@@ -2706,14 +2706,14 @@ window.ALL_QUESTIONS.push(
   { id: 'pobc-num-005', topic: 'pobc', difficulty: 'hard', type: 'numeric', unit: '£', tolerance: 0.10,
     generate: function () {
       const salary = window._QH.rs(20000, 60000, 1000);
-      const threshold = 9100;
-      const rate = 0.138;
+      const threshold = 5000;
+      const rate = 0.15;
       const taxable = salary - threshold;
       const ans = window._QH.round2(taxable * rate);
       return {
-        q: 'An employee earns £' + window._QH.fmt(salary) + ' per year. Employer NIC is 13.8% on earnings above the £' + window._QH.fmt(threshold) + ' secondary threshold. What is the annual employer NIC?',
+        q: 'An employee earns £' + window._QH.fmt(salary) + ' per year. Employer NIC is 15% on earnings above the £' + window._QH.fmt(threshold) + ' secondary threshold. What is the annual employer NIC?',
         answer: ans,
-        exp: 'Employer NIC = (£' + window._QH.fmt(salary) + ' − £' + window._QH.fmt(threshold) + ') × 13.8% = £' + window._QH.fmt(taxable) + ' × 0.138 = £' + window._QH.fmt(ans) + '.'
+        exp: 'Employer NIC = (£' + window._QH.fmt(salary) + ' − £' + window._QH.fmt(threshold) + ') × 15% = £' + window._QH.fmt(taxable) + ' × 0.15 = £' + window._QH.fmt(ans) + '.'
       };
     } },
 
@@ -2943,7 +2943,8 @@ window.ALL_QUESTIONS.push(
 
   { id: 'besy-num-006', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.05,
     generate: function () {
-      const rate = window._QH.pick([8.60, 10.42, 11.44, 11.80, 12.21]);
+      // UK National Minimum/Living Wage rates from April 2026
+      const rate = window._QH.pick([8.00, 10.85, 12.71]);
       const hours = window._QH.r(20, 40);
       const ans = window._QH.round2(hours * rate);
       return {

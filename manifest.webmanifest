@@ -1,0 +1,16 @@
+{
+  "name": "AAT Level 2 Synoptic Practice",
+  "short_name": "AAT L2 Practice",
+  "description": "Practice for the AAT Level 2 Synoptic Assessment (AQ2022) — 500+ questions, mock exams, spaced repetition and more.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1e3a5f",
+  "theme_color": "#1e3a5f",
+  "lang": "en-GB",
+  "categories": ["education"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

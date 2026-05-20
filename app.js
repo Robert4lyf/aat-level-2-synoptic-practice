@@ -81,11 +81,11 @@
         'OAR = Budgeted overheads ÷ Budgeted activity',
         'Over/Under-absorption = Absorbed overheads − Actual overheads',
       ]},
-      { title: 'Payroll & NIC (2024/25 rates)', items: [
+      { title: 'Payroll & NIC (2026/27 rates)', items: [
         'Net pay = Gross pay − PAYE − Employee NIC − Pension − Other deductions',
         "Total employment cost = Gross pay + Employer's NIC + Employer pension",
-        "Employer NIC = (Gross pay − £9,100 secondary threshold) × 13.8%",
-        'NMW/NLW: rates vary by age — see HMRC for current bands',
+        "Employer NIC = (Gross pay − £5,000 secondary threshold) × 15%",
+        'National Living Wage (21+) from April 2026: £12.71/hr; 18–20: £10.85; 16–17 & apprentice: £8.00',
       ]},
       { title: 'Elasticity', items: [
         'PED = |% change demand ÷ % change price|; >1 elastic, <1 inelastic',

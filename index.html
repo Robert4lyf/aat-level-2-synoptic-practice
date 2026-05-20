@@ -11,6 +11,16 @@
   <meta name="robots" content="index, follow">
   <title>AAT Level 2 Synoptic Practice</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231e3a5f'/%3E%3Ctext x='50%25' y='50%25' font-size='38' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%93%8A%3C/text%3E%3C/svg%3E">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AAT L2 Practice">
+  <meta property="og:title" content="AAT Level 2 Synoptic Practice">
+  <meta property="og:description" content="500+ audited questions, timed mock exams, spaced repetition and a T-account playground for the AAT Level 2 Synoptic Assessment.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icon-512.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -40,5 +50,13 @@
 
   <script src="data.js"></script>
   <script src="app.js"></script>
+  <script>
+    /* Register the service worker for offline use (PWA). */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () { /* offline mode unavailable */ });
+      });
+    }
+  </script>
 </body>
 </html>

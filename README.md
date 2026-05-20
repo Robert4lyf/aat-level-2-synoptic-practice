@@ -19,18 +19,32 @@ A browser-based study tool for the **AAT Level 2 Certificate in Accounting — S
 - **AAT-style on-screen calculator** with memory keys, square root and percentage.
 - **Interactive T-account playground** — post double entries and watch the ledgers and trial balance update live.
 - **Progress tracking** — lifetime stats, streaks, topic mastery, flagged questions, wrong-answer review, and CSV export.
-- Light/dark themes, keyboard shortcuts, and full offline use once loaded.
+- **Installable (PWA)** — install it to a phone or desktop home screen and use it fully offline.
+- Light/dark themes and keyboard shortcuts throughout.
 
 ## Running it
 
 This is a static site — no build step and no dependencies. Open `index.html` in any modern browser, or host the folder on any static host.
 
 ```
-index.html      — page shell
-styles.css      — all styling
-data.js         — question bank, glossary and topic data
-app.js          — application logic
+index.html             — page shell
+styles.css             — all styling
+data.js                — question bank, glossary and topic data
+app.js                 — application logic
+manifest.webmanifest   — PWA manifest (installable app metadata)
+sw.js                  — service worker (offline caching)
+icon-192.png / icon-512.png / apple-touch-icon.png — app icons
 ```
+
+## Installing it as an app
+
+When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **Install** option:
+
+- **Desktop (Chrome/Edge):** an install icon appears in the address bar.
+- **Android:** browser menu → *Add to Home screen* / *Install app*.
+- **iOS (Safari):** Share → *Add to Home Screen*.
+
+Once installed, the service worker caches the app so it works **fully offline**. Progress is stored locally in the browser, so installed and in-browser use share the same data on a device.
 
 ## Hosting on GitHub Pages
 
