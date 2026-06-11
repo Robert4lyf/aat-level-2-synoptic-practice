@@ -1298,7 +1298,7 @@
 
   function renderPracticeMcqOrNumeric(q) {
     const total = State.questions.length;
-    const pct = (State.current / total * 100).toFixed(0);
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
     const topic = window.TOPICS.find(t => t.id === q.topic);
     const numeric = isNumeric(q);
     let bodyHtml = '', feedbackHtml = '';
@@ -1365,8 +1365,8 @@
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current} of ${total} completed</div>
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
             </div>
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
@@ -1380,7 +1380,7 @@
 
   function renderDragDropQuiz(q) {
     const total = State.questions.length;
-    const pct = (State.current / total * 100).toFixed(0);
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🧩', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
@@ -1449,8 +1449,8 @@
             <span class="dd-pill">🔗 Match</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current} of ${total} completed</div>
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
             </div>
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
@@ -1475,7 +1475,7 @@
 
   function renderTableFillQuiz(q) {
     const total = State.questions.length;
-    const pct = (State.current / total * 100).toFixed(0);
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📐', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
@@ -1517,8 +1517,8 @@
             <span class="tf-pill">📋 Table</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current} of ${total} completed</div>
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
             </div>
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
@@ -1535,7 +1535,7 @@
 
   function renderScenarioQuiz(q) {
     const total = State.questions.length;
-    const pct = (State.current / total * 100).toFixed(0);
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📚', short: 'Scenario' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
@@ -1593,8 +1593,8 @@
             <span class="sc-pill">📖 Scenario</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current} of ${total} completed</div>
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
             </div>
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
@@ -1614,7 +1614,7 @@
 
   function renderGapFillQuiz(q) {
     const total = State.questions.length;
-    const pct = (State.current / total * 100).toFixed(0);
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '✏️', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
@@ -1654,8 +1654,8 @@
             <span class="gf-pill">✏️ Fill the gaps</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current} of ${total} completed</div>
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
             </div>
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
