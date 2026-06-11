@@ -809,7 +809,7 @@ window.ALL_QUESTIONS = [
 
   { id: 'pobc-011', topic: 'pobc', difficulty: 'easy',
     q: 'A transposition error will:',
-    opts: ['Always balance the trial balance', 'Always cause imbalance', 'Never affect accounts', 'Only affect VAT'],
+    opts: ['Always balance the trial balance', 'Usually cause imbalance', 'Never affect accounts', 'Only affect VAT'],
     ans: 1,
     exp: 'A transposition error (e.g. recording £45 as £54) means one side is wrong by a multiple of nine, so total debits typically no longer equal total credits and the trial balance disagrees.' },
 
@@ -1008,8 +1008,8 @@ window.ALL_QUESTIONS = [
   { id: 'pobc-044', topic: 'pobc', difficulty: 'easy',
     q: 'Which error would still allow the trial balance to agree?',
     opts: ['Single entry error', 'Transposition error affecting both sides equally', 'Omission of transaction', 'Posting to wrong account type'],
-    ans: 1,
-    exp: 'Equal and opposite errors on the two sides offset each other, so the trial balance still agrees and the errors are not detected.' },
+    ans: 2,
+    exp: 'An omission of a transaction means both the debit and credit entries are completely missing, so total debits and credits are reduced by the same amount and the trial balance still agrees.' },
 
   { id: 'pobc-045', topic: 'pobc', difficulty: 'easy',
     q: 'Which is a source document?',
@@ -2619,11 +2619,6 @@ window.ALL_QUESTIONS.push(
       // Annual insurance paid in advance covering 12 months from start month; year end 31 Dec
       const months = ['January','February','March','April','May','June','July','August','September','October','November'];
       const startIdx = window._QH.r(1, 11); // start month 1=Feb..11=Dec, never Jan so always some prepayment
-      const startName = months[startIdx - 1] === undefined ? 'February' : ['January','February','March','April','May','June','July','August','September','October','November','December'][startIdx];
-      const monthsUsed = 12 - startIdx; // months from start to Dec inclusive when starting after Jan? Let me recompute.
-      // Clarify: payment on 1 of (startIdx+1)-th month covers 12 months.
-      // Months used by 31 Dec = 12 - startIdx (if startIdx is 0 = January, used = 12; startIdx 1 = Feb, used = 11, prepaid = 1, ...)
-      // Use startIdx 1..11 → at 31 Dec, used = 12 - startIdx, prepaid = startIdx
       const monthName = ['January','February','March','April','May','June','July','August','September','October','November','December'][startIdx];
       const annual = window._QH.rs(1200, 3600, 120); // divisible by 12
       const prepaidMonths = startIdx; // 1..11
