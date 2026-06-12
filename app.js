@@ -164,7 +164,14 @@
     flagged: {},
     sr: {},
     history: [], session: null,
+    learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {} },
+    flash: {},
+    mistakes: {},
+    planner: { examDate: null, dailyGoalXp: 30 },
+    badges: {},
+    daily: {},
   });
+  const todayKey = () => new Date().toISOString().slice(0, 10);
   const Storage = {
     data: defaultData(),
     load() {
@@ -182,6 +189,17 @@
         this.data.flagged = (this.data.flagged && typeof this.data.flagged === 'object') ? this.data.flagged : {};
         this.data.sr = (this.data.sr && typeof this.data.sr === 'object') ? this.data.sr : {};
         this.data.history = Array.isArray(this.data.history) ? this.data.history : [];
+        this.data.learn = Object.assign(d.learn, (this.data.learn && typeof this.data.learn === 'object') ? this.data.learn : {});
+        this.data.learn.lessons = this.data.learn.lessons || {};
+        this.data.learn.taDone = this.data.learn.taDone || {};
+        this.data.flash = (this.data.flash && typeof this.data.flash === 'object') ? this.data.flash : {};
+        this.data.mistakes = (this.data.mistakes && typeof this.data.mistakes === 'object') ? this.data.mistakes : {};
+        this.data.planner = Object.assign(d.planner, this.data.planner || {});
+        this.data.badges = (this.data.badges && typeof this.data.badges === 'object') ? this.data.badges : {};
+        this.data.daily = (this.data.daily && typeof this.data.daily === 'object') ? this.data.daily : {};
+        // Keep only the most recent 60 days of daily activity
+        const dayKeys = Object.keys(this.data.daily).sort();
+        while (dayKeys.length > 60) delete this.data.daily[dayKeys.shift()];
       } catch (e) { this.data = defaultData(); }
     },
     save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data)); } catch (e) {} },
@@ -204,6 +222,76 @@
       sr.dueAt = Date.now() + SR_INTERVALS_MS[sr.box - 1];
       sr.lastResult = !!correct;
       this.data.sr[question.id] = sr;
+      // Mistake notebook: log wrong answers; redeem on a later correct answer
+      if (!correct) {
+        const m = this.data.mistakes[question.id] || { count: 0 };
+        m.count++; m.lastAt = Date.now(); m.cleared = false;
+        this.data.mistakes[question.id] = m;
+      } else if (this.data.mistakes[question.id] && !this.data.mistakes[question.id].cleared) {
+        this.data.mistakes[question.id].cleared = true;
+        this.data.mistakes[question.id].clearedAt = Date.now();
+      }
+      // XP + daily activity
+      this.day().answered++;
+      if (correct) this.addXp(2);
+    },
+    day() {
+      const k = todayKey();
+      if (!this.data.daily[k]) this.data.daily[k] = { xp: 0, answered: 0 };
+      return this.data.daily[k];
+    },
+    addXp(n) {
+      if (!n) return;
+      this.data.learn.xp += n;
+      this.day().xp += n;
+    },
+    studyDayStreak() {
+      let streak = 0;
+      const d = new Date();
+      for (;;) {
+        const k = d.toISOString().slice(0, 10);
+        const rec = this.data.daily[k];
+        if (rec && (rec.xp > 0 || rec.answered > 0)) { streak++; d.setDate(d.getDate() - 1); }
+        else if (streak === 0 && k === todayKey()) { d.setDate(d.getDate() - 1); } // today not studied yet — look at yesterday
+        else break;
+        if (streak > 366) break;
+      }
+      return streak;
+    },
+    activeMistakeIds() {
+      return Object.keys(this.data.mistakes).filter(id => !this.data.mistakes[id].cleared);
+    },
+    clearedMistakeCount() {
+      return Object.keys(this.data.mistakes).filter(id => this.data.mistakes[id].cleared).length;
+    },
+    lessonRec(id) { return this.data.learn.lessons[id] || null; },
+    completeLesson(id, stars, pct) {
+      const existing = this.data.learn.lessons[id];
+      const r = existing || { firstAt: Date.now(), best: 0, stars: 0 };
+      if (pct > r.best) r.best = pct;
+      if (stars > r.stars) r.stars = stars;
+      r.lastAt = Date.now();
+      this.data.learn.lessons[id] = r;
+      this.addXp(existing ? 10 : 20);
+      return !existing;
+    },
+    flashDueTerms() {
+      const now = Date.now();
+      return (window.GLOSSARY || []).filter(g => {
+        const r = this.data.flash[g.term];
+        return r && r.dueAt <= now;
+      }).map(g => g.term);
+    },
+    flashNewTerms(limit) {
+      return (window.GLOSSARY || []).filter(g => !this.data.flash[g.term]).slice(0, Math.max(0, limit)).map(g => g.term);
+    },
+    gradeFlash(term, ok) {
+      const r = this.data.flash[term] || { box: 0 };
+      r.box = ok ? Math.min(SR_MAX_BOX, r.box + 1) : 1;
+      r.dueAt = Date.now() + SR_INTERVALS_MS[r.box - 1];
+      this.data.flash[term] = r;
+      this.data.learn.flashReviews++;
+      this.addXp(1);
     },
     srDueIds() {
       const now = Date.now();
@@ -230,6 +318,115 @@
     },
     clearAll() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} this.data = defaultData(); },
   };
+
+  /* ── SKILLS ── */
+  function ensureSkillTags() {
+    if (!window.SKILLS) return;
+    for (const q of window.ALL_QUESTIONS) {
+      if (!q.skill) q.skill = window.SKILLS.tag(q);
+    }
+  }
+  function skillById(id) { return (window.SKILLS && id) ? window.SKILLS.byId(id) : null; }
+  function skillAccuracy() {
+    // Per-skill lifetime accuracy from the question-level stats
+    const out = {};
+    for (const [id, s] of Object.entries(Storage.data.stats.questions)) {
+      const q = questionById(id);
+      if (!q || !q.skill) continue;
+      const rec = out[q.skill] || (out[q.skill] = { attempts: 0, correct: 0 });
+      rec.attempts += s.attempts; rec.correct += s.correct;
+    }
+    return out;
+  }
+  function lessonForSkill(skillId) {
+    if (!window.LEARN_PATH) return null;
+    for (const unit of window.LEARN_PATH) {
+      for (const L of unit.lessons) {
+        if (L.skills && L.skills.indexOf(skillId) !== -1) return L;
+      }
+    }
+    return null;
+  }
+  function allLessons() {
+    if (!window.LEARN_PATH) return [];
+    return window.LEARN_PATH.reduce((acc, u) => acc.concat(u.lessons), []);
+  }
+  function findLesson(id) {
+    for (const unit of (window.LEARN_PATH || [])) {
+      const L = unit.lessons.find(x => x.id === id);
+      if (L) return { unit, lesson: L };
+    }
+    return null;
+  }
+  function isLessonDone(id) {
+    const r = Storage.lessonRec(id);
+    return !!(r && r.best >= 50);
+  }
+  function setLabel(topicId) {
+    if (topicId === 'all') return 'Mixed';
+    if (topicId === 'smart') return 'Smart practice';
+    if (topicId === 'mistakes') return 'Mistakes';
+    if (topicId === 'flagged') return 'Flagged';
+    if (topicId === 'review-wrong') return 'Weak spots';
+    if (topicId === 'sr-due') return 'Review due';
+    if (topicId && topicId.indexOf('skill:') === 0) {
+      const s = skillById(topicId.slice(6));
+      return s ? s.name : 'Skill drill';
+    }
+    const t = window.TOPICS.find(x => x.id === topicId);
+    return t ? t.short : (topicId || '');
+  }
+
+  /* ── BADGES ── */
+  const BADGES = [
+    { id: 'first-lesson', icon: '🐣', name: 'First steps', desc: 'Complete your first lesson' },
+    { id: 'ten-lessons', icon: '📚', name: 'Bookworm', desc: 'Complete 10 lessons' },
+    { id: 'path-complete', icon: '🗺️', name: 'Trailblazer', desc: 'Complete the whole journey' },
+    { id: 'hundred-q', icon: '💯', name: 'Century', desc: 'Answer 100 questions' },
+    { id: 'streak-15', icon: '🎯', name: 'Sharpshooter', desc: 'Get 15 answers right in a row' },
+    { id: 'mock-pass', icon: '🏅', name: 'Exam ready', desc: 'Pass a mock exam (70%+)' },
+    { id: 'mock-90', icon: '🌟', name: 'Distinction', desc: 'Score 90%+ on a mock exam' },
+    { id: 'mistakes-10', icon: '🔁', name: 'Comeback', desc: 'Clear 10 mistakes from your notebook' },
+    { id: 'flash-50', icon: '🃏', name: 'Card shark', desc: 'Review 50 flashcards' },
+    { id: 'days-7', icon: '🔥', name: '7-day habit', desc: 'Study on 7 days in a row' },
+    { id: 'xp-500', icon: '⚡', name: 'Power learner', desc: 'Earn 500 XP' },
+    { id: 'ta-all', icon: '🧰', name: 'Ledger legend', desc: 'Finish every guided T-account exercise' },
+  ];
+  function badgeEarnedTest(id) {
+    const d = Storage.data;
+    const lessonsDone = Object.keys(d.learn.lessons).length;
+    switch (id) {
+      case 'first-lesson': return lessonsDone >= 1;
+      case 'ten-lessons': return lessonsDone >= 10;
+      case 'path-complete': {
+        const all = allLessons();
+        return all.length > 0 && all.every(L => isLessonDone(L.id));
+      }
+      case 'hundred-q': return Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0) >= 100;
+      case 'streak-15': return (d.stats.streak && d.stats.streak.best >= 15);
+      case 'mock-pass': return d.history.some(h => h.mode === 'mock' && h.pct >= PASS_MARK);
+      case 'mock-90': return d.history.some(h => h.mode === 'mock' && h.pct >= 90);
+      case 'mistakes-10': return Storage.clearedMistakeCount() >= 10;
+      case 'flash-50': return d.learn.flashReviews >= 50;
+      case 'days-7': return Storage.studyDayStreak() >= 7;
+      case 'xp-500': return d.learn.xp >= 500;
+      case 'ta-all': return TA_EXERCISES.every(ex => d.learn.taDone[ex.id]);
+    }
+    return false;
+  }
+  function checkBadges() {
+    const earned = [];
+    for (const b of BADGES) {
+      if (Storage.data.badges[b.id]) continue;
+      if (badgeEarnedTest(b.id)) { Storage.data.badges[b.id] = Date.now(); earned.push(b); }
+    }
+    if (earned.length) {
+      Storage.save();
+      const names = earned.map(b => b.icon + ' ' + b.name).join(' · ');
+      showToast('🏅 Badge earned: ' + names, 'success');
+    }
+    return earned;
+  }
 
   /* ── AUDIO ── */
   let audioCtx = null;
@@ -438,7 +635,7 @@
 
   /* ── STATE ── */
   const State = {
-    screen: 'splash', activeTab: 'home', mode: 'practice', selectedTopic: null,
+    screen: 'splash', activeTab: 'learn', mode: 'practice', selectedTopic: null,
     questions: [], current: 0, answered: null, answers: [], score: 0, results: [],
     showReview: false, reviewFilter: 'all',
     mockEndTime: 0, mockTimerInterval: null, confirmModal: null,
@@ -451,6 +648,11 @@
     referenceOpen: false,
     taEntries: [],                          // T-account playground postings
     taForm: { desc: '', amount: '', dr: '', cr: '' },
+    taExercise: null, taCheck: null,        // guided T-account exercise state
+    hintLevel: 0, hintElim: null,           // progressive hints (practice mode)
+    lesson: null,                           // lesson player state
+    flash: null,                            // flashcard session state
+    plannerEdit: false,                     // study-planner edit form open
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -466,6 +668,26 @@
     'Drawings': 1, 'Rent': 1, 'Wages': 1, 'Motor expenses': 1, 'Office expenses': 1,
     'Non-current assets': 1, 'Discounts allowed': 1,
   };
+
+  /* Guided T-account exercises — post the entries, then check against the model answer */
+  const TA_EXERCISES = [
+    { id: 'tae-1', title: 'Capital & first purchase', brief: '1) The owner pays £8,000 of personal money into the business bank account. 2) The business buys goods for resale for £2,500, paying by bank transfer.',
+      expected: [{ dr: 'Bank', cr: 'Capital', amount: 8000 }, { dr: 'Purchases', cr: 'Bank', amount: 2500 }] },
+    { id: 'tae-2', title: 'Credit sales & receipts', brief: '1) Sell goods on credit to a customer for £1,200. 2) The customer later pays £700 by bank transfer.',
+      expected: [{ dr: 'Trade receivables', cr: 'Sales', amount: 1200 }, { dr: 'Bank', cr: 'Trade receivables', amount: 700 }] },
+    { id: 'tae-3', title: 'Credit purchases & payments', brief: '1) Buy goods for resale on credit for £3,000. 2) Pay the supplier the full £3,000 by bank transfer.',
+      expected: [{ dr: 'Purchases', cr: 'Trade payables', amount: 3000 }, { dr: 'Trade payables', cr: 'Bank', amount: 3000 }] },
+    { id: 'tae-4', title: 'Expenses & drawings', brief: '1) Pay rent of £650 from the bank. 2) Pay wages of £1,400 from the bank. 3) The owner takes £300 from the bank for personal use.',
+      expected: [{ dr: 'Rent', cr: 'Bank', amount: 650 }, { dr: 'Wages', cr: 'Bank', amount: 1400 }, { dr: 'Drawings', cr: 'Bank', amount: 300 }] },
+    { id: 'tae-5', title: 'Returns both ways', brief: '1) A credit customer returns goods worth £200. 2) The business returns goods worth £450 to a credit supplier.',
+      expected: [{ dr: 'Sales returns', cr: 'Trade receivables', amount: 200 }, { dr: 'Trade payables', cr: 'Purchases returns', amount: 450 }] },
+    { id: 'tae-6', title: 'A loan and an asset', brief: '1) Receive a £5,000 bank loan. 2) Buy a delivery van (a non-current asset) for £4,200, paying from the bank.',
+      expected: [{ dr: 'Bank', cr: 'Loan', amount: 5000 }, { dr: 'Non-current assets', cr: 'Bank', amount: 4200 }] },
+    { id: 'tae-7', title: 'A prompt-payment discount', brief: 'A credit customer owing £500 settles early: they pay £490 into the bank and take a £10 prompt-payment discount. Record BOTH the receipt and the discount.',
+      expected: [{ dr: 'Bank', cr: 'Trade receivables', amount: 490 }, { dr: 'Discounts allowed', cr: 'Trade receivables', amount: 10 }] },
+    { id: 'tae-8', title: 'Putting it all together', brief: '1) Owner introduces £10,000 capital by bank. 2) Buy goods on credit for £4,000. 3) Make bank sales of £2,600. 4) Pay the supplier the £4,000 owed. 5) Pay motor expenses of £180.',
+      expected: [{ dr: 'Bank', cr: 'Capital', amount: 10000 }, { dr: 'Purchases', cr: 'Trade payables', amount: 4000 }, { dr: 'Bank', cr: 'Sales', amount: 2600 }, { dr: 'Trade payables', cr: 'Bank', amount: 4000 }, { dr: 'Motor expenses', cr: 'Bank', amount: 180 }] },
+  ];
 
   function showToast(message, kind) {
     State.toast = { message, kind: kind || 'info' };
@@ -496,11 +718,20 @@
       const dueIds = Storage.srDueIds();
       pool = window.ALL_QUESTIONS.filter(q => dueIds.indexOf(q.id) !== -1);
     }
+    else if (topicId === 'mistakes') {
+      const ids = Storage.activeMistakeIds();
+      pool = window.ALL_QUESTIONS.filter(q => ids.indexOf(q.id) !== -1);
+    }
+    else if (topicId && topicId.indexOf('skill:') === 0) {
+      const sid = topicId.slice(6);
+      pool = window.ALL_QUESTIONS.filter(q => q.skill === sid);
+    }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
     if (!pool.length) {
       const empty = {
         'flagged': 'No flagged questions yet — star questions during practice.',
         'sr-due': 'No questions are due for review right now. Come back later!',
+        'mistakes': 'Your mistake notebook is empty — nothing to clear. 🎉',
       };
       showToast(empty[topicId] || 'No questions in this set.', 'warn');
       return;
@@ -512,8 +743,66 @@
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
       ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
+      hintLevel:0, hintElim:null,
     });
     Calc.reset(); saveSession(); render();
+  }
+
+  /* Adaptive "smart practice": weights weak skills, due reviews and unseen questions,
+     and eases the difficulty mix while overall accuracy is low. */
+  function startSmartPractice() {
+    playClick();
+    const acc = skillAccuracy();
+    const now = Date.now();
+    const attempts = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.attempts, 0);
+    const corrects = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.correct, 0);
+    const overallAcc = attempts ? corrects / attempts : 0;
+    const weighted = window.ALL_QUESTIONS.map(q => {
+      let w = 1;
+      const s = acc[q.skill];
+      if (s && s.attempts >= 3 && (s.correct / s.attempts) < 0.7) w *= 3;       // weak skill
+      const sr = Storage.data.sr[q.id];
+      if (sr && sr.box >= 1 && sr.dueAt <= now) w *= 2;                          // due for review
+      const qs = Storage.data.stats.questions[q.id];
+      if (!qs) w *= 1.5;                                                         // never seen
+      else if (qs.attempts > 0 && qs.correct === 0) w *= 2;                      // never got right
+      // Difficulty ladder: while accuracy is low, favour easier questions
+      if (attempts >= 10 && overallAcc < 0.6 && q.difficulty === 'hard') w *= 0.4;
+      if (attempts >= 10 && overallAcc >= 0.8 && q.difficulty === 'easy') w *= 0.5;
+      return { q, w };
+    });
+    const picked = [];
+    const pool = weighted.slice();
+    while (picked.length < PRACTICE_LENGTH && pool.length) {
+      let total = 0;
+      for (const item of pool) total += item.w;
+      let roll = Math.random() * total;
+      let idx = 0;
+      for (; idx < pool.length - 1; idx++) { roll -= pool[idx].w; if (roll <= 0) break; }
+      picked.push(presentQuestion(pool[idx].q));
+      pool.splice(idx, 1);
+    }
+    Object.assign(State, {
+      screen:'quiz', mode:'practice', selectedTopic:'smart', questions:picked,
+      current:0, answered:null, answers:[], score:0, results:[],
+      showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
+      hintLevel:0, hintElim:null,
+    });
+    Calc.reset(); saveSession(); render();
+  }
+
+  /* Progressive hints (practice mode): level 1 = skill strategy, level 2 = formula or 50/50-style elimination */
+  function useHint() {
+    if (State.answered !== null || State.mode !== 'practice') return;
+    if (State.hintLevel >= 2) return;
+    State.hintLevel++;
+    const q = State.questions[State.current];
+    if (State.hintLevel === 2 && isSimpleMcq(q) && State.hintElim == null) {
+      State.hintElim = (q.ans + 1) % q.opts.length;  // cross out one wrong option
+    }
+    playClick();
+    render();
   }
   function buildMockFromBlueprint() {
     const out = [];
@@ -564,6 +853,158 @@
     el.className = 'timer-pill' + (remaining < MOCK_DANGER_MS ? ' danger' : remaining < MOCK_WARN_MS ? ' warn' : '');
   }
 
+  /* ── LESSON PLAYER (learning journey) ── */
+  function startLesson(id) {
+    const found = findLesson(id);
+    if (!found) { showToast('Lesson not found.', 'error'); return; }
+    playClick();
+    State.screen = 'lesson';
+    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0 };
+    render();
+  }
+  function lessonContinue() {
+    const L = State.lesson; if (!L) return;
+    if (L.phase === 'teach') {
+      if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; }
+      else { L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0; }
+      render();
+    } else if (L.phase === 'quiz' && L.qAnswered !== null) {
+      if (L.qIdx + 1 < L.def.check.length) { L.qIdx++; L.qAnswered = null; render(); }
+      else finishLesson();
+    }
+  }
+  function lessonBack() {
+    const L = State.lesson; if (!L || L.phase !== 'teach' || L.cardIdx === 0) return;
+    L.cardIdx--; render();
+  }
+  function lessonAnswer(idx) {
+    const L = State.lesson; if (!L || L.phase !== 'quiz' || L.qAnswered !== null) return;
+    const q = L.def.check[L.qIdx];
+    L.qAnswered = idx;
+    const correct = idx === q.ans;
+    if (correct) { L.qScore++; Storage.addXp(2); playCorrect(); } else { playWrong(); }
+    Storage.save();
+    render();
+  }
+  function finishLesson() {
+    const L = State.lesson; if (!L) return;
+    const total = L.def.check.length;
+    const pct = total ? Math.round((L.qScore / total) * 100) : 0;
+    const stars = pct >= 100 ? 3 : pct >= 75 ? 2 : pct >= 50 ? 1 : 0;
+    L.phase = 'done'; L.pct = pct; L.stars = stars;
+    if (pct >= 50) {
+      L.firstTime = Storage.completeLesson(L.def.id, stars, pct);
+      Storage.save();
+      checkBadges();
+      if (stars === 3) setTimeout(confetti, 300);
+    }
+    render();
+  }
+  function lessonRetryQuiz() {
+    const L = State.lesson; if (!L) return;
+    L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0;
+    render();
+  }
+  function goLearn() {
+    stopMockTimer();
+    State.screen = 'home'; State.activeTab = 'learn'; State.confirmModal = null;
+    State.lesson = null; State.flash = null;
+    render();
+  }
+
+  /* ── FLASHCARDS (glossary + Leitner scheduling) ── */
+  function startFlashcards() {
+    const due = Storage.flashDueTerms();
+    const fresh = Storage.flashNewTerms(Math.max(0, 12 - due.length));
+    const terms = shuffle(due.concat(fresh)).slice(0, 20);
+    if (!terms.length) { showToast('No cards due — you are all caught up! 🎉', 'success'); return; }
+    playClick();
+    State.screen = 'flash';
+    State.flash = { terms, idx: 0, flipped: false, got: 0 };
+    render();
+  }
+  function flashFlip() {
+    const F = State.flash; if (!F || F.flipped || F.idx >= F.terms.length) return;
+    F.flipped = true; playClick(); render();
+  }
+  function flashGrade(ok) {
+    const F = State.flash; if (!F || !F.flipped || F.idx >= F.terms.length) return;
+    Storage.gradeFlash(F.terms[F.idx], ok);
+    if (ok) { F.got++; playCorrect(); } else { playWrong(); }
+    F.idx++; F.flipped = false;
+    Storage.save();
+    if (F.idx >= F.terms.length) checkBadges();
+    render();
+  }
+
+  /* ── STUDY PLANNER ── */
+  function savePlanner() {
+    const dateEl = document.getElementById('plannerDate');
+    const goalEl = document.getElementById('plannerGoal');
+    if (!dateEl) return;
+    const v = dateEl.value;
+    if (!v) { showToast('Pick your exam date first.', 'warn'); return; }
+    Storage.data.planner.examDate = v;
+    if (goalEl) Storage.data.planner.dailyGoalXp = +goalEl.value || 30;
+    Storage.save();
+    State.plannerEdit = false;
+    showToast('Study plan saved. Good luck! 🎯', 'success');
+    render();
+  }
+  function nextLessonToDo() {
+    for (const unit of (window.LEARN_PATH || [])) {
+      for (const L of unit.lessons) {
+        if (!isLessonDone(L.id)) return { unit, lesson: L };
+      }
+    }
+    return null;
+  }
+
+  /* ── GUIDED T-ACCOUNT EXERCISES ── */
+  function startTaExercise(id) {
+    const ex = TA_EXERCISES.find(e => e.id === id);
+    if (!ex) return;
+    playClick();
+    State.taExercise = id; State.taCheck = null;
+    State.taEntries = [];
+    State.taForm = { desc: '', amount: '', dr: '', cr: '' };
+    render();
+  }
+  function exitTaExercise() {
+    State.taExercise = null; State.taCheck = null;
+    render();
+  }
+  function checkTaExercise() {
+    const ex = TA_EXERCISES.find(e => e.id === State.taExercise);
+    if (!ex) return;
+    const used = new Array(State.taEntries.length).fill(false);
+    const perExpected = ex.expected.map(exp => {
+      for (let i = 0; i < State.taEntries.length; i++) {
+        if (used[i]) continue;
+        const e = State.taEntries[i];
+        if (e.dr === exp.dr && e.cr === exp.cr && Math.abs(e.amount - exp.amount) <= 0.01) {
+          used[i] = true;
+          return { ...exp, ok: true };
+        }
+      }
+      return { ...exp, ok: false };
+    });
+    const extras = used.filter(u => !u).length;
+    const allOk = perExpected.every(p => p.ok) && extras === 0;
+    State.taCheck = { perExpected, extras, allOk };
+    if (allOk) {
+      playCorrect();
+      if (!Storage.data.learn.taDone[ex.id]) {
+        Storage.data.learn.taDone[ex.id] = Date.now();
+        Storage.addXp(15);
+        Storage.save();
+        checkBadges();
+      }
+      setTimeout(confetti, 200);
+    } else playWrong();
+    render();
+  }
+
   function answerPractice(idx) {
     if (State.answered !== null) return;
     const q = State.questions[State.current];
@@ -571,7 +1012,7 @@
     State.answered = idx;
     if (correct) { State.score++; playCorrect(); } else { playWrong(); }
     Storage.recordAnswer(q, correct); Storage.save();
-    State.results.push({ id:q.id, q:q.q, correct, chosen:q.opts[idx], correctOpt:q.opts[q.ans], exp:q.exp, topic:q.topic });
+    State.results.push({ id:q.id, q:q.q, correct, chosen:q.opts[idx], correctOpt:q.opts[q.ans], exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
   }
   function selectDragLeft(idx) {
@@ -618,7 +1059,7 @@
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = q.pairs.map((p, i) => p.left + ' → ' + q.pairs[q.shuffledRights[State.ddMap[i]]].right).join('; ');
     const correctSummary = q.pairs.map(p => p.left + ' → ' + p.right).join('; ');
-    State.results.push({ id:q.id, q:q.q, correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic });
+    State.results.push({ id:q.id, q:q.q, correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
   }
 
@@ -641,7 +1082,7 @@
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perBlank.map(b => b.entered == null ? '—' : b.entered).join(', ');
     const correctSummary = blanks.map(b => b.answer).join(', ');
-    State.results.push({ id:q.id, q:q.q, correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic });
+    State.results.push({ id:q.id, q:q.q, correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
   }
 
@@ -673,7 +1114,7 @@
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perPart.map((p, i) => 'Part ' + (i+1) + ': ' + p.chosenText).join(' | ');
     const correctSummary = perPart.map((p, i) => 'Part ' + (i+1) + ': ' + p.correctText).join(' | ');
-    State.results.push({ id:q.id, q:q.q, correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic });
+    State.results.push({ id:q.id, q:q.q, correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
   }
 
@@ -696,7 +1137,7 @@
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perGap.map(g => g.chosen == null ? '—' : g.chosen).join(' / ');
     const correctSummary = perGap.map(g => g.correctText).join(' / ');
-    State.results.push({ id:q.id, q:q.q || 'Gap-fill', correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic });
+    State.results.push({ id:q.id, q:q.q || 'Gap-fill', correct:allRight, chosen: chosenSummary, correctOpt: correctSummary, exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
   }
 
@@ -718,7 +1159,7 @@
     State.results.push({ id:q.id, q:q.q, correct,
       chosen: formatNumericValue(q, value),
       correctOpt: formatNumericValue(q, q.answer),
-      exp:q.exp, topic:q.topic });
+      exp:q.exp, topic:q.topic, skill:q.skill, steps:q.steps });
     saveSession(); render();
   }
   function selectMockOption(idx) {
@@ -750,6 +1191,7 @@
     else {
       State.current++; State.answered = null; State.numericDraft = '';
       State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {};
+      State.hintLevel = 0; State.hintElim = null;
       Calc.reset(); saveSession(); render();
     }
   }
@@ -764,7 +1206,9 @@
     Storage.data.session = null;
     const pct = State.questions.length ? Math.round((State.score / State.questions.length) * 100) : 0;
     Storage.recordResult({ mode:'practice', topic:State.selectedTopic, score:State.score, total:State.questions.length, pct, timestamp:Date.now() });
+    Storage.addXp(5);   // session-completion bonus
     Storage.save();
+    checkBadges();
     if (pct >= PASS_MARK) setTimeout(confetti, 300);
     render();
   }
@@ -786,16 +1230,19 @@
       if (correct) score++;
       return { id:q.id, q:q.q, correct, chosen:chosenText,
         correctOpt: isNumeric(q) ? formatNumericValue(q, q.answer) : q.opts[q.ans],
-        exp:q.exp, topic:q.topic };
+        exp:q.exp, topic:q.topic, skill:q.skill, steps: isNumeric(q) ? q.steps : undefined };
     });
     State.score = score; State.screen = 'score'; State.timedOut = !!timedOut;
     const pct = State.questions.length ? Math.round((score / State.questions.length) * 100) : 0;
     Storage.recordResult({ mode:'mock', topic:'all', score, total:State.questions.length, pct, timestamp:Date.now(), timedOut: !!timedOut });
+    Storage.addXp(25);  // mock-completion bonus
     Storage.save();
+    checkBadges();
     if (pct >= PASS_MARK) setTimeout(confetti, 300);
     render();
   }
   function exitQuiz() {
+    if (State.screen === 'lesson' || State.screen === 'flash') { goLearn(); return; }
     if (State.screen === 'quiz' && State.mode === 'mock') {
       openConfirm({ title:'Exit mock exam?', message:'Your progress will be lost. Mock exam attempts cannot be resumed.', confirmLabel:'Exit exam',
         onConfirm: () => { stopMockTimer(); closeConfirm(); goHome(); } });
@@ -836,6 +1283,8 @@
     else if (State.screen === 'home')   html = renderMain();
     else if (State.screen === 'quiz')   html = renderQuiz();
     else if (State.screen === 'score')  html = renderScore();
+    else if (State.screen === 'lesson') html = renderLesson();
+    else if (State.screen === 'flash')  html = renderFlash();
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
@@ -869,9 +1318,10 @@
   }
 
   function renderMain() {
-    const tabs = [ {id:'home',label:'🏠 Practice'}, {id:'tools',label:'🧰 T-Accounts'}, {id:'glossary',label:'📖 Glossary'}, {id:'progress',label:'📈 Progress'}, {id:'howto',label:'ℹ️ How to Use'} ];
+    const tabs = [ {id:'learn',label:'🗺️ Learn'}, {id:'home',label:'🎯 Practice'}, {id:'tools',label:'🧰 T-Accounts'}, {id:'glossary',label:'📖 Glossary'}, {id:'progress',label:'📈 Progress'}, {id:'howto',label:'ℹ️ How to Use'} ];
     let content = '';
-    if (State.activeTab === 'home') content = renderHomeTab();
+    if (State.activeTab === 'learn') content = renderLearningJourney();
+    else if (State.activeTab === 'home') content = renderHomeTab();
     else if (State.activeTab === 'tools') content = renderTAccountPlayground();
     else if (State.activeTab === 'glossary') content = renderGlossary();
     else if (State.activeTab === 'progress') content = renderProgress();
@@ -918,6 +1368,57 @@
     render();
   }
   function renderTAccountPlayground() {
+    if (!State.taExercise) {
+      const doneCount = TA_EXERCISES.filter(e => Storage.data.learn.taDone[e.id]).length;
+      const exerciseList = TA_EXERCISES.map((ex, i) => {
+        const done = !!Storage.data.learn.taDone[ex.id];
+        return `<div class="ta-exercise-card ${done ? 'ta-ex-done' : ''}">
+          <div class="ta-ex-header">
+            <span class="ta-ex-num">${i + 1}</span>
+            <strong class="ta-ex-title">${escapeHtml(ex.title)}</strong>
+            ${done ? '<span class="ta-ex-badge">✓ Done</span>' : ''}
+          </div>
+          <p class="ta-ex-brief">${escapeHtml(ex.brief)}</p>
+          <button class="btn-primary ta-start-btn" type="button" data-ta-ex="${escapeHtml(ex.id)}">${done ? '🔁 Redo' : '▶ Start'}</button>
+        </div>`;
+      }).join('');
+      return `<h2 class="section-title">T-Account Playground</h2>
+        <p class="ta-intro">Free-form playground to post any double-entry and watch T-accounts update live. Or work through a guided exercise below.</p>
+        <div style="margin-bottom:24px">
+          <h3 class="section-title" style="font-size:1rem;margin-bottom:12px">Guided Exercises (${doneCount}/${TA_EXERCISES.length} done)</h3>
+          <div class="ta-exercise-list">${exerciseList}</div>
+        </div>
+        <h3 class="section-title" style="font-size:1rem;margin-bottom:0">Free-Form Playground</h3>
+        ${renderTAccountFreeForm()}`;
+    }
+    /* Guided exercise mode */
+    const ex = TA_EXERCISES.find(e => e.id === State.taExercise);
+    if (!ex) { State.taExercise = null; return renderTAccountPlayground(); }
+    const check = State.taCheck;
+    let checkHtml = '';
+    if (check) {
+      checkHtml = `<div class="ta-check-result ${check.allOk ? 'ta-check-ok' : 'ta-check-bad'}">
+        ${check.allOk ? '<strong>✅ Perfect! All entries correct.</strong>' : '<strong>❌ Not quite. Check the results below.</strong>'}
+        <ul class="ta-check-list">${check.perExpected.map(p => `<li class="${p.ok ? 'ta-ok' : 'ta-miss'}">
+          ${p.ok ? '✓' : '✗'} Dr <strong>${escapeHtml(p.dr)}</strong> / Cr <strong>${escapeHtml(p.cr)}</strong> · £${p.amount.toLocaleString('en-GB')}
+        </li>`).join('')}</ul>
+        ${check.extras > 0 ? `<p style="color:var(--wrong-text)">${check.extras} extra entr${check.extras===1?'y':'ies'} — remove any entries not required.</p>` : ''}
+      </div>`;
+    }
+    return `<div class="ta-exercise-header">
+      <button class="back-btn" id="taExitBtn" type="button">← Back to exercises</button>
+      <h2 class="section-title" style="margin-top:12px">${escapeHtml(ex.title)}</h2>
+      <div class="ta-exercise-brief">${escapeHtml(ex.brief)}</div>
+    </div>
+    ${checkHtml}
+    ${renderTAccountFreeForm()}
+    <div class="ta-exercise-footer">
+      <button class="btn-primary" id="taCheckBtn" type="button">✓ Check my entries</button>
+      <button class="btn-secondary" id="taExitBtn2" type="button">← Back to exercises</button>
+    </div>`;
+  }
+
+  function renderTAccountFreeForm() {
     const entries = State.taEntries;
     // Build per-account ledgers
     const ledgers = {};
@@ -1081,6 +1582,12 @@
         <h2 class="section-title" style="margin-top:0">Mixed & Mock</h2>
         <button class="all-topics-btn" type="button" data-topic="all">🎯 Mixed Practice — ${PRACTICE_LENGTH} Questions</button>
         <button class="mock-exam-btn" id="mockBtn" type="button">⏱ Start Mock Exam — ${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min</button>
+      </div>
+      <div style="margin-top:24px">
+        <h2 class="section-title" style="margin-top:0">Smart Modes</h2>
+        <button class="all-topics-btn smart-practice-btn" id="smartPracticeBtn" type="button">🧠 Smart Practice — adapts to your weak areas</button>
+        <button class="all-topics-btn flash-start-btn" id="flashcardsBtn" type="button">🃏 Flashcards — glossary term review</button>
+        ${Storage.activeMistakeIds().length > 0 ? `<button class="all-topics-btn mistakes-drill-btn" type="button" data-topic="mistakes">📝 Mistake Notebook — ${Storage.activeMistakeIds().length} to clear</button>` : ''}
       </div>`;
   }
 
@@ -1371,6 +1878,14 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
+          ${(() => {
+            if (State.mode !== 'practice' || State.answered !== null) return '';
+            const sk = skillById(q.skill);
+            if (!sk) return '';
+            const h1 = State.hintLevel >= 1 ? `<div class="hint-text"><strong>${escapeHtml(sk.name)}</strong>: ${escapeHtml(sk.hint)}</div>` : '';
+            const h2 = State.hintLevel >= 2 && sk.formula ? `<div class="hint-formula">📐 ${escapeHtml(sk.formula)}</div>` : '';
+            return `<div class="hint-area">${h1}${h2}${State.hintLevel < 2 ? `<button class="hint-btn" id="hintBtn" type="button">💡 ${State.hintLevel === 0 ? 'Show hint' : 'Show formula'}</button>` : ''}</div>`;
+          })()}
           ${bodyHtml}${feedbackHtml}
         </div>
         ${numeric ? renderCalculatorSidebar() : ''}
@@ -1827,12 +2342,239 @@
         <div class="breakdown" style="margin-bottom:20px">
           <div class="breakdown-title">Score breakdown by topic</div>${breakdownHtml}
         </div>
+        ${(() => {
+          const skillMap = {};
+          results.forEach(r => {
+            if (!r.skill) return;
+            const rec = skillMap[r.skill] || (skillMap[r.skill] = { correct: 0, total: 0 });
+            rec.total++; if (r.correct) rec.correct++;
+          });
+          const weakSkills = Object.entries(skillMap).filter(([,v]) => v.total >= 2 && (v.correct / v.total) < 0.7).sort((a, b) => (a[1].correct / a[1].total) - (b[1].correct / b[1].total));
+          if (!weakSkills.length) return '';
+          const rows = weakSkills.map(([sid, v]) => {
+            const sk = skillById(sid);
+            if (!sk) return '';
+            const pct = Math.round((v.correct / v.total) * 100);
+            const lesson = lessonForSkill(sid);
+            return `<div class="skill-debrief-row">
+              <span class="skill-debrief-name">${sk.icon} ${escapeHtml(sk.name)}</span>
+              <span class="skill-debrief-score">${v.correct}/${v.total} (${pct}%)</span>
+              <div class="skill-debrief-actions">
+                <button class="skill-drill-btn" type="button" data-topic="skill:${escapeHtml(sid)}">🎯 Drill</button>
+                ${lesson ? `<button class="skill-lesson-btn" type="button" data-lesson="${escapeHtml(lesson.id)}">📖 Lesson</button>` : ''}
+              </div>
+            </div>`;
+          }).join('');
+          return `<div class="breakdown skill-debrief" style="margin-bottom:20px"><div class="breakdown-title">⚠️ Weak skills — work on these</div>${rows}</div>`;
+        })()}
         <div class="score-btns">
           <button class="btn-primary" id="retryBtn" type="button">🔄 ${mode === 'mock' ? 'New mock' : 'Try again'}</button>
           <button class="btn-secondary" id="reviewBtn" type="button" aria-expanded="${State.showReview ? 'true' : 'false'}">${State.showReview ? 'Hide review' : '📋 Review answers'}</button>
           <button class="btn-secondary" id="homeBtn2" type="button">🏠 Topics</button>
         </div>
         ${reviewHtml}
+      </div>
+    </div>`;
+  }
+
+  /* ── LEARNING JOURNEY (Duolingo-style map) ── */
+  function renderLearningJourney() {
+    if (!window.LEARN_PATH) return '<div class="empty-state">Learning content not loaded.</div>';
+    const xp = Storage.data.learn.xp || 0;
+    const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (Storage.data.stats.streak || {}).current || 0;
+    const earnedBadges = BADGES.filter(b => Storage.data.badges[b.id]);
+    const nextLesson = nextLessonToDo();
+    const planner = Storage.data.planner;
+    const daysLeft = planner.examDate ? Math.max(0, Math.ceil((new Date(planner.examDate) - new Date()) / 86400000)) : null;
+
+    const plannerBlock = State.plannerEdit
+      ? `<div class="planner-form">
+          <label>Exam date <input type="date" id="plannerDate" value="${escapeHtml(planner.examDate || '')}" min="${new Date().toISOString().slice(0,10)}"></label>
+          <label>Daily XP goal <select id="plannerGoal">${[10,20,30,50,100].map(v=>`<option value="${v}" ${planner.dailyGoalXp===v?'selected':''}>${v} XP</option>`).join('')}</select></label>
+          <button class="btn-primary" id="savePlannerBtn" type="button">Save plan</button>
+          <button class="btn-secondary" id="cancelPlannerBtn" type="button">Cancel</button>
+        </div>`
+      : `<div class="planner-bar">
+          ${planner.examDate ? `<span>🎯 Exam: <strong>${new Date(planner.examDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</strong> · <strong>${daysLeft}</strong> day${daysLeft===1?'':'s'} left</span>` : '<span>No exam date set</span>'}
+          <span>🏅 Daily goal: <strong>${planner.dailyGoalXp} XP</strong></span>
+          <button class="planner-edit-btn" id="editPlannerBtn" type="button">✏️ Edit</button>
+        </div>`;
+
+    const xpBar = `<div class="xp-bar-wrap" title="${xp} XP earned">
+      <span class="xp-label">⚡ ${xp} XP</span>
+      <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${Math.min(100, (xp % 100))}%"></div></div>
+      <span class="xp-level">Lv ${Math.floor(xp / 100) + 1}</span>
+    </div>`;
+
+    const unitsHtml = window.LEARN_PATH.map((unit, ui) => {
+      const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
+      let unlockedSoFar = true;
+      const lessonsHtml = unit.lessons.map((L, li) => {
+        const rec = Storage.lessonRec(L.id);
+        const done = !!(rec && rec.best >= 50);
+        const stars = rec ? rec.stars : 0;
+        const locked = !unlockedSoFar;
+        if (!done) unlockedSoFar = false;
+        const starRow = [1,2,3].map(s => `<span class="journey-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
+        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}" type="button"
+            ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
+            aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
+          <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
+          <div class="journey-label">${escapeHtml(L.title)}</div>
+          <div class="journey-stars">${starRow}</div>
+        </button>`;
+      }).join('');
+      const unitDone = unit.lessons.every(L => isLessonDone(L.id));
+      return `<div class="journey-unit">
+        <div class="journey-unit-header">
+          <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
+          <div><div class="journey-unit-title">${escapeHtml(unit.title)}</div>
+          <div class="journey-unit-sub">${unit.lessons.filter(L=>isLessonDone(L.id)).length}/${unit.lessons.length} lessons done ${unitDone ? '✓' : ''}</div></div>
+        </div>
+        <div class="journey-nodes">${lessonsHtml}</div>
+      </div>`;
+    }).join('');
+
+    const badgesSnip = earnedBadges.length
+      ? `<div class="journey-badges">${earnedBadges.map(b=>`<span class="badge-chip" title="${escapeHtml(b.name)}: ${escapeHtml(b.desc)}">${b.icon}</span>`).join('')}</div>`
+      : '';
+
+    const nextBlock = nextLesson ? `<div class="journey-next">
+      <div class="journey-next-label">Continue learning</div>
+      <button class="journey-next-btn" type="button" data-lesson="${escapeHtml(nextLesson.lesson.id)}">
+        ${escapeHtml(nextLesson.lesson.icon)} ${escapeHtml(nextLesson.lesson.title)} →
+      </button>
+    </div>` : '<div class="journey-complete">🎉 All lessons complete! Use smart practice to keep sharp.</div>';
+
+    return `<div class="journey-header">
+      ${xpBar}
+      <div class="journey-meta"><span>🔥 ${streak}-day streak</span>${badgesSnip}</div>
+      ${plannerBlock}
+    </div>
+    ${nextBlock}
+    <div class="journey-map">${unitsHtml}</div>`;
+  }
+
+  /* ── LESSON PLAYER ── */
+  function renderLesson() {
+    const L = State.lesson;
+    if (!L) { goLearn(); return ''; }
+    const { def, phase, cardIdx, qIdx, qAnswered, qScore, pct, stars } = L;
+    const totalCards = def.cards.length;
+    const totalQ = def.check ? def.check.length : 0;
+
+    if (phase === 'done') {
+      const starRow = [1,2,3].map(s => `<span class="lesson-star ${(stars||0) >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
+      const msg = stars === 3 ? 'Perfect score! 🏆' : stars >= 2 ? 'Great work! 👏' : stars >= 1 ? 'Good start. Try again to improve!' : 'Keep going — you need 50% to pass.';
+      return `<div class="container">
+        <button class="back-btn" id="lessonExitBtn" type="button">← Back to journey</button>
+        <div class="lesson-done fade-in">
+          <div class="lesson-done-stars">${starRow}</div>
+          <div class="lesson-done-pct">${pct}%</div>
+          <div class="lesson-done-msg">${msg}</div>
+          <div class="lesson-done-xp">+${qScore * 2} XP earned this lesson</div>
+          <div class="lesson-done-btns">
+            ${stars < 3 && totalQ > 0 ? `<button class="btn-primary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
+            <button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills && def.skills[0] || '')}">🎯 Drill these skills</button>
+            <button class="btn-secondary" id="lessonExitBtn2" type="button">🗺️ Back to journey</button>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    if (phase === 'quiz') {
+      if (!def.check || !def.check.length) { finishLesson(); return ''; }
+      const q = def.check[qIdx];
+      const answered = qAnswered !== null;
+      const correct = answered && qAnswered === q.ans;
+      const optHtml = q.opts.map((opt, i) => {
+        let cls = '';
+        if (answered) { if (i === q.ans) cls = 'correct'; else if (i === qAnswered && qAnswered !== q.ans) cls = 'wrong'; }
+        return `<button class="option-btn ${cls}" type="button" data-lesson-ans="${i}" ${answered ? 'disabled' : ''} role="radio" aria-checked="${qAnswered === i}">
+          <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
+        </button>`;
+      }).join('');
+      const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in">
+        <strong>${correct ? '✅ Correct!' : '❌ Not quite'}</strong>${q.exp ? `<br><em>${escapeHtml(q.exp)}</em>` : ''}
+      </div>` : '';
+      return `<div class="container">
+        <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
+        <div class="lesson-player slide-in">
+          <div class="lesson-phase-pill">Quiz · ${qIdx + 1} of ${totalQ}</div>
+          <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((qIdx+1)/totalQ*100).toFixed(0)}%"></div></div>
+          <h2 class="lesson-q">${escapeHtml(q.q)}</h2>
+          <div class="options" role="radiogroup">${optHtml}</div>
+          ${feedback}
+          ${answered ? `<button class="next-btn" id="lessonNextBtn" type="button">${qIdx + 1 >= totalQ ? 'Finish ✓' : 'Next →'}</button>` : ''}
+        </div>
+      </div>`;
+    }
+
+    /* teach phase */
+    const card = def.cards[cardIdx];
+    const mdBold = (t) => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
+    const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
+    const exHtml = card.example ? `<div class="lesson-example">
+      <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
+      <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+    </div>` : '';
+    const splitHtml = card.split ? `<div class="lesson-split">
+      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.h)}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.h)}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+    </div>` : '';
+    return `<div class="container">
+      <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
+      <div class="lesson-player slide-in">
+        <div class="lesson-phase-pill">Learn · ${cardIdx + 1} of ${totalCards}</div>
+        <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
+        <div class="lesson-card fade-in">
+          <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
+          ${paraHtml}${flowHtml}${exHtml}${splitHtml}
+        </div>
+        <div class="lesson-nav">
+          ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
+          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Take quiz →' : 'Continue →'}</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ── FLASHCARD SCREEN ── */
+  function renderFlash() {
+    const F = State.flash;
+    if (!F) { goLearn(); return ''; }
+    const done = F.idx >= F.terms.length;
+    if (done) {
+      return `<div class="container">
+        <button class="back-btn" id="flashExitBtn" type="button">← Back to journey</button>
+        <div class="flash-done fade-in">
+          <div class="flash-done-icon">🃏</div>
+          <h2>Session complete!</h2>
+          <p>You reviewed ${F.terms.length} card${F.terms.length===1?'':'s'} — ${F.got} correct.</p>
+          <button class="btn-primary" id="flashExitBtn2" type="button">🗺️ Back to journey</button>
+        </div>
+      </div>`;
+    }
+    const term = F.terms[F.idx];
+    const glossItem = window.GLOSSARY.find(g => g.term === term) || { term, def: '—' };
+    return `<div class="container">
+      <button class="back-btn" id="flashExitBtn" type="button">← Back to journey</button>
+      <div class="flash-player">
+        <div class="flash-progress">${F.idx + 1} / ${F.terms.length}</div>
+        <div class="flash-card ${F.flipped ? 'flipped' : ''}">
+          ${!F.flipped
+            ? `<div class="flash-front"><span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-hint">Tap to reveal definition</p></div>`
+            : `<div class="flash-back"><span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-def">${escapeHtml(glossItem.def)}</p></div>`
+          }
+        </div>
+        ${!F.flipped
+          ? `<button class="btn-primary flash-flip-btn" id="flashFlipBtn" type="button">Flip card ↩</button>`
+          : `<div class="flash-grade-btns">
+              <button class="flash-btn-no" id="flashNoBtn" type="button">😕 Need more practice</button>
+              <button class="flash-btn-yes" id="flashYesBtn" type="button">✅ Got it!</button>
+            </div>`
+        }
       </div>
     </div>`;
   }
@@ -2013,6 +2755,42 @@
       if (m && typeof m.onConfirm === 'function') m.onConfirm(); else render();
     });
     bind('modalBackdrop', 'click', (e) => { if (e.target.id === 'modalBackdrop') closeConfirm(); });
+    // Smart practice & flashcards
+    bind('smartPracticeBtn', 'click', startSmartPractice);
+    bind('flashcardsBtn', 'click', startFlashcards);
+    // Hint button
+    bind('hintBtn', 'click', useHint);
+    // Skill debrief buttons (score screen)
+    document.querySelectorAll('[data-lesson]').forEach(el => el.addEventListener('click', () => startLesson(el.dataset.lesson)));
+    // Learning journey node buttons
+    document.querySelectorAll('[data-lesson]').forEach(el => el.addEventListener('click', () => startLesson(el.dataset.lesson)));
+    // Lesson player buttons
+    bind('lessonExitBtn', 'click', goLearn);
+    bind('lessonExitBtn2', 'click', goLearn);
+    bind('lessonBackBtn', 'click', lessonBack);
+    bind('lessonContinueBtn', 'click', lessonContinue);
+    bind('lessonNextBtn', 'click', lessonContinue);
+    bind('lessonRetryBtn', 'click', lessonRetryQuiz);
+    bind('lessonDrillBtn', 'click', () => {
+      const btn = document.getElementById('lessonDrillBtn');
+      if (btn && btn.dataset.topic) startPractice(btn.dataset.topic);
+    });
+    document.querySelectorAll('[data-lesson-ans]').forEach(el => el.addEventListener('click', () => lessonAnswer(+el.dataset.lessonAns)));
+    // Flashcard buttons
+    bind('flashExitBtn', 'click', goLearn);
+    bind('flashExitBtn2', 'click', goLearn);
+    bind('flashFlipBtn', 'click', flashFlip);
+    bind('flashYesBtn', 'click', () => flashGrade(true));
+    bind('flashNoBtn', 'click', () => flashGrade(false));
+    // Study planner
+    bind('editPlannerBtn', 'click', () => { State.plannerEdit = true; render(); });
+    bind('cancelPlannerBtn', 'click', () => { State.plannerEdit = false; render(); });
+    bind('savePlannerBtn', 'click', savePlanner);
+    // T-account guided exercises
+    document.querySelectorAll('[data-ta-ex]').forEach(el => el.addEventListener('click', () => startTaExercise(el.dataset.taEx)));
+    bind('taExitBtn', 'click', exitTaExercise);
+    bind('taExitBtn2', 'click', exitTaExercise);
+    bind('taCheckBtn', 'click', checkTaExercise);
   }
   function bind(id, ev, fn) { const el = document.getElementById(id); if (el) el.addEventListener(ev, fn); }
 
@@ -2055,6 +2833,7 @@
 
   function init() {
     Storage.load();
+    ensureSkillTags();
     document.body.classList.toggle('dark', Storage.isDarkActive());
     State.referenceOpen = !!Storage.data.settings.refOpen;
     renderReferencePanel();
