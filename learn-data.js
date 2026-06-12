@@ -475,9 +475,18 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Key point',
-            p: [],
-            callout: { kind: 'key', text: 'Assets = Capital + Liabilities. If this equation is out of balance after a transaction, you have made an error. Debit balances: assets, expenses, drawings. Credit balances: liabilities, income, capital.' },
+            h: 'Depreciation and adjustments formulas',
+            p: [
+              'These formulas cover all the standard calculations for this topic.',
+            ],
+            formula: 'Straight-line charge = (Cost − Residual) ÷ Useful life · Reducing balance charge = Carrying value × Rate% · Carrying value = Cost − Accumulated depreciation · Prepayment = Months unused ÷ 12 × Annual cost',
+          },
+          {
+            h: 'Matching is the core principle',
+            p: [
+              'Accruals and prepayments both serve the same goal as depreciation.',
+            ],
+            callout: { kind: 'key', text: 'The matching (accruals) concept requires that expenses are recognised in the period they are incurred, not when the cash is paid. Depreciation, accruals and prepayments all apply this concept — never show more or less expense than was actually used in the period.' },
           },
         ],
         check: [
@@ -723,9 +732,18 @@ window.LEARN_PATH = [
             },
           },
           {
-            h: 'Key point',
-            p: [],
-            callout: { kind: 'key', text: 'Six errors that do NOT affect the trial balance: omission, commission, principle, original entry, reversal, compensating. Learn these as a list — if the trial balance still agrees, one of these six is the culprit.' },
+            h: 'Bank reconciliation formula',
+            p: [
+              'The reconciliation always follows the same logic, starting from either the cash book or the statement balance.',
+            ],
+            formula: 'Statement balance = Cash book balance + Unpresented cheques − Outstanding lodgements · Cash book balance = Statement balance − Unpresented cheques + Outstanding lodgements',
+          },
+          {
+            h: 'Update the cash book first — always',
+            p: [
+              'Items on the statement but not in the cash book are real transactions that must be entered before reconciling.',
+            ],
+            callout: { kind: 'key', text: 'Always update the cash book before preparing the reconciliation statement. Bank charges, direct debits, standing orders and BACS receipts are genuine transactions the business had not yet recorded — they go in the cash book. Only timing differences (unpresented cheques and outstanding lodgements) go on the reconciliation statement.' },
           },
         ],
         check: [
@@ -969,9 +987,18 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Key point',
-            p: [],
-            callout: { kind: 'key', text: 'Payroll has TWO separate costs: what the employee TAKES HOME (net pay) and what you pay THIRD PARTIES (HMRC, pension). The total cost to the business is gross pay PLUS employer NIC PLUS employer pension.' },
+            h: 'Payroll formulas',
+            p: [
+              'Two formulas capture the full payroll picture.',
+            ],
+            formula: 'Net pay = Gross − PAYE − Employee NIC − Employee pension · Total employer cost = Gross + Employer NIC + Employer pension',
+          },
+          {
+            h: 'Gross vs net vs total cost',
+            p: [
+              'These three figures are different and must not be confused.',
+            ],
+            callout: { kind: 'key', text: 'There are three distinct payroll figures: net pay (what lands in the employee\'s account), gross pay (before deductions) and total employer cost (gross plus employer NIC plus employer pension). Employee deductions reduce net pay but do not change the employer\'s total cost.' },
           },
         ],
         check: [
@@ -1142,9 +1169,18 @@ window.LEARN_PATH = [
             },
           },
           {
-            h: 'Key point',
-            p: [],
-            callout: { kind: 'key', text: 'Fixed cost PER UNIT falls as output rises (same total ÷ more units). Variable cost PER UNIT stays constant (total rises in proportion). This distinction is essential for break-even and decision-making.' },
+            h: 'High-low and semi-variable formulas',
+            p: [
+              'The high-low method isolates the variable element by removing the effect of the fixed cost.',
+            ],
+            formula: 'Variable rate = (High cost − Low cost) ÷ (High units − Low units) · Fixed element = Total cost − (Variable rate × Units) · Semi-variable total = Fixed element + (Variable rate × Units)',
+          },
+          {
+            h: 'Per-unit behaviour flips',
+            p: [
+              'The most common source of confusion is forgetting that per-unit and total behaviour are opposite for fixed costs.',
+            ],
+            callout: { kind: 'key', text: 'Fixed cost per unit FALLS as output rises — the same total spread over more units. Variable cost per unit STAYS CONSTANT — the total rises in direct proportion to output. This distinction is essential for break-even analysis and pricing decisions.' },
           },
         ],
         check: [
@@ -1397,9 +1433,18 @@ window.LEARN_PATH = [
             },
           },
           {
-            h: 'Key point',
-            p: [],
-            callout: { kind: 'key', text: 'Variance = Actual − Budget. Adverse = worse than budget (costs higher OR income lower). Favourable = better than budget. Both types reduce or improve profit relative to the budget target.' },
+            h: 'Labour pay formulas',
+            p: [
+              'Three pay bases cover all standard labour cost questions.',
+            ],
+            formula: 'Time-rate pay = Hours worked × Hourly rate · Overtime premium = Overtime hours × (Overtime rate − Basic rate) · Piecework pay = Units produced × Rate per unit',
+          },
+          {
+            h: 'Identify the pay basis first',
+            p: [
+              'Read every labour question carefully to determine whether pay is based on time, output or a hybrid.',
+            ],
+            callout: { kind: 'key', text: 'Always identify the pay basis before calculating: time rate (hours × rate), piecework (units × rate), or a bonus scheme (time rate plus bonus). The overtime premium is just the extra above basic rate — it is often treated as an indirect cost if overtime is worked for general production reasons rather than a specific customer job.' },
           },
         ],
         check: [
@@ -1801,9 +1846,18 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Key point',
-            p: [],
-            callout: { kind: 'key', text: 'Think CIA: Confidentiality (only authorised users see data), Integrity (data is accurate and unaltered), Availability (data accessible when needed). Match each security control to the CIA element it protects.' },
+            h: 'PED formula',
+            p: [
+              'Elasticity is always expressed as a positive number — ignore the sign.',
+            ],
+            formula: 'PED = % change in quantity demanded ÷ % change in price (ignore sign) · Elastic: PED > 1 · Inelastic: PED < 1 · Unit elastic: PED = 1',
+          },
+          {
+            h: 'PED and pricing strategy',
+            p: [
+              'Knowing whether demand is elastic or inelastic tells a business whether raising prices will increase or decrease revenue.',
+            ],
+            callout: { kind: 'key', text: 'If demand is elastic (PED > 1), raising price reduces total revenue because the percentage fall in quantity exceeds the percentage rise in price. If demand is inelastic (PED < 1), raising price increases total revenue. This is the key insight for pricing decisions.' },
           },
         ],
         check: [
