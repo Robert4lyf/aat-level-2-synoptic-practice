@@ -324,7 +324,7 @@
     flagged: {},
     sr: {},
     history: [], session: null,
-    learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {}, unitTests: {} },
+    learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {}, unitTests: {}, bestCombo: 0 },
     flash: {},
     mistakes: {},
     planner: { examDate: null, dailyGoalXp: 30 },
@@ -353,6 +353,7 @@
         this.data.learn.lessons = this.data.learn.lessons || {};
         this.data.learn.taDone = this.data.learn.taDone || {};
         this.data.learn.unitTests = this.data.learn.unitTests || {};
+        this.data.learn.bestCombo = this.data.learn.bestCombo || 0;
         this.data.flash = (this.data.flash && typeof this.data.flash === 'object') ? this.data.flash : {};
         this.data.mistakes = (this.data.mistakes && typeof this.data.mistakes === 'object') ? this.data.mistakes : {};
         this.data.planner = Object.assign(d.planner, this.data.planner || {});
@@ -403,8 +404,13 @@
     },
     addXp(n) {
       if (!n) return;
+      const prevLevel = Math.floor(this.data.learn.xp / 100) + 1;
       this.data.learn.xp += n;
       this.day().xp += n;
+      const newLevel = Math.floor(this.data.learn.xp / 100) + 1;
+      if (newLevel > prevLevel) {
+        setTimeout(() => showLevelUp(newLevel), 400);
+      }
     },
     studyDayStreak() {
       let streak = 0;
@@ -540,20 +546,26 @@
 
   /* ── BADGES ── */
   const BADGES = [
-    { id: 'first-lesson', icon: '🐣', name: 'First steps', desc: 'Complete your first lesson' },
-    { id: 'ten-lessons', icon: '📚', name: 'Bookworm', desc: 'Complete 10 lessons' },
-    { id: 'path-complete', icon: '🗺️', name: 'Trailblazer', desc: 'Complete the whole journey' },
-    { id: 'hundred-q', icon: '💯', name: 'Century', desc: 'Answer 100 questions' },
-    { id: 'streak-15', icon: '🎯', name: 'Sharpshooter', desc: 'Get 15 answers right in a row' },
-    { id: 'mock-pass', icon: '🏅', name: 'Exam ready', desc: 'Pass a mock exam (70%+)' },
-    { id: 'mock-90', icon: '🌟', name: 'Distinction', desc: 'Score 90%+ on a mock exam' },
-    { id: 'mistakes-10', icon: '🔁', name: 'Comeback', desc: 'Clear 10 mistakes from your notebook' },
-    { id: 'flash-50', icon: '🃏', name: 'Card shark', desc: 'Review 50 flashcards' },
-    { id: 'days-7', icon: '🔥', name: '7-day habit', desc: 'Study on 7 days in a row' },
-    { id: 'xp-500', icon: '⚡', name: 'Power learner', desc: 'Earn 500 XP' },
-    { id: 'ta-all', icon: '🧰', name: 'Ledger legend', desc: 'Finish every guided T-account exercise' },
-    { id: 'daily-7', icon: '📅', name: '7-day challenger', desc: 'Complete 7 daily challenges' },
-    { id: 'unit-complete', icon: '🏆', name: 'Unit master', desc: 'Pass all 4 unit quizzes' },
+    { id: 'first-lesson', icon: '🐣', name: 'First steps', desc: 'Complete your first lesson', hint: 'Complete 1 lesson' },
+    { id: 'ten-lessons', icon: '📚', name: 'Bookworm', desc: 'Complete 10 lessons', hint: 'Complete 10 lessons' },
+    { id: 'path-complete', icon: '🗺️', name: 'Trailblazer', desc: 'Complete the whole journey', hint: 'Complete all lessons' },
+    { id: 'hundred-q', icon: '💯', name: 'Century', desc: 'Answer 100 questions', hint: '100 questions answered' },
+    { id: 'questions-250', icon: '🔢', name: 'Grinder', desc: 'Answer 250 questions', hint: '250 questions answered' },
+    { id: 'streak-15', icon: '🎯', name: 'Sharpshooter', desc: 'Get 15 answers right in a row', hint: '15-question correct streak' },
+    { id: 'mock-pass', icon: '🏅', name: 'Exam ready', desc: 'Pass a mock exam (70%+)', hint: 'Pass a mock exam' },
+    { id: 'mock-90', icon: '🌟', name: 'Distinction', desc: 'Score 90%+ on a mock exam', hint: '90%+ on a mock exam' },
+    { id: 'perfect-lesson', icon: '💎', name: 'Flawless', desc: 'Score 100% on a lesson quiz', hint: '100% on any lesson check' },
+    { id: 'three-star-five', icon: '⭐', name: 'Star collector', desc: 'Earn 3 stars on 5 lessons', hint: '3-star 5 lessons' },
+    { id: 'mistakes-10', icon: '🔁', name: 'Comeback', desc: 'Clear 10 mistakes from your notebook', hint: 'Clear 10 mistakes' },
+    { id: 'flash-50', icon: '🃏', name: 'Card shark', desc: 'Review 50 flashcards', hint: 'Review 50 flashcards' },
+    { id: 'days-7', icon: '🔥', name: '7-day habit', desc: 'Study on 7 days in a row', hint: '7-day study streak' },
+    { id: 'xp-500', icon: '⚡', name: 'Power learner', desc: 'Earn 500 XP', hint: '500 XP earned' },
+    { id: 'xp-1000', icon: '⚡⚡', name: 'XP champion', desc: 'Earn 1,000 XP', hint: '1,000 XP earned' },
+    { id: 'ta-all', icon: '🧰', name: 'Ledger legend', desc: 'Finish every guided T-account exercise', hint: 'All T-account exercises done' },
+    { id: 'daily-7', icon: '📅', name: '7-day challenger', desc: 'Complete 7 daily challenges', hint: '7 daily challenges' },
+    { id: 'unit-complete', icon: '🏆', name: 'Unit master', desc: 'Pass all 4 unit quizzes', hint: 'All 4 unit quizzes passed' },
+    { id: 'combo-5', icon: '🔥', name: 'On fire', desc: 'Get 5 answers correct in a row in one practice session', hint: '5-answer combo in practice' },
+    { id: 'perfect-practice', icon: '🎖️', name: 'Perfection', desc: 'Score 100% on a practice session of 10+ questions', hint: '100% on 10+ question session' },
   ];
   function badgeEarnedTest(id) {
     const d = Storage.data;
@@ -566,6 +578,7 @@
         return all.length > 0 && all.every(L => isLessonDone(L.id));
       }
       case 'hundred-q': return Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0) >= 100;
+      case 'questions-250': return Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0) >= 250;
       case 'streak-15': return (d.stats.streak && d.stats.streak.best >= 15);
       case 'mock-pass': return d.history.some(h => h.mode === 'mock' && h.pct >= PASS_MARK);
       case 'mock-90': return d.history.some(h => h.mode === 'mock' && h.pct >= 90);
@@ -573,6 +586,11 @@
       case 'flash-50': return d.learn.flashReviews >= 50;
       case 'days-7': return Storage.studyDayStreak() >= 7;
       case 'xp-500': return d.learn.xp >= 500;
+      case 'xp-1000': return d.learn.xp >= 1000;
+      case 'perfect-lesson': return Object.values(d.learn.lessons).some(r => r.best >= 100);
+      case 'three-star-five': return Object.values(d.learn.lessons).filter(r => r.stars >= 3).length >= 5;
+      case 'combo-5': return !!(d.learn.bestCombo && d.learn.bestCombo >= 5);
+      case 'perfect-practice': return d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100);
       case 'ta-all': return TA_EXERCISES.every(ex => d.learn.taDone[ex.id]);
       case 'daily-7': return Object.values(d.daily).filter(day => day.challenge && day.challenge.done).length >= 7;
       case 'unit-complete': {
@@ -594,6 +612,65 @@
       showToast('🏅 Badge earned: ' + names, 'success');
     }
     return earned;
+  }
+
+  function badgeProgress(id) {
+    const d = Storage.data;
+    const totalAttempts = () => Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0);
+    const lessonsDone = Object.keys(d.learn.lessons).length;
+    switch (id) {
+      case 'first-lesson':  return { cur: Math.min(1, lessonsDone), max: 1 };
+      case 'ten-lessons':   return { cur: Math.min(10, lessonsDone), max: 10 };
+      case 'path-complete': { const all = allLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
+      case 'hundred-q':     return { cur: Math.min(100, totalAttempts()), max: 100 };
+      case 'questions-250': return { cur: Math.min(250, totalAttempts()), max: 250 };
+      case 'streak-15':     return { cur: Math.min(15, (d.stats.streak && d.stats.streak.best) || 0), max: 15 };
+      case 'mock-pass':     return { cur: d.history.some(h => h.mode === 'mock' && h.pct >= PASS_MARK) ? 1 : 0, max: 1 };
+      case 'mock-90':       return { cur: d.history.some(h => h.mode === 'mock' && h.pct >= 90) ? 1 : 0, max: 1 };
+      case 'perfect-lesson':return { cur: Object.values(d.learn.lessons).some(r => r.best >= 100) ? 1 : 0, max: 1 };
+      case 'three-star-five':return { cur: Math.min(5, Object.values(d.learn.lessons).filter(r => r.stars >= 3).length), max: 5 };
+      case 'mistakes-10':   return { cur: Math.min(10, Storage.clearedMistakeCount()), max: 10 };
+      case 'flash-50':      return { cur: Math.min(50, d.learn.flashReviews), max: 50 };
+      case 'days-7':        return { cur: Math.min(7, Storage.studyDayStreak()), max: 7 };
+      case 'xp-500':        return { cur: Math.min(500, d.learn.xp), max: 500 };
+      case 'xp-1000':       return { cur: Math.min(1000, d.learn.xp), max: 1000 };
+      case 'ta-all':        return { cur: TA_EXERCISES.filter(ex => d.learn.taDone[ex.id]).length, max: TA_EXERCISES.length };
+      case 'daily-7':       return { cur: Math.min(7, Object.values(d.daily).filter(day => day.challenge && day.challenge.done).length), max: 7 };
+      case 'unit-complete': { const ut = d.learn.unitTests || {}; return { cur: (window.LEARN_PATH || []).filter(u => ut[u.unit] && ut[u.unit].passed).length, max: (window.LEARN_PATH || []).length || 4 }; }
+      case 'combo-5':       return { cur: Math.min(5, d.learn.bestCombo || 0), max: 5 };
+      case 'perfect-practice': return { cur: d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100) ? 1 : 0, max: 1 };
+      default: return { cur: 0, max: 1 };
+    }
+  }
+
+  function showLevelUp(level) {
+    const el = document.createElement('div');
+    el.className = 'level-up-banner';
+    el.innerHTML = `<div class="level-up-inner"><span class="level-up-icon">⚡</span><div><div class="level-up-title">Level Up!</div><div class="level-up-sub">You reached Level ${level}</div></div><span class="level-up-icon">⚡</span></div>`;
+    document.body.appendChild(el);
+    setTimeout(() => el.classList.add('level-up-show'), 20);
+    setTimeout(() => { el.classList.remove('level-up-show'); setTimeout(() => el.remove(), 500); }, 2500);
+    if (!reducedMotion) confetti();
+  }
+
+  /* ── COMBO SYSTEM ── */
+  function updateCombo(correct) {
+    if (State.mode !== 'practice') return;
+    if (correct) {
+      State.combo++;
+      if (State.combo > (Storage.data.learn.bestCombo || 0)) {
+        Storage.data.learn.bestCombo = State.combo;
+      }
+      if (State.combo >= 3) {
+        Storage.addXp(1); // bonus XP per answer while on combo
+        if (State.combo === 3) showToast('🔥 3-answer combo! +1 bonus XP per correct answer', 'success');
+        if (State.combo === 5) showToast('🔥🔥 5-answer combo! You\'re on fire!', 'success');
+        if (State.combo === 10) showToast('🔥🔥🔥 10-answer combo! Unstoppable!', 'success');
+      }
+    } else {
+      if (State.combo >= 3) showToast(`Combo broken at ${State.combo}. Keep going!`, 'info');
+      State.combo = 0;
+    }
   }
 
   /* ── DAILY CHALLENGE ── */
@@ -646,7 +723,7 @@
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
       ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
-      hintLevel: 0, hintElim: null,
+      hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); render();
   }
@@ -887,6 +964,7 @@
     flash: null,                            // flashcard session state
     plannerEdit: false,                     // study-planner edit form open
     revisionUnit: null,                     // unit revision notes screen
+    combo: 0,                               // consecutive correct answers in practice
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -977,7 +1055,7 @@
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
       ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
-      hintLevel:0, hintElim:null,
+      hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
   }
@@ -1251,6 +1329,7 @@
     const correct = idx === q.ans;
     State.answered = idx;
     if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
     Storage.recordAnswer(q, correct); Storage.save();
     State.results.push({ id:q.id, q:q.q, correct, chosen:q.opts[idx], correctOpt:q.opts[q.ans], exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
@@ -1296,6 +1375,7 @@
     const allRight = correct === totalPairs;
     State.answered = { kind: 'dragdrop', correct: allRight, perPair, score: correct, total: totalPairs };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = q.pairs.map((p, i) => p.left + ' → ' + q.pairs[q.shuffledRights[State.ddMap[i]]].right).join('; ');
     const correctSummary = q.pairs.map(p => p.left + ' → ' + p.right).join('; ');
@@ -1319,6 +1399,7 @@
     const allRight = correct === blanks.length;
     State.answered = { kind: 'tablefill', correct: allRight, perBlank, score: correct, total: blanks.length };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perBlank.map(b => b.entered == null ? '—' : b.entered).join(', ');
     const correctSummary = blanks.map(b => b.answer).join(', ');
@@ -1351,6 +1432,7 @@
     const allRight = correct === parts.length;
     State.answered = { kind: 'scenario', correct: allRight, perPart, score: correct, total: parts.length };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perPart.map((p, i) => 'Part ' + (i+1) + ': ' + p.chosenText).join(' | ');
     const correctSummary = perPart.map((p, i) => 'Part ' + (i+1) + ': ' + p.correctText).join(' | ');
@@ -1374,6 +1456,7 @@
     const allRight = correct === total;
     State.answered = { kind: 'gapfill', correct: allRight, perGap, score: correct, total: total };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perGap.map(g => g.chosen == null ? '—' : g.chosen).join(' / ');
     const correctSummary = perGap.map(g => g.correctText).join(' / ');
@@ -1395,6 +1478,7 @@
     State.answered = value;
     const correct = isNumericCorrect(q, value);
     if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
     Storage.recordAnswer(q, correct); Storage.save();
     State.results.push({ id:q.id, q:q.q, correct,
       chosen: formatNumericValue(q, value),
@@ -1951,7 +2035,38 @@
       </button>`;
     }).join('') : '';
 
+    // Badge showcase
+    const xp = Storage.data.learn.xp || 0;
+    const level = Math.floor(xp / 100) + 1;
+    const levelXp = xp % 100;
+    const earnedBadgesList = BADGES.filter(b => Storage.data.badges[b.id]);
+    const unearnedBadges = BADGES.filter(b => !Storage.data.badges[b.id]);
+    const badgeShowcase = `<div class="badge-showcase">
+      <div class="badge-showcase-header">
+        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/100 XP to next</span></div>
+        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelXp}%"></div></div>
+      </div>
+      ${earnedBadgesList.length ? `<div class="badge-grid-title">🏅 Earned badges (${earnedBadgesList.length}/${BADGES.length})</div>
+      <div class="badge-grid">${earnedBadgesList.map(b => `<div class="badge-card badge-earned" title="${escapeHtml(b.desc)}">
+        <div class="badge-icon">${b.icon}</div>
+        <div class="badge-name">${escapeHtml(b.name)}</div>
+      </div>`).join('')}</div>` : ''}
+      <div class="badge-grid-title">🔒 Locked badges</div>
+      <div class="badge-grid">${unearnedBadges.map(b => {
+        const p = badgeProgress(b.id);
+        const pct = p.max > 0 ? Math.round((p.cur / p.max) * 100) : 0;
+        return `<div class="badge-card badge-locked" title="${escapeHtml(b.desc)}">
+          <div class="badge-icon badge-icon-locked">${b.icon}</div>
+          <div class="badge-name">${escapeHtml(b.name)}</div>
+          <div class="badge-hint">${escapeHtml(b.hint)}</div>
+          <div class="badge-prog-bg"><div class="badge-prog-fill" style="width:${pct}%"></div></div>
+          <div class="badge-prog-label">${p.cur}/${p.max}</div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+
     return `<h2 class="section-title">Your Progress</h2>
+      ${badgeShowcase}
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-num" data-count="${totalAttempts}">${totalAttempts}</div><div class="stat-label">Questions answered</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${accuracy}" data-suffix="%">${accuracy}%</div><div class="stat-label">Lifetime accuracy</div></div>
@@ -1959,6 +2074,8 @@
         <div class="stat-card"><div class="stat-num" data-count="${Object.keys(stats.questions).length}">${Object.keys(stats.questions).length}</div><div class="stat-label">Unique questions seen</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${streak.current}">${streak.current}</div><div class="stat-label">🔥 Current streak</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${streak.best}">${streak.best}</div><div class="stat-label">🏆 Best streak</div></div>
+        <div class="stat-card"><div class="stat-num" data-count="${Storage.data.learn.bestCombo || 0}">${Storage.data.learn.bestCombo || 0}</div><div class="stat-label">🔥 Best combo</div></div>
+        <div class="stat-card"><div class="stat-num" data-count="${Storage.data.learn.xp || 0}">${Storage.data.learn.xp || 0}</div><div class="stat-label">⚡ Total XP</div></div>
       </div>
       <div class="breakdown" style="background:var(--card);border:1px solid var(--border);padding:16px;border-radius:11px;margin-bottom:20px">
         <div class="breakdown-title">Accuracy by topic</div>${topicRows}
@@ -2151,6 +2268,7 @@
     }
 
     const flagged = Storage.isFlagged(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
       <div class="quiz-layout ${numeric ? 'has-calc' : ''}">
@@ -2158,6 +2276,7 @@
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
+            ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
@@ -2688,10 +2807,17 @@
           <button class="planner-edit-btn" id="editPlannerBtn" type="button">✏️ Edit</button>
         </div>`;
 
+    const lv = Math.floor(xp / 100) + 1;
+    const lvXp = xp % 100;
+    const bestCombo = Storage.data.learn.bestCombo || 0;
     const xpBar = `<div class="xp-bar-wrap" title="${xp} XP earned">
-      <span class="xp-label">⚡ ${xp} XP</span>
-      <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${Math.min(100, (xp % 100))}%"></div></div>
-      <span class="xp-level">Lv ${Math.floor(xp / 100) + 1}</span>
+      <div class="xp-bar-top">
+        <span class="xp-label">⚡ ${xp} XP</span>
+        <span class="xp-level">Level ${lv}</span>
+        ${bestCombo >= 3 ? `<span class="xp-combo-best">🔥 Best combo: ${bestCombo}</span>` : ''}
+      </div>
+      <div class="xp-bar-bg" title="${lvXp}/100 XP to next level"><div class="xp-bar-fill" style="width:${lvXp}%"></div></div>
+      <div class="xp-bar-hint">${lvXp}/100 XP to Level ${lv + 1}</div>
     </div>`;
 
     const unitsHtml = window.LEARN_PATH.map((unit) => {
