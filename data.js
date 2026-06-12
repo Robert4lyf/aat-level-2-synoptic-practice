@@ -2533,6 +2533,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'A sale is invoiced at £' + window._QH.fmt(net) + ' net. What is the VAT charged at 20%?',
         answer: ans,
+        steps: [
+          'Identify the net (VAT-exclusive) amount: £' + window._QH.fmt(net) + '.',
+          'VAT = net × 20% = £' + window._QH.fmt(net) + ' × 0.20 = £' + window._QH.fmt(ans) + '.',
+          'The VAT charged is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'VAT = £' + window._QH.fmt(net) + ' × 20% = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2545,6 +2550,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Goods are sold for £' + window._QH.fmt(net) + ' net plus 20% VAT. What is the total invoice value?',
         answer: total,
+        steps: [
+          'VAT = £' + window._QH.fmt(net) + ' × 20% = £' + window._QH.fmt(vat) + '.',
+          'Total = net + VAT = £' + window._QH.fmt(net) + ' + £' + window._QH.fmt(vat) + ' = £' + window._QH.fmt(total) + '.',
+          'The total invoice value is £' + window._QH.fmt(total) + '.'
+        ],
         exp: 'Total = £' + window._QH.fmt(net) + ' + (£' + window._QH.fmt(net) + ' × 20%) = £' + window._QH.fmt(net) + ' + £' + window._QH.fmt(vat) + ' = £' + window._QH.fmt(total) + '.'
       };
     } },
@@ -2558,6 +2568,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Cost of goods sold: opening inventory £' + window._QH.fmt(opening) + ', purchases £' + window._QH.fmt(purchases) + ', closing inventory £' + window._QH.fmt(closing) + '. What is COGS?',
         answer: ans,
+        steps: [
+          'Opening inventory + purchases = £' + window._QH.fmt(opening) + ' + £' + window._QH.fmt(purchases) + ' = £' + window._QH.fmt(opening + purchases) + '.',
+          'Deduct closing inventory: £' + window._QH.fmt(opening + purchases) + ' − £' + window._QH.fmt(closing) + ' = £' + window._QH.fmt(ans) + '.',
+          'COGS is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'COGS = opening + purchases − closing = £' + window._QH.fmt(opening) + ' + £' + window._QH.fmt(purchases) + ' − £' + window._QH.fmt(closing) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2571,6 +2586,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'An employee has gross pay of £' + window._QH.fmt(gross) + ', PAYE of £' + window._QH.fmt(paye) + ' and employee NIC of £' + window._QH.fmt(nic) + '. What is the net pay?',
         answer: net,
+        steps: [
+          'Total deductions = PAYE + employee NIC = £' + window._QH.fmt(paye) + ' + £' + window._QH.fmt(nic) + ' = £' + window._QH.fmt(paye + nic) + '.',
+          'Net pay = gross − deductions = £' + window._QH.fmt(gross) + ' − £' + window._QH.fmt(paye + nic) + ' = £' + window._QH.fmt(net) + '.',
+          'Net pay is £' + window._QH.fmt(net) + '.'
+        ],
         exp: 'Net pay = gross − PAYE − employee NIC = £' + window._QH.fmt(gross) + ' − £' + window._QH.fmt(paye) + ' − £' + window._QH.fmt(nic) + ' = £' + window._QH.fmt(net) + '.'
       };
     } },
@@ -2598,6 +2618,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Straight-line depreciation: a machine costs £' + window._QH.fmt(c.cost) + ' with a residual value of £' + window._QH.fmt(c.res) + ' and a useful life of ' + c.life + ' years. What is the annual depreciation charge?',
         answer: ans,
+        steps: [
+          'Depreciable amount = cost − residual = £' + window._QH.fmt(c.cost) + ' − £' + window._QH.fmt(c.res) + ' = £' + window._QH.fmt(dep) + '.',
+          'Annual depreciation = depreciable amount ÷ useful life = £' + window._QH.fmt(dep) + ' ÷ ' + c.life + ' = £' + window._QH.fmt(ans) + '.',
+          'The annual depreciation charge is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: '(Cost − residual) ÷ life = (£' + window._QH.fmt(c.cost) + ' − £' + window._QH.fmt(c.res) + ') ÷ ' + c.life + ' = £' + window._QH.fmt(dep) + ' ÷ ' + c.life + ' = £' + window._QH.fmt(ans) + ' per year.'
       };
     } },
@@ -2610,6 +2635,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'A fixed asset has a carrying value of £' + window._QH.fmt(cv) + ' at the start of the year and is depreciated at ' + rate + '% reducing balance. What is the depreciation charge for the year?',
         answer: ans,
+        steps: [
+          'Identify the carrying value at the start of the year: £' + window._QH.fmt(cv) + '.',
+          'Depreciation = carrying value × rate = £' + window._QH.fmt(cv) + ' × ' + rate + '% = £' + window._QH.fmt(ans) + '.',
+          'The depreciation charge for the year is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'Reducing balance = carrying value × rate = £' + window._QH.fmt(cv) + ' × ' + rate + '% = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2628,6 +2658,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Insurance of £' + window._QH.fmt(annual) + ' is paid on 1 ' + monthName + ' covering the next 12 months. The financial year ends 31 December. What is the prepayment at year end?',
         answer: ans,
+        steps: [
+          'Monthly cost = £' + window._QH.fmt(annual) + ' ÷ 12 = £' + window._QH.fmt(monthlyAmount) + ' per month.',
+          'By 31 December, ' + usedMonths + ' month' + (usedMonths === 1 ? '' : 's') + ' of cover ' + (usedMonths === 1 ? 'has' : 'have') + ' been used, leaving ' + prepaidMonths + ' month' + (prepaidMonths === 1 ? '' : 's') + ' prepaid.',
+          'Prepayment = ' + prepaidMonths + ' × £' + window._QH.fmt(monthlyAmount) + ' = £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'By 31 December, ' + usedMonths + ' month' + (usedMonths === 1 ? '' : 's') + ' have been used. The remaining ' + prepaidMonths + ' month' + (prepaidMonths === 1 ? '' : 's') + ' is prepaid: ' + prepaidMonths + '/12 × £' + window._QH.fmt(annual) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2640,6 +2675,10 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'A business sells ' + window._QH.fmt(units) + ' units at £' + price + ' each. What is the total sales revenue?',
         answer: ans,
+        steps: [
+          'Revenue = units sold × selling price = ' + window._QH.fmt(units) + ' × £' + price + ' = £' + window._QH.fmt(ans) + '.',
+          'Total sales revenue is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: window._QH.fmt(units) + ' × £' + price + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2654,6 +2693,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Output VAT for the quarter is £' + window._QH.fmt(output) + ' and input VAT is £' + window._QH.fmt(input) + '. How much VAT is due to HMRC?',
         answer: ans,
+        steps: [
+          'Identify output VAT £' + window._QH.fmt(output) + ' (on sales) and input VAT £' + window._QH.fmt(input) + ' (on purchases).',
+          'VAT due = output VAT − input VAT = £' + window._QH.fmt(output) + ' − £' + window._QH.fmt(input) + ' = £' + window._QH.fmt(ans) + '.',
+          'VAT due to HMRC is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'VAT due = output − input = £' + window._QH.fmt(output) + ' − £' + window._QH.fmt(input) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2666,6 +2710,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'A trial balance shows debits of £' + window._QH.fmt(debits) + ' and credits of £' + window._QH.fmt(credits) + '. What is the suspense account balance required to make it agree?',
         answer: diff,
+        steps: [
+          'Difference = debits − credits = £' + window._QH.fmt(debits) + ' − £' + window._QH.fmt(credits) + ' = £' + window._QH.fmt(diff) + '.',
+          'Debits exceed credits, so a credit entry of £' + window._QH.fmt(diff) + ' is needed in the suspense account.',
+          'The suspense account balance is £' + window._QH.fmt(diff) + '.'
+        ],
         exp: 'Suspense = |debits − credits| = £' + window._QH.fmt(debits) + ' − £' + window._QH.fmt(credits) + ' = £' + window._QH.fmt(diff) + ' (credit balance to make the trial balance agree).'
       };
     } },
@@ -2681,6 +2730,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'PLCA: opening balance £' + window._QH.fmt(opening) + ' Cr, credit purchases £' + window._QH.fmt(purchases) + ', payments to suppliers £' + window._QH.fmt(payments) + ', returns to suppliers £' + window._QH.fmt(returns) + ', contras £' + window._QH.fmt(contras) + '. What is the closing balance?',
         answer: ans,
+        steps: [
+          'Opening balance + credit purchases = £' + window._QH.fmt(opening) + ' + £' + window._QH.fmt(purchases) + ' = £' + window._QH.fmt(opening + purchases) + '.',
+          'Total deductions = payments + returns + contras = £' + window._QH.fmt(payments) + ' + £' + window._QH.fmt(returns) + ' + £' + window._QH.fmt(contras) + ' = £' + window._QH.fmt(payments + returns + contras) + '.',
+          'Closing PLCA = £' + window._QH.fmt(opening + purchases) + ' − £' + window._QH.fmt(payments + returns + contras) + ' = £' + window._QH.fmt(ans) + ' Cr.'
+        ],
         exp: 'Closing PLCA = ' + window._QH.fmt(opening) + ' + ' + window._QH.fmt(purchases) + ' − ' + window._QH.fmt(payments) + ' − ' + window._QH.fmt(returns) + ' − ' + window._QH.fmt(contras) + ' = £' + window._QH.fmt(ans) + ' Cr.'
       };
     } },
@@ -2694,6 +2748,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Bank reconciliation: cash book balance £' + window._QH.fmt(cb) + ' Dr, unpresented cheques £' + window._QH.fmt(unpresented) + ', outstanding lodgements £' + window._QH.fmt(lodgements) + '. What is the bank statement balance?',
         answer: ans,
+        steps: [
+          'Add unpresented cheques to the cash book balance: £' + window._QH.fmt(cb) + ' + £' + window._QH.fmt(unpresented) + ' = £' + window._QH.fmt(cb + unpresented) + '.',
+          'Deduct outstanding lodgements: £' + window._QH.fmt(cb + unpresented) + ' − £' + window._QH.fmt(lodgements) + ' = £' + window._QH.fmt(ans) + '.',
+          'The bank statement balance is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'Bank statement = cash book + unpresented − outstanding lodgements = £' + window._QH.fmt(cb) + ' + £' + window._QH.fmt(unpresented) + ' − £' + window._QH.fmt(lodgements) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2708,6 +2767,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'An employee earns £' + window._QH.fmt(salary) + ' per year. Employer NIC is 15% on earnings above the £' + window._QH.fmt(threshold) + ' secondary threshold. What is the annual employer NIC?',
         answer: ans,
+        steps: [
+          'Earnings above the secondary threshold = £' + window._QH.fmt(salary) + ' − £' + window._QH.fmt(threshold) + ' = £' + window._QH.fmt(taxable) + '.',
+          'Employer NIC = £' + window._QH.fmt(taxable) + ' × 15% = £' + window._QH.fmt(ans) + '.',
+          'The annual employer NIC is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'Employer NIC = (£' + window._QH.fmt(salary) + ' − £' + window._QH.fmt(threshold) + ') × 15% = £' + window._QH.fmt(taxable) + ' × 0.15 = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2721,6 +2785,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'An employee has net pay of £' + window._QH.fmt(net) + ' after PAYE of £' + window._QH.fmt(paye) + ' and employee NIC of £' + window._QH.fmt(nic) + '. What is the gross pay?',
         answer: ans,
+        steps: [
+          'Total deductions = PAYE + employee NIC = £' + window._QH.fmt(paye) + ' + £' + window._QH.fmt(nic) + ' = £' + window._QH.fmt(paye + nic) + '.',
+          'Gross pay = net pay + deductions = £' + window._QH.fmt(net) + ' + £' + window._QH.fmt(paye + nic) + ' = £' + window._QH.fmt(ans) + '.',
+          'Gross pay is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'Gross pay = net + deductions = £' + window._QH.fmt(net) + ' + £' + window._QH.fmt(paye) + ' + £' + window._QH.fmt(nic) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2736,6 +2805,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Fixed costs are £' + window._QH.fmt(fc) + ' and variable cost is £' + vc + ' per unit. What is the total cost when ' + window._QH.fmt(units) + ' units are produced?',
         answer: ans,
+        steps: [
+          'Total variable cost = £' + vc + ' × ' + window._QH.fmt(units) + ' units = £' + window._QH.fmt(vc * units) + '.',
+          'Total cost = fixed costs + variable costs = £' + window._QH.fmt(fc) + ' + £' + window._QH.fmt(vc * units) + ' = £' + window._QH.fmt(ans) + '.',
+          'Total cost is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'Total cost = FC + (VC × units) = £' + window._QH.fmt(fc) + ' + (£' + vc + ' × ' + window._QH.fmt(units) + ') = £' + window._QH.fmt(fc) + ' + £' + window._QH.fmt(vc * units) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2748,6 +2822,10 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Total cost is £' + window._QH.fmt(total) + ' for ' + window._QH.fmt(units) + ' units. What is the average cost per unit?',
         answer: perUnit,
+        steps: [
+          'Average cost = total cost ÷ number of units = £' + window._QH.fmt(total) + ' ÷ ' + window._QH.fmt(units) + ' = £' + perUnit + '.',
+          'The average cost per unit is £' + perUnit + '.'
+        ],
         exp: '£' + window._QH.fmt(total) + ' ÷ ' + window._QH.fmt(units) + ' = £' + perUnit + ' per unit.'
       };
     } },
@@ -2760,6 +2838,10 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Selling price is £' + sp + ' per unit and variable cost is £' + vc + ' per unit. What is the contribution per unit?',
         answer: ans,
+        steps: [
+          'Contribution per unit = selling price − variable cost = £' + sp + ' − £' + vc + ' = £' + ans + '.',
+          'The contribution per unit is £' + ans + '.'
+        ],
         exp: 'Contribution = selling price − variable cost = £' + sp + ' − £' + vc + ' = £' + ans + ' per unit.'
       };
     } },
@@ -2772,6 +2854,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Budgeted overheads are £' + window._QH.fmt(overheads) + ' and budgeted labour hours are ' + window._QH.fmt(hours) + '. What is the overhead absorption rate per labour hour?',
         answer: rate,
+        steps: [
+          'OAR = budgeted overheads ÷ budgeted labour hours.',
+          'OAR = £' + window._QH.fmt(overheads) + ' ÷ ' + window._QH.fmt(hours) + ' = £' + rate + '.',
+          'The overhead absorption rate is £' + rate + ' per labour hour.'
+        ],
         exp: 'OAR = budgeted overheads ÷ budgeted activity = £' + window._QH.fmt(overheads) + ' ÷ ' + window._QH.fmt(hours) + ' = £' + rate + ' per hour.'
       };
     } },
@@ -2784,6 +2871,10 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'OAR is £' + oar + ' per hour. Actual labour hours worked are ' + window._QH.fmt(hours) + '. How much overhead was absorbed?',
         answer: ans,
+        steps: [
+          'Overhead absorbed = OAR × actual hours = £' + oar + ' × ' + window._QH.fmt(hours) + ' = £' + window._QH.fmt(ans) + '.',
+          'The overhead absorbed is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'Absorbed = OAR × actual hours = £' + oar + ' × ' + window._QH.fmt(hours) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2796,6 +2887,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Absorbed overheads are £' + window._QH.fmt(absorbed) + '; actual overheads are £' + window._QH.fmt(actual) + '. What is the under-absorption?',
         answer: diff,
+        steps: [
+          'Compare actual overheads £' + window._QH.fmt(actual) + ' with absorbed overheads £' + window._QH.fmt(absorbed) + '.',
+          'Under-absorption = actual − absorbed = £' + window._QH.fmt(actual) + ' − £' + window._QH.fmt(absorbed) + ' = £' + window._QH.fmt(diff) + '.',
+          'The under-absorption is £' + window._QH.fmt(diff) + '.'
+        ],
         exp: 'Under-absorption = actual − absorbed = £' + window._QH.fmt(actual) + ' − £' + window._QH.fmt(absorbed) + ' = £' + window._QH.fmt(diff) + '.'
       };
     } },
@@ -2808,6 +2904,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Fixed costs are £' + window._QH.fmt(fc) + ' and contribution per unit is £' + contrib + '. What is the break-even point in units?',
         answer: beUnits,
+        steps: [
+          'Break-even units = fixed costs ÷ contribution per unit.',
+          'Break-even = £' + window._QH.fmt(fc) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(beUnits) + '.',
+          'The break-even point is ' + window._QH.fmt(beUnits) + ' units.'
+        ],
         exp: 'Break-even units = fixed costs ÷ contribution per unit = £' + window._QH.fmt(fc) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(beUnits) + ' units.'
       };
     } },
@@ -2820,6 +2921,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Budgeted sales are ' + window._QH.fmt(budgeted) + ' units and break-even is ' + window._QH.fmt(beUnits) + ' units. What is the margin of safety in units?',
         answer: margin,
+        steps: [
+          'Margin of safety = budgeted sales − break-even sales.',
+          'Margin of safety = ' + window._QH.fmt(budgeted) + ' − ' + window._QH.fmt(beUnits) + ' = ' + window._QH.fmt(margin) + '.',
+          'The margin of safety is ' + window._QH.fmt(margin) + ' units.'
+        ],
         exp: 'Margin of safety = budgeted − break-even = ' + window._QH.fmt(budgeted) + ' − ' + window._QH.fmt(beUnits) + ' = ' + window._QH.fmt(margin) + ' units.'
       };
     } },
@@ -2836,12 +2942,22 @@ window.ALL_QUESTIONS.push(
         return {
           q: 'Fixed costs £' + window._QH.fmt(safeFc) + ', contribution per unit £' + contrib + '. How many units must be sold to achieve a target profit of £' + window._QH.fmt(targetProfit) + '?',
           answer: reqUnits,
+          steps: [
+            'Add target profit to fixed costs: £' + window._QH.fmt(safeFc) + ' + £' + window._QH.fmt(targetProfit) + ' = £' + window._QH.fmt(safeFc + targetProfit) + '.',
+            'Divide by contribution per unit: £' + window._QH.fmt(safeFc + targetProfit) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + '.',
+            'The business must sell ' + window._QH.fmt(reqUnits) + ' units.'
+          ],
           exp: 'Required units = (fixed costs + target profit) ÷ contribution per unit = (£' + window._QH.fmt(safeFc) + ' + £' + window._QH.fmt(targetProfit) + ') ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + ' units.'
         };
       }
       return {
         q: 'Fixed costs £' + window._QH.fmt(fc) + ', contribution per unit £' + contrib + '. How many units must be sold to achieve a target profit of £' + window._QH.fmt(targetProfit) + '?',
         answer: reqUnits,
+        steps: [
+          'Add target profit to fixed costs: £' + window._QH.fmt(fc) + ' + £' + window._QH.fmt(targetProfit) + ' = £' + window._QH.fmt(fc + targetProfit) + '.',
+          'Divide by contribution per unit: £' + window._QH.fmt(fc + targetProfit) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + '.',
+          'The business must sell ' + window._QH.fmt(reqUnits) + ' units.'
+        ],
         exp: 'Required units = (fixed costs + target profit) ÷ contribution per unit = (£' + window._QH.fmt(fc) + ' + £' + window._QH.fmt(targetProfit) + ') ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + ' units.'
       };
     } },
@@ -2861,6 +2977,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'FIFO: opening inventory ' + openingUnits + ' units at £' + p1 + '. Buy ' + purchaseUnits + ' at £' + p2 + '. Sell ' + sold + '. What is the closing inventory value?',
         answer: ans,
+        steps: [
+          'FIFO sells oldest stock first: all ' + openingUnits + ' opening units at £' + p1 + ' are sold, plus ' + fromPurchases + ' units from the purchase at £' + p2 + ' (total sold = ' + sold + ').',
+          'Closing inventory = ' + purchaseUnits + ' − ' + fromPurchases + ' = ' + closingUnits + ' units, all from the purchase at £' + p2 + '.',
+          'Closing inventory value = ' + closingUnits + ' × £' + p2 + ' = £' + window._QH.fmt(ans) + '.'
+        ],
         exp: 'FIFO sells oldest first. ' + openingUnits + ' opening @ £' + p1 + ' + ' + fromPurchases + ' newer @ £' + p2 + ' = ' + sold + ' sold. Closing = ' + closingUnits + ' units × £' + p2 + ' = £' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2876,6 +2997,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'CPI rises from ' + base + ' to ' + newIdx + ' over the year. What is the rate of inflation (in %)?',
         answer: ans,
+        steps: [
+          'Rise in the index = ' + newIdx + ' − ' + base + ' = ' + rise + ' points.',
+          'Inflation = rise ÷ original index × 100 = ' + rise + ' ÷ ' + base + ' × 100 = ' + ans + '%.',
+          'The rate of inflation is ' + ans + '%.'
+        ],
         exp: 'Inflation = (' + newIdx + ' − ' + base + ') ÷ ' + base + ' × 100 = ' + ans + '%.'
       };
     } },
@@ -2888,6 +3014,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'The exchange rate is £1 = $' + rate.toFixed(2) + '. How many dollars do you receive for £' + window._QH.fmt(gbp) + '?',
         answer: ans,
+        steps: [
+          'Each £1 buys $' + rate.toFixed(2) + ', so multiply the pounds by the exchange rate.',
+          '£' + window._QH.fmt(gbp) + ' × ' + rate.toFixed(2) + ' = $' + window._QH.fmt(ans) + '.',
+          'You receive $' + window._QH.fmt(ans) + '.'
+        ],
         exp: '£' + window._QH.fmt(gbp) + ' × ' + rate.toFixed(2) + ' = $' + window._QH.fmt(ans) + '.'
       };
     } },
@@ -2901,6 +3032,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Income rises ' + incomePct + '% and demand for a good rises ' + demandPct + '%. What is the income elasticity of demand?',
         answer: ans,
+        steps: [
+          'Income elasticity of demand = % change in demand ÷ % change in income.',
+          'IED = ' + demandPct + '% ÷ ' + incomePct + '% = ' + ans + '.',
+          'The income elasticity of demand is ' + ans + '.'
+        ],
         exp: 'IED = % change in demand ÷ % change in income = ' + demandPct + '% ÷ ' + incomePct + '% = ' + ans + (ans > 1 ? ' (luxury good)' : ' (normal/necessity)') + '.'
       };
     } },
@@ -2914,6 +3050,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'Price rises ' + pricePct + '% and demand falls ' + demandPct + '%. What is the price elasticity of demand (absolute value)?',
         answer: ans,
+        steps: [
+          'Price elasticity of demand = % change in demand ÷ % change in price (ignore the sign).',
+          'PED = ' + demandPct + '% ÷ ' + pricePct + '% = ' + ans + '.',
+          'The price elasticity of demand is ' + ans + '.'
+        ],
         exp: 'PED = |% change in demand ÷ % change in price| = ' + demandPct + '% ÷ ' + pricePct + '% = ' + ans + (ans > 1 ? ' (price-elastic)' : ' (price-inelastic)') + '.'
       };
     } },
@@ -2932,6 +3073,11 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'A firm sells ' + window._QH.fmt(oldUnits) + ' units at £' + oldPrice + ' each. It raises the price to £' + newPrice + ' and sales fall to ' + window._QH.fmt(newUnits) + ' units. What is the change in total revenue?',
         answer: ans,
+        steps: [
+          'Old revenue = ' + window._QH.fmt(oldUnits) + ' × £' + oldPrice + ' = £' + window._QH.fmt(oldRev) + '.',
+          'New revenue = ' + window._QH.fmt(newUnits) + ' × £' + newPrice + ' = £' + window._QH.fmt(newRev) + '.',
+          'Change in revenue = new − old = £' + window._QH.fmt(newRev) + ' − £' + window._QH.fmt(oldRev) + ' = £' + window._QH.fmt(ans) + (ans < 0 ? ' (revenue falls)' : ' (revenue rises)') + '.'
+        ],
         exp: 'Old revenue = ' + window._QH.fmt(oldUnits) + ' × £' + oldPrice + ' = £' + window._QH.fmt(oldRev) + '. New revenue = ' + window._QH.fmt(newUnits) + ' × £' + newPrice + ' = £' + window._QH.fmt(newRev) + '. Change = £' + window._QH.fmt(newRev) + ' − £' + window._QH.fmt(oldRev) + ' = £' + window._QH.fmt(ans) + (ans < 0 ? ' (revenue falls)' : ' (revenue rises)') + '.'
       };
     } },
@@ -2945,6 +3091,10 @@ window.ALL_QUESTIONS.push(
       return {
         q: 'An employee works ' + hours + ' hours a week at the National Minimum/Living Wage of £' + rate.toFixed(2) + ' per hour. What is the weekly gross pay?',
         answer: ans,
+        steps: [
+          'Weekly gross pay = hours worked × hourly rate = ' + hours + ' × £' + rate.toFixed(2) + ' = £' + window._QH.fmt(ans) + '.',
+          'The weekly gross pay is £' + window._QH.fmt(ans) + '.'
+        ],
         exp: hours + ' × £' + rate.toFixed(2) + ' = £' + window._QH.fmt(ans) + '.'
       };
     } }
