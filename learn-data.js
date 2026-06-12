@@ -259,6 +259,7 @@ window.LEARN_PATH = [
               kind: 'tip',
               text: 'Before any VAT calculation, decide: is the number I have the NET (before VAT) or the GROSS (including VAT)? If net, multiply by 20% for VAT. If gross, divide by 6 for VAT. Getting this wrong is the single most common VAT error.',
             },
+            examtrap: 'Never apply 20% to a GROSS figure. If an invoice states "£480 including VAT", the VAT is £480 ÷ 6 = £80 — not £480 × 20% = £96. The examiner often gives the gross figure deliberately to catch this mistake. Always confirm net or gross BEFORE calculating.',
           },
         ],
         check: [
@@ -474,6 +475,18 @@ window.LEARN_PATH = [
             ans: 0,
             exp: 'Closing capital = £15,000 + £8,000 − £3,000 = £20,000. Profit increases capital; drawings reduce it.',
           },
+          {
+            q: 'The debit column of a trial balance totals £48,600 and the credit column totals £48,200. What is the most appropriate immediate action?',
+            opts: ['Delete all entries and start again', 'Open a suspense account with a £400 credit entry', 'Open a suspense account with a £400 debit entry', 'Assume the difference will resolve itself'],
+            ans: 1,
+            exp: 'Debits (£48,600) exceed credits (£48,200) by £400. To balance the trial balance temporarily, a £400 credit is entered in a suspense account while the error is investigated.',
+          },
+          {
+            q: 'Which of the following would appear as a CREDIT balance on the trial balance?',
+            opts: ['Trade receivables', 'Drawings', 'Sales revenue', 'Motor vehicles'],
+            ans: 2,
+            exp: 'Sales revenue is income — it has a credit balance (CLIC: Credits = Liabilities, Income, Capital). Trade receivables, drawings and motor vehicles are assets/expenses with debit balances.',
+          },
         ],
       },
       {
@@ -575,6 +588,18 @@ window.LEARN_PATH = [
             opts: ['Ignore it until the bill arrives', 'Record it as a prepayment asset of £300', 'Record it as an accrual — add £300 to the expense and show £300 as a liability', 'Debit the bank account £300'],
             ans: 2,
             exp: 'An accrual is needed because the expense was incurred in December even though payment comes later. It is added to the period\'s expenses and shown as a current liability.',
+          },
+          {
+            q: 'A van costs £20,000 and is depreciated at 20% reducing balance. It has been owned for 2 full years. What is the depreciation charge in year 3?',
+            opts: ['£4,000', '£3,200', '£2,560', '£12,800'],
+            ans: 2,
+            exp: 'Year 1: 20% × £20,000 = £4,000. CV after yr 1 = £16,000. Year 2: 20% × £16,000 = £3,200. CV after yr 2 = £12,800. Year 3: 20% × £12,800 = £2,560.',
+          },
+          {
+            q: 'Insurance of £1,800 is paid on 1 October, covering 12 months to 30 September. At the 31 December year end, what is the prepayment?',
+            opts: ['£1,800', '£450', '£1,350', '£600'],
+            ans: 2,
+            exp: 'The insurance covers October to September = 12 months. By 31 December, 3 months have been used (Oct, Nov, Dec). Remaining (prepayment) = 9/12 × £1,800 = £1,350.',
           },
         ],
       },
@@ -746,6 +771,213 @@ window.LEARN_PATH = [
             opts: ['Net column', 'VAT column', 'Gross column', 'Discount column'],
             ans: 1,
             exp: 'The sales daybook has three amount columns — net, VAT, and gross. VAT on each sale goes in the VAT column.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-9',
+        title: 'Day books and source documents',
+        icon: '📋',
+        skills: ['itbk-docs'],
+        cards: [
+          {
+            h: 'The document trail',
+            p: [
+              'Every business transaction starts with a **source document**. The chain is: Purchase Order → Delivery Note → Invoice → (Credit Note if needed) → Statement of Account → Remittance Advice.',
+              'Source documents provide the evidence to record transactions. Without them, there is no audit trail.',
+            ],
+            flow: ['Purchase order', 'Delivery note', 'Invoice (or credit note)', 'Statement of account', 'Remittance advice'],
+          },
+          {
+            h: 'Which document does what?',
+            example: {
+              title: 'Key source documents',
+              rows: [
+                ['Document', 'Sent by', 'Purpose'],
+                ['Purchase order', 'Buyer', 'Request to supplier for goods/services'],
+                ['Delivery note', 'Supplier', 'Confirms goods dispatched; signed on receipt'],
+                ['Invoice', 'Supplier', 'Demands payment — the basis for recording'],
+                ['Credit note', 'Supplier', 'Reduces amount owed (returns or overcharges)'],
+                ['Statement', 'Supplier', 'Summary of all transactions in the period'],
+                ['Remittance advice', 'Buyer', 'Tells supplier which invoices payment covers'],
+              ],
+            },
+          },
+          {
+            h: 'Books of prime entry',
+            p: [
+              'Transactions are first recorded in a **book of prime entry** (also called a daybook or journal). These are NOT part of the double-entry system — they are just listing records.',
+              'From the daybook, totals are posted into the ledger accounts.',
+            ],
+            split: {
+              left: { title: 'Sales side', items: ['Sales daybook — credit sales', 'Sales returns daybook — credit notes sent to customers', 'Cash receipts section of cash book'] },
+              right: { title: 'Purchases side', items: ['Purchases daybook — credit purchases', 'Purchases returns daybook — credit notes received from suppliers', 'Cash payments section of cash book'] },
+            },
+          },
+          {
+            h: 'Inside the sales daybook',
+            example: {
+              title: 'Sales daybook — example entries',
+              rows: [
+                ['Date', 'Customer', 'Invoice no.', 'Gross (£)', 'VAT (£)', 'Net (£)'],
+                ['1 Jun', 'Ahmed Ltd', 'SL001', '1,200.00', '200.00', '1,000.00'],
+                ['3 Jun', 'Baker Co', 'SL002', '600.00', '100.00', '500.00'],
+                ['Totals posted to ledger →', 'Dr SLCA', '£1,800', 'Cr VAT', '£300', 'Cr Sales £1,500'],
+              ],
+            },
+          },
+          {
+            h: 'Purchases returns and credit notes',
+            p: [
+              'When goods are **returned to a supplier**, the supplier issues a **credit note** — reducing what the buyer owes.',
+              'Credit notes received are recorded in the **purchases returns daybook**: Dr PLCA, Cr Purchases returns, Cr VAT.',
+              'When goods are **returned by a customer**, the seller issues a credit note. These go in the **sales returns daybook**: Dr Sales returns, Dr VAT, Cr SLCA.',
+            ],
+            callout: { kind: 'key', text: '**Key rule:** A debit note is sometimes used by the BUYER to formally request a credit note from the supplier. It is not a standard source document — the supplier\'s credit note is the one that matters.' },
+          },
+        ],
+        check: [
+          {
+            q: 'A business purchases goods on credit. What document does the SUPPLIER send to request payment?',
+            opts: ['Purchase order', 'Delivery note', 'Invoice', 'Remittance advice'],
+            ans: 2,
+            exp: 'The supplier sends an invoice to request payment. The purchase order came from the buyer; the delivery note confirms dispatch; the remittance advice is sent by the buyer with payment.',
+          },
+          {
+            q: 'A customer returns faulty goods. What document does the SELLER send?',
+            opts: ['Invoice', 'Credit note', 'Debit note', 'Purchase order'],
+            ans: 1,
+            exp: 'The seller sends a credit note to reduce the amount owed by the customer for the returned goods.',
+          },
+          {
+            q: 'In which book of prime entry are credit purchases recorded?',
+            opts: ['Sales daybook', 'Cash book', 'Purchases daybook', 'Petty cash book'],
+            ans: 2,
+            exp: 'Credit purchases (goods bought on credit from suppliers) are listed in the purchases daybook.',
+          },
+          {
+            q: 'The VAT totals column from the purchases daybook is posted as a debit to which account?',
+            opts: ['Sales account', 'VAT control account', 'SLCA', 'Purchases returns'],
+            ans: 1,
+            exp: 'Input VAT (on purchases) is debited to the VAT control account, reducing the amount owed to HMRC.',
+          },
+          {
+            q: 'A credit note received from a supplier is recorded in which book of prime entry?',
+            opts: ['Sales returns daybook', 'Purchases daybook', 'Purchases returns daybook', 'Cash book'],
+            ans: 2,
+            exp: 'Credit notes RECEIVED from suppliers (when goods are returned to the supplier) go in the purchases returns daybook.',
+          },
+          {
+            q: 'A statement of account is sent by the SUPPLIER to the buyer. Its purpose is to:',
+            opts: ['Confirm an order has been placed', 'List all transactions between the two parties in the period', 'Prove goods have been received', 'Authorise payment'],
+            ans: 1,
+            exp: 'A statement of account is a periodic summary of invoices, credit notes and payments, used by the buyer to reconcile against their own purchase ledger records.',
+          },
+          {
+            q: 'The net column total from the sales daybook is posted as a credit to which account?',
+            opts: ['SLCA', 'Bank', 'Sales returns', 'Sales account'],
+            ans: 3,
+            exp: 'The net (ex-VAT) total of credit sales is credited to the Sales account. The gross total is debited to the SLCA; the VAT total is credited to the VAT control account.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-10',
+        title: 'Ledger accounts in practice',
+        icon: '📒',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Three levels of ledger',
+            p: [
+              'The **general (nominal) ledger** contains all the double-entry accounts: assets, liabilities, income, expenses, capital. It is the heart of the accounting system.',
+              'The **sales ledger** holds individual customer accounts (memorandum accounts — not part of double entry). The SLCA in the general ledger is the summary.',
+              'The **purchase ledger** holds individual supplier accounts. The PLCA in the general ledger is the summary.',
+            ],
+          },
+          {
+            h: 'Posting from the sales daybook',
+            p: [
+              'Daybook postings happen **in total** for the general ledger and **individually** for the personal ledgers.',
+              'From the sales daybook totals: **Dr SLCA** (gross total), **Cr Sales** (net total), **Cr VAT control** (VAT total).',
+              'Individually: each customer\'s account in the sales ledger is debited with the gross invoice amount.',
+            ],
+            example: {
+              title: 'Posting the sales daybook',
+              rows: [
+                ['General ledger', 'Dr', 'Cr'],
+                ['SLCA (control)', '1,800', ''],
+                ['Sales account', '', '1,500'],
+                ['VAT control', '', '300'],
+                ['Sales ledger (memorandum)', 'Dr', ''],
+                ['Ahmed Ltd', '1,200', ''],
+                ['Baker Co', '600', ''],
+              ],
+            },
+          },
+          {
+            h: 'Posting from the purchases daybook',
+            p: [
+              'From the purchases daybook totals: **Dr Purchases** (net total), **Dr VAT control** (VAT total), **Cr PLCA** (gross total).',
+              'Individually: each supplier\'s account in the purchase ledger is credited with the gross invoice amount.',
+            ],
+          },
+          {
+            h: 'Contra entries',
+            p: [
+              'A **contra entry** (or set-off) arises when a business is BOTH a customer AND a supplier.',
+              'Instead of paying each other separately, the two balances are offset: **Dr PLCA, Cr SLCA** for the agreed amount.',
+              'The net amount is then settled in cash. Contra entries reduce balances on BOTH control accounts.',
+            ],
+            callout: { kind: 'tip', text: '**Exam tip:** Contras appear in BOTH the SLCA and PLCA reconciliations. They reduce customer balances (Cr SLCA) and supplier balances (Dr PLCA) by the same amount.' },
+          },
+          {
+            h: 'From transaction to trial balance',
+            flow: ['Source document', 'Book of prime entry (daybook)', 'Ledger account (general + personal)', 'Trial balance (all general ledger balances)'],
+          },
+        ],
+        check: [
+          {
+            q: 'Individual customer account balances are kept in which ledger?',
+            opts: ['General ledger', 'Purchase ledger', 'Sales ledger', 'Cash book'],
+            ans: 2,
+            exp: 'The sales ledger contains individual customer accounts. The SLCA in the general ledger is the summary control account.',
+          },
+          {
+            q: 'The gross total of the sales daybook is posted to which account in the general ledger?',
+            opts: ['Dr Sales account', 'Cr SLCA', 'Dr SLCA', 'Dr VAT control'],
+            ans: 2,
+            exp: 'The SLCA (Sales Ledger Control Account) is debited with the gross total from the sales daybook, representing total amounts owed by credit customers.',
+          },
+          {
+            q: 'When the purchases daybook totals are posted, which account is CREDITED?',
+            opts: ['Purchases account', 'VAT control account', 'PLCA', 'SLCA'],
+            ans: 2,
+            exp: 'The PLCA (Purchase Ledger Control Account) is credited with the gross total, representing amounts owed to credit suppliers.',
+          },
+          {
+            q: 'A contra entry between a customer and a supplier involves which journal entries?',
+            opts: ['Dr SLCA, Cr Bank', 'Dr PLCA, Cr SLCA', 'Dr SLCA, Cr PLCA', 'Dr Bank, Cr PLCA'],
+            ans: 1,
+            exp: 'A contra reduces what is owed to the supplier (Dr PLCA) and what the customer owes to us (Cr SLCA). The net amount is settled separately.',
+          },
+          {
+            q: 'The SLCA balance on the trial balance should equal:',
+            opts: ['The total of individual sales invoices', 'The sum of all individual customer balances in the sales ledger', 'The total cash received from customers', 'The balance of the bank account'],
+            ans: 1,
+            exp: 'The SLCA is a control account. Its balance should agree with the total of all individual customer balances in the memorandum sales ledger.',
+          },
+          {
+            q: 'Why are daybook totals posted to the general ledger rather than individual entries?',
+            opts: ['It is a legal requirement', 'It saves time while maintaining double-entry completeness', 'Individual entries go directly to ledger accounts', 'Daybooks are only used for VAT'],
+            ans: 1,
+            exp: 'Posting totals (rather than every individual transaction) maintains double-entry but reduces the volume of ledger postings. Individual entries go to personal (memorandum) accounts.',
+          },
+          {
+            q: 'Which ledger is NOT part of the double-entry bookkeeping system?',
+            opts: ['General ledger', 'Personal (sales and purchase) ledgers', 'Both are part of double entry', 'Neither is part of double entry'],
+            ans: 1,
+            exp: 'Personal ledgers (sales ledger and purchase ledger) are MEMORANDUM records — they are NOT part of double-entry. The SLCA and PLCA in the general ledger ARE part of double-entry.',
           },
         ],
       },
@@ -1013,6 +1245,18 @@ window.LEARN_PATH = [
             opts: ['£3,200', '£3,400', '£3,000', '£2,600'],
             ans: 1,
             exp: 'Rearranging: cash book = statement − unpresented + outstanding = £3,200 − £400 + £600 = £3,400.',
+          },
+          {
+            q: 'A direct debit of £250 appears on the bank statement but was not entered in the cash book. The updated cash book balance is £5,100. Unpresented cheques: £700. Outstanding lodgements: £300. What should the bank statement show?',
+            opts: ['£5,100', '£5,500', '£4,700', '£4,400'],
+            ans: 1,
+            exp: 'Bank statement = Updated cash book + Unpresented − Outstanding = £5,100 + £700 − £300 = £5,500.',
+          },
+          {
+            q: 'Which of the following requires an entry in the CASH BOOK (not just a reconciling item)?',
+            opts: ['An unpresented cheque', 'An outstanding lodgement', 'Bank interest received shown on the statement', 'A cheque the business wrote that has not yet cleared'],
+            ans: 2,
+            exp: 'Bank interest received is on the statement but not yet in the cash book — it must be entered in the cash book (Dr bank). Unpresented cheques and outstanding lodgements are already in the cash book; they are timing differences only.',
           },
         ],
       },
@@ -1453,6 +1697,204 @@ window.LEARN_PATH = [
           },
         ],
       },
+      {
+        id: 'L-pobc-9',
+        title: 'Irrecoverable debts',
+        icon: '💔',
+        skills: ['pobc-ca'],
+        cards: [
+          {
+            h: 'What is an irrecoverable debt?',
+            p: [
+              'An **irrecoverable debt** (also called a bad debt) is a debt owed by a customer that the business is certain cannot be collected — for example, if the customer has become insolvent.',
+              'The debt must be **removed from the SLCA** and recognised as an expense. This follows the **prudence principle** — do not overstate assets.',
+            ],
+          },
+          {
+            h: 'Writing off an irrecoverable debt',
+            p: [
+              'The journal to write off a bad debt of £500 (net of VAT): **Dr Irrecoverable debts expense £500; Cr SLCA £500**.',
+              'If the original invoice included VAT, the VAT can often be reclaimed from HMRC: **Dr VAT control £100; Cr SLCA £100** (for the VAT portion).',
+              'The SLCA is reduced by the gross amount of the debt.',
+            ],
+            example: {
+              title: 'Writing off: customer owes £600 gross (£500 net + £100 VAT)',
+              rows: [
+                ['Account', 'Dr', 'Cr'],
+                ['Irrecoverable debts expense', '500', ''],
+                ['VAT control (bad debt relief)', '100', ''],
+                ['SLCA', '', '600'],
+                ['Net effect: SLCA falls by £600; expense charged £500'],
+              ],
+            },
+          },
+          {
+            h: 'Effect on the control account',
+            p: [
+              'When a debt is written off, it appears as a **deduction from the SLCA** in the control account reconciliation.',
+              'The SLCA formula: Closing = Opening + Credit sales − Receipts − Returns − **Irrecoverable debts** − Discounts − Contras.',
+            ],
+          },
+          {
+            h: 'Allowance for doubtful debts',
+            p: [
+              'Unlike a write-off (specific debt confirmed bad), an **allowance for doubtful debts** is an estimate of what might not be collected.',
+              'It does NOT affect the SLCA directly — the receivables balance stays at full value, but the allowance is deducted on the balance sheet.',
+              'Journal to create/increase an allowance: **Dr Irrecoverable debts expense; Cr Allowance for doubtful debts**.',
+            ],
+          },
+          {
+            h: 'Write-off vs allowance',
+            split: {
+              left: { title: 'Irrecoverable debt write-off', items: ['Specific debt confirmed uncollectable', 'Dr Irrecoverable debts expense', 'Cr SLCA (removes debt)', 'Reduces the SLCA balance', 'Affects actual receivables figure'] },
+              right: { title: 'Allowance for doubtful debts', items: ['Estimated % of receivables uncertain', 'Dr Irrecoverable debts expense', 'Cr Allowance account (not SLCA)', 'SLCA unchanged', 'Shown net of allowance on balance sheet'] },
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'A customer becomes insolvent and their debt of £800 is written off. Which account is DEBITED?',
+            opts: ['SLCA', 'Bank', 'Irrecoverable debts expense', 'Allowance for doubtful debts'],
+            ans: 2,
+            exp: 'Writing off a bad debt: Dr Irrecoverable debts expense (recognising the loss); Cr SLCA (removing the asset).',
+          },
+          {
+            q: 'Writing off a debt of £600 will have what effect on the SLCA?',
+            opts: ['Increase the SLCA by £600', 'Decrease the SLCA by £600', 'No effect on the SLCA', 'Increase the SLCA by £100 (VAT only)'],
+            ans: 1,
+            exp: 'The SLCA is credited with the gross amount of the debt written off, reducing the balance by £600.',
+          },
+          {
+            q: 'An allowance for doubtful debts is created for £500. What is the correct journal?',
+            opts: ['Dr SLCA £500; Cr Irrecoverable debts expense £500', 'Dr Bank £500; Cr Irrecoverable debts expense £500', 'Dr Irrecoverable debts expense £500; Cr Allowance for doubtful debts £500', 'Dr Allowance for doubtful debts £500; Cr SLCA £500'],
+            ans: 2,
+            exp: 'Creating an allowance: Dr Irrecoverable debts expense (cost) and Cr Allowance for doubtful debts (contra asset). The SLCA is NOT touched.',
+          },
+          {
+            q: 'Where does the allowance for doubtful debts appear on the balance sheet?',
+            opts: ['As a liability', 'As a deduction from trade receivables', 'Added to trade receivables', 'As an expense in the income statement'],
+            ans: 1,
+            exp: 'The allowance is a contra-asset: it is deducted from trade receivables to show a more prudent net realisable value.',
+          },
+          {
+            q: 'A debt previously written off as irrecoverable is unexpectedly recovered. What entries are needed?',
+            opts: ['Dr Bank; Cr Irrecoverable debts expense (one entry only)', 'Dr SLCA; Cr Irrecoverable debts expense (reinstate), then Dr Bank; Cr SLCA (receipt)', 'Dr Irrecoverable debts; Cr Bank', 'No entry needed'],
+            ans: 1,
+            exp: 'Reinstate the debt (Dr SLCA, Cr Irrecoverable debts expense), then record receipt (Dr Bank, Cr SLCA). The two-step approach correctly reverses the write-off.',
+          },
+          {
+            q: 'Which accounting principle supports creating an allowance for doubtful debts?',
+            opts: ['Going concern', 'Accruals', 'Prudence', 'Consistency'],
+            ans: 2,
+            exp: 'Prudence requires that assets are not overstated. Creating an allowance reduces the carrying value of receivables to a realistic amount.',
+          },
+          {
+            q: 'Irrecoverable debts written off appear in the SLCA reconciliation as:',
+            opts: ['An addition to the opening balance', 'A deduction from the closing balance', 'Neither — they do not appear in the SLCA', 'An addition to credit sales'],
+            ans: 1,
+            exp: 'Irrecoverable debts are one of the deductions in the SLCA: Closing = Opening + Credit sales − Receipts − Returns − Irrecoverable debts − Discounts − Contras.',
+          },
+        ],
+      },
+      {
+        id: 'L-pobc-10',
+        title: 'The SLCA in full',
+        icon: '🔒',
+        skills: ['pobc-ca'],
+        cards: [
+          {
+            h: 'All items in the SLCA',
+            p: [
+              'The **Sales Ledger Control Account (SLCA)** summarises all activity with credit customers. Every item that changes what customers owe must pass through it.',
+            ],
+            formula: 'Closing SLCA = Opening balance + Credit sales − Cash/cheque received − Sales returns − Irrecoverable debts − Discounts allowed − Contras',
+          },
+          {
+            h: 'The full SLCA reconciliation',
+            example: {
+              title: 'SLCA workthrough',
+              rows: [
+                ['Item', 'Dr (£)', 'Cr (£)'],
+                ['Opening balance', '12,000', ''],
+                ['Credit sales', '30,000', ''],
+                ['Cash/cheques received', '', '26,000'],
+                ['Sales returns (credit notes)', '', '1,500'],
+                ['Irrecoverable debts written off', '', '800'],
+                ['Discounts allowed', '', '300'],
+                ['Contra entries', '', '200'],
+                ['**Closing balance**', '', '**13,200**'],
+              ],
+            },
+          },
+          {
+            h: 'Cash discounts in the SLCA',
+            p: [
+              '**Discounts allowed** are early-payment discounts given to customers. When allowed: **Dr Discounts allowed expense, Cr SLCA** — reducing what the customer owes.',
+              '**Discounts received** from suppliers work the opposite way in the PLCA: **Dr PLCA, Cr Discounts received income**.',
+            ],
+            callout: { kind: 'key', text: '**Key distinction:** Discounts allowed are an expense (Cr SLCA). Discounts received are income (Dr PLCA). Both ultimately reduce the debt between the parties.' },
+          },
+          {
+            h: 'Reconciling the memorandum ledger',
+            p: [
+              'The **memorandum sales ledger** lists individual customer balances. Its total should equal the SLCA balance.',
+              'If they disagree, an error has been made — either in the SLCA or in posting to individual accounts.',
+              'Common causes: transaction posted to SLCA but not to individual account; transposition errors; incorrect amounts.',
+            ],
+          },
+          {
+            h: 'The PLCA follows the same logic',
+            split: {
+              left: { title: 'SLCA (customers owe us)', items: ['Dr: Opening, Credit sales', 'Cr: Receipts, Returns, Bad debts, Discounts allowed, Contras', 'Balance = total owed by customers'] },
+              right: { title: 'PLCA (we owe suppliers)', items: ['Cr: Opening, Credit purchases', 'Dr: Payments, Returns, Discounts received, Contras', 'Balance = total owed to suppliers'] },
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'Opening SLCA balance is £8,000. Credit sales £22,000. Cash received £19,000. Returns £1,200. Discounts allowed £400. Closing balance = ?',
+            opts: ['£9,400', '£10,200', '£8,600', '£9,800'],
+            ans: 0,
+            exp: '£8,000 + £22,000 − £19,000 − £1,200 − £400 = £9,400.',
+          },
+          {
+            q: 'A discount of £150 is allowed to a credit customer. What is the journal entry?',
+            opts: ['Dr Bank £150; Cr SLCA £150', 'Dr Discounts allowed £150; Cr SLCA £150', 'Dr SLCA £150; Cr Discounts allowed £150', 'Dr Discounts received £150; Cr SLCA £150'],
+            ans: 1,
+            exp: 'Discounts allowed: Dr Discounts allowed expense (cost), Cr SLCA (reducing what the customer owes).',
+          },
+          {
+            q: 'The SLCA balance is £14,500 but the sum of individual customer balances is £14,200. What is a likely cause?',
+            opts: ['A receipt was posted to SLCA but not to the individual customer account', 'A sale was posted to the individual account but not to the SLCA', 'The VAT rate was calculated incorrectly', 'Both figures are correct'],
+            ans: 1,
+            exp: 'If a sale was posted to the individual customer account but NOT to the SLCA, the SLCA would be understated relative to the individual accounts. The scenario shows SLCA > individual total, suggesting a receipt was posted to SLCA but missed from the individual account.',
+          },
+          {
+            q: 'A contra entry of £600 is agreed between a customer and a supplier. What entries are made?',
+            opts: ['Dr SLCA £600; Cr PLCA £600', 'Dr PLCA £600; Cr SLCA £600', 'Dr Bank £600; Cr SLCA £600', 'Dr SLCA £600; Cr Bank £600'],
+            ans: 1,
+            exp: 'A contra reduces both control accounts: Dr PLCA (reducing what we owe to the supplier) and Cr SLCA (reducing what the customer owes to us).',
+          },
+          {
+            q: 'Which item INCREASES the SLCA balance?',
+            opts: ['Receipts from customers', 'Credit sales', 'Discounts allowed', 'Irrecoverable debts'],
+            ans: 1,
+            exp: 'Credit sales increase the SLCA (Dr SLCA). All other options — receipts, discounts, and bad debts — reduce the SLCA (Cr SLCA).',
+          },
+          {
+            q: 'Discounts received from suppliers appear in which account and on which side?',
+            opts: ['Dr SLCA', 'Cr PLCA', 'Dr PLCA', 'Cr SLCA'],
+            ans: 2,
+            exp: 'Discounts received from suppliers reduce what the business owes to its suppliers: Dr PLCA (reducing the liability), Cr Discounts received (recognising income).',
+          },
+          {
+            q: 'Which item does NOT appear in the SLCA?',
+            opts: ['Credit sales invoices', 'Irrecoverable debts', 'Purchases from credit suppliers', 'Discounts allowed to customers'],
+            ans: 2,
+            exp: 'Purchases from credit suppliers go through the PLCA, not the SLCA. The SLCA only contains transactions affecting amounts owed BY customers.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -1630,6 +2072,18 @@ window.LEARN_PATH = [
             opts: ['£3', '£2', '£5', '£8'],
             ans: 0,
             exp: 'Variable rate = (£4,100 − £3,200) ÷ (700 − 400) = £900 ÷ 300 = £3 per unit.',
+          },
+          {
+            q: 'A business needs one supervisor for every 25 workers. When the 26th worker is hired a new supervisor is taken on. The supervisors\' salary cost is best described as:',
+            opts: ['Fixed', 'Variable', 'Stepped fixed', 'Semi-variable'],
+            ans: 2,
+            exp: 'Stepped fixed costs are fixed within a range of output (or capacity) and then jump in blocks when a new level of resource is needed. Adding a whole new supervisor is a step, not a smooth variable movement.',
+          },
+          {
+            q: 'Variable cost per unit is £5. Output rises from 2,000 to 2,400 units. What is the total change in variable cost?',
+            opts: ['£400', '£2,000', '£10,000', '£12,000'],
+            ans: 1,
+            exp: 'Change in units = 400. Change in total variable cost = 400 × £5 = £2,000. Variable costs move in direct proportion to activity.',
           },
         ],
       },
@@ -1968,6 +2422,18 @@ window.LEARN_PATH = [
             ans: 0,
             exp: 'Break-even units = fixed costs ÷ contribution per unit = £18,000 ÷ £6 = 3,000 units.',
           },
+          {
+            q: 'Budgeted sales: 800 units at £20 each (£16,000). Actual sales: 750 units at £22 each (£16,500). What is the overall sales variance?',
+            opts: ['£500 adverse', '£500 favourable', '£1,000 adverse', 'No variance'],
+            ans: 1,
+            exp: 'Actual revenue (£16,500) exceeds budgeted revenue (£16,000) by £500. Revenue above budget = favourable variance.',
+          },
+          {
+            q: 'Labour budget: 200 hours at £12/hour = £2,400. Actual: 210 hours at £11.50/hour = £2,415. Is this variance adverse or favourable?',
+            opts: ['Favourable — fewer hours worked', 'Adverse — more hours worked', 'Adverse — actual cost £15 over budget', 'Favourable — lower hourly rate'],
+            ans: 2,
+            exp: 'Actual labour cost (£2,415) exceeds budget (£2,400) by £15. A cost above budget = adverse variance, because profit is reduced.',
+          },
         ],
       },
       {
@@ -2148,6 +2614,197 @@ window.LEARN_PATH = [
             opts: ['FIFO', 'AVCO', 'LIFO', 'Standard cost'],
             ans: 2,
             exp: 'LIFO (Last In, First Out) is not permitted under UK GAAP or IFRS. Only FIFO and AVCO are acceptable.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-9',
+        title: 'Break-even and margin of safety',
+        icon: '📐',
+        skills: ['poc-cvp'],
+        cards: [
+          {
+            h: 'Contribution per unit and C/S ratio',
+            p: [
+              '**Contribution per unit** = Selling price − Variable cost per unit.',
+              'Contribution pays off fixed costs first; any remaining contribution is profit.',
+              'The **contribution to sales (C/S) ratio** = Contribution per unit ÷ Selling price. It shows what fraction of every £1 of sales is contribution.',
+            ],
+            formula: 'Contribution per unit = SP − VC per unit · C/S ratio = Contribution per unit ÷ Selling price · Total contribution = Contribution per unit × Units sold',
+          },
+          {
+            h: 'Break-even point',
+            p: [
+              'At the **break-even point**, total contribution exactly equals fixed costs — profit is zero.',
+            ],
+            formula: 'Break-even units = Fixed costs ÷ Contribution per unit · Break-even revenue = Fixed costs ÷ C/S ratio · (Or: Break-even units × Selling price)',
+          },
+          {
+            h: 'Margin of safety',
+            p: [
+              'The **margin of safety** is how far above break-even the business expects to operate. It measures the buffer before losses begin.',
+            ],
+            formula: 'Margin of safety (units) = Budgeted sales − Break-even sales · Margin of safety (%) = Margin of safety units ÷ Budgeted sales × 100',
+          },
+          {
+            h: 'Target profit',
+            p: [
+              'To earn a **specific profit**, treat the target profit as an additional fixed cost to cover.',
+            ],
+            formula: 'Units for target profit = (Fixed costs + Target profit) ÷ Contribution per unit · Revenue for target profit = (Fixed costs + Target profit) ÷ C/S ratio',
+          },
+          {
+            h: 'Worked example',
+            example: {
+              title: 'Break-even analysis: SP £25, VC £15, FC £48,000, budgeted 6,000 units',
+              rows: [
+                ['Calculation', 'Working', 'Result'],
+                ['Contribution per unit', '£25 − £15', '£10'],
+                ['C/S ratio', '£10 ÷ £25', '40%'],
+                ['Break-even units', '£48,000 ÷ £10', '4,800 units'],
+                ['Break-even revenue', '£48,000 ÷ 40%', '£120,000'],
+                ['Margin of safety', '6,000 − 4,800', '1,200 units (20%)'],
+                ['Target profit £12,000', '(£48,000 + £12,000) ÷ £10', '6,000 units'],
+              ],
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'Selling price is £30 and variable cost per unit is £18. What is the contribution per unit?',
+            opts: ['£30', '£18', '£12', '£48'],
+            ans: 2,
+            exp: 'Contribution per unit = SP − VC = £30 − £18 = £12.',
+          },
+          {
+            q: 'Contribution per unit is £8 and fixed costs are £40,000. What is the break-even point in units?',
+            opts: ['5,000', '4,000', '8,000', '320,000'],
+            ans: 0,
+            exp: 'Break-even units = Fixed costs ÷ Contribution per unit = £40,000 ÷ £8 = 5,000 units.',
+          },
+          {
+            q: 'Break-even is 4,000 units. Budgeted sales are 5,500 units. What is the margin of safety?',
+            opts: ['4,000 units', '1,500 units (27.3%)', '5,500 units', '500 units (9.1%)'],
+            ans: 1,
+            exp: 'Margin of safety = 5,500 − 4,000 = 1,500 units. As a %: 1,500 ÷ 5,500 × 100 = 27.3%.',
+          },
+          {
+            q: 'Fixed costs £60,000, contribution per unit £15, target profit £30,000. Units needed?',
+            opts: ['4,000', '6,000', '2,000', '8,000'],
+            ans: 1,
+            exp: 'Units = (Fixed costs + Target profit) ÷ Contribution per unit = (£60,000 + £30,000) ÷ £15 = 6,000 units.',
+          },
+          {
+            q: 'Selling price £40, variable cost £24. What is the C/S ratio?',
+            opts: ['60%', '40%', '24%', '16%'],
+            ans: 1,
+            exp: 'Contribution per unit = £40 − £24 = £16. C/S ratio = £16 ÷ £40 = 40%.',
+          },
+          {
+            q: 'Fixed costs are £72,000 and the C/S ratio is 45%. What is the break-even revenue?',
+            opts: ['£32,400', '£160,000', '£72,000', '£45,000'],
+            ans: 1,
+            exp: 'Break-even revenue = Fixed costs ÷ C/S ratio = £72,000 ÷ 0.45 = £160,000.',
+          },
+          {
+            q: 'Which of the following changes would REDUCE the break-even point?',
+            opts: ['Increase fixed costs', 'Reduce selling price', 'Reduce variable cost per unit', 'Increase variable cost per unit'],
+            ans: 2,
+            exp: 'Reducing variable cost per unit increases contribution per unit. A higher contribution per unit means fewer units are needed to cover fixed costs, so break-even falls.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-10',
+        title: 'The high-low method',
+        icon: '📏',
+        skills: ['poc-behaviour'],
+        cards: [
+          {
+            h: 'Why we need to split semi-variable costs',
+            p: [
+              '**Semi-variable costs** have both a fixed element (unchanged regardless of activity) and a variable element (changes with output).',
+              'To plan and budget accurately, we need to know the fixed and variable parts separately.',
+              'The **high-low method** uses the two extremes of activity data to split the cost — it is simple but requires only two data points.',
+            ],
+          },
+          {
+            h: 'Step 1 — calculate variable cost per unit',
+            formula: 'Variable cost per unit = (Total cost at highest activity − Total cost at lowest activity) ÷ (Units at highest − Units at lowest)',
+          },
+          {
+            h: 'Step 2 — calculate the fixed cost',
+            p: [
+              'Once the variable cost per unit is known, substitute back into either the high or low data point.',
+            ],
+            formula: 'Fixed cost = Total cost at that level − (Variable cost per unit × Units at that level)',
+          },
+          {
+            h: 'Step 3 — the cost equation and prediction',
+            p: [
+              'With both elements found: **Total cost = Fixed cost + (Variable cost per unit × units)**.',
+              'Use this equation to estimate costs at ANY activity level (within the relevant range).',
+            ],
+          },
+          {
+            h: 'Worked example',
+            example: {
+              title: 'High-low: find fixed and variable elements',
+              rows: [
+                ['Period', 'Units produced', 'Total cost'],
+                ['Highest', '5,000', '£22,000'],
+                ['Lowest', '2,000', '£13,000'],
+                ['Difference', '3,000', '£9,000'],
+                ['VC/unit = £9,000 ÷ 3,000', '', '= £3 per unit'],
+                ['FC = £22,000 − (£3 × 5,000)', '', '= £7,000'],
+                ['Cost at 4,000 units = £7,000 + (£3 × 4,000)', '', '= £19,000'],
+              ],
+            },
+            callout: { kind: 'warning', text: '**Exam trap:** Always check that the question has not included an abnormal or exceptional data point. If a month\'s cost is clearly an outlier (e.g. due to a one-off repair), it should be excluded before applying high-low.' },
+          },
+        ],
+        check: [
+          {
+            q: 'The high-low method is used to split which type of cost?',
+            opts: ['Fixed costs', 'Variable costs', 'Semi-variable costs', 'Direct costs'],
+            ans: 2,
+            exp: 'Semi-variable costs have both a fixed and variable element. The high-low method separates the two so each can be planned and budgeted independently.',
+          },
+          {
+            q: 'Highest activity: 8,000 units, cost £38,000. Lowest: 3,000 units, cost £23,000. Variable cost per unit = ?',
+            opts: ['£3.00', '£4.75', '£7.67', '£2.00'],
+            ans: 0,
+            exp: 'VC/unit = (£38,000 − £23,000) ÷ (8,000 − 3,000) = £15,000 ÷ 5,000 = £3 per unit.',
+          },
+          {
+            q: 'Using the high point (8,000 units, cost £38,000) and VC = £3/unit, what is the fixed cost?',
+            opts: ['£14,000', '£24,000', '£38,000', '£11,000'],
+            ans: 0,
+            exp: 'Fixed cost = Total cost − (VC/unit × units) = £38,000 − (£3 × 8,000) = £38,000 − £24,000 = £14,000.',
+          },
+          {
+            q: 'Fixed cost = £14,000 and VC = £3/unit. Total cost at 6,000 units = ?',
+            opts: ['£32,000', '£18,000', '£44,000', '£28,000'],
+            ans: 0,
+            exp: 'Total cost = Fixed + (VC × units) = £14,000 + (£3 × 6,000) = £14,000 + £18,000 = £32,000.',
+          },
+          {
+            q: 'The high-low method assumes that the variable cost per unit is:',
+            opts: ['Decreasing as volume rises', 'Constant at all activity levels', 'Only relevant at the break-even point', 'Calculated using an average of all periods'],
+            ans: 1,
+            exp: 'The high-low method assumes a linear cost function — variable cost per unit is constant across the relevant range of activity.',
+          },
+          {
+            q: 'Which data points does the high-low method use?',
+            opts: ['The most recent and the oldest', 'The highest and lowest activity levels', 'The average of all periods', 'The two periods with the largest cost difference'],
+            ans: 1,
+            exp: 'The high-low method selects the periods with the HIGHEST and LOWEST levels of activity (not cost), and uses those two data points to calculate the variable rate.',
+          },
+          {
+            q: 'A key limitation of the high-low method is that:',
+            opts: ['It requires complex calculations', 'It uses only two data points and may be distorted by outliers', 'It cannot be used for fixed costs', 'It requires activity to be measured in units only'],
+            ans: 1,
+            exp: 'High-low ignores all data points except two extremes. If either extreme is abnormal (an outlier), the resulting cost split will be inaccurate.',
           },
         ],
       },
@@ -2809,6 +3466,193 @@ window.LEARN_PATH = [
             opts: ['GDP deflator', 'RPI', 'CPI', 'PPI'],
             ans: 1,
             exp: 'The Retail Price Index (RPI) includes housing costs such as mortgage interest payments. It is typically higher than CPI, which is why CPI is the official inflation target measure.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-9',
+        title: 'Sources of finance',
+        icon: '💰',
+        skills: ['besy-finance'],
+        cards: [
+          {
+            h: 'Short-term vs long-term finance',
+            split: {
+              left: { title: 'Short-term (< 1 year)', items: ['Bank overdraft', 'Trade credit (credit from suppliers)', 'Invoice finance (factoring/discounting)', 'Short-term bank loan'] },
+              right: { title: 'Long-term (> 1 year)', items: ['Bank loan (term loan)', 'Hire purchase', 'Leasing', 'Share capital (companies only)', 'Retained profits', 'Grants'] },
+            },
+          },
+          {
+            h: 'Debt finance',
+            p: [
+              '**Bank loan** — borrowed for a fixed term, repaid with interest. Suitable for long-term assets. May require security.',
+              '**Bank overdraft** — flexible short-term borrowing; expensive per £ borrowed but only used when needed.',
+              '**Hire purchase** — pay in instalments; business owns the asset at the end.',
+              '**Finance lease** — pay to use the asset; the lessor retains ownership throughout.',
+            ],
+            callout: { kind: 'tip', text: '**Key difference:** Hire purchase → business OWNS the asset at the end. Finance lease → business does NOT own it (it is returned or re-leased).' },
+          },
+          {
+            h: 'Equity finance',
+            p: [
+              '**Share capital** (limited companies only): raise money by issuing ordinary shares. Shareholders receive dividends. No repayment obligation — but ownership is diluted.',
+              '**Retained profits**: profits not paid as dividends, reinvested in the business. The most common internal source of finance. Free of interest.',
+              '**Owner\'s capital** (sole traders/partnerships): the owner introduces personal funds into the business.',
+            ],
+          },
+          {
+            h: 'Invoice finance',
+            p: [
+              '**Factoring**: the business sells its invoices to a factoring company, which advances up to 85% of the value immediately and collects the debts itself. Fee charged as a % of invoice value.',
+              '**Invoice discounting**: similar advance against invoices, but the business continues to collect its own debts. More confidential.',
+              'Both improve **cash flow** for businesses with large amounts tied up in trade receivables.',
+            ],
+          },
+          {
+            h: 'Matching finance to the need',
+            p: [
+              'The **matching principle** for finance: use long-term finance for long-term assets and short-term finance for short-term needs.',
+              'Using a short-term overdraft to buy a building creates **liquidity risk** — the overdraft may need to be repaid before the asset generates returns.',
+            ],
+            formula: 'Long-term asset → long-term finance (bank loan, HP, share capital) · Short-term working capital → short-term finance (overdraft, trade credit, factoring)',
+          },
+        ],
+        check: [
+          {
+            q: 'A business needs funds for the next 3 months to cover a seasonal gap in cash. Which source is MOST appropriate?',
+            opts: ['10-year bank loan', 'Share capital issue', 'Bank overdraft', 'Hire purchase'],
+            ans: 2,
+            exp: 'A bank overdraft is a short-term, flexible source of finance — ideal for covering a temporary gap. A long-term loan would be inappropriate and costly for a short-term need.',
+          },
+          {
+            q: 'Which source of finance does NOT require repayment to an external party?',
+            opts: ['Bank overdraft', 'Hire purchase', 'Retained profits', 'Trade credit'],
+            ans: 2,
+            exp: 'Retained profits are internal funds — the business reinvests its own earnings. No external party requires repayment, and no interest is charged.',
+          },
+          {
+            q: 'Under invoice factoring, who collects the debts from customers?',
+            opts: ['The business itself', 'The factoring company', 'HMRC', 'The customer\'s bank'],
+            ans: 1,
+            exp: 'With factoring, the factoring company purchases the invoices and collects the debts. Invoice discounting is different — the business continues to collect its own debts.',
+          },
+          {
+            q: 'A company buys a machine, pays monthly instalments over 3 years, and owns it outright at the end. This is:',
+            opts: ['Finance lease', 'Bank overdraft', 'Hire purchase', 'Invoice discounting'],
+            ans: 2,
+            exp: 'Hire purchase: pay in instalments; ownership transfers to the buyer at the end of the agreement. A finance lease keeps ownership with the lessor.',
+          },
+          {
+            q: 'Which source of finance is ONLY available to limited companies (not sole traders)?',
+            opts: ['Bank loan', 'Retained profits', 'Share capital', 'Bank overdraft'],
+            ans: 2,
+            exp: 'Shares can only be issued by limited companies. Sole traders have unlimited liability and cannot issue shares — they use owner\'s capital instead.',
+          },
+          {
+            q: 'The matching principle for finance states that:',
+            opts: ['All finance should be raised by issuing shares', 'Long-term assets should be funded by long-term finance', 'Overdrafts should never be used', 'Interest rates must match inflation'],
+            ans: 1,
+            exp: 'The matching principle: align the term of the finance to the duration of the asset or need. Using short-term finance for long-term assets creates refinancing (rollover) risk.',
+          },
+          {
+            q: 'Retained profits are an example of which type of finance?',
+            opts: ['Debt finance', 'External finance', 'Internal equity finance', 'Short-term finance'],
+            ans: 2,
+            exp: 'Retained profits are internal (generated within the business) and equity (no repayment obligation). They represent reinvested earnings and are the most common source of business finance.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-10',
+        title: 'Employment and consumer law',
+        icon: '⚖️',
+        skills: ['besy-law'],
+        cards: [
+          {
+            h: 'Key employment rights',
+            p: [
+              '**National Minimum Wage (NMW)**: employers must pay at least the legal minimum per hour. Rates vary by age; the National Living Wage applies to workers aged 21+.',
+              '**Working Time Regulations 1998**: maximum 48 hours per week (averaged over 17 weeks), unless the worker opts out in writing. Minimum 5.6 weeks paid holiday per year.',
+              '**Written statement of employment**: must be given within 2 months of starting; sets out key terms (pay, hours, job title, notice periods, holiday).',
+              '**Unfair dismissal**: employees with 2+ years\' service may claim unfair dismissal if dismissed without a fair reason or fair procedure.',
+            ],
+          },
+          {
+            h: 'Protection from discrimination',
+            p: [
+              'The **Equality Act 2010** protects workers from discrimination on nine protected characteristics: age, sex, race, disability, religion or belief, sexual orientation, gender reassignment, pregnancy/maternity, marriage/civil partnership.',
+              '**Direct discrimination**: treating someone less favourably because of a protected characteristic.',
+              '**Indirect discrimination**: applying a practice or policy that puts people with a protected characteristic at a disadvantage.',
+            ],
+          },
+          {
+            h: 'Consumer rights',
+            p: [
+              'The **Consumer Rights Act 2015** covers contracts between businesses and consumers for goods, services, and digital content.',
+              '**Goods** must be: of satisfactory quality; fit for purpose; as described.',
+              '**Services** must be provided with reasonable care and skill, within a reasonable time, and at a reasonable price if not agreed in advance.',
+              '**Remedies**: short-term right to reject (30 days); right to repair or replacement; right to a price reduction or final rejection.',
+            ],
+          },
+          {
+            h: 'Data protection (UK GDPR)',
+            p: [
+              'Under **UK GDPR** (retained after Brexit), personal data must be: processed lawfully, fairly and transparently; collected for specified explicit purposes; adequate, relevant and not excessive; accurate; kept only as long as necessary; kept securely.',
+              'Key rights of data subjects: right of access; right to rectification; right to erasure (right to be forgotten); right to data portability.',
+              'Organisations with 250+ employees (or processing sensitive data) must appoint a **Data Protection Officer (DPO)**.',
+            ],
+          },
+          {
+            h: 'Health and Safety at Work Act 1974',
+            p: [
+              '**Employer duties**: provide a safe workplace; safe equipment; safe systems of work; adequate information, instruction, training and supervision; a safe working environment.',
+              '**Employee duties**: take reasonable care of their own and others\' health and safety; cooperate with employer; not misuse safety equipment.',
+            ],
+            callout: { kind: 'key', text: '**Exam tip:** The key pieces of legislation to know are: Equality Act 2010, Working Time Regulations 1998, Consumer Rights Act 2015, UK GDPR, Health and Safety at Work Act 1974. Know which protects WORKERS, which protects CONSUMERS, and which protects personal DATA.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Under the Working Time Regulations 1998, the maximum weekly working hours are:',
+            opts: ['40 hours with no exceptions', '48 hours per week (averaged over 17 weeks) unless opted out', '60 hours if the employer requires it', '35 hours for all workers'],
+            ans: 1,
+            exp: 'The Working Time Regulations set a 48-hour limit, averaged over a reference period (typically 17 weeks). Workers can opt out in writing.',
+          },
+          {
+            q: 'A new employee must receive their written statement of employment particulars within:',
+            opts: ['1 week of starting', '1 month of starting', '2 months of starting', '6 months of starting'],
+            ans: 2,
+            exp: 'Employers must provide a written statement of employment particulars within 2 months of the employee\'s start date.',
+          },
+          {
+            q: 'Under the Consumer Rights Act 2015, goods must satisfy three conditions. Which of the following is NOT one of them?',
+            opts: ['Of satisfactory quality', 'Fit for purpose', 'As described', 'Delivered within 24 hours'],
+            ans: 3,
+            exp: 'The three statutory requirements are: satisfactory quality, fit for purpose, and as described. There is no automatic 24-hour delivery requirement.',
+          },
+          {
+            q: 'Under UK GDPR, which right allows a data subject to have their data deleted?',
+            opts: ['Right to rectification', 'Right to portability', 'Right to erasure', 'Right to access'],
+            ans: 2,
+            exp: 'The right to erasure (also called the right to be forgotten) allows individuals to request deletion of their personal data in certain circumstances.',
+          },
+          {
+            q: 'Which legislation protects workers from discrimination based on age, sex, and disability?',
+            opts: ['Working Time Regulations 1998', 'Equality Act 2010', 'Health and Safety at Work Act 1974', 'Consumer Rights Act 2015'],
+            ans: 1,
+            exp: 'The Equality Act 2010 protects workers and others from discrimination on nine protected characteristics, including age, sex, and disability.',
+          },
+          {
+            q: 'An employee has worked for 3 years and is dismissed without being given a reason. What may they claim?',
+            opts: ['Wrongful dismissal only (no unfair dismissal rights until 5 years)', 'Unfair dismissal (qualifying period is 2 years)', 'Nothing — employees have no rights regarding dismissal', 'Redundancy payment only'],
+            ans: 1,
+            exp: 'The qualifying period for unfair dismissal is 2 years. After 2 years\' service, employees can claim unfair dismissal if dismissed without a fair reason or procedure.',
+          },
+          {
+            q: 'Under the Health and Safety at Work Act 1974, who has primary responsibility for ensuring a safe workplace?',
+            opts: ['The government', 'The employees', 'The employer', 'The Health and Safety Executive (HSE) directly'],
+            ans: 2,
+            exp: 'The employer has primary responsibility for health and safety. Employees also have duties (to take reasonable care and cooperate), but the main duty lies with the employer.',
           },
         ],
       },
