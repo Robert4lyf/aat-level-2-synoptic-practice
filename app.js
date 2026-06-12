@@ -109,6 +109,166 @@
       ]},
     ],
   };
+
+  /* ── UNIT REVISION NOTES ── */
+  const UNIT_REVISION = [
+    {
+      unit: 'itbk', title: 'Introduction to Bookkeeping', icon: '📒',
+      sections: [
+        { heading: 'DEAD CLIC — the debit/credit rule', items: [
+          'Debits increase: Expenses, Assets, Drawings',
+          'Credits increase: Liabilities, Income, Capital',
+          'Every double-entry transaction: total debits = total credits',
+          'A debit entry is always on the LEFT side of a T-account',
+        ]},
+        { heading: 'Document chain (credit sale)', items: [
+          'Purchase order → Delivery note → Invoice → Credit note → Statement → Remittance advice',
+          'Sales invoices issued → Sales day book',
+          'Credit notes issued → Sales returns day book',
+          'Purchase invoices received → Purchases day book',
+          'Credit notes received → Purchases returns day book',
+          'The journal records non-routine entries (corrections, opening entries)',
+        ]},
+        { heading: 'VAT calculations (standard rate 20%)', items: [
+          'Net → VAT amount: Net × 20%',
+          'Net → Gross: Net × 1.20',
+          'Gross → Net: Gross ÷ 1.20',
+          'VAT from gross (the quick method): Gross ÷ 6',
+          'VAT due to HMRC = Output tax − Input tax',
+        ]},
+        { heading: 'Trial balance', items: [
+          'DEBIT balances: Assets, Expenses, Drawings',
+          'CREDIT balances: Liabilities, Capital, Revenue/Income',
+          'Total debits must equal total credits',
+          'Closing inventory: CREDIT in the trial balance, DEBIT in the statement of financial position',
+        ]},
+      ],
+      traps: [
+        'VAT from gross = Gross ÷ 6 (not ÷ 1.2 — dividing by 1.2 gives you the net, not the VAT).',
+        'Drawings is a DEBIT entry and reduces capital — it is not an expense and does not reduce profit.',
+        'Trade discount reduces the invoice price before VAT. Settlement discount only applies if paid within the agreed period.',
+        'The journal is a book of prime entry (not a ledger account) — use it for corrections and non-routine items.',
+      ],
+    },
+    {
+      unit: 'pobc', title: 'Principles of Bookkeeping Controls', icon: '🔍',
+      sections: [
+        { heading: 'Payroll calculations', items: [
+          'Gross pay = Basic pay + Overtime + Bonus',
+          'Net pay = Gross pay − PAYE − Employee NIC − Employee pension − Other deductions',
+          "Total employment cost = Gross pay + Employer's NIC + Employer pension contribution",
+          "Employer's NIC (2026/27): (Gross pay − £5,000 secondary threshold) × 15%",
+        ]},
+        { heading: 'Bank reconciliation', items: [
+          'Start from BANK STATEMENT balance',
+          '+ Deposits in transit (cash book recorded; bank has not yet)',
+          '− Outstanding cheques/payments (cash book recorded; bank has not yet)',
+          '= Adjusted bank balance — must equal the CASH BOOK balance',
+          'Bank errors are corrected in the bank rec (not in the cash book)',
+        ]},
+        { heading: 'Control accounts', items: [
+          'Sales ledger control = total of all individual trade receivable (customer) accounts',
+          'Purchases ledger control = total of all individual trade payable (supplier) accounts',
+          'Post daily totals from day books to the control account in the general ledger',
+          'The control account total must agree with the sum of the subsidiary ledger balances',
+        ]},
+        { heading: 'Types of bookkeeping error', items: [
+          'Omission — transaction not recorded at all (TB still balances)',
+          'Commission — correct amount, wrong account, same type (TB balances)',
+          'Principle — correct amount, wrong type of account (TB balances)',
+          'Original entry — wrong amount on both sides (TB balances)',
+          'Reversal — debit and credit swapped (TB balances)',
+          'Single-sided / casting / transposition — TB does NOT balance → use suspense account',
+        ]},
+      ],
+      traps: [
+        "Employer's NIC is NOT deducted from the employee's pay — it is an additional cost paid by the employer on top of gross pay.",
+        'Timing differences (deposits in transit, outstanding cheques) are not errors — they appear in the bank rec, not as corrections.',
+        'A suspense account is temporary — it must be fully cleared (reduced to zero) once the error is found and corrected.',
+        'Trade receivables = money owed TO the business (debit balance). Trade payables = money owed BY the business (credit balance).',
+      ],
+    },
+    {
+      unit: 'poc', title: 'Principles of Costing', icon: '📊',
+      sections: [
+        { heading: 'Cost classification', items: [
+          'Prime cost = Direct materials + Direct labour + Direct expenses',
+          'Variable cost: changes in TOTAL as output changes; stays constant per unit',
+          'Fixed cost: stays the same in TOTAL; decreases per unit as output rises',
+          'Semi-variable (mixed) cost: has a fixed element + a variable element',
+          'Production overhead = indirect materials + indirect labour + indirect expenses',
+        ]},
+        { heading: 'CVP / break-even analysis', items: [
+          'Contribution per unit = Selling price − Variable cost per unit',
+          'Contribution margin ratio (CMR) = Contribution per unit ÷ Selling price',
+          'Break-even (units) = Fixed costs ÷ Contribution per unit',
+          'Break-even (£) = Fixed costs ÷ CMR',
+          'Margin of safety (units) = Budgeted sales − Break-even units',
+          'Target profit (units) = (Fixed costs + Target profit) ÷ Contribution per unit',
+        ]},
+        { heading: 'Overhead absorption', items: [
+          'OAR = Budgeted overheads ÷ Budgeted activity level',
+          'Absorbed overhead = OAR × Actual activity',
+          'Over-absorption: absorbed > actual overhead incurred (positive for profit)',
+          'Under-absorption: absorbed < actual overhead incurred (reduces profit)',
+          'Common bases: machine hours, direct labour hours, units produced',
+        ]},
+        { heading: 'Inventory valuation (FIFO and AVCO)', items: [
+          'FIFO: oldest units sold first; closing inventory = most recent purchases',
+          'AVCO: recalculate weighted-average cost after every purchase batch',
+          'LIFO is NOT permitted under UK GAAP or IFRS',
+          'Higher COGS → lower gross profit; lower COGS → higher gross profit',
+        ]},
+      ],
+      traps: [
+        'Fixed cost per unit falls as volume rises — the total fixed cost stays the same.',
+        'Margin of safety uses BUDGETED sales (not actual): Budgeted sales − Break-even sales.',
+        'AVCO must be recalculated after every purchase — not just at the period end.',
+        'Over-absorption means too much overhead was charged to products (absorbed > actual) — this is favourable (boosts profit).',
+      ],
+    },
+    {
+      unit: 'besy', title: 'The Business Environment', icon: '🌐',
+      sections: [
+        { heading: 'Business structures', items: [
+          'Sole trader: unlimited personal liability; simplest to set up',
+          'Partnership: unlimited liability (general) or limited (LLP); shared profit/loss',
+          'Private limited (Ltd): limited liability; shares NOT offered to the general public',
+          'Public limited company (PLC): limited liability; shares CAN be offered on the Stock Exchange',
+          'Not-for-profit / mutual: surplus reinvested for members or community benefit',
+        ]},
+        { heading: 'Elasticity', items: [
+          'PED = |% change in quantity demanded ÷ % change in price|',
+          'PED > 1 → elastic: demand sensitive to price; price ↑ → total revenue ↓',
+          'PED < 1 → inelastic: demand insensitive to price; price ↑ → total revenue ↑',
+          'IED = % change in demand ÷ % change in income; >1 luxury, 0–1 normal, <0 inferior good',
+          'XED: positive = substitutes (e.g. butter/margarine); negative = complements (e.g. cars/petrol)',
+        ]},
+        { heading: 'Employment law essentials', items: [
+          'National Living Wage (21+, 2026/27): £12.71 per hour',
+          '18–20: £10.85; 16–17 and apprentices: £8.00',
+          'Rights from day 1: discrimination protection, NMW entitlement, written terms',
+          'Statutory notice and redundancy rights require qualifying service (2 years for redundancy)',
+          'PAYE operates through the employer — income tax and NICs deducted at source',
+        ]},
+        { heading: 'AAT ethics — 5 fundamental principles', items: [
+          'Integrity — honest and straightforward in all professional relationships',
+          'Objectivity — no bias; do not allow conflicts of interest',
+          'Professional competence and due care — maintain skills; act with diligence',
+          'Confidentiality — do not disclose information without proper authority',
+          'Professional behaviour — comply with laws; avoid discrediting the profession',
+          'Raise concerns through appropriate channels — not directly to external parties unless legally required',
+        ]},
+      ],
+      traps: [
+        'Elastic demand (PED > 1): increasing price REDUCES total revenue because quantity falls more than price rises.',
+        'Ltd vs PLC: the critical difference is whether shares can be offered to the general public — both words include "limited".',
+        'AAT members must follow ethical guidance even if instructed otherwise by management or a client.',
+        'Sustainability reporting (environmental/social impact) is part of the broader finance function role — it is a professional duty, not just PR.',
+      ],
+    },
+  ];
+
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -462,11 +622,43 @@
     Calc.reset(); render();
   }
 
-  /* ── UNIT QUIZ ── */
+  /* ── UNIT QUIZ (structured, weighted toward harder questions) ── */
+  function buildWeightedUnitQuiz(unitId) {
+    const pool = (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
+    const hard = shuffle(pool.filter(q => q.difficulty === 'hard'));
+    const med  = shuffle(pool.filter(q => q.difficulty === 'medium'));
+    const easy = shuffle(pool.filter(q => q.difficulty === 'easy'));
+    const TARGET = 20;
+    const nHard = Math.min(7, hard.length);
+    const nMed  = Math.min(8, med.length);
+    const nEasy = Math.min(TARGET - nHard - nMed, easy.length);
+    return shuffle([...hard.slice(0, nHard), ...med.slice(0, nMed), ...easy.slice(0, nEasy)])
+      .slice(0, TARGET).map(presentQuestion);
+  }
   function startUnitQuiz(unitId) {
     if (!Storage.data.learn.unitTests) Storage.data.learn.unitTests = {};
     State.unitQuizId = unitId;
-    startPractice(unitId);
+    const picked = buildWeightedUnitQuiz(unitId);
+    if (!picked.length) { showToast('No questions available for this unit.', 'warn'); return; }
+    playClick();
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: unitId, questions: picked,
+      current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      hintLevel: 0, hintElim: null,
+    });
+    Calc.reset(); render();
+  }
+
+  /* ── UNIT REVISION NOTES ── */
+  function startRevision(unitId) {
+    const rev = UNIT_REVISION.find(r => r.unit === unitId);
+    if (!rev) { showToast('Revision notes not available.', 'warn'); return; }
+    playClick();
+    State.screen = 'revision';
+    State.revisionUnit = unitId;
+    render();
   }
 
   /* ── AUDIO ── */
@@ -694,6 +886,7 @@
     lesson: null,                           // lesson player state
     flash: null,                            // flashcard session state
     plannerEdit: false,                     // study-planner edit form open
+    revisionUnit: null,                     // unit revision notes screen
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -955,7 +1148,7 @@
   function goLearn() {
     stopMockTimer();
     State.screen = 'home'; State.activeTab = 'learn'; State.confirmModal = null;
-    State.lesson = null; State.flash = null;
+    State.lesson = null; State.flash = null; State.revisionUnit = null;
     render();
   }
 
@@ -1354,8 +1547,9 @@
     else if (State.screen === 'home')   html = renderMain();
     else if (State.screen === 'quiz')   html = renderQuiz();
     else if (State.screen === 'score')  html = renderScore();
-    else if (State.screen === 'lesson') html = renderLesson();
-    else if (State.screen === 'flash')  html = renderFlash();
+    else if (State.screen === 'lesson')   html = renderLesson();
+    else if (State.screen === 'flash')    html = renderFlash();
+    else if (State.screen === 'revision') html = renderRevision();
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
@@ -2535,6 +2729,7 @@
         ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
             ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
            </button>` : '';
+      const revBtn = `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>`;
       return `<div class="journey-unit">
         <div class="journey-unit-header">
           <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
@@ -2543,7 +2738,7 @@
             <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}</div>
           </div>
           ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
-          ${unitQuizBtn}
+          <div class="unit-action-btns">${revBtn}${unitQuizBtn}</div>
         </div>
         <div class="journey-unit-progress-bg"><div class="journey-unit-progress" style="width:${(doneCount/unit.lessons.length*100).toFixed(0)}%"></div></div>
         <div class="journey-nodes">${lessonsHtml}</div>
@@ -2785,6 +2980,34 @@
     </div>`;
   }
 
+  /* ── REVISION NOTES SCREEN ── */
+  function renderRevision() {
+    const rev = UNIT_REVISION.find(r => r.unit === State.revisionUnit);
+    if (!rev) { goLearn(); return ''; }
+    const sectionsHtml = rev.sections.map(s => `
+      <div class="rev-section">
+        <h3 class="rev-section-title">${escapeHtml(s.heading)}</h3>
+        <ul class="rev-list">${s.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      </div>`).join('');
+    const trapsHtml = rev.traps.map(t => `<div class="rev-trap-item">⚠️ ${escapeHtml(t)}</div>`).join('');
+    return `<div class="container revision-screen fade-in">
+      <div class="revision-header">
+        <button class="back-btn" id="revisionExitBtn" type="button">← Back to journey</button>
+        <h2 class="revision-title">${escapeHtml(rev.icon)} ${escapeHtml(rev.title)} — Revision Notes</h2>
+      </div>
+      <div class="revision-intro">Key rules, formulas and traps — everything you need the night before the exam.</div>
+      ${sectionsHtml}
+      <div class="rev-traps-block">
+        <div class="rev-traps-title">Common Exam Traps</div>
+        ${trapsHtml}
+      </div>
+      <div class="revision-footer-btns">
+        <button class="btn-secondary" id="revisionExitBtn2" type="button">← Back to journey</button>
+        <button class="btn-primary" id="revisionQuizBtn" data-unit-quiz="${escapeHtml(rev.unit)}" type="button">📋 Take the unit quiz →</button>
+      </div>
+    </div>`;
+  }
+
   function renderModal(m) {
     const confirmLabel = m.confirmLabel || 'Confirm';
     return `<div class="modal-backdrop" id="modalBackdrop" role="presentation">
@@ -2968,6 +3191,11 @@
     bind('dailyChallengeBtn', 'click', startDailyChallenge);
     // Unit quiz buttons
     document.querySelectorAll('[data-unit-quiz]').forEach(el => el.addEventListener('click', () => startUnitQuiz(el.dataset.unitQuiz)));
+    // Unit revision notes buttons
+    document.querySelectorAll('[data-unit-rev]').forEach(el => el.addEventListener('click', () => startRevision(el.dataset.unitRev)));
+    // Revision screen exit
+    bind('revisionExitBtn', 'click', goLearn);
+    bind('revisionExitBtn2', 'click', goLearn);
     // Skill map drill buttons
     document.querySelectorAll('[data-start-skill]').forEach(el => el.addEventListener('click', () => startPractice('skill:' + el.dataset.startSkill)));
     // Hint button
