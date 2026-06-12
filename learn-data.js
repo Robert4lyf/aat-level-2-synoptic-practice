@@ -50,6 +50,11 @@ window.LEARN_PATH = [
               ],
             },
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'The remittance advice is the BUYER\'s document. The statement is the SELLER\'s document. Exam questions often swap these — check which direction the document travels.' },
+          },
         ],
         check: [
           {
@@ -75,6 +80,12 @@ window.LEARN_PATH = [
             opts: ['What goods were delivered', 'The total owed at month end', 'Which invoices a payment covers', 'The price agreed before delivery'],
             ans: 2,
             exp: 'A remittance advice lists the invoices and credit notes a payment relates to.',
+          },
+          {
+            q: 'Which book of prime entry records money paid to a supplier by bank transfer?',
+            opts: ['Purchases returns day book', 'Cash book', 'Journal', 'Sales day book'],
+            ans: 1,
+            exp: 'Payments (cash and bank) are recorded in the cash book — it is both a book of prime entry and part of the ledger.',
           },
         ],
       },
@@ -118,6 +129,11 @@ window.LEARN_PATH = [
               'Buy on credit and you owe the supplier — a **trade payable**, a liability. So a credit purchase is: debit Purchases, credit Payables.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'DEAD CLIC: Debits increase Expenses, Assets and Drawings. Credits increase Liabilities, Income and Capital. Any account type you are unsure about — ask whether it is closer to an asset or a liability.' },
+          },
         ],
         check: [
           {
@@ -143,6 +159,12 @@ window.LEARN_PATH = [
             opts: ['Because HMRC requires it', 'Because every transaction has a dual effect', 'Because banks process payments in pairs', 'Because invoices come in duplicate'],
             ans: 1,
             exp: 'Each transaction affects two accounts equally, so the two sides always balance.',
+          },
+          {
+            q: 'A business buys goods for resale, paying by bank transfer. Which entry is correct?',
+            opts: ['Debit Bank, credit Purchases', 'Debit Purchases, credit Bank', 'Debit Capital, credit Purchases', 'Debit Purchases, credit Sales'],
+            ans: 1,
+            exp: 'Purchases (an expense) increase with a debit; bank (an asset) decreases with a credit.',
           },
         ],
       },
@@ -187,6 +209,16 @@ window.LEARN_PATH = [
               'The balance on the **VAT control account** is usually a credit: the amount due to HMRC. If input tax is bigger, HMRC owes you a refund.',
             ],
           },
+          {
+            h: 'Net, VAT and gross: the three formulas',
+            p: ['Know these — they cover every VAT calculation in the exam.'],
+            formula: 'VAT = Net × 20% · Gross = Net × 1.20 · Net from gross = Gross ÷ 1.20 · VAT from gross = Gross ÷ 6',
+          },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'When given a GROSS figure and asked for the VAT, divide by 6. When given the NET, multiply by 20%. Never multiply a gross figure by 20%.' },
+          },
         ],
         check: [
           {
@@ -212,6 +244,12 @@ window.LEARN_PATH = [
             opts: ['A debit balance of £1,500 owed by HMRC', 'A credit balance of £6,500 due to HMRC', 'A debit balance of £6,500 owed by HMRC', 'A credit balance of £1,500 due to HMRC'],
             ans: 3,
             exp: 'Output tax exceeds input tax by £1,500, so £1,500 is due to HMRC — a credit balance.',
+          },
+          {
+            q: 'A gross amount is £720. What is the VAT?',
+            opts: ['£120', '£144', '£600', '£72'],
+            ans: 0,
+            exp: 'VAT from gross = Gross ÷ 6 = £720 ÷ 6 = £120. Alternatively: net = £720 ÷ 1.20 = £600, so VAT = £720 − £600 = £120.',
           },
         ],
       },
@@ -255,6 +293,11 @@ window.LEARN_PATH = [
               'The entries: debit Bank £392, debit Discounts allowed £8, and credit the sales ledger control account £400 to clear the full debt.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'The cash book debit column records money coming IN to the bank account. The credit column records money going OUT. Discounts allowed are an EXPENSE; discounts received are INCOME.' },
+          },
         ],
         check: [
           {
@@ -280,6 +323,12 @@ window.LEARN_PATH = [
             opts: ['£240', '£250', '£260', '£10'],
             ans: 0,
             exp: 'The discount is £10 (4% of £250), so the customer pays £240.',
+          },
+          {
+            q: 'A business receives a prompt-payment discount of £45 from a supplier. How is this recorded?',
+            opts: ['Debit Bank £45, credit Purchases £45', 'Debit Cash book £45, credit Discounts received £45', 'Debit Trade payables £45, credit Discounts received £45', 'Debit Discounts allowed £45, credit Trade payables £45'],
+            ans: 2,
+            exp: 'Discounts received from suppliers reduce what you owe (debit PLCA) and create income (credit Discounts received).',
           },
         ],
       },
@@ -330,6 +379,16 @@ window.LEARN_PATH = [
               'Capital itself grows with profit and shrinks with drawings: capital equals what the owner put in, plus profit, minus drawings.',
             ],
           },
+          {
+            h: 'Depreciation formulas',
+            p: ['Two methods appear in every exam. Know the formula for each.'],
+            formula: 'Straight-line annual charge = (Cost − Residual value) ÷ Useful life · Carrying value = Cost − Accumulated depreciation · Reducing balance charge = Carrying value × Rate%',
+          },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Under straight-line the charge is the SAME every year. Under reducing balance it FALLS each year because the carrying value shrinks. The exam always tells you which method to use.' },
+          },
         ],
         check: [
           {
@@ -355,6 +414,12 @@ window.LEARN_PATH = [
             opts: ['Every transaction was recorded', 'No entries went to the wrong account', 'Total debits equal total credits', 'The business made a profit'],
             ans: 2,
             exp: 'Agreement only proves arithmetic equality — some errors do not affect it.',
+          },
+          {
+            q: 'A machine cost £12,000, has a residual value of £2,000 and a 5-year life. What is the annual straight-line depreciation charge?',
+            opts: ['£2,000', '£2,400', '£1,600', '£2,200'],
+            ans: 0,
+            exp: 'Straight-line = (Cost − Residual) ÷ Life = (£12,000 − £2,000) ÷ 5 = £2,000 per year.',
           },
         ],
       },
@@ -409,6 +474,11 @@ window.LEARN_PATH = [
               'A **prepayment** is the opposite: you have paid in advance, like a year of insurance covering part of next year. Take it out of the expense; it is an asset.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Assets = Capital + Liabilities. If this equation is out of balance after a transaction, you have made an error. Debit balances: assets, expenses, drawings. Credit balances: liabilities, income, capital.' },
+          },
         ],
         check: [
           {
@@ -434,6 +504,12 @@ window.LEARN_PATH = [
             opts: ['An accrual', 'A prepayment', 'A drawing', 'A depreciation charge'],
             ans: 1,
             exp: 'It is paid in advance of the period it relates to, so it is a prepayment — an asset.',
+          },
+          {
+            q: 'A sole trader has assets of £45,000 and liabilities of £12,000. What is the capital?',
+            opts: ['£57,000', '£33,000', '£12,000', '£45,000'],
+            ans: 1,
+            exp: 'Capital = Assets − Liabilities = £45,000 − £12,000 = £33,000. This follows from the accounting equation.',
           },
         ],
       },
@@ -483,6 +559,11 @@ window.LEARN_PATH = [
               'The contra entry is: **debit PLCA, credit SLCA**, reducing both the receivable and the payable.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'SLCA is an ASSET (debit balance) — it shows what customers owe. PLCA is a LIABILITY (credit balance) — it shows what the business owes suppliers. They are mirror images on opposite sides.' },
+          },
         ],
         check: [
           {
@@ -508,6 +589,12 @@ window.LEARN_PATH = [
             opts: ['Debit SLCA £150, credit PLCA £150', 'Debit Bank £150, credit SLCA £150', 'Debit PLCA £150, credit SLCA £150', 'Debit PLCA £150, credit Bank £150'],
             ans: 2,
             exp: 'A contra reduces both balances: debit the PLCA and credit the SLCA.',
+          },
+          {
+            q: 'Credit sales of £3,600 (including VAT) are made this month. What is the entry in the SLCA?',
+            opts: ['Credit SLCA £3,600', 'Debit SLCA £3,000', 'Debit SLCA £3,600', 'Credit SLCA £3,000'],
+            ans: 2,
+            exp: 'Credit sales at the GROSS invoice value (including VAT) are debited to the SLCA — this is the full amount the customer owes.',
           },
         ],
       },
@@ -554,6 +641,11 @@ window.LEARN_PATH = [
               ],
             },
           },
+          {
+            h: 'Tip',
+            p: [],
+            callout: { kind: 'tip', text: 'Always ask: did the error happen in a DAY BOOK TOTAL (fix the control account) or in an INDIVIDUAL ACCOUNT (fix the list of balances)? The answer determines which side of the reconciliation to adjust.' },
+          },
         ],
         check: [
           {
@@ -579,6 +671,12 @@ window.LEARN_PATH = [
             opts: ['To detect and correct errors promptly', 'To calculate VAT due', 'To replace the trial balance', 'To work out depreciation'],
             ans: 0,
             exp: 'Comparing the control account with the list of balances catches errors early.',
+          },
+          {
+            q: 'A sales invoice for £600 was entered in the correct customer account but the sales day book total was understated by £600. Where must the adjustment be made in the reconciliation?',
+            opts: ['Increase the list of balances', 'Increase the SLCA (control account)', 'Reduce the SLCA', 'Reduce the list of balances'],
+            ans: 1,
+            exp: 'The sales day book feeds the control account. An undercast day book means the SLCA is too low — add £600 to correct the control account.',
           },
         ],
       },
@@ -624,6 +722,11 @@ window.LEARN_PATH = [
               ],
             },
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Six errors that do NOT affect the trial balance: omission, commission, principle, original entry, reversal, compensating. Learn these as a list — if the trial balance still agrees, one of these six is the culprit.' },
+          },
         ],
         check: [
           {
@@ -649,6 +752,12 @@ window.LEARN_PATH = [
             opts: ['The cash book is already correct — the bank just has not caught up', 'They are errors made by the bank', 'They are too small to matter', 'The auditor adjusts them at year end'],
             ans: 0,
             exp: 'The business recorded them correctly; the bank will process them in time.',
+          },
+          {
+            q: 'A purchase of £800 was recorded as £80 in both debit and credit entries. What type of error is this?',
+            opts: ['Error of commission', 'Error of original entry', 'Error of omission', 'Compensating error'],
+            ans: 1,
+            exp: 'An error of original entry uses the wrong amount in BOTH entries — the trial balance still agrees because both sides are equally wrong.',
           },
         ],
       },
@@ -692,6 +801,11 @@ window.LEARN_PATH = [
               'It is not proof, but it is a fast place to start looking.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'The suspense entry always goes on the side that makes the trial balance agree. To clear it: (1) what WAS posted? (2) what SHOULD have been posted? (3) journal the difference.' },
+          },
         ],
         check: [
           {
@@ -717,6 +831,12 @@ window.LEARN_PATH = [
             opts: ['An error of omission', 'An error of principle', 'A compensating error', 'A transposition error, since £270 divides exactly by 9'],
             ans: 3,
             exp: 'Differences divisible by 9 often point to transposed digits.',
+          },
+          {
+            q: 'Rent paid of £1,200 was debited correctly but no credit entry was made. The trial balance has a suspense credit of £1,200. What clears the suspense?',
+            opts: ['Debit Suspense £1,200, credit Rent £1,200', 'Debit Bank £1,200, credit Suspense £1,200', 'Debit Suspense £1,200, credit Bank £1,200', 'Debit Rent £1,200, credit Suspense £1,200'],
+            ans: 1,
+            exp: 'The missing credit is to Bank. Debit Bank £1,200 to record the payment; credit Suspense £1,200 to clear it.',
           },
         ],
       },
@@ -762,6 +882,11 @@ window.LEARN_PATH = [
               'Remember: only errors that caused a one-sided difference go through suspense. A reversal or commission error is corrected by journal **without** touching suspense.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Bank reconciliation direction: start from the BANK STATEMENT balance to arrive at the CASH BOOK balance. Update the cash book first (for items only on the statement). Then list timing differences only.' },
+          },
         ],
         check: [
           {
@@ -787,6 +912,12 @@ window.LEARN_PATH = [
             opts: ['Because HMRC charges interest on it', 'Because the financial statements must not contain unexplained balances', 'Because the bank requires it', 'Because it earns no interest'],
             ans: 1,
             exp: 'Suspense is a temporary holding account; final accounts must reflect corrected, explained figures.',
+          },
+          {
+            q: 'After cash book updates, the balance is £3,400. Unpresented cheques are £650; outstanding lodgements are £450. What does the bank statement show?',
+            opts: ['£3,200', '£3,600', '£3,400', '£4,500'],
+            ans: 1,
+            exp: 'Bank statement = Cash book + Unpresented cheques − Outstanding lodgements = £3,400 + £650 − £450 = £3,600.',
           },
         ],
       },
@@ -837,6 +968,11 @@ window.LEARN_PATH = [
               'When every liability has been settled, the wages control account balance returns to nil — that is the check working.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Payroll has TWO separate costs: what the employee TAKES HOME (net pay) and what you pay THIRD PARTIES (HMRC, pension). The total cost to the business is gross pay PLUS employer NIC PLUS employer pension.' },
+          },
         ],
         check: [
           {
@@ -862,6 +998,12 @@ window.LEARN_PATH = [
             opts: ['A debit balance equal to net pay', 'A credit balance equal to employer\'s NIC', 'A nil balance', 'A balance equal to gross pay'],
             ans: 2,
             exp: 'Wages control is cleared by the payments; a remaining balance signals an error or an unpaid amount.',
+          },
+          {
+            q: 'Gross pay is £2,800; employer NIC is £280; employee NIC is £210; PAYE is £420. What is the total cost to the business?',
+            opts: ['£2,800', '£2,170', '£3,080', '£3,710'],
+            ans: 2,
+            exp: 'Total cost = Gross pay + Employer NIC = £2,800 + £280 = £3,080. Employee deductions are already within gross pay, not extra.',
           },
         ],
       },
@@ -915,6 +1057,11 @@ window.LEARN_PATH = [
               ],
             },
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Cost centre: costs only. Profit centre: costs AND revenue. Investment centre: costs, revenue AND capital. Each level widens the manager\'s accountability and the information they must report.' },
+          },
         ],
         check: [
           {
@@ -940,6 +1087,12 @@ window.LEARN_PATH = [
             opts: ['Direct materials, direct labour and direct expenses', 'All production costs including overheads', 'Administration and finance costs', 'Indirect materials and indirect labour'],
             ans: 0,
             exp: 'Prime cost is the total of all direct costs.',
+          },
+          {
+            q: 'A production department has no revenue — it only incurs costs. What type of responsibility centre is this?',
+            opts: ['Profit centre', 'Cost centre', 'Investment centre', 'Revenue centre'],
+            ans: 1,
+            exp: 'A cost centre is responsible only for costs and has no revenue. A production department that does not sell is a classic cost centre.',
           },
         ],
       },
@@ -988,6 +1141,11 @@ window.LEARN_PATH = [
               ],
             },
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Fixed cost PER UNIT falls as output rises (same total ÷ more units). Variable cost PER UNIT stays constant (total rises in proportion). This distinction is essential for break-even and decision-making.' },
+          },
         ],
         check: [
           {
@@ -1013,6 +1171,12 @@ window.LEARN_PATH = [
             opts: ['£1,500', '£3,000', '£2,500', '£1,000'],
             ans: 2,
             exp: '£1,000 fixed plus 500 times £3 (£1,500) gives £2,500.',
+          },
+          {
+            q: 'At 5,000 units, total costs are £35,000. At 8,000 units, total costs are £47,000. What is the variable cost per unit?',
+            opts: ['£7.00', '£4.00', '£5.88', '£6.00'],
+            ans: 1,
+            exp: 'Variable rate = (£47,000 − £35,000) ÷ (8,000 − 5,000) = £12,000 ÷ 3,000 = £4.00 per unit.',
           },
         ],
       },
@@ -1058,6 +1222,16 @@ window.LEARN_PATH = [
               'If you cannot tell where a cost belongs, ask — never guess a code.',
             ],
           },
+          {
+            h: 'High-low method',
+            p: ['Use this to split a semi-variable cost into its fixed and variable parts.'],
+            formula: 'Variable rate = (Highest total cost − Lowest total cost) ÷ (Highest units − Lowest units) · Fixed element = Total cost − (Variable rate × Units)',
+          },
+          {
+            h: 'Tip',
+            p: [],
+            callout: { kind: 'tip', text: 'Use the HIGHEST and LOWEST ACTIVITY levels — not the highest and lowest cost figures. High activity usually brings high cost, but the cost extremes might not align with the activity extremes.' },
+          },
         ],
         check: [
           {
@@ -1083,6 +1257,12 @@ window.LEARN_PATH = [
             opts: ['The trial balance will not agree', 'HMRC will issue a fine automatically', 'The bank statement will not reconcile', 'A manager\'s reports show costs they did not incur'],
             ans: 3,
             exp: 'Miscoding sends the cost to the wrong centre, distorting that manager\'s reports.',
+          },
+          {
+            q: 'A cost is £22,000 at 4,000 units and £34,000 at 7,000 units. What is the fixed element?',
+            opts: ['£12,000', '£6,000', '£16,000', '£10,000'],
+            ans: 1,
+            exp: 'Variable rate = (£34,000 − £22,000) ÷ (7,000 − 4,000) = £4 per unit. Fixed = £22,000 − (£4 × 4,000) = £6,000.',
           },
         ],
       },
@@ -1131,6 +1311,16 @@ window.LEARN_PATH = [
               'When prices are falling, the effect reverses. Over the whole life of the inventory the methods even out — the difference is timing.',
             ],
           },
+          {
+            h: 'Labour cost formulas',
+            p: ['Three pay bases appear in the exam. Identify the basis, then apply the right formula.'],
+            formula: 'Time rate = Hours worked × Rate per hour · Overtime premium = Overtime hours × (Overtime rate − Basic rate) · Piecework = Units produced × Rate per unit',
+          },
+          {
+            h: 'Important',
+            p: [],
+            callout: { kind: 'warning', text: 'Overtime PREMIUM is only the EXTRA above basic rate — not the full overtime pay. If basic is £10 and overtime rate is £15, the premium is only £5 per hour, not £15.' },
+          },
         ],
         check: [
           {
@@ -1156,6 +1346,12 @@ window.LEARN_PATH = [
             opts: ['Profit is lower under FIFO', 'Profit is higher under FIFO', 'Closing inventory is lower under FIFO', 'There is never any difference'],
             ans: 1,
             exp: 'FIFO charges older, cheaper costs to issues, leaving higher closing inventory and higher profit.',
+          },
+          {
+            q: 'An employee works 42 hours. Basic rate is £11/hour. Overtime (2 extra hours) is paid at time-and-a-half. What is the overtime PREMIUM only?',
+            opts: ['£11', '£33', '£22', '£44'],
+            ans: 0,
+            exp: 'Overtime rate = £11 × 1.5 = £16.50. Premium = 2 × (£16.50 − £11.00) = 2 × £5.50 = £11. The premium is the extra above basic, not the full overtime pay.',
           },
         ],
       },
@@ -1200,6 +1396,11 @@ window.LEARN_PATH = [
               ],
             },
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Variance = Actual − Budget. Adverse = worse than budget (costs higher OR income lower). Favourable = better than budget. Both types reduce or improve profit relative to the budget target.' },
+          },
         ],
         check: [
           {
@@ -1225,6 +1426,12 @@ window.LEARN_PATH = [
             opts: ['To increase the overtime premium', 'To reduce the employer\'s NIC', 'To make all workers earn the same', 'To protect workers when output is low for reasons beyond their control'],
             ans: 3,
             exp: 'A guaranteed minimum ensures fair pay when machine breakdowns or shortages limit output.',
+          },
+          {
+            q: 'Budgeted sales were £50,000. Actual sales were £47,500. What is the sales variance?',
+            opts: ['£2,500 favourable', '£2,500 adverse', '£47,500 adverse', '£50,000 favourable'],
+            ans: 1,
+            exp: 'Sales variance = Actual − Budget = £47,500 − £50,000 = −£2,500. Income below budget is ADVERSE — it reduces profit.',
           },
         ],
       },
@@ -1270,6 +1477,16 @@ window.LEARN_PATH = [
               'Sell at £20 with variable costs of £12 and each unit contributes **£8**. With fixed costs of £4,000, you need 500 units just to break even.',
             ],
           },
+          {
+            h: 'Contribution and break-even formulas',
+            p: ['Contribution is the foundation of every CVP calculation.'],
+            formula: 'Contribution per unit = Selling price − Variable cost per unit · Break-even (units) = Fixed costs ÷ Contribution per unit · Target profit units = (Fixed costs + Target profit) ÷ Contribution per unit · Margin of safety = Actual units − Break-even units',
+          },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Mark-up is a % of COST. Margin is a % of SELLING PRICE. A 25% mark-up and a 20% margin produce the same absolute profit — just expressed against different bases.' },
+          },
         ],
         check: [
           {
@@ -1295,6 +1512,12 @@ window.LEARN_PATH = [
             opts: ['£15', '£9', '£24', '£6'],
             ans: 3,
             exp: 'Contribution is selling price minus variable cost: £15 minus £9 is £6.',
+          },
+          {
+            q: 'Selling price is £80, variable cost is £48, fixed costs are £32,000. How many units to break even?',
+            opts: ['400', '667', '1,000', '2,000'],
+            ans: 2,
+            exp: 'Contribution = £80 − £48 = £32. Break-even = £32,000 ÷ £32 = 1,000 units.',
           },
         ],
       },
@@ -1343,6 +1566,11 @@ window.LEARN_PATH = [
               'Sole traders keep things private and simple but carry all the risk personally.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Sole traders and ordinary partnerships are NOT separate legal entities. Owners have UNLIMITED LIABILITY — personal assets can pay business debts. Companies and LLPs are separate entities with LIMITED liability.' },
+          },
         ],
         check: [
           {
@@ -1368,6 +1596,12 @@ window.LEARN_PATH = [
             opts: ['A PLC can offer its shares to the general public', 'An Ltd has unlimited liability', 'A PLC is not a separate legal entity', 'An Ltd cannot employ more than 50 people'],
             ans: 0,
             exp: 'Only public limited companies may offer shares to the public, often via a stock exchange.',
+          },
+          {
+            q: 'A partner in an ordinary partnership cannot repay firm debts from business assets alone. What happens?',
+            opts: ['Only the managing partner is liable', 'Personal assets of all partners can be used', 'The firm automatically becomes a company', 'Creditors can only recover from business assets'],
+            ans: 1,
+            exp: 'Ordinary partnerships have unlimited liability. Each partner is personally liable for ALL the firm\'s debts, including those created by other partners.',
           },
         ],
       },
@@ -1407,6 +1641,11 @@ window.LEARN_PATH = [
               'Solvency matters too: finance watches that the business can pay its debts as they fall due. Plenty of profitable businesses have failed simply because they ran out of cash.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'The five fundamental principles are: INTEGRITY, OBJECTIVITY, PROFESSIONAL COMPETENCE AND DUE CARE, CONFIDENTIALITY, PROFESSIONAL BEHAVIOUR. Learn the list — questions ask you to identify which principle applies.' },
+          },
         ],
         check: [
           {
@@ -1432,6 +1671,12 @@ window.LEARN_PATH = [
             opts: ['Because profit is taxed', 'Because it has too many customers', 'Because it runs out of cash to pay debts as they fall due', 'Because it files accounts on time'],
             ans: 2,
             exp: 'Solvency is about cash, not profit — without cash, bills cannot be paid.',
+          },
+          {
+            q: 'A bookkeeper is pressured to process a payment they suspect is fraudulent. Which fundamental principle is most at risk?',
+            opts: ['Objectivity', 'Professional behaviour', 'Integrity', 'Confidentiality'],
+            ans: 2,
+            exp: 'Integrity means being straightforward and honest. Knowingly processing a fraudulent payment directly threatens integrity — the bookkeeper should refuse and escalate.',
           },
         ],
       },
@@ -1472,6 +1717,11 @@ window.LEARN_PATH = [
               'The main remedy is **damages** — money to put the injured party in the position they would have been in had the contract been performed. Courts can sometimes order **specific performance**, requiring the contract to be carried out, but this is rare.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'PED > 1 = elastic demand (consumers very sensitive to price). PED < 1 = inelastic (less sensitive). Luxury goods tend to be elastic; necessities tend to be inelastic. A higher PED means a price rise reduces revenue.' },
+          },
         ],
         check: [
           {
@@ -1497,6 +1747,12 @@ window.LEARN_PATH = [
             opts: ['Imprisonment', 'A fine paid to HMRC', 'Damages — financial compensation', 'Automatic cancellation of all contracts'],
             ans: 2,
             exp: 'Damages aim to put the injured party where they would have been if the contract had been performed.',
+          },
+          {
+            q: 'A 10% price rise leads to a 15% fall in quantity demanded. What does this indicate?',
+            opts: ['PED = 0.67 — inelastic demand', 'PED = 1.5 — elastic demand', 'PED = 1.5 — inelastic demand', 'PED = 0.67 — elastic demand'],
+            ans: 1,
+            exp: 'PED = % change in demand ÷ % change in price = 15% ÷ 10% = 1.5. PED > 1 means elastic — consumers are sensitive to this price change.',
           },
         ],
       },
@@ -1544,6 +1800,11 @@ window.LEARN_PATH = [
               'The Bank\'s main tool is the **interest rate**. Higher rates make borrowing dearer and saving more attractive, cooling spending and inflation; lower rates do the opposite. For a business, higher rates mean costlier loans and customers with less to spend.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'Think CIA: Confidentiality (only authorised users see data), Integrity (data is accurate and unaltered), Availability (data accessible when needed). Match each security control to the CIA element it protects.' },
+          },
         ],
         check: [
           {
@@ -1569,6 +1830,12 @@ window.LEARN_PATH = [
             opts: ['Its existing fixed-rate loans get cheaper', 'Borrowing costs rise and customer spending tends to fall', 'Inflation immediately doubles', 'Its VAT rate increases'],
             ans: 1,
             exp: 'Higher rates raise the cost of borrowing and leave customers with less disposable income.',
+          },
+          {
+            q: 'An employee receives an email from their bank asking them to click a link and enter their login. This is an example of which cyber threat?',
+            opts: ['Malware', 'Phishing', 'Ransomware', 'SQL injection'],
+            ans: 1,
+            exp: 'Phishing is a fraudulent message designed to trick someone into revealing credentials or clicking a malicious link. It mimics a trusted source such as a bank.',
           },
         ],
       },
@@ -1608,6 +1875,11 @@ window.LEARN_PATH = [
               'The **triple bottom line** measures success three ways: **profit** (economic), **people** (social) and **planet** (environmental). Finance professionals support all three — for example, by reporting energy use as well as cost.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'A valid contract requires ALL FOUR: offer, acceptance, consideration and intention to create legal relations. If any one is missing, there is no binding contract — even if both parties agreed verbally.' },
+          },
         ],
         check: [
           {
@@ -1633,6 +1905,12 @@ window.LEARN_PATH = [
             opts: ['Profit, people, planet', 'Price, product, promotion', 'Assets, liabilities, capital', 'Cash, credit, capital'],
             ans: 0,
             exp: 'The triple bottom line balances economic, social and environmental performance.',
+          },
+          {
+            q: 'A supermarket displays a tin priced at £0.49. A customer tries to buy 100 tins. The supermarket refuses. Is the supermarket in breach of contract?',
+            opts: ['Yes — the price label is an offer the customer accepted', 'No — the price label is an invitation to treat, not an offer', 'Yes — refusing to sell is unfair trading', 'No — only written contracts are enforceable'],
+            ans: 1,
+            exp: 'A price label is an INVITATION TO TREAT. The offer comes from the customer at the till. The store can decline without being in breach — no contract existed yet.',
           },
         ],
       },
@@ -1675,6 +1953,11 @@ window.LEARN_PATH = [
               '**Phishing** is a fake message — usually an email — that imitates a trusted sender to steal logins or money. Red flags: urgency, unexpected attachments, requests for credentials, and sender addresses that do not quite match. When in doubt, do not click — verify by another route.',
             ],
           },
+          {
+            h: 'Key point',
+            p: [],
+            callout: { kind: 'key', text: 'The accounting function sits at the centre of the business — providing information to all other functions (operations, HR, marketing, finance). Its outputs satisfy regulators, help managers decide, and support fundraising.' },
+          },
         ],
         check: [
           {
@@ -1700,6 +1983,12 @@ window.LEARN_PATH = [
             opts: ['To slow the system down for safety', 'So staff see and change only the data their job requires', 'To avoid paying for software licences', 'Because GDPR bans all shared systems'],
             ans: 1,
             exp: 'Role-based access limits both accidental errors and deliberate misuse of data.',
+          },
+          {
+            q: 'Which external body requires a UK limited company to file annual accounts?',
+            opts: ['HMRC', 'Companies House', 'The FRC', 'The AAT'],
+            ans: 1,
+            exp: 'Companies House is the UK\'s registrar of companies. All limited companies must file annual accounts and a confirmation statement there.',
           },
         ],
       },

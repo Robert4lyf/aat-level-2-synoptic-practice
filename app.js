@@ -866,7 +866,10 @@
     const L = State.lesson; if (!L) return;
     if (L.phase === 'teach') {
       if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; }
-      else { L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0; }
+      else { L.phase = 'transition'; }
+      render();
+    } else if (L.phase === 'transition') {
+      L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0; L.wrongIdxs = [];
       render();
     } else if (L.phase === 'quiz' && L.qAnswered !== null) {
       if (L.qIdx + 1 < L.def.check.length) { L.qIdx++; L.qAnswered = null; render(); }
@@ -874,7 +877,9 @@
     }
   }
   function lessonBack() {
-    const L = State.lesson; if (!L || L.phase !== 'teach' || L.cardIdx === 0) return;
+    const L = State.lesson; if (!L) return;
+    if (L.phase === 'transition') { L.phase = 'teach'; render(); return; }
+    if (L.phase !== 'teach' || L.cardIdx === 0) return;
     L.cardIdx--; render();
   }
   function lessonAnswer(idx) {
@@ -882,7 +887,8 @@
     const q = L.def.check[L.qIdx];
     L.qAnswered = idx;
     const correct = idx === q.ans;
-    if (correct) { L.qScore++; Storage.addXp(2); playCorrect(); } else { playWrong(); }
+    if (correct) { L.qScore++; Storage.addXp(2); playCorrect(); }
+    else { if (!L.wrongIdxs) L.wrongIdxs = []; L.wrongIdxs.push(L.qIdx); playWrong(); }
     Storage.save();
     render();
   }
@@ -1830,11 +1836,17 @@
         </div>
       </div>`;
       if (answered) {
+        const steps = q.steps && q.steps.length ? q.steps : null;
+        const stepsHtml = steps ? `<details class="worked-steps">
+          <summary>📐 Show working</summary>
+          <ol class="steps-list">${steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+        </details>` : '';
         feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
           <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
           ${!correct ? `<span>Your answer: ${escapeHtml(formatNumericValue(q, State.answered))}</span><br><span>Correct answer: ${escapeHtml(formatNumericValue(q, q.answer))}</span><br><br>` : ''}
           <em>${escapeHtml(q.exp)}</em>
         </div>
+        ${stepsHtml}
         <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
       }
     } else {
@@ -2406,31 +2418,46 @@
       <span class="xp-level">Lv ${Math.floor(xp / 100) + 1}</span>
     </div>`;
 
-    const unitsHtml = window.LEARN_PATH.map((unit, ui) => {
+    const unitsHtml = window.LEARN_PATH.map((unit) => {
       const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
+      const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
+      const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
       let unlockedSoFar = true;
-      const lessonsHtml = unit.lessons.map((L, li) => {
+      const lessonsHtml = unit.lessons.map((L) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
         const locked = !unlockedSoFar;
         if (!done) unlockedSoFar = false;
         const starRow = [1,2,3].map(s => `<span class="journey-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
+        const skillsSnip = (L.skills||[]).slice(0,2).map(sid => { const sk = skillById(sid); return sk ? `<span class="node-skill">${sk.icon}</span>` : ''; }).join('');
+        const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
+        const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
         return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
           <div class="journey-stars">${starRow}</div>
+          <div class="journey-node-meta">
+            ${!locked ? `<span class="node-time">${timeLabel}</span>` : ''}
+            ${!locked ? `<span class="node-xp">${xpLabel}</span>` : ''}
+          </div>
+          ${skillsSnip ? `<div class="node-skills">${skillsSnip}</div>` : ''}
         </button>`;
       }).join('');
-      const unitDone = unit.lessons.every(L => isLessonDone(L.id));
+      const doneCount = unit.lessons.filter(L=>isLessonDone(L.id)).length;
+      const unitDone = doneCount === unit.lessons.length;
       return `<div class="journey-unit">
         <div class="journey-unit-header">
           <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
-          <div><div class="journey-unit-title">${escapeHtml(unit.title)}</div>
-          <div class="journey-unit-sub">${unit.lessons.filter(L=>isLessonDone(L.id)).length}/${unit.lessons.length} lessons done ${unitDone ? '✓' : ''}</div></div>
+          <div class="journey-unit-info">
+            <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}</div>
+          </div>
+          ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
         </div>
+        <div class="journey-unit-progress-bg"><div class="journey-unit-progress" style="width:${(doneCount/unit.lessons.length*100).toFixed(0)}%"></div></div>
         <div class="journey-nodes">${lessonsHtml}</div>
       </div>`;
     }).join('');
@@ -2463,25 +2490,63 @@
     const totalCards = def.cards.length;
     const totalQ = def.check ? def.check.length : 0;
 
+    /* shared helpers */
+    const mdBold = (t) => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const dots = (total, current, cls) => Array.from({length:total}, (_,i) =>
+      `<span class="lesson-dot ${i < current ? 'done' : i === current ? 'active' : ''}" aria-hidden="true"></span>`).join('');
+    const skillChips = (def.skills||[]).map(sid => {
+      const sk = skillById(sid);
+      return sk ? `<span class="lesson-skill-chip">${sk.icon} ${escapeHtml(sk.name)}</span>` : '';
+    }).join('');
+
+    /* ── DONE screen ── */
     if (phase === 'done') {
       const starRow = [1,2,3].map(s => `<span class="lesson-star ${(stars||0) >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
-      const msg = stars === 3 ? 'Perfect score! 🏆' : stars >= 2 ? 'Great work! 👏' : stars >= 1 ? 'Good start. Try again to improve!' : 'Keep going — you need 50% to pass.';
+      const msg = stars === 3 ? 'Perfect score! 🏆' : stars >= 2 ? 'Great work! 👏' : stars >= 1 ? 'Good start — retry to earn more stars!' : 'Keep going — you need 50% to pass.';
+      const wrongIdxs = L.wrongIdxs || [];
+      const wrongReview = wrongIdxs.length > 0 ? `<div class="lesson-wrong-review">
+        <div class="lwr-title">Missed questions — review before you go:</div>
+        ${wrongIdxs.map(wi => {
+          const wq = def.check[wi];
+          return `<div class="lwr-item">
+            <p class="lwr-q">Q${wi+1}: ${escapeHtml(wq.q)}</p>
+            <p class="lwr-ans">✓ <strong>${escapeHtml(wq.opts[wq.ans])}</strong>${wq.exp ? ` — ${escapeHtml(wq.exp)}` : ''}</p>
+          </div>`;
+        }).join('')}
+      </div>` : (stars === 3 ? `<div class="lesson-perfect">All correct — outstanding! ⚡</div>` : '');
       return `<div class="container">
-        <button class="back-btn" id="lessonExitBtn" type="button">← Back to journey</button>
         <div class="lesson-done fade-in">
+          <div class="lesson-done-title">${escapeHtml(def.title)}</div>
           <div class="lesson-done-stars">${starRow}</div>
           <div class="lesson-done-pct">${pct}%</div>
           <div class="lesson-done-msg">${msg}</div>
-          <div class="lesson-done-xp">+${qScore * 2} XP earned this lesson</div>
+          <div class="lesson-done-xp">⚡ +${qScore * 2} XP earned</div>
+          ${wrongReview}
           <div class="lesson-done-btns">
             ${stars < 3 && totalQ > 0 ? `<button class="btn-primary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
-            <button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills && def.skills[0] || '')}">🎯 Drill these skills</button>
+            ${(def.skills||[]).length > 0 ? `<button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills[0]||'')}">🎯 Drill these questions</button>` : ''}
             <button class="btn-secondary" id="lessonExitBtn2" type="button">🗺️ Back to journey</button>
           </div>
         </div>
       </div>`;
     }
 
+    /* ── TRANSITION screen (between teach and quiz) ── */
+    if (phase === 'transition') {
+      return `<div class="container">
+        <button class="back-btn" id="lessonBackBtn" type="button">← Review cards</button>
+        <div class="lesson-transition fade-in">
+          <div class="lesson-transition-icon">🧪</div>
+          <h2 class="lesson-transition-h">Ready to test yourself?</h2>
+          <p class="lesson-transition-p">You've covered <strong>${totalCards}</strong> topic${totalCards===1?'':'s'} in <em>${escapeHtml(def.title)}</em>.</p>
+          <p class="lesson-transition-p">Now answer <strong>${totalQ}</strong> question${totalQ===1?'':'s'} to earn your stars. You need 50% to complete the lesson.</p>
+          ${skillChips ? `<div class="lesson-skill-chips">${skillChips}</div>` : ''}
+          <button class="btn-primary lesson-transition-btn" id="lessonContinueBtn" type="button">Start quiz →</button>
+        </div>
+      </div>`;
+    }
+
+    /* ── QUIZ phase ── */
     if (phase === 'quiz') {
       if (!def.check || !def.check.length) { finishLesson(); return ''; }
       const q = def.check[qIdx];
@@ -2494,14 +2559,18 @@
           <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
         </button>`;
       }).join('');
-      const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in">
+      const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status">
         <strong>${correct ? '✅ Correct!' : '❌ Not quite'}</strong>${q.exp ? `<br><em>${escapeHtml(q.exp)}</em>` : ''}
       </div>` : '';
       return `<div class="container">
         <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
         <div class="lesson-player slide-in">
-          <div class="lesson-phase-pill">Quiz · ${qIdx + 1} of ${totalQ}</div>
-          <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((qIdx+1)/totalQ*100).toFixed(0)}%"></div></div>
+          <div class="lesson-phase-bar">
+            <span class="lesson-phase-pill">Quiz ${qIdx + 1}/${totalQ}</span>
+            <div class="lesson-dots">${dots(totalQ, qIdx, 'quiz')}</div>
+            <span class="lesson-phase-score">⚡ ${L.qScore || 0}/${qIdx + (answered ? 1 : 0)}</span>
+          </div>
+          <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${answered ? ((qIdx+1)/totalQ*100).toFixed(0) : (qIdx/totalQ*100).toFixed(0)}%"></div></div>
           <h2 class="lesson-q">${escapeHtml(q.q)}</h2>
           <div class="options" role="radiogroup">${optHtml}</div>
           ${feedback}
@@ -2510,31 +2579,39 @@
       </div>`;
     }
 
-    /* teach phase */
+    /* ── TEACH phase ── */
     const card = def.cards[cardIdx];
-    const mdBold = (t) => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
     const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
     const exHtml = card.example ? `<div class="lesson-example">
       <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
-      <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+      <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
     </div>` : '';
     const splitHtml = card.split ? `<div class="lesson-split">
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.h)}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.h)}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+    </div>` : '';
+    const formulaHtml = card.formula ? `<div class="lesson-formula">${card.formula.split('·').map(f => `<div class="lesson-formula-line">${escapeHtml(f.trim())}</div>`).join('')}</div>` : '';
+    const calloutKind = card.callout ? (card.callout.kind || 'tip') : '';
+    const calloutHtml = card.callout ? `<div class="lesson-callout callout-${escapeHtml(calloutKind)}">
+      <span class="callout-icon">${calloutKind === 'warning' ? '⚠️' : calloutKind === 'key' ? '🔑' : '💡'}</span>
+      <span class="callout-text">${mdBold(card.callout.text)}</span>
     </div>` : '';
     return `<div class="container">
       <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
       <div class="lesson-player slide-in">
-        <div class="lesson-phase-pill">Learn · ${cardIdx + 1} of ${totalCards}</div>
+        <div class="lesson-phase-bar">
+          <span class="lesson-phase-pill">Learn ${cardIdx + 1}/${totalCards}</span>
+          <div class="lesson-dots">${dots(totalCards, cardIdx, 'teach')}</div>
+        </div>
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
-          ${paraHtml}${flowHtml}${exHtml}${splitHtml}
+          ${paraHtml}${flowHtml}${formulaHtml}${exHtml}${splitHtml}${calloutHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
-          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Take quiz →' : 'Continue →'}</button>
+          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Check understanding →' : 'Continue →'}</button>
         </div>
       </div>
     </div>`;
@@ -2546,30 +2623,43 @@
     if (!F) { goLearn(); return ''; }
     const done = F.idx >= F.terms.length;
     if (done) {
+      const pct = F.terms.length ? Math.round(F.got / F.terms.length * 100) : 0;
+      const stars = pct >= 90 ? 3 : pct >= 60 ? 2 : 1;
+      const starRow = [1,2,3].map(s => `<span class="lesson-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
       return `<div class="container">
-        <button class="back-btn" id="flashExitBtn" type="button">← Back to journey</button>
         <div class="flash-done fade-in">
           <div class="flash-done-icon">🃏</div>
           <h2>Session complete!</h2>
-          <p>You reviewed ${F.terms.length} card${F.terms.length===1?'':'s'} — ${F.got} correct.</p>
-          <button class="btn-primary" id="flashExitBtn2" type="button">🗺️ Back to journey</button>
+          <div class="lesson-done-stars" style="justify-content:center;margin-bottom:8px">${starRow}</div>
+          <p>You remembered <strong>${F.got}</strong> of ${F.terms.length} card${F.terms.length===1?'':'s'} (${pct}%).</p>
+          <p style="font-size:.85rem;color:var(--subtext)">Cards you missed are due again sooner — keep reviewing to move them up the Leitner ladder.</p>
+          <button class="btn-primary" style="margin-top:20px" id="flashExitBtn2" type="button">🗺️ Back to journey</button>
         </div>
       </div>`;
     }
     const term = F.terms[F.idx];
-    const glossItem = window.GLOSSARY.find(g => g.term === term) || { term, def: '—' };
+    const glossItem = window.GLOSSARY.find(g => g.term === term) || { term, def: '—', topic: null };
+    const topicObj = glossItem.topic ? window.TOPICS.find(t => t.id === glossItem.topic) : null;
+    const topicTag = topicObj ? `<span class="flash-topic-tag">${topicObj.icon} ${escapeHtml(topicObj.short)}</span>` : '';
+    const progressPct = ((F.idx) / F.terms.length * 100).toFixed(0);
     return `<div class="container">
       <button class="back-btn" id="flashExitBtn" type="button">← Back to journey</button>
       <div class="flash-player">
-        <div class="flash-progress">${F.idx + 1} / ${F.terms.length}</div>
-        <div class="flash-card ${F.flipped ? 'flipped' : ''}">
+        <div class="flash-header">
+          <div class="flash-progress-wrap">
+            <span class="flash-progress-txt">${F.idx + 1} / ${F.terms.length}</span>
+            <div class="flash-progress-bar-bg"><div class="flash-progress-bar-fill" style="width:${progressPct}%"></div></div>
+          </div>
+          <span class="flash-got">✓ ${F.got} remembered</span>
+        </div>
+        <div class="flash-card ${F.flipped ? 'flipped' : ''}" id="flashFlipBtn">
           ${!F.flipped
-            ? `<div class="flash-front"><span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-hint">Tap to reveal definition</p></div>`
-            : `<div class="flash-back"><span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-def">${escapeHtml(glossItem.def)}</p></div>`
+            ? `<div class="flash-front">${topicTag}<span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-hint">Tap to reveal definition</p></div>`
+            : `<div class="flash-back">${topicTag}<span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-def">${escapeHtml(glossItem.def)}</p></div>`
           }
         </div>
         ${!F.flipped
-          ? `<button class="btn-primary flash-flip-btn" id="flashFlipBtn" type="button">Flip card ↩</button>`
+          ? `<button class="btn-secondary flash-flip-btn-btn" id="flashFlipBtn2" type="button">Flip card ↩</button>`
           : `<div class="flash-grade-btns">
               <button class="flash-btn-no" id="flashNoBtn" type="button">😕 Need more practice</button>
               <button class="flash-btn-yes" id="flashYesBtn" type="button">✅ Got it!</button>
@@ -2780,6 +2870,7 @@
     bind('flashExitBtn', 'click', goLearn);
     bind('flashExitBtn2', 'click', goLearn);
     bind('flashFlipBtn', 'click', flashFlip);
+    bind('flashFlipBtn2', 'click', flashFlip);
     bind('flashYesBtn', 'click', () => flashGrade(true));
     bind('flashNoBtn', 'click', () => flashGrade(false));
     // Study planner
