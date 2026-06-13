@@ -620,6 +620,11 @@
     { id: 'unit-complete', icon: '🏆', name: 'Unit master', desc: 'Pass all 4 unit quizzes', hint: 'All 4 unit quizzes passed' },
     { id: 'combo-5', icon: '🔥', name: 'On fire', desc: 'Get 5 answers correct in a row in one practice session', hint: '5-answer combo in practice' },
     { id: 'perfect-practice', icon: '🎖️', name: 'Perfection', desc: 'Score 100% on a practice session of 10+ questions', hint: '100% on 10+ question session' },
+    { id: 'unit-itbk', icon: '🧮', name: 'ITBK Master', desc: 'Complete all Introduction to Bookkeeping lessons', hint: 'All ITBK lessons done' },
+    { id: 'unit-pobc', icon: '📊', name: 'POBC Master', desc: 'Complete all Principles of Bookkeeping lessons', hint: 'All POBC lessons done' },
+    { id: 'unit-poc', icon: '💸', name: 'POC Master', desc: 'Complete all Principles of Costing lessons', hint: 'All POC lessons done' },
+    { id: 'unit-besy', icon: '🏢', name: 'BESY Master', desc: 'Complete all Business Environment lessons', hint: 'All BESY lessons done' },
+    { id: 'all-units', icon: '👑', name: 'Grand Master', desc: 'Complete every lesson in every unit', hint: 'All 56 lessons done' },
   ];
   function badgeEarnedTest(id) {
     const d = Storage.data;
@@ -650,6 +655,14 @@
       case 'unit-complete': {
         const ut = d.learn.unitTests || {};
         return window.LEARN_PATH && window.LEARN_PATH.length > 0 && window.LEARN_PATH.every(u => ut[u.unit] && ut[u.unit].passed);
+      }
+      case 'unit-itbk': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='itbk')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'unit-pobc': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='pobc')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'unit-poc':  return !!((window.LEARN_PATH||[]).find(u=>u.unit==='poc')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'unit-besy': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='besy')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'all-units': {
+        const all = allLessons();
+        return all.length > 0 && all.every(L => isLessonDone(L.id));
       }
     }
     return false;
@@ -693,6 +706,11 @@
       case 'unit-complete': { const ut = d.learn.unitTests || {}; return { cur: (window.LEARN_PATH || []).filter(u => ut[u.unit] && ut[u.unit].passed).length, max: (window.LEARN_PATH || []).length || 4 }; }
       case 'combo-5':       return { cur: Math.min(5, d.learn.bestCombo || 0), max: 5 };
       case 'perfect-practice': return { cur: d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100) ? 1 : 0, max: 1 };
+      case 'unit-itbk': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='itbk'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'unit-pobc': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='pobc'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'unit-poc':  { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='poc');  return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'unit-besy': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='besy'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'all-units': { const all = allLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
       default: return { cur: 0, max: 1 };
     }
   }
@@ -1283,7 +1301,8 @@
     if (!found) { showToast('Lesson not found.', 'error'); return; }
     playClick();
     State.screen = 'lesson';
-    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0 };
+    const existingRec = Storage.lessonRec(found.lesson.id);
+    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0 };
     render();
   }
   function lessonContinue() {
@@ -1322,11 +1341,21 @@
     const pct = total ? Math.round((L.qScore / total) * 100) : 0;
     const stars = pct >= 100 ? 3 : pct >= 75 ? 2 : pct >= 50 ? 1 : 0;
     L.phase = 'done'; L.pct = pct; L.stars = stars;
+    L.isPersonalBest = pct >= 50 && stars > (L.prevStars || 0);
     if (pct >= 50) {
       L.firstTime = Storage.completeLesson(L.def.id, stars, pct);
       Storage.save();
       checkBadges();
       if (stars === 3) setTimeout(confetti, 300);
+      // Unit completion celebration
+      const unitDef = (window.LEARN_PATH || []).find(u => u.unit === L.unit);
+      L.unitComplete = unitDef && unitDef.lessons.every(l => isLessonDone(l.id));
+      if (L.unitComplete && !Storage.data.badges['unit-' + L.unit]) {
+        Storage.data.badges['unit-' + L.unit] = Date.now();
+        Storage.addXp(50);
+        Storage.save();
+        setTimeout(() => { confetti(); showToast('🏆 Unit complete! +50 bonus XP', 'success'); }, 600);
+      }
     }
     render();
   }
@@ -3119,7 +3148,7 @@
       const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
       let unlockedSoFar = true;
-      const lessonsHtml = unit.lessons.map((L) => {
+      const lessonsHtml = unit.lessons.map((L, nodeIdx) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
@@ -3131,9 +3160,12 @@
         const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
         const nodeQCount = (L.skills || []).reduce((sum, sid) => sum + (skillQCount[sid] || 0), 0);
         const l3Badge = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : '';
-        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}${L.l3Bridge ? ' node-l3' : ''}" type="button"
+        const tier = L.l3Bridge ? 'tier-5' : nodeIdx <= 3 ? 'tier-1' : nodeIdx <= 7 ? 'tier-2' : nodeIdx <= 10 ? 'tier-3' : 'tier-4';
+        const tierLabel = L.l3Bridge ? '<span class="node-tier-label">L3 Bridge</span>' : nodeIdx <= 3 ? '<span class="node-tier-label tier-1-label">Foundations</span>' : nodeIdx <= 7 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 10 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
+        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'} node-${tier}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
+          ${!locked ? tierLabel : ''}
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
           ${l3Badge}
@@ -3148,18 +3180,24 @@
       }).join('');
       const doneCount = unit.lessons.filter(L=>isLessonDone(L.id)).length;
       const unitDone = doneCount === unit.lessons.length;
+      const unitStars = unit.lessons.reduce((sum, L) => { const rec = Storage.lessonRec(L.id); return sum + (rec ? (rec.stars || 0) : 0); }, 0);
+      const unitMaxStars = unit.lessons.length * 3;
+      const unitBadgeEarned = !!Storage.data.badges['unit-' + unit.unit];
       const unitTest = (Storage.data.learn.unitTests || {})[unit.unit] || null;
       const unitQuizBtn = unitDone
         ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
             ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
            </button>` : '';
       const revBtn = `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>`;
-      return `<div class="journey-unit">
+      return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}">
         <div class="journey-unit-header">
-          <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
+          <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
-            <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
+            <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
             <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'} <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit] || 25}% of synoptic</span></div>
+          </div>
+          <div class="unit-star-total" title="${unitStars} of ${unitMaxStars} stars earned">
+            <span class="ust-stars">★</span> ${unitStars}/${unitMaxStars}
           </div>
           ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
           <div class="unit-action-btns">${revBtn}${unitQuizBtn}</div>
@@ -3333,10 +3371,17 @@
         <button class="btn-primary lesson-drill-all" id="lessonDrillAllBtn" type="button"
           data-skills="${escapeHtml(lessonSkills.join(','))}">Start ${Math.min(10, allSkillQs.length)}-question drill →</button>
       </div>` : '';
+      const personalBestBanner = L.isPersonalBest && stars > 0 ? `<div class="lesson-personal-best">🏆 New personal best!</div>` : '';
+      const unitCompleteBanner = L.unitComplete ? `<div class="unit-complete-banner">
+        <div class="ucb-icon">🎉</div>
+        <div class="ucb-text"><strong>Unit complete!</strong> You've finished all lessons in this unit. <span class="ucb-xp">+50 bonus XP</span></div>
+      </div>` : '';
       return `<div class="container">
         <div class="lesson-done fade-in">
+          ${unitCompleteBanner}
           <div class="lesson-done-title">${escapeHtml(def.title)}</div>
           <div class="lesson-done-stars">${starRow}</div>
+          ${personalBestBanner}
           <div class="lesson-done-pct">${pct}%</div>
           <div class="lesson-done-msg">${msg}</div>
           <div class="lesson-done-xp">⚡ +${qScore * 2} XP earned</div>

@@ -228,6 +228,7 @@ header, main { position: relative; z-index: 1; }
 /* ── ANIMATIONS ── */
 @keyframes fadeIn   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideIn  { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slide-down { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pop      { 0% { transform: scale(1); } 50% { transform: scale(1.04); } 100% { transform: scale(1); } }
 @keyframes pulse    { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
 @keyframes shimmer  { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
@@ -3128,6 +3129,92 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 .lesson-done-msg { font-size: 1.05rem; color: var(--text); margin-bottom: 6px; }
 .lesson-done-xp { font-size: .85rem; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
 .lesson-done-btns { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Personal best banner ── */
+.lesson-personal-best {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 700;
+  padding: 5px 16px;
+  border-radius: 99px;
+  margin-bottom: 10px;
+  animation: pb-pop .4s cubic-bezier(.175,.885,.32,1.275) both;
+}
+@keyframes pb-pop {
+  from { transform: scale(.6); opacity: 0; }
+  to   { transform: scale(1);  opacity: 1; }
+}
+
+/* ── Unit complete celebration banner ── */
+.unit-complete-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, color-mix(in srgb, #7c3aed 12%, var(--card)), color-mix(in srgb, #f59e0b 8%, var(--card)));
+  border: 2px solid #7c3aed;
+  border-radius: var(--r-xl);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  text-align: left;
+  animation: slide-down .4s ease both;
+}
+.ucb-icon { font-size: 2rem; flex-shrink: 0; }
+.ucb-text { font-size: .88rem; color: var(--text); line-height: 1.4; }
+.ucb-xp { color: #f59e0b; font-weight: 700; }
+
+/* ── Unit star total chip ── */
+.unit-star-total {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-muted, var(--subtext));
+  white-space: nowrap;
+}
+.ust-stars { color: #f59e0b; font-size: 1rem; }
+
+/* ── Mastered unit ── */
+.unit-mastered { border-color: #7c3aed !important; }
+.unit-mastered .journey-unit-header { background: color-mix(in srgb, #7c3aed 6%, var(--card)); }
+.unit-master-badge {
+  display: inline-block;
+  font-size: .6rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 99px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* ── Lesson difficulty tier labels on nodes ── */
+.node-tier-label {
+  font-size: .52rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: 1px 6px;
+  border-radius: 99px;
+  line-height: 1.6;
+  margin-bottom: 2px;
+}
+.tier-1-label { background: #dcfce7; color: #166534; }
+.tier-2-label { background: #dbeafe; color: #1e40af; }
+.tier-3-label { background: #fef3c7; color: #92400e; }
+.tier-4-label { background: #fce7f3; color: #9d174d; }
+
+/* ── Tier border accents on nodes (available only) ── */
+.node-available.node-tier-1 { border-color: #86efac; }
+.node-available.node-tier-2 { border-color: #93c5fd; }
+.node-available.node-tier-3 { border-color: #fcd34d; }
+.node-available.node-tier-4 { border-color: #f9a8d4; }
+.node-available.node-tier-5 { border-color: #c4b5fd; }
 
 /* ── Exam weight chip on unit header ── */
 .unit-exam-weight {
