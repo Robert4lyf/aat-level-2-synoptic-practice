@@ -269,6 +269,40 @@
     },
   ];
 
+  /* ── LEVEL 3 BRIDGE — "What's next" preview data ── */
+  const L3_BRIDGE = [
+    {
+      unit: 'AVBK', title: 'Advanced Bookkeeping', icon: '📗',
+      buildsOn: ['ITBk'],
+      desc: 'Extended trial balance, incomplete records, complex depreciation and disposal of non-current assets.',
+      topics: ['Extended trial balance', 'Incomplete records', 'Asset disposals'],
+    },
+    {
+      unit: 'FAPS', title: 'Final Accounts Preparation', icon: '📘',
+      buildsOn: ['ITBk', 'POBC'],
+      desc: 'Produce financial statements for sole traders and partnerships from an adjusted trial balance.',
+      topics: ['Sole trader accounts', 'Partnership accounts', 'Appropriation account'],
+    },
+    {
+      unit: 'MATS', title: 'Management Accounting Techniques', icon: '📙',
+      buildsOn: ['POC'],
+      desc: 'Standard costing, variance analysis, flexible budgets and performance measurement.',
+      topics: ['Standard cost cards', 'Variance analysis', 'Flexible budgets'],
+    },
+    {
+      unit: 'TPFB', title: 'Tax Processes for Business', icon: '📕',
+      buildsOn: ['ITBk', 'POBC'],
+      desc: 'Complete VAT returns, income tax for sole traders, PAYE and National Insurance.',
+      topics: ['VAT 100 return', 'Income tax basics', 'PAYE & NIC'],
+    },
+    {
+      unit: 'BUAW', title: 'Business Awareness', icon: '📓',
+      buildsOn: ['BESY'],
+      desc: 'Business strategy, digital transformation, sources of finance and professional ethics at Level 3.',
+      topics: ['Business strategy', 'Digital business', 'Sources of finance'],
+    },
+  ];
+
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -2835,11 +2869,13 @@
         const skillsSnip = (L.skills||[]).slice(0,2).map(sid => { const sk = skillById(sid); return sk ? `<span class="node-skill">${sk.icon}</span>` : ''; }).join('');
         const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
         const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
-        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}" type="button"
+        const l3Badge = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : '';
+        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
+          ${l3Badge}
           <div class="journey-stars">${starRow}</div>
           <div class="journey-node-meta">
             ${!locked ? `<span class="node-time">${timeLabel}</span>` : ''}
@@ -2909,7 +2945,26 @@
     </div>
     ${dailyBlock}
     ${nextBlock}
-    <div class="journey-map">${unitsHtml}</div>`;
+    <div class="journey-map">${unitsHtml}</div>
+    <div class="l3-bridge-section">
+      <div class="l3-bridge-header">
+        <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
+        <p class="l3-bridge-sub">Everything you learn here builds directly into Level 3. Each Level 2 unit maps to at least one Level 3 unit below.</p>
+      </div>
+      <div class="l3-unit-grid">
+        ${L3_BRIDGE.map(m => `<div class="l3-unit-card">
+          <div class="l3-unit-header">
+            <span class="l3-unit-icon">${m.icon}</span>
+            <div>
+              <div class="l3-unit-name">${escapeHtml(m.title)}</div>
+              <div class="l3-unit-builds">Builds on: ${m.buildsOn.map(u => escapeHtml(u)).join(' + ')}</div>
+            </div>
+          </div>
+          <p class="l3-unit-desc">${escapeHtml(m.desc)}</p>
+          <ul class="l3-unit-topics">${m.topics.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
+        </div>`).join('')}
+      </div>
+    </div>`;
   }
 
   /* ── LESSON PLAYER ── */
