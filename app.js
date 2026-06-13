@@ -273,33 +273,51 @@
   const L3_BRIDGE = [
     {
       unit: 'AVBK', title: 'Advanced Bookkeeping', icon: '📗',
-      buildsOn: ['ITBk'],
-      desc: 'Extended trial balance, incomplete records, complex depreciation and disposal of non-current assets.',
-      topics: ['Extended trial balance', 'Incomplete records', 'Asset disposals'],
+      buildsOn: ['ITBk'], topicIds: ['itbk'],
+      exam: 'Computer-based', time: '2h 30min', tasks: 5, passmark: 70,
+      desc: 'Extended trial balance, incomplete records and complex asset transactions in a professional bookkeeping context.',
+      entrySkills: ['Double-entry to trial balance', 'Accruals & prepayments', 'Depreciation (SL & reducing balance)', 'Bank reconciliation'],
+      topics: ['Extended trial balance', 'Incomplete records', 'Asset disposals & part-exchange', 'Revaluation of assets', 'Accounting adjustments'],
     },
     {
       unit: 'FAPS', title: 'Final Accounts Preparation', icon: '📘',
-      buildsOn: ['ITBk', 'POBC'],
+      buildsOn: ['ITBk', 'POBC'], topicIds: ['itbk', 'pobc'],
+      exam: 'Computer-based', time: '2h', tasks: 4, passmark: 70,
       desc: 'Produce financial statements for sole traders and partnerships from an adjusted trial balance.',
-      topics: ['Sole trader accounts', 'Partnership accounts', 'Appropriation account'],
+      entrySkills: ['Adjusted trial balance', 'SLCA & PLCA control accounts', 'Partnership profit-sharing basics', 'Interpreting account balances'],
+      topics: ['Sole trader income statement & SoFP', 'Partnership appropriation account', 'Partner capital & current accounts', 'Incomplete records', 'Interpreting accounts'],
     },
     {
-      unit: 'MATS', title: 'Management Accounting Techniques', icon: '📙',
-      buildsOn: ['POC'],
-      desc: 'Standard costing, variance analysis, flexible budgets and performance measurement.',
-      topics: ['Standard cost cards', 'Variance analysis', 'Flexible budgets'],
+      unit: 'MATS', title: 'Management Accounting: Costing', icon: '📙',
+      buildsOn: ['POC'], topicIds: ['poc'],
+      exam: 'Computer-based', time: '2h', tasks: 5, passmark: 70,
+      desc: 'Standard costing, variance analysis, flexible budgets and performance measurement for management decisions.',
+      entrySkills: ['Marginal vs absorption costing', 'Break-even & contribution analysis', 'Cost classification & coding', 'Budget preparation basics'],
+      topics: ['Standard cost cards', 'Material, labour & overhead variances', 'Flexible budgets', 'Activity-based costing overview', 'Performance indicators & ratios'],
     },
     {
-      unit: 'TPFB', title: 'Tax Processes for Business', icon: '📕',
-      buildsOn: ['ITBk', 'POBC'],
-      desc: 'Complete VAT returns, income tax for sole traders, PAYE and National Insurance.',
-      topics: ['VAT 100 return', 'Income tax basics', 'PAYE & NIC'],
+      unit: 'TPFB', title: 'Tax Processes for Businesses', icon: '📕',
+      buildsOn: ['ITBk', 'POBC'], topicIds: ['itbk', 'pobc'],
+      exam: 'Computer-based', time: '1h 30min', tasks: 4, passmark: 70,
+      desc: 'Complete VAT returns, income tax computations, PAYE and National Insurance in a professional context.',
+      entrySkills: ['VAT accounting (standard & cash)', 'Payroll basics & deductions', 'Business structure awareness', 'Record-keeping principles'],
+      topics: ['VAT 100 return completion', 'Income tax for sole traders', 'PAYE & NIC calculations', 'Corporation tax overview', 'Making Tax Digital (MTD)'],
     },
     {
       unit: 'BUAW', title: 'Business Awareness', icon: '📓',
-      buildsOn: ['BESY'],
+      buildsOn: ['BESY'], topicIds: ['besy'],
+      exam: 'Computer-based', time: '1h 30min', tasks: 5, passmark: 70,
       desc: 'Business strategy, digital transformation, sources of finance and professional ethics at Level 3.',
-      topics: ['Business strategy', 'Digital business', 'Sources of finance'],
+      entrySkills: ['Business structures & types', 'AAT Code of Professional Ethics', 'Business law fundamentals', 'Stakeholder concepts'],
+      topics: ['PESTLE & SWOT analysis', 'Sources of finance (short & long-term)', 'Digital transformation in accounting', 'Corporate social responsibility', 'Sustainability in business'],
+    },
+    {
+      unit: 'PSYA', title: 'Professional Synoptic Assessment', icon: '🎓',
+      buildsOn: ['AVBK', 'FAPS', 'MATS', 'TPFB', 'BUAW'], topicIds: ['itbk', 'pobc', 'poc', 'besy'],
+      exam: 'Synoptic', time: '3h', tasks: 6, passmark: 70,
+      desc: 'The culminating Level 3 assessment integrating all units in a realistic professional accountancy context.',
+      entrySkills: ['All five L3 units completed', 'Strong double-entry foundations', 'Tax, costing & financial reporting', 'Professional ethics in practice'],
+      topics: ['Integrated bookkeeping scenarios', 'Ethics & professional judgement', 'Financial statement preparation', 'Payroll & tax compliance tasks', 'Management reporting tasks'],
     },
   ];
 
@@ -3019,20 +3037,58 @@
     <div class="l3-bridge-section">
       <div class="l3-bridge-header">
         <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
-        <p class="l3-bridge-sub">Everything you learn here builds directly into Level 3. Each Level 2 unit maps to at least one Level 3 unit below.</p>
+        <p class="l3-bridge-sub">Level 2 builds the foundations; Level 3 deepens every skill and adds tax, management accounting and professional reporting. Complete this qualification first, then enrol directly onto Level 3.</p>
+        <div class="l3-info-row">
+          <div class="l3-info-item">📋 5 units + synoptic</div>
+          <div class="l3-info-item">🎯 70% pass mark</div>
+          <div class="l3-info-item">⏱ 12–18 months</div>
+          <div class="l3-info-item">🌐 aat.org.uk</div>
+        </div>
       </div>
+      <p class="l3-readiness-note">💡 The bars below show your current L2 accuracy in the topics each Level 3 unit builds on.</p>
       <div class="l3-unit-grid">
-        ${L3_BRIDGE.map(m => `<div class="l3-unit-card">
-          <div class="l3-unit-header">
-            <span class="l3-unit-icon">${m.icon}</span>
-            <div>
-              <div class="l3-unit-name">${escapeHtml(m.title)}</div>
-              <div class="l3-unit-builds">Builds on: ${m.buildsOn.map(u => escapeHtml(u)).join(' + ')}</div>
-            </div>
-          </div>
-          <p class="l3-unit-desc">${escapeHtml(m.desc)}</p>
-          <ul class="l3-unit-topics">${m.topics.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
-        </div>`).join('')}
+        ${(() => {
+          const l3Stats = Storage.data.stats.topics || {};
+          return L3_BRIDGE.map(m => {
+            const accs = (m.topicIds || []).map(id => { const s = l3Stats[id] || {}; return (s.seen >= 5) ? Math.round(s.correct / s.seen * 100) : null; }).filter(a => a !== null);
+            const ready = accs.length ? Math.round(accs.reduce((a, b) => a + b, 0) / accs.length) : null;
+            const readyHtml = ready !== null
+              ? `<div class="l3-readiness"><div class="l3-readiness-row"><span class="l3-readiness-label">L2 readiness</span><span class="l3-readiness-pct ${scoreClass(ready)}">${ready}%</span></div><div class="l3-bar-bg"><div class="l3-bar" style="width:${ready}%"></div></div><div class="l3-readiness-tip">${ready >= 75 ? '✅ Strong foundations — ready to progress' : ready >= 55 ? '📚 Keep practising L2 topics' : '🔁 Strengthen L2 foundations first'}</div></div>`
+              : '<div class="l3-readiness l3-readiness-empty">Complete L2 practice to see your readiness score</div>';
+            return `<div class="l3-unit-card${m.unit === 'PSYA' ? ' l3-synoptic-card' : ''}">
+              <div class="l3-unit-header">
+                <span class="l3-unit-icon">${m.icon}</span>
+                <div class="l3-unit-title-block">
+                  <div class="l3-unit-name">${escapeHtml(m.title)}</div>
+                  <div class="l3-unit-builds">Builds on: ${m.buildsOn.map(u => escapeHtml(u)).join(' + ')}</div>
+                </div>
+                <span class="l3-exam-badge l3-exam-${m.exam === 'Synoptic' ? 'syn' : 'cbe'}">${escapeHtml(m.exam)}</span>
+              </div>
+              <div class="l3-unit-meta">⏱ ${escapeHtml(m.time)} &nbsp;·&nbsp; ${m.tasks} tasks &nbsp;·&nbsp; ${m.passmark}% pass</div>
+              <p class="l3-unit-desc">${escapeHtml(m.desc)}</p>
+              <div class="l3-unit-sections">
+                <div class="l3-unit-section">
+                  <div class="l3-section-title">Entry skills from L2</div>
+                  <ul class="l3-entry-list">${(m.entrySkills || []).map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+                </div>
+                <div class="l3-unit-section">
+                  <div class="l3-section-title">What you will master</div>
+                  <ul class="l3-unit-topics">${m.topics.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
+                </div>
+              </div>
+              ${readyHtml}
+            </div>`;
+          }).join('');
+        })()}
+      </div>
+      <div class="l3-enrol-steps">
+        <div class="l3-enrol-title">📍 How to progress to Level 3</div>
+        <ol class="l3-steps-list">
+          <li>Complete and pass the AAT Level 2 Synoptic Assessment</li>
+          <li>Receive your Level 2 Certificate in Accounting award from AAT</li>
+          <li>Enrol on AAT Level 3 via aat.org.uk or an approved training provider</li>
+          <li>Complete all five units in any order, then sit the Professional Synoptic</li>
+        </ol>
       </div>
     </div>`;
   }
