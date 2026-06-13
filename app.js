@@ -109,6 +109,166 @@
       ]},
     ],
   };
+
+  /* ── UNIT REVISION NOTES ── */
+  const UNIT_REVISION = [
+    {
+      unit: 'itbk', title: 'Introduction to Bookkeeping', icon: '📒',
+      sections: [
+        { heading: 'DEAD CLIC — the debit/credit rule', items: [
+          'Debits increase: Expenses, Assets, Drawings',
+          'Credits increase: Liabilities, Income, Capital',
+          'Every double-entry transaction: total debits = total credits',
+          'A debit entry is always on the LEFT side of a T-account',
+        ]},
+        { heading: 'Document chain (credit sale)', items: [
+          'Purchase order → Delivery note → Invoice → Credit note → Statement → Remittance advice',
+          'Sales invoices issued → Sales day book',
+          'Credit notes issued → Sales returns day book',
+          'Purchase invoices received → Purchases day book',
+          'Credit notes received → Purchases returns day book',
+          'The journal records non-routine entries (corrections, opening entries)',
+        ]},
+        { heading: 'VAT calculations (standard rate 20%)', items: [
+          'Net → VAT amount: Net × 20%',
+          'Net → Gross: Net × 1.20',
+          'Gross → Net: Gross ÷ 1.20',
+          'VAT from gross (the quick method): Gross ÷ 6',
+          'VAT due to HMRC = Output tax − Input tax',
+        ]},
+        { heading: 'Trial balance', items: [
+          'DEBIT balances: Assets, Expenses, Drawings',
+          'CREDIT balances: Liabilities, Capital, Revenue/Income',
+          'Total debits must equal total credits',
+          'Closing inventory: CREDIT in the trial balance, DEBIT in the statement of financial position',
+        ]},
+      ],
+      traps: [
+        'VAT from gross = Gross ÷ 6 (not ÷ 1.2 — dividing by 1.2 gives you the net, not the VAT).',
+        'Drawings is a DEBIT entry and reduces capital — it is not an expense and does not reduce profit.',
+        'Trade discount reduces the invoice price before VAT. Settlement discount only applies if paid within the agreed period.',
+        'The journal is a book of prime entry (not a ledger account) — use it for corrections and non-routine items.',
+      ],
+    },
+    {
+      unit: 'pobc', title: 'Principles of Bookkeeping Controls', icon: '🔍',
+      sections: [
+        { heading: 'Payroll calculations', items: [
+          'Gross pay = Basic pay + Overtime + Bonus',
+          'Net pay = Gross pay − PAYE − Employee NIC − Employee pension − Other deductions',
+          "Total employment cost = Gross pay + Employer's NIC + Employer pension contribution",
+          "Employer's NIC (2026/27): (Gross pay − £5,000 secondary threshold) × 15%",
+        ]},
+        { heading: 'Bank reconciliation', items: [
+          'Start from BANK STATEMENT balance',
+          '+ Deposits in transit (cash book recorded; bank has not yet)',
+          '− Outstanding cheques/payments (cash book recorded; bank has not yet)',
+          '= Adjusted bank balance — must equal the CASH BOOK balance',
+          'Bank errors are corrected in the bank rec (not in the cash book)',
+        ]},
+        { heading: 'Control accounts', items: [
+          'Sales ledger control = total of all individual trade receivable (customer) accounts',
+          'Purchases ledger control = total of all individual trade payable (supplier) accounts',
+          'Post daily totals from day books to the control account in the general ledger',
+          'The control account total must agree with the sum of the subsidiary ledger balances',
+        ]},
+        { heading: 'Types of bookkeeping error', items: [
+          'Omission — transaction not recorded at all (TB still balances)',
+          'Commission — correct amount, wrong account, same type (TB balances)',
+          'Principle — correct amount, wrong type of account (TB balances)',
+          'Original entry — wrong amount on both sides (TB balances)',
+          'Reversal — debit and credit swapped (TB balances)',
+          'Single-sided / casting / transposition — TB does NOT balance → use suspense account',
+        ]},
+      ],
+      traps: [
+        "Employer's NIC is NOT deducted from the employee's pay — it is an additional cost paid by the employer on top of gross pay.",
+        'Timing differences (deposits in transit, outstanding cheques) are not errors — they appear in the bank rec, not as corrections.',
+        'A suspense account is temporary — it must be fully cleared (reduced to zero) once the error is found and corrected.',
+        'Trade receivables = money owed TO the business (debit balance). Trade payables = money owed BY the business (credit balance).',
+      ],
+    },
+    {
+      unit: 'poc', title: 'Principles of Costing', icon: '📊',
+      sections: [
+        { heading: 'Cost classification', items: [
+          'Prime cost = Direct materials + Direct labour + Direct expenses',
+          'Variable cost: changes in TOTAL as output changes; stays constant per unit',
+          'Fixed cost: stays the same in TOTAL; decreases per unit as output rises',
+          'Semi-variable (mixed) cost: has a fixed element + a variable element',
+          'Production overhead = indirect materials + indirect labour + indirect expenses',
+        ]},
+        { heading: 'CVP / break-even analysis', items: [
+          'Contribution per unit = Selling price − Variable cost per unit',
+          'Contribution margin ratio (CMR) = Contribution per unit ÷ Selling price',
+          'Break-even (units) = Fixed costs ÷ Contribution per unit',
+          'Break-even (£) = Fixed costs ÷ CMR',
+          'Margin of safety (units) = Budgeted sales − Break-even units',
+          'Target profit (units) = (Fixed costs + Target profit) ÷ Contribution per unit',
+        ]},
+        { heading: 'Overhead absorption', items: [
+          'OAR = Budgeted overheads ÷ Budgeted activity level',
+          'Absorbed overhead = OAR × Actual activity',
+          'Over-absorption: absorbed > actual overhead incurred (positive for profit)',
+          'Under-absorption: absorbed < actual overhead incurred (reduces profit)',
+          'Common bases: machine hours, direct labour hours, units produced',
+        ]},
+        { heading: 'Inventory valuation (FIFO and AVCO)', items: [
+          'FIFO: oldest units sold first; closing inventory = most recent purchases',
+          'AVCO: recalculate weighted-average cost after every purchase batch',
+          'LIFO is NOT permitted under UK GAAP or IFRS',
+          'Higher COGS → lower gross profit; lower COGS → higher gross profit',
+        ]},
+      ],
+      traps: [
+        'Fixed cost per unit falls as volume rises — the total fixed cost stays the same.',
+        'Margin of safety uses BUDGETED sales (not actual): Budgeted sales − Break-even sales.',
+        'AVCO must be recalculated after every purchase — not just at the period end.',
+        'Over-absorption means too much overhead was charged to products (absorbed > actual) — this is favourable (boosts profit).',
+      ],
+    },
+    {
+      unit: 'besy', title: 'The Business Environment', icon: '🌐',
+      sections: [
+        { heading: 'Business structures', items: [
+          'Sole trader: unlimited personal liability; simplest to set up',
+          'Partnership: unlimited liability (general) or limited (LLP); shared profit/loss',
+          'Private limited (Ltd): limited liability; shares NOT offered to the general public',
+          'Public limited company (PLC): limited liability; shares CAN be offered on the Stock Exchange',
+          'Not-for-profit / mutual: surplus reinvested for members or community benefit',
+        ]},
+        { heading: 'Elasticity', items: [
+          'PED = |% change in quantity demanded ÷ % change in price|',
+          'PED > 1 → elastic: demand sensitive to price; price ↑ → total revenue ↓',
+          'PED < 1 → inelastic: demand insensitive to price; price ↑ → total revenue ↑',
+          'IED = % change in demand ÷ % change in income; >1 luxury, 0–1 normal, <0 inferior good',
+          'XED: positive = substitutes (e.g. butter/margarine); negative = complements (e.g. cars/petrol)',
+        ]},
+        { heading: 'Employment law essentials', items: [
+          'National Living Wage (21+, 2026/27): £12.71 per hour',
+          '18–20: £10.85; 16–17 and apprentices: £8.00',
+          'Rights from day 1: discrimination protection, NMW entitlement, written terms',
+          'Statutory notice and redundancy rights require qualifying service (2 years for redundancy)',
+          'PAYE operates through the employer — income tax and NICs deducted at source',
+        ]},
+        { heading: 'AAT ethics — 5 fundamental principles', items: [
+          'Integrity — honest and straightforward in all professional relationships',
+          'Objectivity — no bias; do not allow conflicts of interest',
+          'Professional competence and due care — maintain skills; act with diligence',
+          'Confidentiality — do not disclose information without proper authority',
+          'Professional behaviour — comply with laws; avoid discrediting the profession',
+          'Raise concerns through appropriate channels — not directly to external parties unless legally required',
+        ]},
+      ],
+      traps: [
+        'Elastic demand (PED > 1): increasing price REDUCES total revenue because quantity falls more than price rises.',
+        'Ltd vs PLC: the critical difference is whether shares can be offered to the general public — both words include "limited".',
+        'AAT members must follow ethical guidance even if instructed otherwise by management or a client.',
+        'Sustainability reporting (environmental/social impact) is part of the broader finance function role — it is a professional duty, not just PR.',
+      ],
+    },
+  ];
+
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -164,7 +324,7 @@
     flagged: {},
     sr: {},
     history: [], session: null,
-    learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {} },
+    learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {}, unitTests: {}, bestCombo: 0 },
     flash: {},
     mistakes: {},
     planner: { examDate: null, dailyGoalXp: 30 },
@@ -192,6 +352,8 @@
         this.data.learn = Object.assign(d.learn, (this.data.learn && typeof this.data.learn === 'object') ? this.data.learn : {});
         this.data.learn.lessons = this.data.learn.lessons || {};
         this.data.learn.taDone = this.data.learn.taDone || {};
+        this.data.learn.unitTests = this.data.learn.unitTests || {};
+        this.data.learn.bestCombo = this.data.learn.bestCombo || 0;
         this.data.flash = (this.data.flash && typeof this.data.flash === 'object') ? this.data.flash : {};
         this.data.mistakes = (this.data.mistakes && typeof this.data.mistakes === 'object') ? this.data.mistakes : {};
         this.data.planner = Object.assign(d.planner, this.data.planner || {});
@@ -242,8 +404,13 @@
     },
     addXp(n) {
       if (!n) return;
+      const prevLevel = Math.floor(this.data.learn.xp / 100) + 1;
       this.data.learn.xp += n;
       this.day().xp += n;
+      const newLevel = Math.floor(this.data.learn.xp / 100) + 1;
+      if (newLevel > prevLevel) {
+        setTimeout(() => showLevelUp(newLevel), 400);
+      }
     },
     studyDayStreak() {
       let streak = 0;
@@ -379,18 +546,26 @@
 
   /* ── BADGES ── */
   const BADGES = [
-    { id: 'first-lesson', icon: '🐣', name: 'First steps', desc: 'Complete your first lesson' },
-    { id: 'ten-lessons', icon: '📚', name: 'Bookworm', desc: 'Complete 10 lessons' },
-    { id: 'path-complete', icon: '🗺️', name: 'Trailblazer', desc: 'Complete the whole journey' },
-    { id: 'hundred-q', icon: '💯', name: 'Century', desc: 'Answer 100 questions' },
-    { id: 'streak-15', icon: '🎯', name: 'Sharpshooter', desc: 'Get 15 answers right in a row' },
-    { id: 'mock-pass', icon: '🏅', name: 'Exam ready', desc: 'Pass a mock exam (70%+)' },
-    { id: 'mock-90', icon: '🌟', name: 'Distinction', desc: 'Score 90%+ on a mock exam' },
-    { id: 'mistakes-10', icon: '🔁', name: 'Comeback', desc: 'Clear 10 mistakes from your notebook' },
-    { id: 'flash-50', icon: '🃏', name: 'Card shark', desc: 'Review 50 flashcards' },
-    { id: 'days-7', icon: '🔥', name: '7-day habit', desc: 'Study on 7 days in a row' },
-    { id: 'xp-500', icon: '⚡', name: 'Power learner', desc: 'Earn 500 XP' },
-    { id: 'ta-all', icon: '🧰', name: 'Ledger legend', desc: 'Finish every guided T-account exercise' },
+    { id: 'first-lesson', icon: '🐣', name: 'First steps', desc: 'Complete your first lesson', hint: 'Complete 1 lesson' },
+    { id: 'ten-lessons', icon: '📚', name: 'Bookworm', desc: 'Complete 10 lessons', hint: 'Complete 10 lessons' },
+    { id: 'path-complete', icon: '🗺️', name: 'Trailblazer', desc: 'Complete the whole journey', hint: 'Complete all lessons' },
+    { id: 'hundred-q', icon: '💯', name: 'Century', desc: 'Answer 100 questions', hint: '100 questions answered' },
+    { id: 'questions-250', icon: '🔢', name: 'Grinder', desc: 'Answer 250 questions', hint: '250 questions answered' },
+    { id: 'streak-15', icon: '🎯', name: 'Sharpshooter', desc: 'Get 15 answers right in a row', hint: '15-question correct streak' },
+    { id: 'mock-pass', icon: '🏅', name: 'Exam ready', desc: 'Pass a mock exam (70%+)', hint: 'Pass a mock exam' },
+    { id: 'mock-90', icon: '🌟', name: 'Distinction', desc: 'Score 90%+ on a mock exam', hint: '90%+ on a mock exam' },
+    { id: 'perfect-lesson', icon: '💎', name: 'Flawless', desc: 'Score 100% on a lesson quiz', hint: '100% on any lesson check' },
+    { id: 'three-star-five', icon: '⭐', name: 'Star collector', desc: 'Earn 3 stars on 5 lessons', hint: '3-star 5 lessons' },
+    { id: 'mistakes-10', icon: '🔁', name: 'Comeback', desc: 'Clear 10 mistakes from your notebook', hint: 'Clear 10 mistakes' },
+    { id: 'flash-50', icon: '🃏', name: 'Card shark', desc: 'Review 50 flashcards', hint: 'Review 50 flashcards' },
+    { id: 'days-7', icon: '🔥', name: '7-day habit', desc: 'Study on 7 days in a row', hint: '7-day study streak' },
+    { id: 'xp-500', icon: '⚡', name: 'Power learner', desc: 'Earn 500 XP', hint: '500 XP earned' },
+    { id: 'xp-1000', icon: '⚡⚡', name: 'XP champion', desc: 'Earn 1,000 XP', hint: '1,000 XP earned' },
+    { id: 'ta-all', icon: '🧰', name: 'Ledger legend', desc: 'Finish every guided T-account exercise', hint: 'All T-account exercises done' },
+    { id: 'daily-7', icon: '📅', name: '7-day challenger', desc: 'Complete 7 daily challenges', hint: '7 daily challenges' },
+    { id: 'unit-complete', icon: '🏆', name: 'Unit master', desc: 'Pass all 4 unit quizzes', hint: 'All 4 unit quizzes passed' },
+    { id: 'combo-5', icon: '🔥', name: 'On fire', desc: 'Get 5 answers correct in a row in one practice session', hint: '5-answer combo in practice' },
+    { id: 'perfect-practice', icon: '🎖️', name: 'Perfection', desc: 'Score 100% on a practice session of 10+ questions', hint: '100% on 10+ question session' },
   ];
   function badgeEarnedTest(id) {
     const d = Storage.data;
@@ -403,6 +578,7 @@
         return all.length > 0 && all.every(L => isLessonDone(L.id));
       }
       case 'hundred-q': return Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0) >= 100;
+      case 'questions-250': return Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0) >= 250;
       case 'streak-15': return (d.stats.streak && d.stats.streak.best >= 15);
       case 'mock-pass': return d.history.some(h => h.mode === 'mock' && h.pct >= PASS_MARK);
       case 'mock-90': return d.history.some(h => h.mode === 'mock' && h.pct >= 90);
@@ -410,7 +586,17 @@
       case 'flash-50': return d.learn.flashReviews >= 50;
       case 'days-7': return Storage.studyDayStreak() >= 7;
       case 'xp-500': return d.learn.xp >= 500;
+      case 'xp-1000': return d.learn.xp >= 1000;
+      case 'perfect-lesson': return Object.values(d.learn.lessons).some(r => r.best >= 100);
+      case 'three-star-five': return Object.values(d.learn.lessons).filter(r => r.stars >= 3).length >= 5;
+      case 'combo-5': return !!(d.learn.bestCombo && d.learn.bestCombo >= 5);
+      case 'perfect-practice': return d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100);
       case 'ta-all': return TA_EXERCISES.every(ex => d.learn.taDone[ex.id]);
+      case 'daily-7': return Object.values(d.daily).filter(day => day.challenge && day.challenge.done).length >= 7;
+      case 'unit-complete': {
+        const ut = d.learn.unitTests || {};
+        return window.LEARN_PATH && window.LEARN_PATH.length > 0 && window.LEARN_PATH.every(u => ut[u.unit] && ut[u.unit].passed);
+      }
     }
     return false;
   }
@@ -426,6 +612,130 @@
       showToast('🏅 Badge earned: ' + names, 'success');
     }
     return earned;
+  }
+
+  function badgeProgress(id) {
+    const d = Storage.data;
+    const totalAttempts = () => Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0);
+    const lessonsDone = Object.keys(d.learn.lessons).length;
+    switch (id) {
+      case 'first-lesson':  return { cur: Math.min(1, lessonsDone), max: 1 };
+      case 'ten-lessons':   return { cur: Math.min(10, lessonsDone), max: 10 };
+      case 'path-complete': { const all = allLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
+      case 'hundred-q':     return { cur: Math.min(100, totalAttempts()), max: 100 };
+      case 'questions-250': return { cur: Math.min(250, totalAttempts()), max: 250 };
+      case 'streak-15':     return { cur: Math.min(15, (d.stats.streak && d.stats.streak.best) || 0), max: 15 };
+      case 'mock-pass':     return { cur: d.history.some(h => h.mode === 'mock' && h.pct >= PASS_MARK) ? 1 : 0, max: 1 };
+      case 'mock-90':       return { cur: d.history.some(h => h.mode === 'mock' && h.pct >= 90) ? 1 : 0, max: 1 };
+      case 'perfect-lesson':return { cur: Object.values(d.learn.lessons).some(r => r.best >= 100) ? 1 : 0, max: 1 };
+      case 'three-star-five':return { cur: Math.min(5, Object.values(d.learn.lessons).filter(r => r.stars >= 3).length), max: 5 };
+      case 'mistakes-10':   return { cur: Math.min(10, Storage.clearedMistakeCount()), max: 10 };
+      case 'flash-50':      return { cur: Math.min(50, d.learn.flashReviews), max: 50 };
+      case 'days-7':        return { cur: Math.min(7, Storage.studyDayStreak()), max: 7 };
+      case 'xp-500':        return { cur: Math.min(500, d.learn.xp), max: 500 };
+      case 'xp-1000':       return { cur: Math.min(1000, d.learn.xp), max: 1000 };
+      case 'ta-all':        return { cur: TA_EXERCISES.filter(ex => d.learn.taDone[ex.id]).length, max: TA_EXERCISES.length };
+      case 'daily-7':       return { cur: Math.min(7, Object.values(d.daily).filter(day => day.challenge && day.challenge.done).length), max: 7 };
+      case 'unit-complete': { const ut = d.learn.unitTests || {}; return { cur: (window.LEARN_PATH || []).filter(u => ut[u.unit] && ut[u.unit].passed).length, max: (window.LEARN_PATH || []).length || 4 }; }
+      case 'combo-5':       return { cur: Math.min(5, d.learn.bestCombo || 0), max: 5 };
+      case 'perfect-practice': return { cur: d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100) ? 1 : 0, max: 1 };
+      default: return { cur: 0, max: 1 };
+    }
+  }
+
+  function showLevelUp(level) {
+    const el = document.createElement('div');
+    el.className = 'level-up-banner';
+    el.innerHTML = `<div class="level-up-inner"><span class="level-up-icon">⚡</span><div><div class="level-up-title">Level Up!</div><div class="level-up-sub">You reached Level ${level}</div></div><span class="level-up-icon">⚡</span></div>`;
+    document.body.appendChild(el);
+    setTimeout(() => el.classList.add('level-up-show'), 20);
+    setTimeout(() => { el.classList.remove('level-up-show'); setTimeout(() => el.remove(), 500); }, 2500);
+    if (!reducedMotion) confetti();
+  }
+
+  /* ── COMBO SYSTEM ── */
+  function updateCombo(correct) {
+    if (State.mode !== 'practice') return;
+    if (correct) {
+      State.combo++;
+      if (State.combo > (Storage.data.learn.bestCombo || 0)) {
+        Storage.data.learn.bestCombo = State.combo;
+      }
+      if (State.combo >= 3) {
+        Storage.addXp(1); // bonus XP per answer while on combo
+        if (State.combo === 3) showToast('🔥 3-answer combo! +1 bonus XP per correct answer', 'success');
+        if (State.combo === 5) showToast('🔥🔥 5-answer combo! You\'re on fire!', 'success');
+        if (State.combo === 10) showToast('🔥🔥🔥 10-answer combo! Unstoppable!', 'success');
+      }
+    } else {
+      if (State.combo >= 3) showToast(`Combo broken at ${State.combo}. Keep going!`, 'info');
+      State.combo = 0;
+    }
+  }
+
+  /* ── DAILY CHALLENGE ── */
+  function getDailyQuestion() {
+    if (!window.ALL_QUESTIONS || !window.ALL_QUESTIONS.length) return null;
+    const key = todayKey();
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
+    return window.ALL_QUESTIONS[Math.abs(hash) % window.ALL_QUESTIONS.length];
+  }
+  function startDailyChallenge() {
+    const today = todayKey();
+    const existing = (Storage.data.daily[today] || {}).challenge;
+    if (existing && existing.done) { showToast('Challenge already completed today! Come back tomorrow.', 'info'); return; }
+    const q = getDailyQuestion();
+    if (!q) { showToast('No daily question available.', 'warn'); return; }
+    State.isDailyChallenge = true;
+    const picked = [presentQuestion(q)];
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: q.topic, questions: picked,
+      current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      hintLevel: 0, hintElim: null,
+    });
+    Calc.reset(); render();
+  }
+
+  /* ── UNIT QUIZ (structured, weighted toward harder questions) ── */
+  function buildWeightedUnitQuiz(unitId) {
+    const pool = (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
+    const hard = shuffle(pool.filter(q => q.difficulty === 'hard'));
+    const med  = shuffle(pool.filter(q => q.difficulty === 'medium'));
+    const easy = shuffle(pool.filter(q => q.difficulty === 'easy'));
+    const TARGET = 20;
+    const nHard = Math.min(7, hard.length);
+    const nMed  = Math.min(8, med.length);
+    const nEasy = Math.min(TARGET - nHard - nMed, easy.length);
+    return shuffle([...hard.slice(0, nHard), ...med.slice(0, nMed), ...easy.slice(0, nEasy)])
+      .slice(0, TARGET).map(presentQuestion);
+  }
+  function startUnitQuiz(unitId) {
+    if (!Storage.data.learn.unitTests) Storage.data.learn.unitTests = {};
+    State.unitQuizId = unitId;
+    const picked = buildWeightedUnitQuiz(unitId);
+    if (!picked.length) { showToast('No questions available for this unit.', 'warn'); return; }
+    playClick();
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: unitId, questions: picked,
+      current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      hintLevel: 0, hintElim: null, combo: 0,
+    });
+    Calc.reset(); render();
+  }
+
+  /* ── UNIT REVISION NOTES ── */
+  function startRevision(unitId) {
+    const rev = UNIT_REVISION.find(r => r.unit === unitId);
+    if (!rev) { showToast('Revision notes not available.', 'warn'); return; }
+    playClick();
+    State.screen = 'revision';
+    State.revisionUnit = unitId;
+    render();
   }
 
   /* ── AUDIO ── */
@@ -653,6 +963,8 @@
     lesson: null,                           // lesson player state
     flash: null,                            // flashcard session state
     plannerEdit: false,                     // study-planner edit form open
+    revisionUnit: null,                     // unit revision notes screen
+    combo: 0,                               // consecutive correct answers in practice
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -743,7 +1055,7 @@
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
       ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
-      hintLevel:0, hintElim:null,
+      hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
   }
@@ -866,7 +1178,10 @@
     const L = State.lesson; if (!L) return;
     if (L.phase === 'teach') {
       if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; }
-      else { L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0; }
+      else { L.phase = 'transition'; }
+      render();
+    } else if (L.phase === 'transition') {
+      L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0; L.wrongIdxs = [];
       render();
     } else if (L.phase === 'quiz' && L.qAnswered !== null) {
       if (L.qIdx + 1 < L.def.check.length) { L.qIdx++; L.qAnswered = null; render(); }
@@ -874,7 +1189,9 @@
     }
   }
   function lessonBack() {
-    const L = State.lesson; if (!L || L.phase !== 'teach' || L.cardIdx === 0) return;
+    const L = State.lesson; if (!L) return;
+    if (L.phase === 'transition') { L.phase = 'teach'; render(); return; }
+    if (L.phase !== 'teach' || L.cardIdx === 0) return;
     L.cardIdx--; render();
   }
   function lessonAnswer(idx) {
@@ -882,7 +1199,8 @@
     const q = L.def.check[L.qIdx];
     L.qAnswered = idx;
     const correct = idx === q.ans;
-    if (correct) { L.qScore++; Storage.addXp(2); playCorrect(); } else { playWrong(); }
+    if (correct) { L.qScore++; Storage.addXp(2); playCorrect(); }
+    else { if (!L.wrongIdxs) L.wrongIdxs = []; L.wrongIdxs.push(L.qIdx); playWrong(); }
     Storage.save();
     render();
   }
@@ -908,7 +1226,7 @@
   function goLearn() {
     stopMockTimer();
     State.screen = 'home'; State.activeTab = 'learn'; State.confirmModal = null;
-    State.lesson = null; State.flash = null;
+    State.lesson = null; State.flash = null; State.revisionUnit = null;
     render();
   }
 
@@ -1011,6 +1329,7 @@
     const correct = idx === q.ans;
     State.answered = idx;
     if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
     Storage.recordAnswer(q, correct); Storage.save();
     State.results.push({ id:q.id, q:q.q, correct, chosen:q.opts[idx], correctOpt:q.opts[q.ans], exp:q.exp, topic:q.topic, skill:q.skill });
     saveSession(); render();
@@ -1056,6 +1375,7 @@
     const allRight = correct === totalPairs;
     State.answered = { kind: 'dragdrop', correct: allRight, perPair, score: correct, total: totalPairs };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = q.pairs.map((p, i) => p.left + ' → ' + q.pairs[q.shuffledRights[State.ddMap[i]]].right).join('; ');
     const correctSummary = q.pairs.map(p => p.left + ' → ' + p.right).join('; ');
@@ -1079,6 +1399,7 @@
     const allRight = correct === blanks.length;
     State.answered = { kind: 'tablefill', correct: allRight, perBlank, score: correct, total: blanks.length };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perBlank.map(b => b.entered == null ? '—' : b.entered).join(', ');
     const correctSummary = blanks.map(b => b.answer).join(', ');
@@ -1111,6 +1432,7 @@
     const allRight = correct === parts.length;
     State.answered = { kind: 'scenario', correct: allRight, perPart, score: correct, total: parts.length };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perPart.map((p, i) => 'Part ' + (i+1) + ': ' + p.chosenText).join(' | ');
     const correctSummary = perPart.map((p, i) => 'Part ' + (i+1) + ': ' + p.correctText).join(' | ');
@@ -1134,6 +1456,7 @@
     const allRight = correct === total;
     State.answered = { kind: 'gapfill', correct: allRight, perGap, score: correct, total: total };
     if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
     Storage.recordAnswer(q, allRight); Storage.save();
     const chosenSummary = perGap.map(g => g.chosen == null ? '—' : g.chosen).join(' / ');
     const correctSummary = perGap.map(g => g.correctText).join(' / ');
@@ -1155,6 +1478,7 @@
     State.answered = value;
     const correct = isNumericCorrect(q, value);
     if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
     Storage.recordAnswer(q, correct); Storage.save();
     State.results.push({ id:q.id, q:q.q, correct,
       chosen: formatNumericValue(q, value),
@@ -1207,6 +1531,30 @@
     const pct = State.questions.length ? Math.round((State.score / State.questions.length) * 100) : 0;
     Storage.recordResult({ mode:'practice', topic:State.selectedTopic, score:State.score, total:State.questions.length, pct, timestamp:Date.now() });
     Storage.addXp(5);   // session-completion bonus
+    // Daily challenge bonus
+    if (State.isDailyChallenge) {
+      const today = todayKey();
+      if (!Storage.data.daily[today]) Storage.data.daily[today] = { xp: 0, answered: 0 };
+      if (!(Storage.data.daily[today].challenge && Storage.data.daily[today].challenge.done)) {
+        const correct = State.score > 0;
+        Storage.addXp(correct ? 10 : 3);
+        Storage.data.daily[today].challenge = { done: true, correct, qId: State.questions[0] ? State.questions[0].id : null };
+        showToast(correct ? '📅 Daily challenge complete! +10 XP' : '📅 Daily challenge done. +3 XP. Try again tomorrow!', correct ? 'success' : 'info');
+      }
+      State.isDailyChallenge = false;
+    }
+    // Unit quiz bonus
+    if (State.unitQuizId) {
+      const unitId = State.unitQuizId;
+      State.unitQuizId = null;
+      const passed = pct >= PASS_MARK;
+      if (!Storage.data.learn.unitTests) Storage.data.learn.unitTests = {};
+      const existing = Storage.data.learn.unitTests[unitId];
+      if (!existing || pct > (existing.pct || 0)) {
+        Storage.data.learn.unitTests[unitId] = { passed, pct, timestamp: Date.now() };
+        if (passed && (!existing || !existing.passed)) { Storage.addXp(50); showToast('🏆 Unit quiz passed! +50 XP', 'success'); }
+      }
+    }
     Storage.save();
     checkBadges();
     if (pct >= PASS_MARK) setTimeout(confetti, 300);
@@ -1283,8 +1631,9 @@
     else if (State.screen === 'home')   html = renderMain();
     else if (State.screen === 'quiz')   html = renderQuiz();
     else if (State.screen === 'score')  html = renderScore();
-    else if (State.screen === 'lesson') html = renderLesson();
-    else if (State.screen === 'flash')  html = renderFlash();
+    else if (State.screen === 'lesson')   html = renderLesson();
+    else if (State.screen === 'flash')    html = renderFlash();
+    else if (State.screen === 'revision') html = renderRevision();
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
@@ -1673,7 +2022,51 @@
         <div class="ht-score ${cls}">${h.score}/${h.total} · ${h.pct}%</div>
       </div>`;
     }).join('');
+    // Skill map
+    const skillAcc = skillAccuracy();
+    const skillMapHtml = window.SKILLS ? window.SKILLS.defs.map(sk => {
+      const acc = skillAcc[sk.id];
+      const pct = acc && acc.attempts ? Math.round(acc.correct / acc.attempts * 100) : null;
+      const cls = pct === null ? 'skill-gray' : pct >= 70 ? 'skill-green' : pct >= 50 ? 'skill-amber' : 'skill-red';
+      return `<button class="skill-map-cell ${cls}" type="button" data-start-skill="${escapeHtml(sk.id)}" title="${escapeHtml(sk.name)}: ${pct !== null ? pct + '%' : 'no data'}">
+        <span class="skill-map-icon">${sk.icon}</span>
+        <span class="skill-map-name">${escapeHtml(sk.name)}</span>
+        <span class="skill-map-pct">${pct !== null ? pct + '%' : '—'}</span>
+      </button>`;
+    }).join('') : '';
+
+    // Badge showcase
+    const xp = Storage.data.learn.xp || 0;
+    const level = Math.floor(xp / 100) + 1;
+    const levelXp = xp % 100;
+    const earnedBadgesList = BADGES.filter(b => Storage.data.badges[b.id]);
+    const unearnedBadges = BADGES.filter(b => !Storage.data.badges[b.id]);
+    const badgeShowcase = `<div class="badge-showcase">
+      <div class="badge-showcase-header">
+        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/100 XP to next</span></div>
+        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelXp}%"></div></div>
+      </div>
+      ${earnedBadgesList.length ? `<div class="badge-grid-title">🏅 Earned badges (${earnedBadgesList.length}/${BADGES.length})</div>
+      <div class="badge-grid">${earnedBadgesList.map(b => `<div class="badge-card badge-earned" title="${escapeHtml(b.desc)}">
+        <div class="badge-icon">${b.icon}</div>
+        <div class="badge-name">${escapeHtml(b.name)}</div>
+      </div>`).join('')}</div>` : ''}
+      <div class="badge-grid-title">🔒 Locked badges</div>
+      <div class="badge-grid">${unearnedBadges.map(b => {
+        const p = badgeProgress(b.id);
+        const pct = p.max > 0 ? Math.round((p.cur / p.max) * 100) : 0;
+        return `<div class="badge-card badge-locked" title="${escapeHtml(b.desc)}">
+          <div class="badge-icon badge-icon-locked">${b.icon}</div>
+          <div class="badge-name">${escapeHtml(b.name)}</div>
+          <div class="badge-hint">${escapeHtml(b.hint)}</div>
+          <div class="badge-prog-bg"><div class="badge-prog-fill" style="width:${pct}%"></div></div>
+          <div class="badge-prog-label">${p.cur}/${p.max}</div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+
     return `<h2 class="section-title">Your Progress</h2>
+      ${badgeShowcase}
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-num" data-count="${totalAttempts}">${totalAttempts}</div><div class="stat-label">Questions answered</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${accuracy}" data-suffix="%">${accuracy}%</div><div class="stat-label">Lifetime accuracy</div></div>
@@ -1681,10 +2074,16 @@
         <div class="stat-card"><div class="stat-num" data-count="${Object.keys(stats.questions).length}">${Object.keys(stats.questions).length}</div><div class="stat-label">Unique questions seen</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${streak.current}">${streak.current}</div><div class="stat-label">🔥 Current streak</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${streak.best}">${streak.best}</div><div class="stat-label">🏆 Best streak</div></div>
+        <div class="stat-card"><div class="stat-num" data-count="${Storage.data.learn.bestCombo || 0}">${Storage.data.learn.bestCombo || 0}</div><div class="stat-label">🔥 Best combo</div></div>
+        <div class="stat-card"><div class="stat-num" data-count="${Storage.data.learn.xp || 0}">${Storage.data.learn.xp || 0}</div><div class="stat-label">⚡ Total XP</div></div>
       </div>
       <div class="breakdown" style="background:var(--card);border:1px solid var(--border);padding:16px;border-radius:11px;margin-bottom:20px">
         <div class="breakdown-title">Accuracy by topic</div>${topicRows}
       </div>
+      ${skillMapHtml ? `<div class="skill-map-section">
+        <div class="skill-map-title">Skill map <span class="skill-map-legend"><span class="sml sml-green"></span>70%+ <span class="sml sml-amber"></span>50–69% <span class="sml sml-red"></span>&lt;50% <span class="sml sml-gray"></span>no data</span></div>
+        <div class="skill-map-grid">${skillMapHtml}</div>
+      </div>` : ''}
       <h2 class="section-title" style="margin-top:0">Recent attempts</h2>
       <div class="history-list">${historyRows || '<div class="empty-state">No attempts yet.</div>'}</div>
       <div class="progress-actions">
@@ -1830,11 +2229,17 @@
         </div>
       </div>`;
       if (answered) {
+        const steps = q.steps && q.steps.length ? q.steps : null;
+        const stepsHtml = steps ? `<details class="worked-steps">
+          <summary>📐 Show working</summary>
+          <ol class="steps-list">${steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+        </details>` : '';
         feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
           <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
           ${!correct ? `<span>Your answer: ${escapeHtml(formatNumericValue(q, State.answered))}</span><br><span>Correct answer: ${escapeHtml(formatNumericValue(q, q.answer))}</span><br><br>` : ''}
           <em>${escapeHtml(q.exp)}</em>
         </div>
+        ${stepsHtml}
         <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
       }
     } else {
@@ -1863,6 +2268,7 @@
     }
 
     const flagged = Storage.isFlagged(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
       <div class="quiz-layout ${numeric ? 'has-calc' : ''}">
@@ -1870,6 +2276,7 @@
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
+            ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
@@ -2400,37 +2807,66 @@
           <button class="planner-edit-btn" id="editPlannerBtn" type="button">✏️ Edit</button>
         </div>`;
 
+    const lv = Math.floor(xp / 100) + 1;
+    const lvXp = xp % 100;
+    const bestCombo = Storage.data.learn.bestCombo || 0;
     const xpBar = `<div class="xp-bar-wrap" title="${xp} XP earned">
-      <span class="xp-label">⚡ ${xp} XP</span>
-      <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${Math.min(100, (xp % 100))}%"></div></div>
-      <span class="xp-level">Lv ${Math.floor(xp / 100) + 1}</span>
+      <div class="xp-bar-top">
+        <span class="xp-label">⚡ ${xp} XP</span>
+        <span class="xp-level">Level ${lv}</span>
+        ${bestCombo >= 3 ? `<span class="xp-combo-best">🔥 Best combo: ${bestCombo}</span>` : ''}
+      </div>
+      <div class="xp-bar-bg" title="${lvXp}/100 XP to next level"><div class="xp-bar-fill" style="width:${lvXp}%"></div></div>
+      <div class="xp-bar-hint">${lvXp}/100 XP to Level ${lv + 1}</div>
     </div>`;
 
-    const unitsHtml = window.LEARN_PATH.map((unit, ui) => {
+    const unitsHtml = window.LEARN_PATH.map((unit) => {
       const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
+      const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
+      const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
       let unlockedSoFar = true;
-      const lessonsHtml = unit.lessons.map((L, li) => {
+      const lessonsHtml = unit.lessons.map((L) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
         const locked = !unlockedSoFar;
         if (!done) unlockedSoFar = false;
         const starRow = [1,2,3].map(s => `<span class="journey-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
+        const skillsSnip = (L.skills||[]).slice(0,2).map(sid => { const sk = skillById(sid); return sk ? `<span class="node-skill">${sk.icon}</span>` : ''; }).join('');
+        const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
+        const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
         return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
           <div class="journey-stars">${starRow}</div>
+          <div class="journey-node-meta">
+            ${!locked ? `<span class="node-time">${timeLabel}</span>` : ''}
+            ${!locked ? `<span class="node-xp">${xpLabel}</span>` : ''}
+          </div>
+          ${skillsSnip ? `<div class="node-skills">${skillsSnip}</div>` : ''}
         </button>`;
       }).join('');
-      const unitDone = unit.lessons.every(L => isLessonDone(L.id));
+      const doneCount = unit.lessons.filter(L=>isLessonDone(L.id)).length;
+      const unitDone = doneCount === unit.lessons.length;
+      const unitTest = (Storage.data.learn.unitTests || {})[unit.unit] || null;
+      const unitQuizBtn = unitDone
+        ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
+            ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
+           </button>` : '';
+      const revBtn = `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>`;
       return `<div class="journey-unit">
         <div class="journey-unit-header">
           <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
-          <div><div class="journey-unit-title">${escapeHtml(unit.title)}</div>
-          <div class="journey-unit-sub">${unit.lessons.filter(L=>isLessonDone(L.id)).length}/${unit.lessons.length} lessons done ${unitDone ? '✓' : ''}</div></div>
+          <div class="journey-unit-info">
+            <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}</div>
+          </div>
+          ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
+          <div class="unit-action-btns">${revBtn}${unitQuizBtn}</div>
         </div>
+        <div class="journey-unit-progress-bg"><div class="journey-unit-progress" style="width:${(doneCount/unit.lessons.length*100).toFixed(0)}%"></div></div>
         <div class="journey-nodes">${lessonsHtml}</div>
       </div>`;
     }).join('');
@@ -2446,11 +2882,32 @@
       </button>
     </div>` : '<div class="journey-complete">🎉 All lessons complete! Use smart practice to keep sharp.</div>';
 
+    // Daily challenge card
+    const todayD = todayKey();
+    const dailyQ = getDailyQuestion();
+    const dailyRec = (Storage.data.daily[todayD] || {}).challenge || {};
+    const dailyDateLabel = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+    const dailyBlock = dailyQ ? `<div class="daily-challenge-card${dailyRec.done ? ' daily-done' : ''}">
+      <div class="daily-ch-left">
+        <span class="daily-icon">📅</span>
+        <div>
+          <div class="daily-title">Daily Challenge</div>
+          <div class="daily-sub">${escapeHtml(dailyDateLabel)}</div>
+        </div>
+      </div>
+      <div class="daily-ch-right">
+        ${dailyRec.done
+          ? `<span class="daily-result${dailyRec.correct ? ' daily-correct' : ' daily-wrong'}">${dailyRec.correct ? '✓ Correct!' : '✗ Answered'}</span>`
+          : `<button class="btn-primary daily-start-btn" id="dailyChallengeBtn" type="button">Start +10 XP</button>`}
+      </div>
+    </div>` : '';
+
     return `<div class="journey-header">
       ${xpBar}
       <div class="journey-meta"><span>🔥 ${streak}-day streak</span>${badgesSnip}</div>
       ${plannerBlock}
     </div>
+    ${dailyBlock}
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>`;
   }
@@ -2463,25 +2920,63 @@
     const totalCards = def.cards.length;
     const totalQ = def.check ? def.check.length : 0;
 
+    /* shared helpers */
+    const mdBold = (t) => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const dots = (total, current, cls) => Array.from({length:total}, (_,i) =>
+      `<span class="lesson-dot ${i < current ? 'done' : i === current ? 'active' : ''}" aria-hidden="true"></span>`).join('');
+    const skillChips = (def.skills||[]).map(sid => {
+      const sk = skillById(sid);
+      return sk ? `<span class="lesson-skill-chip">${sk.icon} ${escapeHtml(sk.name)}</span>` : '';
+    }).join('');
+
+    /* ── DONE screen ── */
     if (phase === 'done') {
       const starRow = [1,2,3].map(s => `<span class="lesson-star ${(stars||0) >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
-      const msg = stars === 3 ? 'Perfect score! 🏆' : stars >= 2 ? 'Great work! 👏' : stars >= 1 ? 'Good start. Try again to improve!' : 'Keep going — you need 50% to pass.';
+      const msg = stars === 3 ? 'Perfect score! 🏆' : stars >= 2 ? 'Great work! 👏' : stars >= 1 ? 'Good start — retry to earn more stars!' : 'Keep going — you need 50% to pass.';
+      const wrongIdxs = L.wrongIdxs || [];
+      const wrongReview = wrongIdxs.length > 0 ? `<div class="lesson-wrong-review">
+        <div class="lwr-title">Missed questions — review before you go:</div>
+        ${wrongIdxs.map(wi => {
+          const wq = def.check[wi];
+          return `<div class="lwr-item">
+            <p class="lwr-q">Q${wi+1}: ${escapeHtml(wq.q)}</p>
+            <p class="lwr-ans">✓ <strong>${escapeHtml(wq.opts[wq.ans])}</strong>${wq.exp ? ` — ${escapeHtml(wq.exp)}` : ''}</p>
+          </div>`;
+        }).join('')}
+      </div>` : (stars === 3 ? `<div class="lesson-perfect">All correct — outstanding! ⚡</div>` : '');
       return `<div class="container">
-        <button class="back-btn" id="lessonExitBtn" type="button">← Back to journey</button>
         <div class="lesson-done fade-in">
+          <div class="lesson-done-title">${escapeHtml(def.title)}</div>
           <div class="lesson-done-stars">${starRow}</div>
           <div class="lesson-done-pct">${pct}%</div>
           <div class="lesson-done-msg">${msg}</div>
-          <div class="lesson-done-xp">+${qScore * 2} XP earned this lesson</div>
+          <div class="lesson-done-xp">⚡ +${qScore * 2} XP earned</div>
+          ${wrongReview}
           <div class="lesson-done-btns">
             ${stars < 3 && totalQ > 0 ? `<button class="btn-primary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
-            <button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills && def.skills[0] || '')}">🎯 Drill these skills</button>
+            ${(def.skills||[]).length > 0 ? `<button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills[0]||'')}">🎯 Drill these questions</button>` : ''}
             <button class="btn-secondary" id="lessonExitBtn2" type="button">🗺️ Back to journey</button>
           </div>
         </div>
       </div>`;
     }
 
+    /* ── TRANSITION screen (between teach and quiz) ── */
+    if (phase === 'transition') {
+      return `<div class="container">
+        <button class="back-btn" id="lessonBackBtn" type="button">← Review cards</button>
+        <div class="lesson-transition fade-in">
+          <div class="lesson-transition-icon">🧪</div>
+          <h2 class="lesson-transition-h">Ready to test yourself?</h2>
+          <p class="lesson-transition-p">You've covered <strong>${totalCards}</strong> topic${totalCards===1?'':'s'} in <em>${escapeHtml(def.title)}</em>.</p>
+          <p class="lesson-transition-p">Now answer <strong>${totalQ}</strong> question${totalQ===1?'':'s'} to earn your stars. You need 50% to complete the lesson.</p>
+          ${skillChips ? `<div class="lesson-skill-chips">${skillChips}</div>` : ''}
+          <button class="btn-primary lesson-transition-btn" id="lessonContinueBtn" type="button">Start quiz →</button>
+        </div>
+      </div>`;
+    }
+
+    /* ── QUIZ phase ── */
     if (phase === 'quiz') {
       if (!def.check || !def.check.length) { finishLesson(); return ''; }
       const q = def.check[qIdx];
@@ -2494,14 +2989,18 @@
           <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
         </button>`;
       }).join('');
-      const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in">
+      const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status">
         <strong>${correct ? '✅ Correct!' : '❌ Not quite'}</strong>${q.exp ? `<br><em>${escapeHtml(q.exp)}</em>` : ''}
       </div>` : '';
       return `<div class="container">
         <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
         <div class="lesson-player slide-in">
-          <div class="lesson-phase-pill">Quiz · ${qIdx + 1} of ${totalQ}</div>
-          <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((qIdx+1)/totalQ*100).toFixed(0)}%"></div></div>
+          <div class="lesson-phase-bar">
+            <span class="lesson-phase-pill">Quiz ${qIdx + 1}/${totalQ}</span>
+            <div class="lesson-dots">${dots(totalQ, qIdx, 'quiz')}</div>
+            <span class="lesson-phase-score">⚡ ${L.qScore || 0}/${qIdx + (answered ? 1 : 0)}</span>
+          </div>
+          <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${answered ? ((qIdx+1)/totalQ*100).toFixed(0) : (qIdx/totalQ*100).toFixed(0)}%"></div></div>
           <h2 class="lesson-q">${escapeHtml(q.q)}</h2>
           <div class="options" role="radiogroup">${optHtml}</div>
           ${feedback}
@@ -2510,31 +3009,46 @@
       </div>`;
     }
 
-    /* teach phase */
+    /* ── TEACH phase ── */
     const card = def.cards[cardIdx];
-    const mdBold = (t) => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
     const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
     const exHtml = card.example ? `<div class="lesson-example">
       <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
-      <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+      <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
     </div>` : '';
     const splitHtml = card.split ? `<div class="lesson-split">
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.h)}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.h)}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+    </div>` : '';
+    const formulaHtml = card.formula ? `<div class="lesson-formula">${card.formula.split('·').map(f => `<div class="lesson-formula-line">${escapeHtml(f.trim())}</div>`).join('')}</div>` : '';
+    const calloutKind = card.callout ? (card.callout.kind || 'tip') : '';
+    const calloutHtml = card.callout ? `<div class="lesson-callout callout-${escapeHtml(calloutKind)}">
+      <span class="callout-icon">${calloutKind === 'warning' ? '⚠️' : calloutKind === 'key' ? '🔑' : '💡'}</span>
+      <span class="callout-text">${mdBold(card.callout.text)}</span>
+    </div>` : '';
+    const examtrapHtml = card.examtrap ? `<div class="lesson-examtrap">
+      <span class="examtrap-icon">⚠️</span>
+      <div class="examtrap-body">
+        <div class="examtrap-label">EXAM TRAP</div>
+        <div class="examtrap-text">${mdBold(card.examtrap)}</div>
+      </div>
     </div>` : '';
     return `<div class="container">
       <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
       <div class="lesson-player slide-in">
-        <div class="lesson-phase-pill">Learn · ${cardIdx + 1} of ${totalCards}</div>
+        <div class="lesson-phase-bar">
+          <span class="lesson-phase-pill">Learn ${cardIdx + 1}/${totalCards}</span>
+          <div class="lesson-dots">${dots(totalCards, cardIdx, 'teach')}</div>
+        </div>
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
-          ${paraHtml}${flowHtml}${exHtml}${splitHtml}
+          ${paraHtml}${flowHtml}${formulaHtml}${exHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
-          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Take quiz →' : 'Continue →'}</button>
+          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Check understanding →' : 'Continue →'}</button>
         </div>
       </div>
     </div>`;
@@ -2546,35 +3060,76 @@
     if (!F) { goLearn(); return ''; }
     const done = F.idx >= F.terms.length;
     if (done) {
+      const pct = F.terms.length ? Math.round(F.got / F.terms.length * 100) : 0;
+      const stars = pct >= 90 ? 3 : pct >= 60 ? 2 : 1;
+      const starRow = [1,2,3].map(s => `<span class="lesson-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
       return `<div class="container">
-        <button class="back-btn" id="flashExitBtn" type="button">← Back to journey</button>
         <div class="flash-done fade-in">
           <div class="flash-done-icon">🃏</div>
           <h2>Session complete!</h2>
-          <p>You reviewed ${F.terms.length} card${F.terms.length===1?'':'s'} — ${F.got} correct.</p>
-          <button class="btn-primary" id="flashExitBtn2" type="button">🗺️ Back to journey</button>
+          <div class="lesson-done-stars" style="justify-content:center;margin-bottom:8px">${starRow}</div>
+          <p>You remembered <strong>${F.got}</strong> of ${F.terms.length} card${F.terms.length===1?'':'s'} (${pct}%).</p>
+          <p style="font-size:.85rem;color:var(--subtext)">Cards you missed are due again sooner — keep reviewing to move them up the Leitner ladder.</p>
+          <button class="btn-primary" style="margin-top:20px" id="flashExitBtn2" type="button">🗺️ Back to journey</button>
         </div>
       </div>`;
     }
     const term = F.terms[F.idx];
-    const glossItem = window.GLOSSARY.find(g => g.term === term) || { term, def: '—' };
+    const glossItem = window.GLOSSARY.find(g => g.term === term) || { term, def: '—', topic: null };
+    const topicObj = glossItem.topic ? window.TOPICS.find(t => t.id === glossItem.topic) : null;
+    const topicTag = topicObj ? `<span class="flash-topic-tag">${topicObj.icon} ${escapeHtml(topicObj.short)}</span>` : '';
+    const progressPct = ((F.idx) / F.terms.length * 100).toFixed(0);
     return `<div class="container">
       <button class="back-btn" id="flashExitBtn" type="button">← Back to journey</button>
       <div class="flash-player">
-        <div class="flash-progress">${F.idx + 1} / ${F.terms.length}</div>
-        <div class="flash-card ${F.flipped ? 'flipped' : ''}">
+        <div class="flash-header">
+          <div class="flash-progress-wrap">
+            <span class="flash-progress-txt">${F.idx + 1} / ${F.terms.length}</span>
+            <div class="flash-progress-bar-bg"><div class="flash-progress-bar-fill" style="width:${progressPct}%"></div></div>
+          </div>
+          <span class="flash-got">✓ ${F.got} remembered</span>
+        </div>
+        <div class="flash-card ${F.flipped ? 'flipped' : ''}" id="flashFlipBtn">
           ${!F.flipped
-            ? `<div class="flash-front"><span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-hint">Tap to reveal definition</p></div>`
-            : `<div class="flash-back"><span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-def">${escapeHtml(glossItem.def)}</p></div>`
+            ? `<div class="flash-front">${topicTag}<span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-hint">Tap to reveal definition</p></div>`
+            : `<div class="flash-back">${topicTag}<span class="flash-term">${escapeHtml(glossItem.term)}</span><p class="flash-def">${escapeHtml(glossItem.def)}</p></div>`
           }
         </div>
         ${!F.flipped
-          ? `<button class="btn-primary flash-flip-btn" id="flashFlipBtn" type="button">Flip card ↩</button>`
+          ? `<button class="btn-secondary flash-flip-btn-btn" id="flashFlipBtn2" type="button">Flip card ↩</button>`
           : `<div class="flash-grade-btns">
               <button class="flash-btn-no" id="flashNoBtn" type="button">😕 Need more practice</button>
               <button class="flash-btn-yes" id="flashYesBtn" type="button">✅ Got it!</button>
             </div>`
         }
+      </div>
+    </div>`;
+  }
+
+  /* ── REVISION NOTES SCREEN ── */
+  function renderRevision() {
+    const rev = UNIT_REVISION.find(r => r.unit === State.revisionUnit);
+    if (!rev) { goLearn(); return ''; }
+    const sectionsHtml = rev.sections.map(s => `
+      <div class="rev-section">
+        <h3 class="rev-section-title">${escapeHtml(s.heading)}</h3>
+        <ul class="rev-list">${s.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      </div>`).join('');
+    const trapsHtml = rev.traps.map(t => `<div class="rev-trap-item">⚠️ ${escapeHtml(t)}</div>`).join('');
+    return `<div class="container revision-screen fade-in">
+      <div class="revision-header">
+        <button class="back-btn" id="revisionExitBtn" type="button">← Back to journey</button>
+        <h2 class="revision-title">${escapeHtml(rev.icon)} ${escapeHtml(rev.title)} — Revision Notes</h2>
+      </div>
+      <div class="revision-intro">Key rules, formulas and traps — everything you need the night before the exam.</div>
+      ${sectionsHtml}
+      <div class="rev-traps-block">
+        <div class="rev-traps-title">Common Exam Traps</div>
+        ${trapsHtml}
+      </div>
+      <div class="revision-footer-btns">
+        <button class="btn-secondary" id="revisionExitBtn2" type="button">← Back to journey</button>
+        <button class="btn-primary" id="revisionQuizBtn" data-unit-quiz="${escapeHtml(rev.unit)}" type="button">📋 Take the unit quiz →</button>
       </div>
     </div>`;
   }
@@ -2758,6 +3313,17 @@
     // Smart practice & flashcards
     bind('smartPracticeBtn', 'click', startSmartPractice);
     bind('flashcardsBtn', 'click', startFlashcards);
+    // Daily challenge
+    bind('dailyChallengeBtn', 'click', startDailyChallenge);
+    // Unit quiz buttons
+    document.querySelectorAll('[data-unit-quiz]').forEach(el => el.addEventListener('click', () => startUnitQuiz(el.dataset.unitQuiz)));
+    // Unit revision notes buttons
+    document.querySelectorAll('[data-unit-rev]').forEach(el => el.addEventListener('click', () => startRevision(el.dataset.unitRev)));
+    // Revision screen exit
+    bind('revisionExitBtn', 'click', goLearn);
+    bind('revisionExitBtn2', 'click', goLearn);
+    // Skill map drill buttons
+    document.querySelectorAll('[data-start-skill]').forEach(el => el.addEventListener('click', () => startPractice('skill:' + el.dataset.startSkill)));
     // Hint button
     bind('hintBtn', 'click', useHint);
     // Skill debrief buttons (score screen)
@@ -2780,6 +3346,7 @@
     bind('flashExitBtn', 'click', goLearn);
     bind('flashExitBtn2', 'click', goLearn);
     bind('flashFlipBtn', 'click', flashFlip);
+    bind('flashFlipBtn2', 'click', flashFlip);
     bind('flashYesBtn', 'click', () => flashGrade(true));
     bind('flashNoBtn', 'click', () => flashGrade(false));
     // Study planner
@@ -2791,6 +3358,24 @@
     bind('taExitBtn', 'click', exitTaExercise);
     bind('taExitBtn2', 'click', exitTaExercise);
     bind('taCheckBtn', 'click', checkTaExercise);
+    // Swipe support for lesson player
+    if (State.screen === 'lesson') {
+      const lessonEl = document.querySelector('.lesson-player');
+      if (lessonEl) {
+        let swipeStartX = 0, swipeStartY = 0;
+        lessonEl.addEventListener('touchstart', (e) => {
+          swipeStartX = e.touches[0].clientX;
+          swipeStartY = e.touches[0].clientY;
+        }, { passive: true });
+        lessonEl.addEventListener('touchend', (e) => {
+          const dx = e.changedTouches[0].clientX - swipeStartX;
+          const dy = e.changedTouches[0].clientY - swipeStartY;
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            if (dx < 0) lessonContinue(); else lessonBack();
+          }
+        }, { passive: true });
+      }
+    }
   }
   function bind(id, ev, fn) { const el = document.getElementById(id); if (el) el.addEventListener(ev, fn); }
 
