@@ -2131,7 +2131,39 @@
       </button>`;
     }).join('');
 
-    return `${sessionBanner}${progressBlock}
+    const planner = Storage.data.planner || {};
+    const examDateVal = planner.examDate || null;
+    const todayMid = new Date(); todayMid.setHours(0,0,0,0);
+    const todayStr = todayMid.toISOString().slice(0, 10);
+    let countdownHtml = '';
+    if (examDateVal) {
+      const examD = new Date(examDateVal); examD.setHours(0,0,0,0);
+      const daysLeft = Math.max(0, Math.round((examD - todayMid) / 86400000));
+      const dailyTarget = daysLeft > 0 ? Math.max(10, Math.ceil(Math.max(0, 300 - (Storage.data.history || []).reduce((s,h) => s + h.total, 0)) / daysLeft)) : null;
+      const urgCls = daysLeft <= 7 ? ' countdown-urgent' : daysLeft <= 30 ? ' countdown-soon' : '';
+      countdownHtml = `<div class="exam-countdown${urgCls}">
+        <span class="countdown-icon">${daysLeft === 0 ? '🎓' : '📅'}</span>
+        <div class="countdown-text">
+          <strong>${daysLeft === 0 ? 'Exam day — good luck!' : daysLeft + ' days to your exam'}</strong>
+          ${dailyTarget && daysLeft > 0 ? `<span class="countdown-target"> · aim for ${dailyTarget}+ questions today</span>` : ''}
+        </div>
+        <label class="countdown-edit-wrap" title="Change exam date">
+          <span class="countdown-edit">Edit date</span>
+          <input type="date" id="examDateInput" class="exam-date-hidden" value="${examDateVal}" min="${todayStr}">
+        </label>
+      </div>`;
+    } else {
+      countdownHtml = `<div class="exam-countdown exam-countdown-empty">
+        <span class="countdown-icon">📅</span>
+        <span class="countdown-text">Set your exam date to get a personalised daily question target</span>
+        <label class="countdown-set-wrap" title="Set exam date">
+          <span class="countdown-set">Set date →</span>
+          <input type="date" id="examDateInput" class="exam-date-hidden" min="${todayStr}">
+        </label>
+      </div>`;
+    }
+
+    return `${sessionBanner}${progressBlock}${countdownHtml}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
@@ -2305,6 +2337,21 @@
         <div class="skill-map-title">Skill map <span class="skill-map-legend"><span class="sml sml-green"></span>70%+ <span class="sml sml-amber"></span>50–69% <span class="sml sml-red"></span>&lt;50% <span class="sml sml-gray"></span>no data</span></div>
         <div class="skill-map-grid">${skillMapHtml}</div>
       </div>` : ''}
+      ${history.length >= 2 ? (() => {
+        const recent = history.slice(-10);
+        const delta = recent.length >= 2 ? recent[recent.length - 1].pct - recent[recent.length - 2].pct : null;
+        const trendHtml = delta !== null ? `<span class="spark-trend spark-${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '↗' : '↘'} ${Math.abs(delta)}% vs prev</span>` : '';
+        return `<div class="session-sparkline">
+          <div class="spark-header"><span class="spark-title">Session history</span>${trendHtml}</div>
+          <div class="spark-bars">
+            ${recent.map(h => `<div class="spark-col">
+              <div class="spark-bar-bg"><div class="spark-bar spark-${scoreClass(h.pct)}" style="height:${h.pct}%"></div></div>
+              <div class="spark-pct spark-${scoreClass(h.pct)}">${h.pct}%</div>
+              <div class="spark-icon">${h.mode === 'mock' ? '⏱' : '📝'}</div>
+            </div>`).join('')}
+          </div>
+        </div>`;
+      })() : ''}
       <h2 class="section-title" style="margin-top:0">Recent attempts</h2>
       <div class="history-list">${historyRows || '<div class="empty-state">No attempts yet.</div>'}</div>
       <div class="progress-actions">
@@ -2951,6 +2998,10 @@
           </div>
           ${r.correct ? `<span style="color:var(--correct-text)">✅ ${escapeHtml(r.chosen)}</span>` : `<span class="your-ans">✗ Your answer: ${escapeHtml(r.chosen)}</span><br><span class="correct-ans">✓ Correct: ${escapeHtml(r.correctOpt)}</span>`}
           <div class="exp-text">${escapeHtml(r.exp)}</div>
+          ${r.steps && r.steps.length ? `<details class="worked-steps">
+            <summary>📐 Show working</summary>
+            <ol class="steps-list">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+          </details>` : ''}
         </div>`;
       }).join('') : '<div class="empty-state">🎉 No incorrect answers to review.</div>'}
     </div>` : '';
@@ -3594,6 +3645,11 @@
     bind('smartPracticeBtn', 'click', startSmartPractice);
     bind('flashcardsBtn', 'click', startFlashcards);
     bind('focusModeBtn', 'click', startFocusPractice);
+    bind('examDateInput', 'change', function (e) {
+      Storage.data.planner = Storage.data.planner || {};
+      Storage.data.planner.examDate = e.target.value || null;
+      Storage.save(); render();
+    });
     // Daily challenge
     bind('dailyChallengeBtn', 'click', startDailyChallenge);
     // Unit quiz buttons
