@@ -3129,6 +3129,67 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 .lesson-done-xp { font-size: .85rem; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
 .lesson-done-btns { display: flex; flex-direction: column; gap: 10px; }
 
+/* ── Exam weight chip on unit header ── */
+.unit-exam-weight {
+  font-size: .68rem;
+  color: var(--accent);
+  font-weight: 600;
+  opacity: .8;
+}
+
+/* ── Question count on lesson node ── */
+.node-qcount {
+  font-size: .62rem;
+  color: var(--subtext);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ── Lesson drill panel (completion screen) ── */
+.lesson-drill-panel {
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  margin: 18px 0;
+  text-align: left;
+}
+.drill-panel-title {
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 12px;
+}
+.drill-skill-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.drill-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.drill-skill-name {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  min-width: 140px;
+}
+.drill-skill-meta {
+  font-size: .72rem;
+  color: var(--subtext);
+}
+.drill-skill-acc {
+  font-size: .78rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+}
+.drill-skill-acc.great { background: rgba(22,163,74,.12); color: #16a34a; }
+.drill-skill-acc.ok    { background: rgba(245,158,11,.12); color: #d97706; }
+.drill-skill-acc.low   { background: rgba(220,38,38,.12); color: #dc2626; }
+.drill-skill-acc-na { font-size: .72rem; color: var(--subtext); font-style: italic; }
+.lesson-drill-all { width: 100%; }
+
 /* ═══════════════════════════════════════════════════════════
    FLASHCARD SCREEN
    ═══════════════════════════════════════════════════════════ */

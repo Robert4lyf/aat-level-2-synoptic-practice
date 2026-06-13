@@ -321,6 +321,8 @@
     },
   ];
 
+  const UNIT_EXAM_WEIGHT = { itbk: 40, pobc: 30, poc: 15, besy: 15 };
+
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -1197,6 +1199,21 @@
       hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); saveSession(); render();
+  }
+
+  function startMultiSkillDrill(skillsCsv) {
+    const skills = (skillsCsv || '').split(',').map(s => s.trim()).filter(Boolean);
+    const pool = (window.ALL_QUESTIONS || []).filter(q => skills.includes(q.skill));
+    if (!pool.length) return;
+    const picked = shuffle(pool.slice()).slice(0, Math.min(10, pool.length)).map(presentQuestion);
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
+      questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      hintLevel: 0, hintElim: null, combo: 0,
+    });
+    render();
   }
 
   /* Progressive hints (practice mode): level 1 = skill strategy, level 2 = formula or 50/50-style elimination */
@@ -3092,6 +3109,11 @@
       <div class="xp-bar-hint">${lvXp}/100 XP to Level ${lv + 1}</div>
     </div>`;
 
+    const skillQCount = {};
+    (window.ALL_QUESTIONS || []).forEach(q => {
+      if (q.skill) skillQCount[q.skill] = (skillQCount[q.skill] || 0) + 1;
+    });
+
     const unitsHtml = window.LEARN_PATH.map((unit) => {
       const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
       const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
@@ -3107,6 +3129,7 @@
         const skillsSnip = (L.skills||[]).slice(0,2).map(sid => { const sk = skillById(sid); return sk ? `<span class="node-skill">${sk.icon}</span>` : ''; }).join('');
         const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
         const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
+        const nodeQCount = (L.skills || []).reduce((sum, sid) => sum + (skillQCount[sid] || 0), 0);
         const l3Badge = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : '';
         return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
@@ -3120,6 +3143,7 @@
             ${!locked ? `<span class="node-xp">${xpLabel}</span>` : ''}
           </div>
           ${skillsSnip ? `<div class="node-skills">${skillsSnip}</div>` : ''}
+          ${nodeQCount > 0 && !locked ? `<span class="node-qcount">${nodeQCount}Q</span>` : ''}
         </button>`;
       }).join('');
       const doneCount = unit.lessons.filter(L=>isLessonDone(L.id)).length;
@@ -3135,7 +3159,7 @@
           <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
-            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'} <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit] || 25}% of synoptic</span></div>
           </div>
           ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
           <div class="unit-action-btns">${revBtn}${unitQuizBtn}</div>
@@ -3275,6 +3299,40 @@
           </div>`;
         }).join('')}
       </div>` : (stars === 3 ? `<div class="lesson-perfect">All correct — outstanding! ⚡</div>` : '');
+      const TYPE_LABELS = { mcq: 'MCQ', numeric: 'Numeric', scenario: 'Scenario', dragdrop: 'Match', tablefill: 'Table', gapfill: 'Gap fill' };
+      const lessonSkills = def.skills || [];
+      const allSkillQs = (window.ALL_QUESTIONS || []).filter(q => lessonSkills.includes(q.skill));
+      const skillAccMap = {};
+      (window.ALL_QUESTIONS || []).forEach(q => {
+        if (!q.skill) return;
+        const s = Storage.data.stats.questions[q.id];
+        if (!s || !s.attempts) return;
+        if (!skillAccMap[q.skill]) skillAccMap[q.skill] = { attempts: 0, correct: 0 };
+        skillAccMap[q.skill].attempts += s.attempts;
+        skillAccMap[q.skill].correct += s.correct;
+      });
+      const skillRows = lessonSkills.map(sid => {
+        const sk = skillById(sid);
+        if (!sk) return '';
+        const qs = (window.ALL_QUESTIONS || []).filter(q => q.skill === sid);
+        const types = [...new Set(qs.map(q => TYPE_LABELS[q.type] || 'MCQ'))];
+        const sa = skillAccMap[sid] || { attempts: 0, correct: 0 };
+        const acc = sa.attempts >= 3 ? Math.round(sa.correct / sa.attempts * 100) : null;
+        return `<div class="drill-skill-row">
+          <span class="drill-skill-name">${sk.icon} ${escapeHtml(sk.name)}</span>
+          <span class="drill-skill-meta">${qs.length} Q · ${escapeHtml(types.join(', '))}</span>
+          ${acc !== null ? `<span class="drill-skill-acc ${scoreClass(acc)}">${acc}%</span>` : '<span class="drill-skill-acc-na">Not yet attempted</span>'}
+        </div>`;
+      }).join('');
+      const allLessons = (window.LEARN_PATH || []).flatMap(u => u.lessons);
+      const curIdx = allLessons.findIndex(l => l.id === def.id);
+      const nextL = curIdx >= 0 && curIdx + 1 < allLessons.length ? allLessons[curIdx + 1] : null;
+      const drillPanel = allSkillQs.length > 0 ? `<div class="lesson-drill-panel">
+        <div class="drill-panel-title">🎯 Practice what you just learned</div>
+        <div class="drill-skill-list">${skillRows}</div>
+        <button class="btn-primary lesson-drill-all" id="lessonDrillAllBtn" type="button"
+          data-skills="${escapeHtml(lessonSkills.join(','))}">Start ${Math.min(10, allSkillQs.length)}-question drill →</button>
+      </div>` : '';
       return `<div class="container">
         <div class="lesson-done fade-in">
           <div class="lesson-done-title">${escapeHtml(def.title)}</div>
@@ -3283,9 +3341,10 @@
           <div class="lesson-done-msg">${msg}</div>
           <div class="lesson-done-xp">⚡ +${qScore * 2} XP earned</div>
           ${wrongReview}
+          ${drillPanel}
           <div class="lesson-done-btns">
-            ${stars < 3 && totalQ > 0 ? `<button class="btn-primary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
-            ${(def.skills||[]).length > 0 ? `<button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills[0]||'')}">🎯 Drill these questions</button>` : ''}
+            ${stars < 3 && totalQ > 0 ? `<button class="btn-secondary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
+            ${nextL && !nextL.l3Bridge ? `<button class="btn-primary" id="lessonNextBtn" type="button" data-lesson="${escapeHtml(nextL.id)}">${escapeHtml(nextL.icon)} Next: ${escapeHtml(nextL.title)} →</button>` : ''}
             <button class="btn-secondary" id="lessonExitBtn2" type="button">🗺️ Back to journey</button>
           </div>
         </div>
@@ -3649,6 +3708,10 @@
       Storage.data.planner = Storage.data.planner || {};
       Storage.data.planner.examDate = e.target.value || null;
       Storage.save(); render();
+    });
+    bind('lessonDrillAllBtn', 'click', function () {
+      const btn = document.getElementById('lessonDrillAllBtn');
+      if (btn && btn.dataset.skills) startMultiSkillDrill(btn.dataset.skills);
     });
     // Daily challenge
     bind('dailyChallengeBtn', 'click', startDailyChallenge);
