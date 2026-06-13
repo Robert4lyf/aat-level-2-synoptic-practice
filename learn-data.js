@@ -981,6 +981,221 @@ window.LEARN_PATH = [
           },
         ],
       },
+      {
+        id: 'L-itbk-11',
+        title: 'Accruals and prepayments',
+        icon: '⏱️',
+        skills: ['itbk-adjust'],
+        cards: [
+          {
+            h: 'The accruals concept in action',
+            p: [
+              'Income and expenses must be recognised in the period they relate to — not when cash moves. This is the **accruals (matching) concept**, one of the fundamental accounting principles.',
+              'At year end, we must make adjustments so that the financial statements reflect what has genuinely been earned or incurred during the period — regardless of whether cash has been received or paid.',
+              'Two key adjustments arise: an **accrual** (expense incurred but not yet paid — e.g. an electricity bill not yet received) and a **prepayment** (expense paid in advance, benefit not yet received — e.g. insurance paid for future months).',
+            ],
+          },
+          {
+            h: 'Recording an accrual',
+            p: [
+              'An accrual arises when an expense has been incurred in the period but no invoice or payment has yet been processed. We must add the amount to the expense account and create a corresponding current liability.',
+            ],
+            formula: 'Accrual entry: Dr Expense account, Cr Accruals (liability)·Effect: increases expense on income statement, creates current liability on SFP·Reversal at start of next year: Dr Accruals, Cr Expense',
+            example: {
+              title: 'Accrual example',
+              rows: [
+                ['Scenario', 'Electricity bill £400 for Dec not yet received'],
+                ['Adjustment (31 Dec)', 'Dr Electricity £400 / Cr Accruals £400'],
+                ['Effect', 'Adds £400 to expense this year; creates £400 liability'],
+              ],
+            },
+          },
+          {
+            h: 'Recording a prepayment',
+            p: [
+              'A prepayment arises when a business has paid in advance for a benefit that extends beyond the current accounting period. The portion relating to future periods must be removed from the expense account and shown as a current asset.',
+            ],
+            formula: 'Prepayment entry: Dr Prepayments (asset), Cr Expense·Effect: reduces expense on income statement, creates current asset on SFP·Amount remaining = months paid × monthly rate',
+            example: {
+              title: 'Prepayment example',
+              rows: [
+                ['Scenario', 'Insurance £1,200 paid 1 Oct, covering 12 months'],
+                ['At 31 Dec (3 months used)', 'Expense = 3/12 × £1,200 = £300'],
+                ['Prepayment (asset)', '9/12 × £1,200 = £900'],
+                ['Adjustment', 'Dr Prepayments £900 / Cr Insurance £900'],
+              ],
+            },
+          },
+          {
+            h: 'Adjusting the trial balance',
+            p: [
+              'The trial balance shows balances before adjustments. After calculating accruals and prepayments, we adjust the relevant expense accounts. The adjusted figures go into the income statement (profit and loss account).',
+            ],
+            split: {
+              left: {
+                title: 'Accruals increase expenses',
+                items: [
+                  'Add accrual to the expense balance',
+                  'Create a liability in current liabilities',
+                  'Example: Rent accrued £500 → Dr Rent £500, Cr Accruals £500',
+                ],
+              },
+              right: {
+                title: 'Prepayments reduce expenses',
+                items: [
+                  'Deduct prepayment from the expense balance',
+                  'Create an asset in current assets',
+                  'Example: Insurance prepaid £200 → Dr Prepayments £200, Cr Insurance £200',
+                ],
+              },
+            },
+          },
+          {
+            h: 'Accrued income and deferred income',
+            p: [
+              'Accrued income is income earned but not yet received (e.g. rent receivable owed at year end): Dr Accrued income (asset), Cr Income.',
+              'Deferred income is cash received for income not yet earned (e.g. a subscription received in advance): Dr Income, Cr Deferred income (liability).',
+            ],
+            callout: { kind: 'key', text: 'The accruals concept ensures that financial statements show economic reality — not just cash movements.' },
+          },
+        ],
+        check: [
+          {
+            q: 'A business receives an electricity bill for £600 relating to December but does not pay it until January. What is the correct adjustment at 31 December?',
+            opts: ['No adjustment needed — pay in January', 'Dr Electricity £600; Cr Accruals £600', 'Dr Accruals £600; Cr Electricity £600', 'Dr Bank £600; Cr Electricity £600'],
+            ans: 1,
+            exp: 'An expense incurred but not yet paid is an accrual. Debit the expense account to recognise the cost; credit the accruals liability.',
+          },
+          {
+            q: 'A business pays £2,400 for rent on 1 October, covering the next 12 months. At 31 December (3 months later) what is the prepayment?',
+            opts: ['£600', '£1,800', '£2,400', '£200'],
+            ans: 1,
+            exp: '3 months used (Oct–Dec); 9 months remain. Prepayment = 9/12 × £2,400 = £1,800.',
+          },
+          {
+            q: 'A prepayment appears in the statement of financial position as:',
+            opts: ['A current liability', 'A non-current asset', 'A current asset', 'Capital'],
+            ans: 2,
+            exp: 'A prepayment is money paid in advance — it is a benefit still to be received, so it is a current asset.',
+          },
+          {
+            q: 'Which accounting concept requires accruals and prepayments?',
+            opts: ['The going concern concept', 'The accruals (matching) concept', 'The consistency concept', 'The prudence concept'],
+            ans: 1,
+            exp: 'The accruals (matching) concept requires income and expenses to be recognised in the period they relate to, not when cash is received or paid.',
+          },
+          {
+            q: 'Rent of £1,200 is received on 1 December for the next 3 months. At 31 December, the deferred income balance is:',
+            opts: ['£400', '£800', '£1,200', '£600'],
+            ans: 1,
+            exp: '1 month used (December); 2 months still deferred. Deferred income = 2/3 × £1,200 = £800.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-12',
+        title: 'The Statement of Financial Position',
+        icon: '📋',
+        skills: ['itbk-tb', 'itbk-adjust'],
+        cards: [
+          {
+            h: 'What the SFP tells you',
+            p: [
+              'The statement of financial position (SFP, formerly the balance sheet) shows what a business owns (assets), what it owes (liabilities), and how it is funded (capital/equity) at a specific point in time.',
+              'It is a snapshot, not a period summary. The accounting equation that underpins it: **Assets = Capital + Liabilities**.',
+            ],
+            flow: ['Non-current assets', 'Current assets', 'TOTAL ASSETS', 'Capital', 'Non-current liabilities', 'Current liabilities', 'TOTAL CAPITAL + LIABILITIES'],
+          },
+          {
+            h: 'Non-current assets',
+            p: [
+              'Non-current assets (also called fixed assets) are resources owned for more than one year and used in the business — not for resale. They are shown at **carrying value** (cost less accumulated depreciation).',
+            ],
+            example: {
+              title: 'Non-current assets section',
+              rows: [
+                ['Asset', 'Cost', 'Acc. Dep\'n', 'Carrying value'],
+                ['Premises', '£50,000', '—', '£50,000'],
+                ['Motor vehicles', '£18,000', '£6,000', '£12,000'],
+                ['Equipment', '£8,000', '£3,200', '£4,800'],
+                ['Total NCAs', '', '', '£66,800'],
+              ],
+            },
+          },
+          {
+            h: 'Current assets and liabilities',
+            p: [
+              'Current assets are assets that will convert to cash within 12 months: inventory (stock), trade receivables, prepayments, and bank/cash. Current liabilities are amounts due for payment within 12 months: trade payables, accruals, bank overdraft, and VAT payable.',
+            ],
+            split: {
+              left: {
+                title: 'Current assets',
+                items: ['Inventory (closing stock)', 'Trade receivables', 'Prepayments', 'Bank / cash'],
+              },
+              right: {
+                title: 'Current liabilities',
+                items: ['Trade payables', 'Accruals', 'Bank overdraft', 'VAT payable'],
+              },
+            },
+          },
+          {
+            h: 'The capital section',
+            p: [
+              'For a sole trader, the capital section shows: opening capital + profit for the year + capital introduced − drawings = closing capital.',
+            ],
+            example: {
+              title: 'Capital section',
+              rows: [
+                ['Opening capital', '£28,400'],
+                ['Add: Profit for the year', '£11,600'],
+                ['Add: Capital introduced', '£5,000'],
+                ['Less: Drawings', '(£4,200)'],
+                ['Closing capital', '£40,800'],
+              ],
+            },
+          },
+          {
+            h: 'Putting it all together',
+            p: [
+              'The SFP always balances because Assets = Capital + Liabilities.',
+            ],
+            callout: { kind: 'key', text: 'Total assets must always equal total capital + liabilities. If they do not agree, there is an error somewhere.' },
+            examtrap: 'Bank OVERDRAFT is a current LIABILITY (credit balance in bank account), not an asset. Check which side the bank balance sits on before placing it.',
+          },
+        ],
+        check: [
+          {
+            q: 'Which of the following is a non-current asset?',
+            opts: ['Trade receivables', 'Closing inventory', 'A delivery van used in the business', 'Cash in the till'],
+            ans: 2,
+            exp: 'A delivery van used in the business for more than one year is a non-current (fixed) asset. Trade receivables and inventory are current assets.',
+          },
+          {
+            q: 'A business has a bank overdraft of £1,500. Where does this appear on the SFP?',
+            opts: ['Current assets', 'Non-current assets', 'Current liabilities', 'Capital'],
+            ans: 2,
+            exp: 'A bank overdraft is money owed to the bank — it is a current liability, not an asset.',
+          },
+          {
+            q: 'Net assets (net worth) of a business equals:',
+            opts: ['Total assets only', 'Total assets minus total liabilities', 'Capital minus drawings', 'Non-current assets only'],
+            ans: 1,
+            exp: 'Net assets = Total assets − Total liabilities. By the accounting equation, this equals the owner\'s capital (equity).',
+          },
+          {
+            q: 'A carrying value of £12,000 for a motor vehicle means:',
+            opts: ['The vehicle cost £12,000', 'The vehicle is worth £12,000 on the open market', 'Cost minus accumulated depreciation equals £12,000', 'The vehicle was bought this year for £12,000'],
+            ans: 2,
+            exp: 'Carrying value = Cost − Accumulated depreciation. It reflects the net book value, not the market value.',
+          },
+          {
+            q: 'Prepayments appear in the SFP as:',
+            opts: ['A non-current asset', 'A current asset', 'A current liability', 'Part of capital'],
+            ans: 1,
+            exp: 'Prepayments are amounts paid in advance for a benefit still to be received — they are current assets.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -1892,6 +2107,202 @@ window.LEARN_PATH = [
             opts: ['Credit sales invoices', 'Irrecoverable debts', 'Purchases from credit suppliers', 'Discounts allowed to customers'],
             ans: 2,
             exp: 'Purchases from credit suppliers go through the PLCA, not the SLCA. The SLCA only contains transactions affecting amounts owed BY customers.',
+          },
+        ],
+      },
+      {
+        id: 'L-pobc-11',
+        title: 'Journal entries — corrections and non-routine items',
+        icon: '📓',
+        skills: ['pobc-errors', 'pobc-susp'],
+        cards: [
+          {
+            h: 'What the journal is used for',
+            p: [
+              'The journal (or general journal) records transactions that do not belong in any other book of prime entry: opening entries, year-end adjustments (accruals, depreciation, bad debts), correction of errors, and writing off irrecoverable debts.',
+              'Every journal entry has a debit and a credit and must include a **narrative** explaining the reason.',
+            ],
+            flow: ['Identify the error or non-routine item', 'Determine the correct double entry', 'Write the journal entry with a narrative', 'Post to the relevant ledger accounts'],
+          },
+          {
+            h: 'Structure of a journal entry',
+            p: [
+              'A journal entry always shows: Date, Account debited (with amount), Account credited (with amount), and a Narrative.',
+            ],
+            example: {
+              title: 'Journal entry format',
+              rows: [
+                ['Date', 'Account', 'Dr £', 'Cr £'],
+                ['31 Mar', 'Electricity expense', '600', ''],
+                ['', 'Accruals', '', '600'],
+                ['', 'Accrual of Dec electricity bill', '', ''],
+              ],
+            },
+          },
+          {
+            h: 'Correcting errors using the journal',
+            p: [
+              'When an error is discovered that caused the trial balance to not balance, a suspense account is opened. The journal is used to clear the suspense account.',
+              'When an error is found that did not affect the TB balance, the journal corrects it by reversing the wrong entry and posting the correct one.',
+            ],
+            example: {
+              title: 'Error correction examples',
+              rows: [
+                ['Error type', 'Journal correction'],
+                ['Error of omission (both sides missing)', 'Dr correct account / Cr correct account'],
+                ['Error of commission (wrong account)', 'Dr correct account / Cr wrong account (reverse)'],
+                ['Error of principle (wrong type)', 'Dr correct account / Cr wrong account (reverse)'],
+                ['Reversal error', 'Double the correct amount on both sides'],
+              ],
+            },
+          },
+          {
+            h: 'Clearing a suspense account',
+            p: [
+              'A suspense account is opened when the trial balance does not balance. It holds the difference temporarily. Once the error(s) are found, the journal clears the suspense account. The suspense account balance must reach zero.',
+            ],
+            example: {
+              title: 'Suspense account clearance',
+              rows: [
+                ['Opening suspense balance (Dr)', '£400', ''],
+                ['Error found: Cr side £400 understated', '', ''],
+                ['Journal: Dr Creditors £400 / Cr Suspense £400', '', '£400'],
+                ['Closing suspense balance', '£0', ''],
+              ],
+            },
+          },
+          {
+            h: 'Non-routine journal entries',
+            p: [
+              'The journal is also used for: depreciation charges (Dr Depreciation expense, Cr Accumulated depreciation), irrecoverable (bad) debt write-offs (Dr Bad debt expense, Cr Trade receivables), and opening entries when a new set of books is started.',
+            ],
+            callout: { kind: 'warning', text: 'Every journal entry must include a narrative (description). Without one, the purpose of the entry cannot be understood — this is an exam requirement.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Which of the following would be recorded in the journal?',
+            opts: ['A credit sale of goods', 'A payment to a supplier', 'Year-end depreciation charge', 'A cash purchase'],
+            ans: 2,
+            exp: 'The journal is used for non-routine entries like depreciation. Credit sales go in the sales day book; payments go in the cash book.',
+          },
+          {
+            q: 'A £500 payment to a supplier was posted to the correct side but to the wrong supplier\'s account. What type of error is this?',
+            opts: ['Error of omission', 'Error of commission', 'Error of principle', 'Error of original entry'],
+            ans: 1,
+            exp: 'Posting to the wrong account of the same type (wrong supplier — both are trade payables) is an error of commission.',
+          },
+          {
+            q: 'The trial balance shows a debit excess of £250. A suspense account is opened. The suspense account balance is:',
+            opts: ['£250 debit', '£250 credit', 'Zero', '£500 debit'],
+            ans: 1,
+            exp: 'To make the trial balance balance, the suspense account is credited £250 (the missing credit-side amount), so it has a credit balance.',
+          },
+          {
+            q: 'Which journal entry correctly records a bad debt write-off of £300?',
+            opts: ['Dr Trade receivables £300; Cr Bank £300', 'Dr Bad debt expense £300; Cr Trade receivables £300', 'Dr Bank £300; Cr Bad debt expense £300', 'Dr Trade receivables £300; Cr Bad debt expense £300'],
+            ans: 1,
+            exp: 'Writing off a bad debt: Dr Bad debt expense (increase expenses); Cr Trade receivables (remove the asset we no longer expect to collect).',
+          },
+          {
+            q: 'A journal entry is posted to reverse an error of reversal. Sales of £800 were debited to sales and credited to trade receivables. The correction is:',
+            opts: ['Dr Trade receivables £800; Cr Sales £800', 'Dr Sales £1,600; Cr Trade receivables £1,600', 'Dr Trade receivables £1,600; Cr Sales £1,600', 'Dr Sales £800; Cr Trade receivables £800'],
+            ans: 2,
+            exp: 'The original wrong entry was Dr Sales £800 / Cr Receivables £800. To fully reverse and re-enter correctly: debit Receivables £1,600 and credit Sales £1,600 (cancels the wrong Dr Sales and adds the correct Dr Receivables).',
+          },
+        ],
+      },
+      {
+        id: 'L-pobc-12',
+        title: 'VAT reconciliation and the VAT return',
+        icon: '🧾',
+        skills: ['itbk-vat', 'pobc-ca'],
+        cards: [
+          {
+            h: 'How VAT works in the books',
+            p: [
+              'VAT-registered businesses collect VAT on sales (**output tax**) and reclaim VAT on purchases (**input tax**). The difference is paid to (or reclaimed from) HMRC. The business acts as a collector of tax, not a bearer of it.',
+              'The net amount of VAT due = Output tax − Input tax.',
+            ],
+            flow: ['Record sales + output VAT in the sales day book', 'Record purchases + input VAT in the purchases day book', 'Total output tax from SDB', 'Total input tax from PDB', 'Calculate VAT due: Output − Input', 'Complete and submit the VAT return'],
+          },
+          {
+            h: 'The VAT return — key boxes',
+            p: [
+              'The VAT return (now submitted via Making Tax Digital) has several key boxes.',
+            ],
+            example: {
+              title: 'VAT return key boxes',
+              rows: [
+                ['Box 1', 'VAT due on sales (output tax)'],
+                ['Box 4', 'VAT reclaimed on purchases (input tax)'],
+                ['Box 5', 'Net VAT due to HMRC (Box 1 minus Box 4)'],
+                ['Box 6', 'Total value of sales (net of VAT)'],
+                ['Box 7', 'Total value of purchases (net of VAT)'],
+              ],
+            },
+          },
+          {
+            h: 'Reconciling the VAT account',
+            p: [
+              'The VAT control account in the general ledger should agree with the VAT return. Debit entries: input VAT on purchases, VAT paid to HMRC. Credit entries: output VAT on sales. The closing balance is the amount owed to HMRC (credit balance) or due back (debit balance).',
+            ],
+            example: {
+              title: 'VAT control account',
+              rows: [
+                ['Dr side (input tax + payments)', 'Cr side (output tax)'],
+                ['Input VAT on purchases: £4,200', 'Output VAT on sales: £6,800'],
+                ['VAT paid to HMRC: £2,600', ''],
+                ['Balance c/d: £0', ''],
+                ['Total: £6,800', 'Total: £6,800'],
+              ],
+            },
+          },
+          {
+            h: 'Common VAT errors and adjustments',
+            p: [
+              'Common errors include: applying the wrong VAT rate, treating a VAT-exempt supply as standard-rated, not recording a credit note, and posting the gross figure instead of splitting net and VAT.',
+            ],
+            callout: { kind: 'warning', text: 'Gross = Net × 1.20. Net = Gross ÷ 1.20. VAT = Gross ÷ 6. Confusing these is one of the most common calculation errors on the VAT return.' },
+          },
+          {
+            h: 'VAT schemes and special rules',
+            p: [
+              'Small businesses can use the **VAT Flat Rate Scheme** (pay a fixed % of gross turnover, keeping the difference). The **Annual Accounting Scheme** allows one payment per year. The **Cash Accounting Scheme** only accounts for VAT when money is actually received or paid — useful for businesses with slow-paying customers.',
+            ],
+            examtrap: 'VAT is a BALANCE SHEET item (owed to HMRC = liability) between return periods, not an income statement item. Only the net payment to HMRC affects profit indirectly through reduced cash.',
+          },
+        ],
+        check: [
+          {
+            q: 'Output tax is:',
+            opts: ['VAT reclaimed on purchases', 'VAT charged on sales to customers', 'The net VAT paid to HMRC', 'VAT on imports'],
+            ans: 1,
+            exp: 'Output tax is the VAT a business charges its customers on sales. Input tax is the VAT paid on purchases that can be reclaimed.',
+          },
+          {
+            q: 'VAT due to HMRC = Output tax £8,400 minus Input tax £5,100. The amount due is:',
+            opts: ['£13,500', '£3,300', '£2,700', '£8,400'],
+            ans: 1,
+            exp: 'VAT due = £8,400 − £5,100 = £3,300.',
+          },
+          {
+            q: 'In the VAT control account, output VAT on sales appears on the:',
+            opts: ['Debit side', 'Credit side', 'Neither — it goes straight to HMRC', 'Both sides equally'],
+            ans: 1,
+            exp: 'Output VAT (charged to customers) is a liability owed to HMRC, so it is credited in the VAT account.',
+          },
+          {
+            q: 'A business buys goods for £960 gross (VAT inclusive at 20%). The input VAT it can reclaim is:',
+            opts: ['£192', '£160', '£96', '£960'],
+            ans: 1,
+            exp: 'Input VAT = Gross ÷ 6 = £960 ÷ 6 = £160. (Or: Net = £960 ÷ 1.20 = £800; VAT = £800 × 20% = £160.)',
+          },
+          {
+            q: 'Under the Cash Accounting Scheme for VAT, when is output tax accounted for?',
+            opts: ['When the invoice is issued', 'When cash is actually received from the customer', 'At the end of the VAT quarter regardless of payment', 'When the goods are delivered'],
+            ans: 1,
+            exp: 'The Cash Accounting Scheme accounts for VAT when money changes hands — output tax when cash is received; input tax when cash is paid.',
           },
         ],
       },
@@ -2808,6 +3219,202 @@ window.LEARN_PATH = [
           },
         ],
       },
+      {
+        id: 'L-poc-11',
+        title: 'Budget variances — calculating and interpreting',
+        icon: '📉',
+        skills: ['poc-budget'],
+        cards: [
+          {
+            h: 'What is a variance?',
+            p: [
+              'A variance is the difference between actual performance and what was budgeted. Managers use variance analysis to identify where performance has deviated from plan and investigate why.',
+              'A **favourable (F)** variance improves profit; an **adverse (A)** variance reduces profit.',
+            ],
+            formula: 'Variance = Budget − Actual (for costs), or Actual − Budget (for revenue)·Favourable (F): actual costs < budget, or actual revenue > budget·Adverse (A): actual costs > budget, or actual revenue < budget',
+          },
+          {
+            h: 'Direct material variances',
+            p: [
+              'The total direct material variance compares the actual cost of materials used with the standard (budgeted) cost of actual production. It can be broken into a **price variance** (paying more or less than standard) and a **usage variance** (using more or less than standard).',
+            ],
+            example: {
+              title: 'Material variance example',
+              rows: [
+                ['Standard material cost', '2 kg × £5 per kg = £10 per unit'],
+                ['Actual material cost', '2.2 kg × £4.80 per kg = £10.56 per unit'],
+                ['Material price variance', '(£5.00 − £4.80) × 2.2 kg = £0.44 F per unit'],
+                ['Material usage variance', '(2.0 − 2.2) kg × £5.00 = £1.00 A per unit'],
+                ['Total material variance', '£0.56 A per unit'],
+              ],
+            },
+          },
+          {
+            h: 'Direct labour variances',
+            p: [
+              'Similar to materials, the labour variance splits into a **rate variance** (paid more or less per hour than standard) and an **efficiency variance** (took more or fewer hours than standard).',
+            ],
+            example: {
+              title: 'Labour variance example',
+              rows: [
+                ['Standard labour cost', '3 hrs × £12/hr = £36 per unit'],
+                ['Actual labour cost', '3.5 hrs × £11.50/hr = £40.25 per unit'],
+                ['Labour rate variance', '(£12.00 − £11.50) × 3.5 hrs = £1.75 F'],
+                ['Labour efficiency variance', '(3.0 − 3.5) hrs × £12.00 = £6.00 A'],
+                ['Total labour variance', '£4.25 A per unit'],
+              ],
+            },
+          },
+          {
+            h: 'Fixed overhead and sales variances',
+            p: [
+              'The fixed overhead variance compares absorbed overheads with actual overhead. A sales price variance shows whether the actual selling price differed from budget. A sales volume variance shows the profit impact of selling more or fewer units than budgeted.',
+            ],
+            callout: { kind: 'key', text: 'For the exam, always state whether each variance is Favourable (F) or Adverse (A) — a correct figure without the label loses marks.' },
+          },
+          {
+            h: 'Interpreting variances',
+            p: [
+              'Variances do not just need calculating — they need explaining. Possible causes: price changes, efficiency improvements, production problems, measurement errors, or an unrealistic budget. Managers investigate significant variances (materiality).',
+            ],
+            examtrap: 'A favourable variance is not always good news. Buying cheaper materials might cause an adverse usage variance if quality is poor. Always consider the knock-on effects.',
+          },
+        ],
+        check: [
+          {
+            q: 'Actual material cost is £18,000. Budgeted material cost for actual production is £16,500. The variance is:',
+            opts: ['£1,500 Favourable', '£1,500 Adverse', '£34,500 Adverse', '£1,500 — cannot tell without more information'],
+            ans: 1,
+            exp: 'Actual cost (£18,000) > Budget (£16,500) for a cost — this is Adverse. Variance = £16,500 − £18,000 = −£1,500 A.',
+          },
+          {
+            q: 'Actual revenue is £92,000. Budgeted revenue was £85,000. The sales variance is:',
+            opts: ['£7,000 Adverse', '£7,000 Favourable', '£177,000 Favourable', '£7,000 — cannot tell'],
+            ans: 1,
+            exp: 'Actual revenue (£92,000) > Budget (£85,000) — more revenue than planned is Favourable for profit.',
+          },
+          {
+            q: 'Standard material: 4 kg @ £6.00. Actual: 4.5 kg @ £5.50. The material usage variance is:',
+            opts: ['£2.00 Adverse', '£3.00 Adverse', '£2.25 Adverse', '£3.00 Favourable'],
+            ans: 1,
+            exp: 'Usage variance = (Standard qty − Actual qty) × Standard price = (4 − 4.5) × £6.00 = −0.5 × £6.00 = −£3.00. Adverse (used more than standard).',
+          },
+          {
+            q: 'Which of the following would cause a favourable labour rate variance?',
+            opts: ['Employees working faster than standard', 'Paying employees a lower hourly rate than standard', 'Using more hours than standard', 'Paying employees a higher rate than standard'],
+            ans: 1,
+            exp: 'A favourable rate variance means the actual hourly rate paid was lower than the standard rate. More hours used would be an adverse efficiency variance.',
+          },
+          {
+            q: 'The fixed overhead absorbed is £42,000. Actual fixed overhead incurred is £45,000. The variance is:',
+            opts: ['£3,000 Favourable (over-absorbed)', '£3,000 Adverse (under-absorbed)', '£87,000', '£3,000 — cannot tell without knowing activity levels'],
+            ans: 1,
+            exp: 'Absorbed (£42,000) < Actual (£45,000) means under-absorption of £3,000. Under-absorption is adverse — not enough overhead was charged to products.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-12',
+        title: 'Decision-making with cost information',
+        icon: '⚖️',
+        skills: ['poc-cvp', 'poc-behaviour'],
+        cards: [
+          {
+            h: 'Relevant costs and decision-making',
+            p: [
+              'For decision-making, only **RELEVANT** costs matter. A relevant cost is a future, incremental, cash cost that changes as a direct result of the decision. Sunk costs (already spent), committed costs, and non-cash items (depreciation) are NOT relevant to the decision.',
+            ],
+            split: {
+              left: {
+                title: 'Relevant costs',
+                items: ['Future costs that change with the decision', 'Incremental variable costs', 'Opportunity costs (benefits foregone)'],
+              },
+              right: {
+                title: 'NOT relevant',
+                items: ['Sunk costs (already spent)', 'Depreciation (non-cash)', 'Fixed costs that do not change', 'Committed costs'],
+              },
+            },
+          },
+          {
+            h: 'Accepting a special order',
+            p: [
+              'A special order is a one-off request, often below normal selling price. Accept if the contribution is positive (revenue exceeds variable costs) AND spare capacity exists. Fixed costs are usually irrelevant as they are already being paid.',
+            ],
+            example: {
+              title: 'Special order decision',
+              rows: [
+                ['Normal selling price', '£20 per unit'],
+                ['Special order price', '£14 per unit'],
+                ['Variable cost per unit', '£11'],
+                ['Contribution at special price', '£3 per unit (Accept — positive contribution)'],
+                ['Caveat', 'Only if spare capacity exists; beware of cannibalisation'],
+              ],
+            },
+          },
+          {
+            h: 'Make-or-buy decisions',
+            p: [
+              'Should the business make a component internally or buy it from an outside supplier? Compare the relevant (variable) cost of making with the purchase price. If the purchase price is lower than the marginal (variable) cost of making, buy it — unless making uses a scarce resource needed elsewhere.',
+            ],
+            formula: 'Relevant cost of making = Variable cost per unit (exclude fixed costs already committed)·Buy if: Purchase price < Variable cost of making·Also consider: quality, reliability, strategic importance',
+          },
+          {
+            h: 'Limiting factors',
+            p: [
+              'When a resource is in short supply (scarce), the business must decide how to allocate it to maximise profit. Rank products by **contribution per unit of limiting factor** (not by total contribution).',
+            ],
+            example: {
+              title: 'Limiting factor ranking',
+              rows: [
+                ['Product', 'Contribution/unit', 'Machine hrs/unit', 'Contribution per machine hr'],
+                ['A', '£12', '3 hrs', '£4.00'],
+                ['B', '£9', '2 hrs', '£4.50'],
+                ['Ranking', '', '', 'B first (£4.50), then A'],
+              ],
+            },
+          },
+          {
+            h: 'Shut-down decisions',
+            p: [
+              'Should a product line or department be closed? Compare the contribution it makes with the **avoidable** fixed costs. If contribution > avoidable fixed costs, keep it open — even if it appears to be making a loss after shared fixed cost allocation.',
+            ],
+            callout: { kind: 'warning', text: 'Allocated (shared) fixed costs do NOT disappear if a product line closes — they get reallocated. Only avoidable fixed costs are relevant to a shut-down decision.' },
+            examtrap: 'A product showing a net loss may still be worth keeping if it has a positive contribution that covers avoidable fixed costs. The decision is about contribution, not profit after fixed cost allocation.',
+          },
+        ],
+        check: [
+          {
+            q: 'A company has spare capacity. A customer offers £16 per unit for a special order. Variable cost is £13. The fixed overhead absorption rate is £6. Should the company accept?',
+            opts: ['No — selling price is below total cost', 'Yes — contribution of £3 per unit is positive', 'No — contribution is negative', 'Yes — but only if the customer pays upfront'],
+            ans: 1,
+            exp: 'Contribution = £16 − £13 = +£3. With spare capacity, fixed costs are irrelevant (already covered). Accept.',
+          },
+          {
+            q: 'Variable cost of making a component: £8. Purchase price from supplier: £7. There is no spare capacity issue. The correct decision is:',
+            opts: ['Make — always better to keep production in-house', 'Buy — purchase price (£7) is less than variable cost of making (£8)', 'Make — fixed costs need to be covered', 'Cannot decide without knowing the selling price'],
+            ans: 1,
+            exp: 'The relevant cost of making is £8 (variable). Buying at £7 saves £1 per unit. Buy from the supplier.',
+          },
+          {
+            q: 'A product has a contribution of £6 per unit and requires 2 machine hours per unit. Another product has a contribution of £8 per unit and requires 4 machine hours. Machine time is the limiting factor. Which product should be prioritised?',
+            opts: ['Product 2 — higher contribution per unit', 'Product 1 — higher contribution per machine hour (£3 vs £2)', 'Product 2 — higher total contribution', 'Neither — both are equally attractive'],
+            ans: 1,
+            exp: 'With a limiting factor, rank by contribution per unit of the scarce resource. Product 1: £6÷2 = £3/hr. Product 2: £8÷4 = £2/hr. Prioritise Product 1.',
+          },
+          {
+            q: 'Sunk costs are:',
+            opts: ['Future costs that change with the decision', 'Already spent costs that cannot be recovered', 'Costs allocated from shared overheads', 'Variable costs in a special order'],
+            ans: 1,
+            exp: 'Sunk costs are past costs that have already been incurred and cannot be recovered — they are irrelevant to future decisions.',
+          },
+          {
+            q: 'A department has a contribution of £25,000 and is allocated £30,000 of fixed overheads (of which £8,000 are avoidable). Should it close?',
+            opts: ['Yes — it is making a net loss of £5,000', 'No — contribution (£25,000) exceeds avoidable fixed costs (£8,000)', 'Yes — it does not cover its fixed costs', 'Cannot decide — need more information'],
+            ans: 1,
+            exp: 'Only avoidable costs are relevant. Contribution £25,000 > avoidable fixed costs £8,000. Closing would reduce profit by £25,000 − £8,000 = £17,000. Keep it open.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -3653,6 +4260,192 @@ window.LEARN_PATH = [
             opts: ['The government', 'The employees', 'The employer', 'The Health and Safety Executive (HSE) directly'],
             ans: 2,
             exp: 'The employer has primary responsibility for health and safety. Employees also have duties (to take reasonable care and cooperate), but the main duty lies with the employer.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-11',
+        title: 'The external economic environment',
+        icon: '🌍',
+        skills: ['besy-econ', 'besy-finance'],
+        cards: [
+          {
+            h: 'Macroeconomic factors affecting business',
+            p: [
+              'Businesses operate in a wider economic environment they cannot control. Key macroeconomic factors include: the business cycle, inflation, interest rates, exchange rates, and government policy.',
+              'Understanding these helps predict costs, sales, and the availability of finance.',
+            ],
+            flow: ['Business cycle (boom/recession)', 'Inflation (rising prices)', 'Interest rates (cost of borrowing)', 'Exchange rates (import/export costs)', 'Government fiscal policy (tax/spend)'],
+          },
+          {
+            h: 'The business cycle',
+            p: [
+              'The economy moves in cycles: **boom** (growth, low unemployment, rising prices), **downturn** (growth slowing), **recession** (falling output, rising unemployment), **recovery** (growth returning).',
+              'During a boom, demand rises and businesses expand; during a recession, demand falls, businesses contract or fail.',
+            ],
+            callout: { kind: 'key', text: 'Recession is defined as two consecutive quarters of negative GDP growth. A business should have contingency plans for downturns.' },
+          },
+          {
+            h: 'Inflation and interest rates',
+            p: [
+              'Inflation is a general rise in the price level, measured by the Consumer Price Index (CPI). It raises input costs, erodes purchasing power, and can lead to wage pressure. The Bank of England sets the base interest rate to control inflation.',
+              'Higher interest rates: reduce borrowing and spending, cool demand, but increase the cost of loans for businesses.',
+            ],
+            split: {
+              left: {
+                title: 'High inflation effects',
+                items: ['Input costs rise', 'Customer purchasing power falls', 'Wage pressure increases', 'Uncertainty grows'],
+              },
+              right: {
+                title: 'High interest rate effects',
+                items: ['Borrowing is more expensive', 'Mortgage costs rise (less consumer spend)', 'Business investment falls', 'Currency may strengthen'],
+              },
+            },
+          },
+          {
+            h: 'Exchange rates and international trade',
+            p: [
+              'An exchange rate is the price of one currency in terms of another. If sterling (£) weakens: imports cost more (inflationary), exports become cheaper for overseas buyers (good for exporters). If sterling strengthens: imports become cheaper, exports become more expensive for buyers abroad.',
+            ],
+            example: {
+              title: 'Exchange rate impact',
+              rows: [
+                ['£ weakens (e.g. £1 = $1.15 → £1 = $1.05)', 'Imports dearer; exports cheaper overseas'],
+                ['£ strengthens (e.g. £1 = $1.15 → £1 = $1.30)', 'Imports cheaper; exports dearer overseas'],
+                ['Importer of raw materials', 'Hurt by weak pound; helped by strong pound'],
+                ['Exporter of finished goods', 'Helped by weak pound; hurt by strong pound'],
+              ],
+            },
+          },
+          {
+            h: 'Government economic policy',
+            p: [
+              'Governments use **fiscal policy** (taxation and public spending) and rely on the Bank of England for **monetary policy** (interest rates). Higher corporation tax reduces business profits. Incentives such as R&D tax credits or enterprise zones can stimulate investment. Government spending on infrastructure benefits businesses in those areas.',
+            ],
+            examtrap: 'Do not confuse monetary policy (interest rates — set by the Bank of England) with fiscal policy (tax and government spending — set by the government). They are separate tools with different purposes.',
+          },
+        ],
+        check: [
+          {
+            q: 'A recession is defined as:',
+            opts: ['A period of high inflation', 'Two or more consecutive quarters of negative GDP growth', 'Unemployment above 5%', 'A fall in the exchange rate'],
+            ans: 1,
+            exp: 'A recession is technically defined as two consecutive quarters of negative GDP (economic output) growth.',
+          },
+          {
+            q: 'If the pound sterling weakens against the euro, a UK-based importer of goods from France will:',
+            opts: ['Pay less in pounds for the same goods', 'Pay more in pounds for the same goods', 'Be unaffected — the goods price in euros stays the same', 'Benefit — their exports become cheaper'],
+            ans: 1,
+            exp: 'A weaker pound means more pounds are needed to buy the same amount of euros (or dollars). Imports become more expensive in sterling terms.',
+          },
+          {
+            q: 'The Bank of England raises interest rates. Which effect on business is most likely?',
+            opts: ['Businesses find it cheaper to borrow', 'Consumer spending tends to increase', 'Business borrowing costs increase and investment may fall', 'Exports become more expensive overseas'],
+            ans: 2,
+            exp: 'Higher interest rates increase the cost of borrowing for businesses and consumers, which tends to reduce spending and business investment.',
+          },
+          {
+            q: 'Fiscal policy refers to:',
+            opts: ['Setting interest rates to control inflation', 'Government decisions on taxation and public spending', 'The exchange rate mechanism', 'The Bank of England\'s base rate'],
+            ans: 1,
+            exp: 'Fiscal policy is the government\'s use of taxation and public spending to influence the economy. Monetary policy (interest rates) is a separate tool.',
+          },
+          {
+            q: 'Inflation in the UK rises from 2% to 6%. Which of the following is the most likely immediate impact on a manufacturing business?',
+            opts: ['Revenue automatically increases by 6%', 'Input costs (materials, energy) rise, putting pressure on margins', 'The business can reduce its prices to attract more customers', 'The business\'s fixed costs fall in real terms'],
+            ans: 1,
+            exp: 'Rising inflation increases the cost of inputs (materials, energy, wages). Unless selling prices can be raised by the same amount, profit margins are squeezed.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-12',
+        title: 'Technology, sustainability and stakeholders',
+        icon: '💡',
+        skills: ['besy-tech', 'besy-ethics'],
+        cards: [
+          {
+            h: 'Technology in the finance function',
+            p: [
+              'Digital tools have transformed bookkeeping and accounting. Accounting software (e.g. Sage, Xero, QuickBooks) automates data entry, bank feeds, invoicing, and reporting. Cloud accounting allows real-time access from anywhere.',
+              '**Making Tax Digital (MTD)** requires most VAT-registered businesses to keep digital records and file returns digitally.',
+            ],
+            flow: ['Manual bookkeeping', 'Desktop accounting software', 'Cloud accounting + bank feeds', 'Real-time dashboards + AI analysis', 'Making Tax Digital compliance'],
+          },
+          {
+            h: 'Cybersecurity and data protection',
+            p: [
+              'Digital systems create cybersecurity risks: phishing, malware, ransomware, and data breaches. The **UK GDPR** and **Data Protection Act 2018** require businesses to protect personal data.',
+              'Key principles: data minimisation (collect only what is needed), accuracy, storage limitation, and security.',
+            ],
+            callout: { kind: 'warning', text: 'Under UK GDPR, individuals have rights including: the right to access their data, the right to erasure (right to be forgotten), and the right to rectification (correction of errors). Businesses must have a Data Protection Officer if processing large amounts of sensitive data.' },
+          },
+          {
+            h: 'Stakeholders and their interests',
+            p: [
+              'A stakeholder is anyone with an interest in the business.',
+            ],
+            example: {
+              title: 'Key stakeholders',
+              rows: [
+                ['Stakeholder', 'Primary interest'],
+                ['Owners/shareholders', 'Profit and return on investment'],
+                ['Employees', 'Job security, fair pay, good conditions'],
+                ['Customers', 'Quality, value, reliability'],
+                ['Suppliers', 'Prompt payment, long-term relationship'],
+                ['Government', 'Tax compliance, regulation, employment'],
+                ['Community', 'Local employment, environmental impact'],
+                ['Lenders (banks)', 'Interest payments, repayment of debt'],
+              ],
+            },
+          },
+          {
+            h: 'Sustainability and CSR',
+            p: [
+              '**Corporate social responsibility (CSR)** means businesses taking responsibility for their impact on society and the environment, beyond legal requirements. **Sustainability** means meeting today\'s needs without compromising future generations.',
+              'The finance function plays a key role: measuring, reporting, and managing environmental costs (carbon footprint, waste, energy use).',
+            ],
+            callout: { kind: 'key', text: 'The triple bottom line: People (social impact), Planet (environmental impact), Profit (economic performance). A sustainable business balances all three.' },
+          },
+          {
+            h: 'Integrated reporting and the finance function\'s role',
+            p: [
+              'Increasingly, businesses produce integrated reports covering financial AND non-financial performance (environmental, social, governance — ESG). The finance function is responsible for data accuracy across all these areas.',
+              'Accountants may help measure carbon costs, analyse supply chain ethics, and report on workforce diversity.',
+            ],
+            examtrap: 'Do not confuse CSR (voluntary actions beyond legal requirements) with compliance (meeting the law). A business that only does what the law requires is compliant — it is not necessarily demonstrating CSR.',
+          },
+        ],
+        check: [
+          {
+            q: 'Making Tax Digital (MTD) requires VAT-registered businesses to:',
+            opts: ['File paper VAT returns quarterly', 'Keep digital records and file VAT returns digitally using approved software', 'Pay VAT monthly instead of quarterly', 'Submit accounts to Companies House digitally'],
+            ans: 1,
+            exp: 'MTD requires businesses above the VAT threshold to maintain digital records and submit VAT returns using HMRC-approved software.',
+          },
+          {
+            q: 'Under UK GDPR, a customer\'s right to have their personal data deleted is called:',
+            opts: ['Right to portability', 'Right to rectification', 'Right to erasure', 'Right to access'],
+            ans: 2,
+            exp: 'The right to erasure (also called the right to be forgotten) allows individuals to request that their personal data is deleted.',
+          },
+          {
+            q: 'A stakeholder group primarily interested in prompt payment is:',
+            opts: ['Shareholders', 'Employees', 'Suppliers', 'The government'],
+            ans: 2,
+            exp: 'Suppliers\' primary interest is being paid on time (prompt payment) and maintaining a long-term trading relationship.',
+          },
+          {
+            q: 'The "triple bottom line" framework measures business performance in terms of:',
+            opts: ['Revenue, cost and profit', 'People, planet and profit', 'Input, process and output', 'Assets, liabilities and capital'],
+            ans: 1,
+            exp: 'The triple bottom line measures: People (social impact), Planet (environmental impact) and Profit (financial performance). All three matter for sustainable business.',
+          },
+          {
+            q: 'Which of the following is an example of CSR (corporate social responsibility) rather than just legal compliance?',
+            opts: ['Filing the VAT return on time', 'Paying the National Living Wage', 'Voluntarily reducing carbon emissions beyond legal requirements', 'Registering with Companies House'],
+            ans: 2,
+            exp: 'CSR involves actions taken beyond legal requirements. Voluntarily cutting carbon emissions (when not legally required) is a CSR initiative, not just compliance.',
           },
         ],
       },
