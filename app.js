@@ -1955,6 +1955,68 @@
       </div>` : ''}`;
   }
 
+  function calcReadinessScore() {
+    const stats = Storage.data.stats;
+    const allQ = window.ALL_QUESTIONS || [];
+    const topics = window.TOPICS || [];
+    const accs = topics.map(t => {
+      const s = stats.topics[t.id] || {};
+      return (s.attempts >= 5) ? s.correct / s.attempts : null;
+    }).filter(a => a !== null);
+    const avgAcc = accs.length ? accs.reduce((a, b) => a + b, 0) / accs.length : 0;
+    const accScore = avgAcc * 60;
+    const attempted = Object.values(stats.questions || {}).filter(s => s.attempts > 0).length;
+    const coverageScore = Math.min(attempted / Math.max(allQ.length, 1), 1) * 25;
+    const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (stats.streak || {}).current || 0;
+    const streakScore = Math.min(streak / 7, 1) * 10;
+    const mocks = (Storage.data.history || []).filter(h => h.mode === 'mock');
+    const bestMock = mocks.length ? Math.max(...mocks.map(m => m.pct)) : null;
+    const mockScore = bestMock !== null ? (bestMock / 100) * 5 : 0;
+    return Math.min(Math.round(accScore + coverageScore + streakScore + mockScore), 100);
+  }
+
+  function renderReadinessMeter(score) {
+    const r = 36, circ = +(2 * Math.PI * r).toFixed(1);
+    const offset = +((1 - score / 100) * circ).toFixed(1);
+    const cls = scoreClass(score);
+    const label = score >= 80 ? 'Exam Ready' : score >= 60 ? 'Almost There' : score >= 40 ? 'Getting There' : 'Early Stage';
+    return `<div class="readiness-meter">
+      <div class="readiness-ring-wrap">
+        <svg viewBox="0 0 88 88" width="88" height="88" aria-hidden="true">
+          <circle class="ring-track" cx="44" cy="44" r="${r}" fill="none" stroke-width="7"/>
+          <circle class="ring-fill ring-${cls}" cx="44" cy="44" r="${r}" fill="none" stroke-width="7"
+            stroke-dasharray="${circ}" stroke-dashoffset="${offset}"
+            stroke-linecap="round" transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="readiness-score-overlay">
+          <span class="readiness-score-num">${score}</span>
+          <span class="readiness-score-denom">/100</span>
+        </div>
+      </div>
+      <div class="readiness-label readiness-${cls}">${label}</div>
+    </div>`;
+  }
+
+  function renderWeeklyChart() {
+    const bars = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const rec = Storage.data.daily[key] || {};
+      bars.push({ label: ['S','M','T','W','T','F','S'][d.getDay()], n: rec.answered || 0, isToday: i === 0 });
+    }
+    const peak = Math.max(...bars.map(b => b.n), 1);
+    return `<div class="weekly-chart" aria-label="Questions answered this week">
+      ${bars.map(b => `<div class="wc-col${b.isToday ? ' wc-today' : ''}">
+        <div class="wc-bar-bg"><div class="wc-bar" style="height:${Math.round(b.n / peak * 100)}%"></div></div>
+        <div class="wc-count">${b.n > 0 ? b.n : ''}</div>
+        <div class="wc-label">${b.label}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+
   function renderHomeTab() {
     const counts = {};
     const prog = getGlobalProgress();
@@ -1969,13 +2031,44 @@
       <span><button id="resumeBtn" type="button">Resume</button>
       <button class="dismiss" id="dismissSessionBtn" type="button">Dismiss</button></span>
     </div>` : '';
-    const progressBlock = `<div class="hero-progress" role="group" aria-label="Lifetime progress summary">
-      <div class="hero-stat"><div class="hero-label">Seen</div><div class="hero-value">${prog.seen}<span class="hero-sub"> / ${prog.total}</span></div><div class="hero-bar"><div class="hero-bar-fill" style="width:${prog.seenPct}%"></div></div></div>
-      <div class="hero-stat"><div class="hero-label">Mastery</div><div class="hero-value">${prog.masteryPct}<span class="hero-sub">%</span></div><div class="hero-bar"><div class="hero-bar-fill mastery" style="width:${prog.masteryPct}%"></div></div></div>
-      <div class="hero-stat"><div class="hero-label">Streak 🔥</div><div class="hero-value">${streak.current}<span class="hero-sub"> · best ${streak.best}</span></div></div>
+    const readinessScore = calcReadinessScore();
+    const mocks = (Storage.data.history || []).filter(h => h.mode === 'mock');
+    const bestMock = mocks.length ? Math.max(...mocks.map(m => m.pct)) : null;
+    const liveStreak = Storage.studyDayStreak ? Storage.studyDayStreak() : streak.current;
+    const progressBlock = `<div class="dashboard-hero">
+      <div class="dashboard-left">
+        ${renderReadinessMeter(readinessScore)}
+        <div class="readiness-tip">accuracy · coverage · streak</div>
+      </div>
+      <div class="dashboard-right">
+        <div class="dash-stat-grid">
+          <div class="dash-stat">
+            <div class="dash-stat-val ${scoreClass(prog.masteryPct)}">${prog.masteryPct}%</div>
+            <div class="dash-stat-label">Mastery</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val">${prog.seen}<span class="dash-stat-sub"> / ${prog.total}</span></div>
+            <div class="dash-stat-label">Seen</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val">🔥 ${liveStreak}</div>
+            <div class="dash-stat-label">Day streak</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val ${bestMock !== null ? scoreClass(bestMock) : ''}">${bestMock !== null ? bestMock + '%' : '—'}</div>
+            <div class="dash-stat-label">Best mock</div>
+          </div>
+        </div>
+        ${renderWeeklyChart()}
+      </div>
     </div>`;
 
     window.TOPICS.forEach(t => { counts[t.id] = window.ALL_QUESTIONS.filter(q => q.topic === t.id).length; });
+    const seenByTopic = {};
+    (window.ALL_QUESTIONS || []).forEach(q => {
+      const s = Storage.data.stats.questions[q.id];
+      if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1;
+    });
     const topicMastery = (id) => {
       const ts = Storage.data.stats.topics[id];
       if (!ts || !ts.attempts) return null;
@@ -2048,12 +2141,18 @@
         ${window.TOPICS.map(t => {
           const m = topicMastery(t.id);
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
-          return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${counts[t.id]} questions">
+          const seenN = seenByTopic[t.id] || 0;
+          const totalN = counts[t.id];
+          const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
+          return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${seenN} of ${totalN} seen">
             ${badge}
             <div class="icon" aria-hidden="true">${t.icon}</div>
             <h3>${escapeHtml(t.name)}</h3>
             <p>${escapeHtml(t.desc)}</p>
-            <div class="count">${counts[t.id]} questions</div>
+            <div class="topic-card-footer">
+              <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN}</span>
+              <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+            </div>
           </button>`;
         }).join('')}
       </div>
