@@ -839,6 +839,18 @@
       masteryPct: total ? Math.round((correct/total)*100) : 0 };
   }
 
+  function getWeakTopics() {
+    const stats = Storage.data.stats.topics;
+    return (window.TOPICS || [])
+      .map(t => {
+        const s = stats[t.id] || { attempts: 0, correct: 0 };
+        const acc = s.attempts >= 5 ? Math.round(s.correct / s.attempts * 100) : null;
+        return { id: t.id, name: t.name, short: t.short, icon: t.icon, acc, attempts: s.attempts };
+      })
+      .filter(t => t.acc !== null)
+      .sort((a, b) => a.acc - b.acc);
+  }
+
   function isNumeric(q) { return q && q.type === 'numeric'; }
   function isDragDrop(q) { return q && q.type === 'dragdrop'; }
   function isTableFill(q) { return q && q.type === 'tablefill'; }
@@ -1134,6 +1146,37 @@
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
       ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
       hintLevel:0, hintElim:null,
+    });
+    Calc.reset(); saveSession(); render();
+  }
+
+  function startFocusPractice() {
+    playClick();
+    const weakTopics = getWeakTopics();
+    if (!weakTopics.length) { showToast('Answer 5+ questions in each topic to unlock Focus Mode.', 'warn'); return; }
+    const topicIds = weakTopics.slice(0, 3).map(t => t.id);
+    const allQ = (window.ALL_QUESTIONS || []).filter(q => topicIds.includes(q.topic));
+    const mistakeIds = new Set(Storage.activeMistakeIds());
+    const wrongIds = new Set(
+      Object.entries(Storage.data.stats.questions)
+        .filter(([, s]) => s.attempts > 0 && s.correct === 0).map(([id]) => id)
+    );
+    const tier1 = shuffle(allQ.filter(q => mistakeIds.has(q.id)));
+    const tier1Ids = new Set(tier1.map(q => q.id));
+    const tier2 = shuffle(allQ.filter(q => wrongIds.has(q.id) && !tier1Ids.has(q.id)));
+    const tier12Ids = new Set([...tier1Ids, ...tier2.map(q => q.id)]);
+    const tier3 = shuffle(allQ.filter(q => ['hard', 'medium'].includes(q.difficulty) && !tier12Ids.has(q.id)));
+    const tier123Ids = new Set([...tier12Ids, ...tier3.map(q => q.id)]);
+    const tier4 = shuffle(allQ.filter(q => !tier123Ids.has(q.id)));
+    const pool = [...tier1, ...tier2, ...tier3, ...tier4];
+    const picked = pool.slice(0, PRACTICE_LENGTH).map(presentQuestion);
+    if (!picked.length) { showToast('No questions available for your weak topics.', 'warn'); return; }
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: 'focus',
+      questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); saveSession(); render();
   }
@@ -1921,32 +1964,68 @@
       return Math.round((ts.correct / ts.attempts) * 100);
     };
 
-    const extraCards = [];
-    if (srDueCount > 0) extraCards.push(`<button class="topic-card extra-card fade-in" type="button" data-topic="sr-due" aria-label="Spaced repetition — ${srDueCount} due">
-      <div class="icon sr-icon" aria-hidden="true">⏰</div>
-      <h3>Due for review</h3>
-      <p>Spaced repetition: cards scheduled for today.</p>
-      <div class="count">${srDueCount} due now</div>
-    </button>`);
-    if (flaggedCount > 0) extraCards.push(`<button class="topic-card extra-card fade-in" type="button" data-topic="flagged" aria-label="Practice flagged — ${flaggedCount} questions">
-      <div class="icon flag-icon" aria-hidden="true">⭐</div>
-      <h3>Flagged for review</h3>
-      <p>Questions you've starred for revision.</p>
-      <div class="count">${flaggedCount} flagged</div>
-    </button>`);
-    if (wrongCount > 0) extraCards.push(`<button class="topic-card extra-card fade-in" type="button" data-topic="review-wrong" aria-label="Practice wrong — ${wrongCount} questions">
-      <div class="icon wrong-icon" aria-hidden="true">🎯</div>
-      <h3>Target weak spots</h3>
-      <p>Questions you've never got right.</p>
-      <div class="count">${wrongCount} to retry</div>
-    </button>`);
+    const weakTopics = getWeakTopics();
+    const synopticCount = (window.ALL_QUESTIONS || []).filter(q => q.topic === 'synoptic').length;
+
+    // Focus mode card
+    const focusCard = weakTopics.length >= 2
+      ? `<div class="focus-mode-card">
+          <div class="focus-mode-header">
+            <div class="focus-icon-wrap" aria-hidden="true">🎯</div>
+            <div class="focus-mode-text">
+              <div class="focus-mode-title">Focus Mode</div>
+              <div class="focus-mode-sub">Targeting your ${Math.min(3, weakTopics.length)} weakest areas</div>
+            </div>
+            <button class="focus-start-btn" id="focusModeBtn" type="button">Start →</button>
+          </div>
+          <div class="focus-topic-list">
+            ${weakTopics.slice(0, 3).map(t => `<div class="focus-topic-row">
+              <span class="focus-topic-icon" aria-hidden="true">${t.icon}</span>
+              <span class="focus-topic-name">${escapeHtml(t.short)}</span>
+              <div class="focus-topic-bar-bg" role="progressbar" aria-valuenow="${t.acc}" aria-valuemin="0" aria-valuemax="100">
+                <div class="focus-topic-bar" style="width:${t.acc}%"></div>
+              </div>
+              <span class="focus-topic-pct ${scoreClass(t.acc)}">${t.acc}%</span>
+            </div>`).join('')}
+          </div>
+        </div>`
+      : `<div class="focus-mode-card focus-mode-locked">
+          <span class="focus-icon-wrap" aria-hidden="true">🎯</span>
+          <div>
+            <div class="focus-mode-title">Focus Mode</div>
+            <div class="focus-mode-sub">Answer 5+ questions in each topic to unlock personalised targeting</div>
+          </div>
+        </div>`;
+
+    // Mode grid cards
+    const modeDefs = [
+      { id: 'smartPracticeBtn', icon: '🧠', title: 'Smart Practice', desc: 'Adapts to your skill gaps', cls: '' },
+      { topic: 'all', icon: '🎯', title: 'Mixed Practice', desc: `${PRACTICE_LENGTH} random questions`, cls: '' },
+      { id: 'mockBtn', icon: '⏱', title: 'Mock Exam', desc: `${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min timed`, cls: 'mode-mock' },
+      { id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: 'Glossary term review', cls: '' },
+      ...(synopticCount ? [{ topic: 'synoptic', icon: '🔗', title: 'Synoptic Practice', desc: `${synopticCount} cross-unit scenarios`, cls: 'mode-synoptic' }] : []),
+      ...(srDueCount > 0 ? [{ topic: 'sr-due', icon: '⏰', title: 'Due for Review', desc: `${srDueCount} spaced-rep cards`, cls: '' }] : []),
+      ...(flaggedCount > 0 ? [{ topic: 'flagged', icon: '⭐', title: 'Flagged Questions', desc: `${flaggedCount} starred for revision`, cls: '' }] : []),
+      ...(wrongCount > 0 ? [{ topic: 'review-wrong', icon: '🔁', title: 'Never Got Right', desc: `${wrongCount} questions to crack`, cls: '' }] : []),
+      ...(Storage.activeMistakeIds().length > 0 ? [{ topic: 'mistakes', icon: '📝', title: 'Mistake Notebook', desc: `${Storage.activeMistakeIds().length} to clear`, cls: '' }] : []),
+    ];
+    const modeGrid = modeDefs.map(m => {
+      const attr = m.id ? `id="${escapeHtml(m.id)}"` : `data-topic="${escapeHtml(m.topic)}"`;
+      return `<button class="mode-card ${m.cls}" type="button" ${attr}>
+        <span class="mode-card-icon" aria-hidden="true">${m.icon}</span>
+        <div class="mode-card-info">
+          <div class="mode-card-title">${escapeHtml(m.title)}</div>
+          <div class="mode-card-desc">${escapeHtml(m.desc)}</div>
+        </div>
+      </button>`;
+    }).join('');
 
     return `${sessionBanner}${progressBlock}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
       </div>
-      <h2 class="section-title" style="margin-top:0">Practice by Topic <span style="font-weight:400;color:var(--subtext);font-size:.8rem">(${PRACTICE_LENGTH} questions, with feedback)</span></h2>
+      <h2 class="section-title" style="margin-top:0">Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
         ${window.TOPICS.map(t => {
           const m = topicMastery(t.id);
@@ -1956,22 +2035,13 @@
             <div class="icon" aria-hidden="true">${t.icon}</div>
             <h3>${escapeHtml(t.name)}</h3>
             <p>${escapeHtml(t.desc)}</p>
-            <div class="count">${counts[t.id]} questions in bank</div>
+            <div class="count">${counts[t.id]} questions</div>
           </button>`;
         }).join('')}
-        ${extraCards.join('')}
       </div>
-      <div style="margin-top:24px">
-        <h2 class="section-title" style="margin-top:0">Mixed & Mock</h2>
-        <button class="all-topics-btn" type="button" data-topic="all">🎯 Mixed Practice — ${PRACTICE_LENGTH} Questions</button>
-        <button class="mock-exam-btn" id="mockBtn" type="button">⏱ Start Mock Exam — ${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min</button>
-      </div>
-      <div style="margin-top:24px">
-        <h2 class="section-title" style="margin-top:0">Smart Modes</h2>
-        <button class="all-topics-btn smart-practice-btn" id="smartPracticeBtn" type="button">🧠 Smart Practice — adapts to your weak areas</button>
-        <button class="all-topics-btn flash-start-btn" id="flashcardsBtn" type="button">🃏 Flashcards — glossary term review</button>
-        ${Storage.activeMistakeIds().length > 0 ? `<button class="all-topics-btn mistakes-drill-btn" type="button" data-topic="mistakes">📝 Mistake Notebook — ${Storage.activeMistakeIds().length} to clear</button>` : ''}
-      </div>`;
+      ${focusCard}
+      <h2 class="section-title" style="margin-top:24px">More Practice Modes</h2>
+      <div class="mode-card-grid">${modeGrid}</div>`;
   }
 
   function renderGlossary() {
@@ -3368,6 +3438,7 @@
     // Smart practice & flashcards
     bind('smartPracticeBtn', 'click', startSmartPractice);
     bind('flashcardsBtn', 'click', startFlashcards);
+    bind('focusModeBtn', 'click', startFocusPractice);
     // Daily challenge
     bind('dailyChallengeBtn', 'click', startDailyChallenge);
     // Unit quiz buttons
