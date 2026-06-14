@@ -2297,7 +2297,17 @@
     const accuracy = totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
     const sessionsRun = history.length;
     const streak = stats.streak || { current: 0, best: 0 };
-    if (totalAttempts === 0) return `<h2 class="section-title">Your Progress</h2><div class="empty-state">No data yet. Complete a practice round to start tracking your progress.</div>`;
+    if (totalAttempts === 0) return `<h2 class="section-title">Your Progress</h2>
+      <div class="progress-empty">
+        <div class="progress-empty-icon">📊</div>
+        <p class="progress-empty-title">Nothing tracked yet</p>
+        <p class="progress-empty-sub">Complete a practice round to start seeing your accuracy, streaks, and history here.</p>
+        <div class="progress-empty-steps">
+          <div class="progress-empty-step"><span class="progress-empty-step-num">1</span>Go to Practice and choose a topic</div>
+          <div class="progress-empty-step"><span class="progress-empty-step-num">2</span>Answer at least 10 questions</div>
+          <div class="progress-empty-step"><span class="progress-empty-step-num">3</span>Come back here to track your score</div>
+        </div>
+      </div>`;
     const topicRows = window.TOPICS.map(t => {
       const ts = stats.topics[t.id] || { attempts:0, correct:0 };
       const pct = ts.attempts ? Math.round((ts.correct / ts.attempts) * 100) : 0;
