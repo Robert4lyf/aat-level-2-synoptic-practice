@@ -2236,11 +2236,12 @@
         </div>`;
 
     // Mode grid cards
+    const isAAT = _activeSubjectId === 'aat';
     const modeDefs = [
       { id: 'smartPracticeBtn', icon: '🧠', title: 'Smart Practice', desc: 'Adapts to your skill gaps', cls: '' },
       { topic: 'all', icon: '🎯', title: 'Mixed Practice', desc: `${PRACTICE_LENGTH} random questions`, cls: '' },
-      { id: 'mockBtn', icon: '⏱', title: 'Mock Exam', desc: `${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min timed`, cls: 'mode-mock' },
-      { id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: 'Glossary term review', cls: '' },
+      ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Mock Exam', desc: `${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min timed`, cls: 'mode-mock' }] : []),
+      ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: 'Glossary term review', cls: '' }] : []),
       ...(synopticCount ? [{ topic: 'synoptic', icon: '🔗', title: 'Synoptic Practice', desc: `${synopticCount} cross-unit scenarios`, cls: 'mode-synoptic' }] : []),
       ...(srDueCount > 0 ? [{ topic: 'sr-due', icon: '⏰', title: 'Due for Review', desc: `${srDueCount} spaced-rep cards`, cls: '' }] : []),
       ...(flaggedCount > 0 ? [{ topic: 'flagged', icon: '⭐', title: 'Flagged Questions', desc: `${flaggedCount} starred for revision`, cls: '' }] : []),
@@ -2263,7 +2264,7 @@
     const todayMid = new Date(); todayMid.setHours(0,0,0,0);
     const todayStr = todayMid.toISOString().slice(0, 10);
     let countdownHtml = '';
-    if (examDateVal) {
+    if (isAAT && examDateVal) {
       const examD = new Date(examDateVal); examD.setHours(0,0,0,0);
       const daysLeft = Math.max(0, Math.round((examD - todayMid) / 86400000));
       const dailyTarget = daysLeft > 0 ? Math.max(10, Math.ceil(Math.max(0, 300 - (Storage.data.history || []).reduce((s,h) => s + h.total, 0)) / daysLeft)) : null;
@@ -2279,7 +2280,7 @@
           <input type="date" id="examDateInput" class="exam-date-hidden" value="${examDateVal}" min="${todayStr}">
         </label>
       </div>`;
-    } else {
+    } else if (isAAT) {
       countdownHtml = `<div class="exam-countdown exam-countdown-empty">
         <span class="countdown-icon">📅</span>
         <span class="countdown-text">Set your exam date to get a personalised daily question target</span>
@@ -3865,16 +3866,13 @@
     document.querySelectorAll('[data-start-skill]').forEach(el => el.addEventListener('click', () => startPractice('skill:' + el.dataset.startSkill)));
     // Hint button
     bind('hintBtn', 'click', useHint);
-    // Skill debrief buttons (score screen)
-    document.querySelectorAll('[data-lesson]').forEach(el => el.addEventListener('click', () => startLesson(el.dataset.lesson)));
-    // Learning journey node buttons
+    // Lesson start buttons (journey nodes, score screen debrief, done screen "next")
     document.querySelectorAll('[data-lesson]').forEach(el => el.addEventListener('click', () => startLesson(el.dataset.lesson)));
     // Lesson player buttons
     bind('lessonExitBtn', 'click', goLearn);
     bind('lessonExitBtn2', 'click', goLearn);
     bind('lessonBackBtn', 'click', lessonBack);
     bind('lessonContinueBtn', 'click', lessonContinue);
-    bind('lessonNextBtn', 'click', lessonContinue);
     bind('lessonRetryBtn', 'click', lessonRetryQuiz);
     bind('lessonDrillBtn', 'click', () => {
       const btn = document.getElementById('lessonDrillBtn');
