@@ -1852,6 +1852,7 @@
     attachEvents();
     const isDark = Storage.isDarkActive();
     document.body.classList.toggle('dark', isDark);
+    document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
     const dt = document.getElementById('darkToggle');
     if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
     if (State.confirmModal) { const mc = document.getElementById('modalConfirm'); if (mc) mc.focus(); }
