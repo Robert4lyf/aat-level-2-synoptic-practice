@@ -3538,6 +3538,7 @@
 
     /* ── TEACH phase ── */
     const card = def.cards[cardIdx];
+    const visualHtml = card.visual ? `<div class="lesson-visual">${card.visual}</div>` : '';
     const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
     const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
     const exHtml = card.example ? `<div class="lesson-example">
@@ -3571,7 +3572,7 @@
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
-          ${paraHtml}${flowHtml}${formulaHtml}${exHtml}${splitHtml}${calloutHtml}${examtrapHtml}
+          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
