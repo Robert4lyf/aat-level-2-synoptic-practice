@@ -417,67 +417,6 @@ window.LSF_LEARN_PATH = [
     lessons: [
       {
         id: 'lsf-l01',
-        title: 'Introduction à la LSF',
-        icon: '🤟',
-        cards: [
-          {
-            h: "Qu'est-ce que la LSF?",
-            p: [
-              "La LSF (Langue des Signes Française) est une langue visuelle et gestuelle naturelle, utilisée principalement par la communauté Sourde en France.",
-              "Elle possède sa propre grammaire, syntaxe et structure — elle n'est pas une version signée du français."
-            ]
-          },
-          {
-            h: "Histoire de la LSF",
-            p: [
-              "La LSF moderne trouve ses racines au XVIIIe siècle, avec Abbé de l'Épée qui fonda le premier institut public pour sourds en 1760 à Paris.",
-              "Laurent Clerc, sourd, exporta la LSF aux États-Unis en 1817, donnant naissance à l'ASL (American Sign Language)."
-            ]
-          },
-          {
-            h: "La communauté Sourde",
-            p: [
-              "La 'communauté Sourde' (Sourd avec un grand S) représente une identité culturelle et linguistique, pas seulement un état auditif.",
-              "La LSF est reconnue officiellement en France depuis la loi de 2005."
-            ]
-          },
-          {
-            h: "Caractéristiques de la LSF",
-            p: [
-              "La LSF utilise des paramètres : la configuration (handshape), l'emplacement, le mouvement et l'orientation de la main.",
-              "Les expressions faciales et la direction du regard sont des éléments grammaticaux essentiels."
-            ]
-          }
-        ],
-        check: [
-          {
-            q: 'LSF is a complete, independent language.',
-            opts: ['True', 'False', 'Partially true', 'Only in France'],
-            ans: 0,
-            exp: 'LSF is a fully autonomous language with its own grammar, completely independent from spoken French.'
-          },
-          {
-            q: 'Who founded the first public school for the Deaf in Paris (1760)?',
-            opts: ['Laurent Clerc', 'Louis Braille', "Abbé de l'Épée", 'Samuel Heinicke'],
-            ans: 2,
-            exp: "Abbé Charles-Michel de l'Épée founded the Institut National de Jeunes Sourds de Paris in 1760."
-          },
-          {
-            q: 'In LSF, facial expressions are?',
-            opts: ['Just for showing feelings', 'A core grammatical feature', 'Optional add-ons', 'Only used in formal contexts'],
-            ans: 1,
-            exp: 'Facial expressions in LSF carry grammatical information such as question marking, negation and adverbial modification.'
-          },
-          {
-            q: 'ASL (American Sign Language) has its roots in?',
-            opts: ['BSL', 'DGS', 'LSF', 'ISL'],
-            ans: 2,
-            exp: "ASL developed significantly from LSF through Laurent Clerc's work in the US from 1817 onwards."
-          }
-        ]
-      },
-      {
-        id: 'lsf-l02',
         title: "L'alphabet manuel",
         icon: '🔤',
         cards: [
@@ -541,6 +480,67 @@ window.LSF_LEARN_PATH = [
             opts: ['A curved hand', 'Two fingers extended in a V shape', 'A fist with thumb out', 'O shape'],
             ans: 1,
             exp: 'The letter V is formed by extending the index and middle fingers in a V or peace sign shape.'
+          }
+        ]
+      },
+      {
+        id: 'lsf-l02',
+        title: 'Introduction à la LSF',
+        icon: '🤟',
+        cards: [
+          {
+            h: "Qu'est-ce que la LSF?",
+            p: [
+              "La LSF (Langue des Signes Française) est une langue visuelle et gestuelle naturelle, utilisée principalement par la communauté Sourde en France.",
+              "Elle possède sa propre grammaire, syntaxe et structure — elle n'est pas une version signée du français."
+            ]
+          },
+          {
+            h: "Histoire de la LSF",
+            p: [
+              "La LSF moderne trouve ses racines au XVIIIe siècle, avec Abbé de l'Épée qui fonda le premier institut public pour sourds en 1760 à Paris.",
+              "Laurent Clerc, sourd, exporta la LSF aux États-Unis en 1817, donnant naissance à l'ASL (American Sign Language)."
+            ]
+          },
+          {
+            h: "La communauté Sourde",
+            p: [
+              "La 'communauté Sourde' (Sourd avec un grand S) représente une identité culturelle et linguistique, pas seulement un état auditif.",
+              "La LSF est reconnue officiellement en France depuis la loi de 2005."
+            ]
+          },
+          {
+            h: "Caractéristiques de la LSF",
+            p: [
+              "La LSF utilise des paramètres : la configuration (handshape), l'emplacement, le mouvement et l'orientation de la main.",
+              "Les expressions faciales et la direction du regard sont des éléments grammaticaux essentiels."
+            ]
+          }
+        ],
+        check: [
+          {
+            q: 'LSF is a complete, independent language.',
+            opts: ['True', 'False', 'Partially true', 'Only in France'],
+            ans: 0,
+            exp: 'LSF is a fully autonomous language with its own grammar, completely independent from spoken French.'
+          },
+          {
+            q: 'Who founded the first public school for the Deaf in Paris (1760)?',
+            opts: ['Laurent Clerc', 'Louis Braille', "Abbé de l'Épée", 'Samuel Heinicke'],
+            ans: 2,
+            exp: "Abbé Charles-Michel de l'Épée founded the Institut National de Jeunes Sourds de Paris in 1760."
+          },
+          {
+            q: 'In LSF, facial expressions are?',
+            opts: ['Just for showing feelings', 'A core grammatical feature', 'Optional add-ons', 'Only used in formal contexts'],
+            ans: 1,
+            exp: 'Facial expressions in LSF carry grammatical information such as question marking, negation and adverbial modification.'
+          },
+          {
+            q: 'ASL (American Sign Language) has its roots in?',
+            opts: ['BSL', 'DGS', 'LSF', 'ISL'],
+            ans: 2,
+            exp: "ASL developed significantly from LSF through Laurent Clerc's work in the US from 1817 onwards."
           }
         ]
       },

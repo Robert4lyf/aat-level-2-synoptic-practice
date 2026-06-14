@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if ! git -C \"$(git rev-parse --show-toplevel 2>/dev/null)\" diff --quiet HEAD 2>/dev/null || ! git -C \"$(git rev-parse --show-toplevel 2>/dev/null)\" diff --cached --quiet 2>/dev/null; then echo '{\"systemMessage\": \"Version reminder: every commit must bump the version number in index.html. The pre-commit hook (.git/hooks/pre-commit) handles this automatically — it increments the patch version (e.g. v1.0 \\u2192 v1.0.1) on every git commit.\"}'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

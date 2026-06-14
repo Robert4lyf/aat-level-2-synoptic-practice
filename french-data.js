@@ -7,6 +7,7 @@ window.FR_TOPICS = [
   { id: 'fr-gram',  name: 'Grammaire',         short: 'Grammaire',      icon: '✏️', desc: 'French grammar rules and structures' },
   { id: 'fr-num',   name: 'Chiffres & temps',  short: 'Chiffres',       icon: '🔢', desc: 'Numbers, time and dates in French' },
   { id: 'fr-vie',   name: 'Vie quotidienne',   short: 'Vie quotidienne',icon: '🏠', desc: 'Daily life, shopping, transport and directions' },
+  { id: 'fr-conj',  name: 'Conjugaison',       short: 'Conjugaison',    icon: '🔄', desc: 'Verb conjugation practice across all tenses' },
 ];
 
 window.FR_QUESTIONS = [
@@ -614,12 +615,287 @@ window.FR_QUESTIONS = [
     ans: 1,
     exp: '"Tournez à gauche" = Turn left. "Tournez" = turn, "à gauche" = to the left.'
   },
+
+  // ── NEW: Conjugaison & grammaire avancée (fr-086 to fr-120) ──────────────
+
+  // -ER verb gapfill
+  {
+    id: 'fr-086', topic: 'fr-conj', type: 'gapfill',
+    q: 'Complete with the correct form of "parler" (to speak):',
+    template: 'Nous {0} français tous les jours.',
+    gaps: [{ options: ['parlons', 'parlez', 'parlent', 'parle'], answer: 0 }],
+    exp: '"Nous" takes the "-ons" ending for -ER verbs: nous parlons.'
+  },
+  {
+    id: 'fr-087', topic: 'fr-conj', type: 'gapfill',
+    q: 'Complete with the correct form of "aimer" (to like/love):',
+    template: 'Elle {0} le chocolat.',
+    gaps: [{ options: ['aime', 'aimes', 'aimons', 'aimez'], answer: 0 }],
+    exp: '"Il/elle" takes "-e" for -ER verbs: elle aime.'
+  },
+  {
+    id: 'fr-088', topic: 'fr-conj', type: 'gapfill',
+    q: 'Complete with the correct form of "travailler" (to work):',
+    template: 'Vous {0} beaucoup.',
+    gaps: [{ options: ['travaillez', 'travaillons', 'travaillent', 'travaille'], answer: 0 }],
+    exp: '"Vous" takes "-ez" for -ER verbs: vous travaillez.'
+  },
+  {
+    id: 'fr-089', topic: 'fr-conj', type: 'dragdrop',
+    q: 'Match each subject pronoun to its correct form of "parler":',
+    pairs: [
+      { left: 'je', right: 'parle' },
+      { left: 'tu', right: 'parles' },
+      { left: 'nous', right: 'parlons' },
+      { left: 'ils', right: 'parlent' },
+    ],
+    exp: '-ER endings: je -e, tu -es, il/elle -e, nous -ons, vous -ez, ils/elles -ent.'
+  },
+  {
+    id: 'fr-090', topic: 'fr-gram', type: 'gapfill',
+    q: 'Make the sentence negative (ne...pas):',
+    template: 'Je {0} parle {1} anglais.',
+    gaps: [
+      { options: ['ne', 'pas', 'non', 'n\''], answer: 0 },
+      { options: ['pas', 'ne', 'non', 'rien'], answer: 0 },
+    ],
+    exp: 'Negation wraps the verb: Je NE parle PAS anglais.'
+  },
+  {
+    id: 'fr-091', topic: 'fr-gram', type: 'gapfill',
+    q: 'Form a question using "est-ce que":',
+    template: '{0} tu parles espagnol ?',
+    gaps: [{ options: ['Est-ce que', 'Que', 'Qui', 'Dont'], answer: 0 }],
+    exp: '"Est-ce que" placed before subject + verb forms a question without inversion.'
+  },
+  {
+    id: 'fr-092', topic: 'fr-gram', type: 'gapfill',
+    q: 'Complete with the passé composé of "manger":',
+    template: 'J\'{0} mangé ce matin.',
+    gaps: [{ options: ['ai', 'suis', 'as', 'est'], answer: 0 }],
+    exp: '"Manger" uses avoir in passé composé: j\'ai mangé.'
+  },
+  {
+    id: 'fr-093', topic: 'fr-gram', type: 'gapfill',
+    q: 'Complete with the passé composé of "aller":',
+    template: 'Elle {0} allée au marché hier.',
+    gaps: [{ options: ['est', 'a', 'sont', 'ont'], answer: 0 }],
+    exp: '"Aller" uses être in passé composé: elle est allée.'
+  },
+  {
+    id: 'fr-094', topic: 'fr-gram', type: 'dragdrop',
+    q: 'Match each infinitive to its past participle:',
+    pairs: [
+      { left: 'parler', right: 'parlé' },
+      { left: 'finir', right: 'fini' },
+      { left: 'vendre', right: 'vendu' },
+      { left: 'faire', right: 'fait' },
+    ],
+    exp: 'Regular: -ER → -é, -IR → -i, -RE → -u. Irregular: faire → fait.'
+  },
+  {
+    id: 'fr-095', topic: 'fr-gram', type: 'dragdrop',
+    q: 'Match each verb to its auxiliary in the passé composé:',
+    pairs: [
+      { left: 'manger', right: 'avoir' },
+      { left: 'aller', right: 'être' },
+      { left: 'venir', right: 'être' },
+      { left: 'finir', right: 'avoir' },
+    ],
+    exp: 'Être group (DR MRS VANDERTRAMP) + reflexives use être; most verbs use avoir.'
+  },
+  {
+    id: 'fr-096', topic: 'fr-gram', type: 'gapfill',
+    q: 'Complete with the imparfait of "habiter" (to live):',
+    template: 'Quand j\'étais enfant, j\'{0} à Lyon.',
+    gaps: [{ options: ['habitais', 'habite', 'habiterai', 'habitait'], answer: 0 }],
+    exp: 'Imparfait: stem from nous form (drop -ons) + -ais. j\'habitais = I used to live.'
+  },
+  {
+    id: 'fr-097', topic: 'fr-gram', type: 'mcq',
+    q: 'The imparfait is used for?',
+    opts: ['A single completed past action', 'An ongoing or habitual past action / description', 'A future plan', 'A polite request'],
+    ans: 1,
+    exp: 'Imparfait = ongoing, habitual, or descriptive past. Passé composé = completed event.'
+  },
+  {
+    id: 'fr-098', topic: 'fr-gram', type: 'mcq',
+    q: '"Quand j\'étais jeune, je jouais au foot" — the imparfait here expresses?',
+    opts: ['A sudden completed event', 'A habitual past activity', 'A future intention', 'A polite wish'],
+    ans: 1,
+    exp: '"Je jouais" = I used to play — a repeated past habit, expressed with imparfait.'
+  },
+  {
+    id: 'fr-099', topic: 'fr-gram', type: 'gapfill',
+    q: 'Complete with the futur simple of "parler":',
+    template: 'Demain, je {0} avec le directeur.',
+    gaps: [{ options: ['parlerai', 'parle', 'parlais', 'parlé'], answer: 0 }],
+    exp: 'Futur simple: infinitive + -ai. parler → je parlerai.'
+  },
+  {
+    id: 'fr-100', topic: 'fr-gram', type: 'dragdrop',
+    q: 'Match each verb to its irregular futur simple stem:',
+    pairs: [
+      { left: 'être', right: 'ser-' },
+      { left: 'avoir', right: 'aur-' },
+      { left: 'aller', right: 'ir-' },
+      { left: 'faire', right: 'fer-' },
+    ],
+    exp: 'Irregular futur stems: être→ser-, avoir→aur-, aller→ir-, faire→fer-.'
+  },
+  {
+    id: 'fr-101', topic: 'fr-gram', type: 'mcq',
+    q: '"Je vais partir" — which tense is this?',
+    opts: ['Futur simple', 'Futur proche', 'Conditionnel', 'Présent'],
+    ans: 1,
+    exp: 'Futur proche = aller (présent) + infinitif. Je vais partir = I am going to leave.'
+  },
+  {
+    id: 'fr-102', topic: 'fr-gram', type: 'mcq',
+    q: '"Se lever" means?',
+    opts: ['To lower something', 'To get up', 'To lie down', 'To leave'],
+    ans: 1,
+    exp: '"Se lever" is a pronominal (reflexive) verb meaning to get up.'
+  },
+  {
+    id: 'fr-103', topic: 'fr-gram', type: 'gapfill',
+    q: 'Complete with the present tense of "se laver":',
+    template: 'Il {0} les mains avant de manger.',
+    gaps: [{ options: ['se lave', 'se lève', 'se lavait', 'se lavé'], answer: 0 }],
+    exp: '"Se laver" présent for il: il se lave (he washes himself).'
+  },
+  {
+    id: 'fr-104', topic: 'fr-gram', type: 'mcq',
+    q: 'In the passé composé, pronominal verbs use which auxiliary?',
+    opts: ['avoir', 'être', 'aller', 'faire'],
+    ans: 1,
+    exp: 'All pronominal (reflexive) verbs use être in passé composé: je me suis levé(e).'
+  },
+  {
+    id: 'fr-105', topic: 'fr-gram', type: 'mcq',
+    q: '"Je le vois" — what does "le" replace?',
+    opts: ['A feminine direct object', 'A masculine singular direct object', 'An indirect object', 'A plural noun'],
+    ans: 1,
+    exp: '"Le" is the masculine singular COD (direct object pronoun).'
+  },
+  {
+    id: 'fr-106', topic: 'fr-gram', type: 'mcq',
+    q: 'The COI pronoun for "to him / to her" is?',
+    opts: ['lui', 'le', 'la', 'leur'],
+    ans: 0,
+    exp: '"Lui" is the COI pronoun for he/she: Je lui parle = I speak to him/her.'
+  },
+  {
+    id: 'fr-107', topic: 'fr-gram', type: 'mcq',
+    q: '"Nous leur parlons" — "leur" means?',
+    opts: ['To him', 'To her', 'To them', 'For us'],
+    ans: 2,
+    exp: '"Leur" (plural COI) means "to them".'
+  },
+  {
+    id: 'fr-108', topic: 'fr-gram', type: 'mcq',
+    q: 'Where do COD/COI object pronouns go in a sentence?',
+    opts: ['After the verb', 'Before the conjugated verb', 'At the end of the sentence', 'After the subject'],
+    ans: 1,
+    exp: 'Object pronouns go directly before the conjugated verb: Je le vois / Je lui parle.'
+  },
+  {
+    id: 'fr-109', topic: 'fr-gram', type: 'mcq',
+    q: 'The conditionnel présent is formed with?',
+    opts: ['Present stem + present endings', 'Futur stem + imparfait endings', 'Infinitive + être', 'Past participle + avoir'],
+    ans: 1,
+    exp: 'Conditionnel = futur simple stem + imparfait endings (-ais, -ais, -ait, -ions, -iez, -aient).'
+  },
+  {
+    id: 'fr-110', topic: 'fr-gram', type: 'mcq',
+    q: '"Je voudrais un café" — what tense is "voudrais"?',
+    opts: ['Imparfait', 'Futur simple', 'Conditionnel présent', 'Subjonctif'],
+    ans: 2,
+    exp: '"Voudrais" is conditionnel présent of vouloir, used for polite requests.'
+  },
+  {
+    id: 'fr-111', topic: 'fr-gram', type: 'gapfill',
+    q: 'Complete: si + imparfait → conditionnel (voyager):',
+    template: 'Si j\'avais le temps, je {0} en France.',
+    gaps: [{ options: ['voyagerais', 'voyage', 'voyagerai', 'ai voyagé'], answer: 0 }],
+    exp: 'Si + imparfait → conditionnel présent: je voyagerais = I would travel.'
+  },
+  {
+    id: 'fr-112', topic: 'fr-gram', type: 'mcq',
+    q: '"Il faut que tu ___" is followed by which mood?',
+    opts: ['Indicatif', 'Conditionnel', 'Subjonctif', 'Infinitif'],
+    ans: 2,
+    exp: '"Il faut que" always triggers the subjonctif.'
+  },
+  {
+    id: 'fr-113', topic: 'fr-gram', type: 'mcq',
+    q: 'Subjonctif of "être" for "il/elle" is?',
+    opts: ['est', 'soit', 'serait', 'était'],
+    ans: 1,
+    exp: '"Être" has an irregular subjonctif: que je sois, que tu sois, qu\'il soit.'
+  },
+  {
+    id: 'fr-114', topic: 'fr-gram', type: 'mcq',
+    q: '"bien que" (although) is followed by which mood?',
+    opts: ['Indicatif', 'Conditionnel', 'Infinitif', 'Subjonctif'],
+    ans: 3,
+    exp: '"Bien que" always takes the subjonctif: bien qu\'il soit tard.'
+  },
+  {
+    id: 'fr-115', topic: 'fr-gram', type: 'mcq',
+    q: '"L\'homme ___ parle" — which relative pronoun completes this?',
+    opts: ['que', 'dont', 'qui', 'où'],
+    ans: 2,
+    exp: '"Qui" is the subject relative pronoun: l\'homme qui parle = the man who speaks.'
+  },
+  {
+    id: 'fr-116', topic: 'fr-gram', type: 'mcq',
+    q: '"Le livre ___ j\'ai lu" — which relative pronoun?',
+    opts: ['qui', 'que', 'dont', 'où'],
+    ans: 1,
+    exp: '"Que" is the direct object relative pronoun: le livre que j\'ai lu = the book I read.'
+  },
+  {
+    id: 'fr-117', topic: 'fr-gram', type: 'mcq',
+    q: '"Le pays ___ je vis" — which relative pronoun?',
+    opts: ['qui', 'que', 'dont', 'où'],
+    ans: 3,
+    exp: '"Où" is used for place or time: le pays où je vis = the country where I live.'
+  },
+  {
+    id: 'fr-118', topic: 'fr-gram', type: 'mcq',
+    q: '"Le livre ___ j\'ai besoin" — which relative pronoun? (avoir besoin DE)',
+    opts: ['qui', 'que', 'dont', 'où'],
+    ans: 2,
+    exp: '"Dont" replaces de + noun: le livre dont j\'ai besoin (avoir besoin de).'
+  },
+  {
+    id: 'fr-119', topic: 'fr-gram', type: 'dragdrop',
+    q: 'Match each relative pronoun to its function:',
+    pairs: [
+      { left: 'qui', right: 'Subject of relative clause' },
+      { left: 'que', right: 'Direct object of relative clause' },
+      { left: 'dont', right: 'After expressions with "de"' },
+      { left: 'où', right: 'Place or time reference' },
+    ],
+    exp: 'qui = subject, que = direct object, dont = de + ..., où = where/when.'
+  },
+  {
+    id: 'fr-120', topic: 'fr-gram', type: 'mcq',
+    q: '"Elle est partie" — the past participle "parti" adds -e because?',
+    opts: ['All -IR verbs add -e', 'The subject is feminine and être is the auxiliary', 'It is always irregular', 'It is in the futur'],
+    ans: 1,
+    exp: 'With être in passé composé, the past participle agrees with the subject gender: elle est partie.'
+  },
 ];
 
 window.FR_LEARN_PATH = [
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UNIT 1 — A1 Débutant
+  // ═══════════════════════════════════════════════════════════════════════════
   {
-    id: 'fr-debut',
-    title: 'Débuter en français',
+    id: 'fr-a1',
+    title: 'A1 — Débutant',
     lessons: [
       // ── Lesson 1 ────────────────────────────────────────────────────────
       {
@@ -949,6 +1225,784 @@ window.FR_LEARN_PATH = [
             opts: ['être', 'avoir', 'aller', 'faire'],
             ans: 3,
             exp: '"Faire" is used in weather expressions: "il fait beau/chaud/froid".',
+          },
+        ],
+      },
+
+      // ── Lesson 6 — Pronoms personnels + verbes en -ER ───────────────────
+      {
+        id: 'fr-l06',
+        title: 'Pronoms personnels & verbes en -ER',
+        icon: '🔄',
+        cards: [
+          {
+            h: 'Les pronoms sujets',
+            p: [
+              'je (I), tu (you — informal), il/elle (he/she), nous (we), vous (you — formal/plural), ils/elles (they).',
+              'Always use a subject pronoun before the verb in French — unlike Spanish, you cannot drop it.',
+            ],
+          },
+          {
+            h: 'Conjugaison des verbes en -ER',
+            p: [
+              'Pattern for parler (to speak): je parle, tu parles, il/elle parle, nous parlons, vous parlez, ils/elles parlent.',
+              'Endings: -e, -es, -e, -ons, -ez, -ent. The -e, -es, and -ent endings are silent — parle/parles/parlent all sound alike.',
+            ],
+          },
+          {
+            h: 'Verbes fréquents en -ER',
+            p: [
+              'aimer (to like/love), habiter (to live), travailler (to work), manger (to eat), regarder (to watch), écouter (to listen), parler (to speak).',
+              'All follow the same pattern as parler. Manger adds an -e in the nous form: nous mangeons.',
+            ],
+          },
+          {
+            h: 'Élision et liaison',
+            p: [
+              'Before a vowel or mute h, je becomes j\': j\'aime, j\'habite, j\'écoute.',
+              'In "nous aimons", the s of nous links to the vowel (liaison): /nuz‿ɛmɔ̃/.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"Vous" form of "parler"?',
+            opts: ['parlons', 'parlent', 'parlez', 'parles'],
+            ans: 2,
+            exp: '"Vous" takes "-ez" for -ER verbs: vous parlez.',
+          },
+          {
+            q: '"Nous" form of "aimer"?',
+            opts: ['aiment', 'aimez', 'aimes', 'aimons'],
+            ans: 3,
+            exp: '"Nous" takes "-ons": nous aimons.',
+          },
+          {
+            q: '"Je" becomes "j\'" before?',
+            opts: ['A consonant', 'A vowel or mute h', 'The verb être only', 'Any verb'],
+            ans: 1,
+            exp: 'Élision: je → j\' before a vowel sound (j\'aime, j\'habite).',
+          },
+          {
+            q: 'Ending for "ils/elles" in -ER verbs?',
+            opts: ['-ez', '-ons', '-ent', '-es'],
+            ans: 2,
+            exp: '"Ils/elles" takes "-ent": ils parlent. This ending is silent.',
+          },
+          {
+            q: 'Which verb follows the standard -ER pattern?',
+            opts: ['être', 'avoir', 'aller', 'habiter'],
+            ans: 3,
+            exp: '"Habiter" is a regular -ER verb. Être, avoir, aller are all irregular.',
+          },
+        ],
+      },
+
+      // ── Lesson 7 — La négation et l\'interrogation ───────────────────────
+      {
+        id: 'fr-l07',
+        title: 'La négation et l\'interrogation',
+        icon: '❓',
+        cards: [
+          {
+            h: 'La négation: ne...pas',
+            p: [
+              'Wrap the conjugated verb with ne...pas: Je parle → Je ne parle pas.',
+              'In informal spoken French the ne is often dropped: "Je parle pas" (speech only, not written).',
+            ],
+          },
+          {
+            h: 'Interrogation par intonation',
+            p: [
+              'The simplest way to ask a question: keep the same word order and raise your voice.',
+              '"Tu parles français?" — identical to the statement, distinguished only by intonation.',
+            ],
+          },
+          {
+            h: 'Est-ce que',
+            p: [
+              'Add "est-ce que" before the subject for a neutral written or spoken question.',
+              '"Est-ce que tu parles français?" — no inversion needed, correct in all registers.',
+            ],
+          },
+          {
+            h: 'L\'inversion',
+            p: [
+              'Swap the subject pronoun and verb, joined by a hyphen: Parles-tu français? (formal).',
+              'Add -t- between vowels for pronunciation: Parle-t-il français? Mange-t-elle ici?',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"I do not speak" in French?',
+            opts: ['Je parle non', 'Je pas parle', 'Je ne parle pas', 'Ne je parle pas'],
+            ans: 2,
+            exp: 'Ne...pas wraps the verb: Je NE parle PAS.',
+          },
+          {
+            q: '"Est-ce que" is placed?',
+            opts: ['After the verb', 'Before the subject', 'At the end', 'After the object'],
+            ans: 1,
+            exp: '"Est-ce que" goes before the subject: Est-ce que tu parles?',
+          },
+          {
+            q: 'Which is the most formal way to ask a question?',
+            opts: ['Rising intonation', 'Est-ce que', 'Inversion (Parlez-vous?)', 'Adding "non?"'],
+            ans: 2,
+            exp: 'Inversion is the most formal interrogation structure.',
+          },
+          {
+            q: 'In informal speech, what is often dropped from "ne...pas"?',
+            opts: ['pas', 'ne', 'the verb', 'the subject'],
+            ans: 1,
+            exp: 'Informal spoken French often omits "ne": "Je sais pas" instead of "Je ne sais pas".',
+          },
+          {
+            q: '"Mange-t-il?" — why the -t-?',
+            opts: ['It is part of the verb', 'For pronunciation between two vowels', 'It is a spelling rule', 'It marks the formal register'],
+            ans: 1,
+            exp: '-t- is inserted between a verb ending in -e and a vowel-starting pronoun for easier pronunciation.',
+          },
+        ],
+      },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UNIT 2 — A2 Élémentaire
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'fr-a2',
+    title: 'A2 — Élémentaire',
+    lessons: [
+
+      // ── Lesson 8 — Le passé composé (avoir) ─────────────────────────────
+      {
+        id: 'fr-l08',
+        title: 'Le passé composé — avec avoir',
+        icon: '⏪',
+        cards: [
+          {
+            h: 'Formation',
+            p: [
+              'Passé composé = avoir (present) + past participle.',
+              'j\'ai, tu as, il/elle a, nous avons, vous avez, ils/elles ont + past participle.',
+            ],
+          },
+          {
+            h: 'Participes passés réguliers',
+            p: [
+              '-ER verbs → -é: parler → parlé, manger → mangé, aimer → aimé.',
+              '-IR verbs → -i: finir → fini, choisir → choisi.',
+              '-RE verbs → -u: vendre → vendu, répondre → répondu.',
+            ],
+          },
+          {
+            h: 'Participes passés irréguliers',
+            p: [
+              'Common irregular past participles to memorise:',
+              'faire → fait, voir → vu, lire → lu, dire → dit, prendre → pris, avoir → eu, être → été, pouvoir → pu, savoir → su.',
+            ],
+          },
+          {
+            h: 'Usage',
+            p: [
+              'Use passé composé for completed past actions with a clear end point.',
+              '"Hier, j\'ai mangé une pizza." (Yesterday, I ate a pizza.) / "Nous avons vu ce film." (We saw that film.)',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'Passé composé = avoir + ?',
+            opts: ['Infinitive', 'Present participle', 'Past participle', 'Imparfait form'],
+            ans: 2,
+            exp: 'Passé composé is formed with the present tense of avoir + the past participle.',
+          },
+          {
+            q: 'Past participle of "finir"?',
+            opts: ['finant', 'finu', 'finis', 'fini'],
+            ans: 3,
+            exp: '-IR verbs form the past participle by replacing -ir with -i: finir → fini.',
+          },
+          {
+            q: 'Past participle of "faire"?',
+            opts: ['faisé', 'faisit', 'fait', 'fairu'],
+            ans: 2,
+            exp: '"Faire" has an irregular past participle: fait.',
+          },
+          {
+            q: '"Nous avons vu" — "vu" is the past participle of?',
+            opts: ['vouloir', 'venir', 'voir', 'vivre'],
+            ans: 2,
+            exp: '"Vu" is the irregular past participle of voir (to see).',
+          },
+          {
+            q: 'Past participle of "parler"?',
+            opts: ['parlant', 'parlu', 'parlé', 'parlis'],
+            ans: 2,
+            exp: '-ER verbs replace -er with -é: parler → parlé.',
+          },
+        ],
+      },
+
+      // ── Lesson 9 — Le passé composé (être) ──────────────────────────────
+      {
+        id: 'fr-l09',
+        title: 'Le passé composé — avec être',
+        icon: '🚶',
+        cards: [
+          {
+            h: 'Verbes avec être',
+            p: [
+              'About 17 intransitive verbs of motion and change of state use être. Remember them as DR MRS VANDERTRAMP:',
+              'Devenir, Revenir, Mourir, Rester, Sortir, Venir, Aller, Naître, Descendre, Entrer, Rentrer, Tomber, Retourner, Arriver, Monter, Partir, Passer.',
+            ],
+          },
+          {
+            h: 'Accord du participe passé',
+            p: [
+              'With être, the past participle agrees with the SUBJECT in gender and number.',
+              'il est allé / elle est allée / ils sont allés / elles sont allées.',
+            ],
+          },
+          {
+            h: 'Verbes réfléchis (pronominaux)',
+            p: [
+              'All reflexive/pronominal verbs also use être in passé composé.',
+              'Je me suis levé(e). Nous nous sommes vus.',
+            ],
+          },
+          {
+            h: 'Exemples en contexte',
+            p: [
+              'Il est parti hier soir. (He left last night.)',
+              'Elles sont arrivées ce matin. (They [fem] arrived this morning.)',
+              'Je me suis couché(e) tard. (I went to bed late.)',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"Je suis allé(e)" uses which auxiliary?',
+            opts: ['avoir', 'être', 'aller', 'faire'],
+            ans: 1,
+            exp: '"Aller" is a DR MRS VANDERTRAMP verb and uses être in passé composé.',
+          },
+          {
+            q: 'Past participle of "partir"?',
+            opts: ['partu', 'partis', 'parti', 'parte'],
+            ans: 2,
+            exp: 'The past participle of "partir" is "parti" (-i). With être: elle est partie.',
+          },
+          {
+            q: '"Elle est arrivée" — why the extra -e on "arrivée"?',
+            opts: ['It is always added', 'Agreement with a feminine subject (être auxiliary)', 'It is irregular', 'It shows plural'],
+            ans: 1,
+            exp: 'With être, the past participle agrees with the subject: elle (feminine) → arrivée.',
+          },
+          {
+            q: 'Reflexive verbs use which auxiliary in passé composé?',
+            opts: ['avoir', 'être', 'aller', 'faire'],
+            ans: 1,
+            exp: 'All pronominal/reflexive verbs use être: je me suis levé(e).',
+          },
+          {
+            q: 'Which verb uses être in passé composé?',
+            opts: ['parler', 'finir', 'aller', 'vendre'],
+            ans: 2,
+            exp: '"Aller" (to go) is a DR MRS VANDERTRAMP verb and uses être. The others use avoir.',
+          },
+        ],
+      },
+
+      // ── Lesson 10 — L\'imparfait ─────────────────────────────────────────
+      {
+        id: 'fr-l10',
+        title: 'L\'imparfait',
+        icon: '🔁',
+        cards: [
+          {
+            h: 'Formation',
+            p: [
+              'Take the nous form of the present tense, drop -ons, then add imparfait endings.',
+              'Endings: -ais, -ais, -ait, -ions, -iez, -aient.',
+            ],
+          },
+          {
+            h: 'Exemple: parler',
+            p: [
+              'Nous parlons → stem: parl-',
+              'je parlais, tu parlais, il/elle parlait, nous parlions, vous parliez, ils/elles parlaient.',
+            ],
+          },
+          {
+            h: 'Être — exception',
+            p: [
+              '"Être" is the only verb with an irregular imparfait stem: ét-.',
+              'j\'étais, tu étais, il était, nous étions, vous étiez, ils étaient.',
+            ],
+          },
+          {
+            h: 'Usage',
+            p: [
+              'Use imparfait for: (1) ongoing background actions, (2) habitual/repeated past actions, (3) descriptions in the past.',
+              '"Il pleuvait" (it was raining — background) vs "Il a plu" (it rained — single completed event).',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'The imparfait stem comes from?',
+            opts: ['The infinitive', 'The ils/elles present form', 'The nous present form (drop -ons)', 'The past participle'],
+            ans: 2,
+            exp: 'Remove -ons from the nous form of the present tense to get the imparfait stem.',
+          },
+          {
+            q: '"je" ending in the imparfait?',
+            opts: ['-e', '-ais', '-ai', '-ait'],
+            ans: 1,
+            exp: 'Imparfait endings for je: -ais (je parlais, je finissais).',
+          },
+          {
+            q: 'Imparfait of "être" for "je"?',
+            opts: ['suis', 'serai', 'serais', 'étais'],
+            ans: 3,
+            exp: '"Être" has an irregular imparfait stem ét-: j\'étais.',
+          },
+          {
+            q: 'Imparfait is used for?',
+            opts: ['A single completed past action', 'Ongoing or habitual past actions / descriptions', 'Future plans', 'Polite requests'],
+            ans: 1,
+            exp: 'Imparfait = ongoing, habitual, or descriptive past. Passé composé = completed event.',
+          },
+          {
+            q: 'Which sentence correctly uses imparfait for a habitual past?',
+            opts: ['Hier, il est parti tôt.', 'Demain, je parlerai.', 'Quand j\'étais jeune, je jouais au foot.', 'Elle a mangé une pomme.'],
+            ans: 2,
+            exp: '"Je jouais" = I used to play — a repeated habit in the past, expressed with imparfait.',
+          },
+        ],
+      },
+
+      // ── Lesson 11 — Le futur proche et le futur simple ──────────────────
+      {
+        id: 'fr-l11',
+        title: 'Le futur proche & le futur simple',
+        icon: '🔮',
+        cards: [
+          {
+            h: 'Futur proche',
+            p: [
+              'Aller (present) + infinitif = planned or imminent action.',
+              'Je vais manger. / Nous allons partir demain. / Il va pleuvoir.',
+            ],
+          },
+          {
+            h: 'Futur simple — formation',
+            p: [
+              'Add these endings to the infinitive: -ai, -as, -a, -ons, -ez, -ont.',
+              '-RE verbs drop the final -e before adding endings: vendre → vendr- → je vendrai.',
+            ],
+          },
+          {
+            h: 'Futur simple — exemple',
+            p: [
+              'parler: je parlerai, tu parleras, il parlera, nous parlerons, vous parlerez, ils parleront.',
+            ],
+          },
+          {
+            h: 'Stems irréguliers',
+            p: [
+              'être → ser-, avoir → aur-, aller → ir-, faire → fer-, venir → viendr-, pouvoir → pourr-, vouloir → voudr-.',
+              'The endings are always regular: add -ai, -as, -a, -ons, -ez, -ont to these irregular stems.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"Je vais partir" — which tense?',
+            opts: ['Futur simple', 'Futur proche', 'Conditionnel', 'Présent'],
+            ans: 1,
+            exp: 'Futur proche = aller (présent) + infinitif. Je vais partir = I am going to leave.',
+          },
+          {
+            q: 'Futur simple of "parler" for "je"?',
+            opts: ['parlais', 'parle', 'parlé', 'parlerai'],
+            ans: 3,
+            exp: 'Futur simple: infinitive + -ai. parler → je parlerai.',
+          },
+          {
+            q: 'Irregular futur simple stem of "être"?',
+            opts: ['êtr-', 'ét-', 'ser-', 'est-'],
+            ans: 2,
+            exp: '"Être" has the irregular futur stem ser-: je serai, tu seras...',
+          },
+          {
+            q: 'Which tense uses "aller + infinitif"?',
+            opts: ['Futur simple', 'Futur proche', 'Imparfait', 'Conditionnel'],
+            ans: 1,
+            exp: 'Futur proche is formed with the present tense of aller + infinitive.',
+          },
+          {
+            q: '"Ils partiront" means?',
+            opts: ['They left', 'They were leaving', 'They will leave', 'They are leaving'],
+            ans: 2,
+            exp: '"Partiront" is the futur simple (ils form) of partir: they will leave.',
+          },
+        ],
+      },
+
+      // ── Lesson 12 — Les verbes pronominaux ──────────────────────────────
+      {
+        id: 'fr-l12',
+        title: 'Les verbes pronominaux',
+        icon: '🪞',
+        cards: [
+          {
+            h: 'Qu\'est-ce qu\'un verbe pronominal ?',
+            p: [
+              'A pronominal verb includes a reflexive pronoun referring back to the subject.',
+              'Reflexive pronouns: me (myself), te (yourself), se (himself/herself/themselves), nous (ourselves), vous (yourselves).',
+            ],
+          },
+          {
+            h: 'Conjugaison: se lever',
+            p: [
+              'je me lève, tu te lèves, il/elle se lève, nous nous levons, vous vous levez, ils/elles se lèvent.',
+              'The reflexive pronoun always matches the subject.',
+            ],
+          },
+          {
+            h: 'Verbes pronominaux courants',
+            p: [
+              'se lever (get up), se laver (wash oneself), se coucher (go to bed), s\'habiller (get dressed), se souvenir (remember), s\'appeler (be called), se reposer (rest).',
+            ],
+          },
+          {
+            h: 'Passé composé',
+            p: [
+              'Pronominal verbs always use être in passé composé.',
+              'Je me suis levé(e). Elle s\'est habillée. Ils se sont levés.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"Se coucher" means?',
+            opts: ['To lie down/go to bed', 'To cook', 'To cut', 'To run'],
+            ans: 0,
+            exp: '"Se coucher" = to go to bed / to lie down.',
+          },
+          {
+            q: 'Reflexive pronoun for "nous"?',
+            opts: ['se', 'nous', 'me', 'vous'],
+            ans: 1,
+            exp: 'The reflexive pronoun for nous is also "nous": nous nous levons.',
+          },
+          {
+            q: '"Je me lève" means?',
+            opts: ['I am lying down', 'I wash myself', 'I get up', 'I go to bed'],
+            ans: 2,
+            exp: '"Je me lève" = I get up (from se lever).',
+          },
+          {
+            q: 'Pronominal verbs use which auxiliary in passé composé?',
+            opts: ['avoir', 'être', 'aller', 'faire'],
+            ans: 1,
+            exp: 'All pronominal verbs use être: je me suis levé(e).',
+          },
+          {
+            q: 'Reflexive pronoun for "tu"?',
+            opts: ['se', 'me', 'te', 'vous'],
+            ans: 2,
+            exp: 'The reflexive pronoun for tu is "te": tu te lèves.',
+          },
+        ],
+      },
+
+      // ── Lesson 13 — Les pronoms COD et COI ──────────────────────────────
+      {
+        id: 'fr-l13',
+        title: 'Les pronoms COD et COI',
+        icon: '🔗',
+        cards: [
+          {
+            h: 'Pronoms COD (objet direct)',
+            p: [
+              'Replace a direct object noun: me, te, le/la, nous, vous, les.',
+              '"Je vois Marie" → "Je la vois." (I see her.) / "Il mange le gâteau" → "Il le mange."',
+            ],
+          },
+          {
+            h: 'Pronoms COI (objet indirect)',
+            p: [
+              'Replace à + person: me, te, lui, nous, vous, leur.',
+              '"Je parle à Pierre" → "Je lui parle." (I speak to him.) / "Elle téléphone à ses amis" → "Elle leur téléphone."',
+            ],
+          },
+          {
+            h: 'Position',
+            p: [
+              'Object pronouns go BEFORE the conjugated verb (or the auxiliary in compound tenses).',
+              '"Je le mange." / "Je l\'ai mangé." / "Je ne le vois pas."',
+            ],
+          },
+          {
+            h: 'COD vs COI',
+            p: [
+              'COD: verb takes a direct object with no preposition — voir, manger, aimer, connaître, regarder.',
+              'COI: verb takes à + person — parler à, téléphoner à, donner à, écrire à, répondre à.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"Je le vois" — "le" is which type of pronoun?',
+            opts: ['COI (indirect object)', 'COD (direct object)', 'Reflexive', 'Relative'],
+            ans: 1,
+            exp: '"Le" is the masculine singular COD (direct object pronoun).',
+          },
+          {
+            q: 'COI pronoun for "he / she"?',
+            opts: ['lui', 'le', 'la', 'leur'],
+            ans: 0,
+            exp: '"Lui" is the COI pronoun for he/she: Je lui parle = I speak to him/her.',
+          },
+          {
+            q: '"Nous leur parlons" — "leur" means?',
+            opts: ['To him', 'To her', 'To them', 'For us'],
+            ans: 2,
+            exp: '"Leur" is the plural COI pronoun meaning "to them".',
+          },
+          {
+            q: 'Where do COD/COI pronouns go?',
+            opts: ['After the verb', 'Before the conjugated verb', 'At the end of the sentence', 'After the subject'],
+            ans: 1,
+            exp: 'Object pronouns go directly before the conjugated verb: Je le mange.',
+          },
+          {
+            q: '"Je lui téléphone" — why "lui" not "le"?',
+            opts: ['"Lui" is masculine', '"Téléphoner" takes à (indirect object)', '"Le" is only for objects', '"Lui" is always used after verbs'],
+            ans: 1,
+            exp: '"Téléphoner à" takes an indirect object (à + person), so the COI "lui" is correct.',
+          },
+        ],
+      },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UNIT 3 — B1 Intermédiaire
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'fr-b1',
+    title: 'B1 — Intermédiaire',
+    lessons: [
+
+      // ── Lesson 14 — Le conditionnel présent ─────────────────────────────
+      {
+        id: 'fr-l14',
+        title: 'Le conditionnel présent',
+        icon: '💭',
+        cards: [
+          {
+            h: 'Formation',
+            p: [
+              'Conditionnel présent = futur simple stem + imparfait endings.',
+              'Endings: -ais, -ais, -ait, -ions, -iez, -aient (same as imparfait).',
+            ],
+          },
+          {
+            h: 'Exemple: parler',
+            p: [
+              'je parlerais, tu parlerais, il/elle parlerait, nous parlerions, vous parleriez, ils/elles parleraient.',
+              'Irregular stems are the same as futur simple: être → ser-, avoir → aur-, aller → ir-, faire → fer-.',
+            ],
+          },
+          {
+            h: 'Usage 1 — politesse',
+            p: [
+              'The conditionnel softens requests and makes them more polite.',
+              '"Je voudrais un café, s\'il vous plaît." (I would like a coffee.) — much more polite than "Je veux".',
+            ],
+          },
+          {
+            h: 'Usage 2 — hypothèse',
+            p: [
+              'Si + imparfait → conditionnel for hypothetical "if" sentences.',
+              '"Si j\'avais de l\'argent, j\'achèterais une voiture." (If I had money, I would buy a car.)',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'Conditionnel endings are the same as?',
+            opts: ['Futur simple', 'Présent', 'Imparfait', 'Subjonctif'],
+            ans: 2,
+            exp: 'Conditionnel = futur stem + imparfait endings (-ais, -ais, -ait, -ions, -iez, -aient).',
+          },
+          {
+            q: 'Conditionnel uses stems from which tense?',
+            opts: ['Présent', 'Imparfait', 'Futur simple', 'Passé composé'],
+            ans: 2,
+            exp: 'The conditionnel uses the same stems as the futur simple.',
+          },
+          {
+            q: '"Je voudrais" expresses?',
+            opts: ['A past action', 'A polite request', 'A habitual action', 'A completed event'],
+            ans: 1,
+            exp: '"Je voudrais" (conditionnel of vouloir) = I would like — used for polite requests.',
+          },
+          {
+            q: '"Si j\'avais le temps, je ___" — which tense fills the blank?',
+            opts: ['Futur simple', 'Présent', 'Imparfait', 'Conditionnel présent'],
+            ans: 3,
+            exp: 'Si + imparfait → conditionnel: Si j\'avais le temps, je voyagerais.',
+          },
+          {
+            q: 'Conditionnel of "être" for "elle"?',
+            opts: ['sera', 'était', 'soit', 'serait'],
+            ans: 3,
+            exp: '"Être" conditionnel stem = ser-. elle serait = she would be.',
+          },
+        ],
+      },
+
+      // ── Lesson 15 — Le subjonctif présent ───────────────────────────────
+      {
+        id: 'fr-l15',
+        title: 'Le subjonctif présent',
+        icon: '🌀',
+        cards: [
+          {
+            h: 'Formation',
+            p: [
+              'Take the ils/elles form of the present tense, drop -ent, add subjonctif endings.',
+              'Endings: -e, -es, -e, -ions, -iez, -ent.',
+            ],
+          },
+          {
+            h: 'Exemple: parler',
+            p: [
+              'ils parlent → stem: parl-',
+              'que je parle, que tu parles, qu\'il parle, que nous parlions, que vous parliez, qu\'ils parlent.',
+            ],
+          },
+          {
+            h: 'Verbes déclencheurs',
+            p: [
+              'The subjonctif is triggered by: vouloir que, il faut que, souhaiter que, douter que, être content(e) que.',
+              'And conjunctions: bien que (although), pour que (so that), à moins que (unless), avant que (before).',
+            ],
+          },
+          {
+            h: 'Subjonctifs irréguliers',
+            p: [
+              'Key irregular subjonctifs: être → soit, avoir → ait, aller → aille, faire → fasse, pouvoir → puisse, savoir → sache.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'The subjonctif stem comes from?',
+            opts: ['The infinitive', 'The nous present (drop -ons)', 'The ils/elles present (drop -ent)', 'The past participle'],
+            ans: 2,
+            exp: 'Subjonctif stem = ils/elles present form minus -ent.',
+          },
+          {
+            q: '"Il faut que" triggers which mood?',
+            opts: ['Indicatif', 'Conditionnel', 'Subjonctif', 'Infinitif'],
+            ans: 2,
+            exp: '"Il faut que" always requires the subjonctif.',
+          },
+          {
+            q: 'Subjonctif of "être" for "il"?',
+            opts: ['est', 'était', 'serait', 'soit'],
+            ans: 3,
+            exp: '"Être" has an irregular subjonctif: que je sois, que tu sois, qu\'il soit.',
+          },
+          {
+            q: '"bien que" (although) is followed by?',
+            opts: ['Indicatif', 'Conditionnel', 'Infinitif', 'Subjonctif'],
+            ans: 3,
+            exp: '"Bien que" always takes the subjonctif: bien qu\'il soit tard.',
+          },
+          {
+            q: '"que je parle" — "parle" is which mood?',
+            opts: ['Indicatif présent', 'Imparfait', 'Subjonctif', 'Conditionnel'],
+            ans: 2,
+            exp: 'After "que" following a trigger verb, the verb is in the subjonctif.',
+          },
+        ],
+      },
+
+      // ── Lesson 16 — Les pronoms relatifs ────────────────────────────────
+      {
+        id: 'fr-l16',
+        title: 'Les pronoms relatifs',
+        icon: '🔀',
+        cards: [
+          {
+            h: 'qui — sujet',
+            p: [
+              '"Qui" replaces the SUBJECT of the relative clause.',
+              '"L\'homme qui parle est mon professeur." (The man who speaks is my teacher.)',
+            ],
+          },
+          {
+            h: 'que — objet direct',
+            p: [
+              '"Que" replaces the DIRECT OBJECT of the relative clause.',
+              '"Le film que je regarde est passionnant." (The film that I am watching is fascinating.)',
+            ],
+          },
+          {
+            h: 'dont — après "de"',
+            p: [
+              '"Dont" replaces de + noun, used after verbs and expressions that require de.',
+              '"Le livre dont j\'ai besoin." (avoir besoin de) / "La femme dont il parle." (parler de)',
+            ],
+          },
+          {
+            h: 'où — lieu ou temps',
+            p: [
+              '"Où" replaces a place or time expression.',
+              '"Le restaurant où nous mangeons." (where) / "Le jour où je suis arrivé." (when)',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: '"L\'homme ___ parle" — subject relative pronoun?',
+            opts: ['que', 'dont', 'où', 'qui'],
+            ans: 3,
+            exp: '"Qui" is the subject relative pronoun: l\'homme qui parle.',
+          },
+          {
+            q: '"Le livre ___ je lis" — direct object relative pronoun?',
+            opts: ['qui', 'dont', 'où', 'que'],
+            ans: 3,
+            exp: '"Que" is the direct object relative pronoun: le livre que je lis.',
+          },
+          {
+            q: '"dont" is used after expressions with?',
+            opts: ['à', 'de', 'en', 'par'],
+            ans: 1,
+            exp: '"Dont" replaces de + noun: avoir besoin de → dont j\'ai besoin.',
+          },
+          {
+            q: '"Le pays ___ je vis" — which relative pronoun?',
+            opts: ['qui', 'que', 'dont', 'où'],
+            ans: 3,
+            exp: '"Où" is used for place or time: le pays où je vis = the country where I live.',
+          },
+          {
+            q: '"qui" vs "que" — which replaces the SUBJECT?',
+            opts: ['que', 'qui', 'Both can', 'Neither'],
+            ans: 1,
+            exp: '"Qui" = subject; "que" = direct object. L\'homme qui parle / Le livre que je lis.',
           },
         ],
       },

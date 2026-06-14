@@ -4782,3 +4782,257 @@ body.dark[data-subject="code-route"] { --subj: #f87171; --subj-rgb: 248,113,113;
   .subject-cards { grid-template-columns: 1fr; }
   .subject-switcher-btn { max-width: 160px; font-size: .75rem; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SUBJECT VISUAL THEMES
+   Each subject has a totally distinct identity: different palette, background
+   texture/pattern, header gradient, card shape, and navigation style.
+   These rules come after the base --subj variable overrides above and win
+   on specificity for every property they touch.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ────────────────────────────────────────────────────────────────────────────
+   AAT – CORPORATE BLUEPRINT
+   Feel: precise, data-forward, spreadsheet-like.
+   Grid-line background · sharp-cornered cards with blue left stripe ·
+   slightly rectangular nav tabs.
+   ──────────────────────────────────────────────────────────────────────────── */
+body[data-subject="aat"] {
+  --subj: #2563eb; --subj-rgb: 37,99,235; --subj-light: rgba(37,99,235,.08);
+  --bg: #ECF2FC;
+}
+body[data-subject="aat"]::before {
+  background:
+    linear-gradient(rgba(37,99,235,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,.055) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 50% at 25% -5%, rgba(29,78,216,.10) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 85% 105%, rgba(37,99,235,.06) 0%, transparent 65%);
+  background-size: 36px 36px, 36px 36px, auto, auto;
+}
+body[data-subject="aat"] .topic-card,
+body[data-subject="aat"] .score-card,
+body[data-subject="aat"] .unit-card {
+  border-left: 4px solid #2563eb;
+  border-radius: 12px;
+}
+body[data-subject="aat"] .journey-node          { border-radius: 12px; }
+body[data-subject="aat"] .nav-tab               { border-radius: 8px; }
+body[data-subject="aat"] .nav-tab.active        { border-radius: 8px; }
+
+body.dark[data-subject="aat"] {
+  --subj: #60a5fa; --subj-rgb: 96,165,250; --subj-light: rgba(96,165,250,.12);
+  --bg: #0A1120;
+}
+body.dark[data-subject="aat"]::before {
+  background:
+    linear-gradient(rgba(96,165,250,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96,165,250,.045) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 50% at 25% -5%, rgba(96,165,250,.09) 0%, transparent 65%);
+  background-size: 36px 36px, 36px 36px, auto;
+}
+body.dark[data-subject="aat"] .topic-card,
+body.dark[data-subject="aat"] .score-card,
+body.dark[data-subject="aat"] .unit-card {
+  border-left: 4px solid #60a5fa;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+   FRENCH – PARISIAN WARMTH
+   Feel: cultured, warm, literary.
+   Deep navy header with French tricolor bottom stripe · warm cream background
+   with diagonal watermark lines · warm-tinted cards.
+   ──────────────────────────────────────────────────────────────────────────── */
+body[data-subject="french"] {
+  --subj: #00267a; --subj-rgb: 0,38,122; --subj-light: rgba(0,38,122,.08);
+  --header-bg:  linear-gradient(135deg, #000B3D 0%, #001F78 45%, #0034B0 100%);
+  --bg:         #FEF8EF;
+  --bg-elevated:#FFFDF8;
+  --card:       #FFFDF8;
+  --border:     rgba(0,38,122,.13);
+}
+body[data-subject="french"]::before {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(0,38,122,.035) 0, rgba(0,38,122,.035) 1px,
+      transparent 1px, transparent 26px
+    ),
+    radial-gradient(ellipse 70% 50% at 75% -5%, rgba(0,52,176,.08) 0%, transparent 60%);
+}
+body[data-subject="french"] header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 4px 24px -4px rgba(0,31,120,.55);
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(90deg, #002395 33.33%, #ffffff 33.33% 66.66%, #ED2939 66.66%) 1;
+}
+body[data-subject="french"] .topic-card,
+body[data-subject="french"] .score-card,
+body[data-subject="french"] .unit-card {
+  background: #FFFDF8;
+  border-color: rgba(0,38,122,.14);
+  box-shadow: 0 2px 16px -6px rgba(0,38,122,.12);
+}
+
+body.dark[data-subject="french"] {
+  --subj: #93b4ff; --subj-rgb: 147,180,255; --subj-light: rgba(147,180,255,.10);
+  --header-bg:  linear-gradient(135deg, #000520 0%, #001065 45%, #001E94 100%);
+  --bg:         #07090F;
+  --bg-elevated:#0D1130;
+  --card:       #0D1130;
+  --border:     rgba(147,180,255,.16);
+}
+body.dark[data-subject="french"]::before {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(147,180,255,.04) 0, rgba(147,180,255,.04) 1px,
+      transparent 1px, transparent 26px
+    );
+}
+body.dark[data-subject="french"] header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 4px 24px -4px rgba(0,20,100,.7);
+  border-image: linear-gradient(90deg, #4D6ECC 33.33%, rgba(255,255,255,.35) 33.33% 66.66%, #CC4455 66.66%) 1;
+}
+body.dark[data-subject="french"] .topic-card,
+body.dark[data-subject="french"] .score-card,
+body.dark[data-subject="french"] .unit-card {
+  background: #0D1130;
+  box-shadow: 0 2px 16px -6px rgba(0,38,122,.25);
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+   LSF – EXPRESSIVE CANVAS
+   Feel: inclusive, warm, expressive, visual.
+   Rich purple gradient header · soft lavender background with dot texture ·
+   very rounded cards with gentle purple glow · generous border-radius overall.
+   ──────────────────────────────────────────────────────────────────────────── */
+body[data-subject="lsf"] {
+  --subj: #7c3aed; --subj-rgb: 124,58,237; --subj-light: rgba(124,58,237,.08);
+  --header-bg:  linear-gradient(135deg, #2E0066 0%, #5B21B6 48%, #7C3AED 100%);
+  --bg:         #F3EFFD;
+  --bg-elevated:#FDFAFF;
+  --card:       #FDFAFF;
+  --border:     rgba(124,58,237,.16);
+  --r-lg:       22px;
+  --r-xl:       28px;
+}
+body[data-subject="lsf"]::before {
+  background:
+    radial-gradient(circle, rgba(124,58,237,.07) 1.5px, transparent 1.5px),
+    radial-gradient(ellipse 65% 50% at 10% -5%, rgba(109,40,217,.13) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 50% at 90% 105%, rgba(196,181,253,.18) 0%, transparent 60%);
+  background-size: 24px 24px, auto, auto;
+}
+body[data-subject="lsf"] header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.10) inset, 0 4px 28px -4px rgba(91,33,182,.65);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+body[data-subject="lsf"] .topic-card,
+body[data-subject="lsf"] .score-card,
+body[data-subject="lsf"] .unit-card {
+  background: #FDFAFF;
+  border-radius: 26px;
+  border-color: rgba(124,58,237,.16);
+  box-shadow: 0 4px 28px -6px rgba(124,58,237,.20);
+}
+body[data-subject="lsf"] .journey-node   { border-radius: 26px; }
+body[data-subject="lsf"] .nav-tab        { border-radius: 999px; }
+body[data-subject="lsf"] .nav-tab.active { border-radius: 999px; }
+body[data-subject="lsf"] .btn-primary    { border-radius: 999px; }
+body[data-subject="lsf"] .btn-secondary  { border-radius: 999px; }
+
+body.dark[data-subject="lsf"] {
+  --subj: #c4b5fd; --subj-rgb: 196,181,253; --subj-light: rgba(196,181,253,.10);
+  --header-bg:  linear-gradient(135deg, #1A0040 0%, #3B0E82 48%, #5B21B6 100%);
+  --bg:         #090514;
+  --bg-elevated:#100826;
+  --card:       #100826;
+  --border:     rgba(196,181,253,.18);
+}
+body.dark[data-subject="lsf"]::before {
+  background:
+    radial-gradient(circle, rgba(196,181,253,.055) 1.5px, transparent 1.5px),
+    radial-gradient(ellipse 65% 50% at 10% -5%, rgba(124,58,237,.13) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 50% at 90% 105%, rgba(91,33,182,.12) 0%, transparent 60%);
+  background-size: 24px 24px, auto, auto;
+}
+body.dark[data-subject="lsf"] header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 4px 28px -4px rgba(58,16,140,.7);
+}
+body.dark[data-subject="lsf"] .topic-card,
+body.dark[data-subject="lsf"] .score-card,
+body.dark[data-subject="lsf"] .unit-card {
+  background: #100826;
+  box-shadow: 0 4px 28px -6px rgba(124,58,237,.28);
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+   CODE DE LA ROUTE – OFFICIAL ROAD MANUAL
+   Feel: authoritative, bold, high-contrast.
+   Near-black header with red warning stripe · neutral road-gray background
+   with diagonal caution lines · sharp-cornered cards with red top accent ·
+   rectangular nav tabs.
+   ──────────────────────────────────────────────────────────────────────────── */
+body[data-subject="code-route"] {
+  --subj: #b91c1c; --subj-rgb: 185,28,28; --subj-light: rgba(185,28,28,.08);
+  --header-bg:  linear-gradient(150deg, #111111 0%, #1C0404 55%, #2A0606 100%);
+  --bg:         #F2F1EF;
+  --bg-elevated:#FFFFFF;
+  --card:       #FFFFFF;
+  --border:     rgba(0,0,0,.16);
+  --r-md:       8px;
+  --r-lg:       10px;
+  --r-xl:       12px;
+}
+body[data-subject="code-route"]::before {
+  background:
+    repeating-linear-gradient(
+      -58deg,
+      rgba(185,28,28,.038) 0, rgba(185,28,28,.038) 2px,
+      transparent 2px, transparent 22px
+    ),
+    radial-gradient(ellipse 80% 40% at 50% -5%, rgba(185,28,28,.07) 0%, transparent 55%);
+}
+body[data-subject="code-route"] header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 4px 24px -4px rgba(0,0,0,.55);
+  border-bottom: 3px solid #b91c1c;
+}
+body[data-subject="code-route"] .topic-card,
+body[data-subject="code-route"] .score-card,
+body[data-subject="code-route"] .unit-card {
+  border-radius: 10px;
+  border-top: 3px solid #b91c1c;
+  border-left: 1px solid var(--border);
+  box-shadow: 0 2px 10px -4px rgba(0,0,0,.14);
+}
+body[data-subject="code-route"] .journey-node   { border-radius: 8px; }
+body[data-subject="code-route"] .nav-tab        { border-radius: 6px; }
+body[data-subject="code-route"] .nav-tab.active { border-radius: 6px; }
+body[data-subject="code-route"] .btn-primary    { border-radius: 8px; }
+body[data-subject="code-route"] .btn-secondary  { border-radius: 8px; }
+
+body.dark[data-subject="code-route"] {
+  --subj: #f87171; --subj-rgb: 248,113,113; --subj-light: rgba(248,113,113,.10);
+  --header-bg:  linear-gradient(150deg, #0A0A0A 0%, #160202 55%, #200404 100%);
+  --bg:         #0F0F0F;
+  --bg-elevated:#1A1A1A;
+  --card:       #1A1A1A;
+  --border:     rgba(255,255,255,.13);
+}
+body.dark[data-subject="code-route"]::before {
+  background:
+    repeating-linear-gradient(
+      -58deg,
+      rgba(248,113,113,.04) 0, rgba(248,113,113,.04) 2px,
+      transparent 2px, transparent 22px
+    );
+}
+body.dark[data-subject="code-route"] header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 4px 24px -4px rgba(0,0,0,.7);
+  border-bottom: 3px solid #f87171;
+}
+body.dark[data-subject="code-route"] .topic-card,
+body.dark[data-subject="code-route"] .score-card,
+body.dark[data-subject="code-route"] .unit-card {
+  border-top-color: #f87171;
+  background: #1A1A1A;
+}
