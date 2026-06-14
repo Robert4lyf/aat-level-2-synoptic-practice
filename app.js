@@ -321,6 +321,8 @@
     },
   ];
 
+  const UNIT_EXAM_WEIGHT = { itbk: 40, pobc: 30, poc: 15, besy: 15 };
+
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -618,6 +620,11 @@
     { id: 'unit-complete', icon: '🏆', name: 'Unit master', desc: 'Pass all 4 unit quizzes', hint: 'All 4 unit quizzes passed' },
     { id: 'combo-5', icon: '🔥', name: 'On fire', desc: 'Get 5 answers correct in a row in one practice session', hint: '5-answer combo in practice' },
     { id: 'perfect-practice', icon: '🎖️', name: 'Perfection', desc: 'Score 100% on a practice session of 10+ questions', hint: '100% on 10+ question session' },
+    { id: 'unit-itbk', icon: '🧮', name: 'ITBK Master', desc: 'Complete all Introduction to Bookkeeping lessons', hint: 'All ITBK lessons done' },
+    { id: 'unit-pobc', icon: '📊', name: 'POBC Master', desc: 'Complete all Principles of Bookkeeping lessons', hint: 'All POBC lessons done' },
+    { id: 'unit-poc', icon: '💸', name: 'POC Master', desc: 'Complete all Principles of Costing lessons', hint: 'All POC lessons done' },
+    { id: 'unit-besy', icon: '🏢', name: 'BESY Master', desc: 'Complete all Business Environment lessons', hint: 'All BESY lessons done' },
+    { id: 'all-units', icon: '👑', name: 'Grand Master', desc: 'Complete every lesson in every unit', hint: 'All 56 lessons done' },
   ];
   function badgeEarnedTest(id) {
     const d = Storage.data;
@@ -648,6 +655,14 @@
       case 'unit-complete': {
         const ut = d.learn.unitTests || {};
         return window.LEARN_PATH && window.LEARN_PATH.length > 0 && window.LEARN_PATH.every(u => ut[u.unit] && ut[u.unit].passed);
+      }
+      case 'unit-itbk': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='itbk')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'unit-pobc': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='pobc')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'unit-poc':  return !!((window.LEARN_PATH||[]).find(u=>u.unit==='poc')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'unit-besy': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='besy')?.lessons.every(l=>isLessonDone(l.id)));
+      case 'all-units': {
+        const all = allLessons();
+        return all.length > 0 && all.every(L => isLessonDone(L.id));
       }
     }
     return false;
@@ -691,6 +706,11 @@
       case 'unit-complete': { const ut = d.learn.unitTests || {}; return { cur: (window.LEARN_PATH || []).filter(u => ut[u.unit] && ut[u.unit].passed).length, max: (window.LEARN_PATH || []).length || 4 }; }
       case 'combo-5':       return { cur: Math.min(5, d.learn.bestCombo || 0), max: 5 };
       case 'perfect-practice': return { cur: d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100) ? 1 : 0, max: 1 };
+      case 'unit-itbk': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='itbk'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'unit-pobc': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='pobc'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'unit-poc':  { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='poc');  return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'unit-besy': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='besy'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
+      case 'all-units': { const all = allLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
       default: return { cur: 0, max: 1 };
     }
   }
@@ -1199,6 +1219,21 @@
     Calc.reset(); saveSession(); render();
   }
 
+  function startMultiSkillDrill(skillsCsv) {
+    const skills = (skillsCsv || '').split(',').map(s => s.trim()).filter(Boolean);
+    const pool = (window.ALL_QUESTIONS || []).filter(q => skills.includes(q.skill));
+    if (!pool.length) return;
+    const picked = shuffle(pool.slice()).slice(0, Math.min(10, pool.length)).map(presentQuestion);
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
+      questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      hintLevel: 0, hintElim: null, combo: 0,
+    });
+    render();
+  }
+
   /* Progressive hints (practice mode): level 1 = skill strategy, level 2 = formula or 50/50-style elimination */
   function useHint() {
     if (State.answered !== null || State.mode !== 'practice') return;
@@ -1266,7 +1301,8 @@
     if (!found) { showToast('Lesson not found.', 'error'); return; }
     playClick();
     State.screen = 'lesson';
-    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0 };
+    const existingRec = Storage.lessonRec(found.lesson.id);
+    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0 };
     render();
   }
   function lessonContinue() {
@@ -1305,11 +1341,21 @@
     const pct = total ? Math.round((L.qScore / total) * 100) : 0;
     const stars = pct >= 100 ? 3 : pct >= 75 ? 2 : pct >= 50 ? 1 : 0;
     L.phase = 'done'; L.pct = pct; L.stars = stars;
+    L.isPersonalBest = pct >= 50 && stars > (L.prevStars || 0);
     if (pct >= 50) {
       L.firstTime = Storage.completeLesson(L.def.id, stars, pct);
       Storage.save();
       checkBadges();
       if (stars === 3) setTimeout(confetti, 300);
+      // Unit completion celebration
+      const unitDef = (window.LEARN_PATH || []).find(u => u.unit === L.unit);
+      L.unitComplete = unitDef && unitDef.lessons.every(l => isLessonDone(l.id));
+      if (L.unitComplete && !Storage.data.badges['unit-' + L.unit]) {
+        Storage.data.badges['unit-' + L.unit] = Date.now();
+        Storage.addXp(50);
+        Storage.save();
+        setTimeout(() => { confetti(); showToast('🏆 Unit complete! +50 bonus XP', 'success'); }, 600);
+      }
     }
     render();
   }
@@ -1955,6 +2001,68 @@
       </div>` : ''}`;
   }
 
+  function calcReadinessScore() {
+    const stats = Storage.data.stats;
+    const allQ = window.ALL_QUESTIONS || [];
+    const topics = window.TOPICS || [];
+    const accs = topics.map(t => {
+      const s = stats.topics[t.id] || {};
+      return (s.attempts >= 5) ? s.correct / s.attempts : null;
+    }).filter(a => a !== null);
+    const avgAcc = accs.length ? accs.reduce((a, b) => a + b, 0) / accs.length : 0;
+    const accScore = avgAcc * 60;
+    const attempted = Object.values(stats.questions || {}).filter(s => s.attempts > 0).length;
+    const coverageScore = Math.min(attempted / Math.max(allQ.length, 1), 1) * 25;
+    const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (stats.streak || {}).current || 0;
+    const streakScore = Math.min(streak / 7, 1) * 10;
+    const mocks = (Storage.data.history || []).filter(h => h.mode === 'mock');
+    const bestMock = mocks.length ? Math.max(...mocks.map(m => m.pct)) : null;
+    const mockScore = bestMock !== null ? (bestMock / 100) * 5 : 0;
+    return Math.min(Math.round(accScore + coverageScore + streakScore + mockScore), 100);
+  }
+
+  function renderReadinessMeter(score) {
+    const r = 36, circ = +(2 * Math.PI * r).toFixed(1);
+    const offset = +((1 - score / 100) * circ).toFixed(1);
+    const cls = scoreClass(score);
+    const label = score >= 80 ? 'Exam Ready' : score >= 60 ? 'Almost There' : score >= 40 ? 'Getting There' : 'Early Stage';
+    return `<div class="readiness-meter">
+      <div class="readiness-ring-wrap">
+        <svg viewBox="0 0 88 88" width="88" height="88" aria-hidden="true">
+          <circle class="ring-track" cx="44" cy="44" r="${r}" fill="none" stroke-width="7"/>
+          <circle class="ring-fill ring-${cls}" cx="44" cy="44" r="${r}" fill="none" stroke-width="7"
+            stroke-dasharray="${circ}" stroke-dashoffset="${offset}"
+            stroke-linecap="round" transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="readiness-score-overlay">
+          <span class="readiness-score-num">${score}</span>
+          <span class="readiness-score-denom">/100</span>
+        </div>
+      </div>
+      <div class="readiness-label readiness-${cls}">${label}</div>
+    </div>`;
+  }
+
+  function renderWeeklyChart() {
+    const bars = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const rec = Storage.data.daily[key] || {};
+      bars.push({ label: ['S','M','T','W','T','F','S'][d.getDay()], n: rec.answered || 0, isToday: i === 0 });
+    }
+    const peak = Math.max(...bars.map(b => b.n), 1);
+    return `<div class="weekly-chart" aria-label="Questions answered this week">
+      ${bars.map(b => `<div class="wc-col${b.isToday ? ' wc-today' : ''}">
+        <div class="wc-bar-bg"><div class="wc-bar" style="height:${Math.round(b.n / peak * 100)}%"></div></div>
+        <div class="wc-count">${b.n > 0 ? b.n : ''}</div>
+        <div class="wc-label">${b.label}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+
   function renderHomeTab() {
     const counts = {};
     const prog = getGlobalProgress();
@@ -1969,13 +2077,44 @@
       <span><button id="resumeBtn" type="button">Resume</button>
       <button class="dismiss" id="dismissSessionBtn" type="button">Dismiss</button></span>
     </div>` : '';
-    const progressBlock = `<div class="hero-progress" role="group" aria-label="Lifetime progress summary">
-      <div class="hero-stat"><div class="hero-label">Seen</div><div class="hero-value">${prog.seen}<span class="hero-sub"> / ${prog.total}</span></div><div class="hero-bar"><div class="hero-bar-fill" style="width:${prog.seenPct}%"></div></div></div>
-      <div class="hero-stat"><div class="hero-label">Mastery</div><div class="hero-value">${prog.masteryPct}<span class="hero-sub">%</span></div><div class="hero-bar"><div class="hero-bar-fill mastery" style="width:${prog.masteryPct}%"></div></div></div>
-      <div class="hero-stat"><div class="hero-label">Streak 🔥</div><div class="hero-value">${streak.current}<span class="hero-sub"> · best ${streak.best}</span></div></div>
+    const readinessScore = calcReadinessScore();
+    const mocks = (Storage.data.history || []).filter(h => h.mode === 'mock');
+    const bestMock = mocks.length ? Math.max(...mocks.map(m => m.pct)) : null;
+    const liveStreak = Storage.studyDayStreak ? Storage.studyDayStreak() : streak.current;
+    const progressBlock = `<div class="dashboard-hero">
+      <div class="dashboard-left">
+        ${renderReadinessMeter(readinessScore)}
+        <div class="readiness-tip">accuracy · coverage · streak</div>
+      </div>
+      <div class="dashboard-right">
+        <div class="dash-stat-grid">
+          <div class="dash-stat">
+            <div class="dash-stat-val ${scoreClass(prog.masteryPct)}">${prog.masteryPct}%</div>
+            <div class="dash-stat-label">Mastery</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val">${prog.seen}<span class="dash-stat-sub"> / ${prog.total}</span></div>
+            <div class="dash-stat-label">Seen</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val">🔥 ${liveStreak}</div>
+            <div class="dash-stat-label">Day streak</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val ${bestMock !== null ? scoreClass(bestMock) : ''}">${bestMock !== null ? bestMock + '%' : '—'}</div>
+            <div class="dash-stat-label">Best mock</div>
+          </div>
+        </div>
+        ${renderWeeklyChart()}
+      </div>
     </div>`;
 
     window.TOPICS.forEach(t => { counts[t.id] = window.ALL_QUESTIONS.filter(q => q.topic === t.id).length; });
+    const seenByTopic = {};
+    (window.ALL_QUESTIONS || []).forEach(q => {
+      const s = Storage.data.stats.questions[q.id];
+      if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1;
+    });
     const topicMastery = (id) => {
       const ts = Storage.data.stats.topics[id];
       if (!ts || !ts.attempts) return null;
@@ -2038,7 +2177,39 @@
       </button>`;
     }).join('');
 
-    return `${sessionBanner}${progressBlock}
+    const planner = Storage.data.planner || {};
+    const examDateVal = planner.examDate || null;
+    const todayMid = new Date(); todayMid.setHours(0,0,0,0);
+    const todayStr = todayMid.toISOString().slice(0, 10);
+    let countdownHtml = '';
+    if (examDateVal) {
+      const examD = new Date(examDateVal); examD.setHours(0,0,0,0);
+      const daysLeft = Math.max(0, Math.round((examD - todayMid) / 86400000));
+      const dailyTarget = daysLeft > 0 ? Math.max(10, Math.ceil(Math.max(0, 300 - (Storage.data.history || []).reduce((s,h) => s + h.total, 0)) / daysLeft)) : null;
+      const urgCls = daysLeft <= 7 ? ' countdown-urgent' : daysLeft <= 30 ? ' countdown-soon' : '';
+      countdownHtml = `<div class="exam-countdown${urgCls}">
+        <span class="countdown-icon">${daysLeft === 0 ? '🎓' : '📅'}</span>
+        <div class="countdown-text">
+          <strong>${daysLeft === 0 ? 'Exam day — good luck!' : daysLeft + ' days to your exam'}</strong>
+          ${dailyTarget && daysLeft > 0 ? `<span class="countdown-target"> · aim for ${dailyTarget}+ questions today</span>` : ''}
+        </div>
+        <label class="countdown-edit-wrap" title="Change exam date">
+          <span class="countdown-edit">Edit date</span>
+          <input type="date" id="examDateInput" class="exam-date-hidden" value="${examDateVal}" min="${todayStr}">
+        </label>
+      </div>`;
+    } else {
+      countdownHtml = `<div class="exam-countdown exam-countdown-empty">
+        <span class="countdown-icon">📅</span>
+        <span class="countdown-text">Set your exam date to get a personalised daily question target</span>
+        <label class="countdown-set-wrap" title="Set exam date">
+          <span class="countdown-set">Set date →</span>
+          <input type="date" id="examDateInput" class="exam-date-hidden" min="${todayStr}">
+        </label>
+      </div>`;
+    }
+
+    return `${sessionBanner}${progressBlock}${countdownHtml}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
@@ -2048,12 +2219,18 @@
         ${window.TOPICS.map(t => {
           const m = topicMastery(t.id);
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
-          return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${counts[t.id]} questions">
+          const seenN = seenByTopic[t.id] || 0;
+          const totalN = counts[t.id];
+          const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
+          return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${seenN} of ${totalN} seen">
             ${badge}
             <div class="icon" aria-hidden="true">${t.icon}</div>
             <h3>${escapeHtml(t.name)}</h3>
             <p>${escapeHtml(t.desc)}</p>
-            <div class="count">${counts[t.id]} questions</div>
+            <div class="topic-card-footer">
+              <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN}</span>
+              <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+            </div>
           </button>`;
         }).join('')}
       </div>
@@ -2120,7 +2297,17 @@
     const accuracy = totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
     const sessionsRun = history.length;
     const streak = stats.streak || { current: 0, best: 0 };
-    if (totalAttempts === 0) return `<h2 class="section-title">Your Progress</h2><div class="empty-state">No data yet. Complete a practice round to start tracking your progress.</div>`;
+    if (totalAttempts === 0) return `<h2 class="section-title">Your Progress</h2>
+      <div class="progress-empty">
+        <div class="progress-empty-icon">📊</div>
+        <p class="progress-empty-title">Nothing tracked yet</p>
+        <p class="progress-empty-sub">Complete a practice round to start seeing your accuracy, streaks, and history here.</p>
+        <div class="progress-empty-steps">
+          <div class="progress-empty-step"><span class="progress-empty-step-num">1</span>Go to Practice and choose a topic</div>
+          <div class="progress-empty-step"><span class="progress-empty-step-num">2</span>Answer at least 10 questions</div>
+          <div class="progress-empty-step"><span class="progress-empty-step-num">3</span>Come back here to track your score</div>
+        </div>
+      </div>`;
     const topicRows = window.TOPICS.map(t => {
       const ts = stats.topics[t.id] || { attempts:0, correct:0 };
       const pct = ts.attempts ? Math.round((ts.correct / ts.attempts) * 100) : 0;
@@ -2206,6 +2393,21 @@
         <div class="skill-map-title">Skill map <span class="skill-map-legend"><span class="sml sml-green"></span>70%+ <span class="sml sml-amber"></span>50–69% <span class="sml sml-red"></span>&lt;50% <span class="sml sml-gray"></span>no data</span></div>
         <div class="skill-map-grid">${skillMapHtml}</div>
       </div>` : ''}
+      ${history.length >= 2 ? (() => {
+        const recent = history.slice(-10);
+        const delta = recent.length >= 2 ? recent[recent.length - 1].pct - recent[recent.length - 2].pct : null;
+        const trendHtml = delta !== null ? `<span class="spark-trend spark-${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '↗' : '↘'} ${Math.abs(delta)}% vs prev</span>` : '';
+        return `<div class="session-sparkline">
+          <div class="spark-header"><span class="spark-title">Session history</span>${trendHtml}</div>
+          <div class="spark-bars">
+            ${recent.map(h => `<div class="spark-col">
+              <div class="spark-bar-bg"><div class="spark-bar spark-${scoreClass(h.pct)}" style="height:${h.pct}%"></div></div>
+              <div class="spark-pct spark-${scoreClass(h.pct)}">${h.pct}%</div>
+              <div class="spark-icon">${h.mode === 'mock' ? '⏱' : '📝'}</div>
+            </div>`).join('')}
+          </div>
+        </div>`;
+      })() : ''}
       <h2 class="section-title" style="margin-top:0">Recent attempts</h2>
       <div class="history-list">${historyRows || '<div class="empty-state">No attempts yet.</div>'}</div>
       <div class="progress-actions">
@@ -2852,6 +3054,10 @@
           </div>
           ${r.correct ? `<span style="color:var(--correct-text)">✅ ${escapeHtml(r.chosen)}</span>` : `<span class="your-ans">✗ Your answer: ${escapeHtml(r.chosen)}</span><br><span class="correct-ans">✓ Correct: ${escapeHtml(r.correctOpt)}</span>`}
           <div class="exp-text">${escapeHtml(r.exp)}</div>
+          ${r.steps && r.steps.length ? `<details class="worked-steps">
+            <summary>📐 Show working</summary>
+            <ol class="steps-list">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+          </details>` : ''}
         </div>`;
       }).join('') : '<div class="empty-state">🎉 No incorrect answers to review.</div>'}
     </div>` : '';
@@ -2942,12 +3148,17 @@
       <div class="xp-bar-hint">${lvXp}/100 XP to Level ${lv + 1}</div>
     </div>`;
 
+    const skillQCount = {};
+    (window.ALL_QUESTIONS || []).forEach(q => {
+      if (q.skill) skillQCount[q.skill] = (skillQCount[q.skill] || 0) + 1;
+    });
+
     const unitsHtml = window.LEARN_PATH.map((unit) => {
       const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
       const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
       let unlockedSoFar = true;
-      const lessonsHtml = unit.lessons.map((L) => {
+      const lessonsHtml = unit.lessons.map((L, nodeIdx) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
@@ -2957,10 +3168,14 @@
         const skillsSnip = (L.skills||[]).slice(0,2).map(sid => { const sk = skillById(sid); return sk ? `<span class="node-skill">${sk.icon}</span>` : ''; }).join('');
         const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
         const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
+        const nodeQCount = (L.skills || []).reduce((sum, sid) => sum + (skillQCount[sid] || 0), 0);
         const l3Badge = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : '';
-        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'}${L.l3Bridge ? ' node-l3' : ''}" type="button"
+        const tier = L.l3Bridge ? 'tier-5' : nodeIdx <= 3 ? 'tier-1' : nodeIdx <= 7 ? 'tier-2' : nodeIdx <= 10 ? 'tier-3' : 'tier-4';
+        const tierLabel = L.l3Bridge ? '<span class="node-tier-label">L3 Bridge</span>' : nodeIdx <= 3 ? '<span class="node-tier-label tier-1-label">Foundations</span>' : nodeIdx <= 7 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 10 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
+        return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'} node-${tier}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
+          ${!locked ? tierLabel : ''}
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
           ${l3Badge}
@@ -2970,22 +3185,29 @@
             ${!locked ? `<span class="node-xp">${xpLabel}</span>` : ''}
           </div>
           ${skillsSnip ? `<div class="node-skills">${skillsSnip}</div>` : ''}
+          ${nodeQCount > 0 && !locked ? `<span class="node-qcount">${nodeQCount}Q</span>` : ''}
         </button>`;
       }).join('');
       const doneCount = unit.lessons.filter(L=>isLessonDone(L.id)).length;
       const unitDone = doneCount === unit.lessons.length;
+      const unitStars = unit.lessons.reduce((sum, L) => { const rec = Storage.lessonRec(L.id); return sum + (rec ? (rec.stars || 0) : 0); }, 0);
+      const unitMaxStars = unit.lessons.length * 3;
+      const unitBadgeEarned = !!Storage.data.badges['unit-' + unit.unit];
       const unitTest = (Storage.data.learn.unitTests || {})[unit.unit] || null;
       const unitQuizBtn = unitDone
         ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
             ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
            </button>` : '';
       const revBtn = `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>`;
-      return `<div class="journey-unit">
+      return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}">
         <div class="journey-unit-header">
-          <span class="journey-unit-icon">${topicObj.icon || '📚'}</span>
+          <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
-            <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
-            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}</div>
+            <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'} <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit] || 25}% of synoptic</span></div>
+          </div>
+          <div class="unit-star-total" title="${unitStars} of ${unitMaxStars} stars earned">
+            <span class="ust-stars">★</span> ${unitStars}/${unitMaxStars}
           </div>
           ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
           <div class="unit-action-btns">${revBtn}${unitQuizBtn}</div>
@@ -3125,17 +3347,59 @@
           </div>`;
         }).join('')}
       </div>` : (stars === 3 ? `<div class="lesson-perfect">All correct — outstanding! ⚡</div>` : '');
+      const TYPE_LABELS = { mcq: 'MCQ', numeric: 'Numeric', scenario: 'Scenario', dragdrop: 'Match', tablefill: 'Table', gapfill: 'Gap fill' };
+      const lessonSkills = def.skills || [];
+      const allSkillQs = (window.ALL_QUESTIONS || []).filter(q => lessonSkills.includes(q.skill));
+      const skillAccMap = {};
+      (window.ALL_QUESTIONS || []).forEach(q => {
+        if (!q.skill) return;
+        const s = Storage.data.stats.questions[q.id];
+        if (!s || !s.attempts) return;
+        if (!skillAccMap[q.skill]) skillAccMap[q.skill] = { attempts: 0, correct: 0 };
+        skillAccMap[q.skill].attempts += s.attempts;
+        skillAccMap[q.skill].correct += s.correct;
+      });
+      const skillRows = lessonSkills.map(sid => {
+        const sk = skillById(sid);
+        if (!sk) return '';
+        const qs = (window.ALL_QUESTIONS || []).filter(q => q.skill === sid);
+        const types = [...new Set(qs.map(q => TYPE_LABELS[q.type] || 'MCQ'))];
+        const sa = skillAccMap[sid] || { attempts: 0, correct: 0 };
+        const acc = sa.attempts >= 3 ? Math.round(sa.correct / sa.attempts * 100) : null;
+        return `<div class="drill-skill-row">
+          <span class="drill-skill-name">${sk.icon} ${escapeHtml(sk.name)}</span>
+          <span class="drill-skill-meta">${qs.length} Q · ${escapeHtml(types.join(', '))}</span>
+          ${acc !== null ? `<span class="drill-skill-acc ${scoreClass(acc)}">${acc}%</span>` : '<span class="drill-skill-acc-na">Not yet attempted</span>'}
+        </div>`;
+      }).join('');
+      const allLessons = (window.LEARN_PATH || []).flatMap(u => u.lessons);
+      const curIdx = allLessons.findIndex(l => l.id === def.id);
+      const nextL = curIdx >= 0 && curIdx + 1 < allLessons.length ? allLessons[curIdx + 1] : null;
+      const drillPanel = allSkillQs.length > 0 ? `<div class="lesson-drill-panel">
+        <div class="drill-panel-title">🎯 Practice what you just learned</div>
+        <div class="drill-skill-list">${skillRows}</div>
+        <button class="btn-primary lesson-drill-all" id="lessonDrillAllBtn" type="button"
+          data-skills="${escapeHtml(lessonSkills.join(','))}">Start ${Math.min(10, allSkillQs.length)}-question drill →</button>
+      </div>` : '';
+      const personalBestBanner = L.isPersonalBest && stars > 0 ? `<div class="lesson-personal-best">🏆 New personal best!</div>` : '';
+      const unitCompleteBanner = L.unitComplete ? `<div class="unit-complete-banner">
+        <div class="ucb-icon">🎉</div>
+        <div class="ucb-text"><strong>Unit complete!</strong> You've finished all lessons in this unit. <span class="ucb-xp">+50 bonus XP</span></div>
+      </div>` : '';
       return `<div class="container">
         <div class="lesson-done fade-in">
+          ${unitCompleteBanner}
           <div class="lesson-done-title">${escapeHtml(def.title)}</div>
           <div class="lesson-done-stars">${starRow}</div>
+          ${personalBestBanner}
           <div class="lesson-done-pct">${pct}%</div>
           <div class="lesson-done-msg">${msg}</div>
           <div class="lesson-done-xp">⚡ +${qScore * 2} XP earned</div>
           ${wrongReview}
+          ${drillPanel}
           <div class="lesson-done-btns">
-            ${stars < 3 && totalQ > 0 ? `<button class="btn-primary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
-            ${(def.skills||[]).length > 0 ? `<button class="btn-secondary" id="lessonDrillBtn" type="button" data-topic="skill:${escapeHtml(def.skills[0]||'')}">🎯 Drill these questions</button>` : ''}
+            ${stars < 3 && totalQ > 0 ? `<button class="btn-secondary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
+            ${nextL && !nextL.l3Bridge ? `<button class="btn-primary" id="lessonNextBtn" type="button" data-lesson="${escapeHtml(nextL.id)}">${escapeHtml(nextL.icon)} Next: ${escapeHtml(nextL.title)} →</button>` : ''}
             <button class="btn-secondary" id="lessonExitBtn2" type="button">🗺️ Back to journey</button>
           </div>
         </div>
@@ -3495,6 +3759,15 @@
     bind('smartPracticeBtn', 'click', startSmartPractice);
     bind('flashcardsBtn', 'click', startFlashcards);
     bind('focusModeBtn', 'click', startFocusPractice);
+    bind('examDateInput', 'change', function (e) {
+      Storage.data.planner = Storage.data.planner || {};
+      Storage.data.planner.examDate = e.target.value || null;
+      Storage.save(); render();
+    });
+    bind('lessonDrillAllBtn', 'click', function () {
+      const btn = document.getElementById('lessonDrillAllBtn');
+      if (btn && btn.dataset.skills) startMultiSkillDrill(btn.dataset.skills);
+    });
     // Daily challenge
     bind('dailyChallengeBtn', 'click', startDailyChallenge);
     // Unit quiz buttons
