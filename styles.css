@@ -5036,3 +5036,48 @@ body.dark[data-subject="code-route"] .unit-card {
   border-top-color: #f87171;
   background: #1A1A1A;
 }
+
+/* ── DARK MODE: explicit nav-tabs and L3 section overrides ─────────────────
+   CSS variables cascade correctly in modern browsers but these explicit rules
+   ensure the pill tab bar and L3 bridge cards are unambiguously dark.
+   ─────────────────────────────────────────────────────────────────────────── */
+.dark .nav-tabs {
+  background: #0F172A;
+  border-color: #1e2a44;
+}
+.dark .nav-tab {
+  color: #94a0b8;
+}
+.dark .nav-tab:hover {
+  background: #0b1322;
+  color: #e6ebf4;
+}
+
+.dark .l3-bridge-section {
+  background: rgba(96,165,250,.06);
+  border-color: rgba(96,165,250,.18);
+}
+.dark .l3-unit-card {
+  background: #0F172A;
+  border-color: #1e2a44;
+}
+.dark .l3-synoptic-card {
+  background: linear-gradient(135deg, #0F172A 0%, rgba(96,165,250,.08) 100%);
+  border-color: rgba(96,165,250,.35);
+}
+.dark .l3-bridge-title { color: #e6ebf4; }
+.dark .l3-bridge-sub   { color: #94a0b8; }
+.dark .l3-info-item {
+  background: #0b1322;
+  border-color: #1e2a44;
+  color: #e6ebf4;
+}
+.dark .l3-readiness-note { color: #94a0b8; }
+.dark .l3-bar-bg { background: #1e2a44; }
+.dark .l3-enrol-steps {
+  background: rgba(96,165,250,.05);
+  border-color: rgba(96,165,250,.15);
+}
+.dark .l3-enrol-title { color: #e6ebf4; }
+.dark .l3-steps-list  { color: #94a0b8; }
+.dark .l3-exam-cbe { background: rgba(96,165,250,.14); color: #60a5fa; }

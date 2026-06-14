@@ -3338,7 +3338,7 @@
     ${dailyBlock}
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
-    <div class="l3-bridge-section">
+    ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
       <div class="l3-bridge-header">
         <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
         <p class="l3-bridge-sub">Level 2 builds the foundations; Level 3 deepens every skill and adds tax, management accounting and professional reporting. Complete this qualification first, then enrol directly onto Level 3.</p>
@@ -3394,7 +3394,7 @@
           <li>Complete all five units in any order, then sit the Professional Synoptic</li>
         </ol>
       </div>
-    </div>`;
+    </div>` : ''}`;
   }
 
   /* ── LESSON PLAYER ── */
@@ -3874,6 +3874,7 @@
     bind('lessonExitBtn2', 'click', goLearn);
     bind('lessonBackBtn', 'click', lessonBack);
     bind('lessonContinueBtn', 'click', lessonContinue);
+    bind('lessonNextBtn', 'click', lessonContinue);
     bind('lessonRetryBtn', 'click', lessonRetryQuiz);
     bind('lessonDrillBtn', 'click', () => {
       const btn = document.getElementById('lessonDrillBtn');
