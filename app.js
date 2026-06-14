@@ -4,6 +4,41 @@
 
   /* ── CONSTANTS ── */
   const STORAGE_KEY = 'aatPrep_v2';
+  const SUBJECT_STORE_KEY = 'multisubject_active';
+  let _activeSubjectId = localStorage.getItem(SUBJECT_STORE_KEY) || 'aat';
+  function getStorageKey() { return _activeSubjectId === 'aat' ? STORAGE_KEY : 'prep_v2_' + _activeSubjectId; }
+
+  const SUBJECT_REGISTRY = [
+    {
+      id: 'aat', name: 'AAT Level 2 Synoptic', flag: '🧮', color: '#2563EB',
+      desc: 'Prepare for the AQ2022 Business Environment Synoptic Assessment',
+      meta: '515 questions · Mock exams · T-Accounts',
+      tabs: ['learn','home','tools','glossary','progress','howto'],
+      activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
+    },
+    {
+      id: 'french', name: 'Français', flag: '🇫🇷', color: '#003189',
+      desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
+      meta: '80+ questions · 5 leçons · débutant',
+      tabs: ['learn','home','progress'],
+      activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
+    },
+    {
+      id: 'lsf', name: 'Langue des Signes Française', flag: '🤟', color: '#7c3aed',
+      desc: 'Découvrez les bases de la LSF — la langue des signes française',
+      meta: '50+ questions · 4 leçons · débutant',
+      tabs: ['learn','home','progress'],
+      activate() { window.TOPICS = window.LSF_TOPICS; window.ALL_QUESTIONS = window.LSF_QUESTIONS; window.LEARN_PATH = window.LSF_LEARN_PATH; window.SKILLS = { defs: [] }; }
+    },
+    {
+      id: 'code-route', name: 'Code de la Route', flag: '🚗', color: '#dc2626',
+      desc: 'Préparez votre permis de conduire — théorie et panneaux',
+      meta: '80+ questions · 5 leçons · examen officiel',
+      tabs: ['learn','home','progress'],
+      activate() { window.TOPICS = window.CR_TOPICS; window.ALL_QUESTIONS = window.CR_QUESTIONS; window.LEARN_PATH = window.CR_LEARN_PATH; window.SKILLS = { defs: [] }; }
+    },
+  ];
+  function getSubject(id) { return SUBJECT_REGISTRY.find(s => s.id === id) || SUBJECT_REGISTRY[0]; }
   const PASS_MARK = 70;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
@@ -390,7 +425,7 @@
     data: defaultData(),
     load() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(getStorageKey());
         if (!raw) return;
         const parsed = JSON.parse(raw);
         const d = defaultData();
@@ -418,7 +453,7 @@
         while (dayKeys.length > 60) delete this.data.daily[dayKeys.shift()];
       } catch (e) { this.data = defaultData(); }
     },
-    save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data)); } catch (e) {} },
+    save() { try { localStorage.setItem(getStorageKey(), JSON.stringify(this.data)); } catch (e) {} },
     recordAnswer(question, correct) {
       const qs = this.data.stats.questions[question.id] || { attempts: 0, correct: 0, lastSeen: null };
       qs.attempts++; qs.seen = true;
@@ -537,17 +572,17 @@
       const s = this.data.settings.darkMode;
       return s == null ? prefersDark() : !!s;
     },
-    clearAll() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} this.data = defaultData(); },
+    clearAll() { try { localStorage.removeItem(getStorageKey()); } catch (e) {} this.data = defaultData(); },
   };
 
   /* ── SKILLS ── */
   function ensureSkillTags() {
-    if (!window.SKILLS) return;
+    if (!window.SKILLS || typeof window.SKILLS.tag !== 'function') return;
     for (const q of window.ALL_QUESTIONS) {
       if (!q.skill) q.skill = window.SKILLS.tag(q);
     }
   }
-  function skillById(id) { return (window.SKILLS && id) ? window.SKILLS.byId(id) : null; }
+  function skillById(id) { return (window.SKILLS && typeof window.SKILLS.byId === 'function' && id) ? window.SKILLS.byId(id) : null; }
   function skillAccuracy() {
     // Per-skill lifetime accuracy from the question-level stats
     const out = {};
@@ -1738,6 +1773,42 @@
     } else goHome();
   }
   function goHome() { stopMockTimer(); State.screen='home'; State.activeTab='home'; State.confirmModal=null; render(); }
+
+  function switchSubject(id) {
+    const subj = getSubject(id);
+    _activeSubjectId = id;
+    localStorage.setItem(SUBJECT_STORE_KEY, id);
+    subj.activate();
+    Storage.data = defaultData();
+    Storage.load();
+    // Reset all transient state
+    State.screen = 'home';
+    State.activeTab = subj.tabs[0];
+    State.lesson = null; State.flash = null; State.questions = []; State.revisionUnit = null;
+    State.confirmModal = null;
+    render();
+  }
+  function renderSubjectPicker() {
+    const cards = SUBJECT_REGISTRY.map(s => `
+      <button class="subject-card ${s.id === _activeSubjectId ? 'subject-active' : ''}" type="button" data-switch-subject="${escapeHtml(s.id)}">
+        <div class="sc-flag">${s.flag}</div>
+        <div class="sc-info">
+          <div class="sc-name">${escapeHtml(s.name)}</div>
+          <div class="sc-desc">${escapeHtml(s.desc)}</div>
+          <div class="sc-meta">${escapeHtml(s.meta)}</div>
+        </div>
+        ${s.id === _activeSubjectId ? '<span class="sc-active-chip">Active</span>' : ''}
+      </button>`).join('');
+    return `<div class="subject-picker">
+      <div class="sp-header">
+        <h2 class="sp-title">Choose a subject</h2>
+        <p class="sp-sub">Your progress is saved separately for each subject.</p>
+      </div>
+      <div class="subject-cards">${cards}</div>
+      ${_activeSubjectId ? `<button class="btn-secondary sp-back" id="subjectPickerBack" type="button">← Back</button>` : ''}
+    </div>`;
+  }
+
   function openConfirm(modal) { State.confirmModal = modal; render(); }
   function closeConfirm() { State.confirmModal = null; render(); }
 
@@ -1769,6 +1840,7 @@
     const el = app();
     let html = '';
     if (State.screen === 'splash')      html = renderSplash();
+    else if (State.screen === 'subjects') html = `<div class="container fade-in">${renderSubjectPicker()}</div>`;
     else if (State.screen === 'home')   html = renderMain();
     else if (State.screen === 'quiz')   html = renderQuiz();
     else if (State.screen === 'score')  html = renderScore();
@@ -1808,7 +1880,11 @@
   }
 
   function renderMain() {
-    const tabs = [ {id:'learn',label:'🗺️ Learn'}, {id:'home',label:'🎯 Practice'}, {id:'tools',label:'🧰 T-Accounts'}, {id:'glossary',label:'📖 Glossary'}, {id:'progress',label:'📈 Progress'}, {id:'howto',label:'ℹ️ How to Use'} ];
+    const ALL_TABS = { learn:'🗺️ Learn', home:'🎯 Practice', tools:'🧰 T-Accounts', glossary:'📖 Glossary', progress:'📈 Progress', howto:'ℹ️ How to Use' };
+    const subjectTabs = getSubject(_activeSubjectId).tabs;
+    const tabs = subjectTabs.map(id => ({ id, label: ALL_TABS[id] }));
+    // Ensure activeTab is valid for this subject
+    if (!subjectTabs.includes(State.activeTab)) State.activeTab = subjectTabs[0];
     let content = '';
     if (State.activeTab === 'learn') content = renderLearningJourney();
     else if (State.activeTab === 'home') content = renderHomeTab();
@@ -1816,7 +1892,11 @@
     else if (State.activeTab === 'glossary') content = renderGlossary();
     else if (State.activeTab === 'progress') content = renderProgress();
     else if (State.activeTab === 'howto') content = renderHowTo();
+    const subj = getSubject(_activeSubjectId);
     return `<div class="container fade-in">
+      <div class="subject-switcher-bar">
+        <button class="subject-switcher-btn" id="subjectSwitcherBtn" type="button">${subj.flag} ${escapeHtml(subj.name)} ▾</button>
+      </div>
       <div class="nav-tabs" role="tablist">
         ${tabs.map(t => `<button class="nav-tab ${State.activeTab === t.id ? 'active' : ''}" type="button" role="tab" aria-selected="${State.activeTab === t.id}" data-tab="${t.id}">${t.label}</button>`).join('')}
       </div>
@@ -3170,8 +3250,8 @@
         const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
         const nodeQCount = (L.skills || []).reduce((sum, sid) => sum + (skillQCount[sid] || 0), 0);
         const l3Badge = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : '';
-        const tier = L.l3Bridge ? 'tier-5' : nodeIdx <= 3 ? 'tier-1' : nodeIdx <= 7 ? 'tier-2' : nodeIdx <= 10 ? 'tier-3' : 'tier-4';
-        const tierLabel = L.l3Bridge ? '<span class="node-tier-label">L3 Bridge</span>' : nodeIdx <= 3 ? '<span class="node-tier-label tier-1-label">Foundations</span>' : nodeIdx <= 7 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 10 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
+        const tier = L.l3Bridge ? 'tier-5' : nodeIdx <= 2 ? 'tier-2' : nodeIdx <= 5 ? 'tier-3' : 'tier-4';
+        const tierLabel = L.l3Bridge ? null : nodeIdx <= 2 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 5 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
         return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'} node-${tier}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
@@ -3617,6 +3697,9 @@
     bind('homeNavBtn', 'click', exitQuiz);
     bind('startBtn', 'click', () => { Storage.data.settings.seenSplash = true; Storage.save(); State.screen='home'; render(); });
     document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => { State.activeTab = el.dataset.tab; render(); }));
+    document.querySelectorAll('[data-switch-subject]').forEach(el => el.addEventListener('click', () => switchSubject(el.dataset.switchSubject)));
+    bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
+    bind('subjectSwitcherBtn', 'click', () => { State.screen = 'subjects'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
     bind('resumeBtn', 'click', resumeSession);
@@ -3872,6 +3955,10 @@
   }
 
   function init() {
+    // Stash original AAT globals so subject-switching can restore them
+    if (!window.AAT_TOPICS) { window.AAT_TOPICS = window.TOPICS; window.AAT_QUESTIONS = window.ALL_QUESTIONS; window.AAT_LEARN_PATH = window.LEARN_PATH; window.AAT_SKILLS = window.SKILLS; }
+    // Activate the persisted subject
+    getSubject(_activeSubjectId).activate();
     Storage.load();
     ensureSkillTags();
     document.body.classList.toggle('dark', Storage.isDarkActive());
