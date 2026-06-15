@@ -19,7 +19,7 @@
     {
       id: 'french', name: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
-      meta: '180+ questions · 31 leçons · A1–B1 + examens',
+      meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
       tabs: ['learn','home','progress'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
