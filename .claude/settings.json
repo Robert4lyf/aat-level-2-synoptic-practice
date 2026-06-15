@@ -9,6 +9,17 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null)/tools/check_lsf_signs.py\""
+          }
+        ]
+      }
     ]
   }
 }

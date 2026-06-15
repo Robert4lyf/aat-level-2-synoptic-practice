@@ -19,7 +19,7 @@
     {
       id: 'french', name: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
-      meta: '80+ questions · 5 leçons · débutant',
+      meta: '180+ questions · 31 leçons · A1–B1 + examens',
       tabs: ['learn','home','progress'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
@@ -3274,17 +3274,18 @@
       const unitMaxStars = unit.lessons.length * 3;
       const unitBadgeEarned = !!Storage.data.badges['unit-' + unit.unit];
       const unitTest = (Storage.data.learn.unitTests || {})[unit.unit] || null;
-      const unitQuizBtn = unitDone
+      const unitQuizBtn = (unit.unit && unitDone)
         ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
             ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
            </button>` : '';
-      const revBtn = `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>`;
+      const hasRevision = unit.unit && UNIT_REVISION.some(r => r.unit === unit.unit);
+      const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
       return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}">
         <div class="journey-unit-header">
           <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
-            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'} <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit] || 25}% of synoptic</span></div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(unit.unit && UNIT_EXAM_WEIGHT[unit.unit]) ? ` <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit]}% of synoptic</span>` : ''}</div>
           </div>
           <div class="unit-star-total" title="${unitStars} of ${unitMaxStars} stars earned">
             <span class="ust-stars">★</span> ${unitStars}/${unitMaxStars}
