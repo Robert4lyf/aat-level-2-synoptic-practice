@@ -5081,3 +5081,6 @@ body.dark[data-subject="code-route"] .unit-card {
 .dark .l3-enrol-title { color: #e6ebf4; }
 .dark .l3-steps-list  { color: #94a0b8; }
 .dark .l3-exam-cbe { background: rgba(96,165,250,.14); color: #60a5fa; }
+.dark .journey-node.node-l3 { background: linear-gradient(160deg, #0F172A 70%, rgba(124,58,237,.18) 100%); border-color: rgba(124,58,237,.55); }
+.dark .journey-node.node-l3.node-done { border-color: rgba(124,58,237,.7); }
+.dark .node-l3-badge { opacity: .9; }

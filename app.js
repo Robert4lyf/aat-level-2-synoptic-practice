@@ -3253,7 +3253,7 @@
         const nodeQCount = (L.skills || []).reduce((sum, sid) => sum + (skillQCount[sid] || 0), 0);
         const l3Badge = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : '';
         const tier = L.l3Bridge ? 'tier-5' : nodeIdx <= 2 ? 'tier-2' : nodeIdx <= 5 ? 'tier-3' : 'tier-4';
-        const tierLabel = L.l3Bridge ? null : nodeIdx <= 2 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 5 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
+        const tierLabel = L.l3Bridge ? '' : nodeIdx <= 2 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 5 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
         return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'} node-${tier}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
