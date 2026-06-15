@@ -2248,8 +2248,7 @@ window.LEARN_PATH = [
           {
             q: 'A business buys 20 units at £6 then 20 units at £8. It issues 25 units under FIFO. What is the cost of the issue?',
             opts: ['£175', '£150', '£160', '£200'],
-            ans: 0,
-            exp: 'FIFO: use all 20 × £6 = £120 first, then 5 × £8 = £40. Total = £160. Wait — 20×£6=£120, 5×£8=£40, total = £160. Let me recheck: £120+£40=£160. Ans should be £160.',
+            ans: 2,
             exp: 'FIFO: 20 units × £6 = £120, then 5 units × £8 = £40. Total cost of issue = £160.',
           },
           {
