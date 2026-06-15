@@ -952,7 +952,7 @@ window.FR_QUESTIONS = [
   {"id":"fr-182","topic":"fr-conj","type":"mcq","q":"Conditionnel of « vouloir » for politeness:","opts":["je veux","je voudrais","je voulais","je voudrai"],"ans":1,"exp":"je voudrais = I would like (polite)."}
 ];
 
-window.FR_LEARN_PATH = [
+window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
   {
     "id": "fr-a1",
     "title": "A1 — Débutant",
@@ -3545,6 +3545,212 @@ window.FR_LEARN_PATH = [
             "exp": "Weather uses faire: « Il fait beau »."
           }
         ]
+      },
+      {
+        "id": "fr-l32",
+        "title": "Histoire : Au café",
+        "icon": "📖",
+        "cards": [
+          {
+            "h": "Au café — lisez l'histoire",
+            "p": [
+              "Marie entre dans un café à Paris et commande quelque chose. Lisez le dialogue, puis répondez aux questions."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#f0f4ff,#fff);border-left:4px solid #003189;border-radius:10px;padding:16px;font-size:0.9em;line-height:1.9'>\n<div style='color:#003189;font-weight:700;font-size:1em;margin-bottom:10px'>☕ Un café à Paris</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Serveur :</span> Bonjour madame ! Vous désirez ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> Bonjour ! Je voudrais un café et un croissant, s'il vous plaît.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Serveur :</span> Bien sûr. C'est tout ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> Oui, c'est tout. C'est combien ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Serveur :</span> Ça fait quatre euros cinquante, madame.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> Voilà. Merci beaucoup !</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Serveur :</span> De rien. Bon appétit !</div>\n</div>"
+          },
+          {
+            "h": "Vocabulaire clé",
+            "example": {
+              "title": "Key words from the story",
+              "rows": [
+                [
+                  "je voudrais",
+                  "I would like (polite request)"
+                ],
+                [
+                  "c'est tout ?",
+                  "is that everything?"
+                ],
+                [
+                  "c'est combien ?",
+                  "how much is it?"
+                ],
+                [
+                  "ça fait…",
+                  "it comes to… (for a price)"
+                ],
+                [
+                  "voilà",
+                  "here you are (handing something over)"
+                ],
+                [
+                  "bon appétit",
+                  "enjoy your meal"
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "Where does this story take place?",
+            "opts": [
+              "A restaurant",
+              "A café",
+              "A boulangerie",
+              "A supermarket"
+            ],
+            "ans": 1,
+            "exp": "The story is set in a café in Paris."
+          },
+          {
+            "q": "What does Marie order?",
+            "opts": [
+              "Tea and a cake",
+              "Coffee and a croissant",
+              "Coffee only",
+              "A croissant only"
+            ],
+            "ans": 1,
+            "exp": "Marie says: « Je voudrais un café et un croissant. »"
+          },
+          {
+            "q": "How much does Marie pay?",
+            "opts": [
+              "€3.50",
+              "€4.00",
+              "€4.50",
+              "€5.00"
+            ],
+            "ans": 2,
+            "exp": "The waiter says: « Ça fait quatre euros cinquante. »"
+          },
+          {
+            "q": "What does the waiter say when Marie has paid?",
+            "opts": [
+              "Au revoir",
+              "Bonne journée",
+              "Bon appétit",
+              "À bientôt"
+            ],
+            "ans": 2,
+            "exp": "« Bon appétit » = enjoy your meal — a typical farewell in a café or restaurant."
+          },
+          {
+            "q": "What does Marie say when handing over the money?",
+            "opts": [
+              "S'il vous plaît",
+              "Excusez-moi",
+              "Voilà",
+              "De rien"
+            ],
+            "ans": 2,
+            "exp": "« Voilà » (here you are) is used when handing something over."
+          }
+        ]
+      },
+      {
+        "id": "fr-l33",
+        "title": "Histoire : Ma famille",
+        "icon": "📖",
+        "cards": [
+          {
+            "h": "Ma famille — lisez l'histoire",
+            "p": [
+              "Marie shows her friend Lucie a family photo. Pay attention to être, avoir, ages, and descriptions."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#f0f4ff,#fff);border-left:4px solid #003189;border-radius:10px;padding:16px;font-size:0.9em;line-height:1.9'>\n<div style='color:#003189;font-weight:700;font-size:1em;margin-bottom:10px'>👨‍👩‍👧‍👦 Marie montre une photo à son amie Lucie</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> Regarde, c'est ma famille !</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Lucie :</span> Ah, qui est-ce ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> C'est mon père. Il s'appelle Paul. Il a cinquante ans.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Lucie :</span> Et là, c'est qui ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> C'est ma mère, Sophie. Elle a quarante-huit ans. Elle est médecin.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Lucie :</span> Tu as des frères et sœurs ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> Oui, j'ai un frère. Il s'appelle Tom. Il a quinze ans. Il est grand et sportif.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Lucie :</span> Et toi, tu as quel âge ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#003189'>Marie :</span> J'ai dix-neuf ans.</div>\n</div>"
+          },
+          {
+            "h": "Vocabulaire clé",
+            "example": {
+              "title": "Key words from the story",
+              "rows": [
+                [
+                  "mon père / ma mère",
+                  "my father / my mother"
+                ],
+                [
+                  "mon frère / ma sœur",
+                  "my brother / my sister"
+                ],
+                [
+                  "il/elle s'appelle …",
+                  "his/her name is …"
+                ],
+                [
+                  "il/elle a … ans",
+                  "he/she is … years old"
+                ],
+                [
+                  "tu as quel âge ?",
+                  "how old are you?"
+                ],
+                [
+                  "grand(e) et sportif/ve",
+                  "tall and sporty"
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "How old is Marie's father, Paul?",
+            "opts": [
+              "45",
+              "48",
+              "50",
+              "55"
+            ],
+            "ans": 2,
+            "exp": "Marie dit : « Il a cinquante ans. » = He is fifty years old."
+          },
+          {
+            "q": "What is Sophie's profession?",
+            "opts": [
+              "Teacher",
+              "Nurse",
+              "Doctor",
+              "Engineer"
+            ],
+            "ans": 2,
+            "exp": "« Elle est médecin » = she is a doctor."
+          },
+          {
+            "q": "How is Tom described?",
+            "opts": [
+              "Short and artistic",
+              "Tall and sporty",
+              "Kind and funny",
+              "Young and shy"
+            ],
+            "ans": 1,
+            "exp": "Marie dit : « Il est grand et sportif. »"
+          },
+          {
+            "q": "How old is Marie?",
+            "opts": [
+              "15",
+              "17",
+              "19",
+              "21"
+            ],
+            "ans": 2,
+            "exp": "Marie dit : « J'ai dix-neuf ans. » = I am nineteen years old."
+          },
+          {
+            "q": "Who is Lucie?",
+            "opts": [
+              "Marie's sister",
+              "Marie's mother",
+              "Marie's friend",
+              "Marie's teacher"
+            ],
+            "ans": 2,
+            "exp": "The story says « son amie Lucie » = her friend Lucie."
+          }
+        ]
       }
     ]
   },
@@ -4775,6 +4981,206 @@ window.FR_LEARN_PATH = [
             "exp": "Superlative + de = in: de la ville."
           }
         ]
+      },
+      {
+        "id": "fr-l34",
+        "title": "Histoire : Le week-end dernier",
+        "icon": "📖",
+        "cards": [
+          {
+            "h": "Le week-end dernier — lisez l'histoire",
+            "p": [
+              "Emma tells her colleague about last weekend. **Notice the passé composé** — some verbs use avoir, some use être."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#fff8f0,#fff);border-left:4px solid #b45309;border-radius:10px;padding:16px;font-size:0.9em;line-height:1.9'>\n<div style='color:#b45309;font-weight:700;font-size:1em;margin-bottom:10px'>📅 Lundi matin — au bureau</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Claire :</span> Salut Emma ! Tu as passé un bon week-end ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#b45309'>Emma :</span> Oui, excellent ! Samedi, <strong>je suis allée</strong> au marché avec ma sœur.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Claire :</span> Ah oui ? Vous avez acheté quoi ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#b45309'>Emma :</span> On <strong>a acheté</strong> des fruits, du fromage et une belle tarte aux pommes.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Claire :</span> Et dimanche ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#b45309'>Emma :</span> <strong>Je suis restée</strong> à la maison le matin. <strong>J'ai regardé</strong> un film et <strong>j'ai fait</strong> du sport. Le soir, on <strong>est allés</strong> au restaurant avec des amis.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Claire :</span> Super ! C'était quel restaurant ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#b45309'>Emma :</span> Un petit bistrot près de chez moi. On a très bien mangé !</div>\n</div>"
+          },
+          {
+            "h": "Grammaire : être ou avoir ?",
+            "p": [
+              "The highlighted verbs above are all **passé composé**. Two patterns:"
+            ],
+            "split": {
+              "left": {
+                "title": "avec avoir",
+                "items": [
+                  "j'ai regardé (I watched)",
+                  "j'ai fait (I did)",
+                  "on a acheté (we bought)",
+                  "on a mangé (we ate)"
+                ]
+              },
+              "right": {
+                "title": "avec être (mouvement)",
+                "items": [
+                  "je suis allée (I went — fem.)",
+                  "je suis restée (I stayed — fem.)",
+                  "on est allés (we went — masc. pl.)"
+                ]
+              }
+            },
+            "callout": {
+              "kind": "key",
+              "text": "Verbs of movement/state (aller, venir, partir, rester, arriver…) take être. The past participle agrees with the subject in gender and number."
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "Where did Emma go on Saturday?",
+            "opts": [
+              "The supermarket",
+              "The market",
+              "The park",
+              "The cinema"
+            ],
+            "ans": 1,
+            "exp": "Emma dit : « je suis allée au marché »."
+          },
+          {
+            "q": "Which item did Emma NOT buy at the market?",
+            "opts": [
+              "Fruit",
+              "Cheese",
+              "An apple tart",
+              "Bread"
+            ],
+            "ans": 3,
+            "exp": "They bought des fruits, du fromage and une tarte aux pommes — not bread."
+          },
+          {
+            "q": "What did Emma do on Sunday morning?",
+            "opts": [
+              "She went to the market",
+              "She visited friends",
+              "She stayed home and watched a film",
+              "She went to the restaurant"
+            ],
+            "ans": 2,
+            "exp": "Emma dit : « Je suis restée à la maison. J'ai regardé un film et j'ai fait du sport. »"
+          },
+          {
+            "q": "Why is « suis allée » used instead of « ai allé » ?",
+            "opts": [
+              "Aller uses être in passé composé",
+              "Emma is talking about the future",
+              "It is a reflexive verb",
+              "The sentence is negative"
+            ],
+            "ans": 0,
+            "exp": "Aller is one of the 17 verbs that take être in passé composé. The -e on allée agrees with Emma (feminine)."
+          },
+          {
+            "q": "With whom did Emma go to the restaurant on Sunday evening?",
+            "opts": [
+              "Her sister",
+              "Her colleagues",
+              "Her friends",
+              "Her parents"
+            ],
+            "ans": 2,
+            "exp": "Emma dit : « on est allés au restaurant avec des amis »."
+          }
+        ]
+      },
+      {
+        "id": "fr-l35",
+        "title": "Histoire : Lettre de Lyon",
+        "icon": "📖",
+        "cards": [
+          {
+            "h": "Lettre de Lyon — lisez l'histoire",
+            "p": [
+              "Camille has moved from Paris to Lyon. She writes to her friend Sophie. **Imparfait** describes past habits and states; **passé composé** marks single events."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#fff8f0,#fff);border-left:4px solid #b45309;border-radius:10px;padding:16px;font-size:0.9em;line-height:1.9'>\n<div style='color:#b45309;font-weight:700;font-size:1em;margin-bottom:10px'>✉️ Une lettre de Camille</div>\n<p style='margin:8px 0;font-style:italic'>Chère Sophie,</p>\n<p style='margin:8px 0'>Je t'écris de Lyon ! <strong>Je suis arrivée</strong> ici il y a deux semaines pour mon nouveau travail.</p>\n<p style='margin:8px 0'>Quand <strong>j'habitais</strong> à Paris, <strong>je prenais</strong> le métro tous les jours. <strong>C'était</strong> stressant et cher. Ici, à Lyon, je prends le vélo. C'est beaucoup plus agréable !</p>\n<p style='margin:8px 0'>La semaine dernière, <strong>j'ai visité</strong> le Vieux-Lyon avec une collègue. Les rues <strong>étaient</strong> magnifiques et les traboules <strong>étaient</strong> fascinantes. On <strong>a mangé</strong> une quenelle lyonnaise — c'était délicieux !</p>\n<p style='margin:8px 0'>Lyon est <em>moins grand que</em> Paris, mais c'est <em>plus calme</em> et les gens sont très accueillants.</p>\n<p style='margin:8px 0;font-style:italic'>Bisous, Camille</p>\n</div>"
+          },
+          {
+            "h": "Grammaire dans l'histoire",
+            "p": [
+              "Spot the difference between **imparfait** (ongoing past habit/state) and **passé composé** (single event):"
+            ],
+            "split": {
+              "left": {
+                "title": "imparfait (habitude / état)",
+                "items": [
+                  "j'habitais (I used to live)",
+                  "je prenais le métro (I used to take)",
+                  "c'était stressant (it was stressful)",
+                  "les rues étaient (the streets were)"
+                ]
+              },
+              "right": {
+                "title": "passé composé (événement)",
+                "items": [
+                  "je suis arrivée (I arrived)",
+                  "j'ai visité (I visited)",
+                  "on a mangé (we ate)"
+                ]
+              }
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Comparisons: « moins … que » (less than), « plus … que » (more than). Lyon est moins grand que Paris = Lyon is less big than Paris."
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "How long has Camille been in Lyon?",
+            "opts": [
+              "One week",
+              "Two weeks",
+              "One month",
+              "Three weeks"
+            ],
+            "ans": 1,
+            "exp": "« il y a deux semaines » = two weeks ago."
+          },
+          {
+            "q": "How did Camille commute when she lived in Paris?",
+            "opts": [
+              "By bike",
+              "By car",
+              "By metro",
+              "On foot"
+            ],
+            "ans": 2,
+            "exp": "« je prenais le métro tous les jours » — imparfait for a past habit."
+          },
+          {
+            "q": "What did Camille visit last week?",
+            "opts": [
+              "A museum",
+              "The Eiffel Tower",
+              "Le Vieux-Lyon",
+              "A market"
+            ],
+            "ans": 2,
+            "exp": "« j'ai visité le Vieux-Lyon » — passé composé for a single completed event."
+          },
+          {
+            "q": "« Lyon est moins grand que Paris » means:",
+            "opts": [
+              "Lyon is bigger than Paris",
+              "Lyon is less big than Paris",
+              "Lyon is as big as Paris",
+              "Lyon is too big"
+            ],
+            "ans": 1,
+            "exp": "« moins … que » = less … than."
+          },
+          {
+            "q": "Why is « habitais » (imparfait) used rather than « ai habité » (passé composé)?",
+            "opts": [
+              "It describes an ongoing past habit",
+              "It's a negative sentence",
+              "It's the future tense",
+              "It's a reflexive verb"
+            ],
+            "ans": 0,
+            "exp": "« Quand j'habitais à Paris » describes a repeated past habit → imparfait. A one-off event uses passé composé."
+          }
+        ]
       }
     ]
   },
@@ -5441,6 +5847,216 @@ window.FR_LEARN_PATH = [
             ],
             "ans": 1,
             "exp": "« bien que » triggers the subjunctive: qu'il soit."
+          }
+        ]
+      },
+      {
+        "id": "fr-l36",
+        "title": "Histoire : Un débat",
+        "icon": "📖",
+        "cards": [
+          {
+            "h": "Un débat à l'université — lisez l'histoire",
+            "p": [
+              "Students debate whether cars should be banned from city centres. Notice **opinion phrases**, the **subjunctif**, and the **conditional**."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#f0fff4,#fff);border-left:4px solid #166534;border-radius:10px;padding:16px;font-size:0.9em;line-height:1.9'>\n<div style='color:#166534;font-weight:700;font-size:1em;margin-bottom:10px'>🎓 En cours — un débat</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Prof :</span> Le sujet du jour : faut-il interdire les voitures en ville ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#166534'>Léa :</span> <em>Selon moi</em>, c'est absolument nécessaire. <em>Je pense que</em> les voitures polluent trop. <em>Il faudrait que</em> chaque ville <strong>investisse</strong> dans les transports en commun.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#1d4ed8'>Marc :</span> <em>Je ne suis pas d'accord.</em> <em>Bien que</em> la pollution <strong>soit</strong> un problème réel, beaucoup de gens dépendent de leur voiture. Ce <strong>serait</strong> injuste de les pénaliser.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#166534'>Léa :</span> Mais si on <strong>améliorait</strong> les pistes cyclables, les gens <strong>pourraient</strong> utiliser le vélo !</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#1d4ed8'>Marc :</span> C'est possible. <em>Cependant</em>, dans les petites villes, les distances sont trop grandes pour le vélo.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#555'>Prof :</span> Est-ce que vous pensez qu'il y <strong>ait</strong> une solution idéale ?</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#166534'>Léa :</span> Je ne pense pas qu'il y <strong>ait</strong> une solution parfaite, mais il faut agir.</div>\n<div style='margin:5px 0'><span style='font-weight:700;color:#1d4ed8'>Marc :</span> Je suis d'accord là-dessus. Le plus important, c'est qu'on <strong>commence</strong> à changer.</div>\n</div>"
+          },
+          {
+            "h": "Structures clés du débat",
+            "example": {
+              "title": "B1 language in this debate",
+              "rows": [
+                [
+                  "Selon moi, …",
+                  "In my opinion, … (formal opinion marker)"
+                ],
+                [
+                  "Je ne suis pas d'accord",
+                  "I disagree"
+                ],
+                [
+                  "Bien que + subjonctif",
+                  "Although … (bien que la pollution soit)"
+                ],
+                [
+                  "Si + imparfait, … conditionnel",
+                  "If … (si on améliorait, on pourrait)"
+                ],
+                [
+                  "Il faudrait que + subjonctif",
+                  "It would be necessary that … (investisse)"
+                ],
+                [
+                  "Cependant / Pourtant",
+                  "However / Nevertheless"
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "What is the debate topic?",
+            "opts": [
+              "Should cars be taxed more?",
+              "Should cars be banned from cities?",
+              "Should cycling be compulsory?",
+              "Should public transport be free?"
+            ],
+            "ans": 1,
+            "exp": "The professor asks: « faut-il interdire les voitures en ville ? »"
+          },
+          {
+            "q": "What does Léa think cities should invest in?",
+            "opts": [
+              "Cycling lanes",
+              "Electric cars",
+              "Public transport",
+              "More parking"
+            ],
+            "ans": 2,
+            "exp": "Léa dit : « il faudrait que chaque ville investisse dans les transports en commun. »"
+          },
+          {
+            "q": "Why is « soit » used in « bien que la pollution soit un problème » ?",
+            "opts": [
+              "It is the passé composé of être",
+              "« Bien que » always triggers the subjunctive",
+              "It is a question form",
+              "It is conditional mood"
+            ],
+            "ans": 1,
+            "exp": "« Bien que » (although) always triggers the subjunctive. Soit is the subjunctive of être."
+          },
+          {
+            "q": "Marc's argument about small towns is that:",
+            "opts": [
+              "They have no metro system",
+              "Distances are too great for cycling",
+              "Petrol is cheaper there",
+              "People don't own cars"
+            ],
+            "ans": 1,
+            "exp": "Marc dit : « dans les petites villes, les distances sont trop grandes pour le vélo. »"
+          },
+          {
+            "q": "Do Léa and Marc agree at the end of the debate?",
+            "opts": [
+              "No, they completely disagree",
+              "Yes — both agree that change is needed",
+              "Léa abandons her position",
+              "Marc changes his mind about cars"
+            ],
+            "ans": 1,
+            "exp": "Marc dit : « Je suis d'accord là-dessus. Le plus important, c'est qu'on commence à changer. »"
+          }
+        ]
+      },
+      {
+        "id": "fr-l37",
+        "title": "Histoire : Changer de vie",
+        "icon": "📖",
+        "cards": [
+          {
+            "h": "Changer de vie — lisez l'histoire",
+            "p": [
+              "A magazine interviews Sophie, who left a corporate career to open a bakery. Notice the **conditionnel passé** (past conditional), **dont**, and the **subjunctif** after « il faut que »."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#f0fff4,#fff);border-left:4px solid #166534;border-radius:10px;padding:16px;font-size:0.9em;line-height:1.9'>\n<div style='color:#166534;font-weight:700;font-size:1em;margin-bottom:10px'>📰 Interview — magazine</div>\n<div style='margin:8px 0'><span style='font-weight:700;color:#555'>Journaliste :</span> Vous avez quitté votre poste de directrice financière pour ouvrir une boulangerie. Pourquoi ?</div>\n<div style='margin:8px 0'><span style='font-weight:700;color:#166534'>Sophie :</span> Depuis des années, je travaillais dans une grande entreprise. Le salaire était excellent, mais je n'étais pas heureuse. Un jour, j'ai réalisé que le travail <strong>que</strong> je faisais ne correspondait pas à mes valeurs.</div>\n<div style='margin:8px 0'><span style='font-weight:700;color:#555'>Journaliste :</span> C'était risqué, non ?</div>\n<div style='margin:8px 0'><span style='font-weight:700;color:#166534'>Sophie :</span> Oui, bien sûr. Si j'<strong>avais su</strong> à quel point c'était difficile, j'<strong>aurais</strong> peut-être hésité davantage. Mais je ne regrette rien. La boulangerie <strong>dont</strong> je rêvais depuis toujours est maintenant une réalité.</div>\n<div style='margin:8px 0'><span style='font-weight:700;color:#555'>Journaliste :</span> Qu'est-ce que vous conseilleriez à quelqu'un qui veut changer de vie ?</div>\n<div style='margin:8px 0'><span style='font-weight:700;color:#166534'>Sophie :</span> Je lui dirais de ne pas attendre le « bon moment » — il n'existe pas. Il faut que vous <strong>ayez</strong> confiance en vous et que vous <strong>osiez</strong> prendre des risques.</div>\n</div>"
+          },
+          {
+            "h": "Structures clés",
+            "example": {
+              "title": "B1 grammar features in this story",
+              "rows": [
+                [
+                  "le travail que je faisais",
+                  "the work that I was doing (relative pronoun que — object)"
+                ],
+                [
+                  "la boulangerie dont je rêvais",
+                  "the bakery I dreamed of (dont = de + which; rêver de)"
+                ],
+                [
+                  "si j'avais su … j'aurais hésité",
+                  "if I had known … I would have hesitated (conditionnel passé)"
+                ],
+                [
+                  "je ne regrette rien",
+                  "I regret nothing (negative with rien)"
+                ],
+                [
+                  "il faut que vous ayez / osiez",
+                  "you must have / dare (subjunctive after il faut que)"
+                ],
+                [
+                  "conseilleriez / dirais",
+                  "would advise / would say (conditionnel présent)"
+                ]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "« dont » replaces « de + noun ». rêver DE qch → la chose dont je rêve. Use dont whenever the verb takes « de »."
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "What was Sophie's previous job?",
+            "opts": [
+              "Teacher",
+              "Financial director",
+              "Journalist",
+              "Engineer"
+            ],
+            "ans": 1,
+            "exp": "She was « directrice financière » = financial director."
+          },
+          {
+            "q": "Why was Sophie unhappy in her old job?",
+            "opts": [
+              "The salary was too low",
+              "She worked too many hours",
+              "The work didn't match her values",
+              "She had no holidays"
+            ],
+            "ans": 2,
+            "exp": "Sophie dit : « le travail que je faisais ne correspondait pas à mes valeurs. »"
+          },
+          {
+            "q": "What does Sophie regret?",
+            "opts": [
+              "Opening the bakery",
+              "Nothing at all",
+              "Not saving more money",
+              "Leaving Paris"
+            ],
+            "ans": 1,
+            "exp": "Sophie dit : « je ne regrette rien. » = I regret nothing."
+          },
+          {
+            "q": "In « la boulangerie dont je rêvais », what does « dont » replace?",
+            "opts": [
+              "la boulangerie (subject)",
+              "de la boulangerie (rêver de qch)",
+              "que + boulangerie (direct object)",
+              "à la boulangerie (direction)"
+            ],
+            "ans": 1,
+            "exp": "rêver DE qch → dont replaces « de + la boulangerie ». Use dont when the verb takes « de »."
+          },
+          {
+            "q": "What advice does Sophie give to someone wanting to change their life?",
+            "opts": [
+              "Save money first",
+              "Wait for the right moment",
+              "Don't wait — have confidence and take risks",
+              "Ask your family before deciding"
+            ],
+            "ans": 2,
+            "exp": "Sophie dit : « Ne pas attendre le bon moment — il n'existe pas. Il faut que vous ayez confiance en vous. »"
           }
         ]
       }
