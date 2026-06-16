@@ -40,6 +40,33 @@
     },
   ];
   function getSubject(id) { return SUBJECT_REGISTRY.find(s => s.id === id) || SUBJECT_REGISTRY[0]; }
+
+  /* Maps a French question ID (fr-NNN) to its CEFR level string.
+     A1 = beginner basics, A2 = elementary grammar/vocab, B1 = intermediate structures. */
+  function frQuestionLevel(id) {
+    const n = parseInt(id.replace('fr-', ''), 10);
+    if (isNaN(n)) return null;
+    // A1 — Débutant
+    if (n >= 1   && n <= 17)  return 'A1'; // greetings
+    if (n >= 27  && n <= 33)  return 'A1'; // basic family/food vocab
+    if (n >= 35  && n <= 51)  return 'A1'; // gender, articles, negation, possession, questions
+    if (n >= 62  && n <= 65)  return 'A1'; // time and seasons
+    if (n >= 69  && n <= 76)  return 'A1'; // basic daily life
+    if (n >= 86  && n <= 89)  return 'A1'; // présent être/avoir/-ER/-IR
+    if (n >= 121 && n <= 132) return 'A1'; // extended greetings and basic vocab
+    if (n === 136 || n === 137) return 'A1'; // family/seasons dragdrops
+    if (n >= 152 && n <= 157) return 'A1'; // telling the time
+    if (n >= 160 && n <= 167) return 'A1'; // café, restaurant, basic directions
+    if (n === 168 || n === 179 || n === 181) return 'A1'; // être/avoir conjugation drills
+    if (n >= 183 && n <= 200) return 'A1'; // pronunciation/accents + basic body parts
+    if (n >= 253 && n <= 262) return 'A1'; // transport and directions
+    // B1 — Intermédiaire
+    if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
+    if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
+    if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
+    // A2 — Élémentaire (everything else)
+    return 'A2';
+  }
   const PASS_MARK = 70;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
@@ -1349,6 +1376,10 @@
       const sid = topicId.slice(6);
       pool = window.ALL_QUESTIONS.filter(q => q.skill === sid);
     }
+    else if (topicId && topicId.indexOf('level:') === 0) {
+      const lvl = topicId.slice(6);
+      pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
+    }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
     if (!pool.length) {
       const empty = {
@@ -2489,12 +2520,44 @@
       </div>`;
     }
 
+    const isFrench = _activeSubjectId === 'french';
+    const CEFR_LEVELS = [
+      { id: 'A1', sublabel: 'Débutant',       icon: '🌱', color: '#059669', desc: 'Greetings, pronunciation, basic vocab & présent tense' },
+      { id: 'A2', sublabel: 'Élémentaire',    icon: '📗', color: '#2563EB', desc: 'Passé composé, grammar rules, shopping & work vocab' },
+      { id: 'B1', sublabel: 'Intermédiaire',  icon: '📘', color: '#7C3AED', desc: 'Object pronouns, subjonctif & complex structures' },
+    ];
+    const levelSection = isFrench ? `
+      <h2 class="section-title" style="margin-top:0">Practice by Level <span class="section-title-sub">CEFR — A1 · A2 · B1</span></h2>
+      <div class="home-grid">
+        ${CEFR_LEVELS.map(lv => {
+          const lvPool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lv.id);
+          const lvTotal = lvPool.length;
+          const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
+          const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
+          const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
+          const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
+          const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
+          const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
+          return `<button class="topic-card fade-in" type="button" data-topic="${escapeHtml('level:' + lv.id)}" style="border-top-color:${lv.color}" aria-label="Practice ${lv.id} ${escapeHtml(lv.sublabel)} — ${lvSeen} of ${lvTotal} seen">
+            ${badge}
+            <div class="level-card-lbl" aria-hidden="true">${escapeHtml(lv.icon)} ${escapeHtml(lv.id)}</div>
+            <h3>${escapeHtml(lv.sublabel)}</h3>
+            <p>${escapeHtml(lv.desc)}</p>
+            <div class="topic-card-footer">
+              <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal}</span>
+              <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+            </div>
+          </button>`;
+        }).join('')}
+      </div>` : '';
+
     return `${sessionBanner}${progressBlock}${countdownHtml}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
       </div>
-      <h2 class="section-title" style="margin-top:0">Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
+      ${levelSection}
+      <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
         ${window.TOPICS.map(t => {
           const m = topicMastery(t.id);

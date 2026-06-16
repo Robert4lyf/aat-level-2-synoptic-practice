@@ -502,6 +502,14 @@ header .sub {
   transform: translateY(-4px);
   box-shadow: var(--shadow-xl);
 }
+/* CEFR level label (replaces the emoji icon in level cards) */
+.level-card-lbl {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  line-height: 1;
+}
 .topic-card:hover::before { opacity: 1; }
 .topic-card .icon {
   font-size: 1.85rem;
