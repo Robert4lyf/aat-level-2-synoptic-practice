@@ -11,28 +11,28 @@
 
   const SUBJECT_REGISTRY = [
     {
-      id: 'aat', name: 'AAT Level 2 Synoptic', flag: '🧮', color: '#2563EB',
+      id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
       desc: 'Prepare for the AQ2022 Business Environment Synoptic Assessment',
       meta: '515 questions · Mock exams · T-Accounts',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
     },
     {
-      id: 'french', name: 'Français', flag: '🇫🇷', color: '#003189',
+      id: 'french', name: 'Français', short: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
       meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
       tabs: ['learn','home','progress'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
-      id: 'lsf', name: 'Langue des Signes Française', flag: '🤟', color: '#7c3aed',
+      id: 'lsf', name: 'Langue des Signes Française', short: 'LSF', flag: '🤟', color: '#7c3aed',
       desc: 'Découvrez les bases de la LSF — la langue des signes française',
       meta: '50+ questions · 4 leçons · débutant',
       tabs: ['learn','home','progress'],
       activate() { window.TOPICS = window.LSF_TOPICS; window.ALL_QUESTIONS = window.LSF_QUESTIONS; window.LEARN_PATH = window.LSF_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
-      id: 'code-route', name: 'Code de la Route', flag: '🚗', color: '#dc2626',
+      id: 'code-route', name: 'Code de la Route', short: 'Code de la Route', flag: '🚗', color: '#dc2626',
       desc: 'Préparez votre permis de conduire — théorie et panneaux',
       meta: '80+ questions · 5 leçons · examen officiel',
       tabs: ['learn','home','progress'],
@@ -2084,6 +2084,8 @@
     document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
     const dt = document.getElementById('darkToggle');
     if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
+    const sb = document.getElementById('subjectSwitcherBtn');
+    if (sb) { const subj = getSubject(_activeSubjectId); sb.textContent = subj.flag + ' ' + subj.short + ' ▾'; }
     if (State.confirmModal) { const mc = document.getElementById('modalConfirm'); if (mc) mc.focus(); }
     const ni = document.getElementById('numericAnswer');
     if (ni && !ni.disabled && State.screen === 'quiz') {
@@ -2122,11 +2124,7 @@
     else if (State.activeTab === 'glossary') content = renderGlossary();
     else if (State.activeTab === 'progress') content = renderProgress();
     else if (State.activeTab === 'howto') content = renderHowTo();
-    const subj = getSubject(_activeSubjectId);
     return `<div class="container fade-in">
-      <div class="subject-switcher-bar">
-        <button class="subject-switcher-btn" id="subjectSwitcherBtn" type="button">${subj.flag} ${escapeHtml(subj.name)} ▾</button>
-      </div>
       <div class="nav-tabs" role="tablist">
         ${tabs.map(t => `<button class="nav-tab ${State.activeTab === t.id ? 'active' : ''}" type="button" role="tab" aria-selected="${State.activeTab === t.id}" data-tab="${t.id}">${t.label}</button>`).join('')}
       </div>
