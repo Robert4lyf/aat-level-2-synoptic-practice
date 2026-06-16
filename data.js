@@ -4201,3 +4201,504 @@ window.ALL_QUESTIONS.push(
   exp: 'Cross-unit scenario covering error types and correction journals (pobc), trial balance effects, and bank reconciliation cashbook updates (pobc/itbk).' }
 
 );
+
+/* ── EXPANDED CONTENT: harder MCQs, scenario, and table-fill questions ── */
+window.ALL_QUESTIONS.push(
+
+  // ── ITBK additional hard questions ──────────────────────────────────────
+
+  { id: 'itbk-200', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'The imprest petty cash fund is set at £150. At month-end, receipts total £112 and cash remaining in the tin is £38. What is the reimbursement cheque raised?',
+    opts: ['£38', '£112', '£150', '£74'],
+    ans: 1,
+    exp: 'Under the imprest system the reimbursement always equals total vouchers (£112), restoring the fund to £150. Check: £38 + £112 = £150 ✓.' },
+
+  { id: 'itbk-201', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'A supplier sends a credit note for £200 net (plus VAT at 20%). How is this recorded in the BUYER\'s books?',
+    opts: [
+      'Dr PLCA £240, Cr Purchase returns £200, Cr VAT £40',
+      'Dr Purchase returns £200, Dr VAT £40, Cr PLCA £240',
+      'Dr PLCA £200, Cr Purchase returns £200',
+      'Dr Purchase returns £240, Cr PLCA £240'],
+    ans: 0,
+    exp: 'A credit note from a supplier reduces what is owed: Dr PLCA £240 (gross). The credit note net reduces Purchase returns (Cr £200) and input VAT is recovered (Cr VAT £40). Debits must equal credits: £240 = £240.' },
+
+  { id: 'itbk-202', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'A contra (set-off) is used where a business owes a supplier £600 (PLCA) and is also owed £600 by the same party as a customer (SLCA). What is the double entry?',
+    opts: [
+      'Dr PLCA £600, Cr SLCA £600',
+      'Dr SLCA £600, Cr PLCA £600',
+      'Dr Bank £600, Cr PLCA £600 and separately Dr SLCA £600, Cr Bank £600',
+      'No entries needed — debts cancel automatically'],
+    ans: 0,
+    exp: 'A contra: Dr PLCA £600 (remove the payable) / Cr SLCA £600 (remove the receivable). No cash moves. The entry must also appear in the individual personal accounts for both the payables and receivables ledger.' },
+
+  { id: 'itbk-203', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'At 1 April the SLCA has a Dr balance of £3,200. During April: credit sales £12,000; customer receipts £10,500; sales returns £400; discounts allowed £150; bad debt written off £200. What is the closing SLCA balance?',
+    opts: ['£4,150', '£3,950', '£3,750', '£4,350'],
+    ans: 1,
+    exp: 'Dr side: £3,200 + £12,000 = £15,200. Cr side: £10,500 + £400 + £150 + £200 = £11,250. Closing balance: £15,200 − £11,250 = £3,950 Dr.' },
+
+  { id: 'itbk-204', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'Which of the following items appears on the CREDIT (payments) side of the cash book?',
+    opts: [
+      'Cash received from a credit customer',
+      'BACS receipt from a customer',
+      'Standing order payment to a supplier',
+      'Opening bank balance (in credit)'],
+    ans: 2,
+    exp: 'The credit side records PAYMENTS out of the bank. A standing order to a supplier is a payment. All receipts (options A, B) appear on the debit side. An opening balance in credit would be a debit opening entry.' },
+
+  { id: 'itbk-205', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'A customer settles their balance of £2,000 within the discount period, paying £1,960. What is the double entry for the DISCOUNT ALLOWED?',
+    opts: [
+      'Dr Discounts allowed £40, Cr SLCA £40',
+      'Dr SLCA £40, Cr Discounts allowed £40',
+      'Dr Bank £1,960, Cr SLCA £2,000; no separate entry for discount',
+      'Dr Discounts allowed £40, Cr Bank £40'],
+    ans: 0,
+    exp: '2% discount = £40. Expense: Dr Discounts allowed £40 / Cr SLCA £40. Plus separately Dr Bank £1,960 / Cr SLCA £1,960. In a three-column cash book the discount column is a memorandum; at month-end the total is posted Dr Discounts allowed / Cr SLCA.' },
+
+  { id: 'itbk-206', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'In a three-column cash book, discounts RECEIVED appear:',
+    opts: [
+      'On the debit (receipts) side in the discount column',
+      'On the credit (payments) side in the discount column',
+      'On the credit side as income received',
+      'Only in the general ledger — not in the cash book'],
+    ans: 1,
+    exp: 'Discounts received reduce amounts paid to suppliers. They appear on the credit (payments) side memo column. At month-end the column total is posted: Dr PLCA / Cr Discounts received — the income entry enters the general ledger at that point.' },
+
+  { id: 'itbk-207', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'The SLCA shows £22,500 but the total of the sales ledger listing is £21,900 (SLCA is higher by £600). Which error would cause this?',
+    opts: [
+      'A sales invoice of £600 posted to the SLCA but NOT to the individual customer account',
+      'Cash of £600 received from a customer posted to the individual account but NOT to the SLCA',
+      'A credit note of £600 posted to the individual account but not to the SLCA',
+      'Discounts allowed of £300 entered twice in the SLCA'],
+    ans: 0,
+    exp: 'Option A: Dr SLCA £600 (increases the control account) but the individual customer account is not updated — the listing stays the same. SLCA is therefore £600 higher than the listing ✓. This is the standard textbook cause: invoice posted to the control account but omitted from the personal ledger.' },
+
+  { id: 'itbk-208', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'When a business receives a credit note from a supplier (gross £480, VAT £80), which account is CREDITED?',
+    opts: [
+      'PLCA (reduces the liability)',
+      'Purchase returns (reduces expense)',
+      'VAT control (input VAT recovered)',
+      'Bank (cash refund expected)'],
+    ans: 1,
+    exp: 'Dr PLCA £480 / Cr Purchase returns £400 / Cr VAT control £80. The PLCA is debited (reducing the creditor). Purchase returns and VAT control are credited.' },
+
+  { id: 'itbk-209', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+    q: 'A bad debt of £840 is written off. The customer was VAT-registered and the original invoice included VAT at 20%. What is the VAT element that can be reclaimed (if the business uses the standard VAT accounting scheme)?',
+    opts: ['£840', '£700', '£140', '£168'],
+    ans: 2,
+    exp: '£840 gross ÷ 6 = £140 VAT (the "VAT fraction" for 20% is 1/6). Net = £700. The business can reclaim £140 output VAT as bad debt relief from HMRC (subject to 6-month rule). Journal: Dr Bad debt expense £700, Dr VAT £140, Cr SLCA £840.' },
+
+  // ── POBC additional hard questions ──────────────────────────────────────
+
+  { id: 'pobc-200', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'Which of the following is a TIMING DIFFERENCE in a bank reconciliation (i.e., it appears on the bank statement but NOT in the cash book, or vice versa)?',
+    opts: [
+      'A direct debit for rent that the bookkeeper forgot to enter in the cash book',
+      'An unpresented cheque written and recorded in the cash book but not yet cleared the bank',
+      'Bank charges omitted from the cash book',
+      'A standing order payment recorded in neither the cash book nor the bank statement'],
+    ans: 1,
+    exp: 'An unpresented (uncleared) cheque: the business recorded it in the cash book when it was written, but the bank has not yet processed it — a classic timing difference. Options A and C are errors/omissions requiring cash book updates. Option D has not yet occurred in either record.' },
+
+  { id: 'pobc-201', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'Which error would cause the debit side of the trial balance to exceed the credit side by £400 (requiring a credit entry to a suspense account of £400)?',
+    opts: [
+      'A credit sale of £400 omitted from all ledgers',
+      'A purchase invoice for £400 posted Dr Purchases £400, Cr PLCA £400 (both correct)',
+      'Rent of £400 debited to the rent account but no credit entry made',
+      'A sales receipt of £400 posted Dr Bank £400, Cr Bank £400'],
+    ans: 2,
+    exp: 'Option C: Dr Rent £400 with no corresponding credit creates a debit excess of £400. A credit suspense entry of £400 is opened to restore balance. Option A is a complete omission (both sides missing — no imbalance). Options B and D are correctly balanced double entries.' },
+
+  { id: 'pobc-202', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'A purchase of equipment for £3,000 is posted to the office expenses account. What type of error is this?',
+    opts: [
+      'Error of omission',
+      'Error of commission',
+      'Error of principle',
+      'Error of original entry'],
+    ans: 2,
+    exp: 'An error of principle occurs when a transaction is posted to the correct side but the WRONG CLASS of account — here, a capital/non-current asset (equipment) is recorded as a revenue expense (office expenses). The capital vs revenue distinction is violated.' },
+
+  { id: 'pobc-203', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'A transposition error occurs when rent of £450 is posted as £540. The trial balance total shows debits exceed credits by:',
+    opts: ['£90', '£45', '£450', '£540'],
+    ans: 0,
+    exp: '£540 − £450 = £90. The same single amount is wrong on one side, creating a £90 imbalance. Transposition errors always produce a difference divisible by 9 (here 90 ÷ 9 = 10 — a useful check). A suspense account of £90 Cr would be opened to restore balance.' },
+
+  { id: 'pobc-204', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'On a standard UK VAT return, Box 1 represents:',
+    opts: [
+      'Total input tax reclaimed',
+      'VAT due on EC acquisitions',
+      'VAT charged on sales (output tax)',
+      'Net VAT payable or reclaimable'],
+    ans: 2,
+    exp: 'Box 1 = VAT due on sales and other outputs (output tax). Box 4 = input tax reclaimed. Box 5 = net: Box 1 minus Box 4. If Box 5 is positive, the business pays HMRC; if negative, HMRC refunds the business.' },
+
+  { id: 'pobc-205', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'A business has output VAT of £18,400 and input VAT of £11,750 for the quarter. What amount is payable to HMRC?',
+    opts: ['£18,400', '£11,750', '£6,650', '£30,150'],
+    ans: 2,
+    exp: 'Net VAT = Output VAT − Input VAT = £18,400 − £11,750 = £6,650 payable to HMRC (entered in Box 5 of the VAT return).' },
+
+  { id: 'pobc-206', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'The PLCA balance is £13,600 but the total of individual supplier balances is £14,200. The list is higher than the PLCA by £600. Which error would explain this?',
+    opts: [
+      'A purchase invoice of £600 posted to the PLCA but not to the individual supplier account',
+      'A payment of £600 posted to the PLCA (Dr) but not to the individual account',
+      'A purchase return of £600 posted to both the PLCA and individual account correctly',
+      'A contra entry of £600 entered twice in the PLCA'],
+    ans: 1,
+    exp: 'If a payment of £600 was Dr PLCA (reducing it) but the individual account was NOT updated, the PLCA balance falls by £600 while the listing stays the same — list becomes £600 higher than PLCA ✓. Option A would make PLCA higher (Cr PLCA, no matching individual entry). Option C correctly matches — no difference. Option D would reduce PLCA twice.' },
+
+  { id: 'pobc-207', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'Which of the following errors does NOT affect the trial balance agreement?',
+    opts: [
+      'A purchase of £750 debited to both the purchases account and the PLCA (two debits, no credit)',
+      'Rent of £600 debited to the rent account but the bank was credited with only £540',
+      'A credit sale of £400 not recorded anywhere in the ledger',
+      'A debit of £200 to wages with no corresponding credit entry'],
+    ans: 2,
+    exp: 'Option C is a complete omission — both the Dr (SLCA) and the Cr (Sales) entries are missing. Both sides are equally understated so the TB still agrees. Option A has two debits but no credit (Dr excess). Option B has Dr £600 and Cr £540 (£60 imbalance). Option D has only a debit and no credit — all three create TB imbalances.' },
+
+  { id: 'pobc-208', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'A bank reconciliation shows: cash book balance £5,100; unpresented cheques £850; outstanding lodgements £1,200. What should the bank statement balance be?',
+    opts: ['£5,100', '£4,750', '£5,450', '£6,150'],
+    ans: 1,
+    exp: 'Bank statement balance = Cash book balance + Unpresented cheques − Outstanding lodgements = £5,100 + £850 − £1,200 = £4,750. (Cheques written but not cleared inflate the cash book; lodgements paid in but not shown yet inflate the statement.)' },
+
+  { id: 'pobc-209', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+    q: 'After updating the cash book, the balance is £3,800 Dr. Unpresented cheques total £650 and outstanding lodgements total £420. The bank statement should show:',
+    opts: ['£3,800', '£4,030', '£3,570', '£4,870'],
+    ans: 1,
+    exp: 'Statement balance = £3,800 + £650 − £420 = £4,030. The bank has not yet processed the unpresented cheques (so its balance is higher) and has not yet shown the lodgements (so its balance is lower than the cash book after lodgements).' },
+
+  // ── POC additional hard questions ───────────────────────────────────────
+
+  { id: 'poc-200', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Using the high-low method: at 900 units total cost is £7,400; at 400 units total cost is £4,400. What is the variable cost per unit?',
+    opts: ['£6', '£5', '£8', '£3'],
+    ans: 0,
+    exp: 'Variable cost per unit = (High cost − Low cost) ÷ (High units − Low units) = (£7,400 − £4,400) ÷ (900 − 400) = £3,000 ÷ 500 = £6 per unit.' },
+
+  { id: 'poc-201', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Using the high-low data (900 units, £7,400; 400 units, £4,400 and variable cost £6/unit), what is the total FIXED cost?',
+    opts: ['£1,600', '£3,000', '£2,000', '£4,400'],
+    ans: 2,
+    exp: 'Fixed cost = Total cost − (Variable cost × units). Using the high point: £7,400 − (£6 × 900) = £7,400 − £5,400 = £2,000. Verified at low point: £4,400 − (£6 × 400) = £4,400 − £2,400 = £2,000 ✓.' },
+
+  { id: 'poc-202', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Budgeted factory overheads are £54,000 and budgeted machine hours are 9,000. Actual overheads incurred were £56,200 and actual machine hours worked were 9,000. What is the overhead absorption rate (OAR)?',
+    opts: ['£6.00 per machine hour', '£6.24 per machine hour', '£54,000 in total', '£56,200 in total'],
+    ans: 0,
+    exp: 'OAR = Budgeted overheads ÷ Budgeted activity = £54,000 ÷ 9,000 = £6.00 per machine hour. The OAR is ALWAYS calculated using budgeted figures, not actual.' },
+
+  { id: 'poc-203', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Using the OAR of £6 per machine hour: actual machine hours worked were 9,000 but actual overheads incurred were £56,200. What is the absorption outcome?',
+    opts: [
+      'Over-absorbed by £2,200 — credit P&L',
+      'Under-absorbed by £2,200 — debit P&L',
+      'Over-absorbed by £2,200 — debit P&L',
+      'Under-absorbed by £2,200 — credit P&L'],
+    ans: 1,
+    exp: 'Absorbed = 9,000 × £6 = £54,000. Actual = £56,200. Absorbed < Actual → under-absorbed by £2,200. Under-absorption means costs were understated in product costs, so the shortfall is charged to P&L (debited as additional cost).' },
+
+  { id: 'poc-204', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'A product sells for £40. Direct materials £12, direct labour £8, variable overhead £5, fixed overhead £6. What is the contribution per unit?',
+    opts: ['£15', '£9', '£25', '£21'],
+    ans: 0,
+    exp: 'Contribution = Selling price − ALL variable costs = £40 − £12 − £8 − £5 = £15. Fixed overhead is excluded from marginal costing contribution calculations (it is a period cost).' },
+
+  { id: 'poc-205', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Fixed costs are £45,000, contribution per unit is £15, budgeted sales are 5,000 units. What is the margin of safety as a percentage of budgeted sales?',
+    opts: ['28%', '40%', '60%', '12%'],
+    ans: 1,
+    exp: 'Break-even = £45,000 ÷ £15 = 3,000 units. Margin of safety = 5,000 − 3,000 = 2,000 units. MoS% = (2,000 ÷ 5,000) × 100 = 40%.' },
+
+  { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Which of the following is a DIRECT cost?',
+    opts: [
+      'Factory manager\'s salary',
+      'Depreciation of production machinery',
+      'Timber used in manufacturing chairs',
+      'Factory rent and rates'],
+    ans: 2,
+    exp: 'A direct cost is directly traceable to a specific unit of output. Timber used in a chair can be measured per chair — it is a direct material. Factory manager salary, depreciation and rent cannot be traced to individual units; they are indirect (overhead) costs.' },
+
+  { id: 'poc-207', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Inventory records using AVCO: opening balance 200 units at £4.00. Purchase: 300 units at £5.00. What is the new weighted average cost per unit (to 2 d.p.)?',
+    opts: ['£4.50', '£4.60', '£4.00', '£5.00'],
+    ans: 1,
+    exp: 'New AVCO = Total cost ÷ Total units = ((200 × £4.00) + (300 × £5.00)) ÷ (200 + 300) = (£800 + £1,500) ÷ 500 = £2,300 ÷ 500 = £4.60 per unit.' },
+
+  { id: 'poc-208', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'Under marginal costing, fixed production overheads are:',
+    opts: [
+      'Absorbed into each unit of production',
+      'Carried forward in closing inventory valuation',
+      'Written off in full as a period cost in the period incurred',
+      'Allocated to cost centres based on machine hours'],
+    ans: 2,
+    exp: 'Marginal costing treats ALL fixed costs as period costs — they are charged in full to the P&L in the period incurred, regardless of production volume. This contrasts with absorption costing where fixed overheads are included in unit costs and therefore carried forward in inventory.' },
+
+  { id: 'poc-209', topic: 'poc', difficulty: 'hard', type: 'mcq',
+    q: 'A job requires 15 kg of material at £8/kg, 6 hours of direct labour at £12/hr, and overheads absorbed at £5 per labour hour. What is the total job cost?',
+    opts: ['£282', '£252', '£222', '£312'],
+    ans: 2,
+    exp: 'Material: 15 × £8 = £120. Labour: 6 × £12 = £72. Overhead: 6 × £5 = £30. Total: £120 + £72 + £30 = £222.' },
+
+  // ── BESY additional hard questions ──────────────────────────────────────
+
+  { id: 'besy-200', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'Current assets: inventory £14,000; trade receivables £22,000; bank £8,000. Current liabilities: trade payables £18,000; accruals £4,000. What is the current ratio?',
+    opts: ['2:1', '1.5:1', '1.1:1', '2.5:1'],
+    ans: 0,
+    exp: 'Current assets = £14,000 + £22,000 + £8,000 = £44,000. Current liabilities = £18,000 + £4,000 = £22,000. Current ratio = £44,000 ÷ £22,000 = 2:1.' },
+
+  { id: 'besy-201', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'Using the same data (inventory £14,000; receivables £22,000; bank £8,000; CL £22,000), what is the acid test (quick) ratio?',
+    opts: ['2:1', '1.36:1', '1.5:1', '0.64:1'],
+    ans: 1,
+    exp: 'Quick assets = Current assets − Inventory = £44,000 − £14,000 = £30,000. Acid test = £30,000 ÷ £22,000 = 1.36:1 (to 2 d.p.). Inventory is excluded because it may not be quickly convertible to cash.' },
+
+  { id: 'besy-202', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'A company had retained earnings of £28,000 at the start of the year. Profit after tax for the year is £15,000. Dividends paid are £6,000. What are the closing retained earnings?',
+    opts: ['£43,000', '£37,000', '£22,000', '£49,000'],
+    ans: 1,
+    exp: 'Closing retained earnings = Opening £28,000 + Profit £15,000 − Dividends £6,000 = £37,000.' },
+
+  { id: 'besy-203', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'A business does not include future anticipated sales as income until goods have been delivered and the performance obligation met. Which accounting concept does this reflect?',
+    opts: ['Prudence', 'Accruals (matching)', 'Going concern', 'Consistency'],
+    ans: 1,
+    exp: 'The accruals (or matching) concept requires income to be recognised when earned — when performance obligations are met — not when cash is received or orders placed. This aligns income recognition with the period of economic activity.' },
+
+  { id: 'besy-204', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'A non-current asset costs £24,000 with a residual value of £4,000. Using the straight-line method over 5 years, what is the annual depreciation charge?',
+    opts: ['£4,800', '£4,000', '£5,000', '£3,200'],
+    ans: 1,
+    exp: 'SL depreciation = (Cost − Residual value) ÷ Useful life = (£24,000 − £4,000) ÷ 5 = £20,000 ÷ 5 = £4,000 per year.' },
+
+  { id: 'besy-205', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'A company\'s capital structure: £100,000 ordinary share capital, £40,000 retained earnings, £60,000 long-term loan. What is the gearing ratio (debt ÷ equity)?',
+    opts: ['37.5%', '42.9%', '60%', '150%'],
+    ans: 1,
+    exp: 'Equity = £100,000 + £40,000 = £140,000. Debt = £60,000. Gearing = £60,000 ÷ £140,000 = 42.9% (to 1 d.p.). A ratio above 50% is generally considered high gearing.' },
+
+  { id: 'besy-206', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'Revenue is £180,000; trade receivables are £30,000. What are the receivables collection days (to the nearest day)?',
+    opts: ['61 days', '45 days', '90 days', '30 days'],
+    ans: 0,
+    exp: 'Receivables days = (Trade receivables ÷ Revenue) × 365 = (£30,000 ÷ £180,000) × 365 = 60.8 ≈ 61 days.' },
+
+  { id: 'besy-207', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'Cost of sales is £96,000; closing inventory is £16,000. What are inventory days (to the nearest day)?',
+    opts: ['61 days', '73 days', '45 days', '37 days'],
+    ans: 0,
+    exp: 'Inventory days = (Inventory ÷ Cost of sales) × 365 = (£16,000 ÷ £96,000) × 365 = 60.8 ≈ 61 days.' },
+
+  { id: 'besy-208', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'Revenue is £200,000; gross profit is £70,000. What is the gross profit margin?',
+    opts: ['35%', '30%', '42%', '65%'],
+    ans: 0,
+    exp: 'Gross profit margin = (Gross profit ÷ Revenue) × 100 = (£70,000 ÷ £200,000) × 100 = 35%.' },
+
+  { id: 'besy-209', topic: 'besy', difficulty: 'hard', type: 'mcq',
+    q: 'Which item would reduce the NET PROFIT MARGIN but NOT the gross profit margin?',
+    opts: [
+      'An increase in the cost of materials',
+      'Higher direct labour costs',
+      'An increase in administrative salaries',
+      'A fall in selling price'],
+    ans: 2,
+    exp: 'Gross profit = Revenue − Cost of sales (direct costs). Net profit = Gross profit − Operating expenses. Administrative salaries are operating (indirect) expenses: they appear below gross profit, so they reduce net profit margin but do not affect gross profit margin.' },
+
+  // ── SCENARIO QUESTIONS ───────────────────────────────────────────────────
+
+  { id: 'sc-031', topic: 'itbk', difficulty: 'hard', type: 'scenario',
+    setup: 'Kelsey & Co keeps a three-column cash book. On 30 June the cash book shows a debit (bank) balance of £4,850. The bank statement at the same date shows £4,200. On checking: (i) a BACS receipt of £620 from a customer appears on the statement but not in the cash book; (ii) unpresented cheques total £1,300; (iii) a direct debit for business rates of £370 appears on the statement but not in the cash book; (iv) outstanding lodgements total £400.',
+    parts: [
+      { type: 'mcq', q: 'Which items require an UPDATE to the cash book before reconciling?',
+        opts: [
+          'Unpresented cheques and outstanding lodgements only',
+          'BACS receipt and the direct debit only',
+          'All four items',
+          'Only the direct debit'],
+        ans: 1,
+        exp: 'Cash book updates are needed for items on the bank statement NOT yet in the cash book: (i) BACS receipt £620 Dr cash book, and (iii) direct debit £370 Cr cash book. Unpresented cheques and outstanding lodgements are timing differences — they appear in the reconciliation statement but do NOT change the cash book.' },
+      { type: 'numeric', q: 'After updating the cash book for the BACS receipt and direct debit, what is the revised cash book balance (£)?',
+        answer: 5100, unit: '£',
+        exp: '£4,850 + £620 (BACS receipt, Dr) − £370 (direct debit, Cr) = £5,100.' },
+      { type: 'numeric', q: 'Using the bank statement balance of £4,200, calculate the reconciled figure after adding unpresented cheques and deducting outstanding lodgements (£).',
+        answer: 5100, unit: '£',
+        exp: 'Statement £4,200 + unpresented cheques £1,300 − outstanding lodgements £400 = £5,100. This should equal the updated cash book balance — the reconciliation agrees ✓.' },
+      { type: 'mcq', q: 'Unpresented cheques in the bank reconciliation are treated as:',
+        opts: [
+          'An addition to the cash book balance',
+          'A deduction from the cash book balance',
+          'An addition to the bank statement balance',
+          'A deduction from the bank statement balance'],
+        ans: 2,
+        exp: 'Unpresented cheques have been recorded in the cash book (reducing it) but not yet cleared the bank (so the bank balance is still higher by that amount). When reconciling from bank statement to cash book: Statement + Unpresented − Lodgements = Cash book balance.' },
+    ],
+    exp: 'A full bank reconciliation workflow — cash book updates for bank-only items, then timing-difference reconciliation.' },
+
+  { id: 'sc-032', topic: 'poc', difficulty: 'hard', type: 'scenario',
+    setup: 'Oakwood Furniture Ltd has the following inventory movements for timber in March: Opening balance 100 units @ £10.00. Purchase 1: 200 units @ £11.00. Issue to production: 150 units. Purchase 2: 100 units @ £12.00. Issue to production: 180 units.',
+    parts: [
+      { type: 'numeric', q: 'Using FIFO, what is the cost of the first issue of 150 units (£)?',
+        answer: 1550, unit: '£',
+        exp: 'FIFO — oldest stock first. First issue 150 units: 100 units from opening @ £10 = £1,000; 50 units from Purchase 1 @ £11 = £550. Total = £1,550.' },
+      { type: 'numeric', q: 'After the first issue (FIFO), what is the value of inventory remaining before Purchase 2?',
+        answer: 1650, unit: '£',
+        exp: 'After issue: 150 units from Purchase 1 remain @ £11 = £1,650. (200 − 50 = 150 units left from Purchase 1.)' },
+      { type: 'mcq', q: 'Under AVCO, which statement is correct about the effect on profits compared to FIFO during a period of rising prices?',
+        opts: [
+          'AVCO gives higher closing inventory and higher profit than FIFO',
+          'FIFO gives higher closing inventory and higher profit than AVCO',
+          'AVCO and FIFO always give the same profit',
+          'FIFO gives lower cost of sales and lower profit than AVCO'],
+        ans: 1,
+        exp: 'When prices are rising, FIFO issues older (cheaper) stock first, leaving newer (more expensive) stock in closing inventory. This gives HIGHER closing inventory value and LOWER cost of sales, resulting in HIGHER profit than AVCO.' },
+      { type: 'mcq', q: 'Which inventory valuation method gives a closing inventory value closest to current replacement cost when prices are rising?',
+        opts: ['FIFO', 'AVCO', 'LIFO', 'Standard cost'],
+        ans: 0,
+        exp: 'Under FIFO, closing inventory consists of the most recently purchased units — at the most current prices. This gives a closing inventory value closest to current replacement cost.' },
+    ],
+    exp: 'Inventory valuation using FIFO and AVCO, and their comparative impact on profit during price changes.' },
+
+  { id: 'sc-033', topic: 'besy', difficulty: 'hard', type: 'scenario',
+    setup: 'Hartley Retail Ltd reports: Revenue £240,000; Cost of sales £144,000; Operating expenses £52,000. Statement of financial position: Non-current assets £85,000; Inventory £18,000; Receivables £36,000; Cash £6,000; Trade payables £24,000; Long-term loan £40,000; Share capital £50,000; Retained earnings £31,000.',
+    parts: [
+      { type: 'numeric', q: 'What is the gross profit (£)?',
+        answer: 96000, unit: '£',
+        exp: 'Gross profit = Revenue − Cost of sales = £240,000 − £144,000 = £96,000.' },
+      { type: 'numeric', q: 'What is the net profit (£)?',
+        answer: 44000, unit: '£',
+        exp: 'Net profit = Gross profit − Operating expenses = £96,000 − £52,000 = £44,000.' },
+      { type: 'numeric', q: 'What is the current ratio (to 2 d.p.)?',
+        answer: 2.50, unit: ':1',
+        exp: 'Current assets = £18,000 + £36,000 + £6,000 = £60,000. Current liabilities = £24,000. Current ratio = £60,000 ÷ £24,000 = 2.50:1.' },
+      { type: 'mcq', q: 'The net profit margin for Hartley Retail Ltd is closest to:',
+        opts: ['40%', '18.3%', '16.7%', '22.5%'],
+        ans: 1,
+        exp: 'Net profit margin = (Net profit ÷ Revenue) × 100 = (£44,000 ÷ £240,000) × 100 = 18.3%.' },
+    ],
+    exp: 'Ratio analysis and financial statement reading — gross profit, net profit, and current ratio from given data.' },
+
+  { id: 'sc-034', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+    setup: 'Finch & Partners\' trial balance does not agree. A suspense account has been opened with a credit balance of £630. Investigation reveals three errors: (1) A sales invoice for £270 was entered as a debit to both the Sales account AND the SLCA. (2) Rent paid £900 was entered in the cash book correctly but posted to the Rent account as £990. (3) A purchase of stationery for £180 was completely omitted from the ledger.',
+    parts: [
+      { type: 'mcq', q: 'Error 1 (invoice debited to Sales AND SLCA) — what type of error is this?',
+        opts: ['Error of principle', 'Error of commission', 'Error of reversal of entries', 'Compensating error'],
+        ans: 2,
+        exp: 'The correct entry should be Dr SLCA £270 / Cr Sales £270. Instead, both Sales and SLCA were debited — the credit entry for Sales was replaced by a debit. This is an error of reversal of entries (complete reversal), creating a Dr excess of £540 (Dr SLCA £270 + Dr Sales £270, with no corresponding Cr).' },
+      { type: 'mcq', q: 'What is the journal to correct Error 2 (rent posted as £990 instead of £900)?',
+        opts: [
+          'Dr Rent £90, Cr Suspense £90',
+          'Dr Suspense £90, Cr Rent £90',
+          'Dr Rent £990, Cr Rent £900, Cr Suspense £90',
+          'Dr Cash £90, Cr Rent £90'],
+        ans: 1,
+        exp: 'Rent was over-debited by £90 (£990 − £900). Correct by reducing the rent account: Dr Suspense £90 / Cr Rent £90. The cash book Cr was correct at £900 — only the rent ledger posting was wrong, creating a £90 Dr excess that the suspense correction reverses.' },
+      { type: 'mcq', q: 'Which of the three errors contributed to the trial balance difference (the £630 suspense balance)?',
+        opts: [
+          'Errors 1 and 2 only',
+          'Error 2 only',
+          'Errors 1, 2 and 3',
+          'Error 3 only'],
+        ans: 0,
+        exp: 'Error 1 creates a Dr excess of £540 (two debits, no credit). Error 2 creates a Dr excess of £90 (rent over-debited). Together: £540 + £90 = £630 ✓ — matching the suspense Cr balance. Error 3 is a complete omission (both Dr and Cr missing) so it does NOT affect the trial balance.' },
+      { type: 'mcq', q: 'Error 3 (stationery £180 completely omitted) — does this affect the trial balance?',
+        opts: [
+          'Yes — the debit side is understated by £180',
+          'Yes — the credit side is understated by £180',
+          'No — both sides are equally affected (both missing)',
+          'No — stationery is a small amount and can be ignored'],
+        ans: 2,
+        exp: 'A complete omission affects both sides equally — neither the Dr (Stationery expense) nor the Cr (Bank/PLCA) entry was made. The trial balance remains in agreement; this error is only discovered by checking source documents against ledger entries.' },
+    ],
+    exp: 'Error identification and correction journals — reversal, transposition, omission, and the suspense account.' },
+
+  // ── TABLE-FILL QUESTIONS ─────────────────────────────────────────────────
+
+  { id: 'tf-016', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+    q: 'Complete the SLCA for the month. All figures in £.',
+    table: {
+      title: 'Sales Ledger Control Account',
+      columns: ['Debit entries', '£', 'Credit entries', '£'],
+      rows: [
+        ['Balance b/d', '8,400', 'Bank (receipts)', '32,600'],
+        ['Credit sales', '41,200', 'Sales returns', '1,800'],
+        ['', '', 'Discounts allowed', '950'],
+        ['', '', 'Bad debts written off', '400'],
+        ['', '', 'Balance c/d', '?'],
+      ],
+      blanks: [{ row: 4, col: 3, answer: 13850 }]
+    },
+    exp: 'Total Dr: £8,400 + £41,200 = £49,600. Total Cr: £32,600 + £1,800 + £950 + £400 + balance c/d = £49,600. Balance c/d = £49,600 − £35,750 = £13,850.' },
+
+  { id: 'tf-017', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+    q: 'Complete the job cost card for Job 47. OAR = £8 per labour hour.',
+    table: {
+      title: 'Job Cost Card — Job 47',
+      columns: ['Cost element', '£'],
+      rows: [
+        ['Direct materials (40 kg @ £6.50)', '260'],
+        ['Direct labour (12 hrs @ £10.00)', '?'],
+        ['Production overhead (12 hrs @ OAR)', '?'],
+        ['Total production cost', '?'],
+      ],
+      blanks: [
+        { row: 1, col: 1, answer: 120 },
+        { row: 2, col: 1, answer: 96 },
+        { row: 3, col: 1, answer: 476 },
+      ]
+    },
+    exp: 'Labour: 12 × £10 = £120. Overhead: 12 × £8 = £96. Total: £260 + £120 + £96 = £476.' },
+
+  { id: 'tf-018', topic: 'besy', difficulty: 'hard', type: 'tablefill',
+    q: 'Complete the working capital analysis table for Midway Ltd.',
+    table: {
+      title: 'Working Capital Analysis',
+      columns: ['Item', '£'],
+      rows: [
+        ['Inventory', '21,000'],
+        ['Trade receivables', '34,000'],
+        ['Cash and bank', '5,000'],
+        ['Total current assets', '?'],
+        ['Trade payables', '18,000'],
+        ['Accruals', '3,500'],
+        ['Total current liabilities', '?'],
+        ['Net working capital', '?'],
+      ],
+      blanks: [
+        { row: 3, col: 1, answer: 60000 },
+        { row: 6, col: 1, answer: 21500 },
+        { row: 7, col: 1, answer: 38500 },
+      ]
+    },
+    exp: 'Current assets: £21,000 + £34,000 + £5,000 = £60,000. Current liabilities: £18,000 + £3,500 = £21,500. Net working capital: £60,000 − £21,500 = £38,500.' },
+
+  { id: 'tf-019', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+    q: 'A trial balance has a debit excess of £860 (suspense account: credit balance £860). Two correcting journals are processed. Complete the suspense account.',
+    table: {
+      title: 'Suspense Account',
+      columns: ['Debit entries', '£', 'Credit entries', '£'],
+      rows: [
+        ['Error 1: rent under-credited — bank Cr missed', '360', 'Balance b/f (TB debit excess)', '860'],
+        ['Error 2: wages over-debited correction', '?', '', ''],
+      ],
+      blanks: [{ row: 1, col: 1, answer: 500 }]
+    },
+    exp: 'Total credits = £860 (the opening suspense balance). Total debits must also equal £860. Error 1 corrects £360. Error 2 = £860 − £360 = £500. When both corrections are posted the suspense account clears to zero.' }
+
+);

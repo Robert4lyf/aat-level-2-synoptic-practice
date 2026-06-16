@@ -142,6 +142,51 @@
         'Compensating — two errors cancel out (TB balances)',
         'Single-sided / casting / transposition — TB does NOT balance',
       ]},
+      { title: 'Partnership Act 1890 defaults', items: [
+        'Profits and losses shared EQUALLY (not by capital ratio)',
+        'No partners\' salaries (unless agreement says otherwise)',
+        'No interest on capital (unless agreement says otherwise)',
+        'No interest on drawings (unless agreement says otherwise)',
+        'Interest on loans to the firm: 5% per annum',
+        'Appropriation order: salaries → interest on capital → add back interest on drawings → residual in PSR',
+        'Goodwill: raise in OLD ratio, write off in NEW ratio — must not remain on SFP',
+      ]},
+      { title: 'VAT schemes (thresholds 2024)', items: [
+        'Standard accounting: VAT on invoice date (default)',
+        'Cash accounting: VAT on cash receipt/payment date — threshold ≤ £1.35m',
+        'Annual accounting: 1 return/yr, 9 monthly or 3 quarterly payments — threshold ≤ £1.35m',
+        'Flat rate: fixed sector % × gross (VAT-inclusive) turnover — threshold ≤ £150,000',
+        'Zero-rated (0%): food, books, children\'s clothing — input VAT IS reclaimable',
+        'Exempt: financial services, education, insurance — input VAT NOT reclaimable',
+        'Box 5 = Box 1 − Box 4. Positive → pay HMRC. Negative → HMRC refunds',
+      ]},
+      { title: 'Variance formulas (L3 MATS)', items: [
+        'Material price = (Standard price − Actual price) × Actual qty purchased',
+        'Material usage = (Standard qty for actual output − Actual qty used) × Standard price',
+        'Labour rate = (Standard rate − Actual rate) × Actual hours paid',
+        'Labour efficiency = (Standard hours for actual output − Actual hours worked) × Standard rate',
+        'Adverse (A) = actual cost > standard · Favourable (F) = actual cost < standard',
+        'Total material variance = Price + Usage variances',
+        'OAR = Budgeted overheads ÷ Budgeted activity',
+        'Over-absorption (absorbed > incurred) → credit P&L · Under-absorption → debit P&L',
+      ]},
+      { title: 'Income tax — sole trader (L3 TPFB)', items: [
+        'Taxable profit = Accounting profit + Disallowable expenses − Capital allowances',
+        'Always disallowable: depreciation, drawings, private expenses, fines',
+        'AIA: 100% first-year on qualifying plant & machinery (limit £1m 2024/25)',
+        'WDA main pool: 18% reducing balance · WDA special rate pool: 6%',
+        'Personal allowance: £12,570 · Basic rate 20% up to £37,700 · Higher rate 40%',
+        'Payments on account: 31 Jan (in year) and 31 Jul (after year) — each 50% of prior year',
+        'Balancing payment + Self Assessment return: 31 Jan after year end',
+      ]},
+      { title: 'ETB column guide (L3 AVBK)', items: [
+        'Four column pairs: Trial Balance → Adjustments → P&L → SFP',
+        'Accrual: Dr P&L expense / Cr SFP current liability',
+        'Prepayment: Cr P&L expense / Dr SFP current asset',
+        'Depreciation charge: Dr P&L · Accumulated dep: Cr SFP contra-asset',
+        'Profit = P&L balancing debit → same figure credited to SFP equity column',
+        'SFP columns balance after transferring profit/loss',
+      ]},
     ],
   };
 
@@ -603,6 +648,7 @@
       const qs = this.data.stats.questions[question.id] || { attempts: 0, correct: 0, lastSeen: null };
       qs.attempts++; qs.seen = true;
       if (correct) qs.correct++;
+      else qs.lastWrong = Date.now();
       qs.lastSeen = Date.now();
       this.data.stats.questions[question.id] = qs;
       const ts = this.data.stats.topics[question.topic] || { attempts: 0, correct: 0 };
@@ -1342,6 +1388,12 @@
       const qs = Storage.data.stats.questions[q.id];
       if (!qs) w *= 1.5;                                                         // never seen
       else if (qs.attempts > 0 && qs.correct === 0) w *= 2;                      // never got right
+      if (qs && qs.lastWrong) {
+        const age = now - qs.lastWrong;
+        if (age < 3600000)   w *= 4;    // wrong in last hour — resurface immediately
+        else if (age < 86400000) w *= 2.5; // wrong in last 24 h
+        else if (age < 604800000) w *= 1.5; // wrong in last week
+      }
       // Difficulty ladder: while accuracy is low, favour easier questions
       if (attempts >= 10 && overallAcc < 0.6 && q.difficulty === 'hard') w *= 0.4;
       if (attempts >= 10 && overallAcc >= 0.8 && q.difficulty === 'easy') w *= 0.5;
