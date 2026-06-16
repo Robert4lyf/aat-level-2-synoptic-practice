@@ -3718,4 +3718,777 @@ window.LEARN_PATH = [
       },
     ],
   },
+
+  /* ══════════════════════════════════════════════════════════
+     AAT LEVEL 3 — INTRODUCTORY UNITS
+     ══════════════════════════════════════════════════════════ */
+  {
+    unit: 'avbk',
+    title: 'Advanced Bookkeeping',
+    lessons: [
+      {
+        id: 'L-avbk-1',
+        title: 'The Extended Trial Balance',
+        icon: '📋',
+        skills: [],
+        cards: [
+          {
+            h: 'What is the ETB?',
+            p: [
+              'The **extended trial balance (ETB)** is a working paper used at Level 3 to apply year-end adjustments before producing final accounts. It has four pairs of Dr/Cr columns: Trial Balance, Adjustments, Statement of Profit or Loss (P&L), and Statement of Financial Position (SFP).',
+              'Each adjusted balance is carried into either the P&L columns (income and expense accounts) or the SFP columns (assets, liabilities, equity). Never both.',
+              'The P&L columns will not balance on their own — the difference is the profit or loss, which is then transferred into the SFP equity column.',
+            ],
+          },
+          {
+            h: 'Accruals and Prepayments in the ETB',
+            p: [
+              '**Accruals** (expenses incurred but unpaid): debit the expense in P&L columns; credit a current liability in SFP columns.',
+              '**Prepayments** (expenses paid in advance): credit the expense in P&L columns (reducing it); debit a current asset in SFP columns.',
+              'Accrued income follows the same logic in reverse: credit income in P&L; debit a current asset in SFP.',
+            ],
+            callout: { kind: 'key', text: 'Accrual: expense ↑ P&L debit + SFP liability credit. Prepayment: expense ↓ P&L credit + SFP asset debit.' },
+          },
+          {
+            h: 'Depreciation and Completing the ETB',
+            p: [
+              'The **depreciation charge** for the year is a P&L debit (expense). The **accumulated depreciation** sits in the SFP as a credit contra-asset, reducing the non-current asset to its carrying value.',
+              'At Level 3 you must apply both straight-line (SL) and reducing balance (RB) methods. SL: (Cost − Residual) ÷ Life. RB: Carrying value × Rate%.',
+              'Once all adjustments are in, total the P&L columns. The larger side determines profit (credit side larger = profit; debit the P&L shortfall, credit SFP capital). The SFP must then balance.',
+            ],
+            formula: 'SL = (Cost − Residual) ÷ Life · RB = Carrying value × Rate% · Carrying value = Cost − Accumulated depreciation',
+          },
+        ],
+        check: [
+          {
+            q: 'An accrued expense of £800 at year end appears in the ETB as:',
+            opts: [
+              'Debit P&L expense column; credit SFP current liability column',
+              'Credit P&L expense column; debit SFP current asset column',
+              'Debit SFP current asset; credit P&L income column',
+              'Only in the adjustments columns — it does not flow to final accounts',
+            ],
+            ans: 0,
+            exp: 'An accrual increases the expense (P&L debit) and creates a current liability (SFP credit). Both the P&L and SFP columns are affected.',
+          },
+          {
+            q: 'Straight-line depreciation on an asset costing £20,000 with a £2,000 residual value and 6-year life is:',
+            opts: ['£3,000 per year', '£3,333 per year', '£18,000 per year', '£2,000 per year'],
+            ans: 0,
+            exp: '(£20,000 − £2,000) ÷ 6 = £18,000 ÷ 6 = £3,000 per year.',
+          },
+          {
+            q: 'When the ETB P&L credit column total exceeds the debit column total, the difference represents:',
+            opts: [
+              'A loss, transferred as a debit to the SFP equity column',
+              'A profit, transferred as a debit to the P&L columns and a credit to SFP equity',
+              'A balancing error — both columns must always agree',
+              'Accumulated depreciation carried forward',
+            ],
+            ans: 1,
+            exp: 'Credits > debits in P&L = profit. The profit is the balancing debit in the P&L columns and the same figure is credited to SFP equity (retained earnings / capital). SFP columns then balance.',
+          },
+          {
+            q: 'Accumulated depreciation in the SFP columns of the ETB is shown as:',
+            opts: [
+              'A debit (asset) reducing the non-current asset cost',
+              'A credit (contra-asset) reducing the non-current asset to carrying value',
+              'A P&L expense in the income column',
+              'A current liability owed to HMRC',
+            ],
+            ans: 1,
+            exp: 'Accumulated depreciation is a credit balance in the SFP — it is a contra-asset set against the non-current asset cost to show the carrying value (net book value).',
+          },
+        ],
+      },
+      {
+        id: 'L-avbk-2',
+        title: 'Incomplete Records & Asset Disposals',
+        icon: '🔍',
+        skills: [],
+        cards: [
+          {
+            h: 'Incomplete Records',
+            p: [
+              'When full double-entry records do not exist, use available information to reconstruct figures. The **capital comparison method** finds profit without a P&L: Profit = Closing net assets − Opening net assets + Drawings − Capital introduced.',
+              'You also use mark-up or margin to find missing sales or COGS values when only one is known.',
+            ],
+            formula: 'Profit = Closing NA − Opening NA + Drawings − Capital introduced · COGS = Opening inventory + Purchases − Closing inventory',
+            callout: { kind: 'warning', text: '**Mark-up** is profit as % of cost. **Margin** is profit as % of selling price. A 25% mark-up = a 20% gross margin — these are not interchangeable.' },
+          },
+          {
+            h: 'Asset Disposal Account',
+            p: [
+              'To remove a sold or scrapped asset from the books, open a **disposal account**:',
+              '1. Transfer cost: Dr Disposal, Cr Non-current asset at cost.',
+              '2. Transfer accumulated depreciation: Dr Accumulated depreciation, Cr Disposal.',
+              '3. Record proceeds: Dr Bank (or new asset for part-exchange), Cr Disposal.',
+              '4. Balance = profit on disposal (credit balance) or loss (debit balance) — transfer to P&L.',
+            ],
+          },
+          {
+            h: 'Part-Exchange Transactions',
+            p: [
+              'In a **part-exchange**, the old asset\'s agreed trade-in value is credited to the disposal account (as deemed proceeds) and debited to the new asset account as a deposit. The remaining balance is paid in cash.',
+              'The disposal account still produces a profit or loss comparing the trade-in value to the old asset\'s carrying value — treated identically to a cash sale.',
+            ],
+            callout: { kind: 'key', text: 'Part-exchange allowance → credited to Disposal account (same as cash proceeds). New asset account is debited for the full cost; disposal handles the old asset separately.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Opening net assets £35,000; closing net assets £48,000; drawings £12,000; no new capital. Profit for the year is:',
+            opts: ['£13,000', '£25,000', '£1,000', '£60,000'],
+            ans: 1,
+            exp: 'Profit = £48,000 − £35,000 + £12,000 = £25,000. Drawings are added back because they reduced net assets but were not a business expense.',
+          },
+          {
+            q: 'A machine cost £25,000; accumulated depreciation £16,000; sold for £7,500. Result on disposal:',
+            opts: [
+              'Profit of £7,500',
+              'Loss of £1,500',
+              'Profit of £1,500',
+              'Loss of £7,500',
+            ],
+            ans: 1,
+            exp: 'Carrying value = £25,000 − £16,000 = £9,000. Proceeds £7,500. Loss = £9,000 − £7,500 = £1,500 adverse.',
+          },
+          {
+            q: 'A trader applies a 331⁄3% mark-up on cost. Cost of goods sold was £60,000. Sales revenue was:',
+            opts: ['£80,000', '£90,000', '£45,000', '£75,000'],
+            ans: 0,
+            exp: 'Mark-up 331⁄3% on cost: Sales = £60,000 × 4/3 = £80,000.',
+          },
+          {
+            q: 'In a part-exchange transaction, the trade-in allowance on the old asset is recorded in the disposal account as:',
+            opts: [
+              'A debit, increasing the cost of the new asset',
+              'A credit, representing deemed proceeds for the old asset',
+              'A debit, writing off the remaining carrying value',
+              'It is not recorded in the disposal account for a part-exchange',
+            ],
+            ans: 1,
+            exp: 'The part-exchange allowance is credited to the disposal account — it is treated as non-cash proceeds received for the old asset. The same amount is debited to the new asset account.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    unit: 'faps',
+    title: 'Final Accounts Preparation',
+    lessons: [
+      {
+        id: 'L-faps-1',
+        title: 'Sole Trader Financial Statements',
+        icon: '📑',
+        skills: [],
+        cards: [
+          {
+            h: 'Statement of Profit or Loss',
+            p: [
+              'The **statement of profit or loss (SPL)** shows Revenue − Cost of goods sold = **Gross profit**, then Gross profit − Expenses = **Net profit**.',
+              'COGS = Opening inventory + Purchases − Closing inventory. Expenses include depreciation, wages, rent — all charged on an accruals basis.',
+              'Inventory is valued at the **lower of cost and net realisable value (NRV)**. If NRV falls below cost, write inventory down to NRV — a key Level 3 concept.',
+            ],
+            formula: 'COGS = Opening inventory + Purchases − Closing inventory · Gross profit = Revenue − COGS · Net profit = Gross profit − Expenses',
+          },
+          {
+            h: 'Statement of Financial Position',
+            p: [
+              'The **SFP** is a snapshot of assets, liabilities and equity at the period end.',
+              'Non-current assets appear at carrying value (cost − accumulated depreciation). Current assets include inventory, receivables, prepayments, and bank/cash. Current liabilities include payables, accruals, and bank overdraft.',
+              '**Net assets = Total assets − Total liabilities = Equity (capital)**.',
+            ],
+          },
+          {
+            h: 'Equity and Drawings',
+            p: [
+              'Equity reconciliation: Opening capital + Net profit − Drawings = Closing capital.',
+              '**Drawings are never an expense** — they reduce equity in the SFP, not profit in the P&L.',
+              'Additional capital introduced during the year is added to opening capital before deducting drawings.',
+            ],
+            example: {
+              title: 'Equity section',
+              rows: [['Item','£'],['Opening capital','42,000'],['Add: Net profit','16,800'],['Less: Drawings','(11,200)'],['Closing capital','47,600']],
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'Opening inventory £8,000; purchases £74,000; closing inventory £11,000; sales £120,000. What is gross profit?',
+            opts: ['£49,000', '£46,000', '£71,000', '£120,000'],
+            ans: 0,
+            exp: 'COGS = £8,000 + £74,000 − £11,000 = £71,000. Gross profit = £120,000 − £71,000 = £49,000.',
+          },
+          {
+            q: 'Inventory costing £4,000 has an estimated selling price of £3,500 and selling costs of £200. It should be valued at:',
+            opts: ['£4,000 (cost)', '£3,500 (selling price)', '£3,300 (NRV)', '£3,700 (selling price less half the costs)'],
+            ans: 2,
+            exp: 'NRV = £3,500 − £200 = £3,300. Since NRV (£3,300) < cost (£4,000), inventory is written down to £3,300 (lower of cost and NRV).',
+          },
+          {
+            q: 'Opening capital £28,000; profit £14,500; drawings £9,000. Closing capital is:',
+            opts: ['£33,500', '£51,500', '£23,500', '£42,500'],
+            ans: 0,
+            exp: '£28,000 + £14,500 − £9,000 = £33,500.',
+          },
+          {
+            q: 'Non-current assets appear in the SFP at:',
+            opts: [
+              'Original cost',
+              'Current market value',
+              'Cost less accumulated depreciation (carrying value)',
+              'Replacement cost',
+            ],
+            ans: 2,
+            exp: 'Non-current assets are carried at historical cost less accumulated depreciation — the carrying value (net book value). Market or replacement cost is not used under historical cost accounting.',
+          },
+        ],
+      },
+      {
+        id: 'L-faps-2',
+        title: 'Partnership Accounts',
+        icon: '🤝',
+        skills: [],
+        cards: [
+          {
+            h: 'Partnership Basics and the 1890 Act',
+            p: [
+              'A **partnership** is two or more people carrying on business in common with a view to profit. If there is no partnership agreement, the **Partnership Act 1890** applies: profits shared equally, no salaries, no interest on capital, 5% interest on loans.',
+              'A partnership agreement overrides the Act on all points it covers — always check which applies before dividing profit.',
+            ],
+            callout: { kind: 'key', text: 'PA 1890 default: equal profit share regardless of capital. A very common exam trap is assuming profits split by capital ratio.' },
+          },
+          {
+            h: 'Appropriation Account',
+            p: [
+              'After the P&L arrives at net profit, the **appropriation account** divides that profit among partners.',
+              'Order: (1) Deduct partners\' salaries. (2) Deduct interest on capital. (3) Add back interest on drawings (these reduce the partner\'s allocation). (4) Share residual profit in the profit-sharing ratio (PSR).',
+              'Salaries and interest on capital are credits to partners\' current accounts. Interest on drawings is a debit to current accounts.',
+            ],
+          },
+          {
+            h: 'Current Accounts and Goodwill',
+            p: [
+              'Each partner has a fixed **capital account** and a fluctuating **current account**. The current account receives salary, interest on capital, and profit share; it is debited for drawings and interest on drawings.',
+              'A debit balance on a current account means the partner has overdrawn — shown as an asset (amount owed to the firm) in the SFP.',
+              'On admission or retirement, **goodwill** is raised in the old PSR (Cr capital accounts) then immediately written off in the new PSR (Dr capital accounts), so no goodwill remains on the SFP.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'No partnership agreement exists. How is profit shared under the Partnership Act 1890?',
+            opts: [
+              'In proportion to each partner\'s capital balance',
+              'Equally between all partners',
+              'In proportion to hours worked',
+              'Two-thirds to the senior partner, one-third to the junior',
+            ],
+            ans: 1,
+            exp: 'The Partnership Act 1890 default is equal profit sharing. Salaries, interest on capital, and interest on drawings do not apply unless the partnership agreement says so.',
+          },
+          {
+            q: 'Partners\' salaries in the appropriation account are:',
+            opts: [
+              'An expense in the main P&L, reducing net profit',
+              'An appropriation of profit, deducted before sharing the residual',
+              'Treated the same as drawings and not deducted in the appropriation account',
+              'Only applicable if partners work full-time in the business',
+            ],
+            ans: 1,
+            exp: 'Partners\' salaries are an appropriation — they come out of profit in the appropriation account, not as an expense in the P&L.',
+          },
+          {
+            q: 'When a new partner joins and goodwill is £30,000, existing partners A and B share profits 3:2. How much goodwill is credited to A\'s capital?',
+            opts: ['£15,000', '£18,000', '£10,000', '£30,000'],
+            ans: 1,
+            exp: 'Goodwill is raised in the OLD ratio (3:2). A\'s share = 3/5 × £30,000 = £18,000.',
+          },
+          {
+            q: 'A partner\'s current account shows a debit balance. This means:',
+            opts: [
+              'The firm owes the partner money',
+              'The partner has over-drawn and owes money to the firm',
+              'The partner\'s capital has increased beyond their opening investment',
+              'No significance — debit balances are normal for current accounts',
+            ],
+            ans: 1,
+            exp: 'A debit balance on a current account is an overdrawn account — the partner has taken more than they have been allocated. It appears as an asset in the SFP (debtor).',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    unit: 'mats',
+    title: 'Management Accounting: Costing',
+    lessons: [
+      {
+        id: 'L-mats-1',
+        title: 'Overhead Absorption & Recovery',
+        icon: '🏭',
+        skills: [],
+        cards: [
+          {
+            h: 'Overhead Absorption Rates',
+            p: [
+              'Overheads are indirect costs that cannot be directly traced to a product. They are shared between cost centres through **allocation and apportionment**, then charged to products using an **overhead absorption rate (OAR)**.',
+              'OAR = Budgeted overheads ÷ Budgeted activity. Common bases: labour hours, machine hours, or units of output. Machine hours suit automated factories; labour hours suit labour-intensive production.',
+              'Overhead absorbed into a product = OAR × Actual activity achieved.',
+            ],
+            formula: 'OAR = Budgeted overheads ÷ Budgeted activity · Absorbed overhead = OAR × Actual activity',
+            callout: { kind: 'key', text: 'OAR is calculated using BUDGETED figures. Actual overhead spend is only known at year end. You absorb at the pre-determined OAR throughout the year.' },
+          },
+          {
+            h: 'Under and Over Absorption',
+            p: [
+              'At year end compare: **Overhead absorbed** (OAR × actual activity) vs **Overhead incurred** (actual spend).',
+              '**Over-absorbed**: absorbed > incurred → credit to P&L (profit improves — too much was charged to products, so we reverse the excess).',
+              '**Under-absorbed**: absorbed < incurred → debit to P&L (profit reduces — not enough was charged to products, so the remaining cost hits P&L).',
+            ],
+            formula: 'Over-absorption = Absorbed − Incurred (positive → credit P&L) · Under-absorption = Incurred − Absorbed (positive → debit P&L)',
+          },
+          {
+            h: 'Marginal vs Absorption Costing',
+            p: [
+              'Under **absorption costing**: fixed overheads are included in unit cost and carried in inventory valuation. When inventory rises, some fixed overhead is deferred in stock — profit is higher than under marginal costing.',
+              'Under **marginal costing**: fixed overheads are period costs, expensed in full regardless of production volume. Only variable costs go into inventory.',
+              'Reconciliation: Absorption profit − Marginal profit = Change in inventory units × Fixed OAR per unit.',
+            ],
+            callout: { kind: 'tip', text: 'If production > sales (inventory builds), absorption profit > marginal profit. If production < sales (inventory falls), absorption profit < marginal profit.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Budgeted overheads £216,000; budgeted labour hours 54,000. OAR is:',
+            opts: ['£4.00 per hour', '£54.00 per hour', '£0.25 per hour', '£216.00 per hour'],
+            ans: 0,
+            exp: 'OAR = £216,000 ÷ 54,000 = £4.00 per labour hour.',
+          },
+          {
+            q: 'Overhead incurred £88,000; overhead absorbed £94,500. The result is:',
+            opts: [
+              'Under-absorption £6,500 — debit P&L',
+              'Over-absorption £6,500 — credit P&L',
+              'Over-absorption £6,500 — debit P&L',
+              'Under-absorption £6,500 — credit P&L',
+            ],
+            ans: 1,
+            exp: 'Absorbed (£94,500) > Incurred (£88,000) = over-absorbed by £6,500. Over-absorption is a credit to P&L — we charged products more than was actually spent.',
+          },
+          {
+            q: 'Under marginal costing, fixed production overheads are:',
+            opts: [
+              'Included in inventory values and deferred until units are sold',
+              'Charged entirely as period costs in the current accounting period',
+              'Absorbed using a machine hour OAR',
+              'Split equally between units produced and units sold',
+            ],
+            ans: 1,
+            exp: 'Marginal costing treats fixed overheads as period costs — expensed in full when incurred, regardless of units produced. Only variable costs appear in inventory values.',
+          },
+          {
+            q: 'When inventory levels rise between periods, which statement is correct?',
+            opts: [
+              'Marginal costing profit exceeds absorption costing profit',
+              'Absorption costing profit exceeds marginal costing profit',
+              'Both methods always produce the same profit',
+              'The difference depends only on variable costs per unit',
+            ],
+            ans: 1,
+            exp: 'Rising inventory means more fixed overhead is carried forward in stock under absorption costing (deferred, not yet in P&L). Marginal costing expenses all fixed overhead immediately, so marginal profit is lower.',
+          },
+        ],
+      },
+      {
+        id: 'L-mats-2',
+        title: 'Variance Analysis',
+        icon: '📊',
+        skills: [],
+        cards: [
+          {
+            h: 'What Are Variances?',
+            p: [
+              'A **variance** is the difference between a standard (budgeted) cost or revenue and the actual outcome.',
+              '**Favourable (F)**: actual cost < standard (good for profit) or actual revenue > budget.',
+              '**Adverse (A)**: actual cost > standard (bad for profit) or actual revenue < budget.',
+              'Variance analysis helps management identify where and why performance deviated from plan.',
+            ],
+          },
+          {
+            h: 'Material Variances',
+            p: [
+              '**Price variance**: (Standard price − Actual price) × Actual quantity purchased.',
+              '**Usage variance**: (Standard quantity for actual output − Actual quantity used) × Standard price.',
+              '**Total material variance** = Price variance + Usage variance.',
+            ],
+            formula: 'Price = (SP − AP) × AQ · Usage = (SQ − AQ) × SP',
+            callout: { kind: 'warning', text: 'Price variance uses ACTUAL quantity purchased. Usage variance uses STANDARD price. Mixing these is the most common exam error at Level 3.' },
+          },
+          {
+            h: 'Labour Variances and Interdependencies',
+            p: [
+              '**Rate variance**: (Standard rate − Actual rate) × Actual hours paid.',
+              '**Efficiency variance**: (Standard hours for actual output − Actual hours worked) × Standard rate.',
+              'Variances are often interdependent: cheaper materials (favourable price) may cause higher wastage (adverse usage). Cheaper labour (favourable rate) may be less skilled, causing slower output (adverse efficiency).',
+            ],
+            formula: 'Rate = (SR − AR) × AH · Efficiency = (SH − AH) × SR',
+          },
+        ],
+        check: [
+          {
+            q: 'Standard price £4.00/kg; actual price £4.35/kg; actual quantity purchased 600 kg. Material price variance:',
+            opts: ['£210 adverse', '£210 favourable', '£2,400 adverse', '£2,610 favourable'],
+            ans: 0,
+            exp: '(£4.00 − £4.35) × 600 = −£0.35 × 600 = −£210 = £210 adverse (paid more than standard).',
+          },
+          {
+            q: 'Standard hours for actual output: 720 hours. Actual hours worked: 780 hours. Standard rate £10/hr. Labour efficiency variance:',
+            opts: ['£600 adverse', '£600 favourable', '£7,200 adverse', '£7,800 favourable'],
+            ans: 0,
+            exp: '(720 − 780) × £10 = −60 × £10 = −£600 = £600 adverse (worked more hours than standard).',
+          },
+          {
+            q: 'A favourable material price variance alongside an adverse usage variance most likely indicates:',
+            opts: [
+              'A fall in market prices for the material, with no quality change',
+              'Cheaper material was purchased which resulted in higher wastage',
+              'More units were produced than budgeted',
+              'Labour worked more efficiently, using material faster',
+            ],
+            ans: 1,
+            exp: 'Buying cheaper (favourable price) but lower-quality material often results in more waste in production (adverse usage). This is a classic interdependency that an examiner will ask you to explain.',
+          },
+          {
+            q: 'The total material variance equals:',
+            opts: [
+              'Material price variance only',
+              'Material usage variance only',
+              'Material price variance plus material usage variance',
+              'Standard cost of actual output divided by actual cost',
+            ],
+            ans: 2,
+            exp: 'Total material variance = Price variance + Usage variance. It can also be calculated directly as (Standard cost of actual output) − (Actual cost of actual output).',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    unit: 'tpfb',
+    title: 'Tax Processes for Businesses',
+    lessons: [
+      {
+        id: 'L-tpfb-1',
+        title: 'VAT Schemes & Returns',
+        icon: '🧾',
+        skills: [],
+        cards: [
+          {
+            h: 'VAT Registration and Rates',
+            p: [
+              'Businesses must register for VAT when taxable turnover exceeds the threshold (£90,000 from April 2024). Voluntary registration is allowed below this threshold and allows input VAT recovery.',
+              '**Standard rate 20%** (most goods/services). **Reduced rate 5%** (domestic fuel, child car seats). **Zero rate 0%** (food, books, children\'s clothes) — taxable at 0%, input VAT reclaimable. **Exempt** (financial services, education) — outside VAT, input VAT NOT reclaimable.',
+            ],
+            callout: { kind: 'warning', text: 'Zero-rated ≠ Exempt. Zero-rated businesses CAN reclaim input VAT on costs. Exempt businesses CANNOT. This distinction is heavily tested.' },
+          },
+          {
+            h: 'VAT Schemes',
+            p: [
+              '**Cash accounting**: account for VAT when cash is received/paid (not on invoice). Protects against bad debts. Threshold: taxable turnover ≤ £1.35m.',
+              '**Annual accounting**: one VAT return per year; pay 9 monthly or 3 quarterly instalments (based on prior year); balancing payment with return. Threshold ≤ £1.35m.',
+              '**Flat rate**: pay a fixed sector % of gross (VAT-inclusive) turnover to HMRC. No separate input/output VAT calculation. Threshold ≤ £150,000.',
+            ],
+          },
+          {
+            h: 'Completing a VAT Return',
+            p: [
+              'Key boxes: **Box 1** = output VAT; **Box 4** = input VAT; **Box 5** = VAT payable (Box 1 − Box 4); **Box 6** = net sales; **Box 7** = net purchases.',
+              'Returns are submitted quarterly online via Making Tax Digital (MTD) software. Payment is due one month and seven days after the end of the VAT period.',
+            ],
+            callout: { kind: 'key', text: 'Box 5 = Box 1 − Box 4. Positive = pay HMRC. Negative = HMRC repays you.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Which VAT scheme accounts for VAT only when cash is received from customers?',
+            opts: ['Annual accounting scheme', 'Flat rate scheme', 'Cash accounting scheme', 'Standard VAT accounting'],
+            ans: 2,
+            exp: 'The cash accounting scheme uses cash receipt/payment dates rather than invoice dates. It helps businesses avoid paying VAT on invoices that customers have not yet paid.',
+          },
+          {
+            q: 'Output VAT £18,400; input VAT £11,600. VAT payable to HMRC is:',
+            opts: ['£30,000', '£11,600', '£18,400', '£6,800'],
+            ans: 3,
+            exp: 'Box 5 = £18,400 − £11,600 = £6,800 payable to HMRC.',
+          },
+          {
+            q: 'Children\'s school uniforms are zero-rated. A retailer selling only these can:',
+            opts: [
+              'Not register for VAT at all — zero-rated means outside the VAT system',
+              'Register (or voluntarily register) and reclaim input VAT on costs',
+              'Charge 5% VAT on sales as the reduced rate applies',
+              'Only reclaim input VAT if turnover exceeds the registration threshold',
+            ],
+            ans: 1,
+            exp: 'Zero-rated supplies are taxable at 0%. The business can register for VAT and reclaim input VAT on all business purchases. This is one of the main benefits of zero-rating over exempt status.',
+          },
+          {
+            q: 'Under the flat rate scheme, VAT is calculated as:',
+            opts: [
+              'Output VAT minus input VAT as normal',
+              'A fixed sector percentage of gross (VAT-inclusive) turnover',
+              'A fixed sector percentage of net (VAT-exclusive) turnover',
+              'Cash received from customers multiplied by 20%',
+            ],
+            ans: 1,
+            exp: 'The flat rate scheme applies a fixed % (set per business sector) to gross turnover (including VAT). This simplifies administration and may produce a profit if the flat rate is lower than the effective standard rate.',
+          },
+        ],
+      },
+      {
+        id: 'L-tpfb-2',
+        title: 'Income Tax for Sole Traders',
+        icon: '💷',
+        skills: [],
+        cards: [
+          {
+            h: 'Computing Taxable Trading Profit',
+            p: [
+              'Start with **accounting net profit**, then adjust for tax:',
+              '**Add back** disallowable expenses (depreciation, drawings, private costs, fines).',
+              '**Deduct** capital allowances (the tax equivalent of depreciation).',
+              'The result is **taxable trading profit** — the figure HMRC taxes.',
+            ],
+            formula: 'Taxable profit = Accounting profit + Disallowable expenses − Capital allowances',
+            callout: { kind: 'warning', text: 'Depreciation is ALWAYS disallowable — add it back to accounting profit in every question. Replace it with capital allowances.' },
+          },
+          {
+            h: 'Capital Allowances',
+            p: [
+              '**Annual Investment Allowance (AIA)**: 100% first-year deduction for qualifying plant and machinery (up to the annual limit, currently £1 million). Claimed in full in the year of purchase.',
+              '**Writing Down Allowance (WDA)**: 18% per year on the reducing balance of the main pool; 6% for the special rate pool (long-life assets, integral building features).',
+              'On disposal: if the pool is extinguished with remaining value, a **balancing allowance** gives full relief; if sale proceeds exceed the pool, a **balancing charge** claws back over-claimed relief.',
+            ],
+            formula: 'AIA = 100% of cost (up to limit) · WDA main = 18% × Tax written-down value · WDA special = 6% × TWDV',
+          },
+          {
+            h: 'Income Tax Rates and Payment Dates',
+            p: [
+              'Once taxable trading profit is established, deduct the **personal allowance** (£12,570 for 2024/25) to get taxable income. Rates: **20% basic** (up to £37,700); **40% higher** (£37,701–£125,140); **45% additional** (above £125,140).',
+              'Sole traders pay tax via **Self Assessment**. Two payments on account: **31 January** in the tax year and **31 July** after the tax year (each 50% of prior year\'s liability). Balancing payment due **31 January** after the tax year end.',
+            ],
+            callout: { kind: 'key', text: 'Payment on account dates: 31 Jan (in year) and 31 Jul (after year). Balancing payment: 31 Jan after year end. Online Self Assessment return also due 31 January.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Accounting profit £64,000; depreciation charged £8,500; capital allowances £11,200. Taxable profit is:',
+            opts: ['£61,300', '£52,800', '£72,500', '£64,000'],
+            ans: 0,
+            exp: '£64,000 + £8,500 (add back depreciation) − £11,200 (capital allowances) = £61,300.',
+          },
+          {
+            q: 'Which of the following is an allowable trading expense for income tax purposes?',
+            opts: [
+              'The owner\'s drawings from the business',
+              'Depreciation on business equipment',
+              'Wages paid to a member of staff',
+              'A speeding fine incurred while making a delivery',
+            ],
+            ans: 2,
+            exp: 'Staff wages are allowable — wholly and exclusively for trade. Drawings, depreciation, and fines are all disallowable.',
+          },
+          {
+            q: 'The Annual Investment Allowance provides:',
+            opts: [
+              '18% reducing balance allowance each year on plant purchases',
+              '100% first-year deduction for qualifying plant and machinery up to the limit',
+              'A flat £5,000 deduction available to all businesses',
+              '25% accelerated depreciation in year one',
+            ],
+            ans: 1,
+            exp: 'The AIA gives 100% tax relief in the year of purchase for most plant and machinery, up to the annual limit (£1m for 2024/25). This accelerates tax relief compared to the 18% WDA.',
+          },
+          {
+            q: 'A sole trader\'s tax liability for 2023/24 was £10,000. The first payment on account for 2024/25 is due:',
+            opts: ['31 July 2024', '31 January 2025', '31 October 2024', '31 January 2026'],
+            ans: 1,
+            exp: 'The first payment on account for 2024/25 is due 31 January 2025 (during the tax year). It is 50% of the prior year liability = £5,000.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    unit: 'buaw',
+    title: 'Business Awareness',
+    lessons: [
+      {
+        id: 'L-buaw-1',
+        title: 'Corporate Governance & Company Law',
+        icon: '🏛️',
+        skills: [],
+        cards: [
+          {
+            h: 'The Companies Act 2006',
+            p: [
+              'The **Companies Act 2006** governs UK companies. A company is a **separate legal entity** — it can enter contracts, own property, and sue/be sued in its own name, distinct from its shareholders.',
+              '**Private limited company (Ltd)**: cannot offer shares to the public. **Public limited company (PLC)**: can list shares on a stock exchange; minimum share capital £50,000; annual accounts filed within 6 months.',
+              'Every company needs at least one director and one shareholder. Accounts and an annual confirmation statement must be filed at Companies House.',
+            ],
+          },
+          {
+            h: 'Directors\' Duties (CA 2006)',
+            p: [
+              'Seven statutory duties under CA 2006:',
+              '1. Act within powers. 2. **Promote the success of the company** (s.172 — must consider employees, suppliers, community, environment, long-term consequences). 3. Exercise independent judgement. 4. Exercise reasonable care, skill and diligence. 5. Avoid conflicts of interest. 6. Not accept third-party benefits. 7. Declare interests in transactions.',
+              'Directors can face personal liability for breach of duty, wrongful trading, or fraudulent trading.',
+            ],
+            callout: { kind: 'key', text: 's.172 "promote the success" is broader than profit maximisation — it explicitly includes employees, business relationships, community and environmental impact. Scenarios at Level 3 will test this.' },
+          },
+          {
+            h: 'Corporate Governance and Stakeholders',
+            p: [
+              '**Corporate governance** = systems and processes directing and controlling a company. The UK Corporate Governance Code (listed PLCs) covers board leadership, effectiveness, accountability, and remuneration.',
+              'Key structures: independent **non-executive directors (NEDs)**, audit committee, remuneration committee.',
+              '**Principal-agent problem**: managers (agents) may act in their own interest, not shareholders\' (principals). Governance structures — including NEDs and performance pay — aim to align incentives.',
+              '**Stakeholders**: anyone affected by the company — shareholders, employees, customers, suppliers, lenders, community, government. CSR means managing the business ethically with regard to all stakeholders.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'Which statement correctly distinguishes a Ltd from a PLC?',
+            opts: [
+              'A Ltd can offer shares to the public; a PLC cannot',
+              'A PLC can offer shares to the public; a Ltd cannot',
+              'Only a Ltd has limited liability; a PLC has unlimited liability',
+              'A PLC must have fewer shareholders than a Ltd',
+            ],
+            ans: 1,
+            exp: 'A PLC can offer shares to the general public and list on a stock exchange. A private limited company (Ltd) cannot offer shares to the public — that is the key distinction.',
+          },
+          {
+            q: 'The duty under s.172 CA 2006 to "promote the success of the company" requires directors to consider:',
+            opts: [
+              'Only the financial returns to majority shareholders',
+              'Long-term consequences, employees, community, and the environment',
+              'Maximising short-term profit and dividend payments',
+              'The personal financial interests of the directors',
+            ],
+            ans: 1,
+            exp: 's.172 requires regard for a wide range of factors including employees, business relationships, the community, and environmental impact — not just profit for shareholders.',
+          },
+          {
+            q: 'The principal-agent problem in corporate governance refers to:',
+            opts: [
+              'Disputes between the company\'s solicitors and auditors',
+              'The risk that managers act in their own interest rather than shareholders\'',
+              'Conflict between the CEO and the board chairperson',
+              'Difficulty appointing qualified non-executive directors',
+            ],
+            ans: 1,
+            exp: 'Shareholders (principals) delegate control to managers (agents). If managers pursue personal goals rather than maximising shareholder value, a principal-agent problem exists. Governance structures aim to align incentives.',
+          },
+          {
+            q: 'An independent non-executive director (NED) primarily provides:',
+            opts: [
+              'Day-to-day operational management',
+              'Objective challenge and oversight of executive management',
+              'External audit services',
+              'Legal advice on all board decisions',
+            ],
+            ans: 1,
+            exp: 'NEDs are independent of management. They challenge executive decisions, serve on audit and remuneration committees, and protect shareholder interests — they do not manage operations.',
+          },
+        ],
+      },
+      {
+        id: 'L-buaw-2',
+        title: 'The Economic Environment',
+        icon: '🌐',
+        skills: [],
+        cards: [
+          {
+            h: 'Macroeconomic Indicators',
+            p: [
+              '**GDP**: total value of all goods and services produced. Two consecutive quarters of negative GDP growth = **recession**.',
+              '**Inflation**: general rise in price levels; measured by CPI. Bank of England targets 2% CPI. High inflation erodes purchasing power and squeezes business margins.',
+              '**Unemployment**: affects consumer spending and labour costs. **Interest rates** (set by the Bank of England) affect borrowing costs for businesses and consumers.',
+            ],
+          },
+          {
+            h: 'Fiscal and Monetary Policy',
+            p: [
+              '**Fiscal policy** (government): taxation and public spending. Expansionary fiscal policy (cut taxes/increase spending) stimulates demand. Contractionary policy reduces demand to control inflation.',
+              '**Monetary policy** (Bank of England): base rate changes. Raising rates increases borrowing costs → reduces spending and investment → dampens inflation. Lowering rates stimulates the economy.',
+              '**Quantitative easing (QE)**: Bank of England creates money to buy bonds, expanding money supply and stimulating lending.',
+            ],
+            split: {
+              left: { title: 'Fiscal (Government)', items: ['Tax changes', 'Public spending', 'Budget surplus/deficit'] },
+              right: { title: 'Monetary (Bank of England)', items: ['Base interest rate', 'CPI target 2%', 'Quantitative easing'] },
+            },
+          },
+          {
+            h: 'Competition and Globalisation',
+            p: [
+              '**Porter\'s Five Forces**: threat of new entrants, bargaining power of suppliers, bargaining power of buyers, threat of substitutes, competitive rivalry. Used to analyse industry attractiveness.',
+              '**Business cycle**: expansion → peak → contraction/recession → trough → recovery.',
+              '**Globalisation** gives access to wider markets and lower-cost inputs, but increases competition and supply chain risk. Technology (cloud accounting, AI, automation) is reshaping the finance function.',
+            ],
+            callout: { kind: 'tip', text: 'Exam scenarios often link economic events to business decisions. Rising interest rates → higher loan costs → reduced capital investment. Recession → falling consumer demand → lower sales forecasts.' },
+          },
+        ],
+        check: [
+          {
+            q: 'The Bank of England raises the base rate from 4.5% to 5.25%. The most likely immediate effect is:',
+            opts: [
+              'Borrowing becomes cheaper, encouraging more investment',
+              'The cost of variable-rate borrowing increases for businesses',
+              'Government spending automatically rises to offset the impact',
+              'Consumer prices fall immediately as businesses absorb costs',
+            ],
+            ans: 1,
+            exp: 'Higher base rates increase the cost of borrowing for businesses with variable-rate debt and make new loans more expensive. This typically reduces investment and spending — the intended mechanism to reduce inflation.',
+          },
+          {
+            q: 'A recession is defined as:',
+            opts: [
+              'A single quarter of falling GDP',
+              'Two consecutive quarters of negative GDP growth',
+              'Annual inflation above 5%',
+              'Unemployment above 10% of the workforce',
+            ],
+            ans: 1,
+            exp: 'A recession is technically two consecutive quarters of negative GDP growth. One bad quarter is a contraction but not a recession.',
+          },
+          {
+            q: 'Which of the following is a fiscal policy tool?',
+            opts: [
+              'The Bank of England cutting its base interest rate',
+              'The government increasing income tax rates',
+              'Quantitative easing by the central bank',
+              'A fall in the pound\'s exchange rate',
+            ],
+            ans: 1,
+            exp: 'Fiscal policy involves government decisions on taxation and public spending. Increasing income tax is a contractionary fiscal measure. Interest rates and QE are monetary policy tools managed by the Bank of England.',
+          },
+          {
+            q: 'Porter\'s Five Forces is used to:',
+            opts: [
+              'Calculate overhead absorption rates',
+              'Analyse competitive intensity within an industry',
+              'Assess a company\'s liquidity position',
+              'Set the optimal price for a new product',
+            ],
+            ans: 1,
+            exp: 'Porter\'s Five Forces analyses the structural attractiveness of an industry by examining five sources of competitive pressure: existing rivalry, new entrants, substitutes, buyer power, and supplier power.',
+          },
+        ],
+      },
+    ],
+  },
 ];
