@@ -1476,6 +1476,7 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   .mode-card-grid { grid-template-columns: 1fr 1fr; }
   .focus-topic-row { grid-template-columns: 1.2rem 4rem 1fr 2.2rem; }
   .journey-node { width: 88px; min-height: 96px; }
+  .unit-action-btns { width: 100%; justify-content: flex-start; }
 }
 
 @media print {
@@ -3028,6 +3029,7 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   gap: 14px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 .journey-unit-icon { font-size: 2rem; }
 .journey-unit-title { font-weight: 700; font-size: 1rem; }
@@ -5058,7 +5060,7 @@ body.dark[data-subject="code-route"] .unit-card {
   border-color: #1e2a44;
 }
 .dark .nav-tab {
-  color: #94a0b8;
+  color: #c5d0e4;
 }
 .dark .nav-tab:hover {
   background: #0b1322;
