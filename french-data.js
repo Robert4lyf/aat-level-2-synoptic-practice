@@ -3434,9 +3434,33 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
           {
             "h": "Les verbes avec être",
             "p": [
-              "About 17 verbs of movement / change of state use **être** — remember **DR MRS VANDERTRAMP**.",
-              "Devenir, Revenir, Monter, Rester, Sortir, Venir, Aller, Naître, Descendre, Entrer, Rentrer, Tomber, Retourner, Arriver, Mourir, Partir."
-            ]
+              "About 16 verbs of movement / change of state use **être** as the auxiliary in passé composé — not avoir. The mnemonic **DR MRS VANDERTRAMP** names them all."
+            ],
+            "table": {
+              "headers": ["Letter", "Verb", "Meaning", "Past participle"],
+              "rows": [
+                ["D", "Devenir", "to become", "devenu"],
+                ["R", "Revenir", "to come back", "revenu"],
+                ["M", "Monter", "to go up / climb", "monté"],
+                ["R", "Rester", "to stay", "resté"],
+                ["S", "Sortir", "to go out", "sorti"],
+                ["V", "Venir", "to come", "venu"],
+                ["A", "Aller", "to go", "allé"],
+                ["N", "Naître", "to be born", "né"],
+                ["D", "Descendre", "to go down", "descendu"],
+                ["E", "Entrer", "to enter", "entré"],
+                ["R", "Rentrer", "to go back in / return home", "rentré"],
+                ["T", "Tomber", "to fall", "tombé"],
+                ["R", "Retourner", "to return / go back", "retourné"],
+                ["A", "Arriver", "to arrive", "arrivé"],
+                ["M", "Mourir", "to die", "mort"],
+                ["P", "Partir", "to leave", "parti"]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "All reflexive (pronominal) verbs also take être — see the next card. For VANDERTRAMP verbs, the past participle agrees in gender and number with the subject: il est allé / elle est allée / ils sont allés / elles sont allées."
+            }
           },
           {
             "h": "L'accord avec le sujet",
