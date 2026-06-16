@@ -7,6 +7,7 @@
   const SUBJECT_STORE_KEY = 'multisubject_active';
   let _activeSubjectId = localStorage.getItem(SUBJECT_STORE_KEY) || 'aat';
   function getStorageKey() { return _activeSubjectId === 'aat' ? STORAGE_KEY : 'prep_v2_' + _activeSubjectId; }
+  function subjectStorageKey(id) { return id === 'aat' ? STORAGE_KEY : 'prep_v2_' + id; }
 
   const SUBJECT_REGISTRY = [
     {
@@ -2691,7 +2692,19 @@
       <div class="history-list">${historyRows || '<div class="empty-state">No attempts yet.</div>'}</div>
       <div class="progress-actions">
         <button class="btn-secondary action-btn" id="exportCsvBtn" type="button">📥 Export progress (CSV)</button>
-        <button class="danger-btn" id="clearProgressBtn" type="button">🗑 Clear all progress</button>
+      </div>
+      <div class="reset-courses-section">
+        <h3 class="reset-courses-heading">Reset progress by course</h3>
+        <div class="reset-courses-btns">
+          ${SUBJECT_REGISTRY.map(s => {
+            const hasData = !!localStorage.getItem(subjectStorageKey(s.id));
+            return `<button class="reset-course-btn${hasData ? '' : ' no-data'}" type="button" data-reset-subject="${escapeHtml(s.id)}"${hasData ? '' : ' disabled'}>
+              <span class="rcb-flag">${escapeHtml(s.flag)}</span>
+              <span class="rcb-name">${escapeHtml(s.name)}</span>
+              <span class="rcb-status">${hasData ? '🗑 Reset' : 'No data'}</span>
+            </button>`;
+          }).join('')}
+        </div>
       </div>`;
   }
 
@@ -3986,9 +3999,22 @@
     bind('retryBtn', 'click', () => { if (State.mode === 'mock') startMock(); else startPractice(State.selectedTopic); });
     bind('reviewBtn', 'click', () => { State.showReview = !State.showReview; render(); });
     bind('homeBtn2', 'click', goHome);
-    bind('clearProgressBtn', 'click', () => {
-      openConfirm({ title:'Clear all progress?', message:'This will permanently delete your stats, attempt history and saved settings on this device.',
-        confirmLabel:'Clear all', onConfirm: () => { Storage.clearAll(); closeConfirm(); render(); } });
+    document.querySelectorAll('[data-reset-subject]').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.resetSubject;
+        const subj = getSubject(id);
+        openConfirm({
+          title: `Reset ${subj.name} progress?`,
+          message: `This will permanently delete your stats, attempt history and saved settings for ${subj.name} on this device.`,
+          confirmLabel: 'Reset',
+          onConfirm: () => {
+            try { localStorage.removeItem(subjectStorageKey(id)); } catch (e) {}
+            if (id === _activeSubjectId) Storage.data = defaultData();
+            closeConfirm();
+            render();
+          }
+        });
+      });
     });
     bind('exportCsvBtn', 'click', exportCsv);
     bind('flagBtn', 'click', toggleFlagCurrent);
