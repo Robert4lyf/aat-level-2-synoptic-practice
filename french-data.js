@@ -5,7 +5,7 @@ window.FR_TOPICS = [
   { id: 'fr-salut', name: 'Salutations',      short: 'Salutations',    icon: '👋', desc: 'Greetings and polite expressions' },
   { id: 'fr-vocab', name: 'Vocabulaire',       short: 'Vocabulaire',    icon: '📚', desc: 'Essential nouns and adjectives' },
   { id: 'fr-gram',  name: 'Grammaire',         short: 'Grammaire',      icon: '✏️', desc: 'French grammar rules and structures' },
-  { id: 'fr-num',   name: 'Chiffres & temps',  short: 'Chiffres',       icon: '🔢', desc: 'Numbers, time and dates in French' },
+  { id: 'fr-num',   name: 'L\'heure & temps',   short: 'L\'heure',       icon: '🔢', desc: 'Telling the time and expressing time in French' },
   { id: 'fr-vie',   name: 'Vie quotidienne',   short: 'Vie quotidienne',icon: '🏠', desc: 'Daily life, shopping, transport and directions' },
   { id: 'fr-conj',  name: 'Conjugaison',       short: 'Conjugaison',    icon: '🔄', desc: 'Verb conjugation practice across all tenses' },
 ];
@@ -132,70 +132,7 @@ window.FR_QUESTIONS = [
     exp: '"Comment allez-vous?" uses the formal "vous" form and is therefore formal.'
   },
 
-  // ── fr-vocab (fr-018 to fr-034) ──────────────────────────────────────────
-  {
-    id: 'fr-018', topic: 'fr-vocab', type: 'mcq',
-    q: '"Rouge" means?',
-    opts: ['Blue', 'Green', 'Red', 'Yellow'],
-    ans: 2,
-    exp: '"Rouge" is the French word for red.'
-  },
-  {
-    id: 'fr-019', topic: 'fr-vocab', type: 'mcq',
-    q: '"Bleu" means?',
-    opts: ['Blue', 'Purple', 'Green', 'Brown'],
-    ans: 0,
-    exp: '"Bleu" is the French word for blue.'
-  },
-  {
-    id: 'fr-020', topic: 'fr-vocab', type: 'mcq',
-    q: '"Vert" means?',
-    opts: ['Red', 'Green', 'Black', 'White'],
-    ans: 1,
-    exp: '"Vert" is the French word for green.'
-  },
-  {
-    id: 'fr-021', topic: 'fr-vocab', type: 'mcq',
-    q: '"Jaune" means?',
-    opts: ['Orange', 'Yellow', 'Pink', 'Beige'],
-    ans: 1,
-    exp: '"Jaune" is the French word for yellow.'
-  },
-  {
-    id: 'fr-022', topic: 'fr-vocab', type: 'mcq',
-    q: '"Noir" means?',
-    opts: ['White', 'Grey', 'Black', 'Brown'],
-    ans: 2,
-    exp: '"Noir" is the French word for black.'
-  },
-  {
-    id: 'fr-023', topic: 'fr-vocab', type: 'mcq',
-    q: '"Blanc" means?',
-    opts: ['White', 'Black', 'Brown', 'Cream'],
-    ans: 0,
-    exp: '"Blanc" is the French word for white.'
-  },
-  {
-    id: 'fr-024', topic: 'fr-vocab', type: 'mcq',
-    q: 'What is "lundi"?',
-    opts: ['Tuesday', 'Monday', 'Wednesday', 'Sunday'],
-    ans: 1,
-    exp: '"Lundi" is Monday in French.'
-  },
-  {
-    id: 'fr-025', topic: 'fr-vocab', type: 'mcq',
-    q: 'What is "vendredi"?',
-    opts: ['Thursday', 'Saturday', 'Friday', 'Wednesday'],
-    ans: 2,
-    exp: '"Vendredi" is Friday in French.'
-  },
-  {
-    id: 'fr-026', topic: 'fr-vocab', type: 'mcq',
-    q: 'What is "dimanche"?',
-    opts: ['Saturday', 'Sunday', 'Monday', 'Friday'],
-    ans: 1,
-    exp: '"Dimanche" is Sunday in French.'
-  },
+  // ── fr-vocab (fr-027 to fr-033) ──────────────────────────────────────────
   {
     id: 'fr-027', topic: 'fr-vocab', type: 'mcq',
     q: '"Père" means?',
@@ -245,14 +182,6 @@ window.FR_QUESTIONS = [
     ans: 0,
     exp: '"Main" is the French word for hand.'
   },
-  {
-    id: 'fr-034', topic: 'fr-vocab', type: 'mcq',
-    q: 'What month is "mars"?',
-    opts: ['January', 'February', 'March', 'April'],
-    ans: 2,
-    exp: '"Mars" is March in French.'
-  },
-
   // ── fr-gram (fr-035 to fr-051) ───────────────────────────────────────────
   {
     id: 'fr-035', topic: 'fr-gram', type: 'mcq',
@@ -374,77 +303,7 @@ window.FR_QUESTIONS = [
     exp: '"Sous" means under or below (e.g. sous la table — under the table).'
   },
 
-  // ── fr-num (fr-052 to fr-068) ────────────────────────────────────────────
-  {
-    id: 'fr-052', topic: 'fr-num', type: 'mcq',
-    q: 'What is "cinq"?',
-    opts: ['Four', 'Five', 'Six', 'Seven'],
-    ans: 1,
-    exp: '"Cinq" is the French word for five.'
-  },
-  {
-    id: 'fr-053', topic: 'fr-num', type: 'mcq',
-    q: 'What is "dix"?',
-    opts: ['Eight', 'Nine', 'Ten', 'Eleven'],
-    ans: 2,
-    exp: '"Dix" is the French word for ten.'
-  },
-  {
-    id: 'fr-054', topic: 'fr-num', type: 'mcq',
-    q: 'What is "vingt"?',
-    opts: ['Twelve', 'Fifteen', 'Twenty', 'Twenty-two'],
-    ans: 2,
-    exp: '"Vingt" is the French word for twenty.'
-  },
-  {
-    id: 'fr-055', topic: 'fr-num', type: 'mcq',
-    q: 'What is "trente"?',
-    opts: ['Twenty', 'Thirty', 'Forty', 'Fifty'],
-    ans: 1,
-    exp: '"Trente" is the French word for thirty.'
-  },
-  {
-    id: 'fr-056', topic: 'fr-num', type: 'mcq',
-    q: 'What is "soixante-dix"?',
-    opts: ['Sixty', 'Seventy', 'Eighty', 'Ninety'],
-    ans: 1,
-    exp: '"Soixante-dix" literally means sixty-ten, which equals seventy (70).'
-  },
-  {
-    id: 'fr-057', topic: 'fr-num', type: 'mcq',
-    q: 'How do you say 80 in French?',
-    opts: ['Huitante', 'Octante', 'Quatre-vingts', 'Soixante-vingt'],
-    ans: 2,
-    exp: '80 in French is "quatre-vingts" (literally four-twenties).'
-  },
-  {
-    id: 'fr-058', topic: 'fr-num', type: 'mcq',
-    q: 'How do you say 90 in French?',
-    opts: ['Nonante', 'Quatre-vingt-dix', 'Soixante-trente', 'Neuvante'],
-    ans: 1,
-    exp: '90 is "quatre-vingt-dix" (four-twenties-ten) in standard French.'
-  },
-  {
-    id: 'fr-059', topic: 'fr-num', type: 'mcq',
-    q: 'How do you say 100 in French?',
-    opts: ['Millier', 'Centième', 'Cent', 'Centi'],
-    ans: 2,
-    exp: '"Cent" is the French word for one hundred (100).'
-  },
-  {
-    id: 'fr-060', topic: 'fr-num', type: 'mcq',
-    q: '"Premier / Première" means?',
-    opts: ['Second', 'Third', 'First', 'Last'],
-    ans: 2,
-    exp: '"Premier" (masc) / "Première" (fem) means first — the 1st ordinal number.'
-  },
-  {
-    id: 'fr-061', topic: 'fr-num', type: 'mcq',
-    q: '"Deuxième" means?',
-    opts: ['First', 'Second', 'Third', 'Fourth'],
-    ans: 1,
-    exp: '"Deuxième" means second (2nd ordinal).'
-  },
+  // ── fr-num (fr-062 to fr-065) ────────────────────────────────────────────
   {
     id: 'fr-062', topic: 'fr-num', type: 'mcq',
     q: '"Quelle heure est-il?" means?',
@@ -473,28 +332,6 @@ window.FR_QUESTIONS = [
     ans: 2,
     exp: '"L\'hiver" is winter in French.'
   },
-  {
-    id: 'fr-066', topic: 'fr-num', type: 'mcq',
-    q: 'How do you write the date 3 January 2024 in French?',
-    opts: ['January 3 2024', '3 janvier 2024', '2024-01-03', 'jan/03/2024'],
-    ans: 1,
-    exp: 'French dates are written day month year: "3 janvier 2024".'
-  },
-  {
-    id: 'fr-067', topic: 'fr-num', type: 'mcq',
-    q: 'What is "mardi"?',
-    opts: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-    ans: 1,
-    exp: '"Mardi" is Tuesday in French.'
-  },
-  {
-    id: 'fr-068', topic: 'fr-num', type: 'mcq',
-    q: 'What is "septembre"?',
-    opts: ['August', 'September', 'October', 'November'],
-    ans: 1,
-    exp: '"Septembre" is September in French.'
-  },
-
   // ── fr-vie (fr-069 to fr-085) ────────────────────────────────────────────
   {
     id: 'fr-069', topic: 'fr-vie', type: 'mcq',
@@ -902,7 +739,6 @@ window.FR_QUESTIONS = [
   {"id":"fr-132","topic":"fr-vocab","type":"mcq","q":"Which season is « l'hiver »?","opts":["spring","summer","autumn","winter"],"ans":3,"exp":"l'hiver = winter."},
   {"id":"fr-133","topic":"fr-vocab","type":"mcq","q":"« Elle est espagnole » means she is:","opts":["Italian","Spanish","German","English"],"ans":1,"exp":"espagnole = Spanish (feminine)."},
   {"id":"fr-134","topic":"fr-vocab","type":"mcq","q":"The language « le chinois » is:","opts":["Japanese","Korean","Chinese","Vietnamese"],"ans":2,"exp":"le chinois = Chinese."},
-  {"id":"fr-135","topic":"fr-vocab","type":"mcq","q":"« marron » is a:","opts":["fruit","colour (brown)","animal","month"],"ans":1,"exp":"marron = brown (an invariable colour)."},
   {"id":"fr-136","topic":"fr-vocab","type":"dragdrop","q":"Match each French word to its meaning:","pairs":[{"left":"le père","right":"father"},{"left":"la mère","right":"mother"},{"left":"le fils","right":"son"},{"left":"la fille","right":"daughter"}],"exp":"Core family vocabulary: père, mère, fils, fille."},
   {"id":"fr-137","topic":"fr-vocab","type":"dragdrop","q":"Match the season to English:","pairs":[{"left":"le printemps","right":"spring"},{"left":"l'été","right":"summer"},{"left":"l'automne","right":"autumn"},{"left":"l'hiver","right":"winter"}],"exp":"The four seasons in French."},
   {"id":"fr-138","topic":"fr-gram","type":"mcq","q":"« Je vais ___ cinéma. » (à + le)","opts":["à le","au","aux","du"],"ans":1,"exp":"à + le = au."},
@@ -922,11 +758,7 @@ window.FR_QUESTIONS = [
   {"id":"fr-152","topic":"fr-num","type":"mcq","q":"« Il est trois heures et quart » = ","opts":["3:15","3:30","3:45","4:15"],"ans":0,"exp":"et quart = quarter past → 3:15."},
   {"id":"fr-153","topic":"fr-num","type":"mcq","q":"« cinq heures moins le quart » = ","opts":["5:15","5:45","4:45","4:15"],"ans":2,"exp":"moins le quart = quarter to → 4:45."},
   {"id":"fr-154","topic":"fr-num","type":"mcq","q":"« midi » means:","opts":["midnight","noon","morning","evening"],"ans":1,"exp":"midi = noon; minuit = midnight."},
-  {"id":"fr-155","topic":"fr-num","type":"mcq","q":"How do you say « the 1st of May »?","opts":["le un mai","le premier mai","le première mai","premier mai"],"ans":1,"exp":"Only the 1st uses « premier »: le premier mai."},
-  {"id":"fr-156","topic":"fr-num","type":"mcq","q":"Which is the first day of the French week?","opts":["dimanche","lundi","samedi","mardi"],"ans":1,"exp":"The week starts on lundi (Monday)."},
   {"id":"fr-157","topic":"fr-num","type":"mcq","q":"14:30 in 24-hour French is:","opts":["deux heures trente","quatorze heures trente","quatre heures trente","quatorze et demie"],"ans":1,"exp":"quatorze heures trente = 14:30."},
-  {"id":"fr-158","topic":"fr-num","type":"mcq","q":"« quatre-vingt-dix » = ","opts":["80","90","70","100"],"ans":1,"exp":"4×20 + 10 = 90."},
-  {"id":"fr-159","topic":"fr-num","type":"dragdrop","q":"Match the month to English:","pairs":[{"left":"janvier","right":"January"},{"left":"avril","right":"April"},{"left":"juillet","right":"July"},{"left":"octobre","right":"October"}],"exp":"French months (lowercase)."},
   {"id":"fr-160","topic":"fr-vie","type":"mcq","q":"« L'addition, s'il vous plaît » asks for:","opts":["the menu","the bill","a waiter","the toilet"],"ans":1,"exp":"l'addition = the bill."},
   {"id":"fr-161","topic":"fr-vie","type":"mcq","q":"Polite way to order a coffee:","opts":["Donne un café","Je veux café","Je voudrais un café","Café maintenant"],"ans":2,"exp":"« Je voudrais » is the polite « I would like »."},
   {"id":"fr-162","topic":"fr-vie","type":"mcq","q":"« Où est la gare ? » asks:","opts":["What is the station?","Where is the station?","When is the train?","How much is the ticket?"],"ans":1,"exp":"Où = where: Where is the station?"},
@@ -1730,163 +1562,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ]
       },
       {
-        "id": "fr-l06",
-        "title": "Les nombres de 0 à 100",
-        "icon": "🔢",
-        "cards": [
-          {
-            "h": "0 à 20",
-            "p": [
-              "zéro, un, deux, trois, quatre, cinq, six, sept, huit, neuf, dix.",
-              "onze, douze, treize, quatorze, quinze, seize, dix-sept, dix-huit, dix-neuf, vingt."
-            ],
-            "callout": {
-              "kind": "tip",
-              "text": "11–16 are unique words; 17–19 are simply dix + sept/huit/neuf."
-            }
-          },
-          {
-            "h": "Les dizaines",
-            "example": {
-              "title": "Tens",
-              "rows": [
-                [
-                  "20 / 30 / 40",
-                  "vingt / trente / quarante"
-                ],
-                [
-                  "50 / 60",
-                  "cinquante / soixante"
-                ],
-                [
-                  "70",
-                  "soixante-dix (60 + 10)"
-                ],
-                [
-                  "80",
-                  "quatre-vingts (4 × 20)"
-                ],
-                [
-                  "90",
-                  "quatre-vingt-dix (4 × 20 + 10)"
-                ],
-                [
-                  "100",
-                  "cent"
-                ]
-              ]
-            }
-          },
-          {
-            "h": "Construire les nombres",
-            "p": [
-              "21, 31… add **et un**: vingt **et un**, trente **et un**.",
-              "22–29 just join: vingt-deux, vingt-trois…",
-              "70 = soixante-dix, 71 = soixante **et onze**, 72 = soixante-douze… 99 = quatre-vingt-dix-neuf."
-            ],
-            "callout": {
-              "kind": "warning",
-              "text": "« quatre-vingts » has an -s, but it disappears before another number: quatre-vingt-un, quatre-vingt-deux."
-            }
-          },
-          {
-            "h": "Les nombres ordinaux",
-            "example": {
-              "title": "Ordinals",
-              "rows": [
-                [
-                  "premier / première",
-                  "first"
-                ],
-                [
-                  "deuxième",
-                  "second"
-                ],
-                [
-                  "troisième",
-                  "third"
-                ],
-                [
-                  "quatrième, cinquième…",
-                  "fourth, fifth…"
-                ]
-              ]
-            },
-            "p": [
-              "Most ordinals = cardinal + **-ième** (trois → troisième). « cinq » adds a u: cinquième; « neuf » → neuvième."
-            ]
-          }
-        ],
-        "check": [
-          {
-            "q": "What is « quinze »?",
-            "opts": [
-              "13",
-              "14",
-              "15",
-              "16"
-            ],
-            "ans": 2,
-            "exp": "quinze = 15."
-          },
-          {
-            "q": "How do you say 70?",
-            "opts": [
-              "septante",
-              "soixante-dix",
-              "soixante-douze",
-              "huitante"
-            ],
-            "ans": 1,
-            "exp": "Standard French: 70 = soixante-dix (sixty-ten)."
-          },
-          {
-            "q": "How do you say 80?",
-            "opts": [
-              "octante",
-              "huitante",
-              "quatre-vingts",
-              "quatre-vingt-dix"
-            ],
-            "ans": 2,
-            "exp": "80 = quatre-vingts (four twenties)."
-          },
-          {
-            "q": "How do you write 21?",
-            "opts": [
-              "vingt-un",
-              "vingt et un",
-              "vingt-et-un",
-              "vingt un"
-            ],
-            "ans": 1,
-            "exp": "21 = vingt et un (with « et », no hyphen in traditional spelling)."
-          },
-          {
-            "q": "« quatre-vingt-dix » = ?",
-            "opts": [
-              "80",
-              "90",
-              "70",
-              "100"
-            ],
-            "ans": 1,
-            "exp": "quatre-vingt-dix = 90 (4×20 + 10)."
-          },
-          {
-            "q": "« Deuxième » means:",
-            "opts": [
-              "first",
-              "second",
-              "third",
-              "fourth"
-            ],
-            "ans": 1,
-            "exp": "deuxième = second."
-          }
-        ]
-      },
-      {
         "id": "fr-l07",
         "title": "Quelle heure est-il ?",
         "icon": "🕐",
@@ -2022,134 +1697,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 2,
             "exp": "le matin = the morning."
-          }
-        ]
-      },
-      {
-        "id": "fr-l08",
-        "title": "Les jours, les mois et la date",
-        "icon": "📅",
-        "cards": [
-          {
-            "h": "Les jours de la semaine",
-            "p": [
-              "lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche.",
-              "Days are **not** capitalised in French. The week starts on **lundi** (Monday)."
-            ],
-            "callout": {
-              "kind": "tip",
-              "text": "« le lundi » (with le) = every Monday: « Le lundi, je travaille. » Without « le » = this coming Monday."
-            }
-          },
-          {
-            "h": "Les mois de l'année",
-            "p": [
-              "janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre.",
-              "Months are not capitalised either."
-            ]
-          },
-          {
-            "h": "Dire la date",
-            "example": {
-              "title": "Saying the date",
-              "rows": [
-                [
-                  "Quelle est la date ?",
-                  "What's the date?"
-                ],
-                [
-                  "C'est le 3 mars.",
-                  "It's the 3rd of March."
-                ],
-                [
-                  "le premier mai",
-                  "the 1st of May (premier, not « un »)"
-                ],
-                [
-                  "Nous sommes le 14 juillet.",
-                  "It's the 14th of July."
-                ]
-              ]
-            },
-            "callout": {
-              "kind": "warning",
-              "text": "Only the 1st uses the ordinal « premier ». All other dates use the plain number: le 2 mai, le 3 mai."
-            }
-          },
-          {
-            "h": "Phrases utiles",
-            "p": [
-              "**aujourd'hui** (today), **demain** (tomorrow), **hier** (yesterday).",
-              "**Mon anniversaire est le 12 octobre.** (My birthday is the 12th of October.)"
-            ]
-          }
-        ],
-        "check": [
-          {
-            "q": "Which is the first day of the French week?",
-            "opts": [
-              "dimanche",
-              "samedi",
-              "lundi",
-              "mardi"
-            ],
-            "ans": 2,
-            "exp": "The French week starts on lundi (Monday)."
-          },
-          {
-            "q": "Days of the week in French are:",
-            "opts": [
-              "always capitalised",
-              "not capitalised",
-              "capitalised only at the start",
-              "written in English"
-            ],
-            "ans": 1,
-            "exp": "Days and months are lowercase in French."
-          },
-          {
-            "q": "How do you say « the 1st of May »?",
-            "opts": [
-              "le un mai",
-              "le premier mai",
-              "le première mai",
-              "premier de mai"
-            ],
-            "ans": 1,
-            "exp": "The 1st uses « premier »: le premier mai."
-          },
-          {
-            "q": "« hier » means:",
-            "opts": [
-              "today",
-              "tomorrow",
-              "yesterday",
-              "now"
-            ],
-            "ans": 2,
-            "exp": "hier = yesterday; demain = tomorrow; aujourd'hui = today."
-          },
-          {
-            "q": "« Nous sommes le 14 juillet » means:",
-            "opts": [
-              "We are 14",
-              "It's the 14th of July",
-              "There are 14 of us in July",
-              "We go on 14 July"
-            ],
-            "ans": 1,
-            "exp": "« Nous sommes le… » is a common way to state today's date."
-          },
-          {
-            "q": "Which month is « août »?",
-            "opts": [
-              "April",
-              "August",
-              "October",
-              "March"
-            ],
-            "ans": 1,
-            "exp": "août = August."
           }
         ]
       },
@@ -2633,20 +2180,9 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
       },
       {
         "id": "fr-l12",
-        "title": "Décrire : couleurs et adjectifs",
+        "title": "Décrire : les adjectifs",
         "icon": "🎨",
         "cards": [
-          {
-            "h": "Les couleurs",
-            "p": [
-              "rouge, bleu, vert, jaune, noir, blanc, orange, rose, violet, gris, marron.",
-              "**une voiture rouge**, **un chat noir** — colours come AFTER the noun."
-            ],
-            "callout": {
-              "kind": "warning",
-              "text": "« orange » and « marron » are invariable: « des chaussures marron » (no -s)."
-            }
-          },
           {
             "h": "L'accord des adjectifs",
             "example": {
@@ -2714,17 +2250,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ],
         "check": [
           {
-            "q": "« vert » means:",
-            "opts": [
-              "yellow",
-              "blue",
-              "green",
-              "grey"
-            ],
-            "ans": 2,
-            "exp": "vert = green."
-          },
-          {
             "q": "Where do most adjectives go?",
             "opts": [
               "before the noun",
@@ -2756,17 +2281,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 2,
             "exp": "« petit » is a BAGS adjective (size) and goes before: une petite ville."
-          },
-          {
-            "q": "Which colour is invariable (never adds -e/-s)?",
-            "opts": [
-              "bleu",
-              "vert",
-              "marron",
-              "noir"
-            ],
-            "ans": 2,
-            "exp": "« marron » (and « orange ») are invariable."
           },
           {
             "q": "Feminine of « beau »:",
