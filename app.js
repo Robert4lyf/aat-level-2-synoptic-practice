@@ -7,31 +7,32 @@
   const SUBJECT_STORE_KEY = 'multisubject_active';
   let _activeSubjectId = localStorage.getItem(SUBJECT_STORE_KEY) || 'aat';
   function getStorageKey() { return _activeSubjectId === 'aat' ? STORAGE_KEY : 'prep_v2_' + _activeSubjectId; }
+  function subjectStorageKey(id) { return id === 'aat' ? STORAGE_KEY : 'prep_v2_' + id; }
 
   const SUBJECT_REGISTRY = [
     {
-      id: 'aat', name: 'AAT Level 2 Synoptic', flag: '🧮', color: '#2563EB',
+      id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
       desc: 'Prepare for the AQ2022 Business Environment Synoptic Assessment',
       meta: '515 questions · Mock exams · T-Accounts',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
     },
     {
-      id: 'french', name: 'Français', flag: '🇫🇷', color: '#003189',
+      id: 'french', name: 'Français', short: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
       meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
       tabs: ['learn','home','progress'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
-      id: 'lsf', name: 'Langue des Signes Française', flag: '🤟', color: '#7c3aed',
+      id: 'lsf', name: 'Langue des Signes Française', short: 'LSF', flag: '🤟', color: '#7c3aed',
       desc: 'Découvrez les bases de la LSF — la langue des signes française',
       meta: '50+ questions · 4 leçons · débutant',
       tabs: ['learn','home','progress'],
       activate() { window.TOPICS = window.LSF_TOPICS; window.ALL_QUESTIONS = window.LSF_QUESTIONS; window.LEARN_PATH = window.LSF_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
-      id: 'code-route', name: 'Code de la Route', flag: '🚗', color: '#dc2626',
+      id: 'code-route', name: 'Code de la Route', short: 'Code de la Route', flag: '🚗', color: '#dc2626',
       desc: 'Préparez votre permis de conduire — théorie et panneaux',
       meta: '80+ questions · 5 leçons · examen officiel',
       tabs: ['learn','home','progress'],
@@ -39,6 +40,33 @@
     },
   ];
   function getSubject(id) { return SUBJECT_REGISTRY.find(s => s.id === id) || SUBJECT_REGISTRY[0]; }
+
+  /* Maps a French question ID (fr-NNN) to its CEFR level string.
+     A1 = beginner basics, A2 = elementary grammar/vocab, B1 = intermediate structures. */
+  function frQuestionLevel(id) {
+    const n = parseInt(id.replace('fr-', ''), 10);
+    if (isNaN(n)) return null;
+    // A1 — Débutant
+    if (n >= 1   && n <= 17)  return 'A1'; // greetings
+    if (n >= 27  && n <= 33)  return 'A1'; // basic family/food vocab
+    if (n >= 35  && n <= 51)  return 'A1'; // gender, articles, negation, possession, questions
+    if (n >= 62  && n <= 65)  return 'A1'; // time and seasons
+    if (n >= 69  && n <= 76)  return 'A1'; // basic daily life
+    if (n >= 86  && n <= 89)  return 'A1'; // présent être/avoir/-ER/-IR
+    if (n >= 121 && n <= 132) return 'A1'; // extended greetings and basic vocab
+    if (n === 136 || n === 137) return 'A1'; // family/seasons dragdrops
+    if (n >= 152 && n <= 157) return 'A1'; // telling the time
+    if (n >= 160 && n <= 167) return 'A1'; // café, restaurant, basic directions
+    if (n === 168 || n === 179 || n === 181) return 'A1'; // être/avoir conjugation drills
+    if (n >= 183 && n <= 200) return 'A1'; // pronunciation/accents + basic body parts
+    if (n >= 253 && n <= 262) return 'A1'; // transport and directions
+    // B1 — Intermédiaire
+    if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
+    if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
+    if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
+    // A2 — Élémentaire (everything else)
+    return 'A2';
+  }
   const PASS_MARK = 70;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
@@ -1348,6 +1376,10 @@
       const sid = topicId.slice(6);
       pool = window.ALL_QUESTIONS.filter(q => q.skill === sid);
     }
+    else if (topicId && topicId.indexOf('level:') === 0) {
+      const lvl = topicId.slice(6);
+      pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
+    }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
     if (!pool.length) {
       const empty = {
@@ -2052,12 +2084,18 @@
     document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
     const dt = document.getElementById('darkToggle');
     if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
+    const sb = document.getElementById('subjectSwitcherBtn');
+    if (sb) { const subj = getSubject(_activeSubjectId); sb.textContent = subj.flag + ' ' + subj.short + ' ▾'; }
     if (State.confirmModal) { const mc = document.getElementById('modalConfirm'); if (mc) mc.focus(); }
     const ni = document.getElementById('numericAnswer');
     if (ni && !ni.disabled && State.screen === 'quiz') {
       try { ni.focus(); if (State.mode === 'practice' && State.numericDraft) ni.setSelectionRange(ni.value.length, ni.value.length); } catch (e) {}
     }
     if (State.screen === 'home' && State.activeTab === 'progress') animateCounters();
+    if (State.screen === 'quiz' && State.answered !== null) {
+      const nextBtn = document.getElementById('nextBtn');
+      if (nextBtn) nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
   function renderSplash() {
@@ -2090,11 +2128,7 @@
     else if (State.activeTab === 'glossary') content = renderGlossary();
     else if (State.activeTab === 'progress') content = renderProgress();
     else if (State.activeTab === 'howto') content = renderHowTo();
-    const subj = getSubject(_activeSubjectId);
     return `<div class="container fade-in">
-      <div class="subject-switcher-bar">
-        <button class="subject-switcher-btn" id="subjectSwitcherBtn" type="button">${subj.flag} ${escapeHtml(subj.name)} ▾</button>
-      </div>
       <div class="nav-tabs" role="tablist">
         ${tabs.map(t => `<button class="nav-tab ${State.activeTab === t.id ? 'active' : ''}" type="button" role="tab" aria-selected="${State.activeTab === t.id}" data-tab="${t.id}">${t.label}</button>`).join('')}
       </div>
@@ -2488,12 +2522,44 @@
       </div>`;
     }
 
+    const isFrench = _activeSubjectId === 'french';
+    const CEFR_LEVELS = [
+      { id: 'A1', sublabel: 'Débutant',       icon: '🌱', color: '#059669', desc: 'Greetings, pronunciation, basic vocab & présent tense' },
+      { id: 'A2', sublabel: 'Élémentaire',    icon: '📗', color: '#2563EB', desc: 'Passé composé, grammar rules, shopping & work vocab' },
+      { id: 'B1', sublabel: 'Intermédiaire',  icon: '📘', color: '#7C3AED', desc: 'Object pronouns, subjonctif & complex structures' },
+    ];
+    const levelSection = isFrench ? `
+      <h2 class="section-title" style="margin-top:0">Practice by Level <span class="section-title-sub">CEFR — A1 · A2 · B1</span></h2>
+      <div class="home-grid">
+        ${CEFR_LEVELS.map(lv => {
+          const lvPool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lv.id);
+          const lvTotal = lvPool.length;
+          const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
+          const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
+          const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
+          const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
+          const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
+          const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
+          return `<button class="topic-card fade-in" type="button" data-topic="${escapeHtml('level:' + lv.id)}" style="border-top-color:${lv.color}" aria-label="Practice ${lv.id} ${escapeHtml(lv.sublabel)} — ${lvSeen} of ${lvTotal} seen">
+            ${badge}
+            <div class="level-card-lbl" aria-hidden="true">${escapeHtml(lv.icon)} ${escapeHtml(lv.id)}</div>
+            <h3>${escapeHtml(lv.sublabel)}</h3>
+            <p>${escapeHtml(lv.desc)}</p>
+            <div class="topic-card-footer">
+              <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal}</span>
+              <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+            </div>
+          </button>`;
+        }).join('')}
+      </div>` : '';
+
     return `${sessionBanner}${progressBlock}${countdownHtml}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
       </div>
-      <h2 class="section-title" style="margin-top:0">Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
+      ${levelSection}
+      <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
         ${window.TOPICS.map(t => {
           const m = topicMastery(t.id);
@@ -2691,7 +2757,19 @@
       <div class="history-list">${historyRows || '<div class="empty-state">No attempts yet.</div>'}</div>
       <div class="progress-actions">
         <button class="btn-secondary action-btn" id="exportCsvBtn" type="button">📥 Export progress (CSV)</button>
-        <button class="danger-btn" id="clearProgressBtn" type="button">🗑 Clear all progress</button>
+      </div>
+      <div class="reset-courses-section">
+        <h3 class="reset-courses-heading">Reset progress by course</h3>
+        <div class="reset-courses-btns">
+          ${SUBJECT_REGISTRY.map(s => {
+            const hasData = !!localStorage.getItem(subjectStorageKey(s.id));
+            return `<button class="reset-course-btn${hasData ? '' : ' no-data'}" type="button" data-reset-subject="${escapeHtml(s.id)}"${hasData ? '' : ' disabled'}>
+              <span class="rcb-flag">${escapeHtml(s.flag)}</span>
+              <span class="rcb-name">${escapeHtml(s.name)}</span>
+              <span class="rcb-status">${hasData ? '🗑 Reset' : 'No data'}</span>
+            </button>`;
+          }).join('')}
+        </div>
       </div>`;
   }
 
@@ -3986,9 +4064,22 @@
     bind('retryBtn', 'click', () => { if (State.mode === 'mock') startMock(); else startPractice(State.selectedTopic); });
     bind('reviewBtn', 'click', () => { State.showReview = !State.showReview; render(); });
     bind('homeBtn2', 'click', goHome);
-    bind('clearProgressBtn', 'click', () => {
-      openConfirm({ title:'Clear all progress?', message:'This will permanently delete your stats, attempt history and saved settings on this device.',
-        confirmLabel:'Clear all', onConfirm: () => { Storage.clearAll(); closeConfirm(); render(); } });
+    document.querySelectorAll('[data-reset-subject]').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.resetSubject;
+        const subj = getSubject(id);
+        openConfirm({
+          title: `Reset ${subj.name} progress?`,
+          message: `This will permanently delete your stats, attempt history and saved settings for ${subj.name} on this device.`,
+          confirmLabel: 'Reset',
+          onConfirm: () => {
+            try { localStorage.removeItem(subjectStorageKey(id)); } catch (e) {}
+            if (id === _activeSubjectId) Storage.data = defaultData();
+            closeConfirm();
+            render();
+          }
+        });
+      });
     });
     bind('exportCsvBtn', 'click', exportCsv);
     bind('flagBtn', 'click', toggleFlagCurrent);
