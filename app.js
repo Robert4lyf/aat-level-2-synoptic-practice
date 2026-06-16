@@ -4000,14 +4000,10 @@
   }
 
   function attachEvents() {
-    bind('darkToggle', 'click', toggleDarkMode);
-    bind('referenceToggle', 'click', toggleReference);
-    bind('homeNavBtn', 'click', exitQuiz);
     bind('startBtn', 'click', () => { Storage.data.settings.seenSplash = true; Storage.save(); State.screen='home'; render(); });
     document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => { State.activeTab = el.dataset.tab; render(); }));
     document.querySelectorAll('[data-switch-subject]').forEach(el => el.addEventListener('click', () => switchSubject(el.dataset.switchSubject)));
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
-    bind('subjectSwitcherBtn', 'click', () => { State.screen = 'subjects'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
     bind('resumeBtn', 'click', resumeSession);
@@ -4291,6 +4287,15 @@
       return;
     }
     render();
+    // Bind static header buttons once — they live outside #app and must not accumulate listeners
+    const _dt = document.getElementById('darkToggle');
+    if (_dt) _dt.addEventListener('click', toggleDarkMode);
+    const _rt = document.getElementById('referenceToggle');
+    if (_rt) _rt.addEventListener('click', toggleReference);
+    const _hn = document.getElementById('homeNavBtn');
+    if (_hn) _hn.addEventListener('click', exitQuiz);
+    const _ss = document.getElementById('subjectSwitcherBtn');
+    if (_ss) _ss.addEventListener('click', () => { State.screen = 'subjects'; render(); });
     document.addEventListener('keydown', handleGlobalKey);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && audioCtx && audioCtx.state === 'running') { try { audioCtx.suspend(); } catch (e) {} }
