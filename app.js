@@ -629,6 +629,7 @@
       streak: { current: 0, best: 0, lastCorrectAt: 0 },
     },
     flagged: {},
+    confident: {},
     sr: {},
     history: [], session: null,
     learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {}, unitTests: {}, bestCombo: 0 },
@@ -787,6 +788,15 @@
     },
     isFlagged(id) { return !!this.data.flagged[id]; },
     flaggedIds() { return Object.keys(this.data.flagged); },
+    toggleConfident(id) {
+      if (!id) return;
+      if (!this.data.confident) this.data.confident = {};
+      if (this.data.confident[id]) delete this.data.confident[id];
+      else this.data.confident[id] = Date.now();
+      this.save();
+    },
+    isConfident(id) { return !!(this.data.confident && this.data.confident[id]); },
+    confidentIds() { return Object.keys(this.data.confident || {}); },
     isDarkActive() {
       const s = this.data.settings.darkMode;
       return s == null ? prefersDark() : !!s;
@@ -1381,13 +1391,17 @@
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
+    // Exclude questions the user has marked as confident from all regular pools.
+    // Curated lists (flagged, sr-due, review-wrong, mistakes) are left untouched.
+    const CONFIDENT_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    if (!CONFIDENT_EXEMPT.has(topicId)) pool = pool.filter(q => !Storage.isConfident(q.id));
     if (!pool.length) {
       const empty = {
         'flagged': 'No flagged questions yet — star questions during practice.',
         'sr-due': 'No questions are due for review right now. Come back later!',
         'mistakes': 'Your mistake notebook is empty — nothing to clear. 🎉',
       };
-      showToast(empty[topicId] || 'No questions in this set.', 'warn');
+      showToast(empty[topicId] || 'No questions left — you\'ve marked all as confident!', 'warn');
       return;
     }
     const picked = shuffle(pool).slice(0, Math.min(PRACTICE_LENGTH, pool.length)).map(presentQuestion);
@@ -1411,7 +1425,7 @@
     const attempts = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.attempts, 0);
     const corrects = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.correct, 0);
     const overallAcc = attempts ? corrects / attempts : 0;
-    const weighted = window.ALL_QUESTIONS.map(q => {
+    const weighted = window.ALL_QUESTIONS.filter(q => !Storage.isConfident(q.id)).map(q => {
       let w = 1;
       const s = acc[q.skill];
       if (s && s.attempts >= 3 && (s.correct / s.attempts) < 0.7) w *= 3;       // weak skill
@@ -2949,6 +2963,7 @@
     }
 
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -2959,6 +2974,7 @@
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -2987,6 +3003,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🧩', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const matchedCount = Object.keys(State.ddMap).length;
     const totalPairs = q.pairs.length;
     // right shuffled-index → which left item it is assigned to
@@ -3051,6 +3068,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="dd-pill">🔗 Match</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3082,6 +3100,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📐', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const table = q.table;
     const blankByCell = {};
     table.blanks.forEach((b, i) => { blankByCell[b.row + '|' + b.col] = i; });
@@ -3119,6 +3138,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="tf-pill">📋 Table</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3142,6 +3162,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📚', short: 'Scenario' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const partsHtml = q.parts.map((part, i) => {
       const draft = State.scDraft[i];
       let body = '';
@@ -3195,6 +3216,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="sc-pill">📖 Scenario</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3221,6 +3243,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '✏️', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     // Build the sentence, splitting the template on {N} gap markers
     const parts = q.template.split(/(\{\d+\})/);
     const sentence = parts.map(part => {
@@ -3256,6 +3279,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="gf-pill">✏️ Fill the gaps</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3306,6 +3330,7 @@
       </div>${renderKeyboardHintMCQ(true)}`;
     }
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const navCell = (i) => {
       const qq = State.questions[i];
       const answered = State.answers[i] !== null && State.answers[i] !== '';
@@ -3962,6 +3987,12 @@
     showToast(Storage.isFlagged(q.id) ? '⭐ Flagged for review' : 'Flag removed', Storage.isFlagged(q.id) ? 'success' : 'info');
     render();
   }
+  function toggleConfidentCurrent() {
+    const q = State.questions[State.current]; if (!q) return;
+    Storage.toggleConfident(q.id);
+    showToast(Storage.isConfident(q.id) ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', Storage.isConfident(q.id) ? 'success' : 'info');
+    render();
+  }
   function jumpToMockQuestion(idx) {
     if (State.mode !== 'mock') return;
     if (idx < 0 || idx >= State.questions.length) return;
@@ -4083,6 +4114,7 @@
     });
     bind('exportCsvBtn', 'click', exportCsv);
     bind('flagBtn', 'click', toggleFlagCurrent);
+    bind('confidentBtn', 'click', toggleConfidentCurrent);
     document.querySelectorAll('[data-flag-id]').forEach(el => el.addEventListener('click', () => {
       const id = el.dataset.flagId; Storage.toggleFlag(id);
       showToast(Storage.isFlagged(id) ? '⭐ Flagged for review' : 'Flag removed', Storage.isFlagged(id) ? 'success' : 'info');

@@ -1980,6 +1980,31 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   animation: pop .35s var(--ease);
 }
 .dark .flag-btn.is-flagged { background: rgba(251, 191, 36, .22); color: #fcd34d; border-color: rgba(251, 191, 36, .4); }
+.confident-btn {
+  background: var(--card-muted);
+  border: 1px solid var(--border);
+  color: var(--subtext);
+  width: 36px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  line-height: 1;
+}
+.confident-btn:hover { background: var(--btn-sec-hover); color: var(--text); border-color: var(--border-strong); }
+.confident-btn:active { transform: scale(.92); }
+.confident-btn.is-confident {
+  background: linear-gradient(135deg, #bbf7d0, #4ade80);
+  color: #14532d;
+  border-color: #22c55e;
+  animation: pop .35s var(--ease);
+}
+.dark .confident-btn.is-confident { background: rgba(74, 222, 128, .22); color: #86efac; border-color: rgba(74, 222, 128, .4); }
 .review-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
 .review-head .flag-btn { flex-shrink: 0; width: 30px; height: 28px; font-size: .9rem; }
 
