@@ -67,6 +67,21 @@
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
+  /* Returns true if the given CEFR level (A1/A2/B1) is unlocked for the French course.
+     A1 is always open; A2 requires all A1 lessons done + A1 unit quiz passed;
+     B1 requires all A2 lessons done + A2 unit quiz passed. */
+  function frLevelUnlocked(cefrLevel) {
+    if (_activeSubjectId !== 'french') return true;
+    if (!cefrLevel || cefrLevel === 'A1') return true;
+    const prereqLevel  = cefrLevel === 'B1' ? 'A2' : 'A1';
+    const prereqUnitId = cefrLevel === 'B1' ? 'fr-a2' : 'fr-a1';
+    const prereqUnit   = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === prereqUnitId);
+    if (!prereqUnit) return false;
+    if (!prereqUnit.lessons.every(L => isLessonDone(L.id))) return false;
+    const unitTest = (Storage.data.learn.unitTests || {})[prereqUnitId];
+    return !!(unitTest && unitTest.passed);
+  }
+
   const PASS_MARK = 70;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
@@ -629,6 +644,7 @@
       streak: { current: 0, best: 0, lastCorrectAt: 0 },
     },
     flagged: {},
+    confident: {},
     sr: {},
     history: [], session: null,
     learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {}, unitTests: {}, bestCombo: 0 },
@@ -787,6 +803,15 @@
     },
     isFlagged(id) { return !!this.data.flagged[id]; },
     flaggedIds() { return Object.keys(this.data.flagged); },
+    toggleConfident(id) {
+      if (!id) return;
+      if (!this.data.confident) this.data.confident = {};
+      if (this.data.confident[id]) delete this.data.confident[id];
+      else this.data.confident[id] = Date.now();
+      this.save();
+    },
+    isConfident(id) { return !!(this.data.confident && this.data.confident[id]); },
+    confidentIds() { return Object.keys(this.data.confident || {}); },
     isDarkActive() {
       const s = this.data.settings.darkMode;
       return s == null ? prefersDark() : !!s;
@@ -1381,13 +1406,34 @@
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
+    // For French: only surface questions from CEFR levels the learner has unlocked.
+    // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass the gate so
+    // previously-unlocked questions already in those lists remain accessible.
+    const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    if (_activeSubjectId === 'french' && !GATE_EXEMPT.has(topicId)) {
+      if (topicId && topicId.indexOf('level:') === 0) {
+        const requestedLevel = topicId.slice(6);
+        if (!frLevelUnlocked(requestedLevel)) {
+          const prereq = requestedLevel === 'B1' ? 'A2' : 'A1';
+          showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + requestedLevel + '.', 'warn');
+          return;
+        }
+      } else {
+        pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
+      }
+    }
+
+    // Exclude questions the user has marked as confident from all regular pools.
+    // Curated lists (flagged, sr-due, review-wrong, mistakes) are left untouched.
+    const CONFIDENT_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    if (!CONFIDENT_EXEMPT.has(topicId)) pool = pool.filter(q => !Storage.isConfident(q.id));
     if (!pool.length) {
       const empty = {
         'flagged': 'No flagged questions yet — star questions during practice.',
         'sr-due': 'No questions are due for review right now. Come back later!',
         'mistakes': 'Your mistake notebook is empty — nothing to clear. 🎉',
       };
-      showToast(empty[topicId] || 'No questions in this set.', 'warn');
+      showToast(empty[topicId] || 'No questions left — you\'ve marked all as confident!', 'warn');
       return;
     }
     const picked = shuffle(pool).slice(0, Math.min(PRACTICE_LENGTH, pool.length)).map(presentQuestion);
@@ -1411,7 +1457,10 @@
     const attempts = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.attempts, 0);
     const corrects = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.correct, 0);
     const overallAcc = attempts ? corrects / attempts : 0;
-    const weighted = window.ALL_QUESTIONS.map(q => {
+    const weighted = window.ALL_QUESTIONS
+      .filter(q => !Storage.isConfident(q.id))
+      .filter(q => _activeSubjectId !== 'french' || frLevelUnlocked(frQuestionLevel(q.id)))
+      .map(q => {
       let w = 1;
       const s = acc[q.skill];
       if (s && s.attempts >= 3 && (s.correct / s.attempts) < 0.7) w *= 3;       // weak skill
@@ -2532,8 +2581,20 @@
       <h2 class="section-title" style="margin-top:0">Practice by Level <span class="section-title-sub">CEFR — A1 · A2 · B1</span></h2>
       <div class="home-grid">
         ${CEFR_LEVELS.map(lv => {
+          const unlocked = frLevelUnlocked(lv.id);
           const lvPool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lv.id);
           const lvTotal = lvPool.length;
+          if (!unlocked) {
+            const prereqLevel = lv.id === 'B1' ? 'A2' : 'A1';
+            return `<div class="topic-card topic-card-locked fade-in" style="border-top-color:${lv.color}" aria-label="${escapeHtml(lv.id)} locked">
+              <div class="level-card-lbl" aria-hidden="true">🔒 ${escapeHtml(lv.id)}</div>
+              <h3>${escapeHtml(lv.sublabel)}</h3>
+              <p class="lock-reason">Finish all ${escapeHtml(prereqLevel)} lessons and pass the ${escapeHtml(prereqLevel)} unit quiz to unlock</p>
+              <div class="topic-card-footer">
+                <span class="count"><span class="topic-count-sep">${lvTotal} questions locked</span></span>
+              </div>
+            </div>`;
+          }
           const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
@@ -2949,6 +3010,7 @@
     }
 
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -2959,6 +3021,7 @@
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -2987,6 +3050,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🧩', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const matchedCount = Object.keys(State.ddMap).length;
     const totalPairs = q.pairs.length;
     // right shuffled-index → which left item it is assigned to
@@ -3051,6 +3115,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="dd-pill">🔗 Match</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3082,6 +3147,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📐', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const table = q.table;
     const blankByCell = {};
     table.blanks.forEach((b, i) => { blankByCell[b.row + '|' + b.col] = i; });
@@ -3119,6 +3185,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="tf-pill">📋 Table</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3142,6 +3209,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📚', short: 'Scenario' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const partsHtml = q.parts.map((part, i) => {
       const draft = State.scDraft[i];
       let body = '';
@@ -3195,6 +3263,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="sc-pill">📖 Scenario</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3221,6 +3290,7 @@
     const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '✏️', short: 'Mixed' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     // Build the sentence, splitting the template on {N} gap markers
     const parts = q.template.split(/(\{\d+\})/);
     const sentence = parts.map(part => {
@@ -3256,6 +3326,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="gf-pill">✏️ Fill the gaps</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3306,6 +3377,7 @@
       </div>${renderKeyboardHintMCQ(true)}`;
     }
     const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
     const navCell = (i) => {
       const qq = State.questions[i];
       const answered = State.answers[i] !== null && State.answers[i] !== '';
@@ -3511,9 +3583,34 @@
     });
 
     const unitsHtml = window.LEARN_PATH.map((unit) => {
-      const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
-      const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
+      // FR_LEARN_PATH uses `id`; AAT uses `unit` — normalise to a single variable
+      const uid = unit.unit || unit.id || '';
+      const topicObj = window.TOPICS.find(t => t.id === uid) || {};
+      const topicStat = Storage.data.stats.topics[uid] || { attempts: 0, correct: 0 };
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
+
+      // For French: lock the entire unit if the previous CEFR level is not complete
+      const cefrForUnit = uid === 'fr-a2' ? 'A2' : uid === 'fr-b1' ? 'B1' : null;
+      if (cefrForUnit && !frLevelUnlocked(cefrForUnit)) {
+        const prereqLevel = cefrForUnit === 'B1' ? 'A2' : 'A1';
+        return `<div class="journey-unit journey-unit-level-locked">
+          <div class="journey-unit-header">
+            <span class="journey-unit-icon">🔒</span>
+            <div class="journey-unit-info">
+              <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
+              <div class="journey-unit-sub">${unit.lessons.length} lessons · locked</div>
+            </div>
+          </div>
+          <div class="journey-unit-lock-banner">
+            <div class="julb-icon">🔒</div>
+            <div class="julb-text">
+              <strong>${escapeHtml(cefrForUnit)} is locked</strong>
+              <span>Complete all ${escapeHtml(prereqLevel)} lessons and pass the ${escapeHtml(prereqLevel)} unit quiz to unlock</span>
+            </div>
+          </div>
+        </div>`;
+      }
+
       let unlockedSoFar = true;
       const lessonsHtml = unit.lessons.map((L, nodeIdx) => {
         const rec = Storage.lessonRec(L.id);
@@ -3547,20 +3644,20 @@
       const unitDone = doneCount === unit.lessons.length;
       const unitStars = unit.lessons.reduce((sum, L) => { const rec = Storage.lessonRec(L.id); return sum + (rec ? (rec.stars || 0) : 0); }, 0);
       const unitMaxStars = unit.lessons.length * 3;
-      const unitBadgeEarned = !!Storage.data.badges['unit-' + unit.unit];
-      const unitTest = (Storage.data.learn.unitTests || {})[unit.unit] || null;
-      const unitQuizBtn = (unit.unit && unitDone)
-        ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
+      const unitBadgeEarned = !!Storage.data.badges['unit-' + uid];
+      const unitTest = (Storage.data.learn.unitTests || {})[uid] || null;
+      const unitQuizBtn = (uid && unitDone)
+        ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(uid)}">
             ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
            </button>` : '';
-      const hasRevision = unit.unit && UNIT_REVISION.some(r => r.unit === unit.unit);
-      const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
+      const hasRevision = uid && UNIT_REVISION.some(r => r.unit === uid);
+      const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(uid)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
       return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}">
         <div class="journey-unit-header">
           <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
-            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(unit.unit && UNIT_EXAM_WEIGHT[unit.unit]) ? ` <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit]}% of synoptic</span>` : ''}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(uid && UNIT_EXAM_WEIGHT[uid]) ? ` <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[uid]}% of synoptic</span>` : ''}</div>
           </div>
           <div class="unit-star-total" title="${unitStars} of ${unitMaxStars} stars earned">
             <span class="ust-stars">★</span> ${unitStars}/${unitMaxStars}
@@ -3819,6 +3916,12 @@
       <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
       <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
     </div>` : '';
+    const tableHtml = card.table ? `<div class="lesson-table-wrap">
+      <table class="lesson-table">
+        <thead><tr>${(card.table.headers || []).map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+        <tbody>${(card.table.rows || []).map(row => `<tr>${row.map(c => `<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>` : '';
     const splitHtml = card.split ? `<div class="lesson-split">
       <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
       <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
@@ -3846,7 +3949,7 @@
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
-          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${splitHtml}${calloutHtml}${examtrapHtml}
+          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
@@ -3962,6 +4065,12 @@
     showToast(Storage.isFlagged(q.id) ? '⭐ Flagged for review' : 'Flag removed', Storage.isFlagged(q.id) ? 'success' : 'info');
     render();
   }
+  function toggleConfidentCurrent() {
+    const q = State.questions[State.current]; if (!q) return;
+    Storage.toggleConfident(q.id);
+    showToast(Storage.isConfident(q.id) ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', Storage.isConfident(q.id) ? 'success' : 'info');
+    render();
+  }
   function jumpToMockQuestion(idx) {
     if (State.mode !== 'mock') return;
     if (idx < 0 || idx >= State.questions.length) return;
@@ -3969,14 +4078,10 @@
   }
 
   function attachEvents() {
-    bind('darkToggle', 'click', toggleDarkMode);
-    bind('referenceToggle', 'click', toggleReference);
-    bind('homeNavBtn', 'click', exitQuiz);
     bind('startBtn', 'click', () => { Storage.data.settings.seenSplash = true; Storage.save(); State.screen='home'; render(); });
     document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => { State.activeTab = el.dataset.tab; render(); }));
     document.querySelectorAll('[data-switch-subject]').forEach(el => el.addEventListener('click', () => switchSubject(el.dataset.switchSubject)));
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
-    bind('subjectSwitcherBtn', 'click', () => { State.screen = 'subjects'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
     bind('resumeBtn', 'click', resumeSession);
@@ -4083,6 +4188,7 @@
     });
     bind('exportCsvBtn', 'click', exportCsv);
     bind('flagBtn', 'click', toggleFlagCurrent);
+    bind('confidentBtn', 'click', toggleConfidentCurrent);
     document.querySelectorAll('[data-flag-id]').forEach(el => el.addEventListener('click', () => {
       const id = el.dataset.flagId; Storage.toggleFlag(id);
       showToast(Storage.isFlagged(id) ? '⭐ Flagged for review' : 'Flag removed', Storage.isFlagged(id) ? 'success' : 'info');
@@ -4259,6 +4365,15 @@
       return;
     }
     render();
+    // Bind static header buttons once — they live outside #app and must not accumulate listeners
+    const _dt = document.getElementById('darkToggle');
+    if (_dt) _dt.addEventListener('click', toggleDarkMode);
+    const _rt = document.getElementById('referenceToggle');
+    if (_rt) _rt.addEventListener('click', toggleReference);
+    const _hn = document.getElementById('homeNavBtn');
+    if (_hn) _hn.addEventListener('click', exitQuiz);
+    const _ss = document.getElementById('subjectSwitcherBtn');
+    if (_ss) _ss.addEventListener('click', () => { State.screen = 'subjects'; render(); });
     document.addEventListener('keydown', handleGlobalKey);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && audioCtx && audioCtx.state === 'running') { try { audioCtx.suspend(); } catch (e) {} }
