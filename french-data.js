@@ -2880,7 +2880,138 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ]
       },
       {
-        "id": "fr-l17",
+        "id": "fr-l39",
+        "title": "Les transports, les directions et les prépositions de lieu",
+        "icon": "🚌",
+        "cards": [
+          {
+            "h": "Les moyens de transport",
+            "table": {
+              "headers": ["French", "English", "Example"],
+              "rows": [
+                ["le train", "the train", "Je prends le train."],
+                ["l'autobus / le bus", "the bus", "On prend le bus."],
+                ["le métro", "the underground / metro", "Elle prend le métro."],
+                ["le vélo", "the bike", "Il va au travail à vélo."],
+                ["la voiture", "the car", "Nous y allons en voiture."],
+                ["l'avion", "the plane", "Ils voyagent en avion."],
+                ["à pied", "on foot", "Je vais à pied."]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "Use **en** with most vehicles (en voiture, en bus, en avion) but **à** with vélo and à pied. Also: **prendre** the train/bus/metro."
+            }
+          },
+          {
+            "h": "Les directions",
+            "table": {
+              "headers": ["French", "English"],
+              "rows": [
+                ["Allez tout droit.", "Go straight ahead."],
+                ["Tournez à gauche.", "Turn left."],
+                ["Tournez à droite.", "Turn right."],
+                ["Prenez la première rue à gauche.", "Take the first street on the left."],
+                ["Traversez le pont.", "Cross the bridge."],
+                ["C'est à deux cents mètres.", "It's two hundred metres away."]
+              ]
+            },
+            "p": [
+              "To ask where something is: **Où est… ?** (formal/general) or **Où se trouve… ?** (slightly more polite).",
+              "**Pardon, où est la gare, s'il vous plaît ?** (Excuse me, where is the station, please?)"
+            ]
+          },
+          {
+            "h": "Les prépositions de lieu",
+            "p": [
+              "These small words describe **where** something is. They are invariable — they never change form."
+            ],
+            "table": {
+              "headers": ["Preposition", "Meaning", "Example"],
+              "rows": [
+                ["sur", "on", "Le livre est sur la table."],
+                ["sous", "under / beneath", "Le chat est sous la chaise."],
+                ["dans", "in / inside", "Les clés sont dans mon sac."],
+                ["devant", "in front of", "Il attend devant l'école."],
+                ["derrière", "behind", "Le jardin est derrière la maison."],
+                ["entre", "between", "La banque est entre le café et la pharmacie."],
+                ["à côté de", "next to", "La boulangerie est à côté de la poste."],
+                ["en face de", "opposite / across from", "L'hôtel est en face de la gare."],
+                ["près de", "near", "Nous habitons près du centre-ville."],
+                ["loin de", "far from", "C'est loin de la station ?"]
+              ]
+            }
+          },
+          {
+            "h": "À l'hôtel et en ville",
+            "p": [
+              "Key vocabulary for getting around town and checking in to accommodation.",
+              "**Je voudrais une chambre, s'il vous plaît.** (I'd like a room, please.)",
+              "**Pour combien de nuits ?** (For how many nights?)"
+            ],
+            "table": {
+              "headers": ["French", "English"],
+              "rows": [
+                ["une chambre", "a (hotel) room"],
+                ["la gare", "the (train) station"],
+                ["l'aéroport", "the airport"],
+                ["l'arrêt de bus", "the bus stop"],
+                ["la station de métro", "the metro station"],
+                ["l'hôtel", "the hotel"],
+                ["la pharmacie", "the chemist / pharmacy"],
+                ["la poste", "the post office"],
+                ["la banque", "the bank"]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "« Le métro » means:",
+            "opts": ["the bus", "the train", "the underground / metro", "the tram"],
+            "ans": 2,
+            "exp": "le métro = the underground / metro system."
+          },
+          {
+            "type": "mcq",
+            "q": "« En voiture » means:",
+            "opts": ["by foot", "by bus", "by car", "by bike"],
+            "ans": 2,
+            "exp": "en voiture = by car. Use en with most vehicles."
+          },
+          {
+            "type": "mcq",
+            "q": "« Tournez à gauche » means:",
+            "opts": ["Go straight ahead", "Turn right", "Turn left", "Stop here"],
+            "ans": 2,
+            "exp": "à gauche = left; à droite = right."
+          },
+          {
+            "type": "mcq",
+            "q": "« Tout droit » means:",
+            "opts": ["Turn left", "Turn right", "Straight ahead", "Go back"],
+            "ans": 2,
+            "exp": "tout droit = straight ahead / straight on."
+          },
+          {
+            "type": "mcq",
+            "q": "« Le livre est ___ la table. » (on the table)",
+            "opts": ["sous", "dans", "sur", "devant"],
+            "ans": 2,
+            "exp": "sur = on. Le livre est sur la table."
+          },
+          {
+            "type": "mcq",
+            "q": "« Le chat est ___ la chaise. » (under the chair)",
+            "opts": ["sur", "sous", "dans", "derrière"],
+            "ans": 1,
+            "exp": "sous = under / beneath. Le chat est sous la chaise."
+          }
+        ]
+      },
+      {
+
         "title": "Examen A1 (type DELF)",
         "icon": "📝",
         "cards": [
