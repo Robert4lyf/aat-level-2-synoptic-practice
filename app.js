@@ -2145,6 +2145,10 @@
       const nextBtn = document.getElementById('nextBtn');
       if (nextBtn) nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+    if (State.screen === 'lesson' && State.lesson && State.lesson.phase === 'quiz' && State.lesson.qAnswered !== null) {
+      const lessonNextBtn = document.getElementById('lessonNextBtn');
+      if (lessonNextBtn) lessonNextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
   function renderSplash() {
