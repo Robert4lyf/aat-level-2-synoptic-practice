@@ -302,6 +302,151 @@
         'Sustainability reporting (environmental/social impact) is part of the broader finance function role — it is a professional duty, not just PR.',
       ],
     },
+
+    /* ── Level 3 units ── */
+    {
+      unit: 'avbk', title: 'Advanced Bookkeeping', icon: '📗',
+      sections: [
+        { heading: 'Extended Trial Balance', items: [
+          'Four column pairs: Trial Balance → Adjustments → P&L → SFP',
+          'Accrual: Dr expense (P&L), Cr current liability (SFP)',
+          'Prepayment: Cr expense (P&L), Dr current asset (SFP)',
+          'Depreciation charge: Dr P&L expense. Accumulated dep: Cr SFP contra-asset',
+          'Profit = P&L balancing debit → same figure credited to SFP equity',
+        ]},
+        { heading: 'Incomplete Records', items: [
+          'Capital comparison: Profit = Closing NA − Opening NA + Drawings − Capital introduced',
+          'Mark-up on cost vs margin on selling price (25% mark-up = 20% margin)',
+          'COGS = Opening inventory + Purchases − Closing inventory',
+        ]},
+        { heading: 'Asset Disposals', items: [
+          '1) Dr Disposal / Cr Asset at cost. 2) Dr Acc. dep. / Cr Disposal. 3) Dr Bank (or new asset for part-ex) / Cr Disposal. 4) Balance = profit or loss to P&L',
+          'Part-exchange: trade-in value credited to Disposal (deemed proceeds); debited to new asset account',
+        ]},
+      ],
+      traps: [
+        'Accruals/prepayments affect BOTH P&L and SFP — missing the SFP entry is a common slip.',
+        'Profit in the ETB P&L columns is a DEBIT (balancing the credit-heavy income side) — students often put it on the wrong side.',
+        'In incomplete records: mark-up is on COST, margin is on SELLING PRICE. A 25% mark-up ≠ 25% margin.',
+        'Part-exchange: the disposal account still operates normally — the trade-in allowance is the proceeds credit, not cash.',
+      ],
+    },
+    {
+      unit: 'faps', title: 'Final Accounts Preparation', icon: '📘',
+      sections: [
+        { heading: 'Sole Trader Accounts', items: [
+          'COGS = Opening inventory + Purchases − Closing inventory',
+          'Inventory: lower of cost and NRV. Write down if NRV < cost',
+          'Equity: Opening capital + Net profit − Drawings = Closing capital',
+          'Non-current assets in SFP at carrying value (cost − accumulated depreciation)',
+          'Drawings are NOT a P&L expense — they reduce equity only',
+        ]},
+        { heading: 'Partnership Appropriation', items: [
+          'No agreement → Partnership Act 1890: equal profit share, no salaries, no interest on capital, 5% on loans',
+          'Appropriation order: net profit → salaries → interest on capital → add back interest on drawings → residual in PSR',
+          'Credits to current account: salary, int. on capital, profit share. Debits: drawings, int. on drawings',
+          'Debit current account balance = partner owes firm (shown as SFP asset)',
+        ]},
+        { heading: 'Goodwill on Change', items: [
+          'Raise goodwill: Dr Goodwill / Cr existing partners\' capitals in OLD ratio',
+          'Write off: Dr partners\' capitals in NEW ratio / Cr Goodwill',
+          'Goodwill must not remain on SFP unless the question says so',
+        ]},
+      ],
+      traps: [
+        'PA 1890 default = EQUAL shares, NOT capital ratio — the most common partnership trap.',
+        'Partners\' salaries are appropriations, not P&L expenses — they appear after net profit in the appropriation account.',
+        'Drawings are never deducted in the P&L or appropriation account — only in the equity/current account section.',
+        'Goodwill: raised in OLD ratio, written off in NEW ratio — confusing these wipes out the purpose of the adjustment.',
+      ],
+    },
+    {
+      unit: 'mats', title: 'Management Accounting: Costing', icon: '🏭',
+      sections: [
+        { heading: 'Overhead Absorption', items: [
+          'OAR = Budgeted overheads ÷ Budgeted activity (calculated BEFORE the year starts)',
+          'Absorbed = OAR × Actual activity',
+          'Over-absorbed (absorbed > incurred): credit to P&L. Under-absorbed: debit to P&L',
+          'Labour-intensive: labour hour OAR. Automated: machine hour OAR',
+        ]},
+        { heading: 'Marginal vs Absorption Costing', items: [
+          'Absorption: fixed OH in unit cost and inventory value. Marginal: fixed OH = period cost',
+          'Inventory rising → absorption profit > marginal profit (OH deferred in stock)',
+          'Reconciliation: difference = inventory change × fixed OAR per unit',
+        ]},
+        { heading: 'Variances', items: [
+          'Material price = (SP − AP) × AQ purchased',
+          'Material usage = (SQ − AQ used) × SP',
+          'Labour rate = (SR − AR) × AH paid',
+          'Labour efficiency = (SH for actual output − AH worked) × SR',
+          'F = actual cost < standard. A = actual cost > standard',
+        ]},
+      ],
+      traps: [
+        'OAR uses BUDGETED not actual overhead — actual is only known at year end.',
+        'Material price variance: use AQ PURCHASED (not used). Usage: use SP (not actual). Swapping these is the most common error.',
+        'Cheap material → favourable price but often adverse usage (more wastage) — always consider interdependencies.',
+        'Absorption profit > marginal profit when inventory RISES. Reverse when inventory falls.',
+      ],
+    },
+    {
+      unit: 'tpfb', title: 'Tax Processes for Businesses', icon: '🧾',
+      sections: [
+        { heading: 'VAT', items: [
+          'Registration threshold: £90,000 taxable turnover (2024)',
+          'Zero-rated: taxable at 0%, input VAT RECLAIMABLE. Exempt: outside VAT, input VAT NOT reclaimable',
+          'Box 5 = Output VAT − Input VAT. Positive → pay HMRC. Negative → HMRC repays',
+          'Cash accounting ≤ £1.35m. Annual accounting ≤ £1.35m. Flat rate ≤ £150,000',
+          'Flat rate: fixed % × GROSS (VAT-inclusive) turnover',
+        ]},
+        { heading: 'Income Tax — Taxable Profit', items: [
+          'Taxable profit = Accounting profit + Disallowable expenses − Capital allowances',
+          'Always add back: depreciation, drawings, private expenses, fines',
+          'AIA: 100% first-year on qualifying plant (limit £1m). WDA main pool 18% RB. WDA special rate 6% RB',
+        ]},
+        { heading: 'Payment Dates', items: [
+          'Payments on account: 31 January (in year) and 31 July (after year end) — each = 50% prior year liability',
+          'Balancing payment: 31 January after year end',
+          'Online Self Assessment return: 31 January after year end',
+        ]},
+      ],
+      traps: [
+        'Zero-rated ≠ exempt. Zero-rated = input VAT recoverable. Exempt = not recoverable. The exam tests this constantly.',
+        'Depreciation is ALWAYS disallowable — add back every time, even if buried in a scenario.',
+        'Flat rate scheme uses GROSS turnover, not net. Students applying the % to net sales lose marks.',
+        'Drawings cannot be a tax deduction for a sole trader — they are not a business expense.',
+      ],
+    },
+    {
+      unit: 'buaw', title: 'Business Awareness', icon: '🌐',
+      sections: [
+        { heading: 'Company Law', items: [
+          'Ltd: cannot offer shares to public. PLC: can; minimum £50,000 share capital',
+          'Company = separate legal entity → limited liability for shareholders',
+          'Seven duties under CA 2006. s.172 "promote success" includes employees, community, environment, long term',
+          'Director breach → personal liability. Wrongful trading (knew company insolvent, continued) → personal liability',
+        ]},
+        { heading: 'Corporate Governance', items: [
+          'UK Corporate Governance Code: listed PLCs only',
+          'NEDs: independent, challenge executives, sit on audit/remuneration committees',
+          'Principal-agent problem: managers may not act in shareholders\' interests',
+          'CSR: ethical management considering all stakeholders',
+        ]},
+        { heading: 'Economic Environment', items: [
+          'Recession = 2 consecutive quarters of negative GDP growth',
+          'Bank of England: monetary policy (base rate, QE), targeting 2% CPI inflation',
+          'Government: fiscal policy (tax and spend)',
+          'Business cycle: expansion → peak → contraction → trough → recovery',
+          "Porter's Five Forces: rivalry, new entrants, substitutes, buyer power, supplier power",
+        ]},
+      ],
+      traps: [
+        'Bank of England controls MONETARY policy. The GOVERNMENT controls FISCAL policy. Never swap these.',
+        '"Promote the success" (s.172) is not just profit — it explicitly covers employees, community, environment and long-term consequences.',
+        'A recession is two consecutive quarters negative GDP — one bad quarter is not a recession.',
+        "Porter's Five Forces is an industry analysis tool — not a costing or pricing model.",
+      ],
+    },
   ];
 
   /* ── LEVEL 3 BRIDGE — "What's next" preview data ── */
