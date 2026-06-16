@@ -2092,6 +2092,10 @@
       try { ni.focus(); if (State.mode === 'practice' && State.numericDraft) ni.setSelectionRange(ni.value.length, ni.value.length); } catch (e) {}
     }
     if (State.screen === 'home' && State.activeTab === 'progress') animateCounters();
+    if (State.screen === 'quiz' && State.answered !== null) {
+      const nextBtn = document.getElementById('nextBtn');
+      if (nextBtn) nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
   function renderSplash() {
