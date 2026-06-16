@@ -67,6 +67,21 @@
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
+  /* Returns true if the given CEFR level (A1/A2/B1) is unlocked for the French course.
+     A1 is always open; A2 requires all A1 lessons done + A1 unit quiz passed;
+     B1 requires all A2 lessons done + A2 unit quiz passed. */
+  function frLevelUnlocked(cefrLevel) {
+    if (_activeSubjectId !== 'french') return true;
+    if (!cefrLevel || cefrLevel === 'A1') return true;
+    const prereqLevel  = cefrLevel === 'B1' ? 'A2' : 'A1';
+    const prereqUnitId = cefrLevel === 'B1' ? 'fr-a2' : 'fr-a1';
+    const prereqUnit   = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === prereqUnitId);
+    if (!prereqUnit) return false;
+    if (!prereqUnit.lessons.every(L => isLessonDone(L.id))) return false;
+    const unitTest = (Storage.data.learn.unitTests || {})[prereqUnitId];
+    return !!(unitTest && unitTest.passed);
+  }
+
   const PASS_MARK = 70;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
@@ -1391,6 +1406,23 @@
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
+    // For French: only surface questions from CEFR levels the learner has unlocked.
+    // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass the gate so
+    // previously-unlocked questions already in those lists remain accessible.
+    const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    if (_activeSubjectId === 'french' && !GATE_EXEMPT.has(topicId)) {
+      if (topicId && topicId.indexOf('level:') === 0) {
+        const requestedLevel = topicId.slice(6);
+        if (!frLevelUnlocked(requestedLevel)) {
+          const prereq = requestedLevel === 'B1' ? 'A2' : 'A1';
+          showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + requestedLevel + '.', 'warn');
+          return;
+        }
+      } else {
+        pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
+      }
+    }
+
     // Exclude questions the user has marked as confident from all regular pools.
     // Curated lists (flagged, sr-due, review-wrong, mistakes) are left untouched.
     const CONFIDENT_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
@@ -1425,7 +1457,10 @@
     const attempts = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.attempts, 0);
     const corrects = Object.values(Storage.data.stats.questions).reduce((s, q) => s + q.correct, 0);
     const overallAcc = attempts ? corrects / attempts : 0;
-    const weighted = window.ALL_QUESTIONS.filter(q => !Storage.isConfident(q.id)).map(q => {
+    const weighted = window.ALL_QUESTIONS
+      .filter(q => !Storage.isConfident(q.id))
+      .filter(q => _activeSubjectId !== 'french' || frLevelUnlocked(frQuestionLevel(q.id)))
+      .map(q => {
       let w = 1;
       const s = acc[q.skill];
       if (s && s.attempts >= 3 && (s.correct / s.attempts) < 0.7) w *= 3;       // weak skill
@@ -2546,8 +2581,20 @@
       <h2 class="section-title" style="margin-top:0">Practice by Level <span class="section-title-sub">CEFR — A1 · A2 · B1</span></h2>
       <div class="home-grid">
         ${CEFR_LEVELS.map(lv => {
+          const unlocked = frLevelUnlocked(lv.id);
           const lvPool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lv.id);
           const lvTotal = lvPool.length;
+          if (!unlocked) {
+            const prereqLevel = lv.id === 'B1' ? 'A2' : 'A1';
+            return `<div class="topic-card topic-card-locked fade-in" style="border-top-color:${lv.color}" aria-label="${escapeHtml(lv.id)} locked">
+              <div class="level-card-lbl" aria-hidden="true">🔒 ${escapeHtml(lv.id)}</div>
+              <h3>${escapeHtml(lv.sublabel)}</h3>
+              <p class="lock-reason">Finish all ${escapeHtml(prereqLevel)} lessons and pass the ${escapeHtml(prereqLevel)} unit quiz to unlock</p>
+              <div class="topic-card-footer">
+                <span class="count"><span class="topic-count-sep">${lvTotal} questions locked</span></span>
+              </div>
+            </div>`;
+          }
           const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
@@ -3536,9 +3583,34 @@
     });
 
     const unitsHtml = window.LEARN_PATH.map((unit) => {
-      const topicObj = window.TOPICS.find(t => t.id === unit.unit) || {};
-      const topicStat = Storage.data.stats.topics[unit.unit] || { attempts: 0, correct: 0 };
+      // FR_LEARN_PATH uses `id`; AAT uses `unit` — normalise to a single variable
+      const uid = unit.unit || unit.id || '';
+      const topicObj = window.TOPICS.find(t => t.id === uid) || {};
+      const topicStat = Storage.data.stats.topics[uid] || { attempts: 0, correct: 0 };
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
+
+      // For French: lock the entire unit if the previous CEFR level is not complete
+      const cefrForUnit = uid === 'fr-a2' ? 'A2' : uid === 'fr-b1' ? 'B1' : null;
+      if (cefrForUnit && !frLevelUnlocked(cefrForUnit)) {
+        const prereqLevel = cefrForUnit === 'B1' ? 'A2' : 'A1';
+        return `<div class="journey-unit journey-unit-level-locked">
+          <div class="journey-unit-header">
+            <span class="journey-unit-icon">🔒</span>
+            <div class="journey-unit-info">
+              <div class="journey-unit-title">${escapeHtml(unit.title)}</div>
+              <div class="journey-unit-sub">${unit.lessons.length} lessons · locked</div>
+            </div>
+          </div>
+          <div class="journey-unit-lock-banner">
+            <div class="julb-icon">🔒</div>
+            <div class="julb-text">
+              <strong>${escapeHtml(cefrForUnit)} is locked</strong>
+              <span>Complete all ${escapeHtml(prereqLevel)} lessons and pass the ${escapeHtml(prereqLevel)} unit quiz to unlock</span>
+            </div>
+          </div>
+        </div>`;
+      }
+
       let unlockedSoFar = true;
       const lessonsHtml = unit.lessons.map((L, nodeIdx) => {
         const rec = Storage.lessonRec(L.id);
@@ -3572,20 +3644,20 @@
       const unitDone = doneCount === unit.lessons.length;
       const unitStars = unit.lessons.reduce((sum, L) => { const rec = Storage.lessonRec(L.id); return sum + (rec ? (rec.stars || 0) : 0); }, 0);
       const unitMaxStars = unit.lessons.length * 3;
-      const unitBadgeEarned = !!Storage.data.badges['unit-' + unit.unit];
-      const unitTest = (Storage.data.learn.unitTests || {})[unit.unit] || null;
-      const unitQuizBtn = (unit.unit && unitDone)
-        ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(unit.unit)}">
+      const unitBadgeEarned = !!Storage.data.badges['unit-' + uid];
+      const unitTest = (Storage.data.learn.unitTests || {})[uid] || null;
+      const unitQuizBtn = (uid && unitDone)
+        ? `<button class="unit-quiz-btn ${unitTest && unitTest.passed ? 'quiz-passed' : ''}" type="button" data-unit-quiz="${escapeHtml(uid)}">
             ${unitTest ? (unitTest.passed ? `✓ ${unitTest.pct}%` : `↩ Retry (${unitTest.pct}%)`) : '📋 Unit quiz'}
            </button>` : '';
-      const hasRevision = unit.unit && UNIT_REVISION.some(r => r.unit === unit.unit);
-      const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(unit.unit)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
+      const hasRevision = uid && UNIT_REVISION.some(r => r.unit === uid);
+      const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(uid)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
       return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}">
         <div class="journey-unit-header">
           <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
-            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(unit.unit && UNIT_EXAM_WEIGHT[unit.unit]) ? ` <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[unit.unit]}% of synoptic</span>` : ''}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(uid && UNIT_EXAM_WEIGHT[uid]) ? ` <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[uid]}% of synoptic</span>` : ''}</div>
           </div>
           <div class="unit-star-total" title="${unitStars} of ${unitMaxStars} stars earned">
             <span class="ust-stars">★</span> ${unitStars}/${unitMaxStars}
@@ -3844,6 +3916,12 @@
       <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
       <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
     </div>` : '';
+    const tableHtml = card.table ? `<div class="lesson-table-wrap">
+      <table class="lesson-table">
+        <thead><tr>${(card.table.headers || []).map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+        <tbody>${(card.table.rows || []).map(row => `<tr>${row.map(c => `<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>` : '';
     const splitHtml = card.split ? `<div class="lesson-split">
       <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
       <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
@@ -3871,7 +3949,7 @@
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
-          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${splitHtml}${calloutHtml}${examtrapHtml}
+          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}

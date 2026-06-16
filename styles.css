@@ -3288,6 +3288,28 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 .lesson-example-table td:first-child { color: var(--text); }
 .lesson-example-table td:last-child { font-weight: 600; color: var(--text-strong); }
 
+/* ── Generic lesson table (headers + rows) ── */
+.lesson-table-wrap { overflow-x: auto; margin-top: 12px; }
+.lesson-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.lesson-table th {
+  padding: 7px 12px;
+  font-weight: 700;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--subtext);
+  border-bottom: 2px solid var(--border-strong);
+  text-align: left;
+}
+.lesson-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.lesson-table tr:last-child td { border-bottom: none; }
+.lesson-table td:first-child { font-weight: 600; color: var(--text-strong); }
+.dark .lesson-table th { border-bottom-color: rgba(255,255,255,.18); }
+
 /* ── Lesson split layout ── */
 .lesson-split {
   display: grid;
@@ -3382,6 +3404,58 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   vertical-align: middle;
   margin-left: 6px;
 }
+
+/* ── CEFR level-locked unit (French course) ── */
+.journey-unit-level-locked {
+  opacity: .7;
+  pointer-events: none;
+}
+.journey-unit-lock-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgba(0,0,0,.03) 8px,
+    rgba(0,0,0,.03) 16px
+  );
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+}
+.julb-icon { font-size: 1.6rem; flex-shrink: 0; }
+.julb-text { display: flex; flex-direction: column; gap: 2px; }
+.julb-text strong { font-size: .88rem; }
+.julb-text span { font-size: .78rem; color: var(--subtext); }
+.dark .journey-unit-lock-banner {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgba(255,255,255,.03) 8px,
+    rgba(255,255,255,.03) 16px
+  );
+}
+
+/* ── Locked level card (Practice tab) ── */
+.topic-card-locked {
+  background: var(--card);
+  border-radius: var(--r-xl);
+  padding: 24px 20px;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--border-strong);
+  text-align: left;
+  color: var(--subtext);
+  opacity: .72;
+  cursor: default;
+  user-select: none;
+}
+.topic-card-locked h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.topic-card-locked .lock-reason { font-size: .78rem; color: var(--subtext); margin-bottom: 0; line-height: 1.45; }
+.topic-card-locked .topic-card-footer { margin-top: 14px; }
 
 /* ── Lesson difficulty tier labels on nodes ── */
 .node-tier-label {
