@@ -3552,6 +3552,132 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ]
       },
       {
+        "id": "fr-l38",
+        "title": "Les verbes irréguliers essentiels",
+        "icon": "⚙️",
+        "cards": [
+          {
+            "h": "Pourquoi les apprendre ?",
+            "p": [
+              "Six high-frequency irregular verbs — **vouloir, pouvoir, devoir, savoir, venir, prendre** — appear constantly in French. Their present tense forms don't follow regular -ER/-IR/-RE patterns, so you need to learn them individually.",
+              "You already know **être** (fr-l02), **avoir** (fr-l03), **aller** and **faire** (fr-l14). Add these six and you'll have all the key irregular verbs covered."
+            ]
+          },
+          {
+            "h": "Vouloir (to want) & Pouvoir (to be able to / can)",
+            "table": {
+              "headers": ["Pronom", "vouloir", "pouvoir"],
+              "rows": [
+                ["je", "veux", "peux"],
+                ["tu", "veux", "peux"],
+                ["il / elle", "veut", "peut"],
+                ["nous", "voulons", "pouvons"],
+                ["vous", "voulez", "pouvez"],
+                ["ils / elles", "veulent", "peuvent"]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "**Je veux** = I want (direct/strong). **Je voudrais** (conditional) = I would like (polite). Use « voudrais » in shops and restaurants."
+            }
+          },
+          {
+            "h": "Devoir (must / to have to) & Savoir (to know how to)",
+            "table": {
+              "headers": ["Pronom", "devoir", "savoir"],
+              "rows": [
+                ["je", "dois", "sais"],
+                ["tu", "dois", "sais"],
+                ["il / elle", "doit", "sait"],
+                ["nous", "devons", "savons"],
+                ["vous", "devez", "savez"],
+                ["ils / elles", "doivent", "savent"]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "**devoir + infinitive** = must/have to: « Je dois partir. » **savoir + infinitive** = to know how to: « Elle sait nager. »"
+            }
+          },
+          {
+            "h": "Venir (to come) & Prendre (to take)",
+            "table": {
+              "headers": ["Pronom", "venir", "prendre"],
+              "rows": [
+                ["je", "viens", "prends"],
+                ["tu", "viens", "prends"],
+                ["il / elle", "vient", "prend"],
+                ["nous", "venons", "prenons"],
+                ["vous", "venez", "prenez"],
+                ["ils / elles", "viennent", "prennent"]
+              ]
+            },
+            "p": [
+              "Verbs conjugated like **venir**: revenir (to come back), devenir (to become), se souvenir (to remember).",
+              "Verbs conjugated like **prendre**: apprendre (to learn), comprendre (to understand), surprendre (to surprise)."
+            ]
+          },
+          {
+            "h": "En contexte",
+            "example": {
+              "title": "Using these verbs",
+              "rows": [
+                ["Je veux partir maintenant.", "I want to leave now."],
+                ["Elle peut venir demain.", "She can come tomorrow."],
+                ["Vous devez réserver.", "You must book."],
+                ["Il sait parler chinois.", "He knows how to speak Chinese."],
+                ["Nous venons de Paris.", "We come from Paris."],
+                ["Je prends le bus.", "I take the bus."]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "« Ils ___ partir maintenant. » (vouloir)",
+            "opts": ["veulent", "voulons", "voulez", "veut"],
+            "ans": 0,
+            "exp": "ils/elles + vouloir → veulent."
+          },
+          {
+            "type": "mcq",
+            "q": "« Tu ___ nager ? » (savoir — do you know how to?)",
+            "opts": ["sais", "savent", "savons", "sait"],
+            "ans": 0,
+            "exp": "tu + savoir → sais: Tu sais nager ?"
+          },
+          {
+            "type": "mcq",
+            "q": "« Nous ___ prendre le train. » (devoir — must)",
+            "opts": ["devons", "doivent", "dois", "doit"],
+            "ans": 0,
+            "exp": "nous + devoir → devons: Nous devons prendre le train."
+          },
+          {
+            "type": "mcq",
+            "q": "« Vous ___ parler ? » (pouvoir — can you?)",
+            "opts": ["pouvez", "peuvent", "peux", "peut"],
+            "ans": 0,
+            "exp": "vous + pouvoir → pouvez."
+          },
+          {
+            "type": "mcq",
+            "q": "« Elle ___ le bus tous les matins. » (prendre)",
+            "opts": ["prend", "prends", "prenons", "prennent"],
+            "ans": 0,
+            "exp": "il/elle + prendre → prend."
+          },
+          {
+            "type": "mcq",
+            "q": "« Ils ___ de Lyon. » (venir)",
+            "opts": ["viennent", "venons", "vient", "venez"],
+            "ans": 0,
+            "exp": "ils/elles + venir → viennent."
+          }
+        ]
+      },
+      {
         "id": "fr-l20",
         "title": "L'imparfait",
         "icon": "🔁",
