@@ -3079,6 +3079,22 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+/* Story card dark mode — override hardcoded inline colours on the visual HTML */
+.dark .lesson-visual > div {
+  background: var(--card) !important;
+  border-left-color: var(--accent) !important;
+}
+.dark .lesson-visual > div > div:first-child {
+  color: var(--accent) !important;
+}
+.dark .lesson-visual > div > div { color: var(--text); }
+/* Character name spans by colour family */
+.dark .lesson-visual span[style*="#003189"] { color: #93b4ff !important; }
+.dark .lesson-visual span[style*="#b45309"] { color: #fcd34d !important; }
+.dark .lesson-visual span[style*="#166534"] { color: #6ee7b7 !important; }
+.dark .lesson-visual span[style*="#555"]    { color: var(--subtext) !important; }
+/* Ghost-click guard: block pointer events for 400 ms right after lesson opens */
+.lesson-just-started .lesson-nav .btn-primary { pointer-events: none; }
 /* LSF sign drawings are black line-art on a transparent background.
    In dark mode they would vanish, so invert them to crisp white strokes. */
 .lsf-sign-img { transition: filter .2s ease; }

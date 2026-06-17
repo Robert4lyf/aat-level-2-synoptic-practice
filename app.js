@@ -1619,6 +1619,13 @@
     const existingRec = Storage.lessonRec(found.lesson.id);
     State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0 };
     render();
+    // Block the Continue button briefly to prevent ghost-clicks on mobile
+    // where the tap that opened the lesson can fire again on the newly rendered button.
+    const player = document.querySelector('.lesson-player');
+    if (player) {
+      player.classList.add('lesson-just-started');
+      setTimeout(() => player.classList.remove('lesson-just-started'), 400);
+    }
   }
   function lessonContinue() {
     const L = State.lesson; if (!L) return;
