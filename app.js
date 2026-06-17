@@ -2044,6 +2044,7 @@
     const subj = getSubject(id);
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
+    if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }
     subj.activate();
     Storage.data = defaultData();
     Storage.load();
@@ -2396,26 +2397,6 @@
     </div>`;
   }
 
-  function renderWeeklyChart() {
-    const bars = [];
-    const now = new Date();
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(now.getDate() - i);
-      const key = d.toISOString().slice(0, 10);
-      const rec = Storage.data.daily[key] || {};
-      bars.push({ label: ['S','M','T','W','T','F','S'][d.getDay()], n: rec.answered || 0, isToday: i === 0 });
-    }
-    const peak = Math.max(...bars.map(b => b.n), 1);
-    return `<div class="weekly-chart" aria-label="Questions answered this week">
-      ${bars.map(b => `<div class="wc-col${b.isToday ? ' wc-today' : ''}">
-        <div class="wc-bar-bg"><div class="wc-bar" style="height:${Math.round(b.n / peak * 100)}%"></div></div>
-        <div class="wc-count">${b.n > 0 ? b.n : ''}</div>
-        <div class="wc-label">${b.label}</div>
-      </div>`).join('')}
-    </div>`;
-  }
-
   function renderHomeTab() {
     const counts = {};
     const prog = getGlobalProgress();
@@ -2458,7 +2439,6 @@
             <div class="dash-stat-label">Best mock</div>
           </div>
         </div>
-        ${renderWeeklyChart()}
       </div>
     </div>`;
 
@@ -2655,7 +2635,7 @@
       ['Calculator', 'Numeric, table and scenario questions show an on-screen calculator with memory keys (MC, MR, M−, M+), square root and percentage. Click "Use this value" to drop the result into the answer box.'],
       ['T-Account playground', 'Use the 🧰 T-Accounts tab to post any double entry and watch the ledger accounts and trial balance update live — a sandbox for practising debits and credits.'],
       ['Review your score', `${PASS_MARK}% or above is a pass. Filter the review to "wrong only" to focus on weak areas, and flag any question for revision.`],
-      ['Track your progress', 'Lifetime stats, streaks and recent attempts are saved on this device under the Progress tab. Export to CSV any time.'],
+      ['Track your progress', 'Lifetime stats, streaks and accuracy by topic are saved on this device under the Progress tab.'],
       ['Keyboard shortcuts', 'Press A–D to choose an MCQ option, F to flag, Enter or Space to advance, ←/→ to navigate in mock mode, Esc to close dialogs or the reference panel.'],
     ];
     return `<div style="max-width:600px;margin:0 auto" class="fade-in">
@@ -2671,17 +2651,16 @@
   }
 
   function renderProgress() {
-    const stats = Storage.data.stats, history = Storage.data.history;
+    const stats = Storage.data.stats;
     const totalAttempts = Object.values(stats.questions).reduce((s, q) => s + q.attempts, 0);
     const totalCorrect = Object.values(stats.questions).reduce((s, q) => s + q.correct, 0);
     const accuracy = totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
-    const sessionsRun = history.length;
     const streak = stats.streak || { current: 0, best: 0 };
     if (totalAttempts === 0) return `<h2 class="section-title">Your Progress</h2>
       <div class="progress-empty">
         <div class="progress-empty-icon">📊</div>
         <p class="progress-empty-title">Nothing tracked yet</p>
-        <p class="progress-empty-sub">Complete a practice round to start seeing your accuracy, streaks, and history here.</p>
+        <p class="progress-empty-sub">Complete a practice round to start seeing your accuracy and streaks here.</p>
         <div class="progress-empty-steps">
           <div class="progress-empty-step"><span class="progress-empty-step-num">1</span>Go to Practice and choose a topic</div>
           <div class="progress-empty-step"><span class="progress-empty-step-num">2</span>Answer at least 10 questions</div>
@@ -2696,19 +2675,6 @@
         <span class="bl">${t.icon} ${escapeHtml(t.short)}</span>
         <div class="breakdown-bar-bg" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${cls}" style="width:${pct}%"></div></div>
         <span class="breakdown-pct">${ts.attempts ? pct + '%' : '—'}</span>
-      </div>`;
-    }).join('');
-    const historyRows = history.map(h => {
-      const cls = scoreClass(h.pct);
-      const date = new Date(h.timestamp);
-      const when = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const modeLabel = h.mode === 'mock' ? '⏱ Mock' : '📝 Practice';
-      const topicLabel = h.topic === 'all' ? 'Mixed' : (window.TOPICS.find(t => t.id === h.topic) || {}).short || '';
-      const timedOutBadge = h.timedOut ? ' <span style="color:var(--wrong-text);font-size:.7rem">(timed out)</span>' : '';
-      return `<div class="history-row">
-        <div><div class="ht-mode">${modeLabel} <span style="color:var(--subtext);font-weight:400">· ${escapeHtml(topicLabel)}</span></div>
-        <div class="ht-meta">${escapeHtml(when)}${timedOutBadge}</div></div>
-        <div class="ht-score ${cls}">${h.score}/${h.total} · ${h.pct}%</div>
       </div>`;
     }).join('');
     // Skill map
@@ -2759,7 +2725,6 @@
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-num" data-count="${totalAttempts}">${totalAttempts}</div><div class="stat-label">Questions answered</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${accuracy}" data-suffix="%">${accuracy}%</div><div class="stat-label">Lifetime accuracy</div></div>
-        <div class="stat-card"><div class="stat-num" data-count="${sessionsRun}">${sessionsRun}</div><div class="stat-label">Sessions completed</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${Object.keys(stats.questions).length}">${Object.keys(stats.questions).length}</div><div class="stat-label">Unique questions seen</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${streak.current}">${streak.current}</div><div class="stat-label">🔥 Current streak</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${streak.best}">${streak.best}</div><div class="stat-label">🏆 Best streak</div></div>
@@ -2773,26 +2738,6 @@
         <div class="skill-map-title">Skill map <span class="skill-map-legend"><span class="sml sml-green"></span>70%+ <span class="sml sml-amber"></span>50–69% <span class="sml sml-red"></span>&lt;50% <span class="sml sml-gray"></span>no data</span></div>
         <div class="skill-map-grid">${skillMapHtml}</div>
       </div>` : ''}
-      ${history.length >= 2 ? (() => {
-        const recent = history.slice(-10);
-        const delta = recent.length >= 2 ? recent[recent.length - 1].pct - recent[recent.length - 2].pct : null;
-        const trendHtml = delta !== null ? `<span class="spark-trend spark-${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '↗' : '↘'} ${Math.abs(delta)}% vs prev</span>` : '';
-        return `<div class="session-sparkline">
-          <div class="spark-header"><span class="spark-title">Session history</span>${trendHtml}</div>
-          <div class="spark-bars">
-            ${recent.map(h => `<div class="spark-col">
-              <div class="spark-bar-bg"><div class="spark-bar spark-${scoreClass(h.pct)}" style="height:${h.pct}%"></div></div>
-              <div class="spark-pct spark-${scoreClass(h.pct)}">${h.pct}%</div>
-              <div class="spark-icon">${h.mode === 'mock' ? '⏱' : '📝'}</div>
-            </div>`).join('')}
-          </div>
-        </div>`;
-      })() : ''}
-      <h2 class="section-title" style="margin-top:0">Recent attempts</h2>
-      <div class="history-list">${historyRows || '<div class="empty-state">No attempts yet.</div>'}</div>
-      <div class="progress-actions">
-        <button class="btn-secondary action-btn" id="exportCsvBtn" type="button">📥 Export progress (CSV)</button>
-      </div>
       <div class="reset-courses-section">
         <h3 class="reset-courses-heading">Reset progress by course</h3>
         <div class="reset-courses-btns">
@@ -2806,40 +2751,6 @@
           }).join('')}
         </div>
       </div>`;
-  }
-
-  function exportCsv() {
-    const stats = Storage.data.stats;
-    const lines = [];
-    lines.push('"Section","Field","Value"');
-    lines.push(`"Summary","Total attempts","${Object.values(stats.questions).reduce((s,q)=>s+q.attempts,0)}"`);
-    lines.push(`"Summary","Total correct","${Object.values(stats.questions).reduce((s,q)=>s+q.correct,0)}"`);
-    lines.push(`"Summary","Current streak","${stats.streak ? stats.streak.current : 0}"`);
-    lines.push(`"Summary","Best streak","${stats.streak ? stats.streak.best : 0}"`);
-    lines.push('');
-    lines.push('"Topic","Attempts","Correct","Accuracy %"');
-    window.TOPICS.forEach(t => {
-      const ts = stats.topics[t.id] || { attempts: 0, correct: 0 };
-      const acc = ts.attempts ? Math.round((ts.correct / ts.attempts) * 100) : 0;
-      lines.push(`"${t.short}","${ts.attempts}","${ts.correct}","${acc}"`);
-    });
-    lines.push('');
-    lines.push('"Attempt date","Mode","Topic","Score","Total","Percent"');
-    Storage.data.history.forEach(h => {
-      const date = new Date(h.timestamp).toISOString();
-      const topicLabel = h.topic === 'all' ? 'Mixed' : (window.TOPICS.find(t => t.id === h.topic) || { short: '' }).short;
-      lines.push(`"${date}","${h.mode}","${topicLabel}","${h.score}","${h.total}","${h.pct}"`);
-    });
-    try {
-      const csv = lines.join('\r\n');
-      const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `aat-progress-${new Date().toISOString().slice(0,10)}.csv`;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1500);
-      showToast('Progress exported as CSV.', 'success');
-    } catch (e) { showToast('Export failed — try again.', 'error'); }
   }
 
   function animateCounters() {
@@ -4122,7 +4033,6 @@
         });
       });
     });
-    bind('exportCsvBtn', 'click', exportCsv);
     bind('flagBtn', 'click', toggleFlagCurrent);
     bind('confidentBtn', 'click', toggleConfidentCurrent);
     document.querySelectorAll('[data-flag-id]').forEach(el => el.addEventListener('click', () => {
