@@ -2559,6 +2559,7 @@
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
           const lvAvailable = lvPool.filter(q => !Storage.isConfident(q.id) && (!q.lesson || isLessonDone(q.lesson))).length;
+          const lvLocked = lvPool.filter(q => q.lesson && !isLessonDone(q.lesson) && !Storage.isConfident(q.id)).length;
           const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
           const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
           const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
@@ -2571,7 +2572,7 @@
               <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal} seen</span>
               <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
             </div>
-            <div class="topic-available">${lvAvailable} <span class="topic-count-sep">available to practise</span>${lvHidden > 0 ? ` · <span class="topic-count-sep">${lvHidden} hidden</span>` : ''}</div>
+            <div class="topic-available">${lvAvailable} <span class="topic-count-sep">available to practise</span>${lvLocked > 0 ? ` · <span class="topic-count-sep">${lvLocked} locked</span>` : ''}${lvHidden > 0 ? ` · <span class="topic-count-sep">${lvHidden} hidden</span>` : ''}</div>
           </button>`;
         }).join('')}
       </div>` : '';
