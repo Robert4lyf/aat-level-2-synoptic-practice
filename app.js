@@ -62,6 +62,8 @@
     if (n >= 253 && n <= 262) return 'A1'; // transport and directions
     if (n >= 271 && n <= 290) return 'A1'; // plurals, negation, adjectives, aller/faire
     if (n >= 312 && n <= 331) return 'A1'; // -ER verb conjugation, nationalities/countries, weather
+    if (n >= 378 && n <= 422) return 'A1'; // thematic vocab: numbers, family, food
+    if (n >= 447 && n <= 458) return 'A1'; // thematic vocab: weather
     // B1 — Intermédiaire
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
