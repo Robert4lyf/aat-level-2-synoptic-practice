@@ -65,7 +65,9 @@
     if (n >= 378 && n <= 422) return 'A1'; // thematic vocab: numbers, family, food
     if (n >= 447 && n <= 458) return 'A1'; // thematic vocab: weather
     if (n >= 471 && n <= 505) return 'A1'; // conjugation drills: être/avoir/aller + regular -ER/-IR/-RE
+    if (n >= 527 && n <= 543) return 'A1'; // dialogue/scenario: basic real-world conversations
     // B1 — Intermédiaire
+    if (n >= 561 && n <= 575) return 'B1'; // dialogue/scenario: formal and complex situations
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
     if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
