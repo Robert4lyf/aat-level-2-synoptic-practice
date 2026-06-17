@@ -1020,7 +1020,15 @@ window.FR_QUESTIONS = [
   {"id":"fr-368","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"« Je me réveille à six heures » — what does this mean?","opts":["Someone wakes me up at six","I wake (myself) up at six","I am sleeping until six","I wake you up at six"],"ans":1,"exp":"se réveiller = to wake up (oneself). me = myself (reflexive). Je me réveille = I wake up. It is part of a daily routine verb: se réveiller, se lever, se laver, s'habiller, se coucher."},
   {"id":"fr-369","topic":"fr-conj","lesson":"fr-l23","type":"gapfill","q":"She gets dressed before breakfast. (s'habiller)","template":"Elle {0} avant le petit-déjeuner.","gaps":[{"options":["s'habille","se habille","m'habille","t'habille"],"answer":0}],"exp":"s'habiller → elle s'habille. Note the elision: se → s' before a vowel (h is mute here). The reflexive pronoun (se) contracts to s' when followed by a vowel or mute h."},
   {"id":"fr-370","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"How do you say « I don't go to bed late »? (se coucher)","opts":["Je me ne couche pas tard","Je ne se couche pas tard","Je ne me couche pas tard","Je me couche ne pas tard"],"ans":2,"exp":"Negation with reflexive verbs: ne goes before the reflexive pronoun, pas goes after the verb: je NE me couche PAS tard. The reflexive pronoun (me) stays between ne and the verb."},
-  {"id":"fr-371","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"« Elle s'est levée tôt » — why does levée have a final 'e'?","opts":["levée is a feminine noun","Reflexive verbs form their PC with être, so the past participle agrees with the subject (elle = feminine)","être always causes agreement with all verbs","s' requires a feminine form"],"ans":1,"exp":"Reflexive verbs always use être in the passé composé: elle s'est levée. Because the auxiliary is être, the past participle agrees with the subject in gender and number. Elle (f. sg.) → levée (+e). Il s'est levé (no extra e for masculine)."}
+  {"id":"fr-371","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"« Elle s'est levée tôt » — why does levée have a final 'e'?","opts":["levée is a feminine noun","Reflexive verbs form their PC with être, so the past participle agrees with the subject (elle = feminine)","être always causes agreement with all verbs","s' requires a feminine form"],"ans":1,"exp":"Reflexive verbs always use être in the passé composé: elle s'est levée. Because the auxiliary is être, the past participle agrees with the subject in gender and number. Elle (f. sg.) → levée (+e). Il s'est levé (no extra e for masculine)."},
+
+  // fr-l44 — Les pronoms Y et EN (B1, fr-gram)
+  {"id":"fr-372","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"What does the pronoun Y replace?","opts":["le/la/les (direct object)","à + place or à + thing","de + noun","à + person (indirect object)"],"ans":1,"exp":"Y replaces à + place (Tu vas à Paris → Tu y vas) or à + thing when the verb takes à (Je pense à ça → J'y pense). It does NOT replace à + person — use lui/leur for people."},
+  {"id":"fr-373","topic":"fr-gram","lesson":"fr-l44","type":"gapfill","q":"Are you going to the cinema tonight? → Are you going there?","template":"Tu vas au cinéma ce soir ? → Tu {0} vas ?","gaps":[{"options":["y","en","lui","le"],"answer":0}],"exp":"au cinéma = à + place → replaced by Y. Tu y vas ? = Are you going there?"},
+  {"id":"fr-374","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"What does the pronoun EN replace?","opts":["à + place","de + noun (especially with quantities or verbs taking de)","le/la (definite direct object)","à + person"],"ans":1,"exp":"EN replaces de + noun: Il parle de son voyage → Il en parle. It also replaces du/de la/des + noun: Tu veux des pommes → Tu en veux ?"},
+  {"id":"fr-375","topic":"fr-gram","lesson":"fr-l44","type":"gapfill","q":"She has three cats. → She has three (of them).","template":"Elle a trois chats. → Elle {0} a trois.","gaps":[{"options":["en","y","les","leur"],"answer":0}],"exp":"des/de + noun with a quantity → EN. The number (trois) stays AFTER the verb: elle en a trois. Never omit the number when it was part of the original sentence."},
+  {"id":"fr-376","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"Where do Y and EN go in a sentence?","opts":["After the conjugated verb","Before the conjugated verb (or before an infinitive)","At the end of the sentence","After a past participle"],"ans":1,"exp":"Y and EN go before the verb: Je y vais → J'y vais. In a 2-verb group (modal + infinitive), they go before the infinitive: Je vais y aller. Exception: affirmative imperative → after the verb: Vas-y !"},
+  {"id":"fr-377","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"« Vas-y ! » — why does Y come after the verb here?","opts":["Y always follows an imperative","With an affirmative imperative, object pronouns go after the verb with a hyphen","Y is an adverb, not a pronoun","Vas is irregular and requires post-verbal pronouns"],"ans":1,"exp":"With affirmative imperatives, pronouns follow the verb: Vas-y ! (Go there!), Prends-en ! (Take some!). In negative imperatives, the pronoun goes before: N'y vas pas. (Don't go there.)"}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -6074,6 +6082,104 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 2,
             "exp": "Time expression → où."
+          }
+        ]
+      },
+      {
+        "id": "fr-l44",
+        "title": "Les pronoms Y et EN",
+        "icon": "📍",
+        "cards": [
+          {
+            "h": "Le pronom Y",
+            "p": [
+              "**Y** replaces **à + place** or **à + thing** (when the verb takes « à »).",
+              "**Tu vas à Paris ?** → **Tu y vas ?** (Are you going there?)",
+              "**Il pense à son travail.** → **Il y pense.** (He thinks about it.)"
+            ],
+            "example": {
+              "title": "Y in action",
+              "rows": [
+                ["Elle va à l'école. → Elle y va.", "She goes to school. → She goes there."],
+                ["Nous habitons à Lyon. → Nous y habitons.", "We live there."],
+                ["Tu crois à la magie ? → Tu y crois ?", "Do you believe in it?"]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "Y goes **before** the verb (or before the infinitive in a 2-verb construction): **Je vais y aller**."
+            }
+          },
+          {
+            "h": "Le pronom EN",
+            "p": [
+              "**EN** replaces **de + noun**, especially with quantities, numbers, or verbs taking « de ».",
+              "**Tu veux du café ?** → **Tu en veux ?** (Do you want some?)",
+              "**Il parle de son voyage.** → **Il en parle.** (He talks about it.)"
+            ],
+            "example": {
+              "title": "EN in action",
+              "rows": [
+                ["J'ai trois frères. → J'en ai trois.", "I have three (of them)."],
+                ["Elle mange des pommes. → Elle en mange.", "She eats some (of them)."],
+                ["Il revient de Paris. → Il en revient.", "He's coming back from there."]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Keep numbers/quantities AFTER the verb when using EN: **J'en ai trois** (NOT *j'en trois ai*)."
+            }
+          },
+          {
+            "h": "Y et EN — position et résumé",
+            "p": [
+              "Both **y** and **en** go **before the conjugated verb** (or the infinitive in a two-verb group).",
+              "With imperatives (affirmative): pronoun goes **after** the verb: **Vas-y !** (Go there!), **Prends-en !** (Take some!)"
+            ],
+            "split": {
+              "left": {
+                "title": "Y — replaces",
+                "items": [
+                  "à + place (J'y vais)",
+                  "à + thing (J'y pense)",
+                  "Answers: là-bas, à + noun"
+                ]
+              },
+              "right": {
+                "title": "EN — replaces",
+                "items": [
+                  "de + noun (J'en parle)",
+                  "du/de la/des + noun (J'en veux)",
+                  "Keeps numbers: j'en ai deux"
+                ]
+              }
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "Replace: « Tu vas au cinéma ? » → « Tu ___ vas ? »",
+            "opts": ["en","y","le","lui"],
+            "ans": 1,
+            "exp": "au cinéma = à + place → y."
+          },
+          {
+            "q": "Replace: « Elle mange des pommes. » → « Elle ___ mange. »",
+            "opts": ["y","les","en","lui"],
+            "ans": 2,
+            "exp": "des pommes (de + noun, indefinite quantity) → en."
+          },
+          {
+            "q": "« J'en ai trois » — what does EN replace?",
+            "opts": ["à + place","de + noun (with quantity retained)","le/la (direct object)","à + person"],
+            "ans": 1,
+            "exp": "EN replaces de + noun. The number (trois) stays after the verb: j'en ai trois."
+          },
+          {
+            "q": "Where does Y go in the sentence?",
+            "opts": ["After the verb","Before the conjugated verb","At the end of the sentence","After the subject"],
+            "ans": 1,
+            "exp": "Y (and EN) go before the conjugated verb: Tu y vas. Je vais y aller (before infinitive in 2-verb group)."
           }
         ]
       },

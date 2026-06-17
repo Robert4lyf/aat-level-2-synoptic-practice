@@ -66,7 +66,7 @@
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
     if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
-    if (n >= 361 && n <= 365) return 'B1'; // relative pronouns dont/où
+    if (n >= 361 && n <= 377) return 'B1'; // relative pronouns dont/où; Y/EN pronouns
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
