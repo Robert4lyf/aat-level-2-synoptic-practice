@@ -4035,7 +4035,8 @@
         </div>
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
-          <h2 class="lesson-card-h">${escapeHtml(card.h)}</h2>
+          <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
+          ${card.body ? `<div class="lesson-card-body">${card.body}</div>` : ''}
           ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
