@@ -1822,7 +1822,10 @@
     const perPair = q.pairs.map((p, leftIdx) => {
       const chosenShuffledIdx = State.ddMap[leftIdx];
       const chosenRight = q.shuffledRights[chosenShuffledIdx];
-      const ok = chosenRight === leftIdx;
+      // Compare right-side values rather than original indices so that questions
+      // with duplicate right values (e.g. two pairs both mapping to "avoir") accept
+      // either matching slot as correct.
+      const ok = q.pairs[chosenRight].right === p.right;
       if (ok) correct++;
       return { leftIdx, chosenRight, ok };
     });
