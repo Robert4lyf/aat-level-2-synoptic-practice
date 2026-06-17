@@ -102,6 +102,7 @@
   }
 
   const PASS_MARK = 70;
+  const UNIT_QUIZ_PASS_MARK = 80;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
      Mirrors the structure of the AAT Level 2 synoptic: each unit appears as a
@@ -1043,22 +1044,15 @@
     }
   }
 
-  /* ── UNIT QUIZ (structured, weighted toward harder questions) ── */
+  /* ── UNIT QUIZ ── */
   function buildWeightedUnitQuiz(unitId) {
     // French units use CEFR levels (fr-a1/fr-a2/fr-b1); non-French use topic field matching unitId.
     const frCefrMap = { 'fr-a1': 'A1', 'fr-a2': 'A2', 'fr-b1': 'B1' };
     const pool = (_activeSubjectId === 'french' && frCefrMap[unitId])
       ? (window.ALL_QUESTIONS || []).filter(q => frQuestionLevel(q.id) === frCefrMap[unitId])
       : (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
-    const hard = shuffle(pool.filter(q => q.difficulty === 'hard'));
-    const med  = shuffle(pool.filter(q => q.difficulty === 'medium'));
-    const easy = shuffle(pool.filter(q => q.difficulty === 'easy'));
-    const TARGET = 20;
-    const nHard = Math.min(7, hard.length);
-    const nMed  = Math.min(8, med.length);
-    const nEasy = Math.min(TARGET - nHard - nMed, easy.length);
-    return shuffle([...hard.slice(0, nHard), ...med.slice(0, nMed), ...easy.slice(0, nEasy)])
-      .slice(0, TARGET).map(presentQuestion);
+    // Draw from the full pool — no difficulty bucketing or confidence filtering.
+    return shuffle(pool).slice(0, 40).map(presentQuestion);
   }
   function startUnitQuiz(unitId) {
     if (!Storage.data.learn.unitTests) Storage.data.learn.unitTests = {};
@@ -1071,7 +1065,7 @@
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
       ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
-      hintLevel: 0, hintElim: null, combo: 0,
+      hintLevel: 0, hintElim: null, combo: 0, unitQuizPassMark: UNIT_QUIZ_PASS_MARK,
     });
     Calc.reset(); render();
   }
@@ -2007,7 +2001,7 @@
     if (State.unitQuizId) {
       const unitId = State.unitQuizId;
       State.unitQuizId = null;
-      const passed = pct >= PASS_MARK;
+      const passed = pct >= UNIT_QUIZ_PASS_MARK;
       if (!Storage.data.learn.unitTests) Storage.data.learn.unitTests = {};
       const existing = Storage.data.learn.unitTests[unitId];
       if (!existing || pct > (existing.pct || 0)) {
@@ -2017,7 +2011,8 @@
     }
     Storage.save();
     checkBadges();
-    if (pct >= PASS_MARK) setTimeout(confetti, 300);
+    const effectivePassMark = State.unitQuizPassMark || PASS_MARK;
+    if (pct >= effectivePassMark) setTimeout(confetti, 300);
     render();
   }
   function finishMock(timedOut) {
@@ -3352,7 +3347,8 @@
     const total = results.length;
     const pct = total ? Math.round(score / total * 100) : 0;
     const cls = scoreClass(pct);
-    const passed = pct >= PASS_MARK;
+    const effectivePassMark = State.unitQuizPassMark || PASS_MARK;
+    const passed = pct >= effectivePassMark;
     const msg = passed ? '🎉 Excellent work' : pct >= 50 ? '📚 Good effort — keep going' : '💪 More practice needed';
     const sub = passed ? "You're on track for the synoptic." : pct >= 50 ? 'Review the explanations to strengthen weak areas.' : 'Work through each explanation carefully and try again.';
     const topicResults = {};
@@ -3405,7 +3401,7 @@
         <div class="score-msg">${msg}</div>
         <div class="score-sub">${sub}</div>
         ${meta}
-        <span class="pass-badge ${passed ? 'pass' : 'fail'}">${passed ? `✓ PASS — ${PASS_MARK}% threshold met` : `✗ FAIL — below ${PASS_MARK}% threshold`}</span>
+        <span class="pass-badge ${passed ? 'pass' : 'fail'}">${passed ? `✓ PASS — ${effectivePassMark}% threshold met` : `✗ FAIL — below ${effectivePassMark}% threshold`}</span>
         <div class="breakdown" style="margin-bottom:20px">
           <div class="breakdown-title">Score breakdown by topic</div>${breakdownHtml}
         </div>
