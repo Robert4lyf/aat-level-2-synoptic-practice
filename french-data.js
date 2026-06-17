@@ -3456,7 +3456,7 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ]
       },
       {
-
+        "id": "fr-l17",
         "title": "Examen A1 (type DELF)",
         "icon": "📝",
         "cards": [
