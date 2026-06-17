@@ -1045,7 +1045,11 @@
 
   /* ── UNIT QUIZ (structured, weighted toward harder questions) ── */
   function buildWeightedUnitQuiz(unitId) {
-    const pool = (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
+    // French units use CEFR levels (fr-a1/fr-a2/fr-b1); non-French use topic field matching unitId.
+    const frCefrMap = { 'fr-a1': 'A1', 'fr-a2': 'A2', 'fr-b1': 'B1' };
+    const pool = (_activeSubjectId === 'french' && frCefrMap[unitId])
+      ? (window.ALL_QUESTIONS || []).filter(q => frQuestionLevel(q.id) === frCefrMap[unitId])
+      : (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
     const hard = shuffle(pool.filter(q => q.difficulty === 'hard'));
     const med  = shuffle(pool.filter(q => q.difficulty === 'medium'));
     const easy = shuffle(pool.filter(q => q.difficulty === 'easy'));
@@ -1619,6 +1623,13 @@
     const existingRec = Storage.lessonRec(found.lesson.id);
     State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0 };
     render();
+    // Block the Continue button briefly to prevent ghost-clicks on mobile
+    // where the tap that opened the lesson can fire again on the newly rendered button.
+    const player = document.querySelector('.lesson-player');
+    if (player) {
+      player.classList.add('lesson-just-started');
+      setTimeout(() => player.classList.remove('lesson-just-started'), 400);
+    }
   }
   function lessonContinue() {
     const L = State.lesson; if (!L) return;
@@ -1712,7 +1723,14 @@
   }
 
   function nextLessonToDo() {
+    const frCefrMap = { 'fr-a1': 'A1', 'fr-a2': 'A2', 'fr-b1': 'B1' };
     for (const unit of (window.LEARN_PATH || [])) {
+      const unitId = unit.unit || unit.id;
+      if (_activeSubjectId === 'french') {
+        if (!frLevelUnlocked(frCefrMap[unitId] || 'A1')) continue;
+      } else {
+        if (!isUnitUnlocked(unitId)) continue;
+      }
       for (const L of unit.lessons) {
         if (!isLessonDone(L.id)) return { unit, lesson: L };
       }
