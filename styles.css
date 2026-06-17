@@ -1896,6 +1896,7 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   margin-top: 6px;
 }
 .topic-count-sep { color: var(--subtext); font-weight: 400; }
+.topic-available { font-size: .7rem; color: var(--subtext); margin-top: 4px; }
 .topic-seen-bar {
   flex: 1;
   height: 4px;

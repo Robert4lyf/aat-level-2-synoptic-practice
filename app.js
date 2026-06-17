@@ -2556,6 +2556,7 @@
           const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
+          const lvAvailable = lvPool.filter(q => !Storage.isConfident(q.id)).length;
           const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
           const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
           const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
@@ -2565,9 +2566,10 @@
             <h3>${escapeHtml(lv.sublabel)}</h3>
             <p>${escapeHtml(lv.desc)}</p>
             <div class="topic-card-footer">
-              <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal}</span>
+              <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal} seen</span>
               <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
             </div>
+            <div class="topic-available">${lvAvailable} <span class="topic-count-sep">available to practise</span></div>
           </button>`;
         }).join('')}
       </div>` : '';
@@ -2596,15 +2598,17 @@
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
           const seenN = seenByTopic[t.id] || 0;
           const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
+          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
           return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${seenN} of ${totalN} seen">
             ${badge}
             <div class="icon" aria-hidden="true">${t.icon}</div>
             <h3>${escapeHtml(t.name)}</h3>
             <p>${escapeHtml(t.desc)}</p>
             <div class="topic-card-footer">
-              <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN}</span>
+              <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN} seen</span>
               <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
             </div>
+            <div class="topic-available">${availableN} <span class="topic-count-sep">available to practise</span></div>
           </button>`;
         }).join('')}
       </div>
