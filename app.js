@@ -60,10 +60,13 @@
     if (n === 168 || n === 179 || n === 181) return 'A1'; // être/avoir conjugation drills
     if (n >= 183 && n <= 200) return 'A1'; // pronunciation/accents + basic body parts
     if (n >= 253 && n <= 262) return 'A1'; // transport and directions
+    if (n >= 271 && n <= 290) return 'A1'; // plurals, negation, adjectives, aller/faire
+    if (n >= 312 && n <= 331) return 'A1'; // -ER verb conjugation, nationalities/countries, weather
     // B1 — Intermédiaire
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
     if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
+    if (n >= 361 && n <= 377) return 'B1'; // relative pronouns dont/où; Y/EN pronouns
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
@@ -79,6 +82,22 @@
     if (!prereqUnit) return false;
     if (!prereqUnit.lessons.every(L => isLessonDone(L.id))) return false;
     const unitTest = (Storage.data.learn.unitTests || {})[prereqUnitId];
+    return !!(unitTest && unitTest.passed);
+  }
+
+  /* Unit-level unlock gate for non-French subjects.
+     First unit is always open; each subsequent unit requires the previous one to
+     have every lesson done AND its unit quiz passed — mirroring frLevelUnlocked(). */
+  function isUnitUnlocked(unitId) {
+    if (_activeSubjectId === 'french') return true; // French uses frLevelUnlocked instead
+    const lp = window.LEARN_PATH || [];
+    const key = u => u.unit || u.id;
+    const idx = lp.findIndex(u => key(u) === unitId);
+    if (idx <= 0) return true; // first unit, single-unit subjects, or unknown topic
+    const prereq = lp[idx - 1];
+    const prereqId = key(prereq);
+    if (!prereq.lessons.every(L => isLessonDone(L.id))) return false;
+    const unitTest = (Storage.data.learn.unitTests || {})[prereqId];
     return !!(unitTest && unitTest.passed);
   }
 
@@ -1024,32 +1043,6 @@
     }
   }
 
-  /* ── DAILY CHALLENGE ── */
-  function getDailyQuestion() {
-    if (!window.ALL_QUESTIONS || !window.ALL_QUESTIONS.length) return null;
-    const key = todayKey();
-    let hash = 0;
-    for (let i = 0; i < key.length; i++) hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
-    return window.ALL_QUESTIONS[Math.abs(hash) % window.ALL_QUESTIONS.length];
-  }
-  function startDailyChallenge() {
-    const today = todayKey();
-    const existing = (Storage.data.daily[today] || {}).challenge;
-    if (existing && existing.done) { showToast('Challenge already completed today! Come back tomorrow.', 'info'); return; }
-    const q = getDailyQuestion();
-    if (!q) { showToast('No daily question available.', 'warn'); return; }
-    State.isDailyChallenge = true;
-    const picked = [presentQuestion(q)];
-    Object.assign(State, {
-      screen: 'quiz', mode: 'practice', selectedTopic: q.topic, questions: picked,
-      current: 0, answered: null, answers: [], score: 0, results: [],
-      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
-      hintLevel: 0, hintElim: null,
-    });
-    Calc.reset(); render();
-  }
-
   /* ── UNIT QUIZ (structured, weighted toward harder questions) ── */
   function buildWeightedUnitQuiz(unitId) {
     const pool = (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
@@ -1325,7 +1318,6 @@
     hintLevel: 0, hintElim: null,           // progressive hints (practice mode)
     lesson: null,                           // lesson player state
     flash: null,                            // flashcard session state
-    plannerEdit: false,                     // study-planner edit form open
     revisionUnit: null,                     // unit revision notes screen
     combo: 0,                               // consecutive correct answers in practice
   };
@@ -1406,20 +1398,30 @@
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
-    // For French: only surface questions from CEFR levels the learner has unlocked.
-    // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass the gate so
-    // previously-unlocked questions already in those lists remain accessible.
+    // Gate questions to only those from unlocked units / CEFR levels.
+    // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass these gates.
     const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
-    if (_activeSubjectId === 'french' && !GATE_EXEMPT.has(topicId)) {
-      if (topicId && topicId.indexOf('level:') === 0) {
-        const requestedLevel = topicId.slice(6);
-        if (!frLevelUnlocked(requestedLevel)) {
-          const prereq = requestedLevel === 'B1' ? 'A2' : 'A1';
-          showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + requestedLevel + '.', 'warn');
-          return;
+    if (!GATE_EXEMPT.has(topicId)) {
+      if (_activeSubjectId === 'french') {
+        if (topicId && topicId.indexOf('level:') === 0) {
+          const requestedLevel = topicId.slice(6);
+          if (!frLevelUnlocked(requestedLevel)) {
+            const prereq = requestedLevel === 'B1' ? 'A2' : 'A1';
+            showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + requestedLevel + '.', 'warn');
+            return;
+          }
+        } else {
+          pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
         }
       } else {
-        pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
+        // For non-French subjects: gate topic-specific practice if the unit is locked.
+        const isSpecificTopic = topicId && topicId !== 'all' && topicId.indexOf('skill:') !== 0;
+        if (isSpecificTopic && !isUnitUnlocked(topicId)) {
+          showToast('Complete the previous unit and pass its quiz to unlock this topic.', 'warn');
+          return;
+        }
+        // Remove questions from locked units regardless of pool type.
+        pool = pool.filter(q => isUnitUnlocked(q.topic));
       }
     }
 
@@ -1459,7 +1461,7 @@
     const overallAcc = attempts ? corrects / attempts : 0;
     const weighted = window.ALL_QUESTIONS
       .filter(q => !Storage.isConfident(q.id))
-      .filter(q => _activeSubjectId !== 'french' || frLevelUnlocked(frQuestionLevel(q.id)))
+      .filter(q => frLevelUnlocked(frQuestionLevel(q.id)) && isUnitUnlocked(q.topic))
       .map(q => {
       let w = 1;
       const s = acc[q.skill];
@@ -1506,7 +1508,7 @@
     const weakTopics = getWeakTopics();
     if (!weakTopics.length) { showToast('Answer 5+ questions in each topic to unlock Focus Mode.', 'warn'); return; }
     const topicIds = weakTopics.slice(0, 3).map(t => t.id);
-    const allQ = (window.ALL_QUESTIONS || []).filter(q => topicIds.includes(q.topic));
+    const allQ = (window.ALL_QUESTIONS || []).filter(q => topicIds.includes(q.topic) && isUnitUnlocked(q.topic) && frLevelUnlocked(frQuestionLevel(q.id)));
     const mistakeIds = new Set(Storage.activeMistakeIds());
     const wrongIds = new Set(
       Object.entries(Storage.data.stats.questions)
@@ -1709,20 +1711,6 @@
     render();
   }
 
-  /* ── STUDY PLANNER ── */
-  function savePlanner() {
-    const dateEl = document.getElementById('plannerDate');
-    const goalEl = document.getElementById('plannerGoal');
-    if (!dateEl) return;
-    const v = dateEl.value;
-    if (!v) { showToast('Pick your exam date first.', 'warn'); return; }
-    Storage.data.planner.examDate = v;
-    if (goalEl) Storage.data.planner.dailyGoalXp = +goalEl.value || 30;
-    Storage.save();
-    State.plannerEdit = false;
-    showToast('Study plan saved. Good luck! 🎯', 'success');
-    render();
-  }
   function nextLessonToDo() {
     for (const unit of (window.LEARN_PATH || [])) {
       for (const L of unit.lessons) {
@@ -2543,38 +2531,6 @@
       </button>`;
     }).join('');
 
-    const planner = Storage.data.planner || {};
-    const examDateVal = planner.examDate || null;
-    const todayMid = new Date(); todayMid.setHours(0,0,0,0);
-    const todayStr = todayMid.toISOString().slice(0, 10);
-    let countdownHtml = '';
-    if (isAAT && examDateVal) {
-      const examD = new Date(examDateVal); examD.setHours(0,0,0,0);
-      const daysLeft = Math.max(0, Math.round((examD - todayMid) / 86400000));
-      const dailyTarget = daysLeft > 0 ? Math.max(10, Math.ceil(Math.max(0, 300 - (Storage.data.history || []).reduce((s,h) => s + h.total, 0)) / daysLeft)) : null;
-      const urgCls = daysLeft <= 7 ? ' countdown-urgent' : daysLeft <= 30 ? ' countdown-soon' : '';
-      countdownHtml = `<div class="exam-countdown${urgCls}">
-        <span class="countdown-icon">${daysLeft === 0 ? '🎓' : '📅'}</span>
-        <div class="countdown-text">
-          <strong>${daysLeft === 0 ? 'Exam day — good luck!' : daysLeft + ' days to your exam'}</strong>
-          ${dailyTarget && daysLeft > 0 ? `<span class="countdown-target"> · aim for ${dailyTarget}+ questions today</span>` : ''}
-        </div>
-        <label class="countdown-edit-wrap" title="Change exam date">
-          <span class="countdown-edit">Edit date</span>
-          <input type="date" id="examDateInput" class="exam-date-hidden" value="${examDateVal}" min="${todayStr}">
-        </label>
-      </div>`;
-    } else if (isAAT) {
-      countdownHtml = `<div class="exam-countdown exam-countdown-empty">
-        <span class="countdown-icon">📅</span>
-        <span class="countdown-text">Set your exam date to get a personalised daily question target</span>
-        <label class="countdown-set-wrap" title="Set exam date">
-          <span class="countdown-set">Set date →</span>
-          <input type="date" id="examDateInput" class="exam-date-hidden" min="${todayStr}">
-        </label>
-      </div>`;
-    }
-
     const isFrench = _activeSubjectId === 'french';
     const CEFR_LEVELS = [
       { id: 'A1', sublabel: 'Débutant',       icon: '🌱', color: '#059669', desc: 'Greetings, pronunciation, basic vocab & présent tense' },
@@ -2602,6 +2558,7 @@
           const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
+          const lvAvailable = lvPool.filter(q => !Storage.isConfident(q.id)).length;
           const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
           const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
           const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
@@ -2611,14 +2568,15 @@
             <h3>${escapeHtml(lv.sublabel)}</h3>
             <p>${escapeHtml(lv.desc)}</p>
             <div class="topic-card-footer">
-              <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal}</span>
+              <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal} seen</span>
               <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
             </div>
+            <div class="topic-available">${lvAvailable} <span class="topic-count-sep">available to practise</span></div>
           </button>`;
         }).join('')}
       </div>` : '';
 
-    return `${sessionBanner}${progressBlock}${countdownHtml}
+    return `${sessionBanner}${progressBlock}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
@@ -2627,20 +2585,32 @@
       <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
         ${window.TOPICS.map(t => {
+          const totalN = counts[t.id];
+          if (!isUnitUnlocked(t.id)) {
+            return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
+              <div class="icon" aria-hidden="true">🔒</div>
+              <h3>${escapeHtml(t.name)}</h3>
+              <p class="lock-reason">Complete the previous unit and pass its quiz to unlock</p>
+              <div class="topic-card-footer">
+                <span class="count"><span class="topic-count-sep">${totalN} questions locked</span></span>
+              </div>
+            </div>`;
+          }
           const m = topicMastery(t.id);
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
           const seenN = seenByTopic[t.id] || 0;
-          const totalN = counts[t.id];
           const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
+          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
           return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${seenN} of ${totalN} seen">
             ${badge}
             <div class="icon" aria-hidden="true">${t.icon}</div>
             <h3>${escapeHtml(t.name)}</h3>
             <p>${escapeHtml(t.desc)}</p>
             <div class="topic-card-footer">
-              <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN}</span>
+              <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN} seen</span>
               <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
             </div>
+            <div class="topic-available">${availableN} <span class="topic-count-sep">available to practise</span></div>
           </button>`;
         }).join('')}
       </div>
@@ -3552,22 +3522,6 @@
     const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (Storage.data.stats.streak || {}).current || 0;
     const earnedBadges = BADGES.filter(b => Storage.data.badges[b.id]);
     const nextLesson = nextLessonToDo();
-    const planner = Storage.data.planner;
-    const daysLeft = planner.examDate ? Math.max(0, Math.ceil((new Date(planner.examDate) - new Date()) / 86400000)) : null;
-
-    const plannerBlock = State.plannerEdit
-      ? `<div class="planner-form">
-          <label>Exam date <input type="date" id="plannerDate" value="${escapeHtml(planner.examDate || '')}" min="${new Date().toISOString().slice(0,10)}"></label>
-          <label>Daily XP goal <select id="plannerGoal">${[10,20,30,50,100].map(v=>`<option value="${v}" ${planner.dailyGoalXp===v?'selected':''}>${v} XP</option>`).join('')}</select></label>
-          <button class="btn-primary" id="savePlannerBtn" type="button">Save plan</button>
-          <button class="btn-secondary" id="cancelPlannerBtn" type="button">Cancel</button>
-        </div>`
-      : `<div class="planner-bar">
-          ${planner.examDate ? `<span>🎯 Exam: <strong>${new Date(planner.examDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</strong> · <strong>${daysLeft}</strong> day${daysLeft===1?'':'s'} left</span>` : '<span>No exam date set</span>'}
-          <span>🏅 Daily goal: <strong>${planner.dailyGoalXp} XP</strong></span>
-          <button class="planner-edit-btn" id="editPlannerBtn" type="button">✏️ Edit</button>
-        </div>`;
-
     const lv = Math.floor(xp / 100) + 1;
     const lvXp = xp % 100;
     const bestCombo = Storage.data.learn.bestCombo || 0;
@@ -3685,32 +3639,10 @@
       </button>
     </div>` : '<div class="journey-complete">🎉 All lessons complete! Use smart practice to keep sharp.</div>';
 
-    // Daily challenge card
-    const todayD = todayKey();
-    const dailyQ = getDailyQuestion();
-    const dailyRec = (Storage.data.daily[todayD] || {}).challenge || {};
-    const dailyDateLabel = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
-    const dailyBlock = dailyQ ? `<div class="daily-challenge-card${dailyRec.done ? ' daily-done' : ''}">
-      <div class="daily-ch-left">
-        <span class="daily-icon">📅</span>
-        <div>
-          <div class="daily-title">Daily Challenge</div>
-          <div class="daily-sub">${escapeHtml(dailyDateLabel)}</div>
-        </div>
-      </div>
-      <div class="daily-ch-right">
-        ${dailyRec.done
-          ? `<span class="daily-result${dailyRec.correct ? ' daily-correct' : ' daily-wrong'}">${dailyRec.correct ? '✓ Correct!' : '✗ Answered'}</span>`
-          : `<button class="btn-primary daily-start-btn" id="dailyChallengeBtn" type="button">Start +10 XP</button>`}
-      </div>
-    </div>` : '';
-
     return `<div class="journey-header">
       ${xpBar}
       <div class="journey-meta"><span>🔥 ${streak}-day streak</span>${badgesSnip}</div>
-      ${plannerBlock}
     </div>
-    ${dailyBlock}
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
@@ -4242,17 +4174,10 @@
     bind('smartPracticeBtn', 'click', startSmartPractice);
     bind('flashcardsBtn', 'click', startFlashcards);
     bind('focusModeBtn', 'click', startFocusPractice);
-    bind('examDateInput', 'change', function (e) {
-      Storage.data.planner = Storage.data.planner || {};
-      Storage.data.planner.examDate = e.target.value || null;
-      Storage.save(); render();
-    });
     bind('lessonDrillAllBtn', 'click', function () {
       const btn = document.getElementById('lessonDrillAllBtn');
       if (btn && btn.dataset.skills) startMultiSkillDrill(btn.dataset.skills);
     });
-    // Daily challenge
-    bind('dailyChallengeBtn', 'click', startDailyChallenge);
     // Unit quiz buttons
     document.querySelectorAll('[data-unit-quiz]').forEach(el => el.addEventListener('click', () => startUnitQuiz(el.dataset.unitQuiz)));
     // Unit revision notes buttons
@@ -4285,10 +4210,6 @@
     bind('flashFlipBtn2', 'click', flashFlip);
     bind('flashYesBtn', 'click', () => flashGrade(true));
     bind('flashNoBtn', 'click', () => flashGrade(false));
-    // Study planner
-    bind('editPlannerBtn', 'click', () => { State.plannerEdit = true; render(); });
-    bind('cancelPlannerBtn', 'click', () => { State.plannerEdit = false; render(); });
-    bind('savePlannerBtn', 'click', savePlanner);
     // T-account guided exercises
     document.querySelectorAll('[data-ta-ex]').forEach(el => el.addEventListener('click', () => startTaExercise(el.dataset.taEx)));
     bind('taExitBtn', 'click', exitTaExercise);

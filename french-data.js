@@ -873,7 +873,162 @@ window.FR_QUESTIONS = [
   {"id":"fr-259","topic":"fr-vie","type":"scenario","setup":"You are lost in a French town and ask a passer-by for directions to the station (la gare).","parts":[{"q":"How do you politely ask where the station is?","opts":["Excusez-moi, où est la gare ?","Où est le cinéma ?","C'est loin d'ici ?","Avez-vous un plan ?"],"ans":0,"exp":"Excusez-moi, où est la gare ? = Excuse me, where is the station?"},{"q":"The passer-by says \"Continuez tout droit, puis tournez à gauche.\" What do you do FIRST?","opts":["Turn left","Continue straight on","Turn right","Go back the way you came"],"ans":1,"exp":"tout droit = straight on; puis = then; tournez à gauche = turn left. So: go straight first, THEN turn left."},{"q":"They add \"C'est à cinq minutes à pied.\" How far away is the station?","opts":["5 km away","5 minutes by car","5 minutes on foot","5 bus stops away"],"ans":2,"exp":"à pied = on foot; à cinq minutes à pied = five minutes' walk."}],"exp":"Directions: Excusez-moi, où est...? → tout droit puis tournez... → à pied."},
   {"id":"fr-260","topic":"fr-vie","type":"mcq","q":"False friend: \"le car\" in French is:","opts":["a car (automobile)","a coach / long-distance bus","a taxi","a tram"],"ans":1,"exp":"le car = a coach / long-distance bus. la voiture = a car."},
   {"id":"fr-261","topic":"fr-vie","type":"gapfill","q":"Buy a return ticket at the station:","template":"Je voudrais {0} billet aller-retour pour Lyon.","gaps":[{"options":["un","une","des","le"],"answer":0}],"exp":"un billet (masculine) = a ticket; aller-retour = return; aller simple = single."},
-  {"id":"fr-262","topic":"fr-vie","type":"mcq","q":"\"Le prochain train part à quelle heure ?\" asks:","opts":["the price of the next train","when the next train departs","where the next train goes","how long the journey takes"],"ans":1,"exp":"partir = to depart; à quelle heure = at what time: When does the next train depart?"}
+  {"id":"fr-262","topic":"fr-vie","type":"mcq","q":"\"Le prochain train part à quelle heure ?\" asks:","opts":["the price of the next train","when the next train departs","where the next train goes","how long the journey takes"],"ans":1,"exp":"partir = to depart; à quelle heure = at what time: When does the next train depart?"},
+
+  // ── Chez le médecin — doctor / pharmacy vocab (fr-l41) ───────────────────────
+  {"id":"fr-263","topic":"fr-vie","type":"mcq","q":"\"J'éternue\" means:","opts":["I am coughing","I am sneezing","I feel dizzy","I am vomiting"],"ans":1,"exp":"éternuer = to sneeze; j'éternue = I am sneezing. (Je tousse = I am coughing.)"},
+  {"id":"fr-264","topic":"fr-vie","type":"mcq","q":"\"Je me sens mal\" means:","opts":["I feel great","I am very ill","I don't feel well","I am cold"],"ans":2,"exp":"se sentir = to feel; je me sens mal = I don't feel well / I feel unwell. (Je suis malade = I am ill.)"},
+  {"id":"fr-265","topic":"fr-vie","type":"mcq","q":"\"Une ordonnance\" is:","opts":["a medicine","a prescription","a pharmacy","a medical certificate"],"ans":1,"exp":"une ordonnance = a prescription — the document a doctor writes so you can collect medication at the pharmacy."},
+  {"id":"fr-266","topic":"fr-vie","type":"gapfill","q":"Complete: I need a prescription.","template":"Il me {0} une ordonnance.","gaps":[{"options":["faut","fais","suis","ai"],"answer":0}],"exp":"il me faut = I need (literally 'it is necessary for me'); une ordonnance = a prescription."},
+  {"id":"fr-267","topic":"fr-vie","type":"mcq","q":"At the pharmacy, \"des comprimés\" are:","opts":["syrups","creams","tablets / pills","injections"],"ans":2,"exp":"des comprimés = tablets / pills. (du sirop = syrup; une crème = a cream.)"},
+  {"id":"fr-268","topic":"fr-vie","type":"mcq","q":"\"Le pharmacien / la pharmacienne\" is:","opts":["a doctor","a nurse","a pharmacist","a surgeon"],"ans":2,"exp":"le pharmacien / la pharmacienne = the pharmacist. In France, pharmacists can advise on minor ailments without a doctor's appointment."},
+  {"id":"fr-269","topic":"fr-vie","type":"dragdrop","q":"Match each pharmacy item to its English meaning:","pairs":[{"left":"un médicament","right":"a medicine / medication"},{"left":"des comprimés","right":"tablets / pills"},{"left":"du sirop","right":"syrup"},{"left":"une crème","right":"a cream"}],"exp":"médicament = medicine, comprimés = tablets/pills, sirop = syrup, crème = cream."},
+  {"id":"fr-270","topic":"fr-vie","type":"scenario","setup":"You feel unwell and visit a pharmacy in France.","parts":[{"q":"You want to say you don't feel well. Which phrase is correct?","opts":["Je suis en bonne santé.","Je me sens mal.","J'ai faim.","Je suis fatigué(e)."],"ans":1,"exp":"Je me sens mal = I don't feel well / I feel unwell."},{"q":"The pharmacist asks what is wrong. You have a fever and a cough. Which answer covers BOTH symptoms?","opts":["J'ai mal au dos et aux dents.","J'ai de la fièvre et je tousse.","Je suis allergique au soleil.","J'ai mal à la gorge seulement."],"ans":1,"exp":"J'ai de la fièvre (I have a fever) et je tousse (I am coughing) — both symptoms from the lesson."},{"q":"The pharmacist recommends tablets. What is the French word you expect to hear?","opts":["une crème","du sirop","des comprimés","une ordonnance"],"ans":2,"exp":"des comprimés = tablets/pills. (une ordonnance = a prescription, issued by a doctor not a pharmacist.)"}],"exp":"At the pharmacy: je me sens mal → j'ai de la fièvre et je tousse → des comprimés."},
+
+  // ── Le pluriel des noms (fr-l05) — A1 ────────────────────────────────────────
+  {"id":"fr-271","topic":"fr-gram","type":"mcq","q":"Plural of « un bateau » (boat):","opts":["des bateau","des bateus","des bateaux","des bateauxs"],"ans":2,"exp":"Words ending in -eau take -eaux in the plural: un bateau → des bateaux."},
+  {"id":"fr-272","topic":"fr-gram","type":"mcq","q":"Plural of « un animal »:","opts":["des animals","des animaux","des animales","des animeaux"],"ans":1,"exp":"Words ending in -al take -aux in the plural: un animal → des animaux."},
+  {"id":"fr-273","topic":"fr-gram","type":"mcq","q":"Plural of « un jeu » (game):","opts":["des jeus","des jeues","des jeux","des jeuxs"],"ans":2,"exp":"Words ending in -eu take -eux in the plural: un jeu → des jeux."},
+  {"id":"fr-274","topic":"fr-gram","type":"gapfill","q":"She's wearing two hats (chapeau):","template":"Elle porte deux {0}.","gaps":[{"options":["chapeaux","chapeaus","chapeau","chapeausx"],"answer":0}],"exp":"chapeau follows the -eau → -eaux rule: un chapeau → des chapeaux."},
+  {"id":"fr-275","topic":"fr-gram","type":"mcq","q":"Which word already ends in -x and does NOT change in the plural?","opts":["un chat","un livre","une voix","un bateau"],"ans":2,"exp":"Words already ending in -s, -x or -z stay the same in the plural: une voix → des voix."},
+  {"id":"fr-276","topic":"fr-gram","type":"dragdrop","q":"Match each noun to its correct plural:","pairs":[{"left":"un bateau","right":"des bateaux"},{"left":"un animal","right":"des animaux"},{"left":"un jeu","right":"des jeux"},{"left":"un bijou","right":"des bijoux"}],"exp":"-eau→-eaux (bateau), -al→-aux (animal), -eu→-eux (jeu), -ou→-oux (bijou — one of 7 nouns)."},
+
+  // ── La négation et les questions (fr-l10) — A1 ───────────────────────────────
+  {"id":"fr-277","topic":"fr-gram","type":"mcq","q":"« Je ne comprends rien » means:","opts":["I don't understand anything","I understand a little","I understand everything","I never understand"],"ans":0,"exp":"ne … rien = not … anything / nothing: je ne comprends rien = I don't understand anything."},
+  {"id":"fr-278","topic":"fr-gram","type":"mcq","q":"« Il ne mange jamais de viande » means:","opts":["He hardly ever eats meat","He never eats meat","He no longer eats meat","He doesn't eat meat right now"],"ans":1,"exp":"ne … jamais = never: il ne mange jamais de viande = he never eats meat."},
+  {"id":"fr-279","topic":"fr-gram","type":"gapfill","q":"She doesn't live here any more:","template":"Elle n'habite {0} ici.","gaps":[{"options":["plus","jamais","rien","personne"],"answer":0}],"exp":"ne … plus = no longer / not any more: elle n'habite plus ici."},
+  {"id":"fr-280","topic":"fr-gram","type":"mcq","q":"Which phrase introduces a yes/no question politely?","opts":["Qu'est-ce que…","Où est-ce que…","Est-ce que…","Qu'est-ce qui…"],"ans":2,"exp":"Est-ce que… turns any statement into a yes/no question: Est-ce que tu viens ? = Are you coming?"},
+  {"id":"fr-281","topic":"fr-gram","type":"gapfill","q":"What do you want? (use qu'est-ce que):","template":"{0} tu veux ?","gaps":[{"options":["Qu'est-ce que","Est-ce que","Qu'est-ce qui","Qui est-ce que"],"answer":0}],"exp":"Qu'est-ce que = what (direct object): Qu'est-ce que tu veux ? = What do you want?"},
+
+  // ── Les adjectifs (fr-l12) — A1 ──────────────────────────────────────────────
+  {"id":"fr-282","topic":"fr-gram","type":"mcq","q":"Choose the correct form: « une maison ___ » (grand):","opts":["grand","grands","grande","grandes"],"ans":2,"exp":"Adjectives must agree in gender and number: 'maison' is feminine singular → grande (add -e)."},
+  {"id":"fr-283","topic":"fr-gram","type":"mcq","q":"BAGS adjectives go ___ the noun:","opts":["after","before","either side of","at the start of the sentence"],"ans":1,"exp":"BAGS = Beauty, Age, Goodness, Size. These short common adjectives precede the noun: un beau jardin, une bonne idée."},
+  {"id":"fr-284","topic":"fr-gram","type":"mcq","q":"Which sentence places the adjective correctly?","opts":["un intéressant film","une gentille fille","une bleue robe","un grand moderne appartement"],"ans":1,"exp":"'gentil(le)' is a BAGS adjective (Goodness) and goes BEFORE the noun: une gentille fille. Adjectives like bleu or intéressant go AFTER the noun."},
+  {"id":"fr-285","topic":"fr-gram","type":"gapfill","q":"They (m. plural) are tall:","template":"Ils sont {0}.","gaps":[{"options":["grands","grand","grandes","grande"],"answer":0}],"exp":"Masculine plural adjective: add -s → grands. (grande = f. sing., grandes = f. pl.)"},
+  {"id":"fr-286","topic":"fr-gram","type":"dragdrop","q":"Match each adjective to its correct feminine form:","pairs":[{"left":"grand","right":"grande"},{"left":"petit","right":"petite"},{"left":"beau","right":"belle"},{"left":"nouveau","right":"nouvelle"}],"exp":"Regular -e added: grand→grande, petit→petite. Irregular: beau→belle, nouveau→nouvelle."},
+
+  // ── Aller et faire (fr-l14) — A1 ─────────────────────────────────────────────
+  {"id":"fr-287","topic":"fr-conj","type":"mcq","q":"Conjugate « aller »: ils/elles ___:","opts":["allez","allons","vais","vont"],"ans":3,"exp":"aller: je vais, tu vas, il/elle va, nous allons, vous allez, ils/elles vont."},
+  {"id":"fr-288","topic":"fr-conj","type":"gapfill","q":"We do sport on Saturdays:","template":"Nous {0} du sport le samedi.","gaps":[{"options":["faisons","faisez","font","faites"],"answer":0}],"exp":"faire: je fais, tu fais, il fait, nous faisons, vous faites, ils font."},
+  {"id":"fr-289","topic":"fr-gram","type":"mcq","q":"« aller + à + le » contracts to:","opts":["à le","al","au","à du"],"ans":2,"exp":"à + le = au: je vais au cinéma. à + la stays as à la: je vais à la piscine."},
+  {"id":"fr-290","topic":"fr-conj","type":"mcq","q":"Conjugate « faire »: vous ___:","opts":["faisez","faites","font","faisons"],"ans":1,"exp":"faire: vous faites (irregular — not *faisez*). Compare nous faisons."},
+
+  // ── Passé composé avec avoir (fr-l18) — A2 ───────────────────────────────────
+  {"id":"fr-291","topic":"fr-conj","type":"mcq","q":"Past participle of « finir »:","opts":["finu","fini","finé","fin"],"ans":1,"exp":"-IR verbs form the past participle with -i: finir → fini."},
+  {"id":"fr-292","topic":"fr-conj","type":"mcq","q":"Past participle of « vendre »:","opts":["vendu","vendé","vendi","vendré"],"ans":0,"exp":"-RE verbs form the past participle with -u: vendre → vendu."},
+  {"id":"fr-293","topic":"fr-conj","type":"gapfill","q":"He watched a film (passé composé):","template":"Il {0} regardé un film.","gaps":[{"options":["a","est","as","ont"],"answer":0}],"exp":"Most verbs use avoir as auxiliary: il a regardé. (il + a = has/did watch)"},
+  {"id":"fr-294","topic":"fr-conj","type":"mcq","q":"Irregular past participle of « faire »:","opts":["faisé","fairé","fait","faistu"],"ans":2,"exp":"faire → fait (irregular). Other key irregulars: avoir→eu, être→été, voir→vu, prendre→pris."},
+
+  // ── Passé composé avec être (fr-l19) — A2 ────────────────────────────────────
+  {"id":"fr-295","topic":"fr-conj","type":"mcq","q":"With être verbs, the past participle must agree with:","opts":["the auxiliary verb","the direct object","the subject","the indirect object"],"ans":2,"exp":"With être auxiliary, the past participle agrees with the SUBJECT: il est allé / elle est allée / ils sont allés."},
+  {"id":"fr-296","topic":"fr-conj","type":"mcq","q":"She went (passé composé of aller):","opts":["elle a allé","elle est allé","elle est allée","elle a allée"],"ans":2,"exp":"aller takes être: elle est allée — auxiliary être + past participle allé with feminine agreement (-e)."},
+  {"id":"fr-297","topic":"fr-conj","type":"mcq","q":"Which verb uses ÊTRE (not avoir) in the passé composé?","opts":["regarder","finir","partir","acheter"],"ans":2,"exp":"partir is a DR MRS VANDERTRAMP verb and takes être: il est parti. The others use avoir."},
+  {"id":"fr-298","topic":"fr-conj","type":"gapfill","q":"They (m.) left early:","template":"Ils {0} partis tôt.","gaps":[{"options":["sont","ont","est","a"],"answer":0}],"exp":"partir takes être: ils sont partis (+ -s for masculine plural subject agreement)."},
+
+  // ── Imparfait ou passé composé ? (fr-l21) — A2 ───────────────────────────────
+  {"id":"fr-299","topic":"fr-gram","type":"mcq","q":"The signal word « soudain » (suddenly) typically triggers:","opts":["imparfait","passé composé","futur proche","subjonctif"],"ans":1,"exp":"'Soudain' introduces a specific, completed event → passé composé. Ongoing background/habits → imparfait."},
+  {"id":"fr-300","topic":"fr-gram","type":"mcq","q":"The phrase « d'habitude » (usually) signals:","opts":["passé composé","imparfait","futur proche","conditionnel"],"ans":1,"exp":"d'habitude / souvent / toujours / tous les jours signal habitual or repeated actions → imparfait."},
+  {"id":"fr-301","topic":"fr-gram","type":"mcq","q":"« Je dormais quand le téléphone a sonné. » — « dormais » is imparfait because:","opts":["it happened once and is complete","it was the background state, interrupted by the phone","it is a habitual action","it is in the future"],"ans":1,"exp":"dormais (imparfait) = was sleeping — ongoing background action. a sonné (PC) = the single event that interrupted it."},
+
+  // ── Comparatif et superlatif (fr-l25) — A2 ───────────────────────────────────
+  {"id":"fr-302","topic":"fr-gram","type":"mcq","q":"« C'est le meilleur restaurant de la ville » means:","opts":["It is a good restaurant in the city","It is the best restaurant in town","It is a better restaurant than in town","It is the most expensive in town"],"ans":1,"exp":"le meilleur = the best (superlative of bon). 'de' after a superlative = 'in': le meilleur de la ville = the best in town."},
+  {"id":"fr-303","topic":"fr-gram","type":"mcq","q":"« aussi intelligent que » expresses:","opts":["superiority (smarter than)","inferiority (less smart than)","equality (as smart as)","approximation"],"ans":2,"exp":"aussi … que = as … as (equality). plus … que = more/smarter than; moins … que = less … than."},
+  {"id":"fr-304","topic":"fr-gram","type":"gapfill","q":"This is the tallest building in Paris (m.):","template":"C'est {0} plus grand bâtiment de Paris.","gaps":[{"options":["le","la","les","l'"],"answer":0}],"exp":"Masculine singular noun → le plus grand. (la plus grande f., les plus grands m. pl.)"},
+  {"id":"fr-305","topic":"fr-gram","type":"mcq","q":"The comparative of « bon » (good) is:","opts":["plus bon","meilleur","mieux","plus bien"],"ans":1,"exp":"bon → meilleur (better) / le meilleur (the best). Never say *plus bon*. Note: bien (adverb) → mieux."},
+
+  // ── Exprimer son opinion (fr-l30) — A2 ───────────────────────────────────────
+  {"id":"fr-306","topic":"fr-gram","type":"mcq","q":"« À mon avis, c'est une bonne idée » means:","opts":["It is obviously a good idea","In my opinion, it is a good idea","According to him, it is a good idea","Certainly, it is a good idea"],"ans":1,"exp":"À mon avis = in my opinion. (Selon moi = according to me — similar meaning.)"},
+  {"id":"fr-307","topic":"fr-gram","type":"mcq","q":"« Tu as raison » means:","opts":["You are wrong","You are right","You have a reason","You are mistaken"],"ans":1,"exp":"avoir raison = to be right. avoir tort = to be wrong: tu as tort."},
+  {"id":"fr-308","topic":"fr-gram","type":"mcq","q":"« Je ne suis pas d'accord » means:","opts":["I am not sure","I disagree","I am not ready","I don't understand"],"ans":1,"exp":"être d'accord = to agree; ne pas être d'accord = to disagree."},
+  {"id":"fr-309","topic":"fr-gram","type":"gapfill","q":"In my opinion, the situation is serious:","template":"{0} mon avis, la situation est grave.","gaps":[{"options":["À","De","En","Par"],"answer":0}],"exp":"À mon avis = in my opinion. (NOT *De mon avis* or *En mon avis*)"},
+  {"id":"fr-310","topic":"fr-gram","type":"mcq","q":"« Par contre, je préfère le cinéma » — « par contre » means:","opts":["therefore","in fact","however / on the other hand","in addition"],"ans":2,"exp":"par contre = however / on the other hand — introduces a contrasting idea. Similar to 'cependant'."},
+  {"id":"fr-311","topic":"fr-gram","type":"mcq","q":"« Je ne pense pas qu'il vienne » — « vienne » is subjunctive because:","opts":["the sentence is in the past","it follows a negative opinion expression (ne pense pas que)","venir is irregular","it follows a time expression"],"ans":1,"exp":"Negative opinions (je ne pense pas que, je ne crois pas que) trigger the subjunctive mood. Affirmative je pense que takes the indicative."},
+
+  // fr-l09 — -ER verb conjugation (A1, fr-conj)
+  {"id":"fr-312","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"What is the correct conjugation of « parler » for « je »?","opts":["je parle","je parles","je parlee","je parl"],"ans":0,"exp":"-ER verbs: remove -er, add -e for je. je parle."},
+  {"id":"fr-313","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"What is « tu » form of « travailler »?","opts":["tu travaille","tu travailles","tu travaillez","tu travaillons"],"ans":1,"exp":"tu form of -ER verbs adds -es: tu travailles."},
+  {"id":"fr-314","topic":"fr-conj","lesson":"fr-l09","type":"gapfill","q":"Complete: He works every day.","template":"Il {0} tous les jours.","gaps":[{"options":["travaille","travailles","travaillons","travaillez"],"answer":0}],"exp":"il/elle takes -e: il travaille."},
+  {"id":"fr-315","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"How do you say « we listen » in French?","opts":["nous écoutons","nous écoutez","nous écoutent","nous écoute"],"ans":0,"exp":"nous form adds -ons: nous écoutons."},
+  {"id":"fr-316","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"How do you say « you (plural/formal) watch » in French?","opts":["vous regardons","vous regardez","vous regardent","vous regarde"],"ans":1,"exp":"vous form adds -ez: vous regardez."},
+  {"id":"fr-317","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"Which form is correct for « ils aimer »?","opts":["ils aime","ils aimez","ils aiment","ils aimons"],"ans":2,"exp":"ils/elles form adds -ent: ils aiment. The -ent is silent."},
+  {"id":"fr-318","topic":"fr-conj","lesson":"fr-l09","type":"gapfill","q":"Spelling change: We eat together. (manger)","template":"Nous {0} ensemble.","gaps":[{"options":["mangeons","mangons","mangez","mangent"],"answer":0}],"exp":"-ger verbs keep the 'e' before -ons to preserve the soft g: nous mangeons."},
+  {"id":"fr-319","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"Give the correct « nous » form of « commencer »:","opts":["nous commençons","nous commencons","nous commenceons","nous commencez"],"ans":0,"exp":"-cer verbs change c → ç before -ons: nous commençons (to keep the soft s sound)."},
+  {"id":"fr-320","topic":"fr-conj","lesson":"fr-l09","type":"dragdrop","q":"Match each pronoun to the correct -ER verb ending:","pairs":[["je","-e"],["tu","-es"],["il/elle","-e"],["nous","-ons"],["vous","-ez"],["ils/elles","-ent"]],"exp":"Regular -ER endings: je -e, tu -es, il -e, nous -ons, vous -ez, ils -ent. Note je and il share -e."},
+
+  // fr-l13 — Nationalities, countries, en/au/aux (A1, fr-gram)
+  {"id":"fr-321","topic":"fr-gram","lesson":"fr-l13","type":"mcq","q":"What is the masculine adjective of nationality for Spain?","opts":["espagnole","espagnol","espagnés","espagnier"],"ans":1,"exp":"Masculine nationalities usually have no extra ending: espagnol (m.), espagnole (f.)."},
+  {"id":"fr-322","topic":"fr-gram","lesson":"fr-l13","type":"mcq","q":"What is the feminine form of « italien »?","opts":["italienne","italiene","italière","italiano"],"ans":0,"exp":"Nationalities ending in -ien add -ne for feminine: italien → italienne."},
+  {"id":"fr-323","topic":"fr-gram","lesson":"fr-l13","type":"mcq","q":"Which preposition goes before a feminine country (e.g. France)?","opts":["au","aux","en","à"],"ans":2,"exp":"en + feminine country: en France, en Espagne, en Italie. au is for masculine countries."},
+  {"id":"fr-324","topic":"fr-gram","lesson":"fr-l13","type":"mcq","q":"Which preposition goes before a masculine country (e.g. Portugal)?","opts":["en","aux","à","au"],"ans":3,"exp":"au + masculine singular country: au Portugal, au Japon, au Canada."},
+  {"id":"fr-325","topic":"fr-gram","lesson":"fr-l13","type":"gapfill","q":"She lives in Paris. (city — use the right preposition)","template":"Elle habite {0} Paris.","gaps":[{"options":["à","en","au","aux"],"answer":0}],"exp":"Cities take à: à Paris, à Londres, à Lyon. No article with cities."},
+  {"id":"fr-326","topic":"fr-gram","lesson":"fr-l13","type":"mcq","q":"« Il vient des États-Unis » — why « des »?","opts":["des is the partitive article","États-Unis is plural so aux → des for origin (venir de + les = des)","des replaces de un","it's an exception"],"ans":1,"exp":"venir DE + les États-Unis → de + les = des. For plural countries use aux (going) / des (coming from): aux États-Unis / des États-Unis."},
+
+  // fr-l16 — Weather expressions (A1, fr-gram)
+  {"id":"fr-327","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is nice/sunny » in French?","opts":["Il fait froid","Il fait beau","Il pleut","Il neige"],"ans":1,"exp":"il fait beau = it is nice / the weather is good. il fait mauvais = it is bad weather."},
+  {"id":"fr-328","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is cold » in French?","opts":["il fait chaud","il fait du vent","il fait froid","il y a du soleil"],"ans":2,"exp":"il fait froid = it is cold. il fait chaud = it is hot."},
+  {"id":"fr-329","topic":"fr-gram","lesson":"fr-l16","type":"gapfill","q":"It is raining today.","template":"Il {0} aujourd'hui.","gaps":[{"options":["pleut","pleure","pluie","pleuvoit"],"answer":0}],"exp":"il pleut = it is raining. This is the il form of pleuvoir (irregular)."},
+  {"id":"fr-330","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is windy »?","opts":["il fait du soleil","il fait de la neige","il y a du vent","il fait vent"],"ans":2,"exp":"il y a du vent = it is windy. il y a du soleil = it is sunny (alternatively il fait du soleil)."},
+  {"id":"fr-331","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"« Au printemps » means:","opts":["in winter","in summer","in autumn","in spring"],"ans":3,"exp":"au printemps = in spring. en été = in summer; en automne = in autumn; en hiver = in winter. Note: printemps uses au, the others use en."},
+
+  // fr-l38 — Irregular verbs: vouloir/pouvoir/devoir/savoir/venir/prendre (A2, fr-conj)
+  {"id":"fr-332","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"What is the « il » form of « vouloir »?","opts":["il voul","il vouloir","il veut","il voulez"],"ans":2,"exp":"vouloir: je veux, tu veux, il veut, nous voulons, vous voulez, ils veulent."},
+  {"id":"fr-333","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"How do you say « we can »?","opts":["nous pouvons","nous pouvez","nous peuvent","nous pouvez"],"ans":0,"exp":"pouvoir: je peux, tu peux, il peut, nous pouvons, vous pouvez, ils peuvent."},
+  {"id":"fr-334","topic":"fr-conj","lesson":"fr-l38","type":"gapfill","q":"You must leave now. (devoir)","template":"Tu {0} partir maintenant.","gaps":[{"options":["dois","doit","devons","devez"],"answer":0}],"exp":"devoir: je dois, tu dois, il doit, nous devons, vous devez, ils doivent."},
+  {"id":"fr-335","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"What is the « je » form of « savoir »?","opts":["je sais","je sait","je savons","je savoir"],"ans":0,"exp":"savoir: je sais, tu sais, il sait, nous savons, vous savez, ils savent."},
+  {"id":"fr-336","topic":"fr-conj","lesson":"fr-l38","type":"gapfill","q":"They take the bus. (prendre)","template":"Ils {0} le bus.","gaps":[{"options":["prennent","prenent","prends","prend"],"answer":0}],"exp":"prendre: je prends, tu prends, il prend, nous prenons, vous prenez, ils prennent (double n)."},
+  {"id":"fr-337","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"What is the « ils » form of « venir »?","opts":["ils venons","ils viennent","ils venez","ils vient"],"ans":1,"exp":"venir: je viens, tu viens, il vient, nous venons, vous venez, ils viennent (double n)."},
+  {"id":"fr-338","topic":"fr-conj","lesson":"fr-l38","type":"dragdrop","q":"Match each verb to its meaning:","pairs":[["vouloir","to want"],["pouvoir","to be able to / can"],["devoir","to have to / must"],["savoir","to know (a fact/skill)"]],"exp":"These four key irregular verbs are modal-type: vouloir (want), pouvoir (can), devoir (must), savoir (know how)."},
+  {"id":"fr-339","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"« Vous devez remplir ce formulaire » means:","opts":["You want to fill in this form","You can fill in this form","You must fill in this form","You know how to fill in this form"],"ans":2,"exp":"devoir = must/have to. vous devez = you must. Not pouvoir (can) or vouloir (want)."},
+
+  // fr-l20 — Imparfait formation (A2, fr-conj)
+  {"id":"fr-340","topic":"fr-conj","lesson":"fr-l20","type":"mcq","q":"What is the imperfect (imparfait) stem of « parler »?","opts":["parl-","parler-","parl-ait","nous parlons → parli-"],"ans":0,"exp":"Imparfait stem = nous present form minus -ons: nous parlons → parl-. Then add endings: -ais, -ais, -ait, -ions, -iez, -aient."},
+  {"id":"fr-341","topic":"fr-conj","lesson":"fr-l20","type":"mcq","q":"Give the imparfait of « parler » for « je »:","opts":["je parlais","je parlait","je parlerai","je parlions"],"ans":0,"exp":"je/tu take -ais: je parlais (I was speaking / I used to speak)."},
+  {"id":"fr-342","topic":"fr-conj","lesson":"fr-l20","type":"gapfill","q":"She used to drink coffee every morning. (boire)","template":"Elle {0} du café chaque matin.","gaps":[{"options":["buvait","buvais","buvions","boivait"],"answer":0}],"exp":"boire → nous buvons → stem buv-. il/elle: buvait. (Irregular stem but regular imparfait endings.)"},
+  {"id":"fr-343","topic":"fr-conj","lesson":"fr-l20","type":"mcq","q":"What is the imparfait of « être » for « j' »?","opts":["j'avais","j'étais","j'étions","j'était"],"ans":1,"exp":"être has an irregular stem in the imparfait: ét-. j'étais, tu étais, il était, nous étions, vous étiez, ils étaient."},
+  {"id":"fr-344","topic":"fr-conj","lesson":"fr-l20","type":"mcq","q":"Which sentence uses imparfait correctly to describe a past habit?","opts":["Hier, je mangeais une pizza.","Chaque soir, je mangeais une pizza.","Je mangeais une pizza hier soir à 20h.","Soudain, je mangeais une pizza."],"ans":1,"exp":"Imparfait describes repeated past habits (chaque soir = every evening). For a single completed event at a specific time, use passé composé."},
+  {"id":"fr-345","topic":"fr-conj","lesson":"fr-l20","type":"mcq","q":"What is the « nous » imparfait of « finir »?","opts":["nous finissions","nous finions","nous finissons","nous finirons"],"ans":0,"exp":"finir → nous finissons → stem finiss-. nous finissions. (-iss- stem kept for -IR verbs.)"},
+
+  // fr-l22 — Futur proche & futur simple (A2, fr-conj)
+  {"id":"fr-346","topic":"fr-conj","lesson":"fr-l22","type":"mcq","q":"How do you form « futur proche »?","opts":["present of avoir + infinitive","present of aller + infinitive","present of être + past participle","imperfect + infinitive"],"ans":1,"exp":"Futur proche = present of aller + infinitive: je vais partir, tu vas manger, il va venir."},
+  {"id":"fr-347","topic":"fr-conj","lesson":"fr-l22","type":"gapfill","q":"He is going to leave tomorrow. (futur proche)","template":"Il {0} partir demain.","gaps":[{"options":["va","vais","allons","allez"],"answer":0}],"exp":"il va + infinitive = he is going to. Futur proche with aller conjugated to match the subject."},
+  {"id":"fr-348","topic":"fr-conj","lesson":"fr-l22","type":"mcq","q":"The futur simple stem for « avoir » is:","opts":["av-","aur-","avons-","aurait-"],"ans":1,"exp":"avoir → futur stem aur-: j'aurai, tu auras, il aura, nous aurons, vous aurez, ils auront."},
+  {"id":"fr-349","topic":"fr-conj","lesson":"fr-l22","type":"mcq","q":"The futur simple stem for « être » is:","opts":["ét-","êtr-","ser-","est-"],"ans":2,"exp":"être → futur stem ser-: je serai, tu seras, il sera, nous serons, vous serez, ils seront."},
+  {"id":"fr-350","topic":"fr-conj","lesson":"fr-l22","type":"mcq","q":"What is « ils feront » in English?","opts":["they were doing","they do","they will do","they are doing"],"ans":2,"exp":"faire → futur stem fer-: ils feront = they will do/make."},
+  {"id":"fr-351","topic":"fr-conj","lesson":"fr-l22","type":"gapfill","q":"I will be able to come. (pouvoir, futur simple)","template":"Je {0} venir.","gaps":[{"options":["pourrai","pourrait","pouvrai","pourrez"],"answer":0}],"exp":"pouvoir → futur stem pourr-: je pourrai = I will be able to."},
+  {"id":"fr-352","topic":"fr-conj","lesson":"fr-l22","type":"mcq","q":"Which sentence uses futur simple correctly?","opts":["Demain, je vais travailler.","Demain, je travaillerai.","Demain, j'ai travaillé.","Demain, je travaillais."],"ans":1,"exp":"Both futur proche and futur simple can express future plans. je travaillerai is the futur simple form (stem + -ai). Futur proche (je vais travailler) is also correct but option B specifically tests the futur simple form."},
+
+  // fr-l24 — COD & COI pronouns (A2, fr-gram)
+  {"id":"fr-353","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"What does COD stand for and what does it replace?","opts":["Complément d'objet direct — replaces a direct object (no preposition)","Complément d'objet direct — replaces an indirect object (with à)","Complément d'objet de direction — replaces a place","Complément d'objet défini — replaces a definite noun"],"ans":0,"exp":"COD = Complément d'objet direct. It replaces a noun that is the direct object of the verb (no preposition between verb and noun)."},
+  {"id":"fr-354","topic":"fr-gram","lesson":"fr-l24","type":"gapfill","q":"I see her. (la/le/les/lui)","template":"Je {0} vois.","gaps":[{"options":["la","le","lui","les"],"answer":0}],"exp":"la replaces a feminine singular direct object: Je vois Marie → Je la vois. Pronouns go BEFORE the verb."},
+  {"id":"fr-355","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"Which pronoun replaces a masculine singular direct object?","opts":["lui","la","le","leur"],"ans":2,"exp":"le = masculine singular direct object pronoun. la = feminine. les = plural. lui/leur are indirect object pronouns (COI)."},
+  {"id":"fr-356","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"COI pronouns lui and leur replace « à + person ». What does « lui » replace?","opts":["à + a plural person","à + a masculine singular person only","à + a singular person (m. or f.)","à + a place"],"ans":2,"exp":"lui replaces à + singular person (either gender): à Marc → lui; à Marie → lui. leur replaces à + plural people."},
+  {"id":"fr-357","topic":"fr-gram","lesson":"fr-l24","type":"gapfill","q":"I speak to him/her. (parler à → COI)","template":"Je {0} parle.","gaps":[{"options":["lui","le","la","leur"],"answer":0}],"exp":"parler à quelqu'un → replace à + person with lui (singular): Je parle à Paul → Je lui parle."},
+  {"id":"fr-358","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"« Je leur téléphone » — who does « leur » refer to?","opts":["one person (him/her)","a place","multiple people (them)","an object"],"ans":2,"exp":"leur (COI) = to them (plural): je téléphone à mes parents → je leur téléphone. Not to be confused with leur (possessive adjective)."},
+  {"id":"fr-359","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"Where does a COD/COI pronoun go in a sentence?","opts":["After the verb","Before the verb","After the object","At the end of the sentence"],"ans":1,"exp":"Object pronouns (COD/COI) go BEFORE the conjugated verb in French: Je le mange. Je lui parle. In infinitive constructions, before the infinitive: Je vais le manger."},
+  {"id":"fr-360","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"Replace the underlined noun: « J'envoie un message À MES AMIS »","opts":["Je les envoie un message.","Je leur envoie un message.","Je lui envoie un message.","Je le leur envoie un message."],"ans":1,"exp":"à mes amis (plural, indirect) → leur. Je leur envoie un message. (leur because it replaces à + plural people.)"},
+
+  // fr-l29 — Relative pronouns: qui, que, dont, où (B1, fr-gram)
+  {"id":"fr-361","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"In « L'homme qui parle est mon père », what is the role of « qui »?","opts":["direct object of parle","subject of parle","replaces de + noun","indicates a place"],"ans":1,"exp":"qui = subject relative pronoun. It refers back to L'homme and is the subject of parle. Tip: qui is always followed directly by a verb."},
+  {"id":"fr-362","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"In « Le livre que je lis est intéressant », what is the role of « que »?","opts":["subject of lis","direct object of lis","replaces de + livre","indicates time"],"ans":1,"exp":"que = direct object relative pronoun. Je lis le livre → le livre que je lis. que is always followed by a subject + verb."},
+  {"id":"fr-363","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"When do you use « dont » as a relative pronoun?","opts":["To replace a subject","To replace a direct object","To replace de + noun/person","To indicate a place or time"],"ans":2,"exp":"dont replaces de + noun: J'ai besoin de ce livre → le livre dont j'ai besoin. Use dont when the verb requires de (avoir besoin de, parler de, se souvenir de…)."},
+  {"id":"fr-364","topic":"fr-gram","lesson":"fr-l29","type":"gapfill","q":"The town where I grew up is small. (use où)","template":"La ville {0} j'ai grandi est petite.","gaps":[{"options":["où","que","qui","dont"],"answer":0}],"exp":"où = relative pronoun for place or time: La ville où j'ai grandi. Le jour où je suis arrivé. où replaces a location or time expression."},
+  {"id":"fr-365","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"« C'est le sujet dont il parle » — why « dont » and not « que »?","opts":["parler takes a direct object","parler de requires de, so dont replaces de + le sujet","dont is used for people only","que must follow a subject"],"ans":1,"exp":"parler DE quelque chose → dont replaces de + noun. il parle DE ce sujet → le sujet dont il parle. If the verb took a direct object, you'd use que."},
+
+  // fr-l23 — Verbes pronominaux / Reflexive verbs (A2, fr-conj)
+  {"id":"fr-366","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"What characterises a pronominal (reflexive) verb in French?","opts":["It always uses être in the present tense","It uses a reflexive pronoun (me/te/se/nous/vous/se) that refers back to the subject","It can only be used in the third person","It has an irregular present tense stem"],"ans":1,"exp":"Reflexive verbs carry a pronoun that 'reflects' the action back onto the subject: je me lave (I wash myself), tu te lèves (you get yourself up). The pronoun changes with each person."},
+  {"id":"fr-367","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"How do you say « we get up » in French? (se lever)","opts":["nous levons","nous se levons","nous nous levons","nous me levons"],"ans":2,"exp":"With reflexive verbs, the subject pronoun and reflexive pronoun both appear: nous + nous = nous nous levons. Every person doubles up: je me lève, tu te lèves, il se lève, nous nous levons, vous vous levez, ils se lèvent."},
+  {"id":"fr-368","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"« Je me réveille à six heures » — what does this mean?","opts":["Someone wakes me up at six","I wake (myself) up at six","I am sleeping until six","I wake you up at six"],"ans":1,"exp":"se réveiller = to wake up (oneself). me = myself (reflexive). Je me réveille = I wake up. It is part of a daily routine verb: se réveiller, se lever, se laver, s'habiller, se coucher."},
+  {"id":"fr-369","topic":"fr-conj","lesson":"fr-l23","type":"gapfill","q":"She gets dressed before breakfast. (s'habiller)","template":"Elle {0} avant le petit-déjeuner.","gaps":[{"options":["s'habille","se habille","m'habille","t'habille"],"answer":0}],"exp":"s'habiller → elle s'habille. Note the elision: se → s' before a vowel (h is mute here). The reflexive pronoun (se) contracts to s' when followed by a vowel or mute h."},
+  {"id":"fr-370","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"How do you say « I don't go to bed late »? (se coucher)","opts":["Je me ne couche pas tard","Je ne se couche pas tard","Je ne me couche pas tard","Je me couche ne pas tard"],"ans":2,"exp":"Negation with reflexive verbs: ne goes before the reflexive pronoun, pas goes after the verb: je NE me couche PAS tard. The reflexive pronoun (me) stays between ne and the verb."},
+  {"id":"fr-371","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"« Elle s'est levée tôt » — why does levée have a final 'e'?","opts":["levée is a feminine noun","Reflexive verbs form their PC with être, so the past participle agrees with the subject (elle = feminine)","être always causes agreement with all verbs","s' requires a feminine form"],"ans":1,"exp":"Reflexive verbs always use être in the passé composé: elle s'est levée. Because the auxiliary is être, the past participle agrees with the subject in gender and number. Elle (f. sg.) → levée (+e). Il s'est levé (no extra e for masculine)."},
+
+  // fr-l44 — Les pronoms Y et EN (B1, fr-gram)
+  {"id":"fr-372","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"What does the pronoun Y replace?","opts":["le/la/les (direct object)","à + place or à + thing","de + noun","à + person (indirect object)"],"ans":1,"exp":"Y replaces à + place (Tu vas à Paris → Tu y vas) or à + thing when the verb takes à (Je pense à ça → J'y pense). It does NOT replace à + person — use lui/leur for people."},
+  {"id":"fr-373","topic":"fr-gram","lesson":"fr-l44","type":"gapfill","q":"Are you going to the cinema tonight? → Are you going there?","template":"Tu vas au cinéma ce soir ? → Tu {0} vas ?","gaps":[{"options":["y","en","lui","le"],"answer":0}],"exp":"au cinéma = à + place → replaced by Y. Tu y vas ? = Are you going there?"},
+  {"id":"fr-374","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"What does the pronoun EN replace?","opts":["à + place","de + noun (especially with quantities or verbs taking de)","le/la (definite direct object)","à + person"],"ans":1,"exp":"EN replaces de + noun: Il parle de son voyage → Il en parle. It also replaces du/de la/des + noun: Tu veux des pommes → Tu en veux ?"},
+  {"id":"fr-375","topic":"fr-gram","lesson":"fr-l44","type":"gapfill","q":"She has three cats. → She has three (of them).","template":"Elle a trois chats. → Elle {0} a trois.","gaps":[{"options":["en","y","les","leur"],"answer":0}],"exp":"des/de + noun with a quantity → EN. The number (trois) stays AFTER the verb: elle en a trois. Never omit the number when it was part of the original sentence."},
+  {"id":"fr-376","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"Where do Y and EN go in a sentence?","opts":["After the conjugated verb","Before the conjugated verb (or before an infinitive)","At the end of the sentence","After a past participle"],"ans":1,"exp":"Y and EN go before the verb: Je y vais → J'y vais. In a 2-verb group (modal + infinitive), they go before the infinitive: Je vais y aller. Exception: affirmative imperative → after the verb: Vas-y !"},
+  {"id":"fr-377","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"« Vas-y ! » — why does Y come after the verb here?","opts":["Y always follows an imperative","With an affirmative imperative, object pronouns go after the verb with a hyphen","Y is an adverb, not a pronoun","Vas is irregular and requires post-verbal pronouns"],"ans":1,"exp":"With affirmative imperatives, pronouns follow the verb: Vas-y ! (Go there!), Prends-en ! (Take some!). In negative imperatives, the pronoun goes before: N'y vas pas. (Don't go there.)"}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -2723,9 +2878,19 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
           {
             "h": "Aimer, adorer, détester",
             "p": [
-              "Use **+ infinitive** or **+ le/la/les**: **J'aime lire.** / **J'adore le chocolat.** / **Je déteste les maths.**",
-              "**Qu'est-ce que tu aimes faire le week-end ?** (What do you like doing at the weekend?)"
-            ]
+              "**Aimer** (to like/love), **adorer** (to adore/love), and **détester** (to hate) are opinion verbs. They follow two structures depending on what comes next."
+            ],
+            "table": {
+              "headers": ["Structure", "Use when…", "Examples"],
+              "rows": [
+                ["verb + **infinitive**", "talking about an activity", "J'aime lire. · J'adore danser. · Je déteste travailler."],
+                ["verb + **le / la / les**", "talking about things in general", "J'aime le chocolat. · J'adore la musique. · Je déteste les maths."]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "General likes always take **le/la/les**, never du/de la: **J'aime le café** ✓ — *J'aime du café* ✗. To ask: **Qu'est-ce que tu aimes faire ?** (What do you like doing?)"
+            }
           }
         ],
         "check": [
@@ -3377,7 +3542,7 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ]
       },
       {
-
+        "id": "fr-l17",
         "title": "Examen A1 (type DELF)",
         "icon": "📝",
         "cards": [
@@ -5917,6 +6082,104 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 2,
             "exp": "Time expression → où."
+          }
+        ]
+      },
+      {
+        "id": "fr-l44",
+        "title": "Les pronoms Y et EN",
+        "icon": "📍",
+        "cards": [
+          {
+            "h": "Le pronom Y",
+            "p": [
+              "**Y** replaces **à + place** or **à + thing** (when the verb takes « à »).",
+              "**Tu vas à Paris ?** → **Tu y vas ?** (Are you going there?)",
+              "**Il pense à son travail.** → **Il y pense.** (He thinks about it.)"
+            ],
+            "example": {
+              "title": "Y in action",
+              "rows": [
+                ["Elle va à l'école. → Elle y va.", "She goes to school. → She goes there."],
+                ["Nous habitons à Lyon. → Nous y habitons.", "We live there."],
+                ["Tu crois à la magie ? → Tu y crois ?", "Do you believe in it?"]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "Y goes **before** the verb (or before the infinitive in a 2-verb construction): **Je vais y aller**."
+            }
+          },
+          {
+            "h": "Le pronom EN",
+            "p": [
+              "**EN** replaces **de + noun**, especially with quantities, numbers, or verbs taking « de ».",
+              "**Tu veux du café ?** → **Tu en veux ?** (Do you want some?)",
+              "**Il parle de son voyage.** → **Il en parle.** (He talks about it.)"
+            ],
+            "example": {
+              "title": "EN in action",
+              "rows": [
+                ["J'ai trois frères. → J'en ai trois.", "I have three (of them)."],
+                ["Elle mange des pommes. → Elle en mange.", "She eats some (of them)."],
+                ["Il revient de Paris. → Il en revient.", "He's coming back from there."]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Keep numbers/quantities AFTER the verb when using EN: **J'en ai trois** (NOT *j'en trois ai*)."
+            }
+          },
+          {
+            "h": "Y et EN — position et résumé",
+            "p": [
+              "Both **y** and **en** go **before the conjugated verb** (or the infinitive in a two-verb group).",
+              "With imperatives (affirmative): pronoun goes **after** the verb: **Vas-y !** (Go there!), **Prends-en !** (Take some!)"
+            ],
+            "split": {
+              "left": {
+                "title": "Y — replaces",
+                "items": [
+                  "à + place (J'y vais)",
+                  "à + thing (J'y pense)",
+                  "Answers: là-bas, à + noun"
+                ]
+              },
+              "right": {
+                "title": "EN — replaces",
+                "items": [
+                  "de + noun (J'en parle)",
+                  "du/de la/des + noun (J'en veux)",
+                  "Keeps numbers: j'en ai deux"
+                ]
+              }
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "Replace: « Tu vas au cinéma ? » → « Tu ___ vas ? »",
+            "opts": ["en","y","le","lui"],
+            "ans": 1,
+            "exp": "au cinéma = à + place → y."
+          },
+          {
+            "q": "Replace: « Elle mange des pommes. » → « Elle ___ mange. »",
+            "opts": ["y","les","en","lui"],
+            "ans": 2,
+            "exp": "des pommes (de + noun, indefinite quantity) → en."
+          },
+          {
+            "q": "« J'en ai trois » — what does EN replace?",
+            "opts": ["à + place","de + noun (with quantity retained)","le/la (direct object)","à + person"],
+            "ans": 1,
+            "exp": "EN replaces de + noun. The number (trois) stays after the verb: j'en ai trois."
+          },
+          {
+            "q": "Where does Y go in the sentence?",
+            "opts": ["After the verb","Before the conjugated verb","At the end of the sentence","After the subject"],
+            "ans": 1,
+            "exp": "Y (and EN) go before the conjugated verb: Tu y vas. Je vais y aller (before infinitive in 2-verb group)."
           }
         ]
       },
