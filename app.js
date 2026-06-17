@@ -3989,6 +3989,10 @@
       const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status">
         <strong>${correct ? '✅ Correct!' : '❌ Not quite'}</strong>${q.exp ? `<br><em>${escapeHtml(q.exp)}</em>` : ''}
       </div>` : '';
+      const lessonAudioHtml = q.audio ? `<div class="listen-prompt">
+        <button class="listen-play-btn" id="lessonCheckPlayBtn" type="button" aria-label="Play audio clip">🔊 Tap to Listen</button>
+        ${answered ? `<button class="tts-replay-btn" id="lessonCheckReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
+      </div>` : '';
       return `<div class="container">
         <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
         <div class="lesson-player slide-in">
@@ -3999,6 +4003,7 @@
           </div>
           <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${answered ? ((qIdx+1)/totalQ*100).toFixed(0) : (qIdx/totalQ*100).toFixed(0)}%"></div></div>
           <h2 class="lesson-q">${escapeHtml(q.q)}</h2>
+          ${lessonAudioHtml}
           <div class="options" role="radiogroup">${optHtml}</div>
           ${feedback}
           ${answered ? `<button class="next-btn" id="lessonNextBtn" type="button">${qIdx + 1 >= totalQ ? 'Finish ✓' : 'Next →'}</button>` : ''}
@@ -4353,6 +4358,21 @@
           () => { ttsQBtn.textContent = origLabel; ttsQBtn.classList.remove('is-playing'); }
         );
       });
+    }
+    // Lesson check audio button (listen lessons)
+    const lessonCheckPlayBtn = document.getElementById('lessonCheckPlayBtn');
+    if (lessonCheckPlayBtn && State.lesson && State.lesson.phase === 'quiz') {
+      const lcq = State.lesson.def.check[State.lesson.qIdx];
+      if (lcq && lcq.audio) {
+        lessonCheckPlayBtn.addEventListener('click', () => {
+          speakFrench(lcq.audio,
+            () => { lessonCheckPlayBtn.textContent = '⏹ Playing…'; lessonCheckPlayBtn.classList.add('is-playing'); },
+            () => { lessonCheckPlayBtn.textContent = '🔊 Tap to Listen'; lessonCheckPlayBtn.classList.remove('is-playing'); }
+          );
+        });
+        const lessonCheckReplayBtn = document.getElementById('lessonCheckReplayBtn');
+        if (lessonCheckReplayBtn) lessonCheckReplayBtn.addEventListener('click', () => speakFrench(lcq.audio));
+      }
     }
     // T-account playground
     const taDesc = document.getElementById('taDesc');
