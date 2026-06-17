@@ -5081,3 +5081,73 @@ body.dark[data-subject="code-route"] .unit-card {
 .wo-correct-sentence { margin: 6px 0; font-size: .9rem; color: var(--text); }
 .dark .wo-answer-area { background: #0b1322; border-color: #2a3550; }
 .dark .wo-bank { background: #0d1527; border-color: #1e2a44; }
+
+/* TTS / listen question styles */
+.listen-pill {
+  background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+  color: #9d174d;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.dark .listen-pill { background: rgba(219,39,119,.18); color: #f9a8d4; box-shadow: none; border: 1px solid rgba(219,39,119,.3); }
+.listen-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px 16px;
+  margin-bottom: 8px;
+}
+.listen-play-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,.15);
+  min-width: 180px;
+  text-align: center;
+}
+.listen-play-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+.listen-play-btn.is-playing { background: #64748b; }
+.listen-hint { color: var(--subtext); font-size: .9rem; text-align: center; margin: 0; }
+.tts-replay-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 6px 16px;
+  font-size: .85rem;
+  cursor: pointer;
+  color: var(--subtext);
+  transition: all .15s ease;
+}
+.tts-replay-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tts-q-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-pill);
+  padding: 5px 14px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  margin: 4px 0 12px;
+  transition: all .15s ease;
+}
+.tts-q-btn:hover { background: var(--accent); color: #fff; }
+.tts-q-btn.is-playing { background: var(--accent); color: #fff; opacity: .85; }

@@ -18,6 +18,7 @@ window.FR_TOPICS = [
   { id: 'fr-dial',     name: 'Dialogues & situations',   short: 'Dialogues',      icon: '💬', desc: 'Real-world conversations and situational language' },
   { id: 'fr-phon',     name: 'Prononciation',            short: 'Prononciation',  icon: '🔊', desc: 'Minimal pairs, French sounds, silent letters and liaison' },
   { id: 'fr-order',    name: 'Ordre des mots',           short: 'Ordre des mots', icon: '🔀', desc: 'Sentence builder — arrange words in the correct French order' },
+  { id: 'fr-listen',  name: 'Écoute active',            short: 'Écoute',         icon: '🎧', desc: 'Listen to spoken French and identify what you heard' },
 ];
 
 window.FR_QUESTIONS = [
@@ -1355,7 +1356,34 @@ window.FR_QUESTIONS = [
   {"id":"fr-649","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the sentence with 'y': 'I go there every day.' (J'y vais tous les jours.)","words":["jours","J'y","tous","les","vais"],"answer":["J'y","vais","tous","les","jours"],"exp":"J'y vais tous les jours. 'Y' replaces 'à + place': j'y vais = I go there. 'Y' goes before the verb. 'Tous les jours' = every day. Pronoun order: y goes before the verb, after other object pronouns."},
   {"id":"fr-650","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the sentence with 'en': 'I don't have any left.' (Je n'en ai plus.)","words":["plus","n'en","Je","ai"],"answer":["Je","n'en","ai","plus"],"exp":"Je n'en ai plus. 'En' replaces 'de + noun' and goes before the verb. 'Ne...plus' = no longer/no more. The ne wraps around the pronoun+verb: je N'EN ai PLUS. Order: je + n'en (ne + en) + ai (avoir) + plus."},
   {"id":"fr-651","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the sentence: 'I don't entirely agree with you.' (Je ne suis pas tout à fait d'accord avec vous.)","words":["vous","d'accord","suis","à","Je","tout","pas","ne","fait","avec"],"answer":["Je","ne","suis","pas","tout","à","fait","d'accord","avec","vous"],"exp":"Je ne suis pas tout à fait d'accord avec vous. 'Pas tout à fait' = not entirely. Negation: ne...pas wraps the verb (ne suis pas). 'Tout à fait' = entirely/completely. 'Avec vous' = with you (formal)."},
-  {"id":"fr-652","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the formal sentence: 'I am writing to you following our meeting.' (Je vous écris suite à notre réunion.)","words":["réunion","écris","Je","notre","suite","à","vous"],"answer":["Je","vous","écris","suite","à","notre","réunion"],"exp":"Je vous écris suite à notre réunion. 'Suite à' = following/further to (formal connective). 'Vous écris' — indirect object pronoun 'vous' goes before the verb. Used in formal correspondence to establish the reason for contact."}
+  {"id":"fr-652","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the formal sentence: 'I am writing to you following our meeting.' (Je vous écris suite à notre réunion.)","words":["réunion","écris","Je","notre","suite","à","vous"],"answer":["Je","vous","écris","suite","à","notre","réunion"],"exp":"Je vous écris suite à notre réunion. 'Suite à' = following/further to (formal connective). 'Vous écris' — indirect object pronoun 'vous' goes before the verb. Used in formal correspondence to establish the reason for contact."},
+
+  // ── fr-listen (fr-653 to fr-672) ──────────────────────────────────────────
+  // A1 — greetings, basic phrases (fr-653 to fr-662)
+  {"id":"fr-653","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Bonjour, comment allez-vous ?","q":"What did you hear?","opts":["Bonjour, comment allez-vous ?","Bonsoir, comment vas-tu ?","Bon matin, comment vous appelez-vous ?","Bonjour, comment tu t'appelles ?"],"ans":0,"exp":"'Bonjour, comment allez-vous ?' = Hello, how are you? (formal). 'Comment allez-vous' uses the formal vous form; 'comment vas-tu' is informal."},
+  {"id":"fr-654","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Merci beaucoup, au revoir !","q":"What did you hear?","opts":["Merci bien, à bientôt !","Merci beaucoup, au revoir !","Merci mille fois, bonsoir !","De rien, à demain !"],"ans":1,"exp":"'Merci beaucoup, au revoir !' = Thank you very much, goodbye! 'Beaucoup' (a lot) vs 'bien' (well/kindly) — both follow merci but have slightly different registers."},
+  {"id":"fr-655","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Je m'appelle Sophie et j'ai vingt ans.","q":"What did you hear?","opts":["Je m'appelle Sophie et j'ai trente ans.","Je m'appelle Sylvie et j'ai vingt ans.","Je m'appelle Sophie et j'ai vingt ans.","Je m'appelle Sophie et j'ai douze ans."],"ans":2,"exp":"'Je m'appelle Sophie et j'ai vingt ans.' = My name is Sophie and I am twenty years old. Note 'vingt' (20) vs 'trente' (30) and 'douze' (12)."},
+  {"id":"fr-656","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Où est la gare, s'il vous plaît ?","q":"What did you hear?","opts":["Où est le café, s'il vous plaît ?","Où est la poste, s'il vous plaît ?","Où est la gare, s'il te plaît ?","Où est la gare, s'il vous plaît ?"],"ans":3,"exp":"'Où est la gare, s'il vous plaît ?' = Where is the train station, please? 'La gare' = the station; 's'il vous plaît' is the formal please."},
+  {"id":"fr-657","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Il fait beau aujourd'hui.","q":"What did you hear?","opts":["Il fait chaud aujourd'hui.","Il fait beau demain.","Il fait beau aujourd'hui.","Il fait froid ce soir."],"ans":2,"exp":"'Il fait beau aujourd'hui.' = It is nice (weather) today. 'Beau' = nice/fine; 'chaud' = hot; 'froid' = cold. 'Aujourd'hui' = today; 'demain' = tomorrow."},
+  {"id":"fr-658","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Je voudrais un café et un croissant, s'il vous plaît.","q":"What did you hear?","opts":["Je voudrais un thé et un croissant, s'il vous plaît.","Je voudrais un café et un croissant, s'il vous plaît.","Je voudrais un café et un pain au chocolat, s'il vous plaît.","Je prends un café et un croissant, s'il vous plaît."],"ans":1,"exp":"'Je voudrais un café et un croissant, s'il vous plaît.' = I would like a coffee and a croissant, please. 'Je voudrais' (conditional, polite) vs 'je prends' (I'll take — also common in cafés)."},
+  {"id":"fr-659","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Tournez à gauche, puis allez tout droit.","q":"What did you hear?","opts":["Tournez à droite, puis allez tout droit.","Tournez à gauche, puis prenez la première rue.","Tournez à gauche, puis allez tout droit.","Continuez tout droit, puis tournez à gauche."],"ans":2,"exp":"'Tournez à gauche, puis allez tout droit.' = Turn left, then go straight ahead. 'À gauche' = to the left; 'à droite' = to the right; 'tout droit' = straight ahead."},
+  {"id":"fr-660","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"C'est combien, s'il vous plaît ?","q":"What did you hear?","opts":["C'est comment, s'il vous plaît ?","Ça coûte combien, s'il vous plaît ?","C'est combien pour deux, s'il vous plaît ?","C'est combien, s'il vous plaît ?"],"ans":3,"exp":"'C'est combien ?' = How much is it? A key phrase for shopping. 'Combien' = how much/many. 'Ça coûte combien ?' is also correct and very common."},
+  {"id":"fr-661","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Le musée est fermé le lundi.","q":"What did you hear?","opts":["Le musée est ouvert le lundi.","Le musée est fermé le mardi.","Le musée est fermé le lundi.","Le marché est fermé le lundi."],"ans":2,"exp":"'Le musée est fermé le lundi.' = The museum is closed on Mondays. 'Fermé' = closed; 'ouvert' = open. 'Le lundi' (with article) = on Mondays (habitual)."},
+  {"id":"fr-662","topic":"fr-listen","lesson":"fr-l65","type":"listen","audio":"Je dois prendre le bus numéro douze.","q":"What did you hear?","opts":["Je dois prendre le bus numéro deux.","Je dois prendre le train numéro douze.","Je dois prendre le bus numéro vingt.","Je dois prendre le bus numéro douze."],"ans":3,"exp":"'Je dois prendre le bus numéro douze.' = I must take bus number twelve. 'Devoir' (must/have to) + infinitive. 'Douze' = 12; 'deux' = 2; 'vingt' = 20."},
+
+  // A2 — conversational phrases and sentences (fr-663 to fr-668)
+  {"id":"fr-663","topic":"fr-listen","lesson":"fr-l66","type":"listen","audio":"Hier soir, je suis allé au cinéma avec mes amis.","q":"What did you hear?","opts":["Hier matin, je suis allé au cinéma avec mes amis.","Hier soir, je suis allé au théâtre avec mes amis.","Hier soir, je suis allée au cinéma avec ma famille.","Hier soir, je suis allé au cinéma avec mes amis."],"ans":3,"exp":"'Hier soir, je suis allé au cinéma avec mes amis.' = Yesterday evening, I went to the cinema with my friends. Passé composé with être (allé). 'Hier soir' = yesterday evening; 'hier matin' = yesterday morning."},
+  {"id":"fr-664","topic":"fr-listen","lesson":"fr-l66","type":"listen","audio":"Est-ce que tu peux m'aider, s'il te plaît ?","q":"What did you hear?","opts":["Est-ce que vous pouvez m'aider, s'il vous plaît ?","Est-ce que tu veux m'aider, s'il te plaît ?","Est-ce que tu peux m'aider, s'il te plaît ?","Pourrais-tu m'aider, s'il te plaît ?"],"ans":2,"exp":"'Est-ce que tu peux m'aider, s'il te plaît ?' = Can you help me, please? (informal). 'Tu peux' (you can, informal) vs 'vous pouvez' (formal). 'Veux' = want vs 'peux' = can."},
+  {"id":"fr-665","topic":"fr-listen","lesson":"fr-l66","type":"listen","audio":"Je prends le train de huit heures trente.","q":"What did you hear?","opts":["Je prends le train de sept heures trente.","Je prends le bus de huit heures trente.","Je prends le train de huit heures et demie.","Je prends le train de huit heures trente."],"ans":3,"exp":"'Je prends le train de huit heures trente.' = I'm taking the eight thirty train. '8h30' can be said as 'huit heures trente' or 'huit heures et demie' — both are correct. 'Trente' = thirty."},
+  {"id":"fr-666","topic":"fr-listen","lesson":"fr-l66","type":"listen","audio":"Nous avons réservé une table pour deux personnes.","q":"What did you hear?","opts":["Nous avons réservé une chambre pour deux personnes.","Nous avons réservé une table pour quatre personnes.","Nous voudrions réserver une table pour deux personnes.","Nous avons réservé une table pour deux personnes."],"ans":3,"exp":"'Nous avons réservé une table pour deux personnes.' = We have reserved a table for two people. 'Réserver' = to reserve/book. 'Une table' vs 'une chambre' (a room). 'Deux' = two; 'quatre' = four."},
+  {"id":"fr-667","topic":"fr-listen","lesson":"fr-l66","type":"listen","audio":"Qu'est-ce que vous recommandez comme plat principal ?","q":"What did you hear?","opts":["Qu'est-ce que vous recommandez comme dessert ?","Qu'est-ce que vous conseillez comme plat principal ?","Qu'est-ce que vous recommandez comme entrée ?","Qu'est-ce que vous recommandez comme plat principal ?"],"ans":3,"exp":"'Qu'est-ce que vous recommandez comme plat principal ?' = What do you recommend as a main course? 'Recommander' and 'conseiller' are both used for 'to recommend'. 'Plat principal' = main course; 'entrée' = starter; 'dessert' = dessert."},
+  {"id":"fr-668","topic":"fr-listen","lesson":"fr-l66","type":"listen","audio":"Il pleut des cordes depuis ce matin.","q":"What did you hear?","opts":["Il pleut depuis ce matin.","Il pleut des cordes depuis hier soir.","Il pleut à verse depuis ce matin.","Il pleut des cordes depuis ce matin."],"ans":3,"exp":"'Il pleut des cordes depuis ce matin.' = It has been pouring with rain since this morning. 'Pleuvoir des cordes' = to rain cats and dogs (lit. to rain ropes). 'Depuis' = since/for. 'À verse' = in torrents (synonym)."},
+
+  // B1 — complex sentences (fr-669 to fr-672)
+  {"id":"fr-669","topic":"fr-listen","lesson":"fr-l67","type":"listen","audio":"Je ne suis pas sûr que ce soit la bonne décision.","q":"What did you hear?","opts":["Je ne suis pas sûr que c'est la bonne décision.","Je ne suis pas certain que ce soit la bonne solution.","Je ne suis pas sûr que ce soit la bonne décision.","Je ne suis pas sûr que ce soit la bonne direction."],"ans":2,"exp":"'Je ne suis pas sûr que ce soit la bonne décision.' = I'm not sure that it is the right decision. 'Que ce soit' uses the subjunctive (être → soit) because of the doubt expressed by 'ne pas être sûr'. 'Décision' vs 'solution' vs 'direction'."},
+  {"id":"fr-670","topic":"fr-listen","lesson":"fr-l67","type":"listen","audio":"Si j'avais su, je n'aurais pas accepté ce poste.","q":"What did you hear?","opts":["Si j'avais su, je n'aurais pas refusé ce poste.","Si j'avais pu, je n'aurais pas accepté ce poste.","Si j'avais su, je n'aurais pas accepté cet emploi.","Si j'avais su, je n'aurais pas accepté ce poste."],"ans":3,"exp":"'Si j'avais su, je n'aurais pas accepté ce poste.' = If I had known, I wouldn't have accepted this job. Past conditional: si + plus-que-parfait, then conditionnel passé. 'Poste' = post/position; 'emploi' = employment/job (near synonym)."},
+  {"id":"fr-671","topic":"fr-listen","lesson":"fr-l67","type":"listen","audio":"Il faut que tu finisses tes devoirs avant de sortir.","q":"What did you hear?","opts":["Il faut que tu finisses tes devoirs avant de dîner.","Il faut que vous finissiez vos devoirs avant de sortir.","Il faut que tu fasses tes devoirs avant de sortir.","Il faut que tu finisses tes devoirs avant de sortir."],"ans":3,"exp":"'Il faut que tu finisses tes devoirs avant de sortir.' = You must finish your homework before going out. 'Il faut que' + subjunctive (finir → finisses). 'Avant de' + infinitive. Compare 'finisses' (finish) vs 'fasses' (do/make)."},
+  {"id":"fr-672","topic":"fr-listen","lesson":"fr-l67","type":"listen","audio":"C'est en forgeant qu'on devient forgeron.","q":"What did you hear?","opts":["C'est en travaillant qu'on devient fort.","C'est en forgeant qu'on devient forgeron.","C'est en pratiquant qu'on devient expert.","C'est en lisant qu'on devient lettré."],"ans":1,"exp":"'C'est en forgeant qu'on devient forgeron.' = Practice makes perfect (lit. It is by forging that one becomes a blacksmith). Uses 'c'est en + gérondif + que'. A classic French proverb about learning through doing."}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -8001,6 +8029,146 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "opts": ["Il faut que sois tu à l'heure", "Il faut que tu sois à l'heure", "Que il faut tu sois à l'heure", "Il faut tu que sois à l'heure"],
             "ans": 1,
             "exp": "Il faut que tu sois à l'heure. After 'il faut que', normal subject + verb order follows: tu sois (subjunctive of être). The subjunctive is triggered by 'il faut que' but the word order inside the clause is standard."
+          }
+        ]
+      },
+      {
+        "id": "fr-l67",
+        "title": "Écoute active — B1",
+        "icon": "🎧",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Listening for the subjunctive",
+            "body": "<p>At B1 level, listen for subjunctive triggers — verbs that change the verb ending:</p><ul><li><strong>Il faut que</strong> + subjonctif: <em>Il faut que tu <strong>finisses</strong>.</em></li><li><strong>Je ne suis pas sûr que</strong> + subjonctif: <em>Je ne suis pas sûr que ce <strong>soit</strong> vrai.</em></li><li>Subjunctive endings for -ER verbs sound like the ils/elles form: fasse, aille, soit.</li></ul><p>Train your ear to catch <em>soit</em> (subjunctive of être) vs <em>est</em> (indicative).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Listening for the conditionnel passé",
+            "body": "<p>The conditionnel passé sounds like: conditional of avoir/être + past participle.</p><ul><li><em>Je n'<strong>aurais</strong> pas accepté.</em> = I wouldn't have accepted.</li><li><em>Il <strong>serait</strong> parti.</em> = He would have left.</li></ul><p>Key pattern: <strong>si + plus-que-parfait</strong> → <strong>conditionnel passé</strong></p><p>Listen for 'aurais/aurait/aurions' (avoir) and 'serais/serait' (être) before a past participle — that signals a conditionnel passé.</p>"
+          },
+          {
+            "type": "info",
+            "title": "French proverbs and set phrases",
+            "body": "<p>B1 listening often includes idiomatic expressions:</p><ul><li><strong>C'est en forgeant qu'on devient forgeron.</strong> = Practice makes perfect.</li><li><strong>Il pleut des cordes.</strong> = It's raining cats and dogs.</li><li><strong>Avoir le cafard.</strong> = To feel blue/down.</li></ul><p>Key: the gérondif (<em>en + -ant</em>) expresses 'by doing something': <em>en forgeant</em> = by forging/smithing.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "In 'Je ne suis pas sûr que ce soit vrai', why is 'soit' used instead of 'est'?",
+            "opts": ["It is a typo — 'est' is correct here", "Because 'ne pas être sûr que' triggers the subjunctive", "Because 'soit' is the future tense of être", "Because the sentence is negative"],
+            "ans": 1,
+            "exp": "'Soit' is the subjunctive of être. Verbs of doubt and uncertainty (ne pas être sûr que, douter que) trigger the subjunctive in the following clause. 'Est' would be used after certainty: 'Je suis sûr que c'est vrai.'"
+          },
+          {
+            "q": "What tense is used in 'Si j'avais su, je n'aurais pas accepté'?",
+            "opts": ["Imparfait + conditionnel présent", "Plus-que-parfait + conditionnel passé", "Passé composé + futur antérieur", "Subjonctif + conditionnel présent"],
+            "ans": 1,
+            "exp": "This is the past hypothetical: si + plus-que-parfait (j'avais su), then conditionnel passé (je n'aurais pas accepté). This structure expresses something that didn't happen: 'If I had known (but I didn't), I wouldn't have accepted (but I did).'"
+          },
+          {
+            "q": "What does 'C'est en forgeant qu'on devient forgeron' literally mean?",
+            "opts": ["Only blacksmiths can make things", "It is by forging that one becomes a blacksmith", "One must forge a new path in life", "Working with iron makes you strong"],
+            "ans": 1,
+            "exp": "Literal: 'It is by forging that one becomes a blacksmith.' The proverb means practice makes perfect. Structure: c'est en + gérondif (forgeant) + que = it is by [doing X] that..."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fr-a1-listen",
+    "title": "A1 Listening",
+    "icon": "🎧",
+    "lessons": [
+      {
+        "id": "fr-l65",
+        "title": "Écoute active — A1",
+        "icon": "🎧",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Listening to French: getting started",
+            "body": "<p>Your ear needs training — French has several features that differ from English:</p><ul><li><strong>Liaison</strong>: final consonants link to the next word: <em>vous_avez, ils_ont</em>.</li><li><strong>Enchaînement</strong>: words blend together in a phrase — 'je m'appelle' sounds like one word.</li><li><strong>Silent letters</strong>: final consonants (except C, R, F, L) are usually silent: <em>allé, vous</em>.</li></ul><p>Strategy: listen for key words like nouns and verbs — don't try to catch every syllable at first.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Numbers and time words",
+            "body": "<p>Numbers that sound alike cause common listening errors:</p><table><tr><th>Number</th><th>French</th><th>Sounds like</th></tr><tr><td>2</td><td>deux</td><td>'duh'</td></tr><tr><td>12</td><td>douze</td><td>'dooz'</td></tr><tr><td>20</td><td>vingt</td><td>'van'</td></tr><tr><td>30</td><td>trente</td><td>'tront'</td></tr></table><p>Time clues: <em>aujourd'hui</em> (today), <em>demain</em> (tomorrow), <em>hier</em> (yesterday), <em>ce soir</em> (this evening).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Common places and directions",
+            "body": "<p>Key place words you'll hear in A1 listening:</p><ul><li><strong>la gare</strong> = train station</li><li><strong>le café / le restaurant</strong> = café / restaurant</li><li><strong>la poste</strong> = post office</li><li><strong>le musée</strong> = museum</li></ul><p>Direction words: <em>à gauche</em> (left), <em>à droite</em> (right), <em>tout droit</em> (straight ahead), <em>tournez</em> (turn), <em>continuez</em> (continue).</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "Tap Listen and choose what you hear: 'Bonjour' or 'Bonsoir'?",
+            "opts": ["Bonjour (good day / hello)", "Bonsoir (good evening)", "Bon courage (good luck)", "Bonne nuit (good night)"],
+            "ans": 0,
+            "exp": "'Bonjour' is used during the day; 'bonsoir' in the evening. The key difference is the vowel: 'jour' (rhymes with 'poor') vs 'soir' (rhymes with 'war')."
+          },
+          {
+            "q": "You hear a number. Which is 'douze' (12)?",
+            "opts": ["deux (2)", "dix (10)", "douze (12)", "vingt (20)"],
+            "ans": 2,
+            "exp": "'Douze' = twelve. Common confusion: 'deux' (2), 'dix' (10), 'douze' (12), 'vingt' (20). Listen for the 'z' sound in 'douze' that distinguishes it from 'deux'."
+          },
+          {
+            "q": "Someone says 'Tournez à gauche, puis allez tout droit.' What should you do?",
+            "opts": ["Go straight ahead, then turn left", "Turn right, then go straight ahead", "Turn left, then go straight ahead", "Turn left, then turn right"],
+            "ans": 2,
+            "exp": "'Tournez à gauche' = turn left; 'puis' = then; 'allez tout droit' = go straight ahead. The order is: first turn left, then go straight. 'Gauche' = left; 'droite' = right."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fr-a2-listen",
+    "title": "A2 Listening",
+    "icon": "🎧",
+    "lessons": [
+      {
+        "id": "fr-l66",
+        "title": "Écoute active — A2",
+        "icon": "🎧",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Listening for tense clues",
+            "body": "<p>At A2 level, recognising tense markers helps you understand when something happened:</p><ul><li><strong>Passé composé</strong>: je suis allé, j'ai mangé — you'll hear the auxiliary (suis/ai) before the past participle.</li><li><strong>Imparfait</strong>: c'était, il faisait — often ends in '-ait' sound.</li><li><strong>Futur proche</strong>: je vais + infinitive — signals a near-future action.</li></ul><p>Time markers: <em>hier</em> (yesterday), <em>la semaine dernière</em> (last week), <em>demain</em> (tomorrow).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Formal vs informal register",
+            "body": "<p>Listen for these clues to tell formal (vous) from informal (tu):</p><table><tr><th>Formal</th><th>Informal</th></tr><tr><td>vous pouvez</td><td>tu peux</td></tr><tr><td>s'il vous plaît</td><td>s'il te plaît</td></tr><tr><td>Comment allez-vous ?</td><td>Comment vas-tu ? / Ça va ?</td></tr></table><p>In shops, restaurants and with strangers: expect <em>vous</em>. With friends and children: expect <em>tu</em>.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Restaurant and café vocabulary in context",
+            "body": "<p>Key phrases you'll hear in a French restaurant or café:</p><ul><li><em>Je voudrais / Je prends...</em> — I would like / I'll have...</li><li><em>Qu'est-ce que vous recommandez ?</em> — What do you recommend?</li><li><em>Nous avons réservé une table pour...</em> — We have reserved a table for...</li><li><em>L'addition, s'il vous plaît.</em> — The bill, please.</li></ul><p>Note: <em>entrée</em> = starter (NOT entrance); <em>plat principal</em> = main course; <em>dessert</em> = dessert.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "You hear 'Hier soir, je suis allé au cinéma.' When did this happen?",
+            "opts": ["This evening", "Yesterday evening", "Last week", "Tomorrow evening"],
+            "ans": 1,
+            "exp": "'Hier soir' = yesterday evening. 'Hier' = yesterday; 'soir' = evening. The passé composé 'suis allé' confirms a completed past action. Compare: 'ce soir' (this evening), 'demain soir' (tomorrow evening)."
+          },
+          {
+            "q": "Someone says 's'il te plaît'. What register is this?",
+            "opts": ["Formal (vouvoiement)", "Informal (tutoiement)", "Neither — this is a fixed phrase", "Regional dialect"],
+            "ans": 1,
+            "exp": "'S'il te plaît' uses 'te', the informal object pronoun, making it tutoiement (informal register). The formal equivalent is 's'il vous plaît' with 'vous'. Both mean please."
+          },
+          {
+            "q": "At a restaurant you hear 'Nous avons réservé une table pour quatre.' How many people?",
+            "opts": ["Two", "Three", "Four", "Six"],
+            "ans": 2,
+            "exp": "'Pour quatre' = for four. 'Quatre' = 4. Common numbers for restaurant reservations: deux (2), trois (3), quatre (4), cinq (5), six (6)."
           }
         ]
       }

@@ -68,10 +68,12 @@
     if (n >= 527 && n <= 543) return 'A1'; // dialogue/scenario: basic real-world conversations
     if (n >= 576 && n <= 591) return 'A1'; // pronunciation: vowels, silent letters, basic sounds
     if (n >= 618 && n <= 633) return 'A1'; // word order: basic SVO sentences
+    if (n >= 653 && n <= 662) return 'A1'; // listen: greetings and basic phrases
     // B1 — Intermédiaire
     if (n >= 561 && n <= 575) return 'B1'; // dialogue/scenario: formal and complex situations
     if (n >= 606 && n <= 617) return 'B1'; // pronunciation: register, intonation, schwa
     if (n >= 646 && n <= 652) return 'B1'; // word order: relative clauses, subjunctive, complex
+    if (n >= 669 && n <= 672) return 'B1'; // listen: complex sentences, proverbs
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
     if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
@@ -1089,6 +1091,33 @@
     render();
   }
 
+  /* ── TTS (French pronunciation via Web Speech API) ── */
+  let _frVoice = null;
+  function getFrenchVoice() {
+    if (_frVoice) return _frVoice;
+    const voices = (window.speechSynthesis && window.speechSynthesis.getVoices) ? window.speechSynthesis.getVoices() : [];
+    _frVoice = voices.find(v => v.lang === 'fr-FR') || voices.find(v => v.lang.startsWith('fr')) || null;
+    return _frVoice;
+  }
+  function speakFrench(text, onPlay, onDone) {
+    if (!window.speechSynthesis || !text) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'fr-FR';
+    utt.rate = 0.85;
+    const voice = getFrenchVoice();
+    if (voice) utt.voice = voice;
+    if (onPlay) onPlay();
+    const finish = () => { if (onDone) onDone(); };
+    utt.onend = finish;
+    utt.onerror = finish;
+    window.speechSynthesis.speak(utt);
+  }
+  function stopSpeech() { if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+  if (typeof window !== 'undefined' && window.speechSynthesis && 'onvoiceschanged' in window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => { _frVoice = null; };
+  }
+
   /* ── AUDIO ── */
   let audioCtx = null;
   function ensureAudio() {
@@ -1174,6 +1203,7 @@
   function isScenario(q) { return q && q.type === 'scenario'; }
   function isGapFill(q) { return q && q.type === 'gapfill'; }
   function isWordOrder(q) { return q && q.type === 'wordorder'; }
+  function isListen(q) { return q && q.type === 'listen'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
 
   // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
@@ -2032,6 +2062,7 @@
     }
   }
   function nextPractice() {
+    stopSpeech();
     if (State.current + 1 >= State.questions.length) finishPractice();
     else {
       State.current++; State.answered = null; State.numericDraft = '';
@@ -2913,6 +2944,7 @@
     if (isScenario(q)) return renderScenarioQuiz(q);
     if (isGapFill(q)) return renderGapFillQuiz(q);
     if (isWordOrder(q)) return renderWordOrderQuiz(q);
+    if (isListen(q)) return renderListenQuiz(q);
     return renderPracticeMcqOrNumeric(q);
   }
 
@@ -3002,6 +3034,7 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
+          ${_activeSubjectId === 'french' && isFrToEnMcq(q) ? `<button class="tts-q-btn" id="ttsQBtn" type="button" aria-label="Hear French pronunciation" title="Listen to pronunciation">🔊 ${escapeHtml(extractFrenchTerm(q) || '')}</button>` : ''}
           ${(() => {
             if (State.mode !== 'practice' || State.answered !== null) return '';
             const sk = skillById(q.skill);
@@ -3369,6 +3402,63 @@
           <div class="wo-bank">${bankHtml}</div>
           ${!answered ? `<button class="next-btn" id="submitWordOrderBtn" type="button" ${placed.length < q.words.length ? 'disabled' : ''}>Submit ✓</button>` : ''}
           ${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderListenQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🎧', short: 'Écoute' };
+    const answered = State.answered !== null;
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo,10)>=10?'mega':State.combo>=5?'hot':'warm'}">🔥 ${State.combo}x combo</span>` : '';
+    const optionsHtml = `<div class="options" role="radiogroup" aria-label="Answer options">
+      ${q.opts.map((opt, i) => {
+        let cls = '';
+        if (answered) {
+          if (i === q.ans) cls = 'correct';
+          else if (i === State.answered && State.answered !== q.ans) cls = 'wrong';
+        }
+        return `<button class="option-btn ${cls}" type="button" data-opt="${i}" ${answered ? 'disabled' : ''} role="radio" aria-checked="${State.answered === i}">
+          <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
+        </button>`;
+      }).join('')}
+    </div>${renderKeyboardHintMCQ(answered)}`;
+    let feedbackHtml = '';
+    if (answered) {
+      const correct = State.answered === q.ans;
+      feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
+        ${!correct ? `<span>You chose: ${escapeHtml(q.opts[State.answered])}</span><br><span>Correct: ${escapeHtml(q.opts[q.ans])}</span><br><br>` : ''}
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="listen-pill">🎧 Écoute</span>
+            ${comboEl}
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="${confident ? 'Unmark confident' : 'Mark as confident'}">✓</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
+          <div class="listen-prompt">
+            <button class="listen-play-btn" id="listenPlayBtn" type="button" aria-label="Play audio clip">🔊 Tap to Listen</button>
+            <p class="listen-hint">${escapeHtml(q.q || 'What did you hear?')}</p>
+            ${answered ? `<button class="tts-replay-btn" id="ttsReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
+          </div>
+          ${optionsHtml}${feedbackHtml}
         </div>
       </div>
     </div>`;
@@ -4223,6 +4313,34 @@
       State.woDraft.splice(pos, 1); render();
     }));
     bind('submitWordOrderBtn', 'click', submitWordOrder);
+    // TTS / Listen interactions
+    const listenPlayBtn = document.getElementById('listenPlayBtn');
+    if (listenPlayBtn) {
+      const lq = State.questions[State.current];
+      listenPlayBtn.addEventListener('click', () => {
+        speakFrench(lq.audio || lq.q,
+          () => { listenPlayBtn.textContent = '⏹ Playing…'; listenPlayBtn.classList.add('is-playing'); },
+          () => { listenPlayBtn.textContent = '🔊 Tap to Listen'; listenPlayBtn.classList.remove('is-playing'); }
+        );
+      });
+    }
+    const ttsReplayBtn = document.getElementById('ttsReplayBtn');
+    if (ttsReplayBtn) {
+      const lq = State.questions[State.current];
+      ttsReplayBtn.addEventListener('click', () => speakFrench(lq.audio || lq.q));
+    }
+    const ttsQBtn = document.getElementById('ttsQBtn');
+    if (ttsQBtn) {
+      const tq = State.questions[State.current];
+      const ttsText = isFrToEnMcq(tq) ? extractFrenchTerm(tq) : null;
+      if (ttsText) ttsQBtn.addEventListener('click', () => {
+        const origLabel = ttsQBtn.textContent;
+        speakFrench(ttsText,
+          () => { ttsQBtn.textContent = '⏹'; ttsQBtn.classList.add('is-playing'); },
+          () => { ttsQBtn.textContent = origLabel; ttsQBtn.classList.remove('is-playing'); }
+        );
+      });
+    }
     // T-account playground
     const taDesc = document.getElementById('taDesc');
     if (taDesc) taDesc.addEventListener('input', (e) => { State.taForm.desc = e.target.value; });
