@@ -4736,6 +4736,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "Colour adjectives come AFTER the noun: une voiture rouge. Only BAGS adjectives (Beauty, Age, Goodness, Size) come before: une belle voiture, une petite voiture."
           }
         ]
+      },
+      {
+        "id": "fr-l65",
+        "title": "Écoute active — A1",
+        "icon": "🎧",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Listening to French: getting started",
+            "body": "<p>Your ear needs training — French has several features that differ from English:</p><ul><li><strong>Liaison</strong>: final consonants link to the next word: <em>vous_avez, ils_ont</em>.</li><li><strong>Enchaînement</strong>: words blend together in a phrase — 'je m'appelle' sounds like one word.</li><li><strong>Silent letters</strong>: final consonants (except C, R, F, L) are usually silent: <em>allé, vous</em>.</li></ul><p>Strategy: listen for key words like nouns and verbs — don't try to catch every syllable at first.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Numbers and time words",
+            "body": "<p>Numbers that sound alike cause common listening errors:</p><table><tr><th>Number</th><th>French</th><th>Sounds like</th></tr><tr><td>2</td><td>deux</td><td>'duh'</td></tr><tr><td>12</td><td>douze</td><td>'dooz'</td></tr><tr><td>20</td><td>vingt</td><td>'van'</td></tr><tr><td>30</td><td>trente</td><td>'tront'</td></tr></table><p>Time clues: <em>aujourd'hui</em> (today), <em>demain</em> (tomorrow), <em>hier</em> (yesterday), <em>ce soir</em> (this evening).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Common places and directions",
+            "body": "<p>Key place words you'll hear in A1 listening:</p><ul><li><strong>la gare</strong> = train station</li><li><strong>le café / le restaurant</strong> = café / restaurant</li><li><strong>la poste</strong> = post office</li><li><strong>le musée</strong> = museum</li></ul><p>Direction words: <em>à gauche</em> (left), <em>à droite</em> (right), <em>tout droit</em> (straight ahead), <em>tournez</em> (turn), <em>continuez</em> (continue).</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "Tap Listen and choose what you hear: 'Bonjour' or 'Bonsoir'?",
+            "opts": ["Bonjour (good day / hello)", "Bonsoir (good evening)", "Bon courage (good luck)", "Bonne nuit (good night)"],
+            "ans": 0,
+            "exp": "'Bonjour' is used during the day; 'bonsoir' in the evening. The key difference is the vowel: 'jour' (rhymes with 'poor') vs 'soir' (rhymes with 'war')."
+          },
+          {
+            "q": "You hear a number. Which is 'douze' (12)?",
+            "opts": ["deux (2)", "dix (10)", "douze (12)", "vingt (20)"],
+            "ans": 2,
+            "exp": "'Douze' = twelve. Common confusion: 'deux' (2), 'dix' (10), 'douze' (12), 'vingt' (20). Listen for the 'z' sound in 'douze' that distinguishes it from 'deux'."
+          },
+          {
+            "q": "Someone says 'Tournez à gauche, puis allez tout droit.' What should you do?",
+            "opts": ["Go straight ahead, then turn left", "Turn right, then go straight ahead", "Turn left, then go straight ahead", "Turn left, then turn right"],
+            "ans": 2,
+            "exp": "'Tournez à gauche' = turn left; 'puis' = then; 'allez tout droit' = go straight ahead. The order is: first turn left, then go straight. 'Gauche' = left; 'droite' = right."
+          }
+        ]
       }
     ]
   },
@@ -6917,6 +6959,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "Belle (beautiful) is a BAGS adjective — it goes before the noun. Rouge (red) is a colour adjective — it goes after the noun. BAGS = Beauty, Age, Goodness, Size."
           }
         ]
+      },
+      {
+        "id": "fr-l66",
+        "title": "Écoute active — A2",
+        "icon": "🎧",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Listening for tense clues",
+            "body": "<p>At A2 level, recognising tense markers helps you understand when something happened:</p><ul><li><strong>Passé composé</strong>: je suis allé, j'ai mangé — you'll hear the auxiliary (suis/ai) before the past participle.</li><li><strong>Imparfait</strong>: c'était, il faisait — often ends in '-ait' sound.</li><li><strong>Futur proche</strong>: je vais + infinitive — signals a near-future action.</li></ul><p>Time markers: <em>hier</em> (yesterday), <em>la semaine dernière</em> (last week), <em>demain</em> (tomorrow).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Formal vs informal register",
+            "body": "<p>Listen for these clues to tell formal (vous) from informal (tu):</p><table><tr><th>Formal</th><th>Informal</th></tr><tr><td>vous pouvez</td><td>tu peux</td></tr><tr><td>s'il vous plaît</td><td>s'il te plaît</td></tr><tr><td>Comment allez-vous ?</td><td>Comment vas-tu ? / Ça va ?</td></tr></table><p>In shops, restaurants and with strangers: expect <em>vous</em>. With friends and children: expect <em>tu</em>.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Restaurant and café vocabulary in context",
+            "body": "<p>Key phrases you'll hear in a French restaurant or café:</p><ul><li><em>Je voudrais / Je prends...</em> — I would like / I'll have...</li><li><em>Qu'est-ce que vous recommandez ?</em> — What do you recommend?</li><li><em>Nous avons réservé une table pour...</em> — We have reserved a table for...</li><li><em>L'addition, s'il vous plaît.</em> — The bill, please.</li></ul><p>Note: <em>entrée</em> = starter (NOT entrance); <em>plat principal</em> = main course; <em>dessert</em> = dessert.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "You hear 'Hier soir, je suis allé au cinéma.' When did this happen?",
+            "opts": ["This evening", "Yesterday evening", "Last week", "Tomorrow evening"],
+            "ans": 1,
+            "exp": "'Hier soir' = yesterday evening. 'Hier' = yesterday; 'soir' = evening. The passé composé 'suis allé' confirms a completed past action. Compare: 'ce soir' (this evening), 'demain soir' (tomorrow evening)."
+          },
+          {
+            "q": "Someone says 's'il te plaît'. What register is this?",
+            "opts": ["Formal (vouvoiement)", "Informal (tutoiement)", "Neither — this is a fixed phrase", "Regional dialect"],
+            "ans": 1,
+            "exp": "'S'il te plaît' uses 'te', the informal object pronoun, making it tutoiement (informal register). The formal equivalent is 's'il vous plaît' with 'vous'. Both mean please."
+          },
+          {
+            "q": "At a restaurant you hear 'Nous avons réservé une table pour quatre.' How many people?",
+            "opts": ["Two", "Three", "Four", "Six"],
+            "ans": 2,
+            "exp": "'Pour quatre' = for four. 'Quatre' = 4. Common numbers for restaurant reservations: deux (2), trois (3), quatre (4), cinq (5), six (6)."
+          }
+        ]
       }
     ]
   },
@@ -8076,102 +8160,4 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
       }
     ]
   },
-  {
-    "id": "fr-a1-listen",
-    "title": "A1 Listening",
-    "icon": "🎧",
-    "lessons": [
-      {
-        "id": "fr-l65",
-        "title": "Écoute active — A1",
-        "icon": "🎧",
-        "cards": [
-          {
-            "type": "info",
-            "title": "Listening to French: getting started",
-            "body": "<p>Your ear needs training — French has several features that differ from English:</p><ul><li><strong>Liaison</strong>: final consonants link to the next word: <em>vous_avez, ils_ont</em>.</li><li><strong>Enchaînement</strong>: words blend together in a phrase — 'je m'appelle' sounds like one word.</li><li><strong>Silent letters</strong>: final consonants (except C, R, F, L) are usually silent: <em>allé, vous</em>.</li></ul><p>Strategy: listen for key words like nouns and verbs — don't try to catch every syllable at first.</p>"
-          },
-          {
-            "type": "info",
-            "title": "Numbers and time words",
-            "body": "<p>Numbers that sound alike cause common listening errors:</p><table><tr><th>Number</th><th>French</th><th>Sounds like</th></tr><tr><td>2</td><td>deux</td><td>'duh'</td></tr><tr><td>12</td><td>douze</td><td>'dooz'</td></tr><tr><td>20</td><td>vingt</td><td>'van'</td></tr><tr><td>30</td><td>trente</td><td>'tront'</td></tr></table><p>Time clues: <em>aujourd'hui</em> (today), <em>demain</em> (tomorrow), <em>hier</em> (yesterday), <em>ce soir</em> (this evening).</p>"
-          },
-          {
-            "type": "info",
-            "title": "Common places and directions",
-            "body": "<p>Key place words you'll hear in A1 listening:</p><ul><li><strong>la gare</strong> = train station</li><li><strong>le café / le restaurant</strong> = café / restaurant</li><li><strong>la poste</strong> = post office</li><li><strong>le musée</strong> = museum</li></ul><p>Direction words: <em>à gauche</em> (left), <em>à droite</em> (right), <em>tout droit</em> (straight ahead), <em>tournez</em> (turn), <em>continuez</em> (continue).</p>"
-          }
-        ],
-        "check": [
-          {
-            "q": "Tap Listen and choose what you hear: 'Bonjour' or 'Bonsoir'?",
-            "opts": ["Bonjour (good day / hello)", "Bonsoir (good evening)", "Bon courage (good luck)", "Bonne nuit (good night)"],
-            "ans": 0,
-            "exp": "'Bonjour' is used during the day; 'bonsoir' in the evening. The key difference is the vowel: 'jour' (rhymes with 'poor') vs 'soir' (rhymes with 'war')."
-          },
-          {
-            "q": "You hear a number. Which is 'douze' (12)?",
-            "opts": ["deux (2)", "dix (10)", "douze (12)", "vingt (20)"],
-            "ans": 2,
-            "exp": "'Douze' = twelve. Common confusion: 'deux' (2), 'dix' (10), 'douze' (12), 'vingt' (20). Listen for the 'z' sound in 'douze' that distinguishes it from 'deux'."
-          },
-          {
-            "q": "Someone says 'Tournez à gauche, puis allez tout droit.' What should you do?",
-            "opts": ["Go straight ahead, then turn left", "Turn right, then go straight ahead", "Turn left, then go straight ahead", "Turn left, then turn right"],
-            "ans": 2,
-            "exp": "'Tournez à gauche' = turn left; 'puis' = then; 'allez tout droit' = go straight ahead. The order is: first turn left, then go straight. 'Gauche' = left; 'droite' = right."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "fr-a2-listen",
-    "title": "A2 Listening",
-    "icon": "🎧",
-    "lessons": [
-      {
-        "id": "fr-l66",
-        "title": "Écoute active — A2",
-        "icon": "🎧",
-        "cards": [
-          {
-            "type": "info",
-            "title": "Listening for tense clues",
-            "body": "<p>At A2 level, recognising tense markers helps you understand when something happened:</p><ul><li><strong>Passé composé</strong>: je suis allé, j'ai mangé — you'll hear the auxiliary (suis/ai) before the past participle.</li><li><strong>Imparfait</strong>: c'était, il faisait — often ends in '-ait' sound.</li><li><strong>Futur proche</strong>: je vais + infinitive — signals a near-future action.</li></ul><p>Time markers: <em>hier</em> (yesterday), <em>la semaine dernière</em> (last week), <em>demain</em> (tomorrow).</p>"
-          },
-          {
-            "type": "info",
-            "title": "Formal vs informal register",
-            "body": "<p>Listen for these clues to tell formal (vous) from informal (tu):</p><table><tr><th>Formal</th><th>Informal</th></tr><tr><td>vous pouvez</td><td>tu peux</td></tr><tr><td>s'il vous plaît</td><td>s'il te plaît</td></tr><tr><td>Comment allez-vous ?</td><td>Comment vas-tu ? / Ça va ?</td></tr></table><p>In shops, restaurants and with strangers: expect <em>vous</em>. With friends and children: expect <em>tu</em>.</p>"
-          },
-          {
-            "type": "info",
-            "title": "Restaurant and café vocabulary in context",
-            "body": "<p>Key phrases you'll hear in a French restaurant or café:</p><ul><li><em>Je voudrais / Je prends...</em> — I would like / I'll have...</li><li><em>Qu'est-ce que vous recommandez ?</em> — What do you recommend?</li><li><em>Nous avons réservé une table pour...</em> — We have reserved a table for...</li><li><em>L'addition, s'il vous plaît.</em> — The bill, please.</li></ul><p>Note: <em>entrée</em> = starter (NOT entrance); <em>plat principal</em> = main course; <em>dessert</em> = dessert.</p>"
-          }
-        ],
-        "check": [
-          {
-            "q": "You hear 'Hier soir, je suis allé au cinéma.' When did this happen?",
-            "opts": ["This evening", "Yesterday evening", "Last week", "Tomorrow evening"],
-            "ans": 1,
-            "exp": "'Hier soir' = yesterday evening. 'Hier' = yesterday; 'soir' = evening. The passé composé 'suis allé' confirms a completed past action. Compare: 'ce soir' (this evening), 'demain soir' (tomorrow evening)."
-          },
-          {
-            "q": "Someone says 's'il te plaît'. What register is this?",
-            "opts": ["Formal (vouvoiement)", "Informal (tutoiement)", "Neither — this is a fixed phrase", "Regional dialect"],
-            "ans": 1,
-            "exp": "'S'il te plaît' uses 'te', the informal object pronoun, making it tutoiement (informal register). The formal equivalent is 's'il vous plaît' with 'vous'. Both mean please."
-          },
-          {
-            "q": "At a restaurant you hear 'Nous avons réservé une table pour quatre.' How many people?",
-            "opts": ["Two", "Three", "Four", "Six"],
-            "ans": 2,
-            "exp": "'Pour quatre' = for four. 'Quatre' = 4. Common numbers for restaurant reservations: deux (2), trois (3), quatre (4), cinq (5), six (6)."
-          }
-        ]
-      }
-    ]
-  }
 ];
