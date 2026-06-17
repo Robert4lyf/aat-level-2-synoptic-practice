@@ -718,7 +718,14 @@
         while (dayKeys.length > 60) delete this.data.daily[dayKeys.shift()];
       } catch (e) { this.data = defaultData(); }
     },
-    save() { try { localStorage.setItem(getStorageKey(), JSON.stringify(this.data)); } catch (e) {} },
+    save() {
+      try { localStorage.setItem(getStorageKey(), JSON.stringify(this.data)); }
+      catch (e) {
+        if (e && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
+          showToast('⚠️ Storage full — your progress may not be saving. Try clearing old browser data.', 'warn');
+        }
+      }
+    },
     recordAnswer(question, correct) {
       const qs = this.data.stats.questions[question.id] || { attempts: 0, correct: 0, lastSeen: null };
       qs.attempts++; qs.seen = true;
@@ -760,7 +767,7 @@
     addXp(n) {
       if (!n) return;
       const prevLevel = Math.floor(this.data.learn.xp / 100) + 1;
-      this.data.learn.xp += n;
+      this.data.learn.xp = Math.min(999999, this.data.learn.xp + n);
       this.day().xp += n;
       const newLevel = Math.floor(this.data.learn.xp / 100) + 1;
       if (newLevel > prevLevel) {
@@ -1115,7 +1122,7 @@
   }
   function stopSpeech() { if (window.speechSynthesis) window.speechSynthesis.cancel(); }
   if (typeof window !== 'undefined' && window.speechSynthesis && 'onvoiceschanged' in window.speechSynthesis) {
-    window.speechSynthesis.onvoiceschanged = () => { _frVoice = null; };
+    window.speechSynthesis.onvoiceschanged = () => { _frVoice = null; getFrenchVoice(); };
   }
 
   /* ── AUDIO ── */
@@ -1169,6 +1176,18 @@
   function escapeHtml(s) {
     if (s == null) return '';
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // Strip dangerous patterns from trusted HTML card bodies (script, iframe, on* handlers, javascript: URIs).
+  // Data files are authored by us, so this is belt-and-suspenders for public deployment.
+  function sanitizeCardBody(html) {
+    if (!html) return '';
+    return html
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+      .replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]*)/gi, '')
+      .replace(/\bhref\s*=\s*["']javascript:[^"']*["']/gi, 'href="#"')
+      .replace(/\bsrc\s*=\s*["']javascript:[^"']*["']/gi, '');
   }
 
   let QUESTION_INDEX = null;
@@ -2161,6 +2180,7 @@
     localStorage.setItem(SUBJECT_STORE_KEY, id);
     if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }
     subj.activate();
+    QUESTION_INDEX = null; // must clear after activate() so questionById() rebuilds from new subject
     Storage.data = defaultData();
     Storage.load();
     // Reset all transient state
@@ -2951,6 +2971,7 @@
 
   function renderPracticeQuiz() {
     const q = State.questions[State.current];
+    if (!q) { goHome(); return ''; }
     if (isDragDrop(q)) return renderDragDropQuiz(q);
     if (isTableFill(q)) return renderTableFillQuiz(q);
     if (isScenario(q)) return renderScenarioQuiz(q);
@@ -4053,7 +4074,7 @@
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
-          ${card.body ? `<div class="lesson-card-body">${card.body}</div>` : ''}
+          ${card.body ? `<div class="lesson-card-body">${sanitizeCardBody(card.body)}</div>` : ''}
           ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
