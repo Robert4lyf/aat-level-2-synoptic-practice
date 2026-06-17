@@ -13,119 +13,119 @@ window.FR_TOPICS = [
 window.FR_QUESTIONS = [
   // ── fr-salut (fr-001 to fr-017) ──────────────────────────────────────────
   {
-    id: 'fr-001', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-001', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: 'What does "Bonjour" mean?',
     opts: ['Hello / Good day', 'Goodbye', 'Good night', 'Thank you'],
     ans: 0,
     exp: '"Bonjour" is the standard French greeting meaning hello or good day.'
   },
   {
-    id: 'fr-002', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-002', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: 'What does "Bonsoir" mean?',
     opts: ['Good morning', 'Good evening', 'Goodbye', 'See you soon'],
     ans: 1,
     exp: '"Bonsoir" is used to greet someone in the evening, meaning good evening.'
   },
   {
-    id: 'fr-003', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-003', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: 'What does "Bonne nuit" mean?',
     opts: ['Good afternoon', 'Good evening', 'Good night', 'Goodnight tomorrow'],
     ans: 2,
     exp: '"Bonne nuit" means good night and is used when parting for bed.'
   },
   {
-    id: 'fr-004', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-004', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: 'How do you say "Goodbye" formally in French?',
     opts: ['Salut', 'Au revoir', 'À bientôt', 'Ciao'],
     ans: 1,
     exp: '"Au revoir" is the standard formal way to say goodbye in French.'
   },
   {
-    id: 'fr-005', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-005', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"À bientôt" means?',
     opts: ['See you tomorrow', 'See you soon', 'Goodbye forever', 'Good night'],
     ans: 1,
     exp: '"À bientôt" means see you soon.'
   },
   {
-    id: 'fr-006', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-006', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"À demain" means?',
     opts: ['See you later', 'See you tomorrow', 'See you next week', 'Good night'],
     ans: 1,
     exp: '"À demain" means see you tomorrow. "Demain" is the French word for tomorrow.'
   },
   {
-    id: 'fr-007', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-007', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"S\'il vous plaît" is?',
     opts: ['Thank you', 'Please (formal)', 'Sorry', 'Excuse me'],
     ans: 1,
     exp: '"S\'il vous plaît" is the formal way to say please in French.'
   },
   {
-    id: 'fr-008', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-008', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Merci beaucoup" means?',
     opts: ['Thank you very much', 'You\'re welcome', 'Sorry', 'Please'],
     ans: 0,
     exp: '"Merci beaucoup" means thank you very much. "Beaucoup" means a lot/very much.'
   },
   {
-    id: 'fr-009', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-009', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"De rien" means?',
     opts: ['Nothing at all', 'You\'re welcome', 'Excuse me', 'I don\'t know'],
     ans: 1,
     exp: '"De rien" means you\'re welcome (literally "it\'s nothing").'
   },
   {
-    id: 'fr-010', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-010', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Excusez-moi" is?',
     opts: ['Thank you', 'You\'re welcome', 'Excuse me (formal)', 'Sorry (informal)'],
     ans: 2,
     exp: '"Excusez-moi" is the formal/plural way to say excuse me in French.'
   },
   {
-    id: 'fr-011', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-011', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Comment vous appelez-vous?" means?',
     opts: ['How are you?', 'What is your name? (formal)', 'Where are you from?', 'How old are you?'],
     ans: 1,
     exp: '"Comment vous appelez-vous?" is the formal way to ask someone\'s name.'
   },
   {
-    id: 'fr-012', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-012', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Je m\'appelle Marie" means?',
     opts: ['I am from Marie', 'My name is Marie', 'I like Marie', 'I know Marie'],
     ans: 1,
     exp: '"Je m\'appelle" literally means "I call myself" and is used to state your name.'
   },
   {
-    id: 'fr-013', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-013', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Ça va?" means?',
     opts: ['Where are you going?', 'How are you / Is it OK?', 'Do you want some?', 'What time is it?'],
     ans: 1,
     exp: '"Ça va?" is an informal way to ask how someone is doing.'
   },
   {
-    id: 'fr-014', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-014', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Ça va bien, merci" means?',
     opts: ['It\'s going badly', 'I\'m fine thanks', 'Thank you for coming', 'Nothing works'],
     ans: 1,
     exp: '"Ça va bien" means it\'s going well / I\'m fine, and "merci" adds thank you.'
   },
   {
-    id: 'fr-015', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-015', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: 'Which is the INFORMAL greeting?',
     opts: ['Bonjour', 'Bonsoir', 'Salut', 'Comment allez-vous?'],
     ans: 2,
     exp: '"Salut" is the informal/casual greeting equivalent to "hi" in English.'
   },
   {
-    id: 'fr-016', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-016', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Enchanté(e)" means?',
     opts: ['Tired', 'Nice to meet you', 'I\'m busy', 'Let\'s go'],
     ans: 1,
     exp: '"Enchanté(e)" means nice to meet you and is used when introduced to someone.'
   },
   {
-    id: 'fr-017', topic: 'fr-salut', type: 'mcq',
+    id: 'fr-017', topic: 'fr-salut', lesson: 'fr-l01', type: 'mcq',
     q: '"Comment allez-vous?" — what register is this?',
     opts: ['Informal', 'Formal', 'Slang', 'Regional'],
     ans: 1,
@@ -134,49 +134,49 @@ window.FR_QUESTIONS = [
 
   // ── fr-vocab (fr-027 to fr-033) ──────────────────────────────────────────
   {
-    id: 'fr-027', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-027', topic: 'fr-vocab', lesson: 'fr-l11', type: 'mcq',
     q: '"Père" means?',
     opts: ['Mother', 'Brother', 'Father', 'Son'],
     ans: 2,
     exp: '"Père" is the French word for father.'
   },
   {
-    id: 'fr-028', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-028', topic: 'fr-vocab', lesson: 'fr-l11', type: 'mcq',
     q: '"Sœur" means?',
     opts: ['Brother', 'Daughter', 'Mother', 'Sister'],
     ans: 3,
     exp: '"Sœur" is the French word for sister.'
   },
   {
-    id: 'fr-029', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-029', topic: 'fr-vocab', lesson: 'fr-l15', type: 'mcq',
     q: '"Pain" means?',
     opts: ['Butter', 'Bread', 'Cheese', 'Wine'],
     ans: 1,
     exp: '"Pain" is the French word for bread.'
   },
   {
-    id: 'fr-030', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-030', topic: 'fr-vocab', lesson: 'fr-l15', type: 'mcq',
     q: '"Eau" means?',
     opts: ['Milk', 'Coffee', 'Water', 'Tea'],
     ans: 2,
     exp: '"Eau" is the French word for water.'
   },
   {
-    id: 'fr-031', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-031', topic: 'fr-vocab', lesson: 'fr-l04', type: 'mcq',
     q: '"Chat" means?',
     opts: ['Dog', 'Horse', 'Cat', 'Bird'],
     ans: 2,
     exp: '"Chat" is the French word for cat.'
   },
   {
-    id: 'fr-032', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-032', topic: 'fr-vocab', lesson: 'fr-l41', type: 'mcq',
     q: '"Tête" means?',
     opts: ['Hand', 'Foot', 'Head', 'Ear'],
     ans: 2,
     exp: '"Tête" is the French word for head.'
   },
   {
-    id: 'fr-033', topic: 'fr-vocab', type: 'mcq',
+    id: 'fr-033', topic: 'fr-vocab', lesson: 'fr-l41', type: 'mcq',
     q: '"Main" means?',
     opts: ['Hand', 'Foot', 'Eye', 'Nose'],
     ans: 0,
@@ -184,119 +184,119 @@ window.FR_QUESTIONS = [
   },
   // ── fr-gram (fr-035 to fr-051) ───────────────────────────────────────────
   {
-    id: 'fr-035', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-035', topic: 'fr-gram', lesson: 'fr-l04', type: 'mcq',
     q: 'Which article is masculine singular definite?',
     opts: ['la', 'les', 'le', 'un'],
     ans: 2,
     exp: '"Le" is the masculine singular definite article (e.g. le livre).'
   },
   {
-    id: 'fr-036', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-036', topic: 'fr-gram', lesson: 'fr-l04', type: 'mcq',
     q: 'Which article is feminine singular definite?',
     opts: ['le', 'la', 'un', 'une'],
     ans: 1,
     exp: '"La" is the feminine singular definite article (e.g. la table).'
   },
   {
-    id: 'fr-037', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-037', topic: 'fr-gram', lesson: 'fr-l04', type: 'mcq',
     q: '"Un/une" are which type of articles?',
     opts: ['Definite', 'Indefinite', 'Partitive', 'Negative'],
     ans: 1,
     exp: '"Un" and "une" are indefinite articles meaning a/an.'
   },
   {
-    id: 'fr-038', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-038', topic: 'fr-gram', lesson: 'fr-l04', type: 'mcq',
     q: '"Des" is the plural of which article?',
     opts: ['le / la', 'un / une', 'du / de la', 'de'],
     ans: 1,
     exp: '"Des" is the plural of the indefinite articles un and une.'
   },
   {
-    id: 'fr-039', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-039', topic: 'fr-gram', lesson: 'fr-l04', type: 'mcq',
     q: 'The French word "maison" (house) is which gender?',
     opts: ['Masculine', 'Feminine', 'Neuter', 'Variable'],
     ans: 1,
     exp: '"Maison" is a feminine noun in French — it uses "la maison".'
   },
   {
-    id: 'fr-040', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-040', topic: 'fr-gram', lesson: 'fr-l05', type: 'mcq',
     q: 'How do you make most nouns plural in French?',
     opts: ['Add -es', 'Add -s', 'Add -x', 'No change'],
     ans: 1,
     exp: 'Most French nouns form the plural by adding -s (e.g. livre → livres).'
   },
   {
-    id: 'fr-041', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-041', topic: 'fr-gram', lesson: 'fr-l10', type: 'mcq',
     q: '"Ne...pas" is used for?',
     opts: ['Questions', 'Negation', 'Exclamations', 'Emphasis'],
     ans: 1,
     exp: '"Ne...pas" surrounds the verb to form a negative sentence (I do not...).'
   },
   {
-    id: 'fr-042', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-042', topic: 'fr-gram', lesson: 'fr-l02', type: 'mcq',
     q: '"Je suis" means?',
     opts: ['I have', 'I am', 'I go', 'I do'],
     ans: 1,
     exp: '"Je suis" is the first-person singular of être (to be), meaning I am.'
   },
   {
-    id: 'fr-043', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-043', topic: 'fr-gram', lesson: 'fr-l03', type: 'mcq',
     q: '"Tu as" means?',
     opts: ['You go', 'You are', 'You have (informal)', 'You do'],
     ans: 2,
     exp: '"Tu as" is the informal second-person singular of avoir (to have).'
   },
   {
-    id: 'fr-044', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-044', topic: 'fr-gram', lesson: 'fr-l14', type: 'mcq',
     q: '"Il/elle va" uses which verb?',
     opts: ['être', 'avoir', 'aller', 'faire'],
     ans: 2,
     exp: '"Va" is the third-person singular of aller (to go).'
   },
   {
-    id: 'fr-045', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-045', topic: 'fr-gram', lesson: 'fr-l14', type: 'mcq',
     q: '"Nous faisons" means?',
     opts: ['We are', 'We have', 'We go', 'We do / make'],
     ans: 3,
     exp: '"Nous faisons" is the first-person plural of faire (to do/make).'
   },
   {
-    id: 'fr-046', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-046', topic: 'fr-gram', lesson: 'fr-l12', type: 'mcq',
     q: 'How does a feminine adjective generally differ from its masculine form?',
     opts: ['It is shorter', 'It adds -e', 'It adds -s', 'It adds -ment'],
     ans: 1,
     exp: 'Feminine adjectives are generally formed by adding -e to the masculine form.'
   },
   {
-    id: 'fr-047', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-047', topic: 'fr-gram', lesson: 'fr-l12', type: 'mcq',
     q: '"Grand" (masc) becomes what in the feminine form?',
     opts: ['Grande', 'Grandes', 'Grands', 'Grand'],
     ans: 0,
     exp: 'The feminine of "grand" is "grande" — simply add -e.'
   },
   {
-    id: 'fr-048', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-048', topic: 'fr-gram', lesson: 'fr-l10', type: 'mcq',
     q: 'To ask a question you can invert subject and verb. "Parlez-vous français?" means?',
     opts: ['Do you speak French?', 'Are you French?', 'You speak French.', 'Speak French please.'],
     ans: 0,
     exp: '"Parlez-vous français?" inverts the verb and subject to form a question: Do you speak French?'
   },
   {
-    id: 'fr-049', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-049', topic: 'fr-gram', lesson: 'fr-l13', type: 'mcq',
     q: 'Which preposition means "in" (for countries/cities)?',
     opts: ['de', 'sur', 'à / en', 'dans'],
     ans: 2,
     exp: '"À" is used before cities (à Paris) and "en" before feminine countries (en France).'
   },
   {
-    id: 'fr-050', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-050', topic: 'fr-gram', lesson: 'fr-l39', type: 'mcq',
     q: '"Sur" means?',
     opts: ['Under', 'On / Above', 'In', 'Between'],
     ans: 1,
     exp: '"Sur" means on or above (e.g. sur la table — on the table).'
   },
   {
-    id: 'fr-051', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-051', topic: 'fr-gram', lesson: 'fr-l39', type: 'mcq',
     q: '"Sous" means?',
     opts: ['On', 'Over', 'Under / Below', 'Beside'],
     ans: 2,
@@ -305,28 +305,28 @@ window.FR_QUESTIONS = [
 
   // ── fr-num (fr-062 to fr-065) ────────────────────────────────────────────
   {
-    id: 'fr-062', topic: 'fr-num', type: 'mcq',
+    id: 'fr-062', topic: 'fr-num', lesson: 'fr-l07', type: 'mcq',
     q: '"Quelle heure est-il?" means?',
     opts: ['What day is it?', 'What time is it?', 'How long?', 'What year?'],
     ans: 1,
     exp: '"Quelle heure est-il?" is the standard French way to ask what time it is.'
   },
   {
-    id: 'fr-063', topic: 'fr-num', type: 'mcq',
+    id: 'fr-063', topic: 'fr-num', lesson: 'fr-l07', type: 'mcq',
     q: '"Il est trois heures" means?',
     opts: ['It is two o\'clock', 'It is three o\'clock', 'It is thirty', 'It is thirteen hours'],
     ans: 1,
     exp: '"Il est trois heures" = It is three o\'clock.'
   },
   {
-    id: 'fr-064', topic: 'fr-num', type: 'mcq',
+    id: 'fr-064', topic: 'fr-num', lesson: 'fr-l16', type: 'mcq',
     q: 'What is "le printemps"?',
     opts: ['Summer', 'Autumn', 'Winter', 'Spring'],
     ans: 3,
     exp: '"Le printemps" is spring in French.'
   },
   {
-    id: 'fr-065', topic: 'fr-num', type: 'mcq',
+    id: 'fr-065', topic: 'fr-num', lesson: 'fr-l16', type: 'mcq',
     q: 'What is "l\'hiver"?',
     opts: ['Summer', 'Autumn', 'Winter', 'Spring'],
     ans: 2,
@@ -334,119 +334,119 @@ window.FR_QUESTIONS = [
   },
   // ── fr-vie (fr-069 to fr-085) ────────────────────────────────────────────
   {
-    id: 'fr-069', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-069', topic: 'fr-vie', lesson: 'fr-l42', type: 'mcq',
     q: '"Combien ça coûte?" means?',
     opts: ['Where is it?', 'How much does it cost?', 'Do you have any?', 'I\'d like this.'],
     ans: 1,
     exp: '"Combien ça coûte?" is the standard way to ask how much something costs.'
   },
   {
-    id: 'fr-070', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-070', topic: 'fr-vie', lesson: 'fr-l15', type: 'mcq',
     q: '"Je voudrais" means?',
     opts: ['I want (rude)', 'I would like (polite)', 'I need', 'I have'],
     ans: 1,
     exp: '"Je voudrais" is the conditional of vouloir and means I would like — polite and commonly used in shops and restaurants.'
   },
   {
-    id: 'fr-071', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-071', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"Le train" means?',
     opts: ['Plane', 'Bus', 'Train', 'Car'],
     ans: 2,
     exp: '"Le train" is the French word for train.'
   },
   {
-    id: 'fr-072', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-072', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"L\'autobus" means?',
     opts: ['Taxi', 'Bike', 'Bus', 'Subway'],
     ans: 2,
     exp: '"L\'autobus" (or "le bus") is the French word for bus.'
   },
   {
-    id: 'fr-073', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-073', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"Le métro" means?',
     opts: ['Train', 'Subway / Metro', 'Tram', 'Bus'],
     ans: 1,
     exp: '"Le métro" refers to the underground subway/metro system.'
   },
   {
-    id: 'fr-074', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-074', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"À pied" means?',
     opts: ['By car', 'By bus', 'On foot', 'By bike'],
     ans: 2,
     exp: '"À pied" means on foot — travelling by walking.'
   },
   {
-    id: 'fr-075', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-075', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"Tout droit" means?',
     opts: ['Turn left', 'Turn right', 'Straight ahead', 'Stop'],
     ans: 2,
     exp: '"Tout droit" means straight ahead when giving directions.'
   },
   {
-    id: 'fr-076', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-076', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"À gauche" means?',
     opts: ['Straight on', 'To the right', 'To the left', 'Behind'],
     ans: 2,
     exp: '"À gauche" means to the left.'
   },
   {
-    id: 'fr-077', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-077', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"À droite" means?',
     opts: ['To the left', 'Straight on', 'To the right', 'In front'],
     ans: 2,
     exp: '"À droite" means to the right.'
   },
   {
-    id: 'fr-078', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-078', topic: 'fr-vie', lesson: 'fr-l15', type: 'mcq',
     q: '"La carte" at a restaurant means?',
     opts: ['The bill', 'The menu / card', 'The table', 'The waiter'],
     ans: 1,
     exp: '"La carte" at a restaurant means the menu. "La carte des vins" = wine list.'
   },
   {
-    id: 'fr-079', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-079', topic: 'fr-vie', lesson: 'fr-l15', type: 'mcq',
     q: '"L\'addition" means?',
     opts: ['The menu', 'The starter', 'The bill', 'The dessert'],
     ans: 2,
     exp: '"L\'addition" is the bill/check at a restaurant.'
   },
   {
-    id: 'fr-080', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-080', topic: 'fr-vie', lesson: 'fr-l16', type: 'mcq',
     q: '"Il fait beau" means?',
     opts: ['It\'s cold', 'It\'s raining', 'It\'s nice / sunny weather', 'It\'s windy'],
     ans: 2,
     exp: '"Il fait beau" is a common weather expression meaning it\'s nice/fine weather.'
   },
   {
-    id: 'fr-081', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-081', topic: 'fr-vie', lesson: 'fr-l16', type: 'mcq',
     q: '"Il pleut" means?',
     opts: ['It\'s snowing', 'It\'s raining', 'It\'s foggy', 'It\'s hot'],
     ans: 1,
     exp: '"Il pleut" comes from the verb pleuvoir and means it is raining.'
   },
   {
-    id: 'fr-082', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-082', topic: 'fr-vie', lesson: 'fr-l16', type: 'mcq',
     q: '"Il fait chaud" means?',
     opts: ['It\'s cold', 'It\'s windy', 'It\'s hot', 'It\'s cloudy'],
     ans: 2,
     exp: '"Il fait chaud" means it\'s hot. "Chaud" = hot/warm.'
   },
   {
-    id: 'fr-083', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-083', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"Une chambre" at a hotel means?',
     opts: ['A bathroom', 'A room', 'A bed', 'A key'],
     ans: 1,
     exp: '"Une chambre" means a bedroom/room in a hotel.'
   },
   {
-    id: 'fr-084', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-084', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"En voiture" means?',
     opts: ['On foot', 'By train', 'By car', 'By plane'],
     ans: 2,
     exp: '"En voiture" means by car. "Voiture" = car.'
   },
   {
-    id: 'fr-085', topic: 'fr-vie', type: 'mcq',
+    id: 'fr-085', topic: 'fr-vie', lesson: 'fr-l39', type: 'mcq',
     q: '"Tournez à gauche" means?',
     opts: ['Go straight', 'Turn left', 'Turn right', 'Stop here'],
     ans: 1,
@@ -457,28 +457,28 @@ window.FR_QUESTIONS = [
 
   // -ER verb gapfill
   {
-    id: 'fr-086', topic: 'fr-conj', type: 'gapfill',
+    id: 'fr-086', topic: 'fr-conj', lesson: 'fr-l09', type: 'gapfill',
     q: 'Complete with the correct form of "parler" (to speak):',
     template: 'Nous {0} français tous les jours.',
     gaps: [{ options: ['parlons', 'parlez', 'parlent', 'parle'], answer: 0 }],
     exp: '"Nous" takes the "-ons" ending for -ER verbs: nous parlons.'
   },
   {
-    id: 'fr-087', topic: 'fr-conj', type: 'gapfill',
+    id: 'fr-087', topic: 'fr-conj', lesson: 'fr-l09', type: 'gapfill',
     q: 'Complete with the correct form of "aimer" (to like/love):',
     template: 'Elle {0} le chocolat.',
     gaps: [{ options: ['aime', 'aimes', 'aimons', 'aimez'], answer: 0 }],
     exp: '"Il/elle" takes "-e" for -ER verbs: elle aime.'
   },
   {
-    id: 'fr-088', topic: 'fr-conj', type: 'gapfill',
+    id: 'fr-088', topic: 'fr-conj', lesson: 'fr-l09', type: 'gapfill',
     q: 'Complete with the correct form of "travailler" (to work):',
     template: 'Vous {0} beaucoup.',
     gaps: [{ options: ['travaillez', 'travaillons', 'travaillent', 'travaille'], answer: 0 }],
     exp: '"Vous" takes "-ez" for -ER verbs: vous travaillez.'
   },
   {
-    id: 'fr-089', topic: 'fr-conj', type: 'dragdrop',
+    id: 'fr-089', topic: 'fr-conj', lesson: 'fr-l09', type: 'dragdrop',
     q: 'Match each subject pronoun to its correct form of "parler":',
     pairs: [
       { left: 'je', right: 'parle' },
@@ -489,7 +489,7 @@ window.FR_QUESTIONS = [
     exp: '-ER endings: je -e, tu -es, il/elle -e, nous -ons, vous -ez, ils/elles -ent.'
   },
   {
-    id: 'fr-090', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-090', topic: 'fr-gram', lesson: 'fr-l10', type: 'gapfill',
     q: 'Make the sentence negative (ne...pas):',
     template: 'Je {0} parle {1} anglais.',
     gaps: [
@@ -499,28 +499,28 @@ window.FR_QUESTIONS = [
     exp: 'Negation wraps the verb: Je NE parle PAS anglais.'
   },
   {
-    id: 'fr-091', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-091', topic: 'fr-gram', lesson: 'fr-l10', type: 'gapfill',
     q: 'Form a question using "est-ce que":',
     template: '{0} tu parles espagnol ?',
     gaps: [{ options: ['Est-ce que', 'Que', 'Qui', 'Dont'], answer: 0 }],
     exp: '"Est-ce que" placed before subject + verb forms a question without inversion.'
   },
   {
-    id: 'fr-092', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-092', topic: 'fr-gram', lesson: 'fr-l18', type: 'gapfill',
     q: 'Complete with the passé composé of "manger":',
     template: 'J\'{0} mangé ce matin.',
     gaps: [{ options: ['ai', 'suis', 'as', 'est'], answer: 0 }],
     exp: '"Manger" uses avoir in passé composé: j\'ai mangé.'
   },
   {
-    id: 'fr-093', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-093', topic: 'fr-gram', lesson: 'fr-l19', type: 'gapfill',
     q: 'Complete with the passé composé of "aller":',
     template: 'Elle {0} allée au marché hier.',
     gaps: [{ options: ['est', 'a', 'sont', 'ont'], answer: 0 }],
     exp: '"Aller" uses être in passé composé: elle est allée.'
   },
   {
-    id: 'fr-094', topic: 'fr-gram', type: 'dragdrop',
+    id: 'fr-094', topic: 'fr-gram', lesson: 'fr-l18', type: 'dragdrop',
     q: 'Match each infinitive to its past participle:',
     pairs: [
       { left: 'parler', right: 'parlé' },
@@ -531,7 +531,7 @@ window.FR_QUESTIONS = [
     exp: 'Regular: -ER → -é, -IR → -i, -RE → -u. Irregular: faire → fait.'
   },
   {
-    id: 'fr-095', topic: 'fr-gram', type: 'dragdrop',
+    id: 'fr-095', topic: 'fr-gram', lesson: 'fr-l19', type: 'dragdrop',
     q: 'Match each verb to its auxiliary in the passé composé:',
     pairs: [
       { left: 'manger', right: 'avoir' },
@@ -542,35 +542,35 @@ window.FR_QUESTIONS = [
     exp: 'Être group (DR MRS VANDERTRAMP) + reflexives use être; most verbs use avoir.'
   },
   {
-    id: 'fr-096', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-096', topic: 'fr-gram', lesson: 'fr-l20', type: 'gapfill',
     q: 'Complete with the imparfait of "habiter" (to live):',
     template: 'Quand j\'étais enfant, j\'{0} à Lyon.',
     gaps: [{ options: ['habitais', 'habite', 'habiterai', 'habitait'], answer: 0 }],
     exp: 'Imparfait: stem from nous form (drop -ons) + -ais. j\'habitais = I used to live.'
   },
   {
-    id: 'fr-097', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-097', topic: 'fr-gram', lesson: 'fr-l20', type: 'mcq',
     q: 'The imparfait is used for?',
     opts: ['A single completed past action', 'An ongoing or habitual past action / description', 'A future plan', 'A polite request'],
     ans: 1,
     exp: 'Imparfait = ongoing, habitual, or descriptive past. Passé composé = completed event.'
   },
   {
-    id: 'fr-098', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-098', topic: 'fr-gram', lesson: 'fr-l20', type: 'mcq',
     q: '"Quand j\'étais jeune, je jouais au foot" — the imparfait here expresses?',
     opts: ['A sudden completed event', 'A habitual past activity', 'A future intention', 'A polite wish'],
     ans: 1,
     exp: '"Je jouais" = I used to play — a repeated past habit, expressed with imparfait.'
   },
   {
-    id: 'fr-099', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-099', topic: 'fr-gram', lesson: 'fr-l22', type: 'gapfill',
     q: 'Complete with the futur simple of "parler":',
     template: 'Demain, je {0} avec le directeur.',
     gaps: [{ options: ['parlerai', 'parle', 'parlais', 'parlé'], answer: 0 }],
     exp: 'Futur simple: infinitive + -ai. parler → je parlerai.'
   },
   {
-    id: 'fr-100', topic: 'fr-gram', type: 'dragdrop',
+    id: 'fr-100', topic: 'fr-gram', lesson: 'fr-l22', type: 'dragdrop',
     q: 'Match each verb to its irregular futur simple stem:',
     pairs: [
       { left: 'être', right: 'ser-' },
@@ -581,133 +581,133 @@ window.FR_QUESTIONS = [
     exp: 'Irregular futur stems: être→ser-, avoir→aur-, aller→ir-, faire→fer-.'
   },
   {
-    id: 'fr-101', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-101', topic: 'fr-gram', lesson: 'fr-l22', type: 'mcq',
     q: '"Je vais partir" — which tense is this?',
     opts: ['Futur simple', 'Futur proche', 'Conditionnel', 'Présent'],
     ans: 1,
     exp: 'Futur proche = aller (présent) + infinitif. Je vais partir = I am going to leave.'
   },
   {
-    id: 'fr-102', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-102', topic: 'fr-gram', lesson: 'fr-l23', type: 'mcq',
     q: '"Se lever" means?',
     opts: ['To lower something', 'To get up', 'To lie down', 'To leave'],
     ans: 1,
     exp: '"Se lever" is a pronominal (reflexive) verb meaning to get up.'
   },
   {
-    id: 'fr-103', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-103', topic: 'fr-gram', lesson: 'fr-l23', type: 'gapfill',
     q: 'Complete with the present tense of "se laver":',
     template: 'Il {0} les mains avant de manger.',
     gaps: [{ options: ['se lave', 'se lève', 'se lavait', 'se lavé'], answer: 0 }],
     exp: '"Se laver" présent for il: il se lave (he washes himself).'
   },
   {
-    id: 'fr-104', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-104', topic: 'fr-gram', lesson: 'fr-l23', type: 'mcq',
     q: 'In the passé composé, pronominal verbs use which auxiliary?',
     opts: ['avoir', 'être', 'aller', 'faire'],
     ans: 1,
     exp: 'All pronominal (reflexive) verbs use être in passé composé: je me suis levé(e).'
   },
   {
-    id: 'fr-105', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-105', topic: 'fr-gram', lesson: 'fr-l24', type: 'mcq',
     q: '"Je le vois" — what does "le" replace?',
     opts: ['A feminine direct object', 'A masculine singular direct object', 'An indirect object', 'A plural noun'],
     ans: 1,
     exp: '"Le" is the masculine singular COD (direct object pronoun).'
   },
   {
-    id: 'fr-106', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-106', topic: 'fr-gram', lesson: 'fr-l24', type: 'mcq',
     q: 'The COI pronoun for "to him / to her" is?',
     opts: ['lui', 'le', 'la', 'leur'],
     ans: 0,
     exp: '"Lui" is the COI pronoun for he/she: Je lui parle = I speak to him/her.'
   },
   {
-    id: 'fr-107', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-107', topic: 'fr-gram', lesson: 'fr-l24', type: 'mcq',
     q: '"Nous leur parlons" — "leur" means?',
     opts: ['To him', 'To her', 'To them', 'For us'],
     ans: 2,
     exp: '"Leur" (plural COI) means "to them".'
   },
   {
-    id: 'fr-108', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-108', topic: 'fr-gram', lesson: 'fr-l24', type: 'mcq',
     q: 'Where do COD/COI object pronouns go in a sentence?',
     opts: ['After the verb', 'Before the conjugated verb', 'At the end of the sentence', 'After the subject'],
     ans: 1,
     exp: 'Object pronouns go directly before the conjugated verb: Je le vois / Je lui parle.'
   },
   {
-    id: 'fr-109', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-109', topic: 'fr-gram', lesson: 'fr-l27', type: 'mcq',
     q: 'The conditionnel présent is formed with?',
     opts: ['Present stem + present endings', 'Futur stem + imparfait endings', 'Infinitive + être', 'Past participle + avoir'],
     ans: 1,
     exp: 'Conditionnel = futur simple stem + imparfait endings (-ais, -ais, -ait, -ions, -iez, -aient).'
   },
   {
-    id: 'fr-110', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-110', topic: 'fr-gram', lesson: 'fr-l27', type: 'mcq',
     q: '"Je voudrais un café" — what tense is "voudrais"?',
     opts: ['Imparfait', 'Futur simple', 'Conditionnel présent', 'Subjonctif'],
     ans: 2,
     exp: '"Voudrais" is conditionnel présent of vouloir, used for polite requests.'
   },
   {
-    id: 'fr-111', topic: 'fr-gram', type: 'gapfill',
+    id: 'fr-111', topic: 'fr-gram', lesson: 'fr-l27', type: 'gapfill',
     q: 'Complete: si + imparfait → conditionnel (voyager):',
     template: 'Si j\'avais le temps, je {0} en France.',
     gaps: [{ options: ['voyagerais', 'voyage', 'voyagerai', 'ai voyagé'], answer: 0 }],
     exp: 'Si + imparfait → conditionnel présent: je voyagerais = I would travel.'
   },
   {
-    id: 'fr-112', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-112', topic: 'fr-gram', lesson: 'fr-l28', type: 'mcq',
     q: '"Il faut que tu ___" is followed by which mood?',
     opts: ['Indicatif', 'Conditionnel', 'Subjonctif', 'Infinitif'],
     ans: 2,
     exp: '"Il faut que" always triggers the subjonctif.'
   },
   {
-    id: 'fr-113', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-113', topic: 'fr-gram', lesson: 'fr-l28', type: 'mcq',
     q: 'Subjonctif of "être" for "il/elle" is?',
     opts: ['est', 'soit', 'serait', 'était'],
     ans: 1,
     exp: '"Être" has an irregular subjonctif: que je sois, que tu sois, qu\'il soit.'
   },
   {
-    id: 'fr-114', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-114', topic: 'fr-gram', lesson: 'fr-l28', type: 'mcq',
     q: '"bien que" (although) is followed by which mood?',
     opts: ['Indicatif', 'Conditionnel', 'Infinitif', 'Subjonctif'],
     ans: 3,
     exp: '"Bien que" always takes the subjonctif: bien qu\'il soit tard.'
   },
   {
-    id: 'fr-115', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-115', topic: 'fr-gram', lesson: 'fr-l29', type: 'mcq',
     q: '"L\'homme ___ parle" — which relative pronoun completes this?',
     opts: ['que', 'dont', 'qui', 'où'],
     ans: 2,
     exp: '"Qui" is the subject relative pronoun: l\'homme qui parle = the man who speaks.'
   },
   {
-    id: 'fr-116', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-116', topic: 'fr-gram', lesson: 'fr-l29', type: 'mcq',
     q: '"Le livre ___ j\'ai lu" — which relative pronoun?',
     opts: ['qui', 'que', 'dont', 'où'],
     ans: 1,
     exp: '"Que" is the direct object relative pronoun: le livre que j\'ai lu = the book I read.'
   },
   {
-    id: 'fr-117', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-117', topic: 'fr-gram', lesson: 'fr-l29', type: 'mcq',
     q: '"Le pays ___ je vis" — which relative pronoun?',
     opts: ['qui', 'que', 'dont', 'où'],
     ans: 3,
     exp: '"Où" is used for place or time: le pays où je vis = the country where I live.'
   },
   {
-    id: 'fr-118', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-118', topic: 'fr-gram', lesson: 'fr-l29', type: 'mcq',
     q: '"Le livre ___ j\'ai besoin" — which relative pronoun? (avoir besoin DE)',
     opts: ['qui', 'que', 'dont', 'où'],
     ans: 2,
     exp: '"Dont" replaces de + noun: le livre dont j\'ai besoin (avoir besoin de).'
   },
   {
-    id: 'fr-119', topic: 'fr-gram', type: 'dragdrop',
+    id: 'fr-119', topic: 'fr-gram', lesson: 'fr-l29', type: 'dragdrop',
     q: 'Match each relative pronoun to its function:',
     pairs: [
       { left: 'qui', right: 'Subject of relative clause' },
@@ -718,231 +718,231 @@ window.FR_QUESTIONS = [
     exp: 'qui = subject, que = direct object, dont = de + ..., où = where/when.'
   },
   {
-    id: 'fr-120', topic: 'fr-gram', type: 'mcq',
+    id: 'fr-120', topic: 'fr-gram', lesson: 'fr-l19', type: 'mcq',
     q: '"Elle est partie" — the past participle "parti" adds -e because?',
     opts: ['All -IR verbs add -e', 'The subject is feminine and être is the auxiliary', 'It is always irregular', 'It is in the futur'],
     ans: 1,
     exp: 'With être in passé composé, the past participle agrees with the subject gender: elle est partie.'
   },
   // ── Extended practice bank (breadth: family, time, dates, food, weather, tenses) ──
-  {"id":"fr-121","topic":"fr-salut","type":"mcq","q":"A waiter says « Vous désirez ? ». He is asking:","opts":["How are you?","What would you like?","Where are you from?","What's your name?"],"ans":1,"exp":"« Vous désirez ? » = What would you like? (taking an order)."},
-  {"id":"fr-122","topic":"fr-salut","type":"mcq","q":"Which reply best answers « Comment ça va ? »","opts":["Je m'appelle Léa","Ça va bien, merci","Au revoir","J'ai 20 ans"],"ans":1,"exp":"« Ça va bien, merci » = I'm fine, thanks."},
-  {"id":"fr-123","topic":"fr-salut","type":"mcq","q":"« Enchanté(e) ! » is said when:","opts":["leaving","meeting someone for the first time","apologising","thanking"],"ans":1,"exp":"« Enchanté(e) » = pleased to meet you, on first meeting."},
-  {"id":"fr-124","topic":"fr-salut","type":"mcq","q":"To politely get a stranger's attention you say:","opts":["Salut !","Excusez-moi, Monsieur","De rien","Bonne nuit"],"ans":1,"exp":"« Excusez-moi » politely gets attention or apologises."},
-  {"id":"fr-125","topic":"fr-salut","type":"mcq","q":"« À tout à l'heure » means:","opts":["See you tomorrow","See you later today","Goodbye forever","Good night"],"ans":1,"exp":"« À tout à l'heure » = see you later (the same day)."},
-  {"id":"fr-126","topic":"fr-vocab","type":"mcq","q":"« la sœur » means:","opts":["the brother","the sister","the mother","the aunt"],"ans":1,"exp":"la sœur = the sister."},
-  {"id":"fr-127","topic":"fr-vocab","type":"mcq","q":"« les grands-parents » are:","opts":["the parents","the grandparents","the cousins","the children"],"ans":1,"exp":"les grands-parents = the grandparents."},
-  {"id":"fr-128","topic":"fr-vocab","type":"mcq","q":"Which word means « husband »?","opts":["la femme","le mari","le fils","le frère"],"ans":1,"exp":"le mari = husband; la femme = wife."},
-  {"id":"fr-129","topic":"fr-vocab","type":"mcq","q":"« un jus d'orange » is a:","opts":["food","drink","place","colour"],"ans":1,"exp":"un jus d'orange = an orange juice (a drink)."},
-  {"id":"fr-130","topic":"fr-vocab","type":"mcq","q":"Which is something you eat?","opts":["un café","une eau","un croissant","un thé"],"ans":2,"exp":"un croissant is food; the others are drinks."},
-  {"id":"fr-131","topic":"fr-vocab","type":"mcq","q":"« Il fait froid » describes:","opts":["the time","the weather (cold)","a feeling","a colour"],"ans":1,"exp":"« Il fait froid » = it's cold (weather)."},
-  {"id":"fr-132","topic":"fr-vocab","type":"mcq","q":"Which season is « l'hiver »?","opts":["spring","summer","autumn","winter"],"ans":3,"exp":"l'hiver = winter."},
-  {"id":"fr-133","topic":"fr-vocab","type":"mcq","q":"« Elle est espagnole » means she is:","opts":["Italian","Spanish","German","English"],"ans":1,"exp":"espagnole = Spanish (feminine)."},
-  {"id":"fr-134","topic":"fr-vocab","type":"mcq","q":"The language « le chinois » is:","opts":["Japanese","Korean","Chinese","Vietnamese"],"ans":2,"exp":"le chinois = Chinese."},
-  {"id":"fr-136","topic":"fr-vocab","type":"dragdrop","q":"Match each French word to its meaning:","pairs":[{"left":"le père","right":"father"},{"left":"la mère","right":"mother"},{"left":"le fils","right":"son"},{"left":"la fille","right":"daughter"}],"exp":"Core family vocabulary: père, mère, fils, fille."},
-  {"id":"fr-137","topic":"fr-vocab","type":"dragdrop","q":"Match the season to English:","pairs":[{"left":"le printemps","right":"spring"},{"left":"l'été","right":"summer"},{"left":"l'automne","right":"autumn"},{"left":"l'hiver","right":"winter"}],"exp":"The four seasons in French."},
-  {"id":"fr-138","topic":"fr-gram","type":"mcq","q":"« Je vais ___ cinéma. » (à + le)","opts":["à le","au","aux","du"],"ans":1,"exp":"à + le = au."},
-  {"id":"fr-139","topic":"fr-gram","type":"mcq","q":"« le livre ___ professeur » (de + le)","opts":["de le","du","des","au"],"ans":1,"exp":"de + le = du."},
-  {"id":"fr-140","topic":"fr-gram","type":"mcq","q":"Plural of « un animal »:","opts":["des animals","des animaux","des animales","des animal"],"ans":1,"exp":"-al → -aux: animaux."},
-  {"id":"fr-141","topic":"fr-gram","type":"mcq","q":"« ___ amie » (my, before a vowel):","opts":["ma","mon","mes","m'"],"ans":1,"exp":"Before a feminine word starting with a vowel, use « mon » for sound: mon amie."},
-  {"id":"fr-142","topic":"fr-gram","type":"mcq","q":"« ses livres » means:","opts":["my books","our books","his/her books","your books"],"ans":2,"exp":"ses = his/her (plural object)."},
-  {"id":"fr-143","topic":"fr-gram","type":"mcq","q":"« Je mange ___ pain. » (some bread)","opts":["du","de la","des","le"],"ans":0,"exp":"Partitive masculine: du pain."},
-  {"id":"fr-144","topic":"fr-gram","type":"mcq","q":"Negative: « Je bois du café » →","opts":["Je ne bois pas du café","Je ne bois pas de café","Je bois ne pas café","Je ne bois pas le café"],"ans":1,"exp":"After a negative, partitive → de: pas de café."},
-  {"id":"fr-145","topic":"fr-gram","type":"mcq","q":"« Paul est ___ grand ___ Marc. » (taller than)","opts":["plus … que","moins … que","aussi … que","le plus … de"],"ans":0,"exp":"plus … que = more … than."},
-  {"id":"fr-146","topic":"fr-gram","type":"mcq","q":"Comparative of « bon »:","opts":["plus bon","meilleur","mieux","bien"],"ans":1,"exp":"bon → meilleur (irregular)."},
-  {"id":"fr-147","topic":"fr-gram","type":"mcq","q":"« L'homme ___ parle est mon père. »","opts":["que","qui","dont","où"],"ans":1,"exp":"Subject relative pronoun → qui."},
-  {"id":"fr-148","topic":"fr-gram","type":"mcq","q":"« Le livre ___ je lis. »","opts":["qui","que","dont","où"],"ans":1,"exp":"Direct object relative pronoun → que."},
-  {"id":"fr-149","topic":"fr-gram","type":"mcq","q":"« Le pays ___ je vis. »","opts":["qui","que","dont","où"],"ans":3,"exp":"Place → où."},
-  {"id":"fr-150","topic":"fr-gram","type":"gapfill","q":"Choose the correct article:","template":"J'achète {0} pommes au marché.","gaps":[{"options":["des","du","de la","le"],"answer":0}],"exp":"Plural « some » → des pommes."},
-  {"id":"fr-151","topic":"fr-gram","type":"gapfill","q":"Complete the contraction:","template":"Elle parle {0} enfants. (à + les)","gaps":[{"options":["aux","à les","des","au"],"answer":0}],"exp":"à + les = aux."},
-  {"id":"fr-152","topic":"fr-num","type":"mcq","q":"« Il est trois heures et quart » = ","opts":["3:15","3:30","3:45","4:15"],"ans":0,"exp":"et quart = quarter past → 3:15."},
-  {"id":"fr-153","topic":"fr-num","type":"mcq","q":"« cinq heures moins le quart » = ","opts":["5:15","5:45","4:45","4:15"],"ans":2,"exp":"moins le quart = quarter to → 4:45."},
-  {"id":"fr-154","topic":"fr-num","type":"mcq","q":"« midi » means:","opts":["midnight","noon","morning","evening"],"ans":1,"exp":"midi = noon; minuit = midnight."},
-  {"id":"fr-157","topic":"fr-num","type":"mcq","q":"14:30 in 24-hour French is:","opts":["deux heures trente","quatorze heures trente","quatre heures trente","quatorze et demie"],"ans":1,"exp":"quatorze heures trente = 14:30."},
-  {"id":"fr-160","topic":"fr-vie","type":"mcq","q":"« L'addition, s'il vous plaît » asks for:","opts":["the menu","the bill","a waiter","the toilet"],"ans":1,"exp":"l'addition = the bill."},
-  {"id":"fr-161","topic":"fr-vie","type":"mcq","q":"Polite way to order a coffee:","opts":["Donne un café","Je veux café","Je voudrais un café","Café maintenant"],"ans":2,"exp":"« Je voudrais » is the polite « I would like »."},
-  {"id":"fr-162","topic":"fr-vie","type":"mcq","q":"« Où est la gare ? » asks:","opts":["What is the station?","Where is the station?","When is the train?","How much is the ticket?"],"ans":1,"exp":"Où = where: Where is the station?"},
-  {"id":"fr-163","topic":"fr-vie","type":"mcq","q":"« Tournez à gauche » means:","opts":["Turn right","Turn left","Go straight","Stop here"],"ans":1,"exp":"à gauche = left; à droite = right."},
-  {"id":"fr-164","topic":"fr-vie","type":"mcq","q":"« Je me lève à sept heures » describes:","opts":["a daily routine","the weather","a price","a place"],"ans":0,"exp":"se lever (reflexive) describes daily routine: I get up at seven."},
-  {"id":"fr-165","topic":"fr-vie","type":"mcq","q":"« faire les courses » means:","opts":["to do sport","to go shopping (groceries)","to cook","to run"],"ans":1,"exp":"faire les courses = to do the (grocery) shopping."},
-  {"id":"fr-166","topic":"fr-vie","type":"mcq","q":"« C'est combien ? » asks:","opts":["What is it?","How much is it?","Where is it?","Whose is it?"],"ans":1,"exp":"combien = how much: How much is it?"},
-  {"id":"fr-167","topic":"fr-vie","type":"gapfill","q":"Complete the café order:","template":"Je {0} une salade, s'il vous plaît.","gaps":[{"options":["voudrais","veux","vais","suis"],"answer":0}],"exp":"Polite: je voudrais une salade."},
-  {"id":"fr-168","topic":"fr-conj","type":"mcq","q":"« Nous ___ français. » (être)","opts":["sommes","êtes","sont","est"],"ans":0,"exp":"nous sommes."},
-  {"id":"fr-169","topic":"fr-conj","type":"mcq","q":"« Vous ___ vos devoirs. » (faire)","opts":["faisons","faites","font","fais"],"ans":1,"exp":"vous faites (irregular)."},
-  {"id":"fr-170","topic":"fr-conj","type":"mcq","q":"Past participle of « prendre »:","opts":["prendu","pris","prit","prené"],"ans":1,"exp":"prendre → pris."},
-  {"id":"fr-171","topic":"fr-conj","type":"mcq","q":"« Elle ___ allée au marché. » (passé composé)","opts":["a","est","va","fait"],"ans":1,"exp":"aller uses être: elle est allée."},
-  {"id":"fr-172","topic":"fr-conj","type":"mcq","q":"« Quand j'étais jeune, je ___ au foot. »","opts":["ai joué","jouais","jouerai","joue"],"ans":1,"exp":"Habit in the past → imparfait: je jouais."},
-  {"id":"fr-173","topic":"fr-conj","type":"mcq","q":"Futur simple of « aller » for « je »:","opts":["allerai","irai","vais","allais"],"ans":1,"exp":"aller → ir-: j'irai."},
-  {"id":"fr-174","topic":"fr-conj","type":"mcq","q":"« Si j'avais le temps, je ___ (voyager). »","opts":["voyage","voyagerai","voyagerais","voyageais"],"ans":2,"exp":"si + imparfait → conditionnel: je voyagerais."},
-  {"id":"fr-175","topic":"fr-conj","type":"mcq","q":"« Il faut que tu ___ (être) là. »","opts":["es","sois","seras","étais"],"ans":1,"exp":"Subjonctif: que tu sois."},
-  {"id":"fr-176","topic":"fr-conj","type":"mcq","q":"« Je me suis ___ tôt. » (se lever, féminin)","opts":["levé","levée","levés","lever"],"ans":1,"exp":"Pronominal + feminine subject → levée."},
-  {"id":"fr-177","topic":"fr-conj","type":"gapfill","q":"Passé composé with avoir:","template":"Hier, j'{0} un bon film. (regarder)","gaps":[{"options":["ai regardé","suis regardé","regardais","regarde"],"answer":0}],"exp":"regarder uses avoir: j'ai regardé."},
-  {"id":"fr-178","topic":"fr-conj","type":"gapfill","q":"Choose the correct future:","template":"Demain, nous {0} à la plage. (aller)","gaps":[{"options":["irons","allons","allions","irez"],"answer":0}],"exp":"Futur simple of aller: nous irons."},
-  {"id":"fr-179","topic":"fr-conj","type":"dragdrop","q":"Match the subject to « avoir » (présent):","pairs":[{"left":"j'","right":"ai"},{"left":"tu","right":"as"},{"left":"nous","right":"avons"},{"left":"ils","right":"ont"}],"exp":"avoir: j'ai, tu as, il a, nous avons, vous avez, ils ont."},
-  {"id":"fr-180","topic":"fr-conj","type":"dragdrop","q":"Match the verb to its auxiliary in the passé composé:","pairs":[{"left":"manger","right":"avoir"},{"left":"aller","right":"être"},{"left":"finir","right":"avoir"},{"left":"partir","right":"être"}],"exp":"Movement/state verbs (aller, partir) use être; most others use avoir."},
-  {"id":"fr-181","topic":"fr-conj","type":"dragdrop","q":"Match subject to « être » (présent):","pairs":[{"left":"je","right":"suis"},{"left":"tu","right":"es"},{"left":"vous","right":"êtes"},{"left":"elles","right":"sont"}],"exp":"être: je suis, tu es, il est, nous sommes, vous êtes, ils sont."},
-  {"id":"fr-182","topic":"fr-conj","type":"mcq","q":"Conditionnel of « vouloir » for politeness:","opts":["je veux","je voudrais","je voulais","je voudrai"],"ans":1,"exp":"je voudrais = I would like (polite)."},
+  {"id":"fr-121","topic":"fr-salut","lesson":"fr-l15","type":"mcq","q":"A waiter says « Vous désirez ? ». He is asking:","opts":["How are you?","What would you like?","Where are you from?","What's your name?"],"ans":1,"exp":"« Vous désirez ? » = What would you like? (taking an order)."},
+  {"id":"fr-122","topic":"fr-salut","lesson":"fr-l01","type":"mcq","q":"Which reply best answers « Comment ça va ? »","opts":["Je m'appelle Léa","Ça va bien, merci","Au revoir","J'ai 20 ans"],"ans":1,"exp":"« Ça va bien, merci » = I'm fine, thanks."},
+  {"id":"fr-123","topic":"fr-salut","lesson":"fr-l01","type":"mcq","q":"« Enchanté(e) ! » is said when:","opts":["leaving","meeting someone for the first time","apologising","thanking"],"ans":1,"exp":"« Enchanté(e) » = pleased to meet you, on first meeting."},
+  {"id":"fr-124","topic":"fr-salut","lesson":"fr-l01","type":"mcq","q":"To politely get a stranger's attention you say:","opts":["Salut !","Excusez-moi, Monsieur","De rien","Bonne nuit"],"ans":1,"exp":"« Excusez-moi » politely gets attention or apologises."},
+  {"id":"fr-125","topic":"fr-salut","lesson":"fr-l01","type":"mcq","q":"« À tout à l'heure » means:","opts":["See you tomorrow","See you later today","Goodbye forever","Good night"],"ans":1,"exp":"« À tout à l'heure » = see you later (the same day)."},
+  {"id":"fr-126","topic":"fr-vocab","lesson":"fr-l11","type":"mcq","q":"« la sœur » means:","opts":["the brother","the sister","the mother","the aunt"],"ans":1,"exp":"la sœur = the sister."},
+  {"id":"fr-127","topic":"fr-vocab","lesson":"fr-l11","type":"mcq","q":"« les grands-parents » are:","opts":["the parents","the grandparents","the cousins","the children"],"ans":1,"exp":"les grands-parents = the grandparents."},
+  {"id":"fr-128","topic":"fr-vocab","lesson":"fr-l11","type":"mcq","q":"Which word means « husband »?","opts":["la femme","le mari","le fils","le frère"],"ans":1,"exp":"le mari = husband; la femme = wife."},
+  {"id":"fr-129","topic":"fr-vocab","lesson":"fr-l15","type":"mcq","q":"« un jus d'orange » is a:","opts":["food","drink","place","colour"],"ans":1,"exp":"un jus d'orange = an orange juice (a drink)."},
+  {"id":"fr-130","topic":"fr-vocab","lesson":"fr-l15","type":"mcq","q":"Which is something you eat?","opts":["un café","une eau","un croissant","un thé"],"ans":2,"exp":"un croissant is food; the others are drinks."},
+  {"id":"fr-131","topic":"fr-vocab","lesson":"fr-l16","type":"mcq","q":"« Il fait froid » describes:","opts":["the time","the weather (cold)","a feeling","a colour"],"ans":1,"exp":"« Il fait froid » = it's cold (weather)."},
+  {"id":"fr-132","topic":"fr-vocab","lesson":"fr-l16","type":"mcq","q":"Which season is « l'hiver »?","opts":["spring","summer","autumn","winter"],"ans":3,"exp":"l'hiver = winter."},
+  {"id":"fr-133","topic":"fr-vocab","lesson":"fr-l13","type":"mcq","q":"« Elle est espagnole » means she is:","opts":["Italian","Spanish","German","English"],"ans":1,"exp":"espagnole = Spanish (feminine)."},
+  {"id":"fr-134","topic":"fr-vocab","lesson":"fr-l13","type":"mcq","q":"The language « le chinois » is:","opts":["Japanese","Korean","Chinese","Vietnamese"],"ans":2,"exp":"le chinois = Chinese."},
+  {"id":"fr-136","topic":"fr-vocab","lesson":"fr-l11","type":"dragdrop","q":"Match each French word to its meaning:","pairs":[{"left":"le père","right":"father"},{"left":"la mère","right":"mother"},{"left":"le fils","right":"son"},{"left":"la fille","right":"daughter"}],"exp":"Core family vocabulary: père, mère, fils, fille."},
+  {"id":"fr-137","topic":"fr-vocab","lesson":"fr-l16","type":"dragdrop","q":"Match the season to English:","pairs":[{"left":"le printemps","right":"spring"},{"left":"l'été","right":"summer"},{"left":"l'automne","right":"autumn"},{"left":"l'hiver","right":"winter"}],"exp":"The four seasons in French."},
+  {"id":"fr-138","topic":"fr-gram","lesson":"fr-l04","type":"mcq","q":"« Je vais ___ cinéma. » (à + le)","opts":["à le","au","aux","du"],"ans":1,"exp":"à + le = au."},
+  {"id":"fr-139","topic":"fr-gram","lesson":"fr-l04","type":"mcq","q":"« le livre ___ professeur » (de + le)","opts":["de le","du","des","au"],"ans":1,"exp":"de + le = du."},
+  {"id":"fr-140","topic":"fr-gram","lesson":"fr-l05","type":"mcq","q":"Plural of « un animal »:","opts":["des animals","des animaux","des animales","des animal"],"ans":1,"exp":"-al → -aux: animaux."},
+  {"id":"fr-141","topic":"fr-gram","lesson":"fr-l11","type":"mcq","q":"« ___ amie » (my, before a vowel):","opts":["ma","mon","mes","m'"],"ans":1,"exp":"Before a feminine word starting with a vowel, use « mon » for sound: mon amie."},
+  {"id":"fr-142","topic":"fr-gram","lesson":"fr-l11","type":"mcq","q":"« ses livres » means:","opts":["my books","our books","his/her books","your books"],"ans":2,"exp":"ses = his/her (plural object)."},
+  {"id":"fr-143","topic":"fr-gram","lesson":"fr-l15","type":"mcq","q":"« Je mange ___ pain. » (some bread)","opts":["du","de la","des","le"],"ans":0,"exp":"Partitive masculine: du pain."},
+  {"id":"fr-144","topic":"fr-gram","lesson":"fr-l15","type":"mcq","q":"Negative: « Je bois du café » →","opts":["Je ne bois pas du café","Je ne bois pas de café","Je bois ne pas café","Je ne bois pas le café"],"ans":1,"exp":"After a negative, partitive → de: pas de café."},
+  {"id":"fr-145","topic":"fr-gram","lesson":"fr-l25","type":"mcq","q":"« Paul est ___ grand ___ Marc. » (taller than)","opts":["plus … que","moins … que","aussi … que","le plus … de"],"ans":0,"exp":"plus … que = more … than."},
+  {"id":"fr-146","topic":"fr-gram","lesson":"fr-l25","type":"mcq","q":"Comparative of « bon »:","opts":["plus bon","meilleur","mieux","bien"],"ans":1,"exp":"bon → meilleur (irregular)."},
+  {"id":"fr-147","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"« L'homme ___ parle est mon père. »","opts":["que","qui","dont","où"],"ans":1,"exp":"Subject relative pronoun → qui."},
+  {"id":"fr-148","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"« Le livre ___ je lis. »","opts":["qui","que","dont","où"],"ans":1,"exp":"Direct object relative pronoun → que."},
+  {"id":"fr-149","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"« Le pays ___ je vis. »","opts":["qui","que","dont","où"],"ans":3,"exp":"Place → où."},
+  {"id":"fr-150","topic":"fr-gram","lesson":"fr-l15","type":"gapfill","q":"Choose the correct article:","template":"J'achète {0} pommes au marché.","gaps":[{"options":["des","du","de la","le"],"answer":0}],"exp":"Plural « some » → des pommes."},
+  {"id":"fr-151","topic":"fr-gram","lesson":"fr-l04","type":"gapfill","q":"Complete the contraction:","template":"Elle parle {0} enfants. (à + les)","gaps":[{"options":["aux","à les","des","au"],"answer":0}],"exp":"à + les = aux."},
+  {"id":"fr-152","topic":"fr-num","lesson":"fr-l07","type":"mcq","q":"« Il est trois heures et quart » = ","opts":["3:15","3:30","3:45","4:15"],"ans":0,"exp":"et quart = quarter past → 3:15."},
+  {"id":"fr-153","topic":"fr-num","lesson":"fr-l07","type":"mcq","q":"« cinq heures moins le quart » = ","opts":["5:15","5:45","4:45","4:15"],"ans":2,"exp":"moins le quart = quarter to → 4:45."},
+  {"id":"fr-154","topic":"fr-num","lesson":"fr-l07","type":"mcq","q":"« midi » means:","opts":["midnight","noon","morning","evening"],"ans":1,"exp":"midi = noon; minuit = midnight."},
+  {"id":"fr-157","topic":"fr-num","lesson":"fr-l07","type":"mcq","q":"14:30 in 24-hour French is:","opts":["deux heures trente","quatorze heures trente","quatre heures trente","quatorze et demie"],"ans":1,"exp":"quatorze heures trente = 14:30."},
+  {"id":"fr-160","topic":"fr-vie","lesson":"fr-l15","type":"mcq","q":"« L'addition, s'il vous plaît » asks for:","opts":["the menu","the bill","a waiter","the toilet"],"ans":1,"exp":"l'addition = the bill."},
+  {"id":"fr-161","topic":"fr-vie","lesson":"fr-l15","type":"mcq","q":"Polite way to order a coffee:","opts":["Donne un café","Je veux café","Je voudrais un café","Café maintenant"],"ans":2,"exp":"« Je voudrais » is the polite « I would like »."},
+  {"id":"fr-162","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"« Où est la gare ? » asks:","opts":["What is the station?","Where is the station?","When is the train?","How much is the ticket?"],"ans":1,"exp":"Où = where: Where is the station?"},
+  {"id":"fr-163","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"« Tournez à gauche » means:","opts":["Turn right","Turn left","Go straight","Stop here"],"ans":1,"exp":"à gauche = left; à droite = right."},
+  {"id":"fr-164","topic":"fr-vie","lesson":"fr-l23","type":"mcq","q":"« Je me lève à sept heures » describes:","opts":["a daily routine","the weather","a price","a place"],"ans":0,"exp":"se lever (reflexive) describes daily routine: I get up at seven."},
+  {"id":"fr-165","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"« faire les courses » means:","opts":["to do sport","to go shopping (groceries)","to cook","to run"],"ans":1,"exp":"faire les courses = to do the (grocery) shopping."},
+  {"id":"fr-166","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"« C'est combien ? » asks:","opts":["What is it?","How much is it?","Where is it?","Whose is it?"],"ans":1,"exp":"combien = how much: How much is it?"},
+  {"id":"fr-167","topic":"fr-vie","lesson":"fr-l15","type":"gapfill","q":"Complete the café order:","template":"Je {0} une salade, s'il vous plaît.","gaps":[{"options":["voudrais","veux","vais","suis"],"answer":0}],"exp":"Polite: je voudrais une salade."},
+  {"id":"fr-168","topic":"fr-conj","lesson":"fr-l02","type":"mcq","q":"« Nous ___ français. » (être)","opts":["sommes","êtes","sont","est"],"ans":0,"exp":"nous sommes."},
+  {"id":"fr-169","topic":"fr-conj","lesson":"fr-l14","type":"mcq","q":"« Vous ___ vos devoirs. » (faire)","opts":["faisons","faites","font","fais"],"ans":1,"exp":"vous faites (irregular)."},
+  {"id":"fr-170","topic":"fr-conj","lesson":"fr-l18","type":"mcq","q":"Past participle of « prendre »:","opts":["prendu","pris","prit","prené"],"ans":1,"exp":"prendre → pris."},
+  {"id":"fr-171","topic":"fr-conj","lesson":"fr-l19","type":"mcq","q":"« Elle ___ allée au marché. » (passé composé)","opts":["a","est","va","fait"],"ans":1,"exp":"aller uses être: elle est allée."},
+  {"id":"fr-172","topic":"fr-conj","lesson":"fr-l20","type":"mcq","q":"« Quand j'étais jeune, je ___ au foot. »","opts":["ai joué","jouais","jouerai","joue"],"ans":1,"exp":"Habit in the past → imparfait: je jouais."},
+  {"id":"fr-173","topic":"fr-conj","lesson":"fr-l22","type":"mcq","q":"Futur simple of « aller » for « je »:","opts":["allerai","irai","vais","allais"],"ans":1,"exp":"aller → ir-: j'irai."},
+  {"id":"fr-174","topic":"fr-conj","lesson":"fr-l27","type":"mcq","q":"« Si j'avais le temps, je ___ (voyager). »","opts":["voyage","voyagerai","voyagerais","voyageais"],"ans":2,"exp":"si + imparfait → conditionnel: je voyagerais."},
+  {"id":"fr-175","topic":"fr-conj","lesson":"fr-l28","type":"mcq","q":"« Il faut que tu ___ (être) là. »","opts":["es","sois","seras","étais"],"ans":1,"exp":"Subjonctif: que tu sois."},
+  {"id":"fr-176","topic":"fr-conj","lesson":"fr-l23","type":"mcq","q":"« Je me suis ___ tôt. » (se lever, féminin)","opts":["levé","levée","levés","lever"],"ans":1,"exp":"Pronominal + feminine subject → levée."},
+  {"id":"fr-177","topic":"fr-conj","lesson":"fr-l18","type":"gapfill","q":"Passé composé with avoir:","template":"Hier, j'{0} un bon film. (regarder)","gaps":[{"options":["ai regardé","suis regardé","regardais","regarde"],"answer":0}],"exp":"regarder uses avoir: j'ai regardé."},
+  {"id":"fr-178","topic":"fr-conj","lesson":"fr-l22","type":"gapfill","q":"Choose the correct future:","template":"Demain, nous {0} à la plage. (aller)","gaps":[{"options":["irons","allons","allions","irez"],"answer":0}],"exp":"Futur simple of aller: nous irons."},
+  {"id":"fr-179","topic":"fr-conj","lesson":"fr-l03","type":"dragdrop","q":"Match the subject to « avoir » (présent):","pairs":[{"left":"j'","right":"ai"},{"left":"tu","right":"as"},{"left":"nous","right":"avons"},{"left":"ils","right":"ont"}],"exp":"avoir: j'ai, tu as, il a, nous avons, vous avez, ils ont."},
+  {"id":"fr-180","topic":"fr-conj","lesson":"fr-l19","type":"dragdrop","q":"Match the verb to its auxiliary in the passé composé:","pairs":[{"left":"manger","right":"avoir"},{"left":"aller","right":"être"},{"left":"finir","right":"avoir"},{"left":"partir","right":"être"}],"exp":"Movement/state verbs (aller, partir) use être; most others use avoir."},
+  {"id":"fr-181","topic":"fr-conj","lesson":"fr-l02","type":"dragdrop","q":"Match subject to « être » (présent):","pairs":[{"left":"je","right":"suis"},{"left":"tu","right":"es"},{"left":"vous","right":"êtes"},{"left":"elles","right":"sont"}],"exp":"être: je suis, tu es, il est, nous sommes, vous êtes, ils sont."},
+  {"id":"fr-182","topic":"fr-conj","lesson":"fr-l27","type":"mcq","q":"Conditionnel of « vouloir » for politeness:","opts":["je veux","je voudrais","je voulais","je voudrai"],"ans":1,"exp":"je voudrais = I would like (polite)."},
 
   // ── Pronunciation & accents ──────────────────────────────────────────────────
-  {"id":"fr-183","topic":"fr-gram","type":"mcq","q":"What sound does the accent aigu (é) represent?","opts":["Like \"ay\" in \"say\"","Like \"a\" in \"cat\"","Like \"ee\" in \"see\"","It is silent"],"ans":0,"exp":"é sounds like \"ay\": café, été, répéter."},
-  {"id":"fr-184","topic":"fr-gram","type":"mcq","q":"The cédille (ç) always sounds like:","opts":["\"k\" (as in \"car\")","\"s\" (as in \"sun\")","\"sh\" (as in \"she\")","\"z\" (as in \"zoo\")"],"ans":1,"exp":"ç = s sound before a, o, u: garçon, leçon, français."},
-  {"id":"fr-185","topic":"fr-gram","type":"mcq","q":"In \"naïve\", the tréma (¨) on the ï means:","opts":["The i is silent","Pronounce the a and i as separate syllables","Stress the syllable","The word is feminine"],"ans":1,"exp":"Tréma separates vowels that would otherwise combine: naïve = na-ïve, not \"nave\"."},
-  {"id":"fr-186","topic":"fr-gram","type":"mcq","q":"\"Les enfants\" — what happens in spoken French?","opts":["The s in \"les\" is fully silent","The silent s of \"les\" links to the vowel: \"lez-enfants\"","The t in \"enfants\" is pronounced","All letters are silent"],"ans":1,"exp":"Liaison: a normally silent final consonant is pronounced before a vowel word. Les enfants → lez-enfants."},
-  {"id":"fr-187","topic":"fr-gram","type":"mcq","q":"The French \"ou\" sound (in \"vous\", \"rouge\") rhymes with:","opts":["\"oo\" in \"boot\"","\"uh\" in \"but\"","\"u\" in \"cup\"","\"ow\" in \"now\""],"ans":0,"exp":"ou = \"oo\": vous, rouge, beaucoup, bouche."},
-  {"id":"fr-188","topic":"fr-gram","type":"mcq","q":"The French \"u\" (in \"tu\", \"rue\") is unusual because:","opts":["It sounds exactly like English \"oo\"","You round your lips as for \"oo\" but say \"ee\" — no English equivalent","It is always silent","It sounds like \"uh\""],"ans":1,"exp":"French \"u\" has no English equivalent — round lips as if saying \"oo\", then say \"ee\": une, rue, tu."},
-  {"id":"fr-189","topic":"fr-gram","type":"mcq","q":"In French, most final consonants are:","opts":["Always pronounced","Silent unless followed by a vowel-starting word (liaison)","Doubled before a vowel","Always stressed"],"ans":1,"exp":"Final consonants are usually silent: vous parlEZ, ils sontT — but can link before a vowel: vous_avez → vouz-avez."},
-  {"id":"fr-190","topic":"fr-gram","type":"mcq","q":"Nasal vowels (un, in, on, an) are produced by:","opts":["Pressing the tongue to the roof of the mouth","Allowing air to flow through the nose as you speak","Doubling the vowel length","Closing the lips tightly"],"ans":1,"exp":"Nasal vowels involve nasal resonance — breathe through your nose as you say them. The n/m is not fully articulated."},
-  {"id":"fr-191","topic":"fr-gram","type":"dragdrop","q":"Match each accent to an example word:","pairs":[{"left":"accent aigu","right":"café"},{"left":"accent grave","right":"père"},{"left":"cédille","right":"français"},{"left":"tréma","right":"naïf"}],"exp":"é = aigu (sounds like ay), è = grave (open e), ç = cédille (s sound), ï = tréma (separate vowels)."},
-  {"id":"fr-192","topic":"fr-gram","type":"gapfill","q":"Both words contain a cédille. Complete the spelling:","template":"La le{0}on de fran{1}ais commence maintenant.","gaps":[{"options":["ç","c","ss","x"],"answer":0},{"options":["ç","c","ss","z"],"answer":0}],"exp":"leçon and français both use ç to give the 's' sound before o and a."},
+  {"id":"fr-183","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"What sound does the accent aigu (é) represent?","opts":["Like \"ay\" in \"say\"","Like \"a\" in \"cat\"","Like \"ee\" in \"see\"","It is silent"],"ans":0,"exp":"é sounds like \"ay\": café, été, répéter."},
+  {"id":"fr-184","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"The cédille (ç) always sounds like:","opts":["\"k\" (as in \"car\")","\"s\" (as in \"sun\")","\"sh\" (as in \"she\")","\"z\" (as in \"zoo\")"],"ans":1,"exp":"ç = s sound before a, o, u: garçon, leçon, français."},
+  {"id":"fr-185","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"In \"naïve\", the tréma (¨) on the ï means:","opts":["The i is silent","Pronounce the a and i as separate syllables","Stress the syllable","The word is feminine"],"ans":1,"exp":"Tréma separates vowels that would otherwise combine: naïve = na-ïve, not \"nave\"."},
+  {"id":"fr-186","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"\"Les enfants\" — what happens in spoken French?","opts":["The s in \"les\" is fully silent","The silent s of \"les\" links to the vowel: \"lez-enfants\"","The t in \"enfants\" is pronounced","All letters are silent"],"ans":1,"exp":"Liaison: a normally silent final consonant is pronounced before a vowel word. Les enfants → lez-enfants."},
+  {"id":"fr-187","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"The French \"ou\" sound (in \"vous\", \"rouge\") rhymes with:","opts":["\"oo\" in \"boot\"","\"uh\" in \"but\"","\"u\" in \"cup\"","\"ow\" in \"now\""],"ans":0,"exp":"ou = \"oo\": vous, rouge, beaucoup, bouche."},
+  {"id":"fr-188","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"The French \"u\" (in \"tu\", \"rue\") is unusual because:","opts":["It sounds exactly like English \"oo\"","You round your lips as for \"oo\" but say \"ee\" — no English equivalent","It is always silent","It sounds like \"uh\""],"ans":1,"exp":"French \"u\" has no English equivalent — round lips as if saying \"oo\", then say \"ee\": une, rue, tu."},
+  {"id":"fr-189","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"In French, most final consonants are:","opts":["Always pronounced","Silent unless followed by a vowel-starting word (liaison)","Doubled before a vowel","Always stressed"],"ans":1,"exp":"Final consonants are usually silent: vous parlEZ, ils sontT — but can link before a vowel: vous_avez → vouz-avez."},
+  {"id":"fr-190","topic":"fr-gram","lesson":"fr-l40","type":"mcq","q":"Nasal vowels (un, in, on, an) are produced by:","opts":["Pressing the tongue to the roof of the mouth","Allowing air to flow through the nose as you speak","Doubling the vowel length","Closing the lips tightly"],"ans":1,"exp":"Nasal vowels involve nasal resonance — breathe through your nose as you say them. The n/m is not fully articulated."},
+  {"id":"fr-191","topic":"fr-gram","lesson":"fr-l40","type":"dragdrop","q":"Match each accent to an example word:","pairs":[{"left":"accent aigu","right":"café"},{"left":"accent grave","right":"père"},{"left":"cédille","right":"français"},{"left":"tréma","right":"naïf"}],"exp":"é = aigu (sounds like ay), è = grave (open e), ç = cédille (s sound), ï = tréma (separate vowels)."},
+  {"id":"fr-192","topic":"fr-gram","lesson":"fr-l40","type":"gapfill","q":"Both words contain a cédille. Complete the spelling:","template":"La le{0}on de fran{1}ais commence maintenant.","gaps":[{"options":["ç","c","ss","x"],"answer":0},{"options":["ç","c","ss","z"],"answer":0}],"exp":"leçon and français both use ç to give the 's' sound before o and a."},
 
   // ── Le corps et la santé ─────────────────────────────────────────────────────
-  {"id":"fr-193","topic":"fr-vie","type":"mcq","q":"\"La tête\" means:","opts":["the arm","the head","the foot","the hand"],"ans":1,"exp":"la tête = the head."},
-  {"id":"fr-194","topic":"fr-vie","type":"mcq","q":"\"J'ai mal à la gorge\" means:","opts":["I have a sore arm","I have a sore throat","I have a headache","I have a stomach ache"],"ans":1,"exp":"la gorge = the throat; j'ai mal à la gorge = I have a sore throat."},
-  {"id":"fr-195","topic":"fr-vie","type":"mcq","q":"\"Le ventre\" refers to:","opts":["the chest","the stomach/belly","the back","the leg"],"ans":1,"exp":"le ventre = the stomach / belly / abdomen."},
-  {"id":"fr-196","topic":"fr-vie","type":"gapfill","q":"My back hurts — use à + le:","template":"J'ai mal {0} dos.","gaps":[{"options":["au","à le","à la","du"],"answer":0}],"exp":"à + le = au: j'ai mal au dos."},
-  {"id":"fr-197","topic":"fr-vie","type":"mcq","q":"\"Les yeux\" is the IRREGULAR plural of:","opts":["le nez","l'oeil","la tête","le bras"],"ans":1,"exp":"l'oeil (eye) → les yeux (eyes) — completely irregular plural."},
-  {"id":"fr-198","topic":"fr-vie","type":"mcq","q":"At the pharmacy, \"j'ai de la fièvre\" means:","opts":["I have a cold","I have a fever","I have a cough","I feel dizzy"],"ans":1,"exp":"la fièvre = fever; j'ai de la fièvre = I have a fever."},
-  {"id":"fr-199","topic":"fr-vie","type":"dragdrop","q":"Match the French body part to its English meaning:","pairs":[{"left":"la main","right":"hand"},{"left":"le genou","right":"knee"},{"left":"l'épaule","right":"shoulder"},{"left":"la cheville","right":"ankle"}],"exp":"la main = hand, le genou = knee, l'épaule = shoulder, la cheville = ankle."},
-  {"id":"fr-200","topic":"fr-vie","type":"gapfill","q":"My teeth hurt — use à + les:","template":"J'ai mal {0} dents.","gaps":[{"options":["aux","à les","au","à la"],"answer":0}],"exp":"à + les = aux: j'ai mal aux dents."},
-  {"id":"fr-201","topic":"fr-vie","type":"mcq","q":"\"Je tousse\" means:","opts":["I sneeze","I cough","I vomit","I faint"],"ans":1,"exp":"tousser = to cough; je tousse."},
-  {"id":"fr-202","topic":"fr-vie","type":"mcq","q":"\"J'ai mal au coeur\" means:","opts":["I have heartburn","I feel sick / nauseous","I have chest pain","My heart is broken"],"ans":1,"exp":"avoir mal au coeur = to feel sick/nauseous (literally to have pain at the heart)."},
-  {"id":"fr-203","topic":"fr-vie","type":"mcq","q":"\"Il faut prendre des médicaments\" means:","opts":["It is necessary to take medicine","You must see a doctor","Buy medicine at the pharmacy","Take a rest"],"ans":0,"exp":"il faut + infinitif = it is necessary to; des médicaments = medicine/tablets."},
-  {"id":"fr-204","topic":"fr-vie","type":"gapfill","q":"Her stomach hurts:","template":"Elle a {0} au ventre.","gaps":[{"options":["mal","bien","froid","chaud"],"answer":0}],"exp":"avoir mal = to hurt/ache: elle a mal au ventre = her stomach hurts."},
-  {"id":"fr-205","topic":"fr-vie","type":"mcq","q":"\"Les genoux\" is the plural of:","opts":["le genu","le genou","la genoue","le genoux"],"ans":1,"exp":"le genou → les genoux (add x for words ending in -ou such as genou, bijou, caillou)."},
-  {"id":"fr-206","topic":"fr-vie","type":"scenario","setup":"You are at the doctor's surgery in Paris. The doctor asks you some questions.","parts":[{"q":"The doctor says \"Qu'est-ce qui ne va pas ?\" — what is she asking?","opts":["What is your name?","What is wrong with you?","Do you have insurance?","How old are you?"],"ans":1,"exp":"Qu'est-ce qui ne va pas ? = What is wrong? / What's the matter?"},{"q":"You want to say \"I have had a headache for three days.\" Which is correct?","opts":["J'ai mal à la tête depuis trois jours","J'ai de la fièvre depuis trois jours","J'ai mal à l'estomac depuis trois jours","Je suis fatigué depuis trois jours"],"ans":0,"exp":"j'ai mal à la tête = headache; depuis trois jours = for three days (ongoing → use depuis + present)."},{"q":"The doctor says \"Prenez ces comprimés trois fois par jour.\" What should you do?","opts":["Take these tablets once a day","Take these tablets three times a day","Take these tablets with every meal","Rest for three days"],"ans":1,"exp":"comprimés = tablets; trois fois par jour = three times a day."}],"exp":"At the doctor: Qu'est-ce qui ne va pas? → j'ai mal à... depuis... → prenez... par jour."},
-  {"id":"fr-207","topic":"fr-vie","type":"mcq","q":"At the pharmacy, you say you have a cough. Which phrase is correct?","opts":["J'ai mal au dos","Je tousse beaucoup","J'ai de la fièvre","J'ai mal à la tête"],"ans":1,"exp":"tousser = to cough; je tousse beaucoup = I am coughing a lot."},
+  {"id":"fr-193","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"La tête\" means:","opts":["the arm","the head","the foot","the hand"],"ans":1,"exp":"la tête = the head."},
+  {"id":"fr-194","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"J'ai mal à la gorge\" means:","opts":["I have a sore arm","I have a sore throat","I have a headache","I have a stomach ache"],"ans":1,"exp":"la gorge = the throat; j'ai mal à la gorge = I have a sore throat."},
+  {"id":"fr-195","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Le ventre\" refers to:","opts":["the chest","the stomach/belly","the back","the leg"],"ans":1,"exp":"le ventre = the stomach / belly / abdomen."},
+  {"id":"fr-196","topic":"fr-vie","lesson":"fr-l41","type":"gapfill","q":"My back hurts — use à + le:","template":"J'ai mal {0} dos.","gaps":[{"options":["au","à le","à la","du"],"answer":0}],"exp":"à + le = au: j'ai mal au dos."},
+  {"id":"fr-197","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Les yeux\" is the IRREGULAR plural of:","opts":["le nez","l'oeil","la tête","le bras"],"ans":1,"exp":"l'oeil (eye) → les yeux (eyes) — completely irregular plural."},
+  {"id":"fr-198","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"At the pharmacy, \"j'ai de la fièvre\" means:","opts":["I have a cold","I have a fever","I have a cough","I feel dizzy"],"ans":1,"exp":"la fièvre = fever; j'ai de la fièvre = I have a fever."},
+  {"id":"fr-199","topic":"fr-vie","lesson":"fr-l41","type":"dragdrop","q":"Match the French body part to its English meaning:","pairs":[{"left":"la main","right":"hand"},{"left":"le genou","right":"knee"},{"left":"l'épaule","right":"shoulder"},{"left":"la cheville","right":"ankle"}],"exp":"la main = hand, le genou = knee, l'épaule = shoulder, la cheville = ankle."},
+  {"id":"fr-200","topic":"fr-vie","lesson":"fr-l41","type":"gapfill","q":"My teeth hurt — use à + les:","template":"J'ai mal {0} dents.","gaps":[{"options":["aux","à les","au","à la"],"answer":0}],"exp":"à + les = aux: j'ai mal aux dents."},
+  {"id":"fr-201","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Je tousse\" means:","opts":["I sneeze","I cough","I vomit","I faint"],"ans":1,"exp":"tousser = to cough; je tousse."},
+  {"id":"fr-202","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"J'ai mal au coeur\" means:","opts":["I have heartburn","I feel sick / nauseous","I have chest pain","My heart is broken"],"ans":1,"exp":"avoir mal au coeur = to feel sick/nauseous (literally to have pain at the heart)."},
+  {"id":"fr-203","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Il faut prendre des médicaments\" means:","opts":["It is necessary to take medicine","You must see a doctor","Buy medicine at the pharmacy","Take a rest"],"ans":0,"exp":"il faut + infinitif = it is necessary to; des médicaments = medicine/tablets."},
+  {"id":"fr-204","topic":"fr-vie","lesson":"fr-l41","type":"gapfill","q":"Her stomach hurts:","template":"Elle a {0} au ventre.","gaps":[{"options":["mal","bien","froid","chaud"],"answer":0}],"exp":"avoir mal = to hurt/ache: elle a mal au ventre = her stomach hurts."},
+  {"id":"fr-205","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Les genoux\" is the plural of:","opts":["le genu","le genou","la genoue","le genoux"],"ans":1,"exp":"le genou → les genoux (add x for words ending in -ou such as genou, bijou, caillou)."},
+  {"id":"fr-206","topic":"fr-vie","lesson":"fr-l41","type":"scenario","setup":"You are at the doctor's surgery in Paris. The doctor asks you some questions.","parts":[{"q":"The doctor says \"Qu'est-ce qui ne va pas ?\" — what is she asking?","opts":["What is your name?","What is wrong with you?","Do you have insurance?","How old are you?"],"ans":1,"exp":"Qu'est-ce qui ne va pas ? = What is wrong? / What's the matter?"},{"q":"You want to say \"I have had a headache for three days.\" Which is correct?","opts":["J'ai mal à la tête depuis trois jours","J'ai de la fièvre depuis trois jours","J'ai mal à l'estomac depuis trois jours","Je suis fatigué depuis trois jours"],"ans":0,"exp":"j'ai mal à la tête = headache; depuis trois jours = for three days (ongoing → use depuis + present)."},{"q":"The doctor says \"Prenez ces comprimés trois fois par jour.\" What should you do?","opts":["Take these tablets once a day","Take these tablets three times a day","Take these tablets with every meal","Rest for three days"],"ans":1,"exp":"comprimés = tablets; trois fois par jour = three times a day."}],"exp":"At the doctor: Qu'est-ce qui ne va pas? → j'ai mal à... depuis... → prenez... par jour."},
+  {"id":"fr-207","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"At the pharmacy, you say you have a cough. Which phrase is correct?","opts":["J'ai mal au dos","Je tousse beaucoup","J'ai de la fièvre","J'ai mal à la tête"],"ans":1,"exp":"tousser = to cough; je tousse beaucoup = I am coughing a lot."},
 
   // ── Les vêtements et le shopping ─────────────────────────────────────────────
-  {"id":"fr-208","topic":"fr-vie","type":"mcq","q":"\"Un manteau\" is:","opts":["a hat","a coat","a scarf","a pair of trousers"],"ans":1,"exp":"un manteau = a coat."},
-  {"id":"fr-209","topic":"fr-vie","type":"mcq","q":"\"Je porte une robe\" means:","opts":["I am wearing a dress","I am wearing a skirt","I am wearing a jacket","I am wearing trousers"],"ans":0,"exp":"une robe = a dress; porter = to wear."},
-  {"id":"fr-210","topic":"fr-vie","type":"mcq","q":"False friend: \"une librairie\" is:","opts":["a library","a bookshop","a clothes shop","a pharmacy"],"ans":1,"exp":"une librairie = a bookshop. une bibliothèque = a library."},
-  {"id":"fr-211","topic":"fr-vie","type":"mcq","q":"How do you ask for a size in French?","opts":["Quelle est votre taille ?","C'est combien ?","Vous avez cela en rouge ?","Je voudrais l'essayer"],"ans":0,"exp":"Quelle est votre taille ? / Quelle taille faites-vous ? = What is your size?"},
-  {"id":"fr-212","topic":"fr-vie","type":"mcq","q":"\"Je voudrais l'essayer\" means:","opts":["I would like to buy it","I would like to try it on","I would like a refund","I would like to pay by card"],"ans":1,"exp":"essayer = to try on; je voudrais l'essayer = I would like to try it on."},
-  {"id":"fr-213","topic":"fr-vie","type":"mcq","q":"\"Une boulangerie\" sells:","opts":["meat","bread and pastries","vegetables","clothes"],"ans":1,"exp":"une boulangerie = a bakery (bread, croissants, baguettes)."},
-  {"id":"fr-214","topic":"fr-vie","type":"dragdrop","q":"Match the clothing item to its English meaning:","pairs":[{"left":"le pull","right":"jumper / sweater"},{"left":"le pantalon","right":"trousers"},{"left":"les chaussures","right":"shoes"},{"left":"la veste","right":"jacket"}],"exp":"pull = jumper, pantalon = trousers, chaussures = shoes, veste = jacket."},
-  {"id":"fr-215","topic":"fr-vie","type":"gapfill","q":"Complete the polite shop request:","template":"Je {0} ce pantalon en taille 40, s'il vous plaît.","gaps":[{"options":["voudrais","veux","dois","peux"],"answer":0}],"exp":"je voudrais = I would like (polite conditional — always use in shops)."},
-  {"id":"fr-216","topic":"fr-vie","type":"mcq","q":"\"Je paie par carte\" means:","opts":["I am paying in cash","I am paying by card","I am paying by cheque","I cannot pay"],"ans":1,"exp":"payer par carte = to pay by card; en espèces = in cash."},
-  {"id":"fr-217","topic":"fr-vie","type":"mcq","q":"\"C'est trop cher\" means:","opts":["It is very cheap","It is too expensive","It is on sale","It is the right size"],"ans":1,"exp":"trop = too (much); cher = expensive: it is too expensive."},
-  {"id":"fr-218","topic":"fr-vie","type":"gapfill","q":"Ask if they have this item in red:","template":"Vous avez {0} en rouge ?","gaps":[{"options":["ça","ici","bien","là"],"answer":0}],"exp":"ça = this/that (informal demonstrative): Vous avez ça en rouge ? = Do you have this in red?"},
-  {"id":"fr-219","topic":"fr-vie","type":"mcq","q":"\"Les soldes\" refers to:","opts":["the receipts","the sales","the prices","the stock"],"ans":1,"exp":"les soldes = the sales (seasonal sales); en solde = on sale / reduced."},
-  {"id":"fr-220","topic":"fr-vie","type":"mcq","q":"\"Une épicerie\" is:","opts":["a pharmacy","a grocery shop","a department store","a bakery"],"ans":1,"exp":"une épicerie = a grocery shop / corner shop."},
-  {"id":"fr-221","topic":"fr-vie","type":"scenario","setup":"You are shopping in a French clothes shop.","parts":[{"q":"The assistant says \"Je peux vous aider ?\" — what is she offering?","opts":["Can I help you?","What size are you?","We have a sale today","The changing rooms are upstairs"],"ans":0,"exp":"Je peux vous aider ? = Can I help you? (May I help you?)"},{"q":"You want to ask \"Do you have this shirt in a size 38?\" Which is best?","opts":["Vous avez cette chemise en taille 38 ?","Je voudrais une chemise taille 38","C'est combien cette chemise ?","Je l'essaie en 38"],"ans":0,"exp":"Vous avez + item + en taille + number ? = Do you have...in size...?"},{"q":"The price tag says \"30 % de réduction\". What does this mean?","opts":["30 % extra charge","30 % discount","Only 30 items in stock","Fixed price of 30 €"],"ans":1,"exp":"réduction = reduction / discount; 30 % de réduction = 30 % off."}],"exp":"Shopping: Je peux vous aider? → Vous avez...en taille...? → réduction = discount."},
-  {"id":"fr-222","topic":"fr-vie","type":"mcq","q":"In a shop, \"la cabine d'essayage\" is:","opts":["the checkout","the changing / fitting room","the display window","the stockroom"],"ans":1,"exp":"la cabine d'essayage = the changing room / fitting room."},
+  {"id":"fr-208","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Un manteau\" is:","opts":["a hat","a coat","a scarf","a pair of trousers"],"ans":1,"exp":"un manteau = a coat."},
+  {"id":"fr-209","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Je porte une robe\" means:","opts":["I am wearing a dress","I am wearing a skirt","I am wearing a jacket","I am wearing trousers"],"ans":0,"exp":"une robe = a dress; porter = to wear."},
+  {"id":"fr-210","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"False friend: \"une librairie\" is:","opts":["a library","a bookshop","a clothes shop","a pharmacy"],"ans":1,"exp":"une librairie = a bookshop. une bibliothèque = a library."},
+  {"id":"fr-211","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"How do you ask for a size in French?","opts":["Quelle est votre taille ?","C'est combien ?","Vous avez cela en rouge ?","Je voudrais l'essayer"],"ans":0,"exp":"Quelle est votre taille ? / Quelle taille faites-vous ? = What is your size?"},
+  {"id":"fr-212","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Je voudrais l'essayer\" means:","opts":["I would like to buy it","I would like to try it on","I would like a refund","I would like to pay by card"],"ans":1,"exp":"essayer = to try on; je voudrais l'essayer = I would like to try it on."},
+  {"id":"fr-213","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Une boulangerie\" sells:","opts":["meat","bread and pastries","vegetables","clothes"],"ans":1,"exp":"une boulangerie = a bakery (bread, croissants, baguettes)."},
+  {"id":"fr-214","topic":"fr-vie","lesson":"fr-l42","type":"dragdrop","q":"Match the clothing item to its English meaning:","pairs":[{"left":"le pull","right":"jumper / sweater"},{"left":"le pantalon","right":"trousers"},{"left":"les chaussures","right":"shoes"},{"left":"la veste","right":"jacket"}],"exp":"pull = jumper, pantalon = trousers, chaussures = shoes, veste = jacket."},
+  {"id":"fr-215","topic":"fr-vie","lesson":"fr-l42","type":"gapfill","q":"Complete the polite shop request:","template":"Je {0} ce pantalon en taille 40, s'il vous plaît.","gaps":[{"options":["voudrais","veux","dois","peux"],"answer":0}],"exp":"je voudrais = I would like (polite conditional — always use in shops)."},
+  {"id":"fr-216","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Je paie par carte\" means:","opts":["I am paying in cash","I am paying by card","I am paying by cheque","I cannot pay"],"ans":1,"exp":"payer par carte = to pay by card; en espèces = in cash."},
+  {"id":"fr-217","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"C'est trop cher\" means:","opts":["It is very cheap","It is too expensive","It is on sale","It is the right size"],"ans":1,"exp":"trop = too (much); cher = expensive: it is too expensive."},
+  {"id":"fr-218","topic":"fr-vie","lesson":"fr-l42","type":"gapfill","q":"Ask if they have this item in red:","template":"Vous avez {0} en rouge ?","gaps":[{"options":["ça","ici","bien","là"],"answer":0}],"exp":"ça = this/that (informal demonstrative): Vous avez ça en rouge ? = Do you have this in red?"},
+  {"id":"fr-219","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Les soldes\" refers to:","opts":["the receipts","the sales","the prices","the stock"],"ans":1,"exp":"les soldes = the sales (seasonal sales); en solde = on sale / reduced."},
+  {"id":"fr-220","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"\"Une épicerie\" is:","opts":["a pharmacy","a grocery shop","a department store","a bakery"],"ans":1,"exp":"une épicerie = a grocery shop / corner shop."},
+  {"id":"fr-221","topic":"fr-vie","lesson":"fr-l42","type":"scenario","setup":"You are shopping in a French clothes shop.","parts":[{"q":"The assistant says \"Je peux vous aider ?\" — what is she offering?","opts":["Can I help you?","What size are you?","We have a sale today","The changing rooms are upstairs"],"ans":0,"exp":"Je peux vous aider ? = Can I help you? (May I help you?)"},{"q":"You want to ask \"Do you have this shirt in a size 38?\" Which is best?","opts":["Vous avez cette chemise en taille 38 ?","Je voudrais une chemise taille 38","C'est combien cette chemise ?","Je l'essaie en 38"],"ans":0,"exp":"Vous avez + item + en taille + number ? = Do you have...in size...?"},{"q":"The price tag says \"30 % de réduction\". What does this mean?","opts":["30 % extra charge","30 % discount","Only 30 items in stock","Fixed price of 30 €"],"ans":1,"exp":"réduction = reduction / discount; 30 % de réduction = 30 % off."}],"exp":"Shopping: Je peux vous aider? → Vous avez...en taille...? → réduction = discount."},
+  {"id":"fr-222","topic":"fr-vie","lesson":"fr-l42","type":"mcq","q":"In a shop, \"la cabine d'essayage\" is:","opts":["the checkout","the changing / fitting room","the display window","the stockroom"],"ans":1,"exp":"la cabine d'essayage = the changing room / fitting room."},
 
   // ── Le travail et la vie professionnelle ─────────────────────────────────────
-  {"id":"fr-223","topic":"fr-vie","type":"mcq","q":"\"Je suis médecin\" — why is there no article before médecin?","opts":["Because médecin is masculine","Because être + profession omits the article","Because it is in the plural","Because it is an irregular verb"],"ans":1,"exp":"être + profession takes NO article: je suis médecin (not *je suis un médecin)."},
-  {"id":"fr-224","topic":"fr-vie","type":"mcq","q":"What is the feminine form of \"un acteur\"?","opts":["une acteure","une actrice","une acteur","une acteurse"],"ans":1,"exp":"acteur → actrice (irregular feminine, like directeur → directrice)."},
-  {"id":"fr-225","topic":"fr-vie","type":"mcq","q":"\"Je travaille à temps plein\" means:","opts":["I work part-time","I work full-time","I work from home","I am self-employed"],"ans":1,"exp":"à temps plein = full-time; à temps partiel = part-time."},
-  {"id":"fr-226","topic":"fr-vie","type":"mcq","q":"\"Un(e) infirmier / infirmière\" is:","opts":["a doctor","a nurse","a pharmacist","a surgeon"],"ans":1,"exp":"un infirmier / une infirmière = a nurse."},
-  {"id":"fr-227","topic":"fr-vie","type":"mcq","q":"\"Je suis à mon compte\" means:","opts":["I have a bank account","I am self-employed","I am unemployed","I work for an agency"],"ans":1,"exp":"être à son compte = to be self-employed / freelance."},
-  {"id":"fr-228","topic":"fr-vie","type":"dragdrop","q":"Match the masculine profession to its feminine form:","pairs":[{"left":"un boulanger","right":"une boulangère"},{"left":"un vendeur","right":"une vendeuse"},{"left":"un directeur","right":"une directrice"},{"left":"un avocat","right":"une avocate"}],"exp":"boulanger/boulangère, vendeur/vendeuse (irregular), directeur/directrice, avocat/avocate."},
-  {"id":"fr-229","topic":"fr-vie","type":"mcq","q":"\"Mon bureau se trouve au deuxième étage\" means:","opts":["My desk is on the ground floor","My office is on the second floor","My office is in the basement","My desk is at reception"],"ans":1,"exp":"bureau = office / desk; deuxième étage = second floor (in France: rez-de-chaussée = ground, 1er étage = 1st, 2e étage = 2nd)."},
-  {"id":"fr-230","topic":"fr-vie","type":"mcq","q":"\"J'ai un entretien d'embauche\" means:","opts":["I have a team meeting","I have a job interview","I have a salary review","I am starting a new job"],"ans":1,"exp":"un entretien d'embauche = a job interview."},
-  {"id":"fr-231","topic":"fr-vie","type":"gapfill","q":"Complete — profession needs no article:","template":"Ma soeur {0} avocate.","gaps":[{"options":["est","a","fait","va"],"answer":0}],"exp":"être + profession (no article): elle est avocate."},
-  {"id":"fr-232","topic":"fr-vie","type":"mcq","q":"\"Le salaire\" means:","opts":["the salary","the holiday","the contract","the office"],"ans":0,"exp":"le salaire = the salary / wages."},
-  {"id":"fr-233","topic":"fr-vie","type":"mcq","q":"\"Je suis en congé\" means:","opts":["I am at work","I am on leave / holiday","I am in a meeting","I am late"],"ans":1,"exp":"être en congé = to be on leave (annual leave, sick leave, etc.)."},
-  {"id":"fr-234","topic":"fr-vie","type":"scenario","setup":"You are at a job interview at a French company.","parts":[{"q":"The interviewer says \"Parlez-moi de votre expérience.\" What is she asking?","opts":["Tell me about your salary expectations","Tell me about your experience","Where did you study?","What are your weaknesses?"],"ans":1,"exp":"Parlez-moi de... = Tell me about...; votre expérience = your experience."},{"q":"You want to say \"I have been working in a shop for two years.\" Which is correct?","opts":["J'ai travaillé dans un magasin pendant deux ans","Je travaille dans un magasin depuis deux ans","J'ai travaillé dans un magasin pour deux ans","Je travaillais dans un magasin il y a deux ans"],"ans":1,"exp":"An ongoing situation starting in the past uses depuis + present tense: je travaille depuis deux ans."},{"q":"\"Quels sont vos points forts ?\" asks about your:","opts":["salary expectations","weaknesses","strengths","references"],"ans":2,"exp":"points forts = strengths (literally strong points); points faibles = weaknesses."}],"exp":"Interview: votre expérience, depuis + présent, points forts/faibles."},
-  {"id":"fr-235","topic":"fr-vie","type":"mcq","q":"False friend: \"un stage\" in a professional context means:","opts":["a stage performance","a work placement / internship","a pay rise","a promotion"],"ans":1,"exp":"un stage = a work placement or internship (NOT a theatre stage — that is une scène)."},
-  {"id":"fr-236","topic":"fr-vie","type":"gapfill","q":"Complete the sentence:","template":"Je {0} ingénieur depuis cinq ans.","gaps":[{"options":["suis","ai","fais","travaille"],"answer":0}],"exp":"être + profession: je suis ingénieur; depuis cinq ans = for five years (ongoing)."},
-  {"id":"fr-237","topic":"fr-vie","type":"mcq","q":"The feminine of \"un infirmier\" is:","opts":["une infirmière","une infirmieuse","une infirmiere","une infirmiersse"],"ans":0,"exp":"un infirmier → une infirmière (add accent and -e; the -r becomes clearly pronounced)."},
+  {"id":"fr-223","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Je suis médecin\" — why is there no article before médecin?","opts":["Because médecin is masculine","Because être + profession omits the article","Because it is in the plural","Because it is an irregular verb"],"ans":1,"exp":"être + profession takes NO article: je suis médecin (not *je suis un médecin)."},
+  {"id":"fr-224","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"What is the feminine form of \"un acteur\"?","opts":["une acteure","une actrice","une acteur","une acteurse"],"ans":1,"exp":"acteur → actrice (irregular feminine, like directeur → directrice)."},
+  {"id":"fr-225","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Je travaille à temps plein\" means:","opts":["I work part-time","I work full-time","I work from home","I am self-employed"],"ans":1,"exp":"à temps plein = full-time; à temps partiel = part-time."},
+  {"id":"fr-226","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Un(e) infirmier / infirmière\" is:","opts":["a doctor","a nurse","a pharmacist","a surgeon"],"ans":1,"exp":"un infirmier / une infirmière = a nurse."},
+  {"id":"fr-227","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Je suis à mon compte\" means:","opts":["I have a bank account","I am self-employed","I am unemployed","I work for an agency"],"ans":1,"exp":"être à son compte = to be self-employed / freelance."},
+  {"id":"fr-228","topic":"fr-vie","lesson":"fr-l43","type":"dragdrop","q":"Match the masculine profession to its feminine form:","pairs":[{"left":"un boulanger","right":"une boulangère"},{"left":"un vendeur","right":"une vendeuse"},{"left":"un directeur","right":"une directrice"},{"left":"un avocat","right":"une avocate"}],"exp":"boulanger/boulangère, vendeur/vendeuse (irregular), directeur/directrice, avocat/avocate."},
+  {"id":"fr-229","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Mon bureau se trouve au deuxième étage\" means:","opts":["My desk is on the ground floor","My office is on the second floor","My office is in the basement","My desk is at reception"],"ans":1,"exp":"bureau = office / desk; deuxième étage = second floor (in France: rez-de-chaussée = ground, 1er étage = 1st, 2e étage = 2nd)."},
+  {"id":"fr-230","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"J'ai un entretien d'embauche\" means:","opts":["I have a team meeting","I have a job interview","I have a salary review","I am starting a new job"],"ans":1,"exp":"un entretien d'embauche = a job interview."},
+  {"id":"fr-231","topic":"fr-vie","lesson":"fr-l43","type":"gapfill","q":"Complete — profession needs no article:","template":"Ma soeur {0} avocate.","gaps":[{"options":["est","a","fait","va"],"answer":0}],"exp":"être + profession (no article): elle est avocate."},
+  {"id":"fr-232","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Le salaire\" means:","opts":["the salary","the holiday","the contract","the office"],"ans":0,"exp":"le salaire = the salary / wages."},
+  {"id":"fr-233","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"\"Je suis en congé\" means:","opts":["I am at work","I am on leave / holiday","I am in a meeting","I am late"],"ans":1,"exp":"être en congé = to be on leave (annual leave, sick leave, etc.)."},
+  {"id":"fr-234","topic":"fr-vie","lesson":"fr-l43","type":"scenario","setup":"You are at a job interview at a French company.","parts":[{"q":"The interviewer says \"Parlez-moi de votre expérience.\" What is she asking?","opts":["Tell me about your salary expectations","Tell me about your experience","Where did you study?","What are your weaknesses?"],"ans":1,"exp":"Parlez-moi de... = Tell me about...; votre expérience = your experience."},{"q":"You want to say \"I have been working in a shop for two years.\" Which is correct?","opts":["J'ai travaillé dans un magasin pendant deux ans","Je travaille dans un magasin depuis deux ans","J'ai travaillé dans un magasin pour deux ans","Je travaillais dans un magasin il y a deux ans"],"ans":1,"exp":"An ongoing situation starting in the past uses depuis + present tense: je travaille depuis deux ans."},{"q":"\"Quels sont vos points forts ?\" asks about your:","opts":["salary expectations","weaknesses","strengths","references"],"ans":2,"exp":"points forts = strengths (literally strong points); points faibles = weaknesses."}],"exp":"Interview: votre expérience, depuis + présent, points forts/faibles."},
+  {"id":"fr-235","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"False friend: \"un stage\" in a professional context means:","opts":["a stage performance","a work placement / internship","a pay rise","a promotion"],"ans":1,"exp":"un stage = a work placement or internship (NOT a theatre stage — that is une scène)."},
+  {"id":"fr-236","topic":"fr-vie","lesson":"fr-l43","type":"gapfill","q":"Complete the sentence:","template":"Je {0} ingénieur depuis cinq ans.","gaps":[{"options":["suis","ai","fais","travaille"],"answer":0}],"exp":"être + profession: je suis ingénieur; depuis cinq ans = for five years (ongoing)."},
+  {"id":"fr-237","topic":"fr-vie","lesson":"fr-l43","type":"mcq","q":"The feminine of \"un infirmier\" is:","opts":["une infirmière","une infirmieuse","une infirmiere","une infirmiersse"],"ans":0,"exp":"un infirmier → une infirmière (add accent and -e; the -r becomes clearly pronounced)."},
 
   // ── Grammaire avancée : COD / COI / y / en / subjonctif ─────────────────────
-  {"id":"fr-238","topic":"fr-gram","type":"mcq","q":"\"Je le vois\" — what is \"le\"?","opts":["Direct object pronoun (COD)","Indirect object pronoun (COI)","Reflexive pronoun","Subject pronoun"],"ans":0,"exp":"le / la / les are direct object pronouns (COD): je le vois = I see him/it."},
-  {"id":"fr-239","topic":"fr-gram","type":"mcq","q":"\"Je lui parle\" — what is \"lui\"?","opts":["Direct object pronoun","Indirect object pronoun (COI)","Reflexive pronoun","Emphatic pronoun"],"ans":1,"exp":"lui / leur are indirect object pronouns (COI): je lui parle = I speak to him/her."},
-  {"id":"fr-240","topic":"fr-gram","type":"mcq","q":"Where does a COD/COI pronoun go in a French sentence?","opts":["After the verb","Before the conjugated verb (or before the auxiliary in compound tenses)","At the end of the sentence","At the very start of the sentence"],"ans":1,"exp":"Object pronouns precede the verb: je le vois. In compound tenses: je l'ai vu."},
-  {"id":"fr-241","topic":"fr-gram","type":"mcq","q":"\"J'y vais\" — \"y\" replaces:","opts":["a person","a place or à + thing","a quantity","a direct object person"],"ans":1,"exp":"y replaces a location or à + thing: je vais à Paris → j'y vais."},
-  {"id":"fr-242","topic":"fr-gram","type":"mcq","q":"\"J'en veux\" — \"en\" replaces:","opts":["à + noun","de + noun or a quantity expression","a direct object person","a place"],"ans":1,"exp":"en replaces de + noun or a quantity: je veux du café → j'en veux."},
-  {"id":"fr-243","topic":"fr-gram","type":"gapfill","q":"Replace the direct object (Marie, feminine):","template":"Tu vois Marie ? — Oui, je {0} vois chaque jour.","gaps":[{"options":["la","le","lui","les"],"answer":0}],"exp":"Marie is feminine direct object (COD) → la: je la vois chaque jour."},
-  {"id":"fr-244","topic":"fr-gram","type":"gapfill","q":"Replace the indirect object (ton frère):","template":"Tu parles à ton frère ? — Oui, je {0} parle souvent.","gaps":[{"options":["lui","le","la","y"],"answer":0}],"exp":"parler à quelqu'un → COI: lui (singular him/her): je lui parle souvent."},
-  {"id":"fr-245","topic":"fr-gram","type":"mcq","q":"\"Il en a trois\" — what does \"en\" refer to?","opts":["He has three friends","He has three of them (some previously mentioned thing)","He goes there three times","He has been three times"],"ans":1,"exp":"en replaces de + noun or a quantity: \"il en a trois\" = he has three of them."},
-  {"id":"fr-246","topic":"fr-gram","type":"mcq","q":"\"Je ne le vois plus\" — what does ne...plus mean?","opts":["I don't see him often","I don't see him any more","I have never seen him","I rarely see him"],"ans":1,"exp":"ne...plus = no longer / not any more (completed action stopped)."},
-  {"id":"fr-247","topic":"fr-gram","type":"mcq","q":"\"Bien que je sois fatigué, je travaille\" — \"sois\" is in the:","opts":["présent indicatif","subjonctif","conditionnel","imparfait"],"ans":1,"exp":"bien que (although) is one of several conjunctions that trigger the subjonctif: bien que je sois."},
-  {"id":"fr-248","topic":"fr-gram","type":"gapfill","q":"Choose the correct relative pronoun:","template":"C'est le livre {0} je t'ai parlé.","gaps":[{"options":["dont","que","qui","où"],"answer":0}],"exp":"parler de quelque chose → dont: c'est le livre dont je t'ai parlé = the book I told you about."},
-  {"id":"fr-249","topic":"fr-gram","type":"mcq","q":"\"Si j'avais su, je ne serais pas venu\" — this expresses:","opts":["A future condition","A past hypothetical (unreal condition in the past)","A habit in the past","A polite request"],"ans":1,"exp":"si + plus-que-parfait → conditionnel passé = unreal past condition: If I had known, I wouldn't have come."},
-  {"id":"fr-250","topic":"fr-gram","type":"dragdrop","q":"Match each pronoun to what it replaces:","pairs":[{"left":"le / la / les","right":"direct object (COD)"},{"left":"lui / leur","right":"indirect object (COI: à + person)"},{"left":"y","right":"place or à + thing"},{"left":"en","right":"de + noun or quantity"}],"exp":"COD = le/la/les, COI = lui/leur, place/à+thing = y, de+noun/quantity = en."},
-  {"id":"fr-251","topic":"fr-gram","type":"mcq","q":"\"Lequel\" is used to mean:","opts":["who (subject)","which one (replacing a masculine noun already mentioned)","that (direct object)","whose"],"ans":1,"exp":"lequel / laquelle / lesquels / lesquelles = which one(s) — refers back to a noun already mentioned."},
-  {"id":"fr-252","topic":"fr-gram","type":"scenario","setup":"Sophie tells her friend about a birthday present she bought.","parts":[{"q":"\"Je lui ai acheté un livre.\" — to WHOM did Sophie buy the book?","opts":["To herself","To her friend (indirect object — lui)","To the bookshop owner","To them (plural)"],"ans":1,"exp":"lui = COI (indirect object): to him/her. Plural would be leur."},{"q":"Sophie says \"Je l'ai emballé hier.\" What did she wrap?","opts":["The book (l' = le = direct object)","Her friend","A present box","A birthday card"],"ans":0,"exp":"l' = le before a vowel (COD, masculine): refers to the book."},{"q":"\"Elle y est allée pour l'acheter.\" Where did she go?","opts":["To the library","To a place already mentioned (the bookshop)","To her friend's house","Online"],"ans":1,"exp":"y replaces the previously mentioned location (the bookshop — la librairie)."}],"exp":"lui (COI), l' = le (COD), y (place pronoun)."},
+  {"id":"fr-238","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"\"Je le vois\" — what is \"le\"?","opts":["Direct object pronoun (COD)","Indirect object pronoun (COI)","Reflexive pronoun","Subject pronoun"],"ans":0,"exp":"le / la / les are direct object pronouns (COD): je le vois = I see him/it."},
+  {"id":"fr-239","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"\"Je lui parle\" — what is \"lui\"?","opts":["Direct object pronoun","Indirect object pronoun (COI)","Reflexive pronoun","Emphatic pronoun"],"ans":1,"exp":"lui / leur are indirect object pronouns (COI): je lui parle = I speak to him/her."},
+  {"id":"fr-240","topic":"fr-gram","lesson":"fr-l24","type":"mcq","q":"Where does a COD/COI pronoun go in a French sentence?","opts":["After the verb","Before the conjugated verb (or before the auxiliary in compound tenses)","At the end of the sentence","At the very start of the sentence"],"ans":1,"exp":"Object pronouns precede the verb: je le vois. In compound tenses: je l'ai vu."},
+  {"id":"fr-241","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"\"J'y vais\" — \"y\" replaces:","opts":["a person","a place or à + thing","a quantity","a direct object person"],"ans":1,"exp":"y replaces a location or à + thing: je vais à Paris → j'y vais."},
+  {"id":"fr-242","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"\"J'en veux\" — \"en\" replaces:","opts":["à + noun","de + noun or a quantity expression","a direct object person","a place"],"ans":1,"exp":"en replaces de + noun or a quantity: je veux du café → j'en veux."},
+  {"id":"fr-243","topic":"fr-gram","lesson":"fr-l24","type":"gapfill","q":"Replace the direct object (Marie, feminine):","template":"Tu vois Marie ? — Oui, je {0} vois chaque jour.","gaps":[{"options":["la","le","lui","les"],"answer":0}],"exp":"Marie is feminine direct object (COD) → la: je la vois chaque jour."},
+  {"id":"fr-244","topic":"fr-gram","lesson":"fr-l24","type":"gapfill","q":"Replace the indirect object (ton frère):","template":"Tu parles à ton frère ? — Oui, je {0} parle souvent.","gaps":[{"options":["lui","le","la","y"],"answer":0}],"exp":"parler à quelqu'un → COI: lui (singular him/her): je lui parle souvent."},
+  {"id":"fr-245","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"\"Il en a trois\" — what does \"en\" refer to?","opts":["He has three friends","He has three of them (some previously mentioned thing)","He goes there three times","He has been three times"],"ans":1,"exp":"en replaces de + noun or a quantity: \"il en a trois\" = he has three of them."},
+  {"id":"fr-246","topic":"fr-gram","lesson":"fr-l10","type":"mcq","q":"\"Je ne le vois plus\" — what does ne...plus mean?","opts":["I don't see him often","I don't see him any more","I have never seen him","I rarely see him"],"ans":1,"exp":"ne...plus = no longer / not any more (completed action stopped)."},
+  {"id":"fr-247","topic":"fr-gram","lesson":"fr-l28","type":"mcq","q":"\"Bien que je sois fatigué, je travaille\" — \"sois\" is in the:","opts":["présent indicatif","subjonctif","conditionnel","imparfait"],"ans":1,"exp":"bien que (although) is one of several conjunctions that trigger the subjonctif: bien que je sois."},
+  {"id":"fr-248","topic":"fr-gram","lesson":"fr-l29","type":"gapfill","q":"Choose the correct relative pronoun:","template":"C'est le livre {0} je t'ai parlé.","gaps":[{"options":["dont","que","qui","où"],"answer":0}],"exp":"parler de quelque chose → dont: c'est le livre dont je t'ai parlé = the book I told you about."},
+  {"id":"fr-249","topic":"fr-gram","lesson":"fr-l27","type":"mcq","q":"\"Si j'avais su, je ne serais pas venu\" — this expresses:","opts":["A future condition","A past hypothetical (unreal condition in the past)","A habit in the past","A polite request"],"ans":1,"exp":"si + plus-que-parfait → conditionnel passé = unreal past condition: If I had known, I wouldn't have come."},
+  {"id":"fr-250","topic":"fr-gram","lesson":"fr-l24","type":"dragdrop","q":"Match each pronoun to what it replaces:","pairs":[{"left":"le / la / les","right":"direct object (COD)"},{"left":"lui / leur","right":"indirect object (COI: à + person)"},{"left":"y","right":"place or à + thing"},{"left":"en","right":"de + noun or quantity"}],"exp":"COD = le/la/les, COI = lui/leur, place/à+thing = y, de+noun/quantity = en."},
+  {"id":"fr-251","topic":"fr-gram","lesson":"fr-l29","type":"mcq","q":"\"Lequel\" is used to mean:","opts":["who (subject)","which one (replacing a masculine noun already mentioned)","that (direct object)","whose"],"ans":1,"exp":"lequel / laquelle / lesquels / lesquelles = which one(s) — refers back to a noun already mentioned."},
+  {"id":"fr-252","topic":"fr-gram","lesson":"fr-l24","type":"scenario","setup":"Sophie tells her friend about a birthday present she bought.","parts":[{"q":"\"Je lui ai acheté un livre.\" — to WHOM did Sophie buy the book?","opts":["To herself","To her friend (indirect object — lui)","To the bookshop owner","To them (plural)"],"ans":1,"exp":"lui = COI (indirect object): to him/her. Plural would be leur."},{"q":"Sophie says \"Je l'ai emballé hier.\" What did she wrap?","opts":["The book (l' = le = direct object)","Her friend","A present box","A birthday card"],"ans":0,"exp":"l' = le before a vowel (COD, masculine): refers to the book."},{"q":"\"Elle y est allée pour l'acheter.\" Where did she go?","opts":["To the library","To a place already mentioned (the bookshop)","To her friend's house","Online"],"ans":1,"exp":"y replaces the previously mentioned location (the bookshop — la librairie)."}],"exp":"lui (COI), l' = le (COD), y (place pronoun)."},
 
   // ── Les transports et la vie quotidienne ─────────────────────────────────────
-  {"id":"fr-253","topic":"fr-vie","type":"mcq","q":"\"Je prends le métro\" — how are you travelling?","opts":["by bus","by underground / metro","by train","by bike"],"ans":1,"exp":"le métro = the underground / subway."},
-  {"id":"fr-254","topic":"fr-vie","type":"mcq","q":"\"À vélo\" means travelling:","opts":["by car","by bus","by bike","on foot"],"ans":2,"exp":"à vélo = by bike; à pied = on foot."},
-  {"id":"fr-255","topic":"fr-vie","type":"mcq","q":"\"Tournez à droite au feu\" — what should you do at the traffic lights?","opts":["Turn left at the lights","Turn right at the lights","Go straight at the lights","Stop at the lights"],"ans":1,"exp":"à droite = right; au feu (rouge) = at the traffic lights."},
-  {"id":"fr-256","topic":"fr-vie","type":"gapfill","q":"Choose en or à for transport in a vehicle:","template":"Je vais au travail {0} voiture.","gaps":[{"options":["en","à","par","avec"],"answer":0}],"exp":"Enclosed vehicle → en: en voiture, en bus, en train. Non-enclosed → à: à vélo, à pied."},
-  {"id":"fr-257","topic":"fr-vie","type":"mcq","q":"\"Prenez la deuxième rue à gauche\" means:","opts":["Take the first road on the left","Take the second road on the left","Take the second road on the right","Go straight for two streets"],"ans":1,"exp":"deuxième = second; à gauche = on the left."},
-  {"id":"fr-258","topic":"fr-vie","type":"mcq","q":"\"C'est à dix minutes à pied\" means:","opts":["It is ten minutes by car","It is ten minutes on foot","It is ten kilometres away","It takes ten minutes by bus"],"ans":1,"exp":"à pied = on foot; à dix minutes à pied = ten minutes' walk."},
-  {"id":"fr-259","topic":"fr-vie","type":"scenario","setup":"You are lost in a French town and ask a passer-by for directions to the station (la gare).","parts":[{"q":"How do you politely ask where the station is?","opts":["Excusez-moi, où est la gare ?","Où est le cinéma ?","C'est loin d'ici ?","Avez-vous un plan ?"],"ans":0,"exp":"Excusez-moi, où est la gare ? = Excuse me, where is the station?"},{"q":"The passer-by says \"Continuez tout droit, puis tournez à gauche.\" What do you do FIRST?","opts":["Turn left","Continue straight on","Turn right","Go back the way you came"],"ans":1,"exp":"tout droit = straight on; puis = then; tournez à gauche = turn left. So: go straight first, THEN turn left."},{"q":"They add \"C'est à cinq minutes à pied.\" How far away is the station?","opts":["5 km away","5 minutes by car","5 minutes on foot","5 bus stops away"],"ans":2,"exp":"à pied = on foot; à cinq minutes à pied = five minutes' walk."}],"exp":"Directions: Excusez-moi, où est...? → tout droit puis tournez... → à pied."},
-  {"id":"fr-260","topic":"fr-vie","type":"mcq","q":"False friend: \"le car\" in French is:","opts":["a car (automobile)","a coach / long-distance bus","a taxi","a tram"],"ans":1,"exp":"le car = a coach / long-distance bus. la voiture = a car."},
-  {"id":"fr-261","topic":"fr-vie","type":"gapfill","q":"Buy a return ticket at the station:","template":"Je voudrais {0} billet aller-retour pour Lyon.","gaps":[{"options":["un","une","des","le"],"answer":0}],"exp":"un billet (masculine) = a ticket; aller-retour = return; aller simple = single."},
-  {"id":"fr-262","topic":"fr-vie","type":"mcq","q":"\"Le prochain train part à quelle heure ?\" asks:","opts":["the price of the next train","when the next train departs","where the next train goes","how long the journey takes"],"ans":1,"exp":"partir = to depart; à quelle heure = at what time: When does the next train depart?"},
+  {"id":"fr-253","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"\"Je prends le métro\" — how are you travelling?","opts":["by bus","by underground / metro","by train","by bike"],"ans":1,"exp":"le métro = the underground / subway."},
+  {"id":"fr-254","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"\"À vélo\" means travelling:","opts":["by car","by bus","by bike","on foot"],"ans":2,"exp":"à vélo = by bike; à pied = on foot."},
+  {"id":"fr-255","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"\"Tournez à droite au feu\" — what should you do at the traffic lights?","opts":["Turn left at the lights","Turn right at the lights","Go straight at the lights","Stop at the lights"],"ans":1,"exp":"à droite = right; au feu (rouge) = at the traffic lights."},
+  {"id":"fr-256","topic":"fr-vie","lesson":"fr-l39","type":"gapfill","q":"Choose en or à for transport in a vehicle:","template":"Je vais au travail {0} voiture.","gaps":[{"options":["en","à","par","avec"],"answer":0}],"exp":"Enclosed vehicle → en: en voiture, en bus, en train. Non-enclosed → à: à vélo, à pied."},
+  {"id":"fr-257","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"\"Prenez la deuxième rue à gauche\" means:","opts":["Take the first road on the left","Take the second road on the left","Take the second road on the right","Go straight for two streets"],"ans":1,"exp":"deuxième = second; à gauche = on the left."},
+  {"id":"fr-258","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"\"C'est à dix minutes à pied\" means:","opts":["It is ten minutes by car","It is ten minutes on foot","It is ten kilometres away","It takes ten minutes by bus"],"ans":1,"exp":"à pied = on foot; à dix minutes à pied = ten minutes' walk."},
+  {"id":"fr-259","topic":"fr-vie","lesson":"fr-l39","type":"scenario","setup":"You are lost in a French town and ask a passer-by for directions to the station (la gare).","parts":[{"q":"How do you politely ask where the station is?","opts":["Excusez-moi, où est la gare ?","Où est le cinéma ?","C'est loin d'ici ?","Avez-vous un plan ?"],"ans":0,"exp":"Excusez-moi, où est la gare ? = Excuse me, where is the station?"},{"q":"The passer-by says \"Continuez tout droit, puis tournez à gauche.\" What do you do FIRST?","opts":["Turn left","Continue straight on","Turn right","Go back the way you came"],"ans":1,"exp":"tout droit = straight on; puis = then; tournez à gauche = turn left. So: go straight first, THEN turn left."},{"q":"They add \"C'est à cinq minutes à pied.\" How far away is the station?","opts":["5 km away","5 minutes by car","5 minutes on foot","5 bus stops away"],"ans":2,"exp":"à pied = on foot; à cinq minutes à pied = five minutes' walk."}],"exp":"Directions: Excusez-moi, où est...? → tout droit puis tournez... → à pied."},
+  {"id":"fr-260","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"False friend: \"le car\" in French is:","opts":["a car (automobile)","a coach / long-distance bus","a taxi","a tram"],"ans":1,"exp":"le car = a coach / long-distance bus. la voiture = a car."},
+  {"id":"fr-261","topic":"fr-vie","lesson":"fr-l39","type":"gapfill","q":"Buy a return ticket at the station:","template":"Je voudrais {0} billet aller-retour pour Lyon.","gaps":[{"options":["un","une","des","le"],"answer":0}],"exp":"un billet (masculine) = a ticket; aller-retour = return; aller simple = single."},
+  {"id":"fr-262","topic":"fr-vie","lesson":"fr-l39","type":"mcq","q":"\"Le prochain train part à quelle heure ?\" asks:","opts":["the price of the next train","when the next train departs","where the next train goes","how long the journey takes"],"ans":1,"exp":"partir = to depart; à quelle heure = at what time: When does the next train depart?"},
 
   // ── Chez le médecin — doctor / pharmacy vocab (fr-l41) ───────────────────────
-  {"id":"fr-263","topic":"fr-vie","type":"mcq","q":"\"J'éternue\" means:","opts":["I am coughing","I am sneezing","I feel dizzy","I am vomiting"],"ans":1,"exp":"éternuer = to sneeze; j'éternue = I am sneezing. (Je tousse = I am coughing.)"},
-  {"id":"fr-264","topic":"fr-vie","type":"mcq","q":"\"Je me sens mal\" means:","opts":["I feel great","I am very ill","I don't feel well","I am cold"],"ans":2,"exp":"se sentir = to feel; je me sens mal = I don't feel well / I feel unwell. (Je suis malade = I am ill.)"},
-  {"id":"fr-265","topic":"fr-vie","type":"mcq","q":"\"Une ordonnance\" is:","opts":["a medicine","a prescription","a pharmacy","a medical certificate"],"ans":1,"exp":"une ordonnance = a prescription — the document a doctor writes so you can collect medication at the pharmacy."},
-  {"id":"fr-266","topic":"fr-vie","type":"gapfill","q":"Complete: I need a prescription.","template":"Il me {0} une ordonnance.","gaps":[{"options":["faut","fais","suis","ai"],"answer":0}],"exp":"il me faut = I need (literally 'it is necessary for me'); une ordonnance = a prescription."},
-  {"id":"fr-267","topic":"fr-vie","type":"mcq","q":"At the pharmacy, \"des comprimés\" are:","opts":["syrups","creams","tablets / pills","injections"],"ans":2,"exp":"des comprimés = tablets / pills. (du sirop = syrup; une crème = a cream.)"},
-  {"id":"fr-268","topic":"fr-vie","type":"mcq","q":"\"Le pharmacien / la pharmacienne\" is:","opts":["a doctor","a nurse","a pharmacist","a surgeon"],"ans":2,"exp":"le pharmacien / la pharmacienne = the pharmacist. In France, pharmacists can advise on minor ailments without a doctor's appointment."},
-  {"id":"fr-269","topic":"fr-vie","type":"dragdrop","q":"Match each pharmacy item to its English meaning:","pairs":[{"left":"un médicament","right":"a medicine / medication"},{"left":"des comprimés","right":"tablets / pills"},{"left":"du sirop","right":"syrup"},{"left":"une crème","right":"a cream"}],"exp":"médicament = medicine, comprimés = tablets/pills, sirop = syrup, crème = cream."},
-  {"id":"fr-270","topic":"fr-vie","type":"scenario","setup":"You feel unwell and visit a pharmacy in France.","parts":[{"q":"You want to say you don't feel well. Which phrase is correct?","opts":["Je suis en bonne santé.","Je me sens mal.","J'ai faim.","Je suis fatigué(e)."],"ans":1,"exp":"Je me sens mal = I don't feel well / I feel unwell."},{"q":"The pharmacist asks what is wrong. You have a fever and a cough. Which answer covers BOTH symptoms?","opts":["J'ai mal au dos et aux dents.","J'ai de la fièvre et je tousse.","Je suis allergique au soleil.","J'ai mal à la gorge seulement."],"ans":1,"exp":"J'ai de la fièvre (I have a fever) et je tousse (I am coughing) — both symptoms from the lesson."},{"q":"The pharmacist recommends tablets. What is the French word you expect to hear?","opts":["une crème","du sirop","des comprimés","une ordonnance"],"ans":2,"exp":"des comprimés = tablets/pills. (une ordonnance = a prescription, issued by a doctor not a pharmacist.)"}],"exp":"At the pharmacy: je me sens mal → j'ai de la fièvre et je tousse → des comprimés."},
+  {"id":"fr-263","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"J'éternue\" means:","opts":["I am coughing","I am sneezing","I feel dizzy","I am vomiting"],"ans":1,"exp":"éternuer = to sneeze; j'éternue = I am sneezing. (Je tousse = I am coughing.)"},
+  {"id":"fr-264","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Je me sens mal\" means:","opts":["I feel great","I am very ill","I don't feel well","I am cold"],"ans":2,"exp":"se sentir = to feel; je me sens mal = I don't feel well / I feel unwell. (Je suis malade = I am ill.)"},
+  {"id":"fr-265","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Une ordonnance\" is:","opts":["a medicine","a prescription","a pharmacy","a medical certificate"],"ans":1,"exp":"une ordonnance = a prescription — the document a doctor writes so you can collect medication at the pharmacy."},
+  {"id":"fr-266","topic":"fr-vie","lesson":"fr-l41","type":"gapfill","q":"Complete: I need a prescription.","template":"Il me {0} une ordonnance.","gaps":[{"options":["faut","fais","suis","ai"],"answer":0}],"exp":"il me faut = I need (literally 'it is necessary for me'); une ordonnance = a prescription."},
+  {"id":"fr-267","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"At the pharmacy, \"des comprimés\" are:","opts":["syrups","creams","tablets / pills","injections"],"ans":2,"exp":"des comprimés = tablets / pills. (du sirop = syrup; une crème = a cream.)"},
+  {"id":"fr-268","topic":"fr-vie","lesson":"fr-l41","type":"mcq","q":"\"Le pharmacien / la pharmacienne\" is:","opts":["a doctor","a nurse","a pharmacist","a surgeon"],"ans":2,"exp":"le pharmacien / la pharmacienne = the pharmacist. In France, pharmacists can advise on minor ailments without a doctor's appointment."},
+  {"id":"fr-269","topic":"fr-vie","lesson":"fr-l41","type":"dragdrop","q":"Match each pharmacy item to its English meaning:","pairs":[{"left":"un médicament","right":"a medicine / medication"},{"left":"des comprimés","right":"tablets / pills"},{"left":"du sirop","right":"syrup"},{"left":"une crème","right":"a cream"}],"exp":"médicament = medicine, comprimés = tablets/pills, sirop = syrup, crème = cream."},
+  {"id":"fr-270","topic":"fr-vie","lesson":"fr-l41","type":"scenario","setup":"You feel unwell and visit a pharmacy in France.","parts":[{"q":"You want to say you don't feel well. Which phrase is correct?","opts":["Je suis en bonne santé.","Je me sens mal.","J'ai faim.","Je suis fatigué(e)."],"ans":1,"exp":"Je me sens mal = I don't feel well / I feel unwell."},{"q":"The pharmacist asks what is wrong. You have a fever and a cough. Which answer covers BOTH symptoms?","opts":["J'ai mal au dos et aux dents.","J'ai de la fièvre et je tousse.","Je suis allergique au soleil.","J'ai mal à la gorge seulement."],"ans":1,"exp":"J'ai de la fièvre (I have a fever) et je tousse (I am coughing) — both symptoms from the lesson."},{"q":"The pharmacist recommends tablets. What is the French word you expect to hear?","opts":["une crème","du sirop","des comprimés","une ordonnance"],"ans":2,"exp":"des comprimés = tablets/pills. (une ordonnance = a prescription, issued by a doctor not a pharmacist.)"}],"exp":"At the pharmacy: je me sens mal → j'ai de la fièvre et je tousse → des comprimés."},
 
   // ── Le pluriel des noms (fr-l05) — A1 ────────────────────────────────────────
-  {"id":"fr-271","topic":"fr-gram","type":"mcq","q":"Plural of « un bateau » (boat):","opts":["des bateau","des bateus","des bateaux","des bateauxs"],"ans":2,"exp":"Words ending in -eau take -eaux in the plural: un bateau → des bateaux."},
-  {"id":"fr-272","topic":"fr-gram","type":"mcq","q":"Plural of « un animal »:","opts":["des animals","des animaux","des animales","des animeaux"],"ans":1,"exp":"Words ending in -al take -aux in the plural: un animal → des animaux."},
-  {"id":"fr-273","topic":"fr-gram","type":"mcq","q":"Plural of « un jeu » (game):","opts":["des jeus","des jeues","des jeux","des jeuxs"],"ans":2,"exp":"Words ending in -eu take -eux in the plural: un jeu → des jeux."},
-  {"id":"fr-274","topic":"fr-gram","type":"gapfill","q":"She's wearing two hats (chapeau):","template":"Elle porte deux {0}.","gaps":[{"options":["chapeaux","chapeaus","chapeau","chapeausx"],"answer":0}],"exp":"chapeau follows the -eau → -eaux rule: un chapeau → des chapeaux."},
-  {"id":"fr-275","topic":"fr-gram","type":"mcq","q":"Which word already ends in -x and does NOT change in the plural?","opts":["un chat","un livre","une voix","un bateau"],"ans":2,"exp":"Words already ending in -s, -x or -z stay the same in the plural: une voix → des voix."},
-  {"id":"fr-276","topic":"fr-gram","type":"dragdrop","q":"Match each noun to its correct plural:","pairs":[{"left":"un bateau","right":"des bateaux"},{"left":"un animal","right":"des animaux"},{"left":"un jeu","right":"des jeux"},{"left":"un bijou","right":"des bijoux"}],"exp":"-eau→-eaux (bateau), -al→-aux (animal), -eu→-eux (jeu), -ou→-oux (bijou — one of 7 nouns)."},
+  {"id":"fr-271","topic":"fr-gram","lesson":"fr-l05","type":"mcq","q":"Plural of « un bateau » (boat):","opts":["des bateau","des bateus","des bateaux","des bateauxs"],"ans":2,"exp":"Words ending in -eau take -eaux in the plural: un bateau → des bateaux."},
+  {"id":"fr-272","topic":"fr-gram","lesson":"fr-l05","type":"mcq","q":"Plural of « un animal »:","opts":["des animals","des animaux","des animales","des animeaux"],"ans":1,"exp":"Words ending in -al take -aux in the plural: un animal → des animaux."},
+  {"id":"fr-273","topic":"fr-gram","lesson":"fr-l05","type":"mcq","q":"Plural of « un jeu » (game):","opts":["des jeus","des jeues","des jeux","des jeuxs"],"ans":2,"exp":"Words ending in -eu take -eux in the plural: un jeu → des jeux."},
+  {"id":"fr-274","topic":"fr-gram","lesson":"fr-l05","type":"gapfill","q":"She's wearing two hats (chapeau):","template":"Elle porte deux {0}.","gaps":[{"options":["chapeaux","chapeaus","chapeau","chapeausx"],"answer":0}],"exp":"chapeau follows the -eau → -eaux rule: un chapeau → des chapeaux."},
+  {"id":"fr-275","topic":"fr-gram","lesson":"fr-l05","type":"mcq","q":"Which word already ends in -x and does NOT change in the plural?","opts":["un chat","un livre","une voix","un bateau"],"ans":2,"exp":"Words already ending in -s, -x or -z stay the same in the plural: une voix → des voix."},
+  {"id":"fr-276","topic":"fr-gram","lesson":"fr-l05","type":"dragdrop","q":"Match each noun to its correct plural:","pairs":[{"left":"un bateau","right":"des bateaux"},{"left":"un animal","right":"des animaux"},{"left":"un jeu","right":"des jeux"},{"left":"un bijou","right":"des bijoux"}],"exp":"-eau→-eaux (bateau), -al→-aux (animal), -eu→-eux (jeu), -ou→-oux (bijou — one of 7 nouns)."},
 
   // ── La négation et les questions (fr-l10) — A1 ───────────────────────────────
-  {"id":"fr-277","topic":"fr-gram","type":"mcq","q":"« Je ne comprends rien » means:","opts":["I don't understand anything","I understand a little","I understand everything","I never understand"],"ans":0,"exp":"ne … rien = not … anything / nothing: je ne comprends rien = I don't understand anything."},
-  {"id":"fr-278","topic":"fr-gram","type":"mcq","q":"« Il ne mange jamais de viande » means:","opts":["He hardly ever eats meat","He never eats meat","He no longer eats meat","He doesn't eat meat right now"],"ans":1,"exp":"ne … jamais = never: il ne mange jamais de viande = he never eats meat."},
-  {"id":"fr-279","topic":"fr-gram","type":"gapfill","q":"She doesn't live here any more:","template":"Elle n'habite {0} ici.","gaps":[{"options":["plus","jamais","rien","personne"],"answer":0}],"exp":"ne … plus = no longer / not any more: elle n'habite plus ici."},
-  {"id":"fr-280","topic":"fr-gram","type":"mcq","q":"Which phrase introduces a yes/no question politely?","opts":["Qu'est-ce que…","Où est-ce que…","Est-ce que…","Qu'est-ce qui…"],"ans":2,"exp":"Est-ce que… turns any statement into a yes/no question: Est-ce que tu viens ? = Are you coming?"},
-  {"id":"fr-281","topic":"fr-gram","type":"gapfill","q":"What do you want? (use qu'est-ce que):","template":"{0} tu veux ?","gaps":[{"options":["Qu'est-ce que","Est-ce que","Qu'est-ce qui","Qui est-ce que"],"answer":0}],"exp":"Qu'est-ce que = what (direct object): Qu'est-ce que tu veux ? = What do you want?"},
+  {"id":"fr-277","topic":"fr-gram","lesson":"fr-l10","type":"mcq","q":"« Je ne comprends rien » means:","opts":["I don't understand anything","I understand a little","I understand everything","I never understand"],"ans":0,"exp":"ne … rien = not … anything / nothing: je ne comprends rien = I don't understand anything."},
+  {"id":"fr-278","topic":"fr-gram","lesson":"fr-l10","type":"mcq","q":"« Il ne mange jamais de viande » means:","opts":["He hardly ever eats meat","He never eats meat","He no longer eats meat","He doesn't eat meat right now"],"ans":1,"exp":"ne … jamais = never: il ne mange jamais de viande = he never eats meat."},
+  {"id":"fr-279","topic":"fr-gram","lesson":"fr-l10","type":"gapfill","q":"She doesn't live here any more:","template":"Elle n'habite {0} ici.","gaps":[{"options":["plus","jamais","rien","personne"],"answer":0}],"exp":"ne … plus = no longer / not any more: elle n'habite plus ici."},
+  {"id":"fr-280","topic":"fr-gram","lesson":"fr-l10","type":"mcq","q":"Which phrase introduces a yes/no question politely?","opts":["Qu'est-ce que…","Où est-ce que…","Est-ce que…","Qu'est-ce qui…"],"ans":2,"exp":"Est-ce que… turns any statement into a yes/no question: Est-ce que tu viens ? = Are you coming?"},
+  {"id":"fr-281","topic":"fr-gram","lesson":"fr-l10","type":"gapfill","q":"What do you want? (use qu'est-ce que):","template":"{0} tu veux ?","gaps":[{"options":["Qu'est-ce que","Est-ce que","Qu'est-ce qui","Qui est-ce que"],"answer":0}],"exp":"Qu'est-ce que = what (direct object): Qu'est-ce que tu veux ? = What do you want?"},
 
   // ── Les adjectifs (fr-l12) — A1 ──────────────────────────────────────────────
-  {"id":"fr-282","topic":"fr-gram","type":"mcq","q":"Choose the correct form: « une maison ___ » (grand):","opts":["grand","grands","grande","grandes"],"ans":2,"exp":"Adjectives must agree in gender and number: 'maison' is feminine singular → grande (add -e)."},
-  {"id":"fr-283","topic":"fr-gram","type":"mcq","q":"BAGS adjectives go ___ the noun:","opts":["after","before","either side of","at the start of the sentence"],"ans":1,"exp":"BAGS = Beauty, Age, Goodness, Size. These short common adjectives precede the noun: un beau jardin, une bonne idée."},
-  {"id":"fr-284","topic":"fr-gram","type":"mcq","q":"Which sentence places the adjective correctly?","opts":["un intéressant film","une gentille fille","une bleue robe","un grand moderne appartement"],"ans":1,"exp":"'gentil(le)' is a BAGS adjective (Goodness) and goes BEFORE the noun: une gentille fille. Adjectives like bleu or intéressant go AFTER the noun."},
-  {"id":"fr-285","topic":"fr-gram","type":"gapfill","q":"They (m. plural) are tall:","template":"Ils sont {0}.","gaps":[{"options":["grands","grand","grandes","grande"],"answer":0}],"exp":"Masculine plural adjective: add -s → grands. (grande = f. sing., grandes = f. pl.)"},
-  {"id":"fr-286","topic":"fr-gram","type":"dragdrop","q":"Match each adjective to its correct feminine form:","pairs":[{"left":"grand","right":"grande"},{"left":"petit","right":"petite"},{"left":"beau","right":"belle"},{"left":"nouveau","right":"nouvelle"}],"exp":"Regular -e added: grand→grande, petit→petite. Irregular: beau→belle, nouveau→nouvelle."},
+  {"id":"fr-282","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"Choose the correct form: « une maison ___ » (grand):","opts":["grand","grands","grande","grandes"],"ans":2,"exp":"Adjectives must agree in gender and number: 'maison' is feminine singular → grande (add -e)."},
+  {"id":"fr-283","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"BAGS adjectives go ___ the noun:","opts":["after","before","either side of","at the start of the sentence"],"ans":1,"exp":"BAGS = Beauty, Age, Goodness, Size. These short common adjectives precede the noun: un beau jardin, une bonne idée."},
+  {"id":"fr-284","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"Which sentence places the adjective correctly?","opts":["un intéressant film","une gentille fille","une bleue robe","un grand moderne appartement"],"ans":1,"exp":"'gentil(le)' is a BAGS adjective (Goodness) and goes BEFORE the noun: une gentille fille. Adjectives like bleu or intéressant go AFTER the noun."},
+  {"id":"fr-285","topic":"fr-gram","lesson":"fr-l12","type":"gapfill","q":"They (m. plural) are tall:","template":"Ils sont {0}.","gaps":[{"options":["grands","grand","grandes","grande"],"answer":0}],"exp":"Masculine plural adjective: add -s → grands. (grande = f. sing., grandes = f. pl.)"},
+  {"id":"fr-286","topic":"fr-gram","lesson":"fr-l12","type":"dragdrop","q":"Match each adjective to its correct feminine form:","pairs":[{"left":"grand","right":"grande"},{"left":"petit","right":"petite"},{"left":"beau","right":"belle"},{"left":"nouveau","right":"nouvelle"}],"exp":"Regular -e added: grand→grande, petit→petite. Irregular: beau→belle, nouveau→nouvelle."},
 
   // ── Aller et faire (fr-l14) — A1 ─────────────────────────────────────────────
-  {"id":"fr-287","topic":"fr-conj","type":"mcq","q":"Conjugate « aller »: ils/elles ___:","opts":["allez","allons","vais","vont"],"ans":3,"exp":"aller: je vais, tu vas, il/elle va, nous allons, vous allez, ils/elles vont."},
-  {"id":"fr-288","topic":"fr-conj","type":"gapfill","q":"We do sport on Saturdays:","template":"Nous {0} du sport le samedi.","gaps":[{"options":["faisons","faisez","font","faites"],"answer":0}],"exp":"faire: je fais, tu fais, il fait, nous faisons, vous faites, ils font."},
-  {"id":"fr-289","topic":"fr-gram","type":"mcq","q":"« aller + à + le » contracts to:","opts":["à le","al","au","à du"],"ans":2,"exp":"à + le = au: je vais au cinéma. à + la stays as à la: je vais à la piscine."},
-  {"id":"fr-290","topic":"fr-conj","type":"mcq","q":"Conjugate « faire »: vous ___:","opts":["faisez","faites","font","faisons"],"ans":1,"exp":"faire: vous faites (irregular — not *faisez*). Compare nous faisons."},
+  {"id":"fr-287","topic":"fr-conj","lesson":"fr-l14","type":"mcq","q":"Conjugate « aller »: ils/elles ___:","opts":["allez","allons","vais","vont"],"ans":3,"exp":"aller: je vais, tu vas, il/elle va, nous allons, vous allez, ils/elles vont."},
+  {"id":"fr-288","topic":"fr-conj","lesson":"fr-l14","type":"gapfill","q":"We do sport on Saturdays:","template":"Nous {0} du sport le samedi.","gaps":[{"options":["faisons","faisez","font","faites"],"answer":0}],"exp":"faire: je fais, tu fais, il fait, nous faisons, vous faites, ils font."},
+  {"id":"fr-289","topic":"fr-gram","lesson":"fr-l14","type":"mcq","q":"« aller + à + le » contracts to:","opts":["à le","al","au","à du"],"ans":2,"exp":"à + le = au: je vais au cinéma. à + la stays as à la: je vais à la piscine."},
+  {"id":"fr-290","topic":"fr-conj","lesson":"fr-l14","type":"mcq","q":"Conjugate « faire »: vous ___:","opts":["faisez","faites","font","faisons"],"ans":1,"exp":"faire: vous faites (irregular — not *faisez*). Compare nous faisons."},
 
   // ── Passé composé avec avoir (fr-l18) — A2 ───────────────────────────────────
-  {"id":"fr-291","topic":"fr-conj","type":"mcq","q":"Past participle of « finir »:","opts":["finu","fini","finé","fin"],"ans":1,"exp":"-IR verbs form the past participle with -i: finir → fini."},
-  {"id":"fr-292","topic":"fr-conj","type":"mcq","q":"Past participle of « vendre »:","opts":["vendu","vendé","vendi","vendré"],"ans":0,"exp":"-RE verbs form the past participle with -u: vendre → vendu."},
-  {"id":"fr-293","topic":"fr-conj","type":"gapfill","q":"He watched a film (passé composé):","template":"Il {0} regardé un film.","gaps":[{"options":["a","est","as","ont"],"answer":0}],"exp":"Most verbs use avoir as auxiliary: il a regardé. (il + a = has/did watch)"},
-  {"id":"fr-294","topic":"fr-conj","type":"mcq","q":"Irregular past participle of « faire »:","opts":["faisé","fairé","fait","faistu"],"ans":2,"exp":"faire → fait (irregular). Other key irregulars: avoir→eu, être→été, voir→vu, prendre→pris."},
+  {"id":"fr-291","topic":"fr-conj","lesson":"fr-l18","type":"mcq","q":"Past participle of « finir »:","opts":["finu","fini","finé","fin"],"ans":1,"exp":"-IR verbs form the past participle with -i: finir → fini."},
+  {"id":"fr-292","topic":"fr-conj","lesson":"fr-l18","type":"mcq","q":"Past participle of « vendre »:","opts":["vendu","vendé","vendi","vendré"],"ans":0,"exp":"-RE verbs form the past participle with -u: vendre → vendu."},
+  {"id":"fr-293","topic":"fr-conj","lesson":"fr-l18","type":"gapfill","q":"He watched a film (passé composé):","template":"Il {0} regardé un film.","gaps":[{"options":["a","est","as","ont"],"answer":0}],"exp":"Most verbs use avoir as auxiliary: il a regardé. (il + a = has/did watch)"},
+  {"id":"fr-294","topic":"fr-conj","lesson":"fr-l18","type":"mcq","q":"Irregular past participle of « faire »:","opts":["faisé","fairé","fait","faistu"],"ans":2,"exp":"faire → fait (irregular). Other key irregulars: avoir→eu, être→été, voir→vu, prendre→pris."},
 
   // ── Passé composé avec être (fr-l19) — A2 ────────────────────────────────────
-  {"id":"fr-295","topic":"fr-conj","type":"mcq","q":"With être verbs, the past participle must agree with:","opts":["the auxiliary verb","the direct object","the subject","the indirect object"],"ans":2,"exp":"With être auxiliary, the past participle agrees with the SUBJECT: il est allé / elle est allée / ils sont allés."},
-  {"id":"fr-296","topic":"fr-conj","type":"mcq","q":"She went (passé composé of aller):","opts":["elle a allé","elle est allé","elle est allée","elle a allée"],"ans":2,"exp":"aller takes être: elle est allée — auxiliary être + past participle allé with feminine agreement (-e)."},
-  {"id":"fr-297","topic":"fr-conj","type":"mcq","q":"Which verb uses ÊTRE (not avoir) in the passé composé?","opts":["regarder","finir","partir","acheter"],"ans":2,"exp":"partir is a DR MRS VANDERTRAMP verb and takes être: il est parti. The others use avoir."},
-  {"id":"fr-298","topic":"fr-conj","type":"gapfill","q":"They (m.) left early:","template":"Ils {0} partis tôt.","gaps":[{"options":["sont","ont","est","a"],"answer":0}],"exp":"partir takes être: ils sont partis (+ -s for masculine plural subject agreement)."},
+  {"id":"fr-295","topic":"fr-conj","lesson":"fr-l19","type":"mcq","q":"With être verbs, the past participle must agree with:","opts":["the auxiliary verb","the direct object","the subject","the indirect object"],"ans":2,"exp":"With être auxiliary, the past participle agrees with the SUBJECT: il est allé / elle est allée / ils sont allés."},
+  {"id":"fr-296","topic":"fr-conj","lesson":"fr-l19","type":"mcq","q":"She went (passé composé of aller):","opts":["elle a allé","elle est allé","elle est allée","elle a allée"],"ans":2,"exp":"aller takes être: elle est allée — auxiliary être + past participle allé with feminine agreement (-e)."},
+  {"id":"fr-297","topic":"fr-conj","lesson":"fr-l19","type":"mcq","q":"Which verb uses ÊTRE (not avoir) in the passé composé?","opts":["regarder","finir","partir","acheter"],"ans":2,"exp":"partir is a DR MRS VANDERTRAMP verb and takes être: il est parti. The others use avoir."},
+  {"id":"fr-298","topic":"fr-conj","lesson":"fr-l19","type":"gapfill","q":"They (m.) left early:","template":"Ils {0} partis tôt.","gaps":[{"options":["sont","ont","est","a"],"answer":0}],"exp":"partir takes être: ils sont partis (+ -s for masculine plural subject agreement)."},
 
   // ── Imparfait ou passé composé ? (fr-l21) — A2 ───────────────────────────────
-  {"id":"fr-299","topic":"fr-gram","type":"mcq","q":"The signal word « soudain » (suddenly) typically triggers:","opts":["imparfait","passé composé","futur proche","subjonctif"],"ans":1,"exp":"'Soudain' introduces a specific, completed event → passé composé. Ongoing background/habits → imparfait."},
-  {"id":"fr-300","topic":"fr-gram","type":"mcq","q":"The phrase « d'habitude » (usually) signals:","opts":["passé composé","imparfait","futur proche","conditionnel"],"ans":1,"exp":"d'habitude / souvent / toujours / tous les jours signal habitual or repeated actions → imparfait."},
-  {"id":"fr-301","topic":"fr-gram","type":"mcq","q":"« Je dormais quand le téléphone a sonné. » — « dormais » is imparfait because:","opts":["it happened once and is complete","it was the background state, interrupted by the phone","it is a habitual action","it is in the future"],"ans":1,"exp":"dormais (imparfait) = was sleeping — ongoing background action. a sonné (PC) = the single event that interrupted it."},
+  {"id":"fr-299","topic":"fr-gram","lesson":"fr-l21","type":"mcq","q":"The signal word « soudain » (suddenly) typically triggers:","opts":["imparfait","passé composé","futur proche","subjonctif"],"ans":1,"exp":"'Soudain' introduces a specific, completed event → passé composé. Ongoing background/habits → imparfait."},
+  {"id":"fr-300","topic":"fr-gram","lesson":"fr-l21","type":"mcq","q":"The phrase « d'habitude » (usually) signals:","opts":["passé composé","imparfait","futur proche","conditionnel"],"ans":1,"exp":"d'habitude / souvent / toujours / tous les jours signal habitual or repeated actions → imparfait."},
+  {"id":"fr-301","topic":"fr-gram","lesson":"fr-l21","type":"mcq","q":"« Je dormais quand le téléphone a sonné. » — « dormais » is imparfait because:","opts":["it happened once and is complete","it was the background state, interrupted by the phone","it is a habitual action","it is in the future"],"ans":1,"exp":"dormais (imparfait) = was sleeping — ongoing background action. a sonné (PC) = the single event that interrupted it."},
 
   // ── Comparatif et superlatif (fr-l25) — A2 ───────────────────────────────────
-  {"id":"fr-302","topic":"fr-gram","type":"mcq","q":"« C'est le meilleur restaurant de la ville » means:","opts":["It is a good restaurant in the city","It is the best restaurant in town","It is a better restaurant than in town","It is the most expensive in town"],"ans":1,"exp":"le meilleur = the best (superlative of bon). 'de' after a superlative = 'in': le meilleur de la ville = the best in town."},
-  {"id":"fr-303","topic":"fr-gram","type":"mcq","q":"« aussi intelligent que » expresses:","opts":["superiority (smarter than)","inferiority (less smart than)","equality (as smart as)","approximation"],"ans":2,"exp":"aussi … que = as … as (equality). plus … que = more/smarter than; moins … que = less … than."},
-  {"id":"fr-304","topic":"fr-gram","type":"gapfill","q":"This is the tallest building in Paris (m.):","template":"C'est {0} plus grand bâtiment de Paris.","gaps":[{"options":["le","la","les","l'"],"answer":0}],"exp":"Masculine singular noun → le plus grand. (la plus grande f., les plus grands m. pl.)"},
-  {"id":"fr-305","topic":"fr-gram","type":"mcq","q":"The comparative of « bon » (good) is:","opts":["plus bon","meilleur","mieux","plus bien"],"ans":1,"exp":"bon → meilleur (better) / le meilleur (the best). Never say *plus bon*. Note: bien (adverb) → mieux."},
+  {"id":"fr-302","topic":"fr-gram","lesson":"fr-l25","type":"mcq","q":"« C'est le meilleur restaurant de la ville » means:","opts":["It is a good restaurant in the city","It is the best restaurant in town","It is a better restaurant than in town","It is the most expensive in town"],"ans":1,"exp":"le meilleur = the best (superlative of bon). 'de' after a superlative = 'in': le meilleur de la ville = the best in town."},
+  {"id":"fr-303","topic":"fr-gram","lesson":"fr-l25","type":"mcq","q":"« aussi intelligent que » expresses:","opts":["superiority (smarter than)","inferiority (less smart than)","equality (as smart as)","approximation"],"ans":2,"exp":"aussi … que = as … as (equality). plus … que = more/smarter than; moins … que = less … than."},
+  {"id":"fr-304","topic":"fr-gram","lesson":"fr-l25","type":"gapfill","q":"This is the tallest building in Paris (m.):","template":"C'est {0} plus grand bâtiment de Paris.","gaps":[{"options":["le","la","les","l'"],"answer":0}],"exp":"Masculine singular noun → le plus grand. (la plus grande f., les plus grands m. pl.)"},
+  {"id":"fr-305","topic":"fr-gram","lesson":"fr-l25","type":"mcq","q":"The comparative of « bon » (good) is:","opts":["plus bon","meilleur","mieux","plus bien"],"ans":1,"exp":"bon → meilleur (better) / le meilleur (the best). Never say *plus bon*. Note: bien (adverb) → mieux."},
 
   // ── Exprimer son opinion (fr-l30) — A2 ───────────────────────────────────────
-  {"id":"fr-306","topic":"fr-gram","type":"mcq","q":"« À mon avis, c'est une bonne idée » means:","opts":["It is obviously a good idea","In my opinion, it is a good idea","According to him, it is a good idea","Certainly, it is a good idea"],"ans":1,"exp":"À mon avis = in my opinion. (Selon moi = according to me — similar meaning.)"},
-  {"id":"fr-307","topic":"fr-gram","type":"mcq","q":"« Tu as raison » means:","opts":["You are wrong","You are right","You have a reason","You are mistaken"],"ans":1,"exp":"avoir raison = to be right. avoir tort = to be wrong: tu as tort."},
-  {"id":"fr-308","topic":"fr-gram","type":"mcq","q":"« Je ne suis pas d'accord » means:","opts":["I am not sure","I disagree","I am not ready","I don't understand"],"ans":1,"exp":"être d'accord = to agree; ne pas être d'accord = to disagree."},
-  {"id":"fr-309","topic":"fr-gram","type":"gapfill","q":"In my opinion, the situation is serious:","template":"{0} mon avis, la situation est grave.","gaps":[{"options":["À","De","En","Par"],"answer":0}],"exp":"À mon avis = in my opinion. (NOT *De mon avis* or *En mon avis*)"},
-  {"id":"fr-310","topic":"fr-gram","type":"mcq","q":"« Par contre, je préfère le cinéma » — « par contre » means:","opts":["therefore","in fact","however / on the other hand","in addition"],"ans":2,"exp":"par contre = however / on the other hand — introduces a contrasting idea. Similar to 'cependant'."},
-  {"id":"fr-311","topic":"fr-gram","type":"mcq","q":"« Je ne pense pas qu'il vienne » — « vienne » is subjunctive because:","opts":["the sentence is in the past","it follows a negative opinion expression (ne pense pas que)","venir is irregular","it follows a time expression"],"ans":1,"exp":"Negative opinions (je ne pense pas que, je ne crois pas que) trigger the subjunctive mood. Affirmative je pense que takes the indicative."},
+  {"id":"fr-306","topic":"fr-gram","lesson":"fr-l30","type":"mcq","q":"« À mon avis, c'est une bonne idée » means:","opts":["It is obviously a good idea","In my opinion, it is a good idea","According to him, it is a good idea","Certainly, it is a good idea"],"ans":1,"exp":"À mon avis = in my opinion. (Selon moi = according to me — similar meaning.)"},
+  {"id":"fr-307","topic":"fr-gram","lesson":"fr-l30","type":"mcq","q":"« Tu as raison » means:","opts":["You are wrong","You are right","You have a reason","You are mistaken"],"ans":1,"exp":"avoir raison = to be right. avoir tort = to be wrong: tu as tort."},
+  {"id":"fr-308","topic":"fr-gram","lesson":"fr-l30","type":"mcq","q":"« Je ne suis pas d'accord » means:","opts":["I am not sure","I disagree","I am not ready","I don't understand"],"ans":1,"exp":"être d'accord = to agree; ne pas être d'accord = to disagree."},
+  {"id":"fr-309","topic":"fr-gram","lesson":"fr-l30","type":"gapfill","q":"In my opinion, the situation is serious:","template":"{0} mon avis, la situation est grave.","gaps":[{"options":["À","De","En","Par"],"answer":0}],"exp":"À mon avis = in my opinion. (NOT *De mon avis* or *En mon avis*)"},
+  {"id":"fr-310","topic":"fr-gram","lesson":"fr-l30","type":"mcq","q":"« Par contre, je préfère le cinéma » — « par contre » means:","opts":["therefore","in fact","however / on the other hand","in addition"],"ans":2,"exp":"par contre = however / on the other hand — introduces a contrasting idea. Similar to 'cependant'."},
+  {"id":"fr-311","topic":"fr-gram","lesson":"fr-l30","type":"mcq","q":"« Je ne pense pas qu'il vienne » — « vienne » is subjunctive because:","opts":["the sentence is in the past","it follows a negative opinion expression (ne pense pas que)","venir is irregular","it follows a time expression"],"ans":1,"exp":"Negative opinions (je ne pense pas que, je ne crois pas que) trigger the subjunctive mood. Affirmative je pense que takes the indicative."},
 
   // fr-l09 — -ER verb conjugation (A1, fr-conj)
   {"id":"fr-312","topic":"fr-conj","lesson":"fr-l09","type":"mcq","q":"What is the correct conjugation of « parler » for « je »?","opts":["je parle","je parles","je parlee","je parl"],"ans":0,"exp":"-ER verbs: remove -er, add -e for je. je parle."},
