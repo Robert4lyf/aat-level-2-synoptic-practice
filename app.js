@@ -2701,7 +2701,7 @@
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
           const seenN = seenByTopic[t.id] || 0;
           const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
-          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id) && frLevelUnlocked(frQuestionLevel(q.id))).length;
+          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id) && frLevelUnlocked(frQuestionLevel(q.id)) && (!q.lesson || isLessonDone(q.lesson))).length;
           if (isFrench && availableN === 0 && totalN > 0) {
             return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
               <div class="icon" aria-hidden="true">${t.icon}</div>
