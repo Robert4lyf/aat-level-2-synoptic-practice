@@ -1143,7 +1143,72 @@ window.FR_QUESTIONS = [
   {"id":"fr-467","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"What does 'le pourboire' mean?","opts":["the starter","the bill","the set menu","the tip"],"ans":3,"exp":"le pourboire = the tip (gratuity). Etymology: pour = for, boire = to drink (historically you'd tip someone 'for a drink'). In France, service is included in prices by law, but tips are appreciated."},
   {"id":"fr-468","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"'Je suis allergique aux noix.' — What should the waiter know?","opts":["The customer doesn't like nuts","The customer wants nuts in their dish","The customer is vegetarian","The customer is allergic to nuts"],"ans":3,"exp":"Je suis allergique aux noix = I am allergic to nuts. allergique à = allergic to; les noix = nuts. Important for safety — always communicate allergies clearly."},
   {"id":"fr-469","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"Which phrase means 'I'm a vegetarian'?","opts":["Je n'aime pas la viande","Je préfère les légumes","Je mange sain","Je suis végétarien/végétarienne"],"ans":3,"exp":"Je suis végétarien (m.) / végétarienne (f.) = I am a vegetarian. Je suis végétalien/e = vegan. Je suis sans gluten = gluten-free. Essential dietary phrases for eating out."},
-  {"id":"fr-470","topic":"fr-resto","lesson":"fr-l51","type":"dragdrop","q":"Match each restaurant phrase to its meaning","pairs":[{"left":"l'addition","right":"the bill"},{"left":"le serveur","right":"the waiter"},{"left":"commander","right":"to order"},{"left":"l'entrée","right":"the starter"}],"exp":"l'addition (bill), le serveur/la serveuse (waiter/waitress), commander (to order), l'entrée (starter — not main course as in American English!)."}
+  {"id":"fr-470","topic":"fr-resto","lesson":"fr-l51","type":"dragdrop","q":"Match each restaurant phrase to its meaning","pairs":[{"left":"l'addition","right":"the bill"},{"left":"le serveur","right":"the waiter"},{"left":"commander","right":"to order"},{"left":"l'entrée","right":"the starter"}],"exp":"l'addition (bill), le serveur/la serveuse (waiter/waitress), commander (to order), l'entrée (starter — not main course as in American English!)."},
+
+  // ── CONJUGATION TABLE DRILLS ─────────────────────────────────────────────
+  // fr-l52 — Être, avoir, aller — tableau complet — A1
+  {"id":"fr-471","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Être — je ___ (I am)","template":"Je {0} professeur.","gaps":[{"options":["suis","est","sommes","êtes"],"answer":0}],"exp":"être → je suis. Full présent: je suis · tu es · il/elle est · nous sommes · vous êtes · ils/elles sont."},
+  {"id":"fr-472","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Être — tu ___ (you are, informal)","template":"Tu {0} étudiant.","gaps":[{"options":["es","est","êtes","suis"],"answer":0}],"exp":"être → tu es. Common confusions: tu es (informal you) vs vous êtes (formal/plural you)."},
+  {"id":"fr-473","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Être — il/elle ___ (he/she is)","template":"Elle {0} française.","gaps":[{"options":["est","es","soit","a"],"answer":0}],"exp":"être → il/elle est. Note: est sounds like 'ay'. It's also the 3rd-person form used for on: on est = we are (informal)."},
+  {"id":"fr-474","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Être — nous ___ (we are)","template":"Nous {0} prêts.","gaps":[{"options":["sommes","êtes","sont","suis"],"answer":0}],"exp":"être → nous sommes. Memory tip: SOMmes — think of 'sum' (total). Nous sommes = we are."},
+  {"id":"fr-475","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Être — vous ___ (you are, formal/plural)","template":"Vous {0} en retard.","gaps":[{"options":["êtes","es","sont","sommes"],"answer":0}],"exp":"être → vous êtes. The accent on ê distinguishes êtes (you are) from et (and)."},
+  {"id":"fr-476","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Être — ils/elles ___ (they are)","template":"Ils {0} contents.","gaps":[{"options":["sont","suis","es","est"],"answer":0}],"exp":"être → ils/elles sont. Note: elles sont = they are (f.); ils sont = they are (m. or mixed group)."},
+  {"id":"fr-477","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Avoir — j'___ (I have)","template":"J'{0} faim.","gaps":[{"options":["ai","as","a","avons"],"answer":0}],"exp":"avoir → j'ai. Elision: je + ai → j'ai. Remember: j'ai faim (I'm hungry), j'ai soif (I'm thirsty) — French uses avoir for these states."},
+  {"id":"fr-478","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Avoir — tu ___ (you have)","template":"Tu {0} quel âge ?","gaps":[{"options":["as","ai","a","avez"],"answer":0}],"exp":"avoir → tu as. Asking age: tu as quel âge ? = how old are you? (lit. 'you have what age?')"},
+  {"id":"fr-479","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Avoir — il/elle ___ (he/she has)","template":"Elle {0} les yeux bleus.","gaps":[{"options":["a","ai","as","ont"],"answer":0}],"exp":"avoir → il/elle a. Compare: il est (he is) vs il a (he has). These two verbs are essential and often confused by beginners."},
+  {"id":"fr-480","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Avoir — nous ___ (we have)","template":"Nous {0} deux enfants.","gaps":[{"options":["avons","avez","ont","a"],"answer":0}],"exp":"avoir → nous avons. Full present of avoir: j'ai · tu as · il/elle a · nous avons · vous avez · ils/elles ont."},
+  {"id":"fr-481","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Avoir — vous ___ (you have, formal/plural)","template":"Vous {0} un rendez-vous.","gaps":[{"options":["avez","avons","ont","as"],"answer":0}],"exp":"avoir → vous avez. Also used in avoir passé composé: vous avez mangé (you have eaten)."},
+  {"id":"fr-482","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Avoir — ils/elles ___ (they have)","template":"Ils {0} de la chance.","gaps":[{"options":["ont","avons","avez","a"],"answer":0}],"exp":"avoir → ils/elles ont. Ils ont de la chance = they are lucky (lit. 'they have luck'). Note: ils ont sounds like 'il-zon' due to liaison."},
+  {"id":"fr-483","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Aller — je ___ (I go)","template":"Je {0} au marché.","gaps":[{"options":["vais","vas","va","allons"],"answer":0}],"exp":"aller → je vais. Aller is highly irregular! Full présent: je vais · tu vas · il/elle va · nous allons · vous allez · ils/elles vont."},
+  {"id":"fr-484","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Aller — tu ___ (you go)","template":"Tu {0} à l'école.","gaps":[{"options":["vas","vais","va","allez"],"answer":0}],"exp":"aller → tu vas. Also used for the near future: tu vas manger = you are going to eat."},
+  {"id":"fr-485","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Aller — nous ___ (we go)","template":"Nous {0} en France.","gaps":[{"options":["allons","allez","vont","vais"],"answer":0}],"exp":"aller → nous allons. Allons! = Let's go! (imperative). The nous form is also used to form the futur proche: nous allons partir."},
+  {"id":"fr-486","topic":"fr-conj","lesson":"fr-l52","type":"gapfill","q":"Aller — ils/elles ___ (they go)","template":"Ils {0} au cinéma.","gaps":[{"options":["vont","vais","va","allez"],"answer":0}],"exp":"aller → ils/elles vont. Ils vont = they go / they are going. Also the near future: ils vont arriver = they are going to arrive."},
+  {"id":"fr-487","topic":"fr-conj","lesson":"fr-l52","type":"mcq","q":"Which is the correct form of 'être' for 'vous'?","opts":["vous êtes","vous est","vous sommes","vous sont"],"ans":0,"exp":"vous êtes = you are (formal/plural). Note the circumflex on ê. Vous form of être is unique — it doesn't follow any regular pattern."},
+  {"id":"fr-488","topic":"fr-conj","lesson":"fr-l52","type":"mcq","q":"'Nous ___ en retard.' — Which verb (être) is correct?","opts":["nous sommes","nous êtes","nous sont","nous suis"],"ans":0,"exp":"nous sommes = we are. The nous form of être is sommes — it comes from the Latin 'sumus'. Just one to memorise!"},
+  {"id":"fr-489","topic":"fr-conj","lesson":"fr-l52","type":"dragdrop","q":"Match each pronoun to the correct form of ÊTRE","pairs":[{"left":"je","right":"suis"},{"left":"tu","right":"es"},{"left":"nous","right":"sommes"},{"left":"ils","right":"sont"}],"exp":"être: je suis · tu es · il/elle est · nous sommes · vous êtes · ils/elles sont. This is the most irregular verb in French — learn it by heart!"},
+  {"id":"fr-490","topic":"fr-conj","lesson":"fr-l52","type":"dragdrop","q":"Match each pronoun to the correct form of AVOIR","pairs":[{"left":"j'","right":"ai"},{"left":"tu","right":"as"},{"left":"nous","right":"avons"},{"left":"ils","right":"ont"}],"exp":"avoir: j'ai · tu as · il/elle a · nous avons · vous avez · ils/elles ont. Avoir is used for passé composé of most verbs (e.g. j'ai mangé)."},
+
+  // fr-l53 — Verbes réguliers -ER, -IR, -RE — A1
+  {"id":"fr-491","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-ER verb: parler — je ___ (I speak)","template":"Je {0} français.","gaps":[{"options":["parle","parles","parlez","parlons"],"answer":0}],"exp":"parler → je parle. Regular -ER endings: -e · -es · -e · -ons · -ez · -ent. The je/il/elle forms both end in -e (the 's' that appears in other forms is absent here)."},
+  {"id":"fr-492","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-ER verb: parler — tu ___ (you speak)","template":"Tu {0} vite !","gaps":[{"options":["parles","parle","parlez","parlent"],"answer":0}],"exp":"parler → tu parles (add -es). Regular -ER: je parle · tu parles · il parle · nous parlons · vous parlez · ils parlent."},
+  {"id":"fr-493","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-ER verb: parler — nous ___ (we speak)","template":"Nous {0} anglais.","gaps":[{"options":["parlons","parlez","parlent","parles"],"answer":0}],"exp":"parler → nous parlons (add -ons). All regular verbs use -ons for nous. Parlons! = Let's talk! (imperative)."},
+  {"id":"fr-494","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-ER verb: manger — nous ___ (we eat)","template":"Nous {0} à midi.","gaps":[{"options":["mangeons","mangons","manges","mangez"],"answer":0}],"exp":"manger → nous mangeons. Verbs ending in -ger add an 'e' before -ons to keep the soft 'g' sound: mang-e-ons. Same pattern for nager (to swim) → nous nageons."},
+  {"id":"fr-495","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-ER verb: aimer — ils ___ (they like/love)","template":"Ils {0} la musique.","gaps":[{"options":["aiment","aimez","aimé","aimes"],"answer":0}],"exp":"aimer → ils aiment. The -ent ending of ils/elles is SILENT. ils aiment sounds exactly like il aime (he loves)."},
+  {"id":"fr-496","topic":"fr-conj","lesson":"fr-l53","type":"mcq","q":"Which form is correct? 'Vous ___ le français.' (parler)","opts":["parlons","parlez","parlent","parle"],"ans":1,"exp":"vous parlez = you speak. -ER verbs: vous + stem + -ez. Nearly all verbs (including most irregular ones) use -ez for vous."},
+  {"id":"fr-497","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-IR verb: finir — je ___ (I finish)","template":"Je {0} le travail.","gaps":[{"options":["finis","fini","finit","finissons"],"answer":0}],"exp":"finir → je finis. Regular -IR endings: -is · -is · -it · -issons · -issez · -issent. Note the 'iss' inserted in plural forms: nous finissons."},
+  {"id":"fr-498","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-IR verb: finir — il/elle ___ (he/she finishes)","template":"Il {0} le repas.","gaps":[{"options":["finit","finis","finissent","finissons"],"answer":0}],"exp":"finir → il finit. The 't' appears in the il/elle form: -it. Full present: je finis · tu finis · il finit · nous finissons · vous finissez · ils finissent."},
+  {"id":"fr-499","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-IR verb: finir — nous ___ (we finish)","template":"Nous {0} à 17h.","gaps":[{"options":["finissons","finissez","finissent","finit"],"answer":0}],"exp":"finir → nous finissons. The -iss- infix appears in nous/vous/ils forms of regular -IR verbs: finissons, finissez, finissent."},
+  {"id":"fr-500","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-IR verb: choisir — ils ___ (they choose)","template":"Ils {0} le menu.","gaps":[{"options":["choisissent","choisit","choisissons","choisissez"],"answer":0}],"exp":"choisir → ils choisissent. All regular -IR verbs follow this pattern: ils + stem + -issent. Other -IR verbs: réussir (to succeed), obéir (to obey), rougir (to blush)."},
+  {"id":"fr-501","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-RE verb: attendre — j'___ (I wait for)","template":"J'{0} le bus.","gaps":[{"options":["attends","attend","attendons","attendez"],"answer":0}],"exp":"attendre → j'attends. Regular -RE endings: -ds · -ds · d (NO ending) · -ons · -ez · -ent. Note: the je/tu forms have -ds and the il/elle form has just the stem with no ending."},
+  {"id":"fr-502","topic":"fr-conj","lesson":"fr-l53","type":"gapfill","q":"-RE verb: attendre — il/elle ___ (he/she waits)","template":"Elle {0} son ami.","gaps":[{"options":["attend","attends","attendez","attendons"],"answer":0}],"exp":"attendre → il/elle attend. The il/elle form of -RE verbs has NO added ending — just the stem: attend (not attendt). Compare -ER (il parle) and -IR (il finit) where endings appear."},
+  {"id":"fr-503","topic":"fr-conj","lesson":"fr-l53","type":"mcq","q":"Which pattern correctly shows the endings for regular -ER verbs?","opts":["-is, -is, -it, -issons, -issez, -issent","-s, -s, -d, -ons, -ez, -ent","-e, -es, -e, -ons, -ez, -ent","-e, -es, -e, -ons, -ez, -ons"],"ans":2,"exp":"Regular -ER endings: -e · -es · -e · -ons · -ez · -ent. The -IR pattern uses -is/-issons; the -RE pattern uses -ds/-d. Each group has distinct endings."},
+  {"id":"fr-504","topic":"fr-conj","lesson":"fr-l53","type":"mcq","q":"'Elle ___ vite.' — Which form of 'travailler' is correct?","opts":["travaillons","travaillez","travaille","travailles"],"ans":2,"exp":"elle travaille = she works. -ER verb, il/elle form: stem + -e (no extra letter). The ending is silent — travaille and j'aime both end in the same sound."},
+  {"id":"fr-505","topic":"fr-conj","lesson":"fr-l53","type":"dragdrop","q":"Match each -ER verb ending to its pronoun","pairs":[{"left":"je","right":"-e"},{"left":"tu","right":"-es"},{"left":"nous","right":"-ons"},{"left":"ils/elles","right":"-ent"}],"exp":"-ER verb endings: je -e · tu -es · il/elle -e · nous -ons · vous -ez · ils/elles -ent. The je and il/elle endings are identical (-e) and always silent."},
+
+  // fr-l54 — Faire, vouloir, pouvoir, devoir — A2
+  {"id":"fr-506","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Faire — je ___ (I do/make)","template":"Je {0} du sport.","gaps":[{"options":["fais","fait","faites","font"],"answer":0}],"exp":"faire → je fais. Faire is highly irregular! Full présent: je fais · tu fais · il fait · nous faisons · vous faites · ils font. Note: faites (not faisez) for vous."},
+  {"id":"fr-507","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Faire — vous ___ (you do/make)","template":"Vous {0} du bruit.","gaps":[{"options":["faites","faisez","fait","faisons"],"answer":0}],"exp":"faire → vous faites. This is irregular — most verbs use -ez for vous, but faire uses faites. One of only three -tes endings: vous êtes, vous faites, vous dites."},
+  {"id":"fr-508","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Faire — ils/elles ___ (they do/make)","template":"Ils {0} la cuisine.","gaps":[{"options":["font","faits","faisons","fait"],"answer":0}],"exp":"faire → ils font. Irregular: not faisent. Full: je fais · tu fais · il fait · nous faisons · vous faites · ils font."},
+  {"id":"fr-509","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Vouloir — je ___ (I want)","template":"Je {0} un café.","gaps":[{"options":["veux","veut","voulons","voulez"],"answer":0}],"exp":"vouloir → je veux. The stem changes: veul- for je/tu/il, voul- for nous/vous, veul- for ils. Full: je veux · tu veux · il veut · nous voulons · vous voulez · ils veulent."},
+  {"id":"fr-510","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Vouloir — il/elle ___ (he/she wants)","template":"Il {0} partir.","gaps":[{"options":["veut","veux","voulons","voulez"],"answer":0}],"exp":"vouloir → il veut. Note the stem change: je/tu veux · il veut (same sound as veux but spelled differently). The -t on il veut is a spelling convention."},
+  {"id":"fr-511","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Vouloir — nous ___ (we want)","template":"Nous {0} rester.","gaps":[{"options":["voulons","voulons","veulent","voulez"],"answer":0}],"exp":"vouloir → nous voulons. The stem reverts to voul- for nous and vous: voulons, voulez. This stem change (veul-/voul-) is typical of irregular verbs."},
+  {"id":"fr-512","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Pouvoir — je ___ (I can)","template":"Je {0} vous aider.","gaps":[{"options":["peux","peut","pouvons","pouvez"],"answer":0}],"exp":"pouvoir → je peux. Alternative: je puis (very formal/literary). Full: je peux · tu peux · il peut · nous pouvons · vous pouvez · ils peuvent."},
+  {"id":"fr-513","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Pouvoir — vous ___ (you can)","template":"Vous {0} partir.","gaps":[{"options":["pouvez","pouvent","pouvons","peux"],"answer":0}],"exp":"pouvoir → vous pouvez. The vous form is regular (-ez on the pouv- stem): pouvez. Compare vouloir: vous voulez."},
+  {"id":"fr-514","topic":"fr-conj","lesson":"fr-l54","type":"gapfill","q":"Devoir — je ___ (I must)","template":"Je {0} partir maintenant.","gaps":[{"options":["dois","doit","devons","devez"],"answer":0}],"exp":"devoir → je dois. Full présent: je dois · tu dois · il doit · nous devons · vous devez · ils doivent. Devoir expresses obligation: je dois = I must / I have to."},
+  {"id":"fr-515","topic":"fr-conj","lesson":"fr-l54","type":"mcq","q":"Which form of 'faire' is correct for 'vous'?","opts":["vous faisons","vous faisez","vous font","vous faites"],"ans":3,"exp":"vous faites = you do/make. This is one of three irregular vous forms in French: vous êtes (être), vous faites (faire), vous dites (dire). All other verbs use -ez."},
+  {"id":"fr-516","topic":"fr-conj","lesson":"fr-l54","type":"dragdrop","q":"Match each pronoun to the correct form of FAIRE","pairs":[{"left":"je/tu","right":"fais"},{"left":"il/elle","right":"fait"},{"left":"nous","right":"faisons"},{"left":"ils/elles","right":"font"}],"exp":"faire: je/tu fais · il fait · nous faisons · vous faites · ils font. Remember: faites (NOT faisez) for vous, and font (NOT faisent) for ils."},
+
+  // fr-l55 — Le passé composé — A2
+  {"id":"fr-517","topic":"fr-conj","lesson":"fr-l55","type":"gapfill","q":"Passé composé (avoir): 'I ate' — j'___ mangé","template":"Hier, j'{0} mangé.","gaps":[{"options":["ai","suis","ais","avais"],"answer":0}],"exp":"j'ai mangé = I ate (lit. 'I have eaten'). Passé composé = auxiliary (avoir or être) + past participle. Most verbs use avoir: j'ai · tu as · il a · nous avons · vous avez · ils ont + past participle."},
+  {"id":"fr-518","topic":"fr-conj","lesson":"fr-l55","type":"gapfill","q":"Passé composé (avoir): 'she finished' — elle ___ fini","template":"Elle {0} fini le devoir.","gaps":[{"options":["a","ai","est","avait"],"answer":0}],"exp":"elle a fini = she finished/has finished. Auxiliary: elle a (avoir). Past participle of finir → fini. Regular -IR verbs: stem + i."},
+  {"id":"fr-519","topic":"fr-conj","lesson":"fr-l55","type":"gapfill","q":"Passé composé (être): 'I went' — je ___ allé(e)","template":"Je {0} allé(e) au marché.","gaps":[{"options":["suis","ai","était","suis allé"],"answer":0}],"exp":"je suis allé(e) = I went/have gone. Aller uses être as its auxiliary. Verbs of motion/state use être: aller, venir, partir, arriver, naître, mourir, rester, retourner, tomber, entrer, sortir."},
+  {"id":"fr-520","topic":"fr-conj","lesson":"fr-l55","type":"gapfill","q":"Passé composé (être): 'she arrived' — elle ___ arrivée","template":"Elle {0} arrivée tard.","gaps":[{"options":["est","a","était","avait"],"answer":0}],"exp":"elle est arrivée = she arrived. Arriver uses être. With être auxiliary, the past participle agrees with the subject: elle est arrivée (fem. +e), ils sont arrivés (masc. pl. +s)."},
+  {"id":"fr-521","topic":"fr-conj","lesson":"fr-l55","type":"mcq","q":"What is the past participle of 'avoir' (to have)?","opts":["avé","havé","eu","avait"],"ans":2,"exp":"avoir → eu. Irregular past participle. Common irregular past participles to memorise: avoir → eu · être → été · faire → fait · prendre → pris · voir → vu · venir → venu."},
+  {"id":"fr-522","topic":"fr-conj","lesson":"fr-l55","type":"mcq","q":"What is the past participle of 'faire' (to do/make)?","opts":["faisé","faite","fait","fais"],"ans":2,"exp":"faire → fait. J'ai fait = I did/made. Other key irregular past participles: prendre → pris · mettre → mis · voir → vu · vouloir → voulu · pouvoir → pu."},
+  {"id":"fr-523","topic":"fr-conj","lesson":"fr-l55","type":"mcq","q":"What is the past participle of 'prendre' (to take)?","opts":["prendu","pris","prend","prendé"],"ans":1,"exp":"prendre → pris. J'ai pris = I took. Pris is also used for: comprendre (compris), apprendre (appris), surprendre (surpris)."},
+  {"id":"fr-524","topic":"fr-conj","lesson":"fr-l55","type":"mcq","q":"'Je n'ai pas mangé.' — What does this sentence mean?","opts":["I didn't eat","I have eaten","I was not eating","I will not eat"],"ans":0,"exp":"Je n'ai pas mangé = I didn't eat / I haven't eaten. Negation in passé composé: ne goes before the auxiliary, pas goes after it: je NE ai PAS → je N'AI PAS mangé."},
+  {"id":"fr-525","topic":"fr-conj","lesson":"fr-l55","type":"mcq","q":"'Elle est partie hier.' — Why is 'partie' not 'parti'?","opts":["It's an error","Partir is a -RE verb","Avec être auxiliary, the past participle agrees with the subject (elle = feminine)","Hier always causes feminine agreement"],"ans":2,"exp":"With être auxiliary, the past participle agrees with the subject in gender and number: elle (fem.) → partie (+e). Il est parti (masc.) · Elle est partie (fem.) · Ils sont partis (masc. pl.) · Elles sont parties (fem. pl.)."},
+  {"id":"fr-526","topic":"fr-conj","lesson":"fr-l55","type":"dragdrop","q":"Match each infinitive to its past participle","pairs":[{"left":"voir","right":"vu"},{"left":"venir","right":"venu"},{"left":"mettre","right":"mis"},{"left":"être","right":"été"}],"exp":"Irregular past participles: voir → vu · venir → venu · mettre → mis · être → été. Also: avoir → eu · faire → fait · prendre → pris · savoir → su · pouvoir → pu."}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -4268,6 +4333,102 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "'Il fait beau' = the weather is nice/fine. Use 'il fait + adjective' for these weather expressions."
           }
         ]
+      },
+      {
+        "id": "fr-l52",
+        "title": "Conjugaison : être, avoir, aller",
+        "icon": "🔠",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Être — to be",
+            "body": "<p>The most important French verb — irregular in every form:</p><table><tr><th>Pronoun</th><th>être</th><th>English</th></tr><tr><td>je</td><td><strong>suis</strong></td><td>I am</td></tr><tr><td>tu</td><td><strong>es</strong></td><td>you are</td></tr><tr><td>il / elle</td><td><strong>est</strong></td><td>he/she is</td></tr><tr><td>nous</td><td><strong>sommes</strong></td><td>we are</td></tr><tr><td>vous</td><td><strong>êtes</strong></td><td>you are</td></tr><tr><td>ils / elles</td><td><strong>sont</strong></td><td>they are</td></tr></table><p><strong>Tip:</strong> No form resembles the infinitive 'être' at all — it must be fully memorised.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Avoir — to have",
+            "body": "<p>Also essential — used as auxiliary in passé composé for most verbs:</p><table><tr><th>Pronoun</th><th>avoir</th><th>English</th></tr><tr><td>j'</td><td><strong>ai</strong></td><td>I have</td></tr><tr><td>tu</td><td><strong>as</strong></td><td>you have</td></tr><tr><td>il / elle</td><td><strong>a</strong></td><td>he/she has</td></tr><tr><td>nous</td><td><strong>avons</strong></td><td>we have</td></tr><tr><td>vous</td><td><strong>avez</strong></td><td>you have</td></tr><tr><td>ils / elles</td><td><strong>ont</strong></td><td>they have</td></tr></table><p><strong>Note:</strong> 'j'ai' — je elides to j' before a vowel.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Aller — to go",
+            "body": "<p>Irregular but its forms are easy to recognise:</p><table><tr><th>Pronoun</th><th>aller</th><th>English</th></tr><tr><td>je</td><td><strong>vais</strong></td><td>I go</td></tr><tr><td>tu</td><td><strong>vas</strong></td><td>you go</td></tr><tr><td>il / elle</td><td><strong>va</strong></td><td>he/she goes</td></tr><tr><td>nous</td><td><strong>allons</strong></td><td>we go</td></tr><tr><td>vous</td><td><strong>allez</strong></td><td>you go</td></tr><tr><td>ils / elles</td><td><strong>vont</strong></td><td>they go</td></tr></table><p><strong>Tip:</strong> aller + infinitive = near future: <em>je vais manger</em> = I am going to eat.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "What is the 'nous' form of être?",
+            "opts": ["avons", "sommes", "allons", "êtes"],
+            "ans": 1,
+            "exp": "nous sommes = we are. être: je suis · tu es · il est · nous sommes · vous êtes · ils sont."
+          },
+          {
+            "q": "What is the 'ils' form of avoir?",
+            "opts": ["avez", "avons", "ont", "aient"],
+            "ans": 2,
+            "exp": "ils ont = they have. avoir: j'ai · tu as · il a · nous avons · vous avez · ils ont."
+          },
+          {
+            "q": "How do you say 'I am going' in French?",
+            "opts": ["je vais", "je vas", "j'ai", "je suis"],
+            "ans": 0,
+            "exp": "je vais = I go / I am going. aller: je vais · tu vas · il va · nous allons · vous allez · ils vont."
+          },
+          {
+            "q": "Which form of ALLER is correct for 'tu'?",
+            "opts": ["tu allez", "tu allons", "tu vas", "tu vais"],
+            "ans": 2,
+            "exp": "tu vas = you go (informal). aller: je vais · tu vas · il va · nous allons · vous allez · ils vont."
+          }
+        ]
+      },
+      {
+        "id": "fr-l53",
+        "title": "Conjugaison : verbes réguliers",
+        "icon": "📋",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Regular -ER verbs (parler)",
+            "body": "<p>Most French verbs end in <strong>-ER</strong>. Remove -er and add these endings:</p><table><tr><th>Pronoun</th><th>Ending</th><th>parler (to speak)</th></tr><tr><td>je</td><td><strong>-e</strong></td><td>je parle</td></tr><tr><td>tu</td><td><strong>-es</strong></td><td>tu parles</td></tr><tr><td>il/elle</td><td><strong>-e</strong></td><td>il parle</td></tr><tr><td>nous</td><td><strong>-ons</strong></td><td>nous parlons</td></tr><tr><td>vous</td><td><strong>-ez</strong></td><td>vous parlez</td></tr><tr><td>ils/elles</td><td><strong>-ent</strong></td><td>ils parlent</td></tr></table><p>⚠️ The -ent of ils/elles is <strong>silent</strong>. Other -ER verbs: aimer, manger, écouter, travailler.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Regular -IR verbs (finir)",
+            "body": "<p>Remove -ir and add these endings — note the <strong>-iss-</strong> infix in plural forms:</p><table><tr><th>Pronoun</th><th>Ending</th><th>finir (to finish)</th></tr><tr><td>je</td><td><strong>-is</strong></td><td>je finis</td></tr><tr><td>tu</td><td><strong>-is</strong></td><td>tu finis</td></tr><tr><td>il/elle</td><td><strong>-it</strong></td><td>il finit</td></tr><tr><td>nous</td><td><strong>-issons</strong></td><td>nous finissons</td></tr><tr><td>vous</td><td><strong>-issez</strong></td><td>vous finissez</td></tr><tr><td>ils/elles</td><td><strong>-issent</strong></td><td>ils finissent</td></tr></table><p>Other -IR verbs: choisir, réussir, obéir.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Regular -RE verbs (attendre)",
+            "body": "<p>Remove -re and add these endings — il/elle gets <strong>no ending at all</strong>:</p><table><tr><th>Pronoun</th><th>Ending</th><th>attendre (to wait)</th></tr><tr><td>je</td><td><strong>-ds</strong></td><td>j'attends</td></tr><tr><td>tu</td><td><strong>-ds</strong></td><td>tu attends</td></tr><tr><td>il/elle</td><td><strong>— (nothing)</strong></td><td>il attend</td></tr><tr><td>nous</td><td><strong>-ons</strong></td><td>nous attendons</td></tr><tr><td>vous</td><td><strong>-ez</strong></td><td>vous attendez</td></tr><tr><td>ils/elles</td><td><strong>-ent</strong></td><td>ils attendent</td></tr></table><p>Other -RE verbs: vendre, répondre, perdre.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "What ending do regular -ER verbs take with 'nous'?",
+            "opts": ["-ons", "-ez", "-ent", "-e"],
+            "ans": 0,
+            "exp": "nous + -ons: nous parlons, nous écoutons, nous travaillons. This -ons ending is shared by all verb groups."
+          },
+          {
+            "q": "What is 'nous finissons' in English?",
+            "opts": ["we finish / we are finishing", "they finish", "you finish", "I finish"],
+            "ans": 0,
+            "exp": "nous finissons = we finish. Note the -iss- infix that appears in nous/vous/ils forms of regular -IR verbs."
+          },
+          {
+            "q": "What is the il/elle form of 'attendre'?",
+            "opts": ["attends", "attend", "attendez", "attendit"],
+            "ans": 1,
+            "exp": "il attend = he waits. -RE verbs have NO added ending for il/elle — just the stem: attend (not 'attendt')."
+          },
+          {
+            "q": "Which verbs use the -iss- infix in plural forms?",
+            "opts": ["Regular -ER verbs", "Regular -IR verbs", "Regular -RE verbs", "All irregular verbs"],
+            "ans": 1,
+            "exp": "Regular -IR verbs use -iss- in nous/vous/ils: finissons, finissez, finissent. This infix is a key feature of the -IR group."
+          }
+        ]
       }
     ]
   },
@@ -6219,6 +6380,102 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "opts": ["They mean the same thing", "La carte is the set meal; le menu is à la carte", "La carte is the full à la carte menu; le menu is a fixed-price set meal", "Le menu is only for drinks"],
             "ans": 2,
             "exp": "In France: 'la carte' = the full à la carte menu (choose freely); 'le menu' = a fixed-price set meal. Asking for 'le menu' means you want the set deal."
+          }
+        ]
+      },
+      {
+        "id": "fr-l54",
+        "title": "Conjugaison : faire, vouloir, pouvoir, devoir",
+        "icon": "⚙️",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Faire — to do / to make",
+            "body": "<p>Faire is highly irregular — memorise the full table:</p><table><tr><th>Pronoun</th><th>faire</th></tr><tr><td>je</td><td><strong>fais</strong></td></tr><tr><td>tu</td><td><strong>fais</strong></td></tr><tr><td>il/elle</td><td><strong>fait</strong></td></tr><tr><td>nous</td><td><strong>faisons</strong></td></tr><tr><td>vous</td><td><strong>faites</strong></td></tr><tr><td>ils/elles</td><td><strong>font</strong></td></tr></table><p>⚠️ <strong>vous faites</strong> (NOT faisez) — one of only three vous forms ending in -tes: êtes, faites, dites.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Vouloir (to want) and Pouvoir (to be able to)",
+            "body": "<p>Both follow the same stem-change pattern — different stem in singular vs plural:</p><table><tr><th>Pronoun</th><th>vouloir</th><th>pouvoir</th></tr><tr><td>je</td><td>veux</td><td>peux</td></tr><tr><td>tu</td><td>veux</td><td>peux</td></tr><tr><td>il/elle</td><td>veut</td><td>peut</td></tr><tr><td>nous</td><td>voulons</td><td>pouvons</td></tr><tr><td>vous</td><td>voulez</td><td>pouvez</td></tr><tr><td>ils/elles</td><td>veulent</td><td>peuvent</td></tr></table><p><strong>Usage:</strong> vouloir/pouvoir + infinitive: <em>je veux partir</em> · <em>je peux venir</em></p>"
+          },
+          {
+            "type": "info",
+            "title": "Devoir — must / to have to",
+            "body": "<p>Devoir expresses obligation — also stem-changing:</p><table><tr><th>Pronoun</th><th>devoir</th><th>Example</th></tr><tr><td>je</td><td><strong>dois</strong></td><td>je dois travailler</td></tr><tr><td>tu</td><td><strong>dois</strong></td><td>tu dois écouter</td></tr><tr><td>il/elle</td><td><strong>doit</strong></td><td>il doit partir</td></tr><tr><td>nous</td><td><strong>devons</strong></td><td>nous devons rester</td></tr><tr><td>vous</td><td><strong>devez</strong></td><td>vous devez finir</td></tr><tr><td>ils/elles</td><td><strong>doivent</strong></td><td>ils doivent attendre</td></tr></table>"
+          }
+        ],
+        "check": [
+          {
+            "q": "What is the 'vous' form of faire?",
+            "opts": ["vous faisez", "vous faisons", "vous faites", "vous font"],
+            "ans": 2,
+            "exp": "vous faites — irregular! Most verbs use -ez for vous, but faire, être, and dire use -tes: êtes, faites, dites."
+          },
+          {
+            "q": "What is 'ils font' in English?",
+            "opts": ["they want", "they can", "they go", "they do/make"],
+            "ans": 3,
+            "exp": "ils font = they do / they make. Irregular: not 'faisent'. faire: je fais · tu fais · il fait · nous faisons · vous faites · ils font."
+          },
+          {
+            "q": "Which form of vouloir is correct for 'je'?",
+            "opts": ["je veut", "je veux", "je voulons", "je voulez"],
+            "ans": 1,
+            "exp": "je veux = I want. Stem change: je/tu veux · il veut · nous voulons · vous voulez · ils veulent."
+          },
+          {
+            "q": "'Je ___ partir.' — Which verb form means 'I must leave'?",
+            "opts": ["peux", "dois", "veux", "fais"],
+            "ans": 1,
+            "exp": "je dois partir = I must leave / I have to leave. Devoir expresses obligation: je dois · tu dois · il doit · nous devons · vous devez · ils doivent."
+          }
+        ]
+      },
+      {
+        "id": "fr-l55",
+        "title": "Le passé composé — révision",
+        "icon": "🔁",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Structure of the passé composé",
+            "body": "<p><strong>Passé composé = auxiliary verb + past participle</strong></p><p>Most verbs use <strong>avoir</strong>; motion/state verbs use <strong>être</strong>:</p><table><tr><th>Auxiliary</th><th>Example</th><th>English</th></tr><tr><td>avoir</td><td>j'ai mangé</td><td>I ate / have eaten</td></tr><tr><td>avoir</td><td>elle a fini</td><td>she finished</td></tr><tr><td>être</td><td>il est allé</td><td>he went</td></tr><tr><td>être</td><td>elles sont parties</td><td>they left (fem.)</td></tr></table>"
+          },
+          {
+            "type": "info",
+            "title": "Être verbs and agreement",
+            "body": "<p>Verbs that take <strong>être</strong>: aller, venir, partir, arriver, naître, mourir, rester, retourner, tomber, entrer, sortir (plus all reflexive verbs).</p><p>With être, the past participle <strong>agrees</strong> with the subject:</p><ul><li>il est parti · <strong>elle est partie</strong> (+e)</li><li>ils sont partis · <strong>elles sont parties</strong> (+es)</li></ul><p><strong>No agreement with avoir auxiliary</strong> (unless a preceding direct object).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Key irregular past participles",
+            "body": "<table><tr><th>Infinitive</th><th>Past participle</th></tr><tr><td>avoir</td><td><strong>eu</strong></td></tr><tr><td>être</td><td><strong>été</strong></td></tr><tr><td>faire</td><td><strong>fait</strong></td></tr><tr><td>prendre</td><td><strong>pris</strong></td></tr><tr><td>voir</td><td><strong>vu</strong></td></tr><tr><td>venir</td><td><strong>venu</strong></td></tr><tr><td>mettre</td><td><strong>mis</strong></td></tr><tr><td>pouvoir</td><td><strong>pu</strong></td></tr></table><p>Regular patterns: -ER → <strong>-é</strong> · -IR → <strong>-i</strong> · -RE → <strong>-u</strong> (e.g. vendre → vendu)</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "What auxiliary does 'aller' use in the passé composé?",
+            "opts": ["avoir", "être", "either one", "aller itself"],
+            "ans": 1,
+            "exp": "aller uses être: je suis allé(e). Être verbs include: aller, venir, partir, arriver, sortir, entrer, tomber, naître, mourir, rester."
+          },
+          {
+            "q": "What is the past participle of 'faire'?",
+            "opts": ["faisé", "fait", "faite", "fais"],
+            "ans": 1,
+            "exp": "faire → fait. J'ai fait = I did/made. Key irregular past participles: faire → fait · avoir → eu · être → été · prendre → pris · voir → vu."
+          },
+          {
+            "q": "'Elle est ___.' — Which form of 'partir' is correct?",
+            "opts": ["parti", "partis", "parties", "partie"],
+            "ans": 3,
+            "exp": "elle est partie. With être auxiliary, the past participle agrees with the subject: elle (feminine singular) → add -e → partie."
+          },
+          {
+            "q": "How is negation placed in the passé composé?",
+            "opts": ["ne...pas around the whole verb phrase", "ne before auxiliary, pas after auxiliary", "pas only before the past participle", "ne at the end of the sentence"],
+            "ans": 1,
+            "exp": "ne before the auxiliary, pas immediately after it: je N'AI PAS mangé. The past participle comes last, after 'pas'."
           }
         ]
       }
