@@ -667,7 +667,7 @@
   ];
   const SR_MAX_BOX = 5;
   const defaultData = () => ({
-    settings: { darkMode: null, soundOn: true, seenSplash: false, refOpen: false },
+    settings: { darkMode: null, soundOn: true, seenSplash: false, refOpen: false, flipMode: false },
     stats: {
       questions: {}, topics: {},
       streak: { current: 0, best: 0, lastCorrectAt: 0 },
@@ -1061,7 +1061,7 @@
       ? (window.ALL_QUESTIONS || []).filter(q => frQuestionLevel(q.id) === frCefrMap[unitId])
       : (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
     // Draw from the full pool — no difficulty bucketing or confidence filtering.
-    return shuffle(pool).slice(0, 40).map(presentQuestion);
+    return applyFlipMode(shuffle(pool).slice(0, 40).map(presentQuestion));
   }
   function startUnitQuiz(unitId) {
     if (!Storage.data.learn.unitTests) Storage.data.learn.unitTests = {};
@@ -1175,6 +1175,41 @@
   function isGapFill(q) { return q && q.type === 'gapfill'; }
   function isWordOrder(q) { return q && q.type === 'wordorder'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
+
+  // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
+  function isFrToEnMcq(q) {
+    if (!q || q.type !== 'mcq') return false;
+    return /^(what does\s+"[^"]+"|"[^"]+"\s+(means?\??|is\??))/i.test(q.q.trim());
+  }
+  function extractFrenchTerm(q) {
+    const m = q.q.match(/"([^"]+)"/);
+    return m ? m[1] : null;
+  }
+  function applyFlipMode(questions) {
+    if (!Storage.data.settings.flipMode || _activeSubjectId !== 'french') return questions;
+    const distPool = {};
+    (window.ALL_QUESTIONS || []).forEach(orig => {
+      if (!isFrToEnMcq(orig)) return;
+      const term = extractFrenchTerm(orig);
+      if (!term) return;
+      if (!distPool[orig.topic]) distPool[orig.topic] = [];
+      if (!distPool[orig.topic].includes(term)) distPool[orig.topic].push(term);
+    });
+    const allTerms = Object.values(distPool).flat();
+    return questions.map(q => {
+      if (!isFrToEnMcq(q)) return q;
+      const frTerm = extractFrenchTerm(q);
+      if (!frTerm) return q;
+      const englishMeaning = q.opts[q.ans];
+      const topicTerms = (distPool[q.topic] || []).filter(t => t !== frTerm);
+      const fallbackTerms = allTerms.filter(t => t !== frTerm && !topicTerms.includes(t));
+      const combined = [...topicTerms, ...fallbackTerms];
+      if (combined.length < 3) return q;
+      const distractors = shuffle(combined.slice()).slice(0, 3);
+      const opts = shuffle([frTerm, ...distractors]);
+      return { ...q, q: `How do you say "${englishMeaning}" in French?`, opts, ans: opts.indexOf(frTerm), _flipped: true };
+    });
+  }
   function presentQuestion(q) {
     if (isNumeric(q)) {
       if (typeof q.generate === 'function') {
@@ -1450,7 +1485,7 @@
       showToast(empty[topicId] || 'No questions left — you\'ve marked all as confident!', 'warn');
       return;
     }
-    const picked = shuffle(pool).slice(0, Math.min(PRACTICE_LENGTH, pool.length)).map(presentQuestion);
+    const picked = applyFlipMode(shuffle(pool).slice(0, Math.min(PRACTICE_LENGTH, pool.length)).map(presentQuestion));
     if (picked.length === 0) { goHome(); return; }
     Object.assign(State, {
       screen:'quiz', mode:'practice', selectedTopic:topicId, questions:picked,
@@ -1505,8 +1540,9 @@
       picked.push(presentQuestion(pool[idx].q));
       pool.splice(idx, 1);
     }
+    const smartPicked = applyFlipMode(picked);
     Object.assign(State, {
-      screen:'quiz', mode:'practice', selectedTopic:'smart', questions:picked,
+      screen:'quiz', mode:'practice', selectedTopic:'smart', questions:smartPicked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
       ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
@@ -1534,7 +1570,7 @@
     const tier123Ids = new Set([...tier12Ids, ...tier3.map(q => q.id)]);
     const tier4 = shuffle(allQ.filter(q => !tier123Ids.has(q.id)));
     const pool = [...tier1, ...tier2, ...tier3, ...tier4];
-    const picked = pool.slice(0, PRACTICE_LENGTH).map(presentQuestion);
+    const picked = applyFlipMode(pool.slice(0, PRACTICE_LENGTH).map(presentQuestion));
     if (!picked.length) { showToast('No questions available for your weak topics.', 'warn'); return; }
     Object.assign(State, {
       screen: 'quiz', mode: 'practice', selectedTopic: 'focus',
@@ -1550,7 +1586,7 @@
     const skills = (skillsCsv || '').split(',').map(s => s.trim()).filter(Boolean);
     const pool = (window.ALL_QUESTIONS || []).filter(q => skills.includes(q.skill));
     if (!pool.length) return;
-    const picked = shuffle(pool.slice()).slice(0, Math.min(10, pool.length)).map(presentQuestion);
+    const picked = applyFlipMode(shuffle(pool.slice()).slice(0, Math.min(10, pool.length)).map(presentQuestion));
     Object.assign(State, {
       screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
@@ -2607,6 +2643,10 @@
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
       </div>
+      ${isFrench ? `<div class="sound-row">
+        <span style="cursor:default">🔄 Flip mode <span class="flip-mode-hint">show English, type French</span></span>
+        <label class="toggle-switch"><input type="checkbox" id="flipModeToggle" ${Storage.data.settings.flipMode ? 'checked' : ''} aria-label="English to French flip mode"><span class="toggle-slider" aria-hidden="true"></span></label>
+      </div>` : ''}
       ${levelSection}
       <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
@@ -2951,6 +2991,7 @@
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
+            ${q._flipped ? '<span class="flip-pill">🔄 EN→FR</span>' : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
@@ -4044,6 +4085,8 @@
     bind('dismissSessionBtn', 'click', dismissSession);
     const st = document.getElementById('soundToggle');
     if (st) st.addEventListener('change', () => { Storage.data.settings.soundOn = st.checked; Storage.save(); });
+    const ft = document.getElementById('flipModeToggle');
+    if (ft) ft.addEventListener('change', () => { Storage.data.settings.flipMode = ft.checked; Storage.save(); });
     document.querySelectorAll('[data-opt]').forEach(el => el.addEventListener('click', () => {
       const idx = +el.dataset.opt;
       if (State.mode === 'mock') selectMockOption(idx); else answerPractice(idx);
