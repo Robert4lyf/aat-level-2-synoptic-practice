@@ -663,7 +663,7 @@ header .sub {
   gap: 8px;
 }
 .focus-topic-icon { font-size: .85rem; text-align: center; }
-.focus-topic-name { font-size: .78rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.focus-topic-name { font-size: .78rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .focus-topic-bar-bg {
   height: 6px;
   background: var(--progress-bg);
