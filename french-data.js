@@ -2,12 +2,19 @@
 // Sets three globals: window.FR_TOPICS, window.FR_QUESTIONS, window.FR_LEARN_PATH
 
 window.FR_TOPICS = [
-  { id: 'fr-salut', name: 'Salutations',      short: 'Salutations',    icon: '👋', desc: 'Greetings and polite expressions' },
-  { id: 'fr-vocab', name: 'Vocabulaire',       short: 'Vocabulaire',    icon: '📚', desc: 'Essential nouns and adjectives' },
-  { id: 'fr-gram',  name: 'Grammaire',         short: 'Grammaire',      icon: '✏️', desc: 'French grammar rules and structures' },
-  { id: 'fr-num',   name: 'L\'heure & temps',   short: 'L\'heure',       icon: '🔢', desc: 'Telling the time and expressing time in French' },
-  { id: 'fr-vie',   name: 'Vie quotidienne',   short: 'Vie quotidienne',icon: '🏠', desc: 'Daily life, shopping, transport and directions' },
-  { id: 'fr-conj',  name: 'Conjugaison',       short: 'Conjugaison',    icon: '🔄', desc: 'Verb conjugation practice across all tenses' },
+  { id: 'fr-salut',     name: 'Salutations',             short: 'Salutations',    icon: '👋', desc: 'Greetings and polite expressions' },
+  { id: 'fr-vocab',     name: 'Vocabulaire',              short: 'Vocabulaire',    icon: '📚', desc: 'Essential nouns and adjectives' },
+  { id: 'fr-gram',      name: 'Grammaire',                short: 'Grammaire',      icon: '✏️', desc: 'French grammar rules and structures' },
+  { id: 'fr-num',       name: 'L\'heure & temps',          short: 'L\'heure',       icon: '🕐', desc: 'Telling the time and expressing time in French' },
+  { id: 'fr-vie',       name: 'Vie quotidienne',          short: 'Vie quotidienne',icon: '🏠', desc: 'Daily life, shopping, transport and directions' },
+  { id: 'fr-conj',      name: 'Conjugaison',              short: 'Conjugaison',    icon: '🔄', desc: 'Verb conjugation practice across all tenses' },
+  { id: 'fr-nums',      name: 'Les chiffres',             short: 'Chiffres',       icon: '🔢', desc: 'Numbers 0–100 and ordinals' },
+  { id: 'fr-fam',       name: 'La famille',               short: 'Famille',        icon: '👨‍👩‍👧‍👦', desc: 'Family vocabulary and possessives' },
+  { id: 'fr-food',      name: 'Nourriture & boissons',    short: 'Nourriture',     icon: '🍽️', desc: 'Food, drink and partitive articles' },
+  { id: 'fr-shop',      name: 'Faire les courses',        short: 'Shopping',       icon: '🛍️', desc: 'Shopping phrases, colours and sizes' },
+  { id: 'fr-transport', name: 'Transports & directions',  short: 'Transports',     icon: '🚌', desc: 'Transport vocabulary and giving directions' },
+  { id: 'fr-meteo',     name: 'La météo',                 short: 'Météo',          icon: '☀️', desc: 'Weather expressions and seasons' },
+  { id: 'fr-resto',     name: 'Au restaurant',            short: 'Restaurant',     icon: '🍷', desc: 'Dining out phrases and restaurant vocabulary' },
 ];
 
 window.FR_QUESTIONS = [
@@ -1028,7 +1035,115 @@ window.FR_QUESTIONS = [
   {"id":"fr-374","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"What does the pronoun EN replace?","opts":["à + place","de + noun (especially with quantities or verbs taking de)","le/la (definite direct object)","à + person"],"ans":1,"exp":"EN replaces de + noun: Il parle de son voyage → Il en parle. It also replaces du/de la/des + noun: Tu veux des pommes → Tu en veux ?"},
   {"id":"fr-375","topic":"fr-gram","lesson":"fr-l44","type":"gapfill","q":"She has three cats. → She has three (of them).","template":"Elle a trois chats. → Elle {0} a trois.","gaps":[{"options":["en","y","les","leur"],"answer":0}],"exp":"des/de + noun with a quantity → EN. The number (trois) stays AFTER the verb: elle en a trois. Never omit the number when it was part of the original sentence."},
   {"id":"fr-376","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"Where do Y and EN go in a sentence?","opts":["After the conjugated verb","Before the conjugated verb (or before an infinitive)","At the end of the sentence","After a past participle"],"ans":1,"exp":"Y and EN go before the verb: Je y vais → J'y vais. In a 2-verb group (modal + infinitive), they go before the infinitive: Je vais y aller. Exception: affirmative imperative → after the verb: Vas-y !"},
-  {"id":"fr-377","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"« Vas-y ! » — why does Y come after the verb here?","opts":["Y always follows an imperative","With an affirmative imperative, object pronouns go after the verb with a hyphen","Y is an adverb, not a pronoun","Vas is irregular and requires post-verbal pronouns"],"ans":1,"exp":"With affirmative imperatives, pronouns follow the verb: Vas-y ! (Go there!), Prends-en ! (Take some!). In negative imperatives, the pronoun goes before: N'y vas pas. (Don't go there.)"}
+  {"id":"fr-377","topic":"fr-gram","lesson":"fr-l44","type":"mcq","q":"« Vas-y ! » — why does Y come after the verb here?","opts":["Y always follows an imperative","With an affirmative imperative, object pronouns go after the verb with a hyphen","Y is an adverb, not a pronoun","Vas is irregular and requires post-verbal pronouns"],"ans":1,"exp":"With affirmative imperatives, pronouns follow the verb: Vas-y ! (Go there!), Prends-en ! (Take some!). In negative imperatives, the pronoun goes before: N'y vas pas. (Don't go there.)"},
+
+  // ── THEMATIC VOCABULARY UNITS ────────────────────────────────────────────
+  // fr-l45 — Les chiffres (0–100) — A1
+  {"id":"fr-378","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"What is 'soixante-dix' in digits?","opts":["60","70","76","80"],"ans":1,"exp":"soixante-dix = 60 + 10 = 70. French counts 70–79 as 60 + 10–19: soixante-dix (70), soixante-et-onze (71), soixante-douze (72)…"},
+  {"id":"fr-379","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"How do you say '80' in French?","opts":["huitante","octante","quatre-vingt","quatre-vingts"],"ans":3,"exp":"80 = quatre-vingts (four-twenties). The final -s drops when followed by another number: quatre-vingt-un (81). Belgian and Swiss French use huitante, but standard French uses quatre-vingts."},
+  {"id":"fr-380","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"What is 'quatre-vingt-dix' in digits?","opts":["80","84","90","94"],"ans":2,"exp":"quatre-vingt-dix = 4 × 20 + 10 = 90. The 90s follow: quatre-vingt-onze (91), quatre-vingt-douze (92)… quatre-vingt-dix-neuf (99)."},
+  {"id":"fr-381","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"How do you say '21' in French?","opts":["vingt-un","vingt et un","vingt-et-un","un-vingt"],"ans":1,"exp":"21 = vingt et un (no hyphen around 'et'). Only 21, 31, 41, 51, 61, 71 use 'et un'. All other compounds use a hyphen: vingt-deux, vingt-trois…"},
+  {"id":"fr-382","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"What does 'cinquante' mean?","opts":["15","25","50","55"],"ans":2,"exp":"cinquante = 50. The tens: vingt (20), trente (30), quarante (40), cinquante (50), soixante (60)."},
+  {"id":"fr-383","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"How do you say '17' in French?","opts":["septième","dix-sept","sèze-un","sept-dix"],"ans":1,"exp":"17 = dix-sept (ten-seven). Numbers 13–16 have unique forms: treize, quatorze, quinze, seize. From 17: dix-sept, dix-huit, dix-neuf."},
+  {"id":"fr-384","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"What is the French word for 12?","opts":["dozième","deuze","douze","deux-dix"],"ans":2,"exp":"12 = douze. The numbers 11–16 are all unique: onze (11), douze (12), treize (13), quatorze (14), quinze (15), seize (16)."},
+  {"id":"fr-385","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"How do you say '71' in French?","opts":["soixante-et-onze","soixante-et-un","soixante-onze","septante-un"],"ans":0,"exp":"71 = soixante-et-onze. This follows the 'et un/onze' pattern: 60 + 11. From 72: soixante-douze (without 'et')."},
+  {"id":"fr-386","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"You count: dix, vingt, trente… What comes next?","opts":["quarante","soixante","cinquante-dix","quadrante"],"ans":0,"exp":"The tens: vingt (20), trente (30), quarante (40), cinquante (50), soixante (60), soixante-dix (70), quatre-vingts (80), quatre-vingt-dix (90), cent (100)."},
+  {"id":"fr-387","topic":"fr-nums","lesson":"fr-l45","type":"gapfill","q":"Complete the sequence: quatre-vingts, ___, quatre-vingt-deux","template":"quatre-vingts, {0}, quatre-vingt-deux","gaps":[{"options":["quatre-vingt-un","quatre-vingt-et-un","huitante-un","quatre-vingts-un"],"answer":0}],"exp":"quatre-vingt-un = 81. No 'et' and no final -s on vingt (the -s only appears when quatre-vingts stands alone as 80)."},
+  {"id":"fr-388","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"How do you say '100' in French?","opts":["mille","centième","centi","cent"],"ans":3,"exp":"100 = cent. Two hundreds: deux cents (with -s). But 201 = deux cent un (no -s when followed by another number). 1000 = mille."},
+  {"id":"fr-389","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"What is 'quatre-vingt-cinq' in digits?","opts":["75","84","85","95"],"ans":2,"exp":"quatre-vingt-cinq = 4 × 20 + 5 = 85. No -s on vingt because it is followed by cinq."},
+  {"id":"fr-390","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"How do you say 'first' (1st, masculine) in French?","opts":["un","unième","primaire","premier"],"ans":3,"exp":"1st (masculine) = premier; (feminine) = première. All other ordinals add -ième to the cardinal: deuxième (2nd), troisième (3rd), vingtième (20th)."},
+  {"id":"fr-391","topic":"fr-nums","lesson":"fr-l45","type":"mcq","q":"A price tag reads 'QUARANTE-SEPT euros'. What is the price?","opts":["€37","€40","€47","€74"],"ans":2,"exp":"quarante-sept = 47. Tens 40s: quarante (40), quarante et un (41), quarante-deux (42)… quarante-neuf (49)."},
+  {"id":"fr-392","topic":"fr-nums","lesson":"fr-l45","type":"dragdrop","q":"Match each French number to its value","pairs":[{"left":"onze","right":"11"},{"left":"quinze","right":"15"},{"left":"soixante","right":"60"},{"left":"quatre-vingts","right":"80"}],"exp":"onze=11, quinze=15, soixante=60, quatre-vingts=80. Common pitfalls: onze ≠ douze; soixante ≠ soixante-dix (70); quatre-vingts is NOT huitante in standard French."},
+
+  // fr-l46 — La famille — A1
+  {"id":"fr-393","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"What does 'le père' mean?","opts":["brother","grandfather","son","father"],"ans":3,"exp":"le père = the father. Feminine: la mère (the mother). Together: les parents (the parents). Note: les parents also means 'relatives' in a broader sense."},
+  {"id":"fr-394","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"How do you say 'sister' in French?","opts":["le frère","la fille","la tante","la sœur"],"ans":3,"exp":"la sœur = sister. le frère = brother. Note the ligature œ in sœur — it is always written with this character. Le frère et la sœur = brother and sister."},
+  {"id":"fr-395","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"What is 'la grand-mère'?","opts":["aunt","mother-in-law","godmother","grandmother"],"ans":3,"exp":"la grand-mère = grandmother. le grand-père = grandfather. Together: les grands-parents (grandparents). Note the hyphen in grand-mère/grand-père."},
+  {"id":"fr-396","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"How do you say 'my father' in French?","opts":["ton père","son père","notre père","mon père"],"ans":3,"exp":"mon père = my father. Possessives: mon (my, masc.), ma (my, fem.), mes (my, plural). Use mon before masculine nouns: mon père, mon frère."},
+  {"id":"fr-397","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"What does 'la fille' mean in a family context?","opts":["godmother","aunt","wife","daughter"],"ans":3,"exp":"la fille = daughter (in a family context) OR girl (in general). ma fille = my daughter; une fille = a girl. Masculine: le fils (son) — note the silent -s in le fils."},
+  {"id":"fr-398","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"How do you say 'his/her aunt'?","opts":["ma tante","ta tante","leur tante","sa tante"],"ans":3,"exp":"sa tante = his/her aunt (or son oncle = his/her uncle). French son/sa/ses covers both 'his' and 'her' — the choice depends on the noun's gender, not the possessor's."},
+  {"id":"fr-399","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"You introduce: 'Voici mon mari.' What are you saying?","opts":["This is my brother","This is my father","This is my son","This is my husband"],"ans":3,"exp":"mon mari = my husband. la femme = wife (also means 'woman'). ma femme = my wife. Voici = here is / this is."},
+  {"id":"fr-400","topic":"fr-fam","lesson":"fr-l46","type":"gapfill","q":"The sister of my mother is my ___. — La sœur de ma mère est ma ___.","template":"La sœur de ma mère est ma {0}.","gaps":[{"options":["tante","cousine","nièce","belle-mère"],"answer":0}],"exp":"La sœur de ta mère = ta tante (aunt). Similarly: le frère de ton parent = ton oncle. Their children = tes cousins/cousines."},
+  {"id":"fr-401","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"What does 'les enfants' mean?","opts":["the parents","the grandparents","the babies","the children"],"ans":3,"exp":"les enfants = the children. Singular: l'enfant (child — can be masculine or feminine). un bébé (baby), un garçon (boy), une fille (girl)."},
+  {"id":"fr-402","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"How do you say 'my sister' in French?","opts":["mon sœur","mes sœurs","sa sœur","ma sœur"],"ans":3,"exp":"ma sœur = my sister. Use ma (not mon) because sœur is feminine. Exception: use mon before any feminine noun starting with a vowel/mute h: mon amie."},
+  {"id":"fr-403","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"Marie says: 'J'ai deux frères et une sœur.' What does she mean?","opts":["She has two sisters and a brother","She has two cousins and a sister","She has two parents and a sibling","She has two brothers and a sister"],"ans":3,"exp":"j'ai = I have; deux frères = two brothers; une sœur = a sister. So: I have two brothers and a sister."},
+  {"id":"fr-404","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"What does 'les beaux-parents' mean?","opts":["good parents","stepparents","grandparents","in-laws"],"ans":3,"exp":"les beaux-parents = in-laws (parents-in-law). le beau-père = father-in-law or stepfather; la belle-mère = mother-in-law or stepmother. Context usually clarifies which meaning is intended."},
+  {"id":"fr-405","topic":"fr-fam","lesson":"fr-l46","type":"dragdrop","q":"Match each French family word to its English meaning","pairs":[{"left":"le mari","right":"husband"},{"left":"la femme","right":"wife"},{"left":"le fils","right":"son"},{"left":"la nièce","right":"niece"}],"exp":"le mari=husband, la femme=wife (also 'woman'), le fils=son (the -s is silent!), la nièce=niece. Note la femme has a double meaning."},
+  {"id":"fr-406","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"How do you say 'our children' in French?","opts":["leur enfants","vos enfants","leurs enfants","nos enfants"],"ans":3,"exp":"nos enfants = our children. Possessives: notre (our, singular noun), nos (our, plural noun). notre fils / notre fille → nos enfants."},
+  {"id":"fr-407","topic":"fr-fam","lesson":"fr-l46","type":"mcq","q":"What is the French word for 'cousin' (female)?","opts":["la niece","la sœur","la cousine","la fille"],"ans":2,"exp":"la cousine = female cousin. le cousin = male cousin. In French, gender matters — unlike English where 'cousin' covers both."},
+
+  // fr-l47 — La nourriture et les boissons — A1
+  {"id":"fr-408","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"What does 'le pain' mean?","opts":["meat","fish","cake","bread"],"ans":3,"exp":"le pain = bread. An essential French food! Un pain = a loaf; une baguette = the long thin bread. La France is famous for its bread culture."},
+  {"id":"fr-409","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"How do you say 'I would like some cheese'?","opts":["Je veux du fromage","Je mange du fromage","J'ai du fromage","Je voudrais du fromage"],"ans":3,"exp":"Je voudrais du fromage = I would like some cheese. Je voudrais is the conditional of vouloir — polite request. du = partitive article (some) before masculine nouns."},
+  {"id":"fr-410","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"What are 'les légumes'?","opts":["fruits","drinks","meals","vegetables"],"ans":3,"exp":"les légumes = vegetables. les fruits = fruits. les fruits de mer = seafood (literally 'sea fruits')."},
+  {"id":"fr-411","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"Which partitive article goes with 'eau' (water)?","opts":["du","de la","des","de l'"],"ans":3,"exp":"de l'eau = some water. Use de l' before nouns starting with a vowel or mute h. du (masc.), de la (fem.), de l' (vowel/h), des (plural)."},
+  {"id":"fr-412","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"How do you say 'I don't like fish'?","opts":["J'aime pas le poisson","Je n'aime le poisson pas","Je n'aime pas du poisson","Je n'aime pas le poisson"],"ans":3,"exp":"Je n'aime pas le poisson = I don't like fish. After aimer/adorer/détester expressing general taste, use the definite article le/la/les — not the partitive. Ne...pas wraps the verb."},
+  {"id":"fr-413","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"What does 'le poulet' mean?","opts":["pork","beef","lamb","chicken"],"ans":3,"exp":"le poulet = chicken. Other meats: le bœuf (beef), le porc (pork), l'agneau (lamb), le veau (veal)."},
+  {"id":"fr-414","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"How do you say 'a cup of coffee'?","opts":["un verre de café","une bouteille de café","un bol de café","une tasse de café"],"ans":3,"exp":"une tasse de café = a cup of coffee. une tasse = cup; un verre = glass; un bol = bowl; une bouteille = bottle."},
+  {"id":"fr-415","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"What does 'du lait' mean?","opts":["some juice","some water","some tea","some milk"],"ans":3,"exp":"du lait = some milk. du = de + le (partitive, masculine). le lait = milk; le jus = juice; l'eau = water; le thé = tea."},
+  {"id":"fr-416","topic":"fr-food","lesson":"fr-l47","type":"gapfill","q":"I like wine but I prefer beer. — J'aime le vin mais je préfère ___.","template":"J'aime le vin mais je préfère {0}.","gaps":[{"options":["la bière","du bière","le bière","une bière"],"answer":0}],"exp":"la bière = beer (definite article for general preference). After préférer/aimer/adorer, use le/la/les for general statements — not the partitive."},
+  {"id":"fr-417","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"Which of these is a vegetable in French?","opts":["la pomme","le raisin","la poire","la carotte"],"ans":3,"exp":"la carotte = carrot (a vegetable). la pomme = apple, le raisin = grape, la poire = pear — all fruits."},
+  {"id":"fr-418","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"How do you say 'I am hungry'?","opts":["Je suis faim","J'ai chaud","Je mange faim","J'ai faim"],"ans":3,"exp":"J'ai faim = I am hungry (lit. 'I have hunger'). French uses avoir for physical states: J'ai soif (thirsty), J'ai chaud (hot), J'ai froid (cold)."},
+  {"id":"fr-419","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"'Il y a des fruits sur la table.' — What does this mean?","opts":["There are vegetables on the table","There is fruit in the kitchen","I like the fruit on the table","There are fruits on the table"],"ans":3,"exp":"Il y a = there is / there are. des fruits = some fruits (indefinite plural). sur la table = on the table."},
+  {"id":"fr-420","topic":"fr-food","lesson":"fr-l47","type":"dragdrop","q":"Match each food to its French translation","pairs":[{"left":"bread","right":"le pain"},{"left":"cheese","right":"le fromage"},{"left":"fish","right":"le poisson"},{"left":"egg","right":"l'œuf"}],"exp":"le pain (bread), le fromage (cheese), le poisson (fish), l'œuf (egg). Note the ligature in l'œuf — plural les œufs is pronounced 'les zeu' (the -fs is silent in plural)."},
+  {"id":"fr-421","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"'Je voudrais de la soupe, s'il vous plaît.' — What is being ordered?","opts":["salad","sauce","dessert","soup"],"ans":3,"exp":"de la soupe = some soup. de la is the feminine partitive article. s'il vous plaît = please (formal). Je voudrais = I would like (polite conditional)."},
+  {"id":"fr-422","topic":"fr-food","lesson":"fr-l47","type":"mcq","q":"What does 'le petit-déjeuner' mean?","opts":["lunch","dinner","snack","breakfast"],"ans":3,"exp":"le petit-déjeuner = breakfast (lit. 'the small lunch'). le déjeuner = lunch; le dîner = dinner; le goûter = afternoon snack (especially for children)."},
+
+  // fr-l48 — Faire les courses (Shopping) — A2
+  {"id":"fr-423","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"How do you ask 'How much does it cost?'","opts":["Combien il coûte ?","Quel est le prix ?","Comment le prix ?","C'est combien ? / Ça coûte combien ?"],"ans":3,"exp":"C'est combien ? or Ça coûte combien ? = How much is it? You can also say Combien coûte-t-il ? (formal). All are correct and commonly heard in French shops."},
+  {"id":"fr-424","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"You say 'Je cherche une veste bleue.' What are you looking for?","opts":["a black jacket","a blue dress","a blue skirt","a blue jacket"],"ans":3,"exp":"je cherche = I'm looking for; une veste = a jacket; bleue = blue (feminine — agrees with veste which is feminine)."},
+  {"id":"fr-425","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"How do you say 'It's too expensive'?","opts":["C'est trop bon","C'est très cher","C'est assez cher","C'est trop cher"],"ans":3,"exp":"C'est trop cher = It's too expensive. trop = too (much); très = very; assez = quite/enough. C'est très cher = It's very expensive but not necessarily too expensive."},
+  {"id":"fr-426","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"A shop assistant asks 'Vous faites quelle taille ?' — What are they asking?","opts":["What colour do you want?","How much do you want to spend?","What are you looking for?","What size do you take?"],"ans":3,"exp":"Quelle taille ? = What size? la taille = clothing size; la pointure = shoe size. Vous faites quelle taille ? = What size do you wear?"},
+  {"id":"fr-427","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"How do you say 'I'll take it' when buying something?","opts":["Je veux ça","C'est pour moi","Je voudrais ça","Je le prends"],"ans":3,"exp":"Je le prends = I'll take it (lit. 'I take it'). This is the standard phrase when deciding to buy. je le prends (masc.) / je la prends (fem.) — depends on the item's gender."},
+  {"id":"fr-428","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"What does 'les soldes' mean?","opts":["the receipts","the shelves","the prices","the sales"],"ans":3,"exp":"les soldes = the sales (seasonal discounts). en soldes = on sale. In France, Les Soldes are legally regulated biannual events in January and July."},
+  {"id":"fr-429","topic":"fr-shop","lesson":"fr-l48","type":"gapfill","q":"Do you have this in red? — Vous avez ça en ___ ?","template":"Vous avez ça en {0} ?","gaps":[{"options":["rouge","roux","rosé","rouge-et-blanc"],"answer":0}],"exp":"rouge = red (invariable — same form for masculine and feminine nouns). Common colours: rouge (red), bleu/e (blue), vert/e (green), noir/e (black), blanc/blanche (white)."},
+  {"id":"fr-430","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"'Ça fait vingt euros.' — What does the cashier mean?","opts":["It's very expensive","It's twenty percent off","It comes to forty euros","It comes to twenty euros"],"ans":3,"exp":"Ça fait vingt euros = It comes to / That's twenty euros. Ça fait + price is the standard cashier phrase for the total amount."},
+  {"id":"fr-431","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"How do you ask for a smaller size?","opts":["Vous avez ça en plus grand ?","Vous avez ça en autre couleur ?","Vous avez ça en solde ?","Vous avez ça en plus petit ?"],"ans":3,"exp":"en plus petit = in a smaller size. en plus grand = in a bigger size. These comparative expressions are used in clothes shops."},
+  {"id":"fr-432","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"What is 'le marché' ?","opts":["the supermarket","the shop","the mall","the market"],"ans":3,"exp":"le marché = the market (outdoor or covered). le supermarché = supermarket; le magasin = shop/store; le centre commercial = shopping centre/mall."},
+  {"id":"fr-433","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"Which phrase means 'I'm just browsing'?","opts":["Je cherche quelque chose","Je veux acheter","J'ai besoin d'aide","Je regarde, merci"],"ans":3,"exp":"Je regarde, merci = I'm just looking, thanks. The polite way to decline a shop assistant's offer of help when you don't want it."},
+  {"id":"fr-434","topic":"fr-shop","lesson":"fr-l48","type":"mcq","q":"You see 'CAISSE' at the end of an aisle. What does it mean?","opts":["Exit","Changing rooms","Information","Till / Checkout"],"ans":3,"exp":"la caisse = the till / checkout. Other useful signs: CABINES D'ESSAYAGE = changing rooms; SORTIE = exit; ACCUEIL = reception."},
+
+  // fr-l49 — Les transports et les directions — A2
+  {"id":"fr-435","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"How do you say 'by train' in French?","opts":["à train","par train","avec train","en train"],"ans":3,"exp":"en train = by train. Use 'en' for enclosed transport: en voiture (by car), en bus, en avion, en métro. Use 'à' for non-enclosed: à vélo (by bike), à pied (on foot)."},
+  {"id":"fr-436","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"What does 'Tournez à gauche' mean?","opts":["Go straight ahead","Turn right","Turn around","Turn left"],"ans":3,"exp":"Tournez à gauche = Turn left. Tournez à droite = turn right. Allez tout droit = go straight ahead. These are the core direction commands."},
+  {"id":"fr-437","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"How do you ask 'Where is the train station?'","opts":["Où est le train ?","Où va la gare ?","Comment est la gare ?","Où est la gare ?"],"ans":3,"exp":"Où est la gare ? = Where is the train station? la gare = train station; l'aéroport = airport; l'arrêt de bus = bus stop; la station de métro = metro station."},
+  {"id":"fr-438","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"'Prenez la deuxième rue à droite.' — What should you do?","opts":["Take the first street on the left","Go straight for two streets","Turn at the traffic lights","Take the second street on the right"],"ans":3,"exp":"Prenez la deuxième rue à droite = Take the second street on the right. Ordinals: première (1st), deuxième (2nd), troisième (3rd) — essential for giving directions."},
+  {"id":"fr-439","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"What does 'C'est loin d'ici ?' mean?","opts":["How do I get there?","Is it on the left?","Where is the nearest bus stop?","Is it far from here?"],"ans":3,"exp":"C'est loin d'ici ? = Is it far from here? loin de = far from; près de = near; d'ici = from here. C'est près d'ici = It's nearby."},
+  {"id":"fr-440","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"How do you say 'on foot' in French?","opts":["en pied","au pied","par pied","à pied"],"ans":3,"exp":"à pied = on foot. Contrast with enclosed transport using en: en bus, en voiture. à pied (foot), à vélo (bicycle), à moto (motorbike)."},
+  {"id":"fr-441","topic":"fr-transport","lesson":"fr-l49","type":"gapfill","q":"Go straight ahead, then turn right. — Allez ___, puis tournez à droite.","template":"Allez {0}, puis tournez à droite.","gaps":[{"options":["tout droit","très droit","tout droite","tout à droite"],"answer":0}],"exp":"tout droit = straight ahead. tout = entirely; droit = straight. Note: la droite (f.) = the right side, but tout droit = straight (invariable fixed phrase)."},
+  {"id":"fr-442","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"What is 'le carrefour'?","opts":["the roundabout","the bridge","the traffic light","the crossroads / intersection"],"ans":3,"exp":"le carrefour = crossroads / intersection. le rond-point = roundabout; le pont = bridge; le feu rouge = traffic light; le passage piéton = pedestrian crossing."},
+  {"id":"fr-443","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"'Traversez le pont, puis continuez tout droit.' — What should you do?","opts":["Turn at the bridge, then go left","Cross the road at the lights, then turn right","Go under the bridge and continue","Cross the bridge, then continue straight ahead"],"ans":3,"exp":"Traversez = cross (verb traverser); le pont = the bridge; continuez = continue; tout droit = straight ahead."},
+  {"id":"fr-444","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"Which transport word uses 'à' rather than 'en'?","opts":["l'avion","le bus","la voiture","le vélo"],"ans":3,"exp":"à vélo = by bicycle. Rule: non-enclosed personal transport uses 'à': à vélo, à moto, à pied, à cheval. Enclosed vehicles use 'en': en voiture, en bus, en avion."},
+  {"id":"fr-445","topic":"fr-transport","lesson":"fr-l49","type":"mcq","q":"How do you say 'The bus stop is on the left'?","opts":["La gare est à gauche","Le bus est sur la gauche","L'arrêt de bus est à droite","L'arrêt de bus est à gauche"],"ans":3,"exp":"L'arrêt de bus est à gauche = The bus stop is on the left. l'arrêt de bus = bus stop; à gauche = on the left; à droite = on the right."},
+  {"id":"fr-446","topic":"fr-transport","lesson":"fr-l49","type":"dragdrop","q":"Match each transport word to its English meaning","pairs":[{"left":"la voiture","right":"car"},{"left":"le métro","right":"underground/subway"},{"left":"l'avion","right":"aeroplane"},{"left":"le vélo","right":"bicycle"}],"exp":"la voiture (car), le métro (underground), l'avion (aeroplane — note the elision l'), le vélo (bicycle)."},
+
+  // fr-l50 — La météo — A1
+  {"id":"fr-447","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"How do you say 'It's nice weather'?","opts":["Il est beau","Il y a beau","C'est beau temps","Il fait beau"],"ans":3,"exp":"Il fait beau = It's nice weather. The construction 'il fait + adjective' is used for weather: il fait beau (nice), il fait mauvais (bad), il fait chaud (hot), il fait froid (cold)."},
+  {"id":"fr-448","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"How do you say 'It's raining'?","opts":["Il fait pluie","Il tombe la pluie","Il est pluvieux","Il pleut"],"ans":3,"exp":"Il pleut = It's raining. This is an impersonal verb — only ever used with il. Similarly: il neige (it's snowing), il gèle (it's freezing), il grêle (it's hailing)."},
+  {"id":"fr-449","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"What does 'il y a du vent' mean?","opts":["it's sunny","it's snowing","it's foggy","it's windy"],"ans":3,"exp":"il y a du vent = it's windy (lit. 'there is some wind'). Use 'il y a du/de la' for weather as nouns: du vent (wind), du soleil (sunshine), du brouillard (fog), des nuages (clouds)."},
+  {"id":"fr-450","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"'Quel temps fait-il aujourd'hui ?' — What does this ask?","opts":["What time is it today?","What's the temperature today?","What season is it?","What's the weather like today?"],"ans":3,"exp":"Quel temps fait-il ? = What's the weather like? le temps = weather (also 'time' as duration). aujourd'hui = today. Il fait quel temps ? is a less formal alternative."},
+  {"id":"fr-451","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"What is the French word for 'spring'?","opts":["l'été","l'automne","l'hiver","le printemps"],"ans":3,"exp":"le printemps = spring. les saisons: le printemps (spring), l'été (summer), l'automne (autumn), l'hiver (winter). Note: au printemps BUT en été / en automne / en hiver."},
+  {"id":"fr-452","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"How do you say 'in summer'?","opts":["au printemps","au été","en hiver","en été"],"ans":3,"exp":"en été = in summer. All seasons except printemps use en: en été, en automne, en hiver. Spring is the exception: au printemps (because printemps starts with a consonant cluster)."},
+  {"id":"fr-453","topic":"fr-meteo","lesson":"fr-l50","type":"gapfill","q":"It's cold and it's snowing. — Il fait froid et il ___.","template":"Il fait froid et il {0}.","gaps":[{"options":["neige","neigeait","neigera","neigeux"],"answer":0}],"exp":"il neige = it's snowing. Impersonal weather verbs: il pleut (raining), il neige (snowing), il gèle (freezing). They only conjugate in the 3rd person singular."},
+  {"id":"fr-454","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"Which phrase means 'it's foggy'?","opts":["Il fait froid","Il pleut","Il y a du vent","Il y a du brouillard"],"ans":3,"exp":"il y a du brouillard = it's foggy. brouillard = fog. Il y a du/de la for weather nouns: du brouillard (fog), du soleil (sun), du vent (wind), des nuages (clouds)."},
+  {"id":"fr-455","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"'Il fait 30 degrés.' — What does this mean?","opts":["It's freezing at -30°C","It's raining heavily","There are 30 clouds","It's 30 degrees (hot)"],"ans":3,"exp":"Il fait 30 degrés = It's 30 degrees. Il fait + temperature is the standard construction. Il fait moins 5 = It's minus 5."},
+  {"id":"fr-456","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"What season do the French associate with 'les vendanges' (grape harvest)?","opts":["le printemps","l'été","l'hiver","l'automne"],"ans":3,"exp":"Les vendanges (grape harvest) take place in l'automne (autumn), typically September–October. France's wine regions are particularly associated with this season."},
+  {"id":"fr-457","topic":"fr-meteo","lesson":"fr-l50","type":"dragdrop","q":"Match each weather expression to its meaning","pairs":[{"left":"il fait beau","right":"it's nice"},{"left":"il pleut","right":"it's raining"},{"left":"il neige","right":"it's snowing"},{"left":"il y a du soleil","right":"it's sunny"}],"exp":"il fait beau (nice weather), il pleut (raining — verb pleuvoir), il neige (snowing — verb neiger), il y a du soleil (sunny — 'there is some sun')."},
+  {"id":"fr-458","topic":"fr-meteo","lesson":"fr-l50","type":"mcq","q":"'Il fait un temps de chien.' — What does this idiom mean?","opts":["It's a beautiful day","The weather is perfect for a walk","It's raining cats and dogs","The weather is terrible"],"ans":3,"exp":"Il fait un temps de chien = The weather is terrible (lit. 'dog weather'). A common French idiom for really bad weather. Similar to English 'it's miserable outside'."},
+
+  // fr-l51 — Au restaurant — A2
+  {"id":"fr-459","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"How do you ask for a table for two?","opts":["Deux personnes, s'il vous plaît","Je voudrais deux tables","Nous voulons une place","Une table pour deux personnes, s'il vous plaît"],"ans":3,"exp":"Une table pour deux personnes, s'il vous plaît = A table for two, please. The standard phrase on entering a restaurant. You can also say: Pour deux, s'il vous plaît."},
+  {"id":"fr-460","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"What is the difference between 'la carte' and 'le menu' in a French restaurant?","opts":["They mean the same thing","La carte is the drinks list; le menu is the food list","Le menu is cheaper; la carte is more expensive","La carte is the full à la carte menu; le menu is a fixed-price set meal"],"ans":3,"exp":"la carte = the à la carte menu (choose individual dishes at listed prices). le menu = a fixed-price set meal. Je prends le menu à 15 euros = I'll have the set menu at €15."},
+  {"id":"fr-461","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"How do you ask for the bill?","opts":["Je voudrais partir","Le prix, s'il vous plaît","Combien, merci","L'addition, s'il vous plaît"],"ans":3,"exp":"L'addition, s'il vous plaît = The bill, please. l'addition = the bill (restaurant). la facture = invoice (business context). You can also gesture to the waiter while saying this."},
+  {"id":"fr-462","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"'Je voudrais commander.' — What does this mean?","opts":["I would like the bill","I would like to leave","I would like a table","I would like to order"],"ans":3,"exp":"Je voudrais commander = I would like to order. commander = to order (food/drink). Je suis prêt(e) à commander = I'm ready to order."},
+  {"id":"fr-463","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"A French menu lists: l'entrée, le plat principal, le dessert. What is 'le plat principal'?","opts":["the starter","the dessert","the side dish","the main course"],"ans":3,"exp":"le plat principal = the main course. l'entrée = the starter (caution: in French, entrée means starter — the opposite of American English where 'entrée' means main course!)."},
+  {"id":"fr-464","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"'Est-ce que le service est compris ?' — What is being asked?","opts":["Is the set menu included?","Is the restaurant busy?","Is the waiter available?","Is service/tip included?"],"ans":3,"exp":"Est-ce que le service est compris ? = Is service included? In France, service (15%) is included in the bill by law. A pourboire (tip) is optional on top. compris = included."},
+  {"id":"fr-465","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"How do you say 'It's delicious!'?","opts":["C'est parfait !","C'est trop salé !","C'est bon marché !","C'est délicieux !"],"ans":3,"exp":"C'est délicieux ! = It's delicious! Other food comments: C'est bon (good), C'est parfait (perfect), C'est trop salé (too salty), C'est trop sucré (too sweet)."},
+  {"id":"fr-466","topic":"fr-resto","lesson":"fr-l51","type":"gapfill","q":"The waiter asks: 'Vous avez ___ ?' (Are you ready to order?)","template":"Vous avez {0} ?","gaps":[{"options":["choisi","commandé","payé","fini"],"answer":0}],"exp":"Vous avez choisi ? = Have you chosen / Are you ready to order? choisir → choisi (past participle). This is the most common waiter phrase to check if you're ready to order."},
+  {"id":"fr-467","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"What does 'le pourboire' mean?","opts":["the starter","the bill","the set menu","the tip"],"ans":3,"exp":"le pourboire = the tip (gratuity). Etymology: pour = for, boire = to drink (historically you'd tip someone 'for a drink'). In France, service is included in prices by law, but tips are appreciated."},
+  {"id":"fr-468","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"'Je suis allergique aux noix.' — What should the waiter know?","opts":["The customer doesn't like nuts","The customer wants nuts in their dish","The customer is vegetarian","The customer is allergic to nuts"],"ans":3,"exp":"Je suis allergique aux noix = I am allergic to nuts. allergique à = allergic to; les noix = nuts. Important for safety — always communicate allergies clearly."},
+  {"id":"fr-469","topic":"fr-resto","lesson":"fr-l51","type":"mcq","q":"Which phrase means 'I'm a vegetarian'?","opts":["Je n'aime pas la viande","Je préfère les légumes","Je mange sain","Je suis végétarien/végétarienne"],"ans":3,"exp":"Je suis végétarien (m.) / végétarienne (f.) = I am a vegetarian. Je suis végétalien/e = vegan. Je suis sans gluten = gluten-free. Essential dietary phrases for eating out."},
+  {"id":"fr-470","topic":"fr-resto","lesson":"fr-l51","type":"dragdrop","q":"Match each restaurant phrase to its meaning","pairs":[{"left":"l'addition","right":"the bill"},{"left":"le serveur","right":"the waiter"},{"left":"commander","right":"to order"},{"left":"l'entrée","right":"the starter"}],"exp":"l'addition (bill), le serveur/la serveuse (waiter/waitress), commander (to order), l'entrée (starter — not main course as in American English!)."}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -3927,6 +4042,232 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "The story says « son amie Lucie » = her friend Lucie."
           }
         ]
+      },
+      {
+        "id": "fr-l45",
+        "title": "Les chiffres (1–100)",
+        "icon": "🔢",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Numbers 0–19",
+            "body": "<p>Each number 0–19 has a unique name to memorise:</p><table><tr><th>0–9</th><th>10–19</th></tr><tr><td>0 zéro · 1 un · 2 deux · 3 trois · 4 quatre · 5 cinq · 6 six · 7 sept · 8 huit · 9 neuf</td><td>10 dix · 11 onze · 12 douze · 13 treize · 14 quatorze · 15 quinze · 16 seize · 17 dix-sept · 18 dix-huit · 19 dix-neuf</td></tr></table><p>Note: 17–19 combine dix + sept/huit/neuf.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Tens: 20–60",
+            "body": "<p>The tens 20–60 are regular and must be learnt:</p><ul><li>20 = vingt · 30 = trente · 40 = quarante · 50 = cinquante · 60 = soixante</li></ul><p>Compound numbers use a hyphen: 22 = vingt-deux, 35 = trente-cinq.<br><strong>Exception:</strong> numbers ending in 1 use 'et': 21 = vingt <em>et</em> un, 31 = trente <em>et</em> un, 51 = cinquante <em>et</em> un.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Special cases: 70, 80, 90",
+            "body": "<p>French has no unique words for 70, 80, or 90 — they use arithmetic!</p><ul><li><strong>70</strong> = soixante-dix (60+10) · 71 = soixante-et-onze · 72 = soixante-douze…</li><li><strong>80</strong> = quatre-vingts (4×20) — note the 's' when it stands alone</li><li><strong>81</strong> = quatre-vingt-un — the 's' drops before any unit digit</li><li><strong>90</strong> = quatre-vingt-dix (4×20+10) · 99 = quatre-vingt-dix-neuf</li></ul><p><strong>Memory tip:</strong> Belgium/Switzerland use septante, huitante, nonante — simpler but not standard French!</p>"
+          },
+          {
+            "type": "info",
+            "title": "Ordinal numbers",
+            "body": "<p>Ordinals indicate position (1st, 2nd, 3rd…):</p><ul><li>1st = <strong>premier</strong> (m.) / <strong>première</strong> (f.) — irregular!</li><li>2nd = deuxième · 3rd = troisième · 4th = quatrième · 5th = cinquième</li></ul><p><strong>Rule:</strong> add <strong>-ième</strong> to the cardinal (drop a final 'e' first: quatre → quatrième).<br>Ordinals are used for floors (au deuxième étage), rankings, and dates (le premier janvier).</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you say 75 in French?",
+            "opts": ["soixante-cinq", "soixante-quinze", "quatre-vingt-cinq", "soixante-dix-cinq"],
+            "ans": 1,
+            "exp": "75 = soixante-quinze (60+15). French builds on 60 for 61–79. Quinze = 15, so 75 = soixante-quinze."
+          },
+          {
+            "q": "What is 'quatre-vingt-dix' in digits?",
+            "opts": ["80", "88", "90", "94"],
+            "ans": 2,
+            "exp": "quatre-vingt-dix = 4×20+10 = 90. French builds the 90s from 80+10 through 80+19."
+          },
+          {
+            "q": "Which is correct for 81 in French?",
+            "opts": ["quatre-vingts-un", "quatre-vingt-un", "quatre-vingt et un", "huitante-un"],
+            "ans": 1,
+            "exp": "81 = quatre-vingt-un. The 's' of quatre-vingts drops when any digit follows. Only 80 alone keeps the 's'."
+          },
+          {
+            "q": "What is the feminine form of the ordinal 'first' in French?",
+            "opts": ["première", "premier", "premièrement", "unième"],
+            "ans": 0,
+            "exp": "'Première' is the feminine form of 'premier' (first). All other ordinals (deuxième, troisième…) have the same form for both genders."
+          },
+          {
+            "q": "How do you say 'on the third floor' in French?",
+            "opts": ["au trois étage", "au troisième étage", "dans le troisième étage", "le troisième étage"],
+            "ans": 1,
+            "exp": "'Au troisième étage' = on the third floor. Use 'au' (à + le) with étage, and the ordinal 'troisième' for 3rd."
+          }
+        ]
+      },
+      {
+        "id": "fr-l46",
+        "title": "La famille",
+        "icon": "👨‍👩‍👧‍👦",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Core family vocabulary",
+            "body": "<p>Essential French family words:</p><table><tr><th>French</th><th>English</th><th>French</th><th>English</th></tr><tr><td>le père</td><td>father</td><td>la mère</td><td>mother</td></tr><tr><td>le frère</td><td>brother</td><td>la sœur</td><td>sister</td></tr><tr><td>le fils</td><td>son</td><td>la fille</td><td>daughter</td></tr><tr><td>le mari</td><td>husband</td><td>la femme</td><td>wife</td></tr><tr><td>l'enfant</td><td>child</td><td>le bébé</td><td>baby</td></tr></table><p><strong>Note:</strong> 'La fille' = daughter or girl; 'la femme' = wife or woman — context is key! The 's' in 'le fils' is silent.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Extended family",
+            "body": "<p>More family vocabulary:</p><table><tr><th>French</th><th>English</th></tr><tr><td>le grand-père</td><td>grandfather</td></tr><tr><td>la grand-mère</td><td>grandmother</td></tr><tr><td>l'oncle</td><td>uncle</td></tr><tr><td>la tante</td><td>aunt</td></tr><tr><td>le cousin</td><td>male cousin</td></tr><tr><td>la cousine</td><td>female cousin</td></tr></table><p><strong>Tip:</strong> Les grands-parents = grandparents. Les parents = parents (or relatives in a broader sense).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Possessives: mon/ma/mes",
+            "body": "<p>French possessives agree with the <strong>noun</strong>, not the owner:</p><table><tr><th></th><th>Masc. sing.</th><th>Fem. sing.</th><th>Plural</th></tr><tr><td><strong>my</strong></td><td>mon</td><td>ma</td><td>mes</td></tr><tr><td><strong>your</strong> (tu)</td><td>ton</td><td>ta</td><td>tes</td></tr><tr><td><strong>his/her</strong></td><td>son</td><td>sa</td><td>ses</td></tr></table><p><strong>Special rule:</strong> Before any vowel-starting noun, use the masculine form: <em>mon amie</em> (not ma amie) to avoid a vowel clash.<br>Examples: mon père, ma mère, mes parents, son frère, sa sœur.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you say 'my aunt' in French?",
+            "opts": ["mon tante", "ma tante", "mes tantes", "sa tante"],
+            "ans": 1,
+            "exp": "'Ma tante' = my aunt. 'Tante' is feminine singular, so use 'ma'. Remember: possessive agrees with the noun, not the owner."
+          },
+          {
+            "q": "What does 'son fils' mean?",
+            "opts": ["her sister", "his/her son", "his father", "their child"],
+            "ans": 1,
+            "exp": "'Son fils' = his son OR her son. 'Fils' is masculine, so 'son' is used regardless of whether the owner is male or female."
+          },
+          {
+            "q": "How do you say 'my uncle' in French? (Note: oncle starts with a vowel)",
+            "opts": ["ma oncle", "mes oncle", "mon oncle", "ton oncle"],
+            "ans": 2,
+            "exp": "'Mon oncle' = my uncle. Before any vowel-starting noun, use 'mon/ton/son' — even for feminine nouns — to avoid a vowel clash."
+          },
+          {
+            "q": "What is the French word for 'grandmother'?",
+            "opts": ["la grand-sœur", "la grand-mère", "la grande-mère", "la mère-grand"],
+            "ans": 1,
+            "exp": "'La grand-mère' = grandmother. Note the hyphen. Grand-père = grandfather. Together: les grands-parents = grandparents."
+          },
+          {
+            "q": "Which sentence means 'She has two brothers'?",
+            "opts": ["Elle a deux sœurs", "Il a deux frères", "Elle a deux frères", "Mes frères sont deux"],
+            "ans": 2,
+            "exp": "'Elle a deux frères' = She has two brothers. 'Elle' = she, 'a' = has (avoir), 'deux' = two, 'frères' = brothers (plural)."
+          }
+        ]
+      },
+      {
+        "id": "fr-l47",
+        "title": "La nourriture et les boissons",
+        "icon": "🍽️",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Food vocabulary",
+            "body": "<p>Essential French food words with gender:</p><table><tr><th>French</th><th>English</th><th>Gender</th></tr><tr><td>le pain</td><td>bread</td><td>masc.</td></tr><tr><td>le fromage</td><td>cheese</td><td>masc.</td></tr><tr><td>la viande</td><td>meat</td><td>fem.</td></tr><tr><td>le poisson</td><td>fish</td><td>masc.</td></tr><tr><td>les légumes</td><td>vegetables</td><td>masc. pl.</td></tr><tr><td>les fruits</td><td>fruit</td><td>masc. pl.</td></tr><tr><td>le poulet</td><td>chicken</td><td>masc.</td></tr><tr><td>l'œuf</td><td>egg</td><td>masc.</td></tr></table>"
+          },
+          {
+            "type": "info",
+            "title": "Drinks vocabulary",
+            "body": "<p>Essential French drink words:</p><table><tr><th>French</th><th>English</th></tr><tr><td>le café</td><td>coffee</td></tr><tr><td>le thé</td><td>tea</td></tr><tr><td>l'eau (f)</td><td>water</td></tr><tr><td>le jus</td><td>juice</td></tr><tr><td>le lait</td><td>milk</td></tr><tr><td>le vin</td><td>wine</td></tr><tr><td>la bière</td><td>beer</td></tr></table><p>Note: l'eau is feminine — <em>de l'eau</em>. All others are masculine — <em>du café, du lait, du vin.</em></p>"
+          },
+          {
+            "type": "info",
+            "title": "Partitive articles: du / de la / de l' / des",
+            "body": "<p>To say 'some' (unspecified quantity), use partitive articles:</p><table><tr><th>Type</th><th>Article</th><th>Example</th></tr><tr><td>Masc. singular</td><td>du</td><td>du pain (some bread)</td></tr><tr><td>Fem. singular</td><td>de la</td><td>de la viande (some meat)</td></tr><tr><td>Before vowel/h</td><td>de l'</td><td>de l'eau (some water)</td></tr><tr><td>Plural</td><td>des</td><td>des légumes (some vegetables)</td></tr></table><p><strong>After negation</strong>, all partitives become <em>de</em> (or <em>d'</em>): Je n'ai pas <em>de</em> pain. Je ne veux pas <em>d'</em>eau.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Expressing preferences and ordering",
+            "body": "<p>Key difference between expressing preference and ordering:</p><ul><li><strong>J'aime le/la/les…</strong> = I like… (general preference — use definite article)</li><li><strong>Je n'aime pas le/la/les…</strong> = I don't like… (still definite article for general preferences)</li><li><strong>Je voudrais du/de la/de l'/des…</strong> = I would like some… (ordering — use partitive)</li><li><strong>Il y a du/de la/de l'/des…</strong> = There is/are some… (existence — use partitive)</li></ul><p>'J'aime le poisson' (I like fish in general) vs 'Je voudrais du poisson' (I'd like some fish now).</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "Which partitive article goes with 'eau' (water)?",
+            "opts": ["du", "de la", "de l'", "des"],
+            "ans": 2,
+            "exp": "'De l'eau' — eau is feminine and starts with a vowel, so 'de la' contracts to 'de l''. Always elide before a vowel sound."
+          },
+          {
+            "q": "How do you say 'I like cheese' (general preference)?",
+            "opts": ["Je voudrais du fromage", "J'aime du fromage", "J'aime le fromage", "Il y a le fromage"],
+            "ans": 2,
+            "exp": "'J'aime le fromage' — with verbs of preference (aimer, adorer), use the definite article for general statements, not the partitive."
+          },
+          {
+            "q": "How do you say 'there are some vegetables' in French?",
+            "opts": ["Il y a le légumes", "Il y a des légumes", "Il y a du légumes", "Il y a de la légumes"],
+            "ans": 1,
+            "exp": "'Il y a des légumes' — légumes is plural, so use 'des'. 'Il y a' = there is/are."
+          },
+          {
+            "q": "What happens to partitive articles after negation?",
+            "opts": ["They stay the same", "They become de/d'", "They become les", "They disappear"],
+            "ans": 1,
+            "exp": "After negation, all partitives (du, de la, de l', des) become 'de' or 'd'': Je n'ai pas de pain. Je ne veux pas d'eau."
+          },
+          {
+            "q": "How do you politely order 'some wine' in French?",
+            "opts": ["Je veux le vin", "Je voudrais du vin", "J'aime le vin", "Il y a du vin"],
+            "ans": 1,
+            "exp": "'Je voudrais du vin' = I would like some wine. 'Je voudrais' (conditional) is polite. 'Du' is the partitive for masculine 'vin'."
+          }
+        ]
+      },
+      {
+        "id": "fr-l50",
+        "title": "La météo",
+        "icon": "☀️",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Weather with 'il fait'",
+            "body": "<p>Many weather expressions use the verb <strong>faire</strong> with impersonal <em>il</em>:</p><table><tr><th>French</th><th>English</th></tr><tr><td>il fait beau</td><td>the weather is nice</td></tr><tr><td>il fait mauvais</td><td>the weather is bad</td></tr><tr><td>il fait chaud</td><td>it is hot</td></tr><tr><td>il fait froid</td><td>it is cold</td></tr><tr><td>il fait doux</td><td>it is mild</td></tr></table>"
+          },
+          {
+            "type": "info",
+            "title": "Weather with 'il y a' and impersonal verbs",
+            "body": "<p>Other weather patterns to master:</p><ul><li><strong>Il y a du vent</strong> = It is windy</li><li><strong>Il y a du soleil</strong> = It is sunny</li><li><strong>Il y a du brouillard</strong> = There is fog</li><li><strong>Il y a des nuages</strong> = It is cloudy</li><li><strong>Il pleut</strong> = It is raining (from pleuvoir)</li><li><strong>Il neige</strong> = It is snowing (from neiger)</li></ul><p><strong>Three patterns:</strong> il fait + adj · il y a du/de la + noun · il + impersonal verb</p>"
+          },
+          {
+            "type": "info",
+            "title": "The four seasons",
+            "body": "<p>The seasons and how to say 'in' each one:</p><table><tr><th>Season</th><th>French</th><th>'In' + season</th></tr><tr><td>spring</td><td>le printemps</td><td>au printemps</td></tr><tr><td>summer</td><td>l'été</td><td>en été</td></tr><tr><td>autumn</td><td>l'automne</td><td>en automne</td></tr><tr><td>winter</td><td>l'hiver</td><td>en hiver</td></tr></table><p><strong>Key rule:</strong> All seasons use 'en' EXCEPT spring: <em>au printemps</em> (à + le printemps). This is the one exception to memorise!</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you say 'it is cold' in French?",
+            "opts": ["il fait chaud", "il fait froid", "il fait beau", "il fait mauvais"],
+            "ans": 1,
+            "exp": "'Il fait froid' = it is cold. Opposite: 'il fait chaud' (hot). These use the impersonal 'il fait + adjective' construction."
+          },
+          {
+            "q": "What is 'il neige' in English?",
+            "opts": ["it is raining", "it is cold", "it is snowing", "it is windy"],
+            "ans": 2,
+            "exp": "'Il neige' = it is snowing. From the verb 'neiger'. Similarly, 'il pleut' = it is raining (from pleuvoir). Both are impersonal verbs."
+          },
+          {
+            "q": "How do you say 'in spring' in French?",
+            "opts": ["en printemps", "en été", "au printemps", "dans le printemps"],
+            "ans": 2,
+            "exp": "'Au printemps' = in spring. Spring is the only season that uses 'au'. All others use 'en': en été, en automne, en hiver."
+          },
+          {
+            "q": "What does 'il y a du brouillard' mean?",
+            "opts": ["it is sunny", "there is fog", "it is windy", "it is raining"],
+            "ans": 1,
+            "exp": "'Il y a du brouillard' = there is fog. The pattern 'il y a du/de la + noun' works for: vent (wind), soleil (sun), brouillard (fog)."
+          },
+          {
+            "q": "Which is correct for 'the weather is nice'?",
+            "opts": ["il y a beau", "il fait du beau", "il fait beau", "il est beau"],
+            "ans": 2,
+            "exp": "'Il fait beau' = the weather is nice/fine. Use 'il fait + adjective' for these weather expressions."
+          }
+        ]
       }
     ]
   },
@@ -5716,6 +6057,168 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 0,
             "exp": "« Quand j'habitais à Paris » describes a repeated past habit → imparfait. A one-off event uses passé composé."
+          }
+        ]
+      },
+      {
+        "id": "fr-l48",
+        "title": "Faire les courses",
+        "icon": "🛍️",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Shopping phrases",
+            "body": "<p>Essential phrases for shopping in French:</p><ul><li><strong>C'est combien ?</strong> / <strong>Combien ça coûte ?</strong> = How much is it?</li><li><strong>Ça fait combien ?</strong> = How much does that come to? (at the till)</li><li><strong>Je cherche…</strong> = I am looking for…</li><li><strong>Vous avez… ?</strong> = Do you have…?</li><li><strong>Je le/la prends.</strong> = I'll take it.</li><li><strong>Je regarde, merci.</strong> = I'm just looking, thanks.</li><li><strong>Où est-ce qu'on paie ?</strong> = Where do we pay?</li></ul>"
+          },
+          {
+            "type": "info",
+            "title": "Size, fit and price",
+            "body": "<p>Key vocabulary for clothes and shopping:</p><table><tr><th>French</th><th>English</th></tr><tr><td>la taille</td><td>clothing size</td></tr><tr><td>la pointure</td><td>shoe size</td></tr><tr><td>le prix</td><td>the price</td></tr><tr><td>les soldes</td><td>the sales</td></tr><tr><td>trop grand/petit</td><td>too big/small</td></tr><tr><td>le magasin</td><td>the shop/store</td></tr><tr><td>le marché</td><td>the market</td></tr><tr><td>la caisse</td><td>the till/checkout</td></tr><tr><td>payer</td><td>to pay</td></tr></table>"
+          },
+          {
+            "type": "info",
+            "title": "Colours (les couleurs)",
+            "body": "<p>Colours come <strong>after</strong> the noun in French and agree in gender and number:</p><table><tr><th>Colour</th><th>Masc.</th><th>Fem.</th></tr><tr><td>red</td><td>rouge</td><td>rouge</td></tr><tr><td>blue</td><td>bleu</td><td>bleue</td></tr><tr><td>green</td><td>vert</td><td>verte</td></tr><tr><td>yellow</td><td>jaune</td><td>jaune</td></tr><tr><td>white</td><td>blanc</td><td>blanche</td></tr><tr><td>black</td><td>noir</td><td>noire</td></tr></table><p>Example: <em>une robe verte</em> (a green dress), <em>un manteau noir</em> (a black coat).</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you ask 'How much is it?' in French?",
+            "opts": ["Combien vous avez ?", "C'est combien ?", "Ça fait quoi ?", "Le prix est quoi ?"],
+            "ans": 1,
+            "exp": "'C'est combien ?' = How much is it? Also correct: 'Combien ça coûte ?' 'Ça fait combien ?' is used more at the checkout."
+          },
+          {
+            "q": "How do you say 'I am looking for a blue jacket'?",
+            "opts": ["Je cherche une veste bleue", "Je voudrais une veste bleu", "Je trouve une veste bleue", "J'achète une veste bleue"],
+            "ans": 0,
+            "exp": "'Je cherche une veste bleue' — chercher = to look for; veste (jacket) is feminine so 'bleu' becomes 'bleue'. Colours agree with the noun."
+          },
+          {
+            "q": "What does 'les soldes' mean?",
+            "opts": ["the shops", "the prices", "the sales", "the markets"],
+            "ans": 2,
+            "exp": "'Les soldes' = the sales. France has two regulated sale periods per year. Don't confuse with 'le solde' (bank balance)."
+          },
+          {
+            "q": "How do you say 'too small' in French?",
+            "opts": ["trop grand", "assez petit", "trop petit", "très petit"],
+            "ans": 2,
+            "exp": "'Trop petit' = too small. 'Trop' = too (much). 'Trop grand' = too big. 'Très petit' = very small (not too small)."
+          },
+          {
+            "q": "Which word means 'to pay' in French?",
+            "opts": ["acheter", "vendre", "chercher", "payer"],
+            "ans": 3,
+            "exp": "'Payer' = to pay. Acheter = to buy, vendre = to sell, chercher = to look for. 'Je voudrais payer' = I would like to pay."
+          }
+        ]
+      },
+      {
+        "id": "fr-l49",
+        "title": "Les transports et les directions",
+        "icon": "🚌",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Transport vocabulary",
+            "body": "<p>Essential French transport words:</p><table><tr><th>French</th><th>English</th></tr><tr><td>le bus</td><td>bus</td></tr><tr><td>le métro</td><td>underground/metro</td></tr><tr><td>le train</td><td>train</td></tr><tr><td>l'avion (m)</td><td>aeroplane</td></tr><tr><td>le vélo</td><td>bicycle</td></tr><tr><td>la voiture</td><td>car</td></tr><tr><td>à pied</td><td>on foot</td></tr></table><p>Use <strong>'en'</strong> for most transport: en bus, en train, en voiture. Use <strong>'à'</strong> for bicycle and foot: à vélo, à pied.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Giving directions",
+            "body": "<p>Key direction phrases using the imperative (vous):</p><ul><li><strong>Allez tout droit.</strong> = Go straight ahead.</li><li><strong>Tournez à gauche.</strong> = Turn left.</li><li><strong>Tournez à droite.</strong> = Turn right.</li><li><strong>Prenez la première / deuxième rue.</strong> = Take the first / second street.</li><li><strong>Traversez la rue / le pont.</strong> = Cross the street / bridge.</li><li><strong>Au carrefour…</strong> = At the crossroads…</li><li><strong>Au feu rouge…</strong> = At the traffic lights…</li></ul>"
+          },
+          {
+            "type": "info",
+            "title": "Prepositions of place",
+            "body": "<p>These prepositions help locate places:</p><table><tr><th>French</th><th>English</th><th>Example</th></tr><tr><td>près de</td><td>near</td><td>près de la gare</td></tr><tr><td>loin de</td><td>far from</td><td>loin d'ici</td></tr><tr><td>à côté de</td><td>next to</td><td>à côté du café</td></tr><tr><td>en face de</td><td>opposite</td><td>en face de l'hôtel</td></tr><tr><td>au bout de</td><td>at the end of</td><td>au bout de la rue</td></tr></table>"
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you say 'Turn left' in French?",
+            "opts": ["Allez tout droit", "Tournez à gauche", "Tournez à droite", "Prenez à gauche"],
+            "ans": 1,
+            "exp": "'Tournez à gauche' = Turn left. 'Gauche' = left. 'Droite' = right. 'Tout droit' = straight ahead."
+          },
+          {
+            "q": "What does 'à pied' mean?",
+            "opts": ["by car", "by bike", "on foot", "by bus"],
+            "ans": 2,
+            "exp": "'À pied' = on foot. 'Le pied' = foot. Transport uses 'en' (en bus, en voiture) but 'à' for vélo and pied."
+          },
+          {
+            "q": "How do you say 'Take the first street on the left'?",
+            "opts": ["Allez la première rue à gauche", "Traversez la première rue à gauche", "Prenez la première rue à gauche", "Tournez la première rue à gauche"],
+            "ans": 2,
+            "exp": "'Prenez la première rue à gauche.' Prendre = to take (streets and transport). 'Première' = first (feminine, agrees with 'rue')."
+          },
+          {
+            "q": "What is 'le carrefour'?",
+            "opts": ["the traffic light", "the roundabout", "the crossroads", "the pavement"],
+            "ans": 2,
+            "exp": "'Le carrefour' = the crossroads/junction. The Carrefour supermarket is named after the crossroads where the first store opened!"
+          },
+          {
+            "q": "How do you say 'the station is near here'?",
+            "opts": ["La gare est loin d'ici", "La gare est près d'ici", "La gare est à côté", "La gare est en face d'ici"],
+            "ans": 1,
+            "exp": "'La gare est près d'ici' = The station is near here. 'Près de' = near. 'Loin de' = far from (opposite)."
+          }
+        ]
+      },
+      {
+        "id": "fr-l51",
+        "title": "Au restaurant",
+        "icon": "🍷",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Arriving and ordering",
+            "body": "<p>Essential phrases for dining out in France:</p><ul><li><strong>Une table pour deux personnes, s'il vous plaît.</strong> = A table for two, please.</li><li><strong>La carte, s'il vous plaît.</strong> = The à la carte menu, please.</li><li><strong>Je voudrais commander.</strong> = I would like to order.</li><li><strong>Vous avez choisi ?</strong> = Have you chosen? (waiter's phrase)</li><li><strong>Qu'est-ce que vous recommandez ?</strong> = What do you recommend?</li></ul><p><strong>Remember:</strong> 'La carte' = the full à la carte menu; 'le menu' = the set meal at a fixed price.</p>"
+          },
+          {
+            "type": "info",
+            "title": "The three courses",
+            "body": "<p>A traditional French meal:</p><table><tr><th>Course</th><th>French</th><th>Notes</th></tr><tr><td>Starter</td><td>l'entrée (f)</td><td>Warning: NOT 'main course' as in American English!</td></tr><tr><td>Main course</td><td>le plat principal</td><td>'Plat' = dish/course</td></tr><tr><td>Dessert</td><td>le dessert</td><td>Same spelling as English</td></tr></table><p>Other useful terms: le fromage (cheese course), la boisson (the drink), le pain (bread — usually free).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Feedback and paying",
+            "body": "<p>Expressing opinions and settling the bill:</p><ul><li><strong>C'est délicieux !</strong> = It is delicious!</li><li><strong>C'est trop salé.</strong> = It is too salty.</li><li><strong>C'est trop sucré.</strong> = It is too sweet.</li><li><strong>C'est inclus le service ?</strong> = Is service included?</li><li><strong>L'addition, s'il vous plaît !</strong> = The bill, please!</li><li><strong>Le pourboire</strong> = the tip (lit. 'for a drink')</li></ul><p><strong>Cultural note:</strong> In France, service (15%) is usually included (service compris). A small extra tip is welcome but not obligatory.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you ask for the bill in French?",
+            "opts": ["Le menu, s'il vous plaît", "Le pourboire, s'il vous plaît", "L'addition, s'il vous plaît", "La carte, s'il vous plaît"],
+            "ans": 2,
+            "exp": "'L'addition, s'il vous plaît' = The bill, please. This is the essential phrase for ending a French restaurant meal."
+          },
+          {
+            "q": "What is 'l'entrée' in a French restaurant?",
+            "opts": ["the main course", "the entrance", "the starter", "the dessert"],
+            "ans": 2,
+            "exp": "'L'entrée' = the starter/first course in France. Warning: in American English, 'entrée' means the main course — the opposite!"
+          },
+          {
+            "q": "How do you say 'I would like to order' in French?",
+            "opts": ["Je voudrais payer", "Je voudrais commander", "Je voudrais la carte", "Je voudrais partir"],
+            "ans": 1,
+            "exp": "'Je voudrais commander' = I would like to order. 'Commander' = to order. 'Je voudrais' is the polite conditional."
+          },
+          {
+            "q": "What does 'c'est trop salé' mean?",
+            "opts": ["it is too sweet", "it is delicious", "it is too spicy", "it is too salty"],
+            "ans": 3,
+            "exp": "'C'est trop salé' = it is too salty. 'Sel' = salt → 'salé' = salty. 'Trop' = too (much). Compare: 'trop sucré' (too sweet)."
+          },
+          {
+            "q": "What is the difference between 'la carte' and 'le menu'?",
+            "opts": ["They mean the same thing", "La carte is the set meal; le menu is à la carte", "La carte is the full à la carte menu; le menu is a fixed-price set meal", "Le menu is only for drinks"],
+            "ans": 2,
+            "exp": "In France: 'la carte' = the full à la carte menu (choose freely); 'le menu' = a fixed-price set meal. Asking for 'le menu' means you want the set deal."
           }
         ]
       }
