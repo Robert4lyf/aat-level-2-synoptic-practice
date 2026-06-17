@@ -1098,6 +1098,9 @@
     render();
   }
 
+  // Timestamp of the last question transition; used to suppress ghost-tap auto-selects.
+  let _lastTransitionTime = 0;
+
   /* ── TTS (French pronunciation via Web Speech API) ── */
   let _frVoice = null;
   function getFrenchVoice() {
@@ -1228,7 +1231,12 @@
   // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
   function isFrToEnMcq(q) {
     if (!q || q.type !== 'mcq') return false;
-    return /^(what does\s+"[^"]+"|"[^"]+"\s+(means?\??|is\??))/i.test(q.q.trim());
+    if (!/^(what does\s+"[^"]+"|"[^"]+"\s+(means?\??|is\??))/i.test(q.q.trim())) return false;
+    // Exclude grammar questions where the answer is French (e.g. '"Les yeux" is the IRREGULAR plural of: l\'oeil')
+    const ans = q.opts && q.opts[q.ans];
+    if (!ans) return false;
+    if (/^(le |la |les |un |une |l'|l'|c'|du |de )/i.test(ans.trim())) return false;
+    return true;
   }
   function extractFrenchTerm(q) {
     const m = q.q.match(/"([^"]+)"/);
@@ -1496,6 +1504,8 @@
     // Gate questions to only those from unlocked units / CEFR levels.
     // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass these gates.
     const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    let poolSizeAfterLevelFilter = pool.length;
+    let poolSizeAfterLessonGate = pool.length;
     if (!GATE_EXEMPT.has(topicId)) {
       if (_activeSubjectId === 'french') {
         if (topicId && topicId.indexOf('level:') === 0) {
@@ -1508,9 +1518,13 @@
         } else {
           pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
         }
+        // Capture size after level filter but before the lesson gate so we can give
+        // an accurate "start some lessons first" message instead of "level locked".
+        poolSizeAfterLevelFilter = pool.length;
         // Only surface questions from lessons the user has already completed.
         // Questions without a lesson field are general-level practice and always available.
         pool = pool.filter(q => !q.lesson || isLessonDone(q.lesson));
+        poolSizeAfterLessonGate = pool.length;
       } else {
         // For non-French subjects: gate topic-specific practice if the unit is locked.
         const isSpecificTopic = topicId && topicId !== 'all' && topicId.indexOf('skill:') !== 0;
@@ -1520,9 +1534,10 @@
         }
         // Remove questions from locked units regardless of pool type.
         pool = pool.filter(q => isUnitUnlocked(q.topic));
+        poolSizeAfterLevelFilter = pool.length;
+        poolSizeAfterLessonGate = pool.length;
       }
     }
-    const poolSizeAfterLevelFilter = pool.length;
 
     // Exclude questions the user has marked as confident from all regular pools.
     // Curated lists (flagged, sr-due, review-wrong, mistakes) are left untouched.
@@ -1535,13 +1550,17 @@
         'mistakes': 'Your mistake notebook is empty — nothing to clear. 🎉',
       };
       const levelLocked = poolSizeAfterLevelFilter === 0;
+      const lessonGated = !levelLocked && poolSizeAfterLessonGate === 0;
       showToast(empty[topicId] || (levelLocked
         ? 'These questions are locked. Finish the prerequisite level lessons and quiz first.'
-        : 'No questions left — you\'ve marked all as confident!'), 'warn');
+        : (lessonGated
+          ? 'Complete some lessons first to unlock practice questions for this level.'
+          : 'No questions left — you\'ve marked all as confident!')), 'warn');
       return;
     }
     const picked = applyFlipMode(shuffle(pool).slice(0, Math.min(PRACTICE_LENGTH, pool.length)).map(presentQuestion));
     if (picked.length === 0) { goHome(); return; }
+    _lastTransitionTime = Date.now();
     Object.assign(State, {
       screen:'quiz', mode:'practice', selectedTopic:topicId, questions:picked,
       current:0, answered:null, answers:[], score:0, results:[],
@@ -1884,6 +1903,8 @@
 
   function answerPractice(idx) {
     if (State.answered !== null) return;
+    // Suppress ghost taps: ignore option clicks within 350ms of a question transition.
+    if (Date.now() - _lastTransitionTime < 350) return;
     const q = State.questions[State.current];
     const correct = idx === q.ans;
     State.answered = idx;
@@ -2088,6 +2109,7 @@
   }
   function nextPractice() {
     stopSpeech();
+    _lastTransitionTime = Date.now();
     if (State.current + 1 >= State.questions.length) finishPractice();
     else {
       State.current++; State.answered = null; State.numericDraft = '';
