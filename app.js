@@ -1024,32 +1024,6 @@
     }
   }
 
-  /* ── DAILY CHALLENGE ── */
-  function getDailyQuestion() {
-    if (!window.ALL_QUESTIONS || !window.ALL_QUESTIONS.length) return null;
-    const key = todayKey();
-    let hash = 0;
-    for (let i = 0; i < key.length; i++) hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
-    return window.ALL_QUESTIONS[Math.abs(hash) % window.ALL_QUESTIONS.length];
-  }
-  function startDailyChallenge() {
-    const today = todayKey();
-    const existing = (Storage.data.daily[today] || {}).challenge;
-    if (existing && existing.done) { showToast('Challenge already completed today! Come back tomorrow.', 'info'); return; }
-    const q = getDailyQuestion();
-    if (!q) { showToast('No daily question available.', 'warn'); return; }
-    State.isDailyChallenge = true;
-    const picked = [presentQuestion(q)];
-    Object.assign(State, {
-      screen: 'quiz', mode: 'practice', selectedTopic: q.topic, questions: picked,
-      current: 0, answered: null, answers: [], score: 0, results: [],
-      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
-      hintLevel: 0, hintElim: null,
-    });
-    Calc.reset(); render();
-  }
-
   /* ── UNIT QUIZ (structured, weighted toward harder questions) ── */
   function buildWeightedUnitQuiz(unitId) {
     const pool = (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
@@ -1325,7 +1299,6 @@
     hintLevel: 0, hintElim: null,           // progressive hints (practice mode)
     lesson: null,                           // lesson player state
     flash: null,                            // flashcard session state
-    plannerEdit: false,                     // study-planner edit form open
     revisionUnit: null,                     // unit revision notes screen
     combo: 0,                               // consecutive correct answers in practice
   };
@@ -1709,20 +1682,6 @@
     render();
   }
 
-  /* ── STUDY PLANNER ── */
-  function savePlanner() {
-    const dateEl = document.getElementById('plannerDate');
-    const goalEl = document.getElementById('plannerGoal');
-    if (!dateEl) return;
-    const v = dateEl.value;
-    if (!v) { showToast('Pick your exam date first.', 'warn'); return; }
-    Storage.data.planner.examDate = v;
-    if (goalEl) Storage.data.planner.dailyGoalXp = +goalEl.value || 30;
-    Storage.save();
-    State.plannerEdit = false;
-    showToast('Study plan saved. Good luck! 🎯', 'success');
-    render();
-  }
   function nextLessonToDo() {
     for (const unit of (window.LEARN_PATH || [])) {
       for (const L of unit.lessons) {
@@ -2543,38 +2502,6 @@
       </button>`;
     }).join('');
 
-    const planner = Storage.data.planner || {};
-    const examDateVal = planner.examDate || null;
-    const todayMid = new Date(); todayMid.setHours(0,0,0,0);
-    const todayStr = todayMid.toISOString().slice(0, 10);
-    let countdownHtml = '';
-    if (isAAT && examDateVal) {
-      const examD = new Date(examDateVal); examD.setHours(0,0,0,0);
-      const daysLeft = Math.max(0, Math.round((examD - todayMid) / 86400000));
-      const dailyTarget = daysLeft > 0 ? Math.max(10, Math.ceil(Math.max(0, 300 - (Storage.data.history || []).reduce((s,h) => s + h.total, 0)) / daysLeft)) : null;
-      const urgCls = daysLeft <= 7 ? ' countdown-urgent' : daysLeft <= 30 ? ' countdown-soon' : '';
-      countdownHtml = `<div class="exam-countdown${urgCls}">
-        <span class="countdown-icon">${daysLeft === 0 ? '🎓' : '📅'}</span>
-        <div class="countdown-text">
-          <strong>${daysLeft === 0 ? 'Exam day — good luck!' : daysLeft + ' days to your exam'}</strong>
-          ${dailyTarget && daysLeft > 0 ? `<span class="countdown-target"> · aim for ${dailyTarget}+ questions today</span>` : ''}
-        </div>
-        <label class="countdown-edit-wrap" title="Change exam date">
-          <span class="countdown-edit">Edit date</span>
-          <input type="date" id="examDateInput" class="exam-date-hidden" value="${examDateVal}" min="${todayStr}">
-        </label>
-      </div>`;
-    } else if (isAAT) {
-      countdownHtml = `<div class="exam-countdown exam-countdown-empty">
-        <span class="countdown-icon">📅</span>
-        <span class="countdown-text">Set your exam date to get a personalised daily question target</span>
-        <label class="countdown-set-wrap" title="Set exam date">
-          <span class="countdown-set">Set date →</span>
-          <input type="date" id="examDateInput" class="exam-date-hidden" min="${todayStr}">
-        </label>
-      </div>`;
-    }
-
     const isFrench = _activeSubjectId === 'french';
     const CEFR_LEVELS = [
       { id: 'A1', sublabel: 'Débutant',       icon: '🌱', color: '#059669', desc: 'Greetings, pronunciation, basic vocab & présent tense' },
@@ -2618,7 +2545,7 @@
         }).join('')}
       </div>` : '';
 
-    return `${sessionBanner}${progressBlock}${countdownHtml}
+    return `${sessionBanner}${progressBlock}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
@@ -3552,22 +3479,6 @@
     const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (Storage.data.stats.streak || {}).current || 0;
     const earnedBadges = BADGES.filter(b => Storage.data.badges[b.id]);
     const nextLesson = nextLessonToDo();
-    const planner = Storage.data.planner;
-    const daysLeft = planner.examDate ? Math.max(0, Math.ceil((new Date(planner.examDate) - new Date()) / 86400000)) : null;
-
-    const plannerBlock = State.plannerEdit
-      ? `<div class="planner-form">
-          <label>Exam date <input type="date" id="plannerDate" value="${escapeHtml(planner.examDate || '')}" min="${new Date().toISOString().slice(0,10)}"></label>
-          <label>Daily XP goal <select id="plannerGoal">${[10,20,30,50,100].map(v=>`<option value="${v}" ${planner.dailyGoalXp===v?'selected':''}>${v} XP</option>`).join('')}</select></label>
-          <button class="btn-primary" id="savePlannerBtn" type="button">Save plan</button>
-          <button class="btn-secondary" id="cancelPlannerBtn" type="button">Cancel</button>
-        </div>`
-      : `<div class="planner-bar">
-          ${planner.examDate ? `<span>🎯 Exam: <strong>${new Date(planner.examDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</strong> · <strong>${daysLeft}</strong> day${daysLeft===1?'':'s'} left</span>` : '<span>No exam date set</span>'}
-          <span>🏅 Daily goal: <strong>${planner.dailyGoalXp} XP</strong></span>
-          <button class="planner-edit-btn" id="editPlannerBtn" type="button">✏️ Edit</button>
-        </div>`;
-
     const lv = Math.floor(xp / 100) + 1;
     const lvXp = xp % 100;
     const bestCombo = Storage.data.learn.bestCombo || 0;
@@ -3685,32 +3596,10 @@
       </button>
     </div>` : '<div class="journey-complete">🎉 All lessons complete! Use smart practice to keep sharp.</div>';
 
-    // Daily challenge card
-    const todayD = todayKey();
-    const dailyQ = getDailyQuestion();
-    const dailyRec = (Storage.data.daily[todayD] || {}).challenge || {};
-    const dailyDateLabel = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
-    const dailyBlock = dailyQ ? `<div class="daily-challenge-card${dailyRec.done ? ' daily-done' : ''}">
-      <div class="daily-ch-left">
-        <span class="daily-icon">📅</span>
-        <div>
-          <div class="daily-title">Daily Challenge</div>
-          <div class="daily-sub">${escapeHtml(dailyDateLabel)}</div>
-        </div>
-      </div>
-      <div class="daily-ch-right">
-        ${dailyRec.done
-          ? `<span class="daily-result${dailyRec.correct ? ' daily-correct' : ' daily-wrong'}">${dailyRec.correct ? '✓ Correct!' : '✗ Answered'}</span>`
-          : `<button class="btn-primary daily-start-btn" id="dailyChallengeBtn" type="button">Start +10 XP</button>`}
-      </div>
-    </div>` : '';
-
     return `<div class="journey-header">
       ${xpBar}
       <div class="journey-meta"><span>🔥 ${streak}-day streak</span>${badgesSnip}</div>
-      ${plannerBlock}
     </div>
-    ${dailyBlock}
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
@@ -4242,17 +4131,10 @@
     bind('smartPracticeBtn', 'click', startSmartPractice);
     bind('flashcardsBtn', 'click', startFlashcards);
     bind('focusModeBtn', 'click', startFocusPractice);
-    bind('examDateInput', 'change', function (e) {
-      Storage.data.planner = Storage.data.planner || {};
-      Storage.data.planner.examDate = e.target.value || null;
-      Storage.save(); render();
-    });
     bind('lessonDrillAllBtn', 'click', function () {
       const btn = document.getElementById('lessonDrillAllBtn');
       if (btn && btn.dataset.skills) startMultiSkillDrill(btn.dataset.skills);
     });
-    // Daily challenge
-    bind('dailyChallengeBtn', 'click', startDailyChallenge);
     // Unit quiz buttons
     document.querySelectorAll('[data-unit-quiz]').forEach(el => el.addEventListener('click', () => startUnitQuiz(el.dataset.unitQuiz)));
     // Unit revision notes buttons
@@ -4285,10 +4167,6 @@
     bind('flashFlipBtn2', 'click', flashFlip);
     bind('flashYesBtn', 'click', () => flashGrade(true));
     bind('flashNoBtn', 'click', () => flashGrade(false));
-    // Study planner
-    bind('editPlannerBtn', 'click', () => { State.plannerEdit = true; render(); });
-    bind('cancelPlannerBtn', 'click', () => { State.plannerEdit = false; render(); });
-    bind('savePlannerBtn', 'click', savePlanner);
     // T-account guided exercises
     document.querySelectorAll('[data-ta-ex]').forEach(el => el.addEventListener('click', () => startTaExercise(el.dataset.taEx)));
     bind('taExitBtn', 'click', exitTaExercise);
