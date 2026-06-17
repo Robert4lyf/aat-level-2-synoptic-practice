@@ -2831,15 +2831,24 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             }
           },
           {
-            "h": "À la forme négative",
+            "h": "De après la négation",
             "p": [
-              "After a negative, all partitives become **de** (or **d'**).",
-              "**Je bois du café.** → **Je ne bois pas de café.**",
-              "**Il y a de la place.** → **Il n'y a pas de place.**"
+              "After **ne…pas** (and ne…plus, ne…jamais), every article that expresses 'some' or 'a/an' collapses to **de** (or **d'** before a vowel). It doesn't matter whether the original article was du, de la, de l', des, un, or une — they all become **de**."
             ],
+            "table": {
+              "headers": ["Affirmative (+)", "Negative (−)"],
+              "rows": [
+                ["Je mange **du** pain.", "Je ne mange pas **de** pain."],
+                ["Elle boit **de la** bière.", "Elle ne boit pas **de** bière."],
+                ["Tu veux **de l'**eau.", "Tu ne veux pas **d'**eau."],
+                ["Il achète **des** légumes.", "Il n'achète pas **de** légumes."],
+                ["J'ai **une** idée.", "Je n'ai pas **d'**idée."],
+                ["Il a **un** chien.", "Il n'a pas **de** chien."]
+              ]
+            },
             "callout": {
               "kind": "warning",
-              "text": "This « de » rule is a classic A1 exam point: ne … pas + de, never « pas du / pas des »."
+              "text": "Exception — after être, the article stays: « Ce n'est pas **un** problème. » ✓   The de-rule only applies to partitive and indefinite articles, not after être."
             }
           },
           {
@@ -2941,6 +2950,39 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 1,
             "exp": "« des » before a plural noun expresses « some fruit »."
+          },
+          {
+            "q": "Negative of « Elle achète des pommes » :",
+            "opts": [
+              "Elle n'achète pas des pommes",
+              "Elle n'achète pas de pommes",
+              "Elle n'achète pas les pommes",
+              "Elle achète ne pas pommes"
+            ],
+            "ans": 1,
+            "exp": "des → de after a negative: elle n'achète pas **de** pommes."
+          },
+          {
+            "q": "Negative of « J'ai une idée » :",
+            "opts": [
+              "Je n'ai pas une idée",
+              "Je n'ai pas de idée",
+              "Je n'ai pas d'idée",
+              "Je n'ai pas l'idée"
+            ],
+            "ans": 2,
+            "exp": "une → de after a negative; and de + vowel = d': **je n'ai pas d'idée**."
+          },
+          {
+            "q": "After être, which sentence is correct?",
+            "opts": [
+              "Ce n'est pas de bon film.",
+              "Ce n'est pas un bon film.",
+              "Ce n'est pas du bon film.",
+              "Ce n'est pas de la bon film."
+            ],
+            "ans": 1,
+            "exp": "After être, the article stays unchanged: **Ce n'est pas un bon film** ✓. The de-rule only replaces du / de la / des / un / une after verbs other than être."
           }
         ]
       },
