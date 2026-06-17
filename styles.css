@@ -3888,6 +3888,9 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   background: linear-gradient(90deg, var(--brand-400), var(--brand-600));
   transition: width 0.6s ease;
 }
+.journey-unit-collapsed .journey-nodes,
+.journey-unit-collapsed .journey-unit-progress-bg { display: none; }
+.unit-collapse-chevron { margin-left: auto; font-size: .8rem; color: var(--subtext); flex-shrink: 0; }
 
 /* ═══════════════════════════════════════════════════════════
    FLASHCARD: PROGRESS BAR & TOPIC TAG
