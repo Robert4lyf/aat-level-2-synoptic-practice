@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v20';
+var CACHE_VERSION = 'aat-l2-practice-v21';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -38,6 +38,12 @@ self.addEventListener('activate', function (event) {
         }));
       })
       .then(function () { return self.clients.claim(); })
+      .then(function () {
+        // Notify all open tabs that a new version is active so they can prompt a reload.
+        return self.clients.matchAll({ type: 'window' }).then(function (clients) {
+          clients.forEach(function (client) { client.postMessage({ type: 'SW_UPDATED' }); });
+        });
+      })
   );
 });
 

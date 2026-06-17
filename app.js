@@ -1458,7 +1458,9 @@
     const node = document.createElement('div');
     node.id = 'toast';
     node.className = 'toast toast-' + State.toast.kind;
-    node.setAttribute('role', 'status');
+    const isUrgent = State.toast.kind === 'warn' || State.toast.kind === 'error';
+    node.setAttribute('role', isUrgent ? 'alert' : 'status');
+    node.setAttribute('aria-live', isUrgent ? 'assertive' : 'polite');
     node.textContent = message;
     document.body.appendChild(node);
   }
@@ -4491,7 +4493,23 @@
   function bind(id, ev, fn) { const el = document.getElementById(id); if (el) el.addEventListener(ev, fn); }
 
   function handleGlobalKey(e) {
-    if (e.key === 'Escape' && State.confirmModal) { e.preventDefault(); closeConfirm(); return; }
+    if (State.confirmModal) {
+      if (e.key === 'Escape') { e.preventDefault(); closeConfirm(); return; }
+      if (e.key === 'Tab') {
+        const cancel = document.getElementById('modalCancel');
+        const confirm = document.getElementById('modalConfirm');
+        if (cancel && confirm) {
+          e.preventDefault();
+          if (e.shiftKey) {
+            (document.activeElement === cancel ? confirm : cancel).focus();
+          } else {
+            (document.activeElement === confirm ? cancel : confirm).focus();
+          }
+        }
+        return;
+      }
+      return; // block all other keys while modal is open
+    }
     if (e.key === 'Escape' && State.referenceOpen) { e.preventDefault(); toggleReference(); return; }
     const t = e.target;
     if (t && /input|textarea|select/i.test(t.tagName)) return;
@@ -4565,6 +4583,14 @@
         if (mq.addEventListener) mq.addEventListener('change', handler);
         else if (mq.addListener) mq.addListener(handler);
       } catch (e) {}
+    }
+    // Show a non-intrusive reload nudge when the service worker updates to a new version.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', function (event) {
+        if (event.data && event.data.type === 'SW_UPDATED') {
+          showToast('🔄 App updated — reload to get the latest version', 'info');
+        }
+      });
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
