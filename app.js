@@ -1501,6 +1501,7 @@
         pool = pool.filter(q => isUnitUnlocked(q.topic));
       }
     }
+    const poolSizeAfterLevelFilter = pool.length;
 
     // Exclude questions the user has marked as confident from all regular pools.
     // Curated lists (flagged, sr-due, review-wrong, mistakes) are left untouched.
@@ -1512,7 +1513,10 @@
         'sr-due': 'No questions are due for review right now. Come back later!',
         'mistakes': 'Your mistake notebook is empty — nothing to clear. 🎉',
       };
-      showToast(empty[topicId] || 'No questions left — you\'ve marked all as confident!', 'warn');
+      const levelLocked = poolSizeAfterLevelFilter === 0;
+      showToast(empty[topicId] || (levelLocked
+        ? 'These questions are locked. Finish the prerequisite level lessons and quiz first.'
+        : 'No questions left — you\'ve marked all as confident!'), 'warn');
       return;
     }
     const picked = applyFlipMode(shuffle(pool).slice(0, Math.min(PRACTICE_LENGTH, pool.length)).map(presentQuestion));
@@ -2697,7 +2701,15 @@
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
           const seenN = seenByTopic[t.id] || 0;
           const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
-          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
+          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id) && frLevelUnlocked(frQuestionLevel(q.id))).length;
+          if (isFrench && availableN === 0 && totalN > 0) {
+            return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
+              <div class="icon" aria-hidden="true">${t.icon}</div>
+              <h3>${escapeHtml(t.name)}</h3>
+              <p class="lock-reason">Complete the prerequisite level lessons and unit quiz to unlock</p>
+              <div class="topic-card-footer"><span class="count"><span class="topic-count-sep">${totalN} questions locked</span></span></div>
+            </div>`;
+          }
           return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${seenN} of ${totalN} seen">
             ${badge}
             <div class="icon" aria-hidden="true">${t.icon}</div>
