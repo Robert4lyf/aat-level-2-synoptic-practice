@@ -2540,6 +2540,7 @@
           const unlocked = frLevelUnlocked(lv.id);
           const lvPool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lv.id);
           const lvTotal = lvPool.length;
+          const lvHidden = lvPool.filter(q => Storage.isConfident(q.id)).length;
           if (!unlocked) {
             const prereqLevel = lv.id === 'B1' ? 'A2' : 'A1';
             return `<div class="topic-card topic-card-locked fade-in" style="border-top-color:${lv.color}" aria-label="${escapeHtml(lv.id)} locked">
@@ -2547,14 +2548,14 @@
               <h3>${escapeHtml(lv.sublabel)}</h3>
               <p class="lock-reason">Finish all ${escapeHtml(prereqLevel)} lessons and pass the ${escapeHtml(prereqLevel)} unit quiz to unlock</p>
               <div class="topic-card-footer">
-                <span class="count"><span class="topic-count-sep">${lvTotal} questions locked</span></span>
+                <span class="count"><span class="topic-count-sep">${lvTotal} questions locked${lvHidden > 0 ? ` · ${lvHidden} hidden` : ''}</span></span>
               </div>
             </div>`;
           }
           const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
-          const lvAvailable = lvPool.filter(q => !Storage.isConfident(q.id)).length;
+          const lvAvailable = lvTotal - lvHidden;
           const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
           const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
           const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
@@ -2567,7 +2568,7 @@
               <span class="count">${lvSeen} <span class="topic-count-sep">of</span> ${lvTotal} seen</span>
               <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
             </div>
-            <div class="topic-available">${lvAvailable} <span class="topic-count-sep">available to practise</span></div>
+            <div class="topic-available">${lvAvailable} <span class="topic-count-sep">available to practise</span>${lvHidden > 0 ? ` · <span class="topic-count-sep">${lvHidden} hidden</span>` : ''}</div>
           </button>`;
         }).join('')}
       </div>` : '';
