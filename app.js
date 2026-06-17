@@ -1411,6 +1411,9 @@
         } else {
           pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
         }
+        // Only surface questions from lessons the user has already completed.
+        // Questions without a lesson field are general-level practice and always available.
+        pool = pool.filter(q => !q.lesson || isLessonDone(q.lesson));
       } else {
         // For non-French subjects: gate topic-specific practice if the unit is locked.
         const isSpecificTopic = topicId && topicId !== 'all' && topicId.indexOf('skill:') !== 0;
@@ -2555,7 +2558,7 @@
           const lvSeen  = lvPool.filter(q => { const s = Storage.data.stats.questions[q.id]; return s && s.attempts > 0; }).length;
           const lvAttempts = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).attempts || 0), 0);
           const lvCorrect  = lvPool.reduce((s, q) => s + ((Storage.data.stats.questions[q.id] || {}).correct  || 0), 0);
-          const lvAvailable = lvTotal - lvHidden;
+          const lvAvailable = lvPool.filter(q => !Storage.isConfident(q.id) && (!q.lesson || isLessonDone(q.lesson))).length;
           const seenPct = lvTotal ? Math.round(lvSeen / lvTotal * 100) : 0;
           const m = lvAttempts > 0 ? Math.round(lvCorrect / lvAttempts * 100) : null;
           const badge = m != null ? `<span class="mastery-badge ${scoreClass(m)}">${m}%</span>` : '';
