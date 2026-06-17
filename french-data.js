@@ -16,6 +16,7 @@ window.FR_TOPICS = [
   { id: 'fr-meteo',     name: 'La météo',                 short: 'Météo',          icon: '☀️', desc: 'Weather expressions and seasons' },
   { id: 'fr-resto',     name: 'Au restaurant',            short: 'Restaurant',     icon: '🍷', desc: 'Dining out phrases and restaurant vocabulary' },
   { id: 'fr-dial',     name: 'Dialogues & situations',   short: 'Dialogues',      icon: '💬', desc: 'Real-world conversations and situational language' },
+  { id: 'fr-phon',     name: 'Prononciation',            short: 'Prononciation',  icon: '🔊', desc: 'Minimal pairs, French sounds, silent letters and liaison' },
 ];
 
 window.FR_QUESTIONS = [
@@ -1264,7 +1265,55 @@ window.FR_QUESTIONS = [
   {"id":"fr-572","topic":"fr-dial","lesson":"fr-l58","type":"mcq","q":"A French colleague emails you informally: 'Salut ! T'as vu le rapport de Thomas ? Il est trop bien !' What register is this, and what does it mean?","opts":["Formal; the report is too long","Informal; have you seen Thomas's report? It's really good!","Neutral; did you finish the report?","Formal; the report needs revision"],"ans":1,"exp":"'Salut' = informal hi. 'T'as vu' = informal contraction of 'tu as vu' (have you seen). 'Trop bien' = really good (colloquial; literally 'too good'). This is informal/familiar register — appropriate for close colleagues, not management or external contacts."},
   {"id":"fr-573","topic":"fr-dial","lesson":"fr-l58","type":"mcq","q":"You read in a contract: 'En cas de litige, les parties s'engagent à recourir à la médiation avant toute procédure judiciaire.' What does this clause mean?","opts":["In case of a dispute, parties must go directly to court","In case of a dispute, parties agree to use mediation before any legal proceedings","Disputes must be reported to the government","All agreements require a judge's approval"],"ans":1,"exp":"'En cas de litige' = in case of a dispute. 'S'engagent à' = agree to (commit to). 'Recourir à la médiation' = to resort to mediation. 'Avant toute procédure judiciaire' = before any legal proceedings. This is a standard arbitration/mediation clause."},
   {"id":"fr-574","topic":"fr-dial","lesson":"fr-l58","type":"mcq","q":"A French news article says: 'Le gouvernement aurait décidé de reporter la réforme.' What does 'aurait décidé' indicate?","opts":["The government has definitely decided to postpone the reform","It is alleged/reportedly decided (unconfirmed information)","The government decided in the past but changed its mind","The government refused to decide"],"ans":1,"exp":"'Aurait décidé' = would have decided — this is the conditionnel passé used as a journalistic device to report unconfirmed information (le conditionnel journalistique). It signals the information is not yet officially confirmed. Very common in French news reporting."},
-  {"id":"fr-575","topic":"fr-dial","lesson":"fr-l58","type":"mcq","q":"You want to end a formal business email professionally. Which sign-off is most appropriate for a first contact?","opts":["Bisous !","À plus tard,","Dans l'attente de votre réponse, je vous adresse mes cordiales salutations.","Merci bye,"],"ans":2,"exp":"'Dans l'attente de votre réponse, je vous adresse mes cordiales salutations' = Awaiting your reply, I send you my cordial regards. Formal first-contact sign-offs: 'Cordialement' (standard) · 'Bien cordialement' (warm/professional) · 'Salutations distinguées' (very formal). 'Bisous' (kisses) is for close friends only."}
+  {"id":"fr-575","topic":"fr-dial","lesson":"fr-l58","type":"mcq","q":"You want to end a formal business email professionally. Which sign-off is most appropriate for a first contact?","opts":["Bisous !","À plus tard,","Dans l'attente de votre réponse, je vous adresse mes cordiales salutations.","Merci bye,"],"ans":2,"exp":"'Dans l'attente de votre réponse, je vous adresse mes cordiales salutations' = Awaiting your reply, I send you my cordial regards. Formal first-contact sign-offs: 'Cordialement' (standard) · 'Bien cordialement' (warm/professional) · 'Salutations distinguées' (very formal). 'Bisous' (kisses) is for close friends only."},
+
+  // fr-l59 — A1 Pronunciation: vowels, silent letters, basic sounds
+  {"id":"fr-576","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"The French word 'ou' (or) and 'où' (where) look nearly identical. How do you tell them apart?","opts":["They are homophones — they sound different","'Ou' has no accent; 'où' has a grave accent (`) — but they sound identical","'Ou' sounds like 'oo'; 'où' sounds like 'uh'","'Où' is always at the start of a sentence"],"ans":1,"exp":"'Ou' and 'où' are homophones — they sound identical (/u/). The grave accent on 'où' is purely a spelling convention to avoid confusion between 'or' and 'where'. Context always clarifies: Tu viens ou tu restes ? vs Où es-tu ?"},
+  {"id":"fr-577","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"Which pair of French words are homophones (sound exactly the same)?","opts":["vert (green) / vers (towards) / verre (glass)","chat (cat) / chaud (hot)","bon (good) / beau (handsome)","et (and) / est (is)"],"ans":0,"exp":"'Vert', 'vers', and 'verre' are all pronounced /vɛʁ/ — identical sounds, different spellings and meanings. French has many such homophones. Context and spelling are key: Je porte un pull vert. · Il marche vers la gare. · Je bois dans un verre."},
+  {"id":"fr-578","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"In French, the letter 'h' at the start of a word is almost always silent. Which sentence is correct?","opts":["Je habite à Paris.","J'habite à Paris.","Je hhabite à Paris.","I h'abite à Paris."],"ans":1,"exp":"'J'habite' = I live (elision: je + habite → j'habite). The 'h' in 'habite' is a 'h muet' (silent h) — treat it as if it starts with a vowel. Elision and liaison occur. Some words have 'h aspiré' (aspirate h) where elision does NOT occur: le hibou (NOT l'hibou)."},
+  {"id":"fr-579","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"In French, the sounds 'au', 'eau', and 'o' all rhyme with each other. Which word does NOT belong in the same rhyming group?","opts":["beau","bureau","bateau","bien"],"ans":3,"exp":"'Beau' /bo/ · 'bureau' /byʁo/ · 'bateau' /bato/ — all contain the /o/ sound. 'Bien' /bjɛ̃/ contains the nasal vowel /ɛ̃/ — completely different. The 'eau' spelling always sounds /o/ in French: eau, beau, gâteau, tableau, chapeau."},
+  {"id":"fr-580","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"The French 'u' sound (as in 'tu', 'lune', 'rue') does not exist in English. How is it best described?","opts":["Like the English 'oo' in 'moon'","Like the English 'u' in 'but'","Round your lips as if to say 'oo' but say 'ee' instead","Like the English 'ew' in 'new'"],"ans":2,"exp":"The French /y/ sound in 'tu/lune/rue': position lips to say 'oo' (rounded), then say 'ee' without moving your lips. This is different from 'ou' (/u/) in 'vous/roue'. 'Tu' (/ty/) vs 'tout' (/tu/) — a minimal pair that changes meaning completely."},
+  {"id":"fr-581","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"Which word contains a SILENT final consonant?","opts":["avec","chef","sept","pont"],"ans":3,"exp":"'Pont' /pɔ̃/ — the final 't' is silent (it also has a nasal vowel). In French, most final consonants are silent: chat, vingt, nez, pied. Exceptions where final consonants ARE pronounced: avec /avɛk/ · chef /ʃɛf/ · sept /sɛt/. The memory trick: CaReFuL — C, R, F, L are usually pronounced at the end."},
+  {"id":"fr-582","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"'Est' (is) and 'et' (and) — how do they compare in pronunciation?","opts":["'Est' is /ɛst/, 'et' is /ɛt/ — different","Both are pronounced /e/ — they sound the same","'Et' rhymes with 'jet'; 'est' is silent","'Est' sounds like 'air'; 'et' sounds like 'ay'"],"ans":1,"exp":"'Et' /e/ and 'est' /ɛ/ are near-identical in natural speech — both sound like 'ay'. In careful speech, 'est' has a slightly more open /ɛ/ vowel. The final 'st' in 'est' is silent. In fast speech they are often indistinguishable, and context clarifies meaning."},
+  {"id":"fr-583","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"The 'é' (closed e) and 'è' (open e) are different sounds. Which word contains a CLOSED 'é' sound (like the 'ay' in 'say')?","opts":["fête","père","café","fenêtre"],"ans":2,"exp":"'Café' contains the closed /e/ sound — like 'ay'. 'Fête', 'père', 'fenêtre' all contain the OPEN /ɛ/ sound (like 'air' in English). Rule: é = closed /e/ · è, ê, e followed by double consonant = open /ɛ/. This distinction matters: chanter (infinitive) vs chanté (past participle) — same spelling group but different tones."},
+  {"id":"fr-584","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"In French, the letter 'c' is pronounced like 's' before which letters?","opts":["a, o, u","e, i, y","r, l, n","all vowels"],"ans":1,"exp":"'C' is soft /s/ before e, i, y: cerise /s/, cinéma /s/, cycle /s/. Before a, o, u it is hard /k/: café, copain, curieux. To force a soft 'c' sound before a, o, u, you add a cedilla: français, garçon, ça va."},
+  {"id":"fr-585","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"Which word does NOT rhyme with 'main' (hand)?","opts":["pain","vin","bain","lune"],"ans":3,"exp":"'Main' /mɛ̃/, 'pain' /pɛ̃/, 'vin' /vɛ̃/, 'bain' /bɛ̃/ — all share the nasal /ɛ̃/ sound. 'Lune' /lyn/ has the /y/ vowel — completely different. French nasal 'in/ain/ein' all produce /ɛ̃/: vin, pain, main, bain, sein, rein."},
+  {"id":"fr-586","topic":"fr-phon","lesson":"fr-l59","type":"dragdrop","q":"Match each word to the vowel sound it contains","pairs":[{"left":"vous","right":"/u/ (oo)"},{"left":"tu","right":"/y/ (French ü)"},{"left":"café","right":"/e/ (ay)"},{"left":"père","right":"/ɛ/ (air)"}],"exp":"Key French vowels: vous /vu/ = 'oo' sound · tu /ty/ = rounded 'ee' (no English equivalent) · café /kafe/ = closed 'ay' · père /pɛʁ/ = open 'air'. The ou/u distinction is crucial: 'vous' vs 'vu', 'roue' vs 'rue'."},
+  {"id":"fr-587","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"Which of these pairs are minimal pairs — words that differ by only ONE sound?","opts":["bon / blanc","tu / tout","verre / vert","chat / chien"],"ans":1,"exp":"'Tu' /ty/ and 'tout' /tu/ differ by exactly one sound: the vowel (/y/ vs /u/). These are minimal pairs. 'Bon'/'blanc' differ in vowel AND consonant. 'Verre'/'vert' are homophones (same sound). 'Chat'/'chien' differ in multiple sounds."},
+  {"id":"fr-588","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"In French, 'on' at the end of a word (as in 'maison', 'bon', 'garçon') produces which sound?","opts":["Like the English 'on' in 'on'","A nasal vowel /ɔ̃/ — like a nasalised 'awn'","Like the English 'own' in 'own'","The letter 'n' is fully pronounced"],"ans":1,"exp":"French 'on' produces the nasal vowel /ɔ̃/ — the vowel is nasalised and the 'n' is NOT a separate consonant. English has no direct equivalent; it sounds like a rounded 'aw' hummed through the nose. bon /bɔ̃/ · maison /mɛzɔ̃/ · garçon /gaʁsɔ̃/."},
+  {"id":"fr-589","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"The letters 'gn' in French (as in 'montagne', 'champagne', 'cognac') produce which sound?","opts":["Like the 'gn' in English 'ignore'","Like the 'ny' in 'canyon' (the Spanish ñ sound)","Like the 'ng' in 'sing'","Like the letter 'g' alone"],"ans":1,"exp":"French 'gn' = /ɲ/ — like the 'ny' sound in 'canyon' or the Spanish ñ. montagne /mɔ̃taɲ/ · champagne /ʃɑ̃paɲ/ · cognac /kɔɲak/ · Espagne /ɛspaɲ/. This sound is also found in 'gagner' (to win/earn) /gaɲe/."},
+  {"id":"fr-590","topic":"fr-phon","lesson":"fr-l59","type":"dragdrop","q":"Match each French spelling pattern to the sound it makes","pairs":[{"left":"eau / au","right":"/o/ (as in 'go')"},{"left":"ou","right":"/u/ (as in 'you')"},{"left":"ai / ei","right":"/ɛ/ (as in 'air')"},{"left":"in / ain","right":"/ɛ̃/ (nasal)"}],"exp":"French spelling patterns: eau/au → /o/ (beau, bateau) · ou → /u/ (vous, rouge) · ai/ei → /ɛ/ (maison, beige) · in/ain → /ɛ̃/ nasal (vin, main). Mastering these patterns makes reading French aloud much more predictable."},
+  {"id":"fr-591","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"How is the French 'r' (as in 'rue', 'rouge', 'très') produced?","opts":["Like the English 'r' — the tongue tip curls back","In the throat/back of the mouth — a uvular fricative","Like the Spanish rolled 'r'","It is always silent"],"ans":1,"exp":"The French 'r' /ʁ/ is produced at the back of the throat (uvular position) — a gentle friction like gargling. It is completely different from the English 'r' (tongue tip) or Spanish 'r' (trilled). Very common in French: rue, rouge, très, partir, merci."},
+
+  // fr-l60 — A2 Pronunciation: nasal vowels, liaison, elision
+  {"id":"fr-592","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"French has four nasal vowel sounds. Which combination is correct?","opts":["/an/, /in/, /on/, /un/","an/en, in/ain/ein, on, un/um","/a/, /i/, /o/, /u/ when followed by 'n'","an, enne, onne, unne"],"ans":1,"exp":"The four French nasal vowels: an/en → /ɑ̃/ (enfant, sans) · in/ain/ein → /ɛ̃/ (vin, pain, bein) · on → /ɔ̃/ (bon, maison) · un → /œ̃/ (un, lundi — though /un/ is merging with /ɛ̃/ in modern French). These sounds are nasalised — air passes through the nose as you say them."},
+  {"id":"fr-593","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"'An' and 'en' both produce the same nasal vowel /ɑ̃/. Which word does NOT contain this sound?","opts":["enfant","sans","vent","vin"],"ans":3,"exp":"'Vin' contains the /ɛ̃/ nasal vowel (not /ɑ̃/). 'Enfant' /ɑ̃fɑ̃/ · 'sans' /sɑ̃/ · 'vent' /vɑ̃/ — all /ɑ̃/. 'Vin' /vɛ̃/ — different nasal vowel. Key contrast: vent (wind) vs vin (wine) — both nasal, but different sounds."},
+  {"id":"fr-594","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"Liaison in French means linking a final consonant to the next word's initial vowel. 'Les enfants' — what happens?","opts":["The 's' is silent as usual","The 's' is pronounced /z/ and links to 'enfants': lez-enfants","The 's' is pronounced /s/ and links: les-senfants","No liaison occurs"],"ans":1,"exp":"In 'les enfants', liaison occurs: the silent 's' of 'les' becomes /z/ and links to the vowel: /lez‿ɑ̃fɑ̃/. Liaison always occurs after: les, des, ces, mes, tes, ses, un, aux, en, on, bien, très. It marks formal/careful speech."},
+  {"id":"fr-595","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"Elision (l'apostrophe) replaces the vowel of 'le/la/je/me/te/se/de/ne/que'. Before which sound does elision occur?","opts":["Before any noun","Before words starting with a vowel or silent h","Before words starting with a consonant","Before words of more than 2 syllables"],"ans":1,"exp":"Elision occurs before words starting with a vowel OR a silent 'h': le + ami → l'ami · je + ai → j'ai · ne + est → n'est. Not before aspirate 'h': le hibou (not l'hibou) · la honte (not l'honte). This is mandatory in written French."},
+  {"id":"fr-596","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"Which sentence contains a MISTAKE in written liaison/elision?","opts":["J'habite à Paris.","Le hibou est là.","C'est un bon ami.","L'homme arrive."],"ans":1,"exp":"'Le hibou' is correct — 'hibou' has an aspirate h (h aspiré), so no elision or liaison. The other sentences are correct: j'habite (elision, h muet) · c'est = elided 'ce est' · l'homme (elision, h muet). Aspirate h is unpredictable and must be memorised."},
+  {"id":"fr-597","topic":"fr-phon","lesson":"fr-l60","type":"dragdrop","q":"Match the French word to its nasal vowel sound","pairs":[{"left":"vin","right":"/ɛ̃/"},{"left":"bon","right":"/ɔ̃/"},{"left":"enfant","right":"/ɑ̃/"},{"left":"un","right":"/œ̃/"}],"exp":"The four nasal vowels: vin /ɛ̃/ (in/ain) · bon /ɔ̃/ (on) · enfant /ɑ̃/ (an/en) · un /œ̃/ (un/um). Being able to distinguish these is essential for both listening and speaking in French."},
+  {"id":"fr-598","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"The French word 'plus' has three different pronunciations. In 'je ne mange plus' (I no longer eat), how is it pronounced?","opts":["/plys/ — the 's' is heard","/ply/ — the 's' is silent","/plu/ — like English 'blue'","/pluz/ — the 'z' sound"],"ans":1,"exp":"In negation (ne...plus = no longer), 'plus' is /ply/ — the 's' is silent. In 'plus de' (more of) it is /ply/ too. Only when meaning 'more' positively is it sometimes /plys/: 'Tu veux plus de pain ?' In liaison: 'de plus en plus' /dəplyzɑ̃ply/."},
+  {"id":"fr-599","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"'Vingt' (20) — how many of its letters are actually pronounced?","opts":["All four (v-i-n-g-t)","Three (v-i-n)","Two: /vɛ̃/ — the nasal vowel only, gt silent","The 't' only"],"ans":2,"exp":"'Vingt' is pronounced /vɛ̃/ — just the 'vin' part, with a nasal vowel. The 'g' and 't' are silent in 'vingt' alone. BUT in liaison: 'vingt-et-un' = /vɛ̃teuœ̃/ — the 't' is heard. Similarly: 'vingt ans' = /vɛ̃tɑ̃/ with liaison."},
+  {"id":"fr-600","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"What happens to the 'd' in 'grand ami' when spoken?","opts":["The 'd' stays silent","Liaison occurs: 'grand' sounds like /grɑ̃t/ — the 'd' becomes /t/","The 'd' is pronounced /d/","'Grand' drops its final syllable"],"ans":1,"exp":"Liaison in 'grand ami': the 'd' is normally silent but in liaison it becomes /t/ (voiced consonants become voiceless in liaison): /grɑ̃t‿ami/. This is why 'un grand ami' sounds like 'un gran-tami'. Other voiced → voiceless: second /sgɔ̃/ → 'second enfant' /sgɔ̃t‿ɑ̃fɑ̃/."},
+  {"id":"fr-601","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"What is the French term for when two vowels in adjacent words merge — the first vowel is dropped?","opts":["Liaison","Élision","Enchaînement","Troncation"],"ans":1,"exp":"Élision = dropping a vowel (replaced by apostrophe): le → l' · la → l' · je → j' · de → d' · ne → n' · que → qu'. This is MANDATORY before vowels/h muet in standard French. Liaison (linking consonants) and enchaînement (linking a pronounced consonant to the next vowel) are related but different."},
+  {"id":"fr-602","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"The French 'j' (as in 'je', 'jour', 'jardin') produces which sound?","opts":["Like the English 'j' in 'jam'","Like the 's' in 'measure' — a voiced palatal fricative /ʒ/","Like the English 'y' in 'yes'","Like the 'zh' in 'Zhukov'"],"ans":1,"exp":"French 'j' = /ʒ/ — like the 's' in 'measure', 'treasure', or 'vision'. je /ʒə/ · jour /ʒuʁ/ · jardin /ʒaʁdɛ̃/. Note: French 'ch' = /ʃ/ (like English 'sh'): chat, chef, chercher. These are two different sounds: je vs chef."},
+  {"id":"fr-603","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"In connected speech, French speakers often shorten 'tu' to /t/ before a vowel. 'Tu as' becomes what?","opts":["tu as (no change)","t'as (/ta/)","tu'as","t'az"],"ans":1,"exp":"'T'as' /ta/ is the colloquial spoken form of 'tu as'. This elision (tu → t') happens in fast speech: t'as vu ? (Have you seen?). Similarly: t'es (tu es), t'aimes (tu aimes). This is spoken/informal only — always write 'tu as' in formal writing."},
+  {"id":"fr-604","topic":"fr-phon","lesson":"fr-l60","type":"mcq","q":"The word 'œuf' (egg) is pronounced /œf/ in the singular. What happens in the plural 'œufs'?","opts":["Pronounced /œfs/ — the 's' is added","Pronounced /ø/ — both consonants drop","Pronounced /œ/ — the 'f' drops too","Same as singular"],"ans":1,"exp":"'Œufs' (eggs) is pronounced /ø/ — both the 'f' AND the 's' are silent in the plural! This is one of the most surprising pronunciation changes in French. Similarly: bœuf /bœf/ → bœufs /bø/ · os (bone) /ɔs/ → os (bones) /o/."},
+  {"id":"fr-605","topic":"fr-phon","lesson":"fr-l60","type":"dragdrop","q":"Identify whether each 'h' triggers elision (h muet) or blocks it (h aspiré)","pairs":[{"left":"habiter (to live)","right":"h muet → j'habite"},{"left":"hibou (owl)","right":"h aspiré → le hibou"},{"left":"homme (man)","right":"h muet → l'homme"},{"left":"haricot (bean)","right":"h aspiré → le haricot"}],"exp":"H muet (silent h) → elision and liaison occur: l'homme, j'habite, l'heure, l'hiver. H aspiré (aspirate h) → NO elision or liaison: le hibou, le haricot, la honte, le héros. Unfortunately this must be memorised — there's no reliable rule."},
+
+  // fr-l61 — B1 Pronunciation: register, reduced forms, intonation
+  {"id":"fr-606","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"In fast spoken French, 'je ne sais pas' (I don't know) is commonly shortened to what?","opts":["je ne sais","je sais pas","/ʃɛpa/","Both B and C"],"ans":3,"exp":"In informal spoken French, 'ne' is commonly dropped: 'je sais pas' (/ʒsɛpa/ or /ʃɛpa/). Further reduction: 'chais pas' or '/ʃɛpa/' in very casual speech. This is perfectly normal in conversation but should NEVER appear in formal writing."},
+  {"id":"fr-607","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"In spoken French, 'il y a' (there is/are) often becomes which sound?","opts":["'il y' only","/ja/ or 'y'a'","'il a'","'y il a'"],"ans":1,"exp":"'Il y a' → /ja/ or 'y'a' in fast speech: 'Y'a pas de problème' (No problem). Similarly: 'il y en a' → 'y'en a'. This reduction is common in all but the most formal spoken contexts. Always write 'il y a' in formal registers."},
+  {"id":"fr-608","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"French intonation in a yes/no question without an inversion can be shown only by:","opts":["Adding 'est-ce que' at the start","Rising intonation on the last syllable","Adding '?' at the end in writing","Both A and B"],"ans":3,"exp":"In spoken French, yes/no questions can be formed three ways: (1) rising intonation: 'Tu viens ?' ↗ (2) est-ce que: 'Est-ce que tu viens ?' (3) inversion: 'Viens-tu ?' In casual speech, only intonation or est-ce que is used — inversion is formal/written."},
+  {"id":"fr-609","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"What is the schwa /ə/ in French, and when is it dropped?","opts":["The letter 'e' — always pronounced","The 'mute e' — often dropped in fast speech: 'je ne sais pas' → 'j'n'sais pas'","A silent letter that is never pronounced","The nasal 'en' sound"],"ans":1,"exp":"The schwa /ə/ is the 'mute e' — a neutral vowel that is often dropped in fast speech. 'Je ne le veux pas' → '/ʒnlvøpa/' in rapid French. In poetry and formal speech every schwa is pronounced. The schwa keeps rhythmic flow; dropping it speeds up speech."},
+  {"id":"fr-610","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"The phrase 'Qu'est-ce que c'est ?' is which level of formality?","opts":["Very formal","Standard/neutral — correct spoken French","Informal/slang","Regional dialect only"],"ans":1,"exp":"'Qu'est-ce que c'est ?' = What is it? This is standard spoken French for a question about identity/nature. More formal: 'Qu'est-ce que c'est que cela ?' Informal: 'C'est quoi ça ?' The most formal (written): 'Qu'est-ce que cela est ?' or 'Qu'est-ce ?' — rarely used."},
+  {"id":"fr-611","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"In French, word stress falls on which syllable?","opts":["The first syllable (like English often does)","The last syllable of a rhythmic group","Whichever syllable carries the most meaning","It varies unpredictably"],"ans":1,"exp":"French stress falls on the LAST syllable of a rhythmic group (phrase), unlike English which varies. 'je mange' = /ʒə MⱭNƷ/ · 'je mange une pomme' = /ʒə mɑ̃ʒ yn POM/. Individual French words have no fixed stress — stress is at the phrase level. This gives French its characteristic even, flowing rhythm."},
+  {"id":"fr-612","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"'Bon' /bɔ̃/ and 'bonne' /bɔn/ are pronounced differently. What changes?","opts":["The vowel changes from nasal to oral when 'ne' is added","The stress moves to the second syllable","The b sound changes","Nothing — they are homophones"],"ans":0,"exp":"'Bon' /bɔ̃/ has a nasal vowel (the 'n' is not a separate consonant). 'Bonne' /bɔn/ has an oral vowel + a pronounced 'n'. This nasal/oral alternation happens when feminine endings are added: bon/bonne · américain/américaine · brun/brune · plein/pleine."},
+  {"id":"fr-613","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"'Pain' (bread) and 'pin' (pine tree) — are these homophones?","opts":["Yes — both /pɛ̃/","No — 'pain' is /pɛ̃/ and 'pin' is /pɛn/","No — 'pain' is /pæn/ and 'pin' is /pɛ̃/","Yes — both /pan/"],"ans":0,"exp":"'Pain' /pɛ̃/ and 'pin' /pɛ̃/ are homophones — both have the /ɛ̃/ nasal vowel. French has many such homophones: vin/vain/vingt /vɛ̃/ · main/maint /mɛ̃/. Context and spelling determine meaning: Je mange du pain. Il y a un pin dans le jardin."},
+  {"id":"fr-614","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"What is 'enchaînement' in French phonetics?","opts":["Elision — dropping a vowel","Linking a word-final pronounced consonant to the initial vowel of the next word","Liaison — linking a silent consonant","A change in vowel quality before nasals"],"ans":1,"exp":"Enchaînement = linking a word-final PRONOUNCED consonant to the initial vowel of the next word: 'une amie' → /y‿na‿mi/ (the 'n' links). This differs from liaison (where normally-silent consonants are activated). Both create the flowing connected sound of French."},
+  {"id":"fr-615","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"In formal spoken French, how many syllables does 'je' have in 'je vais'?","opts":["One /ʒə/ — always","In careful speech it's one; in fast speech the /ə/ drops making it cluster with 'v': /ʒvɛ/","It is silent — inversion must be used","Two syllables: /ʒe-vɛ/"],"ans":1,"exp":"'Je vais' = /ʒə vɛ/ in careful speech (two syllables). In fast speech the schwa drops: /ʒvɛ/. When several clitics cluster: 'je ne le vois pas' → /ʒnlvwapa/. Schwa reduction is a hallmark of natural, spontaneous French speech."},
+  {"id":"fr-616","topic":"fr-phon","lesson":"fr-l61","type":"dragdrop","q":"Match the phonetic phenomenon to its example","pairs":[{"left":"Élision","right":"j'ai (je + ai)"},{"left":"Liaison","right":"les‿enfants (/z/ sound)"},{"left":"Enchaînement","right":"une‿amie (/n/ links)"},{"left":"Chute du ne","right":"Je sais pas (spoken)"}],"exp":"Four key spoken French phenomena: élision (vowel dropped, apostrophe written) · liaison (silent consonant activated before vowel) · enchaînement (pronounced consonant links to next vowel) · chute du ne (dropping 'ne' in negation — spoken only)."},
+  {"id":"fr-617","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"Which sentence demonstrates the FORMAL/WRITTEN register correctly for a question?","opts":["T'as vu le film ?","Tu as vu le film ?","As-tu vu le film ?","Est-ce que t'as vu le film ?"],"ans":2,"exp":"'As-tu vu le film ?' = Have you seen the film? Inversion (verb-subject swap) is the most formal question form — used in written and formal spoken French. 'Tu as vu le film ?' (rising intonation) and 'Est-ce que tu as vu le film ?' are standard spoken forms. 'T'as vu' is informal spoken only."}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -4533,6 +4582,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "'Je m'appelle Marie' = My name is Marie. This is the standard phrase for giving your name in French. 'Je suis Marie' is also possible but less idiomatic."
           }
         ]
+      },
+      {
+        "id": "fr-l59",
+        "title": "Prononciation — sons de base",
+        "icon": "🔊",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Key vowel sounds",
+            "body": "<p>French has vowel sounds that don't exist in English:</p><table><tr><th>Sound</th><th>Symbol</th><th>Example words</th></tr><tr><td>Rounded 'ee' (no English equivalent)</td><td>/y/</td><td>tu, lune, rue, vu</td></tr><tr><td>'oo' (as in 'you')</td><td>/u/</td><td>vous, rouge, tout, ou</td></tr><tr><td>Closed 'ay'</td><td>/e/</td><td>café, été, chanté</td></tr><tr><td>Open 'air'</td><td>/ɛ/</td><td>père, fête, être, mer</td></tr></table><p>🔑 Minimal pair: <strong>tu</strong> /ty/ vs <strong>tout</strong> /tu/ — change just one sound, change the meaning!</p>"
+          },
+          {
+            "type": "info",
+            "title": "Silent letters and h muet",
+            "body": "<p>French has many silent letters:</p><ul><li><strong>Final consonants</strong> are usually silent: cha<strong>t</strong>, pon<strong>t</strong>, ne<strong>z</strong>, pie<strong>d</strong></li><li>Exception: <em>CaReFuL</em> — C, R, F, L are often pronounced at end: aver<strong>c</strong>, spor<strong>t</strong></li><li><strong>H muet</strong> (silent h) — triggers elision: <em>j'habite</em>, <em>l'homme</em>, <em>l'heure</em></li><li><strong>H aspiré</strong> — blocks elision: <em>le hibou</em>, <em>le haricot</em> (must be memorised)</li></ul><p>Spelling patterns: <strong>eau/au → /o/</strong> · <strong>ai/ei → /ɛ/</strong> · <strong>in/ain → /ɛ̃/</strong> nasal</p>"
+          },
+          {
+            "type": "info",
+            "title": "The French R and special consonants",
+            "body": "<p>Consonants that differ from English:</p><ul><li><strong>French R</strong> /ʁ/ — produced at the back of the throat (uvular). Not like English 'r' or Spanish rolled 'r': <em>rue, rouge, très, partir</em></li><li><strong>French J</strong> /ʒ/ — like the 's' in 'measure': <em>je, jour, jardin</em></li><li><strong>CH</strong> /ʃ/ — like English 'sh': <em>chat, chef, chercher</em></li><li><strong>GN</strong> /ɲ/ — like 'ny' in 'canyon': <em>montagne, champagne, gagner</em></li><li><strong>C before e/i/y</strong> = /s/: <em>cerise, cinéma</em></li></ul>"
+          }
+        ],
+        "check": [
+          {
+            "q": "The words 'vert' (green), 'vers' (towards) and 'verre' (glass) all sound the same. What are they called?",
+            "opts": ["Synonyms", "Homophones", "Antonyms", "Cognates"],
+            "ans": 1,
+            "exp": "Homophones = words that sound identical but have different spellings and meanings. French has many: vert/vers/verre, ou/où, à/a, et/est. Context and spelling clarify meaning."
+          },
+          {
+            "q": "Is the 'h' in 'habiter' (to live) silent or aspirate?",
+            "opts": ["Aspirate h — say 'le habite'", "Silent h (h muet) — elision applies: j'habite", "It's always pronounced", "It depends on dialect"],
+            "ans": 1,
+            "exp": "'Habiter' has a silent h (h muet): je + habite → j'habite. Elision and liaison occur. Compare: 'le hibou' (owl) has an aspirate h — no elision. This must be memorised per word."
+          },
+          {
+            "q": "What sound does 'gn' produce in 'montagne'?",
+            "opts": ["Like the 'g' in 'go'", "Like the 'ny' in 'canyon'", "Like 'ng' in 'sing'", "Silent"],
+            "ans": 1,
+            "exp": "'GN' = /ɲ/ — like 'ny' in 'canyon' or the Spanish ñ. montagne /mɔ̃taɲ/ · champagne /ʃɑ̃paɲ/ · gagner /gaɲe/."
+          }
+        ]
       }
     ]
   },
@@ -6630,6 +6721,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "'Laisser un message' = to leave a message. If yes: 'Oui, pouvez-vous lui demander de me rappeler ?' (Yes, could you ask them to call me back?) If no: 'Non merci, je rappellerai plus tard.' (No thank you, I'll call back later.)"
           }
         ]
+      },
+      {
+        "id": "fr-l60",
+        "title": "Prononciation — nasales, liaison, élision",
+        "icon": "🔗",
+        "cards": [
+          {
+            "type": "info",
+            "title": "The four nasal vowels",
+            "body": "<p>French has four nasal vowels — the air flows through the nose:</p><table><tr><th>Sound</th><th>Spellings</th><th>Examples</th></tr><tr><td>/ɑ̃/</td><td>an, am, en, em</td><td>enfant, sans, vent, temps</td></tr><tr><td>/ɛ̃/</td><td>in, im, ain, ein, un*</td><td>vin, pain, bein, fin</td></tr><tr><td>/ɔ̃/</td><td>on, om</td><td>bon, maison, garçon</td></tr><tr><td>/œ̃/</td><td>un, um</td><td>un, lundi, parfum</td></tr></table><p>*In modern French, /un/ and /ɛ̃/ are merging — many speakers don't distinguish 'un' and 'in'.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Liaison and enchaînement",
+            "body": "<p><strong>Liaison</strong>: a normally silent final consonant is pronounced before a word starting with a vowel/h muet:</p><ul><li>les enfants → /lez‿ɑ̃fɑ̃/ (s becomes z)</li><li>un homme → /œ̃n‿ɔm/ (n pronounced)</li><li>grand ami → /grɑ̃t‿ami/ (d becomes t)</li></ul><p><strong>Enchaînement</strong>: a pronounced consonant links naturally to the next vowel:</p><ul><li>une amie → /y‿na‿mi/ (the n of une links)</li></ul><p>⚠️ Liaison is <em>mandatory</em> after les, des, mes, ces, un, en, très, plus (as adverb), and <em>forbidden</em> before h aspiré.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Élision and the schwa",
+            "body": "<p><strong>Élision</strong> (mandatory before vowels/h muet):</p><ul><li>le + ami → <strong>l'ami</strong></li><li>je + ai → <strong>j'ai</strong></li><li>ne + est → <strong>n'est</strong></li><li>de + eau → <strong>de l'eau</strong></li></ul><p><strong>Schwa /ə/</strong> (mute e): often dropped in fast speech:</p><ul><li>'je ne le veux pas' → /ʒnlvøpa/ in rapid speech</li><li>'tu' → /t/ before vowel in casual: 't'as vu ?'</li></ul><p>In formal speech, every schwa is pronounced. In casual speech, many drop.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "In 'les enfants', what happens to the 's' of 'les'?",
+            "opts": ["It stays silent", "It becomes /z/ and links to 'enfants'", "It becomes /s/ and is pronounced", "The word contracts to l'enfants"],
+            "ans": 1,
+            "exp": "Liaison: the normally-silent 's' of 'les' becomes /z/ before the vowel of 'enfants': /lez‿ɑ̃fɑ̃/. Liaison is mandatory after 'les, des, mes, un, en, très'. The 's' always becomes /z/ in liaison."
+          },
+          {
+            "q": "Which word contains the nasal vowel /ɑ̃/?",
+            "opts": ["vin", "bon", "enfant", "brun"],
+            "ans": 2,
+            "exp": "Enfant /ɑ̃fɑ̃/ contains /ɑ̃/ (an/en). vin /vɛ̃/ = /ɛ̃/ · bon /bɔ̃/ = /ɔ̃/ · brun /bʁœ̃/ = /œ̃/. The four nasals are distinct sounds — learning to hear the difference is key."
+          },
+          {
+            "q": "Does 'hibou' (owl) have a silent h or aspirate h? What does this mean for elision?",
+            "opts": ["Silent h — write l'hibou", "Aspirate h — write le hibou (no elision)", "Always write l'hibou in formal French", "The 'h' is always pronounced in hibou"],
+            "ans": 1,
+            "exp": "'Hibou' has aspirate h: le hibou (no elision), les hiboux (no liaison: /le ibu/, not /lez ibu/). Compare: l'homme (silent h, elision applies). Aspirate h must be memorised — there is no rule to predict it."
+          }
+        ]
       }
     ]
   },
@@ -7652,6 +7785,54 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "opts": ["The minister definitely resigned", "It is reportedly/allegedly the minister resigned (unconfirmed)", "The minister should resign", "The minister resigned yesterday"],
             "ans": 1,
             "exp": "The conditionnel passé (aurait + past participle) is used in French journalism to report unconfirmed information. 'Le ministre aurait démissionné' = the minister has reportedly resigned (not yet confirmed). This is called the 'conditionnel journalistique'."
+          }
+        ]
+      },
+      {
+        "id": "fr-l61",
+        "title": "Prononciation — registre et intonation",
+        "icon": "🎶",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Word stress in French",
+            "body": "<p>Unlike English, French does NOT stress individual words — stress falls on the <strong>last syllable of a rhythmic group</strong> (phrase):</p><ul><li>English: <em>IM-por-tant</em> (variable stress)</li><li>French: <em>im-por-TANT</em> in isolation; in a sentence stress goes on the last content word's last syllable</li></ul><p>This gives French its characteristic even, flowing rhythm. Example: 'Je mange une pomme' — stress falls on <em>pomme's</em> last syllable.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Register: spoken vs written French",
+            "body": "<p>French has significant differences between formal/written and informal/spoken registers:</p><table><tr><th>Feature</th><th>Formal/written</th><th>Informal/spoken</th></tr><tr><td>Negation</td><td>Je ne sais pas.</td><td>Je sais pas. / Chais pas.</td></tr><tr><td>Questions</td><td>As-tu vu ? / Est-ce que tu as vu ?</td><td>T'as vu ?</td></tr><tr><td>Il y a</td><td>Il y a un problème.</td><td>Y'a un problème.</td></tr><tr><td>Nous</td><td>Nous allons.</td><td>On y va.</td></tr></table>"
+          },
+          {
+            "type": "info",
+            "title": "Intonation and the schwa",
+            "body": "<p><strong>Intonation patterns:</strong></p><ul><li>Yes/no questions: rising intonation at end ↗</li><li>Information questions (où, quand, comment): falling intonation ↘</li></ul><p><strong>Schwa /ə/ reduction in fast speech:</strong></p><ul><li>'je ne le veux pas' → /ʒnlvøpa/</li><li>'tu' → 't'' before vowel: 't'as mangé ?'</li><li>'il y a' → 'y'a': 'y'a pas de problème'</li></ul><p>In formal speech all schwas are pronounced; in casual speech many drop — both are natural in their contexts.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "Where does stress fall in French?",
+            "opts": ["On the first syllable of a word (like English)", "On the last syllable of a rhythmic group/phrase", "On the syllable with an accent mark", "French has no stress — every syllable is equal"],
+            "ans": 1,
+            "exp": "French stress falls on the LAST syllable of a rhythmic group. Individual words have no fixed stress. This gives French its smooth, flowing rhythm — very different from English's variable stress patterns."
+          },
+          {
+            "q": "In informal spoken French, 'je ne sais pas' often becomes what?",
+            "opts": ["je ne sais", "je sais pas", "j'ne sais pas", "ne sais pas"],
+            "ans": 1,
+            "exp": "'Je sais pas' — the 'ne' is dropped. This is standard in casual spoken French. In very fast speech: 'chais pas'. Always write 'je ne sais pas' in formal contexts."
+          },
+          {
+            "q": "In formal French, how would you turn 'tu as vu le film' into a question?",
+            "opts": ["T'as vu le film ?", "Tu as vu le film ? (rising intonation)", "As-tu vu le film ?", "Est-ce que t'as vu le film ?"],
+            "ans": 2,
+            "exp": "'As-tu vu le film ?' uses inversion — the most formal question structure. 'Est-ce que tu as vu le film ?' is also formal/standard. Rising intonation alone is informal; 'T'as vu' is very casual."
+          },
+          {
+            "q": "What is the 'conditionnel journalistique' used for?",
+            "opts": ["To express polite requests", "To report unconfirmed information in news", "To describe past habits", "To make formal complaints"],
+            "ans": 1,
+            "exp": "The journalistic conditional (aurait + past participle) signals unconfirmed information: 'Le ministre aurait démissionné' = the minister has reportedly resigned. It is very common in French news media."
           }
         ]
       }
