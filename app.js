@@ -2044,6 +2044,7 @@
     const subj = getSubject(id);
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
+    if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }
     subj.activate();
     Storage.data = defaultData();
     Storage.load();

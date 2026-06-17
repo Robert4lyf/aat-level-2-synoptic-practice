@@ -2597,6 +2597,10 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   font-weight: 600;
 }
 
+/* Hide the Ref button and panel for non-AAT subjects */
+body:not([data-subject="aat"]) #referenceToggle { display: none; }
+body:not([data-subject="aat"]) .reference-panel { display: none; }
+
 /* Reference panel */
 .reference-panel {
   position: fixed;
