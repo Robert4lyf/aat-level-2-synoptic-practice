@@ -60,6 +60,7 @@
     if (n === 168 || n === 179 || n === 181) return 'A1'; // être/avoir conjugation drills
     if (n >= 183 && n <= 200) return 'A1'; // pronunciation/accents + basic body parts
     if (n >= 253 && n <= 262) return 'A1'; // transport and directions
+    if (n >= 271 && n <= 290) return 'A1'; // plurals, negation, adjectives, aller/faire
     // B1 — Intermédiaire
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
