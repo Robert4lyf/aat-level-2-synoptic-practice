@@ -1240,40 +1240,6 @@ header .sub {
   font-weight: 500;
 }
 
-.history-list {
-  background: var(--card);
-  border-radius: var(--r-md);
-  padding: 6px 18px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-xs);
-}
-.history-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: .87rem;
-  gap: 12px;
-}
-.history-row:last-child { border-bottom: none; }
-.history-row .ht-mode { font-weight: 600; color: var(--text-strong); }
-.history-row .ht-meta { font-size: .75rem; color: var(--subtext); margin-top: 2px; }
-.history-row .ht-score {
-  font-weight: 700;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  font-size: .82rem;
-}
-.history-row .ht-score.great { color: var(--success-700); background: var(--success-50); }
-.history-row .ht-score.ok    { color: var(--warning-700); background: var(--warning-50); }
-.history-row .ht-score.low   { color: var(--danger-700);  background: var(--danger-50); }
-.dark .history-row .ht-score.great { color: #6ee7a3; background: rgba(22, 163, 74, .14); }
-.dark .history-row .ht-score.ok    { color: #fcd34d; background: rgba(217, 119, 6, .14); }
-.dark .history-row .ht-score.low   { color: #fca5a5; background: rgba(220, 38, 38, .14); }
-
 .empty-state {
   text-align: center;
   padding: 60px 24px;
@@ -1854,40 +1820,6 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 .dash-stat-sub { font-size: .75rem; font-weight: 500; color: var(--subtext); letter-spacing: 0; }
 .dash-stat-label { font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--subtext); }
 
-/* Weekly activity chart */
-.weekly-chart {
-  display: flex;
-  gap: 4px;
-  align-items: flex-end;
-}
-.wc-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.wc-bar-bg {
-  width: 100%;
-  height: 36px;
-  background: var(--bg-main);
-  border-radius: 4px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-}
-.wc-bar {
-  width: 100%;
-  background: linear-gradient(180deg, var(--brand-400), var(--brand-600));
-  border-radius: 4px 4px 0 0;
-  min-height: 3px;
-  transition: height .4s var(--ease);
-}
-.wc-today .wc-bar { background: linear-gradient(180deg, var(--brand-300), var(--brand-500)); }
-.wc-today .wc-label { color: var(--accent); font-weight: 700; }
-.wc-count { font-size: .6rem; font-weight: 600; color: var(--subtext); min-height: .7rem; }
-.wc-label { font-size: .62rem; color: var(--subtext); }
-
 /* Topic card footer with seen/total + progress bar */
 .topic-card-footer {
   display: flex;
@@ -2223,29 +2155,6 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   box-shadow: var(--shadow-xs);
 }
 .review-filter .rf:disabled { opacity: .5; cursor: not-allowed; }
-
-/* Progress actions row */
-.progress-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-  align-items: center;
-}
-.action-btn {
-  padding: 9px 18px;
-  border-radius: var(--r-sm);
-  font-size: .82rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--btn-sec);
-  color: var(--btn-sec-text);
-  transition: background var(--dur) var(--ease), transform var(--dur-fast) var(--ease);
-}
-.action-btn:hover { background: var(--btn-sec-hover); }
-.action-btn:active { transform: scale(.98); }
-.progress-actions .danger-btn { margin-top: 0; }
 
 /* Per-course progress reset */
 .reset-courses-section {
@@ -4009,45 +3918,6 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   width: 100%;
   max-width: 360px;
 }
-
-/* ── Session sparkline ── */
-.session-sparkline {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 14px 16px;
-  margin-bottom: 20px;
-}
-.spark-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.spark-title { font-size: .85rem; font-weight: 700; color: var(--text-strong); }
-.spark-trend { font-size: .75rem; font-weight: 600; }
-.spark-up   { color: #16a34a; }
-.spark-down { color: #dc2626; }
-.spark-bars { display: flex; gap: 5px; align-items: flex-end; }
-.spark-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.spark-bar-bg {
-  width: 100%;
-  height: 48px;
-  background: var(--bg-main);
-  border-radius: 4px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-}
-.spark-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 3px; transition: height .5s var(--ease); }
-.spark-great { background: #16a34a; }
-.spark-ok    { background: #f59e0b; }
-.spark-low   { background: #dc2626; }
-.spark-pct { font-size: .62rem; font-weight: 700; }
-.spark-pct.spark-great { color: #16a34a; }
-.spark-pct.spark-ok    { color: #d97706; }
-.spark-pct.spark-low   { color: #dc2626; }
-.spark-icon { font-size: .58rem; color: var(--subtext); }
 
 /* ═══════════════════════════════════════════════════════════
    WORKED STEPS (numeric practice)
