@@ -64,6 +64,7 @@
     if (n >= 312 && n <= 331) return 'A1'; // -ER verb conjugation, nationalities/countries, weather
     if (n >= 378 && n <= 422) return 'A1'; // thematic vocab: numbers, family, food
     if (n >= 447 && n <= 458) return 'A1'; // thematic vocab: weather
+    if (n >= 471 && n <= 505) return 'A1'; // conjugation drills: être/avoir/aller + regular -ER/-IR/-RE
     // B1 — Intermédiaire
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
