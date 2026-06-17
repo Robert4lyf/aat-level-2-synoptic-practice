@@ -82,6 +82,22 @@
     return !!(unitTest && unitTest.passed);
   }
 
+  /* Unit-level unlock gate for non-French subjects.
+     First unit is always open; each subsequent unit requires the previous one to
+     have every lesson done AND its unit quiz passed — mirroring frLevelUnlocked(). */
+  function isUnitUnlocked(unitId) {
+    if (_activeSubjectId === 'french') return true; // French uses frLevelUnlocked instead
+    const lp = window.LEARN_PATH || [];
+    const key = u => u.unit || u.id;
+    const idx = lp.findIndex(u => key(u) === unitId);
+    if (idx <= 0) return true; // first unit, single-unit subjects, or unknown topic
+    const prereq = lp[idx - 1];
+    const prereqId = key(prereq);
+    if (!prereq.lessons.every(L => isLessonDone(L.id))) return false;
+    const unitTest = (Storage.data.learn.unitTests || {})[prereqId];
+    return !!(unitTest && unitTest.passed);
+  }
+
   const PASS_MARK = 70;
   const PRACTICE_LENGTH = 15;
   /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
@@ -1379,20 +1395,30 @@
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
-    // For French: only surface questions from CEFR levels the learner has unlocked.
-    // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass the gate so
-    // previously-unlocked questions already in those lists remain accessible.
+    // Gate questions to only those from unlocked units / CEFR levels.
+    // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass these gates.
     const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
-    if (_activeSubjectId === 'french' && !GATE_EXEMPT.has(topicId)) {
-      if (topicId && topicId.indexOf('level:') === 0) {
-        const requestedLevel = topicId.slice(6);
-        if (!frLevelUnlocked(requestedLevel)) {
-          const prereq = requestedLevel === 'B1' ? 'A2' : 'A1';
-          showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + requestedLevel + '.', 'warn');
-          return;
+    if (!GATE_EXEMPT.has(topicId)) {
+      if (_activeSubjectId === 'french') {
+        if (topicId && topicId.indexOf('level:') === 0) {
+          const requestedLevel = topicId.slice(6);
+          if (!frLevelUnlocked(requestedLevel)) {
+            const prereq = requestedLevel === 'B1' ? 'A2' : 'A1';
+            showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + requestedLevel + '.', 'warn');
+            return;
+          }
+        } else {
+          pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
         }
       } else {
-        pool = pool.filter(q => frLevelUnlocked(frQuestionLevel(q.id)));
+        // For non-French subjects: gate topic-specific practice if the unit is locked.
+        const isSpecificTopic = topicId && topicId !== 'all' && topicId.indexOf('skill:') !== 0;
+        if (isSpecificTopic && !isUnitUnlocked(topicId)) {
+          showToast('Complete the previous unit and pass its quiz to unlock this topic.', 'warn');
+          return;
+        }
+        // Remove questions from locked units regardless of pool type.
+        pool = pool.filter(q => isUnitUnlocked(q.topic));
       }
     }
 
@@ -1432,7 +1458,7 @@
     const overallAcc = attempts ? corrects / attempts : 0;
     const weighted = window.ALL_QUESTIONS
       .filter(q => !Storage.isConfident(q.id))
-      .filter(q => _activeSubjectId !== 'french' || frLevelUnlocked(frQuestionLevel(q.id)))
+      .filter(q => frLevelUnlocked(frQuestionLevel(q.id)) && isUnitUnlocked(q.topic))
       .map(q => {
       let w = 1;
       const s = acc[q.skill];
@@ -1479,7 +1505,7 @@
     const weakTopics = getWeakTopics();
     if (!weakTopics.length) { showToast('Answer 5+ questions in each topic to unlock Focus Mode.', 'warn'); return; }
     const topicIds = weakTopics.slice(0, 3).map(t => t.id);
-    const allQ = (window.ALL_QUESTIONS || []).filter(q => topicIds.includes(q.topic));
+    const allQ = (window.ALL_QUESTIONS || []).filter(q => topicIds.includes(q.topic) && isUnitUnlocked(q.topic) && frLevelUnlocked(frQuestionLevel(q.id)));
     const mistakeIds = new Set(Storage.activeMistakeIds());
     const wrongIds = new Set(
       Object.entries(Storage.data.stats.questions)
@@ -2554,10 +2580,20 @@
       <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
         ${window.TOPICS.map(t => {
+          const totalN = counts[t.id];
+          if (!isUnitUnlocked(t.id)) {
+            return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
+              <div class="icon" aria-hidden="true">🔒</div>
+              <h3>${escapeHtml(t.name)}</h3>
+              <p class="lock-reason">Complete the previous unit and pass its quiz to unlock</p>
+              <div class="topic-card-footer">
+                <span class="count"><span class="topic-count-sep">${totalN} questions locked</span></span>
+              </div>
+            </div>`;
+          }
           const m = topicMastery(t.id);
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
           const seenN = seenByTopic[t.id] || 0;
-          const totalN = counts[t.id];
           const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
           return `<button class="topic-card fade-in" type="button" data-topic="${t.id}" data-topic-color="${t.id}" aria-label="Practice ${escapeHtml(t.name)} — ${seenN} of ${totalN} seen">
             ${badge}
