@@ -3043,7 +3043,7 @@
           })()}
           ${bodyHtml}${feedbackHtml}
         </div>
-        ${numeric ? renderCalculatorSidebar() : ''}
+        ${numeric && _activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -3202,7 +3202,7 @@
           ${!answered ? `<button class="next-btn" id="submitTableFillBtn" type="button">Submit answers ✓</button>` : ''}
           ${feedbackHtml}
         </div>
-        ${renderCalculatorSidebar()}
+        ${_activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -3283,7 +3283,7 @@
           ${!answered ? `<button class="next-btn" id="submitScenarioBtn" type="button">Submit all parts ✓</button>` : ''}
           ${feedbackHtml}
         </div>
-        ${renderCalculatorSidebar()}
+        ${_activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -3443,7 +3443,7 @@
             ${navGroupsHtml}
           </div>
         </div>
-        ${numeric ? renderCalculatorSidebar() : ''}
+        ${numeric && _activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }

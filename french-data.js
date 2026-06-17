@@ -792,7 +792,7 @@ window.FR_QUESTIONS = [
   {"id":"fr-188","topic":"fr-gram","type":"mcq","q":"The French \"u\" (in \"tu\", \"rue\") is unusual because:","opts":["It sounds exactly like English \"oo\"","You round your lips as for \"oo\" but say \"ee\" — no English equivalent","It is always silent","It sounds like \"uh\""],"ans":1,"exp":"French \"u\" has no English equivalent — round lips as if saying \"oo\", then say \"ee\": une, rue, tu."},
   {"id":"fr-189","topic":"fr-gram","type":"mcq","q":"In French, most final consonants are:","opts":["Always pronounced","Silent unless followed by a vowel-starting word (liaison)","Doubled before a vowel","Always stressed"],"ans":1,"exp":"Final consonants are usually silent: vous parlEZ, ils sontT — but can link before a vowel: vous_avez → vouz-avez."},
   {"id":"fr-190","topic":"fr-gram","type":"mcq","q":"Nasal vowels (un, in, on, an) are produced by:","opts":["Pressing the tongue to the roof of the mouth","Allowing air to flow through the nose as you speak","Doubling the vowel length","Closing the lips tightly"],"ans":1,"exp":"Nasal vowels involve nasal resonance — breathe through your nose as you say them. The n/m is not fully articulated."},
-  {"id":"fr-191","topic":"fr-gram","type":"dragdrop","q":"Match each accent to an example word:","pairs":[{"left":"accent aigu (é)","right":"café"},{"left":"accent grave (è)","right":"père"},{"left":"cédille (ç)","right":"français"},{"left":"tréma (ï)","right":"naïf"}],"exp":"é = aigu (sounds like ay), è = grave (open e), ç = cédille (s sound), ï = tréma (separate vowels)."},
+  {"id":"fr-191","topic":"fr-gram","type":"dragdrop","q":"Match each accent to an example word:","pairs":[{"left":"accent aigu","right":"café"},{"left":"accent grave","right":"père"},{"left":"cédille","right":"français"},{"left":"tréma","right":"naïf"}],"exp":"é = aigu (sounds like ay), è = grave (open e), ç = cédille (s sound), ï = tréma (separate vowels)."},
   {"id":"fr-192","topic":"fr-gram","type":"gapfill","q":"Both words contain a cédille. Complete the spelling:","template":"La le{0}on de fran{1}ais commence maintenant.","gaps":[{"options":["ç","c","ss","x"],"answer":0},{"options":["ç","c","ss","z"],"answer":0}],"exp":"leçon and français both use ç to give the 's' sound before o and a."},
 
   // ── Le corps et la santé ─────────────────────────────────────────────────────
@@ -2831,15 +2831,24 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             }
           },
           {
-            "h": "À la forme négative",
+            "h": "De après la négation",
             "p": [
-              "After a negative, all partitives become **de** (or **d'**).",
-              "**Je bois du café.** → **Je ne bois pas de café.**",
-              "**Il y a de la place.** → **Il n'y a pas de place.**"
+              "After **ne…pas** (and ne…plus, ne…jamais), every article that expresses 'some' or 'a/an' collapses to **de** (or **d'** before a vowel). It doesn't matter whether the original article was du, de la, de l', des, un, or une — they all become **de**."
             ],
+            "table": {
+              "headers": ["Affirmative (+)", "Negative (−)"],
+              "rows": [
+                ["Je mange **du** pain.", "Je ne mange pas **de** pain."],
+                ["Elle boit **de la** bière.", "Elle ne boit pas **de** bière."],
+                ["Tu veux **de l'**eau.", "Tu ne veux pas **d'**eau."],
+                ["Il achète **des** légumes.", "Il n'achète pas **de** légumes."],
+                ["J'ai **une** idée.", "Je n'ai pas **d'**idée."],
+                ["Il a **un** chien.", "Il n'a pas **de** chien."]
+              ]
+            },
             "callout": {
               "kind": "warning",
-              "text": "This « de » rule is a classic A1 exam point: ne … pas + de, never « pas du / pas des »."
+              "text": "Exception — after être, the article stays: « Ce n'est pas **un** problème. » ✓   The de-rule only applies to partitive and indefinite articles, not after être."
             }
           },
           {
@@ -2941,6 +2950,39 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 1,
             "exp": "« des » before a plural noun expresses « some fruit »."
+          },
+          {
+            "q": "Negative of « Elle achète des pommes » :",
+            "opts": [
+              "Elle n'achète pas des pommes",
+              "Elle n'achète pas de pommes",
+              "Elle n'achète pas les pommes",
+              "Elle achète ne pas pommes"
+            ],
+            "ans": 1,
+            "exp": "des → de after a negative: elle n'achète pas **de** pommes."
+          },
+          {
+            "q": "Negative of « J'ai une idée » :",
+            "opts": [
+              "Je n'ai pas une idée",
+              "Je n'ai pas de idée",
+              "Je n'ai pas d'idée",
+              "Je n'ai pas l'idée"
+            ],
+            "ans": 2,
+            "exp": "une → de after a negative; and de + vowel = d': **je n'ai pas d'idée**."
+          },
+          {
+            "q": "After être, which sentence is correct?",
+            "opts": [
+              "Ce n'est pas de bon film.",
+              "Ce n'est pas un bon film.",
+              "Ce n'est pas du bon film.",
+              "Ce n'est pas de la bon film."
+            ],
+            "ans": 1,
+            "exp": "After être, the article stays unchanged: **Ce n'est pas un bon film** ✓. The de-rule only replaces du / de la / des / un / une after verbs other than être."
           }
         ]
       },
