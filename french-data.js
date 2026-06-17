@@ -2723,9 +2723,19 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
           {
             "h": "Aimer, adorer, détester",
             "p": [
-              "Use **+ infinitive** or **+ le/la/les**: **J'aime lire.** / **J'adore le chocolat.** / **Je déteste les maths.**",
-              "**Qu'est-ce que tu aimes faire le week-end ?** (What do you like doing at the weekend?)"
-            ]
+              "**Aimer** (to like/love), **adorer** (to adore/love), and **détester** (to hate) are opinion verbs. They follow two structures depending on what comes next."
+            ],
+            "table": {
+              "headers": ["Structure", "Use when…", "Examples"],
+              "rows": [
+                ["verb + **infinitive**", "talking about an activity", "J'aime lire. · J'adore danser. · Je déteste travailler."],
+                ["verb + **le / la / les**", "talking about things in general", "J'aime le chocolat. · J'adore la musique. · Je déteste les maths."]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "General likes always take **le/la/les**, never du/de la: **J'aime le café** ✓ — *J'aime du café* ✗. To ask: **Qu'est-ce que tu aimes faire ?** (What do you like doing?)"
+            }
           }
         ],
         "check": [
