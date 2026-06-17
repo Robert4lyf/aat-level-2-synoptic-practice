@@ -1304,7 +1304,7 @@
     showReview: false, reviewFilter: 'all',
     mockEndTime: 0, mockTimerInterval: null, confirmModal: null,
     timedOut: false, numericDraft: '',
-    glossaryQuery: '', toast: null, toastTimer: null,
+    glossaryQuery: '', toast: null, toastTimer: null, collapsedUnits: {},
     ddSelectedLeft: null, ddMap: {},        // drag-drop UI state
     tfDraft: {},                            // table-fill blank inputs
     scDraft: {},                            // scenario sub-answers
@@ -3543,8 +3543,9 @@
            </button>` : '';
       const hasRevision = uid && UNIT_REVISION.some(r => r.unit === uid);
       const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(uid)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
-      return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}">
-        <div class="journey-unit-header">
+      const collapsed = !!(State.collapsedUnits && State.collapsedUnits[uid]);
+      return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}${collapsed ? ' journey-unit-collapsed' : ''}">
+        <div class="journey-unit-header" style="cursor:pointer" data-collapse-unit="${escapeHtml(uid)}" role="button" aria-expanded="${!collapsed}" tabindex="0">
           <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
@@ -3555,6 +3556,7 @@
           </div>
           ${topicAcc !== null ? `<span class="journey-unit-acc ${scoreClass(topicAcc)}">${topicAcc}%</span>` : ''}
           <div class="unit-action-btns">${revBtn}${unitQuizBtn}</div>
+          <span class="unit-collapse-chevron" aria-hidden="true">${collapsed ? '▶' : '▼'}</span>
         </div>
         <div class="journey-unit-progress-bg"><div class="journey-unit-progress" style="width:${(doneCount/unit.lessons.length*100).toFixed(0)}%"></div></div>
         <div class="journey-nodes">${lessonsHtml}</div>
@@ -4111,9 +4113,19 @@
       if (btn && btn.dataset.skills) startMultiSkillDrill(btn.dataset.skills);
     });
     // Unit quiz buttons
-    document.querySelectorAll('[data-unit-quiz]').forEach(el => el.addEventListener('click', () => startUnitQuiz(el.dataset.unitQuiz)));
+    document.querySelectorAll('[data-unit-quiz]').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); startUnitQuiz(el.dataset.unitQuiz); }));
     // Unit revision notes buttons
-    document.querySelectorAll('[data-unit-rev]').forEach(el => el.addEventListener('click', () => startRevision(el.dataset.unitRev)));
+    document.querySelectorAll('[data-unit-rev]').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); startRevision(el.dataset.unitRev); }));
+    // Unit collapse/expand headers
+    document.querySelectorAll('[data-collapse-unit]').forEach(el => {
+      el.addEventListener('click', () => {
+        const uid = el.dataset.collapseUnit;
+        if (!State.collapsedUnits) State.collapsedUnits = {};
+        State.collapsedUnits[uid] = !State.collapsedUnits[uid];
+        render();
+      });
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
+    });
     // Revision screen exit
     bind('revisionExitBtn', 'click', goLearn);
     bind('revisionExitBtn2', 'click', goLearn);
