@@ -4761,18 +4761,21 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "check": [
           {
             "q": "Tap Listen and choose what you hear: 'Bonjour' or 'Bonsoir'?",
+            "audio": "Bonjour",
             "opts": ["Bonjour (good day / hello)", "Bonsoir (good evening)", "Bon courage (good luck)", "Bonne nuit (good night)"],
             "ans": 0,
             "exp": "'Bonjour' is used during the day; 'bonsoir' in the evening. The key difference is the vowel: 'jour' (rhymes with 'poor') vs 'soir' (rhymes with 'war')."
           },
           {
-            "q": "You hear a number. Which is 'douze' (12)?",
+            "q": "Tap Listen — which number do you hear?",
+            "audio": "douze",
             "opts": ["deux (2)", "dix (10)", "douze (12)", "vingt (20)"],
             "ans": 2,
             "exp": "'Douze' = twelve. Common confusion: 'deux' (2), 'dix' (10), 'douze' (12), 'vingt' (20). Listen for the 'z' sound in 'douze' that distinguishes it from 'deux'."
           },
           {
-            "q": "Someone says 'Tournez à gauche, puis allez tout droit.' What should you do?",
+            "q": "Tap Listen — then answer: what should you do first?",
+            "audio": "Tournez à gauche, puis allez tout droit.",
             "opts": ["Go straight ahead, then turn left", "Turn right, then go straight ahead", "Turn left, then go straight ahead", "Turn left, then turn right"],
             "ans": 2,
             "exp": "'Tournez à gauche' = turn left; 'puis' = then; 'allez tout droit' = go straight ahead. The order is: first turn left, then go straight. 'Gauche' = left; 'droite' = right."
@@ -6983,19 +6986,22 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ],
         "check": [
           {
-            "q": "You hear 'Hier soir, je suis allé au cinéma.' When did this happen?",
+            "q": "Tap Listen — when did this happen?",
+            "audio": "Hier soir, je suis allé au cinéma.",
             "opts": ["This evening", "Yesterday evening", "Last week", "Tomorrow evening"],
             "ans": 1,
             "exp": "'Hier soir' = yesterday evening. 'Hier' = yesterday; 'soir' = evening. The passé composé 'suis allé' confirms a completed past action. Compare: 'ce soir' (this evening), 'demain soir' (tomorrow evening)."
           },
           {
-            "q": "Someone says 's'il te plaît'. What register is this?",
+            "q": "Tap Listen — what register is the phrase you hear?",
+            "audio": "s'il te plaît",
             "opts": ["Formal (vouvoiement)", "Informal (tutoiement)", "Neither — this is a fixed phrase", "Regional dialect"],
             "ans": 1,
             "exp": "'S'il te plaît' uses 'te', the informal object pronoun, making it tutoiement (informal register). The formal equivalent is 's'il vous plaît' with 'vous'. Both mean please."
           },
           {
-            "q": "At a restaurant you hear 'Nous avons réservé une table pour quatre.' How many people?",
+            "q": "Tap Listen — how many people is the table reservation for?",
+            "audio": "Nous avons réservé une table pour quatre.",
             "opts": ["Two", "Three", "Four", "Six"],
             "ans": 2,
             "exp": "'Pour quatre' = for four. 'Quatre' = 4. Common numbers for restaurant reservations: deux (2), trois (3), quatre (4), cinq (5), six (6)."
