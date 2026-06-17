@@ -67,9 +67,11 @@
     if (n >= 471 && n <= 505) return 'A1'; // conjugation drills: être/avoir/aller + regular -ER/-IR/-RE
     if (n >= 527 && n <= 543) return 'A1'; // dialogue/scenario: basic real-world conversations
     if (n >= 576 && n <= 591) return 'A1'; // pronunciation: vowels, silent letters, basic sounds
+    if (n >= 618 && n <= 633) return 'A1'; // word order: basic SVO sentences
     // B1 — Intermédiaire
     if (n >= 561 && n <= 575) return 'B1'; // dialogue/scenario: formal and complex situations
     if (n >= 606 && n <= 617) return 'B1'; // pronunciation: register, intonation, schwa
+    if (n >= 646 && n <= 652) return 'B1'; // word order: relative clauses, subjunctive, complex
     if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
     if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
     if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
@@ -1071,7 +1073,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: unitId, questions: picked,
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
       hintLevel: 0, hintElim: null, combo: 0, unitQuizPassMark: UNIT_QUIZ_PASS_MARK,
     });
     Calc.reset(); render();
@@ -1171,6 +1173,7 @@
   function isTableFill(q) { return q && q.type === 'tablefill'; }
   function isScenario(q) { return q && q.type === 'scenario'; }
   function isGapFill(q) { return q && q.type === 'gapfill'; }
+  function isWordOrder(q) { return q && q.type === 'wordorder'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
   function presentQuestion(q) {
     if (isNumeric(q)) {
@@ -1316,6 +1319,7 @@
     tfDraft: {},                            // table-fill blank inputs
     scDraft: {},                            // scenario sub-answers
     gfDraft: {},                            // gap-fill dropdown selections
+    woDraft: [],                            // word-order placed word indices
     referenceOpen: false,
     taEntries: [],                          // T-account playground postings
     taForm: { desc: '', amount: '', dr: '', cr: '' },
@@ -1452,7 +1456,7 @@
       screen:'quiz', mode:'practice', selectedTopic:topicId, questions:picked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
       hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
@@ -1505,7 +1509,7 @@
       screen:'quiz', mode:'practice', selectedTopic:'smart', questions:picked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{},
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
       hintLevel:0, hintElim:null,
     });
     Calc.reset(); saveSession(); render();
@@ -1536,7 +1540,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'focus',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
       hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); saveSession(); render();
@@ -1551,7 +1555,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {},
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
       hintLevel: 0, hintElim: null, combo: 0,
     });
     render();
@@ -1931,6 +1935,20 @@
     saveSession(); render();
   }
 
+  function submitWordOrder() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    if (State.woDraft.length < q.words.length) { showToast('Place all words before submitting.', 'warn'); return; }
+    const sentence = State.woDraft.map(i => q.words[i]);
+    const allRight = sentence.every((w, i) => w === q.answer[i]);
+    State.answered = { kind: 'wordorder', correct: allRight };
+    if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
+    Storage.recordAnswer(q, allRight); Storage.save();
+    State.results.push({ id: q.id, q: q.q, correct: allRight, chosen: sentence.join(' '), correctOpt: q.answer.join(' '), exp: q.exp, topic: q.topic, skill: q.skill });
+    saveSession(); render();
+  }
+
   function submitNumericPractice() {
     if (State.answered !== null) return;
     const q = State.questions[State.current];
@@ -1981,7 +1999,7 @@
     if (State.current + 1 >= State.questions.length) finishPractice();
     else {
       State.current++; State.answered = null; State.numericDraft = '';
-      State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {};
+      State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
       State.hintLevel = 0; State.hintElim = null;
       Calc.reset(); saveSession(); render();
     }
@@ -2854,6 +2872,7 @@
     if (isTableFill(q)) return renderTableFillQuiz(q);
     if (isScenario(q)) return renderScenarioQuiz(q);
     if (isGapFill(q)) return renderGapFillQuiz(q);
+    if (isWordOrder(q)) return renderWordOrderQuiz(q);
     return renderPracticeMcqOrNumeric(q);
   }
 
@@ -3249,6 +3268,65 @@
           ${q.q ? `<div class="question-text">${escapeHtml(q.q)}</div>` : ''}
           <div class="gf-sentence">${sentence}</div>
           ${!answered ? `<button class="next-btn" id="submitGapFillBtn" type="button">Submit answers ✓</button>` : ''}
+          ${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderWordOrderQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🔀', short: 'Ordre' };
+    const answered = State.answered !== null;
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const placed = State.woDraft;
+    const placedSet = new Set(placed);
+    const bankIndices = q.words.map((w, i) => i).filter(i => !placedSet.has(i));
+    const answerHtml = Array.from({ length: q.words.length }, (_, pos) => {
+      if (pos < placed.length) {
+        const wordIdx = placed[pos];
+        const word = q.words[wordIdx];
+        let cls = 'wo-word wo-placed';
+        if (answered) cls += q.answer[pos] === word ? ' wo-correct' : ' wo-wrong';
+        return `<button class="${cls}" type="button" data-wo-placed="${pos}" ${answered ? 'disabled' : ''}>${escapeHtml(word)}</button>`;
+      }
+      return `<div class="wo-slot">___</div>`;
+    }).join('');
+    const bankHtml = bankIndices.length
+      ? bankIndices.map(i => `<button class="wo-word wo-bank-word" type="button" data-wo-bank="${i}" ${answered ? 'disabled' : ''}>${escapeHtml(q.words[i])}</button>`).join('')
+      : (answered ? '' : '<span class="wo-bank-empty">All words placed</span>');
+    let feedbackHtml = '';
+    if (answered) {
+      const ok = State.answered.correct;
+      feedbackHtml = `<div class="feedback ${ok ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${ok ? '✅ Correct!' : '❌ Incorrect'}</strong><br>
+        ${!ok ? `<div class="wo-correct-sentence">Correct: <strong>${escapeHtml(q.answer.join(' '))}</strong></div>` : ''}
+        <em>${escapeHtml(q.exp || '')}</em>
+      </div>
+      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="sc-pill">🔀 Word order</span>
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="Mark as confident">✓</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
+          <div class="question-text">${escapeHtml(q.q)}</div>
+          <p class="wo-hint">Tap words from the bank to build the sentence. Tap a placed word to remove it.</p>
+          <div class="wo-answer-area">${answerHtml}</div>
+          <div class="wo-bank">${bankHtml}</div>
+          ${!answered ? `<button class="next-btn" id="submitWordOrderBtn" type="button" ${placed.length < q.words.length ? 'disabled' : ''}>Submit ✓</button>` : ''}
           ${feedbackHtml}
         </div>
       </div>
@@ -4092,6 +4170,16 @@
       State.gfDraft[+el.dataset.gfGap] = e.target.value;
     }));
     bind('submitGapFillBtn', 'click', submitGapFill);
+    // Word-order interactions
+    document.querySelectorAll('[data-wo-bank]').forEach(el => el.addEventListener('click', () => {
+      const idx = +el.dataset.woBank;
+      if (!State.woDraft.includes(idx)) { State.woDraft.push(idx); render(); }
+    }));
+    document.querySelectorAll('[data-wo-placed]').forEach(el => el.addEventListener('click', () => {
+      const pos = +el.dataset.woPlaced;
+      State.woDraft.splice(pos, 1); render();
+    }));
+    bind('submitWordOrderBtn', 'click', submitWordOrder);
     // T-account playground
     const taDesc = document.getElementById('taDesc');
     if (taDesc) taDesc.addEventListener('input', (e) => { State.taForm.desc = e.target.value; });
@@ -4210,7 +4298,7 @@
       if (isAdvanceKey) {
         const focusedIsOptionBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('[data-opt]');
         if (e.key !== 'Enter' && focusedIsOptionBtn) return;
-        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn');
+        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn');
         if (next && !next.disabled) { e.preventDefault(); next.click(); }
         return;
       }

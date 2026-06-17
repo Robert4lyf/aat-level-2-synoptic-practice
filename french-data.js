@@ -17,6 +17,7 @@ window.FR_TOPICS = [
   { id: 'fr-resto',     name: 'Au restaurant',            short: 'Restaurant',     icon: '🍷', desc: 'Dining out phrases and restaurant vocabulary' },
   { id: 'fr-dial',     name: 'Dialogues & situations',   short: 'Dialogues',      icon: '💬', desc: 'Real-world conversations and situational language' },
   { id: 'fr-phon',     name: 'Prononciation',            short: 'Prononciation',  icon: '🔊', desc: 'Minimal pairs, French sounds, silent letters and liaison' },
+  { id: 'fr-order',    name: 'Ordre des mots',           short: 'Ordre des mots', icon: '🔀', desc: 'Sentence builder — arrange words in the correct French order' },
 ];
 
 window.FR_QUESTIONS = [
@@ -1313,7 +1314,48 @@ window.FR_QUESTIONS = [
   {"id":"fr-614","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"What is 'enchaînement' in French phonetics?","opts":["Elision — dropping a vowel","Linking a word-final pronounced consonant to the initial vowel of the next word","Liaison — linking a silent consonant","A change in vowel quality before nasals"],"ans":1,"exp":"Enchaînement = linking a word-final PRONOUNCED consonant to the initial vowel of the next word: 'une amie' → /y‿na‿mi/ (the 'n' links). This differs from liaison (where normally-silent consonants are activated). Both create the flowing connected sound of French."},
   {"id":"fr-615","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"In formal spoken French, how many syllables does 'je' have in 'je vais'?","opts":["One /ʒə/ — always","In careful speech it's one; in fast speech the /ə/ drops making it cluster with 'v': /ʒvɛ/","It is silent — inversion must be used","Two syllables: /ʒe-vɛ/"],"ans":1,"exp":"'Je vais' = /ʒə vɛ/ in careful speech (two syllables). In fast speech the schwa drops: /ʒvɛ/. When several clitics cluster: 'je ne le vois pas' → /ʒnlvwapa/. Schwa reduction is a hallmark of natural, spontaneous French speech."},
   {"id":"fr-616","topic":"fr-phon","lesson":"fr-l61","type":"dragdrop","q":"Match the phonetic phenomenon to its example","pairs":[{"left":"Élision","right":"j'ai (je + ai)"},{"left":"Liaison","right":"les‿enfants (/z/ sound)"},{"left":"Enchaînement","right":"une‿amie (/n/ links)"},{"left":"Chute du ne","right":"Je sais pas (spoken)"}],"exp":"Four key spoken French phenomena: élision (vowel dropped, apostrophe written) · liaison (silent consonant activated before vowel) · enchaînement (pronounced consonant links to next vowel) · chute du ne (dropping 'ne' in negation — spoken only)."},
-  {"id":"fr-617","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"Which sentence demonstrates the FORMAL/WRITTEN register correctly for a question?","opts":["T'as vu le film ?","Tu as vu le film ?","As-tu vu le film ?","Est-ce que t'as vu le film ?"],"ans":2,"exp":"'As-tu vu le film ?' = Have you seen the film? Inversion (verb-subject swap) is the most formal question form — used in written and formal spoken French. 'Tu as vu le film ?' (rising intonation) and 'Est-ce que tu as vu le film ?' are standard spoken forms. 'T'as vu' is informal spoken only."}
+  {"id":"fr-617","topic":"fr-phon","lesson":"fr-l61","type":"mcq","q":"Which sentence demonstrates the FORMAL/WRITTEN register correctly for a question?","opts":["T'as vu le film ?","Tu as vu le film ?","As-tu vu le film ?","Est-ce que t'as vu le film ?"],"ans":2,"exp":"'As-tu vu le film ?' = Have you seen the film? Inversion (verb-subject swap) is the most formal question form — used in written and formal spoken French. 'Tu as vu le film ?' (rising intonation) and 'Est-ce que tu as vu le film ?' are standard spoken forms. 'T'as vu' is informal spoken only."},
+
+  // fr-l62 — A1 Word order: basic SVO, negation, articles
+  {"id":"fr-618","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'She eats an apple.' (Elle mange une pomme.)","words":["une","Elle","pomme","mange"],"answer":["Elle","mange","une","pomme"],"exp":"Elle mange une pomme. Word order: Subject (Elle) + Verb (mange) + Article (une) + Noun (pomme). French basic word order is SVO — same as English."},
+  {"id":"fr-619","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'I speak French.' (Je parle français.)","words":["français","parle","Je"],"answer":["Je","parle","français"],"exp":"Je parle français. Subject (Je) + Verb (parle) + Language (français). Note: no article before a language after 'parler'. Je parle + language (no article)."},
+  {"id":"fr-620","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'He has a dog.' (Il a un chien.)","words":["un","a","Il","chien"],"answer":["Il","a","un","chien"],"exp":"Il a un chien. Subject (Il) + avoir (a) + un (masc. article) + chien. avoir is used for possession: j'ai, tu as, il a, nous avons, vous avez, ils ont."},
+  {"id":"fr-621","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'We are going to Paris.' (Nous allons à Paris.)","words":["allons","Paris","à","Nous"],"answer":["Nous","allons","à","Paris"],"exp":"Nous allons à Paris. Subject (Nous) + aller (allons) + preposition (à) + city name (Paris). Use 'à' before city names: à Paris, à Lyon, à Rome."},
+  {"id":"fr-622","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'I don't understand.' (Je ne comprends pas.)","words":["comprends","ne","Je","pas"],"answer":["Je","ne","comprends","pas"],"exp":"Je ne comprends pas. Negation: ne before the verb, pas after the verb. Je NE comprends PAS. The verb goes between ne and pas."},
+  {"id":"fr-623","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'She is very beautiful.' (Elle est très belle.)","words":["très","est","Elle","belle"],"answer":["Elle","est","très","belle"],"exp":"Elle est très belle. Subject + être + adverb (très) + adjective (belle). 'Très' intensifies the adjective and always comes directly before it. Adjective agrees with subject: belle (feminine) for Elle."},
+  {"id":"fr-624","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'The house is big.' (La maison est grande.)","words":["grande","est","maison","La"],"answer":["La","maison","est","grande"],"exp":"La maison est grande. Article (La) + Noun (maison) + être (est) + Adjective (grande). Predicative adjectives come after être in French — same position as English. Feminine: grand → grande."},
+  {"id":"fr-625","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'I am going to the market.' (Je vais au marché.)","words":["vais","marché","Je","au"],"answer":["Je","vais","au","marché"],"exp":"Je vais au marché. 'Au' = à + le (contracted). You cannot say 'à le marché' — it must contract: à + le → au. Similarly: à + les → aux. Used before masculine nouns."},
+  {"id":"fr-626","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'They have two children.' (Ils ont deux enfants.)","words":["deux","ont","Ils","enfants"],"answer":["Ils","ont","deux","enfants"],"exp":"Ils ont deux enfants. Subject (Ils) + avoir (ont) + numeral (deux) + noun (enfants). Numbers come before the noun they modify, just like in English."},
+  {"id":"fr-627","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'The cat is on the sofa.' (Le chat est sur le canapé.)","words":["sur","Le","est","chat","le","canapé"],"answer":["Le","chat","est","sur","le","canapé"],"exp":"Le chat est sur le canapé. Prepositions of place: sur (on), sous (under), devant (in front of), derrière (behind), dans (in), entre (between). The article is repeated before 'canapé'."},
+  {"id":"fr-628","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'I would like a coffee please.' (Je voudrais un café s'il vous plaît.)","words":["café","voudrais","Je","un","plaît","vous","s'il"],"answer":["Je","voudrais","un","café","s'il","vous","plaît"],"exp":"Je voudrais un café s'il vous plaît. 'Voudrais' (conditional) is the polite form for ordering. 'S'il vous plaît' (formal please) always comes at the end of a request. S'il te plaît is the informal version."},
+  {"id":"fr-629","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'She doesn't like cheese.' (Elle n'aime pas le fromage.)","words":["fromage","n'aime","le","Elle","pas"],"answer":["Elle","n'aime","pas","le","fromage"],"exp":"Elle n'aime pas le fromage. Negation with elision: ne + aime → n'aime (because 'aimer' starts with a vowel). ne/n' comes before the verb, pas after. Use 'le' (definite article) with general likes/dislikes in French."},
+  {"id":"fr-630","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'It is cold today.' (Il fait froid aujourd'hui.)","words":["froid","fait","aujourd'hui","Il"],"answer":["Il","fait","froid","aujourd'hui"],"exp":"Il fait froid aujourd'hui. Impersonal weather: Il + faire + adjective. Time expressions (aujourd'hui, demain, hier) typically go at the end of a French sentence."},
+  {"id":"fr-631","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'You speak very good French.' (Tu parles très bien français.)","words":["bien","français","Tu","parles","très"],"answer":["Tu","parles","très","bien","français"],"exp":"Tu parles très bien français. Adverbs of manner (bien, mal, vite) come immediately after the verb. 'Très bien' = very well. Note: no article before 'français' after 'parler'."},
+  {"id":"fr-632","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'We are in the classroom.' (Nous sommes dans la classe.)","words":["la","dans","Nous","classe","sommes"],"answer":["Nous","sommes","dans","la","classe"],"exp":"Nous sommes dans la classe. 'Dans' = in (enclosed space). Compare: à l'école (at school in general) vs dans la classe (inside the classroom). Location prepositions: dans (in/inside), à (at/in), sur (on), en (in, with countries/states)."},
+  {"id":"fr-633","topic":"fr-order","lesson":"fr-l62","type":"wordorder","q":"Build the sentence: 'I have a headache.' (J'ai mal à la tête.)","words":["tête","mal","à","J'ai","la"],"answer":["J'ai","mal","à","la","tête"],"exp":"J'ai mal à la tête. Pattern: avoir + mal + à + article + body part. J'ai mal au ventre (stomach) · à la gorge (throat) · aux yeux (eyes). This uses AVOIR, not être."},
+
+  // fr-l63 — A2 Word order: questions, pronoun placement, passé composé
+  {"id":"fr-634","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the passé composé sentence: 'I ate a pizza yesterday.' (J'ai mangé une pizza hier.)","words":["hier","mangé","une","J'ai","pizza"],"answer":["J'ai","mangé","une","pizza","hier"],"exp":"J'ai mangé une pizza hier. Passé composé: auxiliary (j'ai) + past participle (mangé) + object + time expression. Time expressions (hier, ce matin, la semaine dernière) go at the end."},
+  {"id":"fr-635","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the passé composé sentence: 'She went to the market.' (Elle est allée au marché.)","words":["allée","marché","est","au","Elle"],"answer":["Elle","est","allée","au","marché"],"exp":"Elle est allée au marché. Aller uses ÊTRE as auxiliary. Past participle agrees with subject: elle → allée (feminine +e). Être verbs include: aller, venir, partir, arriver, rester, tomber, naître, mourir."},
+  {"id":"fr-636","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the question: 'Do you speak French?' using est-ce que. (Est-ce que tu parles français ?)","words":["tu","Est-ce","français","parles","que"],"answer":["Est-ce","que","tu","parles","français"],"exp":"Est-ce que tu parles français ? The est-ce que structure: Est-ce que + subject + verb + rest. No word order change needed after 'est-ce que' — just add it before a normal statement."},
+  {"id":"fr-637","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the sentence with a direct object pronoun: 'I see him.' (Je le vois.)","words":["vois","le","Je"],"answer":["Je","le","vois"],"exp":"Je le vois. Direct object pronouns (me, te, le, la, nous, vous, les) go BEFORE the verb in French — unlike English where they go after. Je le vois (NOT 'je vois le')."},
+  {"id":"fr-638","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the sentence: 'She gave him a book.' (Elle lui a donné un livre.)","words":["lui","un","Elle","a","livre","donné"],"answer":["Elle","lui","a","donné","un","livre"],"exp":"Elle lui a donné un livre. 'Lui' (indirect object pronoun = to him/her) goes before the auxiliary 'a' in passé composé. Pronoun order before verb: me/te/se/nous/vous → le/la/les → lui/leur → y → en."},
+  {"id":"fr-639","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the negated passé composé: 'I didn't see him.' (Je ne l'ai pas vu.)","words":["pas","Je","l'ai","ne","vu"],"answer":["Je","ne","l'ai","pas","vu"],"exp":"Je ne l'ai pas vu. In passé composé, negation wraps around the auxiliary: NE + l'ai + PAS + past participle. The pronoun 'l'' stays before the auxiliary. Je NE l'ai PAS vu."},
+  {"id":"fr-640","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the near future sentence: 'He is going to leave tomorrow morning.' (Il va partir demain matin.)","words":["matin","va","partir","Il","demain"],"answer":["Il","va","partir","demain","matin"],"exp":"Il va partir demain matin. Futur proche: subject + aller (conjugated) + infinitive. 'Demain matin' (tomorrow morning) goes at the end. Aller + infinitive is very common in spoken French for near-future events."},
+  {"id":"fr-641","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the sentence with adjective placement: 'It's a beautiful red dress.' (C'est une belle robe rouge.)","words":["belle","rouge","C'est","une","robe"],"answer":["C'est","une","belle","robe","rouge"],"exp":"C'est une belle robe rouge. 'Belle' (beautiful) is a BAGS adjective (Beauty, Age, Goodness, Size) — it goes BEFORE the noun. 'Rouge' (red) is a colour — it goes AFTER the noun. Belle + robe (pre-noun) + rouge (post-noun)."},
+  {"id":"fr-642","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the question by inversion: 'Can you speak more slowly?' (Pouvez-vous parler plus lentement ?)","words":["parler","lentement","Pouvez-vous","plus"],"answer":["Pouvez-vous","parler","plus","lentement"],"exp":"Pouvez-vous parler plus lentement ? Inversion question: verb-subject hyphenated (Pouvez-vous) + infinitive. 'Plus lentement' = more slowly. Inversion is the formal question structure for modals like pouvoir."},
+  {"id":"fr-643","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the sentence: 'I am looking for a cheap flat.' (Je cherche un appartement pas cher.)","words":["cher","un","cherche","appartement","Je","pas"],"answer":["Je","cherche","un","appartement","pas","cher"],"exp":"Je cherche un appartement pas cher. 'Pas cher' (not expensive) acts as a compound adjective after the noun. Note: 'pas' without 'ne' is informal/spoken. Formal: 'un appartement qui n'est pas cher'. Colour/size adjectives follow the noun."},
+  {"id":"fr-644","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the sentence: 'We have been visiting the Louvre.' (Nous avons visité le Louvre.)","words":["Louvre","le","visité","avons","Nous"],"answer":["Nous","avons","visité","le","Louvre"],"exp":"Nous avons visité le Louvre. Passé composé with avoir: auxiliary (avons) + past participle (visité) + direct object (le Louvre). 'Visiter' is a regular -ER verb: passé composé = visité."},
+  {"id":"fr-645","topic":"fr-order","lesson":"fr-l63","type":"wordorder","q":"Build the sentence: 'You should eat more vegetables.' (Tu devrais manger plus de légumes.)","words":["légumes","manger","Tu","de","devrais","plus"],"answer":["Tu","devrais","manger","plus","de","légumes"],"exp":"Tu devrais manger plus de légumes. 'Devrais' = conditional of devoir (should). Modal + infinitive: devrais + manger. 'Plus de' = more (of). After comparative expressions, use 'de' + noun: plus de légumes (not 'plus des')."},
+
+  // fr-l64 — B1 Word order: complex structures, relative clauses, subjunctive
+  {"id":"fr-646","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the relative clause sentence: 'It's the house that I dream of.' (C'est la maison dont je rêve.)","words":["je","dont","C'est","rêve","la","maison"],"answer":["C'est","la","maison","dont","je","rêve"],"exp":"C'est la maison dont je rêve. 'Dont' = relative pronoun replacing 'de + which/whom'. 'Rêver de' = to dream of → la maison de laquelle → la maison dont. Dont is used when the verb takes 'de'."},
+  {"id":"fr-647","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the subjunctive sentence: 'It is necessary that you be on time.' (Il faut que tu sois à l'heure.)","words":["à","tu","que","l'heure","faut","sois","Il"],"answer":["Il","faut","que","tu","sois","à","l'heure"],"exp":"Il faut que tu sois à l'heure. Subjunctive: il faut que + subject + subjunctive verb. 'Sois' = subjunctive of être. Triggers: il faut que, vouloir que, douter que, bien que, pour que."},
+  {"id":"fr-648","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the conditional sentence: 'We could have finished earlier.' (Nous aurions pu finir plus tôt.)","words":["pu","tôt","finir","Nous","plus","aurions"],"answer":["Nous","aurions","pu","finir","plus","tôt"],"exp":"Nous aurions pu finir plus tôt. Conditionnel passé: subject + auxiliary in conditional (aurions) + past participle (pu) + infinitive (finir). 'Plus tôt' = earlier. Conditionnel passé expresses what would have happened."},
+  {"id":"fr-649","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the sentence with 'y': 'I go there every day.' (J'y vais tous les jours.)","words":["jours","J'y","tous","les","vais"],"answer":["J'y","vais","tous","les","jours"],"exp":"J'y vais tous les jours. 'Y' replaces 'à + place': j'y vais = I go there. 'Y' goes before the verb. 'Tous les jours' = every day. Pronoun order: y goes before the verb, after other object pronouns."},
+  {"id":"fr-650","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the sentence with 'en': 'I don't have any left.' (Je n'en ai plus.)","words":["plus","n'en","Je","ai"],"answer":["Je","n'en","ai","plus"],"exp":"Je n'en ai plus. 'En' replaces 'de + noun' and goes before the verb. 'Ne...plus' = no longer/no more. The ne wraps around the pronoun+verb: je N'EN ai PLUS. Order: je + n'en (ne + en) + ai (avoir) + plus."},
+  {"id":"fr-651","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the sentence: 'I don't entirely agree with you.' (Je ne suis pas tout à fait d'accord avec vous.)","words":["vous","d'accord","suis","à","Je","tout","pas","ne","fait","avec"],"answer":["Je","ne","suis","pas","tout","à","fait","d'accord","avec","vous"],"exp":"Je ne suis pas tout à fait d'accord avec vous. 'Pas tout à fait' = not entirely. Negation: ne...pas wraps the verb (ne suis pas). 'Tout à fait' = entirely/completely. 'Avec vous' = with you (formal)."},
+  {"id":"fr-652","topic":"fr-order","lesson":"fr-l64","type":"wordorder","q":"Build the formal sentence: 'I am writing to you following our meeting.' (Je vous écris suite à notre réunion.)","words":["réunion","écris","Je","notre","suite","à","vous"],"answer":["Je","vous","écris","suite","à","notre","réunion"],"exp":"Je vous écris suite à notre réunion. 'Suite à' = following/further to (formal connective). 'Vous écris' — indirect object pronoun 'vous' goes before the verb. Used in formal correspondence to establish the reason for contact."}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -4624,6 +4666,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "'GN' = /ɲ/ — like 'ny' in 'canyon' or the Spanish ñ. montagne /mɔ̃taɲ/ · champagne /ʃɑ̃paɲ/ · gagner /gaɲe/."
           }
         ]
+      },
+      {
+        "id": "fr-l62",
+        "title": "Ordre des mots — A1",
+        "icon": "🔀",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Basic French word order (SVO)",
+            "body": "<p>French follows <strong>SVO order</strong> — Subject + Verb + Object — just like English:</p><table><tr><th>Subject</th><th>Verb</th><th>Object</th></tr><tr><td>Elle</td><td>mange</td><td>une pomme.</td></tr><tr><td>Je</td><td>parle</td><td>français.</td></tr><tr><td>Nous</td><td>avons</td><td>deux chats.</td></tr></table><p><strong>Time expressions</strong> (hier, demain, aujourd'hui) go at the END of the sentence in French: <em>Je mange une pizza <strong>ce soir</strong>.</em></p>"
+          },
+          {
+            "type": "info",
+            "title": "Negation word order",
+            "body": "<p>French negation uses TWO words that wrap around the verb:</p><p style='text-align:center;font-size:1.1em;padding:8px'><strong>ne</strong> + VERB + <strong>pas</strong></p><ul><li>Je <strong>ne</strong> comprends <strong>pas</strong>. (I don't understand.)</li><li>Elle <strong>n'</strong>aime <strong>pas</strong> le café. (She doesn't like coffee.)</li><li>Il <strong>ne</strong> va <strong>pas</strong> partir. (He is not going to leave.)</li></ul><p>Note: 'ne' becomes 'n'' before a vowel (elision). In spoken French, 'ne' is often dropped: 'Je comprends pas.'</p>"
+          },
+          {
+            "type": "info",
+            "title": "Adjective placement",
+            "body": "<p>Most French adjectives come <strong>AFTER</strong> the noun — opposite to English:</p><ul><li>une voiture <strong>rouge</strong> (a red car)</li><li>un homme <strong>grand</strong> (a tall man)</li></ul><p><strong>BAGS adjectives</strong> come BEFORE the noun:</p><p><strong>B</strong>eauty: beau/belle, joli(e)<br><strong>A</strong>ge: jeune, vieux/vieille, nouveau/nouvelle<br><strong>G</strong>oodness: bon(ne), mauvais(e)<br><strong>S</strong>ize: grand(e), petit(e), gros(se)</p><ul><li>une <strong>belle</strong> robe <strong>rouge</strong> (a beautiful red dress)</li></ul>"
+          }
+        ],
+        "check": [
+          {
+            "q": "Which sentence has the correct French word order?",
+            "opts": ["Mange elle une pomme.", "Elle une pomme mange.", "Elle mange une pomme.", "Une pomme mange elle."],
+            "ans": 2,
+            "exp": "Elle mange une pomme. French word order is SVO: Subject (Elle) + Verb (mange) + Object (une pomme) — the same as English."
+          },
+          {
+            "q": "How do you say 'I don't like coffee' in French?",
+            "opts": ["Je n'aime pas le café.", "Je pas aime le café.", "Je aime ne le café pas.", "Ne je pas aime le café."],
+            "ans": 0,
+            "exp": "'Je n'aime pas le café.' Negation: ne/n' BEFORE the verb, pas AFTER. 'n'aime' = ne + aime (elision before vowel). Use 'le' (definite article) with general likes/dislikes."
+          },
+          {
+            "q": "Where does the adjective 'rouge' (red) go in 'a red car'?",
+            "opts": ["Before the noun: une rouge voiture", "After the noun: une voiture rouge", "Before the article: rouge une voiture", "It doesn't matter"],
+            "ans": 1,
+            "exp": "Colour adjectives come AFTER the noun: une voiture rouge. Only BAGS adjectives (Beauty, Age, Goodness, Size) come before: une belle voiture, une petite voiture."
+          }
+        ]
       }
     ]
   },
@@ -6763,6 +6847,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "exp": "'Hibou' has aspirate h: le hibou (no elision), les hiboux (no liaison: /le ibu/, not /lez ibu/). Compare: l'homme (silent h, elision applies). Aspirate h must be memorised — there is no rule to predict it."
           }
         ]
+      },
+      {
+        "id": "fr-l63",
+        "title": "Ordre des mots — A2",
+        "icon": "🔀",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Object pronouns before the verb",
+            "body": "<p>Direct and indirect object pronouns go <strong>BEFORE</strong> the verb in French:</p><table><tr><th>English</th><th>French (wrong)</th><th>French (correct)</th></tr><tr><td>I see him.</td><td>Je vois le.</td><td>Je <strong>le</strong> vois.</td></tr><tr><td>She gives it to him.</td><td>Elle donne lui le livre.</td><td>Elle <strong>lui</strong> donne le livre.</td></tr></table><p>In passé composé: the pronoun goes before the AUXILIARY: <em>Je <strong>l'</strong>ai vu.</em></p><p>Negation wraps around pronoun + auxiliary: <em>Je <strong>ne l'ai pas</strong> vu.</em></p>"
+          },
+          {
+            "type": "info",
+            "title": "Adjective placement — BAGS and others",
+            "body": "<p>Most adjectives follow the noun; BAGS adjectives precede it:</p><ul><li><strong>Before noun (BAGS)</strong>: beau, joli, jeune, vieux, nouveau, bon, mauvais, grand, petit, gros</li><li><strong>After noun</strong>: all colours, nationalities, shapes, most others</li></ul><p>Both in one sentence: <em>C'est une <strong>belle</strong> robe <strong>rouge</strong>.</em> (belle = BAGS before; rouge = colour after)</p><p>Some adjectives CHANGE meaning depending on position: <em>un homme <strong>grand</strong></em> (a tall man) vs <em>un <strong>grand</strong> homme</em> (a great man).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Passé composé and time expressions",
+            "body": "<p>In passé composé, the structure is: <strong>Subject + auxiliary + past participle + rest</strong></p><ul><li>J'<strong>ai mangé</strong> une pizza hier.</li><li>Elle <strong>est allée</strong> au marché ce matin.</li><li>Nous <strong>avons visité</strong> le Louvre la semaine dernière.</li></ul><p>Time expressions come at the end: hier (yesterday) · ce matin (this morning) · la semaine dernière (last week) · l'année dernière (last year).</p><p>Agreement of past participle with être verbs: elle est allé<strong>e</strong> · ils sont allé<strong>s</strong>.</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "Where does the direct object pronoun 'le' go in 'I see him' (Je le vois)?",
+            "opts": ["After the verb: Je vois le.", "Before the verb: Je le vois.", "At the end: Je vois lui.", "Before the subject: Le je vois."],
+            "ans": 1,
+            "exp": "Je le vois. Object pronouns go BEFORE the verb in French. This is the opposite of English ('I see him'). In passé composé: je l'ai vu (pronoun before auxiliary)."
+          },
+          {
+            "q": "How do you say 'She went to the cinema' in passé composé?",
+            "opts": ["Elle a allée au cinéma.", "Elle est allé au cinéma.", "Elle est allée au cinéma.", "Elle aller est au cinéma."],
+            "ans": 2,
+            "exp": "Elle est allée au cinéma. Aller uses ÊTRE auxiliary. Past participle agrees with subject: elle (feminine) → allée (add -e). Je suis allé · tu es allé · il est allé · elle est allée."
+          },
+          {
+            "q": "In 'C'est une belle robe rouge', why is 'belle' before and 'rouge' after the noun?",
+            "opts": ["It's random word order", "Belle is a BAGS adjective (Beauty) — before; rouge is a colour — after", "Belle is longer so it goes first", "Both should be after the noun"],
+            "ans": 1,
+            "exp": "Belle (beautiful) is a BAGS adjective — it goes before the noun. Rouge (red) is a colour adjective — it goes after the noun. BAGS = Beauty, Age, Goodness, Size."
+          }
+        ]
       }
     ]
   },
@@ -7833,6 +7959,48 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "opts": ["To express polite requests", "To report unconfirmed information in news", "To describe past habits", "To make formal complaints"],
             "ans": 1,
             "exp": "The journalistic conditional (aurait + past participle) signals unconfirmed information: 'Le ministre aurait démissionné' = the minister has reportedly resigned. It is very common in French news media."
+          }
+        ]
+      },
+      {
+        "id": "fr-l64",
+        "title": "Ordre des mots — B1",
+        "icon": "🔀",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Relative pronouns and word order",
+            "body": "<p>Relative clauses follow the noun they describe:</p><table><tr><th>Pronoun</th><th>Replaces</th><th>Example</th></tr><tr><td>qui</td><td>subject</td><td>l'homme <strong>qui</strong> parle</td></tr><tr><td>que/qu'</td><td>direct object</td><td>le livre <strong>que</strong> je lis</td></tr><tr><td>dont</td><td>de + noun</td><td>la maison <strong>dont</strong> je rêve</td></tr><tr><td>où</td><td>place/time</td><td>le jour <strong>où</strong> il est parti</td></tr></table><p>Word order inside the relative clause is normal: subject + verb + rest.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Pronoun placement in complex tenses",
+            "body": "<p>Object pronouns before the AUXILIARY in compound tenses:</p><ul><li>Je <strong>l'</strong>ai vu. (I saw him.) — pronoun before ai</li><li>Je <strong>ne l'</strong>ai <strong>pas</strong> vu. (I didn't see him.) — ne + pronoun + ai + pas</li><li>Je <strong>lui en</strong> ai parlé. (I spoke to him about it.) — double pronoun before auxiliary</li></ul><p>Pronoun order before verb: <strong>me/te/se/nous/vous → le/la/les → lui/leur → y → en</strong></p><p>In infinitive constructions: pronoun before the infinitive: <em>Je vais <strong>le</strong> voir.</em></p>"
+          },
+          {
+            "type": "info",
+            "title": "Subjunctive and conditional word order",
+            "body": "<p><strong>Subjunctive</strong>: triggered after certain verbs/expressions — word order inside is normal:</p><ul><li>Il faut que + tu <strong>sois</strong> là.</li><li>Je veux que + elle <strong>vienne</strong>.</li></ul><p><strong>Conditionnel passé</strong> (what would have happened):</p><ul><li>Subject + conditional auxiliary + past participle: <em>Nous <strong>aurions pu</strong> finir plus tôt.</em></li></ul><p><strong>Y and EN</strong> pronouns go before the verb (after ne in negation):</p><ul><li>J'<strong>y</strong> vais tous les jours.</li><li>Je n'<strong>en</strong> ai plus.</li></ul>"
+          }
+        ],
+        "check": [
+          {
+            "q": "In 'C'est la maison dont je rêve', what does 'dont' replace?",
+            "opts": ["qui — the subject of rêver", "que — the direct object of rêver", "de + la maison — because rêver takes 'de'", "où — the location"],
+            "ans": 2,
+            "exp": "'Dont' replaces 'de + la maison'. 'Rêver de' = to dream of. Whenever the verb takes 'de', use 'dont' as the relative pronoun: rêver de, parler de, avoir besoin de → dont."
+          },
+          {
+            "q": "Where does the object pronoun go in 'I didn't see him' (Je ne l'ai pas vu)?",
+            "opts": ["Je ne ai l' pas vu", "Je ne l'ai pas vu", "Je l'ne ai pas vu", "Je ne ai pas l'vu"],
+            "ans": 1,
+            "exp": "Je ne l'ai pas vu. The pronoun 'l'' goes between 'ne' and the auxiliary 'ai'. Negation: ne + pronoun + auxiliary + pas + past participle. The pronoun always stays right before the auxiliary."
+          },
+          {
+            "q": "What is the correct order in 'It is necessary that you be on time' (Il faut que tu sois à l'heure)?",
+            "opts": ["Il faut que sois tu à l'heure", "Il faut que tu sois à l'heure", "Que il faut tu sois à l'heure", "Il faut tu que sois à l'heure"],
+            "ans": 1,
+            "exp": "Il faut que tu sois à l'heure. After 'il faut que', normal subject + verb order follows: tu sois (subjunctive of être). The subjunctive is triggered by 'il faut que' but the word order inside the clause is standard."
           }
         ]
       }
