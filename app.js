@@ -1293,6 +1293,7 @@
         return { options: order.map(i => g.options[i]), answer: order.indexOf(g.answer) };
       }) };
     }
+    if (isWordOrder(q)) { return { ...q }; }
     // simple MCQ
     const order = shuffle([0,1,2,3]);
     return { ...q, opts: order.map(i => q.opts[i]), ans: order.indexOf(q.ans) };
