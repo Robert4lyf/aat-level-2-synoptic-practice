@@ -1050,10 +1050,13 @@
     const pool = (_activeSubjectId === 'french' && frCefrMap[unitId])
       ? (window.ALL_QUESTIONS || []).filter(q => frQuestionLevel(q.id) === frCefrMap[unitId])
       : (window.ALL_QUESTIONS || []).filter(q => q.topic === unitId);
+    const TARGET = 20;
+    // If the pool has no difficulty tags (e.g. French), just shuffle and slice.
+    const hasDifficulty = pool.some(q => q.difficulty);
+    if (!hasDifficulty) return shuffle(pool).slice(0, TARGET).map(presentQuestion);
     const hard = shuffle(pool.filter(q => q.difficulty === 'hard'));
     const med  = shuffle(pool.filter(q => q.difficulty === 'medium'));
     const easy = shuffle(pool.filter(q => q.difficulty === 'easy'));
-    const TARGET = 20;
     const nHard = Math.min(7, hard.length);
     const nMed  = Math.min(8, med.length);
     const nEasy = Math.min(TARGET - nHard - nMed, easy.length);
