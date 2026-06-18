@@ -1,0 +1,498 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="A French café terrace on a sunny afternoon">
+  <defs>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A9FDF"/>
+      <stop offset="55%" stop-color="#82C8EF"/>
+      <stop offset="100%" stop-color="#C8E8F8"/>
+    </linearGradient>
+    <linearGradient id="floor2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D0C0A0"/>
+      <stop offset="100%" stop-color="#B8A880"/>
+    </linearGradient>
+    <linearGradient id="wall2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8D8B8"/>
+      <stop offset="100%" stop-color="#D4C4A0"/>
+    </linearGradient>
+    <radialGradient id="sunG2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE566" stop-opacity="1"/>
+      <stop offset="70%" stop-color="#FFD033" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FFB800" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="600" height="400" fill="url(#sky2)"/>
+
+  <!-- Sun -->
+  <circle cx="80" cy="55" r="55" fill="url(#sunG2)"/>
+  <circle cx="80" cy="55" r="30" fill="#FFE566"/>
+  <g stroke="#FFE566" stroke-width="2" opacity="0.55">
+    <line x1="80" y1="18" x2="80" y2="8"/>
+    <line x1="106" y1="29" x2="113" y2="22"/>
+    <line x1="117" y1="55" x2="127" y2="55"/>
+    <line x1="106" y1="81" x2="113" y2="88"/>
+    <line x1="80" y1="92" x2="80" y2="102"/>
+    <line x1="54" y1="81" x2="47" y2="88"/>
+    <line x1="43" y1="55" x2="33" y2="55"/>
+    <line x1="54" y1="29" x2="47" y2="22"/>
+  </g>
+
+  <!-- Clouds -->
+  <g opacity="0.88">
+    <ellipse cx="300" cy="38" rx="36" ry="17" fill="white"/>
+    <ellipse cx="322" cy="30" rx="28" ry="16" fill="white"/>
+    <ellipse cx="345" cy="38" rx="26" ry="15" fill="white"/>
+    <ellipse cx="280" cy="44" rx="20" ry="12" fill="#F0F8FF"/>
+    <ellipse cx="362" cy="44" rx="18" ry="11" fill="#F0F8FF"/>
+  </g>
+  <g opacity="0.72">
+    <ellipse cx="480" cy="28" rx="28" ry="13" fill="white"/>
+    <ellipse cx="500" cy="22" rx="22" ry="12" fill="white"/>
+    <ellipse cx="518" cy="28" rx="18" ry="11" fill="white"/>
+  </g>
+
+  <!-- ══ CAFÉ BUILDING FACADE ══ -->
+  <!-- Main wall -->
+  <rect x="0" y="50" width="600" height="230" fill="url(#wall2)"/>
+  <!-- Stone course lines -->
+  <line x1="0" y1="100" x2="600" y2="100" stroke="#C4B490" stroke-width="1" opacity="0.5"/>
+  <line x1="0" y1="150" x2="600" y2="150" stroke="#C4B490" stroke-width="1" opacity="0.5"/>
+  <line x1="0" y1="200" x2="600" y2="200" stroke="#C4B490" stroke-width="1" opacity="0.5"/>
+
+  <!-- Cornice / awning rail -->
+  <rect x="0" y="145" width="600" height="8" fill="#B09060"/>
+
+  <!-- BIG CAFÉ AWNING — dark green & white stripes -->
+  <polygon points="0,50 600,50 600,153 0,153" fill="#166534"/>
+  <!-- White stripes on awning -->
+  <polygon points="20,50 50,50 50,153 20,153" fill="white" opacity="0.18"/>
+  <polygon points="80,50 110,50 110,153 80,153" fill="white" opacity="0.18"/>
+  <polygon points="140,50 170,50 170,153 140,153" fill="white" opacity="0.18"/>
+  <polygon points="200,50 230,50 230,153 200,153" fill="white" opacity="0.18"/>
+  <polygon points="260,50 290,50 290,153 260,153" fill="white" opacity="0.18"/>
+  <polygon points="320,50 350,50 350,153 320,153" fill="white" opacity="0.18"/>
+  <polygon points="380,50 410,50 410,153 380,153" fill="white" opacity="0.18"/>
+  <polygon points="440,50 470,50 470,153 440,153" fill="white" opacity="0.18"/>
+  <polygon points="500,50 530,50 530,153 500,153" fill="white" opacity="0.18"/>
+  <polygon points="560,50 590,50 590,153 560,153" fill="white" opacity="0.18"/>
+  <!-- Awning front valance (scalloped) -->
+  <path d="M0,153 Q15,166 30,153 Q45,166 60,153 Q75,166 90,153 Q105,166 120,153 Q135,166 150,153 Q165,166 180,153 Q195,166 210,153 Q225,166 240,153 Q255,166 270,153 Q285,166 300,153 Q315,166 330,153 Q345,166 360,153 Q375,166 390,153 Q405,166 420,153 Q435,166 450,153 Q465,166 480,153 Q495,166 510,153 Q525,166 540,153 Q555,166 570,153 Q585,166 600,153" fill="none" stroke="#15803D" stroke-width="8"/>
+
+  <!-- Café name sign on awning -->
+  <rect x="190" y="75" width="220" height="40" fill="#0F4A1E" rx="4" opacity="0.9"/>
+  <text x="300" y="88" font-size="10" fill="#FDE68A" text-anchor="middle" font-family="serif" font-weight="bold" letter-spacing="3">LE CAFÉ DU SOLEIL</text>
+  <text x="300" y="104" font-size="7" fill="#A7F3D0" text-anchor="middle" font-family="serif" letter-spacing="1">Fondé en 1921</text>
+
+  <!-- Windows and door on facade -->
+  <!-- Left window -->
+  <rect x="30" y="160" width="80" height="100" fill="#6AAED8" rx="3"/>
+  <rect x="28" y="158" width="84" height="104" fill="none" stroke="#A07840" stroke-width="4" rx="3"/>
+  <line x1="70" y1="158" x2="70" y2="262" stroke="#A07840" stroke-width="2"/>
+  <line x1="28" y1="210" x2="112" y2="210" stroke="#A07840" stroke-width="2"/>
+  <!-- Window reflection -->
+  <rect x="35" y="163" width="20" height="40" fill="white" opacity="0.2" rx="1"/>
+  <!-- Menu board in window -->
+  <rect x="40" y="172" width="55" height="70" fill="#FFF9E8" rx="2" opacity="0.85"/>
+  <text x="67" y="183" font-size="5" fill="#333" text-anchor="middle" font-family="serif" font-weight="bold">MENU DU JOUR</text>
+  <line x1="40" y1="187" x2="95" y2="187" stroke="#999" stroke-width="0.5"/>
+  <text x="67" y="196" font-size="4.5" fill="#555" text-anchor="middle" font-family="sans-serif">Soupe du jour</text>
+  <text x="67" y="205" font-size="4.5" fill="#555" text-anchor="middle" font-family="sans-serif">Croque-monsieur</text>
+  <text x="67" y="214" font-size="4.5" fill="#555" text-anchor="middle" font-family="sans-serif">Salade niçoise</text>
+  <text x="67" y="223" font-size="4.5" fill="#555" text-anchor="middle" font-family="sans-serif">Crème brûlée</text>
+  <line x1="40" y1="228" x2="95" y2="228" stroke="#999" stroke-width="0.5"/>
+  <text x="67" y="236" font-size="4.5" fill="#B91C1C" text-anchor="middle" font-family="sans-serif" font-weight="bold">Formule: 14,50 €</text>
+
+  <!-- Central door (glass) -->
+  <rect x="245" y="155" width="110" height="125" fill="#7AAED8" rx="3"/>
+  <rect x="243" y="153" width="114" height="129" fill="none" stroke="#A07840" stroke-width="5" rx="3"/>
+  <!-- Door arch -->
+  <ellipse cx="300" cy="155" rx="57" ry="15" fill="#7AAED8"/>
+  <ellipse cx="300" cy="155" rx="57" ry="15" fill="none" stroke="#A07840" stroke-width="5"/>
+  <!-- Door handle -->
+  <circle cx="340" cy="220" r="4" fill="#C8A840"/>
+  <rect x="337" y="210" width="6" height="22" fill="#C8A840" rx="3"/>
+  <!-- Door frame vertical -->
+  <line x1="300" y1="153" x2="300" y2="280" stroke="#A07840" stroke-width="3"/>
+  <!-- Reflection -->
+  <rect x="250" y="160" width="22" height="60" fill="white" opacity="0.15" rx="1"/>
+
+  <!-- Right window -->
+  <rect x="490" y="160" width="80" height="100" fill="#6AAED8" rx="3"/>
+  <rect x="488" y="158" width="84" height="104" fill="none" stroke="#A07840" stroke-width="4" rx="3"/>
+  <line x1="530" y1="158" x2="530" y2="262" stroke="#A07840" stroke-width="2"/>
+  <line x1="488" y1="210" x2="572" y2="210" stroke="#A07840" stroke-width="2"/>
+  <rect x="495" y="163" width="20" height="40" fill="white" opacity="0.2" rx="1"/>
+  <!-- Chalkboard in right window -->
+  <rect x="500" y="172" width="55" height="70" fill="#1A3A2A" rx="2" opacity="0.9"/>
+  <text x="527" y="183" font-size="5" fill="#FDE68A" text-anchor="middle" font-family="serif" font-weight="bold">SPÉCIALITÉS</text>
+  <text x="527" y="195" font-size="4.5" fill="white" text-anchor="middle" font-family="sans-serif">☕ Café express 2€</text>
+  <text x="527" y="207" font-size="4.5" fill="white" text-anchor="middle" font-family="sans-serif">🥐 Croissant 1,50€</text>
+  <text x="527" y="219" font-size="4.5" fill="white" text-anchor="middle" font-family="sans-serif">🍷 Vin rosé 5€</text>
+  <text x="527" y="231" font-size="4.5" fill="white" text-anchor="middle" font-family="sans-serif">🧁 Gâteau 4,50€</text>
+
+  <!-- ══ TERRACE FLOOR ══ -->
+  <rect x="0" y="280" width="600" height="120" fill="url(#floor2)"/>
+  <!-- Terrace tiles -->
+  <g stroke="#B0A080" stroke-width="0.8" opacity="0.6">
+    <line x1="0" y1="295" x2="600" y2="295"/>
+    <line x1="0" y1="310" x2="600" y2="310"/>
+    <line x1="0" y1="325" x2="600" y2="325"/>
+    <line x1="0" y1="340" x2="600" y2="340"/>
+    <line x1="0" y1="355" x2="600" y2="355"/>
+    <line x1="0" y1="370" x2="600" y2="370"/>
+    <line x1="60" y1="280" x2="60" y2="400"/>
+    <line x1="120" y1="280" x2="120" y2="400"/>
+    <line x1="180" y1="280" x2="180" y2="400"/>
+    <line x1="240" y1="280" x2="240" y2="400"/>
+    <line x1="300" y1="280" x2="300" y2="400"/>
+    <line x1="360" y1="280" x2="360" y2="400"/>
+    <line x1="420" y1="280" x2="420" y2="400"/>
+    <line x1="480" y1="280" x2="480" y2="400"/>
+    <line x1="540" y1="280" x2="540" y2="400"/>
+  </g>
+
+  <!-- Terrace barrier / railing -->
+  <rect x="0" y="278" width="600" height="8" fill="#A07840"/>
+  <!-- Railing posts -->
+  <g fill="#8B6914">
+    <rect x="25" y="265" width="5" height="20" rx="2"/>
+    <rect x="85" y="265" width="5" height="20" rx="2"/>
+    <rect x="145" y="265" width="5" height="20" rx="2"/>
+    <rect x="205" y="265" width="5" height="20" rx="2"/>
+    <rect x="390" y="265" width="5" height="20" rx="2"/>
+    <rect x="450" y="265" width="5" height="20" rx="2"/>
+    <rect x="510" y="265" width="5" height="20" rx="2"/>
+    <rect x="570" y="265" width="5" height="20" rx="2"/>
+  </g>
+  <!-- Railing top bar -->
+  <rect x="0" y="264" width="215" height="4" fill="#A07840" rx="2"/>
+  <rect x="385" y="264" width="215" height="4" fill="#A07840" rx="2"/>
+
+  <!-- Potted plants on railing -->
+  <rect x="22" y="255" width="14" height="12" fill="#7A5A30" rx="2"/>
+  <ellipse cx="29" cy="253" rx="12" ry="9" fill="#22C55E"/>
+  <circle cx="25" cy="249" r="4" fill="#EF4444"/>
+  <circle cx="32" cy="248" r="4" fill="#F97316"/>
+  <circle cx="29" cy="245" r="3" fill="#EF4444"/>
+
+  <rect x="142" y="255" width="14" height="12" fill="#7A5A30" rx="2"/>
+  <ellipse cx="149" cy="253" rx="12" ry="9" fill="#15803D"/>
+  <circle cx="145" cy="249" r="4" fill="#EC4899"/>
+  <circle cx="152" cy="248" r="3" fill="#F9A8D4"/>
+  <circle cx="149" cy="245" r="4" fill="#EC4899"/>
+
+  <rect x="447" y="255" width="14" height="12" fill="#7A5A30" rx="2"/>
+  <ellipse cx="454" cy="253" rx="12" ry="9" fill="#22C55E"/>
+  <circle cx="450" cy="249" r="4" fill="#FCD34D"/>
+  <circle cx="457" cy="248" r="3" fill="#F59E0B"/>
+  <circle cx="454" cy="245" r="4" fill="#FCD34D"/>
+
+  <rect x="567" y="255" width="14" height="12" fill="#7A5A30" rx="2"/>
+  <ellipse cx="574" cy="253" rx="12" ry="9" fill="#15803D"/>
+  <circle cx="570" cy="249" r="4" fill="#EF4444"/>
+  <circle cx="577" cy="248" r="3" fill="#F97316"/>
+  <circle cx="574" cy="245" r="4" fill="#EF4444"/>
+
+  <!-- ══ CAFÉ TABLES & CHAIRS ══ -->
+
+  <!-- TABLE 1 (left) — round bistro table -->
+  <!-- Table leg -->
+  <line x1="100" y1="295" x2="100" y2="340" stroke="#4A3010" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="100" cy="340" rx="18" ry="5" fill="#3A2010"/>
+  <!-- Table top -->
+  <ellipse cx="100" cy="295" rx="42" ry="14" fill="#F5E0B0"/>
+  <ellipse cx="100" cy="293" rx="40" ry="12" fill="#EDD090"/>
+  <!-- Table edge detail -->
+  <ellipse cx="100" cy="293" rx="40" ry="12" fill="none" stroke="#C8A850" stroke-width="2"/>
+  <!-- Chairs left table -->
+  <!-- Chair L -->
+  <rect x="44" y="285" width="26" height="5" fill="#5A3010" rx="2"/><!-- seat -->
+  <line x1="47" y1="290" x2="44" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="67" y1="290" x2="70" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <rect x="42" y="270" width="28" height="16" fill="#DC2626" rx="3"/><!-- back cushion -->
+  <rect x="44" y="272" width="24" height="12" fill="#EF4444" rx="2" opacity="0.7"/>
+  <!-- Chair R -->
+  <rect x="130" y="285" width="26" height="5" fill="#5A3010" rx="2"/>
+  <line x1="133" y1="290" x2="130" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="153" y1="290" x2="156" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <rect x="128" y="270" width="28" height="16" fill="#DC2626" rx="3"/>
+  <rect x="130" y="272" width="24" height="12" fill="#EF4444" rx="2" opacity="0.7"/>
+
+  <!-- Items on table 1 -->
+  <!-- Two coffee cups -->
+  <ellipse cx="88" cy="290" rx="7" ry="4" fill="#E8D0A0"/>
+  <ellipse cx="88" cy="289" rx="6" ry="3" fill="#4A2010"/><!-- coffee -->
+  <ellipse cx="112" cy="290" rx="7" ry="4" fill="#E8D0A0"/>
+  <ellipse cx="112" cy="289" rx="6" ry="3" fill="#6B3515"/>
+  <!-- Croissant -->
+  <path d="M97,290 Q100,284 103,290" fill="none" stroke="#C8844A" stroke-width="3" stroke-linecap="round"/>
+  <!-- Small vase with flower -->
+  <rect x="99" y="283" width="4" height="8" fill="#7AAED8" rx="1"/>
+  <circle cx="101" cy="282" r="4" fill="#EF4444"/>
+  <circle cx="101" cy="281" r="2" fill="#FEF9C3"/>
+
+  <!-- TABLE 2 (centre) -->
+  <line x1="300" y1="295" x2="300" y2="345" stroke="#4A3010" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="300" cy="345" rx="18" ry="5" fill="#3A2010"/>
+  <ellipse cx="300" cy="295" rx="42" ry="14" fill="#F5E0B0"/>
+  <ellipse cx="300" cy="293" rx="40" ry="12" fill="#EDD090"/>
+  <ellipse cx="300" cy="293" rx="40" ry="12" fill="none" stroke="#C8A850" stroke-width="2"/>
+  <!-- Chairs centre table -->
+  <rect x="244" y="285" width="26" height="5" fill="#5A3010" rx="2"/>
+  <line x1="247" y1="290" x2="244" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="267" y1="290" x2="270" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <rect x="242" y="270" width="28" height="16" fill="#1D4ED8" rx="3"/>
+  <rect x="244" y="272" width="24" height="12" fill="#3B82F6" rx="2" opacity="0.7"/>
+  <rect x="330" y="285" width="26" height="5" fill="#5A3010" rx="2"/>
+  <line x1="333" y1="290" x2="330" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="353" y1="290" x2="356" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <rect x="328" y="270" width="28" height="16" fill="#1D4ED8" rx="3"/>
+  <rect x="330" y="272" width="24" height="12" fill="#3B82F6" rx="2" opacity="0.7"/>
+  <!-- Items on table 2 -->
+  <ellipse cx="288" cy="289" rx="7" ry="4" fill="#E8D0A0"/>
+  <ellipse cx="288" cy="288" rx="6" ry="3" fill="#4A2010"/>
+  <ellipse cx="314" cy="289" rx="7" ry="4" fill="#E8D0A0"/>
+  <ellipse cx="314" cy="288" rx="6" ry="3" fill="#7B3515"/>
+  <!-- Wine glass -->
+  <ellipse cx="300" cy="287" rx="5" ry="3" fill="#F87171" opacity="0.8"/>
+  <rect x="299" y="287" width="2" height="5" fill="#aaa"/>
+  <ellipse cx="300" cy="292" rx="5" ry="2" fill="#888"/>
+  <!-- Small plate with food -->
+  <ellipse cx="295" cy="292" rx="8" ry="3" fill="#EDD090"/>
+  <circle cx="293" cy="291" r="2" fill="#F97316"/>
+  <circle cx="297" cy="291" r="2" fill="#22C55E"/>
+  <!-- Newspaper -->
+  <rect x="306" y="285" width="18" height="12" fill="#F0F0E8" rx="1" transform="rotate(8,315,291)"/>
+  <line x1="308" y1="289" x2="322" y2="288" stroke="#CCC" stroke-width="0.8"/>
+  <line x1="308" y1="292" x2="322" y2="291" stroke="#CCC" stroke-width="0.8"/>
+
+  <!-- TABLE 3 (right) -->
+  <line x1="500" y1="295" x2="500" y2="340" stroke="#4A3010" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="500" cy="340" rx="18" ry="5" fill="#3A2010"/>
+  <ellipse cx="500" cy="295" rx="42" ry="14" fill="#F5E0B0"/>
+  <ellipse cx="500" cy="293" rx="40" ry="12" fill="#EDD090"/>
+  <ellipse cx="500" cy="293" rx="40" ry="12" fill="none" stroke="#C8A850" stroke-width="2"/>
+  <!-- Chairs right table -->
+  <rect x="444" y="285" width="26" height="5" fill="#5A3010" rx="2"/>
+  <line x1="447" y1="290" x2="444" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="467" y1="290" x2="470" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <rect x="442" y="270" width="28" height="16" fill="#15803D" rx="3"/>
+  <rect x="444" y="272" width="24" height="12" fill="#22C55E" rx="2" opacity="0.7"/>
+  <rect x="530" y="285" width="26" height="5" fill="#5A3010" rx="2"/>
+  <line x1="533" y1="290" x2="530" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="553" y1="290" x2="556" y2="315" stroke="#5A3010" stroke-width="3" stroke-linecap="round"/>
+  <rect x="528" y="270" width="28" height="16" fill="#15803D" rx="3"/>
+  <rect x="530" y="272" width="24" height="12" fill="#22C55E" rx="2" opacity="0.7"/>
+  <!-- Items on table 3 -->
+  <ellipse cx="489" cy="289" rx="7" ry="4" fill="#E8D0A0"/>
+  <ellipse cx="489" cy="288" rx="6" ry="3" fill="#4A2010"/>
+  <ellipse cx="513" cy="289" rx="7" ry="4" fill="#E8D0A0"/>
+  <ellipse cx="513" cy="288" rx="6" ry="3" fill="#5A2510"/>
+  <!-- Cake slice -->
+  <polygon points="497,285 506,285 504,294 499,294" fill="#F5CBA7"/>
+  <polygon points="497,285 506,285 504,287 499,287" fill="#FDE68A"/>
+  <line x1="499" y1="287" x2="499" y2="294" stroke="#E8B87A" stroke-width="0.5"/>
+  <!-- Small vase -->
+  <rect x="499" y="283" width="4" height="8" fill="#7AAED8" rx="1"/>
+  <circle cx="501" cy="282" r="4" fill="#EC4899"/>
+  <circle cx="501" cy="281" r="2" fill="#FEF9C3"/>
+
+  <!-- ══ PEOPLE ══ -->
+
+  <!-- TABLE 1 — woman reading, man with phone -->
+
+  <!-- Woman left (reading book) -->
+  <circle cx="57" cy="254" r="10" fill="#F5CBA7"/>
+  <!-- Hair — loose -->
+  <ellipse cx="57" cy="245" rx="10" ry="6" fill="#B45309"/>
+  <path d="M49,249 Q44,255 46,265" fill="none" stroke="#B45309" stroke-width="3"/>
+  <path d="M65,249 Q70,255 68,265" fill="none" stroke="#B45309" stroke-width="3"/>
+  <!-- Body: floral blouse -->
+  <rect x="49" y="264" width="16" height="20" fill="#DB2777" rx="3"/>
+  <!-- Flowers on blouse -->
+  <circle cx="54" cy="269" r="2" fill="#FDE68A"/>
+  <circle cx="60" cy="272" r="2" fill="#FDE68A"/>
+  <circle cx="54" cy="275" r="2" fill="#A7F3D0"/>
+  <!-- Skirt -->
+  <rect x="47" y="282" width="20" height="14" fill="#7C3AED" rx="2"/>
+  <!-- Arms — holding book down on table -->
+  <line x1="49" y1="267" x2="40" y2="278" stroke="#F5CBA7" stroke-width="5" stroke-linecap="round"/>
+  <line x1="65" y1="267" x2="74" y2="278" stroke="#F5CBA7" stroke-width="5" stroke-linecap="round"/>
+  <!-- Book on table near her -->
+  <rect x="62" y="282" width="22" height="14" fill="#1D4ED8" rx="1" transform="rotate(-8,73,289)"/>
+  <rect x="64" y="284" width="18" height="10" fill="#3B82F6" rx="1" transform="rotate(-8,73,289)" opacity="0.7"/>
+  <!-- Legs -->
+  <line x1="51" y1="296" x2="48" y2="318" stroke="#7C3AED" stroke-width="5" stroke-linecap="round"/>
+  <line x1="57" y1="296" x2="61" y2="318" stroke="#7C3AED" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="47" cy="319" rx="5" ry="3" fill="#5A3010"/>
+  <ellipse cx="62" cy="319" rx="5" ry="3" fill="#5A3010"/>
+
+  <!-- Man right of table 1 (reading newspaper / looking at phone) -->
+  <circle cx="143" cy="254" r="10" fill="#8D6E63"/>
+  <!-- Grey hair -->
+  <ellipse cx="143" cy="245" rx="10" ry="5" fill="#9CA3AF"/>
+  <!-- Glasses -->
+  <circle cx="139" cy="254" r="4" fill="none" stroke="#444" stroke-width="1.5"/>
+  <circle cx="147" cy="254" r="4" fill="none" stroke="#444" stroke-width="1.5"/>
+  <line x1="143" y1="254" x2="144" y2="254" stroke="#444" stroke-width="1.5"/>
+  <line x1="135" y1="254" x2="132" y2="255" stroke="#444" stroke-width="1.5"/>
+  <line x1="151" y1="254" x2="154" y2="255" stroke="#444" stroke-width="1.5"/>
+  <!-- Body: light blue shirt -->
+  <rect x="135" y="264" width="16" height="20" fill="#60A5FA" rx="3"/>
+  <line x1="143" y1="264" x2="143" y2="284" stroke="#93C5FD" stroke-width="1" opacity="0.7"/>
+  <!-- Trousers -->
+  <rect x="133" y="282" width="20" height="14" fill="#374151" rx="2"/>
+  <!-- Arms — one on table -->
+  <line x1="135" y1="267" x2="122" y2="275" stroke="#8D6E63" stroke-width="5" stroke-linecap="round"/>
+  <line x1="151" y1="267" x2="162" y2="272" stroke="#8D6E63" stroke-width="5" stroke-linecap="round"/>
+  <!-- Legs -->
+  <line x1="137" y1="296" x2="133" y2="318" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
+  <line x1="143" y1="296" x2="147" y2="318" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="132" cy="319" rx="5" ry="3" fill="#1F2937"/>
+  <ellipse cx="148" cy="319" rx="5" ry="3" fill="#1F2937"/>
+
+  <!-- TABLE 2 — young couple having lunch -->
+
+  <!-- Young woman (left of table 2) -->
+  <circle cx="257" cy="252" r="10" fill="#FDDCB5"/>
+  <!-- Long dark hair -->
+  <ellipse cx="257" cy="243" rx="10" ry="6" fill="#1F2937"/>
+  <path d="M249,247 Q244,255 246,268" fill="none" stroke="#1F2937" stroke-width="3.5"/>
+  <path d="M265,247 Q270,255 268,268" fill="none" stroke="#1F2937" stroke-width="3.5"/>
+  <!-- Body: yellow summer dress -->
+  <rect x="249" y="262" width="16" height="22" fill="#EAB308" rx="3"/>
+  <rect x="247" y="282" width="20" height="14" fill="#CA8A04" rx="2"/>
+  <!-- Arms — leaning in, chatting -->
+  <line x1="249" y1="265" x2="237" y2="272" stroke="#FDDCB5" stroke-width="5" stroke-linecap="round"/>
+  <line x1="265" y1="265" x2="278" y2="271" stroke="#FDDCB5" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="280" cy="272" r="4" fill="#FDDCB5"/><!-- hand on table -->
+  <!-- Legs -->
+  <line x1="251" y1="296" x2="247" y2="318" stroke="#CA8A04" stroke-width="5" stroke-linecap="round"/>
+  <line x1="257" y1="296" x2="261" y2="318" stroke="#CA8A04" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="246" cy="319" rx="5" ry="3" fill="#7C2D12"/>
+  <ellipse cx="262" cy="319" rx="5" ry="3" fill="#7C2D12"/>
+  <!-- Smile -->
+  <path d="M254,256 Q257,258 260,256" fill="none" stroke="#C17B3A" stroke-width="1"/>
+
+  <!-- Young man (right of table 2, facing her) -->
+  <circle cx="343" cy="252" r="10" fill="#D4A574"/>
+  <!-- Hair -->
+  <ellipse cx="343" cy="243" rx="10" ry="5" fill="#292524"/>
+  <!-- Body: striped polo shirt -->
+  <rect x="335" y="262" width="16" height="22" fill="#FFF" rx="3"/>
+  <line x1="335" y1="265" x2="351" y2="265" stroke="#3B82F6" stroke-width="2.5"/>
+  <line x1="335" y1="270" x2="351" y2="270" stroke="#3B82F6" stroke-width="2.5"/>
+  <line x1="335" y1="275" x2="351" y2="275" stroke="#3B82F6" stroke-width="1.5"/>
+  <rect x="333" y="282" width="20" height="14" fill="#1E3A5F" rx="2"/>
+  <!-- Arms — gesturing, talking -->
+  <line x1="335" y1="265" x2="322" y2="271" stroke="#D4A574" stroke-width="5" stroke-linecap="round"/>
+  <line x1="351" y1="265" x2="362" y2="259" stroke="#D4A574" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="319" cy="272" r="4" fill="#D4A574"/><!-- hand gesturing -->
+  <!-- Legs -->
+  <line x1="337" y1="296" x2="333" y2="318" stroke="#1E3A5F" stroke-width="5" stroke-linecap="round"/>
+  <line x1="343" y1="296" x2="347" y2="318" stroke="#1E3A5F" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="332" cy="319" rx="5" ry="3" fill="#111"/>
+  <ellipse cx="348" cy="319" rx="5" ry="3" fill="#111"/>
+
+  <!-- TABLE 3 — older woman alone + waiter approaching -->
+
+  <!-- Older woman at table 3 -->
+  <circle cx="457" cy="252" r="10" fill="#F0C8A0"/>
+  <!-- Silver hair / chignon -->
+  <ellipse cx="457" cy="243" rx="10" ry="5" fill="#D1D5DB"/>
+  <circle cx="457" cy="241" r="5" fill="#E5E7EB"/>
+  <!-- Elegant blouse -->
+  <rect x="449" y="262" width="16" height="20" fill="#7C3AED" rx="3"/>
+  <!-- Pearl necklace -->
+  <ellipse cx="457" cy="264" rx="8" ry="2" fill="none" stroke="#FDE68A" stroke-width="1.5"/>
+  <!-- Skirt -->
+  <rect x="447" y="280" width="20" height="16" fill="#4C1D95" rx="2"/>
+  <!-- Arms — cup in hand -->
+  <line x1="449" y1="265" x2="437" y2="271" stroke="#F0C8A0" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="434" cy="272" r="4" fill="#F0C8A0"/><!-- hand holding cup -->
+  <line x1="465" y1="265" x2="476" y2="270" stroke="#F0C8A0" stroke-width="5" stroke-linecap="round"/>
+  <!-- Legs -->
+  <line x1="451" y1="296" x2="447" y2="318" stroke="#4C1D95" stroke-width="5" stroke-linecap="round"/>
+  <line x1="457" y1="296" x2="461" y2="318" stroke="#4C1D95" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="446" cy="319" rx="5" ry="3" fill="#3A0A6A"/>
+  <ellipse cx="462" cy="319" rx="5" ry="3" fill="#3A0A6A"/>
+
+  <!-- WAITER approaching table 3 (carrying tray) -->
+  <circle cx="540" cy="245" r="10" fill="#FDDCB5"/>
+  <!-- Waiter hair -->
+  <ellipse cx="540" cy="236" rx="10" ry="5" fill="#292524"/>
+  <!-- White shirt + black waistcoat -->
+  <rect x="532" y="255" width="16" height="22" fill="#FFF" rx="3"/>
+  <rect x="534" y="257" width="12" height="18" fill="#1F2937" rx="2" opacity="0.9"/>
+  <!-- Bow tie -->
+  <polygon points="536,257 540,260 536,263" fill="#DC2626"/>
+  <polygon points="544,257 540,260 544,263" fill="#DC2626"/>
+  <circle cx="540" cy="260" r="1.5" fill="#B91C1C"/>
+  <!-- Trousers -->
+  <rect x="530" y="275" width="20" height="18" fill="#111827" rx="2"/>
+  <!-- Tray arm raised -->
+  <line x1="532" y1="258" x2="518" y2="245" stroke="#FDDCB5" stroke-width="5" stroke-linecap="round"/>
+  <!-- Tray -->
+  <ellipse cx="512" cy="242" rx="18" ry="6" fill="#C8A840"/>
+  <ellipse cx="512" cy="241" rx="16" ry="5" fill="#D4B050"/>
+  <!-- Items on tray -->
+  <ellipse cx="506" cy="239" rx="5" ry="3" fill="#E8D0A0"/>
+  <ellipse cx="506" cy="238" rx="4" ry="2" fill="#4A2010"/><!-- coffee -->
+  <ellipse cx="518" cy="239" rx="5" ry="3" fill="#E8D0A0"/>
+  <ellipse cx="518" cy="238" rx="4" ry="2" fill="#6B3515"/>
+  <!-- Other arm down -->
+  <line x1="548" y1="258" x2="558" y2="268" stroke="#FDDCB5" stroke-width="5" stroke-linecap="round"/>
+  <!-- Legs walking -->
+  <line x1="534" y1="293" x2="528" y2="318" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+  <line x1="540" y1="293" x2="546" y2="316" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="527" cy="319" rx="5" ry="3" fill="#111"/>
+  <ellipse cx="547" cy="317" rx="5" ry="3" fill="#111"/>
+
+  <!-- ══ LAMP POST (outside terrace) ══ -->
+  <rect x="198" y="165" width="6" height="115" fill="#3A3A4A" rx="2"/>
+  <!-- Arm -->
+  <path d="M201,168 Q215,162 215,175" fill="none" stroke="#3A3A4A" stroke-width="4"/>
+  <!-- Lantern -->
+  <rect x="208" y="172" width="14" height="16" fill="#C8A840" rx="2"/>
+  <rect x="209" y="174" width="12" height="12" fill="#FFF9C3" rx="1" opacity="0.9"/>
+  <ellipse cx="215" cy="172" rx="8" ry="3" fill="#C8A840"/>
+  <ellipse cx="215" cy="188" rx="8" ry="3" fill="#C8A840"/>
+  <!-- Glow -->
+  <circle cx="215" cy="180" r="14" fill="#FFF9C3" opacity="0.2"/>
+
+  <!-- Street beyond terrace -->
+  <rect x="0" y="385" width="600" height="15" fill="#8A8070" opacity="0.6"/>
+
+  <!-- Bicycle leaning against wall (charming detail) -->
+  <!-- Wheel back -->
+  <circle cx="174" cy="275" r="18" fill="none" stroke="#4A3010" stroke-width="2.5"/>
+  <circle cx="174" cy="275" r="3" fill="#6B4226"/>
+  <!-- Spokes -->
+  <line x1="174" y1="257" x2="174" y2="293" stroke="#6B4226" stroke-width="1"/>
+  <line x1="156" y1="275" x2="192" y2="275" stroke="#6B4226" stroke-width="1"/>
+  <line x1="161" y1="262" x2="187" y2="288" stroke="#6B4226" stroke-width="1"/>
+  <line x1="161" y1="288" x2="187" y2="262" stroke="#6B4226" stroke-width="1"/>
+  <!-- Wheel front -->
+  <circle cx="210" cy="275" r="18" fill="none" stroke="#4A3010" stroke-width="2.5"/>
+  <circle cx="210" cy="275" r="3" fill="#6B4226"/>
+  <line x1="210" y1="257" x2="210" y2="293" stroke="#6B4226" stroke-width="1"/>
+  <line x1="192" y1="275" x2="228" y2="275" stroke="#6B4226" stroke-width="1"/>
+  <!-- Frame -->
+  <line x1="192" y1="268" x2="210" y2="268" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/><!-- top tube -->
+  <line x1="192" y1="268" x2="183" y2="280" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/><!-- down tube -->
+  <line x1="192" y1="280" x2="183" y2="280" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/><!-- seat tube -->
+  <line x1="192" y1="280" x2="174" y2="275" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/><!-- chain stay -->
+  <line x1="192" y1="268" x2="174" y2="275" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/><!-- seat stay -->
+  <!-- Handlebars -->
+  <line x1="210" y1="268" x2="218" y2="263" stroke="#4A3010" stroke-width="3" stroke-linecap="round"/>
+  <line x1="215" y1="260" x2="222" y2="265" stroke="#4A3010" stroke-width="3" stroke-linecap="round"/>
+  <!-- Basket on bike with baguette -->
+  <rect x="218" y="258" width="16" height="12" fill="#C8A050" rx="2"/>
+  <line x1="219" y1="262" x2="233" y2="262" stroke="#A07830" stroke-width="0.8"/>
+  <ellipse cx="228" cy="257" rx="12" ry="4" fill="#D4954A" transform="rotate(-20,228,257)"/>
+
+  <!-- Shadow under tables -->
+  <ellipse cx="100" cy="344" rx="40" ry="8" fill="#000" opacity="0.08"/>
+  <ellipse cx="300" cy="348" rx="40" ry="8" fill="#000" opacity="0.08"/>
+  <ellipse cx="500" cy="344" rx="40" ry="8" fill="#000" opacity="0.08"/>
+</svg>

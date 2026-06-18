@@ -15,6 +15,7 @@ var CORE_ASSETS = [
   './french-data.js',
   './delf-data.js',
   './img-delf-a1-sp3.svg',
+  './img-delf-a2-sp2.svg',
   './lsf-data.js',
   './code-route-data.js',
   './manifest.webmanifest',
