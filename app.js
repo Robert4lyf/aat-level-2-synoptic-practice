@@ -3509,7 +3509,9 @@
   function renderListenQuiz(q) {
     const total = State.questions.length;
     const pct = ((State.current + 1) / total * 100).toFixed(0);
-    const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🎧', short: 'Écoute' };
+    const topic = (window.FR_TOPICS && window.FR_TOPICS.find(t => t.id === q.topic))
+               || window.TOPICS.find(t => t.id === q.topic)
+               || { icon: '🎧', short: 'Écoute' };
     const answered = State.answered !== null;
     const flagged = Storage.isFlagged(q.id);
     const confident = Storage.isConfident(q.id);
@@ -3542,7 +3544,6 @@
         <div class="quiz-container slide-in">
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
-            <span class="listen-pill">🎧 Écoute</span>
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="${confident ? 'Unmark confident' : 'Mark as confident'}">✓</button>
