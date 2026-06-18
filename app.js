@@ -4966,10 +4966,16 @@
     document.querySelectorAll('.delf-rubric-cb').forEach(el => el.addEventListener('change', () => toggleDelfRubric(el.dataset.delfRubric)));
     document.querySelectorAll('[data-delf-tts]').forEach(el => {
       el.addEventListener('click', () => {
+        if (el.classList.contains('is-playing')) {
+          stopSpeech();
+          el.textContent = '🔊 Play Again';
+          el.classList.remove('is-playing');
+          return;
+        }
         const text = el.dataset.delfTts;
         if (!text) return;
         speakDelfDialogue(text,
-          () => { el.textContent = '⏹ Playing…'; el.classList.add('is-playing'); },
+          () => { el.textContent = '⏹ Stop'; el.classList.add('is-playing'); },
           () => { el.textContent = '🔊 Play Again'; el.classList.remove('is-playing'); }
         );
       });
