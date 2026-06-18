@@ -634,7 +634,25 @@ window.DELF_MOCKS = [
           },
           {
             id: 'a2-sp2',
-            title: 'Part 2 — Guided interaction (10 points)',
+            title: 'Part 2 — Photo description (5 points)',
+            instruction: 'Describe what you see in the image below. Speak for about 1–2 minutes.',
+            image: 'img-delf-a2-sp2.svg',
+            guidingQuestions: [
+              'Qu\'est-ce que vous voyez sur cette photo ?',
+              'Où se passe la scène, d\'après vous ?',
+              'Décrivez les personnes : que font-elles ?',
+              'Quelle est l\'ambiance de cette photo ?',
+              'Est-ce que vous aimez ce genre d\'endroit ? Pourquoi ?'
+            ],
+            rubric: [
+              { id: 'a2-sp2-1', label: 'I described the main elements of the image clearly', points: 2 },
+              { id: 'a2-sp2-2', label: 'I used varied vocabulary to describe people, places and actions', points: 2 },
+              { id: 'a2-sp2-3', label: 'I gave my opinion or reaction to the scene', points: 1 }
+            ]
+          },
+          {
+            id: 'a2-sp3',
+            title: 'Part 3 — Guided interaction (10 points)',
             instruction: 'The examiner asks questions about your monologue topic and everyday life. Practise answering these example questions:',
             prompts: [
               'Parlez-moi de vos loisirs préférés et dites-moi pourquoi vous les aimez.',
@@ -645,14 +663,14 @@ window.DELF_MOCKS = [
               'Vous avez déjà habité dans un autre pays ? Comment était l\'expérience ?'
             ],
             rubric: [
-              { id: 'a2-sp2-1', label: 'I responded to questions with relevant and detailed answers', points: 4 },
-              { id: 'a2-sp2-2', label: 'I maintained the conversation naturally and asked questions back', points: 3 },
-              { id: 'a2-sp2-3', label: 'I used a range of vocabulary and sentence structures', points: 3 }
+              { id: 'a2-sp3-1', label: 'I responded to questions with relevant and detailed answers', points: 4 },
+              { id: 'a2-sp3-2', label: 'I maintained the conversation naturally and asked questions back', points: 3 },
+              { id: 'a2-sp3-3', label: 'I used a range of vocabulary and sentence structures', points: 3 }
             ]
           },
           {
-            id: 'a2-sp3',
-            title: 'Part 3 — Role-play (10 points)',
+            id: 'a2-sp4',
+            title: 'Part 4 — Role-play (5 points)',
             instruction: 'Carry out this role-play with a partner (or practise alone). You play the student caller.',
             scenario: 'You want to enrol in a French evening class. Call the language school to: find out what levels are available, ask about the schedule (days and times), ask about the price per term, ask if there is a trial class, and enrol in the class that suits you best.',
             role: 'Student/Caller',
@@ -666,10 +684,10 @@ window.DELF_MOCKS = [
               'Je voudrais m\'inscrire au niveau ___.'
             ],
             rubric: [
-              { id: 'a2-sp3-1', label: 'I enquired clearly about levels and the schedule', points: 3 },
-              { id: 'a2-sp3-2', label: 'I asked about the price and trial class', points: 3 },
-              { id: 'a2-sp3-3', label: 'I successfully completed the enrolment request', points: 2 },
-              { id: 'a2-sp3-4', label: 'I used polite and appropriate French throughout', points: 2 }
+              { id: 'a2-sp4-1', label: 'I enquired clearly about levels and the schedule', points: 2 },
+              { id: 'a2-sp4-2', label: 'I asked about the price and trial class', points: 1 },
+              { id: 'a2-sp4-3', label: 'I successfully completed the enrolment request', points: 1 },
+              { id: 'a2-sp4-4', label: 'I used polite and appropriate French throughout', points: 1 }
             ]
           }
         ]
