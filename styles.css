@@ -5294,6 +5294,8 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-useful-label { font-size: .8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; }
 .delf-useful ul { padding-left: 16px; margin: 0; }
 .delf-useful li { font-size: .85rem; color: var(--text-secondary); line-height: 1.6; }
+.delf-photo-wrap { margin: 12px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.delf-photo { width: 100%; height: auto; display: block; max-height: 300px; object-fit: contain; background: var(--card-muted); }
 
 /* Self-assessment */
 .delf-assess-intro { margin-bottom: 16px; }

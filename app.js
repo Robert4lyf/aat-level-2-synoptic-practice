@@ -4597,7 +4597,7 @@
       const scenarioHtml = t.scenario ? `<div class="delf-scenario"><strong>Scenario:</strong> ${escapeHtml(t.scenario)}</div>` : '';
       const guidingHtml = t.guidingQuestions ? `<ul class="delf-prompts">${t.guidingQuestions.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>` : '';
       const usefulHtml = t.usefulPhrases ? `<div class="delf-useful"><div class="delf-useful-label">Useful phrases:</div><ul>${t.usefulPhrases.map(p => `<li><em>${escapeHtml(p)}</em></li>`).join('')}</ul></div>` : '';
-      const imageHtml = t.imageDesc ? `<div class="delf-image-desc"><div class="delf-image-icon">🖼️</div><p>${escapeHtml(t.imageDesc)}</p></div>` : '';
+      const imageHtml = t.image ? `<div class="delf-photo-wrap"><img src="${escapeHtml(t.image)}" class="delf-photo" alt="Photo for description task" loading="lazy"></div>` : '';
       return `<div class="delf-task">
         <div class="delf-task-title">${escapeHtml(t.title)}</div>
         <div class="delf-task-instruction">${escapeHtml(t.instruction)}</div>

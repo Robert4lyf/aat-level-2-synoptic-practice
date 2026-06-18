@@ -352,8 +352,8 @@ window.DELF_MOCKS = [
           {
             id: 'a1-sp3',
             title: 'Part 3 — Photo description (5 points)',
-            instruction: 'Describe what you see in the image description below. Speak for about 1–2 minutes.',
-            imageDesc: '[Photo description] A busy French outdoor market in a town square on a sunny day. Colourful stalls sell fruit, vegetables, cheese, and bread. Several customers are browsing and chatting with stallholders. In the background there is a stone fountain and old traditional buildings. People look relaxed and happy.',
+            instruction: 'Describe what you see in the image below. Speak for about 1–2 minutes.',
+            image: 'img-delf-a1-sp3.svg',
             guidingQuestions: [
               'Qu\'est-ce que vous voyez sur cette photo ?',
               'Où se trouvent les gens ?',
