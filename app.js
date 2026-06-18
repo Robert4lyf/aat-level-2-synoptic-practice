@@ -2051,7 +2051,7 @@
   function submitWordOrder() {
     if (State.answered !== null) return;
     const q = State.questions[State.current];
-    if (State.woDraft.length < q.words.length) { showToast('Place all words before submitting.', 'warn'); return; }
+    if (State.woDraft.length < q.answer.length) { showToast('Place all the words you need before submitting.', 'warn'); return; }
     const sentence = State.woDraft.map(i => q.words[i]);
     const allRight = sentence.every((w, i) => w === q.answer[i]);
     State.answered = { kind: 'wordorder', correct: allRight };
@@ -3416,7 +3416,7 @@
     const placed = State.woDraft;
     const placedSet = new Set(placed);
     const bankIndices = q.words.map((w, i) => i).filter(i => !placedSet.has(i));
-    const answerHtml = Array.from({ length: q.words.length }, (_, pos) => {
+    const answerHtml = Array.from({ length: q.answer.length }, (_, pos) => {
       if (pos < placed.length) {
         const wordIdx = placed[pos];
         const word = q.words[wordIdx];
@@ -3428,7 +3428,7 @@
     }).join('');
     const bankHtml = bankIndices.length
       ? bankIndices.map(i => `<button class="wo-word wo-bank-word" type="button" data-wo-bank="${i}" ${answered ? 'disabled' : ''}>${escapeHtml(q.words[i])}</button>`).join('')
-      : (answered ? '' : '<span class="wo-bank-empty">All words placed</span>');
+      : (answered ? '' : placed.length >= q.answer.length ? '<span class="wo-bank-empty">Ready — unused words can stay here</span>' : '');
     let feedbackHtml = '';
     if (answered) {
       const ok = State.answered.correct;
@@ -3455,10 +3455,10 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
-          <p class="wo-hint">Tap words from the bank to build the sentence. Tap a placed word to remove it.</p>
+          <p class="wo-hint">Tap words from the bank to build the sentence. Not all words are needed. Tap a placed word to remove it.</p>
           <div class="wo-answer-area">${answerHtml}</div>
           <div class="wo-bank">${bankHtml}</div>
-          ${!answered ? `<button class="next-btn" id="submitWordOrderBtn" type="button" ${placed.length < q.words.length ? 'disabled' : ''}>Submit ✓</button>` : ''}
+          ${!answered ? `<button class="next-btn" id="submitWordOrderBtn" type="button" ${placed.length < q.answer.length ? 'disabled' : ''}>Submit ✓</button>` : ''}
           ${feedbackHtml}
         </div>
       </div>
