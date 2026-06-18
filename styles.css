@@ -5003,6 +5003,12 @@ body.dark[data-subject="code-route"] .unit-card {
 }
 .dark .l3-bridge-title { color: #e6ebf4; }
 .dark .l3-bridge-sub   { color: #94a0b8; }
+.dark .l3-unit-name    { color: #e6ebf4; }
+.dark .l3-unit-meta    { color: #94a0b8; }
+.dark .l3-unit-desc    { color: #94a0b8; }
+.dark .l3-section-title { color: #8899bb; }
+.dark .l3-unit-topics  { color: #b0bdd4; }
+.dark .l3-entry-list   { color: #b0bdd4; }
 .dark .l3-info-item {
   background: #0b1322;
   border-color: #1e2a44;
