@@ -4370,6 +4370,16 @@
       document.querySelectorAll(`[data-delf-opt^="${flatIdx}-"]`).forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
     }
+    // Update progress counter and finish button without a full re-render
+    const anss = de.answers[section.id];
+    const answered = anss.filter(a => a !== null).length;
+    const total = anss.length;
+    const progressSpan = document.querySelector('.delf-progress-row span');
+    if (progressSpan) progressSpan.textContent = `${answered}/${total} answered`;
+    const fill = document.querySelector('.delf-prog-fill');
+    if (fill) fill.style.width = (total ? Math.round(answered / total * 100) : 0) + '%';
+    const finishBtn = document.getElementById('delfFinishSectionBtn');
+    if (finishBtn) finishBtn.textContent = answered < total ? `Finish (${total - answered} unanswered)` : 'Finish Section →';
   }
 
   function toggleDelfRubric(rubricId) {
