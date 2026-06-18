@@ -4374,9 +4374,9 @@
     const anss = de.answers[section.id];
     const answered = anss.filter(a => a !== null).length;
     const total = anss.length;
-    const progressSpan = document.querySelector('.delf-progress-row span');
-    if (progressSpan) progressSpan.textContent = `${answered}/${total} answered`;
-    const fill = document.querySelector('.delf-prog-fill');
+    const progressText = document.getElementById('delfProgressText');
+    if (progressText) progressText.textContent = `${answered}/${total} answered`;
+    const fill = document.getElementById('delfProgFill');
     if (fill) fill.style.width = (total ? Math.round(answered / total * 100) : 0) + '%';
     const finishBtn = document.getElementById('delfFinishSectionBtn');
     if (finishBtn) finishBtn.textContent = answered < total ? `Finish (${total - answered} unanswered)` : 'Finish Section →';
@@ -4557,7 +4557,7 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
-      <div class="delf-progress-row"><span>${answered}/${total} answered</span><div class="delf-prog-bar"><div class="delf-prog-fill" style="width:${total?Math.round(answered/total*100):0}%"></div></div></div>
+      <div class="delf-progress-row"><span id="delfProgressText">${answered}/${total} answered</span><div class="delf-prog-bar"><div class="delf-prog-fill" id="delfProgFill" style="width:${total?Math.round(answered/total*100):0}%"></div></div></div>
       <div class="delf-exercises">${exercisesHtml}</div>
       <div class="delf-section-footer">
         <button class="delf-finish-sec-btn" type="button" id="delfFinishSectionBtn">${answered < total ? `Finish (${total - answered} unanswered)` : 'Finish Section →'}</button>

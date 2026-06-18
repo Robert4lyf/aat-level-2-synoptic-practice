@@ -5224,6 +5224,7 @@ body.dark[data-subject="code-route"] .unit-card {
 @keyframes pulse-danger { 0%,100% { opacity:1; } 50% { opacity:.7; } }
 
 .delf-progress-row { display: flex; align-items: center; gap: 10px; font-size: .82rem; color: var(--text-secondary); margin-bottom: 16px; }
+.dark .delf-progress-row { color: #94a0b8; }
 .delf-prog-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
 .delf-prog-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
 
@@ -5244,13 +5245,16 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-transcript { background: var(--card-muted); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 12px; }
 .delf-transcript-label { font-size: .75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
 .delf-transcript-text { white-space: pre-wrap; font-size: .87rem; line-height: 1.55; color: var(--text-primary); margin: 0; font-family: inherit; }
+.dark .delf-transcript-text { color: #e6ebf4; }
 .delf-text-block { background: var(--card-muted); border-left: 3px solid #2a7; border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 12px; }
 .delf-text-content { white-space: pre-wrap; font-size: .87rem; line-height: 1.6; color: var(--text-primary); margin: 0; font-family: inherit; }
+.dark .delf-text-content { color: #e6ebf4; }
 
 .delf-question { margin-bottom: 16px; }
 .delf-q-row { display: flex; gap: 6px; margin-bottom: 8px; }
 .delf-q-num { font-weight: 700; color: var(--accent); font-size: .9rem; flex-shrink: 0; }
 .delf-q-text { font-size: .9rem; color: var(--text-strong); line-height: 1.45; }
+.dark .delf-q-text { color: #e6ebf4; }
 .delf-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 @media (max-width: 500px) { .delf-opts { grid-template-columns: 1fr; } }
 .delf-opt { background: var(--card-muted); border: 2px solid var(--border); border-radius: 7px; padding: 8px 12px; text-align: left; font-size: .85rem; color: var(--text-primary); cursor: pointer; transition: border-color .12s, background .12s; line-height: 1.35; }
@@ -5269,16 +5273,20 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-task { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
 .delf-task-title { font-weight: 700; font-size: .95rem; color: var(--text-strong); margin-bottom: 6px; }
 .delf-task-instruction { font-size: .88rem; color: var(--text-primary); line-height: 1.5; margin-bottom: 10px; }
+.dark .delf-task-instruction { color: #e6ebf4; }
 .delf-task-content { margin: 10px 0; }
 .delf-form-content { white-space: pre-wrap; font-size: .87rem; line-height: 2; color: var(--text-primary); font-family: inherit; background: var(--card-muted); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 0; }
+.dark .delf-form-content { color: #e6ebf4; }
 .delf-task-hint { font-size: .83rem; color: var(--text-muted); background: #fffbea; border: 1px solid #ffe066; border-radius: 6px; padding: 7px 12px; margin-top: 8px; }
 .dark .delf-task-hint { background: #2b2200; border-color: #7a5c00; color: #e0c060; }
 .delf-writing-area { width: 100%; min-height: 100px; resize: vertical; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: .87rem; font-family: inherit; color: var(--text-primary); background: var(--card-muted); margin-top: 10px; box-sizing: border-box; }
+.dark .delf-writing-area { color: #e6ebf4; }
 .delf-writing-area:focus { outline: 2px solid var(--accent); }
 .delf-prompts { padding-left: 18px; margin: 6px 0 10px; }
 .delf-prompts li { font-size: .87rem; color: var(--text-primary); line-height: 1.5; margin-bottom: 4px; }
+.dark .delf-prompts li { color: #e6ebf4; }
 .delf-scenario { background: #f0f6ff; border: 1px solid #c0d8f5; border-radius: 7px; padding: 10px 14px; font-size: .87rem; color: var(--text-primary); line-height: 1.5; margin: 8px 0 10px; }
-.dark .delf-scenario { background: #0d1e38; border-color: #2050a0; }
+.dark .delf-scenario { background: #0d1e38; border-color: #2050a0; color: #e6ebf4; }
 .delf-image-desc { background: var(--card-muted); border: 1px dashed var(--border); border-radius: 8px; padding: 14px; margin: 10px 0; display: flex; gap: 10px; align-items: flex-start; }
 .delf-image-icon { font-size: 2rem; flex-shrink: 0; }
 .delf-image-desc p { font-size: .87rem; color: var(--text-secondary); line-height: 1.5; margin: 0; font-style: italic; }
@@ -5300,6 +5308,7 @@ body.dark[data-subject="code-route"] .unit-card {
 .dark .delf-rubric-item.checked { background: #0d2d1a; border-color: #2a7a4a; }
 .delf-rubric-cb { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
 .delf-rubric-label { flex: 1; font-size: .87rem; color: var(--text-primary); line-height: 1.4; }
+.dark .delf-rubric-label { color: #e6ebf4; }
 .delf-rubric-pts { font-weight: 700; font-size: .82rem; color: var(--text-muted); white-space: nowrap; }
 .delf-rubric-item.checked .delf-rubric-pts { color: #27ae60; }
 .dark .delf-rubric-item.checked .delf-rubric-pts { color: #6fcf97; }
@@ -5318,6 +5327,7 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-results-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: .88rem; }
 .delf-results-table th { text-align: left; padding: 8px 10px; font-weight: 600; color: var(--text-muted); border-bottom: 2px solid var(--border); font-size: .8rem; }
 .delf-results-table td { padding: 10px; border-bottom: 1px solid var(--border); color: var(--text-primary); }
+.dark .delf-results-table td { color: #e6ebf4; }
 .delf-res-score.pass, .delf-res-pct.pass { color: #27ae60; font-weight: 700; }
 .delf-res-score.fail, .delf-res-pct.fail { color: #e53935; font-weight: 700; }
 .delf-res-min { font-weight: 700; }
