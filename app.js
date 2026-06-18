@@ -1422,6 +1422,7 @@
     flash: null,                            // flashcard session state
     revisionUnit: null,                     // unit revision notes screen
     combo: 0,                               // consecutive correct answers in practice
+    delfExam: null,                         // DELF mock exam state (null when not active)
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -2192,6 +2193,7 @@
   }
   function exitQuiz() {
     if (State.screen === 'lesson' || State.screen === 'flash') { goLearn(); return; }
+    if (State.screen === 'delf') { exitDelf(); return; }
     if (State.screen === 'quiz' && State.mode === 'mock') {
       openConfirm({ title:'Exit mock exam?', message:'Your progress will be lost. Mock exam attempts cannot be resumed.', confirmLabel:'Exit exam',
         onConfirm: () => { stopMockTimer(); closeConfirm(); goHome(); } });
@@ -2274,6 +2276,7 @@
     else if (State.screen === 'lesson')   html = renderLesson();
     else if (State.screen === 'flash')    html = renderFlash();
     else if (State.screen === 'revision') html = renderRevision();
+    else if (State.screen === 'delf')     html = renderDelf();
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
@@ -3854,6 +3857,7 @@
     </div>
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
+    ${_activeSubjectId === 'french' && window.DELF_MOCKS ? renderDelfLanding() : ''}
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
       <div class="l3-bridge-header">
         <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
@@ -4228,6 +4232,421 @@
     State.current = idx; Calc.reset(); render();
   }
 
+  /* ── DELF MOCK EXAM ENGINE ───────────────────────────────────────────────── */
+
+  function getDelfExam(id) { return (window.DELF_MOCKS || []).find(e => e.id === id) || null; }
+
+  function flattenSectionQs(section) {
+    const qs = [];
+    (section.exercises || []).forEach(ex => (ex.questions || []).forEach(q => qs.push(q)));
+    return qs;
+  }
+
+  function delfSectionScore(de, section) {
+    if (section.type === 'auto') {
+      const qs = flattenSectionQs(section);
+      const ans = de.answers[section.id] || [];
+      return ans.filter((a, i) => a !== null && a === qs[i].ans).length;
+    }
+    const rubric = de.selfScores[section.id] || {};
+    let pts = 0;
+    (section.tasks || []).forEach(t => (t.rubric || []).forEach(r => { if (rubric[r.id]) pts += r.points; }));
+    return pts;
+  }
+
+  function startDelfExam(examId) {
+    playClick();
+    const exam = getDelfExam(examId);
+    if (!exam) { showToast('Exam data not found.', 'error'); return; }
+    const answers = {};
+    const selfScores = {};
+    const sectionsDone = {};
+    exam.sections.forEach(s => {
+      if (s.type === 'auto') answers[s.id] = new Array(flattenSectionQs(s).length).fill(null);
+      else selfScores[s.id] = {};
+      sectionsDone[s.id] = false;
+    });
+    State.screen = 'delf';
+    State.delfExam = { examId, phase: 'hub', sectionIdx: 0, sectionPhase: 'active', answers, selfScores, sectionsDone, timerEnd: 0, timerInterval: null, timedOut: false };
+    render();
+  }
+
+  function startDelfSection(idx) {
+    playClick();
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const section = exam.sections[idx];
+    de.sectionIdx = idx;
+    de.phase = 'section';
+    de.sectionPhase = (section.type === 'writing' || section.type === 'speaking') ? 'active' : 'active';
+    de.timedOut = false;
+    de.timerEnd = Date.now() + section.duration * 1000;
+    startDelfTimer(section.duration);
+    render();
+  }
+
+  function startDelfTimer(durationSecs) {
+    stopDelfTimer();
+    const de = State.delfExam;
+    de.timerInterval = setInterval(() => {
+      if (!State.delfExam || State.screen !== 'delf') { stopDelfTimer(); return; }
+      const remaining = State.delfExam.timerEnd - Date.now();
+      if (remaining <= 0) {
+        stopDelfTimer();
+        State.delfExam.timedOut = true;
+        const exam = getDelfExam(State.delfExam.examId);
+        const section = exam.sections[State.delfExam.sectionIdx];
+        if (section.type === 'auto') {
+          finishDelfSection();
+        } else {
+          State.delfExam.sectionPhase = 'assess';
+          render();
+        }
+      } else {
+        updateDelfTimerDisplay(remaining);
+      }
+    }, 1000);
+  }
+
+  function stopDelfTimer() {
+    const de = State.delfExam;
+    if (de && de.timerInterval) { clearInterval(de.timerInterval); de.timerInterval = null; }
+  }
+
+  function updateDelfTimerDisplay(remaining) {
+    const el = document.getElementById('delfTimer'); if (!el) return;
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    el.textContent = '⏱ ' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    el.className = 'delf-timer-pill' + (remaining < 60000 ? ' danger' : remaining < 180000 ? ' warn' : '');
+  }
+
+  function selectDelfAnswer(flatIdx, optIdx) {
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const section = exam.sections[de.sectionIdx];
+    if (!de.answers[section.id]) return;
+    de.answers[section.id][flatIdx] = optIdx;
+    const btn = document.querySelector(`[data-delf-opt="${flatIdx}-${optIdx}"]`);
+    if (btn) {
+      document.querySelectorAll(`[data-delf-opt^="${flatIdx}-"]`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+  }
+
+  function toggleDelfRubric(rubricId) {
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const section = exam.sections[de.sectionIdx];
+    if (!de.selfScores[section.id]) de.selfScores[section.id] = {};
+    de.selfScores[section.id][rubricId] = !de.selfScores[section.id][rubricId];
+    const score = delfSectionScore(de, section);
+    const scoreEl = document.getElementById('delfSelfScore');
+    if (scoreEl) scoreEl.textContent = score + ' / ' + section.maxScore;
+  }
+
+  function finishDelfSection() {
+    stopDelfTimer();
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const section = exam.sections[de.sectionIdx];
+    if (section.type !== 'auto') {
+      de.sectionPhase = 'assess';
+      render();
+      return;
+    }
+    de.sectionsDone[section.id] = delfSectionScore(de, section);
+    de.phase = 'hub';
+    render();
+  }
+
+  function submitDelfSelfAssess() {
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const section = exam.sections[de.sectionIdx];
+    de.sectionsDone[section.id] = delfSectionScore(de, section);
+    de.phase = 'hub';
+    render();
+  }
+
+  function finishDelfExam() {
+    stopDelfTimer();
+    State.delfExam.phase = 'results';
+    render();
+  }
+
+  function exitDelf() {
+    stopDelfTimer();
+    State.delfExam = null;
+    State.screen = 'home';
+    State.activeTab = 'learn';
+    render();
+  }
+
+  /* ── DELF RENDER FUNCTIONS ─────────────────────────────────────────────── */
+
+  function renderDelf() {
+    if (!State.delfExam) { exitDelf(); return ''; }
+    const de = State.delfExam;
+    if (de.phase === 'hub')     return renderDelfHub();
+    if (de.phase === 'section') return renderDelfSection();
+    if (de.phase === 'results') return renderDelfResults();
+    return '';
+  }
+
+  function renderDelfHub() {
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const allDone = exam.sections.every(s => de.sectionsDone[s.id] !== false);
+    const totalScore = allDone ? exam.sections.reduce((sum, s) => sum + (de.sectionsDone[s.id] || 0), 0) : null;
+    const sectionCards = exam.sections.map((s, idx) => {
+      const done = de.sectionsDone[s.id] !== false;
+      const score = done ? de.sectionsDone[s.id] : null;
+      const passSec = score !== null && score >= 5;
+      return `<div class="delf-section-card ${done ? 'delf-sec-done' : ''}">
+        <div class="delf-sec-icon">${s.icon}</div>
+        <div class="delf-sec-info">
+          <div class="delf-sec-title">${escapeHtml(s.title)}</div>
+          <div class="delf-sec-sub">${escapeHtml(s.english)} · ${s.maxScore} pts · ${Math.round(s.duration / 60)} min</div>
+        </div>
+        <div class="delf-sec-status">
+          ${done ? `<span class="delf-sec-score ${passSec ? 'pass' : 'fail'}">${score}/${s.maxScore}</span>` : `<button class="delf-start-sec-btn" type="button" data-delf-start="${idx}">Start →</button>`}
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="container delf-hub fade-in">
+      <div class="delf-hub-header">
+        <button class="delf-back-btn" type="button" id="delfExitBtn">← Back to Learn</button>
+        <div class="delf-hub-title">${escapeHtml(exam.title)}</div>
+        <div class="delf-hub-desc">${escapeHtml(exam.desc)}</div>
+      </div>
+      <div class="delf-sections-list">${sectionCards}</div>
+      ${allDone ? `<div class="delf-hub-actions">
+        <button class="delf-finish-exam-btn" type="button" id="delfFinishExamBtn">View Results →</button>
+      </div>` : ''}
+    </div>`;
+  }
+
+  function renderDelfSection() {
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    const section = exam.sections[de.sectionIdx];
+    if (section.type === 'auto') return renderDelfAutoSection(section);
+    if (section.type === 'writing') return renderDelfWritingSection(section);
+    if (section.type === 'speaking') return renderDelfSpeakingSection(section);
+    return '';
+  }
+
+  function renderDelfAutoSection(section) {
+    const de = State.delfExam;
+    const anss = de.answers[section.id] || [];
+    let flatIdx = 0;
+    const exercisesHtml = (section.exercises || []).map(ex => {
+      const qs = (ex.questions || []).map((q, qi) => {
+        const idx = flatIdx++;
+        const sel = anss[idx];
+        const optsHtml = q.opts.map((o, oi) =>
+          `<button class="delf-opt ${sel === oi ? 'selected' : ''}" type="button" data-delf-opt="${idx}-${oi}">${String.fromCharCode(65+oi)}. ${escapeHtml(o)}</button>`
+        ).join('');
+        let contextHtml = '';
+        if (q.transcript && qi === 0) {
+          contextHtml = `<div class="delf-transcript"><div class="delf-transcript-label">📝 ${section.id === 'listening' ? 'Transcript' : 'Text'}</div><pre class="delf-transcript-text">${escapeHtml(q.transcript)}</pre></div>`;
+        } else if (q.transcript && q.transcript !== null) {
+          contextHtml = `<div class="delf-transcript"><pre class="delf-transcript-text">${escapeHtml(q.transcript)}</pre></div>`;
+        } else if (q.text && qi === 0) {
+          contextHtml = `<div class="delf-text-block"><pre class="delf-text-content">${escapeHtml(q.text)}</pre></div>`;
+        }
+        return `<div class="delf-question" id="delf-q-${idx}">
+          ${contextHtml}
+          <div class="delf-q-row"><span class="delf-q-num">${idx + 1}.</span><span class="delf-q-text">${escapeHtml(q.q)}</span></div>
+          <div class="delf-opts">${optsHtml}</div>
+        </div>`;
+      }).join('');
+      return `<div class="delf-exercise">
+        <div class="delf-ex-title">${escapeHtml(ex.title)}</div>
+        <div class="delf-ex-instruction">${escapeHtml(ex.instruction)}</div>
+        ${section.id === 'listening' && section.audioNote && ex === section.exercises[0] ? `<div class="delf-audio-note">${escapeHtml(section.audioNote)}</div>` : ''}
+        ${qs}
+      </div>`;
+    }).join('');
+    const answered = anss.filter(a => a !== null).length;
+    const total = anss.length;
+    return `<div class="container delf-section-screen fade-in">
+      <div class="delf-section-header">
+        <button class="delf-back-btn" type="button" id="delfSectionBackBtn">← Sections</button>
+        <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
+        <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
+      </div>
+      <div class="delf-progress-row"><span>${answered}/${total} answered</span><div class="delf-prog-bar"><div class="delf-prog-fill" style="width:${total?Math.round(answered/total*100):0}%"></div></div></div>
+      <div class="delf-exercises">${exercisesHtml}</div>
+      <div class="delf-section-footer">
+        <button class="delf-finish-sec-btn" type="button" id="delfFinishSectionBtn">${answered < total ? `Finish (${total - answered} unanswered)` : 'Finish Section →'}</button>
+      </div>
+    </div>`;
+  }
+
+  function renderDelfWritingSection(section) {
+    const de = State.delfExam;
+    if (de.sectionPhase === 'assess') return renderDelfSelfAssess(section);
+    const tasksHtml = (section.tasks || []).map(t => `<div class="delf-task">
+      <div class="delf-task-title">${escapeHtml(t.title)}</div>
+      <div class="delf-task-instruction">${escapeHtml(t.instruction)}</div>
+      ${t.content ? `<div class="delf-task-content"><pre class="delf-form-content">${escapeHtml(t.content)}</pre></div>` : ''}
+      ${t.hint ? `<div class="delf-task-hint">💡 ${escapeHtml(t.hint)}</div>` : ''}
+      <textarea class="delf-writing-area" placeholder="Use this space for notes or draft writing…" rows="6"></textarea>
+    </div>`).join('');
+    return `<div class="container delf-section-screen fade-in">
+      <div class="delf-section-header">
+        <button class="delf-back-btn" type="button" id="delfSectionBackBtn">← Sections</button>
+        <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
+        <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
+      </div>
+      <div class="delf-section-intro">${escapeHtml(section.intro || '')}</div>
+      <div class="delf-tasks">${tasksHtml}</div>
+      <div class="delf-section-footer">
+        <button class="delf-finish-sec-btn" type="button" id="delfFinishSectionBtn">I\'ve finished writing →</button>
+      </div>
+    </div>`;
+  }
+
+  function renderDelfSpeakingSection(section) {
+    const de = State.delfExam;
+    if (de.sectionPhase === 'assess') return renderDelfSelfAssess(section);
+    const tasksHtml = (section.tasks || []).map(t => {
+      const promptsHtml = t.prompts ? `<ul class="delf-prompts">${t.prompts.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>` : '';
+      const scenarioHtml = t.scenario ? `<div class="delf-scenario"><strong>Scenario:</strong> ${escapeHtml(t.scenario)}</div>` : '';
+      const guidingHtml = t.guidingQuestions ? `<ul class="delf-prompts">${t.guidingQuestions.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>` : '';
+      const usefulHtml = t.usefulPhrases ? `<div class="delf-useful"><div class="delf-useful-label">Useful phrases:</div><ul>${t.usefulPhrases.map(p => `<li><em>${escapeHtml(p)}</em></li>`).join('')}</ul></div>` : '';
+      const imageHtml = t.imageDesc ? `<div class="delf-image-desc"><div class="delf-image-icon">🖼️</div><p>${escapeHtml(t.imageDesc)}</p></div>` : '';
+      return `<div class="delf-task">
+        <div class="delf-task-title">${escapeHtml(t.title)}</div>
+        <div class="delf-task-instruction">${escapeHtml(t.instruction)}</div>
+        ${promptsHtml}${scenarioHtml}${imageHtml}${guidingHtml}${usefulHtml}
+      </div>`;
+    }).join('');
+    return `<div class="container delf-section-screen fade-in">
+      <div class="delf-section-header">
+        <button class="delf-back-btn" type="button" id="delfSectionBackBtn">← Sections</button>
+        <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
+        <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
+      </div>
+      <div class="delf-section-intro">${escapeHtml(section.intro || '')}</div>
+      <div class="delf-tasks">${tasksHtml}</div>
+      <div class="delf-section-footer">
+        <button class="delf-finish-sec-btn" type="button" id="delfFinishSectionBtn">I\'ve finished speaking →</button>
+      </div>
+    </div>`;
+  }
+
+  function renderDelfSelfAssess(section) {
+    const de = State.delfExam;
+    const scores = de.selfScores[section.id] || {};
+    let currentScore = 0;
+    const tasksHtml = (section.tasks || []).map(t => {
+      const rubricHtml = (t.rubric || []).map(r => {
+        const checked = !!scores[r.id];
+        if (checked) currentScore += r.points;
+        return `<label class="delf-rubric-item ${checked ? 'checked' : ''}">
+          <input type="checkbox" class="delf-rubric-cb" data-delf-rubric="${escapeHtml(r.id)}" ${checked ? 'checked' : ''}>
+          <span class="delf-rubric-label">${escapeHtml(r.label)}</span>
+          <span class="delf-rubric-pts">+${r.points} pt${r.points !== 1 ? 's' : ''}</span>
+        </label>`;
+      }).join('');
+      return `<div class="delf-task delf-assess-task">
+        <div class="delf-task-title">${escapeHtml(t.title)}</div>
+        <div class="delf-rubric">${rubricHtml}</div>
+      </div>`;
+    }).join('');
+    return `<div class="container delf-section-screen fade-in">
+      <div class="delf-section-header">
+        <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)} — Self-Assessment</div>
+      </div>
+      <div class="delf-assess-intro">
+        <p>Honestly tick the criteria you met. Your score will be calculated from the boxes you check.</p>
+        <div class="delf-self-score-row">Your score: <span id="delfSelfScore" class="delf-self-score">${currentScore} / ${section.maxScore}</span></div>
+      </div>
+      <div class="delf-tasks">${tasksHtml}</div>
+      <div class="delf-section-footer">
+        <button class="delf-finish-sec-btn" type="button" id="delfSubmitAssessBtn">Submit self-assessment →</button>
+      </div>
+    </div>`;
+  }
+
+  function renderDelfResults() {
+    const de = State.delfExam;
+    const exam = getDelfExam(de.examId);
+    let total = 0;
+    let allMinMet = true;
+    const rows = exam.sections.map(s => {
+      const score = de.sectionsDone[s.id] || 0;
+      total += score;
+      const pct = Math.round(score / s.maxScore * 100);
+      const pass = score >= 5;
+      if (!pass) allMinMet = false;
+      const cls = pass ? 'pass' : 'fail';
+      return `<tr class="delf-result-row">
+        <td>${s.icon} ${escapeHtml(s.title)}</td>
+        <td class="delf-res-score ${cls}">${score} / ${s.maxScore}</td>
+        <td class="delf-res-pct ${cls}">${pct}%</td>
+        <td class="delf-res-min">${pass ? '✓' : '✗ below 5'}</td>
+      </tr>`;
+    }).join('');
+    const overallPass = total >= 50 && allMinMet;
+    const overallPct = Math.round(total / 100 * 100);
+    const selfNote = exam.sections.some(s => s.type !== 'auto')
+      ? '<p class="delf-results-note">Note: Writing and speaking scores are self-assessed. In the real DELF exam, these sections are marked by examiners.</p>' : '';
+    return `<div class="container delf-results fade-in">
+      <div class="delf-results-header">
+        <div class="delf-results-title">${escapeHtml(exam.title)} — Results</div>
+        <div class="delf-overall-badge ${overallPass ? 'pass' : 'fail'}">${overallPass ? '✓ PASS' : '✗ Not yet — keep practising'}</div>
+        <div class="delf-overall-score">${total} / 100 (${overallPct}%)</div>
+        <div class="delf-pass-note">Pass mark: 50/100 overall + minimum 5/25 in each section</div>
+      </div>
+      <table class="delf-results-table">
+        <thead><tr><th>Section</th><th>Score</th><th>%</th><th>Min. 5/25</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      ${selfNote}
+      <div class="delf-results-actions">
+        <button class="delf-retry-btn" type="button" data-delf-retry="${escapeHtml(de.examId)}">Retry this exam</button>
+        <button class="delf-back-home-btn" type="button" id="delfHomeBtn">← Back to Learn</button>
+      </div>
+    </div>`;
+  }
+
+  function renderDelfLanding() {
+    if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) return '';
+    const de = State.delfExam;
+    const cardsHtml = window.DELF_MOCKS.map(exam => {
+      const attempted = de && de.examId === exam.id && de.phase === 'results';
+      const inProgress = de && de.examId === exam.id && de.phase !== 'results';
+      const levelColour = exam.level === 'A1' ? '#2a7' : '#0073e6';
+      return `<div class="delf-exam-card">
+        <div class="delf-exam-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</div>
+        <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
+        <div class="delf-exam-card-desc">${escapeHtml(exam.desc)}</div>
+        <div class="delf-exam-card-meta">⏱ ${escapeHtml(exam.totalDuration)} · 4 sections · 100 pts</div>
+        <button class="delf-exam-start-btn" type="button" data-delf-exam="${escapeHtml(exam.id)}">
+          ${inProgress ? 'Continue exam →' : attempted ? 'Retry exam →' : 'Start exam →'}
+        </button>
+      </div>`;
+    }).join('');
+    return `<div class="delf-landing">
+      <div class="delf-landing-header">
+        <div class="delf-landing-icon">🎓</div>
+        <div class="delf-landing-title">DELF Mock Exams</div>
+        <div class="delf-landing-sub">The DELF (Diplôme d\'Études en Langue Française) is an official French language qualification from France Éducation International. Practise under realistic exam conditions with timed sections and automatic scoring.</div>
+      </div>
+      <div class="delf-landing-info">
+        <div class="delf-info-item">📝 4 sections per exam</div>
+        <div class="delf-info-item">⏱ Timed conditions</div>
+        <div class="delf-info-item">✅ Auto-graded (Listening + Reading)</div>
+        <div class="delf-info-item">🎯 50/100 to pass</div>
+      </div>
+      <div class="delf-exam-cards">${cardsHtml}</div>
+    </div>`;
+  }
+
   function attachEvents() {
     bind('startBtn', 'click', () => { Storage.data.settings.seenSplash = true; Storage.save(); State.screen='home'; render(); });
     document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => { State.activeTab = el.dataset.tab; render(); }));
@@ -4461,6 +4880,21 @@
       });
       el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
     });
+    // DELF exam events
+    bind('delfExitBtn', 'click', exitDelf);
+    bind('delfHomeBtn', 'click', exitDelf);
+    bind('delfFinishExamBtn', 'click', finishDelfExam);
+    bind('delfFinishSectionBtn', 'click', finishDelfSection);
+    bind('delfSubmitAssessBtn', 'click', submitDelfSelfAssess);
+    bind('delfSectionBackBtn', 'click', () => { stopDelfTimer(); State.delfExam.phase = 'hub'; render(); });
+    document.querySelectorAll('[data-delf-exam]').forEach(el => el.addEventListener('click', () => startDelfExam(el.dataset.delfExam)));
+    document.querySelectorAll('[data-delf-start]').forEach(el => el.addEventListener('click', () => startDelfSection(+el.dataset.delfStart)));
+    document.querySelectorAll('[data-delf-retry]').forEach(el => el.addEventListener('click', () => startDelfExam(el.dataset.delfRetry)));
+    document.querySelectorAll('[data-delf-opt]').forEach(el => el.addEventListener('click', () => {
+      const [flatIdx, optIdx] = el.dataset.delfOpt.split('-').map(Number);
+      selectDelfAnswer(flatIdx, optIdx);
+    }));
+    document.querySelectorAll('.delf-rubric-cb').forEach(el => el.addEventListener('change', () => toggleDelfRubric(el.dataset.delfRubric)));
     // Revision screen exit
     bind('revisionExitBtn', 'click', goLearn);
     bind('revisionExitBtn2', 'click', goLearn);
@@ -4598,7 +5032,7 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && audioCtx && audioCtx.state === 'running') { try { audioCtx.suspend(); } catch (e) {} }
     });
-    window.addEventListener('beforeunload', stopMockTimer);
+    window.addEventListener('beforeunload', () => { stopMockTimer(); stopDelfTimer(); });
     if (window.matchMedia) {
       try {
         const mq = window.matchMedia('(prefers-color-scheme: dark)');
