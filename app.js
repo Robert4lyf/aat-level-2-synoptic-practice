@@ -1103,6 +1103,7 @@
 
   /* ── TTS (French pronunciation via Web Speech API) ── */
   let _frVoice = null;
+  let _delfActiveTtsBtn = null;  // tracks which DELF play button is currently speaking
   function getFrenchVoice() {
     if (_frVoice) return _frVoice;
     const voices = (window.speechSynthesis && window.speechSynthesis.getVoices) ? window.speechSynthesis.getVoices() : [];
@@ -1149,9 +1150,9 @@
       const even = utterances.length % 2 === 0;
       const utt = new SpeechSynthesisUtterance(text);
       utt.lang = 'fr-FR';
-      utt.rate = 0.85;
+      utt.rate = even ? 0.82 : 1.0;
       if (even ? v1 : v2) utt.voice = even ? v1 : v2;
-      utt.pitch = even ? 1.0 : 1.3;  // pitch fallback when only one voice available
+      utt.pitch = even ? 1.0 : 1.5;
       utterances.push(utt);
     });
     if (!utterances.length) { if (onDone) onDone(); return; }
@@ -4966,18 +4967,28 @@
     document.querySelectorAll('.delf-rubric-cb').forEach(el => el.addEventListener('change', () => toggleDelfRubric(el.dataset.delfRubric)));
     document.querySelectorAll('[data-delf-tts]').forEach(el => {
       el.addEventListener('click', () => {
-        if (el.classList.contains('is-playing')) {
+        if (_delfActiveTtsBtn) {
+          // Something is playing — stop it regardless of which button
           stopSpeech();
-          el.textContent = '🔊 Play Again';
-          el.classList.remove('is-playing');
+          const prev = _delfActiveTtsBtn;
+          _delfActiveTtsBtn = null;
+          prev.textContent = '🔊 Play Again';
+          prev.classList.remove('is-playing');
           return;
         }
         const text = el.dataset.delfTts;
         if (!text) return;
-        speakDelfDialogue(text,
-          () => { el.textContent = '⏹ Stop'; el.classList.add('is-playing'); },
-          () => { el.textContent = '🔊 Play Again'; el.classList.remove('is-playing'); }
-        );
+        // Set state synchronously before speak() so no async callback can race
+        _delfActiveTtsBtn = el;
+        el.textContent = '⏹ Stop';
+        el.classList.add('is-playing');
+        speakDelfDialogue(text, null, () => {
+          if (_delfActiveTtsBtn === el) {
+            _delfActiveTtsBtn = null;
+            el.textContent = '🔊 Play Again';
+            el.classList.remove('is-playing');
+          }
+        });
       });
     });
     // Revision screen exit

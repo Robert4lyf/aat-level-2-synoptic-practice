@@ -5254,6 +5254,7 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 @media (max-width: 500px) { .delf-opts { grid-template-columns: 1fr; } }
 .delf-opt { background: var(--card-muted); border: 2px solid var(--border); border-radius: 7px; padding: 8px 12px; text-align: left; font-size: .85rem; color: var(--text-primary); cursor: pointer; transition: border-color .12s, background .12s; line-height: 1.35; }
+.dark .delf-opt { color: #e6ebf4; }
 .delf-opt:hover { border-color: var(--accent); }
 .delf-opt.selected { border-color: var(--accent); background: var(--accent-bg, #e6f0ff); font-weight: 600; color: var(--accent); }
 .dark .delf-opt.selected { background: #0d2044; color: #7cb9ff; }
