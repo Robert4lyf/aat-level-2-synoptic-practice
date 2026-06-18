@@ -1109,6 +1109,10 @@
     _frVoice = voices.find(v => v.lang === 'fr-FR') || voices.find(v => v.lang.startsWith('fr')) || null;
     return _frVoice;
   }
+  function getAllFrenchVoices() {
+    if (!window.speechSynthesis || !window.speechSynthesis.getVoices) return [];
+    return window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
+  }
   function speakFrench(text, onPlay, onDone) {
     if (!window.speechSynthesis || !text) return;
     window.speechSynthesis.cancel();
@@ -1122,6 +1126,39 @@
     utt.onend = finish;
     utt.onerror = finish;
     window.speechSynthesis.speak(utt);
+  }
+  /* Speak a DELF dialogue, alternating voices/pitch between speakers.
+     Lines beginning with – are treated as separate speaker turns.
+     Falls back to plain speakFrench for single-speaker recordings. */
+  function speakDelfDialogue(rawText, onPlay, onDone) {
+    if (!window.speechSynthesis || !rawText) { if (onDone) onDone(); return; }
+    window.speechSynthesis.cancel();
+    const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+    const isDialogue = lines.some(l => /^[–\-]/.test(l));
+    if (!isDialogue) {
+      speakFrench(lines.join(' '), onPlay, onDone);
+      return;
+    }
+    const frVoices = getAllFrenchVoices();
+    const v1 = frVoices[0] || null;
+    const v2 = frVoices[1] || v1;
+    const utterances = [];
+    lines.forEach(line => {
+      const text = line.replace(/^[–\-]\s*/, '').trim();
+      if (!text) return;
+      const even = utterances.length % 2 === 0;
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'fr-FR';
+      utt.rate = 0.85;
+      if (even ? v1 : v2) utt.voice = even ? v1 : v2;
+      utt.pitch = even ? 1.0 : 1.3;  // pitch fallback when only one voice available
+      utterances.push(utt);
+    });
+    if (!utterances.length) { if (onDone) onDone(); return; }
+    if (onPlay) onPlay();
+    utterances[utterances.length - 1].onend  = () => { if (onDone) onDone(); };
+    utterances[utterances.length - 1].onerror = () => { if (onDone) onDone(); };
+    utterances.forEach(u => window.speechSynthesis.speak(u));
   }
   function stopSpeech() { if (window.speechSynthesis) window.speechSynthesis.cancel(); }
   if (typeof window !== 'undefined' && window.speechSynthesis && 'onvoiceschanged' in window.speechSynthesis) {
@@ -4439,10 +4476,10 @@
 
   function delfTtsText(raw) {
     if (!raw) return '';
+    // Keep dialogue dashes so speakDelfDialogue can parse speaker turns
     return raw
       .replace(/^\[[^\]]*\]\s*"?/, '')   // strip [Stage direction] prefix
       .replace(/"$/, '')                  // strip trailing quote
-      .replace(/^–\s*/gm, '')            // strip French dialogue dashes
       .trim();
   }
 
@@ -4931,7 +4968,7 @@
       el.addEventListener('click', () => {
         const text = el.dataset.delfTts;
         if (!text) return;
-        speakFrench(text,
+        speakDelfDialogue(text,
           () => { el.textContent = '⏹ Playing…'; el.classList.add('is-playing'); },
           () => { el.textContent = '🔊 Play Again'; el.classList.remove('is-playing'); }
         );
