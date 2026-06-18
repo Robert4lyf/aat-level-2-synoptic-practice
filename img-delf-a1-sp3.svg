@@ -1,0 +1,267 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 320" role="img" aria-label="A French outdoor market in a sunny town square">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5BA4CF"/>
+      <stop offset="100%" stop-color="#C8E6F7"/>
+    </linearGradient>
+    <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8B89A"/>
+      <stop offset="100%" stop-color="#B8A080"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="500" height="320" fill="url(#skyGrad)"/>
+
+  <!-- Sun -->
+  <circle cx="440" cy="45" r="32" fill="#FFE066" opacity="0.95"/>
+  <circle cx="440" cy="45" r="42" fill="#FFE066" opacity="0.25"/>
+
+  <!-- Clouds -->
+  <ellipse cx="80" cy="35" rx="28" ry="14" fill="white" opacity="0.85"/>
+  <ellipse cx="100" cy="28" rx="22" ry="13" fill="white" opacity="0.85"/>
+  <ellipse cx="118" cy="35" rx="20" ry="12" fill="white" opacity="0.85"/>
+
+  <ellipse cx="310" cy="25" rx="22" ry="11" fill="white" opacity="0.75"/>
+  <ellipse cx="328" cy="19" rx="18" ry="10" fill="white" opacity="0.75"/>
+  <ellipse cx="344" cy="25" rx="16" ry="10" fill="white" opacity="0.75"/>
+
+  <!-- ── BACKGROUND BUILDINGS ── -->
+  <!-- Left building -->
+  <rect x="0" y="65" width="100" height="165" fill="#C9A87C"/>
+  <rect x="0" y="55" width="100" height="16" fill="#A8845A"/>
+  <!-- windows -->
+  <rect x="12" y="80" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="46" y="80" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="70" y="80" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="12" y="120" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="46" y="120" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="70" y="120" width="22" height="26" fill="#7BB3D0" rx="2"/>
+
+  <!-- Centre civic building (wider, grander) -->
+  <rect x="160" y="48" width="180" height="180" fill="#D9C4A0"/>
+  <!-- Triangular pediment -->
+  <polygon points="152,50 250,12 348,50" fill="#BFA070"/>
+  <!-- Columns (simplified) -->
+  <rect x="178" y="90" width="10" height="110" fill="#C4A878" rx="2"/>
+  <rect x="210" y="90" width="10" height="110" fill="#C4A878" rx="2"/>
+  <rect x="282" y="90" width="10" height="110" fill="#C4A878" rx="2"/>
+  <rect x="314" y="90" width="10" height="110" fill="#C4A878" rx="2"/>
+  <!-- Central door arch -->
+  <rect x="232" y="150" width="36" height="48" fill="#7A5230" rx="3"/>
+  <ellipse cx="250" cy="150" rx="18" ry="9" fill="#7A5230"/>
+  <!-- Windows either side -->
+  <rect x="185" y="105" width="18" height="22" fill="#7BB3D0" rx="2"/>
+  <rect x="299" y="105" width="18" height="22" fill="#7BB3D0" rx="2"/>
+
+  <!-- Right building -->
+  <rect x="400" y="70" width="100" height="160" fill="#C9A87C"/>
+  <rect x="400" y="60" width="100" height="16" fill="#A8845A"/>
+  <rect x="408" y="88" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="444" y="88" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="470" y="88" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="408" y="128" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="444" y="128" width="22" height="26" fill="#7BB3D0" rx="2"/>
+  <rect x="470" y="128" width="22" height="26" fill="#7BB3D0" rx="2"/>
+
+  <!-- ── GROUND / COBBLES ── -->
+  <rect x="0" y="225" width="500" height="95" fill="url(#groundGrad)"/>
+  <!-- Cobble rows -->
+  <line x1="0" y1="238" x2="500" y2="238" stroke="#A89070" stroke-width="1" opacity="0.6"/>
+  <line x1="0" y1="252" x2="500" y2="252" stroke="#A89070" stroke-width="1" opacity="0.6"/>
+  <line x1="0" y1="266" x2="500" y2="266" stroke="#A89070" stroke-width="1" opacity="0.6"/>
+  <line x1="0" y1="280" x2="500" y2="280" stroke="#A89070" stroke-width="1" opacity="0.6"/>
+  <line x1="60" y1="225" x2="60" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+  <line x1="120" y1="225" x2="120" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+  <line x1="180" y1="225" x2="180" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+  <line x1="240" y1="225" x2="240" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+  <line x1="300" y1="225" x2="300" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+  <line x1="360" y1="225" x2="360" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+  <line x1="420" y1="225" x2="420" y2="320" stroke="#A89070" stroke-width="0.8" opacity="0.4"/>
+
+  <!-- ── STONE FOUNTAIN (centre background) ── -->
+  <!-- Basin -->
+  <ellipse cx="250" cy="215" rx="44" ry="16" fill="#B0C8D8" opacity="0.8"/>
+  <ellipse cx="250" cy="213" rx="40" ry="13" fill="#6AAFD0" opacity="0.7"/>
+  <!-- Pedestal -->
+  <rect x="244" y="168" width="12" height="48" fill="#9A9080" rx="2"/>
+  <!-- Top bowl -->
+  <ellipse cx="250" cy="168" rx="22" ry="8" fill="#B0C8D8"/>
+  <ellipse cx="250" cy="165" rx="18" ry="6" fill="#7EC8E8" opacity="0.8"/>
+  <!-- Water jet -->
+  <line x1="250" y1="158" x2="240" y2="140" stroke="#A0D8F0" stroke-width="2" opacity="0.8"/>
+  <line x1="250" y1="158" x2="250" y2="133" stroke="#A0D8F0" stroke-width="2.5" opacity="0.9"/>
+  <line x1="250" y1="158" x2="260" y2="140" stroke="#A0D8F0" stroke-width="2" opacity="0.8"/>
+  <circle cx="240" cy="140" r="3" fill="#A0D8F0" opacity="0.7"/>
+  <circle cx="250" cy="132" r="4" fill="#A0D8F0" opacity="0.7"/>
+  <circle cx="260" cy="140" r="3" fill="#A0D8F0" opacity="0.7"/>
+
+  <!-- ── MARKET STALLS ── -->
+
+  <!-- Stall 1: Red awning (far left) — Fruit -->
+  <rect x="5" y="180" width="88" height="50" fill="#E0CCA8"/>
+  <rect x="5" y="170" width="3" height="58" fill="#6B4226"/>
+  <rect x="90" y="170" width="3" height="58" fill="#6B4226"/>
+  <!-- Awning -->
+  <polygon points="2,172 93,172 90,158 5,158" fill="#DC2626"/>
+  <line x1="2" y1="172" x2="93" y2="172" stroke="#B91C1C" stroke-width="1"/>
+  <!-- Scalloped fringe -->
+  <path d="M5,172 Q11,179 17,172 Q23,179 29,172 Q35,179 41,172 Q47,179 53,172 Q59,179 65,172 Q71,179 77,172 Q83,179 89,172" fill="none" stroke="#DC2626" stroke-width="4"/>
+  <!-- Produce: fruit -->
+  <circle cx="22" cy="191" r="6" fill="#FF6B00"/>
+  <circle cx="35" cy="190" r="6" fill="#FF4500"/>
+  <circle cx="48" cy="191" r="5" fill="#FF6B00"/>
+  <circle cx="60" cy="190" r="6" fill="#FFD700"/>
+  <circle cx="73" cy="191" r="5" fill="#FF4500"/>
+  <circle cx="28" cy="200" r="5" fill="#FF8C00"/>
+  <circle cx="41" cy="201" r="6" fill="#DC143C"/>
+  <circle cx="55" cy="200" r="5" fill="#FF6B00"/>
+  <circle cx="67" cy="201" r="5" fill="#FF4500"/>
+
+  <!-- Stall 2: Blue awning — Cheese & Bread -->
+  <rect x="110" y="180" width="88" height="50" fill="#E0CCA8"/>
+  <rect x="110" y="170" width="3" height="58" fill="#6B4226"/>
+  <rect x="195" y="170" width="3" height="58" fill="#6B4226"/>
+  <polygon points="107,172 198,172 195,158 110,158" fill="#1D4ED8"/>
+  <path d="M110,172 Q116,179 122,172 Q128,179 134,172 Q140,179 146,172 Q152,179 158,172 Q164,179 170,172 Q176,179 182,172 Q188,179 194,172" fill="none" stroke="#1D4ED8" stroke-width="4"/>
+  <!-- Cheese wedges -->
+  <polygon points="118,198 140,186 150,200" fill="#F5D060"/>
+  <polygon points="140,186 155,192 150,200" fill="#E8C040"/>
+  <rect x="118" y="198" width="32" height="10" fill="#F5D060" rx="1"/>
+  <!-- Bread loaves -->
+  <ellipse cx="173" cy="193" rx="16" ry="9" fill="#C8834A"/>
+  <ellipse cx="173" cy="190" rx="14" ry="7" fill="#D4955A"/>
+  <!-- baguette -->
+  <ellipse cx="160" cy="206" rx="20" ry="5" fill="#D4955A"/>
+  <ellipse cx="160" cy="204" rx="18" ry="4" fill="#C8834A"/>
+
+  <!-- Stall 3: Green awning — Vegetables -->
+  <rect x="215" y="180" width="88" height="50" fill="#E0CCA8"/>
+  <rect x="215" y="170" width="3" height="58" fill="#6B4226"/>
+  <rect x="300" y="170" width="3" height="58" fill="#6B4226"/>
+  <polygon points="212,172 303,172 300,158 215,158" fill="#15803D"/>
+  <path d="M215,172 Q221,179 227,172 Q233,179 239,172 Q245,179 251,172 Q257,179 263,172 Q269,179 275,172 Q281,179 287,172 Q293,179 299,172" fill="none" stroke="#15803D" stroke-width="4"/>
+  <!-- Veg -->
+  <circle cx="228" cy="191" r="7" fill="#22C55E"/>
+  <circle cx="243" cy="190" r="6" fill="#16A34A"/>
+  <circle cx="256" cy="192" r="6" fill="#22C55E"/>
+  <!-- Tomatoes -->
+  <circle cx="270" cy="190" r="6" fill="#EF4444"/>
+  <circle cx="283" cy="191" r="5" fill="#DC2626"/>
+  <!-- Carrots -->
+  <rect x="225" y="200" width="8" height="14" fill="#F97316" rx="3"/>
+  <rect x="237" y="201" width="8" height="13" fill="#EA580C" rx="3"/>
+  <!-- Courgette -->
+  <ellipse cx="265" cy="204" rx="14" ry="5" fill="#4ADE80"/>
+  <ellipse cx="285" cy="206" rx="10" ry="4" fill="#22C55E"/>
+
+  <!-- Stall 4: Yellow awning — Mixed produce -->
+  <rect x="320" y="180" width="88" height="50" fill="#E0CCA8"/>
+  <rect x="320" y="170" width="3" height="58" fill="#6B4226"/>
+  <rect x="405" y="170" width="3" height="58" fill="#6B4226"/>
+  <polygon points="317,172 408,172 405,158 320,158" fill="#CA8A04"/>
+  <path d="M320,172 Q326,179 332,172 Q338,179 344,172 Q350,179 356,172 Q362,179 368,172 Q374,179 380,172 Q386,179 392,172 Q398,179 404,172" fill="none" stroke="#CA8A04" stroke-width="4"/>
+  <!-- Melons / grapes -->
+  <ellipse cx="335" cy="191" rx="10" ry="8" fill="#86EFAC"/>
+  <ellipse cx="335" cy="189" rx="9" ry="7" fill="#4ADE80"/>
+  <!-- Grapes cluster -->
+  <circle cx="360" cy="192" r="5" fill="#A855F7"/>
+  <circle cx="368" cy="189" r="5" fill="#9333EA"/>
+  <circle cx="364" cy="198" r="5" fill="#A855F7"/>
+  <circle cx="355" cy="198" r="4" fill="#7C3AED"/>
+  <!-- Strawberries -->
+  <circle cx="385" cy="191" r="6" fill="#EF4444"/>
+  <circle cx="395" cy="193" r="5" fill="#DC2626"/>
+  <circle cx="390" cy="200" r="5" fill="#EF4444"/>
+
+  <!-- ── PEOPLE ── -->
+  <!-- Helper: circle=head, rect=body, lines=arms+legs -->
+
+  <!-- Person A — browsing stall 1, back to viewer -->
+  <circle cx="58" cy="207" r="8" fill="#8D6E63"/>
+  <!-- hat -->
+  <ellipse cx="58" cy="199" rx="9" ry="4" fill="#4A3728"/>
+  <rect cx="54" cy="202" width="8" height="3" fill="#4A3728" rx="1"/>
+  <!-- body -->
+  <rect x="53" y="215" width="10" height="20" fill="#3B82F6" rx="2"/>
+  <!-- arms -->
+  <line x1="53" y1="218" x2="42" y2="225" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="63" y1="218" x2="72" y2="224" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <!-- legs -->
+  <line x1="55" y1="235" x2="52" y2="252" stroke="#1E3A5F" stroke-width="4" stroke-linecap="round"/>
+  <line x1="61" y1="235" x2="64" y2="252" stroke="#1E3A5F" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Person B — between stalls 1&2, chatting, facing right -->
+  <circle cx="97" cy="202" r="8" fill="#F0C8A0"/>
+  <!-- body -->
+  <rect x="92" y="210" width="10" height="20" fill="#EC4899" rx="2"/>
+  <!-- arms (gesturing) -->
+  <line x1="92" y1="213" x2="80" y2="208" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="102" y1="213" x2="112" y2="218" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <!-- legs -->
+  <line x1="94" y1="230" x2="90" y2="248" stroke="#581C87" stroke-width="4" stroke-linecap="round"/>
+  <line x1="100" y1="230" x2="104" y2="248" stroke="#581C87" stroke-width="4" stroke-linecap="round"/>
+  <!-- basket in hand -->
+  <ellipse cx="78" cy="210" rx="8" ry="5" fill="#A0724A"/>
+  <path d="M71,208 Q78,203 85,208" fill="none" stroke="#A0724A" stroke-width="2"/>
+
+  <!-- Person C — at stall 2, facing vendor -->
+  <circle cx="157" cy="204" r="8" fill="#6D4C41"/>
+  <rect x="152" y="212" width="10" height="20" fill="#64748B" rx="2"/>
+  <line x1="152" y1="215" x2="140" y2="212" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="162" y1="215" x2="170" y2="220" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="154" y1="232" x2="150" y2="250" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+  <line x1="160" y1="232" x2="164" y2="250" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Vendor at stall 2 (behind counter, lighter) -->
+  <circle cx="178" cy="200" r="7" fill="#F0C8A0"/>
+  <!-- apron/torso only (behind stall) -->
+  <rect x="173" y="208" width="10" height="14" fill="#FFF" rx="1" opacity="0.9"/>
+  <line x1="173" y1="210" x2="165" y2="213" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+  <line x1="183" y1="210" x2="192" y2="213" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Person D — at stall 3, pointing at veg -->
+  <circle cx="240" cy="204" r="8" fill="#F5CBA7"/>
+  <rect x="235" y="212" width="10" height="20" fill="#7C3AED" rx="2"/>
+  <line x1="235" y1="215" x2="223" y2="210" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="245" y1="215" x2="256" y2="210" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="237" y1="232" x2="233" y2="250" stroke="#4C1D95" stroke-width="4" stroke-linecap="round"/>
+  <line x1="243" y1="232" x2="247" y2="250" stroke="#4C1D95" stroke-width="4" stroke-linecap="round"/>
+  <!-- shopping bag -->
+  <rect x="254" y="205" width="10" height="12" fill="#F59E0B" rx="2"/>
+  <path d="M256,205 Q259,200 262,205" fill="none" stroke="#D97706" stroke-width="2"/>
+
+  <!-- Person E — couple chatting near fountain -->
+  <circle cx="298" cy="208" r="7" fill="#8D6E63"/>
+  <rect x="293" y="215" width="10" height="18" fill="#059669" rx="2"/>
+  <line x1="293" y1="218" x2="284" y2="222" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+  <line x1="303" y1="218" x2="310" y2="214" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+  <line x1="295" y1="233" x2="291" y2="250" stroke="#064E3B" stroke-width="4" stroke-linecap="round"/>
+  <line x1="301" y1="233" x2="305" y2="250" stroke="#064E3B" stroke-width="4" stroke-linecap="round"/>
+
+  <circle cx="316" cy="207" r="7" fill="#F5CBA7"/>
+  <rect x="311" y="214" width="10" height="18" fill="#F43F5E" rx="2"/>
+  <line x1="311" y1="217" x2="304" y2="213" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+  <line x1="321" y1="217" x2="328" y2="221" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+  <line x1="313" y1="232" x2="309" y2="250" stroke="#9F1239" stroke-width="4" stroke-linecap="round"/>
+  <line x1="319" y1="232" x2="323" y2="250" stroke="#9F1239" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Person F — at stall 4 -->
+  <circle cx="378" cy="204" r="8" fill="#6D4C41"/>
+  <rect x="373" y="212" width="10" height="20" fill="#0369A1" rx="2"/>
+  <line x1="373" y1="215" x2="362" y2="212" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="383" y1="215" x2="392" y2="219" stroke="#D4A574" stroke-width="4" stroke-linecap="round"/>
+  <line x1="375" y1="232" x2="371" y2="250" stroke="#1E3A5F" stroke-width="4" stroke-linecap="round"/>
+  <line x1="381" y1="232" x2="385" y2="250" stroke="#1E3A5F" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Stall vendor 4 (behind counter) -->
+  <circle cx="400" cy="200" r="7" fill="#F0C8A0"/>
+  <rect x="395" y="207" width="10" height="14" fill="#FFF9" rx="1"/>
+  <line x1="395" y1="209" x2="386" y2="213" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- ── FRENCH FLAG on building (small detail) ── -->
+  <rect x="246" y="14" width="8" height="18" fill="#002395"/>
+  <rect x="254" y="14" width="8" height="18" fill="white"/>
+  <rect x="262" y="14" width="8" height="18" fill="#ED2939"/>
+  <line x1="246" y1="13" x2="246" y2="4" stroke="#888" stroke-width="1.5"/>
+</svg>
