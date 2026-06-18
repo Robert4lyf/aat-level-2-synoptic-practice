@@ -2200,7 +2200,7 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   padding: 8px 14px;
   border-radius: var(--r-sm);
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--card);
   color: var(--text);
   font-size: .82rem;
   font-weight: 600;
@@ -5176,9 +5176,9 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-landing-title { font-size: 1.4rem; font-weight: 700; color: var(--text-strong); margin-bottom: 6px; }
 .delf-landing-sub { font-size: .9rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.5; }
 .delf-landing-info { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 12px 0 20px; }
-.delf-info-item { background: var(--surface-2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 14px; font-size: .82rem; color: var(--text-secondary); }
+.delf-info-item { background: var(--card-muted); border: 1px solid var(--border); border-radius: 20px; padding: 4px 14px; font-size: .82rem; color: var(--text-secondary); }
 .delf-exam-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.delf-exam-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
+.delf-exam-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
 .delf-exam-level-badge { position: absolute; top: 0; right: 0; color: #fff; font-size: .75rem; font-weight: 700; padding: 4px 10px; border-radius: 0 12px 0 8px; }
 .delf-exam-card-title { font-size: 1.05rem; font-weight: 700; color: var(--text-strong); margin: 8px 0 6px; }
 .delf-exam-card-desc { font-size: .83rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 10px; }
@@ -5190,11 +5190,11 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-hub { padding: 16px 0; }
 .delf-hub-header { margin-bottom: 20px; }
 .delf-back-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: .85rem; color: var(--text-secondary); cursor: pointer; margin-bottom: 12px; }
-.delf-back-btn:hover { background: var(--surface-2); color: var(--text-strong); }
+.delf-back-btn:hover { background: var(--card-muted); color: var(--text-strong); }
 .delf-hub-title { font-size: 1.25rem; font-weight: 700; color: var(--text-strong); margin-bottom: 6px; }
 .delf-hub-desc { font-size: .85rem; color: var(--text-secondary); line-height: 1.45; }
 .delf-sections-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
-.delf-section-card { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.delf-section-card { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
 .delf-section-card.delf-sec-done { border-color: var(--accent); }
 .delf-sec-icon { font-size: 1.6rem; width: 36px; text-align: center; flex-shrink: 0; }
 .delf-sec-info { flex: 1; min-width: 0; }
@@ -5216,7 +5216,7 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-section-screen { padding: 12px 0 32px; }
 .delf-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
 .delf-section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-strong); flex: 1; }
-.delf-timer-pill { background: var(--surface-2); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: .85rem; font-weight: 600; color: var(--text-strong); white-space: nowrap; }
+.delf-timer-pill { background: var(--card-muted); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: .85rem; font-weight: 600; color: var(--text-strong); white-space: nowrap; }
 .delf-timer-pill.warn { background: #fff3cd; border-color: #ffc107; color: #664d03; }
 .delf-timer-pill.danger { background: #f8d7da; border-color: #dc3545; color: #721c24; animation: pulse-danger .8s infinite; }
 .dark .delf-timer-pill.warn { background: #3d2f00; border-color: #b8860b; color: #ffd966; }
@@ -5228,16 +5228,23 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-prog-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
 
 .delf-exercises { display: flex; flex-direction: column; gap: 24px; }
-.delf-exercise { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+.delf-exercise { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
 .delf-ex-title { font-weight: 700; font-size: .95rem; color: var(--text-strong); margin-bottom: 4px; }
 .delf-ex-instruction { font-size: .87rem; color: var(--text-secondary); margin-bottom: 12px; }
 .delf-audio-note { background: #e8f4ff; border: 1px solid #b0d4f1; border-radius: 6px; padding: 8px 12px; font-size: .82rem; color: #1a4d80; margin-bottom: 14px; }
 .dark .delf-audio-note { background: #0d2b45; border-color: #2a5a80; color: #90c8f0; }
 
-.delf-transcript { background: var(--surface-2); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 12px; }
+/* TTS play button for listening exercises */
+.delf-question-group { margin-bottom: 18px; }
+.delf-tts-block { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; padding: 10px 14px; background: var(--card-muted); border: 1px solid var(--border); border-radius: 8px; }
+.delf-tts-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: .88rem; font-weight: 600; cursor: pointer; transition: background .15s; white-space: nowrap; }
+.delf-tts-btn:hover { opacity: .9; }
+.delf-tts-btn.is-playing { background: var(--danger-500, #dc2626); }
+.delf-tts-replay { font-size: .78rem; color: var(--text-muted); font-style: italic; line-height: 1.4; }
+.delf-transcript { background: var(--card-muted); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 12px; }
 .delf-transcript-label { font-size: .75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
 .delf-transcript-text { white-space: pre-wrap; font-size: .87rem; line-height: 1.55; color: var(--text-primary); margin: 0; font-family: inherit; }
-.delf-text-block { background: var(--surface-2); border-left: 3px solid #2a7; border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 12px; }
+.delf-text-block { background: var(--card-muted); border-left: 3px solid #2a7; border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 12px; }
 .delf-text-content { white-space: pre-wrap; font-size: .87rem; line-height: 1.6; color: var(--text-primary); margin: 0; font-family: inherit; }
 
 .delf-question { margin-bottom: 16px; }
@@ -5246,7 +5253,7 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-q-text { font-size: .9rem; color: var(--text-strong); line-height: 1.45; }
 .delf-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 @media (max-width: 500px) { .delf-opts { grid-template-columns: 1fr; } }
-.delf-opt { background: var(--surface-2); border: 2px solid var(--border); border-radius: 7px; padding: 8px 12px; text-align: left; font-size: .85rem; color: var(--text-primary); cursor: pointer; transition: border-color .12s, background .12s; line-height: 1.35; }
+.delf-opt { background: var(--card-muted); border: 2px solid var(--border); border-radius: 7px; padding: 8px 12px; text-align: left; font-size: .85rem; color: var(--text-primary); cursor: pointer; transition: border-color .12s, background .12s; line-height: 1.35; }
 .delf-opt:hover { border-color: var(--accent); }
 .delf-opt.selected { border-color: var(--accent); background: var(--accent-bg, #e6f0ff); font-weight: 600; color: var(--accent); }
 .dark .delf-opt.selected { background: #0d2044; color: #7cb9ff; }
@@ -5254,24 +5261,24 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-section-footer { margin-top: 24px; text-align: center; }
 .delf-finish-sec-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 12px 28px; font-size: .95rem; font-weight: 700; cursor: pointer; }
 .delf-finish-sec-btn:hover { opacity: .9; }
-.delf-section-intro { font-size: .87rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; background: var(--surface-2); border-radius: 8px; padding: 10px 14px; }
+.delf-section-intro { font-size: .87rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; background: var(--card-muted); border-radius: 8px; padding: 10px 14px; }
 
 /* Tasks (writing / speaking) */
 .delf-tasks { display: flex; flex-direction: column; gap: 20px; }
-.delf-task { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+.delf-task { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
 .delf-task-title { font-weight: 700; font-size: .95rem; color: var(--text-strong); margin-bottom: 6px; }
 .delf-task-instruction { font-size: .88rem; color: var(--text-primary); line-height: 1.5; margin-bottom: 10px; }
 .delf-task-content { margin: 10px 0; }
-.delf-form-content { white-space: pre-wrap; font-size: .87rem; line-height: 2; color: var(--text-primary); font-family: inherit; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 0; }
+.delf-form-content { white-space: pre-wrap; font-size: .87rem; line-height: 2; color: var(--text-primary); font-family: inherit; background: var(--card-muted); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 0; }
 .delf-task-hint { font-size: .83rem; color: var(--text-muted); background: #fffbea; border: 1px solid #ffe066; border-radius: 6px; padding: 7px 12px; margin-top: 8px; }
 .dark .delf-task-hint { background: #2b2200; border-color: #7a5c00; color: #e0c060; }
-.delf-writing-area { width: 100%; min-height: 100px; resize: vertical; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: .87rem; font-family: inherit; color: var(--text-primary); background: var(--surface-2); margin-top: 10px; box-sizing: border-box; }
+.delf-writing-area { width: 100%; min-height: 100px; resize: vertical; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: .87rem; font-family: inherit; color: var(--text-primary); background: var(--card-muted); margin-top: 10px; box-sizing: border-box; }
 .delf-writing-area:focus { outline: 2px solid var(--accent); }
 .delf-prompts { padding-left: 18px; margin: 6px 0 10px; }
 .delf-prompts li { font-size: .87rem; color: var(--text-primary); line-height: 1.5; margin-bottom: 4px; }
 .delf-scenario { background: #f0f6ff; border: 1px solid #c0d8f5; border-radius: 7px; padding: 10px 14px; font-size: .87rem; color: var(--text-primary); line-height: 1.5; margin: 8px 0 10px; }
 .dark .delf-scenario { background: #0d1e38; border-color: #2050a0; }
-.delf-image-desc { background: var(--surface-2); border: 1px dashed var(--border); border-radius: 8px; padding: 14px; margin: 10px 0; display: flex; gap: 10px; align-items: flex-start; }
+.delf-image-desc { background: var(--card-muted); border: 1px dashed var(--border); border-radius: 8px; padding: 14px; margin: 10px 0; display: flex; gap: 10px; align-items: flex-start; }
 .delf-image-icon { font-size: 2rem; flex-shrink: 0; }
 .delf-image-desc p { font-size: .87rem; color: var(--text-secondary); line-height: 1.5; margin: 0; font-style: italic; }
 .delf-useful { margin-top: 12px; }
@@ -5287,7 +5294,7 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-assess-task { border-color: var(--accent-border, #c0d4f0); }
 .delf-rubric { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .delf-rubric-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 7px; cursor: pointer; transition: background .1s; }
-.delf-rubric-item:hover { background: var(--surface-2); }
+.delf-rubric-item:hover { background: var(--card-muted); }
 .delf-rubric-item.checked { background: #eaf6ee; border-color: #6fcf97; }
 .dark .delf-rubric-item.checked { background: #0d2d1a; border-color: #2a7a4a; }
 .delf-rubric-cb { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
@@ -5313,9 +5320,9 @@ body.dark[data-subject="code-route"] .unit-card {
 .delf-res-score.pass, .delf-res-pct.pass { color: #27ae60; font-weight: 700; }
 .delf-res-score.fail, .delf-res-pct.fail { color: #e53935; font-weight: 700; }
 .delf-res-min { font-weight: 700; }
-.delf-results-note { font-size: .82rem; color: var(--text-muted); font-style: italic; background: var(--surface-2); border-radius: 6px; padding: 8px 12px; margin: 12px 0; }
+.delf-results-note { font-size: .82rem; color: var(--text-muted); font-style: italic; background: var(--card-muted); border-radius: 6px; padding: 8px 12px; margin: 12px 0; }
 .delf-results-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
 .delf-retry-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 11px 22px; font-weight: 700; font-size: .92rem; cursor: pointer; }
-.delf-back-home-btn { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 22px; font-weight: 600; font-size: .92rem; cursor: pointer; color: var(--text-primary); }
+.delf-back-home-btn { background: var(--card-muted); border: 1px solid var(--border); border-radius: 8px; padding: 11px 22px; font-weight: 600; font-size: .92rem; cursor: pointer; color: var(--text-primary); }
 .delf-retry-btn:hover { opacity: .9; }
 .delf-back-home-btn:hover { background: var(--border); }

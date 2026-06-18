@@ -4437,38 +4437,70 @@
     return '';
   }
 
+  function delfTtsText(raw) {
+    if (!raw) return '';
+    return raw
+      .replace(/^\[[^\]]*\]\s*"?/, '')   // strip [Stage direction] prefix
+      .replace(/"$/, '')                  // strip trailing quote
+      .replace(/^–\s*/gm, '')            // strip French dialogue dashes
+      .trim();
+  }
+
   function renderDelfAutoSection(section) {
     const de = State.delfExam;
     const anss = de.answers[section.id] || [];
+    const isListening = section.id === 'listening';
     let flatIdx = 0;
-    const exercisesHtml = (section.exercises || []).map(ex => {
-      const qs = (ex.questions || []).map((q, qi) => {
-        const idx = flatIdx++;
-        const sel = anss[idx];
-        const optsHtml = q.opts.map((o, oi) =>
-          `<button class="delf-opt ${sel === oi ? 'selected' : ''}" type="button" data-delf-opt="${idx}-${oi}">${String.fromCharCode(65+oi)}. ${escapeHtml(o)}</button>`
-        ).join('');
-        let contextHtml = '';
-        if (q.transcript && qi === 0) {
-          contextHtml = `<div class="delf-transcript"><div class="delf-transcript-label">📝 ${section.id === 'listening' ? 'Transcript' : 'Text'}</div><pre class="delf-transcript-text">${escapeHtml(q.transcript)}</pre></div>`;
-        } else if (q.transcript && q.transcript !== null) {
-          contextHtml = `<div class="delf-transcript"><pre class="delf-transcript-text">${escapeHtml(q.transcript)}</pre></div>`;
-        } else if (q.text && qi === 0) {
-          contextHtml = `<div class="delf-text-block"><pre class="delf-text-content">${escapeHtml(q.text)}</pre></div>`;
+
+    const exercisesHtml = (section.exercises || []).map((ex, exIdx) => {
+      // Group questions by their context (transcript/text). Each new non-null context starts a group.
+      const groups = [];
+      let currentGroup = null;
+      (ex.questions || []).forEach(q => {
+        const hasNewContext = isListening ? (q.transcript !== null && q.transcript !== undefined)
+                                         : (q.text !== null && q.text !== undefined);
+        if (hasNewContext) {
+          currentGroup = { context: isListening ? q.transcript : q.text, questions: [] };
+          groups.push(currentGroup);
+        } else if (!currentGroup) {
+          currentGroup = { context: null, questions: [] };
+          groups.push(currentGroup);
         }
-        return `<div class="delf-question" id="delf-q-${idx}">
-          ${contextHtml}
-          <div class="delf-q-row"><span class="delf-q-num">${idx + 1}.</span><span class="delf-q-text">${escapeHtml(q.q)}</span></div>
-          <div class="delf-opts">${optsHtml}</div>
-        </div>`;
+        currentGroup.questions.push({ q, idx: flatIdx++ });
+      });
+
+      const groupsHtml = groups.map((g, gi) => {
+        let contextHtml = '';
+        if (isListening && g.context) {
+          const ttsText = delfTtsText(g.context);
+          const ttsKey = `delf-tts-${exIdx}-${gi}`;
+          contextHtml = `<div class="delf-tts-block">
+            <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(ttsText)}" id="${ttsKey}">🔊 Play Recording</button>
+            <span class="delf-tts-replay">Tap again to replay · In the real exam you hear each recording twice</span>
+          </div>`;
+        } else if (!isListening && g.context) {
+          contextHtml = `<div class="delf-text-block"><pre class="delf-text-content">${escapeHtml(g.context)}</pre></div>`;
+        }
+        const qsHtml = g.questions.map(({ q, idx }) => {
+          const sel = anss[idx];
+          const optsHtml = q.opts.map((o, oi) =>
+            `<button class="delf-opt ${sel === oi ? 'selected' : ''}" type="button" data-delf-opt="${idx}-${oi}">${String.fromCharCode(65+oi)}. ${escapeHtml(o)}</button>`
+          ).join('');
+          return `<div class="delf-question">
+            <div class="delf-q-row"><span class="delf-q-num">${idx + 1}.</span><span class="delf-q-text">${escapeHtml(q.q)}</span></div>
+            <div class="delf-opts">${optsHtml}</div>
+          </div>`;
+        }).join('');
+        return `<div class="delf-question-group">${contextHtml}${qsHtml}</div>`;
       }).join('');
+
       return `<div class="delf-exercise">
         <div class="delf-ex-title">${escapeHtml(ex.title)}</div>
         <div class="delf-ex-instruction">${escapeHtml(ex.instruction)}</div>
-        ${section.id === 'listening' && section.audioNote && ex === section.exercises[0] ? `<div class="delf-audio-note">${escapeHtml(section.audioNote)}</div>` : ''}
-        ${qs}
+        ${groupsHtml}
       </div>`;
     }).join('');
+
     const answered = anss.filter(a => a !== null).length;
     const total = anss.length;
     return `<div class="container delf-section-screen fade-in">
@@ -4895,6 +4927,16 @@
       selectDelfAnswer(flatIdx, optIdx);
     }));
     document.querySelectorAll('.delf-rubric-cb').forEach(el => el.addEventListener('change', () => toggleDelfRubric(el.dataset.delfRubric)));
+    document.querySelectorAll('[data-delf-tts]').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.delfTts;
+        if (!text) return;
+        speakFrench(text,
+          () => { el.textContent = '⏹ Playing…'; el.classList.add('is-playing'); },
+          () => { el.textContent = '🔊 Play Again'; el.classList.remove('is-playing'); }
+        );
+      });
+    });
     // Revision screen exit
     bind('revisionExitBtn', 'click', goLearn);
     bind('revisionExitBtn2', 'click', goLearn);
