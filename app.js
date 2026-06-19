@@ -4633,9 +4633,17 @@
           <span class="delf-rubric-pts">+${r.points} pt${r.points !== 1 ? 's' : ''}</span>
         </label>`;
       }).join('');
+      const instructionHtml = t.instruction ? `<div class="delf-assess-instruction">${escapeHtml(t.instruction)}</div>` : '';
+      const modelContent = t.modelAnswer || t.modelDialogue;
+      const modelHtml = modelContent ? `<details class="delf-model-wrap">
+        <summary class="delf-model-summary">${t.modelDialogue ? '💬 View model dialogue' : '📝 View model answer'}</summary>
+        <div class="delf-model-body"><pre class="delf-model-text">${escapeHtml(modelContent)}</pre></div>
+      </details>` : '';
       return `<div class="delf-task delf-assess-task">
         <div class="delf-task-title">${escapeHtml(t.title)}</div>
+        ${instructionHtml}
         <div class="delf-rubric">${rubricHtml}</div>
+        ${modelHtml}
       </div>`;
     }).join('');
     return `<div class="container delf-section-screen fade-in">
