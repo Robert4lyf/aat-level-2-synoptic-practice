@@ -263,20 +263,16 @@ window.DELF_MOCKS = [
         tasks: [
           {
             id: 'a1-w1',
-            title: 'Task 1 — Form completion (10 points)',
-            instruction: 'You want to join a French language club in Paris. Complete the registration form using your real or invented personal details.',
-            content: 'CLUB DE LANGUE FRANÇAISE — FICHE D\'INSCRIPTION\n\n• Nom (surname): ___________________________\n• Prénom (first name): ___________________________\n• Date de naissance (date of birth): ___________________________\n• Nationalité (nationality): ___________________________\n• Adresse (address): ___________________________\n• Ville (town) + Code postal: ___________________________\n• Numéro de téléphone: ___________________________\n• Adresse email: ___________________________\n• Niveau de français:  □ débutant   □ intermédiaire   □ avancé\n• Signature: ___________________________   Date: _______________',
+            title: 'Task 1 — Short message (10 points)',
+            instruction: 'Write a short message of 40–50 words in French to your new French penfriend. Introduce yourself: give your name, your age, where you live, what you do (work or studies), and one thing you enjoy doing.',
+            hint: 'Begin with: "Bonjour ! Je m\'appelle…" End with: "À bientôt !" Try to write in simple present tense sentences.',
             rubric: [
-              { id: 'a1-w1-1', label: 'Surname written correctly', points: 1 },
-              { id: 'a1-w1-2', label: 'First name written correctly', points: 1 },
-              { id: 'a1-w1-3', label: 'Date of birth given in correct format (dd/mm/yyyy)', points: 1 },
-              { id: 'a1-w1-4', label: 'Nationality written in French', points: 1 },
-              { id: 'a1-w1-5', label: 'Full address given (street, number)', points: 1 },
-              { id: 'a1-w1-6', label: 'Town and postcode given', points: 1 },
-              { id: 'a1-w1-7', label: 'Phone number in a valid format', points: 1 },
-              { id: 'a1-w1-8', label: 'Valid email address format used', points: 1 },
-              { id: 'a1-w1-9', label: 'French level box ticked', points: 1 },
-              { id: 'a1-w1-10', label: 'Signature and date provided', points: 1 }
+              { id: 'a1-w1-1', label: 'I gave my name and stated my age', points: 2 },
+              { id: 'a1-w1-2', label: 'I said where I live (town or country)', points: 2 },
+              { id: 'a1-w1-3', label: 'I mentioned my job or studies', points: 2 },
+              { id: 'a1-w1-4', label: 'I mentioned one thing I enjoy doing', points: 2 },
+              { id: 'a1-w1-5', label: 'My spelling of common words was mostly correct', points: 1 },
+              { id: 'a1-w1-6', label: 'My message was approximately 40–50 words', points: 1 }
             ]
           },
           {
@@ -323,9 +319,9 @@ window.DELF_MOCKS = [
               'Tu parles quelles langues ?'
             ],
             rubric: [
-              { id: 'a1-sp1-1', label: 'I responded to all questions with relevant information', points: 4 },
-              { id: 'a1-sp1-2', label: 'I used a varied and appropriate vocabulary', points: 3 },
-              { id: 'a1-sp1-3', label: 'My pronunciation was clear and generally understandable', points: 3 }
+              { id: 'a1-sp1-1', label: 'I answered each question with at least one complete sentence', points: 4 },
+              { id: 'a1-sp1-2', label: 'I used basic vocabulary correctly for personal topics (name, age, job, family, hobbies)', points: 3 },
+              { id: 'a1-sp1-3', label: 'My words were generally recognisable to a sympathetic native speaker despite a foreign accent', points: 3 }
             ]
           },
           {
@@ -362,8 +358,8 @@ window.DELF_MOCKS = [
               'Vous aimez les marchés ? Pourquoi ?'
             ],
             rubric: [
-              { id: 'a1-sp3-1', label: 'I described the main elements visible in the image', points: 3 },
-              { id: 'a1-sp3-2', label: 'I spoke clearly and continuously for at least 1 minute', points: 2 }
+              { id: 'a1-sp3-1', label: 'I named and described what I can see — people, objects and the setting — using simple nouns and verbs', points: 3 },
+              { id: 'a1-sp3-2', label: 'I used basic adjectives and present tense correctly to describe the scene (e.g. colour, size, action)', points: 2 }
             ]
           }
         ]
@@ -627,9 +623,9 @@ window.DELF_MOCKS = [
               'Your family and friends'
             ],
             rubric: [
-              { id: 'a2-sp1-1', label: 'I spoke for approximately 2–3 minutes on my chosen topic', points: 2 },
-              { id: 'a2-sp1-2', label: 'I gave sufficient detail and information', points: 2 },
-              { id: 'a2-sp1-3', label: 'My pronunciation was clear and generally understandable', points: 1 }
+              { id: 'a2-sp1-1', label: 'I spoke for approximately 2–3 minutes with few long pauses', points: 2 },
+              { id: 'a2-sp1-2', label: 'I gave specific details, examples or reasons to develop my topic beyond a list of facts', points: 2 },
+              { id: 'a2-sp1-3', label: 'My pronunciation allowed the listener to follow me throughout without difficulty', points: 1 }
             ]
           },
           {
@@ -645,9 +641,9 @@ window.DELF_MOCKS = [
               'Est-ce que vous aimez ce genre d\'endroit ? Pourquoi ?'
             ],
             rubric: [
-              { id: 'a2-sp2-1', label: 'I described the main elements of the image clearly', points: 2 },
-              { id: 'a2-sp2-2', label: 'I used varied vocabulary to describe people, places and actions', points: 2 },
-              { id: 'a2-sp2-3', label: 'I gave my opinion or reaction to the scene', points: 1 }
+              { id: 'a2-sp2-1', label: 'I described the scene in detail using a variety of nouns, adjectives and verbs', points: 2 },
+              { id: 'a2-sp2-2', label: 'I speculated about the context or inferred what is happening ("d\'après moi…", "il me semble que…")', points: 2 },
+              { id: 'a2-sp2-3', label: 'I gave a personal opinion or reaction with a supporting reason', points: 1 }
             ]
           },
           {
@@ -663,9 +659,9 @@ window.DELF_MOCKS = [
               'Vous avez déjà habité dans un autre pays ? Comment était l\'expérience ?'
             ],
             rubric: [
-              { id: 'a2-sp3-1', label: 'I responded to questions with relevant and detailed answers', points: 4 },
-              { id: 'a2-sp3-2', label: 'I maintained the conversation naturally and asked questions back', points: 3 },
-              { id: 'a2-sp3-3', label: 'I used a range of vocabulary and sentence structures', points: 3 }
+              { id: 'a2-sp3-1', label: 'I responded with detailed, relevant answers of more than one sentence each', points: 4 },
+              { id: 'a2-sp3-2', label: 'I kept the conversation going by asking follow-up questions or making comments', points: 3 },
+              { id: 'a2-sp3-3', label: 'I used past tenses (passé composé / imparfait) and future or conditional forms appropriately', points: 3 }
             ]
           },
           {
