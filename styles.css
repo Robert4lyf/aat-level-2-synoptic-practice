@@ -773,12 +773,12 @@ header .sub {
 
 .quiz-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 10px;
 }
+.quiz-header .flag-btn { margin-left: auto; }
 
 .topic-pill {
   background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
