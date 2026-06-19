@@ -96,6 +96,16 @@
     return !!(unitTest && unitTest.passed);
   }
 
+  /* Maps fr-gram lesson IDs to their CEFR level, derived from FR_LEARN_PATH unit membership. */
+  const FR_GRAM_LESSON_LEVEL = {
+    'fr-l02': 'A1', 'fr-l04': 'A1', 'fr-l05': 'A1', 'fr-l09': 'A1',
+    'fr-l10': 'A1', 'fr-l11': 'A1', 'fr-l12': 'A1', 'fr-l13': 'A1',
+    'fr-l15': 'A1', 'fr-l16': 'A1', 'fr-l40': 'A1', 'fr-l41': 'A1',
+    'fr-l19': 'A2', 'fr-l21': 'A2', 'fr-l22': 'A2', 'fr-l23': 'A2',
+    'fr-l24': 'A2', 'fr-l25': 'A2', 'fr-l43': 'A2',
+    'fr-l27': 'B1', 'fr-l28': 'B1', 'fr-l29': 'B1', 'fr-l30': 'B1', 'fr-l44': 'B1',
+  };
+
   /* Unit-level unlock gate for non-French subjects.
      First unit is always open; each subsequent unit requires the previous one to
      have every lesson done AND its unit quiz passed — mirroring frLevelUnlocked(). */
@@ -3123,6 +3133,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
             ${q._flipped ? '<span class="flip-pill">🔄 EN→FR</span>' : ''}
+            ${q.topic === 'fr-gram' && q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson] ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>` : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
@@ -3430,6 +3441,7 @@
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="gf-pill">✏️ Fill the gaps</span>
+            ${q.topic === 'fr-gram' && q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson] ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>` : ''}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
