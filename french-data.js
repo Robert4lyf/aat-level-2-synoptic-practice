@@ -1423,7 +1423,63 @@ window.FR_QUESTIONS = [
   {"id":"fr-705","topic":"fr-vocab","lesson":"fr-l04","type":"mcq","q":"'Chien' means?","opts":["Cat","Horse","Dog","Rabbit"],"ans":2,"exp":"Chien = dog. Chat = cat. Cheval = horse. Lapin = rabbit."},
   {"id":"fr-706","topic":"fr-vocab","lesson":"fr-l04","type":"mcq","q":"'Oiseau' means?","opts":["Fish","Dog","Rabbit","Bird"],"ans":3,"exp":"Oiseau = bird. Poisson = fish. Lapin = rabbit. Chien = dog."},
   {"id":"fr-707","topic":"fr-vocab","lesson":"fr-l39","type":"mcq","q":"'Appartement' means?","opts":["House","Flat / apartment","Garage","Garden"],"ans":1,"exp":"Appartement = flat/apartment. Maison = house. Jardin = garden. Garage = garage."},
-  {"id":"fr-708","topic":"fr-vocab","lesson":"fr-l04","type":"mcq","q":"'Stylo' means?","opts":["Pencil","Ruler","Pen","Notebook"],"ans":2,"exp":"Stylo = pen. Crayon = pencil. Règle = ruler. Cahier = notebook/exercise book."}
+  {"id":"fr-708","topic":"fr-vocab","lesson":"fr-l04","type":"mcq","q":"'Stylo' means?","opts":["Pencil","Ruler","Pen","Notebook"],"ans":2,"exp":"Stylo = pen. Crayon = pencil. Règle = ruler. Cahier = notebook/exercise book."},
+  {"id":"fr-709","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Lundi' means?","opts":["Tuesday","Monday","Thursday","Friday"],"ans":1,"exp":"Lundi = Monday. Days of the week are not capitalised in French."},
+  {"id":"fr-710","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Mercredi' means?","opts":["Monday","Tuesday","Wednesday","Saturday"],"ans":2,"exp":"Mercredi = Wednesday. Les jours: lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche."},
+  {"id":"fr-711","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Vendredi' means?","opts":["Thursday","Saturday","Sunday","Friday"],"ans":3,"exp":"Vendredi = Friday. From Latin Veneris dies (day of Venus)."},
+  {"id":"fr-712","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Samedi' means?","opts":["Friday","Sunday","Saturday","Monday"],"ans":2,"exp":"Samedi = Saturday. Dimanche = Sunday."},
+  {"id":"fr-713","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Janvier' means?","opts":["June","July","January","March"],"ans":2,"exp":"Janvier = January. Mois de l'année: janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre."},
+  {"id":"fr-714","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Juillet' means?","opts":["January","June","August","July"],"ans":3,"exp":"Juillet = July. juin = June. Careful not to confuse juillet (July) and juin (June)."},
+  {"id":"fr-715","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Août' means?","opts":["April","October","August","January"],"ans":2,"exp":"Août = August. The t is silent in casual speech; pronounced roughly 'oo'."},
+  {"id":"fr-716","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Novembre' means?","opts":["September","October","December","November"],"ans":3,"exp":"Novembre = November. Octobre = October. Décembre = December."},
+  {"id":"fr-717","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"How do you say 'on Mondays' (every Monday) in French?","opts":["lundi","le lundi","les lundis","un lundi"],"ans":1,"exp":"le lundi = on Mondays / every Monday. Use the definite article for recurring days. lundi (no article) = this coming Monday."},
+  {"id":"fr-718","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"How do you write the date '1st May' in French?","opts":["le un mai","le premier mai","la premier mai","un mai"],"ans":1,"exp":"le premier mai — in French dates, the 1st is always premier (ordinal). All other dates use cardinal numbers: le deux, le trois, etc."},
+  {"id":"fr-719","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Quelle est la date aujourd'hui?' What does this mean?","opts":["What time is it today?","What is the weather today?","What is today's date?","What day is it?"],"ans":2,"exp":"Quelle est la date aujourd'hui? = What is today's date? Quel jour sommes-nous? = What day is it?"},
+  {"id":"fr-720","topic":"fr-vocab","lesson":"fr-l68","type":"mcq","q":"'Février' means?","opts":["January","March","February","April"],"ans":2,"exp":"Février = February. The accent on é is important — it shows the pronunciation /fe.vʁi.je/."},
+  {"id":"fr-721","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'La cuisine' means?","opts":["Living room","Dining room","Kitchen","Bathroom"],"ans":2,"exp":"La cuisine = the kitchen. La salle à manger = dining room. Le salon = living room."},
+  {"id":"fr-722","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'La chambre' means?","opts":["Bathroom","Bedroom","Living room","Hallway"],"ans":1,"exp":"La chambre = bedroom (or a chamber/room in general). La salle de bains = bathroom."},
+  {"id":"fr-723","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'Le salon' means?","opts":["Kitchen","Bedroom","Living room","Garden"],"ans":2,"exp":"Le salon = living room / lounge. Also called le séjour in some French homes."},
+  {"id":"fr-724","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'La salle de bains' means?","opts":["Dining room","Living room","Bedroom","Bathroom"],"ans":3,"exp":"La salle de bains = bathroom (literally 'the room of baths'). Les toilettes/le WC = the toilet (often a separate room in French homes)."},
+  {"id":"fr-725","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'Le couloir' means?","opts":["Kitchen","Hallway / corridor","Dining room","Stairs"],"ans":1,"exp":"Le couloir = hallway / corridor. L'escalier = the stairs."},
+  {"id":"fr-726","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'Le canapé' means?","opts":["Chair","Armchair","Table","Sofa"],"ans":3,"exp":"Le canapé = sofa / couch. La chaise = chair. Le fauteuil = armchair."},
+  {"id":"fr-727","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'L'armoire' means?","opts":["Bookcase","Wardrobe","Desk","Bed"],"ans":1,"exp":"L'armoire = wardrobe / large cupboard. L'étagère = bookcase/shelf. Le lit = bed. Le bureau = desk."},
+  {"id":"fr-728","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'La fenêtre' means?","opts":["Door","Wall","Window","Ceiling"],"ans":2,"exp":"La fenêtre = window. La porte = door. Le mur = wall. Le plafond = ceiling."},
+  {"id":"fr-729","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"'Un immeuble' means?","opts":["A house","A studio flat","A garden","An apartment block"],"ans":3,"exp":"Un immeuble = an apartment block / building. Une maison = a house. Un appartement = a flat. Un studio = a studio flat."},
+  {"id":"fr-730","topic":"fr-vocab","lesson":"fr-l69","type":"mcq","q":"How do you say 'I live in a flat' in French?","opts":["J'habite une maison.","J'habite dans un appartement.","Je suis dans un immeuble.","J'ai une chambre."],"ans":1,"exp":"J'habite dans un appartement. = I live in a flat. J'habite can also be followed directly by a place: J'habite Paris."},
+  {"id":"fr-731","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"Which demonstrative adjective goes with 'homme' (this man)?","opts":["ce","cet","cette","ces"],"ans":1,"exp":"Before a masculine noun starting with a vowel or silent h, use cet: cet homme. Ce is used before masculine consonants: ce livre."},
+  {"id":"fr-732","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'___ femme est professeur.' (this/that woman)","opts":["ce","cet","cette","ces"],"ans":2,"exp":"cette is used before all feminine singular nouns: cette femme, cette idée, cette école."},
+  {"id":"fr-733","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'___ livres sont intéressants.' (these books)","opts":["ce","cet","cette","ces"],"ans":3,"exp":"ces is used before all plural nouns (m. or f.): ces livres, ces filles, ces hommes."},
+  {"id":"fr-734","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'Je préfère ___ stylo-___.' (this pen here — singular)","opts":["ce…ci","cet…là","cette…ci","ces…ci"],"ans":0,"exp":"ce stylo-ci = this pen (here). Add -ci (here) or -là (there) to the noun to distinguish: ce livre-ci vs. ce livre-là."},
+  {"id":"fr-735","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'Celui-ci' refers to:","opts":["that one (m.)","this one (m.)","this one (f.)","these ones (m.)"],"ans":1,"exp":"celui-ci = this one (masculine singular). celle-ci = this one (f.sg). ceux-ci = these ones (m.pl). celles-ci = these ones (f.pl)."},
+  {"id":"fr-736","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'Je préfère ___ qui est rouge.' (the one — feminine, e.g. la voiture)","opts":["celui","celle","ceux","celles"],"ans":1,"exp":"celle qui est rouge = the one (f.sg) that is red. Demonstrative pronouns agree in gender and number with the noun they replace."},
+  {"id":"fr-737","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'C'est ___ médecin.' vs 'Il ___ médecin.' — which uses 'est'?","opts":["Both use est the same way","C'est un médecin (identifying); Il est médecin (describing role — no article)","C'est médecin; Il est un médecin","They are interchangeable"],"ans":1,"exp":"C'est + article + noun is used to identify. Il/Elle est + noun (no article) describes role or profession. C'est un médecin. Il est médecin."},
+  {"id":"fr-738","topic":"fr-gram","lesson":"fr-l70","type":"mcq","q":"'___ appartement est grand, mais ___ est plus beau.' (this one — m.sg)","opts":["Cet … celui-là","Ce … cet-là","Cette … celle-là","Ces … ceux-là"],"ans":0,"exp":"Cet appartement (adjective, before vowel) est grand, mais celui-là (pronoun) est plus beau. = This flat is big, but that one is more beautiful."},
+  {"id":"fr-739","topic":"fr-gram","lesson":"fr-l71","type":"mcq","q":"'La fille ___ parle français est mon amie.' (who)","opts":["que","qui","où","dont"],"ans":1,"exp":"qui = who/that (subject). La fille qui parle = the girl who speaks. Use qui when the relative pronoun is the subject of the clause."},
+  {"id":"fr-740","topic":"fr-gram","lesson":"fr-l71","type":"mcq","q":"'Le film ___ j'ai vu était super.' (that — object)","opts":["qui","où","que","dont"],"ans":2,"exp":"que (qu' before vowel) = that/which/whom (object). Le film que j'ai vu = the film that I saw. The clause already has a subject (j'), so use que."},
+  {"id":"fr-741","topic":"fr-gram","lesson":"fr-l71","type":"mcq","q":"'La ville ___ j'habite s'appelle Lyon.' (where)","opts":["qui","que","dont","où"],"ans":3,"exp":"où = where (and also when for time). La ville où j'habite = the city where I live. Le jour où je suis arrivé = the day when I arrived."},
+  {"id":"fr-742","topic":"fr-gram","lesson":"fr-l71","type":"mcq","q":"'C'est le train ___ part à huit heures.' (that — subject)","opts":["que","où","qui","dont"],"ans":2,"exp":"qui = that/which (subject). The train is the subject of 'part', so use qui: le train qui part = the train that leaves."},
+  {"id":"fr-743","topic":"fr-gram","lesson":"fr-l71","type":"mcq","q":"'Le livre ___ tu m'as donné est intéressant.'","opts":["qui","où","dont","que"],"ans":3,"exp":"que = that (object). The clause already has a subject (tu), so use que: le livre que tu m'as donné = the book that you gave me."},
+  {"id":"fr-744","topic":"fr-gram","lesson":"fr-l71","type":"mcq","q":"How do you tell if you need qui or que?","opts":["Use qui for things, que for people","Use qui for subjects, que for objects","Use qui after vowels, que after consonants","They are interchangeable"],"ans":1,"exp":"qui = subject (the relative pronoun does the action). que = object (the action is done to it). Test: if the clause after the pronoun has its own subject, use que."},
+  {"id":"fr-745","topic":"fr-gram","lesson":"fr-l72","type":"mcq","q":"How does a formal French letter typically open?","opts":["Cher Monsieur Jean,","Salut,","Madame, Monsieur,","Bonjour,"],"ans":2,"exp":"Formal French letters open with 'Madame,' or 'Monsieur,' or 'Madame, Monsieur,' (if recipient unknown). Never use a first name in a formal opening."},
+  {"id":"fr-746","topic":"fr-gram","lesson":"fr-l72","type":"mcq","q":"Which closing is appropriate for an informal email to a friend?","opts":["Veuillez agréer mes sincères salutations","Je vous prie d'agréer mes cordiales salutations","Bisous / Bises","Cordialement"],"ans":2,"exp":"Bisous / Bises = Kisses (friendly/informal). Cordialement is more formal but still email-appropriate. Veuillez agréer… is for formal letters."},
+  {"id":"fr-747","topic":"fr-gram","lesson":"fr-l72","type":"mcq","q":"'Je me permets de vous écrire au sujet de…' means:","opts":["I am writing to complain about…","I allow myself to write to you regarding…","Please write to me about…","I am not able to write about…"],"ans":1,"exp":"Je me permets de vous écrire au sujet de… = I am writing to you (politely) regarding… It is a polite formal opening that softens a complaint or request."},
+  {"id":"fr-748","topic":"fr-gram","lesson":"fr-l72","type":"mcq","q":"'Pourriez-vous ___ rembourser?' (me — indirect object)","opts":["me","te","lui","vous"],"ans":0,"exp":"Pourriez-vous me rembourser? = Could you reimburse me? me is the indirect object pronoun for 'me'. It comes before the infinitive."},
+  {"id":"fr-749","topic":"fr-gram","lesson":"fr-l72","type":"mcq","q":"'Je vous serais reconnaissant(e) de + infinitive' is used to:","opts":["Express anger in a letter","Politely request something in a formal letter","Introduce yourself","End a casual email"],"ans":1,"exp":"Je vous serais reconnaissant(e) de + infinitif = I would be grateful if you could… It is one of the most polite ways to make a request in a formal French letter."},
+  {"id":"fr-750","topic":"fr-gram","lesson":"fr-l72","type":"mcq","q":"What is the modern formal email sign-off in French?","opts":["Bisous","À bientôt","Cordialement","Salutations distinguées"],"ans":2,"exp":"Cordialement = Regards (warm but professional — the standard modern email sign-off). Salutations distinguées is also acceptable but more old-fashioned in emails."},
+  {"id":"fr-751","topic":"fr-gram","lesson":"fr-l73","type":"mcq","q":"How do you say 'In my opinion' in French?","opts":["Je pense","D'habitude","À mon avis","Selon vous"],"ans":2,"exp":"À mon avis = In my opinion. Selon moi / D'après moi also work. Je pense que + verb clause is also very common: Je pense que c'est une bonne idée."},
+  {"id":"fr-752","topic":"fr-gram","lesson":"fr-l73","type":"mcq","q":"'Je ___ que c'est une bonne idée.' (I think that)","opts":["trouve","dis","pense","suis"],"ans":2,"exp":"Je pense que = I think that. Je trouve que also works: Je trouve que c'est joli. Note: penser que and trouver que are both followed by the indicative (not the subjunctive) at A2."},
+  {"id":"fr-753","topic":"fr-gram","lesson":"fr-l73","type":"mcq","q":"'Je suis d'accord' means:","opts":["I disagree","I am certain","I agree","I am not sure"],"ans":2,"exp":"Je suis d'accord = I agree. Je ne suis pas d'accord = I disagree. Tout à fait = Absolutely / Exactly (strong agreement)."},
+  {"id":"fr-754","topic":"fr-gram","lesson":"fr-l73","type":"mcq","q":"'Au contraire' means:","opts":["In addition","On the other hand","On the contrary","In general"],"ans":2,"exp":"Au contraire = On the contrary. D'un côté… de l'autre côté = On one hand… on the other hand. En général = In general."},
+  {"id":"fr-755","topic":"fr-gram","lesson":"fr-l73","type":"mcq","q":"'Je préfère le café ___ au thé.' (compared to — use a preposition)","opts":["que","à","de","plus"],"ans":1,"exp":"Je préfère X à Y = I prefer X to Y. Je préfère le café au thé (au = à + le). J'aime mieux is an alternative: J'aime mieux le café."},
+  {"id":"fr-756","topic":"fr-gram","lesson":"fr-l73","type":"mcq","q":"'Je ne suis pas sûr(e)' means:","opts":["I am certain","I am not sure","I strongly disagree","I do not think"],"ans":1,"exp":"Je ne suis pas sûr(e) = I am not sure. Je ne suis pas sûr(e) que… can introduce doubt (note: at B1 it triggers the subjunctive, but at A2 you can use indicative: Je ne suis pas sûr que c'est vrai)."},
+  {"id":"fr-757","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'J'ai mal à la tête' means:","opts":["I have a sore throat","I have a headache","I have a stomachache","I have a backache"],"ans":1,"exp":"J'ai mal à la tête = I have a headache. J'ai mal à la gorge = sore throat. J'ai mal au ventre = stomachache. J'ai mal au dos = backache."},
+  {"id":"fr-758","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'Avoir de la fièvre' means:","opts":["To feel cold","To have a fever","To have a cough","To feel nauseous"],"ans":1,"exp":"Avoir de la fièvre = to have a fever/temperature. Tousser = to cough. Avoir des frissons = to have shivers/chills."},
+  {"id":"fr-759","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'Une ordonnance' means:","opts":["An appointment","A prescription","A diagnosis","A symptom"],"ans":1,"exp":"Une ordonnance = a prescription (written by the doctor). Un rendez-vous = an appointment. Un diagnostic = a diagnosis. Un symptôme = a symptom."},
+  {"id":"fr-760","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'Un médicament' means:","opts":["A doctor","A symptom","A medicine / medication","A pharmacy"],"ans":2,"exp":"Un médicament = a medicine / medication. Des comprimés = tablets. Un sirop = syrup. Une pharmacie = a pharmacy."},
+  {"id":"fr-761","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'Tousser' means:","opts":["To sneeze","To vomit","To cough","To faint"],"ans":2,"exp":"Tousser = to cough. Éternuer = to sneeze. Vomir = to vomit. S'évanouir = to faint."},
+  {"id":"fr-762","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"How do you say 'I would like to make an appointment' in French?","opts":["Je voudrais un médicament.","Je voudrais prendre un rendez-vous.","Je voudrais voir la pharmacie.","Je voudrais une ordonnance."],"ans":1,"exp":"Je voudrais prendre un rendez-vous = I would like to make an appointment. Prendre un rendez-vous is the standard phrase — you 'take' an appointment in French, not 'make' one."},
+  {"id":"fr-763","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'Depuis quand êtes-vous malade?' means:","opts":["Are you ill often?","How long have you been ill?","Do you have a prescription?","Where does it hurt?"],"ans":1,"exp":"Depuis quand êtes-vous malade? = How long have you been ill? Depuis + present tense is used to describe something that started in the past and is still happening: Je suis malade depuis lundi."},
+  {"id":"fr-764","topic":"fr-vocab","lesson":"fr-l74","type":"mcq","q":"'Avez-vous quelque chose contre la toux?' means:","opts":["Do you have something for a fever?","Do you have something for a cough?","Do you have any tablets?","Do you have a prescription?"],"ans":1,"exp":"Avez-vous quelque chose contre la toux? = Do you have anything for a cough? contre = against/for (treating). La toux = cough. La fièvre = fever."}
 ];
 
 window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
@@ -3937,6 +3993,120 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         ]
       },
       {
+        "id": "fr-l68",
+        "title": "Les jours, les mois et les dates",
+        "icon": "📅",
+        "cards": [
+          {
+            "h": "Les jours de la semaine",
+            "p": [
+              "The seven days are: **lundi** (Monday), **mardi** (Tuesday), **mercredi** (Wednesday), **jeudi** (Thursday), **vendredi** (Friday), **samedi** (Saturday), **dimanche** (Sunday).",
+              "Key rule: days of the week are **not capitalised** in French.",
+              "**lundi** (no article) = this coming Monday. **le lundi** = on Mondays / every Monday."
+            ],
+            "split": {
+              "left": { "title": "Jours de semaine (weekdays)", "items": ["lundi — Monday", "mardi — Tuesday", "mercredi — Wednesday", "jeudi — Thursday", "vendredi — Friday"] },
+              "right": { "title": "Week-end", "items": ["samedi — Saturday", "dimanche — Sunday", "le week-end = the weekend", "en semaine = on weekdays"] }
+            }
+          },
+          {
+            "h": "Les mois de l'année",
+            "p": [
+              "The twelve months: **janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre**.",
+              "Months are also **not capitalised** in French.",
+              "To say 'in a month': **en janvier**, **en mars**, **en août** — use **en** before all months."
+            ],
+            "callout": { "kind": "key", "text": "Watch out: **juillet** (July) and **juin** (June) look similar. Also **août** (August) — the t is silent in casual speech." }
+          },
+          {
+            "h": "Les dates",
+            "p": [
+              "Dates follow the pattern: **le + cardinal number + month**. The first is always **premier**: le premier janvier.",
+              "All other dates use cardinal numbers: le deux mars, le quinze juillet, le trente et un décembre.",
+              "To ask the date: **Quelle est la date aujourd'hui ?** or **Quel jour sommes-nous ?**"
+            ],
+            "example": {
+              "title": "Date expressions",
+              "rows": [
+                ["French", "English"],
+                ["le premier mai", "1st May"],
+                ["le quatorze juillet", "14th July (Bastille Day)"],
+                ["le vingt-cinq décembre", "25th December"],
+                ["Mon anniversaire est le trois mars.", "My birthday is on 3rd March."]
+              ]
+            }
+          },
+          {
+            "h": "Les saisons et les mois",
+            "p": [
+              "**le printemps** (spring) — mars, avril, mai. **l'été** (summer) — juin, juillet, août.",
+              "**l'automne** (autumn) — septembre, octobre, novembre. **l'hiver** (winter) — décembre, janvier, février.",
+              "Prepositions: **au printemps** (in spring), **en été / en automne / en hiver** (in summer/autumn/winter)."
+            ]
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "How do you say 'every Monday' (recurring) in French?", "opts": ["mardi", "le lundi", "lundi soir", "les lundis"], "ans": 1, "exp": "le lundi = on Mondays / every Monday. The definite article le/la + day expresses recurrence." },
+          { "type": "mcq", "q": "How do you write 'the 1st of March' in French?", "opts": ["le un mars", "le premier mars", "le première mars", "un mars"], "ans": 1, "exp": "le premier mars — the ordinal premier is used only for the first of the month. All other dates use cardinal numbers: le deux, le trois…" },
+          { "type": "mcq", "q": "Which month comes after juillet?", "opts": ["juin", "septembre", "août", "octobre"], "ans": 2, "exp": "After juillet (July) comes août (August), then septembre, octobre, novembre, décembre." },
+          { "type": "mcq", "q": "How do you say 'in autumn' in French?", "opts": ["au automne", "en l'automne", "en automne", "dans automne"], "ans": 2, "exp": "en automne = in autumn. en été = in summer. en hiver = in winter. au printemps = in spring (au because printemps is masculine and starts with a consonant)." }
+        ]
+      },
+      {
+        "id": "fr-l69",
+        "title": "La maison et les pièces",
+        "icon": "🏠",
+        "cards": [
+          {
+            "h": "Les pièces de la maison",
+            "p": [
+              "Key rooms: **le salon** (living room), **la cuisine** (kitchen), **la chambre** (bedroom), **la salle de bains** (bathroom), **les toilettes / le WC** (toilet), **la salle à manger** (dining room), **le couloir** (hallway), **le garage** (garage), **le jardin** (garden).",
+              "In French homes, the toilet is often a separate room from the bathroom."
+            ],
+            "split": {
+              "left": { "title": "Pièces principales", "items": ["le salon — living room", "la cuisine — kitchen", "la chambre — bedroom", "la salle à manger — dining room", "le couloir — hallway"] },
+              "right": { "title": "Autres espaces", "items": ["la salle de bains — bathroom", "les toilettes / le WC — toilet", "le garage — garage", "le jardin — garden", "le bureau — office/study"] }
+            }
+          },
+          {
+            "h": "Les meubles et objets",
+            "p": [
+              "**le lit** (bed), **le canapé** (sofa), **le fauteuil** (armchair), **la table** (table), **la chaise** (chair), **l'armoire** (wardrobe), **l'étagère** (bookcase/shelf), **le bureau** (desk), **le frigo** (fridge), **la fenêtre** (window), **la porte** (door), **le miroir** (mirror)."
+            ],
+            "callout": { "kind": "key", "text": "**l'armoire** (f.) = wardrobe (large freestanding). **le placard** = built-in cupboard. **le tiroir** = drawer. **l'étagère** (f.) = shelf or bookcase." }
+          },
+          {
+            "h": "Localiser les objets",
+            "p": [
+              "Use prepositions to describe where things are: **dans** la cuisine (in the kitchen), **sur** la table (on the table), **sous** le lit (under the bed), **à côté du** salon (next to the living room), **en face de** la porte (opposite the door)."
+            ],
+            "example": {
+              "title": "Describing a home",
+              "rows": [
+                ["French", "English"],
+                ["Mon appartement a trois pièces.", "My flat has three rooms."],
+                ["La cuisine est à côté du salon.", "The kitchen is next to the living room."],
+                ["Mon lit est sous la fenêtre.", "My bed is under the window."],
+                ["Il y a un grand canapé dans le salon.", "There is a big sofa in the living room."]
+              ]
+            }
+          },
+          {
+            "h": "Types de logement",
+            "p": [
+              "**une maison** (a house), **un appartement** (a flat), **un immeuble** (an apartment block), **un studio** (a studio flat), **une villa** (a detached/holiday house), **une chambre** (a room — e.g. in shared accommodation).",
+              "J'habite dans un appartement au troisième étage. (I live in a flat on the third floor.)"
+            ]
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "Which room is 'la salle à manger'?", "opts": ["Bathroom", "Bedroom", "Dining room", "Living room"], "ans": 2, "exp": "la salle à manger = dining room (literally 'the room for eating'). le salon = living room. la chambre = bedroom. la salle de bains = bathroom." },
+          { "type": "mcq", "q": "What does 'le couloir' mean?", "opts": ["Kitchen", "Bedroom", "Hallway / corridor", "Cellar"], "ans": 2, "exp": "le couloir = hallway or corridor. la cave = cellar. le grenier = attic. l'entrée = entrance hall." },
+          { "type": "mcq", "q": "How do you say 'I live in a flat' in French?", "opts": ["J'habite une maison.", "J'habite dans un appartement.", "J'ai une chambre.", "Je suis dans un immeuble."], "ans": 1, "exp": "J'habite dans un appartement. = I live in a flat. Habiter can be used with or without dans: J'habite un appartement is also correct." },
+          { "type": "mcq", "q": "Where would you find 'l'étagère'?", "opts": ["In a kitchen to store food", "On a wall or in a room — it holds books or objects", "It is a type of bed", "It is a type of door"], "ans": 1, "exp": "l'étagère = shelf or bookcase. It holds books, ornaments, or other objects and is often found in a salon or bureau." }
+        ]
+      },
+      {
         "id": "fr-l17",
         "title": "Examen A1 (type DELF)",
         "icon": "📝",
@@ -6231,6 +6401,288 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "La santé = health. Je travaille dans la santé = I work in health/healthcare."
           }
+        ]
+      },
+      {
+        "id": "fr-l70",
+        "title": "Les adjectifs et pronoms démonstratifs",
+        "icon": "👉",
+        "cards": [
+          {
+            "h": "Les adjectifs démonstratifs (this / that / these / those)",
+            "p": [
+              "Demonstrative adjectives agree in gender and number with the noun they modify.",
+              "**ce** (m.sg, consonant): ce livre, ce garçon. **cet** (m.sg, vowel or silent h): cet homme, cet ami. **cette** (f.sg): cette femme, cette idée. **ces** (pl.): ces enfants, ces maisons."
+            ],
+            "split": {
+              "left": { "title": "Singulier", "items": ["ce livre (m. consonant)", "cet arbre (m. vowel/h)", "cette maison (f.)", "this / that"] },
+              "right": { "title": "Pluriel", "items": ["ces livres (m.pl)", "ces arbres (m.pl vowel)", "ces maisons (f.pl)", "these / those"] }
+            }
+          },
+          {
+            "h": "-ci et -là",
+            "p": [
+              "To distinguish 'this' from 'that', add **-ci** (here, closer) or **-là** (there, further) to the noun after a hyphen.",
+              "ce livre-ci = **this** book (here). ce livre-là = **that** book (there).",
+              "Ces chaussures-ci sont plus confortables que ces chaussures-là. (These shoes are more comfortable than those shoes.)"
+            ]
+          },
+          {
+            "h": "Les pronoms démonstratifs (the one / those)",
+            "p": [
+              "When the noun is not repeated, replace with a demonstrative pronoun: **celui** (m.sg), **celle** (f.sg), **ceux** (m.pl), **celles** (f.pl).",
+              "They are usually followed by: **-ci/-là**, a relative clause (qui/que), or **de** + noun.",
+              "Je préfère **celui-ci**. (I prefer this one.) La fille **qui** porte le chapeau est **celle** dont je parlais. (The girl wearing the hat is the one I was talking about.)"
+            ],
+            "example": {
+              "title": "Demonstrative pronouns in use",
+              "rows": [
+                ["Pronoun", "Meaning", "Example"],
+                ["celui-ci / celui-là", "this one / that one (m.sg)", "Quel manteau ? Celui-ci."],
+                ["celle-ci / celle-là", "this one / that one (f.sg)", "Quelle robe ? Celle-là."],
+                ["ceux-ci / ceux-là", "these / those (m.pl)", "Ces livres ? Ceux-là sont meilleurs."],
+                ["celles-ci / celles-là", "these / those (f.pl)", "Ces chaises ? Celles-ci sont confortables."]
+              ]
+            }
+          },
+          {
+            "h": "C'est vs Il/Elle est",
+            "p": [
+              "**C'est + article + noun** identifies who or what something is: C'est **un** médecin. (He is a doctor — identification.)",
+              "**Il/Elle est + noun (no article)** describes role or nationality: Il est médecin. Elle est française.",
+              "Use **c'est** before adjectives referring to a general idea: C'est intéressant. C'est vrai."
+            ],
+            "callout": { "kind": "key", "text": "Exam tip: C'est un professeur (with article) = identifying the person. Il est professeur (no article) = describing his role. This distinction appears in DELF A2 reading and speaking tasks." }
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "'___ homme est mon père.' (this man)", "opts": ["ce", "cet", "cette", "ces"], "ans": 1, "exp": "cet is used before a masculine noun starting with a vowel or silent h: cet homme, cet ami, cet hôtel." },
+          { "type": "mcq", "q": "'Je préfère ___ manteau-___.' (this coat here)", "opts": ["ce…ci", "cet…là", "cette…ci", "ces…là"], "ans": 0, "exp": "ce manteau-ci = this coat (here). Manteau starts with a consonant, so use ce (not cet). Add -ci for 'here'." },
+          { "type": "mcq", "q": "'Quelle voiture préfères-tu ?' — 'Je préfère ___ qui est rouge.'", "opts": ["celui", "celle", "ceux", "celles"], "ans": 1, "exp": "celle (f.sg) because voiture is feminine. celui = m.sg, ceux = m.pl, celles = f.pl." },
+          { "type": "mcq", "q": "'C'est ___ infirmière.' vs 'Elle ___ infirmière.' Which is correct?", "opts": ["C'est une infirmière. Elle est infirmière.", "C'est infirmière. Elle est une infirmière.", "Both use une.", "Both omit the article."], "ans": 0, "exp": "C'est une infirmière (article required after c'est). Elle est infirmière (no article when describing role after être)." }
+        ]
+      },
+      {
+        "id": "fr-l71",
+        "title": "Les pronoms relatifs — qui, que, où",
+        "icon": "🔗",
+        "cards": [
+          {
+            "h": "Qui — sujet (subject)",
+            "p": [
+              "**Qui** replaces a **subject** in a relative clause. It refers to a person or thing.",
+              "La fille **qui** parle français est mon amie. (The girl **who** speaks French is my friend.)",
+              "C'est le bus **qui** va à la gare. (It's the bus **that** goes to the station.)",
+              "Test: if the word after the relative pronoun is a **verb with no other subject**, use **qui**."
+            ]
+          },
+          {
+            "h": "Que / qu' — objet (object)",
+            "p": [
+              "**Que** (qu' before a vowel or h) replaces an **object** in a relative clause.",
+              "Le livre **que** je lis est intéressant. (The book **that** I am reading is interesting.)",
+              "C'est le film **qu'**elle a vu. (It's the film **that** she saw.)",
+              "Test: if the clause after the pronoun already has its own subject, use **que**."
+            ],
+            "callout": { "kind": "key", "text": "Quick test — **qui** or **que**? Look at what follows: 'qui + verb' (no subject) → use qui. 'que + subject + verb' → use que. Example: le chien **qui** aboie (barks) vs. le chien **que** j'aime (I love)." }
+          },
+          {
+            "h": "Où — lieu ou moment (place or time)",
+            "p": [
+              "**Où** means **where** (place) or **when** (time) in a relative clause.",
+              "La ville **où** j'habite s'appelle Lyon. (The city **where** I live is called Lyon.)",
+              "Le jour **où** je suis arrivé, il pleuvait. (The day **when** I arrived, it was raining.)",
+              "Où follows a noun that is a place or a moment in time."
+            ]
+          },
+          {
+            "h": "Récapitulatif",
+            "example": {
+              "title": "Qui / que / où at a glance",
+              "rows": [
+                ["Pronoun", "Role", "Example"],
+                ["qui", "subject (does the action)", "l'homme qui chante — the man who is singing"],
+                ["que / qu'", "object (receives the action)", "la chanson que j'écoute — the song I'm listening to"],
+                ["où", "place or time", "le café où on se retrouve — the café where we meet"]
+              ]
+            }
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "'La fille ___ parle est mon amie.' (who — subject)", "opts": ["que", "où", "qui", "dont"], "ans": 2, "exp": "qui = who/that (subject). The relative pronoun is the subject of 'parle', so use qui." },
+          { "type": "mcq", "q": "'Le film ___ tu as regardé était super.' (that — object)", "opts": ["qui", "où", "dont", "que"], "ans": 3, "exp": "que = that/which (object). The clause already has a subject (tu), so use que. Becomes qu' before a vowel." },
+          { "type": "mcq", "q": "'La ville ___ je suis né(e) est très belle.'", "opts": ["qui", "que", "dont", "où"], "ans": 3, "exp": "où = where. La ville où je suis né(e) = the city where I was born. Use où when the relative pronoun stands for a place or time." },
+          { "type": "mcq", "q": "How do you tell whether to use qui or que?", "opts": ["qui for people, que for things", "qui for subjects, que for objects", "qui after a vowel, que after a consonant", "They are interchangeable"], "ans": 1, "exp": "qui = subject (the pronoun itself is the subject of the following verb). que = object (the clause has its own subject). The person/thing distinction does NOT determine the choice." }
+        ]
+      },
+      {
+        "id": "fr-l72",
+        "title": "Écrire une lettre ou un e-mail",
+        "icon": "✉️",
+        "cards": [
+          {
+            "h": "L'e-mail informel (to a friend)",
+            "p": [
+              "**Opening**: Salut [prénom], / Coucou [prénom], / Cher Thomas, / Chère Sophie,",
+              "**Body**: Keep the tone friendly. Use tu. Start with a question: Comment tu vas ? / Ça va ?",
+              "**Closing**: Bises, / Bisous, / À bientôt, / Amicalement, / Grosses bises,"
+            ],
+            "example": {
+              "title": "Informal email structure",
+              "rows": [
+                ["Part", "Example"],
+                ["Opening", "Salut Marie,"],
+                ["News / reason", "Je t'écris pour te donner des nouvelles de mon séjour à Paris."],
+                ["Details", "Hier, j'ai visité le Louvre — c'était magnifique !"],
+                ["Closing", "À très bientôt,\nJulie"]
+              ]
+            }
+          },
+          {
+            "h": "La lettre formelle (formal letter / email)",
+            "p": [
+              "**Opening**: Madame, / Monsieur, / Madame, Monsieur, (if recipient unknown — no first name).",
+              "**Introduce your purpose**: Je me permets de vous écrire au sujet de… / Suite à votre annonce, / Je souhaite formuler une réclamation concernant…",
+              "**Body**: Use vous. Be polite and precise. State facts, then your request.",
+              "**Closing (formule de politesse)**: Veuillez agréer, Madame/Monsieur, mes sincères salutations. / Cordialement, (email)."
+            ]
+          },
+          {
+            "h": "Formuler une demande ou une réclamation",
+            "p": [
+              "To make a polite request: **Pourriez-vous** + infinitive (Could you…?)",
+              "To express gratitude in advance: **Je vous serais reconnaissant(e) de** + infinitive (I would be grateful if you could…)",
+              "Common uses: Pourriez-vous me rembourser ? Pourriez-vous me confirmer la date ? Je vous serais reconnaissante de bien vouloir m'envoyer la facture."
+            ],
+            "callout": { "kind": "key", "text": "DELF A2 writing task: you may be asked to write a complaint letter (60–80 words). Include: the problem, what you want done, and a polite close. Always address the recipient as Madame/Monsieur — never by first name in a formal letter." }
+          },
+          {
+            "h": "Prendre rendez-vous par e-mail",
+            "p": [
+              "Je vous contacte pour **fixer un rendez-vous** avec [nom]. (I am writing to arrange an appointment with…)",
+              "**Serait-il possible** de me recevoir le [date] à [heure] ? (Would it be possible to see me on…?)",
+              "**Je vous confirme** mon rendez-vous du [date]. (I confirm my appointment on…)",
+              "**Je souhaite annuler** mon rendez-vous du [date] et **le reporter** au [nouvelle date]. (I wish to cancel… and rearrange it for…)"
+            ]
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "How should a formal French letter open when you don't know the recipient's name?", "opts": ["Cher Monsieur Dupont,", "Salut,", "Madame, Monsieur,", "Bonjour,"], "ans": 2, "exp": "Madame, Monsieur, is the standard formal opening when the recipient's name is unknown. Use Madame, or Monsieur, if you know the gender." },
+          { "type": "mcq", "q": "Which closing is correct for a formal French letter?", "opts": ["Bisous,", "À bientôt,", "Veuillez agréer, Madame, mes sincères salutations.", "Coucou,"], "ans": 2, "exp": "Veuillez agréer, Madame/Monsieur, mes sincères salutations is the classic formal closing. For emails, Cordialement is also acceptable." },
+          { "type": "mcq", "q": "'Pourriez-vous me rembourser ?' — what does this mean?", "opts": ["You must reimburse me.", "Could you reimburse me?", "I would like a refund form.", "Please send your details."], "ans": 1, "exp": "Pourriez-vous + infinitif = Could you…? It is the conditional of pouvoir and is very polite. Pourriez-vous me rembourser ? = Could you reimburse me?" },
+          { "type": "mcq", "q": "For a DELF A2 formal letter, what length is expected?", "opts": ["20–30 words", "40–50 words", "60–80 words", "100+ words"], "ans": 2, "exp": "DELF A2 writing tasks require 60–80 words. DELF A1 tasks require 40–50 words. Staying within the range is important for full marks." }
+        ]
+      },
+      {
+        "id": "fr-l73",
+        "title": "Exprimer son opinion",
+        "icon": "💬",
+        "cards": [
+          {
+            "h": "Donner son avis",
+            "p": [
+              "**Je pense que** + indicative: Je pense que c'est une bonne idée. (I think that it's a good idea.)",
+              "**À mon avis**, Paris est magnifique. (In my opinion, Paris is magnificent.)",
+              "**Je trouve que** + indicative: Je trouve que c'est trop cher. (I think it's too expensive.)",
+              "**Selon moi / D'après moi**: according to me — slightly more formal."
+            ],
+            "split": {
+              "left": { "title": "Donner son avis", "items": ["Je pense que…", "Je trouve que…", "À mon avis,…", "Selon moi,…", "D'après moi,…"] },
+              "right": { "title": "Nuancer / hésiter", "items": ["Je ne suis pas sûr(e)…", "Ça dépend.", "En général,…", "Dans l'ensemble,…", "Il me semble que…"] }
+            }
+          },
+          {
+            "h": "Exprimer l'accord et le désaccord",
+            "p": [
+              "**Accord (agreement)**: Je suis d'accord. / Tout à fait ! / C'est vrai. / Exactement. / Absolument.",
+              "**Désaccord (disagreement)**: Je ne suis pas d'accord. / Pas du tout. / Au contraire. / Je ne crois pas. / C'est faux."
+            ],
+            "callout": { "kind": "key", "text": "In the DELF A2 speaking exam, you will be asked to give your opinion and react to suggestions. Use these phrases to sound natural rather than just saying 'oui' or 'non'." }
+          },
+          {
+            "h": "Exprimer des préférences",
+            "p": [
+              "**Je préfère X à Y** (I prefer X to Y): Je préfère le café au thé.",
+              "**J'aime mieux** X: J'aime mieux rester ici. (I'd rather stay here.)",
+              "**Ce que j'aime dans X, c'est…**: Ce que j'aime dans Paris, c'est l'architecture.",
+              "**Mon [truc] préféré, c'est…**: Mon plat préféré, c'est la quiche."
+            ]
+          },
+          {
+            "h": "Nuancer et structurer",
+            "p": [
+              "**D'un côté… de l'autre côté** (on one hand… on the other hand): D'un côté, c'est pratique; de l'autre côté, c'est cher.",
+              "**Cependant / Pourtant** (however): C'est beau, cependant c'est trop loin.",
+              "**En général** (in general): En général, je préfère les films français.",
+              "These phrases help you give balanced opinions — essential for the DELF A2 monologue."
+            ]
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "How do you say 'In my opinion' in French?", "opts": ["Je pense", "D'habitude", "À mon avis", "Selon vous"], "ans": 2, "exp": "À mon avis = In my opinion. Selon moi and D'après moi also work. Je pense que is used with a full clause: Je pense que c'est vrai." },
+          { "type": "mcq", "q": "'Je suis d'accord' means:", "opts": ["I disagree", "I am certain", "I agree", "I am not sure"], "ans": 2, "exp": "Je suis d'accord = I agree. Je ne suis pas d'accord = I disagree. Tout à fait = Absolutely (strong agreement)." },
+          { "type": "mcq", "q": "'Je préfère le thé ___ café.' (to — preposition)", "opts": ["que", "à", "de", "plus"], "ans": 1, "exp": "Je préfère X à Y = I prefer X to Y. au = à + le: Je préfère le thé au café. J'aime mieux is an alternative structure." },
+          { "type": "mcq", "q": "'D'un côté… ___ l'autre côté' means:", "opts": ["Sometimes… sometimes", "On one hand… on the other hand", "First… then", "In general… in particular"], "ans": 1, "exp": "D'un côté… de l'autre côté = On one hand… on the other hand. It helps structure a balanced opinion — very useful in the DELF A2 speaking monologue." }
+        ]
+      },
+      {
+        "id": "fr-l74",
+        "title": "La santé — chez le médecin",
+        "icon": "🏥",
+        "cards": [
+          {
+            "h": "Avoir mal — describing pain",
+            "p": [
+              "**Avoir mal à + body part** = to have a pain in / to ache:",
+              "J'ai mal à la tête (headache), J'ai mal à la gorge (sore throat), J'ai mal au ventre (stomachache), J'ai mal au dos (backache), J'ai mal aux dents (toothache).",
+              "Note the contractions: **au** (à + le), **aux** (à + les)."
+            ],
+            "split": {
+              "left": { "title": "Symptômes courants", "items": ["J'ai de la fièvre — I have a fever", "Je tousse — I am coughing", "J'éternue — I am sneezing", "Je suis fatigué(e) — I am tired", "J'ai des frissons — I have chills"] },
+              "right": { "title": "Avoir mal à…", "items": ["mal à la tête — headache", "mal à la gorge — sore throat", "mal au ventre — stomachache", "mal au dos — backache", "mal aux dents — toothache"] }
+            }
+          },
+          {
+            "h": "Chez le médecin",
+            "p": [
+              "**un médecin généraliste** (GP), **un spécialiste** (specialist), **une infirmière / un infirmier** (nurse).",
+              "**une ordonnance** (prescription), **un médicament** (medicine), **un diagnostic** (diagnosis), **un symptôme** (symptom).",
+              "Common doctor's question: **Qu'est-ce qui ne va pas ?** (What's wrong?) / **Depuis quand êtes-vous malade ?** (How long have you been ill?)"
+            ],
+            "example": {
+              "title": "Dialogue — at the doctor's",
+              "rows": [
+                ["Médecin", "Qu'est-ce qui ne va pas ?"],
+                ["Patient", "J'ai mal à la gorge et j'ai de la fièvre depuis deux jours."],
+                ["Médecin", "Ouvrez la bouche, s'il vous plaît… Je vais vous faire une ordonnance."],
+                ["Patient", "Merci. Est-ce que je dois rester au lit ?"],
+                ["Médecin", "Oui, reposez-vous et buvez beaucoup d'eau."]
+              ]
+            }
+          },
+          {
+            "h": "Prendre un rendez-vous médical",
+            "p": [
+              "**Je voudrais prendre un rendez-vous avec le docteur [nom].** (I'd like to make an appointment with Dr…)",
+              "**C'est urgent.** / **Ça n'est pas urgent.** (It's urgent / not urgent.)",
+              "**Avez-vous un créneau disponible** le [date] à [heure] ? (Do you have a slot available on…?)",
+              "**Je dois annuler mon rendez-vous** du [date]. (I need to cancel my appointment on…)"
+            ]
+          },
+          {
+            "h": "À la pharmacie",
+            "p": [
+              "**Avez-vous quelque chose contre** la toux ? la fièvre ? le mal de tête ? (Do you have anything for the cough / fever / headache?)",
+              "**un sirop** (syrup / cough mixture), **des comprimés** (tablets), **du paracétamol**, **un pansement** (plaster), **une crème** (cream), **des gouttes** (drops).",
+              "Sans ordonnance = without a prescription (over the counter). Sur ordonnance = prescription only."
+            ]
+          }
+        ],
+        "check": [
+          { "type": "mcq", "q": "How do you say 'I have a headache' in French?", "opts": ["J'ai mal au dos.", "J'ai de la fièvre.", "J'ai mal à la tête.", "J'ai mal à la gorge."], "ans": 2, "exp": "J'ai mal à la tête = I have a headache (literally 'I have pain in the head'). J'ai mal au dos = backache. J'ai mal à la gorge = sore throat." },
+          { "type": "mcq", "q": "'Une ordonnance' means:", "opts": ["An appointment", "A prescription", "A diagnosis", "A tablet"], "ans": 1, "exp": "Une ordonnance = a prescription — the document a doctor gives you to get medication from the pharmacy. Un comprimé = a tablet. Un rendez-vous = an appointment." },
+          { "type": "mcq", "q": "'Depuis quand êtes-vous malade ?' means:", "opts": ["Are you often ill?", "How long have you been ill?", "Do you have a prescription?", "Where does it hurt?"], "ans": 1, "exp": "Depuis quand êtes-vous malade? = How long have you been ill? Depuis + present tense describes a situation that started in the past and is still ongoing." },
+          { "type": "mcq", "q": "'Avez-vous quelque chose contre la toux ?' — where would you say this?", "opts": ["At the doctor's, asking for a diagnosis", "At the pharmacy, asking for a remedy for a cough", "At the hospital, registering", "At the dentist's"], "ans": 1, "exp": "You would say this at the pharmacy (la pharmacie). Quelque chose contre… = something for / against [a symptom]. La toux = cough." }
         ]
       },
       {
