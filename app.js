@@ -5285,7 +5285,6 @@
       B1: { icon: '📘', colour: '#7c3aed', label: 'Intermediate', cando: 'Deal with most travel and social situations. Write simple connected text. Understand the main points of clear standard speech.' },
     };
 
-    // Group exams by level
     const grouped = {};
     sortedMocks.forEach(exam => {
       if (!grouped[exam.level]) grouped[exam.level] = [];
