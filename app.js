@@ -101,10 +101,15 @@
     'fr-l02': 'A1', 'fr-l04': 'A1', 'fr-l05': 'A1', 'fr-l09': 'A1',
     'fr-l10': 'A1', 'fr-l11': 'A1', 'fr-l12': 'A1', 'fr-l13': 'A1',
     'fr-l15': 'A1', 'fr-l16': 'A1', 'fr-l40': 'A1', 'fr-l41': 'A1',
+    'fr-l86': 'A1', 'fr-l92': 'A1',
     'fr-l19': 'A2', 'fr-l21': 'A2', 'fr-l22': 'A2', 'fr-l23': 'A2',
     'fr-l24': 'A2', 'fr-l25': 'A2', 'fr-l43': 'A2',
     'fr-l70': 'A2', 'fr-l71': 'A2', 'fr-l72': 'A2', 'fr-l73': 'A2',
+    'fr-l82': 'A2', 'fr-l87': 'A2',
     'fr-l27': 'B1', 'fr-l28': 'B1', 'fr-l29': 'B1', 'fr-l30': 'B1', 'fr-l44': 'B1',
+    'fr-l83': 'B1', 'fr-l84': 'B1', 'fr-l85': 'B1', 'fr-l88': 'B1', 'fr-l89': 'B1',
+    'fr-l90': 'B1', 'fr-l91': 'B1',
+    'fr-l93': 'B2', 'fr-l94': 'B2', 'fr-l95': 'B2', 'fr-l96': 'B2',
   };
 
   /* Unit-level unlock gate for non-French subjects.

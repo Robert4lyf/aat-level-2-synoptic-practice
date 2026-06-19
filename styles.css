@@ -1528,9 +1528,11 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 .level-pill-a1 { background: linear-gradient(135deg, #d1fae5, #6ee7b7); color: #065f46; }
 .level-pill-a2 { background: linear-gradient(135deg, #dbeafe, #93c5fd); color: #1e40af; }
 .level-pill-b1 { background: linear-gradient(135deg, #ede9fe, #c4b5fd); color: #5b21b6; }
+.level-pill-b2 { background: linear-gradient(135deg, #fce7f3, #f9a8d4); color: #9d174d; }
 .dark .level-pill-a1 { background: rgba(16, 185, 129, .18); color: #6ee7b7; box-shadow: none; border: 1px solid rgba(16, 185, 129, .3); }
 .dark .level-pill-a2 { background: rgba(59, 130, 246, .18); color: #93c5fd; box-shadow: none; border: 1px solid rgba(59, 130, 246, .3); }
 .dark .level-pill-b1 { background: rgba(139, 92, 246, .18); color: #ddd6fe; box-shadow: none; border: 1px solid rgba(139, 92, 246, .3); }
+.dark .level-pill-b2 { background: rgba(244, 114, 182, .18); color: #f9a8d4; box-shadow: none; border: 1px solid rgba(244, 114, 182, .3); }
 
 /* numeric input */
 .numeric-input-wrap { margin-top: 4px; }
