@@ -81,14 +81,13 @@
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
-  /* Returns true if the given CEFR level (A1/A2/B1) is unlocked for the French course.
-     A1 is always open; A2 requires all A1 lessons done + A1 unit quiz passed;
-     B1 requires all A2 lessons done + A2 unit quiz passed. */
+  /* Returns true if the given CEFR level (A1/A2/B1/B2) is unlocked for the French course.
+     A1 is always open; A2 requires all A1 done + A1 quiz; B1 requires A2; B2 requires B1. */
   function frLevelUnlocked(cefrLevel) {
     if (_activeSubjectId !== 'french') return true;
     if (!cefrLevel || cefrLevel === 'A1') return true;
-    const prereqLevel  = cefrLevel === 'B1' ? 'A2' : 'A1';
-    const prereqUnitId = cefrLevel === 'B1' ? 'fr-a2' : 'fr-a1';
+    const prereqLevel  = cefrLevel === 'B2' ? 'B1' : cefrLevel === 'B1' ? 'A2' : 'A1';
+    const prereqUnitId = cefrLevel === 'B2' ? 'fr-b1' : cefrLevel === 'B1' ? 'fr-a2' : 'fr-a1';
     const prereqUnit   = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === prereqUnitId);
     if (!prereqUnit) return false;
     if (!prereqUnit.lessons.every(L => isLessonDone(L.id))) return false;
@@ -3815,9 +3814,9 @@
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
 
       // For French: lock the entire unit if the previous CEFR level is not complete
-      const cefrForUnit = uid === 'fr-a2' ? 'A2' : uid === 'fr-b1' ? 'B1' : null;
+      const cefrForUnit = uid === 'fr-a2' ? 'A2' : uid === 'fr-b1' ? 'B1' : uid === 'fr-b2' ? 'B2' : null;
       if (cefrForUnit && !frLevelUnlocked(cefrForUnit)) {
-        const prereqLevel = cefrForUnit === 'B1' ? 'A2' : 'A1';
+        const prereqLevel = cefrForUnit === 'B2' ? 'B1' : cefrForUnit === 'B1' ? 'A2' : 'A1';
         return `<div class="journey-unit journey-unit-level-locked">
           <div class="journey-unit-header">
             <span class="journey-unit-icon">🔒</span>
@@ -3856,7 +3855,7 @@
           ${!locked ? tierLabel : ''}
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
-          <div class="journey-stars">${starRow}</div>
+          <div class="journey-stars">${locked ? '' : starRow}</div>
           <div class="journey-node-meta">
             ${!locked ? `<span class="node-time">${timeLabel}</span>` : ''}
             ${!locked ? `<span class="node-xp">${xpLabel}</span>` : ''}
@@ -4724,10 +4723,12 @@
   function renderDelfLanding() {
     if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) return '';
     const de = State.delfExam;
-    const cardsHtml = window.DELF_MOCKS.map(exam => {
+    const levelOrder = { A1: 1, A2: 2, B1: 3, B2: 4 };
+    const sortedMocks = [...window.DELF_MOCKS].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
+    const cardsHtml = sortedMocks.map(exam => {
       const attempted = de && de.examId === exam.id && de.phase === 'results';
       const inProgress = de && de.examId === exam.id && de.phase !== 'results';
-      const levelColour = exam.level === 'A1' ? '#2a7' : '#0073e6';
+      const levelColour = exam.level === 'A1' ? '#2a7' : exam.level === 'A2' ? '#0073e6' : exam.level === 'B1' ? '#5b21b6' : '#9d174d';
       return `<div class="delf-exam-card">
         <div class="delf-exam-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</div>
         <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
