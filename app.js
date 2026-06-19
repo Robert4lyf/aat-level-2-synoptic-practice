@@ -81,14 +81,26 @@
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
-  /* Returns true if the given CEFR level (A1/A2/B1) is unlocked for the French course.
-     A1 is always open; A2 requires all A1 lessons done + A1 unit quiz passed;
-     B1 requires all A2 lessons done + A2 unit quiz passed. */
+  /* ── XP / Level helpers (FF-style scaling) ──────────────────────────────
+     xpForLevel(n)  → total cumulative XP needed to reach level n.
+     Curve: 100 × (n−1)^1.5  — cheap early levels, steep late levels.
+     Level 2=100 · Level 5=800 · Level 10=2700 · Level 20=8280          */
+  function xpForLevel(n) {
+    return n <= 1 ? 0 : Math.floor(100 * Math.pow(n - 1, 1.5));
+  }
+  function levelFromXp(xp) {
+    let lv = 1;
+    while (xpForLevel(lv + 1) <= xp) lv++;
+    return lv;
+  }
+
+  /* Returns true if the given CEFR level (A1/A2/B1/B2) is unlocked for the French course.
+     A1 is always open; A2 requires all A1 done + A1 quiz; B1 requires A2; B2 requires B1. */
   function frLevelUnlocked(cefrLevel) {
     if (_activeSubjectId !== 'french') return true;
     if (!cefrLevel || cefrLevel === 'A1') return true;
-    const prereqLevel  = cefrLevel === 'B1' ? 'A2' : 'A1';
-    const prereqUnitId = cefrLevel === 'B1' ? 'fr-a2' : 'fr-a1';
+    const prereqLevel  = cefrLevel === 'B2' ? 'B1' : cefrLevel === 'B1' ? 'A2' : 'A1';
+    const prereqUnitId = cefrLevel === 'B2' ? 'fr-b1' : cefrLevel === 'B1' ? 'fr-a2' : 'fr-a1';
     const prereqUnit   = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === prereqUnitId);
     if (!prereqUnit) return false;
     if (!prereqUnit.lessons.every(L => isLessonDone(L.id))) return false;
@@ -782,10 +794,10 @@
     },
     addXp(n) {
       if (!n) return;
-      const prevLevel = Math.floor(this.data.learn.xp / 100) + 1;
+      const prevLevel = levelFromXp(this.data.learn.xp);
       this.data.learn.xp = Math.min(999999, this.data.learn.xp + n);
       this.day().xp += n;
-      const newLevel = Math.floor(this.data.learn.xp / 100) + 1;
+      const newLevel = levelFromXp(this.data.learn.xp);
       if (newLevel > prevLevel) {
         setTimeout(() => showLevelUp(newLevel), 400);
       }
@@ -2923,14 +2935,17 @@
 
     // Badge showcase
     const xp = Storage.data.learn.xp || 0;
-    const level = Math.floor(xp / 100) + 1;
-    const levelXp = xp % 100;
+    const level   = levelFromXp(xp);
+    const lvFloor = xpForLevel(level);
+    const lvNeed  = xpForLevel(level + 1) - lvFloor;
+    const levelXp = xp - lvFloor;
+    const levelPct = Math.round(levelXp / lvNeed * 100);
     const earnedBadgesList = BADGES.filter(b => Storage.data.badges[b.id]);
     const unearnedBadges = BADGES.filter(b => !Storage.data.badges[b.id]);
     const badgeShowcase = `<div class="badge-showcase">
       <div class="badge-showcase-header">
-        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/100 XP to next</span></div>
-        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelXp}%"></div></div>
+        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/${lvNeed} XP to next</span></div>
+        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelPct}%"></div></div>
       </div>
       ${earnedBadgesList.length ? `<div class="badge-grid-title">🏅 Earned badges (${earnedBadgesList.length}/${BADGES.length})</div>
       <div class="badge-grid">${earnedBadgesList.map(b => `<div class="badge-card badge-earned" title="${escapeHtml(b.desc)}">
@@ -3789,8 +3804,12 @@
     const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (Storage.data.stats.streak || {}).current || 0;
     const earnedBadges = BADGES.filter(b => Storage.data.badges[b.id]);
     const nextLesson = nextLessonToDo();
-    const lv = Math.floor(xp / 100) + 1;
-    const lvXp = xp % 100;
+    const lv = levelFromXp(xp);
+    const lvFloor = xpForLevel(lv);
+    const lvCeil  = xpForLevel(lv + 1);
+    const lvXp    = xp - lvFloor;
+    const lvNeed  = lvCeil - lvFloor;
+    const lvPct   = Math.round(lvXp / lvNeed * 100);
     const bestCombo = Storage.data.learn.bestCombo || 0;
     const xpBar = `<div class="xp-bar-wrap" title="${xp} XP earned">
       <div class="xp-bar-top">
@@ -3798,8 +3817,8 @@
         <span class="xp-level">Level ${lv}</span>
         ${bestCombo >= 3 ? `<span class="xp-combo-best">🔥 Best combo: ${bestCombo}</span>` : ''}
       </div>
-      <div class="xp-bar-bg" title="${lvXp}/100 XP to next level"><div class="xp-bar-fill" style="width:${lvXp}%"></div></div>
-      <div class="xp-bar-hint">${lvXp}/100 XP to Level ${lv + 1}</div>
+      <div class="xp-bar-bg" title="${lvXp}/${lvNeed} XP to next level"><div class="xp-bar-fill" style="width:${lvPct}%"></div></div>
+      <div class="xp-bar-hint">${lvXp}/${lvNeed} XP to Level ${lv + 1}</div>
     </div>`;
 
     const skillQCount = {};
@@ -3815,9 +3834,9 @@
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
 
       // For French: lock the entire unit if the previous CEFR level is not complete
-      const cefrForUnit = uid === 'fr-a2' ? 'A2' : uid === 'fr-b1' ? 'B1' : null;
+      const cefrForUnit = uid === 'fr-a2' ? 'A2' : uid === 'fr-b1' ? 'B1' : uid === 'fr-b2' ? 'B2' : null;
       if (cefrForUnit && !frLevelUnlocked(cefrForUnit)) {
-        const prereqLevel = cefrForUnit === 'B1' ? 'A2' : 'A1';
+        const prereqLevel = cefrForUnit === 'B2' ? 'B1' : cefrForUnit === 'B1' ? 'A2' : 'A1';
         return `<div class="journey-unit journey-unit-level-locked">
           <div class="journey-unit-header">
             <span class="journey-unit-icon">🔒</span>
@@ -3856,7 +3875,7 @@
           ${!locked ? tierLabel : ''}
           <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
           <div class="journey-label">${escapeHtml(L.title)}</div>
-          <div class="journey-stars">${starRow}</div>
+          <div class="journey-stars">${locked ? '' : starRow}</div>
           <div class="journey-node-meta">
             ${!locked ? `<span class="node-time">${timeLabel}</span>` : ''}
             ${!locked ? `<span class="node-xp">${xpLabel}</span>` : ''}
@@ -4724,10 +4743,12 @@
   function renderDelfLanding() {
     if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) return '';
     const de = State.delfExam;
-    const cardsHtml = window.DELF_MOCKS.map(exam => {
+    const levelOrder = { A1: 1, A2: 2, B1: 3, B2: 4 };
+    const sortedMocks = [...window.DELF_MOCKS].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
+    const cardsHtml = sortedMocks.map(exam => {
       const attempted = de && de.examId === exam.id && de.phase === 'results';
       const inProgress = de && de.examId === exam.id && de.phase !== 'results';
-      const levelColour = exam.level === 'A1' ? '#2a7' : '#0073e6';
+      const levelColour = exam.level === 'A1' ? '#2a7' : exam.level === 'A2' ? '#0073e6' : exam.level === 'B1' ? '#5b21b6' : '#9d174d';
       return `<div class="delf-exam-card">
         <div class="delf-exam-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</div>
         <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
