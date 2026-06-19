@@ -2045,6 +2045,20 @@ window.LEARN_PATH = [
             ],
             formula: 'Variance = Actual − Budget (adverse if cost actual > budget, or income actual < budget) · Contribution per unit = Selling price − Variable cost per unit · Break-even units = Fixed costs ÷ Contribution per unit · Target profit units = (Fixed costs + Target profit) ÷ Contribution per unit',
           },
+          {
+            h: 'Break-even worked example',
+            example: {
+              title: 'Selling price £25/unit · Variable cost £15/unit · Fixed costs £48,000 · Target profit £12,000',
+              rows: [
+                ['Step', 'Working', 'Result'],
+                ['Contribution per unit', '£25 − £15', '£10 per unit'],
+                ['Break-even units', '£48,000 ÷ £10', '4,800 units'],
+                ['Break-even revenue', '4,800 × £25', '£120,000'],
+                ['Units for target profit', '(£48,000 + £12,000) ÷ £10', '6,000 units'],
+                ['Margin of safety (if selling 6,500)', '6,500 − 4,800', '1,700 units'],
+              ],
+            },
+          },
         ],
         check: [
           {
@@ -2514,6 +2528,21 @@ window.LEARN_PATH = [
               'The fixed overhead variance compares absorbed overheads with actual overhead. A sales price variance shows whether the actual selling price differed from budget. A sales volume variance shows the profit impact of selling more or fewer units than budgeted.',
             ],
             callout: { kind: 'key', text: 'For the exam, always state whether each variance is Favourable (F) or Adverse (A) — a correct figure without the label loses marks.' },
+          },
+          {
+            h: 'Complete variance statement',
+            example: {
+              title: 'Budgeted output 1,000 units · Actual output 1,000 units',
+              rows: [
+                ['Item', 'Budget £', 'Actual £', 'Variance'],
+                ['Sales revenue', '50,000', '52,000', '£2,000 F'],
+                ['Direct materials', '18,000', '19,200', '£1,200 A'],
+                ['Direct labour', '12,000', '11,400', '£600 F'],
+                ['Fixed overheads', '8,000', '8,500', '£500 A'],
+                ['Total costs', '38,000', '39,100', '£1,100 A'],
+                ['Profit', '12,000', '12,900', '£900 F'],
+              ],
+            },
           },
           {
             h: 'Interpreting variances',
