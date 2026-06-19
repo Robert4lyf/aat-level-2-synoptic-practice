@@ -21,7 +21,7 @@
       id: 'french', name: 'Français', short: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
       meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
-      tabs: ['learn','home','progress'],
+      tabs: ['learn','home','listen','delf','clinic','progress'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
@@ -1586,12 +1586,23 @@
       const lvl = topicId.slice(6);
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
+    else if (topicId && topicId.indexOf('listen:') === 0) {
+      const lvl = topicId.slice(7);
+      if (_activeSubjectId === 'french' && !frLevelUnlocked(lvl)) {
+        const prereq = lvl === 'B1' ? 'A2' : 'A1';
+        showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + lvl + '.', 'warn');
+        return;
+      }
+      pool = window.ALL_QUESTIONS.filter(q => (q.type === 'listen' || q.type === 'listen-typed') && frQuestionLevel(q.id) === lvl);
+    }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
     // Gate questions to only those from unlocked units / CEFR levels.
     // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass these gates.
     const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
     // Mistake Clinic topics are always accessible — bypass level and lesson gates
     if (topicId && topicId.startsWith('fr-clinic-')) GATE_EXEMPT.add(topicId);
+    // listen: topics did their own level check above; bypass the general lesson gate
+    if (topicId && topicId.startsWith('listen:')) GATE_EXEMPT.add(topicId);
     let poolSizeAfterLevelFilter = pool.length;
     let poolSizeAfterLessonGate = pool.length;
     if (!GATE_EXEMPT.has(topicId)) {
@@ -2454,7 +2465,7 @@
   }
 
   function renderMain() {
-    const ALL_TABS = { learn:'🗺️ Learn', home:'🎯 Practice', tools:'🧰 T-Accounts', glossary:'📖 Glossary', progress:'📈 Progress', howto:'ℹ️ How to Use' };
+    const ALL_TABS = { learn:'🗺️ Learn', home:'🎯 Practice', listen:'🎧 Listening', delf:'📋 DELF Mock', clinic:'🏥 Clinic', tools:'🧰 T-Accounts', glossary:'📖 Glossary', progress:'📈 Progress', howto:'ℹ️ How to Use' };
     const subjectTabs = getSubject(_activeSubjectId).tabs;
     const tabs = subjectTabs.map(id => ({ id, label: ALL_TABS[id] }));
     // Ensure activeTab is valid for this subject
@@ -2462,6 +2473,9 @@
     let content = '';
     if (State.activeTab === 'learn') content = renderLearningJourney();
     else if (State.activeTab === 'home') content = renderHomeTab();
+    else if (State.activeTab === 'listen') content = renderListeningTab();
+    else if (State.activeTab === 'delf') content = renderDelfTab();
+    else if (State.activeTab === 'clinic') content = renderClinicTab();
     else if (State.activeTab === 'tools') content = renderTAccountPlayground();
     else if (State.activeTab === 'glossary') content = renderGlossary();
     else if (State.activeTab === 'progress') content = renderProgress();
@@ -2904,33 +2918,6 @@
           </button>`;
         }).join('')}
       </div>
-      ${isFrench ? (() => {
-        const clinicTopics = (window.TOPICS || []).filter(t => t.section === 'clinic');
-        if (!clinicTopics.length) return '';
-        return `<h2 class="section-title" style="margin-top:28px">🏥 Mistake Clinic <span class="section-title-sub">targeted error correction · no prerequisites</span></h2>
-        <p class="clinic-intro">Targeted practice for the grammar points where French learners most often make mistakes.</p>
-        <div class="home-grid">
-          ${clinicTopics.map(t => {
-            const totalN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id).length;
-            const m = topicMastery(t.id);
-            const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
-            const seenN = seenByTopic[t.id] || 0;
-            const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
-            const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
-            return `<button class="topic-card fade-in topic-card-clinic" type="button" data-topic="${t.id}" aria-label="Mistake Clinic: practise ${escapeHtml(t.name)}">
-              ${badge}
-              <div class="icon" aria-hidden="true">${t.icon}</div>
-              <h3>${escapeHtml(t.name)}</h3>
-              <p>${escapeHtml(t.desc)}</p>
-              <div class="topic-card-footer">
-                <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN} seen</span>
-                <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
-              </div>
-              <div class="topic-available">${availableN} <span class="topic-count-sep">available to practise</span></div>
-            </button>`;
-          }).join('')}
-        </div>`;
-      })() : ''}
       ${focusCard}
       <h2 class="section-title" style="margin-top:24px">More Practice Modes</h2>
       <div class="mode-card-grid">${modeGrid}</div>`;
@@ -2985,6 +2972,133 @@
         <p style="font-size:.75rem;color:var(--subtext);margin-top:16px;line-height:1.5">⚠️ Independent study tool, not affiliated with AAT.</p>
       </div>
     </div>`;
+  }
+
+  /* ── French skill / sublevel helpers ───────────────────────────────────── */
+  function frQuestionSkill(q) {
+    const type = q.type || '';
+    const topic = q.topic || '';
+    if (type === 'listen' || type === 'listen-typed') return 'listening';
+    if (type === 'typed') return topic === 'fr-phon' ? 'listening' : 'writing';
+    if (topic === 'fr-gram' || topic === 'fr-conj' || topic === 'fr-order' || topic.startsWith('fr-clinic-')) return 'grammar';
+    if (topic === 'fr-dial') return 'reading';
+    if (topic === 'fr-phon') return 'listening';
+    return 'vocabulary';
+  }
+
+  function frQuestionSublevel(q) {
+    const topic = q.topic || '';
+    if (topic.startsWith('fr-clinic-')) return null;
+    const id = q.id || '';
+    const n = parseInt(id.replace('fr-', ''), 10);
+    if (isNaN(n)) return null;
+    const level = frQuestionLevel(id);
+    if (level === 'A1') return n < 152 ? 'A1.1' : 'A1.2';
+    if (level === 'A2') return n < 640 ? 'A2.1' : 'A2.2';
+    if (level === 'B1') return 'B1';
+    return null;
+  }
+
+  /* ── French tab: Listening ─────────────────────────────────────────────── */
+  function renderListeningTab() {
+    const allQ = window.ALL_QUESTIONS || [];
+    const stats = Storage.data.stats;
+    const levels = [
+      { id: 'A1', label: 'Débutant',      icon: '🌱', color: '#059669' },
+      { id: 'A2', label: 'Élémentaire',   icon: '📗', color: '#2563EB' },
+      { id: 'B1', label: 'Intermédiaire', icon: '📘', color: '#7C3AED' },
+    ];
+    const ttsNote = hasFrenchTts()
+      ? `<p class="fr-listen-tip">💡 Audio plays in your browser via TTS. Use headphones for best results. Transcript reveals after each answer.</p>`
+      : `<div class="tts-unavail" style="margin-bottom:12px">🔇 No French TTS voice found on this device — transcript will show immediately instead of audio playback.</div>`;
+    const cards = levels.map(lv => {
+      const pool = allQ.filter(q => (q.type === 'listen' || q.type === 'listen-typed') && frQuestionLevel(q.id) === lv.id);
+      if (!pool.length) return '';
+      const unlocked = frLevelUnlocked(lv.id);
+      if (!unlocked) {
+        const prereq = lv.id === 'B1' ? 'A2' : 'A1';
+        return `<div class="topic-card topic-card-locked fade-in" style="border-top-color:${lv.color}">
+          <div class="level-card-lbl">🔒 ${escapeHtml(lv.id)}</div>
+          <h3>${escapeHtml(lv.id)} ${escapeHtml(lv.label)}</h3>
+          <p class="lock-reason">Finish all ${prereq} lessons and pass the ${prereq} unit quiz to unlock</p>
+          <div class="topic-card-footer"><span class="count"><span class="topic-count-sep">${pool.length} exercises locked</span></span></div>
+        </div>`;
+      }
+      const seen = pool.filter(q => { const s = stats.questions[q.id]; return s && s.attempts > 0; }).length;
+      const attempts = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).attempts || 0), 0);
+      const correct  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).correct  || 0), 0);
+      const mastery  = attempts > 0 ? Math.round(correct / attempts * 100) : null;
+      const available = pool.filter(q => !Storage.isConfident(q.id)).length;
+      const seenPct  = pool.length ? Math.round(seen / pool.length * 100) : 0;
+      const badge    = mastery != null ? `<span class="mastery-badge ${scoreClass(mastery)}">${mastery}%</span>` : '';
+      const mcqCount  = pool.filter(q => q.type === 'listen').length;
+      const dictCount = pool.filter(q => q.type === 'listen-typed').length;
+      return `<button class="topic-card fade-in" type="button" data-topic="listen:${lv.id}" style="border-top-color:${lv.color}" aria-label="Listening ${lv.id} — ${seen} of ${pool.length} seen">
+        ${badge}
+        <div class="level-card-lbl">${escapeHtml(lv.icon)} ${escapeHtml(lv.id)}</div>
+        <h3>${escapeHtml(lv.label)}</h3>
+        <p>${mcqCount} comprehension · ${dictCount} dictation</p>
+        <div class="topic-card-footer">
+          <span class="count">${seen} <span class="topic-count-sep">of</span> ${pool.length} seen</span>
+          <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+        </div>
+        <div class="topic-available">${available} <span class="topic-count-sep">available to practise</span></div>
+      </button>`;
+    }).join('');
+    return `<h2 class="section-title">Listening Practice <span class="section-title-sub">Écoute active · comprehension &amp; dictation</span></h2>
+      ${ttsNote}
+      <div class="home-grid">${cards}</div>`;
+  }
+
+  /* ── French tab: DELF Mock ──────────────────────────────────────────────── */
+  function renderDelfTab() {
+    if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) {
+      return `<h2 class="section-title">DELF Mock Exams</h2>
+        <div class="progress-empty">
+          <div class="progress-empty-icon">📋</div>
+          <p class="progress-empty-title">No DELF exams loaded</p>
+          <p class="progress-empty-sub">DELF mock exam data hasn't been loaded yet.</p>
+        </div>`;
+    }
+    return `<h2 class="section-title">DELF Mock Exams <span class="section-title-sub">Diplôme d'Études en Langue Française</span></h2>
+      <p style="font-size:.88rem;color:var(--text-secondary);margin-bottom:16px">Timed practice exams structured like the official DELF. Each exam has 4 sections and is scored out of 100.</p>
+      ${renderDelfLanding()}`;
+  }
+
+  /* ── French tab: Mistake Clinic ─────────────────────────────────────────── */
+  function renderClinicTab() {
+    const allQ = window.ALL_QUESTIONS || [];
+    const stats = Storage.data.stats;
+    const clinicTopics = (window.TOPICS || []).filter(t => t.section === 'clinic');
+    if (!clinicTopics.length) {
+      return `<h2 class="section-title">Mistake Clinic</h2>
+        <div class="progress-empty"><div class="progress-empty-icon">🏥</div><p class="progress-empty-title">No clinic topics found</p></div>`;
+    }
+    const seenByTopic = {};
+    allQ.forEach(q => { const s = stats.questions[q.id]; if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1; });
+    const topicMastery = id => { const ts = stats.topics[id]; if (!ts || !ts.attempts) return null; return Math.round((ts.correct / ts.attempts) * 100); };
+    const cards = clinicTopics.map(t => {
+      const totalN   = allQ.filter(q => q.topic === t.id).length;
+      const m        = topicMastery(t.id);
+      const badge    = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
+      const seenN    = seenByTopic[t.id] || 0;
+      const seenPct  = totalN ? Math.round(seenN / totalN * 100) : 0;
+      const available = allQ.filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
+      return `<button class="topic-card fade-in topic-card-clinic" type="button" data-topic="${t.id}" aria-label="Mistake Clinic: ${escapeHtml(t.name)}">
+        ${badge}
+        <div class="icon" aria-hidden="true">${t.icon}</div>
+        <h3>${escapeHtml(t.name)}</h3>
+        <p>${escapeHtml(t.desc)}</p>
+        <div class="topic-card-footer">
+          <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN} seen</span>
+          <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+        </div>
+        <div class="topic-available">${available} <span class="topic-count-sep">available to practise</span></div>
+      </button>`;
+    }).join('');
+    return `<h2 class="section-title">🏥 Mistake Clinic <span class="section-title-sub">targeted error correction · no prerequisites</span></h2>
+      <p class="clinic-intro">Targeted practice for the grammar points where French learners most often make mistakes. No prerequisites — open to all levels.</p>
+      <div class="home-grid">${cards}</div>`;
   }
 
   function renderProgress() {
@@ -3060,8 +3174,82 @@
       }).join('')}</div>
     </div>`;
 
+    // French-specific: CEFR sublevel + skill breakdown
+    const isFrProgress = _activeSubjectId === 'french';
+    const frCefrSection = isFrProgress ? (() => {
+      const allQ = window.ALL_QUESTIONS || [];
+      const SUBLEVELS = [
+        { id: 'A1.1', label: 'Premiers pas',    icon: '🌱', desc: 'Greetings, basic phrases, numbers', color: '#059669' },
+        { id: 'A1.2', label: 'Fondations A1',   icon: '🌿', desc: 'Time, directions, conjugation basics', color: '#16a34a' },
+        { id: 'A2.1', label: 'Élémentaire',     icon: '📗', desc: 'Past tense, shopping, work vocabulary', color: '#2563EB' },
+        { id: 'A2.2', label: 'A2 avancé',       icon: '📘', desc: 'Pronouns, complex sentences, dialogue', color: '#1d4ed8' },
+        { id: 'B1',   label: 'Intermédiaire',   icon: '📙', desc: 'Subjunctive, hypotheticals, register', color: '#7c3aed' },
+      ];
+      const rows = SUBLEVELS.map(sl => {
+        const pool = allQ.filter(q => frQuestionSublevel(q) === sl.id);
+        if (!pool.length) return '';
+        const seen = pool.filter(q => { const s = stats.questions[q.id]; return s && s.attempts > 0; }).length;
+        const att  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).attempts || 0), 0);
+        const cor  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).correct  || 0), 0);
+        const pct  = att > 0 ? Math.round(cor / att * 100) : null;
+        const seenPct = pool.length ? Math.round(seen / pool.length * 100) : 0;
+        const cls  = pct === null ? '' : scoreClass(pct);
+        return `<div class="fr-sublevel-row">
+          <div class="fr-sublevel-label" style="border-left:3px solid ${sl.color}">
+            <span class="fr-sublevel-id">${escapeHtml(sl.icon)} ${escapeHtml(sl.id)}</span>
+            <span class="fr-sublevel-name">${escapeHtml(sl.label)}</span>
+            <span class="fr-sublevel-desc">${escapeHtml(sl.desc)}</span>
+          </div>
+          <div class="fr-sublevel-bars">
+            <div class="fr-sublevel-stat">
+              <span class="fr-sublevel-stat-label">Seen</span>
+              <div class="breakdown-bar-bg" style="flex:1" role="progressbar" aria-valuenow="${seenPct}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ok" style="width:${seenPct}%;background:${sl.color}80"></div></div>
+              <span class="fr-sublevel-stat-val">${seen}/${pool.length}</span>
+            </div>
+            <div class="fr-sublevel-stat">
+              <span class="fr-sublevel-stat-label">Accuracy</span>
+              <div class="breakdown-bar-bg" style="flex:1" role="progressbar" aria-valuenow="${pct || 0}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${cls}" style="width:${pct || 0}%"></div></div>
+              <span class="fr-sublevel-stat-val">${pct !== null ? pct + '%' : '—'}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="fr-progress-section">
+        <div class="fr-progress-title">Progress by CEFR level <span class="fr-progress-sub">A1.1 · A1.2 · A2.1 · A2.2 · B1</span></div>
+        <div class="fr-sublevel-list">${rows}</div>
+      </div>`;
+    })() : '';
+
+    const frSkillSection = isFrProgress ? (() => {
+      const allQ = window.ALL_QUESTIONS || [];
+      const SKILLS_FR = [
+        { id: 'grammar',    label: 'Grammar',    icon: '📐', desc: 'Tenses, agreement, structure' },
+        { id: 'vocabulary', label: 'Vocabulary', icon: '📚', desc: 'Words, phrases, thematic sets' },
+        { id: 'listening',  label: 'Listening',  icon: '🎧', desc: 'Audio comprehension, dictation' },
+        { id: 'reading',    label: 'Reading',    icon: '📖', desc: 'Dialogue, text comprehension' },
+        { id: 'writing',    label: 'Writing',    icon: '✏️', desc: 'Typed production, spelling' },
+      ];
+      const rows = SKILLS_FR.map(sk => {
+        const pool = allQ.filter(q => frQuestionSkill(q) === sk.id);
+        const att  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).attempts || 0), 0);
+        const cor  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).correct  || 0), 0);
+        const pct  = att > 0 ? Math.round(cor / att * 100) : null;
+        const cls  = pct === null ? '' : scoreClass(pct);
+        return `<div class="breakdown-row">
+          <span class="bl">${sk.icon} ${escapeHtml(sk.label)}</span>
+          <div class="breakdown-bar-bg" role="progressbar" aria-valuenow="${pct || 0}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${cls}" style="width:${pct || 0}%"></div></div>
+          <span class="breakdown-pct">${pct !== null ? pct + '%' : '—'}</span>
+        </div>`;
+      }).join('');
+      return `<div class="breakdown" style="background:var(--card);border:1px solid var(--border);padding:16px;border-radius:11px;margin-bottom:20px">
+        <div class="breakdown-title">Accuracy by skill</div>${rows}
+      </div>`;
+    })() : '';
+
     return `<h2 class="section-title">Your Progress</h2>
       ${badgeShowcase}
+      ${frCefrSection}
+      ${frSkillSection}
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-num" data-count="${totalAttempts}">${totalAttempts}</div><div class="stat-label">Questions answered</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${accuracy}" data-suffix="%">${accuracy}%</div><div class="stat-label">Lifetime accuracy</div></div>
@@ -4181,7 +4369,6 @@
     </div>
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
-    ${_activeSubjectId === 'french' && window.DELF_MOCKS ? renderDelfLanding() : ''}
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
       <div class="l3-bridge-header">
         <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
