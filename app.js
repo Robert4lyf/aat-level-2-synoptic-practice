@@ -81,6 +81,19 @@
     // A2 — Élémentaire (everything else)
     return 'A2';
   }
+  /* ── XP / Level helpers (FF-style scaling) ──────────────────────────────
+     xpForLevel(n)  → total cumulative XP needed to reach level n.
+     Curve: 100 × (n−1)^1.5  — cheap early levels, steep late levels.
+     Level 2=100 · Level 5=800 · Level 10=2700 · Level 20=8280          */
+  function xpForLevel(n) {
+    return n <= 1 ? 0 : Math.floor(100 * Math.pow(n - 1, 1.5));
+  }
+  function levelFromXp(xp) {
+    let lv = 1;
+    while (xpForLevel(lv + 1) <= xp) lv++;
+    return lv;
+  }
+
   /* Returns true if the given CEFR level (A1/A2/B1/B2) is unlocked for the French course.
      A1 is always open; A2 requires all A1 done + A1 quiz; B1 requires A2; B2 requires B1. */
   function frLevelUnlocked(cefrLevel) {
@@ -781,10 +794,10 @@
     },
     addXp(n) {
       if (!n) return;
-      const prevLevel = Math.floor(this.data.learn.xp / 100) + 1;
+      const prevLevel = levelFromXp(this.data.learn.xp);
       this.data.learn.xp = Math.min(999999, this.data.learn.xp + n);
       this.day().xp += n;
-      const newLevel = Math.floor(this.data.learn.xp / 100) + 1;
+      const newLevel = levelFromXp(this.data.learn.xp);
       if (newLevel > prevLevel) {
         setTimeout(() => showLevelUp(newLevel), 400);
       }
@@ -2922,14 +2935,17 @@
 
     // Badge showcase
     const xp = Storage.data.learn.xp || 0;
-    const level = Math.floor(xp / 100) + 1;
-    const levelXp = xp % 100;
+    const level   = levelFromXp(xp);
+    const lvFloor = xpForLevel(level);
+    const lvNeed  = xpForLevel(level + 1) - lvFloor;
+    const levelXp = xp - lvFloor;
+    const levelPct = Math.round(levelXp / lvNeed * 100);
     const earnedBadgesList = BADGES.filter(b => Storage.data.badges[b.id]);
     const unearnedBadges = BADGES.filter(b => !Storage.data.badges[b.id]);
     const badgeShowcase = `<div class="badge-showcase">
       <div class="badge-showcase-header">
-        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/100 XP to next</span></div>
-        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelXp}%"></div></div>
+        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/${lvNeed} XP to next</span></div>
+        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelPct}%"></div></div>
       </div>
       ${earnedBadgesList.length ? `<div class="badge-grid-title">🏅 Earned badges (${earnedBadgesList.length}/${BADGES.length})</div>
       <div class="badge-grid">${earnedBadgesList.map(b => `<div class="badge-card badge-earned" title="${escapeHtml(b.desc)}">
@@ -3788,8 +3804,12 @@
     const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (Storage.data.stats.streak || {}).current || 0;
     const earnedBadges = BADGES.filter(b => Storage.data.badges[b.id]);
     const nextLesson = nextLessonToDo();
-    const lv = Math.floor(xp / 100) + 1;
-    const lvXp = xp % 100;
+    const lv = levelFromXp(xp);
+    const lvFloor = xpForLevel(lv);
+    const lvCeil  = xpForLevel(lv + 1);
+    const lvXp    = xp - lvFloor;
+    const lvNeed  = lvCeil - lvFloor;
+    const lvPct   = Math.round(lvXp / lvNeed * 100);
     const bestCombo = Storage.data.learn.bestCombo || 0;
     const xpBar = `<div class="xp-bar-wrap" title="${xp} XP earned">
       <div class="xp-bar-top">
@@ -3797,8 +3817,8 @@
         <span class="xp-level">Level ${lv}</span>
         ${bestCombo >= 3 ? `<span class="xp-combo-best">🔥 Best combo: ${bestCombo}</span>` : ''}
       </div>
-      <div class="xp-bar-bg" title="${lvXp}/100 XP to next level"><div class="xp-bar-fill" style="width:${lvXp}%"></div></div>
-      <div class="xp-bar-hint">${lvXp}/100 XP to Level ${lv + 1}</div>
+      <div class="xp-bar-bg" title="${lvXp}/${lvNeed} XP to next level"><div class="xp-bar-fill" style="width:${lvPct}%"></div></div>
+      <div class="xp-bar-hint">${lvXp}/${lvNeed} XP to Level ${lv + 1}</div>
     </div>`;
 
     const skillQCount = {};
