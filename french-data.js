@@ -1276,7 +1276,7 @@ window.FR_QUESTIONS = [
   {"id":"fr-579","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"In French, the sounds 'au', 'eau', and 'o' all rhyme with each other. Which word does NOT belong in the same rhyming group?","opts":["beau","bureau","bateau","bien"],"ans":3,"exp":"'Beau' /bo/ · 'bureau' /byʁo/ · 'bateau' /bato/ — all contain the /o/ sound. 'Bien' /bjɛ̃/ contains the nasal vowel /ɛ̃/ — completely different. The 'eau' spelling always sounds /o/ in French: eau, beau, gâteau, tableau, chapeau."},
   {"id":"fr-580","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"The French 'u' sound (as in 'tu', 'lune', 'rue') does not exist in English. How is it best described?","opts":["Like the English 'oo' in 'moon'","Like the English 'u' in 'but'","Round your lips as if to say 'oo' but say 'ee' instead","Like the English 'ew' in 'new'"],"ans":2,"exp":"The French /y/ sound in 'tu/lune/rue': position lips to say 'oo' (rounded), then say 'ee' without moving your lips. This is different from 'ou' (/u/) in 'vous/roue'. 'Tu' (/ty/) vs 'tout' (/tu/) — a minimal pair that changes meaning completely."},
   {"id":"fr-581","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"Which word contains a SILENT final consonant?","opts":["avec","chef","sept","pont"],"ans":3,"exp":"'Pont' /pɔ̃/ — the final 't' is silent (it also has a nasal vowel). In French, most final consonants are silent: chat, vingt, nez, pied. Exceptions where final consonants ARE pronounced: avec /avɛk/ · chef /ʃɛf/ · sept /sɛt/. The memory trick: CaReFuL — C, R, F, L are usually pronounced at the end."},
-  {"id":"fr-582","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"'Est' (is) and 'et' (and) — how do they compare in pronunciation?","opts":["'Est' is /ɛst/, 'et' is /ɛt/ — different","Both are pronounced /e/ — they sound the same","'Et' rhymes with 'jet'; 'est' is silent","'Est' sounds like 'air'; 'et' sounds like 'ay'"],"ans":1,"exp":"'Et' /e/ and 'est' /ɛ/ are near-identical in natural speech — both sound like 'ay'. In careful speech, 'est' has a slightly more open /ɛ/ vowel. The final 'st' in 'est' is silent. In fast speech they are often indistinguishable, and context clarifies meaning."},
+  {"id":"fr-582","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"'Est' (is) and 'et' (and) — how do they compare in pronunciation?","opts":["'Est' is /ɛst/, 'et' is /ɛt/ — different","Both are pronounced /e/ — they sound the same","'Et' rhymes with 'jet'; 'est' is silent","'Est' sounds like 'air'; 'et' sounds like 'ay'"],"ans":3,"exp":"'Et' (and) = /e/ — a closed vowel, like 'ay' in 'say' or the French 'é'. 'Est' (is) = /ɛ/ — an open vowel, like 'è' in 'père' or the 'e' in 'bed'; the final 'st' is silent. So: 'et' has a tighter, higher vowel; 'est' is more open. In fast speech they sound very similar, but they are NOT identical. Context always resolves which is which: Il est là et elle aussi (He is there and she too)."},
   {"id":"fr-583","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"The 'é' (closed e) and 'è' (open e) are different sounds. Which word contains a CLOSED 'é' sound (like the 'ay' in 'say')?","opts":["fête","père","café","fenêtre"],"ans":2,"exp":"'Café' contains the closed /e/ sound — like 'ay'. 'Fête', 'père', 'fenêtre' all contain the OPEN /ɛ/ sound (like 'air' in English). Rule: é = closed /e/ · è, ê, e followed by double consonant = open /ɛ/. This distinction matters: chanter (infinitive) vs chanté (past participle) — same spelling group but different tones."},
   {"id":"fr-584","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"In French, the letter 'c' is pronounced like 's' before which letters?","opts":["a, o, u","e, i, y","r, l, n","all vowels"],"ans":1,"exp":"'C' is soft /s/ before e, i, y: cerise /s/, cinéma /s/, cycle /s/. Before a, o, u it is hard /k/: café, copain, curieux. To force a soft 'c' sound before a, o, u, you add a cedilla: français, garçon, ça va."},
   {"id":"fr-585","topic":"fr-phon","lesson":"fr-l59","type":"mcq","q":"Which word does NOT rhyme with 'main' (hand)?","opts":["pain","vin","bain","lune"],"ans":3,"exp":"'Main' /mɛ̃/, 'pain' /pɛ̃/, 'vin' /vɛ̃/, 'bain' /bɛ̃/ — all share the nasal /ɛ̃/ sound. 'Lune' /lyn/ has the /y/ vowel — completely different. French nasal 'in/ain/ein' all produce /ɛ̃/: vin, pain, main, bain, sein, rein."},
@@ -1928,6 +1928,25 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
                 ["Liaison: link words before vowels", "vous_avez, ils_ont"]
               ]
             }
+          },
+          {
+            "h": "\"et\" vs \"est\" — a common confusion",
+            "p": [
+              "**et** (and) = /e/ — closed vowel, like the **é** in *café*. The 't' is always silent.",
+              "**est** (is, from être) = /ɛ/ — open vowel, like the **è** in *père*. The 'st' is always silent.",
+              "Think: **et** = tight 'ay'; **est** = more open, like 'eh'."
+            ],
+            "table": {
+              "headers": ["Word", "IPA", "Sounds like", "Example"],
+              "rows": [
+                ["et (and)", "/e/", "tight 'ay' — like café", "Il parle et elle écoute."],
+                ["est (is)", "/ɛ/", "open 'eh' — like père", "Il est là. Elle est là."]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Quick test: replace the word with 'and' or 'is' in English. 'He is here AND she too' → et. 'He IS here' → est. In speech, context makes the meaning clear even when the sounds are similar."
+            }
           }
         ],
         "check": [
@@ -1972,6 +1991,13 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "opts": ["rue", "vin", "feu", "ou"],
             "ans": 1,
             "exp": "\"vin\" contains the nasal vowel \"in\" — air flows through the nose when pronouncing it."
+          },
+          {
+            "type": "mcq",
+            "q": "\"et\" (and) and \"est\" (is) — which statement is correct?",
+            "opts": ["They sound identical — both /e/", "\"et\" = /e/ (closed), \"est\" = /ɛ/ (open); both have a silent final consonant", "\"est\" is pronounced /ɛst/ with a clear 'st'", "\"et\" has an open vowel; \"est\" has a closed vowel"],
+            "ans": 1,
+            "exp": "\"et\" (and) = /e/ — closed vowel like 'é' in café; the 't' is silent. \"est\" (is) = /ɛ/ — open vowel like 'è' in père; the 'st' is silent. They sound similar but 'est' is slightly more open. Context always tells them apart."
           }
         ]
       },
@@ -9883,3 +9909,40 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
     ]
   },
 ];
+
+// CEFR sublevel lookup — maps each lesson ID to its CEFR sublevel string.
+// A1 split into A1.1 (foundational) and A1.2 (consolidation); A2 into A2.1 and A2.2.
+// Used by the quiz header badge and progress screens (app.js reads this when available).
+window.FR_LESSON_CEFR_SUBLEVEL = {
+  // A1.1 — foundational A1 (first 18 lessons of the A1 unit)
+  'fr-l01': 'A1.1', 'fr-l40': 'A1.1', 'fr-l02': 'A1.1', 'fr-l03': 'A1.1',
+  'fr-l04': 'A1.1', 'fr-l05': 'A1.1', 'fr-l76': 'A1.1', 'fr-l07': 'A1.1',
+  'fr-l09': 'A1.1', 'fr-l10': 'A1.1', 'fr-l11': 'A1.1', 'fr-l12': 'A1.1',
+  'fr-l75': 'A1.1', 'fr-l13': 'A1.1', 'fr-l14': 'A1.1', 'fr-l15': 'A1.1',
+  'fr-l16': 'A1.1', 'fr-l41': 'A1.1',
+  // A1.2 — consolidation A1 (remaining lessons of the A1 unit)
+  'fr-l39': 'A1.2', 'fr-l68': 'A1.2', 'fr-l69': 'A1.2', 'fr-l17': 'A1.2',
+  'fr-l32': 'A1.2', 'fr-l33': 'A1.2', 'fr-l45': 'A1.2', 'fr-l46': 'A1.2',
+  'fr-l47': 'A1.2', 'fr-l50': 'A1.2', 'fr-l52': 'A1.2', 'fr-l53': 'A1.2',
+  'fr-l56': 'A1.2', 'fr-l59': 'A1.2', 'fr-l62': 'A1.2', 'fr-l65': 'A1.2',
+  'fr-l86': 'A1.2', 'fr-l92': 'A1.2',
+  // A2.1 — foundational A2 (first 16 lessons of the A2 unit)
+  'fr-l18': 'A2.1', 'fr-l19': 'A2.1', 'fr-l38': 'A2.1', 'fr-l20': 'A2.1',
+  'fr-l21': 'A2.1', 'fr-l22': 'A2.1', 'fr-l23': 'A2.1', 'fr-l24': 'A2.1',
+  'fr-l25': 'A2.1', 'fr-l42': 'A2.1', 'fr-l43': 'A2.1', 'fr-l70': 'A2.1',
+  'fr-l71': 'A2.1', 'fr-l72': 'A2.1', 'fr-l73': 'A2.1', 'fr-l74': 'A2.1',
+  // A2.2 — consolidation A2 (remaining lessons of the A2 unit)
+  'fr-l77': 'A2.2', 'fr-l78': 'A2.2', 'fr-l26': 'A2.2', 'fr-l34': 'A2.2',
+  'fr-l35': 'A2.2', 'fr-l48': 'A2.2', 'fr-l49': 'A2.2', 'fr-l51': 'A2.2',
+  'fr-l54': 'A2.2', 'fr-l55': 'A2.2', 'fr-l57': 'A2.2', 'fr-l60': 'A2.2',
+  'fr-l63': 'A2.2', 'fr-l66': 'A2.2', 'fr-l82': 'A2.2', 'fr-l87': 'A2.2',
+  // B1 — intermediate
+  'fr-l27': 'B1', 'fr-l28': 'B1', 'fr-l29': 'B1', 'fr-l44': 'B1',
+  'fr-l30': 'B1', 'fr-l31': 'B1', 'fr-l36': 'B1', 'fr-l37': 'B1',
+  'fr-l58': 'B1', 'fr-l61': 'B1', 'fr-l64': 'B1', 'fr-l79': 'B1',
+  'fr-l80': 'B1', 'fr-l81': 'B1', 'fr-l67': 'B1', 'fr-l83': 'B1',
+  'fr-l84': 'B1', 'fr-l85': 'B1', 'fr-l88': 'B1', 'fr-l89': 'B1',
+  'fr-l90': 'B1', 'fr-l91': 'B1',
+  // B2 — upper intermediate / advanced
+  'fr-l93': 'B2', 'fr-l94': 'B2', 'fr-l95': 'B2', 'fr-l96': 'B2',
+};
