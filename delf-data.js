@@ -273,7 +273,8 @@ window.DELF_MOCKS = [
               { id: 'a1-w1-4', label: 'I mentioned one thing I enjoy doing', points: 2 },
               { id: 'a1-w1-5', label: 'My spelling of common words was mostly correct', points: 1 },
               { id: 'a1-w1-6', label: 'My message was approximately 40–50 words', points: 1 }
-            ]
+            ],
+            modelAnswer: `Bonjour ! Je m'appelle Emma. J'ai 25 ans et j'habite à Manchester, en Angleterre. Je suis infirmière dans un grand hôpital. Le week-end, j'aime lire des romans et retrouver mes amis. Je suis très heureuse d'avoir un correspondant français ! À bientôt ! Emma`
           },
           {
             id: 'a1-w2',
@@ -288,7 +289,8 @@ window.DELF_MOCKS = [
               { id: 'a1-w2-5', label: 'I used an appropriate greeting and sign-off', points: 2 },
               { id: 'a1-w2-6', label: 'My vocabulary was appropriate and varied', points: 2 },
               { id: 'a1-w2-7', label: 'My spelling was mostly correct', points: 2 }
-            ]
+            ],
+            modelAnswer: `Chère Marie,\n\nJe suis à Nice, sur la Côte d'Azur ! Il fait magnifique ici — très beau et chaud. Hier, j'ai visité la vieille ville et j'ai mangé une excellente pizza. Je me sens vraiment heureuse et je profite bien de mes vacances !\n\nÀ bientôt, Emma`
           }
         ]
       },
@@ -343,7 +345,8 @@ window.DELF_MOCKS = [
               { id: 'a1-sp2-1', label: 'I asked for all the required items correctly', points: 4 },
               { id: 'a1-sp2-2', label: 'I asked about the price and responded appropriately', points: 3 },
               { id: 'a1-sp2-3', label: 'I used polite and appropriate language', points: 3 }
-            ]
+            ],
+            modelDialogue: `Marchand : Bonjour ! Je peux vous aider ?\nClient : Bonjour ! Je voudrais un kilo de tomates, s'il vous plaît.\nMarchand : Voilà. C'est tout ?\nClient : Non. Je voudrais aussi cinq cents grammes de fraises.\nMarchand : Voici. Autre chose ?\nClient : Oui — un sachet de salade, s'il vous plaît. C'est combien en tout ?\nMarchand : Ça fait six euros cinquante.\nClient : Voici dix euros. Et vous avez un sac, s'il vous plaît ?\nMarchand : Bien sûr ! Voici votre monnaie — trois euros cinquante.\nClient : Merci beaucoup ! Au revoir !\nMarchand : Bonne journée !`
           },
           {
             id: 'a1-sp3',
@@ -579,7 +582,8 @@ window.DELF_MOCKS = [
               { id: 'a2-w1-5', label: 'I used the passé composé correctly at least twice', points: 1 },
               { id: 'a2-w1-6', label: 'My vocabulary was appropriate and mostly accurate', points: 1 },
               { id: 'a2-w1-7', label: 'My text was approximately 60–80 words', points: 1 }
-            ]
+            ],
+            modelAnswer: `Chère Sophie,\n\nSamedi dernier, je suis allée à la fête d'anniversaire de mon amie Claire. C'était chez elle, dans son appartement à Paris. Il y avait une vingtaine de personnes. Nous avons dansé, mangé un gâteau délicieux et ri toute la soirée ! J'ai rencontré des gens très sympas et l'ambiance était vraiment festive. Je me suis très bien amusée !\n\nBisous, Léa`
           },
           {
             id: 'a2-w2',
@@ -593,7 +597,8 @@ window.DELF_MOCKS = [
               { id: 'a2-w2-4', label: 'I made a clear, polite request for a refund', points: 3 },
               { id: 'a2-w2-5', label: 'I used appropriate formal vocabulary', points: 2 },
               { id: 'a2-w2-6', label: 'My sentences were grammatically mostly correct', points: 2 }
-            ]
+            ],
+            modelAnswer: `Madame, Monsieur,\n\nJe vous écris au sujet de mon séjour dans votre hôtel du 5 au 8 septembre. J'avais réservé une chambre double avec vue sur la mer, mais on m'a attribué une chambre au rez-de-chaussée avec vue sur le parking. De plus, la climatisation ne fonctionnait pas et la salle de bain n'était pas propre à mon arrivée.\n\nJe vous demande donc un remboursement partiel de ma réservation.\n\nVeuillez agréer, Madame, Monsieur, mes cordiales salutations.\n\nMme Martin`
           }
         ]
       },
@@ -684,7 +689,8 @@ window.DELF_MOCKS = [
               { id: 'a2-sp4-2', label: 'I asked about the price and trial class', points: 1 },
               { id: 'a2-sp4-3', label: 'I successfully completed the enrolment request', points: 1 },
               { id: 'a2-sp4-4', label: 'I used polite and appropriate French throughout', points: 1 }
-            ]
+            ],
+            modelDialogue: `Réceptionniste : École de langues Lumière, bonjour !\nÉtudiant : Bonjour ! Je voudrais m'inscrire à un cours de français, s'il vous plaît.\nRéceptionniste : Bien sûr. Quel niveau souhaitez-vous ?\nÉtudiant : Quels niveaux est-ce que vous proposez ?\nRéceptionniste : Nous avons des cours du niveau A1 au B2.\nÉtudiant : Le cours a lieu quels jours ? Et à quelle heure ?\nRéceptionniste : Les cours ont lieu le mardi et le jeudi soir, de 19h à 21h.\nÉtudiant : Quel est le tarif pour un trimestre ?\nRéceptionniste : C'est 350 euros par trimestre, matériel inclus.\nÉtudiant : Est-ce qu'il est possible d'essayer un cours avant de m'inscrire ?\nRéceptionniste : Oui, le premier cours est gratuit !\nÉtudiant : Parfait. Je voudrais m'inscrire au niveau A2, s'il vous plaît.\nRéceptionniste : Très bien, je note votre inscription. Votre nom ?\nÉtudiant : [Your name]. Merci beaucoup !\nRéceptionniste : À bientôt !`
           }
         ]
       }
