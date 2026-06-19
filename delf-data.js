@@ -371,6 +371,218 @@ window.DELF_MOCKS = [
   },
 
   /* ═══════════════════════════════════════════════════════════════
+     DELF B1 — SELF-ASSESSMENT
+     100 pts total · pass mark 50/100 · minimum 5/25 per section
+     All four skills are self-assessed using rubric checklists.
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    id: 'delf-b1-1',
+    level: 'B1',
+    title: 'DELF B1 — Self-Assessment',
+    desc: 'Self-assessed practice for DELF B1 (threshold level). All four sections use rubric checklists. Pass mark: 50/100 with a minimum of 5/25 in each section.',
+    totalDuration: '2h 00min',
+    sections: [
+
+      /* ── LISTENING ────────────────────────────────────────────── */
+      {
+        id: 'listening',
+        icon: '🎧',
+        title: "Compréhension de l'oral",
+        english: 'Listening Comprehension',
+        duration: 1800,
+        maxScore: 25,
+        type: 'self',
+        audioNote: 'Read each transcript as you would listen to the recording. Answer each task mentally or on paper, then self-assess using the rubric checklist.',
+        tasks: [
+          {
+            id: 'b1-li1',
+            title: 'Task 1 — Annonce radio — environnement (8 points)',
+            instruction: 'Vous allez entendre une annonce de la radio. Lisez les questions, puis écoutez l\'enregistrement et répondez.',
+            script: 'Bonjour à tous. La mairie de Lyon vient d\'annoncer un plan ambitieux pour développer les pistes cyclables dans l\'agglomération. D\'ici 2026, cent kilomètres de nouvelles voies seront créés pour encourager les habitants à délaisser leur voiture. Le maire a déclaré que cette initiative permettra de réduire de 30% les émissions de CO2 dans le centre-ville. Les travaux commenceront dès le printemps prochain, avec en priorité les axes principaux reliant les grandes gares aux quartiers résidentiels. Les riverains sont invités à consulter les plans sur le site de la mairie et à donner leur avis lors de réunions publiques organisées en janvier. Pour plus d\'informations, vous pouvez appeler le numéro vert au 0800-LYON-VELO.',
+            rubric: [
+              { id: 'b1-li1-1', label: 'Identifies the main topic (cycling infrastructure)', points: 2 },
+              { id: 'b1-li1-2', label: 'States the target reduction (30% CO2)', points: 2 },
+              { id: 'b1-li1-3', label: 'Identifies when work begins (spring)', points: 1 },
+              { id: 'b1-li1-4', label: 'Names how residents can give feedback (public meetings, website)', points: 2 },
+              { id: 'b1-li1-5', label: 'Notes the phone number provided', points: 1 }
+            ]
+          },
+          {
+            id: 'b1-li2',
+            title: 'Task 2 — Interview — le télétravail (9 points)',
+            instruction: 'Vous allez entendre une interview avec une experte en ressources humaines sur le sujet du télétravail. Écoutez et répondez aux questions.',
+            script: 'Journaliste : Le télétravail est-il vraiment bénéfique pour les employés ?\nExperte : C\'est une question très intéressante. D\'un côté, les études montrent que les télétravailleurs sont en général plus productifs — ils économisent le temps de transport et peuvent mieux organiser leurs journées. Cependant, la frontière entre vie professionnelle et vie privée devient souvent floue. Beaucoup de salariés me disent qu\'ils ont du mal à \'décrocher\' le soir. Un autre problème important est l\'isolement social — le bureau n\'est pas seulement un lieu de travail, c\'est aussi un espace d\'échanges humains. Pour les personnes qui vivent seules, le manque de contact peut devenir pesant. Les entreprises doivent donc trouver un équilibre — peut-être deux ou trois jours de télétravail par semaine — pour profiter des avantages sans souffrir des inconvénients. Les managers aussi doivent adapter leur style : il ne s\'agit plus de contrôler la présence mais d\'évaluer les résultats.',
+            rubric: [
+              { id: 'b1-li2-1', label: 'Identifies benefits mentioned (productivity, time saved)', points: 2 },
+              { id: 'b1-li2-2', label: 'Identifies problems mentioned (work-life blur, social isolation)', points: 2 },
+              { id: 'b1-li2-3', label: 'States the recommended balance (2-3 days/week)', points: 2 },
+              { id: 'b1-li2-4', label: 'Notes the shift required of managers (results not presence)', points: 2 },
+              { id: 'b1-li2-5', label: 'Identifies who particularly suffers from isolation (people living alone)', points: 1 }
+            ]
+          },
+          {
+            id: 'b1-li3',
+            title: 'Task 3 — Documentaire — les réseaux sociaux chez les jeunes (8 points)',
+            instruction: 'Vous allez entendre un extrait de documentaire. Écoutez attentivement et répondez aux questions d\'opinion et d\'inférence.',
+            script: 'Aujourd\'hui, neuf jeunes Français sur dix utilisent au moins un réseau social quotidiennement. Cette réalité soulève des questions importantes sur l\'impact de ces plateformes sur le développement des adolescents. D\'un côté, les réseaux sociaux permettent aux jeunes de maintenir des liens avec leurs amis, de s\'informer et même de développer de nouvelles compétences créatives. Certains adolescents lancent des chaînes YouTube ou des comptes Instagram et apprennent ainsi la photographie, le montage vidéo ou la communication. Mais les spécialistes s\'inquiètent aussi des effets négatifs : la comparaison constante avec des images soigneusement filtrées peut nuire à l\'estime de soi. Une étude récente de l\'université de Bordeaux révèle que les filles de 13 à 16 ans sont particulièrement vulnérables à ces effets. Les parents se trouvent souvent démunis — interdire complètement les réseaux sociaux isole l\'enfant de ses pairs, mais les laisser totalement libres comporte des risques réels. La solution semble résider dans l\'éducation aux médias — apprendre aux jeunes à analyser de façon critique ce qu\'ils voient en ligne.',
+            rubric: [
+              { id: 'b1-li3-1', label: 'States the statistic (9 out of 10 young French people use social media daily)', points: 1 },
+              { id: 'b1-li3-2', label: 'Identifies positive aspects (maintaining friendships, learning creative skills)', points: 2 },
+              { id: 'b1-li3-3', label: 'Identifies the main negative (comparison with filtered images, self-esteem)', points: 2 },
+              { id: 'b1-li3-4', label: 'Names the most vulnerable group (girls 13-16)', points: 1 },
+              { id: 'b1-li3-5', label: 'States the recommended solution (media literacy education)', points: 1 },
+              { id: 'b1-li3-6', label: 'Notes what happens if social media is banned entirely (social isolation from peers)', points: 1 }
+            ]
+          }
+        ]
+      },
+
+      /* ── READING ──────────────────────────────────────────────── */
+      {
+        id: 'reading',
+        icon: '📖',
+        title: 'Compréhension des écrits',
+        english: 'Reading Comprehension',
+        duration: 2100,
+        maxScore: 25,
+        type: 'self',
+        tasks: [
+          {
+            id: 'b1-re1',
+            title: 'Task 1 — Article de magazine — le végétarisme en France (9 points)',
+            instruction: 'Lisez cet article et répondez aux questions.',
+            text: 'Le végétarisme gagne du terrain en France. Selon une enquête récente, 3 millions de Français se déclarent aujourd\'hui végétariens, soit le double d\'il y a dix ans. Ce changement s\'explique par plusieurs facteurs : les préoccupations environnementales, l\'accès croissant à l\'information sur les conditions d\'élevage industriel, et une prise de conscience des effets de la consommation de viande rouge sur la santé. Les restaurants s\'adaptent : là où il y avait autrefois une seule option végétarienne sur la carte, on trouve désormais des menus entiers dédiés. Les grandes surfaces ont également développé leur offre de produits végétaux. Pourtant, la transition n\'est pas toujours simple. De nombreux végétariens témoignent de difficultés lors de repas en famille ou entre amis, où la viande reste souvent centrale. \'Mon beau-père ne comprend toujours pas pourquoi je refuse son gigot d\'agneau du dimanche,\' raconte Lucie, 28 ans. Le débat sur l\'impact environnemental du végétarisme reste vif : si l\'élevage représente 14,5% des émissions mondiales de gaz à effet de serre selon la FAO, certains experts soulignent que l\'élevage extensif peut aussi jouer un rôle positif dans la gestion des écosystèmes locaux.',
+            rubric: [
+              { id: 'b1-re1-1', label: 'Identifies how many French vegetarians there are (3 million)', points: 1 },
+              { id: 'b1-re1-2', label: 'Notes the comparison to 10 years ago (double)', points: 1 },
+              { id: 'b1-re1-3', label: 'Lists reasons for the trend (environment, animal welfare info, health)', points: 3 },
+              { id: 'b1-re1-4', label: 'Identifies a social difficulty mentioned (family meals)', points: 1 },
+              { id: 'b1-re1-5', label: 'Notes the FAO statistic (14.5% of global greenhouse gas)', points: 2 },
+              { id: 'b1-re1-6', label: 'Understands the nuance about livestock (can have positive ecosystem role)', points: 1 }
+            ]
+          },
+          {
+            id: 'b1-re2',
+            title: 'Task 2 — Correspondance — échange d\'emails professionnel (8 points)',
+            instruction: 'Lisez cet échange d\'e-mails et répondez aux questions.',
+            text: 'E-mail 1 — De : Sophie Bonnet À : Thomas Faure\nMonsieur, Je me permets de vous contacter suite à votre candidature pour le poste de chargé de communication au sein de notre association. Votre profil nous a vivement intéressés, notamment votre expérience dans le secteur associatif et votre maîtrise des outils numériques. Je souhaiterais vous inviter à un entretien le mardi 18 mars à 14h30 dans nos locaux, situés au 12 rue des Acacias, Lyon 3e. Merci de bien vouloir confirmer votre disponibilité. Cordialement, Sophie Bonnet, Directrice RH.\n\nE-mail 2 — De : Thomas Faure À : Sophie Bonnet\nMadame, Je vous remercie vivement pour votre message et suis très heureux de l\'intérêt que vous portez à ma candidature. Je confirme ma disponibilité pour le mardi 18 mars à 14h30 et me ferai un plaisir de vous rencontrer à l\'adresse indiquée. Pourriez-vous me préciser s\'il est nécessaire d\'apporter des documents particuliers, tels que des lettres de recommandation ou un portfolio ? Dans l\'attente de vous rencontrer, je vous adresse mes cordiales salutations. Thomas Faure',
+            rubric: [
+              { id: 'b1-re2-1', label: 'Identifies the job (communications officer at an association)', points: 2 },
+              { id: 'b1-re2-2', label: 'Notes what impressed the employer (associative sector experience, digital skills)', points: 2 },
+              { id: 'b1-re2-3', label: 'States interview date and time (Tuesday 18 March 14:30)', points: 2 },
+              { id: 'b1-re2-4', label: 'States the location (12 rue des Acacias Lyon 3e)', points: 1 },
+              { id: 'b1-re2-5', label: 'Identifies what M. Faure asks about (whether to bring documents)', points: 1 }
+            ]
+          },
+          {
+            id: 'b1-re3',
+            title: 'Task 3 — Article d\'opinion — faut-il réduire la semaine de travail à 4 jours ? (8 points)',
+            instruction: 'Lisez cet article d\'opinion et identifiez les arguments pour et contre.',
+            text: 'La semaine de quatre jours fait de plus en plus parler d\'elle. Plusieurs pays ont lancé des expérimentations à grande échelle : en Islande, une réduction du temps de travail sans baisse de salaire a été testée avec succès entre 2015 et 2019, avec des résultats encourageants sur le bien-être des salariés et — fait surprenant — sur la productivité. Au Royaume-Uni, une expérience similaire menée en 2022 a convaincu 92% des entreprises participantes de maintenir ce rythme définitivement. Les partisans de ce modèle font valoir que la qualité de vie s\'améliore, le stress diminue, et les employés reviennent au travail plus motivés. Certains avancent même des arguments environnementaux : moins de trajets domicile-travail signifie moins d\'émissions. Mais les critiques ne manquent pas. Dans les secteurs où la présence humaine est indispensable — hôpitaux, restaurants, commerce de détail — une semaine de quatre jours est difficile à mettre en œuvre sans engager du personnel supplémentaire. Les petites entreprises craignent d\'autre part de ne pas pouvoir absorber les coûts d\'une telle réorganisation. Et si la productivité augmente dans certains cas, rien ne garantit que ce soit universel.',
+            rubric: [
+              { id: 'b1-re3-1', label: 'Identifies countries that have trialled 4-day week (Iceland, UK)', points: 2 },
+              { id: 'b1-re3-2', label: 'States the Icelandic result (positive for wellbeing AND productivity)', points: 1 },
+              { id: 'b1-re3-3', label: 'Notes UK result (92% maintained the change)', points: 1 },
+              { id: 'b1-re3-4', label: 'Lists arguments in favour (wellbeing, less stress, environment)', points: 2 },
+              { id: 'b1-re3-5', label: 'Identifies sectors where it\'s difficult (hospitals, restaurants, retail)', points: 1 },
+              { id: 'b1-re3-6', label: 'Notes small business concern (reorganisation costs)', points: 1 }
+            ]
+          }
+        ]
+      },
+
+      /* ── WRITING ──────────────────────────────────────────────── */
+      {
+        id: 'writing',
+        icon: '✏️',
+        title: 'Production écrite',
+        english: 'Written Expression',
+        duration: 3000,
+        maxScore: 25,
+        type: 'writing',
+        intro: 'This section has 2 tasks. Write your answers on paper or in a separate document. Aim for 160–180 words per task. Use the timer to simulate real exam conditions, then self-assess using the rubric provided.',
+        tasks: [
+          {
+            id: 'b1-wr1',
+            title: 'Task 1 — Lettre de lecteur — les transports en commun (12 points)',
+            instruction: 'Vous avez lu un article dans un magazine local qui suggère de supprimer certaines lignes de bus pour réduire les dépenses municipales. Vous écrivez une lettre au rédacteur en chef pour exprimer votre opinion. Écrivez entre 160 et 180 mots.',
+            rubric: [
+              { id: 'b1-wr1-1', label: 'Formal register (Madame/Monsieur opening, Cordialement close)', points: 2 },
+              { id: 'b1-wr1-2', label: 'States personal position clearly', points: 2 },
+              { id: 'b1-wr1-3', label: 'Gives at least 2 arguments', points: 3 },
+              { id: 'b1-wr1-4', label: 'Uses connectors (de plus, plutôt que, à une époque où)', points: 2 },
+              { id: 'b1-wr1-5', label: 'Suggests an alternative', points: 1 },
+              { id: 'b1-wr1-6', label: 'Within 160-180 words', points: 1 },
+              { id: 'b1-wr1-7', label: 'Uses a range of vocabulary and B1+ structures', points: 1 }
+            ],
+            modelAnswer: `Madame, Monsieur,\n\nJ'ai lu avec beaucoup d'intérêt votre article sur la réduction des lignes de bus dans notre ville. Je souhaite vous faire part de mon désaccord avec cette proposition.\n\nEn tant qu'utilisatrice quotidienne des transports en commun, je peux témoigner de l'importance de ce service pour de nombreux habitants. Supprimer ces lignes aurait des conséquences graves, notamment pour les personnes âgées, les étudiants et ceux qui n'ont pas de voiture.\n\nDe plus, à une époque où nous cherchons tous à réduire notre empreinte carbone, encourager l'utilisation de la voiture individuelle semble aller à l'encontre des objectifs environnementaux que notre ville s'est fixés.\n\nPlutôt que de supprimer des lignes, ne serait-il pas préférable de chercher des financements alternatifs ou d'optimiser les horaires existants ? Je suis convaincue qu'une solution plus équilibrée est possible.\n\nCordialement,\nUne lectrice engagée`
+          },
+          {
+            id: 'b1-wr2',
+            title: 'Task 2 — Article pour un magazine scolaire (13 points)',
+            instruction: 'Le magazine de votre école vous demande d\'écrire un article sur le sujet suivant : \'Les voyages à l\'étranger : une expérience indispensable pour les jeunes ?\' Donnez votre opinion en vous appuyant sur des exemples. Écrivez entre 160 et 180 mots.',
+            rubric: [
+              { id: 'b1-wr2-1', label: 'Has a title', points: 1 },
+              { id: 'b1-wr2-2', label: 'Balanced structure (for + nuance + conclusion)', points: 3 },
+              { id: 'b1-wr2-3', label: 'Uses personal example', points: 2 },
+              { id: 'b1-wr2-4', label: 'Uses B1 connectors (cependant, en effet, en conclusion)', points: 2 },
+              { id: 'b1-wr2-5', label: 'Uses conditional (il serait réducteur)', points: 2 },
+              { id: 'b1-wr2-6', label: 'Gives concrete counter-argument', points: 2 },
+              { id: 'b1-wr2-7', label: 'Within 160-180 words', points: 1 }
+            ],
+            modelAnswer: `Les voyages à l'étranger : une expérience indispensable ?\n\nNombreux sont ceux qui affirment que voyager est la meilleure école de la vie. En effet, partir à l'étranger permet de découvrir d'autres cultures, d'améliorer ses compétences linguistiques et de développer son autonomie. Personnellement, mon séjour linguistique en Espagne l'année dernière m'a aidé à gagner en confiance et à voir le monde différemment.\n\nCependant, il serait réducteur de dire que le voyage est indispensable pour tous les jeunes. Certains n'ont pas la chance d'avoir les moyens financiers nécessaires, et il existe de nombreuses façons de s'ouvrir au monde sans quitter son pays : les échanges virtuels, les films étrangers, ou même la rencontre avec des personnes d'autres origines dans sa propre ville.\n\nEn conclusion, si les voyages sont une expérience enrichissante, ils ne doivent pas devenir un critère d'exclusion. Ce qui compte, c'est la curiosité et l'ouverture d'esprit.\n\n— Marie-Claire, Terminale B`
+          }
+        ]
+      },
+
+      /* ── SPEAKING ─────────────────────────────────────────────── */
+      {
+        id: 'speaking',
+        icon: '🗣️',
+        title: 'Production orale',
+        english: 'Oral Expression',
+        duration: 720,
+        prepDuration: 600,
+        maxScore: 25,
+        type: 'speaking',
+        intro: 'This section has 2 tasks. You have 10 minutes to prepare your monologue (Task 1). Carry out each task out loud — with a partner if possible — then self-assess honestly using the rubric.',
+        tasks: [
+          {
+            id: 'b1-sp1',
+            title: 'Task 1 — Monologue — document sur le bénévolat (12 points)',
+            instruction: 'Vous disposez de 10 minutes pour préparer un exposé à partir du document suivant. Vous présenterez le document (2-3 minutes), puis donnerez votre opinion personnelle et répondrez aux questions de l\'examinateur.',
+            document: 'En France, 22 millions de personnes font du bénévolat dans des associations. Le nombre de bénévoles a augmenté de 12% depuis la crise sanitaire de 2020. Les secteurs les plus représentés sont le sport (34%), la culture (18%), et l\'action sociale (15%). Les jeunes de 15-25 ans représentent désormais 28% des bénévoles — une proportion en hausse constante. Cependant, 60% des associations déclarent manquer de bénévoles qualifiés pour gérer l\'administration et la communication numérique.',
+            rubric: [
+              { id: 'b1-sp1-1', label: 'Presents key figures accurately (22 million, 12% increase, sectors)', points: 2 },
+              { id: 'b1-sp1-2', label: 'Goes beyond description to analyse or interpret', points: 2 },
+              { id: 'b1-sp1-3', label: 'Gives personal opinion with justification', points: 2 },
+              { id: 'b1-sp1-4', label: 'Uses appropriate vocabulary (bénévolat, association, secteur)', points: 2 },
+              { id: 'b1-sp1-5', label: 'Uses B1 structures (conditional, comparatives, opinion phrases)', points: 2 },
+              { id: 'b1-sp1-6', label: 'Responds to follow-up questions with developed answers', points: 1 },
+              { id: 'b1-sp1-7', label: 'Pronunciation generally clear despite occasional errors', points: 1 }
+            ]
+          },
+          {
+            id: 'b1-sp2',
+            title: 'Task 2 — Discussion — les loisirs et les écrans (13 points)',
+            instruction: 'L\'examinateur vous propose de discuter du sujet suivant : \'Les jeunes passent trop de temps devant les écrans. Les loisirs traditionnels (lecture, sport, musique) sont-ils en danger ?\' Exprimez et défendez votre point de vue.',
+            modelDialogue: `Examinateur : Pensez-vous que les jeunes passent trop de temps devant les écrans ?\nCandidat : Oui, je pense que c'est un vrai problème, mais il faut nuancer. Les écrans ne sont pas tous pareils — passer deux heures à lire des articles en ligne, c'est différent de défiler sur TikTok pendant deux heures. Ce qui m'inquiète davantage, c'est la perte de concentration que cela peut entraîner.\nExaminateur : Et les loisirs traditionnels, sont-ils vraiment en danger ?\nCandidat : Peut-être pas en danger total, mais certainement moins pratiqués. Dans mon entourage, beaucoup de gens ne lisent plus de livres physiques. En revanche, des activités comme le sport ou la musique semblent résister — peut-être parce qu'elles procurent des satisfactions que les écrans ne peuvent pas reproduire.\nExaminateur : Que faudrait-il faire selon vous ?\nCandidat : Il me semble qu'une éducation aux médias dès le jeune âge serait essentielle. Apprendre à utiliser les outils numériques de façon critique, plutôt que de les interdire, serait plus efficace. Les parents ont aussi un rôle à jouer en proposant des alternatives attractives.`,
+            rubric: [
+              { id: 'b1-sp2-1', label: 'Expresses and justifies opinion', points: 2 },
+              { id: 'b1-sp2-2', label: 'Uses nuance (il faut nuancer, en revanche)', points: 2 },
+              { id: 'b1-sp2-3', label: 'Uses B1 vocabulary (entraîner, procurer, résister)', points: 2 },
+              { id: 'b1-sp2-4', label: 'Responds to follow-up questions with developed answers', points: 3 },
+              { id: 'b1-sp2-5', label: 'Uses conditional (serait)', points: 2 },
+              { id: 'b1-sp2-6', label: 'Demonstrates B1 grammar range', points: 1 },
+              { id: 'b1-sp2-7', label: 'Interaction is fluent with minor hesitations', points: 1 }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  /* ═══════════════════════════════════════════════════════════════
      DELF A2 — MOCK EXAM 1
      100 pts total · pass mark 50/100 · minimum 5/25 per section
   ═══════════════════════════════════════════════════════════════ */
