@@ -1110,7 +1110,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: unitId, questions: picked,
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0, unitQuizPassMark: UNIT_QUIZ_PASS_MARK,
     });
     Calc.reset(); render();
@@ -1292,6 +1292,7 @@
   function isGapFill(q) { return q && q.type === 'gapfill'; }
   function isWordOrder(q) { return q && q.type === 'wordorder'; }
   function isListen(q) { return q && q.type === 'listen'; }
+  function isTyped(q) { return q && q.type === 'typed'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
 
   // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
@@ -1479,6 +1480,7 @@
     scDraft: {},                            // scenario sub-answers
     gfDraft: {},                            // gap-fill dropdown selections
     woDraft: [],                            // word-order placed word indices
+    typedDraft: '',                          // typed-answer current input
     referenceOpen: false,
     taEntries: [],                          // T-account playground postings
     taForm: { desc: '', amount: '', dr: '', cr: '' },
@@ -1633,7 +1635,7 @@
       screen:'quiz', mode:'practice', selectedTopic:topicId, questions:picked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
       hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
@@ -1687,7 +1689,7 @@
       screen:'quiz', mode:'practice', selectedTopic:'smart', questions:smartPicked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
       hintLevel:0, hintElim:null,
     });
     Calc.reset(); saveSession(); render();
@@ -1718,7 +1720,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'focus',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); saveSession(); render();
@@ -1733,7 +1735,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     render();
@@ -1776,7 +1778,7 @@
     Object.assign(State, {
       screen:'quiz', mode:'mock', selectedTopic:'all', questions:picked,
       current:0, answered:null, answers:new Array(picked.length).fill(null),
-      score:0, results:[], showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
+      score:0, results:[], showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'', typedDraft:'',
       mockEndTime: Date.now() + MOCK_DURATION_MS,
     });
     Storage.data.session = null; Storage.save();
@@ -2003,6 +2005,15 @@
     delete State.ddMap[leftIdx];
     render();
   }
+  function normalizeTyped(s, stripAcc) {
+    let n = String(s).trim().toLowerCase();
+    if (stripAcc) n = n.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return n;
+  }
+  function isTypedCorrect(q, input) {
+    const norm = s => normalizeTyped(s, q.ignoreAccents);
+    return [q.ans].concat(q.alts || []).some(a => norm(a) === norm(input));
+  }
   function submitDragDrop() {
     if (State.answered !== null) return;
     const q = State.questions[State.current];
@@ -2151,6 +2162,25 @@
       exp:q.exp, topic:q.topic, skill:q.skill, steps:q.steps });
     saveSession(); render();
   }
+  function submitTypedPractice() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    const el = document.getElementById('typedAnswer');
+    const input = el ? el.value : '';
+    if (!input.trim()) {
+      const err = document.getElementById('typedError');
+      if (err) err.textContent = 'Please type an answer before submitting.';
+      return;
+    }
+    State.typedDraft = input;
+    State.answered = input;
+    const correct = isTypedCorrect(q, input);
+    if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
+    Storage.recordAnswer(q, correct); Storage.save();
+    State.results.push({ id: q.id, q: q.q, correct, chosen: input, correctOpt: q.ans, exp: q.exp, topic: q.topic, skill: q.skill });
+    saveSession(); render();
+  }
   function selectMockOption(idx) {
     if (State.mode !== 'mock') return;
     State.answers[State.current] = idx;
@@ -2180,7 +2210,7 @@
     _lastTransitionTime = Date.now();
     if (State.current + 1 >= State.questions.length) finishPractice();
     else {
-      State.current++; State.answered = null; State.numericDraft = '';
+      State.current++; State.answered = null; State.numericDraft = ''; State.typedDraft = '';
       State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
       State.hintLevel = 0; State.hintElim = null;
       Calc.reset(); saveSession(); render();
@@ -3075,6 +3105,7 @@
     if (isGapFill(q)) return renderGapFillQuiz(q);
     if (isWordOrder(q)) return renderWordOrderQuiz(q);
     if (isListen(q)) return renderListenQuiz(q);
+    if (isTyped(q)) return renderTypedQuiz(q);
     return renderPracticeMcqOrNumeric(q);
   }
 
@@ -3592,6 +3623,76 @@
             ${answered ? `<button class="tts-replay-btn" id="ttsReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
           </div>
           ${optionsHtml}${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderTypedQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = (window.FR_TOPICS && window.FR_TOPICS.find(t => t.id === q.topic))
+               || window.TOPICS.find(t => t.id === q.topic)
+               || { icon: '✍️', short: 'French' };
+    const answered = State.answered !== null;
+    const correct = answered && isTypedCorrect(q, State.answered);
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice')
+      ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>`
+      : '';
+    const levelBadge = q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson]
+      ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>`
+      : '';
+    const inputVal = answered ? escapeHtml(State.answered) : escapeHtml(State.typedDraft || '');
+    const bodyHtml = `<div class="numeric-input-wrap">
+      <label for="typedAnswer" class="numeric-label">Your answer:</label>
+      <div class="numeric-input-row">
+        <input type="text" id="typedAnswer" class="numeric-input ${answered ? (correct ? 'is-correct' : 'is-wrong') : ''}"
+               autocomplete="off" spellcheck="false" lang="fr"
+               value="${inputVal}" ${answered ? 'disabled' : ''}
+               placeholder="Type your answer…" aria-describedby="typedError">
+        ${answered ? '' : `<button class="next-btn" id="submitTypedBtn" type="button">Submit ✓</button>`}
+      </div>
+      <div class="numeric-error" id="typedError" role="alert"></div>
+      ${q.ignoreAccents ? `<div class="kbd-hint" aria-hidden="true"><span>Accents are optional — correct accents are always shown in feedback</span></div>` : ''}
+      <div class="kbd-hint" aria-hidden="true">
+        <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
+      </div>
+    </div>`;
+    let feedbackHtml = '';
+    if (answered) {
+      const altsHtml = q.alts && q.alts.length
+        ? `<br><span>Also accepted: <em>${q.alts.map(a => escapeHtml(a)).join(' · ')}</em></span>`
+        : '';
+      feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
+        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct answer: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="numeric-pill">✍️ Written</span>
+            ${levelBadge}
+            ${comboEl}
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}">✓</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}">
+                <div class="progress-bar" style="width:${pct}%"></div>
+              </div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
+          <div class="question-text">${escapeHtml(q.q)}</div>
+          ${bodyHtml}${feedbackHtml}
         </div>
       </div>
     </div>`;
@@ -4924,6 +5025,23 @@
       State.woDraft.splice(pos, 1); render();
     }));
     bind('submitWordOrderBtn', 'click', submitWordOrder);
+    // Typed-answer interactions
+    bind('submitTypedBtn', 'click', submitTypedPractice);
+    const typedInput = document.getElementById('typedAnswer');
+    if (typedInput) {
+      typedInput.addEventListener('input', () => {
+        const err = document.getElementById('typedError');
+        if (err) err.textContent = '';
+      });
+      typedInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (State.answered === null) submitTypedPractice();
+          else { const next = document.getElementById('nextBtn'); if (next) next.click(); }
+        }
+      });
+      if (State.answered === null) { try { typedInput.focus(); } catch (ex) {} }
+    }
     // TTS / Listen interactions
     const listenPlayBtn = document.getElementById('listenPlayBtn');
     if (listenPlayBtn) {
@@ -5142,7 +5260,7 @@
       if (isAdvanceKey) {
         const focusedIsOptionBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('[data-opt]');
         if (e.key !== 'Enter' && focusedIsOptionBtn) return;
-        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn');
+        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn') || document.getElementById('submitTypedBtn');
         if (next && !next.disabled) { e.preventDefault(); next.click(); }
         return;
       }
