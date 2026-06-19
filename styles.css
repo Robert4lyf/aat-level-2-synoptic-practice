@@ -3394,6 +3394,20 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
 .topic-card-locked .lock-reason { font-size: .78rem; color: var(--subtext); margin-bottom: 0; line-height: 1.45; }
 .topic-card-locked .topic-card-footer { margin-top: 14px; }
 
+/* ── Mistake Clinic ─────────────────────────────────────────────────────── */
+.clinic-intro {
+  font-size: .88rem;
+  color: var(--text-secondary);
+  margin: -8px 0 16px;
+  line-height: 1.5;
+}
+.topic-card-clinic {
+  border-top: 3px solid #dc2626;
+}
+[data-theme="dark"] .topic-card-clinic {
+  border-top-color: #f87171;
+}
+
 /* ── Lesson difficulty tier labels on nodes ── */
 .node-tier-label {
   font-size: .52rem;
@@ -5173,6 +5187,27 @@ body.dark[data-subject="code-route"] .unit-card {
 .tts-q-btn:hover { background: var(--accent); color: #fff; }
 .tts-q-btn.is-playing { background: var(--accent); color: #fff; opacity: .85; }
 
+.tts-unavail {
+  display: inline-block;
+  color: var(--text-muted, #888);
+  font-size: .83rem;
+  font-style: italic;
+  margin: 6px 0;
+}
+.listen-transcript-reveal {
+  background: var(--card-muted, #f0f4f8);
+  border-left: 3px solid var(--accent, #0066cc);
+  border-radius: 4px;
+  padding: .45rem .75rem;
+  margin-bottom: .75rem;
+  font-size: .92rem;
+  line-height: 1.5;
+}
+[data-theme="dark"] .listen-transcript-reveal {
+  background: rgba(255,255,255,.06);
+  border-left-color: var(--accent, #4d9fff);
+}
+
 /* ── DELF MOCK EXAM ─────────────────────────────────────────────────────── */
 
 /* Landing section in Learn tab */
@@ -5360,3 +5395,69 @@ details[open] .delf-model-summary::before { transform: rotate(90deg); }
 .delf-back-home-btn { background: var(--card-muted); border: 1px solid var(--border); border-radius: 8px; padding: 11px 22px; font-weight: 600; font-size: .92rem; cursor: pointer; color: var(--text-primary); }
 .delf-retry-btn:hover { opacity: .9; }
 .delf-back-home-btn:hover { background: var(--border); }
+
+/* ── French navigation tabs & listening tab ────────────────────────────── */
+.fr-listen-tip { font-size: .82rem; color: var(--text-secondary); margin-bottom: 16px; background: var(--card-muted, #f0f4f8); border-radius: 8px; padding: 8px 12px; }
+[data-theme="dark"] .fr-listen-tip { background: rgba(255,255,255,.06); }
+
+/* ── French progress: CEFR sublevel breakdown ───────────────────────────── */
+.fr-progress-section { background: var(--card); border: 1px solid var(--border); border-radius: 11px; padding: 16px; margin-bottom: 20px; }
+.fr-progress-title { font-weight: 700; font-size: .92rem; color: var(--text-strong); margin-bottom: 14px; }
+.fr-progress-sub { font-weight: 400; font-size: .78rem; color: var(--text-muted); margin-left: 6px; }
+.fr-sublevel-list { display: flex; flex-direction: column; gap: 12px; }
+.fr-sublevel-row { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; align-items: center; }
+@media (max-width: 500px) { .fr-sublevel-row { grid-template-columns: 1fr; } }
+.fr-sublevel-label { padding-left: 10px; }
+.fr-sublevel-id { display: block; font-weight: 700; font-size: .8rem; color: var(--text-strong); }
+.fr-sublevel-name { display: block; font-size: .82rem; color: var(--text-primary); }
+.fr-sublevel-desc { display: block; font-size: .72rem; color: var(--text-muted); }
+.fr-sublevel-bars { display: flex; flex-direction: column; gap: 5px; }
+.fr-sublevel-stat { display: flex; align-items: center; gap: 8px; font-size: .75rem; }
+.fr-sublevel-stat-label { color: var(--text-muted); min-width: 52px; }
+.fr-sublevel-stat-val { color: var(--text-primary); min-width: 36px; text-align: right; font-weight: 600; font-size: .75rem; }
+
+/* ── DELF refinements ───────────────────────────────────────────────────── */
+/* TTS availability notice */
+.delf-tts-notice { background:#fffbe6; border:1px solid #f59e0b; border-radius:8px; padding:10px 14px; font-size:.83rem; color:#78350f; margin-bottom:14px; line-height:1.5; }
+.delf-tts-notice.no-tts { background:#fef2f2; border-color:#f87171; color:#7f1d1d; }
+[data-theme="dark"] .delf-tts-notice { background:rgba(245,158,11,.1); border-color:#92400e; color:#fcd34d; }
+[data-theme="dark"] .delf-tts-notice.no-tts { background:rgba(248,113,113,.08); border-color:#991b1b; color:#fca5a5; }
+
+/* Per-section exam instruction */
+.delf-section-instruction { background:var(--card-muted,#f0f4f8); border-left:3px solid var(--accent,#2563EB); border-radius:4px; padding:9px 13px; font-size:.83rem; color:var(--text-secondary); margin-bottom:14px; line-height:1.5; }
+[data-theme="dark"] .delf-section-instruction { background:rgba(255,255,255,.05); }
+
+/* B1 self-section content */
+.delf-self-audio-block { background:var(--card-muted,#f0f4f8); border-radius:8px; padding:12px; margin:10px 0; }
+[data-theme="dark"] .delf-self-audio-block { background:rgba(255,255,255,.05); }
+.delf-self-content-block { background:var(--card-muted,#f0f4f8); border-radius:8px; padding:12px; margin:10px 0; }
+[data-theme="dark"] .delf-self-content-block { background:rgba(255,255,255,.05); }
+.delf-no-audio-label { font-size:.76rem; color:var(--text-muted); font-style:italic; margin-bottom:8px; }
+
+/* Collapsible transcript */
+.delf-transcript-details { margin-top:10px; }
+.delf-transcript-toggle { font-size:.82rem; color:var(--accent,#2563EB); cursor:pointer; font-weight:600; }
+.delf-transcript-pre { background:var(--card,#fff); border:1px solid var(--border); border-radius:6px; padding:10px 12px; font-size:.8rem; white-space:pre-wrap; word-break:break-word; line-height:1.6; margin:6px 0 0; color:var(--text-primary); }
+[data-theme="dark"] .delf-transcript-pre { background:rgba(255,255,255,.04); }
+
+/* Reference text in self-assess */
+.delf-source-ref { margin:10px 0; }
+
+/* No-TTS transcript fallback */
+.delf-transcript-fallback { background:var(--card-muted,#f0f4f8); border-radius:6px; padding:10px 12px; margin:8px 0; }
+[data-theme="dark"] .delf-transcript-fallback { background:rgba(255,255,255,.05); }
+
+/* Level grouping in DELF landing */
+.delf-level-group { margin-bottom:28px; }
+.delf-level-group-header { padding:12px 14px; border-radius:8px; background:var(--card-muted,#f0f4f8); margin-bottom:12px; }
+[data-theme="dark"] .delf-level-group-header { background:rgba(255,255,255,.05); }
+.delf-level-group-badge { display:inline-block; color:#fff; font-size:.78rem; font-weight:700; border-radius:5px; padding:2px 8px; margin-right:8px; vertical-align:middle; }
+.delf-level-group-label { font-weight:700; font-size:.9rem; color:var(--text-strong); vertical-align:middle; }
+.delf-level-group-cando { font-size:.82rem; color:var(--text-secondary); margin:6px 0 4px; line-height:1.5; }
+.delf-level-group-scoring { font-size:.78rem; color:var(--text-muted); margin:0; }
+
+/* Hub level badge */
+.delf-hub-level-badge { display:inline-block; color:#fff; font-size:.8rem; font-weight:700; border-radius:5px; padding:3px 10px; margin:8px 0 4px; }
+
+/* Section type label on hub cards */
+.delf-sec-type { font-size:.72rem; color:var(--text-muted); margin-top:2px; }

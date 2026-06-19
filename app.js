@@ -21,7 +21,7 @@
       id: 'french', name: 'Français', short: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
       meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
-      tabs: ['learn','home','progress'],
+      tabs: ['learn','home','listen','delf','clinic','progress'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
@@ -1110,7 +1110,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: unitId, questions: picked,
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0, unitQuizPassMark: UNIT_QUIZ_PASS_MARK,
     });
     Calc.reset(); render();
@@ -1190,6 +1190,19 @@
     utterances.forEach(u => window.speechSynthesis.speak(u));
   }
   function stopSpeech() { if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+  function hasFrenchTts() { return !!(window.speechSynthesis && getFrenchVoice()); }
+  /* Returns HTML for the "no voice" note — shown when speechSynthesis exists but no fr voice found. */
+  function frNoVoiceNote() {
+    if (!window.speechSynthesis) return '';
+    return '<span class="tts-unavail" role="note">🔇 No French voice on this device — audio unavailable</span>';
+  }
+  /* Shared TTS button HTML for in-question listen buttons. */
+  function frTtsBtn(id, label) {
+    if (!window.speechSynthesis) return '';
+    return hasFrenchTts()
+      ? `<button class="tts-q-btn" id="${escapeHtml(id)}" type="button" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}">🔊 ${escapeHtml(label)}</button>`
+      : frNoVoiceNote();
+  }
   if (typeof window !== 'undefined' && window.speechSynthesis && 'onvoiceschanged' in window.speechSynthesis) {
     window.speechSynthesis.onvoiceschanged = () => { _frVoice = null; getFrenchVoice(); };
   }
@@ -1292,6 +1305,8 @@
   function isGapFill(q) { return q && q.type === 'gapfill'; }
   function isWordOrder(q) { return q && q.type === 'wordorder'; }
   function isListen(q) { return q && q.type === 'listen'; }
+  function isTyped(q) { return q && q.type === 'typed'; }
+  function isListenTyped(q) { return q && q.type === 'listen-typed'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
 
   // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
@@ -1360,6 +1375,8 @@
       }) };
     }
     if (isWordOrder(q)) { return { ...q }; }
+    if (isTyped(q)) { return { ...q }; }
+    if (isListenTyped(q)) { return { ...q }; }
     // simple MCQ
     const order = shuffle([0,1,2,3]);
     return { ...q, opts: order.map(i => q.opts[i]), ans: order.indexOf(q.ans) };
@@ -1479,6 +1496,7 @@
     scDraft: {},                            // scenario sub-answers
     gfDraft: {},                            // gap-fill dropdown selections
     woDraft: [],                            // word-order placed word indices
+    typedDraft: '',                          // typed-answer current input
     referenceOpen: false,
     taEntries: [],                          // T-account playground postings
     taForm: { desc: '', amount: '', dr: '', cr: '' },
@@ -1568,10 +1586,23 @@
       const lvl = topicId.slice(6);
       pool = window.ALL_QUESTIONS.filter(q => frQuestionLevel(q.id) === lvl);
     }
+    else if (topicId && topicId.indexOf('listen:') === 0) {
+      const lvl = topicId.slice(7);
+      if (_activeSubjectId === 'french' && !frLevelUnlocked(lvl)) {
+        const prereq = lvl === 'B1' ? 'A2' : 'A1';
+        showToast('Complete all ' + prereq + ' lessons and pass the ' + prereq + ' unit quiz to unlock ' + lvl + '.', 'warn');
+        return;
+      }
+      pool = window.ALL_QUESTIONS.filter(q => (q.type === 'listen' || q.type === 'listen-typed') && frQuestionLevel(q.id) === lvl);
+    }
     else pool = window.ALL_QUESTIONS.filter(q => q.topic === topicId);
     // Gate questions to only those from unlocked units / CEFR levels.
     // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass these gates.
     const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    // Mistake Clinic topics are always accessible — bypass level and lesson gates
+    if (topicId && topicId.startsWith('fr-clinic-')) GATE_EXEMPT.add(topicId);
+    // listen: topics did their own level check above; bypass the general lesson gate
+    if (topicId && topicId.startsWith('listen:')) GATE_EXEMPT.add(topicId);
     let poolSizeAfterLevelFilter = pool.length;
     let poolSizeAfterLessonGate = pool.length;
     if (!GATE_EXEMPT.has(topicId)) {
@@ -1633,7 +1664,7 @@
       screen:'quiz', mode:'practice', selectedTopic:topicId, questions:picked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
       hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
@@ -1687,7 +1718,7 @@
       screen:'quiz', mode:'practice', selectedTopic:'smart', questions:smartPicked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[],
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
       hintLevel:0, hintElim:null,
     });
     Calc.reset(); saveSession(); render();
@@ -1718,7 +1749,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'focus',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); saveSession(); render();
@@ -1733,7 +1764,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [],
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     render();
@@ -1776,7 +1807,7 @@
     Object.assign(State, {
       screen:'quiz', mode:'mock', selectedTopic:'all', questions:picked,
       current:0, answered:null, answers:new Array(picked.length).fill(null),
-      score:0, results:[], showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
+      score:0, results:[], showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'', typedDraft:'',
       mockEndTime: Date.now() + MOCK_DURATION_MS,
     });
     Storage.data.session = null; Storage.save();
@@ -2003,6 +2034,15 @@
     delete State.ddMap[leftIdx];
     render();
   }
+  function normalizeTyped(s, stripAcc) {
+    let n = String(s).trim().toLowerCase();
+    if (stripAcc) n = n.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return n;
+  }
+  function isTypedCorrect(q, input) {
+    const norm = s => normalizeTyped(s, q.ignoreAccents);
+    return [q.ans].concat(q.alts || []).some(a => norm(a) === norm(input));
+  }
   function submitDragDrop() {
     if (State.answered !== null) return;
     const q = State.questions[State.current];
@@ -2151,6 +2191,44 @@
       exp:q.exp, topic:q.topic, skill:q.skill, steps:q.steps });
     saveSession(); render();
   }
+  function submitTypedPractice() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    const el = document.getElementById('typedAnswer');
+    const input = el ? el.value : '';
+    if (!input.trim()) {
+      const err = document.getElementById('typedError');
+      if (err) err.textContent = 'Please type an answer before submitting.';
+      return;
+    }
+    State.typedDraft = input;
+    State.answered = input;
+    const correct = isTypedCorrect(q, input);
+    if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
+    Storage.recordAnswer(q, correct); Storage.save();
+    State.results.push({ id: q.id, q: q.q, correct, chosen: input, correctOpt: q.ans, exp: q.exp, topic: q.topic, skill: q.skill });
+    saveSession(); render();
+  }
+  function submitListenTypedPractice() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    const el = document.getElementById('listenTypedAnswer');
+    const input = el ? el.value : '';
+    if (!input.trim()) {
+      const err = document.getElementById('listenTypedError');
+      if (err) err.textContent = 'Please type what you heard before submitting.';
+      return;
+    }
+    State.typedDraft = input;
+    State.answered = input;
+    const correct = isTypedCorrect(q, input);
+    if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
+    Storage.recordAnswer(q, correct); Storage.save();
+    State.results.push({ id: q.id, q: q.q, correct, chosen: input, correctOpt: q.ans, exp: q.exp, topic: q.topic, skill: q.skill });
+    saveSession(); render();
+  }
   function selectMockOption(idx) {
     if (State.mode !== 'mock') return;
     State.answers[State.current] = idx;
@@ -2180,7 +2258,7 @@
     _lastTransitionTime = Date.now();
     if (State.current + 1 >= State.questions.length) finishPractice();
     else {
-      State.current++; State.answered = null; State.numericDraft = '';
+      State.current++; State.answered = null; State.numericDraft = ''; State.typedDraft = '';
       State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
       State.hintLevel = 0; State.hintElim = null;
       Calc.reset(); saveSession(); render();
@@ -2312,7 +2390,7 @@
     Storage.data.session = { mode:State.mode, selectedTopic:State.selectedTopic,
       questionIds: State.questions.map(q => q.id),
       current: State.current, score: State.score, results: State.results,
-      numericDraft: State.numericDraft || '', timestamp: Date.now() };
+      numericDraft: State.numericDraft || '', typedDraft: State.typedDraft || '', timestamp: Date.now() };
     Storage.save();
   }
   function resumeSession() {
@@ -2324,7 +2402,7 @@
     Object.assign(State, { screen:'quiz', mode:s.mode, selectedTopic:s.selectedTopic, questions,
       current: firstUnansweredIdx >= 0 ? firstUnansweredIdx : 0,
       answered:null, score: s.score || 0, results,
-      showReview:false, reviewFilter:'all', timedOut:false, numericDraft: s.numericDraft || '' });
+      showReview:false, reviewFilter:'all', timedOut:false, numericDraft: s.numericDraft || '', typedDraft: s.typedDraft || '' });
     Calc.reset(); render();
   }
   function dismissSession() { Storage.data.session = null; Storage.save(); render(); }
@@ -2387,7 +2465,7 @@
   }
 
   function renderMain() {
-    const ALL_TABS = { learn:'🗺️ Learn', home:'🎯 Practice', tools:'🧰 T-Accounts', glossary:'📖 Glossary', progress:'📈 Progress', howto:'ℹ️ How to Use' };
+    const ALL_TABS = { learn:'🗺️ Learn', home:'🎯 Practice', listen:'🎧 Listening', delf:'📋 DELF Mock', clinic:'🏥 Clinic', tools:'🧰 T-Accounts', glossary:'📖 Glossary', progress:'📈 Progress', howto:'ℹ️ How to Use' };
     const subjectTabs = getSubject(_activeSubjectId).tabs;
     const tabs = subjectTabs.map(id => ({ id, label: ALL_TABS[id] }));
     // Ensure activeTab is valid for this subject
@@ -2395,6 +2473,9 @@
     let content = '';
     if (State.activeTab === 'learn') content = renderLearningJourney();
     else if (State.activeTab === 'home') content = renderHomeTab();
+    else if (State.activeTab === 'listen') content = renderListeningTab();
+    else if (State.activeTab === 'delf') content = renderDelfTab();
+    else if (State.activeTab === 'clinic') content = renderClinicTab();
     else if (State.activeTab === 'tools') content = renderTAccountPlayground();
     else if (State.activeTab === 'glossary') content = renderGlossary();
     else if (State.activeTab === 'progress') content = renderProgress();
@@ -2799,7 +2880,7 @@
       ${levelSection}
       <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
-        ${window.TOPICS.map(t => {
+        ${window.TOPICS.filter(t => t.section !== 'clinic').map(t => {
           const totalN = counts[t.id];
           if (!isUnitUnlocked(t.id)) {
             return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
@@ -2893,6 +2974,133 @@
     </div>`;
   }
 
+  /* ── French skill / sublevel helpers ───────────────────────────────────── */
+  function frQuestionSkill(q) {
+    const type = q.type || '';
+    const topic = q.topic || '';
+    if (type === 'listen' || type === 'listen-typed') return 'listening';
+    if (type === 'typed') return topic === 'fr-phon' ? 'listening' : 'writing';
+    if (topic === 'fr-gram' || topic === 'fr-conj' || topic === 'fr-order' || topic.startsWith('fr-clinic-')) return 'grammar';
+    if (topic === 'fr-dial') return 'reading';
+    if (topic === 'fr-phon') return 'listening';
+    return 'vocabulary';
+  }
+
+  function frQuestionSublevel(q) {
+    const topic = q.topic || '';
+    if (topic.startsWith('fr-clinic-')) return null;
+    const id = q.id || '';
+    const n = parseInt(id.replace('fr-', ''), 10);
+    if (isNaN(n)) return null;
+    const level = frQuestionLevel(id);
+    if (level === 'A1') return n < 152 ? 'A1.1' : 'A1.2';
+    if (level === 'A2') return n < 640 ? 'A2.1' : 'A2.2';
+    if (level === 'B1') return 'B1';
+    return null;
+  }
+
+  /* ── French tab: Listening ─────────────────────────────────────────────── */
+  function renderListeningTab() {
+    const allQ = window.ALL_QUESTIONS || [];
+    const stats = Storage.data.stats;
+    const levels = [
+      { id: 'A1', label: 'Débutant',      icon: '🌱', color: '#059669' },
+      { id: 'A2', label: 'Élémentaire',   icon: '📗', color: '#2563EB' },
+      { id: 'B1', label: 'Intermédiaire', icon: '📘', color: '#7C3AED' },
+    ];
+    const ttsNote = hasFrenchTts()
+      ? `<p class="fr-listen-tip">💡 Audio plays in your browser via TTS. Use headphones for best results. Transcript reveals after each answer.</p>`
+      : `<div class="tts-unavail" style="margin-bottom:12px">🔇 No French TTS voice found on this device — transcript will show immediately instead of audio playback.</div>`;
+    const cards = levels.map(lv => {
+      const pool = allQ.filter(q => (q.type === 'listen' || q.type === 'listen-typed') && frQuestionLevel(q.id) === lv.id);
+      if (!pool.length) return '';
+      const unlocked = frLevelUnlocked(lv.id);
+      if (!unlocked) {
+        const prereq = lv.id === 'B1' ? 'A2' : 'A1';
+        return `<div class="topic-card topic-card-locked fade-in" style="border-top-color:${lv.color}">
+          <div class="level-card-lbl">🔒 ${escapeHtml(lv.id)}</div>
+          <h3>${escapeHtml(lv.id)} ${escapeHtml(lv.label)}</h3>
+          <p class="lock-reason">Finish all ${prereq} lessons and pass the ${prereq} unit quiz to unlock</p>
+          <div class="topic-card-footer"><span class="count"><span class="topic-count-sep">${pool.length} exercises locked</span></span></div>
+        </div>`;
+      }
+      const seen = pool.filter(q => { const s = stats.questions[q.id]; return s && s.attempts > 0; }).length;
+      const attempts = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).attempts || 0), 0);
+      const correct  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).correct  || 0), 0);
+      const mastery  = attempts > 0 ? Math.round(correct / attempts * 100) : null;
+      const available = pool.filter(q => !Storage.isConfident(q.id)).length;
+      const seenPct  = pool.length ? Math.round(seen / pool.length * 100) : 0;
+      const badge    = mastery != null ? `<span class="mastery-badge ${scoreClass(mastery)}">${mastery}%</span>` : '';
+      const mcqCount  = pool.filter(q => q.type === 'listen').length;
+      const dictCount = pool.filter(q => q.type === 'listen-typed').length;
+      return `<button class="topic-card fade-in" type="button" data-topic="listen:${lv.id}" style="border-top-color:${lv.color}" aria-label="Listening ${lv.id} — ${seen} of ${pool.length} seen">
+        ${badge}
+        <div class="level-card-lbl">${escapeHtml(lv.icon)} ${escapeHtml(lv.id)}</div>
+        <h3>${escapeHtml(lv.label)}</h3>
+        <p>${mcqCount} comprehension · ${dictCount} dictation</p>
+        <div class="topic-card-footer">
+          <span class="count">${seen} <span class="topic-count-sep">of</span> ${pool.length} seen</span>
+          <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+        </div>
+        <div class="topic-available">${available} <span class="topic-count-sep">available to practise</span></div>
+      </button>`;
+    }).join('');
+    return `<h2 class="section-title">Listening Practice <span class="section-title-sub">Écoute active · comprehension &amp; dictation</span></h2>
+      ${ttsNote}
+      <div class="home-grid">${cards}</div>`;
+  }
+
+  /* ── French tab: DELF Mock ──────────────────────────────────────────────── */
+  function renderDelfTab() {
+    if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) {
+      return `<h2 class="section-title">DELF Mock Exams</h2>
+        <div class="progress-empty">
+          <div class="progress-empty-icon">📋</div>
+          <p class="progress-empty-title">No DELF exams loaded</p>
+          <p class="progress-empty-sub">DELF mock exam data hasn't been loaded yet.</p>
+        </div>`;
+    }
+    return `<h2 class="section-title">DELF Mock Exams <span class="section-title-sub">Diplôme d'Études en Langue Française</span></h2>
+      <p style="font-size:.88rem;color:var(--text-secondary);margin-bottom:16px">Timed practice exams structured like the official DELF. Each exam has 4 sections and is scored out of 100.</p>
+      ${renderDelfLanding()}`;
+  }
+
+  /* ── French tab: Mistake Clinic ─────────────────────────────────────────── */
+  function renderClinicTab() {
+    const allQ = window.ALL_QUESTIONS || [];
+    const stats = Storage.data.stats;
+    const clinicTopics = (window.TOPICS || []).filter(t => t.section === 'clinic');
+    if (!clinicTopics.length) {
+      return `<h2 class="section-title">Mistake Clinic</h2>
+        <div class="progress-empty"><div class="progress-empty-icon">🏥</div><p class="progress-empty-title">No clinic topics found</p></div>`;
+    }
+    const seenByTopic = {};
+    allQ.forEach(q => { const s = stats.questions[q.id]; if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1; });
+    const topicMastery = id => { const ts = stats.topics[id]; if (!ts || !ts.attempts) return null; return Math.round((ts.correct / ts.attempts) * 100); };
+    const cards = clinicTopics.map(t => {
+      const totalN   = allQ.filter(q => q.topic === t.id).length;
+      const m        = topicMastery(t.id);
+      const badge    = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
+      const seenN    = seenByTopic[t.id] || 0;
+      const seenPct  = totalN ? Math.round(seenN / totalN * 100) : 0;
+      const available = allQ.filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
+      return `<button class="topic-card fade-in topic-card-clinic" type="button" data-topic="${t.id}" aria-label="Mistake Clinic: ${escapeHtml(t.name)}">
+        ${badge}
+        <div class="icon" aria-hidden="true">${t.icon}</div>
+        <h3>${escapeHtml(t.name)}</h3>
+        <p>${escapeHtml(t.desc)}</p>
+        <div class="topic-card-footer">
+          <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN} seen</span>
+          <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+        </div>
+        <div class="topic-available">${available} <span class="topic-count-sep">available to practise</span></div>
+      </button>`;
+    }).join('');
+    return `<h2 class="section-title">🏥 Mistake Clinic <span class="section-title-sub">targeted error correction · no prerequisites</span></h2>
+      <p class="clinic-intro">Targeted practice for the grammar points where French learners most often make mistakes. No prerequisites — open to all levels.</p>
+      <div class="home-grid">${cards}</div>`;
+  }
+
   function renderProgress() {
     const stats = Storage.data.stats;
     const totalAttempts = Object.values(stats.questions).reduce((s, q) => s + q.attempts, 0);
@@ -2966,8 +3174,82 @@
       }).join('')}</div>
     </div>`;
 
+    // French-specific: CEFR sublevel + skill breakdown
+    const isFrProgress = _activeSubjectId === 'french';
+    const frCefrSection = isFrProgress ? (() => {
+      const allQ = window.ALL_QUESTIONS || [];
+      const SUBLEVELS = [
+        { id: 'A1.1', label: 'Premiers pas',    icon: '🌱', desc: 'Greetings, basic phrases, numbers', color: '#059669' },
+        { id: 'A1.2', label: 'Fondations A1',   icon: '🌿', desc: 'Time, directions, conjugation basics', color: '#16a34a' },
+        { id: 'A2.1', label: 'Élémentaire',     icon: '📗', desc: 'Past tense, shopping, work vocabulary', color: '#2563EB' },
+        { id: 'A2.2', label: 'A2 avancé',       icon: '📘', desc: 'Pronouns, complex sentences, dialogue', color: '#1d4ed8' },
+        { id: 'B1',   label: 'Intermédiaire',   icon: '📙', desc: 'Subjunctive, hypotheticals, register', color: '#7c3aed' },
+      ];
+      const rows = SUBLEVELS.map(sl => {
+        const pool = allQ.filter(q => frQuestionSublevel(q) === sl.id);
+        if (!pool.length) return '';
+        const seen = pool.filter(q => { const s = stats.questions[q.id]; return s && s.attempts > 0; }).length;
+        const att  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).attempts || 0), 0);
+        const cor  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).correct  || 0), 0);
+        const pct  = att > 0 ? Math.round(cor / att * 100) : null;
+        const seenPct = pool.length ? Math.round(seen / pool.length * 100) : 0;
+        const cls  = pct === null ? '' : scoreClass(pct);
+        return `<div class="fr-sublevel-row">
+          <div class="fr-sublevel-label" style="border-left:3px solid ${sl.color}">
+            <span class="fr-sublevel-id">${escapeHtml(sl.icon)} ${escapeHtml(sl.id)}</span>
+            <span class="fr-sublevel-name">${escapeHtml(sl.label)}</span>
+            <span class="fr-sublevel-desc">${escapeHtml(sl.desc)}</span>
+          </div>
+          <div class="fr-sublevel-bars">
+            <div class="fr-sublevel-stat">
+              <span class="fr-sublevel-stat-label">Seen</span>
+              <div class="breakdown-bar-bg" style="flex:1" role="progressbar" aria-valuenow="${seenPct}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ok" style="width:${seenPct}%;background:${sl.color}80"></div></div>
+              <span class="fr-sublevel-stat-val">${seen}/${pool.length}</span>
+            </div>
+            <div class="fr-sublevel-stat">
+              <span class="fr-sublevel-stat-label">Accuracy</span>
+              <div class="breakdown-bar-bg" style="flex:1" role="progressbar" aria-valuenow="${pct || 0}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${cls}" style="width:${pct || 0}%"></div></div>
+              <span class="fr-sublevel-stat-val">${pct !== null ? pct + '%' : '—'}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="fr-progress-section">
+        <div class="fr-progress-title">Progress by CEFR level <span class="fr-progress-sub">A1.1 · A1.2 · A2.1 · A2.2 · B1</span></div>
+        <div class="fr-sublevel-list">${rows}</div>
+      </div>`;
+    })() : '';
+
+    const frSkillSection = isFrProgress ? (() => {
+      const allQ = window.ALL_QUESTIONS || [];
+      const SKILLS_FR = [
+        { id: 'grammar',    label: 'Grammar',    icon: '📐', desc: 'Tenses, agreement, structure' },
+        { id: 'vocabulary', label: 'Vocabulary', icon: '📚', desc: 'Words, phrases, thematic sets' },
+        { id: 'listening',  label: 'Listening',  icon: '🎧', desc: 'Audio comprehension, dictation' },
+        { id: 'reading',    label: 'Reading',    icon: '📖', desc: 'Dialogue, text comprehension' },
+        { id: 'writing',    label: 'Writing',    icon: '✏️', desc: 'Typed production, spelling' },
+      ];
+      const rows = SKILLS_FR.map(sk => {
+        const pool = allQ.filter(q => frQuestionSkill(q) === sk.id);
+        const att  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).attempts || 0), 0);
+        const cor  = pool.reduce((s, q) => s + ((stats.questions[q.id] || {}).correct  || 0), 0);
+        const pct  = att > 0 ? Math.round(cor / att * 100) : null;
+        const cls  = pct === null ? '' : scoreClass(pct);
+        return `<div class="breakdown-row">
+          <span class="bl">${sk.icon} ${escapeHtml(sk.label)}</span>
+          <div class="breakdown-bar-bg" role="progressbar" aria-valuenow="${pct || 0}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${cls}" style="width:${pct || 0}%"></div></div>
+          <span class="breakdown-pct">${pct !== null ? pct + '%' : '—'}</span>
+        </div>`;
+      }).join('');
+      return `<div class="breakdown" style="background:var(--card);border:1px solid var(--border);padding:16px;border-radius:11px;margin-bottom:20px">
+        <div class="breakdown-title">Accuracy by skill</div>${rows}
+      </div>`;
+    })() : '';
+
     return `<h2 class="section-title">Your Progress</h2>
       ${badgeShowcase}
+      ${frCefrSection}
+      ${frSkillSection}
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-num" data-count="${totalAttempts}">${totalAttempts}</div><div class="stat-label">Questions answered</div></div>
         <div class="stat-card"><div class="stat-num" data-count="${accuracy}" data-suffix="%">${accuracy}%</div><div class="stat-label">Lifetime accuracy</div></div>
@@ -3075,6 +3357,8 @@
     if (isGapFill(q)) return renderGapFillQuiz(q);
     if (isWordOrder(q)) return renderWordOrderQuiz(q);
     if (isListen(q)) return renderListenQuiz(q);
+    if (isTyped(q)) return renderTypedQuiz(q);
+    if (isListenTyped(q)) return renderListenTypedQuiz(q);
     return renderPracticeMcqOrNumeric(q);
   }
 
@@ -3165,7 +3449,12 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
-          ${_activeSubjectId === 'french' && isFrToEnMcq(q) ? `<button class="tts-q-btn" id="ttsQBtn" type="button" aria-label="Hear French pronunciation" title="Listen to pronunciation">🔊 ${escapeHtml(extractFrenchTerm(q) || '')}</button>` : ''}
+          ${(() => {
+            if (_activeSubjectId !== 'french') return '';
+            if (isFrToEnMcq(q)) return frTtsBtn('ttsQBtn', extractFrenchTerm(q) || 'Listen');
+            if (q.tts) return frTtsBtn('ttsQBtn', 'Listen');
+            return '';
+          })()}
           ${(() => {
             if (State.mode !== 'practice' || State.answered !== null) return '';
             const sk = skillById(q.skill);
@@ -3597,6 +3886,153 @@
     </div>`;
   }
 
+  function renderTypedQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = (window.FR_TOPICS && window.FR_TOPICS.find(t => t.id === q.topic))
+               || window.TOPICS.find(t => t.id === q.topic)
+               || { icon: '✍️', short: 'French' };
+    const answered = State.answered !== null;
+    const correct = answered && isTypedCorrect(q, State.answered);
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice')
+      ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>`
+      : '';
+    const levelBadge = q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson]
+      ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>`
+      : '';
+    const inputVal = answered ? escapeHtml(State.answered) : escapeHtml(State.typedDraft || '');
+    const bodyHtml = `<div class="numeric-input-wrap">
+      <label for="typedAnswer" class="numeric-label">Your answer:</label>
+      <div class="numeric-input-row">
+        <input type="text" id="typedAnswer" class="numeric-input ${answered ? (correct ? 'is-correct' : 'is-wrong') : ''}"
+               autocomplete="off" spellcheck="false" lang="fr"
+               value="${inputVal}" ${answered ? 'disabled' : ''}
+               placeholder="Type your answer…" aria-describedby="typedError">
+        ${answered ? '' : `<button class="next-btn" id="submitTypedBtn" type="button">Submit ✓</button>`}
+      </div>
+      <div class="numeric-error" id="typedError" role="alert"></div>
+      ${q.ignoreAccents ? `<div class="kbd-hint" aria-hidden="true"><span>Accents are optional — correct accents are always shown in feedback</span></div>` : ''}
+      <div class="kbd-hint" aria-hidden="true">
+        <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
+      </div>
+    </div>`;
+    let feedbackHtml = '';
+    if (answered) {
+      const altsHtml = q.alts && q.alts.length
+        ? `<br><span>Also accepted: <em>${q.alts.map(a => escapeHtml(a)).join(' · ')}</em></span>`
+        : '';
+      feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
+        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct answer: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="numeric-pill">✍️ Written</span>
+            ${levelBadge}
+            ${comboEl}
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}">✓</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}">
+                <div class="progress-bar" style="width:${pct}%"></div>
+              </div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
+          <div class="question-text">${escapeHtml(q.q)}</div>
+          ${q.tts && _activeSubjectId === 'french' ? frTtsBtn('ttsQBtn', 'Listen') : ''}
+          ${bodyHtml}${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderListenTypedQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = (window.FR_TOPICS && window.FR_TOPICS.find(t => t.id === q.topic))
+               || window.TOPICS.find(t => t.id === q.topic)
+               || { icon: '🎧', short: 'Dictée' };
+    const answered = State.answered !== null;
+    const correct = answered && isTypedCorrect(q, State.answered);
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice')
+      ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>`
+      : '';
+    const audioText = q.audio || q.ans;
+    const inputVal = answered ? escapeHtml(State.answered) : escapeHtml(State.typedDraft || '');
+    const playBtnHtml = window.speechSynthesis
+      ? `<button class="listen-play-btn" id="listenTypedPlayBtn" type="button" aria-label="Play audio">🔊 Tap to Listen</button>`
+      : `<span class="tts-unavail" role="note">🔇 Audio not available on this device — transcript shown below</span>`;
+    const transcriptHtml = answered || !window.speechSynthesis
+      ? `<div class="listen-transcript-reveal" role="note"><strong>Transcript:</strong> ${escapeHtml(audioText)}</div>`
+      : '';
+    const bodyHtml = `<div class="listen-prompt">
+      ${playBtnHtml}
+      <p class="listen-hint">${escapeHtml(q.q)}</p>
+      ${answered && window.speechSynthesis ? `<button class="tts-replay-btn" id="listenTypedReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
+    </div>
+    <div class="numeric-input-wrap">
+      ${transcriptHtml}
+      <label for="listenTypedAnswer" class="numeric-label">What did you hear?</label>
+      <div class="numeric-input-row">
+        <input type="text" id="listenTypedAnswer" class="numeric-input ${answered ? (correct ? 'is-correct' : 'is-wrong') : ''}"
+               autocomplete="off" spellcheck="false" lang="fr"
+               value="${inputVal}" ${answered ? 'disabled' : ''}
+               placeholder="Type what you heard…" aria-describedby="listenTypedError">
+        ${answered ? '' : `<button class="next-btn" id="submitListenTypedBtn" type="button">Submit ✓</button>`}
+      </div>
+      <div class="numeric-error" id="listenTypedError" role="alert"></div>
+      ${q.ignoreAccents ? `<div class="kbd-hint" aria-hidden="true"><span>Accents are optional</span></div>` : ''}
+      <div class="kbd-hint" aria-hidden="true">
+        <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
+      </div>
+    </div>`;
+    let feedbackHtml = '';
+    if (answered) {
+      const altsHtml = q.alts && q.alts.length
+        ? `<br><span>Also accepted: <em>${q.alts.map(a => escapeHtml(a)).join(' · ')}</em></span>`
+        : '';
+      feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
+        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="numeric-pill">🎧 Dictée</span>
+            ${comboEl}
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="${confident ? 'Unmark confident' : 'Mark as confident'}">✓</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
+          ${bodyHtml}${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
   function renderMockQuiz() {
     const q = State.questions[State.current];
     const total = State.questions.length;
@@ -3933,7 +4369,6 @@
     </div>
     ${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
-    ${_activeSubjectId === 'french' && window.DELF_MOCKS ? renderDelfLanding() : ''}
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
       <div class="l3-bridge-header">
         <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
@@ -4465,7 +4900,7 @@
     stopDelfTimer();
     State.delfExam = null;
     State.screen = 'home';
-    State.activeTab = 'learn';
+    State.activeTab = 'delf';
     render();
   }
 
@@ -4485,24 +4920,29 @@
     const exam = getDelfExam(de.examId);
     const allDone = exam.sections.every(s => de.sectionsDone[s.id] !== false);
     const totalScore = allDone ? exam.sections.reduce((sum, s) => sum + (de.sectionsDone[s.id] || 0), 0) : null;
+    const SEC_TYPE_LABEL = { auto: '✅ Auto-graded', self: '📋 Self-assessed', writing: '📋 Self-assessed', speaking: '📋 Self-assessed' };
     const sectionCards = exam.sections.map((s, idx) => {
       const done = de.sectionsDone[s.id] !== false;
       const score = done ? de.sectionsDone[s.id] : null;
       const passSec = score !== null && score >= 5;
+      const typeLabel = SEC_TYPE_LABEL[s.type] || '';
       return `<div class="delf-section-card ${done ? 'delf-sec-done' : ''}">
         <div class="delf-sec-icon">${s.icon}</div>
         <div class="delf-sec-info">
           <div class="delf-sec-title">${escapeHtml(s.title)}</div>
           <div class="delf-sec-sub">${escapeHtml(s.english)} · ${s.maxScore} pts · ${Math.round(s.duration / 60)} min</div>
+          <div class="delf-sec-type">${typeLabel}</div>
         </div>
         <div class="delf-sec-status">
           ${done ? `<span class="delf-sec-score ${passSec ? 'pass' : 'fail'}">${score}/${s.maxScore}</span>` : `<button class="delf-start-sec-btn" type="button" data-delf-start="${idx}">Start →</button>`}
         </div>
       </div>`;
     }).join('');
+    const levelColour = exam.level === 'A1' ? '#059669' : exam.level === 'A2' ? '#2563EB' : exam.level === 'B1' ? '#7c3aed' : '#9d174d';
     return `<div class="container delf-hub fade-in">
       <div class="delf-hub-header">
-        <button class="delf-back-btn" type="button" id="delfExitBtn">← Back to Learn</button>
+        <button class="delf-back-btn" type="button" id="delfExitBtn">← Back to DELF Exams</button>
+        <span class="delf-hub-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</span>
         <div class="delf-hub-title">${escapeHtml(exam.title)}</div>
         <div class="delf-hub-desc">${escapeHtml(exam.desc)}</div>
       </div>
@@ -4518,6 +4958,7 @@
     const exam = getDelfExam(de.examId);
     const section = exam.sections[de.sectionIdx];
     if (section.type === 'auto') return renderDelfAutoSection(section);
+    if (section.type === 'self') return renderDelfSelfSection(section);
     if (section.type === 'writing') return renderDelfWritingSection(section);
     if (section.type === 'speaking') return renderDelfSpeakingSection(section);
     return '';
@@ -4532,14 +4973,87 @@
       .trim();
   }
 
+  /* Renders a B1-style self-assessed listening or reading section */
+  function renderDelfSelfSection(section) {
+    const de = State.delfExam;
+    if (de.sectionPhase === 'assess') return renderDelfSelfAssess(section);
+    const isListening = section.id === 'listening';
+    const ttsAvail = hasFrenchTts();
+    const SECTION_INSTRUCTIONS = {
+      listening: 'Listen to each recording (or read the transcript if audio is unavailable), then answer the comprehension questions mentally before self-assessing.',
+      reading: 'Read each text carefully. Take notes if helpful. Then use the rubric checklist to assess your comprehension.',
+    };
+    const ttsNotice = isListening
+      ? `<div class="delf-tts-notice${ttsAvail ? '' : ' no-tts'}">
+          ${ttsAvail
+            ? `🔊 <strong>Simulated audio:</strong> Listening is via your browser's text-to-speech engine — real DELF uses recorded audio. Play each extract, then reveal the transcript to verify your understanding.`
+            : `🔇 <strong>No French TTS voice found.</strong> Transcripts are shown below in place of audio. In the real exam these would be recorded extracts played twice.`}
+        </div>` : '';
+    const tasksHtml = (section.tasks || []).map(t => {
+      const raw = t.script || t.text || '';
+      let contentHtml = '';
+      if (raw) {
+        if (isListening && ttsAvail) {
+          contentHtml = `<div class="delf-self-audio-block">
+            <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(raw)}">🔊 Play recording</button>
+            <span class="delf-tts-replay">Tap again to replay · real exam: played twice</span>
+            <details class="delf-transcript-details">
+              <summary class="delf-transcript-toggle">📄 Show transcript (reveal after attempting)</summary>
+              <pre class="delf-transcript-pre">${escapeHtml(raw)}</pre>
+            </details>
+          </div>`;
+        } else {
+          contentHtml = `<div class="delf-self-content-block">
+            ${isListening ? `<div class="delf-no-audio-label">📄 Transcript (no audio on this device)</div>` : ''}
+            <pre class="delf-transcript-pre">${escapeHtml(raw)}</pre>
+          </div>`;
+        }
+      }
+      return `<div class="delf-task">
+        <div class="delf-task-title">${escapeHtml(t.title)}</div>
+        <div class="delf-task-instruction">${escapeHtml(t.instruction)}</div>
+        ${contentHtml}
+      </div>`;
+    }).join('');
+    return `<div class="container delf-section-screen fade-in">
+      <div class="delf-section-header">
+        <button class="delf-back-btn" type="button" id="delfSectionBackBtn">← Sections</button>
+        <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
+        <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
+      </div>
+      ${ttsNotice}
+      <div class="delf-section-instruction">${escapeHtml(SECTION_INSTRUCTIONS[section.id] || '')}</div>
+      <div class="delf-tasks">${tasksHtml}</div>
+      <div class="delf-section-footer">
+        <button class="delf-finish-sec-btn" type="button" id="delfFinishSectionBtn">I've finished — self-assess →</button>
+      </div>
+    </div>`;
+  }
+
   function renderDelfAutoSection(section) {
     const de = State.delfExam;
     const anss = de.answers[section.id] || [];
     const isListening = section.id === 'listening';
+    const ttsAvail = hasFrenchTts();
     let flatIdx = 0;
 
+    // Per-section exam-style instructions
+    const SECTION_INSTRUCTIONS = {
+      listening: isListening && ttsAvail
+        ? 'Click "Play Recording" for each extract. In the real exam each recording is played twice. Answer without looking at the transcript, then move on.'
+        : 'Read each transcript carefully (substituting for audio). In the real exam these would be recordings played twice.',
+      reading: 'Read each text carefully. You may refer back to it while answering.',
+    };
+    const sectionInstruction = SECTION_INSTRUCTIONS[section.id] || '';
+
+    const ttsNotice = isListening
+      ? `<div class="delf-tts-notice${ttsAvail ? '' : ' no-tts'}">
+          ${ttsAvail
+            ? `🔊 <strong>Simulated audio:</strong> This app uses browser text-to-speech — real DELF exams use recorded audio.`
+            : `🔇 <strong>No French TTS voice found.</strong> Transcripts are shown below in place of audio recordings.`}
+        </div>` : '';
+
     const exercisesHtml = (section.exercises || []).map((ex, exIdx) => {
-      // Group questions by their context (transcript/text). Each new non-null context starts a group.
       const groups = [];
       let currentGroup = null;
       (ex.questions || []).forEach(q => {
@@ -4560,10 +5074,18 @@
         if (isListening && g.context) {
           const ttsText = delfTtsText(g.context);
           const ttsKey = `delf-tts-${exIdx}-${gi}`;
-          contextHtml = `<div class="delf-tts-block">
-            <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(ttsText)}" id="${ttsKey}">🔊 Play Recording</button>
-            <span class="delf-tts-replay">Tap again to replay · In the real exam you hear each recording twice</span>
-          </div>`;
+          if (ttsAvail) {
+            contextHtml = `<div class="delf-tts-block">
+              <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(ttsText)}" id="${ttsKey}">🔊 Play Recording</button>
+              <span class="delf-tts-replay">Tap again to replay · In the real exam you hear each recording twice</span>
+            </div>`;
+          } else {
+            // No TTS — show transcript directly as substitute
+            contextHtml = `<div class="delf-text-block delf-transcript-fallback">
+              <div class="delf-no-audio-label">📄 Transcript (no audio on this device — read as you would listen)</div>
+              <pre class="delf-text-content">${escapeHtml(g.context)}</pre>
+            </div>`;
+          }
         } else if (!isListening && g.context) {
           contextHtml = `<div class="delf-text-block"><pre class="delf-text-content">${escapeHtml(g.context)}</pre></div>`;
         }
@@ -4595,6 +5117,8 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
+      ${ttsNotice}
+      ${sectionInstruction ? `<div class="delf-section-instruction">${escapeHtml(sectionInstruction)}</div>` : ''}
       <div class="delf-progress-row"><span id="delfProgressText">${answered}/${total} answered</span><div class="delf-prog-bar"><div class="delf-prog-fill" id="delfProgFill" style="width:${total?Math.round(answered/total*100):0}%"></div></div></div>
       <div class="delf-exercises">${exercisesHtml}</div>
       <div class="delf-section-footer">
@@ -4619,6 +5143,7 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
+      <div class="delf-section-instruction">Write in French on paper or in a separate document. Use the textarea below for planning notes only. When the timer ends, self-assess your work using the rubric checklist.</div>
       <div class="delf-section-intro">${escapeHtml(section.intro || '')}</div>
       <div class="delf-tasks">${tasksHtml}</div>
       <div class="delf-section-footer">
@@ -4648,6 +5173,7 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
+      <div class="delf-section-instruction">Carry out each task out loud — with a partner if possible, or alone in front of a mirror. Use your preparation time, then speak. Self-assess at the end.</div>
       <div class="delf-section-intro">${escapeHtml(section.intro || '')}</div>
       <div class="delf-tasks">${tasksHtml}</div>
       <div class="delf-section-footer">
@@ -4671,6 +5197,11 @@
         </label>`;
       }).join('');
       const instructionHtml = t.instruction ? `<div class="delf-assess-instruction">${escapeHtml(t.instruction)}</div>` : '';
+      const sourceContent = t.script || t.text || '';
+      const sourceHtml = sourceContent ? `<details class="delf-transcript-details delf-source-ref">
+        <summary class="delf-transcript-toggle">📄 Reference ${t.script ? 'transcript' : 'text'}</summary>
+        <pre class="delf-transcript-pre">${escapeHtml(sourceContent)}</pre>
+      </details>` : '';
       const modelContent = t.modelAnswer || t.modelDialogue;
       const modelHtml = modelContent ? `<details class="delf-model-wrap">
         <summary class="delf-model-summary">${t.modelDialogue ? '💬 View model dialogue' : '📝 View model answer'}</summary>
@@ -4679,6 +5210,7 @@
       return `<div class="delf-task delf-assess-task">
         <div class="delf-task-title">${escapeHtml(t.title)}</div>
         ${instructionHtml}
+        ${sourceHtml}
         <div class="delf-rubric">${rubricHtml}</div>
         ${modelHtml}
       </div>`;
@@ -4735,7 +5267,7 @@
       ${selfNote}
       <div class="delf-results-actions">
         <button class="delf-retry-btn" type="button" data-delf-retry="${escapeHtml(de.examId)}">Retry this exam</button>
-        <button class="delf-back-home-btn" type="button" id="delfHomeBtn">← Back to Learn</button>
+        <button class="delf-back-home-btn" type="button" id="delfHomeBtn">← Back to DELF Exams</button>
       </div>
     </div>`;
   }
@@ -4743,35 +5275,66 @@
   function renderDelfLanding() {
     if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) return '';
     const de = State.delfExam;
+    const ttsAvail = hasFrenchTts();
     const levelOrder = { A1: 1, A2: 2, B1: 3, B2: 4 };
     const sortedMocks = [...window.DELF_MOCKS].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
-    const cardsHtml = sortedMocks.map(exam => {
-      const attempted = de && de.examId === exam.id && de.phase === 'results';
-      const inProgress = de && de.examId === exam.id && de.phase !== 'results';
-      const levelColour = exam.level === 'A1' ? '#2a7' : exam.level === 'A2' ? '#0073e6' : exam.level === 'B1' ? '#5b21b6' : '#9d174d';
-      return `<div class="delf-exam-card">
-        <div class="delf-exam-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</div>
-        <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
-        <div class="delf-exam-card-desc">${escapeHtml(exam.desc)}</div>
-        <div class="delf-exam-card-meta">⏱ ${escapeHtml(exam.totalDuration)} · 4 sections · 100 pts</div>
-        <button class="delf-exam-start-btn" type="button" data-delf-exam="${escapeHtml(exam.id)}">
-          ${inProgress ? 'Continue exam →' : attempted ? 'Retry exam →' : 'Start exam →'}
-        </button>
+
+    const LEVEL_META = {
+      A1: { icon: '🌱', colour: '#059669', label: 'Beginner', cando: 'Understand and produce very simple everyday expressions. Introduce yourself, ask basic questions about people and places.' },
+      A2: { icon: '📗', colour: '#2563EB', label: 'Elementary', cando: 'Describe your immediate environment and routine. Handle short social exchanges. Read simple notices and messages.' },
+      B1: { icon: '📘', colour: '#7c3aed', label: 'Intermediate', cando: 'Deal with most travel and social situations. Write simple connected text. Understand the main points of clear standard speech.' },
+    };
+
+    const grouped = {};
+    sortedMocks.forEach(exam => {
+      if (!grouped[exam.level]) grouped[exam.level] = [];
+      grouped[exam.level].push(exam);
+    });
+
+    const levelsHtml = Object.entries(grouped).map(([level, exams]) => {
+      const meta = LEVEL_META[level] || { icon: '📄', colour: '#555', label: level, cando: '' };
+      const hasAutoGraded = exams.some(e => e.sections && e.sections.some(s => s.type === 'auto'));
+      const scoringNote = hasAutoGraded
+        ? '✅ Listening + Reading auto-graded · 📋 Writing + Speaking self-assessed'
+        : '📋 All sections self-assessed using rubric checklists';
+      const cardsHtml = exams.map(exam => {
+        const attempted = de && de.examId === exam.id && de.phase === 'results';
+        const inProgress = de && de.examId === exam.id && de.phase !== 'results';
+        return `<div class="delf-exam-card" style="border-top:3px solid ${meta.colour}">
+          <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
+          <div class="delf-exam-card-desc">${escapeHtml(exam.desc)}</div>
+          <div class="delf-exam-card-meta">⏱ ${escapeHtml(exam.totalDuration)} · 4 sections · 100 pts</div>
+          <button class="delf-exam-start-btn" type="button" data-delf-exam="${escapeHtml(exam.id)}" style="background:${meta.colour}">
+            ${inProgress ? 'Continue exam →' : attempted ? 'Retry exam →' : 'Start exam →'}
+          </button>
+        </div>`;
+      }).join('');
+      return `<div class="delf-level-group">
+        <div class="delf-level-group-header" style="border-left:4px solid ${meta.colour}">
+          <span class="delf-level-group-badge" style="background:${meta.colour}">${meta.icon} ${escapeHtml(level)}</span>
+          <span class="delf-level-group-label">${escapeHtml(meta.label)}</span>
+          <p class="delf-level-group-cando">${escapeHtml(meta.cando)}</p>
+          <p class="delf-level-group-scoring">${scoringNote}</p>
+        </div>
+        <div class="delf-exam-cards">${cardsHtml}</div>
       </div>`;
     }).join('');
+
+    const ttsNotice = `<div class="delf-tts-notice${ttsAvail ? '' : ' no-tts'}" style="margin-bottom:16px">
+      ${ttsAvail
+        ? `🔊 <strong>Audio note:</strong> Listening sections use your browser's text-to-speech engine. Real DELF exams use recorded audio. Results are still valid practice.`
+        : `🔇 <strong>No French TTS voice detected.</strong> Listening transcripts will be shown as text when you start an exam. All other sections work normally.`}
+    </div>`;
+
     return `<div class="delf-landing">
-      <div class="delf-landing-header">
-        <div class="delf-landing-icon">🎓</div>
-        <div class="delf-landing-title">DELF Mock Exams</div>
-        <div class="delf-landing-sub">The DELF (Diplôme d\'Études en Langue Française) is an official French language qualification from France Éducation International. Practise under realistic exam conditions with timed sections and automatic scoring.</div>
-      </div>
       <div class="delf-landing-info">
         <div class="delf-info-item">📝 4 sections per exam</div>
         <div class="delf-info-item">⏱ Timed conditions</div>
-        <div class="delf-info-item">✅ Auto-graded (Listening + Reading)</div>
+        <div class="delf-info-item">✅ Auto-graded Listening + Reading (A1/A2)</div>
         <div class="delf-info-item">🎯 50/100 to pass</div>
       </div>
-      <div class="delf-exam-cards">${cardsHtml}</div>
+      ${ttsNotice}
+      ${levelsHtml}
     </div>`;
   }
 
@@ -4924,6 +5487,56 @@
       State.woDraft.splice(pos, 1); render();
     }));
     bind('submitWordOrderBtn', 'click', submitWordOrder);
+    // Typed-answer interactions
+    bind('submitTypedBtn', 'click', submitTypedPractice);
+    const typedInput = document.getElementById('typedAnswer');
+    if (typedInput) {
+      typedInput.addEventListener('input', () => {
+        const err = document.getElementById('typedError');
+        if (err) err.textContent = '';
+      });
+      typedInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (State.answered === null) submitTypedPractice();
+          else { const next = document.getElementById('nextBtn'); if (next) next.click(); }
+        }
+      });
+      if (State.answered === null) { try { typedInput.focus(); } catch (ex) {} }
+    }
+    // Listen-typed interactions
+    const listenTypedPlayBtn = document.getElementById('listenTypedPlayBtn');
+    if (listenTypedPlayBtn) {
+      const ltq = State.questions[State.current];
+      const ltAudio = ltq.audio || ltq.ans;
+      listenTypedPlayBtn.addEventListener('click', () => {
+        speakFrench(ltAudio,
+          () => { listenTypedPlayBtn.textContent = '⏹ Playing…'; listenTypedPlayBtn.classList.add('is-playing'); },
+          () => { listenTypedPlayBtn.textContent = '🔊 Tap to Listen'; listenTypedPlayBtn.classList.remove('is-playing'); }
+        );
+      });
+    }
+    const listenTypedReplayBtn = document.getElementById('listenTypedReplayBtn');
+    if (listenTypedReplayBtn) {
+      const ltq = State.questions[State.current];
+      listenTypedReplayBtn.addEventListener('click', () => speakFrench(ltq.audio || ltq.ans));
+    }
+    bind('submitListenTypedBtn', 'click', submitListenTypedPractice);
+    const listenTypedInput = document.getElementById('listenTypedAnswer');
+    if (listenTypedInput) {
+      listenTypedInput.addEventListener('input', () => {
+        const err = document.getElementById('listenTypedError');
+        if (err) err.textContent = '';
+      });
+      listenTypedInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (State.answered === null) submitListenTypedPractice();
+          else { const next = document.getElementById('nextBtn'); if (next) next.click(); }
+        }
+      });
+      if (State.answered === null) { try { listenTypedInput.focus(); } catch (ex) {} }
+    }
     // TTS / Listen interactions
     const listenPlayBtn = document.getElementById('listenPlayBtn');
     if (listenPlayBtn) {
@@ -4943,7 +5556,7 @@
     const ttsQBtn = document.getElementById('ttsQBtn');
     if (ttsQBtn) {
       const tq = State.questions[State.current];
-      const ttsText = isFrToEnMcq(tq) ? extractFrenchTerm(tq) : null;
+      const ttsText = tq.tts || (isFrToEnMcq(tq) ? extractFrenchTerm(tq) : null);
       if (ttsText) ttsQBtn.addEventListener('click', () => {
         const origLabel = ttsQBtn.textContent;
         speakFrench(ttsText,
@@ -5142,7 +5755,7 @@
       if (isAdvanceKey) {
         const focusedIsOptionBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('[data-opt]');
         if (e.key !== 'Enter' && focusedIsOptionBtn) return;
-        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn');
+        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn') || document.getElementById('submitTypedBtn') || document.getElementById('submitListenTypedBtn');
         if (next && !next.disabled) { e.preventDefault(); next.click(); }
         return;
       }
