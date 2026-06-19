@@ -4900,7 +4900,7 @@
     stopDelfTimer();
     State.delfExam = null;
     State.screen = 'home';
-    State.activeTab = 'learn';
+    State.activeTab = 'delf';
     render();
   }
 
@@ -4920,24 +4920,29 @@
     const exam = getDelfExam(de.examId);
     const allDone = exam.sections.every(s => de.sectionsDone[s.id] !== false);
     const totalScore = allDone ? exam.sections.reduce((sum, s) => sum + (de.sectionsDone[s.id] || 0), 0) : null;
+    const SEC_TYPE_LABEL = { auto: '✅ Auto-graded', self: '📋 Self-assessed', writing: '📋 Self-assessed', speaking: '📋 Self-assessed' };
     const sectionCards = exam.sections.map((s, idx) => {
       const done = de.sectionsDone[s.id] !== false;
       const score = done ? de.sectionsDone[s.id] : null;
       const passSec = score !== null && score >= 5;
+      const typeLabel = SEC_TYPE_LABEL[s.type] || '';
       return `<div class="delf-section-card ${done ? 'delf-sec-done' : ''}">
         <div class="delf-sec-icon">${s.icon}</div>
         <div class="delf-sec-info">
           <div class="delf-sec-title">${escapeHtml(s.title)}</div>
           <div class="delf-sec-sub">${escapeHtml(s.english)} · ${s.maxScore} pts · ${Math.round(s.duration / 60)} min</div>
+          <div class="delf-sec-type">${typeLabel}</div>
         </div>
         <div class="delf-sec-status">
           ${done ? `<span class="delf-sec-score ${passSec ? 'pass' : 'fail'}">${score}/${s.maxScore}</span>` : `<button class="delf-start-sec-btn" type="button" data-delf-start="${idx}">Start →</button>`}
         </div>
       </div>`;
     }).join('');
+    const levelColour = exam.level === 'A1' ? '#059669' : exam.level === 'A2' ? '#2563EB' : exam.level === 'B1' ? '#7c3aed' : '#9d174d';
     return `<div class="container delf-hub fade-in">
       <div class="delf-hub-header">
-        <button class="delf-back-btn" type="button" id="delfExitBtn">← Back to Learn</button>
+        <button class="delf-back-btn" type="button" id="delfExitBtn">← Back to DELF Exams</button>
+        <span class="delf-hub-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</span>
         <div class="delf-hub-title">${escapeHtml(exam.title)}</div>
         <div class="delf-hub-desc">${escapeHtml(exam.desc)}</div>
       </div>
@@ -4953,6 +4958,7 @@
     const exam = getDelfExam(de.examId);
     const section = exam.sections[de.sectionIdx];
     if (section.type === 'auto') return renderDelfAutoSection(section);
+    if (section.type === 'self') return renderDelfSelfSection(section);
     if (section.type === 'writing') return renderDelfWritingSection(section);
     if (section.type === 'speaking') return renderDelfSpeakingSection(section);
     return '';
@@ -4967,14 +4973,87 @@
       .trim();
   }
 
+  /* Renders a B1-style self-assessed listening or reading section */
+  function renderDelfSelfSection(section) {
+    const de = State.delfExam;
+    if (de.sectionPhase === 'assess') return renderDelfSelfAssess(section);
+    const isListening = section.id === 'listening';
+    const ttsAvail = hasFrenchTts();
+    const SECTION_INSTRUCTIONS = {
+      listening: 'Listen to each recording (or read the transcript if audio is unavailable), then answer the comprehension questions mentally before self-assessing.',
+      reading: 'Read each text carefully. Take notes if helpful. Then use the rubric checklist to assess your comprehension.',
+    };
+    const ttsNotice = isListening
+      ? `<div class="delf-tts-notice${ttsAvail ? '' : ' no-tts'}">
+          ${ttsAvail
+            ? `🔊 <strong>Simulated audio:</strong> Listening is via your browser's text-to-speech engine — real DELF uses recorded audio. Play each extract, then reveal the transcript to verify your understanding.`
+            : `🔇 <strong>No French TTS voice found.</strong> Transcripts are shown below in place of audio. In the real exam these would be recorded extracts played twice.`}
+        </div>` : '';
+    const tasksHtml = (section.tasks || []).map(t => {
+      const raw = t.script || t.text || '';
+      let contentHtml = '';
+      if (raw) {
+        if (isListening && ttsAvail) {
+          contentHtml = `<div class="delf-self-audio-block">
+            <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(raw)}">🔊 Play recording</button>
+            <span class="delf-tts-replay">Tap again to replay · real exam: played twice</span>
+            <details class="delf-transcript-details">
+              <summary class="delf-transcript-toggle">📄 Show transcript (reveal after attempting)</summary>
+              <pre class="delf-transcript-pre">${escapeHtml(raw)}</pre>
+            </details>
+          </div>`;
+        } else {
+          contentHtml = `<div class="delf-self-content-block">
+            ${isListening ? `<div class="delf-no-audio-label">📄 Transcript (no audio on this device)</div>` : ''}
+            <pre class="delf-transcript-pre">${escapeHtml(raw)}</pre>
+          </div>`;
+        }
+      }
+      return `<div class="delf-task">
+        <div class="delf-task-title">${escapeHtml(t.title)}</div>
+        <div class="delf-task-instruction">${escapeHtml(t.instruction)}</div>
+        ${contentHtml}
+      </div>`;
+    }).join('');
+    return `<div class="container delf-section-screen fade-in">
+      <div class="delf-section-header">
+        <button class="delf-back-btn" type="button" id="delfSectionBackBtn">← Sections</button>
+        <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
+        <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
+      </div>
+      ${ttsNotice}
+      <div class="delf-section-instruction">${escapeHtml(SECTION_INSTRUCTIONS[section.id] || '')}</div>
+      <div class="delf-tasks">${tasksHtml}</div>
+      <div class="delf-section-footer">
+        <button class="delf-finish-sec-btn" type="button" id="delfFinishSectionBtn">I've finished — self-assess →</button>
+      </div>
+    </div>`;
+  }
+
   function renderDelfAutoSection(section) {
     const de = State.delfExam;
     const anss = de.answers[section.id] || [];
     const isListening = section.id === 'listening';
+    const ttsAvail = hasFrenchTts();
     let flatIdx = 0;
 
+    // Per-section exam-style instructions
+    const SECTION_INSTRUCTIONS = {
+      listening: isListening && ttsAvail
+        ? 'Click "Play Recording" for each extract. In the real exam each recording is played twice. Answer without looking at the transcript, then move on.'
+        : 'Read each transcript carefully (substituting for audio). In the real exam these would be recordings played twice.',
+      reading: 'Read each text carefully. You may refer back to it while answering.',
+    };
+    const sectionInstruction = SECTION_INSTRUCTIONS[section.id] || '';
+
+    const ttsNotice = isListening
+      ? `<div class="delf-tts-notice${ttsAvail ? '' : ' no-tts'}">
+          ${ttsAvail
+            ? `🔊 <strong>Simulated audio:</strong> This app uses browser text-to-speech — real DELF exams use recorded audio.`
+            : `🔇 <strong>No French TTS voice found.</strong> Transcripts are shown below in place of audio recordings.`}
+        </div>` : '';
+
     const exercisesHtml = (section.exercises || []).map((ex, exIdx) => {
-      // Group questions by their context (transcript/text). Each new non-null context starts a group.
       const groups = [];
       let currentGroup = null;
       (ex.questions || []).forEach(q => {
@@ -4995,10 +5074,18 @@
         if (isListening && g.context) {
           const ttsText = delfTtsText(g.context);
           const ttsKey = `delf-tts-${exIdx}-${gi}`;
-          contextHtml = `<div class="delf-tts-block">
-            <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(ttsText)}" id="${ttsKey}">🔊 Play Recording</button>
-            <span class="delf-tts-replay">Tap again to replay · In the real exam you hear each recording twice</span>
-          </div>`;
+          if (ttsAvail) {
+            contextHtml = `<div class="delf-tts-block">
+              <button class="delf-tts-btn" type="button" data-delf-tts="${escapeHtml(ttsText)}" id="${ttsKey}">🔊 Play Recording</button>
+              <span class="delf-tts-replay">Tap again to replay · In the real exam you hear each recording twice</span>
+            </div>`;
+          } else {
+            // No TTS — show transcript directly as substitute
+            contextHtml = `<div class="delf-text-block delf-transcript-fallback">
+              <div class="delf-no-audio-label">📄 Transcript (no audio on this device — read as you would listen)</div>
+              <pre class="delf-text-content">${escapeHtml(g.context)}</pre>
+            </div>`;
+          }
         } else if (!isListening && g.context) {
           contextHtml = `<div class="delf-text-block"><pre class="delf-text-content">${escapeHtml(g.context)}</pre></div>`;
         }
@@ -5030,6 +5117,8 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
+      ${ttsNotice}
+      ${sectionInstruction ? `<div class="delf-section-instruction">${escapeHtml(sectionInstruction)}</div>` : ''}
       <div class="delf-progress-row"><span id="delfProgressText">${answered}/${total} answered</span><div class="delf-prog-bar"><div class="delf-prog-fill" id="delfProgFill" style="width:${total?Math.round(answered/total*100):0}%"></div></div></div>
       <div class="delf-exercises">${exercisesHtml}</div>
       <div class="delf-section-footer">
@@ -5054,6 +5143,7 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
+      <div class="delf-section-instruction">Write in French on paper or in a separate document. Use the textarea below for planning notes only. When the timer ends, self-assess your work using the rubric checklist.</div>
       <div class="delf-section-intro">${escapeHtml(section.intro || '')}</div>
       <div class="delf-tasks">${tasksHtml}</div>
       <div class="delf-section-footer">
@@ -5083,6 +5173,7 @@
         <div class="delf-section-title">${section.icon} ${escapeHtml(section.title)}</div>
         <div id="delfTimer" class="delf-timer-pill">⏱ ${String(Math.floor(section.duration/60)).padStart(2,'0')}:00</div>
       </div>
+      <div class="delf-section-instruction">Carry out each task out loud — with a partner if possible, or alone in front of a mirror. Use your preparation time, then speak. Self-assess at the end.</div>
       <div class="delf-section-intro">${escapeHtml(section.intro || '')}</div>
       <div class="delf-tasks">${tasksHtml}</div>
       <div class="delf-section-footer">
@@ -5106,6 +5197,11 @@
         </label>`;
       }).join('');
       const instructionHtml = t.instruction ? `<div class="delf-assess-instruction">${escapeHtml(t.instruction)}</div>` : '';
+      const sourceContent = t.script || t.text || '';
+      const sourceHtml = sourceContent ? `<details class="delf-transcript-details delf-source-ref">
+        <summary class="delf-transcript-toggle">📄 Reference ${t.script ? 'transcript' : 'text'}</summary>
+        <pre class="delf-transcript-pre">${escapeHtml(sourceContent)}</pre>
+      </details>` : '';
       const modelContent = t.modelAnswer || t.modelDialogue;
       const modelHtml = modelContent ? `<details class="delf-model-wrap">
         <summary class="delf-model-summary">${t.modelDialogue ? '💬 View model dialogue' : '📝 View model answer'}</summary>
@@ -5114,6 +5210,7 @@
       return `<div class="delf-task delf-assess-task">
         <div class="delf-task-title">${escapeHtml(t.title)}</div>
         ${instructionHtml}
+        ${sourceHtml}
         <div class="delf-rubric">${rubricHtml}</div>
         ${modelHtml}
       </div>`;
@@ -5170,7 +5267,7 @@
       ${selfNote}
       <div class="delf-results-actions">
         <button class="delf-retry-btn" type="button" data-delf-retry="${escapeHtml(de.examId)}">Retry this exam</button>
-        <button class="delf-back-home-btn" type="button" id="delfHomeBtn">← Back to Learn</button>
+        <button class="delf-back-home-btn" type="button" id="delfHomeBtn">← Back to DELF Exams</button>
       </div>
     </div>`;
   }
@@ -5178,35 +5275,67 @@
   function renderDelfLanding() {
     if (!window.DELF_MOCKS || !window.DELF_MOCKS.length) return '';
     const de = State.delfExam;
+    const ttsAvail = hasFrenchTts();
     const levelOrder = { A1: 1, A2: 2, B1: 3, B2: 4 };
     const sortedMocks = [...window.DELF_MOCKS].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
-    const cardsHtml = sortedMocks.map(exam => {
-      const attempted = de && de.examId === exam.id && de.phase === 'results';
-      const inProgress = de && de.examId === exam.id && de.phase !== 'results';
-      const levelColour = exam.level === 'A1' ? '#2a7' : exam.level === 'A2' ? '#0073e6' : exam.level === 'B1' ? '#5b21b6' : '#9d174d';
-      return `<div class="delf-exam-card">
-        <div class="delf-exam-level-badge" style="background:${levelColour}">${escapeHtml(exam.level)}</div>
-        <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
-        <div class="delf-exam-card-desc">${escapeHtml(exam.desc)}</div>
-        <div class="delf-exam-card-meta">⏱ ${escapeHtml(exam.totalDuration)} · 4 sections · 100 pts</div>
-        <button class="delf-exam-start-btn" type="button" data-delf-exam="${escapeHtml(exam.id)}">
-          ${inProgress ? 'Continue exam →' : attempted ? 'Retry exam →' : 'Start exam →'}
-        </button>
+
+    const LEVEL_META = {
+      A1: { icon: '🌱', colour: '#059669', label: 'Beginner', cando: 'Understand and produce very simple everyday expressions. Introduce yourself, ask basic questions about people and places.' },
+      A2: { icon: '📗', colour: '#2563EB', label: 'Elementary', cando: 'Describe your immediate environment and routine. Handle short social exchanges. Read simple notices and messages.' },
+      B1: { icon: '📘', colour: '#7c3aed', label: 'Intermediate', cando: 'Deal with most travel and social situations. Write simple connected text. Understand the main points of clear standard speech.' },
+    };
+
+    // Group exams by level
+    const grouped = {};
+    sortedMocks.forEach(exam => {
+      if (!grouped[exam.level]) grouped[exam.level] = [];
+      grouped[exam.level].push(exam);
+    });
+
+    const levelsHtml = Object.entries(grouped).map(([level, exams]) => {
+      const meta = LEVEL_META[level] || { icon: '📄', colour: '#555', label: level, cando: '' };
+      const hasAutoGraded = exams.some(e => e.sections && e.sections.some(s => s.type === 'auto'));
+      const scoringNote = hasAutoGraded
+        ? '✅ Listening + Reading auto-graded · 📋 Writing + Speaking self-assessed'
+        : '📋 All sections self-assessed using rubric checklists';
+      const cardsHtml = exams.map(exam => {
+        const attempted = de && de.examId === exam.id && de.phase === 'results';
+        const inProgress = de && de.examId === exam.id && de.phase !== 'results';
+        return `<div class="delf-exam-card" style="border-top:3px solid ${meta.colour}">
+          <div class="delf-exam-card-title">${escapeHtml(exam.title)}</div>
+          <div class="delf-exam-card-desc">${escapeHtml(exam.desc)}</div>
+          <div class="delf-exam-card-meta">⏱ ${escapeHtml(exam.totalDuration)} · 4 sections · 100 pts</div>
+          <button class="delf-exam-start-btn" type="button" data-delf-exam="${escapeHtml(exam.id)}" style="background:${meta.colour}">
+            ${inProgress ? 'Continue exam →' : attempted ? 'Retry exam →' : 'Start exam →'}
+          </button>
+        </div>`;
+      }).join('');
+      return `<div class="delf-level-group">
+        <div class="delf-level-group-header" style="border-left:4px solid ${meta.colour}">
+          <span class="delf-level-group-badge" style="background:${meta.colour}">${meta.icon} ${escapeHtml(level)}</span>
+          <span class="delf-level-group-label">${escapeHtml(meta.label)}</span>
+          <p class="delf-level-group-cando">${escapeHtml(meta.cando)}</p>
+          <p class="delf-level-group-scoring">${scoringNote}</p>
+        </div>
+        <div class="delf-exam-cards">${cardsHtml}</div>
       </div>`;
     }).join('');
+
+    const ttsNotice = `<div class="delf-tts-notice${ttsAvail ? '' : ' no-tts'}" style="margin-bottom:16px">
+      ${ttsAvail
+        ? `🔊 <strong>Audio note:</strong> Listening sections use your browser's text-to-speech engine. Real DELF exams use recorded audio. Results are still valid practice.`
+        : `🔇 <strong>No French TTS voice detected.</strong> Listening transcripts will be shown as text when you start an exam. All other sections work normally.`}
+    </div>`;
+
     return `<div class="delf-landing">
-      <div class="delf-landing-header">
-        <div class="delf-landing-icon">🎓</div>
-        <div class="delf-landing-title">DELF Mock Exams</div>
-        <div class="delf-landing-sub">The DELF (Diplôme d\'Études en Langue Française) is an official French language qualification from France Éducation International. Practise under realistic exam conditions with timed sections and automatic scoring.</div>
-      </div>
       <div class="delf-landing-info">
         <div class="delf-info-item">📝 4 sections per exam</div>
         <div class="delf-info-item">⏱ Timed conditions</div>
-        <div class="delf-info-item">✅ Auto-graded (Listening + Reading)</div>
+        <div class="delf-info-item">✅ Auto-graded Listening + Reading (A1/A2)</div>
         <div class="delf-info-item">🎯 50/100 to pass</div>
       </div>
-      <div class="delf-exam-cards">${cardsHtml}</div>
+      ${ttsNotice}
+      ${levelsHtml}
     </div>`;
   }
 

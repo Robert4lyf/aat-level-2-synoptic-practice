@@ -801,7 +801,7 @@ window.DELF_MOCKS = [
             id: 'a2-w2',
             title: 'Task 2 — Formal complaint letter (15 points)',
             instruction: 'Write a letter or email of 60–80 words in French. You recently stayed at a hotel and were unhappy with some aspects. Write to the hotel manager to describe your experience and request a partial refund.',
-            hint: 'Structure: Opening (Madame, Monsieur,) → When you stayed and what was wrong → Request a refund → Closing (Veuillez agréer, Madame, Monsieur, l\'expression de mes salutations distinguées.)',
+            hint: 'Structure: Opening (Madame, Monsieur,) → When you stayed and what was wrong → Request a partial refund → Closing (Cordialement — or for a more formal register: Veuillez agréer mes cordiales salutations.)',
             rubric: [
               { id: 'a2-w2-1', label: 'I used an appropriate formal letter format (opening and closing)', points: 2 },
               { id: 'a2-w2-2', label: 'I clearly stated when and where I stayed', points: 2 },
