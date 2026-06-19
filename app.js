@@ -1590,6 +1590,8 @@
     // Gate questions to only those from unlocked units / CEFR levels.
     // Curated sets (flagged, sr-due, review-wrong, mistakes) bypass these gates.
     const GATE_EXEMPT = new Set(['flagged', 'sr-due', 'review-wrong', 'mistakes']);
+    // Mistake Clinic topics are always accessible — bypass level and lesson gates
+    if (topicId && topicId.startsWith('fr-clinic-')) GATE_EXEMPT.add(topicId);
     let poolSizeAfterLevelFilter = pool.length;
     let poolSizeAfterLessonGate = pool.length;
     if (!GATE_EXEMPT.has(topicId)) {
@@ -2864,7 +2866,7 @@
       ${levelSection}
       <h2 class="section-title"${isFrench ? ' style="margin-top:24px"' : ' style="margin-top:0"'}>Practice by Topic <span class="section-title-sub">${PRACTICE_LENGTH} questions · instant feedback</span></h2>
       <div class="home-grid">
-        ${window.TOPICS.map(t => {
+        ${window.TOPICS.filter(t => t.section !== 'clinic').map(t => {
           const totalN = counts[t.id];
           if (!isUnitUnlocked(t.id)) {
             return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
@@ -2902,6 +2904,33 @@
           </button>`;
         }).join('')}
       </div>
+      ${isFrench ? (() => {
+        const clinicTopics = (window.TOPICS || []).filter(t => t.section === 'clinic');
+        if (!clinicTopics.length) return '';
+        return `<h2 class="section-title" style="margin-top:28px">🏥 Mistake Clinic <span class="section-title-sub">targeted error correction · no prerequisites</span></h2>
+        <p class="clinic-intro">Targeted practice for the grammar points where French learners most often make mistakes.</p>
+        <div class="home-grid">
+          ${clinicTopics.map(t => {
+            const totalN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id).length;
+            const m = topicMastery(t.id);
+            const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
+            const seenN = seenByTopic[t.id] || 0;
+            const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
+            const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id)).length;
+            return `<button class="topic-card fade-in topic-card-clinic" type="button" data-topic="${t.id}" aria-label="Mistake Clinic: practise ${escapeHtml(t.name)}">
+              ${badge}
+              <div class="icon" aria-hidden="true">${t.icon}</div>
+              <h3>${escapeHtml(t.name)}</h3>
+              <p>${escapeHtml(t.desc)}</p>
+              <div class="topic-card-footer">
+                <span class="count">${seenN} <span class="topic-count-sep">of</span> ${totalN} seen</span>
+                <div class="topic-seen-bar"><div class="topic-seen-fill" style="width:${seenPct}%"></div></div>
+              </div>
+              <div class="topic-available">${availableN} <span class="topic-count-sep">available to practise</span></div>
+            </button>`;
+          }).join('')}
+        </div>`;
+      })() : ''}
       ${focusCard}
       <h2 class="section-title" style="margin-top:24px">More Practice Modes</h2>
       <div class="mode-card-grid">${modeGrid}</div>`;

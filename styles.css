@@ -3394,6 +3394,20 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
 .topic-card-locked .lock-reason { font-size: .78rem; color: var(--subtext); margin-bottom: 0; line-height: 1.45; }
 .topic-card-locked .topic-card-footer { margin-top: 14px; }
 
+/* ── Mistake Clinic ─────────────────────────────────────────────────────── */
+.clinic-intro {
+  font-size: .88rem;
+  color: var(--text-secondary);
+  margin: -8px 0 16px;
+  line-height: 1.5;
+}
+.topic-card-clinic {
+  border-top: 3px solid #dc2626;
+}
+[data-theme="dark"] .topic-card-clinic {
+  border-top-color: #f87171;
+}
+
 /* ── Lesson difficulty tier labels on nodes ── */
 .node-tier-label {
   font-size: .52rem;
