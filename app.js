@@ -1190,6 +1190,19 @@
     utterances.forEach(u => window.speechSynthesis.speak(u));
   }
   function stopSpeech() { if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+  function hasFrenchTts() { return !!(window.speechSynthesis && getFrenchVoice()); }
+  /* Returns HTML for the "no voice" note — shown when speechSynthesis exists but no fr voice found. */
+  function frNoVoiceNote() {
+    if (!window.speechSynthesis) return '';
+    return '<span class="tts-unavail" role="note">🔇 No French voice on this device — audio unavailable</span>';
+  }
+  /* Shared TTS button HTML for in-question listen buttons. */
+  function frTtsBtn(id, label) {
+    if (!window.speechSynthesis) return '';
+    return hasFrenchTts()
+      ? `<button class="tts-q-btn" id="${escapeHtml(id)}" type="button" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}">🔊 ${escapeHtml(label)}</button>`
+      : frNoVoiceNote();
+  }
   if (typeof window !== 'undefined' && window.speechSynthesis && 'onvoiceschanged' in window.speechSynthesis) {
     window.speechSynthesis.onvoiceschanged = () => { _frVoice = null; getFrenchVoice(); };
   }
@@ -1293,6 +1306,7 @@
   function isWordOrder(q) { return q && q.type === 'wordorder'; }
   function isListen(q) { return q && q.type === 'listen'; }
   function isTyped(q) { return q && q.type === 'typed'; }
+  function isListenTyped(q) { return q && q.type === 'listen-typed'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
 
   // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
@@ -1361,6 +1375,8 @@
       }) };
     }
     if (isWordOrder(q)) { return { ...q }; }
+    if (isTyped(q)) { return { ...q }; }
+    if (isListenTyped(q)) { return { ...q }; }
     // simple MCQ
     const order = shuffle([0,1,2,3]);
     return { ...q, opts: order.map(i => q.opts[i]), ans: order.indexOf(q.ans) };
@@ -2007,7 +2023,7 @@
   }
   function normalizeTyped(s, stripAcc) {
     let n = String(s).trim().toLowerCase();
-    if (stripAcc) n = n.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    if (stripAcc) n = n.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     return n;
   }
   function isTypedCorrect(q, input) {
@@ -2181,6 +2197,25 @@
     State.results.push({ id: q.id, q: q.q, correct, chosen: input, correctOpt: q.ans, exp: q.exp, topic: q.topic, skill: q.skill });
     saveSession(); render();
   }
+  function submitListenTypedPractice() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    const el = document.getElementById('listenTypedAnswer');
+    const input = el ? el.value : '';
+    if (!input.trim()) {
+      const err = document.getElementById('listenTypedError');
+      if (err) err.textContent = 'Please type what you heard before submitting.';
+      return;
+    }
+    State.typedDraft = input;
+    State.answered = input;
+    const correct = isTypedCorrect(q, input);
+    if (correct) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(correct);
+    Storage.recordAnswer(q, correct); Storage.save();
+    State.results.push({ id: q.id, q: q.q, correct, chosen: input, correctOpt: q.ans, exp: q.exp, topic: q.topic, skill: q.skill });
+    saveSession(); render();
+  }
   function selectMockOption(idx) {
     if (State.mode !== 'mock') return;
     State.answers[State.current] = idx;
@@ -2342,7 +2377,7 @@
     Storage.data.session = { mode:State.mode, selectedTopic:State.selectedTopic,
       questionIds: State.questions.map(q => q.id),
       current: State.current, score: State.score, results: State.results,
-      numericDraft: State.numericDraft || '', timestamp: Date.now() };
+      numericDraft: State.numericDraft || '', typedDraft: State.typedDraft || '', timestamp: Date.now() };
     Storage.save();
   }
   function resumeSession() {
@@ -2354,7 +2389,7 @@
     Object.assign(State, { screen:'quiz', mode:s.mode, selectedTopic:s.selectedTopic, questions,
       current: firstUnansweredIdx >= 0 ? firstUnansweredIdx : 0,
       answered:null, score: s.score || 0, results,
-      showReview:false, reviewFilter:'all', timedOut:false, numericDraft: s.numericDraft || '' });
+      showReview:false, reviewFilter:'all', timedOut:false, numericDraft: s.numericDraft || '', typedDraft: s.typedDraft || '' });
     Calc.reset(); render();
   }
   function dismissSession() { Storage.data.session = null; Storage.save(); render(); }
@@ -3106,6 +3141,7 @@
     if (isWordOrder(q)) return renderWordOrderQuiz(q);
     if (isListen(q)) return renderListenQuiz(q);
     if (isTyped(q)) return renderTypedQuiz(q);
+    if (isListenTyped(q)) return renderListenTypedQuiz(q);
     return renderPracticeMcqOrNumeric(q);
   }
 
@@ -3196,7 +3232,12 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
-          ${_activeSubjectId === 'french' && isFrToEnMcq(q) ? `<button class="tts-q-btn" id="ttsQBtn" type="button" aria-label="Hear French pronunciation" title="Listen to pronunciation">🔊 ${escapeHtml(extractFrenchTerm(q) || '')}</button>` : ''}
+          ${(() => {
+            if (_activeSubjectId !== 'french') return '';
+            if (isFrToEnMcq(q)) return frTtsBtn('ttsQBtn', extractFrenchTerm(q) || 'Listen');
+            if (q.tts) return frTtsBtn('ttsQBtn', 'Listen');
+            return '';
+          })()}
           ${(() => {
             if (State.mode !== 'practice' || State.answered !== null) return '';
             const sk = skillById(q.skill);
@@ -3692,6 +3733,83 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
+          ${q.tts && _activeSubjectId === 'french' ? frTtsBtn('ttsQBtn', 'Listen') : ''}
+          ${bodyHtml}${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderListenTypedQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = (window.FR_TOPICS && window.FR_TOPICS.find(t => t.id === q.topic))
+               || window.TOPICS.find(t => t.id === q.topic)
+               || { icon: '🎧', short: 'Dictée' };
+    const answered = State.answered !== null;
+    const correct = answered && isTypedCorrect(q, State.answered);
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const comboEl = (State.combo >= 3 && State.mode === 'practice')
+      ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>`
+      : '';
+    const audioText = q.audio || q.ans;
+    const inputVal = answered ? escapeHtml(State.answered) : escapeHtml(State.typedDraft || '');
+    const playBtnHtml = window.speechSynthesis
+      ? `<button class="listen-play-btn" id="listenTypedPlayBtn" type="button" aria-label="Play audio">🔊 Tap to Listen</button>`
+      : `<span class="tts-unavail" role="note">🔇 Audio not available on this device — transcript shown below</span>`;
+    const transcriptHtml = answered || !window.speechSynthesis
+      ? `<div class="listen-transcript-reveal" role="note"><strong>Transcript:</strong> ${escapeHtml(audioText)}</div>`
+      : '';
+    const bodyHtml = `<div class="listen-prompt">
+      ${playBtnHtml}
+      <p class="listen-hint">${escapeHtml(q.q)}</p>
+      ${answered && window.speechSynthesis ? `<button class="tts-replay-btn" id="listenTypedReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
+    </div>
+    <div class="numeric-input-wrap">
+      ${transcriptHtml}
+      <label for="listenTypedAnswer" class="numeric-label">What did you hear?</label>
+      <div class="numeric-input-row">
+        <input type="text" id="listenTypedAnswer" class="numeric-input ${answered ? (correct ? 'is-correct' : 'is-wrong') : ''}"
+               autocomplete="off" spellcheck="false" lang="fr"
+               value="${inputVal}" ${answered ? 'disabled' : ''}
+               placeholder="Type what you heard…" aria-describedby="listenTypedError">
+        ${answered ? '' : `<button class="next-btn" id="submitListenTypedBtn" type="button">Submit ✓</button>`}
+      </div>
+      <div class="numeric-error" id="listenTypedError" role="alert"></div>
+      ${q.ignoreAccents ? `<div class="kbd-hint" aria-hidden="true"><span>Accents are optional</span></div>` : ''}
+      <div class="kbd-hint" aria-hidden="true">
+        <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
+      </div>
+    </div>`;
+    let feedbackHtml = '';
+    if (answered) {
+      const altsHtml = q.alts && q.alts.length
+        ? `<br><span>Also accepted: <em>${q.alts.map(a => escapeHtml(a)).join(' · ')}</em></span>`
+        : '';
+      feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
+        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="numeric-pill">🎧 Dictée</span>
+            ${comboEl}
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="${confident ? 'Unmark confident' : 'Mark as confident'}">✓</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
           ${bodyHtml}${feedbackHtml}
         </div>
       </div>
@@ -5042,6 +5160,39 @@
       });
       if (State.answered === null) { try { typedInput.focus(); } catch (ex) {} }
     }
+    // Listen-typed interactions
+    const listenTypedPlayBtn = document.getElementById('listenTypedPlayBtn');
+    if (listenTypedPlayBtn) {
+      const ltq = State.questions[State.current];
+      const ltAudio = ltq.audio || ltq.ans;
+      listenTypedPlayBtn.addEventListener('click', () => {
+        speakFrench(ltAudio,
+          () => { listenTypedPlayBtn.textContent = '⏹ Playing…'; listenTypedPlayBtn.classList.add('is-playing'); },
+          () => { listenTypedPlayBtn.textContent = '🔊 Tap to Listen'; listenTypedPlayBtn.classList.remove('is-playing'); }
+        );
+      });
+    }
+    const listenTypedReplayBtn = document.getElementById('listenTypedReplayBtn');
+    if (listenTypedReplayBtn) {
+      const ltq = State.questions[State.current];
+      listenTypedReplayBtn.addEventListener('click', () => speakFrench(ltq.audio || ltq.ans));
+    }
+    bind('submitListenTypedBtn', 'click', submitListenTypedPractice);
+    const listenTypedInput = document.getElementById('listenTypedAnswer');
+    if (listenTypedInput) {
+      listenTypedInput.addEventListener('input', () => {
+        const err = document.getElementById('listenTypedError');
+        if (err) err.textContent = '';
+      });
+      listenTypedInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (State.answered === null) submitListenTypedPractice();
+          else { const next = document.getElementById('nextBtn'); if (next) next.click(); }
+        }
+      });
+      if (State.answered === null) { try { listenTypedInput.focus(); } catch (ex) {} }
+    }
     // TTS / Listen interactions
     const listenPlayBtn = document.getElementById('listenPlayBtn');
     if (listenPlayBtn) {
@@ -5061,7 +5212,7 @@
     const ttsQBtn = document.getElementById('ttsQBtn');
     if (ttsQBtn) {
       const tq = State.questions[State.current];
-      const ttsText = isFrToEnMcq(tq) ? extractFrenchTerm(tq) : null;
+      const ttsText = tq.tts || (isFrToEnMcq(tq) ? extractFrenchTerm(tq) : null);
       if (ttsText) ttsQBtn.addEventListener('click', () => {
         const origLabel = ttsQBtn.textContent;
         speakFrench(ttsText,
@@ -5260,7 +5411,7 @@
       if (isAdvanceKey) {
         const focusedIsOptionBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('[data-opt]');
         if (e.key !== 'Enter' && focusedIsOptionBtn) return;
-        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn') || document.getElementById('submitTypedBtn');
+        const next = document.getElementById('nextBtn') || document.getElementById('submitBtn') || document.getElementById('submitNumericBtn') || document.getElementById('submitDragDropBtn') || document.getElementById('submitTableFillBtn') || document.getElementById('submitScenarioBtn') || document.getElementById('submitGapFillBtn') || document.getElementById('submitWordOrderBtn') || document.getElementById('submitTypedBtn') || document.getElementById('submitListenTypedBtn');
         if (next && !next.disabled) { e.preventDefault(); next.click(); }
         return;
       }

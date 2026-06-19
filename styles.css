@@ -5173,6 +5173,27 @@ body.dark[data-subject="code-route"] .unit-card {
 .tts-q-btn:hover { background: var(--accent); color: #fff; }
 .tts-q-btn.is-playing { background: var(--accent); color: #fff; opacity: .85; }
 
+.tts-unavail {
+  display: inline-block;
+  color: var(--text-muted, #888);
+  font-size: .83rem;
+  font-style: italic;
+  margin: 6px 0;
+}
+.listen-transcript-reveal {
+  background: var(--card-muted, #f0f4f8);
+  border-left: 3px solid var(--accent, #0066cc);
+  border-radius: 4px;
+  padding: .45rem .75rem;
+  margin-bottom: .75rem;
+  font-size: .92rem;
+  line-height: 1.5;
+}
+[data-theme="dark"] .listen-transcript-reveal {
+  background: rgba(255,255,255,.06);
+  border-left-color: var(--accent, #4d9fff);
+}
+
 /* ── DELF MOCK EXAM ─────────────────────────────────────────────────────── */
 
 /* Landing section in Learn tab */
