@@ -28,13 +28,28 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <script>
+    /* Apply saved theme/subject before first paint to prevent flash of wrong styles. */
+    (function () {
+      try {
+        var subj = localStorage.getItem('multisubject_active') || 'aat';
+        var key  = subj === 'aat' ? 'aatPrep_v2' : 'prep_v2_' + subj;
+        var data = JSON.parse(localStorage.getItem(key) || '{}');
+        var dm   = (data.settings && data.settings.darkMode != null)
+                     ? data.settings.darkMode
+                     : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.body.setAttribute('data-subject', subj);
+        if (dm) document.body.classList.add('dark');
+      } catch (e) {}
+    }());
+  </script>
   <a class="skip-link" href="#app">Skip to main content</a>
   <header>
     <div class="header-left">
       <div>
         <h1>📊 AAT Level 2 Synoptic Practice</h1>
         <span class="sub">AQ2022 — The Business Environment Synoptic Assessment</span>
-        <span class="version-badge">v1.0.127</span>
+        <span class="version-badge">v1.0.128</span>
       </div>
       <span class="badge">EXAM PREP</span>
     </div>
