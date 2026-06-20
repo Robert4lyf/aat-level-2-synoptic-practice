@@ -870,10 +870,10 @@ window.FR_QUESTIONS = [
   {"id":"fr-865","topic":"fr-nums","lesson":"fr-l86","type":"mcq","q":"How is 'deux cent cinq' (205) spelled — does cent have an 's'?","opts":["Yes — deux cents cinq","No — deux cent cinq (no s)","Both are acceptable","Only in Belgium"],"ans":1,"exp":"No s: cent only takes s when it is multiplied AND is the LAST element: deux cents (200) but deux cent cinq (205)."},
   {"id":"fr-866","topic":"fr-nums","lesson":"fr-l86","type":"mcq","q":"What is the French for 1,000,000?","opts":["un millier","un milliard","un million","mille mille"],"ans":2,"exp":"un million = 1,000,000. un milliard = 1,000,000,000 (a billion). un millier is an approximate (about a thousand)."},
   {"id":"fr-867","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"Which suffix almost always makes a noun FEMININE?","opts":["-ment","-eau","-tion","-isme"],"ans":2,"exp":"-tion / -sion endings are almost always feminine: la nation, la décision, la révolution. -ment is masculine, -eau is masculine, -isme is masculine."},
-  {"id":"fr-868","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"What gender is 'le voyage'?","opts":["Féminin","Masculin","Both possible","Neutre"],"ans":1,"exp":"le voyage is masculine. -age endings are usually masculine: le garage, le passage, le courage. BUT: une image, une page, une cage are feminine exceptions."},
-  {"id":"fr-869","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"What gender is 'la patience'?","opts":["Masculin","Féminin","Either","Depends"],"ans":1,"exp":"la patience is feminine. -ence and -ance endings are almost always feminine: la science, la chance, la violence, la confiance."},
+  {"id":"fr-868","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"What gender is 'voyage'?","opts":["Féminin","Masculin","Both possible","Neutre"],"ans":1,"exp":"voyage is masculine (le voyage). -age endings are usually masculine: le garage, le passage, le courage. BUT: une image, une page, une cage are feminine exceptions."},
+  {"id":"fr-869","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"What gender is 'patience'?","opts":["Masculin","Féminin","Either","Depends"],"ans":1,"exp":"patience is feminine (la patience). -ence and -ance endings are almost always feminine: la science, la chance, la violence, la confiance."},
   {"id":"fr-870","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"'L'eau' (water) ends in -eau, which is usually masculine. What gender is 'eau'?","opts":["Masculin","Féminin","Both","Neutre"],"ans":1,"exp":"l'eau is FEMININE — a key exception. The -eau ending is usually masculine (le chapeau, le gâteau) but l'eau is feminine. Always learn gender with the word."},
-  {"id":"fr-871","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"Which is the masculine noun?","opts":["la nation","la tristesse","le département","la voiture"],"ans":2,"exp":"le département is masculine (-ment ending → masculine). la nation (-tion → f.), la tristesse (-esse → f.), la voiture (-ure → f.)."},
+  {"id":"fr-871","topic":"fr-gram","lesson":"fr-l92","type":"mcq","q":"Which of these nouns is MASCULINE?","opts":["nation","tristesse","département","voiture"],"ans":2,"exp":"département is masculine (le département — -ment ending → masculine). nation (-tion → f.), tristesse (-esse → f.), voiture (-ure → f.)."},
   {"id":"fr-872","topic":"fr-vocab","lesson":"fr-l82","type":"mcq","q":"What does 'assister à' mean?","opts":["to assist someone","to attend (an event)","to help with something","to assist and attend"],"ans":1,"exp":"assister à = to attend. J'assiste à la réunion = I am attending the meeting. To assist someone use aider: Je l'aide = I help/assist him."},
   {"id":"fr-873","topic":"fr-vocab","lesson":"fr-l82","type":"mcq","q":"What does 'une déception' mean?","opts":["A deception / lie","A disappointment","A decision","A reception"],"ans":1,"exp":"une déception = a disappointment. Quelle déception ! = What a disappointment! For deception use la tromperie or la supercherie. Another faux ami trap."},
   {"id":"fr-874","topic":"fr-vocab","lesson":"fr-l82","type":"mcq","q":"What does 'large' mean in French?","opts":["Large (big)","Wide / broad","Strong","Tall"],"ans":1,"exp":"large = wide / broad in French. Le fleuve est large = The river is wide. To say 'large (big)', use grand(e). un grand T-shirt = a large T-shirt."},
@@ -3291,7 +3291,7 @@ window.FR_LEARN_PATH = [
         ],
         "check": [
           {
-            "q": "What gender is 'la décision'?",
+            "q": "What gender is 'décision'?",
             "opts": [
               "Masculin",
               "Féminin",
@@ -3302,7 +3302,7 @@ window.FR_LEARN_PATH = [
             "exp": "-sion ending → féminin. All -tion / -sion / -xion nouns are feminine (la nation, la décision, la connexion). This is one of the most reliable gender rules."
           },
           {
-            "q": "What gender is 'le gouvernement'?",
+            "q": "What gender is 'gouvernement'?",
             "opts": [
               "Féminin",
               "Masculin",
@@ -3313,15 +3313,15 @@ window.FR_LEARN_PATH = [
             "exp": "-ment ending → masculin. Also: le département, le changement, le mouvement. Very reliable rule with few exceptions."
           },
           {
-            "q": "Which of these is FEMININE?",
+            "q": "Which of these nouns is FEMININE?",
             "opts": [
-              "le voyage",
-              "le chapeau",
-              "la richesse",
-              "le tourisme"
+              "voyage",
+              "chapeau",
+              "richesse",
+              "tourisme"
             ],
             "ans": 2,
-            "exp": "la richesse is feminine (-esse ending). le voyage (-age → usually masculine), le chapeau (-eau → masculine), le tourisme (-isme → masculine)."
+            "exp": "richesse is feminine (-esse ending → féminin). voyage (-age → usually masculine), chapeau (-eau → masculine), tourisme (-isme → masculine)."
           },
           {
             "q": "What is the EXCEPTION here: 'une image'?",
