@@ -3438,7 +3438,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
             ${q._flipped ? '<span class="flip-pill">🔄 EN→FR</span>' : ''}
-            ${q.topic === 'fr-gram' && q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson] ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>` : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
@@ -3751,7 +3750,6 @@
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="gf-pill">✏️ Fill the gaps</span>
-            ${q.topic === 'fr-gram' && q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson] ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>` : ''}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
@@ -3899,9 +3897,7 @@
     const comboEl = (State.combo >= 3 && State.mode === 'practice')
       ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>`
       : '';
-    const levelBadge = q.lesson && FR_GRAM_LESSON_LEVEL[q.lesson]
-      ? `<span class="level-pill level-pill-${FR_GRAM_LESSON_LEVEL[q.lesson].toLowerCase()}">${FR_GRAM_LESSON_LEVEL[q.lesson]}</span>`
-      : '';
+    const levelBadge = '';
     const inputVal = answered ? escapeHtml(State.answered) : escapeHtml(State.typedDraft || '');
     const bodyHtml = `<div class="numeric-input-wrap">
       <label for="typedAnswer" class="numeric-label">Your answer:</label>
@@ -4303,8 +4299,9 @@
         const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
         const timeLabel = `~${Math.max(2, (L.cards||[]).length + ((L.check||[]).length || 0))} min`;
         const nodeQCount = (L.skills || []).reduce((sum, sid) => sum + (skillQCount[sid] || 0), 0);
-        const tier = L.l3Bridge ? 'tier-5' : nodeIdx <= 2 ? 'tier-2' : nodeIdx <= 5 ? 'tier-3' : 'tier-4';
-        const tierLabel = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : nodeIdx <= 2 ? '<span class="node-tier-label tier-2-label">Core</span>' : nodeIdx <= 5 ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-4-label">Mastery</span>';
+        const tag = L.tag || 'core';
+        const tier = L.l3Bridge ? 'tier-5' : tag === 'mastery' ? 'tier-4' : tag === 'advanced' ? 'tier-3' : 'tier-2';
+        const tierLabel = L.l3Bridge ? '<span class="node-l3-badge">L3 Bridge</span>' : tag === 'mastery' ? '<span class="node-tier-label tier-4-label">Mastery</span>' : tag === 'advanced' ? '<span class="node-tier-label tier-3-label">Advanced</span>' : '<span class="node-tier-label tier-2-label">Core</span>';
         return `<button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'} node-${tier}${L.l3Bridge ? ' node-l3' : ''}" type="button"
             ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
             aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">

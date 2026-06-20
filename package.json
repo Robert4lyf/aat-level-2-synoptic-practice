@@ -1,0 +1,7 @@
+{
+  "name": "aat-level-2-synoptic-practice",
+  "private": true,
+  "scripts": {
+    "validate:french": "node scripts/validate-french-data.js"
+  }
+}
