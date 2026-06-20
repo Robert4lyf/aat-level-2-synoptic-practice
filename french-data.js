@@ -5049,18 +5049,19 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "La cigale comprend : il faut travailler — you must work. La Fontaine's fable teaches that preparation matters."
           }
-        ],
-        "tag": "advanced"
+        ]
       },
       {
-        "id": "fr-l47",
-        "title": "Les quantités et les mesures",
-        "icon": "⚖️",
+        "id": "fr-l68",
+        "title": "Les jours, les mois et les dates",
+        "icon": "📅",
         "cards": [
           {
-            "h": "Les expressions de quantité",
+            "h": "Les jours de la semaine",
             "p": [
-              "Quantity expressions in French: **un kilo de** (a kilo of), **une livre de** (500g / a pound of), **100 grammes de** (100 grams of), **un litre de** (a litre of), **une demi-bouteille de** (half a bottle of), **une tranche de** (a slice of), **un morceau de** (a piece of), **une boîte de** (a tin / box of), **un paquet de** (a packet of), **un verre de** (a glass of), **une tasse de** (a cup of)."
+              "The seven days are: **lundi** (Monday), **mardi** (Tuesday), **mercredi** (Wednesday), **jeudi** (Thursday), **vendredi** (Friday), **samedi** (Saturday), **dimanche** (Sunday).",
+              "Key rule: days of the week are **not capitalised** in French.",
+              "**lundi** (no article) = this coming Monday. **le lundi** = on Mondays / every Monday."
             ],
             "split": {
               "left": {
@@ -5085,10 +5086,11 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             }
           },
           {
-            "h": "La règle : de/d' après les quantités",
+            "h": "Les mois de l'année",
             "p": [
-              "After any quantity expression, use **de** (or **d'** before a vowel) — NOT du / de la / des.",
-              "un kilo **de** pommes ✓ (NOT du pommes) — une tranche **de** jambon ✓ — un verre **d'**eau ✓"
+              "The twelve months: **janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre**.",
+              "Months are also **not capitalised** in French.",
+              "To say 'in a month': **en janvier**, **en mars**, **en août** — use **en** before all months."
             ],
             "callout": {
               "kind": "key",
@@ -5129,12 +5131,11 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             }
           },
           {
-            "h": "Au marché — phrases utiles",
+            "h": "Les saisons et les mois",
             "p": [
-              "**Je voudrais deux cents grammes de fromage.** (I'd like 200g of cheese.)",
-              "**C'est combien ?** (How much is it?) — **Ça fait trois euros cinquante.** (That's €3.50.)",
-              "**Un kilo de tomates, s'il vous plaît.** (A kilo of tomatoes, please.)",
-              "**Il me faut une bouteille de lait.** (I need a bottle of milk.)"
+              "**le printemps** (spring) — mars, avril, mai. **l'été** (summer) — juin, juillet, août.",
+              "**l'automne** (autumn) — septembre, octobre, novembre. **l'hiver** (winter) — décembre, janvier, février.",
+              "Prepositions: **au printemps** (in spring), **en été / en automne / en hiver** (in summer/autumn/winter)."
             ]
           }
         ],
@@ -5191,17 +5192,15 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
-        "id": "fr-l50",
-        "title": "Les activités saisonnières et les fêtes",
-        "icon": "🎉",
+        "id": "fr-l69",
+        "title": "La maison et les pièces",
+        "icon": "🏠",
         "cards": [
           {
-            "h": "Activités selon les saisons",
+            "h": "Les pièces de la maison",
             "p": [
-              "**En été**: aller à la plage, nager, faire un pique-nique, bronzer (to sunbathe).",
-              "**En automne**: ramasser des champignons (to pick mushrooms), rentrer à l'école (back to school).",
-              "**En hiver**: faire du ski, se promener, rester au chaud (to stay warm indoors).",
-              "**Au printemps**: jardiner (to garden), se promener, admirer les fleurs."
+              "Key rooms: **le salon** (living room), **la cuisine** (kitchen), **la chambre** (bedroom), **la salle de bains** (bathroom), **les toilettes / le WC** (toilet), **la salle à manger** (dining room), **le couloir** (hallway), **le garage** (garage), **le jardin** (garden).",
+              "In French homes, the toilet is often a separate room from the bathroom."
             ],
             "split": {
               "left": {
@@ -5227,13 +5226,9 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             }
           },
           {
-            "h": "Les fêtes françaises",
+            "h": "Les meubles et objets",
             "p": [
-              "**Noël** (25 décembre) — Christmas. Families exchange gifts; the réveillon is the Christmas Eve dinner.",
-              "**Le jour de l'An** (1er janvier) — New Year's Day.",
-              "**Pâques** — Easter. Children hunt for chocolate eggs hidden in gardens.",
-              "**La Fête Nationale — le 14 juillet** — Bastille Day. Celebrated with fireworks (feux d'artifice), parades, and dances (bals).",
-              "**La Toussaint** (1er novembre) — All Saints' Day. A national holiday; schools close for two weeks — les vacances de la Toussaint."
+              "**le lit** (bed), **le canapé** (sofa), **le fauteuil** (armchair), **la table** (table), **la chaise** (chair), **l'armoire** (wardrobe), **l'étagère** (bookcase/shelf), **le bureau** (desk), **le frigo** (fridge), **la fenêtre** (window), **la porte** (door), **le miroir** (mirror)."
             ],
             "callout": {
               "kind": "key",
@@ -5270,6 +5265,13 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
                 ]
               ]
             }
+          },
+          {
+            "h": "Types de logement",
+            "p": [
+              "**une maison** (a house), **un appartement** (a flat), **un immeuble** (an apartment block), **un studio** (a studio flat), **une villa** (a detached/holiday house), **une chambre** (a room — e.g. in shared accommodation).",
+              "J'habite dans un appartement au troisième étage. (I live in a flat on the third floor.)"
+            ]
           }
         ],
         "check": [
