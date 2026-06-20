@@ -284,11 +284,11 @@ window.FR_QUESTIONS = [
   {"id":"fr-279","topic":"fr-gram","lesson":"fr-l10","type":"gapfill","q":"She moved away last year — fill the gap:","template":"Elle n'habite {0} ici.","gaps":[{"options":["plus","jamais","rien","personne"],"answer":0}],"exp":"ne … plus = no longer / not any more: elle n'habite plus ici."},
   {"id":"fr-280","topic":"fr-gram","lesson":"fr-l10","type":"mcq","q":"Which phrase introduces a yes/no question politely?","opts":["Qu'est-ce que…","Où est-ce que…","Est-ce que…","Qu'est-ce qui…"],"ans":2,"exp":"Est-ce que… turns any statement into a yes/no question: Est-ce que tu viens ? = Are you coming?"},
   {"id":"fr-281","topic":"fr-gram","lesson":"fr-l10","type":"gapfill","q":"'What do you want?' — choose the correct question expression:","template":"{0} tu veux ?","gaps":[{"options":["Qu'est-ce que","Est-ce que","Qu'est-ce qui","Qui est-ce que"],"answer":0}],"exp":"Qu'est-ce que = what (direct object): Qu'est-ce que tu veux ? = What do you want?"},
-  {"id":"fr-282","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"Choose the correct form: « une maison ___ » (grand):","opts":["grand","grands","grande","grandes"],"ans":2,"exp":"Adjectives must agree in gender and number: 'maison' is feminine singular → grande (add -e)."},
+  {"id":"fr-282","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"Choose the correct form: « une ___ maison » (grand):","opts":["grand","grands","grande","grandes"],"ans":2,"exp":"Adjectives must agree in gender and number: 'maison' is feminine singular → grande (add -e). As a BAGS adjective (Size), grand/grande goes before the noun: une grande maison."},
   {"id":"fr-283","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"BAGS adjectives go ___ the noun:","opts":["before","after","either side of","at the start of the sentence"],"ans":0,"exp":"BAGS = Beauty, Age, Goodness, Size. These short common adjectives precede the noun: un beau jardin, une bonne idée."},
   {"id":"fr-284","topic":"fr-gram","lesson":"fr-l12","type":"mcq","q":"Which sentence places the adjective correctly?","opts":["un intéressant film","une bleue robe","un grand moderne appartement","une gentille fille"],"ans":3,"exp":"'gentil(le)' is a BAGS adjective (Goodness) and goes BEFORE the noun: une gentille fille. Adjectives like bleu or intéressant go AFTER the noun."},
   {"id":"fr-285","topic":"fr-gram","lesson":"fr-l12","type":"gapfill","q":"Complete — make the adjective agree: (grand)","template":"Ils sont {0}.","gaps":[{"options":["grands","grand","grandes","grande"],"answer":0}],"exp":"Masculine plural adjective: add -s → grands. (grande = f. sing., grandes = f. pl.)"},
-  {"id":"fr-286","topic":"fr-gram","lesson":"fr-l12","type":"dragdrop","q":"Match each adjective to its correct feminine form:","pairs":[{"left":"grand","right":"grande"},{"left":"petit","right":"petite"},{"left":"beau","right":"belle"},{"left":"nouveau","right":"nouvelle"}],"exp":"Regular -e added: grand→grande, petit→petite. Irregular: beau→belle, nouveau→nouvelle."},
+  {"id":"fr-286","topic":"fr-gram","lesson":"fr-l12","type":"dragdrop","q":"Match each adjective to its correct feminine form:","pairs":[{"left":"vieux","right":"vieille"},{"left":"actif","right":"active"},{"left":"heureux","right":"heureuse"},{"left":"blanc","right":"blanche"}],"exp":"Irregular feminine patterns: vieux→vieille (-ieux), actif→active (-if→-ive), heureux→heureuse (-eux→-euse), blanc→blanche (-c→-che). None of these simply add -e."},
   {"id":"fr-287","topic":"fr-conj","lesson":"fr-l14","type":"mcq","q":"Conjugate « aller »: ils/elles ___:","opts":["allez","allons","vais","vont"],"ans":3,"exp":"aller: je vais, tu vas, il/elle va, nous allons, vous allez, ils/elles vont."},
   {"id":"fr-288","topic":"fr-conj","lesson":"fr-l14","type":"gapfill","q":"We do sport on Saturdays:","template":"Nous {0} du sport le samedi.","gaps":[{"options":["faisons","faisez","font","faites"],"answer":0}],"exp":"faire: je fais, tu fais, il fait, nous faisons, vous faites, ils font."},
   {"id":"fr-289","topic":"fr-gram","lesson":"fr-l14","type":"mcq","q":"« aller + à + le » contracts to:","opts":["à le","al","au","à du"],"ans":2,"exp":"à + le = au: je vais au cinéma. à + la stays as à la: je vais à la piscine."},
@@ -330,9 +330,9 @@ window.FR_QUESTIONS = [
   {"id":"fr-325","topic":"fr-gram","lesson":"fr-l13","type":"gapfill","q":"She lives in Paris. (city — use the right preposition)","template":"Elle habite {0} Paris.","gaps":[{"options":["à","en","au","aux"],"answer":0}],"exp":"Cities take à: à Paris, à Londres, à Lyon. No article with cities."},
   {"id":"fr-326","topic":"fr-gram","lesson":"fr-l13","type":"mcq","q":"« Il vient des États-Unis » — why « des »?","opts":["États-Unis is plural so aux → des for origin (venir de + les = des)","des is the partitive article","des replaces de un","it's an exception"],"ans":0,"exp":"venir DE + les États-Unis → de + les = des. For plural countries use aux (going) / des (coming from): aux États-Unis / des États-Unis."},
   {"id":"fr-327","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is nice/sunny » in French?","opts":["Il fait froid","Il pleut","Il neige","Il fait beau"],"ans":3,"exp":"il fait beau = it is nice / the weather is good. il fait mauvais = it is bad weather."},
-  {"id":"fr-328","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is cold » in French?","opts":["il fait chaud","il fait du vent","il fait froid","il y a du soleil"],"ans":2,"exp":"il fait froid = it is cold. il fait chaud = it is hot."},
+  {"id":"fr-328","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is cold » in French?","opts":["il fait chaud","il fait beau","il fait froid","il fait mauvais"],"ans":2,"exp":"il fait froid = it is cold. il fait chaud = it is hot."},
   {"id":"fr-329","topic":"fr-gram","lesson":"fr-l16","type":"gapfill","q":"It is raining today.","template":"Il {0} aujourd'hui.","gaps":[{"options":["pleut","pleure","pluie","pleuvoit"],"answer":0}],"exp":"il pleut = it is raining. This is the il form of pleuvoir (irregular)."},
-  {"id":"fr-330","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is windy »?","opts":["il fait du soleil","il fait de la neige","il y a du vent","il fait vent"],"ans":2,"exp":"il y a du vent = it is windy. il y a du soleil = it is sunny (alternatively il fait du soleil)."},
+  {"id":"fr-330","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"How do you say « it is windy »?","opts":["il y a du soleil","il fait de la neige","il y a du vent","il fait vent"],"ans":2,"exp":"il y a du vent = it is windy. il y a du soleil = it is sunny. Both use il y a, not faire."},
   {"id":"fr-331","topic":"fr-gram","lesson":"fr-l16","type":"mcq","q":"« Au printemps » means:","opts":["in winter","in summer","in autumn","in spring"],"ans":3,"exp":"au printemps = in spring. en été = in summer; en automne = in autumn; en hiver = in winter. Note: printemps uses au, the others use en."},
   {"id":"fr-332","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"What is the « il » form of « vouloir »?","opts":["il voul","il vouloir","il veut","il voulez"],"ans":2,"exp":"vouloir: je veux, tu veux, il veut, nous voulons, vous voulez, ils veulent."},
   {"id":"fr-333","topic":"fr-conj","lesson":"fr-l38","type":"mcq","q":"How do you say « we can »?","opts":["nous pouvons","nous pouvez","nous peuvent","nous peut"],"ans":0,"exp":"pouvoir: je peux, tu peux, il peut, nous pouvons, vous pouvez, ils peuvent."},
@@ -4743,7 +4743,7 @@ window.FR_LEARN_PATH = [
             "exp": "\"Yuki vient du Japon.\" — Yuki comes from Japan. \"Du\" = de + le (contracted masculine article)."
           },
           {
-            "q": "\"Il porte un T-shirt rouge.\" Which regular -ER conjugation is \"porte\"?",
+            "q": "Porter is a regular -ER verb. Which form goes with the subject « il »?",
             "opts": [
               "nous portons",
               "vous portez",
@@ -4751,7 +4751,7 @@ window.FR_LEARN_PATH = [
               "ils portent"
             ],
             "ans": 2,
-            "exp": "\"Il porte\" = he wears. Regular -ER verbs: je porte, tu portes, il/elle porte, nous portons, vous portez, ils/elles portent."
+            "exp": "il/elle porte (no ending change from stem). Regular -ER verbs: je porte, tu portes, il/elle porte, nous portons, vous portez, ils/elles portent."
           },
           {
             "q": "Emma's coat is what colour?",
@@ -5439,14 +5439,14 @@ window.FR_LEARN_PATH = [
                   "It's hot / cold."
                 ],
                 [
-                  "Il fait du vent / du soleil.",
+                  "Il y a du vent / du soleil.",
                   "It's windy / sunny."
                 ]
               ]
             },
             "callout": {
               "kind": "key",
-              "text": "Weather usually uses **faire**: « il fait… ». But « il pleut » (it's raining) and « il neige » (it's snowing) are their own verbs."
+              "text": "Weather often uses **faire**: « il fait beau/mauvais/chaud/froid ». For wind and sun use **il y a**: « il y a du vent », « il y a du soleil ». Rain and snow have their own verbs: « il pleut », « il neige »."
             }
           },
           {
@@ -5509,12 +5509,12 @@ window.FR_LEARN_PATH = [
             "q": "Which weather expression does NOT use « faire »?",
             "opts": [
               "Il fait chaud",
-              "Il fait du vent",
+              "Il fait beau",
               "Il pleut",
               "Il fait froid"
             ],
             "ans": 2,
-            "exp": "« Il pleut » (it rains) uses the verb pleuvoir, not faire."
+            "exp": "« Il pleut » (it rains) uses the verb pleuvoir, not faire. « Il fait chaud / beau / froid » all use faire."
           },
           {
             "q": "« It's snowing » in French:",
