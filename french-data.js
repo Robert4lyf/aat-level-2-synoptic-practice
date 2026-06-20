@@ -4037,7 +4037,7 @@ window.FR_LEARN_PATH = [
             "exp": "la sœur = the sister."
           },
           {
-            "q": "Choose « my » for « ma mère »→ for « père » (m):",
+            "q": "« ma mère » means 'my mother'. How do you say 'my father'?",
             "opts": [
               "ma père",
               "mon père",
