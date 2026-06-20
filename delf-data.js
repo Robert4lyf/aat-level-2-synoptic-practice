@@ -623,7 +623,7 @@ window.DELF_MOCKS = [
                 ans: 2
               },
               {
-                transcript: '[Radio advert] "Profitez de nos soldes d\'été! Du premier au trente et un juillet, jusqu\'à cinquante pour cent de réduction sur toute la collection printemps-été. Ouvert sept jours sur sept de dix heures à vingt heures. Boutiques Mode & Style, dans tous les centres commerciaux de la région."',
+                transcript: '[Radio advert] "Profitez de nos soldes d\'été! Du premier au trente-et-un juillet, jusqu\'à cinquante pour cent de réduction sur toute la collection printemps-été. Ouvert sept jours sur sept de dix heures à vingt heures. Boutiques Mode & Style, dans tous les centres commerciaux de la région."',
                 q: 'What discount is offered during the sale?',
                 opts: ['Up to 30% off', 'Up to 40% off', 'Up to 50% off', 'Up to 70% off'],
                 ans: 2
