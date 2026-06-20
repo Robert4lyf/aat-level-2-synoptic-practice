@@ -4738,8 +4738,16 @@
   function toggleConfidentCurrent() {
     const q = State.questions[State.current]; if (!q) return;
     Storage.toggleConfident(q.id);
-    showToast(Storage.isConfident(q.id) ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', Storage.isConfident(q.id) ? 'success' : 'info');
-    render();
+    const isNow = Storage.isConfident(q.id);
+    showToast(isNow ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', isNow ? 'success' : 'info');
+    // Update button in-place so typed input is not cleared by a full re-render
+    const btn = document.getElementById('confidentBtn');
+    if (btn) {
+      btn.classList.toggle('is-confident', isNow);
+      btn.setAttribute('aria-pressed', isNow);
+      btn.setAttribute('title', isNow ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice');
+      btn.setAttribute('aria-label', isNow ? 'Unmark as confident' : 'Mark as confident');
+    }
   }
   function jumpToMockQuestion(idx) {
     if (State.mode !== 'mock') return;
