@@ -2036,6 +2036,7 @@
   }
   function normalizeTyped(s, stripAcc) {
     let n = String(s).trim().toLowerCase();
+    n = n.replace(/[?!.,;:]+$/g, '').trim(); // strip trailing punctuation
     if (stripAcc) n = n.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     return n;
   }
