@@ -4496,6 +4496,8 @@
           data-skills="${escapeHtml(lessonSkills.join(','))}">Start ${Math.min(10, allSkillQs.length)}-question drill →</button>
       </div>` : '';
       const personalBestBanner = L.isPersonalBest && stars > 0 ? `<div class="lesson-personal-best">🏆 New personal best!</div>` : '';
+      const unlockedQCount = L.firstTime ? (window.ALL_QUESTIONS || []).filter(q => q.lesson === def.id).length : 0;
+      const unlockedBanner = unlockedQCount > 0 ? `<div class="lesson-unlocked-banner">🔓 ${unlockedQCount} practice question${unlockedQCount === 1 ? '' : 's'} unlocked!</div>` : '';
       const unitCompleteBanner = L.unitComplete ? `<div class="unit-complete-banner">
         <div class="ucb-icon">🎉</div>
         <div class="ucb-text"><strong>Unit complete!</strong> You've finished all lessons in this unit. <span class="ucb-xp">+50 bonus XP</span></div>
@@ -4509,6 +4511,7 @@
           <div class="lesson-done-pct">${pct}%</div>
           <div class="lesson-done-msg">${msg}</div>
           <div class="lesson-done-xp">⚡ +${qScore * 2} XP earned</div>
+          ${unlockedBanner}
           ${wrongReview}
           ${drillPanel}
           <div class="lesson-done-btns">

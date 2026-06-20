@@ -3435,6 +3435,20 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   to   { transform: scale(1);  opacity: 1; }
 }
 
+/* ── Newly unlocked practice questions banner ── */
+.lesson-unlocked-banner {
+  display: inline-block;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 700;
+  padding: 5px 16px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+  animation: pb-pop .4s cubic-bezier(.175,.885,.32,1.275) both;
+  animation-delay: .15s;
+}
+
 /* ── Unit complete celebration banner ── */
 .unit-complete-banner {
   display: flex;
