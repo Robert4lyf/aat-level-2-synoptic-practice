@@ -1695,7 +1695,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "« Bonsoir » greets someone in the evening; « Bonne nuit » is only for going to bed."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l09",
@@ -1845,7 +1846,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "habiter starts with a vowel, so je → j': « J'habite à Lyon »."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l04",
@@ -2004,7 +2006,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "de + le contracts to « du »: le livre du professeur."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l02",
@@ -2182,7 +2185,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "In everyday French « on » commonly means « we »."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l03",
@@ -2339,7 +2343,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "« Quel âge avez-vous ? » = How old are you? (formal)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l10",
@@ -2508,7 +2513,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "pourquoi = why; answer with « parce que »."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l45",
@@ -2592,7 +2598,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "'Au troisième étage' = on the third floor. Use 'au' (à + le) with étage, and the ordinal 'troisième' for 3rd."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l05",
@@ -2698,7 +2705,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "The plural -s is silent; the article (les, des) signals the plural."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l92",
@@ -2837,7 +2845,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Most -age nouns are masculine (le voyage, le garage) but une image is FEMININE — a common exception. un/une stage = internship (masculine). Exceptions must be memorised."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l40",
@@ -3119,7 +3128,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "\"et\" (and) = /e/ — closed vowel like 'é' in café; the 't' is silent. \"est\" (is) = /ɛ/ — open vowel like 'è' in père; the 'st' is silent. They sound similar but 'est' is slightly more open. Context always tells them apart."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l59",
@@ -3176,7 +3186,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "'GN' = /ɲ/ — like 'ny' in 'canyon' or the Spanish ñ. montagne /mɔ̃taɲ/ · champagne /ʃɑ̃paɲ/ · gagner /gaɲe/."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l07",
@@ -3315,7 +3326,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "le matin = the morning."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l11",
@@ -3474,7 +3486,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "leur = their (singular object)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l12",
@@ -3591,7 +3604,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Irregular: beau → belle."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l75",
@@ -3727,7 +3741,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Le ciel est bleu. = The sky is blue. De quelle couleur est…? = What colour is…?"
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l13",
@@ -3856,7 +3871,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Feminine countries (mostly ending in -e) use « en »: en France, en Italie."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l53",
@@ -3924,7 +3940,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Regular -IR verbs use -iss- in nous/vous/ils: finissons, finissez, finissent. This infix is a key feature of the -IR group."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l76",
@@ -4035,7 +4052,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Je ne comprends pas = I don't understand. Je n'entends pas = I can't hear. Je ne sais pas = I don't know."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l14",
@@ -4219,7 +4237,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "aimer + infinitive: J'aime lire."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l15",
@@ -4429,7 +4448,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "After être, the article stays unchanged: **Ce n'est pas un bon film** ✓. The de-rule only replaces du / de la / des / un / une after verbs other than être."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l16",
@@ -4575,7 +4595,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "Near future = aller + infinitive: il va pleuvoir."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l68",
@@ -4714,7 +4735,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "en automne = in autumn. en été = in summer. en hiver = in winter. au printemps = in spring (au because printemps is masculine and starts with a consonant)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l69",
@@ -4848,7 +4870,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "l'étagère = shelf or bookcase. It holds books, ornaments, or other objects and is often found in a salon or bureau."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l39",
@@ -5136,7 +5159,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "sous = under / beneath. Le chat est sous la chaise."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l41",
@@ -5354,7 +5378,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Un médicament = a medicine / medication."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l62",
@@ -5411,7 +5436,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Colour adjectives come AFTER the noun: une voiture rouge. Only BAGS adjectives (Beauty, Age, Goodness, Size) come before: une belle voiture, une petite voiture."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l56",
@@ -5479,7 +5505,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "'Je m'appelle Marie' = My name is Marie. This is the standard phrase for giving your name in French. 'Je suis Marie' is also possible but less idiomatic."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l46",
@@ -5605,7 +5632,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "le sien = his (masculine, replacing 'son livre' — livre is masculine). Possessive pronouns agree with the noun replaced, not the owner."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l47",
@@ -5711,7 +5739,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Ça fait trois euros cinquante = That's three euros fifty (€3.50). C'est combien? = How much is it? Ça fait… / C'est… are used to give a price."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l50",
@@ -5814,7 +5843,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "bronzer = to sunbathe / to get a tan. aller à la plage = go to the beach. nager = to swim. se promener = to go for a walk."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l65",
@@ -5874,7 +5904,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "'Tournez à gauche' = turn left; 'puis' = then; 'allez tout droit' = go straight ahead. The order is: first turn left, then go straight. 'Gauche' = left; 'droite' = right."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l52",
@@ -6009,7 +6040,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "Je vais chercher les enfants. = I am going to pick up/fetch the children. aller chercher = to go and get/pick up. Here aller + infinitive also serves as the near future."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l32",
@@ -6112,7 +6144,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "« Voilà » (here you are) is used when handing something over."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l33",
@@ -6215,7 +6248,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "The story says « son amie Lucie » = her friend Lucie."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l86",
@@ -6347,7 +6381,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "deux millions — million DOES take an s in the plural: un million, deux millions, trois millions. Unlike mille which never has s."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l17",
@@ -6528,7 +6563,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Weather uses faire: « Il fait beau »."
           }
-        ]
+        ],
+        "tag": "core"
       }
     ]
   },
@@ -6688,7 +6724,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "prendre uses avoir: nous avons pris."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l19",
@@ -6922,7 +6959,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "naître → né; plural subject « nous » → nés (born)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l23",
@@ -7036,7 +7074,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "s'appeler is pronominal; « m' » is the reflexive pronoun."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l20",
@@ -7159,7 +7198,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Imparfait = ongoing description or habitual past."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l21",
@@ -7276,7 +7316,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Passé composé = a specific, completed action."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l38",
@@ -7534,7 +7575,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "ils/elles + venir → viennent."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l54",
@@ -7602,7 +7644,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "je dois partir = I must leave / I have to leave. Devoir expresses obligation: je dois · tu dois · il doit · nous devons · vous devez · ils doivent."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l22",
@@ -7744,7 +7787,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "-ai, -as, -a, -ons, -ez, -ont echo avoir."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l70",
@@ -7886,7 +7930,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "C'est une infirmière (article required after c'est). Elle est infirmière (no article when describing role after être)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l24",
@@ -8021,7 +8066,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 3,
             "exp": "COD « les » (fleurs, f.pl.) before avoir → agreement: achetées."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l25",
@@ -8155,7 +8201,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Superlative + de: le meilleur … de la ville."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l71",
@@ -8271,7 +8318,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "qui = subject (the pronoun itself is the subject of the following verb). que = object (the clause has its own subject). The person/thing distinction does NOT determine the choice."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l77",
@@ -8374,7 +8422,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "de temps en temps = from time to time / occasionally. Equivalent to parfois or quelquefois. de temps à autre is a more formal alternative."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l42",
@@ -8588,7 +8637,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Taille = size. The phrase asks what size you have it in."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l43",
@@ -8757,7 +8807,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "La santé = health. Je travaille dans la santé = I work in health/healthcare."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l48",
@@ -8836,7 +8887,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 3,
             "exp": "'Payer' = to pay. Acheter = to buy, vendre = to sell, chercher = to look for. 'Je voudrais payer' = I would like to pay."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l49",
@@ -8915,7 +8967,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "'La gare est près d'ici' = The station is near here. 'Près de' = near. 'Loin de' = far from (opposite)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l51",
@@ -8994,7 +9047,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "In France: 'la carte' = the full à la carte menu (choose freely); 'le menu' = a fixed-price set meal. Asking for 'le menu' means you want the set deal."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l74",
@@ -9131,7 +9185,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "You would say this at the pharmacy (la pharmacie). Quelque chose contre… = something for / against [a symptom]. La toux = cough."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l72",
@@ -9251,7 +9306,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "DELF A2 writing tasks require 60–80 words. DELF A1 tasks require 40–50 words. Staying within the range is important for full marks."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l73",
@@ -9368,7 +9424,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "D'un côté… de l'autre côté = On one hand… on the other hand. It helps structure a balanced opinion — very useful in the DELF A2 speaking monologue."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l60",
@@ -9425,7 +9482,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "'Hibou' has aspirate h: le hibou (no elision), les hiboux (no liaison: /le ibu/, not /lez ibu/). Compare: l'homme (silent h, elision applies). Aspirate h must be memorised — there is no rule to predict it."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l63",
@@ -9482,7 +9540,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Belle (beautiful) is a BAGS adjective — it goes before the noun. Rouge (red) is a colour adjective — it goes after the noun. BAGS = Beauty, Age, Goodness, Size."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l55",
@@ -9550,7 +9609,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "ne before the auxiliary, pas immediately after it: je N'AI PAS mangé. The past participle comes last, after 'pas'."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l78",
@@ -9681,7 +9741,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "dire que = to say that (statements). demander si = to ask whether (yes/no questions). répondre que = to answer that."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l57",
@@ -9749,7 +9810,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "'Laisser un message' = to leave a message. If yes: 'Oui, pouvez-vous lui demander de me rappeler ?' (Yes, could you ask them to call me back?) If no: 'Non merci, je rappellerai plus tard.' (No thank you, I'll call back later.)"
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l66",
@@ -9809,7 +9871,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "'Pour quatre' = for four. 'Quatre' = 4. Common numbers for restaurant reservations: deux (2), trois (3), quatre (4), cinq (5), six (6)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l34",
@@ -9909,7 +9972,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Emma dit : « on est allés au restaurant avec des amis »."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l35",
@@ -10009,7 +10073,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "« Quand j'habitais à Paris » describes a repeated past habit → imparfait. A one-off event uses passé composé."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l82",
@@ -10149,7 +10214,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "un raisin = a grape (fresh). un raisin sec = a dried grape (raisin in English). The 'sec' means 'dry/dried'. Another key false friend!"
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l87",
@@ -10296,7 +10362,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "le goûter = the afternoon snack, typically around 4pm, especially for children (often bread with chocolate or a biscuit). Not to be confused with le déjeuner (lunch) or le dîner (dinner)."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l26",
@@ -10476,7 +10543,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Superlative + de = in: de la ville."
           }
-        ]
+        ],
+        "tag": "core"
       }
     ]
   },
@@ -10604,7 +10672,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Same as future: ser- → je serais."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l44",
@@ -10740,7 +10809,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Y (and EN) go before the conjugated verb: Tu y vas. Je vais y aller (before infinitive in 2-verb group)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l29",
@@ -10856,7 +10926,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Time expression → où."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l28",
@@ -10978,7 +11049,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "que nous ayons (irregular)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l79",
@@ -11117,7 +11189,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "The plus-que-parfait describes an action that was ALREADY DONE before another past action: Quand il est arrivé, j'avais déjà mangé. It is the 'past of the past'."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l81",
@@ -11260,7 +11333,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "de plus = moreover / furthermore (addition). Also: en outre, d'ailleurs, également. donc = consequence. cependant = contrast. parce que = cause."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l80",
@@ -11369,7 +11443,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "The passive is most common in formal texts, news, and legal/scientific writing. In everyday speech, French speakers often prefer 'on': On a réparé la voiture."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l83",
@@ -11492,7 +11567,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Means/method: c'est en forgeant (it is BY forging) qu'on devient forgeron. = By/through practising a craft, one becomes skilled. Practice makes perfect. The gérondif here shows the METHOD for achieving the result."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l84",
@@ -11617,7 +11693,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Past probability / supposition: he probably forgot the appointment. This is the 'supposition about the past' use of the futur antérieur. English equivalent: 'he must have forgotten' / 'he will have forgotten'."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l85",
@@ -11748,7 +11825,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "J'aurais voulu = I would have liked / I would have wanted. Conditionnel passé of vouloir expresses REGRET about a past situation: I would have liked to leave (but I didn't). Common with vouloir, pouvoir, devoir."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l30",
@@ -11870,7 +11948,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 0,
             "exp": "« Par contre » = however / on the other hand."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l58",
@@ -11938,7 +12017,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "The conditionnel passé (aurait + past participle) is used in French journalism to report unconfirmed information. 'Le ministre aurait démissionné' = the minister has reportedly resigned (not yet confirmed). This is called the 'conditionnel journalistique'."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l61",
@@ -12006,7 +12086,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "The journalistic conditional (aurait + past participle) signals unconfirmed information: 'Le ministre aurait démissionné' = the minister has reportedly resigned. It is very common in French news media."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l64",
@@ -12063,7 +12144,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Il faut que tu sois à l'heure. After 'il faut que', normal subject + verb order follows: tu sois (subjunctive of être). The subjunctive is triggered by 'il faut que' but the word order inside the clause is standard."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l67",
@@ -12120,7 +12202,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Literal: 'It is by forging that one becomes a blacksmith.' The proverb means practice makes perfect. Structure: c'est en + gérondif (forgeant) + que = it is by [doing X] that..."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l88",
@@ -12193,7 +12276,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Sophie peut payer jusqu'à 900€ par mois, charges comprises = up to 900€/month including bills. jusqu'à = up to. charges comprises = bills/charges included."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l89",
@@ -12290,7 +12374,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Cependant = however — it signals the counter-argument (shopkeepers' objections). This contrasts with the positive points made before it. Classic B1 discourse marker for opposition."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l90",
@@ -12422,7 +12507,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "avoir du pain sur la planche = to have a lot of work / things to do. Literally: to have bread on the board (ready to be worked). J'ai du pain sur la planche = I have a lot on my plate."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l91",
@@ -12558,7 +12644,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "dans les meilleurs délais = as soon as possible (in a formal/professional context). Literally 'in the best delays'. Equivalent to 'at the earliest opportunity'. Used in business correspondence."
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l36",
@@ -12661,7 +12748,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Marc dit : « Je suis d'accord là-dessus. Le plus important, c'est qu'on commence à changer. »"
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l37",
@@ -12768,7 +12856,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "Sophie dit : « Ne pas attendre le bon moment — il n'existe pas. Il faut que vous ayez confiance en vous. »"
           }
-        ]
+        ],
+        "tag": "mastery"
       },
       {
         "id": "fr-l31",
@@ -12948,7 +13037,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "« bien que » triggers the subjunctive: qu'il soit."
           }
-        ]
+        ],
+        "tag": "core"
       }
     ]
   },
@@ -13098,7 +13188,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "ait = subjonctif of avoir. ne pas penser que → subjunctive. But penser que (affirmative) → indicative: Je pense qu'il a raison. Negation of certainty triggers the subjunctive."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l94",
@@ -13206,7 +13297,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "bien que always takes the subjunctive: Bien qu'il soit fatigué (not est). quoique also takes the subjunctive. Remember: après que takes the indicative (a key distinction to get right at B2)."
           }
-        ]
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l96",
@@ -13330,7 +13422,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 2,
             "exp": "In soutenu register, always use the full negation ne…pas (not just 'pas') and prefer nous over on. Also: no anglicismes, no familier vocabulary. il est important de rather than c'est important de."
           }
-        ]
+        ],
+        "tag": "advanced"
       },
       {
         "id": "fr-l95",
@@ -13448,7 +13541,8 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             "ans": 1,
             "exp": "Nominalisation creates a more formal, dense style used in journalistic, academic, and official French. Verbal structures are preferred in everyday speech, but nominalisations sound more authoritative and concise in writing."
           }
-        ]
+        ],
+        "tag": "advanced"
       }
     ]
   }
