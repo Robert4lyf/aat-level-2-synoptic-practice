@@ -6933,14 +6933,13 @@ window.FR_LEARN_PATH = [
           {
             "h": "Les expressions de quantité",
             "p": [
-              "Quantity expressions in French: **un kilo de** (a kilo of), **une livre de** (500g / a pound of), **100 grammes de** (100 grams of), **un litre de** (a litre of), **une demi-bouteille de** (half a bottle of), **une tranche de** (a slice of), **un morceau de** (a piece of), **une boîte de** (a tin / box of), **un paquet de** (a packet of), **un verre de** (a glass of), **une tasse de** (a cup of)."
+              "Quantity expressions in French: **un kilo de** (a kilo of), **100 grammes de** (100 grams of), **un litre de** (a litre of), **une demi-bouteille de** (half a bottle of), **une tranche de** (a slice of), **un morceau de** (a piece of), **une boîte de** (a tin / box of), **un paquet de** (a packet of), **un verre de** (a glass of), **une tasse de** (a cup of)."
             ],
             "split": {
               "left": {
                 "title": "Weight & volume",
                 "items": [
                   "un kilo de — a kilo of",
-                  "une livre de — 500g / a pound of",
                   "100 grammes de — 100g of",
                   "un litre de — a litre of",
                   "une demi-bouteille de — half a bottle of"
