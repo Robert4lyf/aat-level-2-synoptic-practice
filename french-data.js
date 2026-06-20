@@ -2857,7 +2857,7 @@ window.FR_LEARN_PATH = [
             "h": "Quatre-vingts et ses formes",
             "p": [
               "80 = quatre-vingts (takes s when final), 81 = quatre-vingt-un (no s), 90 = quatre-vingt-dix, 91 = quatre-vingt-onze.",
-              "70 = soixante-dix, 71 = soixante et onze."
+              "70 = soixante-dix, 71 = soixante-et-onze."
             ],
             "split": {
               "left": {
