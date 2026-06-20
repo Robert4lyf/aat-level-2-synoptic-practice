@@ -1449,7 +1449,12 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   .nav-tab { font-size: .74rem; padding: 7px 11px; }
   .mode-card-grid { grid-template-columns: 1fr 1fr; }
   .focus-topic-row { grid-template-columns: 1.2rem 4rem 1fr 2.2rem; }
-  .journey-node { width: 88px; min-height: 96px; }
+  .journey-node { width: 60px; height: 60px; min-height: 60px; }
+  .journey-icon { font-size: 1.5rem; }
+  .step-pos-l { transform: translateX(-64px); }
+  .step-pos-r { transform: translateX(64px); }
+  .journey-step-label { font-size: .58rem; max-width: 84px; }
+  .journey-nodes::before { opacity: .35; }
   .unit-action-btns { width: 100%; justify-content: flex-start; }
 }
 
@@ -2998,15 +3003,21 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   margin-bottom: 24px;
 }
 
-/* ── Journey map units ── */
-.journey-map { display: flex; flex-direction: column; gap: 28px; }
+/* ══════════════════════════════════════════════════════════════
+   JOURNEY MAP — Duolingo-style winding path
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Unit card ── */
+.journey-map { display: flex; flex-direction: column; gap: 0; }
 .journey-unit {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r-xl);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 20px 20px 28px;
+  margin-bottom: 24px;
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  position: relative;
 }
 .journey-unit-header {
   display: flex;
@@ -3019,51 +3030,179 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
 .journey-unit-icon { font-size: 2rem; }
 .journey-unit-title { font-weight: 700; font-size: 1rem; }
 .journey-unit-sub { font-size: .78rem; color: var(--subtext); margin-top: 2px; }
+
+/* ── Winding path container ── */
 .journey-nodes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 16px 0 0;
-}
-.journey-node {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 16px 0 8px;
+  gap: 0;
+  /* min-height ensures the spine is visible even with few nodes */
+  min-height: 60px;
+}
+
+/* Dashed vertical spine */
+.journey-nodes::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--border-strong) 0px,
+    var(--border-strong) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  transform: translateX(-50%);
+  z-index: 0;
+  border-radius: 2px;
+  opacity: .5;
+}
+
+/* ── Each step (node + label) ── */
+.journey-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 108px;
+  margin: 6px 0;
+  transition: transform .12s var(--ease);
+}
+/* Three-position winding: left → centre → right */
+.step-pos-l { transform: translateX(-96px); }
+.step-pos-c { transform: translateX(0); }
+.step-pos-r { transform: translateX(96px); }
+
+/* Story steps get a subtle glow aura */
+.journey-step-story .journey-node {
+  box-shadow: 0 0 0 4px rgba(245,158,11,.22), var(--shadow-sm);
+}
+
+/* ── The circular node button ── */
+.journey-node {
+  position: relative;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 6px;
-  width: 100px;
-  min-height: 110px;
-  padding: 14px 10px 10px;
-  border-radius: var(--r-xl);
-  border: 2px solid;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  min-height: 72px;
+  padding: 0;
+  border: 3px solid;
   cursor: pointer;
   transition: transform .15s var(--ease), box-shadow .15s var(--ease);
-  text-align: center;
+  overflow: hidden;
 }
-.journey-node:hover:not(:disabled) { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.journey-node:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: var(--shadow-md);
+}
+
+/* Done state — green tint */
 .node-done {
-  background: color-mix(in srgb, var(--brand-500) 10%, var(--card));
+  background: color-mix(in srgb, var(--brand-500) 12%, var(--card));
   border-color: var(--brand-500);
   color: var(--text);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand-500) 20%, transparent);
 }
+/* Done ring overlay — arc to indicate 100% complete */
+.node-done-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 3px solid var(--brand-400);
+  pointer-events: none;
+  opacity: .6;
+}
+
+/* Available state */
 .node-available {
   background: var(--card);
-  border: 2px solid var(--border);
+  border-color: var(--border-strong);
   color: var(--text);
 }
 .node-available:hover:not(:disabled) { border-color: var(--brand-400); }
+
+/* Locked state */
 .node-locked {
   background: var(--card-muted);
   border-color: var(--border);
   color: var(--subtext);
-  opacity: 0.6;
+  opacity: 0.55;
+  cursor: not-allowed;
 }
-.journey-icon { font-size: 1.6rem; margin-bottom: 4px; }
-.journey-label { font-size: .7rem; font-weight: 600; line-height: 1.2; }
-.journey-stars { display: flex; gap: 2px; }
-.journey-star { font-size: .9rem; color: var(--border-strong); }
+
+/* ── Icon inside node ── */
+.journey-icon { font-size: 1.9rem; line-height: 1; pointer-events: none; }
+
+/* ── Tier badge (above node) ── */
+.journey-step-badge {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
+}
+
+/* ── Stars (below node) ── */
+.journey-stars {
+  display: flex;
+  gap: 1px;
+  margin-top: 5px;
+  justify-content: center;
+  min-height: 16px;
+}
+.journey-star { font-size: .85rem; color: var(--border-strong); }
 .journey-star.lit { color: #F59E0B; }
+
+/* ── Label (below stars) ── */
+.journey-step-label {
+  font-size: .63rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 4px;
+  line-height: 1.35;
+  max-width: 100px;
+  color: var(--text);
+  word-break: break-word;
+}
+.node-locked + * .journey-step-label,
+.journey-step:has(.node-locked) .journey-step-label { color: var(--subtext); opacity: .6; }
+
+/* ── Meta (time · xp) ── */
+.journey-step-meta {
+  display: flex;
+  gap: 4px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── Tier-specific border colours on available nodes ── */
+.node-available.node-tier-2 { border-color: #93c5fd; }
+.node-available.node-tier-3 { border-color: #fcd34d; }
+.node-available.node-tier-4 { border-color: #f9a8d4; }
+.node-available.node-tier-5 { border-color: #c4b5fd; }
+.node-available.node-story   { border-color: #F59E0B; background: color-mix(in srgb,#fef3c7 30%,var(--card)); }
+.node-done.node-story        { border-color: #D97706; }
+
+/* ── Story tier label ── */
+.tier-tier-story-label { background: #fef3c7; color: #92400e; }
+
+/* Dark mode overrides */
+.dark .node-available.node-tier-2 { border-color: rgba(147,197,253,.5); }
+.dark .node-available.node-tier-3 { border-color: rgba(252,211,77,.45); }
+.dark .node-available.node-tier-4 { border-color: rgba(249,168,212,.45); }
+.dark .node-available.node-tier-5 { border-color: rgba(196,181,253,.5); }
+.dark .node-available.node-story   { border-color: #d97706; background: rgba(245,158,11,.08); }
+.dark .journey-step-story .journey-node { box-shadow: 0 0 0 4px rgba(245,158,11,.14), var(--shadow-sm); }
 
 /* ═══════════════════════════════════════════════════════════
    LESSON PLAYER
@@ -3414,33 +3553,29 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .07em;
-  padding: 1px 6px;
+  padding: 1px 7px;
   border-radius: 99px;
   line-height: 1.6;
-  margin-bottom: 2px;
+  white-space: nowrap;
 }
-.tier-1-label { background: #dcfce7; color: #166534; }
-.tier-2-label { background: #dbeafe; color: #1e40af; }
-.tier-3-label { background: #fef3c7; color: #92400e; }
-.tier-4-label { background: #fce7f3; color: #9d174d; }
+.tier-1-label          { background: #dcfce7; color: #166534; }
+.tier-2-label          { background: #dbeafe; color: #1e40af; }
+.tier-3-label          { background: #fef3c7; color: #92400e; }
+.tier-4-label          { background: #fce7f3; color: #9d174d; }
+.tier-tier-story-label { background: #fef3c7; color: #92400e; }
+.tier-story-label      { background: #fef3c7; color: #92400e; }
 
-/* ── Tier border accents on nodes (available only) ── */
-.node-available.node-tier-1 { border-color: #86efac; }
-.node-available.node-tier-2 { border-color: #93c5fd; }
-.node-available.node-tier-3 { border-color: #fcd34d; }
-.node-available.node-tier-4 { border-color: #f9a8d4; }
-.node-available.node-tier-5 { border-color: #c4b5fd; }
+/* node-l3-badge kept for AAT */
+.node-l3-badge { background: #ede9fe; color: #5b21b6; font-size: .52rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em; padding: 1px 7px; border-radius: 99px; line-height: 1.6; }
 
 /* ── Tier labels & borders – dark mode ── */
 .dark .tier-1-label { background: rgba(22,163,74,.18); color: #86efac; }
 .dark .tier-2-label { background: rgba(59,130,246,.18); color: #93c5fd; }
 .dark .tier-3-label { background: rgba(245,158,11,.16); color: #fcd34d; }
 .dark .tier-4-label { background: rgba(236,72,153,.16); color: #f9a8d4; }
-.dark .node-available.node-tier-1 { border-color: rgba(134,239,172,.4); }
-.dark .node-available.node-tier-2 { border-color: rgba(147,197,253,.4); }
-.dark .node-available.node-tier-3 { border-color: rgba(252,211,77,.35); }
-.dark .node-available.node-tier-4 { border-color: rgba(249,168,212,.35); }
-.dark .node-available.node-tier-5 { border-color: rgba(196,181,253,.4); }
+.dark .tier-story-label,
+.dark .tier-tier-story-label { background: rgba(245,158,11,.16); color: #fcd34d; }
 
 /* ── Exam weight chip on unit header ── */
 .unit-exam-weight {

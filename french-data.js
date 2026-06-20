@@ -2602,6 +2602,139 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l86",
+        "title": "Les grands nombres (100–1†00†00)",
+        "icon": "🔢",
+        "cards": [
+          {
+            "h": "Cent, mille, million",
+            "p": [
+              "Formation: 100 = cent, 200 = deux cents, 201 = deux cent un (no s before another number), 1000 = mille (never takes an s), 1,000,000 = un million.",
+              "Examples: 150 = cent cinquante, 500 = cinq cents, 1,500 = mille cinq cents, 2,000 = deux mille."
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "cent prend un s (cents) quand il est multiplié et final : deux cents, cinq cents. Mais : deux cent cinq (no s — followed by more digits). mille ne prend JAMAIS de s."
+            }
+          },
+          {
+            "h": "Quatre-vingts et ses formes",
+            "p": [
+              "80 = quatre-vingts (takes s when final), 81 = quatre-vingt-un (no s), 90 = quatre-vingt-dix, 91 = quatre-vingt-onze.",
+              "70 = soixante-dix, 71 = soixante et onze."
+            ],
+            "split": {
+              "left": {
+                "title": "Multiples of 20",
+                "items": [
+                  "60 — soixante",
+                  "70 — soixante-dix",
+                  "80 — quatre-vingts",
+                  "90 — quatre-vingt-dix"
+                ]
+              },
+              "right": {
+                "title": "Common large numbers",
+                "items": [
+                  "100 — cent",
+                  "500 — cinq cents",
+                  "1 000 — mille",
+                  "1 000 000 — un million"
+                ]
+              }
+            }
+          },
+          {
+            "h": "Les grands nombres en pratique",
+            "p": [
+              "Prices, statistics, populations. La population de Paris est d'environ deux millions deux cent mille habitants. Le billet coûte cent cinquante euros. Il y a trois mille étudiants dans l'université."
+            ],
+            "example": {
+              "title": "Spelling rules at a glance",
+              "rows": [
+                [
+                  "Number",
+                  "French",
+                  "Notes"
+                ],
+                [
+                  "200",
+                  "deux cents",
+                  "s at end — multiplied cent"
+                ],
+                [
+                  "201",
+                  "deux cent un",
+                  "no s — more digits follow"
+                ],
+                [
+                  "1 000",
+                  "mille",
+                  "never has s"
+                ],
+                [
+                  "80",
+                  "quatre-vingts",
+                  "s at end — multiplied vingt"
+                ],
+                [
+                  "81",
+                  "quatre-vingt-un",
+                  "no s — digit follows"
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "How do you write 200 in French?",
+            "opts": [
+              "deux cent",
+              "deux cents",
+              "deux centes",
+              "deux mille"
+            ],
+            "ans": 1,
+            "exp": "deux cents — cent takes an s when multiplied AND at the end of the number: deux cents, cinq cents. But: deux cent cinq (no s because followed by cinq)."
+          },
+          {
+            "q": "How do you write 1,500 in French?",
+            "opts": [
+              "un mille cinq cents",
+              "mille cinq cent",
+              "mille cinq cents",
+              "cent cinq mille"
+            ],
+            "ans": 2,
+            "exp": "mille cinq cents: mille never has an s; cinq cents has the s because it is multiplied and final. 1,501 would be mille cinq cent un (no s)."
+          },
+          {
+            "q": "What is 'quatre-vingts' in digits?",
+            "opts": [
+              "70",
+              "80",
+              "90",
+              "84"
+            ],
+            "ans": 1,
+            "exp": "quatre-vingts = 4 × 20 = 80. The s drops when followed by another digit: quatre-vingt-un (81), quatre-vingt-dix (90)."
+          },
+          {
+            "q": "How do you say 2,000,000 in French?",
+            "opts": [
+              "deux milles",
+              "deux million",
+              "deux millions",
+              "deux mille mille"
+            ],
+            "ans": 2,
+            "exp": "deux millions — million DOES take an s in the plural: un million, deux millions, trois millions. Unlike mille which never has s."
+          }
+        ],
+        "tag": "advanced"
+      },
+      {
         "id": "fr-l05",
         "title": "Le pluriel des noms",
         "icon": "➕",
@@ -4599,6 +4732,326 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l41",
+        "title": "Le corps et la santé",
+        "icon": "🏥",
+        "cards": [
+          {
+            "h": "Les parties du corps",
+            "p": [
+              "Learn the key body parts in French. Note the irregular plural: **l'œil → les yeux**."
+            ],
+            "table": {
+              "headers": [
+                "French",
+                "English"
+              ],
+              "rows": [
+                [
+                  "la tête",
+                  "the head"
+                ],
+                [
+                  "le visage",
+                  "the face"
+                ],
+                [
+                  "les yeux / l'œil",
+                  "the eyes / the eye"
+                ],
+                [
+                  "le nez",
+                  "the nose"
+                ],
+                [
+                  "la bouche",
+                  "the mouth"
+                ],
+                [
+                  "l'oreille",
+                  "the ear"
+                ],
+                [
+                  "les cheveux",
+                  "the hair"
+                ],
+                [
+                  "le cou",
+                  "the neck"
+                ],
+                [
+                  "l'épaule",
+                  "the shoulder"
+                ],
+                [
+                  "le bras",
+                  "the arm"
+                ],
+                [
+                  "la main",
+                  "the hand"
+                ],
+                [
+                  "le doigt",
+                  "the finger"
+                ],
+                [
+                  "le ventre",
+                  "the stomach"
+                ],
+                [
+                  "le dos",
+                  "the back"
+                ],
+                [
+                  "la jambe",
+                  "the leg"
+                ],
+                [
+                  "le genou",
+                  "the knee"
+                ],
+                [
+                  "le pied",
+                  "the foot"
+                ]
+              ]
+            }
+          },
+          {
+            "h": "J'ai mal à… — expressing pain",
+            "p": [
+              "Use **j'ai mal à** + definite article to say where it hurts.",
+              "Remember: **à + le → au** and **à + les → aux**."
+            ],
+            "table": {
+              "headers": [
+                "French phrase",
+                "English translation"
+              ],
+              "rows": [
+                [
+                  "J'ai mal à la tête.",
+                  "I have a headache."
+                ],
+                [
+                  "J'ai mal au dos.",
+                  "I have a backache."
+                ],
+                [
+                  "J'ai mal aux dents.",
+                  "I have toothache."
+                ],
+                [
+                  "J'ai mal à la gorge.",
+                  "I have a sore throat."
+                ],
+                [
+                  "J'ai mal au ventre.",
+                  "I have a stomach ache."
+                ],
+                [
+                  "J'ai mal à l'oreille.",
+                  "I have earache."
+                ]
+              ]
+            }
+          },
+          {
+            "h": "Chez le médecin — at the doctor",
+            "p": [
+              "**Je suis malade.** — I'm ill.",
+              "**Je me sens mal.** — I don't feel well.",
+              "**J'ai de la fièvre.** — I have a fever.",
+              "**Je tousse.** — I'm coughing.",
+              "**J'éternue.** — I'm sneezing.",
+              "**Il me faut une ordonnance.** — I need a prescription.",
+              "À la pharmacie: *un médicament* (medicine), *des comprimés* (tablets), *du sirop* (syrup), *une crème* (cream)."
+            ],
+            "callout": {
+              "kind": "tip",
+              "text": "In France, the pharmacist (le pharmacien / la pharmacienne) can advise on minor ailments — a great first port of call."
+            }
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "\"La tête\" means:",
+            "opts": [
+              "the hand",
+              "the head",
+              "the foot",
+              "the back"
+            ],
+            "ans": 1,
+            "exp": "La tête = the head."
+          },
+          {
+            "type": "mcq",
+            "q": "\"J'ai mal au dos\" means:",
+            "opts": [
+              "I have a headache",
+              "I have a stomach ache",
+              "I have a backache",
+              "I have a toothache"
+            ],
+            "ans": 2,
+            "exp": "J'ai mal au dos = I have a backache. (dos = back)"
+          },
+          {
+            "type": "mcq",
+            "q": "The correct contracted form of \"à + les\" is:",
+            "opts": [
+              "à les",
+              "au",
+              "aux",
+              "del"
+            ],
+            "ans": 2,
+            "exp": "à + les contracts to aux: j'ai mal aux dents."
+          },
+          {
+            "type": "mcq",
+            "q": "\"Je suis malade\" means:",
+            "opts": [
+              "I am tired",
+              "I am ill",
+              "I am hungry",
+              "I am cold"
+            ],
+            "ans": 1,
+            "exp": "Je suis malade = I am ill."
+          },
+          {
+            "type": "mcq",
+            "q": "\"J'ai de la fièvre\" means:",
+            "opts": [
+              "I have a cough",
+              "I have a temperature / fever",
+              "I have a headache",
+              "I feel dizzy"
+            ],
+            "ans": 1,
+            "exp": "J'ai de la fièvre = I have a fever / temperature."
+          },
+          {
+            "type": "mcq",
+            "q": "What is \"un médicament\"?",
+            "opts": [
+              "a doctor",
+              "a prescription",
+              "a medicine",
+              "a nurse"
+            ],
+            "ans": 2,
+            "exp": "Un médicament = a medicine / medication."
+          }
+        ],
+        "tag": "core"
+      },
+      {
+        "id": "fr-l97",
+        "title": "Histoire : La Cigale et la Fourmi",
+        "icon": "🐜",
+        "tag": "mastery",
+        "cards": [
+          {
+            "h": "La Cigale et la Fourmi — lisez la fable",
+            "p": [
+              "D'après Jean de La Fontaine (1668). Adapted for A1 learners. Read the fable, then answer the questions."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#f0fdf4,#fff);border-left:4px solid #166534;border-radius:10px;padding:16px;font-size:0.92em;line-height:2'>\n<div style='color:#166534;font-weight:700;font-size:1em;margin-bottom:10px'>🐜 La Fable — d'après La Fontaine</div>\n<p>La cigale chante toute la journée. Elle chante en été, au printemps, en automne. Elle est heureuse !</p>\n<p>La fourmi, elle, <strong>travaille</strong>. Elle cherche de la nourriture. Elle mange, et elle mange encore. Elle prépare pour l'hiver.</p>\n<p>L'hiver <strong>arrive</strong>. Il <strong>fait</strong> très froid. La cigale <strong>n'a pas</strong> de nourriture. Elle a faim et elle a froid.</p>\n<p>La cigale <strong>va</strong> chez la fourmi. Elle <strong>dit</strong> : <em>« Bonjour, amie ! Tu as de la nourriture pour moi ? »</em></p>\n<p>La fourmi répond : <em>« En été, tu chantes, tu ne travailles pas. Maintenant, je n'ai pas de nourriture pour toi ! »</em></p>\n<p>La cigale <strong>est</strong> triste. Elle comprend maintenant : <strong>il faut travailler !</strong></p>\n</div>"
+          },
+          {
+            "h": "Vocabulaire clé",
+            "example": {
+              "title": "Key words from the fable",
+              "rows": [
+                [
+                  "toute la journée",
+                  "all day long"
+                ],
+                [
+                  "chercher",
+                  "to look for"
+                ],
+                [
+                  "la nourriture",
+                  "food"
+                ],
+                [
+                  "avoir faim",
+                  "to be hungry"
+                ],
+                [
+                  "avoir froid",
+                  "to be cold"
+                ],
+                [
+                  "il faut + infinitif",
+                  "you must / one must"
+                ],
+                [
+                  "la fourmi",
+                  "the ant"
+                ],
+                [
+                  "la cigale",
+                  "the cicada / grasshopper"
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "What does the cicada do all summer long?",
+            "opts": [
+              "She works",
+              "She sleeps",
+              "She sings",
+              "She eats"
+            ],
+            "ans": 2,
+            "exp": "La cigale chante toute la journée — she sings all day long."
+          },
+          {
+            "q": "What does the ant do during summer?",
+            "opts": [
+              "She sings and dances",
+              "She collects food for winter",
+              "She sleeps in the sun",
+              "She visits the cicada"
+            ],
+            "ans": 1,
+            "exp": "La fourmi travaille et cherche de la nourriture — she works and collects food."
+          },
+          {
+            "q": "Why does the cicada go to the ant's house in winter?",
+            "opts": [
+              "To sing together",
+              "To return borrowed food",
+              "Because she has no food and is hungry",
+              "Because it is too hot outside"
+            ],
+            "ans": 2,
+            "exp": "La cigale n'a pas de nourriture et elle a faim — she has no food and is hungry."
+          },
+          {
+            "q": "What is the moral of the fable?",
+            "opts": [
+              "Singing makes you happy",
+              "You must work to prepare for the future",
+              "Ants are unkind",
+              "Winter is short"
+            ],
+            "ans": 1,
+            "exp": "La cigale comprend : il faut travailler — you must work. La Fontaine's fable teaches that preparation matters."
+          }
+        ]
+      },
+      {
         "id": "fr-l68",
         "title": "Les jours, les mois et les dates",
         "icon": "📅",
@@ -5158,225 +5611,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 1,
             "exp": "sous = under / beneath. Le chat est sous la chaise."
-          }
-        ],
-        "tag": "core"
-      },
-      {
-        "id": "fr-l41",
-        "title": "Le corps et la santé",
-        "icon": "🏥",
-        "cards": [
-          {
-            "h": "Les parties du corps",
-            "p": [
-              "Learn the key body parts in French. Note the irregular plural: **l'œil → les yeux**."
-            ],
-            "table": {
-              "headers": [
-                "French",
-                "English"
-              ],
-              "rows": [
-                [
-                  "la tête",
-                  "the head"
-                ],
-                [
-                  "le visage",
-                  "the face"
-                ],
-                [
-                  "les yeux / l'œil",
-                  "the eyes / the eye"
-                ],
-                [
-                  "le nez",
-                  "the nose"
-                ],
-                [
-                  "la bouche",
-                  "the mouth"
-                ],
-                [
-                  "l'oreille",
-                  "the ear"
-                ],
-                [
-                  "les cheveux",
-                  "the hair"
-                ],
-                [
-                  "le cou",
-                  "the neck"
-                ],
-                [
-                  "l'épaule",
-                  "the shoulder"
-                ],
-                [
-                  "le bras",
-                  "the arm"
-                ],
-                [
-                  "la main",
-                  "the hand"
-                ],
-                [
-                  "le doigt",
-                  "the finger"
-                ],
-                [
-                  "le ventre",
-                  "the stomach"
-                ],
-                [
-                  "le dos",
-                  "the back"
-                ],
-                [
-                  "la jambe",
-                  "the leg"
-                ],
-                [
-                  "le genou",
-                  "the knee"
-                ],
-                [
-                  "le pied",
-                  "the foot"
-                ]
-              ]
-            }
-          },
-          {
-            "h": "J'ai mal à… — expressing pain",
-            "p": [
-              "Use **j'ai mal à** + definite article to say where it hurts.",
-              "Remember: **à + le → au** and **à + les → aux**."
-            ],
-            "table": {
-              "headers": [
-                "French phrase",
-                "English translation"
-              ],
-              "rows": [
-                [
-                  "J'ai mal à la tête.",
-                  "I have a headache."
-                ],
-                [
-                  "J'ai mal au dos.",
-                  "I have a backache."
-                ],
-                [
-                  "J'ai mal aux dents.",
-                  "I have toothache."
-                ],
-                [
-                  "J'ai mal à la gorge.",
-                  "I have a sore throat."
-                ],
-                [
-                  "J'ai mal au ventre.",
-                  "I have a stomach ache."
-                ],
-                [
-                  "J'ai mal à l'oreille.",
-                  "I have earache."
-                ]
-              ]
-            }
-          },
-          {
-            "h": "Chez le médecin — at the doctor",
-            "p": [
-              "**Je suis malade.** — I'm ill.",
-              "**Je me sens mal.** — I don't feel well.",
-              "**J'ai de la fièvre.** — I have a fever.",
-              "**Je tousse.** — I'm coughing.",
-              "**J'éternue.** — I'm sneezing.",
-              "**Il me faut une ordonnance.** — I need a prescription.",
-              "À la pharmacie: *un médicament* (medicine), *des comprimés* (tablets), *du sirop* (syrup), *une crème* (cream)."
-            ],
-            "callout": {
-              "kind": "tip",
-              "text": "In France, the pharmacist (le pharmacien / la pharmacienne) can advise on minor ailments — a great first port of call."
-            }
-          }
-        ],
-        "check": [
-          {
-            "type": "mcq",
-            "q": "\"La tête\" means:",
-            "opts": [
-              "the hand",
-              "the head",
-              "the foot",
-              "the back"
-            ],
-            "ans": 1,
-            "exp": "La tête = the head."
-          },
-          {
-            "type": "mcq",
-            "q": "\"J'ai mal au dos\" means:",
-            "opts": [
-              "I have a headache",
-              "I have a stomach ache",
-              "I have a backache",
-              "I have a toothache"
-            ],
-            "ans": 2,
-            "exp": "J'ai mal au dos = I have a backache. (dos = back)"
-          },
-          {
-            "type": "mcq",
-            "q": "The correct contracted form of \"à + les\" is:",
-            "opts": [
-              "à les",
-              "au",
-              "aux",
-              "del"
-            ],
-            "ans": 2,
-            "exp": "à + les contracts to aux: j'ai mal aux dents."
-          },
-          {
-            "type": "mcq",
-            "q": "\"Je suis malade\" means:",
-            "opts": [
-              "I am tired",
-              "I am ill",
-              "I am hungry",
-              "I am cold"
-            ],
-            "ans": 1,
-            "exp": "Je suis malade = I am ill."
-          },
-          {
-            "type": "mcq",
-            "q": "\"J'ai de la fièvre\" means:",
-            "opts": [
-              "I have a cough",
-              "I have a temperature / fever",
-              "I have a headache",
-              "I feel dizzy"
-            ],
-            "ans": 1,
-            "exp": "J'ai de la fièvre = I have a fever / temperature."
-          },
-          {
-            "type": "mcq",
-            "q": "What is \"un médicament\"?",
-            "opts": [
-              "a doctor",
-              "a prescription",
-              "a medicine",
-              "a nurse"
-            ],
-            "ans": 2,
-            "exp": "Un médicament = a medicine / medication."
           }
         ],
         "tag": "core"
@@ -6252,139 +6486,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "mastery"
       },
       {
-        "id": "fr-l86",
-        "title": "Les grands nombres (100–1†00†00)",
-        "icon": "🔢",
-        "cards": [
-          {
-            "h": "Cent, mille, million",
-            "p": [
-              "Formation: 100 = cent, 200 = deux cents, 201 = deux cent un (no s before another number), 1000 = mille (never takes an s), 1,000,000 = un million.",
-              "Examples: 150 = cent cinquante, 500 = cinq cents, 1,500 = mille cinq cents, 2,000 = deux mille."
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "cent prend un s (cents) quand il est multiplié et final : deux cents, cinq cents. Mais : deux cent cinq (no s — followed by more digits). mille ne prend JAMAIS de s."
-            }
-          },
-          {
-            "h": "Quatre-vingts et ses formes",
-            "p": [
-              "80 = quatre-vingts (takes s when final), 81 = quatre-vingt-un (no s), 90 = quatre-vingt-dix, 91 = quatre-vingt-onze.",
-              "70 = soixante-dix, 71 = soixante et onze."
-            ],
-            "split": {
-              "left": {
-                "title": "Multiples of 20",
-                "items": [
-                  "60 — soixante",
-                  "70 — soixante-dix",
-                  "80 — quatre-vingts",
-                  "90 — quatre-vingt-dix"
-                ]
-              },
-              "right": {
-                "title": "Common large numbers",
-                "items": [
-                  "100 — cent",
-                  "500 — cinq cents",
-                  "1 000 — mille",
-                  "1 000 000 — un million"
-                ]
-              }
-            }
-          },
-          {
-            "h": "Les grands nombres en pratique",
-            "p": [
-              "Prices, statistics, populations. La population de Paris est d'environ deux millions deux cent mille habitants. Le billet coûte cent cinquante euros. Il y a trois mille étudiants dans l'université."
-            ],
-            "example": {
-              "title": "Spelling rules at a glance",
-              "rows": [
-                [
-                  "Number",
-                  "French",
-                  "Notes"
-                ],
-                [
-                  "200",
-                  "deux cents",
-                  "s at end — multiplied cent"
-                ],
-                [
-                  "201",
-                  "deux cent un",
-                  "no s — more digits follow"
-                ],
-                [
-                  "1 000",
-                  "mille",
-                  "never has s"
-                ],
-                [
-                  "80",
-                  "quatre-vingts",
-                  "s at end — multiplied vingt"
-                ],
-                [
-                  "81",
-                  "quatre-vingt-un",
-                  "no s — digit follows"
-                ]
-              ]
-            }
-          }
-        ],
-        "check": [
-          {
-            "q": "How do you write 200 in French?",
-            "opts": [
-              "deux cent",
-              "deux cents",
-              "deux centes",
-              "deux mille"
-            ],
-            "ans": 1,
-            "exp": "deux cents — cent takes an s when multiplied AND at the end of the number: deux cents, cinq cents. But: deux cent cinq (no s because followed by cinq)."
-          },
-          {
-            "q": "How do you write 1,500 in French?",
-            "opts": [
-              "un mille cinq cents",
-              "mille cinq cent",
-              "mille cinq cents",
-              "cent cinq mille"
-            ],
-            "ans": 2,
-            "exp": "mille cinq cents: mille never has an s; cinq cents has the s because it is multiplied and final. 1,501 would be mille cinq cent un (no s)."
-          },
-          {
-            "q": "What is 'quatre-vingts' in digits?",
-            "opts": [
-              "70",
-              "80",
-              "90",
-              "84"
-            ],
-            "ans": 1,
-            "exp": "quatre-vingts = 4 × 20 = 80. The s drops when followed by another digit: quatre-vingt-un (81), quatre-vingt-dix (90)."
-          },
-          {
-            "q": "How do you say 2,000,000 in French?",
-            "opts": [
-              "deux milles",
-              "deux million",
-              "deux millions",
-              "deux mille mille"
-            ],
-            "ans": 2,
-            "exp": "deux millions — million DOES take an s in the plural: un million, deux millions, trois millions. Unlike mille which never has s."
-          }
-        ],
-        "tag": "advanced"
-      },
-      {
         "id": "fr-l17",
         "title": "Examen A1 (type DELF)",
         "icon": "📝",
@@ -6963,6 +7064,75 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l55",
+        "title": "Le passé composé — révision",
+        "icon": "🔁",
+        "cards": [
+          {
+            "type": "info",
+            "title": "Structure of the passé composé",
+            "body": "<p><strong>Passé composé = auxiliary verb + past participle</strong></p><p>Most verbs use <strong>avoir</strong>; motion/state verbs use <strong>être</strong>:</p><table><tr><th>Auxiliary</th><th>Example</th><th>English</th></tr><tr><td>avoir</td><td>j'ai mangé</td><td>I ate / have eaten</td></tr><tr><td>avoir</td><td>elle a fini</td><td>she finished</td></tr><tr><td>être</td><td>il est allé</td><td>he went</td></tr><tr><td>être</td><td>elles sont parties</td><td>they left (fem.)</td></tr></table>"
+          },
+          {
+            "type": "info",
+            "title": "Être verbs and agreement",
+            "body": "<p>Verbs that take <strong>être</strong>: aller, venir, partir, arriver, naître, mourir, rester, retourner, tomber, entrer, sortir (plus all reflexive verbs).</p><p>With être, the past participle <strong>agrees</strong> with the subject:</p><ul><li>il est parti · <strong>elle est partie</strong> (+e)</li><li>ils sont partis · <strong>elles sont parties</strong> (+es)</li></ul><p><strong>No agreement with avoir auxiliary</strong> (unless a preceding direct object).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Key irregular past participles",
+            "body": "<table><tr><th>Infinitive</th><th>Past participle</th></tr><tr><td>avoir</td><td><strong>eu</strong></td></tr><tr><td>être</td><td><strong>été</strong></td></tr><tr><td>faire</td><td><strong>fait</strong></td></tr><tr><td>prendre</td><td><strong>pris</strong></td></tr><tr><td>voir</td><td><strong>vu</strong></td></tr><tr><td>venir</td><td><strong>venu</strong></td></tr><tr><td>mettre</td><td><strong>mis</strong></td></tr><tr><td>pouvoir</td><td><strong>pu</strong></td></tr></table><p>Regular patterns: -ER → <strong>-é</strong> · -IR → <strong>-i</strong> · -RE → <strong>-u</strong> (e.g. vendre → vendu)</p>"
+          }
+        ],
+        "check": [
+          {
+            "q": "What auxiliary does 'aller' use in the passé composé?",
+            "opts": [
+              "avoir",
+              "être",
+              "either one",
+              "aller itself"
+            ],
+            "ans": 1,
+            "exp": "aller uses être: je suis allé(e). Être verbs include: aller, venir, partir, arriver, sortir, entrer, tomber, naître, mourir, rester."
+          },
+          {
+            "q": "What is the past participle of 'faire'?",
+            "opts": [
+              "faisé",
+              "fait",
+              "faite",
+              "fais"
+            ],
+            "ans": 1,
+            "exp": "faire → fait. J'ai fait = I did/made. Key irregular past participles: faire → fait · avoir → eu · être → été · prendre → pris · voir → vu."
+          },
+          {
+            "q": "'Elle est ___.' — Which form of 'partir' is correct?",
+            "opts": [
+              "parti",
+              "partis",
+              "parties",
+              "partie"
+            ],
+            "ans": 3,
+            "exp": "elle est partie. With être auxiliary, the past participle agrees with the subject: elle (feminine singular) → add -e → partie."
+          },
+          {
+            "q": "How is negation placed in the passé composé?",
+            "opts": [
+              "ne...pas around the whole verb phrase",
+              "ne before auxiliary, pas after auxiliary",
+              "pas only before the past participle",
+              "ne at the end of the sentence"
+            ],
+            "ans": 1,
+            "exp": "ne before the auxiliary, pas immediately after it: je N'AI PAS mangé. The past participle comes last, after 'pas'."
+          }
+        ],
+        "tag": "core"
+      },
+      {
         "id": "fr-l23",
         "title": "Les verbes pronominaux",
         "icon": "🪞",
@@ -7318,6 +7488,110 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
           }
         ],
         "tag": "core"
+      },
+      {
+        "id": "fr-l98",
+        "title": "Histoire : Le Tour du Monde",
+        "icon": "🌍",
+        "tag": "mastery",
+        "cards": [
+          {
+            "h": "Le Tour du Monde en 80 Jours — lisez l'extrait",
+            "p": [
+              "D'après Jules Verne, <em>Le Tour du Monde en Quatre-vingts Jours</em> (1872). Notice the mix of <strong>imparfait</strong> (descriptions) and <strong>passé composé</strong> (events)."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#fff7ed,#fff);border-left:4px solid #c2410c;border-radius:10px;padding:16px;font-size:0.92em;line-height:2'>\n<div style='color:#c2410c;font-weight:700;font-size:1em;margin-bottom:10px'>🎩 Londres, 1872</div>\n<p>Phileas Fogg <strong>habitait</strong> au 7, Saville Row, à Londres. C'<strong>était</strong> un homme très mystérieux et très précis. Chaque matin, il se <strong>levait</strong> à huit heures exactement, <strong>déjeunait</strong> à treize heures, et <strong>dînait</strong> à dix-neuf heures.</p>\n<p>Un mardi soir, Fogg <strong>a lu</strong> dans son journal qu'on pouvait faire le tour du monde en quatre-vingts jours.</p>\n<p>Ses amis au Reform Club <strong>ont dit</strong> : <em>« C'est impossible ! »</em></p>\n<p>Fogg <strong>a répondu</strong> calmement : <em>« Je peux le faire. Je parie vingt mille livres. »</em></p>\n<p>Le même soir, il <strong>a parlé</strong> à son domestique Passepartout.</p>\n<p><em>« Passepartout, nous partons ce soir. »</em><br>\n<em>« Ce soir, monsieur ?! »</em><br>\n<em>« Oui. Dans deux heures. Préparez vos affaires. »</em></p>\n<p>Passepartout <strong>était</strong> très surpris, mais il <strong>a obéi</strong>. L'aventure <strong>commençait</strong> !</p>\n</div>"
+          },
+          {
+            "h": "Imparfait vs passé composé dans le texte",
+            "p": [
+              "The text uses both tenses deliberately — spot the pattern:"
+            ],
+            "split": {
+              "left": {
+                "title": "Imparfait (description / habit)",
+                "items": [
+                  "habitait (lived — ongoing)",
+                  "était (was — description)",
+                  "se levait (used to get up)",
+                  "déjeunait (used to have lunch)",
+                  "commençait (was beginning)"
+                ]
+              },
+              "right": {
+                "title": "Passé composé (single event)",
+                "items": [
+                  "a lu (read — one moment)",
+                  "ont dit (said)",
+                  "a répondu (replied)",
+                  "a parlé (spoke)",
+                  "a obéi (obeyed)"
+                ]
+              }
+            },
+            "callout": {
+              "kind": "key",
+              "text": "Imparfait paints the background; passé composé marks the events that move the story forward."
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "Where did Phileas Fogg live?",
+            "opts": [
+              "Paris",
+              "New York",
+              "London, Saville Row",
+              "Mumbai"
+            ],
+            "ans": 2,
+            "exp": "Fogg habitait au 7, Saville Row, à Londres."
+          },
+          {
+            "q": "What did Fogg read in his newspaper?",
+            "opts": [
+              "That a new train line was opening",
+              "That one could travel the world in 80 days",
+              "That his friends had won a bet",
+              "That the Reform Club was closing"
+            ],
+            "ans": 1,
+            "exp": "Fogg a lu qu'on pouvait faire le tour du monde en quatre-vingts jours."
+          },
+          {
+            "q": "How much did Fogg bet?",
+            "opts": [
+              "Ten thousand pounds",
+              "Twenty thousand pounds",
+              "Eighty thousand francs",
+              "One thousand livres"
+            ],
+            "ans": 1,
+            "exp": "Fogg a dit : « Je parie vingt mille livres. »"
+          },
+          {
+            "q": "Why is « habitait » (imparfait) used rather than passé composé?",
+            "opts": [
+              "It describes his ongoing living situation, not a single event",
+              "It happened only once",
+              "It is a reflexive verb",
+              "The sentence is negative"
+            ],
+            "ans": 0,
+            "exp": "Habitait is imparfait because it describes an ongoing state or habit — he lived there continuously, not as a one-off event."
+          },
+          {
+            "q": "How did Passepartout react to the news?",
+            "opts": [
+              "He was delighted and immediately packed",
+              "He refused to go",
+              "He was very surprised but obeyed",
+              "He had already expected it"
+            ],
+            "ans": 2,
+            "exp": "Passepartout était très surpris, mais il a obéi — very surprised but he obeyed."
+          }
+        ]
       },
       {
         "id": "fr-l38",
@@ -9544,75 +9818,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "advanced"
       },
       {
-        "id": "fr-l55",
-        "title": "Le passé composé — révision",
-        "icon": "🔁",
-        "cards": [
-          {
-            "type": "info",
-            "title": "Structure of the passé composé",
-            "body": "<p><strong>Passé composé = auxiliary verb + past participle</strong></p><p>Most verbs use <strong>avoir</strong>; motion/state verbs use <strong>être</strong>:</p><table><tr><th>Auxiliary</th><th>Example</th><th>English</th></tr><tr><td>avoir</td><td>j'ai mangé</td><td>I ate / have eaten</td></tr><tr><td>avoir</td><td>elle a fini</td><td>she finished</td></tr><tr><td>être</td><td>il est allé</td><td>he went</td></tr><tr><td>être</td><td>elles sont parties</td><td>they left (fem.)</td></tr></table>"
-          },
-          {
-            "type": "info",
-            "title": "Être verbs and agreement",
-            "body": "<p>Verbs that take <strong>être</strong>: aller, venir, partir, arriver, naître, mourir, rester, retourner, tomber, entrer, sortir (plus all reflexive verbs).</p><p>With être, the past participle <strong>agrees</strong> with the subject:</p><ul><li>il est parti · <strong>elle est partie</strong> (+e)</li><li>ils sont partis · <strong>elles sont parties</strong> (+es)</li></ul><p><strong>No agreement with avoir auxiliary</strong> (unless a preceding direct object).</p>"
-          },
-          {
-            "type": "info",
-            "title": "Key irregular past participles",
-            "body": "<table><tr><th>Infinitive</th><th>Past participle</th></tr><tr><td>avoir</td><td><strong>eu</strong></td></tr><tr><td>être</td><td><strong>été</strong></td></tr><tr><td>faire</td><td><strong>fait</strong></td></tr><tr><td>prendre</td><td><strong>pris</strong></td></tr><tr><td>voir</td><td><strong>vu</strong></td></tr><tr><td>venir</td><td><strong>venu</strong></td></tr><tr><td>mettre</td><td><strong>mis</strong></td></tr><tr><td>pouvoir</td><td><strong>pu</strong></td></tr></table><p>Regular patterns: -ER → <strong>-é</strong> · -IR → <strong>-i</strong> · -RE → <strong>-u</strong> (e.g. vendre → vendu)</p>"
-          }
-        ],
-        "check": [
-          {
-            "q": "What auxiliary does 'aller' use in the passé composé?",
-            "opts": [
-              "avoir",
-              "être",
-              "either one",
-              "aller itself"
-            ],
-            "ans": 1,
-            "exp": "aller uses être: je suis allé(e). Être verbs include: aller, venir, partir, arriver, sortir, entrer, tomber, naître, mourir, rester."
-          },
-          {
-            "q": "What is the past participle of 'faire'?",
-            "opts": [
-              "faisé",
-              "fait",
-              "faite",
-              "fais"
-            ],
-            "ans": 1,
-            "exp": "faire → fait. J'ai fait = I did/made. Key irregular past participles: faire → fait · avoir → eu · être → été · prendre → pris · voir → vu."
-          },
-          {
-            "q": "'Elle est ___.' — Which form of 'partir' is correct?",
-            "opts": [
-              "parti",
-              "partis",
-              "parties",
-              "partie"
-            ],
-            "ans": 3,
-            "exp": "elle est partie. With être auxiliary, the past participle agrees with the subject: elle (feminine singular) → add -e → partie."
-          },
-          {
-            "q": "How is negation placed in the passé composé?",
-            "opts": [
-              "ne...pas around the whole verb phrase",
-              "ne before auxiliary, pas after auxiliary",
-              "pas only before the past participle",
-              "ne at the end of the sentence"
-            ],
-            "ans": 1,
-            "exp": "ne before the auxiliary, pas immediately after it: je N'AI PAS mangé. The past participle comes last, after 'pas'."
-          }
-        ],
-        "tag": "core"
-      },
-      {
         "id": "fr-l78",
         "title": "Le discours indirect",
         "icon": "🗣️",
@@ -10364,6 +10569,80 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
           }
         ],
         "tag": "mastery"
+      },
+      {
+        "id": "fr-l88",
+        "title": "Textes authentiques — pratique A2",
+        "icon": "📰",
+        "cards": [
+          {
+            "h": "Stratégies de lecture A2",
+            "p": [
+              "At A2 level, you can understand short, simple texts on familiar topics. Strategies: (1) **Don't translate every word** — identify the TOPIC first. (2) **Read for the gist** — what is the overall message? (3) **Use cognates** — French-English similarities (information, décision, culture). (4) **Focus on numbers and proper nouns** — often key details. (5) **Skip unknown words** and guess from context."
+            ],
+            "callout": {
+              "kind": "tip",
+              "text": "For A2 reading, you need 60–70% comprehension to score well. Don't panic about unknown words — use context, cognates, and structure to work out the meaning."
+            }
+          },
+          {
+            "h": "Texte 1 — Annonce de cinéma",
+            "p": [
+              "Read this short announcement: **CINÉMA LE LUMIÈRE — PROGRAMME DU WEEKEND** Vendredi 15 mars : *Les Misérables* — 19h30 et 21h00. Samedi 16 mars : *Amélie* — 14h00, 17h30, 20h00. Dimanche 17 mars : *La Haine* — 15h00 et 19h00. Tarif : 9,50€ (plein tarif), 7,00€ (tarif réduit — étudiants et seniors). Réservation en ligne : www.cinemalumiere.fr."
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "Stratégie : Repérez les chiffres (heures, prix), les jours et les noms propres en premier."
+            }
+          },
+          {
+            "h": "Texte 2 — Message de réseaux sociaux",
+            "p": [
+              "Read this social media post: **@Sophie_Paris** Bonjour tout le monde ! Je cherche un appartement à louer à Paris 15e. Je suis étudiante, je peux payer jusqu'à 900€ par mois, charges comprises. J'ai besoin d'une chambre et d'un accès internet. Je suis sérieuse et non-fumeuse. Contactez-moi en message privé.",
+              "La réponse-clé : Sophie cherche un appartement à louer. Prix maximum : 900€/mois."
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "Mots utiles: chercher à louer (looking to rent), charges comprises (bills included), non-fumeur/fumeuse (non-smoker), message privé (direct message/DM)."
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "In the cinema text, on Saturday 16 March, Amélie is showing at which times?",
+            "opts": [
+              "19h30 and 21h00",
+              "14h00, 17h30, and 20h00",
+              "15h00 and 19h00",
+              "Only at 20h00"
+            ],
+            "ans": 1,
+            "exp": "Samedi 16 mars : Amélie — 14h00, 17h30, 20h00. Three showings on Saturday. Friday shows Les Misérables, Sunday shows La Haine."
+          },
+          {
+            "q": "In the cinema text, what is the reduced price (tarif réduit)?",
+            "opts": [
+              "9,50€",
+              "7,00€",
+              "8,00€",
+              "6,50€"
+            ],
+            "ans": 1,
+            "exp": "tarif réduit = 7,00€. It applies to étudiants (students) and seniors. plein tarif (full price) = 9,50€."
+          },
+          {
+            "q": "In Sophie's post, what is her maximum rent?",
+            "opts": [
+              "700€/mois",
+              "800€/mois",
+              "900€/mois",
+              "1000€/mois"
+            ],
+            "ans": 2,
+            "exp": "Sophie peut payer jusqu'à 900€ par mois, charges comprises = up to 900€/month including bills. jusqu'à = up to. charges comprises = bills/charges included."
+          }
+        ],
+        "tag": "core"
       },
       {
         "id": "fr-l26",
@@ -11337,6 +11616,129 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l30",
+        "title": "Exprimer son opinion",
+        "icon": "💬",
+        "cards": [
+          {
+            "h": "Donner son avis",
+            "example": {
+              "title": "Opinion phrases",
+              "rows": [
+                [
+                  "Je pense que…",
+                  "I think that…"
+                ],
+                [
+                  "À mon avis,…",
+                  "In my opinion,…"
+                ],
+                [
+                  "Je trouve que…",
+                  "I find that…"
+                ],
+                [
+                  "Selon moi,…",
+                  "According to me,…"
+                ]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Affirmative « je pense que / je crois que » take the **indicative**: « Je pense qu'il a raison »."
+            }
+          },
+          {
+            "h": "Être d'accord ou non",
+            "p": [
+              "**Je suis d'accord (avec toi).** (I agree.) · **Je ne suis pas d'accord.** (I disagree.)",
+              "**Tu as raison.** (You're right.) · **Tu as tort.** (You're wrong.)",
+              "**C'est vrai, mais…** / **Par contre,…** (However,…)"
+            ]
+          },
+          {
+            "h": "Doute et certitude",
+            "p": [
+              "Certainty → indicative: **Je suis sûr qu'il viendra.**",
+              "Doubt / negation of opinion → subjunctive: **Je ne pense pas qu'il vienne.** · **Je doute qu'il ait raison.**"
+            ],
+            "callout": {
+              "kind": "warning",
+              "text": "« Je ne pense pas que… » becomes negative/doubtful → triggers the subjunctive: « … qu'il **vienne** »."
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "« À mon avis » means:",
+            "opts": [
+              "I agree",
+              "In my opinion",
+              "I doubt",
+              "However"
+            ],
+            "ans": 1,
+            "exp": "À mon avis = in my opinion."
+          },
+          {
+            "q": "« I disagree » =",
+            "opts": [
+              "Je suis d'accord",
+              "Je ne suis pas d'accord",
+              "Tu as raison",
+              "C'est vrai"
+            ],
+            "ans": 1,
+            "exp": "Je ne suis pas d'accord = I disagree."
+          },
+          {
+            "q": "« Je pense qu'il ___ raison. » (avoir)",
+            "opts": [
+              "ait",
+              "a",
+              "aurait",
+              "aie"
+            ],
+            "ans": 1,
+            "exp": "Affirmative « je pense que » → indicative: il a raison."
+          },
+          {
+            "q": "« Je ne pense pas qu'il ___. » (venir)",
+            "opts": [
+              "vient",
+              "viendra",
+              "vienne",
+              "venait"
+            ],
+            "ans": 2,
+            "exp": "Negative opinion → subjunctive: qu'il vienne."
+          },
+          {
+            "q": "« Tu as tort » means:",
+            "opts": [
+              "You're right",
+              "You're wrong",
+              "You agree",
+              "You doubt"
+            ],
+            "ans": 1,
+            "exp": "avoir tort = to be wrong."
+          },
+          {
+            "q": "Which introduces a contrasting idea?",
+            "opts": [
+              "Par contre",
+              "Selon moi",
+              "Je trouve que",
+              "D'accord"
+            ],
+            "ans": 0,
+            "exp": "« Par contre » = however / on the other hand."
+          }
+        ],
+        "tag": "core"
+      },
+      {
         "id": "fr-l80",
         "title": "La voix passive",
         "icon": "🔄",
@@ -11445,6 +11847,118 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
           }
         ],
         "tag": "core"
+      },
+      {
+        "id": "fr-l99",
+        "title": "Histoire : Les Misérables",
+        "icon": "📚",
+        "tag": "mastery",
+        "cards": [
+          {
+            "h": "Les Misérables — lisez l'extrait",
+            "p": [
+              "D'après Victor Hugo, <em>Les Misérables</em> (1862). This passage uses <strong>connecteurs</strong> and <strong>pronouns</strong> to build a complex narrative — skills you have been practising."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#f8f4ff,#fff);border-left:4px solid #6d28d9;border-radius:10px;padding:16px;font-size:0.92em;line-height:2'>\n<div style='color:#6d28d9;font-weight:700;font-size:1em;margin-bottom:10px'>⚖️ France, début du XIXe siècle</div>\n<p>Jean Valjean <strong>avait passé</strong> dix-neuf ans en prison. Lorsqu'il est sorti, personne ne voulait lui ouvrir sa porte — ni les auberges, ni les maisons particulières.</p>\n<p><strong>Cependant</strong>, un soir, un vieux prêtre, Monseigneur Myriel, <strong>l'a accueilli</strong> chez lui. Il <strong>lui a donné</strong> à dîner et un lit pour la nuit.</p>\n<p><strong>Or</strong>, la nuit, au lieu de dormir, Jean Valjean s'<strong>est levé</strong> en silence. Il <strong>a pris</strong> l'argenterie et s'<strong>est enfui</strong>.</p>\n<p>Le lendemain matin, les gendarmes <strong>l'ont arrêté</strong> et <strong>l'ont ramené</strong> devant l'évêque.</p>\n<p><em>« Votre Excellence, il a volé votre argenterie ! »</em></p>\n<p>L'évêque a souri. <em>« Non, messieurs. Je <strong>lui ai offert</strong> ces objets. »</em></p>\n<p><strong>Puis</strong>, il a dit à voix basse à Jean Valjean : <em>« N'oubliez jamais : vous avez promis de devenir un homme honnête. »</em></p>\n<p>Jean Valjean était bouleversé. Ces mots <strong>ont changé</strong> sa vie pour toujours.</p>\n</div>"
+          },
+          {
+            "h": "Vocabulaire clé",
+            "example": {
+              "title": "Key words and phrases",
+              "rows": [
+                [
+                  "avait passé",
+                  "had spent (plus-que-parfait)"
+                ],
+                [
+                  "cependant",
+                  "however (connecteur)"
+                ],
+                [
+                  "or",
+                  "now / but then (narrative connecteur)"
+                ],
+                [
+                  "puis",
+                  "then / next (connecteur)"
+                ],
+                [
+                  "l'argenterie",
+                  "the silverware"
+                ],
+                [
+                  "s'enfuir",
+                  "to flee"
+                ],
+                [
+                  "bouleversé(e)",
+                  "overwhelmed, shaken"
+                ],
+                [
+                  "à voix basse",
+                  "in a low voice"
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "q": "How long had Jean Valjean spent in prison?",
+            "opts": [
+              "Ten years",
+              "Fifteen years",
+              "Nineteen years",
+              "Twenty-five years"
+            ],
+            "ans": 2,
+            "exp": "Jean Valjean avait passé dix-neuf ans en prison."
+          },
+          {
+            "q": "What did the Bishop do when Jean Valjean arrived?",
+            "opts": [
+              "He called the police",
+              "He sent him away",
+              "He welcomed him, gave him dinner and a bed",
+              "He lent him money"
+            ],
+            "ans": 2,
+            "exp": "Monseigneur Myriel l'a accueilli, lui a donné à dîner et un lit pour la nuit."
+          },
+          {
+            "q": "What did Jean Valjean steal?",
+            "opts": [
+              "Money from the safe",
+              "The Bishop's silverware",
+              "A horse",
+              "Food from the kitchen"
+            ],
+            "ans": 1,
+            "exp": "Jean Valjean a pris l'argenterie — the silverware."
+          },
+          {
+            "q": "What did the Bishop tell the police?",
+            "opts": [
+              "That Valjean was a dangerous man",
+              "That he had given the silverware to Valjean himself",
+              "That he had not seen Valjean",
+              "That he wanted Valjean arrested"
+            ],
+            "ans": 1,
+            "exp": "L'évêque a dit : « Je lui ai offert ces objets » — he claimed he had given them to Valjean."
+          },
+          {
+            "q": "What is the grammatical tense of « avait passé » and why is it used?",
+            "opts": [
+              "Passé composé — a completed action",
+              "Plus-que-parfait — an action completed before another past action",
+              "Imparfait — an ongoing past state",
+              "Futur antérieur — a future completion"
+            ],
+            "ans": 1,
+            "exp": "Avait passé is plus-que-parfait — it shows his prison time was already completed before the moment the story begins."
+          }
+        ]
       },
       {
         "id": "fr-l83",
@@ -11829,127 +12343,120 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
         "tag": "advanced"
       },
       {
-        "id": "fr-l30",
-        "title": "Exprimer son opinion",
-        "icon": "💬",
+        "id": "fr-l100",
+        "title": "Histoire : La Parure",
+        "icon": "💎",
+        "tag": "mastery",
         "cards": [
           {
-            "h": "Donner son avis",
+            "h": "La Parure — lisez l'extrait",
+            "p": [
+              "D'après Guy de Maupassant, <em>La Parure</em> (1884). One of Maupassant's most famous short stories. Notice the <strong>conditionnel</strong> and <strong>plus-que-parfait</strong> in the narrative."
+            ],
+            "visual": "<div style='background:linear-gradient(135deg,#fff0f7,#fff);border-left:4px solid #be185d;border-radius:10px;padding:16px;font-size:0.92em;line-height:2'>\n<div style='color:#be185d;font-weight:700;font-size:1em;margin-bottom:10px'>💎 Paris, fin du XIXe siècle</div>\n<p>Mathilde Loisel était une belle jeune femme qui vivait modestement avec son mari, un employé de ministère. Elle <strong>rêvait</strong> de richesse et d'élégance.</p>\n<p>Un soir, son mari <strong>a apporté</strong> une invitation à un grand bal au Ministère. Mathilde <strong>était</strong> désespérée : elle n'avait rien à mettre, aucun bijou.</p>\n<p>Son amie Madame Forestier <strong>lui a prêté</strong> un magnifique collier de diamants. Au bal, Mathilde était la plus belle de toutes. Elle <strong>a dansé</strong> toute la nuit, ravie.</p>\n<p>Mais en rentrant, elle <strong>a découvert</strong> avec horreur que le collier <strong>avait disparu</strong>.</p>\n<p>Le couple <strong>a cherché</strong> partout — en vain. Ils <strong>ont acheté</strong> alors un collier semblable pour trente-six mille francs et <strong>ont travaillé</strong> dix ans pour rembourser leurs dettes.</p>\n<p>Dix ans plus tard, Mathilde <strong>a croisé</strong> Madame Forestier. Son amie ne la reconnaissait plus — Mathilde <strong>avait vieilli</strong>.</p>\n<p><em>« Je dois vous dire quelque chose. Ce collier que vous m'avez prêté — je l'ai perdu. Nous en avons acheté un autre. »</em></p>\n<p>Madame Forestier, émue, a répondu : <em>« Oh, ma pauvre Mathilde ! Mais le mien <strong>était faux</strong>. Il ne <strong>valait</strong> pas plus de cinq cents francs… »</em></p>\n</div>"
+          },
+          {
+            "h": "Vocabulaire et structures clés",
             "example": {
-              "title": "Opinion phrases",
+              "title": "Key words and grammar structures",
               "rows": [
                 [
-                  "Je pense que…",
-                  "I think that…"
+                  "rêver de + nom",
+                  "to dream of something"
                 ],
                 [
-                  "À mon avis,…",
-                  "In my opinion,…"
+                  "n'avoir rien à mettre",
+                  "to have nothing to wear"
                 ],
                 [
-                  "Je trouve que…",
-                  "I find that…"
+                  "prêter",
+                  "to lend"
                 ],
                 [
-                  "Selon moi,…",
-                  "According to me,…"
+                  "avait disparu",
+                  "had disappeared (plus-que-parfait)"
+                ],
+                [
+                  "en vain",
+                  "in vain / without success"
+                ],
+                [
+                  "rembourser",
+                  "to pay back, reimburse"
+                ],
+                [
+                  "vieillir",
+                  "to age, grow old"
+                ],
+                [
+                  "avait vieilli",
+                  "had aged (plus-que-parfait)"
+                ],
+                [
+                  "émue",
+                  "moved / touched (emotion)"
                 ]
               ]
-            },
-            "callout": {
-              "kind": "tip",
-              "text": "Affirmative « je pense que / je crois que » take the **indicative**: « Je pense qu'il a raison »."
-            }
-          },
-          {
-            "h": "Être d'accord ou non",
-            "p": [
-              "**Je suis d'accord (avec toi).** (I agree.) · **Je ne suis pas d'accord.** (I disagree.)",
-              "**Tu as raison.** (You're right.) · **Tu as tort.** (You're wrong.)",
-              "**C'est vrai, mais…** / **Par contre,…** (However,…)"
-            ]
-          },
-          {
-            "h": "Doute et certitude",
-            "p": [
-              "Certainty → indicative: **Je suis sûr qu'il viendra.**",
-              "Doubt / negation of opinion → subjunctive: **Je ne pense pas qu'il vienne.** · **Je doute qu'il ait raison.**"
-            ],
-            "callout": {
-              "kind": "warning",
-              "text": "« Je ne pense pas que… » becomes negative/doubtful → triggers the subjunctive: « … qu'il **vienne** »."
             }
           }
         ],
         "check": [
           {
-            "q": "« À mon avis » means:",
+            "q": "Why was Mathilde upset when she received the ball invitation?",
             "opts": [
-              "I agree",
-              "In my opinion",
-              "I doubt",
-              "However"
+              "She did not like balls",
+              "She had nothing to wear and no jewellery",
+              "She was ill",
+              "She did not know anyone at the Ministry"
             ],
             "ans": 1,
-            "exp": "À mon avis = in my opinion."
+            "exp": "Mathilde était désespérée : elle n'avait rien à mettre, aucun bijou — nothing to wear and no jewels."
           },
           {
-            "q": "« I disagree » =",
+            "q": "How did Mathilde get a diamond necklace for the ball?",
             "opts": [
-              "Je suis d'accord",
-              "Je ne suis pas d'accord",
-              "Tu as raison",
-              "C'est vrai"
-            ],
-            "ans": 1,
-            "exp": "Je ne suis pas d'accord = I disagree."
-          },
-          {
-            "q": "« Je pense qu'il ___ raison. » (avoir)",
-            "opts": [
-              "ait",
-              "a",
-              "aurait",
-              "aie"
-            ],
-            "ans": 1,
-            "exp": "Affirmative « je pense que » → indicative: il a raison."
-          },
-          {
-            "q": "« Je ne pense pas qu'il ___. » (venir)",
-            "opts": [
-              "vient",
-              "viendra",
-              "vienne",
-              "venait"
+              "Her husband bought her one",
+              "She found it in the street",
+              "She borrowed it from her friend Madame Forestier",
+              "She stole it from a jewellery shop"
             ],
             "ans": 2,
-            "exp": "Negative opinion → subjunctive: qu'il vienne."
+            "exp": "Madame Forestier lui a prêté un magnifique collier de diamants — she lent it to her."
           },
           {
-            "q": "« Tu as tort » means:",
+            "q": "How much did the replacement necklace cost?",
             "opts": [
-              "You're right",
-              "You're wrong",
-              "You agree",
-              "You doubt"
+              "Five hundred francs",
+              "Ten thousand francs",
+              "Twenty thousand francs",
+              "Thirty-six thousand francs"
+            ],
+            "ans": 3,
+            "exp": "Ils ont acheté un collier semblable pour trente-six mille francs — thirty-six thousand francs."
+          },
+          {
+            "q": "What is the twist at the end of the story?",
+            "opts": [
+              "The necklace was found in the house",
+              "Madame Forestier had not noticed the loss",
+              "The original necklace was fake and only worth 500 francs",
+              "Mathilde wins the money back at cards"
+            ],
+            "ans": 2,
+            "exp": "Madame Forestier révèle : « le mien était faux — il ne valait pas plus de cinq cents francs. » Ten years of poverty for a fake necklace."
+          },
+          {
+            "q": "What does « avait disparu » (plus-que-parfait) tell us?",
+            "opts": [
+              "The necklace will disappear in the future",
+              "The disappearance had already happened before Mathilde noticed it",
+              "Mathilde was watching the necklace disappear",
+              "The necklace disappears regularly"
             ],
             "ans": 1,
-            "exp": "avoir tort = to be wrong."
-          },
-          {
-            "q": "Which introduces a contrasting idea?",
-            "opts": [
-              "Par contre",
-              "Selon moi",
-              "Je trouve que",
-              "D'accord"
-            ],
-            "ans": 0,
-            "exp": "« Par contre » = however / on the other hand."
+            "exp": "Plus-que-parfait (avait disparu) = an action completed before another past moment. By the time Mathilde checked, the necklace had already gone."
           }
-        ],
-        "tag": "core"
+        ]
       },
       {
         "id": "fr-l58",
@@ -12201,80 +12708,6 @@ window.FR_LEARN_PATH = window.FR_LEARN_PATH = [
             ],
             "ans": 1,
             "exp": "Literal: 'It is by forging that one becomes a blacksmith.' The proverb means practice makes perfect. Structure: c'est en + gérondif (forgeant) + que = it is by [doing X] that..."
-          }
-        ],
-        "tag": "core"
-      },
-      {
-        "id": "fr-l88",
-        "title": "Textes authentiques — pratique A2",
-        "icon": "📰",
-        "cards": [
-          {
-            "h": "Stratégies de lecture A2",
-            "p": [
-              "At A2 level, you can understand short, simple texts on familiar topics. Strategies: (1) **Don't translate every word** — identify the TOPIC first. (2) **Read for the gist** — what is the overall message? (3) **Use cognates** — French-English similarities (information, décision, culture). (4) **Focus on numbers and proper nouns** — often key details. (5) **Skip unknown words** and guess from context."
-            ],
-            "callout": {
-              "kind": "tip",
-              "text": "For A2 reading, you need 60–70% comprehension to score well. Don't panic about unknown words — use context, cognates, and structure to work out the meaning."
-            }
-          },
-          {
-            "h": "Texte 1 — Annonce de cinéma",
-            "p": [
-              "Read this short announcement: **CINÉMA LE LUMIÈRE — PROGRAMME DU WEEKEND** Vendredi 15 mars : *Les Misérables* — 19h30 et 21h00. Samedi 16 mars : *Amélie* — 14h00, 17h30, 20h00. Dimanche 17 mars : *La Haine* — 15h00 et 19h00. Tarif : 9,50€ (plein tarif), 7,00€ (tarif réduit — étudiants et seniors). Réservation en ligne : www.cinemalumiere.fr."
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "Stratégie : Repérez les chiffres (heures, prix), les jours et les noms propres en premier."
-            }
-          },
-          {
-            "h": "Texte 2 — Message de réseaux sociaux",
-            "p": [
-              "Read this social media post: **@Sophie_Paris** Bonjour tout le monde ! Je cherche un appartement à louer à Paris 15e. Je suis étudiante, je peux payer jusqu'à 900€ par mois, charges comprises. J'ai besoin d'une chambre et d'un accès internet. Je suis sérieuse et non-fumeuse. Contactez-moi en message privé.",
-              "La réponse-clé : Sophie cherche un appartement à louer. Prix maximum : 900€/mois."
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "Mots utiles: chercher à louer (looking to rent), charges comprises (bills included), non-fumeur/fumeuse (non-smoker), message privé (direct message/DM)."
-            }
-          }
-        ],
-        "check": [
-          {
-            "q": "In the cinema text, on Saturday 16 March, Amélie is showing at which times?",
-            "opts": [
-              "19h30 and 21h00",
-              "14h00, 17h30, and 20h00",
-              "15h00 and 19h00",
-              "Only at 20h00"
-            ],
-            "ans": 1,
-            "exp": "Samedi 16 mars : Amélie — 14h00, 17h30, 20h00. Three showings on Saturday. Friday shows Les Misérables, Sunday shows La Haine."
-          },
-          {
-            "q": "In the cinema text, what is the reduced price (tarif réduit)?",
-            "opts": [
-              "9,50€",
-              "7,00€",
-              "8,00€",
-              "6,50€"
-            ],
-            "ans": 1,
-            "exp": "tarif réduit = 7,00€. It applies to étudiants (students) and seniors. plein tarif (full price) = 9,50€."
-          },
-          {
-            "q": "In Sophie's post, what is her maximum rent?",
-            "opts": [
-              "700€/mois",
-              "800€/mois",
-              "900€/mois",
-              "1000€/mois"
-            ],
-            "ans": 2,
-            "exp": "Sophie peut payer jusqu'à 900€ par mois, charges comprises = up to 900€/month including bills. jusqu'à = up to. charges comprises = bills/charges included."
           }
         ],
         "tag": "core"
@@ -13579,6 +14012,10 @@ window.FR_LESSON_CEFR_SUBLEVEL = {
   'fr-l58': 'B1', 'fr-l61': 'B1', 'fr-l64': 'B1', 'fr-l79': 'B1',
   'fr-l80': 'B1', 'fr-l81': 'B1', 'fr-l67': 'B1', 'fr-l83': 'B1',
   'fr-l84': 'B1', 'fr-l85': 'B1', 'fr-l88': 'A2.2', 'fr-l89': 'B1',
+  'fr-l100': 'B1',
+  'fr-l99': 'B1',
+  'fr-l98': 'A2.1',
+  'fr-l97': 'A1.2',
   'fr-l90': 'B1', 'fr-l91': 'B1',
   // B2 — upper intermediate / advanced
   'fr-l93': 'B2', 'fr-l94': 'B2', 'fr-l95': 'B2', 'fr-l96': 'B2',
