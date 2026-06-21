@@ -2283,6 +2283,27 @@ window.FR_LEARN_PATH = [
                 ]
               }
             }
+          },
+          {
+            "h": "Les nationalités et il fait (météo)",
+            "p": [
+              "Nationality adjectives are **not** capitalised in French: **Je suis anglais(e).** · **Il est français.** · **Elle est espagnole.**"
+            ],
+            "example": {
+              "title": "Nationalités courantes",
+              "rows": [
+                ["anglais / anglaise", "English"],
+                ["français / française", "French"],
+                ["espagnol / espagnole", "Spanish"],
+                ["allemand / allemande", "German"],
+                ["américain / américaine", "American"],
+                ["irlandais / irlandaise", "Irish"]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Weather uses **faire**, not être: **Il fait beau** (it's nice) · **Il fait chaud** (it's hot) · **Il fait froid** (it's cold) · **Il fait mauvais** (bad weather). This is covered fully in the weather lesson."
+            }
           }
         ],
         "check": [
@@ -2611,6 +2632,30 @@ window.FR_LEARN_PATH = [
             "p": [
               "**Où habites-tu ?** (Where do you live?) · **Pourquoi ?** — **Parce que…** (Why? — Because…)"
             ]
+          },
+          {
+            "h": "Qu'est-ce que vs Qu'est-ce qui",
+            "split": {
+              "left": {
+                "title": "Qu'est-ce que (what — object)",
+                "items": [
+                  "Qu'est-ce que tu veux ? (What do you want?)",
+                  "Qu'est-ce qu'il fait ? (What is he doing?)",
+                  "Qu'est-ce que c'est ? (What is this?)"
+                ]
+              },
+              "right": {
+                "title": "Qu'est-ce qui (what — subject)",
+                "items": [
+                  "Qu'est-ce qui se passe ? (What's happening?)",
+                  "Qu'est-ce qui est important ? (What is important?)"
+                ]
+              }
+            },
+            "callout": {
+              "kind": "key",
+              "text": "**Qu'est-ce que** = what + subject already given (you, he…). **Qu'est-ce qui** = what + IS the subject. Tip: if a noun/pronoun follows straight after, use **que**."
+            }
           }
         ],
         "check": [
@@ -3063,6 +3108,23 @@ window.FR_LEARN_PATH = [
               "Nouns already ending in **-s, -x, -z** do not change: un fils → des fils, une voix → des voix, le nez → les nez.",
               "Example: **J'ai deux fils.** (I have two sons.)"
             ]
+          },
+          {
+            "h": "Pluriels irréguliers importants",
+            "example": {
+              "title": "Irregular plurals to memorise",
+              "rows": [
+                ["un œil → des yeux", "eye → eyes (completely irregular)"],
+                ["un travail → des travaux", "-ail → -aux"],
+                ["un genou → des genoux", "one of 7 -ou → -oux nouns"],
+                ["un bal → des bals", "exception: -al stays regular here"],
+                ["un festival → des festivals", "another -al exception"]
+              ]
+            },
+            "callout": {
+              "kind": "warning",
+              "text": "Most -al nouns become -aux (animal→animaux, cheval→chevaux) but a few are regular exceptions: un bal→des bals, un festival→des festivals, un carnaval→des carnavals."
+            }
           }
         ],
         "check": [
@@ -4208,6 +4270,27 @@ window.FR_LEARN_PATH = [
                   "happy"
                 ]
               ]
+            }
+          },
+          {
+            "h": "Les couleurs — colour adjectives",
+            "table": {
+              "headers": ["Couleur", "Masc.", "Fém.", "Example"],
+              "rows": [
+                ["red", "rouge", "rouge", "une robe rouge"],
+                ["blue", "bleu", "bleue", "un ciel bleu"],
+                ["green", "vert", "verte", "une veste verte"],
+                ["yellow", "jaune", "jaune", "un manteau jaune"],
+                ["black", "noir", "noire", "des chaussures noires"],
+                ["white", "blanc", "blanche", "une chemise blanche"],
+                ["grey", "gris", "grise", "un pull gris"],
+                ["pink", "rose", "rose", "une jupe rose"],
+                ["orange", "orange", "orange", "un t-shirt orange"]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Colours go **after** the noun: une voiture rouge ✓ (NOT une rouge voiture). Colours taken from nouns (orange, marron) are **invariable** — they never add -e or -s."
             }
           }
         ],
@@ -7082,6 +7165,31 @@ window.FR_LEARN_PATH = [
               "**Un kilo de tomates, s'il vous plaît.** (A kilo of tomatoes, please.)",
               "**Il me faut une bouteille de lait.** (I need a bottle of milk.)"
             ]
+          },
+          {
+            "h": "Les aliments courants — food vocabulary",
+            "table": {
+              "headers": ["French", "English"],
+              "rows": [
+                ["le pain", "bread"],
+                ["le fromage", "cheese"],
+                ["le poulet", "chicken"],
+                ["le poisson", "fish"],
+                ["la viande", "meat"],
+                ["les légumes (m pl)", "vegetables"],
+                ["les fruits (m pl)", "fruit"],
+                ["le lait", "milk"],
+                ["le beurre", "butter"],
+                ["les œufs (m pl)", "eggs"],
+                ["le petit-déjeuner", "breakfast"],
+                ["le déjeuner", "lunch"],
+                ["le dîner", "dinner"]
+              ]
+            },
+            "p": [
+              "**J'ai faim** (I'm hungry) · **J'ai soif** (I'm thirsty) — use **avoir**, not être.",
+              "**Je n'aime pas le poisson.** (I don't like fish.) — general dislike uses **le/la/les**, not du/de la."
+            ]
           }
         ],
         "check": [
@@ -7186,6 +7294,35 @@ window.FR_LEARN_PATH = [
               "kind": "key",
               "text": "Le 14 juillet is France's national day — it marks the storming of the Bastille in 1789. Festivities include a military parade on the Champs-Élysées and fireworks at the Eiffel Tower."
             }
+          },
+          {
+            "h": "La météo — weather phrases",
+            "split": {
+              "left": {
+                "title": "Il fait + adjective",
+                "items": [
+                  "Il fait beau — it's nice weather",
+                  "Il fait mauvais — it's bad weather",
+                  "Il fait chaud — it's hot",
+                  "Il fait froid — it's cold",
+                  "Il fait doux — it's mild"
+                ]
+              },
+              "right": {
+                "title": "Autres expressions",
+                "items": [
+                  "Il pleut — it's raining",
+                  "Il neige — it's snowing",
+                  "Il y a du vent — it's windy",
+                  "Il y a du soleil — it's sunny",
+                  "Il y a du brouillard — it's foggy"
+                ]
+              }
+            },
+            "p": [
+              "**Quel temps fait-il ?** (What's the weather like?) · **Il fait X degrés.** (It's X degrees.)",
+              "**Aujourd'hui** il fait beau, **mais demain** il va pleuvoir. (Today it's nice, but tomorrow it's going to rain.)"
+            ]
           }
         ],
         "check": [
@@ -9160,6 +9297,30 @@ window.FR_LEARN_PATH = [
               "**L'année prochaine, nous habiterons à Nice.** (futur simple)",
               "**Quand il sera grand, il deviendra médecin.**"
             ]
+          },
+          {
+            "h": "Le passé composé avec être",
+            "p": [
+              "A group of verbs — mainly verbs of movement and change of state — use **être** (not avoir) as the auxiliary in the passé composé.",
+              "The past participle **agrees in gender and number** with the subject."
+            ],
+            "example": {
+              "title": "Verbes avec être (DR MRS VANDERTRAMP)",
+              "rows": [
+                ["aller → allé(e)", "je suis allé(e) — I went"],
+                ["venir → venu(e)", "elle est venue — she came"],
+                ["partir → parti(e)", "ils sont partis — they left"],
+                ["arriver → arrivé(e)", "elle est arrivée — she arrived"],
+                ["naître → né(e)", "il est né — he was born"],
+                ["mourir → mort(e)", "elle est morte — she died"],
+                ["rester → resté(e)", "nous sommes restés — we stayed"],
+                ["sortir → sorti(e)", "tu es sorti(e) — you went out"]
+              ]
+            },
+            "callout": {
+              "kind": "warning",
+              "text": "Agreement rule: **je suis allé** (masc.) but **je suis allée** (fem.) · **ils sont partis** (m. pl.) · **elles sont parties** (f. pl.). Don't confuse with avoir verbs: **j'ai mangé** never adds -e/-s for agreement."
+            }
           }
         ],
         "check": [
@@ -10240,6 +10401,27 @@ window.FR_LEARN_PATH = [
               "kind": "key",
               "text": "une librairie = a bookshop; une bibliothèque = a library. A classic false friend!"
             }
+          },
+          {
+            "h": "En cabine d'essayage — trying on clothes",
+            "example": {
+              "title": "Fitting room phrases",
+              "rows": [
+                ["Je voudrais l'essayer.", "I would like to try it on."],
+                ["Où sont les cabines d'essayage ?", "Where are the changing rooms?"],
+                ["La cabine d'essayage", "the changing / fitting room"],
+                ["C'est trop grand / petit.", "It's too big / small."],
+                ["C'est trop cher.", "It's too expensive."],
+                ["Je le/la prends.", "I'll take it."],
+                ["Je peux payer par carte ?", "Can I pay by card?"],
+                ["Je voudrais un remboursement.", "I'd like a refund."],
+                ["30 % de réduction", "30 % discount"]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Shop signs to know: **CABINES D'ESSAYAGE** = changing rooms · **CAISSE** = till/checkout · **SORTIE** = exit · **SOLDES** = sale."
+            }
           }
         ],
         "check": [
@@ -10665,6 +10847,11 @@ window.FR_LEARN_PATH = [
             "type": "info",
             "title": "Colours (les couleurs)",
             "body": "<p>Colours come <strong>after</strong> the noun in French and agree in gender and number:</p><table><tr><th>Colour</th><th>Masc.</th><th>Fem.</th></tr><tr><td>red</td><td>rouge</td><td>rouge</td></tr><tr><td>blue</td><td>bleu</td><td>bleue</td></tr><tr><td>green</td><td>vert</td><td>verte</td></tr><tr><td>yellow</td><td>jaune</td><td>jaune</td></tr><tr><td>white</td><td>blanc</td><td>blanche</td></tr><tr><td>black</td><td>noir</td><td>noire</td></tr></table><p>Example: <em>une robe verte</em> (a green dress), <em>un manteau noir</em> (a black coat).</p>"
+          },
+          {
+            "type": "info",
+            "title": "Fitting rooms, returns and shop signs",
+            "body": "<p>Essential vocabulary for trying things on and returning items:</p><ul><li><strong>Je voudrais l'essayer.</strong> = I'd like to try it on.</li><li><strong>Où sont les cabines d'essayage ?</strong> = Where are the changing rooms?</li><li><strong>Vous avez ça en plus grand / plus petit ?</strong> = Do you have this in a bigger / smaller size?</li><li><strong>Je voudrais l'échanger.</strong> = I'd like to exchange it.</li><li><strong>Je voudrais être remboursé(e).</strong> = I'd like a refund.</li><li><strong>Vous avez le reçu ?</strong> = Do you have the receipt?</li></ul><p>Key shop signs: <strong>CABINES D'ESSAYAGE</strong> = changing rooms · <strong>CAISSE</strong> = till/checkout · <strong>SORTIE</strong> = exit · <strong>SOLDES</strong> = sale · <strong>ACCUEIL</strong> = reception.</p>"
           }
         ],
         "check": [
@@ -10945,6 +11132,11 @@ window.FR_LEARN_PATH = [
             "type": "info",
             "title": "Feedback and paying",
             "body": "<p>Expressing opinions and settling the bill:</p><ul><li><strong>C'est délicieux !</strong> = It is delicious!</li><li><strong>C'est trop salé.</strong> = It is too salty.</li><li><strong>C'est trop sucré.</strong> = It is too sweet.</li><li><strong>C'est inclus le service ?</strong> = Is service included?</li><li><strong>L'addition, s'il vous plaît !</strong> = The bill, please!</li><li><strong>Le pourboire</strong> = the tip (lit. 'for a drink')</li></ul><p><strong>Cultural note:</strong> In France, service (15%) is usually included (service compris). A small extra tip is welcome but not obligatory.</p>"
+          },
+          {
+            "type": "info",
+            "title": "Dietary requirements and reservations",
+            "body": "<p>Essential phrases for communicating food needs and booking a table:</p><ul><li><strong>Je suis végétarien / végétarienne.</strong> = I am vegetarian.</li><li><strong>Je suis végétalien / végétalienne.</strong> = I am vegan.</li><li><strong>Je suis allergique aux noix / aux fruits de mer.</strong> = I am allergic to nuts / seafood.</li><li><strong>Sans gluten, s'il vous plaît.</strong> = Gluten-free, please.</li><li><strong>Je voudrais réserver une table pour deux pour ce soir.</strong> = I would like to book a table for two for this evening.</li><li><strong>Au nom de…</strong> = In the name of…</li><li><strong>Vous avez choisi ?</strong> = Have you chosen? (waiter asking if you're ready)</li></ul><p><strong>Est-ce que le service est compris ?</strong> = Is service included? (Answer: usually yes in France — service compris.)</p>"
           }
         ],
         "check": [
@@ -11090,6 +11282,26 @@ window.FR_LEARN_PATH = [
               "**un sirop** (syrup / cough mixture), **des comprimés** (tablets), **du paracétamol**, **un pansement** (plaster), **une crème** (cream), **des gouttes** (drops).",
               "Sans ordonnance = without a prescription (over the counter). Sur ordonnance = prescription only."
             ]
+          },
+          {
+            "h": "Urgences et conditions chroniques",
+            "example": {
+              "title": "Emergency and chronic health phrases",
+              "rows": [
+                ["Appelez une ambulance !", "Call an ambulance!"],
+                ["J'ai besoin d'aide.", "I need help."],
+                ["C'est urgent.", "It's urgent."],
+                ["La salle des urgences / les urgences", "A&E / the emergency room"],
+                ["Je suis diabétique.", "I am diabetic."],
+                ["Je suis allergique à la pénicilline.", "I am allergic to penicillin."],
+                ["J'ai de l'asthme.", "I have asthma."],
+                ["Je prends des médicaments contre…", "I take medication for…"]
+              ]
+            },
+            "callout": {
+              "kind": "key",
+              "text": "French emergency numbers: **15** = SAMU (medical) · **17** = Police · **18** = Pompiers (fire) · **112** = European emergency number. La mutuelle = complementary health insurance (tops up what the Sécurité Sociale doesn't cover)."
+            }
           }
         ],
         "check": [
