@@ -40,6 +40,7 @@
                      : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
         document.body.setAttribute('data-subject', subj);
         if (dm) document.body.classList.add('dark');
+        document.body.classList.add('no-fade');
         document.body.style.visibility = 'hidden';
       } catch (e) {}
     }());
