@@ -5519,6 +5519,12 @@
       const ltq = State.questions[State.current];
       const ltAudio = ltq.audio || ltq.ans;
       listenTypedPlayBtn.addEventListener('click', () => {
+        if (listenTypedPlayBtn.classList.contains('is-playing')) {
+          window.speechSynthesis.cancel();
+          listenTypedPlayBtn.textContent = '🔊 Tap to Listen';
+          listenTypedPlayBtn.classList.remove('is-playing');
+          return;
+        }
         speakFrench(ltAudio,
           () => { listenTypedPlayBtn.textContent = '⏹ Playing…'; listenTypedPlayBtn.classList.add('is-playing'); },
           () => { listenTypedPlayBtn.textContent = '🔊 Tap to Listen'; listenTypedPlayBtn.classList.remove('is-playing'); }
@@ -5551,6 +5557,12 @@
     if (listenPlayBtn) {
       const lq = State.questions[State.current];
       listenPlayBtn.addEventListener('click', () => {
+        if (listenPlayBtn.classList.contains('is-playing')) {
+          window.speechSynthesis.cancel();
+          listenPlayBtn.textContent = '🔊 Tap to Listen';
+          listenPlayBtn.classList.remove('is-playing');
+          return;
+        }
         speakFrench(lq.audio || lq.q,
           () => { listenPlayBtn.textContent = '⏹ Playing…'; listenPlayBtn.classList.add('is-playing'); },
           () => { listenPlayBtn.textContent = '🔊 Tap to Listen'; listenPlayBtn.classList.remove('is-playing'); }
@@ -5566,13 +5578,21 @@
     if (ttsQBtn) {
       const tq = State.questions[State.current];
       const ttsText = tq.tts || (isFrToEnMcq(tq) ? extractFrenchTerm(tq) : null);
-      if (ttsText) ttsQBtn.addEventListener('click', () => {
+      if (ttsText) {
         const origLabel = ttsQBtn.textContent;
-        speakFrench(ttsText,
-          () => { ttsQBtn.textContent = '⏹'; ttsQBtn.classList.add('is-playing'); },
-          () => { ttsQBtn.textContent = origLabel; ttsQBtn.classList.remove('is-playing'); }
-        );
-      });
+        ttsQBtn.addEventListener('click', () => {
+          if (ttsQBtn.classList.contains('is-playing')) {
+            window.speechSynthesis.cancel();
+            ttsQBtn.textContent = origLabel;
+            ttsQBtn.classList.remove('is-playing');
+            return;
+          }
+          speakFrench(ttsText,
+            () => { ttsQBtn.textContent = '⏹'; ttsQBtn.classList.add('is-playing'); },
+            () => { ttsQBtn.textContent = origLabel; ttsQBtn.classList.remove('is-playing'); }
+          );
+        });
+      }
     }
     // Lesson check audio button (listen lessons)
     const lessonCheckPlayBtn = document.getElementById('lessonCheckPlayBtn');
@@ -5580,6 +5600,12 @@
       const lcq = State.lesson.def.check[State.lesson.qIdx];
       if (lcq && lcq.audio) {
         lessonCheckPlayBtn.addEventListener('click', () => {
+          if (lessonCheckPlayBtn.classList.contains('is-playing')) {
+            window.speechSynthesis.cancel();
+            lessonCheckPlayBtn.textContent = '🔊 Tap to Listen';
+            lessonCheckPlayBtn.classList.remove('is-playing');
+            return;
+          }
           speakFrench(lcq.audio,
             () => { lessonCheckPlayBtn.textContent = '⏹ Playing…'; lessonCheckPlayBtn.classList.add('is-playing'); },
             () => { lessonCheckPlayBtn.textContent = '🔊 Tap to Listen'; lessonCheckPlayBtn.classList.remove('is-playing'); }
