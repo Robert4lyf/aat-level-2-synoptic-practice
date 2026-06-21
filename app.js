@@ -4737,7 +4737,6 @@
     const q = State.questions[State.current]; if (!q) return;
     Storage.toggleConfident(q.id);
     const isNow = Storage.isConfident(q.id);
-    showToast(isNow ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', isNow ? 'success' : 'info');
     // Update button in-place so typed input is not cleared by a full re-render
     const btn = document.getElementById('confidentBtn');
     if (btn) {
