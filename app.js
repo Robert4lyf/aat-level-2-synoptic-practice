@@ -4186,26 +4186,7 @@
   /* ── LEARNING JOURNEY (Duolingo-style map) ── */
   function renderLearningJourney() {
     if (!window.LEARN_PATH) return '<div class="empty-state">Learning content not loaded.</div>';
-    const xp = Storage.data.learn.xp || 0;
-    const streak = Storage.studyDayStreak ? Storage.studyDayStreak() : (Storage.data.stats.streak || {}).current || 0;
-    const earnedBadges = BADGES.filter(b => Storage.data.badges[b.id]);
     const nextLesson = nextLessonToDo();
-    const lv = levelFromXp(xp);
-    const lvFloor = xpForLevel(lv);
-    const lvCeil  = xpForLevel(lv + 1);
-    const lvXp    = xp - lvFloor;
-    const lvNeed  = lvCeil - lvFloor;
-    const lvPct   = Math.round(lvXp / lvNeed * 100);
-    const bestCombo = Storage.data.learn.bestCombo || 0;
-    const xpBar = `<div class="xp-bar-wrap" title="${xp} XP earned">
-      <div class="xp-bar-top">
-        <span class="xp-label">⚡ ${xp} XP</span>
-        <span class="xp-level">Level ${lv}</span>
-        ${bestCombo >= 3 ? `<span class="xp-combo-best">🔥 Best combo: ${bestCombo}</span>` : ''}
-      </div>
-      <div class="xp-bar-bg" title="${lvXp}/${lvNeed} XP to next level"><div class="xp-bar-fill" style="width:${lvPct}%"></div></div>
-      <div class="xp-bar-hint">${lvXp}/${lvNeed} XP to Level ${lv + 1}</div>
-    </div>`;
 
     const skillQCount = {};
     (window.ALL_QUESTIONS || []).forEach(q => {
@@ -4308,10 +4289,6 @@
       </div>`;
     }).join('');
 
-    const badgesSnip = earnedBadges.length
-      ? `<div class="journey-badges">${earnedBadges.map(b=>`<span class="badge-chip" title="${escapeHtml(b.name)}: ${escapeHtml(b.desc)}">${b.icon}</span>`).join('')}</div>`
-      : '';
-
     const nextBlock = nextLesson ? `<div class="journey-next">
       <div class="journey-next-label">Continue learning</div>
       ${nextLesson.unitQuiz
@@ -4324,11 +4301,7 @@
       }
     </div>` : '<div class="journey-complete">🎉 All lessons complete! Use smart practice to keep sharp.</div>';
 
-    return `<div class="journey-header">
-      ${xpBar}
-      <div class="journey-meta"><span>🔥 ${streak}-day streak</span>${badgesSnip}</div>
-    </div>
-    ${nextBlock}
+    return `${nextBlock}
     <div class="journey-map">${unitsHtml}</div>
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
       <div class="l3-bridge-header">
