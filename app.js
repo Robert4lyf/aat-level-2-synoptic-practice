@@ -1069,12 +1069,8 @@
       }
       if (State.combo >= 3) {
         Storage.addXp(1); // bonus XP per answer while on combo
-        if (State.combo === 3) showToast('🔥 3-answer combo! +1 bonus XP per correct answer', 'success');
-        if (State.combo === 5) showToast('🔥🔥 5-answer combo! You\'re on fire!', 'success');
-        if (State.combo === 10) showToast('🔥🔥🔥 10-answer combo! Unstoppable!', 'success');
       }
     } else {
-      if (State.combo >= 3) showToast(`Combo broken at ${State.combo}. Keep going!`, 'info');
       State.combo = 0;
     }
   }
