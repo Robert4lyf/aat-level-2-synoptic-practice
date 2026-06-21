@@ -3720,7 +3720,7 @@
             </div>
             <span class="q-counter">Q${State.current + 1}/${total}</span>
           </div>
-          ${q.q ? `<div class="question-text">${escapeHtml(q.q)}</div>` : ''}
+          ${q.q ? `<div class="question-text">${escapeHtml(q.q.replace(/\{\d+\}/g, '___'))}</div>` : ''}
           <div class="gf-sentence">${sentence}</div>
           ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitGapFillBtn" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
