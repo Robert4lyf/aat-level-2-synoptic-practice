@@ -5773,8 +5773,6 @@
       }, { passive: true });
       app.addEventListener('touchend', (e) => {
         if (State.screen !== 'home') return;
-        // Don't steal swipes when a quiz is active
-        if (State.questions && State.questions.length) return;
         const t = e.changedTouches[0];
         const dx = t.clientX - sx;
         const dy = t.clientY - sy;
