@@ -43,43 +43,31 @@
 
   /* Maps a French question ID (fr-NNN) to its CEFR level string.
      A1 = beginner basics, A2 = elementary grammar/vocab, B1 = intermediate structures. */
+  // Cache: question id → CEFR level, derived from lesson assignments in FR_LEARN_PATH.
+  // Built lazily on first call after ALL_QUESTIONS is populated.
+  let _frQLevelCache = null;
   function frQuestionLevel(id) {
+    // Build lesson-based cache once ALL_QUESTIONS is available
+    if (!_frQLevelCache && window.ALL_QUESTIONS && window.ALL_QUESTIONS.length) {
+      _frQLevelCache = {};
+      const cefrMap = { 'fr-a1': 'A1', 'fr-a2': 'A2', 'fr-b1': 'B1', 'fr-b2': 'B2' };
+      const lessonLevel = {};
+      for (const unit of (window.FR_LEARN_PATH || [])) {
+        const lv = cefrMap[unit.id] || 'A2';
+        for (const l of (unit.lessons || [])) lessonLevel[l.id] = lv;
+      }
+      for (const q of window.ALL_QUESTIONS) {
+        if (q.id && q.lesson && lessonLevel[q.lesson]) _frQLevelCache[q.id] = lessonLevel[q.lesson];
+      }
+    }
+    if (_frQLevelCache && _frQLevelCache[id] !== undefined) return _frQLevelCache[id];
+    // Fallback for questions without a lesson field (clinic/supplementary questions)
     const n = parseInt(id.replace('fr-', ''), 10);
     if (isNaN(n)) return null;
-    // A1 — Débutant
-    if (n >= 1   && n <= 17)  return 'A1'; // greetings
-    if (n >= 27  && n <= 33)  return 'A1'; // basic family/food vocab
-    if (n >= 35  && n <= 51)  return 'A1'; // gender, articles, negation, possession, questions
-    if (n >= 62  && n <= 65)  return 'A1'; // time and seasons
-    if (n >= 69  && n <= 76)  return 'A1'; // basic daily life
-    if (n >= 86  && n <= 89)  return 'A1'; // présent être/avoir/-ER/-IR
-    if (n >= 121 && n <= 132) return 'A1'; // extended greetings and basic vocab
-    if (n === 136 || n === 137) return 'A1'; // family/seasons dragdrops
-    if (n >= 152 && n <= 157) return 'A1'; // telling the time
-    if (n >= 160 && n <= 167) return 'A1'; // café, restaurant, basic directions
-    if (n === 168 || n === 179 || n === 181) return 'A1'; // être/avoir conjugation drills
-    if (n >= 183 && n <= 200) return 'A1'; // pronunciation/accents + basic body parts
-    if (n >= 253 && n <= 262) return 'A1'; // transport and directions
-    if (n >= 271 && n <= 290) return 'A1'; // plurals, negation, adjectives, aller/faire
-    if (n >= 312 && n <= 331) return 'A1'; // -ER verb conjugation, nationalities/countries, weather
-    if (n >= 378 && n <= 422) return 'A1'; // thematic vocab: numbers, family, food
-    if (n >= 447 && n <= 458) return 'A1'; // thematic vocab: weather
-    if (n >= 471 && n <= 505) return 'A1'; // conjugation drills: être/avoir/aller + regular -ER/-IR/-RE
-    if ((n >= 506 && n <= 508) || n === 515 || n === 516) return 'A1'; // faire present tense (moved from fr-l54)
-    if (n >= 527 && n <= 543) return 'A1'; // dialogue/scenario: basic real-world conversations
-    if (n >= 576 && n <= 591) return 'A1'; // pronunciation: vowels, silent letters, basic sounds
-    if (n >= 618 && n <= 633) return 'A1'; // word order: basic SVO sentences
-    if (n >= 653 && n <= 662) return 'A1'; // listen: greetings and basic phrases
-    // B1 — Intermédiaire
-    if (n >= 561 && n <= 575) return 'B1'; // dialogue/scenario: formal and complex situations
-    if (n >= 606 && n <= 617) return 'B1'; // pronunciation: register, intonation, schwa
-    if (n >= 646 && n <= 652) return 'B1'; // word order: relative clauses, subjunctive, complex
-    if (n >= 669 && n <= 672) return 'B1'; // listen: complex sentences, proverbs
-    if (n === 115 || n === 116) return 'B1'; // COD/COI pronouns intro
-    if (n === 174 || n === 175 || n === 176) return 'B1'; // conditionnel si, subjonctif, reflexive agreement
-    if (n >= 238 && n <= 252) return 'B1'; // COD/COI/y/en/dont/subjonctif/past hypothetical
-    if (n >= 361 && n <= 377) return 'B1'; // relative pronouns dont/où; Y/EN pronouns
-    // A2 — Élémentaire (everything else)
+    if (n >= 561 && n <= 575) return 'B1';
+    if (n >= 606 && n <= 617) return 'B1';
+    if (n >= 646 && n <= 652) return 'B1';
+    if (n >= 669 && n <= 672) return 'B1';
     return 'A2';
   }
   /* ── XP / Level helpers (FF-style scaling) ──────────────────────────────
@@ -4749,7 +4737,6 @@
     const q = State.questions[State.current]; if (!q) return;
     Storage.toggleConfident(q.id);
     const isNow = Storage.isConfident(q.id);
-    showToast(isNow ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', isNow ? 'success' : 'info');
     // Update button in-place so typed input is not cleared by a full re-render
     const btn = document.getElementById('confidentBtn');
     if (btn) {
