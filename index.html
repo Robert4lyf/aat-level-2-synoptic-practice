@@ -41,10 +41,11 @@
         document.body.setAttribute('data-subject', subj);
         if (dm) document.body.classList.add('dark');
         document.body.classList.add('no-fade');
-        document.body.style.visibility = 'hidden';
       } catch (e) {}
     }());
   </script>
+  <!-- Cover div: hides all content until JS has rendered the app. Removed by init() after render(). -->
+  <div id="page-cover" aria-hidden="true"></div>
   <a class="skip-link" href="#app">Skip to main content</a>
   <header>
     <div class="header-left">
