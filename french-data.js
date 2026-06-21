@@ -1903,6 +1903,10 @@ window.FR_LEARN_PATH = [
         "cards": [
           {
             "h": "Articles définis (the)",
+            "p": [
+              "A **definite** article ('the') is used when both speaker and listener know **which specific thing** is meant — because it was mentioned before, there's only one, or context makes it clear.",
+              "Also used for **general statements** about a whole category: **J'aime le café.** (I like coffee — coffee in general, not a specific cup.)"
+            ],
             "example": {
               "title": "le / la / l' / les",
               "rows": [
@@ -1931,6 +1935,10 @@ window.FR_LEARN_PATH = [
           },
           {
             "h": "Articles indéfinis (a / some)",
+            "p": [
+              "An **indefinite** article ('a/an/some') introduces something **non-specific** or mentioned for the **first time** — the listener doesn't yet know which one you mean.",
+              "**J'ai vu un film.** (I saw a film — any film, first mention.) → **Le film était super !** (The film — now you both know which one.)"
+            ],
             "example": {
               "title": "un / une / des",
               "rows": [
@@ -1947,6 +1955,31 @@ window.FR_LEARN_PATH = [
                   "some friends (plural)"
                 ]
               ]
+            }
+          },
+          {
+            "h": "Défini vs indéfini — en pratique",
+            "split": {
+              "left": {
+                "title": "Indéfini — first mention / non-specific",
+                "items": [
+                  "J'ai **un** chien. (I have a dog)",
+                  "Je cherche **une** boulangerie. (any bakery)",
+                  "Il y a **des** étudiants ici. (some students)"
+                ]
+              },
+              "right": {
+                "title": "Défini — known / specific / general",
+                "items": [
+                  "**Le** chien est adorable ! (that dog)",
+                  "**La** boulangerie est fermée. (the specific one)",
+                  "J'adore **les** étudiants. (students in general)"
+                ]
+              }
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "Verbs like **aimer, adorer, préférer, détester** always use the **definite** article in French: **J'adore le cinéma, la musique, les voyages.** (English says 'I love cinema', but French needs 'le'.)"
             }
           },
           {
@@ -9659,6 +9692,10 @@ window.FR_LEARN_PATH = [
         "cards": [
           {
             "h": "Pronoms COD (direct object)",
+            "p": [
+              "A **direct object** (COD — complément d'objet direct) receives the action of the verb with **no preposition**: Je mange **la pomme** · Je vois **Marie**.",
+              "Replace it with: **me, te, le, la, nous, vous, les** (placed before the verb)."
+            ],
             "example": {
               "title": "me / te / le / la / nous / vous / les",
               "rows": [
@@ -9683,6 +9720,10 @@ window.FR_LEARN_PATH = [
           },
           {
             "h": "Pronoms COI (indirect object — « à »)",
+            "p": [
+              "An **indirect object** (COI — complément d'objet indirect) is linked to the verb via **à** (to/for): Je parle **à Paul** · J'écris **à mes amis**.",
+              "Replace it with: **me, te, lui, nous, vous, leur** (also before the verb). Note: **lui** = to him OR to her; **leur** = to them."
+            ],
             "example": {
               "title": "me / te / lui / nous / vous / leur",
               "rows": [
@@ -13347,6 +13388,18 @@ window.FR_LEARN_PATH = [
         "title": "Le subjonctif présent",
         "icon": "🌀",
         "cards": [
+          {
+            "h": "Qu'est-ce que le subjonctif ?",
+            "p": [
+              "The subjunctive is a **mood** (mode), not a tense. It expresses **subjectivity** — wishes, emotions, doubts, and necessity — rather than stating facts.",
+              "In English it survives only in phrases like 'If I **were** you…' or 'I suggest he **be** here'. In French it's used constantly.",
+              "The key trigger is **que** following a verb of wanting, feeling, or doubting with **two different subjects**: **Je veux que tu viennes.** (I want you to come.)"
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "The **indicative** states facts (il est là). The **subjunctive** expresses how the speaker feels about something (je veux qu'il **soit** là). Same person → use infinitive: je veux **venir** (not que je vienne)."
+            }
+          },
           {
             "h": "Formation",
             "p": [
