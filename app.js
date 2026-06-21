@@ -5818,9 +5818,11 @@
     if (Storage.data.settings.seenSplash) State.screen = 'home';
     if (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length) {
       const el = app(); if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="alert">⚠️ Question bank failed to load. Please reload the page.</div></div>`;
+      document.body.style.visibility = '';
       return;
     }
     render();
+    document.body.style.visibility = '';
     // Bind static header buttons once — they live outside #app and must not accumulate listeners
     const _dt = document.getElementById('darkToggle');
     if (_dt) _dt.addEventListener('click', toggleDarkMode);
