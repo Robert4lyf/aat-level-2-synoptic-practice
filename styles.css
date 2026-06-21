@@ -1982,6 +1982,41 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   animation: pop .35s var(--ease);
 }
 .dark .confident-btn.is-confident { background: rgba(74, 222, 128, .22); color: #86efac; border-color: rgba(74, 222, 128, .4); }
+
+/* Action row: submit / next button + confident button side by side */
+.quiz-action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+.quiz-action-row .next-btn { margin-top: 0; flex: 2; }
+.confident-action-btn {
+  flex: 1;
+  min-width: 0;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border: none;
+  padding: 15px 12px;
+  border-radius: var(--r-lg);
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 16px -4px rgba(16, 185, 129, .4);
+  transition: transform var(--dur-fast) var(--ease), filter var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.confident-action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); }
+.confident-action-btn:active { transform: translateY(0); }
+.confident-action-btn.is-confident {
+  background: linear-gradient(135deg, #bbf7d0, #4ade80);
+  color: #14532d;
+  box-shadow: 0 4px 12px -4px rgba(34, 197, 94, .3);
+}
+.dark .confident-action-btn.is-confident { background: rgba(74, 222, 128, .25); color: #86efac; }
+
 .review-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
 .review-head .flag-btn { flex-shrink: 0; width: 30px; height: 28px; font-size: .9rem; }
 
