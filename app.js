@@ -3137,39 +3137,6 @@
       </button>`;
     }).join('') : '';
 
-    // Badge showcase
-    const xp = Storage.data.learn.xp || 0;
-    const level   = levelFromXp(xp);
-    const lvFloor = xpForLevel(level);
-    const lvNeed  = xpForLevel(level + 1) - lvFloor;
-    const levelXp = xp - lvFloor;
-    const levelPct = Math.round(levelXp / lvNeed * 100);
-    const earnedBadgesList = BADGES.filter(b => Storage.data.badges[b.id]);
-    const unearnedBadges = BADGES.filter(b => !Storage.data.badges[b.id]);
-    const badgeShowcase = `<div class="badge-showcase">
-      <div class="badge-showcase-header">
-        <div class="badge-level-pill">⚡ Level ${level} <span class="badge-level-xp">${levelXp}/${lvNeed} XP to next</span></div>
-        <div class="badge-level-bar"><div class="badge-level-fill" style="width:${levelPct}%"></div></div>
-      </div>
-      ${earnedBadgesList.length ? `<div class="badge-grid-title">🏅 Earned badges (${earnedBadgesList.length}/${BADGES.length})</div>
-      <div class="badge-grid">${earnedBadgesList.map(b => `<div class="badge-card badge-earned" title="${escapeHtml(b.desc)}">
-        <div class="badge-icon">${b.icon}</div>
-        <div class="badge-name">${escapeHtml(b.name)}</div>
-      </div>`).join('')}</div>` : ''}
-      <div class="badge-grid-title">🔒 Locked badges</div>
-      <div class="badge-grid">${unearnedBadges.map(b => {
-        const p = badgeProgress(b.id);
-        const pct = p.max > 0 ? Math.round((p.cur / p.max) * 100) : 0;
-        return `<div class="badge-card badge-locked" title="${escapeHtml(b.desc)}">
-          <div class="badge-icon badge-icon-locked">${b.icon}</div>
-          <div class="badge-name">${escapeHtml(b.name)}</div>
-          <div class="badge-hint">${escapeHtml(b.hint)}</div>
-          <div class="badge-prog-bg"><div class="badge-prog-fill" style="width:${pct}%"></div></div>
-          <div class="badge-prog-label">${p.cur}/${p.max}</div>
-        </div>`;
-      }).join('')}</div>
-    </div>`;
-
     // French-specific: CEFR sublevel + skill breakdown
     const isFrProgress = _activeSubjectId === 'french';
     const frCefrSection = isFrProgress ? (() => {
@@ -3243,7 +3210,6 @@
     })() : '';
 
     return `<h2 class="section-title">Your Progress</h2>
-      ${badgeShowcase}
       ${frCefrSection}
       ${frSkillSection}
       <div class="stats-grid">
