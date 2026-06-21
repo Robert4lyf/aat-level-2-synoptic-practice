@@ -5749,10 +5749,8 @@
       return;
     }
     render();
-    // Strip fade-in from the initial paint so header and content appear simultaneously
-    const _initCont = document.querySelector('#app .container');
-    if (_initCont) _initCont.classList.remove('fade-in');
     document.body.style.visibility = '';
+    document.body.classList.remove('no-fade');
     // Bind static header buttons once — they live outside #app and must not accumulate listeners
     const _dt = document.getElementById('darkToggle');
     if (_dt) _dt.addEventListener('click', toggleDarkMode);

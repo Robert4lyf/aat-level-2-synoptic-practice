@@ -244,6 +244,8 @@ header, main { position: relative; z-index: 1; }
 
 .fade-in  { animation: fadeIn  var(--dur-slow) var(--ease) both; }
 .slide-in { animation: slideIn var(--dur-slow) var(--ease) both; }
+/* Suppress all animations on first paint to prevent flash of content */
+.no-fade .fade-in, .no-fade .slide-in { animation: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
