@@ -5745,15 +5745,13 @@
     if (Storage.data.settings.seenSplash) State.screen = 'home';
     if (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length) {
       const el = app(); if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="alert">⚠️ Question bank failed to load. Please reload the page.</div></div>`;
-      document.body.style.visibility = '';
+      const _c = document.getElementById('page-cover'); if (_c) _c.remove();
       return;
     }
     render();
-    // Strip fade-in from the initial paint so header and content appear simultaneously
-    const _initCont = document.querySelector('#app .container');
-    if (_initCont) _initCont.classList.remove('fade-in');
-    document.body.style.visibility = '';
     document.body.classList.remove('no-fade');
+    const _cover = document.getElementById('page-cover');
+    if (_cover) _cover.remove();
     // Bind static header buttons once — they live outside #app and must not accumulate listeners
     const _dt = document.getElementById('darkToggle');
     if (_dt) _dt.addEventListener('click', toggleDarkMode);

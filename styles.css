@@ -162,6 +162,16 @@
   --bg-main: #0b1322;
 }
 
+/* ── PAGE COVER — hides content until JS renders the app ── */
+#page-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: #f6f8fb; /* light mode --bg */
+}
+body.dark #page-cover { background: #080D1A; } /* dark mode --bg */
+
 /* ── RESET & BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
