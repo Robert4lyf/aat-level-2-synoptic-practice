@@ -1626,6 +1626,53 @@ window.FR_LEARN_PATH = [
               "**Merci** = thank you · **Merci beaucoup** = thank you very much · **De rien** = you're welcome.",
               "**Pardon** / **Excusez-moi** = excuse me / sorry."
             ]
+          },
+          {
+            "h": "Les au revoir — saying goodbye",
+            "example": {
+              "title": "Farewell expressions",
+              "rows": [
+                ["Au revoir !", "Goodbye!"],
+                ["À bientôt !", "See you soon!"],
+                ["À tout à l'heure !", "See you in a moment! (same day)"],
+                ["À demain !", "See you tomorrow!"],
+                ["À plus tard !", "See you later!"],
+                ["Bonne journée !", "Have a good day!"],
+                ["Bonne soirée !", "Have a good evening!"]
+              ]
+            },
+            "callout": {
+              "kind": "tip",
+              "text": "**Au revoir** is the general goodbye. Use **à + time expression** for 'see you at a specific time': à demain, à lundi, à la prochaine !"
+            }
+          },
+          {
+            "h": "Occasions spéciales et expressions sociales",
+            "example": {
+              "title": "Special occasions",
+              "rows": [
+                ["Bon anniversaire ! / Joyeux anniversaire !", "Happy birthday!"],
+                ["Joyeux Noël !", "Merry Christmas!"],
+                ["Bonne Année !", "Happy New Year!"],
+                ["Félicitations !", "Congratulations!"],
+                ["Bonne chance !", "Good luck!"],
+                ["Bon appétit !", "Enjoy your meal!"],
+                ["À vos souhaits !", "Bless you! (after a sneeze, formal)"],
+                ["À tes souhaits !", "Bless you! (informal)"]
+              ]
+            }
+          },
+          {
+            "h": "En classe — communication phrases",
+            "p": [
+              "These phrases help you communicate when you don't fully understand:",
+              "**Pouvez-vous répéter, s'il vous plaît ?** — Can you repeat, please?",
+              "**Pouvez-vous parler plus lentement ?** — Can you speak more slowly?",
+              "**Je ne comprends pas.** — I don't understand.",
+              "**Je n'ai pas compris.** — I didn't understand.",
+              "**Pouvez-vous l'écrire ?** — Can you write it down?",
+              "**Comment dit-on ___ en français ?** — How do you say ___ in French?"
+            ]
           }
         ],
         "check": [
@@ -5692,11 +5739,13 @@ window.FR_LEARN_PATH = [
           {
             "h": "Chez le médecin — at the doctor",
             "p": [
+              "**Qu'est-ce qui ne va pas ?** — What is wrong? / What's the matter?",
               "**Je suis malade.** — I'm ill.",
               "**Je me sens mal.** — I don't feel well.",
               "**J'ai de la fièvre.** — I have a fever.",
               "**Je tousse.** — I'm coughing.",
               "**J'éternue.** — I'm sneezing.",
+              "**J'ai mal au cœur.** — I feel nauseous. (lit. 'I have pain at the heart')",
               "**Il me faut une ordonnance.** — I need a prescription.",
               "À la pharmacie: *un médicament* (medicine), *des comprimés* (tablets), *du sirop* (syrup), *une crème* (cream)."
             ],
@@ -5704,6 +5753,26 @@ window.FR_LEARN_PATH = [
               "kind": "tip",
               "text": "In France, the pharmacist (le pharmacien / la pharmacienne) can advise on minor ailments — a great first port of call."
             }
+          },
+          {
+            "h": "Plus de vocabulaire du corps — more body vocabulary",
+            "table": {
+              "headers": ["French", "English"],
+              "rows": [
+                ["la gorge", "the throat"],
+                ["la cheville", "the ankle"],
+                ["le coude", "the elbow"],
+                ["le poignet", "the wrist"],
+                ["la poitrine", "the chest"],
+                ["le talon", "the heel"],
+                ["les poumons", "the lungs"],
+                ["le cœur", "the heart"]
+              ]
+            },
+            "p": [
+              "**Se casser + body part** = to break something: *Je me suis cassé la jambe.* (I broke my leg.)",
+              "**Depuis combien de temps ?** — How long have you had it? Use **depuis** + present tense for ongoing conditions."
+            ]
           }
         ],
         "check": [
@@ -6317,6 +6386,42 @@ window.FR_LEARN_PATH = [
                 ]
               ]
             }
+          },
+          {
+            "h": "Les numéros ordinaux dans les directions",
+            "p": [
+              "When giving directions, French uses **ordinal numbers** (first, second…):",
+              "**premier / première** = first (masc. / fem.)",
+              "**deuxième** = second · **troisième** = third · **quatrième** = fourth",
+              "**Prenez la première rue à gauche.** = Take the first street on the left.",
+              "**Prenez la deuxième rue à droite.** = Take the second street on the right.",
+              "**C'est à dix minutes à pied.** = It's ten minutes on foot.",
+              "**C'est loin d'ici ?** = Is it far from here?"
+            ],
+            "callout": {
+              "kind": "warn",
+              "text": "**Faux ami:** *le car* = a coach / long-distance bus (NOT a car — that is **la voiture**)."
+            }
+          },
+          {
+            "h": "Acheter un billet — buying a ticket",
+            "example": {
+              "title": "At the station (à la gare)",
+              "rows": [
+                ["un billet aller simple", "a single / one-way ticket"],
+                ["un billet aller-retour", "a return ticket"],
+                ["la première classe", "first class"],
+                ["la deuxième classe", "second class / standard"],
+                ["le prochain train", "the next train"],
+                ["À quelle heure part le train ?", "What time does the train leave?"],
+                ["le quai", "the platform"],
+                ["composter son billet", "to validate / stamp your ticket"]
+              ]
+            },
+            "p": [
+              "**Je voudrais un billet aller-retour pour Lyon, s'il vous plaît.**",
+              "(I'd like a return ticket to Lyon, please.)"
+            ]
           },
           {
             "h": "À l'hôtel et en ville",
@@ -10424,6 +10529,44 @@ window.FR_LEARN_PATH = [
             "callout": {
               "kind": "key",
               "text": "With être + profession, drop the article: Je suis ingénieur (not 'un ingénieur')."
+            }
+          },
+          {
+            "h": "Vocabulaire de l'emploi — employment vocabulary",
+            "table": {
+              "headers": ["French", "English"],
+              "rows": [
+                ["le salaire", "the salary / wage"],
+                ["un entretien d'embauche", "a job interview"],
+                ["un stage", "a work placement / internship (NOT a theatre stage)"],
+                ["être en congé", "to be on leave / holiday"],
+                ["être à son compte", "to be self-employed / freelance"],
+                ["l'employeur (m.)", "the employer"],
+                ["l'employé(e)", "the employee"],
+                ["un contrat", "a contract"],
+                ["un syndicat", "a trade union"],
+                ["être licencié(e)", "to be made redundant"],
+                ["une promotion", "a promotion"]
+              ]
+            },
+            "callout": {
+              "kind": "warn",
+              "text": "**Faux ami:** *un stage* = work placement / internship — NOT a stage or platform (that is *une scène*)."
+            }
+          },
+          {
+            "h": "Plus de métiers — more professions",
+            "table": {
+              "headers": ["Métier", "Masculine", "Feminine"],
+              "rows": [
+                ["baker", "un boulanger", "une boulangère"],
+                ["actor / actress", "un acteur", "une actrice"],
+                ["dentist", "un dentiste", "une dentiste"],
+                ["pharmacist", "un pharmacien", "une pharmacienne"],
+                ["firefighter", "un pompier", "une pompière"],
+                ["police officer", "un policier", "une policière"],
+                ["architect", "un architecte", "une architecte"]
+              ]
             }
           }
         ],
