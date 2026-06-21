@@ -4441,7 +4441,7 @@
           ${drillPanel}
           <div class="lesson-done-btns">
             ${stars < 3 && totalQ > 0 ? `<button class="btn-secondary" id="lessonRetryBtn" type="button">🔁 Retry quiz</button>` : ''}
-            ${nextL && !nextL.l3Bridge ? `<button class="btn-primary" id="lessonNextBtn" type="button" data-lesson="${escapeHtml(nextL.id)}">${escapeHtml(nextL.icon)} Next: ${escapeHtml(nextL.title)} →</button>` : ''}
+            ${nextL && !nextL.l3Bridge ? `<button class="btn-primary" id="lessonNextLessonBtn" type="button" data-lesson="${escapeHtml(nextL.id)}">${escapeHtml(nextL.icon)} Next: ${escapeHtml(nextL.title)} →</button>` : ''}
             <button class="btn-secondary" id="lessonExitBtn2" type="button">🗺️ Back to journey</button>
           </div>
         </div>
