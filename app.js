@@ -3349,6 +3349,10 @@
 
   function renderQuiz() { return State.mode === 'mock' ? renderMockQuiz() : renderPracticeQuiz(); }
 
+  function confidentActionBtn(c) {
+    return `<button class="confident-action-btn${c ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${c}" title="${c ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}" aria-label="${c ? 'Unmark as confident' : 'Mark as confident'}">✓ Confident</button>`;
+  }
+
   function renderPracticeQuiz() {
     const q = State.questions[State.current];
     if (!q) { goHome(); return ''; }
@@ -3368,6 +3372,7 @@
     const pct = ((State.current + 1) / total * 100).toFixed(0);
     const topic = window.TOPICS.find(t => t.id === q.topic);
     const numeric = isNumeric(q);
+    const confident = Storage.isConfident(q.id);
     let bodyHtml = '', feedbackHtml = '';
 
     if (numeric) {
@@ -3381,14 +3386,14 @@
                  inputmode="decimal" autocomplete="off" spellcheck="false"
                  value="${draftValue}" ${answered ? 'disabled' : ''}
                  placeholder="Type or use the calculator →" aria-describedby="numericError">
-          ${answered ? '' : `<button class="next-btn" id="submitNumericBtn" type="button">Submit ✓</button>`}
         </div>
         <div class="numeric-error" id="numericError" role="alert"></div>
         <div class="kbd-hint" aria-hidden="true">
           <span><kbd>0</kbd>–<kbd>9</kbd> type</span><span class="kbd-sep">·</span>
           <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
         </div>
-      </div>`;
+      </div>
+      ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitNumericBtn" type="button">Submit ✓</button>${confidentActionBtn(confident)}</div>` : ''}`;
       if (answered) {
         const steps = q.steps && q.steps.length ? q.steps : null;
         const stepsHtml = steps ? `<details class="worked-steps">
@@ -3401,7 +3406,7 @@
           <em>${escapeHtml(q.exp)}</em>
         </div>
         ${stepsHtml}
-        <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+        <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
       }
     } else {
       const answered = State.answered !== null;
@@ -3424,12 +3429,11 @@
           ${!correct ? `<span>Your answer: ${escapeHtml(q.opts[State.answered])}</span><br><span>Correct answer: ${escapeHtml(q.opts[q.ans])}</span><br><br>` : ''}
           <em>${escapeHtml(q.exp)}</em>
         </div>
-        <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+        <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
       }
     }
 
     const flagged = Storage.isFlagged(q.id);
-    const confident = Storage.isConfident(q.id);
     const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3441,7 +3445,6 @@
             ${q._flipped ? '<span class="flip-pill">🔄 EN→FR</span>' : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3527,7 +3530,7 @@
         ${!ok ? '<span>Review matches above (green = correct, red = wrong).</span><br><br>' : ''}
         <em>${escapeHtml(q.exp)}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     const statusLine = answered ? '' : `<div class="dd-status">
       <span class="dd-status-count">${matchedCount} of ${totalPairs} matched</span>
@@ -3541,7 +3544,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="dd-pill">🔗 Match</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3560,7 +3562,7 @@
               ${rightBoxes}
             </div>
           </div>
-          ${!answered ? `<button class="next-btn" id="submitDragDropBtn" type="button">Submit matches ✓</button>` : ''}
+          ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitDragDropBtn" type="button">Submit matches ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
       </div>
@@ -3601,7 +3603,7 @@
         <strong>${ok ? '✅ All correct' : '❌ ' + State.answered.score + ' of ' + State.answered.total + ' correct'}</strong><br>
         <em>${escapeHtml(q.exp)}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3611,7 +3613,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="tf-pill">📋 Table</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3621,7 +3622,7 @@
           <div class="question-text">${escapeHtml(q.q)}</div>
           ${table.title ? `<div class="tf-title">${escapeHtml(table.title)}</div>` : ''}
           ${tableHtml}
-          ${!answered ? `<button class="next-btn" id="submitTableFillBtn" type="button">Submit answers ✓</button>` : ''}
+          ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitTableFillBtn" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
         ${_activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
@@ -3679,7 +3680,7 @@
         <strong>${ok ? '✅ All parts correct' : '📋 Scored ' + State.answered.score + ' of ' + State.answered.total}</strong><br>
         <em>${escapeHtml(q.exp || 'Each part is marked individually above.')}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3689,7 +3690,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="sc-pill">📖 Scenario</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3702,7 +3702,7 @@
           </div>
           ${q.q ? `<div class="question-text">${escapeHtml(q.q)}</div>` : ''}
           <div class="sc-parts">${partsHtml}</div>
-          ${!answered ? `<button class="next-btn" id="submitScenarioBtn" type="button">Submit all parts ✓</button>` : ''}
+          ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitScenarioBtn" type="button">Submit all parts ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
         ${_activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
@@ -3742,7 +3742,7 @@
         <strong>${ok ? '✅ All gaps correct' : '❌ ' + State.answered.score + ' of ' + State.answered.total + ' correct'}</strong><br>
         <em>${escapeHtml(q.exp)}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3752,7 +3752,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="gf-pill">✏️ Fill the gaps</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}" title="${confident ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3761,7 +3760,7 @@
           </div>
           ${q.q ? `<div class="question-text">${escapeHtml(q.q)}</div>` : ''}
           <div class="gf-sentence">${sentence}</div>
-          ${!answered ? `<button class="next-btn" id="submitGapFillBtn" type="button">Submit answers ✓</button>` : ''}
+          ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitGapFillBtn" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
       </div>
@@ -3799,7 +3798,7 @@
         ${!ok ? `<div class="wo-correct-sentence">Correct: <strong>${escapeHtml(q.answer.join(' '))}</strong></div>` : ''}
         <em>${escapeHtml(q.exp || '')}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3809,7 +3808,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="sc-pill">🔀 Word order</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="Mark as confident">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3820,7 +3818,7 @@
           <p class="wo-hint">Tap words from the bank to build the sentence. Not all words are needed. Tap a placed word to remove it.</p>
           <div class="wo-answer-area">${answerHtml}</div>
           <div class="wo-bank">${bankHtml}</div>
-          ${!answered ? `<button class="next-btn" id="submitWordOrderBtn" type="button" ${placed.length < q.answer.length ? 'disabled' : ''}>Submit ✓</button>` : ''}
+          ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitWordOrderBtn" type="button" ${placed.length < q.answer.length ? 'disabled' : ''}>Submit ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
       </div>
@@ -3857,7 +3855,7 @@
         ${!correct ? `<span>You chose: ${escapeHtml(q.opts[State.answered])}</span><br><span>Correct: ${escapeHtml(q.opts[q.ans])}</span><br><br>` : ''}
         <em>${escapeHtml(q.exp)}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3867,7 +3865,6 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="${confident ? 'Unmark confident' : 'Mark as confident'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -3907,14 +3904,14 @@
                autocomplete="off" spellcheck="false" lang="fr"
                value="${inputVal}" ${answered ? 'disabled' : ''}
                placeholder="Type your answer…" aria-describedby="typedError">
-        ${answered ? '' : `<button class="next-btn" id="submitTypedBtn" type="button">Submit ✓</button>`}
       </div>
       <div class="numeric-error" id="typedError" role="alert"></div>
       ${q.ignoreAccents ? `<div class="kbd-hint" aria-hidden="true"><span>Accents are optional — correct accents are always shown in feedback</span></div>` : ''}
       <div class="kbd-hint" aria-hidden="true">
         <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
       </div>
-    </div>`;
+    </div>
+    ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitTypedBtn" type="button">Submit ✓</button>${confidentActionBtn(confident)}</div>` : ''}`;
     let feedbackHtml = '';
     if (answered) {
       const altsHtml = q.alts && q.alts.length
@@ -3925,7 +3922,7 @@
         ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct answer: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
         <em>${escapeHtml(q.exp)}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -3937,7 +3934,6 @@
             ${levelBadge}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" aria-label="${confident ? 'Unmark as confident' : 'Mark as confident'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}">
                 <div class="progress-bar" style="width:${pct}%"></div>
@@ -3988,14 +3984,14 @@
                autocomplete="off" spellcheck="false" lang="fr"
                value="${inputVal}" ${answered ? 'disabled' : ''}
                placeholder="Type what you heard…" aria-describedby="listenTypedError">
-        ${answered ? '' : `<button class="next-btn" id="submitListenTypedBtn" type="button">Submit ✓</button>`}
       </div>
       <div class="numeric-error" id="listenTypedError" role="alert"></div>
       ${q.ignoreAccents ? `<div class="kbd-hint" aria-hidden="true"><span>Accents are optional</span></div>` : ''}
       <div class="kbd-hint" aria-hidden="true">
         <span><kbd>Enter</kbd> ${answered ? 'next' : 'submit'}</span>
       </div>
-    </div>`;
+    </div>
+    ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitListenTypedBtn" type="button">Submit ✓</button>${confidentActionBtn(confident)}</div>` : ''}`;
     let feedbackHtml = '';
     if (answered) {
       const altsHtml = q.alts && q.alts.length
@@ -4006,7 +4002,7 @@
         ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
         <em>${escapeHtml(q.exp)}</em>
       </div>
-      <button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>`;
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -4017,7 +4013,6 @@
             <span class="numeric-pill">🎧 Dictée</span>
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <button class="confident-btn${confident ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${confident}" title="${confident ? 'Unmark confident' : 'Mark as confident'}">✓</button>
             <div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
               <div class="progress-label">${State.current + 1} of ${total} completed</div>
@@ -4738,8 +4733,16 @@
   function toggleConfidentCurrent() {
     const q = State.questions[State.current]; if (!q) return;
     Storage.toggleConfident(q.id);
-    showToast(Storage.isConfident(q.id) ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', Storage.isConfident(q.id) ? 'success' : 'info');
-    render();
+    const isNow = Storage.isConfident(q.id);
+    showToast(isNow ? '✓ Marked confident — won\'t appear in practice' : 'Confidence mark removed', isNow ? 'success' : 'info');
+    // Update button in-place so typed input is not cleared by a full re-render
+    const btn = document.getElementById('confidentBtn');
+    if (btn) {
+      btn.classList.toggle('is-confident', isNow);
+      btn.setAttribute('aria-pressed', String(isNow));
+      btn.setAttribute('title', isNow ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice');
+      btn.setAttribute('aria-label', isNow ? 'Unmark as confident' : 'Mark as confident');
+    }
   }
   function jumpToMockQuestion(idx) {
     if (State.mode !== 'mock') return;
