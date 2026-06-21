@@ -1009,8 +1009,6 @@
     }
     if (earned.length) {
       Storage.save();
-      const names = earned.map(b => b.icon + ' ' + b.name).join(' · ');
-      showToast('🏅 Badge earned: ' + names, 'success');
     }
     return earned;
   }
