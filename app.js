@@ -3350,7 +3350,7 @@
   function renderQuiz() { return State.mode === 'mock' ? renderMockQuiz() : renderPracticeQuiz(); }
 
   function confidentActionBtn(c) {
-    return `<button class="confident-action-btn${c ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${c}" title="${c ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}" aria-label="${c ? 'Unmark as confident' : 'Mark as confident'}">✓ Confident</button>`;
+    return `<button class="confident-action-btn${c ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${c}" title="${c ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}" aria-label="${c ? 'Unmark as confident' : 'Mark as confident'}">✓</button>`;
   }
 
   function renderPracticeQuiz() {

@@ -1991,31 +1991,32 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 }
 .quiz-action-row .next-btn { margin-top: 0; flex: 2; }
 .confident-action-btn {
-  flex: 1;
-  min-width: 0;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: #fff;
-  border: none;
-  padding: 15px 12px;
+  flex: 0 0 auto;
+  min-width: 52px;
+  background: transparent;
+  color: var(--subtext);
+  border: 2px solid var(--border);
+  padding: 15px 16px;
   border-radius: var(--r-lg);
-  font-size: .9rem;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  box-shadow: 0 4px 16px -4px rgba(16, 185, 129, .4);
-  transition: transform var(--dur-fast) var(--ease), filter var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: transform var(--dur-fast) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.confident-action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); }
+.confident-action-btn:hover:not(:disabled) { border-color: #10b981; color: #059669; transform: translateY(-1px); }
 .confident-action-btn:active { transform: translateY(0); }
 .confident-action-btn.is-confident {
-  background: linear-gradient(135deg, #bbf7d0, #4ade80);
-  color: #14532d;
-  box-shadow: 0 4px 12px -4px rgba(34, 197, 94, .3);
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px -4px rgba(16, 185, 129, .5);
+  animation: pop .3s var(--ease);
 }
-.dark .confident-action-btn.is-confident { background: rgba(74, 222, 128, .25); color: #86efac; }
+.dark .confident-action-btn { color: var(--subtext); border-color: var(--border); }
+.dark .confident-action-btn.is-confident { background: linear-gradient(135deg, #059669, #047857); color: #fff; }
 
 .review-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
 .review-head .flag-btn { flex-shrink: 0; width: 30px; height: 28px; font-size: .9rem; }
