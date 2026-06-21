@@ -65,6 +65,7 @@
     if (n >= 378 && n <= 422) return 'A1'; // thematic vocab: numbers, family, food
     if (n >= 447 && n <= 458) return 'A1'; // thematic vocab: weather
     if (n >= 471 && n <= 505) return 'A1'; // conjugation drills: être/avoir/aller + regular -ER/-IR/-RE
+    if ((n >= 506 && n <= 508) || n === 515 || n === 516) return 'A1'; // faire present tense (moved from fr-l54)
     if (n >= 527 && n <= 543) return 'A1'; // dialogue/scenario: basic real-world conversations
     if (n >= 576 && n <= 591) return 'A1'; // pronunciation: vowels, silent letters, basic sounds
     if (n >= 618 && n <= 633) return 'A1'; // word order: basic SVO sentences
@@ -1951,6 +1952,11 @@
       for (const L of unit.lessons) {
         if (!isLessonDone(L.id)) return { unit, lesson: L };
       }
+      // All lessons in this unit done — if quiz not yet passed, that's the next step
+      const unitTest = (Storage.data.learn.unitTests || {})[unitId];
+      if (!unitTest || !unitTest.passed) {
+        return { unit, lesson: null, unitQuiz: unitId };
+      }
     }
     return null;
   }
@@ -2037,6 +2043,7 @@
   function normalizeTyped(s, stripAcc) {
     let n = String(s).trim().toLowerCase();
     n = n.replace(/[?!.,;:]+$/g, '').trim(); // strip trailing punctuation
+    n = n.replace(/[,.]\s/g, ' ');           // treat comma/period before space as equivalent (greeting punctuation)
     if (stripAcc) n = n.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     return n;
   }
@@ -3350,6 +3357,7 @@
   function renderQuiz() { return State.mode === 'mock' ? renderMockQuiz() : renderPracticeQuiz(); }
 
   function confidentActionBtn(c) {
+    if (State.unitQuizId) return '';
     return `<button class="confident-action-btn${c ? ' is-confident' : ''}" id="confidentBtn" type="button" aria-pressed="${c}" title="${c ? 'Confident — click to unmark' : 'Mark as confident — hides from future practice'}" aria-label="${c ? 'Unmark as confident' : 'Mark as confident'}">✓</button>`;
   }
 
@@ -4328,9 +4336,11 @@
            </button>` : '';
       const hasRevision = uid && UNIT_REVISION.some(r => r.unit === uid);
       const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(uid)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
-      const collapsed = !!(State.collapsedUnits && State.collapsedUnits[uid]);
+      const unitComplete = unitDone && !!(unitTest && unitTest.passed);
+      const collapsedOverride = State.collapsedUnits && State.collapsedUnits[uid];
+      const collapsed = collapsedOverride !== undefined ? !!collapsedOverride : unitComplete;
       return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}${collapsed ? ' journey-unit-collapsed' : ''}">
-        <div class="journey-unit-header" style="cursor:pointer" data-collapse-unit="${escapeHtml(uid)}" role="button" aria-expanded="${!collapsed}" tabindex="0">
+        <div class="journey-unit-header" style="cursor:pointer" data-collapse-unit="${escapeHtml(uid)}" data-collapsed="${collapsed}" role="button" aria-expanded="${!collapsed}" tabindex="0">
           <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
@@ -4354,9 +4364,14 @@
 
     const nextBlock = nextLesson ? `<div class="journey-next">
       <div class="journey-next-label">Continue learning</div>
-      <button class="journey-next-btn" type="button" data-lesson="${escapeHtml(nextLesson.lesson.id)}">
-        ${escapeHtml(nextLesson.lesson.icon)} ${escapeHtml(nextLesson.lesson.title)} →
-      </button>
+      ${nextLesson.unitQuiz
+        ? `<button class="journey-next-btn" type="button" data-unit-quiz="${escapeHtml(nextLesson.unitQuiz)}">
+            📋 Take the ${escapeHtml(nextLesson.unit.title)} unit quiz →
+           </button>`
+        : `<button class="journey-next-btn" type="button" data-lesson="${escapeHtml(nextLesson.lesson.id)}">
+            ${escapeHtml(nextLesson.lesson.icon)} ${escapeHtml(nextLesson.lesson.title)} →
+           </button>`
+      }
     </div>` : '<div class="journey-complete">🎉 All lessons complete! Use smart practice to keep sharp.</div>';
 
     return `<div class="journey-header">
@@ -5623,7 +5638,7 @@
       el.addEventListener('click', () => {
         const uid = el.dataset.collapseUnit;
         if (!State.collapsedUnits) State.collapsedUnits = {};
-        State.collapsedUnits[uid] = !State.collapsedUnits[uid];
+        State.collapsedUnits[uid] = el.dataset.collapsed !== 'true';
         render();
       });
       el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
