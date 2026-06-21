@@ -5768,6 +5768,37 @@
     const _ss = document.getElementById('subjectSwitcherBtn');
     if (_ss) _ss.addEventListener('click', () => { State.screen = 'subjects'; render(); });
     document.addEventListener('keydown', handleGlobalKey);
+
+    // Swipe-between-tabs on touch devices
+    (function () {
+      let sx = 0, sy = 0;
+      const app = document.getElementById('app');
+      app.addEventListener('touchstart', (e) => {
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+      }, { passive: true });
+      app.addEventListener('touchend', (e) => {
+        if (State.screen !== 'home') return;
+        // Don't steal swipes when a quiz is active
+        if (State.questions && State.questions.length) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        // Require a meaningful horizontal movement that's larger than vertical
+        if (Math.abs(dx) < 55 || Math.abs(dy) > Math.abs(dx) * 0.75) return;
+        // Don't fire if the touch started on an interactive element
+        const tag = (e.target || document.body).tagName;
+        if (/^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(tag)) return;
+        const tabs = getSubject(_activeSubjectId).tabs;
+        const idx = tabs.indexOf(State.activeTab);
+        if (idx === -1) return;
+        const next = dx < 0 ? idx + 1 : idx - 1; // swipe left → next tab
+        if (next < 0 || next >= tabs.length) return;
+        State.activeTab = tabs[next];
+        render();
+      }, { passive: true });
+    }());
+
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && audioCtx && audioCtx.state === 'running') { try { audioCtx.suspend(); } catch (e) {} }
     });
