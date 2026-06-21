@@ -3872,12 +3872,9 @@
     ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitTypedBtn" type="button">Submit ✓</button>${confidentActionBtn(confident)}</div>` : ''}`;
     let feedbackHtml = '';
     if (answered) {
-      const altsHtml = q.alts && q.alts.length
-        ? `<br><span>Also accepted: <em>${q.alts.map(a => escapeHtml(a)).join(' · ')}</em></span>`
-        : '';
       feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
         <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
-        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct answer: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
+        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct answer: <strong>${escapeHtml(q.ans)}</strong></span><br><br>` : ''}
         <em>${escapeHtml(q.exp)}</em>
       </div>
       <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
@@ -3952,12 +3949,9 @@
     ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitListenTypedBtn" type="button">Submit ✓</button>${confidentActionBtn(confident)}</div>` : ''}`;
     let feedbackHtml = '';
     if (answered) {
-      const altsHtml = q.alts && q.alts.length
-        ? `<br><span>Also accepted: <em>${q.alts.map(a => escapeHtml(a)).join(' · ')}</em></span>`
-        : '';
       feedbackHtml = `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
         <strong>${correct ? '✅ Correct' : '❌ Incorrect'}</strong><br>
-        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct: <strong>${escapeHtml(q.ans)}</strong></span>${altsHtml}<br><br>` : (altsHtml ? altsHtml + '<br><br>' : '')}
+        ${!correct ? `<span>Your answer: ${escapeHtml(State.answered)}</span><br><span>Correct: <strong>${escapeHtml(q.ans)}</strong></span><br><br>` : ''}
         <em>${escapeHtml(q.exp)}</em>
       </div>
       <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
