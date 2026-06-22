@@ -4908,10 +4908,10 @@ window.FR_LEARN_PATH = [
           {
             "q": "Porter is a regular -ER verb. Which form goes with the subject « il »?",
             "opts": [
-              "nous portons",
-              "vous portez",
-              "il porte",
-              "ils portent"
+              "portons",
+              "portez",
+              "porte",
+              "portent"
             ],
             "ans": 2,
             "exp": "il/elle porte (no ending change from stem). Regular -ER verbs: je porte, tu portes, il/elle porte, nous portons, vous portez, ils/elles portent."
