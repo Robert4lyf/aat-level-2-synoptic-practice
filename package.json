@@ -4,7 +4,8 @@
   "scripts": {
     "validate:french": "node scripts/validate-french-data.js",
     "validate:aat": "node scripts/validate-aat-data.js",
+    "check:french-quality": "node scripts/check-french-quality.js",
     "check:csp": "node scripts/check-csp-hashes.js",
-    "test": "node scripts/check-csp-hashes.js && node scripts/validate-aat-data.js && node scripts/validate-french-data.js"
+    "test": "node scripts/check-csp-hashes.js && node scripts/validate-aat-data.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
   }
 }
