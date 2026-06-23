@@ -2340,6 +2340,7 @@
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
     if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }
+    _frQLevelCache = null; // force rebuild from the new subject's ALL_QUESTIONS
     subj.activate();
     QUESTION_INDEX = null; // must clear after activate() so questionById() rebuilds from new subject
     Storage.data = defaultData();
