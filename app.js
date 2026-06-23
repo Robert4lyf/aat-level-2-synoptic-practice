@@ -716,6 +716,50 @@
     30 * 24 * 60 * 60 * 1000,   // box 5: 30 days
   ];
   const SR_MAX_BOX = 5;
+
+  /* ── Adaptive spaced repetition (SM-2-lite) ───────────────────────────────
+     Replaces the fixed Leitner ladder for question-level review. Each item
+     carries its own `ease` (difficulty) and `interval`, so easy items space out
+     quickly while stubborn ones stay frequent — tuned per item, not one schedule
+     for all. Grading is binary (recalled / not). Drives quizzes, Active Recall,
+     Smart Practice and the daily-review nudge. (The AAT glossary flashcards keep
+     their own simple box model.) */
+  const SR_DAY_MS = 24 * 60 * 60 * 1000;
+  const SR_EASE_DEFAULT = 2.5, SR_EASE_MIN = 1.3, SR_EASE_MAX = 2.7;
+  function srSchedule(rec, correct) {
+    let ease = (rec && typeof rec.ease === 'number') ? rec.ease : SR_EASE_DEFAULT;
+    let reps = (rec && typeof rec.reps === 'number') ? rec.reps : 0;
+    let interval = (rec && typeof rec.interval === 'number') ? rec.interval : 0;
+    if (correct) {
+      reps += 1;
+      if (reps === 1) interval = 1;
+      else if (reps === 2) interval = 3;
+      else interval = Math.max(1, Math.round(interval * ease));
+      ease = Math.min(SR_EASE_MAX, ease + 0.08);   // reward consistent recall
+    } else {
+      reps = 0;
+      interval = 1;                                 // relearn from tomorrow
+      ease = Math.max(SR_EASE_MIN, ease - 0.2);     // missed → comes back sooner for longer
+    }
+    interval = Math.min(interval, 365);
+    return {
+      ease: Math.round(ease * 100) / 100,
+      reps, interval,
+      dueAt: Date.now() + interval * SR_DAY_MS,
+      lastResult: !!correct,
+    };
+  }
+  // Convert a legacy Leitner box record {box,dueAt} to the adaptive model.
+  function srMigrate(r) {
+    const box = Math.max(1, Math.min(SR_MAX_BOX, (r && r.box) || 1));
+    const days = [1, 3, 7, 14, 30][box - 1] || 1;
+    return {
+      ease: SR_EASE_DEFAULT, reps: box, interval: days,
+      dueAt: (r && r.dueAt) || (Date.now() + days * SR_DAY_MS),
+      lastResult: r && r.lastResult,
+    };
+  }
+
   const defaultData = () => ({
     settings: { darkMode: null, soundOn: true, seenSplash: false, refOpen: false, flipMode: false },
     stats: {
@@ -750,6 +794,11 @@
         this.data.stats.streak = Object.assign({ current: 0, best: 0, lastCorrectAt: 0 }, this.data.stats.streak || {});
         this.data.flagged = (this.data.flagged && typeof this.data.flagged === 'object') ? this.data.flagged : {};
         this.data.sr = (this.data.sr && typeof this.data.sr === 'object') ? this.data.sr : {};
+        // Migrate legacy Leitner box records to the adaptive (SM-2-lite) model.
+        for (const id in this.data.sr) {
+          const r = this.data.sr[id];
+          if (r && typeof r.ease !== 'number') this.data.sr[id] = srMigrate(r);
+        }
         this.data.history = Array.isArray(this.data.history) ? this.data.history : [];
         this.data.learn = Object.assign(d.learn, (this.data.learn && typeof this.data.learn === 'object') ? this.data.learn : {});
         this.data.learn.lessons = this.data.learn.lessons || {};
@@ -787,13 +836,8 @@
       const st = this.data.stats.streak;
       if (correct) { st.current++; if (st.current > st.best) st.best = st.current; st.lastCorrectAt = Date.now(); }
       else { st.current = 0; }
-      // Spaced-repetition Leitner update
-      const sr = this.data.sr[question.id] || { box: 0, dueAt: 0 };
-      if (correct) sr.box = Math.min(SR_MAX_BOX, sr.box + 1);
-      else sr.box = 1;
-      sr.dueAt = Date.now() + SR_INTERVALS_MS[sr.box - 1];
-      sr.lastResult = !!correct;
-      this.data.sr[question.id] = sr;
+      // Adaptive spaced-repetition update
+      this.data.sr[question.id] = srSchedule(this.data.sr[question.id], correct);
       // Mistake notebook: log wrong answers; redeem on a later correct answer
       if (!correct) {
         const m = this.data.mistakes[question.id] || { count: 0 };
@@ -874,7 +918,7 @@
       const now = Date.now();
       return Object.keys(this.data.sr).filter(id => {
         const r = this.data.sr[id];
-        return r && r.box >= 1 && r.dueAt <= now;
+        return r && r.dueAt && r.dueAt <= now;
       });
     },
     recordResult(result) {
@@ -1717,7 +1761,7 @@
       const s = acc[q.skill];
       if (s && s.attempts >= 3 && (s.correct / s.attempts) < 0.7) w *= 3;       // weak skill
       const sr = Storage.data.sr[q.id];
-      if (sr && sr.box >= 1 && sr.dueAt <= now) w *= 2;                          // due for review
+      if (sr && sr.dueAt && sr.dueAt <= now) w *= 2;                            // due for review
       const qs = Storage.data.stats.questions[q.id];
       if (!qs) w *= 1.5;                                                         // never seen
       else if (qs.attempts > 0 && qs.correct === 0) w *= 2;                      // never got right
@@ -2003,7 +2047,7 @@
       (!q.lesson || isLessonDone(q.lesson)));
     const sr = Storage.data.sr;
     const stat = Storage.data.stats.questions;
-    const due  = unlocked.filter(q => { const r = sr[q.id]; return r && r.box >= 1 && r.dueAt <= now; });
+    const due  = unlocked.filter(q => { const r = sr[q.id]; return r && r.dueAt && r.dueAt <= now; });
     const weak = unlocked.filter(q => { const s = stat[q.id]; return s && s.attempts > 0 && s.correct / s.attempts < 0.7; });
     const fresh = unlocked.filter(q => !stat[q.id]);
     const seenById = new Set();
@@ -2031,12 +2075,8 @@
     const R = State.recall; if (!R || !R.flipped || R.idx >= R.cards.length) return;
     const q = questionById(R.cards[R.idx]);
     if (q) {
-      // Feed spaced repetition (Leitner) — same schedule as the rest of the app.
-      const r = Storage.data.sr[q.id] || { box: 0, dueAt: 0 };
-      r.box = ok ? Math.min(SR_MAX_BOX, r.box + 1) : 1;
-      r.dueAt = Date.now() + SR_INTERVALS_MS[r.box - 1];
-      r.lastResult = !!ok;
-      Storage.data.sr[q.id] = r;
+      // Feed the same adaptive spaced-repetition schedule as the rest of the app.
+      Storage.data.sr[q.id] = srSchedule(Storage.data.sr[q.id], ok);
       Storage.day().answered++;   // counts toward the daily streak
       Storage.addXp(1);
     }
