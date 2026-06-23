@@ -743,6 +743,10 @@ header .sub {
 }
 
 /* ── RESUME BANNER ── */
+/* Active Recall (French) — reuses .flash-* card styles */
+.recall-answer { color: var(--accent); }
+.flash-back .recall-answer { font-size: 1.3rem; }
+
 /* Shadowing aid: slow replay + repeat-aloud prompt on listening questions */
 .shadow-row {
   display: flex;
