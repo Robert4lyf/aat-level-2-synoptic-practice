@@ -9,8 +9,12 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="description" content="Practice for the AAT Level 2 Synoptic Assessment (AQ2022). 450+ audited questions — multiple choice, numeric, matching, table-completion and scenario — with instant feedback, timed mock exams, spaced repetition, a reference panel, an AAT-style calculator, a T-account playground, and persistent progress tracking.">
   <meta name="robots" content="index, follow">
-  <!-- Security: belt-and-suspenders alongside server-side headers (see _headers / vercel.json) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self'; connect-src 'self'; worker-src 'self';">
+  <!-- Security: belt-and-suspenders alongside server-side headers (see _headers / vercel.json).
+       The two sha256 hashes whitelist the inline theme-bootstrap and service-worker
+       registration scripts below WITHOUT relaxing the policy to 'unsafe-inline'.
+       If either inline script's contents change, update its hash in all three places
+       (this meta tag, _headers, vercel.json) — the browser console prints the expected hash. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8PRl4GcVarXiKtZEOPI2t+MXQXNyZN9w9jzfkY4tUGw=' 'sha256-bWdLkvh2q041d4g8zaF7NPzpJpmyJqIjvBMfvQZ5woI='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self'; connect-src 'self'; worker-src 'self';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>AAT Level 2 Synoptic Practice</title>
