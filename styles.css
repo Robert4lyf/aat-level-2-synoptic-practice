@@ -743,6 +743,24 @@ header .sub {
 }
 
 /* ── RESUME BANNER ── */
+/* Story read-along (French Histoire lessons) */
+.story-audio-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.story-audio-hint { font-size: .78rem; color: var(--subtext); }
+.lesson-visual.story-readable p {
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background .12s ease;
+}
+.lesson-visual.story-readable p:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
 /* Active Recall (French) — reuses .flash-* card styles */
 .recall-answer { color: var(--accent); }
 .flash-back .recall-answer { font-size: 1.3rem; }
