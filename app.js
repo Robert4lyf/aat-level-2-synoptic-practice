@@ -1518,6 +1518,7 @@
     hintLevel: 0, hintElim: null,           // progressive hints (practice mode)
     lesson: null,                           // lesson player state
     flash: null,                            // flashcard session state
+    recall: null,                           // active-recall session state (French)
     revisionUnit: null,                     // unit revision notes screen
     combo: 0,                               // consecutive correct answers in practice
     delfExam: null,                         // DELF mock exam state (null when not active)
@@ -1924,7 +1925,7 @@
   function goLearn() {
     stopMockTimer();
     State.screen = 'home'; State.activeTab = 'learn'; State.confirmModal = null;
-    State.lesson = null; State.flash = null; State.revisionUnit = null;
+    State.lesson = null; State.flash = null; State.recall = null; State.revisionUnit = null;
     render();
   }
 
@@ -1950,6 +1951,84 @@
     F.idx++; F.flipped = false;
     Storage.save();
     if (F.idx >= F.terms.length) checkBadges();
+    render();
+  }
+
+  /* ── Active Recall (French) ───────────────────────────────────────────────
+     Retrieval practice — the strongest study technique — built from the
+     learner's own questions. The prompt is shown WITHOUT options; you recall
+     the answer from memory, reveal it, then self-rate. Self-rating feeds the
+     same spaced-repetition (Leitner) schedule used by Smart Practice and the
+     daily-review nudge, but does NOT touch accuracy stats (it's review, not a
+     graded attempt). No new content and no answer-grading guesswork. */
+  const RECALLABLE_TYPES = new Set(['mcq', 'typed', 'listen', 'listen-typed', 'gapfill']);
+  function recallCardContent(q) {
+    const t = q.type || 'mcq';
+    let front = q.q || '', back = '';
+    if (t === 'typed' || t === 'listen-typed') { front = q.q || 'Recall the French'; back = q.ans || ''; }
+    else if (t === 'gapfill') {
+      const tpl = (q.template || q.q || '').replace(/\{(\d+)\}/g, '____');
+      front = tpl;
+      back = (q.gaps || []).map(g => (g.options || [])[g.answer]).filter(Boolean).join(' · ') || (q.q || '');
+    } else { front = q.q || ''; back = Array.isArray(q.opts) && q.ans != null ? q.opts[q.ans] : ''; }
+    // French text to speak: explicit tts/audio, else the French side of the card.
+    let audio = q.tts || q.audio || null;
+    if (!audio) {
+      if (isFrToEnMcq(q)) audio = extractFrenchTerm(q);          // French is in the prompt
+      else if (t === 'typed' || t === 'listen-typed') audio = q.ans; // French is the answer
+    }
+    return { front, back, exp: q.exp || '', audio };
+  }
+  function startRecall() {
+    const now = Date.now();
+    const unlocked = (window.ALL_QUESTIONS || []).filter(q =>
+      RECALLABLE_TYPES.has(q.type || 'mcq') &&
+      !Storage.isConfident(q.id) &&
+      frLevelUnlocked(frQuestionLevel(q.id)) &&
+      (!q.lesson || isLessonDone(q.lesson)));
+    const sr = Storage.data.sr;
+    const stat = Storage.data.stats.questions;
+    const due  = unlocked.filter(q => { const r = sr[q.id]; return r && r.box >= 1 && r.dueAt <= now; });
+    const weak = unlocked.filter(q => { const s = stat[q.id]; return s && s.attempts > 0 && s.correct / s.attempts < 0.7; });
+    const fresh = unlocked.filter(q => !stat[q.id]);
+    const seenById = new Set();
+    const deck = [];
+    for (const q of [...shuffle(due), ...shuffle(weak), ...shuffle(fresh)]) {
+      if (seenById.has(q.id)) continue;
+      seenById.add(q.id); deck.push(q.id);
+      if (deck.length >= 15) break;
+    }
+    if (!deck.length) { showToast('Nothing to recall yet — complete a lesson or two first.', 'info'); return; }
+    playClick();
+    State.screen = 'recall';
+    State.recall = { cards: deck, idx: 0, flipped: false, got: 0 };
+    render();
+  }
+  function recallFlip() {
+    const R = State.recall; if (!R || R.flipped || R.idx >= R.cards.length) return;
+    R.flipped = true; playClick();
+    const q = questionById(R.cards[R.idx]);
+    const c = q && recallCardContent(q);
+    if (c && c.audio) speakFrench(c.audio);
+    render();
+  }
+  function recallGrade(ok) {
+    const R = State.recall; if (!R || !R.flipped || R.idx >= R.cards.length) return;
+    const q = questionById(R.cards[R.idx]);
+    if (q) {
+      // Feed spaced repetition (Leitner) — same schedule as the rest of the app.
+      const r = Storage.data.sr[q.id] || { box: 0, dueAt: 0 };
+      r.box = ok ? Math.min(SR_MAX_BOX, r.box + 1) : 1;
+      r.dueAt = Date.now() + SR_INTERVALS_MS[r.box - 1];
+      r.lastResult = !!ok;
+      Storage.data.sr[q.id] = r;
+      Storage.day().answered++;   // counts toward the daily streak
+      Storage.addXp(1);
+    }
+    if (ok) { R.got++; playCorrect(); } else { playWrong(); }
+    R.idx++; R.flipped = false;
+    Storage.save();
+    if (R.idx >= R.cards.length) checkBadges();
     render();
   }
 
@@ -2392,7 +2471,7 @@
     // Reset all transient state
     State.screen = 'home';
     State.activeTab = subj.tabs[0];
-    State.lesson = null; State.flash = null; State.questions = []; State.revisionUnit = null;
+    State.lesson = null; State.flash = null; State.recall = null; State.questions = []; State.revisionUnit = null;
     State.confirmModal = null;
     render();
   }
@@ -2454,6 +2533,7 @@
     else if (State.screen === 'score')  html = renderScore();
     else if (State.screen === 'lesson')   html = renderLesson();
     else if (State.screen === 'flash')    html = renderFlash();
+    else if (State.screen === 'recall')   html = renderRecall();
     else if (State.screen === 'revision') html = renderRevision();
     else if (State.screen === 'delf')     html = renderDelf();
     if (State.confirmModal) html += renderModal(State.confirmModal);
@@ -2836,6 +2916,7 @@
     const isAAT = _activeSubjectId === 'aat';
     const modeDefs = [
       { id: 'smartPracticeBtn', icon: '🧠', title: 'Smart Practice', desc: 'Adapts to your skill gaps', cls: '' },
+      ...(_activeSubjectId === 'french' ? [{ id: 'recallBtn', icon: '🎴', title: 'Active Recall', desc: 'Retrieve from memory · flashcards', cls: 'mode-recall' }] : []),
       { topic: 'all', icon: '🎯', title: 'Mixed Practice', desc: `${PRACTICE_LENGTH} random questions`, cls: '' },
       ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Mock Exam', desc: `${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min timed`, cls: 'mode-mock' }] : []),
       ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: 'Glossary term review', cls: '' }] : []),
@@ -4686,6 +4767,61 @@
     </div>`;
   }
 
+  function renderRecall() {
+    const R = State.recall;
+    if (!R) { goHome(); return ''; }
+    const done = R.idx >= R.cards.length;
+    if (done) {
+      const pct = R.cards.length ? Math.round(R.got / R.cards.length * 100) : 0;
+      const stars = pct >= 90 ? 3 : pct >= 60 ? 2 : 1;
+      const starRow = [1,2,3].map(s => `<span class="lesson-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
+      return `<div class="container">
+        <div class="flash-done fade-in">
+          <div class="flash-done-icon">🧠</div>
+          <h2>Recall session complete!</h2>
+          <div class="lesson-done-stars" style="justify-content:center;margin-bottom:8px">${starRow}</div>
+          <p>You recalled <strong>${R.got}</strong> of ${R.cards.length} card${R.cards.length === 1 ? '' : 's'} (${pct}%).</p>
+          <p style="font-size:.85rem;color:var(--subtext)">Cards you missed come back sooner. Recalling from memory — not just recognising — is what makes it stick.</p>
+          <button class="btn-primary" style="margin-top:20px" id="recallAgainBtn" type="button">🔁 Another round</button>
+          <button class="btn-secondary" style="margin-top:10px" id="recallExitBtn2" type="button">🏠 Home</button>
+        </div>
+      </div>`;
+    }
+    const q = questionById(R.cards[R.idx]);
+    if (!q) { R.idx++; R.flipped = false; return renderRecall(); }
+    const c = recallCardContent(q);
+    const topicObj = (window.FR_TOPICS || window.TOPICS || []).find(t => t.id === q.topic);
+    const topicTag = topicObj ? `<span class="flash-topic-tag">${topicObj.icon} ${escapeHtml(topicObj.short)}</span>` : '';
+    const progressPct = (R.idx / R.cards.length * 100).toFixed(0);
+    const ttsBtn = (c.audio && window.speechSynthesis)
+      ? `<button class="tts-replay-btn" id="recallTtsBtn" type="button" aria-label="Hear it">🔊 Hear it</button>` : '';
+    return `<div class="container">
+      <button class="back-btn" id="recallExitBtn" type="button">← Back home</button>
+      <div class="flash-player">
+        <div class="flash-header">
+          <div class="flash-progress-wrap">
+            <span class="flash-progress-txt">${R.idx + 1} / ${R.cards.length}</span>
+            <div class="flash-progress-bar-bg"><div class="flash-progress-bar-fill" style="width:${progressPct}%"></div></div>
+          </div>
+          <span class="flash-got">✓ ${R.got} recalled</span>
+        </div>
+        <div class="flash-card ${R.flipped ? 'flipped' : ''}" id="recallFlipBtn">
+          ${!R.flipped
+            ? `<div class="flash-front">${topicTag}<span class="flash-term">${escapeHtml(c.front)}</span><p class="flash-hint">Recall the answer, then tap to reveal</p></div>`
+            : `<div class="flash-back">${topicTag}<span class="flash-term recall-answer">${escapeHtml(c.back)}</span>${c.exp ? `<p class="flash-def">${escapeHtml(c.exp)}</p>` : ''}${ttsBtn}</div>`
+          }
+        </div>
+        ${!R.flipped
+          ? `<button class="btn-secondary flash-flip-btn-btn" id="recallFlipBtn2" type="button">Reveal answer ↩</button>`
+          : `<div class="flash-grade-btns">
+              <button class="flash-btn-no" id="recallNoBtn" type="button">😕 Didn't recall</button>
+              <button class="flash-btn-yes" id="recallYesBtn" type="button">✅ Recalled it</button>
+            </div>`
+        }
+      </div>
+    </div>`;
+  }
+
   /* ── REVISION NOTES SCREEN ── */
   function renderRevision() {
     const rev = UNIT_REVISION.find(r => r.unit === State.revisionUnit);
@@ -5742,6 +5878,23 @@
     bind('flashFlipBtn2', 'click', flashFlip);
     bind('flashYesBtn', 'click', () => flashGrade(true));
     bind('flashNoBtn', 'click', () => flashGrade(false));
+    // Active Recall (French)
+    bind('recallBtn', 'click', startRecall);
+    bind('recallExitBtn', 'click', goHome);
+    bind('recallExitBtn2', 'click', goHome);
+    bind('recallAgainBtn', 'click', startRecall);
+    bind('recallFlipBtn', 'click', recallFlip);
+    bind('recallFlipBtn2', 'click', recallFlip);
+    bind('recallYesBtn', 'click', () => recallGrade(true));
+    bind('recallNoBtn', 'click', () => recallGrade(false));
+    if (State.screen === 'recall' && State.recall && State.recall.flipped) {
+      const rt = document.getElementById('recallTtsBtn');
+      if (rt) {
+        const rq = questionById(State.recall.cards[State.recall.idx]);
+        const rc = rq && recallCardContent(rq);
+        if (rc && rc.audio) rt.addEventListener('click', () => speakFrench(rc.audio));
+      }
+    }
     // T-account guided exercises
     document.querySelectorAll('[data-ta-ex]').forEach(el => el.addEventListener('click', () => startTaExercise(el.dataset.taEx)));
     bind('taExitBtn', 'click', exitTaExercise);
