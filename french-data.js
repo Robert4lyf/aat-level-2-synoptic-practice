@@ -4071,6 +4071,146 @@ window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l68",
+        "title": "Les jours, les mois et les dates",
+        "icon": "📅",
+        "cards": [
+          {
+            "h": "Les jours de la semaine",
+            "p": [
+              "The seven days are: **lundi** (Monday), **mardi** (Tuesday), **mercredi** (Wednesday), **jeudi** (Thursday), **vendredi** (Friday), **samedi** (Saturday), **dimanche** (Sunday).",
+              "Key rule: days of the week are **not capitalised** in French.",
+              "**lundi** (no article) = this coming Monday. **le lundi** = on Mondays / every Monday."
+            ],
+            "split": {
+              "left": {
+                "title": "Jours de semaine (weekdays)",
+                "items": [
+                  "lundi — Monday",
+                  "mardi — Tuesday",
+                  "mercredi — Wednesday",
+                  "jeudi — Thursday",
+                  "vendredi — Friday"
+                ]
+              },
+              "right": {
+                "title": "Week-end",
+                "items": [
+                  "samedi — Saturday",
+                  "dimanche — Sunday",
+                  "le week-end = the weekend",
+                  "en semaine = on weekdays"
+                ]
+              }
+            }
+          },
+          {
+            "h": "Les mois de l'année",
+            "p": [
+              "The twelve months: **janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre**.",
+              "Months are also **not capitalised** in French.",
+              "To say 'in a month': **en janvier**, **en mars**, **en août** — use **en** before all months."
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "Watch out: **juillet** (July) and **juin** (June) look similar. Also **août** (August) — the t is silent in casual speech."
+            }
+          },
+          {
+            "h": "Les dates",
+            "p": [
+              "Dates follow the pattern: **le + cardinal number + month**. The first is always **premier**: le premier janvier.",
+              "All other dates use cardinal numbers: le deux mars, le quinze juillet, le trente-et-un décembre.",
+              "To ask the date: **Quelle est la date aujourd'hui ?** or **Quel jour sommes-nous ?**"
+            ],
+            "example": {
+              "title": "Date expressions",
+              "rows": [
+                [
+                  "French",
+                  "English"
+                ],
+                [
+                  "le premier mai",
+                  "1st May"
+                ],
+                [
+                  "le quatorze juillet",
+                  "14th July (Bastille Day)"
+                ],
+                [
+                  "le vingt-cinq décembre",
+                  "25th December"
+                ],
+                [
+                  "Mon anniversaire est le trois mars.",
+                  "My birthday is on 3rd March."
+                ]
+              ]
+            }
+          },
+          {
+            "h": "Les saisons et les mois",
+            "p": [
+              "**le printemps** (spring) — mars, avril, mai. **l'été** (summer) — juin, juillet, août.",
+              "**l'automne** (autumn) — septembre, octobre, novembre. **l'hiver** (winter) — décembre, janvier, février.",
+              "Prepositions: **au printemps** (in spring), **en été / en automne / en hiver** (in summer/autumn/winter)."
+            ]
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "How do you say 'every Monday' (recurring) in French?",
+            "opts": [
+              "mardi",
+              "le lundi",
+              "lundi soir",
+              "les lundis"
+            ],
+            "ans": 1,
+            "exp": "le lundi = on Mondays / every Monday. The definite article le/la + day expresses recurrence."
+          },
+          {
+            "type": "mcq",
+            "q": "How do you write 'the 1st of March' in French?",
+            "opts": [
+              "le un mars",
+              "le premier mars",
+              "le première mars",
+              "un mars"
+            ],
+            "ans": 1,
+            "exp": "le premier mars — the ordinal premier is used only for the first of the month. All other dates use cardinal numbers: le deux, le trois…"
+          },
+          {
+            "type": "mcq",
+            "q": "Which month comes after juillet?",
+            "opts": [
+              "juin",
+              "septembre",
+              "août",
+              "octobre"
+            ],
+            "ans": 2,
+            "exp": "After juillet (July) comes août (August), then septembre, octobre, novembre, décembre."
+          },
+          {
+            "type": "mcq",
+            "q": "How do you say 'in autumn' in French?",
+            "opts": [
+              "au automne",
+              "en l'automne",
+              "en automne",
+              "dans automne"
+            ],
+            "ans": 2,
+            "exp": "en automne = in autumn. en été = in summer. en hiver = in winter. au printemps = in spring (au because printemps is masculine and starts with a consonant)."
+          }
+        ],
+        "tag": "core"
+      },
+      {
         "id": "fr-l11",
         "title": "La famille et les adjectifs possessifs",
         "icon": "👨‍👩‍👧",
@@ -5721,6 +5861,139 @@ window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l50",
+        "title": "Les activités saisonnières et les fêtes",
+        "icon": "🎉",
+        "cards": [
+          {
+            "h": "Activités selon les saisons",
+            "p": [
+              "**En été**: aller à la plage, nager, faire un pique-nique, bronzer (to sunbathe).",
+              "**En automne**: ramasser des champignons (to pick mushrooms), rentrer à l'école (back to school).",
+              "**En hiver**: faire du ski, se promener, rester au chaud (to stay warm indoors).",
+              "**Au printemps**: jardiner (to garden), se promener, admirer les fleurs."
+            ],
+            "split": {
+              "left": {
+                "title": "Summer & Spring",
+                "items": [
+                  "aller à la plage — go to the beach",
+                  "nager — to swim",
+                  "faire un pique-nique — have a picnic",
+                  "bronzer — to sunbathe",
+                  "jardiner — to garden",
+                  "admirer les fleurs — admire the flowers"
+                ]
+              },
+              "right": {
+                "title": "Autumn & Winter",
+                "items": [
+                  "ramasser des champignons — pick mushrooms",
+                  "rentrer à l'école — go back to school",
+                  "faire du ski — go skiing",
+                  "se promener — go for a walk",
+                  "rester au chaud — stay warm"
+                ]
+              }
+            }
+          },
+          {
+            "h": "Les fêtes françaises",
+            "p": [
+              "**Noël** (25 décembre) — Christmas. Families exchange gifts; the réveillon is the Christmas Eve dinner.",
+              "**Le jour de l'An** (1er janvier) — New Year's Day.",
+              "**Pâques** — Easter. Children hunt for chocolate eggs hidden in gardens.",
+              "**La Fête Nationale — le 14 juillet** — Bastille Day. Celebrated with fireworks (feux d'artifice), parades, and dances (bals).",
+              "**La Toussaint** (1er novembre) — All Saints' Day. A national holiday; schools close for two weeks — les vacances de la Toussaint."
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "Le 14 juillet is France's national day — it marks the storming of the Bastille in 1789. Festivities include a military parade on the Champs-Élysées and fireworks at the Eiffel Tower."
+            }
+          },
+          {
+            "h": "La météo — weather phrases",
+            "split": {
+              "left": {
+                "title": "Il fait + adjective",
+                "items": [
+                  "Il fait beau — it's nice weather",
+                  "Il fait mauvais — it's bad weather",
+                  "Il fait chaud — it's hot",
+                  "Il fait froid — it's cold",
+                  "Il fait doux — it's mild"
+                ]
+              },
+              "right": {
+                "title": "Autres expressions",
+                "items": [
+                  "Il pleut — it's raining",
+                  "Il neige — it's snowing",
+                  "Il y a du vent — it's windy",
+                  "Il y a du soleil — it's sunny",
+                  "Il y a du brouillard — it's foggy"
+                ]
+              }
+            },
+            "p": [
+              "**Quel temps fait-il ?** (What's the weather like?) · **Il fait X degrés.** (It's X degrees.)",
+              "**Aujourd'hui** il fait beau, **mais demain** il va pleuvoir. (Today it's nice, but tomorrow it's going to rain.)"
+            ]
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "Which activity is typical 'en été' (in summer)?",
+            "opts": [
+              "faire du ski",
+              "ramasser des champignons",
+              "aller à la plage",
+              "jardiner"
+            ],
+            "ans": 2,
+            "exp": "aller à la plage (going to the beach) is a typical summer activity. faire du ski = winter. ramasser des champignons = autumn. jardiner = spring."
+          },
+          {
+            "type": "mcq",
+            "q": "What do French people typically do on le 14 juillet?",
+            "opts": [
+              "Hunt for Easter eggs",
+              "Watch fireworks and attend parades",
+              "Exchange Christmas gifts",
+              "Go mushroom picking"
+            ],
+            "ans": 1,
+            "exp": "Le 14 juillet (Bastille Day) is celebrated with fireworks (feux d'artifice), military parades, and street dances (bals). It commemorates the storming of the Bastille in 1789."
+          },
+          {
+            "type": "mcq",
+            "q": "When is 'la Toussaint'?",
+            "opts": [
+              "25 December",
+              "14 July",
+              "1 November",
+              "1 January"
+            ],
+            "ans": 2,
+            "exp": "La Toussaint = All Saints' Day, 1 November. It is a national holiday in France, and schools close for two weeks around this time (les vacances de la Toussaint)."
+          },
+          {
+            "type": "mcq",
+            "q": "'Bronzer' means:",
+            "opts": [
+              "to ski",
+              "to sunbathe",
+              "to swim",
+              "to walk"
+            ],
+            "ans": 1,
+            "exp": "bronzer = to sunbathe / to get a tan. aller à la plage = go to the beach. nager = to swim. se promener = to go for a walk."
+          }
+        ],
+        "tag": "core"
+      },
+      {
         "id": "fr-l41",
         "title": "Le corps et la santé",
         "icon": "🏥",
@@ -6061,146 +6334,6 @@ window.FR_LEARN_PATH = [
             "exp": "La cigale comprend : il faut travailler — you must work. La Fontaine's fable teaches that preparation matters."
           }
         ]
-      },
-      {
-        "id": "fr-l68",
-        "title": "Les jours, les mois et les dates",
-        "icon": "📅",
-        "cards": [
-          {
-            "h": "Les jours de la semaine",
-            "p": [
-              "The seven days are: **lundi** (Monday), **mardi** (Tuesday), **mercredi** (Wednesday), **jeudi** (Thursday), **vendredi** (Friday), **samedi** (Saturday), **dimanche** (Sunday).",
-              "Key rule: days of the week are **not capitalised** in French.",
-              "**lundi** (no article) = this coming Monday. **le lundi** = on Mondays / every Monday."
-            ],
-            "split": {
-              "left": {
-                "title": "Jours de semaine (weekdays)",
-                "items": [
-                  "lundi — Monday",
-                  "mardi — Tuesday",
-                  "mercredi — Wednesday",
-                  "jeudi — Thursday",
-                  "vendredi — Friday"
-                ]
-              },
-              "right": {
-                "title": "Week-end",
-                "items": [
-                  "samedi — Saturday",
-                  "dimanche — Sunday",
-                  "le week-end = the weekend",
-                  "en semaine = on weekdays"
-                ]
-              }
-            }
-          },
-          {
-            "h": "Les mois de l'année",
-            "p": [
-              "The twelve months: **janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre**.",
-              "Months are also **not capitalised** in French.",
-              "To say 'in a month': **en janvier**, **en mars**, **en août** — use **en** before all months."
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "Watch out: **juillet** (July) and **juin** (June) look similar. Also **août** (August) — the t is silent in casual speech."
-            }
-          },
-          {
-            "h": "Les dates",
-            "p": [
-              "Dates follow the pattern: **le + cardinal number + month**. The first is always **premier**: le premier janvier.",
-              "All other dates use cardinal numbers: le deux mars, le quinze juillet, le trente-et-un décembre.",
-              "To ask the date: **Quelle est la date aujourd'hui ?** or **Quel jour sommes-nous ?**"
-            ],
-            "example": {
-              "title": "Date expressions",
-              "rows": [
-                [
-                  "French",
-                  "English"
-                ],
-                [
-                  "le premier mai",
-                  "1st May"
-                ],
-                [
-                  "le quatorze juillet",
-                  "14th July (Bastille Day)"
-                ],
-                [
-                  "le vingt-cinq décembre",
-                  "25th December"
-                ],
-                [
-                  "Mon anniversaire est le trois mars.",
-                  "My birthday is on 3rd March."
-                ]
-              ]
-            }
-          },
-          {
-            "h": "Les saisons et les mois",
-            "p": [
-              "**le printemps** (spring) — mars, avril, mai. **l'été** (summer) — juin, juillet, août.",
-              "**l'automne** (autumn) — septembre, octobre, novembre. **l'hiver** (winter) — décembre, janvier, février.",
-              "Prepositions: **au printemps** (in spring), **en été / en automne / en hiver** (in summer/autumn/winter)."
-            ]
-          }
-        ],
-        "check": [
-          {
-            "type": "mcq",
-            "q": "How do you say 'every Monday' (recurring) in French?",
-            "opts": [
-              "mardi",
-              "le lundi",
-              "lundi soir",
-              "les lundis"
-            ],
-            "ans": 1,
-            "exp": "le lundi = on Mondays / every Monday. The definite article le/la + day expresses recurrence."
-          },
-          {
-            "type": "mcq",
-            "q": "How do you write 'the 1st of March' in French?",
-            "opts": [
-              "le un mars",
-              "le premier mars",
-              "le première mars",
-              "un mars"
-            ],
-            "ans": 1,
-            "exp": "le premier mars — the ordinal premier is used only for the first of the month. All other dates use cardinal numbers: le deux, le trois…"
-          },
-          {
-            "type": "mcq",
-            "q": "Which month comes after juillet?",
-            "opts": [
-              "juin",
-              "septembre",
-              "août",
-              "octobre"
-            ],
-            "ans": 2,
-            "exp": "After juillet (July) comes août (August), then septembre, octobre, novembre, décembre."
-          },
-          {
-            "type": "mcq",
-            "q": "How do you say 'in autumn' in French?",
-            "opts": [
-              "au automne",
-              "en l'automne",
-              "en automne",
-              "dans automne"
-            ],
-            "ans": 2,
-            "exp": "en automne = in autumn. en été = in summer. en hiver = in winter. au printemps = in spring (au because printemps is masculine and starts with a consonant)."
-          }
-        ],
-        "tag": "core"
       },
       {
         "id": "fr-l69",
@@ -6910,133 +7043,6 @@ window.FR_LEARN_PATH = [
         "tag": "advanced"
       },
       {
-        "id": "fr-l46",
-        "title": "La famille élargie et les pronoms possessifs",
-        "icon": "👨‍👩‍👧",
-        "cards": [
-          {
-            "h": "La famille recomposée",
-            "p": [
-              "Step-family vocabulary: **beau-père** (step-father / father-in-law), **belle-mère** (step-mother / mother-in-law), **demi-frère** (half-brother), **demi-sœur** (half-sister), **beau-fils** (son-in-law / step-son), **belle-fille** (daughter-in-law / step-daughter).",
-              "Note: the **beau-/belle-** prefix signals an in-law or step relation. Context usually clarifies which meaning is intended."
-            ],
-            "split": {
-              "left": {
-                "title": "Step-family",
-                "items": [
-                  "beau-père — step-father / father-in-law",
-                  "belle-mère — step-mother / mother-in-law",
-                  "demi-frère — half-brother",
-                  "demi-sœur — half-sister"
-                ]
-              },
-              "right": {
-                "title": "In-laws",
-                "items": [
-                  "beau-fils — son-in-law / step-son",
-                  "belle-fille — daughter-in-law / step-daughter",
-                  "les beaux-parents — in-laws / step-parents",
-                  "la belle-famille — in-laws (family)"
-                ]
-              }
-            }
-          },
-          {
-            "h": "Les pronoms possessifs",
-            "p": [
-              "Possessive PRONOUNS replace a noun entirely (unlike possessive adjectives which precede a noun). They agree in gender and number with the noun they replace.",
-              "**C'est ta voiture ?** — **Non, c'est la sienne.** (Is that your car? — No, it's his/hers.)"
-            ],
-            "split": {
-              "left": {
-                "title": "Masculine",
-                "items": [
-                  "le mien (mine)",
-                  "le tien (yours)",
-                  "le sien (his/hers)",
-                  "le nôtre (ours)",
-                  "le vôtre (yours pl.)",
-                  "le leur (theirs)"
-                ]
-              },
-              "right": {
-                "title": "Feminine",
-                "items": [
-                  "la mienne (mine)",
-                  "la tienne (yours)",
-                  "la sienne (his/hers)",
-                  "la nôtre (ours)",
-                  "la vôtre (yours pl.)",
-                  "la leur (theirs)"
-                ]
-              }
-            }
-          },
-          {
-            "h": "Emploi des pronoms possessifs",
-            "p": [
-              "Use possessive pronouns to avoid repeating a noun: **Mon fils et le sien sont amis.** (My son and his/her son are friends.)",
-              "They take the definite article (le/la/les) as part of their form — this contracts with à and de: **Je pense au mien.** (I'm thinking of mine.) **C'est différent du nôtre.** (It's different from ours.)"
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "Contrast: **ton livre** (possessive adjective — your book) vs **le tien** (possessive pronoun — yours). The pronoun stands ALONE — no noun follows it."
-            }
-          }
-        ],
-        "check": [
-          {
-            "type": "mcq",
-            "q": "What does 'beau-père' mean?",
-            "opts": [
-              "beautiful father",
-              "step-father / father-in-law",
-              "half-brother",
-              "grandfather"
-            ],
-            "ans": 1,
-            "exp": "beau-père = step-father OR father-in-law. Similarly belle-mère = step-mother / mother-in-law. Context determines which meaning is intended."
-          },
-          {
-            "type": "mcq",
-            "q": "'C'est ta voiture ?' — 'Non, c'est ___.' (his/hers — feminine noun)",
-            "opts": [
-              "le sien",
-              "la sienne",
-              "la tienne",
-              "le leur"
-            ],
-            "ans": 1,
-            "exp": "la sienne = his/hers (feminine singular, agreeing with la voiture). Possessive pronouns agree with the noun they replace: voiture is feminine → la sienne."
-          },
-          {
-            "type": "mcq",
-            "q": "What is the masculine plural possessive pronoun for 'ours'?",
-            "opts": [
-              "les nôtres",
-              "le nôtre",
-              "les leurs",
-              "les vôtres"
-            ],
-            "ans": 0,
-            "exp": "les nôtres = ours (masculine/feminine plural). le nôtre = ours (m.sg), la nôtre (f.sg), les nôtres (plural)."
-          },
-          {
-            "type": "mcq",
-            "q": "'Mon livre et ___ de Paul sont perdus.' (his — replace 'son livre')",
-            "opts": [
-              "le sien",
-              "la sienne",
-              "le tien",
-              "le leur"
-            ],
-            "ans": 0,
-            "exp": "le sien = his (masculine, replacing 'son livre' — livre is masculine). Possessive pronouns agree with the noun replaced, not the owner."
-          }
-        ],
-        "tag": "core"
-      },
-      {
         "id": "fr-l32",
         "title": "Histoire : Au café",
         "icon": "📖",
@@ -7267,139 +7273,6 @@ window.FR_LEARN_PATH = [
             ],
             "ans": 1,
             "exp": "Ça fait trois euros cinquante = That's three euros fifty (€3.50). C'est combien? = How much is it? Ça fait… / C'est… are used to give a price."
-          }
-        ],
-        "tag": "core"
-      },
-      {
-        "id": "fr-l50",
-        "title": "Les activités saisonnières et les fêtes",
-        "icon": "🎉",
-        "cards": [
-          {
-            "h": "Activités selon les saisons",
-            "p": [
-              "**En été**: aller à la plage, nager, faire un pique-nique, bronzer (to sunbathe).",
-              "**En automne**: ramasser des champignons (to pick mushrooms), rentrer à l'école (back to school).",
-              "**En hiver**: faire du ski, se promener, rester au chaud (to stay warm indoors).",
-              "**Au printemps**: jardiner (to garden), se promener, admirer les fleurs."
-            ],
-            "split": {
-              "left": {
-                "title": "Summer & Spring",
-                "items": [
-                  "aller à la plage — go to the beach",
-                  "nager — to swim",
-                  "faire un pique-nique — have a picnic",
-                  "bronzer — to sunbathe",
-                  "jardiner — to garden",
-                  "admirer les fleurs — admire the flowers"
-                ]
-              },
-              "right": {
-                "title": "Autumn & Winter",
-                "items": [
-                  "ramasser des champignons — pick mushrooms",
-                  "rentrer à l'école — go back to school",
-                  "faire du ski — go skiing",
-                  "se promener — go for a walk",
-                  "rester au chaud — stay warm"
-                ]
-              }
-            }
-          },
-          {
-            "h": "Les fêtes françaises",
-            "p": [
-              "**Noël** (25 décembre) — Christmas. Families exchange gifts; the réveillon is the Christmas Eve dinner.",
-              "**Le jour de l'An** (1er janvier) — New Year's Day.",
-              "**Pâques** — Easter. Children hunt for chocolate eggs hidden in gardens.",
-              "**La Fête Nationale — le 14 juillet** — Bastille Day. Celebrated with fireworks (feux d'artifice), parades, and dances (bals).",
-              "**La Toussaint** (1er novembre) — All Saints' Day. A national holiday; schools close for two weeks — les vacances de la Toussaint."
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "Le 14 juillet is France's national day — it marks the storming of the Bastille in 1789. Festivities include a military parade on the Champs-Élysées and fireworks at the Eiffel Tower."
-            }
-          },
-          {
-            "h": "La météo — weather phrases",
-            "split": {
-              "left": {
-                "title": "Il fait + adjective",
-                "items": [
-                  "Il fait beau — it's nice weather",
-                  "Il fait mauvais — it's bad weather",
-                  "Il fait chaud — it's hot",
-                  "Il fait froid — it's cold",
-                  "Il fait doux — it's mild"
-                ]
-              },
-              "right": {
-                "title": "Autres expressions",
-                "items": [
-                  "Il pleut — it's raining",
-                  "Il neige — it's snowing",
-                  "Il y a du vent — it's windy",
-                  "Il y a du soleil — it's sunny",
-                  "Il y a du brouillard — it's foggy"
-                ]
-              }
-            },
-            "p": [
-              "**Quel temps fait-il ?** (What's the weather like?) · **Il fait X degrés.** (It's X degrees.)",
-              "**Aujourd'hui** il fait beau, **mais demain** il va pleuvoir. (Today it's nice, but tomorrow it's going to rain.)"
-            ]
-          }
-        ],
-        "check": [
-          {
-            "type": "mcq",
-            "q": "Which activity is typical 'en été' (in summer)?",
-            "opts": [
-              "faire du ski",
-              "ramasser des champignons",
-              "aller à la plage",
-              "jardiner"
-            ],
-            "ans": 2,
-            "exp": "aller à la plage (going to the beach) is a typical summer activity. faire du ski = winter. ramasser des champignons = autumn. jardiner = spring."
-          },
-          {
-            "type": "mcq",
-            "q": "What do French people typically do on le 14 juillet?",
-            "opts": [
-              "Hunt for Easter eggs",
-              "Watch fireworks and attend parades",
-              "Exchange Christmas gifts",
-              "Go mushroom picking"
-            ],
-            "ans": 1,
-            "exp": "Le 14 juillet (Bastille Day) is celebrated with fireworks (feux d'artifice), military parades, and street dances (bals). It commemorates the storming of the Bastille in 1789."
-          },
-          {
-            "type": "mcq",
-            "q": "When is 'la Toussaint'?",
-            "opts": [
-              "25 December",
-              "14 July",
-              "1 November",
-              "1 January"
-            ],
-            "ans": 2,
-            "exp": "La Toussaint = All Saints' Day, 1 November. It is a national holiday in France, and schools close for two weeks around this time (les vacances de la Toussaint)."
-          },
-          {
-            "type": "mcq",
-            "q": "'Bronzer' means:",
-            "opts": [
-              "to ski",
-              "to sunbathe",
-              "to swim",
-              "to walk"
-            ],
-            "ans": 1,
-            "exp": "bronzer = to sunbathe / to get a tan. aller à la plage = go to the beach. nager = to swim. se promener = to go for a walk."
           }
         ],
         "tag": "core"
@@ -9675,6 +9548,133 @@ window.FR_LEARN_PATH = [
             ],
             "ans": 0,
             "exp": "C'est une infirmière (article required after c'est). Elle est infirmière (no article when describing role after être)."
+          }
+        ],
+        "tag": "core"
+      },
+      {
+        "id": "fr-l46",
+        "title": "La famille élargie et les pronoms possessifs",
+        "icon": "👨‍👩‍👧",
+        "cards": [
+          {
+            "h": "La famille recomposée",
+            "p": [
+              "Step-family vocabulary: **beau-père** (step-father / father-in-law), **belle-mère** (step-mother / mother-in-law), **demi-frère** (half-brother), **demi-sœur** (half-sister), **beau-fils** (son-in-law / step-son), **belle-fille** (daughter-in-law / step-daughter).",
+              "Note: the **beau-/belle-** prefix signals an in-law or step relation. Context usually clarifies which meaning is intended."
+            ],
+            "split": {
+              "left": {
+                "title": "Step-family",
+                "items": [
+                  "beau-père — step-father / father-in-law",
+                  "belle-mère — step-mother / mother-in-law",
+                  "demi-frère — half-brother",
+                  "demi-sœur — half-sister"
+                ]
+              },
+              "right": {
+                "title": "In-laws",
+                "items": [
+                  "beau-fils — son-in-law / step-son",
+                  "belle-fille — daughter-in-law / step-daughter",
+                  "les beaux-parents — in-laws / step-parents",
+                  "la belle-famille — in-laws (family)"
+                ]
+              }
+            }
+          },
+          {
+            "h": "Les pronoms possessifs",
+            "p": [
+              "Possessive PRONOUNS replace a noun entirely (unlike possessive adjectives which precede a noun). They agree in gender and number with the noun they replace.",
+              "**C'est ta voiture ?** — **Non, c'est la sienne.** (Is that your car? — No, it's his/hers.)"
+            ],
+            "split": {
+              "left": {
+                "title": "Masculine",
+                "items": [
+                  "le mien (mine)",
+                  "le tien (yours)",
+                  "le sien (his/hers)",
+                  "le nôtre (ours)",
+                  "le vôtre (yours pl.)",
+                  "le leur (theirs)"
+                ]
+              },
+              "right": {
+                "title": "Feminine",
+                "items": [
+                  "la mienne (mine)",
+                  "la tienne (yours)",
+                  "la sienne (his/hers)",
+                  "la nôtre (ours)",
+                  "la vôtre (yours pl.)",
+                  "la leur (theirs)"
+                ]
+              }
+            }
+          },
+          {
+            "h": "Emploi des pronoms possessifs",
+            "p": [
+              "Use possessive pronouns to avoid repeating a noun: **Mon fils et le sien sont amis.** (My son and his/her son are friends.)",
+              "They take the definite article (le/la/les) as part of their form — this contracts with à and de: **Je pense au mien.** (I'm thinking of mine.) **C'est différent du nôtre.** (It's different from ours.)"
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "Contrast: **ton livre** (possessive adjective — your book) vs **le tien** (possessive pronoun — yours). The pronoun stands ALONE — no noun follows it."
+            }
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "What does 'beau-père' mean?",
+            "opts": [
+              "beautiful father",
+              "step-father / father-in-law",
+              "half-brother",
+              "grandfather"
+            ],
+            "ans": 1,
+            "exp": "beau-père = step-father OR father-in-law. Similarly belle-mère = step-mother / mother-in-law. Context determines which meaning is intended."
+          },
+          {
+            "type": "mcq",
+            "q": "'C'est ta voiture ?' — 'Non, c'est ___.' (his/hers — feminine noun)",
+            "opts": [
+              "le sien",
+              "la sienne",
+              "la tienne",
+              "le leur"
+            ],
+            "ans": 1,
+            "exp": "la sienne = his/hers (feminine singular, agreeing with la voiture). Possessive pronouns agree with the noun they replace: voiture is feminine → la sienne."
+          },
+          {
+            "type": "mcq",
+            "q": "What is the masculine plural possessive pronoun for 'ours'?",
+            "opts": [
+              "les nôtres",
+              "le nôtre",
+              "les leurs",
+              "les vôtres"
+            ],
+            "ans": 0,
+            "exp": "les nôtres = ours (masculine/feminine plural). le nôtre = ours (m.sg), la nôtre (f.sg), les nôtres (plural)."
+          },
+          {
+            "type": "mcq",
+            "q": "'Mon livre et ___ de Paul sont perdus.' (his — replace 'son livre')",
+            "opts": [
+              "le sien",
+              "la sienne",
+              "le tien",
+              "le leur"
+            ],
+            "ans": 0,
+            "exp": "le sien = his (masculine, replacing 'son livre' — livre is masculine). Possessive pronouns agree with the noun replaced, not the owner."
           }
         ],
         "tag": "core"
@@ -11968,138 +11968,6 @@ window.FR_LEARN_PATH = [
         "tag": "mastery"
       },
       {
-        "id": "fr-l78",
-        "title": "Le discours indirect",
-        "icon": "🗣️",
-        "cards": [
-          {
-            "h": "Qu'est-ce que le discours indirect ?",
-            "p": [
-              "Reported speech = telling someone what another person said. **Direct**: Il a dit : « Je suis fatigué. » → **Indirect**: Il a dit qu'il était fatigué.",
-              "Key changes: (1) quotation marks removed, (2) **que/si/de** introduces the clause, (3) present → **imparfait** when the reporting verb is in past tense."
-            ],
-            "callout": {
-              "kind": "key",
-              "text": "When the reporting verb is in the PAST (il a dit, elle m'a expliqué…), the verb in the reported clause shifts back one tense: présent → imparfait. If the reporting verb is present, NO tense change occurs."
-            }
-          },
-          {
-            "h": "Les verbes introducteurs",
-            "p": [
-              "**dire que** (to say that), **demander si** (to ask if — for yes/no questions), **expliquer que** (to explain that), **raconter que** (to tell that), **répondre que** (to answer that), **penser que** (to think that).",
-              "Word order for questions: **Il a demandé si je venais.** (Are you coming? → He asked if I was coming.)"
-            ],
-            "split": {
-              "left": {
-                "title": "Statements — dire que",
-                "items": [
-                  "Direct: « Je suis content. »",
-                  "Indirect: Il a dit qu'il était content.",
-                  "Direct: « Nous partons. »",
-                  "Indirect: Ils ont dit qu'ils partaient."
-                ]
-              },
-              "right": {
-                "title": "Questions — demander si / WH-word",
-                "items": [
-                  "Direct: « Est-ce que tu viens ? »",
-                  "Indirect: Il a demandé si je venais.",
-                  "Direct: « Où habites-tu ? »",
-                  "Indirect: Elle a demandé où j'habitais."
-                ]
-              }
-            }
-          },
-          {
-            "h": "Les changements",
-            "p": [
-              "**Pronouns** shift to match the reporter's perspective: tu → je/il/elle.",
-              "**Tenses** shift when reporting verb is past: présent → imparfait; passé composé → plus-que-parfait (B1).",
-              "**Time expressions**: maintenant → à ce moment-là, demain → le lendemain, hier → la veille, aujourd'hui → ce jour-là."
-            ]
-          },
-          {
-            "h": "Exemples comparés",
-            "example": {
-              "title": "Direct → Indirect speech",
-              "rows": [
-                [
-                  "Direct speech",
-                  "Indirect speech"
-                ],
-                [
-                  "« Je pars demain. »",
-                  "Il a dit qu'il partait le lendemain."
-                ],
-                [
-                  "« Tu viens ? »",
-                  "Elle a demandé si je venais."
-                ],
-                [
-                  "« Où habitez-vous ? »",
-                  "Il a demandé où j'habitais."
-                ],
-                [
-                  "« Je suis fatigué. »",
-                  "Il a dit qu'il était fatigué."
-                ]
-              ]
-            }
-          }
-        ],
-        "check": [
-          {
-            "type": "mcq",
-            "q": "Direct: 'Je suis fatigué.' → Indirect: 'Il a dit qu'il ___ fatigué.'",
-            "opts": [
-              "est",
-              "était",
-              "sera",
-              "soit"
-            ],
-            "ans": 1,
-            "exp": "When the reporting verb is in the past (il a dit), the present tense in direct speech shifts to the imparfait in indirect: est → était."
-          },
-          {
-            "type": "mcq",
-            "q": "Which word introduces indirect YES/NO questions?",
-            "opts": [
-              "que",
-              "si",
-              "où",
-              "quand"
-            ],
-            "ans": 1,
-            "exp": "si introduces indirect yes/no questions: 'Est-ce que tu viens ?' → Il a demandé si je venais. si = whether/if in this context."
-          },
-          {
-            "type": "mcq",
-            "q": "What happens to 'demain' in indirect speech (reporting verb in past)?",
-            "opts": [
-              "It stays as demain",
-              "It becomes le lendemain",
-              "It becomes la veille",
-              "It is deleted"
-            ],
-            "ans": 1,
-            "exp": "demain → le lendemain in indirect speech. Other time shifts: maintenant → à ce moment-là, hier → la veille, aujourd'hui → ce jour-là."
-          },
-          {
-            "type": "mcq",
-            "q": "Which verb introduces indirect speech about a statement?",
-            "opts": [
-              "demander si",
-              "savoir si",
-              "dire que",
-              "aller que"
-            ],
-            "ans": 2,
-            "exp": "dire que = to say that (statements). demander si = to ask whether (yes/no questions). répondre que = to answer that."
-          }
-        ],
-        "tag": "core"
-      },
-      {
         "id": "fr-l57",
         "title": "Dialogues du quotidien — A2",
         "icon": "🗣️",
@@ -13142,7 +13010,7 @@ window.FR_LEARN_PATH = [
       },
       {
         "id": "fr-l29",
-        "title": "Les pronoms relatifs",
+        "title": "Les pronoms relatifs — dont et lequel",
         "icon": "🔗",
         "cards": [
           {
@@ -13797,6 +13665,138 @@ window.FR_LEARN_PATH = [
         "tag": "core"
       },
       {
+        "id": "fr-l78",
+        "title": "Le discours indirect",
+        "icon": "🗣️",
+        "cards": [
+          {
+            "h": "Qu'est-ce que le discours indirect ?",
+            "p": [
+              "Reported speech = telling someone what another person said. **Direct**: Il a dit : « Je suis fatigué. » → **Indirect**: Il a dit qu'il était fatigué.",
+              "Key changes: (1) quotation marks removed, (2) **que/si/de** introduces the clause, (3) present → **imparfait** when the reporting verb is in past tense."
+            ],
+            "callout": {
+              "kind": "key",
+              "text": "When the reporting verb is in the PAST (il a dit, elle m'a expliqué…), the verb in the reported clause shifts back one tense: présent → imparfait. If the reporting verb is present, NO tense change occurs."
+            }
+          },
+          {
+            "h": "Les verbes introducteurs",
+            "p": [
+              "**dire que** (to say that), **demander si** (to ask if — for yes/no questions), **expliquer que** (to explain that), **raconter que** (to tell that), **répondre que** (to answer that), **penser que** (to think that).",
+              "Word order for questions: **Il a demandé si je venais.** (Are you coming? → He asked if I was coming.)"
+            ],
+            "split": {
+              "left": {
+                "title": "Statements — dire que",
+                "items": [
+                  "Direct: « Je suis content. »",
+                  "Indirect: Il a dit qu'il était content.",
+                  "Direct: « Nous partons. »",
+                  "Indirect: Ils ont dit qu'ils partaient."
+                ]
+              },
+              "right": {
+                "title": "Questions — demander si / WH-word",
+                "items": [
+                  "Direct: « Est-ce que tu viens ? »",
+                  "Indirect: Il a demandé si je venais.",
+                  "Direct: « Où habites-tu ? »",
+                  "Indirect: Elle a demandé où j'habitais."
+                ]
+              }
+            }
+          },
+          {
+            "h": "Les changements",
+            "p": [
+              "**Pronouns** shift to match the reporter's perspective: tu → je/il/elle.",
+              "**Tenses** shift when reporting verb is past: présent → imparfait; passé composé → plus-que-parfait (B1).",
+              "**Time expressions**: maintenant → à ce moment-là, demain → le lendemain, hier → la veille, aujourd'hui → ce jour-là."
+            ]
+          },
+          {
+            "h": "Exemples comparés",
+            "example": {
+              "title": "Direct → Indirect speech",
+              "rows": [
+                [
+                  "Direct speech",
+                  "Indirect speech"
+                ],
+                [
+                  "« Je pars demain. »",
+                  "Il a dit qu'il partait le lendemain."
+                ],
+                [
+                  "« Tu viens ? »",
+                  "Elle a demandé si je venais."
+                ],
+                [
+                  "« Où habitez-vous ? »",
+                  "Il a demandé où j'habitais."
+                ],
+                [
+                  "« Je suis fatigué. »",
+                  "Il a dit qu'il était fatigué."
+                ]
+              ]
+            }
+          }
+        ],
+        "check": [
+          {
+            "type": "mcq",
+            "q": "Direct: 'Je suis fatigué.' → Indirect: 'Il a dit qu'il ___ fatigué.'",
+            "opts": [
+              "est",
+              "était",
+              "sera",
+              "soit"
+            ],
+            "ans": 1,
+            "exp": "When the reporting verb is in the past (il a dit), the present tense in direct speech shifts to the imparfait in indirect: est → était."
+          },
+          {
+            "type": "mcq",
+            "q": "Which word introduces indirect YES/NO questions?",
+            "opts": [
+              "que",
+              "si",
+              "où",
+              "quand"
+            ],
+            "ans": 1,
+            "exp": "si introduces indirect yes/no questions: 'Est-ce que tu viens ?' → Il a demandé si je venais. si = whether/if in this context."
+          },
+          {
+            "type": "mcq",
+            "q": "What happens to 'demain' in indirect speech (reporting verb in past)?",
+            "opts": [
+              "It stays as demain",
+              "It becomes le lendemain",
+              "It becomes la veille",
+              "It is deleted"
+            ],
+            "ans": 1,
+            "exp": "demain → le lendemain in indirect speech. Other time shifts: maintenant → à ce moment-là, hier → la veille, aujourd'hui → ce jour-là."
+          },
+          {
+            "type": "mcq",
+            "q": "Which verb introduces indirect speech about a statement?",
+            "opts": [
+              "demander si",
+              "savoir si",
+              "dire que",
+              "aller que"
+            ],
+            "ans": 2,
+            "exp": "dire que = to say that (statements). demander si = to ask whether (yes/no questions). répondre que = to answer that."
+          }
+        ],
+        "tag": "core"
+      },
+      {
         "id": "fr-l99",
         "title": "Histoire : Les Misérables",
         "icon": "📚",
@@ -13910,7 +13910,7 @@ window.FR_LEARN_PATH = [
       },
       {
         "id": "fr-l30",
-        "title": "Exprimer son opinion",
+        "title": "Exprimer et nuancer son opinion",
         "icon": "💬",
         "cards": [
           {
@@ -16428,7 +16428,7 @@ window.FR_LESSON_CEFR_SUBLEVEL = {
   "fr-l32": "A1.2",
   "fr-l33": "A1.2",
   "fr-l45": "A1.1",
-  "fr-l46": "A1.2",
+  "fr-l46": "A2.1",
   "fr-l47": "A1.2",
   "fr-l50": "A1.2",
   "fr-l52": "A1.2",
@@ -16456,7 +16456,7 @@ window.FR_LESSON_CEFR_SUBLEVEL = {
   "fr-l73": "A2.1",
   "fr-l74": "A2.1",
   "fr-l77": "A2.1",
-  "fr-l78": "A2.2",
+  "fr-l78": "B1",
   "fr-l26": "A2.2",
   "fr-l34": "A2.2",
   "fr-l35": "A2.2",
