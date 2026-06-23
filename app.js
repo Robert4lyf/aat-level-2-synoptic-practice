@@ -1170,6 +1170,21 @@
     utt.onerror = finish;
     window.speechSynthesis.speak(utt);
   }
+  /* Read a list of French lines aloud in sequence (story read-along). */
+  function speakSequence(texts, onStart, onDone) {
+    if (!window.speechSynthesis || !texts || !texts.length) { if (onDone) onDone(); return; }
+    window.speechSynthesis.cancel();
+    const voice = getFrenchVoice();
+    let remaining = texts.length;
+    texts.forEach((t, i) => {
+      const u = new SpeechSynthesisUtterance(t);
+      u.lang = 'fr-FR'; u.rate = 0.9;
+      if (voice) u.voice = voice;
+      if (i === 0 && onStart) u.onstart = onStart;
+      u.onend = u.onerror = () => { remaining--; if (remaining <= 0 && onDone) onDone(); };
+      window.speechSynthesis.speak(u);
+    });
+  }
   /* Speak a DELF dialogue, alternating voices/pitch between speakers.
      Lines beginning with – are treated as separate speaker turns.
      Falls back to plain speakFrench for single-speaker recordings. */
@@ -4664,7 +4679,15 @@
 
     /* ── TEACH phase ── */
     const card = def.cards[cardIdx];
-    const visualHtml = card.visual ? `<div class="lesson-visual">${card.visual}</div>` : '';
+    // Story read-along: on French story cards, let learners hear the text
+    // (whole story or a single tapped line) for reading + listening input.
+    const isStoryCard = !!card.visual && _activeSubjectId === 'french'
+      && /^histoire/i.test(def.title || '') && !!window.speechSynthesis;
+    const storyAudioBar = isStoryCard ? `<div class="story-audio-bar">
+      <button class="listen-play-btn story-read-btn" id="storyReadBtn" type="button" aria-label="Listen to the story">🔊 Listen to the story</button>
+      <span class="story-audio-hint">🗣️ Tap any line to hear it on its own.</span>
+    </div>` : '';
+    const visualHtml = card.visual ? `${storyAudioBar}<div class="lesson-visual${isStoryCard ? ' story-readable' : ''}">${card.visual}</div>` : '';
     const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
     const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
     const exHtml = card.example ? `<div class="lesson-example">
@@ -5766,6 +5789,34 @@
         });
         const lessonCheckReplayBtn = document.getElementById('lessonCheckReplayBtn');
         if (lessonCheckReplayBtn) lessonCheckReplayBtn.addEventListener('click', () => speakFrench(lcq.audio));
+      }
+    }
+    // Story read-along (French): listen to the whole story, or tap a line.
+    if (State.lesson && State.lesson.phase === 'teach') {
+      const storyVisual = document.querySelector('.lesson-visual.story-readable');
+      if (storyVisual) {
+        const paras = Array.prototype.slice.call(storyVisual.querySelectorAll('p'));
+        const lines = paras.map(p => p.textContent.trim()).filter(Boolean);
+        const storyReadBtn = document.getElementById('storyReadBtn');
+        if (storyReadBtn && lines.length) {
+          storyReadBtn.addEventListener('click', () => {
+            if (storyReadBtn.classList.contains('is-playing')) {
+              window.speechSynthesis.cancel();
+              storyReadBtn.textContent = '🔊 Listen to the story';
+              storyReadBtn.classList.remove('is-playing');
+              return;
+            }
+            speakSequence(lines,
+              () => { storyReadBtn.textContent = '⏹ Stop'; storyReadBtn.classList.add('is-playing'); },
+              () => { storyReadBtn.textContent = '🔊 Listen to the story'; storyReadBtn.classList.remove('is-playing'); });
+          });
+        }
+        paras.forEach(p => {
+          const txt = p.textContent.trim();
+          if (!txt) return;
+          p.classList.add('story-line');
+          p.addEventListener('click', () => speakFrench(txt));
+        });
       }
     }
     // T-account playground
