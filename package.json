@@ -2,6 +2,8 @@
   "name": "aat-level-2-synoptic-practice",
   "private": true,
   "scripts": {
-    "validate:french": "node scripts/validate-french-data.js"
+    "validate:french": "node scripts/validate-french-data.js",
+    "check:csp": "node scripts/check-csp-hashes.js",
+    "test": "node scripts/check-csp-hashes.js && node scripts/validate-french-data.js"
   }
 }

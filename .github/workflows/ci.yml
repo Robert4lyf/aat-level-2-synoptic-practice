@@ -1,0 +1,21 @@
+name: CI
+
+# Lightweight checks for this no-build static site. Runs the data validator and
+# the CSP-hash guard that prevents the inline-script regression fixed in PR #112.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify CSP whitelists every inline script
+        run: npm run check:csp
+      - name: Validate French question data
+        run: npm run validate:french
