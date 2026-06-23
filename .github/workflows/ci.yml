@@ -17,5 +17,7 @@ jobs:
           node-version: 20
       - name: Verify CSP whitelists every inline script
         run: npm run check:csp
+      - name: Validate AAT question bank
+        run: npm run validate:aat
       - name: Validate French question data
         run: npm run validate:french
