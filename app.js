@@ -1156,12 +1156,12 @@
     if (!window.speechSynthesis || !window.speechSynthesis.getVoices) return [];
     return window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
   }
-  function speakFrench(text, onPlay, onDone) {
+  function speakFrench(text, onPlay, onDone, rate) {
     if (!window.speechSynthesis || !text) return;
     window.speechSynthesis.cancel();
     const utt = new SpeechSynthesisUtterance(text);
     utt.lang = 'fr-FR';
-    utt.rate = 0.85;
+    utt.rate = rate || 0.85;
     const voice = getFrenchVoice();
     if (voice) utt.voice = voice;
     if (onPlay) onPlay();
@@ -2903,7 +2903,30 @@
         }).join('')}
       </div>` : '';
 
+    // Daily-review habit nudge: spaced repetition is the strongest retention
+    // driver, so surface due cards prominently (not just as one card in the grid).
+    const srTotal = Object.keys(Storage.data.sr || {}).length;
+    const reviewNudge = srDueCount > 0
+      ? `<button class="review-nudge" type="button" data-topic="sr-due" aria-label="Start daily review, ${srDueCount} cards due">
+          <span class="review-nudge-icon" aria-hidden="true">🗓️</span>
+          <span class="review-nudge-text">
+            <span class="review-nudge-title">Daily review · ${srDueCount} card${srDueCount === 1 ? '' : 's'} due</span>
+            <span class="review-nudge-sub">A few minutes of review each day is the fastest way to make it stick.</span>
+          </span>
+          <span class="review-nudge-cta" aria-hidden="true">Review →</span>
+        </button>`
+      : (srTotal > 0
+        ? `<div class="review-nudge review-nudge-done" role="status">
+            <span class="review-nudge-icon" aria-hidden="true">✓</span>
+            <span class="review-nudge-text">
+              <span class="review-nudge-title">Review complete for now</span>
+              <span class="review-nudge-sub">Nothing due — come back later to keep your memory fresh.</span>
+            </span>
+          </div>`
+        : '');
+
     return `${sessionBanner}${progressBlock}
+      ${reviewNudge}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
         <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
@@ -3876,6 +3899,10 @@
             <button class="listen-play-btn" id="listenPlayBtn" type="button" aria-label="Play audio clip">🔊 Tap to Listen</button>
             <p class="listen-hint">${escapeHtml(q.q || 'What did you hear?')}</p>
             ${answered ? `<button class="tts-replay-btn" id="ttsReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
+            ${answered ? `<div class="shadow-row">
+              <button class="tts-slow-btn" id="listenSlowBtn" type="button" aria-label="Play slowly">🐢 Slow</button>
+              <span class="shadow-hint">🗣️ Play it slowly and repeat aloud.</span>
+            </div>` : ''}
           </div>
           ${optionsHtml}${feedbackHtml}
         </div>
@@ -3966,8 +3993,16 @@
     const playBtnHtml = window.speechSynthesis
       ? `<button class="listen-play-btn" id="listenTypedPlayBtn" type="button" aria-label="Play audio">🔊 Tap to Listen</button>`
       : `<span class="tts-unavail" role="note">🔇 Audio not available on this device — transcript shown below</span>`;
+    // Once the transcript is revealed, offer a slow replay + shadowing prompt:
+    // hearing it slowly and repeating aloud builds pronunciation (no mic needed).
+    const shadowRow = (answered && window.speechSynthesis)
+      ? `<div class="shadow-row">
+          <button class="tts-slow-btn" id="listenTypedSlowBtn" type="button" aria-label="Play slowly">🐢 Slow</button>
+          <span class="shadow-hint">🗣️ Play it slowly and repeat aloud to practise your pronunciation.</span>
+        </div>`
+      : '';
     const transcriptHtml = answered || !window.speechSynthesis
-      ? `<div class="listen-transcript-reveal" role="note"><strong>Transcript:</strong> ${escapeHtml(audioText)}</div>`
+      ? `<div class="listen-transcript-reveal" role="note"><strong>Transcript:</strong> ${escapeHtml(audioText)}</div>${shadowRow}`
       : '';
     const bodyHtml = `<div class="listen-prompt">
       ${playBtnHtml}
@@ -5508,6 +5543,11 @@
       const ltq = State.questions[State.current];
       listenTypedReplayBtn.addEventListener('click', () => speakFrench(ltq.audio || ltq.ans));
     }
+    const listenTypedSlowBtn = document.getElementById('listenTypedSlowBtn');
+    if (listenTypedSlowBtn) {
+      const ltq = State.questions[State.current];
+      listenTypedSlowBtn.addEventListener('click', () => speakFrench(ltq.audio || ltq.ans, null, null, 0.55));
+    }
     bind('submitListenTypedBtn', 'click', submitListenTypedPractice);
     const listenTypedInput = document.getElementById('listenTypedAnswer');
     if (listenTypedInput) {
@@ -5545,6 +5585,11 @@
     if (ttsReplayBtn) {
       const lq = State.questions[State.current];
       ttsReplayBtn.addEventListener('click', () => speakFrench(lq.audio || lq.q));
+    }
+    const listenSlowBtn = document.getElementById('listenSlowBtn');
+    if (listenSlowBtn) {
+      const lq = State.questions[State.current];
+      listenSlowBtn.addEventListener('click', () => speakFrench(lq.audio || lq.q, null, null, 0.55));
     }
     const ttsQBtn = document.getElementById('ttsQBtn');
     if (ttsQBtn) {
