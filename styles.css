@@ -743,6 +743,65 @@ header .sub {
 }
 
 /* ── RESUME BANNER ── */
+/* Shadowing aid: slow replay + repeat-aloud prompt on listening questions */
+.shadow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.tts-slow-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 12px;
+  border-radius: var(--r-xs);
+  font-size: .8rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.tts-slow-btn:hover { border-color: var(--accent); color: var(--accent); }
+.shadow-hint { font-size: .76rem; color: var(--subtext); }
+
+/* Daily-review habit nudge (spaced repetition) */
+.review-nudge {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--accent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent), color-mix(in srgb, var(--accent) 4%, transparent));
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.review-nudge:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.review-nudge-icon { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+.review-nudge-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.review-nudge-title { font-weight: 700; font-size: .92rem; color: var(--text); }
+.review-nudge-sub { font-size: .78rem; color: var(--subtext); }
+.review-nudge-cta {
+  flex-shrink: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: var(--r-xs);
+  font-size: .82rem;
+  font-weight: 600;
+}
+.review-nudge-done {
+  cursor: default;
+  border-color: var(--ok-border, var(--border));
+  background: var(--ok-bg, var(--card));
+}
+.review-nudge-done:hover { transform: none; box-shadow: var(--shadow-xs); }
+.review-nudge-done .review-nudge-icon { color: var(--ok-text, var(--accent)); }
+
 .resume-banner {
   background: var(--warn-bg);
   border: 1px solid var(--warn-border);
