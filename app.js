@@ -9,12 +9,17 @@
   function getStorageKey() { return _activeSubjectId === 'aat' ? STORAGE_KEY : 'prep_v2_' + _activeSubjectId; }
   function subjectStorageKey(id) { return id === 'aat' ? STORAGE_KEY : 'prep_v2_' + id; }
 
+  // `assets` lists the data files a subject needs that are NOT loaded eagerly by
+  // index.html. The default AAT subject's data (data.js/skills.js/learn-data.js)
+  // is loaded up-front; the language subjects' data (~1.6 MB) is fetched on demand
+  // the first time the subject is opened — see ensureSubjectAssets()/loadScript().
   const SUBJECT_REGISTRY = [
     {
       id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
       desc: 'Prepare for the AQ2022 Business Environment Synoptic Assessment',
       meta: '515 questions · Mock exams · T-Accounts',
       tabs: ['learn','home','tools','glossary','progress','howto'],
+      assets: [],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
     },
     {
@@ -22,6 +27,7 @@
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
       meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
       tabs: ['learn','home','listen','delf','clinic','progress'],
+      assets: ['french-data.js', 'delf-data.js'],
       activate() { window.TOPICS = window.FR_TOPICS; window.ALL_QUESTIONS = window.FR_QUESTIONS; window.LEARN_PATH = window.FR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
@@ -29,6 +35,7 @@
       desc: 'Découvrez les bases de la LSF — la langue des signes française',
       meta: '50+ questions · 4 leçons · débutant',
       tabs: ['learn','home','progress'],
+      assets: ['lsf-data.js'],
       activate() { window.TOPICS = window.LSF_TOPICS; window.ALL_QUESTIONS = window.LSF_QUESTIONS; window.LEARN_PATH = window.LSF_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
@@ -36,10 +43,34 @@
       desc: 'Préparez votre permis de conduire — théorie et panneaux',
       meta: '80+ questions · 5 leçons · examen officiel',
       tabs: ['learn','home','progress'],
+      assets: ['code-route-data.js'],
       activate() { window.TOPICS = window.CR_TOPICS; window.ALL_QUESTIONS = window.CR_QUESTIONS; window.LEARN_PATH = window.CR_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
   ];
   function getSubject(id) { return SUBJECT_REGISTRY.find(s => s.id === id) || SUBJECT_REGISTRY[0]; }
+
+  /* ── Lazy subject-data loading ──────────────────────────────────────────────
+     Language-subject data files are injected on demand rather than shipped in
+     index.html, so the default AAT load no longer parses ~1.6 MB of unused JS.
+     loadScript() is idempotent and preserves execution order (async = false);
+     the files remain in the service-worker precache, so this still works offline. */
+  const _assetPromises = Object.create(null);
+  const _assetReady = new Set();
+  function loadScript(src) {
+    if (_assetReady.has(src)) return Promise.resolve();
+    if (_assetPromises[src]) return _assetPromises[src];
+    _assetPromises[src] = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = false; // preserve order for subjects with multiple data files
+      s.onload = () => { _assetReady.add(src); resolve(); };
+      s.onerror = () => { delete _assetPromises[src]; reject(new Error('Failed to load ' + src)); };
+      (document.head || document.documentElement).appendChild(s);
+    });
+    return _assetPromises[src];
+  }
+  function subjectAssetsReady(id) { return (getSubject(id).assets || []).every(a => _assetReady.has(a)); }
+  function ensureSubjectAssets(id) { return Promise.all((getSubject(id).assets || []).map(loadScript)); }
 
   /* Maps a French question ID (fr-NNN) to its CEFR level string.
      A1 = beginner basics, A2 = elementary grammar/vocab, B1 = intermediate structures. */
@@ -2336,6 +2367,19 @@
   function goHome() { stopMockTimer(); State.screen='home'; State.activeTab='home'; State.confirmModal=null; render(); }
 
   function switchSubject(id) {
+    const subj = getSubject(id);
+    // The subject's data may need fetching first (lazy-loaded language subjects).
+    if (!subjectAssetsReady(id)) {
+      const el = app();
+      if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="status" aria-live="polite">⏳ Loading ${escapeHtml(subj.name)}…</div></div>`;
+      ensureSubjectAssets(id)
+        .then(() => _commitSubjectSwitch(id))
+        .catch(() => { showToast('Couldn’t load ' + subj.short + ' — check your connection and try again.', 'error'); render(); });
+      return;
+    }
+    _commitSubjectSwitch(id);
+  }
+  function _commitSubjectSwitch(id) {
     const subj = getSubject(id);
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
@@ -5735,6 +5779,13 @@
   function init() {
     // Stash original AAT globals so subject-switching can restore them
     if (!window.AAT_TOPICS) { window.AAT_TOPICS = window.TOPICS; window.AAT_QUESTIONS = window.ALL_QUESTIONS; window.AAT_LEARN_PATH = window.LEARN_PATH; window.AAT_SKILLS = window.SKILLS; }
+    // The persisted subject may be a lazily-loaded language subject whose data
+    // isn't in the page yet — fetch it before rendering. AAT has no extra assets,
+    // so this resolves immediately for the default case. On failure we still call
+    // _initAfterAssets so the "question bank failed to load" guard can show.
+    ensureSubjectAssets(_activeSubjectId).catch(function () {}).then(_initAfterAssets);
+  }
+  function _initAfterAssets() {
     // Activate the persisted subject
     getSubject(_activeSubjectId).activate();
     Storage.load();

@@ -76,13 +76,13 @@
     </div>
   </noscript>
 
+  <!-- Default AAT subject data is loaded eagerly. The language subjects'
+       data files (french/delf, lsf, code-route — ~1.6 MB) are loaded on demand
+       by app.js the first time that subject is opened. They remain in the
+       service-worker precache (sw.js), so offline use still covers every subject. -->
   <script src="data.js"></script>
   <script src="skills.js"></script>
   <script src="learn-data.js"></script>
-  <script src="french-data.js"></script>
-  <script src="delf-data.js"></script>
-  <script src="lsf-data.js"></script>
-  <script src="code-route-data.js"></script>
   <script src="app.js"></script>
   <script>
     /* Register the service worker for offline use (PWA). */
