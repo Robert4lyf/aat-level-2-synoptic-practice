@@ -61,10 +61,17 @@
 .rpg-tile-region.cleared .rpg-tile-art::before { left: 38%; top: 4%; width: 24%; height: 24%; border-radius: 50%; background: #facc15; border: 3px solid #92400e; box-shadow: 0 0 8px rgba(250,204,21,.8); z-index: 4; }
 .rpg-location-label { position: absolute; left: 4px; right: 4px; bottom: 3px; z-index: 5; padding: 2px 3px; background: rgba(15,23,42,.78); color: #fff; border: 2px solid rgba(255,255,255,.35); border-radius: 3px; font-size: clamp(.46rem, 1.15vw, .66rem); font-weight: 900; line-height: 1; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rpg-player-tile { z-index: 2; }
-/* Player and companion share one centred anchor + hop keyframe. The map fully
-   re-renders on every move, so this finite hop replays once per step and rests
-   between steps — a lightweight walk animation for the single-frame sprites. */
-.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 28px; height: 36px; transform: translate(-50%, -68%); image-rendering: pixelated; background: url(rpg-assets/char-player.png) center bottom / 100% 100% no-repeat; filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgHop .32s ease-out 1; pointer-events: none; }
+/* The player faces the way it last moved (data-dir picks a directional sheet)
+   and a 3-frame walk cycle steps on each move: the sprite element is rebuilt
+   per step, so the finite animation plays once (step A → step B → rest on the
+   standing frame) and pairs with the vertical hop. Each sheet is 3×32px frames;
+   background-size:300% shows one frame, animated via background-position. */
+.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 30px; height: 38px; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: 0% bottom; background-size: 300% 100%; background-image: url(rpg-assets/char-player-down.png); filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgPlayerWalk .36s steps(1, jump-end) 1 forwards, rpgHop .36s ease-out 1; pointer-events: none; }
+.rpg-player-sprite[data-dir='down'] { background-image: url(rpg-assets/char-player-down.png); }
+.rpg-player-sprite[data-dir='up'] { background-image: url(rpg-assets/char-player-up.png); }
+.rpg-player-sprite[data-dir='left'] { background-image: url(rpg-assets/char-player-left.png); }
+.rpg-player-sprite[data-dir='right'] { background-image: url(rpg-assets/char-player-right.png); }
+@keyframes rpgPlayerWalk { 0% { background-position: 50% bottom; } 50% { background-position: 100% bottom; } 100% { background-position: 0% bottom; } }
 .rpg-companion-sprite { position: absolute; z-index: 7; left: 50%; top: 50%; width: 24px; height: 30px; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 100% 100%; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); animation: rpgHop .32s ease-out 1; pointer-events: none; }
 .rpg-companion-cub { background-image: url(rpg-assets/char-cub.png); }
 .rpg-companion-fox { background-image: url(rpg-assets/char-fox.png); }
