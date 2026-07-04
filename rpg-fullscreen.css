@@ -5,14 +5,16 @@ body.rpg-map-fullscreen-body {
   overscroll-behavior: none;
 }
 
-#rpgOverlay.rpg-map-fullscreen {
+#rpgOverlay.rpg-map-fullscreen,
+body.rpg-map-fullscreen-body #rpgOverlay {
   padding: 0 !important;
   background: #1a2a18 !important;
   touch-action: none;
   overscroll-behavior: none;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-panel.rpg-world {
+#rpgOverlay.rpg-map-fullscreen .rpg-panel.rpg-world,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-panel.rpg-world {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
@@ -31,11 +33,16 @@ body.rpg-map-fullscreen-body {
 #rpgOverlay.rpg-map-fullscreen .rpg-world-head,
 #rpgOverlay.rpg-map-fullscreen .rpg-badges,
 #rpgOverlay.rpg-map-fullscreen .rpg-map-side,
-#rpgOverlay.rpg-map-fullscreen .rpg-close {
+#rpgOverlay.rpg-map-fullscreen .rpg-close,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-world-head,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-badges,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-map-side,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-close {
   display: none !important;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-map-layout {
+#rpgOverlay.rpg-map-fullscreen .rpg-map-layout,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-map-layout {
   display: block !important;
   margin: 0 !important;
   width: 100vw !important;
@@ -43,7 +50,8 @@ body.rpg-map-fullscreen-body {
   overflow: hidden !important;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map-wrap {
+#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map-wrap,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map-wrap {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
@@ -59,7 +67,8 @@ body.rpg-map-fullscreen-body {
   overscroll-behavior: none;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map {
+#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map {
   width: max(100vw, calc(100dvh * 1.3334)) !important;
   height: max(100dvh, calc(100vw * .75)) !important;
   min-width: 0 !important;
@@ -70,7 +79,8 @@ body.rpg-map-fullscreen-body {
   transform-origin: center center;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-tile {
+#rpgOverlay.rpg-map-fullscreen .rpg-tile,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-tile {
   min-height: 0 !important;
 }
 
@@ -78,7 +88,8 @@ body.rpg-map-fullscreen-body {
   display: none;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-controls {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-controls,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-controls {
   display: block;
   position: fixed;
   inset: 0;
@@ -91,7 +102,9 @@ body.rpg-map-fullscreen-body {
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad,
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy {
   position: fixed;
   bottom: max(22px, env(safe-area-inset-bottom));
   display: grid;
@@ -103,26 +116,32 @@ body.rpg-map-fullscreen-body {
   overscroll-behavior: none;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad {
   left: max(18px, env(safe-area-inset-left));
   grid-template-columns: repeat(3, 58px);
   grid-template-rows: repeat(3, 58px);
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy {
   right: max(18px, env(safe-area-inset-right));
   grid-template-columns: repeat(2, 58px);
   grid-template-rows: repeat(2, 58px);
   transform: rotate(45deg);
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy button {
   transform: rotate(-45deg);
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button,
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button,
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad button,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy button,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-exit {
   border: 2px solid rgba(255,255,255,.42);
   background: rgba(15, 23, 42, .44);
   color: rgba(255,255,255,.94);
@@ -141,29 +160,40 @@ body.rpg-map-fullscreen-body {
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:focus,
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:focus,
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:focus {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:focus,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad button:focus,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy button:focus,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-exit:focus {
   outline: none !important;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:focus-visible,
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:focus-visible,
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:focus-visible {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:focus-visible,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad button:focus-visible,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy button:focus-visible,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-exit:focus-visible {
   outline: 2px solid rgba(255,255,255,.65) !important;
   outline-offset: 2px;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:active,
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:active,
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:active {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:active,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad button:active,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy button:active,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-exit:active {
   transform: translateY(2px) scale(.97);
   background: rgba(59, 130, 246, .62);
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:active {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:active,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy button:active {
   transform: rotate(-45deg) translateY(2px) scale(.97);
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-exit {
   position: fixed;
   top: max(16px, env(safe-area-inset-top));
   right: max(16px, env(safe-area-inset-right));
@@ -172,7 +202,8 @@ body.rpg-map-fullscreen-body {
   font-size: 1.55rem;
 }
 
-#rpgOverlay.rpg-map-fullscreen .rpg-fs-hint {
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-hint,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-hint {
   position: fixed;
   top: max(18px, env(safe-area-inset-top));
   left: 50%;
@@ -188,19 +219,22 @@ body.rpg-map-fullscreen-body {
 }
 
 @media (max-width: 520px) {
-  #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad {
+  #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad,
+  body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad {
     grid-template-columns: repeat(3, 50px);
     grid-template-rows: repeat(3, 50px);
     gap: 7px;
   }
 
-  #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy {
+  #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy,
+  body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-abxy {
     grid-template-columns: repeat(2, 50px);
     grid-template-rows: repeat(2, 50px);
     gap: 7px;
   }
 
-  #rpgOverlay.rpg-map-fullscreen .rpg-fs-hint {
+  #rpgOverlay.rpg-map-fullscreen .rpg-fs-hint,
+  body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-hint {
     display: none;
   }
 }
