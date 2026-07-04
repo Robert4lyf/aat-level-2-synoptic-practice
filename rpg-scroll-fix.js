@@ -20,6 +20,54 @@
   function wrap() { var o = ov(); return o ? o.querySelector('.rpg-pixel-map-wrap') : null; }
   function ctrl(t) { return t && t.closest ? t.closest('#rpgOverlay [data-dir], #rpgOverlay [data-interact], #rpgOverlay [data-fs-exit]') : null; }
 
+  function hidePracticeCard() {
+    var card = document.getElementById('rpgDemoBtn');
+    if (card) card.style.display = 'none';
+  }
+
+  function openLedgerLegends() {
+    var tryClick = function () {
+      var card = document.getElementById('rpgDemoBtn');
+      if (card) {
+        card.click();
+        return true;
+      }
+      return false;
+    };
+
+    if (tryClick()) return;
+
+    var home = document.getElementById('homeNavBtn');
+    if (home) home.click();
+    setTimeout(tryClick, 80);
+    setTimeout(tryClick, 250);
+    setTimeout(tryClick, 650);
+  }
+
+  function addHeaderButton() {
+    var header = document.querySelector('.header-right');
+    if (!header || document.getElementById('ledgerLegendsNavBtn')) return;
+    var btn = document.createElement('button');
+    btn.id = 'ledgerLegendsNavBtn';
+    btn.className = 'icon-btn ledger-legends-nav-btn';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Open Ledger Legends');
+    btn.textContent = '🗺️ Ledger';
+    btn.addEventListener('click', function (event) {
+      event.preventDefault();
+      openLedgerLegends();
+    });
+
+    var ref = document.getElementById('referenceToggle') || document.getElementById('darkToggle') || document.getElementById('homeNavBtn');
+    if (ref && ref.parentNode === header) header.insertBefore(btn, ref);
+    else header.appendChild(btn);
+  }
+
+  function maintainHeaderAccess() {
+    addHeaderButton();
+    hidePracticeCard();
+  }
+
   function keepMap() {
     var p = pnl();
     var w = wrap();
@@ -117,10 +165,13 @@
 
   if (window.MutationObserver) {
     new MutationObserver(function () {
+      maintainHeaderAccess();
       if (!ov()) document.body.classList.remove('rpg-map-fullscreen-body');
       if (full()) addPad();
     }).observe(document.body, { childList: true, subtree: true });
   }
 
   loadCss();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', maintainHeaderAccess);
+  else maintainHeaderAccess();
 }());
