@@ -6,11 +6,8 @@
   var KEY = 'aatRpgDemo_v2';
   var OLD_KEY = 'aatRpgDemo_v1';
   var LEN = 5;
-  var STARTERS = {
-    cub: { id: 'cub', name: 'Audit Cub', icon: '🐣', type: 'Control', move1: 'Ledger Swipe', move2: 'Audit Burst', evo: 'Trial Balance Lynx' },
-    fox: { id: 'fox', name: 'Journal Fox', icon: '🦊', type: 'Bookkeeping', move1: 'Debit Dash', move2: 'Credit Claw', evo: 'Nominal Fox' },
-    mole: { id: 'mole', name: 'Costing Mole', icon: '🦡', type: 'Costing', move1: 'Prime Cost Pounce', move2: 'OAR Quake', evo: 'Factory Badger' }
-  };
+  // The player is the hero and the sole battle fighter — no companion creatures.
+  var FIGHTER = { id: 'player', name: 'The Accountant', icon: '📊', type: 'Ledger', move1: 'Balance Strike', move2: 'Audit Burst' };
   var BOSSES = [
     { id: 'itbk', icon: '🐉', name: 'Ledger Drake', region: 'Ledger Forest', badge: 'Ledger Badge', type: 'Bookkeeping', wild: 'Source Slime', scene: 'forest', desc: 'Debits, credits, source documents and ledger basics.' },
     { id: 'pobc', icon: '🪨', name: 'Reconciliation Golem', region: 'Control Cavern', badge: 'Control Badge', type: 'Control', wild: 'Suspense Bat', scene: 'cave', desc: 'Control accounts, journals, errors and reconciliations.' },
@@ -78,7 +75,7 @@
   // `mon` selects the pixel sprite (rpg-assets/npc-*.png); `lines` is the dialogue.
   var NPCS = {
     quill: {
-      x: 2, y: 2, mon: 'npc-quill', tag: 'Guide', name: 'Professor Quill',
+      x: 2, y: 2, mon: 'professor', tag: 'Guide', name: 'Professor Quill',
       role: 'Head Tutor of Ledger Town',
       lines: [
         'Welcome to Ledger Town, trainee! I am Professor Quill.',
@@ -88,7 +85,7 @@
       ]
     },
     librarian: {
-      x: 5, y: 2, mon: 'npc-scribe', tag: 'Librarian', name: 'Marion the Librarian',
+      x: 5, y: 2, mon: 'librarian', tag: 'Librarian', name: 'Marion the Librarian',
       role: 'Keeper of the Ledger Library',
       lines: [
         'A quick word before you set off — read the signposts you pass; they mark each region gate.',
@@ -97,7 +94,7 @@
       ]
     },
     scribe: {
-      x: 11, y: 2, mon: 'npc-scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
+      x: 11, y: 2, mon: 'fox_scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
       role: 'Keeper of the Ledger Forest',
       lines: [
         'Heading into the Ledger Forest? Mind the Ledger Drake — it quizzes debits and credits.',
@@ -107,7 +104,7 @@
       ]
     },
     warden: {
-      x: 9, y: 8, mon: 'npc-warden', tag: 'Reconciler', name: 'Vex the Warden',
+      x: 9, y: 8, mon: 'badger_judge', tag: 'Reconciler', name: 'Vex the Warden',
       role: 'Guardian of the Control Cavern',
       lines: [
         'The Control Cavern is dark with errors and suspense accounts. The Reconciliation Golem waits within.',
@@ -117,7 +114,7 @@
       ]
     },
     clerk: {
-      x: 11, y: 14, mon: 'npc-clerk', tag: 'Cost Clerk', name: 'Cog the Clerk',
+      x: 11, y: 14, mon: 'mole_clerk', tag: 'Cost Clerk', name: 'Cog the Clerk',
       role: 'Foreman of the Costing Factory',
       lines: [
         'The Costing Factory runs hot! The Costing Chimera tests how costs behave.',
@@ -127,7 +124,7 @@
       ]
     },
     apprentice: {
-      x: 5, y: 14, mon: 'npc-clerk', tag: 'Apprentice', name: 'Nib the Apprentice',
+      x: 5, y: 14, mon: 'apprentice', tag: 'Apprentice', name: 'Nib the Apprentice',
       role: 'Costing Factory Apprentice',
       lines: [
         'New here? I sweep the Costing Factory floor while Cog handles the big sums.',
@@ -136,7 +133,7 @@
       ]
     },
     mayor: {
-      x: 10, y: 20, mon: 'npc-mayor', tag: 'Mayor', name: 'Mayor Sterling',
+      x: 10, y: 20, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
       role: 'Head of Enterprise Town',
       lines: [
         'Welcome to Enterprise Town! The Enterprise Griffin guards knowledge of business and ethics.',
@@ -146,7 +143,7 @@
       ]
     },
     penny: {
-      x: 13, y: 8, mon: 'npc-merchant', tag: 'Trader', name: 'Penny the Trader',
+      x: 13, y: 8, mon: 'cat_merchant', tag: 'Trader', name: 'Penny the Trader',
       role: 'Travelling Potion Merchant',
       gift: 'potion',
       lines: [
@@ -198,9 +195,9 @@
     return runtimeData;
   }
   function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
-  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; if (d.mapV !== 3) { d.pos = { x: START_POS.x, y: START_POS.y }; d.companionPos = { x: START_POS.x, y: START_POS.y }; d.mapV = 3; } /* one-time: drop saved positions onto the new route (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; if (!d.companionPos || typeof d.companionPos.x !== 'number' || typeof d.companionPos.y !== 'number') d.companionPos = { x: d.pos.x, y: d.pos.y }; d.companionPos.x = Math.max(0, Math.min(MAP_W - 1, d.companionPos.x)); d.companionPos.y = Math.max(0, Math.min(MAP_H - 1, d.companionPos.y)); return d; }
+  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.npcDir = d.npcDir || {}; if (d.mapV !== 4) { d.pos = { x: START_POS.x, y: START_POS.y }; d.mapV = 4; } /* v4: player-as-hero, companions removed; reset onto the route (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
-  function starter(d) { return STARTERS[d.starter] || null; }
+  function fighter() { return FIGHTER; }
   function boss(id) { return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
   function qs(id) { return (window.ALL_QUESTIONS || []).filter(function (q) { return q.topic === id && Array.isArray(q.opts) && q.opts.length >= 4 && typeof q.ans === 'number'; }); }
   function present(q) { var ord = shuffle(q.opts.map(function (_, i) { return i; })); return { q: q.q, topic: q.topic, opts: ord.map(function (i) { return q.opts[i]; }), ans: ord.indexOf(q.ans), exp: q.exp || '' }; }
@@ -225,7 +222,6 @@
       var x = ev.target.closest('button');
       if (!x || !el.contains(x)) return;
       if (x.hasAttribute('data-close')) return close();
-      if (x.hasAttribute('data-starter')) return chooseStarter(x.getAttribute('data-starter'));
       if (x.hasAttribute('data-opt')) return answer(+x.getAttribute('data-opt'), x.getAttribute('data-move'));
       if (x.hasAttribute('data-region')) return tryRegion(x.getAttribute('data-region'));
       if (x.hasAttribute('data-node')) return tryRegion(x.getAttribute('data-node'));
@@ -243,20 +239,6 @@
     };
   }
   function close() { var el = document.getElementById('rpgOverlay'); if (el) el.remove(); }
-
-  function chooseStarter(id) {
-    if (!STARTERS[id]) return;
-    var d = load();
-    d.starter = id;
-    if (!d.xp) d.xp = 10;
-    d.inventory = d.inventory || { potion: 1 };
-    save(d);
-    landing(d);
-  }
-  function starterScreen(d) {
-    var cards = Object.keys(STARTERS).map(function (k) { var c = STARTERS[k]; return '<button class="rpg-starter-card" data-starter="' + k + '" type="button"><span class="rpg-starter-icon" data-mon="' + k + '"></span><strong>' + esc(c.name) + '</strong><small>' + esc(c.type) + ' type</small><em>' + esc(c.move1) + '</em></button>'; }).join('');
-    mount('<section class="rpg-panel rpg-start" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><h2>Choose your study companion</h2><p>This makes the mode feel more like an RPG. The companion levels up, learns stronger attacks, and earns badges by defeating topic bosses.</p><div class="rpg-starter-grid">' + cards + '</div></section>');
-  }
 
   function nodeDistance(pos, id) { var n = MAP_NODES[id]; return Math.abs(pos.x - n.x) + Math.abs(pos.y - n.y); }
   function nearestRegion(d) { var best = null; BOSSES.forEach(function (b) { var dist = nodeDistance(d.pos, b.id); if (!best || dist < best.dist) best = { boss: b, dist: dist }; }); return best; }
@@ -279,7 +261,6 @@
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
-    var compHere = d.companionPos && d.companionPos.x === x && d.companionPos.y === y;
     var b = bossAt(x, y);
     var npc = npcAt(x, y);
     var bl = blockerAt(x, y);
@@ -293,8 +274,7 @@
       : (npc ? '<span class="rpg-location-label rpg-npc-label">' + esc(npc.tag) + '</span>'
       : (blocked ? '<span class="rpg-location-label rpg-lock-label">🔒 ' + esc(bl.label) + '</span>' : ''));
     var contents = '<span class="rpg-tile-art" aria-hidden="true"></span>' + label;
-    if (npc) contents += '<span class="rpg-npc-sprite" data-mon="' + esc(npc.mon) + '" aria-hidden="true"></span>';
-    if (compHere) contents += '<span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"></span>';
+    if (npc) contents += '<span class="rpg-npc-sprite" data-mon="' + esc(npc.mon) + '" data-dir="' + esc((d.npcDir && d.npcDir[npc.id]) || 'down') + '" aria-hidden="true"></span>';
     if (here) contents += '<span class="rpg-player-sprite" data-dir="' + esc(d.dir || 'down') + '" aria-label="Player"></span>';
     return '<button class="' + cls + '" type="button"' + attr + ' aria-label="' + aria + '">' + contents + '</button>';
   }
@@ -353,7 +333,7 @@
     var overlay = document.getElementById('rpgOverlay');
     var map = overlay && overlay.querySelector('.rpg-pixel-map');
     if (!map || map.children.length !== MAP_W * MAP_H) return landing(d, message);
-    var c = starter(d); if (!c) return landing(d, message);
+    var c = fighter();
     var seen = {};
     (dirty || []).forEach(function (p) {
       if (!p) return;
@@ -370,17 +350,15 @@
   }
   function movePlayer(dir) {
     if (dlg) return;                 // movement is locked while an NPC textbox is open
-    var d = load(); if (!starter(d)) return landing(d);
+    var d = load();
     var dx = 0, dy = 0;
     if (dir === 'up') dy = -1; if (dir === 'down') dy = 1; if (dir === 'left') dx = -1; if (dir === 'right') dx = 1;
     var nx = d.pos.x + dx, ny = d.pos.y + dy;
     if (!passable(nx, ny)) { d.dir = dir; save(d); moveRender(d, [], 'That way is blocked — follow the open path.'); return; }
-    var oldPlayer = { x: d.pos.x, y: d.pos.y };            // player's current tile (companion will step here)
-    var oldComp = { x: d.companionPos.x, y: d.companionPos.y }; // companion's current tile (will clear)
-    d.companionPos = { x: d.pos.x, y: d.pos.y };
+    var oldPlayer = { x: d.pos.x, y: d.pos.y };
     d.dir = dir;
     d.pos = { x: nx, y: ny }; save(d);
-    moveRender(d, [oldPlayer, oldComp, { x: nx, y: ny }]);
+    moveRender(d, [oldPlayer, { x: nx, y: ny }]);
   }
   function interact() {
     if (dlg) return;                 // the textbox handles its own advance/close
@@ -397,15 +375,25 @@
     if (Math.abs(d.pos.x - n.x) + Math.abs(d.pos.y - n.y) <= 1) return talk(id);
     landing(d, 'Walk closer to ' + n.name + ' before talking.'); cameraSoon(false);
   }
-  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; d.companionPos = { x: START_POS.x, y: START_POS.y }; d.dir = 'down'; save(d); landing(d, 'Player returned to the start of the route.'); cameraSoon(); }
+  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; d.dir = 'down'; save(d); landing(d, 'Player returned to the start of the route.'); cameraSoon(); }
 
   // NPC dialogue shows as an old-Final-Fantasy floating textbox at the bottom of
   // the screen, layered over the still-visible world map (not a fullscreen panel).
   function talk(id) {
-    if (!NPCS[id]) return;
-    if (!document.querySelector('.rpg-world')) landing(load()); // make sure the map is shown behind the box
+    var n = NPCS[id]; if (!n) return;
+    var d = load();
+    if (!document.querySelector('.rpg-world')) landing(d); // make sure the map is shown behind the box
+    // turn the NPC to face the player, then repaint just that tile so it looks over
+    var dir = faceDir(n.x, n.y, d.pos.x, d.pos.y);
+    if (d.npcDir[id] !== dir) { d.npcDir[id] = dir; save(d); moveRender(d, [{ x: n.x, y: n.y }]); }
     dlg = { id: id, i: 0 };
     renderTextbox();
+  }
+  // direction from (fx,fy) toward (tx,ty); vertical wins ties, defaults to down
+  function faceDir(fx, fy, tx, ty) {
+    var dx = tx - fx, dy = ty - fy;
+    if (Math.abs(dy) >= Math.abs(dx)) return dy < 0 ? 'up' : 'down';
+    return dx < 0 ? 'left' : 'right';
   }
   function dlgNext() {
     if (!dlg) return; var n = NPCS[dlg.id]; if (!n) return closeTextbox();
@@ -446,7 +434,7 @@
 
   function landing(forcedData, message) {
     dlg = null;
-    var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
+    var d = normalise(forcedData || load()), c = fighter();
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
     var prompt = worldPrompt(d, message);
     mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
@@ -455,12 +443,12 @@
   }
 
   function region(id) {
-    var d = load(), b = boss(id), c = starter(d), count = qs(id).length;
-    mount('<section class="rpg-panel rpg-region" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-region-hero rpg-region-' + esc(b.scene) + '"><span class="rpg-region-art"></span><div><h2>' + esc(b.region) + '</h2><p>' + esc(b.desc) + '</p></div></div><div class="rpg-encounter"><p><strong>Wild encounter:</strong> A ' + esc(b.wild) + ' blocks the route.</p><p><strong>Gym boss:</strong> ' + b.icon + ' ' + esc(b.name) + ' guards the ' + esc(b.badge) + '.</p><p><strong>Your companion:</strong> ' + c.icon + ' ' + esc(c.name) + ', Lv ' + lvl(d.xp) + '.</p><p><strong>Question pool:</strong> ' + count + ' eligible questions.</p></div><div class="rpg-actions"><button class="rpg-next" data-boss="' + b.id + '" type="button">Challenge ' + esc(b.name) + '</button><button class="rpg-secondary" data-landing type="button">Back to world map</button></div></section>');
+    var d = load(), b = boss(id), c = fighter(), count = qs(id).length;
+    mount('<section class="rpg-panel rpg-region" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-region-hero rpg-region-' + esc(b.scene) + '"><span class="rpg-region-art"></span><div><h2>' + esc(b.region) + '</h2><p>' + esc(b.desc) + '</p></div></div><div class="rpg-encounter"><p><strong>Wild encounter:</strong> A ' + esc(b.wild) + ' blocks the route.</p><p><strong>Gym boss:</strong> ' + b.icon + ' ' + esc(b.name) + ' guards the ' + esc(b.badge) + '.</p><p><strong>You fight as:</strong> ' + c.icon + ' ' + esc(c.name) + ', Lv ' + lvl(d.xp) + '.</p><p><strong>Question pool:</strong> ' + count + ' eligible questions.</p></div><div class="rpg-actions"><button class="rpg-next" data-boss="' + b.id + '" type="button">Challenge ' + esc(b.name) + '</button><button class="rpg-secondary" data-landing type="button">Back to world map</button></div></section>');
   }
 
   function start(id) {
-    var d = load(), c = starter(d), b = boss(id), pool = qs(id); if (!pool.length || !c) return;
+    var d = load(), c = fighter(), b = boss(id), pool = qs(id); if (!pool.length) return;
     st = { b: b, c: c, deck: shuffle(pool).slice(0, Math.min(LEN, pool.length)).map(present), i: 0, player: 34 + lvl(d.xp), enemy: 34, maxP: 34 + lvl(d.xp), maxE: 34, answered: null, move: '', streak: 0, res: [], log: ['A wild ' + b.wild + ' appeared.', b.name + ' challenged you to an AAT battle.'] };
     battle();
   }

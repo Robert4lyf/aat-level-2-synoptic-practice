@@ -220,5 +220,34 @@ function Canvas:save(path)
 end
 function Canvas:close() self.spr:close() end
 
+-- horizontal mirror -> new canvas (used to make the left-facing pose from right)
+function Canvas:flipH()
+  self.img = self.spr.cels[1].image
+  local out = M.canvas(self.w, self.h)
+  for y=0,self.h-1 do for x=0,self.w-1 do
+    local p=self.img:getPixel(x,y)
+    if app.pixelColor.rgbaA(p)>0 then out.img:drawPixel(self.w-1-x, y, p) end
+  end end
+  return out
+end
+
+-- compose same-height canvases side by side -> new wide strip canvas.
+-- Used to pack animation/direction frames. Does NOT close the inputs.
+function M.strip(frames)
+  local h=frames[1].h
+  local w=0; for _,f in ipairs(frames) do w=w+f.w end
+  local out=M.canvas(w,h)
+  local ox=0
+  for _,f in ipairs(frames) do
+    f.img=f.spr.cels[1].image
+    for y=0,f.h-1 do for x=0,f.w-1 do
+      local p=f.img:getPixel(x,y)
+      if app.pixelColor.rgbaA(p)>0 then out.img:drawPixel(ox+x,y,p) end
+    end end
+    ox=ox+f.w
+  end
+  return out
+end
+
 M.Canvas = Canvas
 return M

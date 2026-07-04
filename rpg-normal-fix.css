@@ -43,14 +43,20 @@ body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-fs-controls {
   isolation: isolate !important;
 }
 
-#rpgOverlay .rpg-player-tile {
-  z-index: 1 !important;
+/* Tiles holding a character let the tall chibi sprite overflow upward (its head
+   rises above the tile) instead of cropping it; raised so it draws over the
+   tile above. The other ~470 tiles keep paint containment for scroll perf. */
+#rpgOverlay .rpg-player-tile,
+#rpgOverlay .rpg-tile-npc {
+  overflow: visible !important;
+  contain: none !important;
+  z-index: 6 !important;
 }
 
 #rpgOverlay .rpg-player-sprite,
-#rpgOverlay .rpg-companion-sprite {
-  max-width: 100% !important;
-  max-height: 100% !important;
+#rpgOverlay .rpg-npc-sprite {
+  max-width: none !important;
+  max-height: none !important;
   pointer-events: none !important;
 }
 

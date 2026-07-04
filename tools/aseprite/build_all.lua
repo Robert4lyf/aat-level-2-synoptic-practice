@@ -3,5 +3,6 @@
 local DIR = "C:/Users/rober/Documents/aat_app/tools/aseprite/"
 dofile(DIR.."build_tiles.lua")
 dofile(DIR.."build_creatures.lua")
+dofile(DIR.."build_cast.lua")
 dofile(DIR.."build_scenes.lua")
 print("BUILD_ALL_OK")

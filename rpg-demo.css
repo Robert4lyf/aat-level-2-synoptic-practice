@@ -14,16 +14,10 @@
 .rpg-starter-card, .rpg-boss-card { display: grid; gap: 6px; min-height: 150px; padding: 18px; border-radius: 20px; border: 1px solid rgba(148,163,184,.35); background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(241,245,249,.7)); color: inherit; text-align: left; cursor: pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
 .dark .rpg-starter-card, .dark .rpg-boss-card { background: linear-gradient(160deg, rgba(30,41,59,.95), rgba(15,23,42,.88)); }
 .rpg-starter-card:hover, .rpg-boss-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,.18); border-color: rgba(124,58,237,.55); }
-.rpg-starter-icon { display: block; width: 64px; height: 80px; image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 56px 70px; filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
-.rpg-starter-icon[data-mon='cub'] { background-image: url(rpg-assets/char-cub.png); }
-.rpg-starter-icon[data-mon='fox'] { background-image: url(rpg-assets/char-fox.png); }
-.rpg-starter-icon[data-mon='mole'] { background-image: url(rpg-assets/char-mole.png); }
 .rpg-world-head { display: grid; grid-template-columns: 1fr minmax(180px, 240px); gap: 16px; align-items: start; }
 .rpg-trainer-card { padding: 16px; border-radius: 20px; background: linear-gradient(160deg, rgba(124,58,237,.16), rgba(20,184,166,.10)); border: 1px solid rgba(124,58,237,.25); display: grid; gap: 4px; text-align: center; }
-.rpg-companion { display: block; justify-self: center; width: 56px; height: 68px; image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 48px 60px; filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
-.rpg-companion[data-mon='cub'] { background-image: url(rpg-assets/char-cub.png); }
-.rpg-companion[data-mon='fox'] { background-image: url(rpg-assets/char-fox.png); }
-.rpg-companion[data-mon='mole'] { background-image: url(rpg-assets/char-mole.png); }
+.rpg-companion { display: block; justify-self: center; width: 56px; height: 70px; image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 48px 60px; filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+.rpg-companion[data-mon='player'] { background-image: url(rpg-assets/char-player.png); }
 
 /* Pixel-art world map tiles, rendered from rpg-assets/tile-*.png sprites. */
 .rpg-map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; margin-top: 16px; }
@@ -135,41 +129,58 @@
    per step, so the finite animation plays once (step A → step B → rest on the
    standing frame) and pairs with the vertical hop. Each sheet is 3×32px frames;
    background-size:300% shows one frame, animated via background-position. */
-.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 46.9%; height: auto; aspect-ratio: 30 / 38; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: 0% bottom; background-size: 300% 100%; background-image: url(rpg-assets/char-player-down.png); filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgPlayerWalk .36s steps(1, jump-end) 1 forwards, rpgHop .36s ease-out 1; pointer-events: none; }
+.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 100%; height: auto; aspect-ratio: 32 / 40; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: 0% bottom; background-size: 200% 100%; background-image: url(rpg-assets/char-player-down.png); filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgIdleBlink 3.4s step-end infinite, rpgHop .36s ease-out 1; pointer-events: none; }
 .rpg-player-sprite[data-dir='down'] { background-image: url(rpg-assets/char-player-down.png); }
 .rpg-player-sprite[data-dir='up'] { background-image: url(rpg-assets/char-player-up.png); }
 .rpg-player-sprite[data-dir='left'] { background-image: url(rpg-assets/char-player-left.png); }
 .rpg-player-sprite[data-dir='right'] { background-image: url(rpg-assets/char-player-right.png); }
-@keyframes rpgPlayerWalk { 0% { background-position: 50% bottom; } 50% { background-position: 100% bottom; } 100% { background-position: 0% bottom; } }
-.rpg-companion-sprite { position: absolute; z-index: 7; left: 50%; top: 50%; width: 37.5%; height: auto; aspect-ratio: 24 / 30; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 100% 100%; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); animation: rpgHop .32s ease-out 1; pointer-events: none; }
-.rpg-companion-cub { background-image: url(rpg-assets/char-cub.png); }
-.rpg-companion-fox { background-image: url(rpg-assets/char-fox.png); }
-.rpg-companion-mole { background-image: url(rpg-assets/char-mole.png); }
+/* 2-frame idle: frame0 mostly, a quick blink on frame1 (right half of the strip). */
+@keyframes rpgIdleBlink { 0% { background-position: 0% bottom; } 92% { background-position: 0% bottom; } 96% { background-position: 100% bottom; } 100% { background-position: 0% bottom; } }
+@media (prefers-reduced-motion: reduce) { .rpg-player-sprite, .rpg-npc-sprite { animation: none !important; } }
 @keyframes rpgHop { 0% { transform: translate(-50%, -68%); } 45% { transform: translate(-50%, -80%); } 100% { transform: translate(-50%, -68%); } }
 
 /* Townsfolk NPCs standing on the map, and their name tags. */
-.rpg-npc-sprite { position: absolute; z-index: 7; left: 50%; top: 50%; width: 40.6%; height: auto; aspect-ratio: 26 / 32; transform: translate(-50%, -70%); image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 100% 100%; filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); pointer-events: none; animation: rpgNpcIdle 2.6s ease-in-out infinite; }
-.rpg-npc-sprite[data-mon='npc-quill'] { background-image: url(rpg-assets/npc-quill.png); }
-.rpg-npc-sprite[data-mon='npc-scribe'] { background-image: url(rpg-assets/npc-scribe.png); }
-.rpg-npc-sprite[data-mon='npc-warden'] { background-image: url(rpg-assets/npc-warden.png); }
-.rpg-npc-sprite[data-mon='npc-clerk'] { background-image: url(rpg-assets/npc-clerk.png); }
-.rpg-npc-sprite[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
-.rpg-npc-sprite[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
+.rpg-npc-sprite { position: absolute; z-index: 7; left: 50%; top: 50%; width: 100%; height: auto; aspect-ratio: 32 / 40; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: 0% bottom; background-size: 200% 100%; filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); pointer-events: none; animation: rpgIdleBlink 3.4s step-end infinite; }
+/* 4-directional NPC sprites (turn to face the player when talked to). */
+.rpg-npc-sprite[data-mon='professor'][data-dir='down']    { background-image: url(rpg-assets/npc-professor-down.png); }
+.rpg-npc-sprite[data-mon='professor'][data-dir='up']      { background-image: url(rpg-assets/npc-professor-up.png); }
+.rpg-npc-sprite[data-mon='professor'][data-dir='left']    { background-image: url(rpg-assets/npc-professor-left.png); }
+.rpg-npc-sprite[data-mon='professor'][data-dir='right']   { background-image: url(rpg-assets/npc-professor-right.png); }
+.rpg-npc-sprite[data-mon='librarian'][data-dir='down']    { background-image: url(rpg-assets/npc-librarian-down.png); }
+.rpg-npc-sprite[data-mon='librarian'][data-dir='up']      { background-image: url(rpg-assets/npc-librarian-up.png); }
+.rpg-npc-sprite[data-mon='librarian'][data-dir='left']    { background-image: url(rpg-assets/npc-librarian-left.png); }
+.rpg-npc-sprite[data-mon='librarian'][data-dir='right']   { background-image: url(rpg-assets/npc-librarian-right.png); }
+.rpg-npc-sprite[data-mon='fox_scribe'][data-dir='down']   { background-image: url(rpg-assets/npc-fox_scribe-down.png); }
+.rpg-npc-sprite[data-mon='fox_scribe'][data-dir='up']     { background-image: url(rpg-assets/npc-fox_scribe-up.png); }
+.rpg-npc-sprite[data-mon='fox_scribe'][data-dir='left']   { background-image: url(rpg-assets/npc-fox_scribe-left.png); }
+.rpg-npc-sprite[data-mon='fox_scribe'][data-dir='right']  { background-image: url(rpg-assets/npc-fox_scribe-right.png); }
+.rpg-npc-sprite[data-mon='badger_judge'][data-dir='down'] { background-image: url(rpg-assets/npc-badger_judge-down.png); }
+.rpg-npc-sprite[data-mon='badger_judge'][data-dir='up']   { background-image: url(rpg-assets/npc-badger_judge-up.png); }
+.rpg-npc-sprite[data-mon='badger_judge'][data-dir='left'] { background-image: url(rpg-assets/npc-badger_judge-left.png); }
+.rpg-npc-sprite[data-mon='badger_judge'][data-dir='right']{ background-image: url(rpg-assets/npc-badger_judge-right.png); }
+.rpg-npc-sprite[data-mon='mole_clerk'][data-dir='down']   { background-image: url(rpg-assets/npc-mole_clerk-down.png); }
+.rpg-npc-sprite[data-mon='mole_clerk'][data-dir='up']     { background-image: url(rpg-assets/npc-mole_clerk-up.png); }
+.rpg-npc-sprite[data-mon='mole_clerk'][data-dir='left']   { background-image: url(rpg-assets/npc-mole_clerk-left.png); }
+.rpg-npc-sprite[data-mon='mole_clerk'][data-dir='right']  { background-image: url(rpg-assets/npc-mole_clerk-right.png); }
+.rpg-npc-sprite[data-mon='apprentice'][data-dir='down']   { background-image: url(rpg-assets/npc-apprentice-down.png); }
+.rpg-npc-sprite[data-mon='apprentice'][data-dir='up']     { background-image: url(rpg-assets/npc-apprentice-up.png); }
+.rpg-npc-sprite[data-mon='apprentice'][data-dir='left']   { background-image: url(rpg-assets/npc-apprentice-left.png); }
+.rpg-npc-sprite[data-mon='apprentice'][data-dir='right']  { background-image: url(rpg-assets/npc-apprentice-right.png); }
+.rpg-npc-sprite[data-mon='mayor'][data-dir='down']        { background-image: url(rpg-assets/npc-mayor-down.png); }
+.rpg-npc-sprite[data-mon='mayor'][data-dir='up']          { background-image: url(rpg-assets/npc-mayor-up.png); }
+.rpg-npc-sprite[data-mon='mayor'][data-dir='left']        { background-image: url(rpg-assets/npc-mayor-left.png); }
+.rpg-npc-sprite[data-mon='mayor'][data-dir='right']       { background-image: url(rpg-assets/npc-mayor-right.png); }
+.rpg-npc-sprite[data-mon='cat_merchant'][data-dir='down'] { background-image: url(rpg-assets/npc-cat_merchant-down.png); }
+.rpg-npc-sprite[data-mon='cat_merchant'][data-dir='up']   { background-image: url(rpg-assets/npc-cat_merchant-up.png); }
+.rpg-npc-sprite[data-mon='cat_merchant'][data-dir='left'] { background-image: url(rpg-assets/npc-cat_merchant-left.png); }
+.rpg-npc-sprite[data-mon='cat_merchant'][data-dir='right']{ background-image: url(rpg-assets/npc-cat_merchant-right.png); }
 .rpg-npc-label { background: rgba(37,99,235,.82); border-color: rgba(191,219,254,.6); }
 /* Route blocker: a fenced-off connector locked until the previous badge is earned. */
 .rpg-lock-label { background: rgba(153,27,27,.9); border-color: rgba(254,202,202,.7); }
 .rpg-locked { filter: saturate(.72) brightness(.92); }
-@keyframes rpgNpcIdle { 0%,100% { transform: translate(-50%, -70%); } 50% { transform: translate(-50%, -74%); } }
 .rpg-tile-npc { cursor: pointer; }
 .rpg-tile-npc:hover { outline: 2px solid rgba(191,219,254,.95); }
 
-/* Larger NPC portraits reuse the battle sprite sizing. */
-.rpg-sprite[data-mon='npc-quill'] { background-image: url(rpg-assets/npc-quill.png); }
-.rpg-sprite[data-mon='npc-scribe'] { background-image: url(rpg-assets/npc-scribe.png); }
-.rpg-sprite[data-mon='npc-warden'] { background-image: url(rpg-assets/npc-warden.png); }
-.rpg-sprite[data-mon='npc-clerk'] { background-image: url(rpg-assets/npc-clerk.png); }
-.rpg-sprite[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
-.rpg-sprite[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
 
 /* Final-Fantasy-style floating dialogue textbox — overlays the world map at the
    bottom of the screen (works in both normal and fullscreen modes). Sits above
@@ -179,12 +190,14 @@
 .dark .rpg-textbox-inner { background: #3a2408; color: #fef3c7; }
 .rpg-textbox-portrait { grid-row: 1 / span 2; align-self: end; width: 54px; height: 62px; border-radius: 12px; background-color: rgba(146,64,14,.14); border: 3px solid rgba(146,64,14,.4); background-repeat: no-repeat; background-position: center bottom; background-size: 84%; image-rendering: pixelated; }
 .dark .rpg-textbox-portrait { background-color: rgba(254,243,199,.12); border-color: rgba(254,243,199,.35); }
-.rpg-textbox-portrait[data-mon='npc-quill'] { background-image: url(rpg-assets/npc-quill.png); }
-.rpg-textbox-portrait[data-mon='npc-scribe'] { background-image: url(rpg-assets/npc-scribe.png); }
-.rpg-textbox-portrait[data-mon='npc-warden'] { background-image: url(rpg-assets/npc-warden.png); }
-.rpg-textbox-portrait[data-mon='npc-clerk'] { background-image: url(rpg-assets/npc-clerk.png); }
-.rpg-textbox-portrait[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
-.rpg-textbox-portrait[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
+.rpg-textbox-portrait[data-mon='professor'] { background-image: url(rpg-assets/npc-professor.png); }
+.rpg-textbox-portrait[data-mon='librarian'] { background-image: url(rpg-assets/npc-librarian.png); }
+.rpg-textbox-portrait[data-mon='fox_scribe'] { background-image: url(rpg-assets/npc-fox_scribe.png); }
+.rpg-textbox-portrait[data-mon='badger_judge'] { background-image: url(rpg-assets/npc-badger_judge.png); }
+.rpg-textbox-portrait[data-mon='mole_clerk'] { background-image: url(rpg-assets/npc-mole_clerk.png); }
+.rpg-textbox-portrait[data-mon='apprentice'] { background-image: url(rpg-assets/npc-apprentice.png); }
+.rpg-textbox-portrait[data-mon='mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
+.rpg-textbox-portrait[data-mon='cat_merchant'] { background-image: url(rpg-assets/npc-cat_merchant.png); }
 .rpg-textbox-name { font-weight: 900; font-size: 1rem; margin-bottom: 3px; }
 .rpg-textbox-line { font-weight: 700; line-height: 1.45; font-size: clamp(1rem, 2.6vw, 1.12rem); min-height: 2.9em; }
 .rpg-textbox-controls { grid-row: 1 / span 2; display: flex; flex-direction: column; align-items: center; gap: 7px; }
@@ -226,9 +239,7 @@
 .rpg-sprite { width: 100%; height: clamp(72px, 18vw, 128px); background-repeat: no-repeat; background-position: center; background-size: contain; image-rendering: pixelated; filter: drop-shadow(0 12px 12px rgba(0,0,0,.25)); }
 .rpg-sprite.ally { transform: scaleX(-1); }
 .rpg-sprite.enemy { animation: rpgFloat 2.4s ease-in-out infinite; }
-.rpg-sprite[data-mon='cub'] { background-image: url(rpg-assets/char-cub.png); }
-.rpg-sprite[data-mon='fox'] { background-image: url(rpg-assets/char-fox.png); }
-.rpg-sprite[data-mon='mole'] { background-image: url(rpg-assets/char-mole.png); }
+.rpg-sprite[data-mon='player'] { background-image: url(rpg-assets/char-player.png); }
 .rpg-sprite[data-mon='itbk'] { background-image: url(rpg-assets/boss-itbk.png); }
 .rpg-sprite[data-mon='pobc'] { background-image: url(rpg-assets/boss-pobc.png); }
 .rpg-sprite[data-mon='poc'] { background-image: url(rpg-assets/boss-poc.png); }
