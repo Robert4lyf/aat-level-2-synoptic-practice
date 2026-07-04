@@ -1,0 +1,183 @@
+/* Ledger Legends fullscreen map controls */
+body.rpg-map-fullscreen-body {
+  overflow: hidden !important;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen {
+  padding: 0 !important;
+  background: #0b1220 !important;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-panel.rpg-world {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: #0b1220 !important;
+  box-shadow: none !important;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-world-head,
+#rpgOverlay.rpg-map-fullscreen .rpg-badges,
+#rpgOverlay.rpg-map-fullscreen .rpg-map-side,
+#rpgOverlay.rpg-map-fullscreen .rpg-close {
+  display: none !important;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-map-layout {
+  display: block !important;
+  margin: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map-wrap {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: #1a2a18 !important;
+  box-shadow: none !important;
+  display: grid !important;
+  place-items: center !important;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map {
+  width: min(100vw, calc(100dvh * 1.333)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  border-width: 4px !important;
+  box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d !important;
+  transform: scale(1.08);
+  transform-origin: center center;
+}
+
+.rpg-fs-controls {
+  display: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-controls {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  pointer-events: none;
+  touch-action: none;
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy {
+  position: fixed;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  display: grid;
+  gap: 8px;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad {
+  left: max(18px, env(safe-area-inset-left));
+  grid-template-columns: repeat(3, 58px);
+  grid-template-rows: repeat(3, 58px);
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy {
+  right: max(18px, env(safe-area-inset-right));
+  grid-template-columns: repeat(2, 58px);
+  grid-template-rows: repeat(2, 58px);
+  transform: rotate(45deg);
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button {
+  transform: rotate(-45deg);
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit {
+  border: 2px solid rgba(255,255,255,.38);
+  background: rgba(15, 23, 42, .48);
+  color: rgba(255,255,255,.92);
+  border-radius: 999px;
+  font-weight: 1000;
+  font-size: 1.05rem;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.28), inset 0 0 0 2px rgba(255,255,255,.06);
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:active,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:active,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:active {
+  transform: translateY(2px) scale(.97);
+  background: rgba(59, 130, 246, .62);
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:active {
+  transform: rotate(-45deg) translateY(2px) scale(.97);
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  width: 46px;
+  height: 46px;
+  font-size: 1.55rem;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-hint {
+  position: fixed;
+  top: max(18px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(15,23,42,.46);
+  color: rgba(255,255,255,.9);
+  font-size: .78rem;
+  font-weight: 800;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 520px) {
+  #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad {
+    grid-template-columns: repeat(3, 50px);
+    grid-template-rows: repeat(3, 50px);
+    gap: 7px;
+  }
+
+  #rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy {
+    grid-template-columns: repeat(2, 50px);
+    grid-template-rows: repeat(2, 50px);
+    gap: 7px;
+  }
+
+  #rpgOverlay.rpg-map-fullscreen .rpg-fs-hint {
+    display: none;
+  }
+}
