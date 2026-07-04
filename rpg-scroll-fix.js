@@ -20,6 +20,7 @@
   function full() { var o = ov(); return !!(o && o.classList.contains('rpg-map-fullscreen')); }
   function pnl() { var o = ov(); return o ? o.querySelector('.rpg-panel') : null; }
   function wrap() { var o = ov(); return o ? o.querySelector('.rpg-pixel-map-wrap') : null; }
+  function playerTile() { var o = ov(); return o ? o.querySelector('.rpg-player-tile') : null; }
   function fsExit(t) { return t && t.closest ? t.closest('#rpgOverlay [data-fs-exit]') : null; }
   function isMoveControl(t) { return !!(t && t.closest && t.closest('#rpgOverlay [data-dir], #rpgOverlay [data-interact]')); }
 
@@ -83,26 +84,34 @@
     return true;
   }
 
+  function centerOnPlayer() {
+    var w = wrap();
+    var p = playerTile();
+    if (!w || !p) return false;
+    var wr = w.getBoundingClientRect();
+    var pr = p.getBoundingClientRect();
+    var left = w.scrollLeft + (pr.left - wr.left) - (w.clientWidth / 2) + (pr.width / 2);
+    var top = w.scrollTop + (pr.top - wr.top) - (w.clientHeight / 2) + (pr.height / 2);
+    w.scrollLeft = Math.max(0, left);
+    w.scrollTop = Math.max(0, top);
+    return true;
+  }
+
   function keepMap() {
     var p = pnl();
     var w = wrap();
     if (!p || !w) return;
-    if (desiredFullscreen) {
-      applyFullscreenClass();
-      p.scrollTop = 0;
-      w.scrollLeft = 0;
-    } else {
-      p.scrollTop = Math.max(0, w.offsetTop - 12);
-      if (w.scrollWidth > w.clientWidth) w.scrollLeft = Math.max(0, (w.scrollWidth - w.clientWidth) / 2);
-    }
+    if (desiredFullscreen) applyFullscreenClass();
+    if (!desiredFullscreen && p) p.scrollTop = Math.max(0, w.offsetTop - 12);
+    centerOnPlayer();
   }
 
   function keepSoon() {
     requestAnimationFrame(function () { requestAnimationFrame(keepMap); });
-    setTimeout(keepMap, 30);
-    setTimeout(keepMap, 90);
-    setTimeout(keepMap, 180);
-    setTimeout(keepMap, 320);
+    setTimeout(keepMap, 20);
+    setTimeout(keepMap, 60);
+    setTimeout(keepMap, 130);
+    setTimeout(keepMap, 260);
   }
 
   function blurActive() {
@@ -192,7 +201,7 @@
   document.addEventListener('keydown', function (e) {
     if (!world()) return;
     if (e.key === 'Escape' && (desiredFullscreen || full())) { e.preventDefault(); exit(false); return; }
-    if (desiredFullscreen) keepSoon();
+    keepSoon();
   }, { capture: true });
 
   if (window.MutationObserver) {
@@ -203,7 +212,7 @@
         return;
       }
       if (missingOverlayTimer) { clearTimeout(missingOverlayTimer); missingOverlayTimer = null; }
-      if (desiredFullscreen || Date.now() - justMovedAt < 900) keepSoon();
+      keepSoon();
     }).observe(document.body, { childList: true, subtree: true });
   }
 
