@@ -1,0 +1,4 @@
+# Generated render output and local backups — not source.
+out/
+_orig_backup/
+gallery.html
