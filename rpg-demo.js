@@ -17,6 +17,23 @@
     { id: 'poc', icon: '🧪', name: 'Costing Chimera', region: 'Costing Factory', badge: 'Costing Badge', type: 'Costing', wild: 'Overhead Imp', scene: '🏭', desc: 'Cost behaviour, inventory, OAR and costing systems.' },
     { id: 'besy', icon: '🦅', name: 'Enterprise Griffin', region: 'Enterprise Town', badge: 'Enterprise Badge', type: 'Business', wild: 'Contract Sprite', scene: '🏙️', desc: 'Business structures, law, contracts and stakeholders.' }
   ];
+
+  var MAP_W = 9;
+  var MAP_H = 7;
+  var START_POS = { x: 4, y: 3 };
+  var MAP_NODES = {
+    itbk: { x: 1, y: 1, tile: '🌲' },
+    pobc: { x: 6, y: 1, tile: '⛰️' },
+    poc: { x: 2, y: 5, tile: '🏭' },
+    besy: { x: 7, y: 5, tile: '🏙️' }
+  };
+  var DECOR = {
+    '0,0': '🌳', '2,0': '🌳', '5,0': '🪨', '8,0': '🌳',
+    '0,2': '🌿', '3,2': '📘', '7,2': '🪨',
+    '1,3': '🌿', '5,3': '💰', '8,3': '🌳',
+    '4,4': '📒', '0,5': '🌳', '5,5': '🌿', '8,6': '🌳'
+  };
+
   var st = null;
   var runtimeData = null;
 
@@ -33,7 +50,7 @@
     return runtimeData;
   }
   function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
-  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; return d; }
+  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function starter(d) { return STARTERS[d.starter] || null; }
   function boss(id) { return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
@@ -64,7 +81,11 @@
       if (!x || !el.contains(x)) return;
       if (x.hasAttribute('data-close')) return close();
       if (x.hasAttribute('data-starter')) return chooseStarter(x.getAttribute('data-starter'));
-      if (x.hasAttribute('data-region')) return region(x.getAttribute('data-region'));
+      if (x.hasAttribute('data-region')) return tryRegion(x.getAttribute('data-region'));
+      if (x.hasAttribute('data-node')) return tryRegion(x.getAttribute('data-node'));
+      if (x.hasAttribute('data-move')) return movePlayer(x.getAttribute('data-move'));
+      if (x.hasAttribute('data-interact')) return interact();
+      if (x.hasAttribute('data-reset-pos')) return resetPosition();
       if (x.hasAttribute('data-boss')) return start(x.getAttribute('data-boss'));
       if (x.hasAttribute('data-opt')) return answer(+x.getAttribute('data-opt'), x.getAttribute('data-move'));
       if (x.hasAttribute('data-next')) return next();
@@ -89,11 +110,89 @@
     mount('<section class="rpg-panel rpg-start" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><h2>Choose your study companion</h2><p>This makes the mode feel more like an RPG. The companion levels up, learns stronger attacks, and earns badges by defeating topic bosses.</p><div class="rpg-starter-grid">' + cards + '</div></section>');
   }
 
-  function landing(forcedData) {
+  function nodeDistance(pos, id) {
+    var n = MAP_NODES[id];
+    return Math.abs(pos.x - n.x) + Math.abs(pos.y - n.y);
+  }
+  function nearestRegion(d) {
+    var best = null;
+    BOSSES.forEach(function (b) {
+      var dist = nodeDistance(d.pos, b.id);
+      if (!best || dist < best.dist) best = { boss: b, dist: dist };
+    });
+    return best;
+  }
+  function canEnter(d, id) { return nodeDistance(d.pos, id) <= 1; }
+  function posKey(x, y) { return x + ',' + y; }
+  function bossAt(x, y) {
+    for (var i = 0; i < BOSSES.length; i++) {
+      var b = BOSSES[i], n = MAP_NODES[b.id];
+      if (n.x === x && n.y === y) return b;
+    }
+    return null;
+  }
+  function tileHtml(x, y, d, c) {
+    var here = d.pos.x === x && d.pos.y === y;
+    var b = bossAt(x, y);
+    var cls = 'rpg-map-tile';
+    var label = '';
+    var inner = DECOR[posKey(x, y)] || '';
+    if (b) {
+      cls += ' rpg-region-tile' + (d.badges[b.id] ? ' cleared' : '');
+      inner = '<span class="rpg-tile-scene">' + esc(MAP_NODES[b.id].tile) + '</span><span class="rpg-tile-boss">' + b.icon + '</span>';
+      label = '<small>' + esc(b.region) + '</small>';
+    }
+    if (here) {
+      cls += ' rpg-player-tile';
+      inner += '<span class="rpg-player" aria-label="Player">🧍</span><span class="rpg-following" aria-label="Companion">' + c.icon + '</span>';
+    }
+    return '<button class="' + cls + '" type="button" ' + (b ? 'data-node="' + b.id + '"' : '') + ' aria-label="Map tile ' + x + ',' + y + '"><span class="rpg-tile-inner">' + inner + '</span>' + label + '</button>';
+  }
+  function mapHtml(d, c) {
+    var out = '';
+    for (var y = 0; y < MAP_H; y++) {
+      for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
+    }
+    return out;
+  }
+  function movePlayer(dir) {
+    var d = load();
+    if (!starter(d)) return landing(d);
+    var dx = 0, dy = 0;
+    if (dir === 'up') dy = -1;
+    if (dir === 'down') dy = 1;
+    if (dir === 'left') dx = -1;
+    if (dir === 'right') dx = 1;
+    d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x + dx));
+    d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y + dy));
+    save(d);
+    var near = nearestRegion(d);
+    landing(d, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Move next to a region icon and press Interact.');
+  }
+  function interact() {
+    var d = load(), near = nearestRegion(d);
+    if (near && near.dist <= 1) return region(near.boss.id);
+    landing(d, 'No region is close enough. Walk next to one of the map icons first.');
+  }
+  function tryRegion(id) {
+    var d = load();
+    if (canEnter(d, id)) return region(id);
+    var b = boss(id);
+    landing(d, 'Walk closer to ' + b.region + ' before entering.');
+  }
+  function resetPosition() {
+    var d = load();
+    d.pos = { x: START_POS.x, y: START_POS.y };
+    save(d);
+    landing(d, 'Player returned to the central path.');
+  }
+
+  function landing(forcedData, message) {
     var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
-    var map = BOSSES.map(function (b) { var done = d.badges[b.id]; return '<button class="rpg-map-node ' + (done ? 'cleared' : '') + '" data-region="' + b.id + '" type="button"><span class="rpg-region-scene">' + b.scene + '</span><strong>' + esc(b.region) + '</strong><small>' + esc(b.type) + ' region</small><em>' + (done ? 'Badge earned' : 'Boss waiting') + '</em></button>'; }).join('');
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Travel across four AAT regions, defeat topic bosses and collect badges before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion">' + c.icon + '</span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Next evolution: ' + esc(c.evo) + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-path">' + map + '</div><p class="rpg-note">Demo rule: each boss battle uses five real AAT questions from that topic.</p></section>');
+    var near = nearestRegion(d);
+    var prompt = message || (near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Use the on-screen controls or arrow keys to walk around the map.');
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Walk around the AAT world map, enter regions, defeat topic bosses and collect badges before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion">' + c.icon + '</span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-tile-map" role="grid" aria-label="Ledger Legends world map">' + mapHtml(d, c) + '</div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-move="up" aria-label="Move up">▲</button><span></span><button type="button" data-move="left" aria-label="Move left">◀</button><button type="button" data-interact>Interact</button><button type="button" data-move="right" aria-label="Move right">▶</button><span></span><button type="button" data-move="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Tip: stand on or next to a region icon, then press Interact. You can also use arrow keys or WASD.</p></div></div></section>');
   }
 
   function region(id) {
@@ -141,7 +240,17 @@
     mount('<section class="rpg-panel rpg-result" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-hero-icon">' + (won ? '🏆' : '🛡️') + '</div><h2>' + (won ? esc(st.b.badge) + ' earned' : 'You escaped to revise') + '</h2><p>' + esc(st.b.name) + ': ' + n + '/' + st.deck.length + ' correct · +' + (won ? 45 : 15) + ' XP · Potion found.</p><div class="rpg-profile"><span>' + esc(st.c.name) + ' Lv ' + lvl(d.xp) + '</span><span>Total XP ' + d.xp + '</span><span>' + Object.keys(d.badges).length + '/4 badges</span></div><div class="rpg-actions"><button class="rpg-next" data-retry="' + st.b.id + '" type="button">Rematch boss</button><button class="rpg-secondary" data-landing type="button">World map</button></div><div class="rpg-review">' + review + '</div></section>');
   }
 
-  document.addEventListener('keydown', function (e) { if (!document.getElementById('rpgOverlay')) return; if (e.key === 'Escape') close(); });
+  document.addEventListener('keydown', function (e) {
+    if (!document.getElementById('rpgOverlay')) return;
+    if (e.key === 'Escape') return close();
+    if (!document.querySelector('.rpg-world')) return;
+    var k = e.key.toLowerCase();
+    if (k === 'arrowup' || k === 'w') { e.preventDefault(); return movePlayer('up'); }
+    if (k === 'arrowdown' || k === 's') { e.preventDefault(); return movePlayer('down'); }
+    if (k === 'arrowleft' || k === 'a') { e.preventDefault(); return movePlayer('left'); }
+    if (k === 'arrowright' || k === 'd') { e.preventDefault(); return movePlayer('right'); }
+    if (k === 'enter' || k === ' ') { e.preventDefault(); return interact(); }
+  });
   function init() { inject(); var app = document.getElementById('app'); if (app && window.MutationObserver) new MutationObserver(inject).observe(app, { childList: true, subtree: true }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 }());
