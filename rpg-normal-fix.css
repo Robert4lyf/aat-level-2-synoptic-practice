@@ -1,0 +1,64 @@
+/* Ledger Legends normal-mode layout fixes.
+   Loaded after the RPG styles so normal mode stays document-flow based. */
+
+body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-map-side {
+  position: static !important;
+  inset: auto !important;
+  bottom: auto !important;
+  padding-top: 0 !important;
+  background: transparent !important;
+  align-self: start !important;
+}
+
+body.dark:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-map-side {
+  background: transparent !important;
+}
+
+body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-controls {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  margin: 0 !important;
+}
+
+body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-fs-controls {
+  display: none !important;
+}
+
+#rpgOverlay .rpg-pixel-map-wrap {
+  contain: layout paint !important;
+  isolation: isolate !important;
+  overflow: auto !important;
+}
+
+#rpgOverlay .rpg-pixel-map {
+  contain: paint !important;
+  isolation: isolate !important;
+}
+
+#rpgOverlay .rpg-tile {
+  overflow: hidden !important;
+  contain: paint !important;
+  isolation: isolate !important;
+}
+
+#rpgOverlay .rpg-player-tile {
+  z-index: 1 !important;
+}
+
+#rpgOverlay .rpg-player-sprite,
+#rpgOverlay .rpg-companion-sprite {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 860px) {
+  body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-map-side {
+    position: static !important;
+    bottom: auto !important;
+    padding-top: 0 !important;
+    background: transparent !important;
+  }
+}
