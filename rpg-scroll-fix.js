@@ -7,12 +7,17 @@
   var justMovedAt = 0;
   var missingOverlayTimer = null;
 
-  function loadCss() {
-    if (document.querySelector('link[href="rpg-fullscreen.css"]')) return;
+  function loadOneCss(href) {
+    if (document.querySelector('link[href="' + href + '"]')) return;
     var l = document.createElement('link');
     l.rel = 'stylesheet';
-    l.href = 'rpg-fullscreen.css';
+    l.href = href;
     document.head.appendChild(l);
+  }
+
+  function loadCss() {
+    loadOneCss('rpg-fullscreen.css');
+    loadOneCss('rpg-normal-fix.css');
   }
 
   function ov() { return document.getElementById('rpgOverlay'); }
