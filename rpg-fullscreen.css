@@ -13,7 +13,8 @@ body.rpg-map-fullscreen-body {
   overscroll-behavior: contain;
   border-radius: 24px;
   scrollbar-width: none;
-  scroll-behavior: smooth;
+  /* No smooth scroll: the camera snaps instantly to the player each render.
+     Smooth animation could never finish before the next move re-rendered. */
 }
 
 #rpgOverlay .rpg-pixel-map-wrap::-webkit-scrollbar {

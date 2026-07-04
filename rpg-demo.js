@@ -269,7 +269,11 @@
     for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
     return out;
   }
-  function centerCameraOnPlayer(immediate) {
+  // Synchronous, instant camera centring. Runs in the same task as mount() so the
+  // freshly rebuilt map is scrolled onto the player BEFORE the browser paints —
+  // this is what stops the top-left flash and makes the camera follow. No-ops on
+  // screens without a map (battle/starter/dialogue/region) via the null guard.
+  function centerNow() {
     var overlay = document.getElementById('rpgOverlay');
     if (!overlay) return;
     var viewport = overlay.querySelector('.rpg-pixel-map-wrap');
@@ -279,9 +283,10 @@
     var tileRect = playerTile.getBoundingClientRect();
     var targetLeft = viewport.scrollLeft + (tileRect.left - vpRect.left) - (viewport.clientWidth / 2) + (tileRect.width / 2);
     var targetTop = viewport.scrollTop + (tileRect.top - vpRect.top) - (viewport.clientHeight / 2) + (tileRect.height / 2);
-    viewport.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: immediate ? 'auto' : 'smooth' });
+    viewport.scrollLeft = Math.max(0, targetLeft);
+    viewport.scrollTop = Math.max(0, targetTop);
   }
-  function cameraSoon(immediate) { requestAnimationFrame(function () { centerCameraOnPlayer(immediate); }); setTimeout(function () { centerCameraOnPlayer(immediate); }, 40); }
+  function cameraSoon() { requestAnimationFrame(centerNow); setTimeout(centerNow, 40); }
   function movePlayer(dir) {
     var d = load(); if (!starter(d)) return landing(d);
     var dx = 0, dy = 0;
@@ -337,7 +342,8 @@
     var np = adjacentNpc(d);
     var prompt = message || (np ? esc(NPCS[np.id].name) + ' is beside you. Press Interact to talk.' : (near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Use the D-pad or arrow keys to explore the study town and meet its people.'));
     mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Explore the expanded study town, chat with the townsfolk for exam tips, enter the four topic regions, defeat their bosses and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
-    cameraSoon(true);
+    centerNow();   // snap the camera onto the player before the first paint
+    cameraSoon();  // safety re-centre once late layout (fonts/grid) settles
   }
 
   function region(id) {
