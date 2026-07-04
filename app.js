@@ -6144,11 +6144,20 @@
         else if (mq.addListener) mq.addListener(handler);
       } catch (e) {}
     }
-    // Show a non-intrusive reload nudge when the service worker updates to a new version.
+    // Auto-refresh to the new version when an updated service worker takes control,
+    // so users reliably get the latest code/assets instead of a stale cached build.
     if ('serviceWorker' in navigator) {
+      var hadController = !!navigator.serviceWorker.controller;
+      var reloadingForUpdate = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        // Skip the first-install claim (no previous controller) — only reload on a genuine update.
+        if (reloadingForUpdate || !hadController) return;
+        reloadingForUpdate = true;
+        window.location.reload();
+      });
       navigator.serviceWorker.addEventListener('message', function (event) {
         if (event.data && event.data.type === 'SW_UPDATED') {
-          showToast('🔄 App updated — reload to get the latest version', 'info');
+          showToast('🔄 Updating to the latest version…', 'info');
         }
       });
     }

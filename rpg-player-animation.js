@@ -7,6 +7,7 @@
   var idleTimer = null;
   var frame = 1;
   var dir = 'down';
+  var walkPhase = 0; // alternates 0 <-> 2 each step for a left/right stride; survives idle resets
 
   function read() {
     try {
@@ -57,7 +58,11 @@
     if (['up', 'down', 'left', 'right'].indexOf(nextDir) < 0) return;
     read();
     dir = nextDir;
-    frame = frame === 0 ? 2 : 0;
+    // Alternate the two walk poses (frame 0 and 2) on consecutive steps so the
+    // character visibly strides left, right, left... The idle timer resets the
+    // displayed frame to 1 but not walkPhase, so the stride keeps alternating.
+    walkPhase = walkPhase === 0 ? 2 : 0;
+    frame = walkPhase;
     write();
     apply();
     setIdleSoon();

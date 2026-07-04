@@ -18,24 +18,90 @@
     { id: 'besy', icon: '🦅', name: 'Enterprise Griffin', region: 'Enterprise Town', badge: 'Enterprise Badge', type: 'Business', wild: 'Contract Sprite', scene: 'town', desc: 'Business structures, law, contracts and stakeholders.' }
   ];
 
-  var MAP_W = 19;
-  var MAP_H = 15;
-  var START_POS = { x: 9, y: 7 };
+  var MAP_W = 25;
+  var MAP_H = 19;
+  var START_POS = { x: 12, y: 9 };
   var MAP_NODES = {
-    itbk: { x: 3, y: 2, kind: 'forest-gate', short: 'Forest' },
-    pobc: { x: 15, y: 2, kind: 'cave-gate', short: 'Cavern' },
-    poc: { x: 4, y: 12, kind: 'factory-door', short: 'Factory' },
-    besy: { x: 15, y: 11, kind: 'town-door', short: 'Town' }
+    itbk: { x: 4, y: 2, kind: 'forest-gate', short: 'Forest' },
+    pobc: { x: 20, y: 2, kind: 'cave-gate', short: 'Cavern' },
+    poc: { x: 4, y: 16, kind: 'factory-door', short: 'Factory' },
+    besy: { x: 20, y: 16, kind: 'town-door', short: 'Town' }
+  };
+
+  // Townsfolk NPCs. Each stands just off a road so you approach and talk from an
+  // adjacent tile (their own tile blocks movement, like a person standing there).
+  // `mon` selects the pixel sprite (rpg-assets/npc-*.png); `lines` is the dialogue.
+  var NPCS = {
+    quill: {
+      x: 10, y: 8, mon: 'npc-quill', tag: 'Guide', name: 'Professor Quill',
+      role: 'Head Tutor of Ledger Town',
+      lines: [
+        'Welcome to Ledger Town, trainee! I am Professor Quill.',
+        'Four topic bosses guard the badges you need for the Synoptic League — one at each corner of the map.',
+        'Walk the paths with the D-pad or arrow keys. When a landmark, gate or townsperson is beside you, press Interact.',
+        'Talk to the folk near each region first — they teach the tricks that win battles. Off you go!'
+      ]
+    },
+    scribe: {
+      x: 6, y: 4, mon: 'npc-scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
+      role: 'Keeper of the Ledger Forest',
+      lines: [
+        'Heading into the Ledger Forest? Mind the Ledger Drake — it quizzes debits and credits.',
+        'Remember DEAD CLIC: Debits grow Expenses, Assets and Drawings; Credits grow Liabilities, Income and Capital.',
+        'Every transaction hits two accounts, and total debits must always equal total credits.',
+        'Source documents come first: invoices, credit notes, remittances. Record them, then post to the ledger. Good luck!'
+      ]
+    },
+    warden: {
+      x: 18, y: 4, mon: 'npc-warden', tag: 'Reconciler', name: 'Vex the Warden',
+      role: 'Guardian of the Control Cavern',
+      lines: [
+        'The Control Cavern is dark with errors and suspense accounts. The Reconciliation Golem waits within.',
+        'A control account is a summary — the sales ledger control account should equal the total of the individual customer balances.',
+        'When it does not balance, a suspense account holds the difference until you find the error.',
+        'Errors of omission, commission, principle and reversal will not show in a trial balance — hunt them carefully!'
+      ]
+    },
+    clerk: {
+      x: 6, y: 14, mon: 'npc-clerk', tag: 'Cost Clerk', name: 'Cog the Clerk',
+      role: 'Foreman of the Costing Factory',
+      lines: [
+        'The Costing Factory runs hot! The Costing Chimera tests how costs behave.',
+        'Prime cost = direct materials + direct labour + direct expenses. Add overheads and you have total cost.',
+        'Fixed costs stay put as output changes; variable costs rise with each unit made.',
+        'The overhead absorption rate (OAR) spreads overheads over units — budgeted overhead divided by budgeted activity. Stay sharp!'
+      ]
+    },
+    mayor: {
+      x: 18, y: 14, mon: 'npc-mayor', tag: 'Mayor', name: 'Mayor Sterling',
+      role: 'Head of Enterprise Town',
+      lines: [
+        'Welcome to Enterprise Town! The Enterprise Griffin guards knowledge of business and ethics.',
+        'Know your structures: sole traders and partnerships have unlimited liability; companies are separate legal persons.',
+        'A contract needs offer, acceptance, consideration and intention to create legal relations.',
+        'And always act with integrity, objectivity and confidentiality — the AAT ethical principles. Trade fair!'
+      ]
+    },
+    penny: {
+      x: 16, y: 10, mon: 'npc-merchant', tag: 'Trader', name: 'Penny the Trader',
+      role: 'Travelling Potion Merchant',
+      gift: 'potion',
+      lines: [
+        'Psst — Penny the Trader, at your service. Long road ahead, eh?',
+        'Battles heal you when you answer correctly, but a Potion tops you up in a pinch.',
+        'Here, take one on the house. Come back stronger and clear those badges!'
+      ]
+    }
   };
 
   function posKey(x, y) { return x + ',' + y; }
   function isRoad(x, y) {
-    if (y === 7 && x >= 1 && x <= 17) return true;
-    if (x === 9 && y >= 1 && y <= 13) return true;
-    if (y === 3 && x >= 2 && x <= 16) return true;
-    if (x === 4 && y >= 3 && y <= 12) return true;
-    if (y === 12 && x >= 4 && x <= 15) return true;
-    if (x === 15 && y >= 3 && y <= 12) return true;
+    if (y === 9 && x >= 1 && x <= 23) return true;   // central east-west high street
+    if (x === 12 && y >= 1 && y <= 17) return true;  // central north-south avenue
+    if (y === 3 && x >= 4 && x <= 20) return true;    // northern ring (forest ↔ cavern)
+    if (y === 15 && x >= 4 && x <= 20) return true;   // southern ring (factory ↔ town)
+    if (x === 4 && y >= 3 && y <= 15) return true;    // western ring (forest ↔ factory)
+    if (x === 20 && y >= 3 && y <= 15) return true;   // eastern ring (cavern ↔ town)
     return false;
   }
   function buildBlocked() {
@@ -48,10 +114,12 @@
     if (x < 0 || y < 0 || x >= MAP_W || y >= MAP_H) return;
     if (isRoad(x, y)) return;
     if (bossAt(x, y)) return;
+    if (npcAt(x, y)) return;
     out[posKey(x, y)] = t;
   }
   function buildDecor() {
     var out = {}, x, y;
+    // Leafy inner border framing the whole town.
     for (x = 1; x < MAP_W - 1; x++) {
       if (x % 2 === 0) setDecor(out, x, 1, 'tree');
       if (x % 3 === 0) setDecor(out, x, MAP_H - 2, 'tree');
@@ -61,19 +129,31 @@
       if (y % 3 === 1) setDecor(out, MAP_W - 2, y, 'rock');
     }
     [
-      [2,2,'flower'], [5,2,'book'], [7,2,'tree'], [11,2,'rock'], [13,2,'rock'],
-      [2,4,'grass'], [6,4,'sign'], [8,4,'ledger-stone'], [10,4,'flower'], [12,4,'well'], [16,4,'rock'],
-      [2,6,'grass'], [6,6,'book'], [8,6,'pathlamp'], [10,6,'pathlamp'], [12,6,'ledger-stone'], [16,6,'house'],
-      [2,8,'flower'], [6,8,'market'], [8,8,'well'], [10,8,'book'], [12,8,'flower'], [16,8,'house'],
-      [2,10,'factory-wall'], [3,10,'factory-wall'], [5,10,'factory-wall'], [7,10,'tree'], [11,10,'market'], [13,10,'pathlamp'], [16,10,'house'],
-      [2,12,'factory-wall'], [6,12,'factory-wall'], [8,12,'ledger-stone'], [10,12,'sign'], [12,12,'book'], [14,13,'tree']
+      // North-west — Ledger Forest quarter.
+      [2,2,'tree'], [6,2,'tree'], [8,2,'flower'], [2,4,'flower'], [3,5,'ledger-stone'],
+      [7,5,'book'], [2,6,'tree'], [8,4,'sign'], [9,6,'flower'], [3,7,'flower'], [7,7,'tree'],
+      // North-east — Control Cavern quarter.
+      [22,2,'rock'], [18,2,'rock'], [16,2,'tree'], [22,4,'rock'], [21,5,'pathlamp'],
+      [17,5,'well'], [15,5,'book'], [22,6,'rock'], [16,6,'flower'], [21,7,'rock'],
+      // South-west — Costing Factory quarter.
+      [2,16,'factory-wall'], [3,16,'factory-wall'], [2,14,'factory-wall'], [6,16,'factory-wall'],
+      [8,16,'sign'], [3,13,'book'], [7,13,'rock'], [2,12,'factory-wall'], [8,13,'ledger-stone'],
+      // South-east — Enterprise Town quarter.
+      [22,16,'house'], [18,16,'house'], [15,16,'house'], [22,14,'market'], [16,16,'well'],
+      [17,13,'flower'], [21,13,'pathlamp'], [22,12,'house'], [16,13,'book'],
+      // Town green around the central crossroads.
+      [8,6,'pathlamp'], [10,6,'ledger-stone'], [14,6,'well'], [16,7,'flower'], [11,4,'sign'],
+      [8,10,'book'], [8,12,'flower'], [10,12,'flower'], [14,12,'book'], [16,12,'pathlamp'],
+      [13,14,'sign'], [14,10,'flower'], [10,10,'well']
     ].forEach(function (d) { setDecor(out, d[0], d[1], d[2]); });
     return out;
   }
+  function npcAt(x, y) { for (var k in NPCS) { if (NPCS.hasOwnProperty(k)) { var n = NPCS[k]; if (n.x === x && n.y === y) return { id: k, x: n.x, y: n.y, mon: n.mon, tag: n.tag, name: n.name }; } } return null; }
   var BLOCKED = buildBlocked();
   var DECOR = buildDecor();
 
   var st = null;
+  var dlg = null;
   var runtimeData = null;
 
   function esc(x) { return String(x == null ? '' : x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -89,7 +169,7 @@
     return runtimeData;
   }
   function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
-  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); return d; }
+  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function starter(d) { return STARTERS[d.starter] || null; }
   function boss(id) { return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
@@ -120,6 +200,8 @@
       if (x.hasAttribute('data-opt')) return answer(+x.getAttribute('data-opt'), x.getAttribute('data-move'));
       if (x.hasAttribute('data-region')) return tryRegion(x.getAttribute('data-region'));
       if (x.hasAttribute('data-node')) return tryRegion(x.getAttribute('data-node'));
+      if (x.hasAttribute('data-npc')) return tryTalk(x.getAttribute('data-npc'));
+      if (x.hasAttribute('data-talk-next')) return dlgNext();
       if (x.hasAttribute('data-dir')) return movePlayer(x.getAttribute('data-dir'));
       if (x.hasAttribute('data-interact')) return interact();
       if (x.hasAttribute('data-reset-pos')) return resetPosition();
@@ -153,6 +235,7 @@
   function tileType(x, y) {
     var key = posKey(x, y);
     if (bossAt(x, y)) return 'region';
+    if (npcAt(x, y)) return 'npc';
     if (DECOR[key]) return DECOR[key];
     if (BLOCKED[key]) return 'tree';
     if (isRoad(x, y)) return 'path';
@@ -163,25 +246,34 @@
     var t = tileType(x, y);
     return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region'].indexOf(t) >= 0;
   }
+  function adjacentNpc(d) { var best = null; for (var k in NPCS) { if (!NPCS.hasOwnProperty(k)) continue; var n = NPCS[k]; var dist = Math.abs(d.pos.x - n.x) + Math.abs(d.pos.y - n.y); if (dist <= 1 && (!best || dist < best.dist)) best = { id: k, dist: dist }; } return best; }
   var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2], path: [1, 2], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1], rock: [1, 2] };
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
     var b = bossAt(x, y);
+    var npc = npcAt(x, y);
     var t = tileType(x, y);
     var cls = 'rpg-tile rpg-tile-' + t + tileVariant(t, x, y) + (here ? ' rpg-player-tile' : '') + (b && d.badges[b.id] ? ' cleared' : '');
-    var node = b ? ' data-node="' + b.id + '"' : '';
-    var label = b ? '<span class="rpg-location-label">' + esc(MAP_NODES[b.id].short) + '</span>' : '';
+    var attr = b ? ' data-node="' + b.id + '"' : (npc ? ' data-npc="' + npc.id + '"' : '');
+    var aria = npc ? 'Talk to ' + esc(npc.name) : (b ? esc(MAP_NODES[b.id].short) + ' entrance' : 'Map tile ' + x + ',' + y);
+    var label = b ? '<span class="rpg-location-label">' + esc(MAP_NODES[b.id].short) + '</span>'
+      : (npc ? '<span class="rpg-location-label rpg-npc-label">' + esc(npc.tag) + '</span>' : '');
     var contents = '<span class="rpg-tile-art" aria-hidden="true"></span>' + label;
+    if (npc) contents += '<span class="rpg-npc-sprite" data-mon="' + esc(npc.mon) + '" aria-hidden="true"></span>';
     if (here) contents += '<span class="rpg-player-sprite" aria-label="Player"><span></span></span><span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"><span></span></span>';
-    return '<button class="' + cls + '" type="button"' + node + ' aria-label="Map tile ' + x + ',' + y + '">' + contents + '</button>';
+    return '<button class="' + cls + '" type="button"' + attr + ' aria-label="' + aria + '">' + contents + '</button>';
   }
   function mapHtml(d, c) {
     var out = '';
     for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
     return out;
   }
-  function centerCameraOnPlayer(immediate) {
+  // Synchronous, instant camera centring. Runs in the same task as mount() so the
+  // freshly rebuilt map is scrolled onto the player BEFORE the browser paints —
+  // this is what stops the top-left flash and makes the camera follow. No-ops on
+  // screens without a map (battle/starter/dialogue/region) via the null guard.
+  function centerNow() {
     var overlay = document.getElementById('rpgOverlay');
     if (!overlay) return;
     var viewport = overlay.querySelector('.rpg-pixel-map-wrap');
@@ -191,9 +283,10 @@
     var tileRect = playerTile.getBoundingClientRect();
     var targetLeft = viewport.scrollLeft + (tileRect.left - vpRect.left) - (viewport.clientWidth / 2) + (tileRect.width / 2);
     var targetTop = viewport.scrollTop + (tileRect.top - vpRect.top) - (viewport.clientHeight / 2) + (tileRect.height / 2);
-    viewport.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: immediate ? 'auto' : 'smooth' });
+    viewport.scrollLeft = Math.max(0, targetLeft);
+    viewport.scrollTop = Math.max(0, targetTop);
   }
-  function cameraSoon(immediate) { requestAnimationFrame(function () { centerCameraOnPlayer(immediate); }); setTimeout(function () { centerCameraOnPlayer(immediate); }, 40); }
+  function cameraSoon() { requestAnimationFrame(centerNow); setTimeout(centerNow, 40); }
   function movePlayer(dir) {
     var d = load(); if (!starter(d)) return landing(d);
     var dx = 0, dy = 0;
@@ -201,21 +294,56 @@
     var nx = d.pos.x + dx, ny = d.pos.y + dy;
     if (!passable(nx, ny)) { landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.'); cameraSoon(false); return; }
     d.pos.x = nx; d.pos.y = ny; save(d);
-    var near = nearestRegion(d);
-    landing(d, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Walk to a building, cave or forest entrance, then press Interact.');
+    landing(d);
     cameraSoon(false);
   }
-  function interact() { var d = load(), near = nearestRegion(d); if (near && near.dist <= 1) return region(near.boss.id); landing(d, 'No entrance is close enough. Walk next to a region building, cave or forest gate first.'); cameraSoon(false); }
+  function interact() {
+    var d = load();
+    var np = adjacentNpc(d);
+    if (np) return talk(np.id);
+    var near = nearestRegion(d);
+    if (near && near.dist <= 1) return region(near.boss.id);
+    landing(d, 'No one and no entrance is close enough. Walk beside a townsperson or a region gate first.'); cameraSoon(false);
+  }
   function tryRegion(id) { var d = load(); if (canEnter(d, id)) return region(id); var b = boss(id); landing(d, 'Walk closer to ' + b.region + ' before entering.'); cameraSoon(false); }
-  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; save(d); landing(d, 'Player returned to the central path.'); cameraSoon(true); }
+  function tryTalk(id) {
+    var d = load(), n = NPCS[id]; if (!n) return;
+    if (Math.abs(d.pos.x - n.x) + Math.abs(d.pos.y - n.y) <= 1) return talk(id);
+    landing(d, 'Walk closer to ' + n.name + ' before talking.'); cameraSoon(false);
+  }
+  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; save(d); landing(d, 'Player returned to the central crossroads.'); cameraSoon(true); }
+
+  function talk(id) { if (!NPCS[id]) return; dlg = { id: id, i: 0 }; dialogue(); }
+  function dlgNext() {
+    if (!dlg) return; var n = NPCS[dlg.id]; if (!n) { dlg = null; return landing(load()); }
+    if (dlg.i + 1 < n.lines.length) { dlg.i++; return dialogue(); }
+    finishTalk(n);
+  }
+  function finishTalk(n) {
+    var d = load(), msg = 'You finished talking to ' + n.name + '.';
+    d.metNpcs[dlg.id] = true;
+    if (n.gift === 'potion' && !d.gifts[dlg.id]) {
+      d.gifts[dlg.id] = true;
+      d.inventory.potion = Math.min(9, (d.inventory.potion || 0) + 1);
+      msg = n.name + ' gave you a Potion! You now carry ' + d.inventory.potion + '.';
+    }
+    save(d); dlg = null; landing(d, msg); cameraSoon(false);
+  }
+  function dialogue() {
+    var d = load(), n = NPCS[dlg.id], line = n.lines[dlg.i], last = dlg.i + 1 >= n.lines.length;
+    mount('<section class="rpg-panel rpg-dialogue" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-dialogue-inner"><div class="rpg-dialogue-portrait rpg-sprite" data-mon="' + esc(n.mon) + '" aria-hidden="true"></div><div class="rpg-dialogue-body"><h2>' + esc(n.name) + '</h2><p class="rpg-dialogue-role">' + esc(n.role) + '</p><div class="rpg-speech">' + esc(line) + '</div><p class="rpg-dialogue-progress">Line ' + (dlg.i + 1) + ' of ' + n.lines.length + '</p><div class="rpg-actions"><button class="rpg-next" data-talk-next type="button">' + (last ? 'Done' : 'Next ▸') + '</button><button class="rpg-secondary" data-landing type="button">Leave</button></div></div></div></section>');
+  }
 
   function landing(forcedData, message) {
+    dlg = null;
     var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
     var near = nearestRegion(d);
-    var prompt = message || (near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Use the D-pad or arrow keys to move around the study town.');
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Walk around the expanded study town, enter topic regions, defeat bosses and collect badges before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. The camera follows your player.</p></div></div></section>');
-    cameraSoon(true);
+    var np = adjacentNpc(d);
+    var prompt = message || (np ? esc(NPCS[np.id].name) + ' is beside you. Press Interact to talk.' : (near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Use the D-pad or arrow keys to explore the study town and meet its people.'));
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Explore the expanded study town, chat with the townsfolk for exam tips, enter the four topic regions, defeat their bosses and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
+    centerNow();   // snap the camera onto the player before the first paint
+    cameraSoon();  // safety re-centre once late layout (fonts/grid) settles
   }
 
   function region(id) {
@@ -266,6 +394,10 @@
   document.addEventListener('keydown', function (e) {
     if (!document.getElementById('rpgOverlay')) return;
     if (e.key === 'Escape') return close();
+    if (document.querySelector('.rpg-dialogue')) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); return dlgNext(); }
+      return;
+    }
     if (!document.querySelector('.rpg-world')) return;
     var k = e.key.toLowerCase();
     if (k === 'arrowup' || k === 'w') { e.preventDefault(); return movePlayer('up'); }

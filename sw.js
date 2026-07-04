@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v46';
+var CACHE_VERSION = 'aat-l2-practice-v48';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -28,7 +28,50 @@ var CORE_ASSETS = [
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  // Ledger Legends pixel art — precached so the RPG renders fully offline and
+  // updates land with the cache-version bump instead of trickling in lazily.
+  './rpg-assets/char-player.png',
+  './rpg-assets/char-cub.png',
+  './rpg-assets/char-fox.png',
+  './rpg-assets/char-mole.png',
+  './rpg-assets/boss-itbk.png',
+  './rpg-assets/boss-pobc.png',
+  './rpg-assets/boss-poc.png',
+  './rpg-assets/boss-besy.png',
+  './rpg-assets/npc-quill.png',
+  './rpg-assets/npc-scribe.png',
+  './rpg-assets/npc-warden.png',
+  './rpg-assets/npc-clerk.png',
+  './rpg-assets/npc-mayor.png',
+  './rpg-assets/npc-merchant.png',
+  './rpg-assets/scene-forest.png',
+  './rpg-assets/scene-cave.png',
+  './rpg-assets/scene-factory.png',
+  './rpg-assets/scene-town.png',
+  './rpg-assets/tile-grass-1.png',
+  './rpg-assets/tile-grass-2.png',
+  './rpg-assets/tile-grass-3.png',
+  './rpg-assets/tile-path-1.png',
+  './rpg-assets/tile-path-2.png',
+  './rpg-assets/tile-flower-1.png',
+  './rpg-assets/tile-flower-2.png',
+  './rpg-assets/tile-tree-1.png',
+  './rpg-assets/tile-tree-2.png',
+  './rpg-assets/tile-tree-3.png',
+  './rpg-assets/tile-rock.png',
+  './rpg-assets/tile-sign.png',
+  './rpg-assets/tile-book.png',
+  './rpg-assets/tile-well.png',
+  './rpg-assets/tile-ledger-stone.png',
+  './rpg-assets/tile-pathlamp.png',
+  './rpg-assets/tile-house-1.png',
+  './rpg-assets/tile-house-2.png',
+  './rpg-assets/tile-factory-wall.png',
+  './rpg-assets/tile-gate-forest.png',
+  './rpg-assets/tile-gate-cave.png',
+  './rpg-assets/tile-gate-factory.png',
+  './rpg-assets/tile-gate-town.png'
 ];
 
 self.addEventListener('install', function (event) {
