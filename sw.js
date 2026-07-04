@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v49';
+var CACHE_VERSION = 'aat-l2-practice-v52';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -32,6 +32,10 @@ var CORE_ASSETS = [
   // Ledger Legends pixel art — precached so the RPG renders fully offline and
   // updates land with the cache-version bump instead of trickling in lazily.
   './rpg-assets/char-player.png',
+  './rpg-assets/char-player-down.png',
+  './rpg-assets/char-player-up.png',
+  './rpg-assets/char-player-left.png',
+  './rpg-assets/char-player-right.png',
   './rpg-assets/char-cub.png',
   './rpg-assets/char-fox.png',
   './rpg-assets/char-mole.png',
