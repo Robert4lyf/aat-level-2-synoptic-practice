@@ -1,7 +1,7 @@
 /* Ledger Legends RPG demo styles — custom retro bitmap-style tile map */
 .mode-rpg { border-color: rgba(124,58,237,.35); background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(22,163,74,.10)); }
 .rpg-overlay { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: 16px; background: rgba(5,10,20,.68); backdrop-filter: blur(8px); overscroll-behavior: contain; }
-.rpg-panel { position: relative; width: min(1080px, 96vw); max-height: 92vh; overflow: auto; border-radius: 24px; padding: 24px; background: var(--card, #fff); color: var(--text, #172033); box-shadow: 0 24px 80px rgba(0,0,0,.35); border: 1px solid rgba(148,163,184,.35); overscroll-behavior: contain; }
+.rpg-panel { position: relative; width: min(1080px, 96vw); max-height: 92vh; overflow: auto; overflow-anchor: none; border-radius: 24px; padding: 24px; background: var(--card, #fff); color: var(--text, #172033); box-shadow: 0 24px 80px rgba(0,0,0,.35); border: 1px solid rgba(148,163,184,.35); overscroll-behavior: contain; }
 .dark .rpg-panel { background: #111827; color: #f8fafc; }
 .rpg-close { position: absolute; top: 14px; right: 16px; width: 38px; height: 38px; border-radius: 50%; border: 0; font-size: 26px; cursor: pointer; background: rgba(148,163,184,.18); color: inherit; }
 .rpg-panel h2 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.4rem); }
@@ -27,7 +27,7 @@
 
 /* Pixel-art world map tiles, rendered from rpg-assets/tile-*.png sprites. */
 .rpg-map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; margin-top: 16px; }
-.rpg-pixel-map-wrap { padding: 16px; border-radius: 18px; background: #1a2a18; box-shadow: inset 0 0 0 4px #0b160a, 0 18px 45px rgba(0,0,0,.24); overflow: auto; overscroll-behavior: contain; }
+.rpg-pixel-map-wrap { padding: 16px; border-radius: 18px; background: #1a2a18; box-shadow: inset 0 0 0 4px #0b160a, 0 18px 45px rgba(0,0,0,.24); overflow: auto; overscroll-behavior: contain; overflow-anchor: none; }
 .rpg-pixel-map { width: min(100%, 768px); min-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(var(--rpg-cols, 25), minmax(0, 1fr)); gap: 0; border: 6px solid #101820; background: #9bbf72; image-rendering: pixelated; box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d; }
 .rpg-tile { position: relative; aspect-ratio: 1 / 1; min-height: 44px; border: 0; padding: 0; overflow: hidden; cursor: pointer; image-rendering: pixelated; background-color: #8fca5c; background-repeat: no-repeat; background-size: 100% 100%; -webkit-tap-highlight-color: transparent; }
 .rpg-tile::before, .rpg-tile::after, .rpg-tile-art, .rpg-tile-art::before, .rpg-tile-art::after { content: ''; position: absolute; box-sizing: border-box; }
@@ -110,6 +110,9 @@
 .rpg-npc-sprite[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
 .rpg-npc-sprite[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
 .rpg-npc-label { background: rgba(37,99,235,.82); border-color: rgba(191,219,254,.6); }
+/* Route blocker: a fenced-off connector locked until the previous badge is earned. */
+.rpg-lock-label { background: rgba(153,27,27,.9); border-color: rgba(254,202,202,.7); }
+.rpg-locked { filter: saturate(.72) brightness(.92); }
 @keyframes rpgNpcIdle { 0%,100% { transform: translate(-50%, -70%); } 50% { transform: translate(-50%, -74%); } }
 .rpg-tile-npc { cursor: pointer; }
 .rpg-tile-npc:hover { outline: 2px solid rgba(191,219,254,.95); }
@@ -122,18 +125,34 @@
 .rpg-sprite[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
 .rpg-sprite[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
 
-/* Dialogue panel */
-.rpg-dialogue { width: min(680px, 96vw); }
-.rpg-dialogue-inner { display: grid; grid-template-columns: 130px 1fr; gap: 18px; align-items: start; margin-top: 6px; }
-.rpg-dialogue-portrait { width: 130px; height: 150px; border-radius: 20px; background-repeat: no-repeat; background-position: center bottom; background-size: 84%; image-rendering: pixelated; background-color: rgba(99,102,241,.12); border: 3px solid rgba(99,102,241,.28); box-shadow: inset 0 -10px 22px rgba(0,0,0,.14); filter: drop-shadow(0 8px 10px rgba(0,0,0,.18)); animation: rpgFloat 2.8s ease-in-out infinite; }
-.rpg-dialogue-body h2 { margin: 0 0 2px; font-size: clamp(1.35rem, 3.4vw, 1.9rem); }
-.rpg-dialogue-role { margin: 0 0 12px; font-weight: 800; color: var(--muted, #64748b); }
-.rpg-speech { min-height: 96px; padding: 16px; border-radius: 18px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a; font-weight: 700; line-height: 1.5; font-size: clamp(1rem, 2.6vw, 1.12rem); }
-.dark .rpg-speech { background: #422006; color: #fef3c7; }
-.rpg-dialogue-progress { margin: 10px 0 6px; font-weight: 800; color: var(--muted, #64748b); }
-@media (max-width: 560px) { .rpg-dialogue-inner { grid-template-columns: 1fr; } .rpg-dialogue-portrait { width: 110px; height: 128px; justify-self: center; } }
+/* Final-Fantasy-style floating dialogue textbox — overlays the world map at the
+   bottom of the screen (works in both normal and fullscreen modes). Sits above
+   the fullscreen gamepad (.rpg-fs-controls, z-index 10050). */
+.rpg-textbox { position: fixed; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(720px, calc(100vw - 24px)); z-index: 10060; }
+.rpg-textbox-inner { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 14px; align-items: center; padding: 14px 16px; border-radius: 16px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a, 0 16px 38px rgba(0,0,0,.4); }
+.dark .rpg-textbox-inner { background: #3a2408; color: #fef3c7; }
+.rpg-textbox-portrait { grid-row: 1 / span 2; align-self: end; width: 54px; height: 62px; border-radius: 12px; background-color: rgba(146,64,14,.14); border: 3px solid rgba(146,64,14,.4); background-repeat: no-repeat; background-position: center bottom; background-size: 84%; image-rendering: pixelated; }
+.dark .rpg-textbox-portrait { background-color: rgba(254,243,199,.12); border-color: rgba(254,243,199,.35); }
+.rpg-textbox-portrait[data-mon='npc-quill'] { background-image: url(rpg-assets/npc-quill.png); }
+.rpg-textbox-portrait[data-mon='npc-scribe'] { background-image: url(rpg-assets/npc-scribe.png); }
+.rpg-textbox-portrait[data-mon='npc-warden'] { background-image: url(rpg-assets/npc-warden.png); }
+.rpg-textbox-portrait[data-mon='npc-clerk'] { background-image: url(rpg-assets/npc-clerk.png); }
+.rpg-textbox-portrait[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
+.rpg-textbox-portrait[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
+.rpg-textbox-name { font-weight: 900; font-size: 1rem; margin-bottom: 3px; }
+.rpg-textbox-line { font-weight: 700; line-height: 1.45; font-size: clamp(1rem, 2.6vw, 1.12rem); min-height: 2.9em; }
+.rpg-textbox-controls { grid-row: 1 / span 2; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.rpg-textbox-progress { font-weight: 800; font-size: .74rem; opacity: .75; }
+.rpg-textbox-next { border: 3px solid #0f172a; border-radius: 10px; background: linear-gradient(#fef08a 0 16%, #f59e0b 17% 100%); color: #451a03; font-weight: 900; padding: 9px 13px; cursor: pointer; box-shadow: 0 4px 0 #0f172a; animation: rpgTextboxCue 1.1s ease-in-out infinite; }
+.rpg-textbox-next:active { transform: translateY(3px); box-shadow: 0 1px 0 #0f172a; }
+.rpg-textbox-leave { border: 3px solid #0f172a; border-radius: 10px; background: #e5e7eb; color: #111827; font-weight: 900; padding: 5px 10px; cursor: pointer; line-height: 1; }
+@keyframes rpgTextboxCue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@media (max-width: 520px) { .rpg-textbox-inner { padding: 11px 12px; gap: 3px 10px; } .rpg-textbox-portrait { width: 44px; height: 50px; } .rpg-textbox-next { padding: 8px 10px; } }
 .rpg-map-side { display: grid; gap: 12px; }
-.rpg-map-message { min-height: 74px; padding: 14px; border-radius: 18px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a; font-weight: 900; line-height: 1.35; }
+/* Fixed height (not min-height) so swapping between the short and the longer
+   "Press Interact / locked route" prompts never changes the panel height — that
+   height change was recentering the whole panel and jumping the scroll position. */
+.rpg-map-message { height: 96px; overflow: auto; overflow-anchor: none; padding: 14px; border-radius: 18px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a; font-weight: 900; line-height: 1.35; }
 .dark .rpg-map-message { background: #422006; color: #fef3c7; }
 .rpg-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px; border-radius: 20px; background: #1f2937; border: 4px solid #111827; box-shadow: inset 0 0 0 3px #4b5563; touch-action: none; overscroll-behavior: contain; user-select: none; -webkit-user-select: none; }
 .rpg-controls *, .rpg-controls button { touch-action: none; user-select: none; -webkit-user-select: none; }
