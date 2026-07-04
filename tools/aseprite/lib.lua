@@ -183,6 +183,36 @@ function Canvas:coreshade(col)
   end end
 end
 
+-- ---- procedural texture helpers -------------------------------------------
+-- integer hash -> 0..1 (stable, seedable)
+function M.hash(x,y,s)
+  local v = (x*374761393 + y*668265263 + (s or 0)*2246822519) & 0x7fffffff
+  v = (v ~ (v >> 13)) * 1274126177
+  v = (v ~ (v >> 16)) & 0x7fffffff
+  return (v % 100000)/100000.0
+end
+-- smooth value noise: bilinear interp of hash on a coarse grid, smoothstep'd.
+-- Gives soft painterly patches instead of harsh per-pixel speckle. Returns 0..1.
+function M.vnoise(x,y,seed,scale)
+  scale = scale or 6
+  local gx,gy = x/scale, y/scale
+  local x0,y0 = math.floor(gx), math.floor(gy)
+  local fx,fy = gx-x0, gy-y0
+  fx = fx*fx*(3-2*fx); fy = fy*fy*(3-2*fy)
+  local h = M.hash
+  local a,b = h(x0,y0,seed), h(x0+1,y0,seed)
+  local c,d = h(x0,y0+1,seed), h(x0+1,y0+1,seed)
+  local top = a+(b-a)*fx
+  local bot = c+(d-c)*fx
+  return top+(bot-top)*fy
+end
+-- map a 0..1 value to a ramp index (1..#ramp), clamped
+function M.rampidx(t,n)
+  local i = math.floor(t*(n-1)+0.5)+1
+  if i<1 then i=1 elseif i>n then i=n end
+  return i
+end
+
 function Canvas:save(path)
   self.img = self.spr.cels[1].image  -- refresh handle
   self.spr:saveAs(path)

@@ -11,66 +11,163 @@ local function hash(x,y,s)
   return (v % 100000)/100000.0
 end
 
--- organic grass fill (no stripes): base + scattered light tufts + dark blades
+-- Soft painterly grass (Stardew-style): smooth value-noise patches, a gentle
+-- top-left light gradient, and small clustered blade tufts. No harsh speckle.
 local function grass_base(c, seed, R)
   R = R or L.R.grass
-  c:fillrect(0,0,31,31,R[3])
+  local n = #R
   for y=0,31 do for x=0,31 do
-    local n=hash(x//2,y//2,seed)
-    if n>0.82 then c:px(x,y,R[4]) elseif n<0.16 then c:px(x,y,R[2]) end
+    local patch = L.vnoise(x,y,seed,9)*0.60 + L.vnoise(x,y,seed+5,4)*0.30 + L.vnoise(x,y,seed+11,2)*0.10
+    local light = (1 - (x+y)/70) * 0.16        -- subtle brighten toward top-left
+    local t = 0.30 + patch*0.46 + light        -- compress toward mid tones
+    c:px(x,y, R[L.rampidx(t,n)])
   end end
-  -- little upright blade tufts
-  local nt = 8
-  for i=1,nt do
-    local x=math.floor(hash(i,seed,1)*28)+2
-    local y=math.floor(hash(i,seed,2)*24)+6
-    c:vline(x,y,y-2,R[5]); c:px(x-1,y-1,R[4]); c:px(x+1,y-1,R[4])
+  -- clustered upright blade tufts (2-4 blades each), soft highlight + base shadow
+  for i=1,5 do
+    local cx = math.floor(L.hash(i,seed,1)*24)+4
+    local cy = math.floor(L.hash(i,seed,2)*20)+8
+    local blades = 2+math.floor(L.hash(i,seed,3)*3)
+    for b=0,blades-1 do
+      local bx = cx + b - blades//2
+      local bh = 2+math.floor(L.hash(i*3+b,seed,4)*2)
+      c:vline(bx, cy-bh, cy, R[math.min(n,4)])
+      c:px(bx, cy-bh, R[n])
+      c:px(bx, cy, R[2])
+    end
   end
 end
 
+-- Warm textured soil (for tilled plots / factory ground): smooth clods + pebbles.
 local function dirt_base(c, seed, R)
   R = R or L.R.dirt
-  c:fillrect(0,0,31,31,R[3])
+  local n=#R
   for y=0,31 do for x=0,31 do
-    local n=hash(x//2,y//2,seed)
-    if n>0.80 then c:px(x,y,R[4]) elseif n<0.18 then c:px(x,y,R[2]) end
+    local t = L.vnoise(x,y,seed,6)*0.7 + L.vnoise(x,y,seed+3,3)*0.3
+    c:px(x,y, R[L.rampidx(0.2+t*0.6,n)])
   end end
-  -- pebbles
   for i=1,6 do
-    local x=math.floor(hash(i,seed,3)*26)+3
-    local y=math.floor(hash(i,seed,4)*26)+3
+    local x=math.floor(L.hash(i,seed,3)*26)+3
+    local y=math.floor(L.hash(i,seed,4)*26)+3
     c:px(x,y,R[5]); c:px(x+1,y,R[4]); c:px(x,y+1,R[2])
   end
 end
 
 -- ===== ground tiles =====
-function T.grass(v) local c=L.canvas(32,32); grass_base(c,v,L.R.grass); return c end
-function T.path(v)
-  local c=L.canvas(32,32); grass_base(c,10+v,L.R.grass)
-  -- a worn dirt path down the middle
-  local R=L.R.dirt
-  for y=0,31 do
-    local wobble=math.floor((hash(y,v,7)-0.5)*4)
-    c:fillrect(9+wobble,y,22+wobble,y,R[3])
-    c:px(9+wobble,y,R[2]); c:px(22+wobble,y,R[4])
-  end
-  for y=0,31 do for x=0,31 do
-    if app.pixelColor.rgbaR(c:get(x,y))>90 and hash(x//2,y//2,v)>0.85 then
-      -- pebble specks only on dirt
+-- Grass with optional scattered detail for variety (clover, daisies, pebbles).
+function T.grass(v)
+  local c=L.canvas(32,32); grass_base(c,v,L.R.grass)
+  local G=L.R.grass
+  if v==2 then
+    -- clover patches: little three-leaf clusters
+    for i=1,4 do
+      local x=math.floor(hash(i,v,21)*24)+4; local y=math.floor(hash(i,v,22)*24)+4
+      c:px(x,y,G[2]); c:px(x-1,y,G[2]); c:px(x+1,y,G[2]); c:px(x,y-1,G[2])
+      c:px(x,y,G[5])
     end
-  end end
-  if v==2 then for i=1,7 do local x=math.floor(hash(i,v,8)*12)+10; local y=math.floor(hash(i,v,9)*28)+2; c:px(x,y,R[5]); c:px(x,y+1,R[2]) end end
+  elseif v==3 then
+    -- daisy freckles + a couple of pebbles
+    for i=1,5 do
+      local x=math.floor(hash(i,v,23)*26)+3; local y=math.floor(hash(i,v,24)*26)+3
+      c:px(x,y,L.hx("fff6e0")); c:px(x,y-1,L.hx("f4e6bd")); c:px(x-1,y,L.hx("f4e6bd")); c:px(x+1,y,L.hx("f4e6bd")); c:px(x,y+1,L.hx("f4e6bd")); c:px(x,y,L.hx("f6ca45"))
+    end
+    for i=1,3 do
+      local x=math.floor(hash(i,v,25)*26)+3; local y=math.floor(hash(i,v,26)*26)+3
+      c:px(x,y,L.R.stone[3]); c:px(x+1,y,L.R.stone[2]); c:px(x,y+1,L.R.stone[2])
+    end
+  end
   return c
 end
+
+-- ---- connection-aware dirt/stone path ----
+-- Roads occupy a central 16px band; arms extend to the tile edge for each
+-- connected neighbour, so vertical, horizontal, crossroads, T-junctions and
+-- corners all tile together seamlessly. conns = {n=,s=,e=,w=} booleans.
+local PLO, PHI = 8, 23
+local function path_tile(conns, seed)
+  local c=L.canvas(32,32); grass_base(c,70+seed,L.R.grass)
+  local D=L.R.dirt
+  local mask={}
+  local function setb(x0,y0,x1,y1) for y=y0,y1 do for x=x0,x1 do mask[y*32+x]=true end end end
+  setb(PLO,PLO,PHI,PHI)                         -- central junction block
+  if conns.n then setb(PLO,0,PHI,PLO-1) end
+  if conns.s then setb(PLO,PHI+1,PHI,31) end
+  if conns.w then setb(0,PLO,PLO-1,PHI) end
+  if conns.e then setb(PHI+1,PLO,31,PHI) end
+  local function isd(x,y) return x>=0 and x<=31 and y>=0 and y<=31 and mask[y*32+x] end
+  -- irregular side edges (but never erode a tile-border opening, so joins stay clean)
+  local erase={}
+  for y=0,31 do for x=0,31 do
+    if isd(x,y) and x>0 and x<31 and y>0 and y<31 then
+      local border = (not isd(x-1,y)) or (not isd(x+1,y)) or (not isd(x,y-1)) or (not isd(x,y+1))
+      if border and L.vnoise(x,y,seed+7,2.2)>0.66 then erase[y*32+x]=true end
+    end
+  end end
+  for k in pairs(erase) do mask[k]=nil end
+  -- paint textured warm soil
+  for y=0,31 do for x=0,31 do
+    if isd(x,y) then
+      local t=L.vnoise(x,y,seed,5)*0.68 + L.vnoise(x,y,seed+3,2.5)*0.32
+      c:px(x,y, D[L.rampidx(0.22+t*0.6,#D)])
+    end
+  end end
+  -- worn lighter centre track along each arm (foot traffic)
+  for y=0,31 do for x=0,31 do
+    if isd(x,y) then
+      local cxd=math.abs(x-15.5); local cyd=math.abs(y-15.5)
+      if (cxd<4 and (conns.n or conns.s)) or (cyd<4 and (conns.e or conns.w)) then
+        if L.vnoise(x,y,seed+13,3)>0.42 then c:px(x,y,D[4]) end
+      end
+    end
+  end end
+  -- dark rim where soil meets grass + grass blades overhanging the edge
+  for y=0,31 do for x=0,31 do
+    if isd(x,y) then
+      if (not isd(x-1,y)) or (not isd(x+1,y)) or (not isd(x,y-1)) or (not isd(x,y+1)) then
+        if L.hash(x,y,seed)>0.4 then c:px(x,y,D[2]) end
+      end
+    elseif app.pixelColor.rgbaA(c:get(x,y))>0 then
+      -- overhanging blade from grass side onto soil edge
+      if (isd(x,y+1)) and L.hash(x,y,seed+2)>0.7 then c:px(x,y+1,L.R.grass[4]) end
+    end
+  end end
+  -- scattered warm flagstones embedded in the path (Stardew stone-path richness)
+  local sHi,sMid,sLo = L.hx("cabfa4"), L.hx("a1957c"), L.hx("6f6350")
+  for i=1,6 do
+    local x=math.floor(L.hash(i,seed,31)*28)+2
+    local y=math.floor(L.hash(i,seed,32)*28)+2
+    if isd(x,y) and isd(x+1,y) and isd(x,y+1) then
+      c:px(x,y,sMid); c:px(x+1,y,sMid); c:px(x,y+1,sMid); c:px(x+1,y+1,sLo)
+      c:px(x,y-1,sHi); c:px(x-1,y,sHi)
+    end
+  end
+  return c
+end
+-- Build conns from a canonical "nsew"-ordered code string (subset of those letters).
+function T.path_shape(code)
+  local conns={}
+  for ch in code:gmatch("%a") do conns[ch]=true end
+  local seed=0; for i=1,#code do seed=seed*7+string.byte(code,i) end
+  return path_tile(conns, seed%97)
+end
+-- backward-compatible default straight path
+function T.path(v) return T.path_shape("ns") end
+
 function T.flower(v)
   local c=L.canvas(32,32); grass_base(c,20+v,L.R.meadow)
-  local cols = v==1 and {"f6ca45","ff5aa0","ffffff"} or {"c191f4","6ea8e2","ffe694"}
-  for i=1,7 do
-    local x=math.floor(hash(i,v,11)*26)+3
-    local y=math.floor(hash(i,v,12)*26)+3
+  -- clustered wildflowers with stems + soft petals, palette varies by variant
+  local sets = {
+    {"f6ca45","ff5aa0","ffffff"},
+    {"c191f4","6ea8e2","ffe694"},
+    {"ff6b6b","ffd166","fff3b0"},
+  }
+  local cols = sets[((v-1)%#sets)+1]
+  for i=1,8 do
+    local x=math.floor(hash(i,v,11)*24)+4
+    local y=math.floor(hash(i,v,12)*22)+6
     local col=L.hx(cols[(i%#cols)+1])
+    c:px(x,y+2,L.R.meadow[2]) -- stem
     c:px(x,y-1,col); c:px(x-1,y,col); c:px(x+1,y,col); c:px(x,y+1,col)
-    c:px(x,y,L.hx("ffe694"))
+    c:px(x,y,L.hx("ffe694")) -- pollen centre
   end
   return c
 end
@@ -312,6 +409,151 @@ function T.gate_town()
   c:fillrect(12,14,20,31,L.R.path[2])
   -- lanterns
   c:sphere(6,9,1.6,1.6,L.hx("ffe27a"),0.3); c:sphere(26,9,1.6,1.6,L.hx("ffe27a"),0.3)
+  return c
+end
+
+-- ===== bold new objects (Stardew-flavoured props) =====
+
+-- Pond: still water with reflection band + lily pad + reeds.
+function T.pond()
+  local c=L.canvas(32,32); grass_base(c,80,L.R.grass)
+  local W=L.R.water
+  -- bank shadow
+  c:disc(16,17,14,11,L.R.dirt[2])
+  -- water body with soft ripples (value noise -> water ramp)
+  for y=6,28 do for x=2,29 do
+    local nx=(x-16)/14; local ny=(y-17)/11
+    if nx*nx+ny*ny<=1.0 then
+      local t=L.vnoise(x,y*2,80,4)*0.6 + (1-(nx*nx+ny*ny))*0.4
+      c:px(x,y, W[L.rampidx(0.15+t*0.7,#W)])
+    end
+  end end
+  c:outline()
+  -- sun glint highlights
+  for i=1,3 do local gx=10+i*3; c:hline(gx,gx+2,10+i,W[5]) end
+  c:hline(9,13,20,W[5])
+  -- lily pad + flower
+  c:disc(21,19,3,2,L.R.canopy[3]); c:px(21,19,L.R.canopy[2]); c:px(20,18,L.R.canopy[5])
+  c:px(22,18,L.hx("ff9ec4")); c:px(21,17,L.hx("ffd6e8"))
+  -- reeds on the near bank
+  for _,rx in ipairs({6,8,25}) do c:vline(rx,22,28,L.R.pine[3]); c:px(rx,22,L.R.pine[4]) end
+  return c
+end
+
+-- Leafy bush with a few berries.
+function T.bush()
+  local c=L.canvas(32,32); grass_base(c,81,L.R.grass)
+  c:groundshadow(16,27,11,2.6)
+  local R=L.R.canopy
+  c:sphere(13,20,7,6,R); c:sphere(21,21,6,5,R,-0.05); c:sphere(17,16,7,6,R,0.05)
+  c:outline()
+  for i=1,7 do local x=math.floor(hash(i,1,41)*16)+8; local y=math.floor(hash(i,1,42)*10)+13
+    if not c:empty(x,y) then c:px(x,y,R[6] or R[5]) end end
+  -- red berries
+  for _,p in ipairs({{12,19},{19,18},{22,22},{15,23}}) do
+    c:px(p[1],p[2],L.hx("d24d47")); c:px(p[1],p[2]-1,L.hx("ff8a6a"))
+  end
+  return c
+end
+
+-- Cluster of red-cap mushrooms.
+function T.mushroom()
+  local c=L.canvas(32,32); grass_base(c,82,L.R.grass)
+  c:groundshadow(16,27,9,2.2)
+  local function shroom(cx,cy,s)
+    c:fillrect(cx-1,cy,cx+1,cy+s+2,L.R.cream[3]) -- stem
+    c:sphere(cx,cy,s+2,s,L.R.redroof,0.1)         -- cap
+    c:px(cx-1,cy-1,L.hx("ffffff")); c:px(cx+2,cy,L.hx("ffffff")); c:px(cx,cy+1,L.hx("ffe6dd")) -- spots
+  end
+  shroom(13,17,4); shroom(21,20,3); shroom(17,22,2)
+  c:outline()
+  return c
+end
+
+-- Tilled garden plot with green sprouts (crops).
+function T.crop()
+  local c=L.canvas(32,32); grass_base(c,83,L.R.grass)
+  local D=L.R.dirt
+  -- soil bed
+  c:fillrect(3,7,28,27,D[3]); c:fillrect(3,7,28,8,D[4]); c:fillrect(3,26,28,27,D[2])
+  for y=7,27 do for x=3,28 do if L.vnoise(x,y,83,3)>0.6 then c:px(x,y,D[2]) end end end
+  -- furrow rows
+  for ry=10,26,5 do c:hline(4,27,ry,D[2]); c:hline(4,27,ry-1,D[4]) end
+  c:outline()
+  -- sprouts in rows
+  for row=0,2 do local ry=12+row*5
+    for i=0,4 do local x=6+i*5
+      c:vline(x,ry-3,ry,L.R.meadow[3]); c:px(x-1,ry-2,L.R.meadow[4]); c:px(x+1,ry-3,L.R.meadow[5])
+    end
+  end
+  return c
+end
+
+-- Wooden picket fence (horizontal rail).
+function T.fence()
+  local c=L.canvas(32,32); grass_base(c,84,L.R.grass)
+  local W=L.R.wood
+  -- two rails
+  c:fillrect(0,14,31,16,W[4]); c:hline(0,31,14,W[5]); c:hline(0,31,16,W[2])
+  -- posts with pointed tops
+  for _,px in ipairs({4,15,26}) do
+    c:groundshadow(px+1,27,3,1.4)
+    c:fillrect(px,8,px+2,26,W[3]); c:vline(px,8,26,W[5]); c:vline(px+2,8,26,W[2])
+    c:px(px,7,W[3]); c:px(px+1,6,W[4]); c:px(px+2,7,W[3])
+  end
+  c:outline()
+  return c
+end
+
+-- Stone fountain with a spouting basin.
+function T.fountain()
+  local c=L.canvas(32,32); grass_base(c,85,L.R.path)
+  c:groundshadow(16,28,13,3)
+  local S=L.R.stone; local W=L.R.water
+  -- basin
+  c:sphere(16,22,13,6,S)
+  c:disc(16,22,10,4,W[2]); c:sphere(16,22,9,3.4,W,0.15)
+  -- inner pedestal
+  c:fillrect(14,12,18,22,S[3]); c:vline(14,12,22,S[2]); c:vline(18,12,22,S[4])
+  c:sphere(16,11,4,3,S,0.1)
+  -- water jets
+  for _,dx in ipairs({-4,0,4}) do
+    for y=6,12 do c:blend(16+dx*(y-6)/6, y, L.rgba(180,225,250, 200-(y-6)*10)) end
+  end
+  c:disc(16,10,3,1.4,W[4])
+  c:outline()
+  -- glints
+  c:px(11,21,W[5]); c:px(20,20,W[5]); c:px(16,20,W[5])
+  return c
+end
+
+-- Flowerbed: a dense row of tulips.
+function T.flowerbed()
+  local c=L.canvas(32,32); grass_base(c,86,L.R.meadow)
+  local D=L.R.dirt
+  c:fillrect(3,20,28,27,D[3]); c:hline(3,28,20,D[4]); c:outline()
+  local cols={"ef476f","ffd166","06d6a0","c191f4","ff924c"}
+  for i=0,6 do
+    local x=5+i*4; local y=18-((i*7)%3)
+    c:vline(x,y,22,L.R.meadow[2])              -- stem
+    local col=L.hx(cols[(i%#cols)+1])
+    c:fillrect(x-1,y-3,x+1,y,col)               -- tulip cup
+    c:px(x-1,y-3,L.hx("ffffff")); c:px(x,y-4,col)
+  end
+  return c
+end
+
+-- Wooden barrel prop.
+function T.barrel()
+  local c=L.canvas(32,32); grass_base(c,87,L.R.grass)
+  c:groundshadow(16,28,7,2)
+  local W=L.R.wood; local I=L.R.iron
+  c:fillrect(9,10,23,28,W[3])
+  c:vline(9,11,27,W[2]); c:vline(23,11,27,W[2]); c:vline(11,10,28,W[4]); c:vline(16,10,28,W[5])
+  c:sphere(16,10,7,2,W,0.2) -- top lid
+  -- iron hoops
+  c:hline(9,23,13,I[3]); c:hline(9,23,14,I[2]); c:hline(9,23,24,I[3]); c:hline(9,23,25,I[2])
+  c:outline()
   return c
 end
 

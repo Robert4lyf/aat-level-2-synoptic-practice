@@ -104,6 +104,18 @@
     if (x === 20 && y >= 3 && y <= 15) return true;   // eastern ring (cavern ↔ town)
     return false;
   }
+  // A road cell connects to any neighbouring road cell or region gate. The
+  // canonical n,s,e,w code selects the matching autotiled path sprite so
+  // straights, corners, T-junctions and crossroads all join seamlessly.
+  function connectsRoad(x, y) { return isRoad(x, y) || bossAt(x, y) != null; }
+  function roadShape(x, y) {
+    var code = '';
+    if (connectsRoad(x, y - 1)) code += 'n';
+    if (connectsRoad(x, y + 1)) code += 's';
+    if (connectsRoad(x + 1, y)) code += 'e';
+    if (connectsRoad(x - 1, y)) code += 'w';
+    return code || 'ns';
+  }
   function buildBlocked() {
     var out = {}, x, y;
     for (x = 0; x < MAP_W; x++) { out[posKey(x, 0)] = 1; out[posKey(x, MAP_H - 1)] = 1; }
@@ -144,7 +156,13 @@
       // Town green around the central crossroads.
       [8,6,'pathlamp'], [10,6,'ledger-stone'], [14,6,'well'], [16,7,'flower'], [11,4,'sign'],
       [8,10,'book'], [8,12,'flower'], [10,12,'flower'], [14,12,'book'], [16,12,'pathlamp'],
-      [13,14,'sign'], [14,10,'flower'], [10,10,'well']
+      [13,14,'sign'], [14,10,'flower'], [10,10,'well'],
+      // Bold new scenery: ponds, gardens, fountains, fences and props.
+      [6,7,'pond'], [5,6,'mushroom'], [18,7,'bush'], [17,7,'bush'], [15,7,'flowerbed'],
+      [8,7,'fountain'], [3,10,'bush'], [21,10,'mushroom'],
+      [5,12,'crop'], [6,13,'crop'],
+      [10,16,'fence'], [11,16,'fence'], [13,16,'fence'], [14,16,'fence'],
+      [19,13,'barrel'], [18,13,'barrel']
     ].forEach(function (d) { setDecor(out, d[0], d[1], d[2]); });
     return out;
   }
@@ -244,10 +262,10 @@
   function passable(x, y) {
     if (x < 0 || y < 0 || x >= MAP_W || y >= MAP_H) return false;
     var t = tileType(x, y);
-    return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region'].indexOf(t) >= 0;
+    return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region', 'mushroom', 'flowerbed'].indexOf(t) >= 0;
   }
   function adjacentNpc(d) { var best = null; for (var k in NPCS) { if (!NPCS.hasOwnProperty(k)) continue; var n = NPCS[k]; var dist = Math.abs(d.pos.x - n.x) + Math.abs(d.pos.y - n.y); if (dist <= 1 && (!best || dist < best.dist)) best = { id: k, dist: dist }; } return best; }
-  var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2], path: [1, 2], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1], rock: [1, 2] };
+  var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2, 3], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1], rock: [1, 2] };
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
@@ -255,7 +273,8 @@
     var b = bossAt(x, y);
     var npc = npcAt(x, y);
     var t = tileType(x, y);
-    var cls = 'rpg-tile rpg-tile-' + t + tileVariant(t, x, y) + (here ? ' rpg-player-tile' : '') + (b && d.badges[b.id] ? ' cleared' : '');
+    var shape = (t === 'path') ? ' rpg-path-' + roadShape(x, y) : tileVariant(t, x, y);
+    var cls = 'rpg-tile rpg-tile-' + t + shape + (here ? ' rpg-player-tile' : '') + (b && d.badges[b.id] ? ' cleared' : '');
     var attr = b ? ' data-node="' + b.id + '"' : (npc ? ' data-npc="' + npc.id + '"' : '');
     var aria = npc ? 'Talk to ' + esc(npc.name) : (b ? esc(MAP_NODES[b.id].short) + ' entrance' : 'Map tile ' + x + ',' + y);
     var label = b ? '<span class="rpg-location-label">' + esc(MAP_NODES[b.id].short) + '</span>'
