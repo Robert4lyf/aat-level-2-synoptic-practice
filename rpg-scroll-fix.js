@@ -3,6 +3,8 @@
 
   var lastTap = 0;
   var addedState = false;
+  var desiredFullscreen = false;
+  var justMovedAt = 0;
 
   function loadCss() {
     if (document.querySelector('link[href="rpg-fullscreen.css"]')) return;
@@ -62,35 +64,55 @@
     hidePracticeCard();
   }
 
-  function keepMap() {
-    var p = pnl();
-    var w = wrap();
-    if (!p || !w) return;
-    p.scrollTop = full() ? 0 : Math.max(0, w.offsetTop - 12);
-    if (!full() && w.scrollWidth > w.clientWidth) w.scrollLeft = Math.max(0, (w.scrollWidth - w.clientWidth) / 2);
-  }
-
-  function keepSoon() {
-    requestAnimationFrame(function () { requestAnimationFrame(keepMap); });
-    setTimeout(keepMap, 50);
-    setTimeout(keepMap, 150);
-  }
-
   function addPad() {
     var o = ov();
     if (!o || o.querySelector('.rpg-fs-controls')) return;
     var d = document.createElement('div');
     d.className = 'rpg-fs-controls';
-    d.innerHTML = '<button class="rpg-fs-exit" data-fs-exit type="button">×</button><div class="rpg-fs-dpad"><span></span><button data-dir="up" type="button">▲</button><span></span><button data-dir="left" type="button">◀</button><button data-interact type="button">●</button><button data-dir="right" type="button">▶</button><span></span><button data-dir="down" type="button">▼</button><span></span></div><div class="rpg-fs-abxy"><button data-interact type="button">Y</button><button data-interact type="button">X</button><button data-fs-exit type="button">B</button><button data-interact type="button">A</button></div><div class="rpg-fs-hint">Double tap map to exit</div>';
+    d.innerHTML = '<button tabindex="-1" class="rpg-fs-exit" data-fs-exit type="button">×</button><div class="rpg-fs-dpad"><span></span><button tabindex="-1" data-dir="up" type="button">▲</button><span></span><button tabindex="-1" data-dir="left" type="button">◀</button><button tabindex="-1" data-interact type="button">●</button><button tabindex="-1" data-dir="right" type="button">▶</button><span></span><button tabindex="-1" data-dir="down" type="button">▼</button><span></span></div><div class="rpg-fs-abxy"><button tabindex="-1" data-interact type="button">Y</button><button tabindex="-1" data-interact type="button">X</button><button tabindex="-1" data-fs-exit type="button">B</button><button tabindex="-1" data-interact type="button">A</button></div><div class="rpg-fs-hint">Double tap map to exit</div>';
     o.appendChild(d);
   }
 
-  function enter() {
+  function applyFullscreenClass() {
     var o = ov();
-    if (!o || !world()) return;
+    if (!o || !world()) return false;
     o.classList.add('rpg-map-fullscreen');
     document.body.classList.add('rpg-map-fullscreen-body');
     addPad();
+    return true;
+  }
+
+  function keepMap() {
+    var p = pnl();
+    var w = wrap();
+    if (!p || !w) return;
+    if (desiredFullscreen) {
+      applyFullscreenClass();
+      p.scrollTop = 0;
+      w.scrollLeft = 0;
+    } else {
+      p.scrollTop = Math.max(0, w.offsetTop - 12);
+      if (w.scrollWidth > w.clientWidth) w.scrollLeft = Math.max(0, (w.scrollWidth - w.clientWidth) / 2);
+    }
+  }
+
+  function keepSoon() {
+    requestAnimationFrame(function () { requestAnimationFrame(keepMap); });
+    setTimeout(keepMap, 30);
+    setTimeout(keepMap, 90);
+    setTimeout(keepMap, 180);
+  }
+
+  function blurActive() {
+    try {
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    } catch (e) {}
+  }
+
+  function enter() {
+    if (!world()) return;
+    desiredFullscreen = true;
+    applyFullscreenClass();
     keepSoon();
     if (!addedState && history && history.pushState) {
       try { history.pushState({ rpgFull: true }, '', location.href); addedState = true; } catch (e) {}
@@ -98,6 +120,7 @@
   }
 
   function exit(fromPop) {
+    desiredFullscreen = false;
     var o = ov();
     if (o) o.classList.remove('rpg-map-fullscreen');
     document.body.classList.remove('rpg-map-fullscreen-body');
@@ -110,6 +133,13 @@
   document.addEventListener('pointerdown', function (e) {
     if (!isMoveControl(e.target) && !fsExit(e.target)) return;
     e.preventDefault();
+    blurActive();
+  }, { capture: true, passive: false });
+
+  document.addEventListener('pointerup', function (e) {
+    if (!isMoveControl(e.target) && !fsExit(e.target)) return;
+    e.preventDefault();
+    blurActive();
   }, { capture: true, passive: false });
 
   document.addEventListener('click', function (e) {
@@ -121,6 +151,8 @@
     }
 
     if (isMoveControl(e.target)) {
+      justMovedAt = Date.now();
+      blurActive();
       keepSoon();
       return;
     }
@@ -131,7 +163,7 @@
     var now = Date.now();
     if (now - lastTap < 360) {
       e.preventDefault();
-      if (full()) exit(false); else enter();
+      if (desiredFullscreen || full()) exit(false); else enter();
       lastTap = 0;
     } else {
       lastTap = now;
@@ -139,20 +171,24 @@
   }, { capture: true, passive: false });
 
   window.addEventListener('popstate', function () {
-    if (full()) exit(true);
+    if (desiredFullscreen || full()) exit(true);
   });
 
   document.addEventListener('keydown', function (e) {
     if (!world()) return;
-    if (e.key === 'Escape' && full()) { e.preventDefault(); exit(false); return; }
-    keepSoon();
+    if (e.key === 'Escape' && (desiredFullscreen || full())) { e.preventDefault(); exit(false); return; }
+    if (desiredFullscreen) keepSoon();
   }, { capture: true });
 
   if (window.MutationObserver) {
     new MutationObserver(function () {
       maintainHeaderAccess();
-      if (!ov()) document.body.classList.remove('rpg-map-fullscreen-body');
-      if (full()) addPad();
+      if (!ov()) {
+        desiredFullscreen = false;
+        document.body.classList.remove('rpg-map-fullscreen-body');
+        return;
+      }
+      if (desiredFullscreen || Date.now() - justMovedAt < 900) keepSoon();
     }).observe(document.body, { childList: true, subtree: true });
   }
 
