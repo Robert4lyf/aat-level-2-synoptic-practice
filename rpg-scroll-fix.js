@@ -2,7 +2,6 @@
   'use strict';
 
   var lastTap = 0;
-  var suppressClickUntil = 0;
   var addedState = false;
 
   function loadCss() {
@@ -18,7 +17,8 @@
   function full() { var o = ov(); return !!(o && o.classList.contains('rpg-map-fullscreen')); }
   function pnl() { var o = ov(); return o ? o.querySelector('.rpg-panel') : null; }
   function wrap() { var o = ov(); return o ? o.querySelector('.rpg-pixel-map-wrap') : null; }
-  function ctrl(t) { return t && t.closest ? t.closest('#rpgOverlay [data-dir], #rpgOverlay [data-interact], #rpgOverlay [data-fs-exit]') : null; }
+  function fsExit(t) { return t && t.closest ? t.closest('#rpgOverlay [data-fs-exit]') : null; }
+  function isMoveControl(t) { return !!(t && t.closest && t.closest('#rpgOverlay [data-dir], #rpgOverlay [data-interact]')); }
 
   function hidePracticeCard() {
     var card = document.getElementById('rpgDemoBtn');
@@ -28,15 +28,10 @@
   function openLedgerLegends() {
     var tryClick = function () {
       var card = document.getElementById('rpgDemoBtn');
-      if (card) {
-        card.click();
-        return true;
-      }
+      if (card) { card.click(); return true; }
       return false;
     };
-
     if (tryClick()) return;
-
     var home = document.getElementById('homeNavBtn');
     if (home) home.click();
     setTimeout(tryClick, 80);
@@ -57,7 +52,6 @@
       event.preventDefault();
       openLedgerLegends();
     });
-
     var ref = document.getElementById('referenceToggle') || document.getElementById('darkToggle') || document.getElementById('homeNavBtn');
     if (ref && ref.parentNode === header) header.insertBefore(btn, ref);
     else header.appendChild(btn);
@@ -73,7 +67,7 @@
     var w = wrap();
     if (!p || !w) return;
     p.scrollTop = full() ? 0 : Math.max(0, w.offsetTop - 12);
-    if (w.scrollWidth > w.clientWidth) w.scrollLeft = Math.max(0, (w.scrollWidth - w.clientWidth) / 2);
+    if (!full() && w.scrollWidth > w.clientWidth) w.scrollLeft = Math.max(0, (w.scrollWidth - w.clientWidth) / 2);
   }
 
   function keepSoon() {
@@ -113,33 +107,24 @@
     if (shouldGoBack) { try { history.back(); } catch (e) {} }
   }
 
-  function activate(button) {
-    if (!button) return;
-    if (button.hasAttribute('data-fs-exit')) return exit(false);
-    suppressClickUntil = Date.now() + 550;
-    setTimeout(function () { button.click(); keepSoon(); }, 0);
-  }
-
   document.addEventListener('pointerdown', function (e) {
-    if (!ctrl(e.target)) return;
+    if (!isMoveControl(e.target) && !fsExit(e.target)) return;
     e.preventDefault();
-  }, { capture: true, passive: false });
-
-  document.addEventListener('pointerup', function (e) {
-    var b = ctrl(e.target);
-    if (!b) return;
-    e.preventDefault();
-    e.stopPropagation();
-    activate(b);
   }, { capture: true, passive: false });
 
   document.addEventListener('click', function (e) {
-    var b = ctrl(e.target);
-    if (b && Date.now() < suppressClickUntil) {
+    if (fsExit(e.target)) {
       e.preventDefault();
       e.stopPropagation();
+      exit(false);
       return;
     }
+
+    if (isMoveControl(e.target)) {
+      keepSoon();
+      return;
+    }
+
     if (!world()) return;
     var m = e.target && e.target.closest ? e.target.closest('#rpgOverlay .rpg-pixel-map-wrap, #rpgOverlay .rpg-pixel-map') : null;
     if (!m) return;
