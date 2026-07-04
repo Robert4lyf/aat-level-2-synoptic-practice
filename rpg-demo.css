@@ -32,17 +32,24 @@
 .rpg-tile { position: relative; aspect-ratio: 1 / 1; min-height: 44px; border: 0; padding: 0; overflow: hidden; cursor: pointer; image-rendering: pixelated; background-color: #8fca5c; background-repeat: no-repeat; background-size: 100% 100%; -webkit-tap-highlight-color: transparent; }
 .rpg-tile::before, .rpg-tile::after, .rpg-tile-art, .rpg-tile-art::before, .rpg-tile-art::after { content: ''; position: absolute; box-sizing: border-box; }
 .rpg-tile:hover { outline: 2px solid rgba(255,255,255,.7); z-index: 2; }
-.rpg-tile-grass { background-image: url(rpg-assets/tile-grass.png); }
-.rpg-tile-flower { background-image: url(rpg-assets/tile-flower.png); }
-.rpg-tile-path { background-image: url(rpg-assets/tile-path.png); }
-.rpg-tile-tree { background-image: url(rpg-assets/tile-tree.png); cursor: not-allowed; }
+.rpg-tile-grass { background-image: url(rpg-assets/tile-grass-1.png); }
+.rpg-tile-grass.rpg-v2 { background-image: url(rpg-assets/tile-grass-2.png); }
+.rpg-tile-grass.rpg-v3 { background-image: url(rpg-assets/tile-grass-3.png); }
+.rpg-tile-flower { background-image: url(rpg-assets/tile-flower-1.png); }
+.rpg-tile-flower.rpg-v2 { background-image: url(rpg-assets/tile-flower-2.png); }
+.rpg-tile-path { background-image: url(rpg-assets/tile-path-1.png); }
+.rpg-tile-path.rpg-v2 { background-image: url(rpg-assets/tile-path-2.png); }
+.rpg-tile-tree { background-image: url(rpg-assets/tile-tree-1.png); cursor: not-allowed; }
+.rpg-tile-tree.rpg-v2 { background-image: url(rpg-assets/tile-tree-2.png); }
+.rpg-tile-tree.rpg-v3 { background-image: url(rpg-assets/tile-tree-3.png); }
 .rpg-tile-rock { background-image: url(rpg-assets/tile-rock.png); cursor: not-allowed; }
 .rpg-tile-sign { background-image: url(rpg-assets/tile-sign.png); }
 .rpg-tile-book { background-image: url(rpg-assets/tile-book.png); }
 .rpg-tile-well { background-image: url(rpg-assets/tile-well.png); }
 .rpg-tile-ledger-stone { background-image: url(rpg-assets/tile-ledger-stone.png); }
 .rpg-tile-pathlamp { background-image: url(rpg-assets/tile-pathlamp.png); }
-.rpg-tile-market, .rpg-tile-house { background-image: url(rpg-assets/tile-house.png); cursor: not-allowed; }
+.rpg-tile-market, .rpg-tile-house { background-image: url(rpg-assets/tile-house-1.png); cursor: not-allowed; }
+.rpg-tile-market.rpg-v2, .rpg-tile-house.rpg-v2 { background-image: url(rpg-assets/tile-house-2.png); }
 .rpg-tile-factory-wall { background-image: url(rpg-assets/tile-factory-wall.png); cursor: not-allowed; }
 .rpg-tile-region { background-image: url(rpg-assets/tile-gate-town.png); }
 .rpg-tile-region[data-node='itbk'] { background-image: url(rpg-assets/tile-gate-forest.png); }

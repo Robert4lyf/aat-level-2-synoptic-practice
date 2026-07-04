@@ -127,11 +127,13 @@
     var t = tileType(x, y);
     return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region'].indexOf(t) >= 0;
   }
+  var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2], path: [1, 2], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1] };
+  function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
     var b = bossAt(x, y);
     var t = tileType(x, y);
-    var cls = 'rpg-tile rpg-tile-' + t + (here ? ' rpg-player-tile' : '') + (b && d.badges[b.id] ? ' cleared' : '');
+    var cls = 'rpg-tile rpg-tile-' + t + tileVariant(t, x, y) + (here ? ' rpg-player-tile' : '') + (b && d.badges[b.id] ? ' cleared' : '');
     var node = b ? ' data-node="' + b.id + '"' : '';
     var label = b ? '<span class="rpg-location-label">' + esc(MAP_NODES[b.id].short) + '</span>' : '';
     var contents = '<span class="rpg-tile-art" aria-hidden="true"></span>' + label;
