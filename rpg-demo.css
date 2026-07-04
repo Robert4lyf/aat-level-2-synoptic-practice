@@ -28,7 +28,7 @@
 /* Pixel-art world map tiles, rendered from rpg-assets/tile-*.png sprites. */
 .rpg-map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; margin-top: 16px; }
 .rpg-pixel-map-wrap { padding: 16px; border-radius: 18px; background: #1a2a18; box-shadow: inset 0 0 0 4px #0b160a, 0 18px 45px rgba(0,0,0,.24); overflow: auto; overscroll-behavior: contain; }
-.rpg-pixel-map { width: min(100%, 768px); min-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 0; border: 6px solid #101820; background: #9bbf72; image-rendering: pixelated; box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d; }
+.rpg-pixel-map { width: min(100%, 768px); min-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(var(--rpg-cols, 25), minmax(0, 1fr)); gap: 0; border: 6px solid #101820; background: #9bbf72; image-rendering: pixelated; box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d; }
 .rpg-tile { position: relative; aspect-ratio: 1 / 1; min-height: 44px; border: 0; padding: 0; overflow: hidden; cursor: pointer; image-rendering: pixelated; background-color: #8fca5c; background-repeat: no-repeat; background-size: 100% 100%; -webkit-tap-highlight-color: transparent; }
 .rpg-tile::before, .rpg-tile::after, .rpg-tile-art, .rpg-tile-art::before, .rpg-tile-art::after { content: ''; position: absolute; box-sizing: border-box; }
 .rpg-tile:hover { outline: 2px solid rgba(255,255,255,.7); z-index: 2; }
@@ -51,6 +51,7 @@
 .rpg-tile-market, .rpg-tile-house { background-image: url(rpg-assets/tile-house-1.png); cursor: not-allowed; }
 .rpg-tile-market.rpg-v2, .rpg-tile-house.rpg-v2 { background-image: url(rpg-assets/tile-house-2.png); }
 .rpg-tile-factory-wall { background-image: url(rpg-assets/tile-factory-wall.png); cursor: not-allowed; }
+.rpg-tile-npc { background-image: url(rpg-assets/tile-grass-1.png); }
 .rpg-tile-region { background-image: url(rpg-assets/tile-gate-town.png); }
 .rpg-tile-region[data-node='itbk'] { background-image: url(rpg-assets/tile-gate-forest.png); }
 .rpg-tile-region[data-node='pobc'] { background-image: url(rpg-assets/tile-gate-cave.png); }
@@ -66,6 +67,38 @@
 .rpg-companion-fox { background-image: url(rpg-assets/char-fox.png); }
 .rpg-companion-mole { background-image: url(rpg-assets/char-mole.png); }
 @keyframes rpgWalkBob { 0%,100% { transform: translate(-62%, -78%); } 50% { transform: translate(-62%, -86%); } }
+
+/* Townsfolk NPCs standing on the map, and their name tags. */
+.rpg-npc-sprite { position: absolute; z-index: 7; left: 50%; top: 50%; width: 26px; height: 32px; transform: translate(-50%, -70%); image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 100% 100%; filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); pointer-events: none; animation: rpgNpcIdle 2.6s ease-in-out infinite; }
+.rpg-npc-sprite[data-mon='npc-quill'] { background-image: url(rpg-assets/npc-quill.png); }
+.rpg-npc-sprite[data-mon='npc-scribe'] { background-image: url(rpg-assets/npc-scribe.png); }
+.rpg-npc-sprite[data-mon='npc-warden'] { background-image: url(rpg-assets/npc-warden.png); }
+.rpg-npc-sprite[data-mon='npc-clerk'] { background-image: url(rpg-assets/npc-clerk.png); }
+.rpg-npc-sprite[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
+.rpg-npc-sprite[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
+.rpg-npc-label { background: rgba(37,99,235,.82); border-color: rgba(191,219,254,.6); }
+@keyframes rpgNpcIdle { 0%,100% { transform: translate(-50%, -70%); } 50% { transform: translate(-50%, -74%); } }
+.rpg-tile-npc { cursor: pointer; }
+.rpg-tile-npc:hover { outline: 2px solid rgba(191,219,254,.95); }
+
+/* Larger NPC portraits reuse the battle sprite sizing. */
+.rpg-sprite[data-mon='npc-quill'] { background-image: url(rpg-assets/npc-quill.png); }
+.rpg-sprite[data-mon='npc-scribe'] { background-image: url(rpg-assets/npc-scribe.png); }
+.rpg-sprite[data-mon='npc-warden'] { background-image: url(rpg-assets/npc-warden.png); }
+.rpg-sprite[data-mon='npc-clerk'] { background-image: url(rpg-assets/npc-clerk.png); }
+.rpg-sprite[data-mon='npc-mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
+.rpg-sprite[data-mon='npc-merchant'] { background-image: url(rpg-assets/npc-merchant.png); }
+
+/* Dialogue panel */
+.rpg-dialogue { width: min(680px, 96vw); }
+.rpg-dialogue-inner { display: grid; grid-template-columns: 130px 1fr; gap: 18px; align-items: start; margin-top: 6px; }
+.rpg-dialogue-portrait { width: 130px; height: 150px; border-radius: 20px; background-repeat: no-repeat; background-position: center bottom; background-size: 84%; image-rendering: pixelated; background-color: rgba(99,102,241,.12); border: 3px solid rgba(99,102,241,.28); box-shadow: inset 0 -10px 22px rgba(0,0,0,.14); filter: drop-shadow(0 8px 10px rgba(0,0,0,.18)); animation: rpgFloat 2.8s ease-in-out infinite; }
+.rpg-dialogue-body h2 { margin: 0 0 2px; font-size: clamp(1.35rem, 3.4vw, 1.9rem); }
+.rpg-dialogue-role { margin: 0 0 12px; font-weight: 800; color: var(--muted, #64748b); }
+.rpg-speech { min-height: 96px; padding: 16px; border-radius: 18px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a; font-weight: 700; line-height: 1.5; font-size: clamp(1rem, 2.6vw, 1.12rem); }
+.dark .rpg-speech { background: #422006; color: #fef3c7; }
+.rpg-dialogue-progress { margin: 10px 0 6px; font-weight: 800; color: var(--muted, #64748b); }
+@media (max-width: 560px) { .rpg-dialogue-inner { grid-template-columns: 1fr; } .rpg-dialogue-portrait { width: 110px; height: 128px; justify-self: center; } }
 .rpg-map-side { display: grid; gap: 12px; }
 .rpg-map-message { min-height: 74px; padding: 14px; border-radius: 18px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a; font-weight: 900; line-height: 1.35; }
 .dark .rpg-map-message { background: #422006; color: #fef3c7; }

@@ -65,6 +65,7 @@ RAMPS = {
     'mole':     [hx('413c3d'), hx('5d5554'), hx('7c7270'), hx('9b908d'), hx('bab0ad')],
     'dragon':   [hx('184026'), hx('23613a'), hx('2f844a'), hx('47a75d'), hx('70c67a')],
     'purple':   [hx('3b1662'), hx('582692'), hx('7b3ec0'), hx('9d61e2'), hx('c191f4')],
+    'teal':     [hx('184a44'), hx('236b60'), hx('2f8c7c'), hx('47ad99'), hx('72c6b4')],
     'griffin':  [hx('6e4a20'), hx('96682e'), hx('bb8a44'), hx('d9ab5e'), hx('f0cd85')],
     'feather':  [hx('9c8f74'), hx('c2b697'), hx('ddd3b6'), hx('f0e9d2'), hx('fdf9ec')],
     'iron':     [hx('2c3140'), hx('434b5e'), hx('5f6a80'), hx('828ea6'), hx('aab6cc')],
@@ -981,6 +982,23 @@ CREATURES = {
     'boss-besy': dict(size=(56, 56), ramp='griffin', ears='pointy', eyes='fierce',
                       wings='feather', tail=None, muzzle='beak', crest=True,
                       blush=False, belly_color=RAMPS['feather'][3], eye_y=14),
+    # --- townsfolk NPCs (32x40, cute, friendly) — each a distinct animal so
+    #     they read apart from the three starters and the four bosses. ---
+    'npc-quill': dict(ramp='teal', ears='pointy', tail=None, muzzle='beak',
+                      crest=True, belly_color=CREAM, inner_ear=hx('bfe0d8')),
+    'npc-scribe': dict(ramp='foliage', ears='round', tail=None, muzzle='snout',
+                       nose=hx('2f5d34'), inner_ear=hx('bfe89a'),
+                       belly_color=hx('e8f7cf')),
+    'npc-warden': dict(ramp='purple', ears='pointy', tail=None, wings='membrane',
+                       muzzle=None, inner_ear=hx('d3b6f2')),
+    'npc-clerk': dict(ramp='wood', ears='round', tail='bushy', muzzle='snout',
+                      nose=hx('3a2418'), inner_ear=hx('caa06a')),
+    'npc-mayor': dict(ramp='roof_blue', ears='round', tail=None, muzzle='snout',
+                      nose=hx('1f3b70'), inner_ear=hx('a4ccf2'),
+                      belly_color=hx('dbe9fb')),
+    'npc-merchant': dict(ramp='stone', ears='round', tail='bushy', muzzle='snout',
+                         nose=hx('2b2f3a'), inner_ear=hx('c9d2e2'),
+                         belly_color=hx('e4e9f2')),
 }
 
 PLAYER = dict(jacket=(hx('2d63c9'), hx('1f4694'), hx('4a86e0')),
