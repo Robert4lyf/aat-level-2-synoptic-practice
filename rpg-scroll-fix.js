@@ -46,6 +46,7 @@
 
   function openLedgerLegends() {
     var tryClick = function () {
+      if (ov()) return true;                 // already open — never re-click (avoids resetting the screen)
       var card = document.getElementById('rpgDemoBtn');
       if (card) { card.click(); return true; }
       return false;
@@ -215,7 +216,10 @@
 
   document.addEventListener('keydown', function (e) {
     if (!world()) return;
-    if (e.key === 'Escape' && (desiredFullscreen || full())) { e.preventDefault(); exit(false); return; }
+    // Escape backs out one level: exit fullscreen first. stopPropagation keeps the
+    // demo's own Escape handler (which closes the whole overlay) from also firing,
+    // so a single press no longer both exits fullscreen and shuts Ledger Legends.
+    if (e.key === 'Escape' && (desiredFullscreen || full())) { e.preventDefault(); e.stopPropagation(); exit(false); return; }
     keepSoon();
   }, { capture: true });
 
@@ -227,6 +231,10 @@
         return;
       }
       if (missingOverlayTimer) { clearTimeout(missingOverlayTimer); missingOverlayTimer = null; }
+      // The overlay is rebuilt from scratch on every move, so the fullscreen class
+      // and on-screen d-pad are lost. Re-apply them here (a microtask, before the
+      // browser paints) so fullscreen chrome does not flash off on each step.
+      if (desiredFullscreen) applyFullscreenClass();
       keepSoon();
     }).observe(document.body, { childList: true, subtree: true });
   }

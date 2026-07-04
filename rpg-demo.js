@@ -183,7 +183,7 @@
     var b = document.createElement('button');
     b.id = 'rpgDemoBtn'; b.type = 'button'; b.className = 'mode-card mode-rpg';
     b.innerHTML = '<span class="mode-card-icon" aria-hidden="true">🗺️</span><div class="mode-card-info"><div class="mode-card-title">Ledger Legends</div><div class="mode-card-desc">Mini RPG quest · bosses, moves, XP and badges</div></div>';
-    b.onclick = landing; grid.insertBefore(b, grid.firstChild);
+    b.onclick = function () { landing(); }; grid.insertBefore(b, grid.firstChild);
   }
   function mount(html) {
     var old = document.getElementById('rpgOverlay'); if (old) old.remove();
@@ -287,6 +287,14 @@
     var targetTop = viewport.scrollTop + (tileRect.top - vpRect.top) - (viewport.clientHeight / 2) + (tileRect.height / 2);
     viewport.scrollLeft = Math.max(0, targetLeft);
     viewport.scrollTop = Math.max(0, targetTop);
+    // Pin the map viewport within the panel synchronously (same target the
+    // scroll-fix helper applies asynchronously). Because the whole overlay is
+    // rebuilt on every move, the fresh panel starts scrolled to the top; without
+    // this the panel jumped ~header-height a frame later — the move flicker.
+    if (!document.body.classList.contains('rpg-map-fullscreen-body')) {
+      var panel = overlay.querySelector('.rpg-panel');
+      if (panel) panel.scrollTop = Math.max(0, viewport.offsetTop - 12);
+    }
   }
   function cameraSoon() { requestAnimationFrame(centerNow); setTimeout(centerNow, 40); }
   function movePlayer(dir) {
@@ -367,16 +375,24 @@
 
   function battle() {
     var q = st.deck[st.i], done = st.answered !== null, disabled = done ? 'disabled' : '';
+    var potions = (load().inventory.potion || 0);
     var opts = q.opts.map(function (o, i) {
       var cls = done && i === q.ans ? ' correct' : done && i === st.answered ? ' wrong' : '';
       var move = i < 2 ? 'quick' : 'special';
       return '<button class="rpg-option' + cls + '" data-opt="' + i + '" data-move="' + move + '" type="button" ' + disabled + '><b>' + String.fromCharCode(65 + i) + '</b><span>' + esc(o) + '</span><small>' + esc(moveName(move === 'special')) + '</small></button>';
     }).join('');
     var fb = done ? '<div class="rpg-feedback"><strong>' + esc(st.log[0]) + '</strong><br>' + (st.answered === q.ans ? '' : 'Correct: ' + esc(q.opts[q.ans]) + '<br>') + '<em>' + esc(q.exp) + '</em></div><button class="rpg-next" data-next type="button">' + (over() ? 'View battle result' : 'Continue quest') + ' →</button>' : '';
-    mount('<section class="rpg-panel rpg-battle" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-arena"><div class="rpg-backdrop rpg-backdrop-' + esc(st.b.scene) + '"></div><div class="rpg-fighters"><div class="rpg-mon"><div class="rpg-sprite ally" data-mon="' + st.c.id + '"></div><strong>' + esc(st.c.name) + '</strong>' + bar(st.player, st.maxP) + '<small>' + st.player + '/' + st.maxP + ' HP</small></div><div class="rpg-vs">⚔️</div><div class="rpg-mon"><div class="rpg-sprite enemy" data-mon="' + st.b.id + '"></div><strong>' + esc(st.b.name) + '</strong>' + bar(st.enemy, st.maxE) + '<small>' + st.enemy + '/' + st.maxE + ' HP</small></div></div></div><div class="rpg-battle-menu"><p class="rpg-meta">' + esc(st.b.region) + ' · Turn ' + (st.i + 1) + '/' + st.deck.length + ' · Streak ' + st.streak + '</p><h2 class="rpg-question">' + esc(q.q) + '</h2><div class="rpg-options">' + opts + '</div><div class="rpg-actions small"><button class="rpg-secondary" data-potion type="button" ' + (done || st.player >= st.maxP ? 'disabled' : '') + '>Use Potion</button></div>' + fb + '<div class="rpg-log">' + st.log.slice(0, 3).map(function (x) { return '<div>' + esc(x) + '</div>'; }).join('') + '</div></section>');
+    mount('<section class="rpg-panel rpg-battle" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-arena"><div class="rpg-backdrop rpg-backdrop-' + esc(st.b.scene) + '"></div><div class="rpg-fighters"><div class="rpg-mon"><div class="rpg-sprite ally" data-mon="' + st.c.id + '"></div><strong>' + esc(st.c.name) + '</strong>' + bar(st.player, st.maxP) + '<small>' + st.player + '/' + st.maxP + ' HP</small></div><div class="rpg-vs">⚔️</div><div class="rpg-mon"><div class="rpg-sprite enemy" data-mon="' + st.b.id + '"></div><strong>' + esc(st.b.name) + '</strong>' + bar(st.enemy, st.maxE) + '<small>' + st.enemy + '/' + st.maxE + ' HP</small></div></div></div><div class="rpg-battle-menu"><p class="rpg-meta">' + esc(st.b.region) + ' · Turn ' + (st.i + 1) + '/' + st.deck.length + ' · Streak ' + st.streak + '</p><h2 class="rpg-question">' + esc(q.q) + '</h2><div class="rpg-options">' + opts + '</div><div class="rpg-actions small"><button class="rpg-secondary" data-potion type="button" ' + (done || st.player >= st.maxP || potions <= 0 ? 'disabled' : '') + '>Use Potion (' + potions + ')</button></div>' + fb + '<div class="rpg-log">' + st.log.slice(0, 3).map(function (x) { return '<div>' + esc(x) + '</div>'; }).join('') + '</div></section>');
   }
 
-  function usePotion() { if (!st || st.answered !== null || st.player >= st.maxP) return; st.player = Math.min(st.maxP, st.player + 10); st.log.unshift(st.c.name + ' restored 10 HP.'); battle(); }
+  function usePotion() {
+    if (!st || st.answered !== null || st.player >= st.maxP) return;
+    var d = load(); if ((d.inventory.potion || 0) <= 0) return;   // no potions left — do nothing
+    d.inventory.potion = (d.inventory.potion || 0) - 1; save(d);  // consume one from the shared inventory
+    st.player = Math.min(st.maxP, st.player + 10);
+    st.log.unshift(st.c.name + ' drank a Potion (+10 HP). ' + d.inventory.potion + ' left.');
+    battle();
+  }
   function answer(i, mv) {
     if (!st || st.answered !== null) return;
     var q = st.deck[st.i], ok = i === q.ans, strong = mv === 'special';
@@ -390,7 +406,7 @@
 
   function result() {
     var n = st.res.filter(function (r) { return r.ok; }).length, won = st.enemy <= 0 || (st.player > 0 && n >= 4);
-    var d = load(); d.xp += won ? 45 : 15; d.wins[st.b.id] = (d.wins[st.b.id] || 0) + (won ? 1 : 0); if (won) d.badges[st.b.id] = true; d.inventory.potion = Math.min(3, (d.inventory.potion || 0) + 1); save(d);
+    var d = load(); d.xp += won ? 45 : 15; d.wins[st.b.id] = (d.wins[st.b.id] || 0) + (won ? 1 : 0); if (won) d.badges[st.b.id] = true; d.inventory.potion = Math.min(9, (d.inventory.potion || 0) + 1); save(d);
     var review = st.res.map(function (r, i) { return '<details class="rpg-review-item ' + (r.ok ? 'ok' : 'bad') + '"><summary>Turn ' + (i + 1) + ' · ' + esc(r.move) + ' · ' + (r.ok ? 'Hit' : 'Miss') + '</summary><p><strong>' + esc(r.q) + '</strong></p><p>Correct: ' + esc(r.correct) + '</p><p><em>' + esc(r.exp) + '</em></p></details>'; }).join('');
     mount('<section class="rpg-panel rpg-result" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-hero-icon">' + (won ? '🏆' : '🛡️') + '</div><h2>' + (won ? esc(st.b.badge) + ' earned' : 'You escaped to revise') + '</h2><p>' + esc(st.b.name) + ': ' + n + '/' + st.deck.length + ' correct · +' + (won ? 45 : 15) + ' XP · Potion found.</p><div class="rpg-profile"><span>' + esc(st.c.name) + ' Lv ' + lvl(d.xp) + '</span><span>Total XP ' + d.xp + '</span><span>' + Object.keys(d.badges).length + '/4 badges</span></div><div class="rpg-actions"><button class="rpg-next" data-retry="' + st.b.id + '" type="button">Rematch boss</button><button class="rpg-secondary" data-landing type="button">World map</button></div><div class="rpg-review">' + review + '</div></section>');
   }
