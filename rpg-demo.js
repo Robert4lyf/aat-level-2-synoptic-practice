@@ -297,17 +297,50 @@
     }
   }
   function cameraSoon() { requestAnimationFrame(centerNow); setTimeout(centerNow, 40); }
+  function worldPrompt(d, message) {
+    if (message) return message;
+    var np = adjacentNpc(d);
+    if (np) return NPCS[np.id].name + ' is beside you. Press Interact to talk.';
+    var near = nearestRegion(d);
+    if (near && near.dist <= 1) return 'You are close to ' + near.boss.region + '. Press Interact to enter.';
+    return 'Use the D-pad or arrow keys to explore the study town and meet its people.';
+  }
+  // Patch only the handful of tiles that changed on a step, leaving the overlay,
+  // panel, camera viewport and the other ~470 tiles in place. Rebuilding the whole
+  // overlay every move re-composited the backdrop blur and re-decoded every tile
+  // image — that was the visible move flicker. Incremental patching removes it.
+  // Falls back to a full render if the world map is not already mounted.
+  function moveRender(d, dirty, message) {
+    var overlay = document.getElementById('rpgOverlay');
+    var map = overlay && overlay.querySelector('.rpg-pixel-map');
+    if (!map || map.children.length !== MAP_W * MAP_H) return landing(d, message);
+    var c = starter(d); if (!c) return landing(d, message);
+    var seen = {};
+    (dirty || []).forEach(function (p) {
+      if (!p) return;
+      var k = p.x + ',' + p.y; if (seen[k]) return; seen[k] = 1;
+      var el = map.children[p.y * MAP_W + p.x]; if (!el) return;
+      var tmp = document.createElement('div');
+      tmp.innerHTML = tileHtml(p.x, p.y, d, c);
+      if (tmp.firstChild) el.replaceWith(tmp.firstChild);
+    });
+    var msg = overlay.querySelector('.rpg-map-message'); if (msg) msg.textContent = worldPrompt(d, message);
+    var pos = overlay.querySelector('.rpg-pos'); if (pos) pos.textContent = 'Position ' + d.pos.x + ',' + d.pos.y;
+    centerNow();
+    cameraSoon();
+  }
   function movePlayer(dir) {
     var d = load(); if (!starter(d)) return landing(d);
     var dx = 0, dy = 0;
     if (dir === 'up') dy = -1; if (dir === 'down') dy = 1; if (dir === 'left') dx = -1; if (dir === 'right') dx = 1;
     var nx = d.pos.x + dx, ny = d.pos.y + dy;
-    if (!passable(nx, ny)) { d.dir = dir; save(d); landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.'); cameraSoon(); return; }
-    d.companionPos = { x: d.pos.x, y: d.pos.y };  // companion steps onto the tile the player just left
+    if (!passable(nx, ny)) { d.dir = dir; save(d); moveRender(d, [], 'That route is blocked. Use the paths between buildings, trees and landmarks.'); return; }
+    var oldPlayer = { x: d.pos.x, y: d.pos.y };            // player's current tile (companion will step here)
+    var oldComp = { x: d.companionPos.x, y: d.companionPos.y }; // companion's current tile (will clear)
+    d.companionPos = { x: d.pos.x, y: d.pos.y };
     d.dir = dir;
-    d.pos.x = nx; d.pos.y = ny; save(d);
-    landing(d);
-    cameraSoon();
+    d.pos = { x: nx, y: ny }; save(d);
+    moveRender(d, [oldPlayer, oldComp, { x: nx, y: ny }]);
   }
   function interact() {
     var d = load();
@@ -350,10 +383,8 @@
     dlg = null;
     var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
-    var near = nearestRegion(d);
-    var np = adjacentNpc(d);
-    var prompt = message || (np ? esc(NPCS[np.id].name) + ' is beside you. Press Interact to talk.' : (near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Use the D-pad or arrow keys to explore the study town and meet its people.'));
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Explore the expanded study town, chat with the townsfolk for exam tips, enter the four topic regions, defeat their bosses and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
+    var prompt = worldPrompt(d, message);
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Explore the expanded study town, chat with the townsfolk for exam tips, enter the four topic regions, defeat their bosses and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
     centerNow();   // snap the camera onto the player before the first paint
     cameraSoon();  // safety re-centre once late layout (fonts/grid) settles
   }
