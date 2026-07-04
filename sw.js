@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v45';
+var CACHE_VERSION = 'aat-l2-practice-v46';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -13,8 +13,10 @@ var CORE_ASSETS = [
   './rpg-demo.css',
   './rpg-fullscreen.css',
   './rpg-normal-fix.css',
+  './rpg-player-animation.css',
   './rpg-demo.js',
   './rpg-scroll-fix.js',
+  './rpg-player-animation.js',
   './skills.js',
   './learn-data.js',
   './french-data.js',
