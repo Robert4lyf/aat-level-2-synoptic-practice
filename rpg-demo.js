@@ -103,7 +103,10 @@
     var b = document.createElement('button');
     b.id = 'rpgDemoBtn'; b.type = 'button'; b.className = 'mode-card mode-rpg';
     b.innerHTML = '<span class="mode-card-icon" aria-hidden="true">🗺️</span><div class="mode-card-info"><div class="mode-card-title">Ledger Legends</div><div class="mode-card-desc">Mini RPG quest · bosses, moves, XP and badges</div></div>';
-    b.onclick = landing; grid.insertBefore(b, grid.firstChild);
+    // Wrap so the click Event isn't passed as landing()'s forcedData (which
+    // normalise() would treat as game state with no starter, wrongly showing
+    // the companion-select screen for returning players every time).
+    b.onclick = function () { landing(); }; grid.insertBefore(b, grid.firstChild);
   }
   function mount(html) {
     var old = document.getElementById('rpgOverlay'); if (old) old.remove();
@@ -194,20 +197,54 @@
     viewport.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: immediate ? 'auto' : 'smooth' });
   }
   function cameraSoon(immediate) { requestAnimationFrame(function () { centerCameraOnPlayer(immediate); }); setTimeout(function () { centerCameraOnPlayer(immediate); }, 40); }
+  // --- In-place world updates -------------------------------------------
+  // Moving used to rebuild all MAP_W*MAP_H tiles via landing()/mount() every
+  // step, which dropped keyboard focus and forced the stacked camera retries.
+  // Instead we move only the player marker and update the two text nodes, then
+  // let the existing camera recentre. landing() stays the full (re)build entry.
+  function playerSpritesHtml(c) {
+    return '<span class="rpg-player-sprite" aria-label="Player"><span></span></span><span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"><span></span></span>';
+  }
+  function worldEl() { var o = document.getElementById('rpgOverlay'); return o && o.querySelector('.rpg-world') ? o : null; }
+  function tileAt(o, x, y) { return o.querySelector('[aria-label="Map tile ' + x + ',' + y + '"]'); }
+  function setWorldMessage(text) { var o = worldEl(); if (!o) return; var m = o.querySelector('.rpg-map-message'); if (m) m.textContent = text; }
+  function setPosLabel(o, d) { var s = o.querySelectorAll('.rpg-trainer-card small'); if (s.length) s[s.length - 1].textContent = 'Position ' + d.pos.x + ',' + d.pos.y; }
+  function movePlayerTile(o, d, c) {
+    var prev = o.querySelector('.rpg-player-tile');
+    if (prev) {
+      prev.classList.remove('rpg-player-tile');
+      var old = prev.querySelectorAll('.rpg-player-sprite, .rpg-companion-sprite');
+      for (var i = 0; i < old.length; i++) old[i].remove();
+    }
+    var cell = tileAt(o, d.pos.x, d.pos.y);
+    if (cell) { cell.classList.add('rpg-player-tile'); cell.insertAdjacentHTML('beforeend', playerSpritesHtml(c)); }
+  }
+  function commitMove(o, d, c, message) {
+    save(d);
+    movePlayerTile(o, d, c);
+    setPosLabel(o, d);
+    setWorldMessage(message);
+    cameraSoon(false);
+  }
+
   function movePlayer(dir) {
-    var d = load(); if (!starter(d)) return landing(d);
+    var d = load(), c = starter(d); if (!c) return landing(d);
+    var o = worldEl(); if (!o) return landing(d);
     var dx = 0, dy = 0;
     if (dir === 'up') dy = -1; if (dir === 'down') dy = 1; if (dir === 'left') dx = -1; if (dir === 'right') dx = 1;
     var nx = d.pos.x + dx, ny = d.pos.y + dy;
-    if (!passable(nx, ny)) { landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.'); cameraSoon(false); return; }
-    d.pos.x = nx; d.pos.y = ny; save(d);
+    if (!passable(nx, ny)) return setWorldMessage('That route is blocked. Use the paths between buildings, trees and landmarks.');
+    d.pos.x = nx; d.pos.y = ny;
     var near = nearestRegion(d);
-    landing(d, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Walk to a building, cave or forest entrance, then press Interact.');
-    cameraSoon(false);
+    commitMove(o, d, c, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Walk to a building, cave or forest entrance, then press Interact.');
   }
-  function interact() { var d = load(), near = nearestRegion(d); if (near && near.dist <= 1) return region(near.boss.id); landing(d, 'No entrance is close enough. Walk next to a region building, cave or forest gate first.'); cameraSoon(false); }
-  function tryRegion(id) { var d = load(); if (canEnter(d, id)) return region(id); var b = boss(id); landing(d, 'Walk closer to ' + b.region + ' before entering.'); cameraSoon(false); }
-  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; save(d); landing(d, 'Player returned to the central path.'); cameraSoon(true); }
+  function interact() { var d = load(), near = nearestRegion(d); if (near && near.dist <= 1) return region(near.boss.id); setWorldMessage('No entrance is close enough. Walk next to a region building, cave or forest gate first.'); }
+  function tryRegion(id) { var d = load(); if (canEnter(d, id)) return region(id); var b = boss(id); setWorldMessage('Walk closer to ' + b.region + ' before entering.'); }
+  function resetPosition() {
+    var d = load(), c = starter(d), o = worldEl(); if (!c || !o) { d.pos = { x: START_POS.x, y: START_POS.y }; save(d); return landing(d, 'Player returned to the central path.'); }
+    d.pos = { x: START_POS.x, y: START_POS.y };
+    commitMove(o, d, c, 'Player returned to the central path.');
+  }
 
   function landing(forcedData, message) {
     var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
@@ -272,7 +309,12 @@
     if (k === 'arrowdown' || k === 's') { e.preventDefault(); return movePlayer('down'); }
     if (k === 'arrowleft' || k === 'a') { e.preventDefault(); return movePlayer('left'); }
     if (k === 'arrowright' || k === 'd') { e.preventDefault(); return movePlayer('right'); }
-    if (k === 'enter' || k === ' ') { e.preventDefault(); return interact(); }
+    // Let Space/Enter activate a focused button natively; only hijack for Interact
+    // when focus is elsewhere, so a focused d-pad button still moves.
+    if (k === 'enter' || k === ' ') {
+      if (e.target && e.target.closest && e.target.closest('button')) return;
+      e.preventDefault(); return interact();
+    }
   });
   function init() { inject(); var app = document.getElementById('app'); if (app && window.MutationObserver) new MutationObserver(inject).observe(app, { childList: true, subtree: true }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

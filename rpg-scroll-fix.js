@@ -46,6 +46,7 @@
 
   function openLedgerLegends() {
     var tryClick = function () {
+      if (document.getElementById('rpgOverlay')) return true; // already open; don't re-click/clobber
       var card = document.getElementById('rpgDemoBtn');
       if (card) { card.click(); return true; }
       return false;
