@@ -100,6 +100,7 @@ body.rpg-map-fullscreen-body {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  overscroll-behavior: none;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad {
@@ -132,7 +133,23 @@ body.rpg-map-fullscreen-body {
   box-shadow: 0 8px 22px rgba(0,0,0,.28), inset 0 0 0 2px rgba(255,255,255,.06);
   pointer-events: auto;
   touch-action: none;
+  overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:focus,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:focus,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:focus {
+  outline: none !important;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:focus-visible,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-abxy button:focus-visible,
+#rpgOverlay.rpg-map-fullscreen .rpg-fs-exit:focus-visible {
+  outline: 2px solid rgba(255,255,255,.65) !important;
+  outline-offset: 2px;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad button:active,
