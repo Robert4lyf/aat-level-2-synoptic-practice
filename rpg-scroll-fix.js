@@ -5,6 +5,14 @@
   var suppressClickUntil = 0;
   var addedState = false;
 
+  function loadCss() {
+    if (document.querySelector('link[href="rpg-fullscreen.css"]')) return;
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'rpg-fullscreen.css';
+    document.head.appendChild(l);
+  }
+
   function ov() { return document.getElementById('rpgOverlay'); }
   function world() { var o = ov(); return !!(o && o.querySelector('.rpg-world')); }
   function full() { var o = ov(); return !!(o && o.classList.contains('rpg-map-fullscreen')); }
@@ -113,4 +121,6 @@
       if (full()) addPad();
     }).observe(document.body, { childList: true, subtree: true });
   }
+
+  loadCss();
 }());
