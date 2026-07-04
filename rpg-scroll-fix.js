@@ -15,9 +15,19 @@
     document.head.appendChild(l);
   }
 
+  function loadOneScript(src) {
+    if (document.querySelector('script[src="' + src + '"]')) return;
+    var s = document.createElement('script');
+    s.src = src;
+    s.defer = true;
+    document.body.appendChild(s);
+  }
+
   function loadCss() {
     loadOneCss('rpg-fullscreen.css');
     loadOneCss('rpg-normal-fix.css');
+    loadOneCss('rpg-player-animation.css');
+    loadOneScript('rpg-player-animation.js');
   }
 
   function ov() { return document.getElementById('rpgOverlay'); }
