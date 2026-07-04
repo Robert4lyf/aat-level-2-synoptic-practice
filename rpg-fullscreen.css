@@ -1,8 +1,30 @@
-/* Ledger Legends fullscreen map controls */
+/* Ledger Legends fullscreen map controls and camera overrides */
 body.rpg-map-fullscreen-body {
   overflow: hidden !important;
   touch-action: none;
   overscroll-behavior: none;
+}
+
+/* Normal-mode camera viewport. This stylesheet is loaded dynamically for Ledger Legends. */
+#rpgOverlay .rpg-pixel-map-wrap {
+  position: relative;
+  height: min(68vh, 560px);
+  overflow: auto !important;
+  overscroll-behavior: contain;
+  border-radius: 24px;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+#rpgOverlay .rpg-pixel-map-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+#rpgOverlay .rpg-pixel-map {
+  width: max-content !important;
+  min-width: 100% !important;
+  grid-template-columns: repeat(19, 64px) !important;
+  grid-auto-rows: 64px !important;
 }
 
 #rpgOverlay.rpg-map-fullscreen,
@@ -58,21 +80,28 @@ body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map-wrap {
   height: 100dvh !important;
   padding: 0 !important;
   border-radius: 0 !important;
-  overflow: hidden !important;
+  overflow: auto !important;
   background: #1a2a18 !important;
   box-shadow: none !important;
-  display: grid !important;
-  place-items: center !important;
+  display: block !important;
   touch-action: none;
   overscroll-behavior: none;
+  scrollbar-width: none;
+}
+
+#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map-wrap::-webkit-scrollbar,
+body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map-wrap::-webkit-scrollbar {
+  display: none;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-pixel-map,
 body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map {
-  width: max(100vw, calc(100dvh * 1.3334)) !important;
-  height: max(100dvh, calc(100vw * .75)) !important;
-  min-width: 0 !important;
+  width: max-content !important;
+  height: auto !important;
+  min-width: 100vw !important;
   max-width: none !important;
+  grid-template-columns: repeat(19, max(64px, calc(100vw / 10))) !important;
+  grid-auto-rows: max(64px, calc(100vw / 10)) !important;
   border: 0 !important;
   box-shadow: none !important;
   transform: none !important;
@@ -218,7 +247,22 @@ body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-hint {
   backdrop-filter: blur(8px);
 }
 
+@media (max-width: 860px) {
+  #rpgOverlay .rpg-pixel-map-wrap { height: min(62vh, 480px); }
+}
+
 @media (max-width: 520px) {
+  #rpgOverlay .rpg-pixel-map {
+    grid-template-columns: repeat(19, 52px) !important;
+    grid-auto-rows: 52px !important;
+  }
+
+  #rpgOverlay.rpg-map-fullscreen .rpg-pixel-map,
+  body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map {
+    grid-template-columns: repeat(19, max(52px, calc(100vw / 7.5))) !important;
+    grid-auto-rows: max(52px, calc(100vw / 7.5)) !important;
+  }
+
   #rpgOverlay.rpg-map-fullscreen .rpg-fs-dpad,
   body.rpg-map-fullscreen-body #rpgOverlay .rpg-fs-dpad {
     grid-template-columns: repeat(3, 50px);
