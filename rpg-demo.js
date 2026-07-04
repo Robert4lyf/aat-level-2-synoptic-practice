@@ -169,7 +169,7 @@
     return runtimeData;
   }
   function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
-  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); return d; }
+  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; if (!d.companionPos || typeof d.companionPos.x !== 'number' || typeof d.companionPos.y !== 'number') d.companionPos = { x: d.pos.x, y: d.pos.y }; d.companionPos.x = Math.max(0, Math.min(MAP_W - 1, d.companionPos.x)); d.companionPos.y = Math.max(0, Math.min(MAP_H - 1, d.companionPos.y)); return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function starter(d) { return STARTERS[d.starter] || null; }
   function boss(id) { return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
@@ -251,6 +251,7 @@
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
+    var compHere = d.companionPos && d.companionPos.x === x && d.companionPos.y === y;
     var b = bossAt(x, y);
     var npc = npcAt(x, y);
     var t = tileType(x, y);
@@ -261,7 +262,8 @@
       : (npc ? '<span class="rpg-location-label rpg-npc-label">' + esc(npc.tag) + '</span>' : '');
     var contents = '<span class="rpg-tile-art" aria-hidden="true"></span>' + label;
     if (npc) contents += '<span class="rpg-npc-sprite" data-mon="' + esc(npc.mon) + '" aria-hidden="true"></span>';
-    if (here) contents += '<span class="rpg-player-sprite" aria-label="Player"><span></span></span><span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"><span></span></span>';
+    if (compHere) contents += '<span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"></span>';
+    if (here) contents += '<span class="rpg-player-sprite" aria-label="Player"></span>';
     return '<button class="' + cls + '" type="button"' + attr + ' aria-label="' + aria + '">' + contents + '</button>';
   }
   function mapHtml(d, c) {
@@ -292,10 +294,12 @@
     var dx = 0, dy = 0;
     if (dir === 'up') dy = -1; if (dir === 'down') dy = 1; if (dir === 'left') dx = -1; if (dir === 'right') dx = 1;
     var nx = d.pos.x + dx, ny = d.pos.y + dy;
-    if (!passable(nx, ny)) { landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.'); cameraSoon(false); return; }
+    if (!passable(nx, ny)) { d.dir = dir; save(d); landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.'); cameraSoon(); return; }
+    d.companionPos = { x: d.pos.x, y: d.pos.y };  // companion steps onto the tile the player just left
+    d.dir = dir;
     d.pos.x = nx; d.pos.y = ny; save(d);
     landing(d);
-    cameraSoon(false);
+    cameraSoon();
   }
   function interact() {
     var d = load();
@@ -311,7 +315,7 @@
     if (Math.abs(d.pos.x - n.x) + Math.abs(d.pos.y - n.y) <= 1) return talk(id);
     landing(d, 'Walk closer to ' + n.name + ' before talking.'); cameraSoon(false);
   }
-  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; save(d); landing(d, 'Player returned to the central crossroads.'); cameraSoon(true); }
+  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; d.companionPos = { x: START_POS.x, y: START_POS.y }; d.dir = 'down'; save(d); landing(d, 'Player returned to the central crossroads.'); cameraSoon(); }
 
   function talk(id) { if (!NPCS[id]) return; dlg = { id: id, i: 0 }; dialogue(); }
   function dlgNext() {
