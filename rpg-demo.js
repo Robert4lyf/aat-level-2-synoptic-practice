@@ -18,23 +18,60 @@
     { id: 'besy', icon: '🦅', name: 'Enterprise Griffin', region: 'Enterprise Town', badge: 'Enterprise Badge', type: 'Business', wild: 'Contract Sprite', scene: 'town', desc: 'Business structures, law, contracts and stakeholders.' }
   ];
 
-  var MAP_W = 12;
-  var MAP_H = 9;
-  var START_POS = { x: 5, y: 4 };
+  var MAP_W = 19;
+  var MAP_H = 15;
+  var START_POS = { x: 9, y: 7 };
   var MAP_NODES = {
-    itbk: { x: 1, y: 1, kind: 'forest-gate', short: 'Forest' },
-    pobc: { x: 9, y: 1, kind: 'cave-gate', short: 'Cavern' },
-    poc: { x: 2, y: 7, kind: 'factory-door', short: 'Factory' },
-    besy: { x: 9, y: 6, kind: 'town-door', short: 'Town' }
+    itbk: { x: 3, y: 2, kind: 'forest-gate', short: 'Forest' },
+    pobc: { x: 15, y: 2, kind: 'cave-gate', short: 'Cavern' },
+    poc: { x: 4, y: 12, kind: 'factory-door', short: 'Factory' },
+    besy: { x: 15, y: 11, kind: 'town-door', short: 'Town' }
   };
-  var BLOCKED = { '0,0': 1, '1,0': 1, '2,0': 1, '7,0': 1, '8,0': 1, '9,0': 1, '10,0': 1, '11,0': 1, '0,1': 1, '11,1': 1, '0,2': 1, '11,2': 1, '0,7': 1, '11,7': 1, '0,8': 1, '1,8': 1, '2,8': 1, '3,8': 1, '7,8': 1, '8,8': 1, '9,8': 1, '10,8': 1, '11,8': 1 };
-  var DECOR = {
-    '3,0': 'tree', '4,0': 'tree', '5,0': 'tree', '6,0': 'tree', '2,1': 'tree', '3,1': 'tree',
-    '7,1': 'rock', '8,1': 'rock', '10,1': 'rock', '3,2': 'flower', '6,2': 'sign', '10,2': 'rock',
-    '1,3': 'grass', '2,3': 'grass', '8,3': 'ledger-stone', '10,3': 'tree', '1,4': 'grass', '9,4': 'market',
-    '3,5': 'book', '6,5': 'well', '10,5': 'house', '1,6': 'factory-wall', '2,6': 'factory-wall', '3,6': 'factory-wall',
-    '8,6': 'pathlamp', '10,6': 'house', '4,7': 'tree', '5,7': 'tree', '6,7': 'tree'
-  };
+
+  function posKey(x, y) { return x + ',' + y; }
+  function isRoad(x, y) {
+    if (y === 7 && x >= 1 && x <= 17) return true;
+    if (x === 9 && y >= 1 && y <= 13) return true;
+    if (y === 3 && x >= 2 && x <= 16) return true;
+    if (x === 4 && y >= 3 && y <= 12) return true;
+    if (y === 12 && x >= 4 && x <= 15) return true;
+    if (x === 15 && y >= 3 && y <= 12) return true;
+    return false;
+  }
+  function buildBlocked() {
+    var out = {}, x, y;
+    for (x = 0; x < MAP_W; x++) { out[posKey(x, 0)] = 1; out[posKey(x, MAP_H - 1)] = 1; }
+    for (y = 0; y < MAP_H; y++) { out[posKey(0, y)] = 1; out[posKey(MAP_W - 1, y)] = 1; }
+    return out;
+  }
+  function setDecor(out, x, y, t) {
+    if (x < 0 || y < 0 || x >= MAP_W || y >= MAP_H) return;
+    if (isRoad(x, y)) return;
+    if (bossAt(x, y)) return;
+    out[posKey(x, y)] = t;
+  }
+  function buildDecor() {
+    var out = {}, x, y;
+    for (x = 1; x < MAP_W - 1; x++) {
+      if (x % 2 === 0) setDecor(out, x, 1, 'tree');
+      if (x % 3 === 0) setDecor(out, x, MAP_H - 2, 'tree');
+    }
+    for (y = 2; y < MAP_H - 2; y++) {
+      if (y % 2 === 0) setDecor(out, 1, y, 'tree');
+      if (y % 3 === 1) setDecor(out, MAP_W - 2, y, 'rock');
+    }
+    [
+      [2,2,'flower'], [5,2,'book'], [7,2,'tree'], [11,2,'rock'], [13,2,'rock'],
+      [2,4,'grass'], [6,4,'sign'], [8,4,'ledger-stone'], [10,4,'flower'], [12,4,'well'], [16,4,'rock'],
+      [2,6,'grass'], [6,6,'book'], [8,6,'pathlamp'], [10,6,'pathlamp'], [12,6,'ledger-stone'], [16,6,'house'],
+      [2,8,'flower'], [6,8,'market'], [8,8,'well'], [10,8,'book'], [12,8,'flower'], [16,8,'house'],
+      [2,10,'factory-wall'], [3,10,'factory-wall'], [5,10,'factory-wall'], [7,10,'tree'], [11,10,'market'], [13,10,'pathlamp'], [16,10,'house'],
+      [2,12,'factory-wall'], [6,12,'factory-wall'], [8,12,'ledger-stone'], [10,12,'sign'], [12,12,'book'], [14,13,'tree']
+    ].forEach(function (d) { setDecor(out, d[0], d[1], d[2]); });
+    return out;
+  }
+  var BLOCKED = buildBlocked();
+  var DECOR = buildDecor();
 
   var st = null;
   var runtimeData = null;
@@ -112,14 +149,13 @@
   function nodeDistance(pos, id) { var n = MAP_NODES[id]; return Math.abs(pos.x - n.x) + Math.abs(pos.y - n.y); }
   function nearestRegion(d) { var best = null; BOSSES.forEach(function (b) { var dist = nodeDistance(d.pos, b.id); if (!best || dist < best.dist) best = { boss: b, dist: dist }; }); return best; }
   function canEnter(d, id) { return nodeDistance(d.pos, id) <= 1; }
-  function posKey(x, y) { return x + ',' + y; }
   function bossAt(x, y) { for (var i = 0; i < BOSSES.length; i++) { var b = BOSSES[i], n = MAP_NODES[b.id]; if (n.x === x && n.y === y) return b; } return null; }
   function tileType(x, y) {
     var key = posKey(x, y);
     if (bossAt(x, y)) return 'region';
     if (DECOR[key]) return DECOR[key];
     if (BLOCKED[key]) return 'tree';
-    if (y === 4 || x === 5 || x === 6 || (y === 2 && x > 1 && x < 10) || (y === 6 && x > 1 && x < 10)) return 'path';
+    if (isRoad(x, y)) return 'path';
     return 'grass';
   }
   function passable(x, y) {
@@ -127,7 +163,7 @@
     var t = tileType(x, y);
     return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region'].indexOf(t) >= 0;
   }
-  var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2], path: [1, 2], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1] };
+  var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2], path: [1, 2], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1], rock: [1, 2] };
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
@@ -145,26 +181,41 @@
     for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
     return out;
   }
+  function centerCameraOnPlayer(immediate) {
+    var overlay = document.getElementById('rpgOverlay');
+    if (!overlay) return;
+    var viewport = overlay.querySelector('.rpg-pixel-map-wrap');
+    var playerTile = overlay.querySelector('.rpg-player-tile');
+    if (!viewport || !playerTile) return;
+    var vpRect = viewport.getBoundingClientRect();
+    var tileRect = playerTile.getBoundingClientRect();
+    var targetLeft = viewport.scrollLeft + (tileRect.left - vpRect.left) - (viewport.clientWidth / 2) + (tileRect.width / 2);
+    var targetTop = viewport.scrollTop + (tileRect.top - vpRect.top) - (viewport.clientHeight / 2) + (tileRect.height / 2);
+    viewport.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: immediate ? 'auto' : 'smooth' });
+  }
+  function cameraSoon(immediate) { requestAnimationFrame(function () { centerCameraOnPlayer(immediate); }); setTimeout(function () { centerCameraOnPlayer(immediate); }, 40); }
   function movePlayer(dir) {
     var d = load(); if (!starter(d)) return landing(d);
     var dx = 0, dy = 0;
     if (dir === 'up') dy = -1; if (dir === 'down') dy = 1; if (dir === 'left') dx = -1; if (dir === 'right') dx = 1;
     var nx = d.pos.x + dx, ny = d.pos.y + dy;
-    if (!passable(nx, ny)) return landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.');
+    if (!passable(nx, ny)) { landing(d, 'That route is blocked. Use the paths between buildings, trees and landmarks.'); cameraSoon(false); return; }
     d.pos.x = nx; d.pos.y = ny; save(d);
     var near = nearestRegion(d);
     landing(d, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Walk to a building, cave or forest entrance, then press Interact.');
+    cameraSoon(false);
   }
-  function interact() { var d = load(), near = nearestRegion(d); if (near && near.dist <= 1) return region(near.boss.id); landing(d, 'No entrance is close enough. Walk next to a region building, cave or forest gate first.'); }
-  function tryRegion(id) { var d = load(); if (canEnter(d, id)) return region(id); var b = boss(id); landing(d, 'Walk closer to ' + b.region + ' before entering.'); }
-  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; save(d); landing(d, 'Player returned to the central path.'); }
+  function interact() { var d = load(), near = nearestRegion(d); if (near && near.dist <= 1) return region(near.boss.id); landing(d, 'No entrance is close enough. Walk next to a region building, cave or forest gate first.'); cameraSoon(false); }
+  function tryRegion(id) { var d = load(); if (canEnter(d, id)) return region(id); var b = boss(id); landing(d, 'Walk closer to ' + b.region + ' before entering.'); cameraSoon(false); }
+  function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; save(d); landing(d, 'Player returned to the central path.'); cameraSoon(true); }
 
   function landing(forcedData, message) {
     var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
     var near = nearestRegion(d);
     var prompt = message || (near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Use the D-pad or arrow keys to move around the study town.');
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Walk around the study town, enter topic regions, defeat bosses and collect badges before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact.</p></div></div></section>');
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Walk around the expanded study town, enter topic regions, defeat bosses and collect badges before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to centre</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. The camera follows your player.</p></div></div></section>');
+    cameraSoon(true);
   }
 
   function region(id) {
