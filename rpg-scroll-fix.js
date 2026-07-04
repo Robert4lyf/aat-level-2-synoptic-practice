@@ -5,6 +5,7 @@
   var addedState = false;
   var desiredFullscreen = false;
   var justMovedAt = 0;
+  var missingOverlayTimer = null;
 
   function loadCss() {
     if (document.querySelector('link[href="rpg-fullscreen.css"]')) return;
@@ -101,6 +102,7 @@
     setTimeout(keepMap, 30);
     setTimeout(keepMap, 90);
     setTimeout(keepMap, 180);
+    setTimeout(keepMap, 320);
   }
 
   function blurActive() {
@@ -112,6 +114,7 @@
   function enter() {
     if (!world()) return;
     desiredFullscreen = true;
+    if (missingOverlayTimer) { clearTimeout(missingOverlayTimer); missingOverlayTimer = null; }
     applyFullscreenClass();
     keepSoon();
     if (!addedState && history && history.pushState) {
@@ -121,6 +124,7 @@
 
   function exit(fromPop) {
     desiredFullscreen = false;
+    if (missingOverlayTimer) { clearTimeout(missingOverlayTimer); missingOverlayTimer = null; }
     var o = ov();
     if (o) o.classList.remove('rpg-map-fullscreen');
     document.body.classList.remove('rpg-map-fullscreen-body');
@@ -128,6 +132,17 @@
     addedState = false;
     keepSoon();
     if (shouldGoBack) { try { history.back(); } catch (e) {} }
+  }
+
+  function scheduleMissingOverlayCheck() {
+    if (missingOverlayTimer) return;
+    missingOverlayTimer = setTimeout(function () {
+      missingOverlayTimer = null;
+      if (ov()) return;
+      if (Date.now() - justMovedAt < 1600) return;
+      desiredFullscreen = false;
+      document.body.classList.remove('rpg-map-fullscreen-body');
+    }, 700);
   }
 
   document.addEventListener('pointerdown', function (e) {
@@ -138,7 +153,6 @@
 
   document.addEventListener('pointerup', function (e) {
     if (!isMoveControl(e.target) && !fsExit(e.target)) return;
-    e.preventDefault();
     blurActive();
   }, { capture: true, passive: false });
 
@@ -152,6 +166,7 @@
 
     if (isMoveControl(e.target)) {
       justMovedAt = Date.now();
+      if (desiredFullscreen) applyFullscreenClass();
       blurActive();
       keepSoon();
       return;
@@ -184,10 +199,10 @@
     new MutationObserver(function () {
       maintainHeaderAccess();
       if (!ov()) {
-        desiredFullscreen = false;
-        document.body.classList.remove('rpg-map-fullscreen-body');
+        scheduleMissingOverlayCheck();
         return;
       }
+      if (missingOverlayTimer) { clearTimeout(missingOverlayTimer); missingOverlayTimer = null; }
       if (desiredFullscreen || Date.now() - justMovedAt < 900) keepSoon();
     }).observe(document.body, { childList: true, subtree: true });
   }
