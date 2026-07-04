@@ -9,20 +9,13 @@ body.rpg-map-fullscreen-body {
 #rpgOverlay .rpg-pixel-map-wrap {
   position: relative;
   height: min(68vh, 560px);
-  overflow: auto !important;
+  overflow: hidden !important;
   overscroll-behavior: contain;
   border-radius: 24px;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
-}
-
-#rpgOverlay .rpg-pixel-map-wrap::-webkit-scrollbar {
-  display: none;
 }
 
 #rpgOverlay .rpg-pixel-map {
   width: max-content !important;
-  min-width: 100% !important;
   grid-template-columns: repeat(19, 64px) !important;
   grid-auto-rows: 64px !important;
 }
@@ -80,32 +73,24 @@ body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map-wrap {
   height: 100dvh !important;
   padding: 0 !important;
   border-radius: 0 !important;
-  overflow: auto !important;
+  overflow: hidden !important;
   background: #1a2a18 !important;
   box-shadow: none !important;
   display: block !important;
   touch-action: none;
   overscroll-behavior: none;
-  scrollbar-width: none;
-}
-
-#rpgOverlay.rpg-map-fullscreen .rpg-pixel-map-wrap::-webkit-scrollbar,
-body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map-wrap::-webkit-scrollbar {
-  display: none;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-pixel-map,
 body.rpg-map-fullscreen-body #rpgOverlay .rpg-pixel-map {
   width: max-content !important;
   height: auto !important;
-  min-width: 100vw !important;
   max-width: none !important;
   grid-template-columns: repeat(19, max(64px, calc(100vw / 10))) !important;
   grid-auto-rows: max(64px, calc(100vw / 10)) !important;
   border: 0 !important;
   box-shadow: none !important;
-  transform: none !important;
-  transform-origin: center center;
+  transform-origin: top left;
 }
 
 #rpgOverlay.rpg-map-fullscreen .rpg-tile,

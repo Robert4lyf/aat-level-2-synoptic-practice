@@ -27,9 +27,15 @@
 
 /* Pixel-art world map tiles, rendered from rpg-assets/tile-*.png sprites. */
 .rpg-map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; margin-top: 16px; }
-.rpg-pixel-map-wrap { padding: 16px; border-radius: 18px; background: #1a2a18; box-shadow: inset 0 0 0 4px #0b160a, 0 18px 45px rgba(0,0,0,.24); overflow: auto; overscroll-behavior: contain; }
-.rpg-pixel-map { width: min(100%, 768px); min-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 0; border: 6px solid #101820; background: #9bbf72; image-rendering: pixelated; box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d; }
-.rpg-tile { position: relative; aspect-ratio: 1 / 1; min-height: 44px; border: 0; padding: 0; overflow: hidden; cursor: pointer; image-rendering: pixelated; background-color: #8fca5c; background-repeat: no-repeat; background-size: 100% 100%; -webkit-tap-highlight-color: transparent; }
+/* .rpg-pixel-map-wrap is the fixed viewport; .rpg-pixel-map is the map layer,
+   built once and panned by a CSS transform (follow-camera in rpg-demo.js). The
+   grid tile sizing comes from rpg-fullscreen.css (normal + fullscreen). */
+.rpg-pixel-map-wrap { position: relative; padding: 0; border-radius: 18px; background: #1a2a18; box-shadow: inset 0 0 0 4px #0b160a, 0 18px 45px rgba(0,0,0,.24); overflow: hidden; overscroll-behavior: contain; }
+.rpg-pixel-map { position: relative; margin: 0; display: grid; grid-template-columns: repeat(19, 48px); grid-auto-rows: 48px; width: max-content; gap: 0; background: #9bbf72; image-rendering: pixelated; will-change: transform; transition: transform .16s ease-out; }
+.rpg-pixel-map.rpg-cam-instant { transition: none; }
+.rpg-tile { position: relative; aspect-ratio: 1 / 1; min-height: 44px; border: 0; padding: 0; overflow: hidden; cursor: default; pointer-events: none; image-rendering: pixelated; background-color: #8fca5c; background-repeat: no-repeat; background-size: 100% 100%; -webkit-tap-highlight-color: transparent; }
+button.rpg-tile-region { cursor: pointer; pointer-events: auto; }
+button.rpg-tile-region:hover, button.rpg-tile-region:focus-visible { outline: 3px solid rgba(255,255,255,.85); outline-offset: -3px; z-index: 3; }
 .rpg-tile::before, .rpg-tile::after, .rpg-tile-art, .rpg-tile-art::before, .rpg-tile-art::after { content: ''; position: absolute; box-sizing: border-box; }
 .rpg-tile:hover { outline: 2px solid rgba(255,255,255,.7); z-index: 2; }
 .rpg-tile-grass { background-image: url(rpg-assets/tile-grass-1.png); }
@@ -59,13 +65,22 @@
 .rpg-tile-region.cleared { filter: saturate(1.15) brightness(1.1); }
 .rpg-tile-region.cleared .rpg-tile-art::before { left: 38%; top: 4%; width: 24%; height: 24%; border-radius: 50%; background: #facc15; border: 3px solid #92400e; box-shadow: 0 0 8px rgba(250,204,21,.8); z-index: 4; }
 .rpg-location-label { position: absolute; left: 4px; right: 4px; bottom: 3px; z-index: 5; padding: 2px 3px; background: rgba(15,23,42,.78); color: #fff; border: 2px solid rgba(255,255,255,.35); border-radius: 3px; font-size: clamp(.46rem, 1.15vw, .66rem); font-weight: 900; line-height: 1; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rpg-player-tile { outline: 3px solid #2563eb; z-index: 2; }
-.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 22px; height: 28px; transform: translate(-62%, -78%); image-rendering: pixelated; background: url(rpg-assets/char-player.png) center bottom / 100% 100% no-repeat; filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgWalkBob .65s steps(2) infinite; pointer-events: none; }
-.rpg-companion-sprite { position: absolute; z-index: 7; right: 6%; bottom: 4%; width: 16px; height: 20px; image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 100% 100%; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); pointer-events: none; }
+/* Player + companion live in one overlay node inside the map layer. Its size
+   (one tile) and position (transform to the player tile) are set by rpg-demo.js
+   so it stays correct across normal/fullscreen/resize tile sizes. */
+.rpg-world-player { position: absolute; top: 0; left: 0; z-index: 8; pointer-events: none; will-change: transform; transition: transform .16s ease-out; }
+.rpg-pixel-map.rpg-cam-instant .rpg-world-player { transition: none; }
+.rpg-player-sprite { position: absolute; z-index: 2; left: 12%; bottom: 0; width: 74%; height: 96%; image-rendering: pixelated; background: url(rpg-assets/char-player.png) center bottom / 100% 100% no-repeat; filter: drop-shadow(0 3px 2px rgba(0,0,0,.35)); animation: rpgWalkBob .7s steps(2) infinite; }
+/* Companion trails just right of the trainer. Anchored to the overlay centre
+   (where rpg-player-animation.css pins the 32px directional player sprite) at a
+   fixed, proportional size so it stays beside the player in normal + fullscreen
+   rather than ballooning with the tile. */
+.rpg-companion-sprite { position: absolute; z-index: 1; left: 50%; top: 50%; width: 26px; height: 30px; transform: translate(10%, -14%); image-rendering: pixelated; background-repeat: no-repeat; background-position: center bottom; background-size: 100% 100%; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
 .rpg-companion-cub { background-image: url(rpg-assets/char-cub.png); }
 .rpg-companion-fox { background-image: url(rpg-assets/char-fox.png); }
 .rpg-companion-mole { background-image: url(rpg-assets/char-mole.png); }
-@keyframes rpgWalkBob { 0%,100% { transform: translate(-62%, -78%); } 50% { transform: translate(-62%, -86%); } }
+@keyframes rpgWalkBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9%); } }
+@media (prefers-reduced-motion: reduce) { .rpg-player-sprite { animation: none; } .rpg-pixel-map, .rpg-world-player { transition: none; } }
 .rpg-map-side { display: grid; gap: 12px; }
 .rpg-map-message { min-height: 74px; padding: 14px; border-radius: 18px; background: #fef3c7; color: #422006; border: 4px solid #92400e; box-shadow: inset 0 0 0 3px #fde68a; font-weight: 900; line-height: 1.35; }
 .dark .rpg-map-message { background: #422006; color: #fef3c7; }
@@ -127,4 +142,16 @@
 .rpg-note { color: var(--muted, #64748b); }
 @media (max-width: 860px) { .rpg-map-layout { grid-template-columns: 1fr; } .rpg-map-side { position: sticky; bottom: 0; padding-top: 8px; background: linear-gradient(180deg, transparent, var(--card, #fff) 20%); } .dark .rpg-map-side { background: linear-gradient(180deg, transparent, #111827 20%); } }
 @media (max-width: 700px) { .rpg-panel { padding: 18px; border-radius: 20px; } .rpg-world-head, .rpg-fighters { grid-template-columns: 1fr; } .rpg-vs { text-align: center; } .rpg-option { grid-template-columns: auto 1fr; } .rpg-option small { grid-column: 2; } }
-@media (max-width: 520px) { .rpg-pixel-map { min-width: 430px; } .rpg-tile { min-height: 34px; } .rpg-location-label { display: none; } .rpg-controls button { min-height: 48px; } }
+@media (max-width: 520px) { .rpg-tile { min-height: 0; } .rpg-location-label { display: none; } .rpg-controls button { min-height: 48px; } }
+/* Mobile (normal mode): compact the header + badges and shrink the map viewport
+   so the map and d-pad stay above the fold and reachable. Fullscreen mode is
+   unaffected (it hides the header/badges and fills the screen). */
+@media (max-width: 700px) {
+  body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-world-head p { display: none; }
+  #rpgOverlay .rpg-world-head .rpg-trainer-card { grid-template-columns: auto 1fr; align-items: center; justify-items: start; text-align: left; padding: 8px 12px; gap: 0 10px; }
+  #rpgOverlay .rpg-world-head .rpg-trainer-card .rpg-companion { grid-row: 1 / span 3; width: 40px; height: 48px; margin: 0; }
+  #rpgOverlay .rpg-world .rpg-badges { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; gap: 8px; margin: 10px 0; padding-bottom: 2px; }
+  #rpgOverlay .rpg-world .rpg-badges .rpg-badge { flex: 0 0 auto; }
+  #rpgOverlay .rpg-panel h2 { font-size: 1.5rem; margin-bottom: 4px; }
+  body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-pixel-map-wrap { height: min(44vh, 340px) !important; }
+}

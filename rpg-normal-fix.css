@@ -29,11 +29,10 @@ body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-fs-controls {
 #rpgOverlay .rpg-pixel-map-wrap {
   contain: layout paint !important;
   isolation: isolate !important;
-  overflow: auto !important;
+  overflow: hidden !important;
 }
 
 #rpgOverlay .rpg-pixel-map {
-  contain: paint !important;
   isolation: isolate !important;
 }
 
@@ -43,8 +42,8 @@ body:not(.rpg-map-fullscreen-body) #rpgOverlay .rpg-fs-controls {
   isolation: isolate !important;
 }
 
-#rpgOverlay .rpg-player-tile {
-  z-index: 1 !important;
+#rpgOverlay .rpg-world-player {
+  z-index: 8 !important;
 }
 
 #rpgOverlay .rpg-player-sprite,

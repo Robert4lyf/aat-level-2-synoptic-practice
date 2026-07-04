@@ -168,63 +168,69 @@
   }
   var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2], path: [1, 2], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1], rock: [1, 2] };
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
-  function tileHtml(x, y, d, c) {
-    var here = d.pos.x === x && d.pos.y === y;
+  function tileHtml(x, y, d) {
     var b = bossAt(x, y);
     var t = tileType(x, y);
-    var cls = 'rpg-tile rpg-tile-' + t + tileVariant(t, x, y) + (here ? ' rpg-player-tile' : '') + (b && d.badges[b.id] ? ' cleared' : '');
-    var node = b ? ' data-node="' + b.id + '"' : '';
-    var label = b ? '<span class="rpg-location-label">' + esc(MAP_NODES[b.id].short) + '</span>' : '';
-    var contents = '<span class="rpg-tile-art" aria-hidden="true"></span>' + label;
-    if (here) contents += '<span class="rpg-player-sprite" aria-label="Player"><span></span></span><span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"><span></span></span>';
-    return '<button class="' + cls + '" type="button"' + node + ' aria-label="Map tile ' + x + ',' + y + '">' + contents + '</button>';
+    var cls = 'rpg-tile rpg-tile-' + t + tileVariant(t, x, y) + (b && d.badges[b.id] ? ' cleared' : '');
+    var art = '<span class="rpg-tile-art" aria-hidden="true"></span>';
+    if (b) {
+      // Boss gates stay interactive: a real button that enters the region.
+      var label = '<span class="rpg-location-label">' + esc(MAP_NODES[b.id].short) + '</span>';
+      return '<button class="' + cls + '" type="button" data-node="' + b.id + '" aria-label="' + esc(b.region) + ' entrance">' + art + label + '</button>';
+    }
+    // Ground/decor tiles are decorative, non-interactive art (no tab stops).
+    return '<div class="' + cls + '"></div>';
+  }
+  function playerHtml(c) {
+    return '<div class="rpg-world-player" aria-hidden="true"><span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '"></span><span class="rpg-player-sprite"></span></div>';
   }
   function mapHtml(d, c) {
     var out = '';
-    for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
-    return out;
+    for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d);
+    return out + playerHtml(c);
   }
-  function centerCameraOnPlayer(immediate) {
-    var overlay = document.getElementById('rpgOverlay');
-    if (!overlay) return;
-    var viewport = overlay.querySelector('.rpg-pixel-map-wrap');
-    var playerTile = overlay.querySelector('.rpg-player-tile');
-    if (!viewport || !playerTile) return;
-    var vpRect = viewport.getBoundingClientRect();
-    var tileRect = playerTile.getBoundingClientRect();
-    var targetLeft = viewport.scrollLeft + (tileRect.left - vpRect.left) - (viewport.clientWidth / 2) + (tileRect.width / 2);
-    var targetTop = viewport.scrollTop + (tileRect.top - vpRect.top) - (viewport.clientHeight / 2) + (tileRect.height / 2);
-    viewport.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: immediate ? 'auto' : 'smooth' });
-  }
-  function cameraSoon(immediate) { requestAnimationFrame(function () { centerCameraOnPlayer(immediate); }); setTimeout(function () { centerCameraOnPlayer(immediate); }, 40); }
-  // --- In-place world updates -------------------------------------------
-  // Moving used to rebuild all MAP_W*MAP_H tiles via landing()/mount() every
-  // step, which dropped keyboard focus and forced the stacked camera retries.
-  // Instead we move only the player marker and update the two text nodes, then
-  // let the existing camera recentre. landing() stays the full (re)build entry.
-  function playerSpritesHtml(c) {
-    return '<span class="rpg-player-sprite" aria-label="Player"><span></span></span><span class="rpg-companion-sprite rpg-companion-' + esc(c.id) + '" aria-label="Companion"><span></span></span>';
-  }
+  // --- Transform follow-camera ------------------------------------------
+  // The map layer (.rpg-pixel-map) is built once and panned with a CSS
+  // transform so the player stays centred (clamped at edges), in both normal
+  // and fullscreen modes. Pixel-precise: measure the live tile size so it
+  // centres correctly in the non-integer-tile fullscreen viewport.
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(Math.max(lo, hi), v)); }
   function worldEl() { var o = document.getElementById('rpgOverlay'); return o && o.querySelector('.rpg-world') ? o : null; }
-  function tileAt(o, x, y) { return o.querySelector('[aria-label="Map tile ' + x + ',' + y + '"]'); }
+  function updateCamera(immediate) {
+    var o = worldEl(); if (!o) return;
+    var wrap = o.querySelector('.rpg-pixel-map-wrap');
+    var layer = o.querySelector('.rpg-pixel-map');
+    var player = o.querySelector('.rpg-world-player');
+    if (!wrap || !layer || !player) return;
+    var sample = layer.querySelector('.rpg-tile');
+    var tile = sample ? sample.getBoundingClientRect().width : 0;
+    if (!tile) return;
+    var d = load();
+    var vpW = wrap.clientWidth, vpH = wrap.clientHeight;
+    var layerW = MAP_W * tile, layerH = MAP_H * tile;
+    var camX = clamp((d.pos.x + 0.5) * tile - vpW / 2, 0, layerW - vpW);
+    var camY = clamp((d.pos.y + 0.5) * tile - vpH / 2, 0, layerH - vpH);
+    if (immediate) { layer.classList.add('rpg-cam-instant'); }
+    else { layer.classList.remove('rpg-cam-instant'); }
+    layer.style.transform = 'translate(' + (-camX) + 'px,' + (-camY) + 'px)';
+    player.style.width = tile + 'px';
+    player.style.height = tile + 'px';
+    player.style.transform = 'translate(' + (d.pos.x * tile) + 'px,' + (d.pos.y * tile) + 'px)';
+    if (immediate) {
+      // Re-enable transitions on the next frame so future moves glide.
+      requestAnimationFrame(function () { requestAnimationFrame(function () { layer.classList.remove('rpg-cam-instant'); }); });
+    }
+  }
+  function cameraSoon(immediate) { requestAnimationFrame(function () { updateCamera(immediate); }); setTimeout(function () { updateCamera(immediate); }, 40); }
   function setWorldMessage(text) { var o = worldEl(); if (!o) return; var m = o.querySelector('.rpg-map-message'); if (m) m.textContent = text; }
   function setPosLabel(o, d) { var s = o.querySelectorAll('.rpg-trainer-card small'); if (s.length) s[s.length - 1].textContent = 'Position ' + d.pos.x + ',' + d.pos.y; }
-  function movePlayerTile(o, d, c) {
-    var prev = o.querySelector('.rpg-player-tile');
-    if (prev) {
-      prev.classList.remove('rpg-player-tile');
-      var old = prev.querySelectorAll('.rpg-player-sprite, .rpg-companion-sprite');
-      for (var i = 0; i < old.length; i++) old[i].remove();
-    }
-    var cell = tileAt(o, d.pos.x, d.pos.y);
-    if (cell) { cell.classList.add('rpg-player-tile'); cell.insertAdjacentHTML('beforeend', playerSpritesHtml(c)); }
-  }
-  function commitMove(o, d, c, message) {
+  // Moving updates state + camera in place — no tile DOM churn, so keyboard
+  // focus survives. landing() stays the full (re)build entry.
+  function commitMove(o, d, message) {
     save(d);
-    movePlayerTile(o, d, c);
     setPosLabel(o, d);
     setWorldMessage(message);
-    cameraSoon(false);
+    updateCamera(false);
   }
 
   function movePlayer(dir) {
@@ -236,14 +242,14 @@
     if (!passable(nx, ny)) return setWorldMessage('That route is blocked. Use the paths between buildings, trees and landmarks.');
     d.pos.x = nx; d.pos.y = ny;
     var near = nearestRegion(d);
-    commitMove(o, d, c, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Walk to a building, cave or forest entrance, then press Interact.');
+    commitMove(o, d, near && near.dist <= 1 ? 'You are close to ' + near.boss.region + '. Press Interact to enter.' : 'Walk to a building, cave or forest entrance, then press Interact.');
   }
   function interact() { var d = load(), near = nearestRegion(d); if (near && near.dist <= 1) return region(near.boss.id); setWorldMessage('No entrance is close enough. Walk next to a region building, cave or forest gate first.'); }
   function tryRegion(id) { var d = load(); if (canEnter(d, id)) return region(id); var b = boss(id); setWorldMessage('Walk closer to ' + b.region + ' before entering.'); }
   function resetPosition() {
-    var d = load(), c = starter(d), o = worldEl(); if (!c || !o) { d.pos = { x: START_POS.x, y: START_POS.y }; save(d); return landing(d, 'Player returned to the central path.'); }
+    var d = load(), o = worldEl(); if (!starter(d) || !o) { d.pos = { x: START_POS.x, y: START_POS.y }; save(d); return landing(d, 'Player returned to the central path.'); }
     d.pos = { x: START_POS.x, y: START_POS.y };
-    commitMove(o, d, c, 'Player returned to the central path.');
+    commitMove(o, d, 'Player returned to the central path.');
   }
 
   function landing(forcedData, message) {
@@ -316,6 +322,30 @@
       e.preventDefault(); return interact();
     }
   });
-  function init() { inject(); var app = document.getElementById('app'); if (app && window.MutationObserver) new MutationObserver(inject).observe(app, { childList: true, subtree: true }); }
+  // Recentre the camera when the viewport size changes (window resize) or when
+  // fullscreen is toggled by rpg-scroll-fix.js (it flips .rpg-map-fullscreen on
+  // the overlay). Both change the viewport/tile size, so recompute immediately.
+  var resizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { updateCamera(true); }, 60);
+  });
+  var fsObserver = null, fsWatched = null;
+  function watchFullscreen() {
+    var o = document.getElementById('rpgOverlay');
+    if (o === fsWatched) return;
+    if (fsObserver) { fsObserver.disconnect(); fsObserver = null; }
+    fsWatched = o;
+    if (o && window.MutationObserver) {
+      fsObserver = new MutationObserver(function () { updateCamera(true); });
+      fsObserver.observe(o, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+  function init() {
+    inject();
+    var app = document.getElementById('app');
+    if (app && window.MutationObserver) new MutationObserver(inject).observe(app, { childList: true, subtree: true });
+    if (window.MutationObserver) new MutationObserver(watchFullscreen).observe(document.body, { childList: true });
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 }());

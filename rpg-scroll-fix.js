@@ -33,9 +33,6 @@
   function ov() { return document.getElementById('rpgOverlay'); }
   function world() { var o = ov(); return !!(o && o.querySelector('.rpg-world')); }
   function full() { var o = ov(); return !!(o && o.classList.contains('rpg-map-fullscreen')); }
-  function pnl() { var o = ov(); return o ? o.querySelector('.rpg-panel') : null; }
-  function wrap() { var o = ov(); return o ? o.querySelector('.rpg-pixel-map-wrap') : null; }
-  function playerTile() { var o = ov(); return o ? o.querySelector('.rpg-player-tile') : null; }
   function fsExit(t) { return t && t.closest ? t.closest('#rpgOverlay [data-fs-exit]') : null; }
   function isMoveControl(t) { return !!(t && t.closest && t.closest('#rpgOverlay [data-dir], #rpgOverlay [data-interact]')); }
 
@@ -100,34 +97,18 @@
     return true;
   }
 
-  function centerOnPlayer() {
-    var w = wrap();
-    var p = playerTile();
-    if (!w || !p) return false;
-    var wr = w.getBoundingClientRect();
-    var pr = p.getBoundingClientRect();
-    var left = w.scrollLeft + (pr.left - wr.left) - (w.clientWidth / 2) + (pr.width / 2);
-    var top = w.scrollTop + (pr.top - wr.top) - (w.clientHeight / 2) + (pr.height / 2);
-    w.scrollLeft = Math.max(0, left);
-    w.scrollTop = Math.max(0, top);
-    return true;
-  }
-
+  // The camera is now owned by rpg-demo.js (CSS-transform follow-camera). This
+  // only needs to re-assert the fullscreen class/pad after a landing() rebuild
+  // while fullscreen is active; rpg-demo.js recentres on the resulting class
+  // change. No scrolling to stabilise anymore.
   function keepMap() {
-    var p = pnl();
-    var w = wrap();
-    if (!p || !w) return;
     if (desiredFullscreen) applyFullscreenClass();
-    if (!desiredFullscreen && p) p.scrollTop = Math.max(0, w.offsetTop - 12);
-    centerOnPlayer();
   }
 
   function keepSoon() {
     requestAnimationFrame(function () { requestAnimationFrame(keepMap); });
     setTimeout(keepMap, 20);
-    setTimeout(keepMap, 60);
     setTimeout(keepMap, 130);
-    setTimeout(keepMap, 260);
   }
 
   function blurActive() {
