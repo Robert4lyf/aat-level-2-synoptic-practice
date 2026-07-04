@@ -18,12 +18,21 @@
     { id: 'besy', icon: '🦅', name: 'Enterprise Griffin', region: 'Enterprise Town', badge: 'Enterprise Badge', type: 'Business', wild: 'Contract Sprite', scene: '🏙️', desc: 'Business structures, law, contracts and stakeholders.' }
   ];
   var st = null;
+  var runtimeData = null;
 
   function esc(x) { return String(x == null ? '' : x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function migrate() { var old = null; try { old = JSON.parse(localStorage.getItem(OLD_KEY) || 'null'); } catch (e) {} return old || {}; }
-  function load() { try { var d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d) return normalise(d); } catch (e) {} return normalise(migrate()); }
-  function save(d) { try { localStorage.setItem(KEY, JSON.stringify(normalise(d))); } catch (e) {} }
+  function load() {
+    if (runtimeData) return normalise(runtimeData);
+    try {
+      var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (d) { runtimeData = normalise(d); return runtimeData; }
+    } catch (e) {}
+    runtimeData = normalise(migrate());
+    return runtimeData;
+  }
+  function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
   function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.starter = d.starter || ''; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function starter(d) { return STARTERS[d.starter] || null; }
@@ -42,27 +51,46 @@
   }
   function mount(html) {
     var old = document.getElementById('rpgOverlay'); if (old) old.remove();
-    var el = document.createElement('div'); el.id = 'rpgOverlay'; el.className = 'rpg-overlay'; el.innerHTML = html; document.body.appendChild(el);
-    el.querySelectorAll('[data-close]').forEach(function (x) { x.onclick = close; });
-    el.querySelectorAll('[data-starter]').forEach(function (x) { x.onclick = function () { chooseStarter(x.getAttribute('data-starter')); }; });
-    el.querySelectorAll('[data-region]').forEach(function (x) { x.onclick = function () { region(x.getAttribute('data-region')); }; });
-    el.querySelectorAll('[data-boss]').forEach(function (x) { x.onclick = function () { start(x.getAttribute('data-boss')); }; });
-    el.querySelectorAll('[data-opt]').forEach(function (x) { x.onclick = function () { answer(+x.getAttribute('data-opt'), x.getAttribute('data-move')); }; });
-    var n = el.querySelector('[data-next]'); if (n) n.onclick = next;
-    var l = el.querySelector('[data-landing]'); if (l) l.onclick = landing;
-    var r = el.querySelector('[data-retry]'); if (r) r.onclick = function () { start(r.getAttribute('data-retry')); };
-    var heal = el.querySelector('[data-potion]'); if (heal) heal.onclick = usePotion;
+    var el = document.createElement('div');
+    el.id = 'rpgOverlay';
+    el.className = 'rpg-overlay';
+    el.innerHTML = html;
+    document.body.appendChild(el);
+
+    /* Use delegated clicks so newly-rendered screens always respond, including
+       after the starter screen replaces itself with the world map. */
+    el.onclick = function (ev) {
+      var x = ev.target.closest('button');
+      if (!x || !el.contains(x)) return;
+      if (x.hasAttribute('data-close')) return close();
+      if (x.hasAttribute('data-starter')) return chooseStarter(x.getAttribute('data-starter'));
+      if (x.hasAttribute('data-region')) return region(x.getAttribute('data-region'));
+      if (x.hasAttribute('data-boss')) return start(x.getAttribute('data-boss'));
+      if (x.hasAttribute('data-opt')) return answer(+x.getAttribute('data-opt'), x.getAttribute('data-move'));
+      if (x.hasAttribute('data-next')) return next();
+      if (x.hasAttribute('data-landing')) return landing();
+      if (x.hasAttribute('data-retry')) return start(x.getAttribute('data-retry'));
+      if (x.hasAttribute('data-potion')) return usePotion();
+    };
   }
   function close() { var el = document.getElementById('rpgOverlay'); if (el) el.remove(); }
 
-  function chooseStarter(id) { var d = load(); d.starter = id; d.xp = d.xp || 10; save(d); landing(); }
+  function chooseStarter(id) {
+    if (!STARTERS[id]) return;
+    var d = load();
+    d.starter = id;
+    if (!d.xp) d.xp = 10;
+    d.inventory = d.inventory || { potion: 1 };
+    save(d);
+    landing(d);
+  }
   function starterScreen(d) {
     var cards = Object.keys(STARTERS).map(function (k) { var c = STARTERS[k]; return '<button class="rpg-starter-card" data-starter="' + k + '" type="button"><span>' + c.icon + '</span><strong>' + esc(c.name) + '</strong><small>' + esc(c.type) + ' type</small><em>' + esc(c.move1) + '</em></button>'; }).join('');
     mount('<section class="rpg-panel rpg-start" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><h2>Choose your study companion</h2><p>This makes the mode feel more like an RPG. The companion levels up, learns stronger attacks, and earns badges by defeating topic bosses.</p><div class="rpg-starter-grid">' + cards + '</div></section>');
   }
 
-  function landing() {
-    var d = load(), c = starter(d); if (!c) return starterScreen(d);
+  function landing(forcedData) {
+    var d = normalise(forcedData || load()), c = starter(d); if (!c) return starterScreen(d);
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
     var map = BOSSES.map(function (b) { var done = d.badges[b.id]; return '<button class="rpg-map-node ' + (done ? 'cleared' : '') + '" data-region="' + b.id + '" type="button"><span class="rpg-region-scene">' + b.scene + '</span><strong>' + esc(b.region) + '</strong><small>' + esc(b.type) + ' region</small><em>' + (done ? 'Badge earned' : 'Boss waiting') + '</em></button>'; }).join('');
     mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Travel across four AAT regions, defeat topic bosses and collect badges before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion">' + c.icon + '</span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small>Next evolution: ' + esc(c.evo) + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-path">' + map + '</div><p class="rpg-note">Demo rule: each boss battle uses five real AAT questions from that topic.</p></section>');
