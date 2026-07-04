@@ -130,24 +130,87 @@ local function path_tile(conns, seed)
       if (isd(x,y+1)) and L.hash(x,y,seed+2)>0.7 then c:px(x,y+1,L.R.grass[4]) end
     end
   end end
-  -- scattered warm flagstones embedded in the path (Stardew stone-path richness)
+  -- scattered warm flagstones embedded in the path (Stardew stone-path richness).
+  -- Count, positions, sizes and shapes are all seed-driven so each variant differs.
   local sHi,sMid,sLo = L.hx("cabfa4"), L.hx("a1957c"), L.hx("6f6350")
-  for i=1,6 do
+  local nStones = 4 + math.floor(L.hash(seed,17,5)*5)          -- 4..8
+  for i=1,nStones do
     local x=math.floor(L.hash(i,seed,31)*28)+2
     local y=math.floor(L.hash(i,seed,32)*28)+2
-    if isd(x,y) and isd(x+1,y) and isd(x,y+1) then
-      c:px(x,y,sMid); c:px(x+1,y,sMid); c:px(x,y+1,sMid); c:px(x+1,y+1,sLo)
-      c:px(x,y-1,sHi); c:px(x-1,y,sHi)
+    local kind=L.hash(i,seed,41)
+    if isd(x,y) then
+      if kind<0.42 then                                         -- single pebble-stone
+        c:px(x,y,sMid); if isd(x,y-1) then c:px(x,y-1,sHi) end
+      elseif kind<0.82 and isd(x+1,y) and isd(x,y+1) then       -- 2x2 flagstone
+        c:px(x,y,sMid); c:px(x+1,y,sMid); c:px(x,y+1,sMid); c:px(x+1,y+1,sLo)
+        if isd(x,y-1) then c:px(x,y-1,sHi) end
+        if isd(x-1,y) then c:px(x-1,y,sHi) end
+      elseif isd(x+1,y) and isd(x,y+1) and isd(x+1,y+1) and isd(x+2,y+1) then -- L-cluster
+        c:px(x,y,sMid); c:px(x+1,y,sLo); c:px(x,y+1,sMid)
+        c:px(x+1,y+1,sMid); c:px(x+2,y+1,sLo)
+        if isd(x,y-1) then c:px(x,y-1,sHi) end
+      end
+    end
+  end
+  -- scuffs / scrapes: short dark scrapes worn into the soil
+  local nScuff = 2 + math.floor(L.hash(seed,23,3)*3)            -- 2..4
+  for i=1,nScuff do
+    local x=math.floor(L.hash(i,seed+5,51)*26)+3
+    local y=math.floor(L.hash(i,seed+5,52)*26)+3
+    local len=1+math.floor(L.hash(i,seed+5,53)*3)
+    local horiz=L.hash(i,seed+5,54)>0.5
+    for k=0,len do
+      local sx = horiz and x+k or x
+      local sy = horiz and y or y+k
+      if isd(sx,sy) then c:px(sx,sy, D[(L.hash(sx,sy,seed)>0.5) and 1 or 2]) end
+    end
+  end
+  -- puddle: seed-gated reflective blob, resting off the worn centre track
+  if L.hash(seed,71,7) < 0.5 then
+    local P=L.R.puddle
+    local pcx=6+math.floor(L.hash(seed,72,20)*20)
+    local pcy=6+math.floor(L.hash(seed,73,20)*20)
+    local rx=2.2 + L.hash(seed,74,3)*1.8                        -- 2.2..4.0
+    local ry=1.4 + L.hash(seed,75,4)*1.0                        -- 1.4..2.4
+    for y=0,31 do for x=0,31 do
+      if isd(x,y) then
+        local dx=(x-pcx)/rx; local dy=(y-pcy)/ry
+        local d=dx*dx+dy*dy
+        if d<1 then
+          c:px(x,y, P[2 + math.floor((1-d)*2.5)])              -- deeper toward centre
+          if dy<-0.15 and d>0.35 then c:px(x,y,P[4]) end        -- lit top edge
+          if dy> 0.45 and d>0.40 then c:px(x,y,P[1]) end        -- dark bottom rim
+        end
+      end
+    end end
+    if isd(pcx-1,pcy-1) and L.hash(seed,76,9)<0.7 then c:px(pcx-1,pcy-1,P[5]) end
+  end
+  -- gravel / pebble specks
+  local nGrit = 5 + math.floor(L.hash(seed,31,6)*6)            -- 5..10
+  for i=1,nGrit do
+    local x=math.floor(L.hash(i,seed+9,61)*28)+2
+    local y=math.floor(L.hash(i,seed+9,62)*28)+2
+    if isd(x,y) then c:px(x,y, D[(L.hash(i,seed+9,63)>0.5) and 5 or 1]) end
+  end
+  -- hairline crack: occasional thin meandering line
+  if L.hash(seed,81,11) < 0.4 then
+    local x=6+math.floor(L.hash(seed,82,18)*18)
+    local y=5+math.floor(L.hash(seed,83,6)*6)
+    for k=0,10+math.floor(L.hash(seed,84,8)*8) do
+      if isd(x,y) then c:px(x,y,D[1]) end
+      y=y+1
+      if L.hash(x,y,seed)>0.62 then x=x+1 elseif L.hash(x,y,seed+1)>0.62 then x=x-1 end
     end
   end
   return c
 end
 -- Build conns from a canonical "nsew"-ordered code string (subset of those letters).
-function T.path_shape(code)
+function T.path_shape(code, variant)
   local conns={}
   for ch in code:gmatch("%a") do conns[ch]=true end
   local seed=0; for i=1,#code do seed=seed*7+string.byte(code,i) end
-  return path_tile(conns, seed%97)
+  seed = (seed + ((variant or 1)-1)*29) % 97   -- variant reshuffles the decoration
+  return path_tile(conns, seed)
 end
 -- backward-compatible default straight path
 function T.path(v) return T.path_shape("ns") end

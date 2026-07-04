@@ -285,7 +285,7 @@
     var bl = blockerAt(x, y);
     var blocked = bl && !d.badges[bl.needs];
     var t = tileType(x, y);
-    var shape = (t === 'path') ? ' rpg-path-' + roadShape(x, y) : tileVariant(t, x, y);
+    var shape = (t === 'path') ? ' rpg-path-' + roadShape(x, y) + ' rpg-pv' + (((x * 7 + y * 13) % 3) + 1) : tileVariant(t, x, y);
     var cls = 'rpg-tile rpg-tile-' + t + shape + (here ? ' rpg-player-tile' : '') + (blocked ? ' rpg-locked' : '') + (b && d.badges[b.id] ? ' cleared' : '');
     var attr = b ? ' data-node="' + b.id + '"' : (npc ? ' data-npc="' + npc.id + '"' : '');
     var aria = npc ? 'Talk to ' + esc(npc.name) : (b ? esc(MAP_NODES[b.id].short) + ' entrance' : (blocked ? 'Locked route — earn the ' + esc(bl.label) + ' first' : 'Map tile ' + x + ',' + y));

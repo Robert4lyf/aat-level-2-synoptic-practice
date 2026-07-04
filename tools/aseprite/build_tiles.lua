@@ -5,11 +5,16 @@ local function save(c,n) c:save(OUT..n..".png"); c:close() end
 
 save(T.grass(1),"tile-grass-1"); save(T.grass(2),"tile-grass-2"); save(T.grass(3),"tile-grass-3")
 
--- connection-aware path set: vertical, horizontal, crossroads, T-junctions, corners, end-caps
+-- connection-aware path set: vertical, horizontal, crossroads, T-junctions, corners, end-caps.
+-- Each shape gets 3 randomised variants (different stones/scuffs/puddles) so long
+-- straights no longer read as one repeating stamp.
 local PATHS = {"ns","ew","nsew","nse","nsw","new","sew","ne","nw","se","sw","n","s","e","w"}
-for _,code in ipairs(PATHS) do save(T.path_shape(code),"tile-path-"..code) end
+for _,code in ipairs(PATHS) do
+  for v=1,3 do save(T.path_shape(code,v),"tile-path-"..code.."-"..v) end
+  save(T.path_shape(code,1),"tile-path-"..code)   -- no-suffix alias (= variant 1)
+end
 -- keep legacy names as aliases so nothing breaks mid-deploy
-save(T.path_shape("ns"),"tile-path-1"); save(T.path_shape("ns"),"tile-path-2")
+save(T.path_shape("ns",1),"tile-path-1"); save(T.path_shape("ns",2),"tile-path-2")
 
 save(T.flower(1),"tile-flower-1"); save(T.flower(2),"tile-flower-2"); save(T.flower(3),"tile-flower-3")
 save(T.tree(1),"tile-tree-1"); save(T.tree(2),"tile-tree-2"); save(T.tree(3),"tile-tree-3")

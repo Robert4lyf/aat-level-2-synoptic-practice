@@ -47,6 +47,7 @@ M.R = {
   cream   = ramp("d8c49a","e8d5ac","f4e6c4","fff2d4","fffbe8"),
   ember   = ramp("8a2a12","c24618","ef7a1e","ffb038","ffe27a"),
   crystal = ramp("2a6f8c","3f9fc0","6fc8e2","a6e4f4","dbf6ff"),
+  puddle  = ramp("30414d","445a68","5f7a8a","8aa3b2","b9cdd6"),
 }
 M.CREAM   = hx("fff2d4")
 M.CREAMSH = hx("e8d5ac")
