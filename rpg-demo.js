@@ -8,12 +8,26 @@
   var LEN = 5;
   // The player is the hero and the sole battle fighter — no companion creatures.
   var FIGHTER = { id: 'player', name: 'The Accountant', icon: '📊', type: 'Ledger', move1: 'Balance Strike', move2: 'Audit Burst' };
+  // Each boss now has its own fight: hp (enemy HP), counter (wrong-answer damage),
+  // deck (questions), need (correct-to-win-alive), trait (signature gimmick), a
+  // wild-encounter sprite key, and pre-battle dialogue in its own menacing voice.
   var BOSSES = [
-    { id: 'itbk', icon: '🐉', name: 'Ledger Drake', region: 'Ledger Forest', badge: 'Ledger Badge', type: 'Bookkeeping', wild: 'Source Slime', scene: 'forest', desc: 'Debits, credits, source documents and ledger basics.' },
-    { id: 'pobc', icon: '🪨', name: 'Reconciliation Golem', region: 'Control Cavern', badge: 'Control Badge', type: 'Control', wild: 'Suspense Bat', scene: 'cave', desc: 'Control accounts, journals, errors and reconciliations.' },
-    { id: 'poc', icon: '🧪', name: 'Costing Chimera', region: 'Costing Factory', badge: 'Costing Badge', type: 'Costing', wild: 'Overhead Imp', scene: 'factory', desc: 'Cost behaviour, inventory, OAR and costing systems.' },
-    { id: 'besy', icon: '🦅', name: 'Enterprise Griffin', region: 'Enterprise Town', badge: 'Enterprise Badge', type: 'Business', wild: 'Contract Sprite', scene: 'town', desc: 'Business structures, law, contracts and stakeholders.' }
+    { id: 'itbk', icon: '🐉', name: 'Papyrus Wyrm', region: 'Ledger Forest', badge: 'Ledger Badge', type: 'Bookkeeping', wild: 'Source Slime', wildKey: 'slime', scene: 'forest', desc: 'Debits, credits, source documents and ledger basics.',
+      hp: 36, counter: 8, deck: 5, need: 4, trait: 'enrage',
+      lines: ['Ssso… another scribe crawlsss into my wood to balance my hoard.', 'Every debit hasss its credit, morsel — and you shall settle BOTH.', 'Misss a figure and my ledger-flame burnsss hotter. Beginnn.'] },
+    { id: 'pobc', icon: '🪨', name: 'Adding-Machine Golem', region: 'Control Cavern', badge: 'Control Badge', type: 'Control', wild: 'Suspense Bat', wildKey: 'bat', scene: 'cave', desc: 'Control accounts, journals, errors and reconciliations.',
+      hp: 44, counter: 9, deck: 5, need: 4, trait: 'armored',
+      lines: ['RECONCILE. OR BE VOID.', 'YOUR FIGURES DO NOT AGREE. A DIFFERENCE IS HELD… IN SUSPENSE.', 'LIGHT BLOWS GLANCE OFF MY CASING. STRIKE HARD — OR BE ZEROED.'] },
+    { id: 'poc', icon: '🧪', name: 'Cost Chimera', region: 'Costing Factory', badge: 'Costing Badge', type: 'Costing', wild: 'Overhead Imp', wildKey: 'imp', scene: 'factory', desc: 'Cost behaviour, inventory, OAR and costing systems.',
+      hp: 50, counter: 10, deck: 6, need: 5, trait: 'regen',
+      lines: ['Materials— Labour— Overhead— three hungers, one beast.', 'We absorb every cost into the total… and now we absorb YOU.', 'Wound one head and another feeds. Out-produce us if you dare.'] },
+    { id: 'besy', icon: '🦅', name: 'Contract Griffin', region: 'Enterprise Town', badge: 'Enterprise Badge', type: 'Business', wild: 'Contract Sprite', wildKey: 'sprite', scene: 'town', desc: 'Business structures, law, contracts and stakeholders.',
+      hp: 58, counter: 11, deck: 6, need: 5, trait: 'aegis',
+      lines: ['By offer and acceptance, your challenge is BINDING.', 'There is no clause of escape — the ink is already dry.', 'My seal turns aside your first blows. Sign here… in defeat.'] }
   ];
+  var LEAGUE = { id: 'league', icon: '🎓', name: 'The Grand Reckoner', region: 'The Synoptic League', badge: 'Synoptic Crown', type: 'Synoptic', wild: '', wildKey: '', scene: 'town', desc: 'The final reckoning — every topic, all at once.',
+    hp: 80, counter: 12, deck: 8, need: 6, trait: 'grand',
+    lines: ['All four seals broken… yet still you climb.', 'I am the sum of every ledger, every control, every cost and every contract.', 'Show me all you have learned, trainee — or be STRUCK from the record.'] };
 
   var MAP_W = 23;
   var MAP_H = 25;
@@ -180,6 +194,7 @@
 
   var st = null;
   var dlg = null;
+  var dlgBoss = null;
   var runtimeData = null;
 
   function esc(x) { return String(x == null ? '' : x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -198,8 +213,9 @@
   function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.npcDir = d.npcDir || {}; if (d.mapV !== 4) { d.pos = { x: START_POS.x, y: START_POS.y }; d.mapV = 4; } /* v4: player-as-hero, companions removed; reset onto the route (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function fighter() { return FIGHTER; }
-  function boss(id) { return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
-  function qs(id) { return (window.ALL_QUESTIONS || []).filter(function (q) { return q.topic === id && Array.isArray(q.opts) && q.opts.length >= 4 && typeof q.ans === 'number'; }); }
+  function boss(id) { if (id === 'league') return LEAGUE; return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
+  function validQ(q) { return q && Array.isArray(q.opts) && q.opts.length >= 4 && typeof q.ans === 'number'; }
+  function qs(id) { return (window.ALL_QUESTIONS || []).filter(function (q) { return validQ(q) && (id === 'league' || q.topic === id); }); }
   function present(q) { var ord = shuffle(q.opts.map(function (_, i) { return i; })); return { q: q.q, topic: q.topic, opts: ord.map(function (i) { return q.opts[i]; }), ans: ord.indexOf(q.ans), exp: q.exp || '' }; }
 
   function inject() {
@@ -231,7 +247,9 @@
       if (x.hasAttribute('data-dir')) return movePlayer(x.getAttribute('data-dir'));
       if (x.hasAttribute('data-interact')) return interact();
       if (x.hasAttribute('data-reset-pos')) return resetPosition();
-      if (x.hasAttribute('data-boss')) return start(x.getAttribute('data-boss'));
+      if (x.hasAttribute('data-boss')) return bossIntro(x.getAttribute('data-boss'));
+      if (x.hasAttribute('data-boss-next')) return bossIntroNext();
+      if (x.hasAttribute('data-league')) return region('league');
       if (x.hasAttribute('data-next')) return next();
       if (x.hasAttribute('data-landing')) return landing();
       if (x.hasAttribute('data-retry')) return start(x.getAttribute('data-retry'));
@@ -436,26 +454,39 @@
     dlg = null;
     var d = normalise(forcedData || load()), c = fighter();
     var badges = BOSSES.map(function (b) { return '<span class="rpg-badge ' + (d.badges[b.id] ? 'earned' : '') + '">' + (d.badges[b.id] ? '🏅 ' : '⚪ ') + esc(b.badge) + '</span>'; }).join('');
+    var champ = BOSSES.every(function (b) { return d.badges[b.id]; });
+    var leagueCta = champ ? '<button class="rpg-league-cta ' + (d.completed ? 'done' : '') + '" data-league type="button">🎓 Enter the Synoptic League' + (d.completed ? ' · Champion 👑' : '') + '</button>' : '';
     var prompt = worldPrompt(d, message);
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div><div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div>' + leagueCta + '<div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
     centerNow();   // snap the camera onto the player before the first paint
     cameraSoon();  // safety re-centre once late layout (fonts/grid) settles
   }
 
   function region(id) {
     var d = load(), b = boss(id), c = fighter(), count = qs(id).length;
-    mount('<section class="rpg-panel rpg-region" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-region-hero rpg-region-' + esc(b.scene) + '"><span class="rpg-region-art"></span><div><h2>' + esc(b.region) + '</h2><p>' + esc(b.desc) + '</p></div></div><div class="rpg-encounter"><p><strong>Wild encounter:</strong> A ' + esc(b.wild) + ' blocks the route.</p><p><strong>Gym boss:</strong> ' + b.icon + ' ' + esc(b.name) + ' guards the ' + esc(b.badge) + '.</p><p><strong>You fight as:</strong> ' + c.icon + ' ' + esc(c.name) + ', Lv ' + lvl(d.xp) + '.</p><p><strong>Question pool:</strong> ' + count + ' eligible questions.</p></div><div class="rpg-actions"><button class="rpg-next" data-boss="' + b.id + '" type="button">Challenge ' + esc(b.name) + '</button><button class="rpg-secondary" data-landing type="button">Back to world map</button></div></section>');
+    var wildLine = b.wildKey ? '<p class="rpg-wild-row"><span class="rpg-wild" data-wild="' + esc(b.wildKey) + '" aria-hidden="true"></span><span><strong>Wild encounter:</strong> A ' + esc(b.wild) + ' skulks the route.</span></p>' : '';
+    mount('<section class="rpg-panel rpg-region" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-region-hero rpg-region-' + esc(b.scene) + '"><span class="rpg-region-art"></span><div><h2>' + esc(b.region) + '</h2><p>' + esc(b.desc) + '</p></div></div><div class="rpg-encounter">' + wildLine + '<p><strong>Region boss:</strong> ' + b.icon + ' ' + esc(b.name) + ' guards the ' + esc(b.badge) + '.</p><p><strong>You fight as:</strong> ' + c.icon + ' ' + esc(c.name) + ', Lv ' + lvl(d.xp) + '.</p><p><strong>Question pool:</strong> ' + count + ' eligible questions.</p></div><div class="rpg-actions"><button class="rpg-next" data-boss="' + b.id + '" type="button">Challenge ' + esc(b.name) + '</button><button class="rpg-secondary" data-landing type="button">Back to world map</button></div></section>');
   }
 
   function start(id) {
     var d = load(), c = fighter(), b = boss(id), pool = qs(id); if (!pool.length) return;
-    st = { b: b, c: c, deck: shuffle(pool).slice(0, Math.min(LEN, pool.length)).map(present), i: 0, player: 34 + lvl(d.xp), enemy: 34, maxP: 34 + lvl(d.xp), maxE: 34, answered: null, move: '', streak: 0, res: [], log: ['A wild ' + b.wild + ' appeared.', b.name + ' challenged you to an AAT battle.'] };
+    var php = 34 + Math.min(12, lvl(d.xp) - 1);   // capped: battles stay a challenge as you level
+    st = { b: b, c: c, deck: shuffle(pool).slice(0, Math.min(b.deck || LEN, pool.length)).map(present), i: 0,
+      player: php, maxP: php, enemy: b.hp || 34, maxE: b.hp || 34,
+      need: b.need || 4, counter: b.counter || 8, trait: b.trait || '', shield: (b.trait === 'aegis' ? 10 : 0), enrage: 0,
+      answered: null, move: '', streak: 0, res: [],
+      log: (b.wild ? ['A wild ' + b.wild + ' appeared.'] : []).concat([b.name + ' rises to challenge you.']) };
     battle();
   }
   function bar(v, m) { return '<div class="rpg-hp"><span style="width:' + Math.max(0, Math.min(100, v / m * 100)) + '%"></span></div>'; }
   function over() { return st.player <= 0 || st.enemy <= 0 || st.i + 1 >= st.deck.length; }
   function moveName(strong) { return strong ? st.c.move2 : st.c.move1; }
-  function damage(ok, strong) { if (!ok) return 0; return strong ? 13 + Math.min(4, st.streak) : 8 + Math.min(3, st.streak); }
+  function damage(ok, strong) {
+    if (!ok) return 0;
+    var base = strong ? 13 + Math.min(4, st.streak) : 8 + Math.min(3, st.streak);
+    if ((st.trait === 'armored' || st.trait === 'grand') && !strong) base = Math.ceil(base / 2); // shrug off quick hits
+    return base;
+  }
 
   function battle() {
     var q = st.deck[st.i], done = st.answered !== null, disabled = done ? 'disabled' : '';
@@ -481,18 +512,64 @@
     if (!st || st.answered !== null) return;
     var q = st.deck[st.i], ok = i === q.ans, strong = mv === 'special';
     st.answered = i; st.move = moveName(strong);
-    if (ok) { st.streak++; var dmg = damage(true, strong); st.enemy = Math.max(0, st.enemy - dmg); st.log.unshift(st.c.name + ' used ' + st.move + '. It dealt ' + dmg + ' damage.'); }
-    else { st.streak = 0; st.player = Math.max(0, st.player - 8); st.log.unshift(st.b.name + ' countered. ' + st.c.name + ' took 8 damage.'); }
+    if (ok) {
+      st.streak++; var dmg = damage(true, strong);
+      if (st.shield > 0) { var absorbed = Math.min(st.shield, dmg); st.shield -= absorbed; dmg -= absorbed; if (absorbed) st.log.unshift(st.b.name + "'s seal absorbed " + absorbed + ' damage.'); }
+      st.enemy = Math.max(0, st.enemy - dmg);
+      st.log.unshift(st.c.name + ' used ' + st.move + '. It dealt ' + dmg + ' damage.');
+    } else {
+      st.streak = 0; var hit = st.counter + st.enrage; st.player = Math.max(0, st.player - hit);
+      if (st.trait === 'enrage') st.enrage += 2;
+      st.log.unshift(st.b.name + ' countered. ' + st.c.name + ' took ' + hit + ' damage.');
+    }
     st.res.push({ q: q.q, ok: ok, correct: q.opts[q.ans], exp: q.exp, move: st.move });
     battle();
   }
-  function next() { if (over()) return result(); st.i++; st.answered = null; battle(); }
+  function next() {
+    if (over()) return result();
+    st.i++; st.answered = null;
+    if ((st.trait === 'regen' || st.trait === 'grand') && st.enemy > 0) {
+      var before = st.enemy; st.enemy = Math.min(st.maxE, st.enemy + 3);
+      if (st.enemy > before) st.log.unshift(st.b.name + ' regenerated ' + (st.enemy - before) + ' HP.');
+    }
+    battle();
+  }
 
   function result() {
-    var n = st.res.filter(function (r) { return r.ok; }).length, won = st.enemy <= 0 || (st.player > 0 && n >= 4);
-    var d = load(); d.xp += won ? 45 : 15; d.wins[st.b.id] = (d.wins[st.b.id] || 0) + (won ? 1 : 0); if (won) d.badges[st.b.id] = true; d.inventory.potion = Math.min(9, (d.inventory.potion || 0) + 1); save(d);
+    var n = st.res.filter(function (r) { return r.ok; }).length, won = st.enemy <= 0 || (st.player > 0 && n >= (st.need || 4));
+    var isLeague = st.b.id === 'league';
+    var idx = BOSSES.map(function (b) { return b.id; }).indexOf(st.b.id);
+    var xpGain = won ? (isLeague ? 100 : 40 + Math.max(0, idx) * 10) : 15;
+    var d = load(); d.xp += xpGain; d.wins[st.b.id] = (d.wins[st.b.id] || 0) + (won ? 1 : 0);
+    if (won) { if (isLeague) d.completed = true; else d.badges[st.b.id] = true; }
+    d.inventory.potion = Math.min(9, (d.inventory.potion || 0) + 1); save(d);
     var review = st.res.map(function (r, i) { return '<details class="rpg-review-item ' + (r.ok ? 'ok' : 'bad') + '"><summary>Turn ' + (i + 1) + ' · ' + esc(r.move) + ' · ' + (r.ok ? 'Hit' : 'Miss') + '</summary><p><strong>' + esc(r.q) + '</strong></p><p>Correct: ' + esc(r.correct) + '</p><p><em>' + esc(r.exp) + '</em></p></details>'; }).join('');
-    mount('<section class="rpg-panel rpg-result" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-hero-icon">' + (won ? '🏆' : '🛡️') + '</div><h2>' + (won ? esc(st.b.badge) + ' earned' : 'You escaped to revise') + '</h2><p>' + esc(st.b.name) + ': ' + n + '/' + st.deck.length + ' correct · +' + (won ? 45 : 15) + ' XP · Potion found.</p><div class="rpg-profile"><span>' + esc(st.c.name) + ' Lv ' + lvl(d.xp) + '</span><span>Total XP ' + d.xp + '</span><span>' + Object.keys(d.badges).length + '/4 badges</span></div><div class="rpg-actions"><button class="rpg-next" data-retry="' + st.b.id + '" type="button">Rematch boss</button><button class="rpg-secondary" data-landing type="button">World map</button></div><div class="rpg-review">' + review + '</div></section>');
+    if (won && isLeague) {
+      mount('<section class="rpg-panel rpg-result rpg-champion" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-hero-icon">🎓👑</div><h2>Synoptic League Champion!</h2><p>You bested the Grand Reckoner ' + n + '/' + st.deck.length + ' and hold all four badges. The record is yours — you are ready for the real Synoptic assessment.</p><div class="rpg-profile"><span>' + esc(st.c.name) + ' Lv ' + lvl(d.xp) + '</span><span>Total XP ' + d.xp + '</span><span>🏅 4/4 badges + Crown</span></div><div class="rpg-actions"><button class="rpg-next" data-retry="league" type="button">Fight again</button><button class="rpg-secondary" data-landing type="button">World map</button></div><div class="rpg-review">' + review + '</div></section>');
+      return;
+    }
+    var title = won ? (isLeague ? 'The Reckoner endures' : esc(st.b.badge) + ' earned') : 'You escaped to revise';
+    mount('<section class="rpg-panel rpg-result" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-hero-icon">' + (won ? '🏆' : '🛡️') + '</div><h2>' + title + '</h2><p>' + esc(st.b.name) + ': ' + n + '/' + st.deck.length + ' correct · +' + xpGain + ' XP · Potion found.</p><div class="rpg-profile"><span>' + esc(st.c.name) + ' Lv ' + lvl(d.xp) + '</span><span>Total XP ' + d.xp + '</span><span>' + Object.keys(d.badges).length + '/4 badges</span></div><div class="rpg-actions"><button class="rpg-next" data-retry="' + st.b.id + '" type="button">Rematch boss</button><button class="rpg-secondary" data-landing type="button">World map</button></div><div class="rpg-review">' + review + '</div></section>');
+  }
+
+  // --- pre-battle boss cutscene: menacing dialogue in each boss's own voice ---
+  function bossIntro(id) { dlgBoss = { id: id, i: 0 }; renderBossIntro(); }
+  function bossIntroNext() {
+    if (!dlgBoss) return; var b = boss(dlgBoss.id);
+    if (dlgBoss.i + 1 < b.lines.length) { dlgBoss.i++; return renderBossIntro(); }
+    var id = dlgBoss.id; dlgBoss = null; start(id);
+  }
+  function renderBossIntro() {
+    if (!dlgBoss) return; var b = boss(dlgBoss.id);
+    var line = b.lines[dlgBoss.i], last = dlgBoss.i + 1 >= b.lines.length;
+    mount('<section class="rpg-panel rpg-boss-intro" role="dialog" aria-modal="true" aria-label="' + esc(b.name) + ' confronts you"><button class="rpg-close" data-close type="button">×</button>'
+      + '<div class="rpg-backdrop rpg-backdrop-' + esc(b.scene) + '"></div>'
+      + '<div class="rpg-boss-intro-inner"><div class="rpg-sprite enemy rpg-boss-portrait" data-mon="' + esc(b.id) + '" aria-hidden="true"></div>'
+      + '<div class="rpg-boss-name">' + b.icon + ' ' + esc(b.name) + '</div>'
+      + '<div class="rpg-boss-line">“' + esc(line) + '”</div>'
+      + '<div class="rpg-actions"><button class="rpg-next" data-boss-next type="button">' + (last ? 'Begin battle ⚔️' : 'Next ▸') + '</button>'
+      + '<button class="rpg-secondary" data-landing type="button">Flee</button></div>'
+      + '<div class="rpg-boss-progress">' + (dlgBoss.i + 1) + '/' + b.lines.length + '</div></div></section>');
   }
 
   document.addEventListener('keydown', function (e) {
@@ -500,6 +577,11 @@
     if (dlg) {   // an NPC textbox is open: Enter/Space advances, Escape leaves, movement is ignored
       if (e.key === 'Escape') { e.preventDefault(); return leaveTalk(); }
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); return dlgNext(); }
+      return;
+    }
+    if (dlgBoss) {   // boss cutscene: Enter/Space advances to the battle, Escape flees
+      if (e.key === 'Escape') { e.preventDefault(); dlgBoss = null; return landing(load()); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); return bossIntroNext(); }
       return;
     }
     if (e.key === 'Escape') return close();

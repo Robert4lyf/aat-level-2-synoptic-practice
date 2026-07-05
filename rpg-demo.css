@@ -238,13 +238,44 @@
 .dark .rpg-mon { background: rgba(15,23,42,.72); }
 .rpg-sprite { width: 100%; height: clamp(72px, 18vw, 128px); background-repeat: no-repeat; background-position: center; background-size: contain; image-rendering: pixelated; filter: drop-shadow(0 12px 12px rgba(0,0,0,.25)); }
 .rpg-sprite.ally { transform: scaleX(-1); }
-.rpg-sprite.enemy { animation: rpgFloat 2.4s ease-in-out infinite; }
+/* Bosses are 2-frame idle strips (menacing "tell"). Square box shows one 64px
+   frame; rpgBossIdle steps to the tell frame briefly, floated by rpgFloat. */
+.rpg-sprite.enemy { width: auto; aspect-ratio: 1 / 1; height: clamp(84px, 21vw, 140px); margin: 0 auto;
+  background-size: 200% 100%; background-position: 0% center;
+  animation: rpgBossIdle 2.8s step-end infinite, rpgFloat 2.4s ease-in-out infinite; }
 .rpg-sprite[data-mon='player'] { background-image: url(rpg-assets/char-player.png); }
 .rpg-sprite[data-mon='itbk'] { background-image: url(rpg-assets/boss-itbk.png); }
 .rpg-sprite[data-mon='pobc'] { background-image: url(rpg-assets/boss-pobc.png); }
 .rpg-sprite[data-mon='poc'] { background-image: url(rpg-assets/boss-poc.png); }
 .rpg-sprite[data-mon='besy'] { background-image: url(rpg-assets/boss-besy.png); }
+.rpg-sprite[data-mon='league'] { background-image: url(rpg-assets/boss-league.png); }
 @keyframes rpgFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes rpgBossIdle { 0% { background-position: 0% center; } 84% { background-position: 0% center; } 90% { background-position: 100% center; } 100% { background-position: 0% center; } }
+@media (prefers-reduced-motion: reduce) { .rpg-sprite.enemy, .rpg-wild { animation: none !important; background-position: 0% center !important; } }
+/* wild-encounter mini-monsters (region screen) */
+.rpg-wild { display: inline-block; width: 44px; height: 44px; flex: 0 0 44px; image-rendering: pixelated;
+  background-repeat: no-repeat; background-size: 200% 100%; background-position: 0% center;
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,.3)); animation: rpgBossIdle 3.2s step-end infinite; }
+.rpg-wild[data-wild='slime'] { background-image: url(rpg-assets/wild-slime.png); }
+.rpg-wild[data-wild='bat'] { background-image: url(rpg-assets/wild-bat.png); }
+.rpg-wild[data-wild='imp'] { background-image: url(rpg-assets/wild-imp.png); }
+.rpg-wild[data-wild='sprite'] { background-image: url(rpg-assets/wild-sprite.png); }
+.rpg-wild-row { display: flex; align-items: center; gap: 12px; }
+/* Synoptic League call-to-action on the landing screen */
+.rpg-league-cta { display: block; width: 100%; margin: 4px 0 2px; padding: 12px 16px; border: 0; border-radius: 14px;
+  font-weight: 800; font-size: 1rem; color: #fff2c8; cursor: pointer; letter-spacing: .01em;
+  background: linear-gradient(120deg, #4a1d6e, #7c2d3a 60%, #b8801f); box-shadow: 0 8px 22px -8px rgba(74,29,110,.7), inset 0 0 0 2px rgba(255,214,120,.4);
+  animation: rpgFloat 3.2s ease-in-out infinite; }
+.rpg-league-cta:hover { filter: brightness(1.12); }
+.rpg-league-cta.done { background: linear-gradient(120deg, #2a5a3a, #b8801f); animation: none; }
+/* Pre-battle boss cutscene: dark, dramatic, boss looms over its line */
+.rpg-boss-intro { position: relative; overflow: hidden; background: #0b0b12 !important; color: #f2ecda; text-align: center; }
+.rpg-boss-intro .rpg-backdrop { opacity: .35; }
+.rpg-boss-intro-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px 20px 28px; }
+.rpg-boss-portrait { animation: rpgBossIdle 2.2s step-end infinite, rpgFloat 3s ease-in-out infinite !important; height: clamp(120px, 34vw, 210px) !important; filter: drop-shadow(0 0 18px rgba(200,60,80,.5)) drop-shadow(0 12px 14px rgba(0,0,0,.6)); }
+.rpg-boss-name { font-weight: 900; font-size: clamp(1.3rem, 4vw, 1.9rem); letter-spacing: .01em; text-shadow: 0 0 14px rgba(200,60,80,.5); }
+.rpg-boss-line { max-width: 34ch; font-size: 1.12rem; line-height: 1.5; font-style: italic; color: #ffe9c4; min-height: 3.2em; }
+.rpg-boss-progress { font-family: ui-monospace, monospace; font-size: .78rem; color: rgba(242,236,218,.5); }
 .rpg-vs { font-size: 1.6rem; font-weight: 900; align-self: center; }
 .rpg-hp { height: 12px; overflow: hidden; margin: 8px 0 4px; border-radius: 999px; background: rgba(15,23,42,.18); }
 .rpg-hp span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22c55e, #facc15); transition: width .25s ease; }
