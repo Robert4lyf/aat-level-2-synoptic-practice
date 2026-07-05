@@ -70,7 +70,16 @@ local function emit(builder, spec, base)
   end
 end
 
-emit(M.human, PLAYER, "char-player")
+-- player: static front + 4-frame walk strips [idle, blink, stepA, stepB] per dir
+do
+  local front = M.human(PLAYER,0,"down"); front:save(OUT.."char-player.png"); front:close()
+  for _,dir in ipairs(DIRS) do
+    local f0=M.human(PLAYER,0,dir,0); local f1=M.human(PLAYER,1,dir,0)
+    local f2=M.human(PLAYER,0,dir,1); local f3=M.human(PLAYER,0,dir,2)
+    local s=L.strip({f0,f1,f2,f3}); s:save(OUT.."char-player-"..dir..".png"); s:close()
+    f0:close(); f1:close(); f2:close(); f3:close()
+  end
+end
 for _,e in ipairs(HUMANS)  do emit(M.human,  e[2], "npc-"..e[1]) end
 for _,e in ipairs(ANIMALS) do emit(M.animal, e[2], "npc-"..e[1]) end
 print("CAST_OK "..(1+#HUMANS+#ANIMALS).." characters")

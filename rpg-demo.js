@@ -293,7 +293,7 @@
       : (blocked ? '<span class="rpg-location-label rpg-lock-label">🔒 ' + esc(bl.label) + '</span>' : ''));
     var contents = '<span class="rpg-tile-art" aria-hidden="true"></span>' + label;
     if (npc) contents += '<span class="rpg-npc-sprite" data-mon="' + esc(npc.mon) + '" data-dir="' + esc((d.npcDir && d.npcDir[npc.id]) || 'down') + '" aria-hidden="true"></span>';
-    if (here) contents += '<span class="rpg-player-sprite" data-dir="' + esc(d.dir || 'down') + '" aria-label="Player"></span>';
+    if (here) contents += '<span class="rpg-player-sprite" data-dir="' + esc(d.dir || 'down') + '" data-step="' + (((x + y) % 2) ? 'b' : 'a') + '" aria-label="Player"></span>';
     return '<button class="' + cls + '" type="button"' + attr + ' aria-label="' + aria + '">' + contents + '</button>';
   }
   function mapHtml(d, c) {

@@ -138,11 +138,22 @@ local function drawHair(c, hs, hair, skin, underhat)
   end
 end
 
+-- one striding leg + shoe. footY: 37 planted, <37 lifted, >37 extended.
+local function drawLeg(c, x0, x1, footY, tr, sh)
+  c:fillrect(x0,31,x1,footY, tr[2]); c:fillrect(x0,31,x0+1,footY, tr[1])
+  c:fillrect(x0-1,footY,x1+1,footY+1, sh)
+end
+-- walk phase -> {left foot y, right foot y}. 0 idle, 1 stepA, 2 stepB (mirror).
+local function walkFeet(walk)
+  if walk==1 then return 35, 38 elseif walk==2 then return 38, 35 else return 37, 37 end
+end
+
 -- ============================================================================
--- HUMAN chibi (front / down pose). frame: 0 = base, 1 = idle (blink).
+-- HUMAN chibi (front / down pose). frame: 0 = base, 1 = idle (blink);
+-- walk: 0 idle legs, 1/2 striding legs (player walk cycle).
 -- Back (up) and side (right/left) poses follow; M.human dispatches by dir.
 -- ============================================================================
-local function humanFront(spec, frame, turn)
+local function humanFront(spec, frame, turn, walk)
   frame = frame or 0
   local blink = frame==1
   local c = L.canvas(32,40)
@@ -156,10 +167,10 @@ local function humanFront(spec, frame, turn)
 
   c:groundshadow(cx, 38, 9, 2.3)
 
-  -- LEGS + shoes
-  c:fillrect(11,31,14,37, trouser[2]); c:fillrect(11,31,12,37, trouser[1])
-  c:fillrect(18,31,21,37, trouser[2]); c:fillrect(18,31,19,37, trouser[1])
-  c:fillrect(10,37,15,38, shoe); c:fillrect(17,37,22,38, shoe)
+  -- LEGS + shoes (stride when walking)
+  local lf, rf = walkFeet(walk)
+  drawLeg(c, 11,14, lf, trouser, shoe)
+  drawLeg(c, 18,21, rf, trouser, shoe)
 
   -- BODY: shirt torso base
   c:sphere(cx,28,8,7, shirt)
@@ -320,14 +331,14 @@ local function resolve(spec)
 end
 
 -- HUMAN back (up). No face; hair covers the head, garment back, collar peek.
-local function humanBack(spec, frame)
+local function humanBack(spec, frame, walk)
   local c=L.canvas(32,40); local cx=16
   local skin,hair,shirt,over,trouser,shoe = resolve(spec)
   local rolled=spec.sleevesRolled
   c:groundshadow(cx,38,9,2.3)
-  c:fillrect(11,31,14,37,trouser[2]); c:fillrect(11,31,12,37,trouser[1])
-  c:fillrect(18,31,21,37,trouser[2]); c:fillrect(18,31,19,37,trouser[1])
-  c:fillrect(10,37,15,38,shoe); c:fillrect(17,37,22,38,shoe)
+  local lf, rf = walkFeet(walk)
+  drawLeg(c, 11,14, lf, trouser, shoe)
+  drawLeg(c, 18,21, rf, trouser, shoe)
   local body=(over and over.ramp) or shirt
   c:sphere(cx,28,8,7, body)
   c:sphere(8,27,2.6,4.2, body); c:sphere(24,27,2.6,4.2, body)
@@ -408,12 +419,12 @@ end
 
 -- dispatch by direction. Sides are the front pose with the head turned (so the
 -- outfit/colours match the front exactly); left = mirror of the right turn.
-function M.human(spec, frame, dir)
+function M.human(spec, frame, dir, walk)
   frame = frame or 0; dir = dir or "down"
-  if dir=="up" then return humanBack(spec, frame)
-  elseif dir=="right" then return humanFront(spec, frame, "right")
-  elseif dir=="left" then local s=humanFront(spec, frame, "right"); local f=s:flipH(); s:close(); return f
-  else return humanFront(spec, frame) end
+  if dir=="up" then return humanBack(spec, frame, walk)
+  elseif dir=="right" then return humanFront(spec, frame, "right", walk)
+  elseif dir=="left" then local s=humanFront(spec, frame, "right", walk); local f=s:flipH(); s:close(); return f
+  else return humanFront(spec, frame, nil, walk) end
 end
 
 -- hats (silhouette-defining). Drawn over the (reduced) hair; each fully covers

@@ -129,13 +129,22 @@
    per step, so the finite animation plays once (step A → step B → rest on the
    standing frame) and pairs with the vertical hop. Each sheet is 3×32px frames;
    background-size:300% shows one frame, animated via background-position. */
-.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 100%; height: auto; aspect-ratio: 32 / 40; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: 0% bottom; background-size: 200% 100%; background-image: url(rpg-assets/char-player-down.png); filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgIdleBlink 3.4s step-end infinite, rpgHop .36s ease-out 1; pointer-events: none; }
+.rpg-player-sprite { position: absolute; z-index: 8; left: 50%; top: 50%; width: 100%; height: auto; aspect-ratio: 32 / 40; transform: translate(-50%, -68%); image-rendering: pixelated; background-repeat: no-repeat; background-position: 0% bottom; background-size: 400% 100%; background-image: url(rpg-assets/char-player-down.png); filter: drop-shadow(0 4px 0 rgba(0,0,0,.28)); animation: rpgPlayerBlink 3.4s step-end infinite, rpgHop .36s ease-out 1; pointer-events: none; }
 .rpg-player-sprite[data-dir='down'] { background-image: url(rpg-assets/char-player-down.png); }
 .rpg-player-sprite[data-dir='up'] { background-image: url(rpg-assets/char-player-up.png); }
 .rpg-player-sprite[data-dir='left'] { background-image: url(rpg-assets/char-player-left.png); }
 .rpg-player-sprite[data-dir='right'] { background-image: url(rpg-assets/char-player-right.png); }
 /* 2-frame idle: frame0 mostly, a quick blink on frame1 (right half of the strip). */
 @keyframes rpgIdleBlink { 0% { background-position: 0% bottom; } 92% { background-position: 0% bottom; } 96% { background-position: 100% bottom; } 100% { background-position: 0% bottom; } }
+/* Player uses a 4-frame strip [idle, blink, stepA, stepB]: 0% / 33.333% / 66.666% / 100%. */
+@keyframes rpgPlayerBlink { 0% { background-position: 0% bottom; } 92% { background-position: 0% bottom; } 96% { background-position: 33.333% bottom; } 100% { background-position: 0% bottom; } }
+@keyframes rpgStepA { 0%,100% { background-position: 66.666% bottom; } }
+@keyframes rpgStepB { 0%,100% { background-position: 100% bottom; } }
+/* On each move the sprite is re-created; (x+y) tile parity alternates the leading
+   foot, so consecutive tiles show stepA / stepB — a real stride — then the blink
+   loop resumes when standing. The step (last in the list) overrides the blink. */
+.rpg-player-sprite[data-step='a'] { animation: rpgPlayerBlink 3.4s step-end infinite, rpgStepA .34s step-end 1, rpgHop .36s ease-out 1; }
+.rpg-player-sprite[data-step='b'] { animation: rpgPlayerBlink 3.4s step-end infinite, rpgStepB .34s step-end 1, rpgHop .36s ease-out 1; }
 @media (prefers-reduced-motion: reduce) { .rpg-player-sprite, .rpg-npc-sprite { animation: none !important; } }
 @keyframes rpgHop { 0% { transform: translate(-50%, -68%); } 45% { transform: translate(-50%, -80%); } 100% { transform: translate(-50%, -68%); } }
 
