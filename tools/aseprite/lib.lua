@@ -173,15 +173,22 @@ function Canvas:outline(col)
   for _,p in ipairs(todo) do self:px(p[1],p[2],col) end
 end
 
--- 1px inner ink on the bottom-right interior edge for extra form
+-- Soft inner shading on the bottom-right interior edge for extra form. Blends a
+-- translucent shadow just inside the silhouette's shadowed edges (not the very
+-- rim, which the outline owns), so objects read as rounded/grounded.
 function Canvas:coreshade(col)
-  col = col or M.INK
+  col = col or rgba(18,12,24,64)
   local todo={}
   for y=0,self.h-1 do for x=0,self.w-1 do
     if not self:empty(x,y) then
-      if self:empty(x+1,y) or self:empty(x,y+1) then todo[#todo+1]={x,y} end
+      -- one pixel in from a bottom or right transparent edge
+      if (self:empty(x+2,y) and not self:empty(x+1,y)) or
+         (self:empty(x,y+2) and not self:empty(x,y+1)) then
+        todo[#todo+1]={x,y}
+      end
     end
   end end
+  for _,p in ipairs(todo) do self:blend(p[1],p[2], col) end
 end
 
 -- ---- procedural texture helpers -------------------------------------------

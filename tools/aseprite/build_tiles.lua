@@ -16,18 +16,42 @@ end
 -- keep legacy names as aliases so nothing breaks mid-deploy
 save(T.path_shape("ns",1),"tile-path-1"); save(T.path_shape("ns",2),"tile-path-2")
 
+local L = dofile(DIR.."lib.lua")
+-- emit a 2-frame animated strip: <base>.png = strip{ fn(0), fn(1) }
+local function anim(fn, base)
+  local f0=fn(0); local f1=fn(1); local s=L.strip({f0,f1})
+  s:save(OUT..base..".png"); s:close(); f0:close(); f1:close()
+end
+
 save(T.flower(1),"tile-flower-1"); save(T.flower(2),"tile-flower-2"); save(T.flower(3),"tile-flower-3")
-save(T.tree(1),"tile-tree-1"); save(T.tree(2),"tile-tree-2"); save(T.tree(3),"tile-tree-3")
-save(T.rock(),"tile-rock"); save(T.sign(),"tile-sign"); save(T.book(),"tile-book")
-save(T.well(),"tile-well"); save(T.ledger_stone(),"tile-ledger-stone")
-save(T.pathlamp(),"tile-pathlamp")
-save(T.house(1),"tile-house-1"); save(T.house(2),"tile-house-2")
-save(T.factory_wall(),"tile-factory-wall")
+
+-- trees: 10 tall (32x48) variants, each a 2-frame sway strip
+for v=1,10 do anim(function(f) return T.tree(v,f) end, "tile-tree-"..v) end
+
+-- rocks: 8 ground variants
+for v=1,8 do save(T.rock(v),"tile-rock-"..v) end
+save(T.rock(1),"tile-rock")                                   -- legacy alias
+
+save(T.book(),"tile-book")
+save(T.sign(),"tile-sign"); save(T.ledger_stone(),"tile-ledger-stone")   -- tall statics (32x48)
+anim(T.well,"tile-well"); anim(T.pathlamp,"tile-pathlamp"); anim(T.fountain,"tile-fountain")  -- tall animated
+
+for v=1,3 do save(T.house(v),"tile-house-"..v) end            -- tall 32x48 houses
+for v=1,4 do save(T.factory_wall(v),"tile-factory-wall-"..v) end
+save(T.factory_wall(1),"tile-factory-wall")                   -- legacy alias
+
 save(T.gate_forest(),"tile-gate-forest"); save(T.gate_cave(),"tile-gate-cave")
 save(T.gate_factory(),"tile-gate-factory"); save(T.gate_town(),"tile-gate-town")
 
--- bold new props
-save(T.pond(),"tile-pond"); save(T.bush(),"tile-bush"); save(T.mushroom(),"tile-mushroom")
-save(T.crop(),"tile-crop"); save(T.fence(),"tile-fence"); save(T.fountain(),"tile-fountain")
-save(T.flowerbed(),"tile-flowerbed"); save(T.barrel(),"tile-barrel")
+-- ground props with variants
+for v=1,5 do anim(function(f) return T.pond(v,f) end, "tile-pond-"..v) end   -- ponds: 2-frame ripple
+anim(function(f) return T.pond(1,f) end, "tile-pond")        -- legacy alias
+for v=1,4 do save(T.bush(v),"tile-bush-"..v) end
+for v=1,3 do save(T.mushroom(v),"tile-mushroom-"..v) end
+for v=1,3 do save(T.crop(v),"tile-crop-"..v) end
+for v=1,3 do save(T.flowerbed(v),"tile-flowerbed-"..v) end
+for v=1,4 do save(T.barrel(v),"tile-barrel-"..v) end
+save(T.bush(1),"tile-bush"); save(T.mushroom(1),"tile-mushroom"); save(T.crop(1),"tile-crop")
+save(T.flowerbed(1),"tile-flowerbed"); save(T.barrel(1),"tile-barrel")   -- legacy aliases
+save(T.fence(),"tile-fence")
 print("TILES_OK")
