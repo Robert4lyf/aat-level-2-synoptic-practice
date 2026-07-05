@@ -142,7 +142,7 @@ end
 -- HUMAN chibi (front / down pose). frame: 0 = base, 1 = idle (blink).
 -- Back (up) and side (right/left) poses follow; M.human dispatches by dir.
 -- ============================================================================
-local function humanFront(spec, frame)
+local function humanFront(spec, frame, turn)
   frame = frame or 0
   local blink = frame==1
   local c = L.canvas(32,40)
@@ -254,6 +254,7 @@ local function humanFront(spec, frame)
   -- HEAD
   local hy = 13
   c:sphere(cx,hy,8.5,8, skin)
+  if turn=="right" then c:sphere(25,15,2,2.4, skin, 0.1) end   -- nose/muzzle bump => reads as a turned head
 
   -- HAIR (reduced under a hat so it never overdraws the headgear)
   if not spec.bald then drawHair(c, spec.hairStyle or "combed", hair, skin, spec.hat~=nil) end
@@ -272,9 +273,12 @@ local function humanFront(spec, frame)
 
   if spec.beard then M.beard(c, spec.beard, spec.beardCol or hair) end
 
-  -- FACE (after outline)
+  -- FACE (after outline). `turn` rotates the head to a 3/4 side view while the
+  -- body and outfit stay the unchanged front, so the side matches the front.
   local ey = blink and 15 or 14
   local lx,rx = 11, 21
+  local nosex, mouthx, blushL = 16, 16, 9
+  if turn=="right" then lx, rx, nosex, mouthx, blushL = 14, 22, 25, 19, 13 end
   local behindLens = spec.glasses and spec.glasses~="pushed"
   local function eyeAt(ex, eyy, behind)
     if blink then
@@ -293,9 +297,9 @@ local function humanFront(spec, frame)
   end
   local function drawEyes(eyy, behind) eyeAt(lx,eyy,behind); eyeAt(rx,eyy,behind) end
   if not behindLens then drawEyes(ey, false) end
-  c:px(16,16, skin[1])                                   -- nose
-  if not (spec.beard=="full" or spec.beard=="beardgrey") then c:hline(15,17,18, INK) end
-  if not blink then c:blend(9,17,L.rgba(242,124,142,120)); c:blend(23,17,L.rgba(242,124,142,120)) end
+  c:px(nosex,15, skin[1]); c:px(nosex,16, skin[1])       -- nose (sits on the bump when turned)
+  if not (spec.beard=="full" or spec.beard=="beardgrey") then c:hline(mouthx-1,mouthx+1,18, INK) end
+  if not blink then c:blend(blushL,17,L.rgba(242,124,142,120)); c:blend(23,17,L.rgba(242,124,142,120)) end
 
   -- GLASSES
   if spec.glasses then
@@ -402,12 +406,13 @@ local function humanSide(spec, frame)
   return c
 end
 
--- dispatch by direction: down=front, up=back, right=side, left=mirror(side)
+-- dispatch by direction. Sides are the front pose with the head turned (so the
+-- outfit/colours match the front exactly); left = mirror of the right turn.
 function M.human(spec, frame, dir)
   frame = frame or 0; dir = dir or "down"
   if dir=="up" then return humanBack(spec, frame)
-  elseif dir=="right" then return humanSide(spec, frame)
-  elseif dir=="left" then local s=humanSide(spec, frame); local f=s:flipH(); s:close(); return f
+  elseif dir=="right" then return humanFront(spec, frame, "right")
+  elseif dir=="left" then local s=humanFront(spec, frame, "right"); local f=s:flipH(); s:close(); return f
   else return humanFront(spec, frame) end
 end
 
@@ -546,7 +551,7 @@ local INK2 = INK
 --   flat|ring|none), tailCol, spikes, wool, shell, mask, glasses, acc(bowtie|
 --   scarf|collar|apron|vest), accCol, hat, prop, idle
 -- ============================================================================
-local function animalFront(spec, frame)
+local function animalFront(spec, frame, turn)
   local blink = frame==1
   local c=L.canvas(32,40); local cx=16
   local fur=spec.fur or M.FUR.brown
@@ -629,15 +634,17 @@ local function animalFront(spec, frame)
   end
   if spec.hat then M.hat(c, spec.hat, cx) end
 
-  -- MUZZLE / BEAK
+  -- MUZZLE / BEAK — shifts right when the head is turned, so the snout/beak
+  -- points the way the animal faces (the outfit/body stay the unchanged front).
+  local mcx = (turn=="right") and (cx+5) or cx
   if spec.muzzle=="snout" then
-    c:sphere(cx,hy+4,4,3.2, belly,0.15)
+    c:sphere(mcx,hy+4,4,3.2, belly,0.15)
   elseif spec.muzzle=="short" then
-    c:sphere(cx,hy+4,3,2.4, belly,0.15)
+    c:sphere(mcx,hy+4,3,2.4, belly,0.15)
   elseif spec.muzzle=="beak" then
     local bk=spec.beakCol or L.R.gold
     if type(bk)=="number" then bk={bk,bk,bk} end
-    for i=0,3 do local w=math.floor((4-i)*0.8); c:hline(cx-w,cx+w, hy+4+i, bk[math.max(1,3-i)]) end
+    for i=0,3 do local w=math.floor((4-i)*0.8); c:hline(mcx-w,mcx+w, hy+4+i, bk[math.max(1,3-i)]) end
   end
 
   c:outline()
@@ -645,6 +652,7 @@ local function animalFront(spec, frame)
   -- FACE
   local ey = blink and hy+1 or hy
   local lx,rx = 12,20
+  if turn=="right" then lx,rx = 15,21 end                      -- eyes follow the turn
   if spec.rpface then                                           -- red panda: white cheeks/brows + tear marks
     local wh=M.FUR.white[3]
     c:sphere(11,hy+2,2.6,2.4, wh); c:sphere(21,hy+2,2.6,2.4, wh)
@@ -669,14 +677,15 @@ local function animalFront(spec, frame)
     end
     c:hline(lx+3,rx-3,ey,INK2)
   else eye(lx); eye(rx) end
-  -- nose (for furry muzzles)
+  -- nose (for furry muzzles) — sits on the muzzle, which shifts when turned
   if spec.muzzle=="snout" or spec.muzzle=="short" then
-    local nz=spec.nose or L.hx("2a1c1c"); c:fillrect(15,hy+3,17,hy+4,nz); c:hline(15,17,hy+5,INK2)
+    local nz=spec.nose or L.hx("2a1c1c"); c:fillrect(mcx-1,hy+3,mcx+1,hy+4,nz); c:hline(mcx-1,mcx+1,hy+5,INK2)
   elseif spec.muzzle=="none" and not spec.glasses then
     c:hline(12,20,hy+4,INK2); c:px(11,hy+3,INK2); c:px(21,hy+3,INK2)   -- wide smile (frog)
   end
   if spec.whiskers then
-    c:hline(4,9,hy+4,belly[3]); c:hline(23,28,hy+4,belly[3]); c:hline(4,9,hy+6,belly[2]); c:hline(23,28,hy+6,belly[2])
+    if turn=="right" then c:hline(mcx+1,mcx+7,hy+4,belly[3]); c:hline(mcx+1,mcx+7,hy+6,belly[2])
+    else c:hline(4,9,hy+4,belly[3]); c:hline(23,28,hy+4,belly[3]); c:hline(4,9,hy+6,belly[2]); c:hline(23,28,hy+6,belly[2]) end
   end
   if spec.blush~=false then c:blend(9,hy+3,L.rgba(242,130,150,110)); c:blend(23,hy+3,L.rgba(242,130,150,110)) end
   if frame==1 and spec.idle then spec.idle(c,{cx=cx,L=L,WHITE=WHITE}) end
@@ -777,12 +786,13 @@ local function animalSide(spec, frame)
   return c
 end
 
--- dispatch by direction (down=front, up=back, right=side, left=mirror(side))
+-- dispatch by direction. Sides are the front pose with the head/muzzle turned
+-- (body + markings stay the front), so the side matches the front. left=mirror.
 function M.animal(spec, frame, dir)
   frame=frame or 0; dir=dir or "down"
   if dir=="up" then return animalBack(spec,frame)
-  elseif dir=="right" then return animalSide(spec,frame)
-  elseif dir=="left" then local s=animalSide(spec,frame); local f=s:flipH(); s:close(); return f
+  elseif dir=="right" then return animalFront(spec,frame,"right")
+  elseif dir=="left" then local s=animalFront(spec,frame,"right"); local f=s:flipH(); s:close(); return f
   else return animalFront(spec,frame) end
 end
 
