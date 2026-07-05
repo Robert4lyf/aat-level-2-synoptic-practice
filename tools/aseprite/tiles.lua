@@ -17,9 +17,12 @@ local function grass_base(c, seed, R)
   R = R or L.R.grass
   local n = #R
   for y=0,31 do for x=0,31 do
-    local patch = L.vnoise(x,y,seed,9)*0.60 + L.vnoise(x,y,seed+5,4)*0.30 + L.vnoise(x,y,seed+11,2)*0.10
-    local light = (1 - (x+y)/70) * 0.16        -- subtle brighten toward top-left
-    local t = 0.30 + patch*0.46 + light        -- compress toward mid tones
+    -- tileable value-noise patches only (scales divide 32 so they wrap cleanly).
+    -- No per-tile directional gradient: it reset at every tile, so the dark
+    -- bottom-right of one tile met the bright top-left of the next and drew a
+    -- hard seam. Even, wrap-safe tone lets neighbouring tiles blend.
+    local patch = L.vnoise(x,y,seed,8)*0.58 + L.vnoise(x,y,seed+5,4)*0.30 + L.vnoise(x,y,seed+11,16)*0.12
+    local t = 0.40 + (patch-0.5)*0.54          -- centre on mid tones, gentle spread
     c:px(x,y, R[L.rampidx(t,n)])
   end end
   -- clustered upright blade tufts (2-4 blades each), soft highlight + base shadow

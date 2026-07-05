@@ -136,13 +136,18 @@ function Canvas:sphere(cx,cy,rx,ry,rp,bias)
   end
 end
 
--- soft ground shadow (semi-transparent), squashed ellipse
+-- soft ground shadow (semi-transparent), squashed ellipse. Alpha falls off to 0
+-- at the rim so the shadow feathers into the ground instead of reading as a hard
+-- oval (a flat translucent disc over green grass looked like a "green circle").
 function Canvas:groundshadow(cx,cy,rx,ry)
-  local col = rgba(20,14,26,90)
   for y=math.floor(cy-ry), math.ceil(cy+ry) do
     for x=math.floor(cx-rx), math.ceil(cx+rx) do
       local nx=(x+0.5-cx)/rx local ny=(y+0.5-cy)/ry
-      if nx*nx+ny*ny<=1.0 then self:blend(x,y,col) end
+      local d=nx*nx+ny*ny
+      if d<1.0 then
+        local a=math.floor(92*(1-d)+0.5)   -- opaque-ish under object, fades to 0 at rim
+        if a>0 then self:blend(x,y,rgba(20,14,26,a)) end
+      end
     end
   end
 end
@@ -201,15 +206,22 @@ function M.hash(x,y,s)
 end
 -- smooth value noise: bilinear interp of hash on a coarse grid, smoothstep'd.
 -- Gives soft painterly patches instead of harsh per-pixel speckle. Returns 0..1.
-function M.vnoise(x,y,seed,scale)
-  scale = scale or 6
-  local gx,gy = x/scale, y/scale
+-- TILEABLE: the lattice wraps modulo `period` (default 32, the map-tile size) so
+-- the left/right and top/bottom edges of a tile line up perfectly. Without this
+-- every tile's noise ended abruptly at its border, drawing a visible grid of
+-- join lines between abutting ground tiles.
+function M.vnoise(x,y,seed,scale,period)
+  period = period or 32
+  local cells = math.max(1, math.floor(period/(scale or 6) + 0.5))
+  local gx,gy = x*cells/period, y*cells/period      -- exactly `cells` cells per period
   local x0,y0 = math.floor(gx), math.floor(gy)
   local fx,fy = gx-x0, gy-y0
   fx = fx*fx*(3-2*fx); fy = fy*fy*(3-2*fy)
+  local x1,y1 = (x0+1)%cells, (y0+1)%cells
+  x0,y0 = x0%cells, y0%cells
   local h = M.hash
-  local a,b = h(x0,y0,seed), h(x0+1,y0,seed)
-  local c,d = h(x0,y0+1,seed), h(x0+1,y0+1,seed)
+  local a,b = h(x0,y0,seed), h(x1,y0,seed)
+  local c,d = h(x0,y1,seed), h(x1,y1,seed)
   local top = a+(b-a)*fx
   local bot = c+(d-c)*fx
   return top+(bot-top)*fy
