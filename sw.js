@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v57';
+var CACHE_VERSION = 'aat-l2-practice-v58';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -149,6 +149,18 @@ var CORE_ASSETS = [
   './rpg-assets/scene-cave.png',
   './rpg-assets/scene-factory.png',
   './rpg-assets/scene-town.png',
+  './rpg-assets/building-house-small-1.png',
+  './rpg-assets/building-house-small-2.png',
+  './rpg-assets/building-house-medium-1.png',
+  './rpg-assets/building-house-medium-2.png',
+  './rpg-assets/building-house-large-1.png',
+  './rpg-assets/building-house-large-2.png',
+  './rpg-assets/building-shop-1.png',
+  './rpg-assets/building-shop-2.png',
+  './rpg-assets/building-town-hall-1.png',
+  './rpg-assets/building-town-hall-2.png',
+  './rpg-assets/building-factory-1.png',
+  './rpg-assets/building-factory-2.png',
   './rpg-assets/tile-grass-1.png',
   './rpg-assets/tile-grass-2.png',
   './rpg-assets/tile-grass-3.png',

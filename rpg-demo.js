@@ -30,23 +30,26 @@
     lines: ['All four seals broken… yet still you climb.', 'I am the sum of every ledger, every control, every cost and every contract.', 'Show me all you have learned, trainee — or be STRUCK from the record.'] };
 
   var MAP_W = 23;
-  var MAP_H = 33;
-  var START_POS = { x: 3, y: 3 };
-  // The player begins in the starter village of Willowmere (rows 1-8) and heads
-  // south down a tree-lined passage (col 11, rows 9-13) onto the serpentine route.
+  var MAP_H = 39;
+  var START_POS = { x: 5, y: 7 };
+  // The player begins in the starter town of Willowmere (rows 1-14) — a proper
+  // town square of multi-tile buildings (see BUILDINGS) around a plaza — then heads
+  // south down a tree-lined passage (col 11, rows 15-19) onto the serpentine route.
   // Gates sit on the band roads of that route as it snakes top-to-bottom through
   // the four regions in difficulty order: Forest -> Cavern -> Factory -> Town.
   var MAP_NODES = {
-    itbk: { x: 16, y: 14, kind: 'forest-gate', short: 'Forest' },
-    pobc: { x: 6, y: 19, kind: 'cave-gate', short: 'Cavern' },
-    poc: { x: 16, y: 24, kind: 'factory-door', short: 'Factory' },
-    besy: { x: 6, y: 29, kind: 'town-door', short: 'Town' }
+    itbk: { x: 16, y: 20, kind: 'forest-gate', short: 'Forest' },
+    pobc: { x: 6, y: 25, kind: 'cave-gate', short: 'Cavern' },
+    poc: { x: 16, y: 30, kind: 'factory-door', short: 'Factory' },
+    besy: { x: 6, y: 35, kind: 'town-door', short: 'Town' }
   };
-  // Hand-drawn tile map: one char per tile (see LEGEND). Each of the 33 rows is
+  // Hand-drawn tile map: one char per tile (see LEGEND). Each of the 39 rows is
   // exactly 23 chars. Gates, NPCs and blockers are drawn on top by tileType() and
   // sit on '=' (road) or '.' (grass) here so the roads still autotile through them.
-  // The blocked bands between road rows are dead-end alcoves off a single band —
-  // never a vertical shortcut — so the only way south stays the gated connector.
+  // Multi-tile BUILDINGS are drawn on a separate overlay; their footprint tiles are
+  // plain grass here (buildingAt() makes them impassable). The blocked bands between
+  // road rows are dead-end alcoves off a single band — never a vertical shortcut —
+  // so the only way south stays the gated connector.
   var LEGEND = {
     '.': 'grass', ',': 'flower', '=': 'path', 'o': 'well', 'L': 'ledger-stone',
     'p': 'pathlamp', 's': 'sign', 'k': 'book', 'm': 'mushroom', 'x': 'flowerbed',
@@ -55,54 +58,81 @@
   };
   var MAP_ROWS = [
     '#######################', // 0  border
-    '#H..H..o.x...x.o..H..H#', // 1  village houses & wells
-    '#..,..p...,.,...p..,..#', // 2  pathlamps + flowers
-    '#.x..,...........,..x.#', // 3  spawn row (START 3,3)
-    '#..p...o...F...o...p..#', // 4  fountain at the green's heart
-    '#.,..x...,...,...x..,.#', // 5  flowerbeds
-    '#.H..o..x.....x..o..H.#', // 6  houses & wells
-    '#...p..,.......,..p...#', // 7  pathlamps
-    '#,.,.,.,.,...,.,.,.,.,#', // 8  flowery green (col 11 = passage mouth)
-    '###########=###########', // 9  tree-lined passage
-    '##########b=b##########', // 10 passage (bush flanks)
-    '##########%=%##########', // 11 passage (rock flanks)
-    '##########b=b##########', // 12 passage (bush flanks)
-    '###########=###########', // 13 passage
-    '##===================##', // 14 FOREST road (gate itbk 16,14)
-    '##.~.m##.k.#########=##', // 15 Forest middle: pond & book alcoves
-    '##.~.###L.k#########=##', // 16 beaver 4,16 | raven 9,16 | BLOCKER 20,16
-    '###.#m##############=##', // 17 middle seal, col 20 connector
-    '###...##############=##', // 18 scenic alcove (cols 3-5)
-    '##===================##', // 19 CAVERN road (gate pobc 6,19)
-    '##=#####.~.~.##########', // 20 Cavern middle: water-pool alcove
-    '##=#####.~.~.##########', // 21 otter 10,21 | BLOCKER 2,21
-    '##=###########.B.B.####', // 22 barrel alcove (cols 14-18)
-    '##=###########.....####', // 23 owl 16,23
-    '##===================##', // 24 FACTORY road (gate poc 16,24)
-    '####.~.~.M##########=##', // 25 Factory middle: cooling-pond alcove
-    '####.~.~.###########=##', // 26 frog 6,26 | duck 8,26 | BLOCKER 20,26
-    '##########.C.M.#####=##', // 27 market & crop alcove (cols 10-14)
-    '##########.....#####=##', // 28 bear 12,28
-    '##===================##', // 29 TOWN road (gate besy 6,29)
-    '#FpHH,xoM..pHH,xoM.F.H#', // 30 Enterprise Town (mayor 10,30 | treasurer 18,30)
-    '#xoM.FpHH,xoM.FpHH,xoM#', // 31 Town
-    '#######################'  // 32 border
+    '#.....................#', // 1  town — building overhang space
+    '##.....b....#....b...##', // 2  town-hall & house-large plots (buildings overlay)
+    '#.....#......b....#...#', // 3  shop & house-small plots
+    '#....................b#', // 4
+    '#====================.#', // 5  north plaza aisle (building door approaches)
+    '#b...p.....=....p.....#', // 6  plaza — guides & townsfolk
+    '#..F.,...x.=.,...x.,..#', // 7  plaza — fountain, flowerbeds
+    '#......o.p.=..po...p..#', // 8  plaza — wells & lamps (START 5,8)
+    '#..........=..........#', // 9
+    '##.....b...=.b....#..##', // 10 factory & house-medium plots
+    '#.....#....=#....b...b#', // 11 shop(v2) & house-small(v2) plots
+    '#====================.#', // 12 south plaza aisle (building door approaches)
+    '##.m..,..x.=..,..o.m.##', // 13 south green — Fern by the passage
+    '#.,........=........,.#', // 14 town exit onto the passage
+    '###########=###########', // 15 tree-lined passage
+    '##########b=b##########', // 16 passage (bush flanks)
+    '##########%=%##########', // 17 passage (rock flanks)
+    '##########b=b##########', // 18 passage (bush flanks)
+    '###########=###########', // 19 passage
+    '##===================##', // 20 FOREST road (gate itbk 16,20)
+    '##.~.m##.k.#########=##', // 21 Forest middle: pond & book alcoves
+    '##.~.###L.k#########=##', // 22 beaver 4,22 | raven 9,22 | BLOCKER 20,22
+    '###.#m##############=##', // 23 middle seal, col 20 connector
+    '###...##############=##', // 24 scenic alcove (cols 3-5)
+    '##===================##', // 25 CAVERN road (gate pobc 6,25)
+    '##=#####.~.~.##########', // 26 Cavern middle: water-pool alcove
+    '##=#####.~.~.##########', // 27 otter 10,27 | BLOCKER 2,27
+    '##=###########.B.B.####', // 28 barrel alcove (cols 14-18)
+    '##=###########.....####', // 29 owl 16,29
+    '##===================##', // 30 FACTORY road (gate poc 16,30)
+    '####.~.~.M##########=##', // 31 Factory middle: cooling-pond alcove
+    '####.~.~.###########=##', // 32 frog 6,32 | duck 8,32 | BLOCKER 20,32
+    '##########.C.M.#####=##', // 33 market & crop alcove (cols 10-14)
+    '##########.....#####=##', // 34 bear 12,34
+    '##===================##', // 35 TOWN road (gate besy 6,35)
+    '#FpHH,xoM..pHH,xoM.F.H#', // 36 Enterprise Town (mayor 10,36 | treasurer 18,36)
+    '#xoM.FpHH,xoM.FpHH,xoM#', // 37 Town
+    '#######################'  // 38 border
   ];
   // Route blockers: each sits on a connector between two regions and stays
   // impassable (rendered as a fence) until the previous region's badge is earned.
   var BLOCKERS = {
-    '20,16': { needs: 'itbk', label: 'Ledger Badge' },
-    '2,21': { needs: 'pobc', label: 'Control Badge' },
-    '20,26': { needs: 'poc', label: 'Costing Badge' }
+    '20,22': { needs: 'itbk', label: 'Ledger Badge' },
+    '2,27': { needs: 'pobc', label: 'Control Badge' },
+    '20,32': { needs: 'poc', label: 'Costing Badge' }
   };
+  // Multi-tile buildings, drawn on an overlay above the tile grid (see
+  // buildingsHtml/buildingAt). `x,y` is the top-left footprint tile; the art is a
+  // transparent PNG whose bottom aligns to the footprint bottom and whose roof
+  // rises into a 1-tile overhang above (rendered over the grass row above). Every
+  // footprint tile is impassable; the walkable tile directly south of the door is
+  // the approach. Scenery only this pass — townsfolk stand near the doors.
+  var BUILDING_TYPES = {
+    'house-small': { w: 2, h: 2, over: 1 }, 'house-medium': { w: 3, h: 2, over: 1 },
+    'house-large': { w: 3, h: 3, over: 1 }, 'shop': { w: 3, h: 2, over: 1 },
+    'town-hall': { w: 4, h: 3, over: 1 }, 'factory': { w: 4, h: 3, over: 1 }
+  };
+  var BUILDINGS = [
+    { type: 'town-hall', variant: 1, x: 2, y: 2 },
+    { type: 'house-large', variant: 1, x: 8, y: 2 },
+    { type: 'shop', variant: 1, x: 14, y: 3 },
+    { type: 'house-small', variant: 1, x: 19, y: 3 },
+    { type: 'factory', variant: 1, x: 2, y: 9 },
+    { type: 'house-medium', variant: 1, x: 8, y: 10 },
+    { type: 'shop', variant: 2, x: 14, y: 10 },
+    { type: 'house-small', variant: 2, x: 19, y: 10 }
+  ];
 
   // Townsfolk NPCs. Each stands just off a road so you approach and talk from an
   // adjacent tile (their own tile blocks movement, like a person standing there).
   // `mon` selects the pixel sprite (rpg-assets/npc-*.png); `lines` is the dialogue.
   var NPCS = {
-    // ---- Willowmere village (rows 1-8): guides + friendly townsfolk ----
+    // ---- Willowmere town (rows 1-14): guides + townsfolk around the plaza & doors ----
     quill: {
-      x: 4, y: 3, mon: 'professor', tag: 'Guide', name: 'Professor Quill',
+      x: 6, y: 6, mon: 'professor', tag: 'Guide', name: 'Professor Quill',
       role: 'Head Tutor of Willowmere',
       lines: [
         'Welcome to Willowmere, trainee! I am Professor Quill.',
@@ -112,7 +142,7 @@
       ]
     },
     librarian: {
-      x: 8, y: 3, mon: 'librarian', tag: 'Librarian', name: 'Marion the Librarian',
+      x: 9, y: 6, mon: 'librarian', tag: 'Librarian', name: 'Marion the Librarian',
       role: 'Keeper of the Willowmere Library',
       lines: [
         'A quick word before you set off — read the signposts you pass; they mark each region gate.',
@@ -121,7 +151,7 @@
       ]
     },
     scribe: {
-      x: 10, y: 7, mon: 'fox_scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
+      x: 12, y: 13, mon: 'fox_scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
       role: 'Keeper of the Ledger Forest',
       lines: [
         'Heading down the passage into the Ledger Forest? Mind the Papyrus Wyrm — it quizzes debits and credits.',
@@ -131,7 +161,7 @@
       ]
     },
     baker: {
-      x: 14, y: 5, mon: 'baker', tag: 'Baker', name: 'Bess the Baker',
+      x: 16, y: 6, mon: 'baker', tag: 'Baker', name: 'Bess the Baker',
       role: 'Willowmere Bakery',
       lines: [
         'Fresh loaves for the road, trainee? The oven\'s been on since dawn.',
@@ -140,7 +170,7 @@
       ]
     },
     tealady: {
-      x: 6, y: 6, mon: 'tealady', tag: 'Tea Lady', name: 'Tilly the Tea Lady',
+      x: 4, y: 7, mon: 'tealady', tag: 'Tea Lady', name: 'Tilly the Tea Lady',
       role: 'Village Tea Stall',
       lines: [
         'A cuppa before you set off? It\'s a long, winding route ahead.',
@@ -149,7 +179,7 @@
       ]
     },
     lamplighter: {
-      x: 18, y: 5, mon: 'lamplighter', tag: 'Lamplighter', name: 'Lem the Lamplighter',
+      x: 17, y: 8, mon: 'lamplighter', tag: 'Lamplighter', name: 'Lem the Lamplighter',
       role: 'Keeper of the Village Lamps',
       lines: [
         'Evening! I keep every lamp in Willowmere burning bright.',
@@ -158,7 +188,7 @@
       ]
     },
     bard: {
-      x: 4, y: 5, mon: 'bard', tag: 'Bard', name: 'Rowan the Bard',
+      x: 8, y: 7, mon: 'bard', tag: 'Bard', name: 'Rowan the Bard',
       role: 'Wandering Minstrel',
       lines: [
         'Gather round! I sing of four fearsome beasts and the scribe who balanced them all.',
@@ -167,7 +197,7 @@
       ]
     },
     penny: {
-      x: 12, y: 6, mon: 'cat_merchant', tag: 'Trader', name: 'Penny the Trader',
+      x: 13, y: 6, mon: 'cat_merchant', tag: 'Trader', name: 'Penny the Trader',
       role: 'Travelling Potion Merchant',
       gift: 'potion',
       lines: [
@@ -178,7 +208,7 @@
     },
     // ---- Tucked-away route NPCs: each themed to its surroundings + region topic ----
     beaver: {
-      x: 4, y: 16, mon: 'beaver_builder', tag: 'Builder', name: 'Barnaby the Beaver',
+      x: 4, y: 22, mon: 'beaver_builder', tag: 'Builder', name: 'Barnaby the Beaver',
       role: 'Dam-Builder of the Forest Pond',
       lines: [
         'Dam-building\'s my game — log by log I raise a wall right here on the bank.',
@@ -187,7 +217,7 @@
       ]
     },
     raven: {
-      x: 9, y: 16, mon: 'raven_ledger', tag: 'Bookkeeper', name: 'Corvus the Raven',
+      x: 9, y: 22, mon: 'raven_ledger', tag: 'Bookkeeper', name: 'Corvus the Raven',
       role: 'Reader of the Ledger-Stones',
       lines: [
         'Each ledger-stone here carries a debit on one face and a credit on the other.',
@@ -196,7 +226,7 @@
       ]
     },
     otter: {
-      x: 10, y: 21, mon: 'otter_fisher', tag: 'Fisher', name: 'Ollie the Otter',
+      x: 10, y: 27, mon: 'otter_fisher', tag: 'Fisher', name: 'Ollie the Otter',
       role: 'Fisher of the Cavern Pool',
       lines: [
         'I count every catch twice — once in the net, once again in my tally on the bank.',
@@ -205,7 +235,7 @@
       ]
     },
     owl: {
-      x: 16, y: 23, mon: 'owl_auditor', tag: 'Auditor', name: 'Athena the Owl',
+      x: 16, y: 29, mon: 'owl_auditor', tag: 'Auditor', name: 'Athena the Owl',
       role: 'Night Auditor of the Stores',
       lines: [
         'Checking the barrel-counts by lamplight — a good auditor never sleeps on a difference.',
@@ -214,7 +244,7 @@
       ]
     },
     frog: {
-      x: 6, y: 26, mon: 'frog_cashier', tag: 'Cashier', name: 'Fitch the Frog',
+      x: 6, y: 32, mon: 'frog_cashier', tag: 'Cashier', name: 'Fitch the Frog',
       role: 'Cashier by the Cooling-Pond',
       lines: [
         'Ribbit — I ring up every unit that hops off the factory floor.',
@@ -223,7 +253,7 @@
       ]
     },
     duck: {
-      x: 8, y: 26, mon: 'duck_clerk', tag: 'Clerk', name: 'Dabble the Duck',
+      x: 8, y: 32, mon: 'duck_clerk', tag: 'Clerk', name: 'Dabble the Duck',
       role: 'Overhead Clerk',
       lines: [
         'I clerk the overheads — the costs you can\'t pin to any one unit.',
@@ -232,7 +262,7 @@
       ]
     },
     bear: {
-      x: 12, y: 28, mon: 'bear_smith', tag: 'Smith', name: 'Bruin the Smith',
+      x: 12, y: 34, mon: 'bear_smith', tag: 'Smith', name: 'Bruin the Smith',
       role: 'Forge Master of the Market',
       lines: [
         'Every bar of iron that leaves my forge gets costed to the last gram.',
@@ -240,9 +270,9 @@
         'And always carry stock at the lower of cost and net realisable value — never above what it will fetch.'
       ]
     },
-    // ---- Enterprise Town (rows 30-31) ----
+    // ---- Enterprise Town (rows 36-37) ----
     mayor: {
-      x: 10, y: 30, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
+      x: 10, y: 36, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
       role: 'Head of Enterprise Town',
       lines: [
         'Welcome to Enterprise Town! The Contract Griffin guards knowledge of business and ethics.',
@@ -252,7 +282,7 @@
       ]
     },
     treasurer: {
-      x: 18, y: 30, mon: 'treasurer', tag: 'Treasurer', name: 'Tansy the Treasurer',
+      x: 18, y: 36, mon: 'treasurer', tag: 'Treasurer', name: 'Tansy the Treasurer',
       role: 'Keeper of the Counting House',
       lines: [
         'Willowmere\'s counting house welcomes you — you\'ve come a long way down the route.',
@@ -285,6 +315,16 @@
     return code || 'ns';
   }
   function npcAt(x, y) { for (var k in NPCS) { if (NPCS.hasOwnProperty(k)) { var n = NPCS[k]; if (n.x === x && n.y === y) return { id: k, x: n.x, y: n.y, mon: n.mon, tag: n.tag, name: n.name }; } } return null; }
+  // A multi-tile building's footprint (top-left x,y spanning w x h) blocks movement
+  // on every covered tile. The 1-tile roof overhang above the footprint is drawn but
+  // is NOT part of the footprint, so the player can walk (and be occluded) behind it.
+  function buildingAt(x, y) {
+    for (var i = 0; i < BUILDINGS.length; i++) {
+      var b = BUILDINGS[i], t = BUILDING_TYPES[b.type];
+      if (x >= b.x && x < b.x + t.w && y >= b.y && y < b.y + t.h) return b;
+    }
+    return null;
+  }
 
   var st = null;
   var dlg = null;
@@ -304,7 +344,7 @@
     return runtimeData;
   }
   function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
-  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.npcDir = d.npcDir || {}; if (d.mapV !== 5) { d.pos = { x: START_POS.x, y: START_POS.y }; d.mapV = 5; } /* v5: village-starter map; reset into Willowmere (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; return d; }
+  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.npcDir = d.npcDir || {}; if (d.mapV !== 6) { d.pos = { x: START_POS.x, y: START_POS.y }; d.mapV = 6; } /* v6: town rebuilt with multi-tile buildings; reset into Willowmere plaza (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function fighter() { return FIGHTER; }
   function boss(id) { if (id === 'league') return LEAGUE; return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
@@ -365,6 +405,7 @@
   }
   function passable(x, y) {
     if (x < 0 || y < 0 || x >= MAP_W || y >= MAP_H) return false;
+    if (buildingAt(x, y)) return false;   // multi-tile building footprints block movement
     var t = tileType(x, y);
     return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region', 'mushroom', 'flowerbed'].indexOf(t) >= 0;
   }
@@ -403,6 +444,23 @@
     var out = '';
     for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
     return out;
+  }
+  // Buildings render on a single overlay layer appended as the LAST child of
+  // .rpg-pixel-map. Because it is position:absolute it is not a grid item and does
+  // not shift the tile buttons, so tiles keep indices 0..MAP_W*MAP_H-1 and
+  // moveRender's y*MAP_W+x lookup is unaffected. Each building is sized/positioned in
+  // percentages of the grid so it scales in both normal and fullscreen modes; the
+  // top accounts for the roof overhang so the footprint bottom aligns to its row.
+  function buildingsHtml() {
+    var out = '<div class="rpg-building-layer" aria-hidden="true">';
+    for (var i = 0; i < BUILDINGS.length; i++) {
+      var b = BUILDINGS[i], t = BUILDING_TYPES[b.type];
+      var left = b.x / MAP_W * 100, width = t.w / MAP_W * 100;
+      var top = (b.y - t.over) / MAP_H * 100, height = (t.h + t.over) / MAP_H * 100;
+      out += '<div class="rpg-building" data-b="' + esc(b.type + '-' + b.variant)
+        + '" style="left:' + left + '%;top:' + top + '%;width:' + width + '%;height:' + height + '%;"></div>';
+    }
+    return out + '</div>';
   }
   // Synchronous, instant camera centring. Runs in the same task as mount() so the
   // freshly rebuilt map is scrolled onto the player BEFORE the browser paints —
@@ -453,7 +511,7 @@
   function moveRender(d, dirty, message) {
     var overlay = document.getElementById('rpgOverlay');
     var map = overlay && overlay.querySelector('.rpg-pixel-map');
-    if (!map || map.children.length !== MAP_W * MAP_H) return landing(d, message);
+    if (!map || map.children.length < MAP_W * MAP_H) return landing(d, message); // < allows the appended building overlay child; tiles stay at indices 0..MAP_W*MAP_H-1
     var c = fighter();
     var seen = {};
     (dirty || []).forEach(function (p) {
@@ -560,7 +618,7 @@
     var champ = BOSSES.every(function (b) { return d.badges[b.id]; });
     var leagueCta = champ ? '<button class="rpg-league-cta ' + (d.completed ? 'done' : '') + '" data-league type="button">🎓 Enter the Synoptic League' + (d.completed ? ' · Champion 👑' : '') + '</button>' : '';
     var prompt = worldPrompt(d, message);
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div>' + leagueCta + '<div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div>' + leagueCta + '<div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + buildingsHtml() + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
     centerNow();   // snap the camera onto the player before the first paint
     cameraSoon();  // safety re-centre once late layout (fonts/grid) settles
   }
