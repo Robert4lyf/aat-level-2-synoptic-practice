@@ -183,6 +183,55 @@
 .rpg-npc-sprite[data-mon='cat_merchant'][data-dir='up']   { background-image: url(rpg-assets/npc-cat_merchant-up.png); }
 .rpg-npc-sprite[data-mon='cat_merchant'][data-dir='left'] { background-image: url(rpg-assets/npc-cat_merchant-left.png); }
 .rpg-npc-sprite[data-mon='cat_merchant'][data-dir='right']{ background-image: url(rpg-assets/npc-cat_merchant-right.png); }
+/* Village folk + tucked-away route NPCs (beaver by the water, etc.). */
+.rpg-npc-sprite[data-mon='beaver_builder'][data-dir='down'] { background-image: url(rpg-assets/npc-beaver_builder-down.png); }
+.rpg-npc-sprite[data-mon='beaver_builder'][data-dir='up'] { background-image: url(rpg-assets/npc-beaver_builder-up.png); }
+.rpg-npc-sprite[data-mon='beaver_builder'][data-dir='left'] { background-image: url(rpg-assets/npc-beaver_builder-left.png); }
+.rpg-npc-sprite[data-mon='beaver_builder'][data-dir='right'] { background-image: url(rpg-assets/npc-beaver_builder-right.png); }
+.rpg-npc-sprite[data-mon='otter_fisher'][data-dir='down'] { background-image: url(rpg-assets/npc-otter_fisher-down.png); }
+.rpg-npc-sprite[data-mon='otter_fisher'][data-dir='up'] { background-image: url(rpg-assets/npc-otter_fisher-up.png); }
+.rpg-npc-sprite[data-mon='otter_fisher'][data-dir='left'] { background-image: url(rpg-assets/npc-otter_fisher-left.png); }
+.rpg-npc-sprite[data-mon='otter_fisher'][data-dir='right'] { background-image: url(rpg-assets/npc-otter_fisher-right.png); }
+.rpg-npc-sprite[data-mon='frog_cashier'][data-dir='down'] { background-image: url(rpg-assets/npc-frog_cashier-down.png); }
+.rpg-npc-sprite[data-mon='frog_cashier'][data-dir='up'] { background-image: url(rpg-assets/npc-frog_cashier-up.png); }
+.rpg-npc-sprite[data-mon='frog_cashier'][data-dir='left'] { background-image: url(rpg-assets/npc-frog_cashier-left.png); }
+.rpg-npc-sprite[data-mon='frog_cashier'][data-dir='right'] { background-image: url(rpg-assets/npc-frog_cashier-right.png); }
+.rpg-npc-sprite[data-mon='duck_clerk'][data-dir='down'] { background-image: url(rpg-assets/npc-duck_clerk-down.png); }
+.rpg-npc-sprite[data-mon='duck_clerk'][data-dir='up'] { background-image: url(rpg-assets/npc-duck_clerk-up.png); }
+.rpg-npc-sprite[data-mon='duck_clerk'][data-dir='left'] { background-image: url(rpg-assets/npc-duck_clerk-left.png); }
+.rpg-npc-sprite[data-mon='duck_clerk'][data-dir='right'] { background-image: url(rpg-assets/npc-duck_clerk-right.png); }
+.rpg-npc-sprite[data-mon='raven_ledger'][data-dir='down'] { background-image: url(rpg-assets/npc-raven_ledger-down.png); }
+.rpg-npc-sprite[data-mon='raven_ledger'][data-dir='up'] { background-image: url(rpg-assets/npc-raven_ledger-up.png); }
+.rpg-npc-sprite[data-mon='raven_ledger'][data-dir='left'] { background-image: url(rpg-assets/npc-raven_ledger-left.png); }
+.rpg-npc-sprite[data-mon='raven_ledger'][data-dir='right'] { background-image: url(rpg-assets/npc-raven_ledger-right.png); }
+.rpg-npc-sprite[data-mon='owl_auditor'][data-dir='down'] { background-image: url(rpg-assets/npc-owl_auditor-down.png); }
+.rpg-npc-sprite[data-mon='owl_auditor'][data-dir='up'] { background-image: url(rpg-assets/npc-owl_auditor-up.png); }
+.rpg-npc-sprite[data-mon='owl_auditor'][data-dir='left'] { background-image: url(rpg-assets/npc-owl_auditor-left.png); }
+.rpg-npc-sprite[data-mon='owl_auditor'][data-dir='right'] { background-image: url(rpg-assets/npc-owl_auditor-right.png); }
+.rpg-npc-sprite[data-mon='bear_smith'][data-dir='down'] { background-image: url(rpg-assets/npc-bear_smith-down.png); }
+.rpg-npc-sprite[data-mon='bear_smith'][data-dir='up'] { background-image: url(rpg-assets/npc-bear_smith-up.png); }
+.rpg-npc-sprite[data-mon='bear_smith'][data-dir='left'] { background-image: url(rpg-assets/npc-bear_smith-left.png); }
+.rpg-npc-sprite[data-mon='bear_smith'][data-dir='right'] { background-image: url(rpg-assets/npc-bear_smith-right.png); }
+.rpg-npc-sprite[data-mon='baker'][data-dir='down'] { background-image: url(rpg-assets/npc-baker-down.png); }
+.rpg-npc-sprite[data-mon='baker'][data-dir='up'] { background-image: url(rpg-assets/npc-baker-up.png); }
+.rpg-npc-sprite[data-mon='baker'][data-dir='left'] { background-image: url(rpg-assets/npc-baker-left.png); }
+.rpg-npc-sprite[data-mon='baker'][data-dir='right'] { background-image: url(rpg-assets/npc-baker-right.png); }
+.rpg-npc-sprite[data-mon='tealady'][data-dir='down'] { background-image: url(rpg-assets/npc-tealady-down.png); }
+.rpg-npc-sprite[data-mon='tealady'][data-dir='up'] { background-image: url(rpg-assets/npc-tealady-up.png); }
+.rpg-npc-sprite[data-mon='tealady'][data-dir='left'] { background-image: url(rpg-assets/npc-tealady-left.png); }
+.rpg-npc-sprite[data-mon='tealady'][data-dir='right'] { background-image: url(rpg-assets/npc-tealady-right.png); }
+.rpg-npc-sprite[data-mon='lamplighter'][data-dir='down'] { background-image: url(rpg-assets/npc-lamplighter-down.png); }
+.rpg-npc-sprite[data-mon='lamplighter'][data-dir='up'] { background-image: url(rpg-assets/npc-lamplighter-up.png); }
+.rpg-npc-sprite[data-mon='lamplighter'][data-dir='left'] { background-image: url(rpg-assets/npc-lamplighter-left.png); }
+.rpg-npc-sprite[data-mon='lamplighter'][data-dir='right'] { background-image: url(rpg-assets/npc-lamplighter-right.png); }
+.rpg-npc-sprite[data-mon='bard'][data-dir='down'] { background-image: url(rpg-assets/npc-bard-down.png); }
+.rpg-npc-sprite[data-mon='bard'][data-dir='up'] { background-image: url(rpg-assets/npc-bard-up.png); }
+.rpg-npc-sprite[data-mon='bard'][data-dir='left'] { background-image: url(rpg-assets/npc-bard-left.png); }
+.rpg-npc-sprite[data-mon='bard'][data-dir='right'] { background-image: url(rpg-assets/npc-bard-right.png); }
+.rpg-npc-sprite[data-mon='treasurer'][data-dir='down'] { background-image: url(rpg-assets/npc-treasurer-down.png); }
+.rpg-npc-sprite[data-mon='treasurer'][data-dir='up'] { background-image: url(rpg-assets/npc-treasurer-up.png); }
+.rpg-npc-sprite[data-mon='treasurer'][data-dir='left'] { background-image: url(rpg-assets/npc-treasurer-left.png); }
+.rpg-npc-sprite[data-mon='treasurer'][data-dir='right'] { background-image: url(rpg-assets/npc-treasurer-right.png); }
 .rpg-npc-label { background: rgba(37,99,235,.82); border-color: rgba(191,219,254,.6); }
 /* Route blocker: a fenced-off connector locked until the previous badge is earned. */
 .rpg-lock-label { background: rgba(153,27,27,.9); border-color: rgba(254,202,202,.7); }
@@ -207,6 +256,18 @@
 .rpg-textbox-portrait[data-mon='apprentice'] { background-image: url(rpg-assets/npc-apprentice.png); }
 .rpg-textbox-portrait[data-mon='mayor'] { background-image: url(rpg-assets/npc-mayor.png); }
 .rpg-textbox-portrait[data-mon='cat_merchant'] { background-image: url(rpg-assets/npc-cat_merchant.png); }
+.rpg-textbox-portrait[data-mon='beaver_builder'] { background-image: url(rpg-assets/npc-beaver_builder.png); }
+.rpg-textbox-portrait[data-mon='otter_fisher'] { background-image: url(rpg-assets/npc-otter_fisher.png); }
+.rpg-textbox-portrait[data-mon='frog_cashier'] { background-image: url(rpg-assets/npc-frog_cashier.png); }
+.rpg-textbox-portrait[data-mon='duck_clerk'] { background-image: url(rpg-assets/npc-duck_clerk.png); }
+.rpg-textbox-portrait[data-mon='raven_ledger'] { background-image: url(rpg-assets/npc-raven_ledger.png); }
+.rpg-textbox-portrait[data-mon='owl_auditor'] { background-image: url(rpg-assets/npc-owl_auditor.png); }
+.rpg-textbox-portrait[data-mon='bear_smith'] { background-image: url(rpg-assets/npc-bear_smith.png); }
+.rpg-textbox-portrait[data-mon='baker'] { background-image: url(rpg-assets/npc-baker.png); }
+.rpg-textbox-portrait[data-mon='tealady'] { background-image: url(rpg-assets/npc-tealady.png); }
+.rpg-textbox-portrait[data-mon='lamplighter'] { background-image: url(rpg-assets/npc-lamplighter.png); }
+.rpg-textbox-portrait[data-mon='bard'] { background-image: url(rpg-assets/npc-bard.png); }
+.rpg-textbox-portrait[data-mon='treasurer'] { background-image: url(rpg-assets/npc-treasurer.png); }
 .rpg-textbox-name { font-weight: 900; font-size: 1rem; margin-bottom: 3px; }
 .rpg-textbox-line { font-weight: 700; line-height: 1.45; font-size: clamp(1rem, 2.6vw, 1.12rem); min-height: 2.9em; }
 .rpg-textbox-controls { grid-row: 1 / span 2; display: flex; flex-direction: column; align-items: center; gap: 7px; }

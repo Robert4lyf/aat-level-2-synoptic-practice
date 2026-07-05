@@ -30,19 +30,23 @@
     lines: ['All four seals broken… yet still you climb.', 'I am the sum of every ledger, every control, every cost and every contract.', 'Show me all you have learned, trainee — or be STRUCK from the record.'] };
 
   var MAP_W = 23;
-  var MAP_H = 25;
-  var START_POS = { x: 2, y: 3 };
-  // Gates sit on the band roads of a serpentine "route" that snakes top-to-bottom
-  // through the four regions in difficulty order: Forest -> Cavern -> Factory -> Town.
+  var MAP_H = 33;
+  var START_POS = { x: 3, y: 3 };
+  // The player begins in the starter village of Willowmere (rows 1-8) and heads
+  // south down a tree-lined passage (col 11, rows 9-13) onto the serpentine route.
+  // Gates sit on the band roads of that route as it snakes top-to-bottom through
+  // the four regions in difficulty order: Forest -> Cavern -> Factory -> Town.
   var MAP_NODES = {
-    itbk: { x: 16, y: 3, kind: 'forest-gate', short: 'Forest' },
-    pobc: { x: 6, y: 9, kind: 'cave-gate', short: 'Cavern' },
-    poc: { x: 16, y: 15, kind: 'factory-door', short: 'Factory' },
-    besy: { x: 6, y: 21, kind: 'town-door', short: 'Town' }
+    itbk: { x: 16, y: 14, kind: 'forest-gate', short: 'Forest' },
+    pobc: { x: 6, y: 19, kind: 'cave-gate', short: 'Cavern' },
+    poc: { x: 16, y: 24, kind: 'factory-door', short: 'Factory' },
+    besy: { x: 6, y: 29, kind: 'town-door', short: 'Town' }
   };
-  // Hand-drawn tile map: one char per tile (see LEGEND). Each of the 25 rows is
+  // Hand-drawn tile map: one char per tile (see LEGEND). Each of the 33 rows is
   // exactly 23 chars. Gates, NPCs and blockers are drawn on top by tileType() and
   // sit on '=' (road) or '.' (grass) here so the roads still autotile through them.
+  // The blocked bands between road rows are dead-end alcoves off a single band —
+  // never a vertical shortcut — so the only way south stays the gated connector.
   var LEGEND = {
     '.': 'grass', ',': 'flower', '=': 'path', 'o': 'well', 'L': 'ledger-stone',
     'p': 'pathlamp', 's': 'sign', 'k': 'book', 'm': 'mushroom', 'x': 'flowerbed',
@@ -50,57 +54,66 @@
     'B': 'barrel', 'C': 'crop', 'H': 'house', 'M': 'market', 'W': 'factory-wall'
   };
   var MAP_ROWS = [
-    '#######################',
-    '###.b~#k,m##.b~#k,m##.#',
-    '#,.##.b~#k,.##.b~#k,m##',
-    '##===================##',
-    '####################=##',
-    '####################=##',
-    '#~~~~~~~~~~~~~~~~~~~=~#',
-    '####################=##',
-    '#L%s,o%%..L%s.o%%.pL=s#',
-    '##===================##',
-    '#%=%%%%%%%%%%%%%%%%%%%#',
-    '#%=%%%%%%%%%%%%%%%%%%%#',
-    '#%=%%%%%%%%%%%%%%%%%%%#',
-    '#%=%%%%%%%%%%%%%%%%%%%#',
-    '#W=sC.B,fBW.sCWB,fBW.s#',
-    '##===================##',
-    '#BfCBWWBfCBWWBfCBWWB=C#',
-    '#BWWBfCBWWBfCBWWBfCB=W#',
-    '#BfCBWWBfCBWWBfCBWWB=C#',
-    '#BWWBfCBWWBfCBWWBfCB=W#',
-    '#FpHH,xoM..pHH,xoM.F=H#',
-    '##===================##',
-    '#xoM.FpHH,xoM.FpHH,xoM#',
-    '#H,xoM.FpHH,xoM.FpHH,x#',
-    '#######################'
+    '#######################', // 0  border
+    '#H..H..o.x...x.o..H..H#', // 1  village houses & wells
+    '#..,..p...,.,...p..,..#', // 2  pathlamps + flowers
+    '#.x..,...........,..x.#', // 3  spawn row (START 3,3)
+    '#..p...o...F...o...p..#', // 4  fountain at the green's heart
+    '#.,..x...,...,...x..,.#', // 5  flowerbeds
+    '#.H..o..x.....x..o..H.#', // 6  houses & wells
+    '#...p..,.......,..p...#', // 7  pathlamps
+    '#,.,.,.,.,...,.,.,.,.,#', // 8  flowery green (col 11 = passage mouth)
+    '###########=###########', // 9  tree-lined passage
+    '##########b=b##########', // 10 passage (bush flanks)
+    '##########%=%##########', // 11 passage (rock flanks)
+    '##########b=b##########', // 12 passage (bush flanks)
+    '###########=###########', // 13 passage
+    '##===================##', // 14 FOREST road (gate itbk 16,14)
+    '##.~.m##.k.#########=##', // 15 Forest middle: pond & book alcoves
+    '##.~.###L.k#########=##', // 16 beaver 4,16 | raven 9,16 | BLOCKER 20,16
+    '###.#m##############=##', // 17 middle seal, col 20 connector
+    '###...##############=##', // 18 scenic alcove (cols 3-5)
+    '##===================##', // 19 CAVERN road (gate pobc 6,19)
+    '##=#####.~.~.##########', // 20 Cavern middle: water-pool alcove
+    '##=#####.~.~.##########', // 21 otter 10,21 | BLOCKER 2,21
+    '##=###########.B.B.####', // 22 barrel alcove (cols 14-18)
+    '##=###########.....####', // 23 owl 16,23
+    '##===================##', // 24 FACTORY road (gate poc 16,24)
+    '####.~.~.M##########=##', // 25 Factory middle: cooling-pond alcove
+    '####.~.~.###########=##', // 26 frog 6,26 | duck 8,26 | BLOCKER 20,26
+    '##########.C.M.#####=##', // 27 market & crop alcove (cols 10-14)
+    '##########.....#####=##', // 28 bear 12,28
+    '##===================##', // 29 TOWN road (gate besy 6,29)
+    '#FpHH,xoM..pHH,xoM.F.H#', // 30 Enterprise Town (mayor 10,30 | treasurer 18,30)
+    '#xoM.FpHH,xoM.FpHH,xoM#', // 31 Town
+    '#######################'  // 32 border
   ];
   // Route blockers: each sits on a connector between two regions and stays
   // impassable (rendered as a fence) until the previous region's badge is earned.
   var BLOCKERS = {
-    '20,6': { needs: 'itbk', label: 'Ledger Badge' },
-    '2,12': { needs: 'pobc', label: 'Control Badge' },
-    '20,18': { needs: 'poc', label: 'Costing Badge' }
+    '20,16': { needs: 'itbk', label: 'Ledger Badge' },
+    '2,21': { needs: 'pobc', label: 'Control Badge' },
+    '20,26': { needs: 'poc', label: 'Costing Badge' }
   };
 
   // Townsfolk NPCs. Each stands just off a road so you approach and talk from an
   // adjacent tile (their own tile blocks movement, like a person standing there).
   // `mon` selects the pixel sprite (rpg-assets/npc-*.png); `lines` is the dialogue.
   var NPCS = {
+    // ---- Willowmere village (rows 1-8): guides + friendly townsfolk ----
     quill: {
-      x: 2, y: 2, mon: 'professor', tag: 'Guide', name: 'Professor Quill',
-      role: 'Head Tutor of Ledger Town',
+      x: 4, y: 3, mon: 'professor', tag: 'Guide', name: 'Professor Quill',
+      role: 'Head Tutor of Willowmere',
       lines: [
-        'Welcome to Ledger Town, trainee! I am Professor Quill.',
-        'Four topic bosses line the route ahead — Forest, then Cavern, Factory and Town. Clear each one to unlock the gate to the next.',
-        'Walk the path with the D-pad or arrow keys. When a landmark, gate or townsperson is beside you, press Interact.',
-        'Talk to the folk near each region first — they teach the tricks that win battles. Off you go!'
+        'Welcome to Willowmere, trainee! I am Professor Quill.',
+        'Follow the tree-lined path south out of the village and it opens onto the route.',
+        'Four topic bosses line that route — Forest, then Cavern, Factory and Town. Clear each one to unlock the gate to the next.',
+        'Walk with the D-pad or arrow keys. When a landmark, gate or townsperson is beside you, press Interact. Chat with the folk you pass — they teach the tricks that win battles!'
       ]
     },
     librarian: {
-      x: 5, y: 2, mon: 'librarian', tag: 'Librarian', name: 'Marion the Librarian',
-      role: 'Keeper of the Ledger Library',
+      x: 8, y: 3, mon: 'librarian', tag: 'Librarian', name: 'Marion the Librarian',
+      role: 'Keeper of the Willowmere Library',
       lines: [
         'A quick word before you set off — read the signposts you pass; they mark each region gate.',
         'The route runs one way. A locked gate means you must defeat the boss behind you first to open it.',
@@ -108,62 +121,143 @@
       ]
     },
     scribe: {
-      x: 11, y: 2, mon: 'fox_scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
+      x: 10, y: 7, mon: 'fox_scribe', tag: 'Bookkeeper', name: 'Fern the Scribe',
       role: 'Keeper of the Ledger Forest',
       lines: [
-        'Heading into the Ledger Forest? Mind the Ledger Drake — it quizzes debits and credits.',
+        'Heading down the passage into the Ledger Forest? Mind the Papyrus Wyrm — it quizzes debits and credits.',
         'Remember DEAD CLIC: Debits grow Expenses, Assets and Drawings; Credits grow Liabilities, Income and Capital.',
         'Every transaction hits two accounts, and total debits must always equal total credits.',
         'Source documents come first: invoices, credit notes, remittances. Record them, then post to the ledger. Good luck!'
       ]
     },
-    warden: {
-      x: 9, y: 8, mon: 'badger_judge', tag: 'Reconciler', name: 'Vex the Warden',
-      role: 'Guardian of the Control Cavern',
+    baker: {
+      x: 14, y: 5, mon: 'baker', tag: 'Baker', name: 'Bess the Baker',
+      role: 'Willowmere Bakery',
       lines: [
-        'The Control Cavern is dark with errors and suspense accounts. The Reconciliation Golem waits within.',
-        'A control account is a summary — the sales ledger control account should equal the total of the individual customer balances.',
-        'When it does not balance, a suspense account holds the difference until you find the error.',
-        'Errors of omission, commission, principle and reversal will not show in a trial balance — hunt them carefully!'
+        'Fresh loaves for the road, trainee? The oven\'s been on since dawn.',
+        'Bookkeeping\'s a lot like baking — measure twice, record once, and the batch always comes out right.',
+        'Take a bun and mind the folk down the route; they\'ll see you ready for the exam.'
       ]
     },
-    clerk: {
-      x: 11, y: 14, mon: 'mole_clerk', tag: 'Cost Clerk', name: 'Cog the Clerk',
-      role: 'Foreman of the Costing Factory',
+    tealady: {
+      x: 6, y: 6, mon: 'tealady', tag: 'Tea Lady', name: 'Tilly the Tea Lady',
+      role: 'Village Tea Stall',
       lines: [
-        'The Costing Factory runs hot! The Costing Chimera tests how costs behave.',
-        'Prime cost = direct materials + direct labour + direct expenses. Add overheads and you have total cost.',
-        'Fixed costs stay put as output changes; variable costs rise with each unit made.',
-        'The overhead absorption rate (OAR) spreads overheads over units — budgeted overhead divided by budgeted activity. Stay sharp!'
+        'A cuppa before you set off? It\'s a long, winding route ahead.',
+        'Willowmere folk are a friendly lot — say hello to everyone you meet.',
+        'Warm hands, clear head, steady ledger. Off you pop!'
       ]
     },
-    apprentice: {
-      x: 5, y: 14, mon: 'apprentice', tag: 'Apprentice', name: 'Nib the Apprentice',
-      role: 'Costing Factory Apprentice',
+    lamplighter: {
+      x: 18, y: 5, mon: 'lamplighter', tag: 'Lamplighter', name: 'Lem the Lamplighter',
+      role: 'Keeper of the Village Lamps',
       lines: [
-        'New here? I sweep the Costing Factory floor while Cog handles the big sums.',
-        'One tip that sticks: fixed costs stay the same however much we make; variable costs change with every unit.',
-        'Per unit it flips — fixed cost per unit falls as output rises, while variable cost per unit stays put. Handy in battle!'
+        'Evening! I keep every lamp in Willowmere burning bright.',
+        'Follow the lit path and you\'ll never lose your way — same as following the trail balance in your books.',
+        'The passage south is the only way out of the village. Mind the trees!'
       ]
     },
-    mayor: {
-      x: 10, y: 20, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
-      role: 'Head of Enterprise Town',
+    bard: {
+      x: 4, y: 5, mon: 'bard', tag: 'Bard', name: 'Rowan the Bard',
+      role: 'Wandering Minstrel',
       lines: [
-        'Welcome to Enterprise Town! The Enterprise Griffin guards knowledge of business and ethics.',
-        'Know your structures: sole traders and partnerships have unlimited liability; companies are separate legal persons.',
-        'A contract needs offer, acceptance, consideration and intention to create legal relations.',
-        'And always act with integrity, objectivity and confidentiality — the AAT ethical principles. Trade fair!'
+        'Gather round! I sing of four fearsome beasts and the scribe who balanced them all.',
+        'Clear every badge and best the Grand Reckoner, and you could be my next verse.',
+        'Off you go, hero — make me a song worth singing.'
       ]
     },
     penny: {
-      x: 13, y: 8, mon: 'cat_merchant', tag: 'Trader', name: 'Penny the Trader',
+      x: 12, y: 6, mon: 'cat_merchant', tag: 'Trader', name: 'Penny the Trader',
       role: 'Travelling Potion Merchant',
       gift: 'potion',
       lines: [
         'Psst — Penny the Trader, at your service. Long road ahead, eh?',
         'Battles heal you when you answer correctly, but a Potion tops you up in a pinch.',
         'Here, take one on the house. Come back stronger and clear those badges!'
+      ]
+    },
+    // ---- Tucked-away route NPCs: each themed to its surroundings + region topic ----
+    beaver: {
+      x: 4, y: 16, mon: 'beaver_builder', tag: 'Builder', name: 'Barnaby the Beaver',
+      role: 'Dam-Builder of the Forest Pond',
+      lines: [
+        'Dam-building\'s my game — log by log I raise a wall right here on the bank.',
+        'Same with your books, mind: every log I lay on this bank I match on the far bank — like every debit needs its credit.',
+        'Keep both banks level and the water never overruns; keep debits equal to credits and your trial balance always holds.'
+      ]
+    },
+    raven: {
+      x: 9, y: 16, mon: 'raven_ledger', tag: 'Bookkeeper', name: 'Corvus the Raven',
+      role: 'Reader of the Ledger-Stones',
+      lines: [
+        'Each ledger-stone here carries a debit on one face and a credit on the other.',
+        'DEAD CLIC keeps me right — Debits: Expenses, Assets, Drawings; Credits: Liabilities, Income, Capital.',
+        'Post the day books to the ledger, then draw a trial balance — if it agrees, roost easy.'
+      ]
+    },
+    otter: {
+      x: 10, y: 21, mon: 'otter_fisher', tag: 'Fisher', name: 'Ollie the Otter',
+      role: 'Fisher of the Cavern Pool',
+      lines: [
+        'I count every catch twice — once in the net, once again in my tally on the bank.',
+        'That\'s reconciliation: my tally must match the market\'s record, and any gap is a fish that slipped the net.',
+        'Your sales-ledger control account should equal the sum of the customer balances — a difference goes to suspense until you find it.'
+      ]
+    },
+    owl: {
+      x: 16, y: 23, mon: 'owl_auditor', tag: 'Auditor', name: 'Athena the Owl',
+      role: 'Night Auditor of the Stores',
+      lines: [
+        'Checking the barrel-counts by lamplight — a good auditor never sleeps on a difference.',
+        'Some slips hide from the trial balance entirely: errors of omission, commission, principle and reversal.',
+        'Reconcile the bank to the cash book — add outstanding lodgements, deduct unpresented cheques, and it should agree.'
+      ]
+    },
+    frog: {
+      x: 6, y: 26, mon: 'frog_cashier', tag: 'Cashier', name: 'Fitch the Frog',
+      role: 'Cashier by the Cooling-Pond',
+      lines: [
+        'Ribbit — I ring up every unit that hops off the factory floor.',
+        'Prime cost = direct materials + direct labour + direct expenses; add overheads and you have total cost.',
+        'Fixed costs sit still however much we make; variable costs hop up with every single unit.'
+      ]
+    },
+    duck: {
+      x: 8, y: 26, mon: 'duck_clerk', tag: 'Clerk', name: 'Dabble the Duck',
+      role: 'Overhead Clerk',
+      lines: [
+        'I clerk the overheads — the costs you can\'t pin to any one unit.',
+        'The overhead absorption rate is budgeted overhead divided by budgeted activity, then absorbed per unit.',
+        'Beat budget and you over-absorb; fall short and you under-absorb — always watch the variance.'
+      ]
+    },
+    bear: {
+      x: 12, y: 28, mon: 'bear_smith', tag: 'Smith', name: 'Bruin the Smith',
+      role: 'Forge Master of the Market',
+      lines: [
+        'Every bar of iron that leaves my forge gets costed to the last gram.',
+        'Value your inventory with care: FIFO uses the oldest cost first, AVCO a weighted average.',
+        'And always carry stock at the lower of cost and net realisable value — never above what it will fetch.'
+      ]
+    },
+    // ---- Enterprise Town (rows 30-31) ----
+    mayor: {
+      x: 10, y: 30, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
+      role: 'Head of Enterprise Town',
+      lines: [
+        'Welcome to Enterprise Town! The Contract Griffin guards knowledge of business and ethics.',
+        'Know your structures: sole traders and partnerships have unlimited liability; companies are separate legal persons.',
+        'A contract needs offer, acceptance, consideration and intention to create legal relations.',
+        'And always act with integrity, objectivity and confidentiality — the AAT ethical principles. Trade fair!'
+      ]
+    },
+    treasurer: {
+      x: 18, y: 30, mon: 'treasurer', tag: 'Treasurer', name: 'Tansy the Treasurer',
+      role: 'Keeper of the Counting House',
+      lines: [
+        'Willowmere\'s counting house welcomes you — you\'ve come a long way down the route.',
+        'Structures again, for luck: sole traders and partnerships bear unlimited liability; a company is a separate legal person.',
+        'The five AAT ethical principles: integrity, objectivity, professional competence, confidentiality and professional behaviour.'
       ]
     }
   };
@@ -210,7 +304,7 @@
     return runtimeData;
   }
   function save(d) { runtimeData = normalise(d); try { localStorage.setItem(KEY, JSON.stringify(runtimeData)); } catch (e) {} }
-  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.npcDir = d.npcDir || {}; if (d.mapV !== 4) { d.pos = { x: START_POS.x, y: START_POS.y }; d.mapV = 4; } /* v4: player-as-hero, companions removed; reset onto the route (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; return d; }
+  function normalise(d) { d = d || {}; d.xp = d.xp || 0; d.wins = d.wins || {}; d.badges = d.badges || {}; d.routes = d.routes || {}; d.inventory = d.inventory || { potion: 1 }; d.gifts = d.gifts || {}; d.metNpcs = d.metNpcs || {}; d.npcDir = d.npcDir || {}; if (d.mapV !== 5) { d.pos = { x: START_POS.x, y: START_POS.y }; d.mapV = 5; } /* v5: village-starter map; reset into Willowmere (keeps xp/badges) */ d.pos = d.pos || { x: START_POS.x, y: START_POS.y }; if (typeof d.pos.x !== 'number' || typeof d.pos.y !== 'number') d.pos = { x: START_POS.x, y: START_POS.y }; d.pos.x = Math.max(0, Math.min(MAP_W - 1, d.pos.x)); d.pos.y = Math.max(0, Math.min(MAP_H - 1, d.pos.y)); d.dir = ['up', 'down', 'left', 'right'].indexOf(d.dir) >= 0 ? d.dir : 'down'; return d; }
   function lvl(xp) { return Math.max(1, Math.floor(Math.sqrt((xp || 0) / 30)) + 1); }
   function fighter() { return FIGHTER; }
   function boss(id) { if (id === 'league') return LEAGUE; return BOSSES.filter(function (b) { return b.id === id; })[0] || BOSSES[0]; }
