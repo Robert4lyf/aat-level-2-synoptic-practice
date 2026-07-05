@@ -17,9 +17,12 @@ local function grass_base(c, seed, R)
   R = R or L.R.grass
   local n = #R
   for y=0,31 do for x=0,31 do
-    local patch = L.vnoise(x,y,seed,9)*0.60 + L.vnoise(x,y,seed+5,4)*0.30 + L.vnoise(x,y,seed+11,2)*0.10
-    local light = (1 - (x+y)/70) * 0.16        -- subtle brighten toward top-left
-    local t = 0.30 + patch*0.46 + light        -- compress toward mid tones
+    -- tileable value-noise patches only (scales divide 32 so they wrap cleanly).
+    -- No per-tile directional gradient: it reset at every tile, so the dark
+    -- bottom-right of one tile met the bright top-left of the next and drew a
+    -- hard seam. Even, wrap-safe tone lets neighbouring tiles blend.
+    local patch = L.vnoise(x,y,seed,8)*0.58 + L.vnoise(x,y,seed+5,4)*0.30 + L.vnoise(x,y,seed+11,16)*0.12
+    local t = 0.40 + (patch-0.5)*0.54          -- centre on mid tones, gentle spread
     c:px(x,y, R[L.rampidx(t,n)])
   end end
   -- clustered upright blade tufts (2-4 blades each), soft highlight + base shadow
@@ -235,61 +238,159 @@ function T.flower(v)
   return c
 end
 
--- ===== trees =====
-local function tree_round(c, R)
-  c:groundshadow(16,29,10,2.4)
-  -- trunk
-  c:fillrect(14,20,17,29,L.R.wood[2]); c:px(14,20,L.R.wood[3]); c:px(17,29,L.R.wood[1])
-  -- canopy layered
-  c:sphere(16,13,12,11,R)
-  c:sphere(11,9,5,5,R,0.2); c:sphere(21,11,5,5,R,0.1)
-  c:outline()
-  -- leaf clump highlights
-  for i=1,10 do local x=math.floor(hash(i,1,13)*20)+6; local y=math.floor(hash(i,1,14)*14)+5
-    if not c:empty(x,y) then c:px(x,y,R[5]) end end
+-- ===== trees: tall 32x48 transparent sprites that OVERFLOW the tile upward =====
+-- The base/shadow sit near y44 (the tile's front edge, where the player stands);
+-- the canopy rises and overflows over the tile behind. 10 species, 2-frame sway.
+local TREE_H = 48
+-- extra leaf/bark ramps (dark -> light) beyond lib's grass/canopy/pine/blossom
+local R_AUTUMN   = {L.hx("8a3410"),L.hx("b8501a"),L.hx("d8781f"),L.hx("eea236"),L.hx("f6c657")}
+local R_WILLOW   = {L.hx("3c5622"),L.hx("53782e"),L.hx("6c983c"),L.hx("88b552"),L.hx("a6ce70")}
+local R_BIRCHLF  = {L.hx("587c30"),L.hx("72963c"),L.hx("8db150"),L.hx("a8cb68"),L.hx("c4e08a")}
+local R_BIRCHBK  = {L.hx("b7ae9a"),L.hx("cdc5b2"),L.hx("e2dccd"),L.hx("f2eee2"),L.hx("ffffff")}
+local R_DEAD     = {L.hx("4a3420"),L.hx("5e442c"),L.hx("735539"),L.hx("896a49"),L.hx("9e7f5b")}
+
+local function line(c,x0,y0,x1,y1,col,w)
+  w = w or 1
+  local dx=math.abs(x1-x0); local dy=math.abs(y1-y0)
+  local sx=x0<x1 and 1 or -1; local sy=y0<y1 and 1 or -1
+  local err=dx-dy
+  while true do
+    if w>1 then c:fillrect(x0-(w-1),y0,x0,y0,col) else c:px(x0,y0,col) end
+    if x0==x1 and y0==y1 then break end
+    local e2=2*err
+    if e2>-dy then err=err-dy; x0=x0+sx end
+    if e2<dx then err=err+dx; y0=y0+sy end
+  end
 end
-function T.tree(v)
-  local c=L.canvas(32,32); grass_base(c,30+v,L.R.grass)
-  if v==1 then tree_round(c, L.R.canopy)
-  elseif v==2 then
-    -- pine
-    c:groundshadow(16,29,8,2.2)
-    c:fillrect(15,24,17,30,L.R.wood[2])
+-- straight trunk from y=top down to the ground line (y45), half-width w, shaded
+local function t_trunk(c, cx, top, w, R)
+  R = R or L.R.wood
+  c:fillrect(cx-w,top,cx+w,45, R[2])
+  c:vline(cx-w,top,45,R[1]); c:vline(cx+w,top,45,R[3]); c:px(cx-w+1,top,R[4])
+end
+-- layered round canopy (main + two offset lobes) that sways by dx
+local function t_canopy(c, cx,cy,rx,ry, R, dx)
+  dx = dx or 0
+  c:sphere(cx+dx,cy,rx,ry,R)
+  c:sphere(cx-math.max(3,math.floor(rx*0.45))+dx, cy-math.max(2,math.floor(ry*0.4)), math.max(3,math.floor(rx*0.52)), math.max(3,math.floor(ry*0.52)), R, 0.22)
+  c:sphere(cx+math.max(3,math.floor(rx*0.5))+dx, cy-math.floor(ry*0.15), math.max(3,math.floor(rx*0.45)), math.max(3,math.floor(ry*0.45)), R, 0.06)
+end
+local function t_speckle(c, cx,cy,rx,ry, col, dx, n, seed)
+  for i=1,(n or 10) do
+    local x=math.floor(cx+dx+(hash(i,seed,13)*2-1)*rx*0.82)
+    local y=math.floor(cy+(hash(i,seed,14)*2-1)*ry*0.82)
+    if not c:empty(x,y) then c:px(x,y,col) end
+  end
+end
+function T.tree(v, frame)
+  v = v or 1
+  local c=L.canvas(32,TREE_H)
+  local dx = (frame==1) and 1 or 0                 -- gentle canopy sway
+  c:groundshadow(16,45,11,2.8)
+  if v==1 then          -- 1 round oak
+    t_trunk(c,16,30,2); t_canopy(c,16,18,12,11,L.R.canopy,dx); c:outline()
+    t_speckle(c,16,18,12,11,L.R.canopy[6] or L.R.canopy[5],dx,13,1)
+  elseif v==2 then      -- 2 tall oak
+    t_trunk(c,16,26,2); t_canopy(c,16,15,10,12,L.R.canopy,dx); c:outline()
+    t_speckle(c,16,15,10,12,L.R.canopy[6] or L.R.canopy[5],dx,13,2)
+  elseif v==3 then      -- 3 pine (conifer tiers, tapering UP correctly)
+    t_trunk(c,16,36,2)
     local P=L.R.pine
-    for tier=0,2 do
-      local ty=8+tier*6; local ww=6+tier*4
-      for i=0,7 do c:hline(16-ww+math.floor(i*ww/4),16+ww-math.floor(i*ww/4), ty+i, P[math.min(#P,3+tier%2)]) end
+    for tier=0,3 do
+      local base=42-tier*9                         -- widest row of this tier (bottom)
+      local ww=14-tier*3
+      for i=0,8 do
+        local w=math.max(1, ww - math.floor(i*ww/8))
+        c:hline(16-w+dx,16+w+dx, base-i, P[math.min(#P,3+tier%2)])
+      end
     end
-    c:sphere(13,12,2,2,P[5],0.2)
-    c:outline()
-  else
-    -- blossom tree
-    tree_round(c, L.R.blossom)
+    c:px(16+dx,5,P[5]); c:outline()
+  elseif v==4 then      -- 4 cherry blossom
+    t_trunk(c,16,28,2); t_canopy(c,16,17,12,10,L.R.blossom,dx); c:outline()
+    t_speckle(c,16,17,12,10,L.hx("ffe0ee"),dx,15,4)
+  elseif v==5 then      -- 5 willow (drooping strands)
+    t_trunk(c,16,24,2); t_canopy(c,16,14,12,8,R_WILLOW,dx); c:outline()
+    for _,sx in ipairs({6,10,15,20,25}) do
+      local h=6+math.floor(hash(sx,v,7)*7)
+      c:vline(sx+dx,19,19+h,R_WILLOW[2]); c:px(sx+dx,19+h,R_WILLOW[1])
+    end
+  elseif v==6 then      -- 6 birch (white trunk, bark marks)
+    t_trunk(c,16,20,1,R_BIRCHBK)
+    for _,yy in ipairs({40,35,30,25}) do c:px(15,yy,L.INK); c:px(17,yy-2,L.INK) end
+    t_canopy(c,16,13,9,11,R_BIRCHLF,dx); c:outline()
+    t_speckle(c,16,13,9,11,R_BIRCHLF[5],dx,12,6)
+  elseif v==7 then      -- 7 autumn maple
+    t_trunk(c,16,28,2); t_canopy(c,16,17,12,10,R_AUTUMN,dx); c:outline()
+    t_speckle(c,16,17,12,10,R_AUTUMN[5],dx,15,7)
+    for _,p in ipairs({{9,30},{22,32},{14,34}}) do c:px(p[1],p[2],R_AUTUMN[3]) end  -- fallen leaves
+  elseif v==8 then      -- 8 bare/dead tree
+    t_trunk(c,16,18,2,R_DEAD)
+    line(c,16,22,7,11,R_DEAD[2],2); line(c,16,26,25,15,R_DEAD[2],2)
+    line(c,16,17,10,6,R_DEAD[2]); line(c,16,20,24,9,R_DEAD[2]); line(c,15,24,12,14,R_DEAD[1])
+    c:px(7+dx,10,R_DEAD[1]); c:px(25+dx,14,R_DEAD[1]); c:outline()
+  elseif v==9 then      -- 9 bushy (wide low double canopy)
+    t_trunk(c,16,32,2)
+    t_canopy(c,10,23,8,8,L.R.canopy,dx); t_canopy(c,22,22,8,8,L.R.canopy,dx)
+    t_canopy(c,16,16,10,9,L.R.canopy,dx); c:outline()
+    t_speckle(c,16,20,13,11,L.R.canopy[6] or L.R.canopy[5],dx,16,9)
+  else                  -- 10 young sapling (small)
+    t_trunk(c,16,36,1); t_canopy(c,16,29,7,7,L.R.meadow,dx); c:outline()
+    t_speckle(c,16,29,7,7,L.R.meadow[5],dx,7,10)
   end
   return c
 end
 
 -- ===== rock / sign / book / well / lamp / monument =====
-function T.rock()
-  local c=L.canvas(32,32); grass_base(c,40,L.R.grass)
-  c:groundshadow(16,26,11,3)
-  c:sphere(15,20,10,7,L.R.stone)
-  c:sphere(22,23,5,4,L.R.stone,-0.1)
-  c:outline()
-  c:px(11,17,L.R.stone[5]); c:px(13,16,L.R.stone[5]) -- highlights
-  c:hline(12,20,22,L.INK) -- crack
+-- Rocks: 8 shapes/sizes so a cluster never repeats. Ground objects (in-tile),
+-- redrawn with volume + a soft cast shadow so they sit on the grass.
+function T.rock(v)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,40+v*3,L.R.grass)
+  local S=L.R.stone
+  if v==1 then           -- medium boulder
+    c:groundshadow(16,26,11,3); c:sphere(15,20,10,7,S); c:sphere(22,23,5,4,S,-0.1)
+    c:outline(); c:coreshade(); c:px(11,17,S[5]); c:px(13,16,S[5]); c:hline(12,20,22,L.INK)
+  elseif v==2 then       -- scattered pebble cluster (small)
+    c:groundshadow(16,27,12,3)
+    c:sphere(9,24,4,3,S); c:sphere(20,25,5,3.5,S,-0.05); c:sphere(15,21,3.5,3,S,0.12); c:sphere(26,23,2.6,2,S,-0.1)
+    c:outline(); c:px(8,22,S[5]); c:px(19,23,S[5]); c:px(14,19,S[5])
+  elseif v==3 then       -- tall standing boulder
+    c:groundshadow(16,28,8,2.6); c:sphere(16,17,8,11,S); c:sphere(13,11,4,4,S,0.16)
+    c:outline(); c:coreshade(); c:px(12,10,S[5]); c:vline(18,12,25,L.INK); c:px(19,18,S[1])
+  elseif v==4 then       -- twin rocks
+    c:groundshadow(16,27,12,3)
+    c:sphere(10,21,6,5,S); c:sphere(22,23,7,6,S,-0.05)
+    c:outline(); c:coreshade(); c:px(7,17,S[5]); c:px(19,19,S[5]); c:hline(20,25,24,L.INK)
+  elseif v==5 then       -- flat wide slab
+    c:groundshadow(16,27,13,2.8); c:sphere(16,23,13,5,S); c:sphere(11,21,4,2.6,S,0.14)
+    c:outline(); c:coreshade(); c:hline(9,24,23,S[1]); c:px(9,20,S[5]); c:px(22,21,S[4])
+  elseif v==6 then       -- jagged / angular
+    c:groundshadow(16,27,10,2.8)
+    c:sphere(16,21,9,7,S)
+    c:fillrect(12,14,15,20,S[3]); c:fillrect(18,11,21,19,S[4]); c:fillrect(21,16,24,22,S[2])
+    c:outline(); c:coreshade(); c:px(11,17,S[5]); c:px(18,12,S[5]); c:hline(14,20,21,L.INK)
+  elseif v==7 then       -- mossy boulder (green moss cap on the lit top)
+    c:groundshadow(16,26,11,3); c:sphere(15,20,10,7,S); c:sphere(23,23,4,3,S,-0.1); c:outline(); c:coreshade()
+    local Mo=L.R.canopy
+    c:sphere(13,15,5,2.6,Mo,0.1); c:sphere(19,16,3,1.8,Mo,0.05)
+    for i=1,8 do c:px(math.floor(hash(i,7,41)*12)+9, math.floor(hash(i,7,42)*3)+13, Mo[5]) end
+    c:px(11,18,S[5])
+  else                   -- 8 cracked boulder with rubble
+    c:groundshadow(16,27,12,3); c:sphere(15,20,10,8,S); c:outline(); c:coreshade()
+    line(c,12,13,17,27,L.INK); line(c,17,20,23,18,L.INK); c:px(11,16,S[5]); c:px(14,15,S[5])
+    c:sphere(25,26,2.4,1.8,S,-0.1); c:sphere(7,27,2,1.6,S,-0.1); c:outline()  -- chips beside it
+  end
   return c
 end
-function T.sign()
-  local c=L.canvas(32,32); grass_base(c,41,L.R.grass)
-  c:groundshadow(16,29,6,2)
-  c:fillrect(15,16,17,30,L.R.wood[2]) -- post
+function T.sign()   -- tall 32x48 overflow sprite (transparent, sits on grass)
+  local c=L.canvas(32,48)
+  c:groundshadow(16,45,6,2)
   local W=L.R.wood
-  c:fillrect(6,8,26,18,W[4]); -- board
-  c:fillrect(6,8,26,9,W[5]); c:fillrect(6,17,26,18,W[2])
-  c:outline()
-  -- engraved lines (text)
-  c:hline(9,22,12,L.R.wood[1]); c:hline(9,19,14,L.R.wood[1])
+  c:fillrect(15,26,17,45,W[2]); c:vline(15,26,45,W[3]); c:vline(17,26,45,W[1])   -- post
+  c:fillrect(5,18,27,32,W[4]); c:hline(5,27,18,W[5]); c:hline(5,27,32,W[2])       -- board
+  c:vline(5,18,32,W[2]); c:vline(27,18,32,W[5])
+  c:outline(); c:coreshade()
+  c:hline(8,23,23,W[1]); c:hline(8,20,27,W[1])                                    -- engraved text
   return c
 end
 function T.book()
@@ -306,101 +407,105 @@ function T.book()
   c:vline(8,15,25,L.hx("c23b3b")); c:vline(24,15,25,L.hx("c23b3b"))
   return c
 end
-function T.well()
-  local c=L.canvas(32,32); grass_base(c,43,L.R.grass)
-  c:groundshadow(16,28,11,3)
-  local S=L.R.stone
-  c:fillrect(8,18,24,28,S[2]) -- base
-  c:sphere(16,18,8,3.5,S) -- rim
-  c:disc(16,18,6,2.4,L.hx("14324a")) -- water hole
-  c:sphere(16,18,4,1.6,L.R.water[2],0.2)
-  -- roof posts + roof
-  c:vline(9,8,18,L.R.wood[2]); c:vline(23,8,18,L.R.wood[2])
-  for i=0,7 do c:hline(16-8+i,16+8-i,4+i,L.R.redroof[math.min(5,3+i%2)]) end
+function T.well(frame)   -- tall 32x48 overflow sprite, 2-frame water glint
+  local c=L.canvas(32,48)
+  local g=(frame==1) and 1 or 0
+  c:groundshadow(16,45,11,3)
+  local S=L.R.stone; local W=L.R.water
+  c:fillrect(8,32,24,45,S[2]); c:vline(8,32,45,S[1]); c:vline(24,32,45,S[4])      -- base
+  c:hline(8,24,38,S[1]); c:vline(16,38,45,S[1])                                   -- stone joints
+  c:sphere(16,32,8,3.5,S)                                                         -- rim
+  c:disc(16,32,6,2.4,L.hx("14324a"))                                             -- water hole
+  c:sphere(16,32,4,1.6,W,0.2)                                                   -- water
+  c:px(13+g*2,31,W[5]); c:px(16,31,W[5]); c:px(19-g*2,32,W[4])                  -- shimmering glints
+  c:hline(14,18,33, (frame==1) and W[4] or W[2])                               -- ripple band toggles
+  c:vline(9,14,32,L.R.wood[2]); c:vline(23,14,32,L.R.wood[2])                     -- roof posts
+  for i=0,8 do local w=1+i; c:hline(16-w,16+w, 6+i, L.R.redroof[math.min(5,3+i%2)]) end  -- pyramid roof (apex top)
   c:outline()
-  -- stone joints
-  c:hline(8,24,23,S[1]); c:vline(16,24,28,S[1])
   return c
 end
-function T.pathlamp()
-  local c=L.canvas(32,32); grass_base(c,44,L.R.grass)
-  c:groundshadow(16,30,5,1.8)
+function T.pathlamp(frame)   -- tall 32x48 overflow sprite, 2-frame flame flicker
+  local c=L.canvas(32,48)
+  local fl=(frame==1) and 1 or 0
+  c:groundshadow(16,45,5,2)
   local I=L.R.iron
-  c:fillrect(15,12,17,30,I[2]); c:px(15,12,I[3]); c:px(17,30,I[1]) -- post
-  c:fillrect(11,29,21,31,I[1]) -- base
-  -- lantern
-  c:fillrect(12,5,20,13,I[3])
-  c:fillrect(13,6,19,12,L.hx("ffe27a")) -- glow
-  c:sphere(16,9,2,3,L.R.ember,0.3)
-  c:fillrect(11,4,21,5,I[2]); -- cap
-  for i=0,4 do c:hline(13-i//2,19+i//2,4-i,I[2]) end
+  c:fillrect(15,14,17,45,I[2]); c:vline(15,14,45,I[3]); c:vline(17,14,45,I[1])   -- post
+  c:fillrect(11,44,21,46,I[1])                                                    -- base
+  c:fillrect(12,6,20,15,I[3]); c:fillrect(13,7,19,14,L.hx("ffe27a"))            -- lantern + glow
+  c:sphere(16,10,2,3-fl,L.R.ember,0.3)                                           -- flame (flickers)
+  c:fillrect(11,5,21,6,I[2]); for i=0,4 do c:hline(13-i//2,19+i//2,5-i,I[2]) end  -- cap
   c:outline()
-  -- warm glow bloom
-  for r=1,6 do for a=0,15 do
-    local ang=a/16*6.283
-    c:blend(16+math.cos(ang)*r*1.6, 9+math.sin(ang)*r*1.4, L.rgba(255,210,110, math.max(0,40-r*6)))
-  end end
+  for r=1,6 do for a=0,15 do local ang=a/16*6.283                                 -- glow bloom
+    c:blend(16+math.cos(ang)*r*1.6, 10+math.sin(ang)*r*1.4, L.rgba(255,210,110, math.max(0,(38+fl*8)-r*6))) end end
   return c
 end
-function T.ledger_stone()
-  -- carved standing stone monument with a gold ledger sigil (thematic)
-  local c=L.canvas(32,32); grass_base(c,45,L.R.grass)
-  c:groundshadow(16,29,10,2.6)
+function T.ledger_stone()   -- tall 32x48 overflow monument with a gold ledger sigil
+  local c=L.canvas(32,48)
+  c:groundshadow(16,45,10,2.8)
   local S=L.R.stone
-  -- tablet
-  for y=6,29 do
-    local ww = (y<10) and (6+(y-6)) or 10
-    c:hline(16-ww,16+ww,y,S[3])
-  end
-  c:sphere(16,9,8,4,S,0.1) -- rounded top
-  c:outline()
-  -- engraved gold ledger symbol (£ / columns)
+  for y=18,45 do local ww=(y<24) and (4+(y-18)) or 10; c:hline(16-ww,16+ww,y,S[3]) end
+  c:sphere(16,20,8,4,S,0.1)                                          -- rounded top
+  c:outline(); c:coreshade()
   local G=L.R.gold
-  c:vline(16,13,24,G[3]); c:hline(12,20,15,G[3]); c:hline(12,20,22,G[3])
-  c:hline(13,19,18,G[4])
-  -- shading
-  c:vline(6,12,28,S[2]); c:vline(26,12,28,S[4])
+  c:vline(16,26,40,G[3]); c:hline(12,20,29,G[3]); c:hline(12,20,38,G[3]); c:hline(13,19,33,G[4])
+  c:vline(6,24,44,S[2]); c:vline(26,24,44,S[4])                      -- side shading
   return c
 end
 
--- ===== houses / gates / factory =====
-local function cottage(c, roofR)
-  c:groundshadow(16,29,12,2.4)
-  local W=L.R.wood
-  -- walls
-  c:fillrect(7,16,25,29,W[4])
-  c:fillrect(7,16,8,29,W[2]); c:fillrect(24,16,25,29,W[5])
-  -- roof
-  for i=0,9 do c:hline(16-11+i,16+11-i, 6+i, roofR[math.min(#roofR,3+i%2)]) end
-  c:fillrect(5,15,27,16,roofR[1])
+-- ===== houses (tall 32x48 overflow sprites) — CORRECT gable roofs =====
+-- ridge narrow at the TOP, eaves widen toward the BOTTOM (previously inverted).
+local function cottage(c, roofR, wallR)
+  wallR = wallR or L.R.wood
+  c:groundshadow(16,45,12,2.8)
+  local W=wallR
+  -- walls (box) with lit/shadow sides
+  c:fillrect(6,27,26,45,W[4]); c:vline(6,27,45,W[2]); c:vline(26,27,45,W[5]); c:hline(7,25,27,W[5])
+  -- gable roof: i=0 ridge (narrow, top) -> i=11 eaves (wide, bottom)
+  for i=0,11 do local w=2+i; c:hline(16-w,16+w, 15+i, roofR[math.min(#roofR,3+(i%2))]) end
+  c:hline(1,30,26,roofR[2]); c:hline(1,30,27,roofR[1])          -- eave overhang shadow
+  c:px(16,15,roofR[4])
   -- door
-  c:fillrect(13,21,18,29,W[2]); c:px(17,25,L.R.gold[4])
-  -- window
-  c:fillrect(9,19,11,22,L.hx("ffe27a")); c:fillrect(21,19,23,22,L.hx("ffe27a"))
-  c:outline()
+  c:fillrect(13,35,18,45,W[1]); c:vline(18,35,45,W[2]); c:px(17,40,L.R.gold[4])
+  -- lit windows with frames
+  c:fillrect(8,31,11,34,L.hx("ffe27a")); c:rect(8,31,11,34,W[1]); c:px(9,32,L.hx("fff6d4"))
+  c:fillrect(21,31,24,34,L.hx("ffe27a")); c:rect(21,31,24,34,W[1]); c:px(22,32,L.hx("fff6d4"))
+  -- chimney
+  c:fillrect(21,9,24,16,L.R.brick[2]); c:hline(21,24,9,L.R.brick[4])
+  c:outline(); c:coreshade()
 end
 function T.house(v)
-  local c=L.canvas(32,32); grass_base(c,50+v,L.R.grass)
-  cottage(c, v==1 and L.R.redroof or L.R.blueroof)
+  v = v or 1
+  local c=L.canvas(32,48)
+  if v==1 then cottage(c, L.R.redroof)
+  elseif v==2 then cottage(c, L.R.blueroof)
+  else cottage(c, L.R.stone, L.R.brick) end                    -- 3 brick townhouse, slate roof
   return c
 end
-function T.factory_wall()
+-- Factory wall: seamless brick tile, 4 variants (iron band / cracked / mossy / pipe).
+function T.factory_wall(v)
+  v = v or 1
   local c=L.canvas(32,32)
   local B=L.R.brick
   c:fillrect(0,0,31,31,B[2])
-  -- brick courses
   for y=0,31,4 do
     c:hline(0,31,y,B[1])
     local off=((y//4)%2)*4
     for x=off,31,8 do c:vline(x,y,y+3,B[1]) end
     for yy=y+1,y+3 do for x=0,31 do
-      local bx=(x+off)
-      if hash(x,yy,1)>0.7 then c:px(x,yy,B[3]) elseif hash(x,yy,2)<0.2 then c:px(x,yy,B[1]) end
+      if hash(x,yy,v)>0.7 then c:px(x,yy,B[3]) elseif hash(x,yy,v+1)<0.2 then c:px(x,yy,B[1]) end
     end end
   end
-  -- iron band
-  c:fillrect(0,14,31,17,L.R.iron[3]); c:hline(0,31,14,L.R.iron[2]); c:hline(0,31,17,L.R.iron[1])
-  for x=3,31,7 do c:sphere(x,15,1,1,L.R.iron[5],0.3) end -- rivets
+  if v==1 then           -- riveted iron band
+    c:fillrect(0,14,31,17,L.R.iron[3]); c:hline(0,31,14,L.R.iron[2]); c:hline(0,31,17,L.R.iron[1])
+    for x=3,31,7 do c:sphere(x,15,1,1,L.R.iron[5],0.3) end
+  elseif v==2 then       -- cracked
+    line(c,6,1,11,19,L.INK); line(c,20,9,26,30,L.INK); line(c,11,19,15,25,L.INK); line(c,20,9,15,4,L.INK)
+  elseif v==3 then       -- mossy / weathered
+    for i=1,44 do c:blend(math.floor(hash(i,v,7)*32), math.floor(hash(i,v,8)*13)+18, L.rgba(70,120,54,120)) end
+  else                   -- external pipe
+    c:fillrect(22,0,26,31,L.R.iron[3]); c:vline(22,0,31,L.R.iron[4]); c:vline(26,0,31,L.R.iron[1])
+    for y=4,28,8 do c:hline(21,27,y,L.R.iron[2]) end
+  end
   return c
 end
 
@@ -477,76 +582,93 @@ end
 
 -- ===== bold new objects (Stardew-flavoured props) =====
 
--- Pond: still water with reflection band + lily pad + reeds.
-function T.pond()
-  local c=L.canvas(32,32); grass_base(c,80,L.R.grass)
+-- Pond: still water, 5 shapes/sizes, 2-frame ripple (grass identical per frame
+-- so only the water shimmers). Ground object (stays a tile background).
+local POND_SHAPE = { {16,17,14,11}, {16,18,15,9}, {17,19,10,8}, {15,17,13,12}, {16,18,14,10} }
+function T.pond(v, frame)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,80+v,L.R.grass)
   local W=L.R.water
-  -- bank shadow
-  c:disc(16,17,14,11,L.R.dirt[2])
-  -- water body with soft ripples (value noise -> water ramp)
-  for y=6,28 do for x=2,29 do
-    local nx=(x-16)/14; local ny=(y-17)/11
+  local g = (frame==1) and 1 or 0
+  local sh=POND_SHAPE[v]; local pcx,pcy,prx,pry=sh[1],sh[2],sh[3],sh[4]
+  c:disc(pcx,pcy,prx,pry,L.R.dirt[2])                              -- bank shadow
+  for y=0,31 do for x=0,31 do
+    local nx=(x-pcx)/prx; local ny=(y-pcy)/pry
     if nx*nx+ny*ny<=1.0 then
-      local t=L.vnoise(x,y*2,80,4)*0.6 + (1-(nx*nx+ny*ny))*0.4
+      local t=L.vnoise(x,y*2,80+v,4)*0.6 + (1-(nx*nx+ny*ny))*0.4
       c:px(x,y, W[L.rampidx(0.15+t*0.7,#W)])
     end
   end end
   c:outline()
-  -- sun glint highlights
-  for i=1,3 do local gx=10+i*3; c:hline(gx,gx+2,10+i,W[5]) end
-  c:hline(9,13,20,W[5])
-  -- lily pad + flower
-  c:disc(21,19,3,2,L.R.canopy[3]); c:px(21,19,L.R.canopy[2]); c:px(20,18,L.R.canopy[5])
-  c:px(22,18,L.hx("ff9ec4")); c:px(21,17,L.hx("ffd6e8"))
-  -- reeds on the near bank
-  for _,rx in ipairs({6,8,25}) do c:vline(rx,22,28,L.R.pine[3]); c:px(rx,22,L.R.pine[4]) end
+  for i=1,3 do local gx=pcx-6+i*3+g*2; c:hline(gx,gx+2,pcy-6+i,W[5]) end   -- glints (drift 2px)
+  local ry = (frame==1) and (pcy-2) or (pcy+3)                            -- moving ripple dashes
+  c:hline(pcx-6,pcx-2, ry, W[5]); c:hline(pcx,pcx+4, ry+2, W[4]); c:hline(pcx-3,pcx+1, ry+4, W[5])
+  if v~=3 then                                                    -- lily pad + flower
+    c:disc(pcx+5,pcy+2,3,2,L.R.canopy[3]); c:px(pcx+5,pcy+2,L.R.canopy[2]); c:px(pcx+4,pcy+1,L.R.canopy[5])
+    c:px(pcx+6,pcy+1,L.hx("ff9ec4")); c:px(pcx+5,pcy,L.hx("ffd6e8"))
+  end
+  if v==5 then c:disc(pcx-5,pcy+3,2,1.4,L.R.canopy[3]); c:px(pcx-5,pcy+3,L.R.canopy[5]) end
+  if v==1 or v==2 then for _,rx in ipairs({pcx-9,pcx-7,pcx+9}) do c:vline(rx,pcy+5,pcy+10,L.R.pine[3]); c:px(rx,pcy+5,L.R.pine[4]) end end
+  if v==4 then for _,p in ipairs({{4,20},{27,18},{6,10}}) do c:sphere(p[1],p[2],3,2.4,L.R.stone) end; c:outline() end
   return c
 end
 
--- Leafy bush with a few berries.
-function T.bush()
-  local c=L.canvas(32,32); grass_base(c,81,L.R.grass)
+-- Leafy bush: 4 variants (berry / hedge / tall shrub / flowering).
+function T.bush(v)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,81+v,L.R.grass)
   c:groundshadow(16,27,11,2.6)
   local R=L.R.canopy
-  c:sphere(13,20,7,6,R); c:sphere(21,21,6,5,R,-0.05); c:sphere(17,16,7,6,R,0.05)
-  c:outline()
-  for i=1,7 do local x=math.floor(hash(i,1,41)*16)+8; local y=math.floor(hash(i,1,42)*10)+13
-    if not c:empty(x,y) then c:px(x,y,R[6] or R[5]) end end
-  -- red berries
-  for _,p in ipairs({{12,19},{19,18},{22,22},{15,23}}) do
-    c:px(p[1],p[2],L.hx("d24d47")); c:px(p[1],p[2]-1,L.hx("ff8a6a"))
+  local function speck(seed,n,x0,rx,y0,ry) for i=1,n do
+    local x=math.floor(hash(i,seed,41)*rx)+x0; local y=math.floor(hash(i,seed,42)*ry)+y0
+    if not c:empty(x,y) then c:px(x,y,R[6] or R[5]) end end end
+  if v==1 then           -- round berry bush
+    c:sphere(13,20,7,6,R); c:sphere(21,21,6,5,R,-0.05); c:sphere(17,16,7,6,R,0.05); c:outline(); c:coreshade()
+    speck(1,7,8,16,13,10)
+    for _,p in ipairs({{12,19},{19,18},{22,22},{15,23}}) do c:px(p[1],p[2],L.hx("d24d47")); c:px(p[1],p[2]-1,L.hx("ff8a6a")) end
+  elseif v==2 then       -- wide low hedge
+    c:sphere(9,22,6,5,R); c:sphere(16,21,7,5,R,0.05); c:sphere(23,22,6,5,R,-0.05); c:outline(); c:coreshade(); speck(2,10,5,22,16,7)
+  elseif v==3 then       -- tall narrow shrub
+    c:sphere(16,20,6,8,R); c:sphere(14,13,4,4,R,0.1); c:outline(); c:coreshade(); speck(3,7,11,10,10,14)
+  else                   -- flowering bush
+    c:sphere(13,20,7,6,R); c:sphere(21,21,6,5,R,-0.05); c:sphere(17,16,7,6,R,0.05); c:outline(); c:coreshade()
+    for _,p in ipairs({{11,17},{18,15},{22,20},{14,22},{20,24}}) do c:px(p[1],p[2],L.hx("ffd166")); c:px(p[1],p[2]-1,L.hx("fff3b0")); c:px(p[1]-1,p[2],L.hx("ff924c")) end
   end
   return c
 end
 
--- Cluster of red-cap mushrooms.
-function T.mushroom()
-  local c=L.canvas(32,32); grass_base(c,82,L.R.grass)
+-- Mushrooms: 3 variants (red-cap / brown toadstool / big+pink).
+function T.mushroom(v)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,82+v,L.R.grass)
   c:groundshadow(16,27,9,2.2)
-  local function shroom(cx,cy,s)
-    c:fillrect(cx-1,cy,cx+1,cy+s+2,L.R.cream[3]) -- stem
-    c:sphere(cx,cy,s+2,s,L.R.redroof,0.1)         -- cap
-    c:px(cx-1,cy-1,L.hx("ffffff")); c:px(cx+2,cy,L.hx("ffffff")); c:px(cx,cy+1,L.hx("ffe6dd")) -- spots
+  local function shroom(cx,cy,s,capR)
+    c:fillrect(cx-1,cy,cx+1,cy+s+2,L.R.cream[3]); c:vline(cx-1,cy,cy+s+2,L.R.cream[2])
+    c:sphere(cx,cy,s+2,s,capR,0.1)
+    c:px(cx-1,cy-1,L.hx("ffffff")); c:px(cx+2,cy,L.hx("ffffff")); c:px(cx,cy+1,L.hx("ffe6dd"))
   end
-  shroom(13,17,4); shroom(21,20,3); shroom(17,22,2)
-  c:outline()
+  if v==1 then shroom(13,17,4,L.R.redroof); shroom(21,20,3,L.R.redroof); shroom(17,22,2,L.R.redroof)
+  elseif v==2 then shroom(12,19,3,L.R.dirt); shroom(19,17,4,L.R.dirt); shroom(23,21,2,L.R.dirt)
+  else shroom(15,15,5,L.R.redroof); shroom(23,22,2,L.R.blossom) end
+  c:outline(); c:coreshade()
   return c
 end
 
 -- Tilled garden plot with green sprouts (crops).
-function T.crop()
-  local c=L.canvas(32,32); grass_base(c,83,L.R.grass)
+-- Tilled plot: 3 crop types (green sprouts / golden wheat / leafy greens).
+function T.crop(v)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,83+v,L.R.grass)
   local D=L.R.dirt
-  -- soil bed
   c:fillrect(3,7,28,27,D[3]); c:fillrect(3,7,28,8,D[4]); c:fillrect(3,26,28,27,D[2])
-  for y=7,27 do for x=3,28 do if L.vnoise(x,y,83,3)>0.6 then c:px(x,y,D[2]) end end end
-  -- furrow rows
+  for y=7,27 do for x=3,28 do if L.vnoise(x,y,83+v,3)>0.6 then c:px(x,y,D[2]) end end end
   for ry=10,26,5 do c:hline(4,27,ry,D[2]); c:hline(4,27,ry-1,D[4]) end
   c:outline()
-  -- sprouts in rows
+  local SP = ({L.R.meadow, L.R.gold, L.R.canopy})[v] or L.R.meadow
   for row=0,2 do local ry=12+row*5
     for i=0,4 do local x=6+i*5
-      c:vline(x,ry-3,ry,L.R.meadow[3]); c:px(x-1,ry-2,L.R.meadow[4]); c:px(x+1,ry-3,L.R.meadow[5])
+      c:vline(x,ry-3,ry,SP[3]); c:px(x-1,ry-2,SP[4]); c:px(x+1,ry-3,SP[5])
+      if v==2 then c:px(x,ry-4,SP[5]) end
     end
   end
   return c
@@ -568,55 +690,80 @@ function T.fence()
   return c
 end
 
--- Stone fountain with a spouting basin.
-function T.fountain()
-  local c=L.canvas(32,32); grass_base(c,85,L.R.path)
-  c:groundshadow(16,28,13,3)
+-- Stone fountain: tall 32x48 overflow sprite (transparent -> sits on grass, no
+-- more brown base), 2-frame spouting water.
+function T.fountain(frame)
+  local c=L.canvas(32,48)
+  local g=(frame==1) and 1 or 0
+  c:groundshadow(16,45,13,3.2)
   local S=L.R.stone; local W=L.R.water
-  -- basin
-  c:sphere(16,22,13,6,S)
-  c:disc(16,22,10,4,W[2]); c:sphere(16,22,9,3.4,W,0.15)
-  -- inner pedestal
-  c:fillrect(14,12,18,22,S[3]); c:vline(14,12,22,S[2]); c:vline(18,12,22,S[4])
-  c:sphere(16,11,4,3,S,0.1)
-  -- water jets
-  for _,dx in ipairs({-4,0,4}) do
-    for y=6,12 do c:blend(16+dx*(y-6)/6, y, L.rgba(180,225,250, 200-(y-6)*10)) end
+  c:sphere(16,40,13,6,S)                                            -- basin
+  c:disc(16,40,10,4,W[2]); c:sphere(16,40,9,3.4,W,0.15)
+  c:fillrect(14,28,18,40,S[3]); c:vline(14,28,40,S[2]); c:vline(18,28,40,S[4])   -- pedestal
+  c:sphere(16,27,4,3,S,0.1)
+  for _,dx in ipairs({-5,0,5}) do                                  -- water jets (arc + ripple)
+    for y=18,28 do
+      local off = (dx==0) and 0 or (dx<0 and -1 or 1)
+      c:blend(16 + dx*(28-y)/11 + g*off, y, L.rgba(180,225,250, 210-(28-y)*8))
+    end
   end
-  c:disc(16,10,3,1.4,W[4])
+  c:disc(16,26+g,3,1.4,W[4])                                       -- top spray
   c:outline()
-  -- glints
-  c:px(11,21,W[5]); c:px(20,20,W[5]); c:px(16,20,W[5])
+  c:px(11,39,W[5]); c:px(20,38,W[5]); c:px(16,38,W[5])            -- basin glints
   return c
 end
 
--- Flowerbed: a dense row of tulips.
-function T.flowerbed()
-  local c=L.canvas(32,32); grass_base(c,86,L.R.meadow)
+-- Flowerbed: dense tulip row, 3 colour sets.
+function T.flowerbed(v)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,86+v,L.R.meadow)
   local D=L.R.dirt
   c:fillrect(3,20,28,27,D[3]); c:hline(3,28,20,D[4]); c:outline()
-  local cols={"ef476f","ffd166","06d6a0","c191f4","ff924c"}
+  local sets = {
+    {"ef476f","ffd166","06d6a0","c191f4","ff924c"},
+    {"ff5aa0","c191f4","6ea8e2","ffd166","ffffff"},
+    {"e63946","f6c453","ff924c","ef476f","ffd166"},
+  }
+  local cols=sets[((v-1)%#sets)+1]
   for i=0,6 do
     local x=5+i*4; local y=18-((i*7)%3)
-    c:vline(x,y,22,L.R.meadow[2])              -- stem
+    c:vline(x,y,22,L.R.meadow[2])
     local col=L.hx(cols[(i%#cols)+1])
-    c:fillrect(x-1,y-3,x+1,y,col)               -- tulip cup
-    c:px(x-1,y-3,L.hx("ffffff")); c:px(x,y-4,col)
+    c:fillrect(x-1,y-3,x+1,y,col); c:px(x-1,y-3,L.hx("ffffff")); c:px(x,y-4,col)
   end
   return c
 end
 
--- Wooden barrel prop.
-function T.barrel()
-  local c=L.canvas(32,32); grass_base(c,87,L.R.grass)
-  c:groundshadow(16,28,7,2)
+-- Wooden barrel prop: 4 variants (upright / on-side / stacked / open) with depth.
+function T.barrel(v)
+  v = v or 1
+  local c=L.canvas(32,32); grass_base(c,87+v,L.R.grass)
   local W=L.R.wood; local I=L.R.iron
-  c:fillrect(9,10,23,28,W[3])
-  c:vline(9,11,27,W[2]); c:vline(23,11,27,W[2]); c:vline(11,10,28,W[4]); c:vline(16,10,28,W[5])
-  c:sphere(16,10,7,2,W,0.2) -- top lid
-  -- iron hoops
-  c:hline(9,23,13,I[3]); c:hline(9,23,14,I[2]); c:hline(9,23,24,I[3]); c:hline(9,23,25,I[2])
-  c:outline()
+  if v==1 then           -- upright
+    c:groundshadow(16,28,7,2)
+    c:fillrect(9,10,23,28,W[3]); c:vline(9,11,27,W[2]); c:vline(23,11,27,W[2]); c:vline(12,10,28,W[4]); c:vline(16,10,28,W[5])
+    c:sphere(16,10,7,2,W,0.2)
+    c:hline(9,23,13,I[3]); c:hline(9,23,14,I[2]); c:hline(9,23,24,I[3]); c:hline(9,23,25,I[2])
+    c:outline(); c:coreshade()
+  elseif v==2 then       -- lying on its side
+    c:groundshadow(16,27,11,2.6)
+    c:sphere(16,22,11,6,W)
+    c:disc(7,22,2.4,5,W[2]); c:disc(25,22,2.4,5,W[5])           -- end caps
+    c:vline(12,17,27,I[2]); c:vline(20,17,27,I[2])               -- hoops
+    c:outline(); c:coreshade(); c:px(12,18,W[5])
+  elseif v==3 then       -- stacked pair
+    c:groundshadow(16,29,9,2.4)
+    c:fillrect(11,16,21,29,W[3]); c:sphere(16,16,5,1.6,W,0.2); c:hline(11,21,19,I[2]); c:hline(11,21,26,I[2])
+    c:fillrect(7,7,15,16,W[3]); c:sphere(11,7,4,1.4,W,0.2); c:hline(7,15,10,I[2]); c:hline(7,15,14,I[2])
+    c:outline(); c:coreshade()
+  else                   -- open barrel with apples
+    c:groundshadow(16,28,7,2)
+    c:fillrect(9,12,23,28,W[3]); c:vline(9,13,27,W[2]); c:vline(23,13,27,W[5])
+    c:disc(16,12,7,2.2,L.hx("2a1c14"))
+    for _,p in ipairs({{13,11},{18,11},{16,10}}) do c:sphere(p[1],p[2],2,1.6,L.R.redroof,0.1) end
+    c:hline(9,23,15,I[3]); c:hline(9,23,25,I[3]); c:px(11,20,L.INK); c:px(11,22,L.INK)
+    c:outline(); c:coreshade()
+  end
   return c
 end
 

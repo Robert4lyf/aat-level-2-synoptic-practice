@@ -369,7 +369,16 @@
     return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region', 'mushroom', 'flowerbed'].indexOf(t) >= 0;
   }
   function adjacentNpc(d) { var best = null; for (var k in NPCS) { if (!NPCS.hasOwnProperty(k)) continue; var n = NPCS[k]; var dist = Math.abs(d.pos.x - n.x) + Math.abs(d.pos.y - n.y); if (dist <= 1 && (!best || dist < best.dist)) best = { id: k, dist: dist }; } return best; }
-  var TILE_VARIANTS = { grass: [1, 2, 3], flower: [1, 2, 3], tree: [1, 2, 1, 2, 3, 1], house: [1, 2], market: [2, 1], rock: [1, 2] };
+  var TILE_VARIANTS = {
+    grass: [1, 2, 3], flower: [1, 2, 3],
+    tree: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 7, 9],   // all 10 species, lightly weighted
+    house: [1, 2, 3], market: [2, 1, 3],
+    rock: [1, 2, 3, 4, 5, 6, 7, 8],
+    pond: [1, 2, 3, 4, 5], barrel: [1, 2, 3, 4],
+    bush: [1, 2, 3, 4], mushroom: [1, 2, 3],
+    crop: [1, 2, 3], flowerbed: [1, 2, 3],
+    'factory-wall': [1, 2, 3, 4]
+  };
   function tileVariant(t, x, y) { var v = TILE_VARIANTS[t]; return v ? ' rpg-v' + v[(x * 31 + y * 17) % v.length] : ''; }
   function tileHtml(x, y, d, c) {
     var here = d.pos.x === x && d.pos.y === y;
