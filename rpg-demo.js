@@ -83,6 +83,22 @@
     '2,12': { needs: 'pobc', label: 'Control Badge' },
     '20,18': { needs: 'poc', label: 'Costing Badge' }
   };
+  // Multi-tile FireRed-style buildings. (x,y) = top-left footprint tile; fw x fh =
+  // footprint (collision) in tiles; the sprite's roof overhangs upward. `door` = the
+  // one walkable footprint tile the player enters from.
+  var BUILDINGS = [
+    { id: 'b_green',  sprite: 'house_green.png',             fw: 5, fh: 2, x: 1,  y: 19, door: { x: 3,  y: 20 } },
+    { id: 'b_shop',   sprite: 'shop_1.png',                  fw: 5, fh: 2, x: 9,  y: 19, door: { x: 11, y: 20 } },
+    { id: 'b_orange', sprite: 'house_two_storey_orange.png', fw: 5, fh: 2, x: 15, y: 19, door: { x: 17, y: 20 } }
+  ];
+  var _bcover = null;
+  function buildingCovers(x, y) {
+    if (!_bcover) { _bcover = {}; BUILDINGS.forEach(function (b) { for (var yy = b.y; yy < b.y + b.fh; yy++) for (var xx = b.x; xx < b.x + b.fw; xx++) _bcover[xx + ',' + yy] = b; }); }
+    return _bcover[x + ',' + y] || null;
+  }
+  function buildingDoor(x, y) { for (var i = 0; i < BUILDINGS.length; i++) { var b = BUILDINGS[i]; if (b.door && b.door.x === x && b.door.y === y) return b; } return null; }
+  // Ground type ignoring npc/boss/blocker overrides (what the canvas draws underfoot).
+  function baseTile(x, y) { return LEGEND[charAt(x, y)] || 'grass'; }
 
   // Townsfolk NPCs. Each stands just off a road so you approach and talk from an
   // adjacent tile (their own tile blocks movement, like a person standing there).
@@ -147,7 +163,7 @@
       ]
     },
     mayor: {
-      x: 10, y: 20, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
+      x: 10, y: 23, mon: 'mayor', tag: 'Mayor', name: 'Mayor Sterling',
       role: 'Head of Enterprise Town',
       lines: [
         'Welcome to Enterprise Town! The Enterprise Griffin guards knowledge of business and ethics.',
@@ -271,6 +287,7 @@
   }
   function passable(x, y) {
     if (x < 0 || y < 0 || x >= MAP_W || y >= MAP_H) return false;
+    if (buildingCovers(x, y) && !buildingDoor(x, y)) return false; // building walls are solid; door is walkable
     var t = tileType(x, y);
     return ['path', 'grass', 'flower', 'book', 'sign', 'well', 'pathlamp', 'ledger-stone', 'region', 'mushroom', 'flowerbed'].indexOf(t) >= 0;
   }
@@ -310,32 +327,21 @@
     for (var y = 0; y < MAP_H; y++) for (var x = 0; x < MAP_W; x++) out += tileHtml(x, y, d, c);
     return out;
   }
-  // Synchronous, instant camera centring. Runs in the same task as mount() so the
-  // freshly rebuilt map is scrolled onto the player BEFORE the browser paints —
-  // this is what stops the top-left flash and makes the camera follow. No-ops on
-  // screens without a map (battle/starter/dialogue/region) via the null guard.
-  function centerNow() {
-    var overlay = document.getElementById('rpgOverlay');
-    if (!overlay) return;
-    var viewport = overlay.querySelector('.rpg-pixel-map-wrap');
-    var playerTile = overlay.querySelector('.rpg-player-tile');
-    if (!viewport || !playerTile) return;
-    var vpRect = viewport.getBoundingClientRect();
-    var tileRect = playerTile.getBoundingClientRect();
-    var targetLeft = viewport.scrollLeft + (tileRect.left - vpRect.left) - (viewport.clientWidth / 2) + (tileRect.width / 2);
-    var targetTop = viewport.scrollTop + (tileRect.top - vpRect.top) - (viewport.clientHeight / 2) + (tileRect.height / 2);
-    viewport.scrollLeft = Math.max(0, targetLeft);
-    viewport.scrollTop = Math.max(0, targetTop);
-    // Pin the map viewport within the panel synchronously (same target the
-    // scroll-fix helper applies asynchronously). Because the whole overlay is
-    // rebuilt on every move, the fresh panel starts scrolled to the top; without
-    // this the panel jumped ~header-height a frame later — the move flicker.
-    if (!document.body.classList.contains('rpg-map-fullscreen-body')) {
-      var panel = overlay.querySelector('.rpg-panel');
-      if (panel) panel.scrollTop = Math.max(0, viewport.offsetTop - 12);
-    }
+  // Canvas world renderer bridge. rpg-canvas.js owns the drawing + camera; here we
+  // just hand it the map data/helpers once and ask it to repaint the world canvas.
+  function initWorldApi() {
+    if (!window.RPGWorld) return;
+    RPGWorld.init({
+      MAP_W: MAP_W, MAP_H: MAP_H, TILE_VARIANTS: TILE_VARIANTS,
+      roadShape: roadShape, tileType: tileType, baseTile: baseTile,
+      NPCS: NPCS, MAP_NODES: MAP_NODES, BUILDINGS: BUILDINGS, buildingCovers: buildingCovers
+    });
   }
-  function cameraSoon() { requestAnimationFrame(centerNow); setTimeout(centerNow, 40); }
+  function worldCanvas() { var o = document.getElementById('rpgOverlay'); return o && o.querySelector('.rpg-canvas'); }
+  function drawWorld(d) { var cv = worldCanvas(); if (cv && window.RPGWorld) RPGWorld.render(cv, d || load()); }
+  // centerNow/cameraSoon kept as names (called from several places) — now just repaint.
+  function centerNow() { drawWorld(load()); }
+  function cameraSoon() { requestAnimationFrame(function () { drawWorld(load()); }); setTimeout(function () { drawWorld(load()); }, 40); }
   function adjacentBlocker(d) {
     var dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]];
     for (var i = 0; i < dirs.length; i++) { var bl = blockerAt(d.pos.x + dirs[i][0], d.pos.y + dirs[i][1]); if (bl && !d.badges[bl.needs]) return bl; }
@@ -358,22 +364,11 @@
   // Falls back to a full render if the world map is not already mounted.
   function moveRender(d, dirty, message) {
     var overlay = document.getElementById('rpgOverlay');
-    var map = overlay && overlay.querySelector('.rpg-pixel-map');
-    if (!map || map.children.length !== MAP_W * MAP_H) return landing(d, message);
-    var c = fighter();
-    var seen = {};
-    (dirty || []).forEach(function (p) {
-      if (!p) return;
-      var k = p.x + ',' + p.y; if (seen[k]) return; seen[k] = 1;
-      var el = map.children[p.y * MAP_W + p.x]; if (!el) return;
-      var tmp = document.createElement('div');
-      tmp.innerHTML = tileHtml(p.x, p.y, d, c);
-      if (tmp.firstChild) el.replaceWith(tmp.firstChild);
-    });
+    var cv = overlay && overlay.querySelector('.rpg-canvas');
+    if (!cv) return landing(d, message);   // world map not mounted -> full render
     var msg = overlay.querySelector('.rpg-map-message'); if (msg) msg.textContent = worldPrompt(d, message);
     var pos = overlay.querySelector('.rpg-pos'); if (pos) pos.textContent = 'Position ' + d.pos.x + ',' + d.pos.y;
-    centerNow();
-    cameraSoon();
+    drawWorld(d);
   }
   function movePlayer(dir) {
     if (dlg) return;                 // movement is locked while an NPC textbox is open
@@ -403,6 +398,13 @@
     landing(d, 'Walk closer to ' + n.name + ' before talking.'); cameraSoon(false);
   }
   function resetPosition() { var d = load(); d.pos = { x: START_POS.x, y: START_POS.y }; d.dir = 'down'; save(d); landing(d, 'Player returned to the start of the route.'); cameraSoon(); }
+  // Click a tile on the world canvas: enter an adjacent region gate or talk to an NPC.
+  function onCanvasClick(ev) {
+    var cv = worldCanvas(); if (!cv || !window.RPGWorld || dlg) return;
+    var t = RPGWorld.tileAt(cv, ev.clientX, ev.clientY);
+    var b = bossAt(t.x, t.y); if (b) return tryRegion(b.id);
+    var n = npcAt(t.x, t.y); if (n) return tryTalk(n.id);
+  }
 
   // NPC dialogue shows as an old-Final-Fantasy floating textbox at the bottom of
   // the screen, layered over the still-visible world map (not a fullscreen panel).
@@ -466,9 +468,12 @@
     var champ = BOSSES.every(function (b) { return d.badges[b.id]; });
     var leagueCta = champ ? '<button class="rpg-league-cta ' + (d.completed ? 'done' : '') + '" data-league type="button">🎓 Enter the Synoptic League' + (d.completed ? ' · Champion 👑' : '') + '</button>' : '';
     var prompt = worldPrompt(d, message);
-    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div>' + leagueCta + '<div class="rpg-map-layout"><div class="rpg-pixel-map-wrap"><div class="rpg-pixel-map" role="grid" aria-label="Ledger Legends world map" style="--rpg-cols:' + MAP_W + '">' + mapHtml(d, c) + '</div></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
-    centerNow();   // snap the camera onto the player before the first paint
-    cameraSoon();  // safety re-centre once late layout (fonts/grid) settles
+    mount('<section class="rpg-panel rpg-world" role="dialog" aria-modal="true"><button class="rpg-close" data-close type="button">×</button><div class="rpg-world-head"><div><h2>Ledger Legends</h2><p>Follow the winding route through four topic regions — Forest, Cavern, Factory and Town. Chat with the townsfolk for exam tips, then clear each region\'s boss to unlock the gate to the next and collect every badge before the Synoptic League.</p></div><div class="rpg-trainer-card"><span class="rpg-companion" data-mon="' + c.id + '"></span><strong>' + esc(c.name) + '</strong><small>Lv ' + lvl(d.xp) + ' · ' + d.xp + ' XP</small><small class="rpg-pos">Position ' + d.pos.x + ',' + d.pos.y + '</small></div></div><div class="rpg-badges">' + badges + '</div>' + leagueCta + '<div class="rpg-map-layout"><div class="rpg-canvas-wrap"><canvas class="rpg-canvas" role="img" aria-label="Ledger Legends world map"></canvas></div><div class="rpg-map-side"><div class="rpg-map-message">' + esc(prompt) + '</div><div class="rpg-controls" aria-label="Movement controls"><span></span><button type="button" data-dir="up" aria-label="Move up">▲</button><span></span><button type="button" data-dir="left" aria-label="Move left">◀</button><button type="button" data-interact>INTERACT</button><button type="button" data-dir="right" aria-label="Move right">▶</button><span></span><button type="button" data-dir="down" aria-label="Move down">▼</button><span></span></div><button class="rpg-secondary" data-reset-pos type="button">Return to start</button><p class="rpg-note">Keyboard: arrows or WASD to walk; Enter or Space to interact. Talk to the townsfolk (name tags) for study tips. The camera follows your player.</p></div></div></section>');
+    initWorldApi();
+    var _cv = worldCanvas();
+    if (_cv && !_cv._wired) { _cv._wired = true; _cv.addEventListener('click', onCanvasClick); }
+    drawWorld(d);
+    requestAnimationFrame(function () { drawWorld(load()); });   // repaint once layout settles
   }
 
   function region(id) {

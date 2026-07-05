@@ -21,6 +21,10 @@
 
 /* Pixel-art world map tiles, rendered from rpg-assets/tile-*.png sprites. */
 .rpg-map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; margin-top: 16px; }
+/* Canvas world viewport (hybrid renderer). Fixed pixel height so the camera has a
+   stable box; the renderer sizes its backing store to this element's box. */
+.rpg-canvas-wrap { border-radius: 18px; overflow: hidden; background: #1a2a18; box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d, 0 18px 45px rgba(0,0,0,.24); }
+.rpg-canvas { display: block; width: 100%; height: min(64vh, 520px); image-rendering: pixelated; background: #5aa83c; cursor: pointer; }
 .rpg-pixel-map-wrap { padding: 16px; border-radius: 18px; background: #1a2a18; box-shadow: inset 0 0 0 4px #0b160a, 0 18px 45px rgba(0,0,0,.24); overflow: auto; overscroll-behavior: contain; overflow-anchor: none; }
 .rpg-pixel-map { width: min(100%, 768px); min-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(var(--rpg-cols, 25), minmax(0, 1fr)); gap: 0; border: 6px solid #101820; background: #9bbf72; image-rendering: pixelated; box-shadow: 0 0 0 4px #efe2aa, 0 0 0 8px #6b4f1d; }
 .rpg-tile { position: relative; aspect-ratio: 1 / 1; min-height: 44px; border: 0; padding: 0; overflow: hidden; cursor: pointer; image-rendering: pixelated; background-color: #8fca5c; background-repeat: no-repeat; background-size: 100% 100%; -webkit-tap-highlight-color: transparent; }
