@@ -1,5 +1,8 @@
 # AAT Level 2 Synoptic — audit and implementation plan
 
+> **Status: all five phases implemented** (v1.1.0). See §7 for what shipped and
+> the measured before/after figures.
+
 **Date:** August 2026 · **Scope:** the AAT study experience only (`data.js`, `skills.js`,
 `learn-data.js`, and the AAT paths through `app.js`). The French/DELF/LSF/code-route
 subjects are explicitly out of scope.
@@ -48,7 +51,11 @@ mock:
 | 7 | 10 | Bookkeeping systems, receipts and payments, information and data security | **human** |
 | 8 | 14 | The external business environment | computer |
 
-Derived weighting by source unit: **BESY ≈ 58 marks · ITBK ≈ 32 · POBC ≈ 10 · POC = 0.**
+Derived weighting by source unit: **BESY ≈ 58 marks of pure-BESY tasks · POBC ≈ 10 · POC = 0**,
+with Tasks 4 and 7 (32 marks) split between bookkeeping content and the BESY
+communication/data-security elements they also name. Treating those two tasks as
+wholly ITBK overstates it; the implemented split works out at roughly
+**BESY ≈ 70 · ITBK ≈ 20 · POBC ≈ 10 · POC = 0**.
 **32 of 100 marks are human-marked extended written response.**
 
 ---
@@ -398,3 +405,95 @@ specification quote from a publisher's reproduction:
 - [Acorn Q2022 AAT L2 The Business Environment Mock Exam One](https://www.acornlive.com/downloads/pdf/Acorn_Q2022_AAT_L2_TheBusinessEnvironment_MockExamOne.pdf) — task blueprint, marks, human-marked tasks
 - [AAT Q2022 Level 3 Diploma in Accounting (First Intuition)](https://www.firstintuition.co.uk/fihub/aat-q2022-level-3-diploma-in-accounting/) — Level 3 unit structure
 - [AAT Q2022 syllabus change (BPP)](https://www.bpp.com/accountancy-and-tax/aat/q22-advice) — synoptic removal at Levels 3 and 4
+
+
+---
+
+## 7. What shipped
+
+All five phases were implemented. Verified in a real browser (Chromium via
+Playwright) as well as by the CI checks.
+
+### Phase 1 — the synoptic mock is now the synoptic
+
+`SYNOPTIC_BLUEPRINT` replaces the old even-split `MOCK_BLUEPRINT`: eight tasks,
+100 marks, each task carrying per-area mark quotas. `SYNOPTIC_EXCLUDED_TOPICS`
+keeps Principles of Costing out, and a question that would overshoot a task's
+quota is skipped rather than accepted, so generated papers land on the blueprint.
+
+Measured across four generated papers: **98–104 marks, 74–84 questions, zero POC
+questions**, unit mix BESY 68–74 / ITBK 20 / POBC 10, written content 12–16 marks.
+
+`finishMock()` now scores by marks, and the results screen carries a **marks-by-task**
+breakdown alongside marks-by-topic. `UNIT_ASSESSMENT_INFO` replaces the incorrect
+`UNIT_EXAM_WEIGHT`, and unit cards now read e.g. *"90-min unit assessment · not in
+the synoptic"* for POC. Three separate 90-minute unit assessments were added
+(ITBK, POBC, POC) so costing keeps a realistic home.
+
+### Phase 2 — written response
+
+New `written` type: setup, required task, word-counted textarea, model answer and
+an examiner-style rubric the student marks themselves against. Self-assessed
+marks are tracked separately from objective marks and labelled as such on the
+results screen. **16 written tasks** authored across the Task 4 shapes (email,
+note, explanation) and Task 7 shapes (data security, systems, fraud).
+
+### Phase 3 — the answer-length cue
+
+| Measure | Before | After |
+|---|---:|---:|
+| Correct answer is the longest option | **58.4%** | **34.6%** |
+| Key > 1.4× mean distractor | 249 | 25 |
+| Key > 2× mean distractor (severe) | 64 | 12 |
+
+**235 questions had their distractors rewritten** — plausible misconceptions at
+comparable length, rather than the one-word placeholders that made the key
+obvious. The validator now fails the build above a 35% bank-wide rate and warns
+per-question above 1.4×; the ceiling is a ratchet and should come down as the
+remaining scenario sub-parts are cleared.
+
+`scripts/check-question-integrity.js` guards the option shuffling that keeps the
+source data's answer-position bias (68% at one index) invisible to students. The
+guard was verified by removing the shuffle and confirming it fails.
+
+### Phase 4 — new formats and BESY rebalance
+
+`truefalse` statement grids (partial credit, one mark per statement) and
+`multiselect` ("Which TWO…", all-or-nothing) added end to end — render, submit,
+`presentQuestion` shuffling, validator checks. **17 true/false grids and 12
+multi-select** authored, plus **20 questions** targeting the two areas the audit
+found most starved: the finance function and business communication. The three
+costing scenarios were moved out of the `synoptic` pseudo-topic and three genuine
+cross-unit scenarios (process, then explain) added in their place.
+
+### Phase 5 — curriculum accuracy
+
+`L3_BRIDGE` rewritten for Q2022: four units (FAPS, MATS, TPFB, BUAW), correct
+titles, no `AVBK`, no `PSYA`, and the "5 units + synoptic" and "sit the
+Professional Synoptic" copy corrected. Two BESY lessons added — *Business
+communication and planning* and *The finance function and its information* —
+and "Sources of finance" relabelled as a Level 3 preview. `AQ2022` corrected to
+`Q2022` throughout.
+
+### Bank composition after the work
+
+| Type | Count |
+|---|---:|
+| mcq | 469 |
+| scenario | 37 |
+| numeric | 30 |
+| dragdrop | 19 |
+| tablefill | 19 |
+| truefalse | 17 |
+| written | 16 |
+| gapfill | 12 |
+| multiselect | 12 |
+| **Total** | **631** |
+
+### Still open
+
+- The 25 remaining length-cue warnings are all scenario sub-parts; the CI ceiling
+  should be ratcheted from 35% toward 30% as they are cleared.
+- Per-task mark allocations still come from a single mock paper. The `markRange`
+  field records the assumed spread but has not been validated against AAT's own
+  specification.

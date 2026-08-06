@@ -133,6 +133,68 @@ function checkScenario(id, q) {
   });
 }
 
+// True/false statement grid — one mark per statement, so partial credit applies.
+function checkTrueFalse(id, q) {
+  if (!Array.isArray(q.statements) || q.statements.length < 2) {
+    err(id, 'truefalse needs at least 2 statements'); return;
+  }
+  const seen = new Set();
+  q.statements.forEach((s, i) => {
+    if (!s || typeof s.text !== 'string' || !s.text.trim()) err(id, `statement ${i} has no text`);
+    if (typeof s.answer !== 'boolean') err(id, `statement ${i} answer must be true or false, got ${JSON.stringify(s.answer)}`);
+    const k = norm(s.text || '');
+    if (seen.has(k)) err(id, `duplicate statement "${s.text}"`); else seen.add(k);
+  });
+  // A grid where every statement is true (or every one false) is guessable.
+  const trues = q.statements.filter(s => s.answer === true).length;
+  if (trues === 0 || trues === q.statements.length) {
+    warn(id, `all ${q.statements.length} statements are ${trues ? 'TRUE' : 'FALSE'} — mix them so the grid cannot be guessed`);
+  }
+  if (!q.exp || !String(q.exp).trim()) warn(id, 'missing explanation');
+}
+
+// Multi-select — "Which TWO of the following…". All-or-nothing marking.
+function checkMultiSelect(id, q) {
+  if (!Array.isArray(q.opts) || q.opts.length < 3) { err(id, 'multiselect needs at least 3 options'); return; }
+  if (!Array.isArray(q.answers) || q.answers.length < 2) { err(id, 'multiselect needs at least 2 answers'); return; }
+  const seen = new Set();
+  q.opts.forEach((o, i) => {
+    if (o == null || String(o).trim() === '') err(id, `option ${i} is blank`);
+    const k = norm(String(o));
+    if (seen.has(k)) err(id, `duplicate option text "${o}"`); else seen.add(k);
+  });
+  const uniq = new Set(q.answers);
+  if (uniq.size !== q.answers.length) err(id, 'answers contains a duplicate index');
+  q.answers.forEach(a => {
+    if (!Number.isInteger(a) || a < 0 || a >= q.opts.length) err(id, `answer index ${a} is out of range (0..${q.opts.length - 1})`);
+  });
+  if (q.answers.length >= q.opts.length) err(id, 'every option is correct — there are no distractors');
+  if (q.selectCount != null && q.selectCount !== q.answers.length) {
+    err(id, `selectCount ${q.selectCount} does not match ${q.answers.length} answers`);
+  }
+  if (!q.exp || !String(q.exp).trim()) warn(id, 'missing explanation');
+}
+
+// Written response — human-marked in the real assessment, self-marked here.
+// The rubric is the mark scheme, so it must add up to the task's marks.
+function checkWritten(id, q) {
+  if (!q.task || !String(q.task).trim()) err(id, 'written task has no `task` (the "Required:" instruction)');
+  if (!q.modelAnswer || !String(q.modelAnswer).trim()) err(id, 'written task has no model answer');
+  if (!Array.isArray(q.rubric) || !q.rubric.length) { err(id, 'written task has no rubric'); return; }
+  let sum = 0;
+  q.rubric.forEach((r, i) => {
+    if (!r || typeof r.point !== 'string' || !r.point.trim()) err(id, `rubric point ${i} has no text`);
+    if (!Number.isFinite(r.marks) || r.marks <= 0) err(id, `rubric point ${i} has invalid marks ${JSON.stringify(r.marks)}`);
+    else sum += r.marks;
+  });
+  if (Number.isFinite(q.marks) && sum !== q.marks) {
+    err(id, `rubric totals ${sum} marks but the task declares ${q.marks}`);
+  }
+  if (q.minWords != null && (!Number.isInteger(q.minWords) || q.minWords < 1)) {
+    err(id, `minWords must be a positive integer, got ${JSON.stringify(q.minWords)}`);
+  }
+}
+
 // ── Run checks. ──────────────────────────────────────────────────────────────
 const ids = new Map();
 const stems = new Map();
@@ -152,6 +214,9 @@ for (const q of Q) {
   else if (type === 'tablefill') checkTablefill(q.id, q);
   else if (type === 'gapfill') checkGapfill(q.id, q);
   else if (type === 'scenario') checkScenario(q.id, q);
+  else if (type === 'truefalse') checkTrueFalse(q.id, q);
+  else if (type === 'multiselect') checkMultiSelect(q.id, q);
+  else if (type === 'written') checkWritten(q.id, q);
   else warn(q.id, `unrecognised type "${type}"`);
 
   // Contradiction check: a TRUE contradiction is the same stem AND the same set of
@@ -171,6 +236,41 @@ for (const q of Q) {
       stems.set(k, { id: q.id, correct, text: q.opts[q.ans] });
     }
   }
+}
+
+// ── Answer-length cue check. ─────────────────────────────────────────────────
+// If the correct option is reliably the longest, a student can score well above
+// chance without reading the question — and option shuffling does not help,
+// because reordering never changes which option is longest. Chance is 25% for a
+// four-option MCQ; anything far above that is a measurement problem, not a
+// question-writing style.
+const CUE_RATIO = 1.4;          // key longer than this multiple of mean distractor → flagged
+const CUE_CEILING_PCT = 35;     // bank-wide longest-is-correct rate that fails the build
+
+const cueCandidates = [];
+function collectCue(id, q, ctx) {
+  if (!Array.isArray(q.opts) || !Number.isInteger(q.ans)) return;
+  if (q.opts.length < 3 || !q.opts[q.ans]) return;
+  const lens = q.opts.map(o => String(o).length);
+  const key = lens[q.ans];
+  const others = lens.filter((_, i) => i !== q.ans);
+  const isLongest = key > Math.max(...others);
+  const mean = others.reduce((a, b) => a + b, 0) / others.length;
+  cueCandidates.push({ id: ctx ? `${id} (${ctx})` : id, isLongest, ratio: mean ? key / mean : 1 });
+}
+for (const q of Q) {
+  const type = q.type || 'mcq';
+  if (type === 'mcq') collectCue(q.id, q);
+  else if (type === 'scenario' && Array.isArray(q.parts)) {
+    q.parts.forEach((p, i) => { if (!p.type || p.type === 'mcq') collectCue(q.id, p, `part ${i + 1}`); });
+  }
+}
+const cueFlagged = cueCandidates.filter(c => c.isLongest && c.ratio > CUE_RATIO);
+cueFlagged.forEach(c => warn(c.id, `correct answer is the longest option and ${c.ratio.toFixed(1)}× the average distractor — lengthen the distractors`));
+const longestCount = cueCandidates.filter(c => c.isLongest).length;
+const longestPct = cueCandidates.length ? (longestCount / cueCandidates.length) * 100 : 0;
+if (longestPct > CUE_CEILING_PCT) {
+  err('(bank)', `correct answer is the longest option in ${longestPct.toFixed(1)}% of MCQs (${longestCount}/${cueCandidates.length}) — ceiling is ${CUE_CEILING_PCT}%, chance is 25%`);
 }
 
 // ── Report. ──────────────────────────────────────────────────────────────────

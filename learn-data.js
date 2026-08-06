@@ -3200,7 +3200,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-9',
-        title: 'Sources of finance',
+        title: 'Sources of finance (Level 3 preview)',
         icon: '💰',
         skills: ['besy-finance'],
         cards: [
@@ -3742,6 +3742,141 @@ window.LEARN_PATH = [
             opts: ['Calculating 20% VAT on standard-rated supplies', 'Knowing the difference between input and output VAT', 'Calculating income tax on a sole trader\'s taxable profit', 'Recording VAT in the VAT control account'],
             ans: 2,
             exp: 'Income tax calculation for sole traders is first examined in TPFB at Level 3. VAT arithmetic, input/output VAT distinctions, and VAT ledger entries are all covered at Level 2 (ITBk and POBC).',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-15',
+        title: 'Business communication and planning',
+        icon: '✉️',
+        skills: ['besy-comms'],
+        cards: [
+          {
+            h: 'Why communication carries marks',
+            p: [
+              'The synoptic assessment has two human-marked tasks. Between them they carry roughly **a third of the paper**, and most of those marks are for explaining something clearly to someone else — a customer, a supplier, a colleague outside finance.',
+              'The accounting can be perfect and still score badly. The marks are for whether the reader ends up understanding the position and knowing what happens next.',
+            ],
+          },
+          {
+            h: 'Match the medium to the message',
+            p: [
+              '**Email** — routine internal updates and most external account queries. Fast, creates a record, appropriate for the great majority of finance correspondence.',
+              '**Formal letter** — serious or legal matters: a final demand, a notice of proceedings, a contractual notification. It carries weight and creates a dated, retrievable record.',
+              '**Report** — analysis for a decision, where the reader needs structure, figures and a recommendation.',
+              '**Telephone** — quick clarification and relationship repair, but it leaves no record. Follow up in writing when anything was agreed.',
+            ],
+          },
+          {
+            h: 'The structure that earns the marks',
+            p: [
+              'Almost every written task in the synoptic answers to the same four-part shape: **figure, cause, action, close.**',
+              '**Figure** — state the specific amount in question. "There is a difference of £480" is worth marks; "there is a discrepancy" is not.',
+              '**Cause** — name the document or event that caused it. "Invoice 4471 was raised after the order was cancelled."',
+              '**Action** — say what you will do, concretely. "I will raise a credit note for £480 today."',
+              '**Close** — a professional sign-off, and an invitation to come back if anything is still unclear.',
+            ],
+            example: {
+              title: 'Figure, cause, action',
+              rows: [
+                ['Weak', '"There seems to be a problem with your account which we are looking into."'],
+                ['Strong', '"Your statement shows £2,880 and your records show £2,400 — a difference of £480. Invoice 4471 was raised after you cancelled the order. I will issue a credit note for £480 today."'],
+              ],
+            },
+          },
+          {
+            h: 'Writing for a non-finance reader',
+            p: [
+              'Assume the reader does not know what a control account is, and do not make them ask. Either avoid the term or define it in the same sentence.',
+              'Write "the total we are owed by all credit customers" rather than "the SLCA balance". Write "an invoice we raised in error" rather than "an erroneous posting to the sales ledger".',
+              'This is not dumbing down — it is the difference between a message that resolves the issue and one that generates three more emails.',
+            ],
+          },
+          {
+            h: 'Confidentiality in correspondence',
+            p: [
+              'Confidentiality applies to internal matters as well as customer data. A supplier chasing payment is entitled to know the invoice is being processed. They are not entitled to know which manager is on leave.',
+              '"The invoice is going through our internal authorisation process and I expect it to clear in Friday\'s payment run" is honest, useful and discloses nothing it should not.',
+              'Never disclose one customer\'s payment position to another party, and never copy third parties into an account dispute.',
+            ],
+          },
+          {
+            h: 'Planning tools you should recognise',
+            p: [
+              'The synoptic may ask about how a business plans, not just how it records. **Budgets** set a financial plan to measure actual performance against. **Business plans** set out objectives, market and financial forecasts, usually for lenders or investors.',
+              '**SWOT** analyses strengths, weaknesses, opportunities and threats. **PESTLE** analyses the external environment: political, economic, social, technological, legal and environmental factors.',
+              'A **mission statement** states the organisation\'s overall purpose — not its financial targets, which is the distinction most often tested.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'L-besy-16',
+        title: 'The finance function and its information',
+        icon: '🏛️',
+        skills: ['besy-finance'],
+        cards: [
+          {
+            h: 'What the finance function is for',
+            p: [
+              'The finance function exists to **record what happened and turn it into information other people can act on**. It is a service function, not a controlling one.',
+              'It does not set prices, choose products or run operations. It gives the people who do those things the numbers they need, and it makes sure the organisation meets its legal reporting obligations.',
+            ],
+          },
+          {
+            h: 'Financial accounting vs management accounting',
+            p: [
+              '**Financial accounting** serves people outside the organisation — shareholders, lenders, suppliers, HMRC. It is regulated: statutory formats, accounting standards, statutory deadlines. It looks backwards at a completed period.',
+              '**Management accounting** serves people inside the organisation. There is **no prescribed format** — a management report looks however it is most useful. It is often forward-looking: budgets, forecasts, decision support.',
+              'The examiner\'s favourite trap is claiming management accounts must follow a statutory format. They must not, and need not.',
+            ],
+            example: {
+              title: 'Two audiences',
+              rows: [
+                ['Financial', 'External · regulated format · historic · statutory deadlines'],
+                ['Management', 'Internal · any useful format · often forward-looking · no deadline but the decision'],
+              ],
+            },
+          },
+          {
+            h: 'Where the information comes from',
+            p: [
+              '**Internal sources** are generated by the organisation\'s own systems: the sales and purchase day books, payroll records, production output figures, inventory counts, timesheets.',
+              '**External sources** come from outside: interest rates and inflation data, competitor pricing, supplier price lists, industry statistics, tax legislation.',
+              'Crucially, information does not have to be financial to matter. Output volumes, staff turnover and customer complaints are all inputs the finance function converts into cost and performance measures.',
+            ],
+          },
+          {
+            h: 'What makes information useful',
+            p: [
+              '**Accurate** — right enough for the decision being made. **Complete** — nothing material missing. **Relevant** — bears on the decision at hand.',
+              '**Timely** — this is the one most often tested. A report that is perfectly accurate and arrives after the decision has been made has almost no value. Speed and precision are a genuine trade-off, and the right balance depends on the decision.',
+              '**Understandable** — pitched at the reader. **Cost-effective** — worth more than it costs to produce.',
+            ],
+          },
+          {
+            h: 'How finance works with the rest of the business',
+            p: [
+              'The flow runs **both ways**, and answers that show this score better than answers that do not.',
+              'Finance needs operational data — it cannot cost a unit without knowing how many were made, cannot flex a budget without volumes, cannot value inventory without a count.',
+              'In return, operations gets budgets built on real figures rather than guesses, variance analysis that separates price effects from volume effects, and evidence to support a case for investment.',
+            ],
+          },
+          {
+            h: 'Roles within the function, and why they are split',
+            p: [
+              '**Accounts receivable and credit control** — invoicing customers, monitoring balances against limits, chasing overdue amounts. **Accounts payable** — checking supplier invoices against orders and delivery notes, authorising and making payments.',
+              '**Payroll** — gross pay, deductions, net pay and reporting to HMRC. **Management accounting** — budgets, costing and analysis. **Financial accounting** — statutory accounts and external filings.',
+              'The split is deliberate. **Segregation of duties** means no single person can both cause an error or fraud and conceal it — the person who authorises a payment should not be the person who sets up the supplier.',
+            ],
+          },
+          {
+            h: 'Who the finance function answers to',
+            p: [
+              '**HMRC** receives tax returns and payments — corporation tax, VAT, PAYE. What it receives is not published.',
+              '**Companies House** receives annual accounts and the confirmation statement, and those go on the **public register**. That public visibility is the trade-off for limited liability: a sole trader has unlimited liability and files nothing publicly.',
+              'These are two different bodies wanting two different things. It is not duplication, and saying so earns marks.',
+            ],
           },
         ],
       },

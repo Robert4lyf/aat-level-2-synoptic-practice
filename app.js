@@ -16,7 +16,7 @@
   const SUBJECT_REGISTRY = [
     {
       id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
-      desc: 'Prepare for the AQ2022 Business Environment Synoptic Assessment',
+      desc: 'Prepare for the Q2022 Business Environment Synoptic Assessment',
       meta: '515 questions · Mock exams · T-Accounts',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       assets: [],
@@ -163,25 +163,82 @@
   const PASS_MARK = 70;
   const UNIT_QUIZ_PASS_MARK = 80;
   const PRACTICE_LENGTH = 15;
-  /* Mock exam blueprint — task-based, even topic weighting, difficulty progression.
-     Mirrors the structure of the AAT Level 2 synoptic: each unit appears as a
-     "foundations" task (easy) and an "applied" task (medium/hard). */
-  const MOCK_BLUEPRINT = [
-    { title: 'Introduction to Bookkeeping — foundations', topics: ['itbk'], difficulties: ['easy'], count: 7 },
-    { title: 'Introduction to Bookkeeping — applied', topics: ['itbk'], difficulties: ['medium', 'hard'], count: 7 },
-    { title: 'Principles of Bookkeeping Controls — foundations', topics: ['pobc'], difficulties: ['easy'], count: 7 },
-    { title: 'Principles of Bookkeeping Controls — applied', topics: ['pobc'], difficulties: ['medium', 'hard'], count: 7 },
-    { title: 'Principles of Costing — foundations', topics: ['poc'], difficulties: ['easy'], count: 7 },
-    { title: 'Principles of Costing — applied', topics: ['poc'], difficulties: ['medium', 'hard'], count: 7 },
-    { title: 'The Business Environment — foundations', topics: ['besy'], difficulties: ['easy'], count: 7 },
-    { title: 'The Business Environment — applied', topics: ['besy'], difficulties: ['medium', 'hard'], count: 6 },
+  /* ── SYNOPTIC BLUEPRINT ──────────────────────────────────────────────────
+     The AAT Level 2 synoptic assessment IS The Business Environment (BESY):
+     2 hours, 8 tasks, 100 marks. It draws on BESY in full plus the bookkeeping
+     units, and — per the AAT assessment specification — Principles of Costing
+     is a unit assessment ONLY and is never assessed in the synoptic.
+
+     Marks by source unit: BESY ~70 · ITBK ~20 · POBC ~10 · POC 0. (Tasks 4 and
+     7 are mixed by definition, so the 58 marks of pure-BESY tasks understates
+     BESY's real share and 32 overstates ITBK's.)
+
+     `marks` is the task's mark allocation. Per-sitting allocations vary a
+     little, so treat these as representative — `markRange` records the observed
+     spread. Tasks 4 and 7 are human-marked in the real assessment (extended
+     written response), which is why they carry `written: true`.
+
+     Each task lists its areas with a mark quota. Splitting the quota matters for
+     Tasks 4 and 7: they combine a written communication element with genuine
+     bookkeeping work, and without an explicit split the random draw fills them
+     with whichever area has more questions — which skews the whole paper away
+     from the real ITBK ~32 / POBC ~10 / BESY ~58 balance. */
+  const SYNOPTIC_BLUEPRINT = [
+    { n: 1, title: 'Business types and their functions', marks: 10, markRange: [8, 12],
+      areas: [{ area: 'besy-structure', marks: 10 }] },
+    { n: 2, title: 'The finance function and its information', marks: 13, markRange: [10, 15],
+      areas: [{ area: 'besy-finance', marks: 13 }] },
+    { n: 3, title: 'CSR, ethics and sustainability', marks: 14, markRange: [12, 16],
+      areas: [{ area: 'besy-ethics', marks: 14 }] },
+    { n: 4, title: 'Bookkeeping transactions and communicating information', marks: 22, markRange: [18, 24],
+      written: true,
+      areas: [{ area: 'besy-comms', marks: 6, written: true }, { area: 'itbk', marks: 16 }] },
+    { n: 5, title: 'Control accounts, reconciliations and journals', marks: 10, markRange: [8, 12],
+      areas: [{ area: 'pobc', marks: 10 }] },
+    { n: 6, title: 'The principles of contract law', marks: 7, markRange: [6, 10],
+      areas: [{ area: 'besy-law', marks: 7 }] },
+    { n: 7, title: 'Bookkeeping systems, receipts, payments and data security', marks: 10, markRange: [8, 12],
+      written: true,
+      areas: [{ area: 'besy-tech', marks: 6, written: true }, { area: 'itbk', marks: 4 }] },
+    // Tasks 4 and 7 are mixed by definition — "bookkeeping transactions AND
+    // communicating information", "bookkeeping systems AND data security" — so
+    // their 32 marks split rather than counting wholly to ITBK.
+    { n: 8, title: 'The external business environment', marks: 14, markRange: [12, 16],
+      areas: [{ area: 'besy-econ', marks: 14 }] },
   ];
-  const MOCK_LENGTH = MOCK_BLUEPRINT.reduce((s, t) => s + t.count, 0);
+  /* Kept as an alias so older references keep resolving. */
+  const MOCK_BLUEPRINT = SYNOPTIC_BLUEPRINT;
+  const SYNOPTIC_TOTAL_MARKS = SYNOPTIC_BLUEPRINT.reduce((s, t) => s + t.marks, 0);
+  /* POC is a unit assessment only — it must never enter a synoptic mock. */
+  const SYNOPTIC_EXCLUDED_TOPICS = ['poc'];
   const MOCK_DURATION_MS = 120 * 60 * 1000;
   const MOCK_WARN_MS = 10 * 60 * 1000;
   const MOCK_DANGER_MS = 2 * 60 * 1000;
+
+  /* ── UNIT ASSESSMENTS ────────────────────────────────────────────────────
+     The three bookkeeping/costing units each have their own 90-minute
+     computer-based assessment, sat separately from the synoptic. */
+  const UNIT_ASSESSMENTS = [
+    { id: 'itbk', title: 'Introduction to Bookkeeping', durationMin: 90, marks: 100 },
+    { id: 'pobc', title: 'Principles of Bookkeeping Controls', durationMin: 90, marks: 100 },
+    { id: 'poc', title: 'Principles of Costing', durationMin: 90, marks: 100 },
+  ];
   const HISTORY_LIMIT = 20;
   const LETTERS = ['A', 'B', 'C', 'D'];
+  /* Default marks for a question that does not declare its own. */
+  const DEFAULT_QUESTION_MARKS = 1;
+  function questionMarks(q) {
+    if (!q) return DEFAULT_QUESTION_MARKS;
+    if (Number.isFinite(q.marks) && q.marks > 0) return q.marks;
+    if (q.type === 'written' && Array.isArray(q.rubric)) {
+      return q.rubric.reduce((s, r) => s + (Number(r.marks) || 0), 0) || DEFAULT_QUESTION_MARKS;
+    }
+    if (q.type === 'truefalse' && Array.isArray(q.statements)) return q.statements.length;
+    if (q.type === 'scenario' && Array.isArray(q.parts)) {
+      return q.parts.reduce((s, p) => s + questionMarks(p), 0) || DEFAULT_QUESTION_MARKS;
+    }
+    return DEFAULT_QUESTION_MARKS;
+  }
 
   const reducedMotion = window.matchMedia
     ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
@@ -301,7 +358,7 @@
         'Payments on account: 31 Jan (in year) and 31 Jul (after year) — each 50% of prior year',
         'Balancing payment + Self Assessment return: 31 Jan after year end',
       ]},
-      { title: 'ETB column guide (L3 AVBK)', items: [
+      { title: 'ETB column guide (L3 FAPS)', items: [
         'Four column pairs: Trial Balance → Adjustments → P&L → SFP',
         'Accrual: Dr P&L expense / Cr SFP current liability',
         'Prepayment: Cr P&L expense / Dr SFP current asset',
@@ -616,59 +673,64 @@
     },
   ];
 
-  /* ── LEVEL 3 BRIDGE — "What's next" preview data ── */
+  /* ── LEVEL 3 BRIDGE — "What's next" preview data ──────────────────────────
+     Q2022 Level 3 Diploma in Accounting: FOUR units, no synoptic assessment.
+     AQ2016's Advanced Bookkeeping and Final Accounts Preparation were merged
+     into FAPS, and the Level 3 Professional Synoptic was withdrawn for
+     non-apprentices. Do not reintroduce AVBK or PSYA. */
   const L3_BRIDGE = [
     {
-      unit: 'AVBK', title: 'Advanced Bookkeeping', icon: '📗',
-      buildsOn: ['ITBk'], topicIds: ['itbk'],
-      exam: 'Computer-based', time: '2h 30min', tasks: 5, passmark: 70,
-      desc: 'Extended trial balance, incomplete records and complex asset transactions in a professional bookkeeping context.',
-      entrySkills: ['Double-entry to trial balance', 'Accruals & prepayments', 'Depreciation (SL & reducing balance)', 'Bank reconciliation'],
-      topics: ['Extended trial balance', 'Incomplete records', 'Asset disposals & part-exchange', 'Revaluation of assets', 'Accounting adjustments'],
+      unit: 'FAPS', title: 'Financial Accounting: Preparing Financial Statements', icon: '📗',
+      buildsOn: ['ITBK', 'POBC'], topicIds: ['itbk', 'pobc'],
+      exam: 'Computer-based', time: '2h 30min', tasks: 6, passmark: 70,
+      desc: 'Extended trial balance, adjustments and the financial statements of sole traders and partnerships. Absorbs the old Advanced Bookkeeping and Final Accounts Preparation units.',
+      entrySkills: ['Double-entry to trial balance', 'Accruals & prepayments', 'Depreciation (SL & reducing balance)', 'SLCA & PLCA control accounts'],
+      topics: ['Extended trial balance', 'Accounting adjustments & period-end', 'Asset disposals & part-exchange', 'Sole trader income statement & SoFP', 'Partnership accounts & appropriation', 'Incomplete records'],
     },
     {
-      unit: 'FAPS', title: 'Final Accounts Preparation', icon: '📘',
-      buildsOn: ['ITBk', 'POBC'], topicIds: ['itbk', 'pobc'],
-      exam: 'Computer-based', time: '2h', tasks: 4, passmark: 70,
-      desc: 'Produce financial statements for sole traders and partnerships from an adjusted trial balance.',
-      entrySkills: ['Adjusted trial balance', 'SLCA & PLCA control accounts', 'Partnership profit-sharing basics', 'Interpreting account balances'],
-      topics: ['Sole trader income statement & SoFP', 'Partnership appropriation account', 'Partner capital & current accounts', 'Incomplete records', 'Interpreting accounts'],
-    },
-    {
-      unit: 'MATS', title: 'Management Accounting: Costing', icon: '📙',
+      unit: 'MATS', title: 'Management Accounting Techniques', icon: '📙',
       buildsOn: ['POC'], topicIds: ['poc'],
-      exam: 'Computer-based', time: '2h', tasks: 5, passmark: 70,
-      desc: 'Standard costing, variance analysis, flexible budgets and performance measurement for management decisions.',
-      entrySkills: ['Marginal vs absorption costing', 'Break-even & contribution analysis', 'Cost classification & coding', 'Budget preparation basics'],
-      topics: ['Standard cost cards', 'Material, labour & overhead variances', 'Flexible budgets', 'Activity-based costing overview', 'Performance indicators & ratios'],
+      exam: 'Computer-based', time: '2h 30min', tasks: 8, passmark: 70,
+      desc: 'Costing techniques, budgeting, variance analysis and cash management for internal decision-making.',
+      entrySkills: ['Marginal vs absorption costing', 'Cost classification & coding', 'Break-even & contribution analysis', 'Inventory valuation (FIFO/AVCO)'],
+      topics: ['Standard costing & variances', 'Overhead absorption & apportionment', 'Budgeting and flexed budgets', 'Cash management & forecasting', 'Decision-making techniques'],
     },
     {
       unit: 'TPFB', title: 'Tax Processes for Businesses', icon: '📕',
-      buildsOn: ['ITBk', 'POBC'], topicIds: ['itbk', 'pobc'],
-      exam: 'Computer-based', time: '1h 30min', tasks: 4, passmark: 70,
-      desc: 'Complete VAT returns, income tax computations, PAYE and National Insurance in a professional context.',
-      entrySkills: ['VAT accounting (standard & cash)', 'Payroll basics & deductions', 'Business structure awareness', 'Record-keeping principles'],
-      topics: ['VAT 100 return completion', 'Income tax for sole traders', 'PAYE & NIC calculations', 'Corporation tax overview', 'Making Tax Digital (MTD)'],
+      buildsOn: ['ITBK', 'POBC'], topicIds: ['itbk', 'pobc'],
+      exam: 'Computer-based', time: '1h 30min', tasks: 8, passmark: 70,
+      desc: 'VAT returns, payroll reporting obligations and the legal and ethical framework around business taxes.',
+      entrySkills: ['VAT accounting (standard & cash)', 'Payroll basics & deductions', 'Record-keeping principles', 'Professional ethics'],
+      topics: ['VAT registration & schemes', 'Completing and submitting VAT returns', 'Errors, penalties and adjustments', 'Payroll reporting to HMRC', 'Making Tax Digital (MTD)'],
     },
     {
       unit: 'BUAW', title: 'Business Awareness', icon: '📓',
       buildsOn: ['BESY'], topicIds: ['besy'],
-      exam: 'Computer-based', time: '1h 30min', tasks: 5, passmark: 70,
-      desc: 'Business strategy, digital transformation, sources of finance and professional ethics at Level 3.',
-      entrySkills: ['Business structures & types', 'AAT Code of Professional Ethics', 'Business law fundamentals', 'Stakeholder concepts'],
-      topics: ['PESTLE & SWOT analysis', 'Sources of finance (short & long-term)', 'Digital transformation in accounting', 'Corporate social responsibility', 'Sustainability in business'],
-    },
-    {
-      unit: 'PSYA', title: 'Professional Synoptic Assessment', icon: '🎓',
-      buildsOn: ['AVBK', 'FAPS', 'MATS', 'TPFB', 'BUAW'], topicIds: ['itbk', 'pobc', 'poc', 'besy'],
-      exam: 'Synoptic', time: '3h', tasks: 6, passmark: 70,
-      desc: 'The culminating Level 3 assessment integrating all units in a realistic professional accountancy context.',
-      entrySkills: ['All five L3 units completed', 'Strong double-entry foundations', 'Tax, costing & financial reporting', 'Professional ethics in practice'],
-      topics: ['Integrated bookkeeping scenarios', 'Ethics & professional judgement', 'Financial statement preparation', 'Payroll & tax compliance tasks', 'Management reporting tasks'],
+      exam: 'Computer-based', time: '2h', tasks: 6, passmark: 70,
+      desc: 'The business environment, professional ethics, technology and the role of the accountant, taken further than at Level 2.',
+      entrySkills: ['Business types & organisation', 'AAT Code of Professional Ethics', 'Contract law fundamentals', 'Data security awareness'],
+      topics: ['Micro and macro environment analysis', 'Business types, structure and governance', 'Professional ethics in practice', 'Technology and data in accounting', 'Communicating information effectively'],
     },
   ];
 
-  const UNIT_EXAM_WEIGHT = { itbk: 40, pobc: 30, poc: 15, besy: 15 };
+  /* How each unit is actually assessed. Two separate routes, so a single
+     percentage cannot express it: three units have their own 90-minute exam,
+     and the synoptic (which IS The Business Environment) draws on BESY in full
+     plus parts of ITBK and POBC. Principles of Costing is never in the synoptic. */
+  const UNIT_ASSESSMENT_INFO = {
+    itbk: { ownExam: '90-min unit assessment', synopticMarks: 20 },
+    pobc: { ownExam: '90-min unit assessment', synopticMarks: 10 },
+    poc:  { ownExam: '90-min unit assessment', synopticMarks: 0  },
+    besy: { ownExam: null,                     synopticMarks: 70 },
+  };
+  /* Short label for a unit card — states both routes honestly. */
+  function unitAssessmentLabel(uid) {
+    const info = UNIT_ASSESSMENT_INFO[uid];
+    if (!info) return '';
+    if (!info.ownExam) return `Synoptic only · ~${info.synopticMarks}% of the paper`;
+    if (!info.synopticMarks) return `${info.ownExam} · not in the synoptic`;
+    return `${info.ownExam} · ~${info.synopticMarks}% of the synoptic`;
+  }
 
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
@@ -1380,6 +1442,9 @@
   function isListen(q) { return q && q.type === 'listen'; }
   function isTyped(q) { return q && q.type === 'typed'; }
   function isListenTyped(q) { return q && q.type === 'listen-typed'; }
+  function isTrueFalse(q) { return q && q.type === 'truefalse'; }
+  function isMultiSelect(q) { return q && q.type === 'multiselect'; }
+  function isWritten(q) { return q && q.type === 'written'; }
   function isSimpleMcq(q) { return q && (!q.type || q.type === 'mcq'); }
 
   // Flip mode helpers (French only): detect FR→EN MCQ and reverse direction
@@ -1447,11 +1512,22 @@
         return { options: order.map(i => g.options[i]), answer: order.indexOf(g.answer) };
       }) };
     }
+    if (isTrueFalse(q)) {
+      // Shuffle statement order so the true/false pattern is never memorable.
+      return { ...q, statements: shuffle(q.statements.slice()) };
+    }
+    if (isMultiSelect(q)) {
+      const order = shuffle(q.opts.map((_, i) => i));
+      return { ...q,
+        opts: order.map(i => q.opts[i]),
+        answers: q.answers.map(a => order.indexOf(a)).sort((x, y) => x - y) };
+    }
+    if (isWritten(q)) { return { ...q }; }
     if (isWordOrder(q)) { return { ...q }; }
     if (isTyped(q)) { return { ...q }; }
     if (isListenTyped(q)) { return { ...q }; }
-    // simple MCQ
-    const order = shuffle([0,1,2,3]);
+    // simple MCQ — shuffle so the source data's answer-position bias never surfaces
+    const order = shuffle(q.opts.map((_, i) => i));
     return { ...q, opts: order.map(i => q.opts[i]), ans: order.indexOf(q.ans) };
   }
   function parseNumericInput(s) {
@@ -1570,6 +1646,13 @@
     gfDraft: {},                            // gap-fill dropdown selections
     woDraft: [],                            // word-order placed word indices
     typedDraft: '',                          // typed-answer current input
+    tfqDraft: {},                           // true/false statement grid selections
+    msDraft: [],                            // multi-select chosen option indices
+    writtenDraft: '',                       // written-response textarea contents
+    writtenRubric: {},                      // written self-assessment rubric ticks
+    writtenRevealed: false,                 // model answer shown?
+    examLabel: '', examUnitId: null,        // which exam is being sat
+    examTotalMarks: 0,                      // denominator for marks-based scoring
     referenceOpen: false,
     taEntries: [],                          // T-account playground postings
     taForm: { desc: '', amount: '', dr: '', cr: '' },
@@ -1856,36 +1939,105 @@
     playClick();
     render();
   }
-  function buildMockFromBlueprint() {
+  /* Formats a mock can present. Everything the practice screens can render
+     except drag-drop, which needs feedback-on-submit to make sense. */
+  const MOCK_TYPES = ['mcq', 'numeric', 'truefalse', 'multiselect', 'gapfill', 'tablefill', 'written'];
+
+  /* Does a question belong to an area? An area is either a topic id ('itbk') or
+     a skill id ('besy-finance'). */
+  function matchesArea(q, area) {
+    return q.topic === area || q.skill === area;
+  }
+
+  /* Fill each task's areas up to their individual mark quotas. Questions carry
+     their own marks, so a 14-mark quota might be one 4-mark true/false grid plus
+     ten 1-mark items. A question that would overshoot the quota is skipped
+     rather than accepted, so task totals land on the blueprint. */
+  function buildSynopticMock() {
     const out = [];
-    MOCK_BLUEPRINT.forEach((task, taskIdx) => {
-      const pool = window.ALL_QUESTIONS.filter(q => {
-        const type = q.type || 'mcq';
-        if (type !== 'mcq' && type !== 'numeric') return false;  // mock supports MCQ + numeric entry
-        if (task.topics.indexOf(q.topic) === -1) return false;
-        if (task.difficulties && task.difficulties.indexOf(q.difficulty) === -1) return false;
-        return true;
+    const used = new Set();
+    SYNOPTIC_BLUEPRINT.forEach((task, taskIdx) => {
+      let taskFilled = 0;
+      task.areas.forEach(spec => {
+        const pool = window.ALL_QUESTIONS.filter(q => {
+          if (used.has(q.id)) return false;
+          if (SYNOPTIC_EXCLUDED_TOPICS.indexOf(q.topic) !== -1) return false;
+          if (MOCK_TYPES.indexOf(q.type || 'mcq') === -1) return false;
+          return matchesArea(q, spec.area);
+        });
+        // Where the blueprint marks an area as the written element, a written
+        // task anchors it; objective items fill whatever quota remains.
+        const written = spec.written ? shuffle(pool.filter(q => q.type === 'written')) : [];
+        const objective = shuffle(pool.filter(q => q.type !== 'written'));
+        const ordered = written.slice(0, 1).concat(objective);
+        let filled = 0;
+        for (const q of ordered) {
+          if (filled >= spec.marks) break;
+          const marks = questionMarks(q);
+          // Skip anything that would take this area past its quota, unless it is
+          // the first pick (better a slight overshoot than an empty task).
+          if (filled && filled + marks > spec.marks) continue;
+          const pq = presentQuestion(q);
+          pq._task = taskIdx;
+          pq._marks = questionMarks(pq);
+          out.push(pq);
+          used.add(q.id);
+          filled += pq._marks;
+        }
+        taskFilled += filled;
       });
-      shuffle(pool).slice(0, task.count).forEach(q => {
-        const pq = presentQuestion(q);
-        pq._task = taskIdx;
-        out.push(pq);
-      });
+      // Record what the task actually reached so the UI can show real totals.
+      task._built = taskFilled;
     });
     return out;
   }
-  function startMock() {
-    playClick();
-    const picked = buildMockFromBlueprint();
-    if (!picked.length) { showToast('Could not build the mock exam — question bank unavailable.', 'error'); return; }
+  /* Kept under the old name for any caller that still uses it. */
+  function buildMockFromBlueprint() { return buildSynopticMock(); }
+
+  function buildUnitAssessment(unitId) {
+    const spec = UNIT_ASSESSMENTS.find(u => u.id === unitId);
+    if (!spec) return [];
+    const pool = window.ALL_QUESTIONS.filter(q =>
+      q.topic === unitId && MOCK_TYPES.indexOf(q.type || 'mcq') !== -1);
+    const out = [];
+    let filled = 0;
+    for (const q of shuffle(pool)) {
+      if (filled >= spec.marks) break;
+      const pq = presentQuestion(q);
+      pq._task = 0;
+      pq._marks = questionMarks(pq);
+      out.push(pq);
+      filled += pq._marks;
+    }
+    return out;
+  }
+
+  function startExam(picked, durationMs, label, unitId) {
+    if (!picked.length) { showToast('Could not build the exam — question bank unavailable.', 'error'); return; }
     Object.assign(State, {
-      screen:'quiz', mode:'mock', selectedTopic:'all', questions:picked,
+      screen:'quiz', mode:'mock', selectedTopic: unitId || 'all', questions:picked,
       current:0, answered:null, answers:new Array(picked.length).fill(null),
-      score:0, results:[], showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'', typedDraft:'',
-      mockEndTime: Date.now() + MOCK_DURATION_MS,
+      score:0, results:[], showReview:false, reviewFilter:'all', timedOut:false,
+      numericDraft:'', typedDraft:'', writtenDraft:'', msDraft:[], tfqDraft:{},
+      mockEndTime: Date.now() + durationMs,
+      examLabel: label, examUnitId: unitId || null,
+      examTotalMarks: picked.reduce((s, q) => s + questionMarks(q), 0),
     });
     Storage.data.session = null; Storage.save();
     Calc.reset(); startMockTimer(); render();
+  }
+
+  function startMock() {
+    playClick();
+    startExam(buildSynopticMock(), MOCK_DURATION_MS, 'Synoptic assessment', null);
+  }
+
+  function startUnitAssessment(unitId) {
+    playClick();
+    const spec = UNIT_ASSESSMENTS.find(u => u.id === unitId);
+    if (!spec) return;
+    startExam(buildUnitAssessment(unitId), spec.durationMin * 60 * 1000,
+      spec.title + ' — unit assessment', unitId);
   }
   function startMockTimer() {
     stopMockTimer();
@@ -2310,6 +2462,75 @@
     saveSession(); render();
   }
 
+  function submitTrueFalse() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    const picks = State.tfqDraft;
+    if (q.statements.some((s, i) => picks[i] == null)) {
+      showToast('Mark every statement true or false before submitting.', 'warn'); return;
+    }
+    let score = 0;
+    q.statements.forEach((s, i) => { if (picks[i] === s.answer) score++; });
+    const total = q.statements.length;
+    const allRight = score === total;
+    State.answered = { kind: 'truefalse', correct: allRight, picks: { ...picks }, score, total };
+    if (allRight) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(allRight);
+    Storage.recordAnswer(q, allRight); Storage.save();
+    State.results.push({ id:q.id, q:q.q || 'True/false', correct:allRight,
+      chosen: q.statements.map((s, i) => picks[i] ? 'T' : 'F').join(' '),
+      correctOpt: q.statements.map(s => s.answer ? 'T' : 'F').join(' '),
+      exp:q.exp, topic:q.topic, skill:q.skill });
+    saveSession(); render();
+  }
+
+  function submitMultiSelect() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    const need = q.selectCount || q.answers.length;
+    if (State.msDraft.length !== need) { showToast(`Select exactly ${need} options.`, 'warn'); return; }
+    const picks = State.msDraft.slice().sort((a, b) => a - b);
+    const want = q.answers.slice().sort((a, b) => a - b);
+    const ok = picks.length === want.length && picks.every((v, i) => v === want[i]);
+    State.answered = { kind: 'multiselect', correct: ok, picks };
+    if (ok) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(ok);
+    Storage.recordAnswer(q, ok); Storage.save();
+    State.results.push({ id:q.id, q:q.q, correct:ok,
+      chosen: picks.map(i => q.opts[i]).join('; '),
+      correctOpt: want.map(i => q.opts[i]).join('; '),
+      exp:q.exp, topic:q.topic, skill:q.skill });
+    saveSession(); render();
+  }
+
+  /* Written practice is two steps: reveal the model answer, then self-mark. */
+  function submitWritten() {
+    const q = State.questions[State.current];
+    if (q.minWords) {
+      const words = State.writtenDraft.trim() ? State.writtenDraft.trim().split(/\s+/).length : 0;
+      if (words < Math.min(20, q.minWords)) {
+        showToast('Write an answer before revealing the model — you learn nothing from reading it cold.', 'warn');
+        return;
+      }
+    }
+    State.writtenRevealed = true;
+    playClick(); render();
+  }
+
+  function finishWritten() {
+    const q = State.questions[State.current];
+    const marks = questionMarks(q);
+    const awarded = (q.rubric || []).reduce((s, r, i) => s + (State.writtenRubric[i] ? (Number(r.marks) || 0) : 0), 0);
+    const ok = awarded >= marks * 0.7;
+    State.answered = { kind: 'written', correct: ok, awarded, max: marks };
+    if (ok) State.score++;
+    Storage.recordAnswer(q, ok); Storage.save();
+    State.results.push({ id:q.id, q:q.task || q.q || 'Written task', correct:ok,
+      chosen: `Self-assessed ${awarded}/${marks}`, correctOpt: `${marks} marks available`,
+      selfAssessed: true, exp:q.exp || q.modelAnswer, topic:q.topic, skill:q.skill });
+    nextPractice();
+  }
+
   function submitWordOrder() {
     if (State.answered !== null) return;
     const q = State.questions[State.current];
@@ -2402,11 +2623,26 @@
   function setMockNumeric(text) {
     if (State.mode !== 'mock') return;
     State.answers[State.current] = (text === '' || text == null) ? null : String(text);
+    updateAnsweredCounter();
+  }
+  /* Multi-part exam answers (true/false rows, gap-fill gaps, table-fill blanks)
+     are stored as a keyed object on the question's answer slot. */
+  function setExamAnswerKey(key, value) {
+    if (State.mode !== 'mock') return;
+    const cur = State.answers[State.current];
+    const obj = (cur && typeof cur === 'object' && !Array.isArray(cur)) ? { ...cur } : {};
+    obj[key] = value;
+    State.answers[State.current] = obj;
+    updateAnsweredCounter();
+    saveSession();
+  }
+  function updateAnsweredCounter() {
     const counter = document.getElementById('answeredCount');
-    if (counter) {
-      const n = State.answers.filter(a => a !== null).length;
-      counter.textContent = `${n} of ${State.questions.length} answered`;
-    }
+    if (!counter) return;
+    const n = State.answers.filter(a => a !== null && a !== '' &&
+      !(Array.isArray(a) && !a.length) &&
+      !(a && typeof a === 'object' && !Array.isArray(a) && !Object.keys(a).length)).length;
+    counter.textContent = `${n} of ${State.questions.length} answered`;
   }
   function nextPractice() {
     stopSpeech();
@@ -2415,6 +2651,7 @@
     else {
       State.current++; State.answered = null; State.numericDraft = ''; State.typedDraft = '';
       State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
+      State.tfqDraft = {}; State.msDraft = []; State.writtenDraft = ''; State.writtenRubric = {}; State.writtenRevealed = false;
       State.hintLevel = 0; State.hintElim = null;
       Calc.reset(); saveSession(); render();
     }
@@ -2461,29 +2698,90 @@
     if (pct >= effectivePassMark) setTimeout(confetti, 300);
     render();
   }
+  /* Grade one exam response of any type.
+     Returns { correct, awarded, max, chosen, expected, selfAssessed }.
+     `awarded` is partial for true/false grids and written tasks; every other
+     type is all-or-nothing. */
+  function gradeResponse(q, response) {
+    const max = questionMarks(q);
+    const unanswered = response == null || response === '';
+    if (isNumeric(q)) {
+      const value = unanswered ? NaN : parseNumericInput(response);
+      const ok = isNumericCorrect(q, value);
+      return { correct: ok, awarded: ok ? max : 0, max,
+        chosen: unanswered ? '— not answered —' : formatNumericValue(q, value),
+        expected: formatNumericValue(q, q.answer) };
+    }
+    if (isTrueFalse(q)) {
+      const picks = response || {};
+      let right = 0;
+      q.statements.forEach((s, i) => { if (picks[i] === s.answer) right++; });
+      return { correct: right === q.statements.length, awarded: right, max: q.statements.length,
+        chosen: q.statements.map((s, i) =>
+          picks[i] == null ? '—' : (picks[i] ? 'True' : 'False')).join(', '),
+        expected: q.statements.map(s => s.answer ? 'True' : 'False').join(', ') };
+    }
+    if (isMultiSelect(q)) {
+      const picks = (response || []).slice().sort((a, b) => a - b);
+      const want = q.answers.slice().sort((a, b) => a - b);
+      const ok = picks.length === want.length && picks.every((v, i) => v === want[i]);
+      return { correct: ok, awarded: ok ? max : 0, max,
+        chosen: picks.length ? picks.map(i => q.opts[i]).join('; ') : '— not answered —',
+        expected: want.map(i => q.opts[i]).join('; ') };
+    }
+    if (isWritten(q)) {
+      // Human-marked in the real assessment; here the student self-scores
+      // against the rubric. Recorded separately so it never reads as objective.
+      const ticks = (response && response.rubric) || {};
+      const awarded = (q.rubric || []).reduce((s, r, i) => s + (ticks[i] ? (Number(r.marks) || 0) : 0), 0);
+      return { correct: awarded >= max * 0.7, awarded, max, selfAssessed: true,
+        chosen: (response && response.text) ? response.text : '— not attempted —',
+        expected: q.modelAnswer || '' };
+    }
+    if (isGapFill(q)) {
+      const picks = response || {};
+      const ok = q.gaps.every((g, i) => picks[i] === g.answer);
+      return { correct: ok, awarded: ok ? max : 0, max,
+        chosen: q.gaps.map((g, i) => picks[i] == null ? '—' : g.options[picks[i]]).join(', '),
+        expected: q.gaps.map(g => g.options[g.answer]).join(', ') };
+    }
+    if (isTableFill(q)) {
+      const picks = response || {};
+      const ok = q.table.blanks.every((b, i) =>
+        Math.abs(parseNumericInput(picks[i]) - Number(b.answer)) < 0.005);
+      return { correct: ok, awarded: ok ? max : 0, max,
+        chosen: q.table.blanks.map((b, i) => picks[i] == null || picks[i] === '' ? '—' : picks[i]).join(', '),
+        expected: q.table.blanks.map(b => String(b.answer)).join(', ') };
+    }
+    // simple MCQ
+    const ok = response === q.ans;
+    return { correct: ok, awarded: ok ? max : 0, max,
+      chosen: unanswered ? '— not answered —' : q.opts[response],
+      expected: q.opts[q.ans] };
+  }
+
   function finishMock(timedOut) {
     stopMockTimer();
-    let score = 0;
+    let marks = 0, totalMarks = 0, selfMarks = 0, selfTotal = 0;
     State.results = State.questions.map((q, i) => {
       const response = State.answers[i];
-      let correct = false, chosenText;
-      if (isNumeric(q)) {
-        const value = response == null ? NaN : parseNumericInput(response);
-        correct = isNumericCorrect(q, value);
-        chosenText = response == null ? '— not answered —' : formatNumericValue(q, value);
-      } else {
-        correct = response === q.ans;
-        chosenText = response == null ? '— not answered —' : q.opts[response];
-      }
-      if (response !== null) Storage.recordAnswer(q, correct);
-      if (correct) score++;
-      return { id:q.id, q:q.q, correct, chosen:chosenText,
-        correctOpt: isNumeric(q) ? formatNumericValue(q, q.answer) : q.opts[q.ans],
-        exp:q.exp, topic:q.topic, skill:q.skill, steps: isNumeric(q) ? q.steps : undefined };
+      const g = gradeResponse(q, response);
+      totalMarks += g.max;
+      marks += g.awarded;
+      if (g.selfAssessed) { selfMarks += g.awarded; selfTotal += g.max; }
+      if (response !== null && response !== '') Storage.recordAnswer(q, g.correct);
+      return { id:q.id, q:q.q || q.task || '', correct:g.correct, chosen:g.chosen,
+        correctOpt: g.expected, awarded: g.awarded, max: g.max, selfAssessed: !!g.selfAssessed,
+        task: q._task, exp:q.exp, topic:q.topic, skill:q.skill,
+        steps: isNumeric(q) ? q.steps : undefined };
     });
-    State.score = score; State.screen = 'score'; State.timedOut = !!timedOut;
-    const pct = State.questions.length ? Math.round((score / State.questions.length) * 100) : 0;
-    Storage.recordResult({ mode:'mock', topic:'all', score, total:State.questions.length, pct, timestamp:Date.now(), timedOut: !!timedOut });
+    const pct = totalMarks ? Math.round((marks / totalMarks) * 100) : 0;
+    State.score = marks; State.screen = 'score'; State.timedOut = !!timedOut;
+    State.examTotalMarks = totalMarks;
+    State.examSelfMarks = { awarded: selfMarks, total: selfTotal };
+    Storage.recordResult({ mode:'mock', topic: State.examUnitId || 'all',
+      score: marks, total: totalMarks, pct, timestamp:Date.now(), timedOut: !!timedOut,
+      label: State.examLabel || 'Synoptic assessment' });
     Storage.addXp(25);  // mock-completion bonus
     Storage.save();
     checkBadges();
@@ -2601,7 +2899,10 @@
     if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
     const sb = document.getElementById('subjectSwitcherBtn');
     if (sb) { const subj = getSubject(_activeSubjectId); sb.textContent = subj.flag + ' ' + subj.short + ' ▾'; }
-    if (State.confirmModal) { const mc = document.getElementById('modalConfirm'); if (mc) mc.focus(); }
+    if (State.confirmModal) {
+      const mc = document.getElementById('modalConfirm') || document.getElementById('modalCancel');
+      if (mc) mc.focus();
+    }
     const ni = document.getElementById('numericAnswer');
     if (ni && !ni.disabled && State.screen === 'quiz') {
       try { ni.focus(); if (State.mode === 'practice' && State.numericDraft) ni.setSelectionRange(ni.value.length, ni.value.length); } catch (e) {}
@@ -2621,10 +2922,10 @@
     return `<div class="splash fade-in">
       <div class="splash-logo" aria-hidden="true">📊</div>
       <h2>AAT Level 2 Synoptic Practice</h2>
-      <p>Prepare with confidence for the AQ2022 Business Environment Synoptic Assessment. ${window.ALL_QUESTIONS.length} audited practice questions across all four topic areas, with instant feedback, timed mock exams and persistent progress tracking.</p>
+      <p>Prepare with confidence for the Q2022 Business Environment Synoptic Assessment — 8 tasks, 100 marks, 2 hours. ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.</p>
       <div class="splash-features">
         <div class="feat"><div class="fi" aria-hidden="true">📝</div><strong>${window.ALL_QUESTIONS.length} Questions</strong><br>Across all topics</div>
-        <div class="feat"><div class="fi" aria-hidden="true">⏱</div><strong>Mock Exam</strong><br>${MOCK_LENGTH} questions, ${Math.round(MOCK_DURATION_MS / 60000)} min</div>
+        <div class="feat"><div class="fi" aria-hidden="true">⏱</div><strong>Synoptic Mock</strong><br>${SYNOPTIC_BLUEPRINT.length} tasks, ${SYNOPTIC_TOTAL_MARKS} marks, ${Math.round(MOCK_DURATION_MS / 60000)} min</div>
         <div class="feat"><div class="fi" aria-hidden="true">🧮</div><strong>Numeric Qs</strong><br>With on-screen calculator</div>
         <div class="feat"><div class="fi" aria-hidden="true">🎯</div><strong>${PASS_MARK}% Pass Mark</strong><br>AAT aligned</div>
         <div class="feat"><div class="fi" aria-hidden="true">📖</div><strong>Glossary</strong><br>Key terms explained</div>
@@ -2973,7 +3274,8 @@
       { id: 'smartPracticeBtn', icon: '🧠', title: 'Smart Practice', desc: 'Adapts to your skill gaps', cls: '' },
       ...(_activeSubjectId === 'french' ? [{ id: 'recallBtn', icon: '🎴', title: 'Active Recall', desc: 'Retrieve from memory · flashcards', cls: 'mode-recall' }] : []),
       { topic: 'all', icon: '🎯', title: 'Mixed Practice', desc: `${PRACTICE_LENGTH} random questions`, cls: '' },
-      ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Mock Exam', desc: `${MOCK_LENGTH}Q · ${Math.round(MOCK_DURATION_MS / 60000)} min timed`, cls: 'mode-mock' }] : []),
+      ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Synoptic Mock', desc: `${SYNOPTIC_BLUEPRINT.length} tasks · ${SYNOPTIC_TOTAL_MARKS} marks · ${Math.round(MOCK_DURATION_MS / 60000)} min`, cls: 'mode-mock' }] : []),
+      ...(isAAT ? [{ id: 'unitExamBtn', icon: '📝', title: 'Unit Assessment', desc: `ITBK · POBC · POC · 90 min each`, cls: 'mode-unit-exam' }] : []),
       ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: 'Glossary term review', cls: '' }] : []),
       ...(synopticCount ? [{ topic: 'synoptic', icon: '🔗', title: 'Synoptic Practice', desc: `${synopticCount} cross-unit scenarios`, cls: 'mode-synoptic' }] : []),
       ...(srDueCount > 0 ? [{ topic: 'sr-due', icon: '⏰', title: 'Due for Review', desc: `${srDueCount} spaced-rep cards`, cls: '' }] : []),
@@ -3147,7 +3449,8 @@
       ['Choose a topic or mode', 'Pick one of the four topic areas, run a mixed-practice round, or take the timed mock exam. Flagged questions, questions you have never got right, and cards "due for review" each unlock a dedicated practice set.'],
       ['Question types', 'As well as multiple choice and numeric-entry questions, you will meet matching (drag-drop), table-completion, and multi-part scenario questions — the formats used in the real AAT computer-based assessment.'],
       ['Practice mode', 'Receive instant feedback after every answer, with a detailed explanation. Star a question (⭐) to revisit it later.'],
-      ['Mock exam mode', `A ${MOCK_LENGTH}-question paper sat in ${Math.round(MOCK_DURATION_MS / 60000)} minutes with no feedback until the end. It is built from a fixed blueprint of ${MOCK_BLUEPRINT.length} tasks — two per unit, progressing from foundations to applied — with the four topic areas evenly weighted. Use Previous/Next or the task-grouped navigator to move around.`],
+      ['Synoptic mock', `A ${SYNOPTIC_TOTAL_MARKS}-mark paper across ${SYNOPTIC_BLUEPRINT.length} tasks, sat in ${Math.round(MOCK_DURATION_MS / 60000)} minutes with no feedback until the end. It mirrors the real AAT synoptic assessment, which is The Business Environment: BESY in full plus the parts of Introduction to Bookkeeping and Principles of Bookkeeping Controls that the synoptic draws on. Principles of Costing is a unit assessment only and never appears. Tasks are marked out of their own allocation (7–22 marks), so your percentage is marks-based, not question-based. Use Previous/Next or the task-grouped navigator to move around.`],
+      ['Unit assessments', `Separate 90-minute mocks for Introduction to Bookkeeping, Principles of Bookkeeping Controls and Principles of Costing — the three units that have their own end-of-unit exam alongside the synoptic.`],
       ['Spaced repetition', 'Every answer is scheduled for review using a Leitner system: get it right and it returns later (1, 3, 7, 14 then 30 days); get it wrong and it comes back tomorrow. The home screen shows how many cards are due.'],
       ['Reference panel', 'Open the 📘 Ref button (top right) at any time for formulas, double-entry rules and key definitions — mirroring the reference material provided in the real exam.'],
       ['Calculator', 'Numeric, table and scenario questions show an on-screen calculator with memory keys (MC, MR, M−, M+), square root and percentage. Click "Use this value" to drop the result into the answer box.'],
@@ -3520,6 +3823,9 @@
     if (isTableFill(q)) return renderTableFillQuiz(q);
     if (isScenario(q)) return renderScenarioQuiz(q);
     if (isGapFill(q)) return renderGapFillQuiz(q);
+    if (isTrueFalse(q)) return renderTrueFalseQuiz(q);
+    if (isMultiSelect(q)) return renderMultiSelectQuiz(q);
+    if (isWritten(q)) return renderWrittenQuiz(q);
     if (isWordOrder(q)) return renderWordOrderQuiz(q);
     if (isListen(q)) return renderListenQuiz(q);
     if (isTyped(q)) return renderTypedQuiz(q);
@@ -3927,6 +4233,88 @@
     </div>`;
   }
 
+  /* Shared chrome for the practice screens that do not need bespoke layout. */
+  function practiceShell(q, pill, bodyHtml, actionHtml, feedbackHtml, fallbackIcon, fallbackShort) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: fallbackIcon, short: fallbackShort };
+    const flagged = Storage.isFlagged(q.id);
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            ${pill}
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>
+          </div>
+          ${q.q ? `<div class="question-text">${escapeHtml(q.q)}</div>` : ''}
+          ${bodyHtml}${actionHtml}${feedbackHtml}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderTrueFalseQuiz(q) {
+    const answered = State.answered !== null;
+    const confident = Storage.isConfident(q.id);
+    const body = renderTrueFalseGrid(q, answered ? State.answered.picks : State.tfqDraft, answered);
+    const action = !answered
+      ? `<div class="quiz-action-row"><button class="next-btn" id="submitTrueFalseBtn" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>`
+      : '';
+    let feedback = '';
+    if (answered) {
+      const a = State.answered;
+      feedback = `<div class="feedback ${a.correct ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${a.correct ? '✅ All statements correct' : `❌ ${a.score} of ${a.total} correct`}</strong><br>
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= State.questions.length ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
+    }
+    return practiceShell(q, '<span class="gf-pill">✓✗ True or false</span>', body, action, feedback, '⚖️', 'Mixed');
+  }
+
+  function renderMultiSelectQuiz(q) {
+    const answered = State.answered !== null;
+    const confident = Storage.isConfident(q.id);
+    const picks = answered ? State.answered.picks : State.msDraft;
+    const need = q.selectCount || q.answers.length;
+    const body = renderMultiSelect(q, picks, answered);
+    const action = !answered
+      ? `<div class="quiz-action-row"><button class="next-btn" id="submitMultiSelectBtn" type="button" ${picks.length === need ? '' : 'disabled'}>Submit answer ✓</button>${confidentActionBtn(confident)}</div>`
+      : '';
+    let feedback = '';
+    if (answered) {
+      const ok = State.answered.correct;
+      feedback = `<div class="feedback ${ok ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${ok ? '✅ Correct' : '❌ Incorrect'}</strong><br>
+        ${!ok ? `<span class="correct-ans">✓ Correct: ${escapeHtml(q.answers.map(i => q.opts[i]).join('; '))}</span><br><br>` : ''}
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= State.questions.length ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
+    }
+    return practiceShell(q, '<span class="gf-pill">☑ Select ' + (need === 2 ? 'TWO' : need) + '</span>', body, action, feedback, '⚖️', 'Mixed');
+  }
+
+  function renderWrittenQuiz(q) {
+    const revealed = State.writtenRevealed;
+    const confident = Storage.isConfident(q.id);
+    const resp = { text: State.writtenDraft, rubric: State.writtenRubric };
+    const body = renderWrittenTask(q, resp, revealed);
+    const marks = questionMarks(q);
+    const awarded = revealed
+      ? (q.rubric || []).reduce((s, r, i) => s + (State.writtenRubric[i] ? (Number(r.marks) || 0) : 0), 0) : 0;
+    const action = !revealed
+      ? `<div class="quiz-action-row"><button class="next-btn" id="submitWrittenBtn" type="button">Reveal model answer ✓</button>${confidentActionBtn(confident)}</div>`
+      : `<div class="quiz-action-row"><button class="next-btn" id="finishWrittenBtn" type="button">${State.current + 1 >= State.questions.length ? `Record ${awarded}/${marks} and see results ✓` : `Record ${awarded}/${marks} and continue →`}</button>${confidentActionBtn(confident)}</div>`;
+    return practiceShell(q, '<span class="gf-pill">✍️ Written — ' + marks + ' marks</span>', body, action, '', '📝', 'Written');
+  }
+
   function renderWordOrderQuiz(q) {
     const total = State.questions.length;
     const pct = ((State.current + 1) / total * 100).toFixed(0);
@@ -4191,21 +4579,12 @@
     </div>`;
   }
 
-  function renderMockQuiz() {
-    const q = State.questions[State.current];
-    const total = State.questions.length;
-    const pct = ((State.current + 1) / total * 100).toFixed(0);
-    const topic = window.TOPICS.find(t => t.id === q.topic);
-    const response = State.answers[State.current];
-    const remaining = State.mockEndTime - Date.now();
-    const timerCls = remaining < MOCK_DANGER_MS ? ' danger' : remaining < MOCK_WARN_MS ? ' warn' : '';
-    const answeredCount = State.answers.filter(a => a !== null).length;
-    const isFirst = State.current === 0;
-    const isLast = State.current + 1 >= total;
-    const numeric = isNumeric(q);
-    let bodyHtml;
-    if (numeric) {
-      bodyHtml = `<div class="numeric-input-wrap">
+  /* ── EXAM BODY RENDERERS ──────────────────────────────────────────────────
+     Used by the mock/unit-assessment screens, where nothing is revealed until
+     submission. `response` is whatever the student has entered so far. */
+  function renderExamBody(q, response) {
+    if (isNumeric(q)) {
+      return `<div class="numeric-input-wrap">
         <label for="numericAnswer" class="numeric-label">Your answer${q.unit ? ` (in ${escapeHtml(q.unit)})` : ''}:</label>
         <div class="numeric-input-row">
           <input type="text" id="numericAnswer" class="numeric-input"
@@ -4218,13 +4597,144 @@
           <span><kbd>Enter</kbd> next question</span>
         </div>
       </div>`;
-    } else {
-      bodyHtml = `<div class="options" role="radiogroup" aria-label="Answer options">
-        ${q.opts.map((opt, i) => `<button class="option-btn ${response === i ? 'selected' : ''}" type="button" data-opt="${i}" role="radio" aria-checked="${response === i}">
-          <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
-        </button>`).join('')}
-      </div>${renderKeyboardHintMCQ(true)}`;
     }
+    if (isTrueFalse(q)) return renderTrueFalseGrid(q, response || {}, false);
+    if (isMultiSelect(q)) return renderMultiSelect(q, response || [], false);
+    if (isWritten(q)) return renderWrittenTask(q, response, false);
+    if (isGapFill(q)) return renderGapFillBody(q, response || {}, false);
+    if (isTableFill(q)) return renderTableFillBody(q, response || {}, false);
+    return `<div class="options" role="radiogroup" aria-label="Answer options">
+      ${q.opts.map((opt, i) => `<button class="option-btn ${response === i ? 'selected' : ''}" type="button" data-opt="${i}" role="radio" aria-checked="${response === i}">
+        <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
+      </button>`).join('')}
+    </div>${renderKeyboardHintMCQ(true)}`;
+  }
+
+  /* True/false statement grid — the most common BESY answer format.
+     "Identify whether the following statements are true or false." */
+  function renderTrueFalseGrid(q, picks, revealed) {
+    const rows = q.statements.map((s, i) => {
+      const chosen = picks[i];
+      const right = revealed && chosen === s.answer;
+      const wrong = revealed && chosen != null && chosen !== s.answer;
+      return `<div class="tfq-row ${right ? 'is-correct' : wrong ? 'is-wrong' : ''}">
+        <div class="tfq-statement">${escapeHtml(s.text)}</div>
+        <div class="tfq-choices" role="radiogroup" aria-label="${escapeHtml(s.text)}">
+          ${[true, false].map(v => `<button type="button"
+            class="tfq-btn ${chosen === v ? 'selected' : ''}${revealed && s.answer === v ? ' is-answer' : ''}"
+            data-tfq-row="${i}" data-tfq-val="${v}" ${revealed ? 'disabled' : ''}
+            role="radio" aria-checked="${chosen === v}">${v ? 'True' : 'False'}</button>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="tfq-grid">
+      <div class="tfq-head"><span>Statement</span><span>True / False</span></div>${rows}
+      <div class="tfq-marks">${q.statements.length} mark${q.statements.length === 1 ? '' : 's'} — one per statement</div>
+    </div>`;
+  }
+
+  /* Gap-fill and table-fill bodies for exam mode — same markup as the practice
+     screens but driven by the per-question response rather than a live draft. */
+  function renderGapFillBody(q, picks) {
+    return '<div class="gf-sentence">' + q.template.split(/(\{\d+\})/).map(part => {
+      const m = part.match(/^\{(\d+)\}$/);
+      if (!m) return escapeHtml(part);
+      const gi = +m[1], gap = q.gaps[gi], sel = picks[gi];
+      return `<select class="gf-select" data-gf-gap="${gi}" aria-label="Gap ${gi + 1}">
+        <option value="">— choose —</option>
+        ${gap.options.map((o, i) => `<option value="${i}" ${String(sel) === String(i) ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}
+      </select>`;
+    }).join('') + '</div>';
+  }
+
+  function renderTableFillBody(q, picks) {
+    const table = q.table;
+    const blankByCell = {};
+    table.blanks.forEach((b, i) => { blankByCell[b.row + '|' + b.col] = i; });
+    return `<table class="tf-table">
+      ${table.columns ? `<thead><tr>${table.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>` : ''}
+      <tbody>
+        ${table.rows.map((row, ri) => `<tr>${row.map((cell, ci) => {
+          const bi = blankByCell[ri + '|' + ci];
+          if (bi == null) return `<td>${escapeHtml(String(cell))}</td>`;
+          const val = picks[bi] != null ? String(picks[bi]) : '';
+          return `<td class="tf-blank"><input type="text" class="tf-input" inputmode="decimal" autocomplete="off" data-tf-blank="${bi}" value="${escapeHtml(val)}" aria-label="Blank ${bi + 1}" placeholder="?"></td>`;
+        }).join('')}</tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  /* Multi-select — "Which TWO of the following..." */
+  function renderMultiSelect(q, picks, revealed) {
+    const need = q.selectCount || (q.answers || []).length;
+    const full = picks.length >= need;
+    return `<div class="ms-wrap">
+      <div class="ms-instruction">Select <strong>${need === 2 ? 'TWO' : need === 3 ? 'THREE' : need}</strong> option${need === 1 ? '' : 's'}. <span class="ms-count">${picks.length}/${need} selected</span></div>
+      <div class="options" role="group" aria-label="Answer options">
+        ${q.opts.map((opt, i) => {
+          const on = picks.indexOf(i) !== -1;
+          const isAns = revealed && q.answers.indexOf(i) !== -1;
+          let cls = on ? 'selected' : '';
+          if (revealed) cls = isAns ? 'correct' : (on ? 'wrong' : '');
+          // Once the required number is chosen, only the chosen ones stay clickable.
+          const lock = !revealed && full && !on;
+          return `<button class="option-btn ms-btn ${cls}" type="button" data-ms="${i}"
+            ${revealed || lock ? 'disabled' : ''} aria-pressed="${on}">
+            <span class="option-label" aria-hidden="true">${on ? '☑' : '☐'}</span><span>${escapeHtml(opt)}</span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  /* Written response — human-marked in the real assessment, self-assessed here
+     against the task's rubric once the model answer is revealed. */
+  function renderWrittenTask(q, response, revealed) {
+    const text = (response && response.text != null) ? response.text : (State.writtenDraft || '');
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const short = q.minWords && words < q.minWords;
+    const marks = questionMarks(q);
+    if (!revealed) {
+      return `<div class="written-wrap">
+        ${q.setup ? `<div class="written-setup">${escapeHtml(q.setup)}</div>` : ''}
+        <div class="written-task"><strong>Required:</strong> ${escapeHtml(q.task)}</div>
+        <label class="written-label" for="writtenAnswer">Your answer (${marks} marks${q.minWords ? ` · aim for at least ${q.minWords} words` : ''}):</label>
+        <textarea id="writtenAnswer" class="written-input" rows="10" spellcheck="true"
+          placeholder="Write your response here…">${escapeHtml(text)}</textarea>
+        <div class="written-meta ${short ? 'is-short' : ''}">${words} word${words === 1 ? '' : 's'}${q.minWords ? ` · minimum ${q.minWords}` : ''}</div>
+        <div class="written-note">✍️ This task is human-marked in the real assessment. When you submit you will mark your own answer against the examiner's rubric.</div>
+      </div>`;
+    }
+    const ticks = (response && response.rubric) || State.writtenRubric || {};
+    const awarded = (q.rubric || []).reduce((s, r, i) => s + (ticks[i] ? (Number(r.marks) || 0) : 0), 0);
+    return `<div class="written-wrap">
+      <div class="written-yours"><strong>Your answer:</strong><div class="written-yours-body">${escapeHtml(text) || '<em>— not attempted —</em>'}</div></div>
+      <div class="written-model"><strong>Model answer:</strong><div class="written-model-body">${escapeHtml(q.modelAnswer)}</div></div>
+      <div class="written-rubric">
+        <div class="written-rubric-head">Mark your answer — tick each point you covered</div>
+        ${(q.rubric || []).map((r, i) => `<label class="rubric-row">
+          <input type="checkbox" class="rubric-tick" data-rubric="${i}" ${ticks[i] ? 'checked' : ''}>
+          <span class="rubric-point">${escapeHtml(r.point)}</span>
+          <span class="rubric-marks">${r.marks} mark${r.marks === 1 ? '' : 's'}</span>
+        </label>`).join('')}
+        <div class="rubric-total">Self-assessed: <strong>${awarded}/${marks}</strong></div>
+      </div>
+    </div>`;
+  }
+
+  function renderMockQuiz() {
+    const q = State.questions[State.current];
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '🔗', short: 'Synoptic' };
+    const response = State.answers[State.current];
+    const remaining = State.mockEndTime - Date.now();
+    const timerCls = remaining < MOCK_DANGER_MS ? ' danger' : remaining < MOCK_WARN_MS ? ' warn' : '';
+    const answeredCount = State.answers.filter(a => a !== null).length;
+    const isFirst = State.current === 0;
+    const isLast = State.current + 1 >= total;
+    const numeric = isNumeric(q);
+    const bodyHtml = renderExamBody(q, response);
     const flagged = Storage.isFlagged(q.id);
     const confident = Storage.isConfident(q.id);
     const navCell = (i) => {
@@ -4253,19 +4763,24 @@
         <div class="mock-nav-grid">${idxs.map(navCell).join('')}</div>
       </div>`;
     }).join('');
-    // Current task banner
+    // Current task banner — unit assessments are a single task, so it is hidden there.
     const curTaskIdx = q._task != null ? q._task : 0;
-    const curTask = MOCK_BLUEPRINT[curTaskIdx];
+    const curTask = State.examUnitId ? null : SYNOPTIC_BLUEPRINT[curTaskIdx];
+    const taskMarks = curTask
+      ? State.questions.filter(x => x._task === curTaskIdx).reduce((s, x) => s + questionMarks(x), 0)
+      : 0;
     const taskBanner = curTask ? `<div class="mock-task-banner">
-      <span class="mock-task-num">Task ${curTaskIdx + 1} of ${MOCK_BLUEPRINT.length}</span>
+      <span class="mock-task-num">Task ${curTask.n} of ${SYNOPTIC_BLUEPRINT.length}</span>
       <span class="mock-task-title">${escapeHtml(curTask.title)}</span>
+      <span class="mock-task-marks">${taskMarks} marks${curTask.written ? ' · human-marked' : ''}</span>
     </div>` : '';
     return `<div class="container">
-      <button class="back-btn" id="exitBtn" type="button">← Exit mock</button>
+      <button class="back-btn" id="exitBtn" type="button">← Exit exam</button>
       <div class="quiz-layout ${numeric ? 'has-calc' : ''}">
         <div class="quiz-container slide-in">
           <div class="quiz-header">
-            <span class="mode-pill">⏱ MOCK EXAM</span>
+            <span class="mode-pill">⏱ ${escapeHtml((State.examLabel || 'Mock exam').toUpperCase())}</span>
+            <span class="marks-pill">${questionMarks(q)} mark${questionMarks(q) === 1 ? '' : 's'}</span>
             ${numeric ? '<span class="numeric-pill">🧮 Numeric</span>' : ''}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag for later review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
             <span id="mockTimer" class="timer-pill${timerCls}" role="timer" aria-live="off">⏱ ${formatMMSS(remaining)}</span>
@@ -4277,7 +4792,7 @@
           </div>
           ${taskBanner}
           <div style="margin-bottom:8px"><span class="topic-pill" style="font-size:.7rem">${topic.icon} ${escapeHtml(topic.short)}</span></div>
-          <div class="question-text">${escapeHtml(q.q)}</div>
+          ${isWritten(q) ? '' : `<div class="question-text">${escapeHtml(q.q)}</div>`}
           ${bodyHtml}
           <div class="quiz-nav">
             <button class="btn-secondary nav-btn" id="prevBtn" type="button" ${isFirst ? 'disabled' : ''}>← Previous</button>
@@ -4295,7 +4810,11 @@
 
   function renderScore() {
     const { score, results, mode, timedOut } = State;
-    const total = results.length;
+    // Mock/unit exams score by marks; practice still scores by question count.
+    const marksMode = mode === 'mock' && results.some(r => r.max != null);
+    const total = marksMode
+      ? results.reduce((s, r) => s + (r.max || 0), 0)
+      : results.length;
     const pct = total ? Math.round(score / total * 100) : 0;
     const cls = scoreClass(pct);
     const effectivePassMark = State.unitQuizPassMark || PASS_MARK;
@@ -4304,15 +4823,41 @@
     const sub = passed ? "You're on track for the synoptic." : pct >= 50 ? 'Review the explanations to strengthen weak areas.' : 'Work through each explanation carefully and try again.';
     const topicResults = {};
     window.TOPICS.forEach(t => { topicResults[t.id] = { name:t.short, icon:t.icon, correct:0, total:0 }; });
-    results.forEach(r => { if (topicResults[r.topic]) { topicResults[r.topic].total++; if (r.correct) topicResults[r.topic].correct++; } });
+    results.forEach(r => {
+      const tr = topicResults[r.topic];
+      if (!tr) return;
+      if (marksMode) { tr.total += (r.max || 0); tr.correct += (r.awarded || 0); }
+      else { tr.total++; if (r.correct) tr.correct++; }
+    });
     const breakdownHtml = Object.values(topicResults).filter(t => t.total > 0).map(t => {
       const p = Math.round((t.correct / t.total) * 100), bc = scoreClass(p);
       return `<div class="breakdown-row">
         <span class="bl">${t.icon} ${escapeHtml(t.name)}</span>
         <div class="breakdown-bar-bg" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${bc}" style="width:${p}%"></div></div>
-        <span class="breakdown-pct">${p}%</span>
+        <span class="breakdown-pct">${marksMode ? `${t.correct}/${t.total}` : `${p}%`}</span>
       </div>`;
     }).join('');
+    /* Per-task marks table — this is how AAT reports synoptic feedback, so it is
+       the breakdown that tells a student where the marks actually went. */
+    const taskBreakdownHtml = (marksMode && !State.examUnitId) ? (() => {
+      const rows = SYNOPTIC_BLUEPRINT.map((task, idx) => {
+        const items = results.filter(r => r.task === idx);
+        if (!items.length) return '';
+        const got = items.reduce((s, r) => s + (r.awarded || 0), 0);
+        const max = items.reduce((s, r) => s + (r.max || 0), 0);
+        const p = max ? Math.round(got / max * 100) : 0;
+        const anySelf = items.some(r => r.selfAssessed);
+        return `<div class="breakdown-row">
+          <span class="bl">Task ${task.n} · ${escapeHtml(task.title)}${anySelf ? ' <em>(self-assessed)</em>' : ''}</span>
+          <div class="breakdown-bar-bg" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><div class="breakdown-bar ${scoreClass(p)}" style="width:${p}%"></div></div>
+          <span class="breakdown-pct">${got}/${max}</span>
+        </div>`;
+      }).join('');
+      return rows ? `<h3 class="score-section-h">Marks by task</h3><div class="breakdown">${rows}</div>` : '';
+    })() : '';
+    const selfNote = (State.examSelfMarks && State.examSelfMarks.total)
+      ? `<div class="self-assess-note">✍️ ${State.examSelfMarks.awarded}/${State.examSelfMarks.total} of these marks are self-assessed against the rubric. In the real assessment these tasks are marked by a human.</div>`
+      : '';
     const filterAll = State.reviewFilter !== 'wrong';
     const wrongCount = results.filter(r => !r.correct).length;
     const reviewItems = filterAll ? results : results.filter(r => !r.correct);
@@ -4341,7 +4886,7 @@
       }).join('') : '<div class="empty-state">🎉 No incorrect answers to review.</div>'}
     </div>` : '';
     const meta = mode === 'mock'
-      ? `<div class="score-meta">${timedOut ? '⏰ Time expired.' : '✓ Submitted'} · Mock exam · ${total} questions</div>`
+      ? `<div class="score-meta">${timedOut ? '⏰ Time expired.' : '✓ Submitted'} · ${escapeHtml(State.examLabel || 'Mock exam')} · ${total} marks across ${results.length} question${results.length === 1 ? '' : 's'}</div>`
       : `<div class="score-meta">📝 Practice · ${total} questions</div>`;
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
@@ -4353,9 +4898,11 @@
         <div class="score-sub">${sub}</div>
         ${meta}
         <span class="pass-badge ${passed ? 'pass' : 'fail'}">${passed ? `✓ PASS — ${effectivePassMark}% threshold met` : `✗ FAIL — below ${effectivePassMark}% threshold`}</span>
+        ${selfNote}
         <div class="breakdown" style="margin-bottom:20px">
-          <div class="breakdown-title">Score breakdown by topic</div>${breakdownHtml}
+          <div class="breakdown-title">${marksMode ? 'Marks by topic' : 'Score breakdown by topic'}</div>${breakdownHtml}
         </div>
+        ${taskBreakdownHtml ? `<div class="breakdown" style="margin-bottom:20px">${taskBreakdownHtml}</div>` : ''}
         ${(() => {
           const skillMap = {};
           results.forEach(r => {
@@ -4483,7 +5030,7 @@
           <span class="journey-unit-icon">${unitBadgeEarned ? '👑' : (topicObj.icon || '📚')}</span>
           <div class="journey-unit-info">
             <div class="journey-unit-title">${escapeHtml(unit.title)}${unitBadgeEarned ? ' <span class="unit-master-badge">MASTERED</span>' : ''}</div>
-            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(uid && UNIT_EXAM_WEIGHT[uid]) ? ` <span class="unit-exam-weight">· ~${UNIT_EXAM_WEIGHT[uid]}% of synoptic</span>` : ''}</div>
+            <div class="journey-unit-sub">${doneCount}/${unit.lessons.length} lessons ${unitDone ? '✓ complete' : 'in progress'}${(uid && UNIT_ASSESSMENT_INFO[uid]) ? ` <span class="unit-exam-weight">· ${escapeHtml(unitAssessmentLabel(uid))}</span>` : ''}</div>
           </div>
           <div class="unit-star-total" title="${unitStars} of ${unitMaxStars} stars earned">
             <span class="ust-stars">★</span> ${unitStars}/${unitMaxStars}
@@ -4514,9 +5061,9 @@
     ${_activeSubjectId === 'aat' ? `<div class="l3-bridge-section">
       <div class="l3-bridge-header">
         <h3 class="l3-bridge-title">🌉 What comes next — AAT Level 3</h3>
-        <p class="l3-bridge-sub">Level 2 builds the foundations; Level 3 deepens every skill and adds tax, management accounting and professional reporting. Complete this qualification first, then enrol directly onto Level 3.</p>
+        <p class="l3-bridge-sub">Level 2 builds the foundations; Level 3 deepens every skill and adds tax, management accounting and professional reporting. Under Q2022 the Level 3 Diploma is four units, each with its own assessment — the Level 3 synoptic was withdrawn. Complete this qualification first, then enrol directly onto Level 3.</p>
         <div class="l3-info-row">
-          <div class="l3-info-item">📋 5 units + synoptic</div>
+          <div class="l3-info-item">📋 4 units · no synoptic</div>
           <div class="l3-info-item">🎯 70% pass mark</div>
           <div class="l3-info-item">⏱ 12–18 months</div>
           <div class="l3-info-item">🌐 aat.org.uk</div>
@@ -4532,14 +5079,14 @@
             const readyHtml = ready !== null
               ? `<div class="l3-readiness"><div class="l3-readiness-row"><span class="l3-readiness-label">L2 readiness</span><span class="l3-readiness-pct ${scoreClass(ready)}">${ready}%</span></div><div class="l3-bar-bg"><div class="l3-bar" style="width:${ready}%"></div></div><div class="l3-readiness-tip">${ready >= 75 ? '✅ Strong foundations — ready to progress' : ready >= 55 ? '📚 Keep practising L2 topics' : '🔁 Strengthen L2 foundations first'}</div></div>`
               : '<div class="l3-readiness l3-readiness-empty">Complete L2 practice to see your readiness score</div>';
-            return `<div class="l3-unit-card${m.unit === 'PSYA' ? ' l3-synoptic-card' : ''}">
+            return `<div class="l3-unit-card">
               <div class="l3-unit-header">
                 <span class="l3-unit-icon">${m.icon}</span>
                 <div class="l3-unit-title-block">
                   <div class="l3-unit-name">${escapeHtml(m.title)}</div>
                   <div class="l3-unit-builds">Builds on: ${m.buildsOn.map(u => escapeHtml(u)).join(' + ')}</div>
                 </div>
-                <span class="l3-exam-badge l3-exam-${m.exam === 'Synoptic' ? 'syn' : 'cbe'}">${escapeHtml(m.exam)}</span>
+                <span class="l3-exam-badge l3-exam-cbe">${escapeHtml(m.exam)}</span>
               </div>
               <div class="l3-unit-meta">⏱ ${escapeHtml(m.time)} &nbsp;·&nbsp; ${m.tasks} tasks &nbsp;·&nbsp; ${m.passmark}% pass</div>
               <p class="l3-unit-desc">${escapeHtml(m.desc)}</p>
@@ -4561,10 +5108,10 @@
       <div class="l3-enrol-steps">
         <div class="l3-enrol-title">📍 How to progress to Level 3</div>
         <ol class="l3-steps-list">
-          <li>Complete and pass the AAT Level 2 Synoptic Assessment</li>
+          <li>Pass the three unit assessments and the Business Environment synoptic</li>
           <li>Receive your Level 2 Certificate in Accounting award from AAT</li>
           <li>Enrol on AAT Level 3 via aat.org.uk or an approved training provider</li>
-          <li>Complete all five units in any order, then sit the Professional Synoptic</li>
+          <li>Complete all four units in any order — Level 3 has no synoptic assessment</li>
         </ol>
       </div>
     </div>` : ''}`;
@@ -4919,12 +5466,38 @@
       <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
         <h3 id="modalTitle">${escapeHtml(m.title)}</h3>
         <p id="modalDesc">${escapeHtml(m.message)}</p>
+        ${m.bodyHtml || ''}
         <div class="modal-buttons">
-          <button class="btn-secondary nav-btn" id="modalCancel" type="button">Cancel</button>
-          <button class="btn-primary nav-btn" id="modalConfirm" type="button">${escapeHtml(confirmLabel)}</button>
+          <button class="btn-secondary nav-btn" id="modalCancel" type="button">${escapeHtml(m.cancelLabel || 'Cancel')}</button>
+          ${m.hideConfirm ? '' : `<button class="btn-primary nav-btn" id="modalConfirm" type="button">${escapeHtml(confirmLabel)}</button>`}
         </div>
       </div>
     </div>`;
+  }
+
+  /* Pick which of the three unit assessments to sit. */
+  function showUnitAssessmentPicker() {
+    playClick();
+    const rows = UNIT_ASSESSMENTS.map(u => {
+      const t = window.TOPICS.find(x => x.id === u.id) || { icon: '📝' };
+      const pool = (window.ALL_QUESTIONS || []).filter(q =>
+        q.topic === u.id && MOCK_TYPES.indexOf(q.type || 'mcq') !== -1).length;
+      return `<button class="unit-exam-row" type="button" data-unit-exam="${u.id}">
+        <span class="unit-exam-icon" aria-hidden="true">${t.icon}</span>
+        <span class="unit-exam-body">
+          <strong>${escapeHtml(u.title)}</strong>
+          <span class="unit-exam-sub">${u.durationMin} min · ${u.marks} marks · ${pool} questions available</span>
+        </span>
+      </button>`;
+    }).join('');
+    State.confirmModal = {
+      title: 'Unit assessment',
+      message: 'These three units each have their own end-of-unit exam, sat separately from the synoptic. Choose one to sit under timed conditions.',
+      bodyHtml: `<div class="unit-exam-list">${rows}</div>`,
+      hideConfirm: true, cancelLabel: 'Close',
+      onCancel: () => { State.confirmModal = null; render(); },
+    };
+    render();
   }
 
   /* ── EVENTS ── */
@@ -5560,6 +6133,9 @@
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
+    bind('unitExamBtn', 'click', showUnitAssessmentPicker);
+    document.querySelectorAll('[data-unit-exam]').forEach(el =>
+      el.addEventListener('click', () => { State.confirmModal = null; startUnitAssessment(el.dataset.unitExam); }));
     bind('resumeBtn', 'click', resumeSession);
     bind('dismissSessionBtn', 'click', dismissSession);
     const st = document.getElementById('soundToggle');
@@ -5600,8 +6176,63 @@
     }));
     document.querySelectorAll('[data-dd-right]').forEach(el => el.addEventListener('click', () => selectDragRight(+el.dataset.ddRight)));
     document.querySelectorAll('[data-tf-blank]').forEach(el => {
-      el.addEventListener('input', (e) => { State.tfDraft[+el.dataset.tfBlank] = e.target.value; });
+      el.addEventListener('input', (e) => {
+        const i = +el.dataset.tfBlank;
+        if (State.mode === 'mock') setExamAnswerKey(i, e.target.value);
+        else State.tfDraft[i] = e.target.value;
+      });
     });
+    /* True/false grid */
+    document.querySelectorAll('[data-tfq-row]').forEach(el => el.addEventListener('click', () => {
+      const row = +el.dataset.tfqRow, val = el.dataset.tfqVal === 'true';
+      if (State.mode === 'mock') { setExamAnswerKey(row, val); render(); }
+      else { State.tfqDraft[row] = val; render(); }
+    }));
+    /* Multi-select */
+    document.querySelectorAll('[data-ms]').forEach(el => el.addEventListener('click', () => {
+      const i = +el.dataset.ms;
+      const cur = (State.mode === 'mock' ? (State.answers[State.current] || []) : State.msDraft).slice();
+      const at = cur.indexOf(i);
+      if (at !== -1) cur.splice(at, 1); else cur.push(i);
+      if (State.mode === 'mock') { State.answers[State.current] = cur; }
+      else State.msDraft = cur;
+      playClick(); render();
+    }));
+    bind('submitTrueFalseBtn', 'click', submitTrueFalse);
+    bind('submitMultiSelectBtn', 'click', submitMultiSelect);
+    bind('submitWrittenBtn', 'click', submitWritten);
+    bind('finishWrittenBtn', 'click', finishWritten);
+    /* Written response */
+    const wa = document.getElementById('writtenAnswer');
+    if (wa) wa.addEventListener('input', (e) => {
+      if (State.mode === 'mock') {
+        const cur = State.answers[State.current] || { text: '', rubric: {} };
+        State.answers[State.current] = { ...cur, text: e.target.value };
+        const meta = wa.parentElement && wa.parentElement.querySelector('.written-meta');
+        if (meta) {
+          const n = e.target.value.trim() ? e.target.value.trim().split(/\s+/).length : 0;
+          meta.textContent = `${n} word${n === 1 ? '' : 's'}` + (State.questions[State.current].minWords ? ` · minimum ${State.questions[State.current].minWords}` : '');
+        }
+      } else {
+        State.writtenDraft = e.target.value;
+        const meta = wa.parentElement && wa.parentElement.querySelector('.written-meta');
+        if (meta) {
+          const n = e.target.value.trim() ? e.target.value.trim().split(/\s+/).length : 0;
+          meta.textContent = `${n} word${n === 1 ? '' : 's'}` + (State.questions[State.current].minWords ? ` · minimum ${State.questions[State.current].minWords}` : '');
+        }
+      }
+    });
+    document.querySelectorAll('[data-rubric]').forEach(el => el.addEventListener('change', () => {
+      const i = +el.dataset.rubric;
+      if (State.mode === 'mock') {
+        const cur = State.answers[State.current] || { text: '', rubric: {} };
+        cur.rubric = { ...(cur.rubric || {}), [i]: el.checked };
+        State.answers[State.current] = cur;
+      } else {
+        State.writtenRubric = { ...State.writtenRubric, [i]: el.checked };
+      }
+      render();
+    }));
     document.querySelectorAll('[data-sc-part]').forEach(el => {
       el.addEventListener('input', (e) => { State.scDraft[+el.dataset.scPart] = e.target.value; });
     });
@@ -5689,7 +6320,9 @@
     bind('clearSearch', 'click', () => { State.glossaryQuery = ''; render(); });
     // Gap-fill question type
     document.querySelectorAll('[data-gf-gap]').forEach(el => el.addEventListener('change', (e) => {
-      State.gfDraft[+el.dataset.gfGap] = e.target.value;
+      const i = +el.dataset.gfGap;
+      if (State.mode === 'mock') setExamAnswerKey(i, e.target.value === '' ? null : Number(e.target.value));
+      else State.gfDraft[i] = e.target.value;
     }));
     bind('submitGapFillBtn', 'click', submitGapFill);
     // Word-order interactions
