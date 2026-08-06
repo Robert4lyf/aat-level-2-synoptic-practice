@@ -108,6 +108,10 @@ window.SKILLS = (function () {
       hint: 'Place the accounting function in context: who it reports to, which external bodies regulate it, and how finance supports the other business functions.',
       formula: null,
       match: [/accounting function|finance function|hmrc|companies house|regulator|audit|funding|source of finance|bank loan|overdraft|invoice (finance|discounting)/i] },
+    { id: 'besy-comms', topic: 'besy', name: 'Business communication & planning', icon: '✉️',
+      hint: 'Match the medium to the audience and purpose: email for a routine internal update, letter for a formal external matter, report for analysis. Open with the purpose, give the figures, say what happens next.',
+      formula: null,
+      match: [/email|e-mail|letter|memo|report writing|communicat|professional tone|audience|meeting|agenda|minutes|draft (a|an)|business plan|planning tool/i] },
     { id: 'besy-structure', topic: 'besy', name: 'Business types & organisation', icon: '🏢',
       hint: 'Key split: is the owner legally separate from the business? Sole traders and ordinary partnerships are NOT separate (unlimited liability); companies and LLPs are.',
       formula: null,
@@ -118,8 +122,10 @@ window.SKILLS = (function () {
   DEFS.forEach(function (d) { BY_ID[d.id] = d; });
 
   function questionText(q) {
-    var parts = [q.q, q.exp, q.setup, q.template];
+    var parts = [q.q, q.exp, q.setup, q.template, q.task, q.modelAnswer];
     if (Array.isArray(q.parts)) q.parts.forEach(function (p) { parts.push(p.q, p.exp); });
+    if (Array.isArray(q.statements)) q.statements.forEach(function (s) { parts.push(s.text); });
+    if (Array.isArray(q.opts)) parts.push(q.opts.join(' '));
     if (!q.q && typeof q.generate === 'function') {
       try { var g = q.generate(); if (g) { parts.push(g.q, g.exp); } } catch (e) {}
     }
@@ -127,6 +133,8 @@ window.SKILLS = (function () {
   }
 
   function tag(q) {
+    // An explicitly authored skill always wins over the rule-based guess.
+    if (q.skill && BY_ID[q.skill]) return q.skill;
     var text = questionText(q);
     for (var i = 0; i < DEFS.length; i++) {
       var d = DEFS[i];

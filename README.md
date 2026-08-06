@@ -1,6 +1,6 @@
 # AAT Level 2 Synoptic Practice
 
-A browser-based study tool for the **AAT Level 2 Certificate in Accounting — Synoptic Assessment (AQ2022)**, covering all four units:
+A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q2022)**, covering all four units:
 
 - Introduction to Bookkeeping (ITBK)
 - Principles of Bookkeeping Controls (POBC)
