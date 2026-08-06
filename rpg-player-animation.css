@@ -1,6 +1,0 @@
-/* Ledger Legends player animation.
-   The previous directional walk spritesheet was embedded here as a base64
-   data-URI, but that PNG was truncated/corrupt and never decoded — leaving the
-   player invisible. The player now renders from the valid rpg-assets/char-player.png
-   with a hop animation, styled in rpg-demo.css. This file is intentionally empty
-   (still injected by rpg-scroll-fix.js and precached; kept as a no-op override). */
