@@ -92,6 +92,87 @@ Q.filter(q => q.type === 'written').forEach(q => {
   }
 });
 
+// ── 4. Learning-path integrity. ──────────────────────────────────────────────
+// The lesson data has no schema, so a typo in a check question (an out-of-range
+// answer index, a gap-fill placeholder with no gap) silently ships a lesson that
+// cannot be completed. These checks are cheap and catch that class of fault.
+const learnSrc = fs.readFileSync(path.join(ROOT, 'learn-data.js'), 'utf8');
+const skillsSrc = fs.readFileSync(path.join(ROOT, 'skills.js'), 'utf8');
+// eslint-disable-next-line no-new-func
+new Function('window', learnSrc)(sandbox.window);
+// eslint-disable-next-line no-new-func
+new Function('window', skillsSrc)(sandbox.window);
+const LEARN = sandbox.window.LEARN_PATH || [];
+const skillIds = new Set(((sandbox.window.SKILLS || {}).defs || []).map(d => d.id));
+
+const lessonIds = new Set();
+let lessonCount = 0, checkCount = 0, workedCount = 0;
+for (const unit of LEARN) {
+  for (const l of unit.lessons || []) {
+    lessonCount++;
+    const where = l.id || '(no id)';
+    if (!l.id) errors.push('A lesson has no id.');
+    else if (lessonIds.has(l.id)) errors.push(`Duplicate lesson id: ${l.id}.`);
+    else lessonIds.add(l.id);
+    if (!l.title) errors.push(`${where}: no title.`);
+    if (!Array.isArray(l.cards) || !l.cards.length) errors.push(`${where}: no cards.`);
+    for (const sid of l.skills || []) {
+      if (!skillIds.has(sid)) errors.push(`${where}: references unknown skill "${sid}".`);
+    }
+    (l.cards || []).forEach((c, ci) => {
+      if (!c.h && !c.title) errors.push(`${where} card ${ci}: no heading.`);
+      if (!c.worked) return;
+      workedCount++;
+      const w = c.worked;
+      if (!w.problem) errors.push(`${where} card ${ci}: worked example has no problem.`);
+      if (!Array.isArray(w.steps) || !w.steps.length) errors.push(`${where} card ${ci}: worked example has no steps.`);
+      else w.steps.forEach((st, si) => { if (!st.do) errors.push(`${where} card ${ci} step ${si}: no "do" text.`); });
+      if (!w.answer) errors.push(`${where} card ${ci}: worked example has no answer.`);
+      if (w.tryIt) {
+        if (!w.tryIt.q) errors.push(`${where} card ${ci}: tryIt has no question.`);
+        if (!Number.isFinite(w.tryIt.answer)) errors.push(`${where} card ${ci}: tryIt answer is not a finite number.`);
+      }
+    });
+    (l.check || []).forEach((q, qi) => {
+      checkCount++;
+      const w = `${where} check ${qi}`;
+      const t = q.type || 'mcq';
+      if (!q.q) errors.push(`${w}: no question text.`);
+      if (!q.exp) errors.push(`${w}: no explanation.`);
+      if (t === 'mcq') {
+        if (!Array.isArray(q.opts) || q.opts.length < 2) { errors.push(`${w}: needs at least 2 options.`); return; }
+        if (!Number.isInteger(q.ans) || q.ans < 0 || q.ans >= q.opts.length) errors.push(`${w}: ans index ${q.ans} out of range.`);
+        if (new Set(q.opts.map(o => String(o).toLowerCase())).size !== q.opts.length) errors.push(`${w}: duplicate option text.`);
+      } else if (t === 'numeric') {
+        if (!Number.isFinite(q.answer)) errors.push(`${w}: numeric answer is not a finite number.`);
+      } else if (t === 'gapfill') {
+        if (!q.template) { errors.push(`${w}: no template.`); return; }
+        if (!Array.isArray(q.gaps) || !q.gaps.length) { errors.push(`${w}: no gaps.`); return; }
+        q.gaps.forEach((g, gi) => {
+          if (!q.template.includes('{' + gi + '}')) errors.push(`${w}: template is missing placeholder {${gi}}.`);
+          if (!Array.isArray(g.options) || g.options.length < 2) errors.push(`${w} gap ${gi}: needs at least 2 options.`);
+          else if (!Number.isInteger(g.answer) || g.answer < 0 || g.answer >= g.options.length) errors.push(`${w} gap ${gi}: answer index out of range.`);
+        });
+        (q.template.match(/\{(\d+)\}/g) || []).forEach(ph => {
+          const n = +ph.slice(1, -1);
+          if (n >= q.gaps.length) errors.push(`${w}: template uses {${n}} but only ${q.gaps.length} gaps exist.`);
+        });
+      } else if (t === 'truefalse') {
+        if (!Array.isArray(q.statements) || q.statements.length < 2) { errors.push(`${w}: needs at least 2 statements.`); return; }
+        q.statements.forEach((st, si) => {
+          if (!st.text) errors.push(`${w} statement ${si}: no text.`);
+          if (typeof st.answer !== 'boolean') errors.push(`${w} statement ${si}: answer must be true or false.`);
+        });
+        const trues = q.statements.filter(st => st.answer === true).length;
+        if (trues === 0 || trues === q.statements.length) errors.push(`${w}: every statement has the same answer — the grid is guessable.`);
+      } else {
+        errors.push(`${w}: unknown check type "${t}".`);
+      }
+    });
+  }
+}
+notes.push(`Learning path: ${lessonCount} lessons, ${checkCount} check questions, ${workedCount} worked examples.`);
+
 // ── Report. ──────────────────────────────────────────────────────────────────
 console.log(`${BOLD}Question-integrity checks${RESET}`);
 console.log(`${DIM}${Q.length} questions${RESET}\n`);

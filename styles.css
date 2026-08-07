@@ -160,6 +160,16 @@
   --shadow-xl: 0 36px 72px -16px rgba(0, 0, 0, .75), 0 14px 28px -10px rgba(0, 0, 0, .50);
   --shadow-focus: 0 0 0 4px rgba(96, 144, 248, .28);
   --bg-main: #0b1322;
+
+  /* Alias tokens are declared on :root as var(--text-strong) etc. A custom
+     property is substituted in the scope that declares it, so those aliases were
+     baked with the LIGHT palette and stayed light under .dark. Redeclare them
+     here so components using the alias names follow the dark palette. */
+  --text-primary: #e6ebf4;
+  --text-secondary: #94a0b8;
+  --text-muted: #94a0b8;
+  --bg-card: #0F172A;
+  --bg-secondary: #0F172A;
 }
 
 /* ── PAGE COVER — hides content until JS renders the app ── */
@@ -3686,7 +3696,7 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
 .topic-card-clinic {
   border-top: 3px solid #dc2626;
 }
-[data-theme="dark"] .topic-card-clinic {
+body.dark .topic-card-clinic {
   border-top-color: #f87171;
 }
 
@@ -5481,7 +5491,7 @@ body.dark[data-subject="code-route"] .unit-card {
   font-size: .92rem;
   line-height: 1.5;
 }
-[data-theme="dark"] .listen-transcript-reveal {
+body.dark .listen-transcript-reveal {
   background: rgba(255,255,255,.06);
   border-left-color: var(--accent, #4d9fff);
 }
@@ -5676,7 +5686,7 @@ details[open] .delf-model-summary::before { transform: rotate(90deg); }
 
 /* ── French navigation tabs & listening tab ────────────────────────────── */
 .fr-listen-tip { font-size: .82rem; color: var(--text-secondary); margin-bottom: 16px; background: var(--card-muted, #f0f4f8); border-radius: 8px; padding: 8px 12px; }
-[data-theme="dark"] .fr-listen-tip { background: rgba(255,255,255,.06); }
+body.dark .fr-listen-tip { background: rgba(255,255,255,.06); }
 
 /* ── French progress: CEFR sublevel breakdown ───────────────────────────── */
 .fr-progress-section { background: var(--card); border: 1px solid var(--border); border-radius: 11px; padding: 16px; margin-bottom: 20px; }
@@ -5698,37 +5708,37 @@ details[open] .delf-model-summary::before { transform: rotate(90deg); }
 /* TTS availability notice */
 .delf-tts-notice { background:#fffbe6; border:1px solid #f59e0b; border-radius:8px; padding:10px 14px; font-size:.83rem; color:#78350f; margin-bottom:14px; line-height:1.5; }
 .delf-tts-notice.no-tts { background:#fef2f2; border-color:#f87171; color:#7f1d1d; }
-[data-theme="dark"] .delf-tts-notice { background:rgba(245,158,11,.1); border-color:#92400e; color:#fcd34d; }
-[data-theme="dark"] .delf-tts-notice.no-tts { background:rgba(248,113,113,.08); border-color:#991b1b; color:#fca5a5; }
+body.dark .delf-tts-notice { background:rgba(245,158,11,.1); border-color:#92400e; color:#fcd34d; }
+body.dark .delf-tts-notice.no-tts { background:rgba(248,113,113,.08); border-color:#991b1b; color:#fca5a5; }
 
 /* Per-section exam instruction */
 .delf-section-instruction { background:var(--card-muted,#f0f4f8); border-left:3px solid var(--accent,#2563EB); border-radius:4px; padding:9px 13px; font-size:.83rem; color:var(--text-secondary); margin-bottom:14px; line-height:1.5; }
-[data-theme="dark"] .delf-section-instruction { background:rgba(255,255,255,.05); }
+body.dark .delf-section-instruction { background:rgba(255,255,255,.05); }
 
 /* B1 self-section content */
 .delf-self-audio-block { background:var(--card-muted,#f0f4f8); border-radius:8px; padding:12px; margin:10px 0; }
-[data-theme="dark"] .delf-self-audio-block { background:rgba(255,255,255,.05); }
+body.dark .delf-self-audio-block { background:rgba(255,255,255,.05); }
 .delf-self-content-block { background:var(--card-muted,#f0f4f8); border-radius:8px; padding:12px; margin:10px 0; }
-[data-theme="dark"] .delf-self-content-block { background:rgba(255,255,255,.05); }
+body.dark .delf-self-content-block { background:rgba(255,255,255,.05); }
 .delf-no-audio-label { font-size:.76rem; color:var(--text-muted); font-style:italic; margin-bottom:8px; }
 
 /* Collapsible transcript */
 .delf-transcript-details { margin-top:10px; }
 .delf-transcript-toggle { font-size:.82rem; color:var(--accent,#2563EB); cursor:pointer; font-weight:600; }
 .delf-transcript-pre { background:var(--card,#fff); border:1px solid var(--border); border-radius:6px; padding:10px 12px; font-size:.8rem; white-space:pre-wrap; word-break:break-word; line-height:1.6; margin:6px 0 0; color:var(--text-primary); }
-[data-theme="dark"] .delf-transcript-pre { background:rgba(255,255,255,.04); }
+body.dark .delf-transcript-pre { background:rgba(255,255,255,.04); }
 
 /* Reference text in self-assess */
 .delf-source-ref { margin:10px 0; }
 
 /* No-TTS transcript fallback */
 .delf-transcript-fallback { background:var(--card-muted,#f0f4f8); border-radius:6px; padding:10px 12px; margin:8px 0; }
-[data-theme="dark"] .delf-transcript-fallback { background:rgba(255,255,255,.05); }
+body.dark .delf-transcript-fallback { background:rgba(255,255,255,.05); }
 
 /* Level grouping in DELF landing */
 .delf-level-group { margin-bottom:28px; }
 .delf-level-group-header { padding:12px 14px; border-radius:8px; background:var(--card-muted,#f0f4f8); margin-bottom:12px; }
-[data-theme="dark"] .delf-level-group-header { background:rgba(255,255,255,.05); }
+body.dark .delf-level-group-header { background:rgba(255,255,255,.05); }
 .delf-level-group-badge { display:inline-block; color:#fff; font-size:.78rem; font-weight:700; border-radius:5px; padding:2px 8px; margin-right:8px; vertical-align:middle; }
 .delf-level-group-label { font-weight:700; font-size:.9rem; color:var(--text-strong); vertical-align:middle; }
 .delf-level-group-cando { font-size:.82rem; color:var(--text-secondary); margin:6px 0 4px; line-height:1.5; }
@@ -5746,13 +5756,13 @@ details[open] .delf-model-summary::before { transform: rotate(90deg); }
 
 /* Marks pill in the exam header */
 .marks-pill { display:inline-block; background:var(--accent-soft); color:var(--accent-2); font-size:.72rem; font-weight:700; border-radius:5px; padding:3px 8px; }
-[data-theme="dark"] .marks-pill { background:rgba(255,255,255,.08); color:var(--text-strong); }
+body.dark .marks-pill { background:rgba(255,255,255,.08); color:var(--text-strong); }
 .mock-task-marks { font-size:.75rem; color:var(--text-muted); font-weight:600; margin-left:auto; }
 
 /* ── True/false statement grid ── */
 .tfq-grid { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin:14px 0; }
 .tfq-head { display:grid; grid-template-columns:1fr 160px; gap:12px; padding:9px 14px; background:var(--card-muted,#f0f4f8); font-size:.75rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.03em; }
-[data-theme="dark"] .tfq-head { background:rgba(255,255,255,.05); }
+body.dark .tfq-head { background:rgba(255,255,255,.05); }
 .tfq-row { display:grid; grid-template-columns:1fr 160px; gap:12px; align-items:center; padding:11px 14px; border-top:1px solid var(--border); }
 .tfq-row.is-correct { background:var(--correct-bg,rgba(22,163,74,.08)); }
 .tfq-row.is-wrong { background:var(--wrong-bg,rgba(220,38,38,.08)); }
@@ -5778,7 +5788,7 @@ details[open] .delf-model-summary::before { transform: rotate(90deg); }
 /* ── Written response ── */
 .written-wrap { margin:14px 0; }
 .written-setup { background:var(--card-muted,#f0f4f8); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; font-size:.9rem; line-height:1.6; margin-bottom:12px; color:var(--text-primary); }
-[data-theme="dark"] .written-setup { background:rgba(255,255,255,.05); }
+body.dark .written-setup { background:rgba(255,255,255,.05); }
 .written-task { font-size:.95rem; line-height:1.6; margin-bottom:12px; color:var(--text-primary); }
 .written-label { display:block; font-size:.82rem; font-weight:600; color:var(--text-secondary); margin-bottom:6px; }
 .written-input { width:100%; padding:12px 14px; border:1px solid var(--border-strong); border-radius:8px; background:var(--card); color:var(--text-primary); font-family:inherit; font-size:.92rem; line-height:1.6; resize:vertical; }
@@ -5789,31 +5799,88 @@ details[open] .delf-model-summary::before { transform: rotate(90deg); }
 .written-yours, .written-model { margin-bottom:14px; font-size:.9rem; }
 .written-yours-body, .written-model-body { border:1px solid var(--border); border-radius:8px; padding:12px 14px; margin-top:6px; white-space:pre-wrap; line-height:1.65; background:var(--card); color:var(--text-primary); }
 .written-model-body { background:var(--accent-soft); border-color:var(--accent); }
-[data-theme="dark"] .written-model-body { background:rgba(255,255,255,.06); }
+body.dark .written-model-body { background:rgba(255,255,255,.06); }
 .written-rubric { border:1px solid var(--border); border-radius:8px; overflow:hidden; }
 .written-rubric-head { padding:10px 14px; background:var(--card-muted,#f0f4f8); font-size:.82rem; font-weight:700; color:var(--text-strong); }
-[data-theme="dark"] .written-rubric-head { background:rgba(255,255,255,.05); }
+body.dark .written-rubric-head { background:rgba(255,255,255,.05); }
 .rubric-row { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 14px; border-top:1px solid var(--border); cursor:pointer; font-size:.88rem; }
 .rubric-row:hover { background:var(--card-muted,#f0f4f8); }
-[data-theme="dark"] .rubric-row:hover { background:rgba(255,255,255,.04); }
+body.dark .rubric-row:hover { background:rgba(255,255,255,.04); }
 .rubric-tick { width:17px; height:17px; accent-color:var(--accent); cursor:pointer; }
 .rubric-point { line-height:1.5; color:var(--text-primary); }
 .rubric-marks { font-size:.78rem; color:var(--text-muted); font-weight:600; white-space:nowrap; }
 .rubric-total { padding:11px 14px; border-top:1px solid var(--border); background:var(--accent-soft); font-size:.9rem; color:var(--text-strong); }
-[data-theme="dark"] .rubric-total { background:rgba(255,255,255,.06); }
+body.dark .rubric-total { background:rgba(255,255,255,.06); }
 
 /* Self-assessment note on the results screen */
 .self-assess-note { font-size:.82rem; color:var(--text-secondary); background:var(--card-muted,#f0f4f8); border-radius:8px; padding:10px 14px; margin:12px 0; line-height:1.55; }
-[data-theme="dark"] .self-assess-note { background:rgba(255,255,255,.05); }
+body.dark .self-assess-note { background:rgba(255,255,255,.05); }
 .score-section-h { font-size:.82rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.03em; margin:0 0 10px; }
 
 /* ── Unit assessment picker ── */
 .unit-exam-list { display:flex; flex-direction:column; gap:8px; margin:14px 0 4px; }
 .unit-exam-row { display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:12px 14px; border:1px solid var(--border-strong); border-radius:8px; background:var(--card); cursor:pointer; transition:border-color .12s,background .12s; }
 .unit-exam-row:hover { border-color:var(--accent); background:var(--accent-soft); }
-[data-theme="dark"] .unit-exam-row:hover { background:rgba(255,255,255,.06); }
+body.dark .unit-exam-row:hover { background:rgba(255,255,255,.06); }
 .unit-exam-icon { font-size:1.5rem; }
 .unit-exam-body { display:flex; flex-direction:column; gap:2px; }
 .unit-exam-body strong { font-size:.94rem; color:var(--text-strong); }
 .unit-exam-sub { font-size:.78rem; color:var(--text-muted); }
 .mode-unit-exam .mi { color:var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════════
+   WORKED EXAMPLES — stepped solution, then "now you try"
+   ═══════════════════════════════════════════════════════════════ */
+.lesson-worked { border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; margin:16px 0; background:var(--card); }
+body.dark .lesson-worked { background:rgba(255,255,255,.03); }
+.worked-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.worked-badge { background:var(--accent); color:#fff; font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; border-radius:4px; padding:3px 8px; }
+.worked-title { font-size:.86rem; font-weight:600; color:var(--text-secondary); }
+.worked-problem { font-size:.95rem; line-height:1.65; color:var(--text-primary); background:var(--card-muted,#f0f4f8); border-radius:8px; padding:12px 14px; margin-bottom:14px; }
+body.dark .worked-problem { background:rgba(255,255,255,.05); }
+.worked-steps-list { list-style:none; counter-reset:wstep; padding:0; margin:0 0 14px; }
+.worked-step { counter-increment:wstep; position:relative; padding:10px 0 10px 38px; border-top:1px solid var(--border); }
+.worked-step:first-child { border-top:none; }
+.worked-step::before { content:counter(wstep); position:absolute; left:0; top:10px; width:24px; height:24px; border-radius:50%; background:var(--accent-soft); color:var(--accent-2); font-size:.78rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+body.dark .worked-step::before { background:rgba(255,255,255,.1); color:var(--text-strong); }
+.worked-step-do { font-size:.93rem; line-height:1.6; color:var(--text-primary); }
+.worked-step-why { font-size:.84rem; line-height:1.55; color:var(--text-muted); margin-top:4px; font-style:italic; }
+.worked-controls { display:flex; gap:8px; flex-wrap:wrap; }
+.worked-next, .worked-all { font-size:.86rem; padding:8px 14px; }
+.worked-answer { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--correct-bg,rgba(22,163,74,.1)); border-radius:8px; padding:11px 14px; }
+.worked-answer-label { font-size:.7rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--correct-text); }
+.worked-answer-value { font-size:1rem; font-weight:700; color:var(--text-strong); }
+
+/* "Now you try" — the faded-practice half of the worked example */
+.worked-try { margin-top:16px; border-top:1px dashed var(--border-strong); padding-top:14px; }
+.worked-try-label { font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--accent-2); margin-bottom:8px; }
+.worked-try.is-correct .worked-try-label { color:var(--correct-text); }
+.worked-try.is-wrong .worked-try-label { color:var(--wrong-text); }
+.worked-try-q { font-size:.93rem; line-height:1.6; color:var(--text-primary); margin-bottom:10px; }
+.worked-try-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.worked-try-input { max-width:190px; }
+.worked-try-result { font-size:.9rem; color:var(--text-primary); margin-top:4px; }
+.worked-try-exp { font-size:.86rem; line-height:1.55; color:var(--text-secondary); margin-top:8px; }
+.worked-hint-btn { margin-top:9px; background:none; border:none; color:var(--accent); font-size:.84rem; font-weight:600; cursor:pointer; padding:0; }
+.worked-hint-btn:hover { text-decoration:underline; }
+.worked-try-hint { font-size:.86rem; line-height:1.55; color:var(--text-secondary); background:var(--accent-soft); border-radius:6px; padding:9px 12px; margin-top:8px; }
+body.dark .worked-try-hint { background:rgba(255,255,255,.06); }
+@media (max-width:480px) { .worked-try-input { max-width:100%; } .worked-try-row { flex-direction:column; align-items:stretch; } }
+
+/* Lesson checks now render numeric / gap-fill / true-false as well as MCQ */
+.lesson-player .gf-sentence { font-size:1rem; line-height:2.1; margin:14px 0; }
+.lesson-player .tfq-grid { margin:14px 0; }
+.lesson-player .numeric-input-wrap { margin:14px 0; }
+
+/* ── Diagnostic placement quiz ── */
+.diag-intro { font-size:.92rem; line-height:1.6; color:var(--text-secondary); margin-bottom:14px; }
+.diag-result { border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin:14px 0; background:var(--card); }
+body.dark .diag-result { background:rgba(255,255,255,.03); }
+.diag-result-h { font-size:1rem; font-weight:700; color:var(--text-strong); margin:0 0 6px; }
+.diag-result-p { font-size:.9rem; line-height:1.6; color:var(--text-secondary); margin:0 0 12px; }
+.diag-start-row { display:flex; gap:8px; flex-wrap:wrap; }
+.diag-unit-row { display:flex; align-items:center; gap:12px; padding:11px 14px; border-top:1px solid var(--border); }
+.diag-unit-row:first-of-type { border-top:none; }
+.diag-unit-name { flex:1; font-size:.92rem; color:var(--text-primary); }
+.diag-unit-score { font-size:.82rem; font-weight:700; }
+.diag-unit-rec { font-size:.8rem; color:var(--text-muted); }
