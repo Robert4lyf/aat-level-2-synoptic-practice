@@ -490,10 +490,67 @@ and "Sources of finance" relabelled as a Level 3 preview. `AQ2022` corrected to
 | multiselect | 12 |
 | **Total** | **631** |
 
+## 8. Depth and correctness pass (v1.3.0)
+
+Prompted by a report from a real mock-exam sitting: *"for a number of questions,
+all four possible answers do not correspond at all to the question"*, and
+*"some questions and answers are severely lacking depth and quality"*.
+
+### Answer/question mismatch
+
+49 questions had option sets belonging to entirely different questions — damage
+introduced by an earlier bulk distractor rewrite that applied option sets to
+question IDs it had never read. All 49 were restored from git history (verified
+byte-identical to the originals) and then rewritten properly, with full-sentence
+options and richer explanations.
+
+A permanent guard now runs in CI: `checkCoherence()` in
+`scripts/validate-aat-data.js` flags any question whose correct answer shares no
+content word with its own stem or explanation. It was proven to fire by
+reintroducing a known corruption. Twelve questions currently trip it; each has
+been reviewed by hand and is a false positive — a definition question whose
+answer legitimately rewords the stem.
+
+### Explanation depth
+
+79 explanations were under 100 characters. All were rewritten to explain *why*
+the answer is right and, where useful, why the distractors are wrong. No `exp`
+is now under 100 characters; the mean is 171.
+
+### Two genuine content errors found and fixed
+
+- **sc-018** — the setup said Priya *issues* a credit note, but the scenario
+  casts her as the buyer and both the explanation and the part-4 arithmetic
+  treat it as a credit note *received*. The setup and stem now say received.
+- **sc-034 part 1** — a transaction posted as two debits was labelled an "error
+  of reversal". A true reversal leaves the trial balance in agreement, which
+  contradicts part 3's £630 suspense arithmetic. Reclassified as a posting
+  error, with the reversal retained as a distractor and the contrast explained.
+
+### Length cue cleared
+
+All 26 remaining length-cue warnings (25 scenario sub-parts plus two MCQs) were
+rewritten so that every option is a comparable full phrase. The bank-wide rate at
+which the correct answer is the single longest option is now **32.7%** against a
+25% chance baseline, down from 58.4% before this work began.
+
+### Lesson depth
+
+The learning material was the weakest part of the app: 62 of 336 lesson cards
+carried a table, split, formula or worked example with **no explanatory prose at
+all** — the student saw the artefact but was never told what it meant or why it
+worked. Prose was written for every one of them.
+
+| | Before | After |
+|---|---:|---:|
+| Cards with no prose | 62 | 0 |
+| Mean prose per lesson | ~190 words | 276 words |
+| Lessons under 120 words | 9 | 0 |
+
 ### Still open
 
-- The 25 remaining length-cue warnings are all scenario sub-parts; the CI ceiling
-  should be ratcheted from 35% toward 30% as they are cleared.
 - Per-task mark allocations still come from a single mock paper. The `markRange`
   field records the assumed spread but has not been validated against AAT's own
   specification.
+- The length-cue CI ceiling is still set at 35%. With the bank now at 32.7% it
+  can be ratcheted to 33% to lock the gain in.

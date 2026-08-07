@@ -42,6 +42,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Sorting things into the five types',
+            p: [
+              'Classification is the whole job. Once you know which of the five types an item is, the debit-or-credit decision follows automatically — and if you classify it wrongly, every entry after it is wrong too.',
+              'The distinction that catches people out is **asset versus expense**. A van is an asset because the business still has it next year; the fuel put in it is an expense because it is gone.',
+              'Watch the two that look like their opposites: purchases of goods for resale are an **expense**, not an asset, and drawings reduce **capital** rather than being an expense of the business.',
+            ],
             split: {
               left: { title: 'Common assets & expenses', items: [
                 'Bank and cash — **asset**',
@@ -73,6 +78,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Using the equation',
+            p: [
+              'The accounting equation is not just a fact to memorise — it is a tool. Give it any two of assets, liabilities and capital and it produces the third.',
+              'Rearrange it rather than guessing: Assets = Capital + Liabilities, so Capital = Assets − Liabilities and Liabilities = Assets − Capital.',
+            ],
             worked: {
               title: 'Finding the missing figure',
               problem: 'A business has assets of £64,000 and liabilities of £27,500. What is the owner\'s capital?',
@@ -146,6 +155,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'The rule as a table',
+            p: [
+              'This table is the whole of double entry compressed into six lines. Every posting you will ever make is one row used twice — once on the debit side, once on the credit.',
+              'The mnemonic **DEAD CLIC** encodes it: **D**ebits increase **E**xpenses, **A**ssets and **D**rawings; **C**redits increase **L**iabilities, **I**ncome and **C**apital.',
+              'Note the symmetry — the "decrease" column is simply the mirror of the "increase" column, so there is really only one rule to learn, not twelve.',
+            ],
             table: {
               headers: ['Account type', 'Increase', 'Decrease'],
               rows: [
@@ -160,6 +174,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Working out a double entry',
+            p: [
+              'Use the same three questions every time: which two accounts are affected, is each one going up or down, and what type of account is each?',
+              'Only then apply the rule. Trying to feel your way to "debit bank or credit bank?" without naming the account type is how errors creep in.',
+            ],
             worked: {
               title: 'A cash purchase of equipment',
               problem: 'A business buys office equipment for £3,400, paying immediately by bank transfer. What is the double entry?',
@@ -180,6 +198,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Four transactions worked through',
+            p: [
+              'Read each line as a pair of decisions rather than a single fact. The account type drives the side; the direction of change drives which column it lands in.',
+              'The last row is the one to study: drawings are debited even though the business is paying money out, because drawings **reduce capital** and capital is reduced by a debit.',
+            ],
             example: {
               title: 'Applying DEAD CLIC',
               rows: [
@@ -248,6 +270,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'The shape of a T-account',
+            p: [
+              'The T is only a layout, but the layout carries meaning: the left column is always debits and the right column is always credits, in every account without exception.',
+              'Each line records the amount and the **name of the other account** in the entry — the cross-reference that lets anyone trace the matching half.',
+              'The balance is the difference between the two sides. An account with a bigger debit side carries a debit balance, and vice versa.',
+            ],
             example: {
               title: 'Bank account',
               rows: [
@@ -279,6 +306,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Posting a transaction into T-accounts',
+            p: [
+              'Post one transaction at a time, and finish it completely before starting the next. Half-posted transactions are the single most common cause of a trial balance that will not balance.',
+              'Notice what happens across the two dates: the sale creates a receivable, and the receipt clears it. The sale is recognised when it is made, not when the money arrives.',
+            ],
             worked: {
               title: 'A credit sale, then the receipt',
               problem: 'Willow Crafts sells goods on credit to a customer for £1,500 on 4 May. The customer pays in full by bank transfer on 28 May. Show the entries.',
@@ -355,6 +386,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'What each document does',
+            p: [
+              'Each document answers a different question, and that is how you tell them apart: who asked for what, what actually arrived, and what is owed.',
+              'A delivery note is never a demand for money, and an invoice is never proof of delivery. Confusing the two is the most common error in this task.',
+            ],
             table: {
               headers: ['Document', 'Who sends it', 'What it does'],
               rows: [
@@ -380,6 +415,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Invoice or credit note?',
+            p: [
+              'A credit note is not a cancelled invoice. It is a separate document that reduces a balance already recorded, and the original invoice stays in the records.',
+              'Issue one when goods are returned, when an overcharge is found, or when a price is reduced after the event.',
+            ],
             split: {
               left: { title: 'Invoice', items: [
                 'Issued when goods or services are supplied',
@@ -397,6 +436,9 @@ window.LEARN_PATH = [
           },
           {
             h: 'Checking an invoice',
+            p: [
+              'Check in a fixed order — quantities against the goods received note, prices against the purchase order, then trade and settlement discounts, then the VAT. A fixed order is what stops something being missed.',
+            ],
             worked: {
               title: 'Does the invoice add up?',
               problem: 'An invoice shows 40 units at £12.50 each, less a 10% trade discount, plus VAT at 20%. The supplier has billed a total of £540.00. Is that right?',
@@ -691,6 +733,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Capital vs Revenue — side by side',
+            p: [
+              'The quickest test is to ask what the money bought: a *thing* the business will still own next year, or a *service consumed* this year.',
+              'A second test settles most exam cases — did the spending **increase** what the asset can do, or merely **maintain** what it already did? Enhancement is capital; upkeep is revenue.',
+              'Receipts split the same way. Selling a delivery van is a capital receipt; selling the goods it carried is a revenue receipt.',
+            ],
             split: {
               left: { title: 'Capital expenditure', items: ['Buys or improves assets', 'Benefit spans > 1 year', 'Goes to balance sheet', 'Depreciated over time', 'E.g. new van £15,000'] },
               right: { title: 'Revenue expenditure', items: ['Day-to-day running cost', 'Benefit ≤ 1 year', 'Goes to income statement', 'Expensed immediately', 'E.g. van repair £300'] },
@@ -698,6 +745,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Borderline examples',
+            p: [
+              'The hard cases nearly always involve money spent on a non-current asset *after* it was bought.',
+              'Anything needed to **get the asset ready for its first use** is capital, even when it looks like an expense: delivery, installation, legal fees on a building, testing before it goes into service.',
+              'Anything that only **keeps it working** is revenue: servicing, replacing a worn part, road tax, insurance, cleaning.',
+            ],
             example: {
               title: 'CapEx or RevEx?',
               rows: [
@@ -783,6 +835,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'VAT control account',
+            p: [
+              'The VAT control account brings both sides of VAT together so that only the **net** amount is ever settled with HMRC.',
+              'It is normally a liability, so a credit balance means VAT is owed to HMRC and a debit balance means a refund is due. Input VAT sits on the debit side because it is recoverable.',
+            ],
             split: {
               left: { title: 'Debit side (input VAT)', items: ['VAT on purchases', 'VAT on expenses', 'VAT refunds from HMRC', 'Reduces what is owed'] },
               right: { title: 'Credit side (output VAT)', items: ['VAT on sales', 'VAT on other income', 'Increases what is owed', 'Credit balance = owe HMRC'] },
@@ -854,6 +910,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Which document does what?',
+            p: [
+              'The documents fall into three jobs: **requesting** goods, **evidencing** their movement, and **demanding or acknowledging** money.',
+              'A statement of account is a periodic summary, not a fresh charge. Treating it as a new liability — or paying against it instead of the individual invoices — is a classic error.',
+            ],
             example: {
               title: 'Key source documents',
               rows: [
@@ -880,6 +940,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Inside the sales daybook',
+            p: [
+              'The daybook lists each invoice across net, VAT and gross columns. Only the **totals** are posted to the ledger, which is exactly what makes daybooks efficient.',
+              'Cross-cast before posting: net plus VAT must equal gross on every line and in the totals, and the gross total is the figure that goes to the SLCA.',
+            ],
             example: {
               title: 'Sales daybook — example entries',
               rows: [
@@ -997,6 +1061,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'From transaction to trial balance',
+            p: [
+              'Everything in bookkeeping runs along this one chain, and every task in the assessment sits somewhere on it. Knowing where you are on the chain usually tells you what the question wants.',
+              'Note where the double entry actually starts. The daybook is a **listing** record and is not part of the double entry; the entry begins when the daybook totals are posted to the ledger.',
+            ],
             flow: ['Source document', 'Book of prime entry (daybook)', 'Ledger account (general + personal)', 'Trial balance (all general ledger balances)'],
           },
         ],
@@ -1455,6 +1523,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Prevent, detect, correct',
+            p: [
+              'Controls do three different jobs, and a system needs all three. Preventive controls stop an error happening, detective controls find it afterwards, and corrective controls put it right.',
+              'No preventive control is perfect, which is why detection matters — and detection is worthless without a correction routine, which is where journals and suspense accounts come in.',
+              'When an assessment asks you to "identify a control", say **what it prevents or detects**, not just what it is. That is where the mark sits.',
+            ],
             split: {
               left: { title: 'Preventive controls', items: [
                 'Authorisation limits before payments go out',
@@ -1537,6 +1610,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'What goes into the SLCA',
+            p: [
+              'Every item here is something that changes what customers owe **in total**. If it does not change the total owed by customers, it does not belong in this account.',
+              'Sort each item by asking whether it increases or decreases the debt. Increases go on the debit side, decreases on the credit side — the same rule as any other asset account.',
+              'The two most-missed credit items are the **contra** with the PLCA and a **dishonoured cheque**, which goes the other way and increases the debt again.',
+            ],
             example: {
               title: 'Sales ledger control account',
               rows: [
@@ -1560,6 +1638,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Building a control account',
+            p: [
+              'Build it as an account rather than as a sum. Opening balance and increases on the debit side, decreases on the credit side, then balance it off.',
+              'Doing it that way makes the arithmetic self-checking and matches the layout the assessment asks for.',
+            ],
             worked: {
               title: 'Finding the closing balance',
               problem: 'At 1 June the SLCA showed £18,400. During June: credit sales £52,000; receipts from customers £47,300; sales returns £1,900; irrecoverable debts written off £600. What is the closing balance?',
@@ -1629,6 +1711,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Errors the trial balance does NOT reveal',
+            p: [
+              'Every error below leaves total debits equal to total credits, which is precisely why the trial balance cannot see them. Something was posted — just not the right something.',
+              'That makes them the dangerous family: the accounts *look* correct. Only a reconciliation, a supplier statement or a physical check will bring them out.',
+              'Learn the six as a set — omission, commission, principle, compensating, original entry, reversal — because the exam asks you to name the type, not just spot the mistake.',
+            ],
             table: {
               headers: ['Error', 'What happened', 'Example'],
               rows: [
@@ -1643,6 +1730,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Commission vs principle',
+            p: [
+              'These two are confused more often than any other pair, and assessments exploit that.',
+              'Ask one question: **was it posted to the right *type* of account?** Right type but wrong individual account is commission. Wrong type altogether is principle.',
+              'Commission stays inside one class — one receivable instead of another. Principle crosses classes — an asset recorded as an expense.',
+            ],
             split: {
               left: { title: 'Error of commission', items: [
                 'Wrong account, but of the **correct type**',
@@ -1671,6 +1763,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Classifying an error',
+            p: [
+              'Work through every error in the same order: what was actually posted, what should have been posted, and are the two sides still equal?',
+              'Only the third question tells you whether a suspense account is involved — and that is usually the mark on offer.',
+            ],
             worked: {
               title: 'Which error is it, and does the trial balance agree?',
               problem: 'A business buys a new laptop for £900 and posts: Dr Office expenses £900, Cr Bank £900. Classify the error and state whether the trial balance will agree.',
@@ -1734,6 +1830,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'The layout',
+            p: [
+              'A journal has a fixed shape, and marks are given for using it: date, the account debited first, the account credited underneath, the two amounts in separate columns, then a narrative.',
+              'The **narrative** is not decoration. It is the audit trail explaining why a non-routine entry was made, and an assessment that asks for a journal usually expects one.',
+            ],
             example: {
               title: 'Journal entry',
               rows: [
@@ -1757,6 +1857,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Correcting an error of principle',
+            p: [
+              'Correcting an error is a three-part thought, not a single entry: what was posted, what should have been posted, and what entry moves you from one to the other.',
+              'Here both sides of the original entry were equal, so the trial balance balanced and no suspense account is involved — only the wrong account needs moving.',
+            ],
             worked: {
               title: 'From wrong to right in one journal',
               problem: 'A van costing £9,600 was posted: Dr Motor expenses £9,600, Cr Bank £9,600. Correct it.',
@@ -2006,6 +2110,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Which errors affect the trial balance?',
+            p: [
+              'The dividing line is whether debits still equal credits after the mistake. If they do, the trial balance stays silent and no suspense account arises.',
+              'That matters practically: only the errors in the right-hand column will ever be caught by the trial balance, so the others need a different control — a reconciliation or a physical check — to surface them.',
+            ],
             split: {
               left: { title: 'Do NOT affect TB', items: ['Omission', 'Commission', 'Principle', 'Original entry', 'Reversal', 'Compensating'] },
               right: { title: 'DO affect TB', items: ['Single-sided entry', 'Wrong amount on one side only', 'Posted to wrong side of one account', 'These create a suspense account'] },
@@ -2039,6 +2147,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Correcting errors: the rule',
+            p: [
+              'This sequence works for every correction, including the ones that look unfamiliar. Never try to write the correcting journal straight from the description of the error.',
+              'One case needs care: a **reversal**, where the entry went in the right accounts but on the wrong sides. Correcting it takes **double** the original amount — once to cancel the wrong entry and once to make the right one.',
+            ],
             formula: 'Step 1: Identify what was posted · Step 2: Identify what should have been posted · Step 3: Journal the difference to move from wrong to right',
             callout: { kind: 'key', text: '**Key:** To reverse a wrong debit, credit the same account for the same amount. Then post the correct entry. Alternatively, use a single net journal that achieves both steps at once.' },
           },
@@ -2093,6 +2205,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'The employer\'s total payroll cost',
+            p: [
+              'The figure charged to the income statement is **not** the amount employees receive. It is gross pay plus the employer’s own contributions.',
+              'Employee deductions are not an extra cost — they are part of gross pay, simply redirected to HMRC or the pension scheme instead of to the employee.',
+              'Employer NIC and employer pension sit **on top** of gross pay, which is why total payroll cost always exceeds the payroll’s gross figure.',
+            ],
             formula: 'Total employer cost = Gross pay + Employer NIC + Employer pension · Net pay = Gross pay − PAYE − Employee NIC − Employee pension',
           },
           {
@@ -2112,6 +2229,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Journal 2: paying out',
+            p: [
+              'The first journal recognised the expense; this one settles the liabilities that journal created. Nothing new is charged to profit here.',
+              'Each payment is a debit to the relevant liability or control account and a credit to bank: net pay to the employees, PAYE and NIC to HMRC, pension contributions to the scheme.',
+            ],
             example: {
               title: 'Payment journals — clearing wages control',
               rows: [
@@ -2214,6 +2335,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Write-off vs allowance',
+            p: [
+              'The difference is certainty. A write-off deals with a specific debt you now know will not be paid; an allowance covers the general risk that some of the remaining debts will not be.',
+              'That is why only the write-off touches the SLCA. An allowance is an estimate about receivables in general, so it sits in its own account and the receivables ledger stays intact.',
+              'Both are charged to the same expense, so profit falls either way — but only the write-off changes the amount an individual customer is shown as owing.',
+            ],
             split: {
               left: { title: 'Irrecoverable debt write-off', items: ['Specific debt confirmed uncollectable', 'Dr Irrecoverable debts expense', 'Cr SLCA (removes debt)', 'Reduces the SLCA balance', 'Affects actual receivables figure'] },
               right: { title: 'Allowance for doubtful debts', items: ['Estimated % of receivables uncertain', 'Dr Irrecoverable debts expense', 'Cr Allowance account (not SLCA)', 'SLCA unchanged', 'Shown net of allowance on balance sheet'] },
@@ -2280,6 +2406,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'The full SLCA reconciliation',
+            p: [
+              'Lay it out as an account, not a list. Anything that **increases** what customers owe goes on the debit side; anything that **reduces** it goes on the credit side.',
+              'The closing balance you arrive at is the figure that must agree with the total of the memorandum sales ledger.',
+            ],
             example: {
               title: 'SLCA workthrough',
               rows: [
@@ -2313,6 +2443,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'The PLCA follows the same logic',
+            p: [
+              'The Purchases Ledger Control Account is the mirror image. It is a **liability**, so its normal balance is a credit and every side swaps over.',
+              'Credit purchases increase the balance (credit); payments, returns outwards and discounts received reduce it (debit).',
+              'A **contra** — where the same party is both customer and supplier — hits both accounts at once: Dr PLCA, Cr SLCA, settling the two balances against each other.',
+            ],
             split: {
               left: { title: 'SLCA (customers owe us)', items: ['Dr: Opening, Credit sales', 'Cr: Receipts, Returns, Bad debts, Discounts allowed, Contras', 'Balance = total owed by customers'] },
               right: { title: 'PLCA (we owe suppliers)', items: ['Cr: Opening, Credit purchases', 'Dr: Payments, Returns, Discounts received, Contras', 'Balance = total owed to suppliers'] },
@@ -2767,6 +2902,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Cost units and cost centres',
+            p: [
+              'The two are easy to confuse because both collect costs. The difference is **what** versus **where**: a cost unit is the thing being costed, a cost centre is the place costs are gathered before being charged on.',
+              'They work together. Overheads are collected in cost centres first, then absorbed into cost units — which is the whole basis of absorption costing later in the unit.',
+            ],
             split: {
               left: { title: 'Cost unit', items: [
                 'The **thing** whose cost you are measuring',
@@ -2856,6 +2995,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Direct and indirect',
+            p: [
+              'The test for a direct cost is **traceability, not size**. A cost can be enormous and still indirect: factory rent belongs to no single unit.',
+              'Prime cost totals the direct costs only. Add absorbed production overhead to prime cost and you have the full production cost per unit.',
+            ],
             split: {
               left: { title: 'Direct costs', items: [
                 'Traceable to a single cost unit',
@@ -2876,6 +3019,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Cost behaviour',
+            p: [
+              'Behaviour is always described **in total** and only within the **relevant range** — the band of activity over which current capacity and the existing cost structure hold.',
+              'Watch the total-versus-per-unit flip: a fixed cost is constant in total but falls per unit as output rises, while a variable cost is constant per unit but rises in total.',
+            ],
             table: {
               headers: ['Type', 'Total cost as activity rises', 'Cost per unit as activity rises', 'Example'],
               rows: [
@@ -2896,6 +3043,9 @@ window.LEARN_PATH = [
           },
           {
             h: 'Classifying and calculating',
+            p: [
+              'Read each cost twice — once asking "can I trace it to a unit?" and once asking "does it change when output changes?" The two answers are independent of each other.',
+            ],
             worked: {
               title: 'Total cost at two activity levels',
               problem: 'A workshop has fixed costs of £18,000 per month and variable costs of £7.50 per unit. What is the total cost at 2,000 units, and what is the cost per unit?',
@@ -2968,6 +3118,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Calculating a reorder level',
+            p: [
+              'Control levels are built from usage and lead time, so identify which version of each figure the question gives you — maximum, minimum or average — before substituting anything.',
+              'The reorder level uses the **maximum** of both because its job is to survive the worst case: heaviest usage during the longest delay.',
+            ],
             worked: {
               title: 'When should we order?',
               problem: 'A component is used at a maximum rate of 400 units per week. The maximum lead time from the supplier is 3 weeks. Average usage is 300 units per week and average lead time is 2 weeks. Calculate the reorder level and the minimum level.',
@@ -2997,6 +3151,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'The effect of rising prices',
+            p: [
+              'The whole comparison holds only while prices are **rising**. Reverse the direction of prices and every row reverses with it.',
+              'The reason is mechanical: FIFO issues the old cheap costs and leaves the new dear ones in stock, while AVCO blends the two — which is why it always lands between.',
+            ],
             table: {
               headers: ['When prices are rising', 'FIFO', 'AVCO'],
               rows: [
@@ -3058,6 +3216,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Choosing an apportionment basis',
+            p: [
+              'A basis is defensible when it reflects **what causes the cost to be incurred**. Rent is caused by occupying floor space; canteen costs are caused by the number of people.',
+              'There is rarely one right answer, but there is a wrong one: a basis with no causal link to the cost distorts every unit cost that flows out of it.',
+            ],
             table: {
               headers: ['Overhead', 'Sensible basis'],
               rows: [
@@ -3079,6 +3241,9 @@ window.LEARN_PATH = [
           },
           {
             h: 'Calculating an OAR and absorbing overhead',
+            p: [
+              'Two separate calculations at two different times: the rate is set from **budgeted** figures before the period, then overhead is absorbed using **actual** activity during it.',
+            ],
             worked: {
               title: 'Setting the rate and applying it',
               problem: 'A department budgets overheads of £48,000 and 6,000 labour hours. Actual hours worked were 6,200 and actual overheads £49,000. Calculate the OAR, the overhead absorbed, and the under- or over-absorption.',
@@ -3099,6 +3264,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Under- and over-absorption',
+            p: [
+              'Compare absorbed overhead with actual overhead and let the direction tell you the name: absorbed more than actual is over-absorption, absorbed less is under-absorption.',
+              'Because absorbed overhead is OAR × **actual** activity, the difference can come from the overhead figure, the activity figure, or both.',
+            ],
             split: {
               left: { title: 'Under-absorption', items: [
                 'Absorbed **less than** actual overhead',
@@ -3274,6 +3443,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Break-even worked example',
+            p: [
+              'The steps run in a fixed order because each depends on the one above. Contribution per unit comes first; nothing else can be calculated until it is known.',
+              'The target-profit line uses the same formula as break-even with the profit simply added to fixed costs — treat the profit as one more cost that contribution has to cover.',
+            ],
             example: {
               title: 'Selling price £25/unit · Variable cost £15/unit · Fixed costs £48,000 · Target profit £12,000',
               rows: [
@@ -3348,6 +3521,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Calculating the OAR',
+            p: [
+              'The rate must be fixed **before** the period starts, because a job costed in March cannot wait until December for the actual overhead figure.',
+              'That is why both inputs are budgeted. The choice of basis matters too: machine hours in an automated department, labour hours in a labour-intensive one — whichever actually drives the overhead.',
+            ],
             formula: 'OAR = Budgeted overheads ÷ Budgeted activity level · Common bases: machine hours, labour hours, units produced',
             example: {
               title: 'OAR example',
@@ -3370,6 +3547,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Under vs over absorption',
+            p: [
+              'Under- and over-absorption exist only because the OAR was an estimate. If budget and actual ever matched exactly, neither would arise.',
+              'Either input can cause it — actual overheads differing from budget, actual activity differing from budget, or both at once.',
+              'The adjustment does not change the unit cost already charged to products. It is a single period-end correction in the income statement.',
+            ],
             split: {
               left: { title: 'Under-absorption', items: ['Absorbed < Actual overheads', 'Not enough overheads charged', 'Debit to income statement', 'Reduces profit'] },
               right: { title: 'Over-absorption', items: ['Absorbed > Actual overheads', 'Too many overheads charged', 'Credit to income statement', 'Increases profit'] },
@@ -3377,6 +3559,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Building the full unit cost',
+            p: [
+              'Absorption costing builds the unit cost in layers: direct costs first, then variable overhead, then fixed overhead brought in through the OAR.',
+              'The result is the figure used to value closing inventory in the financial statements, and the long-run floor below which a selling price makes a loss.',
+            ],
             example: {
               title: 'Full cost per unit',
               rows: [
@@ -3440,6 +3626,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'FIFO step by step',
+            p: [
+              'FIFO is an assumption about **cost flow, not physical movement**. The stores may hand over whichever box is nearest; the valuation still charges the oldest cost first.',
+              'Work the stores record one line at a time and keep the balance split into price layers. The layer you use up first is always the oldest one.',
+            ],
             example: {
               title: 'FIFO: 10 units at £4, then 10 at £5; issue 8 units',
               rows: [
@@ -3453,6 +3643,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'AVCO step by step',
+            p: [
+              'Under AVCO the balance is never split into layers — there is only ever one figure, the current weighted average.',
+              'Recalculate it on every **receipt**: total value ÷ total units. Issues never change the average; they simply remove units at the rate already in force.',
+            ],
             example: {
               title: 'AVCO: same data — recalculate average on each receipt',
               rows: [
@@ -3465,6 +3659,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'FIFO vs AVCO — comparison',
+            p: [
+              'Neither method is "more correct". They divide the same total cost differently between cost of sales and closing inventory, and over the life of the stock the two converge.',
+              'The choice matters in the short run because it shifts profit between periods — which is why a business must apply its chosen method consistently.',
+            ],
             split: {
               left: { title: 'FIFO', items: ['Oldest stock issued first', 'Closing stock at latest prices', 'Higher closing stock in inflation', 'Lower COGS in inflation → higher profit'] },
               right: { title: 'AVCO', items: ['Issues at average price', 'Recalculate average each receipt', 'Smooths price fluctuations', 'Profit between FIFO and LIFO'] },
@@ -3550,6 +3748,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Worked example',
+            p: [
+              'Take the figures strictly in order: contribution per unit, then break-even, then margin of safety. Each line feeds the next, so an early slip carries all the way down.',
+              'Sense-check the answer. Margin of safety can never exceed budgeted sales, and break-even units round **up** — a part unit does not cover the fixed costs.',
+            ],
             example: {
               title: 'Break-even analysis: SP £25, VC £15, FC £48,000, budgeted 6,000 units',
               rows: [
@@ -3625,6 +3827,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Step 1 — calculate variable cost per unit',
+            p: [
+              'The logic is simple: between the highest and lowest activity levels the fixed cost has not moved at all, so the **whole** change in total cost must be variable.',
+              'Choose the two rows by **activity level, not by cost**. The dearest month is not always the busiest, and picking on cost is the most common way to lose these marks.',
+            ],
             formula: 'Variable cost per unit = (Total cost at highest activity − Total cost at lowest activity) ÷ (Units at highest − Units at lowest)',
           },
           {
@@ -3643,6 +3849,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Worked example',
+            p: [
+              'Set the two data points one above the other and subtract, so the arithmetic stays visible and a transposition is easy to spot.',
+              'Once the cost equation is built, test it against the other data point — substituting the low activity level should reproduce the low total cost exactly.',
+            ],
             example: {
               title: 'High-low: find fixed and variable elements',
               rows: [
@@ -3758,6 +3968,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Complete variance statement',
+            p: [
+              'Read a variance statement line by line and label each one before interpreting anything. **Favourable** means better than budget — higher revenue or lower cost; **adverse** means worse.',
+              'The direction is not the same on both sides: costs above budget are adverse, but revenue above budget is favourable. Reading a cost variance as though it were revenue is the classic error here.',
+              'A variance is a prompt to investigate, not a verdict. A favourable materials variance may simply mean cheaper, poorer material was bought — which shows up later as waste.',
+            ],
             example: {
               title: 'Budgeted output 1,000 units · Actual output 1,000 units',
               rows: [
@@ -4118,6 +4333,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Two sources of law',
+            p: [
+              'English law is not written down in one place. It comes from Parliament and from the accumulated decisions of judges, and both are binding.',
+              'Where the two conflict, statute wins. Parliament can pass an Act that overturns a decided case; a court cannot overturn an Act.',
+            ],
             split: {
               left: { title: 'Case law (common law)', items: [
                 'Made by **judges** deciding individual cases',
@@ -4143,6 +4362,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Criminal law and civil law',
+            p: [
+              'The row that carries most marks is the **standard of proof**. Criminal cases must be proved beyond reasonable doubt; civil cases only on the balance of probabilities.',
+              'That difference explains why the same facts can fail as a prosecution and still succeed as a civil claim — the claimant has a lower bar to clear.',
+              'Notice the language too. Criminal cases are *prosecuted* and end in *punishment*; civil cases are *sued* and end in a *remedy*.',
+            ],
             table: {
               headers: ['', 'Criminal law', 'Civil law'],
               rows: [
@@ -4221,6 +4445,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Express and implied terms',
+            p: [
+              'A contract contains more than the parties wrote down. Terms implied by statute apply whether or not anyone mentioned them, and cannot usually be excluded in a consumer contract.',
+              'That is the practical point for a business: agreeing nothing about quality does not mean there is no quality obligation — the legislation supplies one.',
+            ],
             split: {
               left: { title: 'Express terms', items: [
                 'Actually stated by the parties',
@@ -4238,6 +4466,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Working out whether a contract exists',
+            p: [
+              'Test the four elements in order: offer, acceptance, consideration, and intention to create legal relations. If any one is missing there is no contract.',
+              'Acceptance must be **unqualified**. A reply that changes any term is a counter-offer, which destroys the original offer rather than accepting it.',
+            ],
             worked: {
               title: 'Applying the four essentials',
               problem: 'A wholesaler emails a retailer: "We can supply 200 units at £15 each, delivery next Friday." The retailer replies: "Agreed, but we need delivery on Wednesday." The wholesaler does not respond. Is there a contract?',
@@ -4313,6 +4545,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'The four main structures',
+            p: [
+              'Two columns do most of the work. **Separate legal personality** determines whether the business can own property and be sued in its own name, and **liability** determines whether the owner\'s personal assets are at risk.',
+              'The two travel together: separate legal personality is what makes limited liability possible, because the debts belong to the company and not to its members.',
+              'Public filing is the price of that protection — limited companies and LLPs must file accounts at Companies House, where anyone can read them.',
+            ],
             table: {
               headers: ['Structure', 'Separate legal person?', 'Owner liability', 'Public filing?'],
               rows: [
@@ -4325,6 +4562,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Sole traders and partnerships',
+            p: [
+              'Neither structure is separate from its owners in law, so in both cases the owner\'s personal assets stand behind the business debts.',
+              'The partnership default matters in assessments: with no partnership agreement, the Partnership Act 1890 applies — profits shared **equally** regardless of what each partner put in.',
+              '"Jointly liable" is stronger than it sounds. A creditor can pursue one partner for the whole debt, leaving that partner to recover from the others.',
+            ],
             split: {
               left: { title: 'Sole trader', items: [
                 'One owner, in business on their own account',
@@ -4437,6 +4679,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'The eight tasks',
+            p: [
+              'Two tasks are **human-marked extended written response** — task 4 in part and task 7 — and together they carry around a third of the paper. Practising the calculations alone leaves those marks untouched.',
+              'Notice the spread. No single unit dominates: the paper draws on the business environment material heavily, with bookkeeping and control account work threaded through it.',
+              'Use the mark allocation to budget your time. In a two-hour paper, a 22-mark task deserves roughly a quarter of your time and a 7-mark task considerably less.',
+            ],
             table: {
               headers: ['Task', 'Marks', 'Content'],
               rows: [
@@ -4700,6 +4947,11 @@ window.LEARN_PATH = [
           },
           {
             h: 'Safeguards',
+            p: [
+              'Safeguards come from two directions, and an answer that names only one side is only half an answer.',
+              'Match the safeguard to the threat. A self-review threat is answered by independent review; a familiarity threat by rotating staff; an intimidation threat by escalating within the firm.',
+              'Where no safeguard can reduce a threat to an acceptable level, the correct answer is to **decline or withdraw** from the engagement.',
+            ],
             split: {
               left: { title: 'Created by the profession', items: ['CPD requirements', 'AAT Code of Ethics', 'Disciplinary procedures', 'Regulatory oversight'] },
               right: { title: 'In the work environment', items: ['Internal policies and procedures', 'Independent review', 'Audit committees', 'Rotation of staff on engagements'] },
@@ -4782,6 +5034,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'Interest rates and business',
+            p: [
+              'The Bank of England’s base rate feeds through to two different things at once: what a business pays to borrow, and what its customers can afford to spend.',
+              'A rate rise therefore squeezes from both sides — a dearer overdraft or loan, and weaker demand as households have less left after mortgage costs.',
+            ],
             split: {
               left: { title: 'Higher interest rates', items: ['Borrowing more expensive', 'Reduced consumer spending', 'Investment may fall', 'Currency often strengthens'] },
               right: { title: 'Lower interest rates', items: ['Cheaper borrowing', 'More consumer spending', 'Investment encouraged', 'Currency may weaken'] },
@@ -4789,6 +5045,10 @@ window.LEARN_PATH = [
           },
           {
             h: 'The economic cycle',
+            p: [
+              'The economy moves through recurring phases rather than growing in a straight line, and each phase calls for a different response from a business.',
+              'Two consecutive quarters of falling GDP is the conventional definition of a recession — a definition that is worth knowing verbatim.',
+            ],
             flow: ['Expansion (boom)', 'Peak', 'Contraction (recession)', 'Trough', 'Recovery'],
           },
           {
@@ -4842,6 +5102,11 @@ window.LEARN_PATH = [
         cards: [
           {
             h: 'Short-term vs long-term finance',
+            p: [
+              'The governing principle is **matching**: finance a long-life asset with long-term finance, and short-term working capital needs with short-term finance.',
+              'Funding a building on an overdraft is the classic mismatch — the overdraft is repayable on demand while the asset takes years to pay for itself.',
+              'Each source carries a different cost and a different loss of control. Borrowing must be repaid with interest; issuing shares need not be repaid but dilutes the owners.',
+            ],
             split: {
               left: { title: 'Short-term (< 1 year)', items: ['Bank overdraft', 'Trade credit (credit from suppliers)', 'Invoice finance (factoring/discounting)', 'Short-term bank loan'] },
               right: { title: 'Long-term (> 1 year)', items: ['Bank loan (term loan)', 'Hire purchase', 'Leasing', 'Share capital (companies only)', 'Retained profits', 'Grants'] },

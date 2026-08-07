@@ -245,7 +245,7 @@ for (const q of Q) {
 // four-option MCQ; anything far above that is a measurement problem, not a
 // question-writing style.
 const CUE_RATIO = 1.4;          // key longer than this multiple of mean distractor → flagged
-const CUE_CEILING_PCT = 35;     // bank-wide longest-is-correct rate that fails the build
+const CUE_CEILING_PCT = 33;     // bank-wide longest-is-correct rate that fails the build
 
 const cueCandidates = [];
 function collectCue(id, q, ctx) {
@@ -271,6 +271,55 @@ const longestCount = cueCandidates.filter(c => c.isLongest).length;
 const longestPct = cueCandidates.length ? (longestCount / cueCandidates.length) * 100 : 0;
 if (longestPct > CUE_CEILING_PCT) {
   err('(bank)', `correct answer is the longest option in ${longestPct.toFixed(1)}% of MCQs (${longestCount}/${cueCandidates.length}) — ceiling is ${CUE_CEILING_PCT}%, chance is 25%`);
+}
+
+// ── Answer-coherence check. ──────────────────────────────────────────────────
+// A bulk distractor rewrite once landed option sets on the wrong questions —
+// "In a general partnership, partners' liability is:" answered by "Government
+// policy on taxation and public spending". Structurally valid, completely wrong.
+// The key should share some vocabulary with its own stem or explanation; when it
+// shares none at all, the pair is very likely mismatched.
+const COHERENCE_STOP = new Set(['that','this','with','from','which','their','they','have','been',
+  'when','what','into','than','then','there','these','those','will','would','should','could',
+  'because','the','and','for','are','not','following','statements','identify','whether','true',
+  'false','business','account','accounts','cost','costs','amount','amounts']);
+const contentWords = (t) => new Set(String(t || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ')
+  .split(/\s+/).filter(w => w.length > 3 && !COHERENCE_STOP.has(w)));
+
+let incoherent = 0;
+function checkCoherence(id, q, ctx) {
+  if (!Array.isArray(q.opts) || !Number.isInteger(q.ans) || !q.opts[q.ans]) return;
+  const ref = new Set([...contentWords(q.q), ...contentWords(q.exp)]);
+  const key = [...contentWords(q.opts[q.ans])];
+  if (key.length < 3) return;                 // short keys carry too little signal
+  const shared = key.filter(w => ref.has(w)).length;
+  if (shared === 0) {
+    incoherent++;
+    warn(ctx ? `${id} (${ctx})` : id,
+      `correct answer shares no wording with its question or explanation — check the option set belongs to this question ("${String(q.opts[q.ans]).slice(0, 60)}")`);
+  }
+}
+for (const q of Q) {
+  const type = q.type || 'mcq';
+  if (type === 'mcq') checkCoherence(q.id, q);
+  else if (type === 'scenario' && Array.isArray(q.parts)) {
+    q.parts.forEach((p, i) => { if (!p.type || p.type === 'mcq') checkCoherence(q.id, p, `part ${i + 1}`); });
+  }
+}
+// A handful of legitimate questions phrase the key entirely in synonyms, so this
+// is a warning with a ceiling rather than a hard failure per question.
+if (incoherent > 25) {
+  err('(bank)', `${incoherent} questions have a correct answer sharing no wording with their stem or explanation — that is well above the expected handful of synonym cases, and suggests option sets have been applied to the wrong questions`);
+}
+
+// ── Explanation-depth check. ─────────────────────────────────────────────────
+// A one-line explanation confirms the answer without teaching anything. The
+// explanation is what a student reads after getting it wrong, so it is the most
+// valuable text in the bank.
+const shallow = Q.filter(q => (q.type || 'mcq') === 'mcq' && q.exp && String(q.exp).length < 80);
+shallow.forEach(q => warn(q.id, `explanation is only ${String(q.exp).length} characters — say why the answer is right, not just what it is`));
+if (shallow.length > 20) {
+  err('(bank)', `${shallow.length} MCQ explanations are under 80 characters — the ceiling is 20`);
 }
 
 // ── Report. ──────────────────────────────────────────────────────────────────
