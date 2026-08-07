@@ -17,10 +17,14 @@ jobs:
           node-version: 20
       - name: Verify CSP whitelists every inline script
         run: npm run check:csp
+      - name: Check theme tokens (dark-mode alias staleness)
+        run: npm run check:theme
       - name: Validate AAT question bank
         run: npm run validate:aat
       - name: Check question integrity (option shuffling, answer keys)
         run: npm run check:integrity
+      - name: Check AAT Level 3 syllabus integrity and coverage
+        run: npm run check:aat3
       - name: Validate story-mode data (marks, flags, reachable buckets)
         run: npm run validate:story
       - name: Validate French question data

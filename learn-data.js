@@ -2,6 +2,7 @@
 window.LEARN_PATH = [
   {
     unit: 'itbk',
+    level: 2,
     title: 'Introduction to Bookkeeping',
     lessons: [
       /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
@@ -1493,6 +1494,7 @@ window.LEARN_PATH = [
   },
   {
     unit: 'pobc',
+    level: 2,
     title: 'Principles of Bookkeeping Controls',
     lessons: [
       /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
@@ -2872,6 +2874,7 @@ window.LEARN_PATH = [
   },
   {
     unit: 'poc',
+    level: 2,
     title: 'Principles of Costing',
     lessons: [
       /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
@@ -4312,6 +4315,7 @@ window.LEARN_PATH = [
   },
   {
     unit: 'besy',
+    level: 2,
     title: 'The Business Environment',
     lessons: [
       /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
@@ -5789,6 +5793,8 @@ window.LEARN_PATH = [
      ══════════════════════════════════════════════════════════ */
   {
     unit: 'faps',
+    level: 3,
+    preview: true,
     title: 'Financial Accounting: Preparing Financial Statements',
     lessons: [
       {
@@ -6082,6 +6088,8 @@ window.LEARN_PATH = [
   },
   {
     unit: 'mats',
+    level: 3,
+    preview: true,
     title: 'Management Accounting Techniques',
     lessons: [
       {
@@ -6237,6 +6245,8 @@ window.LEARN_PATH = [
   },
   {
     unit: 'tpfb',
+    level: 3,
+    preview: true,
     title: 'Tax Processes for Businesses',
     lessons: [
       {
@@ -6309,73 +6319,115 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-tpfb-2',
-        title: 'Income Tax for Sole Traders',
+        title: 'Payroll: employer duties and RTI',
         icon: '💷',
         skills: [],
         cards: [
           {
-            h: 'Computing Taxable Trading Profit',
+            h: 'What payroll actually asks of an employer',
             p: [
-              'Start with **accounting net profit**, then adjust for tax:',
-              '**Add back** disallowable expenses (depreciation, drawings, private costs, fines).',
-              '**Deduct** capital allowances (the tax equivalent of depreciation).',
-              'The result is **taxable trading profit** — the figure HMRC taxes.',
+              'Payroll is operated by anyone who employs staff, and **HMRC is the tax authority for it**. Registering as an employer is required before the first payday, not after it.',
+              'HMRC can compel compliance on registration, record keeping, submitting returns and paying what is due — and it has rights of **inspection of records and visits**.',
+              'Records must be kept in a prescribed form, held for the required retention period, and — because they are employee personal data — handled under data protection principles.',
             ],
-            formula: 'Taxable profit = Accounting profit + Disallowable expenses − Capital allowances',
-            callout: { kind: 'warning', text: 'Depreciation is ALWAYS disallowable — add it back to accounting profit in every question. Replace it with capital allowances.' },
+            callout: { kind: 'key', text: 'At Level 3 you are examined on the **employer\'s obligations and the process**, not on computing the tax itself. That distinction is what the whole outcome turns on.' },
           },
           {
-            h: 'Capital Allowances',
+            h: 'The four pay figures, and why they differ',
             p: [
-              '**Annual Investment Allowance (AIA)**: 100% first-year deduction for qualifying plant and machinery (up to the annual limit, currently £1 million). Claimed in full in the year of purchase.',
-              '**Writing Down Allowance (WDA)**: 18% per year on the reducing balance of the main pool; 6% for the special rate pool (long-life assets, integral building features).',
-              'On disposal: if the pool is extinguished with remaining value, a **balancing allowance** gives full relief; if sale proceeds exceed the pool, a **balancing charge** claws back over-claimed relief.',
+              '**Gross pay** is everything earned before any deduction.',
+              '**Taxable gross pay** is gross pay after deductions that reduce taxable earnings — most commonly an occupational pension contribution.',
+              '**Taxable pay** is the figure PAYE is actually applied to.',
+              '**Net pay** is what reaches the employee once every deduction has been taken.',
             ],
-            formula: 'AIA = 100% of cost (up to limit) · WDA main = 18% × Tax written-down value · WDA special = 6% × TWDV',
+            split: {
+              left: { title: 'Statutory deductions', items: ['Pay As You Earn (PAYE)', 'National Insurance contributions', 'Student loan repayments', 'Pension contributions'] },
+              right: { title: 'Non-statutory deductions', items: ['Trade union subscriptions', 'Charitable giving via payroll', 'Season ticket or other loan repayments', 'Attachment of earnings, where ordered'] },
+            },
+            examtrap: 'Statutory deductions are required by law; non-statutory ones need the employee\'s agreement. Being asked to sort a list into the two is a standard task.',
           },
           {
-            h: 'Income Tax Rates and Payment Dates',
+            h: 'Reconciling gross to net',
             p: [
-              'Once taxable trading profit is established, deduct the **personal allowance** (£12,570 for 2024/25) to get taxable income. Rates: **20% basic** (up to £37,700); **40% higher** (£37,701–£125,140); **45% additional** (above £125,140).',
-              'Sole traders pay tax via **Self Assessment**. Two payments on account: **31 January** in the tax year and **31 July** after the tax year (each 50% of prior year\'s liability). Balancing payment due **31 January** after the tax year end.',
+              'The assessment gives you the figures and asks you to **reconcile** them — work down from gross pay to net pay, or across to taxable gross pay, showing that the deductions account for the difference.',
+              'The amount due to HMRC is not the same as the deductions from the employee: it is employee PAYE and NIC **plus the employer\'s own NIC**, which never appears on the payslip.',
             ],
-            callout: { kind: 'key', text: 'Payment on account dates: 31 Jan (in year) and 31 Jul (after year). Balancing payment: 31 Jan after year end. Online Self Assessment return also due 31 January.' },
+            formula: 'Net pay = Gross pay − PAYE − Employee NIC − Student loan − Pension · Due to HMRC = PAYE + Employee NIC + Employer NIC + Student loan',
+            callout: { kind: 'warning', text: '**Excluded from this unit:** calculating Income Tax, National Insurance or student loan repayments. You will always be *given* those figures. Marks are for handling and reconciling them, not deriving them.' },
+          },
+          {
+            h: 'The forms, and who gets which',
+            table: {
+              headers: ['Form', 'Purpose', 'When'],
+              rows: [
+                ['Starter checklist', 'Collects details for a new employee with no P45', 'Before the first payday'],
+                ['Payslip', 'Shows gross pay, deductions and net pay', 'On or before every payday'],
+                ['P45', 'Issued when an employee leaves', 'On leaving'],
+                ['P60', 'End-of-year summary of pay and deductions', 'After the tax year end'],
+                ['P11D', 'Reports expenses and benefits provided', 'After the tax year end'],
+                ['P11D(b)', 'Employer\'s declaration and Class 1A NIC due on those benefits', 'With the P11D'],
+              ],
+            },
+            p: [
+              'Employers must not only produce these but **distribute them within the required time period** — a late P60 is a compliance failure in its own right.',
+              'Benefits can be handled two ways: reported after the year on a **P11D**, or **payrolled** — taxed through the payroll as they are provided, so no P11D is needed for those benefits. The P11D(b) and its Class 1A charge still apply.',
+            ],
+          },
+          {
+            h: 'Real Time Information',
+            p: [
+              'Payroll is reported to HMRC under **Real Time Information (RTI)** — submissions happen on or before each payday, not once a year.',
+              'A **Full Payment Submission (FPS)** reports what each employee was paid and what was deducted. An **Employer Payment Summary (EPS)** reports adjustments that the FPS cannot carry, such as statutory pay recovered or a nil-payment month.',
+              'Employee changes — starters, leavers, changes of circumstance — must also be reported within the required timescale.',
+            ],
+            callout: { kind: 'warning', text: 'Late returns and late payment both carry consequences. Know that penalties exist and what triggers them; the unit tests the obligation and the deadline, not a penalty computation.' },
           },
         ],
         check: [
           {
-            q: 'Accounting profit £64,000; depreciation charged £8,500; capital allowances £11,200. Taxable profit is:',
-            opts: ['£61,300', '£52,800', '£72,500', '£64,000'],
+            q: 'Which of these is a NON-statutory deduction from gross pay?',
+            opts: [
+              'A trade union subscription the employee has agreed to',
+              'Pay As You Earn (PAYE) income tax',
+              'Employee National Insurance contributions',
+              'Student loan repayments collected through payroll',
+            ],
             ans: 0,
-            exp: '£64,000 + £8,500 (add back depreciation) − £11,200 (capital allowances) = £61,300.',
+            exp: 'Statutory deductions are required by law: PAYE, NIC, student loan repayments and pension contributions. A union subscription is deducted only because the employee has agreed to it, which makes it non-statutory.',
           },
           {
-            q: 'Which of the following is an allowable trading expense for income tax purposes?',
+            q: 'Gross pay is £2,400. PAYE is £280, employee NIC £142, and pension £120. What is net pay?',
+            opts: ['£1,858', '£1,978', '£2,120', '£1,738'],
+            ans: 0,
+            exp: 'Net pay = £2,400 − £280 − £142 − £120 = £1,858. Note that employer NIC is not deducted from the employee and so plays no part in this figure.',
+          },
+          {
+            q: 'Which form is issued to an employee when they leave part-way through a tax year?',
+            opts: ['A P45', 'A P60', 'A P11D', 'A starter checklist'],
+            ans: 0,
+            exp: 'A P45 is issued on leaving. A P60 summarises a full tax year for someone still employed at the year end; a P11D reports benefits; a starter checklist is completed by a new employee who has no P45.',
+          },
+          {
+            q: 'Under RTI, what does an Employer Payment Summary (EPS) do that a Full Payment Submission cannot?',
             opts: [
-              'The owner\'s drawings from the business',
-              'Depreciation on business equipment',
-              'Wages paid to a member of staff',
-              'A speeding fine incurred while making a delivery',
+              'Report adjustments such as statutory pay recovered, or a month with no payments to employees',
+              'Report the pay and deductions for each individual employee on a payday',
+              'Replace the requirement to issue payslips to employees',
+              'Calculate the income tax and National Insurance due for each employee',
             ],
-            ans: 2,
-            exp: 'Staff wages are allowable — wholly and exclusively for trade. Drawings, depreciation, and fines are all disallowable.',
+            ans: 0,
+            exp: 'The FPS reports what each employee was paid and what was deducted. The EPS carries what the FPS cannot — recovered statutory payments and nil-payment periods. Neither calculates anybody\'s tax; payroll software does that from figures the employer supplies.',
           },
           {
-            q: 'The Annual Investment Allowance provides:',
-            opts: [
-              '18% reducing balance allowance each year on plant purchases',
-              '100% first-year deduction for qualifying plant and machinery up to the limit',
-              'A flat £5,000 deduction available to all businesses',
-              '25% accelerated depreciation in year one',
+            type: 'truefalse',
+            q: 'Decide whether each statement about employer payroll duties is true or false.',
+            statements: [
+              { text: 'HMRC has the right to inspect payroll records and to visit business premises.', answer: true },
+              { text: 'Payroll records may be destroyed as soon as the tax year ends.', answer: false },
+              { text: 'Employee payroll data is personal data and is subject to data protection principles.', answer: true },
+              { text: 'Employers must register with HMRC before the first payday.', answer: true },
             ],
-            ans: 1,
-            exp: 'The AIA gives 100% tax relief in the year of purchase for most plant and machinery, up to the annual limit (£1m for 2024/25). This accelerates tax relief compared to the 18% WDA.',
-          },
-          {
-            q: 'A sole trader\'s tax liability for 2023/24 was £10,000. The first payment on account for 2024/25 is due:',
-            opts: ['31 July 2024', '31 January 2025', '31 October 2024', '31 January 2026'],
-            ans: 1,
-            exp: 'The first payment on account for 2024/25 is due 31 January 2025 (during the tax year). It is 50% of the prior year liability = £5,000.',
+            exp: 'HMRC can inspect and visit; records must be retained for the required period rather than destroyed at the year end; employee data is personal data; and registration comes before the first payday, not after it.',
           },
         ],
       },
@@ -6383,6 +6435,8 @@ window.LEARN_PATH = [
   },
   {
     unit: 'buaw',
+    level: 3,
+    preview: true,
     title: 'Business Awareness',
     lessons: [
       {

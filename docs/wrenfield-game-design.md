@@ -523,13 +523,19 @@ Also corrected: the subject registry advertised `515 questions`; the bank is 631
 
 ## 9. Open questions
 
-1. **Level 3 is content-first, not simulator-first.** The app has zero L3 questions and
-   zero L3 lessons — `L3_BRIDGE` (`app.js:681`) is a signpost. A Level 3 game would be the
-   app's first L3 feature and its report card would say "revise depreciation" with nowhere
-   to go. The correct first L3 feature is a question bank and learn path. A TPFB VAT-return
-   day is the best eventual candidate, because completing a VAT return from the ledger and
-   verifying it against the VAT control account is the most simulation-shaped task in the
-   whole qualification.
+1. **Level 3 is content-first, not simulator-first — and the content now exists.** When
+   this was first written the app had zero L3 questions and zero L3 lessons, so a Level 3
+   game would have been the app's first L3 feature, with its report card saying "revise
+   depreciation" and nowhere to send the student. That objection has since been answered
+   from the other direction: **v1.4.0 shipped AAT Level 3 as its own subject** (`aat3-*.js`,
+   TPFB Outcome 2 with its own UI and learn path). The precondition is therefore met for
+   TPFB, and not yet for FAPS, MATS or BUAW.
+   A TPFB VAT-return day is the right first L3 story day — completing a VAT return from the
+   ledger and then verifying it against the VAT control account is the most
+   simulation-shaped task in the whole qualification, and there is now a learn path behind
+   it to revise from. It should reuse this engine unchanged: it needs no new step
+   primitives, only `figures` (the nine boxes), `flags` (what explains the difference) and
+   `choice` (Method 1 vs Method 2).
 2. **Mark allocations must not be hard-coded** from the publisher mocks (§3 caveat).
 3. **This is not exam coverage.** An office game teaches the job and the professional
    judgment. It does not drill the bank. It must sit beside revision, must be labelled as
