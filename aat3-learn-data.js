@@ -19,6 +19,200 @@
     : root.AAT3_TAX;
 
   var LESSONS = [
+
+    /* ── Orientation ────────────────────────────────────────────────────────
+       Neither of these covers new syllabus content — they exist because the
+       material previously opened straight into building a VAT return, with no
+       account of what VAT is, why a business collects it, or what the reader
+       already knows from Level 2. `criteria: []` is honest: this is the
+       chapter opening a textbook would have, not syllabus coverage. */
+    {
+      id: 'L3-TPFB-0A',
+      title: 'Where this unit fits',
+      icon: '🧭',
+      criteria: [],
+      cards: [
+        {
+          h: 'What Tax Processes for Businesses is about',
+          p: [
+            'This unit is about **two taxes a business handles on other people’s behalf**: VAT, which it collects from its customers for HMRC, and payroll taxes, which it deducts from its employees for HMRC.',
+            'That framing matters more than it first appears. In neither case is the business paying its own tax. It is acting as an unpaid collector, and almost every rule in the unit follows from that: the record keeping, the deadlines, the penalties, the powers HMRC has to inspect and assess.',
+            'It is worth saying plainly what this unit is **not**. It is not about how much tax a business owes on its profits. Corporation tax and the income tax a sole trader pays are different units at a different level. If you have met the phrase "adjusting profit for tax", that is not this.',
+          ],
+          callout: { kind: 'key', text: 'The whole unit sits on one idea: the money is not yours. You are holding it, recording it, and handing it over on time.' },
+        },
+        {
+          h: 'How the unit is assessed',
+          table: {
+            headers: ['', ''],
+            rows: [
+              ['Assessment', 'Computer based, computer marked'],
+              ['Length', String(T.FINANCE_ACT ? 90 : 90) + ' minutes'],
+              ['Pass mark', '70%'],
+              ['Share of the qualification', '15%'],
+              ['Guided learning hours', '60 — the smallest unit at Level 3'],
+              ['Tax year', T.FINANCE_ACT + ', assessable from ' + T.ASSESSABLE_FROM],
+            ],
+          },
+          p: [
+            'Computer marked means there is no extended written answer to compose and no examiner judgement to satisfy: answers are right or wrong. That makes the unit unusually **learnable** — the rules are finite, and knowing them is most of the mark.',
+            'It also means precision counts. A figure that is nearly right is wrong, and a rule remembered approximately will lose the mark outright.',
+          ],
+        },
+        {
+          h: 'The five outcomes, and their weight',
+          table: {
+            headers: ['Outcome', 'Weight', 'What it asks of you'],
+            rows: [
+              ['1. Legislation relating to VAT', '25%', 'Know the rules — registration, schemes, deadlines, penalties'],
+              ['2. Calculate VAT', '**30%**', 'Do the arithmetic and the adjustments'],
+              ['3. Review and verify VAT returns', '20%', 'Check a return, correct errors, reconcile'],
+              ['4. Principles of payroll', '15%', 'Employer duties, the pay figures, RTI'],
+              ['5. Report information', '10%', 'Tell the right person the right thing in time'],
+            ],
+          },
+          p: [
+            'Four of the five outcomes are VAT. Payroll is a single outcome worth 15%, and it is about the employer’s **obligations** rather than the tax computation — you are given the tax figures rather than working them out.',
+            '**You are starting at Outcome 2.** That is deliberate: it is the largest outcome and the one where the work is. The next lesson supplies the background that Outcome 1 would otherwise have given you.',
+          ],
+        },
+        {
+          h: 'What you already know',
+          p: [
+            'If you have come from Level 2, you have met VAT twice — once in Introduction to Bookkeeping and again in Principles of Bookkeeping Controls. You already know more than you may think.',
+          ],
+          split: {
+            left: { title: 'Already yours from Level 2', items: ['VAT is charged on sales and reclaimed on purchases', 'Output tax and input tax, and that only the difference is settled', 'The standard rate is 20%, and gross ÷ 6 gets you the VAT', 'The VAT control account, and that it should agree with the return', 'Returns are usually quarterly and filed through Making Tax Digital'] },
+            right: { title: 'New at Level 3', items: ['*Why* the system works this way, and who actually bears the tax', 'Which supplies are standard, reduced, zero-rated, exempt or outside the scope', 'Tax points — the date a supply legally belongs to', 'What cannot be reclaimed at all, and partial exemption', 'Adjustments: discounts, fuel, bad debts, imports', 'Registration, schemes, penalties and error correction'] },
+          },
+          callout: { kind: 'tip', text: 'Level 2 taught you to *record* VAT. Level 3 asks you to *decide* it — which rate, which period, which amounts are recoverable, and what to do when something was wrong.' },
+        },
+      ],
+      check: [
+        {
+          q: 'Whose tax is the VAT a business charges its customers?',
+          opts: [
+            'The customer’s — the business collects it on HMRC’s behalf',
+            'The business’s own, calculated on its profits for the period',
+            'HMRC’s, and the business may keep any it does not spend',
+            'Nobody’s until the VAT return is submitted and accepted',
+          ],
+          ans: 0,
+          exp: 'VAT is a tax on consumer spending. A registered business charges it, holds it, and pays it over — it is never the business’s own money, which is why the record-keeping and deadline rules are as strict as they are.',
+        },
+        {
+          q: 'Which of these is NOT part of Tax Processes for Businesses?',
+          opts: [
+            'Calculating the income tax a sole trader owes on their profits',
+            'Deciding whether a business must register for VAT',
+            'Working out an employee’s net pay from given deductions',
+            'Correcting an error found on a previous VAT return',
+          ],
+          ans: 0,
+          exp: 'The unit covers VAT and the employer’s payroll obligations. Computing income tax on business profits belongs elsewhere — and the specification explicitly excludes calculating income tax, National Insurance and student loan repayments from this unit.',
+        },
+      ],
+    },
+    {
+      id: 'L3-TPFB-0B',
+      title: 'How VAT actually works',
+      icon: '⛓️',
+      criteria: ['TPFB-2.3.1'],
+      cards: [
+        {
+          h: 'A tax on spending, collected in instalments',
+          p: [
+            'VAT is a tax on **consumer spending**. The person who ultimately bears it is the final customer — you, buying something in a shop.',
+            'What makes VAT unusual is that HMRC does not collect it from that customer directly. It collects it in instalments, from every business in the chain that brought the goods to the shelf, and each business hands over only the tax on the **value it added**.',
+            'That is where the name comes from, and once the chain makes sense the rest of the unit stops feeling arbitrary.',
+          ],
+        },
+        {
+          h: 'Following one item along the chain',
+          worked: {
+            title: 'The same £50 of tax, collected in three pieces',
+            problem: 'A manufacturer sells goods to a wholesaler for £100 plus VAT. The wholesaler sells them on to a retailer for £160 plus VAT. The retailer sells them to a member of the public for £250 plus VAT. How much does each business pay HMRC, and what does the consumer bear?',
+            steps: [
+              { do: 'The manufacturer charges £20 and reclaims nothing.', why: '£100 × 20% = £20 of output tax. Assume no input tax on this item, so the manufacturer pays HMRC the full £20.' },
+              { do: 'The wholesaler charges £32 and reclaims £20.', why: '£160 × 20% = £32 of output tax, less the £20 of input tax it was charged. It pays HMRC £12 — the tax on the £60 of value it added.' },
+              { do: 'The retailer charges £50 and reclaims £32.', why: '£250 × 20% = £50 of output tax, less £32 of input tax. It pays HMRC £18 — the tax on the £90 of value it added.' },
+              { do: 'Add up what HMRC received.', why: '£20 + £12 + £18 = £50. Exactly the VAT the consumer paid, and not a penny more.' },
+              { do: 'Notice what it cost each business.', why: 'Nothing. Each one recovered every pound of VAT it was charged. The tax was borne entirely by the consumer, who has nobody to reclaim from.' },
+            ],
+            answer: 'HMRC receives £50 in three instalments; the consumer bears all of it and the businesses bear none',
+            tryIt: {
+              q: 'A distributor buys goods for £400 plus VAT and sells them for £700 plus VAT, both at the standard rate. How much VAT does it pay over to HMRC, in pounds?',
+              answer: 60,
+              unit: '£',
+              hint: 'Output tax less input tax — or, more quickly, the rate applied to the value it added.',
+              exp: 'Output tax £700 × 20% = £140. Input tax £400 × 20% = £80. It pays £140 − £80 = £60. The shortcut is the same answer: the value added was £300, and £300 × 20% = £60.',
+            },
+          },
+        },
+        {
+          h: 'Why registered businesses are collectors, not payers',
+          p: [
+            'Three consequences follow from the chain, and each explains a rule you will meet later.',
+            '**VAT should be broadly neutral for a registered business.** It charges VAT, reclaims VAT, and settles the difference. This is why irrecoverable VAT — on entertaining, on cars — feels so punitive: it is one of the few times VAT becomes a genuine cost.',
+            '**The money passing through is not the business’s.** It is holding public money between the sale and the return. That is why late payment attracts penalties and interest, and why HMRC has powers to inspect records and visit premises.',
+            '**Only the final consumer bears it.** Anyone who cannot reclaim — a private individual, or a business making exempt supplies — is where the tax finally lands.',
+          ],
+          callout: { kind: 'warning', text: 'The neutrality is the general rule, not a guarantee. Blocked input tax, partial exemption and the flat rate scheme are all places where VAT does become a real cost to a business.' },
+        },
+        {
+          h: 'Output tax and input tax',
+          split: {
+            left: { title: 'Output tax', items: ['VAT on what the business **sells**', 'Charged to the customer', 'Owed to HMRC', 'Goes on the return as tax due'] },
+            right: { title: 'Input tax', items: ['VAT on what the business **buys**', 'Charged by the supplier', 'Reclaimed from HMRC', 'Goes on the return as tax recoverable'] },
+          },
+          formula: 'VAT payable to HMRC = Output tax − Input tax · Input tax greater than output tax means a repayment is due',
+          p: [
+            'You met both terms at Level 2. The reason they are worth restating is that everything in Outcome 2 is ultimately about deciding which of the two a figure belongs to, and whether it counts at all.',
+          ],
+        },
+        {
+          h: 'What a VAT return is, and when it happens',
+          p: [
+            'A **VAT return** is a periodic declaration — usually covering three months — of the output tax charged and the input tax reclaimed, with the difference paid to HMRC or repaid by them.',
+            'It is not an invoice, a demand or an assessment. It is the business’s own statement of what it owes, which is precisely why HMRC surrounds it with rules about evidence and with penalties for getting it wrong.',
+            'Filing and payment are both due **one calendar month and seven days** after the period ends, and the return must be submitted from compatible software under Making Tax Digital.',
+          ],
+          flow: ['Trade for three months', 'Extract the figures', 'Calculate the VAT', 'Check and submit', 'Pay HMRC'],
+          callout: { kind: 'tip', text: 'The rest of this outcome walks that flow in order — finding the figures, valuing them correctly, deciding what is recoverable, applying adjustments, and arriving at a single number.' },
+        },
+      ],
+      check: [
+        {
+          q: 'A wholesaler buys goods for £500 plus VAT and sells them for £800 plus VAT. How much VAT does it pay to HMRC?',
+          opts: ['£60', '£160', '£100', '£260'],
+          ans: 0,
+          exp: 'Output tax £160, input tax £100, so £60 is paid over — the tax on the £300 of value added. The £160 answer is the output tax before recovering the input tax the wholesaler was itself charged.',
+        },
+        {
+          q: 'In a chain of registered businesses ending in a sale to a member of the public, who ultimately bears the VAT?',
+          opts: [
+            'The final consumer, who has nobody to reclaim from',
+            'Each business in the chain, in proportion to its sales',
+            'The manufacturer, who charged the VAT first',
+            'It is shared equally between the businesses and the consumer',
+          ],
+          ans: 0,
+          exp: 'Every registered business in the chain reclaims the VAT it was charged, so none of them bears any of it. The tax stops with the consumer, who cannot reclaim — which is why VAT is described as a tax on consumer spending.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement is true or false.',
+          statements: [
+            { text: 'Output tax is the VAT a business is charged by its suppliers.', answer: false },
+            { text: 'For most registered businesses VAT is broadly cost-neutral.', answer: true },
+            { text: 'A VAT return is a demand issued to the business by HMRC.', answer: false },
+            { text: 'A business can be in a repayment position if input tax exceeds output tax.', answer: true },
+          ],
+          exp: 'Output tax is on sales and input tax on purchases — the reverse of the first statement. VAT is broadly neutral because both sides are recovered, though blocked input tax and partial exemption are real exceptions. And the return is the business’s own declaration, not a demand.',
+        },
+      ],
+    },
+
     /* ── 2.1 ────────────────────────────────────────────────────────────── */
     {
       id: 'L3-TPFB-2A',
@@ -29,6 +223,7 @@
         {
           h: 'A return is only as good as what goes into it',
           p: [
+            'You now know what a VAT return is and what it declares. This lesson is about the first practical step in producing one: getting the right numbers out of the books.',
             'Every VAT return is assembled from records the business already keeps. Nothing on it is invented at the year end — the whole task is finding the right figures, for the right period, from records you can stand behind.',
             'That is why this outcome starts here rather than with arithmetic. A perfectly executed calculation on the wrong month\'s data is simply a wrong return, and it is the kind of error that survives every check the software makes.',
             'At Level 2 you posted transactions. Here you go the other way: starting from the return, working back to the evidence that supports each box.',
@@ -128,6 +323,7 @@
         {
           h: 'Why the tax point decides everything',
           p: [
+            'You have the figures. Before they can be used, each supply has to be dated — and for VAT the date that matters is not always the one on the invoice or the day the money moved.',
             'The **tax point** — the time of supply — fixes three things at once: which VAT period a supply falls into, which rate of VAT applies, and whether a business qualifies for a special scheme.',
             'That is why it gets a topic area of its own. A supply with the wrong tax point is not a small error: it lands on the wrong return, and if a rate changed in between, it is charged at the wrong rate too.',
           ],
@@ -252,6 +448,7 @@
         {
           h: 'Four words that must not blur',
           p: [
+            'With the figures found and dated, this is where the arithmetic happens. Level 2 taught you the mechanics of these calculations; the reason they are revisited here is that Level 3 questions run them in both directions and at two different rates, and expects the rounding rules to be right.',
             '**Inputs** are what the business buys. **Outputs** are what it sells. **Input tax** is the VAT on its purchases; **output tax** is the VAT on its sales.',
             'The business collects output tax on behalf of HMRC and recovers input tax it has been charged. Only the difference is settled.',
             'Getting the pairing wrong reverses the whole return, so it is worth fixing the association now: *out*puts go *out* to customers, and the tax on them is output tax.',
@@ -380,6 +577,7 @@
         {
           h: 'Zero-rated and exempt are not the same thing',
           p: [
+            'So far every purchase has been assumed recoverable. It is not. This lesson is about the three situations where input tax is restricted or blocked — and this is where VAT stops being cost-neutral and starts costing the business real money.',
             'Both mean no VAT is charged to the customer. The difference is what happens to the **input tax** on the costs of making that supply, and it is the difference that matters.',
             'A **zero-rated** supply is a taxable supply on which the rate happens to be ' + T.rates.zero.value + '%. Because it is taxable, input tax relating to it is fully recoverable.',
             'An **exempt** supply is within the scope of VAT but exempted from the charge. Input tax relating to it is **not** recoverable. This is not the same as a supply **outside the scope** of VAT, which is not a taxable supply at all — the syllabus treats them as separate categories.',
@@ -493,6 +691,7 @@
         {
           h: 'Three things that move the figures after the invoice',
           p: [
+            'The last three lessons dealt with supplies as they were made. Real periods are untidier: customers take discounts, cars are fuelled privately, and some invoices are never paid at all.',
             'The previous lessons calculated VAT on a supply as it happened. This one deals with the three routine adjustments that change the position afterwards, and they pull in different directions.',
             'A **prompt payment discount** taken reduces output tax. A **fuel scale charge** increases it. **Bad debt relief** increases input tax. Knowing which side of the return each lands on is most of the battle.',
           ],
@@ -629,6 +828,7 @@
         {
           h: 'Goods leaving the UK',
           p: [
+            'Everything so far has assumed both parties are in the UK. Trade across a border changes both the rate charged and the mechanics of paying the tax.',
             'Exports of goods from the UK are **zero-rated**. No VAT is charged to the overseas customer, and because zero-rating is a taxable rate rather than an exemption, the input tax on the costs of making that supply stays fully recoverable.',
             'The zero-rating is conditional on evidence. The business must hold proof that the goods physically left the UK, and must obtain it within the required time limit. Without that evidence HMRC can treat the supply as standard-rated, leaving the business to fund VAT it never charged.',
           ],
@@ -717,6 +917,7 @@
         {
           h: 'Everything, in one figure',
           p: [
+            'Every lesson in this outcome has produced one component of a single figure. This is where they come together.',
             'This is the task the whole outcome has been building toward, and it is the one most likely to appear as a substantial question: given a period\'s records, work out the VAT payable or repayable.',
             'It is not conceptually hard. It goes wrong because there are many small components and each one has to land on the correct side.',
           ],
