@@ -23,6 +23,8 @@ jobs:
         run: npm run validate:aat
       - name: Check question integrity (option shuffling, answer keys)
         run: npm run check:integrity
+      - name: Check AAT Level 3 syllabus integrity and coverage
+        run: npm run check:aat3
       - name: Validate French question data
         run: npm run validate:french
       - name: Check French learning quality

@@ -604,30 +604,87 @@ tests, into a CI that has no behavioural tests at all.** It stays shelved until
 MATS LO5 is the module being written, and it does not merge without
 `scripts/test-formula-engine.js` wired into `npm test`.
 
+### 5.10 Copyright — what may and may not be reproduced
+
+Neither the first draft nor its rewrite mentioned this. The specification carries
+its own licence:
+
+> Copyright © AAT. All rights reserved. **Reproduction is permitted for personal
+> and educational use only.** No part of this content may be reproduced or
+> transmitted for commercial use without the copyright holder's written consent.
+
+The plan proposed encoding the syllabus "verbatim", shipping AAT's identifiers
+as product-visible tags, reproducing a mark-scheme blueprint, and a references
+pane "replicating the in-exam Code of Ethics access" — that last one being a
+separate AAT copyright.
+
+**Resolved: this app is for the owner's personal study only and is not
+commercial.** That places it squarely inside the licence's own carve-out —
+"reproduction is permitted for personal and educational use" — which is the
+permission the notice grants rather than an exception being stretched. So the
+syllabus tree may be encoded faithfully, and the coverage check in §5.1 is
+meaningful precisely because it maps to AAT's own wording.
+
+Three things still hold, and cost nothing:
+
+- **The non-affiliation disclaimer** already in `README.md` and on the Level 2
+  home screen must appear on the Level 3 surface too, and its claim that
+  question content is original must stay true — questions are authored, not
+  lifted from AAT assessments.
+- **Teaching prose is written from scratch.** The syllabus is a coverage
+  checklist; the lessons explain the content in their own words. This is a
+  pedagogical requirement before it is a licensing one.
+- **If the position ever changes** — commercial release, or distribution as a
+  product rather than a personal study tool — the carve-out no longer applies
+  and this must be revisited before, not after.
+
 ---
 
-## 6. Phasing — content first
+## 6. Phasing — one complete unit first
 
-The first draft put three engineering phases ahead of every word of content.
-Inverted:
+**Decision taken: TPFB complete, end to end, before anything else.** This
+replaces both the first draft's engineering-first order and the rewrite's
+"FAPS only for a year".
+
+Why TPFB rather than a slice of FAPS:
+
+- **It is finishable.** 60 GLH, 5 outcomes, 14 topic areas — the smallest unit in
+  the qualification. Three-ninths of FAPS is not a release; a whole TPFB is.
+- **It is computer marked**, with no free-text and no banded marking. That
+  removes the hardest assessment problem in the qualification from the first
+  build entirely (see §3.8 on BUAW's level-of-response bands).
+- **Its mock can be built from the specification alone.** Per-LO weightings are
+  published — 25 / 30 / 20 / 15 / 10 — so no SAMS is needed, and §3.9 establishes
+  none exists for this unit anyway.
+- **It has the largest exclusions** (§3.4), which cut the real teaching surface
+  well below what its 93-key-concept count suggests.
+- **It proves the whole pipeline** — syllabus encoding, exclusions as data,
+  coverage ratchet, per-module content files, tax-data isolation, a mock, a
+  readiness estimate — on the cheapest unit available.
+
+The counter-argument is real and was weighed: TPFB is 15% of the grade against
+FAPS's 40%, and its content churns annually. But **that churn is an argument for
+doing it first, not last** — the annual Finance Act roll is a permanent
+maintenance obligation, and its true cost should be discovered on a 60 GLH unit
+now rather than on a large corpus in two years. The syllabus diff tool in §5.1
+cannot be tested at all until some version-scoped TPFB content exists to diff
+against. The current FA2025 window runs to January 2027, so a unit written now
+has a clean twelve months.
 
 | Phase | Content |
 |---|---|
-| **P0 — Pilot** | **Write FAPS LO2 to full depth on the existing Level 2 lesson player.** No new node types, no path art, no design system, no grid. Get it reviewed by a qualified accountant. |
-| **P1 — Recalibrate** | Rewrite §5.2's sufficiency spec, the card vocabulary and the whole phase order from what P0 actually taught: real words per topic area, real authoring time, real error rate at review, real gaps in the card types. |
-| **P2 — First release** | **FAPS LO2 + LO3 + LO4** — non-current assets and depreciation are one coherent teaching arc and ~30% of FAPS, a defensible standalone product. Plus the plumbing it actually needs: subject registry entry and the 25–30 edit sites in §2, syllabus file, per-module coverage ratchet, **per-subject service-worker cache groups**, **per-module content files**, honest empty states. |
-| **P3 — Engine and design** | Typed nodes, personalised practice in-path, readiness estimate, exam-date planning, the token layer back-ported to Level 2, accessibility bar. Justified by content pressure from P2, not in advance of it. **Gated on behavioural tests existing first** — the journey and lesson player are shared by five subjects and currently guarded by no UI tests at all. |
-| **P4…** | Remaining FAPS outcomes, module by module. |
-| **Later** | MATS (including the LO5 grid decision), then TPFB and BUAW. Unit mocks as each unit's content supports one. |
+| **T0** | `aat3-syllabus.js` for TPFB — 5 outcomes, 14 topic areas, 93 key concepts, with **exclusions as data**. Plus `aat3-tax-data.js`, every figure sourced and dated. Written, not engineered. |
+| **T1** | **LO2 "Calculate VAT" first** — 30%, the largest outcome and the one with the most calculation. This is a representative sample, not an easy one: it is genuinely new at Level 3 and it is where the marks are. Measure words written, authoring time and error rate at review. |
+| **T2** | Recalibrate from T1's real numbers, then LO1, LO3, LO4, LO5. |
+| **T3** | Subject registry entry and the plumbing in §2; per-module content files; per-subject service-worker cache groups; coverage ratchet; honest empty states. |
+| **T4** | The TPFB mock to the published weightings, and a readiness estimate. **Unit complete and releasable.** |
+| **Then** | FAPS, module by module, recalibrated against everything TPFB taught. |
 
-**Year one is FAPS only.** A complete, deep FAPS — 40% of the grade, 150 of 400
-GLH — is a far better product than a thin shell across four units. Anything
-faster is a claim this project has no throughput evidence for.
-
-**Why FAPS LO2 first:** it is advanced double-entry, the direct continuation of
-what a Level 2 leaver has just finished, so it is the gentlest true start. LO1 is
-conceptual-framework material that reads better once there is something concrete
-to attach it to.
+**Why LO2 first within TPFB**, rather than starting at LO1: LO1 is legislation
+and registration rules — knowledge-dense and quick to write, which would produce
+the same misleadingly optimistic calibration that made FAPS LO2 a bad pilot
+(§8 #28). LO2 is the calculation core. If the sufficiency spec and the card
+vocabulary survive LO2, they will survive the rest.
 
 ---
 
