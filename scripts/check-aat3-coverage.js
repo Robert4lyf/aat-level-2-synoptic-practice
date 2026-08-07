@@ -93,13 +93,14 @@ Object.keys(S.SYLLABUS.units).forEach(key => {
 /* Lesson data is tagged with `criteria: ['TPFB-2.3.11', …]`. Until the first
    Level 3 content file exists there is nothing to check, which is correct —
    the ratchet starts empty. */
+/* Loaded with require() rather than evaluated in a bare sandbox: the content
+   file depends on aat3-tax-data.js, and resolving that dependency is the whole
+   point — figures live there, not inline. */
 let lessons = [];
 const contentFile = path.join(ROOT, 'aat3-learn-data.js');
 if (fs.existsSync(contentFile)) {
-  const sandbox = { window: {} };
-  // eslint-disable-next-line no-new-func
-  new Function('window', fs.readFileSync(contentFile, 'utf8'))(sandbox.window);
-  (sandbox.window.AAT3_LEARN_PATH || []).forEach(unit => {
+  const content = require(contentFile);
+  (content.AAT3_LEARN_PATH || []).forEach(unit => {
     (unit.lessons || []).forEach(l => lessons.push(l));
   });
 }
