@@ -214,6 +214,70 @@ architectural answer is in §4.5.
 
 ---
 
+### 2.6 QTI — the legislation actually assessed
+
+Source: **AAT Level 3 Qualification Technical Information, v3.4, published
+January 2025**. It is only two pages but it pins down exactly which legislation
+is examinable, which matters for BUAW and TPFB content.
+
+- **BUAW** — Fraud Act 2006; Bribery Act 2010; Data Protection Act 2018; Public
+  Interest Disclosure Act 1998; Proceeds of Crime Act 2002; Money Laundering
+  Regulations 2020; Charities Act 2011; Charity Commission (England and Wales);
+  Charities SORP (no requirement to distinguish between statements); AAT Code of
+  Professional Ethics 2017; Terrorism Act 2000; Partnership Act 1890; Companies
+  Act 2006; Limited Liability Partnership Act 2000.
+- **FAPS** — IAS 1 (formats for the SPL and SFP); IAS 2 (inventories); IAS 16
+  (property, plant and equipment); Conceptual Framework for Financial Reporting
+  2018; international accounting standards for organisations adopting IFRS.
+- **MATS** — "No additional guidance."
+- **TPFB** — Finance Act 2024 for assessments delivered from 27 January 2025;
+  Value Added Tax Act 1994.
+
+**Conflict to be aware of.** The QTI (v3.4, January 2025) still names **Finance
+Act 2024**, but the qualification specification (v5.11, March 2026) titles the
+unit **Tax Processes for Businesses (FA2025)** and removed the FA24 variant in
+v5.10 on 24 February 2026. The QTI has simply not been reissued. The
+specification is the more recent document and should be treated as authoritative
+on which Finance Act applies, but **this needs confirming with AAT before TPFB
+content is written** — getting it wrong makes every threshold in the unit wrong.
+This is exactly the risk §4.5 exists to contain.
+
+### 2.7 SAMS — a real assessment blueprint, and how AAT thinks
+
+Source: **AAT Level 3 Business Awareness Sample Assessment and Mark Scheme**.
+
+BUAW is **7 tasks, 100 marks, 2 hours 30 minutes**, and each task is
+independent — no task depends on an answer from a previous one.
+
+| Task | Marks | Outcomes drawn on |
+|---|---:|---|
+| 1 | 20 | LO1, LO3 |
+| 2 | 18 | LO1, LO2, LO4 |
+| 3 | 17 | LO1, LO4 |
+| 4 | 10 | LO3 |
+| 5 | 10 | LO2 |
+| 6 | 13 | LO5 |
+| 7 | 12 | LO1, LO5 |
+
+**This corrects the app again: BUAW has 7 tasks, not the 6 claimed in
+`L3_BRIDGE`.** Task counts for FAPS, MATS and TPFB remain unverified — only the
+BUAW SAMS was supplied, and the other three should be obtained before their
+blueprints are built.
+
+The most useful finding is structural: **AAT tags every sub-question in the mark
+scheme with the exact assessment criteria it tests** — "(3 marks) (1.4.1,
+1.4.2)". Tasks deliberately span several outcomes rather than testing one at a
+time. Two consequences:
+
+1. The criterion-tagging design in §4.1 is not an invention; it is how the
+   awarding body itself structures assessment. Tagging questions the same way
+   makes app blueprints directly comparable to real ones.
+2. Practice must **interleave outcomes within a task**, because the real
+   assessment does. A mock that tests one outcome per task would be easier than
+   the real thing and would mislead the student.
+
+---
+
 ## 3. Research: what to take from Duolingo
 
 Duolingo's path is four nested levels — **section → unit → level (node) →
@@ -317,19 +381,45 @@ FAPS 40%, MATS 30%, BUAW 15%, TPFB 15%.
 It requires organising, manipulating, verifying, protecting and presenting data
 in a spreadsheet, and it is partly human marked.
 
-Three options, in order of preference:
+**Decision taken: build the formula-evaluating grid.**
 
-1. **Build a small spreadsheet grid component.** The app already has a T-account
-   playground and a `tablefill` question type, so a formula-evaluating grid is
-   an extension rather than a new subsystem. Exercises would ask for a real
-   formula (`=SUMIF(...)`) and evaluate it.
-2. **Teach the concepts and drill formula writing as text**, marking the
-   practical file-handling criteria as taught-not-practised.
-3. **Cover it as reference material only** and say so plainly in the app.
+The syllabus names the exact function set to support at criterion 5.2.1, which
+makes this a bounded target rather than "implement Excel":
 
-Option 1 is the right answer for a tool claiming to replace a textbook, but it
-is a genuine piece of engineering and should be scoped separately. **This needs
-a decision before MATS content starts.**
+> SUM, AVERAGE, MIN, MAX, ROUND, ROUNDUP, ROUNDDOWN, SUMIF, COUNT, COUNTA,
+> COUNTIF, IF (simple and nested), VLOOKUP, HLOOKUP, DAYS — "using absolute and
+> relative cell referencing"
+
+Plus, at 5.2.1, the statistical tools **goal seek** and **forecast**; at 5.2.4
+the auditing tools **trace precedents**, **trace dependents** and **show
+formulas**.
+
+Scope, honestly drawn:
+
+- **Fully practised** — writing and evaluating formulas, the 15 functions above,
+  absolute vs relative referencing, and what happens when a formula is copied.
+  This is the core of 5.2.1 and much of 5.2.2, and it is where the marks are.
+- **Practised in a reduced form** — show formulas and trace precedents fall out
+  of the engine almost free, since it already parses references (5.2.4).
+- **Taught but not practised** — charts, pivot tables, conditional formatting,
+  cell protection, headers and footers, print setup (parts of 5.1.3, 5.2.2,
+  5.3.1, 5.3.2). These are Excel UI skills. The app should teach them as
+  knowledge and **say plainly that they need practising in real spreadsheet
+  software**, rather than pretending otherwise.
+
+Engineering requirements, given this takes student free-text input:
+
+- **No `eval`, no `new Function`.** A hand-written tokeniser and recursive-descent
+  parser producing an AST that is then walked.
+- **Excel semantics where they differ from JavaScript**, notably: unary minus
+  binds tighter than `^` (so `-2^2` is 4); `%` is postfix; `ROUND` goes half away
+  from zero, so `ROUND(-2.5, 0)` is −3 and `ROUND(2.675, 2)` is 2.68 despite
+  binary floating point.
+- **Circular references detected**, not hung on.
+- **Hard limits** on formula length, range size and nesting depth, since a
+  student can type anything.
+- **A comprehensive unit-test suite in CI**, in the spirit of the existing
+  question-integrity guards.
 
 ### 4.5 Tax currency — isolate the numbers
 
@@ -355,38 +445,107 @@ one unit makes the whole qualification unclassified.
 
 ---
 
+### 4.7 Visual design — Level 3 must feel like a tier up
+
+Level 3 should not look like Level 2 with different words in it. The brief is
+that it lands as a premium product, and the visual language is most of how that
+reads before a single lesson is opened.
+
+Where Level 2 stands: a functional card-and-list UI, one accent colour per
+subject, journey nodes as circles with lock and star glyphs, flat cards, minimal
+motion, and a dark mode that was defective until v1.3.0. It is clean but plainly
+utilitarian.
+
+What "a tier up" should mean concretely:
+
+- **A distinct Level 3 identity, not a recoloured Level 2.** Its own palette and
+  accent, richer surfaces (layered elevation, subtle gradients on section
+  headers), and a heavier display face for headings against the current single
+  system font.
+- **A path that reads as a path.** Level 2 renders nodes as a vertical list of
+  circles. Level 3 should draw an actual winding track with connecting segments
+  that fill as you progress, section banners between units, and typed node art
+  so a workshop, a review and a practice node are distinguishable at a glance —
+  which is exactly how Duolingo signals what is coming next.
+- **Motion with a purpose.** Node completion, streak increments, section
+  unlocks and correct/incorrect feedback all deserve transitions. All of it must
+  respect `prefers-reduced-motion`, which the app does not currently handle.
+- **Progress made legible.** Per-outcome rings, a criteria-coverage meter driven
+  by §4.1, and a live projected qualification grade from §2.2 weightings.
+- **Typography and density tuned for reading.** A textbook substitute is read
+  for long stretches: measure capped for line length, larger body size, more
+  generous spacing than the quiz-oriented Level 2 layout.
+- **Both themes designed together, from tokens.** The v1.3.0 dark-mode failure
+  happened because 25 rules targeted a selector the app never set and alias
+  tokens resolved once against light values. Level 3 styling should be built on
+  semantic tokens defined for both themes at the same time, with a contrast
+  check in CI so that class of bug cannot recur.
+
+Risk worth stating: this is the part of the plan most likely to expand without
+limit, and it competes directly with content for effort. The recommendation is a
+**fixed visual foundation delivered once in phase 1** — tokens, path, node art,
+motion, typography — and then a freeze, so that phases 2–5 are content work
+against a stable design rather than a rolling redesign.
+
+---
+
 ## 5. Phasing
+
+**Revised on instruction: the full course is parked. Content is delivered one
+module at a time**, each module shipped complete — lessons, worked examples,
+checks, guidebook, criteria coverage — before the next begins. That keeps every
+release useful on its own and stops a half-finished 78-lesson corpus sitting in
+the app.
 
 | Phase | Content | Depends on |
 |---|---|---|
-| 0 | Subject registry entry, `aat3-syllabus.js`, coverage validator, generalise `isAAT`, de-hardcode the app title, fix the `L3_BRIDGE` errors in §2.3 | — |
-| 1 | Journey engine: typed nodes, guidebook, test-out, practice/review nodes, mistakes queue | 0 |
-| 2 | **FAPS** content — 28 sub-topics, 122 criteria, 40% of the grade | 0, 1 |
-| 3 | **MATS** content — 21 sub-topics, 65 criteria, 30%; includes the §4.4 spreadsheet decision | 0, 1 |
-| 4 | **TPFB** content — 14 sub-topics, 93 criteria, 15%; `aat3-tax-data.js` first | 0, 1 |
-| 5 | **BUAW** content — 15 sub-topics, 83 criteria, 15%; extended written response | 0, 1 |
-| 6 | Four unit assessment mocks to real blueprints; qualification grade calculator | 2–5 |
+| 0 | Subject registry entry, `aat3-syllabus.js` for all 363 criteria, coverage validator, generalise `isAAT`, de-hardcode the app title, fix the `L3_BRIDGE` errors in §2.3 and §2.7 | — |
+| 1 | Journey engine + **visual foundation** (§4.7): typed nodes, path, guidebook, test-out, practice/review nodes, mistakes queue, design tokens, motion, contrast check | 0 |
+| 1b | Spreadsheet grid engine and UI (§4.4), with its CI test suite | 0 |
+| 2+ | **One module at a time.** Each module = one learning outcome, shipped complete. | 0, 1 |
+| last | Four unit assessment mocks to real blueprints; qualification grade calculator | content |
 
-Phases 2–5 are independent of each other and each is large. FAPS first, because
-it is 40% of the grade and 150 of the 400 guided learning hours.
+**Module order.** Within the module-at-a-time approach, FAPS first — 40% of the
+grade and 150 of the 400 guided learning hours — starting at FAPS LO2 rather
+than LO1. LO2 is advanced double-entry, which is the direct continuation of what
+the student has just finished at Level 2, so it is the gentlest true start; LO1
+is conceptual framework material that reads better once there is something
+concrete to attach it to.
+
+Each module ships with: every criterion in that outcome covered and
+CI-verified, a guidebook entry, at least one workshop node, a review node, and
+enough questions to support the practice queue.
 
 ---
 
 ## 6. Open questions
 
-1. **Sources still to obtain.** The AAT Qualification Technical Information
-   (QTI) and the Sample Assessment and Mark Schemes (SAMS) have not been read.
-   These are needed for per-unit task counts, mark allocations and the current
-   Finance Act legislation list. Level 2's blueprint was built from a Kaplan
-   exam kit and an Acorn mock rather than from memory, and Level 3 deserves the
-   same treatment before any assessment blueprint is written.
-2. **The spreadsheet decision** (§4.4) — blocks MATS.
-3. **Depth confirmation** (§4.3) — 80,000–110,000 words is the honest estimate
-   for a textbook substitute. Worth agreeing before starting rather than
-   discovering at phase 3.
+Resolved since the first draft:
+
+- ~~The spreadsheet decision~~ — **decided: build the grid** (§4.4).
+- ~~Depth confirmation~~ — **decided: park the full course, one module at a
+  time** (§5).
+- ~~QTI and BUAW SAMS not yet read~~ — both now obtained and folded into §2.6
+  and §2.7.
+
+Still open:
+
+1. **Which Finance Act applies to TPFB.** The QTI says FA2024, the current
+   specification says FA2025 (§2.6). Must be settled with AAT before any TPFB
+   content is written, because it determines every threshold in the unit.
+2. **SAMS for FAPS, MATS and TPFB.** Only the BUAW sample assessment has been
+   supplied. The other three are needed before their mock blueprints are built —
+   task counts and mark allocations cannot be guessed.
+3. **How far the "taught but not practised" spreadsheet criteria can go**
+   (§4.4). Charts, pivot tables and cell protection are real syllabus content
+   that a browser grid will not genuinely exercise. The plan is to teach them
+   and say so plainly; that honesty should be checked as acceptable.
 4. **Tax content must not be written from memory.** VAT penalty regimes, MTD
    obligations and payroll thresholds change; every figure needs sourcing
-   against the current QTI at authoring time.
+   against the current QTI at authoring time and storing in `aat3-tax-data.js`.
+5. **Scope discipline on the visual upgrade** (§4.7) — the fixed-foundation-then-
+   freeze recommendation needs agreeing, or design work will run indefinitely
+   alongside content.
 
 ---
 
