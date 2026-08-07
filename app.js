@@ -17,7 +17,7 @@
     {
       id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
       desc: 'Prepare for the Q2022 Business Environment Synoptic Assessment',
-      meta: '515 questions · Mock exams · T-Accounts',
+      meta: '631 questions · Mock exams · T-Accounts',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       assets: [],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
@@ -885,18 +885,37 @@
         }
       }
     },
-    recordAnswer(question, correct) {
+    /* `opts.selfAssessed` marks an answer the student graded themselves against a
+       rubric — the `written` type, which is human-marked in the real assessment.
+       Those answers are still recorded: they count as seen, they drive spaced
+       repetition, the mistake notebook and daily activity. But they are tallied
+       into the parallel self* counters so that objAcc() can keep them out of every
+       attainment figure — the readiness meter, topic mastery, the weakness
+       dashboard and the skill map. A mark you awarded yourself must never read as
+       an objective one. */
+    recordAnswer(question, correct, opts) {
+      const selfAssessed = !!(opts && opts.selfAssessed);
       const qs = this.data.stats.questions[question.id] || { attempts: 0, correct: 0, lastSeen: null };
       qs.attempts++; qs.seen = true;
       if (correct) qs.correct++;
       else qs.lastWrong = Date.now();
+      if (selfAssessed) {
+        qs.selfAttempts = (qs.selfAttempts || 0) + 1;
+        if (correct) qs.selfCorrect = (qs.selfCorrect || 0) + 1;
+      }
       qs.lastSeen = Date.now();
       this.data.stats.questions[question.id] = qs;
       const ts = this.data.stats.topics[question.topic] || { attempts: 0, correct: 0 };
       ts.attempts++; if (correct) ts.correct++;
+      if (selfAssessed) {
+        ts.selfAttempts = (ts.selfAttempts || 0) + 1;
+        if (correct) ts.selfCorrect = (ts.selfCorrect || 0) + 1;
+      }
       this.data.stats.topics[question.topic] = ts;
+      // A self-scored answer neither extends nor breaks the objective answer streak.
       const st = this.data.stats.streak;
-      if (correct) { st.current++; if (st.current > st.best) st.best = st.current; st.lastCorrectAt = Date.now(); }
+      if (selfAssessed) { /* no streak effect */ }
+      else if (correct) { st.current++; if (st.current > st.best) st.best = st.current; st.lastCorrectAt = Date.now(); }
       else { st.current = 0; }
       // Adaptive spaced-repetition update
       this.data.sr[question.id] = srSchedule(this.data.sr[question.id], correct);
@@ -1019,14 +1038,28 @@
     }
   }
   function skillById(id) { return (window.SKILLS && typeof window.SKILLS.byId === 'function' && id) ? window.SKILLS.byId(id) : null; }
+  /* Objective attempts/correct from a stats record — total less the self-assessed
+     subset. Every displayed attainment percentage goes through this, so a mark the
+     student awarded their own prose against a rubric can never inflate it. Records
+     saved before self* tracking existed have no self* fields and read as fully
+     objective, which is the only honest reading available for them. */
+  function objAcc(rec) {
+    if (!rec) return { attempts: 0, correct: 0 };
+    return {
+      attempts: Math.max(0, (rec.attempts || 0) - (rec.selfAttempts || 0)),
+      correct:  Math.max(0, (rec.correct  || 0) - (rec.selfCorrect  || 0)),
+    };
+  }
+
   function skillAccuracy() {
-    // Per-skill lifetime accuracy from the question-level stats
+    // Per-skill lifetime accuracy from the question-level stats (objective only)
     const out = {};
     for (const [id, s] of Object.entries(Storage.data.stats.questions)) {
       const q = questionById(id);
       if (!q || !q.skill) continue;
       const rec = out[q.skill] || (out[q.skill] = { attempts: 0, correct: 0 });
-      rec.attempts += s.attempts; rec.correct += s.correct;
+      const a = objAcc(s);
+      rec.attempts += a.attempts; rec.correct += a.correct;
     }
     return out;
   }
@@ -1415,7 +1448,7 @@
   function getGlobalProgress() {
     const stats = Storage.data.stats.questions, total = window.ALL_QUESTIONS.length;
     const seen = Object.keys(stats).length;
-    const correct = Object.values(stats).filter(q => q.correct > 0).length;
+    const correct = Object.values(stats).filter(q => objAcc(q).correct > 0).length;
     return { total, seen, correct,
       seenPct: total ? Math.round((seen/total)*100) : 0,
       masteryPct: total ? Math.round((correct/total)*100) : 0 };
@@ -1425,7 +1458,7 @@
     const stats = Storage.data.stats.topics;
     return (window.TOPICS || [])
       .map(t => {
-        const s = stats[t.id] || { attempts: 0, correct: 0 };
+        const s = objAcc(stats[t.id]);
         const acc = s.attempts >= 5 ? Math.round(s.correct / s.attempts * 100) : null;
         return { id: t.id, name: t.name, short: t.short, icon: t.icon, acc, attempts: s.attempts };
       })
@@ -2680,7 +2713,7 @@
     const ok = awarded >= marks * 0.7;
     State.answered = { kind: 'written', correct: ok, awarded, max: marks };
     if (ok) State.score++;
-    Storage.recordAnswer(q, ok); Storage.save();
+    Storage.recordAnswer(q, ok, { selfAssessed: true }); Storage.save();
     State.results.push({ id:q.id, q:q.task || q.q || 'Written task', correct:ok,
       chosen: `Self-assessed ${awarded}/${marks}`, correctOpt: `${marks} marks available`,
       selfAssessed: true, exp:q.exp || q.modelAnswer, topic:q.topic, skill:q.skill });
@@ -2925,7 +2958,7 @@
       totalMarks += g.max;
       marks += g.awarded;
       if (g.selfAssessed) { selfMarks += g.awarded; selfTotal += g.max; }
-      if (response !== null && response !== '') Storage.recordAnswer(q, g.correct);
+      if (response !== null && response !== '') Storage.recordAnswer(q, g.correct, { selfAssessed: !!g.selfAssessed });
       return { id:q.id, q:q.q || q.task || '', correct:g.correct, chosen:g.chosen,
         correctOpt: g.expected, awarded: g.awarded, max: g.max, selfAssessed: !!g.selfAssessed,
         task: q._task, exp:q.exp, topic:q.topic, skill:q.skill,
@@ -3297,7 +3330,7 @@
     const allQ = window.ALL_QUESTIONS || [];
     const topics = window.TOPICS || [];
     const accs = topics.map(t => {
-      const s = stats.topics[t.id] || {};
+      const s = objAcc(stats.topics[t.id]);
       return (s.attempts >= 5) ? s.correct / s.attempts : null;
     }).filter(a => a !== null);
     const avgAcc = accs.length ? accs.reduce((a, b) => a + b, 0) / accs.length : 0;
@@ -3386,8 +3419,8 @@
       if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1;
     });
     const topicMastery = (id) => {
-      const ts = Storage.data.stats.topics[id];
-      if (!ts || !ts.attempts) return null;
+      const ts = objAcc(Storage.data.stats.topics[id]);
+      if (!ts.attempts) return null;
       return Math.round((ts.correct / ts.attempts) * 100);
     };
 
@@ -3730,7 +3763,7 @@
     }
     const seenByTopic = {};
     allQ.forEach(q => { const s = stats.questions[q.id]; if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1; });
-    const topicMastery = id => { const ts = stats.topics[id]; if (!ts || !ts.attempts) return null; return Math.round((ts.correct / ts.attempts) * 100); };
+    const topicMastery = id => { const ts = objAcc(stats.topics[id]); if (!ts.attempts) return null; return Math.round((ts.correct / ts.attempts) * 100); };
     const cards = clinicTopics.map(t => {
       const totalN   = allQ.filter(q => q.topic === t.id).length;
       const m        = topicMastery(t.id);
@@ -3773,7 +3806,7 @@
         </div>
       </div>`;
     const topicRows = window.TOPICS.map(t => {
-      const ts = stats.topics[t.id] || { attempts:0, correct:0 };
+      const ts = objAcc(stats.topics[t.id]);
       const pct = ts.attempts ? Math.round((ts.correct / ts.attempts) * 100) : 0;
       const cls = scoreClass(pct);
       return `<div class="breakdown-row">
@@ -5127,7 +5160,7 @@
       // FR_LEARN_PATH uses `id`; AAT uses `unit` — normalise to a single variable
       const uid = unit.unit || unit.id || '';
       const topicObj = window.TOPICS.find(t => t.id === uid) || {};
-      const topicStat = Storage.data.stats.topics[uid] || { attempts: 0, correct: 0 };
+      const topicStat = objAcc(Storage.data.stats.topics[uid]);
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
 
       // For French: lock the entire unit if the previous CEFR level is not complete
