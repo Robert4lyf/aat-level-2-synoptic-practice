@@ -23,6 +23,22 @@
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
     },
     {
+      /* Level 3 renders itself — see aat3-ui.js. render() delegates to it and
+         app.js takes no further part, so the Level 2 journey and lesson player
+         (shared by every other subject, and covered by no behavioural tests)
+         are untouched by anything Level 3 does. */
+      id: 'aat3', name: 'AAT Level 3', short: 'AAT L3', flag: '📗', color: '#4F46E5',
+      desc: 'Tax Processes for Businesses — VAT and payroll for the Q2022 Level 3 Diploma',
+      meta: 'Outcome 2 of 5 · 7 lessons · FA2025',
+      tabs: ['home'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-ui.js'],
+      activate() {
+        /* No shared globals: Level 3 reads its own data directly. Empty values
+           keep any incidental app.js reference safe. */
+        window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };
+      }
+    },
+    {
       id: 'french', name: 'Français', short: 'Français', flag: '🇫🇷', color: '#003189',
       desc: 'Apprenez le vocabulaire, la grammaire et la conversation française',
       meta: '180+ questions · 37 leçons · A1–B1 + histoires + examens',
@@ -3046,8 +3062,38 @@
 
   /* ── RENDER ── */
   const app = () => document.getElementById('app');
+  /* Header chrome is shared by every subject; the body below it is not. */
+  function applyChrome() {
+    const isDark = Storage.isDarkActive();
+    document.body.classList.toggle('dark', isDark);
+    document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
+    const dt = document.getElementById('darkToggle');
+    if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
+    const sb = document.getElementById('subjectSwitcherBtn');
+    if (sb) { const s = getSubject(_activeSubjectId); sb.textContent = s.flag + ' ' + s.short + ' ▾'; }
+    /* index.html hardcodes the Level 2 title; keep the header honest per subject. */
+    const subj = getSubject(_activeSubjectId);
+    const h1 = document.querySelector('header h1');
+    const sub = document.querySelector('header .sub');
+    const badge = document.querySelector('header .badge');
+    if (h1)  h1.textContent = subj.flag + ' ' + (subj.id === 'aat' ? 'AAT Level 2 Synoptic Practice' : subj.name);
+    if (sub) sub.textContent = subj.id === 'aat' ? 'Q2022 — The Business Environment Synoptic Assessment' : subj.desc;
+    if (badge) badge.style.display = subj.id === 'aat' ? '' : 'none';
+  }
+
   function render() {
     const el = app();
+
+    /* Level 3 owns its own rendering entirely. Delegating here — before any of
+       the Level 2 screens or attachEvents() run — is what keeps the two apart. */
+    if (_activeSubjectId === 'aat3' && window.AAT3_UI && State.screen !== 'subjects') {
+      window.AAT3_UI.mount(el);
+      applyChrome();
+      const sw = document.getElementById('subjectSwitcherBtn');
+      if (sw && !sw._a3) { sw._a3 = true; sw.addEventListener('click', () => { State.screen = 'subjects'; render(); }); }
+      return;
+    }
+
     let html = '';
     if (State.screen === 'splash')      html = renderSplash();
     else if (State.screen === 'subjects') html = `<div class="container fade-in">${renderSubjectPicker()}</div>`;
@@ -3062,13 +3108,9 @@
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
-    const isDark = Storage.isDarkActive();
-    document.body.classList.toggle('dark', isDark);
-    document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
-    const dt = document.getElementById('darkToggle');
-    if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
-    const sb = document.getElementById('subjectSwitcherBtn');
-    if (sb) { const subj = getSubject(_activeSubjectId); sb.textContent = subj.flag + ' ' + subj.short + ' ▾'; }
+    /* Same chrome routine as the Level 3 branch, so switching between subjects
+       always leaves the header describing the subject actually on screen. */
+    applyChrome();
     if (State.confirmModal) {
       const mc = document.getElementById('modalConfirm') || document.getElementById('modalCancel');
       if (mc) mc.focus();
@@ -7058,7 +7100,10 @@
     renderReferencePanel();
     updateRefToggleBtn();
     if (Storage.data.settings.seenSplash) State.screen = 'home';
-    if (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length) {
+    /* Level 3 carries no shared question bank — it reads its own data — so this
+       guard would fire on a healthy load. Skip it when Level 3 is ready. */
+    const _l3 = _activeSubjectId === 'aat3' && window.AAT3_UI && window.AAT3_LEARN_PATH;
+    if (!_l3 && (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length)) {
       const el = app(); if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="alert">⚠️ Question bank failed to load. Please reload the page.</div></div>`;
       const _c = document.getElementById('page-cover'); if (_c) _c.remove();
       return;

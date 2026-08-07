@@ -1,0 +1,467 @@
+/* AAT Level 3 — its own design language.
+ *
+ * Every rule here is scoped under body[data-subject="aat3"], so nothing can
+ * reach the four shipped subjects. Level 3 is meant to read as a tier above
+ * Level 2, so this does not reuse Level 2's tokens, spacing or type scale.
+ *
+ * Both themes are defined together from one token set, and the tokens are
+ * literal values rather than aliases of aliases — the bug that shipped twice in
+ * Level 2 came from an alias resolving once against the light palette.
+ */
+
+body[data-subject="aat3"] {
+  --a3-ink:        #0B1020;
+  --a3-ink-2:      #2A3350;
+  --a3-ink-3:      #5A6684;
+  --a3-paper:      #F7F8FC;
+  --a3-surface:    #FFFFFF;
+  --a3-surface-2:  #F0F2F9;
+  --a3-line:       #DFE3EF;
+  --a3-line-2:     #C7CDE0;
+
+  --a3-brand:      #4F46E5;
+  --a3-brand-2:    #7C3AED;
+  --a3-brand-ink:  #3730A3;
+  --a3-brand-wash: #EEF0FE;
+  --a3-gold:       #B0891B;
+  --a3-gold-wash:  #FBF3DC;
+
+  --a3-ok:         #0F7B4F;
+  --a3-ok-wash:    #E4F6EC;
+  --a3-bad:        #B4243C;
+  --a3-bad-wash:   #FCE9EC;
+
+  --a3-hero-1:     #1E1B4B;
+  --a3-hero-2:     #312E81;
+  --a3-hero-3:     #4C1D95;
+  --a3-hero-ink:   #EEF0FE;
+
+  --a3-shadow:     0 1px 2px rgba(16,20,40,.05), 0 8px 24px -8px rgba(16,20,40,.12);
+  --a3-shadow-lg:  0 2px 4px rgba(16,20,40,.06), 0 24px 56px -16px rgba(16,20,40,.24);
+  --a3-r:          14px;
+  --a3-r-lg:       22px;
+  --a3-serif:      ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+}
+
+body.dark[data-subject="aat3"] {
+  --a3-ink:        #EAEDF7;
+  --a3-ink-2:      #BFC7DE;
+  --a3-ink-3:      #8C97B4;
+  --a3-paper:      #070A14;
+  --a3-surface:    #10152A;
+  --a3-surface-2:  #171D36;
+  --a3-line:       #232B4A;
+  --a3-line-2:     #333D63;
+
+  --a3-brand:      #8B85FF;
+  --a3-brand-2:    #A78BFA;
+  --a3-brand-ink:  #C7C3FF;
+  --a3-brand-wash: #1A1B44;
+  --a3-gold:       #E3C168;
+  --a3-gold-wash:  #2A2413;
+
+  --a3-ok:         #5FD79E;
+  --a3-ok-wash:    #0D2B1F;
+  --a3-bad:        #FF8FA0;
+  --a3-bad-wash:   #2B1219;
+
+  --a3-hero-1:     #0A0A24;
+  --a3-hero-2:     #17164A;
+  --a3-hero-3:     #2A1055;
+  --a3-hero-ink:   #E7E5FF;
+
+  --a3-shadow:     0 1px 2px rgba(0,0,0,.5), 0 8px 24px -8px rgba(0,0,0,.6);
+  --a3-shadow-lg:  0 2px 4px rgba(0,0,0,.5), 0 24px 56px -16px rgba(0,0,0,.7);
+}
+
+body[data-subject="aat3"] #app { background: var(--a3-paper); }
+
+.a3-root {
+  color: var(--a3-ink);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  animation: a3-in .32s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes a3-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.a3-hero {
+  position: relative;
+  margin: 0 -20px 30px;
+  padding: 56px 20px 40px;
+  background: linear-gradient(135deg, var(--a3-hero-1) 0%, var(--a3-hero-2) 52%, var(--a3-hero-3) 100%);
+  color: var(--a3-hero-ink);
+  overflow: hidden;
+}
+.a3-hero-glow {
+  position: absolute; inset: -40% -20% auto auto; width: 560px; height: 560px;
+  background: radial-gradient(closest-side, rgba(167,139,250,.34), transparent 70%);
+  pointer-events: none;
+}
+.a3-hero-in { position: relative; max-width: 860px; margin: 0 auto; }
+.a3-eyebrow {
+  font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.62); margin-bottom: 14px;
+}
+.a3-title {
+  font-family: var(--a3-serif);
+  font-size: clamp(30px, 5.2vw, 46px); line-height: 1.08; font-weight: 600;
+  letter-spacing: -.018em; margin: 0 0 10px;
+}
+.a3-sub { font-size: 16px; color: rgba(255,255,255,.78); margin-bottom: 22px; }
+.a3-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.a3-chip {
+  font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,255,255,.11); border: 1px solid rgba(255,255,255,.16);
+  color: rgba(255,255,255,.9);
+}
+.a3-chip-accent { background: rgba(227,193,104,.16); border-color: rgba(227,193,104,.34); color: #F3DFA6; }
+
+.a3-progress-bar {
+  height: 7px; border-radius: 999px; background: rgba(255,255,255,.15); overflow: hidden;
+}
+.a3-progress-bar span {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, #A78BFA, #E3C168);
+  transition: width .5s cubic-bezier(.2,.7,.3,1);
+}
+.a3-progress-meta {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  margin-top: 10px; font-size: 12.5px; color: rgba(255,255,255,.68);
+}
+
+/* ── Honest scope notice ──────────────────────────────────────────────────── */
+.a3-notice {
+  background: var(--a3-gold-wash); border: 1px solid rgba(176,137,27,.3);
+  border-radius: var(--a3-r); padding: 14px 16px; font-size: 13.5px; line-height: 1.6;
+  color: var(--a3-ink-2); margin-bottom: 34px;
+}
+.a3-notice strong { color: var(--a3-ink); }
+
+/* ── The track ────────────────────────────────────────────────────────────── */
+.a3-track { position: relative; padding: 8px 0 20px; }
+.a3-node-wrap { position: relative; display: flex; align-items: center; gap: 20px; min-height: 104px; }
+.a3-side-l { flex-direction: row; }
+.a3-side-r { flex-direction: row-reverse; }
+.a3-side-r .a3-node-card { text-align: right; }
+
+.a3-link {
+  /* An absolutely-positioned SVG with a viewBox derives its width from the
+     aspect ratio when width is auto, so `right` alone is ignored. */
+  position: absolute; top: -62px; left: 37px; width: calc(100% - 74px); height: 72px;
+  z-index: 0; pointer-events: none;
+}
+.a3-link path {
+  fill: none; stroke: var(--a3-line-2); stroke-width: 3;
+  stroke-dasharray: 5 8; stroke-linecap: round; vector-effect: non-scaling-stroke;
+}
+.a3-node, .a3-node-card { position: relative; z-index: 1; }
+
+.a3-node {
+  flex: 0 0 auto; width: 74px; height: 74px; border-radius: 24px;
+  border: 1px solid var(--a3-line); background: var(--a3-surface);
+  box-shadow: var(--a3-shadow); cursor: pointer; font-size: 27px;
+  display: grid; place-items: center; color: var(--a3-ink);
+  transition: transform .18s cubic-bezier(.2,.7,.3,1), box-shadow .18s, border-color .18s;
+}
+.a3-node:hover { transform: translateY(-3px) scale(1.03); box-shadow: var(--a3-shadow-lg); }
+.a3-node:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 3px; }
+.a3-node-concept  { border-color: var(--a3-line-2); }
+.a3-node-applied  { border-color: var(--a3-brand); box-shadow: 0 0 0 4px var(--a3-brand-wash), var(--a3-shadow); }
+.a3-node-workshop {
+  border-color: var(--a3-gold); box-shadow: 0 0 0 4px var(--a3-gold-wash), var(--a3-shadow);
+  background: linear-gradient(160deg, var(--a3-surface), var(--a3-gold-wash));
+}
+.a3-node.is-done {
+  background: linear-gradient(160deg, var(--a3-brand), var(--a3-brand-2));
+  border-color: transparent; color: #fff; box-shadow: var(--a3-shadow-lg);
+}
+
+.a3-node-card { flex: 1 1 auto; min-width: 0; }
+.a3-node-type {
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--a3-ink-3); margin-bottom: 3px;
+}
+.a3-node-title { font-size: 17px; font-weight: 650; line-height: 1.3; letter-spacing: -.01em; }
+.a3-node-meta { font-size: 12.5px; color: var(--a3-ink-3); margin-top: 3px; }
+.a3-stars { margin-top: 5px; font-size: 13px; color: var(--a3-line-2); letter-spacing: 2px; }
+.a3-stars .on { color: var(--a3-gold); }
+.a3-stars-big { font-size: 26px; letter-spacing: 5px; margin: 14px 0 22px; }
+
+.a3-foot {
+  margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--a3-line);
+  font-size: 11.5px; color: var(--a3-ink-3); text-align: center; line-height: 1.6;
+}
+.a3-empty { padding: 60px 20px; text-align: center; color: var(--a3-ink-3); }
+
+/* ── Lesson chrome ────────────────────────────────────────────────────────── */
+.a3-lessonbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 0 20px; position: sticky; top: 0; z-index: 5;
+  background: linear-gradient(var(--a3-paper) 72%, transparent);
+}
+.a3-lessonbar-p { flex: 1; height: 6px; border-radius: 999px; background: var(--a3-line); overflow: hidden; }
+.a3-lessonbar-p span {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--a3-brand), var(--a3-brand-2));
+  transition: width .4s cubic-bezier(.2,.7,.3,1);
+}
+.a3-lessonbar-n { font-size: 12.5px; color: var(--a3-ink-3); font-variant-numeric: tabular-nums; }
+
+.a3-sheet {
+  background: var(--a3-surface); border: 1px solid var(--a3-line);
+  border-radius: var(--a3-r-lg); box-shadow: var(--a3-shadow);
+  padding: clamp(24px, 4vw, 44px);
+  animation: a3-in .26s cubic-bezier(.2,.7,.3,1) both;
+}
+.a3-reading { max-width: 760px; }
+
+.a3-card-h {
+  font-family: var(--a3-serif); font-size: clamp(23px, 3.4vw, 31px);
+  line-height: 1.18; font-weight: 600; letter-spacing: -.016em; margin: 0 0 18px;
+}
+.a3-p { font-size: 16.5px; line-height: 1.72; color: var(--a3-ink-2); margin: 0 0 15px; }
+.a3-p strong { color: var(--a3-ink); font-weight: 650; }
+
+/* ── Content blocks ───────────────────────────────────────────────────────── */
+.a3-formula {
+  display: flex; flex-direction: column; gap: 7px;
+  background: var(--a3-brand-wash); border-left: 3px solid var(--a3-brand);
+  border-radius: 0 var(--a3-r) var(--a3-r) 0; padding: 15px 18px; margin: 20px 0;
+  font-size: 14.5px; color: var(--a3-brand-ink); font-weight: 550;
+}
+.a3-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.a3-split-col {
+  background: var(--a3-surface-2); border: 1px solid var(--a3-line);
+  border-radius: var(--a3-r); padding: 16px 18px;
+}
+.a3-split-col h4 { margin: 0 0 10px; font-size: 13.5px; letter-spacing: .01em; }
+.a3-split-col ul { margin: 0; padding-left: 17px; }
+.a3-split-col li { font-size: 14px; line-height: 1.62; color: var(--a3-ink-2); margin-bottom: 6px; }
+
+.a3-tablewrap { overflow-x: auto; margin: 20px 0; -webkit-overflow-scrolling: touch; }
+.a3-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
+.a3-table th, .a3-table td {
+  text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--a3-line);
+  vertical-align: top; line-height: 1.55;
+}
+.a3-table thead th {
+  background: var(--a3-surface-2); font-size: 11.5px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--a3-ink-3); border-bottom: 1px solid var(--a3-line-2);
+}
+.a3-table td { color: var(--a3-ink-2); }
+.a3-table-plain tr:first-child td, .a3-table-plain th { font-weight: 650; color: var(--a3-ink); }
+
+.a3-example {
+  border: 1px solid var(--a3-line); border-radius: var(--a3-r);
+  overflow: hidden; margin: 20px 0;
+}
+.a3-example-t {
+  background: var(--a3-surface-2); padding: 11px 14px; font-size: 13px;
+  font-weight: 650; border-bottom: 1px solid var(--a3-line);
+}
+.a3-example .a3-tablewrap { margin: 0; }
+.a3-example .a3-table th, .a3-example .a3-table td { padding: 10px 14px; }
+
+.a3-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 20px 0; }
+.a3-flow-step {
+  background: var(--a3-brand-wash); color: var(--a3-brand-ink);
+  border-radius: 999px; padding: 7px 15px; font-size: 13px; font-weight: 600;
+}
+.a3-flow-arrow { color: var(--a3-ink-3); }
+
+.a3-callout {
+  display: flex; gap: 12px; align-items: flex-start; margin: 20px 0;
+  padding: 15px 17px; border-radius: var(--a3-r); font-size: 14.5px; line-height: 1.65;
+  background: var(--a3-brand-wash); color: var(--a3-ink-2);
+  border: 1px solid rgba(79,70,229,.2);
+}
+.a3-callout-warning { background: var(--a3-gold-wash); border-color: rgba(176,137,27,.32); }
+.a3-callout-i {
+  flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 12px; font-weight: 700;
+  background: var(--a3-brand); color: #fff;
+}
+.a3-callout-warning .a3-callout-i { background: var(--a3-gold); }
+
+.a3-trap {
+  display: flex; gap: 12px; align-items: baseline; margin: 20px 0;
+  padding: 14px 17px; border-radius: var(--a3-r);
+  background: var(--a3-bad-wash); border: 1px solid rgba(180,36,60,.22);
+  font-size: 14.5px; line-height: 1.65; color: var(--a3-ink-2);
+}
+.a3-trap-l {
+  flex: 0 0 auto; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: var(--a3-bad);
+}
+
+/* ── Worked example ───────────────────────────────────────────────────────── */
+.a3-worked {
+  margin: 26px 0; border: 1px solid var(--a3-line-2); border-radius: var(--a3-r-lg);
+  overflow: hidden; background: var(--a3-surface);
+}
+.a3-worked-head {
+  padding: 14px 18px; background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
+  color: #fff; display: flex; flex-direction: column; gap: 3px;
+}
+.a3-worked-tag { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; opacity: .82; }
+.a3-worked-title { font-size: 15.5px; font-weight: 650; }
+.a3-worked-problem {
+  margin: 0; padding: 17px 18px; font-size: 15.5px; line-height: 1.68;
+  color: var(--a3-ink-2); background: var(--a3-surface-2); border-bottom: 1px solid var(--a3-line);
+}
+.a3-steps { list-style: none; margin: 0; padding: 8px 18px 4px; }
+.a3-step { display: flex; gap: 13px; padding: 11px 0; align-items: flex-start; }
+.a3-step + .a3-step { border-top: 1px dashed var(--a3-line); }
+.a3-step-n {
+  flex: 0 0 auto; width: 25px; height: 25px; border-radius: 50%;
+  background: var(--a3-brand-wash); color: var(--a3-brand-ink);
+  display: grid; place-items: center; font-size: 12.5px; font-weight: 700;
+}
+.a3-step.is-shown { animation: a3-in .24s cubic-bezier(.2,.7,.3,1) both; }
+.a3-step-do { font-size: 15px; font-weight: 600; line-height: 1.55; }
+.a3-step-why { font-size: 14px; line-height: 1.65; color: var(--a3-ink-3); margin-top: 4px; }
+.a3-blur { color: var(--a3-ink-3); opacity: .5; font-weight: 400; font-style: italic; }
+.a3-worked-actions { display: flex; gap: 9px; padding: 4px 18px 18px; flex-wrap: wrap; }
+.a3-answer {
+  display: flex; align-items: baseline; gap: 12px; margin: 4px 18px 18px;
+  padding: 14px 17px; border-radius: var(--a3-r);
+  background: var(--a3-ok-wash); border: 1px solid rgba(15,123,79,.24);
+}
+.a3-answer span { font-size: 10.5px; letter-spacing: .11em; text-transform: uppercase; color: var(--a3-ok); font-weight: 700; }
+.a3-answer strong { font-size: 17px; color: var(--a3-ink); }
+
+.a3-try { margin: 0 18px 18px; padding: 17px; border-radius: var(--a3-r); background: var(--a3-surface-2); border: 1px solid var(--a3-line); }
+.a3-try-head { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--a3-brand-ink); font-weight: 700; margin-bottom: 8px; }
+.a3-try-row { display: flex; gap: 9px; flex-wrap: wrap; }
+.a3-input {
+  flex: 1 1 150px; min-width: 0; padding: 12px 15px; font-size: 16px;
+  border: 1px solid var(--a3-line-2); border-radius: 11px;
+  background: var(--a3-surface); color: var(--a3-ink);
+}
+.a3-input:focus { outline: none; border-color: var(--a3-brand); box-shadow: 0 0 0 4px var(--a3-brand-wash); }
+.a3-hint { margin-top: 10px; font-size: 13.5px; color: var(--a3-ink-3); line-height: 1.6; }
+.a3-try-verdict { font-size: 15px; font-weight: 650; padding: 11px 14px; border-radius: 11px; margin-bottom: 10px; }
+.a3-try-verdict.is-right { background: var(--a3-ok-wash); color: var(--a3-ok); }
+.a3-try-verdict.is-wrong { background: var(--a3-bad-wash); color: var(--a3-bad); }
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.a3-btn {
+  border: 1px solid transparent; border-radius: 12px; padding: 12px 22px;
+  font-size: 14.5px; font-weight: 650; cursor: pointer; font-family: inherit;
+  transition: transform .14s, box-shadow .14s, background .14s;
+}
+.a3-btn:active { transform: translateY(1px); }
+.a3-btn:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+.a3-btn-primary {
+  background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
+  color: #fff; box-shadow: 0 6px 18px -6px rgba(79,70,229,.6);
+}
+.a3-btn-primary:hover { box-shadow: 0 10px 26px -8px rgba(79,70,229,.7); }
+.a3-btn-ghost { background: transparent; border-color: var(--a3-line-2); color: var(--a3-ink-2); }
+.a3-btn-ghost:hover { background: var(--a3-surface-2); }
+.a3-wide { width: 100%; margin-top: 18px; }
+.a3-nav { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 30px; }
+.a3-nav-hint { font-size: 13.5px; color: var(--a3-ink-3); font-style: italic; }
+
+/* ── Questions ────────────────────────────────────────────────────────────── */
+.a3-qhead { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--a3-ink-3); margin-bottom: 12px; }
+.a3-q { font-size: clamp(19px, 2.8vw, 24px); line-height: 1.4; font-weight: 650; letter-spacing: -.012em; margin: 0 0 24px; }
+.a3-opts { display: flex; flex-direction: column; gap: 10px; }
+.a3-opt {
+  display: flex; gap: 13px; align-items: flex-start; text-align: left; width: 100%;
+  padding: 15px 17px; border-radius: var(--a3-r); cursor: pointer;
+  border: 1px solid var(--a3-line-2); background: var(--a3-surface);
+  font-size: 15.5px; line-height: 1.6; color: var(--a3-ink-2); font-family: inherit;
+  transition: border-color .14s, background .14s, transform .14s;
+}
+.a3-opt:hover:not(:disabled) { border-color: var(--a3-brand); background: var(--a3-brand-wash); transform: translateX(2px); }
+.a3-opt:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+.a3-opt-k {
+  flex: 0 0 auto; width: 25px; height: 25px; border-radius: 8px;
+  background: var(--a3-surface-2); color: var(--a3-ink-3);
+  display: grid; place-items: center; font-size: 12.5px; font-weight: 700;
+}
+.a3-opt.is-right { border-color: var(--a3-ok); background: var(--a3-ok-wash); color: var(--a3-ink); }
+.a3-opt.is-right .a3-opt-k { background: var(--a3-ok); color: #fff; }
+.a3-opt.is-wrong { border-color: var(--a3-bad); background: var(--a3-bad-wash); }
+.a3-opt.is-wrong .a3-opt-k { background: var(--a3-bad); color: #fff; }
+.a3-opt:disabled { cursor: default; }
+
+.a3-tf { display: flex; flex-direction: column; gap: 9px; }
+.a3-tf-row {
+  display: flex; gap: 14px; align-items: center; justify-content: space-between;
+  padding: 13px 16px; border-radius: var(--a3-r);
+  border: 1px solid var(--a3-line); background: var(--a3-surface);
+}
+.a3-tf-t { font-size: 14.5px; line-height: 1.55; color: var(--a3-ink-2); }
+.a3-tf-b { display: flex; gap: 6px; flex: 0 0 auto; }
+.a3-tf-row.is-right { border-color: var(--a3-ok); background: var(--a3-ok-wash); }
+.a3-tf-row.is-wrong { border-color: var(--a3-bad); background: var(--a3-bad-wash); }
+
+.a3-pill {
+  border: 1px solid var(--a3-line-2); background: var(--a3-surface); color: var(--a3-ink-2);
+  border-radius: 999px; padding: 7px 15px; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all .14s;
+}
+.a3-pill:hover:not(:disabled) { border-color: var(--a3-brand); }
+.a3-pill.on { background: var(--a3-brand); border-color: var(--a3-brand); color: #fff; }
+.a3-pill.is-right { background: var(--a3-ok); border-color: var(--a3-ok); color: #fff; }
+.a3-pill.is-wrong { background: var(--a3-bad); border-color: var(--a3-bad); color: #fff; }
+.a3-pill:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+
+.a3-gap { font-size: 16.5px; line-height: 2.5; color: var(--a3-ink-2); }
+.a3-gapsel { display: inline-flex; gap: 5px; margin: 0 4px; vertical-align: middle; }
+
+.a3-exp-box {
+  margin-top: 22px; padding: 17px; border-radius: var(--a3-r);
+  background: var(--a3-surface-2); border: 1px solid var(--a3-line);
+}
+.a3-exp-l { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--a3-ink-3); font-weight: 700; margin-bottom: 7px; }
+.a3-exp { font-size: 15px; line-height: 1.7; color: var(--a3-ink-2); margin: 0; }
+
+/* ── Completion ───────────────────────────────────────────────────────────── */
+.a3-done { text-align: center; padding: 70px 20px; }
+.a3-done-ring {
+  width: 158px; height: 158px; margin: 0 auto 26px; border-radius: 50%;
+  display: grid; place-items: center; position: relative;
+  background: conic-gradient(var(--a3-brand) calc(var(--p) * 1%), var(--a3-line) 0);
+  animation: a3-pop .5s cubic-bezier(.2,.8,.3,1.2) both;
+}
+.a3-done-ring::after {
+  content: ''; position: absolute; inset: 11px; border-radius: 50%; background: var(--a3-paper);
+}
+.a3-done-ring span {
+  position: relative; z-index: 1; font-size: 33px; font-weight: 700;
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+@keyframes a3-pop { from { transform: scale(.82); opacity: 0; } to { transform: none; opacity: 1; } }
+.a3-done-h { font-family: var(--a3-serif); font-size: 30px; font-weight: 600; margin: 0 0 7px; letter-spacing: -.015em; }
+.a3-done-sub { font-size: 15px; color: var(--a3-ink-3); }
+.a3-done-actions { display: flex; gap: 11px; justify-content: center; flex-wrap: wrap; }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 620px) {
+  .a3-split { grid-template-columns: 1fr; }
+  .a3-node { width: 60px; height: 60px; border-radius: 19px; font-size: 22px; }
+  .a3-node-wrap { gap: 15px; min-height: 88px; }
+  .a3-link { top: -52px; left: 30px; width: 2px; height: 60px; }
+  .a3-side-r .a3-node-card { text-align: left; }
+  .a3-side-r { flex-direction: row; }
+  .a3-tf-row { flex-direction: column; align-items: stretch; gap: 10px; }
+  .a3-sheet { padding: 22px 18px; }
+  .a3-done-ring { width: 130px; height: 130px; }
+}
+
+/* The Level 2 stylesheet applies a universal !important reduced-motion reset,
+   which already neutralises everything above. This block is here so the intent
+   is explicit and survives that reset being narrowed later. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat3"] .a3-root,
+  body[data-subject="aat3"] .a3-sheet,
+  body[data-subject="aat3"] .a3-step.is-shown,
+  body[data-subject="aat3"] .a3-done-ring { animation: none; }
+  body[data-subject="aat3"] .a3-node:hover { transform: none; }
+  body[data-subject="aat3"] .a3-opt:hover:not(:disabled) { transform: none; }
+}

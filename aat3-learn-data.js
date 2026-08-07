@@ -150,7 +150,8 @@
             headers: ['Situation', 'Tax point'],
             rows: [
               ['Advance payment', 'The date the payment is received, for that amount only. The balance follows the normal rules.'],
-              ['Deposit', 'Same as an advance payment — a tax point is created when it is received.'],
+              ['Deposit as part-payment', 'Same as an advance payment — a tax point is created when it is received.'],
+              ['Refundable security deposit', 'Not consideration for a supply, so no tax point arises on receipt — for example a deposit against the safe return of hired goods.'],
               ['Continuous supply', 'The earlier of each invoice issued and each payment received.'],
               ['Goods on sale or return', 'When the customer adopts the goods, or 12 months from despatch if earlier.'],
             ],
@@ -264,7 +265,7 @@
             'Working back from a **gross** figure is where errors creep in, because the rate cannot simply be applied to it — the gross already includes the VAT.',
             'At the standard rate of ' + T.rates.standard.value + '%, the gross is 120% of the net, so the VAT is 20/120 of the gross — which simplifies to **one sixth**. At the reduced rate of ' + T.rates.reduced.value + '%, the gross is 105% of the net, so the VAT is 5/105, or **one twenty-first**.',
           ],
-          formula: 'Net → VAT: Net × ' + T.rates.standard.value + '% · Gross → VAT at ' + T.rates.standard.value + '%: Gross ÷ 6 · Gross → VAT at ' + T.rates.reduced.value + '%: Gross ÷ 21 · Gross → Net: Gross ÷ 1.' + (100 + T.rates.standard.value).toString().slice(1),
+          formula: 'Net → VAT: Net × ' + T.rates.standard.value + '% · Gross → VAT at ' + T.rates.standard.value + '%: Gross ÷ 6 · Gross → VAT at ' + T.rates.reduced.value + '%: Gross ÷ 21 · Gross → Net: Gross ÷ ' + (1 + T.rates.standard.value / 100).toFixed(2),
           examtrap: 'Applying ' + T.rates.standard.value + '% to a gross figure overstates the VAT by a fifth. If a question gives you a "total including VAT", the divide-by-six route is the one you want.',
         },
         {
@@ -286,11 +287,12 @@
         {
           h: 'Rounding',
           p: [
-            'The total VAT on an invoice may be **rounded down to the nearest penny**. This is a concession in the taxpayer\'s favour and applies to the invoice total, not to each line calculated separately.',
-            'On the **VAT return itself**, figures are entered in whole pounds. VAT amounts are rounded to the nearest pound; the pence are not carried onto the return.',
+            'HMRC permits VAT to be calculated **per line item** or **per unit**, rounding to the nearest penny. Line-by-line calculation is not an error — it is one of the prescribed methods, and it is what accounting software actually does.',
+            'Separately, an **invoice trader** may round the total VAT on an invoice **down** to a whole penny. That concession is not available to retailers, who have their own rules.',
+            'On the **VAT return**, the two groups of boxes are treated differently. The VAT boxes (1 to 5) are completed in **pounds and pence**. The value boxes (6 to 9) — the net values of sales and purchases — are **whole pounds, rounded down**.',
             'Do not round intermediate workings. Round once, at the end, or small differences compound across a period.',
           ],
-          callout: { kind: 'warning', text: 'Rounding down applies to the invoice total. Rounding line by line and then totalling gives a different — and wrong — answer.' },
+          callout: { kind: 'key', text: 'VAT boxes carry pence; value boxes are whole pounds rounded down. Reversing the two is a common and expensive slip.' },
         },
         {
           h: 'What automation changes',
@@ -346,13 +348,13 @@
         {
           q: 'Which statement about rounding is correct?',
           opts: [
-            'The total VAT on an invoice may be rounded down to the nearest penny',
-            'The VAT on each individual line must be rounded down before totalling',
+            'An invoice trader may round the total VAT on an invoice down to a whole penny',
+            'Every business may round the total VAT on an invoice down, including retailers',
             'VAT must always be rounded up to the nearest penny in HMRC’s favour',
-            'No rounding of any kind is permitted on a VAT invoice',
+            'Calculating VAT line by line is not permitted and must be avoided',
           ],
           ans: 0,
-          exp: 'The concession applies to the invoice total and rounds down, in the taxpayer’s favour. Rounding each line separately and then totalling produces a different figure and is not the rule.',
+          exp: 'The rounding-down concession belongs to invoice traders; retailers have separate rules. Calculating VAT line by line is expressly permitted — it is one of HMRC’s prescribed methods, not an error.',
         },
         {
           type: 'truefalse',
@@ -361,9 +363,9 @@
             { text: 'Output tax is the VAT charged on sales.', answer: true },
             { text: 'If input tax exceeds output tax, a repayment is due from HMRC.', answer: true },
             { text: 'Accounting software can determine the correct rate for an unfamiliar supply.', answer: false },
-            { text: 'Figures are entered on the VAT return to the nearest penny.', answer: false },
+            { text: 'The value boxes (6 to 9) on the VAT return are rounded down to whole pounds.', answer: true },
           ],
-          exp: 'Output tax is on sales and input tax on purchases; where input exceeds output a repayment arises. Software applies the rate it has been given rather than judging which is correct, and return figures are entered in whole pounds.',
+          exp: 'Output tax is on sales and input tax on purchases; where input exceeds output a repayment arises. Software applies the rate it has been given rather than judging which is correct. On the return, the VAT boxes carry pounds and pence while the value boxes are whole pounds rounded down.',
         },
       ],
     },
@@ -380,12 +382,12 @@
           p: [
             'Both mean no VAT is charged to the customer. The difference is what happens to the **input tax** on the costs of making that supply, and it is the difference that matters.',
             'A **zero-rated** supply is a taxable supply on which the rate happens to be ' + T.rates.zero.value + '%. Because it is taxable, input tax relating to it is fully recoverable.',
-            'An **exempt** supply is outside the VAT charge altogether. Input tax relating to it is **not** recoverable.',
+            'An **exempt** supply is within the scope of VAT but exempted from the charge. Input tax relating to it is **not** recoverable. This is not the same as a supply **outside the scope** of VAT, which is not a taxable supply at all — the syllabus treats them as separate categories.',
             'So a business making only zero-rated supplies charges nothing and reclaims everything — it is in a permanent repayment position. A business making only exempt supplies charges nothing and reclaims nothing, and the VAT it pays becomes an absorbed cost.',
           ],
           split: {
             left: { title: 'Zero-rated (taxable at 0%)', items: ['Most food', 'Books and newspapers', 'Children’s clothing', 'Input tax fully recoverable', 'Counts toward the registration threshold'] },
-            right: { title: 'Exempt', items: ['Insurance', 'Postal services', 'Most finance and credit', 'Input tax NOT recoverable', 'Does not count toward the registration threshold'] },
+            right: { title: 'Exempt', items: ['Insurance', 'Public postal services (Royal Mail universal service)', 'Most finance and credit', 'Input tax NOT recoverable', 'Does not count toward the registration threshold'] },
           },
           examtrap: 'That exempt supplies do not count toward the taxable turnover threshold is a favourite. A business making only exempt supplies cannot register at all, however large it is.',
         },
@@ -395,15 +397,16 @@
             'Most businesses making exempt supplies also make taxable ones. They are **partially exempt**, and their input tax splits three ways: wholly attributable to taxable supplies (recoverable), wholly attributable to exempt supplies (not recoverable), and residual overheads relating to both (apportioned).',
             'There is relief for businesses whose exempt activity is small. If the exempt input tax passes the **de minimis** test, all of it may be recovered as though the business were fully taxable.',
           ],
-          formula: 'De minimis: exempt input tax ≤ ' + T.partialExemption.deMinimisPerMonth.value + ' per month on average AND ≤ ' + T.partialExemption.inputTaxProportion.value + '% of total input tax',
-          callout: { kind: 'warning', text: 'BOTH limbs must be satisfied. Passing the ' + T.partialExemption.deMinimisPerMonth.value + ' test while exempt input tax is more than half the total does not qualify.' },
+          formula: 'De minimis: exempt input tax ≤ £' + T.partialExemption.deMinimisPerMonth.value + ' per month on average AND ≤ ' + T.partialExemption.inputTaxProportion.value + '% of total input tax',
+          callout: { kind: 'warning', text: 'BOTH limbs must be satisfied. Passing the £' + T.partialExemption.deMinimisPerMonth.value + ' test while exempt input tax is more than half the total does not qualify.' },
         },
         {
           h: 'Blocked input tax',
           table: {
             headers: ['Blocked', 'Why, and the exception'],
             rows: [
-              ['Business entertaining', 'Not recoverable. Entertaining employees IS recoverable — but on a mixed group of staff and clients, only the staff proportion.'],
+              ['Client entertaining', 'Not recoverable. Where employees act as hosts to clients, the whole cost is blocked — including the employees’ share.'],
+              ['Employee entertaining', 'Recoverable. Where staff bring guests to a staff event, apportion and recover only the employees’ share.'],
               ['Cars', 'Not recoverable on purchase, unless used exclusively for business with no private use at all — a very hard test to meet.'],
               ['Vans and commercial vehicles', 'Recoverable. The block applies to cars, not to commercial vehicles.'],
               ['Assets with private use', 'Recoverable only to the extent of business use, so an apportionment is needed.'],
@@ -411,7 +414,7 @@
           },
           p: [
             'The car block is unusually strict: merely being available for private use is enough to fail it, so the exception almost never applies outside pool cars and vehicles bought for hire or driving instruction.',
-            'A **mixed group** of employees and clients is the exam favourite. Split the cost and recover only the employee share.',
+            'Read the purpose, not just the guest list. A staff event to which employees bring partners is apportioned. Employees hosting clients is entertaining clients, and all of it is blocked.',
           ],
         },
         {
@@ -421,7 +424,7 @@
             problem: 'Calder Services is partially exempt. For the quarter, total input tax is £9,000, of which £1,700 relates to exempt supplies. Does it pass the de minimis test?',
             steps: [
               { do: 'Test the monthly average.', why: 'The quarter is three months, so £1,700 ÷ 3 = £566.67 per month. That is below the £' + T.partialExemption.deMinimisPerMonth.value + ' limit. First limb passed.' },
-              { do: 'Test the proportion of total input tax.', why: '' + T.partialExemption.inputTaxProportion.value + '% of £9,000 is £4,500. The exempt input tax of £1,700 is well below that. Second limb passed.' },
+              { do: 'Test the proportion of total input tax.', why: T.partialExemption.inputTaxProportion.value + '% of £9,000 is £4,500. The exempt input tax of £1,700 is well below that. Second limb passed.' },
               { do: 'Apply both together.', why: 'Both limbs are satisfied, so the business is de minimis for the period.' },
               { do: 'State the consequence.', why: 'All input tax is recoverable — the full £9,000, including the £1,700 that relates to exempt supplies.' },
             ],
@@ -431,7 +434,7 @@
               answer: 1900,
               unit: '£',
               hint: 'Work out the monthly average first. If either limb fails, the exempt element cannot be recovered.',
-              exp: '£2,100 ÷ 3 = £700 per month, which exceeds the £' + T.partialExemption.deMinimisPerMonth.value + ' limit, so the first limb fails. Once either limb fails the business is not de minimis, and there is no need to test the other. The exempt input tax is therefore blocked: £4,000 − £2,100 = £1,900 recoverable.',
+              exp: '£2,100 ÷ 3 = £700 per month, which exceeds the £' + T.partialExemption.deMinimisPerMonth.value + ' limit, so the first limb fails. Once either limb fails the business is not de minimis, and both limbs must be met. The exempt input tax is therefore blocked: £4,000 − £2,100 = £1,900 recoverable. (HMRC also operates two simplified tests and an annual review, which are beyond this unit.)',
             },
           },
         },
@@ -460,15 +463,15 @@
           exp: 'Input tax on a car is blocked unless it is used exclusively for business with no private use. Merely being available for private use fails that test, which is why the exception rarely applies outside pool cars and vehicles bought for hire or instruction.',
         },
         {
-          q: 'A business spends £600 plus VAT entertaining a group made up of its own staff and of clients. What can it recover?',
+          q: 'A business holds a staff Christmas party at which employees may each bring a partner. What VAT can it recover?',
           opts: [
-            'The proportion of the VAT relating to its own employees',
-            'All of the VAT, because staff were present',
-            'None of the VAT, because clients were present',
+            'The proportion relating to its own employees',
+            'All of the VAT, because it is a staff event',
+            'None of the VAT, because non-employees attended',
             'Half of the VAT, by standard convention',
           ],
           ans: 0,
-          exp: 'Employee entertaining is recoverable and client entertaining is blocked. On a mixed group the cost is apportioned and only the employee share recovered — there is no fixed convention of a half.',
+          exp: 'Employee entertaining is recoverable, so a staff event is apportioned and the employees’ share recovered. Contrast this with employees hosting clients, where the purpose is entertaining the client and the whole cost — including the employees’ share — is blocked.',
         },
         {
           type: 'numeric',
@@ -476,6 +479,341 @@
           answer: 9600,
           unit: '£',
           exp: '£2,400 ÷ 3 = £800 per month, above the £' + T.partialExemption.deMinimisPerMonth.value + ' limit, so the first limb fails and the business is not de minimis. Note that the second limb would have passed — £2,400 is only 20% of £12,000 — but both must be met. The exempt input tax is blocked: £12,000 − £2,400 = £9,600.',
+        },
+      ],
+    },
+
+    /* ── 2.3 — adjustments ──────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-2E',
+      title: 'Adjustments: discounts, fuel and bad debts',
+      icon: '🔧',
+      criteria: ['TPFB-2.3.4', 'TPFB-2.3.8', 'TPFB-2.3.9', 'TPFB-2.3.14'],
+      cards: [
+        {
+          h: 'Three things that move the figures after the invoice',
+          p: [
+            'The previous lessons calculated VAT on a supply as it happened. This one deals with the three routine adjustments that change the position afterwards, and they pull in different directions.',
+            'A **prompt payment discount** taken reduces output tax. A **fuel scale charge** increases it. **Bad debt relief** increases input tax. Knowing which side of the return each lands on is most of the battle.',
+          ],
+          split: {
+            left: { title: 'Reduces what you owe', items: ['PPD taken by the customer — less output tax', 'Bad debt relief — more input tax'] },
+            right: { title: 'Increases what you owe', items: ['Fuel scale charge — more output tax'] },
+          },
+        },
+        {
+          h: 'Prompt payment discounts',
+          p: [
+            'A PPD is a discount offered for early settlement. The customer may or may not take it, so at the point of invoicing the final consideration is unknown.',
+            'The rule is that **VAT is due on the amount actually paid**. The supplier invoices the full amount with VAT on the full amount, and states the discount terms. If the customer then takes the discount, the VAT must be adjusted down — normally by issuing a credit note, or by the invoice carrying wording that lets the customer adjust their own claim.',
+            'What is not permitted is assuming the discount will be taken and charging the lower VAT up front.',
+          ],
+          callout: { kind: 'key', text: 'VAT follows the money. Discount taken, VAT reduced; discount not taken, the original VAT stands.' },
+        },
+        {
+          h: 'A discount taken',
+          worked: {
+            title: 'Adjusting output tax for a PPD',
+            problem: 'Sandford Supplies invoices a customer £4,000 net, offering a 2.5% discount for payment within 10 days. The customer pays within the 10 days. What VAT is finally due, and what is the adjustment?',
+            steps: [
+              { do: 'Calculate the VAT as originally invoiced.', why: 'The invoice goes out on the full amount: £4,000 × 20% = £800 of output tax.' },
+              { do: 'Calculate the amount actually paid, net of the discount.', why: '£4,000 × 2.5% = £100 discount, so the net consideration becomes £4,000 − £100 = £3,900.' },
+              { do: 'Calculate the VAT on what was actually paid.', why: '£3,900 × 20% = £780. This is the VAT genuinely due, because VAT follows the consideration.' },
+              { do: 'Work out the adjustment.', why: '£800 originally accounted for, £780 due — so output tax is reduced by £20, normally via a credit note.' },
+            ],
+            answer: 'VAT due £780; output tax reduced by £20',
+            tryIt: {
+              q: 'An invoice is raised for £6,000 net with a 3% prompt payment discount, and the customer takes it. What is the VAT finally due, in pounds?',
+              answer: 1164,
+              unit: '£',
+              hint: 'Reduce the net by the discount first, then apply the rate to what was actually paid.',
+              exp: '£6,000 × 3% = £180 discount, leaving £5,820. £5,820 × 20% = £1,164. The invoice would originally have carried £1,200, so output tax falls by £36.',
+            },
+          },
+        },
+        {
+          h: 'Fuel scale charges',
+          p: [
+            'Where a business reclaims input tax on road fuel that is also used privately, it has a choice: apportion the input tax and reclaim only the business share, or reclaim it all and apply a **fuel scale charge**.',
+            'The scale charge is a fixed amount set by reference to the vehicle\'s CO2 emissions and the length of the VAT period. It is treated as **additional output tax**, which is what makes it increase the VAT payable.',
+            'The figure itself is **VAT-inclusive**, so the VAT element is one sixth of it — the same divide-by-six as any other gross amount.',
+          ],
+          example: {
+            title: 'Applying a quarterly scale charge',
+            rows: [
+              ['Step', 'Working', 'Result'],
+              ['Scale charge from the table (VAT-inclusive)', 'given', '£462'],
+              ['VAT element', '£462 ÷ 6', '£77.00'],
+              ['Treatment', 'added to output tax', 'increases VAT payable by £77'],
+            ],
+          },
+          examtrap: 'The scale charge is a gross figure and it is OUTPUT tax. Treating it as net, or deducting it from input tax, are the two standard errors.',
+        },
+        {
+          h: 'Bad debt relief',
+          p: [
+            'When a customer does not pay, the supplier has already accounted for output tax on the sale. Bad debt relief recovers it.',
+            'Three conditions must all be met. The debt must be at least **' + T.badDebtRelief.debtAgeMonths.value + ' months** overdue, measured from the later of the payment due date and the date of supply. It must have been **written off** in the business\'s refunds for bad debts account. And the claim must be made within **' + T.badDebtRelief.claimWindow.value + '**.',
+            'The relief is claimed by **adding the VAT to input tax**, not by reducing output tax. The effect on the return is the same, but the presentation is not, and the return asks for the figures separately.',
+          ],
+          formula: 'Debt at least ' + T.badDebtRelief.debtAgeMonths.value + ' months overdue · written off in the accounts · claimed within ' + T.badDebtRelief.claimWindow.value + ' · relief added to INPUT tax',
+        },
+        {
+          h: 'Claiming relief on an unpaid invoice',
+          worked: {
+            title: 'How much relief, and where does it go?',
+            problem: 'A sale was invoiced at £3,200 net plus VAT, payable within 30 days. Seven months after the due date the customer has not paid and the debt has been written off in the accounts. What relief can be claimed?',
+            steps: [
+              { do: 'Check the age of the debt.', why: 'Seven months have passed since the due date, which is more than the ' + T.badDebtRelief.debtAgeMonths.value + '-month minimum. Condition met.' },
+              { do: 'Check the write-off.', why: 'The debt has been written off in the refunds for bad debts account. Condition met.' },
+              { do: 'Calculate the VAT originally accounted for.', why: '£3,200 × 20% = £640 of output tax was declared when the sale was made.' },
+              { do: 'Claim it as input tax.', why: 'The £640 is added to input tax on the return, recovering the VAT paid over on a sale that produced no money.' },
+            ],
+            answer: '£640, added to input tax',
+            tryIt: {
+              q: 'An invoice for £1,450 net plus standard-rate VAT is eight months overdue and has been written off. How much bad debt relief can be claimed, in pounds?',
+              answer: 290,
+              unit: '£',
+              hint: 'The relief is the VAT that was originally charged on the supply.',
+              exp: '£1,450 × 20% = £290. Both conditions are met — eight months exceeds ' + T.badDebtRelief.debtAgeMonths.value + ', and the debt is written off — so £290 is added to input tax.',
+            },
+          },
+        },
+      ],
+      check: [
+        {
+          q: 'An invoice for £2,000 net offers a 4% prompt payment discount, which the customer takes. What VAT is due?',
+          opts: ['£384', '£400', '£416', '£320'],
+          ans: 0,
+          exp: '£2,000 × 4% = £80 discount, leaving £1,920 actually paid. £1,920 × 20% = £384. VAT follows the consideration actually received, so the £400 originally invoiced is reduced by £16.',
+        },
+        {
+          type: 'numeric',
+          q: 'A quarterly fuel scale charge of £588 applies. What amount is added to output tax, in pounds?',
+          answer: 98,
+          unit: '£',
+          exp: 'The scale charge is VAT-inclusive, so the VAT is one sixth: £588 ÷ 6 = £98. It is added to output tax, increasing the VAT payable.',
+        },
+        {
+          q: 'Which is NOT a condition for claiming VAT bad debt relief?',
+          opts: [
+            'The customer must have been formally declared insolvent',
+            'The debt must be at least six months overdue',
+            'The debt must have been written off in the accounts',
+            'The claim must be made within four years and six months',
+          ],
+          ans: 0,
+          exp: 'Insolvency is not required — the debt simply has to be old enough and written off. The other three are the actual conditions, and all must be met.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about adjustments is true or false.',
+          statements: [
+            { text: 'A fuel scale charge increases the VAT payable.', answer: true },
+            { text: 'Bad debt relief is claimed by reducing output tax.', answer: false },
+            { text: 'A supplier may charge VAT on the discounted amount before knowing whether the discount will be taken.', answer: false },
+            { text: 'A fuel scale charge figure is VAT-inclusive.', answer: true },
+          ],
+          exp: 'The scale charge is additional output tax and is a gross figure. Bad debt relief is added to INPUT tax rather than netted off output tax. And VAT must be charged on the full amount until the discount is actually taken.',
+        },
+      ],
+    },
+
+    /* ── 2.3 — international ────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-2F',
+      title: 'Imports, exports and postponed VAT accounting',
+      icon: '🌍',
+      criteria: ['TPFB-2.3.10', 'TPFB-2.3.15'],
+      cards: [
+        {
+          h: 'Goods leaving the UK',
+          p: [
+            'Exports of goods from the UK are **zero-rated**. No VAT is charged to the overseas customer, and because zero-rating is a taxable rate rather than an exemption, the input tax on the costs of making that supply stays fully recoverable.',
+            'The zero-rating is conditional on evidence. The business must hold proof that the goods physically left the UK, and must obtain it within the required time limit. Without that evidence HMRC can treat the supply as standard-rated, leaving the business to fund VAT it never charged.',
+          ],
+          callout: { kind: 'warning', text: 'The commercial risk here is one-sided. If the export evidence is missing, the VAT is still due — and the customer has long since paid a price that did not include it.' },
+        },
+        {
+          h: 'Goods entering the UK, and the cash-flow problem',
+          p: [
+            'Import VAT is due on goods brought into the UK, charged at the rate that would apply to those goods domestically.',
+            'Historically it was paid at the border and reclaimed later on the return. That is fine in principle and painful in practice: a business could be out of pocket for months on VAT it was always going to recover in full.',
+            '**Postponed VAT accounting (PVA)** removes that gap. Instead of paying at the border, the importer accounts for the import VAT on the VAT return itself.',
+          ],
+        },
+        {
+          h: 'How postponed VAT accounting works on the return',
+          p: [
+            'The same amount is entered **twice**: once as output tax and once as input tax.',
+            'It is declared as output tax because the import VAT is a liability the business has incurred. It is reclaimed as input tax under the ordinary rules — so for a fully taxable business the two entries cancel and the cash-flow cost is nil.',
+            'The net effect is only nil where the input tax is fully recoverable. A partially exempt business, or one importing something on which input tax is blocked, still has a real cost — the output tax entry stands while the input tax entry is restricted.',
+          ],
+          formula: 'PVA: import VAT added to output tax AND to input tax · net effect nil where input tax is fully recoverable · the value of the goods also enters total purchases',
+          examtrap: 'PVA is not a relief and does not make import VAT disappear. It is a timing mechanism. The commonest error is entering it once rather than twice.',
+        },
+        {
+          h: 'Accounting for an import under PVA',
+          worked: {
+            title: 'What goes where on the return?',
+            problem: 'Weald Trading imports goods with a customs value of £20,000. The goods would be standard-rated if bought in the UK, and the business uses postponed VAT accounting. It is fully taxable. What is the effect on the return?',
+            steps: [
+              { do: 'Calculate the import VAT.', why: 'The goods are standard-rated, so £20,000 × 20% = £4,000 of import VAT.' },
+              { do: 'Declare it as output tax.', why: 'Under PVA the import VAT is accounted for on the return rather than paid at the border, so £4,000 is added to output tax.' },
+              { do: 'Reclaim it as input tax.', why: 'The business is fully taxable, so the same £4,000 is recoverable and is added to input tax.' },
+              { do: 'Net the two.', why: 'Output tax up £4,000, input tax up £4,000 — no net VAT cost and no cash paid at the border. The £20,000 value of the goods is also included in total purchases.' },
+            ],
+            answer: '£4,000 added to output tax and £4,000 to input tax — net effect nil',
+            tryIt: {
+              q: 'The following quarter Weald imports standard-rated goods with a customs value of £13,500 under PVA. What amount is declared as output tax, in pounds?',
+              answer: 2700,
+              unit: '£',
+              hint: 'Apply the domestic rate to the customs value. The same figure appears on both sides.',
+              exp: '£13,500 × 20% = £2,700 declared as output tax, and the same £2,700 reclaimed as input tax since the business is fully taxable. Net effect nil.',
+            },
+          },
+        },
+      ],
+      check: [
+        {
+          q: 'A UK business exports goods to a customer overseas. How is the supply treated?',
+          opts: [
+            'Zero-rated, with input tax on related costs still recoverable',
+            'Exempt, so input tax on related costs is not recoverable',
+            'Standard-rated, with the customer reclaiming the VAT locally',
+            'Outside the scope of VAT entirely, with no reporting requirement',
+          ],
+          ans: 0,
+          exp: 'Exports are zero-rated. Because zero-rating is a taxable rate rather than an exemption, related input tax remains fully recoverable — which is the practical difference from exempt treatment.',
+        },
+        {
+          q: 'Under postponed VAT accounting, how is import VAT dealt with on the return?',
+          opts: [
+            'Declared as output tax and reclaimed as input tax on the same return',
+            'Reclaimed as input tax only, having been paid at the border',
+            'Declared as output tax only, with recovery on a later return',
+            'Omitted from the return, as it is settled directly with customs',
+          ],
+          ans: 0,
+          exp: 'The same amount goes on both sides of the return. That is what removes the cash-flow cost of paying at the border and reclaiming months later. Entering it once is the standard error.',
+        },
+        {
+          type: 'numeric',
+          q: 'A fully taxable business imports standard-rated goods with a customs value of £46,000 under PVA. What is the NET effect on the VAT payable for the period, in pounds?',
+          answer: 0,
+          unit: '£',
+          exp: '£9,200 is declared as output tax and the same £9,200 reclaimed as input tax, so the net effect is nil. PVA is a timing mechanism, not a relief — and the answer would not be nil if the business were partially exempt.',
+        },
+      ],
+    },
+
+    /* ── 2.3 — the whole period ─────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-2G',
+      title: 'Working out the VAT payable for a period',
+      icon: '🧾',
+      criteria: ['TPFB-2.3.13'],
+      cards: [
+        {
+          h: 'Everything, in one figure',
+          p: [
+            'This is the task the whole outcome has been building toward, and it is the one most likely to appear as a substantial question: given a period\'s records, work out the VAT payable or repayable.',
+            'It is not conceptually hard. It goes wrong because there are many small components and each one has to land on the correct side.',
+          ],
+          flow: ['Total output tax', 'Total input tax', 'Apply every adjustment', 'Output − Input = payable or repayable'],
+        },
+        {
+          h: 'A checklist that stops things being missed',
+          table: {
+            headers: ['Component', 'Side', 'Direction'],
+            rows: [
+              ['VAT on sales invoices', 'Output', 'Add'],
+              ['Credit notes issued to customers', 'Output', 'Subtract'],
+              ['Fuel scale charge', 'Output', 'Add'],
+              ['Import VAT under PVA', 'Output', 'Add'],
+              ['VAT on purchase invoices', 'Input', 'Add'],
+              ['Credit notes received from suppliers', 'Input', 'Subtract'],
+              ['Blocked input tax (entertaining, cars)', 'Input', 'Subtract'],
+              ['Bad debt relief', 'Input', 'Add'],
+              ['Import VAT under PVA', 'Input', 'Add'],
+            ],
+          },
+          p: [
+            'Work down the checklist rather than through the question in the order it happens to present things. Questions are deliberately written so that the adjustments are scattered.',
+          ],
+          examtrap: 'The two most-missed items are credit notes, which reduce whichever side issued them, and blocked input tax, which has to be taken OUT of a purchases figure that already includes it.',
+        },
+        {
+          h: 'A full period calculation',
+          worked: {
+            title: 'VAT payable for the quarter',
+            problem: 'For the quarter, Fenwick Trading records: sales invoices £84,000 net with £16,800 VAT; credit notes issued £2,000 net with £400 VAT; purchase invoices £41,000 net with £8,200 VAT; credit notes received £600 net with £120 VAT. A fuel scale charge of £420 applies. Bad debt relief of £480 is claimable. Included in the purchase VAT is £150 on entertaining clients. What is the VAT payable?',
+            steps: [
+              { do: 'Start the output tax with sales.', why: '£16,800 of VAT was charged on sales invoices.' },
+              { do: 'Deduct credit notes issued.', why: 'These reduce what customers owe and therefore reduce output tax: £16,800 − £400 = £16,400.' },
+              { do: 'Add the fuel scale charge VAT.', why: 'The £420 charge is VAT-inclusive, so the VAT is £420 ÷ 6 = £70. It is additional output tax: £16,400 + £70 = £16,470.' },
+              { do: 'Start the input tax with purchases.', why: '£8,200 of VAT was charged by suppliers.' },
+              { do: 'Deduct credit notes received.', why: 'These reduce what is owed to suppliers and so reduce input tax: £8,200 − £120 = £8,080.' },
+              { do: 'Remove the blocked input tax.', why: 'Client entertaining is not recoverable, and the £150 is already inside the purchases figure: £8,080 − £150 = £7,930.' },
+              { do: 'Add bad debt relief.', why: 'Relief is claimed as input tax, not as a reduction of output tax: £7,930 + £480 = £8,410.' },
+              { do: 'Subtract input from output.', why: '£16,470 − £8,410 = £8,060 payable to HMRC.' },
+            ],
+            answer: '£8,060 payable',
+            tryIt: {
+              q: 'For the next quarter, output tax totals £22,400. Input tax on purchases is £11,900, of which £260 relates to client entertaining. Bad debt relief of £540 is claimable. What is the VAT payable, in pounds?',
+              answer: 10220,
+              unit: '£',
+              hint: 'Adjust the input tax first — take out what is blocked, add the relief — then subtract from output tax.',
+              exp: 'Input tax = £11,900 − £260 (blocked) + £540 (relief) = £12,180. VAT payable = £22,400 − £12,180 = £10,220.',
+            },
+          },
+        },
+        {
+          h: 'Payable or repayable?',
+          p: [
+            'If output tax exceeds input tax, the difference is **payable** to HMRC. If input tax exceeds output tax, it is **repayable** to the business.',
+            'A repayment position is normal and not a sign of error. A business making mainly zero-rated supplies charges almost no output tax while recovering input tax in full, so it will be in repayment nearly every period. A business that has just made a large capital purchase may be in repayment for one period only.',
+            'Always state which way round the answer goes. A correct figure labelled the wrong way is not a correct answer.',
+          ],
+          callout: { kind: 'key', text: 'Sense-check before you finish: does the sign make sense for this business? A retailer in permanent repayment, or an exporter permanently paying, both suggest something has been put on the wrong side.' },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'Output tax is £19,600. Input tax on purchases is £8,450, including £310 on client entertaining. Bad debt relief of £275 is claimable. What is the VAT payable, in pounds?',
+          answer: 11185,
+          unit: '£',
+          exp: 'Input tax = £8,450 − £310 + £275 = £8,415. Payable = £19,600 − £8,415 = £11,185. The entertaining VAT must come out because it is already inside the purchases figure.',
+        },
+        {
+          q: 'A business issues credit notes to customers during the period. What is the effect?',
+          opts: [
+            'Output tax is reduced',
+            'Input tax is reduced',
+            'Output tax is increased',
+            'There is no effect until the customer pays',
+          ],
+          ans: 0,
+          exp: 'A credit note issued to a customer reduces what that customer owes, and with it the output tax originally charged. Credit notes RECEIVED from suppliers work the other way and reduce input tax.',
+        },
+        {
+          type: 'numeric',
+          q: 'Output tax for a quarter is £6,300. Input tax is £9,150, all recoverable. What amount is repayable by HMRC, in pounds?',
+          answer: 2850,
+          unit: '£',
+          exp: '£9,150 − £6,300 = £2,850 repayable. Input tax exceeding output tax gives a repayment, which is the normal position for a business making mainly zero-rated supplies.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about the period calculation is true or false.',
+          statements: [
+            { text: 'A fuel scale charge is added to output tax.', answer: true },
+            { text: 'Blocked input tax must be removed from the purchases VAT figure.', answer: true },
+            { text: 'A repayment position always indicates an error has been made.', answer: false },
+            { text: 'Credit notes received from suppliers reduce output tax.', answer: false },
+          ],
+          exp: 'The scale charge is additional output tax and blocked input tax has to be taken out of a purchases figure that already includes it. A repayment is perfectly normal for zero-rated traders. Credit notes received reduce INPUT tax, not output tax.',
         },
       ],
     },
