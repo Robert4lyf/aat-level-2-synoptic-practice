@@ -1653,6 +1653,8 @@
     writtenRevealed: false,                 // model answer shown?
     examLabel: '', examUnitId: null,        // which exam is being sat
     examTotalMarks: 0,                      // denominator for marks-based scoring
+    isDiagnostic: false,                    // placement quiz in progress?
+    diagnosticResult: null,                 // per-unit recommendations once scored
     referenceOpen: false,
     taEntries: [],                          // T-account playground postings
     taForm: { desc: '', amount: '', dr: '', cr: '' },
@@ -1819,6 +1821,7 @@
     _lastTransitionTime = Date.now();
     Object.assign(State, {
       screen:'quiz', mode:'practice', selectedTopic:topicId, questions:picked,
+      isDiagnostic:false, diagnosticResult:null,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
       ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
@@ -1829,6 +1832,70 @@
 
   /* Adaptive "smart practice": weights weak skills, due reviews and unseen questions,
      and eases the difficulty mix while overall accuracy is low. */
+  /* ── DIAGNOSTIC PLACEMENT ────────────────────────────────────────────────
+     Walking the whole learning path is the only route through the app, which
+     is wasteful for anyone who already knows some of it. This samples three
+     questions per unit — one easy, one medium, one hard — and turns the result
+     into a recommended starting lesson for each unit. */
+  const DIAGNOSTIC_UNITS = ['itbk', 'pobc', 'poc', 'besy'];
+  const DIAGNOSTIC_PER_UNIT = 3;
+
+  function buildDiagnostic() {
+    const out = [];
+    DIAGNOSTIC_UNITS.forEach(uid => {
+      ['easy', 'medium', 'hard'].forEach(diff => {
+        const pool = window.ALL_QUESTIONS.filter(q =>
+          q.topic === uid && q.difficulty === diff &&
+          ['mcq', 'numeric', 'truefalse'].indexOf(q.type || 'mcq') !== -1);
+        const pick = shuffle(pool)[0];
+        if (pick) { const pq = presentQuestion(pick); pq._diagUnit = uid; out.push(pq); }
+      });
+    });
+    return shuffle(out);
+  }
+
+  function startDiagnostic() {
+    playClick();
+    const picked = buildDiagnostic();
+    if (picked.length < 4) { showToast('Not enough questions to build a diagnostic.', 'error'); return; }
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: 'all', questions: picked,
+      current: 0, answered: null, answers: new Array(picked.length).fill(null),
+      score: 0, results: [], showReview: false, reviewFilter: 'all',
+      numericDraft: '', typedDraft: '', tfqDraft: {}, msDraft: [],
+      isDiagnostic: true, diagnosticResult: null, hintLevel: 0, hintElim: null, combo: 0,
+    });
+    Storage.data.session = null; Storage.save();
+    Calc.reset(); render();
+  }
+
+  /* Turn diagnostic results into a per-unit recommendation. */
+  function diagnosticRecommendations() {
+    const byUnit = {};
+    (State.questions || []).forEach((q, i) => {
+      const uid = q._diagUnit; if (!uid) return;
+      if (!byUnit[uid]) byUnit[uid] = { right: 0, total: 0 };
+      byUnit[uid].total++;
+      const r = State.results.find(x => x.id === q.id);
+      if (r && r.correct) byUnit[uid].right++;
+    });
+    return DIAGNOSTIC_UNITS.filter(uid => byUnit[uid]).map(uid => {
+      const { right, total } = byUnit[uid];
+      const pct = total ? Math.round(right / total * 100) : 0;
+      const unit = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === uid);
+      const lessons = (unit && unit.lessons) || [];
+      // Below half: start at the foundations. Middle: skip the first four.
+      // Strong: go to the last third, or straight to exam practice.
+      let idx = 0, advice = 'Start at the beginning — these are the foundations.';
+      if (pct >= 100) { idx = Math.max(0, Math.floor(lessons.length * 0.66)); advice = 'Strong. Skim the later lessons, then go straight to exam practice.'; }
+      else if (pct >= 67) { idx = Math.min(lessons.length - 1, 4); advice = 'Solid basics. Pick up from the applied lessons.'; }
+      else if (pct >= 34) { idx = Math.min(lessons.length - 1, 2); advice = 'Some gaps. Recap the last of the foundations first.'; }
+      const target = lessons[idx] || lessons[0];
+      const topic = (window.TOPICS || []).find(t => t.id === uid) || { icon: '📘', name: uid.toUpperCase() };
+      return { uid, pct, right, total, advice, topic, lesson: target };
+    });
+  }
+
   function startSmartPractice() {
     playClick();
     const acc = skillAccuracy();
@@ -2064,7 +2131,9 @@
     playClick();
     State.screen = 'lesson';
     const existingRec = Storage.lessonRec(found.lesson.id);
-    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0, qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0 };
+    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0,
+      qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0,
+      worked: newWorkedState(), checkDraft: newCheckDraft() };
     render();
     // Block the Continue button briefly to prevent ghost-clicks on mobile
     // where the tap that opened the lesson can fire again on the newly rendered button.
@@ -2074,35 +2143,121 @@
       setTimeout(() => player.classList.remove('lesson-just-started'), 400);
     }
   }
+  /* Worked-example card state: how many solution steps are revealed, and the
+     learner's attempt at the follow-up problem. Reset on every card change so
+     each worked example starts folded. */
+  function newWorkedState() { return { step: 0, tryDraft: '', tryResult: null, tryRevealed: false }; }
+  /* Draft state for the non-MCQ lesson check formats. */
+  function newCheckDraft() { return { numeric: '', gaps: {}, tf: {} }; }
+
   function lessonContinue() {
     const L = State.lesson; if (!L) return;
     if (L.phase === 'teach') {
-      if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; }
+      if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; L.worked = newWorkedState(); }
       else { L.phase = 'transition'; }
       render();
     } else if (L.phase === 'transition') {
       L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0; L.wrongIdxs = [];
+      L.checkDraft = newCheckDraft();
       render();
     } else if (L.phase === 'quiz' && L.qAnswered !== null) {
-      if (L.qIdx + 1 < L.def.check.length) { L.qIdx++; L.qAnswered = null; render(); }
-      else finishLesson();
+      if (L.qIdx + 1 < L.def.check.length) {
+        L.qIdx++; L.qAnswered = null; L.checkDraft = newCheckDraft(); render();
+      } else finishLesson();
     }
   }
   function lessonBack() {
     const L = State.lesson; if (!L) return;
     if (L.phase === 'transition') { L.phase = 'teach'; render(); return; }
     if (L.phase !== 'teach' || L.cardIdx === 0) return;
-    L.cardIdx--; render();
+    L.cardIdx--; L.worked = newWorkedState(); render();
   }
-  function lessonAnswer(idx) {
-    const L = State.lesson; if (!L || L.phase !== 'quiz' || L.qAnswered !== null) return;
-    const q = L.def.check[L.qIdx];
-    L.qAnswered = idx;
-    const correct = idx === q.ans;
+
+  /* ── Worked-example interactions ── */
+  function workedRevealStep() {
+    const L = State.lesson; if (!L) return;
+    const card = L.def.cards[L.cardIdx];
+    if (!card || !card.worked) return;
+    if (L.worked.step < card.worked.steps.length) { L.worked.step++; playClick(); render(); }
+  }
+  function workedRevealAll() {
+    const L = State.lesson; if (!L) return;
+    const card = L.def.cards[L.cardIdx];
+    if (!card || !card.worked) return;
+    L.worked.step = card.worked.steps.length; playClick(); render();
+  }
+  function workedSubmitTry() {
+    const L = State.lesson; if (!L) return;
+    const card = L.def.cards[L.cardIdx];
+    const t = card && card.worked && card.worked.tryIt;
+    if (!t || L.worked.tryResult !== null) return;
+    const value = parseNumericInput(L.worked.tryDraft);
+    if (!Number.isFinite(value)) { showToast('Enter a number first.', 'warn'); return; }
+    const tol = Number.isFinite(t.tolerance) ? t.tolerance : 0.01;
+    const ok = Math.abs(value - t.answer) <= tol;
+    L.worked.tryResult = { ok, value };
+    if (ok) { Storage.addXp(3); playCorrect(); } else playWrong();
+    Storage.save(); render();
+  }
+  function workedShowTryAnswer() {
+    const L = State.lesson; if (!L) return;
+    L.worked.tryRevealed = true; playClick(); render();
+  }
+
+  /* ── Lesson check grading (MCQ, numeric, gap-fill, true/false) ── */
+  function lessonCheckType(q) { return (q && q.type) || 'mcq'; }
+
+  function recordLessonAnswer(correct) {
+    const L = State.lesson;
     if (correct) { L.qScore++; Storage.addXp(2); playCorrect(); }
     else { if (!L.wrongIdxs) L.wrongIdxs = []; L.wrongIdxs.push(L.qIdx); playWrong(); }
     Storage.save();
     render();
+  }
+
+  function lessonAnswer(idx) {
+    const L = State.lesson; if (!L || L.phase !== 'quiz' || L.qAnswered !== null) return;
+    const q = L.def.check[L.qIdx];
+    if (lessonCheckType(q) !== 'mcq') return;
+    L.qAnswered = idx;
+    recordLessonAnswer(idx === q.ans);
+  }
+
+  function lessonSubmitNumeric() {
+    const L = State.lesson; if (!L || L.phase !== 'quiz' || L.qAnswered !== null) return;
+    const q = L.def.check[L.qIdx];
+    const value = parseNumericInput(L.checkDraft.numeric);
+    if (!Number.isFinite(value)) { showToast('Enter a number first.', 'warn'); return; }
+    const tol = Number.isFinite(q.tolerance) ? q.tolerance : 0.01;
+    const ok = Math.abs(value - q.answer) <= tol;
+    L.qAnswered = { kind: 'numeric', value, ok };
+    recordLessonAnswer(ok);
+  }
+
+  function lessonSubmitGapFill() {
+    const L = State.lesson; if (!L || L.phase !== 'quiz' || L.qAnswered !== null) return;
+    const q = L.def.check[L.qIdx];
+    const picks = L.checkDraft.gaps;
+    if (q.gaps.some((g, i) => picks[i] == null || picks[i] === '')) {
+      showToast('Fill in every gap before submitting.', 'warn'); return;
+    }
+    const perGap = q.gaps.map((g, i) => Number(picks[i]) === g.answer);
+    const ok = perGap.every(Boolean);
+    L.qAnswered = { kind: 'gapfill', picks: { ...picks }, perGap, ok };
+    recordLessonAnswer(ok);
+  }
+
+  function lessonSubmitTrueFalse() {
+    const L = State.lesson; if (!L || L.phase !== 'quiz' || L.qAnswered !== null) return;
+    const q = L.def.check[L.qIdx];
+    const picks = L.checkDraft.tf;
+    if (q.statements.some((s, i) => picks[i] == null)) {
+      showToast('Mark every statement true or false.', 'warn'); return;
+    }
+    const right = q.statements.filter((s, i) => picks[i] === s.answer).length;
+    const ok = right === q.statements.length;
+    L.qAnswered = { kind: 'truefalse', picks: { ...picks }, right, ok };
+    recordLessonAnswer(ok);
   }
   function finishLesson() {
     const L = State.lesson; if (!L) return;
@@ -2131,6 +2286,7 @@
   function lessonRetryQuiz() {
     const L = State.lesson; if (!L) return;
     L.phase = 'quiz'; L.qIdx = 0; L.qAnswered = null; L.qScore = 0;
+    L.wrongIdxs = []; L.checkDraft = newCheckDraft();
     render();
   }
   function goLearn() {
@@ -3276,7 +3432,8 @@
       { topic: 'all', icon: '🎯', title: 'Mixed Practice', desc: `${PRACTICE_LENGTH} random questions`, cls: '' },
       ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Synoptic Mock', desc: `${SYNOPTIC_BLUEPRINT.length} tasks · ${SYNOPTIC_TOTAL_MARKS} marks · ${Math.round(MOCK_DURATION_MS / 60000)} min`, cls: 'mode-mock' }] : []),
       ...(isAAT ? [{ id: 'unitExamBtn', icon: '📝', title: 'Unit Assessment', desc: `ITBK · POBC · POC · 90 min each`, cls: 'mode-unit-exam' }] : []),
-      ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: 'Glossary term review', cls: '' }] : []),
+      ...(isAAT ? [{ id: 'diagnosticBtn', icon: '🧭', title: 'Where should I start?', desc: '12 questions · finds your level per unit', cls: 'mode-diagnostic' }] : []),
+      ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: `${(window.GLOSSARY || []).length} glossary terms`, cls: '' }] : []),
       ...(synopticCount ? [{ topic: 'synoptic', icon: '🔗', title: 'Synoptic Practice', desc: `${synopticCount} cross-unit scenarios`, cls: 'mode-synoptic' }] : []),
       ...(srDueCount > 0 ? [{ topic: 'sr-due', icon: '⏰', title: 'Due for Review', desc: `${srDueCount} spaced-rep cards`, cls: '' }] : []),
       ...(flaggedCount > 0 ? [{ topic: 'flagged', icon: '⭐', title: 'Flagged Questions', desc: `${flaggedCount} starred for revision`, cls: '' }] : []),
@@ -4858,6 +5015,23 @@
     const selfNote = (State.examSelfMarks && State.examSelfMarks.total)
       ? `<div class="self-assess-note">✍️ ${State.examSelfMarks.awarded}/${State.examSelfMarks.total} of these marks are self-assessed against the rubric. In the real assessment these tasks are marked by a human.</div>`
       : '';
+    /* Diagnostic placement: turn the score into a starting point per unit. */
+    const diagnosticHtml = State.isDiagnostic ? (() => {
+      const recs = diagnosticRecommendations();
+      if (!recs.length) return '';
+      return `<div class="diag-result">
+        <h3 class="diag-result-h">🧭 Where to start</h3>
+        <p class="diag-result-p">Based on how you did on each unit, here is where to pick up. You can always start earlier if you would rather build from the ground up.</p>
+        ${recs.map(r => `<div class="diag-unit-row">
+          <span class="diag-unit-name">${r.topic.icon} ${escapeHtml(r.topic.name || r.uid.toUpperCase())}
+            <span class="diag-unit-rec">${escapeHtml(r.advice)}</span></span>
+          <span class="diag-unit-score ${scoreClass(r.pct)}">${r.right}/${r.total}</span>
+        </div>`).join('')}
+        <div class="diag-start-row">
+          ${recs.filter(r => r.lesson).map(r => `<button class="btn-secondary" type="button" data-lesson="${escapeHtml(r.lesson.id)}">${r.topic.icon} Start: ${escapeHtml(r.lesson.title)}</button>`).join('')}
+        </div>
+      </div>`;
+    })() : '';
     const filterAll = State.reviewFilter !== 'wrong';
     const wrongCount = results.filter(r => !r.correct).length;
     const reviewItems = filterAll ? results : results.filter(r => !r.correct);
@@ -4899,6 +5073,7 @@
         ${meta}
         <span class="pass-badge ${passed ? 'pass' : 'fail'}">${passed ? `✓ PASS — ${effectivePassMark}% threshold met` : `✗ FAIL — below ${effectivePassMark}% threshold`}</span>
         ${selfNote}
+        ${diagnosticHtml}
         <div class="breakdown" style="margin-bottom:20px">
           <div class="breakdown-title">${marksMode ? 'Marks by topic' : 'Score breakdown by topic'}</div>${breakdownHtml}
         </div>
@@ -5143,9 +5318,16 @@
         <div class="lwr-title">Missed questions — review before you go:</div>
         ${wrongIdxs.map(wi => {
           const wq = def.check[wi];
+          // The correct answer reads differently per format, so build it per type.
+          const wt = lessonCheckType(wq);
+          const answerText =
+            wt === 'numeric' ? formatNumericValue(wq, wq.answer)
+            : wt === 'gapfill' ? wq.gaps.map(g => g.options[g.answer]).join(' / ')
+            : wt === 'truefalse' ? wq.statements.map(s => `${s.text} — ${s.answer ? 'True' : 'False'}`).join('; ')
+            : wq.opts[wq.ans];
           return `<div class="lwr-item">
             <p class="lwr-q">Q${wi+1}: ${escapeHtml(wq.q)}</p>
-            <p class="lwr-ans">✓ <strong>${escapeHtml(wq.opts[wq.ans])}</strong>${wq.exp ? ` — ${escapeHtml(wq.exp)}` : ''}</p>
+            <p class="lwr-ans">✓ <strong>${escapeHtml(answerText)}</strong>${wq.exp ? ` — ${escapeHtml(wq.exp)}` : ''}</p>
           </div>`;
         }).join('')}
       </div>` : (stars === 3 ? `<div class="lesson-perfect">All correct — outstanding! ⚡</div>` : '');
@@ -5230,18 +5412,78 @@
     if (phase === 'quiz') {
       if (!def.check || !def.check.length) { finishLesson(); return ''; }
       const q = def.check[qIdx];
+      const qType = lessonCheckType(q);
       const answered = qAnswered !== null;
-      const correct = answered && qAnswered === q.ans;
-      const optHtml = q.opts.map((opt, i) => {
-        let cls = '';
-        if (answered) { if (i === q.ans) cls = 'correct'; else if (i === qAnswered && qAnswered !== q.ans) cls = 'wrong'; }
-        return `<button class="option-btn ${cls}" type="button" data-lesson-ans="${i}" ${answered ? 'disabled' : ''} role="radio" aria-checked="${qAnswered === i}">
-          <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
-        </button>`;
-      }).join('');
+      const correct = answered && (qType === 'mcq' ? qAnswered === q.ans : !!qAnswered.ok);
+      const draft = L.checkDraft || newCheckDraft();
+      let optHtml, submitHtml = '';
+
+      if (qType === 'numeric') {
+        const shown = answered ? formatNumericValue(q, qAnswered.value) : escapeHtml(draft.numeric);
+        optHtml = `<div class="numeric-input-wrap">
+          <label for="lessonNumeric" class="numeric-label">Your answer${q.unit ? ` (in ${escapeHtml(q.unit)})` : ''}:</label>
+          <input type="text" id="lessonNumeric" class="numeric-input ${answered ? (correct ? 'is-correct' : 'is-wrong') : ''}"
+                 inputmode="decimal" autocomplete="off" spellcheck="false"
+                 value="${shown}" ${answered ? 'disabled' : ''} placeholder="Type your answer">
+        </div>`;
+        if (!answered) submitHtml = `<button class="next-btn" id="lessonSubmitNumericBtn" type="button">Submit ✓</button>`;
+      } else if (qType === 'gapfill') {
+        const sentence = q.template.split(/(\{\d+\})/).map(part => {
+          const m = part.match(/^\{(\d+)\}$/);
+          if (!m) return escapeHtml(part);
+          const gi = +m[1], gap = q.gaps[gi];
+          if (answered) {
+            const ok = qAnswered.perGap[gi];
+            const chosen = gap.options[Number(qAnswered.picks[gi])];
+            return `<span class="gf-result ${ok ? 'gf-ok' : 'gf-wrong'}">${escapeHtml(chosen)}${!ok ? ' <span class="gf-correct">(' + escapeHtml(gap.options[gap.answer]) + ')</span>' : ''}</span>`;
+          }
+          return `<select class="gf-select" data-lesson-gap="${gi}" aria-label="Gap ${gi + 1}">
+            <option value="">— choose —</option>
+            ${gap.options.map((o, i) => `<option value="${i}" ${String(draft.gaps[gi]) === String(i) ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}
+          </select>`;
+        }).join('');
+        optHtml = `<div class="gf-sentence">${sentence}</div>`;
+        if (!answered) submitHtml = `<button class="next-btn" id="lessonSubmitGapBtn" type="button">Submit ✓</button>`;
+      } else if (qType === 'truefalse') {
+        optHtml = `<div class="tfq-grid">
+          <div class="tfq-head"><span>Statement</span><span>True / False</span></div>
+          ${q.statements.map((s, i) => {
+            const chosen = answered ? qAnswered.picks[i] : draft.tf[i];
+            const right = answered && chosen === s.answer;
+            const wrong = answered && chosen != null && chosen !== s.answer;
+            return `<div class="tfq-row ${right ? 'is-correct' : wrong ? 'is-wrong' : ''}">
+              <div class="tfq-statement">${escapeHtml(s.text)}</div>
+              <div class="tfq-choices" role="radiogroup" aria-label="${escapeHtml(s.text)}">
+                ${[true, false].map(v => `<button type="button"
+                  class="tfq-btn ${chosen === v ? 'selected' : ''}${answered && s.answer === v ? ' is-answer' : ''}"
+                  data-lesson-tf="${i}" data-lesson-tf-val="${v}" ${answered ? 'disabled' : ''}
+                  role="radio" aria-checked="${chosen === v}">${v ? 'True' : 'False'}</button>`).join('')}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`;
+        if (!answered) submitHtml = `<button class="next-btn" id="lessonSubmitTfBtn" type="button">Submit ✓</button>`;
+      } else {
+        optHtml = `<div class="options" role="radiogroup">${q.opts.map((opt, i) => {
+          let cls = '';
+          if (answered) { if (i === q.ans) cls = 'correct'; else if (i === qAnswered && qAnswered !== q.ans) cls = 'wrong'; }
+          return `<button class="option-btn ${cls}" type="button" data-lesson-ans="${i}" ${answered ? 'disabled' : ''} role="radio" aria-checked="${qAnswered === i}">
+            <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
+          </button>`;
+        }).join('')}</div>`;
+      }
+
+      const wrongDetail = (answered && !correct) ? (
+        qType === 'numeric' ? `<br><span>Correct answer: ${escapeHtml(formatNumericValue(q, q.answer))}</span>`
+        : qType === 'truefalse' ? `<br><span>${qAnswered.right} of ${q.statements.length} statements correct</span>`
+        : '') : '';
+      const stepsHtml = (answered && q.steps && q.steps.length) ? `<details class="worked-steps" open>
+        <summary>📐 How to get there</summary>
+        <ol class="steps-list">${q.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+      </details>` : '';
       const feedback = answered ? `<div class="feedback ${correct ? 'correct' : 'wrong'} fade-in" role="status">
-        <strong>${correct ? '✅ Correct!' : '❌ Not quite'}</strong>${q.exp ? `<br><em>${escapeHtml(q.exp)}</em>` : ''}
-      </div>` : '';
+        <strong>${correct ? '✅ Correct!' : '❌ Not quite'}</strong>${wrongDetail}${q.exp ? `<br><em>${escapeHtml(q.exp)}</em>` : ''}
+      </div>${stepsHtml}` : '';
       const lessonAudioHtml = q.audio ? `<div class="listen-prompt">
         <button class="listen-play-btn" id="lessonCheckPlayBtn" type="button" aria-label="Play audio clip">🔊 Tap to Listen</button>
         ${answered ? `<button class="tts-replay-btn" id="lessonCheckReplayBtn" type="button" aria-label="Replay audio">↺ Replay</button>` : ''}
@@ -5257,7 +5499,8 @@
           <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${answered ? ((qIdx+1)/totalQ*100).toFixed(0) : (qIdx/totalQ*100).toFixed(0)}%"></div></div>
           <h2 class="lesson-q">${escapeHtml(q.q)}</h2>
           ${lessonAudioHtml}
-          <div class="options" role="radiogroup">${optHtml}</div>
+          ${optHtml}
+          ${submitHtml}
           ${feedback}
           ${answered ? `<button class="next-btn" id="lessonNextBtn" type="button">${qIdx + 1 >= totalQ ? 'Finish ✓' : 'Next →'}</button>` : ''}
         </div>
@@ -5304,6 +5547,57 @@
         <div class="examtrap-text">${mdBold(card.examtrap)}</div>
       </div>
     </div>` : '';
+    /* Worked example — reveal the solution a step at a time, then try one.
+       Novices learn a procedure from a narrated worked example far better than
+       from a finished table, so nothing is shown until the learner asks for it. */
+    const W = L.worked || newWorkedState();
+    const workedHtml = card.worked ? (() => {
+      const w = card.worked;
+      const shown = Math.min(W.step, w.steps.length);
+      const allShown = shown >= w.steps.length;
+      const stepsList = w.steps.slice(0, shown).map((s, i) => `<li class="worked-step">
+        <div class="worked-step-do">${mdBold(s.do)}</div>
+        ${s.why ? `<div class="worked-step-why">${mdBold(s.why)}</div>` : ''}
+      </li>`).join('');
+      const controls = !allShown
+        ? `<div class="worked-controls">
+             <button class="btn-primary worked-next" id="workedStepBtn" type="button">${shown === 0 ? 'Show me step 1 →' : `Next step (${shown + 1} of ${w.steps.length}) →`}</button>
+             ${shown > 0 ? `<button class="btn-secondary worked-all" id="workedAllBtn" type="button">Show all steps</button>` : ''}
+           </div>`
+        : `<div class="worked-answer"><span class="worked-answer-label">Answer</span><span class="worked-answer-value">${mdBold(w.answer)}</span></div>`;
+      // The follow-up problem only appears once the full solution has been seen.
+      const t = w.tryIt;
+      const tryHtml = (allShown && t) ? (() => {
+        const r = W.tryResult;
+        if (r) {
+          return `<div class="worked-try ${r.ok ? 'is-correct' : 'is-wrong'}">
+            <div class="worked-try-label">${r.ok ? '✅ Correct' : '❌ Not quite'}</div>
+            <div class="worked-try-q">${mdBold(t.q)}</div>
+            <div class="worked-try-result">You answered <strong>${escapeHtml(formatNumericValue(t, r.value))}</strong>${!r.ok ? ` · correct answer <strong>${escapeHtml(formatNumericValue(t, t.answer))}</strong>` : ''}</div>
+            ${t.exp ? `<div class="worked-try-exp">${mdBold(t.exp)}</div>` : ''}
+          </div>`;
+        }
+        return `<div class="worked-try">
+          <div class="worked-try-label">Now you try</div>
+          <div class="worked-try-q">${mdBold(t.q)}</div>
+          <div class="worked-try-row">
+            <input type="text" id="workedTryInput" class="numeric-input worked-try-input" inputmode="decimal"
+                   autocomplete="off" spellcheck="false" value="${escapeHtml(W.tryDraft || '')}"
+                   placeholder="${t.unit ? escapeHtml(t.unit) : 'Your answer'}" aria-label="Your answer">
+            <button class="btn-primary" id="workedTryBtn" type="button">Check ✓</button>
+          </div>
+          ${t.hint && !W.tryRevealed ? `<button class="worked-hint-btn" id="workedHintBtn" type="button">💡 Need a hint?</button>` : ''}
+          ${W.tryRevealed && t.hint ? `<div class="worked-try-hint">${mdBold(t.hint)}</div>` : ''}
+        </div>`;
+      })() : '';
+      return `<div class="lesson-worked">
+        <div class="worked-head"><span class="worked-badge">Worked example</span>${w.title ? `<span class="worked-title">${escapeHtml(w.title)}</span>` : ''}</div>
+        <div class="worked-problem">${mdBold(w.problem)}</div>
+        ${stepsList ? `<ol class="worked-steps-list">${stepsList}</ol>` : ''}
+        ${controls}
+        ${tryHtml}
+      </div>`;
+    })() : '';
     return `<div class="container">
       <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
       <div class="lesson-player slide-in">
@@ -5315,7 +5609,7 @@
         <div class="lesson-card fade-in">
           <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
           ${card.body ? `<div class="lesson-card-body">${sanitizeCardBody(card.body)}</div>` : ''}
-          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
+          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
@@ -6513,6 +6807,7 @@
     bind('modalBackdrop', 'click', (e) => { if (e.target.id === 'modalBackdrop') closeConfirm(); });
     // Smart practice & flashcards
     bind('smartPracticeBtn', 'click', startSmartPractice);
+    bind('diagnosticBtn', 'click', startDiagnostic);
     bind('flashcardsBtn', 'click', startFlashcards);
     bind('focusModeBtn', 'click', startFocusPractice);
     bind('lessonDrillAllBtn', 'click', function () {
@@ -6595,6 +6890,38 @@
       if (btn && btn.dataset.topic) startPractice(btn.dataset.topic);
     });
     document.querySelectorAll('[data-lesson-ans]').forEach(el => el.addEventListener('click', () => lessonAnswer(+el.dataset.lessonAns)));
+    /* Worked-example cards */
+    bind('workedStepBtn', 'click', workedRevealStep);
+    bind('workedAllBtn', 'click', workedRevealAll);
+    bind('workedTryBtn', 'click', workedSubmitTry);
+    bind('workedHintBtn', 'click', workedShowTryAnswer);
+    const wti = document.getElementById('workedTryInput');
+    if (wti) {
+      wti.addEventListener('input', (e) => { if (State.lesson) State.lesson.worked.tryDraft = e.target.value; });
+      wti.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); workedSubmitTry(); } });
+    }
+    /* Non-MCQ lesson checks */
+    bind('lessonSubmitNumericBtn', 'click', lessonSubmitNumeric);
+    bind('lessonSubmitGapBtn', 'click', lessonSubmitGapFill);
+    bind('lessonSubmitTfBtn', 'click', lessonSubmitTrueFalse);
+    const lni = document.getElementById('lessonNumeric');
+    if (lni) {
+      lni.addEventListener('input', (e) => { if (State.lesson) State.lesson.checkDraft.numeric = e.target.value; });
+      lni.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        if (State.lesson && State.lesson.qAnswered === null) lessonSubmitNumeric();
+        else { const n = document.getElementById('lessonNextBtn'); if (n) n.click(); }
+      });
+    }
+    document.querySelectorAll('[data-lesson-gap]').forEach(el => el.addEventListener('change', (e) => {
+      if (State.lesson) State.lesson.checkDraft.gaps[+el.dataset.lessonGap] = e.target.value;
+    }));
+    document.querySelectorAll('[data-lesson-tf]').forEach(el => el.addEventListener('click', () => {
+      if (!State.lesson || State.lesson.qAnswered !== null) return;
+      State.lesson.checkDraft.tf[+el.dataset.lessonTf] = el.dataset.lessonTfVal === 'true';
+      playClick(); render();
+    }));
     // Flashcard buttons
     bind('flashExitBtn', 'click', goLearn);
     bind('flashExitBtn2', 'click', goLearn);

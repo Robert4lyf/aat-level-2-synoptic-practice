@@ -4,6 +4,445 @@ window.LEARN_PATH = [
     unit: 'itbk',
     title: 'Introduction to Bookkeeping',
     lessons: [
+      /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
+         Level 2 is the entry qualification: most students arrive with no
+         accounting background at all. These four lessons assume nothing. */
+      {
+        id: 'L-itbk-1',
+        title: 'What bookkeeping is for',
+        icon: '🌱',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Start here',
+            p: [
+              'You do not need any accounting background for this lesson. We will build everything from the beginning.',
+              '**Bookkeeping** is the process of recording every financial transaction a business makes, in a consistent way, so that at any point you can answer three questions: what does the business own, what does it owe, and did it make a profit?',
+              'A **transaction** is any exchange of value — a sale, a purchase, paying wages, buying a van. If money or value moves, it gets recorded.',
+            ],
+          },
+          {
+            h: 'Why not just look at the bank account?',
+            p: [
+              'The bank balance only tells you about cash that has actually moved. It cannot tell you that a customer owes you £4,000, that you owe a supplier £2,500, or that the van you bought will last five years.',
+              'Bookkeeping captures **obligations and resources**, not just cash. That is why a business can be profitable and still run out of money, or hold plenty of cash while making a loss.',
+            ],
+            callout: { kind: 'key', text: 'Profit is not cash. They are two different questions, and bookkeeping is what lets you answer both.' },
+          },
+          {
+            h: 'The five types of account',
+            p: [
+              'Everything a business records falls into one of five categories. Learn these now — every rule that follows depends on them.',
+              '**Assets** — things the business owns or is owed: bank, cash, inventory, equipment, money owed by customers.',
+              '**Liabilities** — what the business owes to others: money owed to suppliers, bank loans, VAT owed to HMRC.',
+              '**Capital** — what the owner has put into the business, plus profits kept in it. In effect, what the business owes its owner.',
+              '**Income** — value earned from trading: sales, fees, commission received.',
+              '**Expenses** — the costs of trading: rent, wages, fuel, insurance, purchases of goods for resale.',
+            ],
+          },
+          {
+            h: 'Sorting things into the five types',
+            split: {
+              left: { title: 'Common assets & expenses', items: [
+                'Bank and cash — **asset**',
+                'Money owed by customers (trade receivables) — **asset**',
+                'Delivery van — **asset**',
+                'Rent paid — **expense**',
+                'Wages paid — **expense**',
+                'Goods bought for resale (purchases) — **expense**',
+              ] },
+              right: { title: 'Common liabilities, capital & income', items: [
+                'Money owed to suppliers (trade payables) — **liability**',
+                'Bank loan — **liability**',
+                'VAT owed to HMRC — **liability**',
+                'Owner\'s investment — **capital**',
+                'Sales — **income**',
+                'Commission received — **income**',
+              ] },
+            },
+          },
+          {
+            h: 'The accounting equation',
+            p: [
+              'These five types are connected by one equation that always holds:',
+              '**Assets = Capital + Liabilities**',
+              'Read it as: everything the business has (assets) was funded either by the owner (capital) or by someone else (liabilities). There is no third source.',
+              'If a business owns £50,000 of assets and owes £18,000 to others, the owner\'s stake must be £32,000. Not roughly — exactly.',
+            ],
+            formula: 'Assets = Capital + Liabilities · Capital = Assets − Liabilities · Liabilities = Assets − Capital',
+          },
+          {
+            h: 'Using the equation',
+            worked: {
+              title: 'Finding the missing figure',
+              problem: 'A business has assets of £64,000 and liabilities of £27,500. What is the owner\'s capital?',
+              steps: [
+                { do: 'Write down the equation: **Assets = Capital + Liabilities**.', why: 'Always start from the equation rather than trying to remember a rearrangement.' },
+                { do: 'Substitute what you know: **£64,000 = Capital + £27,500**.', why: 'Two of the three figures are given, so only one is unknown.' },
+                { do: 'Rearrange to isolate capital: **Capital = £64,000 − £27,500**.', why: 'Move the known liability figure across the equals sign; it changes sign.' },
+                { do: 'Calculate: **Capital = £36,500**.', why: 'The owner\'s stake is what is left of the assets after everyone else has been paid.' },
+              ],
+              answer: '£36,500',
+              tryIt: {
+                q: 'A business has assets of £81,200 and capital of £45,700. What are its liabilities, in £?',
+                answer: 35500, unit: '£',
+                hint: 'Liabilities = Assets − Capital. Take the capital away from the assets.',
+                exp: '£81,200 − £45,700 = £35,500. The equation must balance exactly.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'Which of the following is a liability?', opts: [
+              'Money owed to a supplier for goods bought on credit',
+              'Money owed by a customer for goods sold on credit',
+              'The delivery van the business uses to make deliveries',
+              'The rent the business paid for its premises last month'],
+            ans: 0, exp: 'A liability is what the business owes. Money owed BY a customer is an asset; the van is an asset; rent paid is an expense.' },
+          { type: 'numeric', q: 'A business has assets of £52,000 and liabilities of £19,400. What is the capital, in £?',
+            answer: 32600, unit: '£',
+            steps: ['Assets = Capital + Liabilities.', '£52,000 = Capital + £19,400.', 'Capital = £52,000 − £19,400 = £32,600.'],
+            exp: 'Capital is the owner\'s residual stake once liabilities are deducted from assets.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'A profitable business can still run out of cash.', answer: true },
+              { text: 'The bank balance on its own tells you whether the business made a profit.', answer: false },
+              { text: 'Capital represents what the business owes to its owner.', answer: true },
+              { text: 'Purchases of goods for resale are classified as an asset.', answer: false },
+            ],
+            exp: 'Profit and cash are different questions. Purchases are an expense — the goods become inventory (an asset) only while unsold.' },
+          { q: 'The accounting equation states that:', opts: [
+              'Assets equal capital plus liabilities',
+              'Assets equal capital minus liabilities',
+              'Capital equals assets plus liabilities',
+              'Liabilities equal capital plus assets'],
+            ans: 0, exp: 'Everything the business holds was funded either by the owner or by someone else — so assets = capital + liabilities.' },
+        ],
+      },
+      {
+        id: 'L-itbk-2',
+        title: 'Debits and credits',
+        icon: '⚖️',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Every transaction has two sides',
+            p: [
+              'This is the idea the whole subject rests on. Every transaction affects **at least two accounts**, and the total recorded on one side always equals the total on the other.',
+              'The two sides are called **debit** (left) and **credit** (right). They are just names for positions — debit does not mean good and credit does not mean bad.',
+              'If you buy a van for £12,000 cash, you gain a van and lose cash. Two accounts move, by the same amount, in opposite directions. That is the **dual effect**.',
+            ],
+            callout: { kind: 'warning', text: 'Forget the everyday meaning of "credit". In bookkeeping, debit means the left-hand side and credit means the right-hand side. Nothing more.' },
+          },
+          {
+            h: 'DEAD CLIC — the rule to memorise',
+            p: [
+              'You need to know which side increases each type of account. The standard mnemonic is **DEAD CLIC**.',
+              '**DEAD** — things that increase on the **Debit** side: **E**xpenses, **A**ssets, **D**rawings.',
+              '**CLIC** — things that increase on the **Credit** side: **L**iabilities, **I**ncome, **C**apital.',
+              'To decrease any of them, you use the opposite side.',
+            ],
+            formula: 'Debit increases: Expenses · Assets · Drawings — Credit increases: Liabilities · Income · Capital',
+          },
+          {
+            h: 'The rule as a table',
+            table: {
+              headers: ['Account type', 'Increase', 'Decrease'],
+              rows: [
+                ['Asset', 'Debit', 'Credit'],
+                ['Expense', 'Debit', 'Credit'],
+                ['Drawings', 'Debit', 'Credit'],
+                ['Liability', 'Credit', 'Debit'],
+                ['Income', 'Credit', 'Debit'],
+                ['Capital', 'Credit', 'Debit'],
+              ],
+            },
+          },
+          {
+            h: 'Working out a double entry',
+            worked: {
+              title: 'A cash purchase of equipment',
+              problem: 'A business buys office equipment for £3,400, paying immediately by bank transfer. What is the double entry?',
+              steps: [
+                { do: 'Identify the **two accounts** affected: Office equipment, and Bank.', why: 'Ask what the business received and what it gave up. It received equipment; it gave up money in the bank.' },
+                { do: 'Classify each one. Office equipment is an **asset**. Bank is also an **asset**.', why: 'You cannot apply DEAD CLIC until you know the account type.' },
+                { do: 'Decide the direction. Equipment **increases**; bank **decreases**.', why: 'The business now owns equipment it did not own before, and has less money.' },
+                { do: 'Apply DEAD CLIC. Assets increase on the debit side, so **Dr Office equipment £3,400**. Assets decrease on the credit side, so **Cr Bank £3,400**.', why: 'Both sides are £3,400, so the entry balances.' },
+              ],
+              answer: 'Dr Office equipment £3,400 · Cr Bank £3,400',
+              tryIt: {
+                q: 'The business pays rent of £850 by bank transfer. The rent expense account is debited. By how much is the bank account credited, in £?',
+                answer: 850, unit: '£',
+                hint: 'The two sides of any double entry are always equal. If one side is £850, so is the other.',
+                exp: 'Dr Rent £850 (an expense increases on the debit side), Cr Bank £850 (an asset decreases on the credit side). Every double entry balances.',
+              },
+            },
+          },
+          {
+            h: 'Four transactions worked through',
+            example: {
+              title: 'Applying DEAD CLIC',
+              rows: [
+                ['**Transaction**', '**Debit**', '**Credit**'],
+                ['Owner pays £10,000 into the business', 'Bank (asset ↑)', 'Capital (capital ↑)'],
+                ['Buys goods for resale, £2,000, on credit', 'Purchases (expense ↑)', 'Trade payables (liability ↑)'],
+                ['Sells goods for £900 cash', 'Bank (asset ↑)', 'Sales (income ↑)'],
+                ['Owner takes £400 for personal use', 'Drawings (drawings ↑)', 'Bank (asset ↓)'],
+              ],
+            },
+          },
+          {
+            h: 'Two questions that get you there every time',
+            p: [
+              'When you are stuck, work through these in order:',
+              '**1. Which two accounts are involved?** Name them before you think about sides.',
+              '**2. What type is each, and is it going up or down?** Then DEAD CLIC gives you the side automatically.',
+              'Resist the urge to memorise entries transaction by transaction. There are hundreds of transactions and only six account types.',
+            ],
+            examtrap: 'Drawings are **not** an expense. Money the owner takes out reduces capital — it is not a cost of trading, and it never appears in the profit calculation.',
+          },
+        ],
+        check: [
+          { q: 'A business pays a supplier £1,200 that it owed. The correct double entry is:', opts: [
+              'Dr Trade payables £1,200, Cr Bank £1,200',
+              'Dr Bank £1,200, Cr Trade payables £1,200',
+              'Dr Purchases £1,200, Cr Bank £1,200',
+              'Dr Trade payables £1,200, Cr Purchases £1,200'],
+            ans: 0, exp: 'The liability falls (debit reduces a liability) and the bank falls (credit reduces an asset). Purchases were already recorded when the goods were bought.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'Assets increase on the debit side.', answer: true },
+              { text: 'Income increases on the debit side.', answer: false },
+              { text: 'Every transaction affects at least two accounts.', answer: true },
+              { text: 'A credit entry always means something bad has happened.', answer: false },
+            ],
+            exp: 'DEAD CLIC: income increases on the CREDIT side. Debit and credit are positions — left and right — not judgements.' },
+          { type: 'gapfill', q: 'Complete the double entry for a credit sale.',
+            template: 'When goods are sold on credit, the entry is Dr {0} and Cr {1}.',
+            gaps: [
+              { options: ['Trade receivables', 'Trade payables', 'Bank', 'Purchases'], answer: 0 },
+              { options: ['Trade receivables', 'Sales', 'Bank', 'Capital'], answer: 1 },
+            ],
+            exp: 'A credit sale increases what customers owe (Dr Trade receivables, an asset) and recognises the income (Cr Sales).' },
+          { q: 'Which of the following increases on the credit side?', opts: [
+              'A bank loan taken out by the business',
+              'The inventory held by the business',
+              'The wages paid to the business\'s employees',
+              'The drawings taken by the owner'],
+            ans: 0, exp: 'A bank loan is a liability, and liabilities increase on the credit side. Inventory is an asset, wages an expense, drawings a reduction of capital — all debits.' },
+        ],
+      },
+      {
+        id: 'L-itbk-3',
+        title: 'Ledger accounts and the T-account',
+        icon: '📒',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Where entries actually go',
+            p: [
+              'Each account — Bank, Sales, Rent, Trade receivables and so on — has its own record called a **ledger account**. All the entries for that account collect in one place.',
+              'The traditional layout is drawn as a **T**: the account name across the top, debits on the left, credits on the right. Hence "T-account".',
+              'Real software does not draw a T, but every assessment does, and thinking in T-accounts is how you keep double entry straight.',
+            ],
+          },
+          {
+            h: 'The shape of a T-account',
+            example: {
+              title: 'Bank account',
+              rows: [
+                ['**Debit (left)**', '**£**', '**Credit (right)**', '**£**'],
+                ['Capital introduced', '10,000', 'Rent paid', '850'],
+                ['Cash sales', '900', 'Equipment purchased', '3,400'],
+                ['', '', 'Drawings', '400'],
+              ],
+            },
+            callout: { kind: 'tip', text: 'Money coming IN to the bank goes on the debit side. Money going OUT goes on the credit side. The bank is an asset, so DEAD CLIC applies as normal.' },
+          },
+          {
+            h: 'What goes in each entry',
+            p: [
+              'Each line in a T-account records **the name of the other account** in the double entry, plus the amount.',
+              'So if you pay rent from the bank, the Bank account\'s credit side says "Rent" and the Rent account\'s debit side says "Bank". Each account points at its partner.',
+              'That cross-referencing is what lets you trace any transaction from either direction — a habit that becomes essential when you start hunting errors.',
+            ],
+          },
+          {
+            h: 'The three ledgers',
+            p: [
+              'Accounts are grouped into three ledgers:',
+              '**General ledger** (sometimes called the nominal ledger) — every account needed for the trial balance and the financial statements. This is the ledger where double entry actually happens.',
+              '**Sales ledger** — one account per credit customer, showing what each individual customer owes.',
+              '**Purchases ledger** — one account per credit supplier, showing what is owed to each one.',
+            ],
+            examtrap: 'The sales and purchases ledgers sit **outside** the double entry. They are memorandum records. This is exactly why an error in one customer\'s account does not unbalance the trial balance — a point tested constantly in Bookkeeping Controls.',
+          },
+          {
+            h: 'Posting a transaction into T-accounts',
+            worked: {
+              title: 'A credit sale, then the receipt',
+              problem: 'Willow Crafts sells goods on credit to a customer for £1,500 on 4 May. The customer pays in full by bank transfer on 28 May. Show the entries.',
+              steps: [
+                { do: 'On 4 May, identify the accounts: **Trade receivables** and **Sales**.', why: 'The sale is on credit, so no money has moved yet — the customer owes it.' },
+                { do: 'Post: **Dr Trade receivables £1,500** (asset up), **Cr Sales £1,500** (income up).', why: 'The business is owed £1,500 and has earned £1,500 of revenue.' },
+                { do: 'On 28 May, identify the accounts: **Bank** and **Trade receivables**.', why: 'The receipt does not create new income — the sale was already recorded on 4 May.' },
+                { do: 'Post: **Dr Bank £1,500** (asset up), **Cr Trade receivables £1,500** (asset down).', why: 'The debt is settled, so trade receivables returns to nil for this customer.' },
+              ],
+              answer: '4 May: Dr Trade receivables / Cr Sales £1,500. 28 May: Dr Bank / Cr Trade receivables £1,500.',
+              tryIt: {
+                q: 'After both entries above, what is the balance remaining on the Trade receivables account for this customer, in £?',
+                answer: 0, unit: '£',
+                hint: 'One entry put £1,500 on the debit side; the other put £1,500 on the credit side.',
+                exp: 'Debits of £1,500 less credits of £1,500 leaves nil. The customer has paid in full, so nothing is outstanding.',
+              },
+            },
+          },
+          {
+            h: 'The single most common beginner error',
+            p: [
+              'Recording income twice. When a credit customer pays, it is tempting to credit Sales again — but the sale was recognised when the goods went out, not when the money arrived.',
+              'The receipt only moves the amount from one asset (trade receivables) to another (bank). Income is untouched.',
+            ],
+            callout: { kind: 'warning', text: 'Ask yourself: has the business earned anything new? If the answer is no, Sales does not move.' },
+          },
+        ],
+        check: [
+          { q: 'In a T-account, entries on the left-hand side are:', opts: [
+              'Debits',
+              'Credits',
+              'Always increases, whatever the account type',
+              'Always decreases, whatever the account type'],
+            ans: 0, exp: 'Left is debit, right is credit. Whether that is an increase or a decrease depends on the account type — DEAD CLIC decides.' },
+          { q: 'Which ledger contains one account for each individual credit customer?', opts: [
+              'The sales ledger',
+              'The general ledger',
+              'The purchases ledger',
+              'The cash book'],
+            ans: 0, exp: 'The sales ledger holds an account per credit customer. The general ledger holds the single sales ledger control account that summarises them all.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'The sales and purchases ledgers sit outside the double entry.', answer: true },
+              { text: 'When a credit customer pays, the Sales account is credited again.', answer: false },
+              { text: 'Money paid into the bank is recorded on the debit side of the bank account.', answer: true },
+              { text: 'Each T-account entry names the other account in the double entry.', answer: true },
+            ],
+            exp: 'Recording sales twice — once at invoice and again at receipt — is the classic beginner error. The receipt moves value between two assets.' },
+          { type: 'numeric', q: 'A Bank T-account has debits of £14,600 and credits of £9,250. What is the balance, in £?',
+            answer: 5350, unit: '£',
+            steps: ['Total the debit side: £14,600.', 'Total the credit side: £9,250.', 'Balance = £14,600 − £9,250 = £5,350 debit.'],
+            exp: 'Debits exceed credits, so the bank has a debit balance of £5,350 — a positive balance, since bank is an asset.' },
+        ],
+      },
+      {
+        id: 'L-itbk-4',
+        title: 'Source documents and the paper trail',
+        icon: '📄',
+        skills: ['itbk-docs'],
+        cards: [
+          {
+            h: 'Nothing is recorded without evidence',
+            p: [
+              'Every entry in the ledgers must be supported by a **source document** — a piece of evidence that the transaction happened and for how much.',
+              'This is not bureaucracy. It is what makes the records checkable: by a manager, by an auditor, or by HMRC. If you cannot evidence an entry, you cannot defend it.',
+            ],
+          },
+          {
+            h: 'The order-to-payment trail',
+            p: [
+              'For a credit purchase, the documents appear in a fixed sequence. Knowing the order is worth marks on its own.',
+            ],
+            flow: ['Purchase order', 'Goods received note', 'Purchase invoice', 'Statement', 'Remittance advice', 'Payment'],
+          },
+          {
+            h: 'What each document does',
+            table: {
+              headers: ['Document', 'Who sends it', 'What it does'],
+              rows: [
+                ['Purchase order', 'Buyer → supplier', 'Requests goods at an agreed price'],
+                ['Delivery note', 'Supplier → buyer', 'Accompanies the goods on delivery'],
+                ['Goods received note (GRN)', 'Internal', 'Confirms goods arrived and were checked'],
+                ['Invoice', 'Seller → buyer', 'Requests payment for goods supplied'],
+                ['Credit note', 'Seller → buyer', 'Reduces the amount the buyer owes'],
+                ['Statement of account', 'Seller → buyer', 'Lists the month\'s transactions and balance'],
+                ['Remittance advice', 'Buyer → seller', 'Says which invoices a payment covers'],
+              ],
+            },
+          },
+          {
+            h: 'The three-way match',
+            p: [
+              'Before a purchase invoice is authorised for payment, it is checked against two other documents:',
+              '**Purchase order** — were these goods actually ordered, at this price?',
+              '**Goods received note** — did they actually arrive, and were they checked?',
+              'If all three agree, the invoice is authorised. If any disagree, it is queried. This single control stops most duplicate payments and a good deal of fraud.',
+            ],
+            callout: { kind: 'key', text: 'Three-way match: purchase order + goods received note + invoice. If you remember one control from this unit, make it this one.' },
+          },
+          {
+            h: 'Invoice or credit note?',
+            split: {
+              left: { title: 'Invoice', items: [
+                'Issued when goods or services are supplied',
+                'Increases the amount the customer owes',
+                'Seller: Dr Trade receivables, Cr Sales',
+                'Recorded in the sales day book',
+              ] },
+              right: { title: 'Credit note', items: [
+                'Issued for returns, overcharges or damaged goods',
+                'Decreases the amount the customer owes',
+                'Seller: Dr Sales returns, Cr Trade receivables',
+                'Recorded in the sales returns day book',
+              ] },
+            },
+          },
+          {
+            h: 'Checking an invoice',
+            worked: {
+              title: 'Does the invoice add up?',
+              problem: 'An invoice shows 40 units at £12.50 each, less a 10% trade discount, plus VAT at 20%. The supplier has billed a total of £540.00. Is that right?',
+              steps: [
+                { do: 'Calculate the list price: **40 × £12.50 = £500.00**.', why: 'Always start from quantity × unit price before any discount.' },
+                { do: 'Deduct the trade discount: **£500.00 × 10% = £50.00**, so net = **£450.00**.', why: 'Trade discount is deducted before VAT is calculated — it reduces the amount actually charged.' },
+                { do: 'Calculate VAT on the net figure: **£450.00 × 20% = £90.00**.', why: 'VAT is always charged on the discounted (net) amount, never on the list price.' },
+                { do: 'Total the invoice: **£450.00 + £90.00 = £540.00**.', why: 'This matches the supplier\'s figure, so the invoice is arithmetically correct and can be passed for authorisation.' },
+              ],
+              answer: 'Yes — £540.00 is correct',
+              tryIt: {
+                q: 'An invoice shows 25 units at £16.00, less 20% trade discount, plus VAT at 20%. What is the total, in £?',
+                answer: 384, unit: '£',
+                hint: 'List price first, then take off the trade discount, then add VAT to the discounted figure.',
+                exp: '25 × £16.00 = £400.00. Less 20% = £320.00 net. VAT = £320.00 × 20% = £64.00. Total = £384.00.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'Which document confirms that goods have arrived and been checked against the order?', opts: [
+              'The goods received note raised when the delivery is checked',
+              'The purchase order sent to the supplier requesting the goods',
+              'The invoice received from the supplier requesting payment',
+              'The remittance advice sent when the invoice is settled'],
+            ans: 0, exp: 'The GRN is the internal record that the goods physically arrived and were inspected — the second leg of the three-way match.' },
+          { type: 'numeric', q: 'An invoice shows 30 units at £20.00, less 25% trade discount, plus VAT at 20%. What is the invoice total, in £?',
+            answer: 540, unit: '£',
+            steps: ['List price: 30 × £20.00 = £600.00.', 'Less 25% trade discount: £600.00 − £150.00 = £450.00 net.', 'VAT: £450.00 × 20% = £90.00.', 'Total: £450.00 + £90.00 = £540.00.'],
+            exp: 'Trade discount comes off before VAT is calculated. VAT is never charged on the list price.' },
+          { type: 'truefalse', q: 'Identify whether the following statements about source documents are true or false.',
+            statements: [
+              { text: 'A credit note reduces the amount a customer owes.', answer: true },
+              { text: 'A remittance advice is sent by the seller to request payment.', answer: false },
+              { text: 'The three-way match compares the purchase order, goods received note and invoice.', answer: true },
+              { text: 'Every ledger entry should be supported by a source document.', answer: true },
+            ],
+            exp: 'A remittance advice goes the other way — buyer to seller — telling the supplier which invoices a payment covers. The seller requests payment with an invoice.' },
+          { q: 'A supplier invoice arrives with no purchase order and no goods received note on file. What should happen?', opts: [
+              'The invoice is queried and held until both documents can be produced',
+              'The invoice is paid, because the supplier would not invoice without cause',
+              'The invoice is paid in part, with the balance held back until next month',
+              'The invoice is destroyed and the supplier asked to issue a fresh one'],
+            ans: 0, exp: 'Without the purchase order there is no evidence the goods were ordered at that price; without the GRN there is no evidence they arrived. Paying regardless defeats the control.' },
+        ],
+      },
       {
         id: 'L-itbk-5',
         title: 'Balancing off and the trial balance',
@@ -510,7 +949,7 @@ window.LEARN_PATH = [
         id: 'L-itbk-10',
         title: 'Ledger accounts in practice',
         icon: '📒',
-        skills: ['itbk-de'],
+        skills: ['itbk-de', 'itbk-cashbook'],
         cards: [
           {
             h: 'Three levels of ledger',
@@ -908,7 +1347,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-14',
-        title: 'Bridge to Level 3 — Advanced Bookkeeping',
+        title: 'Bridge to Level 3 — Financial Accounting',
         icon: '🌉',
         skills: ['itbk-tb', 'itbk-adjust'],
         l3Bridge: true,
@@ -916,45 +1355,45 @@ window.LEARN_PATH = [
           {
             h: 'Where Level 3 begins',
             p: [
-              'AAT Level 3 Certificate in Accounting has five mandatory units. The most directly linked to Level 2 ITBk are **Advanced Bookkeeping (AVBK)** and **Final Accounts Preparation (FAPS)**. At Level 3, double-entry bookkeeping and the trial balance are assumed knowledge — you go straight into more complex scenarios.',
-              'Think of Level 2 ITBk as learning to drive in a car park. Level 3 AVBK is taking that skill onto a motorway: same rules, more complexity.',
+              'The AAT Level 3 Diploma in Accounting has **four** mandatory units and, unlike Level 2, **no synoptic assessment**. The one most directly linked to ITBK is **Financial Accounting: Preparing Financial Statements (FAPS)**, which under Q2022 combines what used to be two separate units. At Level 3, double-entry bookkeeping and the trial balance are assumed knowledge — you go straight into more complex scenarios.',
+              'Think of Level 2 ITBK as learning to drive in a car park. Level 3 FAPS is taking that skill onto a motorway: same rules, more complexity.',
             ],
           },
           {
-            h: 'Advanced Bookkeeping (AVBK) at Level 3',
+            h: 'What FAPS adds to your bookkeeping',
             p: [
-              'AVBK extends everything in ITBk. You will: produce and interpret an extended trial balance; account for complex depreciation scenarios (straight-line and reducing balance in the same year; part-year depreciation; disposal of non-current assets); handle accruals and prepayments for income as well as expenses; and use journals to correct a wider range of errors.',
+              'FAPS extends everything in ITBK. You will: produce and interpret an extended trial balance; account for complex depreciation scenarios (straight-line and reducing balance in the same year; part-year depreciation; disposal of non-current assets); handle accruals and prepayments for income as well as expenses; and use journals to correct a wider range of errors.',
               'The disposal of non-current assets is a key new topic: Dr Disposal account with cost, Cr Asset; Dr Accumulated depreciation, Cr Disposal; then record proceeds and the profit or loss on disposal.',
             ],
           },
           {
-            h: 'Final Accounts Preparation (FAPS) at Level 3',
+            h: 'From trial balance to financial statements',
             p: [
-              'FAPS takes the ETB and turns it into financial statements for sole traders and — new at Level 3 — **partnerships**. For partnerships, you prepare an **appropriation account** that shows how profit is shared between partners using: partners\' salaries, interest on capital, and a profit-sharing ratio (PSR).',
+              'The second half of FAPS takes the ETB and turns it into financial statements for sole traders and — new at Level 3 — **partnerships**. For partnerships, you prepare an **appropriation account** that shows how profit is shared between partners using: partners\' salaries, interest on capital, and a profit-sharing ratio (PSR).',
               'Each partner has two ledger accounts: a **capital account** (permanent investment) and a **current account** (running balance of share of profit, drawings, interest, and salary).',
             ],
           },
           {
-            h: 'Tax Processes for Business (TPFB) at Level 3',
+            h: 'Tax Processes for Businesses (TPFB) at Level 3',
             p: [
-              'ITBk\'s VAT knowledge feeds directly into TPFB at Level 3. You will complete the VAT 100 return, deal with different VAT schemes (cash accounting, annual accounting, flat rate), and tackle import VAT and reverse charge scenarios.',
+              'ITBK\'s VAT knowledge feeds directly into TPFB at Level 3. You will complete the VAT 100 return, deal with different VAT schemes (cash accounting, annual accounting, flat rate), and tackle import VAT and reverse charge scenarios.',
               'TPFB also introduces **income tax for sole traders** — calculating taxable trading profit after allowable expenses, applying the personal allowance, and computing the income tax liability at basic and higher rate.',
             ],
           },
           {
             h: 'The foundations you have already mastered',
             p: [
-              'Every skill from ITBk reappears at Level 3: DEAD CLIC for debit and credit rules, double-entry for every transaction, the trial balance as a check, VAT calculations, the accounting equation, and accruals and prepayments.',
+              'Every skill from ITBK reappears at Level 3: DEAD CLIC for debit and credit rules, double-entry for every transaction, the trial balance as a check, VAT calculations, the accounting equation, and accruals and prepayments.',
               'Level 3 adds depth and complexity — not new foundations. You are better prepared than you might think. The extended trial balance is the single biggest new concept, and you have just learned it.',
             ],
           },
         ],
         check: [
           {
-            q: 'Which Level 3 unit most directly extends your ITBk double-entry skills?',
-            opts: ['Management Accounting Techniques (MATS)', 'Business Awareness (BUAW)', 'Advanced Bookkeeping (AVBK)', 'Indirect Tax'],
+            q: 'Which Level 3 unit most directly extends your ITBK double-entry skills?',
+            opts: ['Management Accounting Techniques (MATS)', 'Business Awareness (BUAW)', 'Financial Accounting: Preparing Financial Statements (FAPS)', 'Tax Processes for Businesses (TPFB)'],
             ans: 2,
-            exp: 'Advanced Bookkeeping (AVBK) is the direct Level 3 extension of ITBk. It builds on double-entry, journals, the trial balance, adjustments, and depreciation — all covered at Level 2.',
+            exp: 'Financial Accounting: Preparing Financial Statements (FAPS) is the direct Level 3 extension of ITBK. Under Q2022 it absorbed the old Advanced Bookkeeping and Final Accounts Preparation units, and it builds on double-entry, journals, the trial balance, adjustments and depreciation — all covered at Level 2.',
           },
           {
             q: 'At Level 3, a partnership appropriation account is used to:',
@@ -969,10 +1408,10 @@ window.LEARN_PATH = [
             exp: 'FAPS covers producing financial statements (income statement + SFP) for sole traders and partnerships. Limited company accounts are not examined at Level 3.',
           },
           {
-            q: 'The Level 3 unit that extends ITBk VAT knowledge to include completing VAT returns and income tax is:',
-            opts: ['Advanced Bookkeeping (AVBK)', 'Management Accounting Techniques (MATS)', 'Business Awareness (BUAW)', 'Tax Processes for Business (TPFB)'],
+            q: 'The Level 3 unit that extends ITBK VAT knowledge to include completing VAT returns and income tax is:',
+            opts: ['Financial Accounting: Preparing Financial Statements (FAPS)', 'Management Accounting Techniques (MATS)', 'Business Awareness (BUAW)', 'Tax Processes for Businesses (TPFB)'],
             ans: 3,
-            exp: 'Tax Processes for Business (TPFB) covers VAT returns (VAT 100), different VAT schemes, and introduces income tax for sole traders — all building on the VAT foundation from Level 2 ITBk.',
+            exp: 'Tax Processes for Businesses (TPFB) covers VAT returns (VAT 100), different VAT schemes, and introduces income tax for sole traders — all building on the VAT foundation from Level 2 ITBK.',
           },
           {
             q: 'At Level 3, what is treated as assumed knowledge from Level 2?',
@@ -988,6 +1427,392 @@ window.LEARN_PATH = [
     unit: 'pobc',
     title: 'Principles of Bookkeeping Controls',
     lessons: [
+      /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
+         POBC used to open on suspense accounts, which only make sense once
+         you know what a control account is and how errors behave. These four
+         lessons supply that. */
+      {
+        id: 'L-pobc-1',
+        title: 'Why controls exist',
+        icon: '🛡️',
+        skills: ['pobc-ca'],
+        cards: [
+          {
+            h: 'Bookkeeping is done by people',
+            p: [
+              'Introduction to Bookkeeping showed you how entries should be made. This unit is about what happens when they are not — because people transpose digits, post to the wrong account, record something twice, or miss it altogether.',
+              'A **control** is any routine designed to prevent an error, or to catch one that has already happened. Controls do not assume dishonesty; they assume fallibility.',
+            ],
+          },
+          {
+            h: 'The three main controls at this level',
+            p: [
+              '**Control accounts** — a single general ledger account holding the total of many individual accounts, checked against the sum of those individual accounts.',
+              '**Reconciliations** — comparing the business\'s own record against an independent one, most commonly the bank statement.',
+              '**The journal** — a formal, documented way of making entries that do not arise from a day book, including corrections.',
+            ],
+            callout: { kind: 'key', text: 'Every control works the same way: build a figure by two independent routes, then compare them. If they agree, both are probably right.' },
+          },
+          {
+            h: 'Prevent, detect, correct',
+            split: {
+              left: { title: 'Preventive controls', items: [
+                'Authorisation limits before payments go out',
+                'Segregation of duties between roles',
+                'Sequential numbering of documents',
+                'The three-way match on purchase invoices',
+              ] },
+              right: { title: 'Detective controls', items: [
+                'Control account reconciliations',
+                'Bank reconciliations',
+                'The trial balance',
+                'Reviewing exception reports',
+              ] },
+            },
+          },
+          {
+            h: 'Segregation of duties',
+            p: [
+              'The most important preventive control is splitting a task so that **no single person can both cause an error and hide it**.',
+              'The person who authorises a payment should not be the person who sets up the supplier. The person who banks the cash should not be the person who records it.',
+              'Segregation does not stop a determined pair of colleagues colluding — but it converts a one-person problem into a two-person conspiracy, which is far rarer and far easier to detect.',
+            ],
+            examtrap: 'Segregation of duties usually needs **more** staff, not fewer. Answers claiming it saves money are wrong.',
+          },
+          {
+            h: 'What the trial balance can and cannot catch',
+            p: [
+              'The trial balance is a detective control, but a weak one. It proves only that total debits equal total credits.',
+              'It will catch a one-sided entry, or a transposition on one side only.',
+              'It will **not** catch a transaction omitted entirely, posted to the wrong account of the right type, entered twice, or recorded at the wrong amount on both sides.',
+            ],
+            callout: { kind: 'warning', text: 'An agreeing trial balance is not proof the books are right. That gap is exactly why this unit exists.' },
+          },
+        ],
+        check: [
+          { q: 'What is the main benefit of segregating duties?', opts: [
+              'No single person can both cause an error or fraud and conceal it',
+              'The business can operate with fewer members of finance staff',
+              'The trial balance is guaranteed to agree at the period end',
+              'Bank reconciliations no longer need to be performed'],
+            ans: 0, exp: 'Segregation forces collusion, which is rarer and easier to spot. It typically needs more people, and it complements rather than replaces reconciliations.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'An agreeing trial balance proves the entries are in the correct accounts.', answer: false },
+              { text: 'A control account is checked against the total of the individual accounts.', answer: true },
+              { text: 'A transaction omitted entirely will still leave the trial balance in balance.', answer: true },
+              { text: 'Reconciliation compares the business\'s record against an independent one.', answer: false },
+            ],
+            exp: 'The last is a trick: bank reconciliation does compare against an independent record, but a control account reconciliation compares two of the business\'s own records built by different routes. Both count as reconciliations.' },
+          { q: 'Which of the following is a preventive rather than a detective control?', opts: [
+              'Requiring a manager to authorise payments above a set limit',
+              'Reconciling the cash book against the bank statement each month',
+              'Comparing the control account with the list of individual balances',
+              'Extracting a trial balance at the end of the period'],
+            ans: 0, exp: 'Authorisation stops the error happening. The other three all look for errors after the event.' },
+        ],
+      },
+      {
+        id: 'L-pobc-2',
+        title: 'Control accounts explained',
+        icon: '🔗',
+        skills: ['pobc-ca'],
+        cards: [
+          {
+            h: 'The problem control accounts solve',
+            p: [
+              'A business with 300 credit customers has 300 accounts in the sales ledger. Putting all 300 into the trial balance would be unmanageable.',
+              'Instead, the general ledger holds **one** account — the **sales ledger control account (SLCA)** — carrying the total owed by all customers. That single figure goes into the trial balance.',
+              'The same applies to suppliers, via the **purchases ledger control account (PLCA)**.',
+            ],
+          },
+          {
+            h: 'Two routes to the same number',
+            p: [
+              'The control account is built from **day book totals**: total credit sales, total receipts, total returns.',
+              'The individual customer accounts are built from **individual transactions**, one customer at a time.',
+              'Because the two are built by genuinely different routes, agreement between them is real evidence. That is the whole point.',
+            ],
+            flow: ['Day book totals', 'Control account', 'compare', 'List of individual balances'],
+          },
+          {
+            h: 'What goes into the SLCA',
+            example: {
+              title: 'Sales ledger control account',
+              rows: [
+                ['**Debit side (increases)**', '**£**', '**Credit side (decreases)**', '**£**'],
+                ['Opening balance b/d', 'X', 'Cash/bank received from customers', 'X'],
+                ['Credit sales', 'X', 'Sales returns', 'X'],
+                ['Dishonoured cheques', 'X', 'Discounts allowed', 'X'],
+                ['', '', 'Irrecoverable debts written off', 'X'],
+                ['', '', 'Contra with PLCA', 'X'],
+                ['', '', 'Closing balance c/d', 'X'],
+              ],
+            },
+          },
+          {
+            h: 'The PLCA is the mirror image',
+            p: [
+              'The purchases ledger control account works the same way with the sides reversed, because it records a **liability** rather than an asset.',
+              'Credit purchases and the opening balance sit on the **credit** side. Payments to suppliers, purchases returns, discounts received and contras sit on the **debit** side.',
+            ],
+            callout: { kind: 'tip', text: 'If you can build the SLCA, you can build the PLCA — flip every side. The SLCA is an asset; the PLCA is a liability.' },
+          },
+          {
+            h: 'Building a control account',
+            worked: {
+              title: 'Finding the closing balance',
+              problem: 'At 1 June the SLCA showed £18,400. During June: credit sales £52,000; receipts from customers £47,300; sales returns £1,900; irrecoverable debts written off £600. What is the closing balance?',
+              steps: [
+                { do: 'Start with the opening balance on the **debit** side: **£18,400**.', why: 'Trade receivables is an asset, so its balance sits on the debit side.' },
+                { do: 'Add credit sales to the debit side: **£18,400 + £52,000 = £70,400**.', why: 'Credit sales increase what customers owe.' },
+                { do: 'Total the credit side: receipts £47,300 + returns £1,900 + irrecoverable debts £600 = **£49,800**.', why: 'All three reduce what customers owe, so all three are credits.' },
+                { do: 'Closing balance = **£70,400 − £49,800 = £20,600** debit.', why: 'The debit total less the credit total gives the amount still outstanding at the month end.' },
+              ],
+              answer: '£20,600 debit',
+              tryIt: {
+                q: 'A PLCA opens at £11,200. Credit purchases £34,500; payments to suppliers £30,800; purchases returns £1,400; discounts received £300. What is the closing balance, in £?',
+                answer: 13200, unit: '£',
+                hint: 'The PLCA is a liability, so opening balance and purchases are credits; payments, returns and discounts are debits.',
+                exp: 'Credits: £11,200 + £34,500 = £45,700. Debits: £30,800 + £1,400 + £300 = £32,500. Closing balance = £45,700 − £32,500 = £13,200 credit.',
+              },
+            },
+          },
+          {
+            h: 'When the two do not agree',
+            p: [
+              'A difference tells you an error exists and roughly where to look. Work out **which side** is wrong before writing any journal.',
+              'If the individual accounts are right and the control account is wrong, the correction is a journal in the general ledger. If the control account is right, the individual account is amended instead — and no journal is needed, because the sales ledger sits outside the double entry.',
+            ],
+            examtrap: 'A credit balance on the SLCA is not automatically an error. It usually means a customer has overpaid or holds a credit note — genuinely possible, and often tested.',
+          },
+        ],
+        check: [
+          { type: 'numeric', q: 'An SLCA opens at £22,000. Credit sales £61,000; receipts £55,400; sales returns £2,100. What is the closing balance, in £?',
+            answer: 25500, unit: '£',
+            steps: ['Debits: opening £22,000 + credit sales £61,000 = £83,000.', 'Credits: receipts £55,400 + returns £2,100 = £57,500.', 'Closing balance = £83,000 − £57,500 = £25,500 debit.'],
+            exp: 'Sales increase the balance; receipts and returns reduce it.' },
+          { q: 'Which entry appears on the CREDIT side of the sales ledger control account?', opts: [
+              'Cash received from credit customers during the period',
+              'Credit sales made to customers during the period',
+              'The opening balance brought down at the start of the period',
+              'A cheque from a customer returned unpaid by the bank'],
+            ans: 0, exp: 'Receipts reduce what customers owe, so they are credits. Sales, the opening balance and dishonoured cheques all increase the balance and sit on the debit side.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'The PLCA normally has a credit balance.', answer: true },
+              { text: 'An error in one customer\'s individual account will unbalance the trial balance.', answer: false },
+              { text: 'A contra entry reduces both the SLCA and the PLCA.', answer: true },
+              { text: 'The control account and the individual accounts are built from the same source.', answer: false },
+            ],
+            exp: 'The two records are deliberately built by different routes — day book totals versus individual transactions — which is what makes their agreement meaningful.' },
+          { q: 'The SLCA total does not agree with the list of customer balances. What does this tell you?', opts: [
+              'An error exists in one of the two records and must be located',
+              'The trial balance will definitely fail to agree as a result',
+              'The bank statement must contain an error that needs correcting',
+              'The difference will reverse itself in the following period'],
+            ans: 0, exp: 'The disagreement proves an error but says nothing about the trial balance, which can balance perfectly while the subsidiary ledger is wrong.' },
+        ],
+      },
+      {
+        id: 'L-pobc-3',
+        title: 'Types of error',
+        icon: '🔍',
+        skills: ['pobc-errors'],
+        cards: [
+          {
+            h: 'Two families of error',
+            p: [
+              'Errors split into those the trial balance **will** reveal and those it will not. Getting this distinction right is worth more marks than anything else in this unit.',
+              'The test is simple: does the error leave total debits equal to total credits? If yes, the trial balance stays silent.',
+            ],
+          },
+          {
+            h: 'Errors the trial balance does NOT reveal',
+            table: {
+              headers: ['Error', 'What happened', 'Example'],
+              rows: [
+                ['Omission', 'The transaction was never recorded at all', 'An invoice for £180 lost before entry'],
+                ['Commission', 'Right amount, right type, wrong account', 'Rent posted to Insurance'],
+                ['Principle', 'Right amount, wrong TYPE of account', 'A van posted to Motor expenses'],
+                ['Original entry', 'Wrong amount used on BOTH sides', '£450 entered as £540 throughout'],
+                ['Reversal', 'Debit and credit the wrong way round', 'Dr Sales / Cr Bank instead of the reverse'],
+                ['Compensating', 'Two errors that cancel out exactly', 'One side £100 over, the other £100 over'],
+              ],
+            },
+          },
+          {
+            h: 'Commission vs principle',
+            split: {
+              left: { title: 'Error of commission', items: [
+                'Wrong account, but of the **correct type**',
+                'Rent expense posted to Insurance expense',
+                'A payment posted to the wrong supplier',
+                'Profit is unaffected — both are expenses',
+              ] },
+              right: { title: 'Error of principle', items: [
+                'Wrong **type** of account entirely',
+                'A van (asset) posted to Motor expenses',
+                'A repair (expense) posted to a non-current asset',
+                'Profit **is** affected — this one matters more',
+              ] },
+            },
+            callout: { kind: 'key', text: 'Commission = wrong drawer, right cabinet. Principle = wrong cabinet altogether.' },
+          },
+          {
+            h: 'Errors the trial balance DOES reveal',
+            p: [
+              'These leave the two columns unequal, so the difference shows up immediately:',
+              '**Single-sided entry** — only one half of the double entry was posted.',
+              '**Transposition on one side only** — £540 posted as £450 on the debit side but correctly on the credit side.',
+              '**Two debits or two credits** — both halves posted to the same side.',
+              '**Casting error** — a column added up incorrectly.',
+            ],
+          },
+          {
+            h: 'Classifying an error',
+            worked: {
+              title: 'Which error is it, and does the trial balance agree?',
+              problem: 'A business buys a new laptop for £900 and posts: Dr Office expenses £900, Cr Bank £900. Classify the error and state whether the trial balance will agree.',
+              steps: [
+                { do: 'Check the arithmetic: one debit of £900 and one credit of £900.', why: 'Both sides are equal, so the trial balance is undisturbed.' },
+                { do: 'Check the account types. The laptop should be a **non-current asset**; it has gone to **Office expenses**, which is an expense.', why: 'Different types of account, not just different accounts.' },
+                { do: 'That makes it an **error of principle**.', why: 'Commission would be expense-to-expense; here the type itself is wrong.' },
+                { do: 'State the effect: profit is **understated by £900** and non-current assets are **understated by £900**.', why: 'The cost was charged against this year\'s profit instead of being capitalised and depreciated over the laptop\'s life.' },
+              ],
+              answer: 'Error of principle — the trial balance still agrees',
+              tryIt: {
+                q: 'A sale of £370 is recorded in the sales account as £730, while trade receivables is correctly recorded at £370. By how much do the trial balance columns differ, in £?',
+                answer: 360, unit: '£',
+                hint: 'Only one side was wrong. Find the difference between the two figures on that side.',
+                exp: '£730 − £370 = £360. Because the transposition affected only the credit side, the credit column exceeds the debit column by £360 and the trial balance fails to agree.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'Rent of £400 is correctly credited to bank but debited to the insurance account. This is an error of:', opts: [
+              'Commission — the wrong account, but of the correct type',
+              'Principle — the wrong type of account entirely',
+              'Omission — the transaction was never recorded',
+              'Original entry — the wrong amount was used throughout'],
+            ans: 0, exp: 'Rent and insurance are both expenses, so the type is right and only the account is wrong. That is commission.' },
+          { type: 'truefalse', q: 'Identify whether the following errors would be revealed by the trial balance.',
+            statements: [
+              { text: 'A transaction omitted from the records entirely.', answer: false },
+              { text: 'Only one side of a transaction posted.', answer: true },
+              { text: 'A purchase of a machine posted to repairs expense.', answer: false },
+              { text: 'A debit column added up incorrectly.', answer: true },
+            ],
+            exp: 'Omission and error of principle both leave debits equal to credits. One-sided postings and casting errors do not.' },
+          { type: 'gapfill', q: 'Complete the description of an error of principle.',
+            template: 'An error of principle records a transaction in the wrong {0} of account, and the trial balance will {1}.',
+            gaps: [
+              { options: ['type', 'column', 'day book', 'ledger'], answer: 0 },
+              { options: ['fail to agree', 'still agree', 'show a suspense balance', 'be reversed'], answer: 1 },
+            ],
+            exp: 'Both entries are still equal and opposite, so the trial balance agrees — the error is in classification, not arithmetic.' },
+          { type: 'numeric', q: 'A payment of £620 is debited correctly but credited to bank as £260. By how much do the trial balance columns differ, in £?',
+            answer: 360, unit: '£',
+            steps: ['The debit side is correct at £620.', 'The credit side is understated at £260.', 'Difference = £620 − £260 = £360.'],
+            exp: 'A transposition affecting one side only leaves the columns unequal by the difference between the two figures.' },
+        ],
+      },
+      {
+        id: 'L-pobc-4',
+        title: 'The journal',
+        icon: '✍️',
+        skills: ['pobc-errors'],
+        cards: [
+          {
+            h: 'What the journal is for',
+            p: [
+              'Most entries reach the ledgers through a day book — sales, purchases, returns, cash. The **journal** handles everything else.',
+              'It is the book of prime entry for transactions that are **not routine**: corrections of errors, opening balances, year-end adjustments, writing off irrecoverable debts, payroll, and the disposal of assets.',
+              'Every journal entry is dated, shows the accounts to be debited and credited, and carries a **narrative** explaining why.',
+            ],
+          },
+          {
+            h: 'The layout',
+            example: {
+              title: 'Journal entry',
+              rows: [
+                ['**Date**', '**Account**', '**Dr £**', '**Cr £**'],
+                ['30 Jun', 'Motor vehicles', '9,600', ''],
+                ['', 'Motor expenses', '', '9,600'],
+                ['', '*Being correction of a van purchase posted in error to motor expenses*', '', ''],
+              ],
+            },
+            callout: { kind: 'tip', text: 'The narrative is not optional decoration. Without it, nobody reviewing the books later can tell whether the entry was legitimate.' },
+          },
+          {
+            h: 'Correcting an error in three moves',
+            p: [
+              'Correction questions become straightforward once you always do the same three things:',
+              '**1. What was posted?** Write out the entry that was actually made.',
+              '**2. What should have been posted?** Write out the correct entry.',
+              '**3. What journal moves you from one to the other?** That difference is your answer.',
+              'Do not try to leap straight to the correcting journal. Writing out both entries takes ten seconds and prevents almost every mistake.',
+            ],
+          },
+          {
+            h: 'Correcting an error of principle',
+            worked: {
+              title: 'From wrong to right in one journal',
+              problem: 'A van costing £9,600 was posted: Dr Motor expenses £9,600, Cr Bank £9,600. Correct it.',
+              steps: [
+                { do: '**What was posted:** Dr Motor expenses £9,600, Cr Bank £9,600.', why: 'Write it down exactly as it stands, however wrong it looks.' },
+                { do: '**What should have been posted:** Dr Motor vehicles £9,600, Cr Bank £9,600.', why: 'The van is a non-current asset, so it is capitalised rather than expensed. The bank side was always correct.' },
+                { do: 'Compare. The bank entry is identical in both, so it needs no correction. Only the debit is in the wrong account.', why: 'Never journal an entry that was already right — a common way to turn one error into two.' },
+                { do: 'Journal: **Dr Motor vehicles £9,600, Cr Motor expenses £9,600**.', why: 'This removes the amount from the expense account and puts it into the asset account, leaving bank untouched.' },
+              ],
+              answer: 'Dr Motor vehicles £9,600 · Cr Motor expenses £9,600',
+              tryIt: {
+                q: 'Rent of £740 was posted to Insurance in error; the bank side was correct. What amount is credited to Insurance in the correcting journal, in £?',
+                answer: 740, unit: '£',
+                hint: 'The full amount must come out of the wrong account and go into the right one.',
+                exp: 'Dr Rent £740, Cr Insurance £740. The bank entry was correct and is left alone.',
+              },
+            },
+          },
+          {
+            h: 'Reversal errors need double the amount',
+            p: [
+              'If the debit and credit were posted the wrong way round, the correcting journal must be for **twice** the original amount.',
+              'One times the amount only cancels the wrong entry, leaving nothing recorded. The second cancels it again in the right direction.',
+              'A £300 reversal therefore needs a £600 journal.',
+            ],
+            examtrap: 'Reversal corrections at double the amount are one of the most reliably missed marks in this unit. If a question says the entries were reversed, double it.',
+          },
+        ],
+        check: [
+          { q: 'Which of the following would be recorded through the journal?', opts: [
+              'The correction of an error found after the trial balance',
+              'A credit sale to a regular customer on normal terms',
+              'A payment received from a credit customer by bank transfer',
+              'A credit purchase of goods for resale from a supplier'],
+            ans: 0, exp: 'Routine transactions go through the day books and cash book. The journal is for non-routine items — corrections, adjustments, opening balances and payroll.' },
+          { type: 'numeric', q: 'A receipt of £450 was posted as Dr Sales / Cr Bank, exactly reversing the correct entry. What amount is used in the correcting journal, in £?',
+            answer: 900, unit: '£',
+            steps: ['Reversing the wrong entry needs £450.', 'Recording the correct entry needs a further £450.', 'Total journal amount = £450 × 2 = £900.'],
+            exp: 'A reversal correction is always double the original amount — once to cancel, once to record it correctly.' },
+          { type: 'truefalse', q: 'Identify whether the following statements about the journal are true or false.',
+            statements: [
+              { text: 'Every journal entry should carry a narrative explaining it.', answer: true },
+              { text: 'The journal is used for routine credit sales.', answer: false },
+              { text: 'A correcting journal should not disturb entries that were already correct.', answer: true },
+              { text: 'The journal is a book of prime entry.', answer: true },
+            ],
+            exp: 'The journal is a book of prime entry for non-routine items. Re-journalling a correct entry creates a second error.' },
+          { type: 'gapfill', q: 'Complete the correcting entry.',
+            template: 'A machine posted to repairs expense in error is corrected by Dr {0} and Cr {1}.',
+            gaps: [
+              { options: ['Non-current assets', 'Repairs expense', 'Bank', 'Suspense'], answer: 0 },
+              { options: ['Non-current assets', 'Repairs expense', 'Bank', 'Suspense'], answer: 1 },
+            ],
+            exp: 'The amount moves out of the expense account (credit) and into the asset account (debit). The bank side was correct and is untouched.' },
+        ],
+      },
       {
         id: 'L-pobc-5',
         title: 'The suspense account',
@@ -1740,7 +2565,7 @@ window.LEARN_PATH = [
         id: 'L-pobc-13',
         title: 'Bank Reconciliation in Depth',
         icon: '🏦',
-        skills: ['pobc-ca'],
+        skills: ['pobc-bankrec'],
         cards: [
           {
             h: 'Why bank reconciliations matter',
@@ -1847,7 +2672,7 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Advanced Bookkeeping (AVBK) extensions from POBC',
+            h: 'What FAPS extends from POBC',
             p: [
               'At Level 3, you will clear suspense accounts using journals (not just identify the error type as in POBC). You will also post journals for complex scenarios: dishonoured (bounced) cheques, capital introduced mid-year, contra entries between the SLCA and PLCA, and the disposal of non-current assets.',
               'A **contra entry** arises when a customer is also a supplier — the two balances are offset: Dr PLCA / Cr SLCA. This removes the double counting from both control accounts.',
@@ -1856,14 +2681,14 @@ window.LEARN_PATH = [
           {
             h: 'Partnership accounts in Final Accounts Preparation (FAPS)',
             p: [
-              'Once you can prepare an ETB, FAPS at Level 3 adds **partnerships**. A partnership appropriation account allocates net profit: first deducting partners\' salaries and interest on capital; the remainder is divided by the **profit-sharing ratio (PSR)**.',
+              'Once you can prepare an ETB, FAPS adds **partnerships**. A partnership appropriation account allocates net profit: first deducting partners\' salaries and interest on capital; the remainder is divided by the **profit-sharing ratio (PSR)**.',
               'Each partner has two accounts: a **capital account** (fixed investment, rarely changes) and a **current account** (running total of salary, interest, profit share, less drawings). The current account balance carries to the balance sheet.',
             ],
           },
           {
-            h: 'VAT returns and payroll in Tax Processes for Business (TPFB)',
+            h: 'VAT returns and payroll in Tax Processes for Businesses (TPFB)',
             p: [
-              'At Level 3, you complete the **VAT 100 form**, deal with different VAT schemes (cash accounting, flat rate, annual accounting), and handle import VAT and partial exemption. This extends ITBk and POBC VAT knowledge significantly.',
+              'At Level 3, you complete the **VAT 100 form**, deal with different VAT schemes (cash accounting, flat rate, annual accounting), and handle import VAT and partial exemption. This extends ITBK and POBC VAT knowledge significantly.',
               'TPFB also covers PAYE and National Insurance: **Class 1 primary NIC** is deducted from the employee\'s gross pay; **Class 1 secondary NIC** is an additional cost for the employer. Both are remitted to HMRC alongside income tax deducted under PAYE.',
             ],
           },
@@ -1914,6 +2739,408 @@ window.LEARN_PATH = [
     unit: 'poc',
     title: 'Principles of Costing',
     lessons: [
+      /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
+         Costing used to open on labour payment methods, which presumes cost
+         classification and cost behaviour are already understood. They are
+         the foundation of every calculation in the unit. */
+      {
+        id: 'L-poc-1',
+        title: 'What costing is for',
+        icon: '🌱',
+        skills: ['poc-behaviour', 'poc-coding'],
+        cards: [
+          {
+            h: 'A different audience',
+            p: [
+              'Bookkeeping produces information for people **outside** the business: HMRC, lenders, Companies House. The rules are fixed and the deadlines are statutory.',
+              '**Costing** — the start of management accounting — produces information for people **inside** the business. There are no prescribed formats, no filing deadlines and no statutory rules. The only test is whether the information helps someone make a better decision.',
+            ],
+            callout: { kind: 'key', text: 'No statutory format applies to management information. If an exam option claims management accounts must follow a prescribed layout, it is wrong.' },
+          },
+          {
+            h: 'The three questions costing answers',
+            p: [
+              '**What did it cost?** Attributing costs to a product, a service, a department or a job.',
+              '**What should it cost?** Setting budgets and standards to plan against.',
+              '**What do we do next?** Supporting decisions — what to make, what to charge, whether to accept an order.',
+            ],
+          },
+          {
+            h: 'Cost units and cost centres',
+            split: {
+              left: { title: 'Cost unit', items: [
+                'The **thing** whose cost you are measuring',
+                'One car; one hotel room-night; one meal',
+                'One tonne of gravel; one patient treated',
+                'Costs are collected **for** the cost unit',
+              ] },
+              right: { title: 'Cost centre', items: [
+                'The **place** where costs are incurred',
+                'The assembly department; the canteen',
+                'A vehicle; a machine; a sales region',
+                'Costs are collected **in** the cost centre',
+              ] },
+            },
+            callout: { kind: 'tip', text: 'Cost unit answers "cost of what?"; cost centre answers "cost incurred where?". Mixing them up is a reliable way to lose easy marks.' },
+          },
+          {
+            h: 'Profit centres and investment centres',
+            p: [
+              'A **cost centre** is measured on its costs alone — the canteen has no revenue of its own.',
+              'A **profit centre** is responsible for both revenue and costs, so it can be measured on the profit it generates — a retail branch, for example.',
+              'An **investment centre** goes further still, being responsible for the capital invested in it as well as its profit.',
+            ],
+          },
+          {
+            h: 'Coding costs',
+            p: [
+              'Every cost is given a **code** so it can be sorted and analysed. A typical code has segments identifying the cost centre and the type of cost.',
+              'If maintenance wages are coded 300/420, the 300 might be the maintenance department (cost centre) and 420 the wages code (cost type).',
+              'Coding is what allows the same £900 wage payment to be reported both as "maintenance department costs" and as "total wages" without recording it twice.',
+            ],
+            worked: {
+              title: 'Reading a cost code',
+              problem: 'A business uses codes in the form CCC/TTT, where CCC is the cost centre and TTT the cost type. Cost centres: 100 Production, 200 Stores, 300 Maintenance. Types: 410 Materials, 420 Labour, 430 Overheads. Code the purchase of lubricating oil used by the maintenance department.',
+              steps: [
+                { do: 'Identify the **cost centre**: the oil is used by maintenance, so **300**.', why: 'The first segment always answers "where was this cost incurred?".' },
+                { do: 'Identify the **cost type**: oil is a material, so **410**.', why: 'The second segment answers "what kind of cost is it?".' },
+                { do: 'Combine them: **300/410**.', why: 'Cost centre first, then cost type — the order matters and is given in the question.' },
+              ],
+              answer: '300/410',
+              tryIt: {
+                q: 'Using the same scheme, wages paid to a stores assistant would be coded 200/xxx. What is the three-digit cost type, as a number?',
+                answer: 420, unit: '',
+                hint: 'Wages are a labour cost. Look up the labour code in the list.',
+                exp: 'Stores is cost centre 200 and labour is type 420, giving the full code 200/420.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'A cost unit is best described as:', opts: [
+              'The unit of product or service for which cost is measured',
+              'The department within which costs are incurred and controlled',
+              'The total production cost incurred during the period',
+              'The rate at which overheads are charged to production'],
+            ans: 0, exp: 'A cost unit is the thing being costed — one car, one meal, one patient. The department is a cost centre.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'Management accounting reports must follow a statutory format.', answer: false },
+              { text: 'A profit centre is responsible for both revenue and costs.', answer: true },
+              { text: 'Cost codes allow the same cost to be analysed in more than one way.', answer: true },
+              { text: 'Costing information is prepared mainly for HMRC.', answer: false },
+            ],
+            exp: 'Management information is internal, so its format is whatever is useful. HMRC receives financial, not management, information.' },
+          { q: 'The canteen in a factory is best described as:', opts: [
+              'A cost centre, because it incurs costs but generates no revenue',
+              'A profit centre, because it is responsible for revenue and costs',
+              'A cost unit, because its cost can be measured per meal',
+              'An investment centre, because capital is tied up in its equipment'],
+            ans: 0, exp: 'The canteen incurs costs without external revenue, making it a cost centre. A meal could be a cost unit, but the canteen itself is the centre.' },
+        ],
+      },
+      {
+        id: 'L-poc-2',
+        title: 'Classifying costs',
+        icon: '🗂️',
+        skills: ['poc-behaviour'],
+        cards: [
+          {
+            h: 'Two ways to slice the same cost',
+            p: [
+              'Every cost can be classified in two independent ways, and you need both:',
+              '**By traceability** — can this cost be traced to a specific cost unit? That gives **direct** and **indirect**.',
+              '**By behaviour** — what happens to this cost when activity changes? That gives **fixed**, **variable** and **semi-variable**.',
+              'The two are not the same question. A cost can be direct and variable, or indirect and fixed, or any other combination.',
+            ],
+          },
+          {
+            h: 'Direct and indirect',
+            split: {
+              left: { title: 'Direct costs', items: [
+                'Traceable to a single cost unit',
+                'Direct materials — the timber in a table',
+                'Direct labour — the joiner assembling it',
+                'Direct expenses — a royalty per unit made',
+                'Together these are **prime cost**',
+              ] },
+              right: { title: 'Indirect costs (overheads)', items: [
+                'Cannot be traced to one cost unit',
+                'Factory rent, heating, insurance',
+                'Supervisors\' and cleaners\' wages',
+                'Depreciation of factory machinery',
+                'Shared across units by absorption',
+              ] },
+            },
+            formula: 'Prime cost = Direct materials + Direct labour + Direct expenses',
+          },
+          {
+            h: 'Cost behaviour',
+            table: {
+              headers: ['Type', 'Total cost as activity rises', 'Cost per unit as activity rises', 'Example'],
+              rows: [
+                ['Variable', 'Rises in proportion', 'Stays the same', 'Raw materials'],
+                ['Fixed', 'Stays the same', 'Falls', 'Factory rent'],
+                ['Semi-variable', 'Rises, but not proportionally', 'Falls', 'Electricity with a standing charge'],
+                ['Stepped fixed', 'Jumps at capacity thresholds', 'Falls, then jumps', 'A second supervisor'],
+              ],
+            },
+            callout: { kind: 'warning', text: 'The classic trap: fixed cost is fixed in TOTAL, not per unit. Fixed cost per unit falls as output rises. Variable cost is the other way round — constant per unit, rising in total.' },
+          },
+          {
+            h: 'Why the distinction earns its keep',
+            p: [
+              'Because it changes the answer. If you are deciding whether to accept a one-off order, the factory rent is irrelevant — it will be paid either way. Only the costs that actually change with the decision matter.',
+              'Fixed costs behaving as though they were variable is the most expensive misunderstanding in costing, and it is why marginal costing exists.',
+            ],
+          },
+          {
+            h: 'Classifying and calculating',
+            worked: {
+              title: 'Total cost at two activity levels',
+              problem: 'A workshop has fixed costs of £18,000 per month and variable costs of £7.50 per unit. What is the total cost at 2,000 units, and what is the cost per unit?',
+              steps: [
+                { do: 'Calculate the variable cost: **2,000 × £7.50 = £15,000**.', why: 'Variable cost per unit is constant, so total variable cost is simply units × rate.' },
+                { do: 'Add the fixed cost, which does not change with output: **£15,000 + £18,000 = £33,000**.', why: 'Fixed cost stays at £18,000 whether the workshop makes 1 unit or 5,000.' },
+                { do: 'Calculate cost per unit: **£33,000 ÷ 2,000 = £16.50**.', why: 'This is £7.50 variable plus £9.00 of fixed cost spread over the 2,000 units.' },
+                { do: 'Note what happens at 3,000 units: total = £22,500 + £18,000 = £40,500, so cost per unit falls to **£13.50**.', why: 'The same £18,000 of fixed cost now spreads over more units — this is why cost per unit falls as output rises.' },
+              ],
+              answer: 'Total £33,000 · £16.50 per unit',
+              tryIt: {
+                q: 'Same workshop, 4,000 units. What is the total cost, in £?',
+                answer: 48000, unit: '£',
+                hint: 'Variable cost is 4,000 × £7.50. Fixed cost is unchanged at £18,000.',
+                exp: 'Variable: 4,000 × £7.50 = £30,000. Fixed: £18,000. Total = £48,000, or £12.00 per unit.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'Which of the following is a direct cost for a furniture maker?', opts: [
+              'The timber used in making a specific table',
+              'The rent payable on the workshop premises',
+              'The salary paid to the production supervisor',
+              'The insurance covering the workshop machinery'],
+            ans: 0, exp: 'Timber can be traced to the individual table, making it a direct material. Rent, supervision and insurance are shared across all output.' },
+          { type: 'numeric', q: 'Fixed costs are £24,000 and variable costs £6.00 per unit. What is the total cost of producing 5,000 units, in £?',
+            answer: 54000, unit: '£',
+            steps: ['Variable cost: 5,000 × £6.00 = £30,000.', 'Fixed cost is unchanged at £24,000.', 'Total = £30,000 + £24,000 = £54,000.'],
+            exp: 'Only the variable element scales with output; the fixed element is the same at every activity level.' },
+          { type: 'truefalse', q: 'Identify whether the following statements about cost behaviour are true or false.',
+            statements: [
+              { text: 'Fixed costs stay the same in total as output changes.', answer: true },
+              { text: 'Variable cost per unit falls as output rises.', answer: false },
+              { text: 'Fixed cost per unit falls as output rises.', answer: true },
+              { text: 'A semi-variable cost contains both a fixed and a variable element.', answer: true },
+            ],
+            exp: 'Variable cost per unit is constant — it is the total that rises. Fixed cost is the reverse: constant in total, falling per unit.' },
+          { type: 'gapfill', q: 'Complete the definition of prime cost.',
+            template: 'Prime cost is the total of direct materials, direct {0} and direct expenses, and it excludes all {1}.',
+            gaps: [
+              { options: ['labour', 'overheads', 'rent', 'depreciation'], answer: 0 },
+              { options: ['direct costs', 'overheads', 'materials', 'revenues'], answer: 1 },
+            ],
+            exp: 'Prime cost is the sum of the three direct cost elements. Indirect costs — overheads — are added afterwards under absorption costing.' },
+        ],
+      },
+      {
+        id: 'L-poc-3',
+        title: 'Materials and inventory control',
+        icon: '📦',
+        skills: ['poc-inv'],
+        cards: [
+          {
+            h: 'Materials are usually the biggest cost',
+            p: [
+              'For most manufacturers, direct materials are the single largest cost, so how they are ordered, stored and valued has a direct effect on profit.',
+              'Two questions matter: **how much to hold**, and **what value to put on it**.',
+            ],
+          },
+          {
+            h: 'Inventory control levels',
+            p: [
+              '**Reorder level** — the balance at which a new order is triggered. Set high enough to cover demand during the lead time.',
+              '**Minimum level** — the buffer below which stock should not fall, protecting against unexpected delays.',
+              '**Maximum level** — the ceiling, avoiding cash tied up and the risk of obsolescence.',
+              'Holding too much wastes cash and storage; holding too little risks stopping production. Control levels manage that trade-off.',
+            ],
+            formula: 'Reorder level = Maximum usage × Maximum lead time · Minimum level = Reorder level − (Average usage × Average lead time)',
+          },
+          {
+            h: 'Calculating a reorder level',
+            worked: {
+              title: 'When should we order?',
+              problem: 'A component is used at a maximum rate of 400 units per week. The maximum lead time from the supplier is 3 weeks. Average usage is 300 units per week and average lead time is 2 weeks. Calculate the reorder level and the minimum level.',
+              steps: [
+                { do: 'Reorder level = **maximum usage × maximum lead time** = 400 × 3 = **1,200 units**.', why: 'Always use the worst case for the reorder level — highest usage, longest wait — so stock cannot run out.' },
+                { do: 'Calculate expected usage during a normal wait: **average usage × average lead time** = 300 × 2 = **600 units**.', why: 'This is what you would normally consume between ordering and delivery.' },
+                { do: 'Minimum level = **reorder level − expected usage** = 1,200 − 600 = **600 units**.', why: 'The minimum level is the buffer that remains if everything goes to plan — the safety stock.' },
+              ],
+              answer: 'Reorder level 1,200 units · Minimum level 600 units',
+              tryIt: {
+                q: 'Maximum usage 250 units/week, maximum lead time 4 weeks. What is the reorder level, in units?',
+                answer: 1000, unit: 'units',
+                hint: 'Reorder level uses the maximum figures only: usage × lead time.',
+                exp: '250 × 4 = 1,000 units. Ordering at this level means even the worst combination of high usage and slow delivery will not cause a stock-out.',
+              },
+            },
+          },
+          {
+            h: 'Valuing what is issued and what remains',
+            p: [
+              'When identical items were bought at different prices, you need a rule for which cost to use when stock is issued.',
+              '**FIFO (first in, first out)** — assume the oldest items go first. Closing inventory is therefore valued at the most recent prices.',
+              '**AVCO (weighted average)** — recalculate a weighted average cost after each receipt, and value every issue at that running average.',
+              'The physical goods may move in any order; these are **costing assumptions**, not warehouse instructions.',
+            ],
+            examtrap: 'LIFO (last in, first out) is **not permitted** under IAS 2 for financial reporting. If it appears as an option in a question about acceptable methods, it is the wrong answer.',
+          },
+          {
+            h: 'The effect of rising prices',
+            table: {
+              headers: ['When prices are rising', 'FIFO', 'AVCO'],
+              rows: [
+                ['Cost of issues (cost of sales)', 'Lower', 'In between'],
+                ['Closing inventory value', 'Higher', 'In between'],
+                ['Reported profit', 'Higher', 'In between'],
+              ],
+            },
+            callout: { kind: 'tip', text: 'FIFO issues the old, cheap stock first, so cost of sales is low and profit looks higher. Remember the direction and you can reason out any variant of this question.' },
+          },
+        ],
+        check: [
+          { type: 'numeric', q: 'Maximum usage is 180 units per week and the maximum lead time is 5 weeks. What is the reorder level, in units?',
+            answer: 900, unit: 'units',
+            steps: ['Reorder level = maximum usage × maximum lead time.', '180 × 5 = 900 units.'],
+            exp: 'The reorder level always uses the worst case so that stock cannot run out during an unusually long wait.' },
+          { q: 'Under FIFO, closing inventory is valued at:', opts: [
+              'The most recent purchase prices paid',
+              'The earliest purchase prices paid',
+              'A weighted average of all prices paid',
+              'The lowest price paid during the period'],
+            ans: 0, exp: 'FIFO issues the oldest units first, so whatever remains is the most recently purchased — and therefore valued at recent prices.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'LIFO is permitted for financial reporting under IAS 2.', answer: false },
+              { text: 'AVCO recalculates the average cost after each receipt.', answer: true },
+              { text: 'When prices are rising, FIFO gives a higher closing inventory value than AVCO.', answer: true },
+              { text: 'Inventory valuation methods dictate the physical order goods leave the store.', answer: false },
+            ],
+            exp: 'These are costing assumptions, not warehouse rules. LIFO is prohibited by IAS 2.' },
+          { type: 'numeric', q: 'Opening stock 100 units at £5.00. A receipt of 100 units at £7.00 follows. Under AVCO, what is the new average cost per unit, in £?',
+            answer: 6, unit: '£',
+            steps: ['Total cost: (100 × £5.00) + (100 × £7.00) = £500 + £700 = £1,200.', 'Total units: 100 + 100 = 200.', 'Average = £1,200 ÷ 200 = £6.00 per unit.'],
+            exp: 'AVCO weights by quantity. Here the quantities are equal, so the average sits midway between £5.00 and £7.00.' },
+        ],
+      },
+      {
+        id: 'L-poc-4',
+        title: 'Overheads and absorption',
+        icon: '🏭',
+        skills: ['poc-behaviour'],
+        cards: [
+          {
+            h: 'The overhead problem',
+            p: [
+              'Direct costs attach themselves to a cost unit automatically — you know how much timber went into the table.',
+              'Overheads do not. Nobody can say how much of the factory rent belongs to one table. But if you ignore overheads, you will price below cost and lose money on every sale.',
+              '**Absorption costing** is the mechanism for getting a fair share of overhead into each unit.',
+            ],
+          },
+          {
+            h: 'Three stages',
+            p: [
+              '**Allocation** — charge a whole overhead to the one cost centre that incurred it. The maintenance department\'s own wages go straight to maintenance.',
+              '**Apportionment** — share an overhead that benefits several cost centres, on a sensible basis. Factory rent might be apportioned on floor area.',
+              '**Absorption** — charge the cost centre\'s total overhead into the units passing through it, using an absorption rate.',
+            ],
+            flow: ['Allocate', 'Apportion', 'Absorb into units'],
+          },
+          {
+            h: 'Choosing an apportionment basis',
+            table: {
+              headers: ['Overhead', 'Sensible basis'],
+              rows: [
+                ['Rent, rates, heating, lighting', 'Floor area occupied'],
+                ['Machine insurance and depreciation', 'Machine value or machine hours'],
+                ['Canteen and personnel costs', 'Number of employees'],
+                ['Stores and materials handling', 'Value or volume of materials'],
+              ],
+            },
+            callout: { kind: 'key', text: 'The basis should reflect what actually drives the cost. Apportioning canteen costs on floor area rather than headcount is a classic wrong answer.' },
+          },
+          {
+            h: 'The overhead absorption rate',
+            p: [
+              'The **OAR** is set in advance, from budgeted figures, so that products can be costed during the year without waiting for actual results.',
+              'The basis is usually labour hours or machine hours — whichever better reflects how the cost centre consumes overhead. A machine-intensive department uses machine hours.',
+            ],
+            formula: 'OAR = Budgeted overheads ÷ Budgeted activity · Overhead absorbed = OAR × Actual activity',
+          },
+          {
+            h: 'Calculating an OAR and absorbing overhead',
+            worked: {
+              title: 'Setting the rate and applying it',
+              problem: 'A department budgets overheads of £48,000 and 6,000 labour hours. Actual hours worked were 6,200 and actual overheads £49,000. Calculate the OAR, the overhead absorbed, and the under- or over-absorption.',
+              steps: [
+                { do: 'Calculate the OAR from **budgeted** figures: **£48,000 ÷ 6,000 = £8.00 per labour hour**.', why: 'The rate is always set in advance from budget, never from actuals — that is the whole point of a predetermined rate.' },
+                { do: 'Calculate overhead absorbed using **actual** activity: **£8.00 × 6,200 = £49,600**.', why: 'Products are charged at the predetermined rate for the hours they actually consumed.' },
+                { do: 'Compare absorbed with actual: **£49,600 absorbed − £49,000 actual = £600**.', why: 'Absorbed exceeds actual, so more overhead has been charged to products than was really incurred.' },
+                { do: 'That is **over-absorption of £600**, which increases profit.', why: 'Product costs were overstated, so profit was understated during the year and the £600 is credited back.' },
+              ],
+              answer: 'OAR £8.00/hour · absorbed £49,600 · over-absorbed £600',
+              tryIt: {
+                q: 'Budgeted overheads £60,000 over 5,000 machine hours. What is the OAR, in £ per machine hour?',
+                answer: 12, unit: '£',
+                hint: 'OAR = budgeted overheads ÷ budgeted activity.',
+                exp: '£60,000 ÷ 5,000 = £12.00 per machine hour. Always divide budget by budget.',
+              },
+            },
+          },
+          {
+            h: 'Under- and over-absorption',
+            split: {
+              left: { title: 'Under-absorption', items: [
+                'Absorbed **less than** actual overhead',
+                'Products were undercharged',
+                'Profit is **overstated** and must be reduced',
+                'Caused by lower activity or higher costs than budget',
+              ] },
+              right: { title: 'Over-absorption', items: [
+                'Absorbed **more than** actual overhead',
+                'Products were overcharged',
+                'Profit is **understated** and is increased',
+                'Caused by higher activity or lower costs than budget',
+              ] },
+            },
+            examtrap: 'Under-absorption means profit was overstated during the year and must now be reduced. Students routinely get this the wrong way round — work it through from "were products charged too much or too little?" rather than memorising it.',
+          },
+        ],
+        check: [
+          { type: 'numeric', q: 'Budgeted overheads are £75,000 and budgeted labour hours 6,250. What is the overhead absorption rate, in £ per hour?',
+            answer: 12, unit: '£',
+            steps: ['OAR = budgeted overheads ÷ budgeted activity.', '£75,000 ÷ 6,250 = £12.00 per labour hour.'],
+            exp: 'The rate is predetermined from budgeted figures so products can be costed before actual results are known.' },
+          { q: 'Which basis is most appropriate for apportioning canteen costs?', opts: [
+              'The number of employees in each cost centre',
+              'The floor area occupied by each cost centre',
+              'The value of machinery in each cost centre',
+              'The value of materials issued to each cost centre'],
+            ans: 0, exp: 'Canteen cost is driven by how many people use it. Floor area suits rent and heating; machine value suits machine insurance.' },
+          { type: 'numeric', q: 'The OAR is £9.00 per hour. Actual hours were 4,000 and actual overheads £37,500. By how much is overhead UNDER-absorbed, in £?',
+            answer: 1500, unit: '£',
+            steps: ['Overhead absorbed = OAR × actual hours = £9.00 × 4,000 = £36,000.', 'Actual overhead incurred = £37,500.', 'Absorbed is less than actual, so overhead is under-absorbed.', 'Under-absorption = £37,500 − £36,000 = £1,500.'],
+            exp: 'Products were charged £36,000 of overhead but £37,500 was actually incurred. Profit was therefore overstated by £1,500 and must be reduced.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'The overhead absorption rate is calculated from budgeted figures.', answer: true },
+              { text: 'Under-absorption means profit has been overstated and must be reduced.', answer: true },
+              { text: 'Allocation shares one overhead across several cost centres.', answer: false },
+              { text: 'Overhead absorbed is the OAR multiplied by actual activity.', answer: true },
+            ],
+            exp: 'Allocation charges a whole overhead to a single cost centre; apportionment is what shares a cost across several.' },
+        ],
+      },
       {
         id: 'L-poc-5',
         title: 'Paying for labour',
@@ -2860,7 +4087,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which Level 3 unit is the direct extension of Principles of Costing?',
-            opts: ['Advanced Bookkeeping (AVBK)', 'Final Accounts Preparation (FAPS)', 'Tax Processes for Business (TPFB)', 'Management Accounting Techniques (MATS)'],
+            opts: ['Financial Accounting: Preparing Financial Statements (FAPS)', 'Business Awareness (BUAW)', 'Tax Processes for Businesses (TPFB)', 'Management Accounting Techniques (MATS)'],
             ans: 3,
             exp: 'Management Accounting Techniques (MATS) directly extends POC: standard costing, variance analysis, flexible budgeting, and performance measurement all build on the overhead absorption, CVP, and budgeting skills developed in POC.',
           },
@@ -2872,6 +4099,415 @@ window.LEARN_PATH = [
     unit: 'besy',
     title: 'The Business Environment',
     lessons: [
+      /* ── FOUNDATIONS (1–4) ──────────────────────────────────────────────
+         BESY used to open on professional ethics, leaving the legal system,
+         contract law and business types — Tasks 1 and 6 of the synoptic,
+         worth 17 marks between them — with no lesson at all. */
+      {
+        id: 'L-besy-1',
+        title: 'The English legal system',
+        icon: '⚖️',
+        skills: ['besy-law'],
+        cards: [
+          {
+            h: 'Why an accountant studies law',
+            p: [
+              'You will spend your working life inside a framework of rules you did not write: contracts with customers and suppliers, employment law, consumer protection, data protection, company law.',
+              'You are not being trained as a lawyer. You are being trained to **recognise when something has legal consequences** — and to know when to stop and take advice.',
+            ],
+          },
+          {
+            h: 'Two sources of law',
+            split: {
+              left: { title: 'Case law (common law)', items: [
+                'Made by **judges** deciding individual cases',
+                'Developed over centuries through precedent',
+                'Emerged after the Norman Conquest of 1066',
+                'A lower court must follow a higher court\'s decision',
+              ] },
+              right: { title: 'Statute law', items: [
+                'Made by **Parliament** through legislation',
+                'Acts of Parliament (primary legislation)',
+                'Statutory instruments (delegated legislation)',
+                'Overrides case law wherever the two conflict',
+              ] },
+            },
+            callout: { kind: 'key', text: 'Where statute and case law conflict, statute wins. The courts cannot question the validity of an Act of Parliament.' },
+          },
+          {
+            h: 'Delegated legislation',
+            p: [
+              'Parliament cannot pass a full Act every time a detail needs updating — a fee level, a threshold, a technical schedule.',
+              '**Delegated legislation** lets a minister or body make those changes, provided the original Act granted the power. It is law, and it binds, but it did not go through the full parliamentary process.',
+            ],
+          },
+          {
+            h: 'Criminal law and civil law',
+            table: {
+              headers: ['', 'Criminal law', 'Civil law'],
+              rows: [
+                ['Concerns', 'Offences against the state', 'Disputes between private parties'],
+                ['Brought by', 'The state (prosecution)', 'The wronged party (claimant)'],
+                ['Standard of proof', 'Beyond reasonable doubt', 'On the balance of probabilities'],
+                ['Outcome', 'Punishment — fine, imprisonment', 'Remedy — damages, injunction'],
+                ['Example', 'Theft, fraud, bribery', 'Breach of contract, negligence'],
+              ],
+            },
+            examtrap: 'Criminal law is not "serious law" and civil law is not "minor law". The distinction is who brings the action and what the court is being asked to do — punish, or put right.',
+          },
+          {
+            h: 'Classifying a situation',
+            p: [
+              'A single set of facts can give rise to both. If an employee steals £40,000 from their employer, the state may prosecute them for theft (criminal), and the employer may separately sue to recover the money (civil).',
+              'The two proceed independently, with different standards of proof — which is why someone can be acquitted in a criminal court and still lose the civil case.',
+            ],
+            callout: { kind: 'tip', text: 'Ask two questions: who is bringing this, and what do they want? The state seeking punishment is criminal. A private party seeking compensation is civil.' },
+          },
+        ],
+        check: [
+          { q: 'Where statute law and case law conflict, which prevails?', opts: [
+              'Statute law, because the courts cannot override an Act of Parliament',
+              'Case law, because it reflects centuries of judicial reasoning',
+              'Whichever came later in time takes precedence over the other',
+              'Neither — the conflict is resolved by a referendum'],
+            ans: 0, exp: 'Parliament is sovereign. The courts interpret statute but cannot question the validity of an Act.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'Common law is developed by judges deciding individual cases.', answer: true },
+              { text: 'Criminal cases are brought by the wronged private individual.', answer: false },
+              { text: 'The civil standard of proof is the balance of probabilities.', answer: true },
+              { text: 'Delegated legislation allows detail to be changed without a new Act.', answer: true },
+            ],
+            exp: 'Criminal proceedings are brought by the state. A private individual brings a civil claim.' },
+          { q: 'A supplier sues a customer for an unpaid invoice. This is:', opts: [
+              'A civil matter, with the supplier seeking a remedy',
+              'A criminal matter, because non-payment is theft',
+              'A criminal matter, because the state has an interest in trade',
+              'Neither civil nor criminal — it is an administrative matter'],
+            ans: 0, exp: 'A dispute between two private parties, with the claimant seeking compensation, is civil. Non-payment of a debt is not a criminal offence.' },
+        ],
+      },
+      {
+        id: 'L-besy-2',
+        title: 'Contract law essentials',
+        icon: '📜',
+        skills: ['besy-law'],
+        cards: [
+          {
+            h: 'Contracts are everywhere',
+            p: [
+              'Every sale, purchase, employment relationship and supply arrangement your business enters is a contract. Most are never written down and none the less bind.',
+              'A **contract** is an agreement the law will enforce. What separates it from a mere promise is the presence of four essential elements.',
+            ],
+          },
+          {
+            h: 'The four essentials',
+            p: [
+              '**Offer** — a definite statement of the terms on which one party is willing to contract.',
+              '**Acceptance** — unqualified agreement to those exact terms. Introduce a new term and you have made a counter-offer, not an acceptance.',
+              '**Consideration** — each party must give something of value. A promise for nothing in return is not enforceable.',
+              '**Intention to create legal relations** — presumed in business dealings; presumed absent in purely social or domestic arrangements.',
+            ],
+            formula: 'Offer + Acceptance + Consideration + Intention = a binding contract',
+          },
+          {
+            h: 'Offer or invitation to treat?',
+            p: [
+              'This is the single most tested point in the topic.',
+              'An **invitation to treat** is an invitation for someone else to make an offer. Goods displayed in a shop or advertised at a price are invitations to treat — **not** offers.',
+              'The customer makes the offer at the till. The retailer may accept it or decline it. That is why a shop is not obliged to sell you an item that was mispriced on the shelf.',
+            ],
+            examtrap: 'Goods on display, price lists, catalogues and most advertisements are invitations to treat. Calling any of them an "offer" is the classic wrong answer.',
+          },
+          {
+            h: 'Express and implied terms',
+            split: {
+              left: { title: 'Express terms', items: [
+                'Actually stated by the parties',
+                'Written into the contract or agreed verbally',
+                'Price, delivery date, quantity, specification',
+                'What the parties consciously negotiated',
+              ] },
+              right: { title: 'Implied terms', items: [
+                'Not stated, but read into the contract',
+                'Implied by statute — e.g. the Consumer Rights Act',
+                'Implied by custom in a particular trade',
+                'Implied by the courts to give the contract effect',
+              ] },
+            },
+          },
+          {
+            h: 'Working out whether a contract exists',
+            worked: {
+              title: 'Applying the four essentials',
+              problem: 'A wholesaler emails a retailer: "We can supply 200 units at £15 each, delivery next Friday." The retailer replies: "Agreed, but we need delivery on Wednesday." The wholesaler does not respond. Is there a contract?',
+              steps: [
+                { do: 'Identify the **offer**: the wholesaler\'s email states definite terms — 200 units, £15 each, Friday delivery.', why: 'It is specific enough to be accepted as it stands, so it is an offer rather than an invitation to treat.' },
+                { do: 'Examine the reply. The retailer has changed a term — Wednesday instead of Friday.', why: 'Acceptance must be **unqualified**. Any change to the terms is not acceptance.' },
+                { do: 'Classify the reply as a **counter-offer**, which destroys the original offer.', why: 'Once a counter-offer is made, the original offer is no longer open for acceptance — a point students routinely miss.' },
+                { do: 'The wholesaler has not responded, so the counter-offer has not been accepted. **There is no contract.**', why: 'Silence is not acceptance. Without acceptance, no agreement has been formed.' },
+              ],
+              answer: 'No contract — the reply was a counter-offer, and it was never accepted',
+              tryIt: {
+                q: 'A contract needs four essential elements. If offer, acceptance and consideration are all present but intention to create legal relations is absent, how many of the four essentials are satisfied?',
+                answer: 3, unit: '',
+                hint: 'Count the elements that are present. All four are needed for a binding contract.',
+                exp: 'Three of four. That is not enough — all four essentials must be present, which is why purely social arrangements are generally unenforceable.',
+              },
+            },
+          },
+          {
+            h: 'When a contract is broken',
+            p: [
+              '**Breach of contract** occurs when a party fails to perform an obligation without lawful excuse.',
+              'The innocent party may claim **damages** — money to put them in the position they would have been in had the contract been performed.',
+              'Where the breach goes to the heart of the contract, they may also **terminate** and treat themselves as released from their own obligations.',
+            ],
+            callout: { kind: 'warning', text: 'Damages compensate; they do not punish. The aim is to put the innocent party where they would have been, not to penalise the party in breach.' },
+          },
+        ],
+        check: [
+          { q: 'Goods displayed in a shop window with a price ticket are:', opts: [
+              'An invitation to treat, inviting the customer to make an offer',
+              'An offer that the customer accepts by taking the goods to the till',
+              'A binding contract as soon as the customer sees the display',
+              'An express term of a contract already in existence'],
+            ans: 0, exp: 'The display invites offers. The customer offers at the till and the retailer may accept or decline — which is why a mispriced item need not be sold.' },
+          { type: 'truefalse', q: 'Identify whether the following statements about contract law are true or false.',
+            statements: [
+              { text: 'Consideration means each party must give something of value.', answer: true },
+              { text: 'A reply that changes a term of the offer is a valid acceptance.', answer: false },
+              { text: 'Intention to create legal relations is presumed in business agreements.', answer: true },
+              { text: 'A contract must be in writing to be enforceable.', answer: false },
+            ],
+            exp: 'Changing a term creates a counter-offer, which destroys the original offer. Most contracts need no writing at all.' },
+          { type: 'gapfill', q: 'Complete the statement about contract formation.',
+            template: 'An agreement becomes binding when offer, acceptance, consideration and {0} are all present; goods on display are an invitation to {1}.',
+            gaps: [
+              { options: ['intention to create legal relations', 'a written document', 'a witness signature', 'legal advice'], answer: 0 },
+              { options: ['treat', 'accept', 'terminate', 'perform'], answer: 0 },
+            ],
+            exp: 'All four essentials are required. Goods on display invite the customer to make an offer.' },
+          { q: 'A party breaches a contract. The usual remedy available to the innocent party is:', opts: [
+              'Damages, to put them in the position performance would have achieved',
+              'A criminal prosecution brought by the state against the other party',
+              'An automatic renewal of the contract on the same terms',
+              'A requirement that both parties renegotiate the agreement'],
+            ans: 0, exp: 'Breach of contract is a civil matter and the primary remedy is compensatory damages. It is not a criminal offence.' },
+        ],
+      },
+      {
+        id: 'L-besy-3',
+        title: 'Types of business',
+        icon: '🏢',
+        skills: ['besy-structure'],
+        cards: [
+          {
+            h: 'The question that decides everything',
+            p: [
+              'When you meet any business structure, ask one question first: **is the business a separate legal person from its owners?**',
+              'If yes, the business can own property, enter contracts and be sued in its own name — and the owners\' liability is limited.',
+              'If no, the owner and the business are legally the same thing, and the owner is personally liable for everything the business owes.',
+            ],
+            callout: { kind: 'key', text: 'Separate legal personality is the dividing line. Everything else — filing requirements, taxation, how easily ownership transfers — follows from it.' },
+          },
+          {
+            h: 'The four main structures',
+            table: {
+              headers: ['Structure', 'Separate legal person?', 'Owner liability', 'Public filing?'],
+              rows: [
+                ['Sole trader', 'No', 'Unlimited', 'No'],
+                ['Ordinary partnership', 'No', 'Unlimited, joint', 'No'],
+                ['Limited liability partnership (LLP)', 'Yes', 'Limited', 'Yes'],
+                ['Limited company (Ltd or plc)', 'Yes', 'Limited', 'Yes'],
+              ],
+            },
+          },
+          {
+            h: 'Sole traders and partnerships',
+            split: {
+              left: { title: 'Sole trader', items: [
+                'One owner, in business on their own account',
+                'Simple and cheap to set up — no registration',
+                '**Unlimited liability** — personal assets at risk',
+                'Keeps all the profit; bears all the risk',
+                'Accounts are private',
+              ] },
+              right: { title: 'Ordinary partnership', items: [
+                'Two or more people trading together',
+                'Governed by the Partnership Act 1890 by default',
+                '**Unlimited liability**, and partners are jointly liable',
+                'Without an agreement, profits are shared **equally**',
+                'Accounts are private',
+              ] },
+            },
+            examtrap: 'A partner can be pursued for the whole of the partnership\'s debts, not just their share. That is what "joint liability" means, and it is why partnership agreements matter.',
+          },
+          {
+            h: 'Limited companies',
+            p: [
+              'A company is created by incorporation at **Companies House** and exists as a legal person distinct from its shareholders.',
+              '**Limited liability** means a shareholder risks only what they paid, or agreed to pay, for their shares. If the company fails, creditors generally cannot pursue them personally.',
+              'The price of that protection is **transparency**: the company must file annual accounts and a confirmation statement on the public register, where anyone can inspect them.',
+              'A company also has **perpetual succession** — it continues to exist regardless of who owns the shares.',
+            ],
+          },
+          {
+            h: 'Private and public companies',
+            p: [
+              'A **private limited company (Ltd)** cannot offer its shares to the general public. Most UK companies are Ltd.',
+              'A **public limited company (plc)** may offer shares to the public and may be listed on a stock exchange. It faces higher minimum capital requirements and stricter reporting.',
+              'Both have limited liability and separate legal personality; the difference is how they may raise capital.',
+            ],
+          },
+          {
+            h: 'Not-for-profit organisations and charities',
+            p: [
+              'Not every organisation exists to make a profit for owners. A **not-for-profit** exists to fulfil a social, community or member purpose. It may generate a surplus — what it cannot do is distribute that surplus to owners, because it has none.',
+              'A **charity** must exist for **public benefit** for recognised charitable purposes, and in England and Wales is registered with and regulated by the **Charity Commission**.',
+              'Charities are generally exempt from corporation tax on income applied to their charitable purposes.',
+            ],
+            worked: {
+              title: 'Choosing a structure',
+              problem: 'Two friends want to start a business together. They expect to borrow £60,000 and are worried about personal risk. They want the simplest structure that protects their personal assets. Which structure fits, and why?',
+              steps: [
+                { do: 'Rule out **sole trader** — there are two of them.', why: 'A sole trader is by definition a single owner.' },
+                { do: 'Rule out an **ordinary partnership** — it offers no protection.', why: 'Partners have unlimited, joint liability, so the £60,000 borrowing would put both of their personal assets at risk. That is exactly what they want to avoid.' },
+                { do: 'Consider **LLP** and **limited company** — both give separate legal personality and limited liability.', why: 'Either would protect personal assets beyond the amount invested.' },
+                { do: 'A **private limited company** is the usual choice for a small trading business, accepting the obligation to file accounts publicly.', why: 'It is well understood by lenders, straightforward to incorporate, and the public filing requirement is the accepted trade-off for limited liability.' },
+              ],
+              answer: 'A private limited company (Ltd) — limited liability, with public filing as the trade-off',
+              tryIt: {
+                q: 'Of the four main structures — sole trader, ordinary partnership, LLP and limited company — how many give their owners limited liability?',
+                answer: 2, unit: '',
+                hint: 'Limited liability requires incorporation. Which structures are incorporated?',
+                exp: 'Two: the LLP and the limited company. Sole traders and ordinary partners both have unlimited liability.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'Which structure gives its owners limited liability?', opts: [
+              'A private limited company registered at Companies House',
+              'A sole trader operating under a registered business name',
+              'An ordinary partnership governed by the Partnership Act 1890',
+              'A self-employed contractor working through an agency'],
+            ans: 0, exp: 'Limited liability requires incorporation. Trading names and agency arrangements change nothing about legal liability.' },
+          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            statements: [
+              { text: 'A limited company continues to exist when its shareholders change.', answer: true },
+              { text: 'An ordinary partnership has a legal identity separate from its partners.', answer: false },
+              { text: 'A charity may generate a surplus provided it is applied to its purposes.', answer: true },
+              { text: 'A sole trader must file annual accounts at Companies House.', answer: false },
+            ],
+            exp: 'An ordinary partnership is not a separate legal person. Sole traders file nothing publicly — that privacy is the flip side of unlimited liability.' },
+          { q: 'Why must a limited company file its accounts on the public register?', opts: [
+              'It is the transparency trade-off for shareholders having limited liability',
+              'It allows HMRC to calculate the corporation tax the company owes',
+              'It is required before the company is permitted to continue trading',
+              'It registers the company\'s employees for PAYE and National Insurance'],
+            ans: 0, exp: 'Anyone dealing with a company whose owners cannot be pursued personally is entitled to see its financial position. Tax is settled separately with HMRC.' },
+          { type: 'numeric', q: 'A partnership of three has no written agreement and makes a profit of £84,000. Under the Partnership Act 1890 default, what is each partner\'s share, in £?',
+            answer: 28000, unit: '£',
+            steps: ['Without an agreement, the Partnership Act 1890 default applies.', 'That default is equal sharing between the partners.', '£84,000 ÷ 3 = £28,000 each.'],
+            exp: 'Absent a written agreement, profits are shared equally regardless of capital contributed or hours worked — which is precisely why partnership agreements are worth having.' },
+        ],
+      },
+      {
+        id: 'L-besy-4',
+        title: 'The synoptic assessment explained',
+        icon: '🎯',
+        skills: ['besy-structure'],
+        cards: [
+          {
+            h: 'What you are actually sitting',
+            p: [
+              'The Level 2 Certificate in Accounting has four units but only **three end-of-unit exams**. The fourth assessment is the **synoptic**, and the synoptic *is* The Business Environment.',
+              'It is **2 hours, 8 tasks, 100 marks**, and the pass mark is 70%.',
+              'It draws on the whole qualification — The Business Environment in full, plus the parts of Introduction to Bookkeeping and Principles of Bookkeeping Controls it needs.',
+            ],
+          },
+          {
+            h: 'What is NOT in the synoptic',
+            p: [
+              '**Principles of Costing does not appear in the synoptic at all.** The AAT assessment specification states it plainly: Principles of Costing is a unit assessment only.',
+              'That matters for how you revise. Costing needs your full attention for its own 90-minute exam — and none of it for this one.',
+            ],
+            callout: { kind: 'warning', text: 'Revising costing "for the synoptic" is wasted effort. It cannot be examined there. Revise it for its own paper instead.' },
+          },
+          {
+            h: 'The eight tasks',
+            table: {
+              headers: ['Task', 'Marks', 'Content'],
+              rows: [
+                ['1', '10', 'Business types and their functions'],
+                ['2', '13', 'The finance function and its information'],
+                ['3', '14', 'CSR, ethics and sustainability'],
+                ['4', '**22**', 'Bookkeeping transactions **and communicating information**'],
+                ['5', '10', 'Control accounts, reconciliations and journals'],
+                ['6', '7', 'The principles of contract law'],
+                ['7', '10', 'Bookkeeping systems, receipts, payments and data security'],
+                ['8', '14', 'The external business environment'],
+              ],
+            },
+          },
+          {
+            h: 'Two tasks are marked by a human',
+            p: [
+              '**Tasks 4 and 7 are not computer-marked.** They ask you to write — an email explaining a discrepancy, a note advising a colleague, a recommendation on data security.',
+              'Between them they carry around **32 of the 100 marks**, which is why your results are not released immediately.',
+              'You cannot pass these by recognising the right option. You have to produce clear, specific prose.',
+            ],
+            examtrap: 'Task 4 alone is 22 marks — the largest single task in the paper. A candidate who has only ever answered multiple-choice questions walks into it unprepared.',
+          },
+          {
+            h: 'What earns the written marks',
+            p: [
+              'Examiners are not looking for length or elegance. Almost every written task rewards the same four things:',
+              '**Figure** — state the specific amount. "A difference of £480", not "a discrepancy".',
+              '**Cause** — name the document or event responsible. "Invoice 4471 was raised after the order was cancelled."',
+              '**Action** — say concretely what will happen. "I will issue a credit note for £480 today."',
+              '**Tone** — professional, appropriate to the reader, and free of unexplained jargon.',
+            ],
+            flow: ['Figure', 'Cause', 'Action', 'Professional close'],
+          },
+          {
+            h: 'Planning your revision',
+            p: [
+              'Weight your effort to the marks. The Business Environment supplies the majority of the paper, so its topics — business types, the finance function, ethics and sustainability, contract law, the external environment — deserve the bulk of your time.',
+              'The bookkeeping content that appears is the **foundation** material, not the advanced end: processing transactions, control accounts, reconciliations, receipts and payments.',
+              'And practise **writing**. It is the one skill you cannot acquire by reading.',
+            ],
+            callout: { kind: 'tip', text: 'Use this app\'s Synoptic Mock for the real 8-task, 100-mark shape, and the separate Unit Assessments for the three 90-minute exams.' },
+          },
+        ],
+        check: [
+          { q: 'Which unit is NOT assessed as part of the Level 2 synoptic assessment?', opts: [
+              'Principles of Costing, which is a unit assessment only',
+              'The Business Environment, which has no separate exam',
+              'Introduction to Bookkeeping, which is fully assumed knowledge',
+              'Principles of Bookkeeping Controls, which is examined separately'],
+            ans: 0, exp: 'The AAT assessment specification states that Principles of Costing is a unit assessment only and is not assessed in the synoptic.' },
+          { type: 'numeric', q: 'The synoptic assessment is 8 tasks totalling how many marks?',
+            answer: 100, unit: 'marks',
+            steps: ['The Business Environment synoptic is a 2-hour assessment.', 'It contains 8 independent tasks.', 'The tasks total 100 marks.'],
+            exp: 'Eight tasks, 100 marks, 2 hours, 70% pass mark.' },
+          { type: 'truefalse', q: 'Identify whether the following statements about the synoptic are true or false.',
+            statements: [
+              { text: 'Two of the eight tasks are marked by a human rather than the computer.', answer: true },
+              { text: 'The Business Environment has its own separate end-of-unit exam.', answer: false },
+              { text: 'The written tasks carry roughly a third of the total marks.', answer: true },
+              { text: 'Results are released immediately at the end of the assessment.', answer: false },
+            ],
+            exp: 'The Business Environment is assessed in the synoptic only. Because Tasks 4 and 7 need human marking, results are not immediate.' },
+          { q: 'A written task asks you to explain an account discrepancy to a customer. What should the answer contain?', opts: [
+              'The specific amount, its cause, and what you will do about it',
+              'A full listing of every transaction posted to the account',
+              'An apology, without reference to the underlying figures',
+              'The relevant ledger extracts, with no accompanying commentary'],
+            ans: 0, exp: 'Figure, cause, action. Raw data shifts the work back onto the reader, and an apology without a figure resolves nothing.' },
+        ],
+      },
       {
         id: 'L-besy-5',
         title: 'Acting professionally',
@@ -3671,9 +5307,9 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Tax Processes for Business (TPFB) — a new unit at Level 3',
+            h: 'Tax Processes for Businesses (TPFB) — a new unit at Level 3',
             p: [
-              'There is no direct TPFB equivalent at Level 2, but your ITBk and POBC VAT knowledge feeds straight in. TPFB covers: completing the VAT 100 return; VAT schemes (cash accounting, annual accounting, flat rate scheme for small businesses); import VAT and reverse charge; and partial exemption basics.',
+              'There is no direct TPFB equivalent at Level 2, but your ITBK and POBC VAT knowledge feeds straight in. TPFB covers: completing the VAT 100 return; VAT schemes (cash accounting, annual accounting, flat rate scheme for small businesses); import VAT and reverse charge; and partial exemption basics.',
               'TPFB also introduces **income tax for sole traders and employees** — calculating taxable trading profit, allowable expenses, the personal allowance, and the income tax liability. This is brand-new territory for Level 2 students but builds logically on the business and accounting knowledge you already have.',
             ],
           },
@@ -3733,15 +5369,15 @@ window.LEARN_PATH = [
           },
           {
             q: 'Business Awareness at Level 3 (BUAW) builds most directly on which Level 2 unit?',
-            opts: ['Introduction to Bookkeeping (ITBk)', 'Principles of Costing (POC)', 'The Business Environment (BESY)', 'Principles of Bookkeeping Controls (POBC)'],
+            opts: ['Introduction to Bookkeeping (ITBK)', 'Principles of Costing (POC)', 'The Business Environment (BESY)', 'Principles of Bookkeeping Controls (POBC)'],
             ans: 2,
             exp: 'BUAW at Level 3 extends the content from BESY at Level 2 — business structures, economic analysis, ethics, stakeholders, sustainability, and sources of finance. It applies these concepts in more complex, strategy-focused scenarios.',
           },
           {
-            q: 'Which of the following is covered in Tax Processes for Business (TPFB) at Level 3 but is NOT covered at Level 2?',
+            q: 'Which of the following is covered in Tax Processes for Businesses (TPFB) at Level 3 but is NOT covered at Level 2?',
             opts: ['Calculating 20% VAT on standard-rated supplies', 'Knowing the difference between input and output VAT', 'Calculating income tax on a sole trader\'s taxable profit', 'Recording VAT in the VAT control account'],
             ans: 2,
-            exp: 'Income tax calculation for sole traders is first examined in TPFB at Level 3. VAT arithmetic, input/output VAT distinctions, and VAT ledger entries are all covered at Level 2 (ITBk and POBC).',
+            exp: 'Income tax calculation for sole traders is first examined in TPFB at Level 3. VAT arithmetic, input/output VAT distinctions, and VAT ledger entries are all covered at Level 2 (ITBK and POBC).',
           },
         ],
       },
@@ -3887,8 +5523,8 @@ window.LEARN_PATH = [
      AAT LEVEL 3 — INTRODUCTORY UNITS
      ══════════════════════════════════════════════════════════ */
   {
-    unit: 'avbk',
-    title: 'Advanced Bookkeeping',
+    unit: 'faps',
+    title: 'Financial Accounting: Preparing Financial Statements',
     lessons: [
       {
         id: 'L-avbk-1',
@@ -4036,12 +5672,6 @@ window.LEARN_PATH = [
           },
         ],
       },
-    ],
-  },
-  {
-    unit: 'faps',
-    title: 'Final Accounts Preparation',
-    lessons: [
       {
         id: 'L-faps-1',
         title: 'Sole Trader Financial Statements',
@@ -4187,7 +5817,7 @@ window.LEARN_PATH = [
   },
   {
     unit: 'mats',
-    title: 'Management Accounting: Costing',
+    title: 'Management Accounting Techniques',
     lessons: [
       {
         id: 'L-mats-1',
