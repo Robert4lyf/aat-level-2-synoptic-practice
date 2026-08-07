@@ -164,12 +164,18 @@
   /* Alias tokens are declared on :root as var(--text-strong) etc. A custom
      property is substituted in the scope that declares it, so those aliases were
      baked with the LIGHT palette and stayed light under .dark. Redeclare them
-     here so components using the alias names follow the dark palette. */
+     here so components using the alias names follow the dark palette.
+
+     Redeclaring as var(--accent) rather than a literal works because the
+     substitution now happens in THIS scope, where --accent is the dark value.
+     Any future alias added to :root must be repeated here if what it points at
+     changes between themes — scripts/check-theme-tokens.js enforces that. */
   --text-primary: #e6ebf4;
   --text-secondary: #94a0b8;
   --text-muted: #94a0b8;
   --bg-card: #0F172A;
   --bg-secondary: #0F172A;
+  --primary: var(--accent);
 }
 
 /* ── PAGE COVER — hides content until JS renders the app ── */

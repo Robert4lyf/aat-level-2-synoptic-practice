@@ -1,0 +1,4250 @@
+Qualification Number: 603/6337/X
+Qualification Specification
+Version 5.11 published March 2026
+
+-- 1 of 108 --
+
+Updates to this specification 2
+Updates to this specification
+Since first publication of the Level 3 Diploma in Accounting, the following areas of the
+qualification specification have been updated.
+Version Date first published What has been updated
+Version 5.11 16 March 2026 Section 11: Units Botswana Tax
+Processes for Business 2025 added
+Version 5.10 24 February 2026 Section 11: Units: Tax Processes for
+Business FA24 removed
+Version 5.9 17 October 2025 Corrections to anomalies with
+numbering for FA24 and FA25
+Version 5.8 24 September 2025 Updates to paragraphs:
+About AAT
+Ethics: we set and raise standards
+Student Registration: support every step
+of the way
+Version 5.7 12 September 2025 Section 11: Units (changes to Tax
+Processes for Businesses for FA25 for
+assessments from 26 January 2025)
+Version 5.6 14 May 2025 Test specification for Introduction to
+Bookkeeping unit assessment – link
+updated
+Updates made to reflect change to
+Partner Support / Partner Account
+Manager
+Version 5.5 17 February 2025 Section 11: Units (changes to Botswana
+Tax Processes for Businesses for 2024
+for assessments from 12 May 2025)
+
+-- 2 of 108 --
+
+Updates to this specification 3
+Version 5.4 27 January 2025 Section 11: Units (finalised Tax
+Processes for Businesses for FA24,
+removed Tax Processes for Businesses
+for FA23)
+Version 5.3 10 January 2025 Section 5: RPL statement updated
+Version 5.2 28 October 2024 Section 11: Units (changes to Tax
+Processes for Businesses for FA24 –
+1.1.4 and 1.1.5 correct order)
+Version 5.1 16 September 2024 Section 11: Units (changes to Tax
+Processes for Businesses for FA24 for
+assessments from 27 January 2025)
+Version 5.0 8 March 2024 Section 5: RPL statement updated
+Section 11: Units (FAPS 3.3.8, MATS
+5.3.1)
+Version 4.5 29 January 2024 Section 11: Units (Removal of FA21
+content)
+Version 4.4 02 November 2023 Section 11: Units (Tax Processes for
+Businesses for FA23 – removal of “sign
+up to MTD” in unit introduction added
+“gross” to taxable pay 4.1.6, 4.1.12 and
+4.1.13)
+Version 4.3 03 October 2023 Section 11: Units (Tax Processes for
+Businesses for FA23 – 1.4.1 added
+“operation of” and 3.1.5 and 3.1.6
+removed the word “period”)
+Version 4.2 15 September 2023 Section 11: Units (changes to Tax
+Processes for Businesses for FA23 for
+assessments from 29 January 2024)
+Version 4.1 30 June 2023 Section 11: Units (new Botswana Tax
+Processes for Businesses unit)
+Section 11: Units (clarification that
+Northern Ireland rules are not assessed
+in Tax Processes for Businesses)
+Version 4.0 09 January 2023 Section 11: Units (clarification of skills
+topic area in Tax Processes for
+Businesses LO4.1)
+Version 3.1 10 June 2022 Removal of tracked changes throughout
+document.
+Version 3.0 21 January 2022 Qualification go-live date
+Section 5.5 / 6.1: Inclusion of dedicated
+webpage to the RPL and exemptions
+policy
+Version 2.1 1 October 2021 Section 11: Units (additions / omissions
+highlighted in red)
+Version 2.0 30 April 2021 Section 9.6: Results
+Section 10: Grading
+Section 11: Units (additions / omissions
+highlighted in blue)
+Version 1.0 1 September 2020 First publication
+
+-- 3 of 108 --
+
+Updates to this specification 4
+This qualification is approved and regulated by:
+• the Office of Qualifications and Examinations Regulation (Ofqual) in England and
+internationally
+• the Council for the Curriculum, Examinations and Assessment (CCEA) in Northern Ireland
+• Qualifications Wales.
+This qualification applies only to students registered with AAT from 1 September 2022.
+
+-- 4 of 108 --
+
+Contents 5
+Contents
+Updates to this specification .................................................................................................. 2
+Contents.................................................................................................................................... 5
+1. About AAT ...................................................................................................................... 5
+2. Ethics: we set and raise standards ............................................................................ 6
+3. Student registration: support every step of the way ................................................ 7
+4. Choosing to study the AAT Level 3 Diploma in Accounting ................................... 8
+5. About the AAT Level 3 Diploma in Accounting ...................................................... 12
+6. Exemptions .................................................................................................................. 14
+7. Employer involvement ................................................................................................ 15
+8. Support for this qualification ...................................................................................... 16
+9. The assessment in detail ........................................................................................... 17
+10. Grading ......................................................................................................................... 24
+11. Units .............................................................................................................................. 29
+Business Awareness ............................................................................................................ 31
+Financial Accounting: Preparing Financial Statements ................................................... 45
+Management Accounting Techniques ............................................................................... 60
+Tax Processes for Businesses (FA2025) .......................................................................... 72
+Botswana Tax Processes for Businesses (2024) ............................................................ 83
+Botswana Tax Processes for Businesses (2025) ............................................................. 94
+12. Delivering AAT qualifications .................................................................................. 105
+13. Equality and diversity ............................................................................................... 107
+14. Support for training providers.................................................................................. 109
+
+-- 5 of 108 --
+
+1. About AAT 5
+1. About AAT
+AAT is a trusted brand for quality-assured accountancy qualifications across the globe,
+working with students and members, and partnering with AAT-approved training providers.
+We also have licensed members throughout the UK. Our members are represented at
+every level of the finance and accounting world, including students studying for a career in
+finance, people already working in accountancy and self-employed business owners. To
+find out more about us and our impact, please visit aat.org.uk/about/what-we-do
+AAT members are ambitious, focused accounting professionals. Many of our members
+occupy senior, well-rewarded positions with thousands of employers – from blue-chip
+corporate giants to public sector institutions.
+AAT qualifications are universally respected and internationally recognised. Organisations
+hire AAT qualified members for their knowledge, skills, diligence and enthusiasm because
+AAT represents the highest standards of professionalism.
+In short, an AAT qualification is a route to some of the most in-demand skills in the world
+and provides our students and members with a professional status to be proud of.
+Find out more about AAT
+
+-- 6 of 108 --
+
+2. Ethics: we set and raise standards 6
+2. Ethics: we set and raise standards
+AAT is about more than qualifications. AAT is recognised and respected as a professional
+membership body by a wide range of businesses. We require our members to take a
+professional and ethical approach throughout their accountancy and finance careers.
+It is because of our exceptionally high standards and the professionalism of our members
+that AAT members are so highly regarded. This is a benefit to us as a professional body
+and to our members.
+We publish the AAT Code of Professional Ethics, which sets out a code of fundamental
+ethical principles and supporting guidance, and is based on the IFAC Code of Ethics for
+Professional Accountants. The decisions that an accounting technician makes in the course
+of their professional life can have real ethical implications, and this is where the Code can
+help. It:
+• sets out the required standards of professional behaviour with guidance to help our
+members achieve them
+• helps our members to protect the public interest
+• helps our members to maintain AAT’s good reputation and public confidence.
+To reflect the realities of the workplace, we have embedded ethical dilemmas and decision
+making throughout the content of AAT’s qualifications and assessments. This will help to
+set our students on the right path as they embark on careers as accountancy or finance
+professionals.
+
+-- 7 of 108 --
+
+3. Student registration: support every step of the way 7
+3. Student registration: support every step of the way
+Registering with AAT is essential if students wish to study an AAT qualification. Once
+students have registered and purchased access to their desired qualification, they will be
+able to:
+• sit AAT assessments
+• access AAT support resources to supplement the qualification learning and aid
+career progression.
+AAT registration is a one-off fee, giving students access to the purchased qualification for
+the lifespan of the qualification. Additional fees will apply for sitting AAT assessments.
+We support and develop our students through AAT Approved training providers across the
+world. We also have an extensive branch network where students can access support and
+training and meet other AAT students and professional members in their local area.
+Prospective students wishing to register for the Level 3 Diploma in Accounting can do so at
+aat.org.uk/register/student
+Students are advised to register with an AAT Approved training provider before registering
+with AAT. On registration, an email confirming their registration and AAT registration
+number will be sent.
+Find out more about the benefits of
+registering with AAT
+
+-- 8 of 108 --
+
+4. Choosing to study the AAT Level 3 Diploma in Accounting 8
+4. Choosing to study the AAT Level 3 Diploma
+in Accounting
+4.1 Who should choose to study this qualification?
+The Level 3 Diploma in Accounting offers technical training in accounting and is ideal for
+anyone wishing to pursue a career in accountancy or finance.
+The purpose of the Level 3 Diploma in Accounting is to provide students with the specialist
+knowledge and skills required to progress to employment in an accounting or finance role,
+or to further study in accountancy and finance.
+This qualification is a progression route for students who have achieved the Level 2
+Certificate in Accounting. It’s also suitable for those who have already started their journey
+studying a related subject and are looking to develop their skills in accounting, or for those
+who have already started working in finance and who have a need and desire to attain
+formal recognition of their skills.
+The Level 3 Diploma in Accounting is suitable for adult students, career changers and 16–
+19 year old students in full-time education seeking to develop their knowledge and skills in
+this occupational area.
+4.2 Why choose this qualification?
+The Level 3 Diploma in Accounting is a potential route into employment with a globally
+recognised qualification accrediting the skills and knowledge required by employers. On
+completion, students can successfully undertake a role in finance. It can also be a
+stepping-stone to further education, with students progressing onto the Level 4 Diploma in
+Professional Accounting. It may be suited to students studying part-time alongside
+employment or to those already working in finance. This qualification will also suit those
+looking to gain the skills required to move into a career in finance as it provides a clear
+pathway towards a successful career in accounting and finance.
+In developing this qualification, AAT has carried out extensive consultation with and
+received input from a wide variety of stakeholders, including industry experts, employers
+and training providers. AAT qualifications benefit from being globally recognised and they
+are valued by leading employers, from small high street firms to large accountancy
+businesses. They offer students flexible study options, with over 500 AAT Approved
+training providers around the world.
+
+-- 9 of 108 --
+
+4. Choosing to study the AAT Level 3 Diploma in Accounting 9
+4.3 What does the qualification cover?
+The Level 3 Diploma in Accounting covers a range of essential and complex accounting
+tasks, including maintaining cost accounting records and the preparation of reports and
+returns. Key themes have also been introduced throughout the suite of accounting
+qualifications including technology, ethics, sustainability and communication.
+This qualification comprises four mandatory units (400 guided learning hours in total):
+• Business Awareness
+• Financial Accounting: Preparing Financial Statements
+• Management Accounting Techniques
+• Tax Processes for Businesses.
+The purpose of this qualification is to ensure that students are well prepared to progress
+into a career in business, finance or professional accountancy, or into further education.
+Students will learn and develop skills needed for financial processes, including accounting
+principles and concepts, advanced bookkeeping and preparing financial statements. They
+will also understand the business environment, technology used in finance and accounting,
+business issues regarding payroll and value added tax (VAT) (which may be known by
+another name in other countries), issues in business, management accounting techniques,
+ethical principles and sustainability considerations for accountants.
+Students will develop an understanding of business and its structure and purpose, as well
+as appreciating the wider business environment. Students will develop skills supporting
+complex financial processes, such as final accounts, reports and returns, use of technology
+to provide management accounting information, and completion of VAT returns.
+Students will be expected to take responsibility for initiating and completing tasks and
+procedures, as well as exercising autonomy and judgement within limited parameters, such
+as awareness of different perspectives or approaches within an area of study or work.
+Students will need to use a variety of data and information about a business to visualise
+and communicate key information needed for business decision making.
+The four units are assessed individually through computer-based end-of-unit assessments.
+
+-- 10 of 108 --
+
+4. Choosing to study the AAT Level 3 Diploma in Accounting 10
+4.4 What will this qualification lead to?
+The accountancy skills developed through this qualification will enable a student to seek
+employment with confidence and/or to progress to the next level of learning. It will lead to a
+choice of great careers, as well as providing progress onto the Level 4 Diploma in
+Professional Accounting and a route to higher education.
+This qualification is part of a suite of AAT qualifications available to students that offer both
+horizontal and vertical progression channels. Completion of this qualification can provide
+progression onto the Associate Bookkeeping membership, where students will gain
+professional recognition with the designatory letters AATQB. Students may also progress
+onto Professional level and become a full member of AAT upon achieving the associated
+membership criteria. The Level 3 Diploma in Accounting also provides the skills required to
+support the establishment and operation of a healthy business.
+Skills developed through this qualification could lead to employment as:
+• an Accounts Assistant
+• an Accounts Payable and Expenses Supervisor
+• an Assistant Accountant
+• an Audit Trainee
+• a Credit Controller
+• a Finance Assistant
+• a Finance Officer
+• a Payroll Supervisor
+• a Senior Bookkeeper
+• a Tax Assistant.
+
+-- 11 of 108 --
+
+4. Choosing to study the AAT Level 3 Diploma in Accounting 11
+4.5 Is this part of an apprenticeship?
+The Level 3 Diploma in Accounting is fully mapped to the Assistant Accountant
+apprenticeship Standard and can be used as part of the On-Programme Learning.
+AAT understands that not everyone can access an apprenticeship. In these cases, there
+are compelling reasons to choose to take this high-quality qualification, which is valued
+because of its track record of delivering successful employment outcomes outside of the
+apprenticeship. AAT has many examples of unemployed and career-change students of all
+ages who have gained employment directly as a result of achieving this qualification.
+
+-- 12 of 108 --
+
+5. About the AAT Level 3 Diploma in Accounting 12
+5. About the AAT Level 3 Diploma in Accounting
+Qualification name AAT Level 3 Diploma in Accounting
+Qualification number 603/6337/X
+Level 3
+Guided learning hours (GLH) 400
+Total qualification time (TQT) 620
+5.1 Guided learning hours (GLH) value
+The total GLH value for the Level 3 Diploma in Accounting is 400 hours.
+The GLH value for a qualification is an estimate of the amount of time a student spends
+learning under the supervision of a teacher or tutor. This might include lectures, tutorials or
+supervised study carried out either face-to-face or remotely. Time spent by tutors, teachers
+or external experts assessing student performance is also included. It doesn’t include time
+that students spend on unsupervised preparation or study.
+The GLH value is set and recommended as appropriate by AAT, but some students may
+need more or less support to achieve the qualification. The GLH value is not a compulsory
+measure for all students. Training providers have the flexibility to offer the qualification in
+the hours required by their own students, within the constraints of any funded provision
+requirements.
+5.2 Total qualification time (TQT) value
+The TQT value for the Level 3 Diploma in Accounting is 620 hours.
+The TQT value is also a measure of how long it takes to complete a qualification, but it
+includes both GLH and unsupervised learning.
+Any independent study time or any additional work by the student that is directed by, but
+not under the supervision of, a tutor is included in the TQT value. This might include
+working through e-learning at home or time spent on independent research.
+
+-- 13 of 108 --
+
+5. About the AAT Level 3 Diploma in Accounting 13
+5.3 Are there any entry requirements for this qualification?
+AAT does not set any entry requirements for this qualification.
+However, for the best chance of success, we recommend that students begin their studies
+with a good standard of English and maths. Accountants work at the very heart of a
+business and are expected to be able to communicate information clearly and
+appropriately to a given audience. Ideally, students should have completed the Level 2
+Certificate in Accounting and/or the Level 2 Certificate in Bookkeeping. Prior attainment of
+other business or finance studies would also be beneficial.
+AAT recommends that students use AAT Skillcheck to ensure that they’re ready to start
+on a particular qualification.
+5.4 Will current students be able to transfer their results onto this
+qualification to complete their studies?
+Students who have already started an AAT qualification should try to complete their studies
+on their current programme where possible.
+If this is not possible, transitional arrangements may be available. In some cases, students
+may be able to transfer results for current units to similar units in an updated qualification,
+although this will be strictly time-limited.
+It’s important to check for the latest information to see if transitional arrangements apply.
+More information is available in the AQ2016 to Q2022 Transitional arrangements (PDF)
+5.5 Recognition of prior learning (RPL)
+If a student can demonstrate that they already have the knowledge and skills to meet the
+requirements for a unit assessment, they may be eligible for RPL. This must be arranged
+through a registered AAT training provider and mapping of the student’s skills and
+knowledge must be uploaded to AAT’s assessment platform.
+RPL is planned to be made available from mid-2025. Please refer to the RPL Policy for full
+details on restrictions and the process. There are restrictions on the number of units that
+may be claimed by RPL to ensure that at least 50% of the qualification will always be
+externally assessed. Where RPL is successfully claimed for a unit assessment, the student
+will be given a pass mark for that assessment and this mark will be used in determining the
+final qualification grade. In order to achieve a higher mark, the student must sit a standard
+assessment instead.
+More details on RPL can be found in the AQ2016 to Q2022 Transitional Arrangements
+(PDF) and the dedicated RPL and exemptions webpage at aat.org.uk/qualifications-and-
+courses/exemptions-recognition-prior-learning
+
+-- 14 of 108 --
+
+6. Exemptions 14
+6. Exemptions
+6.1 Exemptions from AAT assessments
+Exemptions may be offered to students who can provide evidence of gaining a previous,
+relevant qualification. If eligible, students may be exempt from sitting some AAT
+assessments. This includes students who have completed a recognised accounting or
+finance-related degree with one of AAT’s partner universities.
+There are restrictions on how many exemptions are allowed within each qualification. Fees
+will be charged for exemptions. Exemptions will carry a maximum pass into the overall
+grade of the qualification.
+More details on exemptions can be found in the AQ2016 to Q2022 Transitional
+Arrangements (PDF) document at aat.org.uk/training/qualifications/2022/resources and
+the dedicated exemptions and RPL webpage at aat.org.uk/qualifications-and-
+courses/exemptions-recognition-prior-learning
+6.2 Exemptions from the first year of university
+AAT qualifications are a great alternative to university, but some students may wish to go
+on and study for a degree.
+A number of institutions, including universities, offer exemptions for AAT qualified members.
+Students should contact the individual institutions to confirm their exemption policies. UCAS
+Tariff points may be available for AAT qualifications, although UCAS points will not
+automatically offer entry to some HE courses. Further information on UCAS may be found
+on the UCAS website.
+6.3 Exemptions from chartered accountancy bodies
+For students who wish to become chartered accountants, the study of AAT qualifications
+may also offer exemptions from the exams required by a range of chartered accountancy
+bodies. Full details on exemptions from chartered accountancy bodies can be accessed
+through MyAAT at aat.org.uk/membership/professional-membership/reduced-
+membership-chartered
+
+-- 15 of 108 --
+
+7. Employer involvement 15
+7. Employer involvement
+AAT qualifications are recognised and valued by employers as vocational and technical
+qualifications that prepare students for the world of work and for working specifically in
+accountancy and finance roles.
+7.1 Employer involvement in development and assessment
+AAT has worked closely with employers in the development of this qualification to ensure
+that the qualification demands the skills that an employer would expect of a student at this
+level.
+Employers also contribute to the development of the live materials used to assess students
+on completion of their study. Employer involvement in assessment of this qualification
+includes reviewing and editing the assessments and scenarios used to ensure that they
+reflect realistic working practices and the wider environment.
+
+-- 16 of 108 --
+
+8. Support for this qualification 16
+8. Support for this qualification
+8.1 AAT qualification support
+Throughout the life of this qualification, AAT will make available a range of free materials
+and resources to support tutors and students in delivery and assessment.
+Materials produced for this qualification will include:
+• practice assessments for each unit
+• one Sample Assessment and Mark Scheme (SMAS - Business Awareness)
+• Qualification Technical Information (QTI)
+• annual Chief Examiner reports.
+Additional materials may also include:
+• e-learning
+• Green Light tests
+• webinars
+• tutor-to-tutor sessions at network meetings.
+All AAT study support resources can be accessed via the AAT Lifelong Learning Portal.
+8.2 Published materials
+A number of commercial publishers produce support materials for AAT qualifications. While
+AAT ensures that commercial publishers have the information, they need to produce
+materials in good time to support the qualifications, AAT does not formally endorse any
+specific publisher and it does not review publishers’ materials for accuracy.
+Tutors are reminded to always refer to the unit content within this specification for what to
+teach and what will be assessed and to refer to a range of support materials where
+possible. While published materials can offer excellent support and variety in teaching and
+learning, they should not be used without reference to this specification.
+
+-- 17 of 108 --
+
+9. The assessment in detail 17
+9. The assessment in detail
+9.1 How will students be assessed?
+Students must successfully achieve the four mandatory unit assessments to achieve this
+qualification. The proportion of this qualification assessed by externally marked
+assessment is 100%.
+All assessments in this qualification:
+• are set and marked by AAT (with the exception of RPL, which is marked by the
+training provider)
+• are computer based
+• are time-limited
+• are scheduled by training providers or assessment venues
+• take place at approved training providers and assessment venues under controlled
+conditions.
+9.2 Availability of assessments
+Unit assessments are available to be scheduled on demand throughout the year, except
+during periods set and communicated by AAT.
+9.3 Controlled conditions
+AAT has published detailed regulations for training providers and assessment venues
+regarding how to conduct computer based assessments.
+Training providers and assessment venues must ensure that they comply with the
+minimum and supporting requirements for the hardware and software used in the delivery
+of AAT assessments and must ensure that all assessments are delivered securely.
+Each training provider and assessment venue must have at least one computer based
+assessment (CBA) administrator and at least one invigilator. Training providers and
+assessment venues must ensure that all assessments are invigilated and conducted in
+accordance with AAT policies and procedures. To avoid any possible conflict of interest,
+the CBA administrator(s) and invigilator(s) for an assessment must not be an active AAT
+student or related to any student taking that assessment, and must not be or have been a
+tutor involved in preparing students for any of the units that are being assessed.
+AAT requirements and regulations for how to conduct assessments within this qualification
+will be detailed in an updated version of the Instructions for conducting AAT Computer
+Based Assessments guidance document. This will be hosted on a dedicated
+assessment support webpage for Qualifications 2022.
+
+-- 18 of 108 --
+
+9. The assessment in detail 18
+9.4 Sitting the assessment
+The assessments in this qualification are computer based, with time restrictions. Details on
+assessment duration for each unit has been included in Section 11: Units.
+Students will be presented with a range of question types and formats in the assessment.
+These may include multiple-choice questions, numeric gap-fill questions, or question tools
+that replicate workplace activities such as completing an extended trial balance. In the
+Business Awareness unit, some tasks will require extended written responses. While tasks
+generally do not have to be completed in a specific order, students are encouraged to
+proceed through them in the order in which they are presented.
+Students should familiarise themselves with the CBA environment, assessment platform
+software and some of the question styles that they might encounter in the exam by using
+the practice assessment materials provided by AAT. Registered students may access the
+Lifelong Learning Portal and practice assessment materials through MyAAT.
+9.5 Marking
+Assessments in this qualification are marked by AAT, with the exception of RPL, and may
+be either:
+• wholly computer marked
+• partially computer marked and partially human marked.
+Computer marking is completed within the assessment software in accordance with an
+objective marking scheme devised during assessment development. Human marking is
+conducted by a team of markers, with appropriate subject matter knowledge, who are
+appointed by AAT. Markers use mark schemes devised during assessment development.
+Assessments undergo regular quality assurance, which includes:
+• standardisation of markers
+• sampling for marking consistency
+• review of borderline scripts.
+9.6 Results
+Results for computer marked assessments are made available via MyAAT within 24 hours
+of submitting the assessment. For assessments that contain human marked tasks, results
+can take up to six weeks to become available via MyAAT.
+Students will be advised on what percentage of the marks available they achieved in their
+assessments.
+AAT’s feedback service provides a simple summary of students’ performance in each
+assessment. The feedback statement confirms their overall result and a breakdown of
+performance by task. Students will also be able to see marks available and marks
+achieved against each task position.
+Feedback statements are automatically generated and are designed to help students
+
+-- 19 of 108 --
+
+9. The assessment in detail 19
+identify their strengths and any topic areas requiring further study. The student is
+presented with a short descriptor for each task to describe their performance in that task
+against the topics assessed. There are four feedback descriptors. Each descriptor provides
+an indication of how the student has performed in that task and includes generic advice on
+how to proceed with their studies or continuing professional development (CPD).
+9.7 Re-sits
+Students should only be entered for an assessment when they are well prepared and they
+are expected to pass the assessment. Where a student is unsuccessful in an assessment
+attempt, they should discuss their results with their tutor and revise appropriately before
+retaking the assessment.
+This qualification is not subject to re-sit restrictions.
+9.8 Enquiries and appeals
+If the student thinks that their assessment outcome does not reflect their performance, they
+can submit an enquiry. Full details of the process can be found on AAT’s dedicated
+Enquiries and Appeals webpage AAT’s results enquiry service includes a check of all
+procedures leading to the issue of the outcome, checking that all parts of the assessment
+were marked, that the marks were totalled correctly and that the marks were recorded
+correctly. Students may also request to have the original marking reviewed, to check that
+the agreed mark scheme was applied correctly.
+The appeals process can be followed if a student is not satisfied with the outcome of their
+enquiry or Malpractice Review Panel (MRP) decision. The appeals process checks all
+aspects of the original enquiry review or MRP hearing and checks that all AAT procedures
+have been correctly followed.
+Enquiries and appeals can be made by a student or by their training provider or employer
+on their behalf; enquiries and appeals for a group of students can also be made by a
+training provider.
+There is an administrative fee for enquiries and appeals. All paid fees will be refunded if
+the outcome of the enquiry or appeal is in favour of the student.
+
+-- 20 of 108 --
+
+10. Grading 24
+10. Grading
+To achieve the qualification and to be awarded a grade, a student must pass all
+mandatory unit assessments.
+Students will be awarded a grade based on performance across the qualification. Unit
+assessments are not individually graded. These assessments are given a mark that is used
+in calculating the overall grade.
+10.1 How the overall grade is determined
+Students will be awarded an overall qualification grade (Distinction, Merit, and Pass).
+Students who do not achieve the qualification will not receive a qualification certificate and
+will be shown as unclassified. This is indicated below for illustrative purposes only.
+The raw marks of each assessment will be converted into a percentage mark and rounded
+up or down to the nearest whole number. For example, 75.5% would be rounded up to
+76%, whereas 82.1% would be rounded down to 82%. This percentage mark is then
+weighted according to the weighting of the unit assessment within the qualification. The
+resulting weighted assessment percentages are combined to arrive at a percentage mark
+for the whole qualification.
+Grade definition Percentage threshold
+Distinction 90–100%
+Merit 80–89%
+Pass 70–79%
+Unclassified 0–69% Or failure to pass one or more assessment/s
+
+-- 21 of 108 --
+
+10. Grading 25
+Example of Pass
+Assessment
+Contribution
+of assessment
+to
+qualification
+grade
+Percentage
+achieved
+Weighted
+percentage
+contribution to
+grade
+Business Awareness 15% 70% 10.5%
+Financial Accounting:
+Preparing Financial
+Statements
+40% 75% 30.0%
+Management Accounting
+Techniques 30% 71% 21.3%
+Tax Processes for Businesses 15% 78% 11.7%
+Total 74%*
+*has been rounded to nearest whole number
+Example of Merit
+Assessment
+Contribution
+of assessment
+to
+qualification
+grade
+Percentage
+achieved
+Weighted
+percentage
+contribution to
+grade
+Business Awareness 15% 90% 13.5%
+Financial Accounting:
+Preparing Financial
+Statements
+40% 82% 32.8%
+Management Accounting
+Techniques 30% 78% 23.4%
+Tax Processes for Businesses 15% 85% 12.8%
+Total 83%*
+*has been rounded to nearest whole number
+
+-- 22 of 108 --
+
+10. Grading 26
+Example of Distinction
+Assessment
+Contribution
+of assessment
+to qualification
+grade
+Percentage
+achieved
+Weighted
+percentage
+contribution to
+grade
+Business Awareness 15% 95% 14.3%
+Financial Accounting:
+Preparing Financial
+Statements
+40% 93% 37.2%
+Management Accounting
+Techniques 30% 87% 26.1%
+Tax Processes for Businesses 15% 82% 12.3%
+Total 90%*
+*has been rounded to nearest whole number
+10.2 Can students improve their grades?
+Any student wishing to improve their grade can do so by re-sitting their assessment(s).
+Only a student’s highest result will count towards their grade. If a student re-sits but, in
+doing so, achieves an assessment result that would lower their overall grade, their previous
+higher result will remain valid and will be used to determine their overall grade for the
+qualification.
+It’s important to recognise that students achieving a Pass are already demonstrating a
+high level of competence, as AAT maintains a pass mark of 70% across all assessments.
+
+-- 23 of 108 --
+
+10. Grading 27
+10.3 Grading descriptors
+Pass Merit Distinction
+Demonstrates understanding
+of theories and concepts in
+accounting, including
+professional ethics and
+sustainability.
+Demonstrates good
+understanding of a range of
+theories and concepts in
+accounting, including
+professional ethics and
+sustainability.
+Demonstrates sound
+understanding of a wide
+range of theories and
+concepts in accounting,
+including professional ethics
+and sustainability.
+Demonstrates
+understanding of the
+business environment and
+of internal and external
+business environments.
+Demonstrates good
+understanding of the
+business environment and of
+the implications on
+performance and decisions
+of internal and external
+business environments.
+Demonstrates sound
+understanding of the impact
+of the internal and external
+business environments on
+business operations,
+decisions and performance.
+Demonstrates
+understanding of
+technologies and how they
+are used by the finance
+function and the need to
+protect data.
+Demonstrates good
+understanding of a range of
+developing technologies, the
+impact on the role of the
+finance function, the
+associated risks and the
+importance of data security.
+Demonstrates sound
+understanding of a wide
+range of developing
+technologies, the impact on
+the role of the finance
+function, the associated
+risks and the importance of
+data security.
+Recognises, selects and
+uses management and
+financial accounting
+techniques to prepare
+accounts for sole traders
+and partnerships.
+Recognises and selects a
+range of management and
+financial accounting
+techniques and uses these
+with a good level of accuracy
+to prepare accounts for sole
+traders and partnerships.
+Recognises and selects a
+wide range of management
+and financial accounting
+techniques and uses them
+with a high level of accuracy
+to prepare accounts for sole
+traders and partnerships.
+Performs calculations for
+VAT, financial and
+management accounting
+purposes and records these
+in accounting formats,
+including spreadsheets.
+Performs a range of
+calculations for VAT,
+financial and management
+accounting purposes and
+records these with a good
+degree of accuracy in a
+range of accounting
+formats, including
+spreadsheets.
+Performs a wide range of
+calculations for VAT,
+financial and management
+accounting purposes and
+records these with a high
+degree of accuracy in a
+range of accounting
+formats, including
+spreadsheets.
+
+-- 24 of 108 --
+
+10. Grading 28
+Gathers data and information
+to arrive at conclusions, in
+order to support
+management decision
+making.
+Gathers and analyses data
+and information to arrive at
+conclusions, which support
+management decision
+making.
+Gathers and analyses data
+and information to arrive at
+reasoned conclusions, which
+fully support management
+decision making.
+Communicates information
+clearly in written and/or
+numerical form in financial
+and business formats.
+Content is relevant,
+structured, uses appropriate
+business language and
+considers the needs of the
+audience.
+Communicates information
+clearly in written and/or
+numerical form in a range of
+appropriate financial and
+business formats.
+Content is relevant, logically
+structured, uses effective
+business language and
+meets the needs of the
+audience.
+Communicates information
+clearly in written and/or
+numerical form in a wide
+range of appropriate financial
+and business formats.
+Content is relevant, logically
+structured, clear and concise,
+uses effective business
+language and fully meets the
+needs of the audience.
+
+-- 25 of 108 --
+
+11. Units 29
+11. Units
+All units in this qualification comply with the requirements set out in the Conditions of
+Recognition published by the regulators in England, Wales and Northern Ireland and follow
+a standard format. The unit specification gives guidance on the requirements of the unit for
+students, tutors, assessors and those responsible for monitoring national standards. Each
+unit contains a range of sections, as outlined below.
+Unit title
+This qualification, and its component units, is regulated. The unit title shown is the
+regulated title of the unit.
+Unit level
+All units and qualifications are assigned a level using the level descriptors that apply to
+regulated qualifications in England, Wales and Northern Ireland. There are nine levels of
+achievement, from Entry Level to Level 8. All units in this qualification are Level 3.
+GLH value
+The GLH value is defined as all the times when a tutor, trainer or facilitator is present to
+give specific guidance. This definition includes lectures, tutorials and supervised study. It
+also includes time spent by staff assessing student achievements. It does not include time
+spent by staff marking assignments or homework where the student is not present.
+Assessment methodology
+All units will be independently assessed.
+Unit reference number
+This number is set by Ofqual, the independent qualifications regulator for England, and is
+unique to the unit.
+Introduction
+The unit introduction gives the reader an appreciation of the unit in the context of the
+vocational setting of the qualification, as well as highlighting the focus of the unit. It gives
+the reader a snapshot of the unit and the key knowledge, skills and understanding gained
+while studying the unit.
+Learning outcomes
+The learning outcomes of a unit set out what a student is expected to know or be able to
+do as a result of their learning.
+Scope of content
+The scope of content identifies the breadth of knowledge, skills and understanding needed
+to achieve each of the learning outcomes. The content provides the range of subject
+material for the programme of learning and specifies the skills, knowledge and
+understanding required for achievement of the unit.
+
+-- 26 of 108 --
+
+11. Units 30
+Content structure
+• Each learning outcome is stated in full.
+• Topic areas specify the standard that a student is expected to meet in order to
+demonstrate that the learning outcome has been achieved. These may be shown as
+‘Learners need to understand’ for an understanding topic area or ‘Learners need to be
+able to’ for a skills topic area. Some learning outcomes may include both
+understanding and skills elements.
+• Each topic area is then expanded into key concepts related to that learning outcome.
+• Each concept is then further expanded into indicative content where applicable.
+Relationship between content and assessment
+Students must have the opportunity to cover all the unit content. It is not a requirement of
+the unit specification that all the content is assessed. However, the indicative content will
+need to be covered in a programme of learning for students to be able to meet the
+standard determined in the scope of content.
+Delivering this unit
+This section includes guidance on how the unit content can be delivered. Tutors are
+encouraged to develop their own approach depending on the needs of their students, but
+may wish to incorporate some of the ideas included. Tutors may wish to go beyond the
+scope of the content in order to aid understanding and provide context, but must always
+ensure first that all required content is covered according to the depth and breadth
+indicated in the scope of content.
+Test specification for unit assessment
+The test specification for the unit assessment gives details about the assessment method,
+marking type and duration of the assessment. The contribution that each learning outcome
+makes to the overall mark for the unit assessment is also provided.
+
+-- 27 of 108 --
+
+Business Awareness 31
+Business Awareness
+Unit
+level GLH value Unit reference
+number Assessment
+3 70 D/618/3579 Unit assessment
+Introduction
+This unit provides students with an understanding of the business, its environment and the
+influence that this has on an organisation’s structure, the role of its accounting function and its
+performance. Students will examine the purposes and types of businesses that exist, and the
+rights and responsibilities of key stakeholders. Students will learn what the micro- and macro-
+economic environments are and the impact and influence that changes in these environments
+can have on performance and decisions. This will include an understanding of the basic
+business law relating to the preparation of financial statements for different types of entities.
+Students will learn about the concepts of risk, types of risk and risk management for a
+business.
+Students will understand the importance of professional ethics and ethical management, and
+how the finance function interacts with other key business functions to enhance operational
+efficiency. Students will learn the core aspects of the ethical code for accountants and will
+apply these principles to analyse and judge ethical situations which could arise in the
+workplace. They will also understand how acting ethically stems from core personal and
+organisational values, as well as understanding the legal and regulatory framework for anti-
+money laundering.
+The role of the accountant is changing. This change is particularly driven by emerging
+technologies, so students will learn about types of technological changes that affect the
+accounting profession and the impact of these on performance, data analysis and accounting
+processes. An important skill for accountants is being able to analyse, understand and interpret
+information gathered and communicated in different formats. Students will understand the use
+of and impact of big data, the key features of blockchain, artificial intelligence (AI) and cloud
+accounting. Students will gain the skills required to visualise and interpret data to support
+understanding and decision making for businesses.
+
+-- 28 of 108 --
+
+Business Awareness 32
+Learning outcomes
+1. Understand business types, structures and governance, and the legal framework in which
+they operate
+2. Understand the impact of the external and internal environment on businesses, their
+performance and decisions
+3. Understand how businesses and accountants comply with principles of professional ethics
+4. Understand the impact of new technologies in accounting and the risks associated with data
+security
+5. Communicate information to stakeholders
+
+-- 29 of 108 --
+
+Business Awareness 33
+Scope of content
+This section illustrates the depth and breadth of content to be delivered for this unit. All areas
+indicated in the table below must be covered in teaching.
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of
+content. Content assessed may change over time to ensure validity of assessment.
+1. Understand business types, structures and governance, and the legal framework in
+which
+they operate
+1.1 The types of businesses
+Learners need to understand:
+1.1.1 the standard organisation types and their key characteristics:
+- sole traders
+- partnerships (unlimited liability)
+- limited liability partnerships and limited partnerships
+- private limited companies
+- public limited companies
+- not-for-profit organisations including public sector
+1.1.2 the impact of business type on the organisation’s governance:
+- degree of separation of ownership
+- control/management
+1.1.3 types of funding used by businesses:
+- new capital introduced
+- profits retained
+- lending
+- working capital
+1.1.4 common features of business organisations:
+- a structure determined by groups of interrelated individuals
+- achievement of common objectives, i.e. goal congruence
+- co-operative relationships
+- defined responsibility, authority, relationship
+- individuals working together as teams
+- division of work
+1.1.5 the differences between manufacturing and service businesses:
+- availability of internal information
+- the processes and activities
+- reporting requirements.
+1.2 The legal framework for companies and partnerships
+Learners need to understand:
+1.2.1 the key elements of companies legislation:
+- the rights and roles of shareholders
+- the role and duties of directors
+- regulates company formation and reporting
+1.2.2 the key elements of unlimited liability partnerships:
+
+-- 30 of 108 --
+
+Business Awareness 34
+- what a partnership agreement typically contains
+- that formal partnership agreements may not exist for all partnerships
+- the definition of goodwill and its relevance to the partnership
+- the impact of a change in partner on the partnership.
+1.3 Business stakeholders’ interactions and needs
+Learners need to understand:
+1.3.1 different business stakeholders:
+- customers
+- suppliers
+- finance providers
+- owners
+- government
+- employees
+- regulatory/professional bodies
+- the general public
+1.3.2 stakeholders’ objectives and requirements from the business
+1.3.3 stakeholders’ contributions to and impact on the business
+1.3.4 the relative significance of stakeholders to the business (including attitudes to risk).
+1.4 Organisational structure and governance
+Learners need to understand:
+1.4.1 organisational structure:
+- different organisational structures: functional, divisional, matrix
+- the impact that the span of control has on the organisation structure, i.e. tall or
+flat
+1.4.2 the importance of governance in different organisation types:
+- what is meant by the term ‘governance’ in a business context
+- the impact of organisational structure and size on governance
+- the difference between centralised and decentralised control
+1.4.3 the role of operational, managerial and corporate/strategic levels within an
+organisation
+1.4.4 the role of the finance function in contributing towards the operation of the other
+business functions and the organisation’s plans and decision making:
+- operations/production
+- sales and marketing
+- human resources
+- information technology
+- distribution and logistics
+1.4.5 the concept of risk and risk management:
+- difference between risk and uncertainty
+- types of risk:
+▪ business risk
+▪ financial risk
+▪ strategic risk
+▪ operational risk (cyber risk and reputational risk)
+
+-- 31 of 108 --
+
+Business Awareness 35
+- risk management:
+▪ transfer
+▪ accept
+▪ reduce
+▪ avoid.
+2. Understand the impact of the external and internal environment on businesses, their
+performance and decisions
+2.1 The use of PESTLE model for analysing the external environment
+Learners need to understand:
+2.1.1 the use of PESTLE to analyse the
+impact of the business’s macro
+environment
+2.1.2 political factors affecting a
+business:
+- government policy
+- taxation
+- imports and exports
+- public spending
+2.1.3 economic factors affecting a
+business:
+- interest rates
+- exchange rates
+- changes in disposable income
+- business cycles
+- demand-pull and cost-push
+inflation
+2.1.4 social factors affecting a business:
+- demographic changes
+- trends
+- unemployment
+2.1.5 technological factors affecting a
+business:
+- changes in technology
+- impact on structure
+2.1.6 legal factors affecting a business:
+- trade regulations
+- changes in law and
+regulations
+2.1.7 environmental factors affecting a
+business:
+- environmental changes
+- sustainability.
+Learners need to be able to:
+2.1.8 identify PESTLE factors affecting a
+business
+2.1.9 recognise the impact of PESTLE
+factors on the business.
+
+-- 32 of 108 --
+
+Business Awareness 36
+2.2 The micro-economic environment
+Learners need to understand:
+2.2.1 the concept of supply and demand
+2.2.2 how prices are determined by the price mechanism (supply = demand, i.e. shifts
+along the supply/demand curves) and market forces (shifts of the supply/demand
+curves) and the impact of the type of goods (normal, necessity, substitute and
+complementary)
+2.2.3 the impact of price changes on volumes, revenues, costs and profitability
+2.2.4 how the levels of competition in the micro-economic environment are influenced:
+- product features
+- number of sellers and buyers
+- barriers to entry, i.e. licences and regulatory controls, cost to set up, expertise
+- location
+- availability of information.
+2.3 The importance of sustainability
+Learners need to understand:
+2.3.1 the meaning of sustainability
+2.3.2 the three aspects of sustainable performance:
+- social
+- ecological/environmental
+- economic/financial
+2.3.3 the importance of:
+- taking a long-term view and allowing the needs of present generations to be
+met without compromising the ability of future generations to meet their own
+needs
+- considering the needs of the organisation’s wider stakeholders
+- long-term responsible management and use of resources
+- operating sustainably in relation to products and services, customers,
+employees, the workplace, the supply chain and business functions and
+processes
+- the accountant’s public interest duty to protect society as a whole and the
+organisation’s sustainability.
+
+-- 33 of 108 --
+
+Business Awareness 37
+3. Understand how businesses and accountants comply with principles of
+professional ethics
+3.1 The relevance of the ethical code for professional accountants
+Learners need to understand:
+3.1.1 the principle of integrity:
+- the effect of accountants being
+associated with misleading
+information
+- the key ethical values of
+honesty, transparency and
+fairness when liaising with
+clients, suppliers and
+colleagues
+- how integrity is threatened by
+self-interest and familiarity
+threats
+3.1.2 the principle of objectivity:
+- what is meant by a conflict of
+interest, including self-interest
+threats arising from financial
+interests, and compensation
+and incentives linked to
+financial reporting and decision
+making
+- the importance of appearing to
+be objective as well as actually
+being objective
+- the importance of professional
+scepticism when exercising
+professional judgement in
+relation to financial accounting
+and the link between
+compromised objectivity and
+possible accusations of bribery
+or fraud
+3.1.3 the principle of professional
+behaviour:
+- how compliance with relevant
+laws and regulations in relation
+to financial accounting is a
+minimum requirement but an
+act that is permitted by the law
+or regulations is not necessarily
+ethical
+- the link between bringing
+disrepute on the profession and
+disciplinary action brought by a
+professional accountancy body
+3.1.4 the principle of professional
+competence and acting with due
+care:
+Learners need to be able to:
+3.1.11 recognise threats to integrity in
+financial accounting: intimidation/self-
+interest threats to present misleading
+information to users of financial
+statements
+3.1.12 recognise threats to objectivity:
+intimidation, self-review, advocacy,
+self-interest, familiarity threats
+resulting in bias
+3.1.13 recognise professional competence
+and due care threats: keeping
+knowledge up to date, pressure in
+working role, self-interest, self-
+review, familiarity threats
+3.1.14 recognise areas in which up to date
+technical knowledge can be critical
+and the consequences of not
+maintaining CPD
+3.1.15 recognise when confidential
+information: can or must be
+disclosed, when it must not be
+disclosed, and when situations pose
+a threat to confidentiality
+3.1.16 recognise situations when
+professional scepticism should be
+applied and the action to be taken
+3.1.17 recognise which safeguards may be
+appropriate.
+
+-- 34 of 108 --
+
+Business Awareness 38
+- how professional qualifications
+and continuing professional
+development (CPD) support
+professional competence
+3.1.5 the principle of confidentiality:
+- how financial accounting
+information confidentiality may
+be affected by compliance with
+data protection laws
+3.1.6 professional scepticism:
+- the meaning of professional
+scepticism: assessing
+information critically, with a
+questioning mind, and being
+alert to possible misstatements
+due to error or fraud
+- the importance of professional
+scepticism when exercising
+professional judgement in
+relation to transactions
+recording and financial
+reporting
+3.1.7 the difference between a principles-
+based approach and a rules-based
+approach
+3.1.8 how documented organisational
+policies on relevant issues can be
+used as safeguards to prevent
+threats and ethical conflict from
+arising
+3.1.9 the types of safeguard that may be
+applied
+3.1.10 what an accountant should do
+when a threat cannot be eliminated
+or reduced to an acceptable level.
+3.2 Ethical conflicts and reporting unethical behaviour
+Learners need to understand:
+3.2.1 how ethical conflicts arise
+3.2.2 how to determine whether behaviour is ethical or unethical
+3.2.3 key organisational values and compliance with regulations:
+- being transparent with customers and suppliers
+- reporting financial and regulatory information clearly and on time
+- whether to accept and give gifts and hospitality
+- paying suppliers a fair price and on time
+- providing fair treatment, decent wages and good working conditions to
+employees
+- use of social media
+3.2.4 the stages in the process for ethical conflict resolution when a situation presents a
+conflict in application of the fundamental principles
+
+-- 35 of 108 --
+
+Business Awareness 39
+3.2.5 what happens when a course of action is unethical:
+- when disciplinary action by the relevant professional accountancy body may
+be brought against the accountant for misconduct, and the possible penalties
+that can arise
+- when internal disciplinary procedures may be brought against the accountant
+by the employer for unethical or illegal behaviour
+3.2.6 the link between lack of professional competence and due care and claims for
+breach of contract and professional negligence
+3.2.7 the requirement for professional indemnity insurance
+3.2.8 when and how to report unethical behaviour to responsible persons at work,
+including:
+- when it is appropriate to report that a breach of the ethical code has taken
+place
+- report in line with formal internal whistle-blowing or ‘speak-out’ procedures that
+may be available for reporting unethical behaviour
+- seek advice confidentially from relevant managers or helplines as appropriate
+- circumstances when there may be public interest disclosure protection
+available under statute for blowing the whistle externally in the public interest
+in relation to certain illegal or unethical acts by the employer
+- seeking third-party advice before blowing the whistle externally.
+3.3 Money laundering
+Learners need to understand:
+3.3.1 money laundering law and regulations:
+- the process of money laundering (layering, placement, integration)
+- the consequences for an accountant of failing to act appropriately in response
+to money laundering, including the potential for the offences of ‘tipping off’ and
+‘failure to disclose’
+- the consequences for any person of ‘prejudicing an investigation’
+- the nature of the protection given to accountants by protected disclosures and
+authorised disclosures under money laundering law and regulations
+- all accountants will be regulated by their professional body or by HMRC
+3.3.2 the importance of reporting suspected money laundering in accordance with
+regulations:
+- select the information that should be reported by an accountant making a
+required disclosure in either an internal report or a suspicious activity report
+regarding suspicions about money laundering
+- timescales for disclosure of suspected money laundering.
+
+-- 36 of 108 --
+
+Business Awareness 40
+4. Understand the impact of new technologies in accounting and the risks associated
+with data security
+4.1 Technology
+Learners need to understand:
+4.1.1 the impact of emerging and developing technologies on accounting systems:
+- automation of processes
+- AI and machine learning
+- blockchain
+- electronic filing of documents
+- electronic signing of documents
+- data analytics
+4.1.2 how technological developments have increased outsourcing and offshoring,
+which has impacted business development:
+- cost structure
+- markets
+- locations
+4.1.3 the effect of automation and AI in accounting systems on the role of the
+accountant and the finance function
+4.1.4 the key features of cloud accounting:
+- access to data and information from anywhere
+- remote data storage so no backup by the business is required
+- automation capabilities
+- availability of apps/plug-ins/add-ins
+- interactions with stakeholders
+- real-time data
+4.1.5 benefits and limitations of cloud accounting for an organisation.
+4.2 Data protection, information-security and cybersecurity
+Learners need to understand:
+4.2.1 the principles of data protection:
+- lawfulness, fairness and transparency
+- purpose limitation
+- data minimisation
+- accuracy
+- storage limitation
+- integrity and confidentiality (security)
+- accountability
+4.2.2 the impact of data protection breaches on the individual and business
+4.2.3 the importance of maintaining information security:
+- accounting systems access levels
+- security controls, i.e. firewalls
+- integrity controls (input, processing and output controls)
+4.2.4 the importance of cybersecurity to address cyber risks
+4.2.5 the risks to data and operations posed by cyberattacks.
+
+-- 37 of 108 --
+
+Business Awareness 41
+5. Communicate information to stakeholders
+5.1 Information requirements in a business organisation
+Learners need to understand:
+5.1.1 the attributes of good quality information
+5.1.2 the type, purpose and characteristics of information at operational, managerial
+and corporate/strategic levels within an organisation
+5.1.3 the characteristics of big data:
+- value
+- variety
+- velocity
+- veracity
+- volume
+5.1.4 the benefits and limitations of the use of big data
+5.1.5 the sources of internal and external big data
+5.1.6 the need to apply professional scepticism in relation to big data
+5.1.7 the use of data analytics from external sources.
+5.2 Visualising information
+Learners need to understand:
+5.2.1 the importance of being able to
+visualise information in different
+formats:
+- images
+- charts
+- diagrams
+- tables
+- matrices
+- graphs
+5.2.2 patterns or significant anomalies
+within data
+5.2.3 the importance of choosing the
+most appropriate forms of
+visualised data for communication
+purposes
+5.2.4 that accounting software packages
+use dashboards to communicate to
+non-technical stakeholders.
+Learners need to be able to:
+5.2.5 interpret visual information to
+indicate relationships and trends.
+5.3 Communicating information
+Learners need to understand:
+5.3.1 the principles used to determine the appropriate method of communication to use
+both internally and externally by the business
+5.3.2 the characteristics of professional communication:
+- meeting different stakeholder requirements
+- use of appropriate communication medium for desired outcome
+- importance of communicating valid information
+- importance of confidentiality.
+
+-- 38 of 108 --
+
+Business Awareness 42
+Delivering this unit
+When delivering this unit, tutors could refer to a range of organisations of differing types and
+sizes. This will enhance students’ understanding of how the finance function supports the other
+functions and inputs into the short-, medium- and long-term decision making at all levels in an
+organisation. The structure of the business will have an impact on how it is controlled and how
+the processes and reporting in a business will interact. Through use of different examples,
+students will gain an awareness of the differences between tall and flat organisations and the
+impact that this has on the span of control.
+Students need to know the different business types and the differences in regulatory and legal
+requirements of these business types. Service industries have increased, and students should
+appreciate the characteristics and challenges of these business and how the processes and
+activities differ from manufacturing business. They should also understand the regulatory
+requirements for the different business types, including partnerships. Students should be able
+to identify who the stakeholders are and the interest they have on the business as well as what
+they want from the business. Through case studies, or real business examples, students can
+identify stakeholders, their needs and their expectations and consider their power over and
+influence on the business.
+Throughout the delivery of topic areas associated with external and internal business
+environments, students could apply PESTLE analysis to known organisations, either as part of
+a project or as group work. Students could explore how the analysis can be used by
+businesses to gain an understanding of threats and opportunities that exist in the macro-
+economic environment, as well as understanding what political, economic, social, technological
+and environmental factors are and how changes may impact on performance and decisions.
+When learning about the micro-economic environment, students should understand the
+relationship between supply and demand and the effect of changes in price, including what is
+meant by price elasticity of demand and how the level of competition in the environment is
+influenced.
+Ethics is fundamental to everyone working in accounting and finance, and it is key to have a
+thorough understanding of the principles and how to apply them to practical situations.
+Throughout the delivery of associated topic areas, tutors can help to prepare students by
+providing practical examples and opportunities to apply to ethical situations, so that students
+can identify the issues and the courses of action to be taken. They should appreciate the
+importance of personal and organisational values, culture, policies and code of ethics in acting
+ethically. They will need a sound understanding of the legal and regulatory frameworks that
+provide safeguards to the ethical principles, and when and how they should report unethical
+behaviours.
+There have been changes in the industry as new technologies have been developed, which
+have changed the nature of accounting and the role of the accountant. It is therefore important
+for students to understand what technologies are used, the processes or activities for which
+they are used and the impact they have on the work undertaken by the accountant/finance
+function. Students should understand key features of blockchain, machine learning and AI, and
+the impact that these have on the processing of transactions, the available data, and the speed
+and complexity of reporting. Cloud accounting and electronic filing is increasing used by the
+industry, and students should know what these are as well as their key features, how they work
+in real time (such as bank feeds), the benefits they offer and the opportunities for add-
+ons/apps/plug-ins to undertake specific processes, activities or reports. As well as
+digitalisation, it is important to appreciate the risks posed to data, and students should have a
+
+-- 39 of 108 --
+
+Business Awareness 43
+basic understanding of the risks of cyberattack and how data can be protected. Showing
+examples of these or providing the opportunity to use cloud software would aid students’
+understanding.
+Students need to understand how to provide information in different formats and are
+encouraged to practice interpreting and communicating financial information by visualising
+data, such as by using graphs, images and diagrams. Students should be prepared to
+communicate information as well as understand the most appropriate method for specific
+audiences. Students need to know what big data is, where it can come from and the benefits
+that it can provide to organisations. Students should also be aware of the number of risks that
+are associated with big data and the need to use big data with caution in some cases.
+Links with other units
+This unit links with:
+• Level 2 The Business Environment
+• Level 3 Financial Accounting: Preparing Financial Statements
+• Level 3 Management Accounting Techniques
+• Level 3 Tax Processes for Businesses
+• Level 4 Applied Management Accounting.
+
+-- 40 of 108 --
+
+Business Awareness 44
+Test specification for Business Awareness unit assessment
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation that will
+apply to assessments. Details can be accessed at
+aat.org.uk/deliver/qualifications/specifications-outlines
+Assessment method Marking type Duration of assessment
+Computer based
+assessment
+Partially computer/
+partially human
+marked
+2 hours 30 minutes
+Learning outcomes Weighting
+1. Understand business types, structures and governance, and the legal
+framework in which they operate
+25%
+2. Understand the impact of the external and internal environment on
+businesses, their performance and decisions
+20%
+3. Understand how businesses and accountants comply with principles of
+professional ethics
+20%
+4. Understand the impact of new technologies in accounting and the risks
+associated with data security
+15%
+5. Communicate information to stakeholders 20%
+Total 100%
+
+-- 41 of 108 --
+
+Financial Accounting: Preparing Financial Statements 45
+Financial Accounting: Preparing Financial Statements
+Unit
+level GLH value Unit reference
+number Assessment
+3 150 R/618/3580 Unit assessment
+Introduction
+This unit provides students with the skills required to produce statements of profit or loss and
+statements of financial position for sole traders and partnerships using a trial balance. In
+employment, students may be required to prepare a portion of, or all, the final accounts and
+this unit will give them the theoretical knowledge needed to complete that task. It will also allow
+them to understand how final accounts have been produced, either manually or automatically
+through use of accounting software.
+Students will gain the double-entry bookkeeping skills required to record financial transactions
+into an organisation’s accounts using a manual bookkeeping system. They will take this
+forward to carry out adjustments, ensuring that the accounts conform to the accruals basis of
+accounting. Students will understand depreciation, where the loss of value of a non-current
+asset during a period is reflected in the profit figure for that period. They will also learn to
+account for allowances for doubtful receivables where account is taken of the likelihood that
+not all credit customers will pay in full. These adjustments are regularly carried out by
+employers to ensure accounts give a more accurate view of both the profitability and the
+financial stability of the organisation.
+By developing an awareness of how the final accounts are used, and by whom, students will
+appreciate how to produce useful accounting records, sometimes from incomplete information.
+They will learn about the format of both the statement of profit or loss and the statement of
+financial position. Students will also learn how to use their double-entry bookkeeping skills to
+analyse and correct errors that have been made in the ledgers. Students will also be required
+to check the accuracy of the balances on key accounts within the accounting system by
+carrying out reconciliations with independent documents, such as bank statements. Accounting
+ratios to assess the profitability of sole traders will also be introduced, allowing students to
+interpret financial statements more effectively.
+The application of ethical principles is threaded throughout this unit. All work must be carried
+out with integrity, objectivity and a high degree of professional competence.
+
+-- 42 of 108 --
+
+Financial Accounting: Preparing Financial Statements 46
+Learning outcomes
+1. Understand the accounting principles underlying final accounts preparation
+2. Understand the principles of advanced double-entry bookkeeping
+3. Implement procedures for the acquisition and disposal of non-current assets
+4. Prepare and record depreciation calculations
+5. Record period end adjustments
+6. Produce and extend the trial balance
+7. Produce financial statements for sole traders and partnerships
+8. Interpret financial statements using profitability ratios
+9. Prepare accounting records from incomplete information
+
+-- 43 of 108 --
+
+Financial Accounting: Preparing Financial Statements 47
+Scope of content
+This section illustrates the depth and breadth of content to be delivered for this unit. All areas
+indicated in the table below must be covered in teaching.
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of
+content. Content assessed may change over time to ensure validity of assessment.
+1. Understand the accounting principles underlying final accounts preparation
+1.1 The primary users of final accounts
+Learners need to know:
+1.1.1 the primary users of final accounts:
+- existing and potential investors
+- lenders
+- other creditors
+1.1.2 how final accounts are used by the primary users.
+1.2 The framework of accounting underlying the preparation of final accounts
+Learners need to understand:
+1.2.1 the accounting principles:
+- accruals
+- going concern
+- business entity
+- materiality
+- consistency
+- prudence
+- money measurement.
+1.3 Qualities of useful financial information
+Learners need to know:
+1.3.1 the fundamental qualitative characteristics:
+- relevance representation
+- faithful representation
+1.3.2 the enhancing qualitative characteristics:
+- comparability
+- verifiability
+- timeliness
+- understandability
+1.3.3 the importance of ensuring financial statements are free from material misstatement
+1.3.4 the importance of the accountant’s fundamental ethical principles and professional
+scepticism when preparing financial statements for users.
+
+-- 44 of 108 --
+
+Financial Accounting: Preparing Financial Statements 48
+2. Understand the principles of advanced double-entry bookkeeping
+2.1 Use of the accounting equation
+Learners need to understand:
+2.1.1 the importance of the
+accounting equation for
+keeping accounting records
+2.1.2 the effect of accounting
+transactions on elements of the
+accounting equation:
+- capital
+- assets
+- liabilities.
+Learners need to be able to:
+2.1.3 calculate the different elements of the
+accounting equation:
+- capital
+- assets
+- liabilities.
+2.2 Classification of ledger accounts
+Learners need to know:
+2.2.1 the classification of general ledger accounts into:
+- assets: non-current (tangible, intangible) and current
+- liabilities: non-current and current
+- equity (capital)
+- income
+- expenses.
+2.3 Purpose and use of books of prime entry and ledger accounting
+Learners need to understand:
+2.3.1 the daybooks (books of prime
+entry): sales, sales returns,
+purchases, purchases returns,
+discounts allowed, discounts
+received, cash book and journal
+(including narratives)
+2.3.2 the information recorded in
+each type of daybook
+2.3.3 how daybooks are used to
+update ledger account records,
+including dealing with value
+added tax (VAT)
+2.3.4 the different ledgers and how
+they interact: the general ledger
+and the memorandum
+(subsidiary) ledgers
+(receivables ledger and
+payables ledger)
+2.3.5 control accounts:
+- receivables ledger
+- payables ledger
+- wages and salaries
+- VAT
+Learners need to be able to:
+2.3.7 prepare ledger accounts using double-
+entry principles.
+
+-- 45 of 108 --
+
+Financial Accounting: Preparing Financial Statements 49
+2.3.6 that accounting software
+automates the transfer of data
+into the control accounts.
+2.4 Carry out financial period end routines
+Learners need to understand:
+2.4.1 that at the end of the period
+accounts are balanced off
+differently depending on their
+classification in terms of
+income, expense, asset, liability
+or capital
+2.4.2 that accounting software
+automates the period end
+routine.
+Learners need be able to:
+2.4.3 verify general ledger balances by using
+relevant sources of information and
+performing reconciliations where
+appropriate: physical checks, inventory
+records, supplier and bank statements,
+receivables and payables ledgers
+(memorandum ledger accounts), non-
+current asset register
+2.4.4 transfer balances or carry down balances
+on ledger accounts as appropriate
+2.4.5 determine whether transactions are
+genuine and valid for inclusion in the
+organisation’s records.
+3. Implement procedures for the acquisition and disposal of non-current assets
+3.1 Importance of prior authority for capital expenditure
+Learners need to understand:
+3.1.1 why authorisation is necessary
+3.1.2 the appropriate person in an organisation to give authority.
+3.2 The importance of classifying expenditure into capital or revenue expenditure
+Learners need to understand:
+3.2.1 that International Financial
+Reporting Standards (IFRS)
+exist that are relevant to non-
+current assets (NCA): IAS 16
+3.2.2 the definitions of cost, useful
+life, residual value, depreciable
+amount, carrying amount
+3.2.3 which items can be included in
+the cost of NCA under the
+current IFRS (capital
+expenditure)
+3.2.4 that revenue expenditure
+should be excluded from the
+value of NCA
+3.2.5 the importance of only
+capitalising expenditure in
+excess of the level specified in
+the organisation’s policy
+3.2.6 the effect of capitalisation on
+the statement of profit or loss
+(SPL) and statement of
+financial position (SFP).
+Learners need to be able to:
+3.2.7 categorise items into revenue and capital
+expenditure for the purposes of accounting
+for non-current assets.
+
+-- 46 of 108 --
+
+Financial Accounting: Preparing Financial Statements 50
+3.3 Record acquisitions and disposals of non-current assets
+Learners need to understand:
+3.3.1 the purpose and content of the
+non-current asset register,
+including assisting physical
+verification and reconciling with
+general ledger entries and
+balances
+3.3.2 the meaning of any balance on
+the disposals account
+3.3.3 that part-exchange is a different
+form of funding to cash or credit
+3.3.4 that non-current asset registers
+can be part of accounting
+software or held independently
+on spreadsheets
+3.3.5 how gains and losses on
+disposal are treated at the
+period end.
+Learners need to be able to:
+3.3.6 update the non-current asset register for
+acquisitions and disposals
+3.3.7 record acquisitions and disposals in the
+general ledger (including part-exchanges)
+3.3.8 treat VAT according to the registration
+status of the acquiring organisation.
+Excluded: VAT treatment of part
+exchanges
+4. Prepare and record depreciation calculations
+4.1 Calculate depreciation
+Learners need to understand:
+4.1.1 that accounting for depreciation
+is an application of the accruals
+principle of accounting
+4.1.2 that the depreciable amount of
+the NCA should be allocated
+over the relevant period of its
+useful life
+4.1.3 that depreciation can be
+calculated automatically by
+accounting software or
+independently through
+spreadsheets then journaled-in.
+Learners need to be able to:
+4.1.4 calculate the depreciation charge for an
+asset, using the straight-line method of
+depreciation, according to organisational
+policy, in terms of:
+- using either a given percentage or the
+useful life calculation method
+- dealing with cases when a residual
+value is expected or where no residual
+value is expected
+- depreciating for a full year or pro-rata for
+part of a year
+4.1.5 calculate the depreciation charge for an
+asset, using the diminishing balance
+method of depreciation for a full year with a
+given percentage.
+4.2 Record depreciation
+Learners need to be able to:
+4.2.1 record depreciation in the:
+- non-current asset register
+- general ledger, including producing relevant journal entries
+4.2.2 reconcile the NCA register to the appropriate general ledger balances.
+
+-- 47 of 108 --
+
+Financial Accounting: Preparing Financial Statements 51
+5. Record period end adjustments
+5.1 Record accruals and prepayments of income and expenditure
+Learners need to understand:
+5.1.1 that adjustments for accruals
+and prepayments are an
+application of the accruals
+principle of accounting
+5.1.2 why there can be a difference
+between the amount paid or
+received during the period and
+the amount recognised in the
+statement of profit or loss for
+that period
+5.1.3 how adjustments for accruals
+and prepayments for the
+current period and the reversal
+of adjustments for the previous
+period affect ledger accounts
+5.1.4 that accrued and prepaid
+income and expense balances
+are recognised as either assets
+or liabilities
+5.1.5 that accounting software
+automates recurring entries
+including for accruals and
+prepayments.
+Learners need to be able to:
+5.1.6 calculate the amount of a prepayment or
+accrual adjustment to be made
+5.1.7 account for accruals and prepayments by
+making entries in the general ledger,
+including using the journal
+5.1.8 account for the reversal of accruals and
+prepayments from a previous period by
+making entries in the general ledger,
+including using the journal.
+5.2 Record irrecoverable debts and allowances for doubtful receivables
+Learners need to understand:
+5.2.1 that allowances for doubtful
+receivables are an application
+of the accruals principle of
+accounting
+5.2.2 the differences between
+irrecoverable debts, allowances
+for specific doubtful receivables
+and general allowances for
+doubtful receivables.
+Learners need to be able to:
+5.2.3 account for the writing-off of an
+irrecoverable debt and for the recovery of
+an irrecoverable debt previously written off
+in the ledgers
+5.2.4 calculate new allowances for doubtful
+receivables and adjustments to existing
+allowances for doubtful receivables in
+accordance with organisational policy
+5.2.5 use the journal to record irrecoverable
+debts and adjustments to allowances for
+doubtful receivables.
+
+-- 48 of 108 --
+
+Financial Accounting: Preparing Financial Statements 52
+5.3 Record inventory
+Learners need to understand:
+5.3.1 that accounting for inventory is
+an application of the accruals
+basis of accounting.
+5.3.2 the effect that changes in
+valuation of inventory have on
+profit/loss for a period
+5.3.3 that IFRS exist that are relevant
+to inventory valuation: IAS 2
+5.3.4 that inventory must be valued
+at the lower of cost and net
+realisable value (NRV) on an
+individual item basis
+5.3.5 which types of expenditure can
+be included in the valuation of
+inventory
+5.3.6 that accounting software
+automates the process of
+recording, tracking and valuing
+inventory.
+Learners need to be able to:
+5.3.7 determine the closing inventory figure in
+accordance with current accounting
+standards
+5.3.8 make entries in the journal to record the
+value of closing inventory.
+5.4 Considerations for recording period end adjustments
+Learners need to understand:
+5.4.1 that when making period end adjustments:
+- there is scope to significantly affect the reported results of the organisation
+- accounting software requires the user to enter dates accurately
+5.4.2 the need to apply professional scepticism, integrity and objectivity to prevent
+misleading and inaccurate information
+5.4.3 the effects of including misleading or inaccurate period end adjustments (non-
+compliance with regulations, misinformed decision making by users of the final
+accounts)
+5.4.4 how to respond appropriately to period end pressures:
+- time pressure
+- pressure to report favourable results
+- pressure from authority.
+
+-- 49 of 108 --
+
+Financial Accounting: Preparing Financial Statements 53
+6. Produce and extend the trial balance
+6.1 Prepare an initial trial balance
+Learners need to understand:
+6.1.1 that certain accounts can carry
+either a debit or a credit
+balance: VAT, disposals, bank,
+irrecoverable debts expense
+6.1.2 the importance of producing the
+trial balance to check for errors
+6.1.3 the limitations of the trial
+balance as a check for errors
+6.1.4 that accounting software
+completes the transfer of data
+into the trial balance.
+Learners need to be able to:
+6.1.5 transfer balances from ledger accounts, a
+list of balances or written data into the
+correct debit or credit columns of the initial
+trial balance
+6.1.6 correct errors that are not shown by the
+initial trial balance
+6.1.7 correct errors that are shown by the initial
+trial balance by the use and clearing of the
+suspense account.
+6.2 Prepare an adjusted trial balance
+Learners need to understand:
+6.2.1 that accounting software
+automatically recalculates
+balances after adjustments.
+Learners need to be able to:
+6.2.2 place the following adjustments correctly
+into the adjustments columns of the
+adjusted trial balance so that it balances:
+- closing inventory
+- accruals of income or expenses
+- prepayments of income or expenses
+- corrections of errors
+- depreciation
+- irrecoverable debts
+- allowances for doubtful receivables
+- disposals of NCA including part-
+exchange.
+6.3 Complete the extended trial balance (ETB)
+Learners need to understand:
+6.3.1 the importance of the fully
+extended trial balance for the
+preparation of financial
+statements
+6.3.2 the difference between entries
+in the ETB for sole traders and
+partnerships.
+Learners need to be able to:
+6.3.3 complete the SPL and SFP columns of the
+ETB, for sole traders, by extending figures:
+- from the ledger balances and
+adjustments columns of the adjusted
+trial balance
+- to the relevant SPL and SFP columns
+6.3.4 balance off the ETB, for sole traders, by
+calculating the profit/loss figure and
+entering it into the relevant SPL and SFP
+columns.
+Excluded: completion of the ETB for
+partnerships.
+
+-- 50 of 108 --
+
+Financial Accounting: Preparing Financial Statements 54
+7. Produce financial statements for sole traders and partnerships
+7.1 Prepare financial statements for sole traders
+Learners need to understand:
+7.1.1 the purpose of SPLs
+7.1.2 the purpose of SFPs
+7.1.3 how the financial statements
+are linked to the accounting
+equation
+7.1.4 how the SPL and SFP are
+related
+7.1.5 terminology:
+- sales revenue = sales –
+sales returns
+- net purchases = purchases –
+purchases returns + carriage
+inwards
+- cost of sales = opening
+inventory + net purchases –
+closing inventory.
+Learners need to be able to:
+7.1.6 prepare SPLs
+7.1.7 prepare SFPs using the net assets
+presentation.
+7.2 Opening and closing capital for sole traders
+Learners need to understand:
+7.2.1 the reasons for movements in
+the capital balance during a
+period.
+Learners need to be able to:
+7.2.2 account for drawings of cash, goods and
+services, capital injections and profits or
+losses during a period in order to complete
+the capital account.
+7.3 Produce the SPL for partnerships
+Learners need to understand:
+7.3.1 why the difference between the
+SPL for a partnership and for a
+sole trader is the appropriation
+account
+7.3.2 the purpose and content of the
+partnership appropriation
+account
+7.3.3 how the SPL is linked to the
+partnership appropriation
+account.
+Learners need to be able to:
+7.3.4 prepare an appropriation account:
+- interest on capital (calculation not
+required)
+- interest on drawings (calculation not
+required)
+- salaries or commission paid to partners
+7.3.5 calculate each partner’s share of any
+residual profit/loss according to the profit-
+sharing ratio
+7.3.6 prepare a partnership’s SPL.
+7.4 Produce the SFP for partnerships
+Learners need to understand:
+7.4.1 why the difference between the
+SFP for a partnership and for a
+sole trader is the partners’
+capital and current accounts
+7.4.2 the difference between the
+partners’ current accounts and
+the appropriation account
+7.4.3 the difference between the
+partners’ current accounts and
+the partners’ capital account.
+Learners need to be able to:
+7.4.4 account for drawings in the form of cash,
+goods or services
+7.4.5 prepare partners’ current accounts:
+- interest on capital (calculation not
+required)
+- interest on drawings (calculation not
+required)
+- salaries or commission paid to partners
+
+-- 51 of 108 --
+
+Financial Accounting: Preparing Financial Statements 55
+- drawings
+7.4.6 prepare a partnership’s SFP using the net
+assets presentation.
+8. Interpret financial statements using profitability ratios
+8.1 Calculate profitability ratios
+Learners need to understand:
+8.1.1 the relationship between the
+SPL and SFP regarding net
+profit
+8.1.2 the link between gross profit
+margin and mark-up
+8.1.3 the meaning of profitability
+ratios.
+Learners need to be able to:
+8.1.4 calculate the following profitability ratios to
+assist with interpretation of the financial
+statements:
+- ROCE (return on capital employed):
+formula used = profit for the year /
+capital employed × 100 (where capital
+employed = capital + non-current
+liabilities)
+- gross profit margin: formula used =
+gross profit / sales revenue × 100
+- net profit margin: formula used = profit
+for the year / sales revenue × 100
+- expense/sales revenue percentage
+(specified expense including cost of
+sales as a % of sales revenue): formula
+used = specified expense / sales
+revenue × 100).
+8.2 The interpretation of profitability ratios
+Learners need to understand:
+8.2.1 why calculating ratios can aid planning, decision making and control for businesses
+8.2.2 factors that may cause changes in a business’s ratios and differences between
+businesses’ ratios
+8.2.3 whether a ratio is better or worse than a comparative ratio; comparisons can be
+made with:
+- a different organisation
+- a different time period
+- an industry standard
+8.2.4 the importance of professional scepticism to the interpretation of financial
+information.
+
+-- 52 of 108 --
+
+Financial Accounting: Preparing Financial Statements 56
+9. Prepare accounting records from incomplete information
+9.1 Identify missing figures
+Learners need to be able to:
+9.1.1 calculate missing figures relating to income, expenses, assets, liabilities and capital
+by:
+- selecting relevant data
+- using daybooks
+- using the cash book
+- reconstructing ledger accounts: receivables and payables ledger control
+accounts, VAT control account and the bank account
+- calculating and labelling the missing figures of reconstructed accounts
+- calculating opening and closing balances
+- adjusting for VAT.
+9.2 Mark-up and margin
+Learners need to understand:
+9.2.1 the difference between margin
+and mark-up.
+Learners need to be able to:
+9.2.2 calculate margin and mark-up to determine
+missing figures
+9.2.3 use cost of sales calculations to determine
+missing figures.
+9.3 Reasonableness of figures when information is incomplete
+Learners need to understand:
+9.3.1 whether a given figure is reasonable
+9.3.2 why an actual balance and a calculated balance can be different
+9.3.3 the importance of checking information produced by accounting software for
+accuracy
+9.3.4 when and how to apply professional scepticism.
+
+-- 53 of 108 --
+
+Financial Accounting: Preparing Financial Statements 57
+Delivering this unit
+When delivering the accounting principles underlying final accounts preparation, different
+scenarios about what might happen if there were no accounting rules could be explored. Tutors
+could use online videos detailing accounting scandals to highlight the repercussions if the rules
+are not followed. Students could be encouraged to read articles detailing current events
+involving accounting, either from news sources or journals. Students could also evaluate
+financial information in terms of the qualitative characteristics of useful information.
+In relation to the principles of advanced double-entry bookkeeping, the accounting equation is at
+the heart of bookkeeping. Students could be encouraged to list items they would purchase when
+setting up a new venture, including buildings, fixtures and fittings. The effect of each these on
+the accounting equation could be tracked, leading to a discussion about double-entry. In order to
+understand the links between different aspects of bookkeeping, training providers could acquire
+or produce invoices and credit notes and use these to populate daybooks and the ledger
+accounts. This would lead to a simple trial balance. Tutors could demonstrate how invoices and
+credit notes are entered into accounting software and how these update the trial balance, in
+contrast to the manual system which uses daybooks. Bank reconciliations can be taught using
+students’ personal experience of looking at their bank statement. A discussion as to why the
+bank statement shows a credit balance when there is money in the account is a good way of
+enforcing the difference between assets and liabilities.
+Implementing procedures for the acquisition and disposal of non-current assets could be taught
+through the use of case studies, based on actual cases where non-current assets have been
+acquired or disposed of.
+When preparing and recording depreciation calculations, students could be tasked with
+researching prices of an assets, such as cars that are the same model but different ages. The
+effect of methods of depreciation on profit and asset values could then be demonstrated. By
+preparing accounts over the lifetime of an asset, both writing it off in the year of purchases and
+then depreciating it, students could discover the effect of depreciation in giving a true and fair
+view of the state of the organisation.
+Accruals and prepayments could be illustrated with simulated invoices by reference to real
+examples within the training provider or employer. To support delivery of recording period end
+adjustments, a local employer could be invited to talk about inventory and how it is tracked and
+valued. They could be asked to set questions based on real-life examples of how their inventory
+is managed. This could be supplemented by practical examples of situations where the NRV of
+the inventory falls to below the cost, for example if inventory is damaged or, in the case of
+perishable goods, gets towards its sell-by date.
+When preparing an initial trial balance, error correction could be demonstrated practically by
+making the errors and looking at the effect on the trial balance using spreadsheets. Errors could
+then be corrected and the effect of correcting the error could be investigated in the same way. A
+demonstration of the types of errors that could be made on accounting software as opposed to a
+manual system could also take place as part of this learning outcome.
+Students could research some real partnerships online, such as large accounting companies,
+and look at the final accounts, particularly the SFP. Representatives from local partnerships,
+such as accountancy firms, could also talk through the format of their accounts. Students could
+research the ethics statements which organisations include in their final accounts or publish
+elsewhere.
+
+-- 54 of 108 --
+
+Financial Accounting: Preparing Financial Statements 58
+When interpreting financial statements, students could study simplified accounts and be asked
+to judge which one to invest in in terms of profitability, prior to calculating the ratios. Following
+the study of profitability ratios, this exercise could be repeated and students asked to judge
+again. A comparison could be made with their previous decision. Using well-known
+organisations, a comparison could also be made of these ratios over time, with students invited
+to suggest reasons for the changes in the ratio. Students could be asked to discuss what other
+factors should be used when comparing organisations.
+Links with other units
+This unit links with:
+• Level 2 Introduction to Bookkeeping
+• Level 2 Principles of Bookkeeping Controls
+• Level 3 Business Awareness
+• Level 3 Tax Processes for Businesses
+• Level 4 Drafting and Interpreting Financial Statements.
+
+-- 55 of 108 --
+
+Financial Accounting: Preparing Financial Statements 59
+Test specification for Financial Accounting: Preparing Financial Statements unit
+assessment
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation that will
+apply to assessments. Details can be accessed at
+https://www.aat.org.uk/deliver/qualifications/specifications-outlines
+Assessment method Marking type Duration of assessment
+Computer based
+assessment
+Computer marked 2 hours 30 minutes
+Learning outcomes Weighting
+1. Understand the accounting principles underlying final accounts preparation 5%
+2. Understand the principles of advanced double-entry bookkeeping 10%
+3. Implement procedures for the acquisition and disposal of non-current
+assets 10%
+4. Prepare and record depreciation calculations 10%
+5. Record period end adjustments 10%
+6. Produce and extend the trial balance 15%
+7. Produce financial statements for sole traders and partnerships 20%
+8. Interpret financial statements using profitability ratios 10%
+9. Prepare accounting records from incomplete information 10%
+Total 100%
+
+-- 56 of 108 --
+
+Management Accounting Techniques 60
+Management Accounting Techniques
+Unit
+level GLH value Unit reference
+number Assessment
+3 120 D/618/3582 Unit assessment
+Introduction
+This unit provides students with the knowledge and skills needed to understand the role of
+management accounting in an organisation, and how organisations use such information to aid
+decision making.
+Students will learn the principles that underpin management accounting methodology and
+techniques, how costs are handled in organisations, and why organisations treat costs in
+different ways. Students will be able to recognise different approaches to management
+accounting and provide informed and reasoned judgements to guide management. They will
+also learn how to apply these principles and appreciate why effective management accounting
+is crucial to any organisation.
+Students will learn the techniques required for dealing with direct costs and revenues, and with
+the treatment of short-term overhead costs. They will also learn the techniques required for
+decision making, using estimates of costs, revenues and cashflow. Students will learn to carry
+out procedures as they would in a real-world organisation’s finance function including:
+undertaking budgetary overhead apportionments and producing recovery rates, carrying out
+basic variance and cost-volume-profit (CVP) analysis, calculating changes in forecast unit
+costs and profits, calculating working capital measures, producing simple budgets, monitoring
+cash flow and reporting accounting information.
+Students will be required to use spreadsheets when making calculations, manipulating and
+analysing data, reporting, and forecasting. Skills such as the use of formulas, functions, data
+analysis tools, sorting and filtering will be vital within accountancy to enable students to
+perform complex calculations quickly and accurately. After analysis, the data needs to be
+comprehensively checked and then presented using a range of methods, for example as a
+structured spreadsheet with pivot tables and charts.
+The application of ethical principles is threaded throughout this unit. All work must be carried
+out with integrity, objectivity and a high degree of professional competence.
+
+-- 57 of 108 --
+
+Management Accounting Techniques 61
+Learning outcomes
+1. Understand the purpose and use of management accounting within organisations
+2. Use techniques required for dealing with costs
+3. Attribute costs according to organisational requirements
+4. Investigate deviations from budgets
+5. Use spreadsheet techniques to provide management accounting information
+6. Use management accounting techniques to support short-term decision making
+7. Understand principles of cash management
+
+-- 58 of 108 --
+
+Management Accounting Techniques 62
+Scope of content
+This section illustrates the depth and breadth of content to be delivered for this unit. All areas
+indicated in the table below must be covered in teaching.
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of
+content. Content assessed may change over time to ensure validity of assessment.
+1. Understand the purpose and use of management accounting within organisations
+1.1 Internal reporting calculations
+Learners need to know:
+1.1.1 the purpose of costing, budgeting
+and internal reporting
+1.1.2 the importance of providing
+accurate information to
+management for the purposes of
+planning, control and decision-
+making.
+Learners need to be able to:
+1.1.3 calculate revenue, costs, contribution
+and reported profits for an
+organisation
+1.1.4 calculate segmented revenue, costs,
+contribution and reported profits by
+product.
+1.2 Differences between marginal and absorption costing
+Learners need to understand:
+1.2.1 the difference between product
+and period costs:
+- some period costs are carried
+forward in the value of closing
+inventory under absorption
+costing
+- in marginal costing only variable
+costs are included in inventory
+and period costs are written off
+in full
+1.2.2 the differences between costing
+techniques:
+- marginal costing
+- absorption costing
+1.2.3 the impact on reported
+performance of marginal versus
+full absorption costing in both the
+short run and the long run
+1.2.4 when each technique is
+appropriate.
+Learners need to be able to:
+1.2.5 calculate:
+- prime cost
+- marginal cost
+- full absorption cost.
+
+-- 59 of 108 --
+
+Management Accounting Techniques 63
+2 Use techniques required for dealing with costs
+2.1 Record and calculate materials, labour and overhead costs
+Learners need to be able to:
+2.1.1 use appropriate data and information from both manual records and software
+packages to:
+- prepare and interpret inventory records for materials, work-in-progress and
+finished goods
+- calculate materials and labour costs
+- account for overheads
+- calculate cost per equivalent unit of finished production.
+2.2 Prepare cost accounting journals
+Learners need to understand:
+2.2.1 principles of cost accounting
+journal entries for:
+- direct materials or indirect
+materials
+- direct or indirect labour
+- overheads costs.
+Learners need to be able to:
+2.2.2 prepare cost accounting journals for:
+- materials
+- labour
+- overheads.
+2.3 Apply inventory control methods
+Learners need to be able to:
+2.3.1 calculate inventory control and valuation measures:
+- inventory buffers, lead times, minimum/maximum order quantities
+▪ buffer inventory = re-order level - (average usage x average lead time)
+▪ re-order level = (average usage x average lead time) + buffer
+inventory
+Note: students will be provided with either buffer inventory or re-order level
+values when completing calculations.
+▪ maximum inventory level = buffer inventory + maximum re-order
+quantity
+▪ maximum re-order quantity = maximum inventory level – buffer
+inventory
+Note: students will be provided with either maximum inventory level or
+maximum re-order quantity values when completing calculations.
+▪ minimum re-order quantity = average usage x average lead time
+- economic order quantity (EOQ)
+▪ = √((2 x annual usage x ordering cost ) ÷ inventory holding cost)
+- compliance with inventory control policies
+- the effect on reported profits of choice of method
+2.3.2 account for inventories using first-in-first-out (FIFO) and average cost (AVCO)
+methods
+2.3.3 analyse closing inventory balances.
+
+-- 60 of 108 --
+
+Management Accounting Techniques 64
+2.4 Cost behaviours
+Learners need to understand:
+2.4.1 the implications of different cost
+behaviours for cost analysis,
+decision making and reporting:
+- fixed
+- variable
+- semi-variable
+- stepped.
+Learners need to be able to:
+2.4.2 use the high-low method to separate
+fixed and variable cost elements of
+semi-variable costs.
+2.5 Differences between costing systems
+Learners need to understand:
+2.5.1 the appropriate choice of costing
+system for different business
+sectors and individual
+organisations
+2.5.2 the effect of waste on costing
+inputs and outputs.
+Learners need to be able to:
+2.5.3 record cost information, using
+different costing systems:
+- job costing
+- batch costing
+- unit costing
+- service costing.
+3 Attribute costs according to organisational requirements
+3.1 Calculate and attribute overhead costs using traditional methods
+Learners need to know:
+3.1.1 different methods of indirect cost
+recovery:
+- apportionment
+- allocation.
+Learners need to be able to:
+3.1.2 attribute overhead costs to production
+and service cost centres:
+- apportionment versus allocation
+- direct method
+- step-down method.
+3.2 Calculate overhead recovery rates using traditional methods
+Learners need to be able to:
+3.2.1 calculate overhead recovery rates in accordance with suitable bases of absorption:
+- for a manufacturer: machine hours or direct labour hours
+- for a service business: suitable basis for the specific business.
+3.3 Calculate overhead recovery rates using activity-based costing
+Learners need to know:
+3.3.1 the concept of activity-based
+costing:
+- appropriate cost drivers
+- use of cost pools.
+Learners need to be able to:
+3.3.2 calculate overhead recovery rates
+using appropriate cost drivers.
+
+-- 61 of 108 --
+
+Management Accounting Techniques 65
+3.4 Under- or over-recovery of overheads
+Learners need to understand:
+3.4.1 how to account for under- or over-recovered overhead costs in accordance with
+established procedures:
+- making under- or over-absorption calculations
+- interpreting the significance of under- or over-recoveries of overhead costs on
+unit costs and total profit.
+4 Investigate deviations from budgets
+4.1 Principles of standard prices/costs and budgeting
+Learners need to understand:
+4.1.1 a product’s standard price and
+standard cost
+4.1.2 how standard prices and costs
+can be used to develop budgets
+4.1.3 different types of budget:
+- fixed
+- flexed
+- rolling
+4.1.4 how operating statements are
+used to compare budgeted
+volume and standard
+revenue/cost versus actual
+performance.
+Learners need to be able to:
+4.1.5 prepare budgets for multi-product
+organisations:
+- revenue
+- materials
+- labour
+- variable overheads
+- fixed overheads
+- non-manufacturing overheads
+4.1.6 flex fixed budgets for actual volume.
+4.2 Calculate variances
+Learners need to be able to:
+4.2.1 recognise variances as being either favourable or adverse
+4.2.2 calculate variances using flexed budgets
+4.2.3 compare flexed budget versus actual costs and revenues to calculate:
+- sales price variance (total)
+- raw material variance (total)
+- labour variance (total)
+- variable overhead variance (total)
+- fixed production variance (total).
+4.3 Analyse and investigate variances
+Learners need to be able to:
+4.3.1 determine the cause and effects of revenue and cost variances
+4.3.2 recognise significant variances for investigation
+4.3.3 report on remedial action to address adverse variances.
+
+-- 62 of 108 --
+
+Management Accounting Techniques 66
+5. Use spreadsheet techniques to provide management accounting information
+5.1 Organise, record and format data
+Learners need to be able to:
+5.1.1 organise data:
+- design spreadsheets to support:
+▪ flexing budgets
+▪ the calculation and analysis of variances
+▪ production of operating statements
+▪ overhead absorption and allocation
+▪ short-term decision making
+▪ cash budgeting
+5.1.2 ensure data is valid and reliable:
+- select data from different sources
+- enter data manually into appropriate cells and worksheets
+- link data from different sources within the same worksheet/across different
+worksheets:
+▪ copying and pasting special values
+▪ linking
+- remove duplications in data
+5.1.3 format data:
+- formatting cells:
+▪ advanced formatting i.e. data manipulation, data security, data statistics
+▪ decimals, whole numbers, thousand separator, %
+▪ currency, accountancy, general, number
+▪ show adverse/negative figures with ( ) or –
+- produce/format/adjust charts and graphs:
+▪ chart production: 3D, exploded, bar, column, pie, line
+▪ changing chart type
+- chart labelling:
+▪ axis scale
+▪ titles
+▪ legend
+▪ data tables.
+
+-- 63 of 108 --
+
+Management Accounting Techniques 67
+5.2 Use tools to manipulate, analyse and verify data
+Learners need to be able to:
+5.2.1 use a range of formulas and functions to perform calculations:
+- mathematical and logical functions using absolute and relative cell
+referencing:
+▪ sum
+▪ average
+▪ minimum
+▪ maximum
+▪ round
+▪ roundup
+▪ rounddown
+▪ sumif
+▪ count
+▪ counta
+▪ countif
+▪ IF (simple and nested)
+▪ VLOOKUP
+▪ HLOOKUP
+▪ days
+- statistical techniques:
+▪ goal seek
+▪ forecast
+5.2.2 use tools to support analysis of data:
+- data sort/data filter using single and/or multiple criteria
+- conditional formatting (using function)
+- lookup tables:
+▪ pivot tables
+▪ pivot charts
+- subtotals:
+▪ average
+▪ sum
+▪ maximum
+▪ minimum
+- comments box:
+▪ show
+▪ hide
+5.2.3 edit and update data:
+- include new data (worksheet/chart)
+- consider if any new data is included in any existing analysis/existing charts
+5.2.4 verify accuracy of data by using formula auditing tools:
+- trace precedents
+- trace dependents
+- show formulas.
+
+-- 64 of 108 --
+
+Management Accounting Techniques 68
+5.3 Use tools to prepare, protect and present accounting information
+Learners need to be able to:
+5.3.1 protect integrity of data:
+- use data validation to restrict data entry and editing
+- protect individual and ranges of cells
+5.3.2 enhance the visual presentation of data:
+- insert/edit headers and footers
+- hide/unhide rows/columns
+- format columns and rows to enhance understanding of data: font type, font
+colour, size, bold, italics, alignment
+- freezing rows and columns
+- adjust margins, orientation and print area
+- use a range of charts to summarise and present information
+- chart alteration: moving and resizing, changing chart type, in stacked, 3D,
+exploded formats
+- changing data series: chart colour/format, add/change cell fill colour
+- format charts: altering and formatting scales, axes, labels, data series, data
+tables.
+6. Use management accounting techniques to support short-term decision making
+6.1 Estimate and use short-term future revenue and costs
+Learners need to understand:
+6.1.1 the concept of contribution, i.e.
+revenue minus variable costs.
+Learners need to be able to:
+6.1.2 use estimates of relevant future
+revenue and costs
+6.1.3 use cost-volume-profit (CVP) analysis
+(both by calculation and by linear
+break-even chart) to calculate:
+- break-even analysis
+- margin of safety and margin of
+safety percentage
+- target profit
+- profit-volume ratio
+6.1.4 interpret and report on CVP analysis.
+6.2 Examine the effects of changing activity levels
+Learners need to understand:
+6.2.1 the effect of changing activity
+levels on unit revenue, costs and
+profits.
+Learners need to be able to:
+6.2.2 calculate changes in forecast unit
+revenue, costs and profits.
+
+-- 65 of 108 --
+
+Management Accounting Techniques 69
+7. Understand principles of cash management
+7.1 Principles of cash budgeting
+Learners need to understand:
+7.1.1 the key differences between cash
+and profit
+7.1.2 principles of forecasting cash
+receipts and payments for:
+- sales, purchases and
+production
+- the acquisition and disposal of
+non-current assets
+- accounts receivable and
+payable
+- capital/new loans, repayment
+of loans and drawings
+7.1.3 the funding methods available for
+the acquisition of non-current
+assets:
+- cash
+- part-exchange
+- borrowing – loans, hire
+purchase
+7.1.4 the suitability of each funding
+method for the acquisition of non-
+current assets
+7.1.5 the importance of liquidity and
+use of resources ratios
+7.1.6 the working capital cycle.
+Learners need to be able to:
+7.1.7 produce cash budgets
+7.1.8 calculate working capital using
+resources ratios:
+- inventory holding period (days) =
+inventories / cost of sales × 365
+- trade receivables collection period
+(days) = trade receivables /
+revenue × 365
+- trade payables payment period
+(days) = trade payables / cost of
+sales × 365
+- working capital cycle (days) =
+inventory days + receivable days –
+payable days.
+7.2 Improving cash flow
+Learners need to understand:
+7.2.1 the importance of liquidity for businesses’ survival
+7.2.2 the actions that can be taken if insufficient liquidity:
+- raise additional finance from owners in the form of capital
+- raise additional finance externally in the form of debt
+7.2.3 other methods of improving cash flow:
+- chase receivables
+- delay supplier payments
+- offer prompt payment discounts (PPD)
+- dispose of non-current assets
+- reduce inventory
+7.2.4 how accounting software and the use of automation and visualisation can aid
+cash flow planning.
+
+-- 66 of 108 --
+
+Management Accounting Techniques 70
+Delivering this unit
+Tutors can facilitate students’ understanding of why particular costing methods are used by
+ensuring examples are relevant and current to the group of students involved. It would also be
+useful to highlight that students will encounter in their daily lives some elements of costing,
+whether simple or complex, used to determine the selling price of all products and services.
+For example, unit costing could be illustrated with products such as mobile phones or an article
+of clothing; job costing could be shown by referring to a quote from a tradesperson; inventory
+control could be illustrated by using products available in supermarkets; break-even could be
+showing using the example of a café or restaurant.
+By referring to and using examples from organisations of differing sizes, which could be real or
+simulated, tutors will be able to illustrate the importance of overhead recovery and the choice
+of costing methods. More complex methods may be required for larger organisations, and
+external speakers could be invited to explain to students why they use particular methods
+within their organisation.
+With regards to teaching budgets, tutors should revisit the fixed budget from Level 2 Principles
+of Costing. The principles learnt can be added to by introducing budgets for organisations with
+multiple products and flexed budgeting. Students should be encouraged to participate in
+discussions about the reasons for and consequences of variances, rather than learning
+standard answers.
+A starting point for teaching the principles of cash management is for students to review their
+own finances and bank statements and build a simple cash budget for their own income and
+expenses. The use of reports and examples from organisations can be used to explain the
+resources ratios, which will provide the underpinning knowledge for progressing to Level 4.
+The use of spreadsheets should be embedded throughout this unit. Tutors should place
+emphasis on budgets, operating statements, overhead absorption and allocation and short-
+term decision making, when teaching spreadsheet techniques, whilst ensuring that students
+fully understand the management accounting techniques applied.
+Links with other units
+This unit links with:
+• Level 2 Principles of Costing
+• Level 3 Business Awareness
+• Level 3 Financial Accounting: Preparing Financial Statements
+• Level 4 Applied Management Accounting.
+
+-- 67 of 108 --
+
+Management Accounting Techniques 71
+Test specification for Management Accounting Techniques unit assessment
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation that will
+apply to assessments. Details can be accessed at
+https://www.aat.org.uk/deliver/qualifications/specifications-outlines
+Assessment method Marking type Duration of assessment
+Computer based
+assessment
+Partially computer/
+partially human
+marked
+2 hours 30 minutes
+Learning outcomes Weighting
+1. Understand the purpose and use of management accounting within
+organisations
+10%
+2. Use techniques required for dealing with costs 15%
+3. Attribute costs according to organisational requirements 20%
+4. Investigate deviations from budgets 15%
+5. Use spreadsheet techniques to provide management accounting
+information
+15%
+6. Use management accounting techniques to support short-term decision
+making
+15%
+7. Understand principles of cash management 10%
+Total 100%
+
+-- 68 of 108 --
+
+Tax Processes for Businesses FA25 72
+Tax Processes for Businesses (FA2025)
+Unit
+level GLH value Unit reference
+number Assessment
+3 60 Y/618/3581 Unit assessment
+Introduction
+This unit explores tax processes that influence the daily operations of businesses and is
+designed to develop students’ skills in understanding, preparing, and submitting Value
+Added Tax (VAT) returns to HM Revenue and Customs (HMRC). The unit provides
+students with the knowledge and skills that are needed to keep businesses, employers and
+clients compliant with laws and practices that apply to VAT and payroll. Students will learn
+about legislation and the importance of maintaining their technical knowledge through
+monitoring updates.
+For VAT, students will understand the registration and deregistration rules and the rules
+relating to specialist VAT schemes. Students will be able to recognise different types of
+supplies and calculate VAT correctly, understanding the importance of the rules relating to
+the recovery of input tax and the sanctions and penalties for inaccuracies, omissions and
+failure to make submissions and payments within the correct timescales. Students will be
+able to verify the accuracy of calculations, invoices and tax points, and will learn about the
+correction of errors. When learning about the content of the VAT return, students will
+understand how to apply special rules when goods and services are imported and exported
+out of the UK and how to extract the appropriate data to complete VAT returns.
+In relation to payroll, students will understand the processes for businesses involved in
+calculating pay and deductions and the content of documents and reports produced on
+software, along with the timescales for submission and payment.
+The application of ethical principles is threaded throughout this unit. All work must be
+carried out with integrity, objectivity and a high degree of professional competence. There
+must be due care with regards to confidentiality about any personal data being processed
+and, from a business protection aspect, with the correct approach to professional
+behaviour. Students will understand how to communicate VAT and payroll matters to
+relevant individuals and organisations.
+The rules relating to Northern Ireland are not assessed in this unit.
+This unit is based on the Finance Act 2025 subject to assessment from 26 January
+2026.
+
+-- 69 of 108 --
+
+Tax Processes for Businesses FA25 73
+Learning outcomes
+1. Understand legislation requirements relating to VAT
+2. Calculate VAT
+3. Review and verify VAT returns
+4. Understand principles of payroll
+5. Report information within the organisation
+
+-- 70 of 108 --
+
+Tax Processes for Businesses FA25 74
+Scope of content
+This section illustrates the depth and breadth of content to be delivered for this unit. All
+areas indicated in the table below must be covered in teaching.
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of
+content. Content assessed may change over time to ensure validity of assessment.
+1. Understand legislation requirements relating to VAT
+1.1 UK tax law principles relating to VAT
+Learners need to understand:
+1.1.1 that HMRC is the relevant tax authority for VAT in the UK
+1.1.2 that VAT is a tax on consumer spending, charged on taxable supplies by taxable
+persons, including whether the tax charged falls on registered businesses or the
+end user
+1.1.3 the definitions of:
+- taxable supplies
+- standard-rated supplies
+- reduced-rated supplies
+- zero-rated supplies
+- exempt supplies
+- supplies outside the scope of VAT
+1.1.4 HMRC’s rules about:
+- what records should be kept
+- how long VAT records should be retained
+- how VAT record should be retained
+- penalties for failure to keep VAT records
+1.1.5 HMRC’s rights in respect of inspection of records and visits to registered
+businesses
+1.2 VAT registration and deregistration requirements
+Learners need to understand:
+1.2.1 the registration and deregistration thresholds for the normal VAT scheme and
+how to apply them
+1.2.2 what is meant by the historic turnover method (historic test) and the future
+turnover method, (future test) and how to comply with them in respect of
+registration.
+1.2.3 the circumstances:
+- in which voluntary registration may be beneficial to a business
+- for voluntary and compulsory deregistration.
+1.3 Filing and payment of VAT returns
+Learners need to understand:
+1.3.1 the timing and frequency of:
+- filing VAT returns under the normal scheme
+- payment/repayment of VAT under the normal scheme
+1.3.2 the circumstances in which monthly accounting may be beneficial to a business
+1.3.3 how statutory time limits for making payment differ depending on the payment
+method used
+1.3.4 that compatible software must be used and authorised for submitting VAT returns
+under Making Tax Digital (MTD).
+
+-- 71 of 108 --
+
+Tax Processes for Businesses FA25 75
+1.4 Special schemes
+Learners need to understand:
+1.4.1 the thresholds, qualification criteria and operation of the special VAT schemes:
+- annual accounting scheme
+- cash accounting scheme
+- flat rate scheme
+1.4.2 the timing and frequency of:
+- filing VAT returns
+- payment/repayment of VAT
+1.4.3 the circumstances for voluntary and compulsory withdrawal from special
+schemes.
+1.5 Implications for non-compliance with VAT regulations
+Learners need to understand:
+1.5.1 the powers of HMRC to penalise a business that has failed to register for VAT
+1.5.2 the details of the penalty regime applicable to non-registration or late registration
+1.5.3 how the penalty regime applies to late submission or non-submission of VAT
+returns (excluding changes in filing frequency)
+1.5.4 the powers of assessment that HMRC has in respect of failure to submit VAT
+returns
+1.5.5 the details of the penalty and interest regime applicable to late or non-payment of
+VAT due
+1.5.6 the consequences of failing to:
+- correct errors properly
+- report an error when required to do so
+1.5.7 the operational and legal consequences of incorrect recovery of VAT.
+
+-- 72 of 108 --
+
+Tax Processes for Businesses FA25 76
+2. Calculate VAT
+2.1 Extracting relevant data from accounting records
+Learners need to understand:
+2.1.1 relevant sources of VAT information
+2.1.2 how to identify relevant accounting records that cover the required period of each
+VAT return
+2.1.3 how to identify and extract relevant revenue, expenditure and VAT figures from
+the accounting records
+2.1.4 how to validate data and determine that the figures extracted have come from
+original and verified source documents
+2.1.5 the benefits of accounting software in identifying errors, e.g. incorrect VAT rate.
+2.2 VAT invoices
+Learners need to understand:
+2.2.1 the contents and form of a VAT invoice:
+- simplified VAT invoices
+- modified VAT invoices
+- e-invoicing requirements
+- mixed-rated supplies
+2.2.2 how to determine the tax point of an invoice, both basic and actual, when there
+are:
+- advance payments
+- deposits
+- continuous supplies
+- goods on sale or return
+2.2.3 the significance of the correct tax point for:
+- eligibility for special VAT schemes
+- applying the correct rate of VAT
+- determining the correct VAT period
+2.2.4 the time limits for issuing VAT invoices:
+- 14-day rules
+- 30-day rules
+2.2.5 the rules relating to electronic invoicing
+2.3 VAT calculations
+Learners need to understand:
+2.3.1 the difference between inputs
+and outputs, and between input
+tax and output tax
+2.3.2 the automation of calculations
+through use of accounting
+software
+2.3.3 rounding rules on VAT
+calculations
+2.3.4 rules for VAT when prompt
+payment discounts (PPD) are
+offered to customers
+2.3.5 the different implications of
+exempt supplies and of zero-
+rated supplies, and the effect
+on recovery of input tax
+2.3.6 how partial exemption works,
+the de-minimis limit and how
+this affects the recovery of input
+tax
+Learners need to be able to:
+2.3.11 calculate VAT on:
+- standard-rated supplies
+- reduced-rated supplies
+2.3.12 calculate VAT when given the net or the
+gross amount of the supply
+2.3.13 calculate the VAT payable/repayable for
+a VAT period from information such as:
+- sales and purchases invoices
+- credit notes issued and received
+- cash and petty cash transaction
+receipts
+- deposits, advance payments and
+delayed payments
+- adjustments made for:
+▪ fuel scale charges
+▪ bad debts
+▪ input tax that cannot be claimed
+2.3.14 calculate the impact on VAT of:
+- PPD
+
+-- 73 of 108 --
+
+Tax Processes for Businesses FA25 77
+2.3.7 the identification of what cannot
+be claimed as input tax:
+- expenditure on employee
+and business contact
+entertaining, including that
+of mixed groups
+- purchases and sales of cars
+and vans
+- assets with private use
+2.3.8 the VAT rules on fuel scale
+charges, how to apply them
+and their effect on the VAT
+payable or reclaimable
+2.3.9 how to apply VAT bad debt
+relief, when this is available and
+what time limits apply
+2.3.10 how to account for postponed
+import VAT.
+- fuel scale charges
+- bad debts
+- items on which input tax cannot be
+reclaimed
+2.3.15 calculate VAT for international trade:
+- imports
+- exports.
+3. Review and verify VAT returns
+3.1 Make adjustments for errors or omissions in VAT returns
+Learners need to understand:
+3.1.1 if previous period errors or
+omissions can be corrected by
+amendments on current VAT
+returns
+3.1.2 the thresholds and deadlines
+where previous period errors or
+omissions must be declared,
+including the timescales during
+which corrections can be made
+3.1.3 when previous period errors or
+omissions must be separately
+reported rather than corrected
+on current VAT returns
+3.1.4 when to report given previous
+period errors or omissions that
+cannot be corrected on current
+VAT returns.
+Learners will be able to:
+3.1.5 calculate and process the appropriate
+adjustments for given previous errors
+3.1.6 recognise the impact that the
+adjustments for previous errors will
+have on VAT.
+3.2 Verify information contained within VAT returns
+Learners need to understand:
+3.2.1 what is included in all relevant
+boxes of the VAT return
+(excluding Box 2, 8 and 9)
+3.2.2 how imports and exports are
+treated on a VAT return
+3.2.3 the importance of checking the
+VAT return before submission
+3.2.4 how to identify reasons for any
+given differences between the
+VAT return and the accounting
+records
+Learners need to be able to:
+3.2.5 review VAT returns from accounting
+information
+3.2.6 reconcile the VAT return to accounting
+records.
+
+-- 74 of 108 --
+
+Tax Processes for Businesses FA25 78
+4. Understand principles of payroll
+4.1 Employer responsibilities of payroll
+Learners need to understand:
+4.1.1 that payroll is operated by
+businesses or individuals who
+employ staff
+4.1.2 that HMRC is the relevant tax
+authority for payroll
+4.1.3 HMRC’s powers to require
+businesses to comply with:
+- regulations about registration
+- record keeping
+- submissions of returns
+- payment of amounts due
+4.1.4 HMRC’s rights in respect of
+inspection of records and visits
+4.1.5 HMRC’s rules about:
+- what records should be kept
+- software
+- how payroll records should be
+retained
+- how long payroll records
+should be retained
+4.1.6 the difference between gross pay,
+taxable pay, taxable gross pay and
+net pay
+4.1.7 that businesses are required to
+make statutory deductions from
+gross pay:
+- Pay As You Earn (PAYE)
+- National Insurance contributions
+(NICs)
+- student loan repayments
+- pension contributions
+4.1.8 that businesses may be required to
+make non-statutory deductions from
+gross pay
+4.1.9 when businesses or individuals are
+required to register as an employer
+4.1.10 the data protection principles
+specifically related to the personal
+data of employees.
+Learners will be able to:
+4.1.11 calculate the following:
+- gross pay
+- taxable gross pay
+- deductions from the pay of
+employees
+- net pay
+- the amount due to HMRC
+4.1.12 reconcile gross pay to net pay
+and / or taxable gross pay.
+Note: students will be provided with figures
+from which to calculate these values.
+Exclusion: the calculation of Income Tax,
+National Insurance contributions (NICs)
+and student loan repayments.
+
+-- 75 of 108 --
+
+Tax Processes for Businesses FA25 79
+4.2 Operating payroll
+Learners need to understand:
+4.2.1 the outline content of forms produced for payroll:
+- starter checklist
+- payslips
+- P45s
+- P60s
+- P11Ds
+- P11Dbs
+4.2.2 that employers must produce and distribute forms to employees within the
+required time period
+4.2.3 the difference between:
+- reporting expenses and benefits on forms P11D
+- payrolling benefits and expenses
+4.2.4 that payroll reports must be submitted to HMRC by employers using Real Time
+Information (RTI)
+4.2.5 the content of Full Payment Submissions (FPS) and the Employer Payment
+Summary (EPS) reports submitted under RTI
+4.2.6 that employers must report to HMRC employee payments and employee changes
+within the required timescale
+4.2.7 the statutory time limits for submitting payroll returns and making payment to
+HMRC
+4.2.8 the consequences of late payroll returns and/or payment.
+
+-- 76 of 108 --
+
+Tax Processes for Businesses FA25 80
+5. Report information within the organisation
+5.1 Communicating information on VAT and payroll related matters
+Learners need to understand:
+5.1.1 who to report relevant
+information to
+5.1.2 when a query is beyond current
+experience or expertise and so
+should be referred to a line
+manager
+5.1.3 the significant effect on cash
+flows and cash budgeting of
+the requirements to make
+payments on time to HMRC.
+Learners need to be able to:
+5.1.4 communicate the appropriate time
+limits for submitting returns and making
+payments to appropriate persons
+5.1.5 communicate the effects of new
+legislation to the appropriate person
+5.1.6 provide appropriate information for
+VAT:
+- the completion of the VAT return
+- the discovery of current and previous
+period errors and omissions
+- determining whether to correct or
+disclose errors and omissions
+- penalties and assessments
+- the effects of a change in VAT rate
+or other regulatory changes
+- the effect on VAT of a change in
+business operations
+- effects of adopting special VAT
+schemes on payment or recovery of
+VAT
+5.1.7 provide appropriate information for
+payroll:
+- the completion of payroll reports
+- penalties
+- the effects of regulatory changes.
+5.2 Legislation, regulation, guidance and codes of practice
+Learners need to understand:
+5.2.1 where to find information regarding changes to VAT and payroll law and practice
+5.2.2 the importance of seeking authorisation before returns are submitted
+5.2.3 the relevance of data protection, information security and confidentiality to VAT
+and payroll practice
+5.2.4 the importance of maintaining up to date and relevant knowledge
+5.2.5 the importance of ethical behaviour in relation to VAT and payroll
+5.2.6 the importance of updating accounting software regarding changes to VAT and
+payroll legislation
+5.2.7 the importance of acting in good faith and exercising care in relation to facts or
+information presented on behalf of clients or employers when dealing with HMRC,
+according to the AAT Code of Professional Ethics.
+
+-- 77 of 108 --
+
+Tax Processes for Businesses FA25 81
+Delivering this unit
+To deliver this unit effectively, tutors must have up to date knowledge of the areas of tax
+covered and how processes may be automated using accounting software. Although the
+use of specific accounting software is not covered in this unit, having an understanding and
+using examples of the types of reports produced by different accounting systems and for
+different types of businesses would be helpful, along with the differences associated with
+special schemes, such as the annual, flat rate and cash accounting schemes.
+An emphasis should be placed on understanding the sources of data used to produce
+reports in accounting systems and confirming their accuracy by applying and understanding
+the rules and regulations of HMRC. Knowledge must be updated regularly and the unit
+should be taught alongside the relevant extracts from the AAT reference material.
+Wherever possible, students should be encouraged to have direct work experience in the
+preparation, completion and submission of VAT returns and payroll reports. The use of
+simulated activities based on real workplace scenarios would be helpful. Tutors should use
+examples of documents such as invoices, receipts, payslips and P60s to aid the
+understanding for students, whilst complying with confidentiality, security and data
+protection principles. Using examples of businesses who have carried out processes
+incorrectly, as well as those who have carried out processes in the correct way, will
+emphasise the penalty regimes and the importance of timely, accurate and complete
+reporting.
+Tutors should illustrate the importance of budgeting and cash flow requirements when
+calculating VAT and payroll payments. This could be delivered alongside topic areas within
+Management Accounting Techniques.
+Links with other units
+This unit links with the following units:
+• Level 3 Business Awareness
+• Level 3 Financial Accounting: Preparing Financial Statements
+• Level 3 Management Accounting Techniques.
+
+-- 78 of 108 --
+
+Tax Processes for Businesses FA25 82
+Test specification for Tax Processes for Businesses unit assessment
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation
+that will apply to assessments. Details can be accessed at
+aat.org.uk/training/qualifications/2022/resources
+Assessment method Marking type Duration of assessment
+Computer based
+assessment
+Computer marked 1 hour 30 minutes
+Learning outcomes Weighting
+1. Understand legislation requirements relating to VAT 25%
+2. Calculate VAT 30%
+3. Review and verify VAT returns 20%
+4. Understand principles of payroll 15%
+5. Report information within the organisation 10%
+Total 100%
+
+-- 79 of 108 --
+
+Botswana Tax Processes for Businesses FA24 83
+Botswana Tax Processes for Businesses (2024)
+Unit
+level GLH value Unit reference
+number Assessment
+3 60 A/650/7497 Unit
+assessment
+Introduction
+This unit is optional in the Level 3 Diploma in Accounting. For students based in the UK there
+is a UK version of this unit Tax Processes for Businesses, earlier in this specification.
+This unit explores tax processes that influence the daily operations of businesses and is
+designed to develop students’ skills in understanding, preparing, and submitting Value
+Added Tax (VAT) returns to the Botswana Unified Revenue Services (BURS). The unit
+provides students with the knowledge and skills that are needed to keep businesses,
+employers and clients compliant with laws and practices that apply to VAT and payroll.
+Students will learn about legislation and the importance of maintaining their technical
+knowledge through monitoring updates.
+For VAT, students will understand the registration and deregistration rules, including signing
+up for BURS e-Services. Students will be able to recognise different types of supplies and
+calculate VAT correctly, understanding the importance of the rules relating to the recovery
+of input tax and the sanctions and penalties for inaccuracies, omissions, and failure to make
+submissions and payments within the correct timescales. Students will be able to verify the
+accuracy of calculations, invoices and tax points, and will learn about the correction of
+errors. When learning about the content of the VAT return, students will understand how to
+apply special rules when goods and services are imported and exported out of Botswana,
+and how to extract the appropriate data to complete VAT returns.
+In relation to payroll, students will understand the processes for businesses involved in
+calculating pay and deductions and the content of documents and reports produced
+manually or on software, along with the timescales for submission and payment.
+The application of ethical principles is threaded throughout this unit. All work must be
+carried out with integrity, objectivity and a high degree of professional competence. There
+must be due care with regards to confidentiality about any personal data being processed
+and, from a business protection aspect, with the correct approach to professional behaviour.
+Students will understand how to communicate VAT and payroll matters to relevant
+individuals and organisations.
+This unit is based on the Tax year 1July 2023 – 30 June 2024 subject to assessment
+from 12 May 2025.
+
+-- 80 of 108 --
+
+Botswana Tax Processes for Businesses FA24 84
+Learning outcomes
+1. Understand legislation requirements relating to VAT
+2. Calculate VAT
+3. Review and verify VAT returns
+4. Understand principles of payroll
+5. Report information within the organisation
+
+-- 81 of 108 --
+
+Botswana Tax Processes for Businesses FA24 85
+Scope of content
+This section illustrates the depth and breadth of content to be delivered for this unit. All
+areas indicated in the table below must be covered in teaching.
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of
+content. Content assessed may change over time to ensure validity of assessment.
+1. Understand legislation requirements relating to VAT
+1.1 Botswana tax law principles relating to VAT
+Learners need to understand:
+1.1.1 that BURS is the relevant tax authority for VAT in Botswana
+1.1.2 that VAT is a tax on consumer spending, charged on taxable supplies by taxable
+persons, including whether the tax charged falls on registered businesses or the
+end user
+1.1.3 the definitions of:
+- taxable supplies
+- standard-rate supplies
+- zero-rated supplies
+- exempt supplies
+1.1.4 BURS’s rights in respect of inspection of records and visits to registered
+businesses
+1.1.5 BURS’S rules about:
+- what records should be kept
+- how long VAT records should be retained
+- how VAT records should be retained
+1.2 VAT registration and deregistration requirements
+Learners need to understand:
+1.2.1 the registration and deregistration thresholds for VAT and how to apply them
+1.2.2 what is meant by the historic turnover method (historic test) and the future
+turnover method (future turnover test) and how to comply with them in respect of
+registration.
+1.2.3 the circumstances:
+- in which voluntary registration may be beneficial to the business
+- for voluntary and compulsory deregistration.
+1.3 Filing and payment of VAT returns
+Learners need to understand:
+1.3.1 the timing and frequency of:
+- filing VAT returns under the BURS tax requirements
+- payment/re-payment of VAT under the BURS tax requirements
+1.3.2 the circumstances in which monthly or two-monthly VAT returns are required
+1.3.3 the processes for registering and submitting VAT returns under BURS e-services
+
+-- 82 of 108 --
+
+Botswana Tax Processes for Businesses FA24 86
+1.4 Implications for non-compliance with VAT regulations
+Learners need to understand:
+1.4.1 the powers of BURS to penalise a business that has failed to register for VAT
+1.4.2 the details of the BURS penalty applicable to non-registration or late registration
+1.4.3 the consequences of late submission and non-submission of VAT returns
+1.4.4 the details of the penalties imposed by BURS applicable for late submission and
+non-submission of VAT returns
+1.4.5 the powers of assessment that BURS has in respect of failure to submit VAT
+returns
+1.4.6 the consequences of late payment or non-payment of VAT due
+1.4.7 the details of the penalties and interest imposed by BURS applicable to late or
+non-payment of VAT due
+1.4.8 the consequences of errors in VAT returns
+2 Calculate VAT
+2.1 Extracting relevant data from accounting records
+Learners need to understand:
+2.1.1 relevant sources of VAT information needed by a business
+2.1.2 how to identify relevant accounting records that cover the required period of
+each VAT return
+2.1.3 how to identify and extract relevant revenue, expenditure and VAT figures from
+the accounting records
+2.1.4 how to validate data and determine that the figures extracted have come from
+original and verified source documents
+2.1.5 the benefits of accounting software in identifying errors, e.g. incorrect VAT
+rate.
+2.2 VAT invoices
+Learners need to understand:
+2.2.1 the contents and form of a VAT invoice:
+- e-invoicing and manual invoicing requirements
+- mixed-rated supplies
+2.2.2 how to determine the tax point (time of supply) of an invoice, both basic and
+actual, including when there are advance payments (deposits)
+2.2.3 the significance of the correct tax point for:
+- applying the correct rate of VAT
+- determining the correct VAT period
+2.2.4 the time limits for issuing VAT invoices:
+- 14-day rules
+- 60-day rules
+
+-- 83 of 108 --
+
+Botswana Tax Processes for Businesses FA24 87
+2.3 VAT calculations
+Learners need to understand:
+2.3.1 the difference between output and
+input, and between output tax and
+input tax
+2.3.2 the automation of calculations
+through use of accounting
+software
+2.3.3 rules for VAT when prompt
+payment discounts (PPD) are
+offered to customers
+2.3.4 the different implications of
+exempt supplies and of zero-rated
+supplies, and the effect on
+recovery of input tax
+2.3.5 how partial exemption works and
+how this affects the recovery of
+input tax
+2.3.6 the identification of what can and
+cannot be claimed as input tax:
+- business entertaining,
+- purchases and sales of
+passenger vehicles
+- non-business use
+- notional input tax
+2.3.7 how to apply bad debt relief, when
+this is available and what time
+limits apply
+2.3.8 how to account for VAT for
+international trade:
+- imports
+- exports.
+Learners need to be able to:
+2.3.9 calculate VAT on standard-rated
+supplies
+2.3.10 calculate VAT when given the net or
+the gross amount of the supply
+2.3.11 calculate the VAT payable/repayable
+for a VAT period from information
+such as:
+- sales and purchases invoices
+- credit notes issued and received
+- cash and petty cash transaction
+receipts
+- deposits, advance payments and
+delayed payments
+- adjustments made for:
+- bad debts
+- input tax that cannot be claimed
+2.3.12 calculate the impact on VAT of:
+- PPD
+- bad debts
+- items on which input tax cannot be
+reclaimed
+- notional input tax
+2.3.13 calculate VAT for international trade:
+- imports
+- exports.
+
+-- 84 of 108 --
+
+Botswana Tax Processes for Businesses FA24 88
+3 Review and verify VAT returns
+3.1 Make adjustments for errors or omissions in VAT returns
+Learners need to understand:
+3.1.1 that previous period errors may be
+corrected.
+Learners will be able to:
+3.1.2 calculate and process the appropriate
+adjustments for given previous period
+errors
+3.1.3 recognise the impact that the
+adjustments for previous period errors
+will have on VAT.
+3.2 Verify information contained within VAT returns
+Learners need to understand:
+3.2.1 what is included in all relevant
+boxes of the Botswana VAT
+return
+3.2.2 how imports and exports are
+treated on the Botswana VAT
+return
+3.2.3 the importance of checking the
+VAT return before submission
+3.2.4 how to identify reasons for any
+given differences between the
+VAT return and the VAT control
+account
+Learners need to be able to:
+3.2.5 review VAT returns from accounting
+information
+3.2.6 reconcile the VAT return to accounting
+records.
+
+-- 85 of 108 --
+
+Botswana Tax Processes for Businesses FA24 89
+4 Understand principles of payroll
+4.1 Employer responsibilities of payroll
+Learners need to understand:
+4.1.1 that payroll is operated by
+businesses or individuals who
+employ staff
+4.1.2 that BURS is the relevant tax
+authority for payroll
+4.1.3 BURS’s powers to require
+businesses to comply with:
+- regulations about registration
+- record keeping
+- submissions of returns
+- payment of amounts due
+4.1.4 BURS’s rights in respect of
+inspection of records and visits
+4.1.5 BURS’s rules about:
+- what records should be kept
+- software / manual system
+used
+- how payroll records should be
+retained
+- how long payroll records
+should be retained
+4.1.6 the difference between gross pay,
+taxable gross pay and net pay
+4.1.7 that businesses are required to
+make statutory deductions from
+gross pay:
+- Pay As You Earn (PAYE)
+- pension
+4.1.8 that businesses may be required
+to make non-statutory deductions
+from gross pay
+4.1.9 when businesses or individuals are
+required to register as an
+employer
+4.1.10 that employers are entitled to
+deduct statutory and other
+deductions from employees’ pay
+4.1.11 the data protection principles
+specifically related to the personal
+data of employees.
+Learners need to be able to:
+4.1.12 calculate the following:
+- gross pay
+- taxable gross pay
+- deductions from employees’ pay
+- net pay
+- the amount due to BURS
+4.1.13 Reconcile gross pay to net pay and /
+or taxable gross pay
+
+-- 86 of 108 --
+
+Botswana Tax Processes for Businesses FA24 90
+4.2 Operating payroll
+Learners need to understand:
+4.2.1 the outline content of forms produced for payroll:
+- payslips
+- Certificate of Tax
+- annual return
+4.2.2 that employers must produce and distribute forms to employees within the
+required time period
+4.2.3 that payroll reports must be submitted to BURS by employers in the required
+time period
+4.2.4 the content of payroll reports submitted to BURS
+4.2.5 that employers must report to BURS employee payments and employee
+changes within the required timescale
+4.2.6 the statutory time limits for submitting payroll returns and making payment to
+BURS
+4.2.7 the consequences of late filing and/or payment
+
+-- 87 of 108 --
+
+Botswana Tax Processes for Businesses FA24 91
+5 Report information within the organisation
+5.1 Communicating information on VAT and payroll related matters
+Learners need to understand:
+5.1.1 who to report relevant information
+to
+5.1.2 when a query is beyond current
+experience or expertise and so
+should be referred to a line
+manager
+5.1.3 the significant effect on cash flows
+and cash budgeting of the
+requirements to make payments
+on time to BURS.
+Learners need to be able to:
+5.1.4 communicate the appropriate time
+limits for submitting returns and
+making payments to appropriate
+persons
+5.1.5 communicate the effects of new
+legislation to the appropriate person
+5.1.6 provide appropriate information for
+VAT:
+- the completion of the VAT return
+- the discovery of current and
+previous period errors and
+omissions
+- determining whether to correct or
+disclose errors and omissions
+- penalties, surcharges /
+interest and assessments
+- the effects of a change in VAT rate
+or other regulatory changes
+- the effect on VAT of a change in
+business operations
+5.1.7 provide appropriate information for
+payroll:
+- the completion of payroll reports
+- penalties
+- the effects of regulatory changes.
+5.2 Legislation, regulation, guidance and codes of practice
+Learners need to understand:
+5.2.1 where to find information regarding changes to VAT and payroll law and
+practice
+5.2.2 the importance of seeking authorisation before returns are submitted
+5.2.3 the relevance of data protection, information security and confidentiality to VAT
+and payroll practice
+5.2.4 the importance of maintaining up to date and relevant knowledge
+5.2.5 the importance of ethical behaviour in relation to VAT and payroll
+5.2.6 the importance of updating any accounting software regarding changes to VAT
+and payroll legislation
+5.2.7 the importance of acting in good faith and exercising care in relation to facts or
+information presented on behalf of clients or employers when dealing with
+BURS, according to the AAT Code of Professional Ethics.
+
+-- 88 of 108 --
+
+Botswana Tax Processes for Businesses FA24 92
+Delivering this unit
+To deliver this unit effectively, tutors must have up to date knowledge of the areas of tax
+covered and how processes may be automated using accounting software. Although the
+use of specific accounting software is not covered in this unit, having an understanding and
+using examples of the types of reports produced by different accounting systems and for
+different types of businesses would be helpful.
+An emphasis should be placed on understanding the sources of data used to produce
+reports in accounting systems and confirming their accuracy by applying and understanding
+the rules and regulations of BURS. Knowledge must be updated regularly, and the unit
+should be taught alongside the relevant extracts from the AAT Reference Material.
+Wherever possible, students should be encouraged to have direct work experience in the
+preparation, completion and submission of VAT returns and payroll reports. The use of
+simulated activities based on real workplace scenarios would be helpful. Tutors should use
+examples of documents such as invoices, receipts, payslips and annual returns to aid the
+understanding for students, whilst complying with confidentiality, security and data
+protection principles. Using examples of businesses who have carried out processes
+incorrectly, as well as those who have carried out processes in the correct way, will
+emphasise the penalty charges and the importance of timely, accurate and complete
+reporting.
+Tutors should illustrate the importance of budgeting and cash flow requirements when
+calculating VAT and payroll payments. This could be delivered alongside topic areas within
+Management Accounting Techniques.
+Links with other units
+This unit links with the following units:
+• Level 3 Business Awareness
+• Level 3 Financial Accounting: Preparing Financial Statements
+• Level 3 Management Accounting Techniques.
+
+-- 89 of 108 --
+
+Botswana Tax Processes for Businesses FA24 93
+Test specification for Botswana Tax Processes for Businesses unit
+assessment
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation that
+will apply to assessments. Details can be accessed at
+https://www.aat.org.uk/deliver/qualifications/specifications-outlines
+Assessment method Marking type Duration of assessment
+Computer based
+assessment
+Computer marked 1 hour 30 minutes
+Learning outcomes Weighting
+1. Understand legislation requirements relating to VAT 25%
+2. Calculate VAT 30%
+3. Review and verify VAT returns 20%
+4. Understand principles of payroll 15%
+5. Report information within the organisation 10%
+Total 100%
+
+-- 90 of 108 --
+
+94
+Botswana Tax Processes for Businesses 2025
+Botswana Tax Processes for Businesses (2025)
+Unit
+level GLH value Unit reference
+number Assessment
+3 60 A/650/7497 Unit
+assessment
+Introduction
+This unit is optional in the Level 3 Diploma in Accounting. For students based in the UK
+there is a UK version of this unit Tax Processes for Businesses, earlier in this
+specification.
+This unit explores tax processes that influence the daily operations of businesses and is
+designed to develop students’ skills in understanding, preparing, and submitting Value
+Added Tax (VAT) returns to the Botswana Unified Revenue Services (BURS). The unit
+provides students with the knowledge and skills that are needed to keep businesses,
+employers and clients compliant with laws and practices that apply to VAT and payroll.
+Students will learn about legislation and the importance of maintaining their technical
+knowledge through monitoring updates.
+For VAT, students will understand the registration and deregistration rules, including
+signing up for BURS e-Services. Students will be able to recognise different types of
+supplies and calculate VAT correctly, understanding the importance of the rules relating to
+the recovery of input tax and the sanctions and penalties for inaccuracies, omissions, and
+failure to make submissions and payments within the correct timescales. Students will be
+able to verify the accuracy of calculations, invoices and tax points, and will learn about the
+correction of errors. When learning about the content of the VAT return, students will
+understand how to apply special rules when goods and services are imported and
+exported out of Botswana, and how to extract the appropriate data to complete VAT
+returns.
+In relation to payroll, students will understand the processes for businesses involved in
+calculating pay and deductions and the content of documents and reports produced
+manually or on software, along with the timescales for submission and payment.
+The application of ethical principles is threaded throughout this unit. All work must be
+carried out with integrity, objectivity and a high degree of professional competence. There
+must be due care with regards to confidentiality about any personal data being processed
+and, from a business protection aspect, with the correct approach to professional
+behaviour. Students will understand how to communicate VAT and payroll matters to
+relevant individuals and organisations.
+This unit is based on the Tax year 1 July 2024 – 30 June 2025 subject to
+assessment from 15 June 2026.
+
+-- 91 of 108 --
+
+95
+Botswana Tax Processes for Businesses 2025
+Learning outcomes
+1. Understand legislation requirements relating to VAT
+2. Calculate VAT
+3. Review and verify VAT returns
+4. Understand principles of payroll
+5. Report information within the organisation
+
+-- 92 of 108 --
+
+96
+Botswana Tax Processes for Businesses 2025
+Scope of content
+This section illustrates the depth and breadth of content to be delivered for this unit. All areas
+indicated in the table below must be covered in teaching.
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of content.
+Content assessed may change over time to ensure validity of assessment.
+1. Understand legislation requirements relating to VAT
+1.1 Botswana tax law principles relating to VAT
+Learners need to understand:
+1.1.1 that BURS is the relevant tax authority for VAT in Botswana
+1.1.2 that VAT is a tax on consumer spending, charged on taxable supplies by taxable
+persons, including whether the tax charged falls on registered businesses or the
+end user
+1.1.3 the definitions of:
+- taxable supplies
+- standard-rated supplies
+- zero-rated supplies
+- exempt supplies
+1.1.4 BURS’s rights in respect of inspection of records and visits to registered
+businesses
+1.1.5 BURS’S rules about:
+- what records should be kept
+- how long VAT records should be retained
+- how VAT records should be retained
+1.2 VAT registration and deregistration requirements
+Learners need to understand:
+1.2.1 the registration thresholds for VAT and how to apply them
+1.2.2 what is meant by the historic turnover method (historic test) and the future
+turnover method (future turnover test) and how to comply with them in respect of
+registration.
+1.2.3 the circumstances:
+- in which voluntary registration may be beneficial to the business
+- for voluntary and compulsory deregistration.
+1.3 Filing and payment of VAT returns
+Learners need to understand:
+1.3.1 the timing and frequency of:
+- filing VAT returns under the BURS tax requirements
+- payment/re-payment of VAT under the BURS tax requirements
+1.3.2 the circumstances in which monthly or two-monthly VAT returns are required
+1.3.3 the processes for registering and submitting VAT returns under BURS e-services
+
+-- 93 of 108 --
+
+97
+Botswana Tax Processes for Businesses 2025
+1.4 Implications for non-compliance with VAT regulations
+Learners need to understand:
+1.4.1 the powers of BURS to penalise a business that has failed to register for VAT
+1.4.2 the details of the BURS penalty applicable to non-registration or late registration
+1.4.3 the consequences of late submission and non-submission of VAT returns
+1.4.4 the details of the penalties imposed by BURS applicable for late submission and
+non-submission of VAT returns
+1.4.5 the powers of assessment that BURS has in respect of failure to submit VAT
+returns
+1.4.6 the consequences of late payment or non-payment of VAT due
+1.4.7 the details of the penalties and interest imposed by BURS applicable to late or
+non-payment of VAT due
+1.4.8 the consequences of errors in VAT returns
+2 Calculate VAT
+2.1 Extracting relevant data from accounting records
+Learners need to understand:
+2.1.1 relevant sources of VAT information
+2.1.2 how to identify relevant accounting records that cover the required period of
+each VAT return
+2.1.3 how to identify and extract relevant revenue, expenditure and VAT figures from
+the accounting records
+2.1.4 how to validate data and determine that the figures extracted have come from
+original and verified source documents
+2.1.5 the benefits of accounting software in identifying errors, e.g. incorrect VAT
+rate.
+2.2 VAT invoices
+Learners need to understand:
+2.2.1 the contents and form of a VAT invoice:
+- e-invoicing and manual invoicing requirements
+- mixed-rated supplies
+2.2.2 how to determine the tax point (time of supply) of an invoice, both basic and
+actual, including when there are advance payments (deposits)
+2.2.3 the significance of the correct tax point for:
+- applying the correct rate of VAT
+- determining the correct VAT period
+2.2.4 the time limits for issuing VAT invoices:
+- 14-day rules
+- 60-day rules
+
+-- 94 of 108 --
+
+98
+Botswana Tax Processes for Businesses 2025
+2.3 VAT calculations
+Learners need to understand: Learners need to be able to:
+2.3.9 calculate VAT on standard-rated
+supplies
+2.3.10 calculate VAT when given the net or
+the gross amount of the supply
+2.3.11 calculate the VAT payable/repayable
+for a VAT period from information
+such as:
+- sales and purchases invoices
+- credit notes issued and received
+- cash and petty cash transaction
+receipts
+- deposits, advance payments and
+delayed payments
+- adjustments made for:
+• bad debts
+• input tax that cannot be
+claimed
+2.3.12 calculate the impact on VAT of:
+- PPD
+- bad debts
+- items on which input tax cannot be
+reclaimed
+- notional input tax
+2.3.13 calculate VAT for international trade:
+- imports
+- exports.
+2.3.1 the difference between outputs
+and inputs, and between output
+tax and input tax
+2.3.2 the automation of calculations
+through use of accounting
+software
+2.3.3 rules for VAT when prompt
+payment discounts (PPD) are
+offered to customers
+2.3.4 the different implications of
+exempt supplies and of zero-rated
+supplies, and the effect on
+recovery of input tax
+2.3.5 how partial exemption works and
+how this affects the recovery of
+input tax
+2.3.6 the identification of what can and
+cannot be claimed as input tax:
+- business entertaining,
+- purchases and sales of
+passenger vehicles
+- non-business use
+- notional input tax
+2.3.7 how to reclaim VAT on bad debts,
+when this is available and what
+time limits apply
+2.3.8 how to account for VAT for
+international trade:
+- imports
+- exports.
+
+-- 95 of 108 --
+
+99
+Botswana Tax Processes for Businesses 2025
+3 Review and verify VAT returns
+3.1 Make adjustments for errors or omissions in VAT returns
+Learners need to understand:
+3.1.1 that previous period errors may be
+corrected.
+Learners will be able to:
+3.1.2 calculate and process the appropriate
+adjustments for given previous period
+errors
+3.1.3 recognise the impact that the
+adjustments for previous period errors
+will have on VAT.
+3.2 Verify information contained within VAT returns
+Learners need to understand:
+3.2.1 what is included in all relevant
+boxes of the Botswana VAT
+return
+3.2.2 how imports and exports are
+treated on the Botswana VAT
+return
+3.2.3 the importance of checking the
+VAT return before submission
+3.2.4 how to identify reasons for any
+given differences between the
+VAT return and the VAT control
+account
+Learners need to be able to:
+3.2.5 review VAT returns from accounting
+information
+3.2.6 reconcile the VAT return to accounting
+records.
+
+-- 96 of 108 --
+
+100
+Botswana Tax Processes for Businesses 2025
+4 Understand principles of payroll
+4
+.
+1
+Employer responsibilities of payroll
+Learners need to understand: Learners need to be able to:
+4.1.1 that payroll is operated by
+businesses or individuals who
+employ staff
+4.1.2 that BURS is the relevant tax
+authority for payroll
+4.1.3 BURS’s powers to require
+businesses to comply with:
+- regulations about registration
+- record keeping
+- submissions of returns
+- payment of amounts due
+4.1.4 BURS’s rights in respect of
+inspection of records and visits
+4.1.11 calculate the following:
+- gross pay
+- taxable gross pay
+- deductions from the pay of
+employees
+- net pay
+- the amount due to BURS
+4.1.12 reconcile gross pay to net pay and / or
+taxable gross pay
+4.1.5 BURS’s rules about:
+- what records should be kept
+- software / manual system
+used
+- how payroll records should be
+retained
+- how long payroll records
+should be retained
+4.1.6 the difference between gross pay,
+taxable gross pay and net pay
+4.1.7 that businesses are required to
+make statutory deductions from
+gross pay:
+- Pay As You Earn (PAYE)
+- pensions
+4.1.8 that businesses may be required
+to make non-statutory deductions
+from gross pay
+4.1.9 when businesses or individuals are
+required to register as an
+employer
+4.1.10 the data protection principles
+specifically related to the personal
+data of employees.
+
+-- 97 of 108 --
+
+101
+Botswana Tax Processes for Businesses 2025
+4.2 Operating payroll
+Learners need to understand:
+4.2.1 the outline content of forms produced for payroll:
+- payslips
+- Certificate of Tax
+- annual return
+- monthly returns
+4.2.2 that employers must produce and distribute forms to employees within the
+required time period
+4.2.3 that payroll reports must be submitted to BURS by employers in the required
+time period
+4.2.4 the content of payroll reports submitted to BURS
+4.2.5 that employers must report to BURS employee payments and employee
+changes within the required timescale
+4.2.6 the statutory time limits for submitting payroll returns and making payment to
+BURS
+4.2.7 the consequences of late payroll filing and / or payment
+
+-- 98 of 108 --
+
+102
+Botswana Tax Processes for Businesses 2025
+5 Report information within the organisation
+5.1 Communicating information on VAT and payroll related matters
+Learners need to understand:
+5.1.1 who to report relevant information
+to
+5.1.2 when a query is beyond current
+experience or expertise and so
+should be referred to a line
+manager
+5.1.3 the significant effect on cash flows
+and cash budgeting of the
+requirements to make payments
+on time to BURS.
+Learners need to be able to:
+5.1.4 communicate the appropriate time
+limits for submitting returns and
+making payments to appropriate
+persons
+5.1.5 communicate the effects of new
+legislation to the appropriate person
+5.1.6 provide appropriate information for
+VAT:
+- the completion of the VAT return
+- the discovery of current and
+previous period errors and
+omissions
+- determining whether to correct or
+disclose errors and omissions
+- penalties, interest and
+assessments
+- the effects of a change in VAT rate
+or other regulatory changes
+- the effect on VAT of a change in
+business operations
+5.1.7 provide appropriate information for
+payroll:
+- the completion of payroll reports
+- penalties
+- the effects of regulatory changes.
+5.2 Legislation, regulation, guidance and codes of practice
+Learners need to understand:
+5.2.1 where to find information regarding changes to VAT and payroll law and
+practice
+5.2.2 the importance of seeking authorisation before returns are submitted
+5.2.3 the relevance of data protection, information security and confidentiality to VAT
+and payroll practice
+5.2.4 the importance of maintaining up to date and relevant knowledge
+5.2.5 the importance of ethical behaviour in relation to VAT and payroll
+5.2.6 the importance of updating any accounting software regarding changes to VAT
+and payroll legislation
+5.2.7 the importance of acting in good faith and exercising care in relation to facts or
+information presented on behalf of clients or employers when dealing with
+BURS, according to the AAT Code of Professional Ethics.
+
+-- 99 of 108 --
+
+103
+Botswana Tax Processes for Businesses 2025
+Delivering this unit
+To deliver this unit effectively, tutors must have up to date knowledge of the areas of tax
+covered and how processes may be automated using accounting software. Although the
+use of specific accounting software is not covered in this unit, having an understanding
+and using examples of the types of reports produced by different accounting systems and
+for different types of businesses would be helpful.
+An emphasis should be placed on understanding the sources of data used to produce
+reports in accounting systems and confirming their accuracy by applying and
+understanding the rules and regulations of BURS. Knowledge must be updated regularly,
+and the unit should be taught alongside the relevant extracts from the AAT Reference
+Material.
+Wherever possible, students should be encouraged to have direct work experience in the
+preparation, completion and submission of VAT returns and payroll reports. The use of
+simulated activities based on real workplace scenarios would be helpful. Tutors should
+use examples of documents such as invoices, receipts, payslips and annual returns to aid
+the understanding for students, whilst complying with confidentiality, security and data
+protection principles. Using examples of businesses who have carried out processes
+incorrectly, as well as those who have carried out processes in the correct way, will
+emphasise the penalty charges and the importance of timely, accurate and complete
+reporting.
+Tutors should illustrate the importance of budgeting and cash flow requirements when
+calculating VAT and payroll payments. This could be delivered alongside topic areas
+within Management Accounting Techniques.
+Links with other units
+This unit links with the following units:
+• Level 3 Business Awareness
+• Level 3 Financial Accounting: Preparing Financial Statements
+• Level 3 Management Accounting Techniques.
+
+-- 100 of 108 --
+
+104
+Botswana Tax Processes for Businesses 2025
+Test specification for Botswana Tax Processes for Businesses unit assessment
+Please refer to the latest Qualification Technical Information (QTI) for specific
+legislation that will apply to assessments. Details can be accessed at
+aat.org.uk/training/qualifications/2022/resources
+Assessment method Marking type Duration of assessment
+Computer based
+assessment
+Computer marked 1 hour 30 minutes
+Learning outcomes Weighting
+1. Understand legislation requirements relating to VAT 25%
+2. Calculate VAT 30%
+3. Review and verify VAT returns 20%
+4. Understand principles of payroll 15%
+5. Report information within the organisation 10%
+Total 100%
+
+-- 101 of 108 --
+
+105
+Delivering AAT Qualifications
+12. Delivering AAT qualifications
+12.1 Staff requirements
+AAT requires that all staff who deliver AAT qualifications, including tutors, assessors and
+verifiers, are professionally competent to do so.
+If a training provider wishes to claim recognition of prior learning (RPL) for a student, the
+staff must hold the relevant assessor and/or Internal Verifier (IV) qualifications.
+For more information on assessing RPL and the role and qualifications required for
+assessors and/or IVs, please refer to the AAT Code of practice for approved training providers
+and AAT Guidance for training providers documents available through MyAAT at
+aat.org.uk/support/quality-assurance/resources
+12.2 Training provider and assessment venue approval
+Training providers must be approved by AAT to offer these qualifications. To apply to
+become an AAT Approved training provider, email trainingproviders@aat.org.uk with the
+following information:
+• full name of organisation
+• full postal address, including postcode
+• landline telephone number
+• website address – this must be a live, fully functioning website
+• other awarding bodies with which the organisation is accredited.
+When AAT has received this information, an account manager will set up a meeting and
+discuss the criteria needed for approval. Only applications that meet AAT’s high standards
+will be approved.
+Existing training providers who wish to offer the qualification(s) should apply through the
+qualification approval section under online centre services, which can be found under the
+MyAAT login. Please note that only the training provider’s main contact can apply for
+qualification approval.
+Some organisations will not wish to become AAT Approved training providers but may be
+interested in administering AAT assessments by becoming an approved assessment
+venue. To apply to become an AAT Approved assessment venue, email
+assessment.venues@aat.org.uk with the following information:
+• the full address of the proposed venue
+• any experience in administering computer-based assessments.
+AAT will evaluate whether a venue meets the minimum hardware and software
+requirements, is a suitable environment for delivering assessments and has the staff to run
+assessments successfully. A representative from AAT will conduct a visit before approval is
+granted.
+
+-- 102 of 108 --
+
+106
+Delivering AAT Qualifications
+12.3 Quality assurance
+AAT monitors training providers to ensure their continued compliance with the AAT
+approval criteria, the AAT Code of practice for approved training providers and appropriate
+regulatory requirements.
+All training providers have an allocated point of contact and will be subject to a range of
+quality assurance activities (including visits, remote activities, self-assessment and thematic
+reviews) to ensure that quality standards are being met. The frequency of quality assurance
+activities will depend on a number of factors, including the level of risk associated with the
+provider’s experience in delivering AAT qualifications and/or the outcomes of previous
+quality assurance activities. If a centre has been delivering assessments using RPL, AAT
+may also ask for particular information and/or documents to be made available so that
+sampling can be carried out.
+Training providers will receive a report following on from any quality assurance activity from
+AAT, which will identify any actions that are to be addressed.
+AAT may apply an action plan with deadlines and/or a sanction where training providers do not
+meet the requirements set out in the AAT Code of practice for approved training providers, which
+may be accessed via MyAAT at aat.org.uk/assessments/training-providers/quality-assurance
+Sanctions will be applied at training provider level and will take the following form:
+• Level 1: Action plan imposed
+• Level 2: Suspension of the right to claim certification
+• Level 3: Suspension of the right to register students, schedule assessments and
+claim certification.
+Where AAT considers that there is an irretrievable breakdown in the management and
+quality assurance of the delivery of specified qualifications, AAT will withdraw training
+provider approval.
+
+-- 103 of 108 --
+
+13. Equality and diversity 107
+13. Equality and diversity
+AAT firmly believes in equality of opportunity for all who participate in its qualifications. As
+well as our commitment to the Equality Act 2010, we aim to ensure that:
+• our qualifications are free from barriers that restrict access and progression
+• our qualifications are attainable by all who can demonstrate the required standard by
+whatever means
+• our qualifications, publications and procedures are free from discriminatory practices
+or stereotypes with regards to age, disability, gender reassignment, marriage and
+civil partnerships, pregnancy and maternity, race, religion or belief, sexual
+orientation, caring responsibilities, and part-time working. Assessment tasks and
+study opportunities are sufficiently varied and flexible to ensure that no particular
+group of students or would-be students are placed at any disadvantage
+• all reasonable adjustments are made to cater for the individual requirements of
+students
+• assessments are valid and reliable to ensure that all students receive impartial
+treatment.
+We do this by:
+• considering issues of diversity and equality as part of the development process
+• avoiding the creation of barriers that might disadvantage those students who share
+one or more protected characteristics
+• consulting with students (or their representatives)
+• collecting data for monitoring and evaluation
+• providing additional information at aat.org.uk/about/what-we-do/responsible-
+business-strategy
+13.1 Reasonable adjustments
+A reasonable adjustment is an arrangement that can be put in place by AAT or the
+assessment centre prior to an assessment to help students with a long-term disability, such
+as dyslexia, or who are temporarily impaired, such as a student who has broken their arm, to
+do their best. For example, this could mean applying extra time for dyslexic students or
+allowing the use of a scribe for a student with a broken arm.
+In most cases, it should be possible for the assessment centre to make the decision to grant
+adjustments and notify AAT before scheduling the assessment: for example, granting extra
+time up to and including one-third of the available time as published for that assessment.
+However, if a more significant adjustment is needed, assessment centres may need to
+obtain approval from AAT first.
+Further information about reasonable adjustments and the procedures for notification and
+approval are given in the Guidance on the Application of Reasonable Adjustments and
+Special Considerations in AAT assessments available through MyAAT at
+aat.org.uk/assessments/students/preparing/reasonable-adjustments-special-
+consideration
+
+-- 104 of 108 --
+
+13. Equality and diversity 108
+13.2 Special consideration
+Special consideration is a process that takes account of a student’s circumstances, for
+example a temporary illness or injury, or some other event outside of the student’s control,
+at or shortly before the time of assessment, which could have had an effect on the student’s
+ability to take the assessment. The process entails a review of the student’s performance in
+the assessment and, if appropriate, the application of a small mark adjustment to
+compensate, as far as possible, for the difficulties that they might have experienced.
+Further information about special consideration and the procedure that must be followed in
+notifying AAT is given in the Guidance on the Application of Reasonable Adjustments and
+Special Consideration in AAT assessments available through MyAAT at
+aat.org.uk/assessment/adjustments-and-considerations
+
+-- 105 of 108 --
+
+109	14. Support for training providers
+14. Support for training providers
+14.1 Centre Support team
+The Centre Support team is dedicated to helping training providers with the daily running
+of AAT qualifications. The team also offers one-to-one support for new training providers
+to help them get their AAT qualifications up and running.
+Phone: +44 (0)203 3735 2443
+Email: Partner.support@aat.org.uk
+14.2 Partner Account Manager (PAM)
+Each training provider has their own Partner Account Manager (PAM) assigned to support
+them once they have been approved as an AAT training provider. PAMs help provide
+links to local employers and visit regularly to keep training providers up to date on
+qualification developments, apprenticeships and possible commercial opportunities.
+14.3 Weekly email update from AAT – SummingUp
+Every Friday, SummingUp shares all the latest news from AAT with AAT Approved
+training providers, including:
+• technical updates
+• qualification developments
+• upcoming events
+• new e-learning materials
+• the latest marketing materials.
+14.4 Events for training providers
+Tutors have the opportunity to attend the following events throughout the year.
+Annual conference
+The annual training provider conference is a chance to get together, network and share
+ideas. The conference typically includes:
+• topical workshops
+• guest speaker sessions
+• the opportunity to learn about new developments directly from AAT.
+
+-- 106 of 108 --
+
+110	14. Support for training providers
+Network meetings
+At these events, training providers can raise queries, share best practice and ideas with
+AAT and other training providers. The events:
+• cover a wide range of topics
+• keep tutors up to date on the latest issues
+• provide relevant and cost-effective CPD.
+Technical events (tutor-to-tutor sessions)
+These events are free of charge to training providers and cover a range of our
+qualifications and assessment areas. Experienced and high-performing training providers
+share their experiences, tips and techniques with attendees to help others improve their
+teaching and delivery.
+14.5 Tutor talk forum
+All AAT Approved training providers have access to Tutor talk, where tutors can
+contribute to online conversations about a wide range of AAT issues. Tutors will
+receive:
+• unlimited user logins for all AAT tutors
+• email updates on posts they are interested in.
+14.6 Online support resources
+In order to help tutors deliver AAT qualifications, a range of support materials are offered
+for all AAT qualifications, such as:
+• practice assessments
+• tutor workbooks
+• recorded webinars
+• videos
+• podcasts
+• training materials
+• green light tests for all AAT units.
+All tutor support materials can be found on the Lifelong Learning Portal.
+
+-- 107 of 108 --
+
+Copyright © 2023 AAT
+All rights reserved. Reproduction is permitted for personal and educational use only. No
+part of this content may be reproduced or transmitted for commercial use without the
+copyright holder’s written consent.
+The Association of Accounting Technicians
+30 Churchill Place
+London
+E14 5RE
+t: +44 (0)20 3735 2468
+f: +44 (0)20 7397 3009
+e: aat@aat.org.uk
+
+-- 108 of 108 --
+
