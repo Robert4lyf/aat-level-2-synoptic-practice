@@ -21,6 +21,8 @@ jobs:
         run: npm run validate:aat
       - name: Check question integrity (option shuffling, answer keys)
         run: npm run check:integrity
+      - name: Validate story-mode data (marks, flags, reachable buckets)
+        run: npm run validate:story
       - name: Validate French question data
         run: npm run validate:french
       - name: Check French learning quality

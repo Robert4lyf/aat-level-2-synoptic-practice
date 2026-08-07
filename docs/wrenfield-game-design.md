@@ -1,7 +1,8 @@
 # Wrenfield Supplies — accountant simulator design
 
-> **Status: planning only. Nothing in this document is built.** The one thing that
-> shipped alongside it is an unrelated bug fix (§8), which stands on its own.
+> **Status: Tuesday is built and playable** (§10). Everything beyond it — Wednesday
+> to Friday, Level 3, the other four formats — remains planning only. The bug fix in
+> §8 is unrelated to the game and stands on its own.
 
 **Date:** August 2026 · **Scope:** a standalone game inside the AAT app, giving hands-on
 experience of what an accounts role actually involves day to day, with an office-comedy
@@ -537,3 +538,60 @@ Also corrected: the subject registry advertised `515 questions`; the bank is 631
 4. **The comedy is the highest risk and no architecture mitigates it.** Ledger Legends
    failed on design; this would fail on craft. The only mitigation is writing one day and
    being genuinely willing to bin it.
+
+---
+
+## 10. What shipped — Tuesday
+
+Tuesday is built and playable from a **mode card in the Practice tab** ("A Day at
+Wrenfield"). Not a seventh nav tab, for the reason in §7.
+
+| File | What it holds |
+|---|---|
+| `story-data.js` | All of Tuesday — six items, six scenes, every consequence branch |
+| `app.js` | The engine (~470 lines) under a `/* ── STORY MODE ── */` banner |
+| `styles.css` | ~200 lines under a `/* ── STORY MODE (Wrenfield) ── */` banner |
+| `scripts/validate-story-data.js` | Structural validator, wired into `npm test` and CI |
+
+**Step primitives.** Four, and no more: `flags` (tick all that apply — wrong ticks cancel
+right ones), `choice` (pick one), `figures` (typed numbers, tolerance 0.005), `written`
+(free text, self-marked against a rubric). Every item is a stack of these, marked in one
+pass. Adding a new item is a data change, not a code change.
+
+**Branching is one flat flag map.** A step may `setFlag` from its chosen option; a later
+beat may declare `variants: { on: '<flag>', cases: {...} }`. Tuesday uses exactly one such
+flag — `wr.posted` — read by two later beats. There is no branch graph and no reachability
+problem to reason about.
+
+**The coupling works.** Item 1's decision sets `wr.posted`; item 6 resolves against it and
+serves a different ledger, different correct answers and a different closing line:
+
+| Item 1 decision | Item 6 ledger | Difference | Payment |
+|---|---:|---:|---:|
+| Queried, not posted | £546.00 | £462.00 | £546.00 |
+| Posted as billed £144.00 | £690.00 | £318.00 | £690.00 |
+| Posted corrected £302.40 | £848.40 | £159.60 | £848.40 |
+
+All three verified end to end in Chromium: each branch plays to the outro, each scores its
+variant's figures correctly, and the Gavin scene at 10:05 serves the matching variant.
+
+**Story marks are quarantined.** The engine never calls `Storage.recordAnswer()`. Playing
+the whole day leaves `stats.topics` as `{}` — confirmed in the browser test. Progress lives
+in `Storage.data.story`, versioned so a content rewrite resets the record rather than
+showing a score for a day that no longer exists in that form. The end-of-day screen says so
+in plain words, and links the weakest item into topic practice so a bad day sends the
+student *into* revision.
+
+**Verified rather than assumed:**
+- All three branches played to completion in Chromium; a fully correct run scores 34/34.
+- No console errors on any branch.
+- No horizontal overflow at 375 px; documents stack below 700 px.
+- Dark mode holds — the paper stock stays paper, everything else takes app tokens.
+- The validator was proven to fire by breaking three things in turn: an item's marks total,
+  a variant's flag name, and a written rubric's sum. Each produced the specific error.
+- Draft state survives typing (inputs write to state without re-rendering), so a
+  part-filled form is not wiped mid-item.
+
+**Still open on the content:** the accounting is hand-checked against §6's audit table, not
+machine-checked — the validator can prove a rubric sums to its marks and a bucket is
+reachable, but nothing can prove £252.00 is the right net. That remains a human read.
