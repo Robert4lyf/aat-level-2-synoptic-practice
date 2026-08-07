@@ -1043,6 +1043,19 @@
     if (!window.LEARN_PATH) return [];
     return window.LEARN_PATH.reduce((acc, u) => acc.concat(u.lessons), []);
   }
+  /* The AAT journey carries four Level 2 units plus four Level 3 PREVIEW units
+     (`preview: true`), which exist to show what comes next — they are two-lesson
+     tasters, not a syllabus, and they have no unit test. Completion achievements
+     must therefore count the qualification's own units only; counting the
+     previews made "Unit master" unreachable and made the Level 2 progress meter
+     read out of 8. Subjects that set no `level` (French, LSF, Code de la Route)
+     are unaffected: everything counts, as before. */
+  function qualificationUnits() {
+    return (window.LEARN_PATH || []).filter(u => !u.preview);
+  }
+  function qualificationLessons() {
+    return qualificationUnits().reduce((acc, u) => acc.concat(u.lessons), []);
+  }
   function findLesson(id) {
     for (const unit of (window.LEARN_PATH || [])) {
       const L = unit.lessons.find(x => x.id === id);
@@ -1095,7 +1108,7 @@
     { id: 'unit-pobc', icon: '📊', name: 'POBC Master', desc: 'Complete all Principles of Bookkeeping lessons', hint: 'All POBC lessons done' },
     { id: 'unit-poc', icon: '💸', name: 'POC Master', desc: 'Complete all Principles of Costing lessons', hint: 'All POC lessons done' },
     { id: 'unit-besy', icon: '🏢', name: 'BESY Master', desc: 'Complete all Business Environment lessons', hint: 'All BESY lessons done' },
-    { id: 'all-units', icon: '👑', name: 'Grand Master', desc: 'Complete every lesson in every unit', hint: 'All 56 lessons done' },
+    { id: 'all-units', icon: '👑', name: 'Grand Master', desc: 'Complete every lesson in every unit', hint: 'Every lesson in all four units' },
   ];
   function badgeEarnedTest(id) {
     const d = Storage.data;
@@ -1104,7 +1117,7 @@
       case 'first-lesson': return lessonsDone >= 1;
       case 'ten-lessons': return lessonsDone >= 10;
       case 'path-complete': {
-        const all = allLessons();
+        const all = qualificationLessons();
         return all.length > 0 && all.every(L => isLessonDone(L.id));
       }
       case 'hundred-q': return Object.values(d.stats.questions).reduce((s, q) => s + q.attempts, 0) >= 100;
@@ -1125,14 +1138,15 @@
       case 'daily-7': return Object.values(d.daily).filter(day => day.challenge && day.challenge.done).length >= 7;
       case 'unit-complete': {
         const ut = d.learn.unitTests || {};
-        return window.LEARN_PATH && window.LEARN_PATH.length > 0 && window.LEARN_PATH.every(u => ut[u.unit] && ut[u.unit].passed);
+        const qu = qualificationUnits();
+        return qu.length > 0 && qu.every(u => ut[u.unit] && ut[u.unit].passed);
       }
       case 'unit-itbk': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='itbk')?.lessons.every(l=>isLessonDone(l.id)));
       case 'unit-pobc': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='pobc')?.lessons.every(l=>isLessonDone(l.id)));
       case 'unit-poc':  return !!((window.LEARN_PATH||[]).find(u=>u.unit==='poc')?.lessons.every(l=>isLessonDone(l.id)));
       case 'unit-besy': return !!((window.LEARN_PATH||[]).find(u=>u.unit==='besy')?.lessons.every(l=>isLessonDone(l.id)));
       case 'all-units': {
-        const all = allLessons();
+        const all = qualificationLessons();
         return all.length > 0 && all.every(L => isLessonDone(L.id));
       }
     }
@@ -1157,7 +1171,7 @@
     switch (id) {
       case 'first-lesson':  return { cur: Math.min(1, lessonsDone), max: 1 };
       case 'ten-lessons':   return { cur: Math.min(10, lessonsDone), max: 10 };
-      case 'path-complete': { const all = allLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
+      case 'path-complete': { const all = qualificationLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
       case 'hundred-q':     return { cur: Math.min(100, totalAttempts()), max: 100 };
       case 'questions-250': return { cur: Math.min(250, totalAttempts()), max: 250 };
       case 'streak-15':     return { cur: Math.min(15, (d.stats.streak && d.stats.streak.best) || 0), max: 15 };
@@ -1172,14 +1186,14 @@
       case 'xp-1000':       return { cur: Math.min(1000, d.learn.xp), max: 1000 };
       case 'ta-all':        return { cur: TA_EXERCISES.filter(ex => d.learn.taDone[ex.id]).length, max: TA_EXERCISES.length };
       case 'daily-7':       return { cur: Math.min(7, Object.values(d.daily).filter(day => day.challenge && day.challenge.done).length), max: 7 };
-      case 'unit-complete': { const ut = d.learn.unitTests || {}; return { cur: (window.LEARN_PATH || []).filter(u => ut[u.unit] && ut[u.unit].passed).length, max: (window.LEARN_PATH || []).length || 4 }; }
+      case 'unit-complete': { const ut = d.learn.unitTests || {}; const qu = qualificationUnits(); return { cur: qu.filter(u => ut[u.unit] && ut[u.unit].passed).length, max: qu.length || 4 }; }
       case 'combo-5':       return { cur: Math.min(5, d.learn.bestCombo || 0), max: 5 };
       case 'perfect-practice': return { cur: d.history.some(h => h.mode === 'practice' && h.total >= 10 && h.pct === 100) ? 1 : 0, max: 1 };
       case 'unit-itbk': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='itbk'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
       case 'unit-pobc': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='pobc'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
       case 'unit-poc':  { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='poc');  return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
       case 'unit-besy': { const u = (window.LEARN_PATH||[]).find(u=>u.unit==='besy'); return u ? { cur: u.lessons.filter(l=>isLessonDone(l.id)).length, max: u.lessons.length } : { cur: 0, max: 14 }; }
-      case 'all-units': { const all = allLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
+      case 'all-units': { const all = qualificationLessons(); return { cur: all.filter(L => isLessonDone(L.id)).length, max: all.length }; }
       default: return { cur: 0, max: 1 };
     }
   }
