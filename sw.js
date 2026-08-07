@@ -12,6 +12,7 @@ var CORE_ASSETS = [
   './app.js',
   './skills.js',
   './learn-data.js',
+  './story-data.js',
   './aat3-styles.css',
   './aat3-syllabus.js',
   './aat3-tax-data.js',
