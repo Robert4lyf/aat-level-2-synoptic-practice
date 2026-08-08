@@ -7424,7 +7424,12 @@
 
   function startProto() {
     if (!protoDef()) { showToast('Prototype not loaded.', 'warn'); return; }
-    State.proto = { phase: 'desk', pen: false, circled: {}, lifted: false, top: 'invoice',
+    /* Both sheets sit loose on the desk. They arrive clipped together and it is
+       up to the player to slide them apart far enough to read one against the
+       other — which is the whole job of the item. */
+    State.proto = { phase: 'desk', pen: false, circled: {}, lifted: false,
+                    pos: { order: { x: 0, y: 0 }, invoice: { x: 26, y: 34 } },
+                    top: 'invoice', moved: false,
                     tray: null, db: { net: '', vat: '', total: '' },
                     outcome: null, examiner: false };
     State.screen = 'proto';
@@ -7446,10 +7451,14 @@
     P.circled[id] = !P.circled[id];
     sndPen(); render();
   }
-  function protoPullOut() {
+  function protoRaise(which) {
     const P = State.proto;
-    P.top = P.top === 'invoice' ? 'order' : 'invoice';
-    P.lifted = false;
+    if (P.top !== which) { P.top = which; sndPaper(); }
+  }
+  function protoTidy() {
+    const P = State.proto;
+    P.pos = { order: { x: 0, y: 0 }, invoice: { x: 26, y: 34 } };
+    P.top = 'invoice'; P.lifted = false;
     sndPaper(); render();
   }
   function protoLift() {
@@ -7531,19 +7540,20 @@
           <span class="pr-pen-body"></span>
           <span>${P.pen ? 'Pen in hand' : 'A red biro, on the desk'}</span>
         </button>
-        <div class="pr-stack ${P.top === 'order' ? 'is-flipped' : ''}">
-          ${protoSheet(D.order, { cls: 'pr-order ' + (P.top === 'order' ? 'pr-front' : 'pr-behind'),
-                                  attrs: 'id="prOrder"' })}
-          ${protoSheet(D.invoice, { cls: 'pr-invoice ' + (P.top === 'invoice' ? 'pr-front' : 'pr-behind') + (P.lifted ? ' is-lifted' : ''),
-                                    hot: P.top === 'invoice', clip: true, attrs: 'id="prInvoice"' })}
-          <button class="pr-pull" id="prPull" type="button">
-            <span class="pr-pull-l">${P.top === 'invoice' ? escapeHtml(D.order.ref) : escapeHtml(D.invoice.ref)}</span>
-            <span class="pr-pull-h">pull it out</span>
-          </button>
+        <div class="pr-deskarea" id="prDeskArea">
+          ${[['order', D.order], ['invoice', D.invoice]].map(([k, doc]) => {
+            const pos = P.pos[k];
+            return protoSheet(doc, {
+              cls: 'pr-loose pr-' + k + (P.top === k ? ' is-top' : '') + (P.lifted && k === 'invoice' ? ' is-lifted' : ''),
+              hot: k === 'invoice',
+              clip: k === 'invoice',
+              attrs: `id="pr${k === 'order' ? 'Order' : 'Invoice'}" data-pr-move="${k}"` +
+                     ` style="transform:translate3d(${pos.x}px,${pos.y}px,0);z-index:${P.top === k ? 12 : 6}"`,
+            });
+          }).join('')}
         </div>
-        <p class="pr-swap-note">${P.top === 'invoice'
-          ? 'The purchase order is clipped behind it.'
-          : 'The invoice is underneath.'}</p>
+        ${!P.moved ? '<p class="pr-swap-note">They came clipped together. Slide them about.</p>'
+                   : '<p class="pr-swap-note"><button type="button" class="pr-tidy" id="prTidy">Square them up</button></p>'}
         <div class="pr-trays">
           ${D.trays.map(t => `<button class="pr-tray" type="button" data-pr-tray="${escapeHtml(t.id)}">
             <div class="pr-tray-l">${escapeHtml(t.label)}</div>
@@ -7664,16 +7674,53 @@
     bind('prAgain', 'click', startProto);
     bind('prExam', 'click', () => { P.examiner = !P.examiner; playClick(); render(); });
     bind('prBack', 'click', () => { P.phase = 'desk'; P.tray = null; sndPaper(); render(); });
-    /* Tapping whichever sheet is underneath pulls it out. Tapping the one on
-       top picks it up, ready for a tray. */
-    const inv = document.getElementById('prInvoice');
-    const ord = document.getElementById('prOrder');
-    if (inv) inv.addEventListener('click', (e) => {
-      if (e.target.closest('[data-pr-hot]')) return;
-      if (P.top === 'invoice') protoLift(); else protoPullOut();
+    /* Both sheets drag freely. Releasing the invoice over a tray files it, which
+       is the same verb as putting paper in a tray on a real desk. A press that
+       does not move is still a tap, so circling and the keyboard path both work. */
+    let drag = null;
+    document.querySelectorAll('[data-pr-move]').forEach(el => {
+      el.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('[data-pr-hot]')) return;      // circling, not dragging
+        const k = el.dataset.prMove;
+        protoRaise(k);
+        el.style.zIndex = 20;
+        drag = { el, k, sx: e.clientX, sy: e.clientY,
+                 ox: P.pos[k].x, oy: P.pos[k].y, moved: false };
+        try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (!drag || drag.el !== el) return;
+        const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+        if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 5) return;
+        drag.moved = true;
+        el.classList.add('is-dragging');
+        el.style.transform = `translate3d(${drag.ox + dx}px,${drag.oy + dy}px,0)`;
+      });
+      const end = (e) => {
+        if (!drag || drag.el !== el) return;
+        const d = drag; drag = null;
+        el.classList.remove('is-dragging');
+        if (!d.moved) {                                     // a tap, not a drag
+          if (d.k === 'invoice') protoLift(); else render();
+          return;
+        }
+        P.pos[d.k] = { x: d.ox + (e.clientX - d.sx), y: d.oy + (e.clientY - d.sy) };
+        P.moved = true;
+        /* The sheet is under the cursor, so it has to be made transparent to
+           hit-testing for a moment or it finds itself instead of the tray. */
+        el.style.pointerEvents = 'none';
+        const over = document.elementFromPoint(e.clientX, e.clientY);
+        el.style.pointerEvents = '';
+        const tray = over && over.closest && over.closest('[data-pr-tray]');
+        if (tray && d.k === 'invoice') { P.lifted = true; protoDrop(tray.dataset.prTray); return; }
+        if (tray && d.k === 'order') { showToast('The order stays with you. It is the invoice that gets filed.', 'warn'); }
+        sndPaper(); render();
+      };
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+      el.addEventListener('click', (e) => { if (e.target.closest('[data-pr-hot]')) return; });
     });
-    if (ord) ord.addEventListener('click', () => { if (P.top !== 'order') protoPullOut(); });
-    bind('prPull', 'click', protoPullOut);
+    bind('prTidy', 'click', protoTidy);
     document.querySelectorAll('[data-pr-hot]').forEach(el =>
       el.addEventListener('click', (e) => { e.stopPropagation(); protoCircle(el.dataset.prHot); }));
     document.querySelectorAll('[data-pr-tray]').forEach(el =>
