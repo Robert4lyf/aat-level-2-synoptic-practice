@@ -423,6 +423,40 @@
       }
     },
 
+    /* ── Reporting and ethics (Outcome 5) ───────────────────────────────────
+       No figures here — this outcome is about who to tell, when, and on what
+       authority. What IS factual is where the information comes from and what
+       the AAT Code requires, so those are recorded and sourced. */
+    reporting: {
+      /* 5.2.1 — where changes are found. Cadences verified, because "check the
+         HMRC website" is not an answer an assessment will accept. */
+      sources: [
+        { name: 'HMRC Agent Update', what: 'Guidance and news for tax agents and advisers.', cadence: 'Monthly' },
+        { name: 'HMRC Employer Bulletin', what: 'Payroll news for employers and agents — rate changes, RTI, deadlines.', cadence: '6 times a year' },
+        { name: 'GOV.UK VAT and PAYE guidance', what: 'The notices themselves, updated as the law changes.', cadence: 'Continuous' },
+        { name: 'The Finance Act', what: 'The annual statute that changes rates, thresholds and penalties.', cadence: 'Annual' },
+        { name: 'AAT — Comment, CPD and technical updates', what: 'Professional-body interpretation and CPD.', cadence: 'Continuous' },
+        { name: 'Payroll and accounting software vendors', what: 'Release notes covering legislative changes built into the product.', cadence: 'Per release' }
+      ],
+      sourcesSource: 'HMRC, Agent Update collection; HMRC, Employer Bulletin collection',
+      checked: '2026-08-08',
+
+      /* 5.2.7 — the AAT Code of Professional Ethics. Five fundamental
+         principles, shared with the IESBA code the other UK bodies use. */
+      ethics: {
+        principles: [
+          { name: 'Integrity', what: 'Being straightforward and honest in all professional and business relationships.' },
+          { name: 'Objectivity', what: 'Not allowing bias, conflict of interest or undue influence to override professional judgement.' },
+          { name: 'Professional competence and due care', what: 'Keeping knowledge and skill at the level required, and acting diligently. It includes knowing the limits of your own competence.' },
+          { name: 'Confidentiality', what: 'Not disclosing information acquired at work without proper authority, and not using it for personal advantage.' },
+          { name: 'Professional behaviour', what: 'Complying with relevant laws and regulations and avoiding conduct that discredits the profession.' }
+        ],
+        goodFaith: 'A member must act in good faith and exercise care over the facts and information presented to HMRC on behalf of a client or employer. The obligation runs to the accuracy of what is submitted, not merely to following instructions.',
+        source: 'AAT Code of Professional Ethics',
+        checked: '2026-08-08'
+      }
+    },
+
     /* Figures the assessment SUPPLIES rather than expects from memory. Teach the
        method and the fact that a table will be given; do not ship a table that
        will be wrong next year. */

@@ -78,8 +78,8 @@
           p: [
             'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are.',
             'VAT dominates. Three of the five outcomes are VAT and nothing else, and they carry 75% of the assessment between them. Payroll is a single outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation — you are told what the deductions are and asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about communicating VAT *and* payroll matters to the right person in the right way.',
-            '**Outcomes 1 to 4 are written; only Outcome 5 is not.** That is 90% of the assessment. Take them in order, because each depends on the one before. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 checks the result — verifying a return, reconciling it to the records, and correcting it when it is wrong. Outcome 4 then changes subject to payroll, which turns out to have the same shape: register, record, report, pay, be penalised.',
-            'What is missing matters, and it would be dishonest not to say so. Outcome 5 — reporting information within the organisation — is 10% of the marks and is not written yet. Treat what follows as thorough preparation for nine tenths of the unit rather than as complete preparation for the assessment.',
+            '**All five outcomes are written.** Take them in order, because each depends on the one before. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 checks the result — verifying a return, reconciling it to the records, and correcting it when it is wrong. Outcome 4 changes subject to payroll, which turns out to have the same shape: register, record, report, pay, be penalised. Outcome 5 then asks you to explain all of it to somebody else, which is what the work is actually for.',
+            'One caveat, stated plainly. This material covers the whole syllabus, but covering a syllabus is not the same as being ready to sit an assessment — that needs practice under timed conditions against real question formats, and it needs someone qualified to have checked the teaching. Neither has happened yet. Treat this as a textbook, which is what it was written to be, rather than as a guarantee.',
             'One thing worth flagging now: the outcomes are not independent of each other. Outcome 3 asks you to review and correct a return that Outcome 2 taught you to build. Outcome 5 asks you to explain to somebody else what Outcomes 1 to 4 established. Material learned here is drawn on repeatedly later, which is another reason to learn it properly the first time.',
           ],
         },
@@ -3112,6 +3112,508 @@
     },
   ];
 
+
+  /* ── Outcome 5: Report information within the organisation (10%) ──────────
+     The smallest outcome, and the one that depends on all four others: it asks
+     you to explain to somebody else what Outcomes 1 to 4 established. Half of
+     5.1 is "be able to", so the lessons work through what a good communication
+     actually contains rather than asserting that communication matters. */
+  var LESSONS_LO5 = [
+
+    /* ── 5.1 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-5A',
+      title: 'Who to tell, and when to ask',
+      icon: '💬',
+      criteria: ['TPFB-5.1.1', 'TPFB-5.1.2', 'TPFB-5.1.4'],
+      cards: [
+        {
+          h: 'The outcome that uses all the others',
+          p: [
+            'Four outcomes have taught you what the law requires, how to calculate VAT, how to check a return and how payroll works. This one asks a different question: **who else needs to know, and how do you tell them?**',
+            'It is worth taking seriously rather than treating as the soft outcome at the end. In practice almost nothing a technician works out is useful until somebody else acts on it. A correctly calculated VAT liability that nobody warns the business about becomes a missed payment. A rate change spotted in an HMRC bulletin and not passed on becomes a systematic error across every invoice. An error discovered and not escalated becomes a failure to disclose.',
+            'The specification asks for two kinds of thing here. **Understanding** who to report to, when to escalate, and why the timing of payments matters so much to a business. And **being able to** communicate deadlines, the effects of new legislation, and specific VAT and payroll information to the right person.',
+            'Notice that this is 10% of the assessment for an outcome with no calculations of its own. The marks come from knowing what a good communication contains and who should receive it.',
+          ],
+          callout: { kind: 'key', text: 'Nothing you work out is useful until the right person knows it in time to act. That is the whole of this outcome.' },
+        },
+        {
+          h: 'Who receives what',
+          p: [
+            'There is no single "report it upwards" rule. Different information belongs to different people, and matching them is what the assessment tests.',
+            'Your **line manager** is the default for anything routine, anything uncertain, and anything outside your own competence. Escalating is not an admission of inadequacy — it is the professional response, and lesson 5C explains why the Code treats it that way.',
+            'The **finance function** — a financial controller, finance manager or whoever runs cash — needs the **amounts and dates**. They cannot budget for a payment they have not been told about, and this is the single most consequential communication in the outcome.',
+            '**Directors, owners or the board** need decisions and risks: whether to join a special scheme, the effect of a change in business operations, a penalty exposure, a systemic error that spans several periods. These are matters somebody with authority has to decide, not matters for the person preparing the figures.',
+            'The **client**, in a practice setting, occupies the same position as the employer does in-house — but with one addition. Nothing may be **submitted to HMRC** on a client\'s behalf without their authorisation, which lesson 5C returns to.',
+            'And **HMRC** receives returns, error disclosures and notifications — but only through the proper channel and, critically, only with authority. A technician does not decide unilaterally to disclose a client\'s error to HMRC.',
+          ],
+          table: {
+            headers: ['Who', 'What they need from you'],
+            rows: [
+              ['Line manager', 'Anything routine, uncertain, or beyond your competence'],
+              ['Finance / cash management', '**Amounts and dates** — what is payable and when'],
+              ['Directors or owners', 'Decisions and risks: schemes, penalties, systemic errors'],
+              ['The client or employer', 'The same, plus authorisation before anything is filed'],
+              ['HMRC', 'Returns, disclosures and notifications — **with authority**'],
+            ],
+          },
+        },
+        {
+          h: 'Knowing the edge of your own competence',
+          p: [
+            'The specification asks specifically when a query is **beyond your current experience or expertise** and should go to a line manager. It is worth being concrete, because "when you are not sure" is too vague to act on.',
+            'Some situations are beyond a Level 3 technician almost by definition. A **partial exemption calculation** using a special method. A supply whose **place of supply** is genuinely uncertain. A question about whether a business should **register in another country**. Anything touching the **domestic reverse charge** in an unfamiliar sector. A large or **deliberate error**. Any suggestion that figures have been altered on purpose.',
+            'A second class is subtler and matters more: situations where you **could produce an answer but should not be the one deciding**. Whether to adopt the flat rate scheme is arithmetic you can do, but it is a business decision with consequences you may not see. Whether an error is careless or deliberate is a judgement about somebody\'s state of mind. Whether to disclose to HMRC is a decision with legal weight.',
+            'The professional test is not "can I produce a number?" but "**am I the right person to be relied on for this?**". Producing a confident answer outside your competence is a breach of professional competence and due care, and it is more damaging than saying you need to check — because the person receiving it has no way of knowing it was a guess.',
+          ],
+          split: {
+            left: { title: 'Refer upwards', items: ['Special-method partial exemption', 'Uncertain place of supply, or overseas registration', 'An unfamiliar reverse charge', 'A large error, or one that may be deliberate', 'Any suspicion figures were altered on purpose'] },
+            right: { title: 'Refer even though you could answer', items: ['Whether to adopt a special scheme', 'Whether an error was careless or deliberate', 'Whether to disclose to HMRC', 'Anything committing the business to a position'] },
+          },
+          callout: { kind: 'warning', text: 'Producing a confident answer outside your competence is worse than saying you need to check. The person relying on it cannot tell it was a guess.' },
+        },
+        {
+          h: 'Communicating a deadline usefully',
+          p: [
+            'One of the "be able to" requirements is communicating **time limits for returns and payments to the appropriate person**. It sounds trivial. Done badly it is the most common failure in this outcome.',
+            'A useful deadline communication has four parts. **What** is due — the return, the payment, or both, since they are separate obligations. **When** — the actual date, not "next month". **How much**, where money is involved. And **what happens if it is missed**, because a deadline without a consequence attached tends to be treated as a target.',
+            'The recipient matters as much as the content. The finance function needs the **amount and date** far enough ahead to have the cash available. A director needs to know about an exposure. The person operating the payroll needs the filing date. Sending everything to everybody is not thoroughness; it is how the important item gets lost.',
+            'Timing is part of the message. Telling the finance manager on the 6th that £48,000 leaves the account on the 7th is technically a communication and practically useless. The point of communicating a deadline is to leave time to act on it.',
+          ],
+          example: {
+            title: 'The same deadline, badly and well',
+            rows: [
+              ['Poor', 'Better'],
+              ['"VAT is due soon."', '"The VAT return for the quarter ended 31 March is due for filing and payment by **7 May**. The liability is **£18,400**."'],
+              ['No date, no amount, no consequence.', '"Please make sure the funds are available by the 6th — a direct debit is collected three working days after the deadline."'],
+              ['Sent to everyone, or to no one in particular.', '"Sent to the finance manager, who controls the cash, with the FD copied."'],
+              ['Sent the day before.', '"Sent two weeks ahead, so there is time to act."'],
+            ],
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A technician calculates that £62,000 of VAT will be payable on 7 August. Who most needs to be told, and why?',
+          opts: [
+            'The finance function, because they must have the cash available by the date',
+            'HMRC, because the liability should be notified in advance of the return',
+            'All employees, so that everyone understands the position of the business',
+            'Nobody — the figure will appear on the return when it is submitted',
+          ],
+          ans: 0,
+          exp: 'A payment of that size has to be planned for. Whoever manages cash cannot budget for an outflow they do not know about, which makes this the most consequential communication in the outcome. HMRC learns the figure from the return itself, in the ordinary way.',
+        },
+        {
+          type: 'mcq',
+          q: 'A technician is asked whether a business should join the flat rate scheme. They could do the calculation. What is the appropriate response?',
+          opts: [
+            'Do the calculation, but refer the decision upwards — it commits the business',
+            'Decline to do anything, since scheme calculations are beyond Level 3',
+            'Decide and implement it, since the arithmetic is straightforward',
+            'Refer the whole question to HMRC for a ruling before acting',
+          ],
+          ans: 0,
+          exp: 'The arithmetic is well within Level 3, and doing it is useful. But adopting a scheme commits the business — and, for the flat rate scheme, cannot be reversed for twelve months. Producing the analysis and referring the decision is the professional response.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about reporting is true or false.',
+          statements: [
+            { text: 'Referring a query beyond your competence to a line manager is the professional response.', answer: true },
+            { text: 'A deadline communication should include the amount and the consequence of missing it.', answer: true },
+            { text: 'A technician may disclose a client’s error to HMRC on their own initiative.', answer: false },
+            { text: 'Sending every communication to everybody ensures nothing is missed.', answer: false },
+          ],
+          exp: 'Escalation is professional rather than an admission of weakness. A useful deadline says what, when, how much and what happens if missed. Disclosure to HMRC needs authority — it is not a unilateral decision. And sending everything to everyone is how the important item gets lost, not how it gets noticed.',
+        },
+      ],
+    },
+
+    /* ── 5.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-5B',
+      title: 'Tax and cash flow',
+      icon: '📉',
+      criteria: ['TPFB-5.1.3'],
+      cards: [
+        {
+          h: 'Why the timing matters so much',
+          p: [
+            'The specification singles out **the significant effect on cash flows and cash budgeting of the requirement to pay HMRC on time**. It is the only cash-flow concept in the unit, and it earns its place.',
+            'Consider what these payments look like from a business\'s bank account. They are **large** — a business turning over £1m of standard-rated sales hands over roughly £200,000 of VAT a year, and payroll taxes on a £500,000 wage bill run to six figures. They are **lumpy**, arriving as single amounts on fixed dates rather than spread across the month. They are **non-negotiable**, in a way that a supplier invoice is not: a supplier may accept late payment, and HMRC charges a penalty from a named day. And they are **not the business\'s money**, which means there is no argument for prioritising anything else over them.',
+            'Put those four together and the conclusion follows. VAT and PAYE are the most predictable large outflows a business has, and also the least forgiving. Predictability is the opportunity: unlike most costs, the date is known months ahead and the amount is knowable weeks ahead. A business that plans for them is never surprised. A business that does not is surprised four times a year.',
+          ],
+          callout: { kind: 'key', text: 'Large, lumpy, non-negotiable, and not the business\'s money — but entirely predictable. That combination is what makes tax the easiest large outflow to plan for and the most damaging to ignore.' },
+        },
+        {
+          h: 'The trap of holding money that is not yours',
+          p: [
+            'The specific danger is worth naming, because it is how otherwise healthy businesses fail.',
+            'VAT is collected from customers throughout the quarter and paid to HMRC after it ends. For up to four months, a business is holding money that belongs to the Exchequer and sitting in its own bank account. It looks exactly like the business\'s own cash. It appears in the balance, it can be spent, and nothing in the day-to-day operation of the account distinguishes it.',
+            'A business under pressure spends it. Not usually as a decision — it simply pays wages and suppliers from a balance that included VAT, and finds at the quarter end that it cannot pay HMRC. The payment then falls due against an account that no longer holds it.',
+            'What follows escalates on a fixed schedule, as lesson 1G set out: no penalty within 15 days, then 3% at day 15, another 3% at day 30, then 10% a year accruing daily, with interest throughout. And the following quarter arrives before the last one is cleared. This is the pattern behind a large share of HMRC debt, and it starts with a business that never separated money it was holding from money it had earned.',
+            'The defence is unglamorous and effective: **set the VAT aside as it is collected**, in a separate account if possible, and treat the payment date as an immovable commitment rather than a bill to be prioritised alongside others.',
+          ],
+          callout: { kind: 'warning', text: 'VAT sitting in the current account looks exactly like the business\'s own money. Businesses do not usually decide to spend it — they simply spend from a balance that included it.' },
+        },
+        {
+          h: 'What this means for advice',
+          p: [
+            'Because the outcome is about **communication**, the point is not merely to understand the cash-flow effect but to be able to explain it, and to identify when a change makes it worse.',
+            'Several things covered earlier in this unit change a business\'s cash position, and recognising them is exactly what an assessment would ask.',
+            '**Cash accounting** improves cash flow for a business that gives credit — VAT is not paid over until the customer pays. **Annual accounting** makes cash flow predictable through instalments, but suits a repayment trader badly. **Monthly returns** accelerate repayments for a zero-rated trader or an exporter. **Registering for VAT** means output tax begins leaving the business on a fixed calendar for the first time. **Growth** raises the liability proportionately, so a business that has just had its best quarter faces its largest ever payment.',
+            'That last case deserves emphasis, because it is counter-intuitive and it catches people. A growing business generates more VAT, pays more PAYE as it hires, and often has more cash tied up in stock and receivables at the same time. The quarter after a boom is when the largest tax bill lands. Growth is a cash-flow risk, not only a cash-flow benefit, and it is exactly the sort of thing a technician who sees the figures should be raising with whoever manages the money.',
+          ],
+          table: {
+            headers: ['Change', 'Effect on cash flow'],
+            rows: [
+              ['Joining cash accounting', 'Improves it — no VAT paid on unpaid invoices'],
+              ['Joining annual accounting', 'Makes it predictable; poor for a repayment trader'],
+              ['Moving to monthly returns', 'Accelerates repayments for zero-rated traders and exporters'],
+              ['Registering for VAT', 'Introduces a new fixed outflow on a fixed calendar'],
+              ['**Rapid growth**', '**Raises the liability just as working capital is stretched**'],
+            ],
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'Why is the requirement to pay HMRC on time particularly significant for cash budgeting?',
+          opts: [
+            'The payments are large, lumpy and non-negotiable, but entirely predictable',
+            'The amounts cannot be known until HMRC issues an assessment for the period',
+            'HMRC may vary the payment date, so the outflow cannot be planned for',
+            'The payments are small enough to be absorbed without specific planning',
+          ],
+          ans: 0,
+          exp: 'The dates are known months ahead and the amounts weeks ahead, so these are the most predictable large outflows a business has. What makes them dangerous is that they are also the least forgiving — the penalty regime starts on a named day regardless of circumstances.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business has just had its best trading quarter ever. What should a technician raise with the finance manager?',
+          opts: [
+            'That the VAT liability will be the largest yet, at a time when working capital is stretched',
+            'That the increased turnover will reduce the VAT payable through economies of scale',
+            'That growth removes the need to plan for the payment, since cash is plentiful',
+            'That HMRC will spread the higher liability across the following four quarters',
+          ],
+          ans: 0,
+          exp: 'More sales mean more output tax, and a growing business usually has more cash tied up in stock and receivables at the same time. The quarter after a boom brings the largest payment — which is why growth is a cash-flow risk and not only a benefit.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about tax and cash flow is true or false.',
+          statements: [
+            { text: 'VAT collected sits in the business’s account before it is paid to HMRC.', answer: true },
+            { text: 'Cash accounting improves cash flow for a business that gives credit.', answer: true },
+            { text: 'Annual accounting suits a repayment trader particularly well.', answer: false },
+            { text: 'The date a VAT payment falls due is known well in advance.', answer: true },
+          ],
+          exp: 'VAT does sit in the current account, indistinguishable from the business’s own money, which is precisely the danger. Cash accounting defers VAT until customers pay. Annual accounting suits a repayment trader badly, since the refund arrives once a year. And the due date is fixed and known, which is what makes planning possible.',
+        },
+      ],
+    },
+
+    /* ── 5.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-5C',
+      title: 'Explaining VAT and payroll to others',
+      icon: '📢',
+      criteria: ['TPFB-5.1.5', 'TPFB-5.1.6', 'TPFB-5.1.7'],
+      cards: [
+        {
+          h: 'What a good explanation contains',
+          p: [
+            'Three of this outcome\'s requirements are about **providing information** — on new legislation, on VAT matters, and on payroll matters. They share a structure, and having it in mind is more useful than memorising three separate lists.',
+            'A good communication answers four questions. **What has happened or will happen** — the fact itself, stated plainly. **What it means for this business** — the consequence, specific to them rather than general. **What needs to be done** — the action, and who must take it. **By when** — the date, and what follows from missing it.',
+            'The second of those is what separates a useful communication from a forwarded link. "The VAT rate on hospitality changes from 1 April" is a fact. "The VAT rate on hospitality changes from 1 April, which affects roughly 60% of our sales; the till system and price lists need updating before then, and I will need a day to do it" is advice.',
+            'Pitch matters too. The recipient is usually not a tax specialist — that is why they are being told. Jargon that is precise between technicians is noise to a director, and an explanation that is not understood has not been given.',
+          ],
+          flow: ['What has changed', 'What it means for us', 'What must be done', 'By when'],
+        },
+        {
+          h: 'Communicating a change in legislation',
+          p: [
+            'Tax changes annually and sometimes more often, so this is a recurring task rather than an occasional one. The categories worth being ready for are the ones this unit has already covered.',
+            'A **change in VAT rate** is the most disruptive, because it touches everything: pricing, invoicing, the till system, quotes already given, and contracts spanning the change date. The tax point rules of lesson 2B decide which rate applies to a supply straddling it, which is exactly the sort of question that arrives on the day and cannot wait.',
+            'A **change in thresholds** may bring a business into VAT registration, or make it eligible to leave a scheme. Someone monitoring rolling turnover is the first to know, and the last person who should keep it to themselves.',
+            'A **change in penalties** matters because it changes the cost of behaviour the business may currently regard as tolerable. When the VAT late payment penalty rose from 2% to 3% at day 15, a business habitually paying a fortnight late became materially worse off without doing anything differently.',
+            '**Payroll changes** arrive every April with the new tax year — rates, thresholds, statutory pay, the National Living Wage. The employer must have them in the payroll software before the first payday of the new year, which makes this a deadline rather than an item of news.',
+          ],
+          example: {
+            title: 'Communicating a rate change well',
+            rows: [
+              ['Question', 'What the message should say'],
+              ['What has changed?', 'The standard rate changes from 20% to 22% on 1 April.'],
+              ['What does it mean for us?', 'All standard-rated sales are affected — about 85% of turnover. Quotes already issued and contracts spanning the date need checking against the tax point rules.'],
+              ['What must be done?', 'Update the invoicing system and price lists; decide whether to absorb the increase or pass it on; review open quotes.'],
+              ['By when, and who?', 'Before the first invoice on 1 April. Systems by me; the pricing decision is for the directors.'],
+            ],
+          },
+        },
+        {
+          h: 'The VAT matters you may be asked about',
+          p: [
+            'The specification lists what a technician should be able to provide information on, and every item is something an earlier lesson covered. Read as a list, it is a fair summary of the whole unit seen from the outside.',
+            '**Completion of the return** — what the figures are and what they mean. **Errors and omissions**, current and previous period — that one has been found, its size, and which periods it affects. **Whether to correct or disclose** — the two-limb test of lesson 3A applied to this error, presented as an analysis for somebody else to decide on. **Penalties and assessments** — the exposure, and how behaviour and disclosure affect it. **The effects of a rate change or other regulatory change**. **The effect of a change in business operations** — starting to export, adding an exempt activity, buying a car. And **the effect of adopting a special scheme** on payment and recovery.',
+            'Two of those deserve care. On **whether to correct or disclose**, the technician\'s job is to lay out the test and the numbers, not to decide alone — the decision affects the business\'s relationship with HMRC and may turn on whether the error was deliberate, which is a judgement about people rather than figures.',
+            'And on **penalties**, the honest communication includes the part nobody wants to deliver: that an unprompted disclosure is worth substantially more than one made after HMRC starts asking, so delay has a price. Softening that is not kindness.',
+          ],
+          callout: { kind: 'tip', text: 'On an error, present the test and the numbers and let the decision sit with whoever has authority. Your job is to make the choice informed, not to make it.' },
+        },
+        {
+          h: 'The payroll matters you may be asked about',
+          p: [
+            'The payroll list is shorter — **completion of payroll reports**, **penalties**, and **the effects of regulatory changes** — but the communications carry a dimension VAT ones do not.',
+            'Payroll information is about **identifiable individuals**, and lesson 4B set out what follows. A question about a colleague\'s pay is not answered because the person asking is senior; it is answered if they have a legitimate need to know. That is a genuinely awkward conversation to have with a manager, and it is exactly the situation this outcome is preparing you for.',
+            'On **reports**, the useful communication is usually about what the figures mean rather than what they are: why the amount due to HMRC exceeds what employees had deducted (the employer\'s National Insurance), why a payslip shows a smaller pension deduction than expected, why a new starter appears to have paid too much tax.',
+            'On **penalties**, the point worth making is the one from lesson 4F: late filing is penalised **per month by headcount**, and repeated late payment escalates from 1% to 4% across the year. A business that is habitually a few days late is paying progressively more for behaviour it has stopped noticing.',
+            'On **regulatory changes**, the annual April cycle is the thing to communicate ahead of time rather than during. The software must be updated, the rates must be right, and the first payday of the new tax year is a hard deadline that arrives at the same time every year.',
+          ],
+          examtrap: 'Payroll communications concern identifiable individuals. Seniority is not the same as a legitimate need to know, and confidentiality does not yield to rank.',
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'Which of these is the most useful way to communicate a forthcoming VAT rate change to a director?',
+          opts: [
+            'State the change, what proportion of sales it affects, what must be done and by when',
+            'Forward the HMRC guidance page so they can read the detail themselves',
+            'Wait until the change takes effect, so the position is certain before advising',
+            'Explain the tax point rules in full, so they understand the underlying mechanism',
+          ],
+          ans: 0,
+          exp: 'A useful communication answers what has changed, what it means for this business, what must be done and by when. Forwarding a link supplies the fact without the consequence, and waiting removes the chance to act. The tax point mechanism matters to whoever implements it, not to the person deciding on pricing.',
+        },
+        {
+          type: 'mcq',
+          q: 'A manager asks a payroll technician what a colleague in another department earns. What is the correct response?',
+          opts: [
+            'Decline unless the manager has a legitimate need to know',
+            'Provide it, since a manager is senior enough to be entitled to the information',
+            'Provide it only if the colleague is told afterwards that it was disclosed',
+            'Provide an approximate figure, since a rounded amount is not confidential',
+          ],
+          ans: 0,
+          exp: 'Confidentiality turns on a legitimate need to know, not on seniority. Payroll data concerns identifiable individuals and is protected accordingly. An approximation is still a disclosure, and telling the colleague afterwards does not make an unauthorised disclosure authorised.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about communicating tax matters is true or false.',
+          statements: [
+            { text: 'A good communication says what must be done and by when, not just what has changed.', answer: true },
+            { text: 'The decision whether to disclose an error should rest with whoever has authority.', answer: true },
+            { text: 'Payroll rate changes should be communicated after the new tax year begins.', answer: false },
+            { text: 'An unprompted disclosure attracts a lower penalty than a prompted one.', answer: true },
+          ],
+          exp: 'Facts without consequences and actions are not advice. Disclosure decisions carry legal weight and belong with whoever has authority. April changes must be in the software before the first payday, so they are communicated ahead of the year, not during it. And coming forward first is worth real money under the penalty regime.',
+        },
+      ],
+    },
+
+    /* ── 5.2 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-5D',
+      title: 'Keeping current, and keeping systems current',
+      icon: '🔄',
+      criteria: ['TPFB-5.2.1', 'TPFB-5.2.4', 'TPFB-5.2.6'],
+      cards: [
+        {
+          h: 'Where changes are found',
+          p: [
+            'Tax changes every year, and a technician working from what they learned when they qualified will be wrong within a couple of years without ever noticing the moment it happened. The specification therefore asks **where to find information about changes to VAT and payroll law and practice**, and "the HMRC website" is not a sufficient answer.',
+            '**HMRC Agent Update** is published **monthly** and carries guidance and news for tax agents and advisers. **HMRC Employer Bulletin** is published **six times a year** and is the payroll equivalent — rate changes, RTI developments, deadline reminders. Both can be subscribed to by email, which converts keeping up to date from something you must remember to do into something that arrives.',
+            'Beneath those sit the **VAT notices and PAYE guidance on GOV.UK** themselves, updated continuously as the law changes; the **Finance Act** each year, which is where rates, thresholds and penalties actually move; **AAT\'s own technical updates and CPD**, which interpret changes for members; and **software vendors\' release notes**, which describe the legislative changes built into a product.',
+            'The practical point is that these are **push** rather than **pull** sources. A technician who relies on remembering to check will eventually not check during the month that mattered.',
+          ],
+          table: {
+            headers: ['Source', 'What it carries', 'How often'],
+            rows: [
+              ['HMRC Agent Update', 'Guidance and news for agents and advisers', '**Monthly**'],
+              ['HMRC Employer Bulletin', 'Payroll news — rates, RTI, deadlines', '**6 times a year**'],
+              ['GOV.UK notices and guidance', 'The rules themselves', 'Continuous'],
+              ['The Finance Act', 'Where rates and thresholds actually change', 'Annual'],
+              ['AAT technical updates and CPD', 'Interpretation for members', 'Continuous'],
+              ['Software vendor release notes', 'Legislative changes built into the product', 'Per release'],
+            ],
+          },
+        },
+        {
+          h: 'Why keeping current is an obligation',
+          p: [
+            'The specification treats **maintaining up to date and relevant knowledge** as a requirement rather than good practice, and the reason is in the Code of Professional Ethics that lesson 5E covers.',
+            '**Professional competence and due care** is one of the five fundamental principles, and it has two limbs. Attaining competence, and **maintaining** it. Knowledge that was correct when acquired does not stay correct, so competence is not a state you reach but one you keep.',
+            'This unit provides its own illustration. It is written to **Finance Act 2025**, assessable from January 2026, and the unit is reissued every September for the following Finance Act. The **VAT late payment penalty changed from 2% to 3%** at day 15, and from 4% to 10% annualised — a technician still quoting the old figures would be confidently, precisely wrong, and would sound exactly as authoritative as one quoting the new ones.',
+            'Worse, some superseded rules survive in circulation for years. The **5%/10%/15% late registration penalty** described in VAT Notice 700/41 applied only to failures before April 2010, and is still repeated in study material today. Being out of date rarely announces itself. It has to be actively guarded against, which is what CPD is for.',
+          ],
+          callout: { kind: 'warning', text: 'Being out of date does not feel like being out of date. A superseded figure sounds exactly as authoritative as a current one — which is why keeping current is an obligation rather than a habit.' },
+        },
+        {
+          h: 'Software has to be updated too',
+          p: [
+            'The specification asks separately about **updating accounting software for changes to VAT and payroll legislation**, and it is a distinct point from personal knowledge.',
+            'Under Making Tax Digital and RTI, the software does not merely record what a person decided — it **applies the rules**. It calculates the VAT on a sale from the rate held against the product. It calculates tax and National Insurance from the bands held in the payroll module. It files directly to HMRC without a person retyping anything.',
+            'So software running last year\'s rates does not produce an obviously wrong figure that somebody catches. It produces a **plausible figure that is wrong**, on every transaction, until somebody notices. A payroll running last April\'s thresholds under-deducts consistently across an entire workforce, and the error is discovered when HMRC asks about it.',
+            'Three things follow. Updates must be applied **before the change takes effect**, not after — for payroll that means before the first payday of the new tax year, which is a hard date. Rates held against individual products or customers may need changing separately from a system-wide update. And after any change, the first run should be **checked** rather than assumed, which is where the review techniques of lesson 3D earn their keep.',
+          ],
+          examtrap: 'Out-of-date software does not fail visibly. It produces plausible wrong figures on every transaction until somebody checks — which is why the update must precede the change, not follow it.',
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'How often is the HMRC Employer Bulletin published?',
+          opts: [
+            '6 times a year',
+            'Monthly, in line with the Agent Update',
+            'Annually, alongside the Finance Act',
+            'Quarterly, matching the VAT return cycle',
+          ],
+          ans: 0,
+          exp: 'The Employer Bulletin appears six times a year and carries payroll news — rate changes, RTI developments and deadline reminders. Agent Update, aimed at agents and advisers, is the monthly one. Both can be subscribed to by email.',
+        },
+        {
+          type: 'mcq',
+          q: 'A payroll system has not been updated for the new tax year’s thresholds. What is the likely consequence?',
+          opts: [
+            'Plausible but wrong deductions on every payslip until someone notices',
+            'The software will refuse to run until the update is applied',
+            'HMRC will reject the Full Payment Submission automatically',
+            'No consequence, since HMRC recalculates the figures on receipt',
+          ],
+          ans: 0,
+          exp: 'This is what makes stale software dangerous: it does not fail visibly. It applies last year’s rules consistently and produces figures that look entirely normal, across the whole workforce, until the error is found — often by HMRC.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about staying current is true or false.',
+          statements: [
+            { text: 'Maintaining up to date knowledge is part of professional competence and due care.', answer: true },
+            { text: 'Software updates should be applied before the legislative change takes effect.', answer: true },
+            { text: 'A superseded tax figure is usually obvious when quoted.', answer: false },
+            { text: 'HMRC Agent Update is published monthly.', answer: true },
+          ],
+          exp: 'Competence must be maintained, not merely attained — that is the second limb of the principle. Updates must precede the change, particularly for payroll where the first payday is a hard deadline. A superseded figure sounds exactly as authoritative as a current one, which is the whole difficulty. And Agent Update is monthly, against the Employer Bulletin’s six times a year.',
+        },
+      ],
+    },
+
+    /* ── 5.2 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-5E',
+      title: 'Ethics, authorisation and confidentiality',
+      icon: '🤝',
+      criteria: ['TPFB-5.2.2', 'TPFB-5.2.3', 'TPFB-5.2.5', 'TPFB-5.2.7'],
+      cards: [
+        {
+          h: 'The five fundamental principles',
+          p: [
+            'The **AAT Code of Professional Ethics** sets out five fundamental principles, shared with the codes the other UK accountancy bodies use. They are the framework the rest of this lesson applies, and they are worth knowing by name because the assessment refers to them by name.',
+            '**Integrity** — being straightforward and honest in all professional and business relationships. **Objectivity** — not allowing bias, conflict of interest or undue influence to override professional judgement. **Professional competence and due care** — keeping knowledge and skill at the level required and acting diligently, which includes knowing the limits of your own competence. **Confidentiality** — not disclosing information acquired at work without proper authority, and not using it for personal advantage. **Professional behaviour** — complying with relevant laws and regulations, and avoiding conduct that discredits the profession.',
+            'They are not abstractions in a tax context. Each maps onto a situation this unit has already described, which is the most useful way to learn them.',
+          ],
+          table: {
+            headers: ['Principle', 'What it looks like in VAT and payroll'],
+            rows: [
+              ['Integrity', 'Not submitting a return you know to be wrong, whoever asked you to'],
+              ['Objectivity', 'Not letting pressure from a client or manager change a figure'],
+              ['Professional competence and due care', 'Referring a partial exemption special method; keeping up with the Finance Act'],
+              ['Confidentiality', 'Not disclosing a colleague’s pay to someone with no need to know'],
+              ['Professional behaviour', 'Meeting deadlines, and dealing with HMRC honestly'],
+            ],
+          },
+        },
+        {
+          h: 'Authorisation before submission',
+          p: [
+            'The specification asks specifically about **the importance of seeking authorisation before returns are submitted**, and it is worth understanding why a step that looks like a formality is treated as a principle.',
+            'A submitted return is a **declaration by the business or client**, not by the person who prepared it. It commits them to a figure, exposes them to penalties if it is wrong, and forms the basis on which HMRC will act. The person who bears those consequences is entitled to see it before it is made in their name.',
+            'For an **agent** the position is formal: authorisation to act must be in place before anything can be filed, and the client should approve the return itself. For an **employee** it is usually a matter of internal authority — a technician prepares the return, and someone with the standing to commit the business approves it.',
+            'The requirement protects the preparer as much as the business. A return approved by whoever is accountable for it is a shared position rather than an individual one, and the approval step is a genuine last check by someone who knows things the preparer may not — a credit note agreed verbally, a contract that changed, an asset sold. Skipping it to save time removes the last opportunity for that knowledge to surface.',
+          ],
+          callout: { kind: 'key', text: 'A return is a declaration by the business, not by whoever typed it. The person exposed to the penalty is entitled to approve it first — and often knows something the preparer does not.' },
+        },
+        {
+          h: 'Confidentiality and information security',
+          p: [
+            'Lesson 4B covered data protection for employee data. The Code adds a professional duty of **confidentiality** that is wider than data protection law and applies to the business\'s information as much as to individuals\'.',
+            'Confidentiality means not disclosing information acquired at work **without proper authority**, and not using it **for personal advantage**. Both limbs matter. Knowing a client is about to lose its largest customer is confidential; acting on that knowledge is a separate breach from disclosing it.',
+            'The duty does not stop when the engagement or the employment does. Information learned about a former employer remains confidential afterwards, which is a point people find genuinely counter-intuitive.',
+            'It is not absolute. Disclosure is permitted where it is **required by law**, where it is **permitted by law and authorised** by the client or employer, and where there is a **professional duty or right** to disclose. Money laundering reporting is the standard example of the first: a required disclosure overrides the confidentiality duty, and the fact that a client would object is not a reason to withhold it.',
+            '**Information security** is the practical arm. Payroll and VAT records are attractive to fraudsters — bank details, National Insurance numbers, salary data. Access restricted to those who need it, care with attachments and email addresses, no discussion of client or colleague affairs in public, and breaches handled rather than hoped about.',
+          ],
+          split: {
+            left: { title: 'Confidentiality means', items: ['No disclosure without proper authority', 'No use for personal advantage', 'Continuing after the engagement ends', 'Applying to the business as well as to individuals'] },
+            right: { title: 'Disclosure is permitted where', items: ['It is **required by law** — money laundering reporting', 'It is permitted by law **and authorised**', 'There is a professional duty or right to disclose'] },
+          },
+        },
+        {
+          h: 'Acting in good faith with HMRC',
+          p: [
+            'The last key concept of the unit is the one that gives the rest its point: the importance of **acting in good faith and exercising care over facts or information presented on behalf of clients or employers when dealing with HMRC**, in line with the AAT Code.',
+            'The obligation runs to **the accuracy of what is submitted**, not merely to following instructions. A technician who submits a return knowing it understates output tax has not discharged their duty by pointing out that the client told them to. Integrity is the principle engaged, and it does not yield to the fact that somebody else asked.',
+            '"Exercising care over facts" also covers what you did **not** check. Accepting a figure that looks implausible, without asking, is a failure of due care even if nobody instructed you to accept it. The review techniques of lesson 3D are the professional obligation in practical form: a Box 1 that is 6% of Box 6 for a wholly standard-rated trader is a question to ask, not a figure to file.',
+            'Where a genuine conflict arises — an employer instructing something you believe is wrong — the Code\'s expectation is to raise it internally first, escalate within the organisation, seek advice from AAT if it is unresolved, and document what happened throughout. What is not available is quietly complying, and neither is quietly resigning while leaving the return filed.',
+            'This is where the unit ends, and it ends here for a reason. Everything before it was mechanism — thresholds, tax points, boxes, deadlines. Mechanism is only worth having if the person operating it can be relied on, which is the whole of what the Code is for.',
+          ],
+          callout: { kind: 'warning', text: '"The client told me to" is not a defence. The obligation runs to the accuracy of what is submitted, and integrity does not yield to instruction.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A client instructs a technician to submit a VAT return the technician knows understates output tax. What does the Code require?',
+          opts: [
+            'Refuse to submit it — integrity does not yield to instruction',
+            'Submit it, since the client bears responsibility for their own declaration',
+            'Submit it, but record in writing that the client gave the instruction',
+            'Submit it and report the client to HMRC immediately afterwards',
+          ],
+          ans: 0,
+          exp: 'The obligation runs to the accuracy of what is submitted, and "the client told me to" is not a defence. The Code expects the matter to be raised, escalated and documented — and if unresolved, advice sought from AAT. Filing a knowingly wrong return with a note on file is still filing a knowingly wrong return.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which fundamental principle is engaged when a technician takes on a partial exemption special method they do not understand?',
+          opts: [
+            'Professional competence and due care',
+            'Confidentiality, because the calculation involves sensitive figures',
+            'Objectivity, because the method may favour one outcome',
+            'Professional behaviour, because the work will take longer than planned',
+          ],
+          ans: 0,
+          exp: 'Professional competence and due care requires both attaining competence and knowing its limits. Working beyond your competence breaches it even if the answer happens to come out right, because the person relying on the figure has no way of knowing it was uncertain.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about ethics and confidentiality is true or false.',
+          statements: [
+            { text: 'The duty of confidentiality continues after the employment or engagement ends.', answer: true },
+            { text: 'Confidentiality prevents disclosure that is required by law.', answer: false },
+            { text: 'A return should be authorised by the business before it is submitted.', answer: true },
+            { text: 'Using confidential information for personal advantage breaches the Code even if it is never disclosed.', answer: true },
+          ],
+          exp: 'The duty survives the end of the relationship. It is not absolute — a legally required disclosure such as money laundering reporting overrides it. A return is the business’s declaration and should be approved by whoever is accountable. And the Code prohibits both disclosure and use for personal advantage, which are separate breaches.',
+        },
+        {
+          type: 'gapfill',
+          q: 'Complete the five fundamental principles of the AAT Code.',
+          template: 'The five principles are integrity, {0}, professional competence and {1}, {2}, and professional behaviour.',
+          gaps: [
+            { options: ['objectivity', 'transparency', 'independence'], answer: 0 },
+            { options: ['due care', 'good faith', 'diligence'], answer: 0 },
+            { options: ['confidentiality', 'accountability', 'honesty'], answer: 0 },
+          ],
+          exp: 'Integrity, objectivity, professional competence and due care, confidentiality, and professional behaviour. The same five appear in the codes of the other UK accountancy bodies, and the assessment refers to them by name.',
+        },
+      ],
+    },
+  ];
+
   /* One entry per learning outcome. The orientation lessons open Outcome 1
      because they are the opening of the unit, not of any one outcome. */
   var PATH = [
@@ -3150,6 +3652,15 @@
       outcomeTitle: 'Understand principles of payroll',
       weighting: 15,
       lessons: LESSONS_LO4,
+    },
+    {
+      unit: 'tpfb',
+      level: 3,
+      title: 'Tax Processes for Businesses',
+      outcome: 5,
+      outcomeTitle: 'Report information within the organisation',
+      weighting: 10,
+      lessons: LESSONS_LO5,
     },
   ];
 

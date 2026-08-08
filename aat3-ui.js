@@ -272,11 +272,20 @@
         (cov ? '<span>' + cov.studied + ' of ' + cov.total + ' syllabus points studied</span>' : '') + '</div></div>' +
       '</div></header>';
 
-    /* Honest scope notice — this is part of the unit, not all of it. */
-    h += '<div class="a3-notice"><strong>' + groups.length + ' of the unit’s 5 outcomes are written.</strong> ' +
-      'They cover ' + (cov ? cov.covered : 0) + ' of the unit’s ' + (cov ? cov.total : 0) +
-      ' syllabus points, worth ' + outcomeWeight + '% of the assessment. The remaining outcomes are not written yet, ' +
-      'so this is not yet full preparation for the assessment.</div>';
+    /* Honest scope notice. Once every outcome is written the claim has to
+       change rather than disappear: full syllabus coverage is not the same
+       thing as being ready to sit the assessment, and saying so is the point
+       of having the notice at all. */
+    var whole = cov && cov.covered >= cov.total;
+    h += '<div class="a3-notice">' + (whole
+      ? '<strong>All five outcomes are written.</strong> They cover every one of the unit’s ' +
+        (cov ? cov.total : 0) + ' syllabus points. Covering the syllabus is not the same as being ' +
+        'ready to sit the assessment, which also needs timed practice against real question formats — ' +
+        'and none of this has been reviewed by a qualified accountant.'
+      : '<strong>' + groups.length + ' of the unit’s 5 outcomes are written.</strong> ' +
+        'They cover ' + (cov ? cov.covered : 0) + ' of the unit’s ' + (cov ? cov.total : 0) +
+        ' syllabus points, worth ' + outcomeWeight + '% of the assessment. The remaining outcomes are ' +
+        'not written yet, so this is not yet full preparation for the assessment.') + '</div>';
 
     /* The track — one section per outcome, continuous numbering of nodes. */
     groups.forEach(function (g) {
