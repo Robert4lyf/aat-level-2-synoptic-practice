@@ -6520,111 +6520,226 @@
   }
 
   /* ── STORY MODE ───────────────────────────────────────────────────────────
-     "Wrenfield Supplies" — a working day on the accounts desk. Content lives in
-     story-data.js, the look in story-styles.css. Story mode takes over the
-     viewport (body.story-mode hides the app chrome) because it is a game, not
-     another question screen.
+     "Wrenfield Supplies" — a day on the accounts desk. Content in story-data.js,
+     look in story-styles.css. Story mode takes over the viewport.
 
-     Deliberately small: beats play in order, an item's steps are marked in one
-     pass, and the only branching is a flat flag map where one item's decision is
-     read back by one later beat.
+     The clock is the game. You start at 08:52 with a tray and you choose what to
+     work on. Every item costs its minutes; every wrong answer costs rework on
+     top, because you go back and check. A careful day finishes around four; a
+     sloppy one has you still at your desk when Deirdre puts her coat on. The WR
+     statement takes 90 minutes and has to be agreed before the 16:00 payment run,
+     so it cannot be left to last.
+
+     Nothing is ever locked. At 17:00 with work left you choose: stay late, or
+     leave it for Wednesday. Leaving it costs the marks but you still see the
+     answers at clock-off, so the teaching never depends on the clock.
 
      Story marks never enter Storage.data.stats — they cannot move the readiness
      meter, topic mastery or spaced repetition. This teaches the job; the question
      bank measures the exam. */
 
   function storyDef() { return window.AAT_STORY || null; }
+  function storyDay(id) {
+    const s = storyDef();
+    return s ? ((s.days || []).find(d => d.id === id) || null) : null;
+  }
   function storyModeDesc() {
     const s = storyDef();
     const day = s && (s.days || [])[0];
     if (!day) return '';
     const rec = ((Storage.data.story || {}).days || {})[day.id];
-    const base = `${day.title} · ${day.minutes} min · ${day.totalMarks} marks`;
+    const base = `${day.title} · a shift on the accounts desk`;
     return rec ? `${base} · best ${rec.best}/${rec.total || day.totalMarks}` : base;
-  }
-  function storyDay(id) {
-    const s = storyDef();
-    return s ? ((s.days || []).find(d => d.id === id) || null) : null;
   }
   function storyPerson(id) {
     const s = storyDef();
     return (s && (s.cast || []).find(c => c.id === id)) || { name: id || '', initials: '?', tone: 'n', role: '' };
   }
-  /* Light inline emphasis for dialogue: *word* → <em>. Escaped first, so content
-     can never introduce markup. */
   function storyText(s) {
     return escapeHtml(String(s == null ? '' : s)).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
-  function storyBeats() { const d = storyDay(State.story.dayId); return d ? d.beats : []; }
 
-  function storyResolve(beat) {
-    if (!beat || !beat.variants) return beat;
-    const cases = beat.variants.cases || {};
-    const key = State.story.flags[beat.variants.on];
-    const chosen = cases[key] || cases[Object.keys(cases)[0]] || {};
-    const out = Object.assign({}, beat, chosen);
-    if (chosen.docsExtra) out.docs = (beat.docs || []).concat(chosen.docsExtra);
-    return out;
-  }
-  function storyCurrent() {
-    const beats = storyBeats();
-    return State.story.i < beats.length ? storyResolve(beats[State.story.i]) : null;
-  }
+  /* ── Clock ── */
+  const stM = (t) => { const p = String(t || '0:00').split(':'); return (+p[0]) * 60 + (+p[1] || 0); };
+  const stT = (m) => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(Math.round(m) % 60).padStart(2, '0');
+  function storyBeatsOf(day) { return day.beats || []; }
+  function storyItems(day) { return storyBeatsOf(day).filter(b => b.kind === 'item'); }
+  function storyItem(day, id) { return storyItems(day).find(b => b.id === id) || null; }
 
+  /* ── Diegetic sound ──
+     Synthesised, because the last game in this repo died of an asset pipeline.
+     Everything here is an oscillator or a noise buffer through a filter. */
+  let _stNoise = null;
+  function stNoiseBuf(ctx) {
+    if (_stNoise && _stNoise.sampleRate === ctx.sampleRate) return _stNoise;
+    const n = ctx.sampleRate * 0.6;
+    const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    _stNoise = buf; _stNoise.sampleRate = ctx.sampleRate;
+    return buf;
+  }
+  function stNoise(dur, freq, vol, type) {
+    const ctx = ensureAudio(); if (!ctx) return;
+    try {
+      const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      src.buffer = stNoiseBuf(ctx);
+      f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = 0.9;
+      src.connect(f); f.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(vol, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0008, ctx.currentTime + dur);
+      src.start(); src.stop(ctx.currentTime + dur);
+    } catch (e) {}
+  }
+  const sndPen    = () => { stNoise(0.09, 2600, 0.16, 'bandpass'); setTimeout(() => stNoise(0.07, 3200, 0.11, 'bandpass'), 70); };
+  const sndPaper  = () => { stNoise(0.16, 1500, 0.13, 'highpass'); setTimeout(() => stNoise(0.12, 2200, 0.08, 'highpass'), 90); };
+  const sndStamp  = () => { playTone(90, 'sine', 0.13, 0.32); stNoise(0.05, 900, 0.22, 'lowpass'); };
+  const sndDrawer = () => { stNoise(0.22, 420, 0.14, 'lowpass'); };
+  const sndPhone  = () => { [0, 420].forEach(d => { setTimeout(() => { playTone(420, 'sine', 0.32, 0.14); setTimeout(() => playTone(310, 'sine', 0.32, 0.14), 180); }, d); }); };
+  const sndAlarm  = () => { for (let i = 0; i < 5; i++) setTimeout(() => playTone(i % 2 ? 780 : 1040, 'square', 0.16, 0.10), i * 180); };
+  const sndTick   = () => playTone(1200, 'sine', 0.02, 0.05);
+  const sndChime  = () => { playTone(660, 'sine', 0.14, 0.16); setTimeout(() => playTone(880, 'sine', 0.26, 0.14), 110); };
+
+  /* ── Session ── */
   function startStory(dayId) {
-    if (!storyDay(dayId)) { showToast('That day isn’t available.', 'warn'); return; }
-    State.story = { dayId, i: 0, drafts: {}, marked: null, flags: {}, results: [], phase: 'run' };
+    const day = storyDay(dayId);
+    if (!day) { showToast('That day isn’t available.', 'warn'); return; }
+    State.story = {
+      dayId, phase: 'clockon', mins: stM(day.start),
+      queue: [], scene: null, itemId: null,
+      drafts: {}, marked: null, flags: {}, fired: {}, done: {}, results: [],
+      overrun: false, lateAsked: false, stamp: null,
+    };
     State.screen = 'story';
-    playClick();
-    render();
+    playClick(); render();
   }
   function exitStory() {
     State.story = null; State.screen = 'home'; State.activeTab = 'home';
     document.body.classList.remove('story-mode');
     render();
   }
-  function storyAdvance() {
+  function storyClockOn() {
+    const S = State.story, day = storyDay(S.dayId);
+    S.queue = storyBeatsOf(day).filter(b => b.kind === 'scene' && b.opening).slice();
+    sndDrawer();
+    storyPlayQueueOrTray();
+  }
+
+  /* Scenes waiting to fire: clock-triggered ones whose time has passed, and any
+     keyed to the item just finished. */
+  function storyPendingScenes(afterItemId) {
+    const S = State.story, day = storyDay(S.dayId), out = [];
+    storyBeatsOf(day).forEach((b, i) => {
+      if (b.kind !== 'scene' || b.opening) return;
+      const key = b.after || b.at || ('s' + i);
+      if (S.fired[key]) return;
+      if (b.after && b.after === afterItemId) { S.fired[key] = 1; out.push(b); return; }
+      if (b.at && !b.after && S.mins >= stM(b.at)) { S.fired[key] = 1; out.push(b); }
+    });
+    return out;
+  }
+  function storyPlayQueueOrTray() {
+    const S = State.story, day = storyDay(S.dayId);
+    if (S.queue.length) {
+      S.scene = S.queue.shift();
+      S.phase = 'scene';
+      if (/alarm|car park/i.test(S.scene.title || '')) sndAlarm();
+      else if (/quick chat|calendar/i.test(S.scene.title || '')) sndChime();
+      else sndPaper();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      render();
+      return;
+    }
+    S.scene = null;
+    // Lunch is not optional and not a decision.
+    const lunch = day.lunch;
+    if (lunch && !S.fired._lunch && S.mins >= stM(lunch.at)) {
+      S.fired._lunch = 1;
+      S.mins += lunch.mins;
+    }
+    const left = storyItems(day).filter(b => !S.done[b.id]);
+    if (!left.length) { storyFinish(); return; }
+    if (S.mins >= stM(day.close) && !S.lateAsked) { S.phase = 'late'; window.scrollTo({ top: 0, behavior: 'instant' }); render(); return; }
+    S.phase = 'tray';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+  function storySceneDone() {
     const S = State.story;
-    S.drafts = {}; S.marked = null;
-    S.i++;
-    if (S.i >= storyBeats().length) storyFinish();
-    else { playClick(); window.scrollTo({ top: 0, behavior: 'instant' }); render(); }
+    S.mins += (S.scene && S.scene.mins) || 0;
+    playClick();
+    storyPlayQueueOrTray();
+  }
+  function storyOpenItem(id) {
+    const S = State.story;
+    S.itemId = id; S.phase = 'item'; S.drafts = {}; S.marked = null; S.stamp = null;
+    sndPaper();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+  /* At the close with work left: stay, or leave it for Wednesday. */
+  function storyStayLate() {
+    const S = State.story;
+    S.lateAsked = true; S.overrun = true;
+    playClick(); storyPlayQueueOrTray();
+  }
+  function storyLeaveIt() {
+    const S = State.story, day = storyDay(S.dayId);
+    S.lateAsked = true; S.overrun = true;
+    storyItems(day).filter(b => !S.done[b.id]).forEach(b => {
+      S.done[b.id] = true;
+      S.results.push({ id: b.id, title: b.title, awarded: 0, max: b.marks, carried: true, topic: b.topic || null });
+    });
+    playClick(); storyFinish();
   }
   function storyFinish() {
-    const S = State.story;
-    const day = storyDay(S.dayId);
+    const S = State.story, day = storyDay(S.dayId);
     const awarded = S.results.reduce((t, r) => t + r.awarded, 0);
     const total = S.results.reduce((t, r) => t + r.max, 0) || day.totalMarks;
+    if (S.mins > stM(day.close)) S.overrun = true;   // finished everything, just not on time
     S.phase = 'outro';
     const store = Storage.data.story || (Storage.data.story = { v: 1, days: {} });
     const prev = store.days[S.dayId] || { best: 0 };
-    store.days[S.dayId] = { best: Math.max(prev.best || 0, awarded), last: awarded, total, at: Date.now() };
+    store.days[S.dayId] = {
+      best: Math.max(prev.best || 0, awarded), last: awarded, total,
+      finishedAt: stT(S.mins), at: Date.now(),
+    };
     Storage.addXp(20);
     Storage.save();
+    sndChime();
     window.scrollTo({ top: 0, behavior: 'instant' });
     render();
   }
 
   /* ── Marking ── */
+  function storyResolve(beat) {
+    if (!beat || !beat.variants) return beat;
+    const cases = beat.variants.cases || {};
+    const chosen = cases[State.story.flags[beat.variants.on]] || cases[Object.keys(cases)[0]] || {};
+    const out = Object.assign({}, beat, chosen);
+    if (chosen.docsExtra) out.docs = (beat.docs || []).concat(chosen.docsExtra);
+    return out;
+  }
+  function storyActiveItem() {
+    const S = State.story, day = storyDay(S.dayId);
+    const raw = storyItem(day, S.itemId);
+    return raw ? storyResolve(raw) : null;
+  }
   function storyStepMark(step, idx) {
     const S = State.story;
     const get = (k) => S.drafts['s' + idx + ':' + k];
     const max = Number(step.marks) || 0;
-
-    /* flags and hotspot mark identically — right minus wrong, over the number of
-       real answers. The difference is only where the player points. */
     if (step.type === 'flags' || step.type === 'hotspot') {
       const opts = step.type === 'flags' ? (step.options || []) : (step.targets || []);
       const need = opts.filter(o => o.ok).length || 1;
       let right = 0, wrong = 0;
       opts.forEach(o => { if (get(o.id)) { if (o.ok) right++; else wrong++; } });
       const net = Math.max(0, right - wrong);
-      return { awarded: Math.round(max * net / need), max, ok: net === need && wrong === 0, right, wrong, need };
+      return { awarded: Math.round(max * net / need), max, ok: net === need && !wrong, wrong };
     }
     if (step.type === 'choice') {
-      const picked = get('pick');
-      const opt = (step.options || []).find(o => o.id === picked);
-      return { awarded: opt && opt.ok ? max : 0, max, ok: !!(opt && opt.ok), picked };
+      const opt = (step.options || []).find(o => o.id === get('pick'));
+      return { awarded: opt && opt.ok ? max : 0, max, ok: !!(opt && opt.ok), wrong: opt && opt.ok ? 0 : 1 };
     }
     if (step.type === 'figures') {
       const fields = step.fields || [];
@@ -6635,20 +6750,21 @@
         if (ok) right++;
         return { id: f.id, ok, expected: f.answer };
       });
-      return { awarded: fields.length ? Math.round(max * right / fields.length) : 0, max, ok: right === fields.length, per };
+      return { awarded: fields.length ? Math.round(max * right / fields.length) : 0, max,
+               ok: right === fields.length, per, wrong: fields.length - right };
     }
     if (step.type === 'written') {
       const rubric = step.rubric || [];
       const awarded = rubric.reduce((t, r, i) => t + (get('r' + i) ? (Number(r.marks) || 0) : 0), 0);
-      return { awarded, max, ok: awarded >= max * 0.7, selfAssessed: true };
+      return { awarded, max, ok: awarded >= max * 0.7, selfAssessed: true, wrong: 0 };
     }
-    return { awarded: 0, max, ok: false };
+    return { awarded: 0, max, ok: false, wrong: 0 };
   }
 
   function storySubmit() {
-    const S = State.story;
-    const beat = storyCurrent();
-    if (!beat || beat.kind !== 'item' || S.marked) return;
+    const S = State.story, day = storyDay(S.dayId);
+    const beat = storyActiveItem();
+    if (!beat || S.marked) return;
     const steps = beat.steps || [];
     for (let i = 0; i < steps.length; i++) {
       if (steps[i].type === 'written' && !S.drafts['s' + i + ':revealed']) {
@@ -6659,7 +6775,8 @@
     const per = steps.map((st, i) => storyStepMark(st, i));
     const awarded = per.reduce((t, r) => t + r.awarded, 0);
     const max = per.reduce((t, r) => t + r.max, 0);
-    const selfAssessed = per.some(r => r.selfAssessed);
+    const wrong = per.reduce((t, r) => t + (r.wrong || 0), 0);
+    const rework = wrong * (day.rework || 0);
 
     let bucketKey = null;
     steps.forEach((st, i) => {
@@ -6676,15 +6793,31 @@
     if (beat.bucket) bucket = beat.bucket;
     else if (beat.buckets) bucket = beat.buckets[bucketKey] || beat.buckets[passed ? 'pass' : 'fail'] || null;
 
-    S.marked = { per, awarded, max, bucket, selfAssessed };
-    S.results.push({ id: beat.id, title: beat.title, awarded, max, selfAssessed, topic: beat.topic || null });
-    if (passed) playCorrect(); else playWrong();
+    /* Late on a deadline is a story consequence, not a mark penalty. */
+    const lateFor = beat.before && S.mins + beat.mins > stM(beat.before) ? beat.before : null;
+
+    S.marked = { per, awarded, max, bucket, wrong, rework,
+                 selfAssessed: per.some(r => r.selfAssessed), lateFor };
+    S.results.push({ id: beat.id, title: beat.title, awarded, max,
+                     selfAssessed: per.some(r => r.selfAssessed), topic: beat.topic || null, lateFor });
+    S.stamp = bucketKey === 'queried' ? 'QUERIED' : passed ? 'POSTED' : 'CHECK AGAIN';
+    sndStamp();
+    if (passed) setTimeout(playCorrect, 180); else setTimeout(playWrong, 180);
     render();
   }
-
+  function storyCloseItem() {
+    const S = State.story, day = storyDay(S.dayId);
+    const beat = storyActiveItem();
+    S.done[beat.id] = true;
+    S.mins += (beat.mins || 0) + (S.marked ? S.marked.rework : 0);
+    const pend = storyPendingScenes(beat.id);
+    S.queue = pend;
+    S.itemId = null; S.marked = null; S.drafts = {}; S.stamp = null;
+    storyPlayQueueOrTray();
+  }
   function storyRevealWritten(idx) {
     const S = State.story;
-    const step = (storyCurrent().steps || [])[idx];
+    const step = (storyActiveItem().steps || [])[idx];
     const text = String(S.drafts['s' + idx + ':text'] || '').trim();
     const words = text ? text.split(/\s+/).length : 0;
     if (words < Math.min(20, step.minWords || 20)) {
@@ -6695,22 +6828,19 @@
     playClick(); render();
   }
 
-  /* ── Hotspots ──
-     The active hotspot step turns parts of one document into tappable targets, so
-     the player has to find the discrepancy on the paper rather than recognise it
-     in a list. Returns the context the document renderer needs. */
+  /* ── Hotspots ── */
   function storyHotCtx(beat) {
     const steps = (beat && beat.steps) || [];
     for (let i = 0; i < steps.length; i++) {
-      if (steps[i].type === 'hotspot') {
-        return { stepIdx: i, docIdx: steps[i].doc == null ? 0 : steps[i].doc, step: steps[i] };
-      }
+      if (steps[i].type === 'hotspot') return { stepIdx: i, docIdx: steps[i].doc == null ? 0 : steps[i].doc, step: steps[i] };
     }
     return null;
   }
+  function storyPensUsed(ctx) {
+    return (ctx.step.targets || []).filter(t => State.story.drafts['s' + ctx.stepIdx + ':' + t.id]).length;
+  }
   function storyHotClass(id, ctx) {
     const S = State.story;
-    if (!ctx) return '';
     const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
     if (!S.marked) return on ? 'is-on' : '';
     const t = (ctx.step.targets || []).find(x => x.id === id);
@@ -6719,13 +6849,12 @@
   }
   function storyHotMark(id, ctx) {
     const S = State.story;
-    if (!S.marked || !ctx) return '';
+    if (!S.marked) return '';
     const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
     const t = (ctx.step.targets || []).find(x => x.id === id);
     if (t && t.ok) return on ? '✓' : '!';
     return on ? '✗' : '';
   }
-  /* Wrap a piece of document text as a tappable target when its step is live. */
   function storyHot(text, id, ctx) {
     const safe = escapeHtml(String(text == null ? '' : text));
     if (!id || !ctx) return safe;
@@ -6775,16 +6904,8 @@
       <table class="sty-paper-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''} ${r.muted ? 'is-muted' : ''}">
         <td>${storyHot(r.label, r.hot, ctx)}</td>
         <td class="sty-amt">${r.amount == null ? '' : storyHot(r.amount, r.hotAmt, ctx)}</td></tr>`).join('')}</table>
-      ${foot.length ? `<div class="sty-paper-foot">${foot.map(f =>
-        `<div>${storyHot(f.text, f.hot, ctx)}</div>`).join('')}</div>` : ''}
+      ${foot.length ? `<div class="sty-paper-foot">${foot.map(f => `<div>${storyHot(f.text, f.hot, ctx)}</div>`).join('')}</div>` : ''}
     </article>`;
-  }
-
-  /* Outro lines may be gated on how the day went, so nobody congratulates you on
-     a score they can see. Ungated lines always show. */
-  function storyLinesForScore(lines, pct) {
-    return (lines || []).filter(l =>
-      (l.minPct == null || pct >= l.minPct) && (l.maxPct == null || pct <= l.maxPct));
   }
 
   function renderStoryLines(lines) {
@@ -6800,6 +6921,10 @@
       </div>`;
     }).join('');
   }
+  function storyLinesForScore(lines, pct) {
+    return (lines || []).filter(l =>
+      (l.minPct == null || pct >= l.minPct) && (l.maxPct == null || pct <= l.maxPct));
+  }
 
   function renderStoryStep(step, i) {
     const S = State.story;
@@ -6810,19 +6935,22 @@
 
     if (step.type === 'hotspot') {
       const targets = step.targets || [];
-      const found = targets.filter(t => val(t.id)).length;
-      const need = targets.filter(t => t.ok).length;
+      const ctx = { stepIdx: i, step };
+      const used = storyPensUsed(ctx);
+      const pens = step.pens || targets.filter(t => t.ok).length;
       if (!marked) {
-        body = `<div class="sty-found"><span class="sty-found-n">${found} marked</span>
-          <span>${need} to find. Tap them on the invoice above — tap again to unmark.</span></div>`;
+        body = `<div class="sty-pens" role="status">
+          ${Array.from({ length: pens }, (_, n) => `<span class="sty-pen ${n < used ? 'spent' : ''}"></span>`).join('')}
+          <span class="sty-pen-note">${used} of ${pens} circles used</span>
+        </div>
+        ${step.penNote ? `<p class="sty-note">${storyText(step.penNote)}</p>` : ''}`;
       } else {
         body = `<div class="sty-opts">${targets.map(t => {
           const on = !!val(t.id);
           if (!on && !t.ok) return '';
-          const cls = t.ok ? (on ? 'is-right' : '') : 'is-wrong';
-          const tag = t.ok ? (on ? '✓ found' : '✗ missed') : '✗ not an error';
-          return `<div class="sty-opt ${cls}"><span>${escapeHtml(t.label)}</span>
-            <span class="sty-tick" style="${t.ok && on ? '' : 'color:var(--w-red)'}">${tag}</span></div>`;
+          const cls = t.ok && on ? 'is-right' : 'is-wrong';
+          const tag = t.ok ? (on ? '✓ found' : '! missed') : '✗ nothing wrong with it';
+          return `<div class="sty-opt ${cls}"><span>${escapeHtml(t.label)}</span><span class="sty-tick">${tag}</span></div>`;
         }).join('')}</div>`;
       }
     } else if (step.type === 'flags' || step.type === 'choice') {
@@ -6834,9 +6962,7 @@
         return `<label class="sty-opt ${on ? 'is-on' : ''} ${cls}">
           <input type="${isFlags ? 'checkbox' : 'radio'}" ${isFlags ? '' : `name="sty-c-${i}"`}
             data-sty-${isFlags ? 'flag' : 'pick'}="${i}:${escapeHtml(o.id)}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
-          <span>${escapeHtml(o.label)}</span>
-          ${marked && o.ok ? '<span class="sty-tick">✓</span>' : ''}
-        </label>`;
+          <span>${escapeHtml(o.label)}</span>${marked && o.ok ? '<span class="sty-tick">✓</span>' : ''}</label>`;
       }).join('')}</div>`;
     } else if (step.type === 'figures') {
       body = `<div class="sty-fields">${(step.fields || []).map(f => {
@@ -6855,53 +6981,53 @@
       body = `<textarea class="sty-textarea" data-sty-text="${i}" rows="9" placeholder="${escapeHtml(step.placeholder || '')}" ${marked ? 'disabled' : ''}>${escapeHtml(text)}</textarea>
         <div class="sty-wordcount" data-min="${step.minWords || 0}">${words} word${words === 1 ? '' : 's'}${step.minWords ? ` · aim for ${step.minWords}+` : ''}</div>`;
       if (!val('revealed')) {
-        body += `<button class="sty-btn sty-btn-ghost" type="button" data-sty-reveal="${i}" style="margin-top:0">Reveal the model answer and mark it</button>`;
+        body += `<button class="sty-btn sty-btn-ghost" type="button" data-sty-reveal="${i}" style="margin-top:0">Compare with a full-mark reply</button>`;
       } else {
         body += `<div class="sty-model">
             <div class="sty-model-h">What a full-mark reply looks like</div>
-            <div class="sty-model-b">${escapeHtml(step.modelAnswer || '').replace(/\n/g, '<br>')}</div>
-          </div>
+            <div class="sty-model-b">${escapeHtml(step.modelAnswer || '').replace(/\n/g, '<br>')}</div></div>
           <div class="sty-rubric">
             <div class="sty-rubric-h">Tick each point your reply actually made</div>
             ${(step.rubric || []).map((r, ri) => {
               const on = !!val('r' + ri);
               return `<label class="sty-opt ${on ? 'is-on' : ''}">
                 <input type="checkbox" data-sty-rub="${i}:${ri}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
-                <span>${escapeHtml(r.point)}</span><span class="sty-rubmark">${r.marks}</span></label>`;
+                <span>${escapeHtml(r.point)}</span></label>`;
             }).join('')}
             <div class="sty-selfnote">You are marking your own work. These marks are recorded separately and never count towards your readiness score.</div>
           </div>`;
       }
     }
-
     return `<div class="sty-step">
-      <div class="sty-step-h">
-        <span class="sty-ask">${storyText(step.prompt || '')}</span>
-        <span class="sty-worth ${res ? 'is-scored' : ''}">${res ? `${res.awarded} / ${res.max}` : `${step.marks} mark${step.marks === 1 ? '' : 's'}`}</span>
-      </div>
+      <div class="sty-step-h"><span class="sty-ask">${storyText(step.prompt || '')}</span></div>
       ${step.help ? `<p class="sty-note">${storyText(step.help)}</p>` : ''}
       ${body}
     </div>`;
   }
 
   function renderStoryItem(beat) {
-    const m = State.story.marked;
-    const ctx = m ? storyHotCtx(beat) : storyHotCtx(beat);   // targets stay marked-up after scoring
+    const S = State.story, day = storyDay(S.dayId);
+    const m = S.marked;
+    const ctx = storyHotCtx(beat);
     const hotDoc = ctx ? ctx.docIdx : -1;
-    const good = m && m.awarded >= m.max * 0.7;
     return `<div>
       <p class="sty-stage-note">${storyText(beat.stage || '')}</p>
-      ${ctx && !m ? `<div class="sty-hint">🖊️ <span><b>Tap the invoice itself</b> where something is wrong. Nothing is listed for you.</span></div>` : ''}
+      ${ctx && !m ? `<div class="sty-hint">🖊️ <span><b>Circle what is wrong on the invoice itself.</b> Nothing is listed for you.</span></div>` : ''}
       ${(beat.docs || []).length ? `<div class="sty-papers">${beat.docs.map((d, di) =>
         renderStoryPaper(d, di === hotDoc ? ctx : null)).join('')}</div>` : ''}
       <div class="sty-steps">${(beat.steps || []).map(renderStoryStep).join('')}</div>
-      ${!m ? `<button class="sty-btn" type="button" id="stySubmitBtn">Submit</button>` : `
-        <div class="sty-verdict ${good ? 'is-good' : 'is-poor'}">
-          <div class="sty-verdict-score"><b>${m.awarded}</b><span>of ${m.max} marks${m.selfAssessed ? ' · self-assessed' : ''}</span></div>
-          ${beat.why ? `<p>${storyText(beat.why)}</p>` : ''}
+      ${!m ? `<button class="sty-btn" type="button" id="stySubmitBtn">File it</button>` : `
+        ${S.stamp ? `<div class="sty-stamp sty-stamp-${m.awarded >= m.max * 0.7 ? 'ok' : 'bad'}">${escapeHtml(S.stamp)}</div>` : ''}
+        <div class="sty-cost">
+          <span class="sty-cost-l">That took</span>
+          <b>${beat.mins} min</b>
+          ${m.rework ? `<span class="sty-cost-extra">+ ${m.rework} min going back over it</span>` : '<span class="sty-cost-clean">nothing to redo</span>'}
+          <span class="sty-cost-l">→ ${stT(S.mins + beat.mins + m.rework)}</span>
         </div>
+        ${m.lateFor ? `<div class="sty-late-warn">You finished this after ${escapeHtml(m.lateFor)}. The payment run has already gone.</div>` : ''}
+        ${beat.why ? `<div class="sty-verdict"><p>${storyText(beat.why)}</p></div>` : ''}
         ${m.bucket ? renderStoryReaction(m.bucket) : ''}
-        <button class="sty-btn" type="button" id="styNextBtn">Carry on</button>`}
+        <button class="sty-btn" type="button" id="styNextBtn">Back to the tray</button>`}
     </div>`;
   }
 
@@ -6911,53 +7037,145 @@
       ${b.who ? `<div class="sty-line">
         <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
         <div class="sty-said"><div class="sty-name">${escapeHtml(p.name)}</div>
-        <p class="sty-speech">${storyText(b.text || '')}</p></div>
-      </div>` : `<p class="sty-speech">${storyText(b.text || '')}</p>`}
+        <p class="sty-speech">${storyText(b.text || '')}</p></div></div>`
+      : `<p class="sty-speech">${storyText(b.text || '')}</p>`}
       ${b.dir ? `<p class="sty-dir">${storyText(b.dir)}</p>` : ''}
     </div>`;
   }
 
-  function renderStoryHud(beat) {
-    const S = State.story;
-    const day = storyDay(S.dayId);
-    const beats = storyBeats();
-    const done = S.results.reduce((t, r) => t + r.awarded, 0);
-    const pct = Math.round((S.i / beats.length) * 100);
-    const pips = beats.map((b, i) => b.kind === 'item'
-      ? `<span class="sty-pip ${i < S.i ? 'done' : ''}" style="left:${(i / (beats.length - 1)) * 100}%"></span>` : '').join('');
+  function renderStoryHud() {
+    const S = State.story, day = storyDay(S.dayId);
+    const open = stM(day.start), close = stM(day.close);
+    const pct = Math.max(0, Math.min(100, ((S.mins - open) / (close - open)) * 100));
+    const left = storyItems(day).filter(b => !S.done[b.id]).length;
     return `<div class="sty-hud">
       <div class="sty-hud-left">
         <button class="sty-leave" id="styExitBtn" type="button" aria-label="Leave the office">✕</button>
         <span class="sty-hud-when">
           <span class="sty-hud-day">${escapeHtml(day.title)}</span>
-          <span class="sty-clock">${escapeHtml((beat && beat.at) || '16:45')}</span>
+          <span class="sty-clock ${S.mins >= close ? 'is-late' : ''}">${stT(S.mins)}</span>
         </span>
       </div>
-      <div class="sty-timeline"><div class="sty-timeline-fill" style="width:${pct}%"></div>${pips}</div>
-      <div class="sty-hud-marks"><b>${done}</b><span>of ${day.totalMarks}</span></div>
+      <div class="sty-timeline"><div class="sty-timeline-fill" style="width:${pct}%"></div>
+        <span class="sty-timeline-close" style="left:100%"></span></div>
+      <div class="sty-hud-marks"><b>${left}</b><span>in the tray</span></div>
+    </div>`;
+  }
+
+  function renderStoryClockOn() {
+    const day = storyDay(State.story.dayId);
+    const s = storyDef();
+    const items = storyItems(day);
+    const rec = ((Storage.data.story || {}).days || {})[day.id];
+    return `<div class="sty-stage sty-stage-title">
+      <div class="sty-inner">
+        <div class="sty-titlecard">
+          <div class="sty-slug">${escapeHtml(s.business.trade)} · ${escapeHtml(s.business.name)}</div>
+          <h1 class="sty-bigtitle">${escapeHtml(day.title)}</h1>
+          <p class="sty-subtitle">${escapeHtml(day.subtitle)} — ${escapeHtml(day.summary)}</p>
+          <div class="sty-facts">
+            <div><b>${escapeHtml(day.start)}</b><span>you sit down</span></div>
+            <div><b>${escapeHtml(day.close)}</b><span>the office empties</span></div>
+            <div><b>${items.length}</b><span>things in the tray</span></div>
+          </div>
+          <p class="sty-rules">You choose what to work on and in what order. Everything takes time, and going back over your own mistakes takes more. The WR statement has to be agreed before the payment run at 16:00, and it is not a quick one.</p>
+          <div class="sty-crew">${(s.cast || []).filter(c => c.id !== 'you').map(c =>
+            `<span class="sty-crew-m"><span class="sty-av sty-av-${escapeHtml(c.tone)}">${escapeHtml(c.initials)}</span>
+             <span class="sty-crew-n">${escapeHtml(c.name.split(' ')[0])}</span></span>`).join('')}</div>
+          ${rec ? `<p class="sty-prev">Best so far: ${rec.best}/${rec.total}${rec.finishedAt ? ` · finished ${escapeHtml(rec.finishedAt)}` : ''}</p>` : ''}
+          <button class="sty-btn" type="button" id="styClockOnBtn">Clock on</button>
+          <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn">Not today</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderStoryTray() {
+    const S = State.story, day = storyDay(S.dayId);
+    const close = stM(day.close);
+    const items = storyItems(day);
+    const left = items.filter(b => !S.done[b.id]);
+    return `<div class="sty-stage">
+      ${renderStoryHud()}
+      <div class="sty-inner">
+        <div class="sty-beat">
+          <div class="sty-slug">The in-tray</div>
+          <h2 class="sty-title">What are you doing next?</h2>
+          <p class="sty-stage-note">${left.length} left. It is ${stT(S.mins)} and the office empties at ${escapeHtml(day.close)}.</p>
+          <div class="sty-tray">${left.map(b => {
+            const wouldEnd = S.mins + b.mins;
+            const missesDeadline = b.before && wouldEnd > stM(b.before);
+            const runsLate = wouldEnd > close;
+            return `<button class="sty-trayitem ${missesDeadline ? 'is-risky' : ''}" type="button" data-sty-open="${escapeHtml(b.id)}">
+              <span class="sty-trayitem-main">
+                <span class="sty-trayitem-t">${escapeHtml(b.title)}</span>
+                <span class="sty-trayitem-d">${escapeHtml(b.tray || '')}</span>
+              </span>
+              <span class="sty-trayitem-meta">
+                <span class="sty-trayitem-mins">${b.mins} min</span>
+                ${b.before ? `<span class="sty-trayitem-due ${missesDeadline ? 'blown' : ''}">due ${escapeHtml(b.before)}</span>` : ''}
+                ${runsLate && !missesDeadline ? '<span class="sty-trayitem-due">past 17:00</span>' : ''}
+              </span>
+            </button>`;
+          }).join('')}</div>
+          ${S.done && Object.keys(S.done).length ? `<div class="sty-donelist">
+            <div class="sty-slug">Cleared</div>
+            ${items.filter(b => S.done[b.id]).map(b => `<div class="sty-doneitem">✓ ${escapeHtml(b.title)}</div>`).join('')}
+          </div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderStoryLate() {
+    const S = State.story, day = storyDay(S.dayId);
+    const left = storyItems(day).filter(b => !S.done[b.id]);
+    return `<div class="sty-stage">
+      ${renderStoryHud()}
+      <div class="sty-inner">
+        <div class="sty-beat">
+          <div class="sty-slug">${escapeHtml(day.close)}</div>
+          <h2 class="sty-title">The office is emptying</h2>
+          <div class="sty-script">
+            <p class="sty-dir">Deirdre’s computer has been off for ten minutes. Karen is doing the lights at the far end, one bank at a time, in a way that is not subtle.</p>
+            ${renderStoryLines([{ who: 'nigel', dir: 'coat on, bag over shoulder', text: 'You’re not still — right. Well. Don’t make a habit of it. It’ll all still be here tomorrow, that’s the thing about it.' }])}
+          </div>
+          <p class="sty-stage-note">Still in the tray: ${left.map(b => escapeHtml(b.title)).join(', ')}.</p>
+          <div class="sty-outro-actions">
+            <button class="sty-btn" type="button" id="styStayBtn">Stay and finish it</button>
+            <button class="sty-btn sty-btn-ghost" type="button" id="styLeaveBtn">Leave it for Wednesday</button>
+          </div>
+          <p class="sty-footnote">Leaving it costs the marks for what is left, but you will still see the answers at clock-off. Nothing is ever hidden behind the clock.</p>
+        </div>
+      </div>
     </div>`;
   }
 
   function renderStoryOutro() {
-    const S = State.story;
-    const day = storyDay(S.dayId);
+    const S = State.story, day = storyDay(S.dayId);
     const awarded = S.results.reduce((t, r) => t + r.awarded, 0);
     const total = S.results.reduce((t, r) => t + r.max, 0);
-    const weak = S.results.slice().filter(r => r.max).sort((a, b) => (a.awarded / a.max) - (b.awarded / b.max))[0];
+    const pct = total ? Math.round(awarded / total * 100) : 0;
+    const order = storyItems(day).map(b => b.id);
+    const results = S.results.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    const weak = results.filter(r => r.max && !r.carried).sort((a, b) => (a.awarded / a.max) - (b.awarded / b.max))[0];
     const carry = ((day.outro && day.outro.carry) || []).filter(c => !c.ifFlag || S.flags[c.ifFlag]);
-    const cls = (r) => r.awarded === r.max ? 'full' : r.awarded ? 'part' : 'none';
+    const cls = (r) => r.carried ? 'none' : r.awarded === r.max ? 'full' : r.awarded ? 'part' : 'none';
     return `<div class="sty-stage">
-      ${renderStoryHud(null)}
+      ${renderStoryHud()}
       <div class="sty-inner">
         <div class="sty-outro">
-          <div class="sty-slug">${escapeHtml((day.outro && day.outro.title) || 'End of day')}</div>
+          <div class="sty-slug">You left at ${stT(S.mins)}</div>
           <div class="sty-outro-score">${awarded}<small>/ ${total}</small></div>
-          <div class="sty-script" style="margin-top:24px">${renderStoryLines(
-            storyLinesForScore(day.outro && day.outro.lines, total ? Math.round(awarded / total * 100) : 0))}</div>
+          ${S.overrun ? '<p class="sty-overrun">You were still here after five.</p>' : ''}
+          <div class="sty-script" style="margin-top:24px">${renderStoryLines(storyLinesForScore(day.outro && day.outro.lines, pct))}</div>
+          <div class="sty-slug" style="margin-top:26px">How the day marked up</div>
           <div class="sty-tally">
-            ${S.results.map(r => `<div class="sty-tally-row">
+            ${results.map(r => `<div class="sty-tally-row">
               <span class="sty-tally-t">${escapeHtml(r.title)}</span>
+              ${r.carried ? '<span class="sty-chip">not reached</span>' : ''}
               ${r.selfAssessed ? '<span class="sty-chip">self-marked</span>' : ''}
+              ${r.lateFor ? '<span class="sty-chip">late</span>' : ''}
               <span class="sty-tally-m ${cls(r)}">${r.awarded}/${r.max}</span>
             </div>`).join('')}
           </div>
@@ -6971,7 +7189,7 @@
             ${carry.map(c => `<div class="sty-carry-row"><span class="sty-when">${escapeHtml(c.when)}</span><span>${storyText(c.text)}</span></div>`).join('')}
           </div>` : ''}
           <div class="sty-outro-actions">
-            <button class="sty-btn" type="button" id="styReplayBtn">Do it again</button>
+            <button class="sty-btn" type="button" id="styReplayBtn">Another go at Tuesday</button>
             <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn2">Clock off</button>
           </div>
           <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
@@ -6985,23 +7203,30 @@
     if (!S) { State.screen = 'home'; return ''; }
     const day = storyDay(S.dayId);
     if (!day) { State.screen = 'home'; State.story = null; return ''; }
-    if (S.phase === 'outro') return renderStoryOutro();
-
-    const beat = storyCurrent();
-    if (!beat) { storyFinish(); return renderStoryOutro(); }
-
+    if (S.phase === 'clockon') return renderStoryClockOn();
+    if (S.phase === 'outro')   return renderStoryOutro();
+    if (S.phase === 'late')    return renderStoryLate();
+    if (S.phase === 'tray')    return renderStoryTray();
+    if (S.phase === 'scene') {
+      const sc = storyResolve(S.scene);
+      return `<div class="sty-stage">
+        ${renderStoryHud()}
+        <div class="sty-inner"><div class="sty-beat">
+          <div class="sty-slug">The office${sc.mins ? ` · ${sc.mins} min` : ''}</div>
+          <h2 class="sty-title">${escapeHtml(sc.title || '')}</h2>
+          <div class="sty-script">${renderStoryLines(sc.lines)}</div>
+          <button class="sty-btn" type="button" id="stySceneBtn">Back to it</button>
+        </div></div></div>`;
+    }
+    const beat = storyActiveItem();
+    if (!beat) { S.phase = 'tray'; return renderStoryTray(); }
     return `<div class="sty-stage">
-      ${renderStoryHud(beat)}
-      <div class="sty-inner">
-        <div class="sty-beat">
-          <div class="sty-slug">${beat.kind === 'item' ? 'In the tray' : 'The office'}</div>
-          <h2 class="sty-title">${escapeHtml(beat.title || '')}</h2>
-          ${beat.kind === 'item' ? renderStoryItem(beat) : `
-            <div class="sty-script">${renderStoryLines(beat.lines)}</div>
-            <button class="sty-btn" type="button" id="styNextBtn">Carry on</button>`}
-        </div>
-      </div>
-    </div>`;
+      ${renderStoryHud()}
+      <div class="sty-inner"><div class="sty-beat">
+        <div class="sty-slug">In the tray · ${beat.mins} min</div>
+        <h2 class="sty-title">${escapeHtml(beat.title || '')}</h2>
+        ${renderStoryItem(beat)}
+      </div></div></div>`;
   }
 
   function attachStoryEvents() {
@@ -7010,17 +7235,31 @@
     const S = State.story;
     bind('styExitBtn', 'click', exitStory);
     bind('styExitBtn2', 'click', exitStory);
-    bind('styNextBtn', 'click', storyAdvance);
+    bind('styClockOnBtn', 'click', storyClockOn);
+    bind('stySceneBtn', 'click', storySceneDone);
     bind('stySubmitBtn', 'click', storySubmit);
+    bind('styNextBtn', 'click', storyCloseItem);
+    bind('styStayBtn', 'click', storyStayLate);
+    bind('styLeaveBtn', 'click', storyLeaveIt);
     bind('styReplayBtn', 'click', () => startStory(S.dayId));
+    document.querySelectorAll('[data-sty-open]').forEach(el =>
+      el.addEventListener('click', () => storyOpenItem(el.dataset.styOpen)));
 
-    /* Tapping the document itself. Re-renders so the ring appears — cheap here
-       because a hotspot step has no text inputs to lose. */
+    /* Circling the document. Re-renders so the ring lands — safe because a
+       hotspot step holds no text inputs. The pen is finite. */
     document.querySelectorAll('[data-sty-hot]').forEach(el => el.addEventListener('click', () => {
       const [i, id] = el.dataset.styHot.split(':');
+      const beat = storyActiveItem();
+      const ctx = storyHotCtx(beat);
       const k = 's' + i + ':' + id;
+      const pens = ctx.step.pens || (ctx.step.targets || []).filter(t => t.ok).length;
+      if (!S.drafts[k] && storyPensUsed(ctx) >= pens) {
+        showToast('That is your last circle used. Un-circle something to move it.', 'warn');
+        playWrong();
+        return;
+      }
       S.drafts[k] = !S.drafts[k];
-      playClick();
+      sndPen();
       render();
     }));
 

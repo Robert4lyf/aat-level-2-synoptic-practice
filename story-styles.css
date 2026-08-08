@@ -466,3 +466,108 @@ body.story-mode .container { max-width: none; padding: 0; margin: 0; }
   .sty-react .sty-dir { padding-left: 0; }
   .sty-outro-actions .sty-btn { flex: 1 1 100%; }
 }
+
+/* ── The clock, the tray, and clocking on ──────────────────────────────────
+   The day is chosen rather than played on rails: you pick from the tray, every
+   item costs its minutes, and going back over your own mistakes costs more. */
+
+/* Title card */
+.sty-stage-title { display: grid; place-items: center; }
+.sty-titlecard { max-width: 620px; margin: 0 auto; padding: 56px 0; text-align: left; }
+.sty-bigtitle {
+  font-size: clamp(38px, 9vw, 68px); font-weight: 800; letter-spacing: -.045em;
+  line-height: .95; margin: 12px 0 0; text-wrap: balance;
+}
+.sty-subtitle { font-size: 17px; line-height: 1.6; color: var(--w-dim); margin: 14px 0 0; max-width: 52ch; }
+.sty-facts { display: flex; gap: 30px; flex-wrap: wrap; margin: 30px 0 26px; }
+.sty-facts div { display: flex; flex-direction: column; gap: 2px; }
+.sty-facts b { font-family: var(--w-mono); font-size: 26px; color: var(--w-amber); line-height: 1; }
+.sty-facts span { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--w-dimmer); font-weight: 700; }
+.sty-rules {
+  font-size: 15px; line-height: 1.7; color: var(--w-dim);
+  border-left: 2px solid var(--w-line-2); padding-left: 16px; margin: 0 0 26px; max-width: 56ch;
+}
+.sty-crew { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
+.sty-crew-m { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.sty-crew-n { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--w-dimmer); font-weight: 700; }
+.sty-prev { font-family: var(--w-mono); font-size: 12.5px; color: var(--w-dimmer); margin: 0 0 18px; }
+
+/* The tray */
+.sty-tray { display: flex; flex-direction: column; gap: 11px; margin-top: 6px; }
+.sty-trayitem {
+  display: flex; gap: 16px; align-items: center; justify-content: space-between; width: 100%;
+  text-align: left; cursor: pointer; font: inherit; color: var(--w-text);
+  background: linear-gradient(180deg, var(--w-desk-3), var(--w-desk-2));
+  border: 1px solid var(--w-line); border-left: 3px solid var(--w-line-2);
+  border-radius: 10px; padding: 16px 18px;
+  transition: border-color .15s, transform .1s, background .15s;
+}
+.sty-trayitem:hover { border-left-color: var(--w-amber); transform: translateX(3px); }
+.sty-trayitem:focus-visible { outline: 2px solid var(--w-amber); outline-offset: 2px; }
+.sty-trayitem.is-risky { border-left-color: var(--w-red); }
+.sty-trayitem-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.sty-trayitem-t { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.sty-trayitem-d { font-size: 13.5px; color: var(--w-dim); line-height: 1.45; }
+.sty-trayitem-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex: none; }
+.sty-trayitem-mins { font-family: var(--w-mono); font-size: 15px; color: var(--w-amber); font-variant-numeric: tabular-nums; }
+.sty-trayitem-due {
+  font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 800;
+  color: var(--w-dimmer); border: 1px solid var(--w-line-2); border-radius: 20px; padding: 2px 8px; white-space: nowrap;
+}
+.sty-trayitem-due.blown { color: var(--w-red); border-color: var(--w-red); }
+.sty-donelist { margin-top: 30px; }
+.sty-doneitem { font-size: 14px; color: var(--w-dimmer); padding: 5px 0; }
+
+/* Finite red pen */
+.sty-pens { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
+.sty-pen {
+  width: 26px; height: 5px; border-radius: 3px;
+  background: var(--w-line-2); transition: background .18s;
+}
+.sty-pen.spent { background: var(--w-red); box-shadow: 0 0 9px rgba(242,115,92,.5); }
+.sty-pen-note { font-family: var(--w-mono); font-size: 12px; color: var(--w-dimmer); margin-left: 6px; }
+
+/* What the item cost you */
+.sty-cost {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  font-family: var(--w-mono); font-size: 13px; color: var(--w-dim);
+  background: var(--w-desk-2); border: 1px solid var(--w-line);
+  border-radius: 10px; padding: 13px 16px; margin-top: 22px;
+}
+.sty-cost b { font-size: 17px; color: var(--w-text); }
+.sty-cost-l { color: var(--w-dimmer); letter-spacing: .06em; text-transform: uppercase; font-size: 10.5px; font-weight: 700; }
+.sty-cost-extra { color: var(--w-red); font-weight: 700; }
+.sty-cost-clean { color: var(--w-green); }
+.sty-late-warn {
+  margin-top: 12px; padding: 13px 16px; border-radius: 10px; font-size: 14.5px; line-height: 1.6;
+  background: rgba(242,115,92,.10); border: 1px solid var(--w-red); color: var(--w-text);
+}
+.sty-overrun { font-family: var(--w-mono); font-size: 13px; color: var(--w-red); margin: 6px 0 0; }
+
+/* The stamp */
+@keyframes sty-thud {
+  0%   { opacity: 0; transform: rotate(-9deg) scale(2.4); }
+  60%  { opacity: 1; transform: rotate(-9deg) scale(.94); }
+  100% { opacity: 1; transform: rotate(-9deg) scale(1); }
+}
+.sty-stamp {
+  display: inline-block; margin: 26px 0 0;
+  font-family: var(--w-sans); font-size: 22px; font-weight: 800;
+  letter-spacing: .18em; text-transform: uppercase;
+  padding: 9px 20px; border: 4px double currentColor; border-radius: 6px;
+  transform: rotate(-9deg); opacity: .82;
+  animation: sty-thud .34s cubic-bezier(.2,1.4,.4,1) both;
+}
+.sty-stamp-ok  { color: var(--w-green); }
+.sty-stamp-bad { color: var(--w-red); }
+.sty-clock.is-late { color: var(--w-red); text-shadow: 0 0 18px rgba(242,115,92,.45); }
+.sty-timeline-close {
+  position: absolute; top: 50%; width: 2px; height: 11px; margin: -5.5px 0 0 -1px;
+  background: var(--w-red); border-radius: 1px;
+}
+@media (prefers-reduced-motion: reduce) { .sty-stamp { animation: none; } }
+@media (max-width: 600px) {
+  .sty-trayitem { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .sty-trayitem-meta { flex-direction: row; align-items: center; gap: 10px; }
+  .sty-facts { gap: 20px; }
+}

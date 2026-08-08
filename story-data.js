@@ -50,10 +50,20 @@
       minutes: 14,
       totalMarks: 34,
 
+      /* The clock is the game. You start at 08:52 and the office empties at
+         17:00. Every item costs its `mins`; every wrong answer costs `rework`
+         on top, because you go back and check. A careful day finishes around
+         four; a sloppy one has you still here when Deirdre puts her coat on.
+         Nothing is ever locked — at 17:00 you choose to stay or leave it. */
+      start: '08:52',
+      close: '17:00',
+      rework: 10,
+      lunch: { at: '12:55', mins: 40 },
+
       beats: [
 
         /* ── 08:52 ─────────────────────────────────────────────────── */
-        { kind: 'scene', at: '08:52', title: 'You sit down',
+        { kind: 'scene', at: '08:52', opening: true, mins: 4, title: 'You sit down',
           lines: [
             { dir: 'Nine things in the tray. PRINTER-2 is making the noise again — the one it makes for about a week before it stops making any noise at all.' },
             { who: 'deirdre', text: 'Morning. I’ve been through the tray. The WR one’s on top.' },
@@ -61,14 +71,14 @@
           ] },
 
         /* ── 09:12 ─────────────────────────────────────────────────── */
-        { kind: 'scene', at: '09:12', title: 'Calendar invite',
+        { kind: 'scene', at: '09:12', opening: true, mins: 4, title: 'Calendar invite',
           lines: [
             { who: 'nigel', text: 'quick chat' },
             { dir: 'Fifteen minutes, 15:00, no agenda, no location. He has done this before. It has never once been bad news. It is never once *not* felt like bad news.' },
           ] },
 
         /* ── 09:20 · ITEM 1 ────────────────────────────────────────── */
-        { kind: 'item', at: '09:20', id: 'wr-invoice', topic: 'itbk', marks: 8,
+        { kind: 'item', at: '09:20', id: 'wr-invoice', mins: 65, tray: 'A supplier invoice to check against the order.', topic: 'itbk', marks: 8,
           title: 'The invoice that’s too cheap',
           stage: 'A purchase invoice from WR Limited, with the purchase order clipped behind it. Check one against the other before it goes anywhere near the ledger.',
           docs: [
@@ -97,8 +107,9 @@
               ] },
           ],
           steps: [
-            { type: 'hotspot', marks: 3, doc: 1,
+            { type: 'hotspot', marks: 3, doc: 1, pens: 4,
               prompt: 'Three things on this invoice do not match the order. Find them.',
+              penNote: 'Four circles. Three errors. Choose carefully — a wrong circle costs you ten minutes checking it.',
               targets: [
                 { id: 'price',   ok: true, label: 'The unit price — £7.50 charged, £17.50 on the order' },
                 { id: 'trade',   ok: true, label: 'The 10% trade discount has not been applied' },
@@ -138,7 +149,7 @@
           } },
 
         /* ── 10:05 ─────────────────────────────────────────────────── */
-        { kind: 'scene', at: '10:05', title: 'Gavin, at your desk',
+        { kind: 'scene', after: 'wr-invoice', mins: 6, title: 'Gavin, at your desk',
           variants: { on: 'wr.posted', cases: {
             queried: { lines: [
               { who: 'gavin', text: 'Quick one. You doing the WR invoice? Just whack it through. They’re a good account, I’ve known Trevor there fifteen years.' },
@@ -164,7 +175,7 @@
           } } },
 
         /* ── 10:20 · ITEM 2 ────────────────────────────────────────── */
-        { kind: 'item', at: '10:20', id: 'hexfield', topic: 'itbk', marks: 6,
+        { kind: 'item', at: '10:20', id: 'hexfield', mins: 60, tray: 'An invoice to match to what actually turned up.', topic: 'itbk', marks: 6,
           title: 'Barry’s thumb',
           stage: 'An invoice from Hexfield Fasteners for goods delivered last week. Before it is paid it has to be matched to what was ordered and what actually turned up.',
           docs: [
@@ -218,7 +229,7 @@
           } },
 
         /* ── 11:15 ─────────────────────────────────────────────────── */
-        { kind: 'scene', at: '11:15', title: 'Twelve minutes in the car park',
+        { kind: 'scene', at: '11:15', mins: 12, title: 'Twelve minutes in the car park',
           lines: [
             { dir: 'The alarm goes. Everyone files out and stands in the car park in the specific silence of people who work together but have never socialised.' },
             { who: 'karen',   text: 'It’s the toaster. It’s not *faulty*, it’s that people put the crumpets in on setting six.' },
@@ -229,7 +240,7 @@
           ] },
 
         /* ── 11:40 · ITEM 3 ────────────────────────────────────────── */
-        { kind: 'item', at: '11:40', id: 'karen-vat', topic: 'itbk', marks: 3,
+        { kind: 'item', at: '11:40', id: 'karen-vat', mins: 25, tray: 'A one-line query from Karen. Quick, if you know it.', topic: 'itbk', marks: 3,
           title: '“How much of this can we claim back?”',
           stage: 'A query from Karen. Short, answerable, and the sort of thing you are asked six times a week and expected to know without going away and coming back.',
           docs: [
@@ -263,7 +274,7 @@
           } },
 
         /* ── 13:15 · ITEM 4 ────────────────────────────────────────── */
-        { kind: 'item', at: '13:15', id: 'crowther', topic: 'besy', marks: 6,
+        { kind: 'item', at: '13:15', id: 'crowther', mins: 65, tray: 'Gavin wants an answer. Priya has already given you one.', topic: 'besy', marks: 6,
           title: 'Crowther, and a favour',
           stage: 'The day’s judgment call. Gavin’s email arrived at 09:02 and you have been putting it off. Priya forwarded it back to you at 11:03 with two words.',
           docs: [
@@ -305,7 +316,7 @@
           } },
 
         /* ── 13:50 ─────────────────────────────────────────────────── */
-        { kind: 'scene', at: '13:50', title: 'The Secret Santa apportionment dispute',
+        { kind: 'scene', at: '13:50', mins: 8, title: 'The Secret Santa apportionment dispute',
           lines: [
             { who: 'karen', text: 'It’s five pounds *per head*. Not five pounds per department. Per HEAD, Gavin. It’s in cell B4.' },
             { who: 'gavin', text: 'Right, but Sales is four people and Finance is three, so if we’re splitting the buffet *and* the Santa, Sales is subsidising Finance. That’s — mate, that’s just maths.' },
@@ -318,7 +329,7 @@
           ] },
 
         /* ── 14:30 · ITEM 5 ────────────────────────────────────────── */
-        { kind: 'item', at: '14:30', id: 'petty-cash', topic: 'itbk', marks: 4,
+        { kind: 'item', at: '14:30', id: 'petty-cash', mins: 35, tray: 'A petty cash voucher and a printer that has died.', topic: 'itbk', marks: 4,
           title: 'The toner, and the £30 limit',
           stage: 'PRINTER-2 has stopped making the noise, which is worse. Karen has been out and bought a toner cartridge and would like the money back. She has filled the voucher in correctly, because of course she has.',
           docs: [
@@ -373,7 +384,7 @@
           } },
 
         /* ── 15:00 ─────────────────────────────────────────────────── */
-        { kind: 'scene', at: '15:00', title: 'The quick chat',
+        { kind: 'scene', at: '15:00', mins: 12, title: 'The quick chat',
           lines: [
             { dir: 'Nigel’s office. He has printed something out, which is itself concerning, because PRINTER-2 is dead and this means he went downstairs.' },
             { who: 'nigel', text: 'Nothing to worry about. It’s just — the board see the sales figure Thursday, and April’s gone *down*, and they’ll ask, and I’ll be in Warrington.' },
@@ -385,7 +396,7 @@
           ] },
 
         /* ── 15:30 · ITEM 6 ────────────────────────────────────────── */
-        { kind: 'item', at: '15:30', id: 'wr-statement', topic: 'itbk', marks: 7,
+        { kind: 'item', at: '15:30', id: 'wr-statement', mins: 90, before: '16:00', tray: 'WR’s statement, to agree before the payment run.', topic: 'itbk', marks: 7,
           title: 'WR Limited’s statement',
           stage: 'WR’s statement has to be agreed to their account in the payables ledger before anything is paid. Their account contains whatever you did at twenty past nine.',
           docs: [
@@ -500,12 +511,12 @@
 
       /* End-of-day copy. `carry` items are the loaded guns for Wednesday onward. */
       outro: {
-        title: 'Sixteen forty-five',
+        title: 'Clocking off',
         /* Deirdre's sign-off is graded. A line that contradicts the score reads as
            a bug in the fiction, and she is not a woman who says "not bad" to a
            day that went badly. `minPct`/`maxPct` filter on the day's percentage. */
         lines: [
-          { dir: 'You put the tray straight, which does not help but feels like it does. Deirdre left at half four. Gavin is still on the phone.' },
+          { dir: 'You put the tray straight, which does not help but feels like it does. Gavin is still on the phone.' },
           { who: 'deirdre', dir: 'on her way past, coat on', minPct: 85,
             text: 'That’s a proper day’s work, that. Wednesday’s the chasing. Bring a thick skin and a list.' },
           { who: 'deirdre', dir: 'on her way past, coat on', minPct: 50, maxPct: 84,
