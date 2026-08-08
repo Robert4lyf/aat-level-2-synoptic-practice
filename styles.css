@@ -5890,3 +5890,4 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
 .diag-unit-name { flex:1; font-size:.92rem; color:var(--text-primary); }
 .diag-unit-score { font-size:.82rem; font-weight:700; }
 .diag-unit-rec { font-size:.8rem; color:var(--text-muted); }
+

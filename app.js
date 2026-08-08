@@ -17,7 +17,7 @@
     {
       id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
       desc: 'Prepare for the Q2022 Business Environment Synoptic Assessment',
-      meta: '515 questions · Mock exams · T-Accounts',
+      meta: '631 questions · Mock exams · T-Accounts',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       assets: [],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
@@ -854,6 +854,7 @@
     planner: { examDate: null, dailyGoalXp: 30 },
     badges: {},
     daily: {},
+    story: { v: 1, days: {} },
   });
   const todayKey = () => new Date().toISOString().slice(0, 10);
   const Storage = {
@@ -888,6 +889,12 @@
         this.data.planner = Object.assign(d.planner, this.data.planner || {});
         this.data.badges = (this.data.badges && typeof this.data.badges === 'object') ? this.data.badges : {};
         this.data.daily = (this.data.daily && typeof this.data.daily === 'object') ? this.data.daily : {};
+        // Story progress is versioned: a content rewrite that changes what a day
+        // means should reset its record rather than show a score for a day that
+        // no longer exists in that form.
+        const sd = this.data.story;
+        this.data.story = (sd && typeof sd === 'object' && sd.v === 1) ? sd : { v: 1, days: {} };
+        this.data.story.days = this.data.story.days || {};
         // Keep only the most recent 60 days of daily activity
         const dayKeys = Object.keys(this.data.daily).sort();
         while (dayKeys.length > 60) delete this.data.daily[dayKeys.shift()];
@@ -901,18 +908,37 @@
         }
       }
     },
-    recordAnswer(question, correct) {
+    /* `opts.selfAssessed` marks an answer the student graded themselves against a
+       rubric — the `written` type, which is human-marked in the real assessment.
+       Those answers are still recorded: they count as seen, they drive spaced
+       repetition, the mistake notebook and daily activity. But they are tallied
+       into the parallel self* counters so that objAcc() can keep them out of every
+       attainment figure — the readiness meter, topic mastery, the weakness
+       dashboard and the skill map. A mark you awarded yourself must never read as
+       an objective one. */
+    recordAnswer(question, correct, opts) {
+      const selfAssessed = !!(opts && opts.selfAssessed);
       const qs = this.data.stats.questions[question.id] || { attempts: 0, correct: 0, lastSeen: null };
       qs.attempts++; qs.seen = true;
       if (correct) qs.correct++;
       else qs.lastWrong = Date.now();
+      if (selfAssessed) {
+        qs.selfAttempts = (qs.selfAttempts || 0) + 1;
+        if (correct) qs.selfCorrect = (qs.selfCorrect || 0) + 1;
+      }
       qs.lastSeen = Date.now();
       this.data.stats.questions[question.id] = qs;
       const ts = this.data.stats.topics[question.topic] || { attempts: 0, correct: 0 };
       ts.attempts++; if (correct) ts.correct++;
+      if (selfAssessed) {
+        ts.selfAttempts = (ts.selfAttempts || 0) + 1;
+        if (correct) ts.selfCorrect = (ts.selfCorrect || 0) + 1;
+      }
       this.data.stats.topics[question.topic] = ts;
+      // A self-scored answer neither extends nor breaks the objective answer streak.
       const st = this.data.stats.streak;
-      if (correct) { st.current++; if (st.current > st.best) st.best = st.current; st.lastCorrectAt = Date.now(); }
+      if (selfAssessed) { /* no streak effect */ }
+      else if (correct) { st.current++; if (st.current > st.best) st.best = st.current; st.lastCorrectAt = Date.now(); }
       else { st.current = 0; }
       // Adaptive spaced-repetition update
       this.data.sr[question.id] = srSchedule(this.data.sr[question.id], correct);
@@ -1035,14 +1061,28 @@
     }
   }
   function skillById(id) { return (window.SKILLS && typeof window.SKILLS.byId === 'function' && id) ? window.SKILLS.byId(id) : null; }
+  /* Objective attempts/correct from a stats record — total less the self-assessed
+     subset. Every displayed attainment percentage goes through this, so a mark the
+     student awarded their own prose against a rubric can never inflate it. Records
+     saved before self* tracking existed have no self* fields and read as fully
+     objective, which is the only honest reading available for them. */
+  function objAcc(rec) {
+    if (!rec) return { attempts: 0, correct: 0 };
+    return {
+      attempts: Math.max(0, (rec.attempts || 0) - (rec.selfAttempts || 0)),
+      correct:  Math.max(0, (rec.correct  || 0) - (rec.selfCorrect  || 0)),
+    };
+  }
+
   function skillAccuracy() {
-    // Per-skill lifetime accuracy from the question-level stats
+    // Per-skill lifetime accuracy from the question-level stats (objective only)
     const out = {};
     for (const [id, s] of Object.entries(Storage.data.stats.questions)) {
       const q = questionById(id);
       if (!q || !q.skill) continue;
       const rec = out[q.skill] || (out[q.skill] = { attempts: 0, correct: 0 });
-      rec.attempts += s.attempts; rec.correct += s.correct;
+      const a = objAcc(s);
+      rec.attempts += a.attempts; rec.correct += a.correct;
     }
     return out;
   }
@@ -1445,7 +1485,7 @@
   function getGlobalProgress() {
     const stats = Storage.data.stats.questions, total = window.ALL_QUESTIONS.length;
     const seen = Object.keys(stats).length;
-    const correct = Object.values(stats).filter(q => q.correct > 0).length;
+    const correct = Object.values(stats).filter(q => objAcc(q).correct > 0).length;
     return { total, seen, correct,
       seenPct: total ? Math.round((seen/total)*100) : 0,
       masteryPct: total ? Math.round((correct/total)*100) : 0 };
@@ -1455,7 +1495,7 @@
     const stats = Storage.data.stats.topics;
     return (window.TOPICS || [])
       .map(t => {
-        const s = stats[t.id] || { attempts: 0, correct: 0 };
+        const s = objAcc(stats[t.id]);
         const acc = s.attempts >= 5 ? Math.round(s.correct / s.attempts * 100) : null;
         return { id: t.id, name: t.name, short: t.short, icon: t.icon, acc, attempts: s.attempts };
       })
@@ -1696,6 +1736,8 @@
     revisionUnit: null,                     // unit revision notes screen
     combo: 0,                               // consecutive correct answers in practice
     delfExam: null,                         // DELF mock exam state (null when not active)
+    story: null,                            // Wrenfield story-mode state (null when not playing)
+    proto: null,                            // prototype-desk state (null when not playing)
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -2710,7 +2752,7 @@
     const ok = awarded >= marks * 0.7;
     State.answered = { kind: 'written', correct: ok, awarded, max: marks };
     if (ok) State.score++;
-    Storage.recordAnswer(q, ok); Storage.save();
+    Storage.recordAnswer(q, ok, { selfAssessed: true }); Storage.save();
     State.results.push({ id:q.id, q:q.task || q.q || 'Written task', correct:ok,
       chosen: `Self-assessed ${awarded}/${marks}`, correctOpt: `${marks} marks available`,
       selfAssessed: true, exp:q.exp || q.modelAnswer, topic:q.topic, skill:q.skill });
@@ -2955,7 +2997,7 @@
       totalMarks += g.max;
       marks += g.awarded;
       if (g.selfAssessed) { selfMarks += g.awarded; selfTotal += g.max; }
-      if (response !== null && response !== '') Storage.recordAnswer(q, g.correct);
+      if (response !== null && response !== '') Storage.recordAnswer(q, g.correct, { selfAssessed: !!g.selfAssessed });
       return { id:q.id, q:q.q || q.task || '', correct:g.correct, chosen:g.chosen,
         correctOpt: g.expected, awarded: g.awarded, max: g.max, selfAssessed: !!g.selfAssessed,
         task: q._task, exp:q.exp, topic:q.topic, skill:q.skill,
@@ -3105,6 +3147,8 @@
     else if (State.screen === 'recall')   html = renderRecall();
     else if (State.screen === 'revision') html = renderRevision();
     else if (State.screen === 'delf')     html = renderDelf();
+    else if (State.screen === 'story')    html = renderStory();
+    else if (State.screen === 'proto')    html = renderProto();
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
@@ -3353,7 +3397,7 @@
     const allQ = window.ALL_QUESTIONS || [];
     const topics = window.TOPICS || [];
     const accs = topics.map(t => {
-      const s = stats.topics[t.id] || {};
+      const s = objAcc(stats.topics[t.id]);
       return (s.attempts >= 5) ? s.correct / s.attempts : null;
     }).filter(a => a !== null);
     const avgAcc = accs.length ? accs.reduce((a, b) => a + b, 0) / accs.length : 0;
@@ -3442,8 +3486,8 @@
       if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1;
     });
     const topicMastery = (id) => {
-      const ts = Storage.data.stats.topics[id];
-      if (!ts || !ts.attempts) return null;
+      const ts = objAcc(Storage.data.stats.topics[id]);
+      if (!ts.attempts) return null;
       return Math.round((ts.correct / ts.attempts) * 100);
     };
 
@@ -3489,6 +3533,8 @@
       ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Synoptic Mock', desc: `${SYNOPTIC_BLUEPRINT.length} tasks · ${SYNOPTIC_TOTAL_MARKS} marks · ${Math.round(MOCK_DURATION_MS / 60000)} min`, cls: 'mode-mock' }] : []),
       ...(isAAT ? [{ id: 'unitExamBtn', icon: '📝', title: 'Unit Assessment', desc: `ITBK · POBC · POC · 90 min each`, cls: 'mode-unit-exam' }] : []),
       ...(isAAT ? [{ id: 'diagnosticBtn', icon: '🧭', title: 'Where should I start?', desc: '12 questions · finds your level per unit', cls: 'mode-diagnostic' }] : []),
+      ...(isAAT && storyDef() ? [{ id: 'storyBtn', icon: '🗂️', title: 'A Day at Wrenfield', desc: storyModeDesc(), cls: 'mode-story' }] : []),
+      ...(isAAT && protoDef() ? [{ id: 'protoBtn', icon: '🖊️', title: 'Prototype desk', desc: 'One invoice, no questions asked · compare with the day above', cls: 'mode-story' }] : []),
       ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: `${(window.GLOSSARY || []).length} glossary terms`, cls: '' }] : []),
       ...(synopticCount ? [{ topic: 'synoptic', icon: '🔗', title: 'Synoptic Practice', desc: `${synopticCount} cross-unit scenarios`, cls: 'mode-synoptic' }] : []),
       ...(srDueCount > 0 ? [{ topic: 'sr-due', icon: '⏰', title: 'Due for Review', desc: `${srDueCount} spaced-rep cards`, cls: '' }] : []),
@@ -3786,7 +3832,7 @@
     }
     const seenByTopic = {};
     allQ.forEach(q => { const s = stats.questions[q.id]; if (s && s.attempts > 0) seenByTopic[q.topic] = (seenByTopic[q.topic] || 0) + 1; });
-    const topicMastery = id => { const ts = stats.topics[id]; if (!ts || !ts.attempts) return null; return Math.round((ts.correct / ts.attempts) * 100); };
+    const topicMastery = id => { const ts = objAcc(stats.topics[id]); if (!ts.attempts) return null; return Math.round((ts.correct / ts.attempts) * 100); };
     const cards = clinicTopics.map(t => {
       const totalN   = allQ.filter(q => q.topic === t.id).length;
       const m        = topicMastery(t.id);
@@ -3829,7 +3875,7 @@
         </div>
       </div>`;
     const topicRows = window.TOPICS.map(t => {
-      const ts = stats.topics[t.id] || { attempts:0, correct:0 };
+      const ts = objAcc(stats.topics[t.id]);
       const pct = ts.attempts ? Math.round((ts.correct / ts.attempts) * 100) : 0;
       const cls = scoreClass(pct);
       return `<div class="breakdown-row">
@@ -5183,7 +5229,7 @@
       // FR_LEARN_PATH uses `id`; AAT uses `unit` — normalise to a single variable
       const uid = unit.unit || unit.id || '';
       const topicObj = window.TOPICS.find(t => t.id === uid) || {};
-      const topicStat = Storage.data.stats.topics[uid] || { attempts: 0, correct: 0 };
+      const topicStat = objAcc(Storage.data.stats.topics[uid]);
       const topicAcc = topicStat.attempts ? Math.round(topicStat.correct / topicStat.attempts * 100) : null;
 
       // For French: lock the entire unit if the previous CEFR level is not complete
@@ -6476,13 +6522,1247 @@
     </div>`;
   }
 
+  /* ── STORY MODE ───────────────────────────────────────────────────────────
+     "Wrenfield Supplies" — a day on the accounts desk. Content in story-data.js,
+     look in story-styles.css. Story mode takes over the viewport.
+
+     The clock is the game. You start at 08:52 with a tray and you choose what to
+     work on. Every item costs its minutes; every wrong answer costs rework on
+     top, because you go back and check. A careful day finishes around four; a
+     sloppy one has you still at your desk when Deirdre puts her coat on. The WR
+     statement takes 90 minutes and has to be agreed before the 16:00 payment run,
+     so it cannot be left to last.
+
+     Nothing is ever locked. At 17:00 with work left you choose: stay late, or
+     leave it for Wednesday. Leaving it costs the marks but you still see the
+     answers at clock-off, so the teaching never depends on the clock.
+
+     Story marks never enter Storage.data.stats — they cannot move the readiness
+     meter, topic mastery or spaced repetition. This teaches the job; the question
+     bank measures the exam. */
+
+  function storyDef() { return window.AAT_STORY || null; }
+  function storyDay(id) {
+    const s = storyDef();
+    return s ? ((s.days || []).find(d => d.id === id) || null) : null;
+  }
+  function storyModeDesc() {
+    const s = storyDef();
+    const day = s && (s.days || [])[0];
+    if (!day) return '';
+    const rec = ((Storage.data.story || {}).days || {})[day.id];
+    const base = `${day.title} · a shift on the accounts desk`;
+    return rec ? `${base} · best ${rec.best}/${rec.total || day.totalMarks}` : base;
+  }
+  function storyPerson(id) {
+    const s = storyDef();
+    return (s && (s.cast || []).find(c => c.id === id)) || { name: id || '', initials: '?', tone: 'n', role: '' };
+  }
+  function storyText(s) {
+    return escapeHtml(String(s == null ? '' : s)).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  }
+
+  /* ── Clock ── */
+  const stM = (t) => { const p = String(t || '0:00').split(':'); return (+p[0]) * 60 + (+p[1] || 0); };
+  const stT = (m) => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(Math.round(m) % 60).padStart(2, '0');
+  function storyBeatsOf(day) { return day.beats || []; }
+  function storyItems(day) { return storyBeatsOf(day).filter(b => b.kind === 'item'); }
+  function storyItem(day, id) { return storyItems(day).find(b => b.id === id) || null; }
+
+  /* The light in the room follows the clock: daylight in the morning, low and
+     warm by four, and after five the overheads are off and it is your desk lamp
+     and a blue window. One data attribute; the CSS does the rest. */
+  function storyLight() {
+    const S = State.story;
+    if (!S) return 'morning';
+    const day = storyDay(S.dayId);
+    if (S.mins >= stM(day.close)) return 'after';
+    if (S.mins >= stM('16:00')) return 'late';
+    if (S.mins >= stM('11:30')) return 'day';
+    return 'morning';
+  }
+  function renderStoryRoom() {
+    return `<div class="sty-room" aria-hidden="true">
+      <span class="sty-win"></span><span class="sty-key"></span><span class="sty-tint"></span>
+      <span class="sty-prop sty-prop-plant"></span>
+      <span class="sty-prop sty-prop-door"></span>
+      <span class="sty-prop sty-prop-printer"></span>
+      <span class="sty-prop sty-prop-mug"></span>
+    </div>`;
+  }
+
+  /* ── Diegetic sound ──
+     Synthesised, because the last game in this repo died of an asset pipeline.
+     Everything here is an oscillator or a noise buffer through a filter. */
+  let _stNoise = null;
+  function stNoiseBuf(ctx) {
+    if (_stNoise && _stNoise.sampleRate === ctx.sampleRate) return _stNoise;
+    const n = ctx.sampleRate * 0.6;
+    const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    _stNoise = buf; _stNoise.sampleRate = ctx.sampleRate;
+    return buf;
+  }
+  function stNoise(dur, freq, vol, type) {
+    const ctx = ensureAudio(); if (!ctx) return;
+    try {
+      const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      src.buffer = stNoiseBuf(ctx);
+      f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = 0.9;
+      src.connect(f); f.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(vol, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0008, ctx.currentTime + dur);
+      src.start(); src.stop(ctx.currentTime + dur);
+    } catch (e) {}
+  }
+  const sndPen    = () => { stNoise(0.09, 2600, 0.16, 'bandpass'); setTimeout(() => stNoise(0.07, 3200, 0.11, 'bandpass'), 70); };
+  const sndPaper  = () => { stNoise(0.16, 1500, 0.13, 'highpass'); setTimeout(() => stNoise(0.12, 2200, 0.08, 'highpass'), 90); };
+  const sndStamp  = () => { playTone(90, 'sine', 0.13, 0.32); stNoise(0.05, 900, 0.22, 'lowpass'); };
+  const sndDrawer = () => { stNoise(0.22, 420, 0.14, 'lowpass'); };
+  const sndPhone  = () => { [0, 420].forEach(d => { setTimeout(() => { playTone(420, 'sine', 0.32, 0.14); setTimeout(() => playTone(310, 'sine', 0.32, 0.14), 180); }, d); }); };
+  const sndAlarm  = () => { for (let i = 0; i < 5; i++) setTimeout(() => playTone(i % 2 ? 780 : 1040, 'square', 0.16, 0.10), i * 180); };
+  const sndTick   = () => playTone(1200, 'sine', 0.02, 0.05);
+  const sndChime  = () => { playTone(660, 'sine', 0.14, 0.16); setTimeout(() => playTone(880, 'sine', 0.26, 0.14), 110); };
+
+  /* ── Session ── */
+  function startStory(dayId) {
+    const day = storyDay(dayId);
+    if (!day) { showToast('That day isn’t available.', 'warn'); return; }
+    State.story = {
+      dayId, phase: 'clockon', mins: stM(day.start),
+      queue: [], scene: null, itemId: null,
+      drafts: {}, marked: null, flags: {}, fired: {}, done: {}, results: [],
+      overrun: false, lateAsked: false, stamp: null,
+    };
+    State.screen = 'story';
+    playClick(); render();
+  }
+  function exitStory() {
+    State.story = null; State.screen = 'home'; State.activeTab = 'home';
+    document.body.classList.remove('story-mode');
+    render();
+  }
+  function storyClockOn() {
+    const S = State.story, day = storyDay(S.dayId);
+    S.queue = storyBeatsOf(day).filter(b => b.kind === 'scene' && b.opening).slice();
+    sndDrawer();
+    storyPlayQueueOrTray();
+  }
+
+  /* Scenes waiting to fire: clock-triggered ones whose time has passed, and any
+     keyed to the item just finished. */
+  function storyPendingScenes(afterItemId) {
+    const S = State.story, day = storyDay(S.dayId), out = [];
+    storyBeatsOf(day).forEach((b, i) => {
+      if (b.kind !== 'scene' || b.opening) return;
+      const key = b.after || b.at || ('s' + i);
+      if (S.fired[key]) return;
+      if (b.after && b.after === afterItemId) { S.fired[key] = 1; out.push(b); return; }
+      if (b.at && !b.after && S.mins >= stM(b.at)) { S.fired[key] = 1; out.push(b); }
+    });
+    return out;
+  }
+  function storyPlayQueueOrTray() {
+    const S = State.story, day = storyDay(S.dayId);
+    if (S.queue.length) {
+      S.scene = S.queue.shift();
+      S.phase = 'scene';
+      if (/alarm|car park/i.test(S.scene.title || '')) sndAlarm();
+      else if (/quick chat|calendar/i.test(S.scene.title || '')) sndChime();
+      else sndPaper();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      render();
+      return;
+    }
+    S.scene = null;
+    // Lunch is not optional and not a decision.
+    const lunch = day.lunch;
+    if (lunch && !S.fired._lunch && S.mins >= stM(lunch.at)) {
+      S.fired._lunch = 1;
+      S.mins += lunch.mins;
+    }
+    const left = storyItems(day).filter(b => !S.done[b.id]);
+    if (!left.length) { storyFinish(); return; }
+    if (S.mins >= stM(day.close) && !S.lateAsked) { S.phase = 'late'; window.scrollTo({ top: 0, behavior: 'instant' }); render(); return; }
+    S.phase = 'tray';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+  function storySceneDone() {
+    const S = State.story;
+    S.mins += (S.scene && S.scene.mins) || 0;
+    playClick();
+    storyPlayQueueOrTray();
+  }
+  function storyOpenItem(id) {
+    const S = State.story;
+    S.itemId = id; S.phase = 'item'; S.drafts = {}; S.marked = null; S.stamp = null;
+    sndPaper();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+  /* At the close with work left: stay, or leave it for Wednesday. */
+  function storyStayLate() {
+    const S = State.story;
+    S.lateAsked = true; S.overrun = true;
+    playClick(); storyPlayQueueOrTray();
+  }
+  function storyLeaveIt() {
+    const S = State.story, day = storyDay(S.dayId);
+    S.lateAsked = true; S.overrun = true;
+    storyItems(day).filter(b => !S.done[b.id]).forEach(b => {
+      S.done[b.id] = true;
+      S.results.push({ id: b.id, title: b.title, awarded: 0, max: b.marks, carried: true, topic: b.topic || null });
+    });
+    playClick(); storyFinish();
+  }
+  function storyFinish() {
+    const S = State.story, day = storyDay(S.dayId);
+    const awarded = S.results.reduce((t, r) => t + r.awarded, 0);
+    const total = S.results.reduce((t, r) => t + r.max, 0) || day.totalMarks;
+    if (S.mins > stM(day.close)) S.overrun = true;   // finished everything, just not on time
+    S.phase = 'outro';
+    const store = Storage.data.story || (Storage.data.story = { v: 1, days: {} });
+    const prev = store.days[S.dayId] || { best: 0 };
+    store.days[S.dayId] = {
+      best: Math.max(prev.best || 0, awarded), last: awarded, total,
+      finishedAt: stT(S.mins), at: Date.now(),
+    };
+    Storage.addXp(20);
+    Storage.save();
+    sndChime();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+
+  /* ── Marking ── */
+  function storyResolve(beat) {
+    if (!beat || !beat.variants) return beat;
+    const cases = beat.variants.cases || {};
+    const chosen = cases[State.story.flags[beat.variants.on]] || cases[Object.keys(cases)[0]] || {};
+    const out = Object.assign({}, beat, chosen);
+    if (chosen.docsExtra) out.docs = (beat.docs || []).concat(chosen.docsExtra);
+    return out;
+  }
+  function storyActiveItem() {
+    const S = State.story, day = storyDay(S.dayId);
+    const raw = storyItem(day, S.itemId);
+    return raw ? storyResolve(raw) : null;
+  }
+  function storyStepMark(step, idx) {
+    const S = State.story;
+    const get = (k) => S.drafts['s' + idx + ':' + k];
+    const max = Number(step.marks) || 0;
+    if (step.type === 'flags' || step.type === 'hotspot') {
+      const opts = step.type === 'flags' ? (step.options || []) : (step.targets || []);
+      const need = opts.filter(o => o.ok).length || 1;
+      let right = 0, wrong = 0;
+      opts.forEach(o => { if (get(o.id)) { if (o.ok) right++; else wrong++; } });
+      const net = Math.max(0, right - wrong);
+      return { awarded: Math.round(max * net / need), max, ok: net === need && !wrong, wrong };
+    }
+    if (step.type === 'choice') {
+      const opt = (step.options || []).find(o => o.id === get('pick'));
+      return { awarded: opt && opt.ok ? max : 0, max, ok: !!(opt && opt.ok), wrong: opt && opt.ok ? 0 : 1 };
+    }
+    if (step.type === 'figures') {
+      const fields = step.fields || [];
+      let right = 0;
+      const per = fields.map(f => {
+        const v = parseNumericInput(get(f.id));
+        const ok = Number.isFinite(v) && Math.abs(v - Number(f.answer)) < 0.005;
+        if (ok) right++;
+        return { id: f.id, ok, expected: f.answer };
+      });
+      return { awarded: fields.length ? Math.round(max * right / fields.length) : 0, max,
+               ok: right === fields.length, per, wrong: fields.length - right };
+    }
+    if (step.type === 'written') {
+      const rubric = step.rubric || [];
+      const awarded = rubric.reduce((t, r, i) => t + (get('r' + i) ? (Number(r.marks) || 0) : 0), 0);
+      return { awarded, max, ok: awarded >= max * 0.7, selfAssessed: true, wrong: 0 };
+    }
+    return { awarded: 0, max, ok: false, wrong: 0 };
+  }
+
+  function storySubmit() {
+    const S = State.story, day = storyDay(S.dayId);
+    const beat = storyActiveItem();
+    if (!beat || S.marked) return;
+    const steps = beat.steps || [];
+    for (let i = 0; i < steps.length; i++) {
+      if (steps[i].type === 'written' && !S.drafts['s' + i + ':revealed']) {
+        showToast('Write your reply, then reveal the model answer to mark it.', 'warn');
+        return;
+      }
+    }
+    const per = steps.map((st, i) => storyStepMark(st, i));
+    const awarded = per.reduce((t, r) => t + r.awarded, 0);
+    const max = per.reduce((t, r) => t + r.max, 0);
+    const wrong = per.reduce((t, r) => t + (r.wrong || 0), 0);
+    const rework = wrong * (day.rework || 0);
+
+    let bucketKey = null;
+    steps.forEach((st, i) => {
+      if (st.setFlag) {
+        const v = S.drafts['s' + i + ':pick'];
+        if (v) { S.flags[st.setFlag] = v; bucketKey = v; }
+      }
+    });
+    if (beat.outcomeFrom) bucketKey = S.flags[beat.outcomeFrom] || bucketKey;
+    const passed = max ? awarded >= max * 0.7 : true;
+    S.flags[beat.id + '.pass'] = passed;
+
+    let bucket = null;
+    if (beat.bucket) bucket = beat.bucket;
+    else if (beat.buckets) bucket = beat.buckets[bucketKey] || beat.buckets[passed ? 'pass' : 'fail'] || null;
+
+    /* Late on a deadline is a story consequence, not a mark penalty. */
+    const lateFor = beat.before && S.mins + beat.mins > stM(beat.before) ? beat.before : null;
+
+    S.marked = { per, awarded, max, bucket, wrong, rework,
+                 selfAssessed: per.some(r => r.selfAssessed), lateFor };
+    S.results.push({ id: beat.id, title: beat.title, awarded, max,
+                     selfAssessed: per.some(r => r.selfAssessed), topic: beat.topic || null, lateFor });
+    S.stamp = bucketKey === 'queried' ? 'QUERIED' : passed ? 'POSTED' : 'CHECK AGAIN';
+    sndStamp();
+    if (passed) setTimeout(playCorrect, 180); else setTimeout(playWrong, 180);
+    render();
+  }
+  function storyCloseItem() {
+    const S = State.story, day = storyDay(S.dayId);
+    const beat = storyActiveItem();
+    S.done[beat.id] = true;
+    S.mins += (beat.mins || 0) + (S.marked ? S.marked.rework : 0);
+    const pend = storyPendingScenes(beat.id);
+    S.queue = pend;
+    S.itemId = null; S.marked = null; S.drafts = {}; S.stamp = null;
+    storyPlayQueueOrTray();
+  }
+  function storyRevealWritten(idx) {
+    const S = State.story;
+    const step = (storyActiveItem().steps || [])[idx];
+    const text = String(S.drafts['s' + idx + ':text'] || '').trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    if (words < Math.min(20, step.minWords || 20)) {
+      showToast('Write an answer before revealing the model — you learn nothing from reading it cold.', 'warn');
+      return;
+    }
+    S.drafts['s' + idx + ':revealed'] = true;
+    playClick(); render();
+  }
+
+  /* ── Hotspots ── */
+  function storyHotCtx(beat) {
+    const steps = (beat && beat.steps) || [];
+    for (let i = 0; i < steps.length; i++) {
+      if (steps[i].type === 'hotspot') return { stepIdx: i, docIdx: steps[i].doc == null ? 0 : steps[i].doc, step: steps[i] };
+    }
+    return null;
+  }
+  function storyPensUsed(ctx) {
+    return (ctx.step.targets || []).filter(t => State.story.drafts['s' + ctx.stepIdx + ':' + t.id]).length;
+  }
+  function storyHotClass(id, ctx) {
+    const S = State.story;
+    const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
+    if (!S.marked) return on ? 'is-on' : '';
+    const t = (ctx.step.targets || []).find(x => x.id === id);
+    if (t && t.ok) return on ? 'is-on is-hit' : 'is-on is-miss';
+    return on ? 'is-on is-false' : '';
+  }
+  function storyHotMark(id, ctx) {
+    const S = State.story;
+    if (!S.marked) return '';
+    const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
+    const t = (ctx.step.targets || []).find(x => x.id === id);
+    if (t && t.ok) return on ? '✓' : '!';
+    return on ? '✗' : '';
+  }
+  function storyHot(text, id, ctx) {
+    const safe = escapeHtml(String(text == null ? '' : text));
+    if (!id || !ctx) return safe;
+    const S = State.story;
+    const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
+    const mark = storyHotMark(id, ctx);
+    return `<button type="button" class="sty-hot ${storyHotClass(id, ctx)}"
+      data-sty-hot="${ctx.stepIdx}:${escapeHtml(id)}" aria-pressed="${on}"
+      ${S.marked ? 'disabled' : ''}>${safe}<span class="sty-ring"></span>${mark ? `<span class="sty-mark">${mark}</span>` : ''}</button>`;
+  }
+
+  /* ── Rendering ── */
+  function renderStoryPaper(d, ctx, surface) {
+    /* On the monitor these are things in software, not paper. Rendering an email
+       on a creased sheet was the tell that this was still a styled document. */
+    if (surface === 'screen') {
+      if (d.kind === 'email') {
+        const p = storyPerson(d.from);
+        return `<article class="sty-mail">
+          <div class="sty-mail-h">
+            <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
+            <div class="sty-mail-meta">
+              <div class="sty-mail-sub">${escapeHtml(d.subject || '')}</div>
+              <div class="sty-mail-from">${escapeHtml(p.name)} · ${escapeHtml(p.role)}</div>
+            </div>
+            <span class="sty-mail-at">${escapeHtml(d.at || '')}</span>
+          </div>
+          <div class="sty-mail-b">${storyText(d.body).replace(/\n/g, '<br>')}</div>
+          ${d.attach ? `<div class="sty-mail-att">📎 ${escapeHtml(d.attach).replace(/\n/g, '<br>📎 ')}</div>` : ''}
+        </article>`;
+      }
+      if (d.kind === 'panel') {
+        return `<article class="sty-scr-panel">
+          <div class="sty-scr-panel-h">${escapeHtml(d.title || '')}</div>
+          <table class="sty-scr-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''}">
+            <td>${escapeHtml(r.label)}</td>
+            <td class="sty-amt ${r.bad ? 'is-bad' : ''}">${escapeHtml(r.amount || '')}</td></tr>`).join('')}</table>
+        </article>`;
+      }
+      if (d.kind === 'photo') {
+        return `<article class="sty-scr-photo">
+          <div class="sty-scr-photo-h">IMG_4471.JPG · 2.1 MB</div>
+          <div class="sty-scr-photo-b"><span aria-hidden="true">📷</span><p>${escapeHtml(d.caption || '')}</p></div>
+        </article>`;
+      }
+      /* A ledger or statement shown in the software keeps a plain grid. */
+      const foot0 = Array.isArray(d.foot) ? d.foot
+        : (d.foot ? String(d.foot).split('\n').map(t => ({ text: t })) : []);
+      return `<article class="sty-scr-panel">
+        <div class="sty-scr-panel-h">${escapeHtml(d.title || '')}${d.sub ? ` — ${escapeHtml(d.sub)}` : ''}
+          <span class="sty-scr-ref">${escapeHtml(d.ref || '')}</span></div>
+        <table class="sty-scr-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''} ${r.muted ? 'is-muted' : ''}">
+          <td>${storyHot(r.label, r.hot, ctx)}</td>
+          <td class="sty-amt">${r.amount == null ? '' : storyHot(r.amount, r.hotAmt, ctx)}</td></tr>`).join('')}</table>
+        ${foot0.length ? `<div class="sty-scr-foot">${foot0.map(f => `<div>${storyHot(f.text, f.hot, ctx)}</div>`).join('')}</div>` : ''}
+      </article>`;
+    }
+    if (d.kind === 'email') {
+      const p = storyPerson(d.from);
+      return `<article class="sty-paper sty-paper-alt">
+        <div class="sty-paper-head">
+          <div><div class="sty-paper-name">${escapeHtml(d.subject || '')}</div>
+            <div class="sty-paper-sub">from ${escapeHtml(p.name)}</div></div>
+          <div class="sty-paper-ref">${escapeHtml(d.at || '')}</div>
+        </div>
+        <div>${storyText(d.body).replace(/\n/g, '<br>')}</div>
+        ${d.attach ? `<div class="sty-paper-foot">${escapeHtml(d.attach).replace(/\n/g, '<br>')}</div>` : ''}
+      </article>`;
+    }
+    if (d.kind === 'photo') {
+      return `<article class="sty-paper sty-paper-alt" style="--tilt:1.2deg">
+        <div class="sty-paper-head"><div class="sty-paper-name">📷 IMG_4471.JPG</div></div>
+        <div style="filter:blur(.5px);opacity:.85">${escapeHtml(d.caption || '')}</div>
+      </article>`;
+    }
+    if (d.kind === 'panel') {
+      return `<article class="sty-paper sty-paper-alt">
+        <div class="sty-paper-head"><div class="sty-paper-name">${escapeHtml(d.title || '')}</div></div>
+        <table class="sty-paper-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''}">
+          <td>${escapeHtml(r.label)}</td><td class="sty-amt">${escapeHtml(r.amount || '')}</td></tr>`).join('')}</table>
+      </article>`;
+    }
+    const foot = Array.isArray(d.foot) ? d.foot
+      : (d.foot ? String(d.foot).split('\n').map(t => ({ text: t })) : []);
+    return `<article class="sty-paper">
+      ${d.clip ? '<span class="sty-clip"></span>' : ''}
+      <div class="sty-paper-head">
+        <div><div class="sty-paper-name">${escapeHtml(d.title || '')}</div>
+          ${d.sub ? `<div class="sty-paper-sub">${escapeHtml(d.sub)}</div>` : ''}</div>
+        <div class="sty-paper-ref">${escapeHtml(d.ref || '')}${d.date ? `<br>${escapeHtml(d.date)}` : ''}</div>
+      </div>
+      <table class="sty-paper-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''} ${r.muted ? 'is-muted' : ''}">
+        <td>${storyHot(r.label, r.hot, ctx)}</td>
+        <td class="sty-amt">${r.amount == null ? '' : storyHot(r.amount, r.hotAmt, ctx)}</td></tr>`).join('')}</table>
+      ${foot.length ? `<div class="sty-paper-foot">${foot.map(f => `<div>${storyHot(f.text, f.hot, ctx)}</div>`).join('')}</div>` : ''}
+    </article>`;
+  }
+
+  function renderStoryLines(lines) {
+    return (lines || []).map(l => {
+      if (!l.who) return `<p class="sty-dir">${storyText(l.dir || l.text || '')}</p>`;
+      const p = storyPerson(l.who);
+      return `<div class="sty-line">
+        <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
+        <div class="sty-said">
+          <div class="sty-name">${escapeHtml(p.name)}${l.dir ? ` <span class="sty-name-dir">${escapeHtml(l.dir)}</span>` : ''}</div>
+          <p class="sty-speech">${storyText(l.text || '')}</p>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  function storyLinesForScore(lines, pct) {
+    return (lines || []).filter(l =>
+      (l.minPct == null || pct >= l.minPct) && (l.maxPct == null || pct <= l.maxPct));
+  }
+
+  function renderStoryStep(step, i) {
+    const S = State.story;
+    const marked = S.marked;
+    const res = marked ? marked.per[i] : null;
+    const val = (k) => S.drafts['s' + i + ':' + k];
+    let body = '';
+
+    if (step.type === 'hotspot') {
+      const targets = step.targets || [];
+      const ctx = { stepIdx: i, step };
+      const used = storyPensUsed(ctx);
+      const pens = step.pens || targets.filter(t => t.ok).length;
+      if (!marked) {
+        body = `<div class="sty-pens" role="status">
+          ${Array.from({ length: pens }, (_, n) => `<span class="sty-pen ${n < used ? 'spent' : ''}"></span>`).join('')}
+          <span class="sty-pen-note">${used} of ${pens} circles used</span>
+        </div>
+        ${step.penNote ? `<p class="sty-note">${storyText(step.penNote)}</p>` : ''}`;
+      } else {
+        body = `<div class="sty-opts">${targets.map(t => {
+          const on = !!val(t.id);
+          if (!on && !t.ok) return '';
+          const cls = t.ok && on ? 'is-right' : 'is-wrong';
+          const tag = t.ok ? (on ? '✓ found' : '! missed') : '✗ nothing wrong with it';
+          return `<div class="sty-opt ${cls}"><span>${escapeHtml(t.label)}</span><span class="sty-tick">${tag}</span></div>`;
+        }).join('')}</div>`;
+      }
+    } else if (step.type === 'flags' || step.type === 'choice') {
+      const isFlags = step.type === 'flags';
+      body = `<div class="sty-opts">${(step.options || []).map(o => {
+        const on = isFlags ? !!val(o.id) : val('pick') === o.id;
+        let cls = '';
+        if (marked) cls = o.ok ? 'is-right' : (on ? 'is-wrong' : '');
+        return `<label class="sty-opt ${on ? 'is-on' : ''} ${cls}">
+          <input type="${isFlags ? 'checkbox' : 'radio'}" ${isFlags ? '' : `name="sty-c-${i}"`}
+            data-sty-${isFlags ? 'flag' : 'pick'}="${i}:${escapeHtml(o.id)}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
+          <span>${escapeHtml(o.label)}</span>${marked && o.ok ? '<span class="sty-tick">✓</span>' : ''}</label>`;
+      }).join('')}</div>`;
+    } else if (step.type === 'figures') {
+      body = `<div class="sty-fields">${(step.fields || []).map(f => {
+        const r = res && res.per ? res.per.find(x => x.id === f.id) : null;
+        return `<label class="sty-field ${r ? (r.ok ? 'is-right' : 'is-wrong') : ''}">
+          <span class="sty-field-lbl">${escapeHtml(f.label)}</span>
+          <span class="sty-field-in"><span class="sty-cur">£</span>
+            <input type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"
+              data-sty-fig="${i}:${escapeHtml(f.id)}" value="${escapeHtml(val(f.id) || '')}" ${marked ? 'disabled' : ''}></span>
+          ${r && !r.ok ? `<span class="sty-fix">✓ ${Number(f.answer).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>` : ''}
+        </label>`;
+      }).join('')}</div>`;
+    } else if (step.type === 'written') {
+      const text = val('text') || '';
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      body = `<textarea class="sty-textarea" data-sty-text="${i}" rows="9" placeholder="${escapeHtml(step.placeholder || '')}" ${marked ? 'disabled' : ''}>${escapeHtml(text)}</textarea>
+        <div class="sty-wordcount" data-min="${step.minWords || 0}">${words} word${words === 1 ? '' : 's'}${step.minWords ? ` · aim for ${step.minWords}+` : ''}</div>`;
+      if (!val('revealed')) {
+        body += `<button class="sty-btn sty-btn-ghost" type="button" data-sty-reveal="${i}" style="margin-top:0">Compare with a full-mark reply</button>`;
+      } else {
+        body += `<div class="sty-model">
+            <div class="sty-model-h">What a full-mark reply looks like</div>
+            <div class="sty-model-b">${escapeHtml(step.modelAnswer || '').replace(/\n/g, '<br>')}</div></div>
+          <div class="sty-rubric">
+            <div class="sty-rubric-h">Tick each point your reply actually made</div>
+            ${(step.rubric || []).map((r, ri) => {
+              const on = !!val('r' + ri);
+              return `<label class="sty-opt ${on ? 'is-on' : ''}">
+                <input type="checkbox" data-sty-rub="${i}:${ri}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
+                <span>${escapeHtml(r.point)}</span></label>`;
+            }).join('')}
+            <div class="sty-selfnote">You are marking your own work. These marks are recorded separately and never count towards your readiness score.</div>
+          </div>`;
+      }
+    }
+    return `<div class="sty-step">
+      <div class="sty-step-h"><span class="sty-ask">${storyText(step.prompt || '')}</span></div>
+      ${step.help ? `<p class="sty-note">${storyText(step.help)}</p>` : ''}
+      ${body}
+    </div>`;
+  }
+
+  function renderStoryItem(beat) {
+    const S = State.story;
+    const m = S.marked;
+    const ctx = storyHotCtx(beat);
+    const hotDoc = ctx ? ctx.docIdx : -1;
+    const medium = beat.medium || 'paper';
+    const docs = beat.docs || [];
+    /* A document sits where it would really be: the invoice that came in the
+       post is paper whatever else the item is doing. */
+    const paperDocs = docs.filter(d => (d.on || medium) === 'paper');
+    const screenDocs = docs.filter(d => (d.on || medium) !== 'paper');
+
+    const paperHtml = paperDocs.length ? `<div class="sty-desk-scene">
+      <div class="sty-papers">${paperDocs.map(d =>
+        renderStoryPaper(d, docs.indexOf(d) === hotDoc ? ctx : null, 'paper')).join('')}</div></div>` : '';
+    const screenDocsHtml = screenDocs.length ? `<div class="sty-papers">${screenDocs.map(d =>
+      renderStoryPaper(d, docs.indexOf(d) === hotDoc ? ctx : null, 'screen')).join('')}</div>` : '';
+
+    const work = `${(beat.steps || []).length ? `<div class="sty-steps">${(beat.steps || []).map(renderStoryStep).join('')}</div>` : ''}
+      ${!m ? `<button class="sty-btn" type="button" id="stySubmitBtn">File it</button>` : `
+        ${S.stamp ? `<div class="sty-stamp sty-stamp-${m.awarded >= m.max * 0.7 ? 'ok' : 'bad'}">${escapeHtml(S.stamp)}</div>` : ''}
+        <div class="sty-cost">
+          <span class="sty-cost-l">That took</span><b>${beat.mins} min</b>
+          ${m.rework ? `<span class="sty-cost-extra">+ ${m.rework} min going back over it</span>` : '<span class="sty-cost-clean">nothing to redo</span>'}
+          <span class="sty-cost-l">&rarr; ${stT(S.mins + beat.mins + m.rework)}</span>
+        </div>
+        ${m.lateFor ? `<div class="sty-late-warn">You finished this after ${escapeHtml(m.lateFor)}. The payment run has already gone.</div>` : ''}
+        ${beat.why ? `<div class="sty-verdict"><p>${storyText(beat.why)}</p></div>` : ''}
+        ${m.bucket ? renderStoryReaction(m.bucket) : ''}
+        <button class="sty-btn" type="button" id="styNextBtn">Back to the tray</button>`}`;
+
+    const stageNote = `<p class="sty-stage-note">${storyText(beat.stage || '')}</p>
+      ${ctx && !m ? `<div class="sty-hint">🖊️ <span><b>Circle what is wrong on the invoice itself.</b> Nothing is listed for you.</span></div>` : ''}`;
+
+    if (medium === 'paper') {
+      return `<div>${stageNote}${paperHtml}${screenDocsHtml}${work}</div>`;
+    }
+    /* Screen items put the software on the monitor. Paper that belongs to the
+       same job stays on the desk in front of it — which is exactly what agreeing
+       a supplier statement looks like. */
+    return `<div>
+      ${stageNote}
+      ${paperHtml}
+      ${paperHtml ? '<p class="sty-onscreen-note">…and on the screen</p>' : ''}
+      <div class="sty-monitor">
+        <div class="sty-mon-body">
+          <div class="sty-screen">
+            <div class="sty-appbar">
+              <span class="sty-appdot"></span><span class="sty-appdot"></span><span class="sty-appdot"></span>
+              <span class="sty-apptitle">Wrenfield Accounts</span>
+              <span class="sty-appclock">${stT(State.story.mins)}</span>
+            </div>
+            <div class="sty-screen-in">${screenDocsHtml}${work}</div>
+          </div>
+        </div>
+        <div class="sty-mon-stand"></div><div class="sty-mon-foot"></div>
+      </div>
+    </div>`;
+  }
+
+  function renderStoryReaction(b) {
+    const p = storyPerson(b.who);
+    return `<div class="sty-react">
+      ${b.who ? `<div class="sty-line">
+        <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
+        <div class="sty-said"><div class="sty-name">${escapeHtml(p.name)}</div>
+        <p class="sty-speech">${storyText(b.text || '')}</p></div></div>`
+      : `<p class="sty-speech">${storyText(b.text || '')}</p>`}
+      ${b.dir ? `<p class="sty-dir">${storyText(b.dir)}</p>` : ''}
+    </div>`;
+  }
+
+  function renderStoryHud() {
+    const S = State.story, day = storyDay(S.dayId);
+    const open = stM(day.start), close = stM(day.close);
+    const pct = Math.max(0, Math.min(100, ((S.mins - open) / (close - open)) * 100));
+    const left = storyItems(day).filter(b => !S.done[b.id]).length;
+    return `<div class="sty-hud">
+      <div class="sty-hud-left">
+        <button class="sty-leave" id="styExitBtn" type="button" aria-label="Leave the office">✕</button>
+        <span class="sty-hud-when">
+          <span class="sty-hud-day">${escapeHtml(day.title)}</span>
+          <span class="sty-clock ${S.mins >= close ? 'is-late' : ''}">${stT(S.mins)}</span>
+        </span>
+      </div>
+      <div class="sty-timeline"><div class="sty-timeline-fill" style="width:${pct}%"></div>
+        <span class="sty-timeline-close" style="left:100%"></span></div>
+      <div class="sty-hud-marks"><b>${left}</b><span>in the tray</span></div>
+    </div>`;
+  }
+
+  function renderStoryClockOn() {
+    const day = storyDay(State.story.dayId);
+    const s = storyDef();
+    const items = storyItems(day);
+    const rec = ((Storage.data.story || {}).days || {})[day.id];
+    return `<div class="sty-stage sty-stage-title" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-inner">
+        <div class="sty-titlecard">
+          <div class="sty-slug">${escapeHtml(s.business.trade)} · ${escapeHtml(s.business.name)}</div>
+          <h1 class="sty-bigtitle">${escapeHtml(day.title)}</h1>
+          <p class="sty-subtitle">${escapeHtml(day.subtitle)} — ${escapeHtml(day.summary)}</p>
+          <div class="sty-facts">
+            <div><b>${escapeHtml(day.start)}</b><span>you sit down</span></div>
+            <div><b>${escapeHtml(day.close)}</b><span>the office empties</span></div>
+            <div><b>${items.length}</b><span>things in the tray</span></div>
+          </div>
+          <p class="sty-rules">You choose what to work on and in what order. Everything takes time, and going back over your own mistakes takes more. The WR statement has to be agreed before the payment run at 16:00, and it is not a quick one.</p>
+          <div class="sty-crew">${(s.cast || []).filter(c => c.id !== 'you').map(c =>
+            `<span class="sty-crew-m"><span class="sty-av sty-av-${escapeHtml(c.tone)}">${escapeHtml(c.initials)}</span>
+             <span class="sty-crew-n">${escapeHtml(c.name.split(' ')[0])}</span></span>`).join('')}</div>
+          ${rec ? `<p class="sty-prev">Best so far: ${rec.best}/${rec.total}${rec.finishedAt ? ` · finished ${escapeHtml(rec.finishedAt)}` : ''}</p>` : ''}
+          <button class="sty-btn" type="button" id="styClockOnBtn">Clock on</button>
+          <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn">Not today</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderStoryTray() {
+    const S = State.story, day = storyDay(S.dayId);
+    const close = stM(day.close);
+    const items = storyItems(day);
+    const left = items.filter(b => !S.done[b.id]);
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
+      ${renderStoryHud()}
+      <div class="sty-inner">
+        <div class="sty-beat">
+          <div class="sty-slug">The in-tray</div>
+          <h2 class="sty-title">What are you doing next?</h2>
+          <p class="sty-stage-note">${left.length} left. It is ${stT(S.mins)} and the office empties at ${escapeHtml(day.close)}.</p>
+          <div class="sty-tray">${left.map(b => {
+            const wouldEnd = S.mins + b.mins;
+            const missesDeadline = b.before && wouldEnd > stM(b.before);
+            const runsLate = wouldEnd > close;
+            return `<button class="sty-trayitem ${missesDeadline ? 'is-risky' : ''}" type="button" data-sty-open="${escapeHtml(b.id)}">
+              <span class="sty-trayitem-main">
+                <span class="sty-trayitem-t">${escapeHtml(b.title)}</span>
+                <span class="sty-trayitem-d">${escapeHtml(b.tray || '')}</span>
+              </span>
+              <span class="sty-trayitem-meta">
+                <span class="sty-trayitem-mins">${b.mins} min</span>
+                ${b.before ? `<span class="sty-trayitem-due ${missesDeadline ? 'blown' : ''}">due ${escapeHtml(b.before)}</span>` : ''}
+                ${runsLate && !missesDeadline ? '<span class="sty-trayitem-due">past 17:00</span>' : ''}
+              </span>
+            </button>`;
+          }).join('')}</div>
+          ${S.done && Object.keys(S.done).length ? `<div class="sty-donelist">
+            <div class="sty-slug">Cleared</div>
+            ${items.filter(b => S.done[b.id]).map(b => `<div class="sty-doneitem">✓ ${escapeHtml(b.title)}</div>`).join('')}
+          </div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderStoryLate() {
+    const S = State.story, day = storyDay(S.dayId);
+    const left = storyItems(day).filter(b => !S.done[b.id]);
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
+      ${renderStoryHud()}
+      <div class="sty-inner">
+        <div class="sty-beat">
+          <div class="sty-slug">${escapeHtml(day.close)}</div>
+          <h2 class="sty-title">The office is emptying</h2>
+          <div class="sty-script">
+            <p class="sty-dir">Deirdre’s computer has been off for ten minutes. Karen is doing the lights at the far end, one bank at a time, in a way that is not subtle.</p>
+            ${renderStoryLines([{ who: 'nigel', dir: 'coat on, bag over shoulder', text: 'You’re not still — right. Well. Don’t make a habit of it. It’ll all still be here tomorrow, that’s the thing about it.' }])}
+          </div>
+          <p class="sty-stage-note">Still in the tray: ${left.map(b => escapeHtml(b.title)).join(', ')}.</p>
+          <div class="sty-outro-actions">
+            <button class="sty-btn" type="button" id="styStayBtn">Stay and finish it</button>
+            <button class="sty-btn sty-btn-ghost" type="button" id="styLeaveBtn">Leave it for Wednesday</button>
+          </div>
+          <p class="sty-footnote">Leaving it costs the marks for what is left, but you will still see the answers at clock-off. Nothing is ever hidden behind the clock.</p>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderStoryOutro() {
+    const S = State.story, day = storyDay(S.dayId);
+    const awarded = S.results.reduce((t, r) => t + r.awarded, 0);
+    const total = S.results.reduce((t, r) => t + r.max, 0);
+    const pct = total ? Math.round(awarded / total * 100) : 0;
+    const order = storyItems(day).map(b => b.id);
+    const results = S.results.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    const weak = results.filter(r => r.max && !r.carried).sort((a, b) => (a.awarded / a.max) - (b.awarded / b.max))[0];
+    const carry = ((day.outro && day.outro.carry) || []).filter(c => !c.ifFlag || S.flags[c.ifFlag]);
+    const cls = (r) => r.carried ? 'none' : r.awarded === r.max ? 'full' : r.awarded ? 'part' : 'none';
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
+      ${renderStoryHud()}
+      <div class="sty-inner">
+        <div class="sty-outro">
+          <div class="sty-slug">You left at ${stT(S.mins)}</div>
+          <div class="sty-outro-score">${awarded}<small>/ ${total}</small></div>
+          ${S.overrun ? '<p class="sty-overrun">You were still here after five.</p>' : ''}
+          <div class="sty-script" style="margin-top:24px">${renderStoryLines(storyLinesForScore(day.outro && day.outro.lines, pct))}</div>
+          <div class="sty-slug" style="margin-top:26px">How the day marked up</div>
+          <div class="sty-tally">
+            ${results.map(r => `<div class="sty-tally-row">
+              <span class="sty-tally-t">${escapeHtml(r.title)}</span>
+              ${r.carried ? '<span class="sty-chip">not reached</span>' : ''}
+              ${r.selfAssessed ? '<span class="sty-chip">self-marked</span>' : ''}
+              ${r.lateFor ? '<span class="sty-chip">late</span>' : ''}
+              <span class="sty-tally-m ${cls(r)}">${r.awarded}/${r.max}</span>
+            </div>`).join('')}
+          </div>
+          ${weak && weak.awarded < weak.max ? `<div class="sty-panel">
+            <div class="sty-slug">Worth revising</div>
+            <p>“${escapeHtml(weak.title)}” cost you ${weak.max - weak.awarded} mark${weak.max - weak.awarded === 1 ? '' : 's'}. The question bank drills it properly.</p>
+            <button class="sty-btn sty-btn-ghost" type="button" data-topic="${escapeHtml(weak.topic || 'all')}" style="margin-top:0">Practise ${escapeHtml(weak.topic === 'besy' ? 'Business Environment' : 'Bookkeeping')}</button>
+          </div>` : ''}
+          ${carry.length ? `<div class="sty-panel">
+            <div class="sty-slug">Hanging over you</div>
+            ${carry.map(c => `<div class="sty-carry-row"><span class="sty-when">${escapeHtml(c.when)}</span><span>${storyText(c.text)}</span></div>`).join('')}
+          </div>` : ''}
+          <div class="sty-outro-actions">
+            <button class="sty-btn" type="button" id="styReplayBtn">Another go at Tuesday</button>
+            <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn2">Clock off</button>
+          </div>
+          <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderStory() {
+    const S = State.story;
+    if (!S) { State.screen = 'home'; return ''; }
+    const day = storyDay(S.dayId);
+    if (!day) { State.screen = 'home'; State.story = null; return ''; }
+    if (S.phase === 'clockon') return renderStoryClockOn();
+    if (S.phase === 'outro')   return renderStoryOutro();
+    if (S.phase === 'late')    return renderStoryLate();
+    if (S.phase === 'tray')    return renderStoryTray();
+    if (S.phase === 'scene') {
+      const sc = storyResolve(S.scene);
+      return `<div class="sty-stage" data-light="${storyLight()}">
+        ${renderStoryRoom()}
+        ${renderStoryHud()}
+        <div class="sty-inner"><div class="sty-beat">
+          <div class="sty-slug">The office${sc.mins ? ` · ${sc.mins} min` : ''}</div>
+          <h2 class="sty-title">${escapeHtml(sc.title || '')}</h2>
+          <div class="sty-script">${renderStoryLines(sc.lines)}</div>
+          <button class="sty-btn" type="button" id="stySceneBtn">Back to it</button>
+        </div></div></div>`;
+    }
+    const beat = storyActiveItem();
+    if (!beat) { S.phase = 'tray'; return renderStoryTray(); }
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
+      ${renderStoryHud()}
+      <div class="sty-inner"><div class="sty-beat">
+        <div class="sty-slug">In the tray · ${beat.mins} min</div>
+        <h2 class="sty-title">${escapeHtml(beat.title || '')}</h2>
+        ${renderStoryItem(beat)}
+      </div></div></div>`;
+  }
+
+  function attachStoryEvents() {
+    document.body.classList.toggle('story-mode', State.screen === 'story' && !!State.story);
+    if (State.screen !== 'story' || !State.story) return;
+    const S = State.story;
+    bind('styExitBtn', 'click', exitStory);
+    bind('styExitBtn2', 'click', exitStory);
+    bind('styClockOnBtn', 'click', storyClockOn);
+    bind('stySceneBtn', 'click', storySceneDone);
+    bind('stySubmitBtn', 'click', storySubmit);
+    bind('styNextBtn', 'click', storyCloseItem);
+    bind('styStayBtn', 'click', storyStayLate);
+    bind('styLeaveBtn', 'click', storyLeaveIt);
+    bind('styReplayBtn', 'click', () => startStory(S.dayId));
+    document.querySelectorAll('[data-sty-open]').forEach(el =>
+      el.addEventListener('click', () => storyOpenItem(el.dataset.styOpen)));
+
+    /* Circling the document. Re-renders so the ring lands — safe because a
+       hotspot step holds no text inputs. The pen is finite. */
+    document.querySelectorAll('[data-sty-hot]').forEach(el => el.addEventListener('click', () => {
+      const [i, id] = el.dataset.styHot.split(':');
+      const beat = storyActiveItem();
+      const ctx = storyHotCtx(beat);
+      const k = 's' + i + ':' + id;
+      const pens = ctx.step.pens || (ctx.step.targets || []).filter(t => t.ok).length;
+      if (!S.drafts[k] && storyPensUsed(ctx) >= pens) {
+        showToast('That is your last circle used. Un-circle something to move it.', 'warn');
+        playWrong();
+        return;
+      }
+      S.drafts[k] = !S.drafts[k];
+      sndPen();
+      render();
+    }));
+
+    /* Everything else writes to draft state without re-rendering, so a
+       part-filled form survives typing. */
+    document.querySelectorAll('[data-sty-flag]').forEach(el => el.addEventListener('change', () => {
+      const [i, id] = el.dataset.styFlag.split(':');
+      S.drafts['s' + i + ':' + id] = el.checked;
+    }));
+    document.querySelectorAll('[data-sty-rub]').forEach(el => el.addEventListener('change', () => {
+      const [i, ri] = el.dataset.styRub.split(':');
+      S.drafts['s' + i + ':r' + ri] = el.checked;
+    }));
+    document.querySelectorAll('[data-sty-pick]').forEach(el => el.addEventListener('change', () => {
+      const [i, id] = el.dataset.styPick.split(':');
+      S.drafts['s' + i + ':pick'] = id;
+    }));
+    document.querySelectorAll('[data-sty-fig]').forEach(el => el.addEventListener('input', () => {
+      const [i, id] = el.dataset.styFig.split(':');
+      S.drafts['s' + i + ':' + id] = el.value;
+    }));
+    document.querySelectorAll('[data-sty-text]').forEach(el => el.addEventListener('input', () => {
+      S.drafts['s' + el.dataset.styText + ':text'] = el.value;
+      const wc = el.parentNode.querySelector('.sty-wordcount');
+      if (wc) {
+        const t = el.value.trim();
+        const n = t ? t.split(/\s+/).length : 0;
+        const min = +wc.dataset.min || 0;
+        wc.textContent = n + ' word' + (n === 1 ? '' : 's') + (min ? ' · aim for ' + min + '+' : '');
+      }
+    }));
+    document.querySelectorAll('[data-sty-reveal]').forEach(el =>
+      el.addEventListener('click', () => storyRevealWritten(+el.dataset.styReveal)));
+  }
+
+
+  /* ── PROTOTYPE DESK ───────────────────────────────────────────────────────
+     A test of one idea on one item: are the atoms the reason story mode still
+     reads as a quiz? No prompts, no marks, no submit, no options list — an
+     invoice, a pen, a daybook and three trays.
+
+     The same three decisions live here (query it, post it as billed, post it at
+     the figures you worked out) but none is a control you pick from a list.
+     They fall out of what you do with the paper. Nothing says that checking the
+     invoice against the order is the job; knowing that is the thing being
+     learned, and announcing it is what makes a game feel like a test.
+
+     Self-contained: story-proto.js, this block, the .pr-* rules, one State key,
+     one mode card. */
+
+  function protoDef() { return window.AAT_STORY_PROTO || null; }
+
+  function startProto() {
+    if (!protoDef()) { showToast('Prototype not loaded.', 'warn'); return; }
+    /* Both sheets sit loose on the desk. They arrive clipped together and it is
+       up to the player to slide them apart far enough to read one against the
+       other — which is the whole job of the item. */
+    State.proto = { phase: 'desk', pen: false, circled: {}, lifted: false,
+                    pos: { order: { x: 0, y: 0 }, invoice: { x: 26, y: 34 } },
+                    top: 'invoice', moved: false,
+                    tray: null, db: { net: '', vat: '', total: '' },
+                    outcome: null, examiner: false };
+    State.screen = 'proto';
+    sndDrawer(); render();
+  }
+  function exitProto() {
+    State.proto = null; State.screen = 'home'; State.activeTab = 'home';
+    document.body.classList.remove('story-mode', 'pen-up', 'lifting');
+    render();
+  }
+  function protoTogglePen() {
+    State.proto.pen = !State.proto.pen;
+    if (State.proto.pen) State.proto.lifted = false;
+    sndPaper(); render();
+  }
+  function protoCircle(id) {
+    const P = State.proto;
+    if (!P.pen) return;
+    P.circled[id] = !P.circled[id];
+    sndPen(); render();
+  }
+  function protoRaise(which) {
+    const P = State.proto;
+    if (P.top !== which) { P.top = which; sndPaper(); }
+  }
+  function protoTidy() {
+    const P = State.proto;
+    P.pos = { order: { x: 0, y: 0 }, invoice: { x: 26, y: 34 } };
+    P.top = 'invoice'; P.lifted = false;
+    sndPaper(); render();
+  }
+  function protoLift() {
+    const P = State.proto;
+    if (P.pen) return;                  /* put the pen down first */
+    P.lifted = !P.lifted;
+    sndPaper(); render();
+  }
+  /* Where the invoice ends up is the decision. Posting opens the daybook, and
+     what you write in it decides which posting it was. */
+  function protoDrop(trayId) {
+    const P = State.proto;
+    if (!P.lifted) return;
+    P.lifted = false; P.tray = trayId;
+    sndStamp();
+    if (trayId === 'post') { P.phase = 'book'; }
+    else { P.outcome = trayId === 'query' ? 'query' : 'hold'; P.phase = 'out'; setTimeout(sndChime, 200); }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+  function protoRuleOff() {
+    const P = State.proto, D = protoDef();
+    const near = (v, t) => Number.isFinite(v) && Math.abs(v - t) < 0.005;
+    const n = parseNumericInput(P.db.net), v = parseNumericInput(P.db.vat), t = parseNumericInput(P.db.total);
+    if (![n, v, t].every(Number.isFinite)) { showToast('The daybook needs all three columns.', 'warn'); return; }
+    const isBilled = near(n, D.billed.net) && near(v, D.billed.vat) && near(t, D.billed.total);
+    const isRight  = near(n, D.correct.net) && near(v, D.correct.vat) && near(t, D.correct.total);
+    P.outcome = isBilled ? 'billed' : isRight ? 'corrected' : 'odd';
+    P.phase = 'out';
+    sndStamp(); setTimeout(sndChime, 220);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+
+  /* What did you actually circle? The query you raise is only as good as this,
+     so it drives which ending you get rather than sitting on top of it. */
+  function protoCircleState() {
+    const P = State.proto, D = protoDef();
+    const real = Object.keys(D.wrong);
+    const found = real.filter(k => P.circled[k]).length;
+    const decoys = Object.keys(D.fine).filter(k => P.circled[k]).length;
+    if (!found) return { key: 'blind', checked: decoys > 0, found, decoys };
+    if (found < real.length) return { key: 'partial', checked: true, found, decoys };
+    return { key: decoys ? 'noisy' : 'full', checked: true, found, decoys };
+  }
+  /* An outcome may branch on that state; if it does not, it is used as it is. */
+  function protoOutcome() {
+    const P = State.proto, D = protoDef();
+    const base = D.outcomes[P.outcome];
+    if (!base) return null;
+    if (!base.by) return base;
+    const st = protoCircleState();
+    return base.by[st.key] || base.by[st.checked ? 'checked' : 'unchecked']
+        || base.by[Object.keys(base.by)[0]];
+  }
+
+  function protoHot(text, id) {
+    const P = State.proto, safe = escapeHtml(String(text == null ? '' : text));
+    if (!id) return safe;
+    const on = !!P.circled[id];
+    return `<button type="button" class="pr-hot ${on ? 'is-on' : ''}" data-pr-hot="${escapeHtml(id)}"
+      aria-pressed="${on}" aria-label="${safe}">${safe}<span class="pr-ring"></span></button>`;
+  }
+  function protoSheet(d, opts) {
+    const o = opts || {};
+    const foot = (d.foot || []).map(f => (typeof f === 'string' ? { t: f } : f));
+    return `<article class="pr-sheet ${o.cls || ''}" ${o.attrs || ''}>
+      ${o.clip ? '<span class="pr-clip"></span>' : ''}
+      <div class="pr-sheet-h">
+        <div><div class="pr-nm">${escapeHtml(d.name)}</div><div class="pr-sb">${escapeHtml(d.sub || '')}</div></div>
+        <div class="pr-rf">${escapeHtml(d.ref || '')}<br>${escapeHtml(d.date || '')}</div>
+      </div>
+      <table class="pr-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'tot' : ''} ${r.muted ? 'mut' : ''}">
+        <td>${o.hot ? protoHot(r.l, r.hot) : escapeHtml(r.l)}</td>
+        <td class="r">${r.a == null ? '' : (o.hot ? protoHot(r.a, r.hotA) : escapeHtml(r.a))}</td></tr>`).join('')}</table>
+      ${foot.length ? `<div class="pr-ft">${foot.map(f =>
+        `<div>${o.hot ? protoHot(f.t, f.hot) : escapeHtml(f.t)}</div>`).join('')}</div>` : ''}
+    </article>`;
+  }
+
+  function renderProtoDesk() {
+    const P = State.proto, D = protoDef();
+    return `<div class="sty-stage" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-hud">
+        <div class="sty-hud-left">
+          <button class="sty-leave" id="prExit" type="button" aria-label="Leave">✕</button>
+          <span class="sty-hud-when"><span class="sty-hud-day">Prototype desk</span>
+          <span class="sty-clock">09:20</span></span>
+        </div>
+        <div class="sty-timeline"><div class="sty-timeline-fill" style="width:8%"></div></div>
+        <div class="sty-hud-marks"><b>1</b><span>in the tray</span></div>
+      </div>
+      <div class="sty-inner"><div class="pr-desk">
+        <div class="pr-head">
+          <div class="sty-slug">This morning’s post</div>
+          <h2 class="pr-from">${escapeHtml(D.title)}</h2>
+          <p class="pr-sub">${escapeHtml(D.sub)}</p>
+        </div>
+        <button class="pr-pen ${P.pen ? 'is-up' : ''}" id="prPen" type="button" aria-pressed="${P.pen}">
+          <span class="pr-pen-body"></span>
+          <span>${P.pen ? 'Pen in hand' : 'A red biro, on the desk'}</span>
+        </button>
+        <div class="pr-deskarea" id="prDeskArea">
+          ${[['order', D.order], ['invoice', D.invoice]].map(([k, doc]) => {
+            const pos = P.pos[k];
+            return protoSheet(doc, {
+              cls: 'pr-loose pr-' + k + (P.top === k ? ' is-top' : '') + (P.lifted && k === 'invoice' ? ' is-lifted' : ''),
+              hot: k === 'invoice',
+              clip: k === 'invoice',
+              attrs: `id="pr${k === 'order' ? 'Order' : 'Invoice'}" data-pr-move="${k}"` +
+                     ` style="transform:translate3d(${pos.x}px,${pos.y}px,0);z-index:${P.top === k ? 12 : 6}"`,
+            });
+          }).join('')}
+        </div>
+        ${!P.moved ? '<p class="pr-swap-note">They came clipped together. Slide them about.</p>'
+                   : '<p class="pr-swap-note"><button type="button" class="pr-tidy" id="prTidy">Square them up</button></p>'}
+        <div class="pr-trays">
+          ${D.trays.map(t => `<button class="pr-tray" type="button" data-pr-tray="${escapeHtml(t.id)}">
+            <div class="pr-tray-l">${escapeHtml(t.label)}</div>
+            <div class="pr-tray-h">${escapeHtml(t.hint)}</div>
+          </button>`).join('')}
+        </div>
+      </div></div>
+    </div>`;
+  }
+
+  function renderProtoBook() {
+    const P = State.proto;
+    const cell = (id, ph) => `<div class="pr-bc r"><input type="text" inputmode="decimal" autocomplete="off"
+      placeholder="${ph}" data-pr-db="${id}" value="${escapeHtml(P.db[id] || '')}"></div>`;
+    return `<div class="sty-stage" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-hud">
+        <div class="sty-hud-left">
+          <button class="sty-leave" id="prExit" type="button" aria-label="Leave">✕</button>
+          <span class="sty-hud-when"><span class="sty-hud-day">Prototype desk</span>
+          <span class="sty-clock">09:41</span></span>
+        </div>
+        <div class="sty-timeline"><div class="sty-timeline-fill" style="width:22%"></div></div>
+        <div class="sty-hud-marks"><b>1</b><span>in the tray</span></div>
+      </div>
+      <div class="sty-inner"><div class="pr-desk">
+        <div class="sty-slug">Purchase daybook</div>
+        <h2 class="pr-from">Write it up</h2>
+        <p class="pr-sub">The invoice is in the post tray. It only counts once it is in the book.</p>
+        <div class="pr-book">
+          <div class="pr-book-h"><span style="font-weight:700">PURCHASE DAYBOOK</span><span>May 20XX · page 14</span></div>
+          <div class="pr-book-grid">
+            <div><div class="pr-bh">Supplier</div><div class="pr-bc">WR Limited</div></div>
+            <div><div class="pr-bh r">Net</div>${cell('net', '0.00')}</div>
+            <div><div class="pr-bh r">VAT</div>${cell('vat', '0.00')}</div>
+            <div><div class="pr-bh r">Total</div>${cell('total', '0.00')}</div>
+          </div>
+          <div class="pr-book-note">Inv 000231 · 12 May</div>
+        </div>
+        <button class="sty-btn" type="button" id="prRuleOff">Rule off</button>
+        <button class="sty-btn sty-btn-ghost" type="button" id="prBack" style="margin-top:10px">Take it back out of the tray</button>
+      </div></div>
+    </div>`;
+  }
+
+  function renderProtoOut() {
+    const P = State.proto, D = protoDef();
+    const o = protoOutcome() || D.outcomes.corrected;
+    const st = protoCircleState();
+    const p = storyPerson(o.who);
+    const circled = Object.keys(P.circled).filter(k => P.circled[k]);
+    const rows = Object.keys(D.wrong).map(k => {
+      const got = circled.indexOf(k) >= 0;
+      return `<div class="pr-db-row ${got ? 'hit' : 'miss'}"><span class="m">${got ? '✓' : '!'}</span><span>${escapeHtml(D.wrong[k])}</span></div>`;
+    }).concat(circled.filter(k => D.fine[k]).map(k =>
+      `<div class="pr-db-row bad"><span class="m">✗</span><span>${escapeHtml(D.fine[k])}</span></div>`)).join('');
+    return `<div class="sty-stage" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-hud">
+        <div class="sty-hud-left">
+          <button class="sty-leave" id="prExit" type="button" aria-label="Leave">✕</button>
+          <span class="sty-hud-when"><span class="sty-hud-day">Prototype desk</span>
+          <span class="sty-clock">09:52</span></span>
+        </div>
+        <div class="sty-timeline"><div class="sty-timeline-fill" style="width:34%"></div></div>
+        <div class="sty-hud-marks"><b>0</b><span>in the tray</span></div>
+      </div>
+      <div class="sty-inner"><div class="pr-desk pr-out">
+        <div class="sty-slug">What happened next</div>
+        <div class="sty-react sty-react-${escapeHtml(o.tone)}" style="margin-top:14px">
+          <div class="sty-line">
+            <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
+            <div class="sty-said"><div class="sty-name">${escapeHtml(p.name)}</div>
+            <p class="sty-speech">${storyText(o.text)}</p></div>
+          </div>
+          <p class="sty-dir">${storyText(o.dir)}</p>
+        </div>
+        <div class="pr-wed"><div class="pr-wed-l">Later that week</div><p>${storyText(o.wed)}</p></div>
+
+        <div class="pr-examiner">
+          <button class="sty-btn sty-btn-ghost" type="button" id="prExam" style="margin-top:0">
+            ${P.examiner ? 'Hide the marking' : 'How would an examiner have marked that?'}
+          </button>
+          ${P.examiner ? `<div class="pr-examiner-body">
+            <p>An AAT task built on this invoice would be worth <b>8 marks</b>. On what you did, <b>${o.marks} of 8</b>.</p>
+            <p>Three marks are for spotting the discrepancies, three for the corrected figures, two for what you did with it. You circled <b>${st.found} of 3</b>${st.decoys ? ` and ${st.decoys} that ${st.decoys === 1 ? 'was' : 'were'} fine` : ''}.</p>
+            <div class="pr-debrief">${rows || '<div class="pr-db-row miss"><span class="m">!</span><span>You did not pick the pen up.</span></div>'}</div>
+            <p style="margin-top:12px">The corrected invoice is <b>£252.00 net, £50.40 VAT, £302.40 total</b> — 16 × £17.50, less 10%, then VAT on what is left. The 2% prompt payment discount is not deducted here; it comes off at the point of payment.</p>
+          </div>` : ''}
+        </div>
+
+        <div class="sty-outro-actions">
+          <button class="sty-btn" type="button" id="prAgain">Try it a different way</button>
+          <button class="sty-btn sty-btn-ghost" type="button" id="prExit2">Back to practice</button>
+        </div>
+      </div></div>
+    </div>`;
+  }
+
+  function renderProto() {
+    const P = State.proto;
+    if (!P || !protoDef()) { State.screen = 'home'; return ''; }
+    if (P.phase === 'book') return renderProtoBook();
+    if (P.phase === 'out')  return renderProtoOut();
+    return renderProtoDesk();
+  }
+
+  function attachProtoEvents() {
+    const on = State.screen === 'proto' && !!State.proto;
+    document.body.classList.toggle('story-mode', on || (State.screen === 'story' && !!State.story));
+    document.body.classList.toggle('pen-up', on && State.proto.pen);
+    document.body.classList.toggle('lifting', on && State.proto.lifted);
+    if (!on) return;
+    const P = State.proto;
+    bind('prExit', 'click', exitProto);
+    bind('prExit2', 'click', exitProto);
+    bind('prPen', 'click', protoTogglePen);
+    bind('prRuleOff', 'click', protoRuleOff);
+    bind('prAgain', 'click', startProto);
+    bind('prExam', 'click', () => { P.examiner = !P.examiner; playClick(); render(); });
+    bind('prBack', 'click', () => { P.phase = 'desk'; P.tray = null; sndPaper(); render(); });
+    /* Both sheets drag freely. Releasing the invoice over a tray files it, which
+       is the same verb as putting paper in a tray on a real desk. A press that
+       does not move is still a tap, so circling and the keyboard path both work. */
+    let drag = null;
+    document.querySelectorAll('[data-pr-move]').forEach(el => {
+      el.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('[data-pr-hot]')) return;      // circling, not dragging
+        const k = el.dataset.prMove;
+        protoRaise(k);
+        el.style.zIndex = 20;
+        drag = { el, k, sx: e.clientX, sy: e.clientY,
+                 ox: P.pos[k].x, oy: P.pos[k].y, moved: false };
+        try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (!drag || drag.el !== el) return;
+        const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+        if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 5) return;
+        drag.moved = true;
+        el.classList.add('is-dragging');
+        el.style.transform = `translate3d(${drag.ox + dx}px,${drag.oy + dy}px,0)`;
+      });
+      const end = (e) => {
+        if (!drag || drag.el !== el) return;
+        const d = drag; drag = null;
+        el.classList.remove('is-dragging');
+        if (!d.moved) {                                     // a tap, not a drag
+          if (d.k === 'invoice') protoLift(); else render();
+          return;
+        }
+        P.pos[d.k] = { x: d.ox + (e.clientX - d.sx), y: d.oy + (e.clientY - d.sy) };
+        P.moved = true;
+        /* The sheet is under the cursor, so it has to be made transparent to
+           hit-testing for a moment or it finds itself instead of the tray. */
+        el.style.pointerEvents = 'none';
+        const over = document.elementFromPoint(e.clientX, e.clientY);
+        el.style.pointerEvents = '';
+        const tray = over && over.closest && over.closest('[data-pr-tray]');
+        if (tray && d.k === 'invoice') { P.lifted = true; protoDrop(tray.dataset.prTray); return; }
+        if (tray && d.k === 'order') { showToast('The order stays with you. It is the invoice that gets filed.', 'warn'); }
+        sndPaper(); render();
+      };
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+      el.addEventListener('click', (e) => { if (e.target.closest('[data-pr-hot]')) return; });
+    });
+    bind('prTidy', 'click', protoTidy);
+    document.querySelectorAll('[data-pr-hot]').forEach(el =>
+      el.addEventListener('click', (e) => { e.stopPropagation(); protoCircle(el.dataset.prHot); }));
+    document.querySelectorAll('[data-pr-tray]').forEach(el =>
+      el.addEventListener('click', () => protoDrop(el.dataset.prTray)));
+    document.querySelectorAll('[data-pr-db]').forEach(el =>
+      el.addEventListener('input', () => { P.db[el.dataset.prDb] = el.value; }));
+  }
+
   function attachEvents() {
     bind('startBtn', 'click', () => { Storage.data.settings.seenSplash = true; Storage.save(); State.screen='home'; render(); });
+    attachStoryEvents();
+    attachProtoEvents();
     document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => { State.activeTab = el.dataset.tab; render(); }));
     document.querySelectorAll('[data-switch-subject]').forEach(el => el.addEventListener('click', () => switchSubject(el.dataset.switchSubject)));
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
+    bind('protoBtn', 'click', startProto);
+    bind('storyBtn', 'click', () => { const s = storyDef(); if (s && s.days && s.days[0]) startStory(s.days[0].id); });
     bind('unitExamBtn', 'click', showUnitAssessmentPicker);
     document.querySelectorAll('[data-unit-exam]').forEach(el =>
       el.addEventListener('click', () => { State.confirmModal = null; startUnitAssessment(el.dataset.unitExam); }));
