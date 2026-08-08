@@ -18,7 +18,7 @@
     ? require('./aat3-tax-data.js').TAX
     : root.AAT3_TAX;
 
-  var LESSONS = [
+  var ORIENTATION = [
 
     /* ── Orientation ────────────────────────────────────────────────────────
        Neither of these covers new syllabus content — they exist because the
@@ -58,7 +58,7 @@
           },
           p: [
             'Tax Processes for Businesses is assessed on its own, in a single sitting, and the result feeds into the overall qualification grade alongside the other three units.',
-            'Two features of that assessment should shape how you study. The first is that it is **computer marked**. There is no extended written answer to compose and no examiner judgement to satisfy: an answer is either right or it is not. Compare that with Business Awareness, where nearly a third of the marks are free text assessed against band descriptors, and the difference in preparation is obvious. Here there is no credit for a well-argued wrong answer — and equally no risk of a good answer being marked down for how it is expressed.',
+            'Two features of that assessment should shape how you study. The first is that it is **computer marked**. There is no extended written answer to compose and no examiner judgement to satisfy: an answer is either right or it is not. Compare that with Business Awareness, where 29 of the 100 marks are free text marked by a human — and one task of those is graded against level-of-response bands rather than a mark scheme of right answers. Here there is no credit for a well-argued wrong answer — and equally no risk of a good answer being marked down for how it is expressed.',
             'That makes the unit unusually **learnable**. The rule set is finite. The thresholds, deadlines, categories and adjustments can all be known, and knowing them is most of the mark. Very little is left to interpretation.',
             'The second feature is the flip side of the first: **precision counts absolutely**. A figure that is nearly right is wrong. A rule remembered approximately — six months rather than four years, output tax rather than input tax, the gross figure rather than the net — loses the mark outright. Where other units reward broad understanding, this one rewards exactness, and revision should be adjusted accordingly: learn the numbers, not the gist of them.',
           ],
@@ -77,8 +77,9 @@
           },
           p: [
             'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are.',
-            'Four of the five are VAT, and together they carry 85% of the assessment. Payroll is a single outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation — you are told what the deductions are and asked to handle, reconcile and report them correctly.',
-            '**You are starting at Outcome 2.** That is deliberate rather than an oversight. It is the largest outcome, it is where the actual work of the unit lives, and it is the part that most rewards being taught carefully rather than looked up. The cost of starting there is that the background Outcome 1 would have supplied — what VAT is, who bears it, why the machinery exists at all — has not been laid down yet. The next chapter supplies exactly that, before any calculation begins.',
+            'VAT dominates. Three of the five outcomes are VAT and nothing else, and they carry 75% of the assessment between them. Payroll is a single outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation — you are told what the deductions are and asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about communicating VAT *and* payroll matters to the right person in the right way.',
+            '**Outcomes 1 and 2 are written; Outcomes 3, 4 and 5 are not yet.** That covers 55% of the assessment, and it covers the two halves that depend on each other most — the legal framework and the calculations performed inside it. Work through them in order. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong; Outcome 2 then does the arithmetic those rules govern.',
+            'What is missing matters, and it would be dishonest not to say so. Outcome 3 (reviewing and correcting returns), Outcome 4 (payroll) and Outcome 5 (reporting) are between them 45% of the marks. Treat what follows as a thorough grounding in the larger half of the unit rather than as complete preparation for the assessment.',
             'One thing worth flagging now: the outcomes are not independent of each other. Outcome 3 asks you to review and correct a return that Outcome 2 taught you to build. Outcome 5 asks you to explain to somebody else what Outcomes 1 to 4 established. Material learned here is drawn on repeatedly later, which is another reason to learn it properly the first time.',
           ],
         },
@@ -167,7 +168,7 @@
           h: 'Why registered businesses are collectors, not payers',
           p: [
             'Three consequences follow from the chain, and each explains a rule you will meet later. They are worth stating explicitly, because in the assessment they usually appear as facts to be recalled rather than conclusions to be reasoned to — and a fact that is understood is much harder to forget.',
-            '**First, VAT should be broadly neutral for a registered business.** It charges VAT, it reclaims VAT, and it settles the difference. Neither figure touches profit, because neither is its money. This is exactly why the exceptions sting. When input tax is blocked — on client entertaining, or on a car available for any private use — the VAT stops passing through and becomes a real, unrecoverable cost. A £30,000 car carrying £6,000 of irrecoverable VAT genuinely costs the business £36,000.',
+            '**First, VAT should be broadly neutral for a registered business.** It charges VAT, it reclaims VAT, and it settles the difference. Neither figure touches profit, because neither is its money. This is exactly why the exceptions sting. When input tax is blocked — on client entertaining, or on a car available for any private use — the VAT stops passing through and becomes a real, unrecoverable cost. A car priced at £30,000 before VAT carries £6,000 of input tax that can never be reclaimed, so it genuinely costs the business £36,000.',
             '**Second, the money passing through is not the business\'s own.** Between charging a customer and paying HMRC, the business is holding public money. That is the justification for the entire compliance apparatus: prescribed records kept for a prescribed period, powers of inspection and premises visits, a fixed filing calendar, and penalties that begin on a specific day regardless of intent. A business that spends its VAT and then cannot pay has, in substance, spent somebody else\'s money.',
             '**Third, only the final consumer bears the tax.** The chain of charge-and-reclaim passes the burden along untouched until it reaches someone who cannot reclaim. Usually that is a private individual. But it can equally be a business making exempt supplies — an insurance broker, say — which cannot recover its input tax and therefore absorbs it exactly as a consumer does. That is not an accident in the rules. It is what exemption means, and it is why the difference between exempt and zero-rated matters so much later.',
           ],
@@ -231,6 +232,10 @@
         },
       ],
     },
+  ];
+
+  /* ── Outcome 2: Calculate VAT (30%) ──────────────────────────────────── */
+  var LESSONS_LO2 = [
 
     /* ── 2.1 ────────────────────────────────────────────────────────────── */
     {
@@ -579,7 +584,7 @@
           q: 'A business sells goods with a net value of £14,600 at the standard rate. What is the output tax, in pounds?',
           answer: 2920,
           unit: '£',
-          exp: '£14,600 × 20% = £2,920. Working forward from a net figure, the rate is simply applied.',
+          exp: '£14,600 × 20% = £2,920. The net figure is the VAT-exclusive value, so the rate applies to it directly — no fraction is needed. The VAT fraction of 1/6 is for the opposite journey, when you are handed a gross figure and have to strip the VAT back out of it. Reading which figure you have been given is half the work in these questions.',
         },
         {
           type: 'numeric',
@@ -641,7 +646,7 @@
             'Most businesses that make exempt supplies also make taxable ones. They are **partially exempt**, and their input tax has to be divided three ways.',
             'Input tax **wholly attributable to taxable supplies** is recoverable in full. Input tax **wholly attributable to exempt supplies** is not recoverable. Input tax on **residual overheads** — rent, heating, professional fees, everything that supports both activities — is apportioned between the two, normally by reference to the value of supplies made.',
             'That is administratively heavy for a business whose exempt activity is incidental, so there is relief. If the exempt input tax passes the **de minimis** test, all of it may be recovered as though the business were fully taxable.',
-            'The test has two limbs and **both** must be satisfied. The exempt input tax must average no more than £625 a month, and it must be no more than 50% of total input tax. A quarter is three months, so the monthly figure is the quarterly exempt input tax divided by three.',
+            'The test has two limbs and **both** must be satisfied. The exempt input tax must average no more than £' + T.partialExemption.deMinimisPerMonth.value + ' a month, and it must be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. A quarter is three months, so the monthly figure is the quarterly exempt input tax divided by three.',
             'The order in which you test them does not matter, but the conjunction does: passing one limb while failing the other does not qualify. HMRC also operates two simplified tests and an annual review of the position, both of which are beyond this unit — within it, treat the two-limb test as the test.',
           ],
           formula: 'De minimis: exempt input tax ≤ £' + T.partialExemption.deMinimisPerMonth.value + ' per month on average AND ≤ ' + T.partialExemption.inputTaxProportion.value + '% of total input tax',
@@ -1010,12 +1015,12 @@
               ['VAT on sales invoices', 'Output', 'Add'],
               ['Credit notes issued to customers', 'Output', 'Subtract'],
               ['Fuel scale charge', 'Output', 'Add'],
-              ['Import VAT under PVA', 'Output', 'Add'],
+              ['Import VAT under PVA *(declared)*', 'Output', 'Add'],
               ['VAT on purchase invoices', 'Input', 'Add'],
               ['Credit notes received from suppliers', 'Input', 'Subtract'],
               ['Blocked input tax (entertaining, cars)', 'Input', 'Subtract'],
               ['Bad debt relief', 'Input', 'Add'],
-              ['Import VAT under PVA', 'Input', 'Add'],
+              ['Import VAT under PVA *(reclaimed)*', 'Input', 'Add'],
             ],
           },
           p: [
@@ -1105,14 +1110,860 @@
     },
   ];
 
-  var PATH = [{
-    unit: 'tpfb',
-    level: 3,
-    title: 'Tax Processes for Businesses',
-    outcome: 2,
-    outcomeTitle: 'Calculate VAT',
-    lessons: LESSONS,
-  }];
+
+  /* ── Outcome 1: Understand legislation requirements relating to VAT (25%) ─
+     Knowledge-led rather than calculation-led. The temptation with an outcome
+     like this is a list of facts to memorise; what follows tries instead to
+     give each rule a reason, because a rule with a reason survives the exam
+     and a rule without one does not. */
+  var LESSONS_LO1 = [
+
+    /* ── 1.1 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1A',
+      title: 'The law, the tax authority and the five categories',
+      icon: '⚖️',
+      criteria: ['TPFB-1.1.1', 'TPFB-1.1.2', 'TPFB-1.1.3'],
+      cards: [
+        {
+          h: 'Who makes the rules and who enforces them',
+          p: [
+            'VAT is created by statute — principally the Value Added Tax Act 1994 and the regulations made under it — and amended every year by the Finance Act. The body that administers and enforces it is **HM Revenue and Customs**, and for the purposes of this unit HMRC is *the* relevant tax authority for VAT in the United Kingdom. There is no other. When the material says "notify HMRC" or "HMRC may assess", it is describing a statutory power, not a matter of custom or good practice.',
+            'That distinction is worth holding on to, because it explains the tone of everything that follows. HMRC is not a supplier the business negotiates with. It sets the deadlines, it decides what records must exist, it may inspect them, and where a business does not file, HMRC may simply decide the figure itself and pursue it as a debt. A commercial creditor has none of those powers.',
+            'It also explains why the unit is written the way it is. Most of Outcome 1 is not arithmetic. It is knowing what the law requires, by when, and what happens when it does not happen — the framework inside which the calculations of Outcome 2 are performed.',
+            'One boundary the specification draws explicitly: **the rules relating to Northern Ireland are not assessed in this unit**. Northern Ireland has a distinct position for goods, and you may meet it in practice, but it is outside what the assessment can ask.',
+          ],
+          callout: { kind: 'key', text: 'HMRC is the tax authority for VAT in the UK. Its powers are statutory, which is why deadlines are fixed and penalties are automatic rather than negotiated.' },
+        },
+        {
+          h: 'Taxable persons and taxable supplies',
+          p: [
+            'Two terms do a great deal of work in the legislation, and they are narrower than ordinary English suggests.',
+            'A **taxable person** is a person — an individual, a partnership, a company, a charity — who is registered for VAT or who is *required* to be. That second limb matters more than it looks. A business that has passed the registration threshold and simply not registered is still a taxable person; it is a taxable person that is breaking the law. Its liability to account for VAT began when it should have registered, not when it eventually did. This is why the late registration penalty in lesson 1F is calculated on the VAT that *should* have been paid.',
+            'A **taxable supply** is a supply of goods or services made in the UK in the course of business that is not exempt. Note what that definition includes: standard-rated, reduced-rated and **zero-rated** supplies are all taxable. Zero-rated is a taxable supply on which the rate happens to be nil. It is not the same as exempt, and Level 3 will punish the confusion repeatedly.',
+            'Putting the two together gives the charge: VAT is due on taxable supplies made in the UK by a taxable person in the course or furtherance of business. Strip out any one element — a private sale between individuals, a supply made abroad, an exempt supply — and there is no VAT to charge.',
+          ],
+          callout: { kind: 'warning', text: 'A business required to register is a taxable person even before it registers. Its VAT liability starts from the date registration was due, not the date it got round to it.' },
+        },
+        {
+          h: 'The five categories of supply',
+          p: [
+            'Every supply a business makes falls into exactly one of five categories, and almost every decision in this unit begins by placing a supply in the right one. Learn them as a set rather than individually, because it is the *contrasts* between them that get tested.',
+            'The first three — standard, reduced and zero — are the taxable rates. They differ only in the percentage applied, and in all three cases the supplier charges VAT (even if at 0%) and recovers input tax on related purchases in the normal way.',
+            'The fourth, **exempt**, is different in kind rather than degree. No VAT is charged, and — this is the sting — input tax on costs incurred in making those supplies cannot be recovered. The business absorbs it. Insurance, most finance, postal services, health and welfare, education and betting are the familiar examples.',
+            'The fifth, **outside the scope**, means the transaction is not a supply within the UK VAT system at all. Wages paid to employees, dividends, most statutory charges such as vehicle excise duty, and supplies made outside the UK sit here. There is nothing to record on the return in Boxes 1 or 4, and nothing to recover.',
+            'The distinction that costs the most marks is **zero-rated versus exempt**. Both mean the customer is charged no VAT, so from the outside they look identical. From the inside they are opposites: a zero-rated trader recovers all its input tax and is usually in a repayment position, while an exempt trader recovers none of it and quietly bears the cost.',
+          ],
+          table: {
+            headers: ['Category', 'Rate charged', 'Input tax recoverable?', 'Typical examples'],
+            rows: [
+              ['Standard-rated', '20%', 'Yes', 'Most goods and services'],
+              ['Reduced-rated', '5%', 'Yes', 'Domestic fuel and power, children’s car seats'],
+              ['Zero-rated', '0%', '**Yes**', 'Most food, books, children’s clothing, public transport'],
+              ['Exempt', 'None', '**No**', 'Insurance, finance, postal services, education, health'],
+              ['Outside the scope', 'None', 'No', 'Wages, dividends, supplies made outside the UK'],
+            ],
+          },
+        },
+        {
+          h: 'Why the zero-rated / exempt distinction matters so much',
+          p: [
+            'It is worth seeing the difference in money rather than in words, because the two categories behave identically from the customer’s side and oppositely from the business’s side.',
+            'Consider two businesses, each with £100,000 of sales and £40,000 of standard-rated costs. The first sells children’s clothing — zero-rated. The second is an insurance broker — exempt. Neither charges its customers a penny of VAT.',
+            'The clothing retailer charges £0 of output tax and reclaims £8,000 of input tax on its costs. It receives £8,000 from HMRC. Its costs are genuinely £40,000.',
+            'The broker charges £0 of output tax and reclaims nothing. It receives nothing from HMRC, and its costs are £48,000. The £8,000 has become an ordinary business expense that reduces its profit, exactly as it would for a private individual.',
+            'Same customer experience, £16,000 apart. That is why the specification asks you to know the categories rather than the rates, and why "no VAT is charged" is never a sufficient answer to a question about a supply.',
+          ],
+          examtrap: { text: 'Asked whether a supply is "taxable", zero-rated counts as YES. It is a taxable supply at a rate of 0%. Only exempt and outside-the-scope supplies are not taxable supplies.' },
+        },
+        {
+          h: 'Where the tax finally lands',
+          p: [
+            'The chain in the opening chapter showed VAT passing through each registered business untouched and settling on the final consumer. The categories are what decide where "final" is.',
+            'For most supplies the chain ends with a private individual, who has no VAT registration and so no way to reclaim. That is the intended result: VAT is a tax on consumer spending, and the consumer bears it.',
+            'But the chain can also end early. A business making exempt supplies cannot reclaim, so the chain stops with it — it bears the tax exactly as a consumer does, even though it is a business. A partially exempt business bears part of it. A business below the registration threshold that has chosen not to register is in the same position: it pays VAT on its purchases and cannot recover it.',
+            'So the question "who bears the VAT?" is answered not by who paid it at the till, but by who was unable to pass it on. Keeping that question in mind makes several later rules — partial exemption, the benefit of voluntary registration, the logic of the flat rate scheme — considerably easier to reason about than to memorise.',
+          ],
+          callout: { kind: 'tip', text: 'The tax stops at the first person in the chain who cannot reclaim. Usually that is the consumer; sometimes it is an exempt or unregistered business.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business makes only exempt supplies. What is the VAT position on its purchases?',
+          opts: [
+            'It cannot recover the input tax, which becomes a cost of the business',
+            'It recovers the input tax in full, as a zero-rated trader would do',
+            'It recovers half of the input tax under the standard apportionment rules',
+            'It recovers the input tax but must add a corresponding charge to output tax',
+          ],
+          ans: 0,
+          exp: 'Exempt supplies carry no right to recover the input tax attributable to them. The VAT sticks to the business and reduces its profit, exactly as it would for a private consumer. This is the single practical difference between exempt and zero-rated, and it is why the two must never be treated as interchangeable.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about the categories of supply is true or false.',
+          statements: [
+            { text: 'A zero-rated supply is a taxable supply.', answer: true },
+            { text: 'Wages paid to employees are outside the scope of VAT.', answer: true },
+            { text: 'An exempt supply allows the supplier to recover related input tax.', answer: false },
+            { text: 'A business that is required to register but has not done so is still a taxable person.', answer: true },
+          ],
+          exp: 'Zero-rated supplies are taxable at 0%, which is what preserves the right to recover input tax. Wages are outside the scope entirely. Exempt supplies carry no recovery — that is the defining feature. And a taxable person is one who is registered OR required to be, which is why liability runs from the date registration fell due.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which body is the relevant tax authority for VAT in the United Kingdom?',
+          opts: [
+            'HM Revenue and Customs',
+            'The Financial Conduct Authority, through its tax division',
+            'Companies House, as part of its statutory filing role',
+            'The Association of Accounting Technicians',
+          ],
+          ans: 0,
+          exp: 'HMRC administers and enforces VAT under the Value Added Tax Act 1994 and its regulations. Its powers — to require registration, to demand records, to inspect, to assess and to penalise — are statutory, which is why VAT deadlines are fixed rather than negotiable.',
+        },
+        {
+          type: 'gapfill',
+          q: 'Complete the contrast between exempt and zero-rated supplies.',
+          template: 'A supply of insurance is {0}, so the supplier recovers {1} of the input tax on its related costs. A supply of children’s clothing is {2}, so the supplier recovers {3} of it.',
+          gaps: [
+            { options: ['exempt', 'zero-rated', 'outside the scope'], answer: 0 },
+            { options: ['none', 'all', 'half'], answer: 0 },
+            { options: ['zero-rated', 'exempt', 'reduced-rated'], answer: 0 },
+            { options: ['all', 'none', 'half'], answer: 0 },
+          ],
+          exp: 'Insurance is exempt and children’s clothing is zero-rated. Neither charges the customer VAT, but the exempt supplier absorbs its input tax while the zero-rated supplier recovers every penny — and is usually in a repayment position as a result.',
+        },
+      ],
+    },
+
+    /* ── 1.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1B',
+      title: 'Records, inspections and visits',
+      icon: '🗄️',
+      criteria: ['TPFB-1.1.4', 'TPFB-1.1.5'],
+      cards: [
+        {
+          h: 'Why record keeping is a legal duty, not good practice',
+          p: [
+            'Every business keeps records because it needs to know how it is doing. A VAT-registered business keeps records because **the law requires it to**, in a prescribed form, for a prescribed period, and subject to inspection. Those are different obligations, and the second is the one this unit tests.',
+            'The justification is the one running through the whole unit. The business is holding public money and calculating its own liability. HMRC does not see the underlying transactions; it sees nine boxes on a return that the business itself completed. The records are the only thing standing between a self-assessed tax and an honour system, which is why the duty to keep them is enforced separately from the duty to pay.',
+            'That separation is the detail students most often miss. The penalty for failing to keep records is not a penalty for underpaying tax. A business can pay every penny it owes, on time, and still be penalised because it cannot produce the evidence. The two obligations stand independently.',
+          ],
+          callout: { kind: 'key', text: 'The duty to keep records is independent of the duty to pay. Paying the right amount does not excuse being unable to prove it.' },
+        },
+        {
+          h: 'What must be kept, and for how long',
+          p: [
+            'The requirement is broad: essentially everything that evidences the figures on the return. HMRC’s list runs to business correspondence and delivery notes, which gives a sense of how widely it is drawn — the test is not "is this an accounting record?" but "does this evidence a supply?".',
+            'At the centre sits the **VAT account** — the summary linking the business’s books to the boxes on the return. It is the document that shows how a set of daybooks became a return, and it is the first thing an officer asks for.',
+            'The retention period is **' + T.records.retentionYears.value + ' years**. Note that this is longer than the four-year window for correcting errors and longer than the four-year assessment limit, which sometimes strikes students as odd. It is not: HMRC may assess up to twenty years back where tax has been lost deliberately, and the six-year rule gives a working margin for the ordinary case without being open-ended.',
+            'Records may be kept electronically, and for most businesses now they must be. Under Making Tax Digital the records forming part of the electronic account have to be kept **digitally in functional compatible software, with digital links between them** — meaning the data must flow from record to return without being retyped. Copying a figure by hand between two systems breaks the digital link even if the figure is correct.',
+          ],
+          table: {
+            headers: ['Requirement', 'The rule'],
+            rows: [
+              ['How long', T.records.retentionYears.value + ' years'],
+              ['What', 'The VAT account, invoices issued and received, credit and debit notes, daybooks, cash books, till rolls, import and export documents, orders and correspondence'],
+              ['How', 'Paper or electronic; digitally in compatible software where MTD applies, with digital links'],
+              ['Penalty for failure', '£' + T.records.penalty.value + ' — separate from any tax or payment penalty'],
+            ],
+          },
+        },
+        {
+          h: 'HMRC’s rights of inspection and visit',
+          p: [
+            'HMRC may inspect a registered business’s records, enter its business premises at a reasonable time, and require documents to be produced. These are powers of the tax authority, exercisable as part of routine compliance work — a visit is not an accusation, and most businesses will receive one at some point without anything being wrong.',
+            'Visits are usually **arranged in advance**, with notice of what the officer wants to see and roughly how long it will take. HMRC may make an unannounced visit, but that is the exception rather than the pattern, and it is generally reserved for cases where advance notice would defeat the purpose.',
+            'What an officer typically does is trace figures in both directions: from the return back through the VAT account to the daybooks and the invoices, and forward from a sample of invoices to check they were recorded, categorised and rated correctly. Anything that cannot be traced is the problem — which is the practical reason the retention rule matters. A business that has discarded its purchase invoices cannot demonstrate its input tax claim, and input tax that cannot be evidenced is input tax that can be disallowed.',
+            'The reasonable response to all of this is not anxiety but organisation. A business whose records are complete, retained and reconcilable has nothing to fear from an inspection; a business whose records are none of those things has a problem that existed long before the officer arrived.',
+          ],
+          callout: { kind: 'tip', text: 'Rights of inspection exist because the business holds public money. A visit is routine compliance, not an allegation — but it is only survivable if the records are complete.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'For how long must a VAT-registered business normally retain its VAT records?',
+          opts: [
+            '6 years',
+            '3 years, matching the ordinary limitation period for contract claims',
+            '4 years, matching the time limit for correcting errors on a return',
+            '10 years, matching the retention period required for statutory accounts',
+          ],
+          ans: 0,
+          exp: 'The retention period is six years. It is deliberately longer than the four-year error correction window and the four-year normal assessment limit, so that records still exist when HMRC exercises those powers near the end of their period.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about records and inspections is true or false.',
+          statements: [
+            { text: 'HMRC may enter business premises at a reasonable time to inspect records.', answer: true },
+            { text: 'A business that has paid the correct VAT cannot be penalised for poor records.', answer: false },
+            { text: 'Under Making Tax Digital, records must be kept digitally with digital links between them.', answer: true },
+            { text: 'All HMRC visits must be arranged in advance.', answer: false },
+          ],
+          exp: 'Inspection and entry are statutory powers. The record-keeping duty is separate from the payment duty, so a correct payment is no defence to a records failure. MTD requires digital records and digital links — retyping a figure breaks the link. And while visits are usually arranged in advance, HMRC may visit unannounced.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which document links a business’s books to the figures reported in the boxes of its VAT return?',
+          opts: [
+            'The VAT account',
+            'The sales daybook, which records every invoice issued in date order',
+            'The trial balance extracted at the end of the accounting period',
+            'The bank reconciliation statement for the final month of the quarter',
+          ],
+          ans: 0,
+          exp: 'The VAT account is the required summary showing how the underlying records became the return. It is the first record an inspecting officer will ask for, because it is the bridge between the bookkeeping and the declaration.',
+        },
+      ],
+    },
+
+    /* ── 1.2 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1C',
+      title: 'Registration and deregistration',
+      icon: '📝',
+      criteria: ['TPFB-1.2.1', 'TPFB-1.2.2', 'TPFB-1.2.3'],
+      cards: [
+        {
+          h: 'The threshold, and what counts towards it',
+          p: [
+            'A business must register for VAT once its **taxable turnover** passes the registration threshold of **£' + T.registration.threshold.value.toLocaleString('en-GB') + '**. Two words in that sentence do all the work.',
+            '**Taxable** means what lesson 1A meant by it: standard-rated, reduced-rated and zero-rated supplies all count. Exempt supplies and supplies outside the scope do not. A business with £120,000 of sales, £100,000 of which is exempt insurance commission, has taxable turnover of £20,000 and no obligation to register. Conversely, a zero-rated food producer with £95,000 of sales must register, even though it will never charge a customer a penny of VAT.',
+            '**Turnover** means the value of supplies, not profit and not cash received. It is measured net of VAT, and it includes sales the business has invoiced but not yet been paid for.',
+            'The threshold is not tested against a financial year. It is tested on a **rolling 12-month basis**, which means it must be reconsidered at the end of every single month, looking back over the previous twelve. A business with steady sales of £8,000 a month will cross £' + T.registration.threshold.value.toLocaleString('en-GB') + ' partway through its second year without anything unusual happening in any individual month.',
+          ],
+          examtrap: { text: 'Zero-rated sales count towards the registration threshold. A business can be obliged to register even though it will charge no VAT to any customer — and it will then recover input tax, which is usually to its advantage.' },
+        },
+        {
+          h: 'Two tests, two different answers',
+          p: [
+            'There are two separate tests for compulsory registration, and they differ in what triggers them, when HMRC must be told, and — the part most often got wrong — **the date registration takes effect**. Getting the trigger right and the effective date wrong loses the mark just as completely as getting neither.',
+            'The **historic test** looks backwards. At the end of each month, add up taxable turnover for the previous twelve months. If it exceeds the threshold, the business must notify HMRC within **' + T.registration.historicTest.notifyWithinDays.value + ' days of the end of that month**, and registration takes effect from **the first day of the second month** after the threshold was exceeded. The gap is deliberate: it gives the business a short run-in to change its invoicing and systems before it has to start charging.',
+            'The **future test** looks forwards, and it is much sharper than students expect. It bites when the business expects taxable turnover to exceed the threshold **in the next 30 days alone** — not over the next year. This is the test that catches a business winning a single unusually large contract. Notification is due by the end of that 30-day period, and registration takes effect from **the date the expectation arose**, which is the start of the period, not the end of it.',
+            'Read those two effective dates side by side. Under the historic test registration starts *after* a delay; under the future test it starts *immediately, and retrospectively by the time you notify*. A business that realises on 1 May that it will bill £100,000 in the next fortnight is registered from 1 May, and every invoice it issues from that date carries VAT.',
+          ],
+          table: {
+            headers: ['', 'Historic test', 'Future test'],
+            rows: [
+              ['Trigger', 'Taxable turnover in the past 12 months exceeded the threshold', 'Expected to exceed the threshold in the next 30 days **alone**'],
+              ['Tested', 'At the end of every month, rolling', 'The moment the expectation arises'],
+              ['Notify by', 'Within ' + T.registration.historicTest.notifyWithinDays.value + ' days of the end of that month', 'The end of that 30-day period'],
+              ['Registered from', 'The 1st of the **second** month after', '**The date the expectation arose**'],
+            ],
+          },
+        },
+        {
+          h: 'Applying the historic test',
+          p: [
+            'The arithmetic is straightforward; the dates are where the marks are. Work the trigger month out first, then apply the two rules to it separately rather than trying to hold both in your head at once.',
+          ],
+          worked: {
+            title: 'When must Brayford Joinery register, and from when?',
+            problem: 'Brayford Joinery has taxable turnover of £7,000 in most months. Adding up the twelve months to 31 August, the total is £' + (T.registration.threshold.value + 2400).toLocaleString('en-GB') + '. This is the first month the rolling total has exceeded the threshold. By when must Brayford notify HMRC, and from what date will it be registered?',
+            steps: [
+              { do: 'Identify the trigger month.', why: 'The rolling 12-month total first exceeded £' + T.registration.threshold.value.toLocaleString('en-GB') + ' at the end of August, so August is the month in which the threshold was exceeded.' },
+              { do: 'Apply the notification rule.', why: 'Notification is due within ' + T.registration.historicTest.notifyWithinDays.value + ' days of the END OF that month. Thirty days from 31 August is 30 September.' },
+              { do: 'Apply the effective date rule — separately.', why: 'Registration takes effect from the first day of the SECOND month after the threshold was exceeded. The first month after August is September; the second is October. So registration runs from 1 October.' },
+              { do: 'Note what the two dates mean in practice.', why: 'Brayford must tell HMRC by 30 September, and must charge VAT on supplies made from 1 October onwards. It does not charge VAT in September, even though it already knows it has crossed the threshold.' },
+            ],
+            answer: 'Notify by 30 September; registered from 1 October',
+            tryIt: {
+              q: 'A business first exceeds the rolling 12-month threshold at the end of March. In which month does its registration take effect? Answer with the month number (1 = January).',
+              answer: 5,
+              unit: '',
+              hint: 'Count forward: the first month after March, then the second.',
+              exp: 'The threshold was exceeded at the end of March. The first month after is April, the second is May, so registration takes effect from 1 May — month 5. Notification would have been due within 30 days of 31 March, that is by 30 April.',
+            },
+          },
+        },
+        {
+          h: 'Registering voluntarily',
+          p: [
+            'A business below the threshold may register anyway, and for some businesses this is plainly the right decision rather than a marginal one.',
+            'The clearest case is a business making **zero-rated supplies**. It charges its customers 0%, so registration costs its customers nothing at all, while allowing it to recover input tax on everything it buys. It will be in a repayment position almost every period. A small bakery selling zero-rated food has no reason not to register.',
+            'A second case is a business whose customers are themselves VAT-registered. Those customers reclaim whatever VAT they are charged, so the extra 20% costs them nothing in substance — meaning registration is close to free in commercial terms, while letting the supplier recover its own input tax. A business trading mainly with the public is in the opposite position: to a private customer, VAT is a genuine 20% price increase.',
+            'Third, a business planning significant expenditure before it begins trading — fitting out premises, buying equipment — may register to recover that input tax rather than absorb it.',
+            'Against all this sit real costs: returns to file on a fixed calendar, records to keep in prescribed form, penalties to be exposed to, and the credibility of every figure resting on evidence. Voluntary registration is a decision with a downside, not a free option, and the exam expects you to be able to argue both sides.',
+          ],
+          split: {
+            left: { title: 'Points towards registering voluntarily', items: ['The business makes zero-rated supplies and will be in repayment', 'Its customers are VAT-registered and reclaim what they are charged', 'It has large input tax to recover, especially pre-trading', 'It wants to appear larger or more established'] },
+            right: { title: 'Points against', items: ['Customers who are private individuals face a real price rise', 'Returns must be filed on a fixed calendar, on time', 'Records must be kept in prescribed form for ' + T.records.retentionYears.value + ' years', 'The business becomes exposed to the penalty regimes'] },
+          },
+        },
+        {
+          h: 'Coming out again: deregistration',
+          p: [
+            'Deregistration mirrors registration, and like registration it comes in a compulsory form and a voluntary one.',
+            '**Compulsory deregistration** applies when the business ceases to be eligible to be registered — it stops trading, it is sold, or its supplies become wholly exempt. HMRC must be told within **' + T.registration.deregistration.compulsoryNotifyWithinDays.value + ' days** of the business ceasing to be eligible, and a penalty may follow if it is not.',
+            '**Voluntary deregistration** is available where taxable turnover for the **next 12 months** is expected to fall below the deregistration threshold of **£' + T.registration.deregistrationThreshold.value.toLocaleString('en-GB') + '**. Note that this is a forward-looking test, on expected turnover, not a backward-looking one on what has already happened. HMRC may refuse the application.',
+            'The deregistration threshold is set £' + (T.registration.threshold.value - T.registration.deregistrationThreshold.value).toLocaleString('en-GB') + ' below the registration threshold, and the gap is there for a reason. Without it, a business hovering around the line would be obliged to register and permitted to deregister in the same breath, and would spend its life going in and out of the system. The gap creates a buffer zone in which a registered business simply stays registered.',
+          ],
+          examtrap: { text: 'The registration threshold looks BACK 12 months (historic test); the voluntary deregistration threshold looks FORWARD 12 months. Reversing the direction is a common and expensive slip.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business first exceeds the rolling 12-month registration threshold at the end of July. From what date is it registered for VAT?',
+          opts: [
+            '1 September',
+            '1 August, being the first day of the month following the breach',
+            '31 August, being thirty days after the end of the trigger month',
+            '1 July, being the first day of the month in which the breach occurred',
+          ],
+          ans: 0,
+          exp: 'Under the historic test registration takes effect from the first day of the SECOND month after the threshold was exceeded. July is the trigger month, August is the first month after, so registration runs from 1 September. Notification, separately, is due within 30 days of 31 July — by 30 August.',
+        },
+        {
+          type: 'mcq',
+          q: 'On 3 June a business signs a contract that will produce £110,000 of taxable turnover within the next three weeks. Which test applies and from when is it registered?',
+          opts: [
+            'The future test, registered from 3 June',
+            'The future test, registered from 3 July once the thirty-day period has ended',
+            'The historic test, registered from 1 August under the usual two-month rule',
+            'Neither test, because a single contract is disregarded for threshold purposes',
+          ],
+          ans: 0,
+          exp: 'The future test bites when the threshold is expected to be exceeded in the next 30 days alone, which this contract does. Registration takes effect from the date the expectation arose — 3 June — so VAT must be charged on supplies from that date. Notification is due by the end of the 30-day period.',
+        },
+        {
+          type: 'numeric',
+          q: 'A business has annual sales of £140,000, of which £58,000 is exempt insurance commission and the remainder is standard-rated. What is its taxable turnover for registration purposes, in pounds?',
+          answer: 82000,
+          unit: '£',
+          exp: '£140,000 − £58,000 = £82,000. Only taxable supplies count towards the threshold, and exempt supplies are not taxable supplies. At £82,000 the business is below the £' + T.registration.threshold.value.toLocaleString('en-GB') + ' threshold and is not required to register, even though its total sales comfortably exceed it.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about registration and deregistration is true or false.',
+          statements: [
+            { text: 'Zero-rated sales count towards the registration threshold.', answer: true },
+            { text: 'Voluntary deregistration depends on expected turnover for the next 12 months.', answer: true },
+            { text: 'A business making only exempt supplies must register once its sales exceed the threshold.', answer: false },
+            { text: 'The deregistration threshold is set below the registration threshold.', answer: true },
+          ],
+          exp: 'Zero-rated supplies are taxable, so they count. Voluntary deregistration is a forward-looking test on the next 12 months. Exempt supplies are not taxable supplies, so they never trigger registration however large. And the deregistration threshold sits below the registration threshold to stop businesses oscillating in and out of the system.',
+        },
+      ],
+    },
+
+    /* ── 1.3 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1D',
+      title: 'Filing, paying and Making Tax Digital',
+      icon: '📅',
+      criteria: ['TPFB-1.3.1', 'TPFB-1.3.2', 'TPFB-1.3.3', 'TPFB-1.3.4'],
+      cards: [
+        {
+          h: 'The standard calendar',
+          p: [
+            'Under the normal scheme a business files a return every **three months** and both files and pays by the same deadline: **one calendar month and seven days** after the end of the VAT period. A quarter ending 31 March is due on 7 May; one ending 30 June is due on 7 August.',
+            'Two features of that deadline are worth noticing. First, it covers **both obligations**. Submitting the return on time but paying late is a failure, and the two failures are penalised under entirely separate regimes — the points system for the return, a percentage charge for the money. A business can be penalised twice over for the same period.',
+            'Second, "one calendar month" means exactly that, not thirty days. From 31 January the calendar month ends 28 February, and the deadline is 7 March. From 30 April it ends 31 May, and the deadline is 7 June. Counting thirty-seven days from the period end will give the wrong answer roughly half the time.',
+            'Where input tax exceeds output tax the return produces a **repayment** rather than a payment, and HMRC pays the business. That is the ordinary position for zero-rated traders and exporters and is not an indication that anything has gone wrong.',
+          ],
+          formula: 'Filing and payment deadline = period end + 1 calendar month + 7 days',
+        },
+        {
+          h: 'When monthly returns are worth having',
+          p: [
+            'A business may apply to file **monthly** rather than quarterly, and for one particular kind of business it is a straightforwardly good idea.',
+            'A **repayment trader** — one whose input tax routinely exceeds its output tax — is lending money to HMRC between the moment it incurs the input tax and the moment the return is filed and processed. On a quarterly cycle that wait can approach four months for expenditure incurred early in a quarter. Filing monthly cuts it to a few weeks.',
+            'The businesses in this position are the ones lesson 1A identified: zero-rated suppliers, who charge no output tax while recovering input tax in full, and exporters, whose supplies are likewise zero-rated. A food producer or a children’s clothing wholesaler will be in repayment nearly every period, and the cash-flow benefit of monthly filing is real and recurring.',
+            'The cost is administrative: twelve filings a year instead of four, twelve opportunities to be late, and twelve sets of figures to prepare. For a business that pays VAT over rather than reclaims it, monthly filing simply accelerates its own payments and has nothing to recommend it. The question to ask is always which direction the money flows.',
+          ],
+          callout: { kind: 'tip', text: 'Monthly returns suit repayment traders — zero-rated suppliers and exporters. For a business that pays VAT over, monthly filing just means paying sooner, more often.' },
+        },
+        {
+          h: 'The deadline is when the money arrives',
+          p: [
+            'The statutory deadline is fixed, but the last safe day to *start* a payment is not, because what the law requires is that **cleared funds reach HMRC** by the deadline. A payment initiated on the due date by a slow method is a late payment, and the penalty regime does not care that the instruction was given in time.',
+            'Some methods are effectively instant. **Faster Payments** usually arrive the same or the next day, including weekends and bank holidays; **CHAPS** arrives the same working day if sent within the bank’s cut-off; a debit or corporate credit card payment online is treated as made on the day.',
+            'Others take **three working days**: Bacs, standing orders, and payment in person at a bank or building society. Working days exclude weekends and bank holidays, so a three-working-day method started on the Thursday before a bank holiday Monday will not arrive until the following Wednesday.',
+            '**Direct debit** works differently again, and in the business’s favour. It must be set up at least three working days before the return is submitted; HMRC then collects automatically **three working days after the deadline**. That is a genuine extension of the payment date, not merely a convenience — the money leaves the account later than it would under any other method. If the return is filed late, collection moves to three days after filing.',
+          ],
+          table: {
+            headers: ['Method', 'Time to reach HMRC'],
+            rows: [
+              ['Faster Payments', 'Same or next day, including weekends'],
+              ['CHAPS', 'Same working day, within bank cut-off times'],
+              ['Debit or corporate credit card online', 'Treated as paid on the day'],
+              ['Bacs, standing order, at a bank', '**3 working days**'],
+              ['Direct debit', 'Collected automatically **3 working days after** the deadline'],
+            ],
+          },
+          examtrap: { text: 'The obligation is that the money REACHES HMRC by the deadline, not that it was sent by then. Choosing a three-working-day method on the due date makes the payment late.' },
+        },
+        {
+          h: 'Making Tax Digital',
+          p: [
+            'Returns must be submitted under **Making Tax Digital**, which imposes two requirements that are easy to state and easy to underestimate.',
+            'The first is that the return must be filed from **functional compatible software** — software able to connect to HMRC’s systems directly and authorised to do so. Typing figures into a web form is no longer an available route for a VAT-registered business. The authorisation step matters: software must be linked to the business’s HMRC account before it can file, and doing that for the first time on the day of the deadline is a well-known way to miss it.',
+            'The second is that the underlying **records must be kept digitally, with digital links between them**. A digital link is any transfer of data between systems that happens without manual intervention — an export and import, a linked cell, an API call. Retyping a figure from one system into another is not a digital link, even if the figure is typed correctly.',
+            'The practical consequence deserves stating plainly, because it changes what carefulness means. Under the old regime a figure was seen by a person at least once, when the return was typed up, and an obvious absurdity might be caught there. Under MTD a figure entered wrongly at source flows through to submission untouched. Nobody is looking at it. That is precisely why Outcome 3 — reviewing and verifying the return — exists as a separate learning outcome.',
+          ],
+          callout: { kind: 'warning', text: 'A digital link means no retyping. Copying a figure by hand between two systems breaks the link even when the figure is right.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A VAT quarter ends on 30 September. By what date must the return be filed and the VAT paid?',
+          opts: [
+            '7 November',
+            '31 October, being one calendar month after the period end',
+            '7 October, being seven days after the period end',
+            '30 November, being two calendar months after the period end',
+          ],
+          ans: 0,
+          exp: 'The deadline is one calendar month and seven days after the period end. One calendar month from 30 September is 31 October; seven days further is 7 November. The same date applies to both the return and the payment, and the two failures carry separate penalties.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which business is most likely to benefit from filing monthly VAT returns?',
+          opts: [
+            'A wholesaler of children’s clothing, whose sales are zero-rated',
+            'A newsagent selling mainly standard-rated goods to the public for cash',
+            'An insurance broker whose supplies are exempt from VAT',
+            'A restaurant with standard-rated sales and mainly standard-rated costs',
+          ],
+          ans: 0,
+          exp: 'Zero-rated sales mean almost no output tax while input tax is recovered in full, so the business is in repayment nearly every period. Filing monthly gets those repayments in twelve times a year instead of four. A business that pays VAT over gains nothing, and an exempt business is not filing returns for those supplies at all.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about filing and payment is true or false.',
+          statements: [
+            { text: 'A direct debit is collected three working days after the payment deadline.', answer: true },
+            { text: 'A Bacs payment started on the deadline day will arrive in time.', answer: false },
+            { text: 'Under MTD, retyping a figure between two systems counts as a digital link.', answer: false },
+            { text: 'Filing on time but paying late attracts no penalty.', answer: false },
+          ],
+          exp: 'Direct debit collection genuinely falls after the deadline. Bacs takes three working days, so starting on the deadline is too late — what matters is when the money arrives. A digital link excludes manual retyping. And filing and payment are separate obligations with separate penalty regimes.',
+        },
+        {
+          type: 'gapfill',
+          q: 'Complete the two Making Tax Digital requirements.',
+          template: 'Under Making Tax Digital a business must file from {0} software, and must keep its records {1} with {2} between them.',
+          gaps: [
+            { options: ['functional compatible', 'commercially available', 'HMRC-owned'], answer: 0 },
+            { options: ['digitally', 'on paper', 'in duplicate'], answer: 0 },
+            { options: ['digital links', 'manual reconciliations', 'audit certificates'], answer: 0 },
+          ],
+          exp: 'MTD requires functional compatible software, authorised to connect to HMRC, plus digital record keeping with digital links. The effect is that a figure entered wrongly at source reaches the return with nobody having looked at it.',
+        },
+      ],
+    },
+
+    /* ── 1.4 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1E',
+      title: 'The special schemes',
+      icon: '🗂️',
+      criteria: ['TPFB-1.4.1', 'TPFB-1.4.2', 'TPFB-1.4.3'],
+      cards: [
+        {
+          h: 'Three schemes, three different problems',
+          p: [
+            'The normal scheme asks a business to account for VAT on invoices as they are issued, four times a year, with full records of every transaction on both sides. For a small business that is a real administrative and cash-flow burden, and three optional schemes exist to relieve it. Each solves a *different* problem, and the exam expects you to match the scheme to the difficulty rather than recite all three.',
+            '**Cash accounting** solves a cash-flow problem: paying VAT on invoices customers have not yet settled. **Annual accounting** solves an administrative and budgeting problem: four returns a year and a liability that is hard to predict. **The flat rate scheme** solves a record-keeping problem: the effort of tracking input tax on every purchase.',
+            'They are not mutually exclusive in every combination — annual accounting can be operated alongside either of the others — but each has its own thresholds, its own mechanics and its own exit rules. What follows takes them one at a time, then compares them.',
+            'One thing they have in common is worth stating first: none of them changes what the customer is charged. A business on any of these schemes still charges VAT at the normal rate on its invoices. The schemes change what the business does with the figures afterwards.',
+          ],
+          callout: { kind: 'key', text: 'Cash accounting fixes cash flow. Annual accounting fixes administration and budgeting. The flat rate scheme fixes record keeping. Match the scheme to the problem in the question.' },
+        },
+        {
+          h: 'Cash accounting',
+          p: [
+            'Under cash accounting, output tax is accounted for when **payment is received** and input tax reclaimed when **suppliers are paid** — not when invoices are issued or received. Everything else is unchanged: still quarterly returns, still one month and seven days.',
+            'The benefit is automatic and continuous. A business that gives its customers 60 days to pay is, under the normal scheme, handing VAT to HMRC on invoices it has not yet been paid for. Under cash accounting that never happens. And if a customer never pays at all, no VAT was ever accounted for — which means **bad debt relief becomes irrelevant** while the business is in the scheme, because there is nothing to relieve.',
+            'The price is symmetry: input tax cannot be reclaimed until the supplier has actually been paid. A business that takes long credit from its own suppliers loses as much as it gains, and a business that pays quickly while being paid slowly gains most.',
+            'The thresholds are **£' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString('en-GB') + '** to join, on estimated taxable turnover for the next 12 months, and **£' + T.schemes.cashAccounting.leaveThreshold.value.toLocaleString('en-GB') + '** at which the business must leave. Some supplies are excluded from the scheme altogether and must be dealt with normally: goods on lease or hire purchase, imports, supplies under the domestic reverse charge, invoices payable more than six months ahead, and invoices issued in advance of the supply.',
+          ],
+          split: {
+            left: { title: 'Cash accounting helps', items: ['A business that gives long credit to customers', 'A business exposed to bad debts — no VAT is ever paid on an unpaid invoice', 'A business paid slowly but paying its own suppliers quickly'] },
+            right: { title: 'Cash accounting does not help', items: ['A retailer paid at the point of sale — nothing changes', 'A business that itself takes long credit from suppliers', 'A repayment trader, which now waits to pay before reclaiming'] },
+          },
+        },
+        {
+          h: 'Annual accounting',
+          p: [
+            'Annual accounting replaces four returns with **one**, filed after the end of a twelve-month VAT year, and spreads the liability across the year in payments on account based on the **previous year’s** liability.',
+            'The business chooses between **nine monthly instalments of 10%**, due at the end of months 4 to 12, or **three quarterly instalments of 25%**, due at the end of months 4, 7 and 10. Either way the instalments total less than the expected liability, leaving a balancing figure at the year end.',
+            'The deadline for the annual return is the detail most often missed, because it is **not** the usual one month and seven days. The return and the **balancing payment** are both due **two months after the end of the VAT year**. A business that applies the quarterly deadline to an annual scheme return will file a month early — harmless — or apply the wrong rule elsewhere, which is not.',
+            'The thresholds are **£' + T.schemes.annualAccounting.joinThreshold.value.toLocaleString('en-GB') + '** to join and **£' + T.schemes.annualAccounting.leaveThreshold.value.toLocaleString('en-GB') + '** to leave, the same figures as cash accounting. The scheme suits a stable business that values predictability and one filing a year. It suits a **repayment trader** badly: a business owed money by HMRC would now collect it once a year instead of four times, having made payments on account in the meantime.',
+          ],
+          table: {
+            headers: ['', 'Annual accounting'],
+            rows: [
+              ['Returns per year', '1'],
+              ['Instalments', '9 monthly at 10%, or 3 quarterly at 25%, of last year’s liability'],
+              ['Instalments due', 'Months 4–12 (monthly), or months 4, 7 and 10 (quarterly)'],
+              ['Return and balancing payment', '**2 months** after the year end — not 1 month and 7 days'],
+              ['Suits', 'A stable business wanting predictable payments and one filing'],
+              ['Does not suit', 'A repayment trader, who would wait a year for the refund'],
+            ],
+          },
+        },
+        {
+          h: 'The flat rate scheme',
+          p: [
+            'The flat rate scheme is the most different of the three, because it changes **how much VAT is due**, not merely when it is paid or how often it is reported.',
+            'The business continues to charge its customers VAT at the normal rate. But instead of calculating output tax less input tax, it pays HMRC a **flat percentage of its VAT-inclusive turnover** and keeps the difference. In exchange, it **does not reclaim input tax at all**. The percentage depends on trade sector, and the assessment supplies it — you are never expected to know the sector rates from memory.',
+            'Three refinements attach to that basic bargain. A business in its **first year of VAT registration** takes a **1% discount** off its sector rate, running until the first anniversary of registration. A **limited cost business** — one whose spending on goods is under 2% of its flat rate turnover, or over 2% but under £1,000 a year — must use **' + T.schemes.flatRate.limitedCostBusiness.value + '%** whatever its sector; this exists to stop labour-only businesses with almost no costs profiting from a scheme designed for businesses with real purchases. And although input tax is not normally recoverable, it **may** be reclaimed on a single purchase of capital expenditure goods costing **£' + T.schemes.flatRate.capitalGoodsException.value.toLocaleString('en-GB') + ' or more including VAT**.',
+            'The thresholds are asymmetric and the difference is deliberately awkward: **£' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' excluding VAT** to join, but **£' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' including VAT** to leave. They are not measured on the same basis, and a question that gives you one figure and asks about the other is testing exactly that.',
+          ],
+          examtrap: { text: 'Flat rate thresholds are measured differently at each end: £' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' EXCLUDING VAT to join, £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' INCLUDING VAT to leave. And the flat percentage applies to VAT-inclusive turnover.' },
+        },
+        {
+          h: 'Working out a flat rate payment',
+          p: [
+            'The calculation itself is a single multiplication. What makes it go wrong is applying the percentage to the wrong turnover figure — it is the **VAT-inclusive** total, not the net sales figure the business would otherwise put in Box 6.',
+          ],
+          worked: {
+            title: 'Flat rate VAT due for a quarter',
+            problem: 'Harlow Design is on the flat rate scheme with a sector rate of 12%. It is in its second year of VAT registration. For the quarter its net sales were £40,000, all standard-rated. How much VAT does it pay HMRC, and how does that compare with the normal scheme if its input tax for the quarter was £1,800?',
+            steps: [
+              { do: 'Find the VAT-inclusive turnover.', why: 'The flat rate applies to the gross figure. £40,000 net plus 20% VAT = £48,000 including VAT.' },
+              { do: 'Check whether the first-year discount applies.', why: 'It does not — the discount runs only until the first anniversary of registration, and Harlow is in its second year. The rate stays at 12%.' },
+              { do: 'Apply the flat rate.', why: '£48,000 × 12% = £5,760 payable to HMRC.' },
+              { do: 'Compare with the normal scheme.', why: 'Normally Harlow would pay output tax £8,000 less input tax £1,800 = £6,200. The flat rate scheme costs £5,760, so it is £440 better off.' },
+              { do: 'Notice what drives that result.', why: 'The scheme rewards a business with LOW input tax. Had Harlow’s input tax been £3,000, the normal scheme would have cost £5,000 and the flat rate scheme would have been the worse choice.' },
+            ],
+            answer: '£5,760 under the flat rate scheme, £440 less than the £6,200 due under the normal scheme',
+            tryIt: {
+              q: 'A business on the flat rate scheme has a sector rate of 9% and net standard-rated sales of £30,000 for the quarter. It is in its third year of registration. How much VAT does it pay HMRC, in pounds?',
+              answer: 3240,
+              unit: '£',
+              hint: 'Gross the sales up first — the flat rate applies to VAT-inclusive turnover. No first-year discount applies.',
+              exp: '£30,000 × 1.20 = £36,000 VAT-inclusive turnover. £36,000 × 9% = £3,240. Applying 9% to the net £30,000 would give £2,700, which is the error the question is designed to catch.',
+            },
+          },
+        },
+        {
+          h: 'Leaving a scheme',
+          p: [
+            'Withdrawal comes in the same two forms as everything else in this outcome.',
+            '**Voluntary withdrawal** is available from any of the three schemes. A business simply tells HMRC, normally leaving at the end of a VAT period. No reason is required — a business may conclude the scheme no longer suits it, and that is enough.',
+            '**Compulsory withdrawal** happens when the scheme’s leave threshold is breached, or where HMRC withdraws use of the scheme to protect the revenue. For cash accounting the business must also leave if it is convicted of a VAT offence or penalised for dishonest evasion — the scheme is a concession, and it can be taken away.',
+            'One asymmetry is worth remembering because it makes leaving the flat rate scheme a decision rather than an experiment: a business that has left the flat rate scheme **cannot rejoin for 12 months**. There is no such restriction on cash accounting, where a business whose turnover fell back below the join threshold could return.',
+            'Leaving also has consequences for the figures. A business leaving cash accounting must account for the VAT still outstanding on invoices issued but unpaid, even though it has not been paid — at which point ordinary bad debt relief becomes available to it again if a debt subsequently goes bad.',
+          ],
+          callout: { kind: 'warning', text: 'Leave the flat rate scheme and you cannot rejoin for 12 months. Treat it as a decision to be modelled, not a setting to be toggled.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business is frequently paid 60 days after invoicing and has suffered several bad debts. Which scheme addresses its problem most directly?',
+          opts: [
+            'Cash accounting',
+            'Annual accounting, because a single return reduces the administrative burden',
+            'The flat rate scheme, because it removes the need to track input tax',
+            'Monthly returns, because they accelerate the recovery of input tax',
+          ],
+          ans: 0,
+          exp: 'Cash accounting ties VAT to money actually received and paid, so nothing is handed to HMRC on an invoice the customer has not settled — and if the customer never pays, no VAT was accounted for at all. Annual accounting addresses administration, and the flat rate scheme addresses record keeping; neither fixes the cash-flow problem described.',
+        },
+        {
+          type: 'numeric',
+          q: 'A business on the flat rate scheme has a sector rate of 11% and net standard-rated sales of £25,000 for the quarter. It is in its fourth year of registration. How much VAT is payable to HMRC, in pounds?',
+          answer: 3300,
+          unit: '£',
+          exp: '£25,000 × 1.20 = £30,000 VAT-inclusive turnover. £30,000 × 11% = £3,300. The flat rate applies to the gross figure, not the net — applying 11% to £25,000 would give £2,750 and is the trap. No first-year discount applies in year four.',
+        },
+        {
+          type: 'mcq',
+          q: 'Under the annual accounting scheme, when are the annual return and the balancing payment due?',
+          opts: [
+            'Two months after the end of the VAT year',
+            'One calendar month and seven days after the end of the VAT year',
+            'On the last day of the VAT year itself',
+            'Three months after the end of the VAT year',
+          ],
+          ans: 0,
+          exp: 'Annual accounting uses a two-month deadline for both the return and the balancing payment, not the one month and seven days that applies under the normal scheme. Carrying the quarterly deadline across to the annual scheme is a common error.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about the special schemes is true or false.',
+          statements: [
+            { text: 'A business on the flat rate scheme still charges its customers VAT at the normal rate.', answer: true },
+            { text: 'Input tax can never be reclaimed under the flat rate scheme in any circumstances.', answer: false },
+            { text: 'Annual accounting suits a repayment trader particularly well.', answer: false },
+            { text: 'A business leaving the flat rate scheme cannot rejoin for 12 months.', answer: true },
+          ],
+          exp: 'The flat rate scheme changes what the business pays HMRC, not what it charges customers. Input tax is generally not recoverable, but there is an exception for a single capital purchase of £' + T.schemes.flatRate.capitalGoodsException.value.toLocaleString('en-GB') + ' or more including VAT. Annual accounting suits a repayment trader badly, since the refund arrives once a year. And the 12-month bar on rejoining the flat rate scheme is real.',
+        },
+      ],
+    },
+
+    /* ── 1.5 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1F',
+      title: 'Penalties: registration and returns',
+      icon: '⚠️',
+      criteria: ['TPFB-1.5.1', 'TPFB-1.5.2', 'TPFB-1.5.3', 'TPFB-1.5.4'],
+      cards: [
+        {
+          h: 'Failing to register on time',
+          p: [
+            'A business that should have registered and did not has committed a **failure to notify**, and HMRC has statutory power to penalise it. The reasoning goes back to lesson 1A: the business was a taxable person from the date registration fell due, so it should have been charging VAT from that date. It did not, and the tax that should have reached the Exchequer did not arrive.',
+            'That lost amount has a name — the **potential lost revenue**, or PLR. It is the VAT that would have been paid had the business registered on time, and the penalty is calculated as a **percentage of it**. This is worth pausing on: the penalty scales with the tax at stake, so registering three months late on modest turnover is a small matter, and registering three years late on substantial turnover is not.',
+            'A harsher consequence often bites before the penalty does. Because the business was liable from the date registration fell due, it owes the output tax on everything it sold in the intervening period — whether or not it charged its customers any VAT. Most customers cannot be persuaded to pay a 20% surcharge on invoices settled a year ago, so in practice the business absorbs the tax out of margin it has already spent.',
+          ],
+          callout: { kind: 'warning', text: 'The penalty is usually the smaller problem. The larger one is owing output tax on sales made since registration fell due, on which no VAT was ever charged to the customer.' },
+        },
+        {
+          h: 'How the failure to notify penalty is set',
+          p: [
+            'The percentage applied to the potential lost revenue depends on **behaviour**, and this is the structure to learn — the exact minima matter less than understanding what drives the figure.',
+            'Three categories of behaviour, in ascending order of seriousness. **Non-deliberate** — the business did not realise, perhaps because it never tracked its rolling turnover — carries a maximum of **' + T.penalties.failureToNotify.behaviours.nonDeliberate.max + '%**. **Deliberate** — it knew it should register and chose not to — carries a maximum of **' + T.penalties.failureToNotify.behaviours.deliberate.max + '%**. **Deliberate and concealed** — it also took active steps to hide the failure, such as falsifying records — carries a maximum of **' + T.penalties.failureToNotify.behaviours.deliberateAndConcealed.max + '%**.',
+            'Those maxima are then **reduced for the quality of disclosure**, and the single most valuable distinction is between **unprompted** and **prompted**. A disclosure is unprompted if made when the business had no reason to think HMRC had discovered, or was about to discover, the failure. Come forward first and the reduction is substantial: a non-deliberate failure disclosed unprompted within 12 months can be reduced to **nil**. Wait to be caught and the same failure carries a minimum of 10%.',
+            'Finally, a **reasonable excuse** removes the penalty altogether for a **non-deliberate** failure, provided the failure is put right without unreasonable delay once the excuse ends. Serious illness or bereavement may qualify; not knowing the law, or relying on someone else without checking, generally does not.',
+          ],
+          table: {
+            headers: ['Behaviour', 'Maximum', 'Minimum if unprompted', 'Minimum if prompted'],
+            rows: [
+              ['Non-deliberate, disclosed within 12 months', T.penalties.failureToNotify.behaviours.nonDeliberate.max + '%', '**0%**', '10%'],
+              ['Non-deliberate, after 12 months', T.penalties.failureToNotify.behaviours.nonDeliberate.max + '%', '10%', '20%'],
+              ['Deliberate', T.penalties.failureToNotify.behaviours.deliberate.max + '%', '20%', '35%'],
+              ['Deliberate and concealed', T.penalties.failureToNotify.behaviours.deliberateAndConcealed.max + '%', '30%', '50%'],
+            ],
+          },
+          examtrap: { text: 'Some study material still quotes a 5% / 10% / 15% late registration penalty with a £50 minimum. That regime applied only where the duty to notify arose before 1 April 2010. The live regime is behaviour-based, on potential lost revenue.' },
+        },
+        {
+          h: 'Late returns: the points system',
+          p: [
+            'Late **submission** of a return is penalised on a points basis, and the design is deliberately forgiving of the occasional slip while being unforgiving of a pattern.',
+            'Each late return earns **one point**. Nothing is charged for a point on its own. Once the business reaches its **threshold**, a **£' + T.penalties.lateSubmission.penalty.value + '** penalty is charged — and a further £' + T.penalties.lateSubmission.penalty.value + ' for every late return after that, for as long as it stays at the threshold.',
+            'The threshold depends on filing frequency, and it is inversely related to how often the business files: **' + T.penalties.lateSubmission.thresholds.annual + ' points** for annual filers, **' + T.penalties.lateSubmission.thresholds.quarterly + '** for quarterly, **' + T.penalties.lateSubmission.thresholds.monthly + '** for monthly. That makes sense — a business filing twelve times a year has more opportunities to be late, so it is allowed more points before the penalty bites.',
+            'Points do not last forever, but clearing them at the threshold requires real effort. The business must complete a **period of compliance**, submitting everything on time for **' + T.penalties.lateSubmission.complianceMonths.annual + ' months** (annual), **' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months** (quarterly) or **' + T.penalties.lateSubmission.complianceMonths.monthly + ' months** (monthly) — *and* it must have submitted all outstanding returns for the previous 24 months. Both conditions, not either.',
+            'Note what is being penalised here: **lateness of the return, not of the money**. A nil return filed late earns a point in exactly the same way as one showing a large liability.',
+          ],
+          table: {
+            headers: ['Filing frequency', 'Points threshold', 'Period of compliance to reset'],
+            rows: [
+              ['Annual', String(T.penalties.lateSubmission.thresholds.annual), T.penalties.lateSubmission.complianceMonths.annual + ' months'],
+              ['Quarterly', String(T.penalties.lateSubmission.thresholds.quarterly), T.penalties.lateSubmission.complianceMonths.quarterly + ' months'],
+              ['Monthly', String(T.penalties.lateSubmission.thresholds.monthly), T.penalties.lateSubmission.complianceMonths.monthly + ' months'],
+            ],
+          },
+        },
+        {
+          h: 'When no return is submitted at all',
+          p: [
+            'Points and penalties assume a return eventually arrives. Where one does not, HMRC has a further power: it may raise an **assessment to the best of its judgement**, estimating the liability from whatever information it has — previous returns, trade data, information from third parties. These are sometimes called prime or central assessments.',
+            'Three features of an assessment are worth knowing, and each is a common misunderstanding.',
+            'First, an assessment does **not** discharge the obligation to file. The return is still due; the assessment simply creates an enforceable debt in the meantime, so that HMRC is not left waiting indefinitely with nothing to collect. Submitting the return displaces the assessment with the real figure.',
+            'Second, the assessment is HMRC’s best judgement, not the business’s. It is frequently higher than the true liability, because the business is not there to argue for deductions and HMRC will not assume input tax it cannot see. Ignoring an assessment because "it is too high anyway" is the worst available response.',
+            'Third, there are **time limits**. HMRC may normally assess up to **' + T.assessments.normalTimeLimitYears.value + ' years** back — which is why the ' + T.records.retentionYears.value + '-year retention rule exists — extended to **' + T.assessments.extendedTimeLimitYears.value + ' years** where the loss of tax was brought about deliberately. Penalties and interest continue to run throughout, so the passage of time makes the position worse rather than better.',
+          ],
+          callout: { kind: 'key', text: 'An assessment is a placeholder debt, not a substitute for the return. Filing displaces it; ignoring it lets penalties and interest accumulate on a figure that is usually too high.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business registers for VAT eighteen months late. On what amount is the failure to notify penalty calculated?',
+          opts: [
+            'The potential lost revenue — the VAT that should have been paid over that period',
+            'The total turnover of the business over the eighteen-month period',
+            'A fixed statutory sum of £' + T.penalties.lateSubmission.penalty.value + ', in line with the late submission penalty',
+            'The input tax the business would have been able to reclaim had it registered',
+          ],
+          ans: 0,
+          exp: 'The penalty is a percentage of the potential lost revenue — the VAT that would have reached HMRC had registration happened on time. The percentage itself depends on behaviour and on whether disclosure was prompted or unprompted.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business files quarterly and has just submitted its fourth late return. What happens?',
+          opts: [
+            'It reaches the points threshold and a £' + T.penalties.lateSubmission.penalty.value + ' penalty is charged',
+            'It receives a fourth point but no penalty, the quarterly threshold being five points',
+            'A penalty of £' + (T.penalties.lateSubmission.penalty.value * 4) + ' is charged, being £' + T.penalties.lateSubmission.penalty.value + ' for each of the four late returns',
+            'Nothing is charged, because points expire automatically after twelve months',
+          ],
+          ans: 0,
+          exp: 'The threshold for quarterly filers is four points. The fourth late return reaches it, triggering a £' + T.penalties.lateSubmission.penalty.value + ' penalty — and a further £' + T.penalties.lateSubmission.penalty.value + ' for every late return while the business remains at the threshold. Points are only cleared by a 12-month period of compliance together with submission of all outstanding returns for the previous 24 months.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about penalties and assessments is true or false.',
+          statements: [
+            { text: 'An unprompted disclosure attracts a lower minimum penalty than a prompted one.', answer: true },
+            { text: 'An HMRC assessment removes the obligation to submit the outstanding return.', answer: false },
+            { text: 'A nil return submitted late still earns a penalty point.', answer: true },
+            { text: 'A reasonable excuse can remove a penalty for a non-deliberate failure to notify.', answer: true },
+          ],
+          exp: 'Coming forward before HMRC finds the failure is rewarded with a lower minimum. An assessment creates an enforceable debt but the return remains due, and filing it displaces the assessment. The points system penalises lateness of the return regardless of the amount, so a nil return counts. And a reasonable excuse removes the penalty for a non-deliberate failure put right promptly.',
+        },
+        {
+          type: 'gapfill',
+          q: 'Complete the points threshold, the reset period and the assessment limit.',
+          template: 'A business filing quarterly reaches the points threshold at {0} points, and must then file on time for {1} to reset them. HMRC may normally raise an assessment going back {2}.',
+          gaps: [
+            { options: ['4', '2', '5'], answer: 0 },
+            { options: ['12 months', '6 months', '24 months'], answer: 0 },
+            { options: ['4 years', '6 years', '20 years'], answer: 0 },
+          ],
+          exp: 'Quarterly filers reach the threshold at four points and need a 12-month period of compliance, plus all outstanding returns for the previous 24 months, to clear them. The normal assessment limit is four years, extended to twenty where tax has been lost deliberately.',
+        },
+      ],
+    },
+
+    /* ── 1.5 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-1G',
+      title: 'Penalties: paying late, errors and wrong recovery',
+      icon: '💷',
+      criteria: ['TPFB-1.5.5', 'TPFB-1.5.6', 'TPFB-1.5.7'],
+      cards: [
+        {
+          h: 'Paying late: two penalties and interest',
+          p: [
+            'Late **payment** is penalised entirely separately from late submission, and the structure is escalating rather than fixed — the longer the money is outstanding, the harder it bites. There are three distinct charges and they can all run at once.',
+            'Nothing at all is charged if payment is made **within 15 days** of the due date. This is a genuine grace period, and it exists because HMRC would rather have the money slightly late than fight about it.',
+            'The **first penalty** arrives at day 15: **' + T.penalties.latePayment.firstPenaltyDay15.value + '%** of whatever is outstanding then. If the debt is still unpaid at **day 30**, a further **' + T.penalties.latePayment.firstPenaltyDay30.value + '%** of the amount outstanding at that point is added — so a business that pays on day 31 has been charged twice.',
+            'The **second penalty** then begins on **day 31** and accrues **daily at ' + T.penalties.latePayment.secondPenaltyAnnualised.value + '% a year** on the balance outstanding, until it is paid or a Time to Pay agreement is reached. Unlike the first penalty, this one keeps growing.',
+            'Running alongside all of it is **late payment interest**, charged at the **Bank of England base rate plus 4%** from the first day the payment is overdue. Interest is not a penalty and is not affected by the 15-day grace period — it runs from day one. And it continues even where a Time to Pay agreement has stopped further penalties accruing.',
+          ],
+          table: {
+            headers: ['When paid', 'What is charged'],
+            rows: [
+              ['Within 15 days', 'No penalty — interest only'],
+              ['Days 16–30', T.penalties.latePayment.firstPenaltyDay15.value + '% of the amount outstanding at day 15'],
+              ['Day 31 or later', 'That ' + T.penalties.latePayment.firstPenaltyDay15.value + '%, **plus** ' + T.penalties.latePayment.firstPenaltyDay30.value + '% of the amount outstanding at day 30'],
+              ['Still unpaid after day 30', '**Plus** a second penalty accruing daily at ' + T.penalties.latePayment.secondPenaltyAnnualised.value + '% a year'],
+              ['Throughout', 'Late payment interest at base rate + 4%, from day one'],
+            ],
+          },
+          examtrap: { text: 'These rates changed under Finance Act 2025. They were previously 2% / 2% / 4%. Material written before the change quotes the old figures, and both sets look equally plausible.' },
+        },
+        {
+          h: 'Working out what late payment costs',
+          p: [
+            'Questions on this tend to give a liability and a payment date and ask for the penalty. The method is to work out where the payment date sits relative to the three checkpoints — day 15, day 30, and beyond — and then apply only the charges that have been triggered.',
+          ],
+          worked: {
+            title: 'Penalties on a VAT liability paid 40 days late',
+            problem: 'Ashby Ltd owes £20,000 of VAT for the quarter. It pays nothing until 40 days after the due date, when it settles the full amount. What late payment penalties arise? Ignore interest.',
+            steps: [
+              { do: 'Check the 15-day grace period.', why: 'Payment was not made within 15 days, so the grace period does not apply and the first penalty is triggered.' },
+              { do: 'Apply the day 15 charge.', why: 'The full £20,000 was outstanding at day 15. £20,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £600.' },
+              { do: 'Check the position at day 30.', why: 'Still nothing had been paid, so the whole £20,000 was outstanding at day 30 as well. A further £20,000 × ' + T.penalties.latePayment.firstPenaltyDay30.value + '% = £600 is charged.' },
+              { do: 'Add the second penalty from day 31.', why: 'The debt ran from day 31 to day 40 — ten days — at ' + T.penalties.latePayment.secondPenaltyAnnualised.value + '% a year. £20,000 × 10% × 10/365 = £54.79.' },
+              { do: 'Total it.', why: '£600 + £600 + £54.79 = £1,254.79, on top of the £20,000 of VAT and the interest running from day one.' },
+            ],
+            answer: '£1,254.79 in penalties — £600 at day 15, £600 at day 30 and £54.79 of second penalty',
+            tryIt: {
+              q: 'A business owes £8,000 of VAT and pays it in full on day 20 after the due date. What is the total late payment penalty, in pounds? Ignore interest.',
+              answer: 240,
+              unit: '£',
+              hint: 'Day 20 is past the grace period but before day 30. Only one charge has been triggered.',
+              exp: '£8,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £240. The day 30 charge never arises because the debt was cleared on day 20, and the second penalty only begins at day 31.',
+            },
+          },
+        },
+        {
+          h: 'Getting error correction wrong',
+          p: [
+            'Outcome 3 covers the mechanics of correcting an error. What belongs here is the **consequence of doing it wrongly**, because that is a matter of legislation rather than method.',
+            'The rule being applied is that a small net error may be corrected on the next return, while a larger one must be separately notified to HMRC on **form ' + T.errorCorrection.separateNotificationForm + '**. Correcting a large error quietly on the next return, rather than notifying it, is a **failure to notify an error** in its own right — and it is penalised, even though the tax itself has been put right and HMRC has lost nothing in the end.',
+            'That can feel disproportionate until you see what is being protected. The notification requirement is what lets HMRC see the scale and pattern of errors across the taxpayer population. An error buried in a return is invisible; the same error notified is data. The obligation is to the transparency of the system, not only to the money.',
+            'Two further points. A **deliberate** error must **always** be separately notified, whatever its size — the value limits apply only to genuine mistakes. And errors carry the same behaviour-based penalty structure as failure to notify: a percentage of the tax, driven by whether the error was careless, deliberate, or deliberate and concealed, and reduced according to the quality of disclosure. Correcting an error the moment it is found, unprompted, is worth real money.',
+          ],
+          callout: { kind: 'warning', text: 'A deliberate error must always be separately notified, whatever the amount. The size limits exist for genuine mistakes only.' },
+        },
+        {
+          h: 'Reclaiming VAT that was never recoverable',
+          p: [
+            'The last of these concerns **incorrect recovery** — input tax reclaimed that the business was not entitled to reclaim. Outcome 2 covered which items are blocked: client entertaining, cars available for private use, purchases without a valid VAT invoice, and costs attributable to exempt supplies.',
+            'The **operational** consequence is straightforward. The input tax is disallowed and becomes repayable, with interest from the date it was wrongly recovered. A business that has reclaimed £6,000 on a car for three years does not simply stop; it repays what it took, with interest, and the cash impact arrives all at once.',
+            'The **legal** consequence depends, as ever, on behaviour. A genuine misunderstanding about a borderline item is careless at worst and may attract a low penalty or none. A pattern of reclaiming VAT on obviously blocked items, or on invoices the business knows it does not hold, moves quickly towards deliberate — and at the far end, VAT fraud is a criminal offence, not merely a matter of penalties.',
+            'There is a professional dimension too, and the specification cares about it. An accounting technician who prepares a return knowing it claims input tax the business is not entitled to has a problem that is not solved by the penalty being the client’s. The obligation to act with integrity and to make a disclosure where required sits with the person preparing the figures, and it is the subject of Outcome 5.',
+          ],
+          split: {
+            left: { title: 'Operational consequences', items: ['The input tax is disallowed and becomes repayable', 'Interest runs from the date of the wrongful recovery', 'HMRC may look at earlier periods too, up to ' + T.assessments.normalTimeLimitYears.value + ' years', 'Records and systems come under closer scrutiny'] },
+            right: { title: 'Legal consequences', items: ['A behaviour-based penalty as a percentage of the tax', 'A higher percentage where the recovery was deliberate', 'Criminal liability at the extreme, for VAT fraud', 'A professional obligation on whoever prepared the return'] },
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A business owes £15,000 of VAT and pays it in full 25 days after the due date. What is the total late payment penalty, in pounds? Ignore interest.',
+          answer: 450,
+          unit: '£',
+          exp: '£15,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £450. Day 25 is past the 15-day grace period, so the first charge applies, but the payment was made before day 30 so the second ' + T.penalties.latePayment.firstPenaltyDay30.value + '% charge is never triggered and the second penalty never begins.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business discovers a deliberate error of £3,000 in a previous return. How must it be corrected?',
+          opts: [
+            'It must be separately notified to HMRC, because deliberate errors are always notifiable regardless of amount',
+            'It may be corrected on the next return, being comfortably below the £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ' net error limit',
+            'It may be corrected on the next return provided it does not exceed 1% of the Box 6 figure',
+            'It requires no action, because the error will be picked up on the next HMRC inspection',
+          ],
+          ans: 0,
+          exp: 'The value limits for correcting an error on the next return apply only to genuine mistakes. A deliberate error must always be separately notified, whatever its size, and correcting it quietly is itself a further failure.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about late payment and incorrect recovery is true or false.',
+          statements: [
+            { text: 'No late payment penalty arises if the VAT is paid within 15 days of the due date.', answer: true },
+            { text: 'Late payment interest only begins to run after day 15.', answer: false },
+            { text: 'Input tax wrongly recovered becomes repayable with interest from the date of recovery.', answer: true },
+            { text: 'A Time to Pay agreement, if kept to, prevents further penalties accruing.', answer: true },
+          ],
+          exp: 'The 15-day grace period applies to penalties only — interest runs from the first day the payment is overdue. Wrongly recovered input tax is repayable with interest from when it was taken. And a Time to Pay agreement that is honoured stops further penalties, though interest continues.',
+        },
+        {
+          type: 'mcq',
+          q: 'VAT is paid 35 days after the due date, having been outstanding in full throughout. Which charges apply?',
+          opts: [
+            'Both first penalty charges, plus a second penalty accruing from day 31, plus interest',
+            'Only the day 15 charge, since a single late payment cannot be penalised twice',
+            'Only the second penalty, which replaces the first once day 31 has passed',
+            'No penalty, provided the return itself was submitted by the due date',
+          ],
+          ans: 0,
+          exp: 'The charges are cumulative rather than alternative. ' + T.penalties.latePayment.firstPenaltyDay15.value + '% is charged on the amount outstanding at day 15, a further ' + T.penalties.latePayment.firstPenaltyDay30.value + '% on the amount outstanding at day 30, and the second penalty accrues daily from day 31. Interest runs alongside all of it from day one, and filing the return on time is irrelevant to the payment penalties.',
+        },
+      ],
+    },
+  ];
+
+  /* One entry per learning outcome. The orientation lessons open Outcome 1
+     because they are the opening of the unit, not of any one outcome. */
+  var PATH = [
+    {
+      unit: 'tpfb',
+      level: 3,
+      title: 'Tax Processes for Businesses',
+      outcome: 1,
+      outcomeTitle: 'Understand legislation requirements relating to VAT',
+      weighting: 25,
+      lessons: ORIENTATION.concat(LESSONS_LO1),
+    },
+    {
+      unit: 'tpfb',
+      level: 3,
+      title: 'Tax Processes for Businesses',
+      outcome: 2,
+      outcomeTitle: 'Calculate VAT',
+      weighting: 30,
+      lessons: LESSONS_LO2,
+    },
+  ];
 
   if (typeof module === 'object' && module.exports) module.exports = { AAT3_LEARN_PATH: PATH };
   else root.AAT3_LEARN_PATH = PATH;

@@ -37,7 +37,8 @@ const S = require(path.join(ROOT, 'aat3-syllabus.js'));
 /* Outcomes whose content is declared complete. Add an entry only when the
    module actually ships; this list is the ratchet. */
 const MODULES_SHIPPED = [
-  // { unit: 'tpfb', outcome: 2 },
+  { unit: 'tpfb', outcome: 1 },
+  { unit: 'tpfb', outcome: 2 },
 ];
 
 const errors = [];

@@ -9,7 +9,8 @@
     "check:integrity": "node scripts/check-question-integrity.js",
     "check:theme": "node scripts/check-theme-tokens.js",
     "check:aat3": "node scripts/check-aat3-coverage.js",
+    "check:aat3-quality": "node scripts/check-aat3-quality.js",
     "validate:story": "node scripts/validate-story-data.js",
-    "test": "node scripts/check-csp-hashes.js && node scripts/check-theme-tokens.js && node scripts/validate-aat-data.js && node scripts/check-question-integrity.js && node scripts/check-aat3-coverage.js && node scripts/validate-story-data.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
+    "test": "node scripts/check-csp-hashes.js && node scripts/check-theme-tokens.js && node scripts/validate-aat-data.js && node scripts/check-question-integrity.js && node scripts/check-aat3-coverage.js && node scripts/check-aat3-quality.js && node scripts/validate-story-data.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
   }
 }
