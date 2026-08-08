@@ -6521,16 +6521,19 @@
 
   /* ── STORY MODE ───────────────────────────────────────────────────────────
      "Wrenfield Supplies" — a working day on the accounts desk. Content lives in
-     story-data.js; this is the whole engine. Deliberately small: beats play in
-     order, an item's steps are marked in one pass, and the only branching is a
-     flat flag map where one item's decision is read back by one later beat.
+     story-data.js, the look in story-styles.css. Story mode takes over the
+     viewport (body.story-mode hides the app chrome) because it is a game, not
+     another question screen.
 
-     Story marks are kept entirely out of Storage.data.stats — they never touch
-     the readiness meter, topic mastery or spaced repetition. This teaches the
-     job; the question bank measures the exam. */
+     Deliberately small: beats play in order, an item's steps are marked in one
+     pass, and the only branching is a flat flag map where one item's decision is
+     read back by one later beat.
+
+     Story marks never enter Storage.data.stats — they cannot move the readiness
+     meter, topic mastery or spaced repetition. This teaches the job; the question
+     bank measures the exam. */
 
   function storyDef() { return window.AAT_STORY || null; }
-  /* Mode-card subtitle: the day's shape, plus a best score once it has been played. */
   function storyModeDesc() {
     const s = storyDef();
     const day = s && (s.days || [])[0];
@@ -6541,21 +6544,19 @@
   }
   function storyDay(id) {
     const s = storyDef();
-    if (!s) return null;
-    return (s.days || []).find(d => d.id === id) || null;
+    return s ? ((s.days || []).find(d => d.id === id) || null) : null;
   }
   function storyPerson(id) {
     const s = storyDef();
     return (s && (s.cast || []).find(c => c.id === id)) || { name: id || '', initials: '?', tone: 'n', role: '' };
   }
-  /* Light inline emphasis for dialogue: *word* → <em>. Escaped first, so this
-     can never introduce markup from content. */
+  /* Light inline emphasis for dialogue: *word* → <em>. Escaped first, so content
+     can never introduce markup. */
   function storyText(s) {
     return escapeHtml(String(s == null ? '' : s)).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
   function storyBeats() { const d = storyDay(State.story.dayId); return d ? d.beats : []; }
 
-  /* Apply a beat's `variants` against the flag it keys on. */
   function storyResolve(beat) {
     if (!beat || !beat.variants) return beat;
     const cases = beat.variants.cases || {};
@@ -6578,17 +6579,17 @@
     render();
   }
   function exitStory() {
-    State.story = null; State.screen = 'home'; State.activeTab = 'home'; render();
+    State.story = null; State.screen = 'home'; State.activeTab = 'home';
+    document.body.classList.remove('story-mode');
+    render();
   }
-
   function storyAdvance() {
     const S = State.story;
     S.drafts = {}; S.marked = null;
     S.i++;
     if (S.i >= storyBeats().length) storyFinish();
-    else { playClick(); render(); }
+    else { playClick(); window.scrollTo({ top: 0, behavior: 'instant' }); render(); }
   }
-
   function storyFinish() {
     const S = State.story;
     const day = storyDay(S.dayId);
@@ -6597,11 +6598,10 @@
     S.phase = 'outro';
     const store = Storage.data.story || (Storage.data.story = { v: 1, days: {} });
     const prev = store.days[S.dayId] || { best: 0 };
-    store.days[S.dayId] = {
-      best: Math.max(prev.best || 0, awarded), last: awarded, total, at: Date.now(),
-    };
+    store.days[S.dayId] = { best: Math.max(prev.best || 0, awarded), last: awarded, total, at: Date.now() };
     Storage.addXp(20);
     Storage.save();
+    window.scrollTo({ top: 0, behavior: 'instant' });
     render();
   }
 
@@ -6610,13 +6610,16 @@
     const S = State.story;
     const get = (k) => S.drafts['s' + idx + ':' + k];
     const max = Number(step.marks) || 0;
-    if (step.type === 'flags') {
-      const opts = step.options || [];
+
+    /* flags and hotspot mark identically — right minus wrong, over the number of
+       real answers. The difference is only where the player points. */
+    if (step.type === 'flags' || step.type === 'hotspot') {
+      const opts = step.type === 'flags' ? (step.options || []) : (step.targets || []);
       const need = opts.filter(o => o.ok).length || 1;
       let right = 0, wrong = 0;
       opts.forEach(o => { if (get(o.id)) { if (o.ok) right++; else wrong++; } });
       const net = Math.max(0, right - wrong);
-      return { awarded: Math.round(max * net / need), max, ok: net === need && wrong === 0 };
+      return { awarded: Math.round(max * net / need), max, ok: net === need && wrong === 0, right, wrong, need };
     }
     if (step.type === 'choice') {
       const picked = get('pick');
@@ -6630,7 +6633,7 @@
         const v = parseNumericInput(get(f.id));
         const ok = Number.isFinite(v) && Math.abs(v - Number(f.answer)) < 0.005;
         if (ok) right++;
-        return { id: f.id, ok, entered: get(f.id), expected: f.answer };
+        return { id: f.id, ok, expected: f.answer };
       });
       return { awarded: fields.length ? Math.round(max * right / fields.length) : 0, max, ok: right === fields.length, per };
     }
@@ -6647,8 +6650,6 @@
     const beat = storyCurrent();
     if (!beat || beat.kind !== 'item' || S.marked) return;
     const steps = beat.steps || [];
-
-    // A written step must be attempted before it can be self-marked.
     for (let i = 0; i < steps.length; i++) {
       if (steps[i].type === 'written' && !S.drafts['s' + i + ':revealed']) {
         showToast('Write your reply, then reveal the model answer to mark it.', 'warn');
@@ -6660,7 +6661,6 @@
     const max = per.reduce((t, r) => t + r.max, 0);
     const selfAssessed = per.some(r => r.selfAssessed);
 
-    // A step that sets a flag decides both the branch and the reaction.
     let bucketKey = null;
     steps.forEach((st, i) => {
       if (st.setFlag) {
@@ -6673,7 +6673,7 @@
     S.flags[beat.id + '.pass'] = passed;
 
     let bucket = null;
-    if (beat.bucket) bucket = beat.bucket;                       // set by a variant
+    if (beat.bucket) bucket = beat.bucket;
     else if (beat.buckets) bucket = beat.buckets[bucketKey] || beat.buckets[passed ? 'pass' : 'fail'] || null;
 
     S.marked = { per, awarded, max, bucket, selfAssessed };
@@ -6684,12 +6684,10 @@
 
   function storyRevealWritten(idx) {
     const S = State.story;
-    const beat = storyCurrent();
-    const step = (beat.steps || [])[idx];
+    const step = (storyCurrent().steps || [])[idx];
     const text = String(S.drafts['s' + idx + ':text'] || '').trim();
     const words = text ? text.split(/\s+/).length : 0;
-    const need = Math.min(20, step.minWords || 20);
-    if (words < need) {
+    if (words < Math.min(20, step.minWords || 20)) {
       showToast('Write an answer before revealing the model — you learn nothing from reading it cold.', 'warn');
       return;
     }
@@ -6697,47 +6695,96 @@
     playClick(); render();
   }
 
+  /* ── Hotspots ──
+     The active hotspot step turns parts of one document into tappable targets, so
+     the player has to find the discrepancy on the paper rather than recognise it
+     in a list. Returns the context the document renderer needs. */
+  function storyHotCtx(beat) {
+    const steps = (beat && beat.steps) || [];
+    for (let i = 0; i < steps.length; i++) {
+      if (steps[i].type === 'hotspot') {
+        return { stepIdx: i, docIdx: steps[i].doc == null ? 0 : steps[i].doc, step: steps[i] };
+      }
+    }
+    return null;
+  }
+  function storyHotClass(id, ctx) {
+    const S = State.story;
+    if (!ctx) return '';
+    const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
+    if (!S.marked) return on ? 'is-on' : '';
+    const t = (ctx.step.targets || []).find(x => x.id === id);
+    if (t && t.ok) return on ? 'is-on is-hit' : 'is-on is-miss';
+    return on ? 'is-on is-false' : '';
+  }
+  function storyHotMark(id, ctx) {
+    const S = State.story;
+    if (!S.marked || !ctx) return '';
+    const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
+    const t = (ctx.step.targets || []).find(x => x.id === id);
+    if (t && t.ok) return on ? '✓' : '!';
+    return on ? '✗' : '';
+  }
+  /* Wrap a piece of document text as a tappable target when its step is live. */
+  function storyHot(text, id, ctx) {
+    const safe = escapeHtml(String(text == null ? '' : text));
+    if (!id || !ctx) return safe;
+    const S = State.story;
+    const on = !!S.drafts['s' + ctx.stepIdx + ':' + id];
+    const mark = storyHotMark(id, ctx);
+    return `<button type="button" class="sty-hot ${storyHotClass(id, ctx)}"
+      data-sty-hot="${ctx.stepIdx}:${escapeHtml(id)}" aria-pressed="${on}"
+      ${S.marked ? 'disabled' : ''}>${safe}<span class="sty-ring"></span>${mark ? `<span class="sty-mark">${mark}</span>` : ''}</button>`;
+  }
+
   /* ── Rendering ── */
-  function renderStoryDoc(d) {
+  function renderStoryPaper(d, ctx) {
     if (d.kind === 'email') {
       const p = storyPerson(d.from);
-      return `<div class="sty-email">
-        <div class="sty-email-h">
-          <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
-          <div class="sty-email-meta">
-            <div class="sty-email-sub">${escapeHtml(d.subject || '')}</div>
-            <div class="sty-email-from">${escapeHtml(p.name)} · ${escapeHtml(p.role)}${d.at ? ' · ' + escapeHtml(d.at) : ''}</div>
-          </div>
+      return `<article class="sty-paper sty-paper-alt">
+        <div class="sty-paper-head">
+          <div><div class="sty-paper-name">${escapeHtml(d.subject || '')}</div>
+            <div class="sty-paper-sub">from ${escapeHtml(p.name)}</div></div>
+          <div class="sty-paper-ref">${escapeHtml(d.at || '')}</div>
         </div>
-        <div class="sty-email-b">${storyText(d.body).replace(/\n/g, '<br>')}</div>
-        ${d.attach ? `<div class="sty-attach">📎 ${escapeHtml(d.attach).replace(/\n/g, '<br>📎 ')}</div>` : ''}
-      </div>`;
+        <div>${storyText(d.body).replace(/\n/g, '<br>')}</div>
+        ${d.attach ? `<div class="sty-paper-foot">${escapeHtml(d.attach).replace(/\n/g, '<br>')}</div>` : ''}
+      </article>`;
     }
     if (d.kind === 'photo') {
-      return `<div class="sty-photo">
-        <div class="sty-photo-frame" aria-hidden="true">📷</div>
-        <p>${escapeHtml(d.caption || '')}</p>
-      </div>`;
+      return `<article class="sty-paper sty-paper-alt" style="--tilt:1.2deg">
+        <div class="sty-paper-head"><div class="sty-paper-name">📷 IMG_4471.JPG</div></div>
+        <div style="filter:blur(.5px);opacity:.85">${escapeHtml(d.caption || '')}</div>
+      </article>`;
     }
     if (d.kind === 'panel') {
-      return `<div class="sty-panel">
-        <div class="sty-panel-h">${escapeHtml(d.title || '')}</div>
-        <table class="sty-panel-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'sty-r-tot' : ''}">
-          <td>${escapeHtml(r.label)}</td>
-          <td class="sty-r-amt ${r.bad ? 'sty-bad' : ''}">${escapeHtml(r.amount || '')}</td></tr>`).join('')}</table>
-      </div>`;
+      return `<article class="sty-paper sty-paper-alt">
+        <div class="sty-paper-head"><div class="sty-paper-name">${escapeHtml(d.title || '')}</div></div>
+        <table class="sty-paper-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''}">
+          <td>${escapeHtml(r.label)}</td><td class="sty-amt">${escapeHtml(r.amount || '')}</td></tr>`).join('')}</table>
+      </article>`;
     }
-    // default: a paper document
-    return `<div class="sty-doc">
-      <div class="sty-doc-h">
-        <div><strong>${escapeHtml(d.title || '')}</strong>${d.sub ? `<div class="sty-doc-sub">${escapeHtml(d.sub)}</div>` : ''}</div>
-        <div class="sty-doc-ref">${escapeHtml(d.ref || '')}${d.date ? `<br>${escapeHtml(d.date)}` : ''}</div>
+    const foot = Array.isArray(d.foot) ? d.foot
+      : (d.foot ? String(d.foot).split('\n').map(t => ({ text: t })) : []);
+    return `<article class="sty-paper">
+      <div class="sty-paper-head">
+        <div><div class="sty-paper-name">${escapeHtml(d.title || '')}</div>
+          ${d.sub ? `<div class="sty-paper-sub">${escapeHtml(d.sub)}</div>` : ''}</div>
+        <div class="sty-paper-ref">${escapeHtml(d.ref || '')}${d.date ? `<br>${escapeHtml(d.date)}` : ''}</div>
       </div>
-      <table class="sty-doc-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'sty-r-tot' : ''} ${r.muted ? 'sty-r-muted' : ''}">
-        <td>${escapeHtml(r.label)}</td>
-        <td class="sty-r-amt">${r.amount == null ? '' : escapeHtml(r.amount)}</td></tr>`).join('')}</table>
-      ${d.foot ? `<div class="sty-doc-f">${escapeHtml(d.foot).replace(/\n/g, '<br>')}</div>` : ''}
-    </div>`;
+      <table class="sty-paper-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''} ${r.muted ? 'is-muted' : ''}">
+        <td>${storyHot(r.label, r.hot, ctx)}</td>
+        <td class="sty-amt">${r.amount == null ? '' : storyHot(r.amount, r.hotAmt, ctx)}</td></tr>`).join('')}</table>
+      ${foot.length ? `<div class="sty-paper-foot">${foot.map(f =>
+        `<div>${storyHot(f.text, f.hot, ctx)}</div>`).join('')}</div>` : ''}
+    </article>`;
+  }
+
+  /* Outro lines may be gated on how the day went, so nobody congratulates you on
+     a score they can see. Ungated lines always show. */
+  function storyLinesForScore(lines, pct) {
+    return (lines || []).filter(l =>
+      (l.minPct == null || pct >= l.minPct) && (l.maxPct == null || pct <= l.maxPct));
   }
 
   function renderStoryLines(lines) {
@@ -6746,9 +6793,9 @@
       const p = storyPerson(l.who);
       return `<div class="sty-line">
         <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
-        <div>
-          <div class="sty-who">${escapeHtml(p.name)}${l.dir ? ` <span class="sty-who-dir">(${escapeHtml(l.dir)})</span>` : ''}</div>
-          <p class="sty-say">${storyText(l.text || '')}</p>
+        <div class="sty-said">
+          <div class="sty-name">${escapeHtml(p.name)}${l.dir ? ` <span class="sty-name-dir">${escapeHtml(l.dir)}</span>` : ''}</div>
+          <p class="sty-speech">${storyText(l.text || '')}</p>
         </div>
       </div>`;
     }).join('');
@@ -6761,24 +6808,32 @@
     const val = (k) => S.drafts['s' + i + ':' + k];
     let body = '';
 
-    if (step.type === 'flags') {
+    if (step.type === 'hotspot') {
+      const targets = step.targets || [];
+      const found = targets.filter(t => val(t.id)).length;
+      const need = targets.filter(t => t.ok).length;
+      if (!marked) {
+        body = `<div class="sty-found"><span class="sty-found-n">${found} marked</span>
+          <span>${need} to find. Tap them on the invoice above — tap again to unmark.</span></div>`;
+      } else {
+        body = `<div class="sty-opts">${targets.map(t => {
+          const on = !!val(t.id);
+          if (!on && !t.ok) return '';
+          const cls = t.ok ? (on ? 'is-right' : '') : 'is-wrong';
+          const tag = t.ok ? (on ? '✓ found' : '✗ missed') : '✗ not an error';
+          return `<div class="sty-opt ${cls}"><span>${escapeHtml(t.label)}</span>
+            <span class="sty-tick" style="${t.ok && on ? '' : 'color:var(--w-red)'}">${tag}</span></div>`;
+        }).join('')}</div>`;
+      }
+    } else if (step.type === 'flags' || step.type === 'choice') {
+      const isFlags = step.type === 'flags';
       body = `<div class="sty-opts">${(step.options || []).map(o => {
-        const on = !!val(o.id);
+        const on = isFlags ? !!val(o.id) : val('pick') === o.id;
         let cls = '';
-        if (marked) cls = o.ok ? 'sty-o-right' : (on ? 'sty-o-wrong' : '');
+        if (marked) cls = o.ok ? 'is-right' : (on ? 'is-wrong' : '');
         return `<label class="sty-opt ${on ? 'is-on' : ''} ${cls}">
-          <input type="checkbox" data-sty-flag="${i}:${escapeHtml(o.id)}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
-          <span>${escapeHtml(o.label)}</span>
-          ${marked && o.ok ? '<span class="sty-tick">✓</span>' : ''}
-        </label>`;
-      }).join('')}</div>`;
-    } else if (step.type === 'choice') {
-      body = `<div class="sty-opts">${(step.options || []).map(o => {
-        const on = val('pick') === o.id;
-        let cls = '';
-        if (marked) cls = o.ok ? 'sty-o-right' : (on ? 'sty-o-wrong' : '');
-        return `<label class="sty-opt ${on ? 'is-on' : ''} ${cls}">
-          <input type="radio" name="sty-choice-${i}" data-sty-pick="${i}:${escapeHtml(o.id)}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
+          <input type="${isFlags ? 'checkbox' : 'radio'}" ${isFlags ? '' : `name="sty-c-${i}"`}
+            data-sty-${isFlags ? 'flag' : 'pick'}="${i}:${escapeHtml(o.id)}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
           <span>${escapeHtml(o.label)}</span>
           ${marked && o.ok ? '<span class="sty-tick">✓</span>' : ''}
         </label>`;
@@ -6786,27 +6841,24 @@
     } else if (step.type === 'figures') {
       body = `<div class="sty-fields">${(step.fields || []).map(f => {
         const r = res && res.per ? res.per.find(x => x.id === f.id) : null;
-        return `<label class="sty-field ${r ? (r.ok ? 'sty-f-right' : 'sty-f-wrong') : ''}">
+        return `<label class="sty-field ${r ? (r.ok ? 'is-right' : 'is-wrong') : ''}">
           <span class="sty-field-lbl">${escapeHtml(f.label)}</span>
-          <span class="sty-field-in">
-            <span class="sty-cur">£</span>
+          <span class="sty-field-in"><span class="sty-cur">£</span>
             <input type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"
-              data-sty-fig="${i}:${escapeHtml(f.id)}" value="${escapeHtml(val(f.id) || '')}" ${marked ? 'disabled' : ''}>
-          </span>
-          ${r && !r.ok ? `<span class="sty-field-fix">✓ ${Number(f.answer).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>` : ''}
+              data-sty-fig="${i}:${escapeHtml(f.id)}" value="${escapeHtml(val(f.id) || '')}" ${marked ? 'disabled' : ''}></span>
+          ${r && !r.ok ? `<span class="sty-fix">✓ ${Number(f.answer).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>` : ''}
         </label>`;
       }).join('')}</div>`;
     } else if (step.type === 'written') {
       const text = val('text') || '';
       const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      const revealed = !!val('revealed');
       body = `<textarea class="sty-textarea" data-sty-text="${i}" rows="9" placeholder="${escapeHtml(step.placeholder || '')}" ${marked ? 'disabled' : ''}>${escapeHtml(text)}</textarea>
         <div class="sty-wordcount" data-min="${step.minWords || 0}">${words} word${words === 1 ? '' : 's'}${step.minWords ? ` · aim for ${step.minWords}+` : ''}</div>`;
-      if (!revealed) {
-        body += `<button class="btn-secondary" type="button" id="styRevealBtn" data-sty-reveal="${i}">Reveal the model answer and mark it →</button>`;
+      if (!val('revealed')) {
+        body += `<button class="sty-btn sty-btn-ghost" type="button" data-sty-reveal="${i}" style="margin-top:0">Reveal the model answer and mark it</button>`;
       } else {
         body += `<div class="sty-model">
-            <div class="sty-model-h">Model answer</div>
+            <div class="sty-model-h">What a full-mark reply looks like</div>
             <div class="sty-model-b">${escapeHtml(step.modelAnswer || '').replace(/\n/g, '<br>')}</div>
           </div>
           <div class="sty-rubric">
@@ -6815,53 +6867,74 @@
               const on = !!val('r' + ri);
               return `<label class="sty-opt ${on ? 'is-on' : ''}">
                 <input type="checkbox" data-sty-rub="${i}:${ri}" ${on ? 'checked' : ''} ${marked ? 'disabled' : ''}>
-                <span>${escapeHtml(r.point)}</span>
-                <span class="sty-rub-marks">${r.marks}</span>
-              </label>`;
+                <span>${escapeHtml(r.point)}</span><span class="sty-rubmark">${r.marks}</span></label>`;
             }).join('')}
-            <div class="sty-selfnote">Self-assessed. These marks are recorded separately and never count towards your readiness score.</div>
+            <div class="sty-selfnote">You are marking your own work. These marks are recorded separately and never count towards your readiness score.</div>
           </div>`;
       }
     }
 
     return `<div class="sty-step">
       <div class="sty-step-h">
-        <span class="sty-step-prompt">${storyText(step.prompt || '')}</span>
-        <span class="sty-step-marks">${res ? `${res.awarded}/${res.max}` : `${step.marks} mark${step.marks === 1 ? '' : 's'}`}</span>
+        <span class="sty-ask">${storyText(step.prompt || '')}</span>
+        <span class="sty-worth ${res ? 'is-scored' : ''}">${res ? `${res.awarded} / ${res.max}` : `${step.marks} mark${step.marks === 1 ? '' : 's'}`}</span>
       </div>
-      ${step.help ? `<p class="sty-help">${storyText(step.help)}</p>` : ''}
+      ${step.help ? `<p class="sty-note">${storyText(step.help)}</p>` : ''}
       ${body}
     </div>`;
   }
 
   function renderStoryItem(beat) {
-    const S = State.story;
-    const m = S.marked;
-    return `<div class="sty-item">
-      <p class="sty-stage">${storyText(beat.stage || '')}</p>
-      ${(beat.docs || []).length ? `<div class="sty-docs">${beat.docs.map(renderStoryDoc).join('')}</div>` : ''}
+    const m = State.story.marked;
+    const ctx = m ? storyHotCtx(beat) : storyHotCtx(beat);   // targets stay marked-up after scoring
+    const hotDoc = ctx ? ctx.docIdx : -1;
+    const good = m && m.awarded >= m.max * 0.7;
+    return `<div>
+      <p class="sty-stage-note">${storyText(beat.stage || '')}</p>
+      ${ctx && !m ? `<div class="sty-hint">🖊️ <span><b>Tap the invoice itself</b> where something is wrong. Nothing is listed for you.</span></div>` : ''}
+      ${(beat.docs || []).length ? `<div class="sty-papers">${beat.docs.map((d, di) =>
+        renderStoryPaper(d, di === hotDoc ? ctx : null)).join('')}</div>` : ''}
       <div class="sty-steps">${(beat.steps || []).map(renderStoryStep).join('')}</div>
-      ${!m ? `<button class="btn-primary sty-submit" type="button" id="stySubmitBtn">Submit ✓</button>` : `
-        <div class="sty-result sty-result-${m.awarded >= m.max * 0.7 ? 'ok' : 'low'}">
-          <strong>${m.awarded} of ${m.max} marks${m.selfAssessed ? ' · self-assessed' : ''}</strong>
+      ${!m ? `<button class="sty-btn" type="button" id="stySubmitBtn">Submit</button>` : `
+        <div class="sty-verdict ${good ? 'is-good' : 'is-poor'}">
+          <div class="sty-verdict-score"><b>${m.awarded}</b><span>of ${m.max} marks${m.selfAssessed ? ' · self-assessed' : ''}</span></div>
           ${beat.why ? `<p>${storyText(beat.why)}</p>` : ''}
         </div>
-        ${m.bucket ? renderStoryBucket(m.bucket) : ''}
-        <button class="btn-primary sty-submit" type="button" id="styNextBtn">Continue →</button>`}
+        ${m.bucket ? renderStoryReaction(m.bucket) : ''}
+        <button class="sty-btn" type="button" id="styNextBtn">Carry on</button>`}
     </div>`;
   }
 
-  function renderStoryBucket(b) {
+  function renderStoryReaction(b) {
     const p = storyPerson(b.who);
-    return `<div class="sty-bucket sty-bucket-${escapeHtml(b.tone || 'mid')}">
+    return `<div class="sty-react">
       ${b.who ? `<div class="sty-line">
         <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
-        <div>
-          <div class="sty-who">${escapeHtml(p.name)}</div>
-          <p class="sty-say">${storyText(b.text || '')}</p>
-        </div>
-      </div>` : `<p class="sty-say">${storyText(b.text || '')}</p>`}
+        <div class="sty-said"><div class="sty-name">${escapeHtml(p.name)}</div>
+        <p class="sty-speech">${storyText(b.text || '')}</p></div>
+      </div>` : `<p class="sty-speech">${storyText(b.text || '')}</p>`}
       ${b.dir ? `<p class="sty-dir">${storyText(b.dir)}</p>` : ''}
+    </div>`;
+  }
+
+  function renderStoryHud(beat) {
+    const S = State.story;
+    const day = storyDay(S.dayId);
+    const beats = storyBeats();
+    const done = S.results.reduce((t, r) => t + r.awarded, 0);
+    const pct = Math.round((S.i / beats.length) * 100);
+    const pips = beats.map((b, i) => b.kind === 'item'
+      ? `<span class="sty-pip ${i < S.i ? 'done' : ''}" style="left:${(i / (beats.length - 1)) * 100}%"></span>` : '').join('');
+    return `<div class="sty-hud">
+      <div class="sty-hud-left">
+        <button class="sty-leave" id="styExitBtn" type="button" aria-label="Leave the office">✕</button>
+        <span class="sty-hud-when">
+          <span class="sty-hud-day">${escapeHtml(day.title)}</span>
+          <span class="sty-clock">${escapeHtml((beat && beat.at) || '16:45')}</span>
+        </span>
+      </div>
+      <div class="sty-timeline"><div class="sty-timeline-fill" style="width:${pct}%"></div>${pips}</div>
+      <div class="sty-hud-marks"><b>${done}</b><span>of ${day.totalMarks}</span></div>
     </div>`;
   }
 
@@ -6870,40 +6943,39 @@
     const day = storyDay(S.dayId);
     const awarded = S.results.reduce((t, r) => t + r.awarded, 0);
     const total = S.results.reduce((t, r) => t + r.max, 0);
-    const pct = total ? Math.round(awarded / total * 100) : 0;
     const weak = S.results.slice().filter(r => r.max).sort((a, b) => (a.awarded / a.max) - (b.awarded / b.max))[0];
-    const carry = (day.outro && day.outro.carry || []).filter(c => !c.ifFlag || S.flags[c.ifFlag]);
-    return `<div class="container fade-in sty-wrap">
-      <button class="back-btn" id="styExitBtn" type="button">← Leave the office</button>
-      <div class="sty-outro">
-        <div class="sty-outro-h">
-          <div>
-            <div class="sty-eyebrow">${escapeHtml(day.title)} · ${escapeHtml((day.outro && day.outro.title) || 'End of day')}</div>
-            <h2 class="sty-outro-score ${scoreClass(pct)}">${awarded} <span>/ ${total} marks</span></h2>
+    const carry = ((day.outro && day.outro.carry) || []).filter(c => !c.ifFlag || S.flags[c.ifFlag]);
+    const cls = (r) => r.awarded === r.max ? 'full' : r.awarded ? 'part' : 'none';
+    return `<div class="sty-stage">
+      ${renderStoryHud(null)}
+      <div class="sty-inner">
+        <div class="sty-outro">
+          <div class="sty-slug">${escapeHtml((day.outro && day.outro.title) || 'End of day')}</div>
+          <div class="sty-outro-score">${awarded}<small>/ ${total}</small></div>
+          <div class="sty-script" style="margin-top:24px">${renderStoryLines(
+            storyLinesForScore(day.outro && day.outro.lines, total ? Math.round(awarded / total * 100) : 0))}</div>
+          <div class="sty-tally">
+            ${S.results.map(r => `<div class="sty-tally-row">
+              <span class="sty-tally-t">${escapeHtml(r.title)}</span>
+              ${r.selfAssessed ? '<span class="sty-chip">self-marked</span>' : ''}
+              <span class="sty-tally-m ${cls(r)}">${r.awarded}/${r.max}</span>
+            </div>`).join('')}
           </div>
+          ${weak && weak.awarded < weak.max ? `<div class="sty-panel">
+            <div class="sty-slug">Worth revising</div>
+            <p>“${escapeHtml(weak.title)}” cost you ${weak.max - weak.awarded} mark${weak.max - weak.awarded === 1 ? '' : 's'}. The question bank drills it properly.</p>
+            <button class="sty-btn sty-btn-ghost" type="button" data-topic="${escapeHtml(weak.topic || 'all')}" style="margin-top:0">Practise ${escapeHtml(weak.topic === 'besy' ? 'Business Environment' : 'Bookkeeping')}</button>
+          </div>` : ''}
+          ${carry.length ? `<div class="sty-panel">
+            <div class="sty-slug">Hanging over you</div>
+            ${carry.map(c => `<div class="sty-carry-row"><span class="sty-when">${escapeHtml(c.when)}</span><span>${storyText(c.text)}</span></div>`).join('')}
+          </div>` : ''}
+          <div class="sty-outro-actions">
+            <button class="sty-btn" type="button" id="styReplayBtn">Do it again</button>
+            <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn2">Clock off</button>
+          </div>
+          <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
         </div>
-        ${renderStoryLines(day.outro && day.outro.lines)}
-        <div class="sty-tally">
-          ${S.results.map(r => `<div class="sty-tally-row">
-            <span class="sty-tally-t">${escapeHtml(r.title)}</span>
-            <span class="sty-tally-m ${scoreClass(r.max ? Math.round(r.awarded / r.max * 100) : 0)}">${r.awarded}/${r.max}</span>
-            ${r.selfAssessed ? '<span class="sty-tally-self">self</span>' : ''}
-          </div>`).join('')}
-        </div>
-        ${weak && weak.awarded < weak.max ? `<div class="sty-revise">
-          <div class="sty-eyebrow">Worth revising</div>
-          <p>${escapeHtml(weak.title)} cost you ${weak.max - weak.awarded} mark${weak.max - weak.awarded === 1 ? '' : 's'}. The question bank drills it properly.</p>
-          <button class="btn-secondary" type="button" data-topic="${escapeHtml(weak.topic || 'all')}">Practise ${escapeHtml(weak.topic === 'besy' ? 'Business Environment' : 'Bookkeeping')} →</button>
-        </div>` : ''}
-        ${carry.length ? `<div class="sty-carry">
-          <div class="sty-eyebrow">Hanging over you</div>
-          ${carry.map(c => `<div class="sty-carry-row"><span class="sty-carry-when">${escapeHtml(c.when)}</span><span>${storyText(c.text)}</span></div>`).join('')}
-        </div>` : ''}
-        <div class="sty-outro-actions">
-          <button class="btn-primary" type="button" id="styReplayBtn">Replay the day</button>
-          <button class="btn-secondary" type="button" id="styExitBtn2">Back to practice</button>
-        </div>
-        <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
       </div>
     </div>`;
   }
@@ -6917,30 +6989,23 @@
 
     const beat = storyCurrent();
     if (!beat) { storyFinish(); return renderStoryOutro(); }
-    const beats = storyBeats();
-    const done = S.results.reduce((t, r) => t + r.awarded, 0);
-    const pct = Math.round((S.i / beats.length) * 100);
 
-    return `<div class="container fade-in sty-wrap">
-      <button class="back-btn" id="styExitBtn" type="button">← Leave the office</button>
-      <div class="sty-topbar">
-        <span class="sty-clock">${escapeHtml(beat.at || '')}</span>
-        <div class="sty-progress"><div class="sty-progress-fill" style="width:${pct}%"></div></div>
-        <span class="sty-marks">${done}/${day.totalMarks} marks</span>
-      </div>
-      <div class="sty-beat">
-        <div class="sty-beat-h">
-          <span class="sty-eyebrow">${beat.kind === 'item' ? 'In the tray' : 'The office'}</span>
-          <h2 class="sty-beat-t">${escapeHtml(beat.title || '')}</h2>
+    return `<div class="sty-stage">
+      ${renderStoryHud(beat)}
+      <div class="sty-inner">
+        <div class="sty-beat">
+          <div class="sty-slug">${beat.kind === 'item' ? 'In the tray' : 'The office'}</div>
+          <h2 class="sty-title">${escapeHtml(beat.title || '')}</h2>
+          ${beat.kind === 'item' ? renderStoryItem(beat) : `
+            <div class="sty-script">${renderStoryLines(beat.lines)}</div>
+            <button class="sty-btn" type="button" id="styNextBtn">Carry on</button>`}
         </div>
-        ${beat.kind === 'item' ? renderStoryItem(beat) : `
-          ${renderStoryLines(beat.lines)}
-          <button class="btn-primary sty-submit" type="button" id="styNextBtn">Continue →</button>`}
       </div>
     </div>`;
   }
 
   function attachStoryEvents() {
+    document.body.classList.toggle('story-mode', State.screen === 'story' && !!State.story);
     if (State.screen !== 'story' || !State.story) return;
     const S = State.story;
     bind('styExitBtn', 'click', exitStory);
@@ -6948,8 +7013,19 @@
     bind('styNextBtn', 'click', storyAdvance);
     bind('stySubmitBtn', 'click', storySubmit);
     bind('styReplayBtn', 'click', () => startStory(S.dayId));
-    // Drafts are written straight to state without re-rendering, so a part-filled
-    // form survives typing (same rule as the table-fill inputs).
+
+    /* Tapping the document itself. Re-renders so the ring appears — cheap here
+       because a hotspot step has no text inputs to lose. */
+    document.querySelectorAll('[data-sty-hot]').forEach(el => el.addEventListener('click', () => {
+      const [i, id] = el.dataset.styHot.split(':');
+      const k = 's' + i + ':' + id;
+      S.drafts[k] = !S.drafts[k];
+      playClick();
+      render();
+    }));
+
+    /* Everything else writes to draft state without re-rendering, so a
+       part-filled form survives typing. */
     document.querySelectorAll('[data-sty-flag]').forEach(el => el.addEventListener('change', () => {
       const [i, id] = el.dataset.styFlag.split(':');
       S.drafts['s' + i + ':' + id] = el.checked;
@@ -6966,18 +7042,16 @@
       const [i, id] = el.dataset.styFig.split(':');
       S.drafts['s' + i + ':' + id] = el.value;
     }));
-    document.querySelectorAll('[data-sty-text]').forEach(el => {
-      el.addEventListener('input', () => {
-        S.drafts['s' + el.dataset.styText + ':text'] = el.value;
-        const wc = el.parentNode.querySelector('.sty-wordcount');
-        if (wc) {
-          const t = el.value.trim();
-          const n = t ? t.split(/\s+/).length : 0;
-          const min = +wc.dataset.min || 0;
-          wc.textContent = n + ' word' + (n === 1 ? '' : 's') + (min ? ' · aim for ' + min + '+' : '');
-        }
-      });
-    });
+    document.querySelectorAll('[data-sty-text]').forEach(el => el.addEventListener('input', () => {
+      S.drafts['s' + el.dataset.styText + ':text'] = el.value;
+      const wc = el.parentNode.querySelector('.sty-wordcount');
+      if (wc) {
+        const t = el.value.trim();
+        const n = t ? t.split(/\s+/).length : 0;
+        const min = +wc.dataset.min || 0;
+        wc.textContent = n + ' word' + (n === 1 ? '' : 's') + (min ? ' · aim for ' + min + '+' : '');
+      }
+    }));
     document.querySelectorAll('[data-sty-reveal]').forEach(el =>
       el.addEventListener('click', () => storyRevealWritten(+el.dataset.styReveal)));
   }

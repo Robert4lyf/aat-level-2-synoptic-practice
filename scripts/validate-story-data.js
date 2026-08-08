@@ -38,7 +38,7 @@ if (!S || !Array.isArray(S.days)) {
 }
 
 const castIds = new Set((S.cast || []).map(c => c.id));
-const STEP_TYPES = new Set(['flags', 'choice', 'figures', 'written']);
+const STEP_TYPES = new Set(['flags', 'choice', 'figures', 'written', 'hotspot']);
 const DOC_KINDS = new Set(['doc', 'email', 'photo', 'panel']);
 
 /* Collect every step across a beat, including all variant branches. */
@@ -67,6 +67,18 @@ function checkStep(where, step) {
     if (new Set(ids).size !== ids.length) err(where, 'duplicate option ids');
     opts.forEach(o => { if (!o.id) err(where, 'option missing id'); if (!o.label) err(where, `option "${o.id}" missing label`); });
     if (step.type === 'flags' && ok === opts.length) warn(where, 'every flags option is correct — ticking all of them always scores full marks');
+  }
+  if (step.type === 'hotspot') {
+    const targets = step.targets || [];
+    if (targets.length < 2) err(where, 'hotspot needs at least 2 targets');
+    if (!targets.filter(t => t.ok).length) err(where, 'hotspot has no correct target — it is unwinnable');
+    if (!targets.some(t => !t.ok)) warn(where, 'hotspot has no decoys — every tappable area is an error');
+    const ids = targets.map(t => t.id);
+    if (new Set(ids).size !== ids.length) err(where, 'duplicate target ids');
+    targets.forEach(t => {
+      if (!t.id) err(where, 'target missing id');
+      if (!t.label) err(where, `target "${t.id}" missing the label shown after marking`);
+    });
   }
   if (step.type === 'figures') {
     const fields = step.fields || [];
@@ -149,6 +161,26 @@ S.days.forEach(day => {
       if (!steps.length) { err(W, 'item has no steps'); return; }
       const sum = steps.reduce((t, st, si) => t + checkStep(`${W} step ${si}`, st), 0);
       if (sum !== Number(beat.marks)) err(W, `steps sum to ${sum} marks but the item is worth ${beat.marks}`);
+
+      /* A hotspot target the player cannot physically tap is the failure mode
+         unique to this step type, and it is invisible at runtime — the target
+         simply never scores. Both directions are checked. */
+      steps.forEach((st, si) => {
+        if (st.type !== 'hotspot') return;
+        const SW = `${W} step ${si}`;
+        const doc = (view.docs || [])[st.doc == null ? 0 : st.doc];
+        if (!doc) { err(SW, `doc index ${st.doc} does not exist on this item`); return; }
+        const onPaper = new Set();
+        (doc.rows || []).forEach(r => { if (r.hot) onPaper.add(r.hot); if (r.hotAmt) onPaper.add(r.hotAmt); });
+        (Array.isArray(doc.foot) ? doc.foot : []).forEach(f => { if (f.hot) onPaper.add(f.hot); });
+        (st.targets || []).forEach(t => {
+          if (!onPaper.has(t.id)) err(SW, `target "${t.id}" has no tappable region on the document — unreachable`);
+        });
+        const declared = new Set((st.targets || []).map(t => t.id));
+        onPaper.forEach(id => {
+          if (!declared.has(id)) err(SW, `document region "${id}" is tappable but is not a declared target`);
+        });
+      });
       if (!view.why) warn(W, 'item has no `why` explanation shown after marking');
 
       // A step that sets a flag must have that flag consumed by a bucket or a variant.

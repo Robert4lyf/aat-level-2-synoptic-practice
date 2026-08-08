@@ -80,25 +80,32 @@
                 { label: 'Trade discount', amount: '10%' },
               ],
               foot: 'Terms agreed: 2% prompt payment discount if paid within 7 days of invoice date.' },
+            /* The invoice is the hotspot document (index 1). Anything carrying a
+               `hot`/`hotAmt` id becomes tappable — three real discrepancies and
+               three decoys that are perfectly correct. Nothing is listed for the
+               player until after they have committed. */
             { kind: 'doc', title: 'WR LIMITED', sub: '26 Hall St, Wingleford', ref: 'INVOICE 000231', date: '12 May 20XX',
               rows: [
-                { label: '16 crates DBZ @ £7.50', amount: '120.00' },
-                { label: 'Trade discount', amount: '—', muted: true },
-                { label: 'VAT @ 20%', amount: '24.00' },
-                { label: 'Total', amount: '144.00', total: true },
+                { label: '16 crates DBZ @ £7.50', hot: 'price', amount: '120.00' },
+                { label: 'Trade discount', hot: 'trade', amount: '—', muted: true },
+                { label: 'VAT @ 20%', hot: 'vatrate', amount: '24.00' },
+                { label: 'Total', amount: '144.00', hotAmt: 'total', total: true },
               ],
-              foot: 'Terms: payment within 30 days\nVAT reg 123 6790 01 · A/c WRE004' },
+              foot: [
+                { text: 'Terms: payment within 30 days', hot: 'terms' },
+                { text: 'VAT reg 123 6790 01 · A/c WRE004', hot: 'acct' },
+              ] },
           ],
           steps: [
-            { type: 'flags', marks: 3,
-              prompt: 'Tick every discrepancy between the invoice and the order.',
-              options: [
-                { id: 'price',    label: 'The unit price — £7.50 charged, £17.50 ordered', ok: true },
-                { id: 'trade',    label: 'The 10% trade discount has not been applied', ok: true },
-                { id: 'terms',    label: 'The payment terms — 30 days, not the agreed 2% within 7 days', ok: true },
-                { id: 'qty',      label: 'The quantity — crates ordered and crates invoiced differ' },
-                { id: 'vatrate',  label: 'The VAT rate applied is wrong' },
-                { id: 'acct',     label: 'The account code does not match our records' },
+            { type: 'hotspot', marks: 3, doc: 1,
+              prompt: 'Three things on this invoice do not match the order. Find them.',
+              targets: [
+                { id: 'price',   ok: true, label: 'The unit price — £7.50 charged, £17.50 on the order' },
+                { id: 'trade',   ok: true, label: 'The 10% trade discount has not been applied' },
+                { id: 'terms',   ok: true, label: 'The payment terms — 30 days, not the agreed 2% within 7 days' },
+                { id: 'vatrate', label: 'VAT at 20% is correct — 20% of the £120.00 they billed is £24.00' },
+                { id: 'total',   label: 'The total is right for the figures they used — £120.00 + £24.00' },
+                { id: 'acct',    label: 'The VAT registration and account code both match our records' },
               ] },
             { type: 'figures', marks: 3,
               prompt: 'What should the invoice have said? Enter the figures to two decimal places.',
@@ -494,9 +501,19 @@
       /* End-of-day copy. `carry` items are the loaded guns for Wednesday onward. */
       outro: {
         title: 'Sixteen forty-five',
+        /* Deirdre's sign-off is graded. A line that contradicts the score reads as
+           a bug in the fiction, and she is not a woman who says "not bad" to a
+           day that went badly. `minPct`/`maxPct` filter on the day's percentage. */
         lines: [
           { dir: 'You put the tray straight, which does not help but feels like it does. Deirdre left at half four. Gavin is still on the phone.' },
-          { who: 'deirdre', dir: 'on her way past, coat on', text: 'Not bad. Wednesday’s the chasing. Bring a thick skin and a list.' },
+          { who: 'deirdre', dir: 'on her way past, coat on', minPct: 85,
+            text: 'That’s a proper day’s work, that. Wednesday’s the chasing. Bring a thick skin and a list.' },
+          { who: 'deirdre', dir: 'on her way past, coat on', minPct: 50, maxPct: 84,
+            text: 'Not bad. Few things to tidy. Wednesday’s the chasing — bring a thick skin and a list.' },
+          { who: 'deirdre', dir: 'pausing, coat half on', maxPct: 49,
+            text: 'Right. Well. Everybody has one of those, and anyone who says they haven’t is fibbing.' },
+          { who: 'deirdre', dir: 'already at the door', maxPct: 49,
+            text: 'Do the WR one again tomorrow before you touch anything else. And read the order first. Always the order first.' },
         ],
         carry: [
           { when: 'Wednesday', text: 'Chase Crowther’s £3,100 — you offered.', ifFlag: 'crowther.pass' },
