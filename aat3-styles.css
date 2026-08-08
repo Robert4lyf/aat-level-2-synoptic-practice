@@ -215,13 +215,17 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   padding: clamp(24px, 4vw, 44px);
   animation: a3-in .26s cubic-bezier(.2,.7,.3,1) both;
 }
-.a3-reading { max-width: 760px; }
+.a3-reading { max-width: 800px; }
 
 .a3-card-h {
   font-family: var(--a3-serif); font-size: clamp(23px, 3.4vw, 31px);
   line-height: 1.18; font-weight: 600; letter-spacing: -.016em; margin: 0 0 18px;
 }
-.a3-p { font-size: 16.5px; line-height: 1.72; color: var(--a3-ink-2); margin: 0 0 15px; }
+/* Cap the measure for long-form reading. Around 68 characters is the band
+   where the eye tracks comfortably from one line to the next; the sheet itself
+   stays wider so tables and worked examples still have room. */
+.a3-p { font-size: 16.5px; line-height: 1.75; color: var(--a3-ink-2); margin: 0 0 17px; max-width: 68ch; }
+.a3-card-h + .a3-p { margin-top: 0; }
 .a3-p strong { color: var(--a3-ink); font-weight: 650; }
 
 /* ── Content blocks ───────────────────────────────────────────────────────── */
