@@ -7493,6 +7493,28 @@
     render();
   }
 
+  /* What did you actually circle? The query you raise is only as good as this,
+     so it drives which ending you get rather than sitting on top of it. */
+  function protoCircleState() {
+    const P = State.proto, D = protoDef();
+    const real = Object.keys(D.wrong);
+    const found = real.filter(k => P.circled[k]).length;
+    const decoys = Object.keys(D.fine).filter(k => P.circled[k]).length;
+    if (!found) return { key: 'blind', checked: decoys > 0, found, decoys };
+    if (found < real.length) return { key: 'partial', checked: true, found, decoys };
+    return { key: decoys ? 'noisy' : 'full', checked: true, found, decoys };
+  }
+  /* An outcome may branch on that state; if it does not, it is used as it is. */
+  function protoOutcome() {
+    const P = State.proto, D = protoDef();
+    const base = D.outcomes[P.outcome];
+    if (!base) return null;
+    if (!base.by) return base;
+    const st = protoCircleState();
+    return base.by[st.key] || base.by[st.checked ? 'checked' : 'unchecked']
+        || base.by[Object.keys(base.by)[0]];
+  }
+
   function protoHot(text, id) {
     const P = State.proto, safe = escapeHtml(String(text == null ? '' : text));
     if (!id) return safe;
@@ -7601,7 +7623,8 @@
 
   function renderProtoOut() {
     const P = State.proto, D = protoDef();
-    const o = D.outcomes[P.outcome] || D.outcomes.hold;
+    const o = protoOutcome() || D.outcomes.corrected;
+    const st = protoCircleState();
     const p = storyPerson(o.who);
     const circled = Object.keys(P.circled).filter(k => P.circled[k]);
     const rows = Object.keys(D.wrong).map(k => {
@@ -7638,7 +7661,7 @@
           </button>
           ${P.examiner ? `<div class="pr-examiner-body">
             <p>An AAT task built on this invoice would be worth <b>8 marks</b>. On what you did, <b>${o.marks} of 8</b>.</p>
-            <p>Three marks are for spotting the discrepancies, three for the corrected figures, two for what you did with it.</p>
+            <p>Three marks are for spotting the discrepancies, three for the corrected figures, two for what you did with it. You circled <b>${st.found} of 3</b>${st.decoys ? ` and ${st.decoys} that ${st.decoys === 1 ? 'was' : 'were'} fine` : ''}.</p>
             <div class="pr-debrief">${rows || '<div class="pr-db-row miss"><span class="m">!</span><span>You did not pick the pen up.</span></div>'}</div>
             <p style="margin-top:12px">The corrected invoice is <b>£252.00 net, £50.40 VAT, £302.40 total</b> — 16 × £17.50, less 10%, then VAT on what is left. The 2% prompt payment discount is not deducted here; it comes off at the point of payment.</p>
           </div>` : ''}
