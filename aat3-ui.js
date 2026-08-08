@@ -236,14 +236,16 @@
 
   /* ── Path screen ─────────────────────────────────────────────────────────── */
   function renderPath() {
-    var unit = path()[0];
+    var groups = path();
+    var unit = groups[0];
     if (!unit) return '<div class="a3-empty">Level 3 content is still loading.</div>';
-    var ls = unit.lessons || [];
+    var ls = lessons();
     var doneN = ls.filter(function (l) { return isDone(l.id); }).length;
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
     var cov = coverage();
     var syl = syllabus();
     var u = syl && syl.units ? syl.units.tpfb : null;
+    var outcomeWeight = groups.reduce(function (a, g) { return a + (g.weighting || 0); }, 0);
 
     var h = '<div class="a3-root">';
 
@@ -253,7 +255,7 @@
       '<div class="a3-hero-in">' +
       '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
       '<h1 class="a3-title">' + esc(unit.title) + '</h1>' +
-      '<div class="a3-sub">Outcome ' + esc(unit.outcome) + ' — ' + esc(unit.outcomeTitle) + '</div>' +
+      '<div class="a3-sub">' + groups.length + ' of 5 outcomes · ' + outcomeWeight + '% of the assessment</div>' +
       '<div class="a3-chips">' +
         (u ? '<span class="a3-chip">' + esc(u.financeAct) + '</span>' : '') +
         (u ? '<span class="a3-chip">' + u.assessment.durationMinutes + ' min exam</span>' : '') +
@@ -265,13 +267,28 @@
         (cov ? '<span>' + cov.studied + ' of ' + cov.total + ' syllabus points studied</span>' : '') + '</div></div>' +
       '</div></header>';
 
-    /* Honest scope notice — this is one outcome of five, not the unit. */
-    h += '<div class="a3-notice"><strong>This is one outcome of five.</strong> ' +
-      'Outcome 2 covers ' + (cov ? cov.covered : 0) + ' of the unit’s ' + (cov ? cov.total : 0) +
-      ' syllabus points. The remaining outcomes are not written yet, so this is not full preparation for the assessment.</div>';
+    /* Honest scope notice — this is part of the unit, not all of it. */
+    h += '<div class="a3-notice"><strong>' + groups.length + ' of the unit’s 5 outcomes are written.</strong> ' +
+      'They cover ' + (cov ? cov.covered : 0) + ' of the unit’s ' + (cov ? cov.total : 0) +
+      ' syllabus points, worth ' + outcomeWeight + '% of the assessment. The remaining outcomes are not written yet, ' +
+      'so this is not yet full preparation for the assessment.</div>';
 
-    /* The track */
-    h += '<div class="a3-track">';
+    /* The track — one section per outcome, continuous numbering of nodes. */
+    groups.forEach(function (g) {
+      h += '<div class="a3-outcome">' +
+        '<div class="a3-outcome-n">Outcome ' + esc(g.outcome) + '</div>' +
+        '<h2 class="a3-outcome-t">' + esc(g.outcomeTitle) + '</h2>' +
+        (g.weighting ? '<div class="a3-outcome-w">' + g.weighting + '% of the assessment</div>' : '') +
+        '</div>';
+      h += renderTrack(g.lessons || []);
+    });
+
+    h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
+    return h + '</div>';
+  }
+
+  function renderTrack(ls) {
+    var h = '<div class="a3-track">';
     ls.forEach(function (l, i) {
       var t = nodeType(l);
       var meta = TYPE_META[t];
@@ -294,9 +311,6 @@
             [1,2,3].map(function (n) { return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>' : '') +
         '</div></div>';
     });
-    h += '</div>';
-
-    h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
     return h + '</div>';
   }
 
