@@ -39,6 +39,7 @@ const S = require(path.join(ROOT, 'aat3-syllabus.js'));
 const MODULES_SHIPPED = [
   { unit: 'tpfb', outcome: 1 },
   { unit: 'tpfb', outcome: 2 },
+  { unit: 'tpfb', outcome: 3 },
 ];
 
 const errors = [];

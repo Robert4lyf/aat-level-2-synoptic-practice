@@ -443,9 +443,40 @@
     return renderPath();
   }
 
+  /* Where the reader is, as a single comparable string. Cards are long enough
+     to scroll now, so advancing to the next one has to put them back at the
+     top — otherwise a new card opens halfway down its own text.
+
+     Keyed on POSITION, not on every render. Revealing a worked-example step,
+     picking an option or submitting an answer all re-render, and none of them
+     should yank the page to the top while the reader is mid-card. */
+  function posKey() {
+    return [S.screen, S.lessonId, S.phase, S.cardIdx, S.qIdx].join('|');
+  }
+  var _lastPos = null;
+
+  function restoreScroll(el) {
+    if (typeof window === 'undefined' || !window.scrollTo) return;
+    /* Returning to the path: put the lesson just left back under the reader's
+       eye rather than sending them to the top of a 21-node track. */
+    if (S.screen === 'path' && S.lessonId) {
+      var node = el.querySelector('[data-a3="open"][data-id="' + S.lessonId + '"]');
+      if (node && node.scrollIntoView) {
+        node.scrollIntoView({ behavior: 'instant', block: 'center' });
+        return;
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
   function mount(el) {
     el.innerHTML = html();
     wire(el);
+    var k = posKey();
+    if (k !== _lastPos) {
+      _lastPos = k;
+      restoreScroll(el);
+    }
   }
   var _host = null;
   function rerender() { if (_host) mount(_host); }

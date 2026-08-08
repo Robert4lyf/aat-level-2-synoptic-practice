@@ -78,8 +78,8 @@
           p: [
             'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are.',
             'VAT dominates. Three of the five outcomes are VAT and nothing else, and they carry 75% of the assessment between them. Payroll is a single outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation — you are told what the deductions are and asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about communicating VAT *and* payroll matters to the right person in the right way.',
-            '**Outcomes 1 and 2 are written; Outcomes 3, 4 and 5 are not yet.** That covers 55% of the assessment, and it covers the two halves that depend on each other most — the legal framework and the calculations performed inside it. Work through them in order. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong; Outcome 2 then does the arithmetic those rules govern.',
-            'What is missing matters, and it would be dishonest not to say so. Outcome 3 (reviewing and correcting returns), Outcome 4 (payroll) and Outcome 5 (reporting) are between them 45% of the marks. Treat what follows as a thorough grounding in the larger half of the unit rather than as complete preparation for the assessment.',
+            '**Outcomes 1, 2 and 3 are written; Outcomes 4 and 5 are not yet.** That is 75% of the assessment, and it is the whole of the VAT work bar the reporting. Take them in order, because each depends on the one before. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 then checks the result — verifying a return, reconciling it to the records, and correcting it when it turns out to be wrong.',
+            'What is missing matters, and it would be dishonest not to say so. Outcome 4 (payroll) and Outcome 5 (reporting) are between them 25% of the marks and are not written. Treat what follows as thorough preparation for three quarters of the unit rather than as complete preparation for the assessment.',
             'One thing worth flagging now: the outcomes are not independent of each other. Outcome 3 asks you to review and correct a return that Outcome 2 taught you to build. Outcome 5 asks you to explain to somebody else what Outcomes 1 to 4 established. Material learned here is drawn on repeatedly later, which is another reason to learn it properly the first time.',
           ],
         },
@@ -1942,6 +1942,570 @@
     },
   ];
 
+
+  /* ── Outcome 3: Review and verify VAT returns (20%) ───────────────────────
+     Half of this outcome is "be able to" rather than "understand", so it is
+     built around worked examples rather than exposition. It also depends on
+     Outcome 2 throughout: you cannot check a return you could not have built. */
+  var LESSONS_LO3 = [
+
+    /* ── 3.1 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-3A',
+      title: 'Errors: which ones go on the next return',
+      icon: '🔧',
+      criteria: ['TPFB-3.1.1', 'TPFB-3.1.2', 'TPFB-3.1.3', 'TPFB-3.1.4'],
+      cards: [
+        {
+          h: 'Returns are wrong more often than you would think',
+          p: [
+            'A VAT return is a self-assessment prepared under time pressure from records that were themselves prepared under time pressure. Invoices arrive late. A supply gets rated wrongly. A credit note is posted to the wrong side. Input tax is claimed on a car. None of this is unusual, and the law does not treat it as scandalous — it provides a route for putting it right.',
+            'What the law does insist on is that the route is followed. There are exactly two ways of correcting a previous period\'s error, HMRC calls them **Method 1** and **Method 2**, and which one applies is not a matter of preference. Using the wrong one is itself a failure, penalised separately from the error, even where the tax ends up correct.',
+            'So the question this lesson answers is a narrow one, and it is worth stating precisely before any arithmetic: **given an error in a previous period, may it be corrected on the next return, or must it be separately notified to HMRC?** Everything else follows from that.',
+            'One thing to be clear about at the outset. This is about errors in **previous** periods. An error spotted before the return is submitted is not an error correction at all — it is just a correction. Fix it and file the right figure.',
+          ],
+          callout: { kind: 'key', text: 'Method 1: adjust it on the next return. Method 2: notify HMRC separately on form ' + T.errorCorrection.separateNotificationForm + '. The choice is determined by the rules, not by convenience.' },
+        },
+        {
+          h: 'The test has two limbs',
+          p: [
+            'Method 1 — correcting on the next return — is available only if the error passes **both** limbs of a two-part test. Fail either one and Method 2 becomes compulsory.',
+            'The **first limb** is a flat figure. A net error of **£' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ' or less** may always be corrected on the next return. Below that figure nothing else needs checking; the error is small enough that HMRC does not want to hear about it separately.',
+            'The **second limb** catches larger errors and scales them to the size of the business. An error **above £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '** may still go on the next return if it does not exceed **' + T.errorCorrection.turnoverPercentage.value + '% of the Box 6 figure** for the period in which the error is discovered — subject to an absolute ceiling of **£' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '**. Above that ceiling, Method 2 is required however large the business is.',
+            'Read the two limbs together and the structure is: small errors always qualify; middling errors qualify if the business is big enough that the error is proportionately trivial; very large errors never qualify. That is a sensible design, and remembering the reason makes the mechanics much easier to reproduce under pressure than remembering three numbers.',
+          ],
+          flow: ['Net error ≤ £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → is it ≤ ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6 AND ≤ £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → Method 2'],
+          examtrap: { text: 'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the Box 6 figure for the period in which the error is DISCOVERED — not the period in which it was made. Questions give both figures.' },
+        },
+        {
+          h: '"Net error" means net',
+          p: [
+            'The word doing most of the work in that test is **net**, and it is the detail that most often produces a wrong answer even when the thresholds have been learned correctly.',
+            'The net error is the **total of all errors found, under-declarations less over-declarations**, for the periods being corrected. It is not the largest single error, and it is not the sum of their absolute values.',
+            'So a business that finds it under-declared output tax by £9,000 and separately over-claimed input tax by £4,000 has a net error of £13,000 — both are under-declarations of VAT due, and they add. But a business that under-declared output tax by £9,000 and *also* under-claimed input tax by £4,000 has a net error of £5,000, because the second error was in HMRC\'s favour and offsets the first.',
+            'That second case is the one to watch. Two errors of £9,000 and £4,000 might look like a £13,000 problem requiring Method 2, when in fact the business owes £5,000 net and may correct it on the next return. Working out the direction of each error before adding anything is not optional.',
+          ],
+          split: {
+            left: { title: 'Increases the net error', items: ['Output tax **under**-declared — too little VAT charged', 'Input tax **over**-claimed — too much VAT reclaimed', 'Both mean VAT is owed to HMRC'] },
+            right: { title: 'Reduces the net error', items: ['Output tax **over**-declared — too much VAT charged', 'Input tax **under**-claimed — too little VAT reclaimed', 'Both mean HMRC owes the business'] },
+          },
+        },
+        {
+          h: 'Time limits, and the errors the test does not cover',
+          p: [
+            'Two qualifications sit outside the two-limb test, and both override it.',
+            'The first is the **four-year time limit**. An error may only be corrected within four years — measured from the end of the period for under- or over-declared **output** tax, and from the return due date for under-claimed **input** tax. Beyond four years the correction is simply out of time, whichever method would otherwise have applied.',
+            'The second is the treatment of **deliberate** errors. A deliberate error must **always** be separately notified under Method 2, whatever its size. The value limits exist for genuine mistakes; they are not a shelter for a decision. Burying a deliberate error inside the next return is a further failure on top of the original one, and it moves the whole matter into the deliberate-and-concealed band of the penalty regime — the most expensive band there is.',
+            'It is also worth knowing that **Method 2 may be used voluntarily** for any error, including a small one. There is no rule against notifying an error you were entitled to adjust quietly. A business that wants a clean, documented record — or an accountant who wants the disclosure to be visibly unprompted — may reasonably choose it.',
+          ],
+          callout: { kind: 'warning', text: 'A deliberate error is always Method 2, whatever the amount. And nothing at all can be corrected more than four years back.' },
+        },
+        {
+          h: 'What separate notification involves, and what it costs',
+          p: [
+            'Method 2 means telling HMRC about the error directly, on **form ' + T.errorCorrection.separateNotificationForm + '** or through the online error correction service, rather than folding it into a return. The notification states what the error was, which periods it affected, how much VAT is involved and in which direction.',
+            'Two consequences follow, and neither is automatic punishment.',
+            '**Interest** runs where the error meant VAT was paid late. That is not a penalty and is not discretionary — the business had money that should have been HMRC\'s, and interest is the price of that.',
+            'A **penalty** depends entirely on **behaviour**, following the same structure as the failure to notify regime in lesson 1F. An error made despite taking reasonable care attracts no penalty at all. A careless error attracts a modest one. A deliberate error attracts a large one, and concealment larger still. Every band is reduced for the quality of disclosure, and an **unprompted** disclosure — made before the business had reason to think HMRC was about to find it — is worth a great deal.',
+            'The practical lesson is the same one that runs through the whole penalty regime: the moment an error is found is the moment it is cheapest to disclose. Waiting does not make it go away, and being found rather than confessing costs real money.',
+          ],
+          callout: { kind: 'tip', text: 'Reasonable care taken and prompt unprompted disclosure can mean no penalty at all. The same error found by HMRC eighteen months later will not be free.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business discovers a net error of £6,200 relating to a previous quarter. It was a genuine mistake. How should it be corrected?',
+          opts: [
+            'On the next return, under Method 1',
+            'By separate notification on form VAT652, because all errors above £5,000 must be reported',
+            'By separate notification, because errors in previous periods can never go on a later return',
+            'It cannot be corrected at all, and the business must wait for HMRC to raise an assessment',
+          ],
+          ans: 0,
+          exp: 'A net error of £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ' or less may always be corrected on the next return, so the first limb is satisfied and nothing further needs checking. At £6,200, and not being deliberate, this is a straightforward Method 1 correction.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business finds a net error of £24,000. Its Box 6 figure for the period of discovery is £3,000,000. The error was careless, not deliberate. Which method applies?',
+          opts: [
+            'Method 1 — the error is within ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6 and below the £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + ' ceiling',
+            'Method 2 — any error above £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ' must always be separately notified',
+            'Method 2 — the error exceeds 1% of the Box 6 figure for the period',
+            'Method 1 — but only if HMRC gives prior written approval for the adjustment',
+          ],
+          ans: 0,
+          exp: '1% of £3,000,000 is £30,000, and the £24,000 error is below it. It is also below the £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + ' ceiling and was not deliberate, so both limbs are satisfied and Method 1 is available. The first limb being failed does not by itself force Method 2 — that is what the second limb is for.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about correcting errors is true or false.',
+          statements: [
+            { text: 'A deliberate error must always be separately notified, whatever its value.', answer: true },
+            { text: 'The 1% test uses the Box 6 figure for the period in which the error was made.', answer: false },
+            { text: 'An error discovered five years after the period can still be corrected.', answer: false },
+            { text: 'A business may choose to notify a small error separately even though it need not.', answer: true },
+          ],
+          exp: 'Deliberate errors are always Method 2. The 1% test uses the Box 6 figure for the period of DISCOVERY, not of the error. Nothing can be corrected beyond four years. And Method 2 is always available voluntarily, which can be worth doing for a clean disclosure record.',
+        },
+        {
+          type: 'gapfill',
+          q: 'Complete the two limbs of the error correction test.',
+          template: 'A net error of £{0} or less may always go on the next return. Above that, it may still go on the next return if it is within {1} of the Box 6 figure for the period of discovery, subject to a ceiling of £{2}.',
+          gaps: [
+            { options: ['10,000', '1,000', '50,000'], answer: 0 },
+            { options: ['1%', '10%', '5%'], answer: 0 },
+            { options: ['50,000', '10,000', '100,000'], answer: 0 },
+          ],
+          exp: 'Small errors always qualify; middling ones qualify if proportionately trivial for the size of the business; very large ones never do. Both limbs must be satisfied, and a deliberate error fails regardless.',
+        },
+      ],
+    },
+
+    /* ── 3.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-3B',
+      title: 'Calculating and processing error adjustments',
+      icon: '🧮',
+      criteria: ['TPFB-3.1.5', 'TPFB-3.1.6'],
+      cards: [
+        {
+          h: 'From "there is an error" to "here is the figure"',
+          p: [
+            'Knowing which method applies is half the outcome. The other half is producing the number: working out what the correction actually is, deciding which way it goes, and seeing what it does to the return.',
+            'The method is always the same three steps, and following them in order prevents nearly every mistake that these questions are designed to produce. **Work out what was recorded. Work out what should have been recorded. The difference is the adjustment.** Resist the urge to leap straight to the answer; the difference between "the invoice was £2,400" and "the error was £2,400" is exactly the kind of slip that a computer-marked assessment cannot give partial credit for.',
+            'Then decide the **direction**, which is a separate question and deserves separate attention. Does the correction increase the VAT due to HMRC, or reduce it? Every error is one or the other, and the arithmetic that follows depends entirely on getting that right.',
+          ],
+          callout: { kind: 'key', text: 'What was recorded, what should have been recorded, and the difference between them. Then the direction — more VAT due, or less.' },
+        },
+        {
+          h: 'A single error',
+          p: [
+            'Start with one error in isolation, because the compound cases are only this repeated. Note in particular how the question gives a *gross* figure — as they usually do — and how much of the work is in the first step rather than the last.',
+          ],
+          worked: {
+            title: 'Output tax under-declared on a missed invoice',
+            problem: 'While preparing the March quarter return, Lyndon Supplies finds that a sales invoice from the December quarter was never posted. The invoice was for £7,200 including VAT at the standard rate. What is the error, which way does it go, and how is it corrected?',
+            steps: [
+              { do: 'Work out what should have been recorded.', why: 'The invoice was £7,200 gross. VAT at the standard rate is one sixth of the gross: £7,200 ÷ 6 = £1,200 of output tax, on a net value of £6,000.' },
+              { do: 'Work out what was recorded.', why: 'Nothing. The invoice was never posted, so £0 of output tax was declared for it.' },
+              { do: 'Take the difference.', why: '£1,200 − £0 = £1,200. That is the error.' },
+              { do: 'Decide the direction.', why: 'Output tax was UNDER-declared, so the business owes HMRC more. The correction increases the VAT payable by £1,200.' },
+              { do: 'Choose the method.', why: 'The net error of £1,200 is well under £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ' and was not deliberate, so Method 1 applies: adjust the VAT account and add £1,200 to output tax on the March return.' },
+              { do: 'Do not forget the value box.', why: 'The net £6,000 also belongs in the sales total. Correcting only the VAT and leaving Box 6 understated leaves the return internally inconsistent — and it is the sort of thing a reconciliation is designed to catch.' },
+            ],
+            answer: 'A £1,200 under-declaration of output tax, corrected on the next return under Method 1',
+            tryIt: {
+              q: 'A purchase invoice for £3,600 including standard-rate VAT was omitted from a previous return. By how much does correcting it change the VAT payable, in pounds?',
+              answer: 600,
+              unit: '£',
+              hint: 'Find the VAT in the gross figure, then decide which way a missed PURCHASE invoice goes.',
+              exp: '£3,600 ÷ 6 = £600 of input tax that was never reclaimed. Input tax was under-claimed, so the correction REDUCES the VAT payable by £600 — the opposite direction to a missed sales invoice of the same size.',
+            },
+          },
+        },
+        {
+          h: 'Several errors at once',
+          p: [
+            'Assessment questions rarely give one error. They give three or four pointing in different directions and expect a single net figure, because that is what the two-limb test needs and because it is the only way to test whether direction has been understood.',
+            'The discipline is to build a table rather than work in prose: one line per error, each showing the amount and the direction, then a single total. Keeping under-declarations and over-declarations in separate columns and subtracting once at the end is far more reliable than trying to add signed numbers in your head.',
+          ],
+          worked: {
+            title: 'Four errors, one net figure, one decision',
+            problem: 'Ashwell Trading finds four errors from earlier periods. (1) Output tax under-declared £8,400. (2) Input tax over-claimed £2,600 on client entertaining. (3) Output tax over-declared £1,900 on a sale wrongly treated as standard-rated when it was zero-rated. (4) Input tax under-claimed £3,100 on a mislaid purchase invoice. Box 6 for the current period is £520,000. What is the net error, and how must it be corrected?',
+            steps: [
+              { do: 'Classify error 1.', why: 'Output tax under-declared £8,400 — too little VAT charged, so VAT is OWED to HMRC. This increases the net error.' },
+              { do: 'Classify error 2.', why: 'Input tax over-claimed £2,600 — too much VAT reclaimed, so VAT is again OWED. Increases the net error. Entertaining is blocked, so none of it was recoverable.' },
+              { do: 'Classify error 3.', why: 'Output tax over-declared £1,900 — too much VAT charged, so HMRC owes the business. This REDUCES the net error.' },
+              { do: 'Classify error 4.', why: 'Input tax under-claimed £3,100 — too little reclaimed, so HMRC owes the business again. Also REDUCES the net error.' },
+              { do: 'Net them off.', why: 'Owed to HMRC: £8,400 + £2,600 = £11,000. Owed to the business: £1,900 + £3,100 = £5,000. Net error = £11,000 − £5,000 = £6,000 payable to HMRC.' },
+              { do: 'Apply the test to the NET figure.', why: '£6,000 is below £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ', so the first limb is satisfied and Method 1 applies. Notice that the gross total of the four errors was £16,000, which would have failed the first limb and, at 1% of £520,000 = £5,200, failed the second as well. Netting is what makes the difference here.' },
+            ],
+            answer: 'A net error of £6,000 payable to HMRC, corrected on the next return under Method 1',
+            tryIt: {
+              q: 'A business finds it under-declared output tax by £14,500 and under-claimed input tax by £2,300. What is the net error, in pounds?',
+              answer: 12200,
+              unit: '£',
+              hint: 'The two errors point in opposite directions — one is VAT owed to HMRC, the other is VAT owed to the business.',
+              exp: '£14,500 owed to HMRC less £2,300 owed to the business = £12,200 net. That exceeds £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ', so the second limb must now be tested against 1% of the Box 6 figure for the period of discovery.',
+            },
+          },
+        },
+        {
+          h: 'What the adjustment does to the return',
+          p: [
+            'The last requirement of this topic area is to recognise the **impact** of the adjustment — not merely to compute it. Three effects are worth being able to state.',
+            'The **immediate** effect is on Box 5. A correction that increases VAT due raises the payment; one that reduces it lowers the payment, or turns it into a repayment. Under Method 1 the adjustment is folded into the return, so no separate figure appears — this is why an unexplained jump in a period\'s liability should always prompt the question of whether a prior-period correction is buried in it.',
+            'The **record-keeping** effect is that the VAT account must show the correction separately. Adjusting the return without adjusting the underlying account leaves the two disagreeing, and the reconciliation in lesson 3E will then fail for a reason nobody can trace six months later.',
+            'The **cash** effect is the one businesses feel. A large Method 1 correction arrives in a single period, on top of that period\'s ordinary liability. A business that has been under-declaring for a year does not repay it gently over the next year; it repays it all at once, on one due date, and if it cannot the late payment regime of lesson 1G begins immediately.',
+          ],
+          examtrap: { text: 'Under Method 1 the correction disappears into the return\'s ordinary figures. Only the VAT account shows it separately — which is exactly why the VAT account has to be kept properly.' },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A sales invoice for £10,800 including standard-rate VAT was omitted from a previous return. By how much does the correction increase the VAT payable, in pounds?',
+          answer: 1800,
+          unit: '£',
+          exp: '£10,800 ÷ 6 = £1,800 of output tax that was never declared. A missed sales invoice means output tax was under-declared, so the correction increases the VAT payable. The net £9,000 also needs adding to the sales value box.',
+        },
+        {
+          type: 'numeric',
+          q: 'A business finds these errors: output tax under-declared £9,600; input tax over-claimed £1,400; output tax over-declared £2,000. What is the net error, in pounds?',
+          answer: 9000,
+          unit: '£',
+          exp: 'Owed to HMRC: £9,600 + £1,400 = £11,000. Owed to the business: £2,000. Net error = £11,000 − £2,000 = £9,000. That is below £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ', so Method 1 is available — though the gross total of £13,000 would not have been.',
+        },
+        {
+          type: 'mcq',
+          q: 'Input tax of £900 was reclaimed on client entertaining in a previous period. What is the effect of correcting this?',
+          opts: [
+            'It increases the VAT payable by £900, because input tax was over-claimed',
+            'It reduces the VAT payable by £900, because the input tax is now allowable',
+            'It has no effect on the VAT payable, because entertaining is outside the scope',
+            'It increases the VAT payable by £180, being 20% of the amount over-claimed',
+          ],
+          ans: 0,
+          exp: 'Entertaining is blocked, so the £900 should never have been reclaimed. Over-claimed input tax means VAT is owed to HMRC, so the correction increases the VAT payable by the full £900 — not by a percentage of it, since the £900 is already the VAT.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about processing adjustments is true or false.',
+          statements: [
+            { text: 'Correcting a missed sales invoice means adjusting the sales value box as well as the VAT.', answer: true },
+            { text: 'A Method 1 adjustment appears as a separate figure on the face of the return.', answer: false },
+            { text: 'Under-claimed input tax reduces the net error.', answer: true },
+            { text: 'The VAT account must show the correction separately.', answer: true },
+          ],
+          exp: 'Both the VAT and the net value need correcting, or the return is internally inconsistent. Method 1 folds the adjustment into the ordinary figures — only the VAT account shows it separately, which is why it must. And under-claimed input tax is VAT owed to the business, so it offsets under-declarations.',
+        },
+      ],
+    },
+
+    /* ── 3.2 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-3C',
+      title: 'Inside the return: what goes in each box',
+      icon: '📦',
+      criteria: ['TPFB-3.2.1', 'TPFB-3.2.2'],
+      cards: [
+        {
+          h: 'Nine boxes, and the ones this unit asks about',
+          p: [
+            'The VAT return has nine boxes. Outcome 2 built the figures that go in them; this topic is about knowing precisely what each one contains, because the assessment asks directly and because you cannot verify a return without it.',
+            'Three of the nine are **not assessed in this unit**. Boxes 2, 8 and 9 all concern movements of goods between Northern Ireland and the EU, and the specification excludes Northern Ireland rules from the unit entirely. They are mentioned here only so that the numbering makes sense — if you meet Box 3 as "boxes 1 and 2 added together" and have never heard of Box 2, the definition looks broken.',
+            'That leaves six to know properly, and they fall into two natural groups whose difference is the single most useful thing in this lesson. Boxes 1 to 5 are the **VAT boxes** — amounts of tax. Boxes 6 to 9 are the **value boxes** — the net values of the supplies themselves, excluding VAT. Confusing the two groups is the most common error in return preparation, and almost everything that follows is a consequence of the distinction.',
+          ],
+          table: {
+            headers: ['Box', 'Contains', 'Assessed?'],
+            rows: [
+              ['1', 'VAT due on sales and other outputs', 'Yes'],
+              ['2', 'VAT due on acquisitions from EU member states', '**No** — NI only'],
+              ['3', 'Total VAT due (Box 1 + Box 2)', 'Yes'],
+              ['4', 'VAT reclaimed on purchases and other inputs', 'Yes'],
+              ['5', 'Net VAT to pay or reclaim (Box 3 − Box 4)', 'Yes'],
+              ['6', 'Total value of sales and other outputs, excluding VAT', 'Yes'],
+              ['7', 'Total value of purchases and other inputs, excluding VAT', 'Yes'],
+              ['8', 'Value of goods supplied to EU member states', '**No** — NI only'],
+              ['9', 'Value of goods acquired from EU member states', '**No** — NI only'],
+            ],
+          },
+        },
+        {
+          h: 'The VAT boxes: 1, 3, 4 and 5',
+          p: [
+            '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up the adjustments taught in Outcome 2 — the **fuel scale charge**, VAT on **gifts of goods worth more than £50**, and **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
+            '**Box 4** is input tax: VAT recoverable on purchases. It includes **import VAT reclaimed under postponed accounting** — the same figure that went into Box 1 — and **bad debt relief**, which is claimed as input tax rather than as a reduction of output tax. It excludes everything blocked: client entertaining, cars available for private use, and anything for which the business does not hold a valid VAT invoice.',
+            '**Boxes 3 and 5 are calculated, not entered.** Box 3 is Box 1 plus Box 2; since Box 2 is nil for a business without Northern Ireland acquisitions, Box 3 usually equals Box 1. Box 5 is Box 3 minus Box 4 — the figure that is actually paid or reclaimed.',
+            'A negative Box 5 is a **repayment**, and lesson 2G made the point that this is entirely normal for a zero-rated trader or an exporter. Software will present it as a repayment rather than a negative number, but the arithmetic is the same subtraction.',
+          ],
+          formula: 'Box 3 = Box 1 + Box 2 · Box 5 = Box 3 − Box 4 · Box 5 negative means a repayment is due',
+        },
+        {
+          h: 'The value boxes: 6 and 7',
+          p: [
+            'The value boxes are where returns most often go quietly wrong, because their contents are broader than intuition suggests.',
+            '**Box 6** is the total **net value of ALL sales and other outputs**, excluding VAT. The word "all" is doing the work. It includes standard-rated and reduced-rated sales, and it also includes **zero-rated sales, exempt sales and exports** — supplies that contributed nothing whatever to Box 1. The instinct to leave out a sale that carried no VAT is exactly wrong, and it is what makes a Box 6 figure too small.',
+            '**Box 7** is the total **net value of all purchases and other inputs**, excluding VAT, including imports. It excludes things that are outside the scope of VAT altogether: **wages, PAYE and National Insurance, drawings**, and other non-business expenditure. A Box 7 figure that has swallowed the payroll is a large and obvious error, and it is one of the first things a reviewer checks.',
+            'It is worth holding on to why Box 6 matters beyond the return itself: it is the figure the **1% error correction test** is measured against. A business that habitually understates Box 6 by omitting its zero-rated sales is also, without realising, shrinking the size of error it may correct on a future return.',
+          ],
+          examtrap: { text: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.' },
+        },
+        {
+          h: 'Imports and exports on the return',
+          p: [
+            'Lesson 2F covered the mechanics; what matters here is where the figures land, because imports and exports touch different boxes and behave quite differently.',
+            '**Exports** — goods sent outside the UK — are **zero-rated**. No VAT arises, so Box 1 is unaffected. But the net value still belongs in **Box 6**, exactly like any other zero-rated sale. An exporter that omits its export sales from Box 6 will report a Box 6 figure close to nil while reclaiming substantial input tax, which is both wrong and conspicuous.',
+            '**Imports under postponed VAT accounting** are the neat case, and the one most likely to be examined because it looks paradoxical. The import VAT is declared as output tax in **Box 1** and simultaneously reclaimed as input tax in **Box 4**. For a fully taxable business the two cancel and the net effect on Box 5 is **nil** — no cash crosses at the border and none crosses on the return. The net value of the goods goes in **Box 7**.',
+            'The word "fully taxable" in that sentence is load-bearing. A **partially exempt** business cannot recover all of its input tax, so the Box 4 entry is smaller than the Box 1 entry and postponed accounting produces a real net cost. PVA is a timing mechanism, not a relief, and it only nets to nothing for a business that could recover the VAT anyway.',
+          ],
+          table: {
+            headers: ['Transaction', 'Box 1', 'Box 4', 'Box 6', 'Box 7'],
+            rows: [
+              ['Standard-rated UK sale', 'VAT', '—', 'Net', '—'],
+              ['Zero-rated sale or export', '—', '—', '**Net**', '—'],
+              ['Exempt sale', '—', '—', '**Net**', '—'],
+              ['Standard-rated UK purchase', '—', 'VAT', '—', 'Net'],
+              ['Import under PVA', '**VAT**', '**VAT**', '—', 'Net'],
+              ['Wages and PAYE', '—', '—', '—', '**Excluded**'],
+            ],
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business makes £40,000 of standard-rated sales and £25,000 of zero-rated sales in a quarter, both net. What goes in Box 6?',
+          opts: [
+            '£65,000 — Box 6 includes zero-rated sales',
+            '£40,000, because only sales carrying VAT belong in Box 6',
+            '£78,000, being the standard-rated sales grossed up plus the zero-rated sales',
+            '£25,000, because standard-rated sales are already represented in Box 1',
+          ],
+          ans: 0,
+          exp: 'Box 6 is the net value of ALL sales and other outputs, whether or not VAT arose on them. Zero-rated and exempt sales belong there too. Only £8,000 of VAT on the standard-rated sales goes in Box 1, but the full £65,000 of net value goes in Box 6.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which of these must be EXCLUDED from Box 7?',
+          opts: [
+            'Wages and PAYE',
+            'The net value of goods imported under postponed VAT accounting',
+            'The net value of standard-rated purchases from UK suppliers',
+            'The net value of purchases on which input tax was blocked',
+          ],
+          ans: 0,
+          exp: 'Wages, PAYE and drawings are outside the scope of VAT and never appear in Box 7. Imports and ordinary purchases do belong there, and so does the net value of a blocked purchase — the input tax is not recoverable in Box 4, but the expenditure still happened.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about the VAT return boxes is true or false.',
+          statements: [
+            { text: 'Box 5 is calculated as Box 3 minus Box 4.', answer: true },
+            { text: 'Import VAT under postponed accounting appears in both Box 1 and Box 4.', answer: true },
+            { text: 'Exempt sales are omitted from Box 6 because no VAT arises on them.', answer: false },
+            { text: 'Bad debt relief is claimed by reducing Box 1.', answer: false },
+          ],
+          exp: 'Box 5 is Box 3 less Box 4. PVA is declared and reclaimed simultaneously, netting to nil for a fully taxable business. Box 6 includes exempt and zero-rated sales despite carrying no VAT. And bad debt relief is claimed as input tax in Box 4, not as a reduction of output tax.',
+        },
+        {
+          type: 'numeric',
+          q: 'A fully taxable business imports goods with a customs value of £30,000 under postponed VAT accounting. What is the net effect on Box 5, in pounds?',
+          answer: 0,
+          unit: '£',
+          exp: '£6,000 is declared in Box 1 and the same £6,000 reclaimed in Box 4, so the net effect on Box 5 is nil. The £30,000 net value still goes in Box 7. The answer would not be nil for a partially exempt business, which could not recover the whole Box 4 figure.',
+        },
+      ],
+    },
+
+    /* ── 3.2 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-3D',
+      title: 'Checking the return before it goes',
+      icon: '🔍',
+      criteria: ['TPFB-3.2.3', 'TPFB-3.2.4'],
+      cards: [
+        {
+          h: 'Why checking is a step and not a formality',
+          p: [
+            'It would be easy to treat "check the return before submission" as advice rather than content. The specification makes it a key concept, and there are good reasons why.',
+            'The first is that **submission is a declaration**. The return is the business\'s own statement of what it owes, and once submitted it is the figure HMRC relies on. Getting it wrong is not a draft that will be reviewed by somebody else; it is a legal statement that then has to be corrected through the machinery of lesson 3A, with interest and possibly a penalty.',
+            'The second is the point lesson 1D made about Making Tax Digital. Under MTD, figures flow from the underlying records to the return through **digital links, with no manual stage**. That is precisely what removes the accidental safety net. Under the old regime somebody typed the figures and might have noticed that Box 6 was implausibly small; now nobody types anything, and a wrong figure at source arrives at HMRC untouched. The check has to be deliberate because it is no longer incidental.',
+            'The third is that **errors are cheapest when found early**. An error caught before submission is not an error at all — there is no correction, no notification, no interest, no penalty, no question about behaviour. The same error caught eighteen months later by an HMRC officer is all of those things. The few minutes spent checking buy a genuinely disproportionate amount of protection.',
+          ],
+          callout: { kind: 'key', text: 'An error found before submission costs nothing. The same error found after submission costs a correction, interest, possibly a penalty, and a conversation about behaviour.' },
+        },
+        {
+          h: 'What to actually check',
+          p: [
+            'Useful checking is a small number of specific tests, not a vague re-reading. Each of the following catches a different class of error, and together they catch most of what goes wrong.',
+            '**Does the VAT bear a sensible relationship to the values?** If sales are all standard-rated, Box 1 should be close to 20% of Box 6. A long way off means either that some sales are zero-rated or exempt — which should be verifiable — or that something is wrong. This single ratio test catches more than any other.',
+            '**Is the direction plausible for this business?** Lesson 2G made the point: a general retailer selling standard-rated goods to the public should be paying HMRC. If the return shows a repayment, look again. An exporter that comes out payable deserves the same second look.',
+            '**Is the period right?** Invoices near a period end are the classic problem. A tax point falling either side of the boundary moves a supply between quarters, and both the omission and the duplication are easy.',
+            '**Have the adjustments been made?** Fuel scale charge, bad debt relief, blocked input tax removed, prior-period corrections. These are the items that live outside the sales and purchase daybooks and so are missed most often — they have no natural prompt.',
+            '**Does the return agree with the records?** That is the reconciliation, and it is the subject of the next lesson.',
+          ],
+          split: {
+            left: { title: 'Quick sense checks', items: ['Box 1 ≈ 20% of Box 6, unless there are zero-rated or exempt sales', 'Payment or repayment — is that right for this business?', 'Is Box 6 much larger than Box 1 for a standard-rated trader?', 'Does the liability look like previous periods?'] },
+            right: { title: 'Completeness checks', items: ['Invoices around the period-end boundary', 'Fuel scale charge and bad debt relief included', 'Blocked input tax removed from purchases', 'Prior-period corrections processed', 'Zero-rated and exempt sales present in Box 6'] },
+          },
+        },
+        {
+          h: 'When the return and the records disagree',
+          p: [
+            'A reviewer\'s real skill is diagnostic: given a difference between the return and the accounting records, working out what would produce a difference of that shape. Some causes are innocent and some are errors, and telling them apart quickly is what the specification means by identifying reasons for differences.',
+            'Several **legitimate** causes exist, and a reviewer who has not internalised them will chase problems that are not there. **Timing differences** are the commonest: the tax point rules of lesson 2B mean a supply belongs to the period of its tax point, which is not always the period the accounting system recorded it in. Under **cash accounting** the return follows receipts and payments while the ledgers follow invoices, so the two are *expected* to differ. **Prior-period error corrections** made under Method 1 sit in the return without appearing in this period\'s ledgers at all. And **partial exemption** restrictions reduce recoverable input tax below the amount in the purchase ledger.',
+            'The **error** causes look different in character. Input tax claimed on a blocked item, a supply given the wrong rate, a credit note posted to the wrong side, a transposition, a missing invoice, or output tax accounted for in the wrong period.',
+            'The practical approach is to size the difference first and let its shape suggest the cause. A difference that is exactly 20% of a round number points at a single omitted or duplicated invoice. A difference divisible by 9 is very often a transposition — £1,530 recorded as £1,350 differs by £180. A difference matching the fuel scale charge to the penny is an adjustment that was forgotten. Sizing before hunting saves a great deal of time.',
+          ],
+          table: {
+            headers: ['Cause', 'Legitimate or error?'],
+            rows: [
+              ['Tax point falls in a different period from the ledger entry', 'Legitimate — timing'],
+              ['Cash accounting: return follows money, ledgers follow invoices', 'Legitimate — expected'],
+              ['A Method 1 correction of a prior-period error', 'Legitimate — by design'],
+              ['Partial exemption restricting recoverable input tax', 'Legitimate — restriction'],
+              ['Input tax claimed on entertaining or a car', '**Error** — blocked'],
+              ['A sale given the wrong VAT rate', '**Error** — categorisation'],
+              ['Two digits transposed (difference divisible by 9)', '**Error** — posting'],
+            ],
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A business makes only standard-rated sales. Its return shows Box 6 of £200,000 and Box 1 of £12,000. What does this most likely indicate?',
+          opts: [
+            'An error — Box 1 should be around £40,000 if all sales are standard-rated',
+            'Nothing unusual, since Box 1 and Box 6 are not expected to be related',
+            'That the business is partially exempt and has restricted its output tax',
+            'That the sales figure in Box 6 has been grossed up to include VAT',
+          ],
+          ans: 0,
+          exp: '£200,000 × 20% = £40,000, so £12,000 is far too low for a wholly standard-rated trader. The ratio test between Box 1 and Box 6 is the single most productive check available. Partial exemption restricts INPUT tax, not output tax, so it could not explain this.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business uses cash accounting. Its VAT return does not agree with its sales ledger. What is the most likely explanation?',
+          opts: [
+            'Nothing is wrong — the return follows receipts while the ledger follows invoices',
+            'Input tax has been claimed on blocked items such as entertaining',
+            'A prior-period error has been corrected under Method 2',
+            'The business has exceeded the cash accounting turnover threshold',
+          ],
+          ans: 0,
+          exp: 'Under cash accounting output tax follows money received rather than invoices issued, so a difference from the sales ledger is expected rather than symptomatic. Knowing the legitimate causes of difference is what stops a reviewer chasing problems that are not there.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about checking returns is true or false.',
+          statements: [
+            { text: 'An error found before submission requires no correction, interest or penalty.', answer: true },
+            { text: 'Making Tax Digital removes the manual stage at which a wrong figure might be noticed.', answer: true },
+            { text: 'A difference between the return and the ledgers always indicates an error.', answer: false },
+            { text: 'A difference divisible by 9 often indicates a transposition.', answer: true },
+          ],
+          exp: 'Fixing a figure before filing is not an error correction at all. MTD\'s digital links are precisely what remove the incidental human check, which is why a deliberate one is needed. Timing, cash accounting, prior-period corrections and partial exemption all cause legitimate differences. And the divisible-by-nine test is a genuinely useful shortcut for spotting transpositions.',
+        },
+      ],
+    },
+
+    /* ── 3.2 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-3E',
+      title: 'Reconciling the return to the records',
+      icon: '⚖️',
+      criteria: ['TPFB-3.2.5', 'TPFB-3.2.6'],
+      cards: [
+        {
+          h: 'The VAT control account',
+          p: [
+            'Reconciliation is the formal version of the checking in the last lesson: proving that the return and the accounting records tell the same story, and explaining every difference between them.',
+            'The document at the centre of it is the **VAT control account**, which lesson 1B identified as the record HMRC asks for first. It is an ordinary ledger account, and Level 2 taught you to post to it. Output tax is **credited** to it as sales are recorded, because it is a liability owed to HMRC. Input tax is **debited**, because it reduces that liability. The balance at the period end is what the business owes — and it should equal Box 5.',
+            'Should, but does not automatically. The control account is built from the daybooks; the return is built from the control account **plus the adjustments** that live outside the daybooks. Every one of those adjustments is a legitimate difference that has to be identified and explained, and that is precisely what a reconciliation does.',
+            'It is worth being clear about what a successful reconciliation proves and what it does not. It proves the return is **consistent** with the records. It does not prove either is **right**: a sale recorded at the wrong rate in the daybook will flow through to both, and reconcile perfectly. Reconciliation and review are two different checks, and a business needs both.',
+          ],
+          split: {
+            left: { title: 'Credited to the VAT control account', items: ['Output tax on sales', 'Fuel scale charge', 'Import VAT under PVA (declared)', 'Credit notes received from suppliers'] },
+            right: { title: 'Debited to the VAT control account', items: ['Input tax on purchases', 'Bad debt relief', 'Import VAT under PVA (reclaimed)', 'Credit notes issued to customers'] },
+          },
+        },
+        {
+          h: 'Reconciling in practice',
+          p: [
+            'The method is the same as any reconciliation you have met: start with one figure, apply the known reconciling items, and arrive at the other. Start from the control account balance, because that is the one built mechanically from the ledgers, and work towards Box 5.',
+          ],
+          worked: {
+            title: 'Reconciling a control account balance to Box 5',
+            problem: 'Bramley Ltd\'s VAT control account shows a credit balance of £18,400 at the quarter end. The return shows Box 5 of £18,010 payable. Investigation finds: a fuel scale charge of £90 was included in the return but never posted to the control account; bad debt relief of £560 was claimed on the return but not posted; and input tax of £80 on client entertaining was posted to the control account but correctly excluded from the return. Does the return reconcile?',
+            steps: [
+              { do: 'Start with the control account balance.', why: 'A credit balance of £18,400 means the ledgers say £18,400 is owed to HMRC. That is the starting point because it is built mechanically from the daybooks.' },
+              { do: 'Add the fuel scale charge.', why: 'The £90 charge increased output tax on the return but never reached the control account. Adding it moves the ledger figure towards the return: £18,400 + £90 = £18,490.' },
+              { do: 'Deduct the bad debt relief.', why: 'Relief is claimed as input tax, reducing what is owed. It reduced the return but not the control account: £18,490 − £560 = £17,930.' },
+              { do: 'Add back the blocked input tax.', why: 'The £80 on entertaining was debited to the control account, which wrongly REDUCED the ledger liability by £80. The return correctly left it out, so the return is £80 higher than the ledger. Reversing the wrong debit: £17,930 + £80 = £18,010. Work out which way each item moves the balance rather than assuming an adjustment always reduces it.' },
+              { do: 'Compare with Box 5.', why: '£18,010 reconciled against £18,010 on the return. It agrees, and every difference is explained by an identified adjustment.' },
+            ],
+            answer: 'Yes — £18,400 + £90 − £560 + £80 = £18,010, agreeing with Box 5',
+            tryIt: {
+              q: 'A VAT control account shows a credit balance of £9,400. A fuel scale charge of £120 was included in the return but not posted, and bad debt relief of £300 was claimed on the return but not posted. What figure should Box 5 show, in pounds?',
+              answer: 9220,
+              unit: '£',
+              hint: 'The scale charge increases what is owed; bad debt relief reduces it.',
+              exp: '£9,400 + £120 − £300 = £9,220. The scale charge is additional output tax, so it increases the liability; bad debt relief is claimed as input tax, so it reduces it.',
+            },
+          },
+        },
+        {
+          h: 'Reviewing a return from the accounting information',
+          p: [
+            'The other "be able to" requirement in this topic is the reverse exercise: given a set of accounting information, review a return somebody else prepared and say whether it is right.',
+            'This is a different skill from building one, and it is worth approaching differently. When building a return you work forwards from the records. When reviewing, work **backwards from the return**, asking of each figure: what should this be, and does the evidence support it?',
+            'A workable order is to check the **structure** first — is Box 3 really Box 1 plus Box 2, is Box 5 really Box 3 less Box 4? These are arithmetic and either agree or do not. Then check the **ratios**, as in lesson 3D. Then check **completeness**: are the adjustments there, and does Box 6 include the zero-rated and exempt sales? Then check the **exclusions**: is there blocked input tax in Box 4, or wages in Box 7?',
+            'Working in that order matters, because a structural error makes every later check meaningless — if Box 5 does not equal Box 3 minus Box 4 then something is badly wrong with how the return was assembled, and there is no point examining the ratios of figures that were not combined correctly in the first place.',
+          ],
+          flow: ['Check the structure', 'Check the ratios', 'Check completeness', 'Check the exclusions', 'Reconcile to the records'],
+        },
+        {
+          h: 'What to do with what you find',
+          p: [
+            'Finding a problem is not the end of the task. What happens next depends on when it was found and how large it is, and the whole of this outcome comes together at that point.',
+            'If the return has **not yet been submitted**, amend it. There is no error to correct, nothing to notify and nothing to disclose.',
+            'If it **has been submitted**, lesson 3A decides the route: work out the net error, apply the two-limb test, and either adjust the next return under Method 1 or notify separately under Method 2. Remember that a deliberate error is always Method 2, and that nothing is correctable beyond four years.',
+            'If the problem is **systemic** rather than a one-off — input tax claimed on entertaining every quarter, or zero-rated sales routinely omitted from Box 6 — then correcting this period is only half the job. The same error is in earlier returns too, and the aggregate may be large enough to change which method applies. It is also the kind of pattern HMRC finds quickly on inspection, and finding it yourself first is worth real money under the unprompted disclosure rules.',
+            'And if the problem raises a question about **whether the figures were wrong on purpose**, that is no longer a technical matter. Lesson 1G touched on it: the obligation to act with integrity sits with whoever prepares the return, and it is not discharged by the penalty falling on somebody else. Outcome 5 deals with who to tell and how.',
+          ],
+          callout: { kind: 'tip', text: 'Before submission, just fix it. After submission, run the two-limb test. If it is systemic, check the earlier periods too — the aggregate may change the method.' },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A VAT control account shows a credit balance of £12,600. A fuel scale charge of £150 was included in the return but never posted, and bad debt relief of £480 was claimed on the return but not posted. What should Box 5 show, in pounds?',
+          answer: 12270,
+          unit: '£',
+          exp: '£12,600 + £150 − £480 = £12,270. The fuel scale charge is additional output tax and increases the liability; bad debt relief is claimed as input tax and reduces it. Both were on the return but not in the ledger, so both are reconciling items.',
+        },
+        {
+          type: 'mcq',
+          q: 'A reconciliation between the VAT control account and the return agrees exactly. What does this prove?',
+          opts: [
+            'That the return is consistent with the accounting records',
+            'That the return is correct and no further checking is needed',
+            'That every supply has been given the correct VAT rate',
+            'That no input tax has been claimed on blocked items',
+          ],
+          ans: 0,
+          exp: 'Reconciliation proves consistency, not correctness. A sale recorded at the wrong rate flows into both the ledger and the return and reconciles perfectly. Reconciliation and review are separate checks, and a business needs both.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about reconciliation is true or false.',
+          statements: [
+            { text: 'Output tax is credited to the VAT control account.', answer: true },
+            { text: 'Bad debt relief reduces the balance owed on the control account.', answer: true },
+            { text: 'A return found to be wrong before submission requires a Method 1 correction.', answer: false },
+            { text: 'A systemic error may affect earlier periods as well as the current one.', answer: true },
+          ],
+          exp: 'Output tax is a liability, so it is credited; input tax and bad debt relief are debited and reduce it. A return not yet submitted is simply amended — there is no error correction. And a systemic error certainly does affect earlier periods, which is exactly why the aggregate may change which method applies.',
+        },
+        {
+          type: 'mcq',
+          q: 'A reviewer finds that input tax on client entertaining has been claimed in every quarter for the past two years. What should be done?',
+          opts: [
+            'Correct the current period and aggregate the earlier errors to determine the method',
+            'Correct only the current period, since earlier returns have already been submitted',
+            'Notify HMRC under Method 2 regardless of the amounts, because the error repeated',
+            'Take no action, since input tax on entertaining is recoverable if incurred on clients',
+          ],
+          ans: 0,
+          exp: 'A systemic error affects every period it occurred in. The aggregate net error must be worked out across all of them, because it may exceed the limits that the current period alone would satisfy. Entertaining is blocked, and repetition alone does not make an error deliberate — behaviour does.',
+        },
+      ],
+    },
+  ];
+
   /* One entry per learning outcome. The orientation lessons open Outcome 1
      because they are the opening of the unit, not of any one outcome. */
   var PATH = [
@@ -1962,6 +2526,15 @@
       outcomeTitle: 'Calculate VAT',
       weighting: 30,
       lessons: LESSONS_LO2,
+    },
+    {
+      unit: 'tpfb',
+      level: 3,
+      title: 'Tax Processes for Businesses',
+      outcome: 3,
+      outcomeTitle: 'Review and verify VAT returns',
+      weighting: 20,
+      lessons: LESSONS_LO3,
     },
   ];
 
