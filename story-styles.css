@@ -1,0 +1,468 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   WRENFIELD — story mode.
+
+   Deliberately standalone. This file shares nothing with styles.css: its own
+   palette, its own type scale, its own dark-only commitment. Story mode takes
+   over the viewport, hides the app chrome, and looks like a game rather than a
+   continuation of the question bank.
+
+   The idea is the desk under a lamp — a warm pool of light on the paper, the
+   rest of the office unlit. Everything is CSS: no images, no webfonts, nothing
+   external. (The last game in this repo died of an art pipeline.)
+
+   Removing story mode = delete this file, story-data.js, the STORY MODE block
+   in app.js, one <link>, one <script>, one State key, one Storage key.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+body.story-mode {
+  --w-void:      #070A09;
+  --w-desk:      #121917;
+  --w-desk-2:    #1A2320;
+  --w-desk-3:    #232E2A;
+  --w-line:      #2C3833;
+  --w-line-2:    #3D4B45;
+
+  --w-paper:     #E9DCBA;   /* manila — supplier documents */
+  --w-paper-alt: #F1ECDF;   /* bond — our own paperwork */
+  --w-ink:       #2A2314;
+  --w-ink-dim:   #6E6247;
+  --w-paper-rule:#C4B48A;
+
+  --w-amber:     #F2AB43;
+  --w-amber-2:   #C9832A;
+  --w-amber-glow:rgba(242,171,67,.14);
+  --w-green:     #62C892;
+  --w-red:       #F2735C;
+
+  --w-text:      #E9EDEA;
+  --w-dim:       #94A19C;
+  --w-dimmer:    #647069;
+
+  --w-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --w-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  background: var(--w-void);
+  color: var(--w-text);
+  font-family: var(--w-sans);
+  overflow-x: hidden;
+}
+
+/* Take over the screen. The app's header, reference rail and container
+   constraints are all suppressed while a day is being played. */
+body.story-mode header,
+body.story-mode #referencePanel { display: none !important; }
+body.story-mode #app { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+body.story-mode .container { max-width: none; padding: 0; margin: 0; }
+
+/* ── Stage ─────────────────────────────────────────────────────────────── */
+.sty-stage {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(120% 60% at 50% -10%, var(--w-amber-glow), transparent 60%),
+    linear-gradient(180deg, var(--w-desk) 0%, var(--w-void) 78%);
+  padding: 0 0 72px;
+  isolation: isolate;
+}
+/* Faint desk grain, drawn rather than loaded. */
+.sty-stage::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 4px);
+  opacity: .6;
+}
+
+.sty-inner { max-width: 940px; margin: 0 auto; padding: 0 18px; }
+
+/* ── HUD ───────────────────────────────────────────────────────────────── */
+.sty-hud {
+  position: sticky; top: 0; z-index: 20;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  background: linear-gradient(180deg, rgba(7,10,9,.96), rgba(7,10,9,.72));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--w-line);
+}
+.sty-hud-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.sty-leave {
+  width: 34px; height: 34px; flex: none;
+  border-radius: 50%; border: 1px solid var(--w-line-2);
+  background: transparent; color: var(--w-dim);
+  font-size: 15px; line-height: 1; cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.sty-leave:hover { color: var(--w-text); border-color: var(--w-dim); background: var(--w-desk-2); }
+.sty-leave:focus-visible { outline: 2px solid var(--w-amber); outline-offset: 2px; }
+
+.sty-hud-when { display: flex; flex-direction: column; line-height: 1.1; min-width: 0; }
+.sty-hud-day {
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--w-dimmer); font-weight: 700; white-space: nowrap;
+}
+.sty-clock {
+  font-family: var(--w-mono); font-size: 21px; font-weight: 700;
+  color: var(--w-amber); letter-spacing: .02em; font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 18px rgba(242,171,67,.35);
+}
+
+/* The working day as a strip, with a pip per marked item. */
+.sty-timeline { position: relative; height: 3px; border-radius: 2px; background: var(--w-line); }
+.sty-timeline-fill {
+  position: absolute; inset: 0 auto 0 0; border-radius: 2px;
+  background: linear-gradient(90deg, var(--w-amber-2), var(--w-amber));
+  box-shadow: 0 0 10px rgba(242,171,67,.5);
+  transition: width .45s cubic-bezier(.4,0,.2,1);
+}
+.sty-pip {
+  position: absolute; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px;
+  border-radius: 50%; background: var(--w-line-2);
+}
+.sty-pip.done { background: var(--w-amber); box-shadow: 0 0 8px rgba(242,171,67,.7); }
+
+.sty-hud-marks { text-align: right; font-family: var(--w-mono); line-height: 1.05; }
+.sty-hud-marks b { display: block; font-size: 20px; color: var(--w-text); font-variant-numeric: tabular-nums; }
+.sty-hud-marks span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--w-dimmer); }
+
+/* ── Beat ──────────────────────────────────────────────────────────────── */
+.sty-beat { padding: 34px 0 0; }
+.sty-slug {
+  font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--w-amber-2); font-weight: 800; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sty-slug::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--w-line), transparent); }
+.sty-title {
+  font-size: clamp(26px, 5.2vw, 40px); font-weight: 800; letter-spacing: -.03em;
+  line-height: 1.04; margin: 0 0 22px; color: var(--w-text); text-wrap: balance;
+}
+.sty-stage-note {
+  font-size: 15.5px; line-height: 1.65; color: var(--w-dim);
+  max-width: 62ch; margin: 0 0 26px;
+}
+
+/* ── Dialogue ──────────────────────────────────────────────────────────── */
+.sty-script { display: flex; flex-direction: column; gap: 18px; max-width: 66ch; }
+.sty-line { display: flex; gap: 14px; align-items: flex-start; }
+.sty-av {
+  width: 40px; height: 40px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 800; letter-spacing: .04em; color: #0B0F0E;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 6px 16px rgba(0,0,0,.5);
+}
+.sty-av-g { background: linear-gradient(150deg,#E9A75B,#B4762C); }
+.sty-av-d { background: linear-gradient(150deg,#9FB4C4,#5E7688); }
+.sty-av-p { background: linear-gradient(150deg,#77D3AC,#2F8262); }
+.sty-av-n { background: linear-gradient(150deg,#B3A0E0,#6A5498); }
+.sty-av-b { background: linear-gradient(150deg,#E09B8E,#95463A); }
+.sty-av-k { background: linear-gradient(150deg,#E294BA,#94406A); }
+.sty-av-y { background: linear-gradient(150deg,#F2AB43,#C9832A); font-size: 9px; }
+.sty-said { flex: 1; min-width: 0; }
+.sty-name {
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  font-weight: 800; color: var(--w-amber); margin-bottom: 5px;
+}
+.sty-name-dir { font-weight: 500; letter-spacing: .04em; text-transform: none; color: var(--w-dimmer); font-style: italic; }
+.sty-speech {
+  margin: 0; font-size: 17px; line-height: 1.62; color: var(--w-text);
+  border-left: 2px solid var(--w-line-2); padding-left: 15px;
+}
+.sty-dir {
+  margin: 0; font-size: 15px; line-height: 1.7; color: var(--w-dimmer);
+  font-style: italic; max-width: 64ch; padding-left: 54px;
+}
+.sty-script > .sty-dir:first-child { padding-left: 0; }
+
+/* ── Paper ─────────────────────────────────────────────────────────────── */
+.sty-papers {
+  display: grid; grid-template-columns: 1fr; gap: 22px;
+  margin: 0 0 30px;
+}
+@media (min-width: 760px) { .sty-papers { grid-template-columns: 1fr 1fr; gap: 26px; } }
+.sty-papers > * { min-width: 0; }
+
+.sty-paper {
+  --tilt: -.5deg;
+  position: relative;
+  background: var(--w-paper);
+  color: var(--w-ink);
+  font-family: var(--w-mono);
+  font-size: 12.5px; line-height: 1.7;
+  padding: 20px 20px 18px;
+  border-radius: 2px;
+  transform: rotate(var(--tilt));
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.35) inset,
+    0 18px 40px -18px rgba(0,0,0,.9),
+    0 2px 6px rgba(0,0,0,.5);
+}
+.sty-paper-alt { background: var(--w-paper-alt); --tilt: .45deg; }
+/* A lifted corner, drawn with a gradient rather than an image. */
+.sty-paper::after {
+  content: ''; position: absolute; right: 0; bottom: 0; width: 26px; height: 26px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,.16) 50%);
+  border-radius: 0 0 2px 0;
+}
+.sty-paper-head {
+  display: flex; justify-content: space-between; gap: 14px;
+  border-bottom: 1.5px solid var(--w-paper-rule); padding-bottom: 9px; margin-bottom: 11px;
+}
+.sty-paper-name { font-weight: 700; font-size: 13.5px; letter-spacing: .04em; }
+.sty-paper-sub { color: var(--w-ink-dim); }
+.sty-paper-ref { text-align: right; white-space: nowrap; color: var(--w-ink-dim); }
+.sty-paper-t { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.sty-paper-t td { padding: 3px 0; vertical-align: top; }
+.sty-amt { text-align: right; white-space: nowrap; padding-left: 12px; }
+.sty-paper-t tr.is-total td { border-top: 1.5px solid var(--w-paper-rule); font-weight: 700; padding-top: 5px; }
+.sty-paper-t tr.is-muted td { color: var(--w-ink-dim); }
+.sty-paper-foot {
+  margin-top: 11px; padding-top: 9px; border-top: 1px dashed var(--w-paper-rule);
+  font-size: 11.5px; color: var(--w-ink-dim);
+}
+.sty-paper-foot div { margin-bottom: 2px; }
+
+/* ── Hotspots: tap the document itself ─────────────────────────────────── */
+.sty-hotwrap { position: relative; }
+.sty-hint {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--w-sans); font-size: 13px; color: var(--w-amber);
+  background: rgba(242,171,67,.09); border: 1px dashed var(--w-amber-2);
+  border-radius: 8px; padding: 9px 13px; margin: 0 0 18px;
+}
+.sty-hint b { font-weight: 700; }
+
+.sty-hot {
+  position: relative; display: inline; width: auto;
+  font: inherit; color: inherit; text-align: inherit;
+  background: transparent; border: 0; padding: 1px 3px; margin: -1px -3px;
+  border-radius: 3px; cursor: pointer;
+  transition: background .12s;
+}
+.sty-hot:hover { background: rgba(0,0,0,.07); }
+.sty-hot:focus-visible { outline: 2px solid var(--w-amber-2); outline-offset: 1px; }
+.sty-hot[disabled] { cursor: default; }
+/* Hand-drawn ring — an irregular border-radius, slightly rotated. */
+.sty-hot .sty-ring {
+  position: absolute; inset: -5px -9px; pointer-events: none;
+  border: 2px solid var(--w-red);
+  border-radius: 47% 53% 56% 44% / 58% 46% 54% 42%;
+  transform: rotate(-1.6deg);
+  opacity: 0; transition: opacity .16s ease, transform .16s ease;
+}
+.sty-hot.is-on .sty-ring { opacity: .9; transform: rotate(-1.6deg) scale(1); }
+.sty-hot.is-hit   .sty-ring { border-color: #1F7A4A; opacity: 1; }
+.sty-hot.is-false .sty-ring { border-color: #B03A22; opacity: 1; }
+.sty-hot.is-miss  .sty-ring { border-color: #9A6407; border-style: dashed; opacity: 1; }
+.sty-hot .sty-mark {
+  position: absolute; top: -13px; right: -16px; font-size: 12px; font-weight: 800;
+  font-family: var(--w-sans); pointer-events: none; letter-spacing: 0;
+}
+.sty-hot.is-hit   .sty-mark { color: #1F7A4A; }
+.sty-hot.is-false .sty-mark { color: #B03A22; }
+.sty-hot.is-miss  .sty-mark { color: #9A6407; }
+
+.sty-found {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  font-family: var(--w-sans); font-size: 13px; color: var(--w-dim); margin-top: 4px;
+}
+.sty-found-n {
+  font-family: var(--w-mono); font-weight: 700; color: var(--w-amber);
+  background: rgba(242,171,67,.12); border-radius: 20px; padding: 2px 10px;
+}
+
+/* ── Work steps ────────────────────────────────────────────────────────── */
+.sty-steps { display: flex; flex-direction: column; gap: 30px; }
+.sty-step { position: relative; }
+.sty-step-h { display: flex; gap: 14px; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+.sty-ask { font-size: 18px; font-weight: 700; color: var(--w-text); line-height: 1.4; letter-spacing: -.01em; }
+.sty-worth {
+  flex: none; font-family: var(--w-mono); font-size: 10.5px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--w-amber); border: 1px solid var(--w-amber-2); border-radius: 20px; padding: 3px 10px;
+}
+.sty-worth.is-scored { color: var(--w-text); border-color: var(--w-line-2); background: var(--w-desk-2); }
+.sty-note { font-size: 14px; line-height: 1.65; color: var(--w-dim); margin: -4px 0 14px; max-width: 64ch; }
+
+.sty-opts { display: flex; flex-direction: column; gap: 9px; }
+.sty-opt {
+  display: flex; gap: 13px; align-items: flex-start; cursor: pointer;
+  background: var(--w-desk-2); border: 1px solid var(--w-line);
+  border-radius: 10px; padding: 14px 16px;
+  font-size: 15.5px; line-height: 1.5; color: var(--w-text);
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.sty-opt:hover { border-color: var(--w-line-2); background: var(--w-desk-3); }
+.sty-opt:active { transform: scale(.995); }
+.sty-opt.is-on { border-color: var(--w-amber); background: rgba(242,171,67,.10); }
+.sty-opt input { margin: 3px 0 0; flex: none; accent-color: var(--w-amber); width: 17px; height: 17px; }
+.sty-opt > span { flex: 1; }
+.sty-opt.is-right { border-color: var(--w-green); background: rgba(98,200,146,.11); }
+.sty-opt.is-wrong { border-color: var(--w-red); background: rgba(242,115,92,.10); }
+.sty-tick { flex: none; font-weight: 800; color: var(--w-green); }
+.sty-rubmark { flex: none; font-family: var(--w-mono); font-size: 12px; color: var(--w-dimmer); }
+
+.sty-fields { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 620px) { .sty-fields { grid-template-columns: 1fr 1fr; } }
+.sty-field {
+  display: flex; flex-direction: column; gap: 7px;
+  background: var(--w-desk-2); border: 1px solid var(--w-line);
+  border-radius: 10px; padding: 13px 15px;
+}
+.sty-field-lbl { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--w-dimmer); font-weight: 700; }
+.sty-field-in { display: flex; align-items: center; gap: 7px; }
+.sty-cur { font-family: var(--w-mono); font-size: 17px; color: var(--w-dimmer); }
+.sty-field input {
+  flex: 1; min-width: 0; font-family: var(--w-mono); font-size: 19px; text-align: right;
+  font-variant-numeric: tabular-nums; padding: 8px 12px;
+  border: 1px solid var(--w-line-2); border-radius: 7px;
+  background: var(--w-void); color: var(--w-text);
+}
+.sty-field input::placeholder { color: var(--w-dimmer); }
+.sty-field input:focus { outline: none; border-color: var(--w-amber); box-shadow: 0 0 0 3px rgba(242,171,67,.16); }
+.sty-field.is-right { border-color: var(--w-green); }
+.sty-field.is-wrong { border-color: var(--w-red); }
+.sty-fix { font-family: var(--w-mono); font-size: 13px; font-weight: 700; color: var(--w-green); }
+
+.sty-textarea {
+  width: 100%; min-height: 190px; resize: vertical;
+  font-family: var(--w-sans); font-size: 16px; line-height: 1.65;
+  padding: 16px 18px; border: 1px solid var(--w-line-2); border-radius: 10px;
+  background: var(--w-desk-2); color: var(--w-text);
+}
+.sty-textarea::placeholder { color: var(--w-dimmer); }
+.sty-textarea:focus { outline: none; border-color: var(--w-amber); box-shadow: 0 0 0 3px rgba(242,171,67,.16); }
+.sty-wordcount { font-family: var(--w-mono); font-size: 12px; color: var(--w-dimmer); margin: 8px 0 16px; }
+.sty-model { border: 1px solid var(--w-line); border-radius: 10px; margin: 18px 0; overflow: hidden; background: var(--w-desk-2); }
+.sty-model-h {
+  font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800;
+  color: var(--w-amber-2); padding: 11px 16px; border-bottom: 1px solid var(--w-line);
+}
+.sty-model-b { padding: 16px 18px; font-size: 15px; line-height: 1.7; color: var(--w-dim); }
+.sty-rubric { display: flex; flex-direction: column; gap: 9px; }
+.sty-rubric-h { font-size: 14px; font-weight: 700; color: var(--w-text); margin-bottom: 3px; }
+.sty-selfnote { font-size: 12.5px; line-height: 1.6; color: var(--w-dimmer); margin-top: 6px; }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.sty-btn {
+  display: block; width: 100%; margin-top: 30px;
+  font-family: var(--w-sans); font-size: 14px; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: 17px 22px; border: 0; border-radius: 10px; cursor: pointer;
+  background: linear-gradient(180deg, var(--w-amber), var(--w-amber-2));
+  color: #17110A;
+  box-shadow: 0 6px 20px -6px rgba(242,171,67,.5);
+  transition: transform .1s, box-shadow .18s, filter .15s;
+}
+.sty-btn:hover { filter: brightness(1.07); box-shadow: 0 8px 26px -6px rgba(242,171,67,.65); }
+.sty-btn:active { transform: translateY(1px); }
+.sty-btn:focus-visible { outline: 2px solid var(--w-text); outline-offset: 3px; }
+.sty-btn-ghost {
+  background: transparent; color: var(--w-dim);
+  border: 1px solid var(--w-line-2); box-shadow: none;
+}
+.sty-btn-ghost:hover { color: var(--w-text); border-color: var(--w-dim); filter: none; box-shadow: none; }
+
+/* ── Marking + reaction ────────────────────────────────────────────────── */
+.sty-verdict {
+  margin-top: 30px; padding: 18px 20px; border-radius: 12px;
+  border: 1px solid var(--w-line); background: var(--w-desk-2);
+  border-left: 3px solid var(--w-amber);
+}
+.sty-verdict-score {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--w-mono); margin-bottom: 9px;
+}
+.sty-verdict-score b { font-size: 27px; color: var(--w-text); }
+.sty-verdict-score span { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--w-dimmer); }
+.sty-verdict.is-good { border-left-color: var(--w-green); }
+.sty-verdict.is-good b { color: var(--w-green); }
+.sty-verdict.is-poor { border-left-color: var(--w-red); }
+.sty-verdict.is-poor b { color: var(--w-red); }
+.sty-verdict p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--w-dim); max-width: 66ch; }
+
+.sty-react {
+  margin-top: 18px; padding: 20px; border-radius: 12px;
+  background: linear-gradient(180deg, var(--w-desk-3), var(--w-desk-2));
+  border: 1px solid var(--w-line-2);
+}
+.sty-react .sty-line { margin: 0; }
+.sty-react .sty-dir { padding-left: 54px; margin-top: 12px; }
+
+/* ── Clocking off ──────────────────────────────────────────────────────── */
+.sty-outro { padding: 46px 0 0; }
+.sty-outro-score {
+  font-family: var(--w-mono); font-size: clamp(58px, 15vw, 104px); font-weight: 700;
+  line-height: .9; letter-spacing: -.05em; color: var(--w-amber);
+  text-shadow: 0 0 60px rgba(242,171,67,.35); margin: 6px 0 4px;
+}
+.sty-outro-score small { font-size: .26em; color: var(--w-dimmer); letter-spacing: 0; margin-left: 8px; }
+.sty-tally { border: 1px solid var(--w-line); border-radius: 12px; overflow: hidden; margin: 30px 0; }
+.sty-tally-row {
+  display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+  border-bottom: 1px solid var(--w-line); font-size: 15px; background: var(--w-desk-2);
+}
+.sty-tally-row:last-child { border-bottom: 0; }
+.sty-tally-t { flex: 1; color: var(--w-text); }
+.sty-tally-m { font-family: var(--w-mono); font-weight: 700; font-variant-numeric: tabular-nums; }
+.sty-tally-m.full { color: var(--w-green); }
+.sty-tally-m.part { color: var(--w-amber); }
+.sty-tally-m.none { color: var(--w-red); }
+.sty-chip {
+  font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700;
+  color: var(--w-dimmer); border: 1px solid var(--w-line-2); border-radius: 20px; padding: 3px 9px;
+}
+.sty-panel {
+  border: 1px solid var(--w-line); border-radius: 12px;
+  padding: 18px 20px; margin-bottom: 16px; background: var(--w-desk-2);
+}
+.sty-panel p { font-size: 15px; line-height: 1.65; color: var(--w-dim); margin: 8px 0 14px; }
+.sty-carry-row { display: flex; gap: 12px; align-items: baseline; font-size: 15px; margin-top: 11px; color: var(--w-text); }
+.sty-when {
+  flex: none; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 800;
+  color: var(--w-amber); border: 1px solid var(--w-amber-2); border-radius: 20px; padding: 3px 10px;
+}
+.sty-outro-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+.sty-outro-actions .sty-btn { flex: 1 1 200px; width: auto; margin-top: 0; }
+.sty-footnote { font-size: 12.5px; line-height: 1.7; color: var(--w-dimmer); margin: 24px 0 0; max-width: 68ch; }
+
+/* ── Motion ────────────────────────────────────────────────────────────── */
+@keyframes sty-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes sty-drop { from { opacity: 0; transform: rotate(var(--tilt)) translateY(-18px) scale(.98); } to { opacity: 1; transform: rotate(var(--tilt)); } }
+.sty-beat, .sty-outro { animation: sty-rise .38s cubic-bezier(.2,.7,.3,1) both; }
+.sty-paper { animation: sty-drop .5s cubic-bezier(.2,.7,.3,1) both; }
+.sty-papers > *:nth-child(2) .sty-paper, .sty-papers > .sty-paper:nth-child(2) { animation-delay: .09s; }
+.sty-script .sty-line, .sty-script .sty-dir { animation: sty-rise .4s cubic-bezier(.2,.7,.3,1) both; }
+.sty-script > *:nth-child(1) { animation-delay: .04s; }
+.sty-script > *:nth-child(2) { animation-delay: .13s; }
+.sty-script > *:nth-child(3) { animation-delay: .22s; }
+.sty-script > *:nth-child(4) { animation-delay: .31s; }
+.sty-script > *:nth-child(5) { animation-delay: .40s; }
+.sty-script > *:nth-child(6) { animation-delay: .49s; }
+.sty-script > *:nth-child(n+7) { animation-delay: .56s; }
+.sty-react { animation: sty-rise .42s cubic-bezier(.2,.7,.3,1) both; animation-delay: .12s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sty-beat, .sty-outro, .sty-paper, .sty-script .sty-line, .sty-script .sty-dir, .sty-react {
+    animation: none !important;
+  }
+  .sty-timeline-fill { transition: none; }
+}
+
+/* ── Small screens ─────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .sty-inner { padding: 0 14px; }
+  .sty-hud { gap: 11px; padding: 10px 14px; }
+  .sty-clock { font-size: 18px; }
+  .sty-hud-marks b { font-size: 17px; }
+  .sty-paper { padding: 16px 15px 15px; font-size: 11.8px; --tilt: 0deg; }
+  .sty-paper-alt { --tilt: 0deg; }
+  .sty-step-h { flex-direction: column; gap: 7px; align-items: flex-start; }
+  .sty-dir { padding-left: 0; }
+  .sty-react .sty-dir { padding-left: 0; }
+  .sty-outro-actions .sty-btn { flex: 1 1 100%; }
+}
