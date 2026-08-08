@@ -78,7 +78,7 @@
           ] },
 
         /* ── 09:20 · ITEM 1 ────────────────────────────────────────── */
-        { kind: 'item', at: '09:20', id: 'wr-invoice', mins: 65, tray: 'A supplier invoice to check against the order.', topic: 'itbk', marks: 8,
+        { kind: 'item', at: '09:20', id: 'wr-invoice', medium: 'paper', mins: 65, tray: 'A supplier invoice to check against the order.', topic: 'itbk', marks: 8,
           title: 'The invoice that’s too cheap',
           stage: 'A purchase invoice from WR Limited, with the purchase order clipped behind it. Check one against the other before it goes anywhere near the ledger.',
           docs: [
@@ -94,7 +94,7 @@
                `hot`/`hotAmt` id becomes tappable — three real discrepancies and
                three decoys that are perfectly correct. Nothing is listed for the
                player until after they have committed. */
-            { kind: 'doc', title: 'WR LIMITED', sub: '26 Hall St, Wingleford', ref: 'INVOICE 000231', date: '12 May 20XX',
+            { kind: 'doc', clip: true, title: 'WR LIMITED', sub: '26 Hall St, Wingleford', ref: 'INVOICE 000231', date: '12 May 20XX',
               rows: [
                 { label: '16 crates DBZ @ £7.50', hot: 'price', amount: '120.00' },
                 { label: 'Trade discount', hot: 'trade', amount: '—', muted: true },
@@ -175,14 +175,14 @@
           } } },
 
         /* ── 10:20 · ITEM 2 ────────────────────────────────────────── */
-        { kind: 'item', at: '10:20', id: 'hexfield', mins: 60, tray: 'An invoice to match to what actually turned up.', topic: 'itbk', marks: 6,
+        { kind: 'item', at: '10:20', id: 'hexfield', medium: 'screen', mins: 60, tray: 'An invoice to match to what actually turned up.', topic: 'itbk', marks: 6,
           title: 'Barry’s thumb',
           stage: 'An invoice from Hexfield Fasteners for goods delivered last week. Before it is paid it has to be matched to what was ordered and what actually turned up.',
           docs: [
             { kind: 'email', from: 'barry', at: '10:15', subject: 'del note',
               body: 'sent it thru. cant find the other one, think it might of gone in the skip when we had the clear out. that hexfield lot were short anyway i told dave',
               attach: 'IMG_4471.jpg — 2.1 MB' },
-            { kind: 'photo', caption: 'A goods received note, photographed at an angle, in poor light. A thumb obscures the quantity column. In the top-left corner, out of focus, is a mug.' },
+            { kind: 'photo', on: 'screen', caption: 'A goods received note, photographed at an angle, in poor light. A thumb obscures the quantity column. In the top-left corner, out of focus, is a mug.' },
             { kind: 'doc', title: 'HEXFIELD FASTENERS', ref: 'INVOICE 77140', date: '9 May 20XX',
               rows: [
                 { label: '40 boxes P-clips @ £4.25', amount: '170.00' },
@@ -240,7 +240,7 @@
           ] },
 
         /* ── 11:40 · ITEM 3 ────────────────────────────────────────── */
-        { kind: 'item', at: '11:40', id: 'karen-vat', mins: 25, tray: 'A one-line query from Karen. Quick, if you know it.', topic: 'itbk', marks: 3,
+        { kind: 'item', at: '11:40', id: 'karen-vat', medium: 'screen', mins: 25, tray: 'A one-line query from Karen. Quick, if you know it.', topic: 'itbk', marks: 3,
           title: '“How much of this can we claim back?”',
           stage: 'A query from Karen. Short, answerable, and the sort of thing you are asked six times a week and expected to know without going away and coming back.',
           docs: [
@@ -274,7 +274,7 @@
           } },
 
         /* ── 13:15 · ITEM 4 ────────────────────────────────────────── */
-        { kind: 'item', at: '13:15', id: 'crowther', mins: 65, tray: 'Gavin wants an answer. Priya has already given you one.', topic: 'besy', marks: 6,
+        { kind: 'item', at: '13:15', id: 'crowther', medium: 'screen', mins: 65, tray: 'Gavin wants an answer. Priya has already given you one.', topic: 'besy', marks: 6,
           title: 'Crowther, and a favour',
           stage: 'The day’s judgment call. Gavin’s email arrived at 09:02 and you have been putting it off. Priya forwarded it back to you at 11:03 with two words.',
           docs: [
@@ -329,7 +329,7 @@
           ] },
 
         /* ── 14:30 · ITEM 5 ────────────────────────────────────────── */
-        { kind: 'item', at: '14:30', id: 'petty-cash', mins: 35, tray: 'A petty cash voucher and a printer that has died.', topic: 'itbk', marks: 4,
+        { kind: 'item', at: '14:30', id: 'petty-cash', medium: 'paper', mins: 35, tray: 'A petty cash voucher and a printer that has died.', topic: 'itbk', marks: 4,
           title: 'The toner, and the £30 limit',
           stage: 'PRINTER-2 has stopped making the noise, which is worse. Karen has been out and bought a toner cartridge and would like the money back. She has filled the voucher in correctly, because of course she has.',
           docs: [
@@ -396,11 +396,11 @@
           ] },
 
         /* ── 15:30 · ITEM 6 ────────────────────────────────────────── */
-        { kind: 'item', at: '15:30', id: 'wr-statement', mins: 90, before: '16:00', tray: 'WR’s statement, to agree before the payment run.', topic: 'itbk', marks: 7,
+        { kind: 'item', at: '15:30', id: 'wr-statement', medium: 'screen', mins: 90, before: '16:00', tray: 'WR’s statement, to agree before the payment run.', topic: 'itbk', marks: 7,
           title: 'WR Limited’s statement',
           stage: 'WR’s statement has to be agreed to their account in the payables ledger before anything is paid. Their account contains whatever you did at twenty past nine.',
           docs: [
-            { kind: 'doc', title: 'WR LIMITED', sub: 'Statement of account', ref: 'To 14 May 20XX', date: 'A/c WRE004',
+            { kind: 'doc', on: 'paper', title: 'WR LIMITED', sub: 'Statement of account', ref: 'To 14 May 20XX', date: 'A/c WRE004',
               rows: [
                 { label: '1 May · Balance b/f',      amount: '1,410.00' },
                 { label: '3 May · Invoice 000198',    amount: '642.00' },
