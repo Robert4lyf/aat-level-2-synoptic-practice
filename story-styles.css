@@ -571,3 +571,216 @@ body.story-mode .container { max-width: none; padding: 0; margin: 0; }
   .sty-trayitem-meta { flex-direction: row; align-items: center; gap: 10px; }
   .sty-facts { gap: 20px; }
 }
+
+/* ══ THE ROOM ══════════════════════════════════════════════════════════════
+   A frame is what turns a page into a place. Screen work happens on a monitor;
+   post happens on creased paper on the desk. A little of the office sits behind
+   both, and the light in it follows the clock — daylight at nine, low and warm
+   at four, and after five the overheads are off and it is just your desk lamp.
+
+   All of it is gradients and blurred boxes. No images. */
+
+.sty-stage[data-light] {
+  --lit-wall-a: #1E2724; --lit-wall-b: #151D1A;
+  --lit-win:    rgba(214,232,255,.16);   /* window */
+  --lit-key:    rgba(255,238,206,.10);   /* room light */
+  --lit-desk:   rgba(66,50,30,.34);
+  --lit-tint:   transparent;
+}
+.sty-stage[data-light="day"]  { --lit-win: rgba(226,240,255,.20); --lit-key: rgba(255,244,222,.12); }
+.sty-stage[data-light="late"] {
+  --lit-wall-a:#241F19; --lit-wall-b:#161310;
+  --lit-win: rgba(255,196,122,.20); --lit-key: rgba(255,190,120,.11);
+  --lit-desk: rgba(92,60,26,.36); --lit-tint: rgba(255,150,60,.045);
+}
+.sty-stage[data-light="after"] {
+  --lit-wall-a:#0F1519; --lit-wall-b:#080C0F;
+  --lit-win: rgba(90,130,190,.13); --lit-key: rgba(255,206,140,.16);
+  --lit-desk: rgba(30,32,40,.5); --lit-tint: rgba(40,80,140,.05);
+}
+
+.sty-room { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.sty-room::before {          /* wall */
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--lit-wall-a) 0%, var(--lit-wall-b) 58%, #090D0C 100%);
+  transition: background 1.2s ease;
+}
+.sty-room::after {           /* desk plane the whole scene sits on */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 30%;
+  background: linear-gradient(180deg, var(--lit-desk), rgba(10,8,6,.72));
+  border-top: 1px solid rgba(255,222,178,.07);
+  transition: background 1.2s ease;
+}
+.sty-win {                   /* light through a window, off to the left */
+  position: absolute; left: -14%; top: -22%; width: 66%; height: 96%;
+  background: radial-gradient(58% 58% at 24% 22%, var(--lit-win), transparent 70%);
+  filter: blur(10px); transition: background 1.2s ease;
+}
+.sty-key {                   /* the overheads, or after five the desk lamp */
+  position: absolute; left: 50%; top: -30%; width: 90%; height: 90%;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, var(--lit-key), transparent 68%);
+  filter: blur(14px); transition: background 1.2s ease;
+}
+.sty-tint { position: absolute; inset: 0; background: var(--lit-tint); transition: background 1.2s ease; }
+.sty-prop { position: absolute; filter: blur(8px); opacity: .45; }
+.sty-prop-plant   { left: 2%;  bottom: 15%; width: 68px;  height: 112px; border-radius: 46% 46% 12% 12%; background: linear-gradient(180deg,#2f5540,#1c3326); }
+.sty-prop-printer { right: 3%; bottom: 16%; width: 118px; height: 68px;  border-radius: 6px; background: linear-gradient(180deg,#39423f,#222927); }
+.sty-prop-door    { right: 24%; top: 4%;    width: 78px;  height: 158px; border-radius: 3px; background: linear-gradient(180deg,#1b2320,#131917); box-shadow: 0 0 0 2px rgba(255,222,178,.05); }
+.sty-prop-mug     { right: 13%; bottom: 11%; width: 26px; height: 30px;  border-radius: 4px 4px 9px 9px; background: #6d4b3a; }
+.sty-stage > .sty-hud, .sty-stage > .sty-inner { position: relative; z-index: 1; }
+
+/* ── The monitor ──
+   Wraps a growing column rather than a fixed screen you scroll inside: the
+   written task and the reconciliation are tall, and scrolling inside a box
+   inside a page is the worst thing you can do to someone on a phone. One
+   knowing break of the illusion, in exchange for it staying usable. */
+.sty-monitor { max-width: 880px; margin: 6px auto 0; }
+.sty-mon-body {
+  background: linear-gradient(180deg,#2b3331,#1a201e);
+  border-radius: 14px 14px 6px 6px; padding: 15px 15px 26px;
+  box-shadow: 0 46px 80px -34px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05),
+              inset 0 1px 0 rgba(255,255,255,.07);
+  position: relative;
+}
+.sty-mon-body::after {
+  content: ''; position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--w-green);
+  box-shadow: 0 0 10px var(--w-green);
+}
+.sty-screen {
+  position: relative; background: #0D1418; border-radius: 5px; overflow: hidden;
+  box-shadow: inset 0 0 0 1px #000, inset 0 0 46px rgba(0,0,0,.65);
+}
+.sty-screen::after {                     /* glare, above content but inert */
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 6;
+  background: linear-gradient(122deg, rgba(255,255,255,.05) 0 26%, transparent 44%);
+  border-radius: 5px;
+}
+.sty-mon-stand { width: 128px; height: 17px; margin: 0 auto; background: linear-gradient(180deg,#222927,#171d1b); border-radius: 0 0 4px 4px; }
+.sty-mon-foot  { width: 244px; height: 10px; margin: 0 auto; background: linear-gradient(180deg,#252c2a,#141917); border-radius: 40%/100%; box-shadow: 0 14px 26px -10px rgba(0,0,0,.9); }
+.sty-appbar {
+  display: flex; align-items: center; gap: 9px; padding: 9px 13px;
+  background: #151D22; border-bottom: 1px solid #222D34;
+}
+.sty-appdot { width: 8px; height: 8px; border-radius: 50%; background: #33424B; flex: none; }
+.sty-apptitle {
+  font-family: var(--w-mono); font-size: 10px; letter-spacing: .13em;
+  color: #7C8C96; text-transform: uppercase; margin-left: 4px;
+}
+.sty-appclock { margin-left: auto; font-family: var(--w-mono); font-size: 10px; color: #55656E; }
+.sty-screen-in { padding: 22px 22px 26px; background: linear-gradient(180deg,#111A20,#0C1317); }
+/* Inside the screen the surfaces shift to the software's own palette. */
+.sty-screen-in .sty-opt      { background: #16212800; border-color: #223038; }
+.sty-screen-in .sty-opt:hover{ background: #16212899; }
+.sty-screen-in .sty-field    { background: #0F181D; border-color: #223038; }
+.sty-screen-in .sty-field input,
+.sty-screen-in .sty-textarea { background: #0A1116; border-color: #2C3C45; }
+.sty-screen-in .sty-model,
+.sty-screen-in .sty-react,
+.sty-screen-in .sty-verdict,
+.sty-screen-in .sty-cost     { background: #101A1F; border-color: #223038; }
+
+/* ── The paper ──
+   Creases stay faint on purpose. The moment a fold sits over £302.40 it stops
+   being atmosphere and starts being an obstacle. */
+.sty-desk-scene { padding: 8px 0 4px; }
+.sty-paper {
+  position: relative;
+  filter: drop-shadow(0 26px 32px rgba(0,0,0,.75));
+  box-shadow: none;                       /* drop-shadow does the work now */
+  border: 0; border-radius: 0;
+  clip-path: polygon(0.4% 1.2%, 22% 0.2%, 51% 1.1%, 78% 0.1%, 99.6% 1.4%,
+                     99.2% 26%, 100% 52%, 99.3% 77%, 99.7% 98.6%,
+                     74% 99.8%, 47% 98.7%, 21% 99.9%, 0.6% 98.4%,
+                     1% 74%, 0% 49%, 0.7% 25%);
+  padding: 24px 24px 22px;
+}
+.sty-paper::before {                      /* folds + a light from the top-left */
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background:
+    linear-gradient(103deg, transparent 0 31%, rgba(0,0,0,.05) 32%, rgba(255,255,255,.30) 33.4%, transparent 35%),
+    linear-gradient(77deg,  transparent 0 62%, rgba(0,0,0,.04) 63%, rgba(255,255,255,.25) 64.2%, transparent 66%),
+    linear-gradient(188deg, transparent 0 46%, rgba(0,0,0,.045) 47%, rgba(255,255,255,.26) 48.3%, transparent 50%),
+    radial-gradient(120% 80% at 14% 8%, rgba(255,255,255,.22), transparent 55%),
+    radial-gradient(100% 70% at 88% 94%, rgba(0,0,0,.09), transparent 60%);
+  mix-blend-mode: overlay;
+}
+.sty-paper::after { display: none; }      /* the old turned corner */
+.sty-paper > * { position: relative; z-index: 3; }
+.sty-clip {                               /* holds the order behind the invoice */
+  position: absolute; top: -13px; left: 36px; width: 16px; height: 46px; z-index: 4;
+  border: 2.5px solid #9AA3A8; border-radius: 8px;
+  background: linear-gradient(90deg, transparent 45%, #B7C0C5 45% 55%, transparent 55%);
+  box-shadow: 0 2px 5px rgba(0,0,0,.55);
+}
+.sty-onscreen-note {
+  font-family: var(--w-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--w-dimmer); margin: 0 0 10px;
+}
+
+@media (max-width: 620px) {
+  /* The bezel keeps only enough frame to say "screen". The figures are the point. */
+  .sty-mon-body { padding: 8px 8px 16px; border-radius: 9px 9px 4px 4px; }
+  .sty-mon-stand { width: 84px; height: 11px; }
+  .sty-mon-foot { width: 150px; height: 7px; }
+  .sty-screen-in { padding: 14px 13px 18px; }
+  .sty-paper { padding: 18px 16px 16px; }
+  .sty-prop-door, .sty-prop-printer { display: none; }
+  .sty-room::after { height: 22%; }
+}
+
+/* ── Documents as they appear *in the software* ───────────────────────────
+   An email on a creased sheet was the tell that this was still a styled
+   document rather than a thing on a screen. */
+.sty-mail, .sty-scr-panel, .sty-scr-photo {
+  background: #101A20; border: 1px solid #223038; border-radius: 8px; overflow: hidden;
+}
+.sty-mail-h { display: flex; gap: 11px; align-items: center; padding: 12px 14px; border-bottom: 1px solid #1B2830; }
+.sty-mail-h .sty-av { width: 32px; height: 32px; font-size: 9.5px; }
+.sty-mail-meta { min-width: 0; flex: 1; }
+.sty-mail-sub { font-size: 14px; font-weight: 650; color: #DDE8ED; }
+.sty-mail-from { font-family: var(--w-mono); font-size: 10.5px; color: #61727C; }
+.sty-mail-at { font-family: var(--w-mono); font-size: 10.5px; color: #4E5D66; flex: none; }
+.sty-mail-b { padding: 14px; font-size: 14.5px; line-height: 1.65; color: #B9C8D0; }
+.sty-mail-att {
+  margin: 0 14px 14px; padding: 8px 11px; border: 1px dashed #2A3A44; border-radius: 6px;
+  font-family: var(--w-mono); font-size: 11px; line-height: 1.6; color: #61727C;
+}
+.sty-scr-panel-h {
+  display: flex; justify-content: space-between; gap: 10px; align-items: baseline;
+  padding: 10px 14px; border-bottom: 1px solid #1B2830; background: #0C1519;
+  font-size: 12px; font-weight: 650; color: #C7D5DC;
+}
+.sty-scr-ref { font-family: var(--w-mono); font-size: 10px; color: #55656E; }
+.sty-scr-t { width: 100%; border-collapse: collapse; font-family: var(--w-mono); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.sty-scr-t td { padding: 7px 14px; border-bottom: 1px solid #16222A; color: #BCCBD3; }
+.sty-scr-t tr:last-child td { border-bottom: 0; }
+.sty-scr-t tr.is-total td { font-weight: 700; color: #E2EDF2; background: #0C1519; }
+.sty-scr-t tr.is-muted td { color: #61727C; }
+.sty-scr-t .sty-amt { text-align: right; white-space: nowrap; }
+.sty-scr-t .sty-amt.is-bad { color: var(--w-red); font-weight: 700; }
+.sty-scr-foot { padding: 10px 14px; border-top: 1px dashed #223038; font-family: var(--w-mono); font-size: 11px; color: #61727C; }
+.sty-scr-photo-h { padding: 9px 13px; border-bottom: 1px solid #1B2830; background: #0C1519; font-family: var(--w-mono); font-size: 10px; letter-spacing: .1em; color: #61727C; }
+.sty-scr-photo-b { display: flex; gap: 13px; align-items: flex-start; padding: 14px; }
+.sty-scr-photo-b span { font-size: 26px; filter: blur(.5px); }
+.sty-scr-photo-b p { margin: 0; font-size: 13.5px; line-height: 1.6; color: #8FA0AA; font-style: italic; }
+/* Circling works the same on screen, in the software's own colours. */
+.sty-scr-t .sty-hot:hover { background: rgba(255,255,255,.05); }
+.sty-scr-t .sty-hot.is-hit .sty-ring { border-color: var(--w-green); }
+.sty-scr-t .sty-hot.is-false .sty-ring { border-color: var(--w-red); }
+.sty-scr-t .sty-hot.is-miss .sty-ring { border-color: var(--w-amber); }
+.sty-scr-t .sty-hot.is-hit .sty-mark { color: var(--w-green); }
+.sty-scr-t .sty-hot.is-false .sty-mark { color: var(--w-red); }
+.sty-scr-t .sty-hot.is-miss .sty-mark { color: var(--w-amber); }
+/* The clip holds the order behind the invoice — off the company name. */
+.sty-clip { left: 14px; }
+
+/* A single sheet on the desk should sit at a readable width, not half a grid. */
+.sty-desk-scene .sty-papers { grid-template-columns: 1fr; }
+.sty-desk-scene .sty-papers > .sty-paper:only-child { max-width: 560px; }
+@media (min-width: 760px) {
+  .sty-desk-scene .sty-papers:has(> .sty-paper:nth-child(2)) { grid-template-columns: 1fr 1fr; }
+}
+.sty-scr-panel-h { flex-wrap: nowrap; }
+.sty-scr-ref { white-space: nowrap; flex: none; }

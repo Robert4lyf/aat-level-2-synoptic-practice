@@ -6566,6 +6566,28 @@
   function storyItems(day) { return storyBeatsOf(day).filter(b => b.kind === 'item'); }
   function storyItem(day, id) { return storyItems(day).find(b => b.id === id) || null; }
 
+  /* The light in the room follows the clock: daylight in the morning, low and
+     warm by four, and after five the overheads are off and it is your desk lamp
+     and a blue window. One data attribute; the CSS does the rest. */
+  function storyLight() {
+    const S = State.story;
+    if (!S) return 'morning';
+    const day = storyDay(S.dayId);
+    if (S.mins >= stM(day.close)) return 'after';
+    if (S.mins >= stM('16:00')) return 'late';
+    if (S.mins >= stM('11:30')) return 'day';
+    return 'morning';
+  }
+  function renderStoryRoom() {
+    return `<div class="sty-room" aria-hidden="true">
+      <span class="sty-win"></span><span class="sty-key"></span><span class="sty-tint"></span>
+      <span class="sty-prop sty-prop-plant"></span>
+      <span class="sty-prop sty-prop-door"></span>
+      <span class="sty-prop sty-prop-printer"></span>
+      <span class="sty-prop sty-prop-mug"></span>
+    </div>`;
+  }
+
   /* ── Diegetic sound ──
      Synthesised, because the last game in this repo died of an asset pipeline.
      Everything here is an oscillator or a noise buffer through a filter. */
@@ -6867,7 +6889,51 @@
   }
 
   /* ── Rendering ── */
-  function renderStoryPaper(d, ctx) {
+  function renderStoryPaper(d, ctx, surface) {
+    /* On the monitor these are things in software, not paper. Rendering an email
+       on a creased sheet was the tell that this was still a styled document. */
+    if (surface === 'screen') {
+      if (d.kind === 'email') {
+        const p = storyPerson(d.from);
+        return `<article class="sty-mail">
+          <div class="sty-mail-h">
+            <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
+            <div class="sty-mail-meta">
+              <div class="sty-mail-sub">${escapeHtml(d.subject || '')}</div>
+              <div class="sty-mail-from">${escapeHtml(p.name)} · ${escapeHtml(p.role)}</div>
+            </div>
+            <span class="sty-mail-at">${escapeHtml(d.at || '')}</span>
+          </div>
+          <div class="sty-mail-b">${storyText(d.body).replace(/\n/g, '<br>')}</div>
+          ${d.attach ? `<div class="sty-mail-att">📎 ${escapeHtml(d.attach).replace(/\n/g, '<br>📎 ')}</div>` : ''}
+        </article>`;
+      }
+      if (d.kind === 'panel') {
+        return `<article class="sty-scr-panel">
+          <div class="sty-scr-panel-h">${escapeHtml(d.title || '')}</div>
+          <table class="sty-scr-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''}">
+            <td>${escapeHtml(r.label)}</td>
+            <td class="sty-amt ${r.bad ? 'is-bad' : ''}">${escapeHtml(r.amount || '')}</td></tr>`).join('')}</table>
+        </article>`;
+      }
+      if (d.kind === 'photo') {
+        return `<article class="sty-scr-photo">
+          <div class="sty-scr-photo-h">IMG_4471.JPG · 2.1 MB</div>
+          <div class="sty-scr-photo-b"><span aria-hidden="true">📷</span><p>${escapeHtml(d.caption || '')}</p></div>
+        </article>`;
+      }
+      /* A ledger or statement shown in the software keeps a plain grid. */
+      const foot0 = Array.isArray(d.foot) ? d.foot
+        : (d.foot ? String(d.foot).split('\n').map(t => ({ text: t })) : []);
+      return `<article class="sty-scr-panel">
+        <div class="sty-scr-panel-h">${escapeHtml(d.title || '')}${d.sub ? ` — ${escapeHtml(d.sub)}` : ''}
+          <span class="sty-scr-ref">${escapeHtml(d.ref || '')}</span></div>
+        <table class="sty-scr-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'is-total' : ''} ${r.muted ? 'is-muted' : ''}">
+          <td>${storyHot(r.label, r.hot, ctx)}</td>
+          <td class="sty-amt">${r.amount == null ? '' : storyHot(r.amount, r.hotAmt, ctx)}</td></tr>`).join('')}</table>
+        ${foot0.length ? `<div class="sty-scr-foot">${foot0.map(f => `<div>${storyHot(f.text, f.hot, ctx)}</div>`).join('')}</div>` : ''}
+      </article>`;
+    }
     if (d.kind === 'email') {
       const p = storyPerson(d.from);
       return `<article class="sty-paper sty-paper-alt">
@@ -6896,6 +6962,7 @@
     const foot = Array.isArray(d.foot) ? d.foot
       : (d.foot ? String(d.foot).split('\n').map(t => ({ text: t })) : []);
     return `<article class="sty-paper">
+      ${d.clip ? '<span class="sty-clip"></span>' : ''}
       <div class="sty-paper-head">
         <div><div class="sty-paper-name">${escapeHtml(d.title || '')}</div>
           ${d.sub ? `<div class="sty-paper-sub">${escapeHtml(d.sub)}</div>` : ''}</div>
@@ -7006,28 +7073,62 @@
   }
 
   function renderStoryItem(beat) {
-    const S = State.story, day = storyDay(S.dayId);
+    const S = State.story;
     const m = S.marked;
     const ctx = storyHotCtx(beat);
     const hotDoc = ctx ? ctx.docIdx : -1;
-    return `<div>
-      <p class="sty-stage-note">${storyText(beat.stage || '')}</p>
-      ${ctx && !m ? `<div class="sty-hint">🖊️ <span><b>Circle what is wrong on the invoice itself.</b> Nothing is listed for you.</span></div>` : ''}
-      ${(beat.docs || []).length ? `<div class="sty-papers">${beat.docs.map((d, di) =>
-        renderStoryPaper(d, di === hotDoc ? ctx : null)).join('')}</div>` : ''}
-      <div class="sty-steps">${(beat.steps || []).map(renderStoryStep).join('')}</div>
+    const medium = beat.medium || 'paper';
+    const docs = beat.docs || [];
+    /* A document sits where it would really be: the invoice that came in the
+       post is paper whatever else the item is doing. */
+    const paperDocs = docs.filter(d => (d.on || medium) === 'paper');
+    const screenDocs = docs.filter(d => (d.on || medium) !== 'paper');
+
+    const paperHtml = paperDocs.length ? `<div class="sty-desk-scene">
+      <div class="sty-papers">${paperDocs.map(d =>
+        renderStoryPaper(d, docs.indexOf(d) === hotDoc ? ctx : null, 'paper')).join('')}</div></div>` : '';
+    const screenDocsHtml = screenDocs.length ? `<div class="sty-papers">${screenDocs.map(d =>
+      renderStoryPaper(d, docs.indexOf(d) === hotDoc ? ctx : null, 'screen')).join('')}</div>` : '';
+
+    const work = `${(beat.steps || []).length ? `<div class="sty-steps">${(beat.steps || []).map(renderStoryStep).join('')}</div>` : ''}
       ${!m ? `<button class="sty-btn" type="button" id="stySubmitBtn">File it</button>` : `
         ${S.stamp ? `<div class="sty-stamp sty-stamp-${m.awarded >= m.max * 0.7 ? 'ok' : 'bad'}">${escapeHtml(S.stamp)}</div>` : ''}
         <div class="sty-cost">
-          <span class="sty-cost-l">That took</span>
-          <b>${beat.mins} min</b>
+          <span class="sty-cost-l">That took</span><b>${beat.mins} min</b>
           ${m.rework ? `<span class="sty-cost-extra">+ ${m.rework} min going back over it</span>` : '<span class="sty-cost-clean">nothing to redo</span>'}
-          <span class="sty-cost-l">→ ${stT(S.mins + beat.mins + m.rework)}</span>
+          <span class="sty-cost-l">&rarr; ${stT(S.mins + beat.mins + m.rework)}</span>
         </div>
         ${m.lateFor ? `<div class="sty-late-warn">You finished this after ${escapeHtml(m.lateFor)}. The payment run has already gone.</div>` : ''}
         ${beat.why ? `<div class="sty-verdict"><p>${storyText(beat.why)}</p></div>` : ''}
         ${m.bucket ? renderStoryReaction(m.bucket) : ''}
-        <button class="sty-btn" type="button" id="styNextBtn">Back to the tray</button>`}
+        <button class="sty-btn" type="button" id="styNextBtn">Back to the tray</button>`}`;
+
+    const stageNote = `<p class="sty-stage-note">${storyText(beat.stage || '')}</p>
+      ${ctx && !m ? `<div class="sty-hint">🖊️ <span><b>Circle what is wrong on the invoice itself.</b> Nothing is listed for you.</span></div>` : ''}`;
+
+    if (medium === 'paper') {
+      return `<div>${stageNote}${paperHtml}${screenDocsHtml}${work}</div>`;
+    }
+    /* Screen items put the software on the monitor. Paper that belongs to the
+       same job stays on the desk in front of it — which is exactly what agreeing
+       a supplier statement looks like. */
+    return `<div>
+      ${stageNote}
+      ${paperHtml}
+      ${paperHtml ? '<p class="sty-onscreen-note">…and on the screen</p>' : ''}
+      <div class="sty-monitor">
+        <div class="sty-mon-body">
+          <div class="sty-screen">
+            <div class="sty-appbar">
+              <span class="sty-appdot"></span><span class="sty-appdot"></span><span class="sty-appdot"></span>
+              <span class="sty-apptitle">Wrenfield Accounts</span>
+              <span class="sty-appclock">${stT(State.story.mins)}</span>
+            </div>
+            <div class="sty-screen-in">${screenDocsHtml}${work}</div>
+          </div>
+        </div>
+        <div class="sty-mon-stand"></div><div class="sty-mon-foot"></div>
+      </div>
     </div>`;
   }
 
@@ -7067,7 +7168,8 @@
     const s = storyDef();
     const items = storyItems(day);
     const rec = ((Storage.data.story || {}).days || {})[day.id];
-    return `<div class="sty-stage sty-stage-title">
+    return `<div class="sty-stage sty-stage-title" data-light="morning">
+      ${renderStoryRoom()}
       <div class="sty-inner">
         <div class="sty-titlecard">
           <div class="sty-slug">${escapeHtml(s.business.trade)} · ${escapeHtml(s.business.name)}</div>
@@ -7095,7 +7197,8 @@
     const close = stM(day.close);
     const items = storyItems(day);
     const left = items.filter(b => !S.done[b.id]);
-    return `<div class="sty-stage">
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
       ${renderStoryHud()}
       <div class="sty-inner">
         <div class="sty-beat">
@@ -7130,7 +7233,8 @@
   function renderStoryLate() {
     const S = State.story, day = storyDay(S.dayId);
     const left = storyItems(day).filter(b => !S.done[b.id]);
-    return `<div class="sty-stage">
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
       ${renderStoryHud()}
       <div class="sty-inner">
         <div class="sty-beat">
@@ -7161,7 +7265,8 @@
     const weak = results.filter(r => r.max && !r.carried).sort((a, b) => (a.awarded / a.max) - (b.awarded / b.max))[0];
     const carry = ((day.outro && day.outro.carry) || []).filter(c => !c.ifFlag || S.flags[c.ifFlag]);
     const cls = (r) => r.carried ? 'none' : r.awarded === r.max ? 'full' : r.awarded ? 'part' : 'none';
-    return `<div class="sty-stage">
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
       ${renderStoryHud()}
       <div class="sty-inner">
         <div class="sty-outro">
@@ -7209,7 +7314,8 @@
     if (S.phase === 'tray')    return renderStoryTray();
     if (S.phase === 'scene') {
       const sc = storyResolve(S.scene);
-      return `<div class="sty-stage">
+      return `<div class="sty-stage" data-light="${storyLight()}">
+        ${renderStoryRoom()}
         ${renderStoryHud()}
         <div class="sty-inner"><div class="sty-beat">
           <div class="sty-slug">The office${sc.mins ? ` · ${sc.mins} min` : ''}</div>
@@ -7220,7 +7326,8 @@
     }
     const beat = storyActiveItem();
     if (!beat) { S.phase = 'tray'; return renderStoryTray(); }
-    return `<div class="sty-stage">
+    return `<div class="sty-stage" data-light="${storyLight()}">
+      ${renderStoryRoom()}
       ${renderStoryHud()}
       <div class="sty-inner"><div class="sty-beat">
         <div class="sty-slug">In the tray · ${beat.mins} min</div>
