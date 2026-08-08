@@ -222,6 +222,22 @@
       netErrorMeaning: 'The NET of all errors found — under-declarations less over-declarations — for the periods being corrected, not the largest single error and not their gross total.',
       timeLimitRunsFrom: 'Four years from the end of the period, for under- or over-declared OUTPUT tax; four years from the return due date, for under-claimed INPUT tax.',
       interestAndPenalties: 'Interest runs where an error delayed payment of VAT. A penalty depends on behaviour — careless, deliberate, or deliberate and concealed — and is reduced for an unprompted disclosure. Taking reasonable care and disclosing promptly can mean no penalty at all.',
+
+      /* ERRORS use Schedule 24 FA2007 (inaccuracies), which is NOT the same
+         table as the Schedule 41 failure-to-notify regime in penalties.failureToNotify.
+         Two differences matter: the first band is "careless" rather than
+         "non-deliberate", and there is no 12-month distinction — a prompted
+         careless disclosure has a flat 15% minimum. This table is supplied in
+         the AAT reference material during the assessment. */
+      penaltyForError: {
+        basis: 'A percentage of the potential lost revenue, set by behaviour and reduced for the quality of disclosure.',
+        careless: { max: 30, unpromptedMin: 0, promptedMin: 15, unit: '%' },
+        deliberate: { max: 70, unpromptedMin: 20, promptedMin: 35, unit: '%' },
+        deliberateAndConcealed: { max: 100, unpromptedMin: 30, promptedMin: 50, unit: '%' },
+        reasonableCare: 'An inaccuracy made despite taking reasonable care attracts no penalty at all.',
+        source: 'HMRC Compliance Handbook CH82470; Schedule 24 Finance Act 2007',
+        checked: '2026-08-08'
+      },
       source: 'HMRC, How to correct VAT errors and make adjustments or claims (VAT Notice 700/45)',
       checked: '2026-08-08'
     },
@@ -460,11 +476,52 @@
     /* Figures the assessment SUPPLIES rather than expects from memory. Teach the
        method and the fact that a table will be given; do not ship a table that
        will be wrong next year. */
+    /* AAT supplies reference material that can be viewed DURING the assessment.
+       This is not a minor convenience — it changes what is worth memorising.
+       The figures below are all looked up rather than recalled, so revision
+       effort belongs on knowing WHICH rule applies and HOW to apply it, not on
+       holding the numbers. The rules themselves are still assessed.
+
+       Confirmed against a published Q2022 TPFB mock (Acorn/MarZar, 2025),
+       whose model answers cite the reference material by name at each point. */
     PROVIDED_IN_ASSESSMENT: [
       'Fuel scale charge amounts — given by CO2 band and VAT period length.',
       'Flat rate scheme percentages — given by trade sector.',
+      'The partial exemption de minimis figures — the £625 monthly average and the 50% proportion.',
+      'The conditions for bad debt relief.',
+      'The late submission penalty points thresholds and the £200 penalty.',
+      'The late payment penalty percentages and the days they apply from.',
+      'The late payment interest rate, and the Bank of England base rate it is built on.',
+      'The behaviour-based penalty table for errors and for failure to notify.',
       'Income Tax, National Insurance and student loan figures for payroll tasks — the specification excludes calculating these (TPFB 4.1.12).'
-    ]
+    ],
+
+    /* Assessment shape, from a published Q2022 mock. The qualification
+       specification does not state a task count, so this is the best evidence
+       available and is labelled as such rather than presented as official. */
+    ASSESSMENT_SHAPE: {
+      tasks: 8,
+      marks: 80,
+      minutes: 90,
+      breakdown: [
+        { task: 1, marks: 9, about: 'UK tax law principles, registration and deregistration, special schemes', outcome: 1 },
+        { task: 2, marks: 8, about: 'Calculating and accounting for VAT', outcome: 2 },
+        { task: 3, marks: 12, about: 'Recovery of input tax', outcome: 2 },
+        { task: 4, marks: 8, about: 'Preparing, calculating and adjusting information for VAT returns', outcome: 3 },
+        { task: 5, marks: 12, about: 'Verifying VAT returns', outcome: 3 },
+        { task: 6, marks: 11, about: 'Record keeping, filing, payment and non-compliance', outcome: 1 },
+        { task: 7, marks: 12, about: 'Principles of payroll', outcome: 4 },
+        { task: 8, marks: 8, about: 'Reporting information on VAT and payroll', outcome: 5 }
+      ],
+      roundingInstruction: 'Answers are rounded by normal mathematical rules unless a task says otherwise.',
+      /* The `outcome` above is a best-fit mapping, not an AAT tagging. Tasks
+         span outcomes — task 4 in particular straddles LO2 and LO3. Mapped this
+         way the marks reproduce the published weightings exactly for LO1 (25%),
+         LO4 (15%) and LO5 (10%), which is good evidence the shape is real. */
+      mappingNote: 'Task-to-outcome mapping is inferred. Tasks deliberately span outcomes, so practice should interleave them.',
+      source: 'Acorn/MarZar published Q2022 TPFB mock assessment — indicative, not an AAT publication',
+      checked: '2026-08-08'
+    }
   };
 
   /* Convenience for lessons: format a figure with its unit. */

@@ -1,8 +1,9 @@
 # AAT Level 3 — research findings and implementation plan
 
 Status: **plan, not yet implemented.** Rewritten August 2026 after an
-adversarial review of the first draft found substantial errors. §10 records what
+adversarial review of the first draft found substantial errors. §8 records what
 changed and why, because several of the corrections are worth not re-learning.
+§10 adds what a published mock exam later revealed about the assessment itself.
 
 Brief: Level 3 should be **primarily a learning platform** — a textbook
 substitute for someone who has just finished Level 2 — following the AAT
@@ -708,7 +709,19 @@ vocabulary survive LO2, they will survive the rest.
    data validators and no DOM assertions. Rewriting the journey and lesson
    player — shared by five shipped subjects — with no behavioural coverage is
    the largest unmanaged regression risk in this plan.
-8. **The VAT return box rounding rule is taught but UNVERIFIED.** Lesson 2C
+8. **RESOLVED IN PART (8 Aug 2026), by a published Q2022 TPFB mock.** The mock
+   shows a return with **Box 1 £13,000.00 and Box 4 £8,464.58**, confirming the
+   VAT boxes carry pounds and pence. It gives no Box 6–9 figure, so the
+   "whole pounds, **rounded down**" half remains unsupported by any source. The
+   mock's own instructions say to apply *normal mathematical rules unless the
+   task says otherwise*, which suggests the convention is not tested as a rule
+   to recall. Lesson 2C now teaches the confirmed half, states plainly that the
+   rounding-down claim could not be verified, and tells the reader to follow the
+   task instruction. Close this only against an AAT practice assessment.
+
+   The original entry follows, for the record.
+
+   **The VAT return box rounding rule is taught but UNVERIFIED.** Lesson 2C
    states that boxes 1–5 are completed in pounds and pence and boxes 6–9 in
    whole pounds rounded down. On 8 August 2026 this could not be confirmed
    against any current HMRC source: Notice 700/12 (the box-by-box guidance),
@@ -778,3 +791,68 @@ Recorded so they are not re-learned:
 
 To obtain: per-unit practice assessments and annual Chief Examiner reports
 (§3.9); current HMRC tax figures at authoring time (§3.6).
+
+---
+
+## 10. TPFB assessment shape (published mock, August 2026)
+
+The qualification specification states no task count for TPFB, so §3 left
+`taskCount: null`. A published Q2022 TPFB mock (Acorn/MarZar) supplies the
+shape. It is **not an AAT publication** and is recorded as indicative, but
+three of its five outcome weightings reproduce the published figures exactly,
+which is strong evidence the structure is real.
+
+**8 tasks, 80 marks, 90 minutes.**
+
+| Task | Marks | About | Best-fit outcome |
+|---:|---:|---|---:|
+| 1 | 9 | Tax law principles, registration and deregistration, special schemes | LO1 |
+| 2 | 8 | Calculating and accounting for VAT | LO2 |
+| 3 | 12 | Recovery of input tax | LO2 |
+| 4 | 8 | Preparing, calculating and adjusting information for VAT returns | LO2/LO3 |
+| 5 | 12 | Verifying VAT returns | LO3 |
+| 6 | 11 | Record keeping, filing, payment, non-compliance | LO1 |
+| 7 | 12 | Principles of payroll | LO4 |
+| 8 | 8 | Reporting information on VAT and payroll | LO5 |
+
+Mapped this way the marks give LO1 25%, LO4 15% and LO5 10% — exact matches.
+LO2 and LO3 do not resolve exactly because **task 4 straddles them**, which is
+the useful finding: tasks deliberately span outcomes, so a mock built by
+allocating whole tasks to single outcomes would be easier than the real thing.
+
+### 10.1 Reference material is available during the assessment
+
+The single most consequential finding, and one nothing in the corpus had said.
+The mock's model answers cite AAT reference material at nearly every numerical
+step: fuel scale charges, flat rate percentages, the de minimis figures, bad
+debt relief conditions, penalty points thresholds and the £200 penalty, late
+payment percentages and days, the interest rate and Bank of England base rate,
+and the behaviour tables for both errors and failure to notify.
+
+This does not make the figures unimportant — a student who has never met a rule
+will not think to look it up, and finding the right row under time pressure
+needs familiarity. But it redirects revision decisively towards **which rule
+applies, whether its conditions are met, and how to apply it**. Lesson 0A now
+says so explicitly, in a card written for the purpose.
+
+### 10.2 A conflation the mock exposed
+
+Errors in a return and failure to notify carry **different** penalty tables.
+Errors fall under Schedule 24 FA2007 (behaviour band "careless", prompted
+minimum **15%**, no twelve-month distinction); failure to notify falls under
+Schedule 41 FA2008 ("non-deliberate", with the twelve-month split). Lesson 3A
+had described them as the same structure. Corrected, with the tables separated
+in `aat3-tax-data.js` and both verified against HMRC's Compliance Handbook
+rather than against the mock.
+
+### 10.3 What the mock does NOT settle
+
+Its explanation of the partial exemption de minimis test contains the sentence
+"the rule is 'or' not 'and'", which reads as contradicting the both-limbs test
+taught in 2D. It does not: the mock's own pass condition is stated as "no more
+than £625 **and** no more than 50%", its failure condition as "more than £625
+**or** more than 50%" — De Morgan's law, correctly applied — and its model
+answer blocks the exempt input tax because the first limb fails. The narrative
+sentence is simply garbled. **2D was not changed.** Third-party mocks are
+evidence, not authority, and this one was checked against HMRC before anything
+was altered on its say-so.
