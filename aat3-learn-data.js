@@ -78,8 +78,8 @@
           p: [
             'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are.',
             'VAT dominates. Three of the five outcomes are VAT and nothing else, and they carry 75% of the assessment between them. Payroll is a single outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation — you are told what the deductions are and asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about communicating VAT *and* payroll matters to the right person in the right way.',
-            '**Outcomes 1, 2 and 3 are written; Outcomes 4 and 5 are not yet.** That is 75% of the assessment, and it is the whole of the VAT work bar the reporting. Take them in order, because each depends on the one before. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 then checks the result — verifying a return, reconciling it to the records, and correcting it when it turns out to be wrong.',
-            'What is missing matters, and it would be dishonest not to say so. Outcome 4 (payroll) and Outcome 5 (reporting) are between them 25% of the marks and are not written. Treat what follows as thorough preparation for three quarters of the unit rather than as complete preparation for the assessment.',
+            '**Outcomes 1 to 4 are written; only Outcome 5 is not.** That is 90% of the assessment. Take them in order, because each depends on the one before. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 checks the result — verifying a return, reconciling it to the records, and correcting it when it is wrong. Outcome 4 then changes subject to payroll, which turns out to have the same shape: register, record, report, pay, be penalised.',
+            'What is missing matters, and it would be dishonest not to say so. Outcome 5 — reporting information within the organisation — is 10% of the marks and is not written yet. Treat what follows as thorough preparation for nine tenths of the unit rather than as complete preparation for the assessment.',
             'One thing worth flagging now: the outcomes are not independent of each other. Outcome 3 asks you to review and correct a return that Outcome 2 taught you to build. Outcome 5 asks you to explain to somebody else what Outcomes 1 to 4 established. Material learned here is drawn on repeatedly later, which is another reason to learn it properly the first time.',
           ],
         },
@@ -1174,7 +1174,7 @@
             'The broker charges £0 of output tax and reclaims nothing. It receives nothing from HMRC, and its costs are £48,000. The £8,000 has become an ordinary business expense that reduces its profit, exactly as it would for a private individual.',
             'Same customer experience, £16,000 apart. That is why the specification asks you to know the categories rather than the rates, and why "no VAT is charged" is never a sufficient answer to a question about a supply.',
           ],
-          examtrap: { text: 'Asked whether a supply is "taxable", zero-rated counts as YES. It is a taxable supply at a rate of 0%. Only exempt and outside-the-scope supplies are not taxable supplies.' },
+          examtrap: 'Asked whether a supply is "taxable", zero-rated counts as YES. It is a taxable supply at a rate of 0%. Only exempt and outside-the-scope supplies are not taxable supplies.',
         },
         {
           h: 'Where the tax finally lands',
@@ -1337,7 +1337,7 @@
             '**Turnover** means the value of supplies, not profit and not cash received. It is measured net of VAT, and it includes sales the business has invoiced but not yet been paid for.',
             'The threshold is not tested against a financial year. It is tested on a **rolling 12-month basis**, which means it must be reconsidered at the end of every single month, looking back over the previous twelve. A business with steady sales of £8,000 a month will cross £' + T.registration.threshold.value.toLocaleString('en-GB') + ' partway through its second year without anything unusual happening in any individual month.',
           ],
-          examtrap: { text: 'Zero-rated sales count towards the registration threshold. A business can be obliged to register even though it will charge no VAT to any customer — and it will then recover input tax, which is usually to its advantage.' },
+          examtrap: 'Zero-rated sales count towards the registration threshold. A business can be obliged to register even though it will charge no VAT to any customer — and it will then recover input tax, which is usually to its advantage.',
         },
         {
           h: 'Two tests, two different answers',
@@ -1403,7 +1403,7 @@
             '**Voluntary deregistration** is available where taxable turnover for the **next 12 months** is expected to fall below the deregistration threshold of **£' + T.registration.deregistrationThreshold.value.toLocaleString('en-GB') + '**. Note that this is a forward-looking test, on expected turnover, not a backward-looking one on what has already happened. HMRC may refuse the application.',
             'The deregistration threshold is set £' + (T.registration.threshold.value - T.registration.deregistrationThreshold.value).toLocaleString('en-GB') + ' below the registration threshold, and the gap is there for a reason. Without it, a business hovering around the line would be obliged to register and permitted to deregister in the same breath, and would spend its life going in and out of the system. The gap creates a buffer zone in which a registered business simply stays registered.',
           ],
-          examtrap: { text: 'The registration threshold looks BACK 12 months (historic test); the voluntary deregistration threshold looks FORWARD 12 months. Reversing the direction is a common and expensive slip.' },
+          examtrap: 'The registration threshold looks BACK 12 months (historic test); the voluntary deregistration threshold looks FORWARD 12 months. Reversing the direction is a common and expensive slip.',
         },
       ],
       check: [
@@ -1497,7 +1497,7 @@
               ['Direct debit', 'Collected automatically **3 working days after** the deadline'],
             ],
           },
-          examtrap: { text: 'The obligation is that the money REACHES HMRC by the deadline, not that it was sent by then. Choosing a three-working-day method on the due date makes the payment late.' },
+          examtrap: 'The obligation is that the money REACHES HMRC by the deadline, not that it was sent by then. Choosing a three-working-day method on the due date makes the payment late.',
         },
         {
           h: 'Making Tax Digital',
@@ -1618,7 +1618,7 @@
             'Three refinements attach to that basic bargain. A business in its **first year of VAT registration** takes a **1% discount** off its sector rate, running until the first anniversary of registration. A **limited cost business** — one whose spending on goods is under 2% of its flat rate turnover, or over 2% but under £1,000 a year — must use **' + T.schemes.flatRate.limitedCostBusiness.value + '%** whatever its sector; this exists to stop labour-only businesses with almost no costs profiting from a scheme designed for businesses with real purchases. And although input tax is not normally recoverable, it **may** be reclaimed on a single purchase of capital expenditure goods costing **£' + T.schemes.flatRate.capitalGoodsException.value.toLocaleString('en-GB') + ' or more including VAT**.',
             'The thresholds are asymmetric and the difference is deliberately awkward: **£' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' excluding VAT** to join, but **£' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' including VAT** to leave. They are not measured on the same basis, and a question that gives you one figure and asks about the other is testing exactly that.',
           ],
-          examtrap: { text: 'Flat rate thresholds are measured differently at each end: £' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' EXCLUDING VAT to join, £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' INCLUDING VAT to leave. And the flat percentage applies to VAT-inclusive turnover.' },
+          examtrap: 'Flat rate thresholds are measured differently at each end: £' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' EXCLUDING VAT to join, £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' INCLUDING VAT to leave. And the flat percentage applies to VAT-inclusive turnover.',
         },
         {
           h: 'Working out a flat rate payment',
@@ -1736,7 +1736,7 @@
               ['Deliberate and concealed', T.penalties.failureToNotify.behaviours.deliberateAndConcealed.max + '%', '30%', '50%'],
             ],
           },
-          examtrap: { text: 'Some study material still quotes a 5% / 10% / 15% late registration penalty with a £50 minimum. That regime applied only where the duty to notify arose before 1 April 2010. The live regime is behaviour-based, on potential lost revenue.' },
+          examtrap: 'Some study material still quotes a 5% / 10% / 15% late registration penalty with a £50 minimum. That regime applied only where the duty to notify arose before 1 April 2010. The live regime is behaviour-based, on potential lost revenue.',
         },
         {
           h: 'Late returns: the points system',
@@ -1844,7 +1844,7 @@
               ['Throughout', 'Late payment interest at base rate + 4%, from day one'],
             ],
           },
-          examtrap: { text: 'These rates changed under Finance Act 2025. They were previously 2% / 2% / 4%. Material written before the change quotes the old figures, and both sets look equally plausible.' },
+          examtrap: 'These rates changed under Finance Act 2025. They were previously 2% / 2% / 4%. Material written before the change quotes the old figures, and both sets look equally plausible.',
         },
         {
           h: 'Working out what late payment costs',
@@ -1975,7 +1975,7 @@
             'Read the two limbs together and the structure is: small errors always qualify; middling errors qualify if the business is big enough that the error is proportionately trivial; very large errors never qualify. That is a sensible design, and remembering the reason makes the mechanics much easier to reproduce under pressure than remembering three numbers.',
           ],
           flow: ['Net error ≤ £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → is it ≤ ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6 AND ≤ £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → Method 2'],
-          examtrap: { text: 'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the Box 6 figure for the period in which the error is DISCOVERED — not the period in which it was made. Questions give both figures.' },
+          examtrap: 'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the Box 6 figure for the period in which the error is DISCOVERED — not the period in which it was made. Questions give both figures.',
         },
         {
           h: '"Net error" means net',
@@ -2139,7 +2139,7 @@
             'The **record-keeping** effect is that the VAT account must show the correction separately. Adjusting the return without adjusting the underlying account leaves the two disagreeing, and the reconciliation in lesson 3E will then fail for a reason nobody can trace six months later.',
             'The **cash** effect is the one businesses feel. A large Method 1 correction arrives in a single period, on top of that period\'s ordinary liability. A business that has been under-declaring for a year does not repay it gently over the next year; it repays it all at once, on one due date, and if it cannot the late payment regime of lesson 1G begins immediately.',
           ],
-          examtrap: { text: 'Under Method 1 the correction disappears into the return\'s ordinary figures. Only the VAT account shows it separately — which is exactly why the VAT account has to be kept properly.' },
+          examtrap: 'Under Method 1 the correction disappears into the return\'s ordinary figures. Only the VAT account shows it separately — which is exactly why the VAT account has to be kept properly.',
         },
       ],
       check: [
@@ -2230,7 +2230,7 @@
             '**Box 7** is the total **net value of all purchases and other inputs**, excluding VAT, including imports. It excludes things that are outside the scope of VAT altogether: **wages, PAYE and National Insurance, drawings**, and other non-business expenditure. A Box 7 figure that has swallowed the payroll is a large and obvious error, and it is one of the first things a reviewer checks.',
             'It is worth holding on to why Box 6 matters beyond the return itself: it is the figure the **1% error correction test** is measured against. A business that habitually understates Box 6 by omitting its zero-rated sales is also, without realising, shrinking the size of error it may correct on a future return.',
           ],
-          examtrap: { text: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.' },
+          examtrap: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.',
         },
         {
           h: 'Imports and exports on the return',
@@ -2506,6 +2506,612 @@
     },
   ];
 
+
+  /* ── Outcome 4: Understand principles of payroll (15%) ────────────────────
+     A change of subject: the first three outcomes were VAT throughout. The
+     specification excludes CALCULATING Income Tax, National Insurance and
+     student loan repayments (4.1.12) — those figures are supplied. What is
+     assessed is the employer's framework and the arithmetic AROUND the given
+     deductions, which is a much narrower and more learnable target than most
+     students expect. */
+  var LESSONS_LO4 = [
+
+    /* ── 4.1 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-4A',
+      title: 'Payroll: who runs it and what HMRC can require',
+      icon: '👥',
+      criteria: ['TPFB-4.1.1', 'TPFB-4.1.2', 'TPFB-4.1.3', 'TPFB-4.1.4', 'TPFB-4.1.9'],
+      cards: [
+        {
+          h: 'The second tax collected on somebody else\'s behalf',
+          p: [
+            'Everything so far has been VAT. This outcome changes subject, and it is worth pausing on why the two sit in the same unit at all, because the connection is not accidental.',
+            'The opening chapter framed the unit as being about **two taxes a business handles on other people\'s behalf**. VAT is collected from customers. Payroll taxes are deducted from employees. In both cases the business is holding money that belongs to the Exchequer and passing it on, and in both cases that is what justifies the machinery around it — compulsory registration, prescribed records, fixed deadlines, rights of inspection, and penalties that begin on a named day.',
+            'So if the shape of this outcome feels familiar, that is because it is the same shape. Register, keep records, file returns, pay on time, be penalised if you do not. What changes is the detail: different deadlines, different forms, different retention period, a different penalty structure. The temptation is to assume the VAT answers carry across, and several of them very nearly do without being right.',
+            '**Payroll is operated by any business or individual who employs staff**, and the obligation is genuinely universal. A sole director of their own limited company is an employer of one, and must run payroll. A household employing a nanny is an employer. There is no size below which the rules stop applying. And as with VAT, **HMRC is the relevant tax authority** — the same body, the same statutory footing.',
+          ],
+          callout: { kind: 'key', text: 'Same shape as VAT: register, record, report, pay, be penalised. Different details throughout — and it is the details that are assessed.' },
+        },
+        {
+          h: 'When a business must register as an employer',
+          p: [
+            'Registration is the first obligation, and unlike VAT registration there is **no threshold to cross**. The trigger is simply employing somebody.',
+            'The timing rule is short: an employer must register **before the first payday**, and cannot register **more than two months** in advance. The window is deliberately narrow at both ends. Registering after the first payment has already been made is late; registering six months before trading starts is not permitted.',
+            'What follows registration is an **employer PAYE reference**, which is needed before any submission can be made. This is the practical reason the deadline matters: the reference does not arrive instantly, and an employer who registers the day before payday may find they cannot file on time even though they intended to. The same trap appeared in lesson 1D with Making Tax Digital authorisation.',
+            'It is worth noticing how different this is from VAT. VAT registration turns on a **turnover threshold**, tested backwards and forwards, and a small business may trade for years without it. Employer registration turns on a single binary fact: is anyone being paid? A business with £20,000 of turnover and one part-time employee must register as an employer while being nowhere near the VAT threshold.',
+          ],
+          split: {
+            left: { title: 'VAT registration', items: ['Triggered by a turnover **threshold**', 'Two tests, historic and future', 'Effective date depends on which test', 'A business may never need to register'] },
+            right: { title: 'Employer registration', items: ['Triggered by **employing anyone at all**', 'No threshold of any kind', 'Before the first payday', 'Not more than 2 months in advance'] },
+          },
+        },
+        {
+          h: 'What HMRC can require, and what it can inspect',
+          p: [
+            'HMRC\'s powers over payroll mirror its powers over VAT, and for the same reason — the employer is holding deducted money that is not its own.',
+            'HMRC may require an employer to **register**, to **keep records** in a prescribed form, to **submit returns** on a fixed calendar, and to **pay the amounts due** by statutory deadlines. Each of those is a separate obligation with its own consequence for failure, which is the point most worth carrying into the penalties lesson: an employer can comply with three of the four and still be penalised for the fourth.',
+            'HMRC also has **rights of inspection**. It may inspect payroll records, visit business premises at a reasonable time, and require documents to be produced. As with VAT, an employer compliance visit is routine work rather than an accusation, and it is generally arranged in advance — though HMRC may visit unannounced.',
+            'What an officer looks for is whether the deductions actually made match what should have been made, and whether what was deducted was actually paid over. That second half is the one that catches struggling businesses. Deducting tax from an employee\'s wage and then using the money for something else is not a late payment in the ordinary commercial sense; it is spending money deducted from somebody else\'s pay, and HMRC treats it accordingly.',
+          ],
+          callout: { kind: 'warning', text: 'Deductions are the employee\'s money until they reach HMRC. An employer who deducts and does not pay over has spent somebody else\'s wages, and the penalty regime reflects that.' },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'When must a business register as an employer with HMRC?',
+          opts: [
+            'Before the first payday, and no more than two months in advance',
+            'Once its total annual payroll cost first exceeds the VAT registration threshold',
+            'Within 30 days of the end of the tax year in which it first employed staff',
+            'Only if it employs someone other than its own directors',
+          ],
+          ans: 0,
+          exp: 'There is no threshold for employer registration — employing anyone at all triggers it, including a sole director of their own company. Registration must happen before the first payday, and cannot be made more than two months ahead. The employer PAYE reference is needed before any submission can be filed.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about employer obligations is true or false.',
+          statements: [
+            { text: 'HMRC is the relevant tax authority for payroll as well as for VAT.', answer: true },
+            { text: 'A sole director of their own limited company must operate payroll.', answer: true },
+            { text: 'Employer registration is triggered by a turnover threshold.', answer: false },
+            { text: 'HMRC may inspect payroll records and visit business premises.', answer: true },
+          ],
+          exp: 'HMRC administers both taxes on the same statutory footing. Employing anyone — including only yourself as a director — makes a business an employer. There is no threshold, unlike VAT. And the inspection and visit powers mirror those for VAT, because in both cases the business holds money belonging to the Exchequer.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business has annual turnover of £22,000 and employs one part-time assistant. What is its position?',
+          opts: [
+            'It must register as an employer, but not for VAT',
+            'It need register for neither, being below the threshold for both',
+            'It must register for both, since employing staff triggers VAT registration',
+            'It must register for VAT, but employer registration is optional at this size',
+          ],
+          ans: 0,
+          exp: 'Employer registration has no threshold, so employing the assistant makes it compulsory. VAT registration turns on taxable turnover, and £22,000 is far below the threshold. The two regimes are entirely independent of each other.',
+        },
+      ],
+    },
+
+    /* ── 4.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-4B',
+      title: 'Records, software and employee data',
+      icon: '🔐',
+      criteria: ['TPFB-4.1.5', 'TPFB-4.1.10'],
+      cards: [
+        {
+          h: 'What must be kept, and for how long',
+          p: [
+            'The payroll record-keeping duty is drawn as widely as the VAT one, and for the same reason: HMRC sees submissions, not the underlying facts, so the records are what makes the system checkable.',
+            'An employer must keep what it **paid** each employee and the **deductions** made, the **reports submitted** to HMRC and the **payments made** to HMRC, employee **leave and sickness absence**, **tax code notices**, **taxable expenses and benefits**, and Payroll Giving documents where the scheme is operated.',
+            'The retention period is **' + T.payroll.records.retentionYears.value + ' years from the end of the tax year** the records relate to. That is worth committing to memory as a contrast rather than in isolation, because **VAT records must be kept for ' + T.records.retentionYears.value + ' years** and the two are examined in the same unit. Three for payroll, six for VAT. Mixing them up is one of the easiest marks in the paper to throw away.',
+            'The consequence of failing to keep records is severe and comes in two parts. HMRC may **estimate what is owed** — an estimate the employer is then in a poor position to argue with, having no records — **and** charge a penalty of up to **£' + T.payroll.records.penalty.value.toLocaleString('en-GB') + '**. If records are lost, stolen or destroyed, HMRC must be told immediately and the employer must make reasonable efforts to reconstruct them.',
+          ],
+          table: {
+            headers: ['', 'Payroll', 'VAT'],
+            rows: [
+              ['Retention period', '**' + T.payroll.records.retentionYears.value + ' years**', '**' + T.records.retentionYears.value + ' years**'],
+              ['Measured from', 'The end of the tax year', 'The date of the record'],
+              ['Penalty for failure', 'Up to £' + T.payroll.records.penalty.value.toLocaleString('en-GB') + ', plus an estimated assessment', '£' + T.records.penalty.value],
+            ],
+          },
+          examtrap: 'Payroll records: ' + T.payroll.records.retentionYears.value + ' years. VAT records: ' + T.records.retentionYears.value + ' years. Both are examined in this unit and the numbers are easy to transpose under pressure.',
+        },
+        {
+          h: 'Software is not optional',
+          p: [
+            'Payroll must be run using **software capable of reporting under Real Time Information**. This is not a recommendation about efficiency; RTI submissions have to be made electronically in a prescribed format every time employees are paid, and that cannot be done on paper.',
+            'HMRC provides **Basic PAYE Tools** free for employers with fewer than 10 employees, which removes the cost objection for the smallest businesses. Larger employers use commercial payroll software, often integrated with their accounting system.',
+            'The parallel with Making Tax Digital in lesson 1D is close, and the consequence is the same one worth internalising: the figures flow from the payroll system to HMRC without a person reading them. Where a wrong tax code or a mistyped hours figure would once have been caught by somebody preparing a return, it now goes straight through. Checking has to be deliberate because it is no longer incidental.',
+          ],
+          callout: { kind: 'tip', text: 'RTI-capable software is compulsory. HMRC\'s Basic PAYE Tools is free for employers with fewer than 10 employees, so cost is not a reason to be non-compliant.' },
+        },
+        {
+          h: 'Employee data is personal data',
+          p: [
+            'The specification asks specifically about **data protection as it applies to employees\' personal data**, and it belongs here because payroll is where a business holds the most sensitive information about the people who work for it.',
+            'Consider what a payroll record actually contains: name, address, date of birth, National Insurance number, bank details, salary, and — through sickness absence and statutory payments — information about health, pregnancy and family circumstances. Some of that is **special category data** under UK GDPR, subject to stricter conditions than ordinary personal data.',
+            'The principles that bear most directly on payroll are worth stating individually. Data must be processed **lawfully, fairly and transparently** — employees should know what is held and why. It must be collected for **specified purposes** and not reused for unrelated ones; payroll data gathered to pay people is not a marketing list. It must be **adequate and limited to what is necessary**, so collecting information the payroll does not need is itself a breach. It must be **accurate** and kept up to date. It must not be **kept longer than necessary** — which is where the three-year retention rule and data protection meet, and where they can pull in opposite directions. And it must be kept **secure**, with appropriate technical and organisational measures.',
+            'The practical consequences are mundane and are exactly what an assessment would ask about: payroll files are not left where colleagues can read them, payslips are not distributed openly, salary information is not discussed with people who have no need to know, access to the payroll system is restricted to those who require it, and a breach — a payroll file emailed to the wrong recipient — has to be dealt with rather than quietly hoped about.',
+          ],
+          split: {
+            left: { title: 'The principles that bite hardest in payroll', items: ['Lawful, fair and transparent', 'Collected for a specified purpose only', 'Adequate, relevant, and limited to what is needed', 'Accurate and kept up to date', 'Not kept longer than necessary', 'Kept secure'] },
+            right: { title: 'What that means in practice', items: ['Restrict payroll system access to those who need it', 'Do not leave payroll files or payslips on view', 'Do not discuss individual pay with colleagues', 'Do not reuse payroll data for another purpose', 'Deal with a breach rather than hope', 'Treat health and absence data as more sensitive still'] },
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'For how long must payroll records be retained?',
+          opts: [
+            '3 years from the end of the tax year they relate to',
+            '6 years from the end of the tax year, matching the rule for VAT records',
+            '4 years, matching the normal HMRC assessment time limit',
+            '7 years from the date each employee leaves the business',
+          ],
+          ans: 0,
+          exp: 'Payroll records are kept for three years from the end of the tax year. VAT records are kept for six. Both rules are examined in this unit and the two figures are easy to transpose — three for payroll, six for VAT.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about payroll records and data is true or false.',
+          statements: [
+            { text: 'Payroll must be run using RTI-capable software.', answer: true },
+            { text: 'Failing to keep payroll records can lead to both an estimated assessment and a penalty.', answer: true },
+            { text: 'Payroll data may be reused for another business purpose once collected.', answer: false },
+            { text: 'Sickness absence records fall outside data protection because they are operational.', answer: false },
+          ],
+          exp: 'RTI submissions must be electronic, so compliant software is compulsory. HMRC may estimate the liability AND charge up to £' + T.payroll.records.penalty.value.toLocaleString('en-GB') + '. Data collected for payroll is limited to that purpose. And absence data is health-related, which makes it more sensitive than ordinary personal data, not less.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which of these is the clearest breach of the data protection principles in a payroll context?',
+          opts: [
+            'Emailing a spreadsheet of all staff salaries to an employee who did not need it',
+            'Keeping a record of each employee’s tax code notices from HMRC',
+            'Restricting access to the payroll system to the two people who operate it',
+            'Retaining payroll records for three years after the end of the tax year',
+          ],
+          ans: 0,
+          exp: 'Sending salary data to someone with no need to see it breaches both the security principle and the purpose limitation. Keeping tax code notices is required, restricting access is exactly what the security principle demands, and three-year retention is the rule rather than a breach of it.',
+        },
+      ],
+    },
+
+    /* ── 4.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-4C',
+      title: 'Gross pay, taxable pay and net pay',
+      icon: '💰',
+      criteria: ['TPFB-4.1.6', 'TPFB-4.1.7', 'TPFB-4.1.8'],
+      cards: [
+        {
+          h: 'Four terms that are not synonyms',
+          p: [
+            'The specification asks for the difference between **gross pay, taxable pay, taxable gross pay and net pay**. Four terms, easily blurred, and the distinctions carry real marks because a payslip question is usually a question about which figure a deduction attaches to.',
+            '**Gross pay** is everything the employee earns before any deduction at all: basic pay, overtime, commission, bonuses, holiday pay, statutory payments. It is the top line and the starting point for everything else.',
+            '**Taxable gross pay** is gross pay **less deductions made before tax is calculated**. The main ones are employee **pension contributions** under a net pay arrangement, and **payroll giving**. These reduce the figure on which Income Tax is worked out, which is precisely the benefit of making them this way — relief is given immediately rather than reclaimed later.',
+            '**Taxable pay** is the amount actually subject to Income Tax. In most payslip questions it is the same figure as taxable gross pay; the reason the specification lists both is that the terms are used slightly differently in different sources, and you should recognise either.',
+            '**Net pay** is what reaches the employee\'s bank account: gross pay less **every** deduction, whether it was taken before tax or after.',
+          ],
+          formula: 'Gross pay − pre-tax deductions = Taxable gross pay · Gross pay − ALL deductions = Net pay',
+          examtrap: 'Taxable gross pay is NOT gross pay less all deductions. It is gross pay less only those deductions made BEFORE tax is calculated — pension under a net pay arrangement, payroll giving.',
+        },
+        {
+          h: 'Statutory and non-statutory deductions',
+          p: [
+            'Deductions divide into two kinds, and the difference is about **who requires them**, not how large they are.',
+            '**Statutory deductions** are required by law, and the employer has no discretion. They are **Pay As You Earn (PAYE) Income Tax**, **National Insurance contributions**, **student loan repayments**, and — where the employer has automatically enrolled staff — **pension contributions**. An employee cannot instruct the employer to stop deducting Income Tax; the obligation runs to HMRC, not to the employee.',
+            '**Non-statutory deductions** are everything else, and they depend on the employee having agreed to them or on a court order. Trade union subscriptions, payroll giving to charity, season ticket loan repayments, workplace savings schemes, and repayments of a salary advance all sit here. So do **attachment of earnings orders**, which are imposed by a court rather than chosen — the point being that they are not part of the tax system.',
+            'Two consequences follow. The **order** matters: pre-tax deductions come off before Income Tax is calculated, and everything else comes off afterwards, so putting a deduction in the wrong place changes the tax. And the **amount due to HMRC** includes only the statutory tax and National Insurance items — a union subscription deducted from wages is owed to the union, not to HMRC, and never appears in the payment to them.',
+          ],
+          split: {
+            left: { title: 'Statutory — required by law', items: ['PAYE Income Tax', 'National Insurance contributions', 'Student loan repayments', 'Auto-enrolment pension contributions'] },
+            right: { title: 'Non-statutory — agreed or ordered', items: ['Trade union subscriptions', 'Payroll giving to charity', 'Season ticket and salary advance repayments', 'Attachment of earnings orders'] },
+          },
+        },
+        {
+          h: 'Working through a payslip',
+          p: [
+            'This is where the specification\'s exclusion matters most. You are **not** asked to calculate Income Tax, National Insurance or student loan repayments — those figures are given to you. What you are asked to do is assemble them correctly: build gross pay, apply the pre-tax deductions to reach taxable gross pay, then take everything off to reach net pay.',
+            'That makes these questions much more tractable than they look. The work is in the ordering and in reading which figures have been supplied, not in the tax arithmetic.',
+          ],
+          worked: {
+            title: 'From hours worked to money in the bank',
+            problem: 'Priya works 160 basic hours at £14.50 an hour and 12 overtime hours at time and a half. She receives a bonus of £300. She contributes 5% of gross pay to a pension under a net pay arrangement. Her Income Tax for the month is £742, employee National Insurance £398, and a student loan repayment of £61 applies. She also pays £12 a month in union subscriptions. Calculate her gross pay, taxable gross pay and net pay.',
+            steps: [
+              { do: 'Build gross pay.', why: 'Basic: 160 × £14.50 = £2,320. Overtime: 12 × £14.50 × 1.5 = £261. Plus the £300 bonus. Gross pay = £2,320 + £261 + £300 = £2,881.' },
+              { do: 'Find the pre-tax deduction.', why: 'The pension is 5% of gross pay under a NET PAY arrangement, which means it comes off before tax is calculated: £2,881 × 5% = £144.05.' },
+              { do: 'Arrive at taxable gross pay.', why: '£2,881 − £144.05 = £2,736.95. This is the figure Income Tax was calculated on — and the reason the pension contribution gets relief immediately.' },
+              { do: 'Total the remaining deductions.', why: 'Income Tax £742, National Insurance £398, student loan £61, union subscription £12. Together £1,213. Note the union subscription is non-statutory but still comes out of net pay.' },
+              { do: 'Arrive at net pay.', why: 'Gross pay less ALL deductions: £2,881 − £144.05 − £1,213 = £1,523.95.' },
+              { do: 'Check the logic rather than just the total.', why: 'The pension was deducted once, before tax. The other four came off after. Deducting the pension twice, or taking it off after tax, are the two errors these questions are built to catch.' },
+            ],
+            answer: 'Gross pay £2,881 · taxable gross pay £2,736.95 · net pay £1,523.95',
+            tryIt: {
+              q: 'An employee has gross pay of £3,200 and contributes 4% of gross to a pension under a net pay arrangement. What is the taxable gross pay, in pounds?',
+              answer: 3072,
+              unit: '£',
+              hint: 'Only the pre-tax deduction comes off to reach taxable gross pay.',
+              exp: '£3,200 × 4% = £128 pension contribution. £3,200 − £128 = £3,072 taxable gross pay. Income Tax would then be calculated on £3,072 rather than on the full £3,200.',
+            },
+          },
+        },
+        {
+          h: 'Reconciling gross to net',
+          p: [
+            'The other "be able to" requirement here is **reconciliation**: proving that gross pay, the deductions and net pay all agree. It is the same discipline as the VAT reconciliation in lesson 3E, and it is checked the same way — by showing that the parts account for the whole.',
+            'The reconciliation is simply the identity **gross pay less total deductions equals net pay**, demonstrated line by line. If it does not balance, something has been omitted, double-counted, or put on the wrong side.',
+            'The failure that recurs is **double-counting a pre-tax deduction**. A pension contribution taken off to reach taxable gross pay is easy to subtract a second time when totalling the deductions, and the reconciliation then shows net pay lower than it should be by exactly the pension amount. If a reconciliation is out by a figure that appears on the payslip, that figure has almost certainly been used twice.',
+            'The same check works in the other direction. Given net pay and the deductions, gross pay must be recoverable by adding them all back. An assessment may give the figures either way round, and the identity holds regardless of which end you start from.',
+          ],
+          formula: 'Gross pay − total deductions = Net pay · Net pay + total deductions = Gross pay',
+          callout: { kind: 'tip', text: 'If a gross-to-net reconciliation is out by exactly the amount of a figure on the payslip, that figure has been counted twice. Usually it is the pension.' },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'An employee has gross pay of £2,600 and pays 5% of gross into a pension under a net pay arrangement. What is the taxable gross pay, in pounds?',
+          answer: 2470,
+          unit: '£',
+          exp: '£2,600 × 5% = £130. £2,600 − £130 = £2,470. Only deductions made before tax is calculated reduce taxable gross pay — Income Tax, National Insurance and student loan repayments do not.',
+        },
+        {
+          type: 'numeric',
+          q: 'An employee has gross pay of £2,400. Deductions are: pension £120 (pre-tax), Income Tax £310, National Insurance £180, union subscription £9. What is the net pay, in pounds?',
+          answer: 1781,
+          unit: '£',
+          exp: '£2,400 − £120 − £310 − £180 − £9 = £1,781. Net pay is gross less EVERY deduction, whether taken before or after tax. The pension comes off once, not twice — deducting it again is the classic error.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which of these is a non-statutory deduction?',
+          opts: [
+            'Trade union subscriptions',
+            'Student loan repayments collected through the payroll',
+            'Employee National Insurance contributions',
+            'PAYE Income Tax',
+          ],
+          ans: 0,
+          exp: 'Union subscriptions are deducted only because the employee has agreed to it. PAYE, National Insurance and student loan repayments are all required by law, which is what makes them statutory — and only the statutory tax and NI items form part of the amount owed to HMRC.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about pay and deductions is true or false.',
+          statements: [
+            { text: 'Taxable gross pay is gross pay less deductions made before tax is calculated.', answer: true },
+            { text: 'Net pay is gross pay less all deductions.', answer: true },
+            { text: 'A student loan repayment reduces taxable gross pay.', answer: false },
+            { text: 'An attachment of earnings order is a statutory deduction.', answer: false },
+          ],
+          exp: 'Taxable gross pay reflects only pre-tax deductions such as a net pay arrangement pension. Net pay reflects all of them. A student loan repayment is taken after tax and does not reduce the taxable figure. And an attachment of earnings order is imposed by a court, not by tax law, so it sits outside the statutory deductions.',
+        },
+      ],
+    },
+
+    /* ── 4.1 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-4D',
+      title: 'What the employer owes HMRC',
+      icon: '🧾',
+      criteria: ['TPFB-4.1.11', 'TPFB-4.1.12'],
+      cards: [
+        {
+          h: 'The payment is more than the deductions',
+          p: [
+            'Having built a payslip, the last calculation is what the **employer** must send HMRC. This is the figure students most often get wrong, and the reason is a single conceptual point.',
+            'The amount due is not merely what was deducted from employees. It is **everything deducted from employees, plus the employer\'s own National Insurance contribution**. Employer\'s NI is a genuine cost of employment borne by the business — it is not withheld from anybody\'s wage, it does not appear as a deduction on the payslip, and the employee never sees it. But it is paid over to HMRC in the same payment.',
+            'So the total has four components in a typical case: **PAYE Income Tax** deducted from employees, **employee National Insurance** deducted from employees, **employer National Insurance** paid by the business, and **student loan repayments** deducted from employees.',
+            'And it excludes several things that were on the payslip. **Pension contributions** go to the pension provider, not HMRC. **Union subscriptions** go to the union. **Attachment of earnings** goes wherever the court directed. A deduction being made through the payroll does not make it money owed to HMRC — the question is always who the money belongs to.',
+          ],
+          formula: 'Due to HMRC = PAYE + employee NI + employer NI + student loan repayments',
+          examtrap: 'Employer\'s National Insurance is included in the payment to HMRC but never appears as a deduction on a payslip. Pension contributions appear on the payslip but are NOT paid to HMRC.',
+        },
+        {
+          h: 'Working out the monthly payment',
+          p: [
+            'Questions here typically give a list of figures, some of which belong in the payment and some of which do not. The work is in classification rather than arithmetic — decide who each amount belongs to before adding anything.',
+          ],
+          worked: {
+            title: 'The amount due to HMRC for the month',
+            problem: 'For the month, Kelso Ltd\'s payroll shows: gross pay £48,000; PAYE Income Tax £7,900; employee National Insurance £3,850; employer National Insurance £5,120; student loan repayments £340; employee pension contributions £2,400; employer pension contributions £1,440; union subscriptions £85. How much is due to HMRC?',
+            steps: [
+              { do: 'Include the PAYE.', why: '£7,900 of Income Tax was deducted from employees and belongs to HMRC.' },
+              { do: 'Include the employee National Insurance.', why: '£3,850 deducted from employees, also owed to HMRC.' },
+              { do: 'Include the employer National Insurance.', why: '£5,120. This was never deducted from anyone — it is the employer\'s own liability — but it goes to HMRC in the same payment. Omitting it is the single most common error in this calculation.' },
+              { do: 'Include the student loan repayments.', why: '£340 deducted from employees. Student loan repayments are collected through PAYE and passed to HMRC.' },
+              { do: 'Exclude the pension contributions.', why: 'Both the £2,400 from employees and the £1,440 from the employer go to the PENSION PROVIDER. Neither is owed to HMRC, however they appear on the payslip.' },
+              { do: 'Exclude the union subscriptions.', why: 'The £85 belongs to the union. It is a non-statutory deduction and has nothing to do with the tax system.' },
+              { do: 'Total the four HMRC items.', why: '£7,900 + £3,850 + £5,120 + £340 = £17,210 due to HMRC.' },
+            ],
+            answer: '£17,210 due to HMRC',
+            tryIt: {
+              q: 'A payroll shows PAYE of £4,200, employee NI of £1,900, employer NI of £2,300 and employee pension contributions of £1,100. How much is due to HMRC, in pounds?',
+              answer: 8400,
+              unit: '£',
+              hint: 'Three of these four go to HMRC. Decide who the pension money belongs to.',
+              exp: '£4,200 + £1,900 + £2,300 = £8,400. The £1,100 of pension contributions goes to the pension provider, not HMRC, so it is excluded — while the employer\'s NI is included even though no employee was ever charged it.',
+            },
+          },
+        },
+        {
+          h: 'Reconciling the payroll',
+          p: [
+            'The final "be able to" of this topic is reconciliation, and it works at two levels which are worth keeping distinct.',
+            'The **individual** reconciliation is the one from the last lesson: for each employee, gross pay less every deduction equals net pay.',
+            'The **employer** reconciliation is the one that proves the payroll as a whole: the total cost to the business is the total net pay to employees, plus everything owed to HMRC, plus everything owed to third parties. Nothing may appear twice and nothing may be unaccounted for.',
+            'Stated as an identity: **gross pay + employer NI + employer pension = net pay + HMRC + pension provider + other third parties**. The left is what the employment cost; the right is where the money went. An imbalance means something has been misclassified, and the size of the gap usually names the culprit — a gap equal to the employer\'s NI means it has been left out of the payment to HMRC, which is the most frequent error of all.',
+            'It is worth noticing that gross pay is not the cost of employing somebody. Employer\'s National Insurance and employer pension contributions are real costs on top of it. An employee on £30,000 costs the business meaningfully more than £30,000, and the payroll reconciliation is where that becomes visible.',
+          ],
+          formula: 'Gross pay + employer NI + employer pension = Net pay + due to HMRC + pension provider + other third parties',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A payroll shows PAYE £5,600, employee NI £2,400, employer NI £3,100, student loan repayments £220, and employee pension contributions £1,800. How much is due to HMRC, in pounds?',
+          answer: 11320,
+          unit: '£',
+          exp: '£5,600 + £2,400 + £3,100 + £220 = £11,320. Employer\'s NI is included even though it was never deducted from an employee. The £1,800 of pension contributions goes to the pension provider and is excluded.',
+        },
+        {
+          type: 'mcq',
+          q: 'Which item appears in the payment to HMRC but never as a deduction on an employee’s payslip?',
+          opts: [
+            'Employer National Insurance contributions',
+            'Employee National Insurance contributions',
+            'Student loan repayments collected through PAYE',
+            'PAYE Income Tax deducted from wages',
+          ],
+          ans: 0,
+          exp: 'Employer’s NI is the business’s own liability — it is not withheld from anyone’s pay, so it never shows as a payslip deduction, but it is paid over to HMRC with everything else. The other three are all deducted from the employee and appear on the payslip.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about the amount due to HMRC is true or false.',
+          statements: [
+            { text: 'Employee pension contributions are paid over to HMRC.', answer: false },
+            { text: 'Employer National Insurance forms part of the payment to HMRC.', answer: true },
+            { text: 'Gross pay understates the true cost of employing someone.', answer: true },
+            { text: 'Union subscriptions deducted from wages are owed to HMRC.', answer: false },
+          ],
+          exp: 'Pension contributions go to the pension provider and union subscriptions to the union — being deducted through the payroll does not make money HMRC\'s. Employer\'s NI does go to HMRC and is a real cost on top of gross pay, which is why gross pay alone understates what an employee costs.',
+        },
+      ],
+    },
+
+    /* ── 4.2 ────────────────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-4E',
+      title: 'The forms, and when they are due',
+      icon: '📄',
+      criteria: ['TPFB-4.2.1', 'TPFB-4.2.2', 'TPFB-4.2.3'],
+      cards: [
+        {
+          h: 'Six forms, each with a moment',
+          p: [
+            'Payroll produces a small set of standard forms. Each exists for a particular moment in the employment relationship, and learning them by **when** rather than by name is far more reliable — the assessment usually describes a situation and asks which form applies.',
+            'A **starter checklist** is completed when someone joins **without a P45**, collecting what is needed to work out a tax code. A **payslip** is issued **every pay period**, on or before payday, itemising gross pay, deductions and net pay; it is a legal right rather than a courtesy. A **P45** is issued when an employee **leaves**, recording pay and tax to that date so the next employer can operate the right code.',
+            'The remaining three are annual. A **P60** is the end-of-year certificate given to everyone still employed on 5 April, summarising the year\'s taxable pay and deductions. A **P11D** reports **expenses and benefits** provided to an employee that were not put through the payroll. A **P11D(b)** is the employer\'s declaration and the **Class 1A National Insurance** due on those benefits.',
+            'Note the relationship between the last two, because it is a common confusion. The P11D is per employee and reports the benefits; the P11D(b) is one form for the employer and carries the Class 1A liability. An employer that payrolls all its benefits needs no P11Ds at all — but it still needs a P11D(b).',
+          ],
+          table: {
+            headers: ['Form', 'When', 'Deadline'],
+            rows: [
+              ['Starter checklist', 'A new employee with no P45', 'Before the first payment'],
+              ['Payslip', 'Every pay period', 'On or before payday'],
+              ['P45', 'An employee leaves', 'On leaving'],
+              ['P60', 'Employed on 5 April', '**31 May**'],
+              ['P11D', 'Benefits not payrolled', '**6 July**'],
+              ['P11D(b)', 'Class 1A NIC declaration', '**6 July**; pay by **22 July**'],
+            ],
+          },
+        },
+        {
+          h: 'The dates worth memorising',
+          p: [
+            'Three annual dates carry most of the marks in this topic, and they cluster in a way that makes them easier to hold together than separately.',
+            'The tax year ends **5 April**. **31 May** is the P60 deadline — employees get their end-of-year certificate about eight weeks later. **6 July** is the P11D and P11D(b) deadline, and it is also the date by which the employee must receive their copy of the P11D. **22 July** is when the Class 1A National Insurance on those benefits must reach HMRC electronically, or **19 July** if paying by cheque.',
+            'That last pair should look familiar. The **22nd electronic, 19th non-electronic** split is the same one that applies to ordinary monthly PAYE payments, covered in the next lesson. It is a general rule about how HMRC treats payment methods rather than something specific to Class 1A, which makes it one fact rather than two.',
+            'A useful way to hold the sequence: the year ends in April, employees are told where they stand by the end of May, benefits are reported in early July, and the tax on those benefits is paid a fortnight later.',
+          ],
+          flow: ['5 April — tax year ends', '31 May — P60 to employees', '6 July — P11D and P11D(b)', '22 July — Class 1A NIC paid'],
+          examtrap: 'The P11D deadline is 6 July for BOTH filing with HMRC and giving the employee their copy. The Class 1A payment is a separate, later date — 22 July electronically.',
+        },
+        {
+          h: 'P11D or payrolling — two ways to handle benefits',
+          p: [
+            'The specification asks specifically for the difference between **reporting benefits on a P11D** and **payrolling** them, and the distinction is about **when the employee pays the tax**.',
+            'Under the **P11D route**, benefits are reported after the tax year ends. HMRC then collects the tax by adjusting the employee\'s tax code, typically in a later year. The employee pays eventually, but by an indirect route and on a delay, and the tax code change often arrives without explanation — which is why it generates so many queries.',
+            'Under **payrolling**, the taxable value of the benefit is put through the payroll and taxed **in real time**, spread across the year alongside ordinary pay. No P11D is needed for a payrolled benefit. The employee pays the right tax as they go, sees it on the payslip, and avoids the tax code adjustment altogether.',
+            'Two qualifications matter. The employer must **register with HMRC before the start of the tax year** in which it wants to payroll benefits — this cannot be decided retrospectively. And a **P11D(b) is still required** either way, because the employer\'s Class 1A National Insurance on the benefits is due regardless of how the employee\'s Income Tax was collected.',
+            'Payrolling is the direction of travel, and for good reason: it is simpler for the employee, more transparent, and removes a whole class of tax code confusion. But it requires a decision in advance, which is exactly the sort of detail an assessment likes to test.',
+          ],
+          split: {
+            left: { title: 'P11D route', items: ['Reported after the tax year ends', 'Tax collected via a tax code adjustment', 'The employee pays late and indirectly', 'A P11D per employee, by 6 July'] },
+            right: { title: 'Payrolling', items: ['Taxed in real time through the payroll', 'Spread across the year with ordinary pay', 'Visible on the payslip, no code change', 'No P11D — but **register in advance**'] },
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'By what date must an employer give a P60 to employees?',
+          opts: [
+            '31 May following the end of the tax year',
+            '6 July following the end of the tax year',
+            '5 April, being the last day of the tax year itself',
+            '22 July, alongside the Class 1A National Insurance payment',
+          ],
+          ans: 0,
+          exp: 'The P60 deadline is 31 May, about eight weeks after the tax year ends on 5 April. 6 July is the P11D and P11D(b) deadline, and 22 July is when the Class 1A National Insurance must be paid electronically.',
+        },
+        {
+          type: 'mcq',
+          q: 'An employer payrolls all of its benefits. What must it still submit?',
+          opts: [
+            'A P11D(b), because the Class 1A National Insurance is still due',
+            'Nothing further, because payrolling replaces all benefit reporting',
+            'A P11D for each employee, in addition to the payrolled amounts',
+            'A starter checklist for every employee receiving a benefit',
+          ],
+          ans: 0,
+          exp: 'Payrolling removes the need for P11Ds, because the employee’s Income Tax has already been collected in real time. But the employer’s Class 1A National Insurance on those benefits is still due, and the P11D(b) is the form that declares it.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about payroll forms is true or false.',
+          statements: [
+            { text: 'A payslip must be given on or before payday.', answer: true },
+            { text: 'A starter checklist is used when a new employee has no P45.', answer: true },
+            { text: 'An employer can decide to payroll benefits part-way through a tax year.', answer: false },
+            { text: 'A P45 is issued at the end of every tax year.', answer: false },
+          ],
+          exp: 'The payslip is a legal right, due on or before payday. The starter checklist substitutes for a missing P45. Payrolling must be registered for BEFORE the tax year starts. And a P45 is issued when an employee leaves — it is the P60 that comes at the year end.',
+        },
+        {
+          type: 'gapfill',
+          q: 'Complete the three annual payroll deadlines.',
+          template: 'The P60 is due by {0}, the P11D and P11D(b) by {1}, and the Class 1A National Insurance must reach HMRC electronically by {2}.',
+          gaps: [
+            { options: ['31 May', '6 July', '5 April'], answer: 0 },
+            { options: ['6 July', '31 May', '22 July'], answer: 0 },
+            { options: ['22 July', '19 July', '6 July'], answer: 0 },
+          ],
+          exp: 'The tax year ends 5 April; employees get their P60 by 31 May; benefits are reported by 6 July; and the Class 1A NIC is paid by 22 July electronically, or 19 July by cheque.',
+        },
+      ],
+    },
+
+    /* ── 4.2 continued ──────────────────────────────────────────────────── */
+    {
+      id: 'L3-TPFB-4F',
+      title: 'RTI, deadlines and what late costs',
+      icon: '⏱️',
+      criteria: ['TPFB-4.2.4', 'TPFB-4.2.5', 'TPFB-4.2.6', 'TPFB-4.2.7', 'TPFB-4.2.8'],
+      cards: [
+        {
+          h: 'Real Time Information',
+          p: [
+            'Payroll is reported to HMRC under **Real Time Information**, and the name describes the change it made. Before RTI, an employer deducted tax all year and told HMRC what had happened once, after the year ended. Under RTI a submission is made **every time employees are paid**.',
+            'The consequence is that HMRC knows what each employee has earned within days rather than months. That is what makes real-time adjustment of tax codes possible, and it is what allows Universal Credit to respond to earnings as they change. It also means an employer\'s errors are visible almost immediately rather than at the year end.',
+            'Two submissions do the work, and understanding what each is **for** makes the details follow.',
+            'The **Full Payment Submission (FPS)** reports **what was paid**: for every employee paid in the period, their gross pay, Income Tax, National Insurance, student loan and pension deductions, together with starters, leavers and changes of detail. It must be sent **on or before the date the employees are paid** — not afterwards, and not at the month end. This holds even for an employer paying HMRC quarterly, because the reporting cycle and the payment cycle are separate things.',
+            'The **Employer Payment Summary (EPS)** reports **why less is owed** than the FPS implies: statutory pay recovered, the Employment Allowance, CIS deductions suffered — and a declaration that no employees were paid at all in a month. It is due by the **19th of the following tax month**, and is only sent when there is something to report.',
+          ],
+          table: {
+            headers: ['', 'FPS', 'EPS'],
+            rows: [
+              ['Reports', 'What was paid to employees', 'Why less is owed to HMRC'],
+              ['Contains', 'Pay, deductions, starters, leavers, changes', 'Statutory pay recovered, Employment Allowance, CIS suffered, nil payment months'],
+              ['Deadline', '**On or before payday**', '**19th of the following tax month**'],
+              ['Frequency', 'Every time employees are paid', 'Only when there is something to report'],
+            ],
+          },
+        },
+        {
+          h: 'Paying HMRC',
+          p: [
+            'Reporting and paying are separate obligations with separate deadlines, exactly as they were for VAT — except that in VAT the two shared a date, and here they do not.',
+            'The payment deadline is the **' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the following month** if paying electronically, or the **' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th** if paying by post. This is the same electronic/non-electronic split seen on the Class 1A deadline in the last lesson, and it reflects the same underlying principle from lesson 1D: what matters is when **cleared funds reach HMRC**, so a slower method needs a longer run-up.',
+            'A smaller employer may pay **quarterly** rather than monthly, where the average monthly liability is under **£' + T.payroll.paymentToHmrc.quarterlyThreshold.value.toLocaleString('en-GB') + '**. The reporting obligation is unaffected: the FPS is still due on or before every payday, twelve times a year for a monthly payroll, even though only four payments are made. Assuming quarterly payment implies quarterly reporting is a trap the assessment sets deliberately.',
+            'The pattern to carry away is that **the FPS is tied to the payday, and the payment is tied to the month end**. They move independently, and an employer can be perfectly compliant on one and late on the other.',
+          ],
+          flow: ['Employees paid', 'FPS on or before that day', 'EPS by the 19th, if needed', 'Pay HMRC by the 22nd'],
+          examtrap: 'Quarterly PAYMENT does not mean quarterly REPORTING. An employer paying HMRC quarterly still files an FPS on or before every single payday.',
+        },
+        {
+          h: 'Late filing',
+          p: [
+            'A late FPS is penalised on a **monthly** basis, and the penalty is scaled by **headcount** rather than by the tax at stake — a design that differs from every other penalty in this unit.',
+            'The amounts are **£' + T.payroll.penalties.lateFiling.byEmployees['1to9'] + '** for 1 to 9 employees, **£' + T.payroll.penalties.lateFiling.byEmployees['10to49'] + '** for 10 to 49, **£' + T.payroll.penalties.lateFiling.byEmployees['50to249'] + '** for 50 to 249, and **£' + T.payroll.penalties.lateFiling.byEmployees['250plus'] + '** for 250 or more. They are charged for each month or part month the return is late.',
+            'The **first failure in a tax year is not penalised** — a genuine allowance for the occasional slip, in the same spirit as the points threshold for VAT returns, though the mechanism is quite different. Annual schemes are excepted from that relief.',
+            'A return still outstanding after **three months** attracts a further penalty of **5% of the tax** that should have been reported on it. At that point the penalty stops being a flat administrative charge and starts scaling with the money involved.',
+          ],
+          table: {
+            headers: ['Employees', 'Penalty per month'],
+            rows: [
+              ['1 to 9', '£' + T.payroll.penalties.lateFiling.byEmployees['1to9']],
+              ['10 to 49', '£' + T.payroll.penalties.lateFiling.byEmployees['10to49']],
+              ['50 to 249', '£' + T.payroll.penalties.lateFiling.byEmployees['50to249']],
+              ['250 or more', '£' + T.payroll.penalties.lateFiling.byEmployees['250plus']],
+              ['Outstanding after 3 months', '**A further 5% of the tax due**'],
+            ],
+          },
+        },
+        {
+          h: 'Late payment',
+          p: [
+            'Late **payment** is penalised as a **percentage of the amount paid late**, and the percentage escalates with the number of times it has happened in the tax year. This is a different mechanism again from the VAT regime in lesson 1G, where the escalation was by elapsed time rather than by repetition.',
+            'The **first failure to pay on time in a tax year does not count as a default**. After that: **' + T.payroll.penalties.latePayment.byDefaults['1to3'] + '%** for 1 to 3 defaults, **' + T.payroll.penalties.latePayment.byDefaults['4to6'] + '%** for 4 to 6, **' + T.payroll.penalties.latePayment.byDefaults['7to9'] + '%** for 7 to 9, and **' + T.payroll.penalties.latePayment.byDefaults['10plus'] + '%** for 10 or more. An employer that is habitually a few days late therefore pays progressively more for the same behaviour.',
+            'Two further penalties catch prolonged non-payment, and both apply even where only one payment in the year was late. An amount still unpaid after **6 months** attracts an additional **5%**, and after **12 months** a further **5%**.',
+            '**Daily interest** runs on everything unpaid from the due date until payment, separately from all of the above. As with VAT, interest is not a penalty and is not discretionary — it is the price of holding money that was due.',
+            'It is worth putting this beside the VAT regime rather than learning it in isolation, because the two are examined in one paper and the mechanisms are genuinely different. VAT late payment escalates with **how long** the money is outstanding. PAYE late payment escalates with **how often** the employer has been late. Getting the two the wrong way round is the mistake this pairing is designed to catch.',
+          ],
+          split: {
+            left: { title: 'VAT late payment', items: ['Escalates with **elapsed time**', '3% at day 15, a further 3% at day 30', 'Then 10% a year accruing daily', 'Nothing at all within 15 days'] },
+            right: { title: 'PAYE late payment', items: ['Escalates with **number of defaults**', '1% → 2% → 3% → 4% across the year', 'Extra 5% at 6 months, 5% more at 12', 'First failure in the year is free'] },
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'When must a Full Payment Submission be sent to HMRC?',
+          opts: [
+            'On or before the date the employees are paid',
+            'By the 19th of the following tax month, alongside any EPS',
+            'By the 22nd of the following month, with the payment',
+            'Quarterly, where the employer pays HMRC quarterly',
+          ],
+          ans: 0,
+          exp: 'The FPS is tied to the payday itself, not to the month end. It is due on or before the date employees are paid, and that holds even for an employer that pays HMRC quarterly — the reporting cycle and the payment cycle are independent.',
+        },
+        {
+          type: 'mcq',
+          q: 'An employer with 30 employees files its FPS one month late. It has already been late once earlier in the same tax year. What penalty applies?',
+          opts: [
+            '£' + T.payroll.penalties.lateFiling.byEmployees['10to49'] + ', being the monthly penalty for 10 to 49 employees',
+            'Nothing, because the first failure in a tax year is not penalised',
+            '£100, the penalty being fixed regardless of the number of employees',
+            '5% of the tax due on the missing return',
+          ],
+          ans: 0,
+          exp: 'The late filing penalty is scaled by headcount, and 30 employees falls in the 10 to 49 band at £' + T.payroll.penalties.lateFiling.byEmployees['10to49'] + ' a month. The first-failure relief was used up by the earlier lateness, so this one is charged. The 5% charge only applies once a return is more than three months outstanding.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Decide whether each statement about RTI and deadlines is true or false.',
+          statements: [
+            { text: 'An EPS reports amounts that reduce what the employer owes HMRC.', answer: true },
+            { text: 'An employer paying HMRC quarterly may also file its FPS quarterly.', answer: false },
+            { text: 'PAYE paid electronically is due by the 22nd of the following month.', answer: true },
+            { text: 'The first failure to pay PAYE on time in a tax year counts as a default.', answer: false },
+          ],
+          exp: 'The EPS reports statutory pay recovered, the Employment Allowance and similar reductions. Quarterly payment never implies quarterly reporting — the FPS follows every payday. The 22nd is the electronic payment deadline, the 19th non-electronic. And the first failure in a year does not count as a default, so it carries no percentage penalty.',
+        },
+        {
+          type: 'mcq',
+          q: 'How does the PAYE late payment penalty differ from the VAT late payment penalty?',
+          opts: [
+            'PAYE escalates with the number of defaults in the year; VAT escalates with how long the money is outstanding',
+            'PAYE escalates with elapsed time; VAT escalates with the number of separate defaults',
+            'Both escalate identically, being charged under the same statutory regime',
+            'PAYE carries no percentage penalty at all, only daily interest on the amount unpaid',
+          ],
+          ans: 0,
+          exp: 'The two mechanisms are genuinely different and are examined in the same paper. PAYE runs 1% to 4% according to how many times the employer has been late in the tax year. VAT charges 3% at day 15, a further 3% at day 30, then 10% a year from day 31 — driven entirely by elapsed time.',
+        },
+      ],
+    },
+  ];
+
   /* One entry per learning outcome. The orientation lessons open Outcome 1
      because they are the opening of the unit, not of any one outcome. */
   var PATH = [
@@ -2535,6 +3141,15 @@
       outcomeTitle: 'Review and verify VAT returns',
       weighting: 20,
       lessons: LESSONS_LO3,
+    },
+    {
+      unit: 'tpfb',
+      level: 3,
+      title: 'Tax Processes for Businesses',
+      outcome: 4,
+      outcomeTitle: 'Understand principles of payroll',
+      weighting: 15,
+      lessons: LESSONS_LO4,
     },
   ];
 

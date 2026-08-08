@@ -329,6 +329,100 @@
       }
     },
 
+    /* ── Payroll (Outcome 4) ────────────────────────────────────────────────
+       The specification EXCLUDES calculating Income Tax, National Insurance and
+       student loan repayments (TPFB 4.1.12), so no rates, thresholds or bands
+       appear here — the assessment supplies those figures. What is assessable
+       is the framework: who registers, what is kept, what is filed, by when,
+       and what happens when it is late. */
+    payroll: {
+      registration: {
+        when: 'Before the first payday. A business must register as an employer even if it employs only its sole director.',
+        earliestBefore: { value: 2, unit: 'months', note: 'Registration cannot be made more than two months before the first payment.' },
+        source: 'HMRC, Register as an employer', checked: '2026-08-08'
+      },
+
+      records: {
+        whatToKeep: [
+          'what was paid to each employee, and the deductions made',
+          'reports submitted to HMRC and payments made to HMRC',
+          'employee leave and sickness absence',
+          'tax code notices',
+          'taxable expenses and benefits',
+          'Payroll Giving Scheme documents, where operated'
+        ],
+        retentionYears: { value: 3, unit: 'years',
+          note: 'Three years from the END OF THE TAX YEAR they relate to — shorter than the six years for VAT records, and the two are easily confused.' },
+        software: 'Payroll must be run using software able to report under Real Time Information; HMRC offers Basic PAYE Tools for employers with fewer than 10 employees.',
+        penalty: { value: 3000, unit: '£',
+          note: 'Where records are not kept, HMRC may estimate what is owed AND charge a penalty of up to £3,000.' },
+        lostRecords: 'HMRC must be told immediately, and the employer must make reasonable efforts to reconstruct the information.',
+        source: 'HMRC, PAYE and payroll for employers — keeping records', checked: '2026-08-08'
+      },
+
+      rti: {
+        principle: 'Payroll is reported in REAL TIME: a submission is made every time employees are paid, rather than once a year.',
+        fps: {
+          name: 'Full Payment Submission',
+          content: 'Pay and deductions for every employee paid in the period — gross pay, tax, National Insurance, student loan, pension — plus starters, leavers and changes of details. It reports what was paid.',
+          deadline: 'On or before the date the employees are paid. This holds even for an employer that pays HMRC quarterly.'
+        },
+        eps: {
+          name: 'Employer Payment Summary',
+          content: 'Amounts that REDUCE what is owed to HMRC — statutory pay recovered, the Employment Allowance, CIS deductions suffered — and a declaration where no employees were paid in a month.',
+          deadline: 'By the 19th of the following tax month.',
+          note: 'An EPS is sent only when there is something to report. The FPS says what was paid; the EPS says why less is owed than the FPS implies.'
+        },
+        source: 'HMRC, Running payroll — reporting to HMRC', checked: '2026-08-08'
+      },
+
+      paymentToHmrc: {
+        electronicDeadline: { value: 22, unit: 'day of the following month' },
+        nonElectronicDeadline: { value: 19, unit: 'day of the following month' },
+        quarterlyThreshold: { value: 1500, unit: '£',
+          note: 'An employer whose average monthly liability is under £1,500 may pay quarterly instead of monthly.' },
+        source: 'HMRC, Running payroll — paying HMRC', checked: '2026-08-08'
+      },
+
+      forms: {
+        starterChecklist: { what: 'Collects the details needed to work out a new employee’s tax code where no P45 is available.', when: 'Before the first payment to a new employee.' },
+        payslip: { what: 'Shows gross pay, deductions (itemised) and net pay.', when: 'On or before payday. It is a legal right, not a courtesy.' },
+        p45: { what: 'Records pay and tax to the date of leaving, so the next employer can operate the right code.', when: 'On the employee leaving.' },
+        p60: { what: 'End-of-year certificate summarising the year’s taxable pay and deductions.', when: 'By 31 May following the end of the tax year, to everyone employed on 5 April.' },
+        p11d: { what: 'Reports expenses and benefits provided to an employee that were not payrolled.', when: 'By 6 July following the end of the tax year; the employee gets a copy by the same date.' },
+        p11db: { what: 'The employer’s declaration and the Class 1A National Insurance due on those benefits.', when: 'By 6 July; the Class 1A NIC is payable by 22 July electronically, 19 July by cheque.' },
+        source: 'HMRC, PAYE forms P45, P60, P11D; Expenses and benefits — deadlines', checked: '2026-08-08'
+      },
+
+      payrollingBenefits: {
+        what: 'Benefits are put through the payroll and taxed in real time across the year, instead of being reported on a P11D after it.',
+        effect: 'No P11D is needed for a payrolled benefit, and the employee pays the tax as they go rather than through a changed tax code later. A P11D(b) is still required for the Class 1A National Insurance.',
+        registration: 'The employer must register with HMRC to payroll benefits BEFORE the start of the tax year in which it wants to do so.',
+        source: 'HMRC, Expenses and benefits — reporting and paying', checked: '2026-08-08'
+      },
+
+      penalties: {
+        lateFiling: {
+          model: 'A monthly penalty based on headcount, for a late Full Payment Submission.',
+          byEmployees: { '1to9': 100, '10to49': 200, '50to249': 300, '250plus': 400 },
+          unit: '£ per month',
+          firstFailureFree: 'The FIRST failure in a tax year is not penalised (annual schemes excepted).',
+          extendedFailure: 'A return still outstanding after 3 months attracts a further penalty of 5% of the tax that should have been reported.',
+          source: 'HMRC, What happens if you do not report payroll information on time', checked: '2026-08-08'
+        },
+        latePayment: {
+          model: 'A percentage of the amount paid late, escalating with the number of defaults in the tax year.',
+          byDefaults: { '1to3': 1, '4to6': 2, '7to9': 3, '10plus': 4 },
+          unit: '%',
+          firstFailureFree: 'The first failure to pay on time in a tax year does not count as a default.',
+          sixMonths: { value: 5, unit: '%', note: 'An additional 5% if still unpaid after 6 months.' },
+          twelveMonths: { value: 5, unit: '%', note: 'A further 5% if still unpaid after 12 months.' },
+          interest: 'Daily interest accrues on all unpaid amounts from the due date until payment, separately from the penalties.',
+          source: 'HMRC, Late payment penalties for PAYE and National Insurance', checked: '2026-08-08'
+        }
+      }
+    },
+
     /* Figures the assessment SUPPLIES rather than expects from memory. Teach the
        method and the fact that a table will be given; do not ship a table that
        will be wrong next year. */

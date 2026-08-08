@@ -184,7 +184,12 @@
         '<span>' + md(c.callout.text) + '</span></div>';
     }
     if (c.examtrap) {
-      h += '<div class="a3-trap"><span class="a3-trap-l">Exam trap</span><span>' + md(c.examtrap) + '</span></div>';
+      /* Canonically a string. Tolerate { text } too: an examtrap authored in the
+         callout's shape once shipped as a literal "[object Object]" on the card,
+         and a renderer that degrades to nothing visible is better than one that
+         degrades to that. scripts/check-aat3-quality.js enforces the string. */
+      h += '<div class="a3-trap"><span class="a3-trap-l">Exam trap</span><span>' +
+        md(typeof c.examtrap === 'string' ? c.examtrap : (c.examtrap.text || '')) + '</span></div>';
     }
     if (c.worked) h += workedHtml(c.worked);
     return h;
