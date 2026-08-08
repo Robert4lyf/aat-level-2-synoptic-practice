@@ -1174,7 +1174,7 @@
             'The broker charges £0 of output tax and reclaims nothing. It receives nothing from HMRC, and its costs are £48,000. The £8,000 has become an ordinary business expense that reduces its profit, exactly as it would for a private individual.',
             'Same customer experience, £16,000 apart. That is why the specification asks you to know the categories rather than the rates, and why "no VAT is charged" is never a sufficient answer to a question about a supply.',
           ],
-          examtrap: { text: 'Asked whether a supply is "taxable", zero-rated counts as YES. It is a taxable supply at a rate of 0%. Only exempt and outside-the-scope supplies are not taxable supplies.' },
+          examtrap: 'Asked whether a supply is "taxable", zero-rated counts as YES. It is a taxable supply at a rate of 0%. Only exempt and outside-the-scope supplies are not taxable supplies.',
         },
         {
           h: 'Where the tax finally lands',
@@ -1337,7 +1337,7 @@
             '**Turnover** means the value of supplies, not profit and not cash received. It is measured net of VAT, and it includes sales the business has invoiced but not yet been paid for.',
             'The threshold is not tested against a financial year. It is tested on a **rolling 12-month basis**, which means it must be reconsidered at the end of every single month, looking back over the previous twelve. A business with steady sales of £8,000 a month will cross £' + T.registration.threshold.value.toLocaleString('en-GB') + ' partway through its second year without anything unusual happening in any individual month.',
           ],
-          examtrap: { text: 'Zero-rated sales count towards the registration threshold. A business can be obliged to register even though it will charge no VAT to any customer — and it will then recover input tax, which is usually to its advantage.' },
+          examtrap: 'Zero-rated sales count towards the registration threshold. A business can be obliged to register even though it will charge no VAT to any customer — and it will then recover input tax, which is usually to its advantage.',
         },
         {
           h: 'Two tests, two different answers',
@@ -1403,7 +1403,7 @@
             '**Voluntary deregistration** is available where taxable turnover for the **next 12 months** is expected to fall below the deregistration threshold of **£' + T.registration.deregistrationThreshold.value.toLocaleString('en-GB') + '**. Note that this is a forward-looking test, on expected turnover, not a backward-looking one on what has already happened. HMRC may refuse the application.',
             'The deregistration threshold is set £' + (T.registration.threshold.value - T.registration.deregistrationThreshold.value).toLocaleString('en-GB') + ' below the registration threshold, and the gap is there for a reason. Without it, a business hovering around the line would be obliged to register and permitted to deregister in the same breath, and would spend its life going in and out of the system. The gap creates a buffer zone in which a registered business simply stays registered.',
           ],
-          examtrap: { text: 'The registration threshold looks BACK 12 months (historic test); the voluntary deregistration threshold looks FORWARD 12 months. Reversing the direction is a common and expensive slip.' },
+          examtrap: 'The registration threshold looks BACK 12 months (historic test); the voluntary deregistration threshold looks FORWARD 12 months. Reversing the direction is a common and expensive slip.',
         },
       ],
       check: [
@@ -1497,7 +1497,7 @@
               ['Direct debit', 'Collected automatically **3 working days after** the deadline'],
             ],
           },
-          examtrap: { text: 'The obligation is that the money REACHES HMRC by the deadline, not that it was sent by then. Choosing a three-working-day method on the due date makes the payment late.' },
+          examtrap: 'The obligation is that the money REACHES HMRC by the deadline, not that it was sent by then. Choosing a three-working-day method on the due date makes the payment late.',
         },
         {
           h: 'Making Tax Digital',
@@ -1618,7 +1618,7 @@
             'Three refinements attach to that basic bargain. A business in its **first year of VAT registration** takes a **1% discount** off its sector rate, running until the first anniversary of registration. A **limited cost business** — one whose spending on goods is under 2% of its flat rate turnover, or over 2% but under £1,000 a year — must use **' + T.schemes.flatRate.limitedCostBusiness.value + '%** whatever its sector; this exists to stop labour-only businesses with almost no costs profiting from a scheme designed for businesses with real purchases. And although input tax is not normally recoverable, it **may** be reclaimed on a single purchase of capital expenditure goods costing **£' + T.schemes.flatRate.capitalGoodsException.value.toLocaleString('en-GB') + ' or more including VAT**.',
             'The thresholds are asymmetric and the difference is deliberately awkward: **£' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' excluding VAT** to join, but **£' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' including VAT** to leave. They are not measured on the same basis, and a question that gives you one figure and asks about the other is testing exactly that.',
           ],
-          examtrap: { text: 'Flat rate thresholds are measured differently at each end: £' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' EXCLUDING VAT to join, £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' INCLUDING VAT to leave. And the flat percentage applies to VAT-inclusive turnover.' },
+          examtrap: 'Flat rate thresholds are measured differently at each end: £' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' EXCLUDING VAT to join, £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' INCLUDING VAT to leave. And the flat percentage applies to VAT-inclusive turnover.',
         },
         {
           h: 'Working out a flat rate payment',
@@ -1736,7 +1736,7 @@
               ['Deliberate and concealed', T.penalties.failureToNotify.behaviours.deliberateAndConcealed.max + '%', '30%', '50%'],
             ],
           },
-          examtrap: { text: 'Some study material still quotes a 5% / 10% / 15% late registration penalty with a £50 minimum. That regime applied only where the duty to notify arose before 1 April 2010. The live regime is behaviour-based, on potential lost revenue.' },
+          examtrap: 'Some study material still quotes a 5% / 10% / 15% late registration penalty with a £50 minimum. That regime applied only where the duty to notify arose before 1 April 2010. The live regime is behaviour-based, on potential lost revenue.',
         },
         {
           h: 'Late returns: the points system',
@@ -1844,7 +1844,7 @@
               ['Throughout', 'Late payment interest at base rate + 4%, from day one'],
             ],
           },
-          examtrap: { text: 'These rates changed under Finance Act 2025. They were previously 2% / 2% / 4%. Material written before the change quotes the old figures, and both sets look equally plausible.' },
+          examtrap: 'These rates changed under Finance Act 2025. They were previously 2% / 2% / 4%. Material written before the change quotes the old figures, and both sets look equally plausible.',
         },
         {
           h: 'Working out what late payment costs',
@@ -1975,7 +1975,7 @@
             'Read the two limbs together and the structure is: small errors always qualify; middling errors qualify if the business is big enough that the error is proportionately trivial; very large errors never qualify. That is a sensible design, and remembering the reason makes the mechanics much easier to reproduce under pressure than remembering three numbers.',
           ],
           flow: ['Net error ≤ £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → is it ≤ ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6 AND ≤ £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → Method 2'],
-          examtrap: { text: 'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the Box 6 figure for the period in which the error is DISCOVERED — not the period in which it was made. Questions give both figures.' },
+          examtrap: 'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the Box 6 figure for the period in which the error is DISCOVERED — not the period in which it was made. Questions give both figures.',
         },
         {
           h: '"Net error" means net',
@@ -2139,7 +2139,7 @@
             'The **record-keeping** effect is that the VAT account must show the correction separately. Adjusting the return without adjusting the underlying account leaves the two disagreeing, and the reconciliation in lesson 3E will then fail for a reason nobody can trace six months later.',
             'The **cash** effect is the one businesses feel. A large Method 1 correction arrives in a single period, on top of that period\'s ordinary liability. A business that has been under-declaring for a year does not repay it gently over the next year; it repays it all at once, on one due date, and if it cannot the late payment regime of lesson 1G begins immediately.',
           ],
-          examtrap: { text: 'Under Method 1 the correction disappears into the return\'s ordinary figures. Only the VAT account shows it separately — which is exactly why the VAT account has to be kept properly.' },
+          examtrap: 'Under Method 1 the correction disappears into the return\'s ordinary figures. Only the VAT account shows it separately — which is exactly why the VAT account has to be kept properly.',
         },
       ],
       check: [
@@ -2230,7 +2230,7 @@
             '**Box 7** is the total **net value of all purchases and other inputs**, excluding VAT, including imports. It excludes things that are outside the scope of VAT altogether: **wages, PAYE and National Insurance, drawings**, and other non-business expenditure. A Box 7 figure that has swallowed the payroll is a large and obvious error, and it is one of the first things a reviewer checks.',
             'It is worth holding on to why Box 6 matters beyond the return itself: it is the figure the **1% error correction test** is measured against. A business that habitually understates Box 6 by omitting its zero-rated sales is also, without realising, shrinking the size of error it may correct on a future return.',
           ],
-          examtrap: { text: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.' },
+          examtrap: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.',
         },
         {
           h: 'Imports and exports on the return',
@@ -2619,7 +2619,7 @@
               ['Penalty for failure', 'Up to £' + T.payroll.records.penalty.value.toLocaleString('en-GB') + ', plus an estimated assessment', '£' + T.records.penalty.value],
             ],
           },
-          examtrap: { text: 'Payroll records: ' + T.payroll.records.retentionYears.value + ' years. VAT records: ' + T.records.retentionYears.value + ' years. Both are examined in this unit and the numbers are easy to transpose under pressure.' },
+          examtrap: 'Payroll records: ' + T.payroll.records.retentionYears.value + ' years. VAT records: ' + T.records.retentionYears.value + ' years. Both are examined in this unit and the numbers are easy to transpose under pressure.',
         },
         {
           h: 'Software is not optional',
@@ -2700,7 +2700,7 @@
             '**Net pay** is what reaches the employee\'s bank account: gross pay less **every** deduction, whether it was taken before tax or after.',
           ],
           formula: 'Gross pay − pre-tax deductions = Taxable gross pay · Gross pay − ALL deductions = Net pay',
-          examtrap: { text: 'Taxable gross pay is NOT gross pay less all deductions. It is gross pay less only those deductions made BEFORE tax is calculated — pension under a net pay arrangement, payroll giving.' },
+          examtrap: 'Taxable gross pay is NOT gross pay less all deductions. It is gross pay less only those deductions made BEFORE tax is calculated — pension under a net pay arrangement, payroll giving.',
         },
         {
           h: 'Statutory and non-statutory deductions',
@@ -2811,7 +2811,7 @@
             'And it excludes several things that were on the payslip. **Pension contributions** go to the pension provider, not HMRC. **Union subscriptions** go to the union. **Attachment of earnings** goes wherever the court directed. A deduction being made through the payroll does not make it money owed to HMRC — the question is always who the money belongs to.',
           ],
           formula: 'Due to HMRC = PAYE + employee NI + employer NI + student loan repayments',
-          examtrap: { text: 'Employer\'s National Insurance is included in the payment to HMRC but never appears as a deduction on a payslip. Pension contributions appear on the payslip but are NOT paid to HMRC.' },
+          examtrap: 'Employer\'s National Insurance is included in the payment to HMRC but never appears as a deduction on a payslip. Pension contributions appear on the payslip but are NOT paid to HMRC.',
         },
         {
           h: 'Working out the monthly payment',
@@ -2922,7 +2922,7 @@
             'A useful way to hold the sequence: the year ends in April, employees are told where they stand by the end of May, benefits are reported in early July, and the tax on those benefits is paid a fortnight later.',
           ],
           flow: ['5 April — tax year ends', '31 May — P60 to employees', '6 July — P11D and P11D(b)', '22 July — Class 1A NIC paid'],
-          examtrap: { text: 'The P11D deadline is 6 July for BOTH filing with HMRC and giving the employee their copy. The Class 1A payment is a separate, later date — 22 July electronically.' },
+          examtrap: 'The P11D deadline is 6 July for BOTH filing with HMRC and giving the employee their copy. The Class 1A payment is a separate, later date — 22 July electronically.',
         },
         {
           h: 'P11D or payrolling — two ways to handle benefits',
@@ -3024,7 +3024,7 @@
             'The pattern to carry away is that **the FPS is tied to the payday, and the payment is tied to the month end**. They move independently, and an employer can be perfectly compliant on one and late on the other.',
           ],
           flow: ['Employees paid', 'FPS on or before that day', 'EPS by the 19th, if needed', 'Pay HMRC by the 22nd'],
-          examtrap: { text: 'Quarterly PAYMENT does not mean quarterly REPORTING. An employer paying HMRC quarterly still files an FPS on or before every single payday.' },
+          examtrap: 'Quarterly PAYMENT does not mean quarterly REPORTING. An employer paying HMRC quarterly still files an FPS on or before every single payday.',
         },
         {
           h: 'Late filing',

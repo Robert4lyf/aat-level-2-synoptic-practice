@@ -167,6 +167,80 @@ lessons.forEach(l => {
   });
 });
 
+/* ── 2a. Card fields must match the shape the renderer reads ─────────────── */
+/* An examtrap authored as { text: '…' } instead of a plain string rendered as
+   the literal "[object Object]" on a shipped card, because the renderer passes
+   it straight to md(). Nothing caught it: the data loaded, the coverage check
+   passed, the prose was counted. This encodes the contract in aat3-ui.js so a
+   field that would stringify into the page fails the build instead.
+
+   `str` means it reaches md()/esc() directly and MUST be a primitive. */
+const CARD_SHAPE = {
+  h: 'str',
+  p: 'str[]',
+  formula: 'str',
+  flow: 'str[]',
+  examtrap: 'str',
+  callout: { kind: 'str?', text: 'str' },
+  table: { headers: 'str[]?', rows: 'str[][]' },
+  example: { title: 'str?', rows: 'str[][]' },
+  split: { left: { title: 'str?', items: 'str[]' }, right: { title: 'str?', items: 'str[]' } },
+  worked: {
+    title: 'str?', problem: 'str', answer: 'str',
+    steps: [{ do: 'str', why: 'str?' }],
+    tryIt: { q: 'str', answer: 'num', unit: 'str?', hint: 'str?', exp: 'str?' },
+  },
+};
+
+function isPrim(v) { return typeof v === 'string' || typeof v === 'number'; }
+
+function checkShape(val, spec, where) {
+  if (val === undefined || val === null) return;
+  if (typeof spec === 'string') {
+    const optional = spec.endsWith('?');
+    const base = optional ? spec.slice(0, -1) : spec;
+    if (base === 'str') {
+      if (!isPrim(val)) errors.push(`${where}: must be text, but is ${Array.isArray(val) ? 'an array' : typeof val} — it would render as "[object Object]".`);
+    } else if (base === 'num') {
+      if (!Number.isFinite(val)) errors.push(`${where}: must be a finite number.`);
+    } else if (base === 'str[]') {
+      if (!Array.isArray(val)) { errors.push(`${where}: must be a list.`); return; }
+      val.forEach((x, i) => { if (!isPrim(x)) errors.push(`${where}[${i}]: must be text, but is ${typeof x} — it would render as "[object Object]".`); });
+    } else if (base === 'str[][]') {
+      if (!Array.isArray(val)) { errors.push(`${where}: must be a list of rows.`); return; }
+      val.forEach((row, r) => {
+        if (!Array.isArray(row)) { errors.push(`${where}[${r}]: must be a row (a list of cells).`); return; }
+        row.forEach((x, cIdx) => { if (!isPrim(x)) errors.push(`${where}[${r}][${cIdx}]: must be text — it would render as "[object Object]".`); });
+      });
+    }
+    return;
+  }
+  if (Array.isArray(spec)) {
+    if (!Array.isArray(val)) { errors.push(`${where}: must be a list.`); return; }
+    val.forEach((item, i) => checkShape(item, spec[0], `${where}[${i}]`));
+    return;
+  }
+  if (typeof val !== 'object' || Array.isArray(val)) { errors.push(`${where}: must be an object.`); return; }
+  Object.keys(spec).forEach(k => {
+    const sub = spec[k];
+    const required = typeof sub === 'string' ? !sub.endsWith('?') : true;
+    if (val[k] === undefined) {
+      if (required) errors.push(`${where}.${k}: missing.`);
+      return;
+    }
+    checkShape(val[k], sub, `${where}.${k}`);
+  });
+}
+
+lessons.forEach(l => {
+  (l.cards || []).forEach((c, ci) => {
+    Object.keys(c).forEach(k => {
+      if (!CARD_SHAPE[k]) { errors.push(`${l.id} card ${ci + 1}: unknown field "${k}" — the renderer will ignore it silently.`); return; }
+      checkShape(c[k], CARD_SHAPE[k], `${l.id} card ${ci + 1}.${k}`);
+    });
+  });
+});
+
 /* ── 2b. Arithmetic stated in prose must actually compute ────────────────── */
 /* Worked examples and explanations state their sums in the text — "£18,400 +
    £90 − £560 = £17,930". Those are load-bearing: a student who cannot
