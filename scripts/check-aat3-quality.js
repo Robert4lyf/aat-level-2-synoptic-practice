@@ -295,6 +295,34 @@ lessons.forEach(l => {
   });
 });
 
+/* ── 2a-ii. Prose must not promise an element the card does not have ─────── */
+/* A card's prose referred three times to "that table" and to "the most valuable
+   line in that table", and no table was ever rendered on it — the content had
+   been written as prose and the table never built. Deliberately narrow: it
+   fires only on phrases that promise something ON THIS CARD ("the table
+   below", "shown below"), never on a bare mention of "the table", because
+   material legitimately refers to tables HMRC publishes and supplies in the
+   assessment. A checker that cried wolf here would be worse than none. */
+const PROMISES = {
+  table: /\b(the|this)\s+table\s+(below|opposite|here)\b|\b(below|following)\s+table\b/i,
+  worked: /\bworked example below\b/i,
+  split: /\b(the\s+)?two\s+columns\s+below\b/i,
+  flow: /\b(the\s+)?(flow|sequence)\s+below\b/i,
+  example: /\bexample below\b/i,
+  formula: /\bformula below\b/i,
+};
+lessons.forEach(l => {
+  (l.cards || []).forEach((c, ci) => {
+    const prose = Array.isArray(c.p) ? c.p.join(' ') : String(c.p || '');
+    Object.keys(PROMISES).forEach(el => {
+      const m = prose.match(PROMISES[el]);
+      if (m && !c[el]) {
+        errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): prose says "${m[0]}" but the card has no ${el}.`);
+      }
+    });
+  });
+});
+
 /* ── 2b. Arithmetic stated in prose must actually compute ────────────────── */
 /* Worked examples and explanations state their sums in the text — "£18,400 +
    £90 − £560 = £17,930". Those are load-bearing: a student who cannot

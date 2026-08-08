@@ -815,8 +815,8 @@
           p: [
             'Where a business reclaims input tax on road fuel that is also used privately, it has to deal with the private element somehow. There are four permitted approaches, and the exam favours the third.',
             'It can **reclaim nothing** on road fuel at all — simple, but it must then apply that treatment to every vehicle, including commercial ones. It can **reclaim only the business proportion**, which requires detailed mileage records. It can reclaim only on fuel for business mileage where employees are reimbursed. Or it can **reclaim all the input tax and apply a fuel scale charge**, which trades a fixed charge for the record-keeping burden.',
-            'The scale charge is a fixed amount set by reference to the vehicle\'s CO2 emissions and the length of the VAT period, taken from a published table. It is treated as **additional output tax**, which is what makes it increase the VAT payable rather than reduce the amount recoverable.',
-            'Two details are routinely got wrong. The figure from the table is **VAT-inclusive**, so the VAT element is one sixth of it — the same divide-by-six as any other gross amount, not the whole figure. And the charge applies **per car**, for each car where fuel is available for private use; a business using the scale charge cannot pick and choose between qualifying vehicles.',
+            'The scale charge is a fixed amount set by reference to the vehicle\'s CO2 emissions and the length of the VAT period. You are not expected to memorise the amounts: they come from a table HMRC publishes, and that table is part of the reference material supplied during the assessment. The charge is treated as **additional output tax**, which is what makes it increase the VAT payable rather than reduce the amount recoverable.',
+            'Two details are routinely got wrong. The figure you look up is **VAT-inclusive**, so the VAT element is one sixth of it — the same divide-by-six as any other gross amount, not the whole figure. And the charge applies **per car**, for each car where fuel is available for private use; a business using the scale charge cannot pick and choose between qualifying vehicles.',
             'The charge applies to cars. Vans and commercial vehicles are outside it.',
           ],
           example: {
@@ -1893,8 +1893,17 @@
             'That can feel disproportionate until you see what is being protected. The notification requirement is what lets HMRC see the scale and pattern of errors across the taxpayer population. An error buried in a return is invisible; the same error notified is data. The obligation is to the transparency of the system, not only to the money.',
             'Two further points. A **deliberate** error must **always** be separately notified, whatever its size — the value limits apply only to genuine mistakes. And errors carry a behaviour-based penalty, calculated as a percentage of the tax and reduced for the quality of disclosure.',
             'That penalty table is **not** the failure-to-notify table from lesson 1F, and the difference is examinable. Errors in a return fall under a separate regime with its own first band — **careless** rather than non-deliberate — and no twelve-month distinction. A careless error disclosed unprompted can be reduced to **' + T.errorCorrection.penaltyForError.careless.unpromptedMin + '%**; prompted, the floor is **' + T.errorCorrection.penaltyForError.careless.promptedMin + '%**, not the 10% that applies to a late notification. Deliberate runs to ' + T.errorCorrection.penaltyForError.deliberate.max + '%, and deliberate and concealed to ' + T.errorCorrection.penaltyForError.deliberateAndConcealed.max + '%.',
-            'The most valuable line in that table is the one that is easy to skip: an inaccuracy made **despite taking reasonable care** carries no penalty at all. Care taken before the return goes, and disclosure made the moment an error is found, are together worth more than any amount of argument afterwards.',
+            'The most valuable line in the table below is the one that is easy to skip: an inaccuracy made **despite taking reasonable care** carries no penalty at all. Care taken before the return goes, and disclosure made the moment an error is found, are together worth more than any amount of argument afterwards.',
           ],
+          table: {
+            headers: ['Behaviour', 'Maximum', 'Minimum if unprompted', 'Minimum if prompted'],
+            rows: [
+              ['Reasonable care taken', '**No penalty**', '—', '—'],
+              ['Careless', T.errorCorrection.penaltyForError.careless.max + '%', '**' + T.errorCorrection.penaltyForError.careless.unpromptedMin + '%**', T.errorCorrection.penaltyForError.careless.promptedMin + '%'],
+              ['Deliberate', T.errorCorrection.penaltyForError.deliberate.max + '%', T.errorCorrection.penaltyForError.deliberate.unpromptedMin + '%', T.errorCorrection.penaltyForError.deliberate.promptedMin + '%'],
+              ['Deliberate and concealed', T.errorCorrection.penaltyForError.deliberateAndConcealed.max + '%', T.errorCorrection.penaltyForError.deliberateAndConcealed.unpromptedMin + '%', T.errorCorrection.penaltyForError.deliberateAndConcealed.promptedMin + '%'],
+            ],
+          },
           callout: { kind: 'warning', text: 'A deliberate error must always be separately notified, whatever the amount. The size limits exist for genuine mistakes only.' },
         },
         {
