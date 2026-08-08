@@ -784,3 +784,219 @@ body.story-mode .container { max-width: none; padding: 0; margin: 0; }
 }
 .sty-scr-panel-h { flex-wrap: nowrap; }
 .sty-scr-ref { white-space: nowrap; flex: none; }
+
+/* ══ PROTOTYPE DESK ════════════════════════════════════════════════════════
+   No prompts, no marks, no submit button, no options list. An invoice, a pen,
+   a daybook and three trays. The decisions are the same; none of them is a
+   form control. */
+.pr-desk { padding: 26px 0 40px; }
+.pr-head { margin-bottom: 6px; }
+.pr-from { font-size: clamp(24px,4.6vw,34px); font-weight: 800; letter-spacing: -.03em; margin: 4px 0 2px; }
+.pr-sub { color: var(--w-dimmer); font-size: 14.5px; margin: 0 0 26px; }
+
+/* the two documents, clipped */
+.pr-stack { position: relative; margin: 0 auto 30px; max-width: 560px; }
+.pr-sheet {
+  background: var(--w-paper); color: var(--w-ink);
+  font-family: var(--w-mono); font-size: 12.5px; line-height: 1.72;
+  padding: 24px 24px 20px;
+  filter: drop-shadow(0 22px 30px rgba(0,0,0,.75));
+  clip-path: polygon(0.4% 1.2%,22% 0.2%,51% 1.1%,78% 0.1%,99.6% 1.4%,99.2% 26%,100% 52%,
+                     99.3% 77%,99.7% 98.6%,74% 99.8%,47% 98.7%,21% 99.9%,0.6% 98.4%,1% 74%,0% 49%,0.7% 25%);
+}
+.pr-sheet::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:2; mix-blend-mode:overlay;
+  background:
+    linear-gradient(103deg,transparent 0 31%,rgba(0,0,0,.05) 32%,rgba(255,255,255,.30) 33.4%,transparent 35%),
+    linear-gradient(77deg,transparent 0 62%,rgba(0,0,0,.04) 63%,rgba(255,255,255,.25) 64.2%,transparent 66%),
+    radial-gradient(120% 80% at 14% 8%,rgba(255,255,255,.22),transparent 55%);
+}
+.pr-sheet > * { position: relative; z-index: 3; }
+.pr-behind {
+  position: absolute; inset: 0; transform: rotate(-2.6deg) translate(-16px,-10px);
+  background: var(--w-paper-alt); z-index: 0; opacity: .97;
+}
+.pr-front { position: relative; z-index: 1; transform: rotate(.5deg); cursor: grab; touch-action: none; }
+.pr-front.is-lifted {
+  transform: rotate(-1.2deg) scale(1.03);
+  filter: drop-shadow(0 40px 44px rgba(0,0,0,.85));
+  cursor: grabbing; z-index: 30;
+}
+.pr-front.is-dragging { transition: none; }
+.pr-front { transition: transform .18s cubic-bezier(.2,.7,.3,1), filter .18s; }
+.pr-clip {
+  position: absolute; top: -14px; left: 18px; width: 16px; height: 48px; z-index: 6;
+  border: 2.5px solid #9AA3A8; border-radius: 8px;
+  background: linear-gradient(90deg,transparent 45%,#B7C0C5 45% 55%,transparent 55%);
+  box-shadow: 0 2px 5px rgba(0,0,0,.55);
+}
+.pr-sheet-h { display:flex; justify-content:space-between; gap:14px; border-bottom:1.5px solid var(--w-paper-rule); padding-bottom:9px; margin-bottom:10px; }
+.pr-nm { font-weight:700; font-size:13.5px; letter-spacing:.04em; }
+.pr-sb { color: var(--w-ink-dim); }
+.pr-rf { text-align:right; white-space:nowrap; color: var(--w-ink-dim); }
+.pr-t { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+.pr-t td { padding:3px 0; }
+.pr-t td.r { text-align:right; white-space:nowrap; padding-left:12px; }
+.pr-t tr.tot td { border-top:1.5px solid var(--w-paper-rule); font-weight:700; padding-top:5px; }
+.pr-t tr.mut td { color: var(--w-ink-dim); }
+.pr-ft { margin-top:10px; padding-top:9px; border-top:1px dashed var(--w-paper-rule); font-size:11.5px; color:var(--w-ink-dim); }
+
+/* the pen — a verb you have to notice */
+.pr-pen {
+  position: relative; display:flex; align-items:center; gap:11px;
+  margin: 0 auto 22px; max-width: 560px;
+  background: transparent; border: 0; padding: 8px 2px; cursor: pointer;
+  font-family: var(--w-sans); font-size: 13.5px; color: var(--w-dimmer);
+  transition: color .15s;
+}
+.pr-pen:hover { color: var(--w-dim); }
+.pr-pen-body {
+  width: 78px; height: 9px; border-radius: 5px; flex: none;
+  background: linear-gradient(90deg,#B03A22 0 72%, #6B2114 72% 86%, #C9CDD0 86% 100%);
+  box-shadow: 0 3px 7px rgba(0,0,0,.6);
+  transform: rotate(-3deg); transition: transform .2s, box-shadow .2s;
+}
+.pr-pen.is-up .pr-pen-body { transform: rotate(-26deg) translateY(-4px); box-shadow: 0 9px 16px rgba(0,0,0,.7); }
+.pr-pen.is-up { color: var(--w-amber); }
+
+/* circling only works once the pen is in your hand */
+.pr-hot { position:relative; display:inline; font:inherit; color:inherit; background:transparent; border:0;
+  padding:1px 3px; margin:-1px -3px; border-radius:3px; cursor:default; }
+body.pen-up .pr-hot { cursor: crosshair; }
+body.pen-up .pr-hot:hover { background: rgba(0,0,0,.07); }
+.pr-hot .pr-ring {
+  position:absolute; inset:-5px -9px; pointer-events:none; opacity:0;
+  border:2px solid #B03A22; border-radius:47% 53% 56% 44%/58% 46% 54% 42%;
+  transform:rotate(-1.6deg); transition:opacity .15s;
+}
+.pr-hot.is-on .pr-ring { opacity:.9; }
+
+/* the trays */
+.pr-trays { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:640px; margin:0 auto; }
+.pr-tray {
+  position:relative; border:1px dashed var(--w-line-2); border-radius:10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.25));
+  padding:20px 12px 16px; text-align:center; cursor:pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.pr-tray::before {
+  content:''; position:absolute; left:10px; right:10px; top:9px; height:5px; border-radius:3px;
+  background: linear-gradient(180deg,#39433F,#232B28);
+}
+.pr-tray-l { font-size:14px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--w-dim); }
+.pr-tray-h { font-size:11.5px; color:var(--w-dimmer); margin-top:3px; }
+body.lifting .pr-tray { border-color: var(--w-amber-2); background: rgba(242,171,67,.07); }
+body.lifting .pr-tray:hover, .pr-tray.is-over { border-color: var(--w-amber); background: rgba(242,171,67,.16); transform: translateY(-2px); }
+body.lifting .pr-tray .pr-tray-l { color: var(--w-amber); }
+
+/* the daybook — a ruled book, not a form */
+.pr-book {
+  max-width: 640px; margin: 0 auto; background: #F4F0E2; color: #1F2A44;
+  font-family: var(--w-mono); border-radius: 2px; overflow: hidden;
+  filter: drop-shadow(0 24px 34px rgba(0,0,0,.8));
+  background-image: repeating-linear-gradient(180deg, transparent 0 33px, #AFC0D6 33px 34px);
+  padding: 0 0 18px;
+}
+.pr-book-h {
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+  padding:14px 18px 10px; border-bottom:2px solid #8FA4BE; background:#EFEADA;
+  font-size:12.5px; font-weight:700; letter-spacing:.05em;
+}
+.pr-book-h span { font-weight:400; color:#5C6A83; font-size:11px; }
+.pr-book-grid { display:grid; grid-template-columns: 1.6fr .9fr .9fr .9fr; }
+.pr-book-grid > div { padding: 0 12px; border-left: 1px solid #C3CEDD; }
+.pr-book-grid > div:first-child { border-left: 3px solid #C58B8B; }
+.pr-bh { font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#5C6A83; height:34px; display:flex; align-items:center; }
+.pr-bc { height:34px; display:flex; align-items:center; font-size:13px; font-variant-numeric:tabular-nums; }
+.pr-bc.r, .pr-bh.r { justify-content:flex-end; }
+.pr-bc input {
+  width:100%; text-align:right; background:transparent; border:0; padding:0;
+  font-family:var(--w-mono); font-size:14px; color:#16305E; font-variant-numeric:tabular-nums;
+}
+.pr-bc input:focus { outline:none; background:rgba(22,48,94,.06); }
+.pr-bc input::placeholder { color:#A9B6C8; }
+.pr-book-note { padding:12px 18px 0; font-size:11.5px; color:#5C6A83; }
+
+/* consequence, not score */
+.pr-out { max-width: 660px; margin: 0 auto; }
+.pr-wed {
+  margin-top:16px; padding:16px 18px; border-radius:10px;
+  background: var(--w-desk-2); border:1px solid var(--w-line); border-left:3px solid var(--w-amber-2);
+}
+.pr-wed-l { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--w-amber-2); font-weight:800; margin-bottom:6px; }
+.pr-wed p { margin:0; font-size:15px; line-height:1.65; color:var(--w-dim); }
+.pr-examiner { margin-top:20px; }
+.pr-examiner-body { margin-top:12px; padding:16px 18px; border:1px solid var(--w-line); border-radius:10px; background:var(--w-desk-2); }
+.pr-examiner-body p { font-size:14.5px; line-height:1.6; color:var(--w-dim); margin:0 0 9px; }
+.pr-examiner-body p:last-child { margin:0; }
+.pr-examiner-body b { color: var(--w-text); }
+.pr-debrief { display:flex; flex-direction:column; gap:8px; margin:14px 0 0; }
+.pr-db-row { display:flex; gap:10px; align-items:flex-start; font-size:14.5px; line-height:1.55; }
+.pr-db-row .m { flex:none; font-weight:800; width:16px; }
+.pr-db-row.hit  .m { color: var(--w-green); }
+.pr-db-row.miss .m { color: var(--w-amber); }
+.pr-db-row.bad  .m { color: var(--w-red); }
+.pr-db-row span:last-child { color: var(--w-dim); }
+
+@media (max-width: 560px) {
+  .pr-sheet { padding:18px 15px 15px; font-size:11.6px; }
+  .pr-front, .pr-behind { transform:none; }
+  .pr-behind { transform: translate(-9px,-6px) rotate(-2deg); }
+  .pr-trays { gap:8px; }
+  .pr-tray { padding:16px 6px 12px; }
+  .pr-tray-l { font-size:11.5px; letter-spacing:.1em; }
+  .pr-tray-h { display:none; }
+  .pr-book-grid { grid-template-columns: 1.3fr .9fr .9fr .9fr; }
+  .pr-book-grid > div { padding: 0 7px; }
+  .pr-bh { font-size:8px; letter-spacing:.06em; }
+}
+
+/* Two sheets in a stack. Whichever is underneath shows a graspable edge and can
+   be pulled out — checking one against the other is the job, so it has to be a
+   thing you physically do. */
+.pr-stack .pr-sheet { transition: transform .26s cubic-bezier(.2,.7,.3,1), filter .2s, opacity .2s; }
+.pr-behind {
+  position: absolute; inset: 0; z-index: 0;
+  transform: rotate(-3.4deg) translate(-30px,-26px);
+  filter: drop-shadow(0 14px 22px rgba(0,0,0,.7)) brightness(.82);
+  cursor: pointer;
+}
+.pr-behind:hover { transform: rotate(-3.4deg) translate(-38px,-32px); filter: drop-shadow(0 18px 26px rgba(0,0,0,.75)) brightness(.92); }
+.pr-order.pr-behind { background: var(--w-paper-alt); }
+.pr-order.pr-front  { background: var(--w-paper-alt); }
+.pr-stack { padding: 52px 0 0; }
+.pr-swap-note {
+  max-width: 560px; margin: 14px auto 26px; text-align: center;
+  font-size: 13px; color: var(--w-dimmer); font-style: italic;
+}
+@media (max-width: 560px) {
+  .pr-behind { transform: rotate(-2.6deg) translate(-16px,-18px); }
+  .pr-behind:hover { transform: rotate(-2.6deg) translate(-20px,-22px); }
+}
+
+/* The protruding corner of whichever sheet is underneath, as a real control.
+   It also names what is under there, which is the nudge a first-timer needs
+   without being told to go and check it. */
+.pr-pull {
+  position: absolute; top: 0; left: 0; z-index: 20;
+  transform: rotate(-3.4deg) translate(-34px,-52px);
+  background: transparent; border: 0; padding: 8px 12px 10px; cursor: pointer;
+  text-align: left; font-family: var(--w-sans);
+  transition: transform .22s cubic-bezier(.2,.7,.3,1);
+}
+.pr-pull:hover { transform: rotate(-3.4deg) translate(-42px,-58px); }
+.pr-pull:focus-visible { outline: 2px solid var(--w-amber); outline-offset: 2px; border-radius: 4px; }
+.pr-pull-l {
+  display: block; font-family: var(--w-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; color: var(--w-ink-dim);
+}
+.pr-pull-h {
+  display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--w-amber-2); font-weight: 800; margin-top: 1px; opacity: 0; transition: opacity .18s;
+}
+.pr-pull:hover .pr-pull-h, .pr-pull:focus-visible .pr-pull-h { opacity: 1; }
+@media (max-width: 560px) {
+  .pr-pull { transform: rotate(-2.6deg) translate(-14px,-44px); padding: 6px 9px 8px; }
+  .pr-pull:hover { transform: rotate(-2.6deg) translate(-18px,-48px); }
+  .pr-pull-h { opacity: 1; }
+}

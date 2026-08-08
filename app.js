@@ -1737,6 +1737,7 @@
     combo: 0,                               // consecutive correct answers in practice
     delfExam: null,                         // DELF mock exam state (null when not active)
     story: null,                            // Wrenfield story-mode state (null when not playing)
+    proto: null,                            // prototype-desk state (null when not playing)
   };
 
   /* Common ledger accounts for the T-account playground */
@@ -3147,6 +3148,7 @@
     else if (State.screen === 'revision') html = renderRevision();
     else if (State.screen === 'delf')     html = renderDelf();
     else if (State.screen === 'story')    html = renderStory();
+    else if (State.screen === 'proto')    html = renderProto();
     if (State.confirmModal) html += renderModal(State.confirmModal);
     el.innerHTML = html;
     attachEvents();
@@ -3532,6 +3534,7 @@
       ...(isAAT ? [{ id: 'unitExamBtn', icon: '📝', title: 'Unit Assessment', desc: `ITBK · POBC · POC · 90 min each`, cls: 'mode-unit-exam' }] : []),
       ...(isAAT ? [{ id: 'diagnosticBtn', icon: '🧭', title: 'Where should I start?', desc: '12 questions · finds your level per unit', cls: 'mode-diagnostic' }] : []),
       ...(isAAT && storyDef() ? [{ id: 'storyBtn', icon: '🗂️', title: 'A Day at Wrenfield', desc: storyModeDesc(), cls: 'mode-story' }] : []),
+      ...(isAAT && protoDef() ? [{ id: 'protoBtn', icon: '🖊️', title: 'Prototype desk', desc: 'One invoice, no questions asked · compare with the day above', cls: 'mode-story' }] : []),
       ...(isAAT ? [{ id: 'flashcardsBtn', icon: '🃏', title: 'Flashcards', desc: `${(window.GLOSSARY || []).length} glossary terms`, cls: '' }] : []),
       ...(synopticCount ? [{ topic: 'synoptic', icon: '🔗', title: 'Synoptic Practice', desc: `${synopticCount} cross-unit scenarios`, cls: 'mode-synoptic' }] : []),
       ...(srDueCount > 0 ? [{ topic: 'sr-due', icon: '⏰', title: 'Due for Review', desc: `${srDueCount} spaced-rep cards`, cls: '' }] : []),
@@ -7402,14 +7405,293 @@
       el.addEventListener('click', () => storyRevealWritten(+el.dataset.styReveal)));
   }
 
+
+  /* ── PROTOTYPE DESK ───────────────────────────────────────────────────────
+     A test of one idea on one item: are the atoms the reason story mode still
+     reads as a quiz? No prompts, no marks, no submit, no options list — an
+     invoice, a pen, a daybook and three trays.
+
+     The same three decisions live here (query it, post it as billed, post it at
+     the figures you worked out) but none is a control you pick from a list.
+     They fall out of what you do with the paper. Nothing says that checking the
+     invoice against the order is the job; knowing that is the thing being
+     learned, and announcing it is what makes a game feel like a test.
+
+     Self-contained: story-proto.js, this block, the .pr-* rules, one State key,
+     one mode card. */
+
+  function protoDef() { return window.AAT_STORY_PROTO || null; }
+
+  function startProto() {
+    if (!protoDef()) { showToast('Prototype not loaded.', 'warn'); return; }
+    State.proto = { phase: 'desk', pen: false, circled: {}, lifted: false, top: 'invoice',
+                    tray: null, db: { net: '', vat: '', total: '' },
+                    outcome: null, examiner: false };
+    State.screen = 'proto';
+    sndDrawer(); render();
+  }
+  function exitProto() {
+    State.proto = null; State.screen = 'home'; State.activeTab = 'home';
+    document.body.classList.remove('story-mode', 'pen-up', 'lifting');
+    render();
+  }
+  function protoTogglePen() {
+    State.proto.pen = !State.proto.pen;
+    if (State.proto.pen) State.proto.lifted = false;
+    sndPaper(); render();
+  }
+  function protoCircle(id) {
+    const P = State.proto;
+    if (!P.pen) return;
+    P.circled[id] = !P.circled[id];
+    sndPen(); render();
+  }
+  function protoPullOut() {
+    const P = State.proto;
+    P.top = P.top === 'invoice' ? 'order' : 'invoice';
+    P.lifted = false;
+    sndPaper(); render();
+  }
+  function protoLift() {
+    const P = State.proto;
+    if (P.pen) return;                  /* put the pen down first */
+    P.lifted = !P.lifted;
+    sndPaper(); render();
+  }
+  /* Where the invoice ends up is the decision. Posting opens the daybook, and
+     what you write in it decides which posting it was. */
+  function protoDrop(trayId) {
+    const P = State.proto;
+    if (!P.lifted) return;
+    P.lifted = false; P.tray = trayId;
+    sndStamp();
+    if (trayId === 'post') { P.phase = 'book'; }
+    else { P.outcome = trayId === 'query' ? 'query' : 'hold'; P.phase = 'out'; setTimeout(sndChime, 200); }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+  function protoRuleOff() {
+    const P = State.proto, D = protoDef();
+    const near = (v, t) => Number.isFinite(v) && Math.abs(v - t) < 0.005;
+    const n = parseNumericInput(P.db.net), v = parseNumericInput(P.db.vat), t = parseNumericInput(P.db.total);
+    if (![n, v, t].every(Number.isFinite)) { showToast('The daybook needs all three columns.', 'warn'); return; }
+    const isBilled = near(n, D.billed.net) && near(v, D.billed.vat) && near(t, D.billed.total);
+    const isRight  = near(n, D.correct.net) && near(v, D.correct.vat) && near(t, D.correct.total);
+    P.outcome = isBilled ? 'billed' : isRight ? 'corrected' : 'odd';
+    P.phase = 'out';
+    sndStamp(); setTimeout(sndChime, 220);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    render();
+  }
+
+  function protoHot(text, id) {
+    const P = State.proto, safe = escapeHtml(String(text == null ? '' : text));
+    if (!id) return safe;
+    const on = !!P.circled[id];
+    return `<button type="button" class="pr-hot ${on ? 'is-on' : ''}" data-pr-hot="${escapeHtml(id)}"
+      aria-pressed="${on}" aria-label="${safe}">${safe}<span class="pr-ring"></span></button>`;
+  }
+  function protoSheet(d, opts) {
+    const o = opts || {};
+    const foot = (d.foot || []).map(f => (typeof f === 'string' ? { t: f } : f));
+    return `<article class="pr-sheet ${o.cls || ''}" ${o.attrs || ''}>
+      ${o.clip ? '<span class="pr-clip"></span>' : ''}
+      <div class="pr-sheet-h">
+        <div><div class="pr-nm">${escapeHtml(d.name)}</div><div class="pr-sb">${escapeHtml(d.sub || '')}</div></div>
+        <div class="pr-rf">${escapeHtml(d.ref || '')}<br>${escapeHtml(d.date || '')}</div>
+      </div>
+      <table class="pr-t">${(d.rows || []).map(r => `<tr class="${r.total ? 'tot' : ''} ${r.muted ? 'mut' : ''}">
+        <td>${o.hot ? protoHot(r.l, r.hot) : escapeHtml(r.l)}</td>
+        <td class="r">${r.a == null ? '' : (o.hot ? protoHot(r.a, r.hotA) : escapeHtml(r.a))}</td></tr>`).join('')}</table>
+      ${foot.length ? `<div class="pr-ft">${foot.map(f =>
+        `<div>${o.hot ? protoHot(f.t, f.hot) : escapeHtml(f.t)}</div>`).join('')}</div>` : ''}
+    </article>`;
+  }
+
+  function renderProtoDesk() {
+    const P = State.proto, D = protoDef();
+    return `<div class="sty-stage" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-hud">
+        <div class="sty-hud-left">
+          <button class="sty-leave" id="prExit" type="button" aria-label="Leave">✕</button>
+          <span class="sty-hud-when"><span class="sty-hud-day">Prototype desk</span>
+          <span class="sty-clock">09:20</span></span>
+        </div>
+        <div class="sty-timeline"><div class="sty-timeline-fill" style="width:8%"></div></div>
+        <div class="sty-hud-marks"><b>1</b><span>in the tray</span></div>
+      </div>
+      <div class="sty-inner"><div class="pr-desk">
+        <div class="pr-head">
+          <div class="sty-slug">This morning’s post</div>
+          <h2 class="pr-from">${escapeHtml(D.title)}</h2>
+          <p class="pr-sub">${escapeHtml(D.sub)}</p>
+        </div>
+        <button class="pr-pen ${P.pen ? 'is-up' : ''}" id="prPen" type="button" aria-pressed="${P.pen}">
+          <span class="pr-pen-body"></span>
+          <span>${P.pen ? 'Pen in hand' : 'A red biro, on the desk'}</span>
+        </button>
+        <div class="pr-stack ${P.top === 'order' ? 'is-flipped' : ''}">
+          ${protoSheet(D.order, { cls: 'pr-order ' + (P.top === 'order' ? 'pr-front' : 'pr-behind'),
+                                  attrs: 'id="prOrder"' })}
+          ${protoSheet(D.invoice, { cls: 'pr-invoice ' + (P.top === 'invoice' ? 'pr-front' : 'pr-behind') + (P.lifted ? ' is-lifted' : ''),
+                                    hot: P.top === 'invoice', clip: true, attrs: 'id="prInvoice"' })}
+          <button class="pr-pull" id="prPull" type="button">
+            <span class="pr-pull-l">${P.top === 'invoice' ? escapeHtml(D.order.ref) : escapeHtml(D.invoice.ref)}</span>
+            <span class="pr-pull-h">pull it out</span>
+          </button>
+        </div>
+        <p class="pr-swap-note">${P.top === 'invoice'
+          ? 'The purchase order is clipped behind it.'
+          : 'The invoice is underneath.'}</p>
+        <div class="pr-trays">
+          ${D.trays.map(t => `<button class="pr-tray" type="button" data-pr-tray="${escapeHtml(t.id)}">
+            <div class="pr-tray-l">${escapeHtml(t.label)}</div>
+            <div class="pr-tray-h">${escapeHtml(t.hint)}</div>
+          </button>`).join('')}
+        </div>
+      </div></div>
+    </div>`;
+  }
+
+  function renderProtoBook() {
+    const P = State.proto;
+    const cell = (id, ph) => `<div class="pr-bc r"><input type="text" inputmode="decimal" autocomplete="off"
+      placeholder="${ph}" data-pr-db="${id}" value="${escapeHtml(P.db[id] || '')}"></div>`;
+    return `<div class="sty-stage" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-hud">
+        <div class="sty-hud-left">
+          <button class="sty-leave" id="prExit" type="button" aria-label="Leave">✕</button>
+          <span class="sty-hud-when"><span class="sty-hud-day">Prototype desk</span>
+          <span class="sty-clock">09:41</span></span>
+        </div>
+        <div class="sty-timeline"><div class="sty-timeline-fill" style="width:22%"></div></div>
+        <div class="sty-hud-marks"><b>1</b><span>in the tray</span></div>
+      </div>
+      <div class="sty-inner"><div class="pr-desk">
+        <div class="sty-slug">Purchase daybook</div>
+        <h2 class="pr-from">Write it up</h2>
+        <p class="pr-sub">The invoice is in the post tray. It only counts once it is in the book.</p>
+        <div class="pr-book">
+          <div class="pr-book-h"><span style="font-weight:700">PURCHASE DAYBOOK</span><span>May 20XX · page 14</span></div>
+          <div class="pr-book-grid">
+            <div><div class="pr-bh">Supplier</div><div class="pr-bc">WR Limited</div></div>
+            <div><div class="pr-bh r">Net</div>${cell('net', '0.00')}</div>
+            <div><div class="pr-bh r">VAT</div>${cell('vat', '0.00')}</div>
+            <div><div class="pr-bh r">Total</div>${cell('total', '0.00')}</div>
+          </div>
+          <div class="pr-book-note">Inv 000231 · 12 May</div>
+        </div>
+        <button class="sty-btn" type="button" id="prRuleOff">Rule off</button>
+        <button class="sty-btn sty-btn-ghost" type="button" id="prBack" style="margin-top:10px">Take it back out of the tray</button>
+      </div></div>
+    </div>`;
+  }
+
+  function renderProtoOut() {
+    const P = State.proto, D = protoDef();
+    const o = D.outcomes[P.outcome] || D.outcomes.hold;
+    const p = storyPerson(o.who);
+    const circled = Object.keys(P.circled).filter(k => P.circled[k]);
+    const rows = Object.keys(D.wrong).map(k => {
+      const got = circled.indexOf(k) >= 0;
+      return `<div class="pr-db-row ${got ? 'hit' : 'miss'}"><span class="m">${got ? '✓' : '!'}</span><span>${escapeHtml(D.wrong[k])}</span></div>`;
+    }).concat(circled.filter(k => D.fine[k]).map(k =>
+      `<div class="pr-db-row bad"><span class="m">✗</span><span>${escapeHtml(D.fine[k])}</span></div>`)).join('');
+    return `<div class="sty-stage" data-light="morning">
+      ${renderStoryRoom()}
+      <div class="sty-hud">
+        <div class="sty-hud-left">
+          <button class="sty-leave" id="prExit" type="button" aria-label="Leave">✕</button>
+          <span class="sty-hud-when"><span class="sty-hud-day">Prototype desk</span>
+          <span class="sty-clock">09:52</span></span>
+        </div>
+        <div class="sty-timeline"><div class="sty-timeline-fill" style="width:34%"></div></div>
+        <div class="sty-hud-marks"><b>0</b><span>in the tray</span></div>
+      </div>
+      <div class="sty-inner"><div class="pr-desk pr-out">
+        <div class="sty-slug">What happened next</div>
+        <div class="sty-react sty-react-${escapeHtml(o.tone)}" style="margin-top:14px">
+          <div class="sty-line">
+            <span class="sty-av sty-av-${escapeHtml(p.tone)}">${escapeHtml(p.initials)}</span>
+            <div class="sty-said"><div class="sty-name">${escapeHtml(p.name)}</div>
+            <p class="sty-speech">${storyText(o.text)}</p></div>
+          </div>
+          <p class="sty-dir">${storyText(o.dir)}</p>
+        </div>
+        <div class="pr-wed"><div class="pr-wed-l">Later that week</div><p>${storyText(o.wed)}</p></div>
+
+        <div class="pr-examiner">
+          <button class="sty-btn sty-btn-ghost" type="button" id="prExam" style="margin-top:0">
+            ${P.examiner ? 'Hide the marking' : 'How would an examiner have marked that?'}
+          </button>
+          ${P.examiner ? `<div class="pr-examiner-body">
+            <p>An AAT task built on this invoice would be worth <b>8 marks</b>. On what you did, <b>${o.marks} of 8</b>.</p>
+            <p>Three marks are for spotting the discrepancies, three for the corrected figures, two for what you did with it.</p>
+            <div class="pr-debrief">${rows || '<div class="pr-db-row miss"><span class="m">!</span><span>You did not pick the pen up.</span></div>'}</div>
+            <p style="margin-top:12px">The corrected invoice is <b>£252.00 net, £50.40 VAT, £302.40 total</b> — 16 × £17.50, less 10%, then VAT on what is left. The 2% prompt payment discount is not deducted here; it comes off at the point of payment.</p>
+          </div>` : ''}
+        </div>
+
+        <div class="sty-outro-actions">
+          <button class="sty-btn" type="button" id="prAgain">Try it a different way</button>
+          <button class="sty-btn sty-btn-ghost" type="button" id="prExit2">Back to practice</button>
+        </div>
+      </div></div>
+    </div>`;
+  }
+
+  function renderProto() {
+    const P = State.proto;
+    if (!P || !protoDef()) { State.screen = 'home'; return ''; }
+    if (P.phase === 'book') return renderProtoBook();
+    if (P.phase === 'out')  return renderProtoOut();
+    return renderProtoDesk();
+  }
+
+  function attachProtoEvents() {
+    const on = State.screen === 'proto' && !!State.proto;
+    document.body.classList.toggle('story-mode', on || (State.screen === 'story' && !!State.story));
+    document.body.classList.toggle('pen-up', on && State.proto.pen);
+    document.body.classList.toggle('lifting', on && State.proto.lifted);
+    if (!on) return;
+    const P = State.proto;
+    bind('prExit', 'click', exitProto);
+    bind('prExit2', 'click', exitProto);
+    bind('prPen', 'click', protoTogglePen);
+    bind('prRuleOff', 'click', protoRuleOff);
+    bind('prAgain', 'click', startProto);
+    bind('prExam', 'click', () => { P.examiner = !P.examiner; playClick(); render(); });
+    bind('prBack', 'click', () => { P.phase = 'desk'; P.tray = null; sndPaper(); render(); });
+    /* Tapping whichever sheet is underneath pulls it out. Tapping the one on
+       top picks it up, ready for a tray. */
+    const inv = document.getElementById('prInvoice');
+    const ord = document.getElementById('prOrder');
+    if (inv) inv.addEventListener('click', (e) => {
+      if (e.target.closest('[data-pr-hot]')) return;
+      if (P.top === 'invoice') protoLift(); else protoPullOut();
+    });
+    if (ord) ord.addEventListener('click', () => { if (P.top !== 'order') protoPullOut(); });
+    bind('prPull', 'click', protoPullOut);
+    document.querySelectorAll('[data-pr-hot]').forEach(el =>
+      el.addEventListener('click', (e) => { e.stopPropagation(); protoCircle(el.dataset.prHot); }));
+    document.querySelectorAll('[data-pr-tray]').forEach(el =>
+      el.addEventListener('click', () => protoDrop(el.dataset.prTray)));
+    document.querySelectorAll('[data-pr-db]').forEach(el =>
+      el.addEventListener('input', () => { P.db[el.dataset.prDb] = el.value; }));
+  }
+
   function attachEvents() {
     bind('startBtn', 'click', () => { Storage.data.settings.seenSplash = true; Storage.save(); State.screen='home'; render(); });
     attachStoryEvents();
+    attachProtoEvents();
     document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => { State.activeTab = el.dataset.tab; render(); }));
     document.querySelectorAll('[data-switch-subject]').forEach(el => el.addEventListener('click', () => switchSubject(el.dataset.switchSubject)));
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
+    bind('protoBtn', 'click', startProto);
     bind('storyBtn', 'click', () => { const s = storyDef(); if (s && s.days && s.days[0]) startStory(s.days[0].id); });
     bind('unitExamBtn', 'click', showUnitAssessmentPicker);
     document.querySelectorAll('[data-unit-exam]').forEach(el =>
