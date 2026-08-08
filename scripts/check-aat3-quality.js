@@ -51,6 +51,11 @@ const MIN_EXP_CHARS = 90;      // an explanation shorter than this explains noth
 const MIN_CARD_WORDS = 100;    // total teaching words on a card, prose and element together
 const MIN_PROSE_WORDS = 80;    // for a card whose prose IS the card, with nothing else on it
 const CUE_CEILING_PCT = 45;    // % of MCQs where the key is the single longest option
+const MIN_CUE_GAP_CHARS = 25;  // below this an outlying ratio is noise, not a cue
+
+/* Self-justifying option text. An option that argues its own case is doing the
+   reader's thinking, and if only some options do it the odd one out is free. */
+const REASON_CLAUSE = /\b(because|since|as it|as they|so that|given that)\b/i;
 
 /* Elements that carry teaching weight in their own right. On a card with one of
    these the prose is a lead-in, so measuring prose alone understates the card:
@@ -101,12 +106,41 @@ allQuestions.forEach(({ where, q }) => {
       const max = Math.max(...lens);
       if (lens[q.ans] === max && lens.filter(x => x === max).length === 1) cueCount++;
 
-      /* A key far longer than the average distractor is guessable without
-         reading the question at all. */
+      /* STRUCTURAL PARALLELISM.
+         The first version of this check only looked for a key that was the
+         LONGEST option. That missed the opposite and more common tell: a bare
+         correct answer — "Cash accounting" — sitting among three distractors
+         that each explain themselves — "Annual accounting, because a single
+         return reduces the administrative burden". The odd one out is
+         identifiable without reading the question at all, and 22 of 90 MCQs
+         had it. Worse, an earlier pass that shortened over-long keys to fix
+         the long-key cue was actively creating the short-key one.
+
+         So the test is now symmetric, and it is about SHAPE: every option
+         should look like the same kind of thing. A reason clause belongs in
+         the explanation, not in an option.
+
+         Ratio alone is a poor signal when all the options are short — the five
+         ethical principles differ in length by nature and no cue arises — so a
+         meaningful absolute gap is required as well. */
       const others = lens.filter((_, i) => i !== q.ans);
       const avg = others.reduce((a, b) => a + b, 0) / others.length;
-      if (lens[q.ans] > avg * 1.6 && lens[q.ans] === max) {
-        warnings.push(`${where}: the correct option is ${(lens[q.ans] / avg).toFixed(1)}× the average distractor — lengthen the distractors.`);
+      const ratio = lens[q.ans] / avg;
+      const gap = Math.abs(lens[q.ans] - avg);
+      if ((ratio > 1.5 || ratio < 0.67) && gap >= MIN_CUE_GAP_CHARS) {
+        errors.push(`${where}: the correct option is ${ratio.toFixed(2)}× the average distractor (${Math.round(gap)} characters apart) — make the options structurally parallel.`);
+      }
+
+      /* The same tell, detected by shape rather than by length: every
+         distractor justifies itself and the key does not, or vice versa. */
+      const hasReason = o => REASON_CLAUSE.test(String(o));
+      const keyReason = hasReason(q.opts[q.ans]);
+      const otherReasons = q.opts.filter((o, i) => i !== q.ans && hasReason(o)).length;
+      if (otherReasons > 0 && !keyReason && otherReasons === q.opts.length - 1) {
+        errors.push(`${where}: every distractor carries a "because…" clause and the correct option does not — the key is identifiable without reading the question.`);
+      }
+      if (keyReason && otherReasons === 0 && q.opts.length > 2) {
+        errors.push(`${where}: only the correct option carries a "because…" clause — the key is identifiable without reading the question.`);
       }
     } else if (type === 'numeric') {
       if (!Number.isFinite(q.answer)) errors.push(`${where}: numeric answer is not a finite number.`);

@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v79';
+var CACHE_VERSION = 'aat-l2-practice-v80';
 var CORE_ASSETS = [
   './',
   './index.html',
