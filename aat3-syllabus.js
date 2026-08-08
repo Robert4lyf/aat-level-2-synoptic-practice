@@ -61,12 +61,15 @@
       marking: 'Computer marked',
       durationMinutes: 90,
       passMark: 70,
-      /* Task count is NOT published for this unit. AAT publishes only one
-         Sample Assessment and Mark Scheme (Business Awareness); for the other
-         three units the comparable resource is the per-unit practice
-         assessment. Do not invent a task count — build the mock from the
-         outcome weightings below until a practice assessment is obtained. */
-      taskCount: null
+      /* The qualification specification states no task count for this unit, and
+         AAT publishes a Sample Assessment for Business Awareness only. The
+         figures below come from a published Q2022 mock rather than from AAT, so
+         they are labelled indicative and must not be presented as official —
+         see docs/aat-level-3-plan.md §10 and TAX.ASSESSMENT_SHAPE. Replace them
+         if a per-unit practice assessment is ever obtained. */
+      taskCount: 8,
+      taskCountSource: 'indicative — published mock, not an AAT publication',
+      totalMarks: 80
     },
     /* Applies to the whole unit. */
     excluded: [
