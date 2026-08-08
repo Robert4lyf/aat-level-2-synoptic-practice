@@ -31,7 +31,7 @@
       desc: 'Tax Processes for Businesses — VAT and payroll for the Q2022 Level 3 Diploma',
       meta: 'Outcome 2 of 5 · 7 lessons · FA2025',
       tabs: ['home'],
-      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-ui.js'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-ui.js'],
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values
            keep any incidental app.js reference safe. */

@@ -27,6 +27,7 @@ const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 const ROOT = path.join(__dirname, '..');
 const { AAT3_LEARN_PATH } = require(path.join(ROOT, 'aat3-learn-data.js'));
 const { TAX } = require(path.join(ROOT, 'aat3-tax-data.js'));
+const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
 
 const errors = [];
 const warnings = [];
@@ -34,6 +35,14 @@ const notes = [];
 
 const lessons = [];
 (AAT3_LEARN_PATH || []).forEach(u => (u.lessons || []).forEach(l => lessons.push(l)));
+
+/* Every question in the module, wherever it lives. The practice bank gets the
+   same scrutiny as the lesson checks — and the shared stem map is what stops
+   the bank quietly re-asking a lesson, which would make it a memory test. */
+const practice = (AAT3_PRACTICE && AAT3_PRACTICE.QUESTIONS) || [];
+const allQuestions = [];
+lessons.forEach(l => (l.check || []).forEach((q, i) => allQuestions.push({ where: `${l.id} Q${i + 1}`, q })));
+practice.forEach(q => allQuestions.push({ where: `practice ${q.id}`, q, isPractice: true }));
 
 /* ── Thresholds ──────────────────────────────────────────────────────────────
    Set from what the material currently achieves, so they act as a ratchet
@@ -63,9 +72,8 @@ const flat = o => {
 const stems = new Map();
 let mcqCount = 0, cueCount = 0;
 
-lessons.forEach(l => {
-  (l.check || []).forEach((q, qi) => {
-    const where = `${l.id} Q${qi + 1}`;
+allQuestions.forEach(({ where, q }) => {
+  {
     const type = q.type || 'mcq';
 
     if (!q.q) errors.push(`${where}: no question text.`);
@@ -77,7 +85,7 @@ lessons.forEach(l => {
     const key = String(q.q || '').replace(/\s+/g, ' ').trim();
     if (key) {
       if (!stems.has(key)) stems.set(key, []);
-      stems.get(key).push(l.id);
+      stems.get(key).push(where);
     }
 
     if (type === 'mcq') {
@@ -102,6 +110,18 @@ lessons.forEach(l => {
       }
     } else if (type === 'numeric') {
       if (!Number.isFinite(q.answer)) errors.push(`${where}: numeric answer is not a finite number.`);
+      /* The answer must appear in its own explanation. A practice question once
+         carried answer 14030 while its explanation worked carefully to 12,030 —
+         the arithmetic was internally sound, so the chain checker below had
+         nothing to say, and only the mismatch between the two gave it away. */
+      else if (q.exp) {
+        const plain = String(q.answer);
+        const grouped = Number(q.answer).toLocaleString('en-GB');
+        const twoDp = Number(q.answer).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (q.exp.indexOf(plain) === -1 && q.exp.indexOf(grouped) === -1 && q.exp.indexOf(twoDp) === -1) {
+          errors.push(`${where}: the stated answer ${grouped} never appears in its own explanation — one of the two is wrong.`);
+        }
+      }
     } else if (type === 'truefalse') {
       if (!Array.isArray(q.statements) || q.statements.length < 2) { errors.push(`${where}: needs at least 2 statements.`); return; }
       q.statements.forEach((s, si) => {
@@ -125,7 +145,7 @@ lessons.forEach(l => {
     } else {
       errors.push(`${where}: unknown question type "${type}".`);
     }
-  });
+  }
 });
 
 stems.forEach((where, stem) => {
