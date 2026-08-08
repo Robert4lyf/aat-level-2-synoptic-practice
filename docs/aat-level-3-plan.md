@@ -708,6 +708,20 @@ vocabulary survive LO2, they will survive the rest.
    data validators and no DOM assertions. Rewriting the journey and lesson
    player — shared by five shipped subjects — with no behavioural coverage is
    the largest unmanaged regression risk in this plan.
+8. **The VAT return box rounding rule is taught but UNVERIFIED.** Lesson 2C
+   states that boxes 1–5 are completed in pounds and pence and boxes 6–9 in
+   whole pounds rounded down. On 8 August 2026 this could not be confirmed
+   against any current HMRC source: Notice 700/12 (the box-by-box guidance),
+   Notice 700, and the margin-scheme return page were each checked and none of
+   them states a rounding convention. The rule appears to originate in the
+   online return service and older VAT 100 paper guidance, and it is what AAT
+   study material teaches — but "widely repeated" is not "sourced", and this is
+   the second time on this project that a widely repeated figure has turned out
+   to belong to a superseded regime (see the Notice 700/41 late-registration
+   penalty, §8). It is recorded in `aat3-tax-data.js` as
+   `returnBoxes.roundingUnverified` with a comment saying not to treat it as
+   sourced. Resolve it from a practice assessment or the live return service
+   before the TPFB mock is built, since a mock would test it directly.
 
 ---
 

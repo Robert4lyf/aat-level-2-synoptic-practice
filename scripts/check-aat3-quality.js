@@ -167,6 +167,67 @@ lessons.forEach(l => {
   });
 });
 
+/* ── 2b. Arithmetic stated in prose must actually compute ────────────────── */
+/* Worked examples and explanations state their sums in the text — "£18,400 +
+   £90 − £560 = £17,930". Those are load-bearing: a student who cannot
+   reproduce the line assumes they are wrong, not the material. This evaluates
+   every such chain it can parse and checks the stated result.
+
+   Deliberately conservative. It only handles + − × ÷ and % over plain numbers,
+   and skips anything it cannot parse cleanly, because a false failure here
+   would train people to ignore the gate. */
+const NUM = '£?\\s?-?\\d[\\d,]*(?:\\.\\d+)?%?';
+const CHAIN = new RegExp(NUM + '(?:\\s*[+\\-−×x*÷/]\\s*' + NUM + ')+\\s*=\\s*' + NUM, 'g');
+
+function val(tok) {
+  const pct = /%$/.test(tok);
+  const n = Number(String(tok).replace(/[£,%\s]/g, ''));
+  return { n: n, pct: pct };
+}
+
+function evalChain(expr) {
+  const parts = String(expr).split('=');
+  if (parts.length !== 2) return null;
+  const toks = parts[0].match(new RegExp(NUM + '|[+\\-−×x*÷/]', 'g'));
+  if (!toks || toks.length < 3) return null;
+
+  let acc = val(toks[0]);
+  if (acc.pct) return null;                     // a leading percentage is not a chain we model
+  let total = acc.n;
+  for (let i = 1; i < toks.length; i += 2) {
+    const op = toks[i], rhsTok = toks[i + 1];
+    if (rhsTok === undefined) return null;
+    const rhs = val(rhsTok);
+    if (!Number.isFinite(rhs.n)) return null;
+    if (op === '+') { if (rhs.pct) return null; total += rhs.n; }
+    else if (op === '-' || op === '−') { if (rhs.pct) return null; total -= rhs.n; }
+    else if (op === '×' || op === 'x' || op === '*') total = rhs.pct ? total * (rhs.n / 100) : total * rhs.n;
+    else if (op === '÷' || op === '/') { if (rhs.pct || rhs.n === 0) return null; total /= rhs.n; }
+    else return null;
+  }
+  const want = val(parts[1]);
+  if (want.pct || !Number.isFinite(want.n)) return null;
+  return { got: total, want: want.n };
+}
+
+let sumsChecked = 0;
+lessons.forEach(l => {
+  flat({ cards: l.cards, check: l.check }).split(/(?<=[.;])\s/).forEach(() => {});
+  const text = flat({ cards: l.cards, check: l.check });
+  const found = text.match(CHAIN) || [];
+  found.forEach(expr => {
+    const r = evalChain(expr);
+    if (!r) return;
+    sumsChecked++;
+    /* Tolerate a penny of rounding, and tolerate a stated result that has been
+       rounded to whole pounds from a fractional one. */
+    const off = Math.abs(r.got - r.want);
+    if (off > 0.011 && off > Math.abs(r.got) * 1e-9 && Math.round(r.got) !== r.want) {
+      errors.push(`${l.id}: the stated sum "${expr.trim()}" does not compute — it comes to ${r.got.toFixed(2)}.`);
+    }
+  });
+});
+
 /* ── 3. Tax figures must come from aat3-tax-data.js ──────────────────────── */
 /* Any of these appearing literally in prose is a figure that will silently go
    stale when the Finance Act rolls. Rates and small worked-example amounts are
@@ -229,6 +290,7 @@ lessons.forEach(l => {
 const totalWords = words(flat(AAT3_LEARN_PATH));
 notes.push(`${lessons.length} lessons · ${cardCount} cards · ${Math.round(proseTotal / cardCount)} words of prose and ${Math.round(teachTotal / cardCount)} words of teaching per card.`);
 notes.push(`${workedCount} worked examples (${tryCount} with a try-it) · ${totalWords} words in the module.`);
+notes.push(`${sumsChecked} arithmetic chains stated in prose were evaluated and agree.`);
 
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
 notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));

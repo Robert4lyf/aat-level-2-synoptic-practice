@@ -176,6 +176,31 @@
       }
     },
 
+    /* The nine boxes. Boxes 2, 8 and 9 are EXCLUDED from this unit by the
+       specification (TPFB 3.2.1) — they concern Northern Ireland and the EU,
+       and the unit excludes Northern Ireland rules generally. They are listed
+       here only so the numbering is not silently wrong. */
+    returnBoxes: {
+      box1: { title: 'VAT due on sales and other outputs', note: 'Output tax on all supplies made: standard and reduced rated sales, fuel scale charges, import VAT under postponed accounting, and VAT on gifts of goods over £50. Zero-rated, exempt and outside-the-scope supplies carry no VAT so add nothing here.' },
+      box2: { title: 'VAT due on acquisitions from EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit.' },
+      box3: { title: 'Total VAT due', note: 'Box 1 + Box 2. Calculated, not entered.' },
+      box4: { title: 'VAT reclaimed on purchases and other inputs', note: 'Input tax recoverable: purchases, import VAT under postponed accounting, and bad debt relief. Excludes blocked items — client entertaining, cars available for private use — and anything without a valid VAT invoice.' },
+      box5: { title: 'Net VAT to pay or reclaim', note: 'Box 3 − Box 4. Calculated. A negative result is a repayment due from HMRC.' },
+      box6: { title: 'Total value of sales and other outputs, excluding VAT', note: 'NET values of ALL supplies, including zero-rated and exempt ones. This is a value box, not a VAT box — a common error is to omit zero-rated or exempt sales because they carried no VAT.' },
+      box7: { title: 'Total value of purchases and other inputs, excluding VAT', note: 'NET values of all business purchases including imports. Excludes wages, PAYE, drawings and other outside-the-scope expenditure.' },
+      box8: { title: 'Value of supplies of goods to EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit.' },
+      box9: { title: 'Value of acquisitions of goods from EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit.' },
+      /* NOT VERIFIED against current HMRC guidance — see the note in
+         docs/aat-level-3-plan.md. The rule (VAT boxes in pounds and pence,
+         value boxes in whole pounds rounded down) originates in the online
+         return service and older VAT 100 guidance rather than Notice 700/12,
+         which no longer restates it. Taught in lesson 2C. Re-verify before
+         relying on it, and do not treat this entry as sourced. */
+      roundingUnverified: 'Boxes 1–5 in pounds and pence; boxes 6–9 in whole pounds, rounded down.',
+      source: 'HMRC, How to fill in and submit your VAT Return (VAT Notice 700/12)',
+      checked: '2026-08-08'
+    },
+
     errorCorrection: {
       /* The two-limb test. An error may be corrected on the next return only if
          it is below BOTH limbs; otherwise it must be separately notified. */
@@ -189,8 +214,16 @@
         note: 'Errors may be corrected within four years.' },
       deliberateErrors: 'Deliberate errors must ALWAYS be separately notified, whatever their size.',
       separateNotificationForm: 'VAT652',
+
+      /* HMRC's own names for the two routes. Worth teaching, because the
+         assessment and the notice both use them. */
+      method1: 'Adjust the VAT account and correct the error on the NEXT return. Available only where the net error is within both limbs of the test and was not deliberate.',
+      method2: 'Notify HMRC SEPARATELY, on form VAT652 or online. Required where either limb is breached, and always for a deliberate error. Method 2 may be used voluntarily for any error.',
+      netErrorMeaning: 'The NET of all errors found — under-declarations less over-declarations — for the periods being corrected, not the largest single error and not their gross total.',
+      timeLimitRunsFrom: 'Four years from the end of the period, for under- or over-declared OUTPUT tax; four years from the return due date, for under-claimed INPUT tax.',
+      interestAndPenalties: 'Interest runs where an error delayed payment of VAT. A penalty depends on behaviour — careless, deliberate, or deliberate and concealed — and is reduced for an unprompted disclosure. Taking reasonable care and disclosing promptly can mean no penalty at all.',
       source: 'HMRC, How to correct VAT errors and make adjustments or claims (VAT Notice 700/45)',
-      checked: '2026-08-07'
+      checked: '2026-08-08'
     },
 
     badDebtRelief: {
