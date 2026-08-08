@@ -148,7 +148,7 @@
       type: 'numeric',
       q: 'A business owes £24,000 of VAT and pays nothing until day 28 after the due date, when it settles in full. What is the total late payment penalty, in pounds? Ignore interest.',
       answer: 720, unit: '£',
-      exp: '£24,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £720. Day 28 is past the 15-day grace period, so the first charge applies — but payment was made before day 30, so the second ' + T.penalties.latePayment.firstPenaltyDay30.value + '% charge never arises and the second penalty never begins.',
+      exp: '£24,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £720. Day 28 is past the 15-day grace period, so the first element of the first penalty applies — but the debt was cleared before day 30, so the second element never arises and the second penalty, which starts at day 31, never begins.',
     },
     {
       id: 'P-1-11', lo: 1, criteria: ['TPFB-1.5.1', 'TPFB-1.5.2'],
