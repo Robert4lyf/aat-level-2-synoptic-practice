@@ -21,7 +21,11 @@
 
   /* ── State ───────────────────────────────────────────────────────────────── */
   var S = {
-    screen: 'path',      // 'path' | 'lesson' | 'done'
+    screen: 'path',      // 'path' | 'lesson' | 'practice' | 'quiz' | 'done'
+    mode: 'lesson',      // 'lesson' | 'practice' — which set the question handlers read
+    practiceLo: null,    // an outcome number, or 'mix'
+    practiceQs: [],
+    practiceMissed: [],
     lessonId: null,
     cardIdx: 0,
     phase: 'teach',      // 'teach' | 'check'
@@ -56,6 +60,20 @@
 
   /* ── Data access ─────────────────────────────────────────────────────────── */
   function path() { return root.AAT3_LEARN_PATH || []; }
+  function practiceBank() {
+    var p = root.AAT3_PRACTICE;
+    return (p && p.QUESTIONS) || [];
+  }
+
+  /* The single place that decides which question set the answer handlers act
+     on. Everything downstream — scoring, next-question, the explanation box —
+     is identical for a lesson check and a practice question, so this accessor
+     is all that separates the two modes. */
+  function currentQuestions() {
+    if (S.mode === 'practice') return S.practiceQs;
+    var l = lessonById(S.lessonId);
+    return (l && l.check) || [];
+  }
   function syllabus() { return root.AAT3_SYLLABUS || null; }
   function lessons() {
     var out = [];
@@ -287,6 +305,20 @@
         ' syllabus points, worth ' + outcomeWeight + '% of the assessment. The remaining outcomes are ' +
         'not written yet, so this is not yet full preparation for the assessment.') + '</div>';
 
+    /* Practice entry. Placed above the track because it is a peer of the
+       lessons, not an afterthought at the bottom of a long scroll. */
+    if (practiceBank().length) {
+      h += '<button class="a3-practice-cta" data-a3="practice">' +
+        '<span class="a3-practice-i" aria-hidden="true">◈</span>' +
+        '<span class="a3-practice-tx">' +
+          '<span class="a3-practice-t">Practice questions</span>' +
+          '<span class="a3-practice-m">' + practiceBank().length +
+            ' questions, by outcome or mixed — separate from the lessons</span>' +
+        '</span>' +
+        '<span class="a3-practice-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+
     /* The track — one section per outcome, continuous numbering of nodes. */
     groups.forEach(function (g) {
       h += '<div class="a3-outcome">' +
@@ -434,25 +466,104 @@
 
   /* ── Done screen ─────────────────────────────────────────────────────────── */
   function renderDone() {
-    var l = lessonById(S.lessonId);
-    var checks = (l && l.check) || [];
+    var isP = S.mode === 'practice';
+    var checks = currentQuestions();
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
     var st = pct >= 100 ? 3 : pct >= 80 ? 2 : pct >= 60 ? 1 : 0;
+    var head = isP
+      ? (pct >= 70 ? 'Comfortable' : pct >= 50 ? 'Some gaps' : 'Worth going back to the lessons')
+      : (pct >= 60 ? 'Lesson complete' : 'Worth another pass');
+
+    /* On a practice run, name the outcomes the missed questions came from —
+       a score alone tells the reader nothing about where to go next. */
+    var weak = '';
+    if (isP) {
+      var missedLos = {};
+      (S.practiceMissed || []).forEach(function (q) { missedLos[q.lo] = (missedLos[q.lo] || 0) + 1; });
+      var keys = Object.keys(missedLos);
+      if (keys.length) {
+        weak = '<div class="a3-done-weak">Missed questions came from ' +
+          keys.sort().map(function (k) { return 'Outcome ' + k + ' (' + missedLos[k] + ')'; }).join(', ') +
+          '</div>';
+      }
+    }
+
     return '<div class="a3-root"><div class="a3-done">' +
       '<div class="a3-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
-      '<h1 class="a3-done-h">' + (pct >= 60 ? 'Lesson complete' : 'Worth another pass') + '</h1>' +
-      '<div class="a3-done-sub">' + S.score + ' of ' + checks.length + ' correct</div>' +
-      '<div class="a3-stars a3-stars-big">' + [1,2,3].map(function (n) {
-        return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>' +
+      '<h1 class="a3-done-h">' + head + '</h1>' +
+      '<div class="a3-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
+        (isP ? ' · ' + (S.practiceLo === 'mix' ? 'all outcomes' : 'Outcome ' + S.practiceLo) : '') + '</div>' +
+      (isP ? '' : '<div class="a3-stars a3-stars-big">' + [1,2,3].map(function (n) {
+        return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
+      weak +
       '<div class="a3-done-actions">' +
-        '<button class="a3-btn a3-btn-primary" data-a3="exit">Back to the path</button>' +
+        '<button class="a3-btn a3-btn-primary" data-a3="exit">' +
+          (isP ? 'More practice' : 'Back to the path') + '</button>' +
         '<button class="a3-btn a3-btn-ghost" data-a3="retry">Retry</button>' +
+        (isP ? '<button class="a3-btn a3-btn-ghost" data-a3="topath">Back to the path</button>' : '') +
       '</div></div></div>';
+  }
+
+  /* ── Practice picker ─────────────────────────────────────────────────────── */
+  function renderPractice() {
+    var bank = practiceBank();
+    var syl = syllabus();
+    var los = syl && syl.units ? syl.units.tpfb.outcomes : [];
+    var counts = {};
+    bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
+
+    var h = '<div class="a3-root">';
+    h += '<header class="a3-hero a3-hero-sm">' +
+      '<div class="a3-hero-glow" aria-hidden="true"></div>' +
+      '<div class="a3-hero-in">' +
+      '<div class="a3-eyebrow">Practice</div>' +
+      '<h1 class="a3-title">Test yourself</h1>' +
+      '<div class="a3-sub">' + bank.length + ' questions · ' + PRACTICE_LEN + ' per run, drawn at random</div>' +
+      '</div></header>';
+
+    h += '<div class="a3-notice">These are separate from the questions inside the lessons, and are meant to be met cold. ' +
+      'A run is ' + PRACTICE_LEN + ' questions and records no lesson progress — it tells you what you know, not what you have read.</div>';
+
+    h += '<div class="a3-pgrid">';
+    h += '<button class="a3-pcard a3-pcard-mix" data-a3="startpractice" data-lo="mix">' +
+      '<span class="a3-pcard-k">Mixed</span>' +
+      '<span class="a3-pcard-t">All outcomes</span>' +
+      '<span class="a3-pcard-m">' + bank.length + ' questions in the pool</span>' +
+      '</button>';
+    los.forEach(function (o) {
+      var n = counts[o.n] || 0;
+      if (!n) return;
+      h += '<button class="a3-pcard" data-a3="startpractice" data-lo="' + o.n + '">' +
+        '<span class="a3-pcard-k">Outcome ' + o.n + ' · ' + o.weighting + '%</span>' +
+        '<span class="a3-pcard-t">' + esc(o.title) + '</span>' +
+        '<span class="a3-pcard-m">' + n + ' questions</span>' +
+        '</button>';
+    });
+    h += '</div>';
+    h += '<div class="a3-pback"><button class="a3-btn a3-btn-ghost" data-a3="topath">Back to the path</button></div>';
+    h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
+    return h + '</div>';
+  }
+
+  /* ── Practice quiz — same question renderer as a lesson check ────────────── */
+  function renderQuiz() {
+    var qs = currentQuestions();
+    if (!qs.length) { S.screen = 'practice'; return renderPractice(); }
+    var pct = Math.round((S.qIdx / qs.length) * 100);
+    var h = '<div class="a3-root a3-reading">';
+    h += '<div class="a3-lessonbar">' +
+      '<button class="a3-btn a3-btn-ghost a3-exit" data-a3="exit">Exit</button>' +
+      '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
+      '<div class="a3-lessonbar-n">' + (S.qIdx + 1) + ' / ' + qs.length + '</div></div>';
+    h += '<article class="a3-sheet">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
+    return h;
   }
 
   /* ── Mount and events ────────────────────────────────────────────────────── */
   function html() {
     if (S.screen === 'lesson') return renderLesson();
+    if (S.screen === 'practice') return renderPractice();
+    if (S.screen === 'quiz') return renderQuiz();
     if (S.screen === 'done') return renderDone();
     return renderPath();
   }
@@ -495,7 +606,23 @@
   var _host = null;
   function rerender() { if (_host) mount(_host); }
 
+  /* A practice run is a shuffled slice of the bank. Ten is enough to be
+     informative and short enough to actually finish; a mixed run draws across
+     every outcome so it cannot be answered from one lesson's vocabulary. */
+  var PRACTICE_LEN = 10;
+  function startPractice(lo) {
+    var pool = practiceBank().filter(function (q) { return lo === 'mix' || q.lo === lo; });
+    S.practiceLo = lo;
+    S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
+    S.practiceMissed = [];
+    S.mode = 'practice';
+    S.screen = 'quiz';
+    S.qIdx = 0; S.score = 0;
+    resetQState();
+  }
+
   function startLesson(id) {
+    S.mode = 'lesson';
     S.lessonId = id; S.screen = 'lesson'; S.cardIdx = 0; S.phase = 'teach';
     S.qIdx = 0; S.answered = null; S.picked = null; S.score = 0;
     S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null;
@@ -508,12 +635,18 @@
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null;
   }
   function finish() {
-    var l = lessonById(S.lessonId);
-    var checks = (l && l.check) || [];
+    var checks = currentQuestions();
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
-    var prev = rec(S.lessonId);
-    data.lessons[S.lessonId] = { best: Math.max(pct, prev ? prev.best : 0) };
-    data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
+    /* Practice earns XP but records no lesson result. A practice run is not a
+       lesson attempt, and letting it write to data.lessons would mark nodes
+       complete on the path for teaching the reader has never opened. */
+    if (S.mode !== 'practice') {
+      var prev = rec(S.lessonId);
+      data.lessons[S.lessonId] = { best: Math.max(pct, prev ? prev.best : 0) };
+      data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
+    } else {
+      data.xp += S.score * 3;
+    }
     save();
     S.screen = 'done';
   }
@@ -547,13 +680,24 @@
 
   function handle(act, n) {
     var l = lessonById(S.lessonId);
-    var cards = (l && l.cards) || [], checks = (l && l.check) || [];
+    var cards = (l && l.cards) || [], checks = currentQuestions();
     var card = cards[S.cardIdx] || {};
     var q = checks[S.qIdx];
 
     if (act === 'open') { startLesson(n.getAttribute('data-id')); return rerender(); }
-    if (act === 'exit') { S.screen = 'path'; return rerender(); }
-    if (act === 'retry') { startLesson(S.lessonId); return rerender(); }
+    if (act === 'exit') { S.screen = S.mode === 'practice' ? 'practice' : 'path'; return rerender(); }
+    if (act === 'retry') {
+      if (S.mode === 'practice') startPractice(S.practiceLo);
+      else startLesson(S.lessonId);
+      return rerender();
+    }
+    if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
+    if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
+    if (act === 'startpractice') {
+      var lo = n.getAttribute('data-lo');
+      startPractice(lo === 'mix' ? 'mix' : Number(lo));
+      return rerender();
+    }
 
     if (act === 'step') { S.revealed++; return rerender(); }
     if (act === 'stepall') { S.revealed = (card.worked.steps || []).length; return rerender(); }
@@ -606,6 +750,9 @@
       return rerender();
     }
     if (act === 'nextq') {
+      /* Recorded here rather than in each of the four grading paths, so a new
+         question type cannot be added without its misses being counted. */
+      if (S.mode === 'practice' && S.answered === false && q) S.practiceMissed.push(q);
       if (S.qIdx === checks.length - 1) finish();
       else { S.qIdx++; resetQState(); }
       return rerender();
