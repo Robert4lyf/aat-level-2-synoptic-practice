@@ -580,20 +580,62 @@ notes.push(`${fingerprints.length} cards compared pairwise for near-duplication;
    table below cannot drift out of date: if a term stops titling a card, the
    check fails loudly instead of quietly passing. */
 const KEY_TERMS = [
+  /* Outcomes 1 and 2 — VAT */
   'fuel scale charge', 'bad debt relief', 'Making Tax Digital', 'partial exemption',
   'de minimis', 'tax point', 'flat rate scheme', 'cash accounting', 'annual accounting',
-  'net error', 'blocked input tax',
+  'blocked input tax', 'postponed accounting',
+  /* Outcome 3 — reviewing and correcting */
+  'net error', 'VAT control account', 'Method 2',
+  /* Outcome 4 — payroll */
+  'Real Time Information', 'Full Payment Submission', 'Employer Payment Summary',
+  'employment allowance', 'attachment of earnings', 'statutory deduction', 'tax code',
+  'gross pay', 'taxable pay', 'net pay', 'student loan', 'P11D', 'P45', 'P60',
+  /* Outcome 5 — communication and ethics */
+  'fundamental principles', 'money laundering', 'confidentiality',
 ];
+
+/* Deliberately NOT in the list, with the reason, so nobody adds them back:
+
+   "National Insurance" — the derivation below would name 3C as its home,
+   because that is where it is first bolded. But 3C bolds it inside a list of
+   things EXCLUDED from Box 6, which is not a definition. Payroll deductions are
+   handed to you as figures in this unit rather than calculated, so there is no
+   card that defines the term and no honest home to point at.
+
+   "PAYE" — too widely used, in twelve lessons, for a single home to be
+   meaningful; 0B introduces it at orientation level and 4A onwards assumes it. */
 
 const lessonOrder = [];
 AAT3_LEARN_PATH.forEach(u => (u.lessons || []).forEach(l => lessonOrder.push(l)));
 
 KEY_TERMS.forEach(term => {
-  const re = new RegExp(term.replace(/ /g, '\\s+'), 'i');
+  /* Two things this pattern has to get right, both learned the hard way.
 
-  const homeIdx = lessonOrder.findIndex(l => (l.cards || []).some(c => re.test(String(c.h || ''))));
+     Word boundaries are not optional: without them "PAYE" matches inside
+     "payers" and "P45" inside a reference number, so the check reports on a
+     lesson that never mentioned the term.
+
+     But adding them alone broke the term this whole check was written for.
+     Cards are titled in the plural — "Fuel scale charges", "Statutory and
+     non-statutory deductions" — so \b after a singular term fails to match its
+     own heading, the home falls through to wherever the term happens to be
+     bolded first, and the check passes vacuously. A trailing "s" is therefore
+     optional on the last word, which matches singular and plural alike. */
+  const pattern = term.replace(/ /g, '\\s+') + 's?';
+  const re = new RegExp('\\b' + pattern + '\\b', 'i');
+
+  /* Where a term is explained, in order of how strongly the signal states it:
+     a card TITLED with the term is the author saying "this card is about X";
+     failing that, the first place the term is BOLDED, which is how this module
+     marks a term being introduced. Both are derived, so neither can go stale
+     silently — a term with neither signal fails the build. */
+  let homeIdx = lessonOrder.findIndex(l => (l.cards || []).some(c => re.test(String(c.h || ''))));
   if (homeIdx === -1) {
-    errors.push(`Key term "${term}" no longer titles any card, so this check cannot tell where it is explained. Point it at its new home or drop it from KEY_TERMS.`);
+    const boldRe = new RegExp('\\*\\*[^*]*\\b' + pattern + '\\b[^*]*\\*\\*', 'i');
+    homeIdx = lessonOrder.findIndex(l => boldRe.test(flat(l)));
+  }
+  if (homeIdx === -1) {
+    errors.push(`Key term "${term}" is neither the title of a card nor bolded anywhere, so this check cannot tell where it is explained. Give it a home or drop it from KEY_TERMS.`);
     return;
   }
   const home = lessonOrder[homeIdx].id.replace('L3-TPFB-', '');
