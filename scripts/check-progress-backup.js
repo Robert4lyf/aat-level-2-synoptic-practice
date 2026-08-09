@@ -99,6 +99,19 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   ok(!('multisubject_active' in doc.keys), 'the exported file itself never contains the active-subject key');
   ok(!('prep_v2_settings' in doc.keys), 'the exported file itself never contains device settings');
   ok('aatPrep_v2' in doc.keys, 'the exported file does contain subject progress');
+
+  /* The sync key is a credential. A backup file gets emailed to yourself, put
+     in cloud storage, handed to somebody — it must not carry the ability to
+     read and overwrite the sync document. */
+  const withSync = fakeStore();
+  PB.writeAll({ aatPrep_v2: phone, prep_v2_sync: { key: 'SUPERSECRETSYNCKEY0123456789abcd', version: 4 } }, withSync);
+  const doc2 = PB.buildExport({ store: withSync, now: T0 });
+  ok(!('prep_v2_sync' in doc2.keys), 'the sync key is NEVER written into an exported file');
+  ok(JSON.stringify(doc2).indexOf('SUPERSECRETSYNCKEY') === -1, 'no part of the sync key appears anywhere in the export');
+  const target2 = fakeStore();
+  PB.writeAll({ prep_v2_sync: { key: 'MYOWNKEY0123456789abcdefghijklmn', version: 9 } }, target2);
+  PB.applyImport({ format: PB.FORMAT, version: 1, keys: { prep_v2_sync: { key: 'THEIRS', version: 1 }, aatPrep_v2: phone } }, 'replace', target2);
+  eq(JSON.parse(target2.getItem('prep_v2_sync')).key, 'MYOWNKEY0123456789abcdefghijklmn', 'importing a doctored file cannot overwrite this device\'s sync key');
 }
 
 /* ── Nothing is lost ────────────────────────────────────────────────────── */

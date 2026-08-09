@@ -20,6 +20,7 @@ A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q202
 - **Interactive T-account playground** — post double entries and watch the ledgers and trial balance update live.
 - **Progress tracking** — lifetime stats, streaks, topic mastery, flagged questions and wrong-answer review.
 - **Backup and restore** — export every subject's progress to one JSON file and import it on another device. Importing combines the two rather than overwriting: the higher score always wins, and nothing already on the receiving device is discarded unless you explicitly choose to replace it.
+- **Cross-device sync (optional)** — deploy the small Cloudflare Worker in `sync-worker/`, point `sync-config.js` at it, and devices keep themselves in step automatically. It uses the same merge as import, so two devices that both studied offline end up with both sessions rather than whichever synced last. Off, and invisible, until you configure an endpoint.
 - **Installable (PWA)** — install it to a phone or desktop home screen and use it fully offline.
 - Light/dark themes and keyboard shortcuts throughout.
 
@@ -33,6 +34,9 @@ styles.css             — all styling
 data.js                — question bank, glossary and topic data
 app.js                 — application logic
 progress-backup.js     — export/import and the cross-device merge
+progress-sync.js       — optional automatic sync (pull, merge, push)
+sync-config.js         — where the sync endpoint lives (empty = sync off)
+sync-worker/           — the Cloudflare Worker, with its own deployment README
 manifest.webmanifest   — PWA manifest (installable app metadata)
 sw.js                  — service worker (offline caching)
 icon-192.png / icon-512.png / apple-touch-icon.png — app icons

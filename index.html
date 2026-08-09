@@ -10,11 +10,15 @@
   <meta name="description" content="Practice for the AAT Level 2 Business Environment Synoptic Assessment (Q2022). 600+ audited questions — multiple choice, true/false, multi-select, numeric, matching, table-completion, written response and scenario — with marks-based mock exams, separate unit assessments, spaced repetition, a reference panel, an AAT-style calculator, a T-account playground, and persistent progress tracking.">
   <meta name="robots" content="index, follow">
   <!-- Security: belt-and-suspenders alongside server-side headers (see _headers / vercel.json).
+       connect-src names *.workers.dev because progress sync talks to a Cloudflare
+       Worker the user deploys themselves, whose subdomain is not known here. Once
+       yours is deployed it is worth narrowing this to that exact origin, in all
+       three files.
        The two sha256 hashes whitelist the inline theme-bootstrap and service-worker
        registration scripts below WITHOUT relaxing the policy to 'unsafe-inline'.
        If either inline script's contents change, update its hash in all three places
        (this meta tag, _headers, vercel.json) — the browser console prints the expected hash. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8PRl4GcVarXiKtZEOPI2t+MXQXNyZN9w9jzfkY4tUGw=' 'sha256-bWdLkvh2q041d4g8zaF7NPzpJpmyJqIjvBMfvQZ5woI='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self'; connect-src 'self'; worker-src 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8PRl4GcVarXiKtZEOPI2t+MXQXNyZN9w9jzfkY4tUGw=' 'sha256-bWdLkvh2q041d4g8zaF7NPzpJpmyJqIjvBMfvQZ5woI='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self'; connect-src 'self' https://*.workers.dev; worker-src 'self';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>AAT Level 2 Synoptic Practice</title>
@@ -58,7 +62,7 @@
       <div>
         <h1>📊 AAT Level 2 Synoptic Practice</h1>
         <span class="sub">Q2022 — The Business Environment Synoptic Assessment</span>
-        <span class="version-badge">v1.13.0</span>
+        <span class="version-badge">v1.14.0</span>
       </div>
       <span class="badge">EXAM PREP</span>
     </div>
@@ -88,6 +92,8 @@
   <script src="story-data.js"></script>
   <script src="story-proto.js"></script>
   <script src="progress-backup.js"></script>
+  <script src="sync-config.js"></script>
+  <script src="progress-sync.js"></script>
   <script src="app.js"></script>
   <script>
     /* Register the service worker for offline use (PWA). */
