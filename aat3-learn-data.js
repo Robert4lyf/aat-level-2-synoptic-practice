@@ -573,14 +573,6 @@
           callout: { kind: 'key', text: 'VAT boxes (1 to 5) carry pounds and pence. Value boxes (6 to 9) are whole pounds. Where a task states a rounding rule, that instruction beats any convention.' },
         },
         {
-          h: 'What automation changes',
-          p: [
-            'Accounting software applies whichever rate it has been configured to use and totals the result without arithmetic error. That removes one class of mistake and leaves another entirely intact.',
-            'The rate a supply attracts, whether the tax point falls in this period, and whether input tax is recoverable at all are **judgements**. Software executes the judgement it was given; it does not make it.',
-            'The practical consequence is that errors now tend to be systematic rather than random — a supplier set up at the wrong rate produces a consistent error across every transaction with them, which is harder to spot than a one-off slip.',
-          ],
-        },
-        {
           h: 'Working from a gross total',
           p: [
             'Retail takings are the classic case where the figure you are handed already contains the tax. The method below is the one to use whenever a question says *including VAT*.',

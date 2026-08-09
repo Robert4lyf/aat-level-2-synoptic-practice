@@ -485,6 +485,80 @@ lessons.forEach(l => {
   if (!(l.check || []).length) errors.push(`${l.id}: no check questions.`);
 });
 
+/* ── 5. Near-duplicate cards ─────────────────────────────────────────────────
+   Two cards in this module taught the same thing twice: 2A's "What software
+   does and does not do for you" and, three lessons later, a shorter restatement
+   of the same three claims with the same example. Nothing flagged it, because
+   every other check here looks at one card at a time.
+
+   Repetition is not cosmetic in teaching material. A reader who meets an idea
+   twice cannot tell whether the second telling is deliberate reinforcement or a
+   sign the author lost track — and the shorter version is almost always the
+   weaker one, so the effect is to dilute the good telling.
+
+   THE MEASURE, AND WHY NOT THE OBVIOUS ONE
+
+   Comparison is over content-word BIGRAMS: two cards about VAT inevitably share
+   "input", "tax" and "supply" without saying anything alike, so it is shared
+   PHRASING that indicates one was written from the other.
+
+   The first version of this check scored those bigram sets with Jaccard and
+   MISSED the very pair it was written for — 0.20 against a 0.24 threshold.
+   Jaccard divides by the union, so a short card restating part of a long one is
+   penalised for the length difference, which is exactly backwards: being shorter
+   is what makes it a redundant restatement rather than a second treatment.
+
+   Containment — shared ÷ the smaller set — asks the right question: is this
+   card mostly already inside another one? Measured on the real pair it gives
+   0.69, against 0.28 for the closest legitimate pair in the module (0B's
+   introduction to the nine boxes and 3C's detailed treatment of them, which
+   genuinely share subject matter and should). The threshold sits between. */
+const STOP = new Set(('a an and are as at be been but by can cannot for from had has have if in into is it its ' +
+  'may must no not of on one or so than that the their them then there these they this to two up was what when ' +
+  'where which who will with would you your does do').split(' '));
+
+function bigrams(text) {
+  const w = String(text || '')
+    .toLowerCase()
+    .replace(/\*\*|\*/g, ' ')
+    .replace(/[^a-z0-9£%\s]/g, ' ')
+    .split(/\s+/)
+    .filter(t => t && !STOP.has(t));
+  const out = new Set();
+  for (let i = 0; i < w.length - 1; i++) out.add(w[i] + ' ' + w[i + 1]);
+  return out;
+}
+function containment(a, b) {
+  if (!a.size || !b.size) return 0;
+  let shared = 0;
+  a.forEach(x => { if (b.has(x)) shared++; });
+  return shared / Math.min(a.size, b.size);
+}
+
+const DUPLICATE_AT = 0.45;
+const MIN_BIGRAMS = 25;          // too short to judge, and short cards repeat by nature
+
+const fingerprints = [];
+lessons.forEach(l => {
+  (l.cards || []).forEach((c, ci) => {
+    const g = bigrams(flat(c));
+    if (g.size >= MIN_BIGRAMS) {
+      fingerprints.push({ label: `${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 44)}")`, g });
+    }
+  });
+});
+let closest = 0, closestPair = '';
+for (let i = 0; i < fingerprints.length; i++) {
+  for (let j = i + 1; j < fingerprints.length; j++) {
+    const score = containment(fingerprints[i].g, fingerprints[j].g);
+    if (score > closest) { closest = score; closestPair = `${fingerprints[i].label} / ${fingerprints[j].label}`; }
+    if (score >= DUPLICATE_AT) {
+      warnings.push(`${fingerprints[i].label} and ${fingerprints[j].label}: ${Math.round(score * 100)}% of the shorter card's phrasing already appears in the other. One is probably a restatement — keep the better telling and cut or repoint the other.`);
+    }
+  }
+}
+notes.push(`${fingerprints.length} cards compared pairwise for near-duplication; closest ${Math.round(closest * 100)}%, flagged at ${Math.round(DUPLICATE_AT * 100)}% (${closestPair}).`);
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
 const totalWords = words(flat(AAT3_LEARN_PATH));
 notes.push(`${lessons.length} lessons · ${cardCount} cards · ${Math.round(proseTotal / cardCount)} words of prose and ${Math.round(teachTotal / cardCount)} words of teaching per card.`);
