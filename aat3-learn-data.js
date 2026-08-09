@@ -39,7 +39,7 @@
             'That framing matters more than it first appears, and it is worth pausing on, because almost every rule in the unit follows from it. If the money were the business\'s own, the state would have only the ordinary interest of a creditor in being paid. Because it is not — because a shop holds VAT belonging to the Exchequer between the moment a customer pays and the moment the return falls due — the law surrounds that money with obligations that would look disproportionate for an ordinary debt.',
             'So HMRC can require registration, dictate what records are kept and for how long, demand returns on a fixed calendar, inspect those records, visit premises, and levy penalties for lateness that bear little relation to the harm caused by a few days\' delay. None of that is arbitrary. It is what happens when a private business is conscripted as a tax collector.',
             'Keep that thread in mind as you read. When a rule looks fussy — why a valid VAT invoice is required before input tax can be reclaimed, why a deposit can create a tax liability before anything has been delivered, why a penalty starts accruing on a named day — the answer is almost always that the system is protecting public money held in private hands.',
-            'It is worth saying plainly what this unit is **not**. It is not about how much tax a business owes on its own profits. Corporation tax, and the income tax a sole trader pays on trading profit, belong to different units at a different level. If you have met the phrase *adjusting accounting profit for tax*, that is not this. The specification is explicit that even within payroll you are not asked to calculate income tax, National Insurance or student loan deductions — you are given those figures and asked to handle them correctly.',
+            'It is worth saying plainly what this unit is **not**. It is not about how much tax a business owes on its own profits. Corporation tax, and the income tax a sole trader pays on trading profit, belong to different units at a different level. If you have met the phrase *adjusting accounting profit for tax*, that is not this. The specification is explicit that even within payroll you are not asked to calculate income tax, National Insurance or student loan deductions (all of which lesson 4C handles as given figures) — you are given those figures and asked to handle them correctly.',
           ],
           callout: { kind: 'key', text: 'The whole unit sits on one idea: the money is not yours. You are holding it, recording it, and handing it over on time.' },
         },
@@ -107,7 +107,7 @@
             'The codes beside the list below are lesson numbers. Several of the terms in it are named here for the first and only time until the lesson that explains them, so the reference is there to be followed rather than puzzled over.',
           ],
           split: {
-            left: { title: 'Already yours from Level 2', items: ['VAT is charged on sales and reclaimed on purchases', 'Output tax and input tax, and that only the difference is settled', 'The standard rate is 20%, and gross ÷ 6 gets you the VAT', 'The VAT control account, and that it should agree with the return', 'Returns are usually quarterly and filed through Making Tax Digital *(1D)*'] },
+            left: { title: 'Already yours from Level 2', items: ['VAT is charged on sales and reclaimed on purchases', 'Output tax and input tax, and that only the difference is settled', 'The standard rate is 20%, and gross ÷ 6 gets you the VAT', 'The VAT control account, and that it should agree with the return *(3E)*', 'Returns are usually quarterly and filed through Making Tax Digital *(1D)*'] },
             right: { title: 'New at Level 3', items: ['*Why* the system works this way, and who actually bears the tax', 'Which supplies are standard, reduced, zero-rated, exempt or outside the scope', 'Tax points — the date a supply legally belongs to *(2B)*', 'What cannot be reclaimed at all, and partial exemption *(2D)*', 'Adjustments: discounts, fuel, bad debts, imports *(2E)*', 'Registration, schemes, penalties and error correction *(1C–1G, 3A)*'] },
           },
           callout: { kind: 'tip', text: 'Level 2 taught you to *record* VAT. Level 3 asks you to *decide* it — which rate, which period, which amounts are recoverable, and what to do when something was wrong.' },
@@ -134,7 +134,7 @@
             'Correcting an error found on a previous VAT return',
           ],
           ans: 0,
-          exp: 'The unit covers VAT and the employer’s payroll obligations. Computing income tax on business profits belongs elsewhere — and the specification explicitly excludes calculating income tax, National Insurance and student loan repayments from this unit.',
+          exp: 'The unit covers VAT and the employer’s payroll obligations. Net pay from given deductions is squarely in it — lesson 4C works through a payslip. Computing income tax on business profits belongs elsewhere — and the specification explicitly excludes calculating income tax, National Insurance and student loan repayments from this unit.',
         },
       ],
     },
@@ -298,7 +298,7 @@
               ['Purchases day book', 'Input tax on credit purchases', 'Not everything on it is reclaimable'],
               ['Cash book', 'VAT on cash sales and payments', 'Easily missed on a purely invoice-led review'],
               ['Petty cash records', 'Small amounts of input tax', 'Often unsupported by a valid VAT invoice'],
-              ['VAT control account', 'The ledger position for the period', 'Should reconcile to the return — if not, something is wrong'],
+              ['VAT control account', 'The ledger position for the period', 'Should reconcile to the return — if not, something is wrong (3E)'],
               ['Accounting software reports', 'A drafted return', 'A draft, not an answer — it still needs checking'],
             ],
           },
@@ -2668,7 +2668,7 @@
         {
           h: 'Software is not optional',
           p: [
-            'Payroll must be run using **software capable of reporting under Real Time Information**. This is not a recommendation about efficiency; RTI submissions have to be made electronically in a prescribed format every time employees are paid, and that cannot be done on paper.',
+            'Payroll must be run using **software capable of reporting under Real Time Information** — the regime, set out in lesson 4F, under which the employer reports pay and deductions to HMRC on or before every payday rather than once a year. This is not a recommendation about efficiency; RTI submissions have to be made electronically in a prescribed format every time employees are paid, and that cannot be done on paper.',
             'HMRC provides **Basic PAYE Tools** free for employers with fewer than 10 employees, which removes the cost objection for the smallest businesses. Larger employers use commercial payroll software, often integrated with their accounting system.',
             'The parallel with Making Tax Digital in lesson 1D is close, and the consequence is the same one worth internalising: the figures flow from the payroll system to HMRC without a person reading them. Where a wrong tax code or a mistyped hours figure would once have been caught by somebody preparing a return, it now goes straight through. Checking has to be deliberate because it is no longer incidental.',
           ],
@@ -3417,7 +3417,7 @@
             'On **penalties**, the point worth making is the one from lesson 4F: late filing is penalised **per month by headcount**, and repeated late payment escalates from 1% to 4% across the year. A business that is habitually a few days late is paying progressively more for behaviour it has stopped noticing.',
             'On **regulatory changes**, the annual April cycle is the thing to communicate ahead of time rather than during. The software must be updated, the rates must be right, and the first payday of the new tax year is a hard deadline that arrives at the same time every year.',
           ],
-          examtrap: 'Payroll communications concern identifiable individuals. Seniority is not the same as a legitimate need to know, and confidentiality does not yield to rank.',
+          examtrap: 'Payroll communications concern identifiable individuals. Seniority is not the same as a legitimate need to know, and confidentiality — one of the five fundamental principles, set out in lesson 5E — does not yield to rank.',
         },
       ],
       check: [
