@@ -2385,6 +2385,70 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 .rcb-name { flex: 1; }
 .rcb-status { font-size: .76rem; color: var(--text-muted); font-weight: 500; }
 
+/* Backup and restore. Sits below the reset controls and borrows their shape:
+   both are "what happens to the data itself" rather than study features. */
+.backup-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.backup-heading {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+.backup-note {
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  max-width: 62ch;
+}
+.backup-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.backup-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.backup-btn:hover { background: var(--opt-hover); border-color: var(--accent); }
+.backup-manifest {
+  margin: 4px 0 14px;
+  padding-left: 20px;
+  font-size: .85rem;
+  line-height: 1.6;
+  color: var(--text);
+  text-align: left;          /* .modal centres its children; a list reads badly centred */
+}
+.backup-manifest-empty { font-size: .85rem; color: var(--text-muted); margin: 4px 0 14px; }
+.backup-mode { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.backup-mode-opt {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: .82rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.backup-mode-opt strong { color: var(--text); font-weight: 700; }
+.backup-mode-opt input { margin-top: 2px; flex-shrink: 0; }
+.backup-mode-opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+
 /* Toast notifications */
 .toast {
   position: fixed;
