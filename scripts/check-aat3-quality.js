@@ -559,6 +559,61 @@ for (let i = 0; i < fingerprints.length; i++) {
 }
 notes.push(`${fingerprints.length} cards compared pairwise for near-duplication; closest ${Math.round(closest * 100)}%, flagged at ${Math.round(DUPLICATE_AT * 100)}% (${closestPair}).`);
 
+/* ── 6. Terms used before the lesson that explains them ──────────────────────
+   Reported three times by a reader, each time about a different term: Making
+   Tax Digital introduced as new in three separate lessons, then the domestic
+   reverse charge and Time to Pay named without explanation, then bad debt
+   relief and the fuel scale charge used repeatedly across Outcomes 1 and 2
+   before Outcome 2 defines them.
+
+   The unit's vocabulary is not optional scenery. A reader who meets "fuel scale
+   charge" in lesson 0A and is not told what it is must either break off to look
+   elsewhere or carry an unexplained noun for thirteen lessons.
+
+   The rule enforced is the modest, checkable one: a term may be named before
+   its own lesson, but the card that names it early must say WHERE it is
+   explained. A pointer is the floor, not the ceiling — a term the reader is
+   asked to reason with, rather than merely see in a list, deserves a sentence
+   of gloss too, and that part is a judgement no check can make.
+
+   The home lesson is DERIVED from card headings rather than declared, so the
+   table below cannot drift out of date: if a term stops titling a card, the
+   check fails loudly instead of quietly passing. */
+const KEY_TERMS = [
+  'fuel scale charge', 'bad debt relief', 'Making Tax Digital', 'partial exemption',
+  'de minimis', 'tax point', 'flat rate scheme', 'cash accounting', 'annual accounting',
+  'net error', 'blocked input tax',
+];
+
+const lessonOrder = [];
+AAT3_LEARN_PATH.forEach(u => (u.lessons || []).forEach(l => lessonOrder.push(l)));
+
+KEY_TERMS.forEach(term => {
+  const re = new RegExp(term.replace(/ /g, '\\s+'), 'i');
+
+  const homeIdx = lessonOrder.findIndex(l => (l.cards || []).some(c => re.test(String(c.h || ''))));
+  if (homeIdx === -1) {
+    errors.push(`Key term "${term}" no longer titles any card, so this check cannot tell where it is explained. Point it at its new home or drop it from KEY_TERMS.`);
+    return;
+  }
+  const home = lessonOrder[homeIdx].id.replace('L3-TPFB-', '');
+
+  /* EVERY lesson ahead of the home one, not just the first. The complaint that
+     prompted this was precisely that a term recurred several times unexplained;
+     stopping at the first mention would leave exactly that pattern undetected. */
+  for (let i = 0; i < homeIdx; i++) {
+    const l = lessonOrder[i];
+    const pieces = (l.cards || [])
+      .map((c, ci) => ({ label: `card ${ci + 1} ("${String(c.h || '').slice(0, 36)}")`, text: flat(c) }))
+      .concat((l.check || []).map((q, qi) => ({ label: `check Q${qi + 1}`, text: flat(q) })));
+    const hit = pieces.find(x => re.test(x.text));
+    if (!hit) continue;
+    if (!new RegExp('\\b' + home + '\\b').test(hit.text)) {
+      warnings.push(`${l.id} ${hit.label} uses "${term}" but ${home} is where it is explained, and this card does not say so. Name the lesson, and gloss the term if the reader has to reason with it here.`);
+    }
+  }
+});
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
 const totalWords = words(flat(AAT3_LEARN_PATH));
 notes.push(`${lessons.length} lessons · ${cardCount} cards · ${Math.round(proseTotal / cardCount)} words of prose and ${Math.round(teachTotal / cardCount)} words of teaching per card.`);
