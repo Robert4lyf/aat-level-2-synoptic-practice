@@ -29,6 +29,8 @@ jobs:
         run: npm run check:aat3-quality
       - name: Check progress backup merge (no data loss, idempotent)
         run: npm run check:backup
+      - name: Check cross-device sync (version check, conflict retry, fail-safe)
+        run: npm run check:sync
       - name: Validate story-mode data (marks, flags, reachable buckets)
         run: npm run validate:story
       - name: Validate French question data

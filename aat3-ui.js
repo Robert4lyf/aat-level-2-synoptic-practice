@@ -56,6 +56,10 @@
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+    /* Level 3 persists on its own, so it has to announce its own writes. Without
+       this a lesson finished here would sit unsynced until something on the
+       Level 2 side happened to save. */
+    if (root.ProgressSync) root.ProgressSync.noteLocalChange();
   }
 
   /* ── Data access ─────────────────────────────────────────────────────────── */

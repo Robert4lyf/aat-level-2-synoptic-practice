@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v88';
+var CACHE_VERSION = 'aat-l2-practice-v89';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -11,6 +11,8 @@ var CORE_ASSETS = [
   './data.js',
   './app.js',
   './progress-backup.js',
+  './sync-config.js',
+  './progress-sync.js',
   './skills.js',
   './learn-data.js',
   './story-data.js',
@@ -63,6 +65,10 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
   var req = event.request;
   if (req.method !== 'GET') return;
+  /* Leave anything off this origin alone. The only cross-origin traffic is the
+     progress sync endpoint, and a cached reply from it would mean handing the
+     app somebody's older progress and calling it current. */
+  if (req.url.indexOf(self.location.origin) !== 0) return;
 
   event.respondWith(
     caches.match(req).then(function (cached) {

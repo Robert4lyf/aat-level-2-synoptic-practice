@@ -1,0 +1,10 @@
+name = "aat-progress-sync"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# The KV namespace holding one document per sync key. Create it with
+#   npx wrangler kv namespace create PROGRESS
+# and paste the id it prints below, replacing PASTE_YOUR_NAMESPACE_ID_HERE.
+[[kv_namespaces]]
+binding = "PROGRESS"
+id = "PASTE_YOUR_NAMESPACE_ID_HERE"

@@ -901,6 +901,8 @@
       } catch (e) { this.data = defaultData(); }
     },
     save() {
+      /* Debounced inside ProgressSync — a run of ten answers is one upload. */
+      if (window.ProgressSync) window.ProgressSync.noteLocalChange({ onRemoteChange: onRemoteProgress });
       try { localStorage.setItem(getStorageKey(), JSON.stringify(this.data)); }
       catch (e) {
         if (e && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
@@ -3863,14 +3865,125 @@
   function renderBackupSection() {
     if (!window.ProgressBackup) return '';
     return `<div class="backup-section">
-      <h3 class="backup-heading">Backup and restore</h3>
+      <h3 class="backup-heading">${window.ProgressSync && window.ProgressSync.isConfigured() ? 'Backup, restore and sync' : 'Backup and restore'}</h3>
       <p class="backup-note">Saves every subject's progress to a single file. Import it on another device to combine the two — the higher score always wins and nothing already on that device is thrown away. Dark mode and whichever subject you have open stay as they are on each device.</p>
       <div class="backup-btns">
         <button class="backup-btn" type="button" id="exportProgressBtn">⬇️ Export to a file</button>
         <button class="backup-btn" type="button" id="importProgressBtn">⬆️ Import from a file</button>
       </div>
       <input type="file" id="importProgressFile" accept="application/json,.json" hidden>
+      ${renderSyncBlock()}
     </div>`;
+  }
+
+  /* Sync controls. Absent entirely unless sync-config.js names an endpoint, so
+     a copy of this app with no Worker deployed shows no half-working feature. */
+  function renderSyncBlock() {
+    const PS = window.ProgressSync;
+    if (!PS || !PS.isConfigured()) return '';
+    const st = PS.status();
+    if (!st.enabled) {
+      return `<div class="sync-block">
+        <p class="sync-idle">Sync is off. Turn it on and this device keeps itself in step with your others automatically — no files to move.</p>
+        <div class="backup-btns">
+          <button class="backup-btn" type="button" id="syncSetupBtn">🔗 Set up sync</button>
+        </div>
+      </div>`;
+    }
+    const when = st.lastSyncAt ? timeAgo(st.lastSyncAt) : 'not yet';
+    const dot = { syncing: 'busy', error: 'bad', offline: 'warn' }[st.phase] || 'good';
+    const label = {
+      syncing: 'Syncing…',
+      error: escapeHtml(st.error || 'Sync failed'),
+      offline: 'Offline — will sync when the connection returns',
+    }[st.phase] || `Synced ${escapeHtml(when)}`;
+    return `<div class="sync-block">
+      <p class="sync-status"><span class="sync-dot sync-dot-${dot}" aria-hidden="true"></span>${label}</p>
+      <div class="backup-btns">
+        <button class="backup-btn" type="button" id="syncNowBtn">🔄 Sync now</button>
+        <button class="backup-btn" type="button" id="syncKeyBtn">🔑 Show sync key</button>
+        <button class="backup-btn" type="button" id="syncOffBtn">Turn sync off</button>
+      </div>
+    </div>`;
+  }
+
+  function timeAgo(ts) {
+    const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.round(s / 60) + ' min ago';
+    if (s < 86400) return Math.round(s / 3600) + ' hr ago';
+    return new Date(ts).toLocaleDateString('en-GB');
+  }
+
+  /* First device: generate a key. Second device: paste the first one's key.
+     One dialog does both, because which case you are in is obvious to you and
+     not to the app. */
+  function openSyncSetup() {
+    const PS = window.ProgressSync;
+    const fresh = PS.generateKey();
+    openConfirm({
+      title: 'Set up sync',
+      message: 'A sync key is the only thing linking your devices. There is no account and no password to recover it with — keep it somewhere safe.',
+      bodyHtml: `<div class="sync-setup">
+        <label class="sync-field">
+          <span class="sync-field-label">Use this new key on your first device</span>
+          <input type="text" id="syncKeyInput" class="sync-key-input" value="${escapeHtml(fresh)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+        </label>
+        <p class="sync-hint">On your other device, open this same screen and paste this key in instead of generating a new one. Anyone holding it can read and change your progress, so treat it like a password.</p>
+      </div>`,
+      confirmLabel: 'Turn sync on',
+      onConfirm: () => {
+        const el = document.getElementById('syncKeyInput');
+        const value = el ? el.value : fresh;
+        State.confirmModal = null;
+        try { PS.setKey(value); }
+        catch (e) { showToast('⚠️ ' + e.message, 'warn'); render(); return; }
+        render();
+        PS.syncNow({ onRemoteChange: onRemoteProgress }).then((r) => {
+          if (r && r.error) showToast('⚠️ Sync is on, but the first attempt failed. It will keep trying.', 'warn');
+          else showToast('🔗 Sync is on', 'success');
+          render();
+        });
+      },
+    });
+  }
+
+  function openSyncKey() {
+    openConfirm({
+      title: 'Your sync key',
+      message: 'Enter this on another device to keep the two in step.',
+      bodyHtml: `<div class="sync-setup">
+        <input type="text" class="sync-key-input" value="${escapeHtml(window.ProgressSync.getKey())}" readonly onclick="this.select()">
+        <p class="sync-hint">Anyone holding this key can read and change your progress. Treat it like a password.</p>
+      </div>`,
+      hideConfirm: true,
+      cancelLabel: 'Done',
+    });
+  }
+
+  function openSyncOff() {
+    openConfirm({
+      title: 'Turn sync off?',
+      message: 'Progress already on this device stays exactly as it is. It simply stops being kept in step with your other devices, and the key is forgotten here.',
+      confirmLabel: 'Turn off',
+      onConfirm: () => {
+        window.ProgressSync.clearKey();
+        State.confirmModal = null;
+        showToast('Sync turned off', 'info');
+        render();
+      },
+    });
+  }
+
+  /* A sync that brought something in changed the data underneath us. Reload
+     rather than re-render, for the same reason import does: this module and the
+     Level 3 one both hold their saved data in memory, and a stale copy would
+     write back over what just arrived. Never mid-quiz — a reload there would
+     throw away the questions on screen. */
+  function onRemoteProgress() {
+    if (State.screen === 'quiz' || State.confirmModal) return;
+    try { sessionStorage.setItem('progressImported', 'sync'); } catch (e) {}
+    location.reload();
   }
 
   function exportProgress() {
@@ -8010,6 +8123,17 @@
         });
       });
     });
+    bind('syncSetupBtn', 'click', openSyncSetup);
+    bind('syncKeyBtn', 'click', openSyncKey);
+    bind('syncOffBtn', 'click', openSyncOff);
+    bind('syncNowBtn', 'click', () => {
+      showToast('🔄 Syncing…', 'info');
+      window.ProgressSync.syncNow({ onRemoteChange: onRemoteProgress }).then((r) => {
+        if (r && r.error) showToast('⚠️ ' + (window.ProgressSync.status().error || 'Sync failed'), 'warn');
+        else if (!r.changed) showToast('✅ Already up to date', 'success');
+        render();
+      });
+    });
     bind('exportProgressBtn', 'click', exportProgress);
     bind('importProgressBtn', 'click', () => {
       const inp = document.getElementById('importProgressFile');
@@ -8490,12 +8614,22 @@
     document.body.classList.remove('no-fade');
     const _cover = document.getElementById('page-cover');
     if (_cover) _cover.remove();
+    if (window.ProgressSync) {
+      window.ProgressSync.onChange(() => {
+        /* Redraw only the Progress screen, and only when it is on show —
+           a status change must never interrupt a question. */
+        if (State.screen === 'home' && State.activeTab === 'progress' && !State.confirmModal) render();
+      });
+      window.ProgressSync.init({ onRemoteChange: onRemoteProgress });
+    }
     /* Set just before the reload that follows a restore — see importProgressFromText. */
     try {
       const _imp = sessionStorage.getItem('progressImported');
       if (_imp) {
         sessionStorage.removeItem('progressImported');
-        showToast(_imp === 'replace' ? '✅ Progress replaced from your file' : '✅ Progress combined with your file', 'success');
+        showToast(_imp === 'sync' ? '🔄 Progress synced from your other device'
+                : _imp === 'replace' ? '✅ Progress replaced from your file'
+                : '✅ Progress combined with your file', 'success');
       }
     } catch (e) {}
     // Bind static header buttons once — they live outside #app and must not accumulate listeners

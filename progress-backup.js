@@ -45,9 +45,15 @@
     return k === 'aatPrep_v2' || k === 'multisubject_active' || k.indexOf('prep_v2_') === 0;
   }
 
-  /* Device-local, deliberately not carried across devices. */
+  /* Device-local, deliberately not carried across devices.
+
+     `prep_v2_sync` holds the sync key and matters most of the three: it is a
+     credential. Were it treated as progress it would be written into every
+     exported file, so sharing a backup would hand over the ability to read and
+     overwrite the sync document. It must never leave this device by either
+     route, which is why it is filtered on export as well as on import. */
   function isDeviceKey(k) {
-    return k === 'multisubject_active' || k === 'prep_v2_settings';
+    return k === 'multisubject_active' || k === 'prep_v2_settings' || k === 'prep_v2_sync';
   }
 
   function isObj(v) { return v !== null && typeof v === 'object' && !Array.isArray(v); }
