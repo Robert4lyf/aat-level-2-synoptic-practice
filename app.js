@@ -3857,6 +3857,89 @@
       <div class="home-grid">${cards}</div>`;
   }
 
+  /* Backup and restore. Rendered in BOTH branches of renderProgress — the
+     device you are importing into is usually the one with no progress on it,
+     which is exactly the branch that returns early. */
+  function renderBackupSection() {
+    if (!window.ProgressBackup) return '';
+    return `<div class="backup-section">
+      <h3 class="backup-heading">Backup and restore</h3>
+      <p class="backup-note">Saves every subject's progress to a single file. Import it on another device to combine the two — the higher score always wins and nothing already on that device is thrown away. Dark mode and whichever subject you have open stay as they are on each device.</p>
+      <div class="backup-btns">
+        <button class="backup-btn" type="button" id="exportProgressBtn">⬇️ Export to a file</button>
+        <button class="backup-btn" type="button" id="importProgressBtn">⬆️ Import from a file</button>
+      </div>
+      <input type="file" id="importProgressFile" accept="application/json,.json" hidden>
+    </div>`;
+  }
+
+  function exportProgress() {
+    const PB = window.ProgressBackup;
+    if (!PB) return;
+    try {
+      Storage.save();                       // flush anything held in memory first
+      const badge = document.querySelector('.version-badge');
+      const doc = PB.buildExport({ appVersion: badge ? badge.textContent.trim() : '' });
+      const blob = new Blob([JSON.stringify(doc, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = PB.filename(); a.style.display = 'none';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('⬇️ Progress exported', 'success');
+    } catch (e) {
+      showToast('Could not export progress on this browser.', 'warn');
+    }
+  }
+
+  function importProgressFromText(text) {
+    const PB = window.ProgressBackup;
+    let doc;
+    try { doc = PB.parse(text); }
+    catch (e) { showToast('⚠️ ' + e.message, 'warn'); return; }
+
+    const rows = PB.summarize(doc);
+    const when = doc.exportedAt ? new Date(doc.exportedAt).toLocaleString('en-GB') : 'an unknown date';
+    const list = rows.length
+      ? `<ul class="backup-manifest">${rows.map(r => {
+          const s = SUBJECT_REGISTRY.find(x => subjectStorageKey(x.id) === r.key);
+          return `<li><strong>${escapeHtml(s ? s.name : r.key)}</strong> — ${escapeHtml(r.detail)}</li>`;
+        }).join('')}</ul>`
+      : '<p class="backup-manifest-empty">This file records no progress for any subject.</p>';
+
+    openConfirm({
+      title: 'Import this progress?',
+      message: `Exported ${when}.`,
+      bodyHtml: `${list}
+        <div class="backup-mode">
+          <label class="backup-mode-opt"><input type="radio" name="importMode" value="merge" checked>
+            <span><strong>Combine with this device</strong> — keeps whatever is already here and takes the better of the two for every score.</span></label>
+          <label class="backup-mode-opt"><input type="radio" name="importMode" value="replace">
+            <span><strong>Replace what is here</strong> — discards this device's progress for the subjects in the file.</span></label>
+        </div>`,
+      confirmLabel: 'Import',
+      onConfirm: () => {
+        const picked = document.querySelector('input[name="importMode"]:checked');
+        const mode = picked && picked.value === 'replace' ? 'replace' : 'merge';
+        try {
+          PB.applyImport(doc, mode);
+        } catch (e) {
+          State.confirmModal = null;
+          showToast('⚠️ Could not write the imported progress — storage may be full.', 'warn');
+          render();
+          return;
+        }
+        /* Reload rather than re-render. Both this module and the Level 3 one
+           hold their saved data in memory, and a stale in-memory copy would
+           overwrite what was just imported on the next save. The flag survives
+           the reload so the user is told it worked — otherwise the page simply
+           blinks and says nothing. */
+        try { sessionStorage.setItem('progressImported', mode); } catch (e) {}
+        location.reload();
+      },
+    });
+  }
+
   function renderProgress() {
     const stats = Storage.data.stats;
     const totalAttempts = Object.values(stats.questions).reduce((s, q) => s + q.attempts, 0);
@@ -3873,7 +3956,8 @@
           <div class="progress-empty-step"><span class="progress-empty-step-num">2</span>Answer at least 10 questions</div>
           <div class="progress-empty-step"><span class="progress-empty-step-num">3</span>Come back here to track your score</div>
         </div>
-      </div>`;
+      </div>
+      ${renderBackupSection()}`;
     const topicRows = window.TOPICS.map(t => {
       const ts = objAcc(stats.topics[t.id]);
       const pct = ts.attempts ? Math.round((ts.correct / ts.attempts) * 100) : 0;
@@ -4000,7 +4084,8 @@
             </button>`;
           }).join('')}
         </div>
-      </div>`;
+      </div>
+      ${renderBackupSection()}`;
   }
 
   function animateCounters() {
@@ -7925,6 +8010,19 @@
         });
       });
     });
+    bind('exportProgressBtn', 'click', exportProgress);
+    bind('importProgressBtn', 'click', () => {
+      const inp = document.getElementById('importProgressFile');
+      if (inp) { inp.value = ''; inp.click(); }
+    });
+    bind('importProgressFile', 'change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => importProgressFromText(String(reader.result || ''));
+      reader.onerror = () => showToast('⚠️ Could not read that file.', 'warn');
+      reader.readAsText(file);
+    });
     bind('flagBtn', 'click', toggleFlagCurrent);
     bind('confidentBtn', 'click', toggleConfidentCurrent);
     document.querySelectorAll('[data-flag-id]').forEach(el => el.addEventListener('click', () => {
@@ -8392,6 +8490,14 @@
     document.body.classList.remove('no-fade');
     const _cover = document.getElementById('page-cover');
     if (_cover) _cover.remove();
+    /* Set just before the reload that follows a restore — see importProgressFromText. */
+    try {
+      const _imp = sessionStorage.getItem('progressImported');
+      if (_imp) {
+        sessionStorage.removeItem('progressImported');
+        showToast(_imp === 'replace' ? '✅ Progress replaced from your file' : '✅ Progress combined with your file', 'success');
+      }
+    } catch (e) {}
     // Bind static header buttons once — they live outside #app and must not accumulate listeners
     const _dt = document.getElementById('darkToggle');
     if (_dt) _dt.addEventListener('click', toggleDarkMode);
