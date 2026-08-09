@@ -182,6 +182,49 @@ allQuestions.forEach(({ where, q }) => {
   }
 });
 
+/* ── 1b. True/false grids must not be answerable by test-wiseness ─────────
+   An adversarial review found two cues in the true/false statements that no
+   check was measuring. Both are properties of the SET, not of any one grid,
+   so they cannot be caught while looking at questions one at a time.
+
+   First, absolutes. A statement containing "all", "never", "only" or "cannot"
+   was keyed FALSE 67% of the time against a 39% base rate — so "if it sounds
+   absolute, answer false" beat knowing the subject. Real rules do sometimes
+   admit no exception, so the fix is not to ban absolutes but to keep them from
+   predicting the answer.
+
+   Second, overall balance. The keys leaned 61% true, which rewards guessing
+   true. Neither is a defect in any individual statement, and neither would
+   ever show up in review of a single question. */
+const ABSOLUTE = /\b(all|never|always|only|cannot|every|immediately|any circumstances)\b/i;
+let tfTrue = 0, tfFalse = 0, absTrue = 0, absFalse = 0;
+allQuestions.forEach(({ q }) => {
+  if ((q.type || 'mcq') !== 'truefalse' || !Array.isArray(q.statements)) return;
+  q.statements.forEach(st => {
+    if (st.answer) tfTrue++; else tfFalse++;
+    if (ABSOLUTE.test(String(st.text))) { if (st.answer) absTrue++; else absFalse++; }
+  });
+});
+if (tfTrue + tfFalse >= 20) {
+  const total = tfTrue + tfFalse;
+  const truePct = (tfTrue / total) * 100;
+  notes.push(`True/false balance: ${tfTrue} true, ${tfFalse} false (${truePct.toFixed(0)}% true; even is 50%).`);
+  if (truePct > 65 || truePct < 35) {
+    errors.push(`True/false keys are ${truePct.toFixed(0)}% true across ${total} statements — guessing the majority answer beats knowing the material. Rebalance.`);
+  } else if (truePct > 60 || truePct < 40) {
+    warnings.push(`True/false keys are ${truePct.toFixed(0)}% true across ${total} statements — drifting towards guessable.`);
+  }
+  const absTotal = absTrue + absFalse;
+  if (absTotal >= 8) {
+    const absFalsePct = (absFalse / absTotal) * 100;
+    const baseFalsePct = (tfFalse / total) * 100;
+    notes.push(`Absolute wording ("all", "never", "only"): ${absFalse}/${absTotal} keyed false (${absFalsePct.toFixed(0)}%; base rate ${baseFalsePct.toFixed(0)}%).`);
+    if (absFalsePct - baseFalsePct > 20) {
+      errors.push(`Statements containing an absolute are keyed false ${absFalsePct.toFixed(0)}% of the time against a ${baseFalsePct.toFixed(0)}% base rate — "if it sounds absolute, answer false" is a winning strategy. Either soften the false stems or key some absolutes true.`);
+    }
+  }
+}
+
 stems.forEach((where, stem) => {
   if (where.length > 1) {
     warnings.push(`Question stem repeated in ${where.join(', ')}: "${stem.slice(0, 60)}…"`);

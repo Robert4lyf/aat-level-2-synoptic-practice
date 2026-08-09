@@ -118,6 +118,9 @@
     assessments: {
       power: 'Where a return is not submitted, HMRC may raise an assessment to the best of its judgement under VATA 1994 s.73 — a "prime" or central assessment — creating an enforceable debt for the period.',
       note: 'An assessment does NOT replace the obligation to file. The return is still due, the assessment stands until displaced by it, and penalties continue to run.',
+      direction: 'An assessment may be too high OR too low; HMRC publishes no directional claim and neither should teaching material.',
+      underAssessment: 'Where an assessment understates the liability the business must tell HMRC within 30 days, or send a correct return and payment. Otherwise a penalty of up to 30% of the assessment may apply.',
+      underAssessmentSource: 'HMRC, Send a VAT Return — late returns and payment',
       normalTimeLimitYears: { value: 4, unit: 'years', note: 'The maximum period HMRC may assess, except where the 20-year rule applies.' },
       extendedTimeLimitYears: { value: 20, unit: 'years', note: 'Where the loss of tax is brought about deliberately.' },
       source: 'HMRC, VAT Assessments and Error Correction manual VAEC1143, VAEC2920; VATA 1994 s.73',
@@ -164,7 +167,7 @@
         firstYearDiscount: { value: 1, unit: '%',
           note: 'A 1% reduction to the sector rate, running until the first anniversary of VAT registration.' },
         limitedCostBusiness: { value: 16.5, unit: '%',
-          note: 'A business whose spend on relevant goods is under 2% of flat rate turnover, or over 2% but under £1,000 a year, must use 16.5% whatever its sector.' },
+          note: 'A business whose spend on relevant goods INCLUDING VAT is under 2% of flat rate turnover, or over 2% but under £1,000 a year, must use 16.5% whatever its sector. The £1,000 is annual — for a QUARTERLY return the figure is £250.' },
         source: 'HMRC, Flat Rate Scheme for small businesses (VAT Notice 733)', checked: '2026-08-08',
         note: 'The sector flat rate percentage itself is supplied in the assessment — see PROVIDED_IN_ASSESSMENT.'
       },
@@ -182,10 +185,10 @@
        here only so the numbering is not silently wrong. */
     returnBoxes: {
       box1: { title: 'VAT due on sales and other outputs', note: 'Output tax on all supplies made: standard and reduced rated sales, fuel scale charges, import VAT under postponed accounting, and VAT on gifts of goods over £50. Zero-rated, exempt and outside-the-scope supplies carry no VAT so add nothing here.' },
-      box2: { title: 'VAT due on acquisitions from EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit.' },
+      box2: { title: 'VAT due in the period on acquisitions of goods made in Northern Ireland from EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit — the label was rescoped to NI after 2020 and pre-2021 wording is stale.' },
       box3: { title: 'Total VAT due', note: 'Box 1 + Box 2. Calculated, not entered.' },
       box4: { title: 'VAT reclaimed on purchases and other inputs', note: 'Input tax recoverable: purchases, import VAT under postponed accounting, and bad debt relief. Excludes blocked items — client entertaining, cars available for private use — and anything without a valid VAT invoice.' },
-      box5: { title: 'Net VAT to pay or reclaim', note: 'Box 3 − Box 4. Calculated. A negative result is a repayment due from HMRC.' },
+      box5: { title: 'Net VAT to pay or reclaim', note: 'Deduct the smaller of Box 3 and Box 4 from the larger and enter the difference. ALWAYS POSITIVE — HMRC states expressly that a minus sign must not be entered in Box 5. Box 4 exceeding Box 3 means a repayment is due.' },
       box6: { title: 'Total value of sales and other outputs, excluding VAT', note: 'NET values of ALL supplies, including zero-rated and exempt ones. This is a value box, not a VAT box — a common error is to omit zero-rated or exempt sales because they carried no VAT.' },
       box7: { title: 'Total value of purchases and other inputs, excluding VAT', note: 'NET values of all business purchases including imports. Excludes wages, PAYE, drawings and other outside-the-scope expenditure.' },
       box8: { title: 'Value of supplies of goods to EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit.' },
@@ -268,7 +271,9 @@
         thresholds: { annual: 2, quarterly: 4, monthly: 5 },
         penalty: { value: 200, unit: '£', note: 'Charged at the threshold and again for each subsequent late submission.' },
         complianceMonths: { annual: 24, quarterly: 12, monthly: 6,
-          note: 'Points reset to zero only after a period of compliance AND submission of all outstanding returns for the preceding 24 months.' },
+          note: 'AT the threshold, points reset to zero only after a period of compliance AND submission of all outstanding returns for the preceding 24 months.' },
+        pointExpiryMonths: { value: 24, unit: 'months',
+          note: 'BELOW the threshold, a single point expires automatically 24 months after the first day of the month following the month in which the late return was due. Two different mechanisms — do not merge them.' },
         source: 'HMRC, Penalty points and penalties if you submit your VAT Return late',
         checked: '2026-08-07'
       },
