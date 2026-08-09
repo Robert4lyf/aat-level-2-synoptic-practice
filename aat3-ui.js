@@ -268,8 +268,6 @@
     var cov = coverage();
     var syl = syllabus();
     var u = syl && syl.units ? syl.units.tpfb : null;
-    var outcomeWeight = groups.reduce(function (a, g) { return a + (g.weighting || 0); }, 0);
-
     var h = '<div class="a3-root">';
 
     /* Hero */
@@ -278,7 +276,6 @@
       '<div class="a3-hero-in">' +
       '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
       '<h1 class="a3-title">' + esc(unit.title) + '</h1>' +
-      '<div class="a3-sub">' + groups.length + ' of 5 outcomes · ' + outcomeWeight + '% of the assessment</div>' +
       '<div class="a3-chips">' +
         (u ? '<span class="a3-chip">' + esc(u.financeAct) + '</span>' : '') +
         (u ? '<span class="a3-chip">' + u.assessment.durationMinutes + ' min exam</span>' : '') +
@@ -290,20 +287,11 @@
         (cov ? '<span>' + cov.studied + ' of ' + cov.total + ' syllabus points studied</span>' : '') + '</div></div>' +
       '</div></header>';
 
-    /* Honest scope notice. Once every outcome is written the claim has to
-       change rather than disappear: full syllabus coverage is not the same
-       thing as being ready to sit the assessment, and saying so is the point
-       of having the notice at all. */
-    var whole = cov && cov.covered >= cov.total;
-    h += '<div class="a3-notice">' + (whole
-      ? '<strong>All five outcomes are written.</strong> They cover every one of the unit’s ' +
-        (cov ? cov.total : 0) + ' syllabus points. Covering the syllabus is not the same as being ' +
-        'ready to sit the assessment, which also needs timed practice against real question formats — ' +
-        'and none of this has been reviewed by a qualified accountant.'
-      : '<strong>' + groups.length + ' of the unit’s 5 outcomes are written.</strong> ' +
-        'They cover ' + (cov ? cov.covered : 0) + ' of the unit’s ' + (cov ? cov.total : 0) +
-        ' syllabus points, worth ' + outcomeWeight + '% of the assessment. The remaining outcomes are ' +
-        'not written yet, so this is not yet full preparation for the assessment.') + '</div>';
+    /* The scope notice that used to sit here is gone. It was written when the
+       unit was part-built and the honest thing was to say so on every visit.
+       The unit is complete, so the standing caveat — syllabus coverage is not
+       readiness, and nothing here has been checked by a qualified accountant —
+       is made once in lesson 0A rather than repeated above every scroll. */
 
     /* Practice entry. Placed above the track because it is a peer of the
        lessons, not an afterthought at the bottom of a long scroll. */
