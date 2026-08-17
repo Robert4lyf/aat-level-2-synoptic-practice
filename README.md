@@ -7,6 +7,11 @@ A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q202
 - Principles of Costing (POC)
 - The Business Environment (BESY)
 
+Alongside it are two self-contained modules for the levels either side, each with its own design, its own progress and its own renderer:
+
+- **AAT Level 1 Award in Bookkeeping** — Bookkeeping Fundamentals, all five outcomes
+- **AAT Level 3 Diploma in Accounting** — Tax Processes for Businesses, all five outcomes
+
 > ⚠️ This is an independent study tool. It is **not** affiliated with, endorsed by, or officially associated with AAT (the Association of Accounting Technicians).
 
 ## Features
@@ -24,6 +29,33 @@ A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q202
 - **Installable (PWA)** — install it to a phone or desktop home screen and use it fully offline.
 - Light/dark themes and keyboard shortcuts throughout.
 
+## The Level 1 module
+
+The **Level 1 Award in Bookkeeping** module covers the whole of the Bookkeeping Fundamentals unit
+(QN 610/0818/7), following the published qualification specification version 2.1.
+
+- **26 steps** of textbook-style teaching — about 27,000 words across 106 pages — laid out as a
+  numbered ladder rather than a branching path, because a beginner's first need is an unambiguous
+  next thing to do.
+- **All 51 scope items covered**, each declared by the lesson that teaches it and checked at build
+  time against the encoded syllabus. A lesson cannot claim coverage the specification does not
+  contain, and a shipped outcome cannot leave an item untaught.
+- **198 questions** — 124 following the teaching and a separate bank of 74 meant to be met cold —
+  in six formats, including click-to-pair matching and reorder-the-steps sequencing, both of which
+  suit this unit's recognition and ordering work better than multiple choice does.
+- **Documents drawn as documents.** Three of the five outcomes turn on recognising a piece of
+  paper, so invoices, credit notes, daybooks, cash books and bank statements are rendered as
+  facsimiles rather than described in prose.
+- **Vocabulary taught explicitly** — key terms are highlighted where they are first used and
+  gathered into glossary strips, which is what the specification's own delivery guidance asks for.
+- **Exclusions stated out loud.** Nearly every one of this unit's exclusions is the Level 2
+  treatment of a topic it introduces — debits and credits, ledger accounts, VAT from a gross
+  figure, bank reconciliation — so the material names them rather than leaving a beginner to
+  wonder what they missed.
+
+Its own design language is scoped entirely under `body[data-subject="aat1"]`, and its progress
+lives under its own storage key, so nothing it does can reach the other subjects.
+
 ## Running it
 
 This is a static site — no build step and no dependencies. Open `index.html` in any modern browser, or host the folder on any static host.
@@ -36,6 +68,12 @@ app.js                 — application logic
 progress-backup.js     — export/import and the cross-device merge
 progress-sync.js       — optional automatic sync (pull, merge, push)
 sync-config.js         — where the sync endpoint lives (empty = sync off)
+aat1-syllabus.js       — Level 1 syllabus spine, encoded from the AAT specification
+aat1-learn-data.js     — Level 1 teaching content (26 steps)
+aat1-practice-data.js  — Level 1 practice question bank
+aat1-ui.js             — Level 1 renderer (self-contained)
+aat1-styles.css        — Level 1 design language
+aat3-*.js / aat3-styles.css — the equivalent five files for Level 3
 sync-worker/           — the Cloudflare Worker, with its own deployment README
 manifest.webmanifest   — PWA manifest (installable app metadata)
 sw.js                  — service worker (offline caching)
