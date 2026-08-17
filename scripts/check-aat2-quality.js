@@ -62,10 +62,12 @@ const L2_UNITS = ['itbk', 'pobc', 'poc', 'besy'];
 
 /* Units whose teaching material has been brought to Level 1/3 depth. This list
    is the ratchet — add a unit only when its cards actually meet the floor.
-   Empty for now: no Level 2 unit yet meets it. The per-unit figures are still
-   reported below, so the size of the remaining job is visible on every run
-   rather than being a vague sense that the material is thin. */
-const DEPTH_ENFORCED = [];
+   ITBK now does: 87 cards, mean 228 and median 225 words, none below the floor,
+   against the 90-word average the whole module started at. POBC, POC and BESY
+   are still around 90, and their figures are reported below so the size of the
+   remaining job is visible on every run rather than being a vague sense that
+   the material is thin. */
+const DEPTH_ENFORCED = ['itbk'];
 
 /* Units whose lessons are tagged against the syllabus and must fully cover it.
    Empty for now, and the reason is worth reading: tagging ITBK's lessons

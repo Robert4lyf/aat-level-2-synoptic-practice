@@ -63,11 +63,22 @@ every lesson in an enforced unit to claim a criterion — `criteria: []` being t
 opt-out for a bridge lesson — which is the rule that would have caught the original
 problem.
 
-One gap remains measured but not closed, and the checker reports it on every run:
+**Introduction to Bookkeeping is now complete**, and both ratchets are on for it:
+coverage 16/16 and depth at 87 cards averaging 228 words with none below the floor —
+against the 90-word average the module started at.
 
-- **Teaching depth.** The nine new ITBK lessons run 212–263 words per card, at Level 1/3
-  standard. The older cards do not, so Level 2 as a whole averages 105 words against
-  Level 1's 253 and Level 3's 294. `DEPTH_ENFORCED` is empty until a unit meets the floor.
+The remaining gap is the other three units, and the checker reports it on every run:
+
+| Unit | Coverage | Mean words per card |
+|---|---|---|
+| Introduction to Bookkeeping | **16/16 enforced** | **228 enforced** |
+| Principles of Bookkeeping Controls | untagged | 90 |
+| Principles of Costing | untagged | 92 |
+| The Business Environment | untagged | 91 |
+
+Given that tagging ITBK revealed nine missing criteria and five lessons from another
+qualification, the three untagged units should be treated as unmeasured rather than as
+known to be sound.
 
 ## The Level 1 module
 

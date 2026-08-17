@@ -21,6 +21,8 @@ window.LEARN_PATH = [
               'You do not need any accounting background for this lesson. We will build everything from the beginning.',
               '**Bookkeeping** is the process of recording every financial transaction a business makes, in a consistent way, so that at any point you can answer three questions: what does the business own, what does it owe, and did it make a profit?',
               'A **transaction** is any exchange of value — a sale, a purchase, paying wages, buying a van. If money or value moves, it gets recorded.',
+              'Two features of that definition do the work. **Every** transaction, because a record with gaps cannot be relied on for anything — a business that records most of its sales knows neither its income nor what its customers owe. And **in a consistent way**, because the value of the records comes from being able to compare and total them; figures recorded differently each month cannot be added up.',
+              'The three questions are not arbitrary either. What the business owns and owes is its position at a moment in time; whether it made a profit is a flow over a period. Those are genuinely different questions, and a large part of learning bookkeeping is keeping them apart.',
             ],
           },
           {
@@ -28,6 +30,8 @@ window.LEARN_PATH = [
             p: [
               'The bank balance only tells you about cash that has actually moved. It cannot tell you that a customer owes you £4,000, that you owe a supplier £2,500, or that the van you bought will last five years.',
               'Bookkeeping captures **obligations and resources**, not just cash. That is why a business can be profitable and still run out of money, or hold plenty of cash while making a loss.',
+              'The distinction has a practical edge that catches out real businesses. A company can be profitable and insolvent at the same time: it has sold a great deal on credit, so profit is high, but the cash has not arrived and there is nothing to pay the wages with. Equally a business can hold plenty of cash while making a loss, because it has collected money in advance or has not yet paid for what it consumed.',
+              'That is why bookkeeping records obligations and resources rather than just movements of cash. The bank statement is one input among many, and treating it as the accounts is the mistake this whole unit is designed to prevent.',
             ],
             callout: { kind: 'key', text: 'Profit is not cash. They are two different questions, and bookkeeping is what lets you answer both.' },
           },
@@ -40,6 +44,8 @@ window.LEARN_PATH = [
               '**Capital** — what the owner has put into the business, plus profits kept in it. In effect, what the business owes its owner.',
               '**Income** — value earned from trading: sales, fees, commission received.',
               '**Expenses** — the costs of trading: rent, wages, fuel, insurance, purchases of goods for resale.',
+              'The reason five categories are enough is that they answer only two questions between them. Assets, liabilities and capital describe a position: what is held, what is owed outside, what is owed to the owner. Income and expenses describe a flow: what was earned and what was consumed over a period.',
+              'Classification is not a labelling exercise — it decides how the records treat the item, which is why getting it wrong is expensive. Treating the purchase of a van as an expense understates the assets and the profit at once; treating money owed by a customer as income records the same sale twice.',
             ],
           },
           {
@@ -75,6 +81,8 @@ window.LEARN_PATH = [
               '**Assets = Capital + Liabilities**',
               'Read it as: everything the business has (assets) was funded either by the owner (capital) or by someone else (liabilities). There is no third source.',
               'If a business owns £50,000 of assets and owes £18,000 to others, the owner\'s stake must be £32,000. Not roughly — exactly.',
+              'The equation is worth reading as a sentence rather than as a formula. The left side is what the business has; the right side is where it came from. Since everything a business holds arrived from somewhere, and there are only two somewheres — outsiders it owes, or its owner — adding up one side necessarily adds up the other.',
+              'It also explains where profit goes. Income and expenses are not in the equation directly; they reach it through capital, because profit belongs to the owner. A profit increases what the business owes back to them and a loss reduces it, which is how a whole period of trading is absorbed without any extra machinery.',
             ],
             formula: 'Assets = Capital + Liabilities · Capital = Assets − Liabilities · Liabilities = Assets − Capital',
           },
@@ -143,6 +151,8 @@ window.LEARN_PATH = [
               'This is the idea the whole subject rests on. Every transaction affects **at least two accounts**, and the total recorded on one side always equals the total on the other.',
               'The two sides are called **debit** (left) and **credit** (right). They are just names for positions — debit does not mean good and credit does not mean bad.',
               'If you buy a van for £12,000 cash, you gain a van and lose cash. Two accounts move, by the same amount, in opposite directions. That is the **dual effect**.',
+              'The two sides are not a convention adopted for tidiness — they follow from what a transaction is. Value moves rather than appearing or vanishing, so if something has arrived it came from somewhere and if something has gone it went somewhere. Recording only one end describes half of what happened.',
+              'There is no rule that one side must go up and the other down. Taking a loan increases an asset and increases a liability; buying equipment for cash increases one asset and decreases another; paying a supplier decreases an asset and decreases a liability. All that is required is that two things move by the same amount.',
             ],
             callout: { kind: 'warning', text: 'Forget the everyday meaning of "credit". In bookkeeping, debit means the left-hand side and credit means the right-hand side. Nothing more.' },
           },
@@ -153,6 +163,9 @@ window.LEARN_PATH = [
               '**DEAD** — things that increase on the **Debit** side: **E**xpenses, **A**ssets, **D**rawings.',
               '**CLIC** — things that increase on the **Credit** side: **L**iabilities, **I**ncome, **C**apital.',
               'To decrease any of them, you use the opposite side.',
+              'DEAD CLIC is worth committing to memory because it converts a question about accounting into a question about spelling. **D**ebit: **E**xpenses, **A**ssets, **D**rawings. **C**redit: **L**iabilities, **I**ncome, **C**apital. Anything on the debit list increases with a debit and decreases with a credit; anything on the credit list does the reverse.',
+              'Note what it actually tells you: not that debits are good and credits bad, nor that debits are money out. A debit is simply the left side of an entry, and whether it increases or decreases an account depends entirely on which of the six types that account is.',
+              'Drawings is the entry most often misplaced. It sits on the debit list because it reduces capital, and capital is a credit-balance item — so reducing it takes a debit. Drawings is never an expense, because the owner taking money out is not a cost of trading.',
             ],
             formula: 'Debit increases: Expenses · Assets · Drawings — Credit increases: Liabilities · Income · Capital',
           },
@@ -162,6 +175,9 @@ window.LEARN_PATH = [
               'This table is the whole of double entry compressed into six lines. Every posting you will ever make is one row used twice — once on the debit side, once on the credit.',
               'The mnemonic **DEAD CLIC** encodes it: **D**ebits increase **E**xpenses, **A**ssets and **D**rawings; **C**redits increase **L**iabilities, **I**ncome and **C**apital.',
               'Note the symmetry — the "decrease" column is simply the mirror of the "increase" column, so there is really only one rule to learn, not twelve.',
+              'Reading the table row by row is more useful than memorising it whole, because each row answers the only question that matters at the point of entry: does this account go up or down, and therefore which side does the entry go on?',
+              'The pattern is symmetrical, which is what makes it learnable. The three debit-balance types behave identically to each other and the three credit-balance types behave identically to each other, so there are really only two behaviours rather than six.',
+              'Where beginners lose time is trying to reason from first principles at every entry. The table exists so that you do not have to: identify the account type, and the direction follows mechanically.',
             ],
             table: {
               headers: ['Account type', 'Increase', 'Decrease'],
@@ -204,6 +220,8 @@ window.LEARN_PATH = [
             p: [
               'Read each line as a pair of decisions rather than a single fact. The account type drives the side; the direction of change drives which column it lands in.',
               'The last row is the one to study: drawings are debited even though the business is paying money out, because drawings **reduce capital** and capital is reduced by a debit.',
+              'Work down these four and notice that all four combinations of direction appear: both up, both down, and one of each in either arrangement. That is the point of the set — there is no pattern to memorise about directions, only the requirement that two accounts move.',
+              'The transaction worth pausing on is paying a supplier, because the instinct is to look for an expense. The expense arose earlier, when the goods were received and the liability was created. Paying settles that liability, so both effects are decreases and nothing about the overall position changes.',
             ],
             example: {
               title: 'Applying DEAD CLIC',
@@ -223,6 +241,9 @@ window.LEARN_PATH = [
               '**1. Which two accounts are involved?** Name them before you think about sides.',
               '**2. What type is each, and is it going up or down?** Then DEAD CLIC gives you the side automatically.',
               'Resist the urge to memorise entries transaction by transaction. There are hundreds of transactions and only six account types.',
+              'The first question — what did the business receive, and what did it give up — works because it maps directly onto the two entries. What was received is debited; what was given up is credited. That holds for goods, for services, for cash, and for rights such as a receivable.',
+              'The second question — which of the five types is each account — then settles the direction using DEAD CLIC. Between them the two questions produce the entry without any need to recall the specific transaction, which is what makes them reliable on something you have not seen before.',
+              'The habit worth building is to answer both questions out loud before writing anything. Most wrong entries at this level come from starting with the debit and fitting a credit around it, rather than identifying both accounts first.',
             ],
             examtrap: 'Drawings are **not** an expense. Money the owner takes out reduces capital — it is not a cost of trading, and it never appears in the profit calculation.',
           },
@@ -270,6 +291,8 @@ window.LEARN_PATH = [
               'Each account — Bank, Sales, Rent, Trade receivables and so on — has its own record called a **ledger account**. All the entries for that account collect in one place.',
               'The traditional layout is drawn as a **T**: the account name across the top, debits on the left, credits on the right. Hence "T-account".',
               'Real software does not draw a T, but every assessment does, and thinking in T-accounts is how you keep double entry straight.',
+              'A ledger account is simply the running record for one item — one bank account, one expense heading, one customer. Every entry made anywhere in the system ends up in one, which is why the ledger rather than the daybook is where a balance can be read.',
+              'The general ledger holds an account for every item and is the double-entry system itself. The receivables and payables ledgers hold one account per customer and per supplier, and sit outside the double entry as memorandum records. That distinction matters because an error in a subsidiary ledger cannot unbalance the trial balance, so nothing in the arithmetic will reveal it.',
             ],
           },
           {
@@ -278,6 +301,8 @@ window.LEARN_PATH = [
               'The T is only a layout, but the layout carries meaning: the left column is always debits and the right column is always credits, in every account without exception.',
               'Each line records the amount and the **name of the other account** in the entry — the cross-reference that lets anyone trace the matching half.',
               'The balance is the difference between the two sides. An account with a bigger debit side carries a debit balance, and vice versa.',
+              'The T is a layout rather than a rule: the account name across the top, debits on the left, credits on the right. Its virtue is that it makes the two sides visible at a glance, so whether an account has a debit or a credit balance can be read without calculation.',
+              'Each side carries a date, a narrative naming the OTHER account in the double entry, and an amount. That narrative is what makes an entry traceable — reading "Bank" on the debit side of the sales account tells you where the other half of the entry went.',
             ],
             example: {
               title: 'Bank account',
@@ -296,6 +321,8 @@ window.LEARN_PATH = [
               'Each line in a T-account records **the name of the other account** in the double entry, plus the amount.',
               'So if you pay rent from the bank, the Bank account\'s credit side says "Rent" and the Rent account\'s debit side says "Bank". Each account points at its partner.',
               'That cross-referencing is what lets you trace any transaction from either direction — a habit that becomes essential when you start hunting errors.',
+              'The convention of naming the other account is worth taking seriously, because it is what turns a list of figures into a traceable record. An entry that says only "£450" tells you an amount moved; one that says "Bank £450" tells you the whole transaction, because the account you are looking at supplies the other half.',
+              'That is also the practical check on your own work. If you cannot name the other account, you have not decided what the second effect is — which means the transaction is not yet fully understood, let alone recorded.',
             ],
           },
           {
@@ -305,6 +332,8 @@ window.LEARN_PATH = [
               '**General ledger** (sometimes called the nominal ledger) — every account needed for the trial balance and the financial statements. This is the ledger where double entry actually happens.',
               '**Sales ledger** — one account per credit customer, showing what each individual customer owes.',
               '**Purchases ledger** — one account per credit supplier, showing what is owed to each one.',
+              'The three-ledger structure exists to solve a volume problem. The general ledger needs one figure for total receivables, not four hundred customer accounts cluttering it; but the business also needs to know what each individual customer owes. So the detail goes in the receivables ledger and the total goes in the general ledger.',
+              'The consequence is that the same transactions are recorded twice in different places — once in total, once customer by customer. That is deliberate redundancy, and it is what makes the control account reconciliation possible: the sales ledger control account should equal the sum of the individual balances, and when it does not, an error exists in one of them.',
             ],
             examtrap: 'The sales and purchases ledgers sit **outside** the double entry. They are memorandum records. This is exactly why an error in one customer\'s account does not unbalance the trial balance — a point tested constantly in Bookkeeping Controls.',
           },
@@ -337,6 +366,9 @@ window.LEARN_PATH = [
             p: [
               'Recording income twice. When a credit customer pays, it is tempting to credit Sales again — but the sale was recognised when the goods went out, not when the money arrived.',
               'The receipt only moves the amount from one asset (trade receivables) to another (bank). Income is untouched.',
+              'The error is treating a receipt from a credit customer as income. It feels like income — money has arrived — but the income was recorded when the invoice was raised, and recording it again counts the same sale twice.',
+              'What the receipt actually does is convert one asset into another: the receivable falls and the bank rises. Nothing about income changes, because nothing new has been earned.',
+              'The reliable guard is the question "where did this come from?". Money from a customer who was invoiced last month came from a receivable, not from a sale. Money from a cash sale came from a sale. Tracing the source rather than the arrival is what keeps the two apart.',
             ],
             callout: { kind: 'warning', text: 'Ask yourself: has the business earned anything new? If the answer is no, Sales does not move.' },
           },
@@ -380,12 +412,18 @@ window.LEARN_PATH = [
             p: [
               'Every entry in the ledgers must be supported by a **source document** — a piece of evidence that the transaction happened and for how much.',
               'This is not bureaucracy. It is what makes the records checkable: by a manager, by an auditor, or by HMRC. If you cannot evidence an entry, you cannot defend it.',
+              'The rule is absolute in practice: every entry in the books traces back to a document. That is not bureaucracy — it is what makes the records checkable by somebody who was not there. An entry with no supporting document cannot be verified, corrected or defended.',
+              'It also means the document, not the entry, is the starting point of the work. A bookkeeper does not decide what happened and then find paper to match; they read the paper and record what it says. Where the paper is wrong, it is queried rather than quietly adjusted.',
+              'This is why HMRC requires records to be kept as well as returns filed, and why a valid VAT invoice — not merely a receipt showing a total — is needed before input tax can be reclaimed.',
             ],
           },
           {
             h: 'The order-to-payment trail',
             p: [
               'For a credit purchase, the documents appear in a fixed sequence. Knowing the order is worth marks on its own.',
+              'Each step in the trail answers a question somebody needs answered at that moment. The customer asks what it will cost, and a quotation answers. They decide to proceed, and an order records the commitment. The goods travel with a delivery note; they are checked on arrival and a goods received note records what actually came.',
+              'Only then does money enter the story. The invoice creates the debt; a credit note reduces it if something was wrong or came back; the payment settles it; and a remittance advice says which invoices the payment covered.',
+              'Two observations are worth carrying forward. Only the invoice and the credit note change what is owed — everything else is evidence, instruction or acknowledgement. And the three documents the buyer creates for its own use are exactly the three used later to check the supplier’s invoice.',
             ],
             flow: ['Purchase order', 'Goods received note', 'Purchase invoice', 'Statement', 'Remittance advice', 'Payment'],
           },
@@ -394,6 +432,8 @@ window.LEARN_PATH = [
             p: [
               'Each document answers a different question, and that is how you tell them apart: who asked for what, what actually arrived, and what is owed.',
               'A delivery note is never a demand for money, and an invoice is never proof of delivery. Confusing the two is the most common error in this task.',
+              'The pair worth separating carefully is the delivery note and the goods received note. The delivery note states what the SUPPLIER says was sent; the goods received note records what the buyer FOUND on opening the delivery. Keeping both is the whole point, because the disagreement between them is the useful information.',
+              'The remittance advice is the only document in the list sent by the payer rather than the seller. It arrives with the money and identifies the invoices it settles, which is what makes allocation possible when several are outstanding.',
             ],
             table: {
               headers: ['Document', 'Who sends it', 'What it does'],
@@ -415,6 +455,9 @@ window.LEARN_PATH = [
               '**Purchase order** — were these goods actually ordered, at this price?',
               '**Goods received note** — did they actually arrive, and were they checked?',
               'If all three agree, the invoice is authorised. If any disagree, it is queried. This single control stops most duplicate payments and a good deal of fraud.',
+              'The three-way match is the standard control before a purchase invoice is paid: the **purchase order** says what we wanted, the **goods received note** says what arrived, and the **invoice** says what we are being charged. All three must agree before money moves.',
+              'Each document catches a different failure. Without the order, an invoice for goods nobody ordered would be paid. Without the goods received note, an invoice for a delivery that was short would be paid in full. Without checking the invoice itself, an arithmetic error or a wrong price would go through.',
+              'The reason it is a *three*-way match rather than a comparison of invoice to order is precisely the middle document. An invoice can agree perfectly with the purchase order and still be wrong, because the order records the intention and only the goods received note records the delivery.',
             ],
             callout: { kind: 'key', text: 'Three-way match: purchase order + goods received note + invoice. If you remember one control from this unit, make it this one.' },
           },
@@ -423,6 +466,9 @@ window.LEARN_PATH = [
             p: [
               'A credit note is not a cancelled invoice. It is a separate document that reduces a balance already recorded, and the original invoice stays in the records.',
               'Issue one when goods are returned, when an overcharge is found, or when a price is reduced after the event.',
+              'The distinction is one of direction: an invoice increases what is owed and a credit note reduces it. Everything else about the two documents is nearly identical, which is why they are easy to confuse and why each runs in its own unbroken number sequence.',
+              'A credit note is issued for a small set of reasons — goods returned as faulty, damaged or wrong; goods invoiced but never delivered; an overcharge on the original invoice; a discount that should have been applied and was not; or a prompt payment discount subsequently taken.',
+              'A wrongly issued invoice is never deleted or replaced. The numbering must stay unbroken, because a gap is exactly what an auditor or HMRC looks for, and the customer may already have entered the original in their own books — so they need a document to record against it rather than a hole where an invoice used to be.',
             ],
             split: {
               left: { title: 'Invoice', items: [
@@ -503,6 +549,9 @@ window.LEARN_PATH = [
               'To balance off an account: total both sides, find the difference, and insert it on the **smaller side** as the **balance carried down (c/d)**.',
               'Then bring the same figure down on the **opposite side** below the totals as the **balance brought down (b/d)**. The b/d balance is the figure you use.',
               'A b/d balance on the debit side means a debit balance — typical for assets and expenses. A credit b/d balance is typical for liabilities, income and capital.',
+              'The mechanics are worth doing slowly the first few times. Add the debit side and add the credit side, and note which is larger. The difference goes on the SMALLER side, labelled *balance carried down* (c/d), which forces the two sides to the same total. That same figure is then written on the opposite side beneath the totals, labelled *balance brought down* (b/d), and it is the b/d figure that is the account’s real balance going into the next period.',
+              'Why write it twice? Because the c/d entry is a bookkeeping device to close the account off neatly, while the b/d entry is the genuine opening position. Writing only the c/d would leave the account looking closed with the balance stranded on the wrong side, which is why the pair always appears together.',
+              'The side the b/d lands on tells you what kind of balance it is. An account with more debits than credits carries its balance down on the debit side — an asset or an expense. More credits than debits, and the balance is on the credit side — a liability, capital or income.',
             ],
           },
           {
@@ -510,6 +559,9 @@ window.LEARN_PATH = [
             p: [
               'The **trial balance** lists every ledger balance in two columns: debits and credits. If the double entry has been done arithmetically correctly, the columns agree.',
               'Think DEAD CLIC: expenses, assets and drawings sit in the debit column; liabilities, income and capital sit in the credit column.',
+              'A trial balance is simply a two-column list of every balance in the general ledger: debit balances in one column, credit balances in the other, and both columns totalled. Nothing is calculated and nothing is adjusted at this stage; the balances are copied across as they stand.',
+              'What decides which column a balance goes in is what kind of account it is, and DEAD CLIC answers that without needing to look at the account itself. Debits are Expenses, Assets and Drawings; Credits are Liabilities, Income and Capital. A motor vehicles account belongs on the debit side because it is an asset, whatever happens to be in it.',
+              'The two totals should agree. When they do, the trial balance is said to balance — and the next card is about what that does and does not prove.',
             ],
             example: {
               title: 'Mini trial balance',
@@ -529,6 +581,9 @@ window.LEARN_PATH = [
             p: [
               'An agreeing trial balance proves the **arithmetic** of the double entry: every debit had an equal credit.',
               'It does **not** prove the entries are correct. A transaction missed entirely, or posted to the wrong account, still balances. You will meet these hidden errors in Bookkeeping Controls.',
+              'What it proves is narrow: that for every debit entered there was an equal credit. That is a genuine check, and it catches a whole class of error — a one-sided entry, an entry posted twice to the same side, an entry where the two halves were different amounts, a balance copied into the wrong column, and an addition mistake.',
+              'What it does not prove is that the entries are right. Six kinds of error leave the trial balance in perfect balance, and they are the ones this qualification spends its time on: an error of **omission**, where a transaction was never recorded at all; an error of **commission**, where the right amount went to the wrong account of the right type; an error of **principle**, where it went to an account of the wrong type entirely; an error of **original entry**, where both halves were posted at the same wrong figure; a **reversal**, where the debit and credit were swapped; and a **compensating** error, where two unrelated mistakes happen to cancel out.',
+              'So an agreeing trial balance is a checkpoint rather than a certificate. It says the arithmetic of double entry held; it says nothing about whether the bookkeeper put things in the right places, and that is why control accounts and reconciliations exist.',
             ],
           },
           {
@@ -536,12 +591,18 @@ window.LEARN_PATH = [
             p: [
               'Behind everything sits the accounting equation: **Assets = Liabilities + Capital**.',
               'Capital itself grows with profit and shrinks with drawings: capital equals what the owner put in, plus profit, minus drawings.',
+              'The trial balance and the accounting equation are two views of the same fact. Assets = Liabilities + Capital says that what the business holds must equal where it came from. The trial balance says that total debits must equal total credits. Because assets and expenses are debits while liabilities, capital and income are credits, the two statements are the same constraint written in different notation.',
+              'That is why the equation cannot fail to balance, and why a trial balance that does not balance is proof of an error rather than a discovery about the business. Every transaction moves at least two items in a way that preserves the relationship, so nothing a business can legitimately do will break it.',
+              'It also explains where profit lives. Income and expenses do not appear in the equation directly; they meet it through capital, because profit belongs to the owner. A profit increases capital and a loss reduces it, which is how a period of trading is absorbed without any special machinery.',
             ],
           },
           {
             h: 'Accounting equation formulas',
             p: [
               'These three rearrangements cover every accounting equation question.',
+              'Being able to rearrange the equation matters more than reciting it, because questions rarely give you the two figures you want in the order you want them. Capital = Assets − Liabilities gives the owner’s stake. Liabilities = Assets − Capital gives what is owed outside. Assets = Liabilities + Capital gives the total held.',
+              'There is one further form worth carrying, because it is how the equation is used at a period end rather than at a moment: closing capital = opening capital + profit − drawings. Profit increases what the business owes its owner; drawings take it back out. Neither touches the expense figures, which is why drawings never appear in profit or loss.',
+              'A useful habit is to sense-check the direction before doing the arithmetic. If liabilities are being subtracted from assets, the answer should be smaller than the assets figure. An answer larger than assets means the subtraction went the wrong way.',
             ],
             formula: 'Assets = Capital + Liabilities · Capital = Assets − Liabilities · Closing capital = Opening capital + Profit − Drawings',
           },
@@ -549,6 +610,8 @@ window.LEARN_PATH = [
             h: 'The trial balance is a checkpoint, not a guarantee',
             p: [
               'Agreement of a trial balance is a necessary check but not a sufficient one.',
+              'In practice the trial balance is where the bookkeeping stops and the checking begins. It is extracted, it is confirmed to balance, and then the work of Principles of Bookkeeping Controls starts: reconciling control accounts against the subsidiary ledgers, reconciling the cash book against the bank statement, and using the journal to correct what those reconciliations reveal.',
+              'That sequence is worth holding in mind, because it explains why the trial balance is extracted at all when it proves so little. It is not the answer — it is the point at which the records are stable enough to be interrogated, and the figure that any subsequent correction is measured against.',
             ],
             callout: {
               kind: 'key',
@@ -614,6 +677,9 @@ window.LEARN_PATH = [
               '**Value Added Tax (VAT)** is collected by VAT-registered businesses on behalf of HMRC.',
               'The standard rate is **20%**. Businesses charge VAT on sales (**output VAT**) and reclaim VAT on purchases (**input VAT**).',
               'Only the **net difference** is paid to (or refunded by) HMRC.',
+              'Value added tax is a tax on consumer spending, and the crucial feature for a bookkeeper is that a registered business does not bear it. The business charges VAT to its customers — **output tax** — and reclaims the VAT it was charged by its suppliers — **input tax**. Only the difference is settled with HMRC.',
+              'That framing has a consequence worth stating plainly: VAT is never income to the business and never an expense. It is money collected on HMRC’s behalf and held temporarily. This is why VAT sits in a control account of its own rather than in sales or purchases, and why the amounts recorded in the sales and purchases accounts are always the NET figures.',
+              'The standard rate is 20%. A business below the registration threshold is not registered, charges no output tax, and cannot reclaim input tax — so for an unregistered business VAT simply becomes part of the cost of whatever it buys.',
             ],
             formula: 'Output VAT (on sales) − Input VAT (on purchases) = VAT payable · If Input VAT > Output VAT → HMRC refunds the difference',
           },
@@ -622,6 +688,9 @@ window.LEARN_PATH = [
             p: [
               '**Net to gross:** Net × 1.20 = Gross; VAT = Net × 20%.',
               '**Gross to net:** Gross ÷ 1.20 = Net; VAT = Gross ÷ 6.',
+              'There are two directions, and the assessment uses both. From a **net** figure, VAT is the net × 20%, which is the same as dividing by 5. From a **gross** (VAT-inclusive) figure, VAT is the gross ÷ 6, and the net is the gross ÷ 1.2.',
+              'The ÷ 6 rule is worth understanding rather than memorising. If net is 100 then VAT is 20 and gross is 120, so VAT is 20/120 of the gross — which is one sixth. Knowing where it comes from is what stops you reaching for it in the wrong direction, which is the commonest VAT error at this level.',
+              'One habit prevents most mistakes: before calculating, decide whether the figure you have been given is net or gross. A figure described as "plus VAT" is net; one described as "including VAT" is gross. Applying ÷ 6 to a net figure, or × 20% to a gross one, produces a plausible-looking answer that is simply wrong.',
             ],
             example: {
               title: 'VAT calculations',
@@ -637,6 +706,9 @@ window.LEARN_PATH = [
             p: [
               'The VAT control account brings both sides of VAT together so that only the **net** amount is ever settled with HMRC.',
               'It is normally a liability, so a credit balance means VAT is owed to HMRC and a debit balance means a refund is due. Input VAT sits on the debit side because it is recoverable.',
+              'The VAT control account collects both sides. Output tax charged on sales is credited to it, because the business owes that money onward. Input tax on purchases is debited, because it reduces what is owed. The balance is what is due to — or occasionally from — HMRC.',
+              'A credit balance is the normal position and means VAT is payable: the business charged more than it was charged. A debit balance means a repayment is due, which typically happens to a business making zero-rated sales or one that has bought a substantial asset in the period.',
+              'The account is also where the adjustments land. A credit note issued reduces output tax; a credit note received reduces input tax; and the prompt payment discount adjustments described in the customer and supplier lessons flow through here too, because reducing a sale reduces the VAT charged on it.',
             ],
             split: {
               left: { title: 'Debit side (input VAT)', items: ['VAT on purchases', 'VAT on expenses', 'VAT refunds from HMRC', 'Reduces what is owed'] },
@@ -649,6 +721,9 @@ window.LEARN_PATH = [
               'Businesses record VAT in the **sales daybook** and **purchases daybook** — each has columns for net, VAT, and gross.',
               'The VAT figures from these books are posted to the **VAT control account** in the general ledger.',
               'The balance on the VAT control account shows how much is owed to (or owed by) HMRC.',
+              'Every daybook carries a VAT column, and that is not decoration — it is what makes the return possible. Because the VAT on each invoice is separated at the point of entry, the total of the VAT column in the sales daybook is the period’s output tax, and the total in the purchases daybook is its input tax. Neither figure has to be reconstructed.',
+              'That is why VAT is split out at entry rather than later. Record only the gross total and the split cannot be recovered afterwards without going back to every invoice, which is precisely the work the column avoids.',
+              'HMRC requires the underlying records to be kept as well as the return. Invoices and credit notes evidence each figure, which is why a valid VAT invoice is needed before input tax can be reclaimed — a receipt showing only a total is not enough.',
             ],
           },
           {
@@ -656,6 +731,9 @@ window.LEARN_PATH = [
             p: [
               'Most businesses file VAT returns **quarterly** via HMRC\'s Making Tax Digital (MTD) portal.',
               'A credit balance on the VAT control account means the business owes HMRC; a debit balance means HMRC owes a refund.',
+              'A VAT return is normally filed quarterly, and under Making Tax Digital affected businesses must keep digital records and file using compatible software rather than typing figures into a web form. The return reports output tax, input tax and the net amount payable or reclaimable.',
+              'The figures come straight from the records this unit has been building: the VAT column totals from the daybooks, adjusted for anything in the VAT control account. If the control account has been maintained properly the return is a reading exercise rather than a calculation, which is the practical argument for maintaining it properly.',
+              'Deadlines matter more here than in most of bookkeeping, because they are statutory rather than internal. Late filing and late payment both attract penalties, and neither is waived because the records were not ready — which is the point lesson 1C made about timeliness, applied to the one deadline a business cannot negotiate.',
             ],
             callout: { kind: 'key', text: '**Key rule:** VAT is a **balance sheet item** — it is a creditor or debtor, NOT income or expense. Only the net (ex-VAT) amounts pass through the income statement.' },
           },
@@ -705,6 +783,9 @@ window.LEARN_PATH = [
             p: [
               'Every business transaction starts with a **source document**. The chain is: Purchase Order → Delivery Note → Invoice → (Credit Note if needed) → Statement of Account → Remittance Advice.',
               'Source documents provide the evidence to record transactions. Without them, there is no audit trail.',
+              'Each document in the trail exists because of a question somebody needs answered at that point, and knowing which question makes the sequence memorable rather than arbitrary. The customer asks what it costs; the seller answers; the customer commits; the goods travel; the goods are checked on arrival; the bill follows; anything wrong goes back; the money is paid; the payer says what the money covers.',
+              'Only two of those documents change what is owed — the invoice and the credit note. Everything else is evidence, instruction or acknowledgement, and that distinction is worth holding because it decides what gets entered in the books. A quotation and a delivery note never reach the accounting records at all.',
+              'The same physical document has two names depending on which side you stand on. Your sales invoice is your customer’s purchase invoice; your sales order is their purchase order. "Sales" and "purchases" describe your position in the transaction, not different pieces of paper.',
             ],
             flow: ['Purchase order', 'Delivery note', 'Invoice (or credit note)', 'Statement of account', 'Remittance advice'],
           },
@@ -713,6 +794,9 @@ window.LEARN_PATH = [
             p: [
               'The documents fall into three jobs: **requesting** goods, **evidencing** their movement, and **demanding or acknowledging** money.',
               'A statement of account is a periodic summary, not a fresh charge. Treating it as a new liability — or paying against it instead of the individual invoices — is a classic error.',
+              'The pair most often confused is the delivery note and the goods received note, and the difference is who wrote it. The delivery note travels with the goods and states what the SUPPLIER says was sent. The goods received note is the buyer’s own record of what was actually FOUND when the delivery was opened and counted.',
+              'Keeping both is the entire point. When they disagree, the disagreement is the useful information — and without a goods received note there is nothing to check an invoice against later, because the purchase order records only what was wanted.',
+              'The remittance advice is the other one worth singling out, because it is the only document in the trail sent by the payer. It arrives with the money and says which invoices that money settles, which is what makes allocation possible when several invoices are outstanding.',
             ],
             example: {
               title: 'Key source documents',
@@ -732,6 +816,9 @@ window.LEARN_PATH = [
             p: [
               'Transactions are first recorded in a **book of prime entry** (also called a daybook or journal). These are NOT part of the double-entry system — they are just listing records.',
               'From the daybook, totals are posted into the ledger accounts.',
+              'The books of prime entry are the first place a transaction is written down — "prime" meaning first. There are six for invoices and credit notes, and the reason there are six rather than one is that each holds a single kind of document, so the period total of each book is a meaningful figure in its own right.',
+              'Two questions place any document. **Are we selling or buying?** That picks the group of three. **Is it an invoice, a credit note, or a discount?** That picks which of the three. Anything we issued belongs in the sales group; anything we received belongs in the purchases group.',
+              'The discounts daybooks are the ones students forget, and they exist because of a specific decision in this qualification: prompt payment discount is adjusted for by credit note rather than by a discount column in the cash book. Those credit notes need somewhere to live, and the discounts allowed and discounts received daybooks are it.',
             ],
             split: {
               left: { title: 'Sales side', items: ['Sales daybook — credit sales', 'Sales returns daybook — credit notes sent to customers', 'Cash receipts section of cash book'] },
@@ -743,6 +830,9 @@ window.LEARN_PATH = [
             p: [
               'The daybook lists each invoice across net, VAT and gross columns. Only the **totals** are posted to the ledger, which is exactly what makes daybooks efficient.',
               'Cross-cast before posting: net plus VAT must equal gross on every line and in the totals, and the gross total is the figure that goes to the SLCA.',
+              'Every daybook has the same shape, which is one less thing to learn: date, customer or supplier name, their account code, the document number, and three amount columns — net, VAT and total. The date is the DOCUMENT date rather than the date of entry, because the record describes when the transaction happened.',
+              'Three amount columns rather than one, because the three figures serve different purposes. The net is the value of the trade and feeds the profit calculation. The VAT is money held for HMRC and never belongs to the business. The total is what the customer actually owes. Record only the total and the split cannot be recovered afterwards.',
+              'At the period end each column is totalled, and those totals are what get posted onward to the general ledger — one posting for the month rather than one per invoice. Cross casting proves the addition: the net total plus the VAT total must equal the total column.',
             ],
             example: {
               title: 'Sales daybook — example entries',
@@ -760,6 +850,9 @@ window.LEARN_PATH = [
               'When goods are **returned to a supplier**, the supplier issues a **credit note** — reducing what the buyer owes.',
               'Credit notes received are recorded in the **purchases returns daybook**: Dr PLCA, Cr Purchases returns, Cr VAT.',
               'When goods are **returned by a customer**, the seller issues a credit note. These go in the **sales returns daybook**: Dr Sales returns, Dr VAT, Cr SLCA.',
+              'A credit note reduces an amount previously invoiced, and which returns daybook it belongs in depends on who issued it. One we issued to a customer is a **sales return**; one we received from a supplier is a **purchases return**. That test never fails, and it is more reliable than reasoning about which direction the goods travelled.',
+              'The naming follows the original transaction rather than the movement of the goods, which is exactly why the direction-of-goods reasoning trips people up. Goods coming back INTO our warehouse from a customer is a sales return, because the sale is what it arises from.',
+              'Credit notes run in their own unbroken number sequence, separate from invoices. Neither sequence may have gaps, which is why a wrongly issued invoice is never deleted — a missing number is exactly what an auditor or HMRC looks for, and the customer needs a document to record against the invoice already in their books.',
             ],
             callout: { kind: 'key', text: '**Key rule:** A debit note is sometimes used by the BUYER to formally request a credit note from the supplier. It is not a standard source document — the supplier\'s credit note is the one that matters.' },
           },
@@ -822,6 +915,9 @@ window.LEARN_PATH = [
               'The **general (nominal) ledger** contains all the double-entry accounts: assets, liabilities, income, expenses, capital. It is the heart of the accounting system.',
               'The **sales ledger** holds individual customer accounts (memorandum accounts — not part of double entry). The SLCA in the general ledger is the summary.',
               'The **purchase ledger** holds individual supplier accounts. The PLCA in the general ledger is the summary.',
+              'The system has three layers and it is worth being clear about which are part of the double entry. The **general ledger** holds every nominal account and IS the double-entry system. The **receivables ledger** holds one account per customer and the **payables ledger** one per supplier, and neither is part of the double entry — they are memorandum records.',
+              'That is a genuinely important point rather than a technicality. Because the subsidiary ledgers sit outside the double entry, an error in one customer’s account does not unbalance the trial balance. Nothing in the arithmetic of the general ledger will reveal it.',
+              'So how is it caught? By reconciliation: the sales ledger control account in the general ledger should equal the sum of all the individual customer balances in the receivables ledger. When the two disagree, an error exists in one of them. That reconciliation is the whole subject of Principles of Bookkeeping Controls, and this is why it needs to exist.',
             ],
           },
           {
@@ -830,6 +926,9 @@ window.LEARN_PATH = [
               'Daybook postings happen **in total** for the general ledger and **individually** for the personal ledgers.',
               'From the sales daybook totals: **Dr SLCA** (gross total), **Cr Sales** (net total), **Cr VAT control** (VAT total).',
               'Individually: each customer\'s account in the sales ledger is debited with the gross invoice amount.',
+              'Posting happens once for the period rather than once per invoice, and it uses the daybook column totals. Debit the sales ledger control account with the TOTAL column, because that is what customers owe. Credit sales with the NET column, because that is the income earned. Credit VAT with the VAT column, because that is HMRC’s money.',
+              'One debit against two credits, and they agree because net plus VAT equals total — the same cross cast that proved the daybook was added correctly now proves the posting balances. That is not a coincidence; it is the same arithmetic doing both jobs.',
+              'Alongside the general ledger posting, each individual invoice is entered in that customer’s account in the receivables ledger. The same figures are therefore recorded twice in different places, once in total and once customer by customer, which is precisely what makes the control account reconciliation possible.',
             ],
             example: {
               title: 'Posting the sales daybook',
@@ -849,6 +948,9 @@ window.LEARN_PATH = [
             p: [
               'From the purchases daybook totals: **Dr Purchases** (net total), **Dr VAT control** (VAT total), **Cr PLCA** (gross total).',
               'Individually: each supplier\'s account in the purchase ledger is credited with the gross invoice amount.',
+              'The purchases side is the mirror image and every direction reverses. Credit the purchases ledger control account with the TOTAL column, because that is what the business owes its suppliers. Debit purchases with the NET column, because that is the cost incurred. Debit VAT with the VAT column, because input tax reduces what is owed to HMRC.',
+              'Two debits against one credit this time, agreeing for the same reason as before. If you can post the sales side confidently, the purchases side needs no new knowledge — only the discipline to reverse every entry rather than reproducing the pattern from memory.',
+              'Each supplier invoice is also entered in that supplier’s account in the payables ledger, giving the same double record that lets the purchases ledger control account be reconciled against the sum of the individual supplier balances.',
             ],
           },
           {
@@ -857,6 +959,9 @@ window.LEARN_PATH = [
               'A **contra entry** (or set-off) arises when a business is BOTH a customer AND a supplier.',
               'Instead of paying each other separately, the two balances are offset: **Dr PLCA, Cr SLCA** for the agreed amount.',
               'The net amount is then settled in cash. Contra entries reduce balances on BOTH control accounts.',
+              'A contra entry arises when the same party is both a customer and a supplier — a business that buys from you and also sells to you. Rather than each paying the other in full, the two balances are offset and only the difference changes hands.',
+              'The effect on the records is that BOTH control accounts reduce by the amount offset: the sales ledger control account falls because the customer owes less, and the purchases ledger control account falls because we owe less. Both go down, which is the detail most often got wrong — the instinct is that one must rise.',
+              'The individual accounts in both subsidiary ledgers reduce by the same amount too, which keeps each control account in agreement with its ledger. A contra recorded in the control accounts but not in the individual accounts is a classic cause of a reconciliation difference.',
             ],
             callout: { kind: 'tip', text: '**Exam tip:** Contras appear in BOTH the SLCA and PLCA reconciliations. They reduce customer balances (Cr SLCA) and supplier balances (Dr PLCA) by the same amount.' },
           },
@@ -865,6 +970,9 @@ window.LEARN_PATH = [
             p: [
               'Everything in bookkeeping runs along this one chain, and every task in the assessment sits somewhere on it. Knowing where you are on the chain usually tells you what the question wants.',
               'Note where the double entry actually starts. The daybook is a **listing** record and is not part of the double entry; the entry begins when the daybook totals are posted to the ledger.',
+              'It is worth seeing the whole route once, because every individual step in this unit is a stage of it. A transaction happens and generates a document. The document is checked and entered in the relevant book of prime entry, coded to the right account. At the period end the daybook columns are totalled and cross cast.',
+              'Those totals are posted to the general ledger — one posting per column, not one per document — while the individual invoices are entered in the subsidiary ledgers. Each general ledger account is then balanced off, and the balances are listed in the trial balance.',
+              'Everything after that point belongs to Principles of Bookkeeping Controls: reconciling the control accounts against the subsidiary ledgers, reconciling the cash book against the bank statement, and journalising the corrections those reconciliations reveal. This unit builds the records; that unit interrogates them.',
             ],
             flow: ['Source document', 'Book of prime entry (daybook)', 'Ledger account (general + personal)', 'Trial balance (all general ledger balances)'],
           },
@@ -1906,6 +2014,8 @@ window.LEARN_PATH = [
             p: [
               'The AAT Level 3 Diploma in Accounting has **four** mandatory units and, unlike Level 2, **no synoptic assessment**. The one most directly linked to ITBK is **Financial Accounting: Preparing Financial Statements (FAPS)**, which under Q2022 combines what used to be two separate units. At Level 3, double-entry bookkeeping and the trial balance are assumed knowledge — you go straight into more complex scenarios.',
               'Think of Level 2 ITBK as learning to drive in a car park. Level 3 FAPS is taking that skill onto a motorway: same rules, more complexity.',
+              'Level 3 does not repeat this material — it assumes it. The Diploma takes the records you now know how to build and asks harder questions of them: how the figures are adjusted at a year end, how financial statements are prepared from a trial balance, how costs are analysed for management decisions, and how VAT and payroll obligations are met.',
+              'The step up is real but narrower than it looks. Almost nothing at Level 3 requires new bookkeeping mechanics; what it requires is judgement about which treatment applies. That is why this unit spends its time on getting the mechanics automatic — a student still thinking about which side a debit goes on has no attention left for the judgement.',
             ],
           },
           {
@@ -1913,6 +2023,9 @@ window.LEARN_PATH = [
             p: [
               'FAPS extends everything in ITBK. You will: produce and interpret an extended trial balance; account for complex depreciation scenarios (straight-line and reducing balance in the same year; part-year depreciation; disposal of non-current assets); handle accruals and prepayments for income as well as expenses; and use journals to correct a wider range of errors.',
               'The disposal of non-current assets is a key new topic: Dr Disposal account with cost, Cr Asset; Dr Accumulated depreciation, Cr Disposal; then record proceeds and the profit or loss on disposal.',
+              'Financial Accounting: Preparing Financial Statements is where the year-end adjustments live. Accruals and prepayments, depreciation, irrecoverable debts, and the distinction between capital and revenue expenditure are all FAPS material — and none of them appears in the Level 2 specification, which is why they are presented in this unit as a preview rather than as Level 2 content.',
+              'The unifying idea is the accruals concept: income and expense belong to the period that earned or consumed them, not the period the cash moved. Everything FAPS adds is a mechanism for making the records say that rather than simply recording payments.',
+              'From there the same unit builds the statement of profit or loss and the statement of financial position, for sole traders and then for partnerships. At Level 2 you learned what those statements are FOR; at Level 3 you prepare them.',
             ],
           },
           {
@@ -1920,6 +2033,9 @@ window.LEARN_PATH = [
             p: [
               'The second half of FAPS takes the ETB and turns it into financial statements for sole traders and — new at Level 3 — **partnerships**. For partnerships, you prepare an **appropriation account** that shows how profit is shared between partners using: partners\' salaries, interest on capital, and a profit-sharing ratio (PSR).',
               'Each partner has two ledger accounts: a **capital account** (permanent investment) and a **current account** (running balance of share of profit, drawings, interest, and salary).',
+              'The bridge between the two levels is the extended trial balance. It takes the trial balance you can now extract, adds columns for the year-end adjustments, and then splits every adjusted balance between the statement of profit or loss and the statement of financial position.',
+              'Seeing that structure explains why the trial balance matters so much despite proving so little. It is the raw material: every adjustment is made against it and every statement is derived from it. A trial balance with a coding error carries that error into both statements, which is why the control account reconciliations come first.',
+              'The other thing the extended trial balance makes visible is where profit comes from. The profit or loss columns are totalled, the difference is the profit, and that figure is carried across to the capital section of the statement of financial position — the accounting equation asserting itself one more time.',
             ],
           },
           {
@@ -1927,6 +2043,9 @@ window.LEARN_PATH = [
             p: [
               'ITBK\'s VAT knowledge feeds directly into TPFB at Level 3. You will complete the VAT 100 return, deal with different VAT schemes (cash accounting, annual accounting, flat rate), and tackle import VAT and reverse charge scenarios.',
               'TPFB also introduces **income tax for sole traders** — calculating taxable trading profit after allowable expenses, applying the personal allowance, and computing the income tax liability at basic and higher rate.',
+              'Tax Processes for Businesses takes the VAT you met in this unit and treats it properly. At Level 2 every supply was standard-rated and every invoice was assumed correct; TPFB asks which rate applies, which period a supply belongs to, whether input tax can be recovered at all, and what to do when a return turns out to be wrong.',
+              'It then adds payroll — not the tax computation, but the employer’s obligations: registering, recording, reporting under Real Time Information, paying over deductions, and the penalties for getting any of that late or wrong.',
+              'The framing that holds the whole unit together is one you already have from this one: the money is not the business’s. VAT collected from customers and deductions taken from employees are both held on HMRC’s behalf, which is why the law surrounds them with obligations that would look disproportionate for an ordinary debt.',
             ],
           },
           {
@@ -1934,6 +2053,9 @@ window.LEARN_PATH = [
             p: [
               'Every skill from ITBK reappears at Level 3: DEAD CLIC for debit and credit rules, double-entry for every transaction, the trial balance as a check, VAT calculations, the accounting equation, and accruals and prepayments.',
               'Level 3 adds depth and complexity — not new foundations. You are better prepared than you might think. The extended trial balance is the single biggest new concept, and you have just learned it.',
+              'It is worth being precise about what transfers, because the temptation is either to assume everything ahead is new or to assume it is all revision. Neither is true.',
+              'What transfers is mechanical competence: double entry, the five types of account, the books of prime entry, the cash book, the control accounts, the trial balance, and coding. Those do not change at Level 3 — they are simply used on harder material, and used at a speed that assumes no thought.',
+              'What Level 3 adds is judgement: which rate, which period, which treatment, which figures are recoverable, and what to do when something was wrong. That is the real difference between the levels, and it is why the most useful preparation for Level 3 is not reading ahead but making this unit’s mechanics genuinely automatic.',
             ],
           },
         ],
