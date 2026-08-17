@@ -85,7 +85,7 @@ const DEPTH_ENFORCED = ['itbk'];
    off-syllabus lessons have been moved to the Financial Accounting unit where
    they belong. POBC, POC and BESY are not yet tagged, so their coverage is
    still unmeasured rather than known to be good. */
-const COVERAGE_ENFORCED = ['itbk'];
+const COVERAGE_ENFORCED = ['itbk', 'pobc'];
 
 const errors = [];
 const warnings = [];

@@ -2105,6 +2105,7 @@ window.LEARN_PATH = [
          lessons supply that. */
       {
         id: 'L-pobc-1',
+        criteria: ['POBC-3.2'],
         title: 'Why controls exist',
         icon: '🛡️',
         skills: ['pobc-ca'],
@@ -2191,6 +2192,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-2',
+        criteria: ['POBC-1.1'],
         title: 'Control accounts explained',
         icon: '🔗',
         skills: ['pobc-ca'],
@@ -2302,6 +2304,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-3',
+        criteria: ['POBC-3.2'],
         title: 'Types of error',
         icon: '🔍',
         skills: ['pobc-errors'],
@@ -2420,6 +2423,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-4',
+        criteria: ['POBC-3.1'],
         title: 'The journal',
         icon: '✍️',
         skills: ['pobc-errors'],
@@ -2523,6 +2527,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-5',
+        criteria: ['POBC-3.3'],
         title: 'The suspense account',
         icon: '❓',
         skills: ['pobc-susp'],
@@ -2609,6 +2614,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-6',
+        criteria: ['POBC-3.1'],
         title: 'Payroll',
         icon: '💼',
         skills: ['pobc-payroll'],
@@ -2697,6 +2703,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-7',
+        criteria: ['POBC-3.2', 'POBC-3.3'],
         title: 'Correcting errors with journals',
         icon: '✏️',
         skills: ['pobc-errors'],
@@ -2794,6 +2801,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-8',
+        criteria: ['POBC-3.1'],
         title: 'Payroll: the full journal',
         icon: '💳',
         skills: ['pobc-payroll'],
@@ -2893,6 +2901,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-9',
+        criteria: ['POBC-3.1'],
         title: 'Irrecoverable debts',
         icon: '💔',
         skills: ['pobc-ca'],
@@ -2930,24 +2939,43 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Allowance for doubtful debts',
+            h: 'Splitting the gross debt: VAT from a gross amount',
             p: [
-              'Unlike a write-off (specific debt confirmed bad), an **allowance for doubtful debts** is an estimate of what might not be collected.',
-              'It does NOT affect the SLCA directly — the receivables balance stays at full value, but the allowance is deducted on the balance sheet.',
-              'Journal to create/increase an allowance: **Dr Irrecoverable debts expense; Cr Allowance for doubtful debts**.',
+              'A write-off almost always starts from a **gross** figure, because that is what the customer owed. The invoice was raised for net goods plus VAT, and the customer never paid any of it. Before you can journal anything you have to split that one number back into its two parts.',
+              'The VAT fraction for a standard-rated supply at 20% is **1/6 of the gross amount**. That fraction is not a rule of thumb; it falls straight out of the arithmetic. If net is 100 and VAT is 20, gross is 120, so VAT is 20/120 of gross, which cancels to 1/6.',
+              'So from a gross debt of £1,440: VAT = £1,440 ÷ 6 = £240, and net = £1,440 − £240 = £1,200. You can check it the long way round — £1,440 ÷ 1.20 = £1,200 net, then £1,200 × 20% = £240 VAT — and the two routes must agree.',
+              'Get into the habit of writing both figures down before you touch the journal. Almost every mark lost on a write-off question is lost here, not in the double entry.',
             ],
+            formula: 'VAT from gross = Gross × 1/6  ·  Net from gross = Gross ÷ 1.20  ·  Gross = Net × 1.20',
+            examtrap: 'Never take 20% of a gross figure. £1,440 × 20% = £288, which is wrong by £48. Twenty per cent is charged on the **net** amount, so working backwards from gross needs the 1/6 fraction, not the 20% rate.',
           },
           {
-            h: 'Write-off vs allowance',
+            h: 'Splitting the net debt: VAT from a net amount',
             p: [
-              'The difference is certainty. A write-off deals with a specific debt you now know will not be paid; an allowance covers the general risk that some of the remaining debts will not be.',
-              'That is why only the write-off touches the SLCA. An allowance is an estimate about receivables in general, so it sits in its own account and the receivables ledger stays intact.',
-              'Both are charged to the same expense, so profit falls either way — but only the write-off changes the amount an individual customer is shown as owing.',
+              'Sometimes the question gives you the net sale instead — "goods with a net value of £900 have been sold to a customer who has since gone into liquidation". Now the arithmetic runs forwards rather than backwards.',
+              'VAT = net × 20% = £900 × 0.20 = £180. Gross = £900 + £180 = £1,080, which is the amount to be credited to the sales ledger control account, because that is what the customer was invoiced.',
+              'Whichever direction you are working in, the write-off journal always credits the **gross** figure to the control account and splits the debit side between the expense and the VAT account. The expense takes the net amount, because that is the value of goods the business has genuinely lost.',
+              'Read the question twice for the words "net", "gross", "plus VAT" and "including VAT". They are the whole instruction.',
             ],
-            split: {
-              left: { title: 'Irrecoverable debt write-off', items: ['Specific debt confirmed uncollectable', 'Dr Irrecoverable debts expense', 'Cr SLCA (removes debt)', 'Reduces the SLCA balance', 'Affects actual receivables figure'] },
-              right: { title: 'Allowance for doubtful debts', items: ['Estimated % of receivables uncertain', 'Dr Irrecoverable debts expense', 'Cr Allowance account (not SLCA)', 'SLCA unchanged', 'Shown net of allowance on balance sheet'] },
+            example: {
+              title: 'Same debt, two ways of describing it',
+              rows: [
+                ['Wording', 'Net', 'VAT', 'Gross'],
+                ['"£900 plus VAT"', '900', '180', '1,080'],
+                ['"£1,080 including VAT"', '900', '180', '1,080'],
+                ['Both describe one invoice — only the starting point differs'],
+              ],
             },
+          },
+          {
+            h: 'The write-off in both sets of records',
+            p: [
+              'A write-off has to be recorded twice, in two different places, because a credit customer appears twice in the bookkeeping system. The general ledger holds the control account; the memorandum sales ledger holds the individual customer account.',
+              'In the **general ledger** you post the journal: debit irrecoverable debts expense with the net, debit VAT with the tax, and credit the sales ledger control account with the gross.',
+              'In the **memorandum sales ledger** you credit the individual customer\'s account with the gross, clearing their balance to nil. No debit is needed there, because the memorandum ledger is not part of the double entry — it is a supporting list.',
+              'If you post only one of the two, the control account and the list of individual balances will no longer agree, and the difference will be exactly the gross amount of the debt. That is one of the classic reconciliation differences you will be asked to explain.',
+            ],
+            flow: ['Establish net, VAT and gross', 'Journal in the general ledger', 'Credit the customer\'s memorandum account', 'Control account and list agree again'],
           },
         ],
         check: [
@@ -2964,16 +2992,16 @@ window.LEARN_PATH = [
             exp: 'The SLCA is credited with the gross amount of the debt written off, reducing the balance by £600.',
           },
           {
-            q: 'An allowance for doubtful debts is created for £500. What is the correct journal?',
-            opts: ['Dr SLCA £500; Cr Irrecoverable debts expense £500', 'Dr Bank £500; Cr Irrecoverable debts expense £500', 'Dr Irrecoverable debts expense £500; Cr Allowance for doubtful debts £500', 'Dr Allowance for doubtful debts £500; Cr SLCA £500'],
-            ans: 2,
-            exp: 'Creating an allowance: Dr Irrecoverable debts expense (cost) and Cr Allowance for doubtful debts (contra asset). The SLCA is NOT touched.',
+            q: 'A customer owes £1,440 including VAT at 20%. The debt is written off. What is the correct journal?',
+            opts: ['Dr Irrecoverable debts £1,200; Dr VAT £240; Cr SLCA £1,440', 'Dr Irrecoverable debts £1,440; Cr VAT £240; Cr SLCA £1,200', 'Dr Irrecoverable debts £1,152; Dr VAT £288; Cr SLCA £1,440', 'Dr SLCA £1,440; Cr Irrecoverable debts £1,200; Cr VAT £240'],
+            ans: 0,
+            exp: 'VAT = £1,440 ÷ 6 = £240, so the net loss is £1,200. The expense takes the net, the VAT account takes the tax, and the SLCA is credited with the full £1,440 the customer was invoiced. Option 3 makes the classic mistake of taking 20% of the gross.',
           },
           {
-            q: 'Where does the allowance for doubtful debts appear on the balance sheet?',
-            opts: ['As a liability', 'As a deduction from trade receivables', 'Added to trade receivables', 'As an expense in the income statement'],
+            q: 'Goods are sold for £900 plus VAT at 20% and the customer later becomes insolvent. What amount is credited to the SLCA?',
+            opts: ['£900, because that is the value of the goods lost', '£1,080, because that is what the customer was invoiced', '£180, because only the VAT element is reversed', '£750, because the net figure is £900 ÷ 1.20'],
             ans: 1,
-            exp: 'The allowance is a contra-asset: it is deducted from trade receivables to show a more prudent net realisable value.',
+            exp: 'The customer was invoiced the gross amount of £900 + £180 = £1,080, so that is what the control account carried and that is what must be removed. The £900 goes to the expense and the £180 to the VAT account.',
           },
           {
             q: 'A debt previously written off as irrecoverable is unexpectedly recovered. What entries are needed?',
@@ -2982,10 +3010,10 @@ window.LEARN_PATH = [
             exp: 'Reinstate the debt (Dr SLCA, Cr Irrecoverable debts expense), then record receipt (Dr Bank, Cr SLCA). The two-step approach correctly reverses the write-off.',
           },
           {
-            q: 'Which accounting principle supports creating an allowance for doubtful debts?',
-            opts: ['Going concern', 'Accruals', 'Prudence', 'Consistency'],
-            ans: 2,
-            exp: 'Prudence requires that assets are not overstated. Creating an allowance reduces the carrying value of receivables to a realistic amount.',
+            q: 'Why must the individual customer account in the memorandum sales ledger also be credited?',
+            opts: ['So the control account and the list of balances still agree', 'Because the memorandum ledger forms part of the double entry', 'To create the debit side that the journal has not yet supplied', 'Because HMRC requires the individual account to be retained'],
+            ans: 0,
+            exp: 'The memorandum ledger is a supporting list, not part of the double entry, so it takes a single credit. Omit it and the control account will differ from the list of balances by exactly the gross amount written off.',
           },
           {
             q: 'Irrecoverable debts written off appear in the SLCA reconciliation as:',
@@ -2997,6 +3025,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-10',
+        criteria: ['POBC-1.1', 'POBC-1.2'],
         title: 'The SLCA in full',
         icon: '🔒',
         skills: ['pobc-ca'],
@@ -3105,6 +3134,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-11',
+        criteria: ['POBC-3.1', 'POBC-3.2'],
         title: 'Journal entries — corrections and non-routine items',
         icon: '📓',
         skills: ['pobc-errors', 'pobc-susp'],
@@ -3207,101 +3237,119 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-pobc-12',
-        title: 'VAT reconciliation and the VAT return',
+        criteria: ['POBC-1.1'],
+        title: 'The VAT control account',
         icon: '🧾',
         skills: ['itbk-vat', 'pobc-ca'],
         cards: [
           {
-            h: 'How VAT works in the books',
+            h: 'The third control account',
             p: [
-              'VAT-registered businesses collect VAT on sales (**output tax**) and reclaim VAT on purchases (**input tax**). The difference is paid to (or reclaimed from) HMRC. The business acts as a collector of tax, not a bearer of it.',
-              'The net amount of VAT due = Output tax − Input tax.',
+              'You have met two control accounts already: one for what customers owe, one for what the business owes suppliers. The **VAT control account** is the third, and it does the same job for a different relationship — what the business owes HMRC, or is owed by HMRC.',
+              'A VAT-registered business charges VAT on its sales and hands that money over to HMRC. It also pays VAT on its purchases and reclaims that money from HMRC. Neither amount belongs to the business. It is collecting tax on HMRC\'s behalf, which is why the VAT account is a liability account and not an income or expense account.',
+              'VAT charged on sales is called **output tax**; VAT suffered on purchases is **input tax**. The balance on the VAT control account is the net of the two, and it is the figure that gets settled with HMRC each quarter.',
+              'Because it is a control account, it can be prepared, totalled and balanced exactly like the sales and purchases ledger control accounts — and that is what the assessment asks you to do.',
             ],
-            flow: ['Record sales + output VAT in the sales day book', 'Record purchases + input VAT in the purchases day book', 'Total output tax from SDB', 'Total input tax from PDB', 'Calculate VAT due: Output − Input', 'Complete and submit the VAT return'],
+            callout: { kind: 'key', text: 'The VAT account holds money that never belonged to the business. That single idea explains every entry in it.' },
           },
           {
-            h: 'The VAT return — key boxes',
+            h: 'Which side does each entry go on?',
             p: [
-              'The VAT return (now submitted via Making Tax Digital) has several key boxes.',
+              'The VAT control account is normally a **liability**, so its natural balance is a credit. Anything that increases what the business owes HMRC is credited; anything that reduces it is debited.',
+              'That gives a reliable test. Output tax on sales increases the debt to HMRC, so it is **credited**. Input tax on purchases reduces the debt, so it is **debited**. Paying HMRC settles the debt, so it too is **debited**.',
+              'Returns reverse their original entry. VAT on sales returns is debited, because a credit note to a customer cancels output tax you no longer owe. VAT on purchases returns is credited, because you can no longer reclaim input tax on goods you have sent back.',
+              'Do not memorise a list. Ask "does this make me owe HMRC more or less?" and the side follows. Every one of the six entries below can be derived that way, which is far more reliable under exam pressure than recall.',
+            ],
+            split: {
+              left: { title: 'Debit the VAT account', items: ['Input tax on credit purchases', 'Input tax on cash purchases', 'VAT on sales returns to customers', 'VAT relief on irrecoverable debts', 'Payment of VAT to HMRC'] },
+              right: { title: 'Credit the VAT account', items: ['Output tax on credit sales', 'Output tax on cash sales', 'VAT on purchases returns to suppliers', 'VAT on the sale of a non-current asset', 'A refund received from HMRC (reduces the debit)'] },
+            },
+          },
+          {
+            h: 'Preparing and balancing the account',
+            p: [
+              'Preparation follows the same four steps as any control account: bring the opening balance down on its correct side, enter the period\'s transactions from the day book totals and the cash book, total both columns, and insert the balancing figure.',
+              'The opening balance is normally a credit brought down, representing last quarter\'s VAT not yet paid. When that payment goes out during this quarter it is debited, which is why a well-run VAT account often shows a payment roughly equal to the opening balance.',
+              'To balance, total the larger side first, write that total on both sides, then insert the difference on the smaller side as **balance carried down**. It reappears on the opposite side as **balance brought down** — the same discipline you learned on the sales ledger control account.',
+              'The closing balance is almost always a credit, meaning VAT is payable. A debit balance is not an error; it means input tax exceeded output tax and HMRC owes the business a refund, which happens to exporters and to businesses that have just bought expensive equipment.',
             ],
             example: {
-              title: 'VAT return key boxes',
+              title: 'VAT control account for the quarter',
               rows: [
-                ['Box 1', 'VAT due on sales (output tax)'],
-                ['Box 4', 'VAT reclaimed on purchases (input tax)'],
-                ['Box 5', 'Net VAT due to HMRC (Box 1 minus Box 4)'],
-                ['Box 6', 'Total value of sales (net of VAT)'],
-                ['Box 7', 'Total value of purchases (net of VAT)'],
+                ['Debit', '£', 'Credit', '£'],
+                ['VAT paid to HMRC', '2,600', 'Balance b/d', '2,600'],
+                ['Input tax on purchases', '4,200', 'Output tax on sales', '6,800'],
+                ['VAT on sales returns', '180', 'VAT on purchases returns', '140'],
+                ['Balance c/d', '2,560', '', ''],
+                ['Total', '9,540', 'Total', '9,540'],
+                ['Balance b/d of £2,560 credit = VAT payable to HMRC'],
               ],
             },
           },
           {
-            h: 'Reconciling the VAT account',
+            h: 'Reconciling the account, and what a difference means',
             p: [
-              'The VAT control account in the general ledger should agree with the VAT return. Debit entries: input VAT on purchases, VAT paid to HMRC. Credit entries: output VAT on sales. The closing balance is the amount owed to HMRC (credit balance) or due back (debit balance).',
+              'Reconciling the VAT control account means checking the balance it shows against the VAT actually due for the period, calculated independently from the day books. Two routes to the same number, once again.',
+              'Add up the output tax column of the sales day book and the input tax column of the purchases day book, adjust for returns, and compare the result with the movement on the control account. If they differ, something has been posted to the wrong side, posted twice, or not posted at all.',
+              'The most common causes are mechanical rather than conceptual: the gross figure entered where the VAT figure belongs, a credit note omitted, a cash sale recorded net of VAT, or the wrong rate applied to a zero-rated or exempt supply.',
+              'When you find the difference, correct it with a journal in the usual way. A one-sided VAT error will also have thrown out the trial balance, which is your first clue that the VAT account is where to look.',
             ],
-            example: {
-              title: 'VAT control account',
-              rows: [
-                ['Dr side (input tax + payments)', 'Cr side (output tax)'],
-                ['Input VAT on purchases: £4,200', 'Output VAT on sales: £6,800'],
-                ['VAT paid to HMRC: £2,600', ''],
-                ['Balance c/d: £0', ''],
-                ['Total: £6,800', 'Total: £6,800'],
-              ],
-            },
+            examtrap: 'VAT never appears in profit or loss. It is a liability between return dates and a payment when settled — so an answer that treats VAT as an expense or as part of sales revenue is wrong before the arithmetic even starts.',
           },
           {
-            h: 'Common VAT errors and adjustments',
+            h: 'Splitting gross and net without slipping',
             p: [
-              'Common errors include: applying the wrong VAT rate, treating a VAT-exempt supply as standard-rated, not recording a credit note, and posting the gross figure instead of splitting net and VAT.',
+              'Almost every VAT calculation error at this level is a gross-versus-net error, so it is worth being mechanical about it. At a standard rate of 20%, net is 100, VAT is 20 and gross is 120.',
+              'Working forwards from net is easy: VAT = net × 20%. Working backwards from gross is where people go wrong, because 20% of the gross figure is too big. Use the fraction instead: **VAT = gross ÷ 6**, and net = gross ÷ 1.20.',
+              'A worked pair makes the trap obvious. From a gross purchase of £960, VAT = £960 ÷ 6 = £160 and net = £800. Taking 20% of £960 would give £192, overstating the reclaim by £32 and leaving the VAT account out by that amount.',
+              'The unrounded rule is to work to the penny and round only at the end. If an assessment asks for VAT on £47.99, the answer is £8.00 to the nearest penny — not £8, and not the result of rounding the net figure first.',
             ],
-            callout: { kind: 'warning', text: 'Gross = Net × 1.20. Net = Gross ÷ 1.20. VAT = Gross ÷ 6. Confusing these is one of the most common calculation errors on the VAT return.' },
-          },
-          {
-            h: 'VAT schemes and special rules',
-            p: [
-              'Small businesses can use the **VAT Flat Rate Scheme** (pay a fixed % of gross turnover, keeping the difference). The **Annual Accounting Scheme** allows one payment per year. The **Cash Accounting Scheme** only accounts for VAT when money is actually received or paid — useful for businesses with slow-paying customers.',
-            ],
-            examtrap: 'VAT is a BALANCE SHEET item (owed to HMRC = liability) between return periods, not an income statement item. Only the net payment to HMRC affects profit indirectly through reduced cash.',
+            formula: 'VAT = Net × 20%  ·  VAT = Gross ÷ 6  ·  Net = Gross ÷ 1.20  ·  Gross = Net × 1.20',
           },
         ],
         check: [
           {
-            q: 'Output tax is:',
-            opts: ['VAT reclaimed on purchases', 'VAT charged on sales to customers', 'The net VAT paid to HMRC', 'VAT on imports'],
-            ans: 1,
-            exp: 'Output tax is the VAT a business charges its customers on sales. Input tax is the VAT paid on purchases that can be reclaimed.',
+            q: 'Output tax is best described as:',
+            opts: ['VAT the business has charged its customers on sales', 'VAT the business has paid its suppliers on purchases', 'The net amount the business pays over to HMRC', 'VAT charged on goods brought in from overseas'],
+            ans: 0,
+            exp: 'Output tax is charged on outputs — the things the business sells. Input tax is suffered on inputs. The net of the two is what gets paid over, which is a third figure again.',
           },
           {
-            q: 'VAT due to HMRC = Output tax £8,400 minus Input tax £5,100. The amount due is:',
-            opts: ['£13,500', '£3,300', '£2,700', '£8,400'],
-            ans: 1,
-            exp: 'VAT payable is output tax charged on sales less input tax reclaimed on purchases: £8,400 − £5,100 = £3,300. The balance is a credit, because the business is holding HMRC’s money rather than its own.',
+            q: 'Output tax for the quarter is £8,400 and input tax is £5,100. The amount due to HMRC is:',
+            opts: ['£3,300', '£13,500', '£2,700', '£8,400'],
+            ans: 0,
+            exp: 'VAT payable is output tax less input tax: £8,400 − £5,100 = £3,300. The balance is a credit, because the business is holding HMRC’s money rather than its own.',
           },
           {
-            q: 'In the VAT control account, output VAT on sales appears on the:',
-            opts: ['Debit side', 'Credit side', 'Neither — it goes straight to HMRC', 'Both sides equally'],
-            ans: 1,
-            exp: 'Output VAT (charged to customers) is a liability owed to HMRC, so it is credited in the VAT account.',
+            q: 'In the VAT control account, output VAT on credit sales is entered on the:',
+            opts: ['Credit side, because it increases what is owed to HMRC', 'Debit side, because sales increase the assets of the business', 'Credit side, because all sales entries are credits by convention', 'Debit side, because the VAT will later be paid to HMRC'],
+            ans: 0,
+            exp: 'Ask whether the entry makes the business owe HMRC more or less. Output tax increases the liability, so it is credited. The eventual payment is the debit that clears it.',
           },
           {
-            q: 'A business buys goods for £960 gross (VAT inclusive at 20%). The input VAT it can reclaim is:',
-            opts: ['£192', '£160', '£96', '£960'],
-            ans: 1,
-            exp: 'Input VAT = Gross ÷ 6 = £960 ÷ 6 = £160. (Or: Net = £960 ÷ 1.20 = £800; VAT = £800 × 20% = £160.)',
+            q: 'A business buys goods for £960 including VAT at 20%. The input VAT it can reclaim is:',
+            opts: ['£160', '£192', '£96', '£800'],
+            ans: 0,
+            exp: 'Working backwards from a gross figure needs the 1/6 fraction: £960 ÷ 6 = £160. Taking 20% of £960 gives £192, which is the classic error — 20% is charged on the net figure of £800.',
           },
           {
-            q: 'Under the Cash Accounting Scheme for VAT, when is output tax accounted for?',
-            opts: ['When the invoice is issued', 'When cash is actually received from the customer', 'At the end of the VAT quarter regardless of payment', 'When the goods are delivered'],
-            ans: 1,
-            exp: 'The Cash Accounting Scheme accounts for VAT when money changes hands — output tax when cash is received; input tax when cash is paid.',
+            q: 'VAT on goods returned to a supplier is entered in the VAT control account as a:',
+            opts: ['Credit, because the input tax previously reclaimed is cancelled', 'Debit, because a return always reverses to the debit side', 'Credit, because returns reduce the purchases figure', 'Debit, because the supplier will refund the VAT in cash'],
+            ans: 0,
+            exp: 'Input tax on the original purchase was debited. Sending the goods back cancels the reclaim, so the entry is credited — the business owes HMRC more than it did a moment ago.',
+          },
+          {
+            q: 'The VAT control account shows a debit balance carried down. This means:',
+            opts: ['HMRC owes the business a refund, because input tax exceeded output tax', 'The business owes HMRC, because a debit balance is always a liability', 'An error has been made, because the VAT account cannot be in debit', 'The VAT account has been closed off to profit or loss for the period'],
+            ans: 0,
+            exp: 'A debit balance is unusual but perfectly valid. It arises when input tax exceeds output tax — typically after buying expensive equipment, or for a business making zero-rated supplies.',
           },
         ],
       },
 
       {
         id: 'L-pobc-13',
+        criteria: ['POBC-2.2', 'POBC-2.3'],
         title: 'Bank Reconciliation in Depth',
         icon: '🏦',
         skills: ['pobc-bankrec'],
@@ -3396,8 +3444,361 @@ window.LEARN_PATH = [
           },
         ],
       },
+
+      /* ── PAYMENT METHODS AND THE TRIAL BALANCE (15–17) ───────────────────
+         Learning outcomes 2.1 and 4 carry a quarter of the assessment each,
+         and neither had any teaching material before these three lessons. */
+      {
+        id: 'L-pobc-15',
+        criteria: ['POBC-2.1'],
+        title: 'Payment methods and the bank balance',
+        icon: '💳',
+        skills: ['pobc-bankrec'],
+        cards: [
+          {
+            h: 'Why a bookkeeper cares how money moves',
+            p: [
+              'A bank reconciliation is an exercise in timing. The cash book says one balance, the bank statement says another, and the difference is almost always made up of payments that have been recorded in one place but have not yet reached the other.',
+              'To predict which payments will do that, you have to know how each payment method actually works. A cheque and a Faster Payment are both "paying a supplier £400", but one leaves the bank account within seconds and the other may take four working days — or never clear at all, if it is lost in the post.',
+              'This is also a practical workplace skill. Choosing the right method controls when money leaves the account, which is the difference between a supplier being paid on time and the business going overdrawn. A bookkeeper who understands the timing can plan payments rather than react to them.',
+              'The methods below split into three families: those that move money immediately, those that move it later, and those that do not touch the bank balance at all.',
+            ],
+            callout: { kind: 'key', text: 'Every payment method question at this level reduces to one thing: on what date does the bank balance actually change?' },
+          },
+          {
+            h: 'Methods that reduce funds on the date of payment',
+            p: [
+              'These are the immediate methods. The money has gone the moment the transaction completes, so the cash book and the bank statement agree straight away and no timing difference arises.',
+              '**Cash** is the obvious case — notes and coins handed over, though for a bank reconciliation what matters is the moment cash is banked or withdrawn. **Debit card** payments are drawn directly on the current account and authorised in real time.',
+              '**Faster Payments** move funds between UK banks in seconds and are the normal method for one-off electronic transfers up to the scheme limit. **CHAPS** (Clearing House Automated Payment System) also settles the same working day and is used for large, time-critical amounts such as a property completion, but it carries a fee of roughly £20 to £30, so it is reserved for cases where the certainty is worth paying for.',
+              'A **bank draft** sits with this group in practice: the bank takes the money from the account when it issues the draft, so the payer\'s balance falls immediately even though the recipient has not yet presented it.',
+            ],
+            split: {
+              left: { title: 'Immediate — funds go now', items: ['Cash', 'Debit card', 'Faster Payments', 'CHAPS (same working day)', 'Bank draft (debited on issue)'] },
+              right: { title: 'Delayed — funds go later', items: ['Cheque (three working days to clear)', 'BACS (three working days)', 'Direct credit via BACS', 'Standing order (on its due date)', 'Direct debit (on its due date)'] },
+            },
+          },
+          {
+            h: 'Methods that reduce funds at a later date',
+            p: [
+              'A **cheque** is a written instruction to the bank. Nothing leaves the account until the payee deposits it and it works through the clearing cycle, conventionally three working days. Until then the payment sits in the cash book as an **unpresented cheque** and appears in the reconciliation.',
+              '**BACS** (Bankers\' Automated Clearing Services) runs on a three-day cycle: submitted on day one, processed on day two, credited on day three. Wages and supplier runs normally go by BACS, and a **direct credit** is simply a BACS payment made into someone else\'s account.',
+              'A **standing order** is an instruction from the payer to send a fixed amount on fixed dates — rent of £900 on the first of each month. The payer controls it, and it will keep paying the same amount until cancelled.',
+              'A **direct debit** reverses that control: the payer authorises the recipient to collect variable amounts as they fall due, which is how utility bills and business rates are usually paid. That difference in who controls the amount is the point most often tested.',
+            ],
+            examtrap: 'Standing order versus direct debit is decided by **who sets the amount**, not by who benefits. A fixed monthly amount you instruct your bank to send is a standing order; a variable amount the supplier claims is a direct debit.',
+          },
+          {
+            h: 'Methods that have no effect on the bank balance',
+            p: [
+              'Not every payment method touches the current account, and spotting the ones that do not is worth easy marks.',
+              'A **credit card** payment is made with the card issuer\'s money, not the business\'s. At the moment of purchase the bank balance is untouched; a liability to the card provider arises instead. The bank balance only changes later, when the card account is settled — and that settlement is usually a separate direct debit.',
+              'Receipts follow the same logic in reverse. Money paid **into** the account by a customer increases the balance, but a cheque received and recorded in the cash book on 30 June may not appear on the statement until 3 July. That is an **outstanding lodgement**, the mirror image of an unpresented cheque.',
+              'One further caution: the bank\'s own entries — interest charged, interest received, bank charges — reduce or increase the balance on dates the business never chose, and the business usually learns of them only when the statement arrives.',
+            ],
+            table: {
+              head: ['Method', 'When funds move', 'Who controls the amount'],
+              rows: [
+                ['Debit card', 'Immediately', 'The payer, per transaction'],
+                ['Credit card', 'No effect until the card is settled', 'The payer, then the card issuer'],
+                ['Cheque', 'On clearing, about three working days', 'The payer'],
+                ['Standing order', 'On each due date', 'The payer, fixed amount'],
+                ['Direct debit', 'On each due date', 'The recipient, variable amount'],
+                ['CHAPS', 'Same working day', 'The payer, per transaction'],
+              ],
+            },
+          },
+          {
+            h: 'Reading a payment method question',
+            p: [
+              'Assessment tasks on this criterion usually give you a short list of transactions and ask you to classify each one by its effect on the bank balance, or to pick the appropriate method for a described situation. Both come down to the same two questions.',
+              'First, whose money is it? If it is the card issuer\'s, the bank balance does not move yet. Second, when does the instruction take effect? Immediately for cards and Faster Payments, on a cycle for cheques and BACS, on a date for standing orders and direct debits.',
+              'For "choose the method" questions, match the requirement to the feature. Large and urgent points at CHAPS. A fixed rent points at a standing order. A varying quarterly bill points at a direct debit. A wages run for forty employees points at BACS, because one submission pays them all.',
+              'Where a question mentions a date, do the working-day arithmetic explicitly and remember that weekends and bank holidays do not count. A cheque banked on Thursday clears on Tuesday, not on Sunday.',
+            ],
+            worked: {
+              title: 'Which of these will still be outstanding at 30 June?',
+              problem: 'Five June transactions: a £620 cheque written to a supplier on 29 June; an £85 debit card payment on 28 June; a BACS wages run submitted on 28 June for credit on 30 June; a £1,150 cheque received from a customer and banked on 30 June; and a £240 credit card purchase on 27 June. Which appear on the June bank statement?',
+              steps: [
+                { do: 'The £620 cheque is **unpresented** at 30 June.', why: 'A cheque only leaves the account once the payee banks it and it clears, which takes about three working days.' },
+                { do: 'The £85 debit card payment **is** on the statement.', why: 'Card payments are authorised against the account in real time, so no timing difference arises.' },
+                { do: 'The BACS wages run **is** on the statement.', why: 'BACS runs on a three-day cycle, and day three of a 28 June submission falls on 30 June.' },
+                { do: 'The £1,150 cheque banked is an **outstanding lodgement**.', why: 'Money paid in has not yet cleared into the account, which is the mirror image of an unpresented cheque.' },
+                { do: 'The £240 credit card purchase has **no effect at all**.', why: 'The card issuer paid the supplier, so the liability is to the issuer and the bank balance is untouched this month.' },
+              ],
+              answer: 'Two items are outstanding at 30 June: the £620 unpresented cheque and the £1,150 outstanding lodgement. The credit card purchase never affects the bank balance.',
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'Which payment method has no immediate effect on the business bank balance?',
+            opts: ['A purchase made using a company credit card', 'A purchase made using a company debit card', 'A payment sent by Faster Payments to a supplier', 'A CHAPS transfer made for a property completion'],
+            ans: 0,
+            exp: 'A credit card purchase uses the card issuer\'s money, creating a liability to the issuer. The bank balance only changes later, when the card account is settled — usually by direct debit.',
+          },
+          {
+            q: 'A fixed amount of £900 is sent to a landlord on the first of every month on the business\'s own instruction. This is a:',
+            opts: ['Standing order', 'Direct debit', 'Direct credit', 'Bank draft'],
+            ans: 0,
+            exp: 'The payer sets a fixed amount and fixed dates, which is a standing order. A direct debit would let the landlord vary the amount collected, and a direct credit is a BACS payment into another account.',
+          },
+          {
+            q: 'Which method would a business normally use to pay a large amount that must reach the recipient the same working day?',
+            opts: ['CHAPS', 'BACS', 'Cheque', 'Standing order'],
+            ans: 0,
+            exp: 'CHAPS settles the same working day and is used for large, time-critical payments despite the fee. BACS takes three working days and a cheque takes about three days to clear once presented.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about payment methods is true or false.',
+            statements: [
+              { text: 'A cheque reduces the payer\'s bank balance on the day it is written.', answer: false },
+              { text: 'BACS payments are normally credited on the third day of the cycle.', answer: true },
+              { text: 'With a direct debit the recipient decides the amount collected.', answer: true },
+              { text: 'A bank draft leaves the payer\'s balance untouched until it is presented.', answer: false },
+            ],
+            exp: 'A cheque only reduces the balance once presented and cleared, so it sits in the reconciliation as an unpresented cheque. A bank draft is different: the bank takes the money when it issues the draft, so the payer\'s balance falls straight away.',
+          },
+          {
+            q: 'A cheque received from a customer is banked on 30 June but does not appear on the June bank statement. In the reconciliation it is:',
+            opts: ['An outstanding lodgement', 'An unpresented cheque', 'A timing error requiring a journal', 'A direct credit not yet recorded'],
+            ans: 0,
+            exp: 'Money paid in but not yet cleared is an outstanding lodgement. An unpresented cheque is the opposite case — a cheque the business has written that the payee has not yet banked.',
+          },
+        ],
+      },
+      {
+        id: 'L-pobc-16',
+        criteria: ['POBC-4.1'],
+        title: 'Extracting the initial trial balance',
+        icon: '⚖️',
+        skills: ['pobc-tb'],
+        cards: [
+          {
+            h: 'What the trial balance actually is',
+            p: [
+              'A **trial balance** is a two-column list of every balance in the general ledger at a particular date, debits in one column and credits in the other. It is not a financial statement and it is not part of the double entry. It is a working schedule, extracted from the ledger to prove that the ledger adds up.',
+              'The word "initial" matters. An initial trial balance is drawn up **before** any corrections or adjustments are made. It is the raw position, warts and all, and its job is to reveal whether the raw position balances.',
+              'Everything that follows in the accounting cycle depends on it. If the initial trial balance does not balance, the difference goes to a suspense account and has to be investigated before the financial statements can be prepared.',
+              'You will be asked to do three things with it: extract the balances from the ledger, place each one in the correct column, and total and balance the two columns. That is the whole of criterion 4.1.',
+            ],
+            flow: ['Balance off each general ledger account', 'Take the closing balance b/d', 'Place it in the debit or credit column', 'Total both columns', 'Compare the totals'],
+          },
+          {
+            h: 'Which column does each balance go in?',
+            p: [
+              'The balance goes in the column matching the side it was brought down on, and that side follows from what kind of account it is. There is no need to guess if you know the five categories.',
+              '**Assets** and **expenses** carry debit balances. **Liabilities**, **capital** and **income** carry credit balances. A useful mnemonic is DEAD CLIC — Debit for Expenses, Assets and Drawings; Credit for Liabilities, Income and Capital.',
+              'Two cases catch people out. **Drawings** feel like they should be a credit because money is leaving, but drawings reduce capital, and reducing a credit balance takes a debit. **Sales returns** are a debit even though sales are a credit, because a return reverses the original entry.',
+              'The other trap is a control account with an unexpected balance. The sales ledger control account is normally a debit, but it can show a credit balance if customers have overpaid. Put the balance where it actually is, not where it usually is.',
+            ],
+            table: {
+              head: ['Account', 'Category', 'Normal column'],
+              rows: [
+                ['Motor vehicles', 'Asset', 'Debit'],
+                ['Sales ledger control account', 'Asset', 'Debit'],
+                ['Purchases', 'Expense', 'Debit'],
+                ['Drawings', 'Reduction of capital', 'Debit'],
+                ['Sales returns', 'Reduction of income', 'Debit'],
+                ['Purchases ledger control account', 'Liability', 'Credit'],
+                ['VAT control account', 'Liability', 'Credit'],
+                ['Capital', 'Capital', 'Credit'],
+                ['Sales', 'Income', 'Credit'],
+              ],
+            },
+          },
+          {
+            h: 'Transferring the balances',
+            p: [
+              'Extraction is mechanical, which is exactly why it is worth being disciplined about. Work down the ledger account by account and transfer the **balance brought down**, not the total of the account.',
+              'That distinction is the single most common error. A sales ledger control account might total £96,400 on each side and carry a balance brought down of £18,200. It is £18,200 that goes into the trial balance; the £96,400 is just the sum of the entries and means nothing outside the account.',
+              'Accounts with no balance are omitted. If the VAT account has been settled exactly and shows nil, there is nothing to list. Accounts closed off to profit or loss during the period are also excluded from a trial balance drawn after that transfer.',
+              'Tick each account as you transfer it. A missed account is a one-sided omission, so the trial balance will not balance and you will spend far longer hunting for it than the tick would have cost.',
+            ],
+            examtrap: 'Transfer the **balance brought down**, never the column total. Copying the total of a busy account is the fastest way to produce a trial balance that is out by tens of thousands.',
+          },
+          {
+            h: 'Totalling and balancing',
+            p: [
+              'Add each column and compare. If the two totals agree, the trial balance balances, and you write the agreed total at the foot of both columns with a double underline.',
+              'Agreement proves one thing only: that for every debit posted there was an equal credit. It does not prove the entries went into the right accounts, that anything was posted at the right amount on both sides, or that any transaction was posted at all. Those are precisely the errors this unit exists to find.',
+              'If the totals disagree, the difference is entered as a balancing figure in the smaller column, described as **suspense account**, so that the trial balance can be completed and work can continue. The suspense balance is then investigated and cleared by journal.',
+              'It is worth calculating the difference and looking at it before you start hunting. A difference divisible by nine often means a transposition; a difference exactly equal to a figure in the ledger often means a one-sided entry; a difference that is exactly twice a figure often means an entry posted to the wrong side.',
+            ],
+            example: {
+              title: 'An initial trial balance that does not balance',
+              rows: [
+                ['Account', 'Debit £', 'Credit £'],
+                ['Sales ledger control account', '18,200', ''],
+                ['Purchases', '64,300', ''],
+                ['Drawings', '9,500', ''],
+                ['Purchases ledger control account', '', '11,400'],
+                ['VAT control account', '', '2,560'],
+                ['Sales', '', '78,660'],
+                ['Capital', '', '20,000'],
+                ['Suspense', '20,620', ''],
+                ['Totals', '112,620', '112,620'],
+              ],
+            },
+          },
+          {
+            h: 'Working carefully under exam conditions',
+            p: [
+              'Trial balance tasks are usually computer-marked from a long list of balances, and the marks are lost to carelessness rather than to misunderstanding. A short routine protects you.',
+              'Read the whole list before entering anything, because the awkward items — drawings, sales returns, a credit balance on the sales ledger control account — are usually placed near the end where they are easy to rush.',
+              'Enter every figure without a comma or a currency symbol unless the task asks for one, and never enter a negative number. A balance that belongs in the credit column is entered as a positive figure in the credit column, not as a minus in the debit column.',
+              'Finally, total both columns yourself even when the software does it for you. Seeing the two figures agree is the confirmation that the task is finished; seeing them differ tells you to check the awkward items first.',
+            ],
+            callout: { kind: 'warning', text: 'A trial balance that balances can still be wrong in half a dozen ways. Never write that an agreeing trial balance proves the books are correct — it is a guaranteed lost mark.' },
+          },
+        ],
+        check: [
+          {
+            q: 'What does an agreeing trial balance prove?',
+            opts: ['Total debits posted equal total credits posted', 'Every transaction has been posted to the correct account', 'No transaction has been omitted from the ledger entirely', 'All balances have been calculated at the correct amount'],
+            ans: 0,
+            exp: 'Agreement proves arithmetical equality of debits and credits and nothing more. Errors of omission, commission, principle, original entry, reversal and compensating errors all leave the trial balance in balance.',
+          },
+          {
+            q: 'In which column of the trial balance does the drawings account appear?',
+            opts: ['Debit, because drawings reduce the credit balance on capital', 'Credit, because money is leaving the business bank account', 'Credit, because drawings are treated in the same way as capital', 'Neither, because drawings are deducted from capital before extraction'],
+            ans: 0,
+            exp: 'Drawings reduce capital, and reducing a credit balance requires a debit. The DEAD half of DEAD CLIC covers Expenses, Assets and Drawings.',
+          },
+          {
+            q: 'A general ledger account totals £96,400 on each side and shows a balance brought down of £18,200. What figure goes into the trial balance?',
+            opts: ['£18,200', '£96,400', '£114,600', '£78,200'],
+            ans: 0,
+            exp: 'The trial balance takes the balance brought down. The column total is simply the sum of the entries within that account and has no meaning outside it.',
+          },
+          {
+            q: 'The debit column of an initial trial balance totals £112,620 and the credit column totals £133,240. What should the bookkeeper do?',
+            opts: ['Enter £20,620 as a suspense balance in the debit column', 'Enter £20,620 as a suspense balance in the credit column', 'Recalculate every ledger account before entering any figures', 'Leave the trial balance unbalanced and note the difference'],
+            ans: 0,
+            exp: 'The suspense figure goes in the smaller column so the two agree. Here the debit column is smaller by £20,620, so suspense is a debit. The difference is then investigated and cleared by journal.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about extracting a trial balance is true or false.',
+            statements: [
+              { text: 'A sales ledger control account can only ever show a debit balance.', answer: false },
+              { text: 'Sales returns appear in the debit column of the trial balance.', answer: true },
+              { text: 'An account with a nil balance is omitted from the trial balance.', answer: true },
+              { text: 'The VAT control account normally appears in the debit column.', answer: false },
+            ],
+            exp: 'A sales ledger control account shows a credit balance where customers have overpaid or paid in advance. The VAT account is normally a liability, so its usual place is the credit column — a debit balance means HMRC owes the business.',
+          },
+        ],
+      },
+      {
+        id: 'L-pobc-17',
+        criteria: ['POBC-4.2'],
+        title: 'Redrafting the trial balance',
+        icon: '📝',
+        skills: ['pobc-tb'],
+        cards: [
+          {
+            h: 'From initial to adjusted',
+            p: [
+              'The initial trial balance is the raw position. Once the errors have been found and journalled, those journals have to be worked through the affected accounts and a **redrafted** — or adjusted — trial balance produced.',
+              'This is the second half of the accounting cycle you have been building towards all unit. Extract, investigate, journal, recalculate, redraft. The redrafted trial balance is the version the financial statements are actually built from.',
+              'The mechanics are simple but unforgiving. For each account touched by a journal, take the original balance, apply the journal entry to the correct side, and calculate the new balance. Accounts not mentioned in any journal carry their original figures through unchanged.',
+              'The redrafted trial balance must balance with no suspense account left in it. If suspense survives to the redraft, either an error has not yet been found or a journal has been posted one-sided.',
+            ],
+            flow: ['Initial trial balance with suspense', 'Journals to correct errors', 'Recalculate each affected account', 'Redrafted trial balance', 'Suspense is nil'],
+          },
+          {
+            h: 'Recalculating one account',
+            p: [
+              'Work with the balance and the movement, not with the whole account. Ask which side the balance is on, which side the journal hits, and whether that makes the balance bigger or smaller.',
+              'A journal on the **same** side as the balance increases it. A journal on the **opposite** side decreases it. That is the entire rule, and it holds for every account type.',
+              'Take rent, an expense with a debit balance of £14,400. A journal debits rent £600 — same side as the balance, so the balance rises to £15,000. Now take sales, income with a credit balance of £78,660. A journal debits sales £1,200 — opposite side, so the balance falls to £77,460.',
+              'A balance can cross over if the journal is larger than the balance. A VAT credit balance of £2,560 hit by a debit journal of £3,000 becomes a debit balance of £440, and it moves to the other column of the trial balance. Do not force it back to the side it started on.',
+            ],
+            formula: 'New balance = Original balance ± journal amount  (add if the journal is on the same side, subtract if on the opposite side)',
+          },
+          {
+            h: 'Working a full redraft',
+            p: [
+              'A typical task gives you an initial trial balance with a suspense figure and two or three journals, then asks for the redrafted columns. Handle the journals one at a time, and write down each new balance before moving on.',
+              'Suppose the initial trial balance carries suspense of £20,620 debit. Journal one: debit suspense £20,000, credit sales £20,000, correcting a sale omitted from the sales account. Journal two: debit suspense £620, credit purchases £620, correcting purchases overstated.',
+              'Sales rises from £78,660 credit to £98,660 credit, because the journal is on the same side as the balance. Purchases falls from £64,300 debit to £63,680 debit, because the credit journal is on the opposite side. Suspense receives £20,000 and £620 of credits against its £20,620 debit, clearing to nil.',
+              'Now total again. The redrafted columns agree at £132,240 with no suspense line, which is the signal that the corrections were complete and correctly journalled.',
+            ],
+            example: {
+              title: 'Initial and redrafted side by side',
+              rows: [
+                ['Account', 'Initial Dr', 'Initial Cr', 'Redrafted Dr', 'Redrafted Cr'],
+                ['Sales ledger control account', '18,200', '', '18,200', ''],
+                ['Purchases', '64,300', '', '63,680', ''],
+                ['Drawings', '9,500', '', '9,500', ''],
+                ['Purchases ledger control account', '', '11,400', '', '11,400'],
+                ['VAT control account', '', '2,560', '', '2,560'],
+                ['Sales', '', '78,660', '', '98,660'],
+                ['Capital', '', '20,000', '', '20,000'],
+                ['Suspense', '20,620', '', '—', '—'],
+                ['Totals', '112,620', '112,620', '91,380', '132,620'],
+              ],
+            },
+          },
+          {
+            h: 'When the redraft still does not balance',
+            p: [
+              'If the redrafted columns disagree, the fault is in your working rather than in the original ledger, because the journals you were given were balanced when you received them.',
+              'Check three things in order. First, did every journal get posted to **both** accounts? A journal posted to one side only will throw the redraft out by exactly its amount. Second, did you apply each journal on the correct side of the account it hit? Getting the side wrong throws the redraft out by exactly **twice** the journal amount, which is a very recognisable signature.',
+              'Third, did you carry the untouched accounts through unchanged? It is surprisingly easy to retype a figure wrongly when copying a long list from one column to another.',
+              'If the difference is still there after those three checks, calculate it and look for it. A difference divisible by nine points at a transposition in your own copying, which is the likeliest remaining explanation.',
+            ],
+            examtrap: 'A redrafted trial balance must **never** contain a suspense balance. If yours does, an error has not been corrected or a journal has been posted one-sided — do not simply relabel the difference and move on.',
+          },
+          {
+            h: 'Why the redraft matters beyond the exam',
+            p: [
+              'It is tempting to treat this as an arithmetic exercise, but the redraft is where the whole control system pays off. The financial statements are prepared from the redrafted figures, so an error left in it flows straight through to reported profit and to the statement of financial position.',
+              'Consider the £20,000 sale omitted from the sales account. Left uncorrected, revenue is understated by £20,000 and so is profit. The suspense balance was the only clue that anything was wrong, and clearing it properly is what protects the reported result.',
+              'This is also why an auditor or a reviewer looks for a suspense account first. A live suspense balance in a set of accounts is an admission that something is unexplained, and a business that carries one from period to period is telling everyone that its bookkeeping is not under control.',
+              'At Level 3 the same discipline reappears as the extended trial balance, where adjustment columns for accruals, prepayments and depreciation are added alongside the corrections you are doing here.',
+            ],
+            callout: { kind: 'key', text: 'The redrafted trial balance is the bridge between bookkeeping and the financial statements. Every figure in the accounts comes from it.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Rent has a debit balance of £14,400. A journal debits rent with £600. The redrafted balance is:',
+            opts: ['£15,000 debit', '£13,800 debit', '£15,000 credit', '£600 debit'],
+            ans: 0,
+            exp: 'The journal is on the same side as the existing balance, so the balance increases: £14,400 + £600 = £15,000 debit. A credit journal would have reduced it instead.',
+          },
+          {
+            q: 'Sales has a credit balance of £78,660. A journal debits sales with £1,200. The redrafted balance is:',
+            opts: ['£77,460 credit', '£79,860 credit', '£77,460 debit', '£1,200 debit'],
+            ans: 0,
+            exp: 'The journal is on the opposite side to the balance, so the balance falls: £78,660 − £1,200 = £77,460, still a credit because the journal is much smaller than the balance.',
+          },
+          {
+            q: 'What should the suspense account balance be in a correctly redrafted trial balance?',
+            opts: ['Nil, because every error has been identified and journalled', 'Unchanged, because the initial figure is carried forward', 'Halved, because only some of the errors are ever found', 'Whatever figure is needed to make the two columns agree'],
+            ans: 0,
+            exp: 'Suspense is a temporary holding account. If it survives the redraft, either an error remains unfound or a journal has been posted to one side only.',
+          },
+          {
+            q: 'A redrafted trial balance is out by exactly twice the amount of one of the journals. The most likely cause is:',
+            opts: ['The journal was applied to the wrong side of an account', 'The journal was omitted from the redraft altogether', 'Two figures were transposed while copying the columns', 'An untouched account was carried forward incorrectly'],
+            ans: 0,
+            exp: 'Applying a journal on the wrong side moves the balance the wrong way, producing an error of twice the amount. Omitting it entirely would produce a difference of exactly one times the amount.',
+          },
+          {
+            q: 'The VAT control account has a credit balance of £2,560 and a journal debits it with £3,000. In the redrafted trial balance it appears as:',
+            opts: ['£440 in the debit column', '£440 in the credit column', '£5,560 in the credit column', '£3,000 in the debit column'],
+            ans: 0,
+            exp: 'The debit journal exceeds the credit balance, so the balance crosses over: £3,000 − £2,560 = £440 debit. The account moves to the other column, meaning HMRC now owes the business.',
+          },
+        ],
+      },
       {
         id: 'L-pobc-14',
+        criteria: [],
         title: 'Bridge to Level 3 — Final Accounts & Tax',
         icon: '🌉',
         skills: ['pobc-ca', 'pobc-errors'],
@@ -6686,7 +7087,87 @@ window.LEARN_PATH = [
           },
         ],
       },
-    
+
+      /* Moved here from Principles of Bookkeeping Controls. The Level 2 spec
+         requires only the write-off of a confirmed irrecoverable debt; the
+         allowance for doubtful debts is an estimate, and estimates belong to
+         Level 3 Financial Accounting, where the year-end adjustment is
+         assessed. Keeping it visible as a preview rather than deleting it. */
+      {
+        id: 'L-faps-3',
+        title: 'The allowance for doubtful debts (Level 3 preview)',
+        icon: '🤔',
+        skills: ['pobc-ca'],
+        cards: [
+          {
+            h: 'Write-off and allowance answer different questions',
+            p: [
+              'At Level 2 you write off a debt you **know** has gone: the customer is in liquidation, or the administrator has confirmed there will be no distribution to unsecured creditors. The loss is certain, so the receivable is removed.',
+              'At Level 3 you also have to deal with the debts you merely **suspect**. Some proportion of a large receivables balance never gets paid, and a business that reports every invoice at full value on the statement of financial position is overstating what it will actually collect.',
+              'The answer is an **allowance for doubtful debts** — a separate account holding an estimate of the receivables at risk. It sits alongside receivables as a contra-asset and is deducted from them on the face of the statement of financial position.',
+              'The distinction is entirely one of certainty. A write-off names a customer; an allowance names a percentage.',
+            ],
+            split: {
+              left: { title: 'Irrecoverable debt write-off', items: ['A specific debt confirmed uncollectable', 'Dr Irrecoverable debts expense (net)', 'Dr VAT with the tax element', 'Cr Sales ledger control account (gross)', 'The receivables figure genuinely falls'] },
+              right: { title: 'Allowance for doubtful debts', items: ['An estimate across the whole balance', 'Dr Irrecoverable debts expense', 'Cr Allowance for doubtful debts', 'The control account is not touched', 'Receivables shown net of the allowance'] },
+            },
+          },
+          {
+            h: 'Why the allowance never touches the control account',
+            p: [
+              'This is the point students most often get wrong, and it follows from what the control account is for. The sales ledger control account must always equal the total of the individual customer balances, because that agreement is the control.',
+              'An allowance is not attached to any individual customer. If you credited the control account with an estimate, it would no longer reconcile to the list of balances, and you would have broken the very control the account exists to provide.',
+              'So the allowance is credited to its own account instead. Receivables stay at £84,000 in the ledger; the allowance account holds, say, £2,520; and the statement of financial position shows £81,480 net. Both numbers remain available, which matters because the gross figure is still what you are legally entitled to collect.',
+              'A write-off is different because it does name a customer, so both the control account and that customer\'s memorandum account can be credited and agreement is preserved.',
+            ],
+            callout: { kind: 'key', text: 'Write-offs change the ledger. Allowances change only the presentation. That is why one touches the control account and the other cannot.' },
+          },
+          {
+            h: 'Adjusting the allowance, not recreating it',
+            p: [
+              'The allowance is a **balance**, carried forward from year to year, and only the movement is charged to profit. A student who charges the whole closing allowance every year overstates the expense badly.',
+              'Suppose the allowance stood at £2,100 last year and this year\'s review suggests £2,520 is needed. The account already holds £2,100, so only the £420 increase is journalled: debit irrecoverable debts expense £420, credit allowance for doubtful debts £420.',
+              'If the required allowance had fallen to £1,800 instead, the movement runs the other way: debit allowance for doubtful debts £300, credit irrecoverable debts expense £300. A reduction in the allowance is a credit to the expense account, which increases profit.',
+              'The exam wording to watch for is "the allowance is to be **increased to**" versus "increased **by**". The first gives you the closing balance and asks you to find the movement; the second gives you the movement directly.',
+            ],
+            formula: 'Charge to profit or loss = Required closing allowance − Existing allowance brought forward',
+            examtrap: 'An allowance is never calculated on the gross receivables including VAT-inclusive debts you have already written off. Deduct confirmed write-offs first, then apply the percentage to what is left.',
+          },
+        ],
+        check: [
+          {
+            q: 'An allowance for doubtful debts of £500 is to be created. What is the correct journal?',
+            opts: ['Dr Irrecoverable debts expense £500; Cr Allowance for doubtful debts £500', 'Dr Allowance for doubtful debts £500; Cr Irrecoverable debts expense £500', 'Dr Sales ledger control account £500; Cr Irrecoverable debts expense £500', 'Dr Irrecoverable debts expense £500; Cr Sales ledger control account £500'],
+            ans: 0,
+            exp: 'Creating an allowance charges the expense and credits the contra-asset account. The control account is deliberately left alone so that it still agrees with the list of individual balances.',
+          },
+          {
+            q: 'Where does the allowance for doubtful debts appear in the financial statements?',
+            opts: ['Deducted from trade receivables in the statement of financial position', 'As a current liability in the statement of financial position', 'Added to trade receivables in the statement of financial position', 'Only in the notes, because it is an estimate rather than a balance'],
+            ans: 0,
+            exp: 'It is a contra-asset, deducted from trade receivables so that the net figure shows what the business realistically expects to collect. The charge for the year goes to profit or loss separately.',
+          },
+          {
+            q: 'The allowance brought forward is £2,100 and the allowance required is £2,520. What is charged to profit or loss?',
+            opts: ['£420', '£2,520', '£2,100', '£4,620'],
+            ans: 0,
+            exp: 'Only the movement is charged, because the £2,100 was already expensed last year. Dr Irrecoverable debts expense £420; Cr Allowance for doubtful debts £420.',
+          },
+          {
+            q: 'The allowance brought forward is £3,000 and the allowance required has fallen to £2,400. What is the effect on profit?',
+            opts: ['Profit increases by £600, because the expense account is credited', 'Profit decreases by £600, because the allowance is still an expense', 'Profit is unchanged, because allowances never affect profit', 'Profit decreases by £2,400, being the new allowance required'],
+            ans: 0,
+            exp: 'A reduction in the allowance is written back: Dr Allowance for doubtful debts £600; Cr Irrecoverable debts expense £600. Crediting an expense account increases profit.',
+          },
+          {
+            q: 'Which accounting principle requires an allowance for doubtful debts to be made?',
+            opts: ['Prudence, because assets should not be overstated', 'Going concern, because the business will continue trading', 'Consistency, because the same policy is applied each year', 'Materiality, because small balances can be ignored'],
+            ans: 0,
+            exp: 'Prudence requires that assets are not carried above the amount expected to be recovered. Consistency governs how the estimate is made each year, but prudence is why it is made at all.',
+          },
+        ],
+      },
+
       {
         id: 'L-itbk-6',
         title: 'Spreading and matching costs',
