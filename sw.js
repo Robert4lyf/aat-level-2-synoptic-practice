@@ -1,9 +1,9 @@
-/* AAT Level 2 Synoptic Practice — service worker
+/* AAT Level 2 — service worker
    Offline support via a cache-first, stale-while-revalidate strategy.
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-practice-v98';
+var CACHE_VERSION = 'aat-l2-v99';
 var CORE_ASSETS = [
   './',
   './index.html',

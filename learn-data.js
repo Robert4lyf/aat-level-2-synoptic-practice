@@ -1,4 +1,4 @@
-/* AAT Level 2 Synoptic Practice — Learning Journey content
+/* AAT Level 2 — Learning Journey content
 
    FOUR units, and only four: Introduction to Bookkeeping, Principles of
    Bookkeeping Controls, Principles of Costing and The Business Environment.
@@ -2019,7 +2019,7 @@ window.LEARN_PATH = [
         criteria: [],
         title: 'Bridge to Level 3 — Financial Accounting',
         icon: '🌉',
-        skills: ['itbk-tb', 'itbk-adjust'],
+        skills: ['itbk-tb', 'itbk-cogs'],
         l3Bridge: true,
         cards: [
           {
@@ -4850,7 +4850,7 @@ window.LEARN_PATH = [
         criteria: ['POC-2.3'],
         title: 'Absorption costing and OARs',
         icon: '🏭',
-        skills: ['poc-cvp'],
+        skills: ['poc-oar'],
         cards: [
           {
             h: 'What is absorption costing?',
@@ -5965,7 +5965,7 @@ window.LEARN_PATH = [
         criteria: [],
         title: 'Bridge to Level 3 — Management Accounting',
         icon: '🌉',
-        skills: ['poc-cvp', 'poc-budget'],
+        skills: ['poc-oar', 'poc-budget'],
         l3Bridge: true,
         cards: [
           {

@@ -1,4 +1,4 @@
-/* AAT Level 2 Synoptic Practice — App Logic (rebuilt with numeric Q + calculator) */
+/* AAT Level 2 — App Logic (rebuilt with numeric Q + calculator) */
 (function () {
   'use strict';
 
@@ -31,9 +31,9 @@
       }
     },
     {
-      id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
-      desc: 'Prepare for the Q2022 Business Environment Synoptic Assessment',
-      meta: '631 questions · Mock exams · T-Accounts',
+      id: 'aat', name: 'AAT Level 2', short: 'AAT L2', flag: '🧮', color: '#2563EB',
+      desc: 'Bookkeeping, controls, costing and business environment — the Q2022 Level 2 Certificate in Accounting',
+      meta: '4 units · 68 lessons · mock exams',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       assets: [],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
@@ -3140,8 +3140,8 @@
     const h1 = document.querySelector('header h1');
     const sub = document.querySelector('header .sub');
     const badge = document.querySelector('header .badge');
-    if (h1)  h1.textContent = subj.flag + ' ' + (subj.id === 'aat' ? 'AAT Level 2 Synoptic Practice' : subj.name);
-    if (sub) sub.textContent = subj.id === 'aat' ? 'Q2022 — The Business Environment Synoptic Assessment' : subj.desc;
+    if (h1)  h1.textContent = subj.flag + ' ' + subj.name;
+    if (sub) sub.textContent = subj.desc;
     if (badge) badge.style.display = subj.id === 'aat' ? '' : 'none';
   }
 
@@ -3202,8 +3202,8 @@
   function renderSplash() {
     return `<div class="splash fade-in">
       <div class="splash-logo" aria-hidden="true">📊</div>
-      <h2>AAT Level 2 Synoptic Practice</h2>
-      <p>Prepare with confidence for the Q2022 Business Environment Synoptic Assessment — 8 tasks, 100 marks, 2 hours. ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.</p>
+      <h2>AAT Level 2</h2>
+      <p>The Q2022 Level 2 Certificate in Accounting — four units, each assessed in its own right, with The Business Environment assessed synoptically. ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.</p>
       <div class="splash-features">
         <div class="feat"><div class="fi" aria-hidden="true">📝</div><strong>${window.ALL_QUESTIONS.length} Questions</strong><br>Across all topics</div>
         <div class="feat"><div class="fi" aria-hidden="true">⏱</div><strong>Synoptic Mock</strong><br>${SYNOPTIC_BLUEPRINT.length} tasks, ${SYNOPTIC_TOTAL_MARKS} marks, ${Math.round(MOCK_DURATION_MS / 60000)} min</div>

@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------
-   AAT Level 2 Synoptic Practice -- Question Bank
+   AAT Level 2 -- Question Bank
    ----------------------------------------------------------
    AUDIT NOTES (v3):
    - Question IDs are consistently formatted as <topic>-NNN
@@ -216,11 +216,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trade discount is deducted at the point of sale. Only the net (post-discount) amount is recorded in the books.' },
 
-  { id: 'itbk-018', topic: 'itbk', difficulty: 'easy',
-    q: 'An accrued expense is recorded in which way at year end?',
-    opts: ['Dr expense, Cr liability', 'Dr liability, Cr expense', 'Dr asset, Cr expense', 'Dr expense, Cr asset'],
-    ans: 0,
-    exp: 'An accrual recognises a cost incurred but not yet invoiced or paid. The expense is debited so it falls in the right period, and a liability is credited because the business still owes the money. Omitting it understates both expenses and liabilities, and overstates profit.' },
 
   { id: 'itbk-019', topic: 'itbk', difficulty: 'easy',
     q: 'The accounting equation is:',
@@ -575,11 +570,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Paying a telephone bill increases an expense (debit) and reduces the bank balance (credit): Dr Telephone Expense, Cr Bank.' },
 
-  { id: 'itbk-057', topic: 'itbk', difficulty: 'easy',
-    q: 'Which item is classified as a non-current asset?',
-    opts: ['Inventory', 'Trade receivables', 'Motor vehicle', 'Cash'],
-    ans: 2,
-    exp: 'Non-current assets are held for use in the business over more than one accounting period — vehicles, machinery, premises. Inventory, receivables and cash are all current assets, expected to convert to cash within twelve months.' },
 
   { id: 'itbk-058', topic: 'itbk', difficulty: 'easy',
     q: 'Which ledger records customer accounts?',
@@ -604,11 +594,6 @@ window.ALL_QUESTIONS = [
     ans: 2,
     exp: 'Books of prime entry (day books, cash book, journal) are where transactions are first recorded before being posted to the ledger.' },
 
-  { id: 'itbk-061', topic: 'itbk', difficulty: 'easy',
-    q: 'Which of the following is capital expenditure?',
-    opts: ['Purchasing stationery', 'Paying wages', 'Buying a new delivery van', 'Paying the electricity bill'],
-    ans: 2,
-    exp: 'Capital expenditure is spending on long-term assets used over more than one accounting period. The other options are revenue expenditure.' },
 
   { id: 'itbk-062', topic: 'itbk', difficulty: 'easy',
     q: 'Which of the following would reduce the balance on the purchases ledger control account?',
@@ -683,28 +668,8 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The bank never received the money, so the original receipt must be reversed: Bank is credited and Trade receivables debited, putting the debt back on the customer. Many businesses also recharge any bank fee. The sale itself is unaffected — it was earned when the goods were supplied.' },
 
-  { id: 'itbk-070', topic: 'itbk', difficulty: 'medium',
-    q: 'A prepayment is shown in the financial statements as:',
-    opts: [
-      'A current asset, as the benefit has not yet been received',
-      'A current liability, as the amount is still owed',
-      'A non-current liability repayable after twelve months',
-      'Capital expenditure to be depreciated over its useful life',
-    ],
-    ans: 0,
-    exp: 'Paying in advance means the business is owed a service, so the amount carried forward is an asset realised within twelve months. An accrual — incurred but unpaid — is the current liability equivalent.' },
 
-  { id: 'itbk-071', topic: 'itbk', difficulty: 'medium',
-    q: 'A prepayment occurs when:',
-    opts: ['An expense is incurred but not yet paid', 'An expense is paid in advance', 'Revenue is received late', 'A liability is written off'],
-    ans: 1,
-    exp: 'A prepayment arises when cash goes out before the period it relates to — insurance or rent paid in advance. The expense is removed from this period and carried forward as a current asset. An accrual is the opposite case: incurred but not yet paid.' },
 
-  { id: 'itbk-072', topic: 'itbk', difficulty: 'medium',
-    q: 'A prepayment of insurance exists at year end. What is the adjustment?',
-    opts: ['Dr expense, Cr prepayment', 'Dr prepayment, Cr expense', 'Dr liability, Cr expense', 'Dr expense, Cr liability'],
-    ans: 1,
-    exp: 'Prepayments are carried forward as current assets: Dr Prepayments (asset), Cr Expense (reducing the period charge).' },
 
   { id: 'itbk-073', topic: 'itbk', difficulty: 'medium',
     q: 'A sales ledger control account and sales ledger differ due to:',
@@ -723,44 +688,9 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'An error of original entry occurs when an incorrect figure is used at the point of entry. Both sides of the double entry are then wrong by the same amount, so the trial balance still balances.' },
 
-  { id: 'itbk-075', topic: 'itbk', difficulty: 'medium',
-    q: 'An accrual is best described as:',
-    opts: [
-      'An expense incurred in the period but not yet invoiced or paid',
-      'An expense paid in advance of the period to which it relates',
-      'Income received in advance of the period it relates to',
-      'A reduction in the carrying value of a non-current asset',
-    ],
-    ans: 0,
-    exp: 'An accrual is an expense incurred in the current period but not yet invoiced or paid. It is shown as a current liability on the statement of financial position.' },
 
-  { id: 'itbk-076', topic: 'itbk', difficulty: 'medium',
-    q: 'An accrual is omitted. What is the effect on profit?',
-    opts: ['Overstated', 'Understated', 'No effect', 'Neutralised'],
-    ans: 0,
-    exp: 'Omitting an accrual leaves an incurred expense unrecorded, so expenses are too low and profit is too high. Liabilities are understated by the same amount. Because both the debit and the credit are missing, the trial balance still agrees — which is why this error survives that check.' },
 
-  { id: 'itbk-077', topic: 'itbk', difficulty: 'medium',
-    q: 'Depreciation is charged on non-current assets to comply with which accounting concept?',
-    opts: [
-      'The matching (accruals) concept, spreading cost over the useful life',
-      'The prudence concept, writing the asset off in full when acquired',
-      'The requirements set by HMRC for calculating taxable profits',
-      'The going concern concept, assuming the business will continue trading',
-    ],
-    ans: 0,
-    exp: 'The matching (accruals) concept requires the cost of a non-current asset to be spread over the periods that benefit from its use — achieved through depreciation.' },
 
-  { id: 'itbk-078', topic: 'itbk', difficulty: 'medium',
-    q: 'Depreciation is recorded to:',
-    opts: [
-      'Match the cost of the asset against the periods that benefit',
-      'Increase the carrying value of the asset in the accounts',
-      'Increase the cash flowing into the business each period',
-      'Reduce the amount of VAT the business must pay to HMRC',
-    ],
-    ans: 0,
-    exp: 'Depreciation spreads the cost of a non-current asset over its useful life, matching the cost to the periods that benefit from its use.' },
 
   { id: 'itbk-079', topic: 'itbk', difficulty: 'medium',
     q: 'The imprest system of petty cash means:',
@@ -773,16 +703,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under the imprest system the float is restored to a fixed amount each period — reimbursed by the total of vouchers paid out since the last top-up.' },
 
-  { id: 'itbk-080', topic: 'itbk', difficulty: 'medium',
-    q: 'The prudence concept in accounting means:',
-    opts: [
-      'Revenue is recognised only when reasonably certain, but losses as soon as anticipated',
-      'All income is recognised immediately at the point at which it is earned or invoiced',
-      'Assets are always restated to their current market value at each year end',
-      'Financial statements are prepared on a cash rather than an accruals basis',
-    ],
-    ans: 0,
-    exp: 'Prudence (conservatism) means not overstating assets or income, and not understating liabilities or expenses. Anticipated losses are recognised immediately; gains only when realised.' },
 
   { id: 'itbk-081', topic: 'itbk', difficulty: 'medium',
     q: 'What is a contra entry in a cash book?',
@@ -795,27 +715,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A contra entry in the cash book transfers money between the bank and cash columns — for example withdrawing cash from the bank: Cr Bank, Dr Cash.' },
 
-  { id: 'itbk-082', topic: 'itbk', difficulty: 'medium',
-    q: 'What is an accrual?',
-    opts: [
-      'An expense that has been incurred but not yet paid',
-      'An expense that has been paid but not yet incurred',
-      'An asset representing amounts owed to the business',
-      'Revenue that has been earned during the period',
-    ],
-    ans: 0,
-    exp: 'An accrual is an expense that has been incurred during the period but not yet invoiced or paid. It is recognised by debiting the expense and crediting accruals (a liability).' },
 
-  { id: 'itbk-083', topic: 'itbk', difficulty: 'medium',
-    q: 'What is a prepayment?',
-    opts: [
-      'An expense paid in advance of the period to which it relates',
-      'An expense incurred in the period but not yet paid or invoiced',
-      'Revenue earned by the business during the current accounting period',
-      'Capital introduced into the business by its owner during the period',
-    ],
-    ans: 0,
-    exp: 'A prepayment is an expense paid in advance of the period to which it relates. It is recognised as a current asset until consumed.' },
 
   { id: 'itbk-084', topic: 'itbk', difficulty: 'medium',
     q: 'What is the effect of a contra entry between SLCA and PLCA?',
@@ -828,61 +728,11 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A contra between the SLCA and PLCA offsets mutual balances when the same business is both a customer and a supplier — reducing both receivables and payables by the same amount.' },
 
-  { id: 'itbk-085', topic: 'itbk', difficulty: 'medium',
-    q: 'Which accounting concept requires that the same accounting methods are used from one period to the next?',
-    opts: ['Going concern', 'Accruals', 'Consistency', 'Materiality'],
-    ans: 2,
-    exp: 'The consistency concept requires the same accounting policies and methods to be applied from period to period, enabling meaningful comparison over time.' },
 
-  { id: 'itbk-086', topic: 'itbk', difficulty: 'medium',
-    q: 'Which accounting principle requires expenses to be matched with the revenue they help generate?',
-    opts: [
-      'The matching (accruals) concept, aligning expense with revenue',
-      'The prudence concept, recognising losses as soon as anticipated',
-      'The consistency concept, applying the same policies year to year',
-      'The materiality concept, disregarding items too small to matter',
-    ],
-    ans: 0,
-    exp: 'The matching (accruals) concept puts an expense in the period whose revenue it helped to earn, not the period it was paid for. Accruals, prepayments and depreciation all exist to enforce it. Prudence is a different idea — recognising losses early but gains only when certain.' },
 
-  { id: 'itbk-087', topic: 'itbk', difficulty: 'medium',
-    q: 'Which adjustment ensures income is recorded in the correct accounting period?',
-    opts: [
-      'Accruals and prepayments, which move income into the right period',
-      'Depreciation, which spreads the cost of an asset over its life',
-      'Drawings, which record amounts withdrawn by the owner',
-      'Discounts, which adjust the amount received from a customer',
-    ],
-    ans: 0,
-    exp: 'Accruals and prepayments shift income and expenses into the period they belong to, regardless of when cash moved. Depreciation spreads an asset\'s cost but does not deal with timing of income, and the trial balance is a check rather than an adjustment.' },
 
-  { id: 'itbk-088', topic: 'itbk', difficulty: 'medium',
-    q: 'Which adjustment ensures matching of revenue and expenses?',
-    opts: [
-      'Accruals and prepayments applied at the end of the period',
-      'A reconciliation of the cash book against the bank statement',
-      'The depreciation charged on non-current assets each period',
-      'The trial balance extracted at the end of the period',
-    ],
-    ans: 0,
-    exp: 'Accruals and prepayments apply the matching (accruals) concept, ensuring revenue and expenses are recognised in the period to which they relate.' },
 
-  { id: 'itbk-089', topic: 'itbk', difficulty: 'medium',
-    q: 'Which adjustment ensures non-current assets are stated at carrying value?',
-    opts: ['Accruals', 'Depreciation', 'Revaluation of inventory', 'Bank reconciliation'],
-    ans: 1,
-    exp: 'Depreciation reduces an asset’s carrying amount over time to reflect its consumption or wear and tear.' },
 
-  { id: 'itbk-090', topic: 'itbk', difficulty: 'medium',
-    q: 'Which adjustment is required when insurance is paid in advance?',
-    opts: [
-      'A prepayment, carried forward as a current asset',
-      'An accrual, recognising an expense not yet invoiced',
-      'A depreciation charge spreading the cost over its useful life',
-      'A provision for a liability of uncertain timing or amount',
-    ],
-    ans: 0,
-    exp: 'Insurance paid before the period it covers is a prepayment: the expense is removed from this period and carried forward as a current asset. An accrual is the reverse — incurred but unpaid. Depreciation and provisions address different adjustments entirely.' },
 
   { id: 'itbk-091', topic: 'itbk', difficulty: 'medium',
     q: 'Which adjustment is required when rent is paid quarterly in arrears and the year end falls mid-quarter?',
@@ -890,27 +740,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Paying in arrears means the service has been received but not yet billed at the year end, so the cost has been incurred without payment. That is an accrual: debit the expense, credit a liability. Paying in advance would produce a prepayment instead.' },
 
-  { id: 'itbk-092', topic: 'itbk', difficulty: 'medium',
-    q: 'Which entry records depreciation?',
-    opts: [
-      'Dr Depreciation expense, Cr Accumulated depreciation',
-      'Dr Non-current asset, Cr Depreciation expense',
-      'Dr Bank, Cr Non-current asset at carrying value',
-      'Dr Accumulated depreciation, Cr Depreciation expense',
-    ],
-    ans: 0,
-    exp: 'Depreciation is an expense (debit) but does not reduce the asset account directly. The credit goes to accumulated depreciation, a contra-asset, so the original cost stays visible and the carrying value is cost less accumulated depreciation.' },
 
-  { id: 'itbk-093', topic: 'itbk', difficulty: 'medium',
-    q: 'Which of the following best describes the going concern concept?',
-    opts: [
-      'The business is assumed to continue trading for the foreseeable future',
-      'Assets are recorded at the amount they would realise if sold now',
-      'Expenses are recognised only at the point at which cash is paid',
-      'The same accounting policies are applied from one year to the next',
-    ],
-    ans: 0,
-    exp: 'The going concern concept assumes the business will continue to operate for the foreseeable future, justifying recording assets at cost rather than break-up value.' },
 
   { id: 'itbk-094', topic: 'itbk', difficulty: 'medium',
     q: 'Which of the following is an example of a contra entry within a three-column cash book?',
@@ -946,11 +776,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An accrual recognises a cost incurred but unpaid. The expense is debited so it lands in the correct period, and Accruals is credited as a current liability. The entry reverses at the start of the next period when the invoice is actually settled.' },
 
-  { id: 'itbk-098', topic: 'itbk', difficulty: 'hard',
-    q: 'A business fails to record an accrual of £500. What is the effect on profit?',
-    opts: ['Overstated profit', 'Understated profit', 'No effect', 'Overstated liabilities'],
-    ans: 0,
-    exp: 'The missing accrual leaves £500 of expense unrecorded, so profit is £500 too high and liabilities £500 too low. Both sides of the entry are absent, so the trial balance still balances — an error of omission that only a review of expected costs will catch.' },
 
   { id: 'itbk-099', topic: 'itbk', difficulty: 'hard',
     q: 'A business has opening inventory of £8,000, purchases of £42,000 and closing inventory of £6,000. Cost of goods sold is:',
@@ -1055,11 +880,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'VAT is charged on the net amount: £1,200 × 20% = £240, giving £1,440 gross. To work backwards from a gross figure, divide by 1.2 for the net, or by 6 for the VAT itself — a shortcut worth memorising.' },
 
-  { id: 'itbk-112', topic: 'itbk', difficulty: 'hard',
-    q: 'At the year end, electricity accrued is £300. Which journal entry is required?',
-    opts: ['Dr Electricity £300, Cr Prepayments £300', 'Dr Accruals £300, Cr Electricity £300', 'Dr Electricity £300, Cr Accruals £300', 'Dr Bank £300, Cr Electricity £300'],
-    ans: 2,
-    exp: 'An accrual increases the expense (Dr Electricity) and creates a current liability (Cr Accruals), matching the expense to the correct period.' },
 
   { id: 'itbk-113', topic: 'itbk', difficulty: 'hard',
     q: 'Net assets at year end are £45,000. The owner introduced additional capital of £10,000 during the year, opening capital was £30,000 and there were no drawings. What is the profit for the year?',
@@ -1067,17 +887,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Closing capital = opening capital + capital introduced + profit − drawings. £45,000 = £30,000 + £10,000 + profit − £0. Profit = £45,000 − £40,000 = £5,000.' },
 
-  { id: 'itbk-114', topic: 'itbk', difficulty: 'hard',
-    q: 'Rent of £1,200 is paid quarterly in advance on 1 January, 1 April, 1 July and 1 October. The financial year end is 31 January. What is the prepayment at the year end?',
-    opts: ['£0', '£400', '£800', '£1,200'],
-    ans: 2,
-    exp: 'The 1 January payment of £1,200 covers January, February and March. By 31 January only one month (January) has been used; February and March (2 months) relate to the next financial year. Prepayment = 2/3 × £1,200 = £800.' },
 
-  { id: 'itbk-115', topic: 'itbk', difficulty: 'hard',
-    q: 'Using the straight-line method, an asset costs £10,000, has a residual value of £1,000 and a useful life of 3 years. Annual depreciation is:',
-    opts: ['£3,333', '£3,000', '£1,000', '£10,000'],
-    ans: 1,
-    exp: 'Straight-line depreciation = (cost − residual value) ÷ useful life = (£10,000 − £1,000) ÷ 3 = £9,000 ÷ 3 = £3,000 per year.' },
 
   { id: 'itbk-116', topic: 'itbk', difficulty: 'hard',
     q: 'Which of the following is the correct double entry for a credit sale of £500?',
@@ -1984,10 +1794,10 @@ window.ALL_QUESTIONS = [
     exp: 'A debit balance on the suspense account means the original trial balance had credits exceeding debits — the suspense Dr is needed to make the two sides equal.' },
 
   { id: 'pobc-097', topic: 'pobc', difficulty: 'hard',
-    q: 'On a VAT return, the amount due to HMRC is:',
+    q: 'In the VAT control account, the amount due to HMRC is:',
     opts: ['Output tax minus input tax', 'Input tax minus output tax', 'Total sales divided by 6', 'Total purchases multiplied by 20%'],
     ans: 0,
-    exp: 'VAT due to HMRC = output tax (on sales) − input tax (on purchases). If input tax exceeds output tax, HMRC owes the business a refund.' },
+    exp: 'VAT due to HMRC = output tax (on sales) − input tax (on purchases), which is the balance on the VAT control account. If input tax exceeds output tax the balance is a debit, and HMRC owes the business a refund.' },
 
 
   /* -- PRINCIPLES OF COSTING (POC) -- */
@@ -2025,11 +1835,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'A step cost holds steady across a range of activity, then jumps when a capacity limit is crossed — a second supervisor, another delivery van, an extra shift. Within each range it behaves like a fixed cost; across ranges it plainly does not.' },
 
-  { id: 'poc-005', topic: 'poc', difficulty: 'easy',
-    q: 'A cost that cannot be recovered once incurred is:',
-    opts: ['Fixed cost', 'Sunk cost', 'Variable cost', 'Marginal cost'],
-    ans: 1,
-    exp: 'A sunk cost has already been incurred and no decision can now recover it, so it must be ignored when choosing between options. Only future cash flows that differ between the alternatives are relevant. Including sunk costs is the classic decision-making error.' },
 
   { id: 'poc-006', topic: 'poc', difficulty: 'easy',
     q: 'A cost unit is:',
@@ -2042,27 +1847,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost unit is a quantitative measure of product or service for which costs are ascertained — for example one tonne of steel or one hotel night.' },
 
-  { id: 'poc-007', topic: 'poc', difficulty: 'easy',
-    q: 'A limiting factor in production is:',
-    opts: [
-      'A resource whose scarcity restricts the output achievable',
-      'Demand for the product that is effectively unlimited',
-      'A reduction in the fixed costs the business incurs',
-      'An increase in the profit the business is able to earn',
-    ],
-    ans: 0,
-    exp: 'A limiting (or "key") factor is a resource that constrains the maximum output a business can achieve — for example skilled labour or machine capacity.' },
 
-  { id: 'poc-008', topic: 'poc', difficulty: 'easy',
-    q: 'A limiting factor is:',
-    opts: [
-      'A scarce resource that restricts the level of output achievable',
-      'A resource available in unlimited quantity to the business',
-      'A cost that remains fixed regardless of the level of activity',
-      'A restriction placed on the revenue the business may earn',
-    ],
-    ans: 0,
-    exp: 'A limiting factor is a scarce resource that restricts output and therefore restricts profit. Decisions usually aim to maximise contribution per unit of the limiting factor.' },
 
   { id: 'poc-009', topic: 'poc', difficulty: 'easy',
     q: 'A profit centre is:',
@@ -2141,27 +1926,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Fixed cost is fixed in total, not per unit. Producing 2,000 units instead of 1,000 halves the fixed cost carried by each. This is why cost per unit falls as output rises, and why volume matters so much to unit costing.' },
 
-  { id: 'poc-016', topic: 'poc', difficulty: 'easy',
-    q: 'If selling price is reduced but variable cost remains constant, contribution will:',
-    opts: [
-      'Decrease, because contribution is selling price less variable cost',
-      'Increase, because the lower price will attract additional sales volume',
-      'Remain unchanged, because variable cost has not moved',
-      'Fall to zero as soon as the selling price is reduced',
-    ],
-    ans: 0,
-    exp: 'Contribution per unit = selling price − variable cost per unit. Reducing the selling price with variable cost unchanged reduces contribution pound for pound. Extra volume may follow, but that affects total contribution, not contribution per unit.' },
 
-  { id: 'poc-017', topic: 'poc', difficulty: 'easy',
-    q: 'If variable costs rise but selling price remains constant, contribution will:',
-    opts: [
-      'Decrease, because contribution is selling price less variable cost',
-      'Increase, because total cost has risen with activity',
-      'Remain unchanged, because the selling price itself has not moved at all',
-      'Become a fixed cost rather than a variable one',
-    ],
-    ans: 0,
-    exp: 'Contribution per unit = selling price − variable cost per unit. Raising variable cost with the price unchanged reduces contribution directly, which in turn raises the break-even point.' },
 
   { id: 'poc-018', topic: 'poc', difficulty: 'easy',
     q: 'Labour costs that can be directly traced to a specific product are:',
@@ -2185,16 +1950,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Labour turnover measures how frequently employees leave and need replacing. High turnover increases recruitment and training costs.' },
 
-  { id: 'poc-020', topic: 'poc', difficulty: 'easy',
-    q: 'Marginal costing means:',
-    opts: [
-      'Only variable costs are charged to products; fixed costs are period costs',
-      'Both fixed and variable production costs are absorbed into product cost',
-      'The total cost incurred is averaged evenly across all products made',
-      'Production overheads are allocated to products using machine hours',
-    ],
-    ans: 0,
-    exp: 'Marginal costing values inventory at variable production cost only. Fixed costs are treated as period costs and written off in full when incurred.' },
 
   { id: 'poc-021', topic: 'poc', difficulty: 'easy',
     q: 'Overheads are:',
@@ -2273,16 +2028,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A profit centre is responsible for both revenue and costs, so its profitability can be measured directly.' },
 
-  { id: 'poc-028', topic: 'poc', difficulty: 'easy',
-    q: 'What is a sunk cost?',
-    opts: [
-      'A cost already incurred that cannot now be recovered by any decision',
-      'A cost that will be incurred in the future as a result of a decision',
-      'A cost that varies in direct proportion to the level of activity',
-      'A cost incurred in running the business that is not traceable to units',
-    ],
-    ans: 0,
-    exp: 'A sunk cost is a cost already incurred that cannot be recovered. It is irrelevant to future decisions.' },
 
   { id: 'poc-029', topic: 'poc', difficulty: 'easy',
     q: 'On what basis can overheads be absorbed?',
@@ -2368,16 +2113,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Labour cost is direct when traceable to a specific cost unit (e.g. assembly workers) and indirect when it cannot be (e.g. supervisors, cleaners).' },
 
-  { id: 'poc-038', topic: 'poc', difficulty: 'easy',
-    q: 'What is marginal cost?',
-    opts: [
-      'The cost of producing one additional unit of output',
-      'The total cost of producing all units in the period',
-      'The fixed cost the business incurs over a full year',
-      'The cost of selling and distributing the finished product',
-    ],
-    ans: 0,
-    exp: 'Marginal cost is the additional cost of producing one extra unit — essentially the variable cost per unit at normal activity levels.' },
 
   { id: 'poc-039', topic: 'poc', difficulty: 'easy',
     q: 'What is overhead absorption?',
@@ -2425,16 +2160,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'A variable cost rises in total in direct proportion to output — for example raw materials, where double the output uses double the materials.' },
 
-  { id: 'poc-045', topic: 'poc', difficulty: 'easy',
-    q: 'Which cost is included in marginal costing inventory valuation?',
-    opts: [
-      'Variable production costs only',
-      'Variable production costs plus fixed production overhead',
-      'All production costs plus selling and distribution costs',
-      'Administrative overheads incurred during the period',
-    ],
-    ans: 0,
-    exp: 'Marginal costing values inventory at variable production cost and treats fixed production overhead as a period cost written off in full. Absorption costing includes a share of fixed production overhead. Selling and administrative costs are excluded under both.' },
 
   { id: 'poc-046', topic: 'poc', difficulty: 'easy',
     q: 'Which cost is indirect?',
@@ -2545,27 +2270,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Variable cost is constant per unit but varies in total as output changes — for example £5 of materials in every unit produced.' },
 
-  { id: 'poc-060', topic: 'poc', difficulty: 'medium',
-    q: 'A break-even chart shows:',
-    opts: [
-      'The relationship between costs, revenue and profit at each output level',
-      'The movement in the bank balance over the course of the whole trading year',
-      'The VAT liability owed to HMRC at each point during the quarter',
-      'The cash flowing into and out of the business in each month',
-    ],
-    ans: 0,
-    exp: 'A break-even chart plots total costs and total revenues against output, with the break-even point at their intersection.' },
 
-  { id: 'poc-061', topic: 'poc', difficulty: 'medium',
-    q: 'A higher contribution margin ratio indicates:',
-    opts: [
-      'More of each pound of revenue is available to cover fixed costs',
-      'Less profit is generated from each pound of revenue earned',
-      'A greater proportion of the cost base is fixed rather than variable',
-      'Production overheads have increased relative to direct costs',
-    ],
-    ans: 0,
-    exp: 'A higher contribution margin ratio means a greater proportion of every sales £ remains after variable costs to cover fixed costs and contribute to profit.' },
 
   { id: 'poc-062', topic: 'poc', difficulty: 'medium',
     q: 'Absorbed overhead is compared to actual overhead to determine:',
@@ -2589,38 +2294,8 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'AVCO recalculates a weighted average cost after each purchase. Inventory issues are valued at this running average.' },
 
-  { id: 'poc-064', topic: 'poc', difficulty: 'medium',
-    q: 'Break-even point occurs when:',
-    opts: [
-      'Total revenue is exactly equal to total costs incurred',
-      'Profit is at the maximum level the business can achieve',
-      'Variable costs are greater than the sales revenue earned',
-      'The business incurs no fixed costs in the period at all',
-    ],
-    ans: 0,
-    exp: 'At break-even, contribution exactly covers fixed costs, so there is neither profit nor loss. Fixed costs have not disappeared — they have simply been covered. Selling one unit beyond break-even adds its full contribution to profit.' },
 
-  { id: 'poc-065', topic: 'poc', difficulty: 'medium',
-    q: 'Break-even point occurs where:',
-    opts: [
-      'Total revenue is exactly equal to total costs',
-      'Fixed costs have been reduced to zero',
-      'Variable costs have risen above sales revenue',
-      'Profit reaches the highest level achievable',
-    ],
-    ans: 0,
-    exp: 'At break-even, contribution exactly covers fixed costs and the business makes neither profit nor loss. Fixed costs still exist — they have simply been covered. Break-even says nothing about the point of maximum profit.' },
 
-  { id: 'poc-066', topic: 'poc', difficulty: 'medium',
-    q: 'Contribution margin ratio is used to:',
-    opts: [
-      'Measure how much of each pound of revenue covers fixed costs',
-      'Calculate the VAT payable to HMRC on the period\'s sales',
-      'Determine the balance held in the business bank account',
-      'Set the annual depreciation charge on non-current assets',
-    ],
-    ans: 0,
-    exp: 'The contribution margin ratio (contribution ÷ sales) shows the proportion of each £ of sales available to cover fixed costs and provide profit.' },
 
   { id: 'poc-067', topic: 'poc', difficulty: 'medium',
     q: 'FIFO compared to AVCO typically results in:',
@@ -2650,33 +2325,8 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Fixed costs (such as rent and insurance) remain constant in total regardless of output. Fixed cost per unit falls as output increases.' },
 
-  { id: 'poc-070', topic: 'poc', difficulty: 'medium',
-    q: 'If break-even point increases, it indicates:',
-    opts: [
-      'Fixed costs have risen, or the contribution per unit has fallen',
-      'Fixed costs have fallen while contribution per unit is unchanged',
-      'Revenue has increased with no change in the cost structure',
-      'Variable costs per unit have fallen with fixed costs unchanged',
-    ],
-    ans: 0,
-    exp: 'Break-even rises if fixed costs increase (more contribution needed to cover them) or if contribution per unit falls (each unit covers less of the fixed cost).' },
 
-  { id: 'poc-071', topic: 'poc', difficulty: 'medium',
-    q: 'If contribution per unit increases, break-even point will:',
-    opts: ['Increase', 'Decrease', 'Stay the same', 'Become infinite'],
-    ans: 1,
-    exp: 'Break-even = fixed costs ÷ contribution per unit. A higher contribution per unit means fewer units are needed to cover the fixed costs.' },
 
-  { id: 'poc-072', topic: 'poc', difficulty: 'medium',
-    q: 'If fixed costs increase, break-even point will:',
-    opts: [
-      'Increase, as more contribution is needed to cover them',
-      'Decrease, as the business must sell fewer units',
-      'Stay the same, as break-even depends only on price',
-      'Fall to zero once fixed costs exceed contribution',
-    ],
-    ans: 0,
-    exp: 'Break-even units = fixed costs ÷ contribution per unit. Raising the numerator raises the result. Break-even depends on both fixed costs and contribution, not on selling price alone.' },
 
   { id: 'poc-073', topic: 'poc', difficulty: 'medium',
     q: 'Over-absorption of overheads occurs when:',
@@ -2718,16 +2368,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'AVCO recalculates a weighted average cost after each new purchase. Subsequent issues are valued at this updated average.' },
 
-  { id: 'poc-078', topic: 'poc', difficulty: 'medium',
-    q: 'What is contribution per unit used for?',
-    opts: [
-      'Calculating profit under marginal costing and break-even analysis',
-      'Setting the selling price at which the products will be offered to customers',
-      'Reporting the taxable profits of the business to HMRC',
-      'Reconciling the cash book against the bank statement',
-    ],
-    ans: 0,
-    exp: 'Contribution per unit (selling price − variable cost) is used to calculate break-even, target-profit volumes and profit under marginal costing.' },
 
   { id: 'poc-079', topic: 'poc', difficulty: 'medium',
     q: 'What is the FIFO inventory assumption?',
@@ -2735,11 +2375,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'FIFO assumes the earliest purchases are issued first, so closing inventory consists of the most recent buys. It is a costing assumption, not an instruction to the warehouse: the physical goods may move in any order.' },
 
-  { id: 'poc-080', topic: 'poc', difficulty: 'medium',
-    q: 'Which cost is most relevant for special order decisions?',
-    opts: ['Sunk cost', 'Opportunity cost', 'Depreciation', 'Historical cost'],
-    ans: 1,
-    exp: 'Opportunity cost — the value of the next best alternative foregone — is a relevant cost in special-order and accept/reject decisions.' },
 
   { id: 'poc-081', topic: 'poc', difficulty: 'medium',
     q: 'Which cost is most relevant in decision making?',
@@ -2832,17 +2467,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Both fixed and variable elements are present: a £2,000 increase for a 1,000-unit increase implies £2/unit variable cost, with the remainder fixed — a semi-variable cost.' },
 
-  { id: 'poc-092', topic: 'poc', difficulty: 'hard',
-    q: 'Contribution per unit is calculated as:',
-    opts: ['Selling price − fixed cost', 'Selling price − variable cost', 'Variable cost − selling price', 'Fixed cost ÷ units'],
-    ans: 1,
-    exp: 'Contribution per unit = selling price − variable cost per unit. It measures what each unit contributes towards covering fixed costs, and once those are covered, towards profit. It is the engine of break-even and marginal costing alike.' },
 
-  { id: 'poc-093', topic: 'poc', difficulty: 'hard',
-    q: 'Contribution per unit is:',
-    opts: ['Selling price − fixed cost', 'Selling price − variable cost', 'Fixed cost − variable cost', 'Total cost ÷ units'],
-    ans: 1,
-    exp: 'Contribution is revenue less variable costs — deliberately not less all costs. Deducting fixed costs as well would give profit, and it is precisely by leaving fixed costs out that contribution can be used to work out break-even.' },
 
   { id: 'poc-094', topic: 'poc', difficulty: 'hard',
     q: 'Fixed costs are £10,000; variable cost is £5 per unit; 2,000 units are produced. Total cost is:',
@@ -2856,23 +2481,8 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Absorbed £12,000 > actual £11,200, so overheads are over-absorbed by £800. The over-absorption is credited to the income statement.' },
 
-  { id: 'poc-096', topic: 'poc', difficulty: 'hard',
-    q: 'If fixed costs are £12,000 and contribution per unit is £4, break-even units are:',
-    opts: ['2,000', '3,000', '4,000', '6,000'],
-    ans: 1,
-    exp: 'Break-even units = fixed costs ÷ contribution per unit = £12,000 ÷ £4 = 3,000 units. At that volume contribution of £12,000 exactly covers fixed costs. Raising fixed costs or cutting contribution both push break-even higher.' },
 
-  { id: 'poc-097', topic: 'poc', difficulty: 'hard',
-    q: 'If selling price is £20 and variable cost is £12, contribution is:',
-    opts: ['£8', '£32', '£12', '£20'],
-    ans: 0,
-    exp: 'Contribution = selling price − variable cost = £20 − £12 = £8 per unit. Every unit sold puts £8 towards fixed costs, and once those are covered, £8 straight onto profit.' },
 
-  { id: 'poc-098', topic: 'poc', difficulty: 'hard',
-    q: 'Margin of safety is calculated as:',
-    opts: ['Budgeted or actual sales less break-even sales', 'Fixed costs divided by contribution per unit', 'Total sales revenue divided by profit for the period', 'Total contribution less the fixed costs for the period'],
-    ans: 0,
-    exp: 'Margin of safety = budgeted sales − break-even sales. It measures how far sales can fall before the business makes a loss.' },
 
   { id: 'poc-099', topic: 'poc', difficulty: 'hard',
     q: 'The overhead absorption rate (OAR) is calculated as:',
@@ -3348,27 +2958,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Modern finance functions measure and report sustainability and environmental costs, helping organisations manage and reduce their environmental impact.' },
 
-  { id: 'besy-044', topic: 'besy', difficulty: 'easy',
-    q: 'The Consumer Rights Act 2015 requires goods to be:',
-    opts: [
-      'Of satisfactory quality, fit for purpose and as described to the buyer',
-      'The cheapest equivalent goods available anywhere in the market',
-      'Sold only through retailers who are formally registered with a trade body',
-      'Guaranteed by the seller for a minimum period of five years',
-    ],
-    ans: 0,
-    exp: 'Goods must be of satisfactory quality, fit for purpose and match any description given. Consumers can seek repair, replacement or refund where these standards are not met.' },
 
-  { id: 'besy-045', topic: 'besy', difficulty: 'easy',
-    q: 'The Equality Act 2010 protects workers from discrimination based on:',
-    opts: [
-      'Protected characteristics such as age, sex, race and disability',
-      'The performance ratings that are given to employees in appraisals',
-      'The level of formal qualifications an employee holds',
-      'The number of people the employer has on its payroll',
-    ],
-    ans: 0,
-    exp: 'The Equality Act protects nine characteristics: age, disability, gender reassignment, marriage and civil partnership, pregnancy and maternity, race, religion or belief, sex, and sexual orientation.' },
 
   { id: 'besy-046', topic: 'besy', difficulty: 'easy',
     q: 'The essential elements of a legally binding contract include:',
@@ -4771,27 +4361,6 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Net pay = 2,500 − 400 − 180 = 1,920. Total employment cost = gross + employer NIC = 2,500 + 230 = 2,730.' },
 
-  { id: 'tf-006', topic: 'poc', difficulty: 'hard', type: 'tablefill',
-    q: 'Complete the break-even and contribution analysis.',
-    table: {
-      title: 'Break-even analysis',
-      columns: ['Item', '£ or units'],
-      rows: [
-        ['Selling price per unit', '20'],
-        ['Variable cost per unit', '12'],
-        ['Contribution per unit', '?'],
-        ['Fixed costs', '24,000'],
-        ['Break-even (units)', '?'],
-        ['Budgeted sales (units)', '5,000'],
-        ['Margin of safety (units)', '?'],
-      ],
-      blanks: [
-        { row: 2, col: 1, answer: 8 },
-        { row: 4, col: 1, answer: 3000 },
-        { row: 6, col: 1, answer: 2000 },
-      ]
-    },
-    exp: 'Contribution = 20 − 12 = 8. BE = 24,000 ÷ 8 = 3,000 units. Margin of safety = 5,000 − 3,000 = 2,000 units.' },
 
   /* === SCENARIO-BASED MULTI-PART QUESTIONS === */
   { id: 'sc-001', topic: 'itbk', difficulty: 'medium', type: 'scenario',
@@ -4810,17 +4379,6 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A full sales/receipt/payment cycle with VAT — covers credit sales, output tax, receipt and supplier payment.' },
 
-  { id: 'sc-002', topic: 'poc', difficulty: 'hard', type: 'scenario',
-    setup: 'Northern Knits manufactures one product. Fixed costs for the year are £36,000. The product sells for £25 each and has a variable cost of £15. The company budgets to sell 5,000 units.',
-    parts: [
-      { type: 'numeric', q: 'What is the contribution per unit (in £)?', answer: 10, unit: '£', exp: 'Contribution is selling price less variable cost per unit: 25 − 15 = £10. It is what each extra unit adds towards covering fixed costs, which is why fixed costs are excluded from it.' },
-      { type: 'numeric', q: 'How many units must be sold to break even?', answer: 3600, exp: 'Break-even is the point where total contribution exactly covers fixed costs: 36,000 ÷ 10 = 3,600 units. Every unit beyond that adds £10 straight to profit.' },
-      { type: 'numeric', q: 'What is the margin of safety in units?', answer: 1400, exp: 'Margin of safety is how far budgeted sales exceed break-even: 5,000 − 3,600 = 1,400 units. It measures how much demand could fall before the business starts making a loss.' },
-      { type: 'mcq', q: 'If fixed costs increased by £4,000 and contribution per unit was unchanged, the break-even point would:',
-        opts: ['Decrease', 'Stay the same', 'Increase by 400 units', 'Increase by 4,000 units'],
-        ans: 2, exp: 'Break-even rises because more contribution is needed to cover the higher fixed costs: £4,000 ÷ £10 = 400 extra units. Contribution per unit is unchanged, so only the fixed-cost side of the calculation moves.' },
-    ],
-    exp: 'A standard break-even sensitivity scenario — contribution, break-even, margin of safety, and a what-if change.' },
 
   { id: 'sc-003', topic: 'pobc', difficulty: 'medium', type: 'scenario',
     setup: 'Pinewood Ltd prepares its bank reconciliation at 31 March. The cash book shows a debit balance of £4,200. The bank statement at the same date shows £3,500. On investigation: unpresented cheques total £900; outstanding lodgements total £1,200; bank charges of £40 appear on the statement but are not in the cash book; a direct debit of £160 also appears on the statement but is missing from the cash book.',
@@ -4990,15 +4548,6 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Books of prime entry are where transactions are first recorded before posting to the ledger.' },
 
-  { id: 'dd-011', topic: 'itbk', difficulty: 'medium', type: 'dragdrop',
-    q: 'Match each accounting concept to its meaning.',
-    pairs: [
-      { left: 'Going concern', right: 'The business will continue for the foreseeable future' },
-      { left: 'Accruals (matching)', right: 'Income and expenses recognised in the period they relate to' },
-      { left: 'Prudence', right: 'Do not overstate assets or income; recognise losses early' },
-      { left: 'Consistency', right: 'Use the same accounting methods from period to period' },
-    ],
-    exp: 'Accruals matches income and expense to the period they belong to rather than when cash moved; going concern assumes the business will continue trading; consistency keeps treatment the same year to year; and materiality allows small items to be treated simply.' },
 
   { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
     q: 'Match each item to its classification in the financial statements.',
@@ -5199,24 +4748,6 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The absorption rate is set from the budget: 90,000 ÷ 18,000 = £5 per hour. Overhead absorbed then uses the ACTUAL hours worked: £5 × 17,000 = £85,000. Mixing budgeted rate with budgeted hours is the usual error.' },
 
-  { id: 'tf-013', topic: 'poc', difficulty: 'hard', type: 'tablefill',
-    q: 'Complete the marginal costing profit statement.',
-    table: {
-      title: 'Marginal costing statement',
-      columns: ['Item', '£'],
-      rows: [
-        ['Sales (4,000 units)', '80,000'],
-        ['Less: variable costs', '48,000'],
-        ['Contribution', '?'],
-        ['Less: fixed costs', '20,000'],
-        ['Profit', '?'],
-      ],
-      blanks: [
-        { row: 2, col: 1, answer: 32000 },
-        { row: 4, col: 1, answer: 12000 },
-      ]
-    },
-    exp: 'Under marginal costing, contribution is sales less variable costs: 80,000 − 48,000 = 32,000. Fixed costs are then deducted in total rather than being absorbed into units: 32,000 − 20,000 = 12,000 profit.' },
 
   { id: 'tf-014', topic: 'poc', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the FIFO stores record. 100 units are held at £4, then 200 are bought at £5, then 250 units are issued.',
@@ -5274,19 +4805,6 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A credit purchase with VAT, followed by a returns adjustment — covering day books and VAT-inclusive amounts.' },
 
-  { id: 'sc-006', topic: 'itbk', difficulty: 'hard', type: 'scenario',
-    setup: 'Riverside Cafe prepares accounts to 31 December. On 1 October it paid £1,800 for a 12-month insurance policy. At 31 December the electricity bill of £240 for October–December has been received but not yet paid.',
-    parts: [
-      { type: 'numeric', q: 'How many months of the insurance policy are prepaid at 31 December?', answer: 9, exp: 'The policy runs Oct–Sep. By 31 December 3 months are used; 9 months (Jan–Sep) are prepaid.' },
-      { type: 'numeric', q: 'What is the insurance prepayment at 31 December?', answer: 1350, unit: '£', exp: 'Nine of the twelve months paid for fall after the year end, so 9/12 × £1,800 = £1,350 is a prepayment. It is removed from this year’s expense and carried forward as a current asset.' },
-      { type: 'mcq', q: 'How is the unpaid electricity of £240 treated at the year end?',
-        opts: ['As a prepayment (current asset)', 'As an accrual (current liability)', 'As capital expenditure', 'Ignored until paid'],
-        ans: 1, exp: 'The electricity has been consumed, so the cost belongs to this year whether or not the bill has been paid. It is accrued: added to the expense and shown as a current liability until settled.' },
-      { type: 'mcq', q: 'What is the journal entry for the electricity accrual?',
-        opts: ['Dr Accruals, Cr Electricity', 'Dr Electricity, Cr Accruals', 'Dr Electricity, Cr Bank', 'Dr Bank, Cr Electricity'],
-        ans: 1, exp: 'Dr Electricity and Cr Accruals. The debit puts the cost into the period that consumed it; the credit records the obligation to pay. Both sides are needed — recording only the expense would leave the accounts out of balance.' },
-    ],
-    exp: 'Year-end adjustments: a prepayment and an accrual applied through the matching concept.' },
 
   { id: 'sc-007', topic: 'itbk', difficulty: 'medium', type: 'scenario',
     setup: 'Crafty Pots started trading on 1 January when the owner paid £20,000 into the business bank account. During the year the business made a profit of £14,000 and the owner took drawings of £9,000.',
@@ -5342,17 +4860,6 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional scenario questions (POC / BESY) ── */
 window.ALL_QUESTIONS.push(
-  { id: 'sc-011', topic: 'poc', difficulty: 'medium', type: 'scenario',
-    setup: 'Summit Sportswear makes one product. The selling price is £40 per unit and the variable cost is £24 per unit. Fixed costs for the year are £96,000. The company budgets to sell 8,000 units.',
-    parts: [
-      { type: 'numeric', q: 'What is the contribution per unit?', answer: 16, unit: '£', exp: 'Contribution per unit is selling price less variable cost: £40 − £24 = £16. Fixed costs are deliberately excluded, because they do not change with the number of units made.' },
-      { type: 'numeric', q: 'How many units must be sold for the business to break even?', answer: 6000, exp: 'Break-even is where total contribution just covers fixed costs: £96,000 ÷ £16 = 6,000 units. Selling one more unit than that adds £16 to profit; one fewer leaves £16 of fixed cost uncovered.' },
-      { type: 'numeric', q: 'What is the budgeted profit at 8,000 units?', answer: 32000, unit: '£', exp: 'Total contribution less fixed costs: 8,000 × £16 = £128,000, less £96,000 = £32,000. Because break-even is 6,000 units, the 2,000 units above it each contribute £16 — which gives the same £32,000.' },
-      { type: 'mcq', q: 'The margin of safety of 2,000 units tells the business:',
-        opts: ['How far sales can fall from budget before the business makes a loss', 'How much profit the business will make at the budgeted level of sales', 'The total fixed costs the business has to cover during the year', 'The proportion of every pound of sales that is contribution'],
-        ans: 0, exp: 'Margin of safety (budgeted 8,000 − break-even 6,000 = 2,000 units) shows how far sales can fall before a loss.' },
-    ],
-    exp: 'A complete marginal-costing scenario: contribution, break-even, profit and margin of safety.' },
 
   { id: 'sc-012', topic: 'poc', difficulty: 'hard', type: 'scenario',
     setup: 'Delta Manufacturing absorbs production overheads on a labour-hour basis. Budgeted overheads were £150,000 and budgeted labour hours were 30,000. In the period, actual overheads were £148,000 and 29,000 labour hours were actually worked.',
@@ -5412,9 +4919,6 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-016', topic: 'besy', difficulty: 'hard', type: 'scenario',
     setup: 'Anya works as an accounting technician at a manufacturing company. Her manager asks her to delay recording several supplier invoices until after the year end so that this year\'s profit looks higher. The company also wants to start reporting on its environmental impact.',
     parts: [
-      { type: 'mcq', q: 'Recording the invoices in the wrong period would mainly breach which accounting concept?',
-        opts: ['The accruals (matching) concept, which allocates items to the period they relate to', 'The going concern concept, which assumes the business will continue trading', 'The consistency concept, which requires the same treatment to be used period after period', 'The materiality concept, which allows small items to be treated simply'],
-        ans: 0, exp: 'The accruals concept requires expenses to be recorded in the period they relate to, regardless of when paid.' },
       { type: 'mcq', q: 'Under the AAT Code of Professional Ethics, what should Anya do?',
         opts: ['Refuse to manipulate the records and raise her concerns through the proper channels', 'Follow the instruction given, on the basis that a senior manager has already authorised it', 'Record half of the invoices as a compromise between the two positions', 'Resign from the role immediately without giving any reason for leaving'],
         ans: 0, exp: 'Integrity and objectivity require Anya to refuse to falsify records and to raise the matter through proper channels.' },
@@ -5502,22 +5006,16 @@ window.ALL_QUESTIONS.push(
     exp: 'Payroll: overtime calculation, gross pay, net pay and employer NIC cost.' },
 
   { id: 'sc-021', topic: 'poc', difficulty: 'hard', type: 'scenario',
-    setup: 'A factory produces one product. Fixed costs: £84,000 per month. Variable cost per unit: £18. Selling price: £30 per unit. Budgeted production: 8,000 units. Actual production: 7,500 units. The overhead absorption rate is based on units produced.',
+    setup: 'A factory produces one product. Budgeted fixed production overhead is £84,000 for the month and budgeted production is 8,000 units. Actual production was 7,500 units. The overhead absorption rate is based on units produced.',
     parts: [
-      { type: 'mcq', q: 'The contribution per unit is:',
-        opts: ['£12', '£18', '£30', '£48'],
-        ans: 0, exp: 'Contribution per unit is selling price less variable cost: £30 − £18 = £12. That £12 is what each unit adds towards fixed costs, and towards profit once those are covered.' },
-      { type: 'mcq', q: 'The break-even point (units) is:',
-        opts: ['7,000', '4,667', '2,800', '5,600'],
-        ans: 0, exp: 'Break-even is fixed costs divided by contribution per unit: £84,000 ÷ £12 = 7,000 units. At that volume total contribution exactly equals fixed costs and the business makes neither profit nor loss.' },
       { type: 'mcq', q: 'Based on budgeted production, the overhead absorption rate per unit is:',
         opts: ['£10.50', '£11.20', '£10.00', '£12.00'],
-        ans: 0, exp: 'Absorbing on a per-unit basis divides budgeted overhead by budgeted units: £84,000 ÷ 8,000 = £10.50. Note this is the same £84,000 treated as a fixed cost in the break-even calculation — absorption spreads it, marginal costing does not.' },
+        ans: 0, exp: 'Absorbing on a per-unit basis divides budgeted overhead by budgeted units: £84,000 ÷ 8,000 = £10.50. Both figures are budgeted, which is what lets a unit cost be quoted before the period is over.' },
       { type: 'mcq', q: 'Given actual production of 7,500 units, the overhead position is:',
         opts: ['Over-absorbed by £5,250', 'Under-absorbed by £5,250', 'Over-absorbed by £4,500', 'Under-absorbed by £4,500'],
         ans: 1, exp: 'Absorbed = 7,500 × £10.50 = £78,750. Actual fixed costs = £84,000. Under-absorption = £84,000 − £78,750 = £5,250.' },
     ],
-    exp: 'CVP analysis: contribution, break-even, OAR and overhead absorption with actual vs budgeted production.' },
+    exp: 'Overhead absorption: setting the rate from budgeted figures, then finding the under- or over-absorption once actual output is known.' },
 
   { id: 'sc-022', topic: 'poc', difficulty: 'medium', type: 'scenario',
     setup: 'Meridian Co uses AVCO to value inventory. At 1 May: 200 units @ £5.00 each. Purchased 6 May: 300 units @ £6.50 each. Sold 10 May: 350 units. Purchased 15 May: 150 units @ £7.00 each. Sold 20 May: 200 units.',
@@ -5583,50 +5081,13 @@ window.ALL_QUESTIONS.push(
     { type: 'mcq', q: 'After recording the credit sales (gross), the SLCA balance is:',
       opts: ['£5,000 debit', '£6,000 debit', '£3,000 credit', '£3,600 credit'],
       ans: 1, exp: 'SLCA is debited with the gross invoice amount = £5,000 + £1,000 VAT = £6,000. This represents total trade receivables.' },
-    { type: 'mcq', q: 'Contribution for March (net sales minus variable cost of purchases):',
-      opts: ['£1,200', '£2,000', '£800', '£1,400'],
-      ans: 1, exp: 'Contribution = Net sales £5,000 − Variable cost of purchases £3,000 = £2,000. Fixed costs (£800) are excluded from contribution.' },
     { type: 'mcq', q: 'Hartley faces a large claim from a customer. As a sole trader:',
       opts: ['Liability is limited to the capital invested in the business', 'Personal assets can be seized to pay business debts', 'Liability is capped at the annual turnover figure', 'A sole trader cannot be sued — only the business entity is liable'],
       ans: 1, exp: 'Sole traders have unlimited liability. There is no legal separation between owner and business — creditors can pursue the owner\'s personal assets.' },
   ],
   exp: 'Cross-unit scenario covering VAT calculation (itbk), SLCA entries (pobc), contribution analysis (poc), and sole trader liability (besy).' },
 
-{ id: 'sc-026', topic: 'synoptic', difficulty: 'hard', type: 'scenario',
-  setup: 'Petrov Plumbing reaches its year end on 31 December. Events to account for: (1) A van purchased 1 July for £12,000 — depreciation policy: 20% reducing balance, pro-rated. (2) Insurance £1,200 paid 1 October, covering 12 months from that date. (3) An electricity bill of £300 for December not yet received. (4) Bank interest of £45 on the bank statement not entered in the cashbook.',
-  parts: [
-    { type: 'mcq', q: 'Van depreciation charge for the year (6 months):',
-      opts: ['£2,400', '£1,200', '£600', '£1,800'],
-      ans: 1, exp: 'Reducing balance applies the rate to carrying amount, which in year one is still cost: £12,000 × 20% = £2,400. The van was owned for only six months, so the charge is pro-rated: £2,400 × 6/12 = £1,200.' },
-    { type: 'mcq', q: 'Insurance prepayment at 31 December:',
-      opts: ['£1,200', '£300', '£900', '£600'],
-      ans: 2, exp: 'Insurance covers 12 months from 1 Oct. By 31 Dec, 3 months used. Prepayment = £1,200 × 9/12 = £900 (9 months remaining).' },
-    { type: 'mcq', q: 'Journal for the December electricity bill:',
-      opts: ['Dr Bank £300 / Cr Electricity £300', 'Dr Electricity £300 / Cr Accruals payable £300', 'Dr Prepayments (asset) £300 / Cr Electricity £300', 'Dr Accruals £300 / Cr Electricity £300'],
-      ans: 1, exp: 'Unpaid expense = accrual. Dr Electricity expense (increases expense on IS) / Cr Accruals payable (creates current liability on SFP).' },
-    { type: 'mcq', q: 'To update the cashbook for the £45 bank interest:',
-      opts: ['Credit cashbook £45 (reduce balance)', 'Debit cashbook £45 (increase balance)', 'Record only in reconciliation statement, not cashbook', 'Debit bank statement £45'],
-      ans: 1, exp: 'Bank interest is a receipt — increases the bank balance. Dr Cashbook £45 / Cr Interest received £45. Update cashbook first, then reconcile.' },
-  ],
-  exp: 'Cross-unit scenario covering depreciation, prepayments, accruals (itbk), and bank reconciliation updates (pobc).' },
 
-{ id: 'sc-027', topic: 'poc', difficulty: 'hard', type: 'scenario',
-  setup: 'Crafter Ltd considers launching BrightPen. Selling price £8.00/unit. Variable cost £3.20/unit. Fixed costs £19,200/year. Budgeted sales 6,000 units/year.',
-  parts: [
-    { type: 'mcq', q: 'Contribution per unit and CMR:',
-      opts: ['£4.80 and 60%', '£3.20 and 40%', '£4.80 and 40%', '£5.00 and 62.5%'],
-      ans: 0, exp: 'Contribution per unit is selling price less variable cost: £8.00 − £3.20 = £4.80. The contribution margin ratio expresses that as a share of the selling price, £4.80 ÷ £8.00 = 60%, which is what lets break-even be found in revenue.' },
-    { type: 'mcq', q: 'Break-even in units:',
-      opts: ['5,000', '6,000', '4,000', '3,200'],
-      ans: 2, exp: 'Break-even is fixed costs divided by contribution per unit: £19,200 ÷ £4.80 = 4,000 units. At that volume contribution exactly covers the fixed costs, so the result is neither profit nor loss.' },
-    { type: 'mcq', q: 'Margin of safety at 6,000 units as a % of budgeted sales:',
-      opts: ['25%', '40%', '33%', '67%'],
-      ans: 2, exp: 'Margin of safety measures how far budgeted sales sit above break-even: (6,000 − 4,000) ÷ 6,000 = 33%. Sales could fall by a third before the business stopped covering its fixed costs.' },
-    { type: 'mcq', q: 'BrightPen\'s market has many sellers with slightly differentiated products. This is:',
-      opts: ['Monopolistic competition — many sellers, each with a differentiated product', 'Perfect competition — many sellers offering an identical, homogeneous product', 'An oligopoly — a small number of large firms dominating the whole market', 'A monopoly — a single seller facing no meaningful competition at all'],
-      ans: 0, exp: 'Monopolistic competition: many buyers and sellers, products are differentiated (brand, features) but close substitutes. Most consumer goods markets fit this structure.' },
-  ],
-  exp: 'Cross-unit scenario covering contribution margin ratio, break-even, margin of safety (poc), and market structure classification (besy).' },
 
 { id: 'sc-028', topic: 'poc', difficulty: 'medium', type: 'scenario',
   setup: 'Birch Furniture buys and sells chairs. April inventory: Opening 20 units @ £45. Purchase 1 (5 Apr): 30 units @ £50. Purchase 2 (20 Apr): 50 units @ £54. Sale (25 Apr): 60 units at £90 each. All purchases are on credit.',
@@ -5647,14 +5108,8 @@ window.ALL_QUESTIONS.push(
   exp: 'Cross-unit scenario covering AVCO inventory valuation, cost of sales (itbk), gross profit (poc), and PLCA entries for credit purchases (pobc).' },
 
 { id: 'sc-029', topic: 'poc', difficulty: 'medium', type: 'scenario',
-  setup: 'Meadow Bakery (sole trader, Sarah). Current position: 8,000 units/year at £6.00 each; variable cost £3.50/unit; fixed costs £12,000/year. Sarah is considering a £15,000 bank loan at 8% annual interest to buy equipment that would cut variable cost by £1.50/unit.',
+  setup: 'Meadow Bakery is a sole trader run by Sarah. She is considering a £15,000 bank loan at 8% annual interest to buy equipment that would reduce her cost per unit.',
   parts: [
-    { type: 'mcq', q: 'Current annual contribution and profit:',
-      opts: ['Contribution £2.50/unit; profit £8,000', 'Contribution £2.50/unit; profit £20,000', 'Contribution £3.50/unit; profit £16,000', 'Contribution £2.50/unit; profit £12,000'],
-      ans: 0, exp: 'Contribution = £6.00 − £3.50 = £2.50/unit. Total contribution = 8,000 × £2.50 = £20,000. Profit = £20,000 − £12,000 = £8,000.' },
-    { type: 'mcq', q: 'Annual profit after the investment (8,000 units):',
-      opts: ['£12,000', '£16,800', '£18,800', '£20,000'],
-      ans: 2, exp: 'New variable cost = £3.50 − £1.50 = £2.00. Contribution = £4.00/unit × 8,000 = £32,000. New fixed costs = £12,000 + (£15,000 × 8%) = £13,200. Profit = £32,000 − £13,200 = £18,800.' },
     { type: 'mcq', q: 'The bank loan is an example of:',
       opts: ['Equity finance (share capital)', 'Internal finance (retained profits)', 'External debt finance', 'Trade credit from suppliers'],
       ans: 2, exp: 'A bank loan is external debt finance — borrowed from outside the business with interest, requiring repayment. It does not dilute ownership unlike equity finance.' },
@@ -5815,15 +5270,6 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: '£540 − £450 = £90. The same single amount is wrong on one side, creating a £90 imbalance. Transposition errors always produce a difference divisible by 9 (here 90 ÷ 9 = 10 — a useful check). A suspense account of £90 Cr would be opened to restore balance.' },
 
-  { id: 'pobc-204', topic: 'pobc', difficulty: 'hard', type: 'mcq',
-    q: 'On a standard UK VAT return, Box 1 represents:',
-    opts: [
-      'Total input tax reclaimed',
-      'VAT due on EC acquisitions',
-      'VAT charged on sales (output tax)',
-      'Net VAT payable or reclaimable'],
-    ans: 2,
-    exp: 'Box 1 = VAT due on sales and other outputs (output tax). Box 4 = input tax reclaimed. Box 5 = net: Box 1 minus Box 4. If Box 5 is positive, the business pays HMRC; if negative, HMRC refunds the business.' },
 
   { id: 'pobc-205', topic: 'pobc', difficulty: 'hard', type: 'mcq',
     q: 'A business has output VAT of £18,400 and input VAT of £11,750 for the quarter. What amount is payable to HMRC?',
@@ -5865,17 +5311,7 @@ window.ALL_QUESTIONS.push(
 
   // ── POC additional hard questions ───────────────────────────────────────
 
-  { id: 'poc-200', topic: 'poc', difficulty: 'hard', type: 'mcq',
-    q: 'Using the high-low method: at 900 units total cost is £7,400; at 400 units total cost is £4,400. What is the variable cost per unit?',
-    opts: ['£6', '£5', '£8', '£3'],
-    ans: 0,
-    exp: 'Variable cost per unit = (High cost − Low cost) ÷ (High units − Low units) = (£7,400 − £4,400) ÷ (900 − 400) = £3,000 ÷ 500 = £6 per unit.' },
 
-  { id: 'poc-201', topic: 'poc', difficulty: 'hard', type: 'mcq',
-    q: 'Using the high-low data (900 units, £7,400; 400 units, £4,400 and variable cost £6/unit), what is the total FIXED cost?',
-    opts: ['£1,600', '£3,000', '£2,000', '£4,400'],
-    ans: 2,
-    exp: 'Fixed cost = Total cost − (Variable cost × units). Using the high point: £7,400 − (£6 × 900) = £7,400 − £5,400 = £2,000. Verified at low point: £4,400 − (£6 × 400) = £4,400 − £2,400 = £2,000 ✓.' },
 
   { id: 'poc-202', topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'Budgeted factory overheads are £54,000 and budgeted machine hours are 9,000. Actual overheads incurred were £56,200 and actual machine hours worked were 9,000. What is the overhead absorption rate (OAR)?',
@@ -5893,17 +5329,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Absorbed = 9,000 × £6 = £54,000. Actual = £56,200. Absorbed < Actual → under-absorbed by £2,200. Under-absorption means costs were understated in product costs, so the shortfall is charged to P&L (debited as additional cost).' },
 
-  { id: 'poc-204', topic: 'poc', difficulty: 'hard', type: 'mcq',
-    q: 'A product sells for £40. Direct materials £12, direct labour £8, variable overhead £5, fixed overhead £6. What is the contribution per unit?',
-    opts: ['£15', '£9', '£25', '£21'],
-    ans: 0,
-    exp: 'Contribution = Selling price − ALL variable costs = £40 − £12 − £8 − £5 = £15. Fixed overhead is excluded from marginal costing contribution calculations (it is a period cost).' },
 
-  { id: 'poc-205', topic: 'poc', difficulty: 'hard', type: 'mcq',
-    q: 'Fixed costs are £45,000, contribution per unit is £15, budgeted sales are 5,000 units. What is the margin of safety as a percentage of budgeted sales?',
-    opts: ['28%', '40%', '60%', '12%'],
-    ans: 1,
-    exp: 'Break-even = £45,000 ÷ £15 = 3,000 units. Margin of safety = 5,000 − 3,000 = 2,000 units. MoS% = (2,000 ÷ 5,000) × 100 = 40%.' },
 
   { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'Which of these is a direct cost of production?',
@@ -5921,15 +5347,6 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'New AVCO = Total cost ÷ Total units = ((200 × £4.00) + (300 × £5.00)) ÷ (200 + 300) = (£800 + £1,500) ÷ 500 = £2,300 ÷ 500 = £4.60 per unit.' },
 
-  { id: 'poc-208', topic: 'poc', difficulty: 'hard', type: 'mcq',
-    q: 'Under marginal costing, fixed production overheads are:',
-    opts: [
-      'Absorbed into the cost of each unit of production',
-      'Carried forward within the closing inventory valuation',
-      'Written off in full as a period cost in the period incurred',
-      'Allocated to production cost centres based on machine hours'],
-    ans: 2,
-    exp: 'Marginal costing treats ALL fixed costs as period costs — they are charged in full to the P&L in the period incurred, regardless of production volume. This contrasts with absorption costing where fixed overheads are included in unit costs and therefore carried forward in inventory.' },
 
   { id: 'poc-209', topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'A job requires 15 kg of material at £8/kg, 6 hours of direct labour at £12/hr, and overheads absorbed at £5 per labour hour. What is the total job cost?',
@@ -5939,11 +5356,6 @@ window.ALL_QUESTIONS.push(
 
   // ── BESY additional hard questions ──────────────────────────────────────
 
-  { id: 'besy-200', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'Current assets: inventory £14,000; trade receivables £22,000; bank £8,000. Current liabilities: trade payables £18,000; accruals £4,000. What is the current ratio?',
-    opts: ['2:1', '1.5:1', '1.1:1', '2.5:1'],
-    ans: 0,
-    exp: 'Current assets = £14,000 + £22,000 + £8,000 = £44,000. Current liabilities = £18,000 + £4,000 = £22,000. Current ratio = £44,000 ÷ £22,000 = 2:1.' },
 
   { id: 'besy-201', topic: 'besy', difficulty: 'hard', type: 'mcq',
     q: 'Using the same data (inventory £14,000; receivables £22,000; bank £8,000; CL £22,000), what is the acid test (quick) ratio?',
@@ -5957,28 +5369,8 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Closing retained earnings = opening + profit after tax − dividends = £28,000 + £15,000 − £6,000 = £37,000. Dividends are a distribution of profit, not an expense, so they never appear in the income statement.' },
 
-  { id: 'besy-203', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'A business does not include future anticipated sales as income until goods have been delivered and the performance obligation met. Which accounting concept does this reflect?',
-    opts: [
-      'Accruals (matching), recognising income when it is earned',
-      'Prudence, recognising losses as soon as they are anticipated',
-      'Going concern, assuming the business continues to trade',
-      'Consistency, applying the same policies from year to year',
-    ],
-    ans: 0,
-    exp: 'The accruals (or matching) concept requires income to be recognised when earned — when performance obligations are met — not when cash is received or orders placed. This aligns income recognition with the period of economic activity.' },
 
-  { id: 'besy-204', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'A non-current asset costs £24,000 with a residual value of £4,000. Using the straight-line method over 5 years, what is the annual depreciation charge?',
-    opts: ['£4,800', '£4,000', '£5,000', '£3,200'],
-    ans: 1,
-    exp: 'SL depreciation = (Cost − Residual value) ÷ Useful life = (£24,000 − £4,000) ÷ 5 = £20,000 ÷ 5 = £4,000 per year.' },
 
-  { id: 'besy-205', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'A company\'s capital structure: £100,000 ordinary share capital, £40,000 retained earnings, £60,000 long-term loan. What is the gearing ratio (debt ÷ equity)?',
-    opts: ['37.5%', '42.9%', '60%', '150%'],
-    ans: 1,
-    exp: 'Equity = £100,000 + £40,000 = £140,000. Debt = £60,000. Gearing = £60,000 ÷ £140,000 = 42.9% (to 1 d.p.). A ratio above 50% is generally considered high gearing.' },
 
   { id: 'besy-206', topic: 'besy', difficulty: 'hard', type: 'mcq',
     q: 'Revenue is £180,000; trade receivables are £30,000. What are the receivables collection days (to the nearest day)?',
@@ -6062,24 +5454,6 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Inventory valuation using FIFO and AVCO, and their comparative impact on profit during price changes.' },
 
-  { id: 'sc-033', topic: 'besy', difficulty: 'hard', type: 'scenario',
-    setup: 'Hartley Retail Ltd reports: Revenue £240,000; Cost of sales £144,000; Operating expenses £52,000. Statement of financial position: Non-current assets £85,000; Inventory £18,000; Receivables £36,000; Cash £6,000; Trade payables £24,000; Long-term loan £40,000; Share capital £50,000; Retained earnings £31,000.',
-    parts: [
-      { type: 'numeric', q: 'What is the gross profit (£)?',
-        answer: 96000, unit: '£',
-        exp: 'Gross profit is revenue less the cost of the goods actually sold: £240,000 − £144,000 = £96,000. It measures the trading margin before any of the running costs of the business are taken into account.' },
-      { type: 'numeric', q: 'What is the net profit (£)?',
-        answer: 44000, unit: '£',
-        exp: 'Net profit deducts the operating expenses from gross profit: £96,000 − £52,000 = £44,000. Gross and net profit answer different questions — margin on trading, then the overall result after running the business.' },
-      { type: 'numeric', q: 'What is the current ratio (to 2 d.p.)?',
-        answer: 2.50, unit: ':1',
-        exp: 'Current assets = £18,000 + £36,000 + £6,000 = £60,000. Current liabilities = £24,000. Current ratio = £60,000 ÷ £24,000 = 2.50:1.' },
-      { type: 'mcq', q: 'The net profit margin for Hartley Retail Ltd is closest to:',
-        opts: ['40%', '18.3%', '16.7%', '22.5%'],
-        ans: 1,
-        exp: 'Net profit margin expresses profit as a percentage of revenue: (£44,000 ÷ £240,000) × 100 = 18.3%. It is always measured against revenue rather than cost, which is what separates a margin from a mark-up.' },
-    ],
-    exp: 'Ratio analysis and financial statement reading — gross profit, net profit, and current ratio from given data.' },
 
   { id: 'sc-034', topic: 'pobc', difficulty: 'hard', type: 'scenario',
     setup: 'Finch & Partners\' trial balance does not agree. A suspense account has been opened with a credit balance of £630. Investigation reveals three errors: (1) A sales invoice for £270 was entered as a debit to both the Sales account AND the SLCA. (2) Rent paid £900 was entered in the cash book correctly but posted to the Rent account as £990. (3) A purchase of stationery for £180 was completely omitted from the ledger.',
@@ -6521,7 +5895,7 @@ window.ALL_QUESTIONS.push(
       { text: 'Cloud accounting allows several users to work in the same ledgers at the same time.', answer: true },
       { text: 'A bank feed imports transactions automatically, reducing manual keying errors.', answer: true },
       { text: 'Moving to cloud accounting removes the need to control who has access to the data.', answer: false },
-      { text: 'Making Tax Digital requires affected businesses to keep digital records and file returns using compatible software.', answer: true },
+      { text: 'Keeping regular backups protects against losing data but not against somebody reading it.', answer: true },
     ],
     exp: 'Cloud systems make access control more important, not less: the ledgers are reachable from anywhere, so weak passwords and over-broad rights carry more risk than on an isolated desktop machine.' },
 
