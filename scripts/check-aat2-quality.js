@@ -63,11 +63,11 @@ const L2_UNITS = ['itbk', 'pobc', 'poc', 'besy'];
 /* Units whose teaching material has been brought to Level 1/3 depth. This list
    is the ratchet — add a unit only when its cards actually meet the floor.
    ITBK now does: 87 cards, mean 228 and median 225 words, none below the floor,
-   against the 90-word average the whole module started at. POBC followed, at 87
-   cards, mean 221 and median 217. POC and BESY are still around 90, and their
+   against the 90-word average the whole module started at. POBC followed at 87
+   cards, mean 221; POC at 84 cards, mean 228. BESY is still around 90, and its
    figures are reported below so the size of the remaining job is visible on
    every run rather than being a vague sense that the material is thin. */
-const DEPTH_ENFORCED = ['itbk', 'pobc'];
+const DEPTH_ENFORCED = ['itbk', 'pobc', 'poc'];
 
 /* Units whose lessons are tagged against the syllabus and must fully cover it.
    Worth reading for what tagging turned up: only 7 of ITBK's 16 criteria were
@@ -90,9 +90,18 @@ const DEPTH_ENFORCED = ['itbk', 'pobc'];
    the allowance for doubtful debts has moved to the Level 3 Financial
    Accounting preview (the word 'doubtful' does not appear in the Level 2
    specification), and the VAT return and VAT schemes have gone to Tax
-   Processes for Businesses. POC and BESY are not yet tagged, so their coverage
-   is still unmeasured rather than known to be good. */
-const COVERAGE_ENFORCED = ['itbk', 'pobc'];
+   Processes for Businesses.
+
+   POC was the worst of the three. Six criteria had no lesson, including the
+   whole of learning outcome 4 (spreadsheets, a tenth of the assessment) and
+   criterion 2.5 inside the 40% outcome — cost of goods manufactured, cost of
+   goods sold and service cost units were all absent. Meanwhile four lessons
+   taught Level 3 Management Accounting: break-even, the high-low method,
+   relevant costing and the marginal/absorption reconciliation, none of which
+   appears anywhere in the Level 2 specification. Those four have moved to the
+   Level 3 preview and the six gaps now have lessons. BESY is not yet tagged, so
+   its coverage is still unmeasured rather than known to be good. */
+const COVERAGE_ENFORCED = ['itbk', 'pobc', 'poc'];
 
 const errors = [];
 const warnings = [];

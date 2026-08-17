@@ -4101,6 +4101,9 @@ window.LEARN_PATH = [
             p: [
               'Bookkeeping produces information for people **outside** the business: HMRC, lenders, Companies House. The rules are fixed and the deadlines are statutory.',
               '**Costing** — the start of management accounting — produces information for people **inside** the business. There are no prescribed formats, no filing deadlines and no statutory rules. The only test is whether the information helps someone make a better decision.',
+              'That change of audience changes everything about the information. External users need figures they can compare across businesses, so the format is prescribed and the timing is annual. Internal managers need figures they can act on, so the format is whatever helps and the timing is whenever the decision has to be made.',
+              'It also changes the standard of accuracy that is useful. A published balance sheet has to be right to the pound. A costing estimate produced to help decide whether to accept an order needs to be right enough to make the decision safely, and produced quickly enough to still be relevant.',
+              'Keep that distinction in mind through the whole unit. Almost every apparent oddity in costing — why estimates are acceptable, why the same cost is classified several ways, why LIFO is allowed internally but not in published accounts — follows from who the information is for.',
             ],
             callout: { kind: 'key', text: 'No statutory format applies to management information. If an exam option claims management accounts must follow a prescribed layout, it is wrong.' },
           },
@@ -4110,6 +4113,11 @@ window.LEARN_PATH = [
               '**What did it cost?** Attributing costs to a product, a service, a department or a job.',
               '**What should it cost?** Setting budgets and standards to plan against.',
               '**What do we do next?** Supporting decisions — what to make, what to charge, whether to accept an order.',
+              'Take them one at a time, because each needs a different piece of the costing system.',
+              '**What did it cost?** requires costs to be collected and traced to something — a unit, a job, a batch, a department. This is what cost units and cost centres exist for, and it is the bulk of what you will calculate in this unit.',
+              '**What should it cost?** requires a standard or a budget, set in advance. Without it there is nothing to compare actual performance against, and no way to price work before it is done.',
+              '**What will it cost if we change something?** requires cost behaviour — knowing which costs move with output and which do not. That is why the fixed and variable distinction matters far more in costing than it does in financial accounting.',
+              'Each of the three is worth marks in a different way. The first appears as a calculation, the second as a comparison against budget, and the third as a written explanation of what happens to cost when activity changes.',
             ],
           },
           {
@@ -4117,6 +4125,8 @@ window.LEARN_PATH = [
             p: [
               'The two are easy to confuse because both collect costs. The difference is **what** versus **where**: a cost unit is the thing being costed, a cost centre is the place costs are gathered before being charged on.',
               'They work together. Overheads are collected in cost centres first, then absorbed into cost units — which is the whole basis of absorption costing later in the unit.',
+              'The two are easy to confuse because both are places costs are collected. The test is what kind of thing it is: a **cost unit** is a unit of output, and a **cost centre** is a part of the organisation.',
+              'Cost units are not always as obvious as "one chair". Where a single item is too small to cost individually, a business uses a batch — a thousand screws — or a composite unit that combines two measures, such as a passenger-mile or a patient-day.',
             ],
             split: {
               left: { title: 'Cost unit', items: [
@@ -4140,6 +4150,10 @@ window.LEARN_PATH = [
               'A **cost centre** is measured on its costs alone — the canteen has no revenue of its own.',
               'A **profit centre** is responsible for both revenue and costs, so it can be measured on the profit it generates — a retail branch, for example.',
               'An **investment centre** goes further still, being responsible for the capital invested in it as well as its profit.',
+              'The four types of responsibility centre form a ladder, and each rung adds one thing the manager controls.',
+              'A **cost centre** manager controls costs only, so that is all they are judged on — a maintenance department, say. A **revenue centre** manager controls income only, such as a sales region measured on sales achieved.',
+              'A **profit centre** manager controls both costs and revenue, so they can be judged on profit; a retail branch is the classic example. An **investment centre** manager additionally controls capital spending, so they can be judged on the return earned on the capital they employ.',
+              'The principle underneath is fairness. A manager should be held responsible only for what they can actually influence, which is why judging a cost centre manager on profit — when they have no control over selling prices — is both unfair and useless as a control.',
             ],
           },
           {
@@ -4204,6 +4218,10 @@ window.LEARN_PATH = [
               '**By traceability** — can this cost be traced to a specific cost unit? That gives **direct** and **indirect**.',
               '**By behaviour** — what happens to this cost when activity changes? That gives **fixed**, **variable** and **semi-variable**.',
               'The two are not the same question. A cost can be direct and variable, or indirect and fixed, or any other combination.',
+              'The point worth grasping is that these are not competing classifications to choose between. The same cost is classified both ways at once, and the two answers are independent of each other.',
+              'Factory rent is **indirect** by nature and **fixed** by behaviour. Materials are **direct** by nature and **variable** by behaviour. But a machine operator paid per hour is **direct** and **variable**, while a production supervisor on a salary is **indirect** and **fixed** — so knowing one classification tells you nothing certain about the other.',
+              'A third classification, by **element**, sorts costs into materials, labour and overheads. A fourth, by **function**, sorts them into production, administration, and selling and distribution. All four apply to every cost simultaneously.',
+              'A question will normally tell you which classification it wants. Where it does not, the wording gives it away: "traced" and "apportioned" point at nature, "changes with output" points at behaviour.',
             ],
           },
           {
@@ -4211,6 +4229,9 @@ window.LEARN_PATH = [
             p: [
               'The test for a direct cost is **traceability, not size**. A cost can be enormous and still indirect: factory rent belongs to no single unit.',
               'Prime cost totals the direct costs only. Add absorbed production overhead to prime cost and you have the full production cost per unit.',
+              'The test is traceability, and it is worth stating precisely: a **direct** cost can be traced to one cost unit without apportionment; an **indirect** cost cannot, so it has to be shared out.',
+              'That is why "indirect" is not the same as "small" or "unimportant". Factory rent can be the largest single cost in a business and is still indirect, because no part of it belongs to one particular chair.',
+              'One consequence follows immediately. Because indirect costs cannot be traced, any unit cost that includes them is partly a matter of judgement about the sharing basis — which is why two businesses with identical costs can report different unit costs.',
             ],
             split: {
               left: { title: 'Direct costs', items: [
@@ -4235,6 +4256,8 @@ window.LEARN_PATH = [
             p: [
               'Behaviour is always described **in total** and only within the **relevant range** — the band of activity over which current capacity and the existing cost structure hold.',
               'Watch the total-versus-per-unit flip: a fixed cost is constant in total but falls per unit as output rises, while a variable cost is constant per unit but rises in total.',
+              'Note the phrase that makes this precise: fixed costs stay the same **in total**, and variable costs stay the same **per unit**. Reverse either statement and it becomes false.',
+              'That is the source of nearly every mark lost on cost behaviour questions, and it is worth checking your own answers against. If a table shows the fixed cost per unit unchanged at two output levels, something has gone wrong.',
             ],
             table: {
               headers: ['Type', 'Total cost as activity rises', 'Cost per unit as activity rises', 'Example'],
@@ -4252,6 +4275,11 @@ window.LEARN_PATH = [
             p: [
               'Because it changes the answer. If you are deciding whether to accept a one-off order, the factory rent is irrelevant — it will be paid either way. Only the costs that actually change with the decision matter.',
               'Fixed costs behaving as though they were variable is the most expensive misunderstanding in costing, and it is why marginal costing exists.',
+              'Each classification answers a different question, which is why a costing system keeps all of them.',
+              '**Direct and indirect** tells you how to get the cost into the product — trace it, or apportion and absorb it. That is the whole of overhead absorption.',
+              '**Fixed and variable** tells you what happens if activity changes, which is what makes budgeting and flexing possible. **Element** tells you what kind of resource was consumed, which is how a manufacturing account is laid out. **Function** tells you which part of the business consumed it, which is how a statement of profit or loss is laid out.',
+              'So when an assessment asks you to classify a cost, read which classification is wanted. Answering "variable" to a question about nature earns nothing even though the word is correct about the cost.',
+              'A single cost can therefore appear in four different analyses on the same page, and none of them contradicts the others. Getting comfortable with that is most of what this criterion is testing.',
             ],
           },
           {
@@ -4318,6 +4346,10 @@ window.LEARN_PATH = [
             p: [
               'For most manufacturers, direct materials are the single largest cost, so how they are ordered, stored and valued has a direct effect on profit.',
               'Two questions matter: **how much to hold**, and **what value to put on it**.',
+              'In most manufacturing businesses materials are the largest single element of cost, which makes controlling them the highest-value activity in the costing system. A one per cent saving on materials is usually worth more than a large saving on anything else.',
+              'Control has two halves that are easy to confuse. **Physical** control is about having the right quantity in the right place — not running out, not tying up cash in stock nobody needs, not letting stock deteriorate or walk out of the door. **Value** control is about putting the right cost on what is issued and what remains.',
+              'The first half is what inventory control levels are for; the second is what FIFO, AVCO and LIFO are for. This lesson covers both, and an assessment task will often ask for one of each.',
+              'Both halves need paperwork, which is why the documents matter. A goods received note evidences what arrived, a materials requisition evidences what was issued, and the stores record ties the two together into a running balance of quantity and value.',
             ],
           },
           {
@@ -4327,6 +4359,10 @@ window.LEARN_PATH = [
               '**Minimum level** — the buffer below which stock should not fall, protecting against unexpected delays.',
               '**Maximum level** — the ceiling, avoiding cash tied up and the risk of obsolescence.',
               'Holding too much wastes cash and storage; holding too little risks stopping production. Control levels manage that trade-off.',
+              'The levels exist to answer two operational questions — when to order, and how much to order — without anyone having to think about it each time.',
+              'The **reorder level** is the stock figure that triggers a new order. It has to cover expected usage during the supplier’s lead time, otherwise the business runs out while waiting. Set it at maximum usage times maximum lead time and you are protected against the worst case.',
+              'The **minimum level** is a warning line: fall below it and something has gone wrong, either heavier usage than expected or a late delivery. It is often called the buffer stock, and it is what stops a stockout becoming a production stoppage.',
+              'The **maximum level** caps the investment. Stock above it costs money in storage, insurance and tied-up cash, and risks obsolescence, so exceeding it is a signal that ordering has been too generous.',
             ],
             formula: 'Reorder level = Maximum usage × Maximum lead time · Minimum level = Reorder level − (Average usage × Average lead time)',
           },
@@ -4360,6 +4396,9 @@ window.LEARN_PATH = [
               '**FIFO (first in, first out)** — assume the oldest items go first. Closing inventory is therefore valued at the most recent prices.',
               '**AVCO (weighted average)** — recalculate a weighted average cost after each receipt, and value every issue at that running average.',
               'The physical goods may move in any order; these are **costing assumptions**, not warehouse instructions.',
+              'Two figures come out of every valuation and they are two sides of one calculation. The **issue value** is charged to production and ends up in cost of sales; the **closing value** stays in inventory on the statement of financial position.',
+              'Because they add up to a fixed total — everything that came in must either have gone out or still be there — the choice of method never changes the total. It only changes how that total is divided between this period’s profit and next period’s inventory.',
+              'Set your working out as a stores record with columns for receipts, issues and balance, and show quantity, unit price and total value in each. That layout is what an assessment task provides, and filling it in properly is most of the mark.',
             ],
             examtrap: 'LIFO (last in, first out) is **not permitted** under IAS 2 for financial reporting. If it appears as an option in a question about acceptable methods, it is the wrong answer.',
           },
@@ -4368,6 +4407,9 @@ window.LEARN_PATH = [
             p: [
               'The whole comparison holds only while prices are **rising**. Reverse the direction of prices and every row reverses with it.',
               'The reason is mechanical: FIFO issues the old cheap costs and leaves the new dear ones in stock, while AVCO blends the two — which is why it always lands between.',
+              'The direction is worth reasoning out once rather than memorising. When prices are rising, FIFO charges out the **oldest and therefore cheapest** costs, so cost of sales is low and profit is high, and the inventory left behind carries the newest and highest prices.',
+              'LIFO does the opposite: it charges out the newest and dearest costs, so cost of sales is high and profit low, and the inventory left behind carries old, potentially very stale prices. AVCO sits between the two on every measure.',
+              'Falling prices reverse every one of those statements, so do not learn them as facts about FIFO but as consequences of which costs the method sends out first.',
             ],
             table: {
               headers: ['When prices are rising', 'FIFO', 'AVCO'],
@@ -4418,6 +4460,10 @@ window.LEARN_PATH = [
               'Direct costs attach themselves to a cost unit automatically — you know how much timber went into the table.',
               'Overheads do not. Nobody can say how much of the factory rent belongs to one table. But if you ignore overheads, you will price below cost and lose money on every sale.',
               '**Absorption costing** is the mechanism for getting a fair share of overhead into each unit.',
+              'The problem is precisely that overheads are real costs which cannot be traced. A chair genuinely consumes some factory rent, some supervision and some machine depreciation — but no invoice tells you how much.',
+              'Ignoring them is not an option, because a price based only on traceable costs would not cover the cost of running the factory, and the business would lose money on every sale while appearing to make a margin.',
+              'So the costing system shares them out on a basis that is deliberately, openly approximate. The result is an **absorbed** overhead figure: not the true cost, because there is no such thing at unit level, but a defensible and consistent one.',
+              'The word "absorbed" is worth noticing. Overhead is not allocated to a unit in any factual sense; it is absorbed into it by a rate the business chose, and a different reasonable choice would give a different unit cost.',
             ],
           },
           {
@@ -4426,6 +4472,11 @@ window.LEARN_PATH = [
               '**Allocation** — charge a whole overhead to the one cost centre that incurred it. The maintenance department\'s own wages go straight to maintenance.',
               '**Apportionment** — share an overhead that benefits several cost centres, on a sensible basis. Factory rent might be apportioned on floor area.',
               '**Absorption** — charge the cost centre\'s total overhead into the units passing through it, using an absorption rate.',
+              'The three stages have names, and using them earns marks that describing the process in your own words does not.',
+              '**Allocation** assigns a whole overhead to a single cost centre, because it belongs entirely to that centre — the wages of a supervisor who works only in machining, for instance.',
+              '**Apportionment** shares an overhead that serves several centres between them, using a basis that reflects how it is consumed. **Absorption** then charges the overheads gathered in a production cost centre onto the units passing through it, using an absorption rate.',
+              'The order matters and it never varies. Allocate what you can, apportion what you cannot, then absorb into units.',
+              'A fourth step sits between apportionment and absorption in larger businesses: reapportioning the overheads of **service** cost centres, such as maintenance or stores, onto the production centres they serve. Level 3 develops that; here it is enough to know why it is needed.',
             ],
             flow: ['Allocate', 'Apportion', 'Absorb into units'],
           },
@@ -4434,6 +4485,9 @@ window.LEARN_PATH = [
             p: [
               'A basis is defensible when it reflects **what causes the cost to be incurred**. Rent is caused by occupying floor space; canteen costs are caused by the number of people.',
               'There is rarely one right answer, but there is a wrong one: a basis with no causal link to the cost distorts every unit cost that flows out of it.',
+              'A good basis is one that reflects how the cost is actually driven, and there is usually an obvious candidate. Floor area drives rent, rates, heating and building insurance. Machine value drives machinery depreciation and machinery insurance. Number of employees drives canteen, personnel and welfare costs. Kilowatt hours drive power.',
+              'When a task gives you several possible bases, it is testing whether you can match each overhead to its driver rather than apply one basis to everything.',
+              'State the basis you have used in your answer. A task that asks you to apportion £48,000 of rent will often carry a mark for identifying floor area as the basis, separately from the arithmetic.',
             ],
             table: {
               headers: ['Overhead', 'Sensible basis'],
@@ -4451,6 +4505,11 @@ window.LEARN_PATH = [
             p: [
               'The **OAR** is set in advance, from budgeted figures, so that products can be costed during the year without waiting for actual results.',
               'The basis is usually labour hours or machine hours — whichever better reflects how the cost centre consumes overhead. A machine-intensive department uses machine hours.',
+              'The rate is budgeted overhead divided by a budgeted activity level, and the activity chosen should be the thing that drives the overhead in that centre.',
+              'A **machine-hour rate** suits a centre where the work is done by machinery, because the overheads are largely machine-related. A **labour-hour rate** suits a labour-intensive centre. A **per-unit rate** only works where every unit is essentially identical, which is rarer than students assume.',
+              'Note that both the numerator and the denominator are **budgeted** figures, set before the period starts. That is deliberate: a business needs to price work now, and cannot wait until the year end to learn what its overheads were.',
+              'And it is precisely because both figures are estimates that the absorbed total will not equal the actual total, which is where under- and over-absorption comes from.',
+              'Round the rate as the task instructs and keep using the rounded figure, because absorbing at more decimal places than you quoted will leave your total absorbed overhead disagreeing with the examiner’s.',
             ],
             formula: 'OAR = Budgeted overheads ÷ Budgeted activity · Overhead absorbed = OAR × Actual activity',
           },
@@ -4482,6 +4541,9 @@ window.LEARN_PATH = [
             p: [
               'Compare absorbed overhead with actual overhead and let the direction tell you the name: absorbed more than actual is over-absorption, absorbed less is under-absorption.',
               'Because absorbed overhead is OAR × **actual** activity, the difference can come from the overhead figure, the activity figure, or both.',
+              'The cause is always the same: the rate was set from budgeted overhead and budgeted activity, and both of those can turn out differently.',
+              'Absorb less than was actually incurred and the difference is **under-absorption**, which is adverse — product costs were understated and profit is overstated until the difference is corrected. Absorb more and it is **over-absorption**, which is favourable.',
+              'The adjustment goes to profit or loss for the period, not back into inventory. Once a unit has been costed at the budgeted rate, its cost stays as it is; only the period’s profit is corrected.',
             ],
             split: {
               left: { title: 'Under-absorption', items: [
@@ -4537,6 +4599,10 @@ window.LEARN_PATH = [
             p: [
               'The simplest scheme: pay per hour worked. Gross pay equals hours worked multiplied by the hourly rate.',
               'Time rate is fair and predictable, but it does not reward working faster — an employee earns the same whether they make 5 units or 50.',
+              'Time rate is the simplest basis: hours worked multiplied by a rate per hour. It is used where output is not easily counted, or where quality matters more than speed.',
+              'Its advantage is predictability for the employee and simplicity for the payroll. Its disadvantage is that it gives no direct incentive to produce more, which is why time-rate systems are usually paired with supervision or with a bonus scheme.',
+              'For costing purposes the important feature is that time-rate pay is a **variable** cost of the hours worked, but not necessarily of the units produced. Two employees on the same rate for the same hours cost the same whether one made twice as much as the other.',
+              'Overtime is normally paid on top of the time rate, at a multiple such as time and a half or double time, and separating the basic element from the premium is what the next card is about.',
             ],
           },
           {
@@ -4545,6 +4611,9 @@ window.LEARN_PATH = [
               'Hours beyond the basic week are often paid at a higher rate, like **time and a half**.',
               'Split the overtime pay in two: the basic rate part, and the **overtime premium** — the extra bit above basic rate. At time and a half on £12 per hour, the premium is £6 per hour.',
               'Costing often treats the premium separately, because it is the extra cost of working beyond normal hours.',
+              'The distinction the assessment tests is between basic pay and the **premium**. If the basic rate is £12 and overtime is paid at time and a half, the overtime hour costs £18 — but that £18 is £12 of basic pay plus a £6 premium.',
+              'Splitting it matters because the two elements are often treated differently. Basic pay for overtime hours is a direct cost like any other hour worked; the premium is frequently treated as a production **overhead**, on the grounds that it arises from the general need to meet demand rather than from the particular job that happened to be running late in the day.',
+              'The exception is where overtime was worked **at a customer’s specific request** — a rush order they agreed to pay for. Then the premium is a direct cost of that job, because it is traceable to it.',
             ],
           },
           {
@@ -4552,11 +4621,21 @@ window.LEARN_PATH = [
             p: [
               '**Piecework** pays per unit made: fast workers earn more. Many schemes include a guaranteed minimum so a slow week still pays a fair wage.',
               'A **bonus scheme** mixes the two ideas: time rate as the base, plus a bonus for beating a target — for example, sharing the value of time saved.',
+              '**Piecework** pays for output rather than time: units produced multiplied by a rate per unit. It gives a direct incentive to produce, and it makes labour a genuinely variable cost of output.',
+              'Its risk is quality, and the usual safeguard is a **guaranteed minimum payment** — the employee receives the higher of their piecework earnings and an agreed floor. Calculate both figures and take the larger; a question that gives you a guaranteed minimum is testing whether you did.',
+              '**Bonus schemes** sit between the two. An individual bonus rewards one person for beating a target, usually a time allowance; a team bonus rewards a group and is then shared, often equally or in proportion to hours worked.',
+              'Read the scheme description carefully before calculating. A differential piecework scheme pays a higher rate per unit once a threshold is passed, and applying the higher rate to every unit rather than only the units above the threshold is a common and expensive error.',
             ],
           },
           {
             h: 'A full weekly wage',
-            p: ['Sam works a 38-hour basic week at £12 per hour, plus 4 hours overtime at time and a half.'],
+            p: ['Sam works a 38-hour basic week at £12 per hour, plus 4 hours overtime at time and a half.',
+              'Work through the elements in a fixed order and label each one, because a full wage calculation can have four or five parts and they are easy to conflate.',
+              'Basic hours at the basic rate first. Then overtime hours, split into the basic element and the premium. Then any piecework or bonus element. Then compare the total against any guaranteed minimum and take the higher figure.',
+              'Keep the direct and indirect split visible as you go, because the follow-up question is usually "how much of this is a direct cost?" — and the answer normally excludes the overtime premium.',
+              'Set the calculation out as a list with a subtotal for each element rather than one long line of arithmetic. Marks are usually available for each element separately, and a single wrong figure in a chain destroys everything after it.',
+              'Finish by stating the gross pay figure explicitly. The question asked for it, and an answer that ends with the last element calculated has not quite answered it.',
+            ],
             example: {
               title: 'Sam\'s gross pay',
               rows: [
@@ -4571,6 +4650,11 @@ window.LEARN_PATH = [
             h: 'Labour pay formulas',
             p: [
               'Three pay bases cover all standard labour cost questions.',
+              'All three formulas share a structure: a quantity multiplied by a rate. The skill is identifying which quantity and which rate the question has given you.',
+              'For time rate the quantity is hours and the rate is per hour. For piecework the quantity is units and the rate is per unit. For the overtime premium the quantity is overtime hours and the rate is the **extra** per hour, not the whole overtime rate.',
+              'Where a guaranteed minimum applies, none of the formulas gives the final answer on its own — you calculate the piecework figure, compare it with the minimum, and pay the higher.',
+              'One further caution: the overtime premium rate is the extra above basic, not the whole overtime rate. Time and a half on a £12 basic gives an £18 overtime rate, of which £6 is the premium.',
+              'Multiply the premium by overtime hours only. Applying it to all hours worked is the error the formula is written to prevent.',
             ],
             formula: 'Time-rate pay = Hours worked × Hourly rate · Overtime premium = Overtime hours × (Overtime rate − Basic rate) · Piecework pay = Units produced × Rate per unit · Guaranteed minimum applies if piecework pay falls below it',
           },
@@ -4620,6 +4704,10 @@ window.LEARN_PATH = [
             p: [
               'A **budget** is a financial plan for a future period. It forces managers to plan ahead, coordinates departments, sets targets, and gives a yardstick to measure performance against.',
               'Without a budget, you only find out something went wrong when the money has already gone.',
+              'A budget is a plan expressed in numbers, agreed in advance and covering a defined period. That definition contains the three things that make it useful: it is quantified, it is agreed, and it is set before the period rather than after.',
+              'It does four jobs. It **plans** — deciding what the business intends to do and what resources that needs. It **coordinates** — making sure the sales budget and the production budget describe the same year. It **communicates** — telling each manager what is expected of them. And it **controls** — providing the standard that actual performance is measured against.',
+              'The last of those is why budgeting appears in a costing unit. Without a budget there is nothing to compare actual costs with, so there is no variance, no exception report and no basis for asking why a cost turned out as it did.',
+              'A budget also forces awkward conversations early. Working out that the planned output needs more machine hours than the factory has is much cheaper to discover in a spreadsheet in March than on the shop floor in September.',
             ],
           },
           {
@@ -4627,6 +4715,10 @@ window.LEARN_PATH = [
             p: [
               'A **variance** is the difference between the budgeted figure and the actual figure.',
               'A variance is **favourable (F)** when it makes profit higher than planned: costs below budget, or income above budget. It is **adverse (A)** when it makes profit lower: costs above budget, or income below budget.',
+              'The arithmetic is a subtraction; the skill is the label. A variance without "adverse" or "favourable" attached is an incomplete answer, and the direction reverses between costs and income.',
+              'For **costs**, spending more than budgeted is adverse because it reduces profit, and spending less is favourable. For **income**, earning more than budgeted is favourable and earning less is adverse. The unifying test is simply: does this move profit up or down?',
+              'That test is more reliable than remembering which way round the subtraction goes, because it works on any line you are given. Ask what the difference does to profit and the label follows.',
+              'Note also that "adverse" is not the same as "bad management". An adverse materials variance caused by a worldwide rise in the price of steel is not the buyer’s failure — which is why the next stage is investigating causes rather than allocating blame.',
             ],
             example: {
               title: 'Variance practice',
@@ -4642,6 +4734,10 @@ window.LEARN_PATH = [
             p: [
               'Managers do not have time to investigate every tiny difference. **Exception reporting** flags only **significant** variances — usually those above a set percentage or money value.',
               'A £20 variance on a £50,000 budget is noise. A 10% adverse materials variance is a conversation.',
+              'A business with two hundred budget lines cannot investigate every difference, and would waste its effort if it tried. **Exception reporting** solves this by reporting only the variances that exceed a threshold set by the organisation’s own policy.',
+              'The threshold is normally a percentage — anything over 5% of budget — sometimes combined with an absolute floor so that a 40% variance on a £50 line does not generate work. Whatever the rule, it comes from the organisation’s policy, not from the accountant’s judgement on the day.',
+              'That is why the specification wording is "identify significant variances according to an organisation’s policy". An assessment task will give you the policy and expect you to apply it consistently, including to variances you might personally think unimportant.',
+              'The benefit is management attention going where it is worth spending. The risk is that a small variance repeated every month, or a pair of offsetting variances that cancel out, slips through — which is why a good report shows trends as well as single periods.',
             ],
           },
           {
@@ -4664,6 +4760,7 @@ window.LEARN_PATH = [
               'Revenue is units × selling price. Materials are units × kilograms per unit × price per kilogram. Labour is units × hours per unit × rate per hour. Fixed overheads are stated as a total for the period and do not move with output.',
               'Work in that order and keep the units of measurement visible in your working. Most errors here come from multiplying by the wrong quantity — using total kilograms where kilograms per unit was needed, or hours per unit where total hours was wanted.',
               'Where a flexed budget is required, take the original per-unit rates and apply them to the actual units. The per-unit rate is what the budget committed to; the volume is what actually happened.',
+              'If the task asks for profit as well, remember that revenue is the only line that is not a cost. Profit is revenue less the three cost lines, and the fixed overhead is included in full whatever the output level.',
             ],
             example: {
               title: 'Budget at 10,000 units, flexed to 12,000 actual units',
@@ -4684,6 +4781,7 @@ window.LEARN_PATH = [
               'The calculation is the variance divided by the budgeted figure, expressed as a percentage: £1,800 ÷ £70,000 = 2.6%. Note the denominator — it is always the **budget**, not the actual, because the budget is the standard being measured against.',
               'Round as the task instructs, usually to one decimal place, and keep the adverse or favourable label attached. A percentage without that label tells the reader the size of the deviation but not its direction, which is half the information.',
               'Percentages are what make exception reporting possible. A policy of investigating anything over 5% cannot be applied to pound figures across departments of different sizes, but it applies perfectly well to percentages.',
+              'Where a task gives a materiality policy — investigate anything over 5% — the percentage is what you apply it to. Calculate all the percentages first, then apply the rule, rather than deciding as you go.',
             ],
             formula: 'Variance % = Variance ÷ Budgeted figure × 100  (label the result adverse or favourable)',
             examtrap: 'Divide by the **budget**, not the actual. Using the actual as the denominator gives a different answer and is marked wrong even where the pound variance was right.',
@@ -4747,6 +4845,11 @@ window.LEARN_PATH = [
               '**Absorption costing** charges all manufacturing costs — direct and indirect (overheads) — to each unit produced.',
               'This gives a **full cost per unit** used for inventory valuation and setting selling prices.',
               'Overheads are absorbed using a pre-determined **Overhead Absorption Rate (OAR)**.',
+              '**Absorption costing** charges each unit with a share of production overhead as well as its direct costs, so that the resulting figure represents the full cost of making it.',
+              'The alternative, marginal costing, charges only the variable costs to the unit and treats fixed production overhead as a cost of the period. Both are legitimate for internal use, but only absorption costing is permitted for inventory valuation in published financial statements, because accounting standards require production overhead to be included.',
+              'That is the practical reason a business must be able to do it. Whatever it prefers for internal decisions, it needs an absorption cost per unit to value closing inventory at the year end.',
+              'The mechanism is the overhead absorption rate: a budgeted rate per unit, per labour hour or per machine hour, applied to each unit as it is produced.',
+              'The full name is sometimes "total absorption costing", and the "total" is the clue: the aim is a cost per unit that includes everything spent on making it, direct and indirect alike.',
             ],
           },
           {
@@ -4754,6 +4857,9 @@ window.LEARN_PATH = [
             p: [
               'The rate must be fixed **before** the period starts, because a job costed in March cannot wait until December for the actual overhead figure.',
               'That is why both inputs are budgeted. The choice of basis matters too: machine hours in an automated department, labour hours in a labour-intensive one — whichever actually drives the overhead.',
+              'Both figures in the rate are budgeted, and that is deliberate rather than a shortcut. A business needs a cost per unit to quote prices and value inventory throughout the year, and it cannot wait until the year end to find out what its overheads actually were.',
+              'The denominator should be the activity that drives the overhead in that particular centre — machine hours in a machine-intensive centre, labour hours in a labour-intensive one. Using the wrong activity base gives a rate that is arithmetically correct and economically meaningless.',
+              'Where a business has several production cost centres, each gets its own rate. A single factory-wide rate is simpler but charges a unit that spent an hour in an expensive machining centre exactly the same as one that spent an hour in a cheap assembly centre.',
             ],
             formula: 'OAR = Budgeted overheads ÷ Budgeted activity level · Common bases: machine hours, labour hours, units produced',
             example: {
@@ -4772,6 +4878,11 @@ window.LEARN_PATH = [
               'Because the OAR is based on **budgeted** figures, actual absorption rarely equals actual overheads.',
               '**Under-absorption**: actual overheads > absorbed overheads → additional charge to income statement (reduces profit).',
               '**Over-absorption**: actual overheads < absorbed overheads → credit to income statement (increases profit).',
+              'Because the rate uses two estimates, the overhead absorbed during the year will almost never equal the overhead actually incurred. The difference has to be dealt with, and it has a name and a sign.',
+              '**Under-absorption** means less overhead was charged to products than was actually spent. Product costs were understated and profit overstated, so the difference is written off as an additional expense — an adverse adjustment.',
+              '**Over-absorption** means more was charged than was spent. Product costs were overstated and profit understated, so the difference is credited back — a favourable adjustment.',
+              'Either can arise from two independent causes: actual overhead differing from budget, or actual activity differing from budget. A question may ask you to say which, and the answer comes from comparing both pairs of figures.',
+              'A useful way to remember the sign: under-absorption means the products were undercharged, so profit was flattered and now has to be reduced. Over-absorption means they were overcharged, so profit was understated and is now credited back.',
             ],
             formula: 'Under/over absorption = Overheads absorbed − Actual overheads · Positive = over-absorbed; Negative = under-absorbed',
           },
@@ -4781,6 +4892,11 @@ window.LEARN_PATH = [
               'Under- and over-absorption exist only because the OAR was an estimate. If budget and actual ever matched exactly, neither would arise.',
               'Either input can cause it — actual overheads differing from budget, actual activity differing from budget, or both at once.',
               'The adjustment does not change the unit cost already charged to products. It is a single period-end correction in the income statement.',
+              'The comparison to make is always **absorbed against actual**, and getting the two figures the right way round is most of the mark.',
+              'Absorbed is the rate multiplied by the **actual** activity, not the budgeted activity. That catches people out: a business that budgeted 10,000 machine hours at £4.80 but ran 11,200 hours absorbed £53,760, not £48,000.',
+              'Compare that with the overhead actually incurred and the sign follows. Absorbed less than incurred is under-absorption; absorbed more is over-absorption.',
+              'Show your working in two lines — absorbed, then actual — and label the difference. An answer that gives the right number without saying which way round the comparison went cannot be marked correct.',
+              'And if the question also asks for the cause, compare the two pairs separately: budgeted against actual overhead, and budgeted against actual activity. Usually one of the two explains most of the difference.',
             ],
             split: {
               left: { title: 'Under-absorption', items: ['Absorbed < Actual overheads', 'Not enough overheads charged', 'Debit to income statement', 'Reduces profit'] },
@@ -4792,6 +4908,10 @@ window.LEARN_PATH = [
             p: [
               'Absorption costing builds the unit cost in layers: direct costs first, then variable overhead, then fixed overhead brought in through the OAR.',
               'The result is the figure used to value closing inventory in the financial statements, and the long-run floor below which a selling price makes a loss.',
+              'The full absorption cost of a unit is direct materials, plus direct labour, plus direct expenses, plus absorbed production overhead. Nothing else belongs in it.',
+              'In particular, administration and selling overheads are **not** absorbed into the unit cost. They are period costs, charged in full to the period, and including them would overstate inventory on the statement of financial position.',
+              'Where a unit passes through more than one production centre, it picks up absorbed overhead from each, at that centre’s own rate and for the hours it spent there. Add those together to get the total absorbed overhead for the unit.',
+              'Set it out as a short vertical schedule with each element on its own line and a total at the foot. That layout matches the marking and makes it obvious if a component has been left out.',
             ],
             example: {
               title: 'Full cost per unit',
@@ -4855,6 +4975,8 @@ window.LEARN_PATH = [
               '**LIFO (Last In, First Out)** assumes the newest stock is issued first, so closing inventory is left carrying the oldest prices.',
               'The AAT Level 2 syllabus requires all three. FIFO and AVCO are permitted for financial reporting under UK GAAP and IFRS; LIFO is not, which is why the specification limits it to **internal management accounting use**. That distinction is itself examinable, so do not skip LIFO on the grounds that it is not allowed in published accounts.',
               'Whichever method is used, the same total cost is divided between cost of sales and closing inventory. The method decides the split, not the total.',
+              'One further point applies to all three methods: they are assumptions about **cost flow**, not descriptions of physical movement. A FIFO business does not have to issue the physically oldest box, and an AVCO business does not blend its stock.',
+              'That is also why the assessment can ask you to value the same set of transactions three different ways. Nothing about the physical stock changes; only the assumption about which cost leaves first.',
             ],
           },
           {
@@ -4862,6 +4984,9 @@ window.LEARN_PATH = [
             p: [
               'FIFO is an assumption about **cost flow, not physical movement**. The stores may hand over whichever box is nearest; the valuation still charges the oldest cost first.',
               'Work the stores record one line at a time and keep the balance split into price layers. The layer you use up first is always the oldest one.',
+              'The layer discipline is what makes FIFO reliable. Keep the balance written as separate quantities at separate prices, and never collapse them into a single average — the moment you do, you have switched to AVCO by accident.',
+              'When an issue is larger than the oldest layer, it takes the whole of that layer and then bites into the next one. An issue of 15 units against layers of 10 at £4 and 10 at £5 costs (10 × £4) + (5 × £5) = £65, and leaves 5 units at £5.',
+              'Closing inventory under FIFO therefore always carries the **most recent** prices, which is why it is the method accounting standards prefer: the balance sheet figure is close to current cost.',
             ],
             example: {
               title: 'FIFO: 10 units at £4, then 10 at £5; issue 8 units',
@@ -4879,6 +5004,10 @@ window.LEARN_PATH = [
             p: [
               'Under AVCO the balance is never split into layers — there is only ever one figure, the current weighted average.',
               'Recalculate it on every **receipt**: total value ÷ total units. Issues never change the average; they simply remove units at the rate already in force.',
+              'The recalculation happens on receipts only, and the formula is total value of stock divided by total units of stock. Both figures include what was already there before the new delivery arrived.',
+              'So with 10 units at £4 on hand and 10 more arriving at £5: total value £90, total units 20, new average £4.50. Every issue from that point costs £4.50 a unit until the next receipt changes the average again.',
+              'Round the average as the task instructs and keep working with the rounded figure thereafter, otherwise the issue values and the closing balance will not reconcile to the total. Two decimal places is the usual convention.',
+              'A useful check at the end: issue value plus closing value must equal the total value of everything received plus anything held at the start. If it does not, an average has been applied to the wrong line.',
             ],
             example: {
               title: 'AVCO: same data — recalculate average on each receipt',
@@ -4915,6 +5044,9 @@ window.LEARN_PATH = [
             p: [
               'Neither method is "more correct". They divide the same total cost differently between cost of sales and closing inventory, and over the life of the stock the two converge.',
               'The choice matters in the short run because it shifts profit between periods — which is why a business must apply its chosen method consistently.',
+              'The choice is a policy decision, and once made it must be applied **consistently**. Switching method between periods shifts profit between them and would make the accounts incomparable, which is why accounting standards require consistency.',
+              'AVCO’s advantage is that it smooths price volatility, so a single expensive delivery does not distort the cost of the next few jobs. FIFO’s advantage is that closing inventory is valued at something close to current cost, and that individual layers remain traceable.',
+              'In a period of stable prices the two methods give identical answers, which is a useful sanity check: if a question has constant prices and your FIFO and AVCO figures differ, one of them is wrong.',
             ],
             split: {
               left: { title: 'FIFO', items: ['Oldest stock issued first', 'Closing stock at latest prices', 'Higher closing stock in inflation', 'Lower COGS in inflation → higher profit'] },
@@ -4926,6 +5058,10 @@ window.LEARN_PATH = [
             p: [
               'When prices are **rising (inflation)**: FIFO → lower cost of sales → **higher profit** and **higher closing inventory**.',
               'AVCO produces a cost of sales and closing inventory value between FIFO results.',
+              'Reason it through rather than memorising: the method decides which costs leave and which stay. FIFO sends the old cheap costs out to cost of sales, so profit is high and the inventory left behind is valuable.',
+              'LIFO sends the new expensive costs out, so profit is low and the inventory left behind is cheap. AVCO blends them and lands between the two on both figures.',
+              'And whichever is used, the **total** cost over the life of the stock is identical. All three methods divide the same pot; none of them creates or destroys cost.',
+              'A follow-up question often asks which method a business would prefer, and the honest answer depends on what it wants. Higher reported profit points at FIFO; a cost of sales closer to replacement cost points at LIFO, if internal use permits it.',
             ],
             callout: { kind: 'key', text: 'Rising prices rank the three methods predictably: LIFO gives the highest cost of sales and lowest profit, FIFO the lowest cost of sales and highest profit, and AVCO sits between them. Over the lifetime of all the inventory the three converge on the same total.' },
           },
@@ -4975,6 +5111,10 @@ window.LEARN_PATH = [
             p: [
               'A variance is the difference between actual performance and what was budgeted. Managers use variance analysis to identify where performance has deviated from plan and investigate why.',
               'A **favourable (F)** variance improves profit; an **adverse (A)** variance reduces profit.',
+              'Two refinements make variance work reliable at this level. First, the comparison must be against the **flexed** budget wherever output differed from plan, otherwise the variance measures volume rather than performance.',
+              'Second, the label is part of the answer. Adverse means profit is lower than budgeted; favourable means it is higher. For costs, higher actual is adverse; for income, higher actual is favourable.',
+              'At Level 2 you calculate four total variances — materials, labour, overheads and income — plus each one as a percentage of budget. Splitting them into price and usage, or rate and efficiency, is Level 3 work.',
+              'Present each variance as a figure and a word — "£2,900 adverse" — every time. It costs nothing and it protects the mark when the arithmetic is right but the direction is not obvious from the number alone.',
             ],
             formula: 'Variance = Budget − Actual (for costs), or Actual − Budget (for revenue)·Favourable (F): actual costs < budget, or actual revenue > budget·Adverse (A): actual costs > budget, or actual revenue < budget',
           },
@@ -5005,6 +5145,7 @@ window.LEARN_PATH = [
               'The budgeted labour cost per unit is hours per unit × rate per hour. Multiply by the units actually produced to get the flexed budget, then subtract the actual labour cost. A business that budgeted 0.5 hours at £12 and made 12,000 units has a flexed labour budget of £72,000.',
               'One practical point that catches people: the actual figure must be the **total** labour cost, including any overtime premium and bonuses paid, because those are part of what labour actually cost. A comparison of budgeted basic pay against actual basic pay quietly leaves the overtime out.',
               'As with materials, the split into a rate variance and an efficiency variance belongs at Level 3. Here the total, correctly flexed and correctly labelled, is the answer.',
+              'Where a task gives you actual hours and an actual rate rather than a total, multiply them out first and note the figure. Working from two separate numbers invites the price-and-usage split that Level 2 does not ask for.',
             ],
             example: {
               title: 'Total labour variance at 12,000 actual units',
@@ -5034,6 +5175,9 @@ window.LEARN_PATH = [
               'Read a variance statement line by line and label each one before interpreting anything. **Favourable** means better than budget — higher revenue or lower cost; **adverse** means worse.',
               'The direction is not the same on both sides: costs above budget are adverse, but revenue above budget is favourable. Reading a cost variance as though it were revenue is the classic error here.',
               'A variance is a prompt to investigate, not a verdict. A favourable materials variance may simply mean cheaper, poorer material was bought — which shows up later as waste.',
+              'A variance statement is a table with four columns: the line, the budget, the actual, and the variance with its label. Some tasks add a fifth column for the variance as a percentage.',
+              'Fill it in line by line rather than trying to hold several calculations at once, and put the label in every row. A statement of correct figures with the labels missing loses most of its marks.',
+              'Finish by checking that the individual variances reconcile to the difference in profit. If budgeted profit was £15,000 and actual £11,400, the variances must net to £3,600 adverse — and if they do not, one line is wrong.',
             ],
             example: {
               title: 'Budgeted output 1,000 units · Actual output 1,000 units',
@@ -5052,6 +5196,11 @@ window.LEARN_PATH = [
             h: 'Interpreting variances',
             p: [
               'Variances do not just need calculating — they need explaining. Possible causes: price changes, efficiency improvements, production problems, measurement errors, or an unrealistic budget. Managers investigate significant variances (materiality).',
+              'Calculating a variance is the easy half. The specification also asks you to analyse and report on its potential **causes** and its potential **effects**, and those are written answers.',
+              'Causes fall into a few recognisable families. Prices can change in the market. Usage can change through waste, poor quality materials or an inexperienced operator. Volume can change because demand moved. And the budget itself can simply have been set unrealistically.',
+              'Effects are about consequences elsewhere in the business. An adverse materials price variance squeezes margin unless prices rise; an adverse labour efficiency position may signal a training need; a favourable variance achieved by buying cheaper materials often shows up as adverse usage next month.',
+              'That interdependence is the point most worth making in a written answer. Variances are rarely independent, and the best explanations name the linkage rather than treating each line in isolation.',
+              'Keep written answers short and specific. Two sentences naming a plausible cause and a plausible consequence earn more than a paragraph of general observations about cost control.',
             ],
             examtrap: 'A favourable variance is not always good news. Buying cheaper materials might cause an adverse usage variance if quality is poor. Always consider the knock-on effects.',
           },
@@ -5108,6 +5257,7 @@ window.LEARN_PATH = [
               'The financial accounting system aggregates them into statutory financial statements for people outside the business — HMRC, Companies House, the bank, shareholders. Its output is prescribed, its timing is annual, and its figures are historic.',
               'The costing system disaggregates the same transactions for people inside the business. Its output is whatever a decision needs, its timing is as often as managers want it, and its figures may be historic, current or budgeted.',
               'Put crudely: financial accounting answers "what happened to the business as a whole last year?" and costing answers "what did this product cost, and what should it cost next month?"',
+              'One practical consequence: the two systems must reconcile. Total costs analysed in the costing records should agree with total costs in the financial ledger, and a difference means something has been classified inconsistently.',
             ],
             split: {
               left: { title: 'Financial accounting', items: ['External users, statutory purpose', 'Format prescribed by law and standards', 'Annual, after the year end', 'Historic costs only', 'The business as a single entity'] },
@@ -5121,6 +5271,8 @@ window.LEARN_PATH = [
               'Financial accounting uses only **historic cost** — what was actually paid, evidenced by a document. It cannot use a budgeted figure, because a set of published accounts describing what a business hoped to spend would be worthless.',
               'Costing uses **many classifications of the same cost**. One wage payment might be analysed as labour by element, direct by nature, variable by behaviour, and production by function, all at once, and then charged to a particular cost centre and a particular product.',
               'That is why costing can answer questions financial accounting cannot. The financial statements will tell you total wages for the year; only the costing system can tell you the labour cost of the product you are thinking of discontinuing.',
+              'This is also why the same business can report a unit cost of £14.00 internally and value inventory at a different figure externally. Neither is wrong; they answer different questions using different rules.',
+              'When a task asks you to contrast the two systems, name the classification difference explicitly. "Costing analyses the same cost several ways" is the sentence the marker is looking for.',
             ],
             callout: { kind: 'key', text: 'Financial accounting uses historic cost only. Costing uses the same costs classified in as many ways as decisions require — and may use budgeted figures as well as actual ones.' },
           },
@@ -5150,6 +5302,7 @@ window.LEARN_PATH = [
               '**Budgeted cost** is what the business expected the cost to be, agreed in advance. It is not a forecast produced afterwards, and it is not adjusted once the period starts; that is what makes it a standard to measure against.',
               'A costing system can determine a unit, job or batch cost from either. Using actual costs tells you what happened; using budgeted costs lets you quote a price before the work is done, which is precisely when a customer wants a number.',
               'The distinction matters for the exam because the same job can carry two costs — a budgeted cost used for quoting and an actual cost calculated afterwards — and the difference between them is a variance.',
+              'A useful ordering: the budget comes first in time, the actual comes second, and the historic cost is the actual once the period has closed and the figure has become part of the record.',
             ],
             examtrap: 'Historic cost is the only basis financial accounting may use. A question asking which system can work with budgeted figures is asking about costing, and an answer of "both" is wrong.',
           },
@@ -5160,6 +5313,8 @@ window.LEARN_PATH = [
               '**Planning** happens before the period. Budgeted costs let managers decide what to make, what to charge, how many staff to employ, and whether the business can afford a piece of equipment. None of those decisions can wait for actual figures, because by then the period is over.',
               '**Control** happens during and after the period. Comparing actual against budget shows where reality diverged from plan, which is where management attention should go. Without a budget there is nothing to control against — an actual cost on its own is just a number.',
               'This is why the specification pairs the two words. A costing system that only ever reports actual costs supports control weakly and planning not at all; one that only holds budgets can plan but never learns whether the plan worked.',
+              'The loop is what makes the system improve. Last year’s variances are the best available evidence for whether this year’s budget is realistic, which is why control feeds back into planning rather than simply ending in a report.',
+              'A business that budgets but never compares has half a system, and one that compares but never revises the budget has the other half.',
             ],
             flow: ['Budget set before the period', 'Actual costs recorded during it', 'Compare actual with budget', 'Investigate significant differences', 'Feed what you learn into the next budget'],
           },
@@ -5216,6 +5371,7 @@ window.LEARN_PATH = [
               'A **fixed cost stays the same in total** as output changes — rent of £36,000 a year is £36,000 whether you make 1,000 units or 10,000. Divide that total by a rising number of units, though, and the fixed cost **per unit falls**: £36.00 at 1,000 units, £3.60 at 10,000.',
               'A **variable cost** does the opposite. It moves in direct proportion to output, so the total rises as you make more, while the cost **per unit stays the same**. Materials at £4 a unit cost £4,000 or £40,000 in total, but always £4 each.',
               'Hold those two sentences side by side and you have the whole of cost behaviour: fixed is constant in total and falling per unit; variable is rising in total and constant per unit.',
+              'The reason this matters commercially is pricing. A business quoting a price from a unit cost calculated at 4,000 units will underprice badly if it turns out to make 12,000, and overprice if it makes 1,000.',
             ],
             table: {
               head: ['Output', 'Fixed total', 'Fixed per unit', 'Variable total at £4', 'Variable per unit'],
@@ -5247,6 +5403,8 @@ window.LEARN_PATH = [
               'Take fixed costs of £36,000, materials of £4 per unit and labour of £6 per unit. Variable cost is therefore £10 per unit. At 9,000 units, total cost is £36,000 + (9,000 × £10) = £126,000.',
               'Do not multiply the fixed cost by the units, and do not add the fixed cost per unit to the variable cost per unit and then treat the result as a rate. Both errors are easy to make when the question gives you a fixed cost expressed per unit.',
               'Where a stepped cost is involved, check which step the output level falls in **before** you calculate. At 9,000 units a supervision cost that steps every 5,000 units requires two supervisors, not one.',
+              'Write the two elements on separate lines and total them, rather than combining them in one expression. Marks are frequently available for the variable total and the fixed total separately.',
+              'And read the question for which output level is wanted. Tasks often give three levels and ask about one.',
             ],
             formula: 'Total cost = Fixed cost + (Variable cost per unit × Units)  ·  Cost per unit = Total cost ÷ Units',
           },
@@ -5257,6 +5415,7 @@ window.LEARN_PATH = [
               'Continuing the example: at 9,000 units, total cost of £126,000 gives a unit cost of £14.00. At 12,000 units, total cost is £36,000 + £120,000 = £156,000, and the unit cost falls to £13.00.',
               'The £1 fall is entirely the fixed cost per unit dropping from £4.00 to £3.00. The variable element stayed at £10.00 throughout, which it always will.',
               'So when a question asks why unit cost fell, the answer is not "economies of scale" in the abstract. It is that the same fixed cost was spread over more units, and you should be able to show the two figures that prove it.',
+              'Show the split when you answer. "£14.00, being £10.00 variable and £4.00 fixed" demonstrates the understanding the criterion is testing in a way that "£14.00" alone does not.',
             ],
             example: {
               title: 'Unit cost at three output levels',
@@ -5276,6 +5435,7 @@ window.LEARN_PATH = [
               'Write the fixed total into every column, because it does not change. Write the variable cost per unit into every column, because it does not change either. Those two entries alone usually give you enough to derive everything else.',
               'Then work down each column: variable total is the rate times the units, total cost is the two totals added, and cost per unit is the total divided by the units. Every blank cell falls out of that order.',
               'The one thing to watch is the **relevant range**. Fixed costs are only fixed within the range of output the business can handle with its current premises and staff; ask for double the output and the fixed cost steps up. A question that pushes output far beyond the given levels is usually testing whether you noticed.',
+              'Round only at the end and to the precision the task asks for. Rounding a unit cost mid-calculation and then multiplying it back up by the units will not reconcile to the total cost you started from.',
             ],
             examtrap: 'A cost being "fixed" never means it is fixed per unit. If your completed table shows the same fixed cost per unit at two different output levels, you have made an error somewhere.',
           },
@@ -5332,6 +5492,8 @@ window.LEARN_PATH = [
               '**Direct cost** — sometimes called prime cost — is direct materials plus direct labour plus any direct expenses. These are the costs that can be traced to the product without apportionment.',
               '**Manufacturing cost** adds production overhead: the indirect costs of running the factory, absorbed into the product using an overhead absorption rate.',
               'Beyond that come two adjustments for stock. **Cost of goods manufactured** adjusts manufacturing cost for work in progress; **cost of goods sold** adjusts that for finished goods. Each layer adds exactly one thing to the one below it.',
+              'Two of the names have synonyms worth recognising. Direct cost is often called **prime cost**, and manufacturing cost is sometimes called **total production cost**. A task may use either.',
+              'What never varies is the order. Each layer contains everything below it plus one addition, so a figure can never be smaller than the layer beneath it unless a work-in-progress adjustment has reduced it.',
             ],
             flow: ['Direct materials + direct labour + direct expenses = direct cost', '+ production overhead = manufacturing cost', '± work in progress = cost of goods manufactured', '± finished goods = cost of goods sold'],
           },
@@ -5342,6 +5504,7 @@ window.LEARN_PATH = [
               'A **product cost** is incurred in making the goods: direct materials, direct labour and production overhead. It attaches to the units and stays in inventory until they are sold, at which point it becomes cost of sales.',
               'A **period cost** is incurred in running the business rather than in making anything: administration salaries, sales commission, the finance director\'s car. It is charged in full to the period in which it arises and never enters inventory.',
               'The practical consequence is a timing difference. £20,000 of production overhead on unsold goods sits on the statement of financial position; £20,000 of administration cost has already reduced this period\'s profit. Classify a period cost as a product cost and you overstate both inventory and profit.',
+              'The classification also decides where a cost appears in the statement of profit or loss. Product costs are inside cost of sales and therefore above gross profit; period costs are below it.',
             ],
             split: {
               left: { title: 'Product costs', items: ['Direct materials', 'Direct labour', 'Production overhead', 'Held in inventory until sold', 'Become cost of sales on sale'] },
@@ -5378,6 +5541,7 @@ window.LEARN_PATH = [
               'Take cost of goods manufactured, **add** opening finished goods inventory and **deduct** closing finished goods inventory. Opening finished goods were made last period and sold this one; closing finished goods were made this period and will be sold later.',
               'Notice the symmetry with work in progress. Both adjustments answer the same question — which period does this cost belong to? — and both add the opening balance and deduct the closing one.',
               'The result is the figure that appears as cost of sales in the statement of profit or loss. Subtract it from revenue and you have gross profit, which is where the costing system and the financial accounts meet.',
+              'A quick check on both adjustments: if inventory rose over the period, cost of sales must be lower than the cost of what was made, because some of what was made is still on the shelf.',
             ],
             formula: 'Cost of goods sold = Cost of goods manufactured + Opening finished goods − Closing finished goods',
           },
@@ -5448,6 +5612,7 @@ window.LEARN_PATH = [
               'The **manufacturing account** fills that gap. It gathers the costs of production for the period and works them down to a single figure — the cost of goods manufactured — which then behaves exactly like purchases in the statement of profit or loss.',
               'It is prepared before the statement of profit or loss and feeds into it. That ordering matters: the manufacturing account is not part of the profit calculation, it is the input to it.',
               'Because it separates production cost from everything else, it also answers a management question directly. A manager can see what it cost to make the output, without administration and selling costs muddying the figure.',
+              'It is also a control document in its own right. Comparing this year’s prime cost per unit with last year’s tells a manager whether production has become more or less efficient, which the statement of profit or loss cannot show.',
             ],
             callout: { kind: 'key', text: 'The manufacturing account replaces "purchases" for a business that makes its own goods. Its bottom line, cost of goods manufactured, goes straight into cost of sales.' },
           },
@@ -5458,6 +5623,7 @@ window.LEARN_PATH = [
               'In: direct materials consumed, direct labour, direct expenses, and production overhead — factory rent and rates, factory power, depreciation of production machinery, the production supervisor\'s salary, factory insurance.',
               'Out: administration costs, selling and distribution costs, finance costs, and depreciation of office equipment or delivery vehicles. These are period costs and belong in the statement of profit or loss below gross profit.',
               'Costs that serve both the factory and the office are **apportioned**, usually on floor area. If the premises are 70% factory and 30% office, 70% of the rent is production overhead and enters the manufacturing account; the other 30% does not.',
+              'When a task gives you a list of costs and asks which belong in the account, work through it asking one question of each: was this incurred in **making** the goods? Anything to do with selling them, administering the business or financing it is out.',
             ],
             split: {
               left: { title: 'In the manufacturing account', items: ['Direct materials consumed', 'Direct labour', 'Direct expenses', 'Factory rent, rates, power, insurance', 'Depreciation of production machinery', 'Production supervisor and factory management'] },
@@ -5471,6 +5637,7 @@ window.LEARN_PATH = [
               'So the account opens with a short calculation: opening raw materials inventory, plus purchases of raw materials, plus carriage inwards, less closing raw materials inventory. The result is the cost of materials consumed.',
               '**Carriage inwards** — the cost of getting materials to the factory — is added because it is part of what the materials cost to acquire. **Carriage outwards**, the cost of delivering finished goods to customers, is a selling cost and stays out of the account entirely.',
               'Purchase returns are deducted, and any discount received on raw materials reduces the cost too. The principle throughout is that the figure should be what the materials actually consumed genuinely cost.',
+              'Note that only **raw materials** inventory is adjusted here. Work in progress comes later in the account and finished goods do not appear in it at all, which is the subject of the last card in this lesson.',
             ],
             example: {
               title: 'Direct materials consumed',
@@ -5491,6 +5658,7 @@ window.LEARN_PATH = [
               'Materials consumed, plus direct labour, plus direct expenses, gives **prime cost**. Add production overhead to reach **manufacturing cost**. Adjust for opening and closing work in progress to reach **cost of goods manufactured**.',
               'Label each subtotal. An assessment task frequently asks for one of them specifically — "what is the prime cost?" — and an account that runs straight from materials to the bottom line has no answer to give.',
               'The last line is the one that leaves the account. It becomes the production figure in cost of sales, alongside opening and closing finished goods inventory, exactly as purchases would in a retailer.',
+              'Direct expenses are worth a word, because they are easy to forget. They are traceable costs that are neither materials nor labour — a royalty per unit produced, or the hire of a machine for one specific job.',
             ],
             example: {
               title: 'Manufacturing account for the year',
@@ -5515,6 +5683,7 @@ window.LEARN_PATH = [
               '**Raw materials** are bought but not yet issued to production; their adjustment sits at the top of the manufacturing account. **Work in progress** is started but not finished; its adjustment sits at the bottom. **Finished goods** are complete but unsold; their adjustment sits in cost of sales, outside the manufacturing account altogether.',
               'The pattern is the same for all three — add the opening balance, deduct the closing balance — but they belong in three different places, and putting the finished goods adjustment inside the manufacturing account is the classic error.',
               'On the statement of financial position all three appear together as inventory, which is why a question may give you a single total and ask you to split it. Read the labels carefully.',
+              'A question may also ask you to explain **why** the adjustments are made, and the answer is the matching principle: cost is recognised in the period in which the related output is completed or sold, not the period in which the money was spent.',
             ],
             examtrap: 'Carriage inwards is a production cost and belongs in the manufacturing account. Carriage outwards is a selling cost and does not. Getting them the wrong way round changes both the prime cost and the gross profit.',
           },
@@ -5571,6 +5740,7 @@ window.LEARN_PATH = [
               'The reason it is in a costing unit is that this is how costing is done. Nobody apportions overheads on paper any more, and a schedule of budgeted against actual costs is a spreadsheet in every business you will work in.',
               'Two things are examined. **Entering and formatting data** so that a schedule is accurate and readable, and **using formulas** so that the figures are calculated rather than typed. This lesson covers the first.',
               'Practise in a real spreadsheet rather than reading about it. The skills are muscle memory, and the assessment is timed.',
+              'The assessment provides the spreadsheet software, so the version you practise on matters less than the habits. Selecting cells before formatting, checking the cell reference before typing, and reading the instruction twice are what transfer.',
             ],
             callout: { kind: 'key', text: 'This outcome is marked on the contents of the cells, not on your explanation of what you did. Accuracy in the right cell is the whole mark.' },
           },
@@ -5581,6 +5751,7 @@ window.LEARN_PATH = [
               'Type the number and nothing else. No pound signs, no commas, no spaces, and no text such as "units" alongside the figure. A cell containing "£4,200" typed as text cannot be added up, and the formulas that depend on it will fail.',
               'Negative figures are entered with a minus sign, not with brackets typed by hand. Brackets are a **format**, applied to the cell, not characters you type into it.',
               'Check what you typed against what the task said before moving on. Transposition in a spreadsheet is invisible — the cell looks perfectly plausible with the wrong number in it, and every formula downstream inherits the error silently.',
+              'If a task asks for a figure you have to calculate, calculate it with a formula rather than working it out and typing the answer. That is the subject of the next lesson, and it applies here too.',
             ],
             examtrap: 'Never type a currency symbol or a thousand separator into a cell. Both make the entry text rather than a number, and a text entry breaks every calculation that references it.',
           },
@@ -5611,6 +5782,7 @@ window.LEARN_PATH = [
               '**Thousand separators** display 84000 as 84,000 — applied as a format, never typed. **Accountancy format** aligns the currency symbol at the left of the cell and the digits at the right, and shows negatives in brackets, which is the convention every set of accounts uses.',
               '**Percentages** are where the trap sits. Formatting a cell as a percentage multiplies the displayed value by 100, so a variance of 0.035 displays as 3.5%. If you have already calculated 3.5 and then apply percentage format, the cell will show 350%.',
               '**Decimals** are set to the number of places the task asks for, usually two for currency and one for a percentage. Setting decimals is a display change, so the full precision is retained underneath and later calculations are unaffected by the rounding you can see.',
+              'Apply number formats to whole columns rather than individual cells where the task allows it. It is faster, and it avoids the very common mark loss of formatting eight cells in a column of nine.',
             ],
             examtrap: 'A cell formatted as a percentage displays the value × 100. Calculate the ratio (0.035), not the percentage (3.5), and let the format do the multiplication — or you will report a 350% variance.',
           },
@@ -5621,6 +5793,7 @@ window.LEARN_PATH = [
               '**Copy and paste** duplicates cell contents including any formulas, and the specification is explicit that paste values and paste link are not examined. When a formula is pasted into a new column its relative references shift, which is the behaviour you want: a formula summing column B, pasted into column C, sums column C.',
               '**Inserting rows and columns** makes room for a line that was missed. Ranges in existing formulas usually expand to include an inserted row inside them, but a row inserted immediately below the last row of a range often is not picked up — so check any total after inserting.',
               'That check is the whole skill. After any structural change, look at the totals and ask whether they still cover every row they should. A schedule that looks right and totals the wrong range is worse than one that is obviously broken.',
+              'One more habit worth building: after copying a formula across a row, click one of the pasted cells and check that its references shifted the way you expected. Two seconds there saves rebuilding the row.',
             ],
             flow: ['Insert the row where it belongs', 'Enter the data', 'Check every total that should include it', 'Extend any formula that missed it'],
           },
@@ -5677,6 +5850,7 @@ window.LEARN_PATH = [
               'The reason is practical. A schedule built on cell references updates itself when an input changes, and a schedule built on typed answers has to be rebuilt by hand and will eventually be wrong somewhere nobody notices.',
               'The reason for the assessment is stricter still. The marker inspects the formula, not the displayed result, so a cell containing the right number and no formula scores nothing at all.',
               'Every formula begins with an equals sign. Without it the spreadsheet treats what follows as text, and the cell will display the formula rather than its result — which is an immediate and complete loss of the mark.',
+              'This is also why a task will sometimes give you a figure in a cell you have no obvious use for. It is there so that your formula can reference it, and typing its value into your formula instead loses the mark.',
             ],
             callout: { kind: 'key', text: 'The mark is for the formula, not the answer. A cell showing the correct figure with no formula behind it earns nothing.' },
           },
@@ -5687,6 +5861,8 @@ window.LEARN_PATH = [
               'Addition also has a range form: =SUM(B2:B10) adds every cell from B2 to B10 inclusive. The colon means "through", and it is what makes the formula robust — it keeps working when the numbers in those cells change.',
               'Combining operators is expected rather than exceptional. A total cost formula might read =B4*B5+B6, and the assessment specifically notes that formulas will require more than one operation.',
               'Where the order of operations matters, use brackets. Multiplication and division are performed before addition and subtraction, so =B4+B5*B6 multiplies first; if you want the addition first, it must be =(B4+B5)*B6.',
+              'Two conventions are worth stating explicitly. Cell references are not case sensitive, so =b2+c2 works as well as =B2+C2. And a range must run from the top-left cell to the bottom-right, so =SUM(B10:B2) is not a valid range.',
+              'Where a calculation needs several steps, it is usually clearer to put each step in its own cell than to build one long formula. A schedule of short formulas is easier to check and easier to mark.',
             ],
             formula: '=SUM(B2:B10) · =B2+C2 · =B2-C2 · =B2*C2 · =B2/C2 · =(B4+B5)*B6',
           },
@@ -5697,6 +5873,7 @@ window.LEARN_PATH = [
               'No **unnecessary spaces**. No **commas** where a colon is needed: =SUM(B2,C2) is not credited where =SUM(B2:C2) is. No **square or curly brackets** — only round ones. No **brackets around single cells**: =SUM(B1+B2+B3) is not credited where =SUM(B1:B3) is.',
               'No **PRODUCT** for multiplication; use the asterisk. No **numbers in place of cell references**, which is the same rule as "reference, do not retype". No **redundant references** to cells the calculation does not need.',
               'And no **unnecessary signs**: =+C11-B11 and =-(B11-C11) are both rejected where =C11-B11 is correct. Nor should cell references be padded with zeros — A1, not A01.',
+              'The common thread is that the examiner wants the simplest correct formula. Anything added to it — a bracket, a sign, a comma, a space — is treated as evidence that the underlying convention has not been understood.',
             ],
             split: {
               left: { title: 'Credited', items: ['=SUM(B2:B10)', '=B2+C2', '=B4*B5+B6', '=(B4+B5)*B6', '=C11-B11', '=B7/B8'] },
@@ -5710,6 +5887,7 @@ window.LEARN_PATH = [
               'Suppose column B holds the inputs: units in B4, material kilograms per unit in B5, price per kilogram in B6, labour hours per unit in B7, rate per hour in B8, and fixed overhead in B9.',
               'Total material cost is then =B4*B5*B6, total labour is =B4*B7*B8, and total cost is =B10+B11+B9 if the two totals sit in B10 and B11. Cost per unit is =B12/B4 — the total divided by the units, not the sum of the per-unit rates.',
               'Notice that no number appears in any formula. Change the units in B4 and the whole schedule recalculates, which is both the point of a spreadsheet and what the criterion is testing.',
+              'Where a schedule has both a budget column and an actual column, write the formula once in the budget column and copy it across. The relative references shift to the new column, which is exactly the behaviour you want.',
             ],
             table: {
               head: ['Cell', 'What it holds', 'Formula'],
@@ -5731,6 +5909,7 @@ window.LEARN_PATH = [
               'Second, are the references right? Click the cell and look at which cells highlight. It is much easier to see that a formula is pointing at B6 instead of B7 than to deduce it from the answer.',
               'Third, does the formula obey the rules on the previous card? Scan for a comma inside SUM, a stray plus sign at the start, a typed number, or a bracket around a single cell. Those cost the mark even when the arithmetic is perfect.',
               'Then, if there is time, change one input and check that everything downstream moves. A figure that does not move when its input changes was typed, not calculated.',
+              'If a formula returns an error rather than a number, read the error text. A reference to an empty cell, a division by a blank, or a typed word inside a calculation each produce a recognisable message that names the problem.',
             ],
             examtrap: 'Cost per unit is total cost divided by units. Adding the per-unit rates together instead misses the fixed cost per unit entirely, and the error is invisible in the displayed figure.',
           },
@@ -5781,6 +5960,10 @@ window.LEARN_PATH = [
             p: [
               'MATS is the direct Level 3 extension of Principles of Costing. It covers **standard costing and variance analysis**, activity-based costing, advanced budgeting techniques, and performance measurement ratios.',
               'Every topic from POC underpins MATS: cost behaviour, overhead absorption, CVP analysis, contribution, and budget preparation. At Level 3, these are assumed — you apply them in more complex, integrated scenarios.',
+              'MATS takes everything in Principles of Costing and pushes it one level further. Overhead absorption becomes multi-centre absorption with reciprocal service department apportionment. Budgeting becomes full flexible budgeting. Variance analysis splits every total into its components.',
+              'It also adds topics with no Level 2 equivalent: break-even and margin of safety, the high-low method, relevant costing for short-term decisions, limiting-factor analysis, and the reconciliation of marginal and absorption costing profit.',
+              'Those five are previewed in this unit under Management Accounting Techniques rather than taught as Level 2 material, because none of them appears in the Level 2 specification. Reading them now is useful; being examined on them at Level 2 is not something you should expect.',
+              'MATS is also a longer assessment with more written content. Interpreting a variance, recommending a course of action and explaining a limitation all carry marks, which is a change of emphasis from the largely computational Level 2 paper.',
             ],
           },
           {
@@ -5788,6 +5971,9 @@ window.LEARN_PATH = [
             p: [
               'A **standard cost** is a predetermined expected cost for each element of production. The **standard cost card** sets out: standard material cost (standard price × standard quantity per unit), standard labour cost (standard rate × standard hours per unit), and standard overhead cost (OAR × standard hours).',
               'Standards are set from past performance, engineering specifications, and market prices. They provide a benchmark against which actual costs are compared.',
+              'A **standard cost** is a predetermined cost per unit, built up from standard quantities at standard prices — 2 kg at £3.50 and 0.5 hours at £12, for instance. It is more detailed than a budget, because it specifies both the quantity and the rate for every element.',
+              'That detail is what makes the Level 3 variance analysis possible. Once you know both the standard quantity and the standard price, a total variance can be split into the part caused by paying a different price and the part caused by using a different quantity.',
+              'Standards themselves have to be set, and Level 3 asks you to think about how. An **ideal** standard assumes perfect conditions and is demotivating; an **attainable** standard assumes normal efficiency and is what most businesses use.',
             ],
             example: {
               title: 'Standard cost card (per unit)',
@@ -5806,6 +5992,8 @@ window.LEARN_PATH = [
             p: [
               'A **variance** is the difference between the actual cost and the standard cost. **Favourable (F)**: actual cost < standard cost (good news — cost less than expected). **Adverse (A)**: actual cost > standard cost (bad news — cost more than expected).',
               'At Level 3, you calculate: materials price variance and usage variance; labour rate variance and efficiency variance; and overhead variances. Each variance identifies a specific aspect of performance and points management to areas for investigation.',
+              'The split follows a consistent pattern for both materials and labour. The **price** or **rate** variance holds quantity constant and measures the effect of the price difference; the **usage** or **efficiency** variance holds price constant and measures the effect of the quantity difference.',
+              'The two always add back to the total variance you calculated at Level 2, which is a useful check and also a useful way to see what Level 3 is adding: not a new answer, but an explanation of the answer you already had.',
             ],
             formula: 'Materials price variance = (Standard price − Actual price) × Actual quantity purchased·Materials usage variance = (Standard quantity for actual output − Actual quantity used) × Standard price·Labour rate variance = (Standard rate − Actual rate) × Actual hours paid·Labour efficiency variance = (Standard hours for actual output − Actual hours worked) × Standard rate',
           },
@@ -5814,6 +6002,9 @@ window.LEARN_PATH = [
             p: [
               'A **fixed budget** is set at the start of the period and does not change with volume. A **flexible budget** is adjusted to the actual output level achieved — variable costs are scaled proportionally, fixed costs remain unchanged.',
               'Comparing actual results to the **flexed budget** gives meaningful variances. Comparing to the original fixed budget when output has changed is misleading: the volume difference alone could create apparent variances that are not about efficiency at all.',
+              'You have met flexing at Level 2 in its simplest form — recalculating variable costs at the actual activity level. Level 3 extends it to semi-variable and stepped costs, which is where the high-low method becomes necessary.',
+              'A semi-variable cost cannot be flexed until its fixed and variable elements have been separated, and high-low separates them from two observations of total cost at two activity levels. That is the one genuinely new technique in the topic.',
+              'Stepped costs need judgement rather than arithmetic: you have to decide which step the actual activity level falls into before flexing, and a step boundary crossed mid-period has to be handled explicitly.',
             ],
             formula: 'Flexed budget variable cost = (Actual units ÷ Budgeted units) × Budgeted variable cost·Flexed budget fixed cost = Budgeted fixed cost (unchanged)·Volume variance = (Actual units − Budgeted units) × Standard contribution per unit',
           },
@@ -5822,6 +6013,10 @@ window.LEARN_PATH = [
             p: [
               'OAR calculations, overhead absorption and over/under absorption, marginal vs absorption costing, CVP analysis (contribution, break-even, margin of safety), budget preparation, and limiting factors from POC all carry directly into MATS.',
               'At Level 3, you add variance analysis and flexible budgeting on top of this foundation. Students who mastered POC find MATS is a natural progression. The hardest new skill — variance analysis — is just comparing actual to standard using the same arithmetic you have been using throughout Level 2.',
+              'The transferable skills are the mechanical ones: absorbing overhead, valuing inventory, calculating labour payments, flexing a budget and labelling a variance. MATS assumes all of these and re-teaches none of them.',
+              'What MATS adds is interpretation and decision-making, and those need spare capacity. A student still working out whether a variance is adverse has none left for explaining what caused it.',
+              'The practical advice is therefore the same as for the other units: work at Principles of Costing until the calculations are automatic. The Level 3 material is not harder arithmetic, it is more of it, applied to questions that also want an argument.',
+              'One concrete piece of preparation you can do now is to get fluent with the spreadsheet skills in Learning outcome 4. Level 3 assessments make heavier use of them, and they are the only part of this unit that is pure practice.',
             ],
           },
         ],
