@@ -305,7 +305,7 @@
         'Gross profit = Revenue − COGS',
         'FIFO: oldest items sold first; newest remain in closing inventory',
         'AVCO: weighted-average cost, recalculated after each purchase',
-        'LIFO: not permitted under IFRS or UK GAAP',
+        'LIFO: newest items issued first; examined for internal use only, and not permitted under IFRS or UK GAAP',
       ]},
       { title: 'Depreciation', items: [
         'Straight-line = (Cost − Residual) ÷ Useful life',

@@ -2808,7 +2808,7 @@ window.ALL_QUESTIONS = [
     q: 'Which of the following are recognised methods of inventory valuation?',
     opts: ['FIFO, LIFO and AVCO', 'PAYE, NIC and VAT', 'Fixed, variable and semi-variable', 'Direct, indirect and overhead'],
     ans: 0,
-    exp: 'FIFO, LIFO and AVCO are the three classic inventory valuation methods. Note: LIFO is not permitted under IFRS or UK GAAP.' },
+    exp: 'FIFO, LIFO and AVCO are the three classic inventory valuation methods, and the Level 2 syllabus requires all three. LIFO is examined for internal management accounting use only, because it is not permitted for financial reporting under IFRS or UK GAAP.' },
 
   { id: 'poc-090', topic: 'poc', difficulty: 'medium',
     q: 'Which of the following is relevant in decision making?',
