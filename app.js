@@ -15,6 +15,22 @@
   // the first time the subject is opened — see ensureSubjectAssets()/loadScript().
   const SUBJECT_REGISTRY = [
     {
+      /* Level 1 renders itself — see aat1-ui.js — on the same terms as Level 3:
+         `ui` names the global that render() delegates to, and app.js takes no
+         further part. See the note on the Level 3 entry below for why. */
+      id: 'aat1', name: 'AAT Level 1', short: 'AAT L1', flag: '📘', color: '#0D8A7A',
+      desc: 'Bookkeeping Fundamentals — the Level 1 Award in Bookkeeping',
+      meta: '26 steps · 5 outcomes · beginner',
+      tabs: ['home'],
+      ui: 'AAT1_UI',
+      assets: ['aat1-syllabus.js', 'aat1-learn-data.js', 'aat1-practice-data.js', 'aat1-ui.js'],
+      activate() {
+        /* No shared globals: Level 1 reads its own data directly. Empty values
+           keep any incidental app.js reference safe. */
+        window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };
+      }
+    },
+    {
       id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
       desc: 'Prepare for the Q2022 Business Environment Synoptic Assessment',
       meta: '631 questions · Mock exams · T-Accounts',
@@ -29,8 +45,9 @@
          are untouched by anything Level 3 does. */
       id: 'aat3', name: 'AAT Level 3', short: 'AAT L3', flag: '📗', color: '#4F46E5',
       desc: 'Tax Processes for Businesses — VAT and payroll for the Q2022 Level 3 Diploma',
-      meta: 'Outcome 2 of 5 · 7 lessons · FA2025',
+      meta: '5 outcomes · 21 lessons · FA2025',
       tabs: ['home'],
+      ui: 'AAT3_UI',
       assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-ui.js'],
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values
@@ -3128,13 +3145,16 @@
   function render() {
     const el = app();
 
-    /* Level 3 owns its own rendering entirely. Delegating here — before any of
-       the Level 2 screens or attachEvents() run — is what keeps the two apart. */
-    if (_activeSubjectId === 'aat3' && window.AAT3_UI && State.screen !== 'subjects') {
-      window.AAT3_UI.mount(el);
+    /* The self-rendering subjects (Levels 1 and 3) own their screens entirely.
+       Delegating here — before any of the Level 2 screens or attachEvents() run
+       — is what keeps them apart. A subject opts in by naming its global in
+       `ui`; nothing else in app.js needs to know which subjects those are. */
+    const _own = getSubject(_activeSubjectId).ui;
+    if (_own && window[_own] && State.screen !== 'subjects') {
+      window[_own].mount(el);
       applyChrome();
       const sw = document.getElementById('subjectSwitcherBtn');
-      if (sw && !sw._a3) { sw._a3 = true; sw.addEventListener('click', () => { State.screen = 'subjects'; render(); }); }
+      if (sw && !sw._selfUi) { sw._selfUi = true; sw.addEventListener('click', () => { State.screen = 'subjects'; render(); }); }
       return;
     }
 
@@ -8602,10 +8622,12 @@
     renderReferencePanel();
     updateRefToggleBtn();
     if (Storage.data.settings.seenSplash) State.screen = 'home';
-    /* Level 3 carries no shared question bank — it reads its own data — so this
-       guard would fire on a healthy load. Skip it when Level 3 is ready. */
-    const _l3 = _activeSubjectId === 'aat3' && window.AAT3_UI && window.AAT3_LEARN_PATH;
-    if (!_l3 && (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length)) {
+    /* The self-rendering subjects carry no shared question bank — each reads its
+       own data — so this guard would fire on a healthy load. Skip it when the
+       active subject's own renderer is ready. */
+    const _ownUi = getSubject(_activeSubjectId).ui;
+    const _self = !!(_ownUi && window[_ownUi]);
+    if (!_self && (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length)) {
       const el = app(); if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="alert">⚠️ Question bank failed to load. Please reload the page.</div></div>`;
       const _c = document.getElementById('page-cover'); if (_c) _c.remove();
       return;
