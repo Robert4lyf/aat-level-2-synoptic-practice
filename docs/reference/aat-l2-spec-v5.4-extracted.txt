@@ -1,0 +1,5387 @@
+Qualification Number: 603/6338/1 
+Qualification Specification 
+Version 5.4 published May 2025 
+
+ 
+Updates to this specification 
+
+Since first publication of the Level 2 Certificate in Accounting, the following areas of 
+the qualification specification have been updated. 
+
+Version 
+
+Date first published 
+
+What has been updated 
+
+   Version 5.5 
+
+24 September 2025 
+
+  Version 5.4 
+
+14 May 2025 
+
+Updated information and links on the following 
+paragraphs: 
+About AAT 
+Ethics: we set and raise standards 
+Student Registration: Support every step of the 
+way 
+Test specification for Introduction to 
+Bookkeeping   unit assessment – link updated 
+
+Updates made to reflect change to Partner 
+Support / Partner Account Manager 
+
+  Version 5.3 
+
+10 January 2025 
+
+Section 5: RPL statement updated  
+
+Version 5.2 
+
+24 July 2024 
+
+Version 5.1 
+
+15 April 2024 
+
+Section 9: Removal of synoptic windows 
+statement 
+
+Section 11: Units (Removal of PCTN pre 15 
+April 2024) 
+
+Version 5.0 
+
+8 March 2024 
+
+Section 5 (update to RPL statement) 
+
+Version 4.2 
+
+11 January 2023 
+
+Section 11: Units (Changes to PCTN in effect 
+from 15 April 2024) 
+
+Version 4.1 
+
+06 July 2023 
+
+Section 9.7: clarification of re-sit restrictions. 
+
+Version 4.0 
+
+09 January 2023 
+
+Section 11: Units (clarification to The Business 
+Environment LO4.1, 4.3) 
+
+Version 3.1 
+
+10 June 2022 
+
+Version 3.0 
+
+21 January 2022 
+
+Version 2.1 
+
+24 September 2021 
+
+Version 2.0 
+
+23 April 2021 
+
+Removal of tracked changes throughout 
+document.  
+
+Qualification go-live date 
+Qualification technical information – see 
+updated Level 2 document (PDF) 
+Section 5.5 / 6.1: Inclusion of dedicated 
+webpage to the RPL and exemptions policy 
+
+Section 11: Units (additions / omissions 
+highlighted in red) 
+
+Section 9.6: Results 
+Section 10: Grading 
+Section 11: Units (additions / omissions 
+highlighted in blue) 
+
+Updates to this specification 
+
+2 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Version 1.0 
+
+1 September 2020 
+
+First publication 
+
+This qualification is approved and regulated by: 
+
+• 
+
+the Office of Qualifications and Examinations Regulation (Ofqual) in England and 
+internationally 
+the Council for the Curriculum, Examinations and Assessment (CCEA) in Northern Ireland 
+
+• 
+•  Qualifications Wales. 
+
+Updates to this specification 
+
+3 
+
+ 
+ 
+ 
+ 
+ 
+Contents 
+
+Updates to this specification .................................................................................................. 2 
+
+Contents.................................................................................................................................... 4 
+
+1.  About AAT ....................................................................................................................... 5 
+
+2.  Ethics: we set and raise standards ............................................................................. 6 
+
+3.  Student registration: support every step of the way ................................................. 7 
+
+4.  Choosing to study the AAT Level 2 Certificate in Accounting ................................ 8 
+
+5.  About the AAT Level 2 Certificate in Accounting .................................................... 11 
+
+6.  Exemptions ................................................................................................................... 13 
+
+7.  Employer involvement ................................................................................................. 14 
+
+8.  Support for this qualification ....................................................................................... 15 
+
+9. 
+
+The assessment in detail ............................................................................................ 16 
+
+10. 
+
+11. 
+
+Grading ...................................................................................................................... 19 
+
+Units ........................................................................................................................... 23 
+
+Introduction to Bookkeeping ................................................................................................ 25 
+
+Principles of Bookkeeping Controls ................................................................................... 37 
+
+Principles of Costing ............................................................................................................. 45 
+
+The Business Environment .................................................................................................. 55 
+
+12. 
+
+13. 
+
+14. 
+
+15. 
+
+Synoptic assessment specification ........................................................................ 66 
+
+Delivering AAT qualifications .................................................................................. 69 
+
+Equality and diversity ............................................................................................... 71 
+
+Support for training providers ................................................................................. 73 
+
+Contents 
+
+4 
+
+ 
+ 
+ 
+ 
+1. About AAT 
+
+AAT is a trusted brand for quality-assured accountancy qualifications across the globe, 
+working with students and members, and partnering with AAT-approved training providers. 
+We also have licensed members throughout the UK. Our members are represented at 
+every level of the finance and accounting world, including students studying for a career in 
+finance, people already working in accountancy and self-employed business owners. To 
+find out more about us and our impact, please visit aat.org.uk/about/what-we-do 
+
+AAT members are ambitious, focused accounting professionals. Many of our members 
+occupy senior, well rewarded positions with thousands of employers – from blue-chip 
+corporate giants to public sector institutions. 
+
+AAT qualifications are universally respected and internationally recognised. Organisations 
+hire AAT qualified members for their knowledge, skills, diligence and enthusiasm because 
+AAT represents the highest standards of professionalism. 
+
+In short, an AAT qualification is a route to some of the most in-demand skills in the world 
+and provides our students and members with a professional status to be proud of. 
+
+Find out more about AAT  
+
+1. About AAT 
+
+5 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2. Ethics: we set and raise standards 
+
+AAT is about more than qualifications. AAT is recognised and respected as a professional 
+membership body by a wide range of businesses. We require our members to take a 
+professional and ethical approach throughout their accountancy and finance careers. 
+
+It is because of our exceptionally high standards and the professionalism of our members 
+that AAT members are so highly regarded. This is a benefit to us as a professional body 
+and to our members. 
+
+We publish the AAT Code of Professional Ethics, which sets out a code of fundamental 
+ethical principles and supporting guidance, and is based on the IFAC Code of Ethics for 
+Professional Accountants. The decisions that an accounting technician makes in the course 
+of their professional life can have real ethical implications, and this is where the Code can 
+help. It: 
+
+•  sets out the required standards of professional behaviour with guidance to help 
+
+our members achieve them 
+
+•  helps our members to protect the public interest 
+•  helps our members to maintain AAT’s good reputation and public confidence. 
+
+To reflect the realities of the workplace, we have embedded ethical dilemmas and decision 
+making throughout the content of AAT’s qualifications and assessments. This will help to 
+set our students on the right path as they embark on careers as accountancy or finance 
+professionals. 
+
+2. Ethics: we set and raise standards 
+
+6 
+
+ 
+ 
+ 
+ 
+ 
+ 
+3. Student registration: support every step of the way 
+
+Registering with AAT is essential if students wish to study an AAT qualification. Once 
+students have registered and purchased access to their desired qualification, they will be 
+able to:  
+
+•  sit AAT assessments 
+•  access AAT support resources to supplement the qualification learning and aid 
+
+career progression.  
+
+AAT registration is a one-off fee, giving students access to the purchased qualification for 
+the lifespan of the qualification. Additional fees will apply for sitting AAT assessments.  
+
+We support and develop our students through AAT Approved training providers across the 
+world. We also have an extensive branch network where students can access support and 
+training and meet other AAT students and professional members in their local area. 
+
+Prospective students wishing to register for the AAT Level 2 Certificate in Accounting can do 
+so at aat.org.uk/register/student  
+
+Students are advised to register with an AAT Approved training provider before registering 
+with AAT. On registration, an email confirming registration and AAT registration number will 
+be sent. 
+
+Find out more about the benefits of registering 
+with AAT 
+
+3. Student registration: support every step of the way 
+
+7 
+
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4. Choosing to study the AAT Level 2 Certificate 
+
+in Accounting 
+
+4.1  Who should choose to study this qualification? 
+
+The Level 2 Certificate in Accounting is ideal for anyone wishing to study accountancy and 
+finance alongside a range of complementary business and personal skills. 
+
+The purpose of the Level 2 Certificate in Accounting is to offer the foundation accounting 
+knowledge needed to progress to employment or further study in accountancy and finance, 
+alongside business and personal skills that are transferable to any sector and additional 
+business knowledge relevant to accountancy. The qualification offers a broader focus 
+across several subject areas which enhances employability and is particularly suitable for 
+young people studying full-time. 
+
+4.2  Why choose this qualification? 
+
+Students should choose the Level 2 Certificate in Accounting if they’re interested in 
+developing transferable business and personal skills alongside their core accountancy 
+skills. This qualification may also be valuable for those entering the workplace for the first 
+time or for those changing careers who would like additional support in upskilling to enter, 
+or re-enter, a business environment.  
+
+In developing this qualification, AAT has carried out extensive consultation with and 
+received input from a wide variety of stakeholders, including industry experts, employers 
+and training providers. AAT qualifications benefit from being globally recognised and 
+they’re valued by leading employers, from small high street firms to large accountancy 
+businesses. They offer students flexible study options, with over 500 AAT Approved 
+training providers around the world. 
+
+4.3  What does the qualification cover? 
+
+The Level 2 Certificate in Accounting covers a broad range of core accounting skills, as 
+well as accountancy-related business skills and personal skills. Key themes have also 
+been introduced throughout the suite of accounting qualifications, including technology, 
+ethics, sustainability and communication. 
+
+This qualification comprises four mandatory units (255 guided learning hours in total): 
+
+Introduction to Bookkeeping 
+
+• 
+•  Principles of Bookkeeping Controls 
+•  Principles of Costing 
+•  The Business Environment. 
+
+Working in accountancy requires good communication skills, information technology (IT) 
+skills and an understanding of the business environment, as well as an understanding of 
+daily finance/accounting functions. The purpose of this qualification is to ensure that 
+students are well rounded and well prepared to progress into a career in business, finance 
+or professional accountancy, or into further education. 
+
+4. Choosing to study the AAT Level 2 Certificate in Accounting 
+
+8 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+A student completing this qualification will develop accountancy skills in double-entry 
+bookkeeping and basic costing, as well as an understanding of purchase, sales and 
+general ledgers. Students will learn an understanding of accounting software and develop 
+the professional skills and behaviours needed to contribute effectively in the workplace. 
+Working in accountancy requires good communication skills, IT skills and an understanding 
+of the business environment, all of which are covered by this qualification.  
+
+The qualification develops additional business skills that have particular relevance to those 
+working in accountancy, finance and general business roles. Students are introduced to 
+elements of commercial law that might have an impact on them when working in 
+accountancy, such as contract law, employment law and company law. In addition, 
+students will further develop their business communication and personal skills and will learn 
+how to manage their personal and professional development through lifelong learning. 
+
+Three units are assessed individually in end-of-unit assessments. This qualification also 
+includes a synoptic assessment that draws on and assesses knowledge and understanding 
+from across a number of units. 
+
+4.4  What will this qualification lead to? 
+
+The accountancy and business skills developed by studying this qualification will enable a 
+student to seek employment with confidence and/or to progress to the next level of 
+learning. 
+
+A student completing this qualification will develop skills in double-entry bookkeeping and 
+will understand how to use journals, control accounts and a trial balance. Students will also 
+gain an understanding of accounting software packages, how to process financial 
+information in accordance with company procedures and schedules, and how to provide 
+information to colleagues, suppliers and/or customers as required.  
+
+Skills developed through this qualification could lead to employment as: 
+
+•  an Accounts Administrator 
+•  an Accounts Assistant 
+•  an Accounts Payable Clerk 
+•  a Purchase/Sales Ledger Clerk  
+•  a Trainee Accounting Technician 
+•  a Trainee Finance Assistant. 
+
+The accountancy and finance knowledge developed in this qualification is also the 
+underpinning knowledge needed for the higher-level accountancy and financial skills 
+developed in the Level 3 Diploma in Accounting and the Level 4 Diploma in Professional 
+Accounting. For example, double-entry bookkeeping at Level 2 is the basis for Financial 
+Accounting: Preparing Financial Statements (Level 3), which leads on to Drafting and 
+Interpreting Financial Statements (Level 4).   
+
+4. Choosing to study the AAT Level 2 Certificate in Accounting 
+
+9 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4.5  Is this part of an apprenticeship? 
+
+The Level 2 Certificate in Accounting is included as a recognised qualification for students 
+to demonstrate competence as part of gateway requirements for the Accounts/Finance 
+Assistant apprenticeship.  
+
+AAT understands that not everyone can access an apprenticeship. In these cases, there 
+are compelling reasons to choose to take this high-quality qualification, which is valued 
+because of its track record of delivering successful employment outcomes outside of the 
+apprenticeship. AAT has many examples of unemployed and career-change students of all 
+ages who have gained employment directly as a result of achieving this qualification.
+
+4. Choosing to study the AAT Level 2 Certificate in Accounting 
+
+10 
+
+ 
+ 
+ 
+ 
+5. About the AAT Level 2 Certificate in Accounting 
+
+Qualification name 
+
+AAT Level 2 Certificate in Accounting 
+
+Qualification number 
+
+603/6338/1 
+
+Level 
+
+Guided learning hours (GLH) 
+
+Total qualification time (TQT) 
+
+2 
+
+255 
+
+340 
+
+5.1  Guided learning hours (GLH) value 
+
+The total GLH value for the Level 2 Certificate in Accounting is 255 hours. 
+
+The GLH value for a qualification is an estimate of the amount of time a student spends 
+learning under the supervision of a teacher or tutor. This might include lectures, tutorials or 
+supervised study carried out either face-to-face or remotely. Time spent by tutors, teachers or 
+external experts assessing student performance is also included. It doesn’t include time that 
+students spend on unsupervised preparation or study. 
+
+The GLH value is set and recommended as appropriate by AAT, but some students may need 
+more or less support to achieve the qualification. The GLH value is not a compulsory measure 
+for all students. Training providers have the flexibility to offer the qualification in the hours 
+required by their own students, within the constraints of any funded provision requirements. 
+
+5.2  Total qualification time (TQT) value 
+
+The TQT value for the Level 2 Certificate in Accounting is 340 hours. 
+
+The TQT value is also a measure of how long it takes to complete a qualification, but it 
+includes both GLH and unsupervised learning. 
+
+Any independent study time or any additional work by the student that is directed by, but not 
+under the supervision of, a tutor is included in the TQT value. This might include working 
+through e-learning at home or time spent on independent research. 
+
+5.3  Are there any prerequisites for this qualification?  
+
+AAT does not set any entry requirements for this qualification. 
+
+However, for the best chance of success, we recommend that students begin their studies 
+with a good standard of English and maths. Accountants work at the very heart of a business 
+and are expected to be able to communicate information clearly and appropriately to a given 
+audience.  
+
+AAT recommends that students use AAT Skillcheck to ensure that they’re ready to start on a 
+particular qualification. 
+
+5. About the AAT Level 2 Certificate in Accounting 
+
+11 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+5.4  Will current students be able to transfer their results onto this qualification to 
+
+complete their studies?  
+
+Students who have already started an AAT qualification should try to complete their studies 
+on their current programme where possible. 
+
+If this is not possible, transitional arrangements may be available. In some cases, students 
+may be able to transfer results for current units to similar units in an updated qualification, 
+although this will be strictly time-limited. 
+
+It’s important to check for the latest information to see if transitional arrangements apply. You 
+can find out more in the transitional arrangements PDF here aat.org.uk/files/AAT-AQ2016-
+Q2022-transitional-arrangements.pdf 
+
+5.5  Recognition of prior learning (RPL) 
+
+If a student can demonstrate that they already have the knowledge and skills to meet the 
+requirements for a unit assessment, they may be eligible for RPL. This must be arranged 
+through a registered AAT training provider and mapping of the student’s skills and knowledge 
+must be uploaded to AAT’s assessment platform.  
+
+RPL is planned to be made available from mid-20225. Please refer to the AAT RPL Policy for 
+full details on restrictions and the process. There are restrictions on the number of units that 
+may be claimed by RPL to ensure that at least 50% of the qualification will always be 
+externally assessed. Where RPL is successfully claimed for a unit assessment, the student 
+will be given a pass mark for that assessment and this mark will be used in determining the 
+final qualification grade. In order to achieve a higher mark, the student must sit a standard 
+assessment instead.  
+
+It is not possible to claim RPL for the synoptic assessment. This assessment must be 
+completed and passed in order for the student to be awarded this qualification. More details 
+on RPL can be found in the AQ2016 to Q2022 Transitional Arrangements (PDF) document at 
+AAT-AQ2016-Q2022-transitional-arrangements.pdf and the dedicated RPL and 
+exemptions webpage at aat.org.uk/qualifications-and-courses/exemptions-recognition-
+prior-learning 
+
+5. About the AAT Level 2 Certificate in Accounting 
+
+12 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+6. Exemptions 
+
+6.1  Exemptions from AAT assessments 
+
+Exemptions may be offered to students who can provide evidence of gaining a previous, 
+relevant qualification. If eligible, students may be exempt from sitting some AAT 
+assessments. Fees will be charged for exemptions. 
+
+For this qualification, no exemption can be claimed for the synoptic assessment or for units 
+that are assessed only via the synoptic assessment. There are restrictions on the number of 
+units that may be claimed by exemption to ensure that at least 50% of the qualification will 
+always be externally assessed. Where an exemption is successfully claimed for a unit 
+assessment, the student will be given a pass mark for that assessment and this mark will be 
+used in determining the final qualification grade. In order to achieve a higher mark, the 
+assessment must be taken as normal.  
+
+More details on exemptions can be found in the AQ2016 to Q2022 Transitional 
+Arrangements (PDF) and the dedicated exemptions and RPL webpage at 
+aat.org.uk/qualifications-and-courses/exemptions-recognition-prior-learning 
+
+6.2  Exemptions from chartered accountancy bodies 
+
+For students who wish to become chartered accountants, the study of AAT qualifications 
+may also offer exemptions from the exams required by a range of chartered accountancy 
+bodies. Full details on exemptions from chartered accountancy bodies can be found at 
+aat.org.uk/membership/professional-membership/reduced-membership-chartered
+
+6. Exemptions 
+
+13 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+7. Employer involvement 
+
+AAT qualifications are recognised and valued by employers as vocational and technical 
+qualifications that prepare students for the world of work and for working specifically in 
+accountancy and finance roles. 
+
+7.1  Employer involvement in development and assessment 
+
+AAT has worked closely with employers in the development of this qualification to ensure 
+that the qualification demands the skills that an employer would expect of a student at this 
+level. 
+
+Employers also contribute to the development of the live materials used to assess students 
+on completion of their study. Employer involvement in the assessment of this qualification 
+includes reviewing and editing the synoptic assessments and scenarios used to ensure 
+that they reflect realistic working practices and environments. 
+
+Training providers offering this qualification to 16 – 19 year olds, registered in England, 
+may be required to prepare an employer engagement action plan. Requirements specified 
+by the Department for Education will be confirmed as soon as possible. 
+
+8. Support for this qualification 
+
+14 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+8. Support for this qualification 
+
+8.1  AAT qualification support 
+
+Throughout the life of this qualification, AAT will make available a range of free materials 
+and resources to support tutors and students in delivery and assessment. 
+
+Materials produced for this qualification will include: 
+
+•  practice assessments for each unit 
+•  one Sample Assessment and Mark Scheme (Introduction to Bookkeeping) 
+•  Qualification Technical Information (QTI) 
+•  annual Chief Examiner reports.  
+
+Additional materials may also include:  
+
+•  e-learning 
+•  Green Light tests 
+•  webinars 
+• 
+
+tutor-to-tutor sessions at network meetings. 
+
+All AAT study support resources can be accessed via the AAT Lifelong Learning Portal. 
+
+8.2  Published materials 
+
+A number of commercial publishers produce support materials for AAT qualifications. While 
+AAT ensures that commercial publishers have the information, they need to produce 
+materials in good time to support the qualifications, AAT does not formally endorse any 
+specific publisher and it does not review publishers’ materials for accuracy. 
+
+Tutors are reminded to always refer to the unit content within this specification for what to 
+teach and what will be assessed and to refer to a range of support materials where 
+possible. While published materials can offer excellent support and variety in teaching and 
+learning, they should not be used without reference to this specification. 
+
+8. Support for this qualification 
+
+15 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+9. The assessment in detail 
+
+9.1  How will students be assessed? 
+
+Students must successfully achieve the three mandatory unit assessments and one 
+synoptic assessment to achieve this qualification. The proportion of this qualification 
+assessed by externally marked assessment is 100%. 
+
+All assessments in this qualification: 
+
+•  are set and marked by AAT (with the exception of RPL, which is marked by the 
+
+training provider) 
+•  are computer based 
+•  are time-limited 
+•  are scheduled by training providers or assessment venues 
+• 
+
+take place at approved training providers and assessment venues under 
+controlled conditions. 
+
+9.2  Availability of assessments 
+
+All assessments are available to be scheduled on demand throughout the year.   
+
+Students should only be scheduled for the synoptic assessment once all other required 
+units that contribute to the synoptic assessment have been scheduled. 
+
+9.3  Controlled conditions 
+
+AAT has published detailed regulations for training providers and assessment venues 
+regarding how to conduct computer based assessments. 
+
+Training providers and assessment venues must ensure that they comply with the minimum 
+and supporting requirements for the hardware and software used in the delivery of AAT 
+assessments and must ensure that all assessments are delivered securely. 
+
+Each training provider and assessment venue must have at least one computer based 
+assessment (CBA) administrator and at least one invigilator. Training providers and 
+assessment venues must ensure that all assessments are invigilated and conducted in 
+accordance with AAT policies and procedures. To avoid any possible conflict of interest, the 
+CBA administrator(s) and invigilator(s) for an assessment must not be an active AAT 
+student or related to any student taking that assessment, and must not be or have been a 
+tutor involved in preparing students for any of the units that are being assessed.  
+
+AAT requirements and regulations for how to conduct assessments within this qualification 
+will be detailed in an updated version of the Instructions for conducting AAT computer 
+based assessments (CBAs) guidance document. This will be hosted on a dedicated 
+assessment support webpage for Qualifications 2022.  
+
+9. The assessment in detail 
+
+16 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+9.4  Sitting the assessment 
+
+The assessments in this qualification are computer based, with a time restriction. Details on 
+assessment duration for each unit has been included in Section 11: Units. 
+
+Students will be presented with a range of question types and formats in the assessment. 
+These may include multiple-choice questions, numeric gap-fill questions, or question tools 
+that replicate workplace activities such as making entries in a journal. In the synoptic 
+assessment, some tasks will require written extended responses. While tasks generally do 
+not have to be completed in a specific order, students are encouraged to proceed through 
+them in the order in which they are presented. 
+
+Students should familiarise themselves with the CBA environment, assessment platform 
+software and some of the question styles that they might encounter in the exam by using 
+the practice assessment materials provided by AAT. Registered students may access the 
+Lifelong Learning Portal and practice assessment materials through MyAAT. 
+
+9.5  Marking 
+
+Assessments in this qualification are marked by AAT, with the exception of RPL, and may 
+be either: 
+
+•  wholly computer marked 
+•  partially computer marked and partially human marked. 
+
+Computer marking is completed within the assessment software in accordance with an 
+objective marking scheme devised during assessment development. Human marking is 
+conducted by a team of markers, with appropriate subject matter knowledge, who are 
+appointed by AAT.  
+
+Markers use mark schemes devised during assessment development. 
+
+Assessments undergo regular quality assurance, which includes: 
+
+•  standardisation of markers 
+•  sampling for marking consistency 
+review of borderline scripts. 
+• 
+
+9. The assessment in detail 
+
+17 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+9.6  Results 
+
+Results for computer marked assessments are made available via MyAAT within 24 hours 
+of submitting the assessment. Results for the synoptic assessment will be made available 
+within six weeks of the last day of the synoptic window. 
+
+Students will be advised on what percentage of the marks available they achieved in their 
+assessments. 
+
+AAT’s feedback service provides a simple summary of students’ performance in each 
+assessment. The feedback statement confirms their overall result and a breakdown of 
+performance by task. Students will also be able to see marks available and marks achieved 
+against each task position.  
+
+Feedback statements are automatically generated and are designed to help students 
+identify their strengths and any topic areas requiring further study. The student is presented 
+with a short descriptor for each task to describe their performance in that task against the 
+topics assessed. There are four feedback descriptors. Each descriptor provides an 
+indication of how the student has performed in that task and includes generic advice on 
+how to proceed with their studies or continuing professional development (CPD). 
+
+9.7  Re-sits 
+
+Students should only be entered for an assessment when they are well prepared, and they 
+are expected to pass the assessment. Where a student is unsuccessful in an assessment 
+attempt, they should discuss their results with their tutor and revise appropriately before 
+retaking the assessment. 
+
+This qualification is not subject to re-sit restrictions. 
+
+9.8  Enquiries and appeals 
+
+If the student thinks that their assessment outcome does not reflect their performance, they 
+can submit an enquiry. Full details of the process can be found on AAT’s dedicated 
+webpage aat.org.uk/assessments/students/results/enquiries-appeals. AAT’s results 
+enquiry service includes a check of all procedures leading to the issue of the outcome, 
+checking that all parts of the assessment were marked, that the marks were totalled 
+correctly and that the marks were recorded correctly. Students may also request to have 
+the original marking reviewed, to check that the agreed mark scheme was applied correctly. 
+
+The appeals process can be followed if a student is not satisfied with the outcome of their 
+enquiry or Malpractice Review Panel (MRP) decision. The appeals process checks all 
+aspects of the original enquiry review or MRP hearing and checks that all AAT procedures 
+have been correctly followed. 
+
+Enquiries and appeals can be made by a student or by their training provider or employer 
+on their behalf; enquiries and appeals for a group of students can also be made by a 
+training provider.  
+
+There is an administrative fee for enquiries and appeals. All paid fees will be refunded if the 
+outcome of the enquiry or appeal is in favour of the student.
+
+9. The assessment in detail 
+
+18 
+
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+10. Grading 
+
+To achieve the qualification and to be awarded a grade, a student must pass all 
+mandatory unit assessments and the synoptic assessment. 
+
+Students will be awarded a grade based on performance across the qualification. Unit 
+assessments are not individually graded. These assessments are given a mark that is used 
+in calculating the overall grade. 
+
+10.1   How the overall grade is determined 
+
+Students will be awarded an overall qualification grade (Distinction, Merit, and Pass).  
+
+Students who do not achieve the qualification will not receive a qualification certificate and 
+will be shown as unclassified. This is indicated below for illustrative purposes only. 
+
+The raw marks of each assessment will be converted into a percentage mark and rounded 
+up or down to the nearest whole number. For example, 75.5% would be rounded up to 
+76%, whereas 82.1% would be rounded down to 82%. This percentage mark is then 
+weighted according to the weighting of the unit assessment within the qualification. The 
+resulting weighted assessment percentages are combined to arrive at a percentage mark 
+for the whole qualification. 
+
+Grade definition 
+
+Percentage threshold 
+
+Distinction 
+
+90–100% 
+
+Merit 
+
+Pass 
+
+80–89% 
+
+70–79% 
+
+Unclassified 
+
+0–69% Or failure to pass one or more assessment/s 
+
+11. Units 
+
+19 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Example of Pass 
+
+Assessment 
+
+Contribution of 
+assessment to 
+qualification 
+grade 
+
+Percentage 
+achieved 
+
+Weighted percentage 
+contribution to grade 
+
+Introduction to Bookkeeping 
+
+Principles of Bookkeeping 
+Controls 
+
+Principles of Costing 
+
+25% 
+
+25% 
+
+76% 
+
+72% 
+
+19% 
+
+18% 
+
+20% 
+
+81% 
+
+16.2% 
+
+The Business Environment 
+Synoptic assessment 
+
+30% 
+
+77% 
+
+Total 
+
+*has been rounded to nearest whole number 
+
+23.1% 
+
+76*% 
+
+Example of Merit 
+
+Assessment 
+
+Contribution of 
+assessment to 
+qualification 
+grade 
+
+Percentage 
+achieved 
+
+Weighted percentage 
+contribution to grade 
+
+Introduction to Bookkeeping 
+
+Principles of Bookkeeping 
+Controls 
+
+Principles of Costing 
+
+25% 
+
+25% 
+
+86% 
+
+81% 
+
+21.5% 
+
+20.3% 
+
+20% 
+
+75% 
+
+15% 
+
+The Business Environment 
+Synoptic assessment 
+
+30% 
+
+91% 
+
+Total 
+
+*has been rounded to nearest whole number 
+
+11. Units 
+
+27.3% 
+
+84%* 
+
+20 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Example of Distinction 
+
+Assessment 
+
+Introduction to Bookkeeping 
+
+Principles of Bookkeeping 
+Controls 
+
+Principles of Costing 
+
+The Business Environment 
+Synoptic assessment 
+
+Contribution of 
+assessment to 
+qualification 
+grade 
+
+Percentage 
+achieved 
+
+Weighted percentage 
+contribution to grade 
+
+25% 
+
+25% 
+
+87% 
+
+92% 
+
+21.8% 
+
+23% 
+
+20% 
+
+98% 
+
+19.6% 
+
+30% 
+
+86% 
+
+25.8% 
+
+Total 
+
+90%* 
+
+*has been rounded to nearest whole number 
+
+10.2  Can students improve their grades? 
+
+Any student wishing to improve their grade can do so by re-sitting their assessment(s). 
+
+Only a student’s highest result will count towards their grade. If a student re-sits but, in 
+doing  so,  achieves  an  assessment  result  that  would  lower  their  overall  grade,  their 
+previous higher result will remain valid and will be used to determine their overall grade 
+for the qualification. 
+
+It’s important to recognise that students achieving a Pass are already demonstrating a 
+high level of competence, as AAT maintains a pass mark of 70% across all 
+assessments. 
+
+11. Units 
+
+21 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+10.3  Grading descriptors 
+
+Pass 
+
+Merit 
+
+Distinction 
+
+Demonstrates some 
+knowledge of the purpose, 
+roles and responsibilities of 
+a finance function and the 
+legal context in which it 
+operates. 
+
+Demonstrates good  
+knowledge of the purpose, roles 
+and responsibilities of a finance 
+function and the legal context in 
+which it operates. 
+
+Demonstrates sound  
+knowledge of the purpose, roles 
+and responsibilities of a finance 
+function and the legal context in 
+which it operates. 
+
+Understands the impact of the 
+individual, and of a finance 
+team, on business operations. 
+
+Considers in detail the impact of 
+individuals, and of a finance 
+team, on business operations. 
+
+Processes a range of 
+accounting transactions and 
+understands the automation of 
+transactions through use of 
+accounting software.  
+
+Processes a range of accounting 
+transactions with a high level of 
+accuracy and understands the 
+automation of transactions 
+through use of accounting 
+software.  
+
+Processes a wide range of 
+accounting transactions with a 
+high level of accuracy and 
+understands the automation of 
+transactions through use of 
+accounting software. 
+
+Extracts relevant costing 
+information and has a basic 
+understanding of how this 
+information can be used to 
+compare performance 
+against budget. 
+
+Extracts and combines relevant 
+costing information and has a 
+good understanding of how this 
+information can be used to 
+compare performance against 
+budget. 
+
+Extracts and combines relevant 
+costing information and has a 
+thorough understanding of how 
+this information can be used to 
+compare performance against 
+budget. 
+
+Prepares and reconciles 
+ledgers and accounts, 
+making necessary 
+adjustments. 
+
+Prepares and reconciles 
+ledgers and a range of 
+accounts, making necessary 
+adjustments with a good level 
+of accuracy. 
+
+Prepares and reconciles 
+ledgers and a wide range of 
+accounts, making necessary 
+adjustments with a high level of 
+accuracy. 
+
+Performs a range of 
+calculations for financial 
+and management 
+accounting purposes. 
+
+Performs a range of 
+calculations for financial and 
+management accounting 
+purposes with a good level of 
+accuracy. 
+
+Produces accurate 
+information in written and/or 
+numerical form that has a 
+structure and  
+uses appropriate business 
+language. 
+
+Produces accurate information  
+in written and/or numerical 
+form that is well-structured and 
+uses appropriate and effective 
+business language. 
+
+Performs a wide range of 
+calculations for financial and 
+management accounting 
+purposes with a high level of 
+accuracy, interpreting findings 
+where relevant. 
+
+Produces accurate information 
+in written and/or numerical form 
+that is well-structured, uses 
+appropriate and effective 
+business language, and 
+considers the needs of the 
+recipient. 
+
+11. Units 
+
+22 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+11. Units 
+
+All units in this qualification comply with the requirements set out in the Conditions of 
+Recognition published by the regulators in England, Wales and Northern Ireland and follow 
+a standard format. The unit specification gives guidance on the requirements of the unit for 
+students, tutors, assessors and those responsible for monitoring national standards. Each 
+unit contains a range of sections, as outlined below.  
+
+Unit title 
+This qualification, and its component units, is regulated. The unit title shown is the 
+regulated title of the unit.  
+
+Unit level 
+All units and qualifications are assigned a level using the level descriptors that apply to 
+regulated qualifications in England, Wales and Northern Ireland. There are nine levels of 
+achievement, from Entry Level to Level 8. All units in this qualification are Level 2. 
+
+GLH value 
+The GLH value is defined as all the times when a tutor, trainer or facilitator is present to 
+give specific guidance. This definition includes lectures, tutorials and supervised study. It 
+also includes time spent by staff assessing student achievements. It does not include time 
+spent by staff marking assignments or homework where the student is not present. 
+
+Assessment methodology  
+Units may be assessed by: 
+
+•  unit assessment only 
+•  unit assessment and as part of the synoptic assessment 
+•  synoptic assessment only. 
+
+Unit reference number 
+This number is set by Ofqual, the independent qualifications regulator for England, and is 
+unique to the unit. 
+
+Introduction 
+The unit introduction gives the reader an appreciation of the unit in the context of the 
+vocational setting of the qualification, as well as highlighting the focus of the unit. It gives 
+the reader a snapshot of the unit and the key knowledge, skills and understanding gained 
+while studying the unit.  
+
+Learning outcomes 
+The learning outcomes of a unit set out what a student is expected to know or be able to 
+do as a result of their learning. 
+
+Scope of content 
+The scope of content identifies the breadth of knowledge, skills and understanding needed 
+to achieve each of the learning outcomes. The content provides the range of subject 
+material for the programme of learning and specifies the skills, knowledge and 
+understanding required for achievement of the unit. 
+
+11. Units 
+
+23 
+
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Content structure 
+
+•  Each learning outcome is stated in full. 
+•  Topic areas specify the standard that a student is expected to meet in order to 
+
+demonstrate that the learning outcome has been achieved. These may be shown 
+as ‘Learners need to understand’ for an understanding topic area or ‘Learners 
+need to be able to’ for a skills topic area. Some learning outcomes may include 
+both understanding and skills elements. 
+
+•  Each topic area is then expanded into key concepts related to that learning 
+
+outcome. 
+
+•  Each concept is then further expanded into indicative content where applicable. 
+
+Relationship between content and assessment 
+Students must have the opportunity to cover all the unit content. It is not a requirement of 
+the unit specification that all the content is assessed. However, the indicative content will 
+need to be covered in a programme of learning for students to be able to meet the 
+standard determined in the scope of content. 
+
+Delivering this unit 
+This section includes guidance on how the unit content can be delivered. Tutors are 
+encouraged to develop their own approach depending on the needs of their students but 
+may wish to incorporate some of the ideas included. Tutors may wish to go beyond the 
+scope of the content in order to aid understanding and provide context but must always 
+ensure first that all required content is covered according to the depth and breadth 
+indicated in the scope of content. 
+
+Test specification for unit assessment 
+The test specification for the unit assessment gives details about the assessment method, 
+marking type and duration of the assessment. The contribution that each learning outcome 
+makes to the overall mark for the unit assessment is also provided. 
+
+Where a unit is not assessed by a separate unit assessment and is only assessed in the 
+synoptic assessment, there will be no unit test specification included in the unit. 
+
+11. Units 
+
+24 
+
+ 
+ 
+ 
+ 
+ 
+ 
+Introduction to Bookkeeping 
+
+Unit 
+level 
+
+2 
+
+GLH value 
+
+65 
+
+Unit reference 
+number 
+
+H/618/3583 
+
+Assessment 
+
+Unit and 
+synoptic 
+assessments 
+
+Introduction 
+
+This unit provides students with an understanding of manual and digital bookkeeping systems, 
+including the associated documents and processes. Students will learn the basic principles that 
+underpin the double-entry bookkeeping system and will learn that digital accounting systems 
+are automating some of the stages in the process. 
+
+Students will learn how to check the accuracy of invoices, credit notes, remittance advices, 
+statements of account and petty cash vouchers. They will know how to use these documents to 
+make entries in sales and purchases daybooks, sales and purchases returns daybooks, and 
+discounts allowed and received daybooks using account codes, as well as how to transfer 
+those totals to the sales, purchases and general ledgers. They will learn that entering these into 
+a digital bookkeeping system is the same process as entering the transactions manually, 
+although the way they are entered will vary from system to system. 
+
+The United Kingdom (UK) government department responsible for collecting taxes, HM 
+Revenue & Customs (HMRC), offers more than one method of accounting treatment when 
+prompt payment discount (PPD) is allowed and received. However, students at this level are 
+only required to use credit notes to adjust for PPD. Using this approach, credit notes are 
+recorded in separate daybooks, a discounts allowed and/or a discounts received daybook, 
+which removes the need for discount columns in the cash book. There is no requirement at this 
+level for students to understand how to account for PPD by any other method. This unit refers 
+to value added tax or VAT. This is an indirect tax operating in the UK, but this type of tax may 
+also operate and be known by another name in other countries. 
+
+The cash book and petty cash book are also covered in this unit, including making entries into 
+both and transferring totals to the ledgers. Students will learn that entering transactions into the 
+cash book of a digital bookkeeping system serves the same purpose as entering the 
+transactions into a manual bookkeeping system. Students will make appropriate checks on the 
+accuracy of supplier invoices and credit notes, reconcile supplier statements with the 
+purchases ledger account and calculate payments due to suppliers. They will also calculate 
+sales invoice and credit note amounts and check receipts from customers. 
+
+Students will have learnt all stages necessary to process transactions using both manual and 
+digital systems. Reference to digital systems includes applications as well as both desktop and 
+cloud accounting software. 
+
+Introduction to Bookkeeping 
+
+25 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Learning outcomes 
+
+1.  Understand how to set up bookkeeping systems 
+2.  Process customer transactions 
+3.  Process supplier transactions 
+4.  Process receipts and payments 
+5.  Process transactions into the ledger accounts 
+
+Introduction to Bookkeeping 
+
+26 
+
+ 
+ 
+ 
+ 
+ 
+Scope of content 
+
+This section illustrates the depth and breadth of content to be delivered for this unit. All areas 
+indicated in the table below must be covered in teaching.  
+
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of 
+content. Content assessed may change over time to ensure validity of assessment.  
+
+1. Understand how to set up bookkeeping systems 
+
+1.1 
+
+The purpose of business documents 
+
+Learners need to understand: 
+
+1.1.1 
+
+the purpose of business documents:  
+
+-  petty cash voucher  
+-  invoice  
+-  credit note (including for PPD)  
+-  remittance advice  
+-  statement of account 
+-  bank statement. 
+
+1.2 
+
+The process of recording bookkeeping transactions 
+
+Learners need to understand: 
+
+1.2.1 
+
+1.2.2 
+
+1.2.3 
+
+1.2.4 
+1.2.5 
+
+1.2.6 
+
+1.2.7 
+
+the role of the books of prime entry:  
+-  sales daybook 
+-  sales returns daybook  
+-  purchases daybook 
+-  purchases returns daybook  
+-  discounts allowed daybook 
+-  discounts received daybook  
+the role of the cash book and petty cash book:  
+-  as a book of prime entry only, or as a book of prime entry and part of the 
+
+double-entry bookkeeping system 
+
+the ledgers:  
+-  receivables  
+-  payables  
+-  general 
+the purpose of the trial balance 
+the purpose of financial statements:  
+-  statement of profit or loss 
+-  statement of financial position 
+the importance of ensuring that bookkeeping transactions are entered accurately: 
+-  the consequences of inaccurate entry in manual systems 
+-  the consequences of inaccurate entry in digital systems 
+that digital systems can import transactions from a number of sources: 
+-  bank records 
+-  csv files 
+
+Introduction to Bookkeeping 
+
+27 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+1.2.8 
+
+-  third party software 
+the benefits and drawbacks of using digital bookkeeping systems: 
+-  automatically balances the cash book 
+-  automatically completes the transfer of data from the books of prime entry to 
+
+the ledgers 
+
+-  automatically completes the transfer of data into the control accounts 
+-  automatically reconciles the receivables and payables ledgers to their 
+
+respective control accounts 
+
+-  automatically creates a trial balance from the general ledger accounts 
+-  processes recurring entries 
+-  saves time 
+-  reduces errors and omissions 
+-  makes duplication of automated and manual entries possible 
+-  can create errors when the amount or frequency of a recurring entry changes 
+-  automatically balances but doesn’t mean the entries are automatically correct. 
+
+Learners need to be able to: 
+
+1.3.3  create codes:  
+-  alphabetical 
+-  numerical 
+-  alphanumerical.  
+
+1.3 
+
+Create and use coding systems 
+Learners need to understand: 
+
+1.3.1 
+
+the different types of code:  
+-  customer account  
+-  supplier account  
+-  product  
+-  general ledger 
+
+1.3.2  where to use codes:  
+
+-  sales daybook 
+-  sales returns daybook 
+-  discounts allowed daybooks  
+-  purchases daybook 
+-  purchases returns daybook 
+-  discounts received daybook 
+-  receivables ledger  
+-  payables ledger. 
+
+1.4 
+
+Set bookkeeping systems 
+
+Learners need to know: 
+
+Learners need to be able to: 
+
+1.4.1 
+
+1.4.2 
+
+the dual effect of transaction, i.e. 
+debits and credits   
+the accounting equation (calculation 
+of assets, liabilities and capital). 
+
+1.4.3  classify the following items:  
+
+-  assets  
+-  liabilities 
+-  equity (capital)  
+-  income (revenue)  
+-  expenses (costs). 
+
+Introduction to Bookkeeping 
+
+28 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2. Process customer transactions 
+
+2.1 
+
+Calculate invoice and credit note amounts 
+Learners need to understand: 
+
+2.1.1 
+
+2.1.2 
+
+the documents to be used:  
+-  quotation  
+-  discount policy  
+-  customer order  
+-  delivery note  
+-  price list 
+the difference between discounts 
+offered: 
+-  prompt payment discount (PPD) 
+-  trade discount 
+-  bulk discount 
+
+2.1.3  how discounts are shown on invoices: 
+
+-  PPD  
+-  trade discount 
+-  bulk discount 
+
+2.1.4  how to use credit notes to adjust for 
+PPD and how PPD is recorded once 
+taken:  
+-  discounts allowed daybook  
+-  customer account 
+-  receivables ledger control account 
+-  discounts allowed account 
+-  value added tax (VAT) account. 
+
+Learners need to be able to: 
+
+2.1.5  calculate invoice amounts:  
+
+-  item price  
+-  net  
+-  VAT  
+-  total  
+-  trade discount  
+-  bulk discount  
+
+2.1.6  calculate credit note amounts:  
+
+-  item price  
+-  net  
+-  VAT  
+-  total  
+-  trade  
+-  bulk  
+-  PPD. 
+
+2.2 
+
+Enter customer invoices and credit notes into books of prime entry 
+Learners need to know: 
+
+Learners need to be able to: 
+
+2.2.3  calculate amounts from:  
+
+-  net figures 
+-  total figures 
+
+2.2.4  make entries in books of prime 
+
+2.2.5 
+
+entry  
+total columns in books of prime 
+entry. 
+
+2.2.1 
+
+2.2.2 
+
+the books of prime entry:   
+-  sales daybook 
+-  sales returns daybook 
+-  discounts allowed daybook 
+the columns within books of prime 
+entry: 
+-  customer name  
+-  customer account code  
+-  total  
+-  VAT  
+-  net 
+-  analysis (including product codes). 
+
+Introduction to Bookkeeping 
+
+29 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2.3 
+
+Process receipts from customers 
+Learners need to know: 
+
+Learners need to be able to: 
+
+2.3.1 
+
+the records and documents to use:  
+
+2.3.2 
+
+-  customer account 
+-  sales invoice  
+-  sales credit note  
+-  remittance advice  
+-  discount policy. 
+
+identify discrepancies:  
+-  underpayments  
+-  overpayments  
+-  incorrect discount taken 
+-  incorrect amounts  
+-  incorrect details 
+-  timing differences  
+-  missing transactions  
+-  duplicated transactions 
+
+2.3.3  calculate amounts due from 
+
+customers including PPD 
+
+2.3.4  allocate amounts correctly: 
+-  in full payment  
+-  in part payment  
+-  against opening balances  
+-  against invoices  
+-  against credit notes. 
+
+Introduction to Bookkeeping 
+
+30 
+
+ 
+ 
+ 
+ 
+ 
+ 
+3. Process supplier transactions 
+
+3.1 
+
+Check the accuracy of supplier invoices and credit notes 
+
+Learners need to understand: 
+
+Learners need to be able to: 
+
+3.1.5 
+
+identify discrepancies that may 
+be found:  
+
+-  non-delivery of goods  
+-  incorrect type or quantity of 
+
+goods 
+
+-  incorrect calculations  
+-  incorrect discounts (trade, bulk 
+
+and prompt payment)  
+
+-  date and terms of payment. 
+
+3.1.1 
+
+the documents to use:  
+
+-  quotations including discounts  
+-  purchase orders  
+-  goods received notes  
+-  delivery notes  
+-  goods returned notes 
+the difference between discounts 
+offered: 
+
+3.1.2 
+
+-  prompt payment  
+-  trade and bulk 
+
+3.1.3  how discounts are shown on invoices:  
+
+-  prompt payment  
+-  trade and bulk 
+
+3.1.4  how to use credit notes to adjust for 
+PPD and how PPD is recorded once 
+taken:  
+
+-  discounts received daybook  
+-  supplier account  
+-  payables ledger control account  
+-  discounts received account 
+-  value added tax (VAT) account. 
+
+3.2 
+
+Enter purchase supplier invoices and credit notes into books of prime entry  
+
+Learners need to know: 
+
+Learners need to be able to: 
+
+3.2.1 
+
+the books of prime entry:  
+
+3.2.3  calculate amounts from net and 
+
+total figures 
+
+3.2.4  make entries in books of prime 
+
+3.2.5 
+
+entry  
+total columns in books of prime 
+entry. 
+
+-  purchases daybook 
+-  purchases returns daybook  
+-  discounts received daybook 
+the columns within books of prime 
+entry: 
+
+3.2.2 
+
+-  supplier name 
+-  supplier account code 
+-  total 
+-  VAT 
+-  net 
+-  analysis (including product code). 
+
+Introduction to Bookkeeping 
+
+31 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+3.3  Process payments to suppliers 
+
+Learners need to know: 
+
+Learners need to be able to: 
+
+3.3.1 
+
+the records and documents to use:  
+
+3.3.3  identify discrepancies between the 
+
+-  supplier account 
+-  invoices and credit notes 
+
+(including discounts and VAT) 
+
+-  statement of account  
+the information to take into account:  
+
+3.3.2 
+
+-  agreed payment terms. 
+
+supplier’s statement of account 
+and the supplier account in the 
+payables ledger:  
+
+-  underpayments  
+-  overpayments  
+-  incorrect discount taken 
+-  incorrect amounts  
+-  incorrect details 
+-  timing differences  
+-  missing transactions  
+-  duplicated transactions 
+
+3.3.4  calculate payments due to 
+
+suppliers, including PPD 
+
+3.3.5  allocate amounts correctly: 
+
+-  in full payment 
+-  in part payment  
+-  against opening balances  
+-  against invoices  
+-  against credit notes. 
+
+Introduction to Bookkeeping 
+
+32 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4. Process receipts and payments 
+
+4.1 
+
+Enter receipts and payments into an analysed cash book 
+Learners need to know: 
+
+Learners need to be able to: 
+
+4.1.1 
+
+the format of the cash book: 
+
+4.1.3  calculate amounts from net and 
+
+total figures 
+
+4.1.4  make entries in the cash book. 
+
+-  date 
+-  details 
+-  cash 
+-  bank 
+-  analysis columns (including VAT)  
+the documents to use:  
+
+4.1.2 
+
+-  direct debit/standing order 
+
+schedule  
+
+-  remittance advice (including 
+
+BACS) 
+-  paying-in slip  
+-  cheque stub  
+-  cash receipt  
+-  receipts and payments listing.  
+
+4.2  Enter receipts and payments into an analysed petty cash book 
+
+Learners need to know: 
+
+Learners need to be able to: 
+
+4.2.1 
+
+the format of the petty cash book:  
+
+4.2.3  calculate amounts from net and 
+
+-  date  
+-  details  
+-  cash  
+-  analysis columns (including VAT) 
+
+total figures 
+
+4.2.4  make entries in the petty cash 
+book including reimbursement 
+using the imprest and non-
+imprest systems. 
+
+4.2.2 
+
+the documents to use:  
+
+-  cash receipt 
+-  petty cash voucher. 
+
+4.3  Total and balance the cash book and petty cash book 
+
+Learners need to be able to: 
+
+4.3.1 
+
+total and balance the: 
+
+-  cash book 
+-  petty cash book. 
+
+4.4  Process recurring receipts and payments 
+
+Learners need to understand: 
+
+Learners need to be able to:  
+
+4.4.1 
+
+the information required to set up a 
+recurring entry. 
+
+4.4.2 
+
+the effect of recurring entries in the 
+digital bookkeeping system. 
+
+4.4.3  set up a recurring entry. 
+
+4.4.4  process a recurring entry. 
+
+Introduction to Bookkeeping 
+
+33 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+5. Process transactions into the ledger accounts 
+
+5.1  Transfer data from the books of prime entry to the ledgers 
+
+Learners need to be able to: 
+5.1.3 
+
+transfer data from books of 
+prime entry to the relevant 
+accounts in the ledgers. 
+
+Learners need to know: 
+5.1.1 
+
+the ledgers:  
+
+-  receivables 
+-  payables 
+-  general 
+that the receivables and payables 
+ledger control accounts are part of the 
+double-entry system. 
+
+5.1.2 
+
+5.2  Total and balance ledger accounts 
+
+Learners need to be able to: 
+5.2.1 
+
+total and balance ledger accounts: 
+
+-  balance carried down 
+-  balance brought down 
+-  debit balance 
+-  credit balance. 
+
+Introduction to Bookkeeping 
+
+34 
+
+ 
+ 
+ 
+ 
+ 
+ 
+Delivering this unit 
+
+To deliver this unit effectively, tutors should teach both the manual method and digital methods, 
+although there is no requirement to learn any specific digital method. Tutors should ensure that 
+students have access to a suitable digital system, including specialised accounting software 
+packages, as part of their study for this unit. 
+
+Tutors could teach the content using manual bookkeeping methods and assign the student to 
+complete the same tasks using digital accounting systems in order to understand where the 
+processes are the same or differ. Similarly, the tutor can teach new areas using a digital 
+accounting system first and then assign the student to complete the same task using the 
+manual method. 
+
+Tutors could ensure that students understand that the principles they are learning are the same 
+regardless of whether they are entered into a manual system or a digital system. The student 
+should understand that accounting software automates the double-entry process but does not 
+replace it. 
+
+Links with other units 
+This unit has close links with: 
+
+•  Level 2 Principles of Bookkeeping Controls  
+•  Level 2 The Business Environment  
+•  Level 3 Financial Accounting: Preparing Financial Statements  
+•  Level 4 Cash and Financial Management.  
+
+Introduction to Bookkeeping 
+
+35 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Test specification for Introduction to Bookkeeping unit assessment 
+
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation that 
+will apply to assessments. Details can be accessed at  
+aat.org.uk/deliver/qualifications/specifications-outlines 
+
+Assessment method 
+
+Marking type 
+
+Duration of assessment 
+
+Computer based 
+assessment 
+
+Computer marked 
+
+1 hour 30 minutes  
+
+Learning outcomes 
+
+Weighting 
+
+1.  Understand how to set up bookkeeping systems 
+
+2.  Process customer transactions 
+
+3.  Process supplier transactions 
+
+4.  Process receipts and payments 
+
+5.  Process transactions into the ledger accounts 
+
+Total 
+
+20% 
+
+20% 
+
+20% 
+
+20% 
+
+20% 
+
+100% 
+
+Introduction to Bookkeeping 
+
+36 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Principles of Bookkeeping Controls 
+
+Unit level  GLH value 
+
+Unit reference number 
+
+Assessment 
+
+2 
+
+50 
+
+K/618/3584 
+
+Unit and synoptic 
+assessments 
+
+Introduction 
+
+This unit builds on the knowledge and skills acquired from studying Introduction to 
+Bookkeeping and explores control accounts, journals and reconciliations. It takes students 
+through a number of processes used in bookkeeping that help verify and validate the 
+entries made. These processes enable the student to understand the purpose of control 
+accounts and associated reconciliations. Students will also understand the use of the 
+journal to the stage of redrafting the trial balance, following initial adjustments. 
+
+This unit covers procedures that are required to ensure bookkeeping is completed beyond 
+purely entering or processing initial transactions, which will enable students to develop their 
+understanding of the relationship between the various accounting records and consolidate 
+their knowledge of double-entry bookkeeping.  
+
+Students will develop the ability to prepare the value added tax (VAT) control account as 
+well as the receivables and payables ledger control accounts, including reconciliation with 
+the receivables and payables ledgers. They will use the journal to record a variety of 
+transactions, including the correction of errors. Students will be able to redraft the initial trial 
+balance, following adjustments. They will learn to update the cash book following receipt of 
+a bank statement, and also how to prepare a bank reconciliation statement. 
+
+This unit explores the knowledge required to complete these bookkeeping procedures both 
+manually and digitally. While the student will not be expected to demonstrate the ability to 
+use any specific accounting software, the unit will explain to them where digital accounting 
+systems are automating processes they are learning. The skills and knowledge gained will 
+enable students to understand the business environment and facilitate their comprehension 
+of a digital accounting system. Reference to digital systems includes applications as well as 
+both desktop and cloud accounting software. 
+
+Principles of Bookkeeping Controls  
+
+37 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Learning outcomes 
+
+1.  Use control accounts 
+2.  Reconcile a bank statement with the cash book 
+3.  Use the journal 
+4.  Produce trial balances 
+
+Principles of Bookkeeping Controls  
+
+38 
+
+ 
+ 
+ 
+ 
+ 
+ 
+Scope of content 
+
+This section illustrates the depth and breadth of content to be delivered for this unit. All 
+areas indicated in the table below must be covered in teaching.  
+
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of 
+content. Content assessed may change over time to ensure validity of assessment. 
+
+1.  Use control accounts 
+
+1.1 
+
+Produce control accounts 
+
+Learners need to understand: 
+
+Learners need to be able to: 
+
+1.1.1 
+
+the purpose of the receivables and 
+payables ledger control accounts 
+(part of the double-entry 
+bookkeeping system) 
+
+1.1.2 
+
+the purpose of the VAT control 
+account. 
+
+1.1.3  prepare control accounts:  
+
+- 
+
+receivables ledger 
+
+-  payables ledger  
+
+-  VAT  
+
+1.1.4 
+
+total and balance control accounts: 
+
+-  balance carried down  
+
+-  balance brought down. 
+
+1.2 
+
+Reconcile control accounts 
+
+Learners need to understand: 
+
+Learners need to be able to: 
+
+1.2.1 
+
+reasons for reconciling the 
+receivables and payables ledger 
+control accounts with the 
+receivables and payables ledgers. 
+
+1.2.2 
+
+total the balances of the individual 
+receivables and payables ledger 
+accounts:  
+
+1.2.3 
+
+1.2.4 
+
+1.2.5 
+
+- 
+
+receivables ledger debit/credit 
+balances 
+
+-  payables ledger debit/credit 
+
+balances 
+
+identify discrepancies between the 
+receivables and payables ledger 
+control accounts and the individual 
+customer and supplier accounts 
+reconcile control accounts:  
+
+- 
+
+receivables ledger 
+
+-  payables ledger  
+
+identify reasons for discrepancies 
+between the receivables and 
+payables ledger control accounts 
+and the individual customer and 
+supplier accounts. 
+
+Principles of Bookkeeping Controls  
+
+39 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2.  Reconcile a bank statement with the cash book 
+
+2.1 
+
+Payment methods 
+Learners need to understand: 
+
+2.1.1  different payment methods:  
+
+-  cash  
+
+-  cheque  
+
+-  debit card  
+
+-  credit card  
+
+-  bank draft  
+
+-  standing order  
+
+-  direct debit  
+
+-  BACS (Bankers’ Automated Clearing Services)  
+
+-  direct credit  
+
+-  CHAPS (Clearing House Automated Payment System)  
+
+-  Faster Payments  
+
+2.1.2 
+
+that different payment methods affect the bank balance in different ways:  
+
+- 
+
+- 
+
+reduce funds on the date of payment  
+
+reduce funds at a later date  
+
+-  have no effect.  
+
+2.2 
+
+Use the bank statement to update the cash book  
+
+Learners need to understand: 
+
+Learners need to be able to: 
+
+2.2.1 
+
+reasons for reconciling the bank 
+statement with the cash book 
+
+2.2.2 
+
+the items that can cause differences 
+between bank statements and the 
+cash book: 
+
+-  opening balances  
+
+-  bank interest paid/received  
+-  bank charges  
+
+2.2.3  update the cash book using the 
+
+bank statement:  
+
+-  unrecorded  
+
+-  duplicated  
+
+2.2.4 
+
+total and balance the cash book:  
+
+-  credit/debit balance carried 
+
+down 
+
+-  credit/debit balance brought 
+
+-  automated payments/receipts  
+
+down. 
+
+- 
+
+timing differences: 
+
+▪  unpresented cheques  
+▪  outstanding lodgements.  
+
+2.3 
+
+Complete bank reconciliation statements 
+Learners need to be able to: 
+
+2.3.1  complete bank reconciliation statements using:  
+
+-  closing bank statement balance  
+
+- 
+
+timing differences: 
+
+▪  unpresented cheques   
+▪  outstanding lodgements 
+
+-  closing cash book balance. 
+
+Principles of Bookkeeping Controls  
+
+40 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+3.  Use the journal 
+
+3.1 
+
+Produce journal entries to record bookkeeping transactions 
+
+Learners need to understand: 
+
+Learners need to be able to: 
+
+3.1.1 
+
+the purpose of the journal as a book 
+of prime entry (manual and digital) 
+3.1.2  how the journal is used to record:  
+
+-  opening entries  
+
+- 
+
+irrecoverable debts written off  
+
+-  payroll transactions. 
+
+3.1.3  process journal entries to the 
+
+general ledger accounts 
+
+3.1.4 
+
+record opening entries  
+
+3.1.5 
+
+record entries to write off 
+irrecoverable debts:  
+
+- 
+
+record VAT where appropriate 
+
+-  calculate VAT from gross 
+
+amounts 
+
+-  calculate VAT from net amounts 
+
+3.1.6 
+
+record entries for payroll 
+transactions:  
+
+-  wages control account  
+
+-  gross pay  
+
+- 
+
+income tax  
+
+-  employer’s and employees’ 
+
+National Insurance 
+Contributions (NICs) 
+
+-  employer’s and employees’ 
+
+pensions 
+
+-  voluntary deductions. 
+
+3.2 
+
+Produce journal entries to correct errors not disclosed by the trial balance 
+
+Learners need to understand:  
+
+Learners need to be able to: 
+
+3.2.3  correct errors using the journal. 
+
+3.2.1 
+
+3.2.2 
+
+the difference between errors 
+disclosed and not disclosed by the 
+trial balance 
+types of errors not disclosed by the 
+trial balance (manual and digital):  
+
+-  error of commission  
+
+-  error of omission  
+
+-  error of original entry  
+
+-  error of principle  
+
+- 
+
+reversal of entries  
+
+-  compensating errors. 
+
+3.3 
+
+Produce journal entries to correct errors disclosed by the trial balance 
+
+Learners need to understand: 
+
+3.3.1 
+
+the purpose of a suspense account.  
+
+Learners need to be able to: 
+
+3.3.2  open a suspense account  
+3.3.3  correct errors and clear the 
+suspense account using the 
+journal. 
+
+Principles of Bookkeeping Controls  
+
+41 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4.  Produce trial balances 
+4.1 
+
+Extract an initial trial balance 
+Learners need to know: 
+
+Learners need to be able to: 
+
+4.1.1  how to use the general ledger to 
+
+4.1.3 
+
+extract balances 
+the column to use in the trial balance:  
+
+4.1.2 
+
+4.1.4 
+
+-  debit 
+
+-  credit. 
+
+4.2  Redraft the trial balance following adjustments 
+
+Learners need to be able to: 
+
+transfer balances to the initial trial 
+balance 
+total and balance the initial trial 
+balance. 
+
+recalculate the balance of a general ledger account following journal entries 
+
+4.2.1 
+4.2.2  complete a trial balance from adjusted and unadjusted balances 
+4.2.3  balance the adjusted trial balance: total debit and credit columns. 
+
+Principles of Bookkeeping Controls  
+
+42 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Delivering this unit 
+
+To deliver this unit effectively, tutors should teach both the manual method and digital 
+methods, although there is no requirement to learn any specific digital method. Tutors 
+should ensure that students have access to a suitable digital system, including specialised 
+accounting software packages, as part of their study for this unit. 
+
+Tutors can then teach the content using manual bookkeeping methods and assign the 
+student to complete the same tasks using digital accounting systems in order to understand 
+where the processes are the same or differ. Similarly, the tutor can teach new areas using a 
+digital accounting system first and then assign the student to complete the same task using 
+the manual method. 
+
+Tutors should ensure that students understand that the principles they are learning are the 
+same regardless of whether they are entered into a manual system or a digital system. The 
+student should understand that accounting software automates the double-entry process 
+but does not replace it. 
+
+Links with other units 
+
+This unit has close links with: 
+
+•  Level 2 Introduction to Bookkeeping  
+•  Level 2 The Business Environment  
+•  Level 3 Financial Accounting: Preparing Financial Statements  
+•  Level 4 Cash and Financial Management.  
+
+Principles of Bookkeeping Controls  
+
+43 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Test specification for Principles of Bookkeeping Controls unit assessment 
+
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation 
+that will apply to assessments. Details can be accessed at 
+aat.org.uk/deliver/qualifications/specifications-outlines 
+
+Assessment method 
+
+Marking type 
+
+Duration of assessment 
+
+Computer based 
+assessment 
+
+Computer marked 
+
+1 hour 30 minutes  
+
+Learning outcomes 
+
+1.  Use control accounts 
+
+2.  Reconcile a bank statement with the cash book 
+
+3.  Use the journal 
+
+4.  Produce trial balances 
+
+Total 
+
+Weighting 
+
+25% 
+
+25% 
+
+25% 
+
+25% 
+
+100% 
+
+Principles of Bookkeeping Controls  
+
+44 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Principles of Costing 
+
+Unit 
+level 
+
+2 
+
+GLH value 
+
+50 
+
+Unit reference 
+number 
+
+M/618/3585 
+
+Assessment 
+
+Unit assessment 
+
+Introduction 
+
+This unit gives students an introduction to the principles of basic costing and builds a solid 
+foundation in the knowledge and skills required for more complex costing and management 
+accounting. Students will learn the importance of the costing system as a source of 
+information that allows management to plan, make decisions and control costs. Students 
+should recognise the key differences from a business perspective between costing and 
+financial accounting.  
+
+Students will learn a range of techniques to cost materials, labour and overheads to 
+establish the unit cost of a product or service, and this will include understanding and 
+applying codes. Students will learn how to classify costs and will understand how different 
+classifications of cost can be used for internal management decision making. 
+
+Students will understand how cost behaves at different levels of output, and how variable 
+and fixed costs per unit behave as output changes. Students will learn to build a basic unit 
+product cost using labour hours, machine hours and per unit as a basis. This will prepare 
+students and give them the basic tools for studies in overhead apportionment, 
+reapportionment and absorption in later units. They will learn that overhead is a large, and 
+in many cases the largest, component of cost. The budgetary control system is introduced, 
+and by comparing actual costs with budgeted costs for a single product and using a fixed 
+budget, students will determine variances, noting whether they are adverse or favourable 
+and reporting to management on their causes and effects. 
+
+Learning the tools and techniques that can be used to support the calculation of costs will 
+allow students to recognise that cost calculations can be prepared more quickly and 
+accurately than manual calculations.  
+
+Principles of Costing  
+
+45 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Learning outcomes 
+
+1.  Understand the cost recording system within an organisation 
+2.  Use cost recording techniques 
+3.  Provide information on actual and budgeted costs and income 
+4.  Use tools and techniques to support cost calculations 
+
+Principles of Costing  
+
+46 
+
+ 
+ 
+ 
+ 
+ 
+Scope of content 
+
+This section illustrates the depth and breadth of content to be delivered for this unit. All 
+areas indicated in the table below must be covered in teaching.  
+
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of 
+content. Content assessed may change over time to ensure validity of assessment.  
+
+1. Understand the cost recording system within an organisation 
+
+1.1  Collection and classification of costs in different types of organisations 
+
+Learners need to know: 
+1.1.1  how costs are collected in different organisations 
+
+1.1.2  how elements of cost are classified:  
+
+- 
+
+labour 
+
+-  materials 
+
+-  overheads 
+
+1.1.3  how costs are classified by nature:  
+
+-  direct 
+- 
+
+indirect 
+
+1.1.4  how costs are classified by behaviour:  
+
+- 
+
+fixed 
+
+-  variable 
+-  semi-variable and stepped costs  
+
+1.1.5 
+
+the difference between product costs and period costs. 
+
+1.2  Costing techniques used in organisations 
+
+Learners need to know: 
+
+1.2.1  how product cost is determined:  
+
+-  materials 
+
+labour  
+- 
+-  overheads 
+
+1.2.2 
+
+inventory valuation methods:  
+first-in-first-out (FIFO)  
+- 
+
+- 
+
+last-in-first-out (LIFO)  
+
+-  weighted average cost (AVCO) 
+
+1.2.3 
+
+labour costing methods:  
+
+- 
+
+time-rate  
+
+-  overtime, i.e. basic and premium rates 
+
+-  piecework 
+
+- 
+
+individual and team bonus payments 
+
+-  guaranteed minimum payments 
+
+1.2.4  overhead absorption methods:  
+
+-  per unit 
+
+- 
+
+labour hours 
+
+Principles of Costing  
+
+47 
+
+ 
+ 
+ 
+ 
+-  machine hours. 
+
+1.3  Relationships between costing and financial accounting systems within 
+
+organisations  
+
+Learners need to understand: 
+
+1.3.1 
+
+the costing and financial accounting systems within an organisation 
+
+1.3.2  how each system uses costs:  
+
+-  costing systems use many classifications of cost 
+
+- 
+
+financial accounting uses only historic costs. 
+
+1.4  Sources of information on income and expenditure 
+
+Learners need to know: 
+
+1.4.1  how historic cost is used for accounting and costing reporting 
+
+1.4.2  how costing systems use actual or budgeted costs to determine unit/job/batch 
+
+costs 
+
+1.4.3  how budgeted and actual costs are used for planning and control purposes. 
+
+1.5  Differences between cost, profit and investment centres 
+
+Learners need to know: 
+
+1.5.1 
+
+the differences between cost, revenue, profit and investment centres 
+
+1.5.2 
+
+the use of different centres in different organisations. 
+
+1.6  Classification and recording of labour and overheads  
+
+Learners need to know: 
+
+1.6.1  how costs are classified by element, nature, behaviour and function 
+
+1.6.2  how costs are coded using numeric, alphabetic and alphanumeric coding systems 
+
+1.6.3  different costs included in a manufacturing account 
+
+1.6.4  how a manufacturing account is constructed.  
+
+Principles of Costing  
+
+48 
+
+ 
+ 
+ 
+ 
+2. Use cost recording techniques 
+
+2.1  Calculate cost of inventory issues and inventory valuations 
+
+Learners need to be able to: 
+
+2.1.1  cost issues of inventory for management accounting purposes using FIFO, AVCO 
+
+and for internal use LIFO 
+
+2.1.2  calculate closing values of inventory using FIFO, AVCO and LIFO 
+
+2.1.3  analyse and report on inventory control policy compliance including buffer stocks 
+
+and reorder quantities and timings. 
+
+2.2  Calculate labour payments 
+
+Learners need to be able to: 
+
+2.2.1  calculate labour payments:  
+
+- 
+
+time-rate 
+
+-  overtime, i.e. basic pay and overtime premium  
+
+-  piecework 
+
+- 
+
+individual and team bonuses 
+
+-  guaranteed minimum payments. 
+
+2.3  Calculate overhead absorption rates 
+
+Learners need to be able to: 
+
+2.3.1  calculate overhead absorption rates to arrive at unit cost:  
+
+-  per unit  
+
+-  per labour hour 
+
+-  per machine hour. 
+
+2.4  Use cost behaviour to calculate total and unit costs 
+
+Learners need to understand: 
+2.4.1 
+
+that variable costs per unit remain 
+the same at different levels of 
+output but fixed costs per unit will 
+change 
+
+2.4.2 
+
+that total cost per unit will also 
+change as it may be made up of 
+fixed, variable, semi-variable and 
+stepped costs.  
+
+Learners need to be able to: 
+2.4.3  calculate total and unit costs at 
+different levels of output 
+
+2.4.4 
+
+recognise changes in different costs 
+as output levels change. 
+
+Principles of Costing  
+
+49 
+
+ 
+ 
+ 
+ 
+ 
+ 
+2.5  Calculate the costs of a product 
+
+Learners need to understand: 
+2.5.1  how direct cost is a component of 
+
+Learners need to be able to: 
+
+2.5.4  calculate product costs:  
+
+product cost. 
+
+2.5.2 
+
+the different treatment of product 
+costs and period costs 
+
+2.5.3 
+
+the components of: 
+
+-  direct cost 
+
+-  manufacturing cost 
+
+-  materials 
+
+- 
+
+labour  
+
+-  overheads 
+
+2.5.5  calculate costs of products 
+
+manufacturing organisations: 
+
+-  direct cost 
+
+-  cost of goods manufactured 
+
+-  manufacturing cost 
+
+-  cost of goods sold. 
+
+-  cost of goods manufactured 
+
+-  cost of goods sold 
+
+2.5.6  calculate costs of products in service 
+
+organisations. 
+
+3. Provide information on actual and budgeted costs and income 
+
+3.1  Actual and budgeted costs and income 
+
+Learners need to understand: 
+3.1.1  how budgets are used for  
+
+short-term planning and control   
+
+3.1.2  different types of budget: 
+
+- 
+
+- 
+
+fixed  
+
+flexible 
+
+3.1.3  how to determine if a variable is 
+adverse or favourable for 
+budgeted costs and income. 
+
+Learners need to be able to: 
+
+3.1.4  prepare budgets for single product 
+
+organisations: 
+-  revenue 
+
+-  materials 
+
+- 
+
+- 
+
+labour 
+
+fixed overheads 
+
+3.1.5  calculate variances between actual 
+
+and budgeted costs and income: 
+
+- 
+
+- 
+
+- 
+
+- 
+
+total materials 
+
+total labour 
+
+total overheads 
+
+total income  
+
+3.1.6  calculate variances as a percentage 
+of budgeted costs and income. 
+
+3.2  Exception reporting to identify significant variances 
+
+Learners need to be able to: 
+3.2.1 
+
+identify significant variances according to an organisation’s policy 
+
+3.2.2  analyse and report on the potential causes of variances 
+
+3.2.3  analyse and report on the potential effects of variances  
+
+3.2.4 
+
+report variance analysis to relevant manager.  
+
+Principles of Costing  
+
+50 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4. Use tools and techniques to support cost calculations  
+
+4.1  Enter and format data 
+
+Learners need to be able to: 
+
+4.1.1  enter data into specified cells 
+
+4.1.2 
+
+format cells: 
+
+-  bold 
+
+- 
+
+italics 
+
+-  underline 
+
+-  merge 
+
+- 
+
+fill with colour 
+
+-  wrap text 
+
+- 
+
+text size 
+
+-  borders 
+
+4.1.3 
+
+format numbers: 
+
+- 
+
+thousand separators  
+
+-  accountancy  
+
+-  percentages  
+
+-  decimals 
+
+4.1.4  copy and paste cells (not paste values or paste link) 
+
+4.1.5 
+
+insert rows and columns. 
+
+4.2  Use formulas to support cost calculations  
+
+Learners must be able to: 
+
+4.2.1  use basic formulas:  
+
+-  addition:  
+
+▪  =SUM(CELLREFERENCE 1:CELLREFERENCE 2)  
+
+• 
+
+i.e. =SUM(A1:A10) 
+
+▪  =CELLREFERENCE 1+CELLREFERENCE 2 
+
+• 
+
+i.e. A1+B10 
+
+-  subtraction:  
+
+▪  =CELLREFERENCE 1-CELLREFERENCE 2 
+
+• 
+
+i.e. A1-B10 
+
+-  multiplication:  
+
+▪  = CELLREFERENCE 1*CELLREFERENCE 2 
+
+• 
+
+i.e. A1*B10 
+
+-  division:  
+
+▪  = CELLREFERENCE 1/CELLREFERENCE 2 
+
+• 
+
+i.e. A1/B10 
+
+Note: Use of formulas will require students to combine more than one function for a 
+calculation. 
+
+Students will not be credited for formulas that include: 
+
+- 
+
+unnecessary spaces 
+
+Principles of Costing  
+
+51 
+
+ 
+ 
+ 
+ 
+- 
+
+- 
+
+- 
+
+- 
+
+- 
+
+- 
+
+- 
+
+- 
+
+commas 
+
+for example: =SUM(B2,C2) rather than =SUM(B2:C2) 
+
+▪ 
+square brackets [ ] or curly brackets { } – learners must use ( ) 
+
+use of brackets to reference single cells 
+
+▪ 
+
+for example =SUM(B1+B2+B3), rather than =SUM(B1:B3) 
+
+PRODUCT in formulas for multiplication 
+
+numbers in place of cell references 
+
+redundant references to cells not required for the calculation 
+
+using unnecessary positives/negatives to begin or modify a calculation 
+
+for example, expressing =C11-B11 as =+C11-B11 or =-(B11-C11) 
+
+▪ 
+adding 0s to cell references  
+
+▪ 
+
+for example A01 or B09, rather than A1 or B9 
+
+Principles of Costing  
+
+52 
+
+ 
+ 
+ 
+ 
+ 
+ 
+Delivering this unit 
+
+To deliver this unit effectively, tutors should recognise that students may have little or no 
+work experience in costing. The use of relevant products and services that students are 
+familiar with in their daily lives will help to aid their understanding of this unit. For example, 
+clothing, takeaway food and beverages will be recognisable to all students, along with items 
+used in the workplace and training environment, such as office and IT equipment and 
+services. The use of familiar products and services should enable students to have a better 
+understanding of cost classification, total costs and how the cost of a product or service can 
+change depending on the quantities produced, that is levels of output. Students should be 
+encouraged to think about the different costs that occur in the production of a final product 
+or service by participating in group discussions and projects. The use of media, such as 
+documentaries featuring the manufacture of products, can also enhance the learning for 
+students. 
+
+Scenarios will assist in the teaching of costing techniques, for example the use of a factory 
+or hair salon to illustrate how materials, labour and overhead costs can be determined, 
+along with inventory valuations and the absorption of overhead. The use of reports and 
+examples from organisations can be used to explain the differences between financial and 
+cost accounting and how organisations are split into different departments. Speakers from a 
+variety of organisations, both in manufacturing and service industries, could be asked to 
+demonstrate the basic costing techniques they use.  
+
+A great way of introducing the concept of budgeting to students is by asking them to 
+consider their own finances, for example what they have to pay for on a regular basis, that 
+is one-off costs and long-term considerations, whilst looking at plans to see how they will be 
+able to fund their commitments. This could be done through projects and discussions, or 
+case studies could be devised to avoid the sharing of personal information. 
+
+The use of formatting and mathematical formulas should, wherever possible, be embedded 
+within the learning when covering cost calculations. For example, use of formatting 
+techniques to present budgetary data, showing budget, actual and variances.  
+
+Links with other units 
+
+This unit has close links with: 
+
+•  Level 2 The Business Environment  
+•  Level 3 Management Accounting Techniques  
+•  Level 4 Applied Management Accounting.  
+
+Principles of Costing  
+
+53 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Test specification for Principles of Costing unit assessment 
+
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation 
+that will apply to assessments. Details can be accessed at 
+aat.org.uk/deliver/qualifications/specifications-outlines 
+
+Assessment method 
+
+Marking type 
+
+Duration of assessment 
+
+Computer based 
+assessment 
+
+Computer marked 
+
+1 hour 30 minutes  
+
+Learning outcomes 
+
+Weighting 
+
+1.  Understand the cost recording system within an organisation 
+
+2.  Use cost recording techniques 
+
+3.  Provide information on actual and budgeted costs and income 
+
+4.  Use tools and techniques to support cost calculations 
+
+Total 
+
+30% 
+
+40% 
+
+20% 
+
+10% 
+
+100% 
+
+Principles of Costing  
+
+54 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+The Business Environment 
+
+Unit 
+level 
+
+2 
+
+GLH value 
+
+90 
+
+Unit reference 
+number 
+
+M/618/3586 
+
+Assessment 
+
+Synoptic 
+assessment 
+
+Introduction 
+
+The business environment is dynamic and is changing considerably as the digital age 
+progresses to facilitate the global nature of business. It is essential that students are aware 
+of the impact that this environment has on organisations, from sole traders to large 
+companies operating in local, national and global markets, and that they are equipped with 
+the knowledge and skills to enable them to work effectively.  
+
+This unit provides knowledge and understanding of key business concepts and their 
+practical application in the external and internal environment in which students will work. 
+Students will gain an understanding of the legal system and principles of contract law and 
+an appreciation of the legal implications of setting up a business and the consequences this 
+may have. Wider issues impacting businesses will be considered, including the global 
+economic environment in which it operates, how governments impact upon it and the 
+competitive nature of the global economy. 
+
+Students will learn how organisations are structured and where the finance function fits 
+within this. They will recognise that the role of the finance function has changed 
+considerably due to the impact of new technologies. Although many of the activities remain 
+similar, their scope and nature reach beyond the traditional boundaries of the finance 
+function. 
+
+This unit will prepare students for the current workplace and help them recognise the 
+importance of working effectively, whilst acknowledging the value of differences and being 
+sensitive to the needs of others. They will gain an appreciation of communication methods 
+and learn how to recognise valid sources of information. They will develop skills in using 
+data analytic technology to solve problems, analyse data and communicate effectively.  
+
+Ethics and sustainability are key themes embedded throughout this unit. Students will 
+recognise the importance of ethics in business and how sustainable business is important 
+for future business success.  
+
+The Business Environment  
+
+55 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Learning outcomes 
+
+1.  Understand the principles of contract law 
+
+2.  Understand the external business environment 
+
+3.  Understand key principles of corporate social responsibility (CSR), ethics and sustainability 
+
+4.  Understand the impact of setting up different types of business entity 
+
+5.  Understand the finance function within an organisation 
+
+6.  Produce work in appropriate formats and communicate effectively 
+
+7.  Understand the importance of information to business operations 
+
+The Business Environment  
+
+56 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Scope of content 
+
+This section illustrates the depth and breadth of content to be delivered for this unit. All 
+areas indicated in the table below must be covered in teaching.  
+
+Learners may not be assessed on all content, or on the full depth or breadth of a piece of 
+content. Content assessed may change over time to ensure validity of assessment.  
+
+1. Understand the principles of contract law  
+
+1.1 
+
+The different classifications of law 
+
+Learners need to understand: 
+
+1.1.1 
+
+the principles of: 
+
+-  common law and equity 
+
+-  public law and private law 
+
+-  criminal law and civil law. 
+
+1.2 
+
+The main sources of law  
+Learners need to understand: 
+
+1.2.1 
+
+the development of law by the courts, tribunals and parliament 
+
+1.3 
+
+Key features of contracts 
+
+Learners need to know: 
+
+1.3.1 
+
+the meaning of invitation to treat, offer and termination 
+
+1.3.2 
+
+the meaning and consequences of acceptance 
+
+1.3.3 
+
+the meaning of and the need for consideration 
+
+1.3.4  capacity and legality (valid, void, voidable contracts) 
+
+1.3.5 
+
+the meaning of discharge of contract:  
+
+-  by performance  
+
+-  by breach. 
+
+1.4 
+
+Remedies available for breach of contract 
+Learners need to understand: 
+
+1.4.1 
+
+the consequences of being in breach of contract through: 
+
+-  damages 
+
+-  equitable remedies. 
+
+The Business Environment  
+
+57 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2. Understand the external business environment 
+2.1 
+
+The economic environment 
+
+Learners need to understand: 
+
+2.1.1 
+
+the micro-economic environment:  
+
+- 
+
+the forces of supply and demand on pricing and output 
+
+2.1.2 
+
+the profit motive of business 
+
+2.1.3 
+
+that businesses face uncertainty and risk. 
+
+2.1.4 
+
+that businesses operate in a global business environment 
+
+2.2 
+
+Government control of the economy 
+
+Learners need to understand: 
+
+2.2.1  how government controls the economy 
+
+2.2.2 
+
+the key principles of an effective tax system: 
+
+-  equity  
+
+-  certainty  
+
+-  convenience  
+
+-  economy  
+
+- 
+
+- 
+
+fairness  
+
+transparency    
+
+2.2.3  how government raises finances through the tax system from:  
+
+- 
+
+individuals  
+
+-  businesses  
+
+- 
+
+indirect taxes 
+
+2.2.4 
+
+the impact of government on interest rates, levels of employment and consumer 
+spending. 
+
+2.3 
+
+The competitive environment 
+Learners need to understand: 
+
+2.3.1  how the competitive global market may affect a business 
+
+2.3.2  how changes in exchange rates may change business costs 
+
+2.3.3 
+
+the uncertainty and risks faced by business in the global market 
+
+2.3.4 
+
+the benefits and disadvantages to a business of trading internationally. 
+
+The Business Environment  
+
+58 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+3. Understand key principles of corporate social responsibility (CSR), ethics and sustainability 
+3.1 
+
+Corporate social responsibilities of a business 
+
+Learners need to understand: 
+
+3.1.1 
+
+the objective of CSR 
+
+3.1.2 
+
+the involvement of internal and external stakeholders  
+
+3.1.3  how CSR responsibilities change over time. 
+
+3.2 
+
+Sustainability and the environment 
+
+Learners need to understand: 
+
+3.2.1 
+
+the responsibility of business with respect to sustainability 
+
+3.2.2 
+
+the principles of triple bottom line reporting 
+
+3.2.3 
+
+there may be a trade-off between sustainability and profit 
+
+3.2.4  how businesses respond to changes in the environment to succeed in the long 
+
+term. 
+
+3.3 
+
+The fundamental principles of ethics for accounting technicians 
+
+Learners need to know: 
+
+3.3.1 
+
+the five fundamental principles of ethics: 
+
+-  confidentiality 
+-  professional behaviour 
+
+-  professional competence and due care 
+
+- 
+
+integrity  
+
+-  objectivity.    
+
+3.4  The need to act ethically 
+
+Learners need to understand: 
+3.4.1  why it is important to act ethically: 
+
+- 
+
+- 
+
+- 
+
+- 
+
+the difference between acting professionally and being a member of a 
+professional body  
+the importance of accounting technicians complying with AAT’s Code of 
+Professional Ethics  
+
+the accounting technician’s public interest duty to society as well as to the 
+client or employer 
+
+the legal and professional nature of the accountant’s obligation of compliance 
+with the ethical code  
+
+-  when disciplinary action by AAT or internal disciplinary procedures may be 
+
+- 
+
+brought against accounting technicians for unethical behaviour 
+fines or reputational damage suffered by organisations as a result of unethical 
+behaviour and non-compliance with values, codes and regulations 
+
+3.4.2 
+
+the actions accounting technicians may have to take to act ethically: 
+
+-  specific actions that accounting technicians may have to take in order to 
+
+behave ethically  
+
+-  why simply complying with regulations may not constitute ethical behaviour. 
+
+The Business Environment  
+
+59 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4. Understand the impact of setting up different types of business entity 
+
+4.1 
+
+Models of business ownership 
+Learners need to understand: 
+
+4.1.1 
+
+the entity concept 
+
+4.1.2 
+
+the different legal structures that businesses adopt:  
+
+-  sole trader 
+
+-  partnership (including limited liability partnership (LLP)) 
+
+-  company 
+
+-  not-for-profit organisation 
+
+4.1.3 
+
+4.1.4 
+
+that ownership of a business can be separate from the management and control 
+of the business  
+
+the types of tax applicable to individuals, partnerships (including LLPs) and 
+companies:  
+
+- 
+
+income tax 
+
+-  PAYE  
+
+-  corporation tax  
+
+-  VAT 
+
+4.1.5 
+
+the concept of limited liability and its effect 
+
+4.1.6 
+
+the key features of each legal structure:  
+
+-  control  
+
+-  management 
+
+-  sources of finance 
+
+- 
+
+liability  
+
+-  distribution of profit. 
+
+4.2 
+
+The legal administration of a business 
+Learners need to know: 
+
+4.2.1 
+
+for sole traders and limited companies: 
+
+- 
+
+- 
+
+- 
+- 
+
+- 
+
+- 
+
+the statutory books that must be kept 
+
+the accounting records that must be kept 
+
+the tax records that must be kept 
+the annual financial statements that must be filed 
+
+the annual returns that must be filed 
+
+the electronic filing requirements. 
+
+4.3 
+
+Business formation 
+Learners need to know: 
+
+4.3.1  how sole traders, partnerships (including LLPs) and limited companies are formed 
+
+4.3.2 
+
+the benefits and limitations of using ‘off the shelf’ companies 
+
+4.3.3  why some companies may use pre-incorporation contracts 
+
+4.3.4 
+
+the implications of business name:  
+
+-  what names can and cannot be used  
+
+-  rules about similar and misleading names  
+
+-  where names need to be displayed. 
+
+The Business Environment  
+
+60 
+
+ 
+ 
+ 
+ 
+ 
+5. Understand the finance function within an organisation 
+5.1 
+
+The different functions of a business 
+
+Learners need to know: 
+
+5.1.1 
+
+the different functions of a business: 
+
+-  operations/production  
+
+-  sales and marketing 
+
+- 
+
+finance  
+
+-  human resources  
+
+- 
+
+information technology  
+
+-  distribution and logistics 
+
+5.1.2 
+
+the role each function plays in contributing to business success 
+
+5.1.3 
+
+the interconnected nature of technology to support each function 
+
+5.1.4 
+
+that these functions may be combined in smaller organisations. 
+
+5.2 
+
+The role of the finance function 
+
+Learners need to know: 
+
+5.2.1 
+
+the role of the finance function:  
+
+-  responsibility for the production of statutory financial statements 
+-  providing a service (information, support, advice and guidance) to both internal 
+
+and external stakeholders 
+
+5.2.2 
+
+the relationship and interaction between finance and other functions of a business 
+
+5.2.3  how processes within the finance function may be outsourced (e.g. payroll). 
+
+5.3 
+
+How the finance team contributes to the success of an organisation 
+
+Learners need to know: 
+
+5.3.1 
+
+the importance of establishing effective business relationships 
+
+5.3.2 
+
+the principles of effective communication:  
+-  content is written clearly, complete, accurate, timely and concise  
+-  meets the needs of the recipient 
+-  appropriate medium is used in a suitable environment 
+
+5.3.3  how actions of finance staff support efficient working practices, solvency and  
+
+long-term financial stability, legal and regulatory compliance 
+
+5.3.4 
+
+the importance to an organisation’s survival of remaining solvent and managing 
+funds effectively 
+
+5.3.5 
+
+the different types of policies and procedures affecting finance staff:  
+- 
+-  organisation-wide 
+
+finance function-specific  
+
+5.3.6 
+
+the role of finance in CSR reporting.  
+
+The Business Environment  
+
+61 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+6. Produce work in appropriate formats and communicate effectively 
+
+6.1 
+
+Sources of information 
+
+Learners need to be able to: 
+
+6.1.5  choose information for a specific 
+
+purpose. 
+
+Learners need to know: 
+
+6.1.1 
+
+the difference between valid and 
+invalid sources of information 
+
+6.1.2 
+
+the difference between primary and 
+secondary sources  
+
+6.1.3 
+
+the benefits of obtaining information 
+from more than one source 
+
+6.1.4 
+
+the importance of recognising 
+sources when producing information. 
+
+6.2  Communicate information 
+
+Learners need to understand: 
+
+Learners need to be able to: 
+
+6.2.5  produce written communication 
+
+using acceptable business 
+language that is clear, structured 
+and follows a logical progression:  
+
+-  business letters 
+
+-  emails 
+
+6.2.6 
+
+recognise the impact and 
+consequences of ineffective or 
+inappropriate communication. 
+
+6.2.1 
+
+the importance of effective note-
+taking and documenting key pieces of 
+information:  
+
+-  when dealing with customers  
+-  during meetings (one-to-ones with 
+
+line manager; team)  
+
+6.2.2 
+
+the features of business 
+communications: 
+
+-  business letters  
+
+-  emails  
+
+- 
+
+formal business reports  
+
+-  spreadsheets  
+
+-  social media communications  
+- 
+
+intranet 
+
+6.2.3 
+
+the influence and impact of 
+inappropriate social media postings 
+
+6.2.4 
+
+the consequences of inappropriate 
+information sharing. 
+
+6.3 
+
+Plan workload to meet the needs of the organisation 
+Learners need to understand: 
+
+Learners need to be able to: 
+
+6.3.5  plan workload: 
+
+-  prioritise 
+
+-  monitor 
+
+-  review. 
+
+6.3.1 
+
+the importance of communicating with 
+others whilst undertaking a task or if 
+deadlines may not be met 
+
+6.3.2  how to prioritise workloads based on 
+
+urgency and importance 
+
+6.3.3 
+
+the importance of meeting agreed 
+deadlines and adhering to working 
+practices 
+
+6.3.4 
+
+the impact on others of not 
+completing specified tasks. 
+
+The Business Environment  
+
+62 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+7. Understand the importance of information to business operations  
+
+7.1 
+
+The role of information in the work of the finance function 
+
+Learners need to understand: 
+7.1.1 
+
+the importance of providing useful information 
+
+7.1.2 
+
+the characteristics of useful information:  
+
+-  comparable 
+
+-  consistent  
+
+-  understandable 
+
+- 
+
+- 
+
+relevant and reliable  
+
+timely 
+
+7.1.3 
+
+the use of digital technologies for financial data collection, processing and 
+disseminating information  
+
+7.1.4 
+
+the information and documentation received by the finance function:  
+
+-  budgetary 
+
+- 
+
+- 
+
+inventory control and costing information  
+
+information from suppliers and customers  
+
+-  purchase orders  
+
+- 
+
+remittance advice  
+
+-  statements  
+
+-  supplier invoices  
+
+-  credit notes 
+
+7.1.5 
+
+the information and documentation produced by the finance function:  
+
+- 
+
+information to help management decision making 
+
+-  budgetary information 
+
+-  cash information  
+- 
+
+taxation information  
+
+- 
+
+information for suppliers and customers  
+
+-  sales invoices 
+
+-  credit notes  
+-  statements. 
+
+7.2  The importance of data and information security 
+
+Learners need to know: 
+
+7.2.1  why it is important to ensure the security of data and information 
+
+7.2.2  why it is important to maintain privacy and confidentiality 
+
+7.2.3 
+
+the implications for the organisation if data and information is not secure 
+
+7.2.4  how data and information is retained securely: using passwords, archiving, 
+
+backups and restricting access 
+
+7.2.5 
+
+the importance of cybersecurity. 
+
+The Business Environment  
+
+63 
+
+ 
+ 
+ 
+ 
+ 
+ 
+Delivering this unit 
+
+To deliver this unit effectively, tutors need to help students recognise the impact that the 
+global business environment has on all organisations and give them an awareness of the 
+environment in which they will work in the future. As a result of the digital age, the world has 
+become much smaller and the global economy impacts upon a much wider range of 
+businesses than ever, due to the technologies available. As students at this level may not 
+have any work experience, they may have limited understanding of how business operates 
+and the wider impacts upon business.   
+
+It is important for students to have an awareness of the legal environment and these topics 
+can be challenging to deliver in an engaging format. The opportunity to visit law courts and 
+participate in mock trials can help. Consideration of financial crime, its impact and the role 
+of the finance professional using examples in the media may also help students recognise 
+why it is important to understand the legal system. 
+
+The global business environment encompasses economic factors, at a micro- and macro- 
+level, and political factors. It is vital that students have an appreciation of the wider and 
+global issues that have an impact on businesses and government control. From a finance 
+perspective, this is important, as it may influence key decisions concerned with the overall 
+success of the business. As an organisation operates within the wider global marketplace, 
+the type of business entity created may have an impact upon their ability to operate 
+effectively. Students need to know that it is important to establish the business entity, 
+ensuring it is fit for purpose now and in the future.  
+
+In the current climate, issues surrounding CSR, ethics and sustainability are increasingly 
+important to all businesses. Students could be encouraged to debate key issues based on 
+media coverage, highlighting the dangers of ‘fake news’. The environmental impact of 
+business is one area where student engagement may be particularly high and opportunities 
+such as focusing on a local business to consider the challenges they face. The use of guest 
+speakers, current news issues, a site visit or case study materials would facilitate 
+engagement, teaching and learning in this area. 
+
+The finance function has now expanded its reach to all areas of a business and the 
+processing of data has changed considerably as a result of digital technologies. The value 
+that an effective finance function can add to the overall success of an organisation has 
+moved towards an analytic and advisory function rather than a process role, and jobs in the 
+future will move in this direction. Some aspects of the finance function are now subject to 
+outsourcing and, as a result, the number of stakeholders involved has increased and data 
+security is increasingly seen as an issue. Students are familiar with technology in their 
+everyday lives but need to recognise the impact and issues that affect business on a daily 
+basis and the consequences that inappropriate use of technology can have on overall 
+success. 
+
+Communication within businesses is as important as ever, given the range of devices and 
+media that businesses and individuals can access. The world of digital natives may not 
+always be understood by business leaders but there needs to be recognition that some 
+skills, which are reducing in popularity and may no longer be used by students, are 
+important in the modern business environment. The use of social media platforms and the 
+validity of information sources should be recognised and understood as an important 
+aspect of communication. Students should also understand how their actions can impact 
+upon others and the need for two-way communication to ensure that tasks are understood 
+
+The Business Environment  
+
+64 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+fully and completed in line with operational requirements. 
+
+Access to technology is essential for the teaching of this unit, which should include 
+accounting software and spreadsheets as a minimum. The opportunity to see other 
+technologies being used, including cloud accounting software and integrated systems, may 
+also be available on visits to businesses or via guest speakers.  
+
+Links with other units 
+
+This unit has close links with: 
+
+•  Level 2 Introduction to Bookkeeping 
+•  Level 2 Principles of Bookkeeping Controls 
+•  Level 2 Principles of Costing  
+•  Level 3 Business Awareness. 
+
+The Business Environment  
+
+65 
+
+ 
+ 
+ 
+ 
+ 
+ 
+12. Synoptic assessment specification  
+
+Please refer to the latest Qualification Technical Information (QTI) for specific legislation or 
+rates that apply to the current assessments. Details can be accessed at 
+aat.org.uk/deliver/qualifications/specifications-outlines  
+
+Assessment method 
+
+Marking type 
+
+Duration of assessment 
+
+Computer based 
+assessment 
+
+Partially 
+computer/partially 
+human marked 
+
+2 hours   
+
+The synoptic assessment will ask students to apply knowledge and skills gained across the 
+qualification in an integrated way, within a workplace context. Scenarios will change over 
+time to ensure the validity of the assessment.  
+
+12.1  Assessment objectives 
+
+Task description 
+
+Weighting 
+
+Assessment 
+objective 1 
+
+Demonstrate an understanding of the different business types 
+and their functions 
+
+Related learning 
+outcomes 
+
+The Business Environment  
+LO4 Understand the impact of setting up different types of 
+business entity  
+LO5 Understand the finance function within an organisation 
+
+Assessment 
+objective 2 
+
+Demonstrate an understanding of the finance function, its 
+information requirements and sources, and its role in the wider 
+organisation 
+
+Related learning 
+outcomes 
+
+The Business Environment  
+LO5 Understand the finance function within an organisation  
+LO6 Produce work in appropriate formats and communicate 
+effectively  
+LO7 Understand the importance of information to business 
+operations  
+
+Assessment 
+objective 3 
+
+Demonstrate an understanding of corporate social 
+responsibility (CSR), ethics and sustainability 
+
+Related learning 
+outcomes 
+
+The Business Environment  
+LO3 Understand key principles of corporate social 
+responsibility (CSR), ethics and sustainability 
+
+10% 
+
+13% 
+
+14% 
+
+12. Synoptic test specification 
+
+66 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Assessment 
+objective 4 
+
+Process bookkeeping transactions and communicate 
+information 
+
+Related learning 
+outcomes 
+
+Introduction to Bookkeeping  
+LO1 Understand how to set up bookkeeping systems  
+LO2 Process customer transactions  
+LO3 Process supplier transactions  
+
+The Business Environment  
+LO6 Produce work in appropriate formats and communicate 
+effectively 
+
+Assessment 
+objective 5 
+
+Produce and reconcile control accounts, and use journals to 
+correct errors 
+
+Related learning 
+outcomes 
+
+Principles of Bookkeeping Controls  
+LO1 Use control accounts  
+LO2 Reconcile a bank statement with the cash book  
+LO3 Use the journal 
+
+Assessment 
+objective 6 
+
+Demonstrate an understanding of the principles of contract law 
+
+Related learning 
+outcomes 
+
+The Business Environment  
+LO1 Understand the principles of contract law 
+
+Assessment 
+objective 7 
+
+Demonstrate an understanding of bookkeeping systems, 
+receipts and payments, and the importance of information and 
+data security 
+
+Related learning 
+outcomes 
+
+The Business Environment  
+LO7 Understand the importance of information to business 
+operations  
+
+Introduction to Bookkeeping  
+LO1 Understand how to set up bookkeeping systems 
+LO2 Process customer transactions  
+LO3 Process supplier transactions 
+
+Principles of Bookkeeping Controls 
+  LO1 Use control accounts 
+LO2 Reconcile a bank statement with the cash book 
+LO3 Use the journal 
+
+Assessment 
+objective 8 
+
+Demonstrate an understanding of the global business 
+environment 
+
+12. Synoptic test specification 
+
+22% 
+
+10% 
+
+7% 
+
+10% 
+
+14% 
+
+67 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Related learning 
+outcomes 
+
+The Business Environment  
+LO2 Understand the external business environment 
+
+12. Synoptic test specification 
+
+68 
+
+ 
+ 
+ 
+ 
+13. Delivering AAT qualifications 
+
+13.1  Staff requirements 
+
+AAT requires that all staff who deliver AAT qualifications, including tutors, assessors and 
+verifiers, are professionally competent to do so. 
+
+If a training provider wishes to claim recognition of prior learning (RPL) for a student, the 
+staff must hold the relevant assessor and/or Internal Verifier (IV) qualifications. 
+
+For more information on assessing RPL and the role and qualifications required for 
+assessors and/or IVs, please refer to the AAT Code of practice for approved training providers 
+and AAT Guidance for training providers documents available through MyAAT at 
+aat.org.uk/support/quality-assurance/resources 
+
+13.2  Training provider and assessment venue approval 
+
+Training providers must be approved by AAT to offer these qualifications. To apply to 
+become an AAT Approved training provider, email trainingproviders@aat.org.uk with the 
+following information: 
+
+full name of organisation 
+full postal address, including postcode 
+landline telephone number 
+
+• 
+• 
+• 
+•  website address – this must be a live, fully functioning website 
+•  other awarding bodies with which the organisation is accredited. 
+
+When AAT has received this information, an account manager will set up a meeting and 
+discuss the criteria needed for approval. Only applications that meet AAT’s high standards 
+will be approved. 
+
+Existing training providers who wish to offer the qualification(s) should apply through the 
+qualification approval section under online centre services, which can be found under the 
+MyAAT login. Please note that only the training provider’s main contact can apply for 
+qualification approval. 
+
+Some organisations will not wish to become AAT Approved training providers but may be 
+interested in administering AAT assessments by becoming an approved assessment 
+venue. To apply to become an AAT Approved assessment venue, email 
+assessment.venues@aat.org.uk with the following information: 
+
+the full address of the proposed venue 
+
+• 
+•  any experience in administering computer based assessments. 
+
+AAT will evaluate whether a venue meets the minimum hardware and software 
+requirements, is a suitable environment for delivering assessments and has the staff to run 
+assessments successfully. A representative from AAT will conduct a visit before approval is 
+granted. 
+
+13. Delivering AAT qualifications  
+
+69 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+13.3  Quality assurance 
+
+AAT monitors training providers to ensure their continued compliance with the AAT 
+approval criteria, the AAT Code of practice for approved training providers and appropriate 
+regulatory requirements.  
+
+All training providers have an allocated point of contact and will be subject to a range of 
+quality assurance activities (including visits, remote activities, self-assessment and thematic 
+reviews) to ensure that quality standards are being met. The frequency of quality assurance 
+activities will depend on a number of factors, including the level of risk associated with the 
+provider’s experience in delivering AAT qualifications and/or the outcomes of previous 
+quality assurance activities. If a centre has been delivering assessments using RPL, AAT 
+may also ask for particular information and/or documents to be made available so that 
+sampling can be carried out. 
+
+Training providers will receive a report following on from any quality assurance activity from 
+AAT, which will identify any actions that are to be addressed. 
+
+AAT may apply an action plan with deadlines and/or a sanction where training providers do 
+not meet the requirements set out in the AAT Code of practice for approved training providers, 
+which may be accessed via MyAAT at aat.org.uk/assessments/training-providers/quality-
+assurance 
+
+Sanctions will be applied at training provider level and will take the following form:  
+
+•  Level 1: Action plan imposed 
+•  Level 2: Suspension of the right to claim certification 
+•  Level 3: Suspension of the right to register students, schedule assessments and 
+
+claim certification. 
+
+Where AAT considers that there is an irretrievable breakdown in the management and 
+quality assurance of the delivery of specified qualifications, AAT will withdraw training 
+provider approval. 
+
+13. Delivering AAT qualifications  
+
+70 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+14. Equality and diversity 
+
+AAT firmly believes in equality of opportunity for all who participate in its qualifications. As 
+well as our commitment to the Equality Act 2010, we aim to ensure that: 
+
+•  our qualifications are free from barriers that restrict access and progression 
+•  our qualifications are attainable by all who can demonstrate the required standard 
+
+by whatever means 
+
+•  our qualifications, publications and procedures are free from discriminatory 
+
+practices or stereotypes with regards to age, disability, gender reassignment, 
+marriage and civil partnerships, pregnancy and maternity, race, religion or belief, 
+sexual orientation, caring responsibilities, and part-time working. Assessment tasks 
+and study opportunities are sufficiently varied and flexible to ensure that no 
+particular group of students or would-be students are placed at any disadvantage 
+
+•  all reasonable adjustments are made to cater for the individual requirements of 
+
+students 
+
+•  assessments are valid and reliable to ensure that all students receive impartial 
+
+treatment.  
+
+We do this by: 
+
+•  considering issues of diversity and equality as part of the development process 
+•  avoiding the creation of barriers that might disadvantage those students who share 
+
+one or more protected characteristics 
+
+•  consulting with students (or their representatives) 
+•  collecting data for monitoring and evaluation 
+•  providing additional information at https://www.aat.org.uk/about/what-we-
+
+do/responsible-business-strategy 
+
+14.1  Reasonable adjustments 
+
+A reasonable adjustment is an arrangement that can be put in place by AAT or the 
+assessment centre prior to an assessment to help students with a long-term disability, such 
+as dyslexia, or who are temporarily impaired, such as a student who has broken their arm, 
+to do their best. For example, this could mean applying extra time for dyslexic students or 
+allowing the use of a scribe for a student with a broken arm. 
+
+In most cases, it should be possible for the assessment centre to make the decision to 
+grant adjustments and notify AAT before scheduling the assessment: for example, granting 
+extra time up to and including one-third of the available time as published for that 
+assessment. However, if a more significant adjustment is needed, assessment centres may 
+need to obtain approval from AAT first. 
+
+Further information about reasonable adjustments and the procedures for notification and 
+approval are given in the Guidance on the Application of Reasonable Adjustments and 
+Special Consideration in AAT assessments available through MyAAT at 
+aat.org.uk/assessments/students/preparing/reasonable-adjustments-special-
+consideration 
+
+14. Equality and diversity 
+
+71 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+14.2  Special consideration 
+
+Special consideration is a process that takes account of a student’s circumstances, for 
+example a temporary illness or injury, or some other event outside of the student’s control, 
+at or shortly before the time of assessment, which could have had an effect on the student’s 
+ability to take the assessment. The process entails a review of the student’s performance in 
+the assessment and, if appropriate, the application of a small mark adjustment to 
+compensate, as far as possible, for the difficulties that they might have experienced.  
+
+Further information about special consideration and the procedure that must be followed in 
+notifying AAT is given in the Guidance on the Application of Reasonable Adjustments and 
+Special Consideration in AAT assessments available through MyAAT at 
+aat.org.uk/assessment/adjustments-and-considerations 
+
+14. Equality and diversity 
+
+72 
+
+ 
+ 
+ 
+ 
+ 
+ 
+15. Support for training providers 
+
+15.1  Partner Support team 
+
+The Partner Support team is dedicated to helping training providers with the daily running of 
+AAT qualifications. The team also offers one-to-one support for new training providers to 
+help them get their AAT qualifications up and running. 
+
+Phone: +44 (0)203 3735 2443 
+Email: Partner.support@aat.org.uk 
+
+15.2  Partner Account Manager (PAM) 
+
+Each training provider has their own Partner Account Manager (PAM) assigned to support 
+them once they have been approved as an AAT training provider. PAMs help provide links 
+to local employers and visit regularly to keep training providers up to date on qualification 
+developments, apprenticeships and possible commercial opportunities. 
+
+15.3  Weekly email update from AAT – SummingUp 
+
+Every Friday, SummingUp shares all the latest news from AAT with AAT Approved training 
+providers, including: 
+
+• 
+• 
+• 
+• 
+• 
+
+technical updates 
+qualification developments 
+upcoming events 
+new e-learning materials 
+the latest marketing materials. 
+
+15.4  Events for training providers 
+
+Tutors have the opportunity to attend the following events throughout the year:  
+
+Annual conference 
+The annual training provider conference is a chance to get together, network and share 
+ideas. The conference typically includes: 
+
+topical workshops 
+
+• 
+•  guest speaker sessions 
+• 
+
+the opportunity to learn about new developments directly from AAT. 
+
+15. Support for training providers  
+
+73 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Network meetings 
+At these events, training providers can raise queries, share best practice and ideas with 
+AAT and other training providers. The events: 
+cover a wide range of topics 
+keep tutors up to date on the latest issues 
+provide relevant and cost-effective CPD. 
+
+• 
+• 
+• 
+
+Technical events (tutor-to-tutor sessions) 
+These events are free of charge to training providers and cover a range of our qualifications 
+and assessment areas. Experienced and high-performing training providers share their 
+experiences, tips and techniques with attendees to help others improve their teaching and 
+delivery. 
+
+15.5  Tutor talk forum 
+
+All AAT Approved training providers have access to Tutor talk, where tutors can contribute 
+to online conversations about a wide range of AAT issues. Tutors will receive: 
+
+• 
+• 
+
+unlimited user logins for all AAT tutors 
+email updates on posts they’re interested in. 
+
+15.6  Online support resources 
+
+In order to help tutors deliver AAT qualifications, a range of support materials are offered for 
+all AAT qualifications, such as: 
+
+• 
+• 
+• 
+• 
+• 
+• 
+
+interactive PDFs 
+recorded webinars 
+videos 
+podcasts 
+training materials 
+quiz questions for all AAT units. 
+
+All support materials can be found on the Lifelong Learning Portal. 
+
+15. Support for training providers  
+
+74 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Copyright © 2022 AAT 
+All rights reserved. Reproduction is permitted for personal and educational use only. No 
+part of this content may be reproduced or transmitted for commercial use without the 
+copyright holder’s written consent. 
+
+The Association of Accounting Technicians 
+30 Churchill Place 
+London 
+E14 5RE 
+t: +44 (0)20 3735 2468 
+f: +44 (0)20 7397 3009 
+e: aat@aat.org.uk  
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+

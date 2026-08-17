@@ -29,6 +29,32 @@ Alongside it are two self-contained modules for the levels either side, each wit
 - **Installable (PWA)** — install it to a phone or desktop home screen and use it fully offline.
 - Light/dark themes and keyboard shortcuts throughout.
 
+## Auditing the Level 2 material
+
+Levels 1 and 3 each ship with a build check that asks whether the material is any
+*good* — not merely whether it parses. Level 2, the oldest and largest module here,
+had no such check, and adding one (`scripts/check-aat2-quality.js`, built against the
+encoded syllabus in `aat2-syllabus.js`) found a good deal:
+
+- 126 questions whose explanation was missing or too short to teach anything
+- 30 multiple-choice questions whose answer was identifiable from the shape of the
+  options alone, without reading the stem
+- nine duplicated question stems, one of them repeated ten times
+- four arithmetic errors stated in prose, including a bank-reconciliation task whose
+  figures did not reconcile
+- roughly a hundred scenario sub-questions that no check had ever examined
+- true/false grids keyed 68% true, so guessing "true" beat knowing the topic
+
+All of the above are fixed. Two gaps are measured but **not** yet fixed, and the
+checker reports both on every run so the size of the remaining job stays visible:
+
+- **Teaching depth.** Level 2 cards average 90 words against Level 1's 253 and
+  Level 3's 294. 286 of 306 cards fall below a 150-word floor.
+- **Syllabus coverage.** Tagging the Introduction to Bookkeeping lessons against the
+  encoded criteria showed only 7 of 16 covered. The whole of the analysed cash book
+  and petty cash book area has no lesson, while six ITBK lessons teach Level 3
+  Financial Accounting material instead.
+
 ## The Level 1 module
 
 The **Level 1 Award in Bookkeeping** module covers the whole of the Bookkeeping Fundamentals unit

@@ -10,6 +10,7 @@ window.LEARN_PATH = [
          accounting background at all. These four lessons assume nothing. */
       {
         id: 'L-itbk-1',
+        criteria: ['ITBK-1.2'],
         title: 'What bookkeeping is for',
         icon: '🌱',
         skills: ['itbk-de'],
@@ -112,8 +113,8 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'A business has assets of £52,000 and liabilities of £19,400. What is the capital, in £?',
             answer: 32600, unit: '£',
             steps: ['Assets = Capital + Liabilities.', '£52,000 = Capital + £19,400.', 'Capital = £52,000 − £19,400 = £32,600.'],
-            exp: 'Capital is the owner\'s residual stake once liabilities are deducted from assets.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+            exp: 'Capital is what the business owes back to its owner — the residual once liabilities are taken off assets. £52,000 − £19,400 = £32,600, which is the owner’s stake in the business.' },
+          { type: 'truefalse', q: 'Identify whether each statement about profit and cash is true or false.',
             statements: [
               { text: 'A profitable business can still run out of cash.', answer: true },
               { text: 'The bank balance on its own tells you whether the business made a profit.', answer: false },
@@ -131,6 +132,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-2',
+        criteria: ['ITBK-1.2'],
         title: 'Debits and credits',
         icon: '⚖️',
         skills: ['itbk-de'],
@@ -232,7 +234,7 @@ window.LEARN_PATH = [
               'Dr Purchases £1,200, Cr Bank £1,200',
               'Dr Trade payables £1,200, Cr Purchases £1,200'],
             ans: 0, exp: 'The liability falls (debit reduces a liability) and the bank falls (credit reduces an asset). Purchases were already recorded when the goods were bought.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about debits and credits is true or false.',
             statements: [
               { text: 'Assets increase on the debit side.', answer: true },
               { text: 'Income increases on the debit side.', answer: false },
@@ -257,6 +259,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-3',
+        criteria: ['ITBK-5.1', 'ITBK-5.2'],
         title: 'Ledger accounts and the T-account',
         icon: '📒',
         skills: ['itbk-de'],
@@ -342,8 +345,8 @@ window.LEARN_PATH = [
           { q: 'In a T-account, entries on the left-hand side are:', opts: [
               'Debits',
               'Credits',
-              'Always increases, whatever the account type',
-              'Always decreases, whatever the account type'],
+              'Always an increase',
+              'Always a decrease'],
             ans: 0, exp: 'Left is debit, right is credit. Whether that is an increase or a decrease depends on the account type — DEAD CLIC decides.' },
           { q: 'Which ledger contains one account for each individual credit customer?', opts: [
               'The sales ledger',
@@ -351,7 +354,7 @@ window.LEARN_PATH = [
               'The purchases ledger',
               'The cash book'],
             ans: 0, exp: 'The sales ledger holds an account per credit customer. The general ledger holds the single sales ledger control account that summarises them all.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about the ledgers is true or false.',
             statements: [
               { text: 'The sales and purchases ledgers sit outside the double entry.', answer: true },
               { text: 'When a credit customer pays, the Sales account is credited again.', answer: false },
@@ -367,6 +370,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-4',
+        criteria: ['ITBK-1.1'],
         title: 'Source documents and the paper trail',
         icon: '📄',
         skills: ['itbk-docs'],
@@ -470,7 +474,7 @@ window.LEARN_PATH = [
             answer: 540, unit: '£',
             steps: ['List price: 30 × £20.00 = £600.00.', 'Less 25% trade discount: £600.00 − £150.00 = £450.00 net.', 'VAT: £450.00 × 20% = £90.00.', 'Total: £450.00 + £90.00 = £540.00.'],
             exp: 'Trade discount comes off before VAT is calculated. VAT is never charged on the list price.' },
-          { type: 'truefalse', q: 'Identify whether the following statements about source documents are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about source documents is true or false.',
             statements: [
               { text: 'A credit note reduces the amount a customer owes.', answer: true },
               { text: 'A remittance advice is sent by the seller to request payment.', answer: false },
@@ -488,6 +492,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-5',
+        criteria: ['ITBK-5.2'],
         title: 'Balancing off and the trial balance',
         icon: '📊',
         skills: ['itbk-tb'],
@@ -562,13 +567,13 @@ window.LEARN_PATH = [
             q: 'Which of these would normally appear in the DEBIT column of a trial balance?',
             opts: ['Motor vehicles', 'Sales', 'Capital', 'Bank loan'],
             ans: 0,
-            exp: 'Motor vehicles are an asset, and assets carry debit balances per DEAD CLIC.',
+            exp: 'Motor vehicles are an asset, and assets carry debit balances. DEAD CLIC is the usual reminder: Debits are Expenses, Assets and Drawings; Credits are Liabilities, Income and Capital.',
           },
           {
             q: 'A business has assets of £50,000 and liabilities of £18,000. What is its capital?',
             opts: ['£68,000', '£50,000', '£18,000', '£32,000'],
             ans: 3,
-            exp: 'Capital = Assets − Liabilities: £50,000 − £18,000 = £32,000.',
+            exp: 'Rearranging the accounting equation gives Capital = Assets − Liabilities, so £50,000 − £18,000 = £32,000. That residual is the owner’s stake — what would be left if every liability were settled.',
           },
           {
             q: 'A trial balance agrees. What does that prove?',
@@ -676,7 +681,7 @@ window.LEARN_PATH = [
             q: 'Equipment cost £12,000 with a residual value of £2,000 and a 5-year life. What is the annual straight-line charge?',
             opts: ['£2,400', '£12,000', '£2,800', '£2,000'],
             ans: 3,
-            exp: '(£12,000 − £2,000) ÷ 5 = £10,000 ÷ 5 = £2,000 per year.',
+            exp: 'Straight-line depreciation spreads the cost less residual value evenly over the useful life: (£12,000 − £2,000) ÷ 5 = £2,000 a year. Residual value is deducted because that much is expected to remain at the end.',
           },
           {
             q: 'A van cost £20,000 and is depreciated at 25% reducing balance. What is the year 2 charge?',
@@ -692,7 +697,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Electricity used in December costs £300 but the bill arrives in January. At the 31 December year end, how should this be treated?',
-            opts: ['Ignore it until the bill arrives', 'Record it as a prepayment asset of £300', 'Record it as an accrual — add £300 to the expense and show £300 as a liability', 'Debit the bank account £300'],
+            opts: ['Ignore it until the bill actually arrives', 'Record it as a prepayment asset of £300', 'Record a £300 accrual and a £300 liability', 'Debit the bank account with £300'],
             ans: 2,
             exp: 'An accrual is needed because the expense was incurred in December even though payment comes later. It is added to the period\'s expenses and shown as a current liability.',
           },
@@ -791,7 +796,7 @@ window.LEARN_PATH = [
             exp: 'Treating CapEx as RevEx charges too much expense in the period, so profit is understated. Assets are also understated.',
           },
           {
-            q: 'Which of the following is capital expenditure?',
+            q: 'Which of these is capital rather than revenue expenditure?',
             opts: ['Annual insurance premium £1,200', 'Monthly wages £8,000', 'Extension to the factory building £30,000', 'Replacement of broken windows £600'],
             ans: 2,
             exp: 'Extending a building enhances a long-term asset — capital expenditure. Insurance and wages are running costs (RevEx), and replacing broken windows merely restores the original condition (RevEx).',
@@ -806,6 +811,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-8',
+        criteria: ['ITBK-2.1'],
         title: 'VAT: records and the return',
         icon: '🧾',
         skills: ['itbk-docs'],
@@ -873,7 +879,7 @@ window.LEARN_PATH = [
             q: 'A customer pays £480 including VAT at 20%. What is the VAT element?',
             opts: ['£96', '£80', '£100', '£400'],
             ans: 1,
-            exp: 'VAT = £480 ÷ 6 = £80. Alternatively: net = £480 ÷ 1.20 = £400; VAT = £480 − £400 = £80.',
+            exp: 'From a VAT-inclusive figure, divide by 6 at the standard rate: £480 ÷ 6 = £80. The longer route confirms it — net is £480 ÷ 1.20 = £400, so the VAT element is £80.',
           },
           {
             q: 'In the VAT control account, where is input VAT (VAT on purchases) recorded?',
@@ -897,6 +903,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-9',
+        criteria: ['ITBK-1.1', 'ITBK-2.2', 'ITBK-3.2'],
         title: 'Day books and source documents',
         icon: '📋',
         skills: ['itbk-docs'],
@@ -998,7 +1005,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A statement of account is sent by the SUPPLIER to the buyer. Its purpose is to:',
-            opts: ['Confirm an order has been placed', 'List all transactions between the two parties in the period', 'Prove goods have been received', 'Authorise payment'],
+            opts: ['Confirm an order has been placed', 'List the period’s transactions between the parties', 'Prove that the goods were received', 'Authorise payment of the balance'],
             ans: 1,
             exp: 'A statement of account is a periodic summary of invoices, credit notes and payments, used by the buyer to reconcile against their own purchase ledger records.',
           },
@@ -1012,6 +1019,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-itbk-10',
+        criteria: ['ITBK-5.1', 'ITBK-5.2'],
         title: 'Ledger accounts in practice',
         icon: '📒',
         skills: ['itbk-de', 'itbk-cashbook'],
@@ -1096,7 +1104,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'The SLCA balance on the trial balance should equal:',
-            opts: ['The total of individual sales invoices', 'The sum of all individual customer balances in the sales ledger', 'The total cash received from customers', 'The balance of the bank account'],
+            opts: ['The total of individual sales invoices', 'The sum of the individual customer balances', 'The total cash received from customers', 'The balance shown on the bank account'],
             ans: 1,
             exp: 'The SLCA is a control account. Its balance should agree with the total of all individual customer balances in the memorandum sales ledger.',
           },
@@ -1203,7 +1211,7 @@ window.LEARN_PATH = [
             q: 'A business pays £2,400 for rent on 1 October, covering the next 12 months. At 31 December (3 months later) what is the prepayment?',
             opts: ['£600', '£1,800', '£2,400', '£200'],
             ans: 1,
-            exp: '3 months used (Oct–Dec); 9 months remain. Prepayment = 9/12 × £2,400 = £1,800.',
+            exp: 'Three of the twelve months have been used by 31 December, so nine remain: 9/12 × £2,400 = £1,800. That is removed from this year’s expense and carried forward as a current asset.',
           },
           {
             q: 'A prepayment appears in the statement of financial position as:',
@@ -1221,7 +1229,7 @@ window.LEARN_PATH = [
             q: 'Rent of £1,200 is received on 1 December for the next 3 months. At 31 December, the deferred income balance is:',
             opts: ['£400', '£800', '£1,200', '£600'],
             ans: 1,
-            exp: '1 month used (December); 2 months still deferred. Deferred income = 2/3 × £1,200 = £800.',
+            exp: 'One month has been earned by 31 December, so two remain unearned: 2/3 × £1,200 = £800. Income received but not yet earned is a liability, because the service has still to be provided.',
           },
         ],
       },
@@ -1307,7 +1315,7 @@ window.LEARN_PATH = [
             q: 'A business has a bank overdraft of £1,500. Where does this appear on the SFP?',
             opts: ['Current assets', 'Non-current assets', 'Current liabilities', 'Capital'],
             ans: 2,
-            exp: 'A bank overdraft is money owed to the bank — it is a current liability, not an asset.',
+            exp: 'An overdraft means the bank is owed money, so it is a current liability rather than an asset. A positive bank balance is the asset; being overdrawn reverses the direction of the obligation.',
           },
           {
             q: 'Net assets (net worth) of a business equals:',
@@ -1384,7 +1392,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'What is the main purpose of the extended trial balance?',
-            opts: ['To replace the general ledger', 'To prepare adjusted figures and extract income statement and balance sheet columns', 'To record all transactions for the accounting period', 'To calculate VAT owed to HMRC'],
+            opts: ['To replace the general ledger entirely', 'To extract adjusted figures for the two statements', 'To record all transactions for the accounting period', 'To calculate the VAT owed to HMRC'],
             ans: 1,
             exp: 'The ETB adjusts the initial TB for year-end items (accruals, prepayments, depreciation) and then separates the adjusted balances into income statement and balance sheet columns.',
           },
@@ -1460,7 +1468,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Which Level 3 unit most directly extends your ITBK double-entry skills?',
-            opts: ['Management Accounting Techniques (MATS)', 'Business Awareness (BUAW)', 'Financial Accounting: Preparing Financial Statements (FAPS)', 'Tax Processes for Businesses (TPFB)'],
+            opts: ['Management Accounting Techniques (MATS)', 'Business Awareness (BUAW) at Level 3', 'Financial Accounting: Preparing Financial Statements (FAPS)', 'Tax Processes for Businesses (TPFB)'],
             ans: 2,
             exp: 'Financial Accounting: Preparing Financial Statements (FAPS) is the direct Level 3 extension of ITBK. Under Q2022 it absorbed the old Advanced Bookkeeping and Final Accounts Preparation units, and it builds on double-entry, journals, the trial balance, adjustments and depreciation — all covered at Level 2.',
           },
@@ -1571,7 +1579,7 @@ window.LEARN_PATH = [
               'The trial balance is guaranteed to agree at the period end',
               'Bank reconciliations no longer need to be performed'],
             ans: 0, exp: 'Segregation forces collusion, which is rarer and easier to spot. It typically needs more people, and it complements rather than replaces reconciliations.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about bookkeeping controls is true or false.',
             statements: [
               { text: 'An agreeing trial balance proves the entries are in the correct accounts.', answer: false },
               { text: 'A control account is checked against the total of the individual accounts.', answer: true },
@@ -1675,14 +1683,14 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'An SLCA opens at £22,000. Credit sales £61,000; receipts £55,400; sales returns £2,100. What is the closing balance, in £?',
             answer: 25500, unit: '£',
             steps: ['Debits: opening £22,000 + credit sales £61,000 = £83,000.', 'Credits: receipts £55,400 + returns £2,100 = £57,500.', 'Closing balance = £83,000 − £57,500 = £25,500 debit.'],
-            exp: 'Sales increase the balance; receipts and returns reduce it.' },
+            exp: 'Credit sales increase what customers owe; receipts and returns reduce it. So £22,000 + £61,000 − £55,400 − £2,100 = £25,500. The balance is a debit, because it is an asset owed to the business.' },
           { q: 'Which entry appears on the CREDIT side of the sales ledger control account?', opts: [
               'Cash received from credit customers during the period',
               'Credit sales made to customers during the period',
               'The opening balance brought down at the start of the period',
               'A cheque from a customer returned unpaid by the bank'],
             ans: 0, exp: 'Receipts reduce what customers owe, so they are credits. Sales, the opening balance and dishonoured cheques all increase the balance and sit on the debit side.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about control accounts is true or false.',
             statements: [
               { text: 'The PLCA normally has a credit balance.', answer: true },
               { text: 'An error in one customer\'s individual account will unbalance the trial balance.', answer: false },
@@ -1993,7 +2001,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Why must the suspense account be cleared before the year end?',
-            opts: ['Because HMRC charges interest on it', 'Because the financial statements must not contain unexplained balances', 'Because the bank requires it', 'Because it earns no interest'],
+            opts: ['Because HMRC charges interest on the balance', 'Because the statements must hold no unexplained balances', 'Because the business’s bank requires it', 'Because the balance earns no interest'],
             ans: 1,
             exp: 'The financial statements must reflect corrected, explained figures. A suspense balance means errors remain unresolved.',
           },
@@ -2071,13 +2079,13 @@ window.LEARN_PATH = [
             q: 'Gross pay £1,800; PAYE £160; employee NIC £110; employee pension £90. What is net pay?',
             opts: ['£1,800', '£1,440', '£1,530', '£1,640'],
             ans: 1,
-            exp: '£1,800 − £160 − £110 − £90 = £1,440.',
+            exp: 'Net pay is gross less the employee’s own deductions: £1,800 − £160 PAYE − £110 NIC − £90 pension = £1,440. Employer NIC is a separate cost to the employer and never reduces the employee’s pay.',
           },
           {
             q: 'Until PAYE deducted from employees is paid over, how is it shown in the accounts?',
             opts: ['As a liability owed to HMRC', 'As income of the business', 'As an asset of the business', 'As drawings'],
             ans: 0,
-            exp: 'Deductions are held on behalf of HMRC. Until paid, they are a liability of the employer.',
+            exp: 'PAYE deducted from employees is HMRC’s money held by the employer, so until it is paid over it sits as a current liability. It is never the employer’s own expense — the expense is the gross pay.',
           },
           {
             q: 'After all payroll amounts are paid out, the wages control account should show what?',
@@ -2375,7 +2383,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A debt previously written off as irrecoverable is unexpectedly recovered. What entries are needed?',
-            opts: ['Dr Bank; Cr Irrecoverable debts expense (one entry only)', 'Dr SLCA; Cr Irrecoverable debts expense (reinstate), then Dr Bank; Cr SLCA (receipt)', 'Dr Irrecoverable debts; Cr Bank', 'No entry needed'],
+            opts: ['Dr Bank; Cr Irrecoverable debts expense (one entry only)', 'Reinstate the debt, then record the receipt', 'Dr Irrecoverable debts; Cr Bank only', 'No entry is needed at all'],
             ans: 1,
             exp: 'Reinstate the debt (Dr SLCA, Cr Irrecoverable debts expense), then record receipt (Dr Bank, Cr SLCA). The two-step approach correctly reverses the write-off.',
           },
@@ -2461,7 +2469,7 @@ window.LEARN_PATH = [
             q: 'Opening SLCA balance is £8,000. Credit sales £22,000. Cash received £19,000. Returns £1,200. Discounts allowed £400. Closing balance = ?',
             opts: ['£9,400', '£10,200', '£8,600', '£9,800'],
             ans: 0,
-            exp: '£8,000 + £22,000 − £19,000 − £1,200 − £400 = £9,400.',
+            exp: 'Start with the opening balance, add credit sales, then deduct everything reducing the debt: £8,000 + £22,000 − £19,000 − £1,200 returns − £400 discounts = £9,400 owed by customers at the period end.',
           },
           {
             q: 'A discount of £150 is allowed to a credit customer. What is the journal entry?',
@@ -2675,7 +2683,7 @@ window.LEARN_PATH = [
             q: 'VAT due to HMRC = Output tax £8,400 minus Input tax £5,100. The amount due is:',
             opts: ['£13,500', '£3,300', '£2,700', '£8,400'],
             ans: 1,
-            exp: 'VAT due = £8,400 − £5,100 = £3,300.',
+            exp: 'VAT payable is output tax charged on sales less input tax reclaimed on purchases: £8,400 − £5,100 = £3,300. The balance is a credit, because the business is holding HMRC’s money rather than its own.',
           },
           {
             q: 'In the VAT control account, output VAT on sales appears on the:',
@@ -2764,7 +2772,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'An unpresented cheque is one that:',
-            opts: ['The business received but has not yet deposited', 'The business wrote and recorded in the cashbook, but the bank has not yet processed it', 'Was returned unpaid (bounced) by the bank', 'Is awaiting a signature before payment can be made'],
+            opts: ['The business received but has not yet deposited', 'The business has written and recorded, but the bank has not processed', 'Was returned unpaid, or bounced, by the bank', 'Is awaiting a signature before payment can be made'],
             ans: 1,
             exp: 'An unpresented cheque is a payment already credited in the cashbook but not yet appearing on the bank statement. The bank statement balance is higher than the cashbook by this amount.',
           },
@@ -2852,7 +2860,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A contra entry between the SLCA and PLCA is used when:',
-            opts: ['The business writes off a bad debt', 'A customer is also a supplier and the balances are offset against each other', 'An error is corrected using a suspense account', 'Bank interest is recorded in both control accounts'],
+            opts: ['The business writes off an irrecoverable debt', 'A customer is also a supplier and the balances are offset', 'An error is corrected using a suspense account', 'Bank interest is recorded in both control accounts'],
             ans: 1,
             exp: 'A contra entry offsets a customer balance (in the SLCA) against a supplier balance (in the PLCA) when the same entity is both a customer and a supplier. Entry: Dr PLCA / Cr SLCA.',
           },
@@ -2965,7 +2973,7 @@ window.LEARN_PATH = [
               'The total production cost incurred during the period',
               'The rate at which overheads are charged to production'],
             ans: 0, exp: 'A cost unit is the thing being costed — one car, one meal, one patient. The department is a cost centre.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about costing and management accounting is true or false.',
             statements: [
               { text: 'Management accounting reports must follow a statutory format.', answer: false },
               { text: 'A profit centre is responsible for both revenue and costs.', answer: true },
@@ -3180,14 +3188,14 @@ window.LEARN_PATH = [
               'A weighted average of all prices paid',
               'The lowest price paid during the period'],
             ans: 0, exp: 'FIFO issues the oldest units first, so whatever remains is the most recently purchased — and therefore valued at recent prices.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about inventory valuation is true or false.',
             statements: [
               { text: 'LIFO is permitted for financial reporting under IAS 2.', answer: false },
               { text: 'AVCO recalculates the average cost after each receipt.', answer: true },
               { text: 'When prices are rising, FIFO gives a higher closing inventory value than AVCO.', answer: true },
               { text: 'Inventory valuation methods dictate the physical order goods leave the store.', answer: false },
             ],
-            exp: 'These are costing assumptions, not warehouse rules. LIFO is prohibited by IAS 2.' },
+            exp: 'FIFO and AVCO are assumptions about how cost is allocated, not instructions about which physical items to move — stock can be issued in any order. LIFO is not permitted under IAS 2 or UK GAAP.' },
           { type: 'numeric', q: 'Opening stock 100 units at £5.00. A receipt of 100 units at £7.00 follows. Under AVCO, what is the new average cost per unit, in £?',
             answer: 6, unit: '£',
             steps: ['Total cost: (100 × £5.00) + (100 × £7.00) = £500 + £700 = £1,200.', 'Total units: 100 + 100 = 200.', 'Average = £1,200 ÷ 200 = £6.00 per unit.'],
@@ -3303,7 +3311,7 @@ window.LEARN_PATH = [
             answer: 1500, unit: '£',
             steps: ['Overhead absorbed = OAR × actual hours = £9.00 × 4,000 = £36,000.', 'Actual overhead incurred = £37,500.', 'Absorbed is less than actual, so overhead is under-absorbed.', 'Under-absorption = £37,500 − £36,000 = £1,500.'],
             exp: 'Products were charged £36,000 of overhead but £37,500 was actually incurred. Profit was therefore overstated by £1,500 and must be reduced.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about overhead absorption is true or false.',
             statements: [
               { text: 'The overhead absorption rate is calculated from budgeted figures.', answer: true },
               { text: 'Under-absorption means profit has been overstated and must be reduced.', answer: true },
@@ -3373,17 +3381,17 @@ window.LEARN_PATH = [
             q: 'A worker is paid £0.80 per unit and makes 460 units. What is their piecework pay?',
             opts: ['£460', '£575', '£368', '£80'],
             ans: 2,
-            exp: '460 × £0.80 = £368.',
+            exp: 'Piecework pays per unit produced, so 460 × £0.80 = £368. Hours worked are irrelevant under a pure piece rate, which is what gives it a direct productivity incentive.',
           },
           {
             q: 'What is the main drawback of a pure time rate scheme?',
-            opts: ['It gives no incentive to produce more in the time worked', 'It is illegal in the UK', 'Pay varies wildly each week', 'It cannot be used for overtime'],
+            opts: ['It gives no incentive to produce more', 'It is not lawful in the UK', 'Pay varies unpredictably each week', 'It cannot be applied to overtime hours'],
             ans: 0,
-            exp: 'Pay depends only on hours, not output — so there is no built-in productivity incentive.',
+            exp: 'Under a pure time rate, pay depends only on hours attended, so a fast worker and a slow one earn the same. It is simple to administer and predictable, but it rewards presence rather than output.',
           },
           {
             q: 'Why do many piecework schemes include a guaranteed minimum wage?',
-            opts: ['To increase the overtime premium', 'To reduce the employer\'s NIC', 'To make all workers earn the same', 'To protect workers when output is low for reasons beyond their control'],
+            opts: ['To increase the overtime premium paid', 'To reduce the employer’s NIC liability', 'To make all workers earn the same', 'To protect pay when output falls for outside reasons'],
             ans: 3,
             exp: 'A guaranteed minimum ensures fair pay when machine breakdowns or material shortages limit output through no fault of the worker.',
           },
@@ -3468,17 +3476,17 @@ window.LEARN_PATH = [
             q: 'Actual rent was £5,200 against a budget of £5,000. What is the variance?',
             opts: ['£200 adverse', '£200 favourable', '£5,200 adverse', 'No variance'],
             ans: 0,
-            exp: 'Spending £200 more than budgeted on a cost reduces profit relative to plan — adverse.',
+            exp: 'Actual spending of £5,200 against a £5,000 budget is £200 more than planned, and spending more on a cost reduces profit — so the variance is adverse. Adverse and favourable describe the effect on profit, not the direction of the figure.',
           },
           {
             q: 'Sales revenue came in £900 above budget. How is this variance described?',
             opts: ['Adverse, because budgets should be exact', 'Favourable, because higher income increases profit', 'Neutral', 'Adverse, because costs will also rise'],
             ans: 1,
-            exp: 'Income above budget increases profit, making the variance favourable.',
+            exp: 'Revenue £900 above budget increases profit, so the variance is favourable. Note that for income a higher figure is favourable, whereas for a cost a higher figure is adverse — the test is always the effect on profit.',
           },
           {
             q: 'What is the purpose of exception reporting?',
-            opts: ['To report every variance no matter how small', 'To hide adverse variances', 'To focus management attention on significant variances only', 'To replace the budget'],
+            opts: ['To report every variance no matter how small', 'To conceal adverse variances', 'To focus attention on significant variances', 'To replace the budget itself'],
             ans: 2,
             exp: 'Exception reporting filters out trivial differences so managers investigate only what materially affects the business.',
           },
@@ -3486,13 +3494,13 @@ window.LEARN_PATH = [
             q: 'A product sells for £15 with variable costs of £9 per unit. What is the contribution per unit?',
             opts: ['£15', '£9', '£24', '£6'],
             ans: 3,
-            exp: 'Contribution = selling price − variable cost per unit = £15 − £9 = £6.',
+            exp: 'Contribution per unit is selling price less variable cost: £15 − £9 = £6. Fixed costs are excluded because they do not change with output, so each unit contributes £6 towards covering them.',
           },
           {
             q: 'Fixed costs are £18,000. Contribution per unit is £6. How many units are needed to break even?',
             opts: ['3,000', '1,800', '6,000', '108,000'],
             ans: 0,
-            exp: 'Break-even units = fixed costs ÷ contribution per unit = £18,000 ÷ £6 = 3,000 units.',
+            exp: 'Break-even is where total contribution exactly covers fixed costs: £18,000 ÷ £6 = 3,000 units. Below that some fixed cost is uncovered; above it, each unit adds its full £6 to profit.',
           },
           {
             q: 'Budgeted sales: 800 units at £20 each (£16,000). Actual sales: 750 units at £22 each (£16,500). What is the overall sales variance?',
@@ -3585,13 +3593,13 @@ window.LEARN_PATH = [
             q: 'Budgeted overheads are £80,000 and budgeted labour hours are 16,000. What is the OAR per labour hour?',
             opts: ['£0.20', '£5.00', '£8.00', '£4.00'],
             ans: 1,
-            exp: 'OAR = £80,000 ÷ 16,000 = £5 per labour hour.',
+            exp: 'The overhead absorption rate is set from budgeted figures: £80,000 ÷ 16,000 = £5 per labour hour. It must be budgeted, because products have to be costed before the actual overhead for the period is known.',
           },
           {
             q: 'A product takes 3 labour hours to produce. The OAR is £5 per labour hour. What overheads are absorbed per unit?',
             opts: ['£3', '£5', '£15', '£8'],
             ans: 2,
-            exp: 'Overheads absorbed = 3 hours × £5 = £15 per unit.',
+            exp: 'Absorption applies the rate to the hours the product takes: 3 × £5 = £15 per unit. The rate stays as budgeted; what varies between products is the number of hours each one consumes.',
           },
           {
             q: 'Actual overheads are £95,000. Absorbed overheads are £88,000. What is the result?',
@@ -3685,13 +3693,13 @@ window.LEARN_PATH = [
             q: 'Under FIFO, which units are assumed to be issued first?',
             opts: ['The most recently purchased units', 'The oldest (earliest purchased) units', 'The cheapest units', 'Units chosen at random'],
             ans: 1,
-            exp: 'FIFO — First In, First Out — assumes the oldest stock is sold or used first.',
+            exp: 'FIFO assumes the oldest stock is issued first, so closing inventory is left valued at the most recent prices. It is an assumption about cost allocation rather than about which physical items were moved.',
           },
           {
             q: 'A business buys 20 units at £6 then 20 units at £8. It issues 25 units under FIFO. What is the cost of the issue?',
             opts: ['£175', '£150', '£160', '£200'],
             ans: 2,
-            exp: 'FIFO: 20 units × £6 = £120, then 5 units × £8 = £40. Total cost of issue = £160.',
+            exp: 'FIFO takes the oldest batch first: all 20 at £6 = £120, then 5 from the newer batch at £8 = £40, giving £160. The 15 units left are valued at £8, the most recent price.',
           },
           {
             q: 'Under AVCO, when is the average cost recalculated?',
@@ -3774,19 +3782,19 @@ window.LEARN_PATH = [
             q: 'Selling price is £30 and variable cost per unit is £18. What is the contribution per unit?',
             opts: ['£30', '£18', '£12', '£48'],
             ans: 2,
-            exp: 'Contribution per unit = SP − VC = £30 − £18 = £12.',
+            exp: 'Contribution per unit is selling price less variable cost: £30 − £18 = £12. That is the amount each unit adds towards fixed costs, and towards profit once those are covered.',
           },
           {
             q: 'Contribution per unit is £8 and fixed costs are £40,000. What is the break-even point in units?',
             opts: ['5,000', '4,000', '8,000', '320,000'],
             ans: 0,
-            exp: 'Break-even units = Fixed costs ÷ Contribution per unit = £40,000 ÷ £8 = 5,000 units.',
+            exp: 'Break-even is fixed costs divided by contribution per unit: £40,000 ÷ £8 = 5,000 units. At that volume contribution and fixed costs are equal, so the business makes neither profit nor loss.',
           },
           {
             q: 'Break-even is 4,000 units. Budgeted sales are 5,500 units. What is the margin of safety?',
             opts: ['4,000 units', '1,500 units (27.3%)', '5,500 units', '500 units (9.1%)'],
             ans: 1,
-            exp: 'Margin of safety = 5,500 − 4,000 = 1,500 units. As a %: 1,500 ÷ 5,500 × 100 = 27.3%.',
+            exp: 'Margin of safety is how far budgeted sales exceed break-even: 5,500 − 4,000 = 1,500 units, or 27.3% of budget. It measures how much demand could fall before the business moves into loss.',
           },
           {
             q: 'Fixed costs £60,000, contribution per unit £15, target profit £30,000. Units needed?',
@@ -3798,13 +3806,13 @@ window.LEARN_PATH = [
             q: 'Selling price £40, variable cost £24. What is the C/S ratio?',
             opts: ['60%', '40%', '24%', '16%'],
             ans: 1,
-            exp: 'Contribution per unit = £40 − £24 = £16. C/S ratio = £16 ÷ £40 = 40%.',
+            exp: 'Contribution is £40 − £24 = £16, and the contribution-to-sales ratio expresses that as a share of the selling price: £16 ÷ £40 = 40%. The ratio is what lets break-even be worked out in revenue rather than units.',
           },
           {
             q: 'Fixed costs are £72,000 and the C/S ratio is 45%. What is the break-even revenue?',
             opts: ['£32,400', '£160,000', '£72,000', '£45,000'],
             ans: 1,
-            exp: 'Break-even revenue = Fixed costs ÷ C/S ratio = £72,000 ÷ 0.45 = £160,000.',
+            exp: 'Dividing fixed costs by the C/S ratio gives break-even in sales value: £72,000 ÷ 0.45 = £160,000. Use the ratio when the answer is wanted in revenue, and contribution per unit when it is wanted in units.',
           },
           {
             q: 'Which of the following changes would REDUCE the break-even point?',
@@ -3882,7 +3890,7 @@ window.LEARN_PATH = [
             q: 'Highest activity: 8,000 units, cost £38,000. Lowest: 3,000 units, cost £23,000. Variable cost per unit = ?',
             opts: ['£3.00', '£4.75', '£7.67', '£2.00'],
             ans: 0,
-            exp: 'VC/unit = (£38,000 − £23,000) ÷ (8,000 − 3,000) = £15,000 ÷ 5,000 = £3 per unit.',
+            exp: 'High-low takes the change in cost over the change in activity, which strips out the fixed element: £15,000 ÷ 5,000 = £3 per unit. Only the variable cost changes between the two levels, so the difference must all be variable.',
           },
           {
             q: 'Using the high point (8,000 units, cost £38,000) and VC = £3/unit, what is the fixed cost?',
@@ -3894,7 +3902,7 @@ window.LEARN_PATH = [
             q: 'Fixed cost = £14,000 and VC = £3/unit. Total cost at 6,000 units = ?',
             opts: ['£32,000', '£18,000', '£44,000', '£28,000'],
             ans: 0,
-            exp: 'Total cost = Fixed + (VC × units) = £14,000 + (£3 × 6,000) = £14,000 + £18,000 = £32,000.',
+            exp: 'Total cost is the fixed element plus the variable cost per unit times output: £14,000 + (£3 × 6,000) = £32,000. Fixed cost stays the same in total while falling per unit as output rises.',
           },
           {
             q: 'The high-low method assumes that the variable cost per unit is:',
@@ -4126,7 +4134,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A department has a contribution of £25,000 and is allocated £30,000 of fixed overheads (of which £8,000 are avoidable). Should it close?',
-            opts: ['Yes — it is making a net loss of £5,000', 'No — contribution (£25,000) exceeds avoidable fixed costs (£8,000)', 'Yes — it does not cover its fixed costs', 'Cannot decide — need more information'],
+            opts: ['Yes — it is making a net loss of £5,000', 'No — contribution of £25,000 exceeds £8,000', 'Yes — it does not cover its fixed costs', 'Cannot decide — more information needed'],
             ans: 1,
             exp: 'Only avoidable costs are relevant. Contribution £25,000 > avoidable fixed costs £8,000. Closing would reduce profit by £25,000 − £8,000 = £17,000. Keep it open.',
           },
@@ -4293,7 +4301,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A flexible budget differs from a fixed budget because it:',
-            opts: ['Has no fixed costs included in the calculation', 'Is prepared using marginal costing only, ignoring fixed overheads', 'Is adjusted to the actual level of activity achieved before comparing to actual results', 'Is set at the beginning of the year and reviewed monthly'],
+            opts: ['Has no fixed costs in the calculation at all', 'Is prepared using marginal costing only, ignoring fixed overheads', 'Is adjusted to the activity level actually achieved', 'Is set at the beginning of the year and reviewed monthly'],
             ans: 2,
             exp: 'A flexible budget re-calculates the expected costs at the actual output level. Variable costs are scaled to actual output; fixed costs stay the same. This makes the variance analysis meaningful — comparing like with like.',
           },
@@ -4399,14 +4407,14 @@ window.LEARN_PATH = [
               'Whichever came later in time takes precedence over the other',
               'Neither — the conflict is resolved by a referendum'],
             ans: 0, exp: 'Parliament is sovereign. The courts interpret statute but cannot question the validity of an Act.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about the legal system is true or false.',
             statements: [
               { text: 'Common law is developed by judges deciding individual cases.', answer: true },
               { text: 'Criminal cases are brought by the wronged private individual.', answer: false },
               { text: 'The civil standard of proof is the balance of probabilities.', answer: true },
               { text: 'Delegated legislation allows detail to be changed without a new Act.', answer: true },
             ],
-            exp: 'Criminal proceedings are brought by the state. A private individual brings a civil claim.' },
+            exp: 'Criminal proceedings are brought by the state and punish the offender; civil claims are brought by one party against another to obtain a remedy. The standard of proof differs too — beyond reasonable doubt against the balance of probabilities.' },
           { q: 'A supplier sues a customer for an unpaid invoice. This is:', opts: [
               'A civil matter, with the supplier seeking a remedy',
               'A criminal matter, because non-payment is theft',
@@ -4509,7 +4517,7 @@ window.LEARN_PATH = [
               'A binding contract as soon as the customer sees the display',
               'An express term of a contract already in existence'],
             ans: 0, exp: 'The display invites offers. The customer offers at the till and the retailer may accept or decline — which is why a mispriced item need not be sold.' },
-          { type: 'truefalse', q: 'Identify whether the following statements about contract law are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about forming a contract is true or false.',
             statements: [
               { text: 'Consideration means each party must give something of value.', answer: true },
               { text: 'A reply that changes a term of the offer is a valid acceptance.', answer: false },
@@ -4523,7 +4531,7 @@ window.LEARN_PATH = [
               { options: ['intention to create legal relations', 'a written document', 'a witness signature', 'legal advice'], answer: 0 },
               { options: ['treat', 'accept', 'terminate', 'perform'], answer: 0 },
             ],
-            exp: 'All four essentials are required. Goods on display invite the customer to make an offer.' },
+            exp: 'Offer, acceptance, consideration and intention to create legal relations are all required. Goods on display are an invitation to treat, not an offer — the customer makes the offer at the till, which the shop may accept or decline.' },
           { q: 'A party breaches a contract. The usual remedy available to the innocent party is:', opts: [
               'Damages, to put them in the position performance would have achieved',
               'A criminal prosecution brought by the state against the other party',
@@ -4639,7 +4647,7 @@ window.LEARN_PATH = [
               'An ordinary partnership governed by the Partnership Act 1890',
               'A self-employed contractor working through an agency'],
             ans: 0, exp: 'Limited liability requires incorporation. Trading names and agency arrangements change nothing about legal liability.' },
-          { type: 'truefalse', q: 'Identify whether the following statements are true or false.',
+          { type: 'truefalse', q: 'Identify whether each statement about business types is true or false.',
             statements: [
               { text: 'A limited company continues to exist when its shareholders change.', answer: true },
               { text: 'An ordinary partnership has a legal identity separate from its partners.', answer: false },
@@ -4742,7 +4750,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'The synoptic assessment is 8 tasks totalling how many marks?',
             answer: 100, unit: 'marks',
             steps: ['The Business Environment synoptic is a 2-hour assessment.', 'It contains 8 independent tasks.', 'The tasks total 100 marks.'],
-            exp: 'Eight tasks, 100 marks, 2 hours, 70% pass mark.' },
+            exp: 'The synoptic is eight tasks totalling 100 marks, sat over two hours, and it draws on all four units rather than on The Business Environment alone. It is the only assessment in the qualification that is partly human marked.' },
           { type: 'truefalse', q: 'Identify whether the following statements about the synoptic are true or false.',
             statements: [
               { text: 'Two of the eight tasks are marked by a human rather than the computer.', answer: true },
@@ -4821,7 +4829,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'When may an accountant disclose confidential client information?',
-            opts: ['Whenever a friend asks', 'When it would win new business', 'Never, under any circumstances', 'When there is a legal duty or proper authority to disclose'],
+            opts: ['Whenever a friend happens to ask', 'When it would help win new business', 'Never, in any circumstances at all', 'When there is a legal duty or proper authority'],
             ans: 3,
             exp: 'Confidentiality can be overridden by a legal obligation — for example, a Suspicious Activity Report under money laundering legislation — or proper authorisation.',
           },
@@ -4833,7 +4841,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'An accountant suspects a colleague is involved in money laundering. What should they do?',
-            opts: ['Ignore it — it is not their responsibility', 'Tell the colleague they have been spotted', 'Report it internally via the firm\'s procedures or to the National Crime Agency', 'Destroy any evidence to protect the firm'],
+            opts: ['Ignore it, as it is not their responsibility', 'Tell the colleague they have been spotted', 'Report it internally, or to the National Crime Agency', 'Destroy the evidence to protect the firm'],
             ans: 2,
             exp: 'Money laundering reporting is a legal obligation. Suspicion must be reported through the firm\'s Money Laundering Reporting Officer or directly to the NCA. Tipping off the suspect is itself a criminal offence.',
           },
@@ -5248,7 +5256,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Under the Working Time Regulations 1998, the maximum weekly working hours are:',
-            opts: ['40 hours with no exceptions', '48 hours per week (averaged over 17 weeks) unless opted out', '60 hours if the employer requires it', '35 hours for all workers'],
+            opts: ['40 hours a week with no exceptions', '48 hours a week, averaged, unless opted out', '60 hours if the employer requires it', '35 hours a week for all workers'],
             ans: 1,
             exp: 'The Working Time Regulations set a 48-hour limit, averaged over a reference period (typically 17 weeks). Workers can opt out in writing.',
           },
@@ -5355,7 +5363,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'A recession is defined as:',
-            opts: ['A period of high inflation', 'Two or more consecutive quarters of negative GDP growth', 'Unemployment above 5%', 'A fall in the exchange rate'],
+            opts: ['A sustained period of high inflation', 'Two consecutive quarters of falling GDP', 'Unemployment rising above 5%', 'A fall in the exchange rate'],
             ans: 1,
             exp: 'A recession is technically defined as two consecutive quarters of negative GDP (economic output) growth.',
           },
@@ -5446,7 +5454,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Making Tax Digital (MTD) requires VAT-registered businesses to:',
-            opts: ['File paper VAT returns quarterly', 'Keep digital records and file VAT returns digitally using approved software', 'Pay VAT monthly instead of quarterly', 'Submit accounts to Companies House digitally'],
+            opts: ['File paper VAT returns each quarter', 'Keep digital records and file returns digitally', 'Pay VAT monthly rather than quarterly', 'Submit accounts to Companies House digitally'],
             ans: 1,
             exp: 'MTD requires businesses above the VAT threshold to maintain digital records and submit VAT returns using HMRC-approved software.',
           },
@@ -5470,7 +5478,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which of the following is an example of CSR (corporate social responsibility) rather than just legal compliance?',
-            opts: ['Filing the VAT return on time', 'Paying the National Living Wage', 'Voluntarily reducing carbon emissions beyond legal requirements', 'Registering with Companies House'],
+            opts: ['Filing the VAT return by its due date', 'Paying the National Living Wage', 'Cutting carbon emissions beyond what the law requires', 'Registering the company with Companies House'],
             ans: 2,
             exp: 'CSR involves actions taken beyond legal requirements. Voluntarily cutting carbon emissions (when not legally required) is a CSR initiative, not just compliance.',
           },
@@ -5537,7 +5545,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A condition in a contract is:',
-            opts: ['A minor term whose breach gives a right to damages only', 'A fundamental term whose breach allows the innocent party to terminate and claim damages', 'Any clause relating to the price payable under the contract', 'A term implied by the Sale of Goods Act only'],
+            opts: ['A minor term whose breach gives a right to damages only', 'A fundamental term whose breach allows termination and damages', 'Any clause relating to the price payable under the contract', 'A term implied only by the Sale of Goods Act'],
             ans: 1,
             exp: 'A condition is a fundamental term going to the root of the contract. Breach by one party allows the innocent party to treat the contract as terminated and also claim damages. A warranty breach gives damages only.',
           },
@@ -5555,7 +5563,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A director who uses confidential company information to make a personal profit is primarily breaching:',
-            opts: ['The Companies Act requirement to file annual accounts on time', 'The UK GDPR data minimisation principle', 'Their duty to avoid conflicts of interest and not accept benefits from third parties', 'The requirement to exercise independent judgement only'],
+            opts: ['The Companies Act requirement to file annual accounts on time', 'The data minimisation principle under UK GDPR', 'Their duty to avoid conflicts and refuse third-party benefits', 'The requirement to exercise independent judgement only'],
             ans: 2,
             exp: 'Using company information for personal gain breaches the director\'s duty to avoid conflicts of interest and the duty not to accept benefits from third parties (Companies Act 2006, ss.175-176). This is also a potential breach of fiduciary duty.',
           },
@@ -5846,15 +5854,15 @@ window.LEARN_PATH = [
             q: 'Straight-line depreciation on an asset costing £20,000 with a £2,000 residual value and 6-year life is:',
             opts: ['£3,000 per year', '£3,333 per year', '£18,000 per year', '£2,000 per year'],
             ans: 0,
-            exp: '(£20,000 − £2,000) ÷ 6 = £18,000 ÷ 6 = £3,000 per year.',
+            exp: 'Straight-line depreciation spreads cost less residual value over the useful life: (£20,000 − £2,000) ÷ 6 = £3,000 a year. The residual value is deducted because it is expected to remain at the end of the six years.',
           },
           {
             q: 'When the ETB P&L credit column total exceeds the debit column total, the difference represents:',
             opts: [
               'A loss, transferred as a debit to the SFP equity column',
-              'A profit, transferred as a debit to the P&L columns and a credit to SFP equity',
+              'A profit, debited to the P&L columns and credited to equity',
               'A balancing error — both columns must always agree',
-              'Accumulated depreciation carried forward',
+              'Accumulated depreciation carried forward to next year',
             ],
             ans: 1,
             exp: 'Credits > debits in P&L = profit. The profit is the balancing debit in the P&L columns and the same figure is credited to SFP equity (retained earnings / capital). SFP columns then balance.',
@@ -5863,9 +5871,9 @@ window.LEARN_PATH = [
             q: 'Accumulated depreciation in the SFP columns of the ETB is shown as:',
             opts: [
               'A debit (asset) reducing the non-current asset cost',
-              'A credit (contra-asset) reducing the non-current asset to carrying value',
-              'A P&L expense in the income column',
-              'A current liability owed to HMRC',
+              'A credit reducing the asset to its carrying value',
+              'A profit and loss expense in the income column',
+              'A current liability owed across to HMRC',
             ],
             ans: 1,
             exp: 'Accumulated depreciation is a credit balance in the SFP — it is a contra-asset set against the non-current asset cost to show the carrying value (net book value).',
@@ -5928,7 +5936,7 @@ window.LEARN_PATH = [
             q: 'A trader applies a 331⁄3% mark-up on cost. Cost of goods sold was £60,000. Sales revenue was:',
             opts: ['£80,000', '£90,000', '£45,000', '£75,000'],
             ans: 0,
-            exp: 'Mark-up 331⁄3% on cost: Sales = £60,000 × 4/3 = £80,000.',
+            exp: 'A mark-up is applied to cost, so a third is added: £60,000 × 4/3 = £80,000. Take care not to treat it as a margin — the £20,000 gross profit is 25% of sales, not 33⅓%.',
           },
           {
             q: 'In a part-exchange transaction, the trade-in allowance on the old asset is recorded in the disposal account as:',
@@ -5984,7 +5992,7 @@ window.LEARN_PATH = [
             q: 'Opening inventory £8,000; purchases £74,000; closing inventory £11,000; sales £120,000. What is gross profit?',
             opts: ['£49,000', '£46,000', '£71,000', '£120,000'],
             ans: 0,
-            exp: 'COGS = £8,000 + £74,000 − £11,000 = £71,000. Gross profit = £120,000 − £71,000 = £49,000.',
+            exp: 'Cost of sales is opening inventory plus purchases less closing inventory: £8,000 + £74,000 − £11,000 = £71,000. Gross profit is then £120,000 − £71,000 = £49,000 — revenue less the cost of what was actually sold.',
           },
           {
             q: 'Inventory costing £4,000 has an estimated selling price of £3,500 and selling costs of £200. It should be valued at:',
@@ -5996,15 +6004,15 @@ window.LEARN_PATH = [
             q: 'Opening capital £28,000; profit £14,500; drawings £9,000. Closing capital is:',
             opts: ['£33,500', '£51,500', '£23,500', '£42,500'],
             ans: 0,
-            exp: '£28,000 + £14,500 − £9,000 = £33,500.',
+            exp: 'Closing capital is opening capital plus profit less drawings: £28,000 + £14,500 − £9,000 = £33,500. Profit belongs to the owner so it increases capital, and drawings take value back out again.',
           },
           {
             q: 'Non-current assets appear in the SFP at:',
             opts: [
-              'Original cost',
-              'Current market value',
-              'Cost less accumulated depreciation (carrying value)',
-              'Replacement cost',
+              'Original purchase cost',
+              'Current open-market value',
+              'Cost less accumulated depreciation',
+              'Current replacement cost',
             ],
             ans: 2,
             exp: 'Non-current assets are carried at historical cost less accumulated depreciation — the carrying value (net book value). Market or replacement cost is not used under historical cost accounting.',
@@ -6069,7 +6077,7 @@ window.LEARN_PATH = [
             q: 'When a new partner joins and goodwill is £30,000, existing partners A and B share profits 3:2. How much goodwill is credited to A\'s capital?',
             opts: ['£15,000', '£18,000', '£10,000', '£30,000'],
             ans: 1,
-            exp: 'Goodwill is raised in the OLD ratio (3:2). A\'s share = 3/5 × £30,000 = £18,000.',
+            exp: 'Goodwill is created by the existing partners’ work, so it is raised in the OLD profit-sharing ratio of 3:2 — A takes 3/5 × £30,000 = £18,000. It is then written off in the NEW ratio once the incoming partner has joined.',
           },
           {
             q: 'A partner\'s current account shows a debit balance. This means:',
@@ -6132,7 +6140,7 @@ window.LEARN_PATH = [
             q: 'Budgeted overheads £216,000; budgeted labour hours 54,000. OAR is:',
             opts: ['£4.00 per hour', '£54.00 per hour', '£0.25 per hour', '£216.00 per hour'],
             ans: 0,
-            exp: 'OAR = £216,000 ÷ 54,000 = £4.00 per labour hour.',
+            exp: 'The absorption rate divides budgeted overhead by the budgeted activity level: £216,000 ÷ 54,000 = £4.00 per labour hour. Both figures are budgeted, because the rate has to exist before the period begins.',
           },
           {
             q: 'Overhead incurred £88,000; overhead absorbed £94,500. The result is:',
@@ -6146,7 +6154,7 @@ window.LEARN_PATH = [
             exp: 'Absorbed (£94,500) > Incurred (£88,000) = over-absorbed by £6,500. Over-absorption is a credit to P&L — we charged products more than was actually spent.',
           },
           {
-            q: 'Under marginal costing, fixed production overheads are:',
+            q: 'Under marginal costing, fixed production overheads for the period are:',
             opts: [
               'Included in inventory values and deferred until units are sold',
               'Charged entirely as period costs in the current accounting period',
@@ -6209,13 +6217,13 @@ window.LEARN_PATH = [
             q: 'Standard price £4.00/kg; actual price £4.35/kg; actual quantity purchased 600 kg. Material price variance:',
             opts: ['£210 adverse', '£210 favourable', '£2,400 adverse', '£2,610 favourable'],
             ans: 0,
-            exp: '(£4.00 − £4.35) × 600 = −£0.35 × 600 = −£210 = £210 adverse (paid more than standard).',
+            exp: 'The price variance is the difference in price applied to the actual quantity: (£4.00 − £4.35) × 600 = £210. It is adverse because more was paid per kilogram than standard, which reduces profit against plan.',
           },
           {
             q: 'Standard hours for actual output: 720 hours. Actual hours worked: 780 hours. Standard rate £10/hr. Labour efficiency variance:',
             opts: ['£600 adverse', '£600 favourable', '£7,200 adverse', '£7,800 favourable'],
             ans: 0,
-            exp: '(720 − 780) × £10 = −60 × £10 = −£600 = £600 adverse (worked more hours than standard).',
+            exp: 'The labour efficiency variance compares the hours the output should have taken with the hours actually worked, valued at the standard rate: (720 − 780) × £10 = £600 adverse — 60 more hours than the output justified.',
           },
           {
             q: 'A favourable material price variance alongside an adverse usage variance most likely indicates:',
@@ -6291,7 +6299,7 @@ window.LEARN_PATH = [
             q: 'Output VAT £18,400; input VAT £11,600. VAT payable to HMRC is:',
             opts: ['£30,000', '£11,600', '£18,400', '£6,800'],
             ans: 3,
-            exp: 'Box 5 = £18,400 − £11,600 = £6,800 payable to HMRC.',
+            exp: 'VAT payable is output tax on sales less input tax on purchases: £18,400 − £11,600 = £6,800. It appears in Box 5 of the return, and the balance is owed because the business collected more than it paid.',
           },
           {
             q: 'Children\'s school uniforms are zero-rated. A retailer selling only these can:',
@@ -6509,9 +6517,9 @@ window.LEARN_PATH = [
           {
             q: 'An independent non-executive director (NED) primarily provides:',
             opts: [
-              'Day-to-day operational management',
-              'Objective challenge and oversight of executive management',
-              'External audit services',
+              'Day-to-day operational management of the firm',
+              'Objective challenge and oversight of management',
+              'Provision of external audit services',
               'Legal advice on all board decisions',
             ],
             ans: 1,
@@ -6568,7 +6576,7 @@ window.LEARN_PATH = [
             exp: 'Higher base rates increase the cost of borrowing for businesses with variable-rate debt and make new loans more expensive. This typically reduces investment and spending — the intended mechanism to reduce inflation.',
           },
           {
-            q: 'A recession is defined as:',
+            q: 'In economic terms, a recession is defined as:',
             opts: [
               'A single quarter of falling GDP',
               'Two consecutive quarters of negative GDP growth',

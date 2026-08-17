@@ -925,7 +925,7 @@ window.ALL_QUESTIONS = [
 
   { id: 'itbk-095', topic: 'itbk', difficulty: 'medium',
     q: 'Which of the following is NOT a valid reason for a difference between the sales ledger control account and the list of sales ledger balances?',
-    opts: ['A contra entry posted to the control account but not to the individual customer account', 'A cash receipt entered in the cash book but not posted to the individual customer account', 'An error in the bank reconciliation', 'A sales invoice entered in the day book but not posted to the individual customer account'],
+    opts: ['A contra entry posted to the control account but not to the individual customer account', 'A cash receipt entered in the cash book but not posted to the individual customer account', 'An error in the bank reconciliation, which affects neither the control account nor the customer accounts', 'A sales invoice entered in the day book but not posted to the individual customer account'],
     ans: 2,
     exp: 'A bank reconciliation reconciles the cash book to the bank statement — it has no impact on the sales ledger or its control account.' },
 
@@ -3318,8 +3318,8 @@ window.ALL_QUESTIONS = [
   { id: 'besy-041', topic: 'besy', difficulty: 'easy',
     q: 'Rising interest rates tend to:',
     opts: [
-      'Reduce consumer spending, because borrowing costs more',
-      'Reduce the cost of borrowing for households and businesses',
+      'Reduce consumer spending as borrowing becomes more expensive',
+      'Reduce the cost of borrowing for both households and businesses',
       'Cause exports to rise immediately as the currency weakens',
       'Decrease the interest costs faced by businesses with loans',
     ],
@@ -3745,7 +3745,7 @@ window.ALL_QUESTIONS = [
     exp: 'Macroeconomic factors (unemployment, inflation, interest rates, GDP) are economy-wide influences largely outside the control of any individual business.' },
 
   { id: 'besy-085', topic: 'besy', difficulty: 'easy',
-    q: 'Which of the following is an external stakeholder?',
+    q: 'Which of these stakeholders is external to the business?',
     opts: [
       'A supplier providing goods to the business',
       'An employee working in the finance department',
@@ -4637,7 +4637,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Error of principle', right: 'Posted to the wrong type of account (e.g. capital vs revenue)' },
       { left: 'Error of original entry', right: 'Wrong figure used for both debit and credit' },
     ],
-    exp: 'All four leave the trial balance balanced — they cannot be detected by the TB alone.' },
+    exp: 'All four leave the trial balance in balance, so none can be found by checking that the totals agree. Each needs a different check: reconciliation, a review of the source document, or a second person reading the posting.' },
 
   { id: 'dd-004', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each bank-reconciliation item to its meaning.',
@@ -4667,7 +4667,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Break-even units', right: 'Fixed costs ÷ Contribution per unit' },
       { left: 'Margin of safety (units)', right: 'Budgeted sales − Break-even sales' },
     ],
-    exp: 'These four are the AAT Level 2 costing formulas most often examined.' },
+    exp: 'Contribution is selling price less variable cost per unit; break-even is fixed costs divided by contribution; margin of safety is budgeted sales less break-even sales; and the absorption rate is budgeted overhead divided by the budgeted activity level.' },
 
   { id: 'dd-007', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
     q: 'Match each business structure to its liability characteristic.',
@@ -4702,7 +4702,7 @@ window.ALL_QUESTIONS.push(
       ],
       blanks: [{ row: 2, col: 3, answer: 23000 }]
     },
-    exp: 'Total Dr (12,000 + 58,000) = 70,000. Total Cr to balance = 70,000. Less 45,000 + 2,000 = 23,000 closing balance.' },
+    exp: 'Total Dr = 12,000 + 58,000 = 70,000. The credit side must total the same, so the closing balance is 70,000 − 45,000 − 2,000 = 23,000.' },
 
   { id: 'tf-002', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
     q: 'Complete the purchases ledger control account (PLCA) by calculating the missing balance.',
@@ -4716,7 +4716,7 @@ window.ALL_QUESTIONS.push(
       ],
       blanks: [{ row: 2, col: 1, answer: 19500 }]
     },
-    exp: 'Total Cr (15,000 + 44,000) = 59,000. Total Dr to balance = 59,000. Less 38,000 + 1,500 = 19,500 closing balance.' },
+    exp: 'Total Cr = 15,000 + 44,000 = 59,000. The debit side must total the same, so the closing balance is 59,000 − 38,000 − 1,500 = 19,500.' },
 
   { id: 'tf-003', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
     q: 'Complete the VAT calculation for these three invoices (VAT at 20%).',
@@ -4749,7 +4749,7 @@ window.ALL_QUESTIONS.push(
       ],
       blanks: [{ row: 3, col: 1, answer: 44000 }]
     },
-    exp: 'COGS = Opening + Purchases − Closing = 8,000 + 42,000 − 6,000 = 44,000.' },
+    exp: 'Cost of goods sold is opening inventory plus purchases less closing inventory: 8,000 + 42,000 − 6,000 = 44,000. Only stock that has actually left the business is a cost of this period; what remains on the shelf is an asset.' },
 
   { id: 'tf-005', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the payroll summary for one employee.',
@@ -4799,11 +4799,11 @@ window.ALL_QUESTIONS.push(
     parts: [
       { type: 'mcq', q: 'What is the correct double entry for the sale to Helios Decor on 1 May (gross)?',
         opts: ['Dr Trade Receivables £960, Cr Sales £800, Cr VAT £160', 'Dr Trade Receivables £800, Cr Sales £800, with no VAT entry', 'Dr Bank £960, Cr Sales £800, Cr VAT £160 on the date of sale', 'Dr Sales £800, Dr VAT £160, Cr Trade Receivables £960'],
-        ans: 0, exp: 'Gross = £800 × 1.20 = £960. Dr Trade Receivables £960; Cr Sales £800 + Cr VAT £160.' },
-      { type: 'numeric', q: 'What VAT amount is charged on the sale to Helios Decor?', answer: 160, unit: '£', exp: '£800 × 20% = £160.' },
+        ans: 0, exp: 'The customer owes the gross amount, so £800 × 1.20 = £960 is debited to trade receivables. That splits into £800 of income and £160 of VAT the business is collecting for HMRC — hence two credits against one debit.' },
+      { type: 'numeric', q: 'What VAT amount is charged on the sale to Helios Decor?', answer: 160, unit: '£', exp: 'VAT at the standard rate is charged on the net amount: £800 × 20% = £160. At this level VAT is always added to a net figure, never extracted from a gross one.' },
       { type: 'mcq', q: 'What is the double entry to record the payment from Helios Decor on 28 May?',
         opts: ['Dr Bank £960, Cr Trade Receivables £960', 'Dr Sales £960, Cr Bank £960', 'Dr Trade Receivables £960, Cr Bank £960', 'Dr Bank £800, Cr Sales £800'],
-        ans: 0, exp: 'Receipt from customer: Dr Bank, Cr Trade Receivables, for the gross amount £960.' },
+        ans: 0, exp: 'Dr Bank and Cr Trade Receivables for the full £960. No VAT is recorded again — it was accounted for when the invoice was raised, and this receipt only converts a receivable into cash.' },
       { type: 'mcq', q: 'What is the double entry to record the payment to Aurora Cables on 30 May?',
         opts: ['Dr Bank, Cr Trade Payables', 'Dr Trade Payables, Cr Bank', 'Dr Purchases, Cr Bank', 'Dr Trade Payables, Cr Purchases'],
         ans: 1, exp: 'Paying a supplier reduces the liability and the bank balance: Dr Trade Payables £1,200, Cr Bank £1,200.' },
@@ -4813,12 +4813,12 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-002', topic: 'poc', difficulty: 'hard', type: 'scenario',
     setup: 'Northern Knits manufactures one product. Fixed costs for the year are £36,000. The product sells for £25 each and has a variable cost of £15. The company budgets to sell 5,000 units.',
     parts: [
-      { type: 'numeric', q: 'What is the contribution per unit (in £)?', answer: 10, unit: '£', exp: '25 − 15 = £10 contribution per unit.' },
-      { type: 'numeric', q: 'How many units must be sold to break even?', answer: 3600, exp: '36,000 ÷ 10 = 3,600 break-even units.' },
-      { type: 'numeric', q: 'What is the margin of safety in units?', answer: 1400, exp: '5,000 − 3,600 = 1,400 units margin of safety.' },
+      { type: 'numeric', q: 'What is the contribution per unit (in £)?', answer: 10, unit: '£', exp: 'Contribution is selling price less variable cost per unit: 25 − 15 = £10. It is what each extra unit adds towards covering fixed costs, which is why fixed costs are excluded from it.' },
+      { type: 'numeric', q: 'How many units must be sold to break even?', answer: 3600, exp: 'Break-even is the point where total contribution exactly covers fixed costs: 36,000 ÷ 10 = 3,600 units. Every unit beyond that adds £10 straight to profit.' },
+      { type: 'numeric', q: 'What is the margin of safety in units?', answer: 1400, exp: 'Margin of safety is how far budgeted sales exceed break-even: 5,000 − 3,600 = 1,400 units. It measures how much demand could fall before the business starts making a loss.' },
       { type: 'mcq', q: 'If fixed costs increased by £4,000 and contribution per unit was unchanged, the break-even point would:',
         opts: ['Decrease', 'Stay the same', 'Increase by 400 units', 'Increase by 4,000 units'],
-        ans: 2, exp: 'Extra £4,000 fixed cost ÷ £10 contribution = 400 extra break-even units.' },
+        ans: 2, exp: 'Break-even rises because more contribution is needed to cover the higher fixed costs: £4,000 ÷ £10 = 400 extra units. Contribution per unit is unchanged, so only the fixed-cost side of the calculation moves.' },
     ],
     exp: 'A standard break-even sensitivity scenario — contribution, break-even, margin of safety, and a what-if change.' },
 
@@ -4829,12 +4829,12 @@ window.ALL_QUESTIONS.push(
         opts: ['Enter them as a payment in the cash book, crediting the cash book', 'Enter them as a receipt in the cash book, debiting the cash book', 'Adjust the bank statement balance rather than the cash book', 'Leave them out until the charges appear on the next statement'],
         ans: 0, exp: 'Bank charges reduce the cash book balance — enter as a payment to bring the cash book up to date.' },
       { type: 'numeric', q: 'After updating the cash book for the bank charges and the direct debit, what is the new cash book balance?',
-        answer: 4000, unit: '£', exp: '4,200 − 40 − 160 = £4,000 updated cash book balance.' },
+        answer: 4000, unit: '£', exp: 'Bank charges and the direct debit are genuine transactions the bank has processed and the business has not recorded, so both are entered: 4,200 − 40 − 160 = £4,000. These are corrections, unlike timing differences.' },
       { type: 'numeric', q: 'Using the updated cash book balance, what is the bank statement balance reconciled to (cash book + unpresented − outstanding lodgements)?',
-        answer: 3700, unit: '£', exp: '4,000 + 900 − 1,200 = £3,700 — the bank statement balance after timing differences.' },
+        answer: 3700, unit: '£', exp: 'From the corrected cash book, add the outstanding lodgement the bank has not credited and deduct the cheques not yet presented: 4,000 + 900 − 1,200 = £3,700. Timing differences need no entry — they clear themselves.' },
       { type: 'mcq', q: 'The reconciled figure £3,700 does not match the actual statement balance of £3,500. What is the most likely reason?',
         opts: ['Another timing difference or error remains', 'The cash book is correct and the bank is wrong', 'Bank charges are double-counted', 'The reconciliation is complete'],
-        ans: 0, exp: 'A £200 unexplained difference suggests another unrecorded item or error to investigate.' },
+        ans: 0, exp: 'Every difference between the two records has a cause, so £200 left unexplained means an item is missing or mis-recorded. The right response is to investigate it, never to adjust a figure until the two agree.' },
     ],
     exp: 'A full bank-reconciliation workflow — update the cash book, then reconcile to the statement via timing differences.' },
 
@@ -4851,7 +4851,7 @@ window.ALL_QUESTIONS.push(
         opts: ['More expensive in euro terms, because each euro now buys fewer pounds', 'Cheaper in euro terms, because each euro now buys more pounds', 'Unchanged in price, because exchange rates do not affect export prices', 'Exempt from VAT, because the goods are being sold outside the UK'],
         ans: 0, exp: 'A stronger £ means each £ buys more €, so the £-priced goods cost more euros — exports become less competitive.' },
       { type: 'numeric', q: 'Helen invoices €5,400. At the spot rate £1 = €1.20, what does she expect to receive in £?',
-        answer: 4500, unit: '£', exp: '€5,400 ÷ 1.20 = £4,500.' },
+        answer: 4500, unit: '£', exp: 'Divide by the rate when converting from the foreign currency into pounds: €5,400 ÷ 1.20 = £4,500. Multiplying instead would give €6,480 — checking that the answer is smaller than the euro figure catches the slip.' },
     ],
     exp: 'A mixed scenario integrating business structures, limited liability and exchange-rate impact on exports.' },
 
@@ -4885,7 +4885,7 @@ window.ALL_QUESTIONS.push(
       { options: ['capital', 'liabilities', 'expenses', 'drawings'], answer: 0 },
       { options: ['capital', 'liabilities', 'income', 'revenue'], answer: 1 },
     ],
-    exp: 'Assets = Capital + Liabilities. This can be rearranged as Capital = Assets − Liabilities.' },
+    exp: 'Assets = Capital + Liabilities. Read it as what the business has on one side and where it came from on the other — the owner, or outsiders it owes. Rearranged, Capital = Assets − Liabilities gives the owner’s stake.' },
 
   { id: 'gf-004', topic: 'itbk', difficulty: 'medium', type: 'gapfill',
     q: 'Complete the statement about year-end adjustments.',
@@ -4894,7 +4894,7 @@ window.ALL_QUESTIONS.push(
       { options: ['an accrual', 'a prepayment', 'a provision', 'a reserve'], answer: 0 },
       { options: ['current asset', 'current liability', 'non-current asset', 'non-current liability'], answer: 1 },
     ],
-    exp: 'An accrual is an expense incurred but unpaid; it is recognised as a current liability.' },
+    exp: 'An accrual is an expense the business has incurred but not yet paid, so it is added to the expense and shown as a current liability. It is the accruals concept at work: the cost belongs to the period that consumed it.' },
 
   { id: 'gf-005', topic: 'pobc', difficulty: 'medium', type: 'gapfill',
     q: 'Complete the statement about the VAT control account.',
@@ -4978,7 +4978,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Buy a van by bank transfer', right: 'Dr Motor vehicles, Cr Bank' },
       { left: 'Owner takes cash drawings', right: 'Dr Drawings, Cr Bank' },
     ],
-    exp: 'Each transaction affects two accounts with equal debit and credit entries.' },
+    exp: 'Every transaction changes two accounts by the same amount, one debit and one credit. Work out which account gains value and which gives it up, and the entry follows — the debit is never chosen first and the credit fitted around it.' },
 
   { id: 'dd-010', topic: 'itbk', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each book of prime entry to what it records.',
@@ -4998,7 +4998,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Prudence', right: 'Do not overstate assets or income; recognise losses early' },
       { left: 'Consistency', right: 'Use the same accounting methods from period to period' },
     ],
-    exp: 'These fundamental concepts underpin the preparation of financial statements.' },
+    exp: 'Accruals matches income and expense to the period they belong to rather than when cash moved; going concern assumes the business will continue trading; consistency keeps treatment the same year to year; and materiality allows small items to be treated simply.' },
 
   { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
     q: 'Match each item to its classification in the financial statements.',
@@ -5038,7 +5038,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Sequential numbering of documents', right: 'Missing or duplicated documents' },
       { left: 'Password / access controls', right: 'Unauthorised access to the system' },
     ],
-    exp: 'Internal controls are designed to prevent and detect specific errors and fraud risks.' },
+    exp: 'Each control answers one risk. Segregation of duties stops one person both making and concealing an error; authorisation limits stop unapproved spending; reconciliations catch omissions and duplicates; and physical controls protect assets from theft.' },
 
   { id: 'dd-016', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each cost to whether it is direct or indirect for a furniture manufacturer.',
@@ -5048,7 +5048,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Factory rent', right: 'Indirect cost' },
       { left: "Factory supervisor's salary", right: 'Indirect cost' },
     ],
-    exp: 'Direct costs are traceable to a specific cost unit; indirect costs (overheads) are not.' },
+    exp: 'A direct cost can be traced to one unit of output — the timber in a particular table. An indirect cost cannot, even when it is plainly caused by production: factory rent and the supervisor’s salary are incurred whatever number of tables is made.' },
 
   { id: 'dd-017', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each inventory valuation method to its assumption.',
@@ -5058,7 +5058,7 @@ window.ALL_QUESTIONS.push(
       { left: 'LIFO', right: 'Newest items issued first (not permitted under UK GAAP)' },
       { left: 'Standard cost', right: 'A predetermined cost is used for all issues' },
     ],
-    exp: 'FIFO and AVCO are permitted under UK GAAP and IFRS; LIFO is not.' },
+    exp: 'FIFO issues the oldest stock first, so closing inventory is valued at the most recent prices. AVCO recalculates a weighted average after each receipt. LIFO issues the newest first and is not permitted under UK GAAP or IFRS.' },
 
   { id: 'dd-018', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each market structure to its key feature.',
@@ -5068,7 +5068,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Oligopoly', right: 'A few large firms dominate the market' },
       { left: 'Monopoly', right: 'A single dominant supplier with price-setting power' },
     ],
-    exp: 'Market structures range from many small price-takers to a single price-setting supplier.' },
+    exp: 'The number of suppliers decides who sets the price. Under perfect competition each firm is too small to influence it and must take the market price; a monopoly faces no competitor and sets its own; oligopoly and monopolistic competition sit between the two.' },
 
   { id: 'dd-019', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
     q: 'Match each stakeholder to their main interest in a business.',
@@ -5078,7 +5078,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Suppliers', right: 'Being paid on time and repeat orders' },
       { left: 'Government / HMRC', right: 'Correct payment of taxes and compliance with law' },
     ],
-    exp: 'Different stakeholder groups have different — sometimes competing — objectives.' },
+    exp: 'Each group wants something different from the same business: owners want return, employees want pay and security, suppliers want to be paid on time, customers want value, and lenders want evidence the debt can be serviced.' },
 
   { id: 'dd-020', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each economic change to its likely effect on a UK business.',
@@ -5088,7 +5088,7 @@ window.ALL_QUESTIONS.push(
       { left: 'Inflation rises', right: 'Input costs and wages tend to rise; purchasing power falls' },
       { left: 'Economy enters recession', right: 'Demand falls as incomes and confidence drop' },
     ],
-    exp: 'Macroeconomic changes are external factors a business must monitor and respond to.' }
+    exp: 'None of these is under the business’s control, and each transmits differently: a rate rise raises borrowing costs, inflation raises input prices, a weaker pound raises import costs while helping exporters, and recession reduces demand.' }
 );
 
 
@@ -5131,7 +5131,7 @@ window.ALL_QUESTIONS.push(
         { row: 4, col: 1, answer: 2160 },
       ]
     },
-    exp: 'Net = 2,000 − 200 = 1,800. VAT = 1,800 × 20% = 360. Total = 1,800 + 360 = 2,160.' },
+    exp: 'Take the trade discount off first: 2,000 − 200 = 1,800 net. VAT is then charged on what the customer is actually being charged, so 1,800 × 20% = 360, giving 2,160 total. Calculating VAT before the discount overstates both figures.' },
 
   { id: 'tf-009', topic: 'itbk', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the statement of profit or loss extract.',
@@ -5150,7 +5150,7 @@ window.ALL_QUESTIONS.push(
         { row: 4, col: 1, answer: 17000 },
       ]
     },
-    exp: 'Gross profit = 120,000 − 72,000 = 48,000. Profit for the year = 48,000 − 31,000 = 17,000.' },
+    exp: 'Gross profit is revenue less cost of sales: 120,000 − 72,000 = 48,000. Profit for the year then deducts the operating expenses: 48,000 − 31,000 = 17,000. The two figures answer different questions — trading margin, then overall result.' },
 
   { id: 'tf-010', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
     q: 'Complete the VAT control account by calculating the amount due to HMRC.',
@@ -5163,7 +5163,7 @@ window.ALL_QUESTIONS.push(
       ],
       blanks: [{ row: 1, col: 1, answer: 4800 }]
     },
-    exp: 'Output tax 11,200 − input tax 6,400 = 4,800 owed to HMRC (a credit balance carried down).' },
+    exp: 'Output tax charged on sales less input tax reclaimed on purchases leaves what is owed: 11,200 − 6,400 = 4,800. It is a credit balance because the business is holding HMRC’s money, not its own.' },
 
   { id: 'tf-011', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the bank reconciliation statement.',
@@ -5178,7 +5178,7 @@ window.ALL_QUESTIONS.push(
       ],
       blanks: [{ row: 3, col: 1, answer: 4400 }]
     },
-    exp: 'Cash book balance = 3,500 + 1,800 − 900 = 4,400.' },
+    exp: 'Work from the statement to the cash book: 3,500 + 1,800 outstanding lodgement − 900 unpresented cheques = 4,400. Both adjustments are timing differences the bank has not yet processed, not errors in either record.' },
 
   { id: 'tf-012', topic: 'poc', difficulty: 'medium', type: 'tablefill',
     q: 'Complete the overhead absorption calculation.',
@@ -5197,7 +5197,7 @@ window.ALL_QUESTIONS.push(
         { row: 4, col: 1, answer: 85000 },
       ]
     },
-    exp: 'OAR = 90,000 ÷ 18,000 = £5 per hour. Absorbed = £5 × 17,000 = £85,000.' },
+    exp: 'The absorption rate is set from the budget: 90,000 ÷ 18,000 = £5 per hour. Overhead absorbed then uses the ACTUAL hours worked: £5 × 17,000 = £85,000. Mixing budgeted rate with budgeted hours is the usual error.' },
 
   { id: 'tf-013', topic: 'poc', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the marginal costing profit statement.',
@@ -5216,7 +5216,7 @@ window.ALL_QUESTIONS.push(
         { row: 4, col: 1, answer: 12000 },
       ]
     },
-    exp: 'Contribution = 80,000 − 48,000 = 32,000. Profit = 32,000 − 20,000 = 12,000.' },
+    exp: 'Under marginal costing, contribution is sales less variable costs: 80,000 − 48,000 = 32,000. Fixed costs are then deducted in total rather than being absorbed into units: 32,000 − 20,000 = 12,000 profit.' },
 
   { id: 'tf-014', topic: 'poc', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the FIFO stores record. 100 units are held at £4, then 200 are bought at £5, then 250 units are issued.',
@@ -5234,7 +5234,7 @@ window.ALL_QUESTIONS.push(
         { row: 3, col: 2, answer: 250 },
       ]
     },
-    exp: 'FIFO issue = 100 @ £4 + 150 @ £5 = 400 + 750 = £1,150. Closing = 50 @ £5 = £250.' },
+    exp: 'FIFO issues the oldest stock first, so the 250 units come from the 100 at £4 and then 150 of the £5 batch: 400 + 750 = £1,150. The 50 units left are the newest, valued at £5 each, so closing inventory is £250.' },
 
   { id: 'tf-015', topic: 'besy', difficulty: 'medium', type: 'tablefill',
     q: 'Complete the calculation of weekly gross pay and the inflation rate.',
@@ -5254,7 +5254,7 @@ window.ALL_QUESTIONS.push(
         { row: 5, col: 1, answer: 4 },
       ]
     },
-    exp: 'Gross pay = 38 × £12 = £456. Inflation = (104 − 100) ÷ 100 × 100 = 4%.' }
+    exp: 'Gross pay is hours times rate: 38 × £12 = £456. The inflation rate is the change in the index over the base: (104 − 100) ÷ 100 = 4%. Note the index measures the change in prices, not the price level itself.' }
 );
 
 
@@ -5263,14 +5263,14 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-005', topic: 'itbk', difficulty: 'medium', type: 'scenario',
     setup: 'Maple Joinery is a sole trader. During March it buys timber on credit from Forest Supplies for £600 plus VAT at 20%. It later returns £100 (net) of damaged timber. Maple Joinery is registered for VAT.',
     parts: [
-      { type: 'numeric', q: 'What is the total (gross) amount of the original credit purchase invoice?', answer: 720, unit: '£', exp: '£600 + (£600 × 20%) = £600 + £120 = £720.' },
+      { type: 'numeric', q: 'What is the total (gross) amount of the original credit purchase invoice?', answer: 720, unit: '£', exp: 'Add VAT to the net figure: £600 + £120 = £720. The gross amount is what the supplier is owed, and it is the figure that goes to the total column of the purchases day book.' },
       { type: 'mcq', q: 'In which book of prime entry is the original purchase invoice recorded?',
         opts: ['Sales day book', 'Purchases day book', 'Cash book', 'Purchases returns day book'],
-        ans: 1, exp: 'A credit purchase invoice is recorded in the purchases day book.' },
+        ans: 1, exp: 'A purchase invoice received on credit goes in the purchases day book. The name follows the original transaction and who issued the document — anything received from a supplier belongs to the purchases pair of daybooks.' },
       { type: 'mcq', q: 'When the damaged timber is returned, Forest Supplies issues a credit note. Where does Maple Joinery record it?',
         opts: ['The purchases returns day book, because the credit note came from a supplier', 'The sales returns day book, because the goods were physically returned', 'The cash book, because the credit note reduces the amount to be paid', 'The journal, because credit notes are non-routine adjusting entries'],
-        ans: 0, exp: 'A credit note received from a supplier is recorded in the purchases returns day book.' },
-      { type: 'numeric', q: 'What is the gross value of the credit note for the £100 net return?', answer: 120, unit: '£', exp: '£100 + (£100 × 20%) = £120 gross.' },
+        ans: 0, exp: 'A credit note received from a supplier goes in the purchases returns day book. Ask who issued the credit note: one we received is a purchases return, one we issued to a customer is a sales return.' },
+      { type: 'numeric', q: 'What is the gross value of the credit note for the £100 net return?', answer: 120, unit: '£', exp: 'The credit note reverses part of the invoice, so it carries VAT on the same basis: £100 + £20 = £120 gross. Returning goods reduces the VAT originally charged as well as the net amount.' },
     ],
     exp: 'A credit purchase with VAT, followed by a returns adjustment — covering day books and VAT-inclusive amounts.' },
 
@@ -5278,13 +5278,13 @@ window.ALL_QUESTIONS.push(
     setup: 'Riverside Cafe prepares accounts to 31 December. On 1 October it paid £1,800 for a 12-month insurance policy. At 31 December the electricity bill of £240 for October–December has been received but not yet paid.',
     parts: [
       { type: 'numeric', q: 'How many months of the insurance policy are prepaid at 31 December?', answer: 9, exp: 'The policy runs Oct–Sep. By 31 December 3 months are used; 9 months (Jan–Sep) are prepaid.' },
-      { type: 'numeric', q: 'What is the insurance prepayment at 31 December?', answer: 1350, unit: '£', exp: '9/12 × £1,800 = £1,350 prepaid.' },
+      { type: 'numeric', q: 'What is the insurance prepayment at 31 December?', answer: 1350, unit: '£', exp: 'Nine of the twelve months paid for fall after the year end, so 9/12 × £1,800 = £1,350 is a prepayment. It is removed from this year’s expense and carried forward as a current asset.' },
       { type: 'mcq', q: 'How is the unpaid electricity of £240 treated at the year end?',
         opts: ['As a prepayment (current asset)', 'As an accrual (current liability)', 'As capital expenditure', 'Ignored until paid'],
-        ans: 1, exp: 'An expense incurred but not yet paid is an accrual — a current liability.' },
+        ans: 1, exp: 'The electricity has been consumed, so the cost belongs to this year whether or not the bill has been paid. It is accrued: added to the expense and shown as a current liability until settled.' },
       { type: 'mcq', q: 'What is the journal entry for the electricity accrual?',
         opts: ['Dr Accruals, Cr Electricity', 'Dr Electricity, Cr Accruals', 'Dr Electricity, Cr Bank', 'Dr Bank, Cr Electricity'],
-        ans: 1, exp: 'An accrual increases the expense (Dr Electricity) and creates a liability (Cr Accruals).' },
+        ans: 1, exp: 'Dr Electricity and Cr Accruals. The debit puts the cost into the period that consumed it; the credit records the obligation to pay. Both sides are needed — recording only the expense would leave the accounts out of balance.' },
     ],
     exp: 'Year-end adjustments: a prepayment and an accrual applied through the matching concept.' },
 
@@ -5296,15 +5296,15 @@ window.ALL_QUESTIONS.push(
         ans: 1, exp: 'Capital introduced increases the bank balance (Dr Bank) and the owner\'s capital (Cr Capital).' },
       { type: 'mcq', q: 'How are the owner\'s drawings of £9,000 classified?',
         opts: ['A reduction in the capital the owner has invested in the business', 'A business expense charged against the profit for the period', 'Revenue of the business earned during the accounting period', 'A liability owed by the business to an external third party'],
-        ans: 0, exp: 'Drawings are not an expense — they reduce the owner\'s capital.' },
-      { type: 'numeric', q: 'What is the closing capital at the end of the year?', answer: 25000, unit: '£', exp: 'Closing capital = opening 20,000 + profit 14,000 − drawings 9,000 = £25,000.' },
+        ans: 0, exp: 'Drawings are the owner taking value out of the business for personal use, not a cost of trading, so they never appear in profit or loss. They reduce capital, which is what the business owes back to the owner.' },
+      { type: 'numeric', q: 'What is the closing capital at the end of the year?', answer: 25000, unit: '£', exp: 'Opening capital plus profit less drawings: 20,000 + 14,000 − 9,000 = £25,000. Profit belongs to the owner so it increases capital; drawings take it out again, which is why neither touches the expense figures.' },
     ],
     exp: 'The capital account: capital introduced, profit and drawings combine to give closing capital.' },
 
   { id: 'sc-008', topic: 'pobc', difficulty: 'hard', type: 'scenario',
     setup: 'Oakfield Ltd extracted a trial balance that did not balance: the debit column totalled £248,600 and the credit column totalled £247,900. A suspense account was opened. On investigation, a £700 payment for rent had been debited to the rent account but not credited to the bank account.',
     parts: [
-      { type: 'numeric', q: 'What is the value of the difference placed in the suspense account?', answer: 700, unit: '£', exp: 'Difference = £248,600 − £247,900 = £700.' },
+      { type: 'numeric', q: 'What is the value of the difference placed in the suspense account?', answer: 700, unit: '£', exp: 'The suspense account holds the difference until it is found: £248,600 − £247,900 = £700. Only errors that unbalance the trial balance produce a suspense entry; the ones that leave it balanced never show up here.' },
       { type: 'mcq', q: 'The rent payment was debited but not credited to bank. This is an example of:',
         opts: ['An error of principle', 'A single-sided entry', 'A compensating error', 'An error of commission'],
         ans: 1, exp: 'Only one side of the double entry was recorded — a single-sided entry, which unbalances the trial balance.' },
@@ -5317,18 +5317,18 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-009', topic: 'pobc', difficulty: 'medium', type: 'scenario',
     setup: 'Belmont Trading runs monthly payroll. For one employee in April: gross pay is £2,800, PAYE is £420, employee NIC is £210, and the employee pays £140 into a pension. The employer\'s NIC for the month is £260.',
     parts: [
-      { type: 'numeric', q: 'What is the employee\'s net pay for April?', answer: 2030, unit: '£', exp: 'Net pay = 2,800 − 420 − 210 − 140 = £2,030.' },
-      { type: 'numeric', q: 'What is the total cost of employing this person for April?', answer: 3060, unit: '£', exp: 'Total employment cost = gross pay £2,800 + employer NIC £260 = £3,060.' },
+      { type: 'numeric', q: 'What is the employee\'s net pay for April?', answer: 2030, unit: '£', exp: 'Net pay is gross less the employee’s own deductions: 2,800 − 420 PAYE − 210 employee NIC − 140 pension = £2,030. Employer NIC is never deducted from the employee, so it is not in this calculation.' },
+      { type: 'numeric', q: 'What is the total cost of employing this person for April?', answer: 3060, unit: '£', exp: 'The cost to the employer is gross pay plus the employer’s own contributions: £2,800 + £260 = £3,060. Employee deductions are not an extra cost — they are part of the gross pay, just paid to HMRC instead of to the employee.' },
       { type: 'mcq', q: 'Which document is the source record supporting the payroll journal entries?',
         opts: ['Sales invoice', 'Payslip', 'Remittance advice', 'Purchase order'],
-        ans: 1, exp: 'The payslip evidences gross pay, deductions and net pay for the payroll journal.' },
+        ans: 1, exp: 'The payslip is the source document: it evidences gross pay, each deduction and net pay, which is exactly what the payroll journal needs. Bank records show only the net amount that left the account.' },
     ],
     exp: 'Payroll: distinguishing net pay (to the employee) from total employment cost (to the employer).' },
 
   { id: 'sc-010', topic: 'pobc', difficulty: 'medium', type: 'scenario',
     setup: 'Harbour Supplies keeps a purchases ledger control account. On 1 May the balance was £18,000 Cr. During May: credit purchases were £47,000, payments to suppliers were £41,000, purchases returns were £1,300, and a contra of £700 was made against the sales ledger.',
     parts: [
-      { type: 'numeric', q: 'What is the closing balance on the purchases ledger control account at 31 May?', answer: 22000, unit: '£', exp: 'Closing PLCA = 18,000 + 47,000 − 41,000 − 1,300 − 700 = £22,000 Cr.' },
+      { type: 'numeric', q: 'What is the closing balance on the purchases ledger control account at 31 May?', answer: 22000, unit: '£', exp: 'Start with what was owed, add credit purchases, then deduct everything that reduces the debt: 18,000 + 47,000 − 41,000 payments − 1,300 returns − 700 discounts = £22,000. It is a credit balance because the business owes it.' },
       { type: 'mcq', q: 'What should the closing PLCA balance agree with?',
         opts: ['The total of the individual supplier balances in the purchases ledger', 'The balance shown on the bank statement at the end of the month', 'The net VAT figure reported to HMRC on the quarterly return', 'The total of the individual customer balances in the sales ledger'],
         ans: 0, exp: 'The PLCA is a summary account — it must agree with the total of the individual supplier balances.' },
@@ -5345,9 +5345,9 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-011', topic: 'poc', difficulty: 'medium', type: 'scenario',
     setup: 'Summit Sportswear makes one product. The selling price is £40 per unit and the variable cost is £24 per unit. Fixed costs for the year are £96,000. The company budgets to sell 8,000 units.',
     parts: [
-      { type: 'numeric', q: 'What is the contribution per unit?', answer: 16, unit: '£', exp: 'Contribution = selling price − variable cost = £40 − £24 = £16.' },
-      { type: 'numeric', q: 'How many units must be sold to break even?', answer: 6000, exp: 'Break-even = fixed costs ÷ contribution per unit = £96,000 ÷ £16 = 6,000 units.' },
-      { type: 'numeric', q: 'What is the budgeted profit at 8,000 units?', answer: 32000, unit: '£', exp: 'Profit = (8,000 × £16) − £96,000 = £128,000 − £96,000 = £32,000.' },
+      { type: 'numeric', q: 'What is the contribution per unit?', answer: 16, unit: '£', exp: 'Contribution per unit is selling price less variable cost: £40 − £24 = £16. Fixed costs are deliberately excluded, because they do not change with the number of units made.' },
+      { type: 'numeric', q: 'How many units must be sold for the business to break even?', answer: 6000, exp: 'Break-even is where total contribution just covers fixed costs: £96,000 ÷ £16 = 6,000 units. Selling one more unit than that adds £16 to profit; one fewer leaves £16 of fixed cost uncovered.' },
+      { type: 'numeric', q: 'What is the budgeted profit at 8,000 units?', answer: 32000, unit: '£', exp: 'Total contribution less fixed costs: 8,000 × £16 = £128,000, less £96,000 = £32,000. Because break-even is 6,000 units, the 2,000 units above it each contribute £16 — which gives the same £32,000.' },
       { type: 'mcq', q: 'The margin of safety of 2,000 units tells the business:',
         opts: ['How far sales can fall from budget before the business makes a loss', 'How much profit the business will make at the budgeted level of sales', 'The total fixed costs the business has to cover during the year', 'The proportion of every pound of sales that is contribution'],
         ans: 0, exp: 'Margin of safety (budgeted 8,000 − break-even 6,000 = 2,000 units) shows how far sales can fall before a loss.' },
@@ -5357,24 +5357,24 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-012', topic: 'poc', difficulty: 'hard', type: 'scenario',
     setup: 'Delta Manufacturing absorbs production overheads on a labour-hour basis. Budgeted overheads were £150,000 and budgeted labour hours were 30,000. In the period, actual overheads were £148,000 and 29,000 labour hours were actually worked.',
     parts: [
-      { type: 'numeric', q: 'What is the overhead absorption rate per labour hour?', answer: 5, unit: '£', exp: 'OAR = budgeted overheads ÷ budgeted hours = £150,000 ÷ 30,000 = £5 per hour.' },
-      { type: 'numeric', q: 'How much overhead was absorbed into production in the period?', answer: 145000, unit: '£', exp: 'Absorbed = OAR × actual hours = £5 × 29,000 = £145,000.' },
+      { type: 'numeric', q: 'What is the overhead absorption rate per labour hour?', answer: 5, unit: '£', exp: 'The absorption rate is set in advance from budgeted figures: £150,000 ÷ 30,000 = £5 per hour. It has to be budgeted, because a price has to be quoted before the actual overhead for the period is known.' },
+      { type: 'numeric', q: 'How much overhead was absorbed into production in the period?', answer: 145000, unit: '£', exp: 'Overhead absorbed is the budgeted rate applied to the actual hours worked: £5 × 29,000 = £145,000. The rate stays as budgeted; only the activity level is actual.' },
       { type: 'mcq', q: 'Comparing absorbed (£145,000) with actual (£148,000), the overheads are:',
         opts: ['Over-absorbed by £3,000', 'Under-absorbed by £3,000', 'Correctly absorbed', 'Over-absorbed by £5,000'],
-        ans: 1, exp: 'Actual £148,000 exceeds absorbed £145,000, so overheads are under-absorbed by £3,000.' },
+        ans: 1, exp: 'Actual overhead of £148,000 exceeds the £145,000 charged to production, so £3,000 of real cost has not been recovered — under-absorption. Absorbing more than was actually incurred would be over-absorption.' },
       { type: 'mcq', q: 'How is the under-absorption treated?',
         opts: ['Credited to the income statement, increasing profit', 'Debited to the income statement, reducing profit', 'Added to closing inventory', 'Ignored'],
-        ans: 1, exp: 'Under-absorption is debited to the income statement as an extra cost, reducing profit.' },
+        ans: 1, exp: 'Under-absorption means production was charged less overhead than was actually spent, so the shortfall is debited to profit or loss as an extra cost. Over-absorption is credited back for the same reason in reverse.' },
     ],
     exp: 'Overhead absorption end to end: OAR, overhead absorbed, and the under/over-absorption adjustment.' },
 
   { id: 'sc-013', topic: 'poc', difficulty: 'medium', type: 'scenario',
     setup: 'Greenleaf Ltd is preparing a quotation. The job needs direct materials of £1,200 and direct labour of £800. Production overheads are absorbed at 50% of direct labour cost. The company adds a mark-up of 25% to total cost to set the price.',
     parts: [
-      { type: 'numeric', q: 'What is the prime cost of the job?', answer: 2000, unit: '£', exp: 'Prime cost = direct materials + direct labour = £1,200 + £800 = £2,000.' },
-      { type: 'numeric', q: 'What production overhead is absorbed into the job?', answer: 400, unit: '£', exp: 'Overhead = 50% × direct labour = 50% × £800 = £400.' },
-      { type: 'numeric', q: 'What is the total production cost of the job?', answer: 2400, unit: '£', exp: 'Total cost = prime cost £2,000 + overhead £400 = £2,400.' },
-      { type: 'numeric', q: 'What price should be quoted, after the 25% mark-up?', answer: 3000, unit: '£', exp: 'Price = £2,400 × 1.25 = £3,000.' },
+      { type: 'numeric', q: 'What is the prime cost of the job?', answer: 2000, unit: '£', exp: 'Prime cost is the total of the direct costs: £1,200 materials + £800 labour = £2,000. Overheads are excluded by definition — prime cost is what can be traced to the job itself.' },
+      { type: 'numeric', q: 'What production overhead is absorbed into the job?', answer: 400, unit: '£', exp: 'Overhead is absorbed on the stated basis, here 50% of direct labour: 50% × £800 = £400. The basis matters — absorbing on materials or on prime cost would give a different figure for the same job.' },
+      { type: 'numeric', q: 'What is the total production cost of the job?', answer: 2400, unit: '£', exp: 'Total production cost is prime cost plus absorbed overhead: £2,000 + £400 = £2,400. This is the figure a price is built on, since a price covering only prime cost would leave overheads unrecovered.' },
+      { type: 'numeric', q: 'What price should be quoted, after the 25% mark-up?', answer: 3000, unit: '£', exp: 'A mark-up is added to cost, so £2,400 × 1.25 = £3,000. Note that a 25% mark-up on cost is not a 25% margin on price: the £600 profit is 20% of the £3,000 selling price.' },
     ],
     exp: 'Job costing: prime cost, overhead absorption, total cost and mark-up pricing.' },
 
@@ -5388,7 +5388,7 @@ window.ALL_QUESTIONS.push(
         opts: ['Limited liability, which protects the owners’ personal assets from business debts', 'Freedom from any requirement to keep formal accounting records', 'Exemption from tax on the profits the business earns each year', 'The right to offer shares for sale to the general public'],
         ans: 0, exp: 'Incorporation gives the shareholders limited liability — personal assets are protected from business debts.' },
       { type: 'mcq', q: 'The £4,000 overdue invoice is a concern primarily because it affects the business\'s:',
-        opts: ['Cash flow and liquidity, since the money is not available to meet outgoings', 'Mission statement, which sets out the overall purpose of the organisation', 'Legal structure, which determines who owns and controls the business', 'VAT registration, which depends on the level of taxable turnover'],
+        opts: ['Cash flow and liquidity, where money owed is not yet available to spend', 'Mission statement, which sets out the overall purpose of the organisation', 'Legal structure, which determines who owns and controls the business', 'VAT registration, which depends on the level of taxable turnover'],
         ans: 0, exp: 'Unpaid receivables tie up cash and can threaten the liquidity the business needs to pay its own bills.' },
     ],
     exp: 'Business structures, limited liability, and the cash-flow impact of overdue receivables.' },
@@ -5396,7 +5396,7 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-015', topic: 'besy', difficulty: 'medium', type: 'scenario',
     setup: 'Coastline Imports buys stock from suppliers in the USA and sells to UK customers. The current exchange rate is £1 = $1.25. The Bank of England has just raised interest rates, and inflation in the UK is rising.',
     parts: [
-      { type: 'numeric', q: 'Coastline orders stock costing $10,000. At £1 = $1.25, what is the cost in pounds?', answer: 8000, unit: '£', exp: '$10,000 ÷ 1.25 = £8,000.' },
+      { type: 'numeric', q: 'Coastline orders stock costing $10,000. At £1 = $1.25, what is the cost in pounds?', answer: 8000, unit: '£', exp: 'With £1 buying $1.25, divide the dollar cost by the rate: $10,000 ÷ 1.25 = £8,000. If the pound then weakens, the same order costs more in sterling — which is the exchange-rate risk an importer carries.' },
       { type: 'mcq', q: 'If the pound weakens to £1 = $1.10, the same $10,000 order will:',
         opts: ['Cost less in pounds', 'Cost more in pounds', 'Cost the same', 'Become exempt from VAT'],
         ans: 1, exp: 'A weaker pound buys fewer dollars, so $10,000 costs more in pounds ($10,000 ÷ 1.10 ≈ £9,091).' },
@@ -5405,7 +5405,7 @@ window.ALL_QUESTIONS.push(
         ans: 1, exp: 'Higher interest rates raise borrowing costs and mortgage payments, tending to reduce consumer demand.' },
       { type: 'mcq', q: 'Rising inflation is most likely to:',
         opts: ['Increase the business’s input costs and reduce customers’ purchasing power', 'Reduce the business’s input costs while leaving selling prices unchanged', 'Have no effect on the business, because costs and prices rise together', 'Guarantee higher profits, because selling prices rise with the price level'],
-        ans: 0, exp: 'Inflation pushes up input costs and erodes the purchasing power of customers\' money.' },
+        ans: 0, exp: 'Inflation raises the cost of the business’s inputs while reducing what customers’ money will buy, so costs rise and real demand tends to fall. Both effects squeeze margins at once, which is why it is watched so closely.' },
     ],
     exp: 'External economic factors: exchange rates, interest rates and inflation affecting an importer.' },
 
@@ -5434,7 +5434,7 @@ window.ALL_QUESTIONS.push(
     parts: [
       { type: 'mcq', q: 'The trial balance total (debit side) is:',
         opts: ['£107,700', '£100,000', '£95,800', '£107,200'],
-        ans: 0, exp: '2,400 + 8,100 + 3,600 + 45,000 + 32,000 + 9,500 + 4,200 + 2,900 = £107,700.' },
+        ans: 0, exp: 'Add the debit balances: 2,400 + 8,100 + 3,600 + 45,000 + 32,000 + 9,500 + 4,200 + 2,900 = £107,700. Assets and expenses sit on the debit side; income, liabilities and capital sit on the credit side.' },
       { type: 'mcq', q: 'Drawings appear in the trial balance as a debit because:',
         opts: ['Drawings reduce capital, and a reduction in capital is recorded as a debit', 'Drawings are an expense of the business, and expenses are recorded as debits', 'Drawings are an asset of the business, and assets are recorded as debits', 'Drawings increase profit, and increases in profit are recorded as debits'],
         ans: 0, exp: 'Drawings reduce the owner\'s capital. Capital has a credit nature, so reducing it requires a debit entry.' },
@@ -5452,7 +5452,7 @@ window.ALL_QUESTIONS.push(
     parts: [
       { type: 'mcq', q: 'The VAT on the purchase invoice (£4,800 net) is:',
         opts: ['£800', '£960', '£576', '£4,800'],
-        ans: 1, exp: '£4,800 × 20% = £960 VAT.' },
+        ans: 1, exp: 'VAT at the standard rate on the net figure: £4,800 × 20% = £960. The supplier is owed £5,760 gross, and the £960 is input tax the business can reclaim on its return.' },
       { type: 'mcq', q: 'The gross amount of the purchase invoice (after trade discount but before settlement discount) is:',
         opts: ['£5,560', '£5,760', '£5,500', '£6,000'],
         ans: 1, exp: 'Net £4,800 + VAT £960 = £5,760. The trade discount is already reflected in the £4,800 net figure.' },
@@ -5488,13 +5488,13 @@ window.ALL_QUESTIONS.push(
     parts: [
       { type: 'mcq', q: 'Callum\'s overtime pay for the month is:',
         opts: ['£162', '£243', '£216', '£324'],
-        ans: 1, exp: '12 hours × £13.50 × 1.5 = 12 × £20.25 = £243.' },
+        ans: 1, exp: 'Time-and-a-half means the hourly rate is multiplied by 1.5, so each overtime hour is worth £20.25 and 12 hours give £243. The premium applies to the overtime hours only, not to basic pay.' },
       { type: 'mcq', q: 'Callum\'s gross pay this month (basic + overtime) is:',
         opts: ['£2,575.67', '£2,576.33', '£2,566.67', '£2,243'],
-        ans: 1, exp: 'Basic: £28,000 ÷ 12 = £2,333.33. Overtime: £243. Gross = £2,333.33 + £243 = £2,576.33.' },
+        ans: 1, exp: 'An annual salary is spread evenly over the year, so basic pay is £28,000 ÷ 12 = £2,333.33 a month. Adding the £243 of overtime gives gross pay of £2,576.33 before any deductions.' },
       { type: 'mcq', q: 'Callum\'s net pay this month is:',
         opts: ['£2,058.33', '£2,376.33', '£2,178.33', '£1,858.33'],
-        ans: 0, exp: 'Gross £2,576.33 − PAYE £320 − Employee NIC £198 = £2,058.33.' },
+        ans: 0, exp: 'Net pay is gross less the employee’s deductions: £2,576.33 − £320 PAYE − £198 NIC = £2,058.33. Employer NIC is a cost to the employer and never reduces the employee’s pay.' },
       { type: 'mcq', q: 'The employer\'s NIC for the month (on earnings above £416.67) at 15% is approximately:',
         opts: ['£323.95', '£386.45', '£257.40', '£293.05'],
         ans: 0, exp: '(£2,576.33 − £416.67) × 15% = £2,159.66 × 15% ≈ £323.95. The employer pays this on top of gross pay.' },
@@ -5506,13 +5506,13 @@ window.ALL_QUESTIONS.push(
     parts: [
       { type: 'mcq', q: 'The contribution per unit is:',
         opts: ['£12', '£18', '£30', '£48'],
-        ans: 0, exp: 'Contribution per unit = Selling price − Variable cost = £30 − £18 = £12.' },
+        ans: 0, exp: 'Contribution per unit is selling price less variable cost: £30 − £18 = £12. That £12 is what each unit adds towards fixed costs, and towards profit once those are covered.' },
       { type: 'mcq', q: 'The break-even point (units) is:',
         opts: ['7,000', '4,667', '2,800', '5,600'],
-        ans: 0, exp: 'Break-even = Fixed costs ÷ Contribution per unit = £84,000 ÷ £12 = 7,000 units.' },
+        ans: 0, exp: 'Break-even is fixed costs divided by contribution per unit: £84,000 ÷ £12 = 7,000 units. At that volume total contribution exactly equals fixed costs and the business makes neither profit nor loss.' },
       { type: 'mcq', q: 'Based on budgeted production, the overhead absorption rate per unit is:',
         opts: ['£10.50', '£11.20', '£10.00', '£12.00'],
-        ans: 0, exp: 'OAR = £84,000 ÷ 8,000 units = £10.50 per unit.' },
+        ans: 0, exp: 'Absorbing on a per-unit basis divides budgeted overhead by budgeted units: £84,000 ÷ 8,000 = £10.50. Note this is the same £84,000 treated as a fixed cost in the break-even calculation — absorption spreads it, marginal costing does not.' },
       { type: 'mcq', q: 'Given actual production of 7,500 units, the overhead position is:',
         opts: ['Over-absorbed by £5,250', 'Under-absorbed by £5,250', 'Over-absorbed by £4,500', 'Under-absorbed by £4,500'],
         ans: 1, exp: 'Absorbed = 7,500 × £10.50 = £78,750. Actual fixed costs = £84,000. Under-absorption = £84,000 − £78,750 = £5,250.' },
@@ -5527,10 +5527,10 @@ window.ALL_QUESTIONS.push(
         ans: 0, exp: 'Total value: (200 × £5.00) + (300 × £6.50) = £1,000 + £1,950 = £2,950. Total units: 500. AVCO = £2,950 ÷ 500 = £5.90.' },
       { type: 'mcq', q: 'The cost of the 350 units sold on 10 May (using AVCO at £5.90) is:',
         opts: ['£2,065', '£1,750', '£2,275', '£1,925'],
-        ans: 0, exp: '350 × £5.90 = £2,065.' },
+        ans: 0, exp: 'Under AVCO the issue is valued at the current weighted average: 350 × £5.90 = £2,065. The average is recalculated after each receipt, so it changes over time while FIFO would use the oldest batch price instead.' },
       { type: 'mcq', q: 'After the 10 May sale, how many units remain and at what total value?',
         opts: ['150 units, £885', '150 units, £750', '150 units, £975', '150 units, £1,050'],
-        ans: 0, exp: '500 − 350 = 150 units. 150 × £5.90 = £885.' },
+        ans: 0, exp: '150 units remain, valued at the same weighted average of £5.90, giving £885. Under AVCO the units issued and the units remaining are valued identically — that is what distinguishes it from FIFO.' },
       { type: 'mcq', q: 'After the 15 May purchase (150 units @ £7.00), the new AVCO per unit is:',
         opts: ['£6.45', '£6.50', '£6.00', '£7.00'],
         ans: 0, exp: 'Total value: £885 + (150 × £7.00) = £885 + £1,050 = £1,935. Total units: 300. AVCO = £1,935 ÷ 300 = £6.45.' },
@@ -5566,7 +5566,7 @@ window.ALL_QUESTIONS.push(
         ans: 1, exp: 'PED > 1 means demand is elastic. When price rises by 10%, quantity falls by 20% — total revenue falls from £1,800 to £1,440 per day.' },
       { type: 'mcq', q: 'The cross-price elasticity of demand (XED) between the two shops is:',
         opts: ['+0.75', '−0.75', '+1.33', '−1.33'],
-        ans: 0, exp: 'XED = % change in demand for shop A ÷ % change in price of shop B = +15% ÷ +20% = +0.75.' },
+        ans: 0, exp: 'Cross-price elasticity is the change in demand for one good over the change in the price of another: +15% ÷ +20% = +0.75. A positive figure means the two are substitutes — B raising its price sends customers to A.' },
       { type: 'mcq', q: 'The positive XED value indicates that the two coffee shops are:',
         opts: ['Complementary goods', 'Substitute goods', 'Inferior goods', 'Luxury goods'],
         ans: 1, exp: 'A positive XED means when one product\'s price rises, demand for the other increases — they are substitutes (customers switch between them).' },
@@ -5597,7 +5597,7 @@ window.ALL_QUESTIONS.push(
   parts: [
     { type: 'mcq', q: 'Van depreciation charge for the year (6 months):',
       opts: ['£2,400', '£1,200', '£600', '£1,800'],
-      ans: 1, exp: 'Annual depreciation = £12,000 × 20% = £2,400. Pro-rated 6/12: £2,400 × 6/12 = £1,200.' },
+      ans: 1, exp: 'Reducing balance applies the rate to carrying amount, which in year one is still cost: £12,000 × 20% = £2,400. The van was owned for only six months, so the charge is pro-rated: £2,400 × 6/12 = £1,200.' },
     { type: 'mcq', q: 'Insurance prepayment at 31 December:',
       opts: ['£1,200', '£300', '£900', '£600'],
       ans: 2, exp: 'Insurance covers 12 months from 1 Oct. By 31 Dec, 3 months used. Prepayment = £1,200 × 9/12 = £900 (9 months remaining).' },
@@ -5615,13 +5615,13 @@ window.ALL_QUESTIONS.push(
   parts: [
     { type: 'mcq', q: 'Contribution per unit and CMR:',
       opts: ['£4.80 and 60%', '£3.20 and 40%', '£4.80 and 40%', '£5.00 and 62.5%'],
-      ans: 0, exp: 'Contribution = £8.00 − £3.20 = £4.80. CMR = £4.80/£8.00 = 60%.' },
+      ans: 0, exp: 'Contribution per unit is selling price less variable cost: £8.00 − £3.20 = £4.80. The contribution margin ratio expresses that as a share of the selling price, £4.80 ÷ £8.00 = 60%, which is what lets break-even be found in revenue.' },
     { type: 'mcq', q: 'Break-even in units:',
       opts: ['5,000', '6,000', '4,000', '3,200'],
-      ans: 2, exp: 'Break-even = £19,200 ÷ £4.80 = 4,000 units.' },
+      ans: 2, exp: 'Break-even is fixed costs divided by contribution per unit: £19,200 ÷ £4.80 = 4,000 units. At that volume contribution exactly covers the fixed costs, so the result is neither profit nor loss.' },
     { type: 'mcq', q: 'Margin of safety at 6,000 units as a % of budgeted sales:',
       opts: ['25%', '40%', '33%', '67%'],
-      ans: 2, exp: 'MoS = (6,000 − 4,000) ÷ 6,000 = 2,000/6,000 = 33.3% ≈ 33%.' },
+      ans: 2, exp: 'Margin of safety measures how far budgeted sales sit above break-even: (6,000 − 4,000) ÷ 6,000 = 33%. Sales could fall by a third before the business stopped covering its fixed costs.' },
     { type: 'mcq', q: 'BrightPen\'s market has many sellers with slightly differentiated products. This is:',
       opts: ['Monopolistic competition — many sellers, each with a differentiated product', 'Perfect competition — many sellers offering an identical, homogeneous product', 'An oligopoly — a small number of large firms dominating the whole market', 'A monopoly — a single seller facing no meaningful competition at all'],
       ans: 0, exp: 'Monopolistic competition: many buyers and sellers, products are differentiated (brand, features) but close substitutes. Most consumer goods markets fit this structure.' },
@@ -5636,7 +5636,7 @@ window.ALL_QUESTIONS.push(
       ans: 1, exp: 'Total units = 100. Cost = (20×£45)+(30×£50)+(50×£54) = £900+£1,500+£2,700 = £5,100. AVCO = £5,100÷100 = £51.00.' },
     { type: 'mcq', q: 'Cost of the 60 units sold (AVCO):',
       opts: ['£3,000', '£3,240', '£3,060', '£2,700'],
-      ans: 2, exp: 'Cost of sales = 60 × £51.00 = £3,060.' },
+      ans: 2, exp: 'Under AVCO every issue is valued at the weighted average cost at that date, here £51.00, so 60 × £51.00 = £3,060. The average is recalculated after each purchase, which is what distinguishes AVCO from FIFO.' },
     { type: 'mcq', q: 'Gross profit on the April sale:',
       opts: ['£2,100', '£2,400', '£2,340', '£5,400'],
       ans: 2, exp: 'Revenue = 60 × £90 = £5,400. Cost of sales (AVCO) = £3,060. Gross profit = £5,400 − £3,060 = £2,340.' },
@@ -5906,7 +5906,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Break-even = £45,000 ÷ £15 = 3,000 units. Margin of safety = 5,000 − 3,000 = 2,000 units. MoS% = (2,000 ÷ 5,000) × 100 = 40%.' },
 
   { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq',
-    q: 'Which of the following is a DIRECT cost?',
+    q: 'Which of these is a direct cost of production?',
     opts: [
       'Factory manager\'s salary',
       'Depreciation of production machinery',
@@ -6023,7 +6023,7 @@ window.ALL_QUESTIONS.push(
         exp: 'Cash book updates are needed for items on the bank statement NOT yet in the cash book: (i) BACS receipt £620 Dr cash book, and (iii) direct debit £370 Cr cash book. Unpresented cheques and outstanding lodgements are timing differences — they appear in the reconciliation statement but do NOT change the cash book.' },
       { type: 'numeric', q: 'After updating the cash book for the BACS receipt and direct debit, what is the revised cash book balance (£)?',
         answer: 5100, unit: '£',
-        exp: '£4,850 + £620 (BACS receipt, Dr) − £370 (direct debit, Cr) = £5,100.' },
+        exp: 'Both items are genuine transactions the bank has processed and the cash book has not recorded, so both are entered: £4,850 + £620 − £370 = £5,100. These are corrections, unlike timing differences, which need no entry.' },
       { type: 'numeric', q: 'Using the bank statement balance of £4,200, calculate the reconciled figure after adding unpresented cheques and deducting outstanding lodgements (£).',
         answer: 5100, unit: '£',
         exp: 'Statement £4,200 + unpresented cheques £1,300 − outstanding lodgements £400 = £5,100. This should equal the updated cash book balance — the reconciliation agrees ✓.' },
@@ -6067,17 +6067,17 @@ window.ALL_QUESTIONS.push(
     parts: [
       { type: 'numeric', q: 'What is the gross profit (£)?',
         answer: 96000, unit: '£',
-        exp: 'Gross profit = Revenue − Cost of sales = £240,000 − £144,000 = £96,000.' },
+        exp: 'Gross profit is revenue less the cost of the goods actually sold: £240,000 − £144,000 = £96,000. It measures the trading margin before any of the running costs of the business are taken into account.' },
       { type: 'numeric', q: 'What is the net profit (£)?',
         answer: 44000, unit: '£',
-        exp: 'Net profit = Gross profit − Operating expenses = £96,000 − £52,000 = £44,000.' },
+        exp: 'Net profit deducts the operating expenses from gross profit: £96,000 − £52,000 = £44,000. Gross and net profit answer different questions — margin on trading, then the overall result after running the business.' },
       { type: 'numeric', q: 'What is the current ratio (to 2 d.p.)?',
         answer: 2.50, unit: ':1',
         exp: 'Current assets = £18,000 + £36,000 + £6,000 = £60,000. Current liabilities = £24,000. Current ratio = £60,000 ÷ £24,000 = 2.50:1.' },
       { type: 'mcq', q: 'The net profit margin for Hartley Retail Ltd is closest to:',
         opts: ['40%', '18.3%', '16.7%', '22.5%'],
         ans: 1,
-        exp: 'Net profit margin = (Net profit ÷ Revenue) × 100 = (£44,000 ÷ £240,000) × 100 = 18.3%.' },
+        exp: 'Net profit margin expresses profit as a percentage of revenue: (£44,000 ÷ £240,000) × 100 = 18.3%. It is always measured against revenue rather than cost, which is what separates a margin from a mark-up.' },
     ],
     exp: 'Ratio analysis and financial statement reading — gross profit, net profit, and current ratio from given data.' },
 
@@ -6150,7 +6150,7 @@ window.ALL_QUESTIONS.push(
         { row: 3, col: 1, answer: 476 },
       ]
     },
-    exp: 'Labour: 12 × £10 = £120. Overhead: 12 × £8 = £96. Total: £260 + £120 + £96 = £476.' },
+    exp: 'A job cost card totals the direct costs then adds absorbed overhead. Labour is 12 × £10 = £120 and overhead 12 × £8 = £96, so with £260 of materials the total production cost is £476.' },
 
   { id: 'tf-018', topic: 'besy', difficulty: 'hard', type: 'tablefill',
     q: 'Complete the working capital analysis table for Midway Ltd.',
@@ -6243,16 +6243,16 @@ window.ALL_QUESTIONS.push(
     exp: 'The three-way match — purchase order, goods received note, invoice — is the core purchases control. A mismatched company name is a classic invoice-fraud indicator and should always be flagged rather than assumed to be a typo.' },
 
   { id: 'wr-004', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80,
-    setup: 'You work at Redmayne Joinery Ltd. You have completed the bank reconciliation for October. The cash book shows a balance of £14,320 but the bank statement shows £11,905. You have identified: unpresented cheques of £3,150; an outstanding lodgement of £900; bank charges of £45 not yet in the cash book; and a direct debit for insurance of £320 not yet in the cash book.',
+    setup: 'You work at Redmayne Joinery Ltd. You have completed the bank reconciliation for October. The cash book shows a balance of £14,320 but the bank statement shows £11,905. You have identified: unpresented cheques of £3,150; an outstanding lodgement of £4,900; bank charges of £45 not yet in the cash book; and a direct debit for insurance of £320 not yet in the cash book.',
     task: 'Draft a note to the finance manager explaining the reconciliation and what needs to be adjusted in the cash book.',
     rubric: [
       { point: 'Identifies the two items requiring cash book adjustment: bank charges £45 and direct debit £320', marks: 2 },
       { point: 'States the corrected cash book balance of £13,955 (£14,320 − £45 − £320)', marks: 2 },
       { point: 'Explains unpresented cheques and outstanding lodgements are timing differences, not errors', marks: 2 },
-      { point: 'Shows the reconciliation agrees: £11,905 − £3,150 + £900 = £13,655... and identifies the remaining £300 difference needs investigation', marks: 1 },
+      { point: 'Reconciles from the statement (£11,905 + £4,900 − £3,150 = £13,655) and identifies that the £300 difference against the corrected cash book needs investigation', marks: 1 },
       { point: 'Clear structure with a recommendation or next step', marks: 1 },
     ],
-    modelAnswer: 'Note: October bank reconciliation — Redmayne Joinery Ltd\n\nTwo items need posting to the cash book because they are genuine transactions the bank has processed and we have not recorded: bank charges of £45 and the insurance direct debit of £320. Once posted, the corrected cash book balance is £14,320 − £45 − £320 = £13,955.\n\nThe unpresented cheques of £3,150 and the outstanding lodgement of £900 are timing differences, not errors. They are correctly in our cash book and will clear the bank shortly, so no adjustment is made for them.\n\nReconciling from the statement: £11,905 less unpresented cheques £3,150 plus the outstanding lodgement £900 gives £13,655. That leaves £300 against the corrected cash book balance of £13,955, which does not reconcile. I recommend we review October cash book postings for a transposition or an omitted item before signing off.\n\nAccounts Assistant',
+    modelAnswer: 'Note: October bank reconciliation — Redmayne Joinery Ltd\n\nTwo items need posting to the cash book because they are genuine transactions the bank has processed and we have not recorded: bank charges of £45 and the insurance direct debit of £320. Once posted, the corrected cash book balance is £14,320 − £45 − £320 = £13,955.\n\nThe unpresented cheques of £3,150 and the outstanding lodgement of £4,900 are timing differences, not errors. They are correctly in our cash book and will clear the bank shortly, so no adjustment is made for them.\n\nReconciling from the statement: £11,905 plus the outstanding lodgement £4,900 less unpresented cheques £3,150 gives £13,655. That leaves £300 against the corrected cash book balance of £13,955, which does not reconcile. I recommend we review October cash book postings for a transposition or an omitted item before signing off.\n\nAccounts Assistant',
     exp: 'The distinction that earns marks is between items needing a cash book adjustment (bank charges, direct debits, standing orders, interest) and timing differences (unpresented cheques, outstanding lodgements). Noting that the reconciliation does not fully agree — rather than forcing it — is what a real assistant should do.' },
 
   { id: 'wr-005', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
@@ -6421,9 +6421,9 @@ window.ALL_QUESTIONS.push(
       { text: 'A charity exists for public benefit, such as for religious, educational or scientific purposes.', answer: true },
       { text: 'A charity pays corporation tax on any profits that it earns.', answer: false },
       { text: 'The Charity Commission is the body that registers and regulates charities in England and Wales.', answer: true },
-      { text: 'A charity may generate a surplus, provided it is applied to its charitable purposes.', answer: true },
+      { text: 'A charity must distribute any surplus it generates to its trustees.', answer: false },
     ],
-    exp: 'Charities are generally exempt from corporation tax on income applied to charitable purposes — that is the false statement. They may run a surplus; what they cannot do is distribute it to owners, because they have none.' },
+    exp: 'Two of these are false. Charities are generally exempt from corporation tax on income applied to charitable purposes, so the tax statement is wrong. And a charity may certainly run a surplus — what it must not do is distribute it to trustees or members, because the surplus has to be applied to the charitable purposes.' },
 
   { id: 'tfq-002', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure',
     q: 'Identify whether the following statements about limited companies are true or false.',
@@ -6431,9 +6431,9 @@ window.ALL_QUESTIONS.push(
       { text: 'A limited company has a separate legal personality from its shareholders.', answer: true },
       { text: 'The shareholders of a limited company have unlimited liability for the company\'s debts.', answer: false },
       { text: 'A limited company must file its annual accounts at Companies House, where they become publicly available.', answer: true },
-      { text: 'A limited company continues to exist even if all of its original shareholders sell their shares.', answer: true },
+      { text: 'A limited company is dissolved automatically once its original shareholders sell their shares.', answer: false },
     ],
-    exp: 'Limited liability is the defining feature: shareholders risk only what they paid for their shares. Separate legal personality also gives the company perpetual succession — it survives changes of ownership.' },
+    exp: 'Two are false. Shareholders have LIMITED liability: they risk only what they paid for their shares. And separate legal personality gives the company perpetual succession — it continues to exist however often its shares change hands, which is exactly what makes shares saleable.' },
 
   { id: 'tfq-003', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure',
     q: 'Identify whether the following statements about sole traders and partnerships are true or false.',
@@ -6441,9 +6441,9 @@ window.ALL_QUESTIONS.push(
       { text: 'A sole trader is personally liable for the debts of the business without limit.', answer: true },
       { text: 'An ordinary partnership has a legal identity separate from its partners.', answer: false },
       { text: 'A limited liability partnership (LLP) must file accounts at Companies House.', answer: true },
-      { text: 'In an ordinary partnership without a written agreement, profits are shared equally between the partners.', answer: true },
+      { text: 'In an ordinary partnership without a written agreement, profits are shared in proportion to the capital each partner contributed.', answer: false },
     ],
-    exp: 'An ordinary partnership is not a separate legal person — that is the false statement. An LLP is, which is why it files publicly. Absent an agreement, the Partnership Act 1890 default is equal profit sharing.' },
+    exp: 'Two are false. An ordinary partnership is not a separate legal person, which is why its partners are personally liable; an LLP is, which is why it must file accounts publicly. And with no written agreement the Partnership Act 1890 shares profits EQUALLY, regardless of what each partner put in.' },
 
   { id: 'tfq-004', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law',
     q: 'Identify whether the following statements about contract law are true or false.',
@@ -6461,9 +6461,9 @@ window.ALL_QUESTIONS.push(
       { text: 'Common law is developed by judges through their decisions in individual cases.', answer: true },
       { text: 'Statute law is created by Parliament and takes precedence over case law.', answer: true },
       { text: 'Criminal law is primarily concerned with resolving disputes between private individuals.', answer: false },
-      { text: 'Delegated legislation allows detailed changes to the law without a new Act of Parliament.', answer: true },
+      { text: 'Delegated legislation requires a new Act of Parliament each time it is used.', answer: false },
     ],
-    exp: 'Criminal law concerns offences against the state and is prosecuted by the state; disputes between private parties are civil law. Statute always beats case law where the two conflict.' },
+    exp: 'Two are false. Criminal law concerns offences against the state and is prosecuted by the state, whereas disputes between private parties are civil law. And delegated legislation exists precisely to AVOID a new Act each time: Parliament grants authority for the detail to be set by statutory instrument.' },
 
   { id: 'tfq-006', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics',
     q: 'Identify whether the following statements about professional ethics are true or false.',
@@ -6491,9 +6491,9 @@ window.ALL_QUESTIONS.push(
       { text: 'The finance function provides information that supports decision-making across the whole organisation.', answer: true },
       { text: 'Financial accounting is primarily directed at external users such as shareholders and lenders.', answer: true },
       { text: 'Management accounting reports must follow a prescribed statutory format.', answer: false },
-      { text: 'Segregation of duties reduces the risk that one person can both commit and conceal an error or fraud.', answer: true },
+      { text: 'Segregation of duties means one person should handle a transaction from start to finish.', answer: false },
     ],
-    exp: 'Management accounts are internal, so their format is whatever management finds useful — no statutory format applies. Financial accounts are the ones bound by law and standards.' },
+    exp: 'Two are false. Management accounts are internal, so their format is whatever management finds useful — no statutory format applies to them. And segregation of duties is the opposite of one person handling a transaction throughout: splitting the work is what stops a single person both causing an error and concealing it.' },
 
   { id: 'tfq-009', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance',
     q: 'Identify whether the following statements about the finance function\'s information sources are true or false.',
@@ -6511,9 +6511,9 @@ window.ALL_QUESTIONS.push(
       { text: 'A shared login used by several staff removes the audit trail showing who made each entry.', answer: true },
       { text: 'Backing up data protects its availability if the original is lost or corrupted.', answer: true },
       { text: 'Phishing is a technique that attacks hardware rather than attempting to deceive a person.', answer: false },
-      { text: 'Access rights should be granted according to what a role requires, not given in full to every user.', answer: true },
+      { text: 'Access rights should be granted in full to every user so that work is never blocked.', answer: false },
     ],
-    exp: 'Phishing is social engineering — it deceives a person into revealing credentials or making a payment. The technical controls are secondary to the human one.' },
+    exp: 'Two are false. Phishing is social engineering — it deceives a person into revealing credentials rather than attacking hardware. And access should follow least privilege, granted according to what a role actually requires: blanket access for everyone removes the protection altogether.' },
 
   { id: 'tfq-011', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech',
     q: 'Identify whether the following statements about accounting software and technology are true or false.',
@@ -6541,9 +6541,9 @@ window.ALL_QUESTIONS.push(
       { text: 'The Bank of England is responsible for monetary policy, including setting the base rate.', answer: true },
       { text: 'Fiscal policy — taxation and government spending — is set by the Bank of England.', answer: false },
       { text: 'A recession is conventionally defined as two consecutive quarters of falling GDP.', answer: true },
-      { text: 'If demand for a product is price inelastic, a price rise causes a proportionately smaller fall in quantity demanded.', answer: true },
+      { text: 'If demand for a product is price inelastic, a price rise causes a proportionately larger fall in quantity demanded.', answer: false },
     ],
-    exp: 'Monetary policy is the Bank of England; fiscal policy is the government. Swapping these two is the most frequently penalised error in this topic.' },
+    exp: 'Two are false. Monetary policy is the Bank of England’s and fiscal policy the government’s — swapping the two is the most frequently penalised error in this topic. And inelastic demand means quantity responds LESS than proportionately to a price change, which is why a price rise increases total revenue.' },
 
   { id: 'tfq-014', topic: 'itbk', difficulty: 'easy', type: 'truefalse', skill: 'itbk-docs',
     q: 'Identify whether the following statements about source documents are true or false.',
@@ -6570,20 +6570,20 @@ window.ALL_QUESTIONS.push(
     statements: [
       { text: 'The sales ledger control account total should agree with the sum of the individual customer balances.', answer: true },
       { text: 'An error in one customer\'s individual account will always cause the trial balance to disagree.', answer: false },
-      { text: 'A contra entry reduces both the sales ledger and purchase ledger control accounts.', answer: true },
+      { text: 'A contra entry increases both the sales ledger and purchase ledger control accounts.', answer: false },
       { text: 'An irrecoverable debt written off is credited to the sales ledger control account.', answer: true },
     ],
-    exp: 'The subsidiary ledgers sit outside the double entry, so an error there does not unbalance the trial balance — that is exactly why the control account reconciliation exists.' },
+    exp: 'Two are false. The subsidiary ledgers sit outside the double entry, so an error in one customer’s account does not unbalance the trial balance — which is precisely why the control account reconciliation exists. And a contra entry offsets a party who is both customer and supplier, so it REDUCES both control accounts.' },
 
   { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bank',
     q: 'Identify whether the following statements about bank reconciliation are true or false.',
     statements: [
       { text: 'Unpresented cheques are a timing difference and need no adjustment in the cash book.', answer: true },
       { text: 'Bank charges appearing on the statement require an adjustment to the cash book.', answer: true },
-      { text: 'An outstanding lodgement means money the business has recorded but the bank has not yet credited.', answer: true },
+      { text: 'An outstanding lodgement is money the bank has credited that the business has not yet recorded.', answer: false },
       { text: 'A direct debit shown on the bank statement but missing from the cash book is a timing difference.', answer: false },
     ],
-    exp: 'A direct debit the business has not recorded is an omission, not a timing difference — it needs posting to the cash book. Timing differences are items already correctly in the cash book that the bank has yet to process.' }
+    exp: 'Two are false. A direct debit the business has not recorded is an omission rather than a timing difference, so it must be posted to the cash book. And an outstanding lodgement runs the other way round: the business has recorded the receipt and the bank has not yet credited it.' }
 
 );
 
@@ -6984,9 +6984,9 @@ window.ALL_QUESTIONS.push(
         ], ans: 0,
         exp: 'Gross = £1,600 × 1.20 = £1,920. The receivable is recorded gross; sales and VAT are credited separately.' },
       { type: 'numeric', q: 'What is the gross value of the credit note issued on 19 May?', answer: 240, unit: '£',
-        exp: '£200 net × 1.20 = £240 gross, comprising £200 sales returns and £40 VAT.' },
+        exp: 'A credit note reverses part of the invoice on the same basis, so VAT goes with it: £200 × 1.20 = £240 gross, being £200 of sales returns and £40 of VAT no longer chargeable to the customer.' },
       { type: 'numeric', q: 'What amount does Marchmont pay on 30 May?', answer: 1680, unit: '£',
-        exp: '£1,920 − £240 = £1,680.' },
+        exp: 'The customer pays the invoice less the credit note: £1,920 − £240 = £1,680. Nothing in the bank statement would explain that figure on its own, which is why the remittance advice matters for allocating it.' },
       { type: 'mcq', q: 'Marchmont emails asking why their statement shows £1,680 rather than the £1,920 on the original invoice. What should your reply do?',
         opts: [
           'Explain that a credit note for £240 was issued for the returned goods, reducing the balance to £1,680',
@@ -7002,7 +7002,7 @@ window.ALL_QUESTIONS.push(
     setup: 'You work at Glenmore Supplies Ltd. The purchase ledger control account shows £32,400 at 31 July. The total of the individual supplier accounts is £33,150. Investigation finds that a purchase invoice for £750 was entered in the purchase day book and posted to the supplier\'s individual account, but the day book total posted to the control account was understated by the same amount.',
     parts: [
       { type: 'numeric', q: 'What is the difference between the control account and the list of supplier balances?', answer: 750, unit: '£',
-        exp: '£33,150 − £32,400 = £750.' },
+        exp: 'The difference is £33,150 − £32,400 = £750. A control account and the list of individual balances are built from the same transactions, so any gap between them proves an error in one or the other and must be found.' },
       { type: 'mcq', q: 'Which record requires correction?',
         opts: [
           'The purchase ledger control account, because the day book total posted to it was understated',
