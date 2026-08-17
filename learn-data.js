@@ -4091,6 +4091,7 @@ window.LEARN_PATH = [
          the foundation of every calculation in the unit. */
       {
         id: 'L-poc-1',
+        criteria: ['POC-1.5', 'POC-1.6'],
         title: 'What costing is for',
         icon: '🌱',
         skills: ['poc-behaviour', 'poc-coding'],
@@ -4191,6 +4192,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-2',
+        criteria: ['POC-1.1'],
         title: 'Classifying costs',
         icon: '🗂️',
         skills: ['poc-behaviour'],
@@ -4306,6 +4308,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-3',
+        criteria: ['POC-2.1'],
         title: 'Materials and inventory control',
         icon: '📦',
         skills: ['poc-inv'],
@@ -4404,6 +4407,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-4',
+        criteria: ['POC-1.2', 'POC-2.3'],
         title: 'Overheads and absorption',
         icon: '🏭',
         skills: ['poc-behaviour'],
@@ -4523,6 +4527,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-5',
+        criteria: ['POC-1.2', 'POC-2.2'],
         title: 'Paying for labour',
         icon: '⏱️',
         skills: ['poc-labour'],
@@ -4605,6 +4610,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-6',
+        criteria: ['POC-3.1', 'POC-3.2'],
         title: 'Budgets and variances',
         icon: '🧭',
         skills: ['poc-budget'],
@@ -4639,36 +4645,48 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'A first look at contribution',
+            h: 'Fixed and flexible budgets',
             p: [
-              '**Contribution** is selling price minus **variable** cost per unit. It is what each unit contributes towards covering fixed costs — and after those are covered, towards profit.',
-              'Sell at £20 with variable costs of £12 and each unit contributes **£8**. With fixed costs of £4,000, you need 500 units just to break even.',
+              'A **fixed budget** is set for one planned level of activity and left alone. It is the right tool for planning, because a business has to commit to a target before the year starts, and it is the right tool for judging whether that target was met.',
+              'It is a poor tool for judging **performance**, and the reason is worth seeing clearly. If the budget assumed 10,000 units and the business actually made 12,000, then material and labour costs were always going to exceed budget. Reporting that as an adverse variance blames the production manager for selling more.',
+              'A **flexible budget** solves this by recalculating the variable elements at the activity level actually achieved, leaving the fixed elements alone. Compare actual cost against that flexed figure and you are comparing like with like.',
+              'The word that decides which to use is "control". A fixed budget is for planning and for accountability against a commitment; a flexible budget is for controlling costs once the activity level is known.',
             ],
+            split: {
+              left: { title: 'Fixed budget', items: ['Set at one planned activity level', 'Never recalculated during the period', 'Good for planning and commitment', 'Misleading if output differs from plan', 'Variances mix volume and efficiency'] },
+              right: { title: 'Flexible budget', items: ['Recalculated at actual activity', 'Variable costs flexed, fixed costs unchanged', 'Good for cost control', 'Compares like with like', 'Isolates efficiency from volume'] },
+            },
           },
           {
-            h: 'Budget and CVP formulas',
+            h: 'Preparing a budget for a single-product business',
             p: [
-              'These formulas link variances, contribution and break-even analysis.',
-            ],
-            formula: 'Variance = Actual − Budget (adverse if cost actual > budget, or income actual < budget) · Contribution per unit = Selling price − Variable cost per unit · Break-even units = Fixed costs ÷ Contribution per unit · Target profit units = (Fixed costs + Target profit) ÷ Contribution per unit',
-          },
-          {
-            h: 'Break-even worked example',
-            p: [
-              'The steps run in a fixed order because each depends on the one above. Contribution per unit comes first; nothing else can be calculated until it is known.',
-              'The target-profit line uses the same formula as break-even with the profit simply added to fixed costs — treat the profit as one more cost that contribution has to cover.',
+              'At this level you prepare four lines: **revenue**, **materials**, **labour** and **fixed overheads**. Three of the four flex with output, and the fourth does not, which is the whole reason for the distinction.',
+              'Revenue is units × selling price. Materials are units × kilograms per unit × price per kilogram. Labour is units × hours per unit × rate per hour. Fixed overheads are stated as a total for the period and do not move with output.',
+              'Work in that order and keep the units of measurement visible in your working. Most errors here come from multiplying by the wrong quantity — using total kilograms where kilograms per unit was needed, or hours per unit where total hours was wanted.',
+              'Where a flexed budget is required, take the original per-unit rates and apply them to the actual units. The per-unit rate is what the budget committed to; the volume is what actually happened.',
             ],
             example: {
-              title: 'Selling price £25/unit · Variable cost £15/unit · Fixed costs £48,000 · Target profit £12,000',
+              title: 'Budget at 10,000 units, flexed to 12,000 actual units',
               rows: [
-                ['Step', 'Working', 'Result'],
-                ['Contribution per unit', '£25 − £15', '£10 per unit'],
-                ['Break-even units', '£48,000 ÷ £10', '4,800 units'],
-                ['Break-even revenue', '4,800 × £25', '£120,000'],
-                ['Units for target profit', '(£48,000 + £12,000) ÷ £10', '6,000 units'],
-                ['Margin of safety (if selling 6,500)', '6,500 − 4,800', '1,700 units'],
+                ['Line', 'Per unit', 'Budget 10,000', 'Flexed 12,000'],
+                ['Revenue at £18', '£18.00', '180,000', '216,000'],
+                ['Materials, 2 kg at £3.50', '£7.00', '70,000', '84,000'],
+                ['Labour, 0.5 hr at £12', '£6.00', '60,000', '72,000'],
+                ['Fixed overheads', 'n/a', '35,000', '35,000'],
+                ['Profit', '', '15,000', '25,000'],
               ],
             },
+          },
+          {
+            h: 'Variances as a percentage',
+            p: [
+              'A variance in pounds is hard to judge on its own. An adverse materials variance of £1,800 is trivial against a budget of £400,000 and alarming against a budget of £6,000, so the assessment also asks for the variance **as a percentage of budget**.',
+              'The calculation is the variance divided by the budgeted figure, expressed as a percentage: £1,800 ÷ £70,000 = 2.6%. Note the denominator — it is always the **budget**, not the actual, because the budget is the standard being measured against.',
+              'Round as the task instructs, usually to one decimal place, and keep the adverse or favourable label attached. A percentage without that label tells the reader the size of the deviation but not its direction, which is half the information.',
+              'Percentages are what make exception reporting possible. A policy of investigating anything over 5% cannot be applied to pound figures across departments of different sizes, but it applies perfectly well to percentages.',
+            ],
+            formula: 'Variance % = Variance ÷ Budgeted figure × 100  (label the result adverse or favourable)',
+            examtrap: 'Divide by the **budget**, not the actual. Using the actual as the denominator gives a different answer and is marked wrong even where the pound variance was right.',
           },
         ],
         check: [
@@ -4691,16 +4709,16 @@ window.LEARN_PATH = [
             exp: 'Exception reporting filters out trivial differences so managers investigate only what materially affects the business.',
           },
           {
-            q: 'A product sells for £15 with variable costs of £9 per unit. What is the contribution per unit?',
-            opts: ['£15', '£9', '£24', '£6'],
-            ans: 3,
-            exp: 'Contribution per unit is selling price less variable cost: £15 − £9 = £6. Fixed costs are excluded because they do not change with output, so each unit contributes £6 towards covering them.',
+            q: 'Materials were budgeted at 2 kg per unit at £3.50 per kg for 10,000 units. Actual output was 12,000 units. What is the flexed materials budget?',
+            opts: ['£84,000', '£70,000', '£42,000', '£24,000'],
+            ans: 0,
+            exp: 'Flexing keeps the per-unit rate and applies it to the actual volume: 12,000 × 2 kg × £3.50 = £84,000. The original £70,000 was set for 10,000 units and is no longer a fair comparison.',
           },
           {
-            q: 'Fixed costs are £18,000. Contribution per unit is £6. How many units are needed to break even?',
-            opts: ['3,000', '1,800', '6,000', '108,000'],
+            q: 'Which cost is NOT recalculated when a budget is flexed to the actual level of output?',
+            opts: ['Fixed overheads, which stay at the budgeted total', 'Direct materials, which vary with the units made', 'Direct labour, which varies with the hours worked', 'Sales revenue, which varies with the units sold'],
             ans: 0,
-            exp: 'Break-even is where total contribution exactly covers fixed costs: £18,000 ÷ £6 = 3,000 units. Below that some fixed cost is uncovered; above it, each unit adds its full £6 to profit.',
+            exp: 'Flexing recalculates only the elements that behave variably. Fixed overheads are unchanged by output within the relevant range, so the budgeted total carries straight across.',
           },
           {
             q: 'Budgeted sales: 800 units at £20 each (£16,000). Actual sales: 750 units at £22 each (£16,500). What is the overall sales variance?',
@@ -4718,6 +4736,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-7',
+        criteria: ['POC-2.3'],
         title: 'Absorption costing and OARs',
         icon: '🏭',
         skills: ['poc-cvp'],
@@ -4823,7 +4842,8 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-poc-8',
-        title: 'Inventory: FIFO and AVCO step by step',
+        criteria: ['POC-1.2', 'POC-2.1'],
+        title: 'Inventory: FIFO, AVCO and LIFO step by step',
         icon: '📦',
         skills: ['poc-inv'],
         cards: [
@@ -4832,7 +4852,9 @@ window.LEARN_PATH = [
             p: [
               '**FIFO (First In, First Out)** assumes the oldest stock is issued first. Remaining inventory is valued at the most recent purchase prices.',
               '**AVCO (Average Cost)** calculates a new weighted average cost every time new stock arrives. All issues are at the current average.',
-              'Both are acceptable under UK GAAP; the method affects both closing inventory value and cost of sales.',
+              '**LIFO (Last In, First Out)** assumes the newest stock is issued first, so closing inventory is left carrying the oldest prices.',
+              'The AAT Level 2 syllabus requires all three. FIFO and AVCO are permitted for financial reporting under UK GAAP and IFRS; LIFO is not, which is why the specification limits it to **internal management accounting use**. That distinction is itself examinable, so do not skip LIFO on the grounds that it is not allowed in published accounts.',
+              'Whichever method is used, the same total cost is divided between cost of sales and closing inventory. The method decides the split, not the total.',
             ],
           },
           {
@@ -4869,6 +4891,26 @@ window.LEARN_PATH = [
             },
           },
           {
+            h: 'LIFO step by step',
+            p: [
+              'LIFO reverses FIFO\'s assumption: the **most recent** cost is charged out first, so the layers left in the balance are the oldest ones.',
+              'The mechanics are identical to FIFO — keep the balance split into price layers and work one line at a time — but you take from the newest layer rather than the oldest. On the same data, the issue of 8 units comes out of the £5 batch instead of the £4 batch.',
+              'The argument for LIFO is that it charges production with something close to the current replacement cost of materials, which makes reported margins more realistic when prices are moving quickly. That is a management accounting argument, and it is why the syllabus permits LIFO for internal use.',
+              'The argument against it is what leaves it outside UK GAAP and IFRS. Closing inventory ends up carried at old, potentially very stale prices, so the statement of financial position stops reflecting anything a reader would recognise as current value.',
+            ],
+            example: {
+              title: 'LIFO: 10 units at £4, then 10 at £5; issue 8 units',
+              rows: [
+                ['Date', 'Receipt', 'Issue', 'Balance'],
+                ['1 Jan', '10 × £4 = £40', '', '10u @ £4 = £40'],
+                ['15 Jan', '10 × £5 = £50', '', '10u@£4 + 10u@£5 = £90'],
+                ['20 Jan', '', '8 units (newest first)', '10u@£4 + 2u@£5 = £50'],
+                ['Issue cost', '', '8 × £5 = £40', ''],
+                ['Compare: FIFO issue £32, AVCO issue £36, LIFO issue £40'],
+              ],
+            },
+          },
+          {
             h: 'FIFO vs AVCO — comparison',
             p: [
               'Neither method is "more correct". They divide the same total cost differently between cost of sales and closing inventory, and over the life of the stock the two converge.',
@@ -4876,7 +4918,7 @@ window.LEARN_PATH = [
             ],
             split: {
               left: { title: 'FIFO', items: ['Oldest stock issued first', 'Closing stock at latest prices', 'Higher closing stock in inflation', 'Lower COGS in inflation → higher profit'] },
-              right: { title: 'AVCO', items: ['Issues at average price', 'Recalculate average each receipt', 'Smooths price fluctuations', 'Profit between FIFO and LIFO'] },
+              right: { title: 'AVCO', items: ['Issues at the weighted average price', 'Recalculate the average on each receipt', 'Smooths price fluctuations', 'Profit falls between FIFO and LIFO'] },
             },
           },
           {
@@ -4885,7 +4927,7 @@ window.LEARN_PATH = [
               'When prices are **rising (inflation)**: FIFO → lower cost of sales → **higher profit** and **higher closing inventory**.',
               'AVCO produces a cost of sales and closing inventory value between FIFO results.',
             ],
-            callout: { kind: 'key', text: '**UK rule:** LIFO (Last In, First Out) is NOT permitted under UK GAAP or IFRS. Only FIFO and AVCO are allowed. FIFO and AVCO will give the same total cost of sales over the lifetime of all inventory.' },
+            callout: { kind: 'key', text: 'Rising prices rank the three methods predictably: LIFO gives the highest cost of sales and lowest profit, FIFO the lowest cost of sales and highest profit, and AVCO sits between them. Over the lifetime of all the inventory the three converge on the same total.' },
           },
         ],
         check: [
@@ -4922,211 +4964,9 @@ window.LEARN_PATH = [
         ],
       },
       {
-        id: 'L-poc-9',
-        title: 'Break-even and margin of safety',
-        icon: '📐',
-        skills: ['poc-cvp'],
-        cards: [
-          {
-            h: 'Contribution per unit and C/S ratio',
-            p: [
-              '**Contribution per unit** = Selling price − Variable cost per unit.',
-              'Contribution pays off fixed costs first; any remaining contribution is profit.',
-              'The **contribution to sales (C/S) ratio** = Contribution per unit ÷ Selling price. It shows what fraction of every £1 of sales is contribution.',
-            ],
-            formula: 'Contribution per unit = SP − VC per unit · C/S ratio = Contribution per unit ÷ Selling price · Total contribution = Contribution per unit × Units sold',
-          },
-          {
-            h: 'Break-even point',
-            p: [
-              'At the **break-even point**, total contribution exactly equals fixed costs — profit is zero.',
-            ],
-            formula: 'Break-even units = Fixed costs ÷ Contribution per unit · Break-even revenue = Fixed costs ÷ C/S ratio · (Or: Break-even units × Selling price)',
-          },
-          {
-            h: 'Margin of safety',
-            p: [
-              'The **margin of safety** is how far above break-even the business expects to operate. It measures the buffer before losses begin.',
-            ],
-            formula: 'Margin of safety (units) = Budgeted sales − Break-even sales · Margin of safety (%) = Margin of safety units ÷ Budgeted sales × 100',
-          },
-          {
-            h: 'Target profit',
-            p: [
-              'To earn a **specific profit**, treat the target profit as an additional fixed cost to cover.',
-            ],
-            formula: 'Units for target profit = (Fixed costs + Target profit) ÷ Contribution per unit · Revenue for target profit = (Fixed costs + Target profit) ÷ C/S ratio',
-          },
-          {
-            h: 'Worked example',
-            p: [
-              'Take the figures strictly in order: contribution per unit, then break-even, then margin of safety. Each line feeds the next, so an early slip carries all the way down.',
-              'Sense-check the answer. Margin of safety can never exceed budgeted sales, and break-even units round **up** — a part unit does not cover the fixed costs.',
-            ],
-            example: {
-              title: 'Break-even analysis: SP £25, VC £15, FC £48,000, budgeted 6,000 units',
-              rows: [
-                ['Calculation', 'Working', 'Result'],
-                ['Contribution per unit', '£25 − £15', '£10'],
-                ['C/S ratio', '£10 ÷ £25', '40%'],
-                ['Break-even units', '£48,000 ÷ £10', '4,800 units'],
-                ['Break-even revenue', '£48,000 ÷ 40%', '£120,000'],
-                ['Margin of safety', '6,000 − 4,800', '1,200 units (20%)'],
-                ['Target profit £12,000', '(£48,000 + £12,000) ÷ £10', '6,000 units'],
-              ],
-            },
-          },
-        ],
-        check: [
-          {
-            q: 'Selling price is £30 and variable cost per unit is £18. What is the contribution per unit?',
-            opts: ['£30', '£18', '£12', '£48'],
-            ans: 2,
-            exp: 'Contribution per unit is selling price less variable cost: £30 − £18 = £12. That is the amount each unit adds towards fixed costs, and towards profit once those are covered.',
-          },
-          {
-            q: 'Contribution per unit is £8 and fixed costs are £40,000. What is the break-even point in units?',
-            opts: ['5,000', '4,000', '8,000', '320,000'],
-            ans: 0,
-            exp: 'Break-even is fixed costs divided by contribution per unit: £40,000 ÷ £8 = 5,000 units. At that volume contribution and fixed costs are equal, so the business makes neither profit nor loss.',
-          },
-          {
-            q: 'Break-even is 4,000 units. Budgeted sales are 5,500 units. What is the margin of safety?',
-            opts: ['4,000 units', '1,500 units (27.3%)', '5,500 units', '500 units (9.1%)'],
-            ans: 1,
-            exp: 'Margin of safety is how far budgeted sales exceed break-even: 5,500 − 4,000 = 1,500 units, or 27.3% of budget. It measures how much demand could fall before the business moves into loss.',
-          },
-          {
-            q: 'Fixed costs £60,000, contribution per unit £15, target profit £30,000. Units needed?',
-            opts: ['4,000', '6,000', '2,000', '8,000'],
-            ans: 1,
-            exp: 'Units = (Fixed costs + Target profit) ÷ Contribution per unit = (£60,000 + £30,000) ÷ £15 = 6,000 units.',
-          },
-          {
-            q: 'Selling price £40, variable cost £24. What is the C/S ratio?',
-            opts: ['60%', '40%', '24%', '16%'],
-            ans: 1,
-            exp: 'Contribution is £40 − £24 = £16, and the contribution-to-sales ratio expresses that as a share of the selling price: £16 ÷ £40 = 40%. The ratio is what lets break-even be worked out in revenue rather than units.',
-          },
-          {
-            q: 'Fixed costs are £72,000 and the C/S ratio is 45%. What is the break-even revenue?',
-            opts: ['£32,400', '£160,000', '£72,000', '£45,000'],
-            ans: 1,
-            exp: 'Dividing fixed costs by the C/S ratio gives break-even in sales value: £72,000 ÷ 0.45 = £160,000. Use the ratio when the answer is wanted in revenue, and contribution per unit when it is wanted in units.',
-          },
-          {
-            q: 'Which of the following changes would REDUCE the break-even point?',
-            opts: ['Increase fixed costs', 'Reduce selling price', 'Reduce variable cost per unit', 'Increase variable cost per unit'],
-            ans: 2,
-            exp: 'Reducing variable cost per unit increases contribution per unit. A higher contribution per unit means fewer units are needed to cover fixed costs, so break-even falls.',
-          },
-        ],
-      },
-      {
-        id: 'L-poc-10',
-        title: 'The high-low method',
-        icon: '📏',
-        skills: ['poc-behaviour'],
-        cards: [
-          {
-            h: 'Why we need to split semi-variable costs',
-            p: [
-              '**Semi-variable costs** have both a fixed element (unchanged regardless of activity) and a variable element (changes with output).',
-              'To plan and budget accurately, we need to know the fixed and variable parts separately.',
-              'The **high-low method** uses the two extremes of activity data to split the cost — it is simple but requires only two data points.',
-            ],
-          },
-          {
-            h: 'Step 1 — calculate variable cost per unit',
-            p: [
-              'The logic is simple: between the highest and lowest activity levels the fixed cost has not moved at all, so the **whole** change in total cost must be variable.',
-              'Choose the two rows by **activity level, not by cost**. The dearest month is not always the busiest, and picking on cost is the most common way to lose these marks.',
-            ],
-            formula: 'Variable cost per unit = (Total cost at highest activity − Total cost at lowest activity) ÷ (Units at highest − Units at lowest)',
-          },
-          {
-            h: 'Step 2 — calculate the fixed cost',
-            p: [
-              'Once the variable cost per unit is known, substitute back into either the high or low data point.',
-            ],
-            formula: 'Fixed cost = Total cost at that level − (Variable cost per unit × Units at that level)',
-          },
-          {
-            h: 'Step 3 — the cost equation and prediction',
-            p: [
-              'With both elements found: **Total cost = Fixed cost + (Variable cost per unit × units)**.',
-              'Use this equation to estimate costs at ANY activity level (within the relevant range).',
-            ],
-          },
-          {
-            h: 'Worked example',
-            p: [
-              'Set the two data points one above the other and subtract, so the arithmetic stays visible and a transposition is easy to spot.',
-              'Once the cost equation is built, test it against the other data point — substituting the low activity level should reproduce the low total cost exactly.',
-            ],
-            example: {
-              title: 'High-low: find fixed and variable elements',
-              rows: [
-                ['Period', 'Units produced', 'Total cost'],
-                ['Highest', '5,000', '£22,000'],
-                ['Lowest', '2,000', '£13,000'],
-                ['Difference', '3,000', '£9,000'],
-                ['VC/unit = £9,000 ÷ 3,000', '', '= £3 per unit'],
-                ['FC = £22,000 − (£3 × 5,000)', '', '= £7,000'],
-                ['Cost at 4,000 units = £7,000 + (£3 × 4,000)', '', '= £19,000'],
-              ],
-            },
-            callout: { kind: 'warning', text: '**Exam trap:** Always check that the question has not included an abnormal or exceptional data point. If a month\'s cost is clearly an outlier (e.g. due to a one-off repair), it should be excluded before applying high-low.' },
-          },
-        ],
-        check: [
-          {
-            q: 'The high-low method is used to split which type of cost?',
-            opts: ['Fixed costs', 'Variable costs', 'Semi-variable costs', 'Direct costs'],
-            ans: 2,
-            exp: 'Semi-variable costs have both a fixed and variable element. The high-low method separates the two so each can be planned and budgeted independently.',
-          },
-          {
-            q: 'Highest activity: 8,000 units, cost £38,000. Lowest: 3,000 units, cost £23,000. Variable cost per unit = ?',
-            opts: ['£3.00', '£4.75', '£7.67', '£2.00'],
-            ans: 0,
-            exp: 'High-low takes the change in cost over the change in activity, which strips out the fixed element: £15,000 ÷ 5,000 = £3 per unit. Only the variable cost changes between the two levels, so the difference must all be variable.',
-          },
-          {
-            q: 'Using the high point (8,000 units, cost £38,000) and VC = £3/unit, what is the fixed cost?',
-            opts: ['£14,000', '£24,000', '£38,000', '£11,000'],
-            ans: 0,
-            exp: 'Fixed cost = Total cost − (VC/unit × units) = £38,000 − (£3 × 8,000) = £38,000 − £24,000 = £14,000.',
-          },
-          {
-            q: 'Fixed cost = £14,000 and VC = £3/unit. Total cost at 6,000 units = ?',
-            opts: ['£32,000', '£18,000', '£44,000', '£28,000'],
-            ans: 0,
-            exp: 'Total cost is the fixed element plus the variable cost per unit times output: £14,000 + (£3 × 6,000) = £32,000. Fixed cost stays the same in total while falling per unit as output rises.',
-          },
-          {
-            q: 'The high-low method assumes that the variable cost per unit is:',
-            opts: ['Decreasing as volume rises', 'Constant at all activity levels', 'Only relevant at the break-even point', 'Calculated using an average of all periods'],
-            ans: 1,
-            exp: 'The high-low method assumes a linear cost function — variable cost per unit is constant across the relevant range of activity.',
-          },
-          {
-            q: 'Which data points does the high-low method use?',
-            opts: ['The most recent and the oldest', 'The highest and lowest activity levels', 'The average of all periods', 'The two periods with the largest cost difference'],
-            ans: 1,
-            exp: 'The high-low method selects the periods with the HIGHEST and LOWEST levels of activity (not cost), and uses those two data points to calculate the variable rate.',
-          },
-          {
-            q: 'A key limitation of the high-low method is that:',
-            opts: ['It requires complex calculations', 'It uses only two data points and may be distorted by outliers', 'It cannot be used for fixed costs', 'It requires activity to be measured in units only'],
-            ans: 1,
-            exp: 'High-low ignores all data points except two extremes. If either extreme is abnormal (an outlier), the resulting cost split will be inaccurate.',
-          },
-        ],
-      },
-      {
         id: 'L-poc-11',
-        title: 'Budget variances — calculating and interpreting',
+        criteria: ['POC-3.1'],
+        title: 'Total variances and what causes them',
         icon: '📉',
         skills: ['poc-budget'],
         cards: [
@@ -5139,43 +4979,54 @@ window.LEARN_PATH = [
             formula: 'Variance = Budget − Actual (for costs), or Actual − Budget (for revenue)·Favourable (F): actual costs < budget, or actual revenue > budget·Adverse (A): actual costs > budget, or actual revenue < budget',
           },
           {
-            h: 'Direct material variances',
+            h: 'The total materials variance',
             p: [
-              'The total direct material variance compares the actual cost of materials used with the standard (budgeted) cost of actual production. It can be broken into a **price variance** (paying more or less than standard) and a **usage variance** (using more or less than standard).',
+              'At this level you calculate the **total** materials variance: the budgeted materials cost against the actual materials cost, with no further breakdown. One subtraction, one label.',
+              'The care needed is in choosing the right budget figure. If output differed from plan, the comparison must be against the **flexed** budget — the per-unit material rate applied to the units actually made. Comparing actual cost for 12,000 units against a budget set for 10,000 makes an adverse variance inevitable and meaningless.',
+              'So the routine is: flex the budget to actual output, then subtract actual from budget, then label. A positive result means the business spent less than the flexed budget allowed, which is favourable; a negative result is adverse.',
+              'Splitting the total into a **price** variance and a **usage** variance is a Level 3 technique, taught in the Management Accounting Techniques preview. It is genuinely useful — it distinguishes paying too much from wasting too much — but it is not what a Level 2 task asks for.',
             ],
             example: {
-              title: 'Material variance example',
+              title: 'Total materials variance at 12,000 actual units',
               rows: [
-                ['Standard material cost', '2 kg × £5 per kg = £10 per unit'],
-                ['Actual material cost', '2.2 kg × £4.80 per kg = £10.56 per unit'],
-                ['Material price variance', '(£5.00 − £4.80) × 2.2 kg = £0.44 F per unit'],
-                ['Material usage variance', '(2.0 − 2.2) kg × £5.00 = £1.00 A per unit'],
-                ['Total material variance', '£0.56 A per unit'],
+                ['Step', 'Working', 'Result'],
+                ['Budget per unit', '2 kg at £3.50', '£7.00 per unit'],
+                ['Flexed budget', '12,000 × £7.00', '£84,000'],
+                ['Actual materials cost', 'given', '£86,900'],
+                ['Total materials variance', '£84,000 − £86,900', '£2,900 adverse'],
+                ['As a percentage of budget', '£2,900 ÷ £84,000', '3.5% adverse'],
               ],
             },
           },
           {
-            h: 'Direct labour variances',
+            h: 'The total labour variance',
             p: [
-              'Similar to materials, the labour variance splits into a **rate variance** (paid more or less per hour than standard) and an **efficiency variance** (took more or fewer hours than standard).',
+              'Labour works the same way, and the same warning applies about which budget figure to use. Flex first, compare second.',
+              'The budgeted labour cost per unit is hours per unit × rate per hour. Multiply by the units actually produced to get the flexed budget, then subtract the actual labour cost. A business that budgeted 0.5 hours at £12 and made 12,000 units has a flexed labour budget of £72,000.',
+              'One practical point that catches people: the actual figure must be the **total** labour cost, including any overtime premium and bonuses paid, because those are part of what labour actually cost. A comparison of budgeted basic pay against actual basic pay quietly leaves the overtime out.',
+              'As with materials, the split into a rate variance and an efficiency variance belongs at Level 3. Here the total, correctly flexed and correctly labelled, is the answer.',
             ],
             example: {
-              title: 'Labour variance example',
+              title: 'Total labour variance at 12,000 actual units',
               rows: [
-                ['Standard labour cost', '3 hrs × £12/hr = £36 per unit'],
-                ['Actual labour cost', '3.5 hrs × £11.50/hr = £40.25 per unit'],
-                ['Labour rate variance', '(£12.00 − £11.50) × 3.5 hrs = £1.75 F'],
-                ['Labour efficiency variance', '(3.0 − 3.5) hrs × £12.00 = £6.00 A'],
-                ['Total labour variance', '£4.25 A per unit'],
+                ['Step', 'Working', 'Result'],
+                ['Budget per unit', '0.5 hours at £12.00', '£6.00 per unit'],
+                ['Flexed budget', '12,000 × £6.00', '£72,000'],
+                ['Actual labour cost', 'including £1,400 overtime premium', '£70,600'],
+                ['Total labour variance', '£72,000 − £70,600', '£1,400 favourable'],
+                ['As a percentage of budget', '£1,400 ÷ £72,000', '1.9% favourable'],
               ],
             },
           },
           {
-            h: 'Fixed overhead and sales variances',
+            h: 'Total overhead and total income variances',
             p: [
-              'The fixed overhead variance compares absorbed overheads with actual overhead. A sales price variance shows whether the actual selling price differed from budget. A sales volume variance shows the profit impact of selling more or fewer units than budgeted.',
+              'The **total overheads variance** compares the budgeted fixed overhead for the period against the actual fixed overhead incurred. Because fixed overheads do not flex with output, there is no flexing step: the budget figure is the budget figure.',
+              'That makes it the simplest of the four, and also the one where the label is most often wrong. Spending more on fixed overhead than budgeted is adverse; spending less is favourable. Do not confuse this with under- or over-absorption, which compares overhead **absorbed into products** against overhead incurred and answers a different question.',
+              'The **total income variance** compares budgeted revenue with actual revenue, and here the signs reverse. More revenue than budgeted is favourable; less is adverse. It is the one line in the statement where actual exceeding budget is good news.',
+              'Because income moves with volume, a task will usually give you the flexed revenue figure or the actual units sold. Read carefully whether you are being asked to flex revenue as well — if the comparison is against the original fixed budget, the variance will include the effect of selling a different number of units.',
             ],
-            callout: { kind: 'key', text: 'For the exam, always state whether each variance is Favourable (F) or Adverse (A) — a correct figure without the label loses marks.' },
+            callout: { kind: 'key', text: 'Always state whether each variance is favourable or adverse. A correct figure without the label scores nothing, and the direction reverses between costs and income.' },
           },
           {
             h: 'Complete variance statement',
@@ -5219,16 +5070,16 @@ window.LEARN_PATH = [
             exp: 'Actual revenue (£92,000) > Budget (£85,000) — more revenue than planned is Favourable for profit.',
           },
           {
-            q: 'Standard material: 4 kg @ £6.00. Actual: 4.5 kg @ £5.50. The material usage variance is:',
-            opts: ['£2.00 Adverse', '£3.00 Adverse', '£2.25 Adverse', '£3.00 Favourable'],
-            ans: 1,
-            exp: 'Usage variance = (Standard qty − Actual qty) × Standard price = (4 − 4.5) × £6.00 = −0.5 × £6.00 = −£3.00. Adverse (used more than standard).',
+            q: 'Materials were budgeted at 2 kg per unit at £3.50 per kg. Actual output was 12,000 units and materials cost £86,900. The total materials variance is:',
+            opts: ['£2,900 adverse', '£16,900 adverse', '£2,900 favourable', '£2,900, direction depending on the usage split'],
+            ans: 0,
+            exp: 'Flex the budget first: 12,000 × 2 kg × £3.50 = £84,000. Actual of £86,900 exceeds that by £2,900, so the variance is adverse. Comparing against the unflexed £70,000 budget set for 10,000 units would give a meaningless £16,900.',
           },
           {
-            q: 'Which of the following would cause a favourable labour rate variance?',
-            opts: ['Employees working faster than standard', 'Paying employees a lower hourly rate than standard', 'Using more hours than standard', 'Paying employees a higher rate than standard'],
-            ans: 1,
-            exp: 'A favourable rate variance means the actual hourly rate paid was lower than the standard rate. More hours used would be an adverse efficiency variance.',
+            q: 'Which of the following would produce a favourable total labour variance?',
+            opts: ['Actual labour cost falling below the flexed budget', 'Actual output rising above the level first budgeted', 'Overtime premium paid to complete an urgent order', 'Employees taking more hours per unit than budgeted'],
+            ans: 0,
+            exp: 'A favourable cost variance simply means actual cost came in below the flexed budget. Higher output raises the flexed budget rather than creating a variance, and both overtime and lost efficiency push actual cost up.',
           },
           {
             q: 'The fixed overhead absorbed is £42,000. Actual fixed overhead incurred is £45,000. The variance is:',
@@ -5238,200 +5089,688 @@ window.LEARN_PATH = [
           },
         ],
       },
+
+      /* ── THE GAPS TAGGING REVEALED (15–20) ──────────────────────────────
+         POC-1.3, 1.4, 2.4, 2.5, 4.1 and 4.2 had no teaching material at all.
+         Learning outcome 4 is a tenth of the assessment, and criterion 2.5 sits
+         inside the 40% outcome. These six lessons cover them. */
       {
-        id: 'L-poc-12',
-        title: 'Decision-making with cost information',
-        icon: '⚖️',
-        skills: ['poc-cvp', 'poc-behaviour'],
+        id: 'L-poc-15',
+        criteria: ['POC-1.3', 'POC-1.4'],
+        title: 'Costing and financial accounting',
+        icon: '🗂️',
+        skills: ['poc-systems'],
         cards: [
           {
-            h: 'Relevant costs and decision-making',
+            h: 'Two systems, one set of transactions',
             p: [
-              'For decision-making, only **RELEVANT** costs matter. A relevant cost is a future, incremental, cash cost that changes as a direct result of the decision. Sunk costs (already spent), committed costs, and non-cash items (depreciation) are NOT relevant to the decision.',
+              'A business does not record its transactions twice. The same invoices, payslips and bank entries feed both the **financial accounting** system and the **costing** system; what differs is what each system then does with them.',
+              'The financial accounting system aggregates them into statutory financial statements for people outside the business — HMRC, Companies House, the bank, shareholders. Its output is prescribed, its timing is annual, and its figures are historic.',
+              'The costing system disaggregates the same transactions for people inside the business. Its output is whatever a decision needs, its timing is as often as managers want it, and its figures may be historic, current or budgeted.',
+              'Put crudely: financial accounting answers "what happened to the business as a whole last year?" and costing answers "what did this product cost, and what should it cost next month?"',
             ],
             split: {
-              left: {
-                title: 'Relevant costs',
-                items: ['Future costs that change with the decision', 'Incremental variable costs', 'Opportunity costs (benefits foregone)'],
-              },
-              right: {
-                title: 'NOT relevant',
-                items: ['Sunk costs (already spent)', 'Depreciation (non-cash)', 'Fixed costs that do not change', 'Committed costs'],
-              },
+              left: { title: 'Financial accounting', items: ['External users, statutory purpose', 'Format prescribed by law and standards', 'Annual, after the year end', 'Historic costs only', 'The business as a single entity'] },
+              right: { title: 'Costing', items: ['Internal managers, decision purpose', 'Format chosen by the business', 'Weekly, monthly, or on demand', 'Actual, standard or budgeted costs', 'Products, jobs, centres and units'] },
             },
           },
           {
-            h: 'Accepting a special order',
+            h: 'How each system uses cost',
             p: [
-              'A special order is a one-off request, often below normal selling price. Accept if the contribution is positive (revenue exceeds variable costs) AND spare capacity exists. Fixed costs are usually irrelevant as they are already being paid.',
+              'This is the difference the specification asks you to explain, and it comes down to two words: **historic** and **classified**.',
+              'Financial accounting uses only **historic cost** — what was actually paid, evidenced by a document. It cannot use a budgeted figure, because a set of published accounts describing what a business hoped to spend would be worthless.',
+              'Costing uses **many classifications of the same cost**. One wage payment might be analysed as labour by element, direct by nature, variable by behaviour, and production by function, all at once, and then charged to a particular cost centre and a particular product.',
+              'That is why costing can answer questions financial accounting cannot. The financial statements will tell you total wages for the year; only the costing system can tell you the labour cost of the product you are thinking of discontinuing.',
             ],
-            example: {
-              title: 'Special order decision',
+            callout: { kind: 'key', text: 'Financial accounting uses historic cost only. Costing uses the same costs classified in as many ways as decisions require — and may use budgeted figures as well as actual ones.' },
+          },
+          {
+            h: 'Where the figures come from',
+            p: [
+              'Costing information is only as good as its sources, and at this level you should be able to name them. Nothing in a costing system is invented; every figure traces back to a document or a record.',
+              'For **materials**, the sources are supplier invoices, goods received notes, materials requisitions and the stores record. For **labour**, they are the payroll records, timesheets, job cards and clock cards. For **overheads**, they are the invoices, standing orders and direct debits for rent, rates, power, insurance and depreciation schedules.',
+              'For **income**, the sources are sales invoices, the sales day book and the price list. Where a job is priced individually, the quotation and the customer order also matter, because they record what was promised.',
+              'A question that asks "what source of information would you use to find the direct labour cost of job 417?" wants a named document — the job card or the timesheet — not the phrase "the payroll".',
+            ],
+            table: {
+              head: ['Cost element', 'Source of information', 'What it tells you'],
               rows: [
-                ['Normal selling price', '£20 per unit'],
-                ['Special order price', '£14 per unit'],
-                ['Variable cost per unit', '£11'],
-                ['Contribution at special price', '£3 per unit (Accept — positive contribution)'],
-                ['Caveat', 'Only if spare capacity exists; beware of cannibalisation'],
+                ['Direct materials', 'Materials requisition, stores record', 'Quantity issued to a job and its cost'],
+                ['Direct labour', 'Timesheet, job card, clock card', 'Hours spent on a job and the pay rate'],
+                ['Production overhead', 'Supplier invoices, depreciation schedule', 'Total indirect cost for the period'],
+                ['Income', 'Sales invoice, sales day book', 'Revenue earned and from whom'],
+                ['Budgeted figures', 'The approved budget', 'What the cost was expected to be'],
               ],
             },
           },
           {
-            h: 'Make-or-buy decisions',
+            h: 'Historic, actual and budgeted cost',
             p: [
-              'Should the business make a component internally or buy it from an outside supplier? Compare the relevant (variable) cost of making with the purchase price. If the purchase price is lower than the marginal (variable) cost of making, buy it — unless making uses a scarce resource needed elsewhere.',
+              'Three words that get used loosely, and the specification distinguishes them. **Historic cost** is what was paid, in the past, evidenced by a document. **Actual cost** is the same idea used in a costing context — what a job or a period genuinely cost once the figures were in.',
+              '**Budgeted cost** is what the business expected the cost to be, agreed in advance. It is not a forecast produced afterwards, and it is not adjusted once the period starts; that is what makes it a standard to measure against.',
+              'A costing system can determine a unit, job or batch cost from either. Using actual costs tells you what happened; using budgeted costs lets you quote a price before the work is done, which is precisely when a customer wants a number.',
+              'The distinction matters for the exam because the same job can carry two costs — a budgeted cost used for quoting and an actual cost calculated afterwards — and the difference between them is a variance.',
             ],
-            formula: 'Relevant cost of making = Variable cost per unit (exclude fixed costs already committed)·Buy if: Purchase price < Variable cost of making·Also consider: quality, reliability, strategic importance',
+            examtrap: 'Historic cost is the only basis financial accounting may use. A question asking which system can work with budgeted figures is asking about costing, and an answer of "both" is wrong.',
           },
           {
-            h: 'Limiting factors',
+            h: 'Planning and control',
             p: [
-              'When a resource is in short supply (scarce), the business must decide how to allocate it to maximise profit. Rank products by **contribution per unit of limiting factor** (not by total contribution).',
+              'The reason a business bothers to keep budgeted and actual figures side by side is that together they support two different management activities.',
+              '**Planning** happens before the period. Budgeted costs let managers decide what to make, what to charge, how many staff to employ, and whether the business can afford a piece of equipment. None of those decisions can wait for actual figures, because by then the period is over.',
+              '**Control** happens during and after the period. Comparing actual against budget shows where reality diverged from plan, which is where management attention should go. Without a budget there is nothing to control against — an actual cost on its own is just a number.',
+              'This is why the specification pairs the two words. A costing system that only ever reports actual costs supports control weakly and planning not at all; one that only holds budgets can plan but never learns whether the plan worked.',
             ],
-            example: {
-              title: 'Limiting factor ranking',
-              rows: [
-                ['Product', 'Contribution/unit', 'Machine hrs/unit', 'Contribution per machine hr'],
-                ['A', '£12', '3 hrs', '£4.00'],
-                ['B', '£9', '2 hrs', '£4.50'],
-                ['Ranking', '', '', 'B first (£4.50), then A'],
-              ],
-            },
-          },
-          {
-            h: 'Shut-down decisions',
-            p: [
-              'Should a product line or department be closed? Compare the contribution it makes with the **avoidable** fixed costs. If contribution > avoidable fixed costs, keep it open — even if it appears to be making a loss after shared fixed cost allocation.',
-            ],
-            callout: { kind: 'warning', text: 'Allocated (shared) fixed costs do NOT disappear if a product line closes — they get reallocated. Only avoidable fixed costs are relevant to a shut-down decision.' },
-            examtrap: 'A product showing a net loss may still be worth keeping if it has a positive contribution that covers avoidable fixed costs. The decision is about contribution, not profit after fixed cost allocation.',
+            flow: ['Budget set before the period', 'Actual costs recorded during it', 'Compare actual with budget', 'Investigate significant differences', 'Feed what you learn into the next budget'],
           },
         ],
         check: [
           {
-            q: 'A company has spare capacity. A customer offers £16 per unit for a special order. Variable cost is £13. The fixed overhead absorption rate is £6. Should the company accept?',
-            opts: ['No — selling price is below total cost', 'Yes — contribution of £3 per unit is positive', 'No — contribution is negative', 'Yes — but only if the customer pays upfront'],
-            ans: 1,
-            exp: 'Contribution = £16 − £13 = +£3. With spare capacity, fixed costs are irrelevant (already covered). Accept.',
+            q: 'Which type of cost may a financial accounting system use?',
+            opts: ['Historic cost only, being what was actually paid', 'Budgeted cost only, being what was expected', 'Either historic or budgeted cost as required', 'Standard cost, revised each month for price changes'],
+            ans: 0,
+            exp: 'Published financial statements report what happened, so they use historic cost evidenced by documents. Only the costing system may work with budgeted or standard figures.',
           },
           {
-            q: 'Variable cost of making a component: £8. Purchase price from supplier: £7. There is no spare capacity issue. The correct decision is:',
-            opts: ['Make — always better to keep production in-house', 'Buy — purchase price (£7) is less than variable cost of making (£8)', 'Make — fixed costs need to be covered', 'Cannot decide without knowing the selling price'],
-            ans: 1,
-            exp: 'The relevant cost of making is £8 (variable). Buying at £7 saves £1 per unit. Buy from the supplier.',
+            q: 'What is the main difference in how the two systems treat a single wage payment?',
+            opts: ['Costing classifies it several ways at once; financial accounting records it once in total', 'Costing ignores it entirely because wages are a financial accounting matter', 'Financial accounting classifies it by cost centre and costing does not', 'Both treat it identically, because the source document is the same'],
+            ans: 0,
+            exp: 'The same payment can be analysed by element, nature, behaviour, function, cost centre and product in the costing system. Financial accounting needs only the total for the wages expense line.',
           },
           {
-            q: 'A product has a contribution of £6 per unit and requires 2 machine hours per unit. Another product has a contribution of £8 per unit and requires 4 machine hours. Machine time is the limiting factor. Which product should be prioritised?',
-            opts: ['Product 2 — higher contribution per unit', 'Product 1 — higher contribution per machine hour (£3 vs £2)', 'Product 2 — higher total contribution', 'Neither — both are equally attractive'],
-            ans: 1,
-            exp: 'With a limiting factor, rank by contribution per unit of the scarce resource. Product 1: £6÷2 = £3/hr. Product 2: £8÷4 = £2/hr. Prioritise Product 1.',
+            q: 'Which document would you use to establish the direct labour hours spent on a particular job?',
+            opts: ['The job card or timesheet for that job', 'The payroll summary for the whole month', 'The purchase invoice from the supplier', 'The materials requisition raised by stores'],
+            ans: 0,
+            exp: 'Job cards and timesheets record hours against a specific job, which is what makes the labour cost traceable. The payroll gives the total only, and the other two documents relate to materials.',
           },
           {
-            q: 'Sunk costs are:',
-            opts: ['Future costs that change with the decision', 'Already spent costs that cannot be recovered', 'Costs allocated from shared overheads', 'Variable costs in a special order'],
-            ans: 1,
-            exp: 'Sunk costs are past costs that have already been incurred and cannot be recovered — they are irrelevant to future decisions.',
+            q: 'Budgeted costs are used for planning because:',
+            opts: ['Decisions have to be made before actual costs are known', 'Budgeted figures are more accurate than actual figures', 'Actual costs cannot be classified by cost centre', 'Financial accounting standards require a budget'],
+            ans: 0,
+            exp: 'Pricing, recruitment and purchasing decisions all have to be taken in advance. Actual costs arrive too late to plan with, though they are essential for control afterwards.',
           },
           {
-            q: 'A department has a contribution of £25,000 and is allocated £30,000 of fixed overheads (of which £8,000 are avoidable). Should it close?',
-            opts: ['Yes — it is making a net loss of £5,000', 'No — contribution of £25,000 exceeds £8,000', 'Yes — it does not cover its fixed costs', 'Cannot decide — more information needed'],
-            ans: 1,
-            exp: 'Only avoidable costs are relevant. Contribution £25,000 > avoidable fixed costs £8,000. Closing would reduce profit by £25,000 − £8,000 = £17,000. Keep it open.',
+            type: 'truefalse',
+            q: 'Identify whether each statement about costing and financial accounting is true or false.',
+            statements: [
+              { text: 'The two systems are fed by different source documents.', answer: false },
+              { text: 'A costing system may report as often as managers require.', answer: true },
+              { text: 'Financial accounting reports the business as a single entity.', answer: true },
+              { text: 'A costing system must follow a format prescribed by law.', answer: false },
+            ],
+            exp: 'Both systems draw on the same invoices, payslips and bank entries — what differs is the analysis. And the costing system\'s format is chosen by the business, which is exactly why it can answer questions the statutory format cannot.',
           },
         ],
       },
-
       {
-        id: 'L-poc-13',
-        title: 'Marginal vs Absorption Costing',
-        icon: '⚖️',
-        skills: ['poc-behaviour', 'poc-budget'],
+        id: 'L-poc-16',
+        criteria: ['POC-2.4'],
+        title: 'Cost behaviour: total and unit costs',
+        icon: '📉',
+        skills: ['poc-behaviour'],
         cards: [
           {
-            h: 'Two approaches to product costing',
+            h: 'The one idea behind the whole topic',
             p: [
-              '**Marginal costing** and **absorption costing** are the two main methods for assigning costs to products. They produce the same total profit over the lifetime of a business, but can give different profit figures in a single period when inventory levels change.',
-              'The key difference: how each method treats **fixed production overheads**.',
+              'Fixed costs behave in a way that feels wrong until you have seen the arithmetic, and almost every mark in this criterion turns on it.',
+              'A **fixed cost stays the same in total** as output changes — rent of £36,000 a year is £36,000 whether you make 1,000 units or 10,000. Divide that total by a rising number of units, though, and the fixed cost **per unit falls**: £36.00 at 1,000 units, £3.60 at 10,000.',
+              'A **variable cost** does the opposite. It moves in direct proportion to output, so the total rises as you make more, while the cost **per unit stays the same**. Materials at £4 a unit cost £4,000 or £40,000 in total, but always £4 each.',
+              'Hold those two sentences side by side and you have the whole of cost behaviour: fixed is constant in total and falling per unit; variable is rising in total and constant per unit.',
             ],
-          },
-          {
-            h: 'Marginal costing',
-            p: [
-              'Under marginal costing, only **variable production costs** are included in the unit cost: direct materials, direct labour, and variable overheads.',
-              '**Fixed production overheads** are treated as a **period cost** — charged in full to the income statement in the period they are incurred, regardless of how many units are produced or sold. Fixed costs never enter inventory under marginal costing.',
-            ],
-            formula: 'Marginal unit cost = Direct materials + Direct labour + Variable overhead·Contribution = Selling price − Marginal cost·Fixed overheads → income statement in full (period cost)',
-          },
-          {
-            h: 'Absorption costing',
-            p: [
-              'Under absorption costing, **all production costs** are absorbed into the unit cost — including fixed production overheads. The fixed overhead absorbed per unit is calculated using the **overhead absorption rate (OAR)**:',
-            ],
-            formula: 'OAR = Budgeted fixed overhead ÷ Budgeted activity level (units or hours)·Absorption unit cost = Variable cost + (OAR × standard hours per unit)·Fixed overheads enter inventory if closing stock > opening stock',
-            example: {
-              title: 'Absorption vs marginal unit cost',
+            table: {
+              head: ['Output', 'Fixed total', 'Fixed per unit', 'Variable total at £4', 'Variable per unit'],
               rows: [
-                ['Cost element', 'Marginal costing', 'Absorption costing'],
-                ['Direct materials £10', '£10', '£10'],
-                ['Direct labour £8', '£8', '£8'],
-                ['Variable overhead £4', '£4', '£4'],
-                ['Fixed overhead absorbed £6', '—', '£6'],
-                ['Total unit cost', '£22', '£28'],
+                ['1,000 units', '£36,000', '£36.00', '£4,000', '£4.00'],
+                ['4,000 units', '£36,000', '£9.00', '£16,000', '£4.00'],
+                ['9,000 units', '£36,000', '£4.00', '£36,000', '£4.00'],
+                ['12,000 units', '£36,000', '£3.00', '£48,000', '£4.00'],
               ],
             },
           },
           {
-            h: 'Profit difference between the two methods',
+            h: 'Semi-variable and stepped costs',
             p: [
-              'When **closing inventory > opening inventory** (more produced than sold): absorption costing gives a **higher profit** — some fixed overheads are carried forward in inventory rather than charged to the income statement.',
-              'When **closing inventory < opening inventory** (more sold than produced): marginal costing gives a **higher profit** — absorption costing charges more fixed overhead to the income statement (releasing from prior periods\' inventory).',
-              'When **closing = opening inventory**: both methods give **identical profit**.',
+              'Two more patterns appear in real cost data, and both are mixtures rather than new principles.',
+              'A **semi-variable cost** has a fixed element and a variable element. A phone contract with a £30 monthly line rental plus 5p a minute is the classic example: at zero minutes it still costs £30, and every minute after that adds a little. Its total rises with activity but never starts from zero.',
+              'A **stepped cost** is fixed within a range and then jumps. One supervisor can oversee up to 5,000 units; the 5,001st unit requires a second supervisor, and the cost steps up by a whole salary. Between the steps it behaves exactly like a fixed cost.',
+              'Recognising which pattern a cost follows is the skill being tested. Rent is fixed, materials are variable, a phone bill is semi-variable, supervision is stepped — and describing a stepped cost as variable, because it does eventually increase with output, is a common and costly slip.',
             ],
-            formula: 'Difference in profit = Change in inventory units × Fixed overhead per unit (OAR)',
+            split: {
+              left: { title: 'Semi-variable', items: ['Fixed element plus variable element', 'Total rises but not from zero', 'Phone bill, machine hire with a standing charge', 'Cost per unit falls but never to the variable rate'] },
+              right: { title: 'Stepped', items: ['Fixed within a range, then jumps', 'Total rises in blocks, not smoothly', 'Supervisors, rented machines, delivery vans', 'Behaves as fixed between the steps'] },
+            },
           },
           {
-            h: 'When to use each method',
+            h: 'Calculating total cost at a given output',
             p: [
-              '**Marginal costing** is preferred for short-term decisions: contribution analysis, break-even, special orders, and limiting factor problems. It clearly shows the impact of volume changes without distortion from fixed cost absorption.',
-              '**Absorption costing** is required for **external financial reporting** under UK GAAP (FRS 102) and IFRS — inventory must include a fair share of fixed production overhead. It is also used in standard costing at Level 3.',
+              'Total cost is the fixed total plus the variable cost per unit multiplied by the units. The arithmetic is trivial; the marks are in keeping the two elements separate.',
+              'Take fixed costs of £36,000, materials of £4 per unit and labour of £6 per unit. Variable cost is therefore £10 per unit. At 9,000 units, total cost is £36,000 + (9,000 × £10) = £126,000.',
+              'Do not multiply the fixed cost by the units, and do not add the fixed cost per unit to the variable cost per unit and then treat the result as a rate. Both errors are easy to make when the question gives you a fixed cost expressed per unit.',
+              'Where a stepped cost is involved, check which step the output level falls in **before** you calculate. At 9,000 units a supervision cost that steps every 5,000 units requires two supervisors, not one.',
             ],
+            formula: 'Total cost = Fixed cost + (Variable cost per unit × Units)  ·  Cost per unit = Total cost ÷ Units',
+          },
+          {
+            h: 'Calculating unit cost, and why it moves',
+            p: [
+              'Unit cost is total cost divided by units, and it falls as output rises — but only because of the fixed element. That is the insight the assessment is testing.',
+              'Continuing the example: at 9,000 units, total cost of £126,000 gives a unit cost of £14.00. At 12,000 units, total cost is £36,000 + £120,000 = £156,000, and the unit cost falls to £13.00.',
+              'The £1 fall is entirely the fixed cost per unit dropping from £4.00 to £3.00. The variable element stayed at £10.00 throughout, which it always will.',
+              'So when a question asks why unit cost fell, the answer is not "economies of scale" in the abstract. It is that the same fixed cost was spread over more units, and you should be able to show the two figures that prove it.',
+            ],
+            example: {
+              title: 'Unit cost at three output levels',
+              rows: [
+                ['Output', 'Fixed', 'Variable at £10', 'Total cost', 'Cost per unit'],
+                ['4,000 units', '36,000', '40,000', '76,000', '£19.00'],
+                ['9,000 units', '36,000', '90,000', '126,000', '£14.00'],
+                ['12,000 units', '36,000', '120,000', '156,000', '£13.00'],
+                ['The £6 fall from £19 to £13 is entirely the fixed element per unit'],
+              ],
+            },
+          },
+          {
+            h: 'Recognising changes as output changes',
+            p: [
+              'A common task gives you a table with some cells blank and asks you to complete it. The reliable method is to fill in what behaviour dictates before doing any arithmetic.',
+              'Write the fixed total into every column, because it does not change. Write the variable cost per unit into every column, because it does not change either. Those two entries alone usually give you enough to derive everything else.',
+              'Then work down each column: variable total is the rate times the units, total cost is the two totals added, and cost per unit is the total divided by the units. Every blank cell falls out of that order.',
+              'The one thing to watch is the **relevant range**. Fixed costs are only fixed within the range of output the business can handle with its current premises and staff; ask for double the output and the fixed cost steps up. A question that pushes output far beyond the given levels is usually testing whether you noticed.',
+            ],
+            examtrap: 'A cost being "fixed" never means it is fixed per unit. If your completed table shows the same fixed cost per unit at two different output levels, you have made an error somewhere.',
           },
         ],
         check: [
           {
-            q: 'Under marginal costing, how are fixed production overheads treated?',
-            opts: ['Included in the unit cost and carried forward in closing inventory', 'Charged in full as a period cost in the income statement', 'Excluded from the income statement entirely', 'Added to the OAR for the next period only'],
-            ans: 1,
-            exp: 'Under marginal costing, fixed production overheads are period costs — charged in full to the income statement when incurred, regardless of production or sales volume. They are never held in inventory.',
+            q: 'As output rises, what happens to the fixed cost per unit?',
+            opts: ['It falls, because the same total is spread over more units', 'It rises, because more resources are being consumed', 'It stays the same, because the cost is fixed by definition', 'It falls to zero once the fixed cost has been covered'],
+            ans: 0,
+            exp: 'The fixed total is unchanged, so dividing it by a larger number of units gives a smaller figure per unit. Rent of £36,000 is £36.00 a unit at 1,000 units and £3.60 at 10,000.',
           },
           {
-            q: 'Under absorption costing, which costs are included in the unit product cost?',
-            opts: ['Variable production costs only', 'Variable production costs plus absorbed fixed production overhead', 'All costs including selling, distribution and administration', 'Direct materials and direct labour only'],
-            ans: 1,
-            exp: 'Absorption costing includes all production costs in the unit cost: direct materials + direct labour + variable overheads + a share of fixed production overhead (calculated using the OAR).',
+            q: 'Fixed costs are £36,000 and variable costs are £10 per unit. What is the total cost of 12,000 units?',
+            opts: ['£156,000', '£120,000', '£432,000', '£46,000'],
+            ans: 0,
+            exp: 'Total cost = £36,000 + (12,000 × £10) = £156,000. Multiplying the fixed cost by the units gives £432,000, which is the commonest error on this calculation.',
           },
           {
-            q: 'In a period where closing inventory exceeds opening inventory, which costing method gives the higher reported profit?',
-            opts: ['Marginal costing', 'Absorption costing', 'Both give the same profit', 'It depends on the selling price per unit'],
-            ans: 1,
-            exp: 'When closing inventory > opening inventory, absorption costing carries forward some fixed overhead in inventory (not charged to the income statement). This gives a higher profit than marginal costing in that period.',
+            q: 'A supervisor can oversee up to 5,000 units and a second is needed beyond that. This cost is:',
+            opts: ['Stepped', 'Variable', 'Semi-variable', 'Fixed at all output levels'],
+            ans: 0,
+            exp: 'The cost is fixed within each 5,000-unit range and jumps by a whole salary at the boundary, which is a stepped cost. It is not variable, because it does not move in proportion to output.',
           },
           {
-            q: 'A product has a variable production cost of £18 per unit and absorbed fixed overhead of £6 per unit. Under marginal costing, the inventory value per unit is:',
-            opts: ['£24', '£18', '£6', '£12'],
-            ans: 1,
-            exp: 'Under marginal costing, inventory is valued at variable production cost only: £18 per unit. The £6 fixed overhead is charged as a period cost — it is not included in inventory.',
+            q: 'Fixed costs are £36,000 and variable costs £10 per unit. What is the cost per unit at 9,000 units?',
+            opts: ['£14.00', '£10.00', '£13.00', '£4.00'],
+            ans: 0,
+            exp: 'Total cost is £36,000 + £90,000 = £126,000, so the unit cost is £126,000 ÷ 9,000 = £14.00. That is £10.00 of variable cost plus £4.00 of fixed cost per unit.',
           },
           {
-            q: 'Which financial reporting standard requires absorption costing for inventory valuation?',
-            opts: ['Neither — both methods are acceptable for external reporting', 'Marginal costing only, as it separates fixed costs clearly', 'UK GAAP (FRS 102) and IFRS — inventory must include a share of fixed production overhead', 'Only IFRS — UK GAAP allows marginal costing for listed companies'],
-            ans: 2,
-            exp: 'Both UK GAAP (FRS 102) and IFRS require that inventory includes a fair share of fixed production overhead — i.e. absorption costing. Marginal costing is fine for internal management reports but not for statutory accounts.',
+            type: 'truefalse',
+            q: 'Identify whether each statement about cost behaviour is true or false.',
+            statements: [
+              { text: 'Variable cost per unit stays the same as output changes.', answer: true },
+              { text: 'A semi-variable cost is zero when output is zero.', answer: false },
+              { text: 'Total variable cost rises in proportion to output.', answer: true },
+              { text: 'Fixed costs remain fixed however far output rises.', answer: false },
+            ],
+            exp: 'A semi-variable cost still has its fixed element at zero activity — that is what makes it semi-variable. And fixed costs are only fixed within the relevant range; push output far enough and they step up.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-17',
+        criteria: ['POC-2.5'],
+        title: 'Costing a product',
+        icon: '🏗️',
+        skills: ['poc-product'],
+        cards: [
+          {
+            h: 'Building the cost in named layers',
+            p: [
+              'A product cost is assembled in stages, and each stage has a name the marker is looking for. Learn the names with the arithmetic, because a task will ask for "the manufacturing cost" and expect the specific figure.',
+              '**Direct cost** — sometimes called prime cost — is direct materials plus direct labour plus any direct expenses. These are the costs that can be traced to the product without apportionment.',
+              '**Manufacturing cost** adds production overhead: the indirect costs of running the factory, absorbed into the product using an overhead absorption rate.',
+              'Beyond that come two adjustments for stock. **Cost of goods manufactured** adjusts manufacturing cost for work in progress; **cost of goods sold** adjusts that for finished goods. Each layer adds exactly one thing to the one below it.',
+            ],
+            flow: ['Direct materials + direct labour + direct expenses = direct cost', '+ production overhead = manufacturing cost', '± work in progress = cost of goods manufactured', '± finished goods = cost of goods sold'],
+          },
+          {
+            h: 'Product costs and period costs',
+            p: [
+              'Not every cost a business incurs is part of the product cost, and the split decides where a cost ends up in the accounts.',
+              'A **product cost** is incurred in making the goods: direct materials, direct labour and production overhead. It attaches to the units and stays in inventory until they are sold, at which point it becomes cost of sales.',
+              'A **period cost** is incurred in running the business rather than in making anything: administration salaries, sales commission, the finance director\'s car. It is charged in full to the period in which it arises and never enters inventory.',
+              'The practical consequence is a timing difference. £20,000 of production overhead on unsold goods sits on the statement of financial position; £20,000 of administration cost has already reduced this period\'s profit. Classify a period cost as a product cost and you overstate both inventory and profit.',
+            ],
+            split: {
+              left: { title: 'Product costs', items: ['Direct materials', 'Direct labour', 'Production overhead', 'Held in inventory until sold', 'Become cost of sales on sale'] },
+              right: { title: 'Period costs', items: ['Administration expenses', 'Selling and distribution costs', 'Finance costs', 'Charged to the period incurred', 'Never held in inventory'] },
+            },
+          },
+          {
+            h: 'Cost of goods manufactured',
+            p: [
+              'Work in progress is the reason this layer exists. At any moment a factory contains part-finished units, and the cost that went into them belongs to the period in which they are completed rather than the period in which the work was done.',
+              'So take the manufacturing cost of the period, **add** opening work in progress and **deduct** closing work in progress. Opening WIP was started last period and finished this one, so its cost joins this period\'s completions; closing WIP is not finished, so its cost is carried forward.',
+              'The direction is worth reasoning through rather than memorising. You are converting "cost put in this period" into "cost of what came out this period", so you add what was already in the pipe and take out what is still in it.',
+              'A useful check: if closing WIP is higher than opening WIP, the factory built up part-finished stock, so cost of goods manufactured must be **lower** than manufacturing cost.',
+            ],
+            example: {
+              title: 'From manufacturing cost to cost of goods manufactured',
+              rows: [
+                ['Line', '£'],
+                ['Direct materials used', '84,000'],
+                ['Direct labour', '72,000'],
+                ['Direct cost (prime cost)', '156,000'],
+                ['Production overhead absorbed', '48,000'],
+                ['Manufacturing cost', '204,000'],
+                ['Add opening work in progress', '9,000'],
+                ['Less closing work in progress', '(13,500)'],
+                ['Cost of goods manufactured', '199,500'],
+              ],
+            },
+          },
+          {
+            h: 'Cost of goods sold',
+            p: [
+              'The final layer applies the same logic one level further along the process. Goods can be finished without being sold, and only the ones that were sold belong in cost of sales.',
+              'Take cost of goods manufactured, **add** opening finished goods inventory and **deduct** closing finished goods inventory. Opening finished goods were made last period and sold this one; closing finished goods were made this period and will be sold later.',
+              'Notice the symmetry with work in progress. Both adjustments answer the same question — which period does this cost belong to? — and both add the opening balance and deduct the closing one.',
+              'The result is the figure that appears as cost of sales in the statement of profit or loss. Subtract it from revenue and you have gross profit, which is where the costing system and the financial accounts meet.',
+            ],
+            formula: 'Cost of goods sold = Cost of goods manufactured + Opening finished goods − Closing finished goods',
+          },
+          {
+            h: 'Costing in a service organisation',
+            p: [
+              'A hairdresser, an accountancy firm and a bus company all need to know what their output costs, but none of them has materials to speak of, work in progress to value, or finished goods to store.',
+              'Two things change as a result. First, **labour dominates** — often eighty per cent or more of total cost — so the cost unit is usually defined in terms of time or activity. Second, there is **no inventory**, so the work-in-progress and finished-goods adjustments simply do not arise. Cost of sales is the period cost.',
+              'The other change is the cost unit itself, which has to be invented rather than counted. A bus company costs per passenger-mile, a hotel per occupied room-night, a hospital per patient-day, an accountancy firm per chargeable hour. These are called **composite cost units** where they combine two measures.',
+              'The calculation is then the same as anywhere else: total cost for the period divided by the number of cost units. A hotel with costs of £180,000 and 6,000 occupied room-nights has a cost of £30 per room-night, and that is the figure a manager needs before setting a room rate.',
+            ],
+            table: {
+              head: ['Service', 'Cost unit', 'Why'],
+              rows: [
+                ['Bus operator', 'Passenger-mile', 'Cost depends on both distance and load'],
+                ['Hotel', 'Occupied room-night', 'Revenue and cost both follow occupancy'],
+                ['Hospital', 'Patient-day', 'Care cost accrues per day of stay'],
+                ['Accountancy firm', 'Chargeable hour', 'Labour is the resource being sold'],
+                ['Haulage', 'Tonne-mile', 'Cost depends on weight and distance'],
+              ],
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'Direct materials are £84,000, direct labour £72,000 and production overhead £48,000. What is the direct cost?',
+            opts: ['£156,000', '£204,000', '£132,000', '£120,000'],
+            ans: 0,
+            exp: 'Direct cost, also called prime cost, is direct materials plus direct labour plus direct expenses: £84,000 + £72,000 = £156,000. Adding the overhead gives the manufacturing cost of £204,000.',
+          },
+          {
+            q: 'Which of these is a period cost rather than a product cost?',
+            opts: ['Sales commission paid to the sales team', 'Wages of machine operators in the factory', 'Depreciation of production machinery', 'Raw materials issued to production'],
+            ans: 0,
+            exp: 'Selling costs are incurred in running the business, not in making the goods, so they are charged to the period. The other three all attach to the units and sit in inventory until the goods are sold.',
+          },
+          {
+            q: 'Manufacturing cost is £204,000, opening WIP £9,000 and closing WIP £13,500. What is the cost of goods manufactured?',
+            opts: ['£199,500', '£208,500', '£226,500', '£181,500'],
+            ans: 0,
+            exp: 'Add opening WIP and deduct closing WIP: £204,000 + £9,000 − £13,500 = £199,500. Closing WIP is higher than opening, so part-finished stock built up and the figure is below manufacturing cost.',
+          },
+          {
+            q: 'Why do service organisations not calculate a cost of goods manufactured?',
+            opts: ['They hold no work in progress or finished goods inventory', 'Their costs are too unpredictable to be worth analysing', 'They are not permitted to use a costing system at all', 'Their labour costs cannot be traced to a cost unit'],
+            ans: 0,
+            exp: 'The two adjustments exist to move cost between periods via inventory, and a service organisation has none to move. Its labour costs are traced perfectly well, usually to a chargeable hour.',
+          },
+          {
+            q: 'A hotel has total costs of £180,000 and 6,000 occupied room-nights. Its cost per cost unit is:',
+            opts: ['£30.00', '£33.33', '£3.00', '£300.00'],
+            ans: 0,
+            exp: 'Total cost divided by the number of cost units: £180,000 ÷ 6,000 = £30.00 per occupied room-night. That is the floor a manager needs to know before setting a room rate.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-18',
+        criteria: ['POC-1.6'],
+        title: 'The manufacturing account',
+        icon: '🏭',
+        skills: ['poc-product'],
+        cards: [
+          {
+            h: 'What a manufacturing account is for',
+            p: [
+              'A business that buys goods and resells them has a simple cost of sales: opening inventory plus purchases less closing inventory. A business that **makes** what it sells does not, because there is no purchase figure for a finished product it produced itself.',
+              'The **manufacturing account** fills that gap. It gathers the costs of production for the period and works them down to a single figure — the cost of goods manufactured — which then behaves exactly like purchases in the statement of profit or loss.',
+              'It is prepared before the statement of profit or loss and feeds into it. That ordering matters: the manufacturing account is not part of the profit calculation, it is the input to it.',
+              'Because it separates production cost from everything else, it also answers a management question directly. A manager can see what it cost to make the output, without administration and selling costs muddying the figure.',
+            ],
+            callout: { kind: 'key', text: 'The manufacturing account replaces "purchases" for a business that makes its own goods. Its bottom line, cost of goods manufactured, goes straight into cost of sales.' },
+          },
+          {
+            h: 'Which costs belong in it',
+            p: [
+              'Only **production** costs. That single rule decides every line, and most errors in a manufacturing account are costs that should never have been in it.',
+              'In: direct materials consumed, direct labour, direct expenses, and production overhead — factory rent and rates, factory power, depreciation of production machinery, the production supervisor\'s salary, factory insurance.',
+              'Out: administration costs, selling and distribution costs, finance costs, and depreciation of office equipment or delivery vehicles. These are period costs and belong in the statement of profit or loss below gross profit.',
+              'Costs that serve both the factory and the office are **apportioned**, usually on floor area. If the premises are 70% factory and 30% office, 70% of the rent is production overhead and enters the manufacturing account; the other 30% does not.',
+            ],
+            split: {
+              left: { title: 'In the manufacturing account', items: ['Direct materials consumed', 'Direct labour', 'Direct expenses', 'Factory rent, rates, power, insurance', 'Depreciation of production machinery', 'Production supervisor and factory management'] },
+              right: { title: 'Not in the manufacturing account', items: ['Administration salaries', 'Selling and distribution costs', 'Advertising and sales commission', 'Depreciation of office equipment', 'Depreciation of delivery vehicles', 'Loan interest and bank charges'] },
+            },
+          },
+          {
+            h: 'Direct materials consumed',
+            p: [
+              'The first line is not the materials purchased but the materials **used**, and the difference catches people out. A business can buy £90,000 of raw materials and put only £84,000 of them into production.',
+              'So the account opens with a short calculation: opening raw materials inventory, plus purchases of raw materials, plus carriage inwards, less closing raw materials inventory. The result is the cost of materials consumed.',
+              '**Carriage inwards** — the cost of getting materials to the factory — is added because it is part of what the materials cost to acquire. **Carriage outwards**, the cost of delivering finished goods to customers, is a selling cost and stays out of the account entirely.',
+              'Purchase returns are deducted, and any discount received on raw materials reduces the cost too. The principle throughout is that the figure should be what the materials actually consumed genuinely cost.',
+            ],
+            example: {
+              title: 'Direct materials consumed',
+              rows: [
+                ['Line', '£'],
+                ['Opening raw materials inventory', '11,000'],
+                ['Add purchases of raw materials', '86,000'],
+                ['Add carriage inwards', '2,400'],
+                ['Less closing raw materials inventory', '(15,400)'],
+                ['Direct materials consumed', '84,000'],
+              ],
+            },
+          },
+          {
+            h: 'Constructing the account in full',
+            p: [
+              'The full account runs in the order of the layers you already know, with the materials calculation at the top and the work-in-progress adjustment at the bottom.',
+              'Materials consumed, plus direct labour, plus direct expenses, gives **prime cost**. Add production overhead to reach **manufacturing cost**. Adjust for opening and closing work in progress to reach **cost of goods manufactured**.',
+              'Label each subtotal. An assessment task frequently asks for one of them specifically — "what is the prime cost?" — and an account that runs straight from materials to the bottom line has no answer to give.',
+              'The last line is the one that leaves the account. It becomes the production figure in cost of sales, alongside opening and closing finished goods inventory, exactly as purchases would in a retailer.',
+            ],
+            example: {
+              title: 'Manufacturing account for the year',
+              rows: [
+                ['Line', '£'],
+                ['Direct materials consumed', '84,000'],
+                ['Direct labour', '72,000'],
+                ['Direct expenses', '3,000'],
+                ['Prime cost', '159,000'],
+                ['Production overhead', '48,000'],
+                ['Manufacturing cost', '207,000'],
+                ['Add opening work in progress', '9,000'],
+                ['Less closing work in progress', '(13,500)'],
+                ['Cost of goods manufactured', '202,500'],
+              ],
+            },
+          },
+          {
+            h: 'Three inventories, not one',
+            p: [
+              'A manufacturer holds inventory at three stages, and each has its own opening and closing balance. Keeping them apart is the single most useful discipline in this topic.',
+              '**Raw materials** are bought but not yet issued to production; their adjustment sits at the top of the manufacturing account. **Work in progress** is started but not finished; its adjustment sits at the bottom. **Finished goods** are complete but unsold; their adjustment sits in cost of sales, outside the manufacturing account altogether.',
+              'The pattern is the same for all three — add the opening balance, deduct the closing balance — but they belong in three different places, and putting the finished goods adjustment inside the manufacturing account is the classic error.',
+              'On the statement of financial position all three appear together as inventory, which is why a question may give you a single total and ask you to split it. Read the labels carefully.',
+            ],
+            examtrap: 'Carriage inwards is a production cost and belongs in the manufacturing account. Carriage outwards is a selling cost and does not. Getting them the wrong way round changes both the prime cost and the gross profit.',
+          },
+        ],
+        check: [
+          {
+            q: 'What does the bottom line of a manufacturing account become in the statement of profit or loss?',
+            opts: ['The production figure within cost of sales', 'A separate expense listed below gross profit', 'Part of the closing inventory on the statement of financial position', 'An adjustment to revenue for goods made but unsold'],
+            ans: 0,
+            exp: 'Cost of goods manufactured behaves exactly as purchases would for a retailer: it sits in cost of sales alongside opening and closing finished goods inventory.',
+          },
+          {
+            q: 'Which cost belongs in the manufacturing account?',
+            opts: ['Depreciation of production machinery', 'Depreciation of delivery vehicles', 'Sales commission paid to agents', 'Interest charged on the bank loan'],
+            ans: 0,
+            exp: 'Only production costs enter the account. Delivery vehicles serve distribution, commission is a selling cost, and interest is a finance cost — all three are period costs charged below gross profit.',
+          },
+          {
+            q: 'Opening raw materials are £11,000, purchases £86,000, carriage inwards £2,400 and closing raw materials £15,400. Direct materials consumed are:',
+            opts: ['£84,000', '£82,000', '£88,800', '£97,000'],
+            ans: 0,
+            exp: '£11,000 + £86,000 + £2,400 − £15,400 = £84,000. Carriage inwards is added because it is part of what the materials cost to acquire; the £97,000 answer forgets to deduct closing inventory.',
+          },
+          {
+            q: 'Which subtotal in a manufacturing account is made up only of directly traceable costs?',
+            opts: ['Prime cost', 'Manufacturing cost', 'Cost of goods manufactured', 'Cost of goods sold'],
+            ans: 0,
+            exp: 'Prime cost is the total of direct materials, direct labour and direct expenses. Adding production overhead gives manufacturing cost, and the two inventory adjustments give the other two subtotals.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the manufacturing account is true or false.',
+            statements: [
+              { text: 'The work in progress adjustment appears in the manufacturing account.', answer: true },
+              { text: 'The finished goods adjustment appears in the manufacturing account.', answer: false },
+              { text: 'Factory rent is treated as production overhead.', answer: true },
+              { text: 'Carriage outwards is added to direct materials consumed.', answer: false },
+            ],
+            exp: 'Finished goods are adjusted in cost of sales, outside the account. And carriage outwards is the cost of delivering to customers — a selling cost — where carriage inwards is the cost of bringing materials in and does belong at the top of the account.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-19',
+        criteria: ['POC-4.1'],
+        title: 'Spreadsheets: entering and formatting data',
+        icon: '📊',
+        skills: ['poc-ss'],
+        cards: [
+          {
+            h: 'Why a costing unit examines spreadsheets',
+            p: [
+              'Learning outcome 4 is worth ten per cent of the Principles of Costing assessment, and it is marked by the computer against what is actually in the cells. It is the most mechanically markable part of the paper, which cuts both ways: nothing is subjective, and nothing is forgiven.',
+              'The reason it is in a costing unit is that this is how costing is done. Nobody apportions overheads on paper any more, and a schedule of budgeted against actual costs is a spreadsheet in every business you will work in.',
+              'Two things are examined. **Entering and formatting data** so that a schedule is accurate and readable, and **using formulas** so that the figures are calculated rather than typed. This lesson covers the first.',
+              'Practise in a real spreadsheet rather than reading about it. The skills are muscle memory, and the assessment is timed.',
+            ],
+            callout: { kind: 'key', text: 'This outcome is marked on the contents of the cells, not on your explanation of what you did. Accuracy in the right cell is the whole mark.' },
+          },
+          {
+            h: 'Entering data into specified cells',
+            p: [
+              'A task will tell you exactly where something goes — "enter the budgeted material cost in cell D7". Put it anywhere else and it scores nothing, however correct the figure.',
+              'Type the number and nothing else. No pound signs, no commas, no spaces, and no text such as "units" alongside the figure. A cell containing "£4,200" typed as text cannot be added up, and the formulas that depend on it will fail.',
+              'Negative figures are entered with a minus sign, not with brackets typed by hand. Brackets are a **format**, applied to the cell, not characters you type into it.',
+              'Check what you typed against what the task said before moving on. Transposition in a spreadsheet is invisible — the cell looks perfectly plausible with the wrong number in it, and every formula downstream inherits the error silently.',
+            ],
+            examtrap: 'Never type a currency symbol or a thousand separator into a cell. Both make the entry text rather than a number, and a text entry breaks every calculation that references it.',
+          },
+          {
+            h: 'Formatting cells',
+            p: [
+              'Formatting changes how a value is displayed without changing the value itself. That distinction is the key to the whole topic: format £4,200.00 however you like and the underlying number is still 4200.',
+              'The formats named in the specification are **bold**, *italics*, underline, merge, fill with colour, wrap text, text size and borders. Each is applied by selecting the cells first and then the format — a habit worth building, because applying a format to the wrong selection is the commonest way to lose these marks.',
+              '**Merge** joins cells so that a heading spans several columns, and it is what a task means by "merge cells A1 to D1 and centre the title". **Wrap text** makes a long label display on two lines inside its cell instead of spilling across the neighbouring ones.',
+              'Formatting is not decoration in an accounting schedule. A total in bold with a border above it is how a reader knows it is a total, and marks are awarded for exactly that convention.',
+            ],
+            table: {
+              head: ['Format', 'What it does', 'Typical use in a cost schedule'],
+              rows: [
+                ['Bold', 'Emphasises the text', 'Column headings and totals'],
+                ['Merge', 'Joins cells into one', 'A title spanning the whole schedule'],
+                ['Wrap text', 'Displays a long label on several lines', 'Narrow columns with long headings'],
+                ['Fill colour', 'Shades the cell background', 'Marking the input cells'],
+                ['Borders', 'Draws lines around or under cells', 'A line above a total'],
+                ['Text size', 'Enlarges or reduces the font', 'Making the title larger than the body'],
+              ],
+            },
+          },
+          {
+            h: 'Formatting numbers',
+            p: [
+              'Number formats are the ones that matter most in a costing schedule, and the specification names four: thousand separators, accountancy format, percentages and decimals.',
+              '**Thousand separators** display 84000 as 84,000 — applied as a format, never typed. **Accountancy format** aligns the currency symbol at the left of the cell and the digits at the right, and shows negatives in brackets, which is the convention every set of accounts uses.',
+              '**Percentages** are where the trap sits. Formatting a cell as a percentage multiplies the displayed value by 100, so a variance of 0.035 displays as 3.5%. If you have already calculated 3.5 and then apply percentage format, the cell will show 350%.',
+              '**Decimals** are set to the number of places the task asks for, usually two for currency and one for a percentage. Setting decimals is a display change, so the full precision is retained underneath and later calculations are unaffected by the rounding you can see.',
+            ],
+            examtrap: 'A cell formatted as a percentage displays the value × 100. Calculate the ratio (0.035), not the percentage (3.5), and let the format do the multiplication — or you will report a 350% variance.',
+          },
+          {
+            h: 'Copying, pasting and inserting',
+            p: [
+              'Two more mechanical skills complete the criterion, and both are about restructuring a schedule without breaking it.',
+              '**Copy and paste** duplicates cell contents including any formulas, and the specification is explicit that paste values and paste link are not examined. When a formula is pasted into a new column its relative references shift, which is the behaviour you want: a formula summing column B, pasted into column C, sums column C.',
+              '**Inserting rows and columns** makes room for a line that was missed. Ranges in existing formulas usually expand to include an inserted row inside them, but a row inserted immediately below the last row of a range often is not picked up — so check any total after inserting.',
+              'That check is the whole skill. After any structural change, look at the totals and ask whether they still cover every row they should. A schedule that looks right and totals the wrong range is worse than one that is obviously broken.',
+            ],
+            flow: ['Insert the row where it belongs', 'Enter the data', 'Check every total that should include it', 'Extend any formula that missed it'],
+          },
+        ],
+        check: [
+          {
+            q: 'How should the figure four thousand two hundred pounds be entered into a cell?',
+            opts: ['4200, with any currency symbol applied as a format', '£4,200 exactly as it would be written', '£4200 with the symbol but no separator', '4,200 with the separator but no symbol'],
+            ans: 0,
+            exp: 'Only the digits are typed. A currency symbol or comma typed into the cell makes the entry text, so it cannot be summed and every formula referencing it fails.',
+          },
+          {
+            q: 'A variance ratio of 0.035 is in a cell. Percentage format is applied. What is displayed?',
+            opts: ['3.5%', '0.035%', '350%', '0.35%'],
+            ans: 0,
+            exp: 'Percentage format multiplies the displayed value by 100, so 0.035 shows as 3.5%. This is why you calculate the ratio and let the format convert it, rather than calculating 3.5 first.',
+          },
+          {
+            q: 'What does the merge format do?',
+            opts: ['Joins several cells into one, typically for a heading', 'Combines the values in several cells by adding them', 'Displays a long label on more than one line', 'Links two worksheets so they update together'],
+            ans: 0,
+            exp: 'Merge joins cells so a title can span columns. Adding values is what a formula does, and displaying a label on several lines is wrap text.',
+          },
+          {
+            q: 'After inserting a row immediately below the last row of a summed range, what should you check?',
+            opts: ['Whether the total formula has extended to include the new row', 'Whether the new row has inherited the fill colour', 'Whether the column widths have adjusted automatically', 'Whether the percentage format has been reapplied'],
+            ans: 0,
+            exp: 'A row inserted just below a range is often not picked up by the existing formula, so the total silently excludes it. Checking every affected total after a structural change is the habit that protects these marks.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about spreadsheet formatting is true or false.',
+            statements: [
+              { text: 'Formatting a cell changes how the value is displayed, not the value.', answer: true },
+              { text: 'Negative figures should be typed with brackets around them.', answer: false },
+              { text: 'Accountancy format shows negative figures in brackets.', answer: true },
+              { text: 'Setting decimal places changes the precision used in later calculations.', answer: false },
+            ],
+            exp: 'Brackets are a format applied to the cell, not characters to type — a typed bracket makes the entry text. And reducing the decimals shown never reduces the precision held, so downstream calculations use the full figure.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-20',
+        criteria: ['POC-4.2'],
+        title: 'Spreadsheets: formulas for cost calculations',
+        icon: '📐',
+        skills: ['poc-ss'],
+        cards: [
+          {
+            h: 'Reference cells, never retype numbers',
+            p: [
+              'The single principle behind this criterion is that a spreadsheet should **calculate** its figures, not contain them. If the material cost per unit is in cell C4, then the total material cost is =C4*C5, not the answer typed in.',
+              'The reason is practical. A schedule built on cell references updates itself when an input changes, and a schedule built on typed answers has to be rebuilt by hand and will eventually be wrong somewhere nobody notices.',
+              'The reason for the assessment is stricter still. The marker inspects the formula, not the displayed result, so a cell containing the right number and no formula scores nothing at all.',
+              'Every formula begins with an equals sign. Without it the spreadsheet treats what follows as text, and the cell will display the formula rather than its result — which is an immediate and complete loss of the mark.',
+            ],
+            callout: { kind: 'key', text: 'The mark is for the formula, not the answer. A cell showing the correct figure with no formula behind it earns nothing.' },
+          },
+          {
+            h: 'The four arithmetic operators',
+            p: [
+              'The specification names exactly four, and each has one correct form. **Addition** is =B2+C2. **Subtraction** is =B2-C2. **Multiplication** is =B2*C2, using an asterisk rather than a letter x. **Division** is =B2/C2, using a forward slash.',
+              'Addition also has a range form: =SUM(B2:B10) adds every cell from B2 to B10 inclusive. The colon means "through", and it is what makes the formula robust — it keeps working when the numbers in those cells change.',
+              'Combining operators is expected rather than exceptional. A total cost formula might read =B4*B5+B6, and the assessment specifically notes that formulas will require more than one operation.',
+              'Where the order of operations matters, use brackets. Multiplication and division are performed before addition and subtraction, so =B4+B5*B6 multiplies first; if you want the addition first, it must be =(B4+B5)*B6.',
+            ],
+            formula: '=SUM(B2:B10) · =B2+C2 · =B2-C2 · =B2*C2 · =B2/C2 · =(B4+B5)*B6',
+          },
+          {
+            h: 'What loses the mark',
+            p: [
+              'The specification lists what will not be credited, and the list is unusually specific. It is worth learning as a list of things to avoid, because each one describes a formula that produces the right answer and scores zero.',
+              'No **unnecessary spaces**. No **commas** where a colon is needed: =SUM(B2,C2) is not credited where =SUM(B2:C2) is. No **square or curly brackets** — only round ones. No **brackets around single cells**: =SUM(B1+B2+B3) is not credited where =SUM(B1:B3) is.',
+              'No **PRODUCT** for multiplication; use the asterisk. No **numbers in place of cell references**, which is the same rule as "reference, do not retype". No **redundant references** to cells the calculation does not need.',
+              'And no **unnecessary signs**: =+C11-B11 and =-(B11-C11) are both rejected where =C11-B11 is correct. Nor should cell references be padded with zeros — A1, not A01.',
+            ],
+            split: {
+              left: { title: 'Credited', items: ['=SUM(B2:B10)', '=B2+C2', '=B4*B5+B6', '=(B4+B5)*B6', '=C11-B11', '=B7/B8'] },
+              right: { title: 'Not credited', items: ['=SUM(B2,C2) — comma for a range', '=SUM(B1+B2+B3) — brackets round single cells', '=PRODUCT(B2:C2) — for multiplication', '=+C11-B11 — unnecessary positive', '=B4*250 — a number, not a reference', '=SUM(A01:A10) — padded reference'] },
+            },
+          },
+          {
+            h: 'Building a cost schedule with formulas',
+            p: [
+              'The typical task is a partly built schedule with some formulas missing. Work out what each cell should calculate before you type anything, and name the cells you need.',
+              'Suppose column B holds the inputs: units in B4, material kilograms per unit in B5, price per kilogram in B6, labour hours per unit in B7, rate per hour in B8, and fixed overhead in B9.',
+              'Total material cost is then =B4*B5*B6, total labour is =B4*B7*B8, and total cost is =B10+B11+B9 if the two totals sit in B10 and B11. Cost per unit is =B12/B4 — the total divided by the units, not the sum of the per-unit rates.',
+              'Notice that no number appears in any formula. Change the units in B4 and the whole schedule recalculates, which is both the point of a spreadsheet and what the criterion is testing.',
+            ],
+            table: {
+              head: ['Cell', 'What it holds', 'Formula'],
+              rows: [
+                ['B10', 'Total material cost', '=B4*B5*B6'],
+                ['B11', 'Total labour cost', '=B4*B7*B8'],
+                ['B12', 'Total cost', '=SUM(B9:B11)'],
+                ['B13', 'Cost per unit', '=B12/B4'],
+                ['B14', 'Variance against budget in C12', '=C12-B12'],
+                ['B15', 'Variance as a ratio', '=B14/C12'],
+              ],
+            },
+          },
+          {
+            h: 'Checking a formula before you move on',
+            p: [
+              'Three quick checks catch nearly every error, and all three take seconds.',
+              'First, does the result look plausible? A cost per unit of £1,400 when the selling price is £18 means a formula has multiplied where it should have divided, and the implausibility is the clue.',
+              'Second, are the references right? Click the cell and look at which cells highlight. It is much easier to see that a formula is pointing at B6 instead of B7 than to deduce it from the answer.',
+              'Third, does the formula obey the rules on the previous card? Scan for a comma inside SUM, a stray plus sign at the start, a typed number, or a bracket around a single cell. Those cost the mark even when the arithmetic is perfect.',
+              'Then, if there is time, change one input and check that everything downstream moves. A figure that does not move when its input changes was typed, not calculated.',
+            ],
+            examtrap: 'Cost per unit is total cost divided by units. Adding the per-unit rates together instead misses the fixed cost per unit entirely, and the error is invisible in the displayed figure.',
+          },
+        ],
+        check: [
+          {
+            q: 'Which formula correctly adds the range B2 to B10?',
+            opts: ['=SUM(B2:B10)', '=SUM(B2,B10)', '=SUM(B2+B10)', 'SUM(B2:B10)'],
+            ans: 0,
+            exp: 'A colon means "through" and covers every cell in the range. A comma names two cells only, the third form wraps a single sum in brackets unnecessarily, and the last is missing its equals sign.',
+          },
+          {
+            q: 'Units are in B4, kilograms per unit in B5 and price per kilogram in B6. Which formula gives the total material cost?',
+            opts: ['=B4*B5*B6', '=B4+B5+B6', '=SUM(B4:B6)', '=B4*B5/B6'],
+            ans: 0,
+            exp: 'Total material cost is units × kilograms per unit × price per kilogram, so the three cells are multiplied. Summing them adds three unrelated quantities together.',
+          },
+          {
+            q: 'Which of these formulas would NOT be credited?',
+            opts: ['=+C11-B11', '=C11-B11', '=SUM(C2:C11)', '=B4*B5'],
+            ans: 0,
+            exp: 'The leading plus sign is an unnecessary positive, which the specification lists as not credited. The subtraction is written correctly as =C11-B11.',
+          },
+          {
+            q: 'Total cost is in B12 and units are in B4. Which formula gives the cost per unit?',
+            opts: ['=B12/B4', '=B4/B12', '=B12*B4', '=SUM(B4:B12)'],
+            ans: 0,
+            exp: 'Cost per unit is total cost divided by the number of units. Reversing the division gives units per pound, which is not a figure anyone wants.',
+          },
+          {
+            q: 'A cell displays the correct total but contains a typed number rather than a formula. What happens?',
+            opts: ['No mark is awarded, because the formula is what is marked', 'Full marks, because the figure displayed is correct', 'Half marks, since the arithmetic was done correctly', 'The mark depends on whether the cell is formatted correctly'],
+            ans: 0,
+            exp: 'This criterion assesses the use of formulas, and the marker inspects the formula rather than the result. A typed answer also stops the schedule updating when an input changes.',
           },
         ],
       },
       {
         id: 'L-poc-14',
+        criteria: [],
         title: 'Bridge to Level 3 — Management Accounting',
         icon: '🌉',
         skills: ['poc-cvp', 'poc-budget'],
@@ -8034,6 +8373,404 @@ window.LEARN_PATH = [
             ],
             ans: 2,
             exp: 'Total material variance = Price variance + Usage variance. It can also be calculated directly as (Standard cost of actual output) − (Actual cost of actual output).',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-9',
+        criteria: [],
+        title: 'Break-even and margin of safety (Level 3 preview)',
+        icon: '📐',
+        skills: ['poc-cvp'],
+        cards: [
+          {
+            h: 'Contribution per unit and C/S ratio',
+            p: [
+              '**Contribution per unit** = Selling price − Variable cost per unit.',
+              'Contribution pays off fixed costs first; any remaining contribution is profit.',
+              'The **contribution to sales (C/S) ratio** = Contribution per unit ÷ Selling price. It shows what fraction of every £1 of sales is contribution.',
+            ],
+            formula: 'Contribution per unit = SP − VC per unit · C/S ratio = Contribution per unit ÷ Selling price · Total contribution = Contribution per unit × Units sold',
+          },
+          {
+            h: 'Break-even point',
+            p: [
+              'At the **break-even point**, total contribution exactly equals fixed costs — profit is zero.',
+            ],
+            formula: 'Break-even units = Fixed costs ÷ Contribution per unit · Break-even revenue = Fixed costs ÷ C/S ratio · (Or: Break-even units × Selling price)',
+          },
+          {
+            h: 'Margin of safety',
+            p: [
+              'The **margin of safety** is how far above break-even the business expects to operate. It measures the buffer before losses begin.',
+            ],
+            formula: 'Margin of safety (units) = Budgeted sales − Break-even sales · Margin of safety (%) = Margin of safety units ÷ Budgeted sales × 100',
+          },
+          {
+            h: 'Target profit',
+            p: [
+              'To earn a **specific profit**, treat the target profit as an additional fixed cost to cover.',
+            ],
+            formula: 'Units for target profit = (Fixed costs + Target profit) ÷ Contribution per unit · Revenue for target profit = (Fixed costs + Target profit) ÷ C/S ratio',
+          },
+          {
+            h: 'Worked example',
+            p: [
+              'Take the figures strictly in order: contribution per unit, then break-even, then margin of safety. Each line feeds the next, so an early slip carries all the way down.',
+              'Sense-check the answer. Margin of safety can never exceed budgeted sales, and break-even units round **up** — a part unit does not cover the fixed costs.',
+            ],
+            example: {
+              title: 'Break-even analysis: SP £25, VC £15, FC £48,000, budgeted 6,000 units',
+              rows: [
+                ['Calculation', 'Working', 'Result'],
+                ['Contribution per unit', '£25 − £15', '£10'],
+                ['C/S ratio', '£10 ÷ £25', '40%'],
+                ['Break-even units', '£48,000 ÷ £10', '4,800 units'],
+                ['Break-even revenue', '£48,000 ÷ 40%', '£120,000'],
+                ['Margin of safety', '6,000 − 4,800', '1,200 units (20%)'],
+                ['Target profit £12,000', '(£48,000 + £12,000) ÷ £10', '6,000 units'],
+              ],
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'Selling price is £30 and variable cost per unit is £18. What is the contribution per unit?',
+            opts: ['£30', '£18', '£12', '£48'],
+            ans: 2,
+            exp: 'Contribution per unit is selling price less variable cost: £30 − £18 = £12. That is the amount each unit adds towards fixed costs, and towards profit once those are covered.',
+          },
+          {
+            q: 'Contribution per unit is £8 and fixed costs are £40,000. What is the break-even point in units?',
+            opts: ['5,000', '4,000', '8,000', '320,000'],
+            ans: 0,
+            exp: 'Break-even is fixed costs divided by contribution per unit: £40,000 ÷ £8 = 5,000 units. At that volume contribution and fixed costs are equal, so the business makes neither profit nor loss.',
+          },
+          {
+            q: 'Break-even is 4,000 units. Budgeted sales are 5,500 units. What is the margin of safety?',
+            opts: ['4,000 units', '1,500 units (27.3%)', '5,500 units', '500 units (9.1%)'],
+            ans: 1,
+            exp: 'Margin of safety is how far budgeted sales exceed break-even: 5,500 − 4,000 = 1,500 units, or 27.3% of budget. It measures how much demand could fall before the business moves into loss.',
+          },
+          {
+            q: 'Fixed costs £60,000, contribution per unit £15, target profit £30,000. Units needed?',
+            opts: ['4,000', '6,000', '2,000', '8,000'],
+            ans: 1,
+            exp: 'Units = (Fixed costs + Target profit) ÷ Contribution per unit = (£60,000 + £30,000) ÷ £15 = 6,000 units.',
+          },
+          {
+            q: 'Selling price £40, variable cost £24. What is the C/S ratio?',
+            opts: ['60%', '40%', '24%', '16%'],
+            ans: 1,
+            exp: 'Contribution is £40 − £24 = £16, and the contribution-to-sales ratio expresses that as a share of the selling price: £16 ÷ £40 = 40%. The ratio is what lets break-even be worked out in revenue rather than units.',
+          },
+          {
+            q: 'Fixed costs are £72,000 and the C/S ratio is 45%. What is the break-even revenue?',
+            opts: ['£32,400', '£160,000', '£72,000', '£45,000'],
+            ans: 1,
+            exp: 'Dividing fixed costs by the C/S ratio gives break-even in sales value: £72,000 ÷ 0.45 = £160,000. Use the ratio when the answer is wanted in revenue, and contribution per unit when it is wanted in units.',
+          },
+          {
+            q: 'Which of the following changes would REDUCE the break-even point?',
+            opts: ['Increase fixed costs', 'Reduce selling price', 'Reduce variable cost per unit', 'Increase variable cost per unit'],
+            ans: 2,
+            exp: 'Reducing variable cost per unit increases contribution per unit. A higher contribution per unit means fewer units are needed to cover fixed costs, so break-even falls.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-10',
+        criteria: [],
+        title: 'The high-low method (Level 3 preview)',
+        icon: '📏',
+        skills: ['poc-behaviour'],
+        cards: [
+          {
+            h: 'Why we need to split semi-variable costs',
+            p: [
+              '**Semi-variable costs** have both a fixed element (unchanged regardless of activity) and a variable element (changes with output).',
+              'To plan and budget accurately, we need to know the fixed and variable parts separately.',
+              'The **high-low method** uses the two extremes of activity data to split the cost — it is simple but requires only two data points.',
+            ],
+          },
+          {
+            h: 'Step 1 — calculate variable cost per unit',
+            p: [
+              'The logic is simple: between the highest and lowest activity levels the fixed cost has not moved at all, so the **whole** change in total cost must be variable.',
+              'Choose the two rows by **activity level, not by cost**. The dearest month is not always the busiest, and picking on cost is the most common way to lose these marks.',
+            ],
+            formula: 'Variable cost per unit = (Total cost at highest activity − Total cost at lowest activity) ÷ (Units at highest − Units at lowest)',
+          },
+          {
+            h: 'Step 2 — calculate the fixed cost',
+            p: [
+              'Once the variable cost per unit is known, substitute back into either the high or low data point.',
+            ],
+            formula: 'Fixed cost = Total cost at that level − (Variable cost per unit × Units at that level)',
+          },
+          {
+            h: 'Step 3 — the cost equation and prediction',
+            p: [
+              'With both elements found: **Total cost = Fixed cost + (Variable cost per unit × units)**.',
+              'Use this equation to estimate costs at ANY activity level (within the relevant range).',
+            ],
+          },
+          {
+            h: 'Worked example',
+            p: [
+              'Set the two data points one above the other and subtract, so the arithmetic stays visible and a transposition is easy to spot.',
+              'Once the cost equation is built, test it against the other data point — substituting the low activity level should reproduce the low total cost exactly.',
+            ],
+            example: {
+              title: 'High-low: find fixed and variable elements',
+              rows: [
+                ['Period', 'Units produced', 'Total cost'],
+                ['Highest', '5,000', '£22,000'],
+                ['Lowest', '2,000', '£13,000'],
+                ['Difference', '3,000', '£9,000'],
+                ['VC/unit = £9,000 ÷ 3,000', '', '= £3 per unit'],
+                ['FC = £22,000 − (£3 × 5,000)', '', '= £7,000'],
+                ['Cost at 4,000 units = £7,000 + (£3 × 4,000)', '', '= £19,000'],
+              ],
+            },
+            callout: { kind: 'warning', text: '**Exam trap:** Always check that the question has not included an abnormal or exceptional data point. If a month\'s cost is clearly an outlier (e.g. due to a one-off repair), it should be excluded before applying high-low.' },
+          },
+        ],
+        check: [
+          {
+            q: 'The high-low method is used to split which type of cost?',
+            opts: ['Fixed costs', 'Variable costs', 'Semi-variable costs', 'Direct costs'],
+            ans: 2,
+            exp: 'Semi-variable costs have both a fixed and variable element. The high-low method separates the two so each can be planned and budgeted independently.',
+          },
+          {
+            q: 'Highest activity: 8,000 units, cost £38,000. Lowest: 3,000 units, cost £23,000. Variable cost per unit = ?',
+            opts: ['£3.00', '£4.75', '£7.67', '£2.00'],
+            ans: 0,
+            exp: 'High-low takes the change in cost over the change in activity, which strips out the fixed element: £15,000 ÷ 5,000 = £3 per unit. Only the variable cost changes between the two levels, so the difference must all be variable.',
+          },
+          {
+            q: 'Using the high point (8,000 units, cost £38,000) and VC = £3/unit, what is the fixed cost?',
+            opts: ['£14,000', '£24,000', '£38,000', '£11,000'],
+            ans: 0,
+            exp: 'Fixed cost = Total cost − (VC/unit × units) = £38,000 − (£3 × 8,000) = £38,000 − £24,000 = £14,000.',
+          },
+          {
+            q: 'Fixed cost = £14,000 and VC = £3/unit. Total cost at 6,000 units = ?',
+            opts: ['£32,000', '£18,000', '£44,000', '£28,000'],
+            ans: 0,
+            exp: 'Total cost is the fixed element plus the variable cost per unit times output: £14,000 + (£3 × 6,000) = £32,000. Fixed cost stays the same in total while falling per unit as output rises.',
+          },
+          {
+            q: 'The high-low method assumes that the variable cost per unit is:',
+            opts: ['Decreasing as volume rises', 'Constant at all activity levels', 'Only relevant at the break-even point', 'Calculated using an average of all periods'],
+            ans: 1,
+            exp: 'The high-low method assumes a linear cost function — variable cost per unit is constant across the relevant range of activity.',
+          },
+          {
+            q: 'Which data points does the high-low method use?',
+            opts: ['The most recent and the oldest', 'The highest and lowest activity levels', 'The average of all periods', 'The two periods with the largest cost difference'],
+            ans: 1,
+            exp: 'The high-low method selects the periods with the HIGHEST and LOWEST levels of activity (not cost), and uses those two data points to calculate the variable rate.',
+          },
+          {
+            q: 'A key limitation of the high-low method is that:',
+            opts: ['It requires complex calculations', 'It uses only two data points and may be distorted by outliers', 'It cannot be used for fixed costs', 'It requires activity to be measured in units only'],
+            ans: 1,
+            exp: 'High-low ignores all data points except two extremes. If either extreme is abnormal (an outlier), the resulting cost split will be inaccurate.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-12',
+        criteria: [],
+        title: 'Decision-making with cost information (Level 3 preview)',
+        icon: '⚖️',
+        skills: ['poc-cvp', 'poc-behaviour'],
+        cards: [
+          {
+            h: 'Relevant costs and decision-making',
+            p: [
+              'For decision-making, only **RELEVANT** costs matter. A relevant cost is a future, incremental, cash cost that changes as a direct result of the decision. Sunk costs (already spent), committed costs, and non-cash items (depreciation) are NOT relevant to the decision.',
+            ],
+            split: {
+              left: {
+                title: 'Relevant costs',
+                items: ['Future costs that change with the decision', 'Incremental variable costs', 'Opportunity costs (benefits foregone)'],
+              },
+              right: {
+                title: 'NOT relevant',
+                items: ['Sunk costs (already spent)', 'Depreciation (non-cash)', 'Fixed costs that do not change', 'Committed costs'],
+              },
+            },
+          },
+          {
+            h: 'Accepting a special order',
+            p: [
+              'A special order is a one-off request, often below normal selling price. Accept if the contribution is positive (revenue exceeds variable costs) AND spare capacity exists. Fixed costs are usually irrelevant as they are already being paid.',
+            ],
+            example: {
+              title: 'Special order decision',
+              rows: [
+                ['Normal selling price', '£20 per unit'],
+                ['Special order price', '£14 per unit'],
+                ['Variable cost per unit', '£11'],
+                ['Contribution at special price', '£3 per unit (Accept — positive contribution)'],
+                ['Caveat', 'Only if spare capacity exists; beware of cannibalisation'],
+              ],
+            },
+          },
+          {
+            h: 'Make-or-buy decisions',
+            p: [
+              'Should the business make a component internally or buy it from an outside supplier? Compare the relevant (variable) cost of making with the purchase price. If the purchase price is lower than the marginal (variable) cost of making, buy it — unless making uses a scarce resource needed elsewhere.',
+            ],
+            formula: 'Relevant cost of making = Variable cost per unit (exclude fixed costs already committed)·Buy if: Purchase price < Variable cost of making·Also consider: quality, reliability, strategic importance',
+          },
+          {
+            h: 'Limiting factors',
+            p: [
+              'When a resource is in short supply (scarce), the business must decide how to allocate it to maximise profit. Rank products by **contribution per unit of limiting factor** (not by total contribution).',
+            ],
+            example: {
+              title: 'Limiting factor ranking',
+              rows: [
+                ['Product', 'Contribution/unit', 'Machine hrs/unit', 'Contribution per machine hr'],
+                ['A', '£12', '3 hrs', '£4.00'],
+                ['B', '£9', '2 hrs', '£4.50'],
+                ['Ranking', '', '', 'B first (£4.50), then A'],
+              ],
+            },
+          },
+          {
+            h: 'Shut-down decisions',
+            p: [
+              'Should a product line or department be closed? Compare the contribution it makes with the **avoidable** fixed costs. If contribution > avoidable fixed costs, keep it open — even if it appears to be making a loss after shared fixed cost allocation.',
+            ],
+            callout: { kind: 'warning', text: 'Allocated (shared) fixed costs do NOT disappear if a product line closes — they get reallocated. Only avoidable fixed costs are relevant to a shut-down decision.' },
+            examtrap: 'A product showing a net loss may still be worth keeping if it has a positive contribution that covers avoidable fixed costs. The decision is about contribution, not profit after fixed cost allocation.',
+          },
+        ],
+        check: [
+          {
+            q: 'A company has spare capacity. A customer offers £16 per unit for a special order. Variable cost is £13. The fixed overhead absorption rate is £6. Should the company accept?',
+            opts: ['No — selling price is below total cost', 'Yes — contribution of £3 per unit is positive', 'No — contribution is negative', 'Yes — but only if the customer pays upfront'],
+            ans: 1,
+            exp: 'Contribution = £16 − £13 = +£3. With spare capacity, fixed costs are irrelevant (already covered). Accept.',
+          },
+          {
+            q: 'Variable cost of making a component: £8. Purchase price from supplier: £7. There is no spare capacity issue. The correct decision is:',
+            opts: ['Make — always better to keep production in-house', 'Buy — purchase price (£7) is less than variable cost of making (£8)', 'Make — fixed costs need to be covered', 'Cannot decide without knowing the selling price'],
+            ans: 1,
+            exp: 'The relevant cost of making is £8 (variable). Buying at £7 saves £1 per unit. Buy from the supplier.',
+          },
+          {
+            q: 'A product has a contribution of £6 per unit and requires 2 machine hours per unit. Another product has a contribution of £8 per unit and requires 4 machine hours. Machine time is the limiting factor. Which product should be prioritised?',
+            opts: ['Product 2 — higher contribution per unit', 'Product 1 — higher contribution per machine hour (£3 vs £2)', 'Product 2 — higher total contribution', 'Neither — both are equally attractive'],
+            ans: 1,
+            exp: 'With a limiting factor, rank by contribution per unit of the scarce resource. Product 1: £6÷2 = £3/hr. Product 2: £8÷4 = £2/hr. Prioritise Product 1.',
+          },
+          {
+            q: 'Sunk costs are:',
+            opts: ['Future costs that change with the decision', 'Already spent costs that cannot be recovered', 'Costs allocated from shared overheads', 'Variable costs in a special order'],
+            ans: 1,
+            exp: 'Sunk costs are past costs that have already been incurred and cannot be recovered — they are irrelevant to future decisions.',
+          },
+          {
+            q: 'A department has a contribution of £25,000 and is allocated £30,000 of fixed overheads (of which £8,000 are avoidable). Should it close?',
+            opts: ['Yes — it is making a net loss of £5,000', 'No — contribution of £25,000 exceeds £8,000', 'Yes — it does not cover its fixed costs', 'Cannot decide — more information needed'],
+            ans: 1,
+            exp: 'Only avoidable costs are relevant. Contribution £25,000 > avoidable fixed costs £8,000. Closing would reduce profit by £25,000 − £8,000 = £17,000. Keep it open.',
+          },
+        ],
+      },
+      {
+        id: 'L-poc-13',
+        criteria: [],
+        title: 'Marginal vs absorption costing (Level 3 preview)',
+        icon: '⚖️',
+        skills: ['poc-behaviour', 'poc-budget'],
+        cards: [
+          {
+            h: 'Two approaches to product costing',
+            p: [
+              '**Marginal costing** and **absorption costing** are the two main methods for assigning costs to products. They produce the same total profit over the lifetime of a business, but can give different profit figures in a single period when inventory levels change.',
+              'The key difference: how each method treats **fixed production overheads**.',
+            ],
+          },
+          {
+            h: 'Marginal costing',
+            p: [
+              'Under marginal costing, only **variable production costs** are included in the unit cost: direct materials, direct labour, and variable overheads.',
+              '**Fixed production overheads** are treated as a **period cost** — charged in full to the income statement in the period they are incurred, regardless of how many units are produced or sold. Fixed costs never enter inventory under marginal costing.',
+            ],
+            formula: 'Marginal unit cost = Direct materials + Direct labour + Variable overhead·Contribution = Selling price − Marginal cost·Fixed overheads → income statement in full (period cost)',
+          },
+          {
+            h: 'Absorption costing',
+            p: [
+              'Under absorption costing, **all production costs** are absorbed into the unit cost — including fixed production overheads. The fixed overhead absorbed per unit is calculated using the **overhead absorption rate (OAR)**:',
+            ],
+            formula: 'OAR = Budgeted fixed overhead ÷ Budgeted activity level (units or hours)·Absorption unit cost = Variable cost + (OAR × standard hours per unit)·Fixed overheads enter inventory if closing stock > opening stock',
+            example: {
+              title: 'Absorption vs marginal unit cost',
+              rows: [
+                ['Cost element', 'Marginal costing', 'Absorption costing'],
+                ['Direct materials £10', '£10', '£10'],
+                ['Direct labour £8', '£8', '£8'],
+                ['Variable overhead £4', '£4', '£4'],
+                ['Fixed overhead absorbed £6', '—', '£6'],
+                ['Total unit cost', '£22', '£28'],
+              ],
+            },
+          },
+          {
+            h: 'Profit difference between the two methods',
+            p: [
+              'When **closing inventory > opening inventory** (more produced than sold): absorption costing gives a **higher profit** — some fixed overheads are carried forward in inventory rather than charged to the income statement.',
+              'When **closing inventory < opening inventory** (more sold than produced): marginal costing gives a **higher profit** — absorption costing charges more fixed overhead to the income statement (releasing from prior periods\' inventory).',
+              'When **closing = opening inventory**: both methods give **identical profit**.',
+            ],
+            formula: 'Difference in profit = Change in inventory units × Fixed overhead per unit (OAR)',
+          },
+          {
+            h: 'When to use each method',
+            p: [
+              '**Marginal costing** is preferred for short-term decisions: contribution analysis, break-even, special orders, and limiting factor problems. It clearly shows the impact of volume changes without distortion from fixed cost absorption.',
+              '**Absorption costing** is required for **external financial reporting** under UK GAAP (FRS 102) and IFRS — inventory must include a fair share of fixed production overhead. It is also used in standard costing at Level 3.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'Under marginal costing, how are fixed production overheads treated?',
+            opts: ['Included in the unit cost and carried forward in closing inventory', 'Charged in full as a period cost in the income statement', 'Excluded from the income statement entirely', 'Added to the OAR for the next period only'],
+            ans: 1,
+            exp: 'Under marginal costing, fixed production overheads are period costs — charged in full to the income statement when incurred, regardless of production or sales volume. They are never held in inventory.',
+          },
+          {
+            q: 'Under absorption costing, which costs are included in the unit product cost?',
+            opts: ['Variable production costs only', 'Variable production costs plus absorbed fixed production overhead', 'All costs including selling, distribution and administration', 'Direct materials and direct labour only'],
+            ans: 1,
+            exp: 'Absorption costing includes all production costs in the unit cost: direct materials + direct labour + variable overheads + a share of fixed production overhead (calculated using the OAR).',
+          },
+          {
+            q: 'In a period where closing inventory exceeds opening inventory, which costing method gives the higher reported profit?',
+            opts: ['Marginal costing', 'Absorption costing', 'Both give the same profit', 'It depends on the selling price per unit'],
+            ans: 1,
+            exp: 'When closing inventory > opening inventory, absorption costing carries forward some fixed overhead in inventory (not charged to the income statement). This gives a higher profit than marginal costing in that period.',
+          },
+          {
+            q: 'A product has a variable production cost of £18 per unit and absorbed fixed overhead of £6 per unit. Under marginal costing, the inventory value per unit is:',
+            opts: ['£24', '£18', '£6', '£12'],
+            ans: 1,
+            exp: 'Under marginal costing, inventory is valued at variable production cost only: £18 per unit. The £6 fixed overhead is charged as a period cost — it is not included in inventory.',
+          },
+          {
+            q: 'Which financial reporting standard requires absorption costing for inventory valuation?',
+            opts: ['Neither — both methods are acceptable for external reporting', 'Marginal costing only, as it separates fixed costs clearly', 'UK GAAP (FRS 102) and IFRS — inventory must include a share of fixed production overhead', 'Only IFRS — UK GAAP allows marginal costing for listed companies'],
+            ans: 2,
+            exp: 'Both UK GAAP (FRS 102) and IFRS require that inventory includes a fair share of fixed production overhead — i.e. absorption costing. Marginal costing is fine for internal management reports but not for statutory accounts.',
           },
         ],
       },

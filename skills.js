@@ -67,7 +67,7 @@ window.SKILLS = (function () {
 
     /* ── POC — Principles of Costing ── */
     { id: 'poc-inv', topic: 'poc', name: 'Inventory valuation', icon: '📦',
-      hint: 'FIFO issues the OLDEST cost first, so closing inventory carries the newest prices. AVCO recalculates a weighted average after every receipt. LIFO is not permitted under IFRS or UK GAAP.',
+      hint: 'FIFO issues the OLDEST cost first, so closing inventory carries the newest prices. LIFO issues the newest first, leaving the oldest prices in stock. AVCO recalculates a weighted average after every receipt. LIFO is examined for internal use only — it is not permitted under IFRS or UK GAAP.',
       formula: 'AVCO rate = total cost of inventory ÷ total units, recalculated after each purchase',
       match: [/fifo|avco|lifo|inventory|issue.*units|closing stock/i] },
     { id: 'poc-labour', topic: 'poc', name: 'Labour costs', icon: '🛠️',
@@ -86,9 +86,21 @@ window.SKILLS = (function () {
       hint: 'A cost centre incurs costs only; a profit centre also earns revenue; an investment centre additionally controls capital spending. Codes simply route each cost to the right centre.',
       formula: null,
       match: [/cod(e|ing)|cost centre|profit centre|investment centre|revenue centre|responsibility/i] },
+    { id: 'poc-product', topic: 'poc', name: 'Product cost & the manufacturing account', icon: '🏗️',
+      hint: 'Build the cost upwards in named layers: direct cost, then manufacturing cost, then cost of goods manufactured, then cost of goods sold. Each layer adds one thing and each has a name the marker is looking for.',
+      formula: 'Direct cost = materials + labour + direct expenses · Manufacturing cost = direct cost + production overhead · Cost of goods manufactured = manufacturing cost + opening WIP − closing WIP · Cost of goods sold = cost of goods manufactured + opening finished goods − closing finished goods',
+      match: [/manufacturing account|cost of goods manufactured|cost of goods sold|prime cost|direct cost|work in progress|\bwip\b|service organisation/i] },
+    { id: 'poc-systems', topic: 'poc', name: 'Costing systems & information sources', icon: '🗂️',
+      hint: 'Financial accounting reports history to outsiders in one total; costing analyses the same transactions for insiders, using actual or budgeted figures, at whatever level of detail a decision needs.',
+      formula: null,
+      match: [/financial accounting system|costing system|historic cost|source of information|budgeted cost.*planning|planning and control/i] },
+    { id: 'poc-ss', topic: 'poc', name: 'Spreadsheets for cost calculations', icon: '📐',
+      hint: 'Reference cells, never retype numbers. =SUM(B2:B10) for a range with a colon, no commas, no spaces, and no brackets around a single cell.',
+      formula: '=SUM(B2:B10) · =B2+C2 · =B2-C2 · =B2*C2 · =B2/C2',
+      match: [/spreadsheet|=sum|cell reference|format.*cell|formula bar|thousand separator/i] },
     { id: 'poc-behaviour', topic: 'poc', name: 'Cost classification & behaviour', icon: '🧱',
       hint: 'Test the cost against activity: fixed stays the same in total, variable moves in direct proportion, stepped jumps at capacity points, semi-variable mixes both. Direct costs trace to the product; indirect costs are overheads.',
-      formula: 'Semi-variable: total = fixed element + (variable per unit × units) — use the high-low method to split',
+      formula: 'Total cost = fixed element + (variable per unit × units) · Fixed cost per unit = fixed total ÷ units, so it falls as output rises',
       match: [/.*/] },
 
     /* ── BESY — The Business Environment ── */
