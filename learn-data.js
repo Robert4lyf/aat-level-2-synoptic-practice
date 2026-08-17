@@ -2115,6 +2115,9 @@ window.LEARN_PATH = [
             p: [
               'Introduction to Bookkeeping showed you how entries should be made. This unit is about what happens when they are not — because people transpose digits, post to the wrong account, record something twice, or miss it altogether.',
               'A **control** is any routine designed to prevent an error, or to catch one that has already happened. Controls do not assume dishonesty; they assume fallibility.',
+              'Notice that none of those failures requires dishonesty. A clerk typing £5,940 as £5,490 has made an ordinary human slip, and the entry looks perfectly plausible in the ledger afterwards. That is what makes bookkeeping errors dangerous: they leave no trace of their own making.',
+              'Volume makes it worse. A business processing four hundred purchase invoices a month will make mistakes on some of them no matter how careful the staff are, simply because the error rate is never zero. A system that assumes perfection will fail; a system that assumes a small, steady rate of error can be designed to catch it.',
+              'So this unit takes a different starting point from Introduction to Bookkeeping. There, the question was "what is the correct entry?" Here it is "how do we find out that an entry was not correct, and what do we do about it?"',
             ],
           },
           {
@@ -2123,6 +2126,9 @@ window.LEARN_PATH = [
               '**Control accounts** — a single general ledger account holding the total of many individual accounts, checked against the sum of those individual accounts.',
               '**Reconciliations** — comparing the business\'s own record against an independent one, most commonly the bank statement.',
               '**The journal** — a formal, documented way of making entries that do not arise from a day book, including corrections.',
+              'Those three cover the assessment, but it is worth seeing what they have in common. Each one produces a figure that can be compared against a figure produced some other way, and each one leaves a documented trail of what was compared and when.',
+              'The trail matters as much as the comparison. A reconciliation done in someone’s head is not a control, because nobody else can check it and nothing survives if that person leaves. A control that is not evidenced is, for practical purposes, a control that did not happen.',
+              'In a real finance function these three sit inside a monthly routine: reconcile the control accounts, reconcile the bank, journal the corrections, then extract the trial balance. Everything in this unit is a piece of that routine.',
             ],
             callout: { kind: 'key', text: 'Every control works the same way: build a figure by two independent routes, then compare them. If they agree, both are probably right.' },
           },
@@ -2132,6 +2138,9 @@ window.LEARN_PATH = [
               'Controls do three different jobs, and a system needs all three. Preventive controls stop an error happening, detective controls find it afterwards, and corrective controls put it right.',
               'No preventive control is perfect, which is why detection matters — and detection is worthless without a correction routine, which is where journals and suspense accounts come in.',
               'When an assessment asks you to "identify a control", say **what it prevents or detects**, not just what it is. That is where the mark sits.',
+              'The three types are not interchangeable, and choosing between them is a cost question. Preventive controls are usually the cheapest overall, because an error that never happens costs nothing to fix — but they slow work down, and every authorisation limit is a queue.',
+              'Detective controls are cheaper to run but more expensive per error, because by the time they fire the wrong figure may already have been reported, paid or filed. Corrective controls are the most expensive of all, which is why a business that relies on them is badly run rather than merely unlucky.',
+              'A well-designed system therefore weights towards prevention and uses detection to catch what prevention misses. The classic exam framing is a business that has strong reconciliations but no authorisation limits: it will find its errors reliably, and always after the money has gone.',
             ],
             split: {
               left: { title: 'Preventive controls', items: [
@@ -2154,6 +2163,9 @@ window.LEARN_PATH = [
               'The most important preventive control is splitting a task so that **no single person can both cause an error and hide it**.',
               'The person who authorises a payment should not be the person who sets up the supplier. The person who banks the cash should not be the person who records it.',
               'Segregation does not stop a determined pair of colleagues colluding — but it converts a one-person problem into a two-person conspiracy, which is far rarer and far easier to detect.',
+              'The four duties conventionally kept apart are **authorising** a transaction, **executing** it, **recording** it, and holding **custody** of the related asset. Any one person holding two of those four has an opportunity that the system did not intend to give them.',
+              'Small businesses genuinely cannot achieve full segregation — a sole trader with one bookkeeper has nobody to segregate from. The answer is not to pretend otherwise but to substitute **compensating controls**: the owner reviews the bank statement personally, signs every cheque, and looks at the supplier list each month.',
+              'When an assessment describes a small business and asks what control to recommend, the marks are for a control that is realistic at that size. Recommending a three-person authorisation chain in a firm of four people does not earn them.',
             ],
             examtrap: 'Segregation of duties usually needs **more** staff, not fewer. Answers claiming it saves money are wrong.',
           },
@@ -2163,6 +2175,9 @@ window.LEARN_PATH = [
               'The trial balance is a detective control, but a weak one. It proves only that total debits equal total credits.',
               'It will catch a one-sided entry, or a transposition on one side only.',
               'It will **not** catch a transaction omitted entirely, posted to the wrong account of the right type, entered twice, or recorded at the wrong amount on both sides.',
+              'It is worth being precise about why. The trial balance tests one property of the ledger — that the debit total equals the credit total — and there are many ways to be wrong while preserving that property.',
+              'Post £400 of motor expenses to the motor vehicles account and both totals are unaffected, because a debit is still a debit. Omit a purchase invoice altogether and both sides lose the same amount. Enter £270 instead of £720 on both sides and the equality survives, because the same wrong figure appears twice.',
+              'Those three cases — commission or principle, omission, and original entry — are exactly the errors that need a second, independent control to find them. The trial balance is where you start looking, not where you finish.',
             ],
             callout: { kind: 'warning', text: 'An agreeing trial balance is not proof the books are right. That gap is exactly why this unit exists.' },
           },
@@ -2203,6 +2218,9 @@ window.LEARN_PATH = [
               'A business with 300 credit customers has 300 accounts in the sales ledger. Putting all 300 into the trial balance would be unmanageable.',
               'Instead, the general ledger holds **one** account — the **sales ledger control account (SLCA)** — carrying the total owed by all customers. That single figure goes into the trial balance.',
               'The same applies to suppliers, via the **purchases ledger control account (PLCA)**.',
+              'There is a second reason beyond manageability, and it is the more important one. Splitting the record in two gives you two independently maintained versions of the same total, which is what makes checking possible at all.',
+              'The individual customer accounts live in the **sales ledger**, sometimes called the receivables ledger or the memorandum ledger. "Memorandum" signals that it is not part of the double entry: no trial balance ever contains three hundred customer accounts, and posting to a customer account does not itself require a matching credit.',
+              'What goes into the trial balance is the single control account balance. So the ledger stays compact, the detail stays available for chasing individual customers, and the two can be compared. All three benefits come from the same design.',
             ],
           },
           {
@@ -2211,6 +2229,9 @@ window.LEARN_PATH = [
               'The control account is built from **day book totals**: total credit sales, total receipts, total returns.',
               'The individual customer accounts are built from **individual transactions**, one customer at a time.',
               'Because the two are built by genuinely different routes, agreement between them is real evidence. That is the whole point.',
+              'The word "genuinely" is doing real work in that sentence. If both figures were built from the same source, agreement would prove nothing — it would only prove you had added the same numbers twice.',
+              'The control account is fed from the **totals** columns of the day books and the cash book. The individual accounts are fed from the **individual lines** of the same documents. A clerk who mis-keys one invoice line will affect one customer account without affecting the day book total, so the two figures part company and the difference is visible.',
+              'That is also why the two can agree while both are wrong in the same way. An invoice never entered in the day book at all appears in neither route, so the control account and the list of balances agree perfectly and both understate what customers owe. Reconciliation catches posting errors, not missing paperwork.',
             ],
             flow: ['Day book totals', 'Control account', 'compare', 'List of individual balances'],
           },
@@ -2220,6 +2241,8 @@ window.LEARN_PATH = [
               'Every item here is something that changes what customers owe **in total**. If it does not change the total owed by customers, it does not belong in this account.',
               'Sort each item by asking whether it increases or decreases the debt. Increases go on the debit side, decreases on the credit side — the same rule as any other asset account.',
               'The two most-missed credit items are the **contra** with the PLCA and a **dishonoured cheque**, which goes the other way and increases the debt again.',
+              'A useful discipline is to ask, for each item, whether it makes customers owe **more** or **less**. More means a debit, because the control account is an asset. Less means a credit. That single question handles every item without memorising a list.',
+              'Credit sales make customers owe more, so they are debited. Receipts, sales returns, discounts allowed, irrecoverable debts written off and contra entries all reduce what customers owe, so all five are credited.',
             ],
             example: {
               title: 'Sales ledger control account',
@@ -2239,6 +2262,9 @@ window.LEARN_PATH = [
             p: [
               'The purchases ledger control account works the same way with the sides reversed, because it records a **liability** rather than an asset.',
               'Credit purchases and the opening balance sit on the **credit** side. Payments to suppliers, purchases returns, discounts received and contras sit on the **debit** side.',
+              'Being a liability, the PLCA behaves the opposite way round. Credit purchases increase what the business owes, so they are **credited**. Payments to suppliers, purchases returns, discounts received and contras all reduce the debt, so they are **debited**.',
+              'Its normal balance is therefore a credit brought down, sitting in the credit column of the trial balance. A debit balance on the PLCA is unusual but possible — it means the business has overpaid a supplier or has returned more than it bought in the period.',
+              'A **contra entry** deserves a mention because it appears in both accounts at once. When a business both sells to and buys from the same firm, the two balances can be offset against each other: credit the SLCA and debit the PLCA with the same amount, and only the net difference is settled in cash.',
             ],
             callout: { kind: 'tip', text: 'If you can build the SLCA, you can build the PLCA — flip every side. The SLCA is an asset; the PLCA is a liability.' },
           },
@@ -2271,6 +2297,9 @@ window.LEARN_PATH = [
             p: [
               'A difference tells you an error exists and roughly where to look. Work out **which side** is wrong before writing any journal.',
               'If the individual accounts are right and the control account is wrong, the correction is a journal in the general ledger. If the control account is right, the individual account is amended instead — and no journal is needed, because the sales ledger sits outside the double entry.',
+              'It helps to sort the possible causes by where the mistake was made, because that determines which figure you adjust.',
+              'Errors in the **control account** — a day book total added up wrongly, a total posted to the wrong side, a figure transposed on the way in — mean the control account balance is wrong and the list of balances is right. Errors in the **memorandum ledger** — an invoice posted to the wrong customer, a balance omitted from the list, an individual entry mis-keyed — mean the opposite.',
+              'Some causes affect neither figure directly and simply need adding to the reconciliation, such as a credit balance on a customer account that has been listed as a debit. Working out which of the three categories a difference falls into is most of the work in a reconciliation question.',
             ],
             examtrap: 'A credit balance on the SLCA is not automatically an error. It usually means a customer has overpaid or holds a credit note — genuinely possible, and often tested.',
           },
@@ -2314,6 +2343,10 @@ window.LEARN_PATH = [
             p: [
               'Errors split into those the trial balance **will** reveal and those it will not. Getting this distinction right is worth more marks than anything else in this unit.',
               'The test is simple: does the error leave total debits equal to total credits? If yes, the trial balance stays silent.',
+              'The split matters because it decides what you have to do about the error. If the trial balance still balances, there is no suspense account, no difference to explain, and the correcting journal has a debit and a credit of equal amount in two real accounts.',
+              'If the trial balance does not balance, a suspense account has been opened for the difference, and the correcting journal will have one leg in suspense. That single structural difference is worth more marks across a POBC assessment than any other single idea.',
+              'So the first question to ask about any described error is never "what is the journal?" but "does this leave the trial balance in balance?" The journal follows from the answer.',
+              'The two families also differ in how they are found. Errors that break the trial balance announce themselves immediately, because the columns do not agree. Errors that preserve it have to be hunted, and the reconciliations in this unit are the hunting equipment.',
             ],
           },
           {
@@ -2322,6 +2355,7 @@ window.LEARN_PATH = [
               'Every error below leaves total debits equal to total credits, which is precisely why the trial balance cannot see them. Something was posted — just not the right something.',
               'That makes them the dangerous family: the accounts *look* correct. Only a reconciliation, a supplier statement or a physical check will bring them out.',
               'Learn the six as a set — omission, commission, principle, compensating, original entry, reversal — because the exam asks you to name the type, not just spot the mistake.',
+              'Learn the six by name, because assessment questions name them. Asked to classify an error, an answer of "a posting error" earns nothing where "an error of principle" earns the mark.',
             ],
             table: {
               headers: ['Error', 'What happened', 'Example'],
@@ -2341,6 +2375,8 @@ window.LEARN_PATH = [
               'These two are confused more often than any other pair, and assessments exploit that.',
               'Ask one question: **was it posted to the right *type* of account?** Right type but wrong individual account is commission. Wrong type altogether is principle.',
               'Commission stays inside one class — one receivable instead of another. Principle crosses classes — an asset recorded as an expense.',
+              'The test is whether the wrong account is of the **same type** as the right one. Same type is commission; different type is principle. Motor expenses posted to insurance is commission, because both are expenses. Motor expenses posted to motor vehicles is principle, because an expense has been treated as an asset.',
+              'Principle errors matter more in practice, because they misstate profit and the statement of financial position, not just the analysis within them. Capitalising a repair overstates both assets and profit, which is why auditors look for it.',
             ],
             split: {
               left: { title: 'Error of commission', items: [
@@ -2366,6 +2402,9 @@ window.LEARN_PATH = [
               '**Transposition on one side only** — £540 posted as £450 on the debit side but correctly on the credit side.',
               '**Two debits or two credits** — both halves posted to the same side.',
               '**Casting error** — a column added up incorrectly.',
+              'What unites all of these is that the debit total and the credit total are no longer equal, which is the only thing the trial balance can detect. Something has been entered on one side and not the other, or entered on one side twice.',
+              'Two arithmetical signatures are worth knowing because they save time. A difference divisible by nine usually means a **transposition** — £5,940 entered as £5,490 gives a difference of £450, and 450 ÷ 9 = 50. A difference exactly equal to twice a figure in the ledger usually means an entry posted to the **wrong side**, because the account has moved by two times the amount instead of not at all.',
+              'A difference exactly equal to a figure in the ledger points at a genuinely **one-sided** entry, and a difference in a round number of pounds or a power of ten often points at a **casting** error in adding a column.',
             ],
           },
           {
@@ -2434,6 +2473,9 @@ window.LEARN_PATH = [
               'Most entries reach the ledgers through a day book — sales, purchases, returns, cash. The **journal** handles everything else.',
               'It is the book of prime entry for transactions that are **not routine**: corrections of errors, opening balances, year-end adjustments, writing off irrecoverable debts, payroll, and the disposal of assets.',
               'Every journal entry is dated, shows the accounts to be debited and credited, and carries a **narrative** explaining why.',
+              'Every other book of prime entry has a natural source document. The sales day book comes from invoices issued, the purchases day book from invoices received, the cash book from bank entries. The journal exists for the entries that have no such document.',
+              'That includes opening entries when a business first sets up its ledgers, corrections of errors, irrecoverable debts written off, payroll, transfers between accounts, and year-end adjustments. What they share is that somebody has to **decide** the entry rather than copy it off a document.',
+              'Because there is no document behind it, the journal has to supply its own evidence. That is why every journal carries a date, a narrative explaining the reason, and — in a real business — the initials of whoever authorised it. Without those, an unexplained entry sits in the ledger permanently.',
             ],
           },
           {
@@ -2441,6 +2483,9 @@ window.LEARN_PATH = [
             p: [
               'A journal has a fixed shape, and marks are given for using it: date, the account debited first, the account credited underneath, the two amounts in separate columns, then a narrative.',
               'The **narrative** is not decoration. It is the audit trail explaining why a non-routine entry was made, and an assessment that asks for a journal usually expects one.',
+              'The convention is to write the debit line first and the credit line second, with the account names in the left column and the amounts in a debit column and a credit column. Multi-line journals are allowed, and payroll journals routinely run to five or six lines.',
+              'Whatever the number of lines, the debit total must equal the credit total. A journal that does not balance cannot be posted, and if one is somehow posted the trial balance will disagree by the difference.',
+              'The narrative should say **why**, not what. "Dr Motor expenses, Cr Motor vehicles" is already visible from the entry; "correction of repair invoice 4412 wrongly capitalised" is the information a reviewer actually needs six months later.',
             ],
             example: {
               title: 'Journal entry',
@@ -2461,6 +2506,9 @@ window.LEARN_PATH = [
               '**2. What should have been posted?** Write out the correct entry.',
               '**3. What journal moves you from one to the other?** That difference is your answer.',
               'Do not try to leap straight to the correcting journal. Writing out both entries takes ten seconds and prevents almost every mistake.',
+              'The reason the three-move method works is that it never asks you to guess the correcting entry. You derive it, from two entries you can each write down with confidence.',
+              'The first move is factual: write out what **was** posted, exactly as it appears in the ledger, wrong account and all. The second is also factual: write out what **should have been** posted. Only the third move involves any thought, and even then it is subtraction rather than insight.',
+              'Where the same account appears in both, net the two. Where an account appears in only one, it carries straight through. Students who try to jump to the answer get reversal errors wrong roughly half the time; students who write out the two entries almost never do.',
             ],
           },
           {
@@ -2493,6 +2541,9 @@ window.LEARN_PATH = [
               'If the debit and credit were posted the wrong way round, the correcting journal must be for **twice** the original amount.',
               'One times the amount only cancels the wrong entry, leaving nothing recorded. The second cancels it again in the right direction.',
               'A £300 reversal therefore needs a £600 journal.',
+              'The arithmetic is worth doing once slowly. Suppose a receipt of £300 from a customer was posted as Dr sales ledger control, Cr bank, when it should have been Dr bank, Cr sales ledger control.',
+              'The bank account should be £300 higher than it started; instead it is £300 lower. The gap is £600, not £300. The correcting journal is therefore Dr bank £600, Cr sales ledger control £600 — twice the original figure, in the direction that should have been used in the first place.',
+              'The same doubling applies to any entry posted the right amount on the wrong sides, which is why the examiner likes it. If your correcting journal for a reversal uses the original amount, you have corrected half the error and left the other half in the books.',
             ],
             examtrap: 'Reversal corrections at double the amount are one of the most reliably missed marks in this unit. If a question says the entries were reversed, double it.',
           },
@@ -2538,6 +2589,9 @@ window.LEARN_PATH = [
               'When the trial balance does not agree, the difference is parked in a **suspense account** so work can continue while the errors are found.',
               'The suspense balance goes on **whichever side is smaller**, to force the trial balance to agree. If debits total £50,000 and credits total £49,800, suspense opens with a £200 **credit**.',
               'Suspense is always temporary. It must be cleared to nil before the financial statements are prepared.',
+              'It is worth being clear about what the suspense account is not. It is not a real account in the sense that bank or purchases are real: no transaction ever happened in it, and no asset or liability corresponds to it.',
+              'It exists for one purpose — to let the trial balance be completed and work to continue while an unexplained difference is investigated. Without it, an out-of-balance trial balance would block the whole accounting cycle over a difference that might turn out to be £4.',
+              'Its side follows mechanically from the difference. If the debit column is short, suspense is a debit; if the credit column is short, suspense is a credit. You never choose the side, you calculate it.',
             ],
           },
           {
@@ -2545,11 +2599,20 @@ window.LEARN_PATH = [
             p: [
               'To correct an error, write down two things. **WAS**: what was actually posted. **SHOULD HAVE BEEN**: what the correct entry looks like.',
               'The correcting journal is whatever turns WAS into SHOULD HAVE BEEN. If one side of the original entry was missing or wrong, suspense fills the gap.',
+              'The method is the same three moves you met for errors that do not affect the trial balance, with one addition: because the original entry was incomplete or one-sided, one leg of the correction lands in suspense.',
+              'Take a purchase of £480 debited to purchases but never credited to the purchases ledger control account. What **was** posted: Dr purchases £480 only. What **should have been** posted: Dr purchases £480, Cr purchases ledger control £480. The difference is a single missing credit of £480, so the journal is Dr suspense £480, Cr purchases ledger control £480.',
+              'Suspense picks up the missing leg because that is where the difference was parked when the trial balance was extracted. Clearing the entry and clearing suspense are the same action.',
+              'A final refinement: where the same account appears on the same side in both entries, it cancels and does not appear in the correcting journal. That is why a well-derived correction usually touches fewer accounts than the original error did.',
             ],
           },
           {
             h: 'Worked example',
-            p: ['Rent of £450 was paid. The bank was credited £450 correctly, but the rent account was debited £540.'],
+            p: ['Rent of £450 was paid. The bank was credited £450 correctly, but the rent account was debited £540.',
+              'Work through it slowly and watch which figures are given and which are derived. The amount in suspense is never something you decide; it is whatever the trial balance difference was, and each journal takes a slice out of it until nothing is left.',
+              'A useful check is to keep a running note of the suspense balance as you post each correcting journal. If the last journal leaves suspense at exactly nil, every error has been found. If it leaves a residue, there is at least one more error you have not yet identified.',
+              'Two habits make these questions reliable. Deal with one error at a time, finishing its journal before reading the next. And write down the suspense balance after each journal, so the running figure tells you whether you are on track.',
+              'If the final suspense balance is not nil, resist the temptation to plug it. Go back and check whether one of your journals has hit suspense on the wrong side, which doubles the residue rather than reducing it.',
+            ],
             example: {
               title: 'Correcting a one-sided transposition',
               rows: [
@@ -2566,12 +2629,21 @@ window.LEARN_PATH = [
             p: [
               'Every correcting journal should carry a short **narrative** explaining why it exists — for example, "Correction of transposition error in rent account".',
               'Remember: only errors that caused a one-sided difference go through suspense. A reversal or commission error is corrected by journal **without** touching suspense.',
+              'The reason is partly professional and partly practical. A suspense entry is by definition unexplained, so a journal that clears one without a narrative replaces one mystery with another.',
+              'A good narrative names the source: "invoice 2214 from Redwood Ltd omitted from the purchases ledger" tells a reviewer where to look. A bad one — "correction", "adjustment", "to balance" — tells them nothing and is the kind of entry an auditor will pull first.',
+              'In an assessment, written tasks often ask you to explain the reason for a journal in a sentence. Naming the error type and the document involved is what earns the marks; restating the debits and credits does not.',
+              'In a computerised ledger the narrative is often the only searchable field, so it is what a colleague uses to find the entry months later. Treat it as the entry’s explanation to a future reader rather than as a formality.',
+              'A workable template: what happened, which document, and what the correction does. "Invoice 4412 from Ashfield Ltd posted to insurance in error; transferred to motor expenses" satisfies all three in a single line.',
             ],
           },
           {
             h: 'Suspense is always temporary',
             p: [
               'A remaining suspense balance at the year end signals unresolved errors that must be found.',
+              'A suspense balance that survives into the financial statements is a signal that something is unexplained, and it has to go somewhere — usually written off to profit or loss, which means an unexplained figure has been allowed to affect reported profit.',
+              'That is why a business carrying a suspense balance from one period to the next is telling every reader of its accounts that its bookkeeping is not under control. Auditors treat a live suspense account as a red flag, not a rounding matter.',
+              'In an assessment, if your redrafted trial balance still contains suspense, you have not finished. Either an error remains unfound, or one of your correcting journals has been posted to one side only.',
+              'One nuance worth knowing: a suspense balance genuinely too small to investigate is written off to profit or loss on grounds of materiality, but that is a documented decision taken deliberately, not a way of tidying up a difference nobody understood.',
             ],
             callout: {
               kind: 'key',
@@ -2625,6 +2697,10 @@ window.LEARN_PATH = [
               '**Gross pay** is what an employee earns. **Net pay** is what lands in their bank account after deductions.',
               'The main deductions are **income tax (PAYE)**, **employee National Insurance contributions (NIC)**, and often **employee pension contributions**.',
               'The employer deducts these at source and pays them over on the employee\'s behalf — so until paid, they are **liabilities**.',
+              'Gross pay is what the employee has earned. Net pay is what actually reaches their bank account. Everything between the two is money the employer takes out of the employee’s pay and hands to somebody else.',
+              'Those deductions fall into two groups. **Statutory** deductions are required by law — income tax under PAYE, and the employee’s Class 1 National Insurance contribution. **Voluntary** deductions are ones the employee has agreed to, such as pension contributions, trade union subscriptions or charitable giving under Give As You Earn.',
+              'The key bookkeeping insight is that none of the deductions is an expense of the business. They are amounts the employer is holding on someone else’s behalf, so each one is a **liability** until it is paid over. The expense to the business is the gross pay, not the net.',
+              'A useful way to see it: the employee’s deductions never leave the employer’s hands as an expense — they arrive as gross pay and leave as payments to HMRC, the pension provider or a union. The employer is a conduit.',
             ],
           },
           {
@@ -2633,11 +2709,20 @@ window.LEARN_PATH = [
               'On top of gross pay, the employer must pay **employer\'s NIC** and usually **employer pension contributions**.',
               'These are an **extra cost** to the business — they never come out of the employee\'s pay.',
               'Total payroll cost = gross pay + employer\'s NIC + employer pension contributions.',
+              'On top of gross pay the employer owes its own contributions, and these are genuine additional costs rather than deductions from anybody. The main one is **employer’s Class 1 secondary National Insurance**, charged on the employee’s earnings above a threshold.',
+              'Employer pension contributions work the same way. Under auto-enrolment an employer must contribute to a qualifying scheme for eligible staff, and that contribution is a cost of employing them, not a deduction from their pay.',
+              'So a job advertised at £30,000 costs the business meaningfully more than £30,000. Getting this distinction right is the single most common source of marks in a payroll task: the exam will give you both the employee’s and the employer’s National Insurance and see whether you know which is which.',
+              'There is also the **Apprenticeship Levy** for large employers and, for many businesses, the Employment Allowance which reduces the employer’s National Insurance bill. Neither is examined in detail here, but both are employer costs rather than employee deductions.',
             ],
           },
           {
             h: 'A payroll calculation',
-            p: ['Meet Priya. Her gross pay this month is £2,000.'],
+            p: ['Meet Priya. Her gross pay this month is £2,000.',
+              'Work down the figures in order and label each one as you go, because the numbers look similar and the two National Insurance figures are easy to swap.',
+              'Start from gross pay. Subtract the employee’s deductions one at a time to reach net pay — that is the payment the employee receives. Then, separately, add the employer’s contributions to gross pay to reach the total cost to the business. The two answers come from the same starting figure but move in opposite directions.',
+              'One further habit is worth building: label every figure in the question before you use any of it. Payroll tasks deliberately give you more numbers than you need, and the two National Insurance figures look almost identical on the page.',
+              'The final answer is almost always two figures, not one: the net pay the employee receives, and the total cost to the business. A response giving only one of them has answered half the question.',
+            ],
             example: {
               title: 'Priya\'s payslip and the true cost',
               rows: [
@@ -2658,12 +2743,20 @@ window.LEARN_PATH = [
               'Payroll runs through a **wages control account** to keep the entries tidy and checkable.',
               'The total cost is debited to the wages expense account and credited to wages control. Then wages control is debited as each amount is paid out: net pay to employees, PAYE and NIC to **HMRC**, and contributions to the pension provider.',
               'When every liability has been settled, the wages control account balance returns to nil — that is the check working.',
+              'The wages control account exists for the same reason as the sales and purchases ledger control accounts: it collects everything to do with one relationship in a single place so that it can be proved to clear.',
+              'Everything to do with the payroll passes through it. The gross pay and the employer’s contributions go in as the charge; the net payment to employees and the payments to HMRC and the pension provider go out as settlements.',
+              'When every element of the payroll has been paid over, the account clears to nil. A residual balance means something has been charged but not yet paid — normally the PAYE and National Insurance due to HMRC by the 22nd of the following month, which is a perfectly proper liability to be carrying.',
             ],
           },
           {
             h: 'Payroll formulas',
             p: [
               'Two formulas capture the full payroll picture.',
+              'Both formulas start from gross pay, and that is the point worth holding on to. Gross pay is the pivot: subtract employee deductions to get what the employee receives, add employer contributions to get what the business spends.',
+              'Nothing appears in both directions. Employee National Insurance only ever reduces net pay; employer National Insurance only ever increases total cost. If a figure has crept into both of your calculations, you have used the same number twice.',
+              'A quick sanity check: the total cost to the business must always exceed gross pay, and net pay must always be less than gross pay. If either of those is untrue, a deduction and a contribution have been swapped.',
+              'Both formulas can be checked against the wages control account, which is a third way of saying the same thing: everything charged in must equal everything paid out, and the account clears to nil once it has.',
+              'That is worth doing on any payroll question you are unsure about. If the control account will not clear, one figure has been used twice or omitted, and the check finds it before the marks are lost.',
             ],
             formula: 'Net pay = Gross − PAYE − Employee NIC − Employee pension · Total employer cost = Gross + Employer NIC + Employer pension',
           },
@@ -2717,6 +2810,9 @@ window.LEARN_PATH = [
               '**Original entry** — the wrong amount is entered in both accounts (e.g. £290 instead of £920).',
               '**Reversal of entries** — the correct accounts are used but debit and credit are swapped.',
               '**Compensating** — two separate errors cancel each other out.',
+              'These six share one property that makes them dangerous: every one leaves the trial balance in balance. The debit total still equals the credit total, so the ordinary arithmetical check passes and nothing signals that anything is wrong.',
+              'That is why they have to be found some other way — by reconciling the control accounts against the memorandum ledgers, by reconciling the bank, by reviewing the ledger for entries that look out of character, or by someone noticing that a supplier statement does not match.',
+              'When a question describes an error, name the type before writing any journal. The name tells you whether suspense is involved, and getting that wrong costs the whole entry rather than half of it.',
             ],
           },
           {
@@ -2724,6 +2820,9 @@ window.LEARN_PATH = [
             p: [
               'The dividing line is whether debits still equal credits after the mistake. If they do, the trial balance stays silent and no suspense account arises.',
               'That matters practically: only the errors in the right-hand column will ever be caught by the trial balance, so the others need a different control — a reconciliation or a physical check — to surface them.',
+              'The rule behind the split is simple enough to derive rather than memorise. If the error left a debit and an equal credit somewhere in the ledger, the trial balance still balances. If it left an unmatched amount, it does not.',
+              'So all six named error types preserve balance, because each involves a complete double entry that happens to be wrong. Single-sided entries, entries posted twice on one side, casting errors in adding a column, and transpositions on one side only all break it, because in each case one side has moved and the other has not.',
+              'The practical consequence is the one worth remembering. If an error preserved the balance, there was no suspense account, so no correcting journal for it can touch suspense — and an answer that puts one there is wrong regardless of the amounts.',
             ],
             split: {
               left: { title: 'Do NOT affect TB', items: ['Omission', 'Commission', 'Principle', 'Original entry', 'Reversal', 'Compensating'] },
@@ -2736,6 +2835,10 @@ window.LEARN_PATH = [
               'When the trial balance does not balance, the difference is placed in a **suspense account** — a temporary holding account.',
               'Journal entries are made to correct errors; each correction also removes the entry from suspense.',
               'Once all errors are corrected the suspense account balance is nil.',
+              'Two things decide how a correcting journal is structured, and both are settled by the question you have just asked. Was the trial balance in balance? If yes, both legs of the journal go to real accounts. If no, one leg goes to suspense.',
+              'The amount in suspense is the trial balance difference, and it is given to you rather than calculated. Each correcting journal takes a slice out of it, and when the last error has been corrected the suspense balance is nil.',
+              'A residual suspense balance after all the given errors have been journalled is a message: there is at least one further error that has not been described to you. Some assessment tasks are built precisely to test whether you notice.',
+              'It is also worth remembering what suspense is not: it is not a real account, no transaction ever occurred in it, and nothing in the business corresponds to its balance. It is a placeholder for ignorance.',
             ],
             callout: { kind: 'tip', text: 'A suspense account is not a real balance-sheet item. If it still has a balance at year-end, there is an error still to find.' },
           },
@@ -2744,6 +2847,10 @@ window.LEARN_PATH = [
             p: [
               'A journal has: **date**, **account to debit**, **account to credit**, **amount**, and a **narrative** explaining the correction.',
               'Always think: what was originally posted? What should have been posted? The journal is the difference.',
+              'The mechanics never change: debit line first, credit line second, equal totals, and a narrative that explains the reason rather than restating the entry.',
+              'What does change is where each leg goes, and that is decided by the WAS and SHOULD HAVE BEEN comparison rather than by intuition. Write those two entries out even when the answer feels obvious — reversal errors in particular punish anyone who skips the step.',
+              'One further habit: check the journal balances before you post it. A journal whose columns do not agree cannot be right, and the check costs a few seconds against the cost of an unbalanced ledger.',
+              'For multi-line journals — payroll being the obvious case — total both columns explicitly rather than trusting that the lines look plausible. Six-line journals are where an omitted credit hides most easily.',
             ],
             example: {
               title: 'Correcting a reversal error',
@@ -2761,6 +2868,8 @@ window.LEARN_PATH = [
             p: [
               'This sequence works for every correction, including the ones that look unfamiliar. Never try to write the correcting journal straight from the description of the error.',
               'One case needs care: a **reversal**, where the entry went in the right accounts but on the wrong sides. Correcting it takes **double** the original amount — once to cancel the wrong entry and once to make the right one.',
+              'One refinement is worth adding. Where the same account appears in both the WAS and the SHOULD HAVE BEEN entry, on the same side and for the same amount, it cancels out and does not appear in the correcting journal at all.',
+              'That is why correcting an error of commission touches only two accounts and never the one that was right. A repair invoice posted to insurance instead of motor expenses needs Dr motor expenses, Cr insurance — the purchases ledger control account leg was correct both times, so it is left alone.',
             ],
             formula: 'Step 1: Identify what was posted · Step 2: Identify what should have been posted · Step 3: Journal the difference to move from wrong to right',
             callout: { kind: 'key', text: '**Key:** To reverse a wrong debit, credit the same account for the same amount. Then post the correct entry. Alternatively, use a single net journal that achieves both steps at once.' },
@@ -2813,6 +2922,11 @@ window.LEARN_PATH = [
               '**Employee deductions**: PAYE income tax, employee National Insurance (NIC), employee pension contributions.',
               '**Net pay** = gross pay minus all employee deductions.',
               '**Employer costs**: employer NIC and employer pension are additional costs ABOVE gross pay.',
+              'It helps to sort the components by who ultimately receives the money, because that decides how each one is treated in the books.',
+              'The **employee** receives net pay. **HMRC** receives the income tax deducted under PAYE plus both National Insurance contributions, the employee’s and the employer’s. The **pension provider** receives both pension contributions. Other third parties receive any voluntary deductions such as union subscriptions.',
+              'Everything owed to a third party is a liability until it is paid over, which is why the payroll journal creates several credit balances at once. Only gross pay and the employer’s own contributions are expenses of the business.',
+              'A quick classification test for any payroll figure: does the employee lose it, or does the business add it? If the employee loses it, it is a deduction and the gross pay already includes it. If the business adds it, it is an extra cost on top.',
+              'That single question separates employee National Insurance from employer National Insurance, and employee pension from employer pension, which is where most payroll marks are won or lost.',
             ],
           },
           {
@@ -2821,6 +2935,9 @@ window.LEARN_PATH = [
               'The figure charged to the income statement is **not** the amount employees receive. It is gross pay plus the employer’s own contributions.',
               'Employee deductions are not an extra cost — they are part of gross pay, simply redirected to HMRC or the pension scheme instead of to the employee.',
               'Employer NIC and employer pension sit **on top** of gross pay, which is why total payroll cost always exceeds the payroll’s gross figure.',
+              'The figure matters beyond the bookkeeping, because it is what a manager needs when deciding whether the business can afford to recruit. Gross salary alone understates the commitment by a meaningful margin.',
+              'A useful mental model: gross pay is the amount the employee has earned, and the employer’s contributions are the price of employing somebody at all. The first is negotiated between employer and employee; the second is set by legislation and by the pension scheme rules.',
+              'For planning purposes many businesses use a rule of thumb of gross pay plus fifteen to twenty per cent, though the exact figure depends on the National Insurance thresholds and on the pension scheme. In an assessment, never estimate — use the figures you are given.',
             ],
             formula: 'Total employer cost = Gross pay + Employer NIC + Employer pension · Net pay = Gross pay − PAYE − Employee NIC − Employee pension',
           },
@@ -2828,6 +2945,10 @@ window.LEARN_PATH = [
             h: 'Journal 1: recording the payroll',
             p: [
               'When payroll is processed, the business recognises the full expense and creates a liability (wages control).',
+              'This first journal records the **cost and the obligations**, and it is where most of the marks sit. Nothing has been paid yet — the entries create the expense and the liabilities that the second journal will later settle.',
+              'The debits are the expenses: gross pay, employer’s National Insurance and employer’s pension. The credits are the liabilities: net pay owed to employees, PAYE and both National Insurance contributions owed to HMRC, and both pension contributions owed to the provider.',
+              'Check that the journal balances before moving on. The debit total is gross pay plus the employer’s contributions; the credit total is net pay plus every deduction and contribution. Those two are equal by construction, so if they differ a figure has been used on the wrong side.',
+              'Notice that net pay appears as a **credit** here, not a payment. At this point the employees are creditors of the business: the pay has been earned and calculated but not yet transferred.',
             ],
             example: {
               title: 'Payroll journal — example: gross £10,000; PAYE £1,500; Emp NIC £800; Emp pension £300; Er NIC £1,100; Er pension £400',
@@ -2844,6 +2965,10 @@ window.LEARN_PATH = [
             p: [
               'The first journal recognised the expense; this one settles the liabilities that journal created. Nothing new is charged to profit here.',
               'Each payment is a debit to the relevant liability or control account and a credit to bank: net pay to the employees, PAYE and NIC to HMRC, pension contributions to the scheme.',
+              'The second journal settles the liabilities the first one created, and each payment simply debits the liability and credits the bank. No expense arises here — the cost was recognised in journal one.',
+              'The payments do not all happen on the same date, which is why they are separate lines. Net pay goes out on payday; PAYE and National Insurance are due to HMRC by the 22nd of the following month when paid electronically; the pension contributions go to the provider on the scheme’s own timetable.',
+              'Because the payments are spread over several weeks, the wages control account will normally show a credit balance between payday and the HMRC payment date. That balance is a genuine liability and belongs in the trial balance.',
+              'The one thing that must not happen here is a second expense. If your paying-out journal debits an expense account rather than a liability, the payroll cost has been counted twice.',
             ],
             example: {
               title: 'Payment journals — clearing wages control',
@@ -2861,6 +2986,9 @@ window.LEARN_PATH = [
             p: [
               'After all payments, the wages control account should have a **nil balance** — it is cleared by each payment.',
               'A remaining balance signals an unpaid amount or a posting error.',
+              'A well-run wages control account clears to nil once every element of the payroll has been paid over, and that is the proof the payroll has been accounted for completely.',
+              'Reading a residual balance is a useful skill. A credit balance means the business still owes something — almost always PAYE and National Insurance not yet remitted to HMRC, which is a normal month-end position. A debit balance is more suspicious, because it means more has been paid out than was ever charged.',
+              'In an assessment you may be given a partly completed wages control account and asked for the missing figure. Treat it as any other control account: total the side you can, and the balancing figure is what you are being asked for.',
             ],
             callout: { kind: 'key', text: '**Key:** Wages control is a **clearing account** (like a bucket). It fills from the payroll journal and empties via the payment journals. Zero balance = all paid.' },
             examtrap: 'Students often confuse **employer NIC** (a cost to the employer, above gross) with **employee NIC** (deducted from gross — a cost to the employee). Both go through wages control, but only employer NIC increases the employer\'s total cost beyond gross pay.',
@@ -2911,6 +3039,9 @@ window.LEARN_PATH = [
             p: [
               'An **irrecoverable debt** (also called a bad debt) is a debt owed by a customer that the business is certain cannot be collected — for example, if the customer has become insolvent.',
               'The debt must be **removed from the SLCA** and recognised as an expense. This follows the **prudence principle** — do not overstate assets.',
+              'The word "certain" is doing the work. A debt that is merely late, or disputed, or owed by a customer who has stopped answering the phone, is not irrecoverable — it is overdue. What makes a debt irrecoverable is evidence that it will not be collected: the customer has been wound up, the administrator has confirmed no distribution to unsecured creditors, or the business has formally given up pursuing it.',
+              'That evidential threshold matters in practice as well as in the exam, because writing off a debt reduces reported profit. A business that wrote off every slow payer would understate its profit and its assets, which is as much a misstatement as overstating them.',
+              'Once the threshold is met, the write-off is not optional. Leaving a known bad debt in receivables overstates an asset the business will never realise, and prudence requires it to go.',
             ],
           },
           {
@@ -2919,6 +3050,8 @@ window.LEARN_PATH = [
               'The journal to write off a bad debt of £500 (net of VAT): **Dr Irrecoverable debts expense £500; Cr SLCA £500**.',
               'If the original invoice included VAT, the VAT can often be reclaimed from HMRC: **Dr VAT control £100; Cr SLCA £100** (for the VAT portion).',
               'The SLCA is reduced by the gross amount of the debt.',
+              'Note which figure goes where, because it is not arbitrary. The expense takes the **net** amount, because the goods themselves are what the business has lost. The VAT account takes the **tax**, because HMRC allows relief on VAT already paid over on a sale that was never settled. The control account takes the **gross**, because that is what the customer was invoiced and what the ledger has been carrying.',
+              'Bad debt relief on the VAT is not automatic. The debt must normally be at least six months overdue and have been written off in the business’s own records before the VAT can be reclaimed — a detail worth knowing, though the calculation is what the assessment tests.',
             ],
             example: {
               title: 'Writing off: customer owes £600 gross (£500 net + £100 VAT)',
@@ -2936,6 +3069,10 @@ window.LEARN_PATH = [
             p: [
               'When a debt is written off, it appears as a **deduction from the SLCA** in the control account reconciliation.',
               'The SLCA formula: Closing = Opening + Credit sales − Receipts − Returns − **Irrecoverable debts** − Discounts − Contras.',
+              'Reading that formula from left to right, everything after the credit sales figure reduces what customers owe, and a write-off belongs in that group for the obvious reason: the business has given up on collecting it.',
+              'What matters for a reconciliation question is that the write-off must appear in **both** records. Credit the control account with the gross amount, and credit the individual customer’s memorandum account with the same figure so their balance clears to nil.',
+              'If the write-off is posted to one and not the other, the control account and the list of individual balances will differ by exactly the gross amount written off. That is one of the standard reconciliation differences, and recognising the signature — a difference equal to a single customer’s whole balance — usually identifies it straight away.',
+              'Note also that the write-off is entered at the **gross** figure in the control account, even though the expense charged is only the net. The control account carried the gross balance, so the gross is what has to come out.',
             ],
           },
           {
@@ -2956,6 +3093,7 @@ window.LEARN_PATH = [
               'VAT = net × 20% = £900 × 0.20 = £180. Gross = £900 + £180 = £1,080, which is the amount to be credited to the sales ledger control account, because that is what the customer was invoiced.',
               'Whichever direction you are working in, the write-off journal always credits the **gross** figure to the control account and splits the debit side between the expense and the VAT account. The expense takes the net amount, because that is the value of goods the business has genuinely lost.',
               'Read the question twice for the words "net", "gross", "plus VAT" and "including VAT". They are the whole instruction.',
+              'A last check worth running on any write-off: the debit total must equal the credit total, and the two debits — expense and VAT — must add back to the gross credit. If they do not, one of the two splits is wrong.',
             ],
             example: {
               title: 'Same debt, two ways of describing it',
@@ -2974,6 +3112,7 @@ window.LEARN_PATH = [
               'In the **general ledger** you post the journal: debit irrecoverable debts expense with the net, debit VAT with the tax, and credit the sales ledger control account with the gross.',
               'In the **memorandum sales ledger** you credit the individual customer\'s account with the gross, clearing their balance to nil. No debit is needed there, because the memorandum ledger is not part of the double entry — it is a supporting list.',
               'If you post only one of the two, the control account and the list of individual balances will no longer agree, and the difference will be exactly the gross amount of the debt. That is one of the classic reconciliation differences you will be asked to explain.',
+              'The same double-recording discipline applies to every entry that touches a credit customer, not just write-offs. Receipts, returns and discounts all have to reach both the control account and the individual account, or the reconciliation will not agree.',
             ],
             flow: ['Establish net, VAT and gross', 'Journal in the general ledger', 'Credit the customer\'s memorandum account', 'Control account and list agree again'],
           },
@@ -3034,6 +3173,10 @@ window.LEARN_PATH = [
             h: 'All items in the SLCA',
             p: [
               'The **Sales Ledger Control Account (SLCA)** summarises all activity with credit customers. Every item that changes what customers owe must pass through it.',
+              'Rather than memorise the formula, derive it. The control account is an asset, so its balance is a debit, so anything that increases what customers owe is a debit and anything that decreases it is a credit. Only credit sales do the former.',
+              'Everything else on the list reduces the balance for a recognisable reason: receipts because the customer has paid, sales returns because goods have come back, discounts allowed because the business agreed to accept less, irrecoverable debts because collection has been abandoned, and contras because the balance has been set against what the business owes the same firm.',
+              'Two items that are **not** in the SLCA catch people out. Cash sales never touch it, because no credit was ever given. Nor do discounts **received**, which belong to suppliers and therefore to the purchases ledger control account.',
+              'A final item that surprises people is a **dishonoured cheque**. A customer paid, the receipt was credited to the control account, and the bank then refused the cheque. The receipt has to be reversed, so the control account is debited again and the customer still owes the money.',
             ],
             formula: 'Closing SLCA = Opening balance + Credit sales − Cash/cheque received − Sales returns − Irrecoverable debts − Discounts allowed − Contras',
           },
@@ -3042,6 +3185,9 @@ window.LEARN_PATH = [
             p: [
               'Lay it out as an account, not a list. Anything that **increases** what customers owe goes on the debit side; anything that **reduces** it goes on the credit side.',
               'The closing balance you arrive at is the figure that must agree with the total of the memorandum sales ledger.',
+              'A reconciliation has two halves, and it is worth keeping them physically separate on the page. On one side you adjust the **control account** for errors made in it; on the other you adjust the **list of individual balances** for errors made in the memorandum ledger.',
+              'Only when both have been adjusted do you compare the two totals. Trying to run a single column of adjustments is where most marks are lost, because an error belonging to the list gets applied to the control account and the difference doubles instead of closing.',
+              'Presentation earns marks here. Show the control account balance, list its adjustments with a subtotal, then show the list of balances with its own adjustments, and finish with the two agreed figures side by side. A reconciliation that reaches the right answer without showing which side each adjustment belonged to is hard to award marks to.',
             ],
             example: {
               title: 'SLCA workthrough',
@@ -3063,6 +3209,9 @@ window.LEARN_PATH = [
             p: [
               '**Discounts allowed** are early-payment discounts given to customers. When allowed: **Dr Discounts allowed expense, Cr SLCA** — reducing what the customer owes.',
               '**Discounts received** from suppliers work the opposite way in the PLCA: **Dr PLCA, Cr Discounts received income**.',
+              'A **cash discount**, or settlement discount, is offered to encourage early payment: pay within ten days and take 2% off. It is not certain when the invoice is raised, because the business does not yet know whether the customer will qualify.',
+              'That uncertainty is why it appears in the control account only when it is taken. At that point the customer pays less than the invoiced amount, so the shortfall is credited to the control account as **discounts allowed** and debited to a discounts allowed expense account.',
+              'Do not confuse it with a **trade discount**, which is a reduction in the price itself given to a particular class of customer. A trade discount is deducted before the invoice is written, so the control account never sees it — it only ever carries the discounted figure.',
             ],
             callout: { kind: 'key', text: '**Key distinction:** Discounts allowed are an expense (Cr SLCA). Discounts received are income (Dr PLCA). Both ultimately reduce the debt between the parties.' },
           },
@@ -3072,6 +3221,10 @@ window.LEARN_PATH = [
               'The **memorandum sales ledger** lists individual customer balances. Its total should equal the SLCA balance.',
               'If they disagree, an error has been made — either in the SLCA or in posting to individual accounts.',
               'Common causes: transaction posted to SLCA but not to individual account; transposition errors; incorrect amounts.',
+              'The list of individual balances is produced by working through the sales ledger customer by customer and writing down each closing balance. That total is one of the two figures being compared.',
+              'Two things routinely go wrong with it. A balance can be omitted, which understates the list by that customer’s balance. Or a **credit** balance — a customer who has overpaid or paid in advance — can be listed as a debit, which overstates the list by twice that balance. The doubling is the giveaway.',
+              'Adjust the list for both, then compare. Where the adjusted list agrees with the adjusted control account, the reconciliation is complete and the control has done its job; where it does not, at least one difference has not yet been identified.',
+              'A credit balance on a customer account is not an error in itself. It arises when a customer overpays, pays in advance, or returns goods after settling the invoice, and it is properly shown as a credit within the list.',
             ],
           },
           {
@@ -3080,6 +3233,9 @@ window.LEARN_PATH = [
               'The Purchases Ledger Control Account is the mirror image. It is a **liability**, so its normal balance is a credit and every side swaps over.',
               'Credit purchases increase the balance (credit); payments, returns outwards and discounts received reduce it (debit).',
               'A **contra** — where the same party is both customer and supplier — hits both accounts at once: Dr PLCA, Cr SLCA, settling the two balances against each other.',
+              'The only genuine difference is direction. Because the purchases ledger control account is a liability, credit purchases increase it, and payments, purchases returns, discounts received and contras all reduce it.',
+              'Its independent check is the supplier statement rather than an internally produced list, which makes it arguably stronger evidence: the supplier has no interest in agreeing with a figure that suits the business.',
+              'One practical difference is worth noting. Because suppliers issue statements, a purchases ledger reconciliation is usually done supplier by supplier against those statements, which finds errors the internal list alone would never reveal.',
             ],
             split: {
               left: { title: 'SLCA (customers owe us)', items: ['Dr: Opening, Credit sales', 'Cr: Receipts, Returns, Bad debts, Discounts allowed, Contras', 'Balance = total owed by customers'] },
@@ -3144,6 +3300,9 @@ window.LEARN_PATH = [
             p: [
               'The journal (or general journal) records transactions that do not belong in any other book of prime entry: opening entries, year-end adjustments (accruals, depreciation, bad debts), correction of errors, and writing off irrecoverable debts.',
               'Every journal entry has a debit and a credit and must include a **narrative** explaining the reason.',
+              'Grouping the uses makes them easier to hold. There are **opening entries** when a set of ledgers is first created, **routine non-cash entries** such as payroll and irrecoverable debts, **corrections** of errors both with and without suspense, and **transfers** between accounts.',
+              'What none of them has is a source document generated by the transaction itself. A journal is therefore an instruction written by the bookkeeper, which is exactly why it needs a date, a narrative and, in practice, authorisation.',
+              'That also explains why journals attract attention. An auditor reviewing a set of accounts will read the journals first, because they are the entries somebody chose to make rather than the entries the business’s ordinary trading forced upon it.',
             ],
             flow: ['Identify the error or non-routine item', 'Determine the correct double entry', 'Write the journal entry with a narrative', 'Post to the relevant ledger accounts'],
           },
@@ -3151,6 +3310,10 @@ window.LEARN_PATH = [
             h: 'Structure of a journal entry',
             p: [
               'A journal entry always shows: Date, Account debited (with amount), Account credited (with amount), and a Narrative.',
+              'The columns are fixed by convention: account name, then a debit column, then a credit column, with the debit line written first. A journal may have any number of lines, but the two column totals must agree exactly.',
+              'The date is the date of the entry, not the date of the transaction being corrected, and the narrative explains the reason rather than restating the entry. "Correction of invoice 4412 posted to insurance in error" is a narrative; "Dr motor expenses Cr insurance" is not.',
+              'In a computerised system the same discipline applies with an added feature: the software will usually refuse to post a journal whose columns do not agree, which removes one class of error but not the more important ones.',
+              'Some organisations also require a journal reference number and evidence of authorisation, both of which exist so that a reviewer can trace who decided the entry and on what basis. In a manual system these are written in the journal itself.',
             ],
             example: {
               title: 'Journal entry format',
@@ -3167,6 +3330,9 @@ window.LEARN_PATH = [
             p: [
               'When an error is discovered that caused the trial balance to not balance, a suspense account is opened. The journal is used to clear the suspense account.',
               'When an error is found that did not affect the TB balance, the journal corrects it by reversing the wrong entry and posting the correct one.',
+              'Whichever error you are correcting, the derivation is the same. Write out what was posted, write out what should have been posted, and journal the difference between the two.',
+              'The only variable is whether suspense is involved, and that is settled by whether the original error left the trial balance in balance. Errors of commission, principle, omission, original entry, reversal and compensating errors do not touch suspense; one-sided and single-entry errors do.',
+              'Where a correction has more than two legs — as reversal corrections and some suspense clearances do — set it out as a single multi-line journal rather than two separate ones. It keeps the audit trail together and makes the balancing check obvious.',
             ],
             example: {
               title: 'Error correction examples',
@@ -3183,6 +3349,10 @@ window.LEARN_PATH = [
             h: 'Clearing a suspense account',
             p: [
               'A suspense account is opened when the trial balance does not balance. It holds the difference temporarily. Once the error(s) are found, the journal clears the suspense account. The suspense account balance must reach zero.',
+              'The suspense balance is given to you as the trial balance difference, and every correcting journal for an error that broke the trial balance takes a slice out of it.',
+              'Keep a running total as you work. Start from the suspense balance, apply each journal that touches suspense, and see what is left. If the last journal brings it to nil, every error affecting the trial balance has been found; if a residue remains, at least one has not.',
+              'Watch the side carefully. A debit suspense balance is cleared by credits to suspense, so a correcting journal that debits suspense again is making the difference bigger rather than smaller — a very common and very costly slip.',
+              'When the last correction has been posted and suspense is nil, the account is closed and disappears from the redrafted trial balance altogether. Its absence is the evidence that the investigation finished.',
             ],
             example: {
               title: 'Suspense account clearance',
@@ -3198,6 +3368,10 @@ window.LEARN_PATH = [
             h: 'Non-routine journal entries',
             p: [
               'The journal is also used for: depreciation charges (Dr Depreciation expense, Cr Accumulated depreciation), irrecoverable (bad) debt write-offs (Dr Bad debt expense, Cr Trade receivables), and opening entries when a new set of books is started.',
+              'The clearest examples are the ones with no cash movement at all. Writing off an irrecoverable debt, transferring a balance from one expense account to another, correcting a misclassification, or recording the opening balances of a newly computerised ledger all need a journal because no day book covers them.',
+              'Payroll is the largest routine journal most businesses post, and it is a journal precisely because the payroll figures come from a payroll system rather than from an invoice or a bank entry.',
+              'The practical test is simple: if you cannot name a document that would generate the entry automatically, it is a journal.',
+              'Because journals bypass the ordinary controls that day books provide, most businesses restrict who may post one and require a second person to review them. That is itself a control, and a reasonable answer to an exam question about controls over journals.',
             ],
             callout: { kind: 'warning', text: 'Every journal entry must include a narrative (description). Without one, the purpose of the entry cannot be understood — this is an exam requirement.' },
           },
@@ -3359,6 +3533,9 @@ window.LEARN_PATH = [
             p: [
               'The cashbook records receipts and payments from the business\'s point of view. The bank statement records the same events from the bank\'s perspective. At any moment the two will disagree — due to **timing differences** (items in one record not yet processed in the other) and **errors**.',
               'A bank reconciliation proves the two records are consistent after allowing for these differences. It is a key internal control — businesses that skip it risk undetected fraud, errors, and an inaccurate cash position.',
+              'The bank statement is the only figure in the accounts prepared by somebody other than the business. That independence is what makes the reconciliation the strongest control in this unit.',
+              'It also serves a practical purpose that has nothing to do with errors. Bank charges, interest, direct debits and dishonoured cheques are all things the bank does to the account without telling the business first, and the reconciliation is where the business finds out about them.',
+              'Note the order of work, because it is examined. First **update** the cash book for items that genuinely belong in it but were not known about. Only then **reconcile** the corrected cash book balance to the statement using timing differences. Doing those two steps in one go produces the wrong answer almost every time.',
             ],
           },
           {
@@ -3366,6 +3543,8 @@ window.LEARN_PATH = [
             p: [
               'An **unpresented cheque** is a payment the business has recorded in the cashbook (credit entry), but the payee has not yet presented it to the bank — so it does not yet appear on the bank statement. The bank statement balance is therefore higher than the cashbook balance by this amount.',
               'An **outstanding lodgement** (deposit in transit) is a receipt the business has recorded in the cashbook (debit entry), but the bank has not yet processed it — so it does not yet appear on the bank statement. The bank statement balance is lower than the cashbook balance by this amount.',
+              'These two are the only differences that belong in the reconciliation statement itself, and both exist for the same reason: the business records a payment or receipt when it makes it, and the bank records it when the money actually moves.',
+              'An **unpresented cheque** is one the business has written and recorded but the payee has not yet banked, so the cash book balance is lower than the statement. An **outstanding lodgement** is money the business has banked but the bank has not yet cleared, so the cash book balance is higher.',
             ],
             example: {
               title: 'Timing differences at a glance',
@@ -3381,6 +3560,10 @@ window.LEARN_PATH = [
             p: [
               'Direct debits, standing orders, bank charges, bank interest credited, and BACS receipts may appear on the bank statement before they are entered in the cashbook. When discovered, the cashbook must be **updated** before the reconciliation statement is prepared.',
               'To update: receipts (bank interest, BACS customer payments) are debited in the cashbook; payments (direct debits, standing orders, bank charges) are credited in the cashbook.',
+              'These are not timing differences and they do not belong in the reconciliation statement. They are entries the cash book is simply missing, and the cash book has to be corrected for them before any reconciling begins.',
+              'The usual list is bank charges, interest charged on an overdraft, interest received, standing orders and direct debits the bookkeeper had not recorded, direct credits received from customers, and dishonoured cheques that had been treated as receipts.',
+              'A **dishonoured cheque** is worth pausing on. A customer’s cheque was recorded as a receipt, then the bank refused it. The receipt has to be reversed — credit the cash book, debit the sales ledger control account — because the customer still owes the money.',
+              'A quick test distinguishes these from timing differences: ask whether the cash book is **wrong** or merely **early**. Bank charges mean the cash book is wrong and must be corrected. An unpresented cheque means it is early, and no correction is needed.',
             ],
           },
           {
@@ -3390,6 +3573,9 @@ window.LEARN_PATH = [
               'Step 2: List all unticked items on the bank statement — these must be added to the cashbook.',
               'Step 3: Add receipts as debits (Dr cashbook) and payments as credits (Cr cashbook), recording the corresponding expense or income account on the other side.',
               'Step 4: Calculate the updated (revised) cashbook balance.',
+              'Work through the statement line by line and tick every item that also appears in the cash book. Whatever is left unticked on the statement is either an item to add to the cash book or, if it is on the cash book side, a timing difference.',
+              'Each addition needs a proper double entry, not just a change to the balance. Bank charges are Dr bank charges, Cr cash book. A direct credit from a customer is Dr cash book, Cr sales ledger control account. Interest received is Dr cash book, Cr interest received.',
+              'Once every addition has been posted, total and balance the cash book again. The **corrected** cash book balance is the figure the reconciliation statement has to reach, and using the original balance by mistake is the commonest error in the whole task.',
             ],
             formula: 'Direct debit not in cashbook: Dr Expense / Cr Cashbook (reduces balance)·Bank interest not in cashbook: Dr Cashbook / Cr Interest received (increases balance)',
           },
@@ -3397,6 +3583,10 @@ window.LEARN_PATH = [
             h: 'The reconciliation statement',
             p: [
               'With the cashbook updated, prepare the reconciliation statement. Start with the **bank statement balance**, then adjust for timing differences only (items in the cashbook not yet on the bank statement):',
+              'The reconciliation statement contains **only** timing differences — unpresented cheques and outstanding lodgements. Everything else has already been dealt with by updating the cash book.',
+              'Start from the closing balance on the bank statement. Add outstanding lodgements, because the business has banked money the statement has not yet recognised. Deduct unpresented cheques, because the business has paid money the statement has not yet taken. The result should equal the corrected cash book balance.',
+              'Overdrafts reverse the signs, which is where marks are lost. If the statement shows an overdrawn balance, treat it as a negative starting figure and apply the same additions and deductions; do not try to flip the adjustments as well.',
+              'A completed reconciliation is evidence, so it should be dated, show both balances, and be initialled by whoever prepared it and whoever reviewed it. A reconciliation nobody reviews is only half a control.',
             ],
             formula: 'Bank statement balance·PLUS: Outstanding lodgements·LESS: Unpresented cheques·= Updated cashbook balance',
             example: {
@@ -3809,6 +3999,9 @@ window.LEARN_PATH = [
             p: [
               'Your POBC knowledge — control accounts, bank reconciliations, journals for error correction, and suspense accounts — all continue at Level 3. The difference is complexity: you will encounter more errors, more correction methods, and more involved scenarios. The logic is identical; the questions are harder.',
               'The key skill that POBC builds — thinking in debits and credits, and understanding how errors affect the trial balance — is the skill Level 3 examiners test most heavily.',
+              'The specific reason POBC transfers so well is that Level 3 assumes you can already do everything in it without thinking. Nobody at Level 3 will re-teach you how to balance a control account or derive a correcting journal.',
+              'What Level 3 adds is judgement on top of that mechanism: which adjustments are needed, how they are measured, and how the resulting figures are presented in financial statements. A student still working out which side a journal goes on has no capacity left for those questions.',
+              'Concretely, Financial Accounting: Preparing Financial Statements opens with control accounts, journals and the correction of errors as assumed knowledge in its very first tasks. There is no warm-up.',
             ],
           },
           {
@@ -3816,6 +4009,9 @@ window.LEARN_PATH = [
             p: [
               'At Level 3, you will clear suspense accounts using journals (not just identify the error type as in POBC). You will also post journals for complex scenarios: dishonoured (bounced) cheques, capital introduced mid-year, contra entries between the SLCA and PLCA, and the disposal of non-current assets.',
               'A **contra entry** arises when a customer is also a supplier — the two balances are offset: Dr PLCA / Cr SLCA. This removes the double counting from both control accounts.',
+              'The clearest example is the **extended trial balance**. It is the redrafted trial balance you have just learned, with extra columns for year-end adjustments — accruals, prepayments, depreciation, irrecoverable debts and the allowance for doubtful debts — and then columns that split the adjusted figures between profit or loss and the statement of financial position.',
+              'Every one of those adjustments is journalled the same way as a POBC correction. What is new is deciding the amount, not posting it.',
+              'Level 3 also introduces incomplete records, where the control accounts you have learned become tools for **deriving** a missing figure — credit sales worked back from receipts and balances, for instance — rather than merely checking one.',
             ],
           },
           {
@@ -3823,6 +4019,9 @@ window.LEARN_PATH = [
             p: [
               'Once you can prepare an ETB, FAPS adds **partnerships**. A partnership appropriation account allocates net profit: first deducting partners\' salaries and interest on capital; the remainder is divided by the **profit-sharing ratio (PSR)**.',
               'Each partner has two accounts: a **capital account** (fixed investment, rarely changes) and a **current account** (running total of salary, interest, profit share, less drawings). The current account balance carries to the balance sheet.',
+              'Partnership accounting adds accounts rather than techniques. Each partner has a **capital account** for their long-term investment and a **current account** for profit shares and drawings, and an **appropriation account** divides the profit between them.',
+              'The double entry is entirely familiar. What is new is knowing that partners’ salaries and interest on capital are appropriations of profit rather than expenses of the business — a classification question, not a bookkeeping one.',
+              'The one genuinely new control is the reconciliation of each partner’s current account, which is really a control account for one person: opening balance, plus profit share, plus salary and interest on capital, less drawings, equals closing balance.',
             ],
           },
           {
@@ -3830,6 +4029,9 @@ window.LEARN_PATH = [
             p: [
               'At Level 3, you complete the **VAT 100 form**, deal with different VAT schemes (cash accounting, flat rate, annual accounting), and handle import VAT and partial exemption. This extends ITBK and POBC VAT knowledge significantly.',
               'TPFB also covers PAYE and National Insurance: **Class 1 primary NIC** is deducted from the employee\'s gross pay; **Class 1 secondary NIC** is an additional cost for the employer. Both are remitted to HMRC alongside income tax deducted under PAYE.',
+              'The connection to POBC is direct. The VAT control account you prepare here is the source of the figures that go on the return, and the payroll journal you post here is the source of the amounts remitted under PAYE.',
+              'What TPFB adds is the regulatory layer: registration and deregistration thresholds, the choice between schemes, deadlines and penalties, error correction and disclosure to HMRC, and the Real Time Information reporting that accompanies each payroll run.',
+              'The bookkeeping does not get harder; the consequences of getting it wrong do. Penalties, interest and disclosure obligations mean a VAT or payroll error at Level 3 is presented as a compliance question as well as an accounting one.',
             ],
           },
           {
@@ -3837,6 +4039,9 @@ window.LEARN_PATH = [
             p: [
               'The ability to spot errors, correct them with journals, reconcile control accounts, understand suspense accounts, and think fluently in debits and credits — this is what separates high-scoring Level 3 students from those who struggle.',
               'POBC gives you that foundation. At Level 3, these are not new skills — they are extended skills applied to more complex scenarios. Every hour spent mastering POBC now pays compound interest at Level 3.',
+              'There is a measurable version of this claim. Level 3 tasks are longer, and the students who run out of time are usually the ones spending it re-deriving debits and credits rather than answering the question in front of them.',
+              'Fluency is the goal, not familiarity. If you can look at a described error and see the correcting journal without writing out WAS and SHOULD HAVE BEEN, you have reached the level POBC is trying to get you to — and Level 3 becomes a course about accounting rather than a course about bookkeeping.',
+              'A concrete target: work through past POBC tasks until you can classify an error and write its correcting journal without pausing. That is the level of automaticity Level 3 assumes, and it is reachable with practice rather than talent.',
             ],
           },
         ],

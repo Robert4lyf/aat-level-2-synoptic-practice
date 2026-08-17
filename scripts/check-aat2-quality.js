@@ -63,15 +63,14 @@ const L2_UNITS = ['itbk', 'pobc', 'poc', 'besy'];
 /* Units whose teaching material has been brought to Level 1/3 depth. This list
    is the ratchet — add a unit only when its cards actually meet the floor.
    ITBK now does: 87 cards, mean 228 and median 225 words, none below the floor,
-   against the 90-word average the whole module started at. POBC, POC and BESY
-   are still around 90, and their figures are reported below so the size of the
-   remaining job is visible on every run rather than being a vague sense that
-   the material is thin. */
-const DEPTH_ENFORCED = ['itbk'];
+   against the 90-word average the whole module started at. POBC followed, at 87
+   cards, mean 221 and median 217. POC and BESY are still around 90, and their
+   figures are reported below so the size of the remaining job is visible on
+   every run rather than being a vague sense that the material is thin. */
+const DEPTH_ENFORCED = ['itbk', 'pobc'];
 
 /* Units whose lessons are tagged against the syllabus and must fully cover it.
-   Empty for now, and the reason is worth reading: tagging ITBK's lessons
-   against the encoded criteria showed that only 7 of its 16 criteria are
+   Worth reading for what tagging turned up: only 7 of ITBK's 16 criteria were
    covered at all. The whole of topic area 4 — the analysed cash book, the petty
    cash book, totalling and balancing them, and recurring receipts and payments
    — has no lesson, and neither do coding systems, setting up bookkeeping
@@ -83,8 +82,16 @@ const DEPTH_ENFORCED = ['itbk'];
 
    ITBK is now enforced: the nine missing criteria have lessons, and the five
    off-syllabus lessons have been moved to the Financial Accounting unit where
-   they belong. POBC, POC and BESY are not yet tagged, so their coverage is
-   still unmeasured rather than known to be good. */
+   they belong.
+
+   POBC told the same story. Tagging it showed learning outcome 4 — producing
+   trial balances, a quarter of the assessment — with no lesson behind it at
+   all, and no lesson on payment methods either. Three new lessons cover those,
+   the allowance for doubtful debts has moved to the Level 3 Financial
+   Accounting preview (the word 'doubtful' does not appear in the Level 2
+   specification), and the VAT return and VAT schemes have gone to Tax
+   Processes for Businesses. POC and BESY are not yet tagged, so their coverage
+   is still unmeasured rather than known to be good. */
 const COVERAGE_ENFORCED = ['itbk', 'pobc'];
 
 const errors = [];
