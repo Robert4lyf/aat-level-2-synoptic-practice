@@ -519,7 +519,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'An invoice shows 30 units at £20.00, less 25% trade discount, plus VAT at 20%. What is the invoice total, in £?',
             answer: 540, unit: '£',
             steps: ['List price: 30 × £20.00 = £600.00.', 'Less 25% trade discount: £600.00 − £150.00 = £450.00 net.', 'VAT: £450.00 × 20% = £90.00.', 'Total: £450.00 + £90.00 = £540.00.'],
-            exp: 'Trade discount comes off before VAT is calculated. VAT is never charged on the list price.' },
+            exp: 'Trade discount comes off before VAT is calculated: £600 less 25% is £450 net, VAT is £90, so the invoice totals £540.00. VAT is never charged on the list price.' },
           { type: 'truefalse', q: 'Identify whether each statement about source documents is true or false.',
             statements: [
               { text: 'A credit note reduces the amount a customer owes.', answer: true },
@@ -2457,7 +2457,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'A payment of £620 is debited correctly but credited to bank as £260. By how much do the trial balance columns differ, in £?',
             answer: 360, unit: '£',
             steps: ['The debit side is correct at £620.', 'The credit side is understated at £260.', 'Difference = £620 − £260 = £360.'],
-            exp: 'A transposition affecting one side only leaves the columns unequal by the difference between the two figures.' },
+            exp: 'A transposition affecting one side only leaves the columns unequal by the difference between the two figures — here £620 − £260 = £360.' },
         ],
       },
       {
@@ -2558,7 +2558,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'A receipt of £450 was posted as Dr Sales / Cr Bank, exactly reversing the correct entry. What amount is used in the correcting journal, in £?',
             answer: 900, unit: '£',
             steps: ['Reversing the wrong entry needs £450.', 'Recording the correct entry needs a further £450.', 'Total journal amount = £450 × 2 = £900.'],
-            exp: 'A reversal correction is always double the original amount — once to cancel, once to record it correctly.' },
+            exp: 'A reversal correction is always double the original amount — once to cancel and once to record it correctly — so the journal is for £900, not £450.' },
           { type: 'truefalse', q: 'Identify whether the following statements about the journal are true or false.',
             statements: [
               { text: 'Every journal entry should carry a narrative explaining it.', answer: true },
@@ -4316,7 +4316,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'Fixed costs are £24,000 and variable costs £6.00 per unit. What is the total cost of producing 5,000 units, in £?',
             answer: 54000, unit: '£',
             steps: ['Variable cost: 5,000 × £6.00 = £30,000.', 'Fixed cost is unchanged at £24,000.', 'Total = £30,000 + £24,000 = £54,000.'],
-            exp: 'Only the variable element scales with output; the fixed element is the same at every activity level.' },
+            exp: 'Only the variable element scales with output, so 5,000 × £6.00 = £30,000, and the fixed £24,000 is unchanged: £54,000 in total. Fixed cost is the same at every activity level.' },
           { type: 'truefalse', q: 'Identify whether the following statements about cost behaviour are true or false.',
             statements: [
               { text: 'Fixed costs stay the same in total as output changes.', answer: true },
@@ -4426,7 +4426,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'Maximum usage is 180 units per week and the maximum lead time is 5 weeks. What is the reorder level, in units?',
             answer: 900, unit: 'units',
             steps: ['Reorder level = maximum usage × maximum lead time.', '180 × 5 = 900 units.'],
-            exp: 'The reorder level always uses the worst case so that stock cannot run out during an unusually long wait.' },
+            exp: 'The reorder level always uses the worst case, so 180 units × 5 weeks = 900 units. Set it any lower and stock can run out during an unusually long wait.' },
           { q: 'Under FIFO, closing inventory is valued at:', opts: [
               'The most recent purchase prices paid',
               'The earliest purchase prices paid',
@@ -4444,7 +4444,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'Opening stock 100 units at £5.00. A receipt of 100 units at £7.00 follows. Under AVCO, what is the new average cost per unit, in £?',
             answer: 6, unit: '£',
             steps: ['Total cost: (100 × £5.00) + (100 × £7.00) = £500 + £700 = £1,200.', 'Total units: 100 + 100 = 200.', 'Average = £1,200 ÷ 200 = £6.00 per unit.'],
-            exp: 'AVCO weights by quantity. Here the quantities are equal, so the average sits midway between £5.00 and £7.00.' },
+            exp: 'AVCO weights by quantity: £1,200 of stock across 200 units gives £6.00 each. Here the quantities are equal, so the average sits exactly midway between £5.00 and £7.00.' },
         ],
       },
       {
@@ -4566,7 +4566,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'Budgeted overheads are £75,000 and budgeted labour hours 6,250. What is the overhead absorption rate, in £ per hour?',
             answer: 12, unit: '£',
             steps: ['OAR = budgeted overheads ÷ budgeted activity.', '£75,000 ÷ 6,250 = £12.00 per labour hour.'],
-            exp: 'The rate is predetermined from budgeted figures so products can be costed before actual results are known.' },
+            exp: 'The rate is budgeted overhead ÷ budgeted activity: £75,000 ÷ 6,250 = £12.00 per labour hour. It is predetermined so that products can be costed before actual results are known.' },
           { q: 'Which basis is most appropriate for apportioning canteen costs?', opts: [
               'The number of employees in each cost centre',
               'The floor area occupied by each cost centre',
@@ -6448,7 +6448,7 @@ window.LEARN_PATH = [
           { type: 'numeric', q: 'A partnership of three has no written agreement and makes a profit of £84,000. Under the Partnership Act 1890 default, what is each partner\'s share, in £?',
             answer: 28000, unit: '£',
             steps: ['Without an agreement, the Partnership Act 1890 default applies.', 'That default is equal sharing between the partners.', '£84,000 ÷ 3 = £28,000 each.'],
-            exp: 'Absent a written agreement, profits are shared equally regardless of capital contributed or hours worked — which is precisely why partnership agreements are worth having.' },
+            exp: 'Absent a written agreement, profits are shared equally regardless of capital contributed or hours worked, so £84,000 ÷ 3 = £28,000 each — which is precisely why partnership agreements are worth having.' },
         ],
       },
       {

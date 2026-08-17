@@ -113,6 +113,7 @@ const notes = [];
    currently achieves — the point is to close the gap, not to certify it. */
 const MIN_EXP_CHARS = 90;       // an explanation shorter than this explains nothing
 const MIN_CARD_WORDS = 150;     // hard floor for a card in an enforced unit
+const MIN_PROSE_WORDS = 120;    // prose floor for a card with no rich element
 const TARGET_MEDIAN_WORDS = 200; // median card in an enforced unit
 /* Ratchet, not aspiration — the convention the Level 1 and 3 checkers use. Set
    just above what the bank achieves so it cannot drift worse. This started at
@@ -234,8 +235,20 @@ allQuestions.forEach(({ where, q }) => {
 
   } else if (type === 'numeric') {
     if (q.generate) return;                       // answer computed at runtime
-    if (!Number.isFinite(q.ans) && !Number.isFinite(q.answer)) {
+    const numAns = Number.isFinite(q.answer) ? q.answer : q.ans;
+    if (!Number.isFinite(numAns)) {
       errors.push(`${where}: numeric answer is not a finite number.`);
+    } else if (q.exp) {
+      /* The answer must appear in its own explanation. This is the Level 1
+         checker's rule, and it catches the one defect the arithmetic pass
+         cannot: a stated answer and a carefully-worked explanation that
+         disagree, each internally sound. */
+      const plain = String(numAns);
+      const grouped = Number(numAns).toLocaleString('en-GB');
+      const twoDp = Number(numAns).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (q.exp.indexOf(plain) === -1 && q.exp.indexOf(grouped) === -1 && q.exp.indexOf(twoDp) === -1) {
+        errors.push(`${where}: the stated answer ${grouped} never appears in its own explanation — one of the two is wrong.`);
+      }
     }
 
   } else if (type === 'truefalse') {
@@ -461,7 +474,12 @@ lessons.forEach(l => {
   const u = l._unit;
   if (!depthByUnit[u]) depthByUnit[u] = [];
   (l.cards || []).forEach((c, ci) => {
-    depthByUnit[u].push({ lesson: l.id, ci: ci + 1, h: String(c.h || ''), n: words(flat(c)), rich: RICH_ELEMENTS.some(k => c[k]) });
+    depthByUnit[u].push({
+      lesson: l.id, ci: ci + 1, h: String(c.h || ''),
+      n: words(flat(c)),
+      prose: words((c.p || []).join(' ')),
+      rich: RICH_ELEMENTS.some(k => c[k]),
+    });
   });
 });
 L2_UNITS.forEach(u => {
@@ -476,6 +494,12 @@ L2_UNITS.forEach(u => {
              (enforced ? ` · ENFORCED` : ` · not yet enforced (${thin.length} under ${MIN_CARD_WORDS})`));
   if (!enforced) return;
   thin.forEach(c => errors.push(`${c.lesson} card ${c.ci} ("${c.h.slice(0, 40)}"): ${c.n} words, below the ${MIN_CARD_WORDS}-word floor for an enforced unit.`));
+  /* A card can clear the word floor on the strength of a big table while its
+     prose says almost nothing, so a card with no table, example or worked
+     element has to carry the teaching in prose. Level 1's rule, applied here. */
+  cards.filter(c => c.n >= MIN_CARD_WORDS && !c.rich && c.prose < MIN_PROSE_WORDS).forEach(c => {
+    errors.push(`${c.lesson} card ${c.ci} ("${c.h.slice(0, 40)}"): ${c.prose} words of prose and no table, example or worked element — the card carries little.`);
+  });
   if (med < TARGET_MEDIAN_WORDS) {
     errors.push(`${u.toUpperCase()}: median card is ${med} words, below the ${TARGET_MEDIAN_WORDS}-word target for an enforced unit.`);
   }
