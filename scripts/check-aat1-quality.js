@@ -537,6 +537,57 @@ while ((rv = REVERSE_VAT.exec(learnSrc)) !== null) {
   }
 }
 
+/* ── Prose mannerisms ────────────────────────────────────────────────────────
+   Shared with check-aat3-quality.js, where the reasoning is set out at length.
+   The short version: this material is written by a model, and models have tics.
+
+   NEVER is vocabulary that has no business in a UK accounting textbook and
+   reads as machine-generated on sight. All of it is at zero across all three
+   levels, so a hard failure costs nothing today and catches drift immediately.
+
+   SIGNPOSTING — "it is worth noting that X" — announces that X matters instead
+   of making the point. A few are fine, so this is a rate ceiling, not a ban.
+   All three levels now sit an order of magnitude below it after a cull. */
+const NEVER = [
+  [/\bdelv(e|es|ing)\b/i,                       'delve'],
+  [/\bleverag(e|es|ing)\b/i,                    'leverage'],
+  [/\bseamless(ly)?\b/i,                        'seamless'],
+  [/\b(landscape|realm|tapestry|ecosystem)\b/i,  'landscape/realm/tapestry/ecosystem'],
+  [/\bin today'?s (world|business|climate)\b/i,  "in today's world"],
+  [/\bever-(changing|evolving)\b/i,             'ever-changing'],
+  [/\bat (its|the) (core|heart)\b/i,             'at its core'],
+  [/\bthat said\b/i,                            'that said'],
+  [/(^|[.!?]\s+)(Furthermore|Moreover|Additionally),/, 'Furthermore/Moreover/Additionally'],
+  [/\bunderscore[sd]?\b/i,                      'underscores'],
+  [/\bholistic(ally)?\b/i,                      'holistic'],
+  [/\bmulti-faceted\b/i,                        'multi-faceted'],
+  [/\bnavigat(e|es|ing) the\b/i,                'navigate the (metaphor)'],
+  [/\bit'?s important to note\b/i,              "it's important to note"],
+];
+const SIGNPOST = /\b(it is|it's) worth\b|\bworth (noting|saying|being|pausing|flagging)\b/gi;
+const SIGNPOST_CEILING_PER_1K = 1.0;
+
+{
+  let proseWords = 0;
+  const proseBits = [];
+  lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+    (c.p || []).forEach(par => {
+      const text = String(par);
+      proseBits.push(text);
+      proseWords += words(text);
+      NEVER.forEach(([re, label]) => {
+        if (re.test(text)) errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): prose contains "${label}" — a machine-writing tell, not this material's voice.`);
+      });
+    });
+  }));
+  const hits = (proseBits.join('\n').match(SIGNPOST) || []).length;
+  const perK = proseWords ? (1000 * hits / proseWords) : 0;
+  notes.push(`Signposting ("it is worth…"): ${hits} in ${proseWords.toLocaleString('en-GB')} prose words = ${perK.toFixed(2)} per 1,000 (ceiling ${SIGNPOST_CEILING_PER_1K.toFixed(1)}).`);
+  if (perK > SIGNPOST_CEILING_PER_1K) {
+    warnings.push(`Signposting runs at ${perK.toFixed(2)} per 1,000 prose words, above the ${SIGNPOST_CEILING_PER_1K.toFixed(1)} ceiling. "It is worth noting that X" announces that X matters instead of saying X — cut the frame and keep the point.`);
+  }
+}
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
 const cardCount = lessons.reduce((s, l) => s + (l.cards || []).length, 0);
 const proseWords = lessons.reduce((s, l) => s + words(flat(l.cards)), 0);

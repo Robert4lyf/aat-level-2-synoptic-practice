@@ -485,6 +485,58 @@ lessons.forEach(l => {
   if (!(l.check || []).length) errors.push(`${l.id}: no check questions.`);
 });
 
+/* ── 4b. Prose mannerisms ────────────────────────────────────────────────────
+   This material is written by a model, and models have tics. Two kinds are
+   worth guarding against, and they need different severities.
+
+   The NEVER list is vocabulary that has no business in a UK accounting
+   textbook and reads as machine-generated on sight. Every one of these is
+   currently at zero across all three levels, so a hard failure here costs
+   nothing and catches the drift the moment it starts.
+
+   SIGNPOSTING is different. "It is worth noting that…" is not wrong, it is
+   just weak — it announces that a point matters instead of making the point.
+   A few are fine, so this is a rate ceiling rather than a ban. The module ran
+   at 1.2 per thousand words before a deliberate cull and 0.2 after; the
+   ceiling sits at 1.0, which permits ordinary use and catches a relapse. */
+const NEVER = [
+  [/\bdelv(e|es|ing)\b/i,                    'delve'],
+  [/\bleverag(e|es|ing)\b/i,                 'leverage'],
+  [/\bseamless(ly)?\b/i,                     'seamless'],
+  [/\b(landscape|realm|tapestry|ecosystem)\b/i, 'landscape/realm/tapestry/ecosystem'],
+  [/\bin today'?s (world|business|climate)\b/i, "in today's world"],
+  [/\bever-(changing|evolving)\b/i,          'ever-changing'],
+  [/\bat (its|the) (core|heart)\b/i,          'at its core'],
+  [/\bthat said\b/i,                         'that said'],
+  [/(^|[.!?]\s+)(Furthermore|Moreover|Additionally),/, 'Furthermore/Moreover/Additionally'],
+  [/\bunderscore[sd]?\b/i,                   'underscores'],
+  [/\bholistic(ally)?\b/i,                   'holistic'],
+  [/\bmulti-faceted\b/i,                     'multi-faceted'],
+  [/\bnavigat(e|es|ing) the\b/i,             'navigate the (metaphor)'],
+  [/\bit'?s important to note\b/i,           "it's important to note"],
+];
+const SIGNPOST = /\b(it is|it's) worth\b|\bworth (noting|saying|being|pausing|flagging)\b/gi;
+const SIGNPOST_CEILING_PER_1K = 1.0;
+
+let proseWords = 0;
+const proseBits = [];
+lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+  (c.p || []).forEach(par => {
+    const text = String(par);
+    proseBits.push(text);
+    proseWords += words(text);
+    NEVER.forEach(([re, label]) => {
+      if (re.test(text)) errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): prose contains "${label}" — a machine-writing tell, not this material's voice.`);
+    });
+  });
+}));
+const signposts = (proseBits.join('\n').match(SIGNPOST) || []).length;
+const perK = proseWords ? (1000 * signposts / proseWords) : 0;
+notes.push(`Signposting ("it is worth…"): ${signposts} in ${proseWords.toLocaleString('en-GB')} prose words = ${perK.toFixed(2)} per 1,000 (ceiling ${SIGNPOST_CEILING_PER_1K.toFixed(1)}).`);
+if (perK > SIGNPOST_CEILING_PER_1K) {
+  warnings.push(`Signposting runs at ${perK.toFixed(2)} per 1,000 prose words, above the ${SIGNPOST_CEILING_PER_1K.toFixed(1)} ceiling. "It is worth noting that X" announces that X matters instead of saying X — cut the frame and keep the point.`);
+}
+
 /* ── 5. Near-duplicate cards ─────────────────────────────────────────────────
    Two cards in this module taught the same thing twice: 2A's "What software
    does and does not do for you" and, three lessons later, a shorter restatement
