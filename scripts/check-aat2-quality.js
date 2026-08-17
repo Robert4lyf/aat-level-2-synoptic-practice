@@ -61,46 +61,47 @@ const PATH_UNITS = loadBrowser('learn-data.js').LEARN_PATH || [];
 const L2_UNITS = ['itbk', 'pobc', 'poc', 'besy'];
 
 /* Units whose teaching material has been brought to Level 1/3 depth. This list
-   is the ratchet — add a unit only when its cards actually meet the floor.
-   ITBK now does: 87 cards, mean 228 and median 225 words, none below the floor,
-   against the 90-word average the whole module started at. POBC followed at 87
-   cards, mean 221; POC at 84 cards, mean 228. BESY is still around 90, and its
-   figures are reported below so the size of the remaining job is visible on
-   every run rather than being a vague sense that the material is thin. */
-const DEPTH_ENFORCED = ['itbk', 'pobc', 'poc'];
+   is the ratchet — add a unit only when its cards actually meet the floor. All
+   four now do, against the 90-word average the whole module started at:
+
+     ITBK  87 cards · mean 228 · median 225
+     POBC  87 cards · mean 221 · median 217
+     POC   84 cards · mean 228 · median 226
+     BESY  91 cards · mean 236 · median 233
+
+   Level 1 runs at 253 words a card and Level 3 at 294, so Level 2 now sits in
+   the same band rather than an order of magnitude below it. */
+const DEPTH_ENFORCED = ['itbk', 'pobc', 'poc', 'besy'];
 
 /* Units whose lessons are tagged against the syllabus and must fully cover it.
-   Worth reading for what tagging turned up: only 7 of ITBK's 16 criteria were
-   covered at all. The whole of topic area 4 — the analysed cash book, the petty
-   cash book, totalling and balancing them, and recurring receipts and payments
-   — has no lesson, and neither do coding systems, setting up bookkeeping
-   systems, processing receipts from customers or payments to suppliers.
-   Meanwhile six ITBK lessons teach Level 3 Financial Accounting material
-   (accruals and prepayments, the statement of financial position, the extended
-   trial balance, capital versus revenue, depreciation) and map to no ITBK
-   criterion at all.
+   Tagging is what turned a vague sense that the material was patchy into a
+   list, and every unit had real gaps:
 
-   ITBK is now enforced: the nine missing criteria have lessons, and the five
-   off-syllabus lessons have been moved to the Financial Accounting unit where
-   they belong.
+     ITBK  covered 7 of 16 criteria. The whole of topic area 4 — the analysed
+           cash book, the petty cash book, totalling and balancing them,
+           recurring receipts and payments — had no lesson, nor did coding
+           systems or setting up a bookkeeping system. Six lessons taught Level
+           3 Financial Accounting material and mapped to no ITBK criterion.
 
-   POBC told the same story. Tagging it showed learning outcome 4 — producing
-   trial balances, a quarter of the assessment — with no lesson behind it at
-   all, and no lesson on payment methods either. Three new lessons cover those,
-   the allowance for doubtful debts has moved to the Level 3 Financial
-   Accounting preview (the word 'doubtful' does not appear in the Level 2
-   specification), and the VAT return and VAT schemes have gone to Tax
-   Processes for Businesses.
+     POBC  had nothing at all behind learning outcome 4, producing trial
+           balances, which is a quarter of the assessment. Payment methods were
+           also untaught. The allowance for doubtful debts was taught but does
+           not appear in the Level 2 specification at all.
 
-   POC was the worst of the three. Six criteria had no lesson, including the
-   whole of learning outcome 4 (spreadsheets, a tenth of the assessment) and
-   criterion 2.5 inside the 40% outcome — cost of goods manufactured, cost of
-   goods sold and service cost units were all absent. Meanwhile four lessons
-   taught Level 3 Management Accounting: break-even, the high-low method,
-   relevant costing and the marginal/absorption reconciliation, none of which
-   appears anywhere in the Level 2 specification. Those four have moved to the
-   Level 3 preview and the six gaps now have lessons. BESY is not yet tagged, so
-   its coverage is still unmeasured rather than known to be good. */
+     POC   was the worst. Six criteria had no lesson, including the whole of
+           learning outcome 4 (spreadsheets, a tenth of the assessment) and
+           criterion 2.5 inside the 40% outcome. Four lessons taught Level 3
+           Management Accounting: break-even, high-low, relevant costing and the
+           marginal/absorption reconciliation, none of which is in the spec.
+
+     BESY  was missing the principles of an effective tax system, the legal
+           administration of a business, business formation, and sources of
+           information. Three lessons taught employment law, consumer law and
+           director duties, none of which appears in BESY's scope of content.
+
+   All four are now enforced: every criterion has a lesson, and the off-syllabus
+   material has moved to the Level 3 preview units where it belongs rather than
+   being deleted. */
 const COVERAGE_ENFORCED = ['itbk', 'pobc', 'poc', 'besy'];
 
 const errors = [];
