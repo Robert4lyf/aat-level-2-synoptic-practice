@@ -101,7 +101,7 @@ const DEPTH_ENFORCED = ['itbk', 'pobc', 'poc'];
    appears anywhere in the Level 2 specification. Those four have moved to the
    Level 3 preview and the six gaps now have lessons. BESY is not yet tagged, so
    its coverage is still unmeasured rather than known to be good. */
-const COVERAGE_ENFORCED = ['itbk', 'pobc', 'poc'];
+const COVERAGE_ENFORCED = ['itbk', 'pobc', 'poc', 'besy'];
 
 const errors = [];
 const warnings = [];

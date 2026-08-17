@@ -6066,6 +6066,7 @@ window.LEARN_PATH = [
          worth 17 marks between them — with no lesson at all. */
       {
         id: 'L-besy-1',
+        criteria: ['BESY-1.1', 'BESY-1.2'],
         title: 'The English legal system',
         icon: '⚖️',
         skills: ['besy-law'],
@@ -6159,6 +6160,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-2',
+        criteria: ['BESY-1.3', 'BESY-1.4'],
         title: 'Contract law essentials',
         icon: '📜',
         skills: ['besy-law'],
@@ -6276,6 +6278,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-3',
+        criteria: ['BESY-4.1'],
         title: 'Types of business',
         icon: '🏢',
         skills: ['besy-structure'],
@@ -6403,6 +6406,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-4',
+        criteria: [],
         title: 'The synoptic assessment explained',
         icon: '🎯',
         skills: ['besy-structure'],
@@ -6503,6 +6507,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-5',
+        criteria: ['BESY-3.2', 'BESY-3.3'],
         title: 'Acting professionally',
         icon: '🧭',
         skills: ['besy-ethics'],
@@ -6583,6 +6588,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-6',
+        criteria: ['BESY-7.2'],
         title: 'Technology and keeping data safe',
         icon: '🔐',
         skills: ['besy-tech'],
@@ -6666,6 +6672,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-7',
+        criteria: ['BESY-3.3', 'BESY-3.4'],
         title: 'Ethics: threats and safeguards',
         icon: '⚖️',
         skills: ['besy-ethics'],
@@ -6756,6 +6763,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-8',
+        criteria: ['BESY-2.1'],
         title: 'Economic indicators: reading the data',
         icon: '📈',
         skills: ['besy-econ'],
@@ -6841,199 +6849,8 @@ window.LEARN_PATH = [
         ],
       },
       {
-        id: 'L-besy-9',
-        title: 'Sources of finance (Level 3 preview)',
-        icon: '💰',
-        skills: ['besy-finance'],
-        cards: [
-          {
-            h: 'Short-term vs long-term finance',
-            p: [
-              'The governing principle is **matching**: finance a long-life asset with long-term finance, and short-term working capital needs with short-term finance.',
-              'Funding a building on an overdraft is the classic mismatch — the overdraft is repayable on demand while the asset takes years to pay for itself.',
-              'Each source carries a different cost and a different loss of control. Borrowing must be repaid with interest; issuing shares need not be repaid but dilutes the owners.',
-            ],
-            split: {
-              left: { title: 'Short-term (< 1 year)', items: ['Bank overdraft', 'Trade credit (credit from suppliers)', 'Invoice finance (factoring/discounting)', 'Short-term bank loan'] },
-              right: { title: 'Long-term (> 1 year)', items: ['Bank loan (term loan)', 'Hire purchase', 'Leasing', 'Share capital (companies only)', 'Retained profits', 'Grants'] },
-            },
-          },
-          {
-            h: 'Debt finance',
-            p: [
-              '**Bank loan** — borrowed for a fixed term, repaid with interest. Suitable for long-term assets. May require security.',
-              '**Bank overdraft** — flexible short-term borrowing; expensive per £ borrowed but only used when needed.',
-              '**Hire purchase** — pay in instalments; business owns the asset at the end.',
-              '**Finance lease** — pay to use the asset; the lessor retains ownership throughout.',
-            ],
-            callout: { kind: 'tip', text: '**Key difference:** Hire purchase → business OWNS the asset at the end. Finance lease → business does NOT own it (it is returned or re-leased).' },
-          },
-          {
-            h: 'Equity finance',
-            p: [
-              '**Share capital** (limited companies only): raise money by issuing ordinary shares. Shareholders receive dividends. No repayment obligation — but ownership is diluted.',
-              '**Retained profits**: profits not paid as dividends, reinvested in the business. The most common internal source of finance. Free of interest.',
-              '**Owner\'s capital** (sole traders/partnerships): the owner introduces personal funds into the business.',
-            ],
-          },
-          {
-            h: 'Invoice finance',
-            p: [
-              '**Factoring**: the business sells its invoices to a factoring company, which advances up to 85% of the value immediately and collects the debts itself. Fee charged as a % of invoice value.',
-              '**Invoice discounting**: similar advance against invoices, but the business continues to collect its own debts. More confidential.',
-              'Both improve **cash flow** for businesses with large amounts tied up in trade receivables.',
-            ],
-          },
-          {
-            h: 'Matching finance to the need',
-            p: [
-              'The **matching principle** for finance: use long-term finance for long-term assets and short-term finance for short-term needs.',
-              'Using a short-term overdraft to buy a building creates **liquidity risk** — the overdraft may need to be repaid before the asset generates returns.',
-            ],
-            formula: 'Long-term asset → long-term finance (bank loan, HP, share capital) · Short-term working capital → short-term finance (overdraft, trade credit, factoring)',
-          },
-        ],
-        check: [
-          {
-            q: 'A business needs funds for the next 3 months to cover a seasonal gap in cash. Which source is MOST appropriate?',
-            opts: ['10-year bank loan', 'Share capital issue', 'Bank overdraft', 'Hire purchase'],
-            ans: 2,
-            exp: 'A bank overdraft is a short-term, flexible source of finance — ideal for covering a temporary gap. A long-term loan would be inappropriate and costly for a short-term need.',
-          },
-          {
-            q: 'Which source of finance does NOT require repayment to an external party?',
-            opts: ['Bank overdraft', 'Hire purchase', 'Retained profits', 'Trade credit'],
-            ans: 2,
-            exp: 'Retained profits are internal funds — the business reinvests its own earnings. No external party requires repayment, and no interest is charged.',
-          },
-          {
-            q: 'Under invoice factoring, who collects the debts from customers?',
-            opts: ['The business itself', 'The factoring company', 'HMRC', 'The customer\'s bank'],
-            ans: 1,
-            exp: 'With factoring, the factoring company purchases the invoices and collects the debts. Invoice discounting is different — the business continues to collect its own debts.',
-          },
-          {
-            q: 'A company buys a machine, pays monthly instalments over 3 years, and owns it outright at the end. This is:',
-            opts: ['Finance lease', 'Bank overdraft', 'Hire purchase', 'Invoice discounting'],
-            ans: 2,
-            exp: 'Hire purchase: pay in instalments; ownership transfers to the buyer at the end of the agreement. A finance lease keeps ownership with the lessor.',
-          },
-          {
-            q: 'Which source of finance is ONLY available to limited companies (not sole traders)?',
-            opts: ['Bank loan', 'Retained profits', 'Share capital', 'Bank overdraft'],
-            ans: 2,
-            exp: 'Shares can only be issued by limited companies. Sole traders have unlimited liability and cannot issue shares — they use owner\'s capital instead.',
-          },
-          {
-            q: 'The matching principle for finance states that:',
-            opts: ['All finance should be raised by issuing shares', 'Long-term assets should be funded by long-term finance', 'Overdrafts should never be used', 'Interest rates must match inflation'],
-            ans: 1,
-            exp: 'The matching principle: align the term of the finance to the duration of the asset or need. Using short-term finance for long-term assets creates refinancing (rollover) risk.',
-          },
-          {
-            q: 'Retained profits are an example of which type of finance?',
-            opts: ['Debt finance', 'External finance', 'Internal equity finance', 'Short-term finance'],
-            ans: 2,
-            exp: 'Retained profits are internal (generated within the business) and equity (no repayment obligation). They represent reinvested earnings and are the most common source of business finance.',
-          },
-        ],
-      },
-      {
-        id: 'L-besy-10',
-        title: 'Employment and consumer law',
-        icon: '⚖️',
-        skills: ['besy-law'],
-        cards: [
-          {
-            h: 'Key employment rights',
-            p: [
-              '**National Minimum Wage (NMW)**: employers must pay at least the legal minimum per hour. Rates vary by age; the National Living Wage applies to workers aged 21+.',
-              '**Working Time Regulations 1998**: maximum 48 hours per week (averaged over 17 weeks), unless the worker opts out in writing. Minimum 5.6 weeks paid holiday per year.',
-              '**Written statement of employment**: must be given within 2 months of starting; sets out key terms (pay, hours, job title, notice periods, holiday).',
-              '**Unfair dismissal**: employees with 2+ years\' service may claim unfair dismissal if dismissed without a fair reason or fair procedure.',
-            ],
-          },
-          {
-            h: 'Protection from discrimination',
-            p: [
-              'The **Equality Act 2010** protects workers from discrimination on nine protected characteristics: age, sex, race, disability, religion or belief, sexual orientation, gender reassignment, pregnancy/maternity, marriage/civil partnership.',
-              '**Direct discrimination**: treating someone less favourably because of a protected characteristic.',
-              '**Indirect discrimination**: applying a practice or policy that puts people with a protected characteristic at a disadvantage.',
-            ],
-          },
-          {
-            h: 'Consumer rights',
-            p: [
-              'The **Consumer Rights Act 2015** covers contracts between businesses and consumers for goods, services, and digital content.',
-              '**Goods** must be: of satisfactory quality; fit for purpose; as described.',
-              '**Services** must be provided with reasonable care and skill, within a reasonable time, and at a reasonable price if not agreed in advance.',
-              '**Remedies**: short-term right to reject (30 days); right to repair or replacement; right to a price reduction or final rejection.',
-            ],
-          },
-          {
-            h: 'Data protection (UK GDPR)',
-            p: [
-              'Under **UK GDPR** (retained after Brexit), personal data must be: processed lawfully, fairly and transparently; collected for specified explicit purposes; adequate, relevant and not excessive; accurate; kept only as long as necessary; kept securely.',
-              'Key rights of data subjects: right of access; right to rectification; right to erasure (right to be forgotten); right to data portability.',
-              'Organisations with 250+ employees (or processing sensitive data) must appoint a **Data Protection Officer (DPO)**.',
-            ],
-          },
-          {
-            h: 'Health and Safety at Work Act 1974',
-            p: [
-              '**Employer duties**: provide a safe workplace; safe equipment; safe systems of work; adequate information, instruction, training and supervision; a safe working environment.',
-              '**Employee duties**: take reasonable care of their own and others\' health and safety; cooperate with employer; not misuse safety equipment.',
-            ],
-            callout: { kind: 'key', text: '**Exam tip:** The key pieces of legislation to know are: Equality Act 2010, Working Time Regulations 1998, Consumer Rights Act 2015, UK GDPR, Health and Safety at Work Act 1974. Know which protects WORKERS, which protects CONSUMERS, and which protects personal DATA.' },
-          },
-        ],
-        check: [
-          {
-            q: 'Under the Working Time Regulations 1998, the maximum weekly working hours are:',
-            opts: ['40 hours a week with no exceptions', '48 hours a week, averaged, unless opted out', '60 hours if the employer requires it', '35 hours a week for all workers'],
-            ans: 1,
-            exp: 'The Working Time Regulations set a 48-hour limit, averaged over a reference period (typically 17 weeks). Workers can opt out in writing.',
-          },
-          {
-            q: 'A new employee must receive their written statement of employment particulars within:',
-            opts: ['1 week of starting', '1 month of starting', '2 months of starting', '6 months of starting'],
-            ans: 2,
-            exp: 'Employers must provide a written statement of employment particulars within 2 months of the employee\'s start date.',
-          },
-          {
-            q: 'Under the Consumer Rights Act 2015, goods must satisfy three conditions. Which of the following is NOT one of them?',
-            opts: ['Of satisfactory quality', 'Fit for purpose', 'As described', 'Delivered within 24 hours'],
-            ans: 3,
-            exp: 'The three statutory requirements are: satisfactory quality, fit for purpose, and as described. There is no automatic 24-hour delivery requirement.',
-          },
-          {
-            q: 'Under UK GDPR, which right allows a data subject to have their data deleted?',
-            opts: ['Right to rectification', 'Right to portability', 'Right to erasure', 'Right to access'],
-            ans: 2,
-            exp: 'The right to erasure (also called the right to be forgotten) allows individuals to request deletion of their personal data in certain circumstances.',
-          },
-          {
-            q: 'Which legislation protects workers from discrimination based on age, sex, and disability?',
-            opts: ['Working Time Regulations 1998', 'Equality Act 2010', 'Health and Safety at Work Act 1974', 'Consumer Rights Act 2015'],
-            ans: 1,
-            exp: 'The Equality Act 2010 protects workers and others from discrimination on nine protected characteristics, including age, sex, and disability.',
-          },
-          {
-            q: 'An employee has worked for 3 years and is dismissed without being given a reason. What may they claim?',
-            opts: ['Wrongful dismissal only (no unfair dismissal rights until 5 years)', 'Unfair dismissal (qualifying period is 2 years)', 'Nothing — employees have no rights regarding dismissal', 'Redundancy payment only'],
-            ans: 1,
-            exp: 'The qualifying period for unfair dismissal is 2 years. After 2 years\' service, employees can claim unfair dismissal if dismissed without a fair reason or procedure.',
-          },
-          {
-            q: 'Under the Health and Safety at Work Act 1974, who has primary responsibility for ensuring a safe workplace?',
-            opts: ['The government', 'The employees', 'The employer', 'The Health and Safety Executive (HSE) directly'],
-            ans: 2,
-            exp: 'The employer has primary responsibility for health and safety. Employees also have duties (to take reasonable care and cooperate), but the main duty lies with the employer.',
-          },
-        ],
-      },
-      {
         id: 'L-besy-11',
+        criteria: ['BESY-2.3'],
         title: 'The external economic environment',
         icon: '🌍',
         skills: ['besy-econ', 'besy-finance'],
@@ -7129,6 +6946,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-12',
+        criteria: ['BESY-3.1', 'BESY-3.2'],
         title: 'Technology, sustainability and stakeholders',
         icon: '💡',
         skills: ['besy-tech', 'besy-ethics'],
@@ -7219,92 +7037,456 @@ window.LEARN_PATH = [
         ],
       },
 
+      /* ── THE GAPS TAGGING REVEALED (17–20) ──────────────────────────────
+         BESY-2.2, 4.2, 4.3 and 6.1 had no teaching material. Between them they
+         cover the principles of an effective tax system, everything a business
+         must file and keep, how each structure is actually formed, and how to
+         judge a source of information — all named in the specification. */
       {
-        id: 'L-besy-13',
-        title: 'Business Law Basics',
-        icon: '⚖️',
-        skills: ['besy-structure', 'besy-ethics'],
+        id: 'L-besy-17',
+        criteria: ['BESY-2.2'],
+        title: 'Government, tax and the economy',
+        icon: '🏛️',
+        skills: ['besy-econ'],
         cards: [
           {
-            h: 'Contract law — formation',
+            h: 'How government steers an economy',
             p: [
-              'A legally binding contract requires four elements: (1) **Offer** — a proposal to be bound by specific terms; (2) **Acceptance** — unqualified agreement to the exact terms of the offer; (3) **Consideration** — something of value exchanged by each party (money, goods, services, or a promise); (4) **Intention to create legal relations** — assumed in commercial contracts.',
-              'All four elements must be present. A counter-offer destroys the original offer. Acceptance must be communicated to be effective.',
+              'A government cannot instruct businesses to invest or households to spend. What it can do is change the conditions in which those decisions are made, and it has three broad levers for doing so.',
+              '**Fiscal policy** is tax and public spending. Cutting taxes or raising spending puts money into the economy and stimulates demand; raising taxes or cutting spending takes money out and cools it. This is the lever the Chancellor operates at each Budget.',
+              '**Monetary policy** is interest rates and the money supply, set in the United Kingdom by the Bank of England\'s Monetary Policy Committee rather than by ministers. The Committee has an inflation target — 2% as measured by the Consumer Prices Index — and moves the base rate to keep inflation near it.',
+              '**Supply-side policy and regulation** work on the economy\'s capacity rather than its demand: training and education, infrastructure, competition law, employment law, planning rules. These act slowly but change what the economy is capable of producing.',
             ],
+            split: {
+              left: { title: 'Fiscal policy', items: ['Operated by the Treasury at the Budget', 'Tax rates and thresholds', 'Public spending and borrowing', 'Acts on demand relatively quickly', 'Politically visible and contested'] },
+              right: { title: 'Monetary policy', items: ['Operated by the Bank of England', 'The base rate and money supply', 'Targets CPI inflation at 2%', 'Acts on demand with a lag', 'Deliberately independent of ministers'] },
+            },
           },
           {
-            h: 'Contract terms, breach and remedies',
+            h: 'What makes a tax system effective',
             p: [
-              'A **condition** is a fundamental term — breach by one party entitles the other to terminate the contract and claim damages. A **warranty** is a less important term — breach gives a right to damages only, not termination.',
-              '**Misrepresentation** is a false statement of fact that induced the other party to enter the contract. It may allow rescission (unwinding the contract) and/or damages, depending on the type (fraudulent, negligent, or innocent).',
+              'A tax that raises revenue can still be a bad tax, and the specification names six principles for judging one. They are worth learning as a checklist, because a written task may ask you to assess a proposed tax against them.',
+              '**Equity** means the burden is distributed according to ability to pay — which is the argument for progressive income tax rates. **Fairness** is closely related but broader: taxpayers in similar circumstances should be treated similarly, and the system should not favour one group arbitrarily.',
+              '**Certainty** means a taxpayer can know in advance what they will owe. **Convenience** means paying is straightforward and timed sensibly — PAYE deducting tax as wages are paid is the clearest example.',
+              '**Economy** means the cost of collecting the tax is small relative to what it raises; a tax costing £8 to collect for every £10 gathered fails on this ground alone. **Transparency** means it is clear who is paying and how much, which is why some economists criticise indirect taxes buried in a price.',
             ],
-            example: {
-              title: 'Breach remedies at a glance',
+            table: {
+              head: ['Principle', 'The question it asks', 'A tax that meets it well'],
               rows: [
-                ['Term type', 'Effect of breach'],
-                ['Condition', 'Terminate + claim damages'],
-                ['Warranty', 'Claim damages only (cannot terminate)'],
-                ['Misrepresentation', 'Rescission and/or damages'],
+                ['Equity', 'Does it reflect ability to pay?', 'Progressive income tax'],
+                ['Fairness', 'Are similar taxpayers treated alike?', 'Corporation tax at a common rate'],
+                ['Certainty', 'Can the taxpayer know the amount in advance?', 'VAT at a fixed 20% standard rate'],
+                ['Convenience', 'Is it easy and well timed to pay?', 'PAYE deducted at source'],
+                ['Economy', 'Is collection cheap relative to yield?', 'VAT, collected by businesses'],
+                ['Transparency', 'Is it clear who pays and how much?', 'Income tax on a payslip'],
               ],
             },
           },
           {
-            h: 'Employment law essentials',
+            h: 'Where the money comes from',
             p: [
-              'Employees have statutory rights from day one: the right to a written statement of employment particulars, the national living wage (or minimum wage), and protection from unlawful discrimination (Equality Act 2010).',
-              '**Wrongful dismissal** = dismissal without giving the notice period required by the contract (a contractual remedy). **Unfair dismissal** = dismissal without a fair reason (e.g. conduct, capability, redundancy) or without following a fair procedure — employees must usually have two years\' continuous service to claim unfair dismissal.',
+              'Government raises tax from three broad sources, and the specification asks you to distinguish them.',
+              'From **individuals**: income tax on earnings, pensions and investment income; National Insurance contributions; capital gains tax on disposals; inheritance tax on estates; and council tax on domestic property.',
+              'From **businesses**: corporation tax on company profits; employer\'s National Insurance on wages; business rates on commercial premises. A sole trader\'s profits are taxed through the owner\'s income tax rather than by a separate business tax, which is one of the practical consequences of not being a separate legal entity.',
+              'Through **indirect taxes**: VAT on most goods and services, plus excise duties on fuel, alcohol and tobacco. These are called indirect because the person who bears them is not the person who pays them over. A shop collects VAT from its customers and remits it to HMRC, which makes the shop a collector rather than a taxpayer.',
             ],
+            callout: { kind: 'key', text: 'A direct tax is charged on the income or gains of the person who pays it. An indirect tax is charged on a transaction and collected by a business on HMRC\'s behalf.' },
           },
           {
-            h: 'Company law and director duties',
+            h: 'Interest rates, employment and spending',
             p: [
-              'Directors owe statutory duties to the company under the Companies Act 2006: (1) act within powers; (2) promote the success of the company; (3) exercise independent judgement; (4) exercise reasonable care, skill and diligence; (5) avoid conflicts of interest; (6) not accept benefits from third parties; (7) declare interests in transactions.',
-              'A private limited company (Ltd) must file annual accounts and a confirmation statement at Companies House. Failure to do so is a criminal offence by the directors.',
+              'The specification asks specifically about the effect of government action on three things, and they are connected in a chain worth being able to describe.',
+              'A rise in **interest rates** makes borrowing dearer and saving more attractive. Households with mortgages have less left to spend; businesses postpone investment that no longer covers its financing cost. Consumer spending falls, which is the intended effect when the aim is to bring inflation down.',
+              'Lower spending means lower demand, and lower demand eventually means lower **employment**, because businesses facing weaker order books recruit less and may cut hours or jobs. That is the cost of using interest rates against inflation, and it is why the decision is finely balanced.',
+              'Fiscal policy reaches the same variables by a different route. A cut in income tax raises take-home pay and therefore **consumer spending** directly; a rise in employer\'s National Insurance raises the cost of employing people and can reduce recruitment. Public spending on infrastructure creates employment immediately and capacity later.',
             ],
+            flow: ['Base rate rises', 'Borrowing costs rise, saving becomes attractive', 'Household and business spending falls', 'Demand weakens across the economy', 'Inflation eases, but employment is at risk'],
           },
           {
-            h: 'Data protection — UK GDPR principles',
+            h: 'What this means for a business',
             p: [
-              'Personal data must be processed in accordance with the UK GDPR (retained from EU GDPR post-Brexit). The six data protection principles require that data is: (1) **Lawful, fair and transparent**; (2) collected for a **specified, explicit purpose** (purpose limitation); (3) **adequate, relevant and limited** to what is necessary (data minimisation); (4) **accurate** and kept up to date; (5) not kept **longer than necessary** (storage limitation); (6) kept **secure** (integrity and confidentiality).',
-              'Individuals have rights including access to their data (Subject Access Request), rectification, erasure (right to be forgotten), and objection to processing.',
+              'A written task will usually not ask about policy in the abstract. It will describe a business and ask what a change in the economic environment means for it, so the skill is turning a policy change into a consequence for that particular business.',
+              'A rise in interest rates matters most to a business that is **highly borrowed** or that sells things people buy on credit — cars, kitchens, holidays. It matters least to a business with no debt selling everyday necessities.',
+              'A rise in VAT matters most to a business selling **price-sensitive discretionary** goods, because it either absorbs the increase and loses margin or passes it on and loses volume. A rise in employer\'s National Insurance matters most to a **labour-intensive** business such as a restaurant or a care home.',
+              'So the answer that earns marks names the feature of the business that makes it vulnerable, rather than restating the policy. "Interest rates have risen, which will increase costs" is worth little; "the business has a £180,000 variable-rate loan, so its finance costs will rise and its planned expansion may no longer be affordable" is worth a great deal more.',
             ],
+            examtrap: 'Do not assume every economic change is bad for every business. A rising exchange rate helps importers and hurts exporters; a recession helps discount retailers. Read what the business actually does before deciding the direction.',
           },
         ],
         check: [
           {
-            q: 'Which of the following is NOT a required element for a valid contract?',
-            opts: ['Offer', 'Acceptance', 'The agreement must be in writing', 'Consideration'],
-            ans: 2,
-            exp: 'Most contracts do not need to be in writing to be legally binding. The four required elements are: offer, acceptance, consideration, and intention to create legal relations. Writing is a formality only required for specific contracts (e.g. land sales).',
+            q: 'Who sets the Bank of England base rate?',
+            opts: ['The Monetary Policy Committee of the Bank of England', 'The Chancellor of the Exchequer at each Budget', 'HM Revenue and Customs, alongside the tax rates', 'The Treasury, on the advice of the commercial banks'],
+            ans: 0,
+            exp: 'Monetary policy is deliberately independent of ministers. The Monetary Policy Committee sets the base rate to keep CPI inflation near its 2% target; the Chancellor sets tax and spending instead.',
           },
           {
-            q: 'A condition in a contract is:',
-            opts: ['A minor term whose breach gives a right to damages only', 'A fundamental term whose breach allows termination and damages', 'Any clause relating to the price payable under the contract', 'A term implied only by the Sale of Goods Act'],
-            ans: 1,
-            exp: 'A condition is a fundamental term going to the root of the contract. Breach by one party allows the innocent party to treat the contract as terminated and also claim damages. A warranty breach gives damages only.',
+            q: 'A tax costs £8 to collect for every £10 it raises. Which principle of an effective tax system does it fail?',
+            opts: ['Economy', 'Equity', 'Certainty', 'Transparency'],
+            ans: 0,
+            exp: 'Economy is about the cost of collection being small relative to the yield. The tax might still be equitable, certain and transparent while being hopelessly uneconomic to administer.',
           },
           {
-            q: 'Under the UK GDPR, the principle of data minimisation means:',
-            opts: ['Personal data should be encrypted at all times using approved software', 'Only data that is necessary for the specified purpose should be collected', 'Data should be stored for the minimum possible number of years', 'Individuals must give explicit consent before any data is processed'],
-            ans: 1,
-            exp: 'Data minimisation requires that personal data collected is adequate, relevant, and limited to what is necessary for the purpose. Collecting more data than needed is a breach of this principle.',
+            q: 'Which of these is an indirect tax?',
+            opts: ['Value added tax on a restaurant meal', 'Income tax on a salary paid under PAYE', 'Corporation tax on a company\'s trading profit', 'Capital gains tax on the sale of shares'],
+            ans: 0,
+            exp: 'An indirect tax is charged on a transaction and collected by a business on HMRC\'s behalf, so the person bearing it is not the person paying it over. The other three are charged directly on income or gains.',
           },
           {
-            q: 'Wrongful dismissal occurs when:',
-            opts: ['An employee is dismissed for whistleblowing about illegal activity', 'The employer dismisses without giving the notice period required by the contract', 'The employer dismisses without following the statutory dismissal procedure', 'An employee is dismissed within two years of starting employment'],
-            ans: 1,
-            exp: 'Wrongful dismissal is a breach of the employment contract — specifically, dismissing without giving the contractual (or statutory minimum) notice. It is a contractual claim, not a statutory one. Unfair dismissal is the separate statutory claim requiring a fair reason and fair process.',
+            q: 'Which principle of an effective tax system does PAYE most clearly satisfy?',
+            opts: ['Convenience, because tax is deducted as wages are paid', 'Equity, because everyone pays the same amount', 'Transparency, because the rates are set annually', 'Certainty, because the employer chooses the deduction'],
+            ans: 0,
+            exp: 'Deducting at source means the taxpayer never has to calculate or remit anything, which is convenience. PAYE is progressive rather than equal, and it is the tax code rather than the employer that fixes the deduction.',
           },
           {
-            q: 'A director who uses confidential company information to make a personal profit is primarily breaching:',
-            opts: ['The Companies Act requirement to file annual accounts on time', 'The data minimisation principle under UK GDPR', 'Their duty to avoid conflicts and refuse third-party benefits', 'The requirement to exercise independent judgement only'],
-            ans: 2,
-            exp: 'Using company information for personal gain breaches the director\'s duty to avoid conflicts of interest and the duty not to accept benefits from third parties (Companies Act 2006, ss.175-176). This is also a potential breach of fiduciary duty.',
+            type: 'truefalse',
+            q: 'Identify whether each statement about government and the economy is true or false.',
+            statements: [
+              { text: 'A rise in interest rates always makes borrowing more expensive.', answer: true },
+              { text: 'Fiscal policy is set by the Bank of England.', answer: false },
+              { text: 'A sole trader pays income tax rather than corporation tax on profits.', answer: true },
+              { text: 'An indirect tax is borne by the business that remits it.', answer: false },
+            ],
+            exp: 'Fiscal policy — tax and spending — belongs to the Treasury; the Bank of England handles monetary policy. And an indirect tax is borne by the customer: the business collects it and passes it on, which is precisely what makes it indirect.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-18',
+        criteria: ['BESY-4.3'],
+        title: 'Forming a business',
+        icon: '📜',
+        skills: ['besy-structure'],
+        cards: [
+          {
+            h: 'Three very different levels of formality',
+            p: [
+              'How much has to happen before a business legally exists depends entirely on the structure chosen, and the range is wider than most people expect.',
+              'A **sole trader** does not have to be created at all. The business has no separate legal existence, so there is nothing to register into being; the owner simply starts trading and tells HMRC, registering for self assessment so that the profits can be taxed.',
+              'A **partnership** is barely more formal. Two or more people carrying on business together with a view to profit are a partnership under the Partnership Act 1890 whether or not they intended to be. There is no register to join, though the partnership must be notified to HMRC and a written partnership agreement is strongly advisable.',
+              'A **limited company** and a **limited liability partnership** are different in kind. Both are separate legal persons, and a separate legal person has to be created by registration at Companies House. Until the certificate is issued, the entity does not exist.',
+            ],
+            table: {
+              head: ['Structure', 'How it comes into existence', 'Registered where'],
+              rows: [
+                ['Sole trader', 'By starting to trade', 'HMRC only, for self assessment'],
+                ['Partnership', 'By agreement, express or implied', 'HMRC only; agreement advisable'],
+                ['LLP', 'By registration and certificate', 'Companies House, form LL IN01'],
+                ['Limited company', 'By registration and certificate', 'Companies House, form IN01'],
+              ],
+            },
+          },
+          {
+            h: 'Incorporating a company',
+            p: [
+              'Registering a company means submitting a set of documents to Companies House and paying the registration fee. Most incorporations are now done online and are completed within a day.',
+              'The **memorandum of association** is a short statement by the initial subscribers that they wish to form a company and agree to become members. Under the Companies Act 2006 it is a brief historic record rather than the substantial constitutional document it used to be.',
+              'The **articles of association** are the company\'s constitution: how directors are appointed and removed, how shares are issued and transferred, how meetings are called and voted on. A company may adopt the standard Model Articles or write its own.',
+              'The application also states the company name, the registered office address, the details of at least one director, the shareholders and their shareholdings, and the people with significant control. Companies House then issues a **certificate of incorporation**, and the company exists from the date on it.',
+            ],
+            flow: ['Choose a permitted name', 'Prepare memorandum and articles', 'File form IN01 with the officers and shareholders', 'Pay the registration fee', 'Certificate of incorporation issued — the company exists'],
+          },
+          {
+            h: 'Off-the-shelf companies',
+            p: [
+              'An **off-the-shelf** company is one that has already been registered by a company formation agent and is sitting dormant, waiting to be bought. Buying one transfers an existing company rather than creating a new one.',
+              'The attraction is speed and certainty. The company already exists, so it can contract, open a bank account and start trading immediately, and there is no risk of the registration being rejected over a name or a form. That mattered a great deal when incorporation took weeks.',
+              'The limitations are the mirror image. The name will be something meaningless that has to be changed by special resolution, the articles will be generic and may need replacing, and the existing directors and shareholders must resign and transfer their shares. Each of those steps takes time and costs money.',
+              'There is also a diligence risk. A company that has existed for some time may have a filing history, and in principle liabilities, so a buyer needs to be satisfied that it really has been dormant. Since online incorporation became same-day, the case for buying off the shelf has weakened considerably.',
+            ],
+            split: {
+              left: { title: 'Benefits', items: ['Available immediately, already registered', 'Can contract and trade at once', 'No risk of the application being rejected', 'Gives an earlier incorporation date'] },
+              right: { title: 'Limitations', items: ['Name usually has to be changed', 'Generic articles may need replacing', 'Officers must resign and shares transfer', 'Filing history must be checked', 'Often costs more than incorporating directly'] },
+            },
+          },
+          {
+            h: 'Pre-incorporation contracts',
+            p: [
+              'A company cannot make a contract before it exists, and that creates a genuine practical problem. Premises may need to be secured, equipment ordered and staff engaged before the certificate of incorporation arrives, or the business will have nothing to start with.',
+              'A **pre-incorporation contract** is an agreement entered into on the intended company\'s behalf before it is registered. The reason a promoter might need one is timing: a lease on the right unit will not stay available while Companies House processes a form.',
+              'The legal consequence is the point being examined. Because the company did not exist, it is not bound by the contract, and the **promoter who signed it is personally liable** under section 51 of the Companies Act 2006. That liability does not disappear when the company is later formed.',
+              'To escape it the company must, once incorporated, enter into a fresh contract on the same terms — a process called novation — with the other party\'s agreement. A well-advised promoter therefore either includes a clause providing for novation, or waits.',
+            ],
+            examtrap: 'A company is **not** automatically bound by a contract made on its behalf before incorporation, and it cannot ratify one. The promoter stays personally liable until a new contract replaces the old one.',
+          },
+          {
+            h: 'Choosing and displaying a business name',
+            p: [
+              'A company name is regulated in a way a sole trader\'s trading name largely is not, and the rules divide into what a name may be and where it must appear.',
+              'A name will be **refused** if it is the same as one already on the register, if it is offensive, or if its use would be a criminal offence. **Sensitive words** need approval — anything implying a connection with government, a local authority, or a regulated activity, and terms such as "Bank", "Chartered" or "Royal". A private limited company\'s name must end in "Limited" or "Ltd"; a public company\'s in "public limited company" or "plc".',
+              'Names that are merely **similar** to an existing name are allowed onto the register but can be challenged. The Company Names Tribunal can order a change where a name was adopted opportunistically, and a business with an established reputation may also sue for passing off.',
+              'The name must then be **displayed**: at the registered office and at any place of business, unless the company is dormant or exempt, and on all business letters, order forms, invoices, receipts, cheques, the website and email footers. The registered number, registered office address and place of registration must appear on stationery and the website too.',
+            ],
+            callout: { kind: 'key', text: 'Identical names are refused outright; similar names are allowed but can be challenged. Sensitive words need approval before the name can be used at all.' },
+          },
+        ],
+        check: [
+          {
+            q: 'When does a limited company legally come into existence?',
+            opts: ['On the date shown on its certificate of incorporation', 'On the date the founders agree to form it', 'On the date it first trades or issues an invoice', 'On the date HMRC registers it for corporation tax'],
+            ans: 0,
+            exp: 'A company is a separate legal person created by registration, and the certificate of incorporation states the date it exists from. Nothing before that date binds the company.',
+          },
+          {
+            q: 'Which document is a company\'s constitution, governing how directors and shares are dealt with?',
+            opts: ['The articles of association', 'The memorandum of association', 'The certificate of incorporation', 'The confirmation statement'],
+            ans: 0,
+            exp: 'The articles are the constitution. Since the Companies Act 2006 the memorandum is only a short historic statement by the subscribers, and the other two documents are not constitutional at all.',
+          },
+          {
+            q: 'A promoter signs a lease on behalf of a company that has not yet been incorporated. Who is liable?',
+            opts: ['The promoter personally, until a fresh contract replaces it', 'The company, once its certificate of incorporation is issued', 'Nobody, because a contract with a non-existent party is void', 'The landlord, for failing to check the company existed'],
+            ans: 0,
+            exp: 'Section 51 of the Companies Act 2006 makes the promoter personally liable on a pre-incorporation contract. The company cannot ratify it; a new contract on the same terms must be made instead.',
+          },
+          {
+            q: 'Which is a limitation of buying an off-the-shelf company?',
+            opts: ['The name usually has to be changed by special resolution', 'The company cannot contract until it has been renamed', 'It takes longer than registering a new company online', 'It cannot have its articles of association replaced'],
+            ans: 0,
+            exp: 'Off-the-shelf companies carry meaningless names that need changing, and the officers and shares must be transferred. They can contract immediately, which is their main attraction.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about business formation is true or false.',
+            statements: [
+              { text: 'Every sole trader must register the business at Companies House.', answer: false },
+              { text: 'An LLP is registered at Companies House and is a separate legal person.', answer: true },
+              { text: 'A name identical to one already registered is always refused.', answer: true },
+              { text: 'A partnership requires a signed written agreement before it can exist.', answer: false },
+            ],
+            exp: 'A sole trader has no separate legal existence to register — only HMRC needs telling. And a partnership arises from people carrying on business together with a view to profit, whether or not anything was ever written down, which is exactly why an agreement is advisable.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-19',
+        criteria: ['BESY-4.2'],
+        title: 'Records, filings and deadlines',
+        icon: '🗄️',
+        skills: ['besy-structure'],
+        cards: [
+          {
+            h: 'Two very different administrative burdens',
+            p: [
+              'The price of limited liability is disclosure. A sole trader keeps records for their own benefit and for HMRC; a limited company keeps them for the public as well, because the people who deal with it cannot pursue the owners personally and are entitled to information instead.',
+              'That single idea explains almost every difference in this lesson. A sole trader files one return, to one body, seen by nobody else. A company files accounts and a confirmation statement at Companies House, where anyone can read them, and a separate return to HMRC.',
+              'It is worth being able to state the trade-off, because a written task will often ask whether a business should incorporate. Limited liability and easier access to finance sit on one side; public filing, higher compliance cost and directors\' duties sit on the other.',
+              'The specification asks about sole traders and limited companies specifically, so those are the two compared throughout.',
+            ],
+            split: {
+              left: { title: 'Sole trader', items: ['No statutory books', 'Accounting records for HMRC and the owner', 'No accounts filed publicly', 'Self assessment return to HMRC', 'Records kept five years after the filing deadline'] },
+              right: { title: 'Limited company', items: ['Statutory registers must be maintained', 'Accounting records under the Companies Act', 'Accounts filed at Companies House and public', 'Confirmation statement plus a corporation tax return', 'Records kept six years from the period end'] },
+            },
+          },
+          {
+            h: 'Statutory books',
+            p: [
+              '**Statutory books** are the registers a company must keep about itself. They are not accounting records and they contain no figures; they record who owns and runs the company, which is information the public and the shareholders are entitled to.',
+              'The registers are the register of members, the register of directors, the register of directors\' residential addresses, the register of secretaries where one is appointed, the register of people with significant control, and the register of charges over the company\'s assets.',
+              'A company must also keep **minutes** of general meetings and of directors\' meetings, retaining them for at least ten years. Minutes are the evidence that a decision was properly taken, which matters if a decision is later questioned.',
+              'A sole trader has no statutory books, because there is no separate entity to record ownership of and nobody outside the business with a right to know. This is one of the clearest single differences between the two structures.',
+            ],
+            table: {
+              head: ['Register', 'What it records'],
+              rows: [
+                ['Register of members', 'Shareholders, their holdings and transfers'],
+                ['Register of directors', 'Names, service addresses and dates of appointment'],
+                ['Register of directors\' residential addresses', 'Home addresses, kept off the public record'],
+                ['Register of secretaries', 'The company secretary, where one is appointed'],
+                ['PSC register', 'People with significant control over the company'],
+                ['Register of charges', 'Security given over the company\'s assets'],
+              ],
+            },
+          },
+          {
+            h: 'Accounting and tax records',
+            p: [
+              'Both structures must keep records adequate to show and explain their transactions, and both must keep them long enough for HMRC to check.',
+              'The records themselves are similar in substance: sales and purchase invoices, bank statements, records of cash received and paid, details of assets and liabilities, stocktaking figures, and payroll and VAT records where those apply. A company\'s obligation is imposed by the Companies Act and is enforceable against the directors personally.',
+              'The **retention periods differ**, and this is examinable. A sole trader must keep records for five years after the 31 January self assessment filing deadline for that tax year. A company must keep them for six years from the end of the accounting period they relate to.',
+              'VAT records must be kept for six years by anyone registered, whatever the structure, and payroll records for at least three years from the end of the tax year — though most businesses keep everything for six to be safe.',
+            ],
+            examtrap: 'Retention runs from different starting points. Five years from the sole trader\'s filing deadline is not five years from the year end, and a company\'s six years runs from the end of the accounting period rather than from the filing date.',
+          },
+          {
+            h: 'What gets filed, and when',
+            p: [
+              'A sole trader files one thing: a **self assessment tax return**, due by 31 January following the end of the tax year for an online return, with the tax payable on the same date. Nothing is published and no other body is involved.',
+              'A company files at two places. At **Companies House** it files annual accounts — within nine months of the accounting reference date for a private company, six for a public one — and a **confirmation statement** at least once every twelve months, confirming that the registered details are still correct.',
+              'The confirmation statement replaced the old annual return in 2016. The specification still uses the phrase "annual returns", so recognise both terms: the confirmation statement is what is actually filed, and it confirms rather than restates the company\'s information.',
+              'At **HMRC** a company files a corporation tax return within twelve months of the end of its accounting period, but pays the tax earlier — nine months and one day after the period end. Paying later than filing is a common and expensive misunderstanding.',
+            ],
+            table: {
+              head: ['Who files', 'What', 'To whom', 'Deadline'],
+              rows: [
+                ['Sole trader', 'Self assessment return', 'HMRC', '31 January after the tax year'],
+                ['Company', 'Annual accounts', 'Companies House', '9 months after the period end'],
+                ['Company', 'Confirmation statement', 'Companies House', 'At least every 12 months'],
+                ['Company', 'Corporation tax return', 'HMRC', '12 months after the period end'],
+                ['Company', 'Corporation tax payment', 'HMRC', '9 months and 1 day after the period end'],
+              ],
+            },
+          },
+          {
+            h: 'Filing electronically',
+            p: [
+              'Filing is now overwhelmingly digital, and in several cases digital filing is compulsory rather than merely available.',
+              '**Making Tax Digital for VAT** applies to all VAT-registered businesses: records must be kept digitally and returns submitted through compatible software, not by typing figures into a web form. **Making Tax Digital for Income Tax** is being phased in for the self-employed and landlords by level of qualifying income, starting with those above £50,000 from April 2026 and extending to lower thresholds in the following years.',
+              'Company **corporation tax returns must be filed online**, with the accounts and computations tagged in iXBRL so that HMRC software can read the figures. Companies House accepts online filing for accounts and confirmation statements and increasingly requires it.',
+              'The practical consequences for a finance function are real: compatible software has to be chosen and paid for, staff have to be trained, and records have to be captured digitally from the start rather than written up from paper at the year end. Penalties for late filing are automatic, so the deadlines matter more than they once did.',
+            ],
+            callout: { kind: 'key', text: 'Digital filing is not just a convenience. For VAT it is a legal requirement, for corporation tax returns it is compulsory, and the penalties for missing a deadline apply automatically.' },
+          },
+        ],
+        check: [
+          {
+            q: 'How long must a limited company keep its accounting records?',
+            opts: ['Six years from the end of the accounting period', 'Five years from the end of the accounting period', 'Six years from the date the accounts are filed', 'Three years from the end of the accounting period'],
+            ans: 0,
+            exp: 'A company keeps records for six years from the end of the period they relate to. A sole trader\'s period is five years, and it runs from the 31 January filing deadline rather than from the year end.',
+          },
+          {
+            q: 'Which of these must a limited company maintain but a sole trader need not?',
+            opts: ['A register of people with significant control', 'Records of sales and purchase invoices', 'Bank statements and records of cash received', 'Payroll records for employees'],
+            ans: 0,
+            exp: 'The statutory registers exist because a company is a separate legal person whose ownership and control are matters of public record. All three of the other items are needed by any business with those transactions.',
+          },
+          {
+            q: 'A private company\'s accounting period ends on 31 December. When must the accounts reach Companies House?',
+            opts: ['By 30 September the following year', 'By 31 December the following year', 'By 30 June the following year', 'By 31 January the following year'],
+            ans: 0,
+            exp: 'Private company accounts are due nine months after the accounting reference date, so nine months from 31 December is 30 September. A public company has six months.',
+          },
+          {
+            q: 'What replaced the company annual return in 2016?',
+            opts: ['The confirmation statement', 'The corporation tax return', 'The register of significant control', 'The iXBRL tagged accounts'],
+            ans: 0,
+            exp: 'The confirmation statement confirms that the registered details remain correct, rather than restating them as the annual return did. The specification still uses the older term, so recognise both.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about records and filings is true or false.',
+            statements: [
+              { text: 'A sole trader files annual accounts at Companies House.', answer: false },
+              { text: 'Corporation tax is payable before the tax return is due.', answer: true },
+              { text: 'All VAT-registered businesses must keep digital records under MTD.', answer: true },
+              { text: 'Company minutes must be retained for three years.', answer: false },
+            ],
+            exp: 'A sole trader files nothing publicly — only a self assessment return to HMRC. And minutes must be kept for at least ten years, because they are the evidence that a decision was properly taken.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-20',
+        criteria: ['BESY-6.1'],
+        title: 'Judging a source of information',
+        icon: '🔍',
+        skills: ['besy-comms'],
+        cards: [
+          {
+            h: 'Why the source is part of the answer',
+            p: [
+              'A finance function spends much of its time answering questions with information it did not generate itself: what are competitors charging, what is happening to material prices, what does the law now require. The quality of the answer depends entirely on where the information came from.',
+              'The specification asks you to distinguish **valid** from **invalid** sources, **primary** from **secondary** ones, to explain why more than one source is better than one, to recognise sources when producing information, and to choose information for a specific purpose. Those five are the whole criterion.',
+              'The stakes are practical rather than academic. A price list found on an out-of-date web page, a statistic quoted without its date, or a figure taken from a competitor\'s marketing material can all lead a business to a decision it would not otherwise have made.',
+              'And in a written task, saying where a figure came from is often worth a mark in itself. An answer that states "according to the Office for National Statistics" is doing something an answer that just asserts a number is not.',
+            ],
+            callout: { kind: 'key', text: 'Information without a source is an assertion. Naming where it came from is what turns it into evidence.' },
+          },
+          {
+            h: 'Valid and invalid sources',
+            p: [
+              'A **valid** source is one you have reason to trust: it is authoritative on the subject, it is current, it is identifiable, and it has no obvious interest in misleading you.',
+              'Government and regulatory bodies score well on all four — the Office for National Statistics, HMRC, the Bank of England, Companies House. So do professional bodies such as AAT and ICAEW, audited financial statements, and reputable trade or financial press.',
+              '**Invalid** or unreliable sources fail one of the tests. Anonymous websites and unattributed social media posts are unidentifiable. Marketing material and press releases have an interest. Wikipedia and similar are useful for orientation but are not authoritative for a figure you will act on. And anything undated may simply be out of date.',
+              'The commonest failure in practice is not fabrication but **staleness**. A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher.',
+            ],
+            split: {
+              left: { title: 'Generally valid', items: ['Office for National Statistics', 'HMRC and government departments', 'Bank of England', 'Audited financial statements', 'Professional bodies such as AAT', 'Established financial press'] },
+              right: { title: 'Treat with caution', items: ['Anonymous or undated websites', 'Social media posts', 'Competitors\' marketing material', 'Wikipedia and open-edit sources', 'Company press releases', 'Anything you cannot attribute'] },
+            },
+          },
+          {
+            h: 'Primary and secondary sources',
+            p: [
+              'A **primary** source is information you gather yourself, first hand, for your own purpose. A **secondary** source is information somebody else gathered, which you are now reusing.',
+              'Primary examples in a finance context: your own sales records, a customer survey you ran, prices you collected by ringing round suppliers, a stock count you performed. The advantages are that it answers exactly the question you asked, it is current, and you know how it was collected.',
+              'Secondary examples: published industry statistics, a competitor\'s filed accounts, a trade association report, government data. The advantages are cost and speed — the work has already been done — and often scale, since no small business could gather national data itself.',
+              'The trade-off is control. Primary information is expensive and slow to gather but fits the question; secondary information is cheap and quick but was collected for somebody else\'s purpose, may be defined differently from what you need, and may be out of date.',
+            ],
+            table: {
+              head: ['', 'Primary', 'Secondary'],
+              rows: [
+                ['Who gathered it', 'You, for this purpose', 'Someone else, for theirs'],
+                ['Cost and time', 'High', 'Low'],
+                ['Fit to the question', 'Exact', 'Approximate'],
+                ['Currency', 'As current as you make it', 'As current as its publication date'],
+                ['Examples', 'Own sales data, a survey you ran', 'ONS data, competitor accounts'],
+              ],
+            },
+          },
+          {
+            h: 'Why more than one source',
+            p: [
+              'Using a second source is not duplicated effort. It does three distinct things, and a written answer that names them will earn more than one that simply says two sources are better.',
+              'It **corroborates**. Two independent sources agreeing makes the figure much more likely to be right, and the moment they disagree you know to investigate rather than proceeding on a number that might be wrong.',
+              'It **fills gaps and adds perspective**. No single source covers everything: national statistics give the trend but not your region, a trade association report gives the sector but not the individual competitor. Together they build a picture neither gives alone.',
+              'It **reduces bias**. Every source has a point of view, and a supplier\'s price list, a competitor\'s accounts and an independent survey will emphasise different things. Triangulating between them is how you get closer to the position rather than to somebody\'s presentation of it.',
+            ],
+            flow: ['Identify what you need to know', 'Find an authoritative primary or secondary source', 'Corroborate with a second, independent source', 'Investigate any disagreement', 'Cite both when you report'],
+          },
+          {
+            h: 'Choosing information for a purpose',
+            p: [
+              'The final skill is selection: given more information than you need, picking what actually answers the question. Assessment tasks deliberately supply surplus material to see whether you can.',
+              'Work backwards from the decision. If the question is whether to accept a one-off order, you need the incremental costs and the price offered — not the annual overhead apportionment or last year\'s sales mix. If the question is whether to raise prices, you need competitor prices and demand sensitivity, not the payroll analysis.',
+              'Then check three things about each candidate figure: is it **relevant** to this decision, is it **current** enough to act on, and is it **reliable** enough to stake the decision on. A figure failing any of the three should be left out, and saying why you left it out is often itself worth a mark.',
+              'Finally, report the source alongside the figure. "Materials cost £3.50 per kilogram (supplier quotation, 14 July)" tells the reader how much weight to place on it; "materials cost £3.50" does not.',
+            ],
+            examtrap: 'Including every figure you were given is not thoroughness, it is a failure to select. Written tasks award marks for using the relevant information, and irrelevant material can actively obscure the answer.',
+          },
+        ],
+        check: [
+          {
+            q: 'Which of these is a primary source of information?',
+            opts: ['A customer survey the business ran itself', 'Industry statistics published by a trade association', 'A competitor\'s accounts filed at Companies House', 'Inflation figures from the Office for National Statistics'],
+            ans: 0,
+            exp: 'Primary information is gathered first hand for your own purpose. The other three were all collected by someone else for their own purposes and are being reused, which makes them secondary.',
+          },
+          {
+            q: 'What is the main advantage of using a secondary source rather than a primary one?',
+            opts: ['It is cheaper and faster, since the work is already done', 'It fits the question more precisely, as it was defined for it', 'It is more current, given that publication is continuous', 'It needs no attribution, because the publisher is known'],
+            ans: 0,
+            exp: 'Cost and speed are the advantages, along with scale. The trade-off is fit and currency: secondary data was defined for somebody else\'s purpose and is only as current as its publication date.',
+          },
+          {
+            q: 'Which is the strongest reason for corroborating a figure with a second source?',
+            opts: ['Disagreement between sources signals that investigation is needed', 'It doubles the volume of evidence in the report', 'It removes the need to check the date of publication', 'Two sources are always more current than one'],
+            ans: 0,
+            exp: 'Agreement raises confidence and disagreement is itself information — it tells you to look harder before acting. Volume alone adds nothing, and a second source does not make either one more current.',
+          },
+          {
+            q: 'A statistic is published by a reliable body but carries no date. What is the main concern?',
+            opts: ['It may be out of date and no longer describe the position', 'It cannot be attributed to an identifiable publisher', 'The publisher has an interest in the figure being high', 'It is a primary source being used as a secondary one'],
+            ans: 0,
+            exp: 'Staleness is the commonest failure in practice, and it affects reliable publishers as much as anyone. The source is identifiable and independent here — what is missing is any way to judge currency.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about sources of information is true or false.',
+            statements: [
+              { text: 'A competitor\'s filed accounts are a secondary source.', answer: true },
+              { text: 'Marketing material is a valid source for a competitor\'s pricing strategy.', answer: false },
+              { text: 'Naming the source of a figure can itself earn marks.', answer: true },
+              { text: 'Presenting the whole set of figures supplied demonstrates thoroughness.', answer: false },
+            ],
+            exp: 'Marketing material has an obvious interest in how it presents things, so it is evidence of what a competitor wants said rather than of what is true. And selecting the relevant figures is the skill being assessed — using all of them shows the opposite.',
           },
         ],
       },
       {
         id: 'L-besy-14',
+        criteria: [],
         title: 'Bridge to Level 3 — Tax & Business Awareness',
         icon: '🌉',
         skills: ['besy-structure', 'besy-ethics'],
@@ -7394,6 +7576,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-15',
+        criteria: ['BESY-6.2', 'BESY-6.3'],
         title: 'Business communication and planning',
         icon: '✉️',
         skills: ['besy-comms'],
@@ -7459,6 +7642,7 @@ window.LEARN_PATH = [
       },
       {
         id: 'L-besy-16',
+        criteria: ['BESY-5.1', 'BESY-5.2', 'BESY-5.3', 'BESY-7.1'],
         title: 'The finance function and its information',
         icon: '🏛️',
         skills: ['besy-finance'],
@@ -9327,6 +9511,285 @@ window.LEARN_PATH = [
             ],
             ans: 1,
             exp: 'Porter\'s Five Forces analyses the structural attractiveness of an industry by examining five sources of competitive pressure: existing rivalry, new entrants, substitutes, buyer power, and supplier power.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-9',
+        criteria: [],
+        title: 'Sources of finance (Level 3 preview)',
+        icon: '💰',
+        skills: ['besy-finance'],
+        cards: [
+          {
+            h: 'Short-term vs long-term finance',
+            p: [
+              'The governing principle is **matching**: finance a long-life asset with long-term finance, and short-term working capital needs with short-term finance.',
+              'Funding a building on an overdraft is the classic mismatch — the overdraft is repayable on demand while the asset takes years to pay for itself.',
+              'Each source carries a different cost and a different loss of control. Borrowing must be repaid with interest; issuing shares need not be repaid but dilutes the owners.',
+            ],
+            split: {
+              left: { title: 'Short-term (< 1 year)', items: ['Bank overdraft', 'Trade credit (credit from suppliers)', 'Invoice finance (factoring/discounting)', 'Short-term bank loan'] },
+              right: { title: 'Long-term (> 1 year)', items: ['Bank loan (term loan)', 'Hire purchase', 'Leasing', 'Share capital (companies only)', 'Retained profits', 'Grants'] },
+            },
+          },
+          {
+            h: 'Debt finance',
+            p: [
+              '**Bank loan** — borrowed for a fixed term, repaid with interest. Suitable for long-term assets. May require security.',
+              '**Bank overdraft** — flexible short-term borrowing; expensive per £ borrowed but only used when needed.',
+              '**Hire purchase** — pay in instalments; business owns the asset at the end.',
+              '**Finance lease** — pay to use the asset; the lessor retains ownership throughout.',
+            ],
+            callout: { kind: 'tip', text: '**Key difference:** Hire purchase → business OWNS the asset at the end. Finance lease → business does NOT own it (it is returned or re-leased).' },
+          },
+          {
+            h: 'Equity finance',
+            p: [
+              '**Share capital** (limited companies only): raise money by issuing ordinary shares. Shareholders receive dividends. No repayment obligation — but ownership is diluted.',
+              '**Retained profits**: profits not paid as dividends, reinvested in the business. The most common internal source of finance. Free of interest.',
+              '**Owner\'s capital** (sole traders/partnerships): the owner introduces personal funds into the business.',
+            ],
+          },
+          {
+            h: 'Invoice finance',
+            p: [
+              '**Factoring**: the business sells its invoices to a factoring company, which advances up to 85% of the value immediately and collects the debts itself. Fee charged as a % of invoice value.',
+              '**Invoice discounting**: similar advance against invoices, but the business continues to collect its own debts. More confidential.',
+              'Both improve **cash flow** for businesses with large amounts tied up in trade receivables.',
+            ],
+          },
+          {
+            h: 'Matching finance to the need',
+            p: [
+              'The **matching principle** for finance: use long-term finance for long-term assets and short-term finance for short-term needs.',
+              'Using a short-term overdraft to buy a building creates **liquidity risk** — the overdraft may need to be repaid before the asset generates returns.',
+            ],
+            formula: 'Long-term asset → long-term finance (bank loan, HP, share capital) · Short-term working capital → short-term finance (overdraft, trade credit, factoring)',
+          },
+        ],
+        check: [
+          {
+            q: 'A business needs funds for the next 3 months to cover a seasonal gap in cash. Which source is MOST appropriate?',
+            opts: ['10-year bank loan', 'Share capital issue', 'Bank overdraft', 'Hire purchase'],
+            ans: 2,
+            exp: 'A bank overdraft is a short-term, flexible source of finance — ideal for covering a temporary gap. A long-term loan would be inappropriate and costly for a short-term need.',
+          },
+          {
+            q: 'Which source of finance does NOT require repayment to an external party?',
+            opts: ['Bank overdraft', 'Hire purchase', 'Retained profits', 'Trade credit'],
+            ans: 2,
+            exp: 'Retained profits are internal funds — the business reinvests its own earnings. No external party requires repayment, and no interest is charged.',
+          },
+          {
+            q: 'Under invoice factoring, who collects the debts from customers?',
+            opts: ['The business itself', 'The factoring company', 'HMRC', 'The customer\'s bank'],
+            ans: 1,
+            exp: 'With factoring, the factoring company purchases the invoices and collects the debts. Invoice discounting is different — the business continues to collect its own debts.',
+          },
+          {
+            q: 'A company buys a machine, pays monthly instalments over 3 years, and owns it outright at the end. This is:',
+            opts: ['Finance lease', 'Bank overdraft', 'Hire purchase', 'Invoice discounting'],
+            ans: 2,
+            exp: 'Hire purchase: pay in instalments; ownership transfers to the buyer at the end of the agreement. A finance lease keeps ownership with the lessor.',
+          },
+          {
+            q: 'Which source of finance is ONLY available to limited companies (not sole traders)?',
+            opts: ['Bank loan', 'Retained profits', 'Share capital', 'Bank overdraft'],
+            ans: 2,
+            exp: 'Shares can only be issued by limited companies. Sole traders have unlimited liability and cannot issue shares — they use owner\'s capital instead.',
+          },
+          {
+            q: 'The matching principle for finance states that:',
+            opts: ['All finance should be raised by issuing shares', 'Long-term assets should be funded by long-term finance', 'Overdrafts should never be used', 'Interest rates must match inflation'],
+            ans: 1,
+            exp: 'The matching principle: align the term of the finance to the duration of the asset or need. Using short-term finance for long-term assets creates refinancing (rollover) risk.',
+          },
+          {
+            q: 'Retained profits are an example of which type of finance?',
+            opts: ['Debt finance', 'External finance', 'Internal equity finance', 'Short-term finance'],
+            ans: 2,
+            exp: 'Retained profits are internal (generated within the business) and equity (no repayment obligation). They represent reinvested earnings and are the most common source of business finance.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-10',
+        criteria: [],
+        title: 'Employment and consumer law (Level 3 preview)',
+        icon: '⚖️',
+        skills: ['besy-law'],
+        cards: [
+          {
+            h: 'Key employment rights',
+            p: [
+              '**National Minimum Wage (NMW)**: employers must pay at least the legal minimum per hour. Rates vary by age; the National Living Wage applies to workers aged 21+.',
+              '**Working Time Regulations 1998**: maximum 48 hours per week (averaged over 17 weeks), unless the worker opts out in writing. Minimum 5.6 weeks paid holiday per year.',
+              '**Written statement of employment**: must be given within 2 months of starting; sets out key terms (pay, hours, job title, notice periods, holiday).',
+              '**Unfair dismissal**: employees with 2+ years\' service may claim unfair dismissal if dismissed without a fair reason or fair procedure.',
+            ],
+          },
+          {
+            h: 'Protection from discrimination',
+            p: [
+              'The **Equality Act 2010** protects workers from discrimination on nine protected characteristics: age, sex, race, disability, religion or belief, sexual orientation, gender reassignment, pregnancy/maternity, marriage/civil partnership.',
+              '**Direct discrimination**: treating someone less favourably because of a protected characteristic.',
+              '**Indirect discrimination**: applying a practice or policy that puts people with a protected characteristic at a disadvantage.',
+            ],
+          },
+          {
+            h: 'Consumer rights',
+            p: [
+              'The **Consumer Rights Act 2015** covers contracts between businesses and consumers for goods, services, and digital content.',
+              '**Goods** must be: of satisfactory quality; fit for purpose; as described.',
+              '**Services** must be provided with reasonable care and skill, within a reasonable time, and at a reasonable price if not agreed in advance.',
+              '**Remedies**: short-term right to reject (30 days); right to repair or replacement; right to a price reduction or final rejection.',
+            ],
+          },
+          {
+            h: 'Data protection (UK GDPR)',
+            p: [
+              'Under **UK GDPR** (retained after Brexit), personal data must be: processed lawfully, fairly and transparently; collected for specified explicit purposes; adequate, relevant and not excessive; accurate; kept only as long as necessary; kept securely.',
+              'Key rights of data subjects: right of access; right to rectification; right to erasure (right to be forgotten); right to data portability.',
+              'Organisations with 250+ employees (or processing sensitive data) must appoint a **Data Protection Officer (DPO)**.',
+            ],
+          },
+          {
+            h: 'Health and Safety at Work Act 1974',
+            p: [
+              '**Employer duties**: provide a safe workplace; safe equipment; safe systems of work; adequate information, instruction, training and supervision; a safe working environment.',
+              '**Employee duties**: take reasonable care of their own and others\' health and safety; cooperate with employer; not misuse safety equipment.',
+            ],
+            callout: { kind: 'key', text: '**Exam tip:** The key pieces of legislation to know are: Equality Act 2010, Working Time Regulations 1998, Consumer Rights Act 2015, UK GDPR, Health and Safety at Work Act 1974. Know which protects WORKERS, which protects CONSUMERS, and which protects personal DATA.' },
+          },
+        ],
+        check: [
+          {
+            q: 'Under the Working Time Regulations 1998, the maximum weekly working hours are:',
+            opts: ['40 hours a week with no exceptions', '48 hours a week, averaged, unless opted out', '60 hours if the employer requires it', '35 hours a week for all workers'],
+            ans: 1,
+            exp: 'The Working Time Regulations set a 48-hour limit, averaged over a reference period (typically 17 weeks). Workers can opt out in writing.',
+          },
+          {
+            q: 'A new employee must receive their written statement of employment particulars within:',
+            opts: ['1 week of starting', '1 month of starting', '2 months of starting', '6 months of starting'],
+            ans: 2,
+            exp: 'Employers must provide a written statement of employment particulars within 2 months of the employee\'s start date.',
+          },
+          {
+            q: 'Under the Consumer Rights Act 2015, goods must satisfy three conditions. Which of the following is NOT one of them?',
+            opts: ['Of satisfactory quality', 'Fit for purpose', 'As described', 'Delivered within 24 hours'],
+            ans: 3,
+            exp: 'The three statutory requirements are: satisfactory quality, fit for purpose, and as described. There is no automatic 24-hour delivery requirement.',
+          },
+          {
+            q: 'Under UK GDPR, which right allows a data subject to have their data deleted?',
+            opts: ['Right to rectification', 'Right to portability', 'Right to erasure', 'Right to access'],
+            ans: 2,
+            exp: 'The right to erasure (also called the right to be forgotten) allows individuals to request deletion of their personal data in certain circumstances.',
+          },
+          {
+            q: 'Which legislation protects workers from discrimination based on age, sex, and disability?',
+            opts: ['Working Time Regulations 1998', 'Equality Act 2010', 'Health and Safety at Work Act 1974', 'Consumer Rights Act 2015'],
+            ans: 1,
+            exp: 'The Equality Act 2010 protects workers and others from discrimination on nine protected characteristics, including age, sex, and disability.',
+          },
+          {
+            q: 'An employee has worked for 3 years and is dismissed without being given a reason. What may they claim?',
+            opts: ['Wrongful dismissal only (no unfair dismissal rights until 5 years)', 'Unfair dismissal (qualifying period is 2 years)', 'Nothing — employees have no rights regarding dismissal', 'Redundancy payment only'],
+            ans: 1,
+            exp: 'The qualifying period for unfair dismissal is 2 years. After 2 years\' service, employees can claim unfair dismissal if dismissed without a fair reason or procedure.',
+          },
+          {
+            q: 'Under the Health and Safety at Work Act 1974, who has primary responsibility for ensuring a safe workplace?',
+            opts: ['The government', 'The employees', 'The employer', 'The Health and Safety Executive (HSE) directly'],
+            ans: 2,
+            exp: 'The employer has primary responsibility for health and safety. Employees also have duties (to take reasonable care and cooperate), but the main duty lies with the employer.',
+          },
+        ],
+      },
+      {
+        id: 'L-besy-13',
+        criteria: [],
+        title: 'Business law beyond contract (Level 3 preview)',
+        icon: '⚖️',
+        skills: ['besy-structure', 'besy-ethics'],
+        cards: [
+          {
+            h: 'Contract law — formation',
+            p: [
+              'A legally binding contract requires four elements: (1) **Offer** — a proposal to be bound by specific terms; (2) **Acceptance** — unqualified agreement to the exact terms of the offer; (3) **Consideration** — something of value exchanged by each party (money, goods, services, or a promise); (4) **Intention to create legal relations** — assumed in commercial contracts.',
+              'All four elements must be present. A counter-offer destroys the original offer. Acceptance must be communicated to be effective.',
+            ],
+          },
+          {
+            h: 'Contract terms, breach and remedies',
+            p: [
+              'A **condition** is a fundamental term — breach by one party entitles the other to terminate the contract and claim damages. A **warranty** is a less important term — breach gives a right to damages only, not termination.',
+              '**Misrepresentation** is a false statement of fact that induced the other party to enter the contract. It may allow rescission (unwinding the contract) and/or damages, depending on the type (fraudulent, negligent, or innocent).',
+            ],
+            example: {
+              title: 'Breach remedies at a glance',
+              rows: [
+                ['Term type', 'Effect of breach'],
+                ['Condition', 'Terminate + claim damages'],
+                ['Warranty', 'Claim damages only (cannot terminate)'],
+                ['Misrepresentation', 'Rescission and/or damages'],
+              ],
+            },
+          },
+          {
+            h: 'Employment law essentials',
+            p: [
+              'Employees have statutory rights from day one: the right to a written statement of employment particulars, the national living wage (or minimum wage), and protection from unlawful discrimination (Equality Act 2010).',
+              '**Wrongful dismissal** = dismissal without giving the notice period required by the contract (a contractual remedy). **Unfair dismissal** = dismissal without a fair reason (e.g. conduct, capability, redundancy) or without following a fair procedure — employees must usually have two years\' continuous service to claim unfair dismissal.',
+            ],
+          },
+          {
+            h: 'Company law and director duties',
+            p: [
+              'Directors owe statutory duties to the company under the Companies Act 2006: (1) act within powers; (2) promote the success of the company; (3) exercise independent judgement; (4) exercise reasonable care, skill and diligence; (5) avoid conflicts of interest; (6) not accept benefits from third parties; (7) declare interests in transactions.',
+              'A private limited company (Ltd) must file annual accounts and a confirmation statement at Companies House. Failure to do so is a criminal offence by the directors.',
+            ],
+          },
+          {
+            h: 'Data protection — UK GDPR principles',
+            p: [
+              'Personal data must be processed in accordance with the UK GDPR (retained from EU GDPR post-Brexit). The six data protection principles require that data is: (1) **Lawful, fair and transparent**; (2) collected for a **specified, explicit purpose** (purpose limitation); (3) **adequate, relevant and limited** to what is necessary (data minimisation); (4) **accurate** and kept up to date; (5) not kept **longer than necessary** (storage limitation); (6) kept **secure** (integrity and confidentiality).',
+              'Individuals have rights including access to their data (Subject Access Request), rectification, erasure (right to be forgotten), and objection to processing.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'Which of the following is NOT a required element for a valid contract?',
+            opts: ['Offer', 'Acceptance', 'The agreement must be in writing', 'Consideration'],
+            ans: 2,
+            exp: 'Most contracts do not need to be in writing to be legally binding. The four required elements are: offer, acceptance, consideration, and intention to create legal relations. Writing is a formality only required for specific contracts (e.g. land sales).',
+          },
+          {
+            q: 'A condition in a contract is:',
+            opts: ['A minor term whose breach gives a right to damages only', 'A fundamental term whose breach allows termination and damages', 'Any clause relating to the price payable under the contract', 'A term implied only by the Sale of Goods Act'],
+            ans: 1,
+            exp: 'A condition is a fundamental term going to the root of the contract. Breach by one party allows the innocent party to treat the contract as terminated and also claim damages. A warranty breach gives damages only.',
+          },
+          {
+            q: 'Under the UK GDPR, the principle of data minimisation means:',
+            opts: ['Personal data should be encrypted at all times using approved software', 'Only data that is necessary for the specified purpose should be collected', 'Data should be stored for the minimum possible number of years', 'Individuals must give explicit consent before any data is processed'],
+            ans: 1,
+            exp: 'Data minimisation requires that personal data collected is adequate, relevant, and limited to what is necessary for the purpose. Collecting more data than needed is a breach of this principle.',
+          },
+          {
+            q: 'Wrongful dismissal occurs when:',
+            opts: ['An employee is dismissed for whistleblowing about illegal activity', 'The employer dismisses without giving the notice period required by the contract', 'The employer dismisses without following the statutory dismissal procedure', 'An employee is dismissed within two years of starting employment'],
+            ans: 1,
+            exp: 'Wrongful dismissal is a breach of the employment contract — specifically, dismissing without giving the contractual (or statutory minimum) notice. It is a contractual claim, not a statutory one. Unfair dismissal is the separate statutory claim requiring a fair reason and fair process.',
+          },
+          {
+            q: 'A director who uses confidential company information to make a personal profit is primarily breaching:',
+            opts: ['The Companies Act requirement to file annual accounts on time', 'The data minimisation principle under UK GDPR', 'Their duty to avoid conflicts and refuse third-party benefits', 'The requirement to exercise independent judgement only'],
+            ans: 2,
+            exp: 'Using company information for personal gain breaches the director\'s duty to avoid conflicts of interest and the duty not to accept benefits from third parties (Companies Act 2006, ss.175-176). This is also a potential breach of fiduciary duty.',
           },
         ],
       },
