@@ -53,6 +53,7 @@ function loadBrowser(file) {
 }
 const BANK = loadBrowser('data.js').ALL_QUESTIONS || [];
 const PATH_UNITS = loadBrowser('learn-data.js').LEARN_PATH || [];
+const SKILLS = loadBrowser('skills.js').SKILLS || {};
 
 /* The four units of the Level 2 qualification. learn-data.js also carries short
    preview units for Level 3 subjects (faps, mats, tpfb, buaw); those are
@@ -543,6 +544,71 @@ L2_UNITS.forEach(u => {
              (COVERAGE_ENFORCED.indexOf(u) !== -1 ? ' · ENFORCED' : ' · not yet enforced') +
              (missing.length && have ? ` · missing ${missing.map(c => c.id).join(', ')}` : ''));
 });
+
+/* ── 6b. Question coverage, per criterion ────────────────────────────────────
+   Section 6 proves every criterion is TAUGHT. It says nothing about whether any
+   of it can be PRACTISED, and the two came apart badly: after v1.15.0 tagged
+   the lessons, five criteria had a lesson and not one question behind it —
+   including the whole of Principles of Costing outcome 4, a tenth of that
+   assessment, and criterion 4.1 of Introduction to Bookkeeping, entering
+   receipts and payments into an analysed cash book. Thirteen more had fewer
+   than four. Two Business Environment lessons had no check questions either,
+   which is how criterion 5.3 came to be taught and never tested at all.
+
+   The floors below are a ratchet in the same style as DEPTH_ENFORCED: each is
+   set at what the criterion now has, so the gap cannot silently reopen. Only
+   criteria carrying an explicit `criteria` tag on their questions are counted.
+   Tagging the whole bank retrospectively would mean guessing, and a wrong tag
+   is worse than an absent one — so the list grows as questions are written or
+   audited rather than being backfilled by regex. */
+const QUESTION_FLOORS = {
+  'ITBK-1.3': 5, 'ITBK-4.1': 7, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
+  'POBC-4.1': 7, 'POBC-4.2': 7,
+  'POC-1.3': 5, 'POC-1.4': 6, 'POC-2.2': 9, 'POC-3.2': 6, 'POC-4.1': 8, 'POC-4.2': 7,
+  'BESY-1.1': 5, 'BESY-1.2': 4, 'BESY-1.4': 4, 'BESY-3.4': 4, 'BESY-5.3': 6, 'BESY-6.1': 6,
+};
+const bankByCriterion = new Map();
+BANK.forEach(q => {
+  (q.criteria || []).forEach(tag => {
+    if (!allTags.has(tag)) {
+      errors.push(`bank ${q.id}: claims criterion "${tag}", which is not in the Level 2 syllabus.`);
+      return;
+    }
+    bankByCriterion.set(tag, (bankByCriterion.get(tag) || 0) + 1);
+  });
+});
+Object.keys(QUESTION_FLOORS).forEach(tag => {
+  if (!allTags.has(tag)) { errors.push(`QUESTION_FLOORS names "${tag}", which is not in the Level 2 syllabus.`); return; }
+  const have = bankByCriterion.get(tag) || 0;
+  if (have < QUESTION_FLOORS[tag]) {
+    errors.push(`${tag} has ${have} tagged bank questions, below its floor of ${QUESTION_FLOORS[tag]} — a criterion that is taught but not practisable.`);
+  }
+});
+notes.push(`Question coverage: ${bankByCriterion.size} criteria carry an explicit tag, ${Object.keys(QUESTION_FLOORS).length} of them with an enforced floor.`);
+
+/* Every lesson in an enforced unit must be practisable from its own page too.
+   L-besy-15 and L-besy-16 shipped with no check questions at all, and
+   L-besy-16 alone carries four criteria. */
+lessons.filter(l => COVERAGE_ENFORCED.indexOf(l._unit) !== -1 && (l.criteria || []).length).forEach(l => {
+  const n = (l.check || []).length;
+  if (n < 4) errors.push(`${l.id} ("${String(l.title || '').slice(0, 40)}") has ${n} check questions and claims ${(l.criteria || []).length} criteria — a lesson that cannot be practised where it is taught.`);
+});
+
+/* A `skill` written on a bank question overrides the regex tagger in skills.js,
+   so a typo in one silently detaches the question from the skill map: it never
+   appears in a skill drill and never counts towards that skill's accuracy.
+   Three questions carried `pobc-control` and `pobc-bank`, neither of which
+   exists — the real ids are `pobc-ca` and `pobc-bankrec`. */
+const skillIds = new Set(((SKILLS || {}).defs || []).map(d => d.id));
+if (!skillIds.size) {
+  errors.push('skills.js exposed no skill definitions — the skill-tag guard cannot run.');
+} else {
+  BANK.forEach(q => {
+    if (q.skill && !skillIds.has(q.skill)) {
+      errors.push(`bank ${q.id}: skill "${q.skill}" does not exist in skills.js, so the question is invisible to skill drills.`);
+    }
+  });
+}
 
 /* ── 7. Prose mannerisms ─────────────────────────────────────────────────────
    Shared with the Level 1 and Level 3 checkers, where the reasoning is set out

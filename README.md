@@ -16,7 +16,7 @@ Alongside it are two self-contained modules for the levels either side, each wit
 
 ## Features
 
-- **502 audited questions** across six formats — multiple choice, numeric entry, drag-and-drop matching, table completion, gap-fill, and multi-part scenarios.
+- **646 audited questions** across nine formats — multiple choice, numeric entry, drag-and-drop matching, table completion, gap-fill, and multi-part scenarios.
 - **Topic practice** with instant feedback and worked explanations.
 - **Blueprint mock exam** — an 8-task paper (two tasks per unit, foundations → applied), evenly weighted across the four topics, sat under a 2-hour timer with a task-grouped navigator.
 - **Spaced repetition** — a Leitner system schedules questions for review at 1, 3, 7, 14 and 30-day intervals.
@@ -63,22 +63,55 @@ every lesson in an enforced unit to claim a criterion — `criteria: []` being t
 opt-out for a bridge lesson — which is the rule that would have caught the original
 problem.
 
-**Introduction to Bookkeeping is now complete**, and both ratchets are on for it:
-coverage 16/16 and depth at 87 cards averaging 228 words with none below the floor —
-against the 90-word average the module started at.
+The same treatment was then applied to the other three units, which turned out to have
+the same two-sided defect. Principles of Costing was the worst: six criteria had no
+lesson, including the whole of learning outcome 4 — spreadsheets, a tenth of that
+assessment — while four of its lessons taught Level 3 Management Accounting.
 
-The remaining gap is the other three units, and the checker reports it on every run:
+All four units are now enforced on both ratchets, and the checker prints the position on
+every run:
 
-| Unit | Coverage | Mean words per card |
-|---|---|---|
-| Introduction to Bookkeeping | **16/16 enforced** | **228 enforced** |
-| Principles of Bookkeeping Controls | untagged | 90 |
-| Principles of Costing | untagged | 92 |
-| The Business Environment | untagged | 91 |
+| Unit | Coverage | Cards | Mean words per card |
+|---|---|---|---|
+| Introduction to Bookkeeping | **16/16 enforced** | 87 | **228 enforced** |
+| Principles of Bookkeeping Controls | **10/10 enforced** | 87 | **221 enforced** |
+| Principles of Costing | **15/15 enforced** | 84 | **227 enforced** |
+| The Business Environment | **22/22 enforced** | 92 | **238 enforced** |
 
-Given that tagging ITBK revealed nine missing criteria and five lessons from another
-qualification, the three untagged units should be treated as unmeasured rather than as
-known to be sound.
+### Taught is not the same as practisable
+
+Coverage proves every criterion is *taught*. It says nothing about whether any of it can
+be *practised*, and the two came apart badly. Once the lessons were tagged, a
+per-criterion probe of the bank found **five criteria with a lesson and not one question
+behind them**, and thirteen more with fewer than four:
+
+- the whole of Principles of Costing outcome 4 — spreadsheets, a tenth of that paper
+- ITBK 4.1, entering receipts and payments into an analysed cash book
+- POBC 4.2, redrafting the trial balance after adjustments
+- POC 3.2, exception reporting, and POC 1.4, sources of information
+- BESY 5.3, how the finance team contributes to an organisation's success — which had no
+  questions because the lesson covering it had no check questions either
+
+That is now closed: **103 new bank questions**, each tagged with the criteria it tests,
+plus 21 new lesson check questions. `QUESTION_FLOORS` in the checker holds every one of
+those eighteen criteria at the count it now has. Two lessons that shipped with no check
+questions at all have six each, and a new rule requires any lesson claiming a criterion
+to carry at least four.
+
+### Scoping the bank to Level 2
+
+Removing off-syllabus questions took three passes, and the reason is worth recording. The
+first tested question stems and missed everything naming a Level 3 topic only in its
+*options* — "Which adjustment ensures matching of revenue and expenses?" has no giveaway
+word in the stem. The second widened to the whole of an MCQ and missed gap-fill
+`template`s and drag-and-drop `pairs`, which is where those question types keep all of
+their content. The third caught those, plus six ratio-analysis questions the hand-built
+removal list had simply skipped.
+
+Scope was settled by grepping the published specification rather than by judgement.
+Contribution, break-even, marginal costing, sunk and opportunity cost, accruals and
+prepayments, depreciation, gross and net profit margins and ratio analysis all return
+zero hits in its scope-of-content sections.
 
 ## The Level 1 module
 
