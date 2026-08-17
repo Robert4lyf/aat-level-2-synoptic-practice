@@ -1118,13 +1118,16 @@
     if (!window.LEARN_PATH) return [];
     return window.LEARN_PATH.reduce((acc, u) => acc.concat(u.lessons), []);
   }
-  /* The AAT journey carries four Level 2 units plus four Level 3 PREVIEW units
-     (`preview: true`), which exist to show what comes next — they are two-lesson
-     tasters, not a syllabus, and they have no unit test. Completion achievements
-     must therefore count the qualification's own units only; counting the
-     previews made "Unit master" unreachable and made the Level 2 progress meter
-     read out of 8. Subjects that set no `level` (French, LSF, Code de la Route)
-     are unaffected: everything counts, as before. */
+  /* Achievements count the qualification's OWN units, never a `preview: true`
+     one. The AAT journey used to carry four Level 3 preview units alongside its
+     four Level 2 units, and counting them made "Unit master" unreachable and
+     made the Level 2 progress meter read out of 8. Those previews have since
+     been removed from learn-data.js — the Level 3 material lives in the AAT
+     Level 3 subject, and the "what's next" panel below is built from L3_BRIDGE
+     rather than from lesson data. The filter stays because it is the correct
+     rule for any preview unit a subject may add later, and because subjects
+     that set no `level` (French, LSF, Code de la Route) must be unaffected:
+     everything counts for them, as before. */
   function qualificationUnits() {
     return (window.LEARN_PATH || []).filter(u => !u.preview);
   }
