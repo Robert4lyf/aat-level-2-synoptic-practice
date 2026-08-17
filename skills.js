@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------
-   AAT Level 2 Synoptic Practice — Skill Taxonomy
+   AAT Level 2 — Skill Taxonomy
    ----------------------------------------------------------
    Every question in the bank is tagged with one skill at load
    time (see ensureSkillTags in app.js). Tagging is rule-based:
@@ -14,10 +14,10 @@ window.SKILLS = (function () {
 
   var DEFS = [
     /* ── ITBK — Introduction to Bookkeeping ── */
-    { id: 'itbk-adjust', topic: 'itbk', name: 'Depreciation, accruals & prepayments', icon: '📉',
-      hint: 'Work out which period the cost belongs to. Depreciation spreads the cost of an asset; accruals and prepayments move expenses into the right period.',
-      formula: 'Straight-line = (Cost − Residual) ÷ Life · Reducing balance = Carrying value × Rate% · Prepayment = months unused ÷ 12 × annual cost',
-      match: [/depreciat|accrual|prepay|carrying value|residual|straight.line|reducing balance|cost of sales|cogs|closing inventory.*itbk/i] },
+    { id: 'itbk-cogs', topic: 'itbk', name: 'Cost of sales & closing inventory', icon: '📉',
+      hint: 'Cost of sales is what the goods sold actually cost, not what was bought: opening inventory plus purchases less what is left on the shelf.',
+      formula: 'COGS = Opening inventory + Purchases − Closing inventory · Gross profit = Revenue − COGS',
+      match: [/cost of sales|\bcogs\b|closing inventory|opening inventory|gross profit/i] },
     { id: 'itbk-vat', topic: 'itbk', name: 'VAT calculations', icon: '🧾',
       hint: 'Decide whether the figure you have is NET (before VAT) or GROSS (VAT-inclusive) before you calculate.',
       formula: 'VAT = Net × 20% · Gross = Net × 1.20 · Net = Gross ÷ 1.20 · VAT from gross = Gross ÷ 6',
@@ -78,10 +78,10 @@ window.SKILLS = (function () {
       hint: 'Variance = actual − budget. A variance is ADVERSE when it makes profit lower (costs up or income down) and FAVOURABLE when it makes profit higher.',
       formula: 'Variance = Actual − Budgeted · Significant if large relative to budget (e.g. above a % threshold)',
       match: [/budget|variance|adverse|favourable/i] },
-    { id: 'poc-cvp', topic: 'poc', name: 'Overheads, break-even & margins', icon: '📈',
-      hint: 'Contribution pays for fixed costs: selling price − variable cost. For margins, be clear whether the percentage is of COST (mark-up) or of SALES (margin).',
-      formula: 'Break-even units = Fixed ÷ Contribution per unit · OAR = Budgeted overheads ÷ Budgeted activity · Mark-up % on cost; margin % on sales',
-      match: [/break.even|contribution|margin|mark.up|absorption|oar\b|overhead absorption|target profit/i] },
+    { id: 'poc-oar', topic: 'poc', name: 'Overhead absorption & margins', icon: '📈',
+      hint: 'Allocate what belongs to one centre, apportion what is shared, then absorb into units at a budgeted rate. For margins, be clear whether the percentage is of COST (mark-up) or of SALES (margin).',
+      formula: 'OAR = Budgeted overheads ÷ Budgeted activity · Absorbed = OAR × ACTUAL activity · Under-absorbed if absorbed < incurred · Mark-up % on cost; margin % on sales',
+      match: [/absorption|oar\b|overhead absorption|apportion|allocat|mark.up|\bmargin\b/i] },
     { id: 'poc-coding', topic: 'poc', name: 'Coding & responsibility centres', icon: '🏷️',
       hint: 'A cost centre incurs costs only; a profit centre also earns revenue; an investment centre additionally controls capital spending. Codes simply route each cost to the right centre.',
       formula: null,

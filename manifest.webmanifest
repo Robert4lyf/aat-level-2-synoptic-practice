@@ -1,7 +1,7 @@
 {
-  "name": "AAT Level 2 Synoptic Practice",
+  "name": "AAT Level 2 Practice",
   "short_name": "AAT L2 Practice",
-  "description": "Practice for the AAT Level 2 Synoptic Assessment (AQ2022) — 500+ questions, mock exams, spaced repetition and more.",
+  "description": "Practice for the AAT Level 2 Certificate in Accounting (Q2022) — all four units, 560+ questions, mock exams, spaced repetition and more.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

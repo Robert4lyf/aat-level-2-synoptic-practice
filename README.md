@@ -1,4 +1,4 @@
-# AAT Level 2 Synoptic Practice
+# AAT Level 2 Practice
 
 A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q2022)**, covering all four units:
 

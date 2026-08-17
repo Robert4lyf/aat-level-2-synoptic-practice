@@ -1,4 +1,4 @@
-/* AAT Level 2 Synoptic Practice — App Logic (rebuilt with numeric Q + calculator) */
+/* AAT Level 2 — App Logic (rebuilt with numeric Q + calculator) */
 (function () {
   'use strict';
 
@@ -31,9 +31,9 @@
       }
     },
     {
-      id: 'aat', name: 'AAT Level 2 Synoptic', short: 'AAT', flag: '🧮', color: '#2563EB',
-      desc: 'Prepare for the Q2022 Business Environment Synoptic Assessment',
-      meta: '631 questions · Mock exams · T-Accounts',
+      id: 'aat', name: 'AAT Level 2', short: 'AAT L2', flag: '🧮', color: '#2563EB',
+      desc: 'Bookkeeping, controls, costing and business environment — the Q2022 Level 2 Certificate in Accounting',
+      meta: '4 units · 68 lessons · mock exams',
       tabs: ['learn','home','tools','glossary','progress','howto'],
       assets: [],
       activate() { window.TOPICS = window.AAT_TOPICS; window.ALL_QUESTIONS = window.AAT_QUESTIONS; window.LEARN_PATH = window.AAT_LEARN_PATH; window.SKILLS = window.AAT_SKILLS; }
@@ -1118,13 +1118,16 @@
     if (!window.LEARN_PATH) return [];
     return window.LEARN_PATH.reduce((acc, u) => acc.concat(u.lessons), []);
   }
-  /* The AAT journey carries four Level 2 units plus four Level 3 PREVIEW units
-     (`preview: true`), which exist to show what comes next — they are two-lesson
-     tasters, not a syllabus, and they have no unit test. Completion achievements
-     must therefore count the qualification's own units only; counting the
-     previews made "Unit master" unreachable and made the Level 2 progress meter
-     read out of 8. Subjects that set no `level` (French, LSF, Code de la Route)
-     are unaffected: everything counts, as before. */
+  /* Achievements count the qualification's OWN units, never a `preview: true`
+     one. The AAT journey used to carry four Level 3 preview units alongside its
+     four Level 2 units, and counting them made "Unit master" unreachable and
+     made the Level 2 progress meter read out of 8. Those previews have since
+     been removed from learn-data.js — the Level 3 material lives in the AAT
+     Level 3 subject, and the "what's next" panel below is built from L3_BRIDGE
+     rather than from lesson data. The filter stays because it is the correct
+     rule for any preview unit a subject may add later, and because subjects
+     that set no `level` (French, LSF, Code de la Route) must be unaffected:
+     everything counts for them, as before. */
   function qualificationUnits() {
     return (window.LEARN_PATH || []).filter(u => !u.preview);
   }
@@ -3137,8 +3140,8 @@
     const h1 = document.querySelector('header h1');
     const sub = document.querySelector('header .sub');
     const badge = document.querySelector('header .badge');
-    if (h1)  h1.textContent = subj.flag + ' ' + (subj.id === 'aat' ? 'AAT Level 2 Synoptic Practice' : subj.name);
-    if (sub) sub.textContent = subj.id === 'aat' ? 'Q2022 — The Business Environment Synoptic Assessment' : subj.desc;
+    if (h1)  h1.textContent = subj.flag + ' ' + subj.name;
+    if (sub) sub.textContent = subj.desc;
     if (badge) badge.style.display = subj.id === 'aat' ? '' : 'none';
   }
 
@@ -3199,8 +3202,8 @@
   function renderSplash() {
     return `<div class="splash fade-in">
       <div class="splash-logo" aria-hidden="true">📊</div>
-      <h2>AAT Level 2 Synoptic Practice</h2>
-      <p>Prepare with confidence for the Q2022 Business Environment Synoptic Assessment — 8 tasks, 100 marks, 2 hours. ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.</p>
+      <h2>AAT Level 2</h2>
+      <p>The Q2022 Level 2 Certificate in Accounting — four units, each assessed in its own right, with The Business Environment assessed synoptically. ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.</p>
       <div class="splash-features">
         <div class="feat"><div class="fi" aria-hidden="true">📝</div><strong>${window.ALL_QUESTIONS.length} Questions</strong><br>Across all topics</div>
         <div class="feat"><div class="fi" aria-hidden="true">⏱</div><strong>Synoptic Mock</strong><br>${SYNOPTIC_BLUEPRINT.length} tasks, ${SYNOPTIC_TOTAL_MARKS} marks, ${Math.round(MOCK_DURATION_MS / 60000)} min</div>
