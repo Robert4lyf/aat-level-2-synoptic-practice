@@ -63,9 +63,9 @@
           h: 'What bookkeeping actually is',
           p: [
             'A business does things all day that involve money. It sells something. It buys stock. It pays the electricity bill. Somebody puts fuel in the van. `Bookkeeping` is the work of writing all of that down in an organised way, so that at any point somebody can answer questions about it.',
-            'That sounds modest. It is not, and the reason is the point of this card. Nobody can hold a year of a business in their head. Without records, the owner of a small shop cannot tell you whether the shop made money last month, which customers still owe them, whether that invoice from the wholesaler has already been paid, or how much of the money in the bank is really theirs rather than tax they are holding for somebody else. Every one of those questions has a definite answer, and the records are the only place it exists.',
-            'So bookkeeping is not filing. It is the construction of the only reliable account of what a business has done. Everything else in finance is built on top of it: the accounts that go to Companies House, the tax return, the decision about whether to hire somebody. If the bookkeeping is wrong, all of that is wrong, and nobody downstream has any way of knowing.',
-            'This unit teaches the first layer of that work. It is deliberately narrow — one business, straightforward transactions, no complications — because the point is to get the shape of the thing right before the volume arrives.',
+            'Nobody can hold a year of a business in their head. Without records, the owner of a small shop cannot tell you whether the shop made money last month, which customers still owe them, whether that invoice from the wholesaler has already been paid, or how much of the money in the bank is really theirs rather than tax they are holding for somebody else. Every one of those questions has a definite answer, and the records are the only place it exists.',
+            'Filing is part of the job, but only the part that keeps the paper findable. The records themselves are what the accounts sent to Companies House are built from, what the tax return is built from, and what an owner uses to decide whether they can afford to hire somebody. If the bookkeeping is wrong, each of those is wrong too, and nobody further down the chain has any way of knowing.',
+            'This unit teaches the first layer of that work. It is deliberately narrow — one business, straightforward transactions, no complications — so that the shape of the work is familiar before the volume arrives.',
           ],
           callout: { kind: 'key', text: 'Bookkeeping is the record from which every financial answer about a business is taken. That is why accuracy is treated so seriously throughout this unit.' },
         },
@@ -84,7 +84,7 @@
             ],
           },
           p: [
-            'One assessment, ninety minutes, marked by computer. That last detail matters more than it looks. There is no written answer for an examiner to weigh up and no credit for a well-argued wrong figure: an answer is either the one the marking scheme holds or it is not.',
+            'One assessment, ninety minutes, marked by computer. That last detail should change how you revise. There is no written answer for an examiner to weigh up and no credit for a well-argued wrong figure: an answer is either the one the marking scheme holds or it is not.',
             'The upside is that this unit is unusually **learnable**. There is a finite set of documents, a finite set of rules about which column a figure belongs in, and a finite vocabulary. Learn those and you have most of the marks. Very little rests on judgement of the kind that takes years to acquire.',
             'The downside is the same fact from the other side. A figure that is nearly right is wrong. Putting a receipt in the payments column is wrong even if the amount is perfect. Reading £1,240 as £1,420 is wrong. Most marks lost at this level are lost to carelessness rather than to ignorance, which is why a whole topic area of the syllabus — and two lessons here — is about how to work so that does not happen.',
             'The qualification is **not graded**, so there is no distinction to chase. AAT publishes no pass percentage for it; the 70% you will see quoted on training-provider websites is their figure, not AAT’s. Treat the target as "know the material", not "clear a number".',
@@ -1263,9 +1263,9 @@
             ],
           },
           p: [
-            'Read down the effects columns and you will see all four combinations present: up and up, up and down, down and up, down and down. That is the point of the table — there is no pattern to memorise about directions, only the requirement that two things move.',
+            'Read down the effects columns and you will see all four combinations present: up and up, up and down, down and up, down and down. The table shows there is no pattern to memorise about directions, only the requirement that two things move.',
             'The third row is the swap: one asset up, another asset down, and nothing else in the business changes. This is the transaction from the previous lesson that is not an expense, now shown in terms of its two effects.',
-            'The fourth row is the one worth dwelling on: paying a supplier reduces the bank **and** reduces the liability. Both go down. Nothing about the business’s overall position changes — it had cash and an obligation; now it has less cash and no obligation. Beginners often want an expense here, but the expense arose earlier, when the goods were received.',
+            'Look hardest at the fourth row: paying a supplier reduces the bank **and** reduces the liability. Both go down. Nothing about the business’s overall position changes — it had cash and an obligation; now it has less cash and no obligation. Beginners often want an expense here, but the expense arose earlier, when the goods were received.',
             'The last two rows are the same sale settled differently. The income is identical; only the asset created differs — cash in one case, a right to cash in the other. That is the whole of the difference between cash trading and credit trading, which Outcome 3 takes up.',
           ],
           examtrap: 'Paying a supplier is not an expense. The expense happened when the goods or services were received; paying is settling a liability. If a question asks for the two effects of paying a payable, both are decreases — bank down, liability down.',
