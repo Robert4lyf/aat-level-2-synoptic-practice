@@ -576,6 +576,52 @@ const NEVER = [
 ];
 const SIGNPOST = /\b(it is|it's) worth\b|\bworth (noting|saying|being|pausing|flagging)\b/gi;
 const SIGNPOST_CEILING_PER_1K = 1.0;
+/* ── Cadence: rhetorical shapes, not vocabulary ──────────────────────────────
+   The never-list above hunts WORDS. This hunts SHAPES, which is the harder and
+   more common tell — a reader spotted "That sounds modest, and it is worth
+   being clear about why it is not" and was right to, even though every word in
+   it is ordinary.
+
+   These shapes are not banned. "A credit note is not a cancelled invoice — it
+   is X" corrects a real misconception and earns its form, and one such
+   sentence in a card reads as emphasis. What reads as machine-written is
+   DENSITY: the worst card in the project stacked four of them, opening with a
+   concession-reversal, defining by negation, reaching for a superlative and
+   then announcing that the point was the point of the card.
+
+   So the rule is per card, not per module: at most one. That permits the device
+   and forbids the pile-up. All three modules now sit at a maximum of one. */
+const CADENCE = [
+  [/\b(that|this|it) (sounds|seems|looks|feels)\b[^.!?]{0,60}?\b(and|but|yet)\b[^.!?]{0,40}?\bnot\b/gi, 'concession-reversal ("that sounds X, but it is not")'],
+  [/\bthan it (first |initially )?(appears|looks|sounds|seems)\b/gi,          '"than it appears"'],
+  [/\b(is|are) not [^.!?]{3,60}?[.—:] ?(It|They) (is|are)\b/g,                'definition by negation'],
+  [/\bis not [^.!?]{3,50}?(,| —) (but|it is|rather)\b/gi,                     '"not X, but Y"'],
+  [/\b(that|this) is (the )?(whole |entire |very )?(point|of it|difference)\b/gi, '"that is the point"'],
+  [/\bwhich is (exactly|precisely)\b/gi,                                      '"which is exactly/precisely"'],
+  [/\bthe answer is (almost |nearly )?always\b/gi,                            '"the answer is almost always"'],
+  [/\b(keep|hold) (that|this) (thread |thought )?in mind\b/gi,                '"keep that in mind"'],
+  [/\bthe (only|single most|one) [a-z]+ (account|source|place|thing|reason|way|figure|check)\b/gi, 'superlative-only'],
+  [/\beverything else\b[^.!?]{0,40}\b(is built|rests|follows|depends)\b/gi,    '"everything else follows"'],
+  [/\b(is|are) doing (the|real|a lot of) work\b|\bcarr(y|ies) the whole\b/gi,  '"is doing the work"'],
+  [/\bis the (point|subject|whole) of this (card|lesson)\b/gi,                 '"is the point of this card"'],
+  [/\bworth (pausing|dwelling|lingering) on\b/gi,                             '"worth dwelling on"'],
+  [/\b(none of (that|this) is|that is not) (arbitrary|accidental|an accident|a coincidence)\b/gi, '"not arbitrary/no accident"'],
+  [/\band that is (exactly|precisely) (why|what|the)\b/gi,                     '"and that is precisely why"'],
+];
+const CADENCE_MAX_PER_CARD = 1;
+
+lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+  const text = (c.p || []).join(' ');
+  const found = [];
+  CADENCE.forEach(([re, label]) => {
+    const m = text.match(new RegExp(re.source, re.flags));
+    if (m) for (let k = 0; k < m.length; k++) found.push(label);
+  });
+  if (found.length > CADENCE_MAX_PER_CARD) {
+    errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): ${found.length} rhetorical cadences stacked on one card — ${[...new Set(found)].join('; ')}. One is emphasis; a pile-up is what makes prose read as machine-written. Make the points instead of announcing them.`);
+  }
+}));
+
 
 {
   let proseWords = 0;

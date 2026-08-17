@@ -412,7 +412,7 @@ window.LEARN_PATH = [
             p: [
               'Every entry in the ledgers must be supported by a **source document** — a piece of evidence that the transaction happened and for how much.',
               'This is not bureaucracy. It is what makes the records checkable: by a manager, by an auditor, or by HMRC. If you cannot evidence an entry, you cannot defend it.',
-              'The rule is absolute in practice: every entry in the books traces back to a document. That is not bureaucracy — it is what makes the records checkable by somebody who was not there. An entry with no supporting document cannot be verified, corrected or defended.',
+              'The rule is absolute in practice: every entry in the books traces back to a document. That is what an auditor means by an audit trail: a path from any figure back to the paper behind it. An entry with no supporting document cannot be verified, corrected or defended.',
               'It also means the document, not the entry, is the starting point of the work. A bookkeeper does not decide what happened and then find paper to match; they read the paper and record what it says. Where the paper is wrong, it is queried rather than quietly adjusted.',
               'This is why HMRC requires records to be kept as well as returns filed, and why a valid VAT invoice — not merely a receipt showing a total — is needed before input tax can be reclaimed.',
             ],
@@ -722,7 +722,7 @@ window.LEARN_PATH = [
               'The VAT figures from these books are posted to the **VAT control account** in the general ledger.',
               'The balance on the VAT control account shows how much is owed to (or owed by) HMRC.',
               'Every daybook carries a VAT column, and that is not decoration — it is what makes the return possible. Because the VAT on each invoice is separated at the point of entry, the total of the VAT column in the sales daybook is the period’s output tax, and the total in the purchases daybook is its input tax. Neither figure has to be reconstructed.',
-              'That is why VAT is split out at entry rather than later. Record only the gross total and the split cannot be recovered afterwards without going back to every invoice, which is precisely the work the column avoids.',
+              'That is why VAT is split out at entry rather than later. Record only the gross total and the split cannot be recovered afterwards without going back to every invoice, which is the work the column exists to avoid.',
               'HMRC requires the underlying records to be kept as well as the return. Invoices and credit notes evidence each figure, which is why a valid VAT invoice is needed before input tax can be reclaimed — a receipt showing only a total is not enough.',
             ],
           },
@@ -928,7 +928,7 @@ window.LEARN_PATH = [
               'Individually: each customer\'s account in the sales ledger is debited with the gross invoice amount.',
               'Posting happens once for the period rather than once per invoice, and it uses the daybook column totals. Debit the sales ledger control account with the TOTAL column, because that is what customers owe. Credit sales with the NET column, because that is the income earned. Credit VAT with the VAT column, because that is HMRC’s money.',
               'One debit against two credits, and they agree because net plus VAT equals total — the same cross cast that proved the daybook was added correctly now proves the posting balances. That is not a coincidence; it is the same arithmetic doing both jobs.',
-              'Alongside the general ledger posting, each individual invoice is entered in that customer’s account in the receivables ledger. The same figures are therefore recorded twice in different places, once in total and once customer by customer, which is precisely what makes the control account reconciliation possible.',
+              'Alongside the general ledger posting, each individual invoice is entered in that customer’s account in the receivables ledger. The same figures are therefore recorded twice in different places, once in total and once customer by customer, which is what makes the control account reconciliation possible.',
             ],
             example: {
               title: 'Posting the sales daybook',
@@ -2228,8 +2228,8 @@ window.LEARN_PATH = [
             p: [
               'The control account is built from **day book totals**: total credit sales, total receipts, total returns.',
               'The individual customer accounts are built from **individual transactions**, one customer at a time.',
-              'Because the two are built by genuinely different routes, agreement between them is real evidence. That is the whole point.',
-              'The word "genuinely" is doing real work in that sentence. If both figures were built from the same source, agreement would prove nothing — it would only prove you had added the same numbers twice.',
+              'Because the two are built by genuinely different routes, agreement between them is real evidence rather than a restatement.',
+              'Everything rests on the word "genuinely". If both figures were built from the same source, agreement would prove nothing — it would only prove you had added the same numbers twice.',
               'The control account is fed from the **totals** columns of the day books and the cash book. The individual accounts are fed from the **individual lines** of the same documents. A clerk who mis-keys one invoice line will affect one customer account without affecting the day book total, so the two figures part company and the difference is visible.',
               'That is also why the two can agree while both are wrong in the same way. An invoice never entered in the day book at all appears in neither route, so the control account and the list of balances agree perfectly and both understate what customers owe. Reconciliation catches posting errors, not missing paperwork.',
             ],
@@ -3039,7 +3039,7 @@ window.LEARN_PATH = [
             p: [
               'An **irrecoverable debt** (also called a bad debt) is a debt owed by a customer that the business is certain cannot be collected — for example, if the customer has become insolvent.',
               'The debt must be **removed from the SLCA** and recognised as an expense. This follows the **prudence principle** — do not overstate assets.',
-              'The word "certain" is doing the work. A debt that is merely late, or disputed, or owed by a customer who has stopped answering the phone, is not irrecoverable — it is overdue. What makes a debt irrecoverable is evidence that it will not be collected: the customer has been wound up, the administrator has confirmed no distribution to unsecured creditors, or the business has formally given up pursuing it.',
+              'Everything turns on the word "certain". A debt that is merely late, or disputed, or owed by a customer who has stopped answering the phone, is not irrecoverable — it is overdue. What makes a debt irrecoverable is evidence that it will not be collected: the customer has been wound up, the administrator has confirmed no distribution to unsecured creditors, or the business has formally given up pursuing it.',
               'That evidential threshold matters in practice as well as in the exam, because writing off a debt reduces reported profit. A business that wrote off every slow payer would understate its profit and its assets, which is as much a misstatement as overstating them.',
               'Once the threshold is met, the write-off is not optional. Leaving a known bad debt in receivables overstates an asset the business will never realise, and prudence requires it to go.',
             ],
