@@ -115,11 +115,15 @@ const MIN_EXP_CHARS = 90;       // an explanation shorter than this explains not
 const MIN_CARD_WORDS = 150;     // hard floor for a card in an enforced unit
 const TARGET_MEDIAN_WORDS = 200; // median card in an enforced unit
 /* Ratchet, not aspiration — the convention the Level 1 and 3 checkers use. Set
-   just above what the bank currently achieves (34.3%) so it cannot drift worse,
-   and to be tightened as questions are reworked. For scale: chance is 25%,
-   Level 3 sits at 22% and Level 1 at 5.8%, so this is the one threshold here
-   that is still materially looser than the other two levels. */
-const CUE_CEILING_PCT = 35;     // % of MCQs where the key is the single longest option
+   just above what the bank achieves so it cannot drift worse. This started at
+   35, because 36.3% of MCQs had the key as the single longest option: a student
+   who never read the question and always picked the longest answer would have
+   beaten the 25% chance rate by half again. Reworking about 240 option sets
+   brought it to 20.9%, which is below chance and below the Level 3 bank's 22%.
+   The fix was almost always to write the distractors as specifically as the
+   key rather than to trim the key, since a one-line distractor beside a
+   two-line answer is itself the tell. */
+const CUE_CEILING_PCT = 22;     // % of MCQs where the key is the single longest option
 const MIN_CUE_GAP_CHARS = 25;   // below this an outlying ratio is noise, not a cue
 const TF_TRUE_CEILING = 62;     // % of true/false statements keyed true
 

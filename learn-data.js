@@ -622,13 +622,13 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'When balancing off an account, where is the balance c/d entered?',
-            opts: ['On the larger side', 'On the side with the smaller total', 'Always on the debit side', 'Below the totals'],
+            opts: ['On the larger side', 'On the side with the smaller total', 'Always on the debit side, whatever the totals', 'Below the totals'],
             ans: 1,
             exp: 'The balance c/d goes on the smaller side so that both column totals agree. The b/d then opens on the opposite side.',
           },
           {
             q: 'Which of these would normally appear in the DEBIT column of a trial balance?',
-            opts: ['Motor vehicles', 'Sales', 'Capital', 'Bank loan'],
+            opts: ['Motor vehicles', 'Sales', 'Capital', 'A bank loan repayable in five years'],
             ans: 0,
             exp: 'Motor vehicles are an asset, and assets carry debit balances. DEAD CLIC is the usual reminder: Debits are Expenses, Assets and Drawings; Credits are Liabilities, Income and Capital.',
           },
@@ -890,7 +890,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A statement of account is sent by the SUPPLIER to the buyer. Its purpose is to:',
-            opts: ['Confirm an order has been placed', 'List the period’s transactions between the parties', 'Prove that the goods were received', 'Authorise payment of the balance'],
+            opts: ['Confirm that an order has been received and accepted', 'List the period’s transactions between the parties', 'Prove that the goods arrived in good condition', 'Authorise the buyer to pay the outstanding balance'],
             ans: 1,
             exp: 'A statement of account is a periodic summary of invoices, credit notes and payments, used by the buyer to reconcile against their own purchase ledger records.',
           },
@@ -1004,19 +1004,19 @@ window.LEARN_PATH = [
           },
           {
             q: 'The SLCA balance on the trial balance should equal:',
-            opts: ['The total of individual sales invoices', 'The sum of the individual customer balances', 'The total cash received from customers', 'The balance shown on the bank account'],
+            opts: ['The total of the individual sales invoices raised', 'The sum of the individual customer balances', 'The total cash received from customers', 'The balance shown on the bank account'],
             ans: 1,
             exp: 'The SLCA is a control account. Its balance should agree with the total of all individual customer balances in the memorandum sales ledger.',
           },
           {
             q: 'Why are daybook totals posted to the general ledger rather than individual entries?',
-            opts: ['It is a legal requirement', 'It saves time while maintaining double-entry completeness', 'Individual entries go directly to ledger accounts', 'Daybooks are only used for VAT'],
+            opts: ['It is a legal requirement', 'It saves time while maintaining double-entry completeness', 'Individual entries are posted directly to the ledger accounts', 'Daybooks are only used for VAT'],
             ans: 1,
             exp: 'Posting totals (rather than every individual transaction) maintains double-entry but reduces the volume of ledger postings. Individual entries go to personal (memorandum) accounts.',
           },
           {
             q: 'Which ledger is NOT part of the double-entry bookkeeping system?',
-            opts: ['General ledger', 'Personal (sales and purchase) ledgers', 'Both are part of double entry', 'Neither is part of double entry'],
+            opts: ['General ledger', 'Personal (sales and purchase) ledgers', 'Both are part of double entry', 'Neither of them is part of double entry'],
             ans: 1,
             exp: 'Personal ledgers (sales ledger and purchase ledger) are MEMORANDUM records — they are NOT part of double-entry. The SLCA and PLCA in the general ledger ARE part of double-entry.',
           },
@@ -1315,9 +1315,9 @@ window.LEARN_PATH = [
           { q: 'A customer takes a prompt payment discount. How is the reduction recorded at this level?',
             opts: [
               'A credit note, entered in the discounts allowed daybook',
-              'A discount column in the cash book',
-              'An adjustment to the original invoice',
-              'A journal entry reversing part of the sale'],
+              'A discount allowed column entered in the cash book',
+              'An adjustment made to the original sales invoice',
+              'A journal entry reversing part of the original sale'],
             ans: 0,
             exp: 'The specification requires credit notes for prompt payment discount at this level, recorded in the discounts allowed daybook — which is exactly what removes the need for discount columns in the cash book. No other method is examined here.' },
           { q: 'A prompt payment discount of 4% applies to a net amount of £1,500. What is the discount, before VAT?',
@@ -1539,7 +1539,7 @@ window.LEARN_PATH = [
             opts: [
               'A timing difference needing no entry by either party',
               'An omission in our payables ledger',
-              'An error by the supplier that must be queried',
+              'An error by the supplier which must be queried at once',
               'A duplicated transaction'],
             ans: 0,
             exp: 'The payment is genuine and correctly recorded by us; it simply has not reached their records yet. Timing differences resolve themselves, which is what distinguishes them from omissions and errors — those need action by one side or the other.' },
@@ -1547,7 +1547,7 @@ window.LEARN_PATH = [
             opts: [
               'Query it with the supplier, whose balance is overstated',
               'Enter it twice in our ledger so the records agree',
-              'Adjust our balance upward by the duplicated amount',
+              'Adjust our own balance upward by the duplicated amount',
               'Ignore it, since duplicates cancel out over time'],
             ans: 0,
             exp: 'The error is on their side, so their balance is too high by that amount and it is theirs to correct. Making our own records match a supplier’s error is how a duplicate payment happens, which is the expensive outcome this check exists to prevent.' },
@@ -1556,7 +1556,7 @@ window.LEARN_PATH = [
               'Our own supplier account in the payables ledger',
               'The supplier’s statement of account',
               'The most recent invoice received',
-              'The goods received notes for the period'],
+              'The goods received notes raised during the period'],
             ans: 0,
             exp: 'Our own account is built from invoices, credit notes and payments we have evidence for. The statement is the supplier’s record and is reconciled against, not paid from — it may itself contain errors, duplicates or transactions we have already settled.' },
           { type: 'truefalse', q: 'Identify whether each statement about paying suppliers is true or false.',
@@ -1670,7 +1670,7 @@ window.LEARN_PATH = [
             opts: [
               'The direct debit and standing order schedule',
               'The paying-in slip for the period',
-              'The remittance advice from the customer',
+              'The remittance advice received from the customer',
               'The cheque stub for each payment'],
             ans: 0,
             exp: 'Direct debits and standing orders leave the account without anyone raising a document each month, so nothing arrives to prompt an entry. The schedule is what stops a regular payment going unrecorded for months at a time.' },
@@ -1762,7 +1762,7 @@ window.LEARN_PATH = [
             opts: [
               'Petty cash is money held physically, so nothing passes through the bank',
               'Petty cash payments are too small to be banked',
-              'Bank movements are recorded in the general ledger instead of here',
+              'Bank movements are recorded in the general ledger accounts instead of here',
               'The bank column is only needed under a non-imprest system'],
             ans: 0,
             exp: 'The book records spending from a tin of physical money, so by definition every entry is cash. Payments through the bank belong in the main cash book, which is why that one has both columns and this one has only cash.' },
@@ -1976,7 +1976,7 @@ window.LEARN_PATH = [
             opts: [
               'The end date or number of occurrences',
               'The frequency of the entry',
-              'The general ledger account code',
+              'The general ledger nominal account code',
               'Whether the amount includes VAT'],
             ans: 0,
             exp: 'With no end date the schedule runs indefinitely, and because it runs automatically nobody is watching it. The entries stay correct in form and on time while describing an arrangement that has finished — which is exactly the disadvantage of automation the specification names.' },
@@ -2062,13 +2062,13 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Which Level 3 unit most directly extends your ITBK double-entry skills?',
-            opts: ['Management Accounting Techniques (MATS)', 'Business Awareness (BUAW) at Level 3', 'Financial Accounting: Preparing Financial Statements (FAPS)', 'Tax Processes for Businesses (TPFB)'],
+            opts: ['Management Accounting Techniques (MATS), which is about costing', 'Business Awareness (BUAW), which covers governance and law', 'Financial Accounting: Preparing Financial Statements (FAPS)', 'Tax Processes for Businesses (TPFB), covering VAT and payroll'],
             ans: 2,
             exp: 'Financial Accounting: Preparing Financial Statements (FAPS) is the direct Level 3 extension of ITBK. Under Q2022 it absorbed the old Advanced Bookkeeping and Final Accounts Preparation units, and it builds on double-entry, journals, the trial balance, adjustments and depreciation — all covered at Level 2.',
           },
           {
             q: 'At Level 3, a partnership appropriation account is used to:',
-            opts: ['Record depreciation of non-current assets', 'Reconcile the sales ledger control account', 'Share profit between partners according to their agreement', 'Calculate the VAT liability for the period'],
+            opts: ['Record the depreciation charge on non-current assets', 'Reconcile the sales ledger control account to the list of balances', 'Share profit between partners according to their agreement', 'Calculate the VAT liability payable for the return period'],
             ans: 2,
             exp: 'The appropriation account allocates net profit to partners using their salaries, interest on capital, and profit-sharing ratio (PSR). It is unique to partnership accounts.',
           },
@@ -2086,7 +2086,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'At Level 3, what is treated as assumed knowledge from Level 2?',
-            opts: ['Standard costing and variance analysis', 'Partnership law and appropriation accounts', 'Double-entry bookkeeping and trial balance preparation', 'Income tax calculation for sole traders'],
+            opts: ['Standard costing and the analysis of variances', 'Partnership law and the appropriation of partnership profits', 'Double-entry bookkeeping and trial balance preparation', 'Income tax computations for sole traders'],
             ans: 2,
             exp: 'Double-entry bookkeeping and trial balance preparation are Level 2 skills assumed at Level 3. You are expected to use them fluently without re-learning the basics.',
           },
@@ -2660,19 +2660,19 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which error would NOT involve the suspense account when corrected?',
-            opts: ['A single-sided entry', 'A casting error in one account', 'An amount posted to one side only', 'Rent posted in error to the rates account'],
+            opts: ['A single-sided entry', 'A casting error in one account', 'An amount that was posted to one side only', 'Rent posted in error to the rates account'],
             ans: 3,
             exp: 'A commission error keeps debits equal to credits — no trial balance difference, so no suspense is needed. The correction is a straightforward journal between the two accounts.',
           },
           {
             q: 'In the WAS / SHOULD HAVE BEEN method, what does the correcting journal do?',
-            opts: ['Reverses the whole transaction and starts again', 'Posts the difference to drawings', 'Converts what was posted into what should have been posted', 'Records the entry in the day book again'],
+            opts: ['Reverses the whole of the transaction and then starts again', 'Posts the difference to the drawings account', 'Converts what was posted into what should have been posted', 'Records the original entry in the day book a second time'],
             ans: 2,
             exp: 'The journal bridges the gap between the wrong posting and the correct one, touching suspense only where a one-sided imbalance caused the error.',
           },
           {
             q: 'Why must the suspense account be cleared before the year end?',
-            opts: ['Because HMRC charges interest on the balance', 'Because the statements must hold no unexplained balances', 'Because the business’s bank requires it', 'Because the balance earns no interest'],
+            opts: ['Because HMRC charges interest on any suspense balance', 'Because the statements must hold no unexplained balances', 'Because the business’s bank requires it as a loan condition', 'Because the balance earns the business no interest'],
             ans: 1,
             exp: 'The financial statements must reflect corrected, explained figures. A suspense balance means errors remain unresolved.',
           },
@@ -2902,7 +2902,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which element must every correcting journal entry include?',
-            opts: ['A reference to the original invoice number', 'A narrative explaining the nature of the correction', 'The signature of the managing director', 'A credit to the suspense account'],
+            opts: ['A reference to the original invoice or document number', 'A narrative explaining the nature of the correction', 'The signature of the managing director', 'A credit to the suspense account'],
             ans: 1,
             exp: 'A narrative (description) is required on every journal entry to explain why the adjustment is being made — it provides an audit trail.',
           },
@@ -3138,7 +3138,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Goods are sold for £900 plus VAT at 20% and the customer later becomes insolvent. What amount is credited to the SLCA?',
-            opts: ['£900, because that is the value of the goods lost', '£1,080, because that is what the customer was invoiced', '£180, because only the VAT element is reversed', '£750, because the net figure is £900 ÷ 1.20'],
+            opts: ['£900, because that is the net value of the goods that were lost', '£1,080, because that is what the customer was invoiced', '£180, because only the VAT element is reversed', '£750, because the net figure is £900 ÷ 1.20'],
             ans: 1,
             exp: 'The customer was invoiced the gross amount of £900 + £180 = £1,080, so that is what the control account carried and that is what must be removed. The £900 goes to the expense and the £180 to the VAT account.',
           },
@@ -3379,7 +3379,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Which of the following would be recorded in the journal?',
-            opts: ['A credit sale of goods', 'A payment to a supplier', 'Year-end depreciation charge', 'A cash purchase'],
+            opts: ['A credit sale of goods', 'A cheque payment made to a supplier', 'Year-end depreciation charge', 'A cash purchase'],
             ans: 2,
             exp: 'The journal is used for non-routine entries like depreciation. Credit sales go in the sales day book; payments go in the cash book.',
           },
@@ -3508,7 +3508,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'VAT on goods returned to a supplier is entered in the VAT control account as a:',
-            opts: ['Credit, because the input tax previously reclaimed is cancelled', 'Debit, because a return always reverses to the debit side', 'Credit, because returns reduce the purchases figure', 'Debit, because the supplier will refund the VAT in cash'],
+            opts: ['Credit, because the input tax previously reclaimed is cancelled', 'Debit, because a goods return always reverses to the debit side', 'Credit, because returns reduce the purchases figure', 'Debit, because the supplier will refund the VAT in cash'],
             ans: 0,
             exp: 'Input tax on the original purchase was debited. Sending the goods back cancels the reclaim, so the entry is credited — the business owes HMRC more than it did a moment ago.',
           },
@@ -3604,7 +3604,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'An unpresented cheque is one that:',
-            opts: ['The business received but has not yet deposited', 'The business has written and recorded, but the bank has not processed', 'Was returned unpaid, or bounced, by the bank', 'Is awaiting a signature before payment can be made'],
+            opts: ['The business has received from a customer but has not yet banked', 'The business has written and recorded, but the bank has not processed', 'Was returned unpaid by the bank because the drawer had insufficient funds', 'Is awaiting a second authorised signature before the payment can be released'],
             ans: 1,
             exp: 'An unpresented cheque is a payment already credited in the cashbook but not yet appearing on the bank statement. The bank statement balance is higher than the cashbook by this amount.',
           },
@@ -4060,7 +4060,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A contra entry between the SLCA and PLCA is used when:',
-            opts: ['The business writes off an irrecoverable debt', 'A customer is also a supplier and the balances are offset', 'An error is corrected using a suspense account', 'Bank interest is recorded in both control accounts'],
+            opts: ['The business writes off an irrecoverable debt', 'A customer is also a supplier and the balances are offset', 'An error is corrected using a suspense account', 'Bank interest has been recorded in both of the control accounts'],
             ans: 1,
             exp: 'A contra entry offsets a customer balance (in the SLCA) against a supplier balance (in the PLCA) when the same entity is both a customer and a supplier. Entry: Dr PLCA / Cr SLCA.',
           },
@@ -4072,7 +4072,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which of the following is covered in Level 3 TPFB but goes beyond Level 2 VAT knowledge?',
-            opts: ['Calculating 20% VAT on standard-rated supplies', 'Completing the VAT 100 return and handling the flat rate scheme', 'Recording input and output VAT in the ledger', 'Calculating VAT from a gross (inclusive) amount'],
+            opts: ['Calculating VAT at 20% on standard-rated supplies to customers', 'Completing the VAT 100 return and handling the flat rate scheme', 'Recording input and output VAT in the general ledger accounts', 'Calculating the VAT element from a gross, VAT-inclusive amount'],
             ans: 1,
             exp: 'Completing the VAT 100 return and dealing with VAT schemes such as the flat rate scheme are Level 3 TPFB topics. Basic VAT arithmetic and ledger entries are already covered at Level 2.',
           },
@@ -4680,7 +4680,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Why do many piecework schemes include a guaranteed minimum wage?',
-            opts: ['To increase the overtime premium paid', 'To reduce the employer’s NIC liability', 'To make all workers earn the same', 'To protect pay when output falls for outside reasons'],
+            opts: ['To increase the overtime premium paid on additional hours', 'To reduce the employer’s National Insurance liability', 'To ensure every worker in the team earns the same amount', 'To protect pay when output falls for outside reasons'],
             ans: 3,
             exp: 'A guaranteed minimum ensures fair pay when machine breakdowns or material shortages limit output through no fault of the worker.',
           },
@@ -4796,7 +4796,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Sales revenue came in £900 above budget. How is this variance described?',
-            opts: ['Adverse, because budgets should be exact', 'Favourable, because higher income increases profit', 'Neutral', 'Adverse, because costs will also rise'],
+            opts: ['Adverse, because a budget is meant to be met exactly', 'Favourable, because higher income increases profit', 'Neutral', 'Adverse, because costs will also rise'],
             ans: 1,
             exp: 'Revenue £900 above budget increases profit, so the variance is favourable. Note that for income a higher figure is favourable, whereas for a cost a higher figure is adverse — the test is always the effect on profit.',
           },
@@ -4826,9 +4826,9 @@ window.LEARN_PATH = [
           },
           {
             q: 'Labour budget: 200 hours at £12/hour = £2,400. Actual: 210 hours at £11.50/hour = £2,415. Is this variance adverse or favourable?',
-            opts: ['Favourable — fewer hours worked', 'Adverse — more hours worked', 'Adverse — actual cost £15 over budget', 'Favourable — lower hourly rate'],
+            opts: ['Favourable — the hourly rate paid fell below budget', 'Adverse — ten more hours were worked than budgeted', 'Adverse — actual cost £15 over budget', 'Cannot say without the standard hours per unit'],
             ans: 2,
-            exp: 'Actual labour cost (£2,415) exceeds budget (£2,400) by £15. A cost above budget = adverse variance, because profit is reduced.',
+            exp: 'Actual labour cost of £2,415 exceeds the budget of £2,400 by £15, so the total labour variance is £15 adverse. The lower hourly rate and the extra hours pull in opposite directions; only the total matters at this level.',
           },
         ],
       },
@@ -5081,7 +5081,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Under AVCO, when is the average cost recalculated?',
-            opts: ['After every issue', 'After every receipt of new inventory', 'Once at the end of the month', 'Only when prices change'],
+            opts: ['After every issue', 'After every receipt of new inventory', 'Once only, at the end of each month', 'Only when prices change'],
             ans: 1,
             exp: 'AVCO recalculates the weighted average cost each time new inventory is received, blending old stock value with the new purchase.',
           },
@@ -5328,7 +5328,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'What is the main difference in how the two systems treat a single wage payment?',
-            opts: ['Costing classifies it several ways at once; financial accounting records it once in total', 'Costing ignores it entirely because wages are a financial accounting matter', 'Financial accounting classifies it by cost centre and costing does not', 'Both treat it identically, because the source document is the same'],
+            opts: ['Costing classifies it several ways at once; financial accounting records it once in total', 'Costing ignores the payment entirely, because wages are purely a financial accounting matter', 'Financial accounting classifies it by cost centre and costing does not', 'Both treat it identically, because the source document is the same'],
             ans: 0,
             exp: 'The same payment can be analysed by element, nature, behaviour, function, cost centre and product in the costing system. Financial accounting needs only the total for the wages expense line.',
           },
@@ -5801,7 +5801,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'How should the figure four thousand two hundred pounds be entered into a cell?',
-            opts: ['4200, with any currency symbol applied as a format', '£4,200 exactly as it would be written', '£4200 with the symbol but no separator', '4,200 with the separator but no symbol'],
+            opts: ['4200, with any currency symbol applied as a format', '£4,200, typed exactly as it would be written out', '£4200, with the currency symbol but no separator', '4,200, with the thousand separator but no symbol'],
             ans: 0,
             exp: 'Only the digits are typed. A currency symbol or comma typed into the cell makes the entry text, so it cannot be summed and every formula referencing it fails.',
           },
@@ -5819,7 +5819,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'After inserting a row immediately below the last row of a summed range, what should you check?',
-            opts: ['Whether the total formula has extended to include the new row', 'Whether the new row has inherited the fill colour', 'Whether the column widths have adjusted automatically', 'Whether the percentage format has been reapplied'],
+            opts: ['Whether the total formula has extended to include the new row', 'Whether the new row has inherited the fill colour', 'Whether the column widths have adjusted themselves automatically', 'Whether the percentage format has been reapplied'],
             ans: 0,
             exp: 'A row inserted just below a range is often not picked up by the existing formula, so the total silently excludes it. Checking every affected total after a structural change is the habit that protects these marks.',
           },
@@ -6023,13 +6023,13 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'A standard cost card sets out:',
-            opts: ['The actual cost of production for the previous period', 'The maximum cost allowed under perfect conditions', 'The predetermined expected cost per unit for each cost element', 'The selling price and target profit margin per unit'],
+            opts: ['The actual cost of production incurred in the previous period', 'The maximum cost allowed under perfect conditions', 'The predetermined expected cost per unit for each cost element', 'The selling price and target profit margin per unit'],
             ans: 2,
             exp: 'A standard cost card shows the expected (standard) cost per unit for materials, labour, and overheads. It is the benchmark against which actual costs are compared to calculate variances.',
           },
           {
             q: 'An adverse materials usage variance means:',
-            opts: ['The business paid more per kg than the standard price', 'The business used more kg of material per unit than the standard allowed', 'The business produced fewer units than budgeted', 'The actual fixed overhead was higher than the absorbed amount'],
+            opts: ['The business paid more per kilogram of material than the standard price allowed', 'The business used more kg of material per unit than the standard allowed', 'The business produced fewer units than budgeted', 'The actual fixed overhead was higher than the absorbed amount'],
             ans: 1,
             exp: 'An adverse usage variance arises when more material was used than the standard quantity for the actual output. This adds to cost (adverse). It could indicate wastage, poor quality material, or inefficient processes.',
           },
@@ -6152,7 +6152,7 @@ window.LEARN_PATH = [
         check: [
           { q: 'Where statute law and case law conflict, which prevails?', opts: [
               'Statute law, because the courts cannot override an Act of Parliament',
-              'Case law, because it reflects centuries of judicial reasoning',
+              'Case law, because it reflects several centuries of judicial reasoning',
               'Whichever came later in time takes precedence over the other',
               'Neither — the conflict is resolved by a referendum'],
             ans: 0, exp: 'Parliament is sovereign. The courts interpret statute but cannot question the validity of an Act.' },
@@ -6443,7 +6443,7 @@ window.LEARN_PATH = [
               'It is the transparency trade-off for shareholders having limited liability',
               'It allows HMRC to calculate the corporation tax the company owes',
               'It is required before the company is permitted to continue trading',
-              'It registers the company\'s employees for PAYE and National Insurance'],
+              'It registers the company’s employees for PAYE and National Insurance purposes'],
             ans: 0, exp: 'Anyone dealing with a company whose owners cannot be pursued personally is entitled to see its financial position. Tax is settled separately with HMRC.' },
           { type: 'numeric', q: 'A partnership of three has no written agreement and makes a profit of £84,000. Under the Partnership Act 1890 default, what is each partner\'s share, in £?',
             answer: 28000, unit: '£',
@@ -6644,7 +6644,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Keeping your technical knowledge up to date supports which fundamental principle?',
-            opts: ['Confidentiality', 'Integrity', 'Professional competence and due care', 'Objectivity'],
+            opts: ['Confidentiality, in respect of client information', 'Integrity, being straightforward and honest in all dealings', 'Professional competence and due care', 'Objectivity, keeping judgement free of bias'],
             ans: 2,
             exp: 'Professional competence and due care requires maintaining the knowledge and skills necessary to provide a proper service to clients and employers.',
           },
@@ -6656,7 +6656,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'When may an accountant disclose confidential client information?',
-            opts: ['Whenever a friend happens to ask', 'When it would help win new business', 'Never, in any circumstances at all', 'When there is a legal duty or proper authority'],
+            opts: ['Whenever a friend happens to ask', 'When disclosing it would help the firm win new business', 'Never, in any circumstances at all', 'When there is a legal duty or proper authority'],
             ans: 3,
             exp: 'Confidentiality can be overridden by a legal obligation — for example, a Suspicious Activity Report under money laundering legislation — or proper authorisation.',
           },
@@ -6668,7 +6668,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'An accountant suspects a colleague is involved in money laundering. What should they do?',
-            opts: ['Ignore it, as it is not their responsibility', 'Tell the colleague they have been spotted', 'Report it internally, or to the National Crime Agency', 'Destroy the evidence to protect the firm'],
+            opts: ['Ignore it, since it is not their own responsibility to act', 'Tell the colleague they have been spotted', 'Report it internally, or to the National Crime Agency', 'Destroy the evidence to protect the firm'],
             ans: 2,
             exp: 'Money laundering reporting is a legal obligation. Suspicion must be reported through the firm\'s Money Laundering Reporting Officer or directly to the NCA. Tipping off the suspect is itself a criminal offence.',
           },
@@ -6746,13 +6746,13 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Which is a key benefit of cloud accounting software?',
-            opts: ['It works without any internet connection', 'It removes the need for passwords', 'It makes data security unnecessary', 'Authorised users can access live data from anywhere'],
+            opts: ['It continues to work without any internet connection at all', 'It removes the need for passwords', 'It makes data security unnecessary', 'Authorised users can access live data from anywhere'],
             ans: 3,
             exp: 'Cloud systems hold data centrally so authorised users can work from any location with an internet connection.',
           },
           {
             q: 'Under UK GDPR, how long may personal data be kept?',
-            opts: ['Forever, once collected', 'Exactly seven years in all cases', 'No longer than necessary for its purpose', 'Until the customer asks twice'],
+            opts: ['Forever, once collected', 'Exactly seven years, in every single case', 'No longer than necessary for its purpose', 'Until the customer asks twice'],
             ans: 2,
             exp: 'The storage limitation principle requires that data is kept only as long as needed for the purpose for which it was collected.',
           },
@@ -6764,7 +6764,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Why should access to accounting systems be restricted by role?',
-            opts: ['To slow the system down for safety', 'So staff see and change only the data their job requires', 'To avoid paying for software licences', 'Because GDPR bans all shared systems'],
+            opts: ['To slow processing down so that mistakes are noticed sooner', 'So staff see and change only the data their job requires', 'To reduce the number of software licences the business has to buy', 'Because UK GDPR prohibits more than one person using a system'],
             ans: 1,
             exp: 'Role-based access limits both accidental errors and deliberate misuse, protecting confidentiality and integrity.',
           },
@@ -6869,7 +6869,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'You suspect a client is laundering money. What should you do first?',
-            opts: ['Tell the client that you suspect them', 'Do nothing until you are certain', 'Report to the Nominated Officer (MLRO) internally', 'Call the police directly'],
+            opts: ['Tell the client openly that you suspect them', 'Do nothing at all until you are quite certain', 'Report to the Nominated Officer (MLRO) internally', 'Telephone the local police directly'],
             ans: 2,
             exp: 'The correct first step is to report your suspicion internally to the Nominated Officer (MLRO). Telling the client would be "tipping off", which is a criminal offence.',
           },
@@ -6881,7 +6881,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Confidentiality means a professional accountant should NEVER disclose client information. Is this statement correct?',
-            opts: ['Yes, confidentiality is absolute', 'No — disclosure is required when a legal duty overrides it', 'Yes, except to other accountants', 'No — any third party may request disclosure'],
+            opts: ['Yes — the duty of confidentiality is absolute', 'No — disclosure is required when a legal duty overrides it', 'Yes — except to other members of the profession', 'No — disclosure may be made to any third party who asks for it'],
             ans: 1,
             exp: 'Confidentiality is a fundamental principle but not absolute. Legal obligations (e.g. money-laundering reporting, court orders) override confidentiality.',
           },
@@ -7090,19 +7090,19 @@ window.LEARN_PATH = [
           },
           {
             q: 'The Bank of England raises interest rates. Which effect on business is most likely?',
-            opts: ['Businesses find it cheaper to borrow', 'Consumer spending tends to increase', 'Business borrowing costs increase and investment may fall', 'Exports become more expensive overseas'],
+            opts: ['Businesses find borrowing cheaper and bring investment forward', 'Consumer spending increases as households have more to spend', 'Business borrowing costs increase and investment may fall', 'Exports become dearer overseas and order books shrink'],
             ans: 2,
             exp: 'Higher interest rates increase the cost of borrowing for businesses and consumers, which tends to reduce spending and business investment.',
           },
           {
             q: 'Fiscal policy refers to:',
-            opts: ['Setting interest rates to control inflation', 'Government decisions on taxation and public spending', 'The exchange rate mechanism', 'The Bank of England\'s base rate'],
+            opts: ['Setting the base rate of interest in order to control inflation', 'Government decisions on taxation and public spending', 'The exchange rate mechanism', 'The Bank of England\'s base rate'],
             ans: 1,
             exp: 'Fiscal policy is the government\'s use of taxation and public spending to influence the economy. Monetary policy (interest rates) is a separate tool.',
           },
           {
             q: 'Inflation in the UK rises from 2% to 6%. Which of the following is the most likely immediate impact on a manufacturing business?',
-            opts: ['Revenue automatically increases by 6%', 'Input costs (materials, energy) rise, putting pressure on margins', 'The business can reduce its prices to attract more customers', 'The business\'s fixed costs fall in real terms'],
+            opts: ['Revenue automatically increases by 6%', 'Input costs (materials, energy) rise, putting pressure on margins', 'The business is able to reduce its prices in order to attract more customers', 'The business\'s fixed costs fall in real terms'],
             ans: 1,
             exp: 'Rising inflation increases the cost of inputs (materials, energy, wages). Unless selling prices can be raised by the same amount, profit margins are squeezed.',
           },
@@ -7211,7 +7211,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which of the following is an example of CSR (corporate social responsibility) rather than just legal compliance?',
-            opts: ['Filing the VAT return by its due date', 'Paying the National Living Wage', 'Cutting carbon emissions beyond what the law requires', 'Registering the company with Companies House'],
+            opts: ['Filing the VAT return by its due date', 'Paying the National Living Wage', 'Cutting carbon emissions beyond what the law requires', 'Registering the company at Companies House on formation'],
             ans: 2,
             exp: 'CSR involves actions taken beyond legal requirements. Voluntarily cutting carbon emissions (when not legally required) is a CSR initiative, not just compliance.',
           },
@@ -7652,7 +7652,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which is the strongest reason for corroborating a figure with a second source?',
-            opts: ['Disagreement between sources signals that investigation is needed', 'It doubles the volume of evidence in the report', 'It removes the need to check the date of publication', 'Two sources are always more current than one'],
+            opts: ['Disagreement between sources signals that investigation is needed', 'It doubles the volume of supporting evidence in the report', 'It removes any need to check the date on which each source was published', 'Two independent sources are always more current than one'],
             ans: 0,
             exp: 'Agreement raises confidence and disagreement is itself information — it tells you to look harder before acting. Volume alone adds nothing, and a second source does not make either one more current.',
           },
@@ -7749,7 +7749,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'For income tax purposes, a sole trader\'s taxable trading profit is calculated as:',
-            opts: ['Gross turnover before any deductions', 'Revenue minus allowable business expenses (and capital allowances)', 'Drawings taken from the business during the year', 'The balance on the sole trader\'s capital account at year end'],
+            opts: ['Gross turnover before any deductions', 'Revenue minus allowable business expenses (and capital allowances)', 'Drawings taken from the business during the year', 'The balance on the sole trader’s capital account at the end of the year'],
             ans: 1,
             exp: 'Taxable trading profit = Revenue − allowable business expenses − capital allowances. Allowable expenses must be incurred wholly and exclusively for the purpose of the trade. Drawings are not an allowable expense.',
           },
@@ -7761,7 +7761,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A business expense is allowable for income tax purposes if it is:',
-            opts: ['Approved by HMRC in writing before it is incurred', 'Incurred wholly and exclusively for the purposes of the trade', 'Under £500 in value and paid in the same tax year', 'Paid by bank transfer rather than cash or credit'],
+            opts: ['Approved by HMRC in writing before the expenditure is incurred', 'Incurred wholly and exclusively for the purposes of the trade', 'Under £500 in value and paid within the same tax year', 'Paid by bank transfer rather than in cash or on credit'],
             ans: 1,
             exp: 'The test for an allowable trading expense is: incurred wholly and exclusively for the purposes of the trade (ITTOIA 2005, s.34). HMRC pre-approval is not required; the size or payment method are not the determining factors.',
           },
@@ -7773,7 +7773,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which of the following is covered in Tax Processes for Businesses (TPFB) at Level 3 but is NOT covered at Level 2?',
-            opts: ['Calculating 20% VAT on standard-rated supplies', 'Knowing the difference between input and output VAT', 'Calculating income tax on a sole trader\'s taxable profit', 'Recording VAT in the VAT control account'],
+            opts: ['Calculating 20% VAT on standard-rated supplies', 'Knowing the difference between input tax and output tax', 'Calculating income tax on a sole trader\'s taxable profit', 'Recording VAT in the VAT control account'],
             ans: 2,
             exp: 'Income tax calculation for sole traders is first examined in TPFB at Level 3. VAT arithmetic, input/output VAT distinctions, and VAT ledger entries are all covered at Level 2 (ITBK and POBC).',
           },
@@ -8179,7 +8179,7 @@ window.LEARN_PATH = [
             q: 'Non-current assets appear in the SFP at:',
             opts: [
               'Original purchase cost',
-              'Current open-market value',
+              'Their current open-market resale value',
               'Cost less accumulated depreciation',
               'Current replacement cost',
             ],
@@ -8414,7 +8414,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'What is the main purpose of depreciation?',
-            opts: ['To save up cash to replace the asset', 'To show the asset at market value', 'To spread the cost of the asset over its useful life', 'To reduce the VAT due'],
+            opts: ['To build up a fund of cash to replace the asset later', 'To restate the asset at its current market value', 'To spread the cost of the asset over its useful life', 'To reduce the VAT payable on the purchase'],
             ans: 2,
             exp: 'Depreciation applies the matching concept by allocating the cost of an asset to the periods that benefit from its use.',
           },
@@ -8538,13 +8538,13 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which of these is capital rather than revenue expenditure?',
-            opts: ['Annual insurance premium £1,200', 'Monthly wages £8,000', 'Extension to the factory building £30,000', 'Replacement of broken windows £600'],
+            opts: ['Annual insurance premium £1,200', 'Monthly wages £8,000', 'Extension to the factory building £30,000', 'Replacement of two broken office windows £600'],
             ans: 2,
             exp: 'Extending a building enhances a long-term asset — capital expenditure. Insurance and wages are running costs (RevEx), and replacing broken windows merely restores the original condition (RevEx).',
           },
           {
             q: 'Which accounting principle supports the distinction between CapEx and RevEx?',
-            opts: ['Prudence', 'Matching (accruals)', 'Entity', 'Going concern'],
+            opts: ['Prudence', 'Matching (accruals)', 'Entity', 'The going concern principle'],
             ans: 1,
             exp: 'The matching principle requires costs to be charged in the period their benefit is received. RevEx benefits one period; CapEx benefits several, so it is spread via depreciation.',
           },
@@ -8649,7 +8649,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which accounting concept requires accruals and prepayments?',
-            opts: ['The going concern concept', 'The accruals (matching) concept', 'The consistency concept', 'The prudence concept'],
+            opts: ['The going concern assumption', 'The accruals (matching) concept', 'The consistency concept', 'The prudence concept'],
             ans: 1,
             exp: 'The accruals (matching) concept requires income and expenses to be recognised in the period they relate to, not when cash is received or paid.',
           },
@@ -8735,7 +8735,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Which of the following is a non-current asset?',
-            opts: ['Trade receivables', 'Closing inventory', 'A delivery van used in the business', 'Cash in the till'],
+            opts: ['Amounts owed by credit customers', 'Goods held in stock at the year end', 'A delivery van used in the business', 'Notes and coins held in the till'],
             ans: 2,
             exp: 'A delivery van used in the business for more than one year is a non-current (fixed) asset. Trade receivables and inventory are current assets.',
           },
@@ -8747,7 +8747,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Net assets (net worth) of a business equals:',
-            opts: ['Total assets only', 'Total assets minus total liabilities', 'Capital minus drawings', 'Non-current assets only'],
+            opts: ['Total assets, before deducting anything', 'Total assets minus total liabilities', 'Opening capital less the owner’s drawings', 'Non-current assets, excluding current ones'],
             ans: 1,
             exp: 'Net assets = Total assets − Total liabilities. By the accounting equation, this equals the owner\'s capital (equity).',
           },
@@ -8831,7 +8831,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A prepayment of £600 insurance (covering future periods) is adjusted on the ETB as:',
-            opts: ['Dr Insurance expense £600 / Cr Prepayments £600', 'Dr Prepayments (asset) £600 / Cr Insurance expense £600', 'Dr Accruals £600 / Cr Insurance expense £600', 'Dr Insurance £600 / Cr Bank £600'],
+            opts: ['Dr Insurance expense £600 / Cr Prepayments (asset) £600', 'Dr Prepayments (asset) £600 / Cr Insurance expense £600', 'Dr Accruals £600 / Cr Insurance expense £600', 'Dr Insurance £600 / Cr Bank £600'],
             ans: 1,
             exp: 'A prepayment reduces the current period expense. Dr Prepayments (creates a current asset on the SFP) / Cr Insurance expense (reduces the expense charged to the income statement).',
           },
@@ -9169,7 +9169,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'The high-low method is used to split which type of cost?',
-            opts: ['Fixed costs', 'Variable costs', 'Semi-variable costs', 'Direct costs'],
+            opts: ['Fixed costs', 'Purely variable costs', 'Semi-variable costs', 'Direct costs'],
             ans: 2,
             exp: 'Semi-variable costs have both a fixed and variable element. The high-low method separates the two so each can be planned and budgeted independently.',
           },
@@ -9205,7 +9205,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'A key limitation of the high-low method is that:',
-            opts: ['It requires complex calculations', 'It uses only two data points and may be distorted by outliers', 'It cannot be used for fixed costs', 'It requires activity to be measured in units only'],
+            opts: ['It requires unusually complex calculations', 'It uses only two data points and may be distorted by outliers', 'It cannot be applied to fixed costs at all', 'It requires the activity level to be measured in units only'],
             ans: 1,
             exp: 'High-low ignores all data points except two extremes. If either extreme is abnormal (an outlier), the resulting cost split will be inaccurate.',
           },
@@ -9290,13 +9290,13 @@ window.LEARN_PATH = [
           },
           {
             q: 'Variable cost of making a component: £8. Purchase price from supplier: £7. There is no spare capacity issue. The correct decision is:',
-            opts: ['Make — always better to keep production in-house', 'Buy — purchase price (£7) is less than variable cost of making (£8)', 'Make — fixed costs need to be covered', 'Cannot decide without knowing the selling price'],
+            opts: ['Make — it is always better to keep production in-house where possible', 'Buy — purchase price (£7) is less than variable cost of making (£8)', 'Make — the fixed costs of the factory still need to be covered', 'Cannot decide without knowing the selling price of the finished product'],
             ans: 1,
             exp: 'The relevant cost of making is £8 (variable). Buying at £7 saves £1 per unit. Buy from the supplier.',
           },
           {
             q: 'A product has a contribution of £6 per unit and requires 2 machine hours per unit. Another product has a contribution of £8 per unit and requires 4 machine hours. Machine time is the limiting factor. Which product should be prioritised?',
-            opts: ['Product 2 — higher contribution per unit', 'Product 1 — higher contribution per machine hour (£3 vs £2)', 'Product 2 — higher total contribution', 'Neither — both are equally attractive'],
+            opts: ['Product 2 — it earns the higher contribution for each unit sold', 'Product 1 — higher contribution per machine hour (£3 vs £2)', 'Product 2 — it generates the greater contribution in total', 'Neither — the two products are equally attractive here'],
             ans: 1,
             exp: 'With a limiting factor, rank by contribution per unit of the scarce resource. Product 1: £6÷2 = £3/hr. Product 2: £8÷4 = £2/hr. Prioritise Product 1.',
           },
@@ -9380,7 +9380,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Under absorption costing, which costs are included in the unit product cost?',
-            opts: ['Variable production costs only', 'Variable production costs plus absorbed fixed production overhead', 'All costs including selling, distribution and administration', 'Direct materials and direct labour only'],
+            opts: ['Variable production costs only', 'Variable production costs plus absorbed fixed production overhead', 'All costs, including selling, distribution and administration overhead', 'Direct materials and direct labour only'],
             ans: 1,
             exp: 'Absorption costing includes all production costs in the unit cost: direct materials + direct labour + variable overheads + a share of fixed production overhead (calculated using the OAR).',
           },
@@ -9398,7 +9398,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Which financial reporting standard requires absorption costing for inventory valuation?',
-            opts: ['Neither — both methods are acceptable for external reporting', 'Marginal costing only, as it separates fixed costs clearly', 'UK GAAP (FRS 102) and IFRS — inventory must include a share of fixed production overhead', 'Only IFRS — UK GAAP allows marginal costing for listed companies'],
+            opts: ['Neither — marginal and absorption costing are both acceptable for external reporting', 'Marginal costing only, because it separates the fixed production overhead out clearly', 'UK GAAP (FRS 102) and IFRS — inventory must include a share of fixed production overhead', 'Only IFRS — UK GAAP permits marginal costing for companies that are not listed'],
             ans: 2,
             exp: 'Both UK GAAP (FRS 102) and IFRS require that inventory includes a fair share of fixed production overhead — i.e. absorption costing. Marginal costing is fine for internal management reports but not for statutory accounts.',
           },
@@ -9574,9 +9574,9 @@ window.LEARN_PATH = [
             q: 'Under RTI, what does an Employer Payment Summary (EPS) do that a Full Payment Submission cannot?',
             opts: [
               'Report adjustments such as statutory pay recovered, or a month with no payments to employees',
-              'Report the pay and deductions for each individual employee on a payday',
-              'Replace the requirement to issue payslips to employees',
-              'Calculate the income tax and National Insurance due for each employee',
+              'Report the gross pay, tax and deductions for each individual employee on each payday',
+              'Replace the employer’s obligation to issue an itemised payslip to every employee',
+              'Calculate the income tax and both National Insurance contributions due for each employee',
             ],
             ans: 0,
             exp: 'The FPS reports what each employee was paid and what was deducted. The EPS carries what the FPS cannot — recovered statutory payments and nil-payment periods. Neither calculates anybody\'s tax; payroll software does that from figures the employer supplies.',
@@ -9650,10 +9650,10 @@ window.LEARN_PATH = [
           {
             q: 'The duty under s.172 CA 2006 to "promote the success of the company" requires directors to consider:',
             opts: [
-              'Only the financial returns to majority shareholders',
+              'Only the financial returns due to the majority shareholders',
               'Long-term consequences, employees, community, and the environment',
-              'Maximising short-term profit and dividend payments',
-              'The personal financial interests of the directors',
+              'Maximising short-term profit and the dividends paid out',
+              'The personal financial interests of the individual directors themselves',
             ],
             ans: 1,
             exp: 's.172 requires regard for a wide range of factors including employees, business relationships, the community, and environmental impact — not just profit for shareholders.',
@@ -9661,10 +9661,10 @@ window.LEARN_PATH = [
           {
             q: 'The principal-agent problem in corporate governance refers to:',
             opts: [
-              'Disputes between the company\'s solicitors and auditors',
+              'Disputes between the company’s legal advisers and its external auditors',
               'The risk that managers act in their own interest rather than shareholders\'',
-              'Conflict between the CEO and the board chairperson',
-              'Difficulty appointing qualified non-executive directors',
+              'Conflict between the chief executive and the chair of the board of directors',
+              'Difficulty in appointing suitably qualified independent non-executive directors',
             ],
             ans: 1,
             exp: 'Shareholders (principals) delegate control to managers (agents). If managers pursue personal goals rather than maximising shareholder value, a principal-agent problem exists. Governance structures aim to align incentives.',
@@ -9736,7 +9736,7 @@ window.LEARN_PATH = [
               'A single quarter of falling GDP',
               'Two consecutive quarters of negative GDP growth',
               'Annual inflation above 5%',
-              'Unemployment above 10% of the workforce',
+              'Unemployment rising above 10% of the total workforce',
             ],
             ans: 1,
             exp: 'A recession is technically two consecutive quarters of negative GDP growth. One bad quarter is a contraction but not a recession.',
@@ -9758,7 +9758,7 @@ window.LEARN_PATH = [
               'Calculate overhead absorption rates',
               'Analyse competitive intensity within an industry',
               'Assess a company\'s liquidity position',
-              'Set the optimal price for a new product',
+              'Set the optimal selling price for a newly launched product',
             ],
             ans: 1,
             exp: 'Porter\'s Five Forces analyses the structural attractiveness of an industry by examining five sources of competitive pressure: existing rivalry, new entrants, substitutes, buyer power, and supplier power.',
@@ -9852,13 +9852,13 @@ window.LEARN_PATH = [
           },
           {
             q: 'The matching principle for finance states that:',
-            opts: ['All finance should be raised by issuing shares', 'Long-term assets should be funded by long-term finance', 'Overdrafts should never be used', 'Interest rates must match inflation'],
+            opts: ['All finance should be raised by issuing new equity shares', 'Long-term assets should be funded by long-term finance', 'Overdrafts should never be used', 'Interest rates must match inflation'],
             ans: 1,
             exp: 'The matching principle: align the term of the finance to the duration of the asset or need. Using short-term finance for long-term assets creates refinancing (rollover) risk.',
           },
           {
             q: 'Retained profits are an example of which type of finance?',
-            opts: ['Debt finance', 'External finance', 'Internal equity finance', 'Short-term finance'],
+            opts: ['Debt finance', 'External finance', 'Internal equity finance', 'Short-term external finance'],
             ans: 2,
             exp: 'Retained profits are internal (generated within the business) and equity (no repayment obligation). They represent reinvested earnings and are the most common source of business finance.',
           },
@@ -9917,7 +9917,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Under the Working Time Regulations 1998, the maximum weekly working hours are:',
-            opts: ['40 hours a week with no exceptions', '48 hours a week, averaged, unless opted out', '60 hours if the employer requires it', '35 hours a week for all workers'],
+            opts: ['40 hours a week with no exceptions', '48 hours a week, averaged, unless opted out', '60 hours a week if the employer requires it', '35 hours a week for all workers'],
             ans: 1,
             exp: 'The Working Time Regulations set a 48-hour limit, averaged over a reference period (typically 17 weeks). Workers can opt out in writing.',
           },
@@ -10014,7 +10014,7 @@ window.LEARN_PATH = [
         check: [
           {
             q: 'Which of the following is NOT a required element for a valid contract?',
-            opts: ['Offer', 'Acceptance', 'The agreement must be in writing', 'Consideration'],
+            opts: ['A definite offer capable of being accepted', 'Unqualified acceptance of that exact offer', 'The agreement must be in writing', 'Consideration moving from each party'],
             ans: 2,
             exp: 'Most contracts do not need to be in writing to be legally binding. The four required elements are: offer, acceptance, consideration, and intention to create legal relations. Writing is a formality only required for specific contracts (e.g. land sales).',
           },
@@ -10032,7 +10032,7 @@ window.LEARN_PATH = [
           },
           {
             q: 'Wrongful dismissal occurs when:',
-            opts: ['An employee is dismissed for whistleblowing about illegal activity', 'The employer dismisses without giving the notice period required by the contract', 'The employer dismisses without following the statutory dismissal procedure', 'An employee is dismissed within two years of starting employment'],
+            opts: ['An employee is dismissed for whistleblowing about illegal activity', 'The employer dismisses without giving the notice period required by the contract', 'The employer dismisses without first following the statutory dismissal procedure', 'An employee is dismissed within two years of starting employment'],
             ans: 1,
             exp: 'Wrongful dismissal is a breach of the employment contract — specifically, dismissing without giving the contractual (or statutory minimum) notice. It is a contractual claim, not a statutory one. Unfair dismissal is the separate statutory claim requiring a fair reason and fair process.',
           },
