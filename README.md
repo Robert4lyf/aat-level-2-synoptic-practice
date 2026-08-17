@@ -45,15 +45,29 @@ encoded syllabus in `aat2-syllabus.js`) found a good deal:
 - roughly a hundred scenario sub-questions that no check had ever examined
 - true/false grids keyed 68% true, so guessing "true" beat knowing the topic
 
-All of the above are fixed. Two gaps are measured but **not** yet fixed, and the
-checker reports both on every run so the size of the remaining job stays visible:
+All of the above are fixed.
 
-- **Teaching depth.** Level 2 cards average 90 words against Level 1's 253 and
-  Level 3's 294. 286 of 306 cards fall below a 150-word floor.
-- **Syllabus coverage.** Tagging the Introduction to Bookkeeping lessons against the
-  encoded criteria showed only 7 of 16 covered. The whole of the analysed cash book
-  and petty cash book area has no lesson, while six ITBK lessons teach Level 3
-  Financial Accounting material instead.
+The check also compares each unit's lessons against the encoded syllabus, and that
+found something larger than any question defect: **Introduction to Bookkeeping covered
+only 7 of its 16 assessment criteria.** The whole of topic area 4 — the analysed cash
+book, the petty cash book, totalling and balancing them, and recurring receipts and
+payments — had no lesson at all, which is 20% of that unit's assessment. Meanwhile five
+lessons in the unit taught Level 3 Financial Accounting material (accruals and
+prepayments, the statement of financial position, the extended trial balance, capital
+versus revenue, depreciation) that appears nowhere in the Level 2 specification.
+
+That unit is now restructured: nine new lessons cover the missing criteria, the five
+off-syllabus lessons have moved to the Financial Accounting unit where they belong, and
+**ITBK coverage is enforced at 16/16** so it cannot regress. The check now also requires
+every lesson in an enforced unit to claim a criterion — `criteria: []` being the explicit
+opt-out for a bridge lesson — which is the rule that would have caught the original
+problem.
+
+One gap remains measured but not closed, and the checker reports it on every run:
+
+- **Teaching depth.** The nine new ITBK lessons run 212–263 words per card, at Level 1/3
+  standard. The older cards do not, so Level 2 as a whole averages 105 words against
+  Level 1's 253 and Level 3's 294. `DEPTH_ENFORCED` is empty until a unit meets the floor.
 
 ## The Level 1 module
 

@@ -77,9 +77,13 @@ const DEPTH_ENFORCED = [];
    Meanwhile six ITBK lessons teach Level 3 Financial Accounting material
    (accruals and prepayments, the statement of financial position, the extended
    trial balance, capital versus revenue, depreciation) and map to no ITBK
-   criterion at all. That is a content gap to be written, not a check to be
-   switched on, so this stays empty and the shortfall is reported instead. */
-const COVERAGE_ENFORCED = [];
+   criterion at all.
+
+   ITBK is now enforced: the nine missing criteria have lessons, and the five
+   off-syllabus lessons have been moved to the Financial Accounting unit where
+   they belong. POBC, POC and BESY are not yet tagged, so their coverage is
+   still unmeasured rather than known to be good. */
+const COVERAGE_ENFORCED = ['itbk'];
 
 const errors = [];
 const warnings = [];
@@ -471,6 +475,18 @@ COVERAGE_ENFORCED.forEach(u => {
   if (missing.length) {
     errors.push(`${u.toUpperCase()} is declared covered but ${missing.length} of ${cs.length} criteria have no lesson: ${missing.map(c => c.id).join(', ')}`);
   }
+  /* Coverage in the other direction, and the rule that would have caught the
+     original defect. Requiring every criterion to have a lesson does not stop a
+     unit carrying lessons that belong to a different qualification — six ITBK
+     lessons taught Level 3 Financial Accounting material for exactly that
+     reason. A lesson must therefore claim a criterion, and `criteria: []` is
+     the explicit opt-out for an orientation or bridge lesson that honestly
+     covers none. An ABSENT field is the failure; an empty one is a decision. */
+  lessons.filter(l => l._unit === u).forEach(l => {
+    if (!l.criteria) {
+      errors.push(`${l.id} ("${String(l.title || '').slice(0, 40)}") claims no criteria in an enforced unit. Tag it, or set criteria: [] to declare that it deliberately covers none.`);
+    }
+  });
 });
 L2_UNITS.forEach(u => {
   const cs = S.criteria(u);

@@ -602,214 +602,6 @@ window.LEARN_PATH = [
         ],
       },
       {
-        id: 'L-itbk-6',
-        title: 'Spreading and matching costs',
-        icon: '📉',
-        skills: ['itbk-adjust'],
-        cards: [
-          {
-            h: 'Why depreciate?',
-            p: [
-              'A machine bought for £10,000 helps you earn money for years. Charging all £10,000 against the first year would be misleading.',
-              '**Depreciation** spreads the cost of a non-current asset over its useful life, matching the cost to the periods that benefit.',
-            ],
-          },
-          {
-            h: 'Straight-line depreciation',
-            p: [
-              'The **straight-line** method charges the same amount every year: cost minus residual value, divided by useful life.',
-              'It suits assets that wear out evenly over time, like fixtures and fittings.',
-            ],
-            example: {
-              title: 'Straight-line: machine £10,000, residual £2,000, 4-year life',
-              rows: [
-                ['Depreciable amount', '£10,000 minus £2,000 = £8,000'],
-                ['Annual charge', '£8,000 divided by 4 = £2,000'],
-                ['Charge in every year', '£2,000'],
-              ],
-            },
-          },
-          {
-            h: 'Reducing balance depreciation',
-            p: [
-              'The **reducing balance** method applies a fixed percentage to the **carrying amount** (cost minus depreciation so far). The charge gets smaller each year.',
-              'It suits assets that lose most value early, like vehicles and computers.',
-            ],
-            example: {
-              title: 'Reducing balance: machine £10,000 at 20%',
-              rows: [
-                ['Year 1 charge', '20% of £10,000 = £2,000'],
-                ['Carrying amount end of year 1', '£8,000'],
-                ['Year 2 charge', '20% of £8,000 = £1,600'],
-                ['Carrying amount end of year 2', '£6,400'],
-              ],
-            },
-          },
-          {
-            h: 'Accruals and prepayments',
-            p: [
-              'The same matching idea applies to running costs. An **accrual** is an expense you have used but not yet been billed for — like electricity used in March, invoiced in April. Add it to the expense; it is a liability.',
-              'A **prepayment** is the opposite: you have paid in advance, like a year of insurance covering part of next year. Take it out of the expense; it is an asset.',
-            ],
-          },
-          {
-            h: 'Depreciation and adjustments formulas',
-            p: [
-              'These formulas cover all the standard calculations for this topic.',
-            ],
-            formula: 'Straight-line charge = (Cost − Residual) ÷ Useful life · Reducing balance charge = Carrying value × Rate% · Carrying value = Cost − Accumulated depreciation · Prepayment = Months unused ÷ 12 × Annual cost',
-          },
-          {
-            h: 'Matching is the core principle',
-            p: [
-              'Accruals and prepayments both serve the same goal as depreciation.',
-            ],
-            callout: {
-              kind: 'key',
-              text: 'The matching (accruals) concept requires that expenses are recognised in the period they are incurred, not when the cash is paid. Depreciation, accruals and prepayments all apply this concept — never show more or less expense than was actually used in the period.',
-            },
-          },
-        ],
-        check: [
-          {
-            q: 'What is the main purpose of depreciation?',
-            opts: ['To save up cash to replace the asset', 'To show the asset at market value', 'To spread the cost of the asset over its useful life', 'To reduce the VAT due'],
-            ans: 2,
-            exp: 'Depreciation applies the matching concept by allocating the cost of an asset to the periods that benefit from its use.',
-          },
-          {
-            q: 'Equipment cost £12,000 with a residual value of £2,000 and a 5-year life. What is the annual straight-line charge?',
-            opts: ['£2,400', '£12,000', '£2,800', '£2,000'],
-            ans: 3,
-            exp: 'Straight-line depreciation spreads the cost less residual value evenly over the useful life: (£12,000 − £2,000) ÷ 5 = £2,000 a year. Residual value is deducted because that much is expected to remain at the end.',
-          },
-          {
-            q: 'A van cost £20,000 and is depreciated at 25% reducing balance. What is the year 2 charge?',
-            opts: ['£3,750', '£5,000', '£15,000', '£2,500'],
-            ans: 0,
-            exp: 'Year 1 charge: 25% × £20,000 = £5,000. Carrying value: £15,000. Year 2 charge: 25% × £15,000 = £3,750.',
-          },
-          {
-            q: 'Rent of £1,200 paid in March covers April. At the 31 March year end this is a what?',
-            opts: ['An accrual', 'A prepayment', 'A drawing', 'A depreciation charge'],
-            ans: 1,
-            exp: 'It is paid in advance of the period it relates to, so it is a prepayment — treated as an asset at the year end.',
-          },
-          {
-            q: 'Electricity used in December costs £300 but the bill arrives in January. At the 31 December year end, how should this be treated?',
-            opts: ['Ignore it until the bill actually arrives', 'Record it as a prepayment asset of £300', 'Record a £300 accrual and a £300 liability', 'Debit the bank account with £300'],
-            ans: 2,
-            exp: 'An accrual is needed because the expense was incurred in December even though payment comes later. It is added to the period\'s expenses and shown as a current liability.',
-          },
-          {
-            q: 'A van costs £20,000 and is depreciated at 20% reducing balance. It has been owned for 2 full years. What is the depreciation charge in year 3?',
-            opts: ['£4,000', '£3,200', '£2,560', '£12,800'],
-            ans: 2,
-            exp: 'Year 1: 20% × £20,000 = £4,000. CV after yr 1 = £16,000. Year 2: 20% × £16,000 = £3,200. CV after yr 2 = £12,800. Year 3: 20% × £12,800 = £2,560.',
-          },
-          {
-            q: 'Insurance of £1,800 is paid on 1 October, covering 12 months to 30 September. At the 31 December year end, what is the prepayment?',
-            opts: ['£1,800', '£450', '£1,350', '£600'],
-            ans: 2,
-            exp: 'The insurance covers October to September = 12 months. By 31 December, 3 months have been used (Oct, Nov, Dec). Remaining (prepayment) = 9/12 × £1,800 = £1,350.',
-          },
-        ],
-      },
-      {
-        id: 'L-itbk-7',
-        title: 'Capital vs revenue expenditure',
-        icon: '🏗️',
-        skills: ['itbk-docs'],
-        cards: [
-          {
-            h: 'Capital expenditure (CapEx)',
-            p: [
-              '**Capital expenditure** buys or improves long-term assets that will benefit the business for more than one accounting period.',
-              'Examples: buying a van, purchasing a building, installing new machinery, or extending a factory.',
-              'CapEx is recorded on the **balance sheet** as a non-current asset, then depreciated over its useful life.',
-            ],
-          },
-          {
-            h: 'Revenue expenditure (RevEx)',
-            p: [
-              '**Revenue expenditure** is day-to-day spending that benefits only the current accounting period.',
-              'Examples: repairs, fuel, wages, rent, insurance, and routine maintenance.',
-              'RevEx is charged directly to the **income statement** in the period it arises.',
-            ],
-          },
-          {
-            h: 'Capital vs Revenue — side by side',
-            p: [
-              'The quickest test is to ask what the money bought: a *thing* the business will still own next year, or a *service consumed* this year.',
-              'A second test settles most exam cases — did the spending **increase** what the asset can do, or merely **maintain** what it already did? Enhancement is capital; upkeep is revenue.',
-              'Receipts split the same way. Selling a delivery van is a capital receipt; selling the goods it carried is a revenue receipt.',
-            ],
-            split: {
-              left: { title: 'Capital expenditure', items: ['Buys or improves assets', 'Benefit spans > 1 year', 'Goes to balance sheet', 'Depreciated over time', 'E.g. new van £15,000'] },
-              right: { title: 'Revenue expenditure', items: ['Day-to-day running cost', 'Benefit ≤ 1 year', 'Goes to income statement', 'Expensed immediately', 'E.g. van repair £300'] },
-            },
-          },
-          {
-            h: 'Borderline examples',
-            p: [
-              'The hard cases nearly always involve money spent on a non-current asset *after* it was bought.',
-              'Anything needed to **get the asset ready for its first use** is capital, even when it looks like an expense: delivery, installation, legal fees on a building, testing before it goes into service.',
-              'Anything that only **keeps it working** is revenue: servicing, replacing a worn part, road tax, insurance, cleaning.',
-            ],
-            example: {
-              title: 'CapEx or RevEx?',
-              rows: [
-                ['Transaction', 'Type', 'Reason'],
-                ['Buy delivery van £20,000', 'CapEx', 'Long-term asset'],
-                ['Service the van £400', 'RevEx', 'Maintenance only'],
-                ['Install a new engine £4,000', 'CapEx', 'Extends useful life'],
-                ['Repaint the van £500', 'RevEx', 'Maintains condition'],
-              ],
-            },
-          },
-          {
-            h: 'Why the classification matters',
-            p: [
-              'Treating CapEx as RevEx **understates profit** (too much expense charged) and **understates assets**.',
-              'Treating RevEx as CapEx **overstates profit** and **overstates assets**.',
-            ],
-            callout: { kind: 'warning', text: '**Exam trap:** Replacing a broken window is RevEx (restoring to original condition). Adding a new floor to a building is CapEx (enhancing the asset). The key test: does it extend the asset\'s life or improve its capability?' },
-          },
-        ],
-        check: [
-          {
-            q: 'A business buys new computer equipment for £5,000. How should this be classified?',
-            opts: ['Revenue expenditure — charge to income statement', 'Capital expenditure — record as non-current asset', 'Revenue expenditure if under £10,000', 'Capital expenditure — charge to income statement'],
-            ans: 1,
-            exp: 'Computer equipment is a long-term asset used over several years, so it is capital expenditure recorded on the balance sheet.',
-          },
-          {
-            q: 'A plumber charges £200 to fix a leaking pipe. This is best classified as:',
-            opts: ['Capital expenditure', 'Revenue expenditure', 'Capital expenditure if over 5 years old', 'Neither — record as a liability'],
-            ans: 1,
-            exp: 'Repairing a fault restores the asset to its original condition — that is revenue expenditure, charged immediately to the income statement.',
-          },
-          {
-            q: 'If a business incorrectly treats capital expenditure as revenue expenditure, what is the effect on reported profit?',
-            opts: ['Profit is overstated', 'Profit is understated', 'No effect on profit', 'Assets are overstated'],
-            ans: 1,
-            exp: 'Treating CapEx as RevEx charges too much expense in the period, so profit is understated. Assets are also understated.',
-          },
-          {
-            q: 'Which of these is capital rather than revenue expenditure?',
-            opts: ['Annual insurance premium £1,200', 'Monthly wages £8,000', 'Extension to the factory building £30,000', 'Replacement of broken windows £600'],
-            ans: 2,
-            exp: 'Extending a building enhances a long-term asset — capital expenditure. Insurance and wages are running costs (RevEx), and replacing broken windows merely restores the original condition (RevEx).',
-          },
-          {
-            q: 'Which accounting principle supports the distinction between CapEx and RevEx?',
-            opts: ['Prudence', 'Matching (accruals)', 'Entity', 'Going concern'],
-            ans: 1,
-            exp: 'The matching principle requires costs to be charged in the period their benefit is received. RevEx benefits one period; CapEx benefits several, so it is spread via depreciation.',
-          },
-        ],
-      },
-      {
         id: 'L-itbk-8',
         criteria: ['ITBK-2.1'],
         title: 'VAT: records and the return',
@@ -1122,308 +914,988 @@ window.LEARN_PATH = [
           },
         ],
       },
-      {
-        id: 'L-itbk-11',
-        title: 'Accruals and prepayments',
-        icon: '⏱️',
-        skills: ['itbk-adjust'],
-        cards: [
-          {
-            h: 'The accruals concept in action',
-            p: [
-              'Income and expenses must be recognised in the period they relate to — not when cash moves. This is the **accruals (matching) concept**, one of the fundamental accounting principles.',
-              'At year end, we must make adjustments so that the financial statements reflect what has genuinely been earned or incurred during the period — regardless of whether cash has been received or paid.',
-              'Two key adjustments arise: an **accrual** (expense incurred but not yet paid — e.g. an electricity bill not yet received) and a **prepayment** (expense paid in advance, benefit not yet received — e.g. insurance paid for future months).',
-            ],
-          },
-          {
-            h: 'Recording an accrual',
-            p: [
-              'An accrual arises when an expense has been incurred in the period but no invoice or payment has yet been processed. We must add the amount to the expense account and create a corresponding current liability.',
-            ],
-            formula: 'Accrual entry: Dr Expense account, Cr Accruals (liability)·Effect: increases expense on income statement, creates current liability on SFP·Reversal at start of next year: Dr Accruals, Cr Expense',
-            example: {
-              title: 'Accrual example',
-              rows: [
-                ['Scenario', 'Electricity bill £400 for Dec not yet received'],
-                ['Adjustment (31 Dec)', 'Dr Electricity £400 / Cr Accruals £400'],
-                ['Effect', 'Adds £400 to expense this year; creates £400 liability'],
-              ],
-            },
-          },
-          {
-            h: 'Recording a prepayment',
-            p: [
-              'A prepayment arises when a business has paid in advance for a benefit that extends beyond the current accounting period. The portion relating to future periods must be removed from the expense account and shown as a current asset.',
-            ],
-            formula: 'Prepayment entry: Dr Prepayments (asset), Cr Expense·Effect: reduces expense on income statement, creates current asset on SFP·Amount remaining = months paid × monthly rate',
-            example: {
-              title: 'Prepayment example',
-              rows: [
-                ['Scenario', 'Insurance £1,200 paid 1 Oct, covering 12 months'],
-                ['At 31 Dec (3 months used)', 'Expense = 3/12 × £1,200 = £300'],
-                ['Prepayment (asset)', '9/12 × £1,200 = £900'],
-                ['Adjustment', 'Dr Prepayments £900 / Cr Insurance £900'],
-              ],
-            },
-          },
-          {
-            h: 'Adjusting the trial balance',
-            p: [
-              'The trial balance shows balances before adjustments. After calculating accruals and prepayments, we adjust the relevant expense accounts. The adjusted figures go into the income statement (profit and loss account).',
-            ],
-            split: {
-              left: {
-                title: 'Accruals increase expenses',
-                items: [
-                  'Add accrual to the expense balance',
-                  'Create a liability in current liabilities',
-                  'Example: Rent accrued £500 → Dr Rent £500, Cr Accruals £500',
-                ],
-              },
-              right: {
-                title: 'Prepayments reduce expenses',
-                items: [
-                  'Deduct prepayment from the expense balance',
-                  'Create an asset in current assets',
-                  'Example: Insurance prepaid £200 → Dr Prepayments £200, Cr Insurance £200',
-                ],
-              },
-            },
-          },
-          {
-            h: 'Accrued income and deferred income',
-            p: [
-              'Accrued income is income earned but not yet received (e.g. rent receivable owed at year end): Dr Accrued income (asset), Cr Income.',
-              'Deferred income is cash received for income not yet earned (e.g. a subscription received in advance): Dr Income, Cr Deferred income (liability).',
-            ],
-            callout: { kind: 'key', text: 'The accruals concept ensures that financial statements show economic reality — not just cash movements.' },
-          },
-        ],
-        check: [
-          {
-            q: 'A business receives an electricity bill for £600 relating to December but does not pay it until January. What is the correct adjustment at 31 December?',
-            opts: ['No adjustment needed — pay in January', 'Dr Electricity £600; Cr Accruals £600', 'Dr Accruals £600; Cr Electricity £600', 'Dr Bank £600; Cr Electricity £600'],
-            ans: 1,
-            exp: 'An expense incurred but not yet paid is an accrual. Debit the expense account to recognise the cost; credit the accruals liability.',
-          },
-          {
-            q: 'A business pays £2,400 for rent on 1 October, covering the next 12 months. At 31 December (3 months later) what is the prepayment?',
-            opts: ['£600', '£1,800', '£2,400', '£200'],
-            ans: 1,
-            exp: 'Three of the twelve months have been used by 31 December, so nine remain: 9/12 × £2,400 = £1,800. That is removed from this year’s expense and carried forward as a current asset.',
-          },
-          {
-            q: 'A prepayment appears in the statement of financial position as:',
-            opts: ['A current liability', 'A non-current asset', 'A current asset', 'Capital'],
-            ans: 2,
-            exp: 'A prepayment is money paid in advance — it is a benefit still to be received, so it is a current asset.',
-          },
-          {
-            q: 'Which accounting concept requires accruals and prepayments?',
-            opts: ['The going concern concept', 'The accruals (matching) concept', 'The consistency concept', 'The prudence concept'],
-            ans: 1,
-            exp: 'The accruals (matching) concept requires income and expenses to be recognised in the period they relate to, not when cash is received or paid.',
-          },
-          {
-            q: 'Rent of £1,200 is received on 1 December for the next 3 months. At 31 December, the deferred income balance is:',
-            opts: ['£400', '£800', '£1,200', '£600'],
-            ans: 1,
-            exp: 'One month has been earned by 31 December, so two remain unearned: 2/3 × £1,200 = £800. Income received but not yet earned is a liability, because the service has still to be provided.',
-          },
-        ],
-      },
-      {
-        id: 'L-itbk-12',
-        title: 'The Statement of Financial Position',
-        icon: '📋',
-        skills: ['itbk-tb', 'itbk-adjust'],
-        cards: [
-          {
-            h: 'What the SFP tells you',
-            p: [
-              'The statement of financial position (SFP, formerly the balance sheet) shows what a business owns (assets), what it owes (liabilities), and how it is funded (capital/equity) at a specific point in time.',
-              'It is a snapshot, not a period summary. The accounting equation that underpins it: **Assets = Capital + Liabilities**.',
-            ],
-            flow: ['Non-current assets', 'Current assets', 'TOTAL ASSETS', 'Capital', 'Non-current liabilities', 'Current liabilities', 'TOTAL CAPITAL + LIABILITIES'],
-          },
-          {
-            h: 'Non-current assets',
-            p: [
-              'Non-current assets (also called fixed assets) are resources owned for more than one year and used in the business — not for resale. They are shown at **carrying value** (cost less accumulated depreciation).',
-            ],
-            example: {
-              title: 'Non-current assets section',
-              rows: [
-                ['Asset', 'Cost', 'Acc. Dep\'n', 'Carrying value'],
-                ['Premises', '£50,000', '—', '£50,000'],
-                ['Motor vehicles', '£18,000', '£6,000', '£12,000'],
-                ['Equipment', '£8,000', '£3,200', '£4,800'],
-                ['Total NCAs', '', '', '£66,800'],
-              ],
-            },
-          },
-          {
-            h: 'Current assets and liabilities',
-            p: [
-              'Current assets are assets that will convert to cash within 12 months: inventory (stock), trade receivables, prepayments, and bank/cash. Current liabilities are amounts due for payment within 12 months: trade payables, accruals, bank overdraft, and VAT payable.',
-            ],
-            split: {
-              left: {
-                title: 'Current assets',
-                items: ['Inventory (closing stock)', 'Trade receivables', 'Prepayments', 'Bank / cash'],
-              },
-              right: {
-                title: 'Current liabilities',
-                items: ['Trade payables', 'Accruals', 'Bank overdraft', 'VAT payable'],
-              },
-            },
-          },
-          {
-            h: 'The capital section',
-            p: [
-              'For a sole trader, the capital section shows: opening capital + profit for the year + capital introduced − drawings = closing capital.',
-            ],
-            example: {
-              title: 'Capital section',
-              rows: [
-                ['Opening capital', '£28,400'],
-                ['Add: Profit for the year', '£11,600'],
-                ['Add: Capital introduced', '£5,000'],
-                ['Less: Drawings', '(£4,200)'],
-                ['Closing capital', '£40,800'],
-              ],
-            },
-          },
-          {
-            h: 'Putting it all together',
-            p: [
-              'The SFP always balances because Assets = Capital + Liabilities.',
-            ],
-            callout: { kind: 'key', text: 'Total assets must always equal total capital + liabilities. If they do not agree, there is an error somewhere.' },
-            examtrap: 'Bank OVERDRAFT is a current LIABILITY (credit balance in bank account), not an asset. Check which side the bank balance sits on before placing it.',
-          },
-        ],
-        check: [
-          {
-            q: 'Which of the following is a non-current asset?',
-            opts: ['Trade receivables', 'Closing inventory', 'A delivery van used in the business', 'Cash in the till'],
-            ans: 2,
-            exp: 'A delivery van used in the business for more than one year is a non-current (fixed) asset. Trade receivables and inventory are current assets.',
-          },
-          {
-            q: 'A business has a bank overdraft of £1,500. Where does this appear on the SFP?',
-            opts: ['Current assets', 'Non-current assets', 'Current liabilities', 'Capital'],
-            ans: 2,
-            exp: 'An overdraft means the bank is owed money, so it is a current liability rather than an asset. A positive bank balance is the asset; being overdrawn reverses the direction of the obligation.',
-          },
-          {
-            q: 'Net assets (net worth) of a business equals:',
-            opts: ['Total assets only', 'Total assets minus total liabilities', 'Capital minus drawings', 'Non-current assets only'],
-            ans: 1,
-            exp: 'Net assets = Total assets − Total liabilities. By the accounting equation, this equals the owner\'s capital (equity).',
-          },
-          {
-            q: 'A carrying value of £12,000 for a motor vehicle means:',
-            opts: ['The vehicle cost £12,000', 'The vehicle is worth £12,000 on the open market', 'Cost minus accumulated depreciation equals £12,000', 'The vehicle was bought this year for £12,000'],
-            ans: 2,
-            exp: 'Carrying value = Cost − Accumulated depreciation. It reflects the net book value, not the market value.',
-          },
-          {
-            q: 'Prepayments appear in the SFP as:',
-            opts: ['A non-current asset', 'A current asset', 'A current liability', 'Part of capital'],
-            ans: 1,
-            exp: 'Prepayments are amounts paid in advance for a benefit still to be received — they are current assets.',
-          },
-        ],
-      },
 
       {
-        id: 'L-itbk-13',
-        title: 'The Extended Trial Balance',
-        icon: '📊',
-        skills: ['itbk-tb', 'itbk-adjust'],
+        id: 'L-itbk-19',
+        criteria: ['ITBK-1.3'],
+        title: 'Coding systems',
+        icon: '🔢',
+        skills: ['itbk-de'],
         cards: [
           {
-            h: 'What is the Extended Trial Balance?',
+            h: 'Why every account carries a code',
             p: [
-              'The **extended trial balance (ETB)** is a working paper that adjusts the initial trial balance figures before producing the final financial statements. It has columns for the original TB balances, adjustments (accruals, prepayments, depreciation), and the adjusted figures split into income statement and balance sheet columns.',
-              'The ETB sits between the unadjusted trial balance and the finished financial statements. It is the most important worksheet in accounts preparation.',
+              'A business with four hundred customers cannot identify them by name alone. Names are long, they are spelled inconsistently, two of them are called Thompson, and one of them changed its trading name last year. So every account in a bookkeeping system is given a short **code**, and the code rather than the name is what gets written in the books.',
+              'That single move solves several problems at once. A code is short enough to fit in a narrow column. It is unique, so there is exactly one account it can mean. It does not change when the customer rebrands. And because it follows a pattern, it can be sorted, searched and totalled by a machine — which is what makes a digital bookkeeping system possible at all.',
+              'The specification asks you to know four kinds of code, where they are used, and how codes are built. None of that is difficult, but it is precise, and precision is what the assessment tests: a receipt allocated to the wrong customer code chases the wrong person for money.',
+            ],
+            callout: { kind: 'key', text: 'Codes exist so that an entry points at exactly one account, unambiguously and permanently. The name is for humans; the code is for the records.' },
+          },
+          {
+            h: 'The four kinds of code',
+            table: {
+              headers: ['Code', 'What it identifies', 'Where it is used'],
+              rows: [
+                ['**Customer account code**', 'One credit customer', 'Sales daybook, sales returns daybook, discounts allowed daybook, receivables ledger'],
+                ['**Supplier account code**', 'One credit supplier', 'Purchases daybook, purchases returns daybook, discounts received daybook, payables ledger'],
+                ['**Product code**', 'One item sold or bought', 'Analysis columns of the daybooks, and invoices'],
+                ['**General ledger code**', 'One nominal account, such as sales or motor expenses', 'The general ledger, and the analysis that decides which account a figure lands in'],
+              ],
+            },
+            p: [
+              'The distinction that matters most is between the **account** codes and the **general ledger** code. A customer account code says *who* owes the money; the general ledger code says *what kind of transaction* it was. A single sales invoice needs both: the customer code so the debt is recorded against the right person, and a general ledger code so the income is recorded under the right heading.',
+              'Product codes sit alongside them and answer a third question — *which item* — which is what lets a business see that it sells a great deal of one line and almost none of another. That analysis is invisible if everything is coded simply as "sales".',
             ],
           },
           {
-            h: 'Adjustment columns',
+            h: 'Where codes are used',
             p: [
-              'The adjustment columns capture every year-end change. Each adjustment must use debits and credits that balance each other.',
+              'The specification lists eight places, and they divide into two groups that are worth seeing as a pair, because they mirror each other exactly.',
+              'The **sales side** uses customer account codes: the sales daybook, the sales returns daybook, the discounts allowed daybook, and the receivables ledger. The **purchases side** uses supplier account codes in exactly the same four positions: the purchases daybook, the purchases returns daybook, the discounts received daybook, and the payables ledger.',
+              'Notice the symmetry. Every document you issue is recorded against a customer code; every document you receive is recorded against a supplier code. If you can place a document on the right side, the code follows without further thought — which is why the first question to ask of any document is always who issued it.',
             ],
-            formula: 'Accrual: Dr Expense / Cr Accruals payable·Prepayment: Dr Prepayments / Cr Expense·Depreciation: Dr Depreciation expense / Cr Accumulated depreciation',
-            example: {
-              title: 'Adjustment examples',
+            split: {
+              left: { title: 'Customer codes appear in', items: ['Sales daybook', 'Sales returns daybook', 'Discounts allowed daybook', 'Receivables ledger'] },
+              right: { title: 'Supplier codes appear in', items: ['Purchases daybook', 'Purchases returns daybook', 'Discounts received daybook', 'Payables ledger'] },
+            },
+          },
+          {
+            h: 'Building a code: three schemes',
+            table: {
+              headers: ['Scheme', 'Example', 'How it works'],
               rows: [
-                ['Adjustment', 'Debit', 'Credit'],
-                ['Accrued electricity £300', 'Electricity expense £300', 'Accruals payable £300'],
-                ['Prepaid insurance £600', 'Prepayments £600', 'Insurance expense £600'],
-                ['Depreciation £2,000', 'Depreciation expense £2,000', 'Accum. depreciation £2,000'],
+                ['**Alphabetical**', 'THO01 for Thompson Ltd', 'Derived from the name, so it is easy to guess and easy to look up'],
+                ['**Numerical**', '04127', 'A plain sequence. Nothing has to be decided, and nothing collides'],
+                ['**Alphanumerical**', 'SL-THO-04', 'Letters carry meaning — here the ledger and the name — and digits make it unique'],
+              ],
+            },
+            p: [
+              'Each scheme trades one virtue for another. An **alphabetical** code is readable: a person seeing THO01 can guess it is Thompson, which makes errors easier to spot. Its weakness is that names cluster, so a business with many customers beginning with B needs a numeric tail anyway, and a customer that changes its name leaves a code that no longer matches.',
+              'A **numerical** code never has that problem. It carries no information at all, which is both its strength and its weakness: nothing about 04127 tells you who it is, so a transposed digit produces a valid code for the wrong customer and nothing looks obviously wrong.',
+              'An **alphanumerical** code is the usual compromise, and it is what most real systems use. The letters make the code readable and often say which ledger it belongs to; the digits guarantee uniqueness. SL-THO-04 announces that it is in the sales ledger, that it is Thompson, and that it is the fourth such account.',
+            ],
+            examtrap: 'Read the code scheme the question gives you rather than assuming. If an existing list uses SUP-042, a new supplier gets the next number in that pattern — inventing a different style is marked wrong even though the code would be unique.',
+          },
+          {
+            h: 'What goes wrong when a code is wrong',
+            p: [
+              'A miscoded entry is not a small error, because the code is the only thing directing the figure to an account. Nothing else in the entry contains that information, so nothing else can correct it.',
+              'A sales invoice posted to the wrong **customer code** puts the debt on the wrong account. Two accounts are now wrong by the same amount, in opposite directions, so the total of receivables is still right and the trial balance still balances. The error is invisible from any total, and it surfaces only when one customer is chased for money they never owed and another is never chased at all.',
+              'A figure posted to the wrong **general ledger code** does something different: the total of receivables is untouched, but the analysis is wrong. Motor expenses look higher than they are and repairs look lower, so any decision taken from those figures is taken from a false picture.',
+              'This is why coding is checked rather than trusted. The control account reconciliation you meet in Principles of Bookkeeping Controls exists in large part to catch coding errors of the first kind, and reviewing the analysis against expectation catches the second.',
+            ],
+            callout: { kind: 'warning', text: 'A coding error usually leaves every total correct, so it cannot be found by checking that the books balance. That is precisely why it is dangerous.' },
+          },
+        ],
+        check: [
+          { q: 'A sales invoice is entered in the sales daybook. Which two codes does the entry need?',
+            opts: [
+              'A customer account code and a general ledger code',
+              'A supplier account code and a product code',
+              'A general ledger code only, since the customer is named in full',
+              'A product code only, since the analysis decides the account'],
+            ans: 0,
+            exp: 'The customer account code says who owes the money, so the debt reaches the right receivables account; the general ledger code says what kind of transaction it was, so the income reaches the right nominal account. The two answer different questions and both are needed.' },
+          { q: 'Which daybook uses supplier account codes?',
+            opts: [
+              'The discounts received daybook',
+              'The discounts allowed daybook',
+              'The sales returns daybook',
+              'The sales daybook'],
+            ans: 0,
+            exp: 'Discounts received come from suppliers, so that daybook uses supplier codes — as do the purchases and purchases returns daybooks. The other three are all on the sales side and use customer codes. Ask who issued the document and the side follows.' },
+          { q: 'An existing supplier list uses codes of the form PUR-118. What code should a new supplier be given?',
+            opts: [
+              'The next number in the same pattern, such as PUR-119',
+              'An alphabetical code derived from the supplier’s name',
+              'A plain numerical code, since digits cannot collide',
+              'Any unique code, since uniqueness is the only requirement'],
+            ans: 0,
+            exp: 'A coding system only works if it is applied consistently, so a new account follows the pattern already in use. A unique but differently-shaped code breaks sorting and searching, which is most of what codes are for — uniqueness alone is not sufficient.' },
+          { type: 'truefalse', q: 'Identify whether each statement about coding is true or false.',
+            statements: [
+              { text: 'A code identifies exactly one account.', answer: true },
+              { text: 'An alphanumerical code combines letters that carry meaning with digits that make it unique.', answer: true },
+              { text: 'An invoice posted to the wrong customer code will unbalance the trial balance.', answer: false },
+              { text: 'A numerical code tells you something about the account it belongs to.', answer: false },
+            ],
+            exp: 'A code points at one account, and an alphanumerical scheme is the usual compromise between readability and uniqueness. A wrong customer code leaves the total of receivables unchanged, so the trial balance still balances — which is why the error is hard to find. And a plain numerical code deliberately carries no information at all.' },
+          { q: 'Why is a general ledger coding error harder to notice than a missing invoice?',
+            opts: [
+              'Every total stays correct, so no balancing check reveals it',
+              'General ledger codes are never recorded in the daybooks at all',
+              'It only affects the receivables ledger, which is outside the double entry',
+              'It can only be found by a full audit of the accounting year'],
+            ans: 0,
+            exp: 'The figure is in the books at the right amount, just under the wrong heading, so receivables, payables and the trial balance are all unaffected. Only comparing the analysis against what was expected will show that one expense looks too high and another too low.' },
+        ],
+      },
+      {
+        id: 'L-itbk-20',
+        criteria: ['ITBK-1.4'],
+        title: 'Setting up the system: dual effect and the accounting equation',
+        icon: '⚖️',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Classifying before recording',
+            p: [
+              'Before a transaction can be recorded it has to be classified, because the classification is what decides how the records treat it. The specification names five categories, and every item a business meets is one of them: **assets**, **liabilities**, **equity (capital)**, **income (revenue)** and **expenses (costs)**.',
+              'Two questions settle almost any item. First, is it a *thing* or a *flow*? Assets, liabilities and capital are positions held at a moment in time — what the business has, owes, and owes to its owner. Income and expenses are flows over a period. A van is a thing; the fuel it burns is a flow.',
+              'Second, for a thing: does the business **have** it, **owe** it to an outsider, or **owe** it to the owner? Have it — asset. Owe it outside — liability. Owe it to the owner — capital.',
+              'Working through those two questions in order resolves the five categories almost mechanically, and it is worth doing deliberately rather than by instinct. The commonest error at this level is not arithmetic but classification: treating money owed by a customer as income, or the purchase of equipment as an expense.',
+            ],
+            table: {
+              headers: ['Category', 'Test', 'Examples'],
+              rows: [
+                ['**Asset**', 'The business owns it or is owed it', 'Bank, cash, inventory, equipment, receivables'],
+                ['**Liability**', 'The business owes it to an outsider', 'Payables, bank loan, overdraft, VAT owed to HMRC'],
+                ['**Equity (capital)**', 'The business owes it to its owner', 'Money the owner put in, plus profits retained'],
+                ['**Income (revenue)**', 'Earned during the period', 'Sales, interest received, rent received'],
+                ['**Expenses (costs)**', 'Consumed during the period', 'Purchases, wages, rent, fuel, insurance'],
               ],
             },
           },
           {
-            h: 'Income statement columns',
+            h: 'The dual effect',
             p: [
-              'Revenue and expense account balances (after adjustments) are extended into the income statement columns — expenses on the debit side, revenues on the credit side.',
-              'The net difference between the credit total (revenues) and the debit total (expenses) is the profit or loss for the year. Assets, liabilities, and capital accounts are NOT extended into these columns.',
+              'Every transaction changes **at least two** items in the records. This is the dual effect, and it is not a convention adopted for tidiness — it follows from what a transaction is. Value does not appear or vanish; it moves. If something has arrived it came from somewhere, and if something has gone it went somewhere.',
+              'Pay £300 of rent from the bank and two things change: the bank balance falls by £300, and rent expense rises by £300. Record only the bank movement and you know money left without knowing why. Record only the rent and you know a cost arose without knowing what paid for it.',
+              'The directions are not fixed. Both effects can be increases, both can be decreases, or one of each. Taking a £2,000 loan increases an asset and increases a liability. Buying a £900 computer for cash increases one asset and decreases another. Paying a supplier £400 decreases an asset and decreases a liability.',
+              'That last one is worth dwelling on, because beginners want an expense in it. The expense arose earlier, when the goods were received; paying is settling the obligation. Both effects are decreases and nothing about the overall position changes — the business had cash and a debt, and now has less cash and no debt.',
             ],
+            callout: { kind: 'key', text: 'If you can only see one effect, you have not finished describing the transaction. The second effect is what says where the value came from or went.' },
           },
           {
-            h: 'Balance sheet (SFP) columns',
+            h: 'The accounting equation',
+            formula: 'Assets = Liabilities + Capital',
             p: [
-              'Asset, liability, and capital account balances are extended into the statement of financial position columns. Accumulated depreciation is a credit. Closing inventory (if separately given) appears as a debit here.',
-              'Revenue and expense accounts are NOT extended into these columns — they have already been captured in the income statement columns.',
+              'Read the left side as **what the business has** and the right side as **where it came from**. Everything a business holds arrived from somewhere, and there are only two somewheres: outsiders it owes, or the owner. Add up what it has and you have necessarily added up where it came from, by two routes to the same total.',
+              'A business with £3,000 in the bank, a £7,000 van and £2,000 of inventory holds £12,000 of assets. If it owes £4,000 on a loan and £1,000 to suppliers, liabilities are £5,000, so the owner’s stake must be £7,000 — and £12,000 = £5,000 + £7,000.',
+              'The specification asks you to be able to **calculate** assets, liabilities and capital, which means being comfortable rearranging it. Capital = Assets − Liabilities gives the owner’s stake. Liabilities = Assets − Capital gives what is owed outside. The equation is one relationship read three ways, not three facts to memorise.',
             ],
+            example: {
+              title: 'The same business, read three ways',
+              rows: [
+                ['Given', 'Calculation', 'Answer'],
+                ['Assets £12,000, liabilities £5,000', 'Capital = 12,000 − 5,000', '£7,000'],
+                ['Assets £12,000, capital £7,000', 'Liabilities = 12,000 − 7,000', '£5,000'],
+                ['Liabilities £5,000, capital £7,000', 'Assets = 5,000 + 7,000', '£12,000'],
+              ],
+            },
           },
           {
-            h: 'Profit as the balancing figure',
+            h: 'Why it cannot fail to balance',
             p: [
-              'Once the income statement columns are totalled, the profit is the excess of credits over debits. This profit figure is inserted as a debit in the income statement columns (to make them balance) and as a credit in the balance sheet columns (because profit increases capital).',
-              'If both sets of columns now balance (Dr = Cr in each), the ETB is complete. A loss would be inserted as a credit in the income statement and a debit in the balance sheet.',
+              'The equation always balances, and that is a certainty rather than a hope. The reason is the dual effect.',
+              'Work through what any transaction does to the two sides and you find it either changes both sides by the same amount, or changes two items on the same side in opposite directions. Take a £2,000 loan: assets rise £2,000 and liabilities rise £2,000, so both sides move together. Buy a £900 computer for cash: assets rise £900 and fall £900, so that side nets to nothing and the other side never moved. Pay a supplier £400: assets fall £400 and liabilities fall £400, down together.',
+              'There is no transaction that can break it. So a set of records that does not balance is not describing an unusual business — it is proof that something has been recorded wrongly. That is why balancing is used as a check throughout accounting, and it is the whole logic of the trial balance.',
+              'Income and expenses reach the equation through capital. Profit belongs to the owner, so a profit increases capital and a loss decreases it. Sell for £1,000 goods that cost £600 and assets are up £400 net; liabilities have not moved; so capital must be up £400 — and it is, because the £400 profit is the owner’s.',
             ],
+            examtrap: 'Assets equal liabilities **plus** capital, not liabilities alone. A question giving you assets and liabilities and asking for capital is testing whether you subtract in the right direction.',
           },
         ],
         check: [
+          { q: 'A business has assets of £46,000 and capital of £29,000. What are its liabilities?',
+            opts: ['£17,000', '£75,000', '£29,000', 'It cannot be determined'],
+            ans: 0,
+            exp: 'Rearranging Assets = Liabilities + Capital gives Liabilities = Assets − Capital, so £46,000 − £29,000 = £17,000. Adding the two figures would give what the business holds twice over, which is why the direction of the subtraction matters.' },
+          { q: 'A business pays a supplier £520 for goods invoiced last month. What are the two effects?',
+            opts: [
+              'Bank decreases; a liability decreases',
+              'Bank decreases; an expense increases',
+              'Bank decreases; capital decreases',
+              'An expense increases; a liability increases'],
+            ans: 0,
+            exp: 'Both effects are decreases. The expense arose last month when the goods were received, so this transaction settles the obligation rather than creating a cost — recording an expense now would count the same purchase twice.' },
+          { q: 'Classify money owed to the business by a credit customer.',
+            opts: ['An asset', 'A liability', 'Income for the period', 'Part of capital'],
+            ans: 0,
+            exp: 'A right to receive money has value to the business, so it is an asset — a receivable. It is not income: the income was recorded when the sale was made, and this is what remains of that sale until the customer pays.' },
+          { type: 'truefalse', q: 'Identify whether each statement about the accounting equation is true or false.',
+            statements: [
+              { text: 'A profit increases capital.', answer: true },
+              { text: 'Every transaction changes at least two items in the records.', answer: true },
+              { text: 'Buying equipment for cash changes the totals on both sides of the equation.', answer: false },
+              { text: 'Records that do not balance describe a business in difficulty.', answer: false },
+            ],
+            exp: 'Profit belongs to the owner, so it raises capital, and the dual effect means two items always move. Buying equipment for cash swaps one asset for another, so the assets total is unchanged and the other side never moves. And a failure to balance is proof of an error, not a fact about the business.' },
+          { q: 'Assets rise by £3,000 while liabilities are unchanged. What must have happened to capital?',
+            opts: [
+              'It has risen by £3,000',
+              'It has fallen by £3,000',
+              'It is unchanged',
+              'It cannot be determined without knowing the transaction'],
+            ans: 0,
+            exp: 'The two sides of the equation must stay equal, so if assets rise and liabilities do not, capital has to have risen by the same amount — through a profit, or through the owner paying money in. The direction is fixed even though the cause is not.' },
+        ],
+      },
+      {
+        id: 'L-itbk-21',
+        criteria: ['ITBK-2.3'],
+        title: 'Receipts from customers',
+        icon: '💰',
+        skills: ['itbk-de'],
+        cards: [
           {
-            q: 'What is the main purpose of the extended trial balance?',
-            opts: ['To replace the general ledger entirely', 'To extract adjusted figures for the two statements', 'To record all transactions for the accounting period', 'To calculate the VAT owed to HMRC'],
-            ans: 1,
-            exp: 'The ETB adjusts the initial TB for year-end items (accruals, prepayments, depreciation) and then separates the adjusted balances into income statement and balance sheet columns.',
+            h: 'Money arriving is only half the job',
+            p: [
+              'When a credit customer pays, recording the receipt is the easy part. The work that matters is **allocation**: deciding which invoices that money has settled, and therefore what the customer still owes.',
+              'Consider a customer with four unpaid invoices who sends £4,180. The total owed falls by £4,180 whichever invoices it covered, so the balance on their account is right either way. But the list of *which* invoices remain outstanding is now a guess — and that list is what gets used to chase overdue amounts and to produce an aged analysis.',
+              'Guess wrongly and you chase an invoice that has been paid while treating another as settled when it has not. That is the "incorrect chasing of customers" that costs goodwill, and it comes not from a wrong figure but from a right figure allocated to the wrong place.',
+              'So the question at every receipt is two-part: how much has arrived, and against what. The documents exist to answer the second part.',
+            ],
+            callout: { kind: 'key', text: 'A receipt tells you how much a customer has paid. Only the remittance advice tells you which invoices it was for — and that is what chasing depends on.' },
           },
           {
-            q: 'Depreciation of £2,000 is entered on the ETB as:',
-            opts: ['Dr Accumulated depreciation £2,000 / Cr Depreciation expense £2,000', 'Dr Depreciation expense £2,000 / Cr Accumulated depreciation £2,000', 'Dr Asset £2,000 / Cr Depreciation expense £2,000', 'No entry — the asset value is simply reduced'],
-            ans: 1,
-            exp: 'Depreciation: Dr Depreciation expense (increases the expense) / Cr Accumulated depreciation (increases the contra-asset). This reduces the net book value without removing the cost from the asset account.',
+            h: 'The documents and records used',
+            table: {
+              headers: ['Source', 'What it tells you'],
+              rows: [
+                ['**Remittance advice**', 'Sent by the customer with the payment, listing the invoices it covers. The only document that allocates'],
+                ['**Paying-in slip**', 'What was banked, and when — cash and cheques taken to the bank'],
+                ['**Cheque received**', 'The amount and the payer, though not necessarily which invoices'],
+                ['**BACS or Faster Payments notification**', 'An electronic receipt straight into the account, often with a reference'],
+                ['**Bank statement**', 'The bank’s record, which confirms the money actually arrived'],
+                ['**Customer account in the receivables ledger**', 'What was outstanding before the receipt, so the allocation can be checked'],
+              ],
+            },
+            p: [
+              'The **remittance advice** earns its place at the top of that list because it is the only one that solves the allocation problem. Everything else tells you an amount; the remittance advice tells you a purpose.',
+              'It becomes essential where a credit note is involved. A customer with a £1,200 invoice and a £150 credit note pays £1,050 — a figure that matches no single document. Without the remittance advice you cannot tell whether the invoice is settled in full or £150 short, and the two readings lead to opposite actions.',
+            ],
+            examtrap: 'The remittance advice comes from the customer, not from you. If a question asks which document identifies the invoices a payment relates to, that is the one — and it arrives with the money.',
           },
           {
-            q: 'A prepayment of £600 insurance (covering future periods) is adjusted on the ETB as:',
-            opts: ['Dr Insurance expense £600 / Cr Prepayments £600', 'Dr Prepayments (asset) £600 / Cr Insurance expense £600', 'Dr Accruals £600 / Cr Insurance expense £600', 'Dr Insurance £600 / Cr Bank £600'],
-            ans: 1,
-            exp: 'A prepayment reduces the current period expense. Dr Prepayments (creates a current asset on the SFP) / Cr Insurance expense (reduces the expense charged to the income statement).',
+            h: 'Prompt payment discount, and why it is a credit note here',
+            p: [
+              'A **prompt payment discount** is offered to a customer for paying early — typically a small percentage off if payment arrives within ten days rather than thirty. The customer decides whether to take it, which is precisely what makes it awkward to record.',
+              'At the moment the invoice is raised nobody knows whether the discount will be taken, so the invoice is raised for the full amount. If the customer then pays early and takes the discount, the amount originally invoiced was too much, and the records have to be reduced.',
+              'The specification is explicit that at this level that reduction is made with a **credit note**, recorded in the **discounts allowed daybook**. Using a credit note is what removes the need for discount columns in the cash book, and no other method is required or examined at Level 2.',
+              'The sequence is therefore: invoice for the full amount; customer pays early, net of the discount; issue a credit note for the discount and the VAT on it; the customer’s account clears exactly. If the account does not clear, either the discount was not due or the credit note is wrong.',
+            ],
+            flow: ['Invoice raised in full', 'Customer pays early, less the discount', 'Credit note issued for the discount', 'Recorded in the discounts allowed daybook', 'Customer account clears'],
           },
           {
-            q: 'On the ETB, revenue account balances are extended into:',
-            opts: ['Balance sheet columns — credit side', 'Income statement columns — credit side', 'Income statement columns — debit side', 'Adjustment columns — debit side'],
-            ans: 1,
-            exp: 'Revenue is a credit balance on the trial balance, so it is extended into the income statement columns on the credit side. Expenses are extended on the debit side.',
+            h: 'Worked: allocating a receipt with a discount',
+            worked: {
+              title: 'Allocating £1,764 against two invoices',
+              problem: 'Marchmont Design owes two invoices: number 4412 for £1,920 gross, and number 4430 for £600 gross. Marchmont pays £1,764 and its remittance advice says the payment settles invoice 4412 in full, having taken a 8% prompt payment discount on the net amount of £1,600. VAT is 20%. What credit note is required, and what does Marchmont still owe?',
+              steps: [
+                { do: 'Check the discount taken: 8% × £1,600 net = **£128**', why: 'Prompt payment discount is calculated on the net amount, not the gross — the VAT is dealt with separately.' },
+                { do: 'VAT on the discount: £128 × 20% = **£25.60**', why: 'Reducing the sale also reduces the VAT charged on it, so the credit note carries VAT on the same basis as the invoice.' },
+                { do: 'Credit note total: £128 + £25.60 = **£153.60**', why: 'This is the gross reduction to the customer’s account, recorded in the discounts allowed daybook.' },
+                { do: 'Check the receipt: £1,920 − £153.60 = **£1,766.40**', why: 'That is what invoice 4412 should have been settled at — but Marchmont paid £1,764, which is £2.40 less.' },
+                { do: 'Allocate £1,764 to invoice 4412 and note a **£2.40 shortfall** on it', why: 'The remittance advice says the payment was meant to settle 4412, so the difference is a query on that invoice rather than a part-payment of another.' },
+                { do: 'Marchmont still owes invoice 4430 of £600, plus the £2.40 = **£602.40**', why: 'The second invoice is untouched by this receipt, which is exactly what the remittance advice established.' },
+              ],
+              answer: 'Credit note £153.60 · Marchmont owes £602.40, including a £2.40 query on invoice 4412',
+              tryIt: {
+                q: 'A customer takes a 5% prompt payment discount on a net amount of £2,000. What is the gross value of the credit note, in £, with VAT at 20%?',
+                answer: 120, unit: '£',
+                hint: 'Work the discount on the net figure first, then add VAT to it.',
+                exp: '5% × £2,000 = £100 of discount, and VAT on that is £20, so the credit note is £120 gross. Calculating the discount on the gross figure instead would give £124 and overstate the reduction.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'A customer sends a payment covering several invoices. Which document identifies which invoices it settles?',
+            opts: ['The remittance advice', 'The paying-in slip', 'The bank statement', 'The sales daybook'],
+            ans: 0,
+            exp: 'Only the remittance advice, which the customer sends with the payment, allocates it. Every other record shows an amount arriving without saying what it was for — and the allocation is what an aged analysis and any chasing depend on.' },
+          { q: 'A customer takes a prompt payment discount. How is the reduction recorded at this level?',
+            opts: [
+              'A credit note, entered in the discounts allowed daybook',
+              'A discount column in the cash book',
+              'An adjustment to the original invoice',
+              'A journal entry reversing part of the sale'],
+            ans: 0,
+            exp: 'The specification requires credit notes for prompt payment discount at this level, recorded in the discounts allowed daybook — which is exactly what removes the need for discount columns in the cash book. No other method is examined here.' },
+          { q: 'A prompt payment discount of 4% applies to a net amount of £1,500. What is the discount, before VAT?',
+            type: 'numeric', answer: 60, unit: '£',
+            exp: 'Prompt payment discount is calculated on the net amount: 4% × £1,500 = £60. VAT of £12 would then be credited alongside it, making the credit note £72 gross — but the discount itself is the £60.' },
+          { type: 'truefalse', q: 'Identify whether each statement about customer receipts is true or false.',
+            statements: [
+              { text: 'A receipt from a credit customer reduces the balance on their account.', answer: true },
+              { text: 'A prompt payment discount is calculated on the net amount.', answer: true },
+              { text: 'A receipt from a credit customer is recorded as income when it arrives.', answer: false },
+              { text: 'The remittance advice is sent by the seller to request payment.', answer: false },
+            ],
+            exp: 'A receipt reduces what the customer owes, and prompt payment discount is worked on the net figure. It is not income — that was recorded when the invoice was raised, so counting it again would record the sale twice. And the remittance advice comes from the payer, with the money.' },
+          { q: 'Why does allocating a receipt matter even when the total owed is correct either way?',
+            opts: [
+              'The list of invoices still outstanding drives chasing and ageing',
+              'An unallocated receipt cannot be entered in the cash book at all',
+              'VAT is only recoverable once a receipt is allocated',
+              'The trial balance will not balance until the receipt is allocated'],
+            ans: 0,
+            exp: 'The balance is right whichever invoices the money covered, but the ageing is not. Chasing depends on knowing which specific invoices are still unpaid, and a wrong allocation means pursuing a settled invoice while ignoring a genuinely overdue one.' },
+        ],
+      },
+      {
+        id: 'L-itbk-22',
+        criteria: ['ITBK-3.1'],
+        title: 'Checking a supplier invoice',
+        icon: '🔍',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Why an invoice received is checked before it is paid',
+            p: [
+              'A supplier invoice is a demand for money from outside the business. Nobody inside prepared it, nobody inside has checked it, and paying it transfers real money out. So it is checked first, and checking supplier invoices is a named duty rather than an optional courtesy.',
+              'The check is not a matter of judgement. It is a comparison against documents the business already holds, and the specification names five: **quotations including discounts**, **purchase orders**, **goods received notes**, **delivery notes** and **goods returned notes**.',
+              'Those are precisely the documents your own business generated or received alongside the goods. The invoice is the supplier’s claim; your own records are what test it. Agree, and it can be paid. Disagree, and the difference is a query to raise before any money moves.',
+              'Note the direction of the logic: the invoice is never checked against memory or against what seems reasonable. If a business raises no purchase orders and no goods received notes, there is nothing to check an invoice with — which is the real reason those documents exist.',
+            ],
+            table: {
+              headers: ['Check against', 'What it establishes'],
+              rows: [
+                ['Purchase order', 'That we ordered this, from this supplier, at these prices and quantities'],
+                ['Goods received note', 'What actually arrived, as counted by our own staff'],
+                ['Delivery note', 'What the supplier says was sent'],
+                ['Quotation', 'That the price and discount charged are the ones agreed'],
+                ['Goods returned note', 'That anything sent back has been credited, not still billed'],
+              ],
+            },
           },
           {
-            q: 'The ETB shows that total income statement credits (revenues) exceed debits (expenses) by £15,000. How is profit entered to complete the ETB?',
-            opts: ['Dr Balance sheet £15,000 / Cr Income statement £15,000', 'Dr Income statement £15,000 / Cr Balance sheet £15,000', 'Dr Income statement £15,000 only', 'No entry needed — the profit is shown as a note'],
-            ans: 1,
-            exp: 'The £15,000 profit is a debit in the income statement columns (making them balance) and a credit in the balance sheet columns (increasing capital). This links both sides of the ETB.',
+            h: 'What can be wrong',
+            p: [
+              'The specification lists the discrepancies to look for, and they fall into three groups worth keeping separate because each is found by a different document.',
+              '**Goods that did not arrive as billed.** Non-delivery of goods altogether, or the incorrect type or quantity of goods. Only the goods received note reveals these: an invoice can match the purchase order exactly and still bill for a delivery that was short, because the order says what was wanted rather than what came.',
+              '**Money that is wrong.** Incorrect calculations — a line extended wrongly, a total that does not add — and incorrect discounts, whether trade, bulk or prompt payment. Calculation errors are visible on the invoice alone, without reference to anything else, which makes them the cheapest to catch.',
+              '**Terms that are wrong.** The date, and the terms of payment. An invoice dated earlier than the delivery, or one demanding payment in seven days when thirty was agreed, is wrong even though every figure on it adds up.',
+            ],
+            split: {
+              left: { title: 'Found on the invoice alone', items: ['A line extended wrongly', 'A total that does not add', 'VAT calculated on the wrong figure', 'A discount arithmetically wrong'] },
+              right: { title: 'Found only against our records', items: ['Goods never delivered', 'Wrong type or quantity delivered', 'A price above the one quoted', 'A discount omitted that was agreed', 'Returned goods still being billed'] },
+            },
+            examtrap: 'Quantities are checked against the **goods received note**, not the purchase order. An invoice agreeing perfectly with the order can still overcharge, because the order records the intention and the GRN records the delivery.',
           },
+          {
+            h: 'Three kinds of discount, and where each appears',
+            table: {
+              headers: ['Discount', 'Given for', 'How it appears on the invoice'],
+              rows: [
+                ['**Trade discount**', 'Being a trade customer at all', 'Deducted on the face of the invoice, before VAT'],
+                ['**Bulk discount**', 'Buying above a stated quantity', 'Deducted on the face of the invoice, before VAT'],
+                ['**Prompt payment discount (PPD)**', 'Paying earlier than the standard terms', 'NOT deducted — the invoice is for the full amount'],
+              ],
+            },
+            p: [
+              'Trade and bulk discounts are certain at the moment the invoice is raised, so they are taken off there and then and VAT is charged on the reduced figure. Checking them means confirming two things: that the rate matches what was agreed, and that any quantity condition was actually met. A bulk discount claimed on an order below the threshold is as much an error as one omitted above it.',
+              'Prompt payment discount is different in kind, because at the moment of invoicing nobody knows whether it will be taken — that is the customer’s later decision. So the invoice shows the full amount and mentions the discount as an offer.',
+              'When PPD is later taken, the specification requires the adjustment to be made by **credit note**, recorded in the **discounts received daybook**, and flowing on to the supplier account, the payables ledger control account, the discounts received account and the VAT account. No other method of accounting for PPD is required at this level.',
+            ],
+            callout: { kind: 'warning', text: 'Trade and bulk discounts reduce the invoice before VAT. Prompt payment discount does not appear as a deduction at all — it arrives later as a credit note.' },
+          },
+          {
+            h: 'Worked: checking an invoice line by line',
+            worked: {
+              title: 'An invoice with two errors',
+              problem: 'Kesgrave Papers invoices 40 reams at £6.50 and 12 boxes at £14.00, showing a line total of £260.00 for the reams and £168.00 for the boxes, a 10% trade discount, and VAT at 20%. Our purchase order agreed £6.50 and £14.00 with 10% trade discount. The goods received note records 40 reams and 10 boxes. Check the invoice.',
+              steps: [
+                { do: 'Check the reams: 40 × £6.50 = **£260.00** — agrees', why: 'The extension is right and the quantity matches the goods received note, so this line stands.' },
+                { do: 'Check the boxes against the GRN: 10 arrived, not 12', why: 'The invoice bills a delivery that did not happen. The purchase order was for 12, so only the GRN reveals this.' },
+                { do: 'Correct the boxes line: 10 × £14.00 = **£140.00**, not £168.00', why: 'Billing what arrived rather than what was ordered. The invoice overstates this line by £28.00.' },
+                { do: 'Subtotal: £260.00 + £140.00 = **£400.00**', why: 'The two corrected lines before any discount.' },
+                { do: 'Trade discount 10%: £400.00 − £40.00 = **£360.00** net', why: 'Trade discount comes off before VAT, and the 10% matches the purchase order.' },
+                { do: 'VAT: £360.00 × 20% = **£72.00**; total **£432.00**', why: 'VAT is charged on the discounted net figure, which is what the supplier is actually charging.' },
+              ],
+              answer: 'The invoice should total £432.00 — query the 2 boxes never delivered',
+              tryIt: {
+                q: 'An invoice line reads 25 units at £8.40, amount £215.00. What should the amount be, in £?',
+                answer: 210, unit: '£',
+                hint: 'Extend the line yourself: quantity times unit price.',
+                exp: '25 × £8.40 = £210.00, so the line is overstated by £5.00. This is a calculation error visible on the invoice alone — no other document is needed to find it.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'An invoice bills 12 units, the purchase order was for 12, and the goods received note records 10. What is wrong?',
+            opts: [
+              'The invoice overcharges for 2 units that were never delivered',
+              'Nothing — the invoice agrees with the purchase order',
+              'The goods received note must be wrong, since 12 were ordered',
+              'The supplier should have raised a credit note before invoicing'],
+            ans: 0,
+            exp: 'An invoice bills what arrived, and the goods received note is our own record of that. Agreement with the purchase order proves only that 12 were wanted. The supplier could not have known about the shortfall, so the action is to query it and expect a credit note.' },
+          { q: 'How does a trade discount appear on a supplier invoice?',
+            opts: [
+              'Deducted on the invoice itself, before VAT is calculated',
+              'Deducted only after VAT has been calculated on the full amount',
+              'Not shown at all, and claimed later by credit note',
+              'Shown only as a note of the terms available'],
+            ans: 0,
+            exp: 'Trade and bulk discounts are certain when the invoice is raised, so they reduce the figure there and VAT is charged on the reduced amount. Prompt payment discount is the one that is not deducted, because whether it is taken is not yet known.' },
+          { q: 'Prompt payment discount is later taken. In which book of prime entry is the adjustment recorded?',
+            opts: [
+              'The discounts received daybook',
+              'The discounts allowed daybook',
+              'The purchases returns daybook',
+              'The purchases daybook'],
+            ans: 0,
+            exp: 'A discount we take on a purchase is a discount received, so the credit note goes in the discounts received daybook. Discounts allowed is the sales-side mirror, for discounts our own customers take. Returns daybooks are for goods going back, not for discounts.' },
+          { type: 'truefalse', q: 'Identify whether each statement about checking supplier invoices is true or false.',
+            statements: [
+              { text: 'A calculation error can be found from the invoice alone.', answer: true },
+              { text: 'A bulk discount claimed on an order below the stated threshold is an error.', answer: true },
+              { text: 'Quantities should be checked against the purchase order rather than the goods received note.', answer: false },
+              { text: 'An invoice demanding payment sooner than the agreed terms is acceptable if the figures add up.', answer: false },
+            ],
+            exp: 'Arithmetic is self-checking, and a discount applies only when its condition is met — claimed wrongly it is as much an error as one omitted. Quantities go against the goods received note, because that records what arrived. And the terms of payment are part of what is checked, not just the amounts.' },
+          { q: 'Why does a business raise purchase orders and goods received notes at all?',
+            opts: [
+              'Without them nothing exists to check an invoice against',
+              'They are required by HMRC for VAT purposes',
+              'They replace the need for a supplier invoice',
+              'They are the documents on which the VAT is actually reclaimed'],
+            ans: 0,
+            exp: 'The invoice is the supplier’s claim, and testing it needs an independent record of what was wanted and what arrived. A business without those documents can only pay what it is asked for. VAT is reclaimed on the invoice itself.' },
+        ],
+      },
+      {
+        id: 'L-itbk-23',
+        criteria: ['ITBK-3.3'],
+        title: 'Paying suppliers and the supplier statement',
+        icon: '📤',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Deciding what to pay',
+            p: [
+              'Paying a supplier is not simply a matter of settling whatever the latest invoice says. The amount due is built from the whole account, and the specification names the records and documents to use: the **supplier account** in the payables ledger, the **invoices and credit notes** including discounts and VAT, and the supplier’s **statement of account**.',
+              'The supplier account is the starting point because it is our own record of the relationship: what was owed, what has been invoiced, what has been credited, what has been paid. The invoices and credit notes are the evidence behind each of those movements.',
+              'One further piece of information governs the timing rather than the amount: the **agreed payment terms**. Terms decide when payment is due, and paying early gives away cash the business could have used, while paying late risks the supplier putting the account on hold and refusing the next delivery.',
+              'So the two questions are how much, from our own account, and when, from the agreed terms. Neither is answered by the supplier’s statement alone.',
+            ],
+            callout: { kind: 'key', text: 'Pay from your own supplier account, not from the supplier’s statement. The statement is a document to reconcile against — it is their record, not evidence of what you owe.' },
+          },
+          {
+            h: 'The statement of account, and why it disagrees',
+            p: [
+              'A **statement of account** is sent by the supplier and lists the transactions on the account as *they* see it: invoices issued, credit notes raised, payments received, and the balance they believe is outstanding.',
+              'It will regularly disagree with our own payables ledger, and the specification asks you to identify why. The differences fall into two kinds, and telling them apart decides what to do.',
+              '**Timing differences** are innocent. A payment we sent three days ago has not reached their records yet; an invoice they raised yesterday has not reached ours. Nothing is wrong and no entry is needed — the two records will converge on their own.',
+              '**Errors and omissions** are not innocent. A transaction missing from one record, recorded twice, recorded at the wrong amount, or attached to the wrong account, needs correcting — and it may be either side that is wrong. A supplier statement is not automatically right just because it came from the supplier.',
+            ],
+          },
+          {
+            h: 'The eight discrepancies to look for',
+            table: {
+              headers: ['Discrepancy', 'What it looks like'],
+              rows: [
+                ['**Underpayment**', 'We paid less than the invoice, so the supplier still shows a balance we think is cleared'],
+                ['**Overpayment**', 'We paid more than was due, so the supplier shows a credit we have not recorded'],
+                ['**Incorrect discount taken**', 'We deducted a prompt payment discount we were not entitled to, or at the wrong rate'],
+                ['**Incorrect amounts**', 'The same transaction appears at different figures in the two records'],
+                ['**Incorrect details**', 'A transaction posted to the wrong supplier account, so it is on neither statement correctly'],
+                ['**Timing differences**', 'A payment in transit, or an invoice raised after the statement was produced'],
+                ['**Missing transactions**', 'An invoice, credit note or payment absent from one record entirely'],
+                ['**Duplicated transactions**', 'The same invoice entered twice, so the balance is overstated'],
+              ],
+            },
+            p: [
+              'Two of these deserve emphasis because they are the expensive ones. A **duplicated** invoice, if not caught, produces a duplicate payment — the business pays twice for one delivery, and recovering it depends on the supplier noticing and being willing to repay. And an **incorrect discount taken** is the discrepancy most likely to sour a relationship, because from the supplier’s side it looks like being short-paid without explanation.',
+              'Working through the list systematically rather than hunting is what makes the reconciliation quick. Tick off what appears in both records at the same amount; whatever is left unticked on either side is the explanation, and each unticked item is one of the eight.',
+            ],
+            examtrap: 'A difference is not resolved by adjusting a figure until the two records agree. Each unticked item must be identified and named — and an unexplained residue is the finding, not a rounding nuisance.',
+          },
+          {
+            h: 'Worked: reconciling a supplier statement',
+            worked: {
+              title: 'Our account says £4,180; their statement says £5,020',
+              problem: 'Our payables ledger shows £4,180 owed to Halden Inks. Their statement shows £5,020. Comparing the two: invoice 8891 for £600 appears on their statement but not in our ledger; our payment of £900 sent on 28 May does not appear on their statement; and invoice 8874 for £340 appears twice on their statement. Explain the difference.',
+              steps: [
+                { do: 'The difference is £5,020 − £4,180 = **£840**', why: 'Establishing the size of the gap first tells you when the explanation is complete.' },
+                { do: 'Invoice 8891, £600 — missing from our ledger. It must be added, raising our balance to £4,780', why: 'A genuine invoice we have not recorded is an omission on our side, not a timing difference, so it needs entering.' },
+                { do: 'Our £900 payment — in transit, so absent from their statement', why: 'A timing difference. No entry is needed by either party; their next statement will show it.' },
+                { do: 'Invoice 8874, £340 — duplicated on their statement, so their balance is £340 too high', why: 'An error on the supplier’s side. It must be queried with them rather than corrected in our own books.' },
+                { do: 'Reconcile: their £5,020 − £340 duplicate − £900 in transit = **£3,780**', why: 'Removing their error and their missing payment gives what they should be showing.' },
+                { do: 'Against our corrected £4,780… which still leaves £1,000 unexplained', why: 'The figures do not reconcile, so at least one more item is outstanding. That residue is the finding — it goes to a supervisor, not into an adjustment.' },
+              ],
+              answer: 'Our balance corrects to £4,780; a £340 duplicate and a £900 payment in transit explain part of the gap, and £1,000 remains to be investigated',
+              tryIt: {
+                q: 'Our ledger shows £2,400. The supplier statement shows £3,000, and an invoice for £600 appears on their statement but not in our ledger. How much, in £, remains unexplained once that invoice is entered?',
+                answer: 0, unit: '£',
+                hint: 'Add the missing invoice to your own balance, then compare.',
+                exp: '£2,400 + £600 = £3,000, which agrees with the statement exactly, so nothing remains unexplained. A single omission on our side accounted for the whole difference.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'A payment sent three days ago does not appear on the supplier’s statement. What is this?',
+            opts: [
+              'A timing difference needing no entry by either party',
+              'An omission in our payables ledger',
+              'An error by the supplier that must be queried',
+              'A duplicated transaction'],
+            ans: 0,
+            exp: 'The payment is genuine and correctly recorded by us; it simply has not reached their records yet. Timing differences resolve themselves, which is what distinguishes them from omissions and errors — those need action by one side or the other.' },
+          { q: 'An invoice appears twice on the supplier’s statement. What should be done?',
+            opts: [
+              'Query it with the supplier, whose balance is overstated',
+              'Enter it twice in our ledger so the records agree',
+              'Adjust our balance upward by the duplicated amount',
+              'Ignore it, since duplicates cancel out over time'],
+            ans: 0,
+            exp: 'The error is on their side, so their balance is too high by that amount and it is theirs to correct. Making our own records match a supplier’s error is how a duplicate payment happens, which is the expensive outcome this check exists to prevent.' },
+          { q: 'Which record should the amount paid to a supplier be based on?',
+            opts: [
+              'Our own supplier account in the payables ledger',
+              'The supplier’s statement of account',
+              'The most recent invoice received',
+              'The goods received notes for the period'],
+            ans: 0,
+            exp: 'Our own account is built from invoices, credit notes and payments we have evidence for. The statement is the supplier’s record and is reconciled against, not paid from — it may itself contain errors, duplicates or transactions we have already settled.' },
+          { type: 'truefalse', q: 'Identify whether each statement about paying suppliers is true or false.',
+            statements: [
+              { text: 'Agreed payment terms decide when payment is due rather than how much.', answer: true },
+              { text: 'A duplicated invoice, if not caught, leads to a duplicate payment.', answer: true },
+              { text: 'A supplier statement is authoritative because it comes from the supplier.', answer: false },
+              { text: 'An unexplained difference may be resolved by adjusting our balance to agree.', answer: false },
+            ],
+            exp: 'Terms govern timing; the amount comes from the account. An uncaught duplicate is exactly how a business pays twice for one delivery. A statement is one party’s record and can be wrong. And adjusting a figure to force agreement hides the error rather than finding it.' },
+          { q: 'What is the risk of paying a supplier earlier than the agreed terms require?',
+            opts: [
+              'Cash leaves the business sooner than it needs to',
+              'The supplier may refuse to supply again',
+              'The prompt payment discount is lost',
+              'The invoice becomes invalid for VAT purposes'],
+            ans: 0,
+            exp: 'Paying early gives up the use of the money for no benefit, unless a prompt payment discount makes it worthwhile. Late payment carries the supply risk; early payment carries the cash-flow cost, and neither affects the invoice’s VAT status.' },
+        ],
+      },
+      {
+        id: 'L-itbk-15',
+        criteria: ['ITBK-4.1'],
+        title: 'The analysed cash book',
+        icon: '📗',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Two sides, and why the analysis columns exist',
+            p: [
+              'The daybooks record invoices — amounts that became owed. The **cash book** records money actually moving. It has two sides: a receipts side for money coming in and a payments side for money going out, and every entry belongs on one or the other.',
+              'The specification sets out the columns: **date**, **details**, **cash**, **bank**, and **analysis columns including VAT**. Cash and bank are separate because the business holds money in two genuinely different places — notes in a till and a balance at the bank. One can be plentiful while the other is short, each is counted differently, and mixing them answers neither question.',
+              'The analysis columns are what make the book worth keeping. Without them the cash book would say only that £288 arrived, which is almost useless. With them it says that £240 was a sale and £48 was VAT, or that a payment of £144 was £120 of rent and £24 of VAT.',
+              'Crucially, the analysis is a **breakdown** of the amount, not an addition to it. A payment of £144 analysed as £120 and £24 is one payment of £144 described in two parts. Adding all the columns together as though they were separate movements is a common and expensive error.',
+            ],
+            callout: { kind: 'key', text: 'Analysis columns split an amount; they never add to it. Each row’s analysis must add across to the figure in the cash or bank column.' },
+          },
+          {
+            h: 'Where the entries come from',
+            table: {
+              headers: ['Document', 'What it evidences'],
+              rows: [
+                ['**Direct debit / standing order schedule**', 'Regular payments leaving the account without anyone raising them each time'],
+                ['**Remittance advice (including BACS)**', 'A receipt, and which invoices it covers'],
+                ['**Paying-in slip**', 'Cash and cheques taken to the bank'],
+                ['**Cheque stub**', 'A cheque written, with its amount and payee'],
+                ['**Cash receipt**', 'An over-the-counter sale or payment'],
+                ['**Receipts and payments listing**', 'A summary list of movements to be entered'],
+              ],
+            },
+            p: [
+              'Read that list and notice a pattern: nearly every entry has a piece of paper behind it, generated by whoever initiated the transaction. The paying-in slip and cheque stub are our own records of things we did; the remittance advice and cash receipt come with the money.',
+              'The **direct debit and standing order schedule** is the odd one out and the one students forget. Those payments leave the account on a date nobody chooses each month, so there is no invoice arriving to prompt an entry. The schedule is the standing record that they exist, and working from it is what stops a regular payment being missed for three months.',
+            ],
+          },
+          {
+            h: 'VAT in the cash book: when to analyse it',
+            p: [
+              'This is the single most examined point about the analysed cash book, and it turns on one distinction.',
+              'A **cash sale** creates the VAT at the moment the money arrives, because no invoice was ever raised. So the receipt is split: the net sale to a sales analysis column, and the VAT to the VAT analysis column. Till takings of £288 become £240 and £48.',
+              'A **receipt from a credit customer** is different. That sale was invoiced earlier, and its VAT went into the sales daybook then. The receipt merely converts a receivable into cash, so it is analysed in full to a receivables column and **no VAT is analysed again**. Doing so would record the same VAT twice.',
+              'The same logic governs the payments side. A cash purchase carries VAT to be analysed; a payment settling a purchase invoice does not, because the input tax was recorded when the invoice went into the purchases daybook.',
+            ],
+            example: {
+              title: 'Receipts side — the two cases side by side',
+              rows: [
+                ['Date', 'Details', 'Bank', 'Receivables', 'Cash sales', 'VAT'],
+                ['8 Jun', 'Verity Signs (invoice)', '108.00', '108.00', '—', '—'],
+                ['9 Jun', 'Till takings (cash sale)', '288.00', '—', '240.00', '48.00'],
+                ['**Totals**', '', '**396.00**', '**108.00**', '**240.00**', '**48.00**'],
+              ],
+            },
+            examtrap: 'Analyse VAT on a cash sale; never on a receipt settling an invoice. The commonest error in this topic is a VAT figure entered against a credit customer’s payment.',
+          },
+          {
+            h: 'Worked: entering a week of movements',
+            worked: {
+              title: 'Building the payments side',
+              problem: 'Enter these bank payments and total the columns: 4 June, Kesgrave Papers, settling a purchase invoice, £349.20; 7 June, rent £144.00 including £24.00 VAT; 11 June, wages £680.00. There are no cash payments.',
+              steps: [
+                { do: 'Kesgrave £349.20 — bank column £349.20, analysed in full to payables', why: 'It settles a purchase invoice, so the input tax was recorded in the purchases daybook. No VAT is analysed again here.' },
+                { do: 'Rent £144.00 — bank column £144.00, analysed £120.00 rent and £24.00 VAT', why: 'A cash purchase with VAT on it, so the analysis splits the payment. The two analysis figures add across to £144.00.' },
+                { do: 'Wages £680.00 — bank column £680.00, analysed £680.00 to wages', why: 'Wages are outside the scope of VAT, so there is nothing to split.' },
+                { do: 'Total the bank column: £349.20 + £144.00 + £680.00 = **£1,173.20**', why: 'The bank column holds the full amount of each payment, VAT included.' },
+                { do: 'Total the analysis: payables £349.20, rent £120.00, wages £680.00, VAT £24.00', why: 'Each column added down separately. These are the figures that will be posted onward to the general ledger.' },
+                { do: 'Cross cast: £349.20 + £120.00 + £680.00 + £24.00 = **£1,173.20**, which agrees', why: 'The analysis totals must add across to the bank total. Agreement proves the entries were split correctly.' },
+              ],
+              answer: 'Bank £1,173.20 · payables £349.20 · rent £120.00 · wages £680.00 · VAT £24.00 — and it cross casts',
+              tryIt: {
+                q: 'A bank payment of £216 includes £36 of VAT. What figure goes in the bank column, in £?',
+                answer: 216, unit: '£',
+                hint: 'The cash and bank columns always hold the full amount that moved.',
+                exp: '£216 — the full amount that left the account. The £36 is an analysis of that payment, not an addition to it, so the analysis columns show £180 and £36, adding across to £216.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'A credit customer pays £420 by bank transfer to settle an invoice. How is the receipt analysed?',
+            opts: [
+              'In full to receivables, with no VAT analysed',
+              'Split between a sales column and a VAT column',
+              'In full to cash sales, with no VAT analysed',
+              'Split between receivables and a VAT column'],
+            ans: 0,
+            exp: 'The sale and its VAT were recorded when the invoice went into the sales daybook, so this receipt only converts a receivable into cash. Analysing VAT again would record the same output tax twice — VAT is analysed on a cash sale, not on a receipt settling an invoice.' },
+          { q: 'A bank payment of £180 is analysed as £150 purchases and £30 VAT. How much money left the bank?',
+            type: 'numeric', answer: 180, unit: '£',
+            exp: '£180. The analysis columns break the payment down rather than adding to it, so they add across to the £180 in the bank column. Treating £150 and £30 as separate movements would give £330 and count the VAT twice.' },
+          { q: 'Which document is the standing record that regular payments exist at all?',
+            opts: [
+              'The direct debit and standing order schedule',
+              'The paying-in slip for the period',
+              'The remittance advice from the customer',
+              'The cheque stub for each payment'],
+            ans: 0,
+            exp: 'Direct debits and standing orders leave the account without anyone raising a document each month, so nothing arrives to prompt an entry. The schedule is what stops a regular payment going unrecorded for months at a time.' },
+          { type: 'truefalse', q: 'Identify whether each statement about the analysed cash book is true or false.',
+            statements: [
+              { text: 'Cash and bank are separate columns because the business holds money in two different places.', answer: true },
+              { text: 'Each row’s analysis columns should add across to the cash or bank figure.', answer: true },
+              { text: 'The analysis columns are additional amounts on top of the cash or bank column.', answer: false },
+              { text: 'VAT should be analysed on every receipt entered in the cash book.', answer: false },
+            ],
+            exp: 'Physical cash and the bank account are separate resources, and the analysis is a breakdown that must add across to the amount that moved. It is never an addition. And VAT is analysed only where it arises now — on a cash sale, not on a receipt settling an invoice whose VAT is already recorded.' },
+          { q: 'Why does the analysis in a cash book matter more than the cash and bank columns alone?',
+            opts: [
+              'It records what each amount was for, which totals cannot say',
+              'It is required before the cash book can be totalled at all',
+              'It replaces the need for books of prime entry',
+              'It is the only place VAT is ever recorded'],
+            ans: 0,
+            exp: 'Without analysis the book says only that money moved. The analysis is what says whether a receipt was a cash sale or a customer settling an invoice, and it supplies the figures that get posted onward to the general ledger.' },
+        ],
+      },
+      {
+        id: 'L-itbk-16',
+        criteria: ['ITBK-4.2'],
+        title: 'The petty cash book and the imprest system',
+        icon: '🪙',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'A separate book for small amounts',
+            p: [
+              'A business pays for small things in cash: postage, milk, a taxi, a bag of screws. Putting each of those through the main cash book would swamp it with trivial entries, so they go in a **petty cash book** of their own.',
+              'Its format is close to the cash book but simpler. The specification names **date**, **details**, **cash**, and **analysis columns including VAT**. There is no bank column, and the reason is definitional: petty cash is physical money held on the premises, so nothing in this book ever moves through the bank account.',
+              'Two documents feed it. A **cash receipt** is the evidence from the shop or supplier that the money was spent. A **petty cash voucher** is the business’s own internal record: who took the money, how much, what for, and — importantly — who authorised it. The voucher is what makes petty cash controllable rather than simply a tin that empties.',
+              'VAT is analysed here just as in the cash book, and it matters more than the small amounts suggest: a business that never analyses VAT on petty cash purchases quietly loses input tax it was entitled to reclaim.',
+            ],
+            callout: { kind: 'key', text: 'The petty cash book has no bank column. Petty cash is money physically held, so every entry in it is cash by definition.' },
+          },
+          {
+            h: 'The imprest system',
+            p: [
+              'The specification asks you to handle reimbursement under two systems, and the difference between them is the whole of the topic.',
+              'Under an **imprest** system the tin is restored to a fixed float each period. If the float is £150 and £92 has been spent, the reimbursement is exactly £92, bringing it back to £150. The float is decided once and does not drift.',
+              'That fixed float is a control, not an administrative convenience. At any moment the cash in the tin plus the vouchers for what has been spent must equal the float. So the tin can be checked in seconds by anybody: count the notes, add the vouchers, compare with £150. A shortfall is visible immediately, and it is visible without reference to any book.',
+              'Under a **non-imprest** system a round sum is added regardless of what was spent — £100 topped up every month whatever the vouchers show. It is simpler to operate and gives up exactly the control the imprest system provides: there is no expected total, so nothing to compare a count against.',
+            ],
+            formula: 'Reimbursement under imprest = float − cash remaining · Cash + vouchers = float, always',
+          },
+          {
+            h: 'Worked: the imprest reimbursement',
+            worked: {
+              title: 'Restoring a £150 float',
+              problem: 'A petty cash tin runs on a £150 imprest float. During the month, vouchers are issued for postage £18.60, stationery £32.40 including £5.40 VAT, and travel £41.00. Cash counted in the tin at the month end is £58.00. What reimbursement is required, and does the tin reconcile?',
+              steps: [
+                { do: 'Total the vouchers: £18.60 + £32.40 + £41.00 = **£92.00**', why: 'The vouchers are the record of what left the tin, whatever the analysis of each one.' },
+                { do: 'Check the tin: cash £58.00 + vouchers £92.00 = **£150.00**', why: 'Under an imprest system cash plus vouchers must equal the float. It does, so nothing is missing.' },
+                { do: 'Reimbursement = float − cash remaining = £150.00 − £58.00 = **£92.00**', why: 'Restoring the tin to its float. It equals the vouchers total, which is the arithmetic check on the figure.' },
+                { do: 'Analyse the spending: postage £18.60, stationery £27.00, travel £41.00, VAT £5.40', why: 'The stationery splits into £27.00 net and £5.40 VAT so the input tax can be reclaimed. The other two carry no VAT.' },
+                { do: 'Cross cast: £18.60 + £27.00 + £41.00 + £5.40 = **£92.00**', why: 'The analysis columns must add across to the cash column total, exactly as in the main cash book.' },
+              ],
+              answer: 'Reimbursement £92.00 · the tin reconciles to the £150 float',
+              tryIt: {
+                q: 'A £200 imprest float has £74 of cash left in the tin. What reimbursement restores the float, in £?',
+                answer: 126, unit: '£',
+                hint: 'Reimbursement is the float less the cash remaining.',
+                exp: '£200 − £74 = £126. That figure should also equal the total of the vouchers issued during the period, which is the check that nothing has gone missing from the tin.',
+              },
+            },
+          },
+          {
+            h: 'What the vouchers protect against',
+            p: [
+              'Petty cash is the most easily misused money in a business, because it is physical, it is small, and each individual amount is too trivial to attract attention. The controls are correspondingly simple and worth understanding as controls rather than as paperwork.',
+              'The **voucher** requires that somebody says what the money was for and somebody authorises it. That turns a withdrawal from an anonymous event into an attributable one.',
+              'The **imprest float** gives a fixed expected total, so a count either agrees or does not. Without it there is nothing to compare against, which is the real cost of a non-imprest system.',
+              'And the **receipt** attached to the voucher evidences that the money was spent as claimed. A voucher with no receipt is an assertion; with a receipt it is evidence. That is why a tin containing vouchers but no receipts reconciles arithmetically while proving nothing about where the money went.',
+            ],
+            split: {
+              left: { title: 'Imprest system', items: ['Fixed float restored each period', 'Cash plus vouchers always equals the float', 'A shortfall is visible from a count alone', 'Reimbursement varies with spending'] },
+              right: { title: 'Non-imprest system', items: ['A round sum added each period', 'No expected total to check against', 'A shortfall is not visible from a count', 'Reimbursement is the same each time'] },
+            },
+          },
+        ],
+        check: [
+          { q: 'A petty cash tin runs on a £120 imprest float and £47 of cash remains. What reimbursement is required?',
+            type: 'numeric', answer: 73, unit: '£',
+            exp: '£120 − £47 = £73, restoring the tin to its float. That figure should also equal the total of the vouchers issued, which is the arithmetic check that nothing has gone astray from the tin.' },
+          { q: 'Why does the petty cash book have no bank column?',
+            opts: [
+              'Petty cash is money held physically, so nothing passes through the bank',
+              'Petty cash payments are too small to be banked',
+              'Bank movements are recorded in the general ledger instead of here',
+              'The bank column is only needed under a non-imprest system'],
+            ans: 0,
+            exp: 'The book records spending from a tin of physical money, so by definition every entry is cash. Payments through the bank belong in the main cash book, which is why that one has both columns and this one has only cash.' },
+          { q: 'What does the imprest system provide that a non-imprest system does not?',
+            opts: [
+              'A fixed expected total to check a count of the tin against',
+              'A simpler reimbursement, because the amount never varies at all',
+              'The ability to reclaim VAT on petty cash purchases',
+              'A record of who authorised each payment from the tin'],
+            ans: 0,
+            exp: 'Under imprest, cash plus vouchers must always equal the float, so the tin can be verified by counting. A non-imprest system adds a round sum with no expected total, so there is nothing to compare against. The authorisation record comes from the voucher under either system.' },
+          { type: 'truefalse', q: 'Identify whether each statement about petty cash is true or false.',
+            statements: [
+              { text: 'A petty cash voucher records what the money was for and who authorised it.', answer: true },
+              { text: 'VAT should be analysed on petty cash purchases so the input tax can be reclaimed.', answer: true },
+              { text: 'Under an imprest system the reimbursement is the same amount every period.', answer: false },
+              { text: 'A voucher without a receipt still evidences that the money was spent as claimed.', answer: false },
+            ],
+            exp: 'The voucher attributes and authorises the withdrawal, and analysing VAT is what preserves the input tax reclaim on small purchases. Under imprest the reimbursement varies with spending — it is the FLOAT that is fixed. And a voucher with no receipt is an assertion rather than evidence.' },
+          { q: 'A £150 imprest tin holds £61 of cash and vouchers totalling £84. What does this tell you?',
+            opts: [
+              '£5 is unaccounted for and needs investigating',
+              'The tin reconciles and £89 should be reimbursed',
+              '£5 too much cash is in the tin',
+              'Nothing, until the vouchers are analysed'],
+            ans: 0,
+            exp: 'Cash plus vouchers should equal the float: £61 + £84 = £145 against a £150 float, so £5 is missing. That is exactly the discrepancy the imprest system is designed to make visible from a count, before any book is opened.' },
+        ],
+      },
+      {
+        id: 'L-itbk-17',
+        criteria: ['ITBK-4.3'],
+        title: 'Totalling and balancing the cash books',
+        icon: '🧮',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Three operations, one of which is a proof',
+            p: [
+              'Once entries are made, both cash books have to be totalled and balanced. There are three things to do, and the third is the interesting one because it is the only place in this unit where the records check themselves.',
+              '**Totalling** means adding each column down: the cash column, the bank column, and every analysis column, on each side.',
+              '**Cross casting** means adding across and confirming the two agree. Each row’s analysis should add across to the amount in its cash or bank column, so the totals of the analysis columns should add across to the totals of the cash and bank columns. If they do, the addition is almost certainly right; if they do not, there is definitely an error.',
+              '**Balancing** means working out what is left: opening amount, plus receipts, less payments. It is done twice over — once for cash in hand and once for the bank — because those are two separate resources drawn from two separate columns.',
+            ],
+            formula: 'Closing amount = opening amount + receipts − payments · done separately for cash and for bank',
+          },
+          {
+            h: 'Why cross casting works, and what it cannot catch',
+            p: [
+              'The logic is simple. Every row satisfies analysis = amount. Add up all the rows and the relationship must survive, because you have added the same figures in a different order. So the column totals must satisfy it too.',
+              'That makes it a genuine proof of the addition, and it costs one subtraction — far better value than re-adding every column, which is slower and tends to repeat the original slip.',
+              'Be clear about its limits, because that is what gets examined. Cross casting proves the **columns have been added correctly**. It says nothing about whether the right figures were entered in the first place.',
+              'So it catches a column mis-added, a row included in one column and not another, and two figures written in the wrong columns. It does not catch a receipt entered on the payments side, a figure transcribed as £1,240 instead of £1,420, an entry against the wrong customer, or a document missed out entirely. Every one of those leaves a set of internally consistent figures that cross casts perfectly.',
+            ],
+            split: {
+              left: { title: 'Cross casting catches', items: ['A column added up wrongly', 'A row in one column but not another', 'Two figures in the wrong columns', 'A total copied down incorrectly'] },
+              right: { title: 'Cross casting cannot catch', items: ['A receipt entered on the payments side', 'A figure transcribed wrongly', 'An entry against the wrong account', 'A document omitted altogether'] },
+            },
+            examtrap: 'A cash book that cross casts is not a cash book that is right. It proves the arithmetic, not the entries — finding a wrong or missing entry still needs a comparison back to the source documents.',
+          },
+          {
+            h: 'Worked: totalling and balancing both columns',
+            worked: {
+              title: 'A week in the cash book',
+              problem: 'Opening: cash in hand £145.00, bank £2,380.00. Receipts: cash £412.00, bank £1,860.00. Payments: cash £268.00, bank £2,105.00. Total and balance both.',
+              steps: [
+                { do: 'Separate the figures. Cash: opening £145.00, receipts £412.00, payments £268.00', why: 'Cash in hand uses only the cash column. Nothing from the bank column belongs in this calculation.' },
+                { do: 'Cash in hand: £145.00 + £412.00 = £557.00, then − £268.00 = **£289.00**', why: 'Opening plus receipts less payments. Adding before subtracting makes it harder to lose track.' },
+                { do: 'Bank: opening £2,380.00, receipts £1,860.00, payments £2,105.00', why: 'An entirely separate calculation, using only the bank column.' },
+                { do: 'Bank: £2,380.00 + £1,860.00 = £4,240.00, then − £2,105.00 = **£2,135.00**', why: 'The same formula applied to the bank figures.' },
+                { do: 'Sense-check both. £289.00 in a till is plausible; the bank has fallen slightly, which fits payments exceeding receipts', why: 'Checking that totals agree to expectation. A negative cash figure would signal an error immediately, since a till cannot hold less than nothing.' },
+              ],
+              answer: 'Cash in hand £289.00 · Bank £2,135.00',
+              tryIt: {
+                q: 'Opening cash in hand £86.00, cash receipts £524.00, cash payments £371.00. What is the closing cash in hand, in £?',
+                answer: 239, unit: '£',
+                hint: 'Opening, plus receipts, less payments — cash figures only.',
+                exp: '£86.00 + £524.00 = £610.00, less £371.00 = £239.00. Any bank figures in the question are irrelevant to this calculation, and including them is the standard error.',
+              },
+            },
+          },
+          {
+            h: 'When it does not agree',
+            p: [
+              'Finding the error when the check fails is a skill of its own, and there is a method rather than a hunt.',
+              'Cross cast **each row** rather than only the totals. One row will fail, and that row contains the error. This locates the problem instead of merely detecting it, which is why it is the first thing to do when the overall check fails.',
+              'Then read the size of the discrepancy, because it is itself a clue. A difference divisible by nine often means transposed digits — £1,240 entered as £1,420 differs by £180. A difference exactly equal to an entry in the book suggests that entry was omitted from one column, or included twice. A difference of exactly double an entry suggests it was entered on the wrong side, where correcting it moves the figure by twice its value.',
+              'And a **negative closing cash in hand** is always an error rather than a finding. A till cannot hold less than nothing, so the usual causes are a receipt entered on the payments side or the bank figures wrongly included in the cash calculation.',
+            ],
+            callout: { kind: 'warning', text: 'A negative cash in hand is proof of an error, not a result. The bank can be overdrawn; a tin of notes cannot.' },
+          },
+        ],
+        check: [
+          { q: 'A cash book has analysis totals of £1,285.00 and £257.00 against a bank column total of £1,542.00. What does this show?',
+            opts: [
+              'The columns cross cast, so the addition is proved',
+              'The analysis has been overstated by £257.00',
+              'The bank column has been added twice',
+              'Nothing, until each row is cross cast individually'],
+            ans: 0,
+            exp: '£1,285.00 + £257.00 = £1,542.00, so the analysis adds across to the amount that moved. That proves the columns were added correctly — though not that the right figures were entered, which cross casting can never show.' },
+          { q: 'Opening bank £3,140.00, bank receipts £2,260.00, bank payments £1,875.00. What is the closing bank amount?',
+            type: 'numeric', answer: 3525, unit: '£',
+            exp: '£3,140.00 + £2,260.00 = £5,400.00, less £1,875.00 = £3,525.00. Receipts exceeded payments, so the balance has risen — a quick check that the answer is moving in the right direction.' },
+          { q: 'A closing cash in hand figure comes out as negative £38.00. What does this mean?',
+            opts: [
+              'An error — cash in hand cannot go below nothing',
+              'The business has become overdrawn by £38.00',
+              'Cash payments genuinely exceeded the cash available',
+              'The opening figure should be treated as a payment'],
+            ans: 0,
+            exp: 'A till cannot hold less than nothing, so a negative result proves a mistake — most often a receipt entered on the payments side, or bank figures included in the cash calculation. An overdraft is a bank concept and does not apply to physical cash.' },
+          { type: 'truefalse', q: 'Identify whether each statement about totalling and balancing is true or false.',
+            statements: [
+              { text: 'Cross casting proves that the columns have been added correctly.', answer: true },
+              { text: 'Cash in hand and cash at bank are balanced separately.', answer: true },
+              { text: 'A cash book that cross casts contains no errors.', answer: false },
+              { text: 'A receipt entered on the payments side would be revealed by cross casting.', answer: false },
+            ],
+            exp: 'Cross casting tests the arithmetic of the addition, and the two resources are balanced from their own columns. It says nothing about whether the right figures were entered: a receipt on the wrong side, or a figure transcribed wrongly, leaves the arithmetic intact and passes the check.' },
+          { q: 'A cash book does not cross cast. What is the most efficient next step?',
+            opts: [
+              'Cross cast each row to locate the failing one',
+              'Re-add every column again from the top',
+              'Compare every entry against its source document',
+              'Recalculate the VAT analysis on every row'],
+            ans: 0,
+            exp: 'Row-by-row cross casting locates the error rather than confirming one exists. Re-adding the columns risks repeating the same slip, and going back to source documents is a far larger job that this particular failure does not require.' },
+        ],
+      },
+      {
+        id: 'L-itbk-18',
+        criteria: ['ITBK-4.4'],
+        title: 'Recurring receipts and payments',
+        icon: '🔁',
+        skills: ['itbk-de'],
+        cards: [
+          {
+            h: 'Transactions that repeat without being raised',
+            p: [
+              'Some money moves on a schedule rather than in response to a document: rent paid on the first of the month, an insurance direct debit, a subscription, a customer paying the same amount by standing order. These are **recurring** receipts and payments, and they behave differently from everything else in this unit.',
+              'The difference is that nothing arrives to prompt the entry. An invoice lands on a desk and demands to be processed; a standing order simply leaves the account. So a recurring transaction is recorded either from a standing schedule of what is expected, or from the bank statement after the event — and if neither is checked, months can pass with the entry missing.',
+              'A **standing order** is an instruction from the payer to their bank to pay a fixed amount at set intervals; the payer controls it. A **direct debit** is an authority for the recipient to collect varying amounts; the recipient controls what is taken. The distinction matters because it decides who can change the amount, and therefore where an unexpected figure comes from.',
+            ],
+            callout: { kind: 'key', text: 'A standing order is fixed and controlled by the payer. A direct debit can vary and is controlled by the recipient. That is why an unexpected amount on a direct debit is normal and on a standing order is not.' },
+          },
+          {
+            h: 'Setting one up: what the system needs to know',
+            p: [
+              'The specification asks what information is required to set up a recurring entry. In any bookkeeping system it is the same short list, and each item answers a question the system cannot infer.',
+            ],
+            table: {
+              headers: ['Information', 'Why the system needs it'],
+              rows: [
+                ['**The accounts** — which customer or supplier, and which general ledger account', 'So each generated entry is coded correctly without anyone deciding again'],
+                ['**The amount**, and whether it includes VAT', 'So the analysis splits correctly each time it runs'],
+                ['**The frequency** — weekly, monthly, quarterly', 'So the system knows when to generate the next one'],
+                ['**The start date**', 'So the first entry falls in the right period'],
+                ['**The end date, or number of occurrences**', 'So it stops when the arrangement does'],
+              ],
+            },
+            p: [
+              'The last row is the one most often left blank, and it is where recurring entries cause trouble. A schedule with no end date keeps generating entries after the contract has finished, and because it runs automatically nobody is looking at it. The entries are correct in form, on time, and wrong.',
+              'That is the disadvantage the specification names for automation generally: a recurring entry is a benefit only while the arrangement it describes stays the same. When the amount or the frequency changes and the schedule does not, the system keeps producing the old figure faithfully.',
+            ],
+          },
+          {
+            h: 'The effect in a digital system',
+            p: [
+              'In a manual cash book a recurring payment is entered by hand each period, from the schedule. In a digital system the software generates the entry itself on the due date, already coded and already analysed.',
+              'That changes the work rather than removing it. Three consequences follow, and they are what the specification means by understanding the effect of recurring entries.',
+              'First, **the entry appears whether or not the money moved**. A generated entry is a prediction; the bank statement or bank feed is the evidence. If a direct debit was cancelled or failed, the system may still have posted it, and only comparing against the bank reveals the difference.',
+              'Second, **an error is repeated rather than isolated**. A recurring entry coded to the wrong account produces a wrong entry every month until somebody notices, and each one looks as legitimate as the last.',
+              'Third, **the review moves from entry to setup**. The place to check is no longer each transaction but the schedule that generates them — the amount, the coding, and above all the end date. Checking a hundred generated entries individually is work that setting the schedule up correctly once would have avoided.',
+            ],
+            flow: ['Schedule set up once', 'System generates each entry', 'Bank feed confirms the money moved', 'Differences investigated', 'Schedule reviewed when terms change'],
+          },
+          {
+            h: 'Worked: a recurring payment that has drifted',
+            worked: {
+              title: 'A rent increase the schedule missed',
+              problem: 'A monthly rent standing order of £850 was set up in January with no end date. The landlord raised the rent to £910 from 1 July, and the standing order was amended at the bank but the recurring entry in the bookkeeping system was not. It is now 30 September. What is the effect, and what correction is needed?',
+              steps: [
+                { do: 'Identify the months affected: July, August and September — **three months**', why: 'The increase applied from 1 July and it is now the end of September, so three payments have been made at the new rate.' },
+                { do: 'Amount actually paid each month: £910. Amount recorded: £850', why: 'The bank paid the amended standing order; the bookkeeping system generated the old figure.' },
+                { do: 'Understatement per month: £910 − £850 = **£60**', why: 'Each generated entry is £60 less than the money that actually left the account.' },
+                { do: 'Total understatement: 3 × £60 = **£180**', why: 'Rent expense is £180 too low, and the bank balance in the cash book is £180 too high.' },
+                { do: 'The cash book will not agree with the bank statement by £180', why: 'This is how the error surfaces: the difference appears at the bank reconciliation, not in the cash book itself, which is internally consistent.' },
+                { do: 'Correct the three entries to £910 and amend the recurring schedule', why: 'Fixing the entries without fixing the schedule leaves October wrong as well — the setup is the actual defect.' },
+              ],
+              answer: 'Rent understated by £180 · correct the three entries and amend the schedule itself',
+              tryIt: {
+                q: 'A monthly subscription recorded at £45 was actually increased to £60 four months ago. By how much, in £, is the expense understated?',
+                answer: 60, unit: '£',
+                hint: 'Find the monthly difference first, then multiply by the number of months.',
+                exp: '£60 − £45 = £15 a month, and 4 × £15 = £60 understated. Correcting the four entries is only half the job — the schedule must be amended too, or next month is wrong as well.',
+              },
+            },
+          },
+        ],
+        check: [
+          { q: 'What is the difference between a standing order and a direct debit?',
+            opts: [
+              'A standing order is fixed and set by the payer; a direct debit varies and is collected by the recipient',
+              'A standing order is collected by the recipient, whereas a direct debit is a fixed amount set by the payer',
+              'A standing order is used for receipts and a direct debit for payments',
+              'A standing order passes through the cash book and a direct debit does not'],
+            ans: 0,
+            exp: 'The distinction is who controls the amount. The payer fixes a standing order, so an unexpected figure on one is a warning sign; a direct debit lets the recipient collect what is due, so a varying amount is normal. Both are payments and both are recorded.' },
+          { q: 'Which piece of setup information, if omitted, most commonly causes a recurring entry to keep generating after it should have stopped?',
+            opts: [
+              'The end date or number of occurrences',
+              'The frequency of the entry',
+              'The general ledger account code',
+              'Whether the amount includes VAT'],
+            ans: 0,
+            exp: 'With no end date the schedule runs indefinitely, and because it runs automatically nobody is watching it. The entries stay correct in form and on time while describing an arrangement that has finished — which is exactly the disadvantage of automation the specification names.' },
+          { q: 'A recurring payment records £850 a month but the bank has been paying £910 for three months. By how much is the expense understated?',
+            type: 'numeric', answer: 180, unit: '£',
+            exp: '£910 − £850 = £60 a month, and 3 × £60 = £180. The cash book is internally consistent, so the error surfaces as a £180 difference at the bank reconciliation rather than anywhere within the cash book itself.' },
+          { type: 'truefalse', q: 'Identify whether each statement about recurring entries is true or false.',
+            statements: [
+              { text: 'A generated entry is a prediction that the bank statement confirms or contradicts.', answer: true },
+              { text: 'An incorrectly coded recurring entry repeats the error every period.', answer: true },
+              { text: 'A recurring entry proves the money actually moved.', answer: false },
+              { text: 'Correcting the generated entries is sufficient when an amount has changed.', answer: false },
+            ],
+            exp: 'The system generates what it was told to expect, so the bank feed is the evidence and a cancelled or failed payment may still have been posted. A miscoded schedule repeats its error indefinitely. And correcting past entries without amending the schedule leaves the next period wrong too — the setup is the defect.' },
+          { q: 'Where should the review of recurring transactions be focused?',
+            opts: [
+              'On the schedule that generates them, not on each entry',
+              'On each generated entry, since every one could differ',
+              'On the general ledger, once the entries have all been posted',
+              'On the source documents, which arrive with each payment'],
+            ans: 0,
+            exp: 'The schedule is what determines every entry it produces, so checking the amount, coding and end date once catches errors that reviewing a hundred individual entries would only find one at a time. Recurring transactions have no source document arriving each period, which is what makes them easy to miss.' },
         ],
       },
       {
         id: 'L-itbk-14',
+        criteria: [],
         title: 'Bridge to Level 3 — Financial Accounting',
         icon: '🌉',
         skills: ['itbk-tb', 'itbk-adjust'],
@@ -6089,6 +6561,514 @@ window.LEARN_PATH = [
             ],
             ans: 1,
             exp: 'A debit balance on a current account is an overdrawn account — the partner has taken more than they have been allocated. It appears as an asset in the SFP (debtor).',
+          },
+        ],
+      },
+    
+      {
+        id: 'L-itbk-6',
+        title: 'Spreading and matching costs',
+        icon: '📉',
+        skills: ['itbk-adjust'],
+        cards: [
+          {
+            h: 'Why depreciate?',
+            p: [
+              'A machine bought for £10,000 helps you earn money for years. Charging all £10,000 against the first year would be misleading.',
+              '**Depreciation** spreads the cost of a non-current asset over its useful life, matching the cost to the periods that benefit.',
+            ],
+          },
+          {
+            h: 'Straight-line depreciation',
+            p: [
+              'The **straight-line** method charges the same amount every year: cost minus residual value, divided by useful life.',
+              'It suits assets that wear out evenly over time, like fixtures and fittings.',
+            ],
+            example: {
+              title: 'Straight-line: machine £10,000, residual £2,000, 4-year life',
+              rows: [
+                ['Depreciable amount', '£10,000 minus £2,000 = £8,000'],
+                ['Annual charge', '£8,000 divided by 4 = £2,000'],
+                ['Charge in every year', '£2,000'],
+              ],
+            },
+          },
+          {
+            h: 'Reducing balance depreciation',
+            p: [
+              'The **reducing balance** method applies a fixed percentage to the **carrying amount** (cost minus depreciation so far). The charge gets smaller each year.',
+              'It suits assets that lose most value early, like vehicles and computers.',
+            ],
+            example: {
+              title: 'Reducing balance: machine £10,000 at 20%',
+              rows: [
+                ['Year 1 charge', '20% of £10,000 = £2,000'],
+                ['Carrying amount end of year 1', '£8,000'],
+                ['Year 2 charge', '20% of £8,000 = £1,600'],
+                ['Carrying amount end of year 2', '£6,400'],
+              ],
+            },
+          },
+          {
+            h: 'Accruals and prepayments',
+            p: [
+              'The same matching idea applies to running costs. An **accrual** is an expense you have used but not yet been billed for — like electricity used in March, invoiced in April. Add it to the expense; it is a liability.',
+              'A **prepayment** is the opposite: you have paid in advance, like a year of insurance covering part of next year. Take it out of the expense; it is an asset.',
+            ],
+          },
+          {
+            h: 'Depreciation and adjustments formulas',
+            p: [
+              'These formulas cover all the standard calculations for this topic.',
+            ],
+            formula: 'Straight-line charge = (Cost − Residual) ÷ Useful life · Reducing balance charge = Carrying value × Rate% · Carrying value = Cost − Accumulated depreciation · Prepayment = Months unused ÷ 12 × Annual cost',
+          },
+          {
+            h: 'Matching is the core principle',
+            p: [
+              'Accruals and prepayments both serve the same goal as depreciation.',
+            ],
+            callout: {
+              kind: 'key',
+              text: 'The matching (accruals) concept requires that expenses are recognised in the period they are incurred, not when the cash is paid. Depreciation, accruals and prepayments all apply this concept — never show more or less expense than was actually used in the period.',
+            },
+          },
+        ],
+        check: [
+          {
+            q: 'What is the main purpose of depreciation?',
+            opts: ['To save up cash to replace the asset', 'To show the asset at market value', 'To spread the cost of the asset over its useful life', 'To reduce the VAT due'],
+            ans: 2,
+            exp: 'Depreciation applies the matching concept by allocating the cost of an asset to the periods that benefit from its use.',
+          },
+          {
+            q: 'Equipment cost £12,000 with a residual value of £2,000 and a 5-year life. What is the annual straight-line charge?',
+            opts: ['£2,400', '£12,000', '£2,800', '£2,000'],
+            ans: 3,
+            exp: 'Straight-line depreciation spreads the cost less residual value evenly over the useful life: (£12,000 − £2,000) ÷ 5 = £2,000 a year. Residual value is deducted because that much is expected to remain at the end.',
+          },
+          {
+            q: 'A van cost £20,000 and is depreciated at 25% reducing balance. What is the year 2 charge?',
+            opts: ['£3,750', '£5,000', '£15,000', '£2,500'],
+            ans: 0,
+            exp: 'Year 1 charge: 25% × £20,000 = £5,000. Carrying value: £15,000. Year 2 charge: 25% × £15,000 = £3,750.',
+          },
+          {
+            q: 'Rent of £1,200 paid in March covers April. At the 31 March year end this is a what?',
+            opts: ['An accrual', 'A prepayment', 'A drawing', 'A depreciation charge'],
+            ans: 1,
+            exp: 'It is paid in advance of the period it relates to, so it is a prepayment — treated as an asset at the year end.',
+          },
+          {
+            q: 'Electricity used in December costs £300 but the bill arrives in January. At the 31 December year end, how should this be treated?',
+            opts: ['Ignore it until the bill actually arrives', 'Record it as a prepayment asset of £300', 'Record a £300 accrual and a £300 liability', 'Debit the bank account with £300'],
+            ans: 2,
+            exp: 'An accrual is needed because the expense was incurred in December even though payment comes later. It is added to the period\'s expenses and shown as a current liability.',
+          },
+          {
+            q: 'A van costs £20,000 and is depreciated at 20% reducing balance. It has been owned for 2 full years. What is the depreciation charge in year 3?',
+            opts: ['£4,000', '£3,200', '£2,560', '£12,800'],
+            ans: 2,
+            exp: 'Year 1: 20% × £20,000 = £4,000. CV after yr 1 = £16,000. Year 2: 20% × £16,000 = £3,200. CV after yr 2 = £12,800. Year 3: 20% × £12,800 = £2,560.',
+          },
+          {
+            q: 'Insurance of £1,800 is paid on 1 October, covering 12 months to 30 September. At the 31 December year end, what is the prepayment?',
+            opts: ['£1,800', '£450', '£1,350', '£600'],
+            ans: 2,
+            exp: 'The insurance covers October to September = 12 months. By 31 December, 3 months have been used (Oct, Nov, Dec). Remaining (prepayment) = 9/12 × £1,800 = £1,350.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-7',
+        title: 'Capital vs revenue expenditure',
+        icon: '🏗️',
+        skills: ['itbk-docs'],
+        cards: [
+          {
+            h: 'Capital expenditure (CapEx)',
+            p: [
+              '**Capital expenditure** buys or improves long-term assets that will benefit the business for more than one accounting period.',
+              'Examples: buying a van, purchasing a building, installing new machinery, or extending a factory.',
+              'CapEx is recorded on the **balance sheet** as a non-current asset, then depreciated over its useful life.',
+            ],
+          },
+          {
+            h: 'Revenue expenditure (RevEx)',
+            p: [
+              '**Revenue expenditure** is day-to-day spending that benefits only the current accounting period.',
+              'Examples: repairs, fuel, wages, rent, insurance, and routine maintenance.',
+              'RevEx is charged directly to the **income statement** in the period it arises.',
+            ],
+          },
+          {
+            h: 'Capital vs Revenue — side by side',
+            p: [
+              'The quickest test is to ask what the money bought: a *thing* the business will still own next year, or a *service consumed* this year.',
+              'A second test settles most exam cases — did the spending **increase** what the asset can do, or merely **maintain** what it already did? Enhancement is capital; upkeep is revenue.',
+              'Receipts split the same way. Selling a delivery van is a capital receipt; selling the goods it carried is a revenue receipt.',
+            ],
+            split: {
+              left: { title: 'Capital expenditure', items: ['Buys or improves assets', 'Benefit spans > 1 year', 'Goes to balance sheet', 'Depreciated over time', 'E.g. new van £15,000'] },
+              right: { title: 'Revenue expenditure', items: ['Day-to-day running cost', 'Benefit ≤ 1 year', 'Goes to income statement', 'Expensed immediately', 'E.g. van repair £300'] },
+            },
+          },
+          {
+            h: 'Borderline examples',
+            p: [
+              'The hard cases nearly always involve money spent on a non-current asset *after* it was bought.',
+              'Anything needed to **get the asset ready for its first use** is capital, even when it looks like an expense: delivery, installation, legal fees on a building, testing before it goes into service.',
+              'Anything that only **keeps it working** is revenue: servicing, replacing a worn part, road tax, insurance, cleaning.',
+            ],
+            example: {
+              title: 'CapEx or RevEx?',
+              rows: [
+                ['Transaction', 'Type', 'Reason'],
+                ['Buy delivery van £20,000', 'CapEx', 'Long-term asset'],
+                ['Service the van £400', 'RevEx', 'Maintenance only'],
+                ['Install a new engine £4,000', 'CapEx', 'Extends useful life'],
+                ['Repaint the van £500', 'RevEx', 'Maintains condition'],
+              ],
+            },
+          },
+          {
+            h: 'Why the classification matters',
+            p: [
+              'Treating CapEx as RevEx **understates profit** (too much expense charged) and **understates assets**.',
+              'Treating RevEx as CapEx **overstates profit** and **overstates assets**.',
+            ],
+            callout: { kind: 'warning', text: '**Exam trap:** Replacing a broken window is RevEx (restoring to original condition). Adding a new floor to a building is CapEx (enhancing the asset). The key test: does it extend the asset\'s life or improve its capability?' },
+          },
+        ],
+        check: [
+          {
+            q: 'A business buys new computer equipment for £5,000. How should this be classified?',
+            opts: ['Revenue expenditure — charge to income statement', 'Capital expenditure — record as non-current asset', 'Revenue expenditure if under £10,000', 'Capital expenditure — charge to income statement'],
+            ans: 1,
+            exp: 'Computer equipment is a long-term asset used over several years, so it is capital expenditure recorded on the balance sheet.',
+          },
+          {
+            q: 'A plumber charges £200 to fix a leaking pipe. This is best classified as:',
+            opts: ['Capital expenditure', 'Revenue expenditure', 'Capital expenditure if over 5 years old', 'Neither — record as a liability'],
+            ans: 1,
+            exp: 'Repairing a fault restores the asset to its original condition — that is revenue expenditure, charged immediately to the income statement.',
+          },
+          {
+            q: 'If a business incorrectly treats capital expenditure as revenue expenditure, what is the effect on reported profit?',
+            opts: ['Profit is overstated', 'Profit is understated', 'No effect on profit', 'Assets are overstated'],
+            ans: 1,
+            exp: 'Treating CapEx as RevEx charges too much expense in the period, so profit is understated. Assets are also understated.',
+          },
+          {
+            q: 'Which of these is capital rather than revenue expenditure?',
+            opts: ['Annual insurance premium £1,200', 'Monthly wages £8,000', 'Extension to the factory building £30,000', 'Replacement of broken windows £600'],
+            ans: 2,
+            exp: 'Extending a building enhances a long-term asset — capital expenditure. Insurance and wages are running costs (RevEx), and replacing broken windows merely restores the original condition (RevEx).',
+          },
+          {
+            q: 'Which accounting principle supports the distinction between CapEx and RevEx?',
+            opts: ['Prudence', 'Matching (accruals)', 'Entity', 'Going concern'],
+            ans: 1,
+            exp: 'The matching principle requires costs to be charged in the period their benefit is received. RevEx benefits one period; CapEx benefits several, so it is spread via depreciation.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-11',
+        title: 'Accruals and prepayments',
+        icon: '⏱️',
+        skills: ['itbk-adjust'],
+        cards: [
+          {
+            h: 'The accruals concept in action',
+            p: [
+              'Income and expenses must be recognised in the period they relate to — not when cash moves. This is the **accruals (matching) concept**, one of the fundamental accounting principles.',
+              'At year end, we must make adjustments so that the financial statements reflect what has genuinely been earned or incurred during the period — regardless of whether cash has been received or paid.',
+              'Two key adjustments arise: an **accrual** (expense incurred but not yet paid — e.g. an electricity bill not yet received) and a **prepayment** (expense paid in advance, benefit not yet received — e.g. insurance paid for future months).',
+            ],
+          },
+          {
+            h: 'Recording an accrual',
+            p: [
+              'An accrual arises when an expense has been incurred in the period but no invoice or payment has yet been processed. We must add the amount to the expense account and create a corresponding current liability.',
+            ],
+            formula: 'Accrual entry: Dr Expense account, Cr Accruals (liability)·Effect: increases expense on income statement, creates current liability on SFP·Reversal at start of next year: Dr Accruals, Cr Expense',
+            example: {
+              title: 'Accrual example',
+              rows: [
+                ['Scenario', 'Electricity bill £400 for Dec not yet received'],
+                ['Adjustment (31 Dec)', 'Dr Electricity £400 / Cr Accruals £400'],
+                ['Effect', 'Adds £400 to expense this year; creates £400 liability'],
+              ],
+            },
+          },
+          {
+            h: 'Recording a prepayment',
+            p: [
+              'A prepayment arises when a business has paid in advance for a benefit that extends beyond the current accounting period. The portion relating to future periods must be removed from the expense account and shown as a current asset.',
+            ],
+            formula: 'Prepayment entry: Dr Prepayments (asset), Cr Expense·Effect: reduces expense on income statement, creates current asset on SFP·Amount remaining = months paid × monthly rate',
+            example: {
+              title: 'Prepayment example',
+              rows: [
+                ['Scenario', 'Insurance £1,200 paid 1 Oct, covering 12 months'],
+                ['At 31 Dec (3 months used)', 'Expense = 3/12 × £1,200 = £300'],
+                ['Prepayment (asset)', '9/12 × £1,200 = £900'],
+                ['Adjustment', 'Dr Prepayments £900 / Cr Insurance £900'],
+              ],
+            },
+          },
+          {
+            h: 'Adjusting the trial balance',
+            p: [
+              'The trial balance shows balances before adjustments. After calculating accruals and prepayments, we adjust the relevant expense accounts. The adjusted figures go into the income statement (profit and loss account).',
+            ],
+            split: {
+              left: {
+                title: 'Accruals increase expenses',
+                items: [
+                  'Add accrual to the expense balance',
+                  'Create a liability in current liabilities',
+                  'Example: Rent accrued £500 → Dr Rent £500, Cr Accruals £500',
+                ],
+              },
+              right: {
+                title: 'Prepayments reduce expenses',
+                items: [
+                  'Deduct prepayment from the expense balance',
+                  'Create an asset in current assets',
+                  'Example: Insurance prepaid £200 → Dr Prepayments £200, Cr Insurance £200',
+                ],
+              },
+            },
+          },
+          {
+            h: 'Accrued income and deferred income',
+            p: [
+              'Accrued income is income earned but not yet received (e.g. rent receivable owed at year end): Dr Accrued income (asset), Cr Income.',
+              'Deferred income is cash received for income not yet earned (e.g. a subscription received in advance): Dr Income, Cr Deferred income (liability).',
+            ],
+            callout: { kind: 'key', text: 'The accruals concept ensures that financial statements show economic reality — not just cash movements.' },
+          },
+        ],
+        check: [
+          {
+            q: 'A business receives an electricity bill for £600 relating to December but does not pay it until January. What is the correct adjustment at 31 December?',
+            opts: ['No adjustment needed — pay in January', 'Dr Electricity £600; Cr Accruals £600', 'Dr Accruals £600; Cr Electricity £600', 'Dr Bank £600; Cr Electricity £600'],
+            ans: 1,
+            exp: 'An expense incurred but not yet paid is an accrual. Debit the expense account to recognise the cost; credit the accruals liability.',
+          },
+          {
+            q: 'A business pays £2,400 for rent on 1 October, covering the next 12 months. At 31 December (3 months later) what is the prepayment?',
+            opts: ['£600', '£1,800', '£2,400', '£200'],
+            ans: 1,
+            exp: 'Three of the twelve months have been used by 31 December, so nine remain: 9/12 × £2,400 = £1,800. That is removed from this year’s expense and carried forward as a current asset.',
+          },
+          {
+            q: 'A prepayment appears in the statement of financial position as:',
+            opts: ['A current liability', 'A non-current asset', 'A current asset', 'Capital'],
+            ans: 2,
+            exp: 'A prepayment is money paid in advance — it is a benefit still to be received, so it is a current asset.',
+          },
+          {
+            q: 'Which accounting concept requires accruals and prepayments?',
+            opts: ['The going concern concept', 'The accruals (matching) concept', 'The consistency concept', 'The prudence concept'],
+            ans: 1,
+            exp: 'The accruals (matching) concept requires income and expenses to be recognised in the period they relate to, not when cash is received or paid.',
+          },
+          {
+            q: 'Rent of £1,200 is received on 1 December for the next 3 months. At 31 December, the deferred income balance is:',
+            opts: ['£400', '£800', '£1,200', '£600'],
+            ans: 1,
+            exp: 'One month has been earned by 31 December, so two remain unearned: 2/3 × £1,200 = £800. Income received but not yet earned is a liability, because the service has still to be provided.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-12',
+        title: 'The Statement of Financial Position',
+        icon: '📋',
+        skills: ['itbk-tb', 'itbk-adjust'],
+        cards: [
+          {
+            h: 'What the SFP tells you',
+            p: [
+              'The statement of financial position (SFP, formerly the balance sheet) shows what a business owns (assets), what it owes (liabilities), and how it is funded (capital/equity) at a specific point in time.',
+              'It is a snapshot, not a period summary. The accounting equation that underpins it: **Assets = Capital + Liabilities**.',
+            ],
+            flow: ['Non-current assets', 'Current assets', 'TOTAL ASSETS', 'Capital', 'Non-current liabilities', 'Current liabilities', 'TOTAL CAPITAL + LIABILITIES'],
+          },
+          {
+            h: 'Non-current assets',
+            p: [
+              'Non-current assets (also called fixed assets) are resources owned for more than one year and used in the business — not for resale. They are shown at **carrying value** (cost less accumulated depreciation).',
+            ],
+            example: {
+              title: 'Non-current assets section',
+              rows: [
+                ['Asset', 'Cost', 'Acc. Dep\'n', 'Carrying value'],
+                ['Premises', '£50,000', '—', '£50,000'],
+                ['Motor vehicles', '£18,000', '£6,000', '£12,000'],
+                ['Equipment', '£8,000', '£3,200', '£4,800'],
+                ['Total NCAs', '', '', '£66,800'],
+              ],
+            },
+          },
+          {
+            h: 'Current assets and liabilities',
+            p: [
+              'Current assets are assets that will convert to cash within 12 months: inventory (stock), trade receivables, prepayments, and bank/cash. Current liabilities are amounts due for payment within 12 months: trade payables, accruals, bank overdraft, and VAT payable.',
+            ],
+            split: {
+              left: {
+                title: 'Current assets',
+                items: ['Inventory (closing stock)', 'Trade receivables', 'Prepayments', 'Bank / cash'],
+              },
+              right: {
+                title: 'Current liabilities',
+                items: ['Trade payables', 'Accruals', 'Bank overdraft', 'VAT payable'],
+              },
+            },
+          },
+          {
+            h: 'The capital section',
+            p: [
+              'For a sole trader, the capital section shows: opening capital + profit for the year + capital introduced − drawings = closing capital.',
+            ],
+            example: {
+              title: 'Capital section',
+              rows: [
+                ['Opening capital', '£28,400'],
+                ['Add: Profit for the year', '£11,600'],
+                ['Add: Capital introduced', '£5,000'],
+                ['Less: Drawings', '(£4,200)'],
+                ['Closing capital', '£40,800'],
+              ],
+            },
+          },
+          {
+            h: 'Putting it all together',
+            p: [
+              'The SFP always balances because Assets = Capital + Liabilities.',
+            ],
+            callout: { kind: 'key', text: 'Total assets must always equal total capital + liabilities. If they do not agree, there is an error somewhere.' },
+            examtrap: 'Bank OVERDRAFT is a current LIABILITY (credit balance in bank account), not an asset. Check which side the bank balance sits on before placing it.',
+          },
+        ],
+        check: [
+          {
+            q: 'Which of the following is a non-current asset?',
+            opts: ['Trade receivables', 'Closing inventory', 'A delivery van used in the business', 'Cash in the till'],
+            ans: 2,
+            exp: 'A delivery van used in the business for more than one year is a non-current (fixed) asset. Trade receivables and inventory are current assets.',
+          },
+          {
+            q: 'A business has a bank overdraft of £1,500. Where does this appear on the SFP?',
+            opts: ['Current assets', 'Non-current assets', 'Current liabilities', 'Capital'],
+            ans: 2,
+            exp: 'An overdraft means the bank is owed money, so it is a current liability rather than an asset. A positive bank balance is the asset; being overdrawn reverses the direction of the obligation.',
+          },
+          {
+            q: 'Net assets (net worth) of a business equals:',
+            opts: ['Total assets only', 'Total assets minus total liabilities', 'Capital minus drawings', 'Non-current assets only'],
+            ans: 1,
+            exp: 'Net assets = Total assets − Total liabilities. By the accounting equation, this equals the owner\'s capital (equity).',
+          },
+          {
+            q: 'A carrying value of £12,000 for a motor vehicle means:',
+            opts: ['The vehicle cost £12,000', 'The vehicle is worth £12,000 on the open market', 'Cost minus accumulated depreciation equals £12,000', 'The vehicle was bought this year for £12,000'],
+            ans: 2,
+            exp: 'Carrying value = Cost − Accumulated depreciation. It reflects the net book value, not the market value.',
+          },
+          {
+            q: 'Prepayments appear in the SFP as:',
+            opts: ['A non-current asset', 'A current asset', 'A current liability', 'Part of capital'],
+            ans: 1,
+            exp: 'Prepayments are amounts paid in advance for a benefit still to be received — they are current assets.',
+          },
+        ],
+      },
+      {
+        id: 'L-itbk-13',
+        title: 'The Extended Trial Balance',
+        icon: '📊',
+        skills: ['itbk-tb', 'itbk-adjust'],
+        cards: [
+          {
+            h: 'What is the Extended Trial Balance?',
+            p: [
+              'The **extended trial balance (ETB)** is a working paper that adjusts the initial trial balance figures before producing the final financial statements. It has columns for the original TB balances, adjustments (accruals, prepayments, depreciation), and the adjusted figures split into income statement and balance sheet columns.',
+              'The ETB sits between the unadjusted trial balance and the finished financial statements. It is the most important worksheet in accounts preparation.',
+            ],
+          },
+          {
+            h: 'Adjustment columns',
+            p: [
+              'The adjustment columns capture every year-end change. Each adjustment must use debits and credits that balance each other.',
+            ],
+            formula: 'Accrual: Dr Expense / Cr Accruals payable·Prepayment: Dr Prepayments / Cr Expense·Depreciation: Dr Depreciation expense / Cr Accumulated depreciation',
+            example: {
+              title: 'Adjustment examples',
+              rows: [
+                ['Adjustment', 'Debit', 'Credit'],
+                ['Accrued electricity £300', 'Electricity expense £300', 'Accruals payable £300'],
+                ['Prepaid insurance £600', 'Prepayments £600', 'Insurance expense £600'],
+                ['Depreciation £2,000', 'Depreciation expense £2,000', 'Accum. depreciation £2,000'],
+              ],
+            },
+          },
+          {
+            h: 'Income statement columns',
+            p: [
+              'Revenue and expense account balances (after adjustments) are extended into the income statement columns — expenses on the debit side, revenues on the credit side.',
+              'The net difference between the credit total (revenues) and the debit total (expenses) is the profit or loss for the year. Assets, liabilities, and capital accounts are NOT extended into these columns.',
+            ],
+          },
+          {
+            h: 'Balance sheet (SFP) columns',
+            p: [
+              'Asset, liability, and capital account balances are extended into the statement of financial position columns. Accumulated depreciation is a credit. Closing inventory (if separately given) appears as a debit here.',
+              'Revenue and expense accounts are NOT extended into these columns — they have already been captured in the income statement columns.',
+            ],
+          },
+          {
+            h: 'Profit as the balancing figure',
+            p: [
+              'Once the income statement columns are totalled, the profit is the excess of credits over debits. This profit figure is inserted as a debit in the income statement columns (to make them balance) and as a credit in the balance sheet columns (because profit increases capital).',
+              'If both sets of columns now balance (Dr = Cr in each), the ETB is complete. A loss would be inserted as a credit in the income statement and a debit in the balance sheet.',
+            ],
+          },
+        ],
+        check: [
+          {
+            q: 'What is the main purpose of the extended trial balance?',
+            opts: ['To replace the general ledger entirely', 'To extract adjusted figures for the two statements', 'To record all transactions for the accounting period', 'To calculate the VAT owed to HMRC'],
+            ans: 1,
+            exp: 'The ETB adjusts the initial TB for year-end items (accruals, prepayments, depreciation) and then separates the adjusted balances into income statement and balance sheet columns.',
+          },
+          {
+            q: 'Depreciation of £2,000 is entered on the ETB as:',
+            opts: ['Dr Accumulated depreciation £2,000 / Cr Depreciation expense £2,000', 'Dr Depreciation expense £2,000 / Cr Accumulated depreciation £2,000', 'Dr Asset £2,000 / Cr Depreciation expense £2,000', 'No entry — the asset value is simply reduced'],
+            ans: 1,
+            exp: 'Depreciation: Dr Depreciation expense (increases the expense) / Cr Accumulated depreciation (increases the contra-asset). This reduces the net book value without removing the cost from the asset account.',
+          },
+          {
+            q: 'A prepayment of £600 insurance (covering future periods) is adjusted on the ETB as:',
+            opts: ['Dr Insurance expense £600 / Cr Prepayments £600', 'Dr Prepayments (asset) £600 / Cr Insurance expense £600', 'Dr Accruals £600 / Cr Insurance expense £600', 'Dr Insurance £600 / Cr Bank £600'],
+            ans: 1,
+            exp: 'A prepayment reduces the current period expense. Dr Prepayments (creates a current asset on the SFP) / Cr Insurance expense (reduces the expense charged to the income statement).',
+          },
+          {
+            q: 'On the ETB, revenue account balances are extended into:',
+            opts: ['Balance sheet columns — credit side', 'Income statement columns — credit side', 'Income statement columns — debit side', 'Adjustment columns — debit side'],
+            ans: 1,
+            exp: 'Revenue is a credit balance on the trial balance, so it is extended into the income statement columns on the credit side. Expenses are extended on the debit side.',
+          },
+          {
+            q: 'The ETB shows that total income statement credits (revenues) exceed debits (expenses) by £15,000. How is profit entered to complete the ETB?',
+            opts: ['Dr Balance sheet £15,000 / Cr Income statement £15,000', 'Dr Income statement £15,000 / Cr Balance sheet £15,000', 'Dr Income statement £15,000 only', 'No entry needed — the profit is shown as a note'],
+            ans: 1,
+            exp: 'The £15,000 profit is a debit in the income statement columns (making them balance) and a credit in the balance sheet columns (increasing capital). This links both sides of the ETB.',
           },
         ],
       },
