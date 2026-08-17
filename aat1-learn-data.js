@@ -63,7 +63,7 @@
           h: 'What bookkeeping actually is',
           p: [
             'A business does things all day that involve money. It sells something. It buys stock. It pays the electricity bill. Somebody puts fuel in the van. `Bookkeeping` is the work of writing all of that down in an organised way, so that at any point somebody can answer questions about it.',
-            'That sounds modest, and it is worth being clear about why it is not. Nobody can hold a year of a business in their head. Without records, the owner of a small shop cannot tell you whether the shop made money last month, which customers still owe them, whether that invoice from the wholesaler has already been paid, or how much of the money in the bank is really theirs rather than tax they are holding for somebody else. Every one of those questions has a definite answer, and the records are the only place it exists.',
+            'That sounds modest. It is not, and the reason is the point of this card. Nobody can hold a year of a business in their head. Without records, the owner of a small shop cannot tell you whether the shop made money last month, which customers still owe them, whether that invoice from the wholesaler has already been paid, or how much of the money in the bank is really theirs rather than tax they are holding for somebody else. Every one of those questions has a definite answer, and the records are the only place it exists.',
             'So bookkeeping is not filing. It is the construction of the only reliable account of what a business has done. Everything else in finance is built on top of it: the accounts that go to Companies House, the tax return, the decision about whether to hire somebody. If the bookkeeping is wrong, all of that is wrong, and nobody downstream has any way of knowing.',
             'This unit teaches the first layer of that work. It is deliberately narrow — one business, straightforward transactions, no complications — because the point is to get the shape of the thing right before the volume arrives.',
           ],
@@ -296,7 +296,7 @@
         {
           h: 'Why this is a whole topic on its own',
           p: [
-            'It would be reasonable to expect "be accurate" to take one line. The specification gives it a topic area and twelve separate consequences, and it is worth understanding why before learning the list.',
+            'It would be reasonable to expect "be accurate" to take one line. The specification gives it a topic area and twelve separate consequences, and the reason comes before the list.',
             'The reason is that the assessment does not test whether you think accuracy is good. It tests whether you can trace a specific error to its specific consequence. Given a scenario — a sales invoice entered at £450 when it should have been £540 — the question is not "is this bad" but "what happens next". And what happens next is definite: that customer is undercharged, the sales figure is understated, the profit is understated, and the VAT declared is too low.',
             'So learn this as a set of causal chains rather than as a list of bad outcomes. An error in the customer records does something different from an error in the supplier records, and an error in either does something different again by the time it reaches the accounts.',
           ],
@@ -444,7 +444,7 @@
         {
           h: 'Accuracy and timeliness are separate requirements',
           p: [
-            'The specification treats accuracy and timeliness as two things, with their own lists of consequences, and it is worth seeing why they cannot be collapsed into one.',
+            'The specification treats accuracy and timeliness as two things, with their own lists of consequences, and they cannot be collapsed into one.',
             'Information that is wrong misleads. Information that is late does something different: it is not available when the decision is made. The figure may be perfect, but if the owner needed it on Tuesday to decide whether to place an order, a perfect figure on Friday is worth nothing. The decision was taken on Tuesday, using whatever was to hand — a guess, or last month’s figures.',
             'This is the point beginners find least intuitive, because carefulness feels like an unambiguous virtue. It is not. Work slowly enough and you produce accurate information that nobody can use. The duty in the specification is to prepare information that is timely **and** accurate, and treating either as optional fails it.',
           ],
@@ -751,7 +751,7 @@
           h: 'Confidentiality, in outline',
           p: [
             'Confidentiality is the fifth principle and the one this unit treats at greatest length — the specification gives it two further scope items of its own, which the next lesson covers. In outline it requires that information acquired through your work is not disclosed without proper authority, and not used for your own advantage.',
-            'Three features are worth noting now. It applies to information about **anybody** you encounter through the work — the business, its customers, its suppliers, its employees — not only to your employer. It is not limited to deliberate disclosure; leaving a screen visible or discussing a client where you can be overheard breaches it just as effectively. And it continues after the relationship ends: leaving a job does not release you from it.',
+            'Three features stand out at this stage. It applies to information about **anybody** you encounter through the work — the business, its customers, its suppliers, its employees — not only to your employer. It is not limited to deliberate disclosure; leaving a screen visible or discussing a client where you can be overheard breaches it just as effectively. And it continues after the relationship ends: leaving a job does not release you from it.',
             'The reason it gets extra attention in this unit is that it is the principle a junior bookkeeper is most likely to breach, and to breach accidentally. The others generally require a decision. This one can be broken by a laptop left open on a train.',
           ],
         },
@@ -1118,7 +1118,7 @@
           p: [
             'Income is what the business earns. For most businesses that means `sales` — the value of goods or services sold. It can also include other earnings such as interest received on a bank balance or rent charged to a tenant.',
             'Expenses are what the business spends in order to trade: buying stock, wages, rent, insurance, electricity, fuel, advertising, postage. The test is that the spending is part of trading.',
-            'There is a distinction here that trips people up, and it is worth meeting now even though the full treatment belongs at Level 2. Buying a van is **not** an expense, even though money leaves the business. The van is still there afterwards — the business has swapped one asset (cash) for another (a van), and its overall position has not changed. Buying fuel for the van *is* an expense: the fuel is consumed and nothing of value remains.',
+            'There is a distinction here that trips people up, and it is better met now even though the full treatment belongs at Level 2. Buying a van is **not** an expense, even though money leaves the business. The van is still there afterwards — the business has swapped one asset (cash) for another (a van), and its overall position has not changed. Buying fuel for the van *is* an expense: the fuel is consumed and nothing of value remains.',
             'So the question is not "did money leave?" but "does the business still have something of value?". If yes, it is an asset. If it has been used up in the course of trading, it is an expense.',
           ],
           split: {
@@ -1134,7 +1134,7 @@
             { t: 'Loss', d: 'Expenses greater than income over a period.' },
           ],
           p: [
-            '`Capital` is the hardest of the six, and it is worth taking slowly. It is the owner’s stake in the business — the amount the business owes back to the person who owns it.',
+            '`Capital` is the hardest of the six, so take it slowly. It is the owner’s stake in the business — the amount the business owes back to the person who owns it.',
             'That phrasing is deliberate. Accounting treats the business as separate from its owner, even for a sole trader where they are the same person in law. So when the owner puts £5,000 of their own money in to get started, the business now has £5,000 of cash (an asset) and owes £5,000 back to the owner (capital). The money has not appeared from nowhere; it has arrived from somebody, and the records show who.',
             '`Profit` and `loss` are the difference between income and expenses over a period. Income above expenses is a profit; expenses above income is a loss.',
             'And here is the connection that makes Outcome 2 hang together: **profit belongs to the owner**. So a profit increases capital, and a loss decreases it. The business has earned more than it spent, and that extra is the owner’s — so the amount the business owes back to them goes up. This is scope item 2.2.2, and the next lesson but one builds directly on it.',
@@ -1285,7 +1285,7 @@
           p: [
             'The dual effect is the foundation of `double-entry bookkeeping`, which is the system almost all accounting uses and which Level 2 teaches properly. The name says it: two entries for every transaction, one for each effect.',
             'At Level 2 the two effects acquire names — a `debit` and a `credit` — and they get recorded in ledger accounts, one on each side. There are rules about which effect is which, and learning them is a substantial part of that qualification.',
-            'None of that is required here, and it is worth being clear that the omission is deliberate rather than a gap. What this level asks is that you can see the two effects and say whether each is an increase or a decrease. If you can do that, the machinery at Level 2 is just a notation for something you already understand — which is exactly the intention. Students who struggle with debits and credits are almost always students who never got the dual effect solid first.',
+            'None of that is required here, and the omission is deliberate rather than a gap. What this level asks is that you can see the two effects and say whether each is an increase or a decrease. If you can do that, the machinery at Level 2 is just a notation for something you already understand — which is exactly the intention. Students who struggle with debits and credits are almost always students who never got the dual effect solid first.',
           ],
           notyet: 'Scope item 2.1.3 excludes making entries in ledger accounts, debits and credits, transactions including VAT, and transactions with more than two items. So every transaction you meet in this outcome has exactly two effects and no VAT. VAT appears later, in Outcome 3, but only on documents — never as a third effect in a dual-effect question.',
         },
@@ -1379,7 +1379,7 @@
         {
           h: 'Why it can never fail to balance',
           p: [
-            'Scope item 2.2.3 says the equation **will always balance**, and it is worth seeing why that is a certainty rather than a hope. The reason is the dual effect from the previous lesson.',
+            'Scope item 2.2.3 says the equation **will always balance**, and that is a certainty rather than a hope. The reason is the dual effect from the previous lesson.',
             'Every transaction changes at least two items. Work through what any transaction does to the two sides of the equation and you find it either changes both sides by the same amount, or changes two items on the same side in opposite directions. Either way the totals stay equal.',
             'Take a £2,000 bank loan. Assets rise £2,000 (cash in) and liabilities rise £2,000 (the loan). Both sides up by the same amount. Or buy a £900 computer for cash: assets rise £900 and fall £900, so that side nets to nothing and the other side never moved. Or pay a supplier £400: assets fall £400 and liabilities fall £400. Both sides down together.',
             'There is no transaction that can break it. So if a set of records does not balance, that is not a fact about the business — it is proof that something has been recorded wrongly. This is why balancing is used as a check throughout accounting, and it is the whole logic behind the trial balance you will meet at Level 2.',
@@ -1515,7 +1515,7 @@
             { t: 'Payable', d: 'A supplier the business owes money to for a credit purchase — and also the amount itself. A liability.' },
           ],
           p: [
-            'Four words, and the whole of the difficulty is direction. Get them the wrong way round and every later task in this outcome and the next goes wrong, so it is worth fixing them now.',
+            'Four words, and the whole of the difficulty is direction. Get them the wrong way round and every later task in this outcome and the next goes wrong, so fix them now.',
             'The trick that works is to read the words literally. A `receivable` is something you will **receive** — money coming in, from a customer. A `payable` is something you will **pay** — money going out, to a supplier. The words describe what the business does next.',
             'Note that only credit trading creates receivables and payables. A cash sale is settled on the spot, so nobody owes anybody anything afterwards. That is why the distinction on the previous card matters so much: credit trading is what generates the records of who owes what, and those records are what Outcome 4 spends most of its time on.',
           ],
@@ -2704,7 +2704,7 @@
           p: [
             'In a real cash book the receipts and payments figures are **column totals**, so the calculation depends on those totals being right. Two checks from earlier in the material apply directly.',
             '**Cross casting** works here just as it did in the daybooks. On each side, the analysis columns should add across to the cash and bank columns: if a receipts side shows £96.00 of cash and the analysis columns for that row show £80.00 and £16.00, those agree. Do it for the totals as well as for individual rows.',
-            '**Checking against expectation** is the other. Cash in hand cannot be negative — you cannot take more notes out of a till than are in it — so a negative closing cash figure is proof of an error, usually a receipt entered on the payments side or a figure omitted. This is worth knowing as a hard rule, because it turns a vague sense that something is wrong into a certainty.',
+            '**Checking against expectation** is the other. Cash in hand cannot be negative — you cannot take more notes out of a till than are in it — so a negative closing cash figure is proof of an error, usually a receipt entered on the payments side or a figure omitted. Learn this as a hard rule: it turns a vague sense that something is wrong into a certainty.',
             'The bank is different: a bank balance genuinely can be negative, when the account is overdrawn. But **overdrawn amounts are excluded at this level**, so within this unit a negative bank figure also indicates an error rather than an overdraft.',
           ],
           notyet: 'Overdrawn amounts are excluded from scope items 4.2.2 and 4.3.4. So every closing bank figure you are asked for here is positive, and a negative result means a mistake in the arithmetic or in which side an entry went on — not an overdraft.',
@@ -2793,7 +2793,7 @@
           h: 'The bank’s version of events',
           p: [
             'A `bank statement` is the bank’s own record of everything that went through the business’s account, with a balance after each movement. It is a second, independent account of the same transactions the cash book records — which is what makes it useful for checking.',
-            'There is one feature that confuses nearly everybody the first time, and it is worth confronting immediately. On a bank statement, the columns appear to be the wrong way round.',
+            'There is one feature that confuses nearly everybody the first time, and it is better confronted immediately. On a bank statement, the columns appear to be the wrong way round.',
             'The reason is whose statement it is. The bank writes it from **its own** point of view. Money you pay in is money the bank now owes you, so it appears as a credit. Money you take out reduces what the bank owes you, so it appears as a debit. Your bank balance is, to the bank, a liability — it owes you your money.',
             'At this level you are not asked about debits and credits, so this need not be laboured. What you do need is the practical rule: **read the column headings, and do not assume they match the cash book**. Many statements avoid the problem by using "paid in" and "paid out", or "money in" and "money out", which are unambiguous.',
           ],
@@ -3081,8 +3081,8 @@
             right: { title: 'Documents (4.4.1)', items: ['Sales and purchase invoices, and credit notes', 'Lists of invoices and/or credit notes', 'Cash receipts, cheque stubs, paying-in book', '`Remittance advices` — which invoices a payment covered', 'Lists of receipts and/or payments', 'Bank statements and bank feeds', 'Software reports'] },
           },
           p: [
-            'The specification also names the **software reports** that answer this question automatically, and they are worth knowing by name because Outcome 5 returns to them: individual customer reports, individual supplier reports, `receivables` reports, `payables` reports, and `aged receivables` and `aged payables` analyses.',
-            'An `aged` analysis is the one worth understanding now. It splits what is owed by how long it has been outstanding — current, 30 days, 60 days, 90 days and over. That matters because £5,000 owed across recent invoices is an ordinary trading position, while £5,000 owed on invoices from four months ago is a problem. The total is identical; the picture is not.',
+            'The specification also names the **software reports** that answer this question automatically, and learn them by name, because Outcome 5 returns to them: individual customer reports, individual supplier reports, `receivables` reports, `payables` reports, and `aged receivables` and `aged payables` analyses.',
+            'An `aged` analysis is the one to understand now. It splits what is owed by how long it has been outstanding — current, 30 days, 60 days, 90 days and over. That matters because £5,000 owed across recent invoices is an ordinary trading position, while £5,000 owed on invoices from four months ago is a problem. The total is identical; the picture is not.',
             'The `remittance advice` earns its place on this list for the reason lesson 3B gave: without it you may not know which invoices a payment settled, and for an individual balance that is exactly what you need to know.',
           ],
           terms: [
