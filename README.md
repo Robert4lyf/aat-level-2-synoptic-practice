@@ -29,6 +29,57 @@ Alongside it are two self-contained modules for the levels either side, each wit
 - **Installable (PWA)** — install it to a phone or desktop home screen and use it fully offline.
 - Light/dark themes and keyboard shortcuts throughout.
 
+## Auditing the Level 2 material
+
+Levels 1 and 3 each ship with a build check that asks whether the material is any
+*good* — not merely whether it parses. Level 2, the oldest and largest module here,
+had no such check, and adding one (`scripts/check-aat2-quality.js`, built against the
+encoded syllabus in `aat2-syllabus.js`) found a good deal:
+
+- 126 questions whose explanation was missing or too short to teach anything
+- 30 multiple-choice questions whose answer was identifiable from the shape of the
+  options alone, without reading the stem
+- nine duplicated question stems, one of them repeated ten times
+- four arithmetic errors stated in prose, including a bank-reconciliation task whose
+  figures did not reconcile
+- roughly a hundred scenario sub-questions that no check had ever examined
+- true/false grids keyed 68% true, so guessing "true" beat knowing the topic
+
+All of the above are fixed.
+
+The check also compares each unit's lessons against the encoded syllabus, and that
+found something larger than any question defect: **Introduction to Bookkeeping covered
+only 7 of its 16 assessment criteria.** The whole of topic area 4 — the analysed cash
+book, the petty cash book, totalling and balancing them, and recurring receipts and
+payments — had no lesson at all, which is 20% of that unit's assessment. Meanwhile five
+lessons in the unit taught Level 3 Financial Accounting material (accruals and
+prepayments, the statement of financial position, the extended trial balance, capital
+versus revenue, depreciation) that appears nowhere in the Level 2 specification.
+
+That unit is now restructured: nine new lessons cover the missing criteria, the five
+off-syllabus lessons have moved to the Financial Accounting unit where they belong, and
+**ITBK coverage is enforced at 16/16** so it cannot regress. The check now also requires
+every lesson in an enforced unit to claim a criterion — `criteria: []` being the explicit
+opt-out for a bridge lesson — which is the rule that would have caught the original
+problem.
+
+**Introduction to Bookkeeping is now complete**, and both ratchets are on for it:
+coverage 16/16 and depth at 87 cards averaging 228 words with none below the floor —
+against the 90-word average the module started at.
+
+The remaining gap is the other three units, and the checker reports it on every run:
+
+| Unit | Coverage | Mean words per card |
+|---|---|---|
+| Introduction to Bookkeeping | **16/16 enforced** | **228 enforced** |
+| Principles of Bookkeeping Controls | untagged | 90 |
+| Principles of Costing | untagged | 92 |
+| The Business Environment | untagged | 91 |
+
+Given that tagging ITBK revealed nine missing criteria and five lessons from another
+qualification, the three untagged units should be treated as unmeasured rather than as
+known to be sound.
+
 ## The Level 1 module
 
 The **Level 1 Award in Bookkeeping** module covers the whole of the Bookkeeping Fundamentals unit

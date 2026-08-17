@@ -23,6 +23,8 @@ jobs:
         run: npm run validate:aat
       - name: Check question integrity (option shuffling, answer keys)
         run: npm run check:integrity
+      - name: Check AAT Level 2 content quality (cues, explanations, depth, coverage)
+        run: npm run check:aat2
       - name: Check AAT Level 1 syllabus integrity and coverage
         run: npm run check:aat1
       - name: Check AAT Level 1 content quality (cues, depth, pairing integrity)
