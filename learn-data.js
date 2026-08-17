@@ -5858,7 +5858,7 @@ window.LEARN_PATH = [
             h: 'The four arithmetic operators',
             p: [
               'The specification names exactly four, and each has one correct form. **Addition** is =B2+C2. **Subtraction** is =B2-C2. **Multiplication** is =B2*C2, using an asterisk rather than a letter x. **Division** is =B2/C2, using a forward slash.',
-              'Addition also has a range form: =SUM(B2:B10) adds every cell from B2 to B10 inclusive. The colon means "through", and it is what makes the formula robust — it keeps working when the numbers in those cells change.',
+              'Addition also has a range form: =SUM(B2:B10) adds every cell from B2 to B10 inclusive. The colon means "through", and and it is what keeps the formula working when the numbers in those cells change.',
               'Combining operators is expected rather than exceptional. A total cost formula might read =B4*B5+B6, and the assessment specifically notes that formulas will require more than one operation.',
               'Where the order of operations matters, use brackets. Multiplication and division are performed before addition and subtraction, so =B4+B5*B6 multiplies first; if you want the addition first, it must be =(B4+B5)*B6.',
               'Two conventions are worth stating explicitly. Cell references are not case sensitive, so =b2+c2 works as well as =B2+C2. And a range must run from the top-left cell to the bottom-right, so =SUM(B10:B2) is not a valid range.',
