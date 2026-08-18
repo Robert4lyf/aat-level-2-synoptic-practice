@@ -1011,6 +1011,13 @@
       ans: 0,
       exp: 'A VAT invoice must normally be issued within ' + T.invoicing.issueWithinDays.value + ' days of the basic tax point. The ' + T.invoicing.actualTaxPointDays.value + '-day rule is a different thing — an invoice issued within 14 days AFTER the basic tax point moves the tax point to the invoice date.',
     },
+    {
+      id: 'P-2-27', lo: 2, criteria: ['TPFB-2.3.13'],
+      type: 'numeric',
+      q: 'In the year to date a firm has given one client goods costing £28 excluding VAT, then a second gift of goods costing £26 excluding VAT, reclaiming input tax on both. What output tax must now be accounted for, in pounds?',
+      answer: 10.8, unit: '£',
+      exp: 'The cost of gifts to one person over 12 months is a running total: £28 + £26 = £54, which is over the £' + T.gifts.goodsLimit.value + ' limit. Output tax is therefore due on the WHOLE cost of the series, not the excess: £54 × 20% = £10.80, added to Box 1.',
+    },
 
     /* ── Outcome 3 ─────────────────────────────────────────────────────── */
     {
