@@ -126,6 +126,7 @@ aat1-ui.js             — Level 1 renderer (self-contained)
 aat1-styles.css        — Level 1 design language
 aat3-*.js / aat3-styles.css — the equivalent five files for Level 3
 sync-worker/           — the Cloudflare Worker, with its own deployment README
+functions/_middleware.js — password gate for the deployed site (Cloudflare Pages)
 manifest.webmanifest   — PWA manifest (installable app metadata)
 sw.js                  — service worker (offline caching)
 icon-192.png / icon-512.png / apple-touch-icon.png — app icons
@@ -133,7 +134,7 @@ icon-192.png / icon-512.png / apple-touch-icon.png — app icons
 
 ## Installing it as an app
 
-When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **Install** option:
+When the site is served over HTTPS (see [Hosting it](#hosting-it)), browsers offer an **Install** option:
 
 - **Desktop (Chrome/Edge):** an install icon appears in the address bar.
 - **Android:** browser menu → *Add to Home screen* / *Install app*.
@@ -141,9 +142,66 @@ When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **
 
 Once installed, the service worker caches the app so it works **fully offline**. Progress is stored locally in the browser, so installed and in-browser use share the same data on a device.
 
-## Hosting on GitHub Pages
+## Hosting it
 
-Once this repository is on GitHub, you can publish it free at a public URL:
+There is no build step — the site is the repository — so any static host will
+serve it. Two are set up here.
+
+### Cloudflare Pages, behind a password (recommended)
+
+This is the option to pick if you want to hand the URL to other people without
+putting the site on the open internet. It redeploys on every push to `main`, and
+it is free: GitHub Pages cannot password-protect a site outside Enterprise, and
+Netlify and Vercel both moved theirs behind paid plans.
+
+1. At [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** →
+   **Create** → **Pages** → **Connect to Git**, pick this repository.
+2. Leave the **build command empty** and set the **output directory** to `/`.
+   Production branch: `main`.
+3. Deploy once. It will return **503 Not configured** — that is the gate working,
+   not a broken deploy. Nothing is served until step 4.
+4. **Settings → Variables and Secrets**, add:
+
+   | Name | Required | Notes |
+   |---|---|---|
+   | `SITE_PASSWORD` | yes | The shared password. Add it as a **Secret**, not plaintext. |
+   | `SITE_USERNAME` | no | If set, the username must match too. If unset, any username works and only the password is checked. |
+
+   Add them to **both** the Production and Preview environments, or preview
+   deployments stay at 503.
+5. Redeploy. The site is live at `https://<project>.pages.dev`, and asks for the
+   password first. A custom domain can be attached free under **Custom domains**.
+
+Every merge to `main` redeploys automatically in about twenty seconds.
+
+**What this is and is not.** It is one shared password, not per-person accounts,
+and HTTP Basic authentication encodes rather than encrypts it — HTTPS is what
+keeps it private in transit. That is the right weight for sharing a study URL
+with a group. It is not access control for anything sensitive. If you want
+per-person logins with a revocable list, use **Cloudflare Access** instead (free
+up to 50 users); it emails each person a one-time code rather than using a shared
+secret, and it replaces `functions/_middleware.js` rather than sitting alongside
+it.
+
+The gate lives in `functions/_middleware.js` and runs in front of every request.
+Two things about it are worth knowing before editing it:
+
+- **It fails closed.** With no `SITE_PASSWORD` set it serves 503 to everybody. A
+  forgotten dashboard step looks like a broken deploy rather than an open site.
+- **It re-applies the security headers itself.** Cloudflare does not apply
+  `_headers` to responses that pass through a Function, and this Function is in
+  front of everything — so the CSP is repeated in the middleware. That makes four
+  copies of the policy (`index.html`, `_headers`, `vercel.json` and the
+  middleware); `npm run check:csp` fails the build if they drift apart, and
+  `npm run check:password` exercises the gate itself against mock requests.
+
+The service worker is unaffected: the browser attaches the stored credentials to
+same-origin requests, so offline caching and PWA install work normally once past
+the prompt, and a 401 is never cached (the worker only stores 200s).
+
+### GitHub Pages, in the open
+
+Simpler, but public to anyone with the link — there is no way to gate it.
 
 1. Go to the repository's **Settings → Pages**.
 2. Under **Build and deployment → Source**, choose **Deploy from a branch**.

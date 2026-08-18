@@ -10,8 +10,12 @@
  * pre-paint theme bootstrap never applies.
  *
  * This check recomputes the sha256 of each inline <script> in index.html and
- * verifies the matching hash is present in ALL three CSP definitions:
- *   index.html (meta), _headers, vercel.json.
+ * verifies the matching hash is present in ALL four CSP definitions:
+ *   index.html (meta), _headers, vercel.json, functions/_middleware.js.
+ *
+ * The middleware repeats the policy because Cloudflare does not apply _headers
+ * to responses served through a Pages Function, and the password gate puts a
+ * Function in front of every response.
  *
  * Run: node scripts/check-csp-hashes.js   (exit 1 on any mismatch)
  */
@@ -51,11 +55,12 @@ const hashes = inlineScripts.map((body) => {
   return `sha256-${digest}`;
 });
 
-// The three places the CSP must be kept in sync.
+// The four places the CSP must be kept in sync.
 const cspSources = {
   'index.html (meta)': html,
   '_headers': read('_headers'),
   'vercel.json': read('vercel.json'),
+  'functions/_middleware.js': read('functions/_middleware.js'),
 };
 
 console.log('Inline <script> blocks in index.html:', inlineScripts.length);
