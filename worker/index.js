@@ -1,9 +1,11 @@
-/* Cloudflare Pages middleware — shared-password gate for the whole site.
+/* Cloudflare Worker — the deployed site, behind a shared password.
  *
- * Runs in front of EVERY request. Visitors get a browser password prompt
- * (HTTP Basic authentication) and nothing is served until they pass it.
+ * The static files in this repository are served through this Worker rather
+ * than straight off the edge, so that every request can be checked for a
+ * password first. Visitors get a browser prompt (HTTP Basic authentication)
+ * and nothing is served until they pass it.
  *
- * Setup, once, in the Cloudflare dashboard (Workers & Pages -> this project ->
+ * Setup, once, in the Cloudflare dashboard (Workers & Pages -> this Worker ->
  * Settings -> Variables and Secrets):
  *
  *   SITE_PASSWORD   required. The shared password. Add it as a SECRET so it is
@@ -12,26 +14,28 @@
  *                   unset, any username is accepted and only the password is
  *                   checked — simpler to explain to people you share the URL with.
  *
- * Set the variable for BOTH the Production and Preview environments, or preview
- * deployments will refuse to serve (see the fail-closed note below).
- *
  * This is a single shared password, not per-person accounts, and Basic auth
  * sends it base64-encoded rather than encrypted — HTTPS is what keeps it private
  * in transit. It is the right weight for handing a study URL to a group; it is
  * not access control for anything sensitive. For per-person logins use
  * Cloudflare Access instead, which is free for up to 50 users.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The gate only works because wrangler.jsonc sets assets.run_worker_first.
+ * Cloudflare's DEFAULT is to serve a matching static asset directly from the
+ * edge and never invoke the Worker at all — which would hand out every page of
+ * this site without ever asking for the password. Removing that setting does
+ * not break the site in any visible way; it silently unlocks it.
+ * scripts/check-site-password.js asserts it is still set.
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 
 'use strict';
 
-/* The security headers from _headers, repeated here because Cloudflare does NOT
- * apply _headers to any response that passes through a Pages Function — and with
- * this middleware in place, that is every response. Dropping this block would
- * silently un-set the CSP site-wide.
- *
- * Keep in sync with _headers, vercel.json and the meta tag in index.html.
- * scripts/check-csp-hashes.js fails the build if the script-src hashes drift
- * apart across the four. */
+/* The security headers from _headers, applied here because responses now come
+ * from this Worker. Keep in sync with _headers, vercel.json and the meta tag in
+ * index.html; scripts/check-csp-hashes.js fails the build if the script-src
+ * hashes drift apart across the four. */
 const SECURITY_HEADERS = {
   'Content-Security-Policy':
     "default-src 'self'; " +
@@ -89,7 +93,8 @@ function parseCredentials(header) {
 }
 
 function withSecurityHeaders(response) {
-  /* Response headers from next() are immutable, so rebuild rather than mutate. */
+  /* Response headers from the assets binding are immutable, so rebuild rather
+     than mutate. */
   const out = new Response(response.body, response);
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) out.headers.set(name, value);
   return out;
@@ -110,16 +115,17 @@ function challenge(message) {
   });
 }
 
-export async function onRequest(context) {
-  const { request, env, next } = context;
-
+/* Decide whether a request may proceed. Returns null to allow it, or the
+ * Response to send back instead. Kept separate from the fetch handler so the
+ * decision can be tested without standing up an assets binding. */
+export async function guard(request, env) {
   /* Fail CLOSED. If the password variable is missing the site stays shut rather
      than quietly publishing itself — a forgotten dashboard step should look like
      a broken deploy, not an open one. */
-  if (!env.SITE_PASSWORD) {
+  if (!env || !env.SITE_PASSWORD) {
     return new Response(
       'This deployment is not configured yet: set the SITE_PASSWORD variable in the ' +
-      'Cloudflare Pages dashboard (Settings -> Variables and Secrets) and redeploy.',
+      'Cloudflare dashboard (Settings -> Variables and Secrets) and redeploy.',
       { status: 503, headers: { 'Cache-Control': 'no-store', ...SECURITY_HEADERS } }
     );
   }
@@ -136,6 +142,13 @@ export async function onRequest(context) {
     : true;
 
   if (!passwordOk || !usernameOk) return challenge('Incorrect username or password.');
-
-  return withSecurityHeaders(await next());
+  return null;
 }
+
+export default {
+  async fetch(request, env) {
+    const refusal = await guard(request, env);
+    if (refusal) return refusal;
+    return withSecurityHeaders(await env.ASSETS.fetch(request));
+  },
+};

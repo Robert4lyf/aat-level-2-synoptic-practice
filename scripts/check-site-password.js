@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Guards the Cloudflare Pages password gate in functions/_middleware.js.
+ * Guards the password gate in worker/index.js, and the wrangler.jsonc settings
+ * without which that gate never runs at all.
  *
  * The gate is the only thing standing between the deployed site and the open
  * internet, and it is code that never runs locally — nobody would notice it
@@ -40,31 +41,42 @@ const basic = (user, password) =>
 const APP_BODY = '<html>APP</html>';
 
 async function main() {
-  // The middleware is an ES module (as Pages Functions must be); this script is
-  // CommonJS like the rest of scripts/. Importing it from its own path would make
-  // Node warn about the ambiguous module type on every run — and the obvious
-  // silencer, a package.json inside functions/, means putting a stray file in the
-  // directory Cloudflare scans to build routes. Loading the source through a data:
-  // URL sidesteps both. The middleware imports nothing, so it needs no resolution
-  // context of its own.
+  // The Worker is an ES module; this script is CommonJS like the rest of
+  // scripts/. Importing it from its own path would make Node warn about the
+  // ambiguous module type on every run, so the source is loaded through a data:
+  // URL instead. The Worker imports nothing, so it needs no resolution context.
   const source = require('fs').readFileSync(
-    path.resolve(__dirname, '../functions/_middleware.js'),
+    path.resolve(__dirname, '../worker/index.js'),
     'utf8'
   );
-  const { onRequest } = await import(
+  const worker = await import(
     'data:text/javascript;base64,' + Buffer.from(source, 'utf8').toString('base64')
   );
 
-  const call = (env, authorization) =>
-    onRequest({
-      request: new Request(
-        'https://example.pages.dev/',
+  // A stand-in for the static-assets binding, so the gate can be exercised
+  // without deploying. It records whether it was reached — a request that gets
+  // this far is one that would have been served the real site.
+  let assetsServed = 0;
+  const env = (extra) => ({
+    ...extra,
+    ASSETS: {
+      fetch: async () => {
+        assetsServed++;
+        return new Response(APP_BODY, {
+          headers: { 'Content-Type': 'text/html; charset=utf-8' },
+        });
+      },
+    },
+  });
+
+  const call = (vars, authorization) =>
+    worker.default.fetch(
+      new Request(
+        'https://example.workers.dev/',
         authorization ? { headers: { Authorization: authorization } } : undefined
       ),
-      env,
-      next: async () =>
-        new Response(APP_BODY, { headers: { 'Content-Type': 'text/html; charset=utf-8' } }),
-    });
+      env(vars)
+    );
 
   const ENV = { SITE_PASSWORD: 'correct horse battery staple' };
   const GOOD = basic('anyone', ENV.SITE_PASSWORD);
@@ -101,6 +113,11 @@ async function main() {
       check(`  ...and the 401 body does not echo the password`, !body.includes(ENV.SITE_PASSWORD));
     }
   }
+  check(
+    'no refused request ever reached the static assets',
+    assetsServed === 0,
+    `the assets binding was called ${assetsServed} time(s)`
+  );
 
   console.log('\nThe 401 challenge is well-formed:');
   {
@@ -175,13 +192,71 @@ async function main() {
     );
   }
 
+  /* The gate can be perfect and still never run. Cloudflare serves matching
+     static assets straight from the edge unless run_worker_first is set, and a
+     deploy in that state looks completely normal while being wide open — so the
+     setting is checked here rather than trusted. */
+  console.log('\nwrangler.jsonc still routes every request through the Worker:');
+  {
+    const raw = require('fs').readFileSync(path.resolve(__dirname, '../wrangler.jsonc'), 'utf8');
+    // Strip // comments that are not inside a string, so JSONC parses as JSON.
+    let json = '', inString = false, escaped = false;
+    for (let i = 0; i < raw.length; i++) {
+      const c = raw[i];
+      if (inString) {
+        json += c;
+        if (escaped) escaped = false;
+        else if (c === '\\') escaped = true;
+        else if (c === '"') inString = false;
+        continue;
+      }
+      if (c === '"') { inString = true; json += c; continue; }
+      if (c === '/' && raw[i + 1] === '/') { while (i < raw.length && raw[i] !== '\n') i++; json += '\n'; continue; }
+      json += c;
+    }
+
+    let config = null;
+    try {
+      config = JSON.parse(json);
+    } catch (err) {
+      check('wrangler.jsonc parses', false, err.message);
+    }
+
+    if (config) {
+      const assets = config.assets || {};
+      check(
+        'assets.run_worker_first is true — without it the gate is bypassed entirely',
+        assets.run_worker_first === true,
+        `got ${JSON.stringify(assets.run_worker_first)}`
+      );
+      check(
+        'assets.binding is ASSETS, matching env.ASSETS in the Worker',
+        assets.binding === 'ASSETS',
+        `got ${JSON.stringify(assets.binding)}`
+      );
+      check(
+        'main points at the Worker holding the gate',
+        config.main === 'worker/index.js',
+        `got ${JSON.stringify(config.main)}`
+      );
+    }
+
+    /* node_modules appears at deploy time because the build runs npx wrangler,
+       and workerd inside it is far over the 25 MiB per-asset limit. */
+    const assetsIgnore = require('fs').readFileSync(path.resolve(__dirname, '../.assetsignore'), 'utf8');
+    const ignored = assetsIgnore.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
+    for (const entry of ['/node_modules', '/worker', '/scripts', '/tools']) {
+      check(`.assetsignore excludes ${entry} from the public upload`, ignored.includes(entry));
+    }
+  }
+
   console.log('');
   if (failures.length) {
     console.log(`${RED}Password gate check FAILED (${failures.length} of ${checked}):${RESET}`);
     failures.forEach((f) => console.log(`  ${RED}✗${RESET} ${f}`));
     console.log(
-      `\n${DIM}functions/_middleware.js is what stands between the deployed site and ` +
-      `the open internet. Do not merge this red.${RESET}`
+      `\n${DIM}worker/index.js and its wrangler.jsonc settings are what stand between ` +
+      `the deployed site and the open internet. Do not merge this red.${RESET}`
     );
     process.exit(1);
   }

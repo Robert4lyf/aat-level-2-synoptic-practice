@@ -11,11 +11,10 @@
  *
  * This check recomputes the sha256 of each inline <script> in index.html and
  * verifies the matching hash is present in ALL four CSP definitions:
- *   index.html (meta), _headers, vercel.json, functions/_middleware.js.
+ *   index.html (meta), _headers, vercel.json, worker/index.js.
  *
- * The middleware repeats the policy because Cloudflare does not apply _headers
- * to responses served through a Pages Function, and the password gate puts a
- * Function in front of every response.
+ * The Worker repeats the policy because the deployed site is served through it
+ * rather than straight off the edge, so _headers no longer applies there.
  *
  * Run: node scripts/check-csp-hashes.js   (exit 1 on any mismatch)
  */
@@ -60,7 +59,7 @@ const cspSources = {
   'index.html (meta)': html,
   '_headers': read('_headers'),
   'vercel.json': read('vercel.json'),
-  'functions/_middleware.js': read('functions/_middleware.js'),
+  'worker/index.js': read('worker/index.js'),
 };
 
 console.log('Inline <script> blocks in index.html:', inlineScripts.length);
