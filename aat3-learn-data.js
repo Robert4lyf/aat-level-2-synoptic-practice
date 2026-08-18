@@ -107,7 +107,7 @@
           ],
           split: {
             left: { title: 'Already yours from Level 2', items: ['VAT is charged on sales and reclaimed on purchases', 'Output tax and input tax, and that only the difference is settled', 'The standard rate is 20%, and gross ÷ 6 gets you the VAT', 'The VAT control account, and that it should agree with the return *(3E)*', 'Returns are usually quarterly and filed through Making Tax Digital *(1D)*'] },
-            right: { title: 'New at Level 3', items: ['*Why* the system works this way, and who actually bears the tax', 'Which supplies are standard, reduced, zero-rated, exempt or outside the scope', 'Tax points — the date a supply legally belongs to *(2B)*', 'What cannot be reclaimed at all, and partial exemption *(2D)*', 'Adjustments: discounts, fuel, bad debts, imports *(2E)*', 'Registration, schemes, penalties and error correction *(1C–1G, 3A)*'] },
+            right: { title: 'New at Level 3', items: ['*Why* the system works this way, and who actually bears the tax', 'Which supplies are standard, reduced, zero-rated, exempt or outside the scope', 'Tax points — the date a supply legally belongs to *(2B)*', 'What cannot be reclaimed at all, and partial exemption *(2D)*', 'Adjustments: discounts, fuel, gifts, bad debts, imports *(2E)*', 'Registration, schemes, penalties and error correction *(1C–1G, 3A)*'] },
           },
           callout: { kind: 'tip', text: 'Level 2 taught you to *record* VAT. Level 3 asks you to *decide* it — which rate, which period, which amounts are recoverable, and what to do when something was wrong.' },
         },
@@ -202,7 +202,7 @@
             'Two terms run through every calculation in this unit, and they are transposed under time pressure often enough to be fixed firmly now.',
             '**Output tax** is the VAT on what the business sells — its outputs. It is charged to the customer and owed to HMRC. **Input tax** is the VAT on what the business buys — its inputs. It is charged by the supplier and recoverable from HMRC.',
             'The mnemonic that survives an exam is the plain one: *outputs* go *out* to customers, and the tax on them is output tax.',
-            'You met both terms at Level 2, and they are restated because almost every calculation in this unit is ultimately a decision about which of the two a figure belongs to, and whether it counts at all. Outcome 2 is where that bites hardest — a credit note, a fuel scale charge, bad debt relief and an import each land on a particular side, and lesson 2E is where you meet them. Putting a figure on the wrong side does not produce a slightly wrong answer: it moves the result by twice the amount, and produces a confidently wrong one.',
+            'You met both terms at Level 2, and they are restated because almost every calculation in this unit is ultimately a decision about which of the two a figure belongs to, and whether it counts at all. Outcome 2 is where that bites hardest — a credit note, a fuel scale charge, a gift of goods, bad debt relief and an import each land on a particular side, and lessons 2E and 2F are where you meet them. Putting a figure on the wrong side does not produce a slightly wrong answer: it moves the result by twice the amount, and produces a confidently wrong one.',
             'Neither of those adjustment names is obvious, and both were listed in lesson 0A, so here is the short version. A **fuel scale charge** is extra *output* tax, declared where a business reclaims the VAT on road fuel that is also used privately in a car. **Bad debt relief** is extra *input* tax, recovering VAT already paid over on a sale the customer never settled. They sit on opposite sides, which is the decision this card is about.',
           ],
         },
@@ -771,21 +771,21 @@
     /* ── 2.3 — adjustments ──────────────────────────────────────────────── */
     {
       id: 'L3-TPFB-2E',
-      title: 'Adjustments: discounts, fuel and bad debts',
+      title: 'Adjustments: discounts, fuel, gifts and bad debts',
       icon: '🔧',
       criteria: ['TPFB-2.3.4', 'TPFB-2.3.8', 'TPFB-2.3.9', 'TPFB-2.3.14'],
       cards: [
         {
-          h: 'Three things that move the figures after the invoice',
+          h: 'Four things that move the figures after the invoice',
           p: [
-            'The last three lessons dealt with supplies as they were made. Real periods are untidier than that: customers take discounts, cars are fuelled privately, and some invoices are never paid at all.',
-            'This lesson covers the three routine adjustments that change the VAT position after the original supply has been recorded. What makes them worth grouping together is that they pull in different directions, and the commonest error with all three is putting them on the wrong side of the return.',
-            'A **prompt payment discount** taken by the customer reduces output tax, because less consideration was ultimately received. A **fuel scale charge** increases output tax, because it is a charge for private consumption of business fuel. **Bad debt relief** increases input tax, recovering output tax that was declared on a sale which produced no money.',
+            'The last three lessons dealt with supplies as they were made. Real periods are untidier than that: customers take discounts, cars are fuelled privately, goods are given away, and some invoices are never paid at all.',
+            'This lesson covers the four routine adjustments that change the VAT position after the original supply has been recorded. What makes them worth grouping together is that they pull in different directions, and the commonest error with all of them is putting them on the wrong side of the return.',
+            'A **prompt payment discount** taken by the customer reduces output tax, because less consideration was ultimately received. A **fuel scale charge** increases output tax, because it is a charge for private consumption of business fuel. A **gift of goods** past the £' + T.gifts.goodsLimit.value + ' limit increases output tax too, because giving away goods the business reclaimed VAT on is treated as a supply. **Bad debt relief** increases input tax, recovering output tax that was declared on a sale which produced no money.',
             'Note the asymmetry in that last one: relief for a bad debt is claimed as extra *input* tax, not as a reduction of output tax. The effect on the amount payable is identical, but the return asks for the two figures separately, and the boxes will not reconcile if it is put in the wrong place.',
           ],
           split: {
             left: { title: 'Reduces what you owe', items: ['PPD taken by the customer — less output tax', 'Bad debt relief — more input tax'] },
-            right: { title: 'Increases what you owe', items: ['Fuel scale charge — more output tax'] },
+            right: { title: 'Increases what you owe', items: ['Fuel scale charge — more output tax', 'Gifts of goods past the £' + T.gifts.goodsLimit.value + ' limit — more output tax'] },
           },
         },
         {
@@ -842,6 +842,34 @@
             ],
           },
           examtrap: 'The scale charge is a gross figure and it is OUTPUT tax. Treating it as net, or deducting it from input tax, are the two standard errors.',
+        },
+        {
+          h: 'Gifts of goods',
+          p: [
+            'A business that buys goods reclaims the input tax, and the system squares itself when those goods are eventually sold, because output tax arises on the sale. Give the goods away instead and that second half never happens — so the rules treat a business gift of goods as a **deemed supply**, and the missing output tax is put back by hand.',
+            'The concession that keeps small gestures workable: **no output tax is due so long as the total cost of gifts to the same person stays at or under £' + T.gifts.goodsLimit.value + ', excluding VAT, in any 12-month period**. It is a running total per recipient, not a per-gift test — three £20 gifts to one customer breach it just as surely as one £60 hamper.',
+            'Once the total goes over, output tax is due on the **whole cost of all the gifts to that person**, not merely the excess over the limit. And it is charged on **cost to the business**, never on what the goods would sell for. The tax is additional output tax and lands in **Box 1**, which is why it appears alongside the fuel scale charge when lesson 3C dissects the return.',
+            'Two neighbouring cases are treated differently, and the contrast is exactly the kind of thing an assessment asks. **Free samples** are not liable to VAT however many are supplied, provided they are genuine specimens for the recipient to assess the product. And a **service** given away free is normally no supply in the first place, so nothing arises — the deemed-supply rule is about goods.',
+          ],
+          worked: {
+            title: 'Output tax on a series of gifts',
+            problem: 'During its year to 31 March, Keld Interiors gives one customer a hamper costing £30 excluding VAT in December and a case of wine costing £35 excluding VAT in March, reclaiming input tax on both. What output tax is due, and where does it go?',
+            steps: [
+              { do: 'Keep a running total of the cost of gifts to this person over 12 months.', why: '£30 + £35 = £65, all excluding VAT. The test is the series to one recipient, not each gift on its own.' },
+              { do: 'Compare the total with the limit.', why: '£65 is over the £' + T.gifts.goodsLimit.value + ' limit, so the concession is lost for the whole series.' },
+              { do: 'Charge output tax on the whole cost, not the excess.', why: 'Output tax is due on the full £65 of cost: £65 × 20% = £13.' },
+              { do: 'Put it on the return.', why: 'The £13 is additional output tax, so it goes to Box 1 — the same destination as a fuel scale charge.' },
+            ],
+            answer: '£13 of output tax in Box 1, on the full £65 of cost',
+            tryIt: {
+              q: 'A business gives the same client three gifts in one year costing £20, £18 and £22, each excluding VAT, reclaiming input tax on each. How much output tax is due, in pounds?',
+              answer: 12,
+              unit: '£',
+              hint: 'Total the series first. If it is over the limit, the tax is on the whole cost.',
+              exp: '£20 + £18 + £22 = £60, which is over the £' + T.gifts.goodsLimit.value + ' limit, so output tax is due on the whole cost of the series: £60 × 20% = £12.',
+            },
+          },
+          examtrap: 'Once the £' + T.gifts.goodsLimit.value + ' limit is breached, output tax is due on the TOTAL cost of the gifts, not on the excess — and on cost, never on retail value.',
         },
         {
           h: 'Bad debt relief',
@@ -906,6 +934,17 @@
           exp: 'Insolvency is not required — the debt simply has to be old enough and written off. The other three are the actual conditions, and all must be met.',
         },
         {
+          q: 'Over eleven months a business has given one customer gifts of goods costing £64 in total, excluding VAT, reclaiming input tax on each. What is the VAT consequence?',
+          opts: [
+            'Output tax is due on the whole £64 of cost',
+            'Output tax is due only on the £14 above the limit',
+            'The input tax reclaimed on the gifts is repayable',
+            'Nothing arises until the full 12 months have passed',
+          ],
+          ans: 0,
+          exp: 'The running 12-month total has passed the £' + T.gifts.goodsLimit.value + ' limit, so output tax is due on the total cost of every gift in the series — not the excess, and not by repaying input tax. £64 × 20% = £12.80 of output tax goes to Box 1, and there is no waiting for the twelve months to complete.',
+        },
+        {
           type: 'truefalse',
           q: 'Decide whether each statement about adjustments is true or false.',
           statements: [
@@ -913,8 +952,9 @@
             { text: 'Bad debt relief is claimed by reducing output tax.', answer: false },
             { text: 'A supplier may charge VAT on the discounted amount before knowing whether the discount will be taken.', answer: false },
             { text: 'A fuel scale charge figure is VAT-inclusive.', answer: true },
+            { text: 'Output tax on a business gift of goods is calculated on the retail value of the goods.', answer: false },
           ],
-          exp: 'The scale charge is additional output tax and is a gross figure. Bad debt relief is added to INPUT tax rather than netted off output tax. And VAT must be charged on the full amount until the discount is actually taken.',
+          exp: 'The scale charge is additional output tax and is a gross figure. Bad debt relief is added to INPUT tax rather than netted off output tax. VAT must be charged on the full amount until the discount is actually taken. And gift output tax is charged on the COST of the goods to the business, not their retail value.',
         },
       ],
     },
@@ -2257,7 +2297,7 @@
         {
           h: 'The VAT boxes: 1, 3, 4 and 5',
           p: [
-            '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up the adjustments taught in Outcome 2 — the **fuel scale charge**, VAT on **gifts of goods worth more than £50**, and **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
+            '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up the adjustments taught in Outcome 2 — the **fuel scale charge**, VAT on **gifts of goods once more than £' + T.gifts.goodsLimit.value + ' has gone to one person in a year** (lesson 2E), and **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
             '**Box 4** is input tax: VAT recoverable on purchases. It includes **import VAT reclaimed under postponed accounting** — the same figure that went into Box 1 — and **bad debt relief**, which is claimed as input tax rather than as a reduction of output tax. It excludes everything blocked: client entertaining, cars available for private use, and anything for which the business does not hold a valid VAT invoice.',
             '**Boxes 3 and 5 are calculated, not entered.** Box 3 is Box 1 plus Box 2; since Box 2 is nil for a business without Northern Ireland acquisitions, Box 3 usually equals Box 1. Box 5 is Box 3 minus Box 4 — the figure that is actually paid or reclaimed.',
             'A negative Box 5 is a **repayment**, and lesson 2G made the point that this is entirely normal for a zero-rated trader or an exporter. Software will present it as a repayment rather than a negative number, but the arithmetic is the same subtraction.',
@@ -2370,7 +2410,7 @@
           ],
           split: {
             left: { title: 'Quick sense checks', items: ['Box 1 ≈ 20% of Box 6, unless there are zero-rated or exempt sales', 'Payment or repayment — is that right for this business?', 'Is Box 6 much larger than Box 1 for a standard-rated trader?', 'Does the liability look like previous periods?'] },
-            right: { title: 'Completeness checks', items: ['Invoices around the period-end boundary', 'Fuel scale charge and bad debt relief included', 'Blocked input tax removed from purchases', 'Prior-period corrections processed', 'Zero-rated and exempt sales present in Box 6'] },
+            right: { title: 'Completeness checks', items: ['Invoices around the period-end boundary', 'Fuel scale charge, gift-of-goods VAT and bad debt relief included', 'Blocked input tax removed from purchases', 'Prior-period corrections processed', 'Zero-rated and exempt sales present in Box 6'] },
           },
         },
         {

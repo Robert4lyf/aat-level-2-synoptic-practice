@@ -245,6 +245,20 @@
       checked: '2026-08-08'
     },
 
+    gifts: {
+      /* The £50 limit comes from VATA 1994 Sch 4 para 5 and has stood since
+         2003 — but it is a statutory limit, so it lives here with the rest
+         rather than in prose. */
+      goodsLimit: { value: 50, unit: '£',
+        note: 'Business gifts of goods: no output tax so long as the total cost of gifts to the same person stays at or under £50, excluding VAT, in any 12-month period. Once the running total goes over, output tax is due on the total cost of ALL the gifts to that person — not just the excess.',
+        source: 'HMRC, Business promotions (VAT Notice 700/7), para 2.3', checked: '2026-08-18' },
+      basis: 'Output tax is calculated on the COST to the business of the goods given away, not their retail value.',
+      samples: 'Free samples are not liable to VAT, however many are given, provided they are genuine specimens meant to let the recipient assess the product.',
+      services: 'A service given away free of charge is normally no supply at all, so no output tax arises — the deemed-supply rule is about goods.',
+      source: 'HMRC, Business promotions (VAT Notice 700/7), paras 2.3, 3.1, 4.1–4.2',
+      checked: '2026-08-18'
+    },
+
     badDebtRelief: {
       debtAgeMonths: { value: 6, unit: 'months',
         note: 'The debt must be at least six months overdue, measured from the later of the due date and the date of supply.' },
