@@ -6,6 +6,7 @@
     "validate:aat": "node scripts/validate-aat-data.js",
     "check:french-quality": "node scripts/check-french-quality.js",
     "check:csp": "node scripts/check-csp-hashes.js",
+    "check:password": "node scripts/check-site-password.js",
     "check:integrity": "node scripts/check-question-integrity.js",
     "check:theme": "node scripts/check-theme-tokens.js",
     "check:aat2": "node scripts/check-aat2-quality.js",
@@ -16,6 +17,6 @@
     "check:backup": "node scripts/check-progress-backup.js",
     "check:sync": "node scripts/check-progress-sync.js",
     "validate:story": "node scripts/validate-story-data.js",
-    "test": "node scripts/check-csp-hashes.js && node scripts/check-theme-tokens.js && node scripts/validate-aat-data.js && node scripts/check-question-integrity.js && node scripts/check-aat2-quality.js && node scripts/check-aat1-coverage.js && node scripts/check-aat1-quality.js && node scripts/check-aat3-coverage.js && node scripts/check-aat3-quality.js && node scripts/check-progress-backup.js && node scripts/check-progress-sync.js && node scripts/validate-story-data.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
+    "test": "node scripts/check-csp-hashes.js && node scripts/check-site-password.js && node scripts/check-theme-tokens.js && node scripts/validate-aat-data.js && node scripts/check-question-integrity.js && node scripts/check-aat2-quality.js && node scripts/check-aat1-coverage.js && node scripts/check-aat1-quality.js && node scripts/check-aat3-coverage.js && node scripts/check-aat3-quality.js && node scripts/check-progress-backup.js && node scripts/check-progress-sync.js && node scripts/validate-story-data.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
   }
 }

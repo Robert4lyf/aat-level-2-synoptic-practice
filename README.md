@@ -126,6 +126,9 @@ aat1-ui.js             — Level 1 renderer (self-contained)
 aat1-styles.css        — Level 1 design language
 aat3-*.js / aat3-styles.css — the equivalent five files for Level 3
 sync-worker/           — the Cloudflare Worker, with its own deployment README
+worker/index.js        — password gate + asset serving for the deployed site
+wrangler.jsonc         — Cloudflare Workers config (see the note on run_worker_first)
+.assetsignore          — what must never be uploaded as a public asset
 manifest.webmanifest   — PWA manifest (installable app metadata)
 sw.js                  — service worker (offline caching)
 icon-192.png / icon-512.png / apple-touch-icon.png — app icons
@@ -133,7 +136,7 @@ icon-192.png / icon-512.png / apple-touch-icon.png — app icons
 
 ## Installing it as an app
 
-When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **Install** option:
+When the site is served over HTTPS (see [Hosting it](#hosting-it)), browsers offer an **Install** option:
 
 - **Desktop (Chrome/Edge):** an install icon appears in the address bar.
 - **Android:** browser menu → *Add to Home screen* / *Install app*.
@@ -141,9 +144,75 @@ When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **
 
 Once installed, the service worker caches the app so it works **fully offline**. Progress is stored locally in the browser, so installed and in-browser use share the same data on a device.
 
-## Hosting on GitHub Pages
+## Hosting it
 
-Once this repository is on GitHub, you can publish it free at a public URL:
+There is no build step — the site is the repository — so any static host will
+serve it. Two are set up here.
+
+### Cloudflare Workers, behind a password (recommended)
+
+This is the option to pick if you want to hand the URL to other people without
+putting the site on the open internet. It redeploys on every push to `main`, and
+it is free: GitHub Pages cannot password-protect a site outside Enterprise, and
+Netlify and Vercel both moved theirs behind paid plans.
+
+The site is served by `worker/index.js`, which checks a password before handing
+back any file. `wrangler.jsonc` and `.assetsignore` configure that; both are in
+the repository, so the dashboard needs almost nothing set by hand.
+
+1. At [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** →
+   **Create** → **Import a repository**, pick this repository.
+2. Deploy command: `npx wrangler deploy`. There is no build command.
+3. The first deploy will serve **503 Not configured** — that is the gate working,
+   not a broken deploy. Nothing is served until step 4.
+4. **Settings → Variables and Secrets**, add:
+
+   | Name | Required | Notes |
+   |---|---|---|
+   | `SITE_PASSWORD` | yes | The shared password. Add it as a **Secret**, not plaintext. |
+   | `SITE_USERNAME` | no | If set, the username must match too. If unset, any username works and only the password is checked. |
+
+5. Redeploy. The site is live at `https://<worker>.<subdomain>.workers.dev` and
+   asks for the password first. A custom domain can be attached free under
+   **Settings → Domains & Routes**.
+
+Every merge to `main` redeploys automatically.
+
+**What this is and is not.** It is one shared password, not per-person accounts,
+and HTTP Basic authentication encodes rather than encrypts it — HTTPS is what
+keeps it private in transit. That is the right weight for sharing a study URL
+with a group. It is not access control for anything sensitive. If you want
+per-person logins with a revocable list, use **Cloudflare Access** instead (free
+up to 50 users); it emails each person a one-time code rather than using a shared
+secret, and it sits in front of the Worker rather than replacing it.
+
+Three things about this setup are worth knowing before editing it:
+
+- **`run_worker_first` is load-bearing.** Cloudflare's default is to serve a
+  matching static asset straight from the edge without invoking the Worker at
+  all — which would serve every page of this site without ever asking for the
+  password. `wrangler.jsonc` sets `assets.run_worker_first` to stop that.
+  Removing it breaks nothing visibly; it silently unlocks the site.
+- **`.assetsignore` decides what is public.** The assets directory is the
+  repository root, so anything not excluded there is served to anyone past the
+  password — and `node_modules` (created at deploy time by `npx wrangler`)
+  contains a 144 MiB binary that is over Cloudflare's 25 MiB per-asset limit and
+  fails the build outright.
+- **The Worker re-applies the security headers itself**, because responses no
+  longer come straight off the edge where `_headers` applies. That makes four
+  copies of the policy (`index.html`, `_headers`, `vercel.json` and the Worker).
+
+`npm run check:csp` fails the build if those four drift apart, and
+`npm run check:password` exercises the gate against mock requests and asserts the
+`wrangler.jsonc` settings it depends on. Both run in CI.
+
+The service worker is unaffected: the browser attaches the stored credentials to
+same-origin requests, so offline caching and PWA install work normally once past
+the prompt, and a 401 is never cached (the worker only stores 200s).
+
+### GitHub Pages, in the open
+
+Simpler, but public to anyone with the link — there is no way to gate it.
 
 1. Go to the repository's **Settings → Pages**.
 2. Under **Build and deployment → Source**, choose **Deploy from a branch**.
