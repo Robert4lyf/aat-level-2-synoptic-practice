@@ -104,6 +104,190 @@ body[data-subject="guitar"] .gtr-tab-capo   { fill: var(--gtr-root); font-size: 
 body[data-subject="guitar"] .gtr-tab-pima,
 body[data-subject="guitar"] .gtr-tab-tech   { fill: var(--gtr-muted); font-size: 8px; font-style: italic; }
 
+/* ── The screen around the figures ────────────────────────────────────────
+   Everything above styles what the renderer draws. Everything below styles the
+   markup guitar-ui.js writes around it.
+ 
+   Both halves shipped separately at first: the figure rules were written in the
+   step that built the renderer, the shell markup in the step that built the UI,
+   and the second step never came back for its CSS. The result passed the render
+   sweep — the check asks whether a subject renders, not whether it is legible —
+   and looked like a form from 1996. The lesson is in the review log; the rules
+   are here.
+ 
+   These consume the shared tokens from styles.css (--card, --border, --subj)
+   rather than declaring their own, so dark mode is already handled and
+   check-theme-tokens.js still governs them. Only the figure colours above need
+   hand-maintained pairs, because only those are unique to this subject. */
+
+body[data-subject="guitar"] .gtr-wrap { padding-bottom: 32px; }
+
+body[data-subject="guitar"] .gtr-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 20px;
+  margin: 16px 0;
+}
+
+body[data-subject="guitar"] .gtr-h {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -.01em;
+  color: var(--text-strong);
+}
+
+body[data-subject="guitar"] .gtr-detail {
+  margin: 10px 0 0;
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--subtext);
+}
+body[data-subject="guitar"] .gtr-detail code {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  background: var(--card-muted);
+  border-radius: var(--r-xs);
+  padding: 1px 5px;
+}
+body[data-subject="guitar"] .gtr-detail strong { color: var(--text); font-weight: 600; }
+
+/* ── Control rows ─────────────────────────────────────────────────────────
+   A wrapping grid rather than a fixed column count: these rows hold three
+   controls on the tuning panel and six on the scale panel, and a phone should
+   get one per line without either row needing its own rule. */
+body[data-subject="guitar"] .gtr-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 12px;
+}
+body[data-subject="guitar"] .gtr-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--subtext);
+}
+body[data-subject="guitar"] .gtr-controls select {
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  width: 100%;
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-controls select:focus-visible,
+body[data-subject="guitar"] .gtr-transport input:focus-visible,
+body[data-subject="guitar"] .gtr-chordbtn:focus-visible,
+body[data-subject="guitar"] .gtr-btn:focus-visible,
+body[data-subject="guitar"] .gtr-play:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Chord shapes ─────────────────────────────────────────────────────────
+   Each box is a button, so it needs a hit area a thumb can find and a pressed
+   state that reads without colour. */
+body[data-subject="guitar"] .gtr-chordrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+body[data-subject="guitar"] .gtr-chordbtn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 8px 6px 4px;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+body[data-subject="guitar"] .gtr-chordbtn:hover { border-color: var(--subj, var(--accent)); }
+body[data-subject="guitar"] .gtr-chordbtn:active { transform: translateY(1px); }
+body[data-subject="guitar"] .gtr-chordbtn .gtr-fig { margin: 0; }
+
+body[data-subject="guitar"] .gtr-figures { margin-top: 4px; }
+
+/* ── Transport ────────────────────────────────────────────────────────────── */
+body[data-subject="guitar"] .gtr-transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+body[data-subject="guitar"] .gtr-play,
+body[data-subject="guitar"] .gtr-btn {
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  padding: 9px 16px;
+  min-height: 40px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: filter var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+body[data-subject="guitar"] .gtr-play {
+  background: var(--subj, var(--accent));
+  color: #fff;
+  box-shadow: var(--shadow-xs);
+}
+body[data-subject="guitar"] .gtr-btn {
+  background: var(--btn-sec);
+  color: var(--btn-sec-text);
+  border-color: var(--border);
+}
+body[data-subject="guitar"] .gtr-play:hover,
+body[data-subject="guitar"] .gtr-btn:hover { filter: brightness(1.06); }
+body[data-subject="guitar"] .gtr-play:active,
+body[data-subject="guitar"] .gtr-btn:active { transform: translateY(1px); }
+
+body[data-subject="guitar"] .gtr-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .82rem;
+  color: var(--subtext);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-inline input[type="range"] { width: 120px; accent-color: var(--subj, var(--accent)); }
+body[data-subject="guitar"] .gtr-inline input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--subj, var(--accent)); }
+
+/* ── When the generator cannot build a shape ──────────────────────────────
+   A fault is information, not a crash. It says which combination has no
+   playable shape on this tuning, so it gets the weight of a warning rather
+   than the styling of body text. */
+body[data-subject="guitar"] .gtr-fault {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border: 1px solid var(--warn-border);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-size: .87rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  body[data-subject="guitar"] .gtr-panel { padding: 14px; }
+  body[data-subject="guitar"] .gtr-transport { gap: 8px 10px; }
+  body[data-subject="guitar"] .gtr-inline input[type="range"] { width: 96px; }
+}
+
 /* Figures carry meaning through colour (root, characteristic note), so they
    also carry it through position and label. Nothing here is colour-only. */
 @media (prefers-reduced-motion: reduce) {

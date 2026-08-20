@@ -72,6 +72,24 @@
       activate() { window.TOPICS = window.LSF_TOPICS; window.ALL_QUESTIONS = window.LSF_QUESTIONS; window.LEARN_PATH = window.LSF_LEARN_PATH; window.SKILLS = { defs: [] }; }
     },
     {
+      /* Guitar renders itself, on the same terms as Levels 1 and 3. Its data is
+         an engine rather than a question bank, so `activate()` has nothing to
+         hand the shared player — it only clears the globals so any incidental
+         reference stays safe. The stylesheet is injected here rather than
+         linked from index.html: three subject stylesheets already load on every
+         page and a fourth is avoidable. */
+      id: 'guitar', name: 'Fingerstyle Guitar', short: 'Guitar', flag: '🎸', color: '#B45309',
+      desc: 'Fingerstyle technique, scales, modes and the fretboard',
+      meta: 'fretboard · scales · exercises',
+      tabs: ['home'],
+      ui: 'GUITAR_UI',
+      assets: ['guitar-engine.js', 'guitar-audio.js', 'guitar-render.js', 'guitar-ui.js'],
+      styles: 'guitar-styles.css',
+      activate() {
+        window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };
+      }
+    },
+    {
       id: 'code-route', name: 'Code de la Route', short: 'Code de la Route', flag: '🚗', color: '#dc2626',
       desc: 'Préparez votre permis de conduire — théorie et panneaux',
       meta: '80+ questions · 5 leçons · examen officiel',
@@ -102,8 +120,51 @@
     });
     return _assetPromises[src];
   }
-  function subjectAssetsReady(id) { return (getSubject(id).assets || []).every(a => _assetReady.has(a)); }
-  function ensureSubjectAssets(id) { return Promise.all((getSubject(id).assets || []).map(loadScript)); }
+  /* A subject may also bring a stylesheet. It joins the same promise chain as
+     the scripts rather than being fired and forgotten, because mount() runs as
+     soon as the assets resolve and an unawaited stylesheet means a frame of
+     unstyled figures. Idempotent: activate() runs on every subject switch.
+
+     Memoised the same way loadScript() is, and for the same reason. The first
+     draft tested `document.getElementById(id)` instead — but the <link> is
+     appended synchronously while the file is still in flight, so from the next
+     line onwards that test says "loaded" about a stylesheet that has not
+     arrived. Switching away and back inside that window would resolve
+     immediately and mount against no CSS, which for guitar means the mask rect
+     behind every tab digit paints solid black. Track the promise, not the
+     element. */
+  const _stylePromises = Object.create(null);
+  const _styleReady = new Set();
+  function styleId(href) { return 'style-' + href.replace(/[^a-z0-9]/gi, '-'); }
+  function loadStyles(href) {
+    if (!href) return Promise.resolve();
+    if (_styleReady.has(href)) return Promise.resolve();
+    if (_stylePromises[href]) return _stylePromises[href];
+    _stylePromises[href] = new Promise((resolve) => {
+      const done = () => { _styleReady.add(href); resolve(); };
+      const id = styleId(href);
+      const existing = document.getElementById(id);
+      /* A <link> already in index.html has no load event left to fire. */
+      if (existing && existing.sheet) { done(); return; }
+      const l = existing || document.createElement('link');
+      l.id = id; l.rel = 'stylesheet'; l.href = href;
+      /* Resolve either way: a missing stylesheet should degrade to unstyled,
+         not hang the subject switch forever. */
+      l.onload = done;
+      l.onerror = done;
+      if (!existing) document.head.appendChild(l);
+    });
+    return _stylePromises[href];
+  }
+  function subjectAssetsReady(id) {
+    const s = getSubject(id);
+    return (s.assets || []).every(a => _assetReady.has(a)) &&
+           (!s.styles || _styleReady.has(s.styles));
+  }
+  function ensureSubjectAssets(id) {
+    const s = getSubject(id);
+    return Promise.all((s.assets || []).map(loadScript).concat([loadStyles(s.styles)]));
+  }
 
   /* Maps a French question ID (fr-NNN) to its CEFR level string.
      A1 = beginner basics, A2 = elementary grammar/vocab, B1 = intermediate structures. */

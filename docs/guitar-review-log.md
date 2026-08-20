@@ -401,3 +401,129 @@ fact.** Every one produced structurally valid output — well-formed SVG, correc
 note data, all assertions green — that was wrong in a way only a guitarist
 looking at it would catch. The checkers now cover all four *after* the fact,
 which is the most that could be expected of them.
+
+## Step 7 — guitar-audio.js, and wiring the subject into the app
+
+Nine findings. Four were fixed on the spot; the five below are the ones worth
+writing down, and the first is the most serious thing found in the project so
+far because it is about the reporting rather than the code.
+
+### 7.1 CI has never run a single guitar check
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 7.1 | Steps 2–6 were reported as "CI green" | **Confirmed, and the reporting was wrong.** `.github/workflows/ci.yml` lists its checks individually and stopped at `check:french-quality`. It never ran `npm test`. Every guitar gate written across five steps — 1382 engine assertions, the playability sweep, the handedness rules — ran locally and nowhere else | Every check now has its own step, and a gate keeps it that way |
+
+The gates were real and I did run them. What was wrong is that "CI is green"
+implied a coverage that did not exist: the workflow was checking the pre-guitar
+subjects and reporting success for the whole commit.
+
+The fix is not just adding the missing steps, because they went missing for a
+structural reason. Listing steps individually is worth doing — a red build names
+the check that broke instead of burying it inside one long `npm test` — but it
+makes the workflow and package.json two copies of one list, and copies drift.
+
+`scripts/check-workflow-coverage.js` now reads both and fails when they disagree,
+in all three directions:
+
+- a check in `npm test` with no step in CI (the defect that happened),
+- a CI step naming a script package.json does not define (a typo that fails the
+  build for the wrong reason and reads as a real failure),
+- a gate file sitting in `scripts/` that was never wired into `npm test` at all —
+  written, committed, never run.
+
+Shown to fail on each: deleting the playability step, misspelling a script name,
+and dropping an unwired file into `scripts/`.
+
+A second half to the same finding: `check:subjects` skips itself when Playwright
+is missing, so a failed browser install in CI would report green while asserting
+nothing. CI now sets `REQUIRE_PLAYWRIGHT`, under which a missing browser is a
+build failure. Locally it still skips, so the suite runs for someone who has not
+installed it.
+
+### 7.2 Thirteen shell classes, no CSS
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 7.2 | The UI was styled | **Confirmed false.** `guitar-styles.css` covered the twenty-nine classes the *renderer* emits and none of the thirteen the *UI* emits. Every panel, control row, transport button and fault message took browser defaults | Shell styles written; rule 3b in the handedness checker extended to `guitar-ui.js` |
+
+The figure rules were written in the step that built the renderer and the shell
+markup in the step that built the UI, and the second step never came back for its
+CSS. Nothing noticed, because it rendered: the sweep asks whether a subject
+renders, not whether it is legible.
+
+Extending rule 3b exposed a weakness in the rule itself. It tested
+`css.includes('.' + name)`, which a class mentioned only as an *ancestor* —
+`.gtr-transport input` — passes while the element itself is unstyled. Deleting
+the `.gtr-transport` rule and watching the gate stay green is how that was found.
+It now checks selector position: the class must be the rightmost compound of at
+least one selector, which is what "a rule applies to this element" means.
+
+### 7.3 The lazy cache survived the sweep but was never refreshed
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 7.3 | Excluding the lazy cache from the activate sweep was the whole fix | **Confirmed false — it solved half and created the other half.** The versioned cache is rebuilt from the network on every install; the lazy cache is untouched and serves cache-first. So the first guitar session after an update runs the old engine, renderer and stylesheet against the new `app.js` | `refreshLazyCache()` re-fetches whatever is in there during activate |
+
+One load with a mismatched pair is the class of bug that versioning caches exists
+to prevent. Refreshing rather than deleting is what keeps the offline promise:
+the re-fetch deliberately swallows a network failure, because a stale file still
+beats an empty cache for someone offline.
+
+**The assertion I wrote for this was vacuous, and that is the second time.** It
+checked that the cached bodies equalled what the mock's `fetch` returns — but the
+files had been fetched through that same mock when they were first cached, so the
+bodies already matched and the assertion could not fail. It passed with the
+refresh call deleted. The two workers' networks now return differently-tagged
+bodies, and the gate fails three ways: refresh removed, refresh response
+discarded, and cache deleted instead of refreshed.
+
+The standing rule from step 3 is holding up: *every gate must be shown to fail.*
+Both times the vacuity was invisible on inspection and obvious on mutation.
+
+### 7.4 A stylesheet is not loaded because its `<link>` exists
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 7.4 | `loadStyles` was idempotent | **Confirmed false.** It returned early when `document.getElementById(id)` found the `<link>`. That element is appended synchronously while the file is still in flight, so from the next line on the test says "loaded" about a stylesheet that has not arrived | Memoised the promise, the way `loadScript` already did |
+
+A subject switch inside that window resolves instantly and mounts against no CSS,
+which for guitar means the mask behind every tab digit paints solid black over
+the number it exists to reveal. The renderer carries no colour by design, so
+unstyled is not plainer — it is unreadable.
+
+Two gates, because one could not reach it:
+
+- **`check:subjects` now serves the stylesheet 200ms late** and samples the
+  computed style at the instant the first panel enters the document, via a
+  MutationObserver installed before first paint. Reading it after the page
+  settles answers an easier question — by then a delayed stylesheet has arrived
+  anyway, and the check passes whether or not `mount()` waited. That version was
+  written first and passed with the `await` removed.
+- **`check:subject-assets` runs the real function text against a stub DOM.**
+  Reaching the re-entrant call through the UI would mean opening the subject
+  picker, clicking away and clicking back inside a 200ms window; a
+  timing-dependent click sequence is a flaky gate, and a flaky gate is one people
+  learn to re-run.
+
+That second gate found a defect while being written. Under one mutation the
+process exited silently with status 0 — a promise never settled, so nothing was
+ever reported, and no output plus a zero exit code reads exactly like a pass. It
+now has a deadline, and reports whatever state it is in when the deadline fires.
+
+### 7.5 `node_modules` was untracked but not ignored
+
+19MB of Playwright, one `git add -A` away from the repository. Added to
+`.gitignore`.
+
+### What step 7 says
+
+Steps 2 through 6 each ended with a gate shown to fail, and every one of those
+gates was correct. What none of them established is that anything ran them. The
+adversarial review has been good at finding defects inside the thing being
+built and slow to ask whether the machinery around it is connected — the CI gap,
+the unstyled shell and the unrefreshed cache are all failures of a seam rather
+than of a component.
+
+The visual half stays with the user. Nothing here can tell you whether a
+Karplus–Strong pluck is something you want to play along to for ninety seconds.
