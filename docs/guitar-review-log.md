@@ -733,3 +733,79 @@ Two habits earned their place this round. Reproducing before fixing, which is
 what separated the correct engine from the miscommunicating panel. And
 screenshotting the fix, which found a defect that had nothing to do with the
 report and had been shipped since step 6.
+
+## Step 7e — the playback cursor
+
+Step 7 deferred this with a note saying an earlier draft had run a
+requestAnimationFrame loop writing an attribute nothing read, and that the
+cursor should land when there was a figure that owned a marker to move. There
+now is one, so it landed.
+
+### 7e.1 What it does
+
+Every drawn note is wrapped in `<g class="gtr-note" data-i="N">` in both the
+neck diagram and the tab. A rAF loop asks the transport which note is sounding
+and moves a class. Three decisions worth recording:
+
+- **rAF reading the clock, not a timer painting alongside each note.** The audio
+  is scheduled up to 100 ms ahead against the audio clock; a `setTimeout`
+  queued from the same call would run on the wall clock, drift away from it, and
+  be throttled to roughly once a second in a background tab. Asking "what is
+  sounding now" every frame cannot accumulate error because it never
+  accumulates anything.
+- **Offset by the output latency.** `currentTime` marks audio entering the
+  output pipeline, not audio reaching the ear, so what is heard now was
+  scheduled a latency ago. Wired, that is a few milliseconds. Over Bluetooth it
+  is commonly 150–200 ms — most of a beat at 120 bpm — and a highlight that
+  visibly leads the sound is worse than none on a tool for playing along. The
+  checker measures 32 ms in headless Chromium, so the path is live rather than
+  theoretical.
+- **A note stays lit until the next one starts.** Lighting only for the written
+  duration flickers through the gap between every pair of notes.
+
+### 7e.2 A latent trap, found by mutating
+
+`tab()` sorted its own copy of the notes; `neckDiagram()` drew in whatever order
+the caller passed. Both number their notes by array position, so a caller handing
+the two figures an unsorted array got two different numberings for the same
+notes — and a cursor that was right in one figure and wrong in the other. Nothing
+had gone wrong yet because callers happened to pass sorted arrays.
+
+Both now sort through one shared comparator, so the agreement holds by
+construction rather than by every caller remembering.
+
+### 7e.3 The fourth vacuous assertion
+
+The first version of the gate compared the lit element against
+`transport.currentIndex()` every 25 ms. It passed. It was worthless: an
+off-by-one planted inside `currentIndex()` moved both sides of the comparison
+together, so the check could not see it. Two of six mutations survived, both for
+this reason — the off-by-one and lighting during the count-in.
+
+Asking the cursor whether it agrees with itself is not a test.
+
+Rebuilt to record which note lit and *when*, and compare against times computed
+in the checker from the tempo, the count-in and each note's own beat — none of
+which come from the indexing logic under test. Worst observed error is now
+around 15 ms against a 300 ms beat, and the off-by-one shows up as a 160 ms lag.
+
+Then a seventh mutation — rendering the figures from a reversed array — survived
+even that, because timing alone cannot see a cursor keeping perfect time on the
+wrong notes. So the check also reads the lit digit off the tab and the lit label
+off the neck and compares both against the transport's own note. Eight
+mutations, eight caught.
+
+### What step 7e says
+
+The vacuous-assertion count is now four across seven steps, and all four share
+one shape: the expectation was derived from the thing under test. Step 3
+compared `transportTime` against the expression it evaluates. Step 2 asserted
+an ascending tuning was ascending using the function that built it. Step 7b
+watched the field the code deliberately does not write to. Here, the cursor was
+asked whether it agreed with the function that positions the cursor.
+
+The tell is the same every time and it is worth stating as a rule: if a gate
+cannot name a source of truth that exists independently of the code it is
+checking, it is not checking anything. Timing came from the tempo and the beats.
+Identity came from reading the rendered digits back. Neither is computed by the
+code they judge.

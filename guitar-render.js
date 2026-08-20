@@ -88,6 +88,27 @@
     return '<line x1="' + n2(x1) + '" y1="' + n2(y1) + '" x2="' + n2(x2) + '" y2="' + n2(y2) +
            '" class="' + esc(cls) + '" stroke="currentColor" />';
   }
+  /* Every drawn note is wrapped so a caller can find it again by its position
+     in the notes array — which is how the playback cursor lights the note that
+     is sounding. The index is the array index and nothing else: the transport
+     plays the same array in the same order, so the two agree by construction
+     rather than by matching on beat, which would need float comparison and
+     would still not separate two notes struck together. */
+  /* The one ordering every figure and the transport agree on.
+     data-i is only meaningful if everyone numbers the notes the same way. The
+     tab has always sorted its own copy; the neck diagram drew in whatever order
+     the caller passed, so a caller handing the two figures an unsorted array
+     got two different numberings for the same notes — and a cursor that lit the
+     right note in one figure and the wrong note in the other. Shared here so
+     the agreement is by construction rather than by every caller remembering. */
+  function inPlayOrder(notes) {
+    return (notes || []).slice().sort(function (a, b) {
+      return (a.beat - b.beat) || (a.string - b.string);
+    });
+  }
+  function noteGroup(i, inner) {
+    return '<g class="gtr-note" data-i="' + (i | 0) + '">' + inner + '</g>';
+  }
   function circle(cx, cy, r, cls) {
     return '<circle cx="' + n2(cx) + '" cy="' + n2(cy) + '" r="' + n2(r) + '" class="' + esc(cls) + '" />';
   }
@@ -223,7 +244,7 @@
       g += line(x(fb.capo), y(1), x(fb.capo), y(E.STRING_COUNT), 'gtr-nk-capo');
     }
 
-    (opts.notes || []).forEach(function (nte) {
+    inPlayOrder(opts.notes).forEach(function (nte, i) {
       if (nte.fret > frets) return;                    // only when frets was forced by the caller
       var cx = nte.fret === 0 ? x(0) : (x(nte.fret) + x(nte.fret - 1)) / 2;
       var midi = E.soundingMidi(nte, fb);
@@ -231,10 +252,11 @@
       var cls = 'gtr-nk-dot';
       if (opts.root != null && pc === (((opts.root % 12) + 12) % 12)) cls += ' is-root';
       else if (opts.characteristic != null && pc === (((opts.characteristic % 12) + 12) % 12)) cls += ' is-char';
-      g += circle(cx, y(nte.string), NK.dot, cls);
+      var inner = circle(cx, y(nte.string), NK.dot, cls);
       if (opts.labels && midi !== null) {
-        g += text(cx, y(nte.string), E.midiToName(midi), 'gtr-nk-label');
+        inner += text(cx, y(nte.string), E.midiToName(midi), 'gtr-nk-label');
       }
+      g += noteGroup(i, inner);
     });
 
     return svgWrap(w, h, opts.title || 'Fretboard diagram', 'gtr-neck', g);
@@ -261,9 +283,7 @@
   function tab(opts, fb) {
     opts = opts || {};
     fb = fb || E.makeFretboard();
-    var notes = (opts.notes || []).slice().sort(function (a, b) {
-      return (a.beat - b.beat) || (a.string - b.string);
-    });
+    var notes = inPlayOrder(opts.notes);
     var beatsPerBar = opts.beatsPerBar || 4;
     /* A note with no beat used to make totalBeats NaN, and a NaN viewBox does
        not render at all — the figure vanishes with no error anywhere. Treat a
@@ -322,16 +342,17 @@
            '" class="gtr-tab-capo" text-anchor="start">Capo ' + fb.capo + '</text>';
     }
 
-    notes.forEach(function (nte) {
+    notes.forEach(function (nte, i) {
       var shown = E.displayFret(nte, fb);
       /* A backing rectangle so the stave line does not run through the digit. */
       var tx = x(nte.beat), ty = y(nte.string);
       var half = digitHalf(shown);
-      g += '<rect x="' + n2(tx - half) + '" y="' + n2(ty - TB.fontSize / 2) +
+      var inner = '<rect x="' + n2(tx - half) + '" y="' + n2(ty - TB.fontSize / 2) +
            '" width="' + n2(half * 2) + '" height="' + n2(TB.fontSize) + '" class="gtr-tab-clear" />';
-      g += text(tx, ty, shown, 'gtr-tab-fret');
-      if (nte.finger && nte.hand === 'p') g += text(tx, TB.padY - 9, nte.finger, 'gtr-tab-pima');
-      if (nte.tech === 'tap') g += text(tx, TB.padY - 9, 'T', 'gtr-tab-tech');
+      inner += text(tx, ty, shown, 'gtr-tab-fret');
+      if (nte.finger && nte.hand === 'p') inner += text(tx, TB.padY - 9, nte.finger, 'gtr-tab-pima');
+      if (nte.tech === 'tap') inner += text(tx, TB.padY - 9, 'T', 'gtr-tab-tech');
+      g += noteGroup(i, inner);
     });
 
     return svgWrap(w, h, opts.title || 'Tablature', 'gtr-tab', g);
