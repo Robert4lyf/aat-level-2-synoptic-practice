@@ -29,6 +29,7 @@ body[data-subject="guitar"] {
   --gtr-root:     #b45309;   /* the root note, and the capo */
   --gtr-char:     #0f766e;   /* the characteristic note of a mode */
   --gtr-on-dot:   #ffffff;   /* text sitting inside a filled dot */
+  --gtr-warn:     #b91c1c;   /* a shape drawn on the wrong tuning */
 }
 
 body.dark[data-subject="guitar"] {
@@ -39,6 +40,7 @@ body.dark[data-subject="guitar"] {
   --gtr-root:     #fbbf24;
   --gtr-char:     #5eead4;
   --gtr-on-dot:   #0f1419;
+  --gtr-warn:     #f87171;
 }
 
 /* ── Figure frame ─────────────────────────────────────────────────────────
@@ -75,6 +77,7 @@ body[data-subject="guitar"] .gtr-cb-nut    { fill: var(--gtr-ink); }
 body[data-subject="guitar"] .gtr-cb-dot    { fill: var(--gtr-ink); }
 body[data-subject="guitar"] .gtr-cb-finger { fill: var(--gtr-on-dot); font-size: 7px; font-weight: 600; }
 body[data-subject="guitar"] .gtr-cb-name   { fill: var(--gtr-ink); font-size: 11px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-cb-name.is-wrong-tuning { fill: var(--gtr-warn); }
 body[data-subject="guitar"] .gtr-cb-mark,
 body[data-subject="guitar"] .gtr-cb-basefret { fill: var(--gtr-muted); font-size: 9px; }
 

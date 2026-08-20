@@ -88,7 +88,13 @@
      above that a label says which fret it is, which is how every chord chart
      handles a shape up the neck.
 
-     shape = { name, notes: [{string, fret, finger?}], muted: [stringNo], baseFret? } */
+     A shape may declare the `tuning` it was worked out for. If it does and the
+     fretboard disagrees, the figure says so loudly rather than drawing a
+     confidently mislabelled chord — a standard-tuning C shape on a DADGAD neck
+     is not a C, and nothing about the picture would tell you. Shapes from
+     E.findVoicing() carry their tuning automatically.
+
+     shape = { name, notes: [{string, fret, finger?}], muted: [stringNo], baseFret?, tuning? } */
   function chordBox(shape, fb) {
     shape = shape || {};
     fb = fb || E.makeFretboard();
@@ -148,9 +154,13 @@
     /* Raw, not pre-escaped: svgWrap escapes the title itself, and doing it
        twice turned "A&B" into "A&amp;amp;B" in the aria-label while the visible
        name (line below) rendered correctly — the two paths disagreed. */
-    var label = shape.name || 'Chord';
-    var head = shape.name ? text(w / 2, 9, shape.name, 'gtr-cb-name') : '';
-    return svgWrap(w, h, label + ' chord shape', 'gtr-chordbox', head + g);
+    var wrongTuning = shape.tuning && shape.tuning !== fb.tuning;
+    var shown = (wrongTuning ? '\u26A0 ' : '') + (shape.name || '');
+    var label = wrongTuning
+      ? (shape.name || 'Chord') + ' — shape is for ' + shape.tuning + ', drawn on ' + fb.tuning
+      : (shape.name || 'Chord') + ' chord shape';
+    var head = shown.trim() ? text(w / 2, 9, shown, 'gtr-cb-name' + (wrongTuning ? ' is-wrong-tuning' : '')) : '';
+    return svgWrap(w, h, label, 'gtr-chordbox', head + g);
   }
 
   /* ── Neck diagram ─────────────────────────────────────────────────────────

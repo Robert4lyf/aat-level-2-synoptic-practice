@@ -404,6 +404,120 @@
     return 0;
   }
 
+  /* ── Chord voicings ───────────────────────────────────────────────────────
+     A chord SHAPE is tuning-specific data. The fingering that spells C major in
+     standard tuning spells something else entirely in DADGAD, and drawing it on
+     a DADGAD neck produces a confidently labelled wrong chord — which is
+     exactly what the step 6 check page did, twice.
+
+     So shapes are searched for rather than written down. Given the pitch
+     classes a chord needs and a fretboard, find a playable fingering: every
+     sounding string must belong to the chord, all the chord tones must be
+     present, the hand must reach, and the root should be in the bass if it can
+     be. Muting a string is always an option — chords like C and D need it.
+
+     CHORDS is the interval recipe, not a note list, so it works from any root. */
+  var CHORDS = {
+    maj:   { name: '',      steps: [0, 4, 7] },
+    min:   { name: 'm',     steps: [0, 3, 7] },
+    dom7:  { name: '7',     steps: [0, 4, 7, 10] },
+    maj7:  { name: 'maj7',  steps: [0, 4, 7, 11] },
+    min7:  { name: 'm7',    steps: [0, 3, 7, 10] },
+    sus2:  { name: 'sus2',  steps: [0, 2, 7] },
+    sus4:  { name: 'sus4',  steps: [0, 5, 7] },
+    add9:  { name: 'add9',  steps: [0, 4, 7, 14] }
+  };
+  function chordPitchClasses(chordId, rootPc) {
+    if (!has(CHORDS, chordId)) return null;
+    var out = [];
+    CHORDS[chordId].steps.forEach(function (st) {
+      var pc = ((rootPc + st) % 12 + 12) % 12;
+      if (out.indexOf(pc) === -1) out.push(pc);
+    });
+    return out;
+  }
+  function chordName(chordId, rootPc, useFlats) {
+    if (!has(CHORDS, chordId)) return null;
+    return midiToName(rootPc, useFlats) + CHORDS[chordId].name;
+  }
+
+  function findVoicing(chordId, rootPc, fb, opts) {
+    opts = opts || {};
+    var wanted = chordPitchClasses(chordId, rootPc);
+    if (!wanted) return null;
+    var span = opts.span || 4;
+    var lowFret = Math.max(fb.capo, opts.minFret || 0);
+    var maxStart = Math.min(MAX_FRET - span, opts.maxFret === undefined ? 12 : opts.maxFret);
+    var best = null;
+
+    for (var start = lowFret; start <= maxStart; start++) {
+      /* Per string: every fret in the window whose pitch belongs to the chord,
+         plus the option of not playing it at all. */
+      var choices = [];
+      for (var st = 6; st >= 1; st--) {
+        var open = openMidi(st, fb);
+        var list = [null];                       // null = muted
+        for (var f = start; f <= start + span; f++) {
+          var note = { string: st, fret: f };
+          if (!isPlayable(note, fb)) continue;
+          var pc = (((open + f) % 12) + 12) % 12;
+          if (wanted.indexOf(pc) !== -1) list.push(f);
+        }
+        choices.push({ string: st, frets: list });
+      }
+      /* Depth-first over the six strings. The space is small because only
+         chord tones inside a four-fret window are ever candidates. */
+      var pick = [];
+      (function walk(i) {
+        if (best && best.score >= 100) return;   // good enough, stop early
+        if (i === choices.length) {
+          var sounding = pick.filter(function (p) { return p.fret !== null; });
+          if (sounding.length < (opts.minStrings || 4)) return;
+          var pcs = sounding.map(function (p) {
+            return (((openMidi(p.string, fb) + p.fret) % 12) + 12) % 12;
+          });
+          for (var w = 0; w < wanted.length; w++) if (pcs.indexOf(wanted[w]) === -1) return;
+          /* No gaps: a muted string between two sounding ones is unplayable
+             in practice for a beginner shape. */
+          var idx = pick.map(function (p) { return p.fret !== null; });
+          var firstOn = idx.indexOf(true), lastOn = idx.lastIndexOf(true);
+          for (var k = firstOn; k <= lastOn; k++) if (!idx[k]) return;
+
+          var frets = sounding.map(function (p) { return p.fret; }).filter(function (f2) { return f2 > fb.capo; });
+          var realSpan = frets.length ? Math.max.apply(null, frets) - Math.min.apply(null, frets) : 0;
+          var bassPc = (((openMidi(sounding[0].string, fb) + sounding[0].fret) % 12) + 12) % 12;
+          var score = sounding.length * 12
+                    + (bassPc === (((rootPc % 12) + 12) % 12) ? 40 : 0)
+                    + (start === lowFret ? 10 : 0)
+                    - realSpan * 4;
+          if (!best || score > best.score) {
+            best = {
+              score: score,
+              notes: sounding.map(function (p) { return { string: p.string, fret: p.fret }; }),
+              muted: pick.filter(function (p) { return p.fret === null; })
+                         .map(function (p) { return p.string; })
+            };
+          }
+          return;
+        }
+        var c = choices[i];
+        for (var m = 0; m < c.frets.length; m++) {
+          pick.push({ string: c.string, fret: c.frets[m] });
+          walk(i + 1);
+          pick.pop();
+        }
+      }(0));
+      if (best && best.score >= 100) break;
+    }
+    if (!best) return null;
+    return {
+      name: chordName(chordId, rootPc),
+      tuning: fb.tuning,
+      notes: best.notes,
+      muted: best.muted
+    };
+  }
+
   /* ── Sequence patterns ────────────────────────────────────────────────────
      A sequence reorders an ordered note list into the shape you actually
      practise. Running a scale straight up and down is the one shape that makes
@@ -477,6 +591,32 @@
     sextuplets: { name: 'Sextuplets', sub: 1 / 6 }
   };
 
+  /* The subdivision that matches how a run is actually grouped.
+     A scale position with three notes on every string is played in TRIPLETS —
+     one string per beat — because that is the only subdivision where the finger
+     grouping and the beat agree. Put the same run in eighths and every group of
+     three is cut in half by the barline, which is unreadable and is not how
+     anyone practises it. Four per string wants sixteenths, two wants eighths.
+
+     Returns null when the grouping is uneven, in which case there is no natural
+     answer and the caller's choice stands. */
+  function naturalRhythm(notes) {
+    if (!notes || !notes.length) return null;
+    var perString = {}, order = [];
+    for (var i = 0; i < notes.length; i++) {
+      var s = notes[i].string;
+      if (!has(perString, s)) { perString[s] = 0; order.push(s); }
+      perString[s]++;
+    }
+    var first = perString[order[0]];
+    for (var j = 1; j < order.length; j++) if (perString[order[j]] !== first) return null;
+    if (first === 2) return 'eighths';
+    if (first === 3) return 'triplets';
+    if (first === 4) return 'sixteenths';
+    if (first === 6) return 'sextuplets';
+    return null;
+  }
+
   /* ── The generator ────────────────────────────────────────────────────────
      One exercise from one tuple. Returns { notes, meta } or { fault } — never
      throws, and never returns something half-formed, because the playability
@@ -511,7 +651,10 @@
     var seq = applySequence(base, seqId, !!spec.descending, startIndex);
     if (!seq) return { fault: 'sequence ' + seqId + ' produced nothing from ' + base.length + ' notes' };
 
-    var rhythmId = spec.rhythm || 'eighths';
+    /* No rhythm asked for means "whatever fits", not a fixed eighth note. An
+       explicit choice is always honoured — including a deliberately awkward
+       one, which is a legitimate exercise. */
+    var rhythmId = spec.rhythm || naturalRhythm(seq) || 'eighths';
     if (!has(RHYTHMS, rhythmId)) return { fault: 'unknown rhythm: ' + rhythmId };
     var sub = RHYTHMS[rhythmId].sub;
 
@@ -848,9 +991,15 @@
     boxAnchor: boxAnchor,
     positionNotes: positionNotes,
     positionCount: positionCount,
+    /* chords */
+    CHORDS: CHORDS,
+    chordPitchClasses: chordPitchClasses,
+    chordName: chordName,
+    findVoicing: findVoicing,
     /* sequences and rhythms */
     SEQUENCES: SEQUENCES,
     RHYTHMS: RHYTHMS,
+    naturalRhythm: naturalRhythm,
     applySequence: applySequence,
     /* generator */
     generateExercise: generateExercise,

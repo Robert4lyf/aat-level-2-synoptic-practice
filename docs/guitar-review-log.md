@@ -344,3 +344,34 @@ diagram was well-formed, every structural assertion passed. It took someone who
 knows what A dorian sounds like in DADGAD looking at the picture. Worth
 recording as the clearest example so far of what the visual half of a gate is
 actually for.
+
+### Step 6, third pass — the same class of bug, twice
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 6.18 | Note groups straddling bar lines is a rendering fault | **Disproved — it was the exercise.** A dorian box 1 is uniformly *three notes per string*; the check page asked for eighths, so eight notes per bar cut every group of three in half. A three-per-string run is played in **triplets**, one string to a beat, which is the only subdivision where the finger grouping and the beat agree | `naturalRhythm(notes)` added: an unspecified rhythm now follows the grouping (2/string → eighths, 3 → triplets, 4 → sixteenths, 6 → sextuplets) rather than defaulting to a fixed eighth note. An explicit rhythm is still honoured, including a deliberately awkward one |
+| 6.19 | The DADGAD chord boxes were fixed last pass | **Confirmed false.** I fixed the scale notes and left the chord shapes hardcoded in the same file. `C`, `Bm` and `D (12th)` are standard-tuning fingerings; on a DADGAD neck they are not those chords, and the label says they are | Two fixes, because one was not enough last time |
+
+**6.19 is the same defect as 6.17, one pass later, in the same file.** I fixed the
+instance rather than the class, and it took a second report to see it. The class
+is: *tuning-specific data must not be written down by hand next to a variable
+tuning.*
+
+So it is closed twice over:
+
+- **`findVoicing(chordId, rootPc, fb)`** searches the fretboard for a playable
+  shape instead of anyone writing one out. Verified against fingerings that can
+  be named: standard C comes back `x32010`, A7 `x02020`, and DADGAD's D sus4
+  comes back all-open, which is the chord that tuning exists for. Shapes carry
+  the tuning they were found on.
+- **`chordBox` marks a mismatch loudly.** A shape declaring a tuning that
+  disagrees with the fretboard is drawn with a warning glyph and an aria-label
+  saying which is which, rather than a confidently mislabelled chord.
+
+The check page now hardcodes no shape at all, and prints the sounding notes
+beneath every chord box so the claim is checkable rather than trusted.
+
+**What this says about the visual gate.** Three real defects have now come out of
+looking at the pictures — none of them detectable by any checker, because in
+every case the output was structurally perfect and musically wrong. Two of them
+were mine twice over: I treated a symptom, shipped it, and needed telling again.
