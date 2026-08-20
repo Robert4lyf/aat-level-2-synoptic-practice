@@ -981,3 +981,58 @@ The honest signal the plan asked for, for one unit of seven lessons:
 
 So the remaining 25 units are mostly the first item. The substrate is not the
 long pole; the writing is.
+
+## Step 8b — the cursor ran four beats ahead of the sound
+
+Reported against a lesson card: the highlight did not account for the four-beat
+count-in, so it led the audio by exactly that much.
+
+### 8b.1 The cause
+
+`currentBeat()` reports negative beats while the count-in clicks, and the last
+line of it wrapped them:
+
+    if (T.loop) return E.loopWrap(b, T.loop.start, T.loop.end);
+
+Negative beats are not IN the loop, they are before it. `loopWrap(-4, 0, 8)` is
+4, so a looping card lit the back half of the phrase during the count-in and
+then jumped to the start when the music began. Four beats of count-in, four
+beats ahead.
+
+Only the loop path did this. Unlooped, `b < 0` fell through to `currentIndex`,
+which returns -1 for a negative beat and lights nothing — correct. That is why
+the cursor timing check in `check-guitar-controls.js` never saw it: it plays
+unlooped, and the defect needed a count-in AND a loop together. Lesson cards
+default to `loop: true`, so the course is where it surfaced.
+
+### 8b.2 The gate I wrote first was vacuous, which makes three
+
+The obvious check asks the transport whether the count-in is running and
+requires nothing lit while the beat is negative:
+
+    const earlyLit = samples.filter(x => x.beat < 0 && x.lit > 0);
+
+It passed with the bug reinstated. Under the bug `currentBeat()` reports 4
+rather than -4, so `x.beat < 0` is never true, the filter matches nothing, and
+the gate reports success while the defect sits in front of it. The check read
+its ground truth from the function it was judging.
+
+The working version measures elapsed wall-clock time against the count-in length
+implied by the exercise's own bpm — neither of the two things being judged.
+Reinstating the bug now fails it at the first sample, as does the opposite
+mutation of clamping negative beats to 0.
+
+This is the third vacuous assertion in this project: the ascending-tuning check
+in step 2, the transport-time check in step 3, and now this. The standing rule
+added after step 3 — every gate must be shown to fail — is what caught all three,
+and it caught this one only because the mutation was run before the work was
+called done rather than after.
+
+The pattern behind all three is the same and worth naming: **each read its
+expected value from the code under test.** Step 2 compared a tuning against
+itself sorted, step 3 compared `transportTime` against the expression
+`transportTime` evaluates, and this compared "are we in the count-in" against
+the function that gets the count-in wrong. A gate needs a source of truth from
+outside the thing it is checking — a chord book, a clock, an arithmetic
+identity worked out by hand. When the only available source is the code itself,
+the check is a tautology however carefully it is written.
