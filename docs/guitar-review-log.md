@@ -1203,3 +1203,75 @@ So the estimate holds for units within the shape already built, and each new
 STRAND is likely to want one capability the previous ones did not. M5 and M7
 will lean on the generator rather than authored exercises, which is a different
 kind of work again.
+
+## Step 9b — "it's still saying M3 not written yet"
+
+Reported after M3 merged and deployed. M3 was in the source, ready, with four
+lessons. The reader was being served a copy of `guitar-learn-data.js` from
+before it existed.
+
+### 9b.1 The cause, and how long it had been running
+
+The lazy cache handler was cache-first with a background revalidate — the
+standard stale-while-revalidate shape:
+
+    if (hit) return hit;                    // and quietly refresh for next time
+
+That is right for assets and wrong for content. These files ARE the course:
+lessons, exercises, the syllabus. Serving the cached copy meant every reader ran
+one release behind, permanently, with the fresh copy landing only on the load
+after the one that fetched it.
+
+`refreshLazyCache()` was written in step 7 to cover exactly this and cannot on
+its own. It runs on activate, activate runs on a `CACHE_VERSION` bump, and
+`CACHE_VERSION` had not moved since PR #177 — three content releases earlier.
+Remembering to bump a cache version for a content change is precisely the
+discipline that fails, and it failed three times in a row without a symptom
+either of us could see.
+
+**Every piece of feedback given between #177 and now was against a build one
+release behind.** That is worth stating plainly: some of it may have been about
+defects already fixed, and some of what looked fixed may only have looked so.
+
+### 9b.2 The fix
+
+Network first, cache as the fallback. A round trip on a handful of small files
+is worth paying to never again ship content readers cannot see. Offline is
+unaffected: the fallback is the same unversioned cache, still excluded from the
+version sweep.
+
+`CACHE_VERSION` bumped to v102, which is what moves anyone already carrying the
+old worker onto the new one.
+
+### 9b.3 The gate that existed and could not have caught it
+
+`check-sw-lazy-cache.js` had four assertions, all green throughout: guitar is
+not precached, it caches on first open, it survives a version bump, and it is
+served offline afterwards.
+
+Every one is about what ends up IN the cache. The cache was always correct. What
+was wrong was what got SERVED, and nothing asked that question. The new
+assertion seeds the cache with a known-stale body, puts a different body on the
+network, and requires the network's — plus that the fresh copy is written back,
+so the next offline load is current too.
+
+### 9b.4 And a toast that announced work it never did
+
+`SW_UPDATED` showed "Updating to the latest version…" while nothing reloaded.
+The new shell only applies on the next load, so the message described something
+that was not happening — visible in a screenshot from four steps ago and read
+past every time. Now "Update ready — reload to apply". Reloading automatically
+would be worse: it discards whatever the reader was in the middle of without
+asking.
+
+### What 9b says
+
+Three of the last four defects have been in delivery rather than in logic: the
+cursor ahead of the sound, the exercise repeated across cards, and now content
+that shipped and could not be seen. The engine has been the reliable part; what
+keeps breaking is the path between a correct file and a reader's eyes.
+
+Gates written against the code cannot see any of it. Each of these needed either
+a person looking at the running app, or a check written against the SHAPE OF THE
+DELIVERY — what gets served, what gets drawn, what gets read back — rather than
+against the values a function returns.

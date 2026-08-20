@@ -8784,7 +8784,12 @@
       });
       navigator.serviceWorker.addEventListener('message', function (event) {
         if (event.data && event.data.type === 'SW_UPDATED') {
-          showToast('🔄 Updating to the latest version…', 'info');
+          /* Say what is true. This read "Updating to the latest version…" and
+             nothing reloaded, so the toast announced work that never happened —
+             the new shell only applies on the next load. Reloading here instead
+             would be worse: it throws away whatever the reader was in the
+             middle of, without asking. */
+          showToast('🔄 Update ready — reload to apply', 'info');
         }
       });
     }
