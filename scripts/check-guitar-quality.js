@@ -308,15 +308,38 @@ if (orphans.length) {
 
 /* Playability is guitar-engine's own question, asked here against the authored
    notes because check-guitar-playability sweeps the GENERATED space and would
-   never see these. */
-const fb = E.makeFretboard({ tuning: 'standard', capo: 0, handed: 'right' });
+   never see these.
+
+   ON THE CONTEXT OF EACH ONE. An earlier version of this checked every exercise
+   against standard tuning with no capo, and reported "all playable in standard
+   tuning" while the module contained exercises written for DADGAD and for a
+   capo at the fifth fret. That is a check answering a question nobody asked: a
+   capo-5 exercise with a note at the third fret is unplayable in its own lesson
+   and perfectly fine in standard tuning, so the pass meant nothing. Each
+   exercise is now checked on the instrument the card that uses it declares. */
+const contextOf = new Map();          // exercise id → { tuning, capo }
+for (const lesson of D.LESSONS) {
+  for (const card of lesson.cards) {
+    for (const k of elementsOf(card)) {
+      const el = card[k];
+      if (!el || !el.exercise) continue;
+      const ctx = card.context || {};
+      contextOf.set(el.exercise, { tuning: ctx.tuning || 'standard', capo: ctx.capo || 0 });
+    }
+  }
+}
 let noteCount = 0;
 for (const id of X.ids()) {
   const ex = X.exercise(id);
+  const ctx = contextOf.get(id) || { tuning: 'standard', capo: 0 };
+  const fb = E.makeFretboard({ tuning: ctx.tuning, capo: ctx.capo, handed: 'right' });
   for (const n of ex.notes) {
     noteCount++;
     const fault = E.noteFault(n, fb);
-    if (fault) errors.push(`exercise ${id}: ${JSON.stringify(n)} — ${fault}`);
+    if (fault) {
+      errors.push(`exercise ${id} in ${ctx.tuning}${ctx.capo ? ' capo ' + ctx.capo : ''}: ` +
+                  `${JSON.stringify(n)} — ${fault}`);
+    }
   }
   /* Two notes on one string at one moment is unplayable and renders as a
      collision rather than as an error. */
@@ -330,7 +353,40 @@ for (const id of X.ids()) {
 
 notes.push(`${D.LESSONS.length} lessons, ${totalCards} cards, ${totalWords} prose words ` +
            `(${Math.round(totalWords / totalCards)} per card), ${totalElements} elements.`);
-notes.push(`${X.ids().length} authored exercises, ${noteCount} notes, all playable in standard tuning.`);
+const contexts = [...new Set([...contextOf.values()].map(c => c.tuning + (c.capo ? '/' + c.capo : '')))];
+notes.push(`${X.ids().length} authored exercises, ${noteCount} notes, all playable on the instrument ` +
+           `their card declares (${contexts.sort().join(', ')}).`);
+
+/* A card that declares a tuning the engine does not know would silently fall
+   back to standard, drawing the wrong neck under confident prose. */
+for (const lesson of D.LESSONS) {
+  lesson.cards.forEach((card, i) => {
+    const ctx = card.context;
+    if (!ctx) return;
+    if (ctx.tuning && !Object.prototype.hasOwnProperty.call(E.TUNINGS, ctx.tuning)) {
+      errors.push(`${lesson.id} card ${i + 1} declares tuning "${ctx.tuning}", which the engine does ` +
+                  `not have. It would fall back to standard and draw the wrong neck.`);
+    }
+    if (ctx.capo !== undefined && (!(ctx.capo >= 0) || ctx.capo > 9)) {
+      errors.push(`${lesson.id} card ${i + 1} declares capo ${ctx.capo}, outside 0-9.`);
+    }
+    /* A card says which INSTRUMENT it is talking about. It does not get to say
+       whose hands are playing it — that belongs to the profile, and a card able
+       to override it is a left-handed reader being shown a right-handed neck by
+       content they cannot argue with. */
+    if ('handed' in ctx) {
+      errors.push(`${lesson.id} card ${i + 1} declares handedness in its context. Handedness comes ` +
+                  `from the reader's profile, never from content.`);
+    }
+    const allowed = ['tuning', 'capo'];
+    for (const key of Object.keys(ctx)) {
+      if (!allowed.includes(key)) {
+        errors.push(`${lesson.id} card ${i + 1} has an unknown context key "${key}". ` +
+                    `The player reads only ${allowed.join(' and ')}, so this would be silently ignored.`);
+      }
+    }
+  });
+}
 notes.push(`Signposting ${per1k.toFixed(2)} per 1k words (ceiling ${M.SIGNPOST_CEILING_PER_1K}); ` +
            `${playableLessons}/${D.LESSONS.length} lessons carry a playable example.`);
 

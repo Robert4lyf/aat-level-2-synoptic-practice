@@ -431,6 +431,14 @@ body[data-subject="guitar"] .gtr-cardnav .gtr-btn { flex: 0 0 auto; }
 body[data-subject="guitar"] .gtr-cardnav .gtr-play { flex: 1; }
 body[data-subject="guitar"] .gtr-cardnav .gtr-btn[disabled] { opacity: .45; cursor: default; }
 
+body[data-subject="guitar"] .gtr-context {
+  font-size: .8rem;
+  color: var(--subj, var(--accent));
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 7px 10px;
+  margin-top: 10px;
+}
 body[data-subject="guitar"] .gtr-pointer {
   border-left: 3px solid var(--subj, var(--accent));
   padding: 8px 0 8px 12px;

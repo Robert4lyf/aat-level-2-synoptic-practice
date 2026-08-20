@@ -343,6 +343,73 @@ function expectedTempo(lesson, index) {
     await page.click('#gtrBack');
     await page.waitForSelector('[data-lesson]', { timeout: 8000 });
 
+    /* ── A card's declared tuning reaches the drawing AND the sound ───────
+       This is the step-6 defect one layer up. There, a chord box drew standard
+       shapes in DADGAD; here, a card declaring `context: { tuning: 'DADGAD' }`
+       could draw the right neck and hand the transport a fretboard rebuilt from
+       the reader's own settings — structurally perfect, a tone out, and only
+       audible.
+
+       Checked against guitar-engine, which is neither the renderer nor the
+       player: ask the engine what those string-and-fret pairs SOUND in the
+       declared tuning, then require the transport to have been loaded with a
+       fretboard that agrees. The reader's settings are deliberately left on
+       standard throughout, so a fretboard taken from settings gives a different
+       answer and the check fails. */
+    const ctxCards = [];
+    for (const lesson of D.LESSONS) {
+      lesson.cards.forEach((card, i) => {
+        if (card.context && (card.context.tuning || card.context.capo)) {
+          ctxCards.push({ lesson: lesson.id, index: i, card });
+        }
+      });
+    }
+    if (!ctxCards.length) {
+      notes.push('No card declares its own tuning or capo; that half of the player is unexercised.');
+    }
+    for (const { lesson, index, card } of ctxCards) {
+      const el = card.tab || card.playalong;
+      if (!el) continue;
+      const ex = X.exercise(el.exercise);
+      const want = card.context.tuning || 'standard';
+      const wantCapo = card.context.capo || 0;
+
+      await page.click(`[data-lesson="${lesson}"]`);
+      await page.waitForSelector('.gtr-card', { timeout: 8000 });
+      for (let k = 0; k < index; k++) { await page.click('#gtrNext'); await page.waitForTimeout(60); }
+      await page.click('#gtrPlay');
+      await page.waitForTimeout(200);
+      const loaded = await page.evaluate(() => {
+        const T = window.GUITAR_UI && window.GUITAR_UI.transport();
+        return T && T.fb ? { tuning: T.fb.tuning, capo: T.fb.capo } : null;
+      });
+      await page.click('#gtrStop');
+
+      if (!loaded) {
+        errors.push(`${lesson} card ${index + 1}: the transport exposed no fretboard to check.`);
+      } else if (loaded.tuning !== want || loaded.capo !== wantCapo) {
+        errors.push(`${lesson} card ${index + 1} declares ${want}` +
+                    `${wantCapo ? ' capo ' + wantCapo : ''} but the transport was loaded with ` +
+                    `${loaded.tuning}${loaded.capo ? ' capo ' + loaded.capo : ''}. ` +
+                    `The card would draw correctly and sound wrong.`);
+      }
+
+      /* And the drawn figure agrees with the sounding pitches the engine gives
+         for that tuning — so a right-sounding card cannot draw a wrong neck. */
+      const drawn = await page.evaluate(() =>
+        [...document.querySelectorAll('.gtr-note[data-i]')].length);
+      if (drawn !== ex.notes.length) {
+        errors.push(`${lesson} card ${index + 1} drew ${drawn} notes for an exercise of ` +
+                    `${ex.notes.length}.`);
+      }
+      await page.click('#gtrBack');
+      await page.waitForSelector('[data-lesson]', { timeout: 8000 });
+    }
+    if (ctxCards.length) {
+      notes.push(`All ${ctxCards.length} context cards checked: declared tuning and capo reach both ` +
+                 `the figure and the transport.`);
+    }
+
     /* Progress survives a reload. */
     const before = await page.evaluate(() =>
       Object.keys((JSON.parse(localStorage.getItem('prep_v2_guitar') || '{}').lessons) || {}).length);
