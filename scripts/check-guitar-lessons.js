@@ -230,6 +230,37 @@ function expectedTempo(lesson, index) {
       }
 
       await page.click('#gtrStop');
+      await page.waitForTimeout(60);
+
+      /* ── And with the count-in off, playing starts straight away ─────────
+         The toggle is only worth having if it does something, and "nothing
+         lights for four beats" is indistinguishable from "the cursor is
+         broken" without the other half of the pair. Measured the same way:
+         wall-clock elapsed, not the transport's own opinion of the beat. */
+      await page.uncheck('#gtrCountIn');
+      await page.click('#gtrPlay');
+      const litBy = await page.evaluate(async (windowMs) => {
+        const t0 = performance.now();
+        while (performance.now() - t0 < windowMs) {
+          if (document.querySelectorAll('.gtr-note.is-playing').length) {
+            return Math.round(performance.now() - t0);
+          }
+          await new Promise(r => setTimeout(r, 30));
+        }
+        return null;
+      }, countInMs);
+      await page.click('#gtrStop');
+      await page.check('#gtrCountIn');
+      if (litBy === null) {
+        errors.push(`with the count-in off, no note lit within ${Math.round(countInMs)}ms. ` +
+                    `The toggle is not taking effect, so playback still waits.`);
+      } else if (litBy > countInMs / 2) {
+        errors.push(`with the count-in off, the first note lit ${litBy}ms in — over half of the ` +
+                    `${Math.round(countInMs)}ms count-in it is meant to skip.`);
+      } else {
+        notes.push(`Count-in off: first note lit ${litBy}ms in, against a ${Math.round(countInMs)}ms count-in.`);
+      }
+
       if (!loop) {
         errors.push(`${loopLesson.id} card ${cardIdx + 1} declares loop: true but the transport has no loop set.`);
       } else if (loop.end !== wantBeats) {
@@ -242,6 +273,75 @@ function expectedTempo(lesson, index) {
       await page.click('#gtrBack');
       await page.waitForSelector('[data-lesson]', { timeout: 8000 });
     }
+
+    /* ── The same toggle governs the workshop ─────────────────────────────
+       Playback is started in one place for both screens, which is what stops
+       the count-in applying on the lesson player and not the bench. Asserted
+       rather than trusted: a mutation wiring only the workshop back to a
+       hardcoded count-in passed the whole suite before this existed, because
+       every other check here drives lessons. */
+    await page.click('[data-screen="workshop"]');
+    await page.waitForSelector('#gtrCountIn', { timeout: 8000 });
+    const workshopChecked = await page.isChecked('#gtrCountIn');
+    if (workshopChecked !== true) {
+      errors.push(`the count-in reads ${workshopChecked} on the workshop after being left on in a ` +
+                  `lesson. The two screens are keeping separate settings.`);
+    }
+    await page.uncheck('#gtrCountIn');
+    await page.click('#gtrPlay');
+    const workshopLitBy = await page.evaluate(async () => {
+      const t0 = performance.now();
+      while (performance.now() - t0 < 3000) {
+        if (document.querySelectorAll('.gtr-note.is-playing').length) return Math.round(performance.now() - t0);
+        await new Promise(r => setTimeout(r, 30));
+      }
+      return null;
+    });
+    await page.click('#gtrStop');
+    await page.check('#gtrCountIn');
+    if (workshopLitBy === null || workshopLitBy > 1200) {
+      errors.push(`on the workshop with the count-in off, the first note lit ` +
+                  `${workshopLitBy === null ? 'never' : workshopLitBy + 'ms in'}. ` +
+                  `The toggle works on lessons but not here.`);
+    } else {
+      notes.push(`Workshop honours the same count-in setting; first note lit ${workshopLitBy}ms in with it off.`);
+    }
+    await page.click('[data-screen="lessons"]');
+    await page.waitForSelector('[data-lesson]', { timeout: 8000 });
+
+    /* ── And the box reports the setting it is actually using ─────────────
+       Rendering the checkbox as always-checked still WORKS when clicked — the
+       change handler fires either way — so every assertion above passes with
+       it hardcoded. What breaks is quieter: turn the count-in off, come back
+       later, and the box says it is on while playback starts immediately. A
+       control that misreports its own state is worse than one that does
+       nothing, because it teaches the wrong thing about what the app is doing. */
+    await page.click(`[data-lesson="${D.LESSONS[0].id}"]`);
+    await page.waitForSelector('#gtrCountIn', { timeout: 8000 });
+    await page.uncheck('#gtrCountIn');
+    await page.click('#gtrNext');                       // a rerender
+    await page.waitForTimeout(120);
+    const afterNav = await page.isChecked('#gtrCountIn');
+    if (afterNav) {
+      errors.push('the count-in box shows checked after being turned off and the card redrawn. ' +
+                  'It is rendering a fixed value rather than the setting.');
+    }
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForSelector('[data-lesson]', { timeout: 15000 });
+    await page.click(`[data-lesson="${D.LESSONS[0].id}"]`);
+    await page.waitForSelector('#gtrCountIn', { timeout: 8000 });
+    const afterReload = await page.isChecked('#gtrCountIn');
+    const storedCountIn = await page.evaluate(() =>
+      (JSON.parse(localStorage.getItem('prep_v2_guitar') || '{}').settings || {}).countIn);
+    if (afterReload !== (storedCountIn > 0)) {
+      errors.push(`after a reload the count-in box reads ${afterReload} while the stored setting is ` +
+                  `${storedCountIn}. The control and the setting disagree.`);
+    } else {
+      notes.push(`Count-in setting survives a redraw and a reload (stored ${storedCountIn}).`);
+    }
+    await page.check('#gtrCountIn');
+    await page.click('#gtrBack');
+    await page.waitForSelector('[data-lesson]', { timeout: 8000 });
 
     /* Progress survives a reload. */
     const before = await page.evaluate(() =>

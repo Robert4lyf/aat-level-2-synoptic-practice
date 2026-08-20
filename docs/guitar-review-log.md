@@ -1036,3 +1036,100 @@ the function that gets the count-in wrong. A gate needs a source of truth from
 outside the thing it is checking — a chord book, a clock, an arithmetic
 identity worked out by hand. When the only available source is the code itself,
 the check is a tautology however carefully it is written.
+
+## Step 8c — a count-in toggle
+
+Requested after the cursor fix: an on/off switch for the four-beat lead-in.
+
+### 8c.1 Stored as beats, not as a boolean
+
+`settings.countIn` holds the number of beats, with zero meaning off. A boolean
+would have needed a `4` written at each call site, which is the same shape as
+the bug in 8c.2 — one number in two places, free to drift.
+
+It lives in `settings` rather than `profile`, which is deliberate: `mergeSubject`
+keeps the local copy of `settings`, so a count-in preference stays on the device
+that set it. That is right for something that depends on whether you are
+practising with headphones on a train or sat down with the guitar.
+
+### 8c.2 The duplication that made the toggle risky
+
+`play()` had two branches, one per screen, and each wrote out the whole start
+sequence — load, loop, cursor, play count, and the count-in. Wiring the toggle
+into one and not the other was a one-line change, and a mutation doing exactly
+that **passed the entire suite**, because every browser check that exercises
+playback drives lessons rather than the workshop bench.
+
+Two fixes, and the order matters. The branch now chooses the notes and stops;
+everything after it happens once. Then the gate covers the workshop path
+explicitly, so the next thing that only half-lands is caught even if it is not
+this one.
+
+Gating the instance without removing the duplication would have left the class
+open. Removing the duplication without the gate would have left nothing to stop
+it coming back.
+
+### 8c.3 A mutation the first gate did not catch
+
+Rendering the checkbox as permanently `checked` passed everything. The change
+handler fires whether or not the box reflects the setting, so playback behaved
+correctly and every timing assertion held.
+
+What breaks is quieter: turn the count-in off, come back later, and the box says
+on while playback starts immediately. A control that misreports its own state is
+worse than one that does nothing, because it teaches the wrong thing about what
+the app is doing.
+
+The added assertion turns it off, forces a redraw, reloads, and requires the box
+and the stored value to agree. Worth noting what the near-miss has in common
+with 8b: both gates tested the behaviour and not the display, and both times the
+display was where the lie would have lived.
+
+## Step 8d — the same exercise kept coming back
+
+Reported from a lesson card: "this exercise was used about 2 cards before".
+
+It was, and the measurement was worse than the instance. Thirty-five cards were
+drawing on eleven exercises. One figure of eight notes appeared five times,
+three of them inside a single lesson. Seventeen pairs sat within three cards of
+each other.
+
+### 8d.1 The cause, which will recur
+
+Exercises were written first and cards second. Every card that needed something
+to play reached for what already existed, and when the word floor in 8.2 called
+for fourteen more cards, all fourteen were fitted to the existing bank rather
+than given their own material. That is the path of least resistance and it
+produces a unit that passes every count — cards, words, elements, coverage — and
+reads as repetitive.
+
+There was a second fault underneath it. Lesson 1 was borrowing lesson 3, 6 and
+7's exercises, so a reader met the free-stroke drill two lessons before the free
+stroke was taught, and met it again as an unfamiliar thing when it arrived.
+
+### 8d.2 The fix
+
+Twenty-three new exercises, taking the bank from 11 to 34 across 35 card slots.
+Posture now has its own undemanding material rather than borrowing from later
+lessons; every card that repeated has been given something written for it.
+
+The gate holds two limits. A gap of at least four cards in reading order,
+because a repeat the reader still remembers reads as an oversight rather than as
+revision. And a cap of two uses across the module, because a figure met often
+enough stops being practice.
+
+Reuse is not banned. Returning to a figure once, later, with a different focus
+is real teaching — which is why the cap is two rather than one, and why the rule
+is about distance rather than about novelty.
+
+### What 8d says about the gates so far
+
+Every content gate written in step 8 counts something per card or per lesson:
+words, elements, criteria, paragraphs. All of them passed. None could see a
+property that only exists ACROSS cards, and repetition is exactly that kind of
+property — invisible at every individual card, obvious by the third encounter.
+
+That is the second time a defect has been found by a reader rather than by a
+gate, and both were about the experience of moving through the material rather
+than about any single piece of it. Worth carrying into the remaining units: ask
+what the unit looks like read end to end, not only what each card contains.
