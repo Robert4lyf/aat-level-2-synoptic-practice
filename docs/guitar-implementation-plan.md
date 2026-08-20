@@ -296,7 +296,11 @@ Brightness order, used by the modes unit: lydian > ionian > mixolydian > dorian 
 
 ### 5.2 Positions
 
-CAGED boxes as a fret-window per (scale, key, box) plus three-notes-per-string and single-string. Emit `Note[]` given `(scaleId, rootMidi, position, fretboard)`.
+A position is a **climb**, not a fret window. Take *n* scale tones on string 6 from the anchor upward, then continue on each higher string from the pitch after the last one taken — 2 per string for five- and six-note scales, 3 for seven-note. Emit `Note[]` in playing order.
+
+A rectangular window `[anchor, anchor + span]` is wrong and was built that way first: the shape reaches *below* the string-6 anchor on the higher strings, so six of the ten pentatonic boxes came out with one note on some strings instead of two, and A minor pentatonic box 2 was placed at frets 8–11 instead of 7–10. The climb is correct by construction and also removes the unison repeats a window produces where strings overlap.
+
+**Two position kinds, not three.** `box` and `string`. Three-notes-per-string is exactly what a seven-note box already is under the climb, and two ids for one shape would split its mastery cell. True CAGED five-shape positions are a genuinely different system, deferred rather than conflated.
 
 Guard: a position that would require `fret < capo` is invalid — return empty and let the playability checker fail it at build time rather than rendering nonsense.
 
@@ -316,9 +320,9 @@ Applied to a chord shape: sequence of `(finger, stringOffset)`.
 ```
 
 `rightHand` ∈ `i-m | i-a | m-a | p-i-m-a | p-i-m-a-m-i | p`; `stroke` ∈ `rest | free`.
-The scale engine and the picking-pattern engine are one function with different fields populated.
+The scale engine and the picking-pattern engine are one function with different fields populated. The picking-hand branch lands with unit P2 and is deliberately not stubbed.
 
-**The parameter space is finite but not enumerable in CI.** Counting it honestly: 14 scales × 12 keys × 7 positions × 6 tunings × 8 capo positions × 8 patterns × 6 right-hand fingerings × 2 strokes × 5 rhythms ≈ **27.1 million tuples**. An earlier draft claimed the checker could sweep all of it at build time; it cannot, and `npm test` runs on every commit.
+**The parameter space is finite but not enumerable in CI.** Counting it honestly: 14 scales × 12 roots × ~14 position values × 6 tunings × 8 capo positions × 8 sequences × 2 directions × 5 rhythms ≈ **9 million tuples**, before the picking-hand dimensions land. An earlier draft claimed the checker could sweep all of it at build time; it cannot, and `npm test` runs on every commit.
 
 Use **all-pairs (pairwise) coverage** instead: generate a case set in which every pair of parameter values from every pair of dimensions appears at least once. For these nine dimensions that is roughly 200–250 cases, runs in under a second, and catches the interaction bugs that matter — which are almost always two-dimensional (this scale in that tuning; this position under that capo).
 
@@ -468,11 +472,12 @@ Method: write unit P1, measure, and hard-fail only what already sits at zero. An
 
 ### 8.3 `check-guitar-playability.js`
 - No two simultaneous notes on the same string
-- Fret span within reach for the position (≤5 below fret 12, ≤4 above)
+- Fret span within reach **per string** (≤5 below fret 12, ≤4 above), plus a drift limit of 5 frets between consecutive strings. Measuring the span across a whole shape is wrong — a position climbs by design, and doing it that way failed 193 ordinary shapes.
 - No `fret > 0 && fret < capo`
 - No picking finger sounding two strings at once
 - Tapped and fretted notes not colliding
-- **Sweeps the generator's entire parameter space**, not just authored content
+- **A vacuity floor**: a minimum count of real inspections and a ceiling on the proportion skipped as impossible. Without it the whole gate passes while examining nothing — making `positionNotes` return `null` unconditionally turned every case into a "legitimately impossible combination" and exited 0.
+- **A self-test**: every rule is fired against hand-made bad input and shown to stay quiet on good. A rule the generator cannot currently violate is still a rule, and without this it sits untested.
 
 ### 8.4 `check-guitar-handedness.js`
 - Ban in lesson prose: `right hand`, `left hand`, `right-hand`, `left-hand`, `your right`, `your left`, `on the left`, `on the right`. Required vocabulary: **fretting hand** / **picking hand**.

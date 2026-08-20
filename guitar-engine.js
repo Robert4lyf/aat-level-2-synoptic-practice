@@ -225,6 +225,323 @@
   /* Does this fretboard mirror at all? For prose and aria-labels, not geometry. */
   function mirrorFor(fb) { return fb.handed === 'left'; }
 
+  /* ── Scales ───────────────────────────────────────────────────────────────
+     Semitone offsets from the root. `char` is the characteristic note — the one
+     degree that makes the mode that mode, which the fretboard diagram lights in
+     its own colour and the modal lessons ask you to land on. Ionian and aeolian
+     have none: they are the reference, not a departure from it.
+
+     `bright` orders the modes from brightest to darkest, and each step down
+     flattens exactly one more degree. That ordering is the spine of the modes
+     unit, so it lives here rather than in the lesson data. */
+  var SCALES = {
+    major:      { name: 'Major',            steps: [0, 2, 4, 5, 7, 9, 11] },
+    natMinor:   { name: 'Natural minor',    steps: [0, 2, 3, 5, 7, 8, 10] },
+    harmMinor:  { name: 'Harmonic minor',   steps: [0, 2, 3, 5, 7, 8, 11] },
+    melMinor:   { name: 'Melodic minor',    steps: [0, 2, 3, 5, 7, 9, 11] },
+    ionian:     { name: 'Ionian',           steps: [0, 2, 4, 5, 7, 9, 11], mode: true, bright: 1 },
+    dorian:     { name: 'Dorian',           steps: [0, 2, 3, 5, 7, 9, 10], mode: true, bright: 3, char: 9 },
+    phrygian:   { name: 'Phrygian',         steps: [0, 1, 3, 5, 7, 8, 10], mode: true, bright: 5, char: 1 },
+    lydian:     { name: 'Lydian',           steps: [0, 2, 4, 6, 7, 9, 11], mode: true, bright: 0, char: 6 },
+    mixolydian: { name: 'Mixolydian',       steps: [0, 2, 4, 5, 7, 9, 10], mode: true, bright: 2, char: 10 },
+    aeolian:    { name: 'Aeolian',          steps: [0, 2, 3, 5, 7, 8, 10], mode: true, bright: 4 },
+    locrian:    { name: 'Locrian',          steps: [0, 1, 3, 5, 6, 8, 10], mode: true, bright: 6, char: 6 },
+    minPent:    { name: 'Minor pentatonic', steps: [0, 3, 5, 7, 10] },
+    majPent:    { name: 'Major pentatonic', steps: [0, 2, 4, 7, 9] },
+    blues:      { name: 'Blues',            steps: [0, 3, 5, 6, 7, 10], char: 6 }
+  };
+
+  /* ionian IS major and aeolian IS natural minor, note for note. They exist as
+     separate ids because the modes unit needs them by name, but the mastery
+     grid must not treat playing A ionian and A major as two different skills —
+     that is the same fragmentation the tuning aliases avoid. Resolved in
+     exerciseKey only; everything else keeps the id it was given. */
+  var SCALE_KEY_ALIASES = { ionian: 'major', aeolian: 'natMinor' };
+  function canonicalScaleId(id) {
+    return has(SCALE_KEY_ALIASES, id) ? SCALE_KEY_ALIASES[id] : id;
+  }
+
+  function scaleSteps(scaleId) {
+    return has(SCALES, scaleId) ? SCALES[scaleId].steps.slice() : null;
+  }
+  /* Degrees per octave — five for pentatonic, six for blues, seven for the
+     rest. Position count follows from this rather than being hardcoded at 5 or
+     7: a scale has as many box positions as it has degrees. */
+  function scaleDegreeCount(scaleId) {
+    var st = scaleSteps(scaleId);
+    return st ? st.length : 0;
+  }
+  function scalePitchClasses(scaleId, rootPc) {
+    var st = scaleSteps(scaleId);
+    if (!st) return null;
+    var out = [];
+    for (var i = 0; i < st.length; i++) out.push(((rootPc + st[i]) % 12 + 12) % 12);
+    return out;
+  }
+  function isScaleTone(midi, scaleId, rootPc) {
+    var pcs = scalePitchClasses(scaleId, rootPc);
+    if (!pcs) return false;
+    var pc = ((midi % 12) + 12) % 12;
+    return pcs.indexOf(pc) !== -1;
+  }
+  /* The characteristic note as an absolute pitch class, for the highlight. */
+  function characteristicPc(scaleId, rootPc) {
+    if (!has(SCALES, scaleId) || SCALES[scaleId].char === undefined) return null;
+    return ((rootPc + SCALES[scaleId].char) % 12 + 12) % 12;
+  }
+  function modesByBrightness() {
+    return Object.keys(SCALES)
+      .filter(function (k) { return SCALES[k].mode; })
+      .sort(function (a, b) { return SCALES[a].bright - SCALES[b].bright; });
+  }
+
+  /* ── Positions ────────────────────────────────────────────────────────────
+     A position is a window of frets in which the whole scale is played across
+     all six strings. Box n is anchored on the fret where the nth scale degree
+     sounds on string 6, which is the definition every method book uses and the
+     one that generalises past pentatonics — a scale has as many boxes as it has
+     degrees, so minor pentatonic gets five and dorian gets seven.
+
+     Notes come back in PLAYING order — string 6 first, low fret to high, then
+     string 5 — not in pitch order. Those differ slightly where strings overlap,
+     and playing order is what a scale run actually is. */
+  /* Notes per string, by how many degrees the scale has. A pentatonic box is
+     two notes per string — that is what makes it a box — and a seven-note
+     position is three. Blues is the pentatonic shape with the flat five folded
+     in, so it stays at two and picks the extra note up where it falls. */
+  var NOTES_PER_STRING = { 5: 2, 6: 2, 7: 3 };
+
+  function boxAnchor(scaleId, rootPc, boxIndex, fb) {
+    var st = scaleSteps(scaleId);
+    if (!st) return null;
+    var n = st.length;
+    var idx = ((boxIndex % n) + n) % n;
+    var open6 = openMidi(6, fb);
+    if (open6 === null) return null;
+    var targetPc = ((rootPc + st[idx]) % 12 + 12) % 12;
+    var start = Math.max(0, fb.capo);
+    for (var f = start; f <= MAX_FRET; f++) {
+      if ((((open6 + f) % 12) + 12) % 12 === targetPc) return f;
+    }
+    return null;
+  }
+
+  /* A position is a CLIMB, not a rectangular fret window.
+     An earlier version took every scale tone inside [anchor, anchor + span],
+     with the string-6 degree as the lower bound. That is right for box 0 and
+     wrong for most others: on the higher strings the shape reaches BELOW the
+     string-6 anchor, so those notes were dropped and six of the ten pentatonic
+     boxes came out with one note on some strings instead of two. A minor
+     pentatonic box 2 spans frets 7–10, not 8–11.
+
+     Climbing fixes it by construction: take `per` scale tones on string 6 from
+     the anchor up, then continue on each higher string from the pitch after the
+     last one taken. The strictly-ascending guard also removes the unison
+     repeats the window produced where strings overlap. */
+  function climbPosition(scaleId, rootPc, fb, boxIndex) {
+    var st = scaleSteps(scaleId);
+    if (!st) return null;
+    var per = NOTES_PER_STRING[st.length] || 2;
+    var fromFret = boxAnchor(scaleId, rootPc, boxIndex, fb);
+    if (fromFret === null) return null;
+    var out = [], lastMidi = -Infinity;
+    for (var s = STRING_COUNT; s >= 1; s--) {
+      var open = openMidi(s, fb);
+      if (open === null) return null;
+      var taken = 0, f = fromFret;
+      while (taken < per && f <= MAX_FRET) {
+        var note = { string: s, fret: f };
+        var midi = open + f;
+        if (midi > lastMidi && isPlayable(note, fb) && isScaleTone(midi, scaleId, rootPc)) {
+          out.push(note); lastMidi = midi; taken++;
+        }
+        f++;
+      }
+      if (taken < per) return null;
+      if (s > 1) {
+        var nextOpen = openMidi(s - 1, fb);
+        if (nextOpen === null) return null;
+        fromFret = Math.max(0, fb.capo, lastMidi + 1 - nextOpen);
+      }
+    }
+    return out;
+  }
+
+  /* positionSpec: { kind:'box', index } | { kind:'string', string }
+     There is no separate three-notes-per-string kind: under the climb it is
+     exactly what a seven-note box already is, and two ids for one shape would
+     split its mastery cell in half. True CAGED five-shape positions are a
+     genuinely different system and are deferred rather than conflated. */
+  function positionNotes(scaleId, rootPc, fb, spec) {
+    if (!scaleSteps(scaleId)) return null;
+    spec = spec || { kind: 'box', index: 0 };
+    if (spec.kind === 'string') {
+      var s = spec.string;
+      if (!(s >= 1 && s <= STRING_COUNT)) return null;
+      var open = openMidi(s, fb);
+      if (open === null) return null;
+      var line = [];
+      for (var f = Math.max(0, fb.capo); f <= MAX_FRET; f++) {
+        var n2 = { string: s, fret: f };
+        if (isPlayable(n2, fb) && isScaleTone(open + f, scaleId, rootPc)) line.push(n2);
+      }
+      return line.length ? line : null;
+    }
+    var notes = climbPosition(scaleId, rootPc, fb, spec.index || 0);
+    return (notes && notes.length) ? notes : null;
+  }
+
+  function positionCount(scaleId, kind) {
+    var n = scaleDegreeCount(scaleId);
+    if (!n) return 0;
+    if (kind === 'string') return STRING_COUNT;
+    if (kind === 'box') return n;
+    return 0;
+  }
+
+  /* ── Sequence patterns ────────────────────────────────────────────────────
+     A sequence reorders an ordered note list into the shape you actually
+     practise. Running a scale straight up and down is the one shape that makes
+     solos sound like scales, which is why the others exist.
+
+     Each is an index generator over a list of length n, so the same code drives
+     any scale in any position. Descending is the ascending pattern applied to
+     the reversed list, which is what "in 3s descending" means when a teacher
+     says it — not the ascending sequence played backwards. */
+  function range(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+  function groupsOf(n, k) {
+    var out = [];
+    for (var i = 0; i + k <= n; i++) for (var j = 0; j < k; j++) out.push(i + j);
+    return out;
+  }
+  function intervalPairs(n, step) {
+    var out = [];
+    for (var i = 0; i + step < n; i++) { out.push(i); out.push(i + step); }
+    return out;
+  }
+  var SEQUENCES = {
+    straight: { name: 'Straight',      idx: function (n) { return range(n); } },
+    in3s:     { name: 'In 3s',         idx: function (n) { return groupsOf(n, 3); } },
+    in4s:     { name: 'In 4s',         idx: function (n) { return groupsOf(n, 4); } },
+    thirds:   { name: 'In 3rds',       idx: function (n) { return intervalPairs(n, 2); } },
+    fourths:  { name: 'In 4ths',       idx: function (n) { return intervalPairs(n, 3); } },
+    broken:   { name: 'Broken 3rds',   idx: function (n) {
+      var out = [];
+      for (var i = 0; i + 3 < n; i++) { out.push(i); out.push(i + 2); out.push(i + 1); out.push(i + 3); }
+      return out;
+    } },
+    skip:     { name: 'Skipping',      idx: function (n) {
+      var out = []; for (var i = 0; i < n; i += 2) out.push(i); return out;
+    } },
+    pedal:    { name: 'Pedal tone',    idx: function (n) {
+      var out = []; for (var i = 1; i < n; i++) { out.push(0); out.push(i); } return out;
+    } }
+  };
+
+  /* `startIndex` rotates the note list, NOT the scale degree — the two differ
+     because a position starts on whichever degree anchors it. Named for what it
+     does; an earlier draft called it startDegree and documented it as degrees,
+     which is wrong for every box but the first. */
+  function applySequence(notes, sequenceId, descending, startIndex) {
+    if (!notes || !notes.length) return null;
+    if (!has(SEQUENCES, sequenceId)) return null;
+    var src = notes.slice();
+    if (startIndex) {
+      var k = ((startIndex % src.length) + src.length) % src.length;
+      src = src.slice(k).concat(src.slice(0, k));
+    }
+    if (descending) src.reverse();
+    var idx = SEQUENCES[sequenceId].idx(src.length);
+    var out = [];
+    for (var i = 0; i < idx.length; i++) {
+      var n = src[idx[i]];
+      if (n) out.push({ string: n.string, fret: n.fret });
+    }
+    return out.length ? out : null;
+  }
+
+  /* ── Rhythms ──────────────────────────────────────────────────────────────
+     Subdivision in beats. Swing is deliberately absent: it needs unequal pair
+     durations rather than one subdivision, so it belongs with the rhythm work
+     in M2 rather than being faked here. */
+  var RHYTHMS = {
+    quarters:   { name: 'Quarters',   sub: 1 },
+    eighths:    { name: 'Eighths',    sub: 0.5 },
+    triplets:   { name: 'Triplets',   sub: 1 / 3 },
+    sixteenths: { name: 'Sixteenths', sub: 0.25 },
+    sextuplets: { name: 'Sextuplets', sub: 1 / 6 }
+  };
+
+  /* ── The generator ────────────────────────────────────────────────────────
+     One exercise from one tuple. Returns { notes, meta } or { fault } — never
+     throws, and never returns something half-formed, because the playability
+     sweep needs a reason string it can report rather than an exception.
+
+     Picking-hand patterns (p-i-m-a and the Giuliani ladder) will populate the
+     same shape with `patternId` in place of `scaleId`; that branch lands with
+     unit P2 and is deliberately not stubbed here. */
+  function generateExercise(spec) {
+    spec = spec || {};
+    var fb = makeFretboard({ tuning: spec.tuning, capo: spec.capo, handed: spec.handed });
+    if (spec.tuning && !resolveTuningId(spec.tuning)) return { fault: 'unknown tuning: ' + spec.tuning };
+    if (!has(SCALES, spec.scaleId)) return { fault: 'unknown scale: ' + spec.scaleId };
+    var rootPc = Number(spec.rootPc);
+    if (!isFinite(rootPc) || rootPc !== Math.round(rootPc)) return { fault: 'rootPc must be a whole number' };
+    rootPc = ((rootPc % 12) + 12) % 12;
+
+    var posKind = spec.positionKind || 'box';
+    var count = positionCount(spec.scaleId, posKind);
+    if (!count) return { fault: posKind + ' positions are not defined for ' + spec.scaleId };
+    var posIndex = ((Number(spec.positionIndex || 0) % count) + count) % count;
+    var spec2 = posKind === 'string'
+      ? { kind: 'string', string: posIndex + 1 }
+      : { kind: posKind, index: posIndex };
+
+    var base = positionNotes(spec.scaleId, rootPc, fb, spec2);
+    if (!base) return { fault: 'no playable position: ' + spec.scaleId + ' ' + posKind + ' ' + posIndex +
+                               ' in ' + fb.tuning + ' capo ' + fb.capo };
+
+    var seqId = spec.sequence || 'straight';
+    var startIndex = Math.round(Number(spec.startIndex) || 0);
+    var seq = applySequence(base, seqId, !!spec.descending, startIndex);
+    if (!seq) return { fault: 'sequence ' + seqId + ' produced nothing from ' + base.length + ' notes' };
+
+    var rhythmId = spec.rhythm || 'eighths';
+    if (!has(RHYTHMS, rhythmId)) return { fault: 'unknown rhythm: ' + rhythmId };
+    var sub = RHYTHMS[rhythmId].sub;
+
+    var notes = [];
+    for (var i = 0; i < seq.length; i++) {
+      notes.push({
+        string: seq[i].string,
+        fret: seq[i].fret,
+        beat: beatAt(i, sub),      // computed, never accumulated
+        dur: sub,
+        hand: 'f'
+      });
+    }
+    return {
+      notes: notes,
+      meta: {
+        scaleId: spec.scaleId, rootPc: rootPc, positionKind: posKind, positionIndex: posIndex,
+        sequence: seqId, descending: !!spec.descending, startIndex: startIndex, rhythm: rhythmId,
+        tempo: Number(spec.tempo) > 0 ? Number(spec.tempo) : DEFAULT_BPM,
+        tuning: fb.tuning, capo: fb.capo,
+        beats: seq.length * sub
+      }
+    };
+  }
+
+  /* Stable key for the mastery grid. Deterministic, no free text, and it must
+     not include anything that is a rendering choice — handedness in particular,
+     or the same exercise would score twice. */
+  function exerciseKey(meta) {
+    return [canonicalScaleId(meta.scaleId), meta.rootPc,
+            meta.positionKind + meta.positionIndex,
+            meta.sequence + (meta.descending ? 'D' : 'A') + '@' + (meta.startIndex || 0),
+            meta.rhythm, meta.tuning, meta.capo].join('|');
+  }
+
   /* ── Timing ───────────────────────────────────────────────────────────────
      Pure arithmetic, deliberately kept out of guitar-audio.js so it can be
      tested in Node. Web Audio scheduling itself cannot be; this can, and this
@@ -400,6 +717,27 @@
     neckStringY: neckStringY,
     neckFretX: neckFretX,
     mirrorFor: mirrorFor,
+    /* scales */
+    SCALES: SCALES,
+    scaleSteps: scaleSteps,
+    canonicalScaleId: canonicalScaleId,
+    SCALE_KEY_ALIASES: SCALE_KEY_ALIASES,
+    scaleDegreeCount: scaleDegreeCount,
+    scalePitchClasses: scalePitchClasses,
+    isScaleTone: isScaleTone,
+    characteristicPc: characteristicPc,
+    modesByBrightness: modesByBrightness,
+    /* positions */
+    boxAnchor: boxAnchor,
+    positionNotes: positionNotes,
+    positionCount: positionCount,
+    /* sequences and rhythms */
+    SEQUENCES: SEQUENCES,
+    RHYTHMS: RHYTHMS,
+    applySequence: applySequence,
+    /* generator */
+    generateExercise: generateExercise,
+    exerciseKey: exerciseKey,
     /* timing */
     beatsToSeconds: beatsToSeconds,
     secondsToBeats: secondsToBeats,
