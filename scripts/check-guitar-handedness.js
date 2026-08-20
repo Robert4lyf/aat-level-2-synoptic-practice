@@ -281,6 +281,49 @@ function sameSeq(a, b) { return a.length === b.length && a.every((v, i) => v ===
   });
 }
 
+/* ── 4b. Tab digits do not collide ───────────────────────────────────────────
+   Each fret number is masked from the stave line by a small centred rect. At
+   fine subdivisions a two-digit number's mask reached far enough in both
+   directions to cover most of its neighbour, so "7 9 10" rendered as "7 ε 10" —
+   a missing note that still looks like notation. Spacing must clear the sum of
+   two adjacent half-widths, and this asserts it across every rhythm and a
+   position high enough to need two digits everywhere.
+
+   (This file has grown past handedness into render integrity generally. Kept
+   together rather than split, because everything here asserts on rendered
+   output and a fourth checker would be a fourth thing to remember to run.) */
+{
+  const halfOf = (v) => (String(v).length * 9.5 * 0.29) + 1.3;
+  const collisions = (svg) => {
+    const masks = [...svg.matchAll(/<rect x="([\d.]+)" y="[\d.-]+" width="([\d.]+)"[^>]*gtr-tab-clear/g)]
+      .map(m => ({ x: +m[1], w: +m[2] }));
+    const digits = [...svg.matchAll(/<text x="([\d.]+)"[^>]*gtr-tab-fret[^>]*>([^<]+)</g)]
+      .map(m => ({ x: +m[1], v: m[2] }));
+    let bad = 0;
+    digits.forEach(d => masks.forEach(r => {
+      if (Math.abs(r.x + r.w / 2 - d.x) < 0.01) return;         // the digit's own mask
+      const h = halfOf(d.v);
+      if (r.x < d.x + h - 0.5 && r.x + r.w > d.x - h + 0.5) bad++;
+    }));
+    return bad;
+  };
+  const fbT = E.makeFretboard();
+  let checked = 0;
+  Object.keys(E.RHYTHMS).forEach(rhythm => {
+    [['dorian', 9, 0], ['major', 10, 3], ['minPent', 9, 0]].forEach(([scaleId, rootPc, positionIndex]) => {
+      const ex = E.generateExercise({ scaleId, rootPc, positionIndex, rhythm });
+      if (ex.fault) return;
+      const n = collisions(R.tab({ notes: ex.notes }, ex.fb));
+      checked++;
+      if (n) {
+        errors.push(`tab: ${n} fret number(s) masked by a neighbour at ${rhythm} (${scaleId} position ${positionIndex}). ` +
+                    `Note spacing must clear the sum of two adjacent half-widths, not one.`);
+      }
+    });
+  });
+  notes.push(`Tab digit collisions: none, across ${checked} rhythm × position combinations.`);
+}
+
 /* ── 5. Lesson prose uses fretting/picking, never left/right ─────────────── */
 const BANNED = [
   /\bright[- ]hand(ed)?\b/i, /\bleft[- ]hand(ed)?\b/i,

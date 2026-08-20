@@ -58,6 +58,14 @@
   }
   function n2(v) { return Math.round(v * 100) / 100; }
 
+  /* Half the width of the mask behind a fret number. A digit's advance in a
+     system sans is close to 0.29em; the pad keeps the stave line from grazing
+     the glyph. Used both to draw the mask and to work out how far apart notes
+     have to sit, so the two can never disagree. */
+  function digitHalf(value) {
+    return (String(value).length * TB.fontSize * 0.29) + 1.3;
+  }
+
   /* Every figure is wrapped the same way: a viewBox so it scales to its
      container, a role and title so a screen reader gets something, and an
      overflow-x container so a wide one scrolls itself rather than the page. */
@@ -256,8 +264,31 @@
     var lastBeat = notes.length ? notes[notes.length - 1].beat : 0;
     var totalBeats = Math.max(beatsPerBar, Math.ceil((lastBeat + 0.5) / beatsPerBar) * beatsPerBar);
 
+    /* SPACING MUST CLEAR THE DIGITS, not just the beat.
+       Each fret number is drawn over a small rect that masks the stave line
+       behind it. That rect is centred, so a two-digit number reaches half its
+       width in BOTH directions — and at triplet spacing (26/3 = 8.7px) it ate
+       most of the neighbouring digit, turning "7 9 10" into "7 ε 10".
+
+       So the gap between adjacent notes has to clear the sum of the two
+       half-widths, and the widest pair in the figure sets the requirement.
+       beatGap then grows until the FINEST subdivision present satisfies it.
+       Keeping x linear in beat matters: the playback cursor converts a beat to
+       an x position, and a non-linear layout would need the same map. */
+    var maxHalf = 0;
+    notes.forEach(function (nte) { maxHalf = Math.max(maxHalf, digitHalf(E.displayFret(nte, fb))); });
+    var needGap = maxHalf * 2 + 2;
+    var distinct = [];
+    notes.forEach(function (nte) { if (distinct[distinct.length - 1] !== nte.beat) distinct.push(nte.beat); });
+    var finest = Infinity;
+    for (var d = 1; d < distinct.length; d++) {
+      var gap = distinct[d] - distinct[d - 1];
+      if (gap > 0 && gap < finest) finest = gap;
+    }
+    var beatGapPx = (finest === Infinity) ? TB.beatGap : Math.max(TB.beatGap, needGap / finest);
+
     var bars = Math.max(1, Math.round(totalBeats / beatsPerBar));
-    var barWidth = beatsPerBar * TB.beatGap + TB.barPad;
+    var barWidth = beatsPerBar * beatGapPx + TB.barPad;
     var w = TB.padX * 2 + bars * barWidth;
     var h = TB.padY * 2 + TB.stringGap * (E.STRING_COUNT - 1);
     /* Bar k's line, and a note at absolute beat t, both derived from the same
@@ -265,7 +296,7 @@
     var barLineX = function (k) { return TB.padX + k * barWidth; };
     var x = function (beat) {
       var k = Math.floor(beat / beatsPerBar);
-      return barLineX(k) + TB.barPad + (beat - k * beatsPerBar) * TB.beatGap;
+      return barLineX(k) + TB.barPad + (beat - k * beatsPerBar) * beatGapPx;
     };
     var y = function (stringNo) { return TB.padY + E.tabStringY(stringNo, TB.stringGap); };
 
@@ -285,7 +316,7 @@
       var shown = E.displayFret(nte, fb);
       /* A backing rectangle so the stave line does not run through the digit. */
       var tx = x(nte.beat), ty = y(nte.string);
-      var half = (String(shown).length * TB.fontSize * 0.34) + 1.6;
+      var half = digitHalf(shown);
       g += '<rect x="' + n2(tx - half) + '" y="' + n2(ty - TB.fontSize / 2) +
            '" width="' + n2(half * 2) + '" height="' + n2(TB.fontSize) + '" class="gtr-tab-clear" />';
       g += text(tx, ty, shown, 'gtr-tab-fret');

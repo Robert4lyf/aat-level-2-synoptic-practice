@@ -375,3 +375,29 @@ beneath every chord box so the claim is checkable rather than trusted.
 looking at the pictures — none of them detectable by any checker, because in
 every case the output was structurally perfect and musically wrong. Two of them
 were mine twice over: I treated a symptom, shipped it, and needed telling again.
+
+### Step 6, fourth pass — the mask ate its neighbour
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 6.20 | Fret numbers of any width fit the spacing | **Confirmed false.** Each digit is masked from the stave line by a centred rect. A two-digit mask reaches ~8px in *both* directions, while triplet spacing is 8.7px — so it covered most of the neighbouring digit and "7 9 10" rendered as "7 ε 10": a missing note that still looks like notation | Spacing now clears the **sum of two adjacent half-widths**, not one. `beatGap` grows until the finest subdivision present satisfies it |
+
+Two details worth keeping:
+
+- **`digitHalf()` is used both to draw the mask and to space the notes**, so the
+  two cannot disagree. The original bug was possible because one number sized
+  the rect and a different, unrelated constant set the spacing.
+- **x stays linear in beat.** Proportional-by-content layout is what an engraver
+  would do, but the playback cursor converts a beat to an x position, and a
+  non-linear layout would need that same map threaded through it. Widening the
+  whole figure keeps one arithmetic.
+
+Asserted permanently across every rhythm × three positions, and the assertion was
+shown to fail: with the spacing requirement removed it reports 30 masked digits
+at eighths and 6 at triplets.
+
+**Four passes, four real defects, none of them findable by a checker before the
+fact.** Every one produced structurally valid output — well-formed SVG, correct
+note data, all assertions green — that was wrong in a way only a guitarist
+looking at it would catch. The checkers now cover all four *after* the fact,
+which is the most that could be expected of them.
