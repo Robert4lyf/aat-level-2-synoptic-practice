@@ -38,8 +38,16 @@
   'use strict';
 
   /* ── Geometry constants. Nothing outside this block invents a number. ───── */
+  /* Chord box. padTop has to hold TWO stacked rows above the nut — the chord
+     name and the open/muted markers — and at 26 it did not: the name sat on a
+     baseline of 9 and the markers on 14, so with an 11px name over 9px markers
+     the glyphs overlapped, and "A7" and "Asus4" collided with the circles above
+     the third and fourth strings. Both rows are now placed from named
+     baselines rather than from arithmetic on padTop, so the relationship is
+     stated once and the two cannot drift apart again. */
   var CB = {                       // chord box
-    stringGap: 16, fretGap: 20, padX: 14, padTop: 26, padBottom: 18,
+    stringGap: 16, fretGap: 20, padX: 14, padTop: 36, padBottom: 18,
+    nameBaseline: 11, markBaseline: 27,
     dot: 5.4, nutThickness: 3.4
   };
   var NK = {                       // neck diagram
@@ -148,7 +156,7 @@
       if ((shape.muted || []).indexOf(s2) !== -1) mark = '×';
       else if (sounded[s2] && sounded[s2].fret <= fb.capo) mark = '○';
       else if (!sounded[s2]) mark = '×';
-      if (mark) g += text(x(s2), CB.padTop - 12, mark, 'gtr-cb-mark');
+      if (mark) g += text(x(s2), CB.markBaseline, mark, 'gtr-cb-mark');
     }
 
     notes.forEach(function (nte) {
@@ -167,7 +175,9 @@
     var label = wrongTuning
       ? (shape.name || 'Chord') + ' — shape is for ' + shape.tuning + ', drawn on ' + fb.tuning
       : (shape.name || 'Chord') + ' chord shape';
-    var head = shown.trim() ? text(w / 2, 9, shown, 'gtr-cb-name' + (wrongTuning ? ' is-wrong-tuning' : '')) : '';
+    var head = shown.trim()
+      ? text(w / 2, CB.nameBaseline, shown, 'gtr-cb-name' + (wrongTuning ? ' is-wrong-tuning' : ''))
+      : '';
     return svgWrap(w, h, label, 'gtr-chordbox', head + g);
   }
 

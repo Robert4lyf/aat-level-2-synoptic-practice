@@ -59,6 +59,8 @@ jobs:
         run: npm run test:guitar-engine
       - name: Check every generated guitar shape is playable
         run: npm run check:guitar-playability
+      - name: Check every chord voicing sounds right in its own tuning
+        run: npm run check:guitar-voicings
       - name: Check handedness is applied in one place only
         run: npm run check:guitar-handedness
       - name: Check a subject waits for its stylesheet before mounting

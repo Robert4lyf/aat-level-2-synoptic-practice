@@ -150,11 +150,48 @@
         (ex.notes.length > 8 ? ' …' : '') + '</code></p>';
     }
 
-    var chords = ['maj', 'min', 'dom7', 'sus4'].map(function (c) {
+    /* Each box carries the notes it actually sounds, in this tuning.
+       This exists because "changing tuning doesn't change the chord shapes"
+       was reported against a build where it demonstrably did — and the panel
+       gave no way to tell a correct unchanged shape from a stale one. The
+       pitches settle it on sight: an A major that reads A C# E is right in
+       whatever tuning produced it, and the standard-tuning shape dropped into
+       DADGAD would read as something else entirely. It is also the check that
+       would have caught the original DADGAD bug the moment it appeared. */
+    var CHORD_IDS = ['maj', 'min', 'dom7', 'sus4'];
+    var stdFb = E.makeFretboard({ tuning: 'standard', capo: data.settings.capo, handed: data.profile.handed });
+    var shapeOf = function (v) {
+      return v ? v.notes.map(function (n) { return n.string + 'f' + n.fret; }).join(' ') : '';
+    };
+    var unchanged = 0, shown = 0;
+    var chords = CHORD_IDS.map(function (c) {
       var v = E.findVoicing(c, S.rootPc, fb);
-      return v ? '<button class="gtr-chordbtn" type="button" data-chord="' + esc(c) + '">' +
-                 R.chordBox(v, fb) + '</button>' : '';
+      if (!v) return '';
+      shown++;
+      if (shapeOf(v) === shapeOf(E.findVoicing(c, S.rootPc, stdFb))) unchanged++;
+      /* Low string first, the order they are heard in when rolled. */
+      var pitches = v.notes.slice().sort(function (a, b) { return b.string - a.string; })
+        .map(function (n) { return E.midiToName(E.soundingMidi(n, fb)); }).join(' ');
+      return '<button class="gtr-chordbtn" type="button" data-chord="' + esc(c) + '">' +
+             R.chordBox(v, fb) +
+             '<span class="gtr-chordpitch">' + esc(pitches) + '</span>' +
+             '</button>';
     }).join('');
+
+    /* Drop D alters one string, and none of these voicings use it, so every
+       shape is legitimately identical to standard. Saying so is the difference
+       between a correct answer and an app that looks broken. */
+    var tuningNote;
+    if (fb.tuning !== 'standard' && shown && unchanged === shown) {
+      tuningNote = 'Every shape here is the same as in standard tuning — these voicings do not use the ' +
+                   'strings ' + E.TUNINGS[fb.tuning].name + ' changes. Try another root, or a scale below, ' +
+                   'to hear what this tuning does.';
+    } else if (fb.tuning !== 'standard' && unchanged) {
+      tuningNote = unchanged + ' of these ' + shown + ' shapes are unchanged from standard tuning: they do ' +
+                   'not use the strings ' + E.TUNINGS[fb.tuning].name + ' alters.';
+    } else {
+      tuningNote = 'Tap a shape to hear it. Voicings are searched for on the tuning above, not written down.';
+    }
 
     return '<div class="container gtr-wrap">' +
       '<div class="gtr-panel">' +
@@ -176,7 +213,7 @@
       '<div class="gtr-panel">' +
         '<h2 class="gtr-h">Chords in this tuning</h2>' +
         '<div class="gtr-chordrow">' + chords + '</div>' +
-        '<p class="gtr-detail">Tap a shape to hear it. Voicings are searched for on the tuning above, not written down.</p>' +
+        '<p class="gtr-detail">' + esc(tuningNote) + '</p>' +
       '</div>' +
 
       '<div class="gtr-panel">' +
