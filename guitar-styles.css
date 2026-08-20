@@ -1,0 +1,111 @@
+/* Guitar module — figure styles.
+ *
+ * Scoped entirely under body[data-subject="guitar"], so nothing here can reach
+ * the other five subjects.
+ *
+ * WHY THIS SHIPS WITH THE RENDERER RATHER THAN THE UI SHELL
+ *
+ * guitar-render.js contains no colour at all — every stroke and fill is
+ * currentColor or a token from this file, which is what keeps dark mode from
+ * being a second bug. The consequence is that the renderer is unreadable
+ * without this stylesheet: the little rect that masks the stave line behind a
+ * tab digit has no fill of its own, so with no CSS the browser paints it solid
+ * black and hides the number it exists to reveal. Renderer and stylesheet are
+ * one deliverable.
+ *
+ * THEME DISCIPLINE, done by hand
+ *
+ * scripts/check-theme-tokens.js reads only styles.css, so this file gets none
+ * of that protection. Every token is therefore declared in full on the light
+ * selector and redeclared in full on the dark one — no aliases to :root, and
+ * nothing whose only definition sits inside a dark block.
+ */
+
+body[data-subject="guitar"] {
+  --gtr-ink:      #1f2937;   /* strings, frets, note heads */
+  --gtr-paper:    #ffffff;   /* what a tab digit is punched out of */
+  --gtr-muted:    #6b7280;   /* fret labels, x/o marks, PIMA */
+  --gtr-line:     #9ca3af;   /* stave and string lines */
+  --gtr-root:     #b45309;   /* the root note, and the capo */
+  --gtr-char:     #0f766e;   /* the characteristic note of a mode */
+  --gtr-on-dot:   #ffffff;   /* text sitting inside a filled dot */
+  --gtr-warn:     #b91c1c;   /* a shape drawn on the wrong tuning */
+}
+
+body.dark[data-subject="guitar"] {
+  --gtr-ink:      #e5e7eb;
+  --gtr-paper:    #0f1419;
+  --gtr-muted:    #9ca3af;
+  --gtr-line:     #4b5563;
+  --gtr-root:     #fbbf24;
+  --gtr-char:     #5eead4;
+  --gtr-on-dot:   #0f1419;
+  --gtr-warn:     #f87171;
+}
+
+/* ── Figure frame ─────────────────────────────────────────────────────────
+   A wide figure scrolls inside itself. The page body must never scroll
+   sideways, which on a phone is the difference between a usable diagram and a
+   broken layout. */
+body[data-subject="guitar"] .gtr-fig {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 12px 0;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-subject="guitar"] .gtr-svg {
+  color: var(--gtr-ink);
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+body[data-subject="guitar"] .gtr-fig.gtr-chordbox { max-width: 132px; overflow: visible; }
+body[data-subject="guitar"] .gtr-fig.gtr-neck { max-width: 100%; }
+body[data-subject="guitar"] .gtr-fig.gtr-tab  { max-width: 100%; }
+
+/* Per-element hooks on the <svg> itself. A minimum width stops a long tab
+   stave being squeezed to illegibility inside its scroll container — better to
+   scroll than to shrink the digits past reading size. */
+body[data-subject="guitar"] .gtr-chordbox-svg { min-width: 108px; }
+body[data-subject="guitar"] .gtr-neck-svg     { min-width: 340px; }
+body[data-subject="guitar"] .gtr-tab-svg      { min-width: 300px; }
+
+/* ── Chord box ───────────────────────────────────────────────────────────── */
+body[data-subject="guitar"] .gtr-cb-string,
+body[data-subject="guitar"] .gtr-cb-fret   { stroke: var(--gtr-line); stroke-width: 1; }
+body[data-subject="guitar"] .gtr-cb-nut    { fill: var(--gtr-ink); }
+body[data-subject="guitar"] .gtr-cb-dot    { fill: var(--gtr-ink); }
+body[data-subject="guitar"] .gtr-cb-finger { fill: var(--gtr-on-dot); font-size: 7px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-cb-name   { fill: var(--gtr-ink); font-size: 11px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-cb-name.is-wrong-tuning { fill: var(--gtr-warn); }
+body[data-subject="guitar"] .gtr-cb-mark,
+body[data-subject="guitar"] .gtr-cb-basefret { fill: var(--gtr-muted); font-size: 9px; }
+
+/* ── Neck diagram ────────────────────────────────────────────────────────── */
+body[data-subject="guitar"] .gtr-nk-string,
+body[data-subject="guitar"] .gtr-nk-fret   { stroke: var(--gtr-line); stroke-width: 1; }
+body[data-subject="guitar"] .gtr-nk-nut    { stroke: var(--gtr-ink); stroke-width: 2.6; }
+body[data-subject="guitar"] .gtr-nk-capo   { stroke: var(--gtr-root); stroke-width: 3.2; }
+body[data-subject="guitar"] .gtr-nk-inlay  { fill: var(--gtr-line); opacity: .55; }
+body[data-subject="guitar"] .gtr-nk-dot    { fill: var(--gtr-ink); }
+body[data-subject="guitar"] .gtr-nk-dot.is-root { fill: var(--gtr-root); }
+body[data-subject="guitar"] .gtr-nk-dot.is-char { fill: var(--gtr-char); }
+body[data-subject="guitar"] .gtr-nk-label  { fill: var(--gtr-on-dot); font-size: 6.5px; font-weight: 600; }
+
+/* ── Tablature ────────────────────────────────────────────────────────────
+   gtr-tab-clear is the reason this file cannot be deferred: it punches the
+   stave line out from behind a digit, so it must be painted in the page's own
+   background. Given no fill it defaults to black and hides the number. */
+body[data-subject="guitar"] .gtr-tab-string { stroke: var(--gtr-line); stroke-width: 1; }
+body[data-subject="guitar"] .gtr-tab-bar    { stroke: var(--gtr-ink); stroke-width: 1.8; }
+body[data-subject="guitar"] .gtr-tab-clear  { fill: var(--gtr-paper); }
+body[data-subject="guitar"] .gtr-tab-fret   { fill: var(--gtr-ink); font-size: 9.5px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-tab-capo   { fill: var(--gtr-root); font-size: 9px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-tab-pima,
+body[data-subject="guitar"] .gtr-tab-tech   { fill: var(--gtr-muted); font-size: 8px; font-style: italic; }
+
+/* Figures carry meaning through colour (root, characteristic note), so they
+   also carry it through position and label. Nothing here is colour-only. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="guitar"] .gtr-svg * { transition: none !important; }
+}

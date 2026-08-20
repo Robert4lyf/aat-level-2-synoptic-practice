@@ -258,3 +258,146 @@ same aliased estimator and looked fine.
 **Rule added to §12: validate the measuring instrument, in the configuration the
 gate actually uses, against inputs that are deliberately wrong.** "Show the gate
 can fail" is necessary and, on its own, not sufficient.
+
+---
+
+## Step 6 — the renderer and the handedness checker
+
+Diff: `guitar-render.js` (new), `guitar-styles.css` (new),
+`scripts/check-guitar-handedness.js` (new), `guitar-engine.js` (tabMirror),
+`package.json`, `docs/guitar-implementation-plan.md`.
+
+**Gate: the handedness checker green, plus a visual check across eight
+combinations.** The structural half is in CI; the visual half is not, and cannot be.
+
+### Caught before writing code
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 6.1 | The renderer must be browser-only, so step 6's gate can only be visual | **Disproved.** `aat1-ui.js` builds markup as strings; doing the same makes the renderer UMD and Node-testable, which turns most of the gate into assertions | Renderer emits SVG strings; the checker asserts structure and geometry |
+| 6.2 | Two-voice tab needs stems and is therefore a large job | **Disproved for tablature.** Notes sharing a beat on different strings occupy one column, which *is* polyphonic tab. Stems are staff-notation flourish | Polyphony ships free; engraving deferred to the tapping module |
+| 6.3 | The renderer can decide tab's mirror itself | **Confirmed as a violation.** `tab()` read `fb.handed` directly, breaking the one-file rule the checker was being written to enforce | `tabMirror(fb, mirrorTab)` moved into the engine |
+
+### Caught by mutation testing the checker
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 6.4 | Sorting coordinates before comparing is harmless | **Confirmed as vacuous, and this is the third time.** Mirroring permutes which note sits at which coordinate without changing the *set*, so sorting destroyed the signal — a mutation flipping the neck's string order with handedness passed cleanly | Compare in emission order; `sameSeq` replaces every sorted `.join()` |
+| 6.5 | Comparing the two handednesses to each other is sufficient | **Confirmed insufficient.** Inverting the chord box for *both* hands kept them perfect mirrors and passed. Relative checks say nothing when both sides are wrong together | Absolute anchors added: chord box low-E-leftmost, neck and tab high-E-on-top, nut side per hand |
+
+### Caught by the review
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 6.6 | The chord-box window fits any shape | **Confirmed broken.** The window came from the lowest fretted note alone, so a shape at frets 4–6 drew a nut that is not there and silently dropped two dots — rendering as a different, plausible chord | Window fits lowest *and* highest; rows grow to suit |
+| 6.7 | The neck diagram shows every note given to it | **Confirmed broken.** A fixed 12-fret window discarded everything above it: an 18-note position reaching fret 17 rendered four dots and said nothing | The diagram grows to fit the notes |
+| 6.8 | An unstyled class is merely unstyled | **Confirmed false, and it would have made tab unreadable.** `gtr-tab-clear` masks the stave line behind a digit and carries no fill, so with no CSS the browser defaults to opaque black and paints over the number | `guitar-styles.css` ships with the renderer, and a new rule asserts every emitted class has a rule and every token a dark value. It found four unstyled classes on its first run |
+| 6.9 | The prose ban works | **Confirmed vacuous.** It iterated the top-level path as if entries were lessons, but the house shape is path → unit.lessons → cards, so `l.cards` was undefined everywhere while it printed a confident count | Walks both shapes; finding zero cards is now an error, not a pass |
+| 6.10 | Scanning `card.p` covers the prose | **Confirmed insufficient.** Headings, callouts, tables, splits, worked examples and pointers all carry text; "your left hand" in a heading was invisible | `cardText()` gathers every text-bearing field |
+| 6.11 | A note without a beat is harmless | **Confirmed.** It made `totalBeats` NaN and emitted `viewBox="0 0 NaN 95"` — the figure does not render at all, silently | Missing beat treated as 0 |
+| 6.12 | The base-fret label is fine beside the box | **Confirmed broken.** At `text-anchor="end"` it ran outside the viewBox and clipped "12" to "2" — a *wrong* position marker rather than a missing one | Moved inside, centred |
+| 6.13 | Escaping the chord name is harmless | **Confirmed.** `svgWrap` escapes the title again, so `A&B` reached the aria-label as `A&amp;amp;B` while the visible name was correct — the two paths disagreed | Raw name passed; escaping happens once |
+| 6.14 | The neck's fret axis is pinned like the string axes | **Confirmed missing.** Inverting `neckFretX` for both hands passed the checker; only the engine unit test caught it | Absolute nut-side assertion added for both hands |
+
+### The pattern, now three steps running
+
+Findings 2.11, 3.2 and 6.4 are the same defect: an assertion that cannot fail.
+Each time the cause was **normalising before comparing** — excusing inputs by id,
+restating the implementation as the expectation, sorting away the association
+being tested. 6.5 is its close relative: comparing two things to each other with
+neither anchored to reality.
+
+Added to the §12 checklist as a standing question: *does this assertion compare
+against something independent of the code under test, and is anything being
+sorted, filtered or excused before the comparison?*
+
+### What the gate does not cover
+
+The visual half. Nothing in CI can say whether a chord box is legible at 130px,
+whether the dark palette is comfortable, or whether the tab digits are the right
+size. A page covering eight combinations was generated and handed over for that.
+
+### Step 6, second pass — feedback on the visual check
+
+The half of the gate that CI cannot cover did its job: three things came back
+that no checker had flagged, and one of them was wrong output in a delivered
+artefact.
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 6.15 | Tab mirroring is wanted | **Disproved by the only person who will use it.** It was designed in as an opt-in for left-handed readers | Removed entirely — engine, renderer, checker, tests and plan. `tabStringY` no longer takes a mirror argument, so tab cannot be flipped by accident or on purpose. A switch nobody will touch is worse than no switch |
+| 6.16 | Notes never collide with bar lines | **Confirmed broken.** `x = padX + beat × beatGap` and bar lines at multiples of `beatsPerBar`, so every downbeat was drawn exactly on top of its own bar line. Worst with quarter notes, where every note is a downbeat | Each bar is offset by `barPad`; lines and notes now derive from the same `barWidth` so they cannot drift apart. Verified: zero notes within 4px of a line |
+| 6.17 | The DADGAD panel shows DADGAD | **Confirmed false, and it was in a file I sent.** The check page generated the notes once for standard tuning and drew them on a DADGAD neck. A standard-tuning A dorian box reads `G2 A2 A#2 D3…` in DADGAD — a confident, entirely wrong diagram | Page fixed, and the API hazard behind it closed |
+
+**6.17 is the one worth dwelling on.** The page was wrong, but the reason it
+could be wrong is that `generateExercise` returned notes without the fretboard
+they were computed for, leaving every caller to build a second one and get it
+right by hand. Notes are string-and-fret positions, so the mismatch is silent
+and total.
+
+`generateExercise` now returns `fb`. A caller has no reason to construct a
+second fretboard, and the visual-check protocol in §12 says every panel must
+generate its notes for the board it is drawn on.
+
+No checker caught this, and none realistically could — the notes were valid, the
+diagram was well-formed, every structural assertion passed. It took someone who
+knows what A dorian sounds like in DADGAD looking at the picture. Worth
+recording as the clearest example so far of what the visual half of a gate is
+actually for.
+
+### Step 6, third pass — the same class of bug, twice
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 6.18 | Note groups straddling bar lines is a rendering fault | **Disproved — it was the exercise.** A dorian box 1 is uniformly *three notes per string*; the check page asked for eighths, so eight notes per bar cut every group of three in half. A three-per-string run is played in **triplets**, one string to a beat, which is the only subdivision where the finger grouping and the beat agree | `naturalRhythm(notes)` added: an unspecified rhythm now follows the grouping (2/string → eighths, 3 → triplets, 4 → sixteenths, 6 → sextuplets) rather than defaulting to a fixed eighth note. An explicit rhythm is still honoured, including a deliberately awkward one |
+| 6.19 | The DADGAD chord boxes were fixed last pass | **Confirmed false.** I fixed the scale notes and left the chord shapes hardcoded in the same file. `C`, `Bm` and `D (12th)` are standard-tuning fingerings; on a DADGAD neck they are not those chords, and the label says they are | Two fixes, because one was not enough last time |
+
+**6.19 is the same defect as 6.17, one pass later, in the same file.** I fixed the
+instance rather than the class, and it took a second report to see it. The class
+is: *tuning-specific data must not be written down by hand next to a variable
+tuning.*
+
+So it is closed twice over:
+
+- **`findVoicing(chordId, rootPc, fb)`** searches the fretboard for a playable
+  shape instead of anyone writing one out. Verified against fingerings that can
+  be named: standard C comes back `x32010`, A7 `x02020`, and DADGAD's D sus4
+  comes back all-open, which is the chord that tuning exists for. Shapes carry
+  the tuning they were found on.
+- **`chordBox` marks a mismatch loudly.** A shape declaring a tuning that
+  disagrees with the fretboard is drawn with a warning glyph and an aria-label
+  saying which is which, rather than a confidently mislabelled chord.
+
+The check page now hardcodes no shape at all, and prints the sounding notes
+beneath every chord box so the claim is checkable rather than trusted.
+
+**What this says about the visual gate.** Three real defects have now come out of
+looking at the pictures — none of them detectable by any checker, because in
+every case the output was structurally perfect and musically wrong. Two of them
+were mine twice over: I treated a symptom, shipped it, and needed telling again.
+
+### Step 6, fourth pass — the mask ate its neighbour
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 6.20 | Fret numbers of any width fit the spacing | **Confirmed false.** Each digit is masked from the stave line by a centred rect. A two-digit mask reaches ~8px in *both* directions, while triplet spacing is 8.7px — so it covered most of the neighbouring digit and "7 9 10" rendered as "7 ε 10": a missing note that still looks like notation | Spacing now clears the **sum of two adjacent half-widths**, not one. `beatGap` grows until the finest subdivision present satisfies it |
+
+Two details worth keeping:
+
+- **`digitHalf()` is used both to draw the mask and to space the notes**, so the
+  two cannot disagree. The original bug was possible because one number sized
+  the rect and a different, unrelated constant set the spacing.
+- **x stays linear in beat.** Proportional-by-content layout is what an engraver
+  would do, but the playback cursor converts a beat to an x position, and a
+  non-linear layout would need that same map threaded through it. Widening the
+  whole figure keeps one arithmetic.
+
+Asserted permanently across every rhythm × three positions, and the assertion was
+shown to fail: with the spacing requirement removed it reports 30 masked digits
+at eighths and 6 at triplets.
+
+**Four passes, four real defects, none of them findable by a checker before the
+fact.** Every one produced structurally valid output — well-formed SVG, correct
+note data, all assertions green — that was wrong in a way only a guitarist
+looking at it would catch. The checkers now cover all four *after* the fact,
+which is the most that could be expected of them.
