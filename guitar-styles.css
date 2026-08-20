@@ -328,6 +328,117 @@ body[data-subject="guitar"] .gtr-inline {
 }
 body[data-subject="guitar"] .gtr-inline input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--subj, var(--accent)); }
 
+/* ── The course ───────────────────────────────────────────────────────────
+   Two screens: the lesson list and the card player. The nav is a pair of
+   buttons rather than the app's tab bar, because a self-rendering subject
+   bypasses that bar entirely and reimplementing it here would mean two things
+   to keep in step. */
+body[data-subject="guitar"] .gtr-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+body[data-subject="guitar"] .gtr-navbtn {
+  flex: 1;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--subtext);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-navbtn.is-on {
+  color: var(--subj, var(--accent));
+  border-color: var(--subj, var(--accent));
+  background: var(--subj-light, var(--card));
+}
+
+body[data-subject="guitar"] .gtr-unit.is-empty { opacity: .62; }
+body[data-subject="guitar"] .gtr-lessonlist { list-style: none; margin: 10px 0 0; padding: 0; }
+body[data-subject="guitar"] .gtr-lessonlist li + li { margin-top: 6px; }
+body[data-subject="guitar"] .gtr-lessonbtn {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 11px 12px;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-lessonbtn:hover { border-color: var(--subj, var(--accent)); }
+body[data-subject="guitar"] .gtr-lesson-icon { font-size: 1.15rem; line-height: 1; }
+body[data-subject="guitar"] .gtr-lesson-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+body[data-subject="guitar"] .gtr-lesson-title { font-weight: 600; font-size: .93rem; }
+body[data-subject="guitar"] .gtr-lesson-sum { font-size: .79rem; color: var(--subtext); line-height: 1.35; }
+body[data-subject="guitar"] .gtr-lesson-state { color: var(--subj, var(--accent)); font-weight: 700; }
+
+/* ── One card at a time ───────────────────────────────────────────────────
+   The player shows a single card because the format only works if the reader
+   stops and plays, and a page that can be scrolled past will be. */
+body[data-subject="guitar"] .gtr-lessonbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+body[data-subject="guitar"] .gtr-lessonbar-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: .95rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body[data-subject="guitar"] .gtr-lessonbar-count {
+  font-size: .8rem;
+  color: var(--subtext);
+  font-variant-numeric: tabular-nums;
+}
+body[data-subject="guitar"] .gtr-dots { display: flex; gap: 5px; margin-bottom: 12px; }
+body[data-subject="guitar"] .gtr-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+body[data-subject="guitar"] .gtr-dot.is-past { background: var(--subtext); }
+body[data-subject="guitar"] .gtr-dot.is-here { background: var(--subj, var(--accent)); transform: scale(1.25); }
+/* The card is a panel that holds one step of a lesson. It gets a little more
+   room than the workshop panels because it is read rather than scanned. */
+body[data-subject="guitar"] .gtr-card {
+  padding: 18px;
+}
+body[data-subject="guitar"] .gtr-card .gtr-p {
+  font-size: .93rem;
+  line-height: 1.62;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+body[data-subject="guitar"] .gtr-cardnav {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+body[data-subject="guitar"] .gtr-cardnav .gtr-btn { flex: 0 0 auto; }
+body[data-subject="guitar"] .gtr-cardnav .gtr-play { flex: 1; }
+body[data-subject="guitar"] .gtr-cardnav .gtr-btn[disabled] { opacity: .45; cursor: default; }
+
+body[data-subject="guitar"] .gtr-pointer {
+  border-left: 3px solid var(--subj, var(--accent));
+  padding: 8px 0 8px 12px;
+  margin: 10px 0;
+}
+body[data-subject="guitar"] .gtr-pointer-song { font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+body[data-subject="guitar"] .gtr-standalone { display: flex; margin: 10px 0 2px; }
+
 /* ── Tempo ────────────────────────────────────────────────────────────────
    Its own row under the transport. The slider used to share the transport
    line at 120px, which put 160 bpm inside about 120 device pixels; the row

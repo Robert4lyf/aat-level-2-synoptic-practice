@@ -24,13 +24,22 @@
 (function (root) {
   'use strict';
 
+  var SY = root.GuitarSyllabus;
+  var LD = root.GuitarLearnData;
+  var XD = root.GuitarExercises;
+
   var STORE_KEY = 'prep_v2_guitar';
   var E = root.GuitarEngine, R = root.GuitarRender, A = root.GuitarAudio;
 
   var data = {
     profile:  { handed: 'right', touch: 'flesh' },
     settings: { tuning: 'standard', capo: 0, tempo: 90 },
-    stats:    { plays: 0 }
+    /* Keyed by lesson id, as the plan's storage shape specifies. Written
+       through the generic merge in progress-backup.js, which takes the larger
+       of two numbers field-wise — so `at` being a timestamp means the more
+       recent completion wins, and `done` being a boolean survives either way. */
+    lessons:  {},
+    stats:    { plays: 0, cards: 0 }
   };
 
   function load() {
@@ -41,6 +50,12 @@
         if (p.profile)  { data.profile  = Object.assign(data.profile, p.profile); }
         if (p.settings) { data.settings = Object.assign(data.settings, p.settings); }
         if (p.stats)    { data.stats    = Object.assign(data.stats, p.stats); }
+        /* Lessons was added when the course landed and this line was not, so
+           completion was written to storage on every finish and never read back:
+           every lesson showed as undone after a reload, and the write looked
+           fine from the outside. Assigned onto the default rather than
+           replacing it, so a stored object missing keys does not remove them. */
+        if (p.lessons)  { data.lessons  = Object.assign(data.lessons || {}, p.lessons); }
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
     /* Storage is the one place a tempo arrives unchecked — an older build's
@@ -57,6 +72,12 @@
      restoring someone into the middle of a scale they were poking at is not a
      kindness. */
   var S = {
+    /* 'lessons' is the course; 'workshop' is the scales and chords bench. The
+       bench was here first and is still where the generated material lives, but
+       it is a tool rather than the course, so it stops being the landing page
+       the moment there are lessons to land on. */
+    screen: 'lessons',
+    lessonId: null, cardIndex: 0,
     scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 0,
     sequence: 'straight', descending: false, rhythm: '', loop: false
   };
@@ -135,7 +156,217 @@
     return out;
   }
 
+  /* ── The course ───────────────────────────────────────────────────────────
+     A lesson is a stack of cards; a card is some prose and at least one thing
+     to play. The player shows one card at a time rather than the whole lesson
+     scrolled together, because the format only works if the reader stops and
+     plays — and a page that can be scrolled past will be. */
+
+  function lessonDone(id) {
+    var rec = data.lessons && data.lessons[id];
+    return !!(rec && rec.done);
+  }
+  function markDone(id) {
+    if (!data.lessons) data.lessons = {};
+    data.lessons[id] = { done: true, at: Date.now() };
+    save();
+  }
+
+  /* Move to a card and adopt whatever tempo it prescribes. Called from the
+     navigation handlers rather than from the renderer: doing it during render
+     would reset the tempo on every repaint, so a player who nudged it to 48
+     would watch it snap back the next time anything redrew. */
+  function goToCard(lessonId, index) {
+    var lesson = LD.lesson(lessonId);
+    if (!lesson) return;
+    S.lessonId = lessonId;
+    S.cardIndex = Math.max(0, Math.min(index, lesson.cards.length - 1));
+    S.screen = 'lesson';
+    var card = lesson.cards[S.cardIndex];
+    var el = card && (card.tab || card.playalong);
+    var ex = el && XD.exercise(el.exercise);
+    var bpm = (el && el.bpm) || (ex && ex.bpm);
+    /* A card prescribes a starting tempo, and adopting it is right until the
+       player has said otherwise. Someone working through the unit at 40 because
+       that is where the shape holds should not be dragged back to 54 by every
+       Next — so once the tempo has been touched by hand, this stops overriding
+       it for the rest of the lesson. Opening a lesson clears the flag, because
+       a prescribed tempo is worth offering again at the start. */
+    if (bpm && !S.tempoTouched) data.settings.tempo = clampTempo(bpm);
+    save();
+  }
+
+  function unitProgress(unitId) {
+    var ls = LD.lessonsFor(unitId);
+    var done = ls.filter(function (l) { return lessonDone(l.id); }).length;
+    return { done: done, total: ls.length };
+  }
+
+  function lessonsHtml() {
+    var out = '';
+    SY.UNITS.forEach(function (u) {
+      var ls = LD.lessonsFor(u.id);
+      var prog = unitProgress(u.id);
+      /* A unit with no lessons yet is shown rather than hidden. Someone
+         following the course should be able to see what is coming and what is
+         not there — a syllabus with silent gaps is how the last section of a
+         course turns out to be empty. */
+      if (!ls.length) {
+        out += '<div class="gtr-panel gtr-unit is-empty">' +
+          '<h2 class="gtr-h">' + esc(u.id) + ' · ' + esc(u.title) + '</h2>' +
+          '<p class="gtr-detail">Not written yet. ' +
+            SY.criteriaFor(u.id).length + ' criteria are mapped out for it.</p>' +
+        '</div>';
+        return;
+      }
+      out += '<div class="gtr-panel gtr-unit">' +
+        '<h2 class="gtr-h">' + esc(u.id) + ' · ' + esc(u.title) + '</h2>' +
+        '<p class="gtr-detail">' + prog.done + ' of ' + prog.total + ' done</p>' +
+        '<ul class="gtr-lessonlist">' +
+        ls.map(function (l) {
+          return '<li><button class="gtr-lessonbtn" type="button" data-lesson="' + esc(l.id) + '">' +
+            '<span class="gtr-lesson-icon" aria-hidden="true">' + esc(l.icon || '•') + '</span>' +
+            '<span class="gtr-lesson-text">' +
+              '<span class="gtr-lesson-title">' + esc(l.title) + '</span>' +
+              '<span class="gtr-lesson-sum">' + esc(l.summary || '') + '</span>' +
+            '</span>' +
+            '<span class="gtr-lesson-state">' + (lessonDone(l.id) ? '✓' : '') + '</span>' +
+          '</button></li>';
+        }).join('') +
+        '</ul></div>';
+    });
+    return out;
+  }
+
+  /* Render one card's element. Each returns figure markup plus, where the
+     element is playable, the notes the transport should be given — so the
+     player never has to look the exercise up a second time and cannot end up
+     showing one thing and playing another. */
+  function elementHtml(card, fb) {
+    var figures = '', playable = null, caption = '';
+
+    if (card.tab || card.playalong) {
+      var el = card.tab || card.playalong;
+      var ex = XD.exercise(el.exercise);
+      if (ex) {
+        var notes = byBeat(ex.notes);
+        figures += R.tab({ notes: notes, title: ex.title,
+                           beatsPerBar: ex.beatsPerBar || 4 }, fb);
+        playable = { notes: notes, bpm: el.bpm || ex.bpm || data.settings.tempo,
+                     loop: !!el.loop, title: ex.title };
+        caption = el.caption || el.note || '';
+      } else {
+        figures += '<div class="gtr-fault">Exercise "' + esc(el.exercise) + '" is missing.</div>';
+      }
+    }
+    if (card.chordbox) {
+      var v = E.findVoicing(card.chordbox.chordId, card.chordbox.rootPc, fb);
+      if (v) figures += R.chordBox(v, fb);
+    }
+    if (card.fretboard) {
+      var fnotes = card.fretboard.notes || [];
+      figures += R.neckDiagram({ notes: fnotes, root: card.fretboard.rootPc,
+                                 labels: true, title: card.fretboard.title || 'Fretboard' }, fb);
+    }
+    if (card.pointer) {
+      var pt = card.pointer;
+      figures += '<div class="gtr-pointer">' +
+        '<p class="gtr-pointer-song">' + esc(pt.song) + ' — ' + esc(pt.artist) + '</p>' +
+        '<p class="gtr-detail"><strong>Listen for</strong> ' + esc(pt.listenFor) + '</p>' +
+        '<p class="gtr-detail"><strong>Then try</strong> ' + esc(pt.thenTry) + '</p>' +
+      '</div>';
+    }
+    return { figures: figures, playable: playable, caption: caption };
+  }
+
+  function lessonHtml() {
+    var lesson = LD.lesson(S.lessonId);
+    if (!lesson) { S.screen = 'lessons'; return lessonsHtml(); }
+    var fb = fretboard();
+    var idx = Math.max(0, Math.min(S.cardIndex, lesson.cards.length - 1));
+    var card = lesson.cards[idx];
+    var built = elementHtml(card, fb);
+    _cardPlayable = built.playable;
+
+    var dots = lesson.cards.map(function (c, i) {
+      return '<span class="gtr-dot' + (i === idx ? ' is-here' : '') +
+             (i < idx ? ' is-past' : '') + '" aria-hidden="true"></span>';
+    }).join('');
+
+    var last = idx === lesson.cards.length - 1;
+
+    return '<div class="container gtr-wrap">' +
+      '<div class="gtr-lessonbar">' +
+        '<button class="gtr-btn" id="gtrBack" type="button">← Lessons</button>' +
+        '<span class="gtr-lessonbar-title">' + esc(lesson.title) + '</span>' +
+        '<span class="gtr-lessonbar-count">' + (idx + 1) + '/' + lesson.cards.length + '</span>' +
+      '</div>' +
+      '<div class="gtr-panel gtr-card">' +
+        '<div class="gtr-dots">' + dots + '</div>' +
+        '<h2 class="gtr-h">' + esc(card.h) + '</h2>' +
+        (card.p || []).map(function (para) {
+          return '<p class="gtr-p">' + esc(para) + '</p>';
+        }).join('') +
+        '<div class="gtr-figures">' + built.figures + '</div>' +
+        (built.caption ? '<p class="gtr-detail">' + esc(built.caption) + '</p>' : '') +
+        (built.playable ? transportHtml(built.playable) : '') +
+      '</div>' +
+      '<div class="gtr-cardnav">' +
+        '<button class="gtr-btn" id="gtrPrev" type="button"' + (idx === 0 ? ' disabled' : '') + '>Back</button>' +
+        (last
+          ? '<button class="gtr-play" id="gtrFinish" type="button">' +
+              (lessonDone(lesson.id) ? 'Done ✓' : 'Mark done') + '</button>'
+          : '<button class="gtr-play" id="gtrNext" type="button">Next</button>') +
+      '</div>' +
+    '</div>';
+  }
+
+  /* The transport markup is shared between the lesson player and the workshop,
+     so the tempo control someone learned in one is the same control in the
+     other — and there is one place to fix when it is wrong. */
+  function transportHtml(playable) {
+    /* Always the working tempo, never the card's own number. A card prescribes
+       a starting tempo, but the moment it is displayed from one place and
+       played from another the two disagree — the box would read 44 while the
+       transport ran at 90. The card's bpm is applied on NAVIGATION instead
+       (see goToCard), so there is one value here and it is the one that plays. */
+    var bpm = clampTempo(data.settings.tempo);
+    return '<div class="gtr-transport">' +
+        '<button class="gtr-play" id="gtrPlay" type="button">▶ Play</button>' +
+        '<button class="gtr-btn" id="gtrStop" type="button">■ Stop</button>' +
+        '<label class="gtr-inline"><input id="gtrLoop" type="checkbox"' +
+          ((playable && playable.loop) || S.loop ? ' checked' : '') + '> Loop</label>' +
+      '</div>' +
+      '<div class="gtr-tempo">' +
+        '<span class="gtr-tempo-label" id="gtrTempoLabel">Tempo</span>' +
+        '<button class="gtr-step" id="gtrTempoDown" type="button" aria-label="Slower by one bpm">−</button>' +
+        '<input id="gtrTempoNum" class="gtr-tempo-num" type="number" inputmode="numeric" ' +
+          'min="' + TEMPO_MIN + '" max="' + TEMPO_MAX + '" step="1" ' +
+          'aria-labelledby="gtrTempoLabel" value="' + bpm + '">' +
+        '<button class="gtr-step" id="gtrTempoUp" type="button" aria-label="Faster by one bpm">+</button>' +
+        '<span class="gtr-tempo-unit">bpm</span>' +
+        '<input id="gtrTempo" class="gtr-tempo-range" type="range" ' +
+          'min="' + TEMPO_MIN + '" max="' + TEMPO_MAX + '" step="1" ' +
+          'aria-labelledby="gtrTempoLabel" value="' + bpm + '">' +
+      '</div>' +
+      '<p class="gtr-detail" id="gtrAudioNote"></p>';
+  }
+
+  var _cardPlayable = null;
+
   function html() {
+    if (S.screen === 'lesson') return lessonHtml();
+    if (S.screen === 'lessons') {
+      return '<div class="container gtr-wrap">' +
+        '<div class="gtr-nav">' +
+          '<button class="gtr-navbtn is-on" type="button" data-screen="lessons">Lessons</button>' +
+          '<button class="gtr-navbtn" type="button" data-screen="workshop">Workshop</button>' +
+        '</div>' + lessonsHtml() + '</div>';
+    }
+    return workshopHtml();
+  }
+
+  function workshopHtml() {
     var fb = fretboard();
     var ex = sortedExercise();
     var scaleIds = Object.keys(E.SCALES);
@@ -207,6 +438,10 @@
     }
 
     return '<div class="container gtr-wrap">' +
+      '<div class="gtr-nav">' +
+        '<button class="gtr-navbtn" type="button" data-screen="lessons">Lessons</button>' +
+        '<button class="gtr-navbtn is-on" type="button" data-screen="workshop">Workshop</button>' +
+      '</div>' +
       '<div class="gtr-panel">' +
         '<h2 class="gtr-h">Your guitar</h2>' +
         '<div class="gtr-controls">' +
@@ -244,32 +479,12 @@
         '</div>' +
         detail +
         '<div class="gtr-figures">' + figure + '</div>' +
-        '<div class="gtr-transport">' +
-          '<button class="gtr-play" id="gtrPlay" type="button">▶ Play</button>' +
-          '<button class="gtr-btn" id="gtrStop" type="button">■ Stop</button>' +
-          '<label class="gtr-inline"><input id="gtrLoop" type="checkbox"' + (S.loop ? ' checked' : '') + '> Loop</label>' +
-          '<label class="gtr-inline"><input id="gtrDesc" type="checkbox"' + (S.descending ? ' checked' : '') + '> Descending</label>' +
-        '</div>' +
-        /* Tempo gets its own row rather than a slot in the transport line.
-           Squeezed in beside the buttons it was 120 px wide across 160 bpm —
-           a bpm and a third per pixel, so landing on a chosen tempo was luck.
-           Three ways in now, all writing the same value: type it, step it by
-           one, or drag a slider with a whole row to travel. */
-        '<div class="gtr-tempo">' +
-          '<span class="gtr-tempo-label" id="gtrTempoLabel">Tempo</span>' +
-          '<button class="gtr-step" id="gtrTempoDown" type="button" ' +
-            'aria-label="Slower by one bpm">−</button>' +
-          '<input id="gtrTempoNum" class="gtr-tempo-num" type="number" inputmode="numeric" ' +
-            'min="' + TEMPO_MIN + '" max="' + TEMPO_MAX + '" step="1" ' +
-            'aria-labelledby="gtrTempoLabel" value="' + data.settings.tempo + '">' +
-          '<button class="gtr-step" id="gtrTempoUp" type="button" ' +
-            'aria-label="Faster by one bpm">+</button>' +
-          '<span class="gtr-tempo-unit">bpm</span>' +
-          '<input id="gtrTempo" class="gtr-tempo-range" type="range" ' +
-            'min="' + TEMPO_MIN + '" max="' + TEMPO_MAX + '" step="1" ' +
-            'aria-labelledby="gtrTempoLabel" value="' + data.settings.tempo + '">' +
-        '</div>' +
-        '<p class="gtr-detail" id="gtrAudioNote"></p>' +
+        /* Descending belongs to the generator, not the transport, so it stays
+           here rather than moving into the shared control block — a lesson's
+           written-out exercise has no ascending or descending to toggle. */
+        '<label class="gtr-inline gtr-standalone"><input id="gtrDesc" type="checkbox"' +
+          (S.descending ? ' checked' : '') + '> Descending</label>' +
+        transportHtml(null) +
       '</div>' +
     '</div>';
   }
@@ -328,7 +543,7 @@
       save();
     }
 
-    on('gtrTempo', 'input', function (e) { setTempo(e.target.value, e.target); });
+    on('gtrTempo', 'input', function (e) { S.tempoTouched = true; setTempo(e.target.value, e.target); });
 
     /* While typing, an out-of-range or half-finished number moves nothing:
        "4" on the way to "45" would otherwise jump the tempo to the floor and
@@ -342,14 +557,40 @@
     /* On the way out, whatever is in the box is resolved: an empty field or an
        out-of-range one snaps back to the live tempo rather than sitting there
        disagreeing with what will play. */
-    on('gtrTempoNum', 'change', function (e) { setTempo(e.target.value, null); });
+    on('gtrTempoNum', 'change', function (e) { S.tempoTouched = true; setTempo(e.target.value, null); });
     on('gtrTempoNum', 'blur',   function (e) { setTempo(e.target.value, null); });
     on('gtrTempoNum', 'keydown', function (e) {
       if (e.key === 'Enter') { setTempo(e.target.value, null); e.target.blur(); }
     });
 
-    on('gtrTempoDown', 'click', function () { setTempo(data.settings.tempo - 1, null); });
-    on('gtrTempoUp',   'click', function () { setTempo(data.settings.tempo + 1, null); });
+    on('gtrTempoDown', 'click', function () { S.tempoTouched = true; setTempo(data.settings.tempo - 1, null); });
+    on('gtrTempoUp',   'click', function () { S.tempoTouched = true; setTempo(data.settings.tempo + 1, null); });
+
+    Array.prototype.forEach.call(el.querySelectorAll('[data-screen]'), function (btn) {
+      btn.addEventListener('click', function () {
+        S.screen = btn.getAttribute('data-screen');
+        rerender();
+      });
+    });
+    Array.prototype.forEach.call(el.querySelectorAll('[data-lesson]'), function (btn) {
+      btn.addEventListener('click', function () {
+        S.tempoTouched = false;
+        goToCard(btn.getAttribute('data-lesson'), 0);
+        rerender();
+      });
+    });
+    on('gtrBack', 'click', function () { S.screen = 'lessons'; rerender(); });
+    on('gtrPrev', 'click', function () { goToCard(S.lessonId, S.cardIndex - 1); rerender(); });
+    on('gtrNext', 'click', function () {
+      data.stats.cards = (data.stats.cards || 0) + 1;
+      goToCard(S.lessonId, S.cardIndex + 1);
+      rerender();
+    });
+    on('gtrFinish', 'click', function () {
+      if (S.lessonId) markDone(S.lessonId);
+      S.screen = 'lessons';
+      rerender();
+    });
 
     on('gtrPlay', 'click', play);
     on('gtrStop', 'click', function () { if (transport) transport.stop(); stopCursor(); });
@@ -367,18 +608,53 @@
     }
   }
 
+  /* How long the loop is depends on which screen is playing. Ticking Loop on a
+     lesson card used to set the loop from the WORKSHOP's generated exercise —
+     the only exercise this function knew about — so a four-bar card looped over
+     whatever length the scale panel happened to be showing. Both cases now come
+     from the notes actually loaded. */
+  function loopBeats(notes) {
+    var last = 0;
+    (notes || []).forEach(function (n) {
+      var end = n.beat + (n.dur || 0);
+      if (end > last) last = end;
+    });
+    return Math.ceil(last / 4) * 4;
+  }
   function applyLoop() {
+    if (!transport) return;
+    if (S.screen === 'lesson') {
+      if (!_cardPlayable) return;
+      transport.setLoop(0, S.loop || _cardPlayable.loop ? loopBeats(_cardPlayable.notes) : 0);
+      return;
+    }
     var ex = sortedExercise();
-    if (ex.fault || !transport) return;
+    if (ex.fault) return;
     if (S.loop) transport.setLoop(0, ex.meta.beats);
     else transport.setLoop(0, 0);
   }
 
   function play() {
     if (!A || !A.ready()) return;
+    if (!transport) transport = A.createTransport();
+
+    /* On a lesson card the notes are written out; in the workshop they are
+       generated. Both arrive here already sorted by beat, which is what keeps
+       the cursor's indices agreeing with what is drawn. */
+    if (S.screen === 'lesson') {
+      if (!_cardPlayable) return;
+      transport.load(_cardPlayable.notes, fretboard(), data.settings.tempo);
+      applyLoop();
+      transport.onEnd = stopCursor;
+      transport.play({ countInBeats: 4 });
+      startCursor();
+      data.stats.plays++;
+      save();
+      return;
+    }
+
     var ex = sortedExercise();
     if (ex.fault) return;
-    if (!transport) transport = A.createTransport();
     transport.load(ex.notes, ex.fb, data.settings.tempo);
     applyLoop();
     transport.onEnd = stopCursor;
