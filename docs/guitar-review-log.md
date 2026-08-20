@@ -809,3 +809,81 @@ cannot name a source of truth that exists independently of the code it is
 checking, it is not checking anything. Timing came from the tempo and the beats.
 Identity came from reading the rendered digits back. Neither is computed by the
 code they judge.
+
+## Step 7f — "for standard tuning, these are unconventional fingerings"
+
+Reported against D, Dm, D7 and Dsus4, all of which came back as scattered
+six-string shapes around the seventh fret. D major was 10-9-7-7-7-10: correct
+notes, root in the bass, six strings ringing, and nothing anyone would call a D
+chord.
+
+### 7f.1 The cause
+
+Two lines, working together.
+
+    var score = sounding.length * 12 + (bassIsRoot ? 40 : 0) + ... ;
+    if (best && best.score >= 100) break;
+
+Twelve points a string means six strings is 72, plus 40 for the root in the
+bass is 112, which clears the threshold — so the search stopped at the first
+full-width shape it met and never looked lower. For chords whose open shape
+uses fewer than six strings, that is every one of them. D's open shape scored
+86 and was passed over for a shape scoring 112 four frets further up.
+
+The check written the round before could not see any of this, and was right not
+to: it asks whether a voicing sounds its own chord, and 10-9-7-7-7-10 does.
+Correctness and idiom are different properties and needed different gates.
+
+### 7f.2 The fix
+
+Scored the way a player chooses rather than the way a search is easiest to
+write: fullness worth 6 a string instead of 12, open strings worth 10 each,
+position penalised 3 a fret, span 6, and a hand model that rejects anything
+needing more than four fingers — counting a barre as one finger at the lowest
+fretted fret, and not counting the thumb, since a course should teach a hand
+position before it teaches hooking round the neck.
+
+The magic threshold is gone. Positions are searched from the nut outwards and
+every term either ignores position or penalises it, so the best score still
+reachable further up is bounded; the loop stops when the shape in hand beats
+that bound. That is derived from the scoring rather than guessed, so it cannot
+drift out of agreement with it the way 100 had.
+
+Fourteen open-position chords now come back as the shapes they are taught as.
+
+### 7f.3 A gate I wrote, tested, and deleted
+
+The open-shape table pins the fourteen chords anyone would notice. Wanting
+something more general, I added a check asserting that a voicing should sit at
+the lowest position where any shape exists.
+
+It flagged 98 voicings. The first was D#m in standard tuning, chosen as the
+barre at the eleventh fret over a cramped four-finger shape at the first — and
+the barre is how everyone plays E-flat minor. Chords with no open shape are
+supposed to be found up the neck. The rule was false, and a false gate is worse
+than no gate: kept, it would have forced the engine to get worse in order to
+pass.
+
+Deleted, and replaced with what is actually true — nothing past the twelfth
+fret, where the neck meets the body. Weaker, and it holds.
+
+Worth recording that the check also had a measurement bug on the way: `maxFret`
+bounds where the search may start, not which frets a shape may use, and
+comparing it against a fret number produced 176 false positives before the
+false premise underneath was even visible. Two wrong things stacked, and fixing
+the measurement was what made the bad rule legible.
+
+### What step 7f says
+
+Every gate in this project asserts something about the world, and until now the
+assertions had all been safe: pitches are pitches, text either overlaps or it
+does not. This was the first one that encoded a claim about *taste* — and got it
+wrong.
+
+The distinction that matters: "a chord with a conventional open shape must come
+back as that shape" is checkable, because the conventional shapes are written
+down in every chord book. "A chord should sit as low as possible" sounds like the
+same kind of statement and is not — it is a preference dressed as a fact, and
+the moment it met a real barre chord it was wrong. When a gate has no source
+outside the code AND no source outside my own judgement, it is not measuring
+anything but my opinion.

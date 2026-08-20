@@ -441,6 +441,22 @@
     return midiToName(rootPc, useFlats) + CHORDS[chordId].name;
   }
 
+  /* How many left-hand fingers a shape needs.
+     Barre model: one finger can hold several strings at the SAME fret, and is
+     only worth counting as a barre at the lowest fretted fret in the shape —
+     above that fret the hand is already committed. Anything else costs a finger
+     each. Four is the limit; the thumb is not counted, because a course that
+     starts by telling people to hook their thumb over is teaching a habit
+     before it has taught a hand position. */
+  function fingersNeeded(notes, capo) {
+    var fretted = notes.filter(function (n) { return n.fret > capo; });
+    if (!fretted.length) return 0;
+    var minF = Infinity;
+    fretted.forEach(function (n) { if (n.fret < minF) minF = n.fret; });
+    var atMin = fretted.filter(function (n) { return n.fret === minF; }).length;
+    return atMin >= 2 ? 1 + (fretted.length - atMin) : fretted.length;
+  }
+
   function findVoicing(chordId, rootPc, fb, opts) {
     opts = opts || {};
     var wanted = chordPitchClasses(chordId, rootPc);
@@ -469,7 +485,8 @@
          chord tones inside a four-fret window are ever candidates. */
       var pick = [];
       (function walk(i) {
-        if (best && best.score >= 100) return;   // good enough, stop early
+        /* No early exit on a magic score. The bound below decides when to
+           stop, and it is derived from the scoring rather than guessed. */
         if (i === choices.length) {
           var sounding = pick.filter(function (p) { return p.fret !== null; });
           if (sounding.length < (opts.minStrings || 4)) return;
@@ -486,10 +503,24 @@
           var frets = sounding.map(function (p) { return p.fret; }).filter(function (f2) { return f2 > fb.capo; });
           var realSpan = frets.length ? Math.max.apply(null, frets) - Math.min.apply(null, frets) : 0;
           var bassPc = (((openMidi(sounding[0].string, fb) + sounding[0].fret) % 12) + 12) % 12;
-          var score = sounding.length * 12
+          var fingers = fingersNeeded(sounding, fb.capo);
+          if (fingers > 4) return;                 // no hand does this
+          var openCount = sounding.filter(function (p) { return p.fret <= fb.capo; }).length;
+          var lowest = frets.length ? Math.min.apply(null, frets) : fb.capo;
+
+          /* Scored the way a player chooses, not the way a search is easiest to
+             write. The previous weighting was sounding.length * 12 with a bonus
+             for the root in the bass, which reached the early-exit threshold on
+             the first six-string shape it met — so D major came back as
+             10-9-7-7-7-10 up at the seventh fret while the open shape two frets
+             from the nut was never considered. Fullness is worth something, but
+             far less than being playable and near the nut. */
+          var score = sounding.length * 6          // fuller is better, mildly
+                    + openCount * 10               // open strings ring, and are free
                     + (bassPc === (((rootPc % 12) + 12) % 12) ? 40 : 0)
-                    + (start === lowFret ? 10 : 0)
-                    - realSpan * 4;
+                    - lowest * 3                   // low on the neck, strongly
+                    - realSpan * 6                 // a narrow shape over a stretch
+                    - Math.max(0, fingers - 3) * 15;
           if (!best || score > best.score) {
             best = {
               score: score,
@@ -507,7 +538,14 @@
           pick.pop();
         }
       }(0));
-      if (best && best.score >= 100) break;
+      /* Positions are tried from the nut outwards and every term above either
+         ignores the position or penalises it, so the best score still reachable
+         at any fret beyond this one is bounded. Once the shape in hand beats
+         that bound, nothing further up the neck can win, and searching on is
+         wasted work rather than a missed voicing. */
+      var ceilingBeyond = STRING_COUNT * 6 + (start + 1 <= fb.capo ? STRING_COUNT * 10 : 0)
+                        + 40 - (start + 1) * 3;
+      if (best && best.score >= ceilingBeyond) break;
     }
     if (!best) return null;
     return {
