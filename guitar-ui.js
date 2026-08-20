@@ -33,7 +33,9 @@
 
   var data = {
     profile:  { handed: 'right', touch: 'flesh' },
-    settings: { tuning: 'standard', capo: 0, tempo: 90 },
+    /* countIn is beats, not a boolean, so the number lives in one place rather
+       than as a flag here and a 4 buried at each call site. Zero is off. */
+    settings: { tuning: 'standard', capo: 0, tempo: 90, countIn: 4 },
     /* Keyed by lesson id, as the plan's storage shape specifies. Written
        through the generic merge in progress-backup.js, which takes the larger
        of two numbers field-wise — so `at` being a timestamp means the more
@@ -336,6 +338,8 @@
         '<button class="gtr-btn" id="gtrStop" type="button">■ Stop</button>' +
         '<label class="gtr-inline"><input id="gtrLoop" type="checkbox"' +
           ((playable && playable.loop) || S.loop ? ' checked' : '') + '> Loop</label>' +
+        '<label class="gtr-inline"><input id="gtrCountIn" type="checkbox"' +
+          (data.settings.countIn > 0 ? ' checked' : '') + '> Count in</label>' +
       '</div>' +
       '<div class="gtr-tempo">' +
         '<span class="gtr-tempo-label" id="gtrTempoLabel">Tempo</span>' +
@@ -517,6 +521,10 @@
     on('gtrSeq',    'change', function (e) { S.sequence = e.target.value; rerender(); });
     on('gtrRhythm', 'change', function (e) { S.rhythm = e.target.value; rerender(); });
     on('gtrDesc',   'change', function (e) { S.descending = !!e.target.checked; rerender(); });
+    on('gtrCountIn', 'change', function (e) {
+      data.settings.countIn = e.target.checked ? 4 : 0;
+      save();
+    });
     on('gtrLoop',   'change', function (e) {
       S.loop = !!e.target.checked;
       if (transport) applyLoop();
@@ -634,35 +642,45 @@
     else transport.setLoop(0, 0);
   }
 
+  /* Beats of count-in, clamped to something a transport can use. Read from the
+     setting rather than written at each call site, so the toggle cannot end up
+     applying on one screen and not the other. */
+  function countInBeats() {
+    var n = Number(data.settings.countIn);
+    return n > 0 ? Math.min(n, 8) : 0;
+  }
+
   function play() {
     if (!A || !A.ready()) return;
     if (!transport) transport = A.createTransport();
 
-    /* On a lesson card the notes are written out; in the workshop they are
-       generated. Both arrive here already sorted by beat, which is what keeps
-       the cursor's indices agreeing with what is drawn. */
+    /* Which notes differs by screen — written out on a lesson card, generated
+       in the workshop — and NOTHING ELSE DOES. Starting playback used to be
+       written out once per branch, which is two places for the count-in, the
+       loop, the cursor and the play count to drift apart: wiring the count-in
+       toggle to one of them and not the other was a one-line change that no
+       gate noticed. So the branch chooses the notes and then stops. */
+    var notes, fb;
     if (S.screen === 'lesson') {
       if (!_cardPlayable) return;
-      transport.load(_cardPlayable.notes, fretboard(), data.settings.tempo);
-      applyLoop();
-      transport.onEnd = stopCursor;
-      transport.play({ countInBeats: 4 });
-      startCursor();
-      data.stats.plays++;
-      save();
-      return;
+      notes = _cardPlayable.notes;
+      fb = fretboard();
+    } else {
+      var ex = sortedExercise();
+      if (ex.fault) return;
+      notes = ex.notes;
+      fb = ex.fb;
     }
 
-    var ex = sortedExercise();
-    if (ex.fault) return;
-    transport.load(ex.notes, ex.fb, data.settings.tempo);
+    transport.load(notes, fb, data.settings.tempo);
     applyLoop();
     transport.onEnd = stopCursor;
-    transport.play({ countInBeats: 4 });
+    transport.play({ countInBeats: countInBeats() });
     startCursor();
     data.stats.plays++;
     save();
   }
+
 
   /* ── The playback cursor ──────────────────────────────────────────────────
      Lights the note that is sounding, in the neck diagram and the tab at once.
