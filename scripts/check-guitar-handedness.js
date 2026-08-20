@@ -77,6 +77,7 @@ notes.push(`Guitar source files: ${GUITAR_FILES.join(', ')}`);
    about which way round something goes. Anywhere but the engine, that is a
    second source of truth. */
 const COMPARES_HANDED = /\bhanded\b\s*[!=]==?|[!=]==?\s*['"](left|right)['"]/;
+
 let deciders = [];
 GUITAR_FILES.forEach(f => {
   if (f === 'guitar-engine.js') return;

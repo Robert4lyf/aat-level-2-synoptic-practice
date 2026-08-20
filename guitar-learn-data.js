@@ -416,6 +416,236 @@
                        note: 'Fretting hand first, every time. Listen for the buzz that says otherwise.' }
         }
       ]
+    },
+    /* ═════════════════════════════════════════════════════════════════════
+       M3 — The fretboard
+
+       The first musicianship unit, and the first test of whether this format
+       carries knowledge as well as it carries technique. It does, with one
+       addition: two of these lessons are about tuning and capo, so a card can
+       declare `context: { tuning, capo }` and the player draws AND sounds it on
+       that instrument rather than on whatever the reader has set. Without that,
+       a DADGAD lesson would show standard-tuning notes — the chord-box defect
+       from step 6, one layer up.
+
+       The playing is still the body of the lesson. Naming notes is learned by
+       putting a finger on one and saying what it is, not by reading a diagram
+       of the neck, so every card here has something to play and the diagrams
+       are what you check yourself against.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'm3-l1', strand: 'M', unit: 'M3', instrument: 'any',
+      title: 'Naming the bass strings',
+      icon: '🗺️',
+      criteria: ['M3.names'],
+      summary: 'Find any note on the sixth and fifth strings without counting up from the nut.',
+      cards: [
+        {
+          h: 'Start from the marks',
+          p: ['The dots are at frets 3, 5, 7 and 9, with a double mark at 12. They are the same on every ' +
+              'guitar, and they are what stops you counting.',
+              'Play them on the sixth string and say the fret number aloud as each one sounds.'],
+          tab: { exercise: 'm3-dots-six',
+                 caption: 'Three, five, seven, nine, twelve.' }
+        },
+        {
+          h: 'The sixth string by name',
+          p: ['Open is E. Then F at the first fret, G at the third, A at the fifth, B at the seventh, ' +
+              'C at the eighth, D at the tenth, and E again at the twelfth.',
+              'Say each letter as it sounds. The gaps between them are what the next lesson is about.'],
+          playalong: { exercise: 'm3-six-letters', loop: true,
+                       note: 'E F G A B C D E. Say the letter, then play it.' }
+        },
+        {
+          h: 'The fifth string, same job',
+          p: ['Open is A, then B at the second, C at the third, D at the fifth, E at the seventh, ' +
+              'F# at the ninth, G at the tenth, A at the twelfth.',
+              'These two strings carry most of the bass work in fingerstyle, which is why they come first.'],
+          playalong: { exercise: 'm3-five-letters', loop: true,
+                       note: 'A B C D E F# G A.' }
+        },
+        {
+          h: 'Fifth and seventh as anchors',
+          p: ['A at the fifth fret of the sixth string. E at the seventh. Those two carry more weight than ' +
+              'the rest because so much sits around them.',
+              'Play across both strings at each fret and hear the interval stay the same.'],
+          tab: { exercise: 'm3-anchors',
+                 caption: 'Fifth, seventh, twelfth, on both strings.' }
+        },
+        {
+          h: 'Landing without counting',
+          p: ['Here the notes jump around. Aim for each one directly rather than walking up to it.',
+              'Getting it wrong quickly is more useful than getting it right slowly — the counting is the ' +
+              'habit being replaced.'],
+          playalong: { exercise: 'm3-name-jump', loop: true,
+                       note: 'Name each note before you play it. Check afterwards.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm3-l2', strand: 'M', unit: 'M3', instrument: 'any',
+      title: 'Octaves',
+      icon: '🪞',
+      criteria: ['M3.octaves'],
+      summary: 'One shape that turns a note you know into the same note somewhere else.',
+      cards: [
+        {
+          h: 'Two strings across, two frets up',
+          p: ['From any note on the sixth string, the same note an octave higher sits on the fourth ' +
+              'string, two frets along. One shape, anywhere on the neck.',
+              'Play the pairs below and hear them match.'],
+          tab: { exercise: 'm3-oct-six-four',
+                 caption: 'Sixth string, then its octave on the fourth.' }
+        },
+        {
+          h: 'The same from the fifth',
+          p: ['Fifth string to third string works identically: across two, up two. Learning the sixth and ' +
+              'fifth strings by name therefore gives you the fourth and third for free.',
+              'That is the whole reason the last lesson only covered two strings.'],
+          playalong: { exercise: 'm3-oct-five-three', loop: true,
+                       note: 'Fifth string, then third. Same shape as before.' }
+        },
+        {
+          h: 'Where the shape changes',
+          p: ['Between the third and second strings the tuning narrows by a semitone, so the octave shape ' +
+              'stretches to three frets instead of two.',
+              'Play both versions here. The change is not an exception to remember so much as the one ' +
+              'place the pattern bends.'],
+          tab: { exercise: 'm3-oct-shift',
+                 caption: 'Fourth to second: three frets. Third to first: three frets.' }
+        },
+        {
+          h: 'One note, everywhere it lives',
+          p: ['A single pitch appears in several places. Chaining the octave shape finds them without ' +
+              'knowing any of their names.',
+              'Play the chain and listen for the moment it stops matching — that is a wrong turn, and ' +
+              'hearing it is the skill.'],
+          playalong: { exercise: 'm3-oct-chain', loop: true,
+                       note: 'Every note here is the same letter.' }
+        },
+        {
+          h: 'Tuning by octaves',
+          p: ['The same shape checks tuning. An octave that beats against itself is a string out of tune, ' +
+              'and it is easier to hear than a unison.',
+              'Play each pair and listen for the wobble rather than looking at anything.'],
+          tab: { exercise: 'm3-oct-tune',
+                 caption: 'Open string, then its octave. Listen for beating.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm3-l3', strand: 'M', unit: 'M3', instrument: 'any',
+      title: 'When the tuning changes',
+      icon: '🎛️',
+      criteria: ['M3.tuning'],
+      summary: 'Retune to DADGAD and work out what moved, rather than starting again.',
+      cards: [
+        {
+          h: 'Three strings drop',
+          p: ['DADGAD lowers the sixth, second and first strings by a tone each. Everything else stays ' +
+              'where it was.',
+              'Retune, then play the open strings in order and listen to what the guitar has become.'],
+          context: { tuning: 'DADGAD', capo: 0 },
+          playalong: { exercise: 'm3-dadgad-open', loop: true,
+                       note: 'D A D G A D, low to high.' }
+        },
+        {
+          h: 'What moved, exactly',
+          p: ['E became D on the sixth. B became A on the second. E became D on the first. Each is two ' +
+              'frets lower, so every note on those strings now sits two frets higher than before.',
+              'Play the open string and then the second fret: that second fret is the note that used to ' +
+              'be open.'],
+          context: { tuning: 'DADGAD', capo: 0 },
+          tab: { exercise: 'm3-dadgad-moved',
+                 caption: 'Open, then two frets up, on each string that changed.' }
+        },
+        {
+          h: 'And what did not',
+          p: ['The fifth, fourth and third strings are untouched. Every note you learned on them is still ' +
+              'there, in the same place.',
+              'Half the neck is unchanged, which is why this is a retuning rather than a new instrument.'],
+          context: { tuning: 'DADGAD', capo: 0 },
+          tab: { exercise: 'm3-dadgad-same',
+                 caption: 'A, D and G strings. Nothing here has moved.' }
+        },
+        {
+          h: 'A shape you know, a chord you do not',
+          p: ['Fingering a familiar shape in a new tuning gives a different chord. That is the point of ' +
+              'the tuning rather than a problem with it.',
+              'Play both of these. The second is the open strings alone, and it is where the sound of ' +
+              'DADGAD comes from.'],
+          context: { tuning: 'DADGAD', capo: 0 },
+          playalong: { exercise: 'm3-dadgad-shape', loop: true,
+                       note: 'A D-shape, then everything open.' }
+        },
+        {
+          h: 'Finding a named note again',
+          p: ['Work out where each note has gone using what you know: the strings that moved are two ' +
+              'frets higher, the others are where they were.',
+              'Name each note here before playing it, then check.'],
+          context: { tuning: 'DADGAD', capo: 0 },
+          playalong: { exercise: 'm3-dadgad-find', loop: true,
+                       note: 'Say the letter first. The three unchanged strings are the easy ones.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm3-l4', strand: 'M', unit: 'M3', instrument: 'any',
+      title: 'The capo',
+      icon: '📎',
+      criteria: ['M3.capo'],
+      summary: 'A capo moves the pitch and leaves the shapes alone. Both halves matter.',
+      cards: [
+        {
+          h: 'A new nut',
+          p: ['A capo at the second fret makes the second fret behave as the nut. The open strings now ' +
+              'sound F# B E A C# F#.',
+              'Put one on and play the strings it is holding down.'],
+          context: { tuning: 'standard', capo: 2 },
+          tab: { exercise: 'm3-capo-open',
+                 caption: 'The strings behind a capo at the second fret.' }
+        },
+        {
+          h: 'The shapes do not move',
+          p: ['A shape fingered relative to the capo is the same shape. What changes is the pitch it ' +
+              'produces, by one semitone per fret.',
+              'Play a D shape here. The fingers do what they always did; the sound is E.'],
+          context: { tuning: 'standard', capo: 2 },
+          playalong: { exercise: 'm3-capo-shape', loop: true,
+                       note: 'A D shape and a Dm shape, both behind the capo.' }
+        },
+        {
+          h: 'Know what is actually sounding',
+          p: ['The trap is thinking in shapes and losing the pitch. Playing a G shape at the fifth fret ' +
+              'is a C chord, and anyone else in the room will call it C.',
+              'Walk the sixth string and name the real pitches, not the shapes.'],
+          context: { tuning: 'standard', capo: 2 },
+          playalong: { exercise: 'm3-capo-pitch', loop: true,
+                       note: 'Capo at 2, so the first note is F#, not E.' }
+        },
+        {
+          h: 'Choosing where it goes',
+          p: ['A capo is for putting a song in a key that suits a voice while keeping shapes that ring. ' +
+              'Higher up, the strings shorten and the tone tightens.',
+              'Play this at the fifth fret and hear how much brighter the same figure sits.'],
+          context: { tuning: 'standard', capo: 5 },
+          tab: { exercise: 'm3-capo-choose',
+                 caption: 'Capo at the fifth fret. Same shapes, tighter sound.' }
+        },
+        {
+          h: 'The same music without one',
+          p: ['Everything a capo does can be played without it, further up the neck and usually with a ' +
+              'barre. What is lost is the open strings, which is most of why the capo is used.',
+              'Here is that figure with no capo. Compare it with the last card.'],
+          context: { tuning: 'standard', capo: 0 },
+          playalong: { exercise: 'm3-capo-off', loop: true,
+                       note: 'No capo. The notes are lower and nothing rings open.' }
+        }
+      ]
     }
   ];
 

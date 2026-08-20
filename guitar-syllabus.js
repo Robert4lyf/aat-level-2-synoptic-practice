@@ -118,7 +118,7 @@
      known gap rather than a failure. */
   var UNITS = [
     { id: 'P1', title: 'The hand',                 strand: 'P', phase: 1, ready: true },
-    { id: 'M3', title: 'The fretboard',            strand: 'M', phase: 1, ready: false },
+    { id: 'M3', title: 'The fretboard',            strand: 'M', phase: 1, ready: true },
     { id: 'P2', title: 'Arpeggio patterns',        strand: 'P', phase: 1, ready: false },
     { id: 'M5', title: 'Pentatonics and blues',    strand: 'M', phase: 1, ready: false },
     { id: 'P3', title: 'Voicing and balance',      strand: 'P', phase: 1, ready: false },

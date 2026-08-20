@@ -588,6 +588,285 @@
     }
   };
 
+  /* ── M3 · the fretboard ───────────────────────────────────────────────
+     A different kind of exercise from P1's. These are not drills for the hands;
+     they are routes around the neck, played slowly while naming what is under
+     the finger. The playing is how the knowledge gets in, which is why they are
+     exercises at all rather than diagrams with a paragraph attached.
+
+     Several are written for a named tuning or a capo, and the CARD carries that
+     context — see `context` in guitar-learn-data.js. The notes here stay what
+     they always are: absolute string and fret, never capo-relative. */
+
+  /* Walk a single string through a list of frets, one note per beat. */
+  function walk(string, frets, startBeat, dur, finger) {
+    return frets.map(function (f, i) {
+      return { string: string, fret: f, beat: startBeat + i * (dur || 1),
+               dur: dur || 1, hand: 'p', finger: finger || 'i' };
+    });
+  }
+
+  var M3 = {
+    /* M3.1 — naming the bass strings */
+    'm3-dots-six': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'The marked frets on the sixth string',
+      tags: ['M3', 'fretboard', 'landmarks'],
+      notes: walk(6, [3, 5, 7, 9, 12], 0, 1.5)
+    },
+    'm3-six-letters': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'The sixth string, letter by letter',
+      tags: ['M3', 'fretboard', 'naming'],
+      notes: walk(6, [0, 1, 3, 5, 7, 8, 10, 12], 0, 1)
+    },
+    'm3-five-letters': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'The fifth string, letter by letter',
+      tags: ['M3', 'fretboard', 'naming'],
+      notes: walk(5, [0, 2, 3, 5, 7, 9, 10, 12], 0, 1)
+    },
+    'm3-anchors': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'Fifth and seventh, both strings',
+      tags: ['M3', 'fretboard', 'landmarks'],
+      notes: [
+        { string: 6, fret: 5, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 5, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 7, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 7, beat: 3, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 12, beat: 4, dur: 2, hand: 'p', finger: 'p' },
+        { string: 5, fret: 12, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-name-jump': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'Landing without counting',
+      tags: ['M3', 'fretboard', 'recall'],
+      notes: [
+        { string: 6, fret: 8, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 3, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 10, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 8, beat: 3, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 1, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 10, beat: 5, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 5, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+
+    /* M3.2 — octaves */
+    'm3-oct-six-four': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Sixth to fourth, two frets up',
+      tags: ['M3', 'octaves'],
+      notes: [
+        { string: 6, fret: 3, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 5, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 6, fret: 5, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 7, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 6, fret: 8, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 10, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 6, fret: 10, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-oct-five-three': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Fifth to third, the same shape',
+      tags: ['M3', 'octaves'],
+      notes: [
+        { string: 5, fret: 3, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 5, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 5, fret: 5, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 7, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 5, fret: 7, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 9, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 5, fret: 10, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-oct-shift': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'Where the shape changes',
+      tags: ['M3', 'octaves'],
+      notes: [
+        { string: 4, fret: 5, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 8, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 4, fret: 7, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 10, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 3, fret: 5, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 8, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 3, fret: 7, beat: 6, dur: 2, hand: 'p', finger: 'i' }
+      ]
+    },
+    'm3-oct-chain': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'One note, everywhere it lives',
+      tags: ['M3', 'octaves', 'recall'],
+      notes: [
+        { string: 6, fret: 5, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 7, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 10, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 5, fret: 12, beat: 3, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 14, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 7, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 6, fret: 5, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-oct-tune': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'Checking the tuning by octaves',
+      tags: ['M3', 'octaves', 'tuning'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 5, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 2, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 3, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 6, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+
+    /* M3.3 — altered tuning. Written for DADGAD; the cards say so. */
+    'm3-dadgad-open': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'The open strings, one at a time',
+      tags: ['M3', 'tuning', 'DADGAD'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 4, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-dadgad-moved': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'The three strings that moved',
+      tags: ['M3', 'tuning', 'DADGAD'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 2, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'a' },
+        { string: 1, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 4, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-dadgad-same': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'The three that did not',
+      tags: ['M3', 'tuning', 'DADGAD'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 2, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 2, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-dadgad-shape': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'A familiar shape, a different chord',
+      tags: ['M3', 'tuning', 'DADGAD'],
+      notes: [
+        { string: 4, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'p' },
+        { string: 3, fret: 2, beat: 0, dur: 2, hand: 'p', finger: 'i' },
+        { string: 2, fret: 3, beat: 0, dur: 2, hand: 'p', finger: 'm' },
+        { string: 1, fret: 2, beat: 0, dur: 2, hand: 'p', finger: 'a' },
+        { string: 4, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'p' },
+        { string: 3, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'a' }
+      ]
+    },
+    'm3-dadgad-find': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'Finding a named note again',
+      tags: ['M3', 'tuning', 'DADGAD', 'recall'],
+      notes: [
+        { string: 6, fret: 5, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 5, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 5, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 7, beat: 4, dur: 1, hand: 'p', finger: 'a' },
+        { string: 3, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+
+    /* M3.4 — the capo. Frets stay absolute; the cards carry the capo. */
+    'm3-capo-open': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Open strings behind a capo',
+      tags: ['M3', 'capo'],
+      notes: [
+        { string: 6, fret: 2, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 2, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 2, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 2, beat: 4, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 6, fret: 2, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-capo-shape': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'The same shape, two frets higher',
+      tags: ['M3', 'capo'],
+      notes: [
+        { string: 5, fret: 2, beat: 0, dur: 2, hand: 'p', finger: 'p' },
+        { string: 4, fret: 4, beat: 0, dur: 2, hand: 'p', finger: 'i' },
+        { string: 3, fret: 4, beat: 0, dur: 2, hand: 'p', finger: 'm' },
+        { string: 2, fret: 4, beat: 0, dur: 2, hand: 'p', finger: 'a' },
+        { string: 5, fret: 2, beat: 4, dur: 2, hand: 'p', finger: 'p' },
+        { string: 4, fret: 4, beat: 4, dur: 2, hand: 'p', finger: 'i' },
+        { string: 3, fret: 3, beat: 4, dur: 2, hand: 'p', finger: 'm' },
+        { string: 2, fret: 4, beat: 4, dur: 2, hand: 'p', finger: 'a' }
+      ]
+    },
+    'm3-capo-pitch': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'What the pitch actually is',
+      tags: ['M3', 'capo', 'naming'],
+      notes: walk(6, [2, 4, 5, 7, 9, 10, 12, 14], 0, 1, 'p')
+    },
+    'm3-capo-choose': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'Choosing where to put it',
+      tags: ['M3', 'capo'],
+      notes: [
+        { string: 5, fret: 5, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 7, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 7, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 5, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 4, fret: 7, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 5, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 5, fret: 5, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'm3-capo-off': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'The same music without it',
+      tags: ['M3', 'capo', 'transpose'],
+      notes: [
+        { string: 5, fret: 3, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 5, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 5, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 3, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 4, fret: 5, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 3, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 5, fret: 3, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    }
+  };
+
+  Object.keys(M3).forEach(function (k) { EXERCISES[k] = M3[k]; });
+
   function exercise(id) {
     return Object.prototype.hasOwnProperty.call(EXERCISES, id) ? EXERCISES[id] : null;
   }

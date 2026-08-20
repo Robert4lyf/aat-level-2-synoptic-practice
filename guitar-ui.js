@@ -244,6 +244,24 @@
      element is playable, the notes the transport should be given — so the
      player never has to look the exercise up a second time and cannot end up
      showing one thing and playing another. */
+  /* The fretboard a card is drawn and played on.
+     A lesson about DADGAD has to show DADGAD whatever the player has their own
+     guitar set to, so a card may declare `context: { tuning, capo }`. Without
+     one it inherits the settings, which is right for every unit that is not
+     about tuning.
+
+     HANDEDNESS IS NEVER TAKEN FROM THE CARD. It comes from the profile, always.
+     A card can say which instrument it is talking about; it does not get to say
+     whose hands are playing it. */
+  function cardFretboard(card) {
+    var ctx = card && card.context;
+    return E.makeFretboard({
+      tuning: (ctx && ctx.tuning) || data.settings.tuning,
+      capo: (ctx && ctx.capo !== undefined) ? ctx.capo : data.settings.capo,
+      handed: data.profile.handed
+    });
+  }
+
   function elementHtml(card, fb) {
     var figures = '', playable = null, caption = '';
 
@@ -281,14 +299,36 @@
     return { figures: figures, playable: playable, caption: caption };
   }
 
+  /* Say so when a card is not on the player's own guitar. Silence here is how
+     someone retunes to follow a lesson that never asked them to. */
+  function contextNote(card, fb) {
+    var ctx = card && card.context;
+    if (!ctx) return '';
+    var bits = [];
+    if (ctx.tuning && ctx.tuning !== data.settings.tuning) {
+      bits.push(esc(E.TUNINGS[fb.tuning].name) + ' · ' +
+                esc([6,5,4,3,2,1].map(function (st) { return E.midiToName(E.openMidi(st, fb)); }).join(' ')));
+    }
+    if (ctx.capo !== undefined && ctx.capo !== data.settings.capo) {
+      bits.push(ctx.capo ? 'capo at fret ' + ctx.capo : 'no capo');
+    }
+    if (!bits.length) return '';
+    return '<p class="gtr-context">This card is written for ' + bits.join(', ') + '.</p>';
+  }
+
   function lessonHtml() {
     var lesson = LD.lesson(S.lessonId);
     if (!lesson) { S.screen = 'lessons'; return lessonsHtml(); }
-    var fb = fretboard();
     var idx = Math.max(0, Math.min(S.cardIndex, lesson.cards.length - 1));
     var card = lesson.cards[idx];
+    var fb = cardFretboard(card);
     var built = elementHtml(card, fb);
     _cardPlayable = built.playable;
+    /* The transport gets the fretboard the figure was DRAWN on, not one rebuilt
+       from settings when Play is pressed. Rebuilding is how a DADGAD card ends
+       up sounding in standard tuning while showing the right dots — the exact
+       shape of the chord-box defect from step 6, one layer up. */
+    _cardFb = fb;
 
     var dots = lesson.cards.map(function (c, i) {
       return '<span class="gtr-dot' + (i === idx ? ' is-here' : '') +
@@ -311,6 +351,7 @@
         }).join('') +
         '<div class="gtr-figures">' + built.figures + '</div>' +
         (built.caption ? '<p class="gtr-detail">' + esc(built.caption) + '</p>' : '') +
+        contextNote(card, fb) +
         (built.playable ? transportHtml(built.playable) : '') +
       '</div>' +
       '<div class="gtr-cardnav">' +
@@ -357,6 +398,7 @@
   }
 
   var _cardPlayable = null;
+  var _cardFb = null;
 
   function html() {
     if (S.screen === 'lesson') return lessonHtml();
@@ -664,7 +706,7 @@
     if (S.screen === 'lesson') {
       if (!_cardPlayable) return;
       notes = _cardPlayable.notes;
-      fb = fretboard();
+      fb = _cardFb || fretboard();
     } else {
       var ex = sortedExercise();
       if (ex.fault) return;

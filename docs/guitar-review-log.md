@@ -1133,3 +1133,73 @@ That is the second time a defect has been found by a reader rather than by a
 gate, and both were about the experience of moving through the material rather
 than about any single piece of it. Worth carrying into the remaining units: ask
 what the unit looks like read end to end, not only what each card contains.
+
+## Step 9a — M3, the fretboard
+
+The first musicianship unit, and the first test of whether the card format
+carries knowledge as well as it carries technique. Four lessons, 20 cards, 20
+exercises.
+
+### 9a.1 A card can declare its own instrument
+
+Two of M3's four criteria are about tuning and capo, which the player had no way
+to express: it built one fretboard from the reader's settings and drew
+everything on it. A DADGAD lesson would have shown standard-tuning notes under
+confident prose about DADGAD.
+
+So a card may carry `context: { tuning, capo }`, and the player draws and sounds
+it on that instrument. Three rules came out of writing it:
+
+- **The transport gets the fretboard the figure was DRAWN on**, not one rebuilt
+  from settings when Play is pressed. Rebuilding is how a card ends up looking
+  right and sounding a tone out — the chord-box defect from step 6, one layer up
+  and audible only.
+- **Handedness is never taken from the card.** A card says which instrument it
+  is talking about; it does not get to say whose hands are playing it. Content
+  able to override that is a left-handed reader being shown a right-handed neck
+  by something they cannot argue with.
+- **A card whose context differs from the reader's settings says so on screen.**
+  Silence is how someone retunes to follow a lesson that never asked them to.
+
+### 9a.2 A check that answered a question nobody asked
+
+`check-guitar-quality.js` reported "54 authored exercises, 437 notes, all
+playable in standard tuning" — while the module contained exercises written for
+DADGAD and for a capo at the fifth fret.
+
+The pass meant nothing. A capo-5 exercise with a note at the third fret is
+unplayable in its own lesson and perfectly fine in standard tuning, so the check
+was confirming a property no lesson depends on. Each exercise is now checked on
+the instrument the card that uses it declares, and the note line says which
+contexts were covered rather than naming one that was not.
+
+This is the vacuity failure in a new dress. Not a tautology this time — the
+check did real work — but work against the wrong instrument, which produces the
+same thing: a green tick that carries no information about what shipped.
+
+### 9a.3 A mutation caught by neither checker, closed from the content side
+
+Making `cardFretboard` read handedness from the card passed both the handedness
+checker and the lesson walk. The handedness rule looks for `handed` being
+COMPARED outside the engine, and reading `ctx.handed` is not a comparison.
+
+Rather than widen that regex, the rule went where the failure actually lives: a
+card carrying `handed` in its context now fails `check-guitar-quality.js`, along
+with any context key the player does not read. With the data unable to carry it,
+the code path cannot fire.
+
+Worth recording that a first attempt added two regexes to the handedness checker
+and used neither. Unused rules are worse than absent ones — they read as
+coverage. Removed.
+
+### 9a.4 Cost, against the step 8 estimate
+
+Step 8 predicted the remaining units would be mostly writing, with the player
+and the gates already paid for. Roughly right, with one correction: M3 needed a
+real player feature (card context) that P1 never exercised, because P1 is
+entirely in standard tuning.
+
+So the estimate holds for units within the shape already built, and each new
+STRAND is likely to want one capability the previous ones did not. M5 and M7
+will lean on the generator rather than authored exercises, which is a different
+kind of work again.
