@@ -1084,3 +1084,52 @@ The added assertion turns it off, forces a redraw, reloads, and requires the box
 and the stored value to agree. Worth noting what the near-miss has in common
 with 8b: both gates tested the behaviour and not the display, and both times the
 display was where the lie would have lived.
+
+## Step 8d — the same exercise kept coming back
+
+Reported from a lesson card: "this exercise was used about 2 cards before".
+
+It was, and the measurement was worse than the instance. Thirty-five cards were
+drawing on eleven exercises. One figure of eight notes appeared five times,
+three of them inside a single lesson. Seventeen pairs sat within three cards of
+each other.
+
+### 8d.1 The cause, which will recur
+
+Exercises were written first and cards second. Every card that needed something
+to play reached for what already existed, and when the word floor in 8.2 called
+for fourteen more cards, all fourteen were fitted to the existing bank rather
+than given their own material. That is the path of least resistance and it
+produces a unit that passes every count — cards, words, elements, coverage — and
+reads as repetitive.
+
+There was a second fault underneath it. Lesson 1 was borrowing lesson 3, 6 and
+7's exercises, so a reader met the free-stroke drill two lessons before the free
+stroke was taught, and met it again as an unfamiliar thing when it arrived.
+
+### 8d.2 The fix
+
+Twenty-three new exercises, taking the bank from 11 to 34 across 35 card slots.
+Posture now has its own undemanding material rather than borrowing from later
+lessons; every card that repeated has been given something written for it.
+
+The gate holds two limits. A gap of at least four cards in reading order,
+because a repeat the reader still remembers reads as an oversight rather than as
+revision. And a cap of two uses across the module, because a figure met often
+enough stops being practice.
+
+Reuse is not banned. Returning to a figure once, later, with a different focus
+is real teaching — which is why the cap is two rather than one, and why the rule
+is about distance rather than about novelty.
+
+### What 8d says about the gates so far
+
+Every content gate written in step 8 counts something per card or per lesson:
+words, elements, criteria, paragraphs. All of them passed. None could see a
+property that only exists ACROSS cards, and repetition is exactly that kind of
+property — invisible at every individual card, obvious by the third encounter.
+
+That is the second time a defect has been found by a reader rather than by a
+gate, and both were about the experience of moving through the material rather
+than about any single piece of it. Worth carrying into the remaining units: ask
+what the unit looks like read end to end, not only what each card contains.

@@ -190,6 +190,321 @@
       ], 2, 4)
     },
 
+    /* ── P1.1 · posture, which needs undemanding material ────────────────
+       These exist because the first draft of the unit borrowed lesson 3, 6 and
+       7's exercises for lesson 1 — so a reader met the free-stroke drill before
+       the free stroke, and met it again two cards later when it was actually
+       taught. Posture cards need something easy enough that the hands are free
+       to be watched rather than managed. */
+    'p1-sit-settle': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Open basses, unhurried',
+      tags: ['P1', 'posture', 'open'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 2, dur: 2, hand: 'p', finger: 'p' },
+        { string: 4, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'p1-sit-reach': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'Reaching the first fret',
+      tags: ['P1', 'posture', 'fretting'],
+      notes: [
+        { string: 6, fret: 1, beat: 0, dur: 1, hand: 'f', finger: 1 },
+        { string: 4, fret: 1, beat: 1, dur: 1, hand: 'f', finger: 1 },
+        { string: 2, fret: 1, beat: 2, dur: 1, hand: 'f', finger: 1 },
+        { string: 1, fret: 1, beat: 3, dur: 1, hand: 'f', finger: 1 },
+        { string: 2, fret: 1, beat: 4, dur: 1, hand: 'f', finger: 1 },
+        { string: 4, fret: 1, beat: 5, dur: 1, hand: 'f', finger: 1 },
+        { string: 6, fret: 1, beat: 6, dur: 2, hand: 'f', finger: 1 }
+      ]
+    },
+    'p1-sit-signals': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'Enough work to show the faults',
+      tags: ['P1', 'posture', 'fretting'],
+      notes: [
+        { string: 5, fret: 2, beat: 0, dur: 1, hand: 'f', finger: 2 },
+        { string: 4, fret: 2, beat: 1, dur: 1, hand: 'f', finger: 2 },
+        { string: 3, fret: 1, beat: 2, dur: 1, hand: 'f', finger: 1 },
+        { string: 2, fret: 3, beat: 3, dur: 1, hand: 'f', finger: 3 },
+        { string: 3, fret: 1, beat: 4, dur: 1, hand: 'f', finger: 1 },
+        { string: 4, fret: 2, beat: 5, dur: 1, hand: 'f', finger: 2 },
+        { string: 5, fret: 2, beat: 6, dur: 2, hand: 'f', finger: 2 }
+      ]
+    },
+    'p1-sit-noanchor': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'Three strings, nothing resting',
+      tags: ['P1', 'posture', 'open'],
+      notes: [
+        { string: 3, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 3, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'm' }
+      ]
+    },
+    'p1-sit-mirror': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'Both hands, slowly',
+      tags: ['P1', 'posture'],
+      notes: [
+        { string: 5, fret: 2, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 4, fret: 2, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 5, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 4, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+
+    /* ── P1.2 · placing the hand ─────────────────────────────────────────── */
+    'p1-home-hold': {
+      kind: 'authored', curated: true, bpm: 56, beatsPerBar: 4,
+      title: 'i, m and a stay put',
+      tags: ['P1', 'picking', 'open'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 3, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 6, dur: 1, hand: 'p', finger: 'm' },
+        { string: 3, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'i' }
+      ]
+    },
+    'p1-nail-listen': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'One string, listening for the click',
+      tags: ['P1', 'hygiene', 'tone'],
+      notes: [
+        { string: 2, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 2, dur: 2, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'i' }
+      ]
+    },
+    'p1-a-alone': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Giving a its own turn',
+      tags: ['P1', 'picking', 'independence'],
+      notes: [
+        { string: 1, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'a' },
+        { string: 3, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'a' }
+      ]
+    },
+
+    /* ── P1.3 · free stroke ──────────────────────────────────────────────── */
+    'p1-free-prepare': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'Land, wait, play',
+      tags: ['P1', 'free stroke', 'preparation'],
+      notes: [
+        { string: 1, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 2, dur: 2, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'm' }
+      ]
+    },
+    'p1-free-release': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Follow through and open again',
+      tags: ['P1', 'free stroke'],
+      notes: [
+        { string: 2, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 3, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 3, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'i' }
+      ]
+    },
+    'p1-free-tone': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'The same figure, three places',
+      tags: ['P1', 'free stroke', 'tone'],
+      notes: [
+        { string: 3, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 2, dur: 2, hand: 'p', finger: 'a' },
+        { string: 3, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'a' }
+      ]
+    },
+
+    /* ── P1.4 · rest stroke ──────────────────────────────────────────────── */
+    'p1-rest-melody': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'A melody that has to carry',
+      tags: ['P1', 'rest stroke', 'tone'],
+      notes: [
+        { string: 2, fret: 1, beat: 0, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 3, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 1, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 3, beat: 4, dur: 2, hand: 'p', finger: 'm' },
+        { string: 1, fret: 1, beat: 6, dur: 2, hand: 'p', finger: 'm' }
+      ]
+    },
+    'p1-rest-angle': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'Feeling where the finger stops',
+      tags: ['P1', 'rest stroke'],
+      notes: [
+        { string: 3, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'm' },
+        { string: 3, fret: 2, beat: 2, dur: 2, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'm' },
+        { string: 2, fret: 1, beat: 6, dur: 2, hand: 'p', finger: 'i' }
+      ]
+    },
+    'p1-rest-alternate': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'Rest strokes, taking turns',
+      tags: ['P1', 'rest stroke', 'alternation'],
+      notes: [
+        { string: 1, fret: 0, beat: 0, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 1, beat: 0.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 3, beat: 1, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 5, beat: 1.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 3, beat: 2, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 1, beat: 2.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 1, beat: 4, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 3, beat: 4.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 1, beat: 5.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'm' }
+      ]
+    },
+
+    /* ── P1.5 · alternation ──────────────────────────────────────────────── */
+    'p1-alternate-cross': {
+      kind: 'authored', curated: true, bpm: 54, beatsPerBar: 4,
+      title: 'Alternation across a string change',
+      tags: ['P1', 'alternation', 'open'],
+      notes: [
+        { string: 3, fret: 0, beat: 0, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 3, fret: 0, beat: 0.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 1, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 1.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 2, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 3, fret: 0, beat: 2.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 3, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 3.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 4, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 4.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 3, fret: 0, beat: 5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 5.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'i' }
+      ]
+    },
+    'p1-alternate-ma': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'm and a taking turns',
+      tags: ['P1', 'alternation', 'independence'],
+      notes: [
+        { string: 2, fret: 0, beat: 0, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 0.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 1, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 1.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 1, fret: 0, beat: 2, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 2.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 1, fret: 0, beat: 3, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 3.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 4, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 4.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 5.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 2, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'm' }
+      ]
+    },
+    'p1-alternate-bass': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'Alternation with a bass under it',
+      tags: ['P1', 'alternation', 'thumb'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 0.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 1, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 1.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 2.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 3, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 3.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 5, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 4.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 0, beat: 5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 5.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+
+    /* ── P1.6 · the thumb underneath ─────────────────────────────────────── */
+    'p1-thumb-steady': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'The bass does not pause',
+      tags: ['P1', 'thumb', 'independence'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 1.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 5, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 2.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 2.75, dur: 0.25, hand: 'p', finger: 'a' },
+        { string: 4, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 4.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 4, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'p1-thumb-rest': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'The thumb coming to rest',
+      tags: ['P1', 'thumb', 'rest stroke'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 3, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 2, beat: 3, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p' },
+        { string: 5, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'p' },
+        { string: 6, fret: 3, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+    'p1-thumb-count': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'Counting it out',
+      tags: ['P1', 'thumb', 'timing'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 0.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 5, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 1.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 4, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 2.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 4, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'p' },
+        { string: 1, fret: 0, beat: 3.5, dur: 0.5, hand: 'p', finger: 'a' },
+        { string: 5, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'p' },
+        { string: 2, fret: 0, beat: 5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 4, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'p' }
+      ]
+    },
+
     /* ── P1.7 · the fretting hand ────────────────────────────────────────── */
     'p1-fret-pressure': {
       kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
@@ -204,6 +519,56 @@
         { string: 1, fret: 2, beat: 5, dur: 1, hand: 'f', finger: 2 },
         { string: 1, fret: 3, beat: 6, dur: 1, hand: 'f', finger: 3 },
         { string: 1, fret: 4, beat: 7, dur: 1, hand: 'f', finger: 4 }
+      ]
+    },
+    'p1-fret-light': {
+      kind: 'authored', curated: true, bpm: 42, beatsPerBar: 4,
+      title: 'Finding the buzz, then leaving it',
+      tags: ['P1', 'fretting', 'pressure'],
+      notes: [
+        { string: 3, fret: 2, beat: 0, dur: 2, hand: 'f', finger: 2 },
+        { string: 3, fret: 4, beat: 2, dur: 2, hand: 'f', finger: 4 },
+        { string: 2, fret: 3, beat: 4, dur: 2, hand: 'f', finger: 3 },
+        { string: 2, fret: 1, beat: 6, dur: 2, hand: 'f', finger: 1 }
+      ]
+    },
+    'p1-fret-close': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Fingers that never fly',
+      tags: ['P1', 'fretting', 'economy'],
+      notes: [
+        { string: 2, fret: 1, beat: 0, dur: 0.5, hand: 'f', finger: 1 },
+        { string: 2, fret: 3, beat: 0.5, dur: 0.5, hand: 'f', finger: 3 },
+        { string: 2, fret: 2, beat: 1, dur: 0.5, hand: 'f', finger: 2 },
+        { string: 2, fret: 4, beat: 1.5, dur: 0.5, hand: 'f', finger: 4 },
+        { string: 1, fret: 1, beat: 2, dur: 0.5, hand: 'f', finger: 1 },
+        { string: 1, fret: 3, beat: 2.5, dur: 0.5, hand: 'f', finger: 3 },
+        { string: 1, fret: 2, beat: 3, dur: 0.5, hand: 'f', finger: 2 },
+        { string: 1, fret: 4, beat: 3.5, dur: 0.5, hand: 'f', finger: 4 },
+        { string: 2, fret: 4, beat: 4, dur: 0.5, hand: 'f', finger: 4 },
+        { string: 2, fret: 2, beat: 4.5, dur: 0.5, hand: 'f', finger: 2 },
+        { string: 2, fret: 3, beat: 5, dur: 0.5, hand: 'f', finger: 3 },
+        { string: 2, fret: 1, beat: 5.5, dur: 0.5, hand: 'f', finger: 1 },
+        { string: 2, fret: 1, beat: 6, dur: 2, hand: 'f', finger: 1 }
+      ]
+    },
+    'p1-fret-together': {
+      kind: 'authored', curated: true, bpm: 44, beatsPerBar: 4,
+      title: 'Fretting hand first, every time',
+      tags: ['P1', 'fretting', 'timing'],
+      notes: [
+        { string: 3, fret: 0, beat: 0, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 3, fret: 2, beat: 0.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 1, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 2, fret: 3, beat: 1.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 2, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 1, fret: 2, beat: 2.5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 3, beat: 3, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 2, beat: 4, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 4.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 2, fret: 3, beat: 5, dur: 0.5, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 5.5, dur: 0.5, hand: 'p', finger: 'i' },
+        { string: 3, fret: 2, beat: 6, dur: 2, hand: 'p', finger: 'm' }
       ]
     },
     'p1-fret-clean': {

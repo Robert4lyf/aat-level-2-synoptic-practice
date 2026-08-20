@@ -233,6 +233,65 @@ if (per1k > M.SIGNPOST_CEILING_PER_1K) {
               `matters instead of making the point.`);
 }
 
+/* ── The same exercise does not keep coming back ────────────────────────
+   Caught by a reader, not by this file: "this exercise was used about 2 cards
+   before". It was, and four other times besides — 35 cards were drawing on 11
+   exercises, with one figure of eight notes appearing five times and three of
+   those inside a single lesson.
+
+   The cause was ordinary and worth naming, because it will recur. Exercises
+   were written first and cards second, so every card that needed something to
+   play reached for what already existed. That is the path of least resistance
+   and it produces a unit that looks complete and feels repetitive, which no
+   count of cards or words would show.
+
+   Two limits. A gap of at least MIN_GAP cards in reading order, because a
+   repeat the reader can still remember reads as an oversight rather than as
+   revision. And a cap of MAX_USES across the module, because a figure met
+   often enough stops being practice and becomes wallpaper.
+
+   Reuse is not banned: coming back to a figure once, later, with a different
+   focus is real teaching. Coming back to it two cards later is not. */
+const MIN_GAP = 4;
+const MAX_USES = 2;
+
+(function () {
+  const order = [];
+  const uses = new Map();
+  for (const lesson of D.LESSONS) {
+    lesson.cards.forEach((card, i) => {
+      for (const k of elementsOf(card)) {
+        const el = card[k];
+        if (!el || !el.exercise) continue;
+        const at = `${lesson.id} card ${i + 1}`;
+        order.push({ at, ex: el.exercise });
+        if (!uses.has(el.exercise)) uses.set(el.exercise, []);
+        uses.get(el.exercise).push(at);
+      }
+    });
+  }
+
+  for (let i = 1; i < order.length; i++) {
+    for (let j = Math.max(0, i - MIN_GAP); j < i; j++) {
+      if (order[j].ex !== order[i].ex) continue;
+      errors.push(`"${order[i].ex}" appears at ${order[j].at} and again at ${order[i].at}, ` +
+                  `${i - j} card(s) later. Leave at least ${MIN_GAP} — a reader who still ` +
+                  `remembers the figure reads the repeat as an oversight.`);
+      break;
+    }
+  }
+  for (const [ex, at] of uses) {
+    if (at.length > MAX_USES) {
+      errors.push(`"${ex}" is used ${at.length} times (${at.join(', ')}), over the ${MAX_USES} cap. ` +
+                  `A figure met this often stops being practice.`);
+    }
+  }
+  if (order.length) {
+    notes.push(`${order.length} card slots draw on ${uses.size} distinct exercises; ` +
+               `no repeat within ${MIN_GAP} cards.`);
+  }
+})();
+
 /* ── Every authored exercise is reachable and sound ─────────────────────── */
 const referenced = new Set();
 for (const lesson of D.LESSONS) {

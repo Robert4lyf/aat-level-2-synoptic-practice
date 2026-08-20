@@ -51,7 +51,7 @@
           p: ['The picking hand should be free to move. If it is also stopping the guitar sliding, ' +
               'it has two jobs and will do the second one badly.',
               'Play the open basses below. The guitar should stay where it is when the hand lifts off.'],
-          playalong: { exercise: 'p1-thumb-alone', loop: true,
+          playalong: { exercise: 'p1-sit-settle', loop: true,
                        note: 'Lift the picking hand clear between bars. Nothing should shift.' }
         },
         {
@@ -59,7 +59,7 @@
           p: ['Raise the neck until the fretting hand reaches the first fret without the wrist folding ' +
               'forward. A footstool or a cushion under the thigh does this; so does a strap, sitting down.',
               'Then check the picking hand falls onto the strings around the soundhole with a straight wrist.'],
-          tab: { exercise: 'p1-home',
+          tab: { exercise: 'p1-sit-reach',
                  caption: 'Reach for these four without moving your shoulders.' }
         },
         {
@@ -67,8 +67,8 @@
           p: ['Discomfort arrives late. The reliable signals are earlier: a rising shoulder, a thumb ' +
               'squeezing the neck, a wrist that has to fold to reach.',
               'Play this and watch for those three. Stop at the first one rather than at the ache.'],
-          playalong: { exercise: 'p1-fret-pressure', loop: true,
-                       note: 'Four frets, one finger each. The hand should not travel.' }
+          playalong: { exercise: 'p1-sit-signals', loop: true,
+                       note: 'One finger per fret, moving strings. Watch for all three faults.' }
         },
         {
           h: 'Where the picking hand floats',
@@ -76,7 +76,7 @@
               'near the back of the soundhole. Nothing else touches the guitar.',
               'Anchoring the little finger on the top feels stable and pins the hand to one spot. ' +
               'Leave it off.'],
-          tab: { exercise: 'p1-free-across',
+          tab: { exercise: 'p1-sit-noanchor',
                  caption: 'Three strings, no anchor. The hand pivots from the forearm.' }
         },
         {
@@ -85,7 +85,7 @@
               'common fault at this stage and the one that carries an injury risk.',
               'Play a bar, look, adjust, play it again. The position is learned by repetition, not by ' +
               'being told once.'],
-          playalong: { exercise: 'p1-thumb-under', bpm: 46, loop: true,
+          playalong: { exercise: 'p1-sit-mirror', bpm: 46, loop: true,
                        note: 'Both hands working. Check each wrist between repeats.' }
         }
       ]
@@ -114,7 +114,7 @@
           p: ['p covers the three basses. i, m and a sit on the third, second and first. That is the ' +
               'default, not a rule — but starting from it means the hand rarely has to travel.',
               'Play the figure below until the fingers land without being aimed.'],
-          playalong: { exercise: 'p1-home', loop: true,
+          playalong: { exercise: 'p1-home-hold', loop: true,
                        note: 'p moves between basses. i, m and a stay put.' }
         },
         {
@@ -123,7 +123,7 @@
               'fingertip does — a nail past the flesh clicks and thins the tone.',
               'Look along the finger from the palm side. No white should show past the tip. Cut them ' +
               'there and keep them there.'],
-          playalong: { exercise: 'p1-free-single', loop: true,
+          playalong: { exercise: 'p1-nail-listen', loop: true,
                        note: 'A click on the attack means the nail is still too long.' }
         },
         {
@@ -131,7 +131,7 @@
           p: ['The ring finger shares tendons with the middle finger and starts with less independence ' +
               'than the others. That is anatomy, not a fault, and it evens out with use.',
               'Give it its own turn rather than avoiding it, which is what happens by default.'],
-          tab: { exercise: 'p1-home',
+          tab: { exercise: 'p1-a-alone',
                  caption: 'a takes the first string every bar. Make it sound like the others.' }
         },
         {
@@ -177,7 +177,7 @@
           p: ['Rest the fingertip on the string before sounding it. That contact is what makes the note ' +
               'start when you decide rather than a moment later.',
               'Take the tempo down until the preparation happens on purpose. Speed removes it first.'],
-          playalong: { exercise: 'p1-free-single', bpm: 44, loop: true,
+          playalong: { exercise: 'p1-free-prepare', bpm: 44, loop: true,
                        note: 'Land the finger on the string a full beat before playing it.' }
         },
         {
@@ -186,7 +186,7 @@
               'does not stay curled waiting.',
               'A hand that tightens between notes runs out after a page. Let each finger open again ' +
               'before the next one plays.'],
-          tab: { exercise: 'p1-free-across',
+          tab: { exercise: 'p1-free-release',
                  caption: 'Watch the finger that has already played, not the one about to.' }
         },
         {
@@ -194,7 +194,7 @@
           p: ['Nearer the bridge the sound is thin and hard; nearer the neck it is round and soft. The ' +
               'hand moves a few centimetres to change it.',
               'Play the same figure in three places along the string and pick the one you want.'],
-          playalong: { exercise: 'p1-free-across', loop: true,
+          playalong: { exercise: 'p1-free-tone', loop: true,
                        note: 'Same notes, three hand positions. Only the tone changes.' }
         }
       ]
@@ -232,7 +232,7 @@
           p: ['A nail gives brightness that carries a melody on its own. Flesh does not, so the rest ' +
               'stroke does more work in this course than in one that assumes nails.',
               'Where a melody has to sit above an accompaniment, that is where this stroke goes.'],
-          playalong: { exercise: 'p1-rest-vs-free', bpm: 44, loop: true,
+          playalong: { exercise: 'p1-rest-melody', bpm: 44, loop: true,
                        note: 'Melody notes with m as a rest stroke. Everything else free.' }
         },
         {
@@ -241,7 +241,7 @@
               'further, ending against the next string rather than above it.',
               'If the fingertip is digging under the string to reach, the angle is wrong rather than ' +
               'the effort.'],
-          tab: { exercise: 'p1-rest-single',
+          tab: { exercise: 'p1-rest-angle',
                  caption: 'Slowly enough to feel where the finger stops.' }
         },
         {
@@ -249,7 +249,7 @@
           p: ['Rest strokes alternate the same way free strokes do. A melody played with one repeated ' +
               'finger hits the same ceiling.',
               'Take the line below with i and m alternating, every note a rest stroke.'],
-          playalong: { exercise: 'p1-alternate-scale', bpm: 44, loop: true,
+          playalong: { exercise: 'p1-rest-alternate', bpm: 44, loop: true,
                        note: 'Every note lands on the string above. Keep the letters strict.' }
         }
       ]
@@ -279,7 +279,7 @@
           p: ['Alternation survives the move to a new string. The temptation is to restart with i on ' +
               'every string, which is where the pattern breaks.',
               'Play the figure and say the letters aloud. The mouth catches a repeat before the ear does.'],
-          playalong: { exercise: 'p1-alternate-open', loop: true,
+          playalong: { exercise: 'p1-alternate-cross', loop: true,
                        note: 'The string changes at beat 3. The alternation does not.' }
         },
         {
@@ -295,7 +295,7 @@
           p: ['i and m is the pair that comes up most, but any two neighbours work. m and a is worth ' +
               'building early because the ring finger is weaker and gets skipped otherwise.',
               'Run the same figure with m and a in place of i and m.'],
-          tab: { exercise: 'p1-alternate-open',
+          tab: { exercise: 'p1-alternate-ma',
                  caption: 'Read i as m, and m as a. Same rhythm.' }
         },
         {
@@ -303,7 +303,7 @@
           p: ['Adding a bass should leave the alternation untouched. What usually happens instead is a ' +
               'small pause on every thumb note while the fingers wait.',
               'Play this and listen for the gap rather than watching for it.'],
-          playalong: { exercise: 'p1-thumb-under', loop: true,
+          playalong: { exercise: 'p1-alternate-bass', loop: true,
                        note: 'Fingers alternate through the bass notes without pausing.' }
         }
       ]
@@ -340,7 +340,7 @@
           p: ['If the thumb pauses when a finger plays, the two parts have merged into one. The test is ' +
               'whether the bass stays even while the fingers change.',
               'Play the bass alone, keep it going, and add the fingers without letting it alter.'],
-          playalong: { exercise: 'p1-thumb-under', bpm: 40, loop: true,
+          playalong: { exercise: 'p1-thumb-steady', bpm: 40, loop: true,
                        note: 'Listen only to the bass. It should sound the same with the fingers in as out.' }
         },
         {
@@ -349,7 +349,7 @@
               'ringing into the following harmony.',
               'Use it where the bass line is the tune. Use a free stroke where the basses need to ' +
               'overlap.'],
-          tab: { exercise: 'p1-thumb-alone',
+          tab: { exercise: 'p1-thumb-rest',
                  caption: 'Each thumb stroke coming to rest on the string below.' }
         },
         {
@@ -357,7 +357,7 @@
           p: ['Two parts at different speeds is where counting stops being optional. Say the beat while ' +
               'playing; the part that drifts is the one not being counted.',
               'If speaking and playing at once is too much, count the bass alone and add the fingers after.'],
-          playalong: { exercise: 'p1-thumb-under', bpm: 46, loop: true,
+          playalong: { exercise: 'p1-thumb-count', bpm: 46, loop: true,
                        note: 'Count one and two and. The thumb is on the numbers.' }
         }
       ]
@@ -387,7 +387,7 @@
               'amount back. That is the pressure to use.',
               'Most players use several times what is needed, which is where fatigue and slow changes ' +
               'come from.'],
-          playalong: { exercise: 'p1-fret-pressure', bpm: 40, loop: true,
+          playalong: { exercise: 'p1-fret-light', bpm: 40, loop: true,
                        note: 'Find the buzz on every note, then come back from it.' }
         },
         {
@@ -404,7 +404,7 @@
           p: ['A finger that lifts an inch has an inch to travel back. Held close, it arrives before ' +
               'the beat needs it.',
               'Play the figure below and watch the fingers doing nothing. Those are the ones that fly.'],
-          tab: { exercise: 'p1-fret-clean',
+          tab: { exercise: 'p1-fret-close',
                  caption: 'Four fingers, two strings. Nothing lifts far.' }
         },
         {
@@ -412,7 +412,7 @@
           p: ['A note sounds cleanly when the fretting finger is down before the string is picked. Late ' +
               'by a fraction and it buzzes; early is free.',
               'Slow the tempo until the fretting hand is always waiting for the picking hand.'],
-          playalong: { exercise: 'p1-alternate-scale', bpm: 42, loop: true,
+          playalong: { exercise: 'p1-fret-together', bpm: 42, loop: true,
                        note: 'Fretting hand first, every time. Listen for the buzz that says otherwise.' }
         }
       ]
