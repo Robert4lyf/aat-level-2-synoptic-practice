@@ -156,3 +156,60 @@ implementation, the test measures nothing however many events it runs over.
 
 **Standing rule from here on: every gate must be shown to fail.** A green suite
 is not evidence until a deliberate defect has turned it red.
+
+---
+
+## Step 4 — scales, positions, sequences and the generator
+
+Diff: `guitar-engine.js` (scales, positions, sequences, rhythms, generator),
+`scripts/check-guitar-playability.js` (new), `package.json`, plan.
+
+**Gate: the playability sweep.** 1,018 exercises — all-pairs across nine
+dimensions, plus exhaustive tuning × capo × root, scale × position, and
+sequence × direction × rhythm.
+
+### Caught by the review
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 4.1 | The box shapes are wrong | **Confirmed, and this is a real musical bug.** The window `[anchor, anchor+span]` used the string-6 degree as a lower bound, but a shape reaches *below* that anchor on the higher strings. Six of the ten pentatonic boxes came out with one note on some strings instead of two, and A minor pentatonic box 2 sat at frets 8–11 instead of 7–10 | Rewritten as a **climb**: take *n* tones on string 6 from the anchor up, then continue on each higher string from the pitch after the last taken. Correct by construction, and every box is now even across all six strings |
+| 4.2 | The whole gate can go vacuous | **Confirmed.** Making `positionNotes` return `null` unconditionally turned all 1,087 cases into "legitimately impossible combinations" — the run reported the skips cheerfully and exited 0 | Fixed: a floor of 900 real inspections and a 5% ceiling on skips. The mutant now fails with "only 112 exercises were actually inspected" |
+| 4.3 | `startIndex` is missing from the mastery key | **Confirmed.** Two exercises with genuinely different notes keyed identically, so one cell was credited for something never played | Fixed: `startIndex` reaches `meta` and the key. Verified by mutation — dropping it reproduces the collision |
+| 4.4 | `ionian`/`aeolian` fragment the grid | **Confirmed.** Note-identical to `major`/`natMinor`, but `exerciseKey` carried the raw id — the same duplication the tuning aliases exist to prevent | Fixed: `SCALE_KEY_ALIASES` resolved in `exerciseKey` only, so the modes unit keeps its names while the grid keeps one cell |
+| 4.5 | The reach limit is flat where the plan says it varies | **Confirmed**, and fixing it revealed a worse problem — see 4.6 | Position-dependent limits, ≤5 below fret 12 and ≤4 above |
+| 4.6 | Whole-shape span is the wrong thing to measure | **Confirmed by the fix for 4.5**, which failed 193 perfectly ordinary shapes. A position *climbs* the neck by design, so max-fret minus min-fret says nothing about whether a hand can play it | Rewritten to measure what a hand actually constrains: span on any one string, and drift between consecutive strings. Observed worst cases are 4 and 5; limits sit just above, and the self-test proves they still fire |
+| 4.7 | `startIndex` rotates degrees, as documented | **Disproved as documented.** It rotates the playing-order note list, which differs from scale degrees for every box but the first | Renamed from `startDegree` and documented for what it does |
+| 4.8 | Box runs repeat a unison across string changes | **Confirmed.** Major box 0 sounded E4 twice — 66 such repeats across the box shapes for root A | Fixed by the climb's strictly-ascending guard |
+
+### Caught in my own work, before the reviewer
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 4.9 | The scale-membership rule is self-comparison | **Confirmed.** It called `isScaleTone` — the same function the generator uses to pick notes — so it would pass whatever that function did. Exactly the defect from 3.2 | Rewritten to recompute pitch classes from the raw tuning table and step list |
+
+### Mutation testing
+
+Every rule disabled in turn, and every mutant killed:
+
+| Mutant | Result |
+|---|---|
+| scale filter accepts a chromatic neighbour | 25 errors |
+| beats do not advance | 25 errors |
+| box span widened past a hand | 25 errors |
+| `exerciseKey` includes handedness | 25 errors |
+| `positionNotes` returns null always | vacuity floor fires |
+| rule 1 disabled (capo/bounds) | self-test fires |
+| rule 2 disabled (two notes, one string) | self-test fires |
+| rule 3 disabled (reach) | self-test fires |
+| rule 4 disabled (beats backwards) | self-test fires |
+| rule 5 disabled (off-scale) | self-test fires |
+
+**One mutant initially survived**, and chasing it was the most valuable part of
+the step. Removing the capo guard from `positionNotes` changed nothing, because
+`boxAnchor` already starts at `max(0, capo)` — so that rule was real but
+unreachable. Adding a self-test to fire it directly then exposed a second
+problem: rule 2 could *also* be disabled with no effect, because rule 4 required
+**strictly increasing** beats and was catching its cases first. That rule would
+have rejected every chord, chord box and two-voice tab in the entire app.
+Relaxed to non-decreasing, with a chord added to the self-test as a case that
+must pass.
