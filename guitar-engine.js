@@ -225,6 +225,13 @@
   /* Does this fretboard mirror at all? For prose and aria-labels, not geometry. */
   function mirrorFor(fb) { return fb.handed === 'left'; }
 
+  /* Tab's mirror decision, which combines handedness with the opt-in and so
+     cannot be expressed by the element helpers alone. It lives here rather than
+     in the renderer for one reason: `handed` is read in exactly one file, and
+     the renderer asking `fb.handed === 'left'` for itself would break that —
+     which is the invariant check-guitar-handedness.js exists to hold. */
+  function tabMirror(fb, mirrorTab) { return !!mirrorTab && fb.handed === 'left'; }
+
   /* ── Scales ───────────────────────────────────────────────────────────────
      Semitone offsets from the root. `char` is the characteristic note — the one
      degree that makes the mode that mode, which the fretboard diagram lights in
@@ -823,6 +830,7 @@
     neckStringY: neckStringY,
     neckFretX: neckFretX,
     mirrorFor: mirrorFor,
+    tabMirror: tabMirror,
     /* scales */
     SCALES: SCALES,
     scaleSteps: scaleSteps,

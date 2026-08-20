@@ -56,7 +56,7 @@ New:
 ```
 guitar-engine.js        UMD. Fretboard model, note rep, scales, patterns,
                         generator, timing maths. No DOM. Node-importable.
-guitar-render.js        SVG/DOM: tab, chordbox, fretboard, rhythm grid. Browser only.
+guitar-render.js        SVG STRING builders: tab, chordbox, fretboard. UMD, Node-testable.
 guitar-audio.js         Karplus–Strong, scheduler, transport, drone/vamp. Browser only.
 guitar-syllabus.js      LCM requirements per grade, encoded. Node-importable.
 guitar-learn-data.js    Lessons and cards.
@@ -359,6 +359,9 @@ Web Audio scheduling itself is not testable in Node; these functions are. Be hon
 
 ## 6. Renderer (`guitar-render.js`)
 
+**It builds strings, not DOM nodes, and is therefore not browser-only.** `aat1-ui.js` already builds HTML as strings and assigns `innerHTML`, so this is the house style rather than a novelty — and it turns step 6's gate from "look at it" into "assert the structure in CI, *then* look at it". A renderer that emits markup can be asserted on: every string present exactly once, dots a clean permutation, mirroring flipping exactly what it should, no hardcoded colours, a `viewBox` on every figure. What still needs eyes is whether it looks any good, which no checker will ever tell you.
+
+
 **The two mirror functions live in `guitar-engine.js`, not here.** They are pure arithmetic with no DOM, and §9 step 2 gates them on a Node matrix test — which a browser-only file cannot satisfy. The renderer is their only consumer; the engine is their home. They are documented in this section because this is where they matter.
 
 ### 6.1 The mirrors — two transforms, nowhere else
@@ -402,7 +405,9 @@ Convention writes tab low-E-at-the-bottom regardless of handedness, and most lef
 
 ### 6.3 Elements
 
-`tab` (two voices, independent stems, PIMA above, `T` for tapped, ties), `chordbox`, `fretboard` (with characteristic-note highlight), `rhythm` grid, `playalong`, `changes`, `ear`, `pointer`.
+`tab`, `chordbox`, `fretboard` (with characteristic-note highlight), `rhythm` grid, `playalong`, `changes`, `ear`, `pointer`.
+
+**On "two voices".** In tablature, polyphony is free: notes sharing a beat on different strings occupy the same column, and that is what a bass line under a melody looks like. It falls out of positioning by `(beat, string)` with no extra machinery, so step 6 gets it for nothing. Independent *stems*, flags and ties are staff-notation flourish on top of that, and they wait for the tapping module where two genuinely independent rhythmic lines start to matter. Step 6 ships the polyphony, not the engraving.
 
 Wide elements must scroll inside their own `overflow-x: auto` container; the page body never scrolls horizontally.
 
@@ -565,6 +570,7 @@ The distinction that matters: a normal review reads the code and asks "is this r
 0. **If the step's gate measures something, validate the measuring instrument first** — in the exact configuration the gate uses, against inputs that are deliberately wrong. A ruler coarser than its tolerance, or one whose unambiguous range is narrower than the error it polices, produces a green gate that means nothing, and mutation testing will not catch it: the deliberate defect gets measured by the same broken instrument. This has now happened twice in one step (log 5.1, 5.2).
 1. Run `/code-review` at **high** effort against the step's diff. The skill exists in this repo; use it rather than improvising.
 2. Run the step-type checklist below, writing a failure hypothesis for each item before testing it.
+2b. **Ask of every assertion: can it fail?** Three separate steps shipped one that could not — a tuning check that excused four of its six inputs by id, a timing gate whose expectation restated the implementation, and a mirroring check that sorted away the very association it tested. A fourth compared two rendered outputs to each other with neither anchored to the convention they both had to follow, so inverting both passed. The two questions that catch this class: *is the expectation independent of the code under test?* and *is anything sorted, filtered or excused before the comparison?*
 3. Append every finding to `guitar-review-log.md` — one line per finding: step, hypothesis, outcome, action. **A finding that is deliberately not fixed still gets logged, with the reason.** Silent dismissal is how a known defect becomes a mystery three weeks later.
 4. Fix, or log-with-reason. Then start the next step.
 

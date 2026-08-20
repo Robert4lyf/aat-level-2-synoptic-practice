@@ -258,3 +258,61 @@ same aliased estimator and looked fine.
 **Rule added to §12: validate the measuring instrument, in the configuration the
 gate actually uses, against inputs that are deliberately wrong.** "Show the gate
 can fail" is necessary and, on its own, not sufficient.
+
+---
+
+## Step 6 — the renderer and the handedness checker
+
+Diff: `guitar-render.js` (new), `guitar-styles.css` (new),
+`scripts/check-guitar-handedness.js` (new), `guitar-engine.js` (tabMirror),
+`package.json`, `docs/guitar-implementation-plan.md`.
+
+**Gate: the handedness checker green, plus a visual check across eight
+combinations.** The structural half is in CI; the visual half is not, and cannot be.
+
+### Caught before writing code
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 6.1 | The renderer must be browser-only, so step 6's gate can only be visual | **Disproved.** `aat1-ui.js` builds markup as strings; doing the same makes the renderer UMD and Node-testable, which turns most of the gate into assertions | Renderer emits SVG strings; the checker asserts structure and geometry |
+| 6.2 | Two-voice tab needs stems and is therefore a large job | **Disproved for tablature.** Notes sharing a beat on different strings occupy one column, which *is* polyphonic tab. Stems are staff-notation flourish | Polyphony ships free; engraving deferred to the tapping module |
+| 6.3 | The renderer can decide tab's mirror itself | **Confirmed as a violation.** `tab()` read `fb.handed` directly, breaking the one-file rule the checker was being written to enforce | `tabMirror(fb, mirrorTab)` moved into the engine |
+
+### Caught by mutation testing the checker
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 6.4 | Sorting coordinates before comparing is harmless | **Confirmed as vacuous, and this is the third time.** Mirroring permutes which note sits at which coordinate without changing the *set*, so sorting destroyed the signal — a mutation flipping the neck's string order with handedness passed cleanly | Compare in emission order; `sameSeq` replaces every sorted `.join()` |
+| 6.5 | Comparing the two handednesses to each other is sufficient | **Confirmed insufficient.** Inverting the chord box for *both* hands kept them perfect mirrors and passed. Relative checks say nothing when both sides are wrong together | Absolute anchors added: chord box low-E-leftmost, neck and tab high-E-on-top, nut side per hand |
+
+### Caught by the review
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 6.6 | The chord-box window fits any shape | **Confirmed broken.** The window came from the lowest fretted note alone, so a shape at frets 4–6 drew a nut that is not there and silently dropped two dots — rendering as a different, plausible chord | Window fits lowest *and* highest; rows grow to suit |
+| 6.7 | The neck diagram shows every note given to it | **Confirmed broken.** A fixed 12-fret window discarded everything above it: an 18-note position reaching fret 17 rendered four dots and said nothing | The diagram grows to fit the notes |
+| 6.8 | An unstyled class is merely unstyled | **Confirmed false, and it would have made tab unreadable.** `gtr-tab-clear` masks the stave line behind a digit and carries no fill, so with no CSS the browser defaults to opaque black and paints over the number | `guitar-styles.css` ships with the renderer, and a new rule asserts every emitted class has a rule and every token a dark value. It found four unstyled classes on its first run |
+| 6.9 | The prose ban works | **Confirmed vacuous.** It iterated the top-level path as if entries were lessons, but the house shape is path → unit.lessons → cards, so `l.cards` was undefined everywhere while it printed a confident count | Walks both shapes; finding zero cards is now an error, not a pass |
+| 6.10 | Scanning `card.p` covers the prose | **Confirmed insufficient.** Headings, callouts, tables, splits, worked examples and pointers all carry text; "your left hand" in a heading was invisible | `cardText()` gathers every text-bearing field |
+| 6.11 | A note without a beat is harmless | **Confirmed.** It made `totalBeats` NaN and emitted `viewBox="0 0 NaN 95"` — the figure does not render at all, silently | Missing beat treated as 0 |
+| 6.12 | The base-fret label is fine beside the box | **Confirmed broken.** At `text-anchor="end"` it ran outside the viewBox and clipped "12" to "2" — a *wrong* position marker rather than a missing one | Moved inside, centred |
+| 6.13 | Escaping the chord name is harmless | **Confirmed.** `svgWrap` escapes the title again, so `A&B` reached the aria-label as `A&amp;amp;B` while the visible name was correct — the two paths disagreed | Raw name passed; escaping happens once |
+| 6.14 | The neck's fret axis is pinned like the string axes | **Confirmed missing.** Inverting `neckFretX` for both hands passed the checker; only the engine unit test caught it | Absolute nut-side assertion added for both hands |
+
+### The pattern, now three steps running
+
+Findings 2.11, 3.2 and 6.4 are the same defect: an assertion that cannot fail.
+Each time the cause was **normalising before comparing** — excusing inputs by id,
+restating the implementation as the expectation, sorting away the association
+being tested. 6.5 is its close relative: comparing two things to each other with
+neither anchored to reality.
+
+Added to the §12 checklist as a standing question: *does this assertion compare
+against something independent of the code under test, and is anything being
+sorted, filtered or excused before the comparison?*
+
+### What the gate does not cover
+
+The visual half. Nothing in CI can say whether a chord box is legible at 130px,
+whether the dark palette is comfortable, or whether the tab digits are the right
+size. A page covering eight combinations was generated and handed over for that.
