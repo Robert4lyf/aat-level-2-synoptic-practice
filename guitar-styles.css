@@ -30,6 +30,8 @@ body[data-subject="guitar"] {
   --gtr-char:     #0f766e;   /* the characteristic note of a mode */
   --gtr-on-dot:   #ffffff;   /* text sitting inside a filled dot */
   --gtr-warn:     #b91c1c;   /* a shape drawn on the wrong tuning */
+  --gtr-cursor:     #2563eb; /* the note sounding right now */
+  --gtr-cursor-ink: #ffffff; /* text sitting on the cursor */
 }
 
 body.dark[data-subject="guitar"] {
@@ -41,6 +43,8 @@ body.dark[data-subject="guitar"] {
   --gtr-char:     #5eead4;
   --gtr-on-dot:   #0f1419;
   --gtr-warn:     #f87171;
+  --gtr-cursor:     #60a5fa;
+  --gtr-cursor-ink: #0f1419;
 }
 
 /* ── Figure frame ─────────────────────────────────────────────────────────
@@ -80,6 +84,45 @@ body[data-subject="guitar"] .gtr-cb-name   { fill: var(--gtr-ink); font-size: 11
 body[data-subject="guitar"] .gtr-cb-name.is-wrong-tuning { fill: var(--gtr-warn); }
 body[data-subject="guitar"] .gtr-cb-mark,
 body[data-subject="guitar"] .gtr-cb-basefret { fill: var(--gtr-muted); font-size: 9px; }
+
+/* ── The playback cursor ──────────────────────────────────────────────────
+   The note currently sounding, in the neck diagram and the tab at once.
+
+   Carried by fill and a ring rather than by colour alone: the diagrams already
+   use colour to mean root and characteristic note, and a third colour meaning
+   "now" would be one more thing to decode on a figure someone is reading while
+   their hands are busy. The ring reads at a glance and does not collide with
+   what the palette already says.
+
+   No transition on the highlight. At 200bpm notes are 150ms apart and a fade
+   would still be catching up when the next one lands, which reads as lag
+   rather than as polish. */
+/* The wrapper the cursor addresses. It paints nothing itself — but a wide
+   figure scrolls inside its own container on a phone, and a drag starting on a
+   note group should scroll the figure rather than be swallowed by it. If a note
+   ever becomes tappable, this is the line to revisit. */
+body[data-subject="guitar"] .gtr-note { pointer-events: none; }
+
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-nk-dot {
+  fill: var(--gtr-cursor);
+  stroke: var(--gtr-cursor);
+  stroke-width: 5;
+  paint-order: stroke;
+}
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-nk-label { fill: var(--gtr-cursor-ink); }
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-tab-fret {
+  fill: var(--gtr-cursor-ink);
+  font-weight: 700;
+}
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-tab-clear {
+  fill: var(--gtr-cursor);
+  stroke: var(--gtr-cursor);
+  stroke-width: 4;
+  paint-order: stroke;
+  rx: 2;
+}
+/* Reduced motion does not mean no feedback — there is no motion here, only a
+   change of state. Left as it is deliberately. */
 
 /* ── Neck diagram ────────────────────────────────────────────────────────── */
 body[data-subject="guitar"] .gtr-nk-string,

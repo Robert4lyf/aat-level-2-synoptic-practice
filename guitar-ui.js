@@ -88,6 +88,14 @@
       handed: data.profile.handed
     });
   }
+  /* The playback cursor addresses notes by array index, and the transport
+     sorts by beat when it loads. If the figures were drawn from an unsorted
+     array the two would disagree and the cursor would light the wrong note —
+     silently, and only for exercises whose generator happened to emit out of
+     order. Sorted here, once, and the same array goes to both. */
+  function byBeat(notes) {
+    return (notes || []).slice().sort(function (a, b) { return a.beat - b.beat; });
+  }
   function exercise() {
     return E.generateExercise({
       scaleId: S.scaleId, rootPc: S.rootPc,
@@ -97,6 +105,11 @@
       tuning: data.settings.tuning, capo: data.settings.capo, handed: data.profile.handed,
       tempo: data.settings.tempo
     });
+  }
+  function sortedExercise() {
+    var ex = exercise();
+    if (!ex.fault) ex.notes = byBeat(ex.notes);
+    return ex;
   }
 
   /* Asked of the engine, not written down. An earlier draft listed
@@ -124,7 +137,7 @@
 
   function html() {
     var fb = fretboard();
-    var ex = exercise();
+    var ex = sortedExercise();
     var scaleIds = Object.keys(E.SCALES);
     var posCount = E.positionCount(S.scaleId, S.positionKind);
     var posOptions = [];
@@ -339,7 +352,7 @@
     on('gtrTempoUp',   'click', function () { setTempo(data.settings.tempo + 1, null); });
 
     on('gtrPlay', 'click', play);
-    on('gtrStop', 'click', function () { if (transport) transport.stop(); });
+    on('gtrStop', 'click', function () { if (transport) transport.stop(); stopCursor(); });
 
     Array.prototype.forEach.call(el.querySelectorAll('[data-chord]'), function (btn) {
       btn.addEventListener('click', function () {
@@ -355,7 +368,7 @@
   }
 
   function applyLoop() {
-    var ex = exercise();
+    var ex = sortedExercise();
     if (ex.fault || !transport) return;
     if (S.loop) transport.setLoop(0, ex.meta.beats);
     else transport.setLoop(0, 0);
@@ -363,33 +376,102 @@
 
   function play() {
     if (!A || !A.ready()) return;
-    var ex = exercise();
+    var ex = sortedExercise();
     if (ex.fault) return;
     if (!transport) transport = A.createTransport();
     transport.load(ex.notes, ex.fb, data.settings.tempo);
     applyLoop();
+    transport.onEnd = stopCursor;
     transport.play({ countInBeats: 4 });
+    startCursor();
     data.stats.plays++;
     save();
   }
 
-  /* No playback cursor yet. An earlier draft ran a requestAnimationFrame loop
-     writing a data-beat attribute that nothing read — motion with no drawing
-     behind it. The transport already exposes currentBeat(), which is the hard
-     half; the cursor lands with the lesson player, where there is a tab strip
-     that owns a marker to move. */
+  /* ── The playback cursor ──────────────────────────────────────────────────
+     Lights the note that is sounding, in the neck diagram and the tab at once.
+
+     Driven by requestAnimationFrame reading the transport, NOT by scheduling a
+     highlight alongside each note. The audio is scheduled up to 100 ms ahead
+     against the audio clock; a setTimeout painted from the same call would fire
+     on the wall clock, drift away from it, and be throttled to a crawl in a
+     background tab. Asking "what is sounding now" every frame cannot drift,
+     because it never accumulates.
+
+     The transport answers in its own terms — index into the array it was given
+     — and this only paints. Everything about which note that is, including the
+     output-latency offset, lives with the clock that knows. */
+  var cursorRaf = null;
+  var cursorLit = -1;
+  var cursorEls = null;      // index → [elements], rebuilt on each render
+
+  function cacheCursorEls(el) {
+    cursorEls = Object.create(null);
+    Array.prototype.forEach.call(el.querySelectorAll('.gtr-note[data-i]'), function (g) {
+      var i = parseInt(g.getAttribute('data-i'), 10);
+      if (isNaN(i)) return;
+      (cursorEls[i] || (cursorEls[i] = [])).push(g);
+    });
+  }
+  function setLit(i, on) {
+    var list = cursorEls && cursorEls[i];
+    if (!list) return;
+    list.forEach(function (g) { g.classList[on ? 'add' : 'remove']('is-playing'); });
+  }
+  function paintCursor(idx) {
+    if (!cursorEls) return;
+    if (idx === cursorLit) return;
+    setLit(cursorLit, false);
+    setLit(idx, true);
+    cursorLit = idx;
+  }
+  function stopCursor() {
+    if (cursorRaf && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(cursorRaf);
+    cursorRaf = null;
+    paintCursor(-1);
+  }
+  function startCursor() {
+    if (typeof requestAnimationFrame !== 'function') return;   // no frames: no cursor, no error
+    stopCursor();
+    var tick = function () {
+      if (!transport || !transport.playing) { stopCursor(); return; }
+      var idx = transport.currentIndex();
+      if (idx !== cursorLit) paintCursor(idx);
+      cursorRaf = requestAnimationFrame(tick);
+    };
+    cursorRaf = requestAnimationFrame(tick);
+  }
 
   function mount(el) {
     _host = el;
     load();
     el.innerHTML = html();
     wire(el);
+    cacheCursorEls(el);
     if (A && A.ready()) A.warmUp();
   }
-  function rerender() { if (_host) mount(_host); }
+  /* Every control that reaches here changes the notes themselves — root, scale,
+     shape, sequence, rhythm, tuning, capo, handedness. Playing on through that
+     would leave the transport sounding the old exercise while the figures show
+     the new one, and the cursor lighting notes at indices that no longer mean
+     what they did. Tempo and loop deliberately do not rerender, so neither
+     interrupts playback. */
+  function rerender() {
+    if (!_host) return;
+    if (transport) transport.stop(true);
+    stopCursor();
+    mount(_host);
+  }
 
   root.GUITAR_UI = {
     mount: mount,
-    reset: function () { if (transport) transport.stop(true); }
+    reset: function () { if (transport) transport.stop(true); stopCursor(); },
+    /* The live transport, or null before the first play. Exposed so the state
+       the cursor is painting from can be read independently of the DOM it
+       paints into — which is how the cursor is checked: ask the transport what
+       is sounding, ask the document what is lit, and require the same answer.
+       Reading it through the module's own surface beats reaching into a
+       closure or planting a global that only a test knows about. */
+    transport: function () { return transport; }
   };
 }(typeof self !== 'undefined' ? self : this));

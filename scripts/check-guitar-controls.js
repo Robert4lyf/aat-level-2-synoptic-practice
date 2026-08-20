@@ -304,6 +304,173 @@ function report() {
     }
     notes.push(`Chord-box labels: no overlap between names and markers.`);
 
+    /* -- the playback cursor lights the note that is sounding -------------
+       The claim is "each note lights up at the same time it plays", so what
+       has to be measured is WHEN each note lights, against a clock that does
+       not come from the code being tested.
+
+       An earlier version of this check compared the lit element against
+       transport.currentIndex() every 25ms. It passed, and it was worthless: an
+       off-by-one planted inside currentIndex() moved both sides of the
+       comparison together, so the check could not see it. Asking the cursor
+       whether it agrees with itself is not a test.
+
+       So this records the transitions — which note lit, and at what wall-clock
+       moment — and compares them against times computed here from the tempo,
+       the count-in and each note's own beat. Those come from the notes array
+       and the settings, which are data; nothing in the expectation is produced
+       by the indexing logic under test. An off-by-one now shows up as note 1
+       lighting when note 0 was due, and a drifting cursor as a growing error. */
+    const cursor = await page.evaluate(async () => {
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      const A = window.GuitarAudio;
+      if (!A || !A.ready()) return { skipped: 'no Web Audio in this browser' };
+
+      const BPM = 200, COUNT_IN = 4;
+      const num = document.querySelector('#gtrTempoNum');
+      num.value = String(BPM);
+      num.dispatchEvent(new Event('change', { bubbles: true }));
+
+      const litNow = () => {
+        const set = [...new Set([...document.querySelectorAll('.gtr-note.is-playing')]
+          .map(g => +g.getAttribute('data-i')))];
+        return set.length === 0 ? -1 : (set.length === 1 ? set[0] : -2);  // -2: more than one
+      };
+      /* What the lit note says it is, on the tab. Timing alone cannot catch a
+         figure drawn in a different order from the array the transport plays:
+         the indices would still light in sequence at the right moments while
+         pointing at the wrong notes on screen. Reading the digit back and
+         comparing it to the transport's own note closes that. */
+      const litFret = () => {
+        const t = document.querySelector('.gtr-tab-svg .gtr-note.is-playing .gtr-tab-fret');
+        return t ? t.textContent.trim() : null;
+      };
+      /* And what the NECK says it is. Both figures are checked because they
+         number their notes independently: the tab sorts its own copy, the neck
+         diagram used not to, and a cursor can be right in one and wrong in the
+         other. Agreeing with the transport separately is the only way to know
+         they agree with each other. */
+      const litName = () => {
+        const t = document.querySelector('.gtr-neck-svg .gtr-note.is-playing .gtr-nk-label');
+        return t ? t.textContent.trim() : null;
+      };
+
+      const t0 = performance.now();
+      document.querySelector('#gtrPlay').click();
+
+      const transitions = [];
+      let last = litNow();
+      let multiple = 0;
+      while (performance.now() - t0 < 4200 && transitions.length < 10) {
+        await wait(8);
+        const cur = litNow();
+        if (cur === -2) multiple++;
+        if (cur !== last) {
+          transitions.push({ i: cur, t: performance.now() - t0, fret: litFret(), name: litName() });
+          last = cur;
+        }
+      }
+      const T = window.GUITAR_UI && window.GUITAR_UI.transport();
+      const beats = T ? T.notes.map(n => n.beat) : [];
+      /* The fret each index SHOULD be showing, straight off the transport's
+         own notes — the array it actually schedules from. */
+      const E2 = window.GuitarEngine;
+      const wantFrets = (T && E2) ? T.notes.map(n => String(E2.displayFret(n, T.fb))) : [];
+      const wantNames = (T && E2) ? T.notes.map(n => E2.midiToName(E2.soundingMidi(n, T.fb))) : [];
+      const ctx = A.context();
+      const latency = (ctx && (ctx.outputLatency || ctx.baseLatency)) || 0;
+
+      document.querySelector('#gtrStop').click();
+      await wait(80);
+      const afterStop = document.querySelectorAll('.gtr-note.is-playing').length;
+
+      return { transitions, multiple, beats, wantFrets, wantNames, latency, afterStop, BPM, COUNT_IN,
+               total: document.querySelectorAll('.gtr-note[data-i]').length };
+    });
+
+    if (cursor.skipped) {
+      notes.push(`Playback cursor not exercised: ${cursor.skipped}.`);
+    } else {
+      const lights = cursor.transitions.filter(x => x.i >= 0);
+      const spb = 60 / cursor.BPM;
+      /* play() schedules from currentTime + 0.06, and the cursor is offset by
+         the output latency; both shift every expected time equally. */
+      const offsetMs = (cursor.COUNT_IN * spb + 0.06 + cursor.latency) * 1000;
+      /* One rAF frame, one 8ms sample, and the click-to-play gap. Generous
+         enough not to flake, far tighter than a whole note (300ms here). */
+      const TOL = 110;
+
+      if (!lights.length) {
+        errors.push('no note ever lit during playback — the cursor does not run at all.');
+      } else {
+        if (lights[0].i !== 0) {
+          errors.push(`the first note to light was ${lights[0].i}, not 0. The cursor starts on the ` +
+                      `wrong note, so every highlight after it names the wrong one too.`);
+        }
+        const worst = { err: 0 };
+        for (const L of lights) {
+          if (cursor.beats[L.i] === undefined) {
+            errors.push(`note ${L.i} lit, but the transport holds only ${cursor.beats.length} notes.`);
+            continue;
+          }
+          const want = offsetMs + cursor.beats[L.i] * spb * 1000;
+          const err = L.t - want;
+          if (Math.abs(err) > Math.abs(worst.err)) { worst.err = err; worst.i = L.i; worst.t = L.t; worst.want = want; }
+        }
+        if (Math.abs(worst.err) > TOL) {
+          errors.push(`note ${worst.i} lit ${Math.round(worst.t)}ms after Play but was due at ` +
+                      `${Math.round(worst.want)}ms — ${worst.err > 0 ? 'late' : 'early'} by ` +
+                      `${Math.round(Math.abs(worst.err))}ms, past the ${TOL}ms tolerance. ` +
+                      `The highlight is not landing with the note it names.`);
+        }
+        /* The lit note on screen must BE the note the transport is playing.
+           Checked by reading the digit back off the tab and comparing it with
+           the fret of the transport's own note at that index. Catches figures
+           rendered from a differently ordered array — where the highlight
+           marches along in perfect time, landing on the wrong notes. */
+        const wrongNote = lights.find(L =>
+          L.fret !== null && cursor.wantFrets[L.i] !== undefined && L.fret !== cursor.wantFrets[L.i]);
+        if (wrongNote) {
+          errors.push(`the cursor lit a tab digit reading "${wrongNote.fret}" while the transport was ` +
+                      `playing fret ${cursor.wantFrets[wrongNote.i]} at that index. The figures and the ` +
+                      `transport disagree about which note is which — the highlight keeps perfect time ` +
+                      `on the wrong notes.`);
+        }
+
+        const wrongName = lights.find(L =>
+          L.name !== null && cursor.wantNames[L.i] !== undefined && L.name !== cursor.wantNames[L.i]);
+        if (wrongName) {
+          errors.push(`the neck diagram lit "${wrongName.name}" while the transport was playing ` +
+                      `${cursor.wantNames[wrongName.i]}. The two figures number their notes ` +
+                      `differently, so the cursor cannot be right in both.`);
+        }
+
+        /* Consecutive and in order: a skip or a repeat means the index search
+           is not walking the notes the way the transport plays them. */
+        for (let k = 1; k < lights.length; k++) {
+          if (lights[k].i !== lights[k - 1].i + 1) {
+            errors.push(`the cursor went from note ${lights[k - 1].i} to ${lights[k].i}; ` +
+                        `a scale run should light every note once, in order.`);
+            break;
+          }
+        }
+        notes.push(`Cursor: ${lights.length} notes lit in order from 0, worst timing error ` +
+                   `${Math.round(worst.err)}ms against a ${Math.round(spb * 1000)}ms beat` +
+                   (cursor.latency ? `, output latency ${Math.round(cursor.latency * 1000)}ms` : '') + '.');
+      }
+      /* Nothing may be lit before the count-in ends: the first transition away
+         from "nothing lit" must not arrive early. */
+      if (lights.length && lights[0].t < offsetMs - TOL) {
+        errors.push(`a note lit ${Math.round(lights[0].t)}ms after Play, before the ` +
+                    `${Math.round(offsetMs)}ms count-in had finished. Nothing is sounding yet.`);
+      }
+      if (cursor.multiple) {
+        errors.push(`${cursor.multiple} sample(s) had more than one note lit at once — ` +
+                    `the previous highlight is not being cleared.`);
+      }
+      if (cursor.afterStop) errors.push(`${cursor.afterStop} note(s) stayed lit after Stop.`);
+    }
+
     /* -- and it survives a reload --------------------------------------- */
     const before = (await read()).saved;
     await page.reload({ waitUntil: 'load' });

@@ -338,13 +338,42 @@
       return T;
     };
     /* Where the cursor should be. Reads the audio clock and converts — the
-       display follows audio, never the other way round. */
+       display follows audio, never the other way round.
+
+       Offset by the output latency, which is not a detail. currentTime is the
+       scheduling clock: it marks audio entering the output pipeline, not audio
+       reaching the ear. A note scheduled at X is heard at about X + latency, so
+       what is being heard at this instant was scheduled a latency ago — hence
+       the subtraction. On a wired desktop that is a few milliseconds and barely
+       matters. Over Bluetooth it is commonly 150–200 ms, which at 120 bpm is
+       most of a beat: the highlight would visibly lead the sound, and on a
+       tool for playing along that is worse than no highlight at all.
+
+       Returns negative during a count-in, which callers use to light nothing. */
     T.currentBeat = function () {
       var c = context();
       if (!c || !T.playing) return null;
-      var b = E.beatAtTime(c.currentTime, T.segs, T.t0);
+      var lat = c.outputLatency;
+      if (!(lat > 0)) lat = c.baseLatency;
+      if (!(lat > 0)) lat = 0;
+      var b = E.beatAtTime(c.currentTime - lat, T.segs, T.t0);
       if (T.loop) return E.loopWrap(b, T.loop.start, T.loop.end);
       return b;
+    };
+    /* Which note is sounding, as an index into the array passed to load().
+       Kept here rather than in the UI because it is the transport that knows
+       the array is sorted by beat, and the answer must not disagree with what
+       was scheduled. A note stays lit until the next one starts: for a scale
+       run that reads as a moving cursor, where lighting only for the note's
+       written duration flickers through every rest between them. */
+    T.currentIndex = function () {
+      var b = T.currentBeat();
+      if (b === null || b < 0) return -1;
+      var idx = -1;
+      for (var i = 0; i < T.notes.length; i++) {
+        if (T.notes[i].beat <= b + 1e-9) idx = i; else break;
+      }
+      return idx;
     };
     return T;
   }
