@@ -219,6 +219,22 @@ body[data-subject="guitar"] .gtr-chordbtn {
 body[data-subject="guitar"] .gtr-chordbtn:hover { border-color: var(--subj, var(--accent)); }
 body[data-subject="guitar"] .gtr-chordbtn:active { transform: translateY(1px); }
 body[data-subject="guitar"] .gtr-chordbtn .gtr-fig { margin: 0; }
+body[data-subject="guitar"] .gtr-chordbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+/* The notes the shape actually sounds in the current tuning. Small, because it
+   is corroboration rather than the point — but present, because without it a
+   shape carries no evidence of which tuning produced it. */
+body[data-subject="guitar"] .gtr-chordpitch {
+  font-size: .68rem;
+  line-height: 1.2;
+  color: var(--subtext);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+}
 
 body[data-subject="guitar"] .gtr-figures { margin-top: 4px; }
 

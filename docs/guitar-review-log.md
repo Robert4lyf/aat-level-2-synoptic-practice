@@ -661,3 +661,75 @@ The standing lesson, restated: when a report comes back from real use, gate the
 class of defect, not the instance. 7b gated the tempo control's behaviour because
 behaviour was what had been rebuilt. Legibility was never asked about, so it was
 never checked, and it was the next thing to break.
+
+## Step 7d — "changing tuning doesn't change the chord shapes"
+
+Reported for the third time in this project, and the first time against code
+that was right.
+
+### 7d.1 What was actually happening
+
+The engine was correct. Verified two ways before touching anything: 4,608
+voicings sounded across every tuning, chord type, root, capo and hand, all
+pitch-correct; and a real browser driven through the tuning selector, showing
+DADGAD, Open D, Open G and CGCFCE all producing shapes that differ from standard
+in every one of the 48 root/chord combinations.
+
+Drop D is the exception, and it is not a bug. Drop D alters one string, the
+sixth. At the default root of A, none of the four displayed voicings — A, Am,
+A7, Asus4 — use the sixth string, so all four shapes are legitimately identical
+to standard. Switching to Drop D changed nothing on screen, and the panel gave
+no way to tell that correct answer apart from a stale one.
+
+Which is the real defect. A chord shape is a set of (string, fret) pairs and
+carries no evidence about which tuning produced it, so a right one and a wrong
+one look exactly alike. The panel is headed "Chords in this tuning" and offered
+nothing to back the claim up.
+
+Two changes, both about showing the work:
+
+- **Every box now carries the notes it sounds** in the current tuning, low
+  string first. An A major reading `A E A C# E` is self-evidently right in
+  whatever tuning produced it; the standard-tuning shape dropped into DADGAD
+  would read as something else entirely. This is also the display that would
+  have made the original step-6 bug obvious on sight.
+- **A tuning that changes nothing says so.** In Drop D the panel now explains
+  that these voicings do not use the strings Drop D alters, and suggests another
+  root or the scale panel below.
+
+### 7d.2 The gate that should have existed since step 6
+
+`check:guitar-voicings` sounds every voicing the app can display on its own
+fretboard and compares the pitch classes against the chord definition. Under a
+mutation that makes `findVoicing` ignore the tuning — the original step-6 bug,
+reintroduced exactly — 3,496 of 4,608 voicings fail, with the reason stated:
+`D (maj) in dropD: 6f10 5f9 4f7 3f7 2f7 1f10 — sounds C which is not in the
+chord`.
+
+Step 6 fixed this defect twice: once for the instance reported, once for the
+class. Neither fix came with an assertion that the class stays fixed. It does
+now.
+
+### 7d.3 And a collision found by looking at the screenshot
+
+Taking a screenshot to confirm the pitch labels showed the chord name running
+into the open-string markers on A7 and Asus4. `padTop` at 26 left the name on a
+baseline of 9 and the markers on 14 — an 11px name over 9px markers, so the
+glyphs overlapped.
+
+This is the step-6 tab mask bug again in a different place: two elements
+positioned independently from arithmetic that assumed they would not meet. Both
+rows now come from named baselines, and the gate measures `getBBox` overlap
+between name and markers across every chord shown, catching both collisions.
+
+### What step 7d says
+
+The report was wrong about the cause and completely right that something was
+broken. Chasing only the literal claim — "shapes don't change" — would have
+ended at "works as intended", which is the worst possible outcome: the user is
+told they are mistaken and the actual defect survives.
+
+Two habits earned their place this round. Reproducing before fixing, which is
+what separated the correct engine from the miscommunicating panel. And
+screenshotting the fix, which found a defect that had nothing to do with the
+report and had been shipped since step 6.

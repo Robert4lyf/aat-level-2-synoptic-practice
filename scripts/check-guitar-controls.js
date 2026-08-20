@@ -264,6 +264,46 @@ function report() {
     }
     notes.push(`Tempo field ${Math.round(fit.box)}px wide; 30–240 bpm all fit.`);
 
+    /* -- nothing in a chord box overlaps anything else --------------------
+       The chord name and the open/muted markers are two rows of text stacked
+       above the nut, positioned independently. At the original padTop they
+       overlapped: "A7" and "Asus4" ran into the circles above the third and
+       fourth strings. Structurally the SVG was perfect and every other check
+       passed — the collision only exists once a font renders.
+
+       So it is measured the way a reader sees it, with getBBox on the live
+       elements, across every chord the panel can show. Text-versus-text only:
+       dots deliberately sit on string lines and frets. */
+    const collisions = await page.evaluate(() => {
+      const out = [];
+      for (const box of document.querySelectorAll('.gtr-chordbox-svg')) {
+        const name = box.querySelector('.gtr-cb-name');
+        const marks = [...box.querySelectorAll('.gtr-cb-mark, .gtr-cb-basefret')];
+        if (!name || !marks.length) continue;
+        const a = name.getBBox();
+        for (const m of marks) {
+          const b = m.getBBox();
+          const overlapX = Math.min(a.x + a.width,  b.x + b.width)  - Math.max(a.x, b.x);
+          const overlapY = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
+          if (overlapX > 0.5 && overlapY > 0.5) {
+            out.push({
+              chord: name.textContent.trim(),
+              mark: m.textContent.trim(),
+              x: +overlapX.toFixed(1), y: +overlapY.toFixed(1)
+            });
+          }
+        }
+      }
+      return out;
+    });
+    if (collisions.length) {
+      const c = collisions[0];
+      errors.push(`${collisions.length} overlapping label(s) in the chord boxes: the name "${c.chord}" ` +
+                  `runs into the "${c.mark}" marker by ${c.x}×${c.y}px. Two rows of text above the nut ` +
+                  `are positioned independently and have drifted into each other.`);
+    }
+    notes.push(`Chord-box labels: no overlap between names and markers.`);
+
     /* -- and it survives a reload --------------------------------------- */
     const before = (await read()).saved;
     await page.reload({ waitUntil: 'load' });
