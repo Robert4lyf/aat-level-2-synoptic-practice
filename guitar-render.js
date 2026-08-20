@@ -46,7 +46,7 @@
     stringGap: 13, fretGap: 26, padX: 22, padY: 18, dot: 5.6, frets: 12
   };
   var TB = {                       // tablature
-    stringGap: 11, beatGap: 26, padX: 30, padY: 20, fontSize: 9.5
+    stringGap: 11, beatGap: 26, padX: 26, padY: 20, fontSize: 9.5, barPad: 11
   };
   var MARKER_FRETS = [3, 5, 7, 9, 15, 17, 19, 21];
   var DOUBLE_MARKER_FRETS = [12, 24];
@@ -223,7 +223,13 @@
      tab source in the world. The engine stores them absolute; displayFret does
      the conversion here and nowhere else.
 
-     opts = { notes, beatsPerBar, mirrorTab, title } */
+     Bar lines get breathing room: a note on a downbeat used to be drawn exactly
+     on top of its bar line, which is unreadable and wrong — engraving always
+     leaves a gap after the line. Each bar is therefore offset by BARPAD, and
+     both the lines and the notes are placed from the same arithmetic so they
+     cannot drift apart.
+
+     opts = { notes, beatsPerBar, title } */
   function tab(opts, fb) {
     opts = opts || {};
     fb = fb || E.makeFretboard();
@@ -231,7 +237,6 @@
       return (a.beat - b.beat) || (a.string - b.string);
     });
     var beatsPerBar = opts.beatsPerBar || 4;
-    var mirror = E.tabMirror(fb, opts.mirrorTab);
     /* A note with no beat used to make totalBeats NaN, and a NaN viewBox does
        not render at all — the figure vanishes with no error anywhere. Treat a
        missing beat as 0 rather than poisoning the geometry. */
@@ -241,15 +246,25 @@
     var lastBeat = notes.length ? notes[notes.length - 1].beat : 0;
     var totalBeats = Math.max(beatsPerBar, Math.ceil((lastBeat + 0.5) / beatsPerBar) * beatsPerBar);
 
-    var w = TB.padX * 2 + TB.beatGap * totalBeats;
+    var bars = Math.max(1, Math.round(totalBeats / beatsPerBar));
+    var barWidth = beatsPerBar * TB.beatGap + TB.barPad;
+    var w = TB.padX * 2 + bars * barWidth;
     var h = TB.padY * 2 + TB.stringGap * (E.STRING_COUNT - 1);
-    var x = function (beat) { return TB.padX + beat * TB.beatGap; };
-    var y = function (stringNo) { return TB.padY + E.tabStringY(stringNo, mirror, TB.stringGap); };
+    /* Bar k's line, and a note at absolute beat t, both derived from the same
+       barWidth so a note can never land on top of a line. */
+    var barLineX = function (k) { return TB.padX + k * barWidth; };
+    var x = function (beat) {
+      var k = Math.floor(beat / beatsPerBar);
+      return barLineX(k) + TB.barPad + (beat - k * beatsPerBar) * TB.beatGap;
+    };
+    var y = function (stringNo) { return TB.padY + E.tabStringY(stringNo, TB.stringGap); };
 
     var g = '';
-    for (var s = 1; s <= E.STRING_COUNT; s++) g += line(x(0), y(s), x(totalBeats), y(s), 'gtr-tab-string');
-    for (var b = 0; b <= totalBeats; b += beatsPerBar) {
-      g += line(x(b), y(1), x(b), y(E.STRING_COUNT), 'gtr-tab-bar');
+    for (var s = 1; s <= E.STRING_COUNT; s++) {
+      g += line(barLineX(0), y(s), barLineX(bars), y(s), 'gtr-tab-string');
+    }
+    for (var k2 = 0; k2 <= bars; k2++) {
+      g += line(barLineX(k2), y(1), barLineX(k2), y(E.STRING_COUNT), 'gtr-tab-bar');
     }
     if (fb.capo > 0) {
       g += '<text x="' + n2(TB.padX) + '" y="' + n2(TB.padY - 9) +

@@ -316,3 +316,31 @@ sorted, filtered or excused before the comparison?*
 The visual half. Nothing in CI can say whether a chord box is legible at 130px,
 whether the dark palette is comfortable, or whether the tab digits are the right
 size. A page covering eight combinations was generated and handed over for that.
+
+### Step 6, second pass — feedback on the visual check
+
+The half of the gate that CI cannot cover did its job: three things came back
+that no checker had flagged, and one of them was wrong output in a delivered
+artefact.
+
+| # | Finding | Outcome | Action |
+|---|---|---|---|
+| 6.15 | Tab mirroring is wanted | **Disproved by the only person who will use it.** It was designed in as an opt-in for left-handed readers | Removed entirely — engine, renderer, checker, tests and plan. `tabStringY` no longer takes a mirror argument, so tab cannot be flipped by accident or on purpose. A switch nobody will touch is worse than no switch |
+| 6.16 | Notes never collide with bar lines | **Confirmed broken.** `x = padX + beat × beatGap` and bar lines at multiples of `beatsPerBar`, so every downbeat was drawn exactly on top of its own bar line. Worst with quarter notes, where every note is a downbeat | Each bar is offset by `barPad`; lines and notes now derive from the same `barWidth` so they cannot drift apart. Verified: zero notes within 4px of a line |
+| 6.17 | The DADGAD panel shows DADGAD | **Confirmed false, and it was in a file I sent.** The check page generated the notes once for standard tuning and drew them on a DADGAD neck. A standard-tuning A dorian box reads `G2 A2 A#2 D3…` in DADGAD — a confident, entirely wrong diagram | Page fixed, and the API hazard behind it closed |
+
+**6.17 is the one worth dwelling on.** The page was wrong, but the reason it
+could be wrong is that `generateExercise` returned notes without the fretboard
+they were computed for, leaving every caller to build a second one and get it
+right by hand. Notes are string-and-fret positions, so the mismatch is silent
+and total.
+
+`generateExercise` now returns `fb`. A caller has no reason to construct a
+second fretboard, and the visual-check protocol in §12 says every panel must
+generate its notes for the board it is drawn on.
+
+No checker caught this, and none realistically could — the notes were valid, the
+diagram was well-formed, every structural assertion passed. It took someone who
+knows what A dorian sounds like in DADGAD looking at the picture. Worth
+recording as the clearest example so far of what the visual half of a gate is
+actually for.

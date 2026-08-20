@@ -204,9 +204,11 @@ eq(E.makeFretboard({ handed: 'sideways' }).handed, 'right', 'an unknown handedne
 const rh = E.makeFretboard({ handed: 'right' });
 const lh = E.makeFretboard({ handed: 'left' });
 
-eq(E.tabStringY(1, false), 0, 'tab: string 1 is the top line');
-eq(E.tabStringY(6, false), 5, 'tab: string 6 is the bottom line');
-eq(E.tabStringY(1, true), 5, 'tab: mirrorTab flips it');
+eq(E.tabStringY(1), 0, 'tab: string 1 is the top line');
+eq(E.tabStringY(6), 5, 'tab: string 6 is the bottom line');
+/* Tab takes no mirror argument at all now, so it cannot be flipped by accident
+   or on purpose. An extra argument must be ignored rather than honoured. */
+eq(E.tabStringY(1, 1), 0, 'tab: a stray second argument does not flip it');
 
 /* Right-handed chord boxes put the LOW E leftmost, which is the reverse of the
    natural string-1-first order. Left-handed is the mirror image. */
@@ -237,7 +239,7 @@ eq(E.neckFretX(12, lh, 12), 0, 'neck: fret 12 near the left, left-handed');
       const box = [], tabY = [], neck = [];
       for (let s = 1; s <= 6; s++) {
         box.push(E.chordBoxStringX(s, fb));
-        tabY.push(E.tabStringY(s, false));
+        tabY.push(E.tabStringY(s));
         neck.push(E.neckStringY(s, fb));
       }
       const perm = a => a.slice().sort((x, y) => x - y).join(',') === '0,1,2,3,4,5';

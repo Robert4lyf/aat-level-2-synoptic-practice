@@ -232,7 +232,7 @@ Rut      { id, family, text, level:'nudge'|'constraint'|'hard', requires:[unitId
 
 ```js
 {
-  settings: { tuning, capo, mirrorTab },   // device-local, never synced (mergeSubject keeps local)
+  settings: { tuning, capo },              // device-local, never synced (mergeSubject keeps local)
   profile:  { handed: 'right', touch: 'flesh' },  // travels between devices
   lessons:  { [lessonId]: { done, at } },
   sr:       { [exerciseId]: { box, interval, dueAt } },   // name it `sr` — reuses the existing merge
@@ -247,7 +247,7 @@ Rut      { id, family, text, level:'nudge'|'constraint'|'hard', requires:[unitId
 
 Two notes on how these interact with the existing merge:
 
-- `settings` is wiped to the local copy by `mergeSubject` (`progress-backup.js:237`), which is why per-device state (tuning, capo, `mirrorTab`) lives there.
+- `settings` is wiped to the local copy by `mergeSubject` (`progress-backup.js:237`), which is why per-device state (tuning, capo) lives there.
 - `profile` goes through the generic merge, and **`mergeValue` returns `local` for every string** (`:213`). So `handed` and `touch` do **not** propagate between devices once both have a value — they are set once per device at first run. That is acceptable (one tap to change) but must not be described as syncing. Do not add explicit merge handling for them; a two-device disagreement about handedness has no correct automatic resolution.
 
 ### 4.5 Consequences of flesh, and of instrument neutrality
@@ -381,7 +381,7 @@ fretAxis(fret, reverse, span, spacing)
 `reverse` is **not** "is the player left-handed" — it is "does this axis run backwards from its natural order", and which of those holds depends on the element as much as the hand. So callers use the element helpers and never pass the boolean themselves:
 
 ```js
-tabStringY(stringNo, mirrorTab, spacing)
+tabStringY(stringNo, spacing)
 chordBoxStringX(stringNo, fb, spacing)
 neckStringY(stringNo, fb, spacing)
 neckFretX(fret, fb, span, spacing)
@@ -391,7 +391,7 @@ neckFretX(fret, fb, span, spacing)
 
 | Element | horizontal axis | flips with handedness | fixed |
 |---|---|---|---|
-| Tab | neither | nothing (opt-in `mirrorTab` only) | string 1 on the top line |
+| Tab | neither | nothing, ever | string 1 on the top line |
 | Chord box (nut at top) | strings | strings | frets run down |
 | Neck diagram (nut at left) | frets | frets | high E stays on top |
 
@@ -401,7 +401,7 @@ The chord box is the one that reads oddly: a right-handed chord chart puts the *
 
 ### 6.2 Tab opts out of the handedness toggle
 
-Convention writes tab low-E-at-the-bottom regardless of handedness, and most left-handed players read standard tab unchanged. Tab therefore passes `mirror: false` unless the separate `profile.mirrorTab` opt-in is set — it is not an exception to the single-transform rule, it is a caller passing a different argument.
+Convention writes tab low-E-at-the-bottom regardless of handedness, and left-handed players read standard tab unchanged. Tab therefore always passes `reverse: false` — it is not an exception to the single-transform rule, it is a caller passing a fixed argument. An earlier draft offered a `mirrorTab` opt-in; it was removed as unwanted rather than kept as a switch nobody would ever touch.
 
 ### 6.3 Elements
 
@@ -592,7 +592,7 @@ The distinction that matters: a normal review reads the code and asks "is this r
 - Two voices starting on the same beat; a voice whose note is longer than the loop
 
 **Renderer (step 6)**
-- Both themes × both handedness values × `mirrorTab` on and off — eight combinations, check all eight
+- Both themes × both handedness values × at least two tunings — and every panel must generate its notes **for the fretboard it is drawn on**. The step 6 check page did not, and rendered standard-tuning shapes on a DADGAD neck: a confident, completely wrong diagram. `generateExercise` now returns the fretboard it used, so a caller has no reason to build a second one.
 - Narrowest supported viewport; the longest realistic phrase; does it reflow or overflow the body?
 - A two-voice tab where both voices land on the same beat
 - Grep the diff for coordinate arithmetic outside the two mirror functions

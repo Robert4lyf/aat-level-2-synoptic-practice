@@ -196,9 +196,9 @@
      differently on each of the three:
 
        tab           strings run down the stave, frets are not positional.
-                     Nothing is horizontal, so nothing flips. Tab is written
-                     the same way for both hands by convention, and mirrors
-                     only on the explicit mirrorTab opt-in.
+                     Nothing is horizontal, so nothing flips — and tab is
+                     written identically for both hands by convention, so it
+                     never mirrors at all.
 
        chord box     nut at the top, strings across. STRINGS are horizontal, so
                      they flip. Frets run down and do not.
@@ -209,8 +209,11 @@
        neck diagram  nut at the left, frets across. FRETS are horizontal, so
                      they flip; the string order does not. High E stays on top
                      in both hands, matching the tab stave directly above it. */
-  function tabStringY(stringNo, mirrorTab, spacing) {
-    return stringAxis(stringNo, !!mirrorTab, spacing);
+  /* Tab never mirrors. It is written the same way for both hands by universal
+     convention, and an opt-in to flip it was removed as unwanted rather than
+     left as a switch nobody would touch. String 1 is the top line, always. */
+  function tabStringY(stringNo, spacing) {
+    return stringAxis(stringNo, false, spacing);
   }
   function chordBoxStringX(stringNo, fb, spacing) {
     return stringAxis(stringNo, fb.handed !== 'left', spacing);
@@ -225,12 +228,7 @@
   /* Does this fretboard mirror at all? For prose and aria-labels, not geometry. */
   function mirrorFor(fb) { return fb.handed === 'left'; }
 
-  /* Tab's mirror decision, which combines handedness with the opt-in and so
-     cannot be expressed by the element helpers alone. It lives here rather than
-     in the renderer for one reason: `handed` is read in exactly one file, and
-     the renderer asking `fb.handed === 'left'` for itself would break that —
-     which is the invariant check-guitar-handedness.js exists to hold. */
-  function tabMirror(fb, mirrorTab) { return !!mirrorTab && fb.handed === 'left'; }
+
 
   /* ── Scales ───────────────────────────────────────────────────────────────
      Semitone offsets from the root. `char` is the characteristic note — the one
@@ -529,6 +527,12 @@
     }
     return {
       notes: notes,
+      /* The fretboard these notes were computed FOR. Returned so a caller
+         cannot draw them on a different one: notes are string-and-fret
+         positions, so rendering a standard-tuning shape on a DADGAD neck
+         produces a confident, completely wrong diagram with nothing to
+         indicate it. That happened in the step 6 visual check. */
+      fb: fb,
       meta: {
         scaleId: spec.scaleId, rootPc: rootPc, positionKind: posKind, positionIndex: posIndex,
         sequence: seqId, descending: !!spec.descending, startIndex: startIndex, rhythm: rhythmId,
@@ -830,7 +834,6 @@
     neckStringY: neckStringY,
     neckFretX: neckFretX,
     mirrorFor: mirrorFor,
-    tabMirror: tabMirror,
     /* scales */
     SCALES: SCALES,
     scaleSteps: scaleSteps,

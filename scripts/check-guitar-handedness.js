@@ -235,7 +235,7 @@ function sameSeq(a, b) { return a.length === b.length && a.every((v, i) => v ===
                 'stave upside down.');
   }
   if (!(tabY(oneTab(1, {}, lh)) < tabY(oneTab(6, {}, lh)))) {
-    errors.push('tab, left-handed without the opt-in: string 1 must still be the top line.');
+    errors.push('tab, left-handed: string 1 must still be the top line.');
   }
   const neckAt = (fret, fb2) => coordsOf(R.neckDiagram({ notes: [{ string: 3, fret: fret }] }, fb2), 'cx').slice(-1)[0];
   if (!(neckAt(1, rh) < neckAt(11, rh))) {
@@ -266,20 +266,11 @@ function sameSeq(a, b) { return a.length === b.length && a.every((v, i) => v ===
   const tabR = R.tab({ notes: exercise.notes }, rh);
   const tabL = R.tab({ notes: exercise.notes }, lh);
   if (!sameSeq(coordsOf(tabR, 'y'), coordsOf(tabL, 'y'))) {
-    errors.push('tab: flipped with handedness. Tab is written the same way for both hands by ' +
-                'convention; it must flip only on the explicit mirrorTab opt-in.');
-  }
-  const tabLM = R.tab({ notes: exercise.notes, mirrorTab: true }, lh);
-  if (sameSeq(coordsOf(tabR, 'y'), coordsOf(tabLM, 'y'))) {
-    errors.push('tab: mirrorTab did nothing for a left-handed player.');
-  }
-  const tabRM = R.tab({ notes: exercise.notes, mirrorTab: true }, rh);
-  if (!sameSeq(coordsOf(tabR, 'y'), coordsOf(tabRM, 'y'))) {
-    errors.push('tab: mirrorTab flipped a RIGHT-handed stave. The opt-in mirrors a left-handed ' +
-                'reading, not everyone\'s.');
+    errors.push('tab: flipped with handedness. Tab is written identically for both hands by ' +
+                'convention and must never mirror.');
   }
   notes.push('Mirroring verified on rendered geometry: chord box strings flip, neck frets flip, ' +
-             'neck strings do not, tab only on opt-in.');
+             'neck strings do not, tab never does.');
 
   /* Every figure must scale and be announced. */
   [cbR, nkR, tabR].forEach((svg, i) => {
