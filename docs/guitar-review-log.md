@@ -109,3 +109,50 @@ deliberate defects were introduced one at a time and the gate killed every one:
 
 Worth recording that findings 2.3–2.10 were all in code that passed 867 assertions
 first time. The gate was real; the review found what the gate was not looking at.
+
+---
+
+## Step 3 — transport timing
+
+Diff: `guitar-engine.js` (timing block), `scripts/test-guitar-engine.js`,
+`docs/guitar-implementation-plan.md`.
+
+**Gate: 10,000 events across four tempo changes, within 2 ms of an independent
+reference.** 1,311 assertions green.
+
+### Measured before writing, and it corrected the plan
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 3.1 | Float accumulation of beats causes real drift, as §5.6 claimed | **Disproved.** Accumulating 1/3 a million times drifts 1.09e-6 beats — 1.6 microseconds at 40 bpm, against a 2 ms gate. Sixteenths accumulate exactly | Rule kept, reasoning replaced: accumulation is wrong because it is **path-dependent**, so a tempo change, loop wrap or seek corrupts everything after it by an unbounded amount. Precision was never the argument |
+
+### Caught by the review
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 3.2 | The headline gate is vacuous | **Confirmed, and this is the serious one.** It ran on a single-segment map and compared `transportTime` against `beat * 60 / bpm` — the same expression the function evaluates. Worst error was exactly 0; the assertion could not fail whatever the code did | Rewritten: four-segment map, expectations from `referenceTime()`, written independently (walks entries summing segment durations, where the engine looks up precomputed start times). Verified discriminating — a segment-lookup bug now fails it by 494 seconds, where the old version returned 0 |
+| 3.3 | An uncompiled tempo map returns NaN silently | **Confirmed.** `transportTime` reads `.time` off each segment; a raw `[{beat,bpm}]` has none, so every event lands at NaN with no error and no sound. The plan advertised exactly that signature | Fixed: `asSegments()` normalises a raw map on the spot; the plan now documents both forms |
+| 3.4 | A non-array tempo map is swallowed | **Confirmed.** `compileTempoMap({beat:0,bpm:90})` fell back to 120, so the piece plays a third too fast with nothing reporting a problem | Fixed: a bare object is accepted as a one-entry map; non-objects still fall back |
+| 3.5 | A botched edit artifact survives in the test file | **Confirmed.** `/* ── Report ──/* ── Report ──` — a nested comment opener from my own insertion script | Fixed |
+
+### Mutation testing
+
+| Mutant | Result |
+|---|---|
+| `transportTime` ignores the segment start time | 10 failures |
+| `loopIteration` always returns 0 | 3 failures |
+| `loopWrap` drops the negative-offset correction | 1 failure |
+| `compileTempoMap` does not sort | 2 failures |
+| `beatAtTime` uses the wrong segment | round-trip off by 85 beats |
+| earlier entry wins on duplicate beats | 1 failure |
+| `transportTime` always uses segment 0 | **caught only by the rewritten gate** — the old one returned 0 |
+
+### The pattern worth naming
+
+Finding 3.2 is the same defect as 2.11 — an assertion that cannot fail — and I
+wrote it again one step later, in the headline gate rather than a minor check.
+Self-comparison is the specific trap: if the expectation restates the
+implementation, the test measures nothing however many events it runs over.
+
+**Standing rule from here on: every gate must be shown to fail.** A green suite
+is not evidence until a deliberate defect has turned it red.

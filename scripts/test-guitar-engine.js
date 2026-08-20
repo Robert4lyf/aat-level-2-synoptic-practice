@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * guitar-engine.js — the tuning × capo × handedness matrix.
+ * guitar-engine.js — the tuning × capo × handedness matrix, and transport timing.
  *
  * This is the gate for step 2 of docs/guitar-implementation-plan.md, and it
  * exists because of two specific errors that were made on paper before any of
@@ -289,9 +289,231 @@ ok(behindCapo.length > 0, 'the high E is still findable with a capo at 5 (stops 
 ok(behindCapo.every(p => p.fret >= 5), 'reverse lookup never returns a position behind the capo');
 eq(E.positionsForMidi(200, std).length, 0, 'a pitch off the neck returns nothing');
 
+/* ── 9. Timing ────────────────────────────────────────────────────────────
+   The gate for step 3. Tolerance is 2 ms, which is roughly a tenth of the
+   shortest interval a listener can place, and far tighter than the 25 ms
+   scheduler tick. */
+const TOL_MS = 2;
+const TOL_S = TOL_MS / 1000;
+
+eq(E.beatsToSeconds(1, 60), 1, 'one beat at 60 bpm is one second');
+eq(E.beatsToSeconds(4, 120), 2, 'a 4/4 bar at 120 bpm is two seconds');
+eq(E.secondsToBeats(2, 120), 4, 'two seconds at 120 bpm is four beats');
+near(E.secondsToBeats(E.beatsToSeconds(7.25, 137), 137), 7.25, 1e-12, 'beats round-trip through seconds');
+eq(E.beatAt(0, 1 / 3), 0, 'event 0 is at beat 0');
+near(E.beatAt(3, 1 / 3), 1, 1e-12, 'three triplets make a beat');
+
+/* THE STEP-3 GATE — 10,000 events, across tempo changes, against a reference.
+   An earlier draft ran this on a single-segment map and compared the result to
+   `beat * 60 / bpm`, which is the same expression transportTime evaluates. The
+   worst error was exactly 0 and the assertion could not fail — a vacuous gate
+   dressed as the headline check. This version differs in both respects:
+
+     - the map has four segments, so segment lookup and start-time accumulation
+       are actually exercised;
+     - expectations come from referenceTime(), written independently below. It
+       walks the raw entries summing whole-segment durations, where the engine
+       does a lookup into precomputed start times. Same answer by a different
+       route, which is what makes disagreement meaningful. */
+function referenceTime(beat, entries) {
+  let t = 0;
+  for (let i = 0; i < entries.length; i++) {
+    const segStart = entries[i].beat;
+    const segEnd = (i + 1 < entries.length) ? entries[i + 1].beat : Infinity;
+    if (beat <= segEnd) return t + (beat - segStart) * 60 / entries[i].bpm;
+    t += (segEnd - segStart) * 60 / entries[i].bpm;
+  }
+  return t;
+}
+{
+  const entries = [
+    { beat: 0, bpm: 132 }, { beat: 400, bpm: 60 },
+    { beat: 900, bpm: 176 }, { beat: 2000, bpm: 84 }
+  ];
+  const map = E.compileTempoMap(entries);
+  eq(map.length, 4, 'the gate really is running on a four-segment map');
+  let worst = 0, worstBeat = 0;
+  for (let n = 0; n < 10000; n++) {
+    const beat = E.beatAt(n, 1 / 3);
+    const err = Math.abs(E.transportTime(beat, map, 0) - referenceTime(beat, entries));
+    if (err > worst) { worst = err; worstBeat = beat; }
+  }
+  ok(worst <= TOL_S,
+     `10,000 triplets across four tempo changes stay within ${TOL_MS} ms of an independent reference ` +
+     `(worst ${(worst * 1000).toExponential(2)} ms at beat ${worstBeat.toFixed(2)})`);
+  /* And the reference must itself disagree with a deliberately wrong engine,
+     or it is not discriminating either. */
+  ok(Math.abs(referenceTime(1000, entries) - (1000 * 60 / 132)) > TOL_S,
+     'the reference distinguishes a tempo-map-aware answer from a naive one');
+}
+
+/* Tempo changes, checked against hand-computed segment boundaries.
+   0–16 at 60 bpm  = 16 s. 16–32 at 120 bpm = 8 s, ending at 24 s.
+   32 onward at 90 bpm. */
+{
+  const map = E.compileTempoMap([
+    { beat: 32, bpm: 90 }, { beat: 0, bpm: 60 }, { beat: 16, bpm: 120 }  // deliberately unsorted
+  ]);
+  eq(map.length, 3, 'three segments compile');
+  eq(map[0].beat, 0, 'segments are sorted by beat');
+  near(E.transportTime(0, map, 0), 0, 1e-12, 'beat 0 is at t0');
+  near(E.transportTime(16, map, 0), 16, 1e-12, 'beat 16 arrives after 16 s at 60 bpm');
+  near(E.transportTime(32, map, 0), 24, 1e-12, 'beat 32 arrives after a further 8 s at 120 bpm');
+  near(E.transportTime(38, map, 0), 24 + 4, 1e-12, 'six beats at 90 bpm is four more seconds');
+  near(E.transportTime(8, map, 0), 8, 1e-12, 'mid-segment interpolation is linear');
+  near(E.transportTime(24, map, 0), 20, 1e-12, 'mid-segment in the second segment');
+  /* t0 shifts everything and changes nothing else. */
+  near(E.transportTime(16, map, 5) - E.transportTime(0, map, 5), 16, 1e-12, 't0 shifts uniformly');
+
+  /* A tempo change must not retroactively rescale what came before it — the
+     failure accumulation would cause. */
+  const slower = E.compileTempoMap([{ beat: 0, bpm: 60 }, { beat: 16, bpm: 30 }]);
+  near(E.transportTime(16, slower, 0), 16, 1e-12, 'halving the tempo at beat 16 leaves beat 16 where it was');
+  near(E.transportTime(32, slower, 0), 48, 1e-12, 'and only affects what follows');
+}
+
+/* transportTime and beatAtTime must be exact inverses across the matrix. */
+{
+  const maps = [
+    [{ beat: 0, bpm: 40 }],
+    [{ beat: 0, bpm: 240 }],
+    [{ beat: 0, bpm: 72 }, { beat: 12, bpm: 144 }, { beat: 30, bpm: 60 }]
+  ];
+  let worst = 0;
+  maps.forEach(entries => {
+    const map = E.compileTempoMap(entries);
+    [0, 3.5].forEach(t0 => {
+      for (let n = 0; n < 2000; n++) {
+        const beat = E.beatAt(n, 0.25);
+        const back = E.beatAtTime(E.transportTime(beat, map, t0), map, t0);
+        const err = Math.abs(back - beat);
+        if (err > worst) worst = err;
+      }
+    });
+  });
+  ok(worst < 1e-9, `beat → time → beat round-trips exactly (worst ${worst.toExponential(2)} beats)`);
+}
+
+/* Count-in is negative beats, and must land before t0 with no special case. */
+{
+  const map = E.compileTempoMap([{ beat: 0, bpm: 120 }]);
+  near(E.transportTime(-4, map, 10), 8, 1e-12, 'a four-beat count-in at 120 bpm starts 2 s early');
+  ok(E.transportTime(-1, map, 10) < 10, 'negative beats land before t0');
+  near(E.beatAtTime(8, map, 10), -4, 1e-12, 'and convert back to negative beats');
+}
+
+/* ── Looping ─────────────────────────────────────────────────────────────── */
+eq(E.loopWrap(0, 0, 4), 0, 'loop start maps to itself');
+eq(E.loopWrap(4, 0, 4), 0, 'the loop end wraps to the start');
+eq(E.loopWrap(5, 0, 4), 1, 'one beat past the end is one beat in');
+eq(E.loopWrap(9, 0, 4), 1, 'and again two passes later');
+eq(E.loopWrap(-1, 0, 4), 3, 'a beat before the start wraps to the end');
+eq(E.loopWrap(6, 2, 6), 2, 'a loop that does not start at zero');
+eq(E.loopWrap(3, 0, 0), 3, 'a zero-length loop is a no-op');
+eq(E.loopWrap(3, 4, 2), 3, 'an inverted loop is a no-op');
+
+eq(E.loopIteration(0, 0, 4), 0, 'the first pass is iteration 0');
+eq(E.loopIteration(3.99, 0, 4), 0, 'still the first pass just before the end');
+eq(E.loopIteration(4, 0, 4), 1, 'the end begins the second pass');
+eq(E.loopIteration(-1, 0, 4), -1, 'before the start is a negative iteration');
+eq(E.loopIteration(3, 0, 0), 0, 'a zero-length loop has one iteration');
+
+/* THE DUPLICATE-SCHEDULING GUARD.
+   A loop shorter than the lookahead window is covered more than once in a
+   single scheduler tick. Keying events on beat position alone cannot tell the
+   passes apart — every event would be scheduled twice. Keying on
+   (iteration, index) distinguishes them, which is the whole point. */
+{
+  const loopStart = 0, loopEnd = 0.5;      // half a beat: ~46 ms at 650 bpm
+  const map = E.compileTempoMap([{ beat: 0, bpm: 650 }]);
+  const windowStart = 0, windowEnd = E.secondsToBeats(0.1, 650);  // 100 ms lookahead
+  ok(windowEnd > (loopEnd - loopStart) * 2, 'the window really does cover the loop more than twice');
+
+  const byPosition = new Set(), byIteration = new Set();
+  let events = 0;
+  for (let b = windowStart; b < windowEnd; b += 0.25) {
+    const wrapped = E.loopWrap(b, loopStart, loopEnd);
+    const iter = E.loopIteration(b, loopStart, loopEnd);
+    byPosition.add(wrapped);
+    byIteration.add(iter + ':' + wrapped);
+    events++;
+  }
+  ok(byPosition.size < events, 'keying on position alone collapses distinct passes (the bug)');
+  eq(byIteration.size, events, 'keying on (iteration, position) keeps every pass distinct (the fix)');
+}
+
+/* ── Tempo map hygiene ───────────────────────────────────────────────────── */
+{
+  eq(E.compileTempoMap([]).length, 1, 'an empty map compiles to one default segment');
+  eq(E.compileTempoMap([])[0].bpm, E.DEFAULT_BPM, 'and uses the default tempo');
+  eq(E.compileTempoMap(null).length, 1, 'null compiles to a default');
+  eq(E.compileTempoMap(undefined).length, 1, 'undefined compiles to a default');
+  eq(E.compileTempoMap([{ beat: 8, bpm: 90 }])[0].beat, 0, 'a map not starting at 0 gets a beat-0 segment');
+  eq(E.compileTempoMap([{ beat: 8, bpm: 90 }])[0].bpm, 90, 'which inherits the first declared tempo');
+  eq(E.compileTempoMap([{ beat: 0, bpm: 0 }])[0].bpm, E.DEFAULT_BPM, 'a zero tempo is discarded');
+  eq(E.compileTempoMap([{ beat: 0, bpm: -60 }])[0].bpm, E.DEFAULT_BPM, 'a negative tempo is discarded');
+  eq(E.compileTempoMap([{ beat: 0, bpm: NaN }])[0].bpm, E.DEFAULT_BPM, 'NaN is discarded');
+  eq(E.compileTempoMap([{ beat: NaN, bpm: 90 }])[0].bpm, E.DEFAULT_BPM, 'a NaN beat is discarded');
+  eq(E.compileTempoMap([{ beat: -4, bpm: 200 }, { beat: 0, bpm: 90 }]).length, 1,
+     'a tempo change before beat 0 is meaningless and is dropped');
+  /* Later entry on the same beat wins. */
+  const dup = E.compileTempoMap([{ beat: 0, bpm: 60 }, { beat: 8, bpm: 100 }, { beat: 8, bpm: 200 }]);
+  eq(dup.length, 2, 'duplicate beats collapse to one segment');
+  eq(dup[1].bpm, 200, 'the later entry at the same beat wins');
+  /* Segment start times must agree with transportTime at their own boundary. */
+  const m = E.compileTempoMap([{ beat: 0, bpm: 60 }, { beat: 16, bpm: 120 }, { beat: 32, bpm: 90 }]);
+  m.forEach((seg, idx) => {
+    near(E.transportTime(seg.beat, m, 0), seg.time, 1e-12, `segment ${idx} start time is self-consistent`);
+  });
+}
+
+/* An UNCOMPILED map must not silently produce NaN. transportTime reads .time
+   off each segment; a raw [{beat,bpm}] has none, so every event would land at
+   NaN — no error, no sound, no clue. */
+{
+  const entries = [{ beat: 0, bpm: 60 }, { beat: 16, bpm: 120 }];
+  const compiled = E.compileTempoMap(entries);
+  near(E.transportTime(32, entries, 0), E.transportTime(32, compiled, 0), 1e-12,
+       'a raw tempo map gives the same answer as a compiled one');
+  ok(isFinite(E.transportTime(32, entries, 0)), 'a raw tempo map does not produce NaN');
+  ok(isFinite(E.beatAtTime(20, entries, 0)), 'beatAtTime accepts a raw map too');
+  near(E.beatAtTime(20, entries, 0), E.beatAtTime(20, compiled, 0), 1e-12, 'and agrees with the compiled form');
+  ok(isFinite(E.transportTime(4, [], 0)), 'an empty map still yields a finite time');
+  ok(isFinite(E.transportTime(4, null, 0)), 'a null map still yields a finite time');
+  /* An empty map must not stack the whole piece at one instant. */
+  ok(E.transportTime(8, [], 0) > E.transportTime(0, [], 0), 'an empty map still advances with the beat');
+}
+
+/* A single tempo object, not wrapped in an array, must not be discarded —
+   falling back to the default would play the piece at the wrong tempo silently. */
+{
+  eq(E.compileTempoMap({ beat: 0, bpm: 90 })[0].bpm, 90, 'a bare tempo object is accepted as a one-entry map');
+  near(E.transportTime(90, { beat: 0, bpm: 90 }, 0), 60, 1e-12, 'and is used for the arithmetic');
+  eq(E.compileTempoMap('nonsense')[0].bpm, E.DEFAULT_BPM, 'a string still falls back to the default');
+  eq(E.compileTempoMap(42)[0].bpm, E.DEFAULT_BPM, 'a number still falls back to the default');
+}
+
+/* Accumulation is path-dependent; computation is not. This is the actual
+   argument for beatAt(), and it is asserted rather than asserted-about: a
+   tempo change partway through must not move any event that precedes it. */
+{
+  const map = E.compileTempoMap([{ beat: 0, bpm: 100 }, { beat: 50, bpm: 25 }]);
+  const before = [];
+  for (let n = 0; n < 50; n++) before.push(E.transportTime(E.beatAt(n, 1), map, 0));
+  const noChange = E.compileTempoMap([{ beat: 0, bpm: 100 }]);
+  let worst = 0;
+  for (let n = 0; n < 50; n++) {
+    const err = Math.abs(before[n] - E.transportTime(E.beatAt(n, 1), noChange, 0));
+    if (err > worst) worst = err;
+  }
+  ok(worst < 1e-12, 'a later tempo change moves nothing before it');
+}
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
-console.log(`${BOLD}guitar-engine.js — fretboard matrix${RESET}\n`);
-console.log(`  ${DIM}${checks} assertions · pitch, reachability and drawn coordinates · ${Object.keys(EXPECTED_TUNINGS).length} tunings × capo {0,2,5,7} × both handednesses.${RESET}`);
+console.log(`${BOLD}guitar-engine.js — fretboard matrix and transport timing${RESET}\n`);
+console.log(`  ${DIM}${checks} assertions.${RESET}`);
+console.log(`  ${DIM}Fretboard: pitch, reachability and drawn coordinates over ${Object.keys(EXPECTED_TUNINGS).length} tunings × capo {0,2,5,7} × both handednesses.${RESET}`);
+console.log(`  ${DIM}Timing: 10,000 events across tempo changes within ${TOL_MS} ms, round-trip inversion, and the loop-iteration guard.${RESET}`);
 console.log('');
 if (failures.length) {
   failures.forEach(f => console.log(`  ${RED}✗${RESET}  ${f}`));

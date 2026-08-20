@@ -333,11 +333,21 @@ Split out so `scripts/test-guitar-engine.js` can cover the part that causes drif
 ```js
 beatsToSeconds(beats, bpm)
 secondsToBeats(sec, bpm)
-transportTime(beat, tempoMap, t0)     // handles tempo changes without accumulating error
-loopWrap(beat, loopStart, loopEnd)
+beatAt(index, subdivision)            // compute, never accumulate — see below
+compileTempoMap(entries)              // → segments with precomputed start times
+transportTime(beat, map, t0)          // beat → wall clock, across tempo changes
+beatAtTime(sec, map, t0)              // the inverse, for the playback cursor
+loopWrap(beat, loopStart, loopEnd)    // absolute beat → position within the loop
+loopIteration(beat, loopStart, loopEnd)  // which pass — the duplicate guard
 ```
 
-**Beats are computed, never accumulated.** `beat = index * subdivision` from a fixed origin. Repeatedly doing `beat += 0.25` accumulates binary floating-point error and is the actual source of long-loop drift — a thousand additions of 0.25 is exact, but 1/3 for triplets is not, and a five-minute practice loop at 160 bpm is ~13,000 events. The same rule applies to `tempoMap` entries: store the beat at which each tempo change occurs, not an elapsed-seconds running total.
+`transportTime` and `beatAtTime` want **compiled** segments, and normalise a raw `[{beat,bpm}]` map on the spot rather than reading an absent `.time` and returning `NaN` for every event. Compiling once and reusing is still what the transport should do; the guard is there because a silent NaN is a bug nobody can see.
+
+**Beats are computed, never accumulated.** `beat = index * subdivision` from a fixed origin.
+
+The reason is *not* floating-point precision, which an earlier draft claimed. That was measured: accumulating 1/3 a million times drifts by 1.1e-6 beats, which is 1.6 microseconds at 40 bpm against a 2 ms gate. Negligible, and sixteenths accumulate exactly.
+
+The real reason is **path dependence**. An accumulated position is a function of the route taken to reach it, so a tempo change, a loop wrap or a seek silently corrupts every subsequent event, and the error is unbounded rather than tiny. A computed position is a function of the index alone and survives all three. Store the beat at which each tempo change occurs, never an elapsed-seconds running total, for the same reason.
 
 Web Audio scheduling itself is not testable in Node; these functions are. Be honest about what the gate proves — it verifies conversion accuracy, not that the browser fires events on time.
 
