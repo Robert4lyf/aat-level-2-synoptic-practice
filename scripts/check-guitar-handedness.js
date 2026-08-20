@@ -11,13 +11,26 @@
  * So the rules are structural, and each exists because of a specific way this
  * has already gone wrong once:
  *
- *   1. `handed` is read in EXACTLY ONE FILE, guitar-engine.js. An earlier draft
- *      of this checker grepped for arithmetic on `.string`/`.fret` instead,
- *      which does not work: the axis functions take a plain number and touch
- *      neither property, while soundingMidi, displayFret and noteFault touch
- *      both and are entirely handedness-free. That rule would have failed the
- *      engine and never inspected the axes. Grepping for `handed` is the actual
- *      invariant, and it is one line to check.
+ *   1. `handed` is never COMPARED outside guitar-engine.js.
+ *
+ *      Two earlier drafts of this rule were wrong in opposite directions. The
+ *      first grepped for arithmetic on `.string`/`.fret`, which does not work:
+ *      the axis functions take a plain number and touch neither property, while
+ *      soundingMidi, displayFret and noteFault touch both and are entirely
+ *      handedness-free — it would have failed the engine and never inspected
+ *      the axes.
+ *
+ *      The second banned the word `handed` outside the engine altogether, and
+ *      that fails the settings screen, which reads and writes the preference
+ *      because it *is* the settings screen. Storing a value is not a geometry
+ *      decision. The only way to satisfy that rule would have been to launder
+ *      handedness through a differently-named variable, which games a grep
+ *      rather than honouring an invariant.
+ *
+ *      What actually matters is the COMPARISON. `if (handed === 'left')`
+ *      outside the engine is a second place deciding which way round something
+ *      goes, and that is the thing that ends up inconsistent. Passing the value
+ *      to makeFretboard, or setting it from a dropdown, is not.
  *
  *   2. Renderers call the ELEMENT HELPERS, never stringAxis/fretAxis directly.
  *      Passing the reversal boolean by hand is what inverted a chord box once
@@ -60,16 +73,27 @@ function stripComments(src) {
 const GUITAR_FILES = fs.readdirSync(ROOT).filter(f => /^guitar-.*\.js$/.test(f));
 notes.push(`Guitar source files: ${GUITAR_FILES.join(', ')}`);
 
-let handedReaders = [];
+/* A comparison of `handed`, or against the literals it holds, is a decision
+   about which way round something goes. Anywhere but the engine, that is a
+   second source of truth. */
+const COMPARES_HANDED = /\bhanded\b\s*[!=]==?|[!=]==?\s*['"](left|right)['"]/;
+let deciders = [];
 GUITAR_FILES.forEach(f => {
+  if (f === 'guitar-engine.js') return;
   const code = stripComments(readIf(f) || '');
-  if (/\bhanded\b/.test(code)) handedReaders.push(f);
+  if (COMPARES_HANDED.test(code)) deciders.push(f);
 });
-if (handedReaders.length !== 1 || handedReaders[0] !== 'guitar-engine.js') {
-  errors.push(`\`handed\` must be read only in guitar-engine.js, but appears in: ${handedReaders.join(', ') || 'nowhere'}. ` +
-              `Anything needing a handedness decision asks the engine for it (see tabMirror).`);
+if (deciders.length) {
+  errors.push(`${deciders.join(', ')} compares handedness. Only guitar-engine.js may decide which ` +
+              `way round something goes — ask it (mirrorFor, or an element helper) rather than ` +
+              `branching locally. Reading or storing the value is fine; comparing it is not.`);
 } else {
-  notes.push('`handed` is read in guitar-engine.js and nowhere else.');
+  const engineCompares = COMPARES_HANDED.test(stripComments(readIf('guitar-engine.js') || ''));
+  if (!engineCompares) {
+    errors.push('guitar-engine.js no longer compares handedness anywhere, so the mirrors cannot be ' +
+                'honouring it. This rule only means something while the engine is the one deciding.');
+  }
+  notes.push('Handedness is decided only in guitar-engine.js; other files pass the value without branching on it.');
 }
 
 /* ── 2. Renderers use the element helpers, not the raw axes ──────────────── */
@@ -117,6 +141,29 @@ if (handedReaders.length !== 1 || handedReaders[0] !== 'guitar-engine.js') {
     errors.push('guitar-styles.css is missing. The renderer carries no colour by design, so without ' +
                 'it every figure is unstyled — and an unstyled mask rect is an opaque black box.');
   } else {
+    /* `css.includes('.' + name)` is not the same question as "is this class
+       styled". A class mentioned only as an ancestor — `.gtr-transport input`
+       — or only inside a shared :focus-visible group would pass it while the
+       element itself takes browser defaults. Deleting the .gtr-transport rule
+       and watching this gate stay green is how that was found.
+
+       So look at selector position: the class must be the RIGHTMOST compound of
+       at least one selector, which is what "a rule applies to this element"
+       actually means in CSS. */
+    const styledClasses = (() => {
+      const set = new Set();
+      css.replace(/\/\*[\s\S]*?\*\//g, ' ').split('}').forEach(block => {
+        const sel = block.split('{')[0];
+        if (!sel || !block.includes('{')) return;
+        sel.split(',').forEach(one => {
+          const parts = one.trim().split(/[\s>+~]+/).filter(Boolean);
+          const last = parts[parts.length - 1] || '';
+          (last.match(/\.[A-Za-z0-9_-]+/g) || []).forEach(c => set.add(c.slice(1)));
+        });
+      });
+      return set;
+    })();
+
     const fbA = E.makeFretboard();
     const ex = E.generateExercise({ scaleId: 'minPent', rootPc: 9, positionIndex: 0 });
     const samples = [
@@ -130,13 +177,36 @@ if (handedReaders.length !== 1 || handedReaders[0] !== 'guitar-engine.js') {
     (samples.match(/class="([^"]+)"/g) || []).forEach(m => {
       m.slice(7, -1).split(/\s+/).forEach(c => { if (/^(gtr-|is-)/.test(c)) emitted.add(c); });
     });
-    const unstyled = [...emitted].filter(c => !css.includes('.' + c));
+    const unstyled = [...emitted].filter(c => !styledClasses.has(c));
     if (unstyled.length) {
       errors.push(`guitar-styles.css has no rule for: ${unstyled.sort().join(', ')}. ` +
                   `Every class the renderer emits needs one — unstyled SVG takes browser defaults, ` +
                   `which for a fill is opaque black.`);
     } else {
       notes.push(`All ${emitted.size} emitted classes are styled.`);
+    }
+
+    /* The same rule for the shell around the figures. This half was added after
+       the UI shipped thirteen gtr-* classes with not one rule between them:
+       every panel, control row and transport button took browser defaults. It
+       passed the render sweep, because that check asks whether a subject
+       renders and not whether it is legible.
+
+       Read from source rather than from output — the UI needs a DOM to mount,
+       and a gate that requires a browser is a gate that gets skipped. Every
+       gtr-* token in that file is a class name, so matching the token is enough
+       and it survives the class attribute being built by concatenation. */
+    const uiSrc = readIf('guitar-ui.js');
+    if (uiSrc !== null) {
+      const shell = [...new Set(uiSrc.match(/\bgtr-[a-z0-9-]+\b/g) || [])];
+      const bare = shell.filter(c => !styledClasses.has(c));
+      if (bare.length) {
+        errors.push(`guitar-ui.js emits ${bare.length} class(es) guitar-styles.css has no rule for: ` +
+                    `${bare.sort().join(', ')}. Unstyled shell markup still renders, so no other check ` +
+                    `notices; it just looks like an unstyled form.`);
+      } else if (shell.length) {
+        notes.push(`All ${shell.length} shell classes in guitar-ui.js are styled.`);
+      }
     }
     /* And the theme must be complete on both sides, since check-theme-tokens.js
        does not read this file. */

@@ -1,8 +1,15 @@
 name: CI
 
-# Lightweight checks for this no-build static site. Runs the data validator, the
-# CSP-hash guard that prevents the inline-script regression fixed in PR #112, and
-# the gate that password-protects the deployed site.
+# Checks for this no-build static site: the data validators, the CSP-hash guard
+# that prevents the inline-script regression fixed in PR #112, the gate that
+# password-protects the deployed site, and the guitar module's engine, geometry
+# and offline-cache gates.
+#
+# Every check is listed here individually rather than through `npm test`, so a
+# failure names itself in the Actions UI instead of hiding inside one long red
+# step. The cost of that is this file and package.json can drift: guitar's gates
+# existed for five steps while this workflow ran none of them. `npm test` is the
+# full list; check:workflow asserts that this file covers it.
 on:
   push:
     branches: [main]
@@ -46,3 +53,38 @@ jobs:
         run: npm run validate:french
       - name: Check French learning quality
         run: npm run check:french-quality
+      - name: Check the workflow runs every check in npm test
+        run: npm run check:workflow
+      - name: Test the guitar engine (pitch, geometry, scales, timing)
+        run: npm run test:guitar-engine
+      - name: Check every generated guitar shape is playable
+        run: npm run check:guitar-playability
+      - name: Check handedness is applied in one place only
+        run: npm run check:guitar-handedness
+      - name: Check a subject waits for its stylesheet before mounting
+        run: npm run check:subject-assets
+      - name: Check the service worker's lazy cache survives a version bump
+        run: npm run check:sw-lazy
+
+  render:
+    # Separated because it is the only job needing a browser: it loads the real
+    # site in Chromium and opens all seven subjects. Kept out of the checks job
+    # so a Playwright install failure cannot mask a content failure.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Check every subject renders
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:subjects
+      - name: Check the guitar controls are styled and the tempo behaves
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:guitar-controls

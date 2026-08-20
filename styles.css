@@ -5073,11 +5073,13 @@ body[data-subject="aat"]        { --subj: #2563eb; --subj-rgb: 37,99,235;  --sub
 body[data-subject="french"]     { --subj: #00267a; --subj-rgb: 0,38,122;   --subj-light: rgba(0,38,122,.08);   }
 body[data-subject="lsf"]        { --subj: #7c3aed; --subj-rgb: 124,58,237; --subj-light: rgba(124,58,237,.08); }
 body[data-subject="code-route"] { --subj: #b91c1c; --subj-rgb: 185,28,28;  --subj-light: rgba(185,28,28,.08);  }
+body[data-subject="guitar"]     { --subj: #b45309; --subj-rgb: 180,83,9;   --subj-light: rgba(180,83,9,.08);   }
 
 body.dark[data-subject="aat"]        { --subj: #60a5fa; --subj-rgb: 96,165,250;  --subj-light: rgba(96,165,250,.12);  }
 body.dark[data-subject="french"]     { --subj: #93b4ff; --subj-rgb: 147,180,255; --subj-light: rgba(147,180,255,.10); }
 body.dark[data-subject="lsf"]        { --subj: #c4b5fd; --subj-rgb: 196,181,253; --subj-light: rgba(196,181,253,.10); }
 body.dark[data-subject="code-route"] { --subj: #f87171; --subj-rgb: 248,113,113; --subj-light: rgba(248,113,113,.10); }
+body.dark[data-subject="guitar"]     { --subj: #fbbf24; --subj-rgb: 251,191,36;  --subj-light: rgba(251,191,36,.10); }
 
 /* Per-subject card accent colours used in the subject picker */
 .subject-card[data-switch-subject="aat"]        { --card-subj: #2563eb; --card-subj-light: rgba(37,99,235,.09);  }
