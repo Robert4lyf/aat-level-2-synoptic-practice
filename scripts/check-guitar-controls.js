@@ -236,6 +236,34 @@ function report() {
     }
     notes.push(`Cleared and committed → held at ${s.num}.`);
 
+    /* -- the number fits its box at every tempo --------------------------
+       box-sizing is border-box site-wide, so a width in ch is spent on padding
+       and border before any digits get it. The first version of this control
+       clipped "137" — visible on a phone, invisible to every other check here,
+       since an overflowing field still renders and still reports the right
+       value. Measured rather than eyeballed: scrollWidth exceeding clientWidth
+       is the browser saying the content does not fit. */
+    const fit = await page.evaluate(async () => {
+      const n = document.querySelector('#gtrTempoNum');
+      const bad = [];
+      for (const v of [30, 88, 100, 137, 199, 240]) {
+        n.value = String(v);
+        n.dispatchEvent(new Event('input', { bubbles: true }));
+        /* Let layout settle before measuring. */
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+        if (n.scrollWidth > n.clientWidth) {
+          bad.push({ v, scroll: n.scrollWidth, client: n.clientWidth });
+        }
+      }
+      return { bad, box: n.getBoundingClientRect().width };
+    });
+    if (fit.bad.length) {
+      const w = fit.bad[0];
+      errors.push(`the tempo reads past its box: at ${w.v} bpm the content is ${w.scroll}px wide in a ` +
+                  `${w.client}px field (${fit.bad.length} of 6 tempos tested overflow).`);
+    }
+    notes.push(`Tempo field ${Math.round(fit.box)}px wide; 30–240 bpm all fit.`);
+
     /* -- and it survives a reload --------------------------------------- */
     const before = (await read()).saved;
     await page.reload({ waitUntil: 'load' });

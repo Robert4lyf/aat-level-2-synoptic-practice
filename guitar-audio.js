@@ -68,14 +68,17 @@
      ramp "too small to hear" is still a change nobody asked for. */
   var VOICES = {
     pluck: { attack: 0,     cutoff: 0,    gain: 1 },
-    chord: { attack: 0.018, cutoff: 2400, gain: 0.86 }
+    chord: { attack: 0.018, cutoff: 3200, gain: 0.86 }
   };
   function voiceOf(name) { return VOICES[name] || VOICES.pluck; }
 
   /* Seconds between strings of a strum. A chord is rolled with the thumb here,
      not raked with a pick: 22 ms across six strings put the whole chord inside
-     an eighth of a second, which is a strum. */
-  var STRUM_SPREAD_S = 0.045;
+     an eighth of a second, which is a strum. 45 ms was still too quick by ear,
+     so 75 ms — the whole chord across about four tenths of a second, which is
+     a roll you can hear the individual strings inside. Set by ear; there is no
+     correct value here, only a preferred one. */
+  var STRUM_SPREAD_S = 0.075;
 
   var ctx = null;
   var master = null;

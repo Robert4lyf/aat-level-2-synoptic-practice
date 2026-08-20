@@ -287,7 +287,12 @@ body[data-subject="guitar"] .gtr-tempo-unit {
   color: var(--subtext);
 }
 body[data-subject="guitar"] .gtr-tempo-num {
-  width: 4.4ch;
+  /* box-sizing is border-box site-wide, so a bare ch width is eaten by the
+     padding and border before any digits get a look in: 4.4ch at this size is
+     ~35px, less 12px padding and 2px border, leaving 21px of content box for a
+     three-digit tempo that needs about 24. Hence the explicit allowance —
+     4ch of tabular figures, plus the box around them. */
+  width: calc(4ch + 20px);
   padding: 5px 6px;
   text-align: center;
   font: inherit;

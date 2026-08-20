@@ -611,3 +611,53 @@ the structure cannot express.
 
 The new gate does not fix that. It stops these two specific behaviours from
 regressing silently; it cannot tell anyone whether 45 ms is the right roll.
+
+## Step 7c — the second report from playing it
+
+Three more from the preview build, one of which is a defect the gate written in
+7b should arguably have caught and did not.
+
+### 7c.1 The tempo overflowed its box
+
+`width: 4.4ch` on the number field, under a site-wide `box-sizing: border-box`,
+so the padding and border were taken out of that 4.4ch before any digits saw it:
+about 35px, less 12px of padding and 2px of border, leaving 21px of content box
+for a three-digit tempo needing roughly 24. Any tempo of 100 or more read past
+its own field.
+
+Worth noting where the 7b gate stood on this. It typed 120, stepped to 121,
+dragged to 76, committed 999 and checked all of it read back correctly — and
+every one of those assertions passed while the field was visibly clipping,
+because an overflowing input still renders and still reports the right value.
+The gate tested the control's *behaviour* and never asked whether it could be
+read. It now measures `scrollWidth` against `clientWidth` across 30–240 bpm,
+which is the browser's own answer to "does this fit", and that assertion fails
+on four of the six tempos under the old width.
+
+The fix was also checked by taking a screenshot at phone width and looking at
+it, which is what should have happened before it was shipped the first time.
+
+### 7c.2 Chords, again: slower and brighter
+
+45 ms was still too quick — now 75 ms, putting the roll across about four tenths
+of a second, slow enough to hear the individual strings inside it. The lowpass
+moves from 2.4 kHz to 3.2 kHz, roughly half an octave up.
+
+Both remain ear-set constants. Neither is defensible from first principles and
+neither should pretend to be: the comment in `guitar-audio.js` says so, so that
+whoever changes it next does not go looking for the reasoning that justifies
+75 ms over 70.
+
+### What step 7c says
+
+7b closed by saying the gates hold the structure while the ear and the eye find
+what the structure cannot express. 7c sharpens that: the *visual* half of it can
+be gated after all, and cheaply. A clipped field, an overlapping label, a control
+running past its container are all measurable in a browser that is already
+running. What is not measurable is whether 75 ms is a better roll than 45 —
+that stays with the person holding the guitar.
+
+The standing lesson, restated: when a report comes back from real use, gate the
+class of defect, not the instance. 7b gated the tempo control's behaviour because
+behaviour was what had been rebuilt. Legibility was never asked about, so it was
+never checked, and it was the next thing to break.
