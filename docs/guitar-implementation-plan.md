@@ -194,11 +194,11 @@ Nothing anywhere stores pixel positions or tab as text. Every renderer, checker,
 ### 4.2 Fretboard model
 
 ```js
-Fretboard = { tuning: [e2..], capo: 0, handed: 'right'|'left' }
+Fretboard = { tuning: 'standard', capo: 0, handed: 'right'|'left' }
 ```
 
-- `tuning` is an array of 6 MIDI note numbers, **index 0 = string 6 (low)**. Standard = `[40,45,50,55,59,64]`.
-- `soundingMidi(note, fb)` = `tuning[6 - note.string] + note.fret`. Verify: string 6 → index 0 → 40 (E2); string 1 → index 5 → 64 (E4).
+- `tuning` is a **named id**, not an array — a stored fretboard must survive a change to the tuning table, and an alias must never reach storage. `TUNINGS[id].midi` is the array of 6 MIDI numbers, **index 0 = string 6 (low)**. Standard = `[40,45,50,55,59,64]`.
+- `soundingMidi(note, fb)` = `TUNINGS[fb.tuning].midi[6 - note.string] + note.fret`. Verify: string 6 → index 0 → 40 (E2); string 1 → index 5 → 64 (E4).
 
 **Capo — store absolute, render relative.** These two rules together, and neither alone:
 
@@ -208,9 +208,11 @@ Fretboard = { tuning: [e2..], capo: 0, handed: 'right'|'left' }
 
 An earlier draft of this section said "`fret === 0` means the capo", which is the capo-relative convention leaking into the absolute one. The two cannot both hold. If `soundingMidi` ever needs a `+ capo` term, the data is wrong, not the function.
 
-- `handed` affects **only** the two mirror functions in the renderer (§6.1). Nothing else in the codebase may branch on it.
+- `handed` is read in **exactly one file**, `guitar-engine.js`, by the element helpers in §6.1. Nothing else anywhere may branch on it — that is the invariant the handedness checker enforces (§8.4).
 
-Named tunings to support at launch: `standard`, `dropD`, `DADGAD`, `openD`, `openG`, `DADF#AD`, `CGCFCE`.
+Named tunings to support at launch: `standard`, `dropD`, `DADGAD`, `openD`, `openG`, `CGCFCE`.
+
+`DADF#AD` was listed separately in an earlier draft; it **is** open D, note for note. Two ids for one tuning would fragment the mastery grid, because `cellKey` carries `tuningId` — the same exercise practised in "both" would score as two half-learnt cells. One canonical id per distinct pitch set; aliases resolve to it and are never stored.
 
 ### 4.3 Content shapes
 
@@ -316,13 +318,13 @@ Applied to a chord shape: sequence of `(finger, stringOffset)`.
 `rightHand` ∈ `i-m | i-a | m-a | p-i-m-a | p-i-m-a-m-i | p`; `stroke` ∈ `rest | free`.
 The scale engine and the picking-pattern engine are one function with different fields populated.
 
-**The parameter space is finite but not enumerable in CI.** Counting it honestly: 14 scales × 12 keys × 7 positions × 7 tunings × 8 capo positions × 8 patterns × 6 right-hand fingerings × 2 strokes × 5 rhythms ≈ **31.6 million tuples**. An earlier draft claimed the checker could sweep all of it at build time; it cannot, and `npm test` runs on every commit.
+**The parameter space is finite but not enumerable in CI.** Counting it honestly: 14 scales × 12 keys × 7 positions × 6 tunings × 8 capo positions × 8 patterns × 6 right-hand fingerings × 2 strokes × 5 rhythms ≈ **27.1 million tuples**. An earlier draft claimed the checker could sweep all of it at build time; it cannot, and `npm test` runs on every commit.
 
 Use **all-pairs (pairwise) coverage** instead: generate a case set in which every pair of parameter values from every pair of dimensions appears at least once. For these nine dimensions that is roughly 200–250 cases, runs in under a second, and catches the interaction bugs that matter — which are almost always two-dimensional (this scale in that tuning; this position under that capo).
 
 On top of the pairwise set, sweep **exhaustively** over two things that are small and high-risk:
 - every curated exercise in `guitar-exercise-data.js`
-- every (tuning × capo) pair against every scale root — 7 × 8 × 12 = 672 cases, the combination most likely to produce sub-capo frets
+- every (tuning × capo) pair against every scale root — 6 × 8 × 12 = 576 cases, the combination most likely to produce sub-capo frets
 
 ### 5.6 Timing maths — pure functions, unit tested in Node
 
@@ -343,6 +345,8 @@ Web Audio scheduling itself is not testable in Node; these functions are. Be hon
 
 ## 6. Renderer (`guitar-render.js`)
 
+**The two mirror functions live in `guitar-engine.js`, not here.** They are pure arithmetic with no DOM, and §9 step 2 gates them on a Node matrix test — which a browser-only file cannot satisfy. The renderer is their only consumer; the engine is their home. They are documented in this section because this is where they matter.
+
 ### 6.1 The mirrors — two transforms, nowhere else
 
 **Tab convention puts the highest string on the top line.** String 1 (high E) is therefore index 0, not index 5. An earlier draft had `i = 6 - stringNo` with a comment claiming low E sat at the top; that renders every tab upside down while looking plausible.
@@ -350,28 +354,33 @@ Web Audio scheduling itself is not testable in Node; these functions are. Be hon
 Handedness also flips the **fret** axis, not only the string axis: a horizontal neck diagram for a left-handed player puts the nut on the right. One mirror is not enough.
 
 ```js
-// stringNo 1..6, 1 = high E. Index 0 = top line of a tab stave.
-function stringAxis(stringNo, mirror) {
-  const i = stringNo - 1;
-  return (mirror ? (5 - i) : i) * STRING_SPACING;
-}
-
-// Horizontal neck diagrams only. Vertical chord boxes do not mirror this axis.
-function fretAxis(fret, mirror, span) {
-  return (mirror ? (span - fret) : fret) * FRET_SPACING;
-}
+// stringNo 1..6, 1 = high E. Natural order is string 1 first (index 0).
+// `spacing` is a trailing argument defaulting to 1, so a caller can work in
+// raw indices or in pixels without a second function.
+stringAxis(stringNo, reverse, spacing)
+fretAxis(fret, reverse, span, spacing)
 ```
 
-`mirror` is a **parameter**, never read from global state inside these functions. Callers declare intent:
+`reverse` is **not** "is the player left-handed" — it is "does this axis run backwards from its natural order", and which of those holds depends on the element as much as the hand. So callers use the element helpers and never pass the boolean themselves:
 
-| Element | string mirror | fret mirror |
-|---|---|---|
-| Chord box (vertical) | `handed === 'left'` | no |
-| Neck diagram (horizontal) | `handed === 'left'` | `handed === 'left'` |
-| Tap targets, animation | same as their host element | same |
-| **Tab** | `handed === 'left' && profile.mirrorTab` | no |
+```js
+tabStringY(stringNo, mirrorTab, spacing)
+chordBoxStringX(stringNo, fb, spacing)
+neckStringY(stringNo, fb, spacing)
+neckFretX(fret, fb, span, spacing)
+```
 
-**No other function in the codebase may compute a string or fret coordinate.** `check-guitar-handedness.js` enforces this by grepping for arithmetic on `.string` or `.fret` outside `guitar-render.js`.
+**The rule underneath all four:** mirroring for a left-handed player reflects the drawing about its *vertical* axis, so it flips whichever axis is horizontal in that element and leaves the other alone.
+
+| Element | horizontal axis | flips with handedness | fixed |
+|---|---|---|---|
+| Tab | neither | nothing (opt-in `mirrorTab` only) | string 1 on the top line |
+| Chord box (nut at top) | strings | strings | frets run down |
+| Neck diagram (nut at left) | frets | frets | high E stays on top |
+
+The chord box is the one that reads oddly: a right-handed chord chart puts the **low E leftmost**, which is the *reverse* of the natural string-1-first order, so `chordBoxStringX` passes `reverse: true` for a right-hander. An earlier draft asserted index 0 was both the top tab line and the rightmost chord-box string; those cannot both hold, and taking it literally mirrors every chord box for the default handedness.
+
+**No other function in the codebase may compute a string or fret coordinate.** `check-guitar-handedness.js` enforces this by grepping for arithmetic on `.string` or `.fret` outside the two mirror functions in `guitar-engine.js`.
 
 ### 6.2 Tab opts out of the handedness toggle
 
@@ -458,7 +467,8 @@ Method: write unit P1, measure, and hard-fail only what already sits at zero. An
 ### 8.4 `check-guitar-handedness.js`
 - Ban in lesson prose: `right hand`, `left hand`, `right-hand`, `left-hand`, `your right`, `your left`, `on the left`, `on the right`. Required vocabulary: **fretting hand** / **picking hand**.
 - **One opt-out is required**, or the checker blocks correct content: the lesson covering left-handed instruments, restringing and playing a right-handed guitar upside down cannot be written without those words. Allow `handedProse: true` on a `Lesson`, and have the checker assert that **at most one lesson in the module sets it**. An unbounded opt-out is how this rule quietly stops applying.
-- No string- or fret-coordinate arithmetic outside `guitar-render.js` (§6.1).
+- **`handed` is read only in `guitar-engine.js`.** Grepping for `.string`/`.fret` arithmetic was the rule in an earlier draft and it does not work: the axis functions take a plain number and touch neither property, while `soundingMidi`, `displayFret` and `noteFault` touch both and are entirely handedness-free. The checker would have failed the engine and never looked at the axes. Grep for `handed` instead — one file, no exceptions.
+- Renderers call the **element helpers** (`tabStringY`, `chordBoxStringX`, `neckStringY`, `neckFretX`), never `stringAxis`/`fretAxis` directly. Passing the reversal boolean by hand is what inverted a chord box once already.
 - No stored pixel positions in any data file.
 
 ### 8.5 `check-guitar-coverage.js`
@@ -471,7 +481,7 @@ Mirrors `check-aat1-coverage.js` (197 lines). Every LCM requirement in `guitar-s
 Each step ends green on `npm test` before the next begins.
 
 1. **`prose-mannerisms.js` extraction.** No behaviour change. *Gate: identical error and warning counts, and identical message text, from all three AAT quality checkers. Capture `npm test` output to a file before the change and diff it after — but compare the findings, not the whole stream, since notes carry counts that could legitimately reformat.*
-2. **`guitar-engine.js` — fretboard model + note rep only.** `soundingMidi`, tuning table, capo validity, `stringX`. Plus `scripts/test-guitar-engine.js` covering the **tuning × capo × handedness matrix**: for each named tuning, capo 0/2/5/7, both handednesses — assert sounding pitch and drawn x for a fixed note set. *Gate: matrix green.*
+2. **`guitar-engine.js` — fretboard model + note rep only.** `soundingMidi`, tuning table, capo validity, `stringAxis`/`fretAxis`. Plus `scripts/test-guitar-engine.js` covering the **tuning × capo × handedness matrix**: for each named tuning, capo 0/2/5/7, both handednesses — assert sounding pitch and drawn x for a fixed note set. *Gate: matrix green.*
 3. **Timing maths + its unit tests.** *Gate: 1,000 scheduled beats within 2 ms of intent, computed offline.*
 4. **Scales, positions, sequence patterns, generator.** *Gate: `check-guitar-playability.js` sweeps the whole space clean.*
 5. **`guitar-audio.js`** — synth, then transport, then loop, then cursor. *Gate: manual — a scale plays evenly at 60 and 160 bpm, loops seamlessly, tempo changes mid-loop without drift.*

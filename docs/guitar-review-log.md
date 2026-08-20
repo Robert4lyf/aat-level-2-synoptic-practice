@@ -54,3 +54,58 @@ Findings 1.9–1.13 are all in the optional-override API — latent today, and a
 would have fired the moment `check-guitar-quality.js` passed its own list, which §8.1 of
 the plan commits to doing. Worth recording that the extraction was *correct* and the
 *new API around it* was where the defects were.
+
+---
+
+## Step 2 — the fretboard model and note representation
+
+Diff: `guitar-engine.js` (new), `scripts/test-guitar-engine.js` (new), `package.json`,
+`docs/guitar-implementation-plan.md`.
+
+**Gate: the tuning × capo × handedness matrix.** 1,243 assertions green.
+
+### Caught before writing code
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 2.1 | The plan contradicts itself about where the mirrors live | **Confirmed.** §9 step 2 put `stringX` in the engine and gated it on a Node test; §6.1/§8.4/§2 put it in `guitar-render.js`, declared browser-only. A browser-only file cannot be matrix-tested in Node | Fixed: the axes are pure arithmetic and live in `guitar-engine.js`; the renderer consumes them |
+| 2.2 | `openD` and `DADF#AD` are the same tuning listed twice | **Confirmed.** Identical note for note. `cellKey` carries `tuningId`, so two ids would split one exercise's progress across two half-learnt mastery cells | Fixed: one canonical id, `DADF#AD` is an alias resolved before storage, and the test asserts no two tunings share a pitch set |
+
+### Caught by the review of the code
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 2.3 | A prototype-chain key passes as a tuning id | **Confirmed, and it crashes.** `TUNINGS['constructor']` is truthy through the prototype, so `makeFretboard({tuning:'constructor'})` stored it and the next `soundingMidi` threw on `.slice()` | Fixed with `hasOwnProperty` guards and a type check; five prototype keys are now asserted |
+| 2.4 | The axis contract is self-contradictory | **Confirmed.** The comment claimed index 0 was both the top tab line and the rightmost chord-box string. A right-handed chord chart puts the **low E leftmost**, so with `mirror:false` every right-handed chord box would have drawn mirrored | Fixed: `mirror` renamed `reverse`, and four element helpers (`tabStringY`, `chordBoxStringX`, `neckStringY`, `neckFretX`) own the per-element conventions so no caller passes the boolean by hand |
+| 2.5 | The test banner overclaims its coverage | **Confirmed.** It advertised capo {0,2,5,7} × both handednesses, but the handedness sweep ran capo {0,5} and asserted no drawn coordinate at all — which is precisely what the step-2 gate calls for | Fixed: full four-capo sweep, plus a coordinate permutation check for all three elements across the matrix |
+| 2.6 | `behindCapo.every(...)` passes on an empty array | **Confirmed.** A regression zeroing `positionsForMidi` under a capo would have stayed green | Fixed: length assertion added first |
+| 2.7 | The handedness checker rule is unenforceable as written | **Confirmed.** It exempted `stringAxis`/`fretAxis`, which touch neither `.string` nor `.fret` as properties, while `soundingMidi`, `displayFret` and `noteFault` touch both and are handedness-free. The checker would have failed the engine and never inspected the axes | Fixed: the rule is now "`handed` is read in exactly one file", which is the actual invariant and is greppable |
+| 2.8 | The parameter-space arithmetic is stale | **Confirmed.** Still multiplied by 7 tunings after the list dropped to 6 | Fixed: ≈27.1M, and the exhaustive sub-sweep is 576 not 672 |
+| 2.9 | §6.1's snippets do not match the shipped signatures | **Confirmed.** They showed `STRING_SPACING`/`FRET_SPACING` constants; the functions take a trailing `spacing` defaulting to 1 | Fixed, along with the per-element table |
+| 2.10 | §4.2 still describes `tuning` as a MIDI array | **Confirmed.** The engine stores a named id; implementing the documented formula would have indexed into the string `'standard'` | Fixed |
+
+### Found in my own test, before the reviewer saw it
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 2.11 | The ascending-tuning assertion is vacuous | **Confirmed.** It excused four of six tunings by id (`\|\| id === 'CGCFCE' \|\| ...`), so it tested almost nothing — and all six are in fact strictly ascending | Fixed: asserted flatly, with a note to exempt one id and say why if a genuinely non-ascending tuning is ever added |
+
+### Mutation testing — does the gate actually bite?
+
+A test that passes first time proves nothing until it has been shown to fail. Nine
+deliberate defects were introduced one at a time and the gate killed every one:
+
+| Mutant | Result |
+|---|---|
+| `tuningIndex` inverted to `stringNo - 1` | 588 failures |
+| `soundingMidi` adds the capo | 432 failures |
+| `stringAxis` inverted to `6 - stringNo` | 17 failures |
+| `fret 0` treated as the capo | 2 failures |
+| `DADF#AD` split out as its own tuning | 4 failures |
+| chord box not reversed for right-handed | 4 failures |
+| neck string order flips with handedness | 2 failures |
+| prototype guard removed | crash at module load (loud CI failure) |
+| `positionsForMidi` ignores the capo | 1 failure |
+
+Worth recording that findings 2.3–2.10 were all in code that passed 867 assertions
+first time. The gate was real; the review found what the gate was not looking at.
