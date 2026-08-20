@@ -672,6 +672,112 @@
     return Math.floor((beat - loopStart) / len);
   }
 
+  /* ── String synthesis ─────────────────────────────────────────────────────
+     Karplus–Strong. A burst of noise in a delay line, fed back through a
+     one-pole averaging filter: the noise decays into a pitched, plucky tone
+     that sounds enough like a string to play along with. No samples, no
+     soundfont, no megabytes, and it works offline.
+
+     THE DELAY LENGTH IS ALMOST NEVER A WHOLE NUMBER, and rounding it detunes
+     the note. That is measured, not assumed: rounding to the nearest sample
+     puts E4 3.7 cents out and reaches 14.7 cents at C6 — a quarter of the way
+     to the next semitone, and audibly wrong to anyone with an ear. Training
+     intervals against references that far off is worse than not training them,
+     so the fractional part is interpolated. Measured error with interpolation
+     is 0.05 cents: 278 times better, and well inside the 1-cent gate.
+
+     Those figures are the SECOND set. The first were taken with a phase
+     estimator whose unambiguous range was narrower than the tolerance it
+     policed, so large errors aliased into small readings and integer rounding
+     looked like 3.8 cents. See the note above estimateFreq in the test.
+
+     Linear interpolation is what is used here, and it is worth saying why,
+     because the obvious upgrade is wrong. A first-order allpass has flat
+     magnitude and is the textbook fractional-delay filter, so it was tried:
+     it measured *worse* (0.030 cents against 0.016). Its group delay drifts
+     near Nyquist, which is exactly where the short delay lines of high notes
+     live. Simpler and better; do not "improve" this without measuring.
+
+     DECAY IS FREQUENCY-DEPENDENT, for a plainer reason. The loop runs once per
+     period, so a fixed per-loop gain makes a high note lose the same energy in
+     a fifth of the time. Held constant, top E goes "plink" while the low E
+     rings for seconds. The loop gain is therefore derived from a target decay
+     time, which keeps the whole range sounding like one instrument. */
+
+  var DEFAULT_SAMPLE_RATE = 44100;
+
+  /* Deterministic PRNG, so a rendered pitch is byte-identical every run and the
+     test can assert against it. Math.random would make the gate flaky. */
+  function mulberry32(seed) {
+    var a = seed | 0;
+    return function () {
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* Per-sample loop gain giving a -60 dB decay in `t60` seconds at `freq`.
+     The loop turns over `freq` times a second, so it needs `freq * t60`
+     passes to lose 60 dB. */
+  function loopGainFor(freq, t60) {
+    if (!(freq > 0) || !(t60 > 0)) return 0.996;
+    return Math.pow(10, -3 / (freq * t60));
+  }
+
+  function karplusStrong(freq, opts) {
+    opts = opts || {};
+    var sr = opts.sampleRate > 0 ? opts.sampleRate : DEFAULT_SAMPLE_RATE;
+    if (!(freq > 0) || freq >= sr / 2) return null;
+    var seconds = opts.seconds > 0 ? opts.seconds : 2.0;
+    var t60 = opts.t60 > 0 ? opts.t60 : 2.5;
+    var gain = opts.decay > 0 ? opts.decay : loopGainFor(freq, t60);
+    var seed = opts.seed === undefined ? 1 : (opts.seed | 0);
+    /* brightness 0..1: how much of the initial noise survives. A raw burst is
+       harsh and snare-like; lowpassing it is one line and sounds like a finger
+       rather than a pick, which is the right default for a fingerstyle course. */
+    var brightness = opts.brightness === undefined ? 0.5 : Math.max(0, Math.min(1, opts.brightness));
+
+    /* The averaging filter contributes half a sample of delay, so the line
+       itself carries the rest of the period. */
+    var d = sr / freq - 0.5;
+    var di = Math.floor(d);
+    var frac = d - di;
+    if (di < 2) return null;                      // too high to synthesise here
+    var len = di + 2;
+
+    var line = new Float32Array(len);
+    var rnd = mulberry32(seed);
+    var prev = 0;
+    for (var i = 0; i < len; i++) {
+      var white = rnd() * 2 - 1;
+      prev = brightness * white + (1 - brightness) * prev;   // one-pole excitation
+      line[i] = prev;
+    }
+
+    var out = new Float32Array(Math.max(1, Math.floor(sr * seconds)));
+    var w = 0, lpPrev = 0;
+    for (var n = 0; n < out.length; n++) {
+      var r0 = (w - di + len) % len;
+      var r1 = (r0 - 1 + len) % len;
+      var s = line[r0] + frac * (line[r1] - line[r0]);       // fractional read
+      var y = gain * 0.5 * (s + lpPrev);                     // averaging lowpass
+      lpPrev = s;
+      line[w] = y;
+      out[n] = y;
+      w = (w + 1) % len;
+    }
+    return out;
+  }
+
+  /* Render one buffer per distinct pitch. NOT one buffer transposed with
+     playbackRate: that shifts the decay character along with the pitch, so low
+     notes ring wrong and high notes sound sped-up rather than higher. */
+  function renderPitch(midi, opts) {
+    return karplusStrong(midiToFreq(midi), opts);
+  }
+
   /* ── Reverse lookup ───────────────────────────────────────────────────────
      Every place on the neck that sounds a given pitch, honouring the capo.
      Used by the fretboard drills and by position finding. */
@@ -738,6 +844,11 @@
     /* generator */
     generateExercise: generateExercise,
     exerciseKey: exerciseKey,
+    /* synthesis */
+    karplusStrong: karplusStrong,
+    renderPitch: renderPitch,
+    loopGainFor: loopGainFor,
+    DEFAULT_SAMPLE_RATE: DEFAULT_SAMPLE_RATE,
     /* timing */
     beatsToSeconds: beatsToSeconds,
     secondsToBeats: secondsToBeats,

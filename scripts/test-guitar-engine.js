@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * guitar-engine.js — the tuning × capo × handedness matrix, and transport timing.
+ * guitar-engine.js — the fretboard matrix, transport timing, and string synthesis.
  *
  * This is the gate for step 2 of docs/guitar-implementation-plan.md, and it
  * exists because of two specific errors that were made on paper before any of
@@ -509,11 +509,216 @@ eq(E.loopIteration(3, 0, 0), 0, 'a zero-length loop has one iteration');
   ok(worst < 1e-12, 'a later tempo change moves nothing before it');
 }
 
+/* ── 10. String synthesis ─────────────────────────────────────────────────
+   THE INSTRUMENT IS VALIDATED BEFORE THE THING IT MEASURES.
+
+   The first version of this gate used autocorrelation with parabolic peak
+   refinement, and reported the synth as 0.73 cents out — just inside the
+   1-cent limit, which looked like a pass with no margin. Measuring the
+   ESTIMATOR against pure sines showed it carried 3.65 cents of error by
+   itself. The ruler was coarser than the thing being measured, so neither
+   number meant anything, and a real defect of up to 3 cents could have sailed
+   through while a clean synth could equally have failed.
+
+   The estimator below correlates the signal against a reference oscillator at
+   f0 using ABSOLUTE sample index, in two Hann-windowed segments separated by a
+   gap. A signal at f0+d advances its phase in that frame by 2*pi*d*gap/sr, so
+   d falls out of the phase difference. Hann windowing suppresses harmonic
+   leakage into the f0 bin at low pitches, and is worth three orders of
+   magnitude.
+
+   THE GAP SETS AN UNAMBIGUOUS RANGE, and getting it wrong is how a precise
+   ruler becomes a useless one. The phase difference wraps into (-pi, pi], so
+   deviations beyond +/- sr/(2*gap) alias into small readings. The first
+   version used a 0.8 s gap, which at E6 gives a range of 0.8 CENTS — narrower
+   than the tolerance it was policing. A ten-cent regression at the top of the
+   range measured as 0.18 cents and passed.
+
+   GAP_S is therefore 0.02 s: +/- 32 cents of range at E6, still 0.0002 cents
+   of precision. Measured, both ways, in the validation block below — which
+   feeds it DETUNED tones as well as clean ones, because a validation that only
+   ever sees correct pitches cannot exercise the wrap at all. */
+function phaseAt(sig, sr, f, start, N) {
+  let re = 0, im = 0;
+  for (let i = 0; i < N; i++) {
+    const w = 2 * Math.PI * f * (start + i) / sr;
+    const win = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1));
+    const s = sig[start + i] * win;
+    re += s * Math.cos(w);
+    im -= s * Math.sin(w);
+  }
+  return Math.atan2(im, re);
+}
+function estimateFreq(sig, sr, f0, start, N, gap) {
+  let d = phaseAt(sig, sr, f0, start + gap, N) - phaseAt(sig, sr, f0, start, N);
+  while (d > Math.PI) d -= 2 * Math.PI;
+  while (d < -Math.PI) d += 2 * Math.PI;
+  return f0 + d * sr / (2 * Math.PI * gap);
+}
+
+const SR = E.DEFAULT_SAMPLE_RATE;
+const CENT_TOL = 1.0;
+/* One configuration, shared by the validation and the gate. An earlier draft
+   validated a 0.6 s gap and then measured with 0.8 s, so the block that proved
+   the ruler was proving a different ruler. */
+const AN_START = Math.floor(SR * 0.05);
+const AN_N     = Math.floor(SR * 0.4);
+const AN_GAP   = Math.floor(SR * 0.02);
+const measure  = (sig, f0) => estimateFreq(sig, SR, f0, AN_START, AN_N, AN_GAP);
+
+/* First: prove the ruler, in the exact configuration the gate uses, against
+   tones that are deliberately WRONG as well as right. */
+{
+  const harmonicTone = (freq, secs) => {
+    const n = Math.floor(SR * secs), sig = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      sig[i] = Math.sin(2 * Math.PI * freq * t + 0.7)
+             + 0.4 * Math.sin(2 * Math.PI * 2 * freq * t + 1.1)
+             + 0.2 * Math.sin(2 * Math.PI * 3 * freq * t);
+    }
+    return sig;
+  };
+
+  let worst = 0;
+  for (let midi = 40; midi <= 88; midi++) {
+    const ref = E.midiToFreq(midi);
+    worst = Math.max(worst, Math.abs(E.centsBetween(ref, measure(harmonicTone(ref, 1.2), ref))));
+  }
+  ok(worst < CENT_TOL / 100,
+     `the pitch estimator is at least 100x finer than the tolerance it polices (worst ${worst.toExponential(2)} cents)`);
+
+  /* And it must READ BACK a known detuning rather than aliasing it to nothing.
+     This is the assertion whose absence let a ten-cent regression pass. */
+  let worstOffset = 0;
+  for (const midi of [40, 52, 64, 76, 88]) {
+    const ref = E.midiToFreq(midi);
+    for (const offset of [-20, -10, -3, -1, 1, 3, 10, 20]) {
+      const detuned = ref * Math.pow(2, offset / 1200);
+      const read = E.centsBetween(ref, measure(harmonicTone(detuned, 1.2), ref));
+      worstOffset = Math.max(worstOffset, Math.abs(read - offset));
+    }
+  }
+  ok(worstOffset < 0.05,
+     `a known detuning of up to +/-20 cents reads back correctly at every octave (worst slip ${worstOffset.toExponential(2)} cents)`);
+}
+
+/* THE STEP-5 GATE: every pitch E2–E6 within one cent of equal temperament. */
+{
+  let worst = 0, worstNote = '';
+  for (let midi = 40; midi <= 88; midi++) {
+    const ref = E.midiToFreq(midi);
+    const buf = E.renderPitch(midi, { seconds: 2.0, t60: 6, seed: midi });
+    ok(!!buf && buf.length > 0, `midi ${midi} renders`);
+    if (!buf) continue;
+    const est = measure(buf, ref);
+    const c = Math.abs(E.centsBetween(ref, est));
+    if (c > worst) { worst = c; worstNote = `${E.midiToLabel(midi)} (${ref.toFixed(1)} Hz)`; }
+  }
+  ok(worst <= CENT_TOL,
+     `every pitch E2–E6 is within ${CENT_TOL} cent of equal temperament (worst ${worst.toFixed(4)} at ${worstNote})`);
+}
+
+/* The fractional delay must be doing the work. Rounding to a whole sample is
+   the naive implementation, and it must measurably fail the same gate — if it
+   passes, the interpolation is decoration and the gate proves nothing. */
+{
+  const naive = (freq, seconds, seed) => {
+    /* Deliberately rounded: the version the plan warned about. */
+    const len = Math.round(SR / freq - 0.5) + 1;
+    const line = new Float32Array(len);
+    let a = seed | 0;
+    const rnd = () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a);
+                        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                        return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    for (let i = 0; i < len; i++) line[i] = rnd() * 2 - 1;
+    const out = new Float32Array(Math.floor(SR * seconds));
+    let w = 0, prev = 0;
+    const g = E.loopGainFor(freq, 6);
+    for (let n = 0; n < out.length; n++) {
+      const s = line[(w - (len - 1) + len) % len];
+      const y = g * 0.5 * (s + prev);
+      prev = s; line[w] = y; out[n] = y; w = (w + 1) % len;
+    }
+    return out;
+  };
+  let naiveWorst = 0;
+  for (let midi = 40; midi <= 88; midi++) {
+    const ref = E.midiToFreq(midi);
+    const est = measure(naive(ref, 2.0, midi), ref);
+    naiveWorst = Math.max(naiveWorst, Math.abs(E.centsBetween(ref, est)));
+  }
+  ok(naiveWorst > CENT_TOL,
+     `rounding the delay to a whole sample fails the same gate (${naiveWorst.toFixed(2)} cents), so the interpolation is load-bearing`);
+}
+
+/* Decay must be frequency-compensated, or the top of the range goes "plink"
+   while the bottom rings on. Energy remaining after one second should be
+   comparable across the range rather than differing by orders of magnitude. */
+{
+  const energyAt = (midi, atSec) => {
+    const buf = E.renderPitch(midi, { seconds: atSec + 0.1, t60: 2.5, seed: midi });
+    let sum = 0;
+    for (let i = Math.floor(SR * atSec); i < Math.floor(SR * (atSec + 0.05)); i++) sum += buf[i] * buf[i];
+    return Math.sqrt(sum);
+  };
+  const lo = energyAt(40, 1.0), hi = energyAt(88, 1.0);
+  ok(lo > 0 && hi > 0, 'both ends of the range still sound after a second');
+  const ratio = Math.max(lo, hi) / Math.min(lo, hi);
+  ok(ratio < 20, `decay is comparable across the range after 1 s (ratio ${ratio.toFixed(1)}x)`);
+  /* And the compensation is real: a FIXED loop gain must be far worse. */
+  const fixedLo = E.karplusStrong(E.midiToFreq(40), { seconds: 1.1, decay: 0.996, seed: 40 });
+  const fixedHi = E.karplusStrong(E.midiToFreq(88), { seconds: 1.1, decay: 0.996, seed: 88 });
+  const rms = b => { let s = 0; for (let i = Math.floor(SR * 1.0); i < Math.floor(SR * 1.05); i++) s += b[i] * b[i]; return Math.sqrt(s); };
+  const fixedRatio = Math.max(rms(fixedLo), rms(fixedHi)) / Math.max(1e-30, Math.min(rms(fixedLo), rms(fixedHi)));
+  ok(fixedRatio > ratio * 10,
+     `a fixed loop gain is far more lopsided (${fixedRatio.toExponential(1)}x vs ${ratio.toFixed(1)}x), so the compensation earns its place`);
+}
+
+/* Determinism and boundaries. */
+{
+  const a = E.renderPitch(64, { seconds: 0.2, seed: 7 });
+  const b = E.renderPitch(64, { seconds: 0.2, seed: 7 });
+  let same = a.length === b.length;
+  for (let i = 0; same && i < a.length; i++) if (a[i] !== b[i]) same = false;
+  ok(same, 'the same seed renders byte-identical audio, so the gate cannot flake');
+  const c = E.renderPitch(64, { seconds: 0.2, seed: 8 });
+  let differs = false;
+  for (let i = 0; i < a.length; i++) if (a[i] !== c[i]) { differs = true; break; }
+  ok(differs, 'a different seed renders different audio');
+
+  /* The 44100 default is a trap for any caller on a 48 kHz AudioContext — it
+     would play about 147 cents sharp. guitar-audio.js must pass ctx.sampleRate.
+     Assert the parameter actually works, so the wiring has something to lean on. */
+  {
+    const SR48 = 48000, ref = E.midiToFreq(64);
+    const buf = E.karplusStrong(ref, { sampleRate: SR48, seconds: 1.5, t60: 6, seed: 64 });
+    ok(!!buf, 'renders at 48 kHz');
+    const est = estimateFreq(buf, SR48, ref, Math.floor(SR48 * 0.05), Math.floor(SR48 * 0.4), Math.floor(SR48 * 0.02));
+    ok(Math.abs(E.centsBetween(ref, est)) <= CENT_TOL, 'and is in tune at 48 kHz, so sampleRate is honoured');
+  }
+
+  eq(E.karplusStrong(0), null, 'zero frequency renders nothing');
+  eq(E.karplusStrong(-100), null, 'negative frequency renders nothing');
+  eq(E.karplusStrong(SR), null, 'a frequency at the sample rate renders nothing');
+  eq(E.karplusStrong(SR / 2), null, 'a frequency at Nyquist renders nothing');
+  ok(E.karplusStrong(E.midiToFreq(40)) !== null, 'the low E renders');
+  ok(E.renderPitch(40, { seconds: 0.05 }).length === Math.floor(SR * 0.05), 'length follows the requested duration');
+  /* Nothing may clip: a buffer that exceeds unity distorts on playback. */
+  for (const midi of [40, 52, 64, 76, 88]) {
+    const buf = E.renderPitch(midi, { seconds: 0.5, seed: midi });
+    let peak = 0;
+    for (let i = 0; i < buf.length; i++) peak = Math.max(peak, Math.abs(buf[i]));
+    ok(peak <= 1.0, `${E.midiToLabel(midi)} does not clip (peak ${peak.toFixed(3)})`);
+  }
+}
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
-console.log(`${BOLD}guitar-engine.js — fretboard matrix and transport timing${RESET}\n`);
+console.log(`${BOLD}guitar-engine.js — fretboard, timing and synthesis${RESET}\n`);
 console.log(`  ${DIM}${checks} assertions.${RESET}`);
 console.log(`  ${DIM}Fretboard: pitch, reachability and drawn coordinates over ${Object.keys(EXPECTED_TUNINGS).length} tunings × capo {0,2,5,7} × both handednesses.${RESET}`);
 console.log(`  ${DIM}Timing: 10,000 events across tempo changes within ${TOL_MS} ms, round-trip inversion, and the loop-iteration guard.${RESET}`);
+console.log(`  ${DIM}Synthesis: every pitch E2–E6 within ${CENT_TOL} cent, measured with an estimator validated to 100x that.${RESET}`);
 console.log('');
 if (failures.length) {
   failures.forEach(f => console.log(`  ${RED}✗${RESET}  ${f}`));

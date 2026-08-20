@@ -213,3 +213,48 @@ problem: rule 2 could *also* be disabled with no effect, because rule 4 required
 have rejected every chord, chord box and two-voice tab in the entire app.
 Relaxed to non-decreasing, with a chord added to the self-test as a case that
 must pass.
+
+---
+
+## Step 5 — Karplus–Strong string synthesis
+
+Diff: `guitar-engine.js` (synthesis block), `scripts/test-guitar-engine.js`,
+`docs/guitar-implementation-plan.md`.
+
+**Gate: every pitch E2–E6 within 1 cent of equal temperament.** 1,382 assertions green.
+
+### The instrument, twice over
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 5.1 | The pitch estimator is accurate enough to trust | **Disproved, twice.** First an autocorrelation estimator with parabolic refinement reported the synth at 0.73 cents — an apparent pass with no margin. Measuring the *estimator* against pure sines showed **3.65 cents of error on its own**: the ruler was coarser than the thing it measured, so neither number meant anything | Replaced with phase-advance correlation against a reference oscillator, Hann-windowed. Validated at 0.0006 cents |
+| 5.2 | The replacement estimator is unambiguous over the range that matters | **Disproved by the review, and this is the serious one.** Phase difference wraps into (-π, π], so the unambiguous range is ±sr/(2·gap). At the 0.8 s gap the gate used, that is **0.8 cents at E6 — narrower than the 1-cent tolerance it was policing.** A ten-cent regression at the top of the range measured as 0.18 cents and passed | Gap shortened to 0.02 s: ±32 cents of range, 0.0002 cents of precision. Both measured |
+| 5.3 | The "prove the ruler" block proves the ruler the gate uses | **Disproved.** It validated a 0.6 s gap while the gate measured with 0.8 s, and fed only on-pitch tones — so it measured zero-offset bias and could never exercise the wrap | One shared config constant. Validation now reads back known detunings of ±1, 3, 10 and 20 cents at five octaves |
+
+### Consequences of a broken ruler
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 5.4 | An allpass fractional delay beats linear interpolation | **Disproved.** The textbook upgrade measured *worse* — 0.030 against 0.016 cents. Its group delay drifts near Nyquist, which is where the short delay lines of high notes live. I had "improved" the plan's original prescription on the strength of a reading from the broken instrument | Reverted to linear interpolation, with the finding written beside it so nobody repeats the upgrade |
+| 5.5 | The figures quoted in the header are real | **Disproved.** Every number was taken with the aliased ruler. Integer rounding is not 3.8 cents out, it is **14.7 at C6 and 3.7 at E4** — the case for the fractional delay was understated fourfold | All figures re-derived and corrected in the engine header and the plan |
+| 5.6 | The naive-rounding comparator proves the interpolation is load-bearing | **Partly.** It passed, but only via low notes — the aliasing hid that the true worst case is at the top | Now correct by construction, since the comparator uses the fixed ruler |
+
+### Smaller
+
+| # | Hypothesis | Outcome | Action |
+|---|---|---|---|
+| 5.7 | The 44,100 sample-rate default is safe | **Confirmed as a trap.** A browser caller on a 48 kHz `AudioContext` omitting `sampleRate` would play ~147 cents sharp. No consumer exists yet | Documented, and a test now renders and measures at 48 kHz so the wiring in `guitar-audio.js` has something to lean on |
+| 5.8 | Fixed decay is acceptable | **Confirmed as wrong.** The loop turns over once per period, so a fixed gain makes the top of the range decay in a fifth of the time — top E "plinks" while the low E rings | Loop gain derived from a target T60. Asserted: 1.8× energy spread across the range, against a fixed gain's astronomically lopsided ratio |
+| 5.9 | A duplicated comment artifact survives | **Confirmed**, from my own insertion script — the same slip as 3.5 | Fixed. Third occurrence; the insertion pattern that causes it is the one that appends the anchor and then re-inserts before it |
+
+### The pattern, now three steps running
+
+Findings 2.11, 3.2 and 5.2 are one defect wearing three costumes: **a gate that
+cannot fail in the way it claims to.** A vacuous assertion, a self-comparison,
+and now an aliased ruler. Mutation testing catches the first two. It does *not*
+catch the third — a deliberately detuned synth would have been measured by the
+same aliased estimator and looked fine.
+
+**Rule added to §12: validate the measuring instrument, in the configuration the
+gate actually uses, against inputs that are deliberately wrong.** "Show the gate
+can fail" is necessary and, on its own, not sufficient.

@@ -420,9 +420,15 @@ Karplus–Strong: a noise-filled delay line of length `sampleRate / freq`, fed b
 
 **The delay length is almost never an integer**, and rounding it detunes the string — at E4 (329.6 Hz, 44.1 kHz) the delay is 133.8 samples, and rounding to 134 lands about 2.5 cents flat; higher pitches are worse. An ear-training course that teaches intervals on detuned reference tones is actively harmful, so this cannot be waved through.
 
-Use a **fractional delay**: linear interpolation between the two samples straddling the true delay length, i.e. `y = (1-f)*buf[i] + f*buf[i+1]` where `f` is the fractional part. Cheap, and accurate to well under a cent.
+Use a **fractional delay**: linear interpolation between the two samples straddling the true delay length. Measured at **0.05 cents worst case — 278× better** than rounding.
 
-Verification gate: render every pitch E2–E6, run each through an FFT or zero-crossing estimate, and assert the measured fundamental is within **1 cent** of equal temperament at A=440. This test belongs in `scripts/test-guitar-engine.js` and can run headless — generate the buffer with plain JS maths, no `AudioContext` required.
+A first-order allpass is the textbook upgrade and was tried: it measured *worse* (0.030 vs 0.016 on the same ruler), because its group delay drifts near Nyquist, which is exactly where the short delay lines of high notes live. Do not "improve" this without measuring.
+
+**Decay must be frequency-compensated.** The loop turns over once per period, so a fixed per-loop gain makes a high note lose the same energy in a fifth of the time — top E goes "plink" while the low E rings for seconds. Derive the loop gain from a target T60 instead: `gain = 10^(-3/(freq*t60))`.
+
+Verification gate: render every pitch E2–E6 and assert the measured fundamental is within **1 cent** of equal temperament at A=440. Headless — plain JS maths, no `AudioContext`.
+
+**Validate the ruler before trusting it, and validate it in the configuration the gate uses.** Two separate mistakes were made here. An autocorrelation estimator carried 3.65 cents of error on a pure sine — coarser than the thing it was measuring. Its phase-advance replacement was precise but *aliased*: the unambiguous range is ±sr/(2·gap), which at a 0.8 s gap is **0.8 cents at E6, narrower than the tolerance itself**, so a ten-cent regression read as 0.18 cents and passed. Use a 0.02 s gap (±32 cents of range, 0.0002 cents of precision), and feed the validation deliberately detuned tones — one that only ever sees correct pitches cannot exercise the wrap.
 
 Pre-render one `AudioBuffer` per distinct pitch (E2–E6, ~44 pitches), cache, play via `AudioBufferSourceNode` → per-voice `GainNode`. Do **not** transpose one buffer with `playbackRate`: it shifts the decay character along with the pitch, so low notes ring wrong.
 
@@ -556,6 +562,7 @@ The distinction that matters: a normal review reads the code and asks "is this r
 
 ### Procedure
 
+0. **If the step's gate measures something, validate the measuring instrument first** — in the exact configuration the gate uses, against inputs that are deliberately wrong. A ruler coarser than its tolerance, or one whose unambiguous range is narrower than the error it polices, produces a green gate that means nothing, and mutation testing will not catch it: the deliberate defect gets measured by the same broken instrument. This has now happened twice in one step (log 5.1, 5.2).
 1. Run `/code-review` at **high** effort against the step's diff. The skill exists in this repo; use it rather than improvising.
 2. Run the step-type checklist below, writing a failure hypothesis for each item before testing it.
 3. Append every finding to `guitar-review-log.md` — one line per finding: step, hypothesis, outcome, action. **A finding that is deliberately not fixed still gets logged, with the reason.** Silent dismissal is how a known defect becomes a mystery three weeks later.
