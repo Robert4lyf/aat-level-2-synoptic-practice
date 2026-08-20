@@ -83,7 +83,9 @@
       meta: 'fretboard · scales · exercises',
       tabs: ['home'],
       ui: 'GUITAR_UI',
-      assets: ['guitar-engine.js', 'guitar-audio.js', 'guitar-render.js', 'guitar-ui.js'],
+      assets: ['guitar-engine.js', 'guitar-audio.js', 'guitar-render.js',
+               'guitar-syllabus.js', 'guitar-learn-data.js', 'guitar-exercise-data.js',
+               'guitar-ui.js'],
       styles: 'guitar-styles.css',
       activate() {
         window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };

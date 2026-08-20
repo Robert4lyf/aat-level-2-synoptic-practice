@@ -887,3 +887,97 @@ same kind of statement and is not — it is a preference dressed as a fact, and
 the moment it met a real barre chord it was wrong. When a gate has no source
 outside the code AND no source outside my own judgement, it is not measuring
 anything but my opinion.
+
+## Step 8 — unit P1, end to end
+
+The plan called this "the honest cost signal for the remaining 25 units". What
+shipped: the syllabus skeleton, unit P1 as 7 lessons and 35 cards, 11 authored
+exercises, a lesson player, and three new gates.
+
+### 8.1 A deliberate departure from the plan
+
+The plan said `guitar-syllabus.js` should hold "LCM requirements per grade,
+encoded". It does not, and this is the one place step 8 knowingly does something
+other than what was written down.
+
+Two reasons. An exam board's syllabus is their copyrighted text, and encoding it
+here would be republishing it. And the grades were never the goal — the module
+started from "I want to get better at guitar and the grades are a convenient
+skeleton so nothing is missed". So the file holds technical criteria written
+from scratch, in the order a graded course covers them, carrying no board's name
+and claiming no equivalence. The file says so at the top.
+
+What is preserved is the function the plan wanted: something external that
+states what a unit owes, so coverage can be checked rather than assumed.
+
+### 8.2 The per-lesson floor did its job immediately
+
+First draft: 7 lessons, 3 cards each, 116–139 words per lesson. The 150-word
+floor failed all seven.
+
+The tempting fix was padding the prose, which is exactly the failure the plan
+predicted when it rejected a per-CARD floor. The real reading was different: the
+plan's worked example was ~250 words across six cards, so three-card lessons
+were half the size intended. The fix was more cards — 35 rather than 21, still
+averaging 42 prose words each, right on the design target.
+
+A floor that forces padding is a bad rule; a floor that reveals thin content is
+a good one. The difference is whether it is per card or per lesson, which is the
+distinction the plan drew and the reason it drew it.
+
+### 8.3 A write-only progress record, found by the browser gate
+
+`markDone()` wrote lesson completion to storage. `load()` restored profile,
+settings and stats — and not lessons, because that key was added when the course
+landed and the restore line was not.
+
+Every lesson showed as undone after a reload. From inside the code the write
+looked fine, and both content checkers passed: they read the data files and never
+open a browser. It took `check-guitar-lessons.js` walking the unit the way a
+person does — finish everything, reload, count the ticks — to see it.
+
+That is now three defects of the same shape across this project: state that is
+written correctly and never read back, invisible to everything except actually
+using the thing.
+
+### 8.4 Two more from reviewing the step
+
+- **The Loop checkbox on a lesson card set the loop from the workshop's
+  generated exercise**, because that was the only exercise `applyLoop` knew
+  about. A four-bar card looped over whatever length the scale panel happened to
+  be showing. It sounds like a loop either way, which is why the gate measures
+  the loop length against the exercise data instead of listening to it.
+- **The card's tempo and the transport's tempo were two numbers.** The player
+  displayed the card's prescribed bpm while playing the working tempo, so the box
+  could read 44 while the audio ran at 90. Now there is one value, and the card's
+  bpm is applied on navigation rather than on render — because applying it during
+  render resets the tempo on every repaint, and a player who nudged it to 48
+  would watch it snap back.
+
+  Reviewing that fix raised the question the fix did not answer: a player working
+  through at 40 should not be dragged back to 54 by every Next. So the prescribed
+  tempo is adopted until the tempo is touched by hand, and offered again when the
+  lesson is reopened. Verified in a browser: `open 54 → next 54 → nudged 52 →
+  next 52 → reopened 54`.
+
+### 8.5 What a unit costs
+
+Twelve mutations across the three new gates, all caught. `npm test` runs 26
+checks.
+
+The honest signal the plan asked for, for one unit of seven lessons:
+
+- **Content** is the bulk of it — 35 cards at 42 words is small on the page and
+  slow to write, because the constraint is what to leave out. The word ceiling
+  does most of the editing.
+- **Exercises** were quicker than expected. 11 authored exercises, 108 notes,
+  all playable first time — the note representation and the playability rules
+  from steps 2 and 4 did that work already.
+- **The player** was written once and now serves every remaining unit. That cost
+  does not repeat.
+- **The gates** were roughly a third of the step and also do not repeat: coverage
+  and quality are content-shaped, not unit-shaped, so unit 2 arrives with them
+  already in place.
+
+So the remaining 25 units are mostly the first item. The substrate is not the
+long pole; the writing is.

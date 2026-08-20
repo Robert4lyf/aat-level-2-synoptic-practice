@@ -46,7 +46,15 @@ const css = fs.readFileSync(path.join(ROOT, 'guitar-styles.css'), 'utf8');
 /* Classes as they appear in the markup this file builds: class="a b c". */
 const emitted = new Set();
 for (const m of ui.matchAll(/class="([^"]*)"/g)) {
-  for (const cls of m[1].split(/\s+/)) if (/^gtr-/.test(cls)) emitted.add(cls);
+  for (const raw of m[1].split(/\s+/)) {
+    /* A class attribute built by concatenation — `class="gtr-dot' + (on ? ...)`
+       — ends the captured text mid-expression, so the last token arrives with a
+       quote stuck to it. Stripped rather than rejected: dropping any token that
+       does not look like a bare class would also drop real ones and quietly
+       shrink what this gate covers. */
+    const cls = raw.replace(/['"`+]/g, '');
+    if (/^gtr-[\w-]+$/.test(cls)) emitted.add(cls);
+  }
 }
 /* And the ones the renderer is handed via its own attributes. */
 const styled = new Set([...css.matchAll(/\.(gtr-[\w-]+)/g)].map(m => m[1]));
@@ -140,6 +148,12 @@ function report() {
     const page = await ctx.newPage();
     await page.addInitScript(() => localStorage.setItem('multisubject_active', 'guitar'));
     await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'load' });
+    /* The subject opens on the lesson list now. The controls this file checks
+       live on the workshop bench, so navigate there first — and assert the nav
+       exists rather than waiting 15 seconds for a control that was never going
+       to appear, which is how this check first failed after the course landed. */
+    await page.waitForSelector('[data-screen="workshop"]', { timeout: 15000 });
+    await page.click('[data-screen="workshop"]');
     await page.waitForSelector('#gtrTempoNum', { timeout: 15000 });
 
     const read = () => page.evaluate(() => ({
@@ -474,6 +488,12 @@ function report() {
     /* -- and it survives a reload --------------------------------------- */
     const before = (await read()).saved;
     await page.reload({ waitUntil: 'load' });
+    /* Screen state is deliberately not persisted — a reload lands on the lesson
+       list again, which is the intended behaviour, so navigate back rather than
+       treating it as a failure. The tempo IS persisted, and that is what the
+       assertion below is about. */
+    await page.waitForSelector('[data-screen="workshop"]', { timeout: 15000 });
+    await page.click('[data-screen="workshop"]');
     await page.waitForSelector('#gtrTempoNum', { timeout: 15000 });
     s = await read();
     if (Number(s.num) !== before) {
