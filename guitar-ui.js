@@ -43,6 +43,10 @@
         if (p.stats)    { data.stats    = Object.assign(data.stats, p.stats); }
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
+    /* Storage is the one place a tempo arrives unchecked — an older build's
+       bounds, a synced device, a hand-edited key. Clamped here so nothing
+       downstream has to wonder. */
+    data.settings.tempo = clampTempo(data.settings.tempo);
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
@@ -58,6 +62,17 @@
   };
 
   var transport = null;
+  /* Tempo bounds. Wider than a metronome's 40–208 at the slow end, because the
+     first pass at an unfamiliar shape is played slower than any metronome
+     offers, and that is the tempo that actually teaches it. */
+  var TEMPO_MIN = 30;
+  var TEMPO_MAX = 240;
+  function clampTempo(v) {
+    v = Math.round(Number(v));
+    if (!isFinite(v)) return 90;
+    return Math.max(TEMPO_MIN, Math.min(TEMPO_MAX, v));
+  }
+
   var _host = null;
 
   function esc(s) {
@@ -182,10 +197,27 @@
         '<div class="gtr-transport">' +
           '<button class="gtr-play" id="gtrPlay" type="button">▶ Play</button>' +
           '<button class="gtr-btn" id="gtrStop" type="button">■ Stop</button>' +
-          '<label class="gtr-inline">Tempo <input id="gtrTempo" type="range" min="40" max="200" step="1" value="' +
-            data.settings.tempo + '"><span id="gtrTempoVal">' + data.settings.tempo + '</span> bpm</label>' +
           '<label class="gtr-inline"><input id="gtrLoop" type="checkbox"' + (S.loop ? ' checked' : '') + '> Loop</label>' +
           '<label class="gtr-inline"><input id="gtrDesc" type="checkbox"' + (S.descending ? ' checked' : '') + '> Descending</label>' +
+        '</div>' +
+        /* Tempo gets its own row rather than a slot in the transport line.
+           Squeezed in beside the buttons it was 120 px wide across 160 bpm —
+           a bpm and a third per pixel, so landing on a chosen tempo was luck.
+           Three ways in now, all writing the same value: type it, step it by
+           one, or drag a slider with a whole row to travel. */
+        '<div class="gtr-tempo">' +
+          '<span class="gtr-tempo-label" id="gtrTempoLabel">Tempo</span>' +
+          '<button class="gtr-step" id="gtrTempoDown" type="button" ' +
+            'aria-label="Slower by one bpm">−</button>' +
+          '<input id="gtrTempoNum" class="gtr-tempo-num" type="number" inputmode="numeric" ' +
+            'min="' + TEMPO_MIN + '" max="' + TEMPO_MAX + '" step="1" ' +
+            'aria-labelledby="gtrTempoLabel" value="' + data.settings.tempo + '">' +
+          '<button class="gtr-step" id="gtrTempoUp" type="button" ' +
+            'aria-label="Faster by one bpm">+</button>' +
+          '<span class="gtr-tempo-unit">bpm</span>' +
+          '<input id="gtrTempo" class="gtr-tempo-range" type="range" ' +
+            'min="' + TEMPO_MIN + '" max="' + TEMPO_MAX + '" step="1" ' +
+            'aria-labelledby="gtrTempoLabel" value="' + data.settings.tempo + '">' +
         '</div>' +
         '<p class="gtr-detail" id="gtrAudioNote"></p>' +
       '</div>' +
@@ -225,13 +257,49 @@
       if (transport) applyLoop();
     });
 
-    on('gtrTempo', 'input', function (e) {
-      data.settings.tempo = parseInt(e.target.value, 10) || 90;
-      var out = el.querySelector('#gtrTempoVal');
-      if (out) out.textContent = data.settings.tempo;
+    /* One writer for the tempo, whichever control moved.
+       `except` is the element the user is currently working in: writing a
+       clamped value back into a number field mid-keystroke fights the typing,
+       turning "1" into "30" before the "20" arrives. It is left alone until it
+       commits. Note that none of this rerenders — mount() replaces the whole
+       subtree, which would take the focus and the caret with it. */
+    function setTempo(v, except) {
+      /* A blank or unparseable field restores the live tempo rather than
+         resolving to something. Without this, Number('') is 0 and clamps to
+         the floor, so clearing the box to retype it drops the tempo to 30 the
+         moment focus leaves. */
+      if (v === '' || v === null || v === undefined || !isFinite(Number(v))) v = data.settings.tempo;
+      data.settings.tempo = clampTempo(v);
+      var num = el.querySelector('#gtrTempoNum');
+      var rng = el.querySelector('#gtrTempo');
+      if (num && num !== except) num.value = data.settings.tempo;
+      if (rng && rng !== except) rng.value = data.settings.tempo;
       if (transport) transport.setTempo(data.settings.tempo);
       save();
+    }
+
+    on('gtrTempo', 'input', function (e) { setTempo(e.target.value, e.target); });
+
+    /* While typing, an out-of-range or half-finished number moves nothing:
+       "4" on the way to "45" would otherwise jump the tempo to the floor and
+       drag the slider with it. */
+    on('gtrTempoNum', 'input', function (e) {
+      var v = Number(e.target.value);
+      if (e.target.value === '' || !isFinite(v)) return;
+      if (v < TEMPO_MIN || v > TEMPO_MAX) return;
+      setTempo(v, e.target);
     });
+    /* On the way out, whatever is in the box is resolved: an empty field or an
+       out-of-range one snaps back to the live tempo rather than sitting there
+       disagreeing with what will play. */
+    on('gtrTempoNum', 'change', function (e) { setTempo(e.target.value, null); });
+    on('gtrTempoNum', 'blur',   function (e) { setTempo(e.target.value, null); });
+    on('gtrTempoNum', 'keydown', function (e) {
+      if (e.key === 'Enter') { setTempo(e.target.value, null); e.target.blur(); }
+    });
+
+    on('gtrTempoDown', 'click', function () { setTempo(data.settings.tempo - 1, null); });
+    on('gtrTempoUp',   'click', function () { setTempo(data.settings.tempo + 1, null); });
 
     on('gtrPlay', 'click', play);
     on('gtrStop', 'click', function () { if (transport) transport.stop(); });

@@ -84,3 +84,7 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:subjects
+      - name: Check the guitar controls are styled and the tempo behaves
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:guitar-controls

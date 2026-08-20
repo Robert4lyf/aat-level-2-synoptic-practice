@@ -527,3 +527,87 @@ than of a component.
 
 The visual half stays with the user. Nothing here can tell you whether a
 Karplus–Strong pluck is something you want to play along to for ninety seconds.
+
+## Step 7b — the first report from playing it
+
+Both of these came back from the preview build, from the only test that matters
+at this point: someone picking up a guitar and using it. Neither was reachable
+from any gate written so far, and one of them had a gate written around it
+afterwards precisely because it is not the kind of thing anyone catches twice.
+
+### 7b.1 Chords were too fast and too hard
+
+Scales were fine — same buffers, same synthesis. What was wrong was everything
+between the buffer and the speaker.
+
+- **Too fast.** The strum spread was 22 ms, which puts a six-string chord inside
+  132 ms. That is a strum. This is a fingerstyle course, and a thumb rolling
+  across six strings takes longer. Now 45 ms, and each successive string is
+  fractionally quieter, because a roll at an even level lands all its weight on
+  the trebles.
+- **Too much attack.** Six copies of the same Karplus–Strong transient stacked
+  inside a tenth of a second read as a hit rather than a chord, and the
+  excitation brightness that gives a single line its definition just accumulates.
+
+Fixed by shaping in the graph rather than rendering a second timbre: an 18 ms
+attack ramp and a 2.4 kHz lowpass on chords only. A second buffer set at this
+quality is ~20 MB of `Float32Array` — real weight on a phone, for a difference a
+filter and a fade already make.
+
+The review of the fix caught two things in the fix:
+
+- **The damping stage read its target level back off `g.gain.value`,** which the
+  new attack ramp leaves sitting at its 0.0001 starting floor. Every damped note
+  would have faded out from silence — which is to say, been cut dead. This is the
+  same shape as the step 6 mask bug: the change was right, and it silently broke
+  the thing standing next to it.
+- **The pluck voice was given a 2 ms attack** on the grounds that it is too short
+  to hear. The scales had just been reported as fine. A change nobody asked for,
+  defended by a claim that it makes no difference, is a change that should not be
+  made — so the pluck voice is now all-zero and takes the identical branches the
+  old code took unconditionally.
+
+Whether 45 ms and 2.4 kHz are *right* is not something anything here can answer.
+Both are one-line constants at the top of `guitar-audio.js`, named and commented,
+because they will be adjusted by ear.
+
+### 7b.2 The tempo slider could not be aimed
+
+120 px of slider across 160 bpm is 1.3 bpm per pixel, so choosing 96 rather than
+95 was luck. It now has its own row: a typable number field, −1 and +1 buttons,
+and a full-width slider. All three write through one function.
+
+Three defects found reviewing it, two of them in the gate rather than the code:
+
+- **The first version of the keystroke assertion was vacuous.** It typed "120"
+  and checked the field still read "120" — but the field is deliberately excluded
+  from write-back, so it reads "120" whether or not the bug is present. The
+  mutation survived. What actually lurches when each digit is applied as it lands
+  is everything *downstream*: the slider jumps to 30 and back, storage records the
+  half-typed number, and a playing transport audibly drops to a crawl. The gate
+  now watches the slider. This is the third vacuous assertion in seven steps, and
+  all three shared a shape — asserting on the thing being manipulated rather than
+  on the thing that would move if the code were wrong.
+- **The blank field dropped the tempo to 30.** `Number('')` is 0, which clamps to
+  the floor, so clearing the box to retype it set the tempo to the minimum the
+  moment focus left. The comment above the function claimed it "snaps back to the
+  live tempo". It did not. Found by reading the comment against the code rather
+  than by any test — the comment was written describing what the code should do,
+  and then not checked against what it did.
+- **The class-coverage gate passes a class with only a `:hover` rule.** It asks
+  whether the class appears anywhere in the stylesheet, so renaming a base rule
+  while leaving its `:hover` intact is not caught. Recorded rather than fixed:
+  it catches a class with no rules at all, which is the failure that actually
+  happens, and tightening it to require a base rule would reject the several
+  classes that legitimately only modify.
+
+### What step 7b says
+
+Step 7 closed by saying the visual and audible half stays with the user. It did,
+and it returned two defects within a day — both of which produced output that was
+structurally correct and wrong to use. That is now the established pattern across
+steps 6 and 7: the gates hold the structure, and the ear and the eye find what
+the structure cannot express.
+
+The new gate does not fix that. It stops these two specific behaviours from
+regressing silently; it cannot tell anyone whether 45 ms is the right roll.

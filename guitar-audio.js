@@ -44,6 +44,39 @@
   var MIN_MIDI = 40;          // E2, the lowest note on a standard guitar
   var MAX_MIDI = 88;          // E6, four octaves up
 
+  /* ── Voices ───────────────────────────────────────────────────────────────
+     One set of buffers, shaped differently on the way out.
+
+     A plucked scale note and a strummed chord want different envelopes. The
+     scales sound right as they are: the string is struck and left to ring.
+     Chords built from the same buffers came out hard — six copies of the same
+     transient inside a tenth of a second reads as an attack, not a chord, and
+     the brightness that gives a single line its definition just stacks up.
+
+     Shaping this in the graph rather than rendering a second set of buffers is
+     what keeps it cheap. A second timbre at this quality is ~20 MB of
+     Float32Array, which is real weight on a phone for a difference a filter and
+     a fade already make.
+
+       attack  seconds to reach full level; softens the leading edge
+       cutoff  one-pole lowpass in Hz, 0 for none; takes off the top
+       gain    trim, since a darker note reads as louder at the same level
+
+     The pluck voice is deliberately all-zero: attack 0 and cutoff 0 take the
+     same branches the old code took unconditionally, so a scale sounds exactly
+     as it did before any of this. The scales were reported as fine; a 2 ms
+     ramp "too small to hear" is still a change nobody asked for. */
+  var VOICES = {
+    pluck: { attack: 0,     cutoff: 0,    gain: 1 },
+    chord: { attack: 0.018, cutoff: 2400, gain: 0.86 }
+  };
+  function voiceOf(name) { return VOICES[name] || VOICES.pluck; }
+
+  /* Seconds between strings of a strum. A chord is rolled with the thumb here,
+     not raked with a pick: 22 ms across six strings put the whole chord inside
+     an eighth of a second, which is a strum. */
+  var STRUM_SPREAD_S = 0.045;
+
   var ctx = null;
   var master = null;
   var buffers = Object.create(null);   // midi → AudioBuffer
@@ -112,46 +145,80 @@
   /* ── One note ─────────────────────────────────────────────────────────────
      `when` is an absolute context time. Scheduling in the past is a silent
      no-op in some browsers and an error in others, so it is clamped. */
-  function playMidi(midi, when, gain, durationS) {
+  function playMidi(midi, when, gain, durationS, voiceName) {
     var c = resume();
     if (!c) return null;
     var buf = bufferFor(midi);
     if (!buf) return null;
+    var v = voiceOf(voiceName);
     var src = c.createBufferSource();
     src.buffer = buf;
     var g = c.createGain();
-    g.gain.value = (gain === undefined ? 0.8 : gain);
-    src.connect(g); g.connect(master);
+    /* Held in a variable, not read back off g.gain.value: the attack ramp
+       below leaves that at the ramp's starting floor, so the damping stage
+       would fade out from silence and cut the note dead. */
+    var level = (gain === undefined ? 0.8 : gain) * v.gain;
     var t = Math.max(when === undefined ? c.currentTime : when, c.currentTime);
+
+    if (v.cutoff > 0) {
+      var lp = c.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = v.cutoff;
+      lp.Q.value = 0.707;                 // Butterworth: no peak at the corner
+      src.connect(lp); lp.connect(g);
+    } else {
+      src.connect(g);
+    }
+    g.connect(master);
+
+    /* Ramp in rather than starting at full level. exponentialRampToValueAtTime
+       cannot depart from zero, hence the floor. */
+    if (v.attack > 0 && level > 0.0001) {
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(level, t + v.attack);
+    } else {
+      /* level guarded as well as attack: an exponential ramp cannot reach or
+         depart from zero, and a caller silencing a voice by passing gain 0
+         would otherwise throw rather than go quiet. */
+      g.gain.setValueAtTime(level, t);
+    }
     src.start(t);
+
     /* A note shorter than the buffer is damped rather than cut, so it sounds
        like a hand stopping a string instead of a click. */
     if (durationS > 0 && durationS < buf.duration) {
       var end = t + durationS;
-      g.gain.setValueAtTime(g.gain.value, Math.max(end - 0.06, t));
-      g.gain.exponentialRampToValueAtTime(0.0001, end + 0.02);
-      src.stop(end + 0.05);
+      /* Never before the attack has finished, or the two ramps fight and the
+         note never reaches level. */
+      var damp = Math.max(end - 0.06, t + v.attack);
+      g.gain.setValueAtTime(level, damp);
+      g.gain.exponentialRampToValueAtTime(0.0001, Math.max(end + 0.02, damp + 0.02));
+      src.stop(Math.max(end + 0.05, damp + 0.05));
     }
     return src;
   }
 
   /* `bpm` is optional: with it, a note's `dur` in beats becomes a real damping
      time. Without it the string is left to ring, which is right for a strum. */
-  function playNote(note, fb, when, gain, bpm) {
+  function playNote(note, fb, when, gain, bpm, voiceName) {
     var midi = E.soundingMidi(note, fb);
     if (midi === null) return null;
     var seconds = (bpm > 0 && note.dur > 0) ? E.beatsToSeconds(note.dur, bpm) * 1.6 : undefined;
-    return playMidi(midi, when, gain, seconds);
+    return playMidi(midi, when, gain, seconds, voiceName);
   }
 
   /* Strum a chord: the same notes, spread slightly, low string first. */
   function strum(notes, fb, when, spreadS) {
     var c = resume();
     if (!c) return;
-    var spread = spreadS === undefined ? 0.022 : spreadS;
+    var spread = spreadS === undefined ? STRUM_SPREAD_S : spreadS;
     var base = Math.max(when === undefined ? c.currentTime : when, c.currentTime);
     var ordered = notes.slice().sort(function (a, b) { return b.string - a.string; });
-    ordered.forEach(function (n, i) { playNote(n, fb, base + i * spread, 0.7); });
+    /* Slightly lighter towards the top, the way a thumb roll actually lands:
+       an even level across six strings puts the whole weight on the trebles. */
+    ordered.forEach(function (n, i) {
+      playNote(n, fb, base + i * spread, 0.72 - i * 0.025, 0, 'chord');
+    });
   }
 
   /* ── Transport ────────────────────────────────────────────────────────────
@@ -299,6 +366,8 @@
     strum: strum,
     createTransport: function () { return track(createTransport()); },
     context: context,
+    VOICES: VOICES,
+    STRUM_SPREAD_S: STRUM_SPREAD_S,
     LOOKAHEAD_S: LOOKAHEAD_S,
     TICK_MS: TICK_MS
   };

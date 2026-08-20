@@ -189,6 +189,8 @@ body[data-subject="guitar"] .gtr-controls select {
 }
 body[data-subject="guitar"] .gtr-controls select:focus-visible,
 body[data-subject="guitar"] .gtr-transport input:focus-visible,
+body[data-subject="guitar"] .gtr-tempo input:focus-visible,
+body[data-subject="guitar"] .gtr-step:focus-visible,
 body[data-subject="guitar"] .gtr-chordbtn:focus-visible,
 body[data-subject="guitar"] .gtr-btn:focus-visible,
 body[data-subject="guitar"] .gtr-play:focus-visible {
@@ -265,8 +267,68 @@ body[data-subject="guitar"] .gtr-inline {
   color: var(--subtext);
   cursor: pointer;
 }
-body[data-subject="guitar"] .gtr-inline input[type="range"] { width: 120px; accent-color: var(--subj, var(--accent)); }
 body[data-subject="guitar"] .gtr-inline input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--subj, var(--accent)); }
+
+/* ── Tempo ────────────────────────────────────────────────────────────────
+   Its own row under the transport. The slider used to share the transport
+   line at 120px, which put 160 bpm inside about 120 device pixels; the row
+   gives it the full width so a drag has somewhere to go, and the number
+   field beside it means nobody has to drag at all. */
+body[data-subject="guitar"] .gtr-tempo {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+body[data-subject="guitar"] .gtr-tempo-label,
+body[data-subject="guitar"] .gtr-tempo-unit {
+  font-size: .82rem;
+  color: var(--subtext);
+}
+body[data-subject="guitar"] .gtr-tempo-num {
+  width: 4.4ch;
+  padding: 5px 6px;
+  text-align: center;
+  font: inherit;
+  font-size: .9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+}
+/* The spinners are redundant next to real buttons, and they shrink the
+   typing target on the platforms that show them. */
+body[data-subject="guitar"] .gtr-tempo-num::-webkit-outer-spin-button,
+body[data-subject="guitar"] .gtr-tempo-num::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+body[data-subject="guitar"] .gtr-tempo-num { -moz-appearance: textfield; appearance: textfield; }
+
+body[data-subject="guitar"] .gtr-step {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-step:hover { filter: brightness(1.06); }
+body[data-subject="guitar"] .gtr-step:active { transform: translateY(1px); }
+
+body[data-subject="guitar"] .gtr-tempo-range {
+  width: 100%;
+  min-width: 0;
+  accent-color: var(--subj, var(--accent));
+}
 
 /* ── When the generator cannot build a shape ──────────────────────────────
    A fault is information, not a crash. It says which combination has no
@@ -285,7 +347,10 @@ body[data-subject="guitar"] .gtr-fault {
 @media (max-width: 480px) {
   body[data-subject="guitar"] .gtr-panel { padding: 14px; }
   body[data-subject="guitar"] .gtr-transport { gap: 8px 10px; }
-  body[data-subject="guitar"] .gtr-inline input[type="range"] { width: 96px; }
+  /* Narrow: the slider drops to a full-width second line rather than being
+     squeezed to nothing beside the number. */
+  body[data-subject="guitar"] .gtr-tempo { grid-template-columns: auto auto auto auto 1fr; }
+  body[data-subject="guitar"] .gtr-tempo-range { grid-column: 1 / -1; }
 }
 
 /* Figures carry meaning through colour (root, characteristic note), so they
