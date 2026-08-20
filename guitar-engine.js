@@ -225,6 +225,136 @@
   /* Does this fretboard mirror at all? For prose and aria-labels, not geometry. */
   function mirrorFor(fb) { return fb.handed === 'left'; }
 
+  /* ── Timing ───────────────────────────────────────────────────────────────
+     Pure arithmetic, deliberately kept out of guitar-audio.js so it can be
+     tested in Node. Web Audio scheduling itself cannot be; this can, and this
+     is where the errors that matter live.
+
+     BEATS ARE COMPUTED, NEVER ACCUMULATED. Not for precision — that was
+     measured, and accumulating 1/3 a million times drifts by about 1.6
+     microseconds at 40 bpm, against a 2 ms tolerance. The reason is path
+     dependence: an accumulated position depends on the route taken to reach
+     it, so a tempo change, a loop wrap or a seek corrupts every event after
+     it, by an unbounded amount. A computed position depends only on its index
+     and survives all three.
+
+     THE TEMPO MAP is a list of { beat, bpm } — the beat at which each change
+     happens, never an elapsed-seconds running total, for the same reason.
+     compileTempoMap() precomputes each segment's start time once so that
+     repeated transportTime() calls cannot disagree with each other. */
+
+  var DEFAULT_BPM = 120;
+
+  function beatsToSeconds(beats, bpm) { return beats * 60 / bpm; }
+  function secondsToBeats(sec, bpm)   { return sec * bpm / 60; }
+
+  /* Event n of a regular subdivision. Trivial, and exported so that "compute,
+     don't accumulate" is a call site rather than a convention people remember. */
+  function beatAt(index, subdivision) { return index * subdivision; }
+
+  function compileTempoMap(entries) {
+    /* A bare object is accepted as a one-entry map. Discarding it and falling
+       back to 120 would play the whole piece at the wrong tempo with nothing
+       anywhere reporting a problem. */
+    var raw = Array.isArray(entries) ? entries
+            : (entries && typeof entries === 'object') ? [entries]
+            : [];
+    var clean = [];
+    for (var i = 0; i < raw.length; i++) {
+      var e = raw[i];
+      if (!e) continue;
+      var b = Number(e.beat), t = Number(e.bpm);
+      /* Negative beats belong to a count-in, which runs at the beat-0 tempo;
+         a tempo change before the piece starts is meaningless. */
+      if (!isFinite(b) || !isFinite(t) || t <= 0 || b < 0) continue;
+      clean.push({ beat: b, bpm: t });
+    }
+    clean.sort(function (a, b2) { return a.beat - b2.beat; });
+
+    /* Two entries on the same beat: the later one in the input wins, which is
+       what a caller editing a map in place expects. */
+    var dedup = [];
+    for (var j = 0; j < clean.length; j++) {
+      if (j + 1 < clean.length && clean[j + 1].beat === clean[j].beat) continue;
+      dedup.push(clean[j]);
+    }
+    if (!dedup.length) dedup = [{ beat: 0, bpm: DEFAULT_BPM }];
+    if (dedup[0].beat > 0) dedup.unshift({ beat: 0, bpm: dedup[0].bpm });
+
+    var segs = [], acc = 0;
+    for (var k = 0; k < dedup.length; k++) {
+      segs.push({ beat: dedup[k].beat, bpm: dedup[k].bpm, time: acc });
+      if (k + 1 < dedup.length) {
+        acc += beatsToSeconds(dedup[k + 1].beat - dedup[k].beat, dedup[k].bpm);
+      }
+    }
+    return segs;
+  }
+
+  /* transportTime and beatAtTime want COMPILED segments, which carry a
+     precomputed .time. Handed a raw [{beat,bpm}] map they would read
+     undefined and return NaN for every event — silent, and catastrophic. So
+     they normalise instead: a raw map is compiled on the spot. Compiling once
+     and reusing is still preferable, and is what the transport does. */
+  function asSegments(map) {
+    if (!Array.isArray(map) || !map.length) return compileTempoMap(map);
+    return typeof map[0].time === 'number' ? map : compileTempoMap(map);
+  }
+
+  /* Which segment governs this beat. Linear from the end because tempo maps
+     are a handful of entries; if one ever grows, binary search here. */
+  function segmentFor(segs, beat) {
+    var i = segs.length - 1;
+    while (i > 0 && segs[i].beat > beat) i--;
+    return segs[i];
+  }
+  function segmentAtTime(segs, rel) {
+    var i = segs.length - 1;
+    while (i > 0 && segs[i].time > rel) i--;
+    return segs[i];
+  }
+
+  /* Wall-clock time of a beat. Negative beats are the count-in and land before
+     t0, which falls out of the arithmetic rather than needing a special case. */
+  function transportTime(beat, map, t0) {
+    var base = t0 || 0;
+    var segs = asSegments(map);
+    var s = segmentFor(segs, beat);
+    return base + s.time + beatsToSeconds(beat - s.beat, s.bpm);
+  }
+
+  /* The inverse, for the playback cursor: rAF reads the clock, converts, draws.
+     The cursor must follow audio and never lead it. */
+  function beatAtTime(sec, map, t0) {
+    var segs = asSegments(map);
+    var rel = sec - (t0 || 0);
+    var s = segmentAtTime(segs, rel);
+    return s.beat + secondsToBeats(rel - s.time, s.bpm);
+  }
+
+  /* ── Looping ──────────────────────────────────────────────────────────────
+     loopWrap maps an absolute beat into the loop's range. loopIteration says
+     which pass it belongs to, and that is the one that matters: a loop shorter
+     than the scheduler's lookahead window is covered more than once per tick,
+     so events must be keyed on (iteration, index) or every one is scheduled
+     twice. Keying on beat position alone cannot tell the passes apart. */
+  function loopLength(loopStart, loopEnd) {
+    var len = loopEnd - loopStart;
+    return isFinite(len) && len > 0 ? len : 0;
+  }
+  function loopWrap(beat, loopStart, loopEnd) {
+    var len = loopLength(loopStart, loopEnd);
+    if (!len) return beat;
+    var off = (beat - loopStart) % len;
+    if (off < 0) off += len;
+    return loopStart + off;
+  }
+  function loopIteration(beat, loopStart, loopEnd) {
+    var len = loopLength(loopStart, loopEnd);
+    if (!len) return 0;
+    return Math.floor((beat - loopStart) / len);
+  }
+
   /* ── Reverse lookup ───────────────────────────────────────────────────────
      Every place on the neck that sounds a given pitch, honouring the capo.
      Used by the fretboard drills and by position finding. */
@@ -270,8 +400,20 @@
     neckStringY: neckStringY,
     neckFretX: neckFretX,
     mirrorFor: mirrorFor,
+    /* timing */
+    beatsToSeconds: beatsToSeconds,
+    secondsToBeats: secondsToBeats,
+    beatAt: beatAt,
+    compileTempoMap: compileTempoMap,
+    asSegments: asSegments,
+    transportTime: transportTime,
+    beatAtTime: beatAtTime,
+    loopWrap: loopWrap,
+    loopIteration: loopIteration,
+    loopLength: loopLength,
     /* constants */
     STRING_COUNT: STRING_COUNT,
-    MAX_FRET: MAX_FRET
+    MAX_FRET: MAX_FRET,
+    DEFAULT_BPM: DEFAULT_BPM
   };
 }));
