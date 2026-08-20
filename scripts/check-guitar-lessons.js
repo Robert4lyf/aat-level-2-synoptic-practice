@@ -188,6 +188,47 @@ function expectedTempo(lesson, index) {
         const T = window.GUITAR_UI && window.GUITAR_UI.transport();
         return T && T.loop ? { start: T.loop.start, end: T.loop.end } : null;
       });
+      /* ── Nothing lights during the count-in ───────────────────────────
+         The cursor follows currentBeat(), which reports negative beats while
+         the count-in clicks. Those were being wrapped into the loop range —
+         loopWrap(-4, 0, 8) is 4 — so a looping card lit the back half of the
+         phrase before a note had sounded, then jumped to the start. It looked
+         like a cursor four beats ahead of the audio, and it was. Only the LOOP
+         path did this, which is why the cursor timing check in
+         check-guitar-controls.js never saw it: that one plays unlooped.
+
+         MEASURED BY THE CLOCK, NOT BY THE TRANSPORT. The obvious version of
+         this check asks currentBeat() whether the count-in is still running and
+         requires nothing lit while it is negative — and that is vacuous, because
+         currentBeat() is the broken function. Under the bug it reports 4 rather
+         than -4, the filter never fires, and the gate passes while the defect
+         sits in front of it. So the window comes from elapsed wall-clock time
+         against the count-in length implied by the exercise's own bpm, which is
+         neither of the things being judged. */
+      const countInMs = (4 * 60 / (loopLesson.cards[cardIdx].playalong.bpm || ex.bpm)) * 1000;
+      const litEarly = await page.evaluate(async (windowMs) => {
+        const t0 = performance.now();
+        const samples = [];
+        /* Stop a little short of beat 0 so a slow frame near the boundary is
+           not read as an early light. */
+        while (performance.now() - t0 < windowMs - 250) {
+          samples.push({
+            at: Math.round(performance.now() - t0),
+            lit: document.querySelectorAll('.gtr-note.is-playing').length
+          });
+          await new Promise(r => setTimeout(r, 60));
+        }
+        return samples;
+      }, countInMs);
+      const bad = litEarly.filter(x => x.lit > 0);
+      if (bad.length) {
+        errors.push(`${loopLesson.id} card ${cardIdx + 1}: a note was lit ${bad[0].at}ms after play, ` +
+                    `during a ${Math.round(countInMs)}ms count-in (${bad.length} of ${litEarly.length} ` +
+                    `samples lit). The cursor is running ahead of the sound by the length of the count-in.`);
+      } else {
+        notes.push(`Count-in: ${litEarly.length} samples across ${Math.round(countInMs)}ms, none lit.`);
+      }
+
       await page.click('#gtrStop');
       if (!loop) {
         errors.push(`${loopLesson.id} card ${cardIdx + 1} declares loop: true but the transport has no loop set.`);

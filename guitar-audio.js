@@ -357,6 +357,14 @@
       if (!(lat > 0)) lat = c.baseLatency;
       if (!(lat > 0)) lat = 0;
       var b = E.beatAtTime(c.currentTime - lat, T.segs, T.t0);
+      /* A count-in is negative beats, and negative beats are not IN the loop —
+         they are before it. Wrapping them lands them at the far end of the
+         range instead: with a four-beat count-in over an eight-beat loop,
+         loopWrap(-4, 0, 8) is 4, so the cursor ran the back half of the phrase
+         while the clicks were still counting, then jumped to the start when the
+         music began — four beats ahead of the sound, exactly.
+         Wrap only once the loop has actually been entered. */
+      if (b < 0) return b;
       if (T.loop) return E.loopWrap(b, T.loop.start, T.loop.end);
       return b;
     };
