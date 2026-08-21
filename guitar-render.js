@@ -77,9 +77,26 @@
   /* Every figure is wrapped the same way: a viewBox so it scales to its
      container, a role and title so a screen reader gets something, and an
      overflow-x container so a wide one scrolls itself rather than the page. */
+  /* Below these widths the digits stop being readable, so a wide figure in a
+     narrow container should scroll rather than shrink past them. Held here
+     rather than in the stylesheet because the natural width is only known here,
+     and the two bounds have to be decided together — see below. */
+  var MIN_LEGIBLE = { 'gtr-tab': 300, 'gtr-neck': 340, 'gtr-chordbox': 108 };
+
   function svgWrap(w, h, title, cls, body) {
+    /* BOTH BOUNDS, from the natural width, in one place.
+       The stylesheet used to set a flat min-width per kind — 300px for any tab
+       — and min-width beats max-width in CSS. So a two-bar demonstration 115
+       units wide was forced out to 300 and drawn at nearly three times its
+       size, with every digit and fingering letter enlarged to match. A floor
+       meant for long staves was being applied to short ones.
+       The floor is now whichever is smaller, the legible minimum or the figure
+       itself, so a figure is never stretched past its own size and a long one
+       still scrolls rather than shrinking. */
+    var floor = Math.min(w, MIN_LEGIBLE[cls] || 0);
     return '<div class="gtr-fig ' + esc(cls) + '">' +
       '<svg viewBox="0 0 ' + n2(w) + ' ' + n2(h) + '" width="100%" ' +
+      'style="min-width:' + n2(floor) + 'px;max-width:' + n2(w) + 'px" ' +
       'preserveAspectRatio="xMidYMid meet" role="img" ' +
       'aria-label="' + esc(title) + '" class="gtr-svg ' + esc(cls) + '-svg">' +
       '<title>' + esc(title) + '</title>' + body + '</svg></div>';
@@ -111,6 +128,10 @@
   }
   function circle(cx, cy, r, cls) {
     return '<circle cx="' + n2(cx) + '" cy="' + n2(cy) + '" r="' + n2(r) + '" class="' + esc(cls) + '" />';
+  }
+  function textEnd(x, y, str, cls) {
+    return '<text x="' + n2(x) + '" y="' + n2(y) + '" class="' + esc(cls) +
+           '" text-anchor="end" dominant-baseline="central">' + esc(str) + '</text>';
   }
   function text(x, y, str, cls) {
     return '<text x="' + n2(x) + '" y="' + n2(y) + '" class="' + esc(cls) +
@@ -342,6 +363,10 @@
            '" class="gtr-tab-capo" text-anchor="start">Capo ' + fb.capo + '</text>';
     }
 
+    /* How many notes share each beat, so a chord can be told from a line. */
+    var beatCount = {};
+    notes.forEach(function (nte) { beatCount[nte.beat] = (beatCount[nte.beat] || 0) + 1; });
+
     notes.forEach(function (nte, i) {
       var shown = E.displayFret(nte, fb);
       /* A backing rectangle so the stave line does not run through the digit. */
@@ -350,7 +375,16 @@
       var inner = '<rect x="' + n2(tx - half) + '" y="' + n2(ty - TB.fontSize / 2) +
            '" width="' + n2(half * 2) + '" height="' + n2(TB.fontSize) + '" class="gtr-tab-clear" />';
       inner += text(tx, ty, shown, 'gtr-tab-fret');
-      if (nte.finger && nte.hand === 'p') inner += text(tx, TB.padY - 9, nte.finger, 'gtr-tab-pima');
+      /* Where the fingering letter goes depends on whether the beat is a chord.
+         Above the stave is right for a single line and wrong for a chord: four
+         notes at one beat put four letters at one point, and "p i m a" came out
+         as a single unreadable smudge. In a chord each letter sits beside its
+         own note instead, which is where a chord book puts it anyway. */
+      if (nte.finger && nte.hand === 'p') {
+        inner += (beatCount[nte.beat] > 1)
+          ? textEnd(tx - half - 3, ty, nte.finger, 'gtr-tab-pima')
+          : text(tx, TB.padY - 9, nte.finger, 'gtr-tab-pima');
+      }
       if (nte.tech === 'tap') inner += text(tx, TB.padY - 9, 'T', 'gtr-tab-tech');
       g += noteGroup(i, inner);
     });

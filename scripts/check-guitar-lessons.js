@@ -86,7 +86,7 @@ function expectedTempo(lesson, index) {
   ].filter(p => fs.existsSync(p));
   const browser = await chromium.launch(CANDIDATES.length ? { executablePath: CANDIDATES[0] } : {});
 
-  let cardsSeen = 0, figuresSeen = 0, demoCards = 0;
+  let cardsSeen = 0, figuresSeen = 0, demoCards = 0, figureLabels = 0;
   try {
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
@@ -143,6 +143,49 @@ function expectedTempo(lesson, index) {
         } else {
           figuresSeen++;
         }
+        /* ── Nothing on a figure sits on top of anything else ──────────────
+           Measured as real bounding boxes rather than as identical
+           coordinates. Four fingering letters at one point is the obvious
+           version and the one that shipped — a chord put p, i, m and a at the
+           same x and y and they smeared into one glyph — but two labels three
+           pixels apart overlap just as badly and would pass a coordinate
+           comparison. getBBox is what the reader actually sees.
+
+           And a figure must never be drawn LARGER than it was designed:
+           width="100%" on a small viewBox stretched a two-bar demonstration to
+           a phone's full width, about three times its natural size. Scaling
+           down is fine and wanted; scaling up is the bug. */
+        const figure = await page.evaluate(() => {
+          const boxes = [...document.querySelectorAll('.gtr-card .gtr-tab-pima')]
+            .map(e => { const b = e.getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height, t: e.textContent }; });
+          const clashes = [];
+          for (let a = 0; a < boxes.length; a++) {
+            for (let b = a + 1; b < boxes.length; b++) {
+              const A = boxes[a], B = boxes[b];
+              if (A.x < B.x + B.w && B.x < A.x + A.w && A.y < B.y + B.h && B.y < A.y + A.h) {
+                clashes.push(`${A.t}/${B.t}`);
+              }
+            }
+          }
+          const svgs = [...document.querySelectorAll('.gtr-card .gtr-figures svg')].map(sv => {
+            const vb = (sv.getAttribute('viewBox') || '').split(/\s+/);
+            return { natural: Number(vb[2]) || 0, drawn: Math.round(sv.getBoundingClientRect().width) };
+          });
+          return { labels: boxes.length, clashes, svgs };
+        });
+        if (figure.clashes.length) {
+          errors.push(`${at}: ${figure.clashes.length} fingering label(s) overlap on the tab ` +
+                      `(${figure.clashes.slice(0, 4).join(', ')}). They render as one smudged glyph.`);
+        }
+        for (const sv of figure.svgs) {
+          if (sv.natural && sv.drawn > sv.natural * 1.02) {
+            errors.push(`${at}: a figure ${sv.natural}px wide by its own viewBox is drawn at ` +
+                        `${sv.drawn}px — magnified ${(sv.drawn / sv.natural).toFixed(1)}x. ` +
+                        `Everything on it is enlarged to match.`);
+          }
+        }
+        figureLabels += figure.labels;
+
         if (seen.paras !== (card.p || []).length) {
           errors.push(`${at}: ${seen.paras} paragraph(s) rendered, ${(card.p || []).length} in the data.`);
         }
@@ -535,6 +578,7 @@ function expectedTempo(lesson, index) {
 
   notes.unshift(`${cardsSeen} cards opened across ${D.LESSONS.length} lessons; ${figuresSeen} drew a figure; ` +
                 `${demoCards} were demonstrations with no tempo control.`);
+  notes.push(`${figureLabels} fingering labels measured; none overlapping, no figure magnified.`);
 
   console.log(`${BOLD}guitar lessons${RESET}\n`);
   notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));

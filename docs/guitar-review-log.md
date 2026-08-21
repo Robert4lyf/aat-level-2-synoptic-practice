@@ -1329,3 +1329,71 @@ before any mutation result can be believed. The mutation runs now verify the
 baseline carries the changes under test before trusting a single result, and
 long checks run one per command so a timeout cannot land between a mutation and
 its restore.
+
+## Step 9d — two rendering faults on the demonstration card
+
+Reported: "multiple finger indicators and the tab is huge". Both were caused by
+the demonstration change in 9c, and neither had anything to do with the fix it
+made — they were consequences of the card's new SHAPE.
+
+### 9d.1 Four letters at one point
+
+The tab drew every picking-hand letter at `TB.padY - 9`, above the stave. That is
+right for a single line, where each note has its own beat, and wrong the moment a
+beat carries a chord: four notes at one beat put p, i, m and a at exactly the
+same x and y — measured at (37, 11) for all four — and they rendered as one
+smudged glyph.
+
+In a chord each letter now sits beside its own note, right-anchored just left of
+the digit, which is where a chord book puts it. Above the stave is kept for a
+single line, where it reads better.
+
+### 9d.2 A floor meant for long staves, applied to short ones
+
+`.gtr-tab-svg { min-width: 300px }` existed for a good reason: a long stave
+squeezed into a phone should scroll rather than shrink its digits past reading.
+The demonstration is 115 units wide, and **min-width beats max-width in CSS**, so
+it was forced out to 300 and drawn at nearly three times its size. Every digit
+and letter was enlarged to match.
+
+The first attempt added an inline `max-width` and changed nothing, because of
+that precedence. The fix is that the renderer now owns both bounds, from the
+figure's own natural width: the floor is whichever is smaller, the legible
+minimum or the figure itself. Nothing about figure width is left in the
+stylesheet — the two bounds have to be decided together and only one place knows
+the natural width.
+
+Centring came out of looking at the result: a 115px figure drawn at its own size
+and left-aligned in a 414px card reads as a mistake, and correct-but-badly-placed
+is still worth another round of feedback.
+
+### 9d.3 A gate that would have forced an invented rule
+
+Removing the width rules left `gtr-tab-svg`, `gtr-neck-svg` and
+`gtr-chordbox-svg` with no CSS rule at all, and the "every emitted class needs a
+rule" check failed. The classes cannot go — the browser checks use them to find
+figures — so the obvious response was to write three rules purely to quiet the
+gate.
+
+Which is worth refusing. The risk that rule guards is an ELEMENT taking browser
+defaults, and an element is unstyled only when none of its classes has a rule.
+These sit on `class="gtr-svg gtr-tab-svg"`, fully styled by the first. So the
+check now works per element rather than per class: every class attribute must
+contain at least one styled class, and a selector hook travelling with a styled
+class is fine. An element whose classes are all unstyled still fails, which was
+always the case worth catching.
+
+Verified by making the renderer emit an element whose only class has no rule —
+still caught.
+
+### What 9d says
+
+The pattern from 9c held: a change that is right in its own terms shifts the
+shape of what gets drawn, and the rendering assumptions that were fine for the
+old shape quietly stop holding. Both faults here were invisible to every gate
+because both gates measured what the renderer PRODUCES rather than what a
+browser DRAWS — 115 units wide is correct in the markup and wrong on the screen.
+
+The new assertions measure the drawn result: real bounding boxes for overlap
+across all 398 fingering labels, and drawn width against the figure's own
+viewBox for magnification.

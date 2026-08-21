@@ -174,17 +174,37 @@ if (deciders.length) {
       R.tab({ notes: ex.notes.map(n => Object.assign({}, n, { finger: 'i', hand: 'p', tech: 'tap' })) },
             E.makeFretboard({ capo: 3 }))
     ].join('');
+    /* PER ELEMENT, not per class. The risk this guards is an element taking
+       browser defaults — for an SVG fill, opaque black — and an element is
+       unstyled only when NONE of its classes has a rule. Some classes are
+       selector hooks that share an element with a styled one: `class="gtr-svg
+       gtr-tab-svg"` is fully styled by the first, and the second exists so the
+       checks can find that figure among others.
+
+       Checking class by class flagged those three the moment their width moved
+       inline, and the fix that suggests is inventing a rule so the gate goes
+       quiet — a rule nobody wants, written to satisfy a check. So the group is
+       the unit: every class attribute must contain at least one styled class,
+       and a hook with no rule of its own is fine as long as it travels with
+       one. An element whose classes are ALL unstyled is still a failure, which
+       is the case worth catching. */
     const emitted = new Set();
+    const bareElements = [];
     (samples.match(/class="([^"]+)"/g) || []).forEach(m => {
-      m.slice(7, -1).split(/\s+/).forEach(c => { if (/^(gtr-|is-)/.test(c)) emitted.add(c); });
+      const group = m.slice(7, -1).split(/\s+/).filter(c => /^(gtr-|is-)/.test(c));
+      group.forEach(c => emitted.add(c));
+      if (group.length && !group.some(c => styledClasses.has(c))) bareElements.push(group.join(' '));
     });
-    const unstyled = [...emitted].filter(c => !styledClasses.has(c));
-    if (unstyled.length) {
-      errors.push(`guitar-styles.css has no rule for: ${unstyled.sort().join(', ')}. ` +
-                  `Every class the renderer emits needs one — unstyled SVG takes browser defaults, ` +
-                  `which for a fill is opaque black.`);
+    if (bareElements.length) {
+      const shown = [...new Set(bareElements)].sort();
+      errors.push(`guitar-styles.css has no rule for any class on ${shown.length} element(s): ` +
+                  `${shown.join(' | ')}. An element with no styled class takes browser defaults, ` +
+                  `which for an SVG fill is opaque black.`);
     } else {
-      notes.push(`All ${emitted.size} emitted classes are styled.`);
+      const hooks = [...emitted].filter(c => !styledClasses.has(c)).sort();
+      notes.push(`All ${emitted.size} emitted classes sit on styled elements` +
+                 (hooks.length ? `; ${hooks.length} are selector hooks with no rule of their own ` +
+                                 `(${hooks.join(', ')}).` : '.'));
     }
 
     /* The same rule for the shell around the figures. This half was added after

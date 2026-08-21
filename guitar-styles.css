@@ -60,19 +60,23 @@ body[data-subject="guitar"] .gtr-fig {
 body[data-subject="guitar"] .gtr-svg {
   color: var(--gtr-ink);
   display: block;
-  max-width: 100%;
   height: auto;
+  /* Centred, because a figure is now drawn at its own size rather than
+     stretched to the container, and a short one left-aligned in a wide card
+     reads as a mistake. margin auto rather than text-align so it works whatever
+     the wrapper is doing. */
+  margin-inline: auto;
 }
 body[data-subject="guitar"] .gtr-fig.gtr-chordbox { max-width: 132px; overflow: visible; }
 body[data-subject="guitar"] .gtr-fig.gtr-neck { max-width: 100%; }
 body[data-subject="guitar"] .gtr-fig.gtr-tab  { max-width: 100%; }
 
-/* Per-element hooks on the <svg> itself. A minimum width stops a long tab
-   stave being squeezed to illegibility inside its scroll container — better to
-   scroll than to shrink the digits past reading size. */
-body[data-subject="guitar"] .gtr-chordbox-svg { min-width: 108px; }
-body[data-subject="guitar"] .gtr-neck-svg     { min-width: 340px; }
-body[data-subject="guitar"] .gtr-tab-svg      { min-width: 300px; }
+/* The minimum and maximum width of a figure are set INLINE by guitar-render.js,
+   from the figure's own natural width. They used to live here as a flat
+   min-width per kind, which forced a short figure out to a long one's floor —
+   min-width beats max-width in CSS, so a 115px demonstration was drawn at 300.
+   Both bounds have to be decided together and only the renderer knows the
+   natural width, so it owns them. Nothing about figure width belongs here. */
 
 /* ── Chord box ───────────────────────────────────────────────────────────── */
 body[data-subject="guitar"] .gtr-cb-string,
