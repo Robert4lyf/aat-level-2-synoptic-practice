@@ -343,6 +343,24 @@
     return { figures: figures, playable: playable, caption: caption };
   }
 
+  /* What to actually do with the thing on the card, and when to stop.
+     Added because the format produced cards that took eleven seconds: prose,
+     a figure, a Play button, and nothing telling the reader to stay. The
+     playing is where the minutes are supposed to go, and until this existed
+     nothing asked for any. `until` is the load-bearing half — a target you can
+     tell you have hit turns a card you skim into a card you work at. */
+  function practiceHtml(card) {
+    var pr = card && card.practice;
+    if (!pr) return '';
+    return '<div class="gtr-practice">' +
+      '<p class="gtr-practice-do">' + esc(pr.do) + '</p>' +
+      '<p class="gtr-practice-until"><span class="gtr-practice-label">You have it when</span> ' +
+        esc(pr.until) + '</p>' +
+      (pr.mins ? '<p class="gtr-practice-mins">About ' + esc(String(pr.mins)) +
+                 ' minute' + (pr.mins === 1 ? '' : 's') + '</p>' : '') +
+    '</div>';
+  }
+
   /* Say so when a card is not on the player's own guitar. Silence here is how
      someone retunes to follow a lesson that never asked them to. */
   function contextNote(card, fb) {
@@ -395,6 +413,7 @@
         }).join('') +
         '<div class="gtr-figures">' + built.figures + '</div>' +
         (built.caption ? '<p class="gtr-detail">' + esc(built.caption) + '</p>' : '') +
+        practiceHtml(card) +
         contextNote(card, fb) +
         (built.playable ? transportHtml(built.playable) : '') +
       '</div>' +

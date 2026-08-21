@@ -435,6 +435,43 @@ body[data-subject="guitar"] .gtr-cardnav .gtr-btn { flex: 0 0 auto; }
 body[data-subject="guitar"] .gtr-cardnav .gtr-play { flex: 1; }
 body[data-subject="guitar"] .gtr-cardnav .gtr-btn[disabled] { opacity: .45; cursor: default; }
 
+/* ── What to do, and when to stop ─────────────────────────────────────────
+   The practice block is the part that makes a card worth staying on, so it is
+   given weight rather than tucked under the figure as another caption. */
+body[data-subject="guitar"] .gtr-practice {
+  border-left: 3px solid var(--subj, var(--accent));
+  background: var(--subj-light, var(--bg-elevated));
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 11px 13px;
+  margin-top: 14px;
+}
+body[data-subject="guitar"] .gtr-practice-do {
+  font-size: .89rem;
+  line-height: 1.55;
+  color: var(--text);
+  font-weight: 600;
+}
+body[data-subject="guitar"] .gtr-practice-until {
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--text);
+  margin-top: 7px;
+}
+body[data-subject="guitar"] .gtr-practice-label {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--subj, var(--accent));
+  margin-right: 4px;
+}
+body[data-subject="guitar"] .gtr-practice-mins {
+  font-size: .76rem;
+  color: var(--subtext);
+  margin-top: 7px;
+}
+
 body[data-subject="guitar"] .gtr-context {
   font-size: .8rem;
   color: var(--subj, var(--accent));

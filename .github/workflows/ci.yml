@@ -63,6 +63,8 @@ jobs:
         run: npm run check:guitar-voicings
       - name: Check every syllabus criterion is taught
         run: npm run check:guitar-coverage
+      - name: Check no term is used before it is taught
+        run: npm run check:guitar-prereq
       - name: Check lesson format and voice
         run: npm run check:guitar-quality
       - name: Check handedness is applied in one place only
