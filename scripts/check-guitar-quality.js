@@ -102,6 +102,23 @@ const INSTRUMENTS = ['any', 'steel', 'nylon', 'electric'];
   MINIMISER.lastIndex = 0;
 })();
 
+/* What a card's playable material IS, whether written out or generated.
+   A generated card carries a spec instead of an exercise id, and every rule
+   below keyed on `el.exercise` skipped it silently — 15 M5 cards were invisible
+   to the repetition limit and to the playability sweep, and the checker
+   reported "55 card slots" while the module held 70 cards. A pass that comes
+   from not looking is the failure this file exists to prevent. */
+function materialKey(el) {
+  if (!el) return null;
+  if (el.exercise) return el.exercise;
+  if (el.generate) {
+    const g = el.generate;
+    return `generated:${g.scaleId}/${g.rootPc}/${g.positionKind || 'box'}` +
+           `/${g.positionIndex || 0}/${g.sequence || 'straight'}${g.descending ? '/desc' : ''}`;
+  }
+  return null;
+}
+
 const words = (s) => String(s || '').trim().split(/\s+/).filter(Boolean).length;
 const prose = (card) => (card.p || []).join(' ');
 const elementsOf = (card) => D.ELEMENT_KEYS.filter(k => card[k] !== undefined && card[k] !== null);
@@ -261,12 +278,12 @@ const MAX_USES = 2;
   for (const lesson of D.LESSONS) {
     lesson.cards.forEach((card, i) => {
       for (const k of elementsOf(card)) {
-        const el = card[k];
-        if (!el || !el.exercise) continue;
+        const key = materialKey(card[k]);
+        if (!key) continue;
         const at = `${lesson.id} card ${i + 1}`;
-        order.push({ at, ex: el.exercise });
-        if (!uses.has(el.exercise)) uses.set(el.exercise, []);
-        uses.get(el.exercise).push(at);
+        order.push({ at, ex: key });
+        if (!uses.has(key)) uses.set(key, []);
+        uses.get(key).push(at);
       }
     });
   }
@@ -291,6 +308,65 @@ const MAX_USES = 2;
                `no repeat within ${MIN_GAP} cards.`);
   }
 })();
+
+/* ── Every generated spec resolves, and its notes are playable ───────────
+   The generator is a second source of material and needs the same scrutiny as
+   the written-out one. A spec naming a scale the engine does not have, or a
+   position index past the end of a shape, produces a fault rather than notes —
+   and the player draws a fault message where the exercise should be. */
+let generatedCards = 0, generatedNotes = 0;
+for (const lesson of D.LESSONS) {
+  lesson.cards.forEach((card, i) => {
+    for (const k of elementsOf(card)) {
+      const el = card[k];
+      if (!el || !el.generate) continue;
+      const g = el.generate;
+      const at = `${lesson.id} card ${i + 1}`;
+      generatedCards++;
+
+      if (!Object.prototype.hasOwnProperty.call(E.SCALES, g.scaleId)) {
+        errors.push(`${at} generates from scale "${g.scaleId}", which the engine does not have.`);
+        continue;
+      }
+      if (g.sequence && !Object.prototype.hasOwnProperty.call(E.SEQUENCES, g.sequence)) {
+        errors.push(`${at} names sequence "${g.sequence}", which the engine does not have.`);
+        continue;
+      }
+      const kind = g.positionKind || 'box';
+      const count = E.positionCount(g.scaleId, kind);
+      if (!count) {
+        errors.push(`${at} asks for shape kind "${kind}", which yields no positions for ${g.scaleId}.`);
+        continue;
+      }
+      if ((g.positionIndex || 0) >= count) {
+        errors.push(`${at} asks for position ${(g.positionIndex || 0) + 1} of ${g.scaleId} ${kind}, ` +
+                    `which has ${count}.`);
+        continue;
+      }
+      const ex = E.generateExercise({
+        scaleId: g.scaleId, rootPc: g.rootPc, positionKind: kind,
+        positionIndex: g.positionIndex || 0, sequence: g.sequence || 'straight',
+        descending: !!g.descending
+      });
+      if (ex.fault) {
+        errors.push(`${at} generates a fault: ${ex.fault}. The card would draw an error message.`);
+        continue;
+      }
+      if (!ex.notes.length) {
+        errors.push(`${at} generates no notes.`);
+        continue;
+      }
+      generatedNotes += ex.notes.length;
+      for (const n of ex.notes) {
+        const fault = E.noteFault(n, ex.fb);
+        if (fault) errors.push(`${at} generated an unplayable note ${JSON.stringify(n)} — ${fault}`);
+      }
+    }
+  });
+}
+if (generatedCards) {
+  notes.push(`${generatedCards} cards generate their material; ${generatedNotes} notes, all playable.`);
+}
 
 /* ── Every authored exercise is reachable and sound ─────────────────────── */
 const referenced = new Set();

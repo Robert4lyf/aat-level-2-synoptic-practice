@@ -647,6 +647,205 @@
         }
       ]
     }
+,
+
+    /* ═════════════════════════════════════════════════════════════════════
+       M5 — Pentatonics and blues
+
+       The first unit whose material is GENERATED rather than written out. A
+       card names a scale, a position and a sequence, and guitar-engine.js
+       produces the notes — which is what that generator was built for in step
+       4 and what no lesson had used until here. Writing five box positions by
+       hand, in every key, would be enormous and a worse source of truth than
+       the shape itself: change the shape once and every card follows.
+
+       The engine returns no picking fingers, so the player applies strict i-m
+       alternation over a generated run. That is not decoration — P1.5 teaches
+       never repeating a finger, and a scale drill printed without letters would
+       quietly contradict it.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'm5-l1', strand: 'M', unit: 'M5', instrument: 'any',
+      title: 'One box, both directions',
+      icon: '📦',
+      criteria: ['M5.box'],
+      summary: 'The shape everyone starts with, played until it stops needing to be read.',
+      cards: [
+        {
+          h: 'Five notes, not seven',
+          p: ['A minor pentatonic drops the second and the sixth from the minor scale. What is left has ' +
+              'no semitone clashes, which is why it fits over almost anything.',
+              'Play it up from the sixth string. Two notes per string, all the way across.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'A minor pentatonic, first box' },
+                       loop: true, bpm: 66,
+                       note: 'Two per string. The alternation runs straight through the string changes.' }
+        },
+        {
+          h: 'Back down is a different skill',
+          p: ['Descending uses the same notes and a different set of habits: the picking hand keeps ' +
+              'alternating while the fretting hand releases rather than presses.',
+              'Most players know a shape upward long before they know it downward.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', descending: true, title: 'The same box, descending' },
+                       loop: true, bpm: 66,
+                       note: 'Start on the high string. Same letters, same order.' }
+        },
+        {
+          h: 'The root is not the lowest note',
+          p: ['The shape starts on A because the sixth string is where the root sits here — but the box ' +
+              'contains three more A notes, and hearing which one is home is what makes it music.',
+              'Play the shape and stop on a root each time round.'],
+          fretboard: { notes: [], rootPc: 9, title: 'A minor pentatonic, first box' },
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'pedal', title: 'Returning to the root' },
+                       loop: true, bpm: 60,
+                       note: 'Every other note is a root. Hear it pull.' }
+        },
+        {
+          h: 'Move it without relearning it',
+          p: ['The shape has no open strings, so it slides. Put its lowest note on C at the eighth fret ' +
+              'and the same fingering gives C minor pentatonic.',
+              'That is the whole advantage of a movable shape, and the reason to learn this one properly.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 3, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'C minor pentatonic, same shape' },
+                       loop: true, bpm: 66,
+                       note: 'Identical fingering, three frets higher.' }
+        },
+        {
+          h: 'In threes',
+          p: ['Running the shape in groups of three breaks the up-and-down and makes the notes sound like ' +
+              'a line rather than a scale.',
+              'The alternation still never repeats a finger. That is what keeps it playable at speed.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'in3s', title: 'The box in threes' },
+                       loop: true, bpm: 54,
+                       note: 'Slower than it looks. The grouping is the difficulty, not the notes.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm5-l2', strand: 'M', unit: 'M5', instrument: 'any',
+      title: 'Joining two positions',
+      icon: '🔗',
+      criteria: ['M5.positions'],
+      summary: 'The neck is one shape repeated, and the joins are where playing stops being boxed in.',
+      cards: [
+        {
+          h: 'The next box up',
+          p: ['The second position starts where the first ends. Its lowest note is the one the first box ' +
+              'finished on, which is why they overlap rather than sit apart.',
+              'Play it on its own first.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 1,
+                                   sequence: 'straight', title: 'A minor pentatonic, second box' },
+                       loop: true, bpm: 66,
+                       note: 'Two frets higher than the first box, and a different shape.' }
+        },
+        {
+          h: 'And the one below',
+          p: ['Going the other way, the fifth position sits under the first. Five boxes cover the neck and ' +
+              'then repeat at the twelfth fret.',
+              'Learn the neighbours before the far ones — those are the joins you actually use.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 4,
+                                   sequence: 'straight', title: 'The box below' },
+                       loop: true, bpm: 66,
+                       note: 'Lower on the neck, same five notes.' }
+        },
+        {
+          h: 'One string at a time',
+          p: ['A different way to see it: take a single string and play every scale note on it, right up ' +
+              'the neck. The boxes are slices across that.',
+              'This is the view that stops the neck looking like five unrelated diagrams.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'string', positionIndex: 2,
+                                   sequence: 'straight', title: 'The scale along one string' },
+                       loop: true, bpm: 60,
+                       note: 'One string, the whole neck. Shift with the fretting hand.' }
+        },
+        {
+          h: 'Crossing the join',
+          p: ['A line that starts in one box and ends in the next needs the shift to happen on a note you ' +
+              'were going to play anyway, not as an extra move.',
+              'Play the second box in threes and feel where the hand wants to move.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 1,
+                                   sequence: 'in3s', title: 'Second box, in threes' },
+                       loop: true, bpm: 54,
+                       note: 'The grouping pushes the hand toward the edge of the shape.' }
+        },
+        {
+          h: 'In fours, higher up',
+          p: ['The third position sits around the ninth fret, where the frets are closer and the same ' +
+              'stretch is easier.',
+              'Play it in fours. Higher up the neck, most players find speed comes sooner.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 2,
+                                   sequence: 'in4s', title: 'Third box, in fours' },
+                       loop: true, bpm: 52,
+                       note: 'Narrower frets. Keep the fingers close to the board.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm5-l3', strand: 'M', unit: 'M5', instrument: 'any',
+      title: 'The blue note',
+      icon: '🫐',
+      criteria: ['M5.blue'],
+      summary: 'One extra note between the fourth and the fifth, and what it does to everything around it.',
+      cards: [
+        {
+          h: 'Where it goes',
+          p: ['The blues scale is the minor pentatonic with a flattened fifth added — one note, sitting ' +
+              'between the fourth and the fifth.',
+              'Play it and hear how different the same shape becomes.'],
+          playalong: { generate: { scaleId: 'blues', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'A blues scale, first box' },
+                       loop: true, bpm: 60,
+                       note: 'The added note is the one that sounds like it wants to move.' }
+        },
+        {
+          h: 'It is a passing note',
+          p: ['The flattened fifth is unstable by design. Landing on it and staying there sounds wrong, ' +
+              'which is why it works best going through rather than stopping.',
+              'Play the shape and let that note pass each time.'],
+          playalong: { generate: { scaleId: 'blues', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', descending: true, title: 'Passing through, descending' },
+                       loop: true, bpm: 60,
+                       note: 'Coming down, it falls into the fourth. That is where it wants to go.' }
+        },
+        {
+          h: 'One note changes the genre',
+          p: ['The same box without it is a rock or folk sound; with it the line reads as blues before ' +
+              'anything else has happened.',
+              'Play the pentatonic and the blues scale back to back and hear where the difference sits.'],
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'Without the blue note' },
+                       loop: true, bpm: 60,
+                       note: 'Then go back a card and play the blues scale. One note apart.' }
+        },
+        {
+          h: 'In a broken pattern',
+          p: ['Straight up and down hides what a note does. A broken pattern keeps returning to it from ' +
+              'different sides, which is how you learn its character.',
+              'Slowly — the pattern is harder than the notes.'],
+          playalong: { generate: { scaleId: 'blues', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'broken', title: 'Blues scale, broken' },
+                       loop: true, bpm: 50,
+                       note: 'Listen for the flattened fifth each time it comes round.' }
+        },
+        {
+          h: 'Somewhere else on the neck',
+          p: ['The blue note exists in every position, not only the first. Finding it in an unfamiliar ' +
+              'shape is the test of whether you know what it is rather than where it was.',
+              'Play the second box and locate it by ear.'],
+          playalong: { generate: { scaleId: 'blues', rootPc: 9, positionKind: 'box', positionIndex: 1,
+                                   sequence: 'straight', title: 'Blues scale, second box' },
+                       loop: true, bpm: 58,
+                       note: 'Same note, different place. Find it before you look.' }
+        }
+      ]
+    }
+
   ];
 
   function lesson(id) {
