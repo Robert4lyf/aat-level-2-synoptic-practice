@@ -618,6 +618,53 @@
     });
   }
 
+  var M1 = {
+    'm1-semitone': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'One fret at a time',
+      tags: ['M1', 'intervals'],
+      notes: walk(3, [0, 1, 2, 3, 4, 5, 6, 7], 0, 1)
+    },
+    'm1-tone': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Two frets at a time',
+      tags: ['M1', 'intervals'],
+      notes: walk(3, [0, 2, 4, 6, 8, 10, 12, 14], 0, 1)
+    },
+    'm1-compare': {
+      kind: 'authored', curated: true, demo: true, beatSeconds: 1.2, beatsPerBar: 2,
+      title: 'A semitone, then a tone',
+      tags: ['M1', 'intervals'],
+      notes: [
+        { string: 3, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 1, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 3, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 2, beat: 3, dur: 1, hand: 'p', finger: 'm' }
+      ]
+    },
+    'm1-eandf': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'Where the gaps close up',
+      tags: ['M1', 'intervals', 'naming'],
+      notes: [
+        { string: 1, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 1, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 1, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'i' },
+        { string: 1, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'i' }
+      ]
+    },
+    'm1-count-up': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'Counting the steps',
+      tags: ['M1', 'intervals'],
+      notes: walk(5, [0, 2, 4, 5, 7, 9, 11, 12], 0, 1, 'p')
+    }
+  };
+  Object.keys(M1).forEach(function (k) { EXERCISES[k] = M1[k]; });
+
   var M3 = {
     /* M3.1 — naming the bass strings */
     'm3-dots-six': {

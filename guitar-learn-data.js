@@ -48,6 +48,9 @@
       cards: [
         {
           h: 'Let the guitar sit still',
+          practice: { do: 'Play the basses through four times, lifting the picking hand clear between each.',
+                      until: 'the guitar has not shifted once, and your shoulders are where they started.',
+                      mins: 3 },
           p: ['The picking hand should be free to move. If it is also stopping the guitar sliding, ' +
               'it has two jobs and will do the second one badly.',
               'Play the open basses below. The guitar should stay where it is when the hand lifts off.'],
@@ -56,6 +59,9 @@
         },
         {
           h: 'Height before angle',
+          practice: { do: 'Set the height, play the four notes, adjust, repeat. Change one thing at a time.',
+                      until: 'both wrists look straight from the side and the first fret needs no reaching.',
+                      mins: 4 },
           p: ['Raise the neck until the fretting hand reaches the first fret without the wrist folding ' +
               'forward. A footstool or a cushion under the thigh does this; so does a strap, sitting down.',
               'Then check the picking hand falls onto the strings around the soundhole with a straight wrist.'],
@@ -64,6 +70,9 @@
         },
         {
           h: 'What a bad position feels like',
+          practice: { do: 'Play it through watching for the three faults: rising shoulder, squeezing thumb, folding wrist.',
+                      until: 'you can play it twice with none of the three appearing.',
+                      mins: 4 },
           p: ['Discomfort arrives late. The reliable signals are earlier: a rising shoulder, a thumb ' +
               'squeezing the neck, a wrist that has to fold to reach.',
               'Play this and watch for those three. Stop at the first one rather than at the ache.'],
@@ -72,6 +81,9 @@
         },
         {
           h: 'Where the picking hand floats',
+          practice: { do: 'Play with the little finger deliberately off the top. It will want to land.',
+                      until: 'the hand stays over the strings for a whole bar with nothing resting on the guitar.',
+                      mins: 4 },
           p: ['The forearm rests on the edge of the body; the hand hangs from it over the strings, ' +
               'near the back of the soundhole. Nothing else touches the guitar.',
               'Anchoring the little finger on the top feels stable and pins the hand to one spot. ' +
@@ -81,6 +93,9 @@
         },
         {
           h: 'Check it against a mirror',
+          practice: { do: 'Play a bar, look at each wrist, adjust, play it again. Ten rounds.',
+                      until: 'you stop finding anything to adjust.',
+                      mins: 5 },
           p: ['Both wrists should look straight from the side. A folded picking wrist is the most ' +
               'common fault at this stage and the one that carries an injury risk.',
               'Play a bar, look, adjust, play it again. The position is learned by repetition, not by ' +
@@ -103,6 +118,9 @@
       cards: [
         {
           h: 'The four names',
+          practice: { do: 'Say the letter aloud as each note sounds. Slowly enough that the mouth keeps up.',
+                      until: 'you can name the digit before it plays rather than after.',
+                      mins: 3 },
           p: ['p is the thumb, i the index, m the middle, a the ring. The names are Spanish and they ' +
               'are what every piece of fingerstyle notation uses, including the tab in this course.',
               'The little finger has no part to play here.'],
@@ -111,6 +129,9 @@
         },
         {
           h: 'Home strings',
+          practice: { do: 'Play it with your eyes shut. The fingers should find their strings unaimed.',
+                      until: 'eight bars land clean without looking.',
+                      mins: 5 },
           p: ['p covers the three basses. i, m and a sit on the third, second and first. That is the ' +
               'default, not a rule — but starting from it means the hand rarely has to travel.',
               'Play the figure below until the fingers land without being aimed.'],
@@ -119,6 +140,9 @@
         },
         {
           h: 'Cut the nails back',
+          practice: { do: 'Cut them, then play the string repeatedly and listen at the moment of attack.',
+                      until: 'no note starts with a click, only with tone.',
+                      mins: 3 },
           p: ['This course plays with flesh. For that, the nail must not reach the string before the ' +
               'fingertip does — a nail past the flesh clicks and thins the tone.',
               'Look along the finger from the palm side. No white should show past the tip. Cut them ' +
@@ -128,6 +152,9 @@
         },
         {
           h: 'a is the weak one',
+          practice: { do: 'Play it through and listen only to the a notes, ignoring everything else.',
+                      until: 'the a notes are as loud as the i and m notes around them.',
+                      mins: 5 },
           p: ['The ring finger shares tendons with the middle finger and starts with less independence ' +
               'than the others. That is anatomy, not a fault, and it evens out with use.',
               'Give it its own turn rather than avoiding it, which is what happens by default.'],
@@ -136,6 +163,9 @@
         },
         {
           h: 'The thumb works alone',
+          practice: { do: 'Rest i, m and a on their strings and leave them there while p works.',
+                      until: 'the thumb plays eight bars with the fingers touching but silent.',
+                      mins: 4 },
           p: ['p moves from its own joint at the wrist and does not share a tendon with the fingers. ' +
               'It can hold a steady bass while the fingers do something unrelated above it.',
               'That independence is what the rest of this unit builds on.'],
@@ -157,6 +187,9 @@
       cards: [
         {
           h: 'Move from the knuckle',
+          practice: { do: 'Watch the knuckle where the finger meets the hand. The outer joints hold their shape.',
+                      until: 'the movement is visibly coming from that joint and nowhere else.',
+                      mins: 5 },
           p: ['The finger closes from the joint where it meets the hand. The two joints further out ' +
               'hold their shape rather than curling.',
               'Play the open first string with i, four times, then m. Watch the knuckle, not the tip.'],
@@ -165,6 +198,9 @@
         },
         {
           h: 'Clear the string above',
+          practice: { do: 'Play the three strings and listen for whether the earlier notes are still ringing.',
+                      until: 'all three notes are still sounding at the end of the bar.',
+                      mins: 4 },
           p: ['A free stroke finishes in the air. The fingertip passes the next string without touching ' +
               'it, which is what keeps the note underneath ringing.',
               'If the next string buzzes, the finger is travelling across the strings rather than through ' +
@@ -174,6 +210,9 @@
         },
         {
           h: 'Prepare, then play',
+          practice: { do: 'Land the fingertip on the string a full beat before you sound it.',
+                      until: 'every note starts exactly when you decide, not a moment after.',
+                      mins: 5 },
           p: ['Rest the fingertip on the string before sounding it. That contact is what makes the note ' +
               'start when you decide rather than a moment later.',
               'Take the tempo down until the preparation happens on purpose. Speed removes it first.'],
@@ -182,6 +221,9 @@
         },
         {
           h: 'Follow through, then release',
+          practice: { do: 'Watch the finger that has already played rather than the one about to.',
+                      until: 'each finger opens again before the next one moves.',
+                      mins: 4 },
           p: ['The finger finishes near the palm and returns to the string. It does not clench, and it ' +
               'does not stay curled waiting.',
               'A hand that tightens between notes runs out after a page. Let each finger open again ' +
@@ -191,6 +233,9 @@
         },
         {
           h: 'Move along the string for tone',
+          practice: { do: 'Play the figure three times: near the bridge, over the hole, near the neck.',
+                      until: 'you can produce all three tones on demand and say which you want.',
+                      mins: 5 },
           p: ['Nearer the bridge the sound is thin and hard; nearer the neck it is round and soft. The ' +
               'hand moves a few centimetres to change it.',
               'Play the same figure in three places along the string and pick the one you want.'],
@@ -212,6 +257,9 @@
       cards: [
         {
           h: 'Come to rest',
+          practice: { do: 'Play through the string and let the finger stop against the next one.',
+                      until: 'the finger is leaning on the next string at the end of every stroke.',
+                      mins: 4 },
           p: ['Play through the string and let the fingertip stop against the next one. The finger ends ' +
               'the stroke leaning on that string rather than in the air.',
               'The tone is fuller because the finger has driven the string across rather than lifted it.'],
@@ -220,6 +268,9 @@
         },
         {
           h: 'What it costs',
+          practice: { do: 'Play it twice, once with rest strokes and once free. Listen to the difference.',
+                      until: 'you can hear that the rest stroke is louder and that it stops the next string.',
+                      mins: 4 },
           p: ['The finger comes to rest on the next string, so that string stops ringing. In a chord ' +
               'that matters; in a single line it does not.',
               'That is the whole decision: rest stroke for a line that needs to carry, free stroke ' +
@@ -229,6 +280,9 @@
         },
         {
           h: 'Flesh needs the help',
+          practice: { do: 'Melody notes with m as a rest stroke, everything else free, in the same phrase.',
+                      until: 'the melody sits clearly above the rest without playing anything else quieter.',
+                      mins: 6 },
           p: ['A nail gives brightness that carries a melody on its own. Flesh does not, so the rest ' +
               'stroke does more work in this course than in one that assumes nails.',
               'Where a melody has to sit above an accompaniment, that is where this stroke goes.'],
@@ -237,6 +291,9 @@
         },
         {
           h: 'Same joint, more of it',
+          practice: { do: 'Slowly enough to feel exactly where the finger stops. Do not aim for volume.',
+                      until: 'the finger arrives at the next string without the tip digging under.',
+                      mins: 4 },
           p: ['The rest stroke is not a different movement. It starts at the same knuckle and travels ' +
               'further, ending against the next string rather than above it.',
               'If the fingertip is digging under the string to reach, the angle is wrong rather than ' +
@@ -246,6 +303,9 @@
         },
         {
           h: 'Alternate it too',
+          practice: { do: 'Every note a rest stroke, i and m strictly alternating through the line.',
+                      until: 'the line runs twice with no repeated finger and no note noticeably weaker.',
+                      mins: 6 },
           p: ['Rest strokes alternate the same way free strokes do. A melody played with one repeated ' +
               'finger hits the same ceiling.',
               'Take the line below with i and m alternating, every note a rest stroke.'],
@@ -267,6 +327,9 @@
       cards: [
         {
           h: 'i, m, i, m',
+          practice: { do: 'Say the letters aloud while playing. The mouth catches a repeat before the ear does.',
+                      until: 'eight bars pass with no repeated finger and no gap where you had to think.',
+                      mins: 5 },
           p: ['A finger that has played needs to return before it can play again. Alternating means the ' +
               'other one is already there.',
               'Repeat a finger and the tempo is capped by how fast that single finger can reset. ' +
@@ -276,6 +339,9 @@
         },
         {
           h: 'Across a string change',
+          practice: { do: 'Watch the beat where the string changes. That is where the pattern wants to restart.',
+                      until: 'the alternation crosses the string change without resetting to i.',
+                      mins: 5 },
           p: ['Alternation survives the move to a new string. The temptation is to restart with i on ' +
               'every string, which is where the pattern breaks.',
               'Play the figure and say the letters aloud. The mouth catches a repeat before the ear does.'],
@@ -284,6 +350,9 @@
         },
         {
           h: 'Through a real line',
+          practice: { do: 'Both hands working. Halve the tempo the moment a finger repeats.',
+                      until: 'you can play it four times through at a tempo where the pattern never breaks.',
+                      mins: 6 },
           p: ['Here the fretting hand is moving too. Keep the alternation strict and let the other hand ' +
               'work around it.',
               'Slow enough that the pattern holds. A tempo where it breaks is teaching the break.'],
@@ -292,6 +361,9 @@
         },
         {
           h: 'm and a alternate as well',
+          practice: { do: 'Read every i as m and every m as a. Same rhythm, weaker pair.',
+                      until: 'the m-a version sounds as even as the i-m version did.',
+                      mins: 5 },
           p: ['i and m is the pair that comes up most, but any two neighbours work. m and a is worth ' +
               'building early because the ring finger is weaker and gets skipped otherwise.',
               'Run the same figure with m and a in place of i and m.'],
@@ -300,6 +372,9 @@
         },
         {
           h: 'The thumb does not interrupt',
+          practice: { do: 'Listen for a gap on the thumb notes rather than watching for one.',
+                      until: 'the fingers keep their pulse straight through every bass note.',
+                      mins: 6 },
           p: ['Adding a bass should leave the alternation untouched. What usually happens instead is a ' +
               'small pause on every thumb note while the fingers wait.',
               'Play this and listen for the gap rather than watching for it.'],
@@ -321,6 +396,9 @@
       cards: [
         {
           h: 'p moves in front',
+          practice: { do: 'Basses alone first. The thumb moves away from the palm, in front of the fingers.',
+                      until: 'the thumb and fingers never touch each other while playing.',
+                      mins: 3 },
           p: ['The thumb plays on the far side of the fingers, moving away from the palm. Cross it ' +
               'behind them and the two collide on every other note.',
               'Play the basses alone first, so the movement is set before anything else is added.'],
@@ -329,6 +407,9 @@
         },
         {
           h: 'Add the fingers between',
+          practice: { do: 'Bass on the beat, finger between. Slow enough that both parts are deliberate.',
+                      until: 'two bars pass with the bass even and the offbeats landing where they should.',
+                      mins: 6 },
           p: ['The thumb lands on the beat; a finger falls between the beats. Two things at once is the ' +
               'point of the unit, and it arrives here.',
               'Start slow enough that both parts are deliberate. The bass is what holds when the rest wobbles.'],
@@ -337,6 +418,9 @@
         },
         {
           h: 'Let the bass keep going',
+          practice: { do: 'Play the bass alone, keep it running, then add the fingers without altering it.',
+                      until: 'the bass sounds identical with the fingers in as it did without them.',
+                      mins: 6 },
           p: ['If the thumb pauses when a finger plays, the two parts have merged into one. The test is ' +
               'whether the bass stays even while the fingers change.',
               'Play the bass alone, keep it going, and add the fingers without letting it alter.'],
@@ -345,6 +429,9 @@
         },
         {
           h: 'A rest stroke on the bass',
+          practice: { do: 'Each thumb stroke coming to rest against the string below it.',
+                      until: 'the bass has weight and does not ring on into the next note.',
+                      mins: 4 },
           p: ['The thumb can land on the next string too, which gives the bass weight and stops it ' +
               'ringing into the following harmony.',
               'Use it where the bass line is the tune. Use a free stroke where the basses need to ' +
@@ -354,6 +441,9 @@
         },
         {
           h: 'Count out loud',
+          practice: { do: 'Say one and two and while playing. The part that drifts is the one you are not counting.',
+                      until: 'you can count aloud through two bars without either part slipping.',
+                      mins: 6 },
           p: ['Two parts at different speeds is where counting stops being optional. Say the beat while ' +
               'playing; the part that drifts is the one not being counted.',
               'If speaking and playing at once is too much, count the bass alone and add the fingers after.'],
@@ -375,6 +465,9 @@
       cards: [
         {
           h: 'Close behind the fret',
+          practice: { do: 'Move each finger as close behind its fret as it will sit without touching it.',
+                      until: 'every note sounds clean with noticeably less effort than before.',
+                      mins: 4 },
           p: ['The note is made by the fret, not the finger. Pressing halfway between two frets needs ' +
               'far more force and still buzzes.',
               'Move each finger as close behind its fret as it will sit without touching it.'],
@@ -383,6 +476,9 @@
         },
         {
           h: 'Find the least pressure',
+          practice: { do: 'Press until clean, back off until it buzzes, add the smallest amount back.',
+                      until: 'you can find the buzz point on every note and sit just above it.',
+                      mins: 6 },
           p: ['Press until the note sounds cleanly, then back off until it buzzes, then add the smallest ' +
               'amount back. That is the pressure to use.',
               'Most players use several times what is needed, which is where fatigue and slow changes ' +
@@ -392,6 +488,9 @@
         },
         {
           h: 'The thumb behind, not over',
+          practice: { do: 'Thumb behind the neck, roughly opposite the second finger, while the strings change.',
+                      until: 'the thumb has not moved at all across eight bars.',
+                      mins: 5 },
           p: ['The fretting thumb sits behind the neck, roughly opposite the second finger. It balances ' +
               'the fingers rather than squeezing against them.',
               'A thumb hooked over the top shortens the reach of every finger. That grip has uses; none ' +
@@ -401,6 +500,9 @@
         },
         {
           h: 'Keep the fingers near the board',
+          practice: { do: 'Watch the fingers doing nothing rather than the one playing. Those are the ones that fly.',
+                      until: 'no finger lifts more than a centimetre from the strings.',
+                      mins: 5 },
           p: ['A finger that lifts an inch has an inch to travel back. Held close, it arrives before ' +
               'the beat needs it.',
               'Play the figure below and watch the fingers doing nothing. Those are the ones that fly.'],
@@ -409,6 +511,9 @@
         },
         {
           h: 'Arrive together',
+          practice: { do: 'Slow the tempo until the fretting hand is always waiting for the picking hand.',
+                      until: 'no note buzzes at the start, at a tempo you can hold for a page.',
+                      mins: 6 },
           p: ['A note sounds cleanly when the fretting finger is down before the string is picked. Late ' +
               'by a fraction and it buzzes; early is free.',
               'Slow the tempo until the fretting hand is always waiting for the picking hand.'],
@@ -417,6 +522,237 @@
         }
       ]
     },
+    /* ═════════════════════════════════════════════════════════════════════
+       M1 — Intervals and degrees
+
+       Written after the fact, which is worth recording. M5 shipped saying "a
+       minor pentatonic drops the second and the sixth from the minor scale"
+       when nothing in the course had ever said what a scale degree was, or a
+       tone, or a semitone. Phase 1 chose M3, M5, M7 and M8 and left out the
+       unit they all stand on.
+
+       Everything downstream assumes this vocabulary. It comes second, after the
+       hands know what to do and before anything starts counting.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'm1-l1', strand: 'M', unit: 'M1', instrument: 'any',
+      title: 'Tones and semitones',
+      icon: '📏',
+      criteria: ['M1.tone'],
+      summary: 'The two distances everything else is built from, and where they sit on a guitar.',
+      cards: [
+        {
+          h: 'One fret is a semitone',
+          p: ['A semitone is the smallest step in Western music, and on a guitar it is exactly one ' +
+              'fret. Move up a fret and you have moved a semitone; move up twelve and you are back ' +
+              'where you started, an octave higher.',
+              'That is the whole reason a guitar is easier to reason about than most instruments: the ' +
+              'distance is the same everywhere, on every string.'],
+          practice: { do: 'Play up one fret at a time and listen to how small each step is.',
+                      until: 'you can hear that every step is the same size.',
+                      mins: 3 },
+          tab: { exercise: 'm1-semitone', caption: 'Eight semitones, one fret each.' }
+        },
+        {
+          h: 'Two frets is a tone',
+          p: ['A tone is two semitones — two frets. Almost everything in the next few units is ' +
+              'described as a pattern of tones and semitones, so these two words do a lot of work.',
+              'Some books call them a half step and a whole step. Same things, different names.'],
+          practice: { do: 'Play up in twos and compare the sound with the run you just played.',
+                      until: 'you can tell a tone from a semitone by ear, without looking at your hand.',
+                      mins: 4 },
+          tab: { exercise: 'm1-tone', caption: 'Eight tones, two frets each.' }
+        },
+        {
+          h: 'Hear the difference',
+          p: ['Put them side by side. The semitone sounds tight and unresolved; the tone sounds open. ' +
+              'Naming the interval matters less than hearing which of the two you heard.'],
+          practice: { do: 'Play the pair, then look away and have the difference in your head before you play it again.',
+                      until: 'you can say which one you just heard without watching your hand.',
+                      mins: 4 },
+          playalong: { exercise: 'm1-compare', loop: true,
+                       note: 'A semitone, then a tone, from the same starting note.' }
+        },
+        {
+          h: 'The two places the pattern closes up',
+          p: ['The musical alphabet runs A to G and then starts again, and every pair of letters is a ' +
+              'tone apart except two: E to F, and B to C. Those two are a semitone.',
+              'This is why there is no black key between them on a piano, and why the fret numbers on ' +
+              'the last lesson looked uneven. Nothing is missing there. Those two gaps are the smaller kind.'],
+          practice: { do: 'Find E to F and B to C on the neck and play each as one fret.',
+                      until: 'you can name the two semitone pairs without thinking, and find both.',
+                      mins: 5 },
+          tab: { exercise: 'm1-eandf', caption: 'E to F, then B to C. Both one fret.' }
+        },
+        {
+          h: 'Counting a distance',
+          p: ['Any interval can be counted in semitones. From any starting note to the note seven ' +
+              'frets above it is the same distance, wherever on the neck you begin.',
+              'Counting frets is slow and completely reliable, which makes it the right tool while the ' +
+              'shapes are still being learned.'],
+          practice: { do: 'Count the frets between the first note and each of the others as you play.',
+                      until: 'you can say how many semitones any two notes on one string are apart.',
+                      mins: 5 },
+          tab: { exercise: 'm1-count-up', caption: 'A major scale on one string. Count the gaps.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm1-l2', strand: 'M', unit: 'M1', instrument: 'any',
+      title: 'The major scale, and its numbers',
+      icon: '🔢',
+      criteria: ['M1.major', 'M1.degrees'],
+      summary: 'One pattern of tones and semitones, and the numbering every other scale is described against.',
+      cards: [
+        {
+          h: 'Tone tone semitone, tone tone tone semitone',
+          p: ['That sequence, starting from any note, gives a major scale. Seven notes, and the eighth ' +
+              'is the octave.',
+              'It is worth memorising as a rhythm rather than a list. Say it aloud a few times and it ' +
+              'sticks in a way that reading it does not.'],
+          practice: { do: 'Play the pattern on one string, counting the frets: two, two, one, two, two, two, one.',
+                      until: 'you can play a major scale on one string from any starting fret.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'major', rootPc: 0, positionKind: 'string', positionIndex: 4,
+                                   sequence: 'straight', title: 'A major scale along one string' },
+                       loop: true, bpm: 56,
+                       note: 'One string, so the pattern of gaps is visible as fret distances.' }
+        },
+        {
+          h: 'The notes get numbers',
+          p: ['The first note is the first — the root. The others are the second, third, fourth, fifth, ' +
+              'sixth and seventh, in order up the scale.',
+              'That numbering is the vocabulary the rest of this course runs on. "The flattened fifth" ' +
+              'means the fifth note of the scale, lowered a semitone.'],
+          practice: { do: 'Play the scale up and down saying the numbers aloud rather than the letters.',
+                      until: 'you can play the fourth or the sixth of a scale on request, without counting from the root.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'major', rootPc: 0, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'C major, numbered' },
+                       loop: true, bpm: 60,
+                       note: 'One two three four five six seven, then the octave.' }
+        },
+        {
+          h: 'The numbers travel',
+          p: ['Move the scale to another key and the numbers move with it. The fifth of G is D; the ' +
+              'fifth of C is G. The number describes a position in the scale, not a letter.',
+              'That is why players talk in numbers: it says the same thing in every key.'],
+          practice: { do: 'Play the same shape from a different root and name the new fifth and sixth.',
+                      until: 'you can give the fifth of any major scale without playing it.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'major', rootPc: 7, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'G major, same numbers' },
+                       loop: true, bpm: 60,
+                       note: 'Different letters, identical numbering.' }
+        },
+        {
+          h: 'In thirds',
+          p: ['Playing a scale in thirds means going up two scale steps at a time — first to third, ' +
+              'second to fourth, and so on. It is the first pattern that makes the numbering useful ' +
+              'rather than theoretical.'],
+          practice: { do: 'Play it slowly, naming the pair of numbers for each jump.',
+                      until: 'you can run the whole scale in thirds without losing your place.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'major', rootPc: 0, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'thirds', title: 'C major in thirds' },
+                       loop: true, bpm: 52,
+                       note: 'One-three, two-four, three-five, and onward.' }
+        },
+        {
+          h: 'Why seven and not twelve',
+          p: ['There are twelve semitones in an octave and a major scale uses seven of them. The five ' +
+              'it leaves out are what make it sound like something rather than like everything.',
+              'Every scale in this course is a different choice about which notes to leave out.'],
+          practice: { do: 'Play the scale, then play every fret in the same span, and listen to the difference.',
+                      until: 'you can hear that the scale has a character and the chromatic run does not.',
+                      mins: 5 },
+          playalong: { generate: { scaleId: 'major', rootPc: 0, positionKind: 'box', positionIndex: 1,
+                                   sequence: 'straight', title: 'C major, second shape' },
+                       loop: true, bpm: 60,
+                       note: 'Seven of the twelve. The other five are the ones you are stepping over.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm1-l3', strand: 'M', unit: 'M1', instrument: 'any',
+      title: 'The minor scale',
+      icon: '🌘',
+      criteria: ['M1.minor'],
+      summary: 'Three notes lowered, and a completely different mood from the same seven letters.',
+      cards: [
+        {
+          h: 'Three degrees drop',
+          p: ['A natural minor scale is a major scale with the third, sixth and seventh lowered by a ' +
+              'semitone. Same seven positions, three of them a fret lower.',
+              'Describing it that way is the point of the numbering. "Flat three, flat six, flat ' +
+              'seven" says the whole thing in four words.'],
+          practice: { do: 'Play the major scale, then the minor from the same root, and listen for the three that moved.',
+                      until: 'you can hear which degrees changed rather than just hearing it as sadder.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'natMinor', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'A natural minor' },
+                       loop: true, bpm: 58,
+                       note: 'Flat third, flat sixth, flat seventh. Everything else as it was.' }
+        },
+        {
+          h: 'The third is the one that decides',
+          p: ['Of the three, the third does most of the work. Lower it alone and the scale already ' +
+              'sounds minor; the sixth and seventh colour it further.',
+              'This is why the third is the note to find first in any shape.'],
+          practice: { do: 'Play the scale and stop on the third each time round. Then do it in major.',
+                      until: 'you can find the third of a shape immediately, and hear which kind it is.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'natMinor', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'pedal', title: 'Returning to the third' },
+                       loop: true, bpm: 54,
+                       note: 'The pattern keeps coming back. Listen to where it lands.' }
+        },
+        {
+          h: 'The same notes, a different home',
+          p: ['A minor and C major contain exactly the same seven notes. What differs is which one ' +
+              'you treat as home — and the ear follows that choice completely.',
+              'A scale is a set of notes plus a decision about where they resolve.'],
+          practice: { do: 'Play the shape ending on A, then the same notes ending on C. Listen to both.',
+                      until: 'you can hear the same notes point somewhere different depending on where you stop.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'major', rootPc: 0, positionKind: 'box', positionIndex: 2,
+                                   sequence: 'straight', title: 'C major, third shape' },
+                       loop: true, bpm: 58,
+                       note: 'Same seven notes as A minor. Only the resting place is different.' }
+        },
+        {
+          h: 'Which notes the pentatonic keeps',
+          p: ['A minor pentatonic is this scale with the second and the sixth removed — five notes ' +
+              'left. Those two are the ones most likely to clash against a chord underneath.',
+              'That sentence is what the pentatonic unit assumes you already have.'],
+          practice: { do: 'Play the minor scale, then the pentatonic, and find the two notes missing.',
+                      until: 'you can name the two degrees the pentatonic leaves out.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'minPent', rootPc: 9, positionKind: 'box', positionIndex: 3,
+                                   sequence: 'straight', title: 'A minor pentatonic, fourth shape' },
+                       loop: true, bpm: 60,
+                       note: 'Five notes. The second and the sixth are gone.' }
+        },
+        {
+          h: 'Say it in numbers',
+          p: ['By now every scale in the course can be described the same way: a list of degrees, some ' +
+              'of them flattened. Major is one to seven. Natural minor is flat three, flat six, flat ' +
+              'seven. Minor pentatonic drops the second and sixth as well.',
+              'Learning the shapes is the easy half. This is the half that transfers.'],
+          practice: { do: 'Say each scale as a list of numbers before you play it, then play it.',
+                      until: 'you can describe any scale you know in degrees rather than in shapes.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'natMinor', rootPc: 9, positionKind: 'box', positionIndex: 4,
+                                   sequence: 'in3s', title: 'A natural minor, in threes' },
+                       loop: true, bpm: 52,
+                       note: 'A shape you have not seen. Name the degrees as they pass.' }
+        }
+      ]
+    },
+
     /* ═════════════════════════════════════════════════════════════════════
        M3 — The fretboard
 
@@ -443,6 +779,9 @@
       cards: [
         {
           h: 'Start from the marks',
+          practice: { do: 'Play the marked frets on the sixth string, saying the fret number aloud each time.',
+                      until: 'you can find the seventh and ninth without counting up from the third.',
+                      mins: 4 },
           p: ['The dots are at frets 3, 5, 7 and 9, with a double mark at 12. They are the same on every ' +
               'guitar, and they are what stops you counting.',
               'Play them on the sixth string and say the fret number aloud as each one sounds.'],
@@ -451,6 +790,9 @@
         },
         {
           h: 'The sixth string by name',
+          practice: { do: 'Say the letter, then play it. Up and back down, several times.',
+                      until: 'you can name every marked fret on the sixth string without working it out.',
+                      mins: 6 },
           p: ['Open is E. Then F at the first fret, G at the third, A at the fifth, B at the seventh, ' +
               'C at the eighth, D at the tenth, and E again at the twelfth.',
               'Say each letter as it sounds. The gaps between them are what the next lesson is about.'],
@@ -459,6 +801,9 @@
         },
         {
           h: 'The fifth string, same job',
+          practice: { do: 'Same routine on the fifth string. Say the letter before the note sounds.',
+                      until: 'you can name any marked fret on either bass string within a second.',
+                      mins: 6 },
           p: ['Open is A, then B at the second, C at the third, D at the fifth, E at the seventh, ' +
               'F# at the ninth, G at the tenth, A at the twelfth.',
               'These two strings carry most of the bass work in fingerstyle, which is why they come first.'],
@@ -467,6 +812,9 @@
         },
         {
           h: 'Fifth and seventh as anchors',
+          practice: { do: 'Play across both strings at each fret and listen to the interval stay the same.',
+                      until: 'you can put a finger on A or E at the fifth or seventh fret without hunting.',
+                      mins: 5 },
           p: ['A at the fifth fret of the sixth string. E at the seventh. Those two carry more weight than ' +
               'the rest because so much sits around them.',
               'Play across both strings at each fret and hear the interval stay the same.'],
@@ -475,6 +823,9 @@
         },
         {
           h: 'Landing without counting',
+          practice: { do: 'Name each note before you play it, then check. Getting it wrong quickly beats getting it right slowly.',
+                      until: 'you are right more often than not, and you have stopped counting up from the nut.',
+                      mins: 8 },
           p: ['Here the notes jump around. Aim for each one directly rather than walking up to it.',
               'Getting it wrong quickly is more useful than getting it right slowly — the counting is the ' +
               'habit being replaced.'],
@@ -493,6 +844,9 @@
       cards: [
         {
           h: 'Two strings across, two frets up',
+          practice: { do: 'Play each pair and listen for the two notes matching.',
+                      until: 'you can find the octave of any sixth-string note without thinking about it.',
+                      mins: 5 },
           p: ['From any note on the sixth string, the same note an octave higher sits on the fourth ' +
               'string, two frets along. One shape, anywhere on the neck.',
               'Play the pairs below and hear them match.'],
@@ -501,6 +855,9 @@
         },
         {
           h: 'The same from the fifth',
+          practice: { do: 'Fifth string to third string, same shape. Play the pairs and hear them match.',
+                      until: 'the shape works from either bass string without you checking which you are on.',
+                      mins: 5 },
           p: ['Fifth string to third string works identically: across two, up two. Learning the sixth and ' +
               'fifth strings by name therefore gives you the fourth and third for free.',
               'That is the whole reason the last lesson only covered two strings.'],
@@ -509,6 +866,9 @@
         },
         {
           h: 'Where the shape changes',
+          practice: { do: 'Play both versions and feel the stretch change from two frets to three.',
+                      until: 'you reach for three frets automatically once the second string is involved.',
+                      mins: 6 },
           p: ['Between the third and second strings the tuning narrows by a semitone, so the octave shape ' +
               'stretches to three frets instead of two.',
               'Play both versions here. The change is not an exception to remember so much as the one ' +
@@ -518,6 +878,9 @@
         },
         {
           h: 'One note, everywhere it lives',
+          practice: { do: 'Chain the shape and listen for the moment it stops matching. That is a wrong turn.',
+                      until: 'you can find four places to play one note and hear that all four agree.',
+                      mins: 6 },
           p: ['A single pitch appears in several places. Chaining the octave shape finds them without ' +
               'knowing any of their names.',
               'Play the chain and listen for the moment it stops matching — that is a wrong turn, and ' +
@@ -527,6 +890,9 @@
         },
         {
           h: 'Tuning by octaves',
+          practice: { do: 'Play each pair and listen for the wobble rather than looking at anything.',
+                      until: 'you can hear a string that is slightly out and say which way it needs to go.',
+                      mins: 5 },
           p: ['The same shape checks tuning. An octave that beats against itself is a string out of tune, ' +
               'and it is easier to hear than a unison.',
               'Play each pair and listen for the wobble rather than looking at anything.'],
@@ -545,6 +911,9 @@
       cards: [
         {
           h: 'Three strings drop',
+          practice: { do: 'Retune, then play the open strings in order and listen to what the guitar has become.',
+                      until: 'the six open strings ring as one chord with nothing sounding wrong.',
+                      mins: 4 },
           p: ['DADGAD lowers the sixth, second and first strings by a tone each. Everything else stays ' +
               'where it was.',
               'Retune, then play the open strings in order and listen to what the guitar has become.'],
@@ -554,6 +923,9 @@
         },
         {
           h: 'What moved, exactly',
+          practice: { do: 'Open string, then the second fret, on each string that changed.',
+                      until: 'you can say which three strings moved and by how much, without looking it up.',
+                      mins: 4 },
           p: ['E became D on the sixth. B became A on the second. E became D on the first. Each is two ' +
               'frets lower, so every note on those strings now sits two frets higher than before.',
               'Play the open string and then the second fret: that second fret is the note that used to ' +
@@ -564,6 +936,9 @@
         },
         {
           h: 'And what did not',
+          practice: { do: 'Play only the fifth, fourth and third strings. Nothing here has changed.',
+                      until: 'you can name notes on those three strings as fluently as you did in standard.',
+                      mins: 4 },
           p: ['The fifth, fourth and third strings are untouched. Every note you learned on them is still ' +
               'there, in the same place.',
               'Half the neck is unchanged, which is why this is a retuning rather than a new instrument.'],
@@ -573,6 +948,9 @@
         },
         {
           h: 'A shape you know, a chord you do not',
+          practice: { do: 'Play both, listening to how different a familiar fingering has become.',
+                      until: 'you can hear that the open strings alone are the sound the tuning is for.',
+                      mins: 4 },
           p: ['Fingering a familiar shape in a new tuning gives a different chord. That is the point of ' +
               'the tuning rather than a problem with it.',
               'Play both of these. The second is the open strings alone, and it is where the sound of ' +
@@ -583,6 +961,9 @@
         },
         {
           h: 'Finding a named note again',
+          practice: { do: 'Say the letter before you play it, using what moved and what did not.',
+                      until: 'you can locate a named note anywhere on the neck in this tuning within a few seconds.',
+                      mins: 8 },
           p: ['Work out where each note has gone using what you know: the strings that moved are two ' +
               'frets higher, the others are where they were.',
               'Name each note here before playing it, then check.'],
@@ -602,6 +983,9 @@
       cards: [
         {
           h: 'A new nut',
+          practice: { do: 'Put the capo on and play the strings it is holding down.',
+                      until: 'you can name all six new open-string pitches without counting.',
+                      mins: 3 },
           p: ['A capo at the second fret makes the second fret behave as the nut. The open strings now ' +
               'sound F# B E A C# F#.',
               'Put one on and play the strings it is holding down.'],
@@ -611,6 +995,9 @@
         },
         {
           h: 'The shapes do not move',
+          practice: { do: 'Finger a D shape behind the capo. The hand does what it always did.',
+                      until: 'you can play two familiar shapes behind the capo without any hesitation.',
+                      mins: 4 },
           p: ['A shape fingered relative to the capo is the same shape. What changes is the pitch it ' +
               'produces, by one semitone per fret.',
               'Play a D shape here. The fingers do what they always did; the sound is E.'],
@@ -620,6 +1007,9 @@
         },
         {
           h: 'Know what is actually sounding',
+          practice: { do: 'Walk the sixth string naming real pitches, not shapes. Capo at two, so open is F sharp.',
+                      until: 'you can say what a G shape at this capo would actually be called.',
+                      mins: 6 },
           p: ['The trap is thinking in shapes and losing the pitch. Playing a G shape at the fifth fret ' +
               'is a C chord, and anyone else in the room will call it C.',
               'Walk the sixth string and name the real pitches, not the shapes.'],
@@ -629,6 +1019,9 @@
         },
         {
           h: 'Choosing where it goes',
+          practice: { do: 'Move the capo to the fifth fret and play the same figure again.',
+                      until: 'you can hear the tone tighten and say what key you are now in.',
+                      mins: 5 },
           p: ['A capo is for putting a song in a key that suits a voice while keeping shapes that ring. ' +
               'Higher up, the strings shorten and the tone tightens.',
               'Play this at the fifth fret and hear how much brighter the same figure sits.'],
@@ -638,6 +1031,9 @@
         },
         {
           h: 'The same music without one',
+          practice: { do: 'Take the capo off and play the figure where it now falls.',
+                      until: 'you can say what the capo bought you, and what it cost.',
+                      mins: 5 },
           p: ['Everything a capo does can be played without it, further up the neck and usually with a ' +
               'barre. What is lost is the open strings, which is most of why the capo is used.',
               'Here is that figure with no capo. Compare it with the last card.'],
@@ -674,6 +1070,9 @@
       cards: [
         {
           h: 'Five notes, not seven',
+          practice: { do: 'Up from the sixth string, two notes per string, all the way across.',
+                      until: 'you can play it through twice without reading the tab.',
+                      mins: 6 },
           p: ['A minor pentatonic drops the second and the sixth from the minor scale. What is left has ' +
               'no semitone clashes, which is why it fits over almost anything.',
               'Play it up from the sixth string. Two notes per string, all the way across.'],
@@ -684,6 +1083,9 @@
         },
         {
           h: 'Back down is a different skill',
+          practice: { do: 'Start on the high string and come down. Same letters, same alternation.',
+                      until: 'descending is as fluent as ascending, at the same tempo.',
+                      mins: 6 },
           p: ['Descending uses the same notes and a different set of habits: the picking hand keeps ' +
               'alternating while the fretting hand releases rather than presses.',
               'Most players know a shape upward long before they know it downward.'],
@@ -694,6 +1096,9 @@
         },
         {
           h: 'The root is not the lowest note',
+          practice: { do: 'Play the shape and stop on a root each time round.',
+                      until: 'you can hear which notes are home without looking at the diagram.',
+                      mins: 5 },
           p: ['The shape starts on A because the sixth string is where the root sits here — but the box ' +
               'contains three more A notes, and hearing which one is home is what makes it music.',
               'Play the shape and stop on a root each time round.'],
@@ -705,6 +1110,9 @@
         },
         {
           h: 'Move it without relearning it',
+          practice: { do: 'Slide the shape up three frets and play it as C minor pentatonic.',
+                      until: 'you can put the shape in any key by naming its lowest note first.',
+                      mins: 5 },
           p: ['The shape has no open strings, so it slides. Put its lowest note on C at the eighth fret ' +
               'and the same fingering gives C minor pentatonic.',
               'That is the whole advantage of a movable shape, and the reason to learn this one properly.'],
@@ -715,6 +1123,9 @@
         },
         {
           h: 'In threes',
+          practice: { do: 'Groups of three rather than straight up and down. Slower than it looks.',
+                      until: 'the grouping runs cleanly through the whole shape without the alternation breaking.',
+                      mins: 8 },
           p: ['Running the shape in groups of three breaks the up-and-down and makes the notes sound like ' +
               'a line rather than a scale.',
               'The alternation still never repeats a finger. That is what keeps it playable at speed.'],
@@ -735,6 +1146,9 @@
       cards: [
         {
           h: 'The next box up',
+          practice: { do: 'Play the second box on its own until it stops feeling like the first one moved.',
+                      until: 'you can play it without reference to where the first box was.',
+                      mins: 6 },
           p: ['The second position starts where the first ends. Its lowest note is the one the first box ' +
               'finished on, which is why they overlap rather than sit apart.',
               'Play it on its own first.'],
@@ -745,6 +1159,9 @@
         },
         {
           h: 'And the one below',
+          practice: { do: 'The box under the first. Play it up and down until it sits.',
+                      until: 'you can move between this box and the first without a gap.',
+                      mins: 6 },
           p: ['Going the other way, the fifth position sits under the first. Five boxes cover the neck and ' +
               'then repeat at the twelfth fret.',
               'Learn the neighbours before the far ones — those are the joins you actually use.'],
@@ -755,6 +1172,9 @@
         },
         {
           h: 'One string at a time',
+          practice: { do: 'Every scale note on one string, right up the neck and back.',
+                      until: 'you can see the boxes as slices of this rather than as separate diagrams.',
+                      mins: 6 },
           p: ['A different way to see it: take a single string and play every scale note on it, right up ' +
               'the neck. The boxes are slices across that.',
               'This is the view that stops the neck looking like five unrelated diagrams.'],
@@ -765,6 +1185,9 @@
         },
         {
           h: 'Crossing the join',
+          practice: { do: 'Second box in threes. Feel where the hand wants to move to the next shape.',
+                      until: 'you can start a line in one box and finish it in the next without a pause.',
+                      mins: 8 },
           p: ['A line that starts in one box and ends in the next needs the shift to happen on a note you ' +
               'were going to play anyway, not as an extra move.',
               'Play the second box in threes and feel where the hand wants to move.'],
@@ -775,6 +1198,9 @@
         },
         {
           h: 'In fours, higher up',
+          practice: { do: 'Third box in fours. Narrower frets, so keep the fingers close to the board.',
+                      until: 'the grouping is even at a tempo you could not manage lower down the neck.',
+                      mins: 8 },
           p: ['The third position sits around the ninth fret, where the frets are closer and the same ' +
               'stretch is easier.',
               'Play it in fours. Higher up the neck, most players find speed comes sooner.'],
@@ -795,6 +1221,9 @@
       cards: [
         {
           h: 'Where it goes',
+          practice: { do: 'Play the blues scale and find the one note the pentatonic did not have.',
+                      until: 'you can point to the added note without counting up from the root.',
+                      mins: 5 },
           p: ['The blues scale is the minor pentatonic with a flattened fifth added — one note, sitting ' +
               'between the fourth and the fifth.',
               'Play it and hear how different the same shape becomes.'],
@@ -805,6 +1234,9 @@
         },
         {
           h: 'It is a passing note',
+          practice: { do: 'Coming down, let the added note fall into the fourth rather than stopping on it.',
+                      until: 'the note passes through cleanly and you can hear why stopping on it sounds unfinished.',
+                      mins: 5 },
           p: ['The flattened fifth is unstable by design. Landing on it and staying there sounds wrong, ' +
               'which is why it works best going through rather than stopping.',
               'Play the shape and let that note pass each time.'],
@@ -815,6 +1247,9 @@
         },
         {
           h: 'One note changes the genre',
+          practice: { do: 'Play the pentatonic, then go back a card and play the blues scale.',
+                      until: 'you can hear which of the two you are playing without being told.',
+                      mins: 5 },
           p: ['The same box without it is a rock or folk sound; with it the line reads as blues before ' +
               'anything else has happened.',
               'Play the pentatonic and the blues scale back to back and hear where the difference sits.'],
@@ -825,6 +1260,9 @@
         },
         {
           h: 'In a broken pattern',
+          practice: { do: 'A broken pattern keeps returning to the note from different sides. Slowly.',
+                      until: 'you can hear the flattened fifth each time it comes round, at a steady tempo.',
+                      mins: 8 },
           p: ['Straight up and down hides what a note does. A broken pattern keeps returning to it from ' +
               'different sides, which is how you learn its character.',
               'Slowly — the pattern is harder than the notes.'],
@@ -835,6 +1273,9 @@
         },
         {
           h: 'Somewhere else on the neck',
+          practice: { do: 'Play the second box and find the blue note by ear before you look.',
+                      until: 'you can locate it in an unfamiliar shape without counting.',
+                      mins: 6 },
           p: ['The blue note exists in every position, not only the first. Finding it in an unfamiliar ' +
               'shape is the test of whether you know what it is rather than where it was.',
               'Play the second box and locate it by ear.'],

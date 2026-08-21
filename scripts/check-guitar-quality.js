@@ -44,8 +44,23 @@ const notes = [];
 
 /* ── Limits ─────────────────────────────────────────────────────────────── */
 const WORDS_PER_CARD_MAX = 600;
-const WORDS_PER_ELEMENT_MAX = 80;
+/* Raised from 80. The original came from the plan's "caption of roughly forty
+   words", written before any content existed, and the content it produced was
+   measured at ELEVEN SECONDS of reading per card — thirteen minutes for the
+   whole course. Forty words can label a figure; it cannot explain why the
+   second and the sixth come out of a scale. The ceiling still exists so cards
+   do not drift into essays, but it now permits a paragraph that teaches. */
+const WORDS_PER_ELEMENT_MAX = 130;
 const WORDS_PER_LESSON_MIN = 150;
+
+/* THE REAL FIX FOR THIN CARDS, and it is not prose length.
+   A card said "play this", showed a figure, and offered a Play button. Nothing
+   told the reader to stay, so they played it twice and moved on — the minutes
+   were supposed to be in the PLAYING and nothing ever asked for any. Every card
+   with something to play now carries a practice block: what to do, and a target
+   you can tell you have reached. `until` is the load-bearing half. */
+const PRACTICE_MIN_WORDS = 12;
+const PRACTICE_MAX_WORDS = 70;
 
 /* ── Guitar's own vocabulary, on top of the shared list ─────────────────── */
 const GUITAR_NEVER = [
@@ -76,7 +91,11 @@ const MINIMISER_ALLOW = [
   'just intonation', 'just above the 12th fret', 'just below the nut',
   'just behind the fret', 'just under the string', 'just past the soundhole'
 ];
-const FIRST_PERSON = /\b(let'?s|we'?ll|we can|we will|we'?ve|our hands)\b/i;
+/* `we'?ll` with an optional apostrophe matches the word "well", which is how a
+   card reading "as well as" was reported as first person plural. The apostrophe
+   is not optional in any of these — "well", "weve" and "lets" as bare words are
+   ordinary English and only the contracted forms are the tell. */
+const FIRST_PERSON = /\b(let's|we'll|we can|we will|we've|our hands)\b/i;
 const HEDGE = /\b(you might want to|you could try|feel free to|if you like|perhaps try)\b/i;
 const HANDEDNESS = /\b(right|left)[- ]hand(ed|s)?\b|\byour (right|left)\b|\bon the (right|left)\b/i;
 const INSTRUMENT_ASSUMING = /\b(your acoustic|on the electric|your amp|dial in|steel[- ]string|nylon)\b/i;
@@ -100,6 +119,21 @@ const INSTRUMENTS = ['any', 'steel', 'nylon', 'electric'];
     }
   }
   MINIMISER.lastIndex = 0;
+
+  /* The same treatment for the first-person pattern, which shipped matching the
+     word "well" and flagged a card that had no first person in it at all. A
+     pattern that fires on ordinary English trains you to read past it. */
+  for (const ok of ['well', 'as well as', 'farewell', 'swell', 'lets go of the string']) {
+    if (FIRST_PERSON.test(ok)) {
+      errors.push(`the first-person pattern flags "${ok}", which is ordinary English. ` +
+                  `Fix the pattern before trusting what it reports.`);
+    }
+  }
+  for (const bad of ["let's start", "we'll come back", 'we will return']) {
+    if (!FIRST_PERSON.test(bad)) {
+      errors.push(`the first-person pattern misses "${bad}".`);
+    }
+  }
 })();
 
 /* What a card's playable material IS, whether written out or generated.
@@ -125,6 +159,7 @@ const elementsOf = (card) => D.ELEMENT_KEYS.filter(k => card[k] !== undefined &&
 
 /* ── Per lesson ─────────────────────────────────────────────────────────── */
 let totalCards = 0, totalWords = 0, totalElements = 0, handedOptOuts = 0;
+let practiceCards = 0, practiceMinutes = 0;
 let playableLessons = 0;
 
 for (const lesson of D.LESSONS) {
@@ -158,7 +193,38 @@ for (const lesson of D.LESSONS) {
       errors.push(`${at} ("${card.h}") is prose only. Every card carries something to play — ` +
                   `that is what makes this a lesson you do rather than one you read.`);
     }
-    if (els.includes('tab') || els.includes('playalong')) lessonPlayables++;
+    if (els.includes('tab') || els.includes('playalong')) {
+      lessonPlayables++;
+
+      const pr = card.practice;
+      if (!pr) {
+        errors.push(`${at} ("${card.h}") has something to play and no practice block. ` +
+                    `A card that does not say what to do or when to stop is one the reader ` +
+                    `skims in ten seconds — which is what the whole unit was measured at.`);
+      } else {
+        if (!pr.do || !String(pr.do).trim()) {
+          errors.push(`${at}: the practice block has no instruction.`);
+        }
+        if (!pr.until || !String(pr.until).trim()) {
+          errors.push(`${at}: the practice block has no target. "You have it when…" is the half ` +
+                      `that turns a card the reader skims into one they work at.`);
+        }
+        const pw = words(pr.do) + words(pr.until);
+        if (pw < PRACTICE_MIN_WORDS) {
+          errors.push(`${at}: the practice block is ${pw} words, under ${PRACTICE_MIN_WORDS}. ` +
+                      `Too short to say anything a player can act on.`);
+        }
+        if (pw > PRACTICE_MAX_WORDS) {
+          errors.push(`${at}: the practice block is ${pw} words, over ${PRACTICE_MAX_WORDS}. ` +
+                      `It is an instruction, not a second helping of prose.`);
+        }
+        if (pr.mins !== undefined && !(pr.mins >= 1 && pr.mins <= 20)) {
+          errors.push(`${at}: practice time is ${pr.mins} minutes, outside 1-20.`);
+        }
+        practiceCards++;
+        practiceMinutes += pr.mins || 0;
+      }
+    }
     /* The player draws one tab for either, so a card carrying both gets a
        double prose allowance for a single figure — the ratio rule would stop
        biting exactly where the card is heaviest. */
@@ -429,6 +495,9 @@ for (const id of X.ids()) {
 
 notes.push(`${D.LESSONS.length} lessons, ${totalCards} cards, ${totalWords} prose words ` +
            `(${Math.round(totalWords / totalCards)} per card), ${totalElements} elements.`);
+notes.push(`${practiceCards} cards carry a practice block; ${practiceMinutes} minutes of practice ` +
+           `prescribed across ${D.LESSONS.length} lessons ` +
+           `(${(practiceMinutes / D.LESSONS.length).toFixed(0)} per lesson).`);
 const contexts = [...new Set([...contextOf.values()].map(c => c.tuning + (c.capo ? '/' + c.capo : '')))];
 notes.push(`${X.ids().length} authored exercises, ${noteCount} notes, all playable on the instrument ` +
            `their card declares (${contexts.sort().join(', ')}).`);

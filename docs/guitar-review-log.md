@@ -1454,3 +1454,81 @@ will use the generator, and neither obviously needs anything M5 has not just
 paid for. If they come in without a new capability, the plan's "mostly writing"
 estimate is finally true; if they do not, the estimate was wrong and the
 remaining units should be re-scoped.
+
+## Step 9f — thin content, and a term used before it was taught
+
+Two reports, and they turned out to be different problems.
+
+### 9f.1 Eleven seconds a card
+
+Measured before responding: 41 words a card, 11 seconds of reading, **13 minutes
+for the entire course** across 14 lessons. And `grep` found not one mention of
+how long to stay on anything — no duration, no target, nothing.
+
+The instinct was to write more prose. That is the wrong fix and the plan already
+knew it: forty-word captions were a deliberate choice, because the point of the
+format is that the reader plays rather than reads.
+
+What was actually missing is that the minutes were supposed to be in the
+PLAYING, and nothing ever asked for any. A card said "play this", showed a
+figure, offered a Play button — and gave no reason to stay. So the reader played
+it twice and clicked Next, exactly as reported.
+
+Every card with something to play now carries a practice block: what to do, and
+**a target you can tell you have reached**. The `until` half is the load-bearing
+one — "you have it when eight bars pass with no repeated finger" turns a card
+you skim into a card you work at. 85 cards, **445 minutes prescribed, 26 per
+lesson** against the five minutes it was.
+
+The prose ceiling went from 80 words per element to 130 as well, but that is the
+smaller half. Forty words can label a figure; it cannot explain why a scale has
+a second and a sixth.
+
+### 9f.2 A word used four units before it was defined
+
+M5 opened with "drops the second and the sixth from the minor scale". Nothing in
+the course had said what a scale degree was, a tone, or a semitone. `interval`
+first appears in M3 lesson 1 and is defined nowhere.
+
+Phase 1 selected M3, M5, M7 and M8 and left out the unit they all stand on. That
+choice came from the design conversation, went into the plan unexamined, and
+neither checker could see it:
+
+- `check-guitar-coverage.js` asks whether every criterion is CLAIMED. Every one
+  was. The hole was in what the criteria ASSUMED, not in what they covered.
+- `check-guitar-quality.js` reads each card alone. Each card was fine alone.
+
+**The defect existed only in the order**, which was the one dimension nothing
+was looking at — the same blind spot as the repeated exercise two steps ago,
+which was also a property no single card could show.
+
+Unit M1 (intervals and degrees) is written and sits second, after the hands know
+what to do and before anything starts counting. And
+`check-guitar-prerequisites.js` now declares each term with the lesson that
+introduces it and fails on use before that point.
+
+It found two ordering faults in M1 itself on first run. Moving M1 back after M5
+fails it with `interval` at m3-l1 card 4 — the exact card the report came from.
+
+The check is deliberately narrow. Only unambiguous terms are listed; `tone`
+means both an interval and a timbre, and `third` and `fifth` are ordinals as
+often as degrees. Matching those would produce false failures, and a check that
+cries wolf trains you to read past it. The excluded words are listed in
+ALSO_MEANS with the reason, so the gap is a decision rather than an oversight.
+
+### 9f.3 A pattern in my own checker that flagged ordinary English
+
+`we'?ll` with an optional apostrophe matches the word **"well"**, and reported a
+card containing "as well as" as first person plural. Both prose patterns now
+self-test against real phrases before they are trusted — the minimiser one
+already did, which is why it had no equivalent bug.
+
+### What 9f says
+
+Both reports were about the experience of working through the material, and
+neither was visible from inside any single card. That is now three in a row:
+the repeated exercise, the missing prerequisite, and the thinness. Every gate
+written so far measures a card, a lesson, or a file. None of them measures the
+COURSE — what it is like to move through it in order, at the pace it asks for.
+
+The two added here are the first that do.

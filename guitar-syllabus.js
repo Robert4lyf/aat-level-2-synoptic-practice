@@ -62,6 +62,22 @@
     { id: 'P1.hygiene',     strand: 'P', stage: 1, unit: 'P1',
       text: 'Keep the picking-hand nails short enough that flesh contacts the string first' },
 
+    /* ── M1 · Intervals and scale degrees ────────────────────────────────
+       Added after M5 shipped talking about "the second and the sixth of the
+       minor scale" when nothing anywhere had said what a scale degree is.
+       Phase 1 selected M3, M5, M7 and M8 and skipped the unit underneath them;
+       the coverage checker could not see it, because every criterion WAS
+       claimed — the hole was in what the criteria assumed, not in what they
+       covered. */
+    { id: 'M1.tone',        strand: 'M', stage: 1, unit: 'M1',
+      text: 'Tell a tone from a semitone, and find both on the neck' },
+    { id: 'M1.major',       strand: 'M', stage: 1, unit: 'M1',
+      text: 'Build a major scale from its pattern of tones and semitones' },
+    { id: 'M1.degrees',     strand: 'M', stage: 1, unit: 'M1',
+      text: 'Number the notes of a scale, and name a note by its degree' },
+    { id: 'M1.minor',       strand: 'M', stage: 1, unit: 'M1',
+      text: 'Build a minor scale, and say which degrees differ from the major' },
+
     /* ── P2 · Arpeggio patterns (phase 1, not yet written) ──────────────── */
     { id: 'P2.pattern',     strand: 'P', stage: 1, unit: 'P2',
       text: 'Play p-i-m-a and p-a-m-i patterns over a held chord at an even tempo' },
@@ -118,6 +134,11 @@
      known gap rather than a failure. */
   var UNITS = [
     { id: 'P1', title: 'The hand',                 strand: 'P', phase: 1, ready: true },
+    /* M1 sits here, before anything that counts scale degrees out loud. The
+       order of this array IS the teaching order, and scripts/check-guitar-
+       prerequisites.js reads it to decide whether a term was introduced before
+       it was used. */
+    { id: 'M1', title: 'Intervals and degrees',    strand: 'M', phase: 1, ready: true },
     { id: 'M3', title: 'The fretboard',            strand: 'M', phase: 1, ready: true },
     { id: 'P2', title: 'Arpeggio patterns',        strand: 'P', phase: 1, ready: false },
     { id: 'M5', title: 'Pentatonics and blues',    strand: 'M', phase: 1, ready: true },
