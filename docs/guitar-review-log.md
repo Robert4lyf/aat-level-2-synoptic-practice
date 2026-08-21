@@ -1275,3 +1275,57 @@ Gates written against the code cannot see any of it. Each of these needed either
 a person looking at the running app, or a check written against the SHAPE OF THE
 DELIVERY — what gets served, what gets drawn, what gets read back — rather than
 against the values a function returns.
+
+## Step 9c — a demonstration is not a drill
+
+Reported against the DADGAD card that puts two chords side by side: the gap
+between them stretched and shrank with the tempo slider, so at 108 bpm the
+comparison went past too fast to hear.
+
+### 9c.1 The distinction the data was missing
+
+Every exercise was a drill. A drill has a tempo — playing it faster is the
+point, and the reader sets it. Two chords placed side by side so they can be
+compared is not that: the gap between them is staging, not rhythm, and a slider
+that changes it is changing the only thing the card is about.
+
+So an exercise may now carry `demo: true` and `beatSeconds`. One beat lasts that
+many seconds whatever the reader has set, and the player offers no tempo control
+for the card — a disabled slider would be worse than none, since it invites the
+reader to wonder what they did wrong. Two exercises qualify, both of the
+"compare these two" shape, and they are the only two in the module with stacked
+chords.
+
+### 9c.2 A contaminated measurement, which is a third kind of bad gate
+
+The first version of the check set the reader's tempo on the workshop bench,
+walked to the demonstration card, and timed the gap at 40 bpm and at 200. With
+the bug reinstated it measured 1262ms against 1245ms and passed.
+
+The assertion was right and the measurement was not. Every non-demo card adopts
+its own prescribed tempo on arrival — a feature added two steps earlier — so
+walking through the lesson overwrote the setting, and the demonstration always
+played at whatever the previous card prescribed. The check was varying an input
+that never reached the thing under test.
+
+That is distinct from the three vacuous gates before it. Those compared a value
+against itself. This one measured a real quantity, correctly, while the
+independent variable was being silently discarded on the way in. Both produce a
+green tick that means nothing; only the second one looks like it is working.
+
+Fixed by setting the tempo on the card immediately before the demonstration and
+stepping forward one, which is the only route where the setting survives.
+
+### 9c.3 A corrupted baseline, and how it announced itself
+
+Partway through the mutation run, a command hit its time limit between applying
+a mutation and restoring the file. The mutated line stayed, a later snapshot
+captured it as "clean", and the next run reported the clean build failing its
+own gate.
+
+That failure was the useful part. A gate that fails on what is supposed to be
+clean code is either a broken gate or a broken baseline, and both need finding
+before any mutation result can be believed. The mutation runs now verify the
+baseline carries the changes under test before trusting a single result, and
+long checks run one per command so a timeout cannot land between a mutation and
+its restore.
