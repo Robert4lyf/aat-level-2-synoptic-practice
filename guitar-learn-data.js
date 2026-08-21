@@ -1287,6 +1287,492 @@
       ]
     }
 
+,
+
+    /* ═════════════════════════════════════════════════════════════════════
+       M7 — Keys and the number system
+
+       The first unit that needed the `changes` element: a progression is a
+       SEQUENCE of chords, and until now the player could draw one chord and no
+       more. Predicted before the unit was written, which is worth recording —
+       each new strand has wanted one capability the previous ones did not.
+
+       The boxes and the playback come from the same voicing search, so what is
+       drawn and what is heard cannot come apart.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'm7-l1', strand: 'M', unit: 'M7', instrument: 'any',
+      title: 'Chords have numbers too',
+      icon: '🔟',
+      criteria: ['M7.numbers'],
+      summary: 'Every chord in a key has a degree, and naming it that way says the same thing in every key.',
+      cards: [
+        {
+          h: 'One chord per degree',
+          p: ['Build a chord on each note of a major scale and you get seven, one per degree. Three ' +
+              'come out major, three minor, and the seventh is a diminished chord nobody uses much at ' +
+              'this stage.',
+              'They are written as roman numerals: capitals for major, lower case for minor. In C that ' +
+              'gives C, Dm, Em, F, G, Am.'],
+          practice: { do: 'Play the six chords in order, saying the numeral aloud as each one lands.',
+                      until: 'you can name the numeral for any of the six without counting up from the root.',
+                      mins: 6 },
+          changes: { key: 0, bpm: 66, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 2 }, { chordId: 'min', rootPc: 2, beats: 2 },
+                              { chordId: 'min', rootPc: 4, beats: 2 }, { chordId: 'maj', rootPc: 5, beats: 2 },
+                              { chordId: 'maj', rootPc: 7, beats: 2 }, { chordId: 'min', rootPc: 9, beats: 2 }],
+                     note: 'The six chords of C major, in order. Degrees above each box.' }
+        },
+        {
+          h: 'The one everybody plays',
+          p: ['I, V, vi, IV is the progression under a very large fraction of popular music. Hearing it ' +
+              'as numbers rather than as C, G, Am, F is what lets you recognise it when someone else ' +
+              'plays it in E.'],
+          practice: { do: 'Play it round four times, naming the numerals rather than the chord names.',
+                      until: 'you can hear the shape of it and would recognise it played in another key.',
+                      mins: 6 },
+          changes: { key: 0, bpm: 72, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 },
+                              { chordId: 'min', rootPc: 9, beats: 4 }, { chordId: 'maj', rootPc: 5, beats: 4 }],
+                     note: 'I V vi IV, in C.' }
+        },
+        {
+          h: 'Minors are lower case',
+          p: ['The case of the numeral carries the quality. ii is minor, IV is major, and you can read ' +
+              'a progression off the page without being told which is which.',
+              'That convention is doing real work — it means a progression written in numbers is a ' +
+              'complete instruction.'],
+          practice: { do: 'Play the sequence and check each numeral against whether the chord sounds major or minor.',
+                      until: 'you can hear major or minor before you look at the numeral.',
+                      mins: 5 },
+          changes: { key: 0, bpm: 70, loop: true,
+                     chords: [{ chordId: 'min', rootPc: 2, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 },
+                              { chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'min', rootPc: 9, beats: 4 }],
+                     note: 'ii V I vi. Two minors and two majors.' }
+        },
+        {
+          h: 'A minor key numbers the same way',
+          p: ['In a minor key the same method applies to the minor scale, so the numerals come out ' +
+              'differently: i, III, iv, v, VI, VII.',
+              'The system is the same; only which degrees are major changes.'],
+          practice: { do: 'Play it round and name the numerals. Notice how many are major.',
+                      until: 'you can say why a minor key produces a different set of numerals.',
+                      mins: 6 },
+          changes: { key: 9, bpm: 68, loop: true,
+                     chords: [{ chordId: 'min', rootPc: 9, beats: 4 }, { chordId: 'maj', rootPc: 5, beats: 4 },
+                              { chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 }],
+                     note: 'i VI III VII, in A minor.' }
+        },
+        {
+          h: 'Write one down',
+          p: ['Pick four chords from the six you know and write the numerals. That row of numbers is a ' +
+              'song in any key, which is more than the chord names ever were.'],
+          practice: { do: 'Play your four, write them as numerals, then play them again from the numbers alone.',
+                      until: 'you can play your own progression reading only the numerals.',
+                      mins: 8 },
+          changes: { key: 0, bpm: 72, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 5, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 },
+                              { chordId: 'min', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 5, beats: 4 }],
+                     note: 'IV I v IV. One to copy the shape of.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm7-l2', strand: 'M', unit: 'M7', instrument: 'any',
+      title: 'Moving a song to another key',
+      icon: '🚚',
+      criteria: ['M7.transpose'],
+      summary: 'Numbers transpose for free; chord names have to be worked out one at a time.',
+      cards: [
+        {
+          h: 'The same numbers, a new key',
+          p: ['I V vi IV in G is G, D, Em, C. The numerals did not change; only the letters did.',
+              'This is the whole payoff of the number system, and the reason a band leader calls out ' +
+              '"one four five" rather than three chord names.'],
+          practice: { do: 'Play the same progression you just learned, now starting from G.',
+                      until: 'you can name the four chords in a new key without writing anything down.',
+                      mins: 6 },
+          changes: { key: 7, bpm: 72, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 2, beats: 4 },
+                              { chordId: 'min', rootPc: 4, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 }],
+                     note: 'I V vi IV again, this time in G.' }
+        },
+        {
+          h: 'Move it somewhere awkward',
+          p: ['E flat has three flats and none of its chords are shapes a beginner reaches for. The ' +
+              'numerals are still I, V, vi, IV.',
+              'A capo is the usual answer here, which is exactly the trade the capo lesson described.'],
+          practice: { do: 'Work out the four chords in E flat from the numerals before playing anything.',
+                      until: 'you can name them correctly without a chart, even if playing them is hard.',
+                      mins: 6 },
+          changes: { key: 3, bpm: 68, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 3, beats: 4 }, { chordId: 'maj', rootPc: 10, beats: 4 },
+                              { chordId: 'min', rootPc: 0, beats: 4 }, { chordId: 'maj', rootPc: 8, beats: 4 }],
+                     note: 'The same four degrees in E flat.' }
+        },
+        {
+          h: 'Why singers ask',
+          p: ['Moving a song is usually about a voice rather than a guitar. A song a tone lower is the ' +
+              'difference between straining and singing.',
+              'Knowing the numbers means you can do it between verses rather than between rehearsals.'],
+          practice: { do: 'Take the progression down a tone and play it from the numerals.',
+                      until: 'you can transpose a four-chord song by ear in under a minute.',
+                      mins: 6 },
+          changes: { key: 5, bpm: 70, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 5, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 },
+                              { chordId: 'min', rootPc: 2, beats: 4 }, { chordId: 'maj', rootPc: 10, beats: 4 }],
+                     note: 'The same shape again, in F.' }
+        },
+        {
+          h: 'The shapes move too',
+          p: ['A barre chord shape transposes by sliding. The numeral tells you which chord; the shape ' +
+              'tells you how to play it; the fret tells you where.',
+              'Those three pieces of information are separate, and keeping them separate is what makes ' +
+              'the neck navigable.'],
+          practice: { do: 'Play the progression using movable shapes only, no open strings.',
+                      until: 'you can play it in three different keys using the same two shapes.',
+                      mins: 8 },
+          changes: { key: 2, bpm: 66, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 2, beats: 4 }, { chordId: 'maj', rootPc: 9, beats: 4 },
+                              { chordId: 'min', rootPc: 11, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 }],
+                     note: 'I V vi IV in D.' }
+        },
+        {
+          h: 'Numbers survive the retuning too',
+          p: ['A progression in numerals says nothing about tuning, so it carries into DADGAD or open G ' +
+              'unchanged. What changes is the shapes.',
+              'That is the last thing the number system buys: it describes the music rather than the ' +
+              'instrument.'],
+          practice: { do: 'Play the same four degrees, then work out what the shapes would be in another tuning.',
+                      until: 'you can see that the progression is unaffected by how the guitar is tuned.',
+                      mins: 6 },
+          changes: { key: 4, bpm: 70, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 4, beats: 4 }, { chordId: 'maj', rootPc: 11, beats: 4 },
+                              { chordId: 'min', rootPc: 1, beats: 4 }, { chordId: 'maj', rootPc: 9, beats: 4 }],
+                     note: 'I V vi IV in E.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm7-l3', strand: 'M', unit: 'M7', instrument: 'any',
+      title: 'Which chord is pulling home',
+      icon: '🧲',
+      criteria: ['M7.function'],
+      summary: 'Some chords rest, some lean, and knowing which is which is how you write an ending.',
+      cards: [
+        {
+          h: 'Home is the first degree',
+          p: ['The I chord is where a progression rests. Everything else is measured by how far from it ' +
+              'a chord feels, and how strongly it wants to return.',
+              'Play a progression that never reaches I and the ear stays unsettled the whole way.'],
+          practice: { do: 'Play the sequence and notice how the last chord makes you want the first again.',
+                      until: 'you can hear the pull toward home rather than being told it is there.',
+                      mins: 6 },
+          changes: { key: 0, bpm: 68, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'maj', rootPc: 5, beats: 4 },
+                              { chordId: 'maj', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 }],
+                     note: 'I IV V I. The most settled ending there is.' }
+        },
+        {
+          h: 'The fifth degree leans hardest',
+          p: ['V is the chord that most wants to resolve to I, and adding a seventh to it makes the ' +
+              'pull stronger still.',
+              'Almost every ending in the folk and popular repertoire is some version of V going to I.'],
+          practice: { do: 'Play V7 to I several times and listen to how strongly the second chord settles.',
+                      until: 'you can hear a V7 coming and know what it will resolve to.',
+                      mins: 6 },
+          changes: { key: 0, bpm: 66, loop: true,
+                     chords: [{ chordId: 'dom7', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 }],
+                     note: 'V7 to I. The strongest resolution in the system.' }
+        },
+        {
+          h: 'The fourth degree leans differently',
+          p: ['IV also returns to I, but it arrives from the other side and sounds softer. It is the ' +
+              'sound of a hymn ending rather than a blues ending.',
+              'Two chords, both resolving home, and completely different in character.'],
+          practice: { do: 'Play IV to I, then V to I, back to back. Listen for how differently they arrive.',
+                      until: 'you can tell the two resolutions apart with your eyes shut.',
+                      mins: 6 },
+          changes: { key: 0, bpm: 64, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 5, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 },
+                              { chordId: 'maj', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 }],
+                     note: 'IV I, then V I. Same destination, different road.' }
+        },
+        {
+          h: 'Passing through',
+          p: ['A chord in the middle of a phrase is not resting or resolving; it is carrying you from ' +
+              'one place to another. ii is the classic example, almost always on its way to V.',
+              'Hearing a chord as passing rather than arriving is what stops a progression sounding ' +
+              'like a list.'],
+          practice: { do: 'Play it and listen to how the second chord refuses to feel like an ending.',
+                      until: 'you can hear which chords are passing and which are arriving.',
+                      mins: 6 },
+          changes: { key: 0, bpm: 70, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'min', rootPc: 2, beats: 4 },
+                              { chordId: 'dom7', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 0, beats: 4 }],
+                     note: 'I ii V7 I. The ii is passing through toward the V.' }
+        },
+        {
+          h: 'Ending somewhere else',
+          p: ['A progression that stops on V rather than I leaves the phrase open, which is how a verse ' +
+              'hands over to a chorus.',
+              'Choosing where to stop is a compositional decision, and the number system is what makes ' +
+              'it a decision rather than an accident.'],
+          practice: { do: 'Play it and hear the ending refuse to settle. Then add a I chord and hear it close.',
+                      until: 'you can end a phrase open or closed on purpose.',
+                      mins: 8 },
+          changes: { key: 0, bpm: 68, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'min', rootPc: 9, beats: 4 },
+                              { chordId: 'maj', rootPc: 5, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 }],
+                     note: 'I vi IV V. Ends on the V, so it wants to go round again.' }
+        }
+      ]
+    }
+
+,
+
+    /* ═════════════════════════════════════════════════════════════════════
+       M8 — Modes
+
+       The unit the whole M strand was heading for, and the first one that
+       needed NOTHING new: generated scale material from M5, degree vocabulary
+       from M1, and progressions from M7. Written entirely with what was already
+       there.
+
+       Modes are usually taught as seven scales to memorise, which is both
+       tedious and misleading. They are one scale seen from seven starting
+       points, and each has exactly one note that gives it its character. That
+       note is what the unit is about.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'm8-l1', strand: 'M', unit: 'M8', instrument: 'any',
+      title: 'One scale, seven starting points',
+      icon: '🎠',
+      criteria: ['M8.parent'],
+      summary: 'Every mode is the major scale begun somewhere else, and that is the whole mechanism.',
+      cards: [
+        {
+          h: 'Start on the second degree',
+          p: ['Play a C major scale from D to D. Same seven notes, different starting place, and it no ' +
+              'longer sounds major. That is D dorian.',
+              'Nothing was added or removed. The ear reorganised everything around the new home.'],
+          practice: { do: 'Play C major from C, then the same notes from D. Listen to what changed.',
+                      until: 'you can hear that the second version is not simply the first one moved.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'dorian', rootPc: 2, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'D dorian' },
+                       loop: true, bpm: 60,
+                       note: 'The notes of C major, beginning and ending on D.' }
+        },
+        {
+          h: 'Seven notes, seven modes',
+          p: ['Do that from every degree and you get seven modes: ionian, dorian, phrygian, lydian, ' +
+              'mixolydian, aeolian and locrian, in that order up the scale.',
+              'Ionian is the major scale and aeolian is the natural minor, so two of the seven already ' +
+              'have familiar names.'],
+          practice: { do: 'Play the parent scale from the third degree and name which mode that is.',
+                      until: 'you can name the mode produced by starting on any degree.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'phrygian', rootPc: 4, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'E phrygian' },
+                       loop: true, bpm: 58,
+                       note: 'C major from its third degree. That is phrygian.' }
+        },
+        {
+          h: 'The parent is not the point',
+          p: ['Thinking of D dorian as "C major starting on D" explains where the notes come from and ' +
+              'tells you nothing about how it sounds.',
+              'Once the mechanism is clear, the useful view is the other one: dorian is a minor scale ' +
+              'with a raised sixth, which says what it sounds like.'],
+          practice: { do: 'Play D dorian, then D natural minor, and find the single note that differs.',
+                      until: 'you can describe dorian by what it changes rather than by where it starts.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'dorian', rootPc: 2, positionKind: 'box', positionIndex: 1,
+                                   sequence: 'straight', title: 'D dorian, second shape' },
+                       loop: true, bpm: 60,
+                       note: 'One note apart from D minor. Find it.' }
+        },
+        {
+          h: 'Same shapes, different home',
+          p: ['Because the notes are the parent scale, the fretboard shapes are the ones already ' +
+              'learned. What changes is which note you treat as home and where you resolve.',
+              'A mode is a set of notes plus a decision, exactly as a scale was.'],
+          practice: { do: 'Play a familiar C major shape but start and finish on A. Then on G.',
+                      until: 'you can produce three different modes from one shape by changing where you land.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'mixolydian', rootPc: 7, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'G mixolydian' },
+                       loop: true, bpm: 62,
+                       note: 'C major from its fifth degree, resolving to G.' }
+        },
+        {
+          h: 'Order them by brightness',
+          p: ['Lydian, ionian, mixolydian, dorian, aeolian, phrygian, locrian. Each step down that list ' +
+              'flattens one more degree, and each sounds a little darker than the last.',
+              'That ordering is more useful than the numbered one, because it lines up with what the ' +
+              'modes actually do.'],
+          practice: { do: 'Play lydian, then ionian, then mixolydian from the same root and hear each darken.',
+                      until: 'you can arrange three modes by brightness after hearing them.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'lydian', rootPc: 5, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'F lydian, the brightest' },
+                       loop: true, bpm: 60,
+                       note: 'The brightest of the seven. One note above the major scale.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm8-l2', strand: 'M', unit: 'M8', instrument: 'any',
+      title: 'The note that does the work',
+      icon: '💡',
+      criteria: ['M8.character'],
+      summary: 'Each mode has one degree that makes it what it is. Find it, voice it, and the mode arrives.',
+      cards: [
+        {
+          h: 'Dorian is the raised sixth',
+          p: ['Dorian is a minor scale with the sixth raised a semitone. That one note is the whole ' +
+              'difference, and it is why dorian sounds hopeful where natural minor sounds resigned.',
+              'Land on it and the mode announces itself; avoid it and you are playing minor.'],
+          practice: { do: 'Play the scale and stop on the sixth degree each time round.',
+                      until: 'you can find and hold the raised sixth without counting to it.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'dorian', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'pedal', title: 'A dorian, returning to the sixth' },
+                       loop: true, bpm: 58,
+                       note: 'The raised sixth is the note the pattern keeps landing on.' }
+        },
+        {
+          h: 'Mixolydian is the flattened seventh',
+          p: ['Mixolydian is major with a flat seventh. It loses the pull the leading note gave and ' +
+              'settles into something looser — which is why so much folk and rock sits in it.',
+              'One note away from major, and a completely different feeling.'],
+          practice: { do: 'Play major, then mixolydian, from the same root. Find the note that moved.',
+                      until: 'you can hear a flat seventh and name it as the thing that changed.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'mixolydian', rootPc: 2, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'D mixolydian' },
+                       loop: true, bpm: 62,
+                       note: 'Major, but the seventh is a fret lower.' }
+        },
+        {
+          h: 'Lydian is the raised fourth',
+          p: ['Lydian is major with a sharpened fourth — the one note above the major scale, and the ' +
+              'reason it sounds like it is floating.',
+              'It is the brightest of the seven and the easiest to overuse.'],
+          practice: { do: 'Play the scale and hold the fourth degree. Then play major and hold its fourth.',
+                      until: 'you can hear the raised fourth as the thing that lifts the scale.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'lydian', rootPc: 0, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'pedal', title: 'C lydian, returning to the fourth' },
+                       loop: true, bpm: 60,
+                       note: 'The raised fourth, over and over.' }
+        },
+        {
+          h: 'Phrygian is the flattened second',
+          p: ['Phrygian is minor with a flat second, sitting a semitone above the root. That interval ' +
+              'is what gives it the Spanish or middle-eastern colour people reach for it for.',
+              'It is the most immediately recognisable of the seven.'],
+          practice: { do: 'Play the root, then the second, back to back, and listen to how close they sit.',
+                      until: 'you can recognise phrygian from its first two notes.',
+                      mins: 6 },
+          playalong: { generate: { scaleId: 'phrygian', rootPc: 9, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'straight', title: 'A phrygian' },
+                       loop: true, bpm: 58,
+                       note: 'Root, then one fret up. That is the sound.' }
+        },
+        {
+          h: 'One note is enough',
+          p: ['Every mode in the list is one or two degrees away from major or minor. Naming that ' +
+              'degree is faster than memorising seven shapes and it transfers to any key.',
+              'Learn the characteristic note and the shapes look after themselves.'],
+          practice: { do: 'For each mode you know, say its characteristic degree before playing it.',
+                      until: 'you can name the characteristic note of four modes without hesitating.',
+                      mins: 8 },
+          playalong: { generate: { scaleId: 'aeolian', rootPc: 4, positionKind: 'box', positionIndex: 0,
+                                   sequence: 'in3s', title: 'E aeolian, in threes' },
+                       loop: true, bpm: 54,
+                       note: 'Aeolian is the natural minor. No characteristic note to add.' }
+        }
+      ]
+    },
+
+    {
+      id: 'm8-l3', strand: 'M', unit: 'M8', instrument: 'any',
+      title: 'Choosing one on purpose',
+      icon: '🎨',
+      criteria: ['M8.use'],
+      summary: 'Pick a mood, pick the mode that carries it, and write four bars that prove it.',
+      cards: [
+        {
+          h: 'A mode needs a chord under it',
+          p: ['Play dorian over a plain minor chord and it sounds like minor, because nothing is ' +
+              'holding the raised sixth in place. Modes need harmony that agrees with them.',
+              'That is why this unit comes after progressions rather than before.'],
+          practice: { do: 'Play the two-chord vamp, then play dorian over it and hold the sixth.',
+                      until: 'you can hear the mode survive rather than collapsing back into minor.',
+                      mins: 8 },
+          changes: { key: 2, bpm: 66, loop: true,
+                     chords: [{ chordId: 'min', rootPc: 2, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 }],
+                     note: 'i to IV. The major fourth chord is what holds dorian in place.' }
+        },
+        {
+          h: 'Bright, for something hopeful',
+          p: ['Lydian over a major chord gives brightness without sweetness. It is the sound of a ' +
+              'film score at the moment something opens up.',
+              'Choose it when the thing you are writing needs to lift.'],
+          practice: { do: 'Vamp on the two chords and play lydian across them, landing on the raised fourth.',
+                      until: 'you have four bars that sound like the mood rather than like a scale.',
+                      mins: 10 },
+          changes: { key: 0, bpm: 68, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'maj', rootPc: 2, beats: 4 }],
+                     note: 'I to II. The major second chord is what makes it lydian rather than major.' }
+        },
+        {
+          h: 'Loose, for something rolling',
+          p: ['Mixolydian over a major chord with a flat seventh above it is most of folk, blues and ' +
+              'rock. It moves without ever quite resolving.',
+              'Choose it when you want momentum rather than an ending.'],
+          practice: { do: 'Vamp the two chords and play mixolydian over them, leaning on the flat seventh.',
+                      until: 'you can play four bars that keep moving rather than arriving.',
+                      mins: 10 },
+          changes: { key: 7, bpm: 72, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 7, beats: 4 }, { chordId: 'maj', rootPc: 5, beats: 4 }],
+                     note: 'I to bVII. The flat seventh chord is the giveaway.' }
+        },
+        {
+          h: 'Dark, for something with an edge',
+          p: ['Phrygian over a minor chord with a flat second above it is dark in a way natural minor ' +
+              'is not. The semitone at the bottom does all of it.',
+              'Choose it sparingly. It is strong enough to become the only thing anyone hears.'],
+          practice: { do: 'Vamp and play phrygian, using the flat second as a way in rather than a resting place.',
+                      until: 'you can write four bars in it that do not sound like an exercise.',
+                      mins: 10 },
+          changes: { key: 4, bpm: 62, loop: true,
+                     chords: [{ chordId: 'min', rootPc: 4, beats: 4 }, { chordId: 'maj', rootPc: 5, beats: 4 }],
+                     note: 'i to bII. That second chord is what makes it phrygian.' }
+        },
+        {
+          h: 'Write the phrase',
+          p: ['Pick a mood, pick the mode, and write four bars over its vamp. Use the characteristic ' +
+              'note at least twice and finish on the root.',
+              'This is the point everything in the M strand was for: not knowing the modes, but ' +
+              'choosing one and having it do what you wanted.'],
+          practice: { do: 'Write four bars over one of the vamps and play them from memory.',
+                      until: 'someone else could name the mood without being told which mode you used.',
+                      mins: 12 },
+          changes: { key: 9, bpm: 66, loop: true,
+                     chords: [{ chordId: 'min', rootPc: 9, beats: 4 }, { chordId: 'maj', rootPc: 2, beats: 4 },
+                              { chordId: 'min', rootPc: 9, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 }],
+                     note: 'A dorian vamp to write over. i IV i bVII.' }
+        }
+      ]
+    }
+
   ];
 
   function lesson(id) {

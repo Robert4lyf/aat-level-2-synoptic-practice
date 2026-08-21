@@ -279,6 +279,39 @@
              bpm: spec.bpm || 72, beatsPerBar: 4, generated: true, fb: ex.fb };
   }
 
+  /* Build a progression: the boxes to draw and the notes to sound, from one
+     voicing search each so the two always agree. `key` turns chord roots into
+     scale degrees, which is the whole point of the unit — a progression read as
+     one, four, five says the same thing in every key. */
+  var DEGREE_NAMES = ['I', 'bII', 'II', 'bIII', 'III', 'IV', 'bV', 'V', 'bVI', 'VI', 'bVII', 'VII'];
+  function changesPlayable(ch, fb) {
+    var beat = 0, notes = [], boxes = '';
+    for (var i = 0; i < ch.chords.length; i++) {
+      var c = ch.chords[i];
+      var v = E.findVoicing(c.chordId, c.rootPc, fb);
+      if (!v) return null;
+      var span = c.beats || 4;
+      var label = '';
+      if (ch.key !== undefined) {
+        var deg = (((c.rootPc - ch.key) % 12) + 12) % 12;
+        label = DEGREE_NAMES[deg];
+        /* Minor chords are written in lower case, which is the convention the
+           lesson teaches rather than a decoration. */
+        if (c.chordId === 'min' || c.chordId === 'min7') label = label.toLowerCase();
+      }
+      boxes += '<div class="gtr-change">' +
+        (label ? '<span class="gtr-change-deg">' + esc(label) + '</span>' : '') +
+        R.chordBox(v, fb) +
+      '</div>';
+      v.notes.forEach(function (n) {
+        notes.push({ string: n.string, fret: n.fret, beat: beat, dur: span,
+                     hand: 'p', finger: n.string >= 4 ? 'p' : 'i' });
+      });
+      beat += span;
+    }
+    return { notes: notes, boxes: boxes };
+  }
+
   /* The fretboard a card is drawn and played on.
      A lesson about DADGAD has to show DADGAD whatever the player has their own
      guitar set to, so a card may declare `context: { tuning, capo }`. Without
@@ -321,6 +354,28 @@
         caption = el.caption || el.note || '';
       } else {
         figures += '<div class="gtr-fault">Exercise "' + esc(el.exercise) + '" is missing.</div>';
+      }
+    }
+    /* ── A progression ────────────────────────────────────────────────────
+       M7 is about hearing a sequence of chords as degrees rather than as
+       names, and nothing in the player could show a sequence at all — the plan
+       listed a `changes` element and it had never been built.
+
+       It renders as a row of chord boxes with their scale degree above each,
+       and plays as the same chords strummed in time. Both come from the SAME
+       voicing search, so the boxes and the sound cannot disagree — which is the
+       defect this project has hit twice already, at chord level and again at
+       card level. */
+    if (card.changes) {
+      var ch = card.changes;
+      var seq = changesPlayable(ch, fb);
+      if (seq) {
+        figures += '<div class="gtr-changes">' + seq.boxes + '</div>';
+        playable = { notes: seq.notes, bpm: ch.bpm || 76, loop: !!ch.loop,
+                     title: 'Progression', strum: true };
+        caption = ch.note || '';
+      } else {
+        figures += '<div class="gtr-fault">A chord in this progression has no playable voicing.</div>';
       }
     }
     if (card.chordbox) {

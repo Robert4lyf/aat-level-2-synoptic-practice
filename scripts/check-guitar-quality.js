@@ -59,6 +59,10 @@ const WORDS_PER_LESSON_MIN = 150;
    were supposed to be in the PLAYING and nothing ever asked for any. Every card
    with something to play now carries a practice block: what to do, and a target
    you can tell you have reached. `until` is the load-bearing half. */
+/* Element kinds that give the reader something to sound. Named once, because
+   three separate rules ask the question and they must agree. */
+const PLAYABLE_KINDS = ['tab', 'playalong', 'changes'];
+
 const PRACTICE_MIN_WORDS = 12;
 const PRACTICE_MAX_WORDS = 70;
 
@@ -145,6 +149,9 @@ const INSTRUMENTS = ['any', 'steel', 'nylon', 'electric'];
 function materialKey(el) {
   if (!el) return null;
   if (el.exercise) return el.exercise;
+  if (el.chords) {
+    return 'changes:' + el.chords.map(c => c.chordId + '/' + c.rootPc + '/' + (c.beats || 4)).join(',');
+  }
   if (el.generate) {
     const g = el.generate;
     return `generated:${g.scaleId}/${g.rootPc}/${g.positionKind || 'box'}` +
@@ -193,7 +200,14 @@ for (const lesson of D.LESSONS) {
       errors.push(`${at} ("${card.h}") is prose only. Every card carries something to play — ` +
                   `that is what makes this a lesson you do rather than one you read.`);
     }
-    if (els.includes('tab') || els.includes('playalong')) {
+    /* `changes` is playable too. It produces notes and a transport exactly as
+       the others do, and leaving it out of this list meant M7's progression
+       cards were exempt from the practice-block rule AND did not count toward
+       the lesson's playable example — two lessons made entirely of them were
+       reported as having nothing to play. A list of element kinds that has to
+       be kept in step with the player is the kind of thing that silently rots,
+       so it is derived from one place. */
+    if (PLAYABLE_KINDS.some(k => els.includes(k))) {
       lessonPlayables++;
 
       const pr = card.practice;

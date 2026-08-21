@@ -1532,3 +1532,55 @@ written so far measures a card, a lesson, or a file. None of them measures the
 COURSE — what it is like to move through it in order, at the pace it asks for.
 
 The two added here are the first that do.
+
+## Step 9g — M7 and M8
+
+Two units, six lessons, 30 cards. The M strand is finished.
+
+### 9g.1 M7 needed the capability that was predicted
+
+Before writing it, the note went in: M7 is about chord progressions, the player
+could draw one chord and no more, and the plan's `changes` element had never
+been built. That turned out to be exactly right.
+
+`changes` renders a row of chord boxes with the scale degree above each, and
+plays the same chords strummed in time. Both halves come from ONE voicing
+search, because this project has now had the drawn-and-sounded pair come apart
+twice — at chord level in step 6, and again at card level in step 9a. Making it
+structurally impossible is cheaper than checking for it a third time.
+
+Degrees are the point of the unit rather than decoration: a progression written
+as I V vi IV says the same thing in every key, which is what the whole number
+system buys.
+
+### 9g.2 M8 needed nothing
+
+The first unit in the project written entirely with what already existed:
+generated scale material from M5, degree vocabulary from M1, progressions from
+M7. Three lessons, no new element, no engine change.
+
+So the pattern from 9a — each new STRAND wants one capability — held for four
+units and then stopped, at the point where the strand ran out of new kinds of
+thing to show. That is the shape to expect for P2 and P3: P2 is arpeggio
+patterns over held chords, which the existing elements already cover.
+
+### 9g.3 A rule that had not kept up with the player
+
+Adding `changes` made two M7 lessons fail with "no playable example" — because
+the rule listing playable element kinds said `tab` and `playalong`, and a
+progression is neither.
+
+Worse than the error message: progression cards were also silently EXEMPT from
+the practice-block rule, because that rule sat inside the same condition. A new
+element kind quietly switched off two rules for every card using it — the same
+shape as generated cards going invisible in 9e, two steps earlier, and for the
+same reason: a rule keyed on a specific field rather than on the question it
+means to ask.
+
+The list is now named once and used by all three rules. A mutation removing
+`changes` from it fails immediately.
+
+### What is left
+
+P2 and P3 are the last two Phase 1 units, and both are technique rather than
+theory. Neither should need anything new.
