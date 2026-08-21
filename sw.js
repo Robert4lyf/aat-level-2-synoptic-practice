@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v101';
+var CACHE_VERSION = 'aat-l2-v102';
 
 /* Guitar's files are cached lazily, on first open, rather than precached with
    everything else — its engine, renderer, audio and stylesheet are dead weight
@@ -121,17 +121,35 @@ self.addEventListener('fetch', function (event) {
 
   /* Lazily-cached subject files: same stale-while-revalidate behaviour, but in
      the cache that survives a version bump. */
+  /* NETWORK FIRST, cache as the fallback.
+   *
+   * This was cache-first, with a background fetch updating the cache for next
+   * time. That is the standard stale-while-revalidate shape and it is wrong for
+   * this material. These files are the course CONTENT — lessons, exercises, the
+   * syllabus — and they change on every content release, so serving the cached
+   * copy meant every reader ran one deploy behind, permanently. A whole unit
+   * shipped and the lesson list still said "Not written yet", because the copy
+   * being served predated it.
+   *
+   * The versioned refresh in refreshLazyCache() was supposed to cover this and
+   * cannot on its own: it only runs on activate, activate only runs on a
+   * CACHE_VERSION bump, and remembering to bump the version for a content
+   * change is exactly the discipline that fails. Three content releases went
+   * out without one.
+   *
+   * So: ask the network, fall back to the cache when it does not answer. A
+   * round trip on a handful of small files is worth paying to never again ship
+   * content that readers cannot see. Offline is unaffected — the fallback is
+   * the same cache, still excluded from the version sweep. */
   if (LAZY_PATTERN.test(req.url)) {
     event.respondWith(
       caches.open(LAZY_CACHE).then(function (cache) {
-        return cache.match(req).then(function (hit) {
-          var net = fetch(req).then(function (res) {
-            if (res && res.status === 200) cache.put(req, res.clone());
-            return res;
-          }).catch(function () { return null; });
-          if (hit) return hit;
-          return net.then(function (res) {
-            return res || new Response('', { status: 504, statusText: 'Offline' });
+        return fetch(req).then(function (res) {
+          if (res && res.status === 200) cache.put(req, res.clone());
+          return res;
+        }).catch(function () {
+          return cache.match(req).then(function (hit) {
+            return hit || new Response('', { status: 504, statusText: 'Offline' });
           });
         });
       })

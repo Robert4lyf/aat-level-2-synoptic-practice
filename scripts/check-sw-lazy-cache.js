@@ -196,6 +196,48 @@ const req = (url) => ({ url, method: 'GET', mode: 'cors' });
     notes.push('Offline after the bump, guitar files are still served from cache.');
   }
 
+  /* ── 5. THE OTHER TRAP: a cached copy must never beat a live one ────────
+     Surviving the version sweep was half the problem. The other half shipped
+     for three releases: the handler was cache-first, so a reader with anything
+     in the lazy cache got that copy and the fresh one only landed on the NEXT
+     load. Since these files are the course content, a whole unit could ship and
+     the lesson list would still say "Not written yet".
+
+     Nothing above catches it. Every earlier assertion is about what ends up IN
+     the cache, and the cache was always correct — it was what got SERVED that
+     was a release behind. So: seed the cache with a known-stale body, put a
+     different body on the network, and require the network's. */
+  {
+    const ctx3 = makeEnv();
+    const url = 'https://example.test/guitar-learn-data.js';
+    const cache = await ctx3.caches.open('guitar-lazy-v1');
+    await cache.put(url, { _body: 'STALE-last-release' });
+    ctx3.fetch = async () => ({ _body: 'FRESH-from-network', status: 200, clone() { return this; } });
+    ctx3.self.fetch = ctx3.fetch;
+
+    const ev5 = await fire(ctx3, 'fetch', { request: req(url) });
+    const served = await ev5._response;
+    if (!served) {
+      errors.push('a lazy request produced no response at all.');
+    } else if (served._body !== 'FRESH-from-network') {
+      errors.push(`with a live network, the worker served "${served._body}" instead of the fresh copy. ` +
+                  `Cache-first on content means every reader runs one release behind — a unit can ship ` +
+                  `and the lesson list still say it is not written.`);
+    } else {
+      notes.push('A live network beats the cached copy, so content is never a release behind.');
+    }
+
+    /* And the fresh copy replaces the stale one, so the next offline load is
+       also current rather than reverting to what was there before. */
+    const after = await (await ctx3.caches.open('guitar-lazy-v1')).match(url);
+    if (!after || after._body !== 'FRESH-from-network') {
+      errors.push(`after serving from the network the cache still holds "${after && after._body}". ` +
+                  `The next offline load would go back to the stale copy.`);
+    } else {
+      notes.push('The fresh copy is written back, so the next offline load is current too.');
+    }
+  }
+
   console.log(`${BOLD}service worker — lazy cache${RESET}\n`);
   notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
   console.log('');

@@ -1203,3 +1203,129 @@ So the estimate holds for units within the shape already built, and each new
 STRAND is likely to want one capability the previous ones did not. M5 and M7
 will lean on the generator rather than authored exercises, which is a different
 kind of work again.
+
+## Step 9b — "it's still saying M3 not written yet"
+
+Reported after M3 merged and deployed. M3 was in the source, ready, with four
+lessons. The reader was being served a copy of `guitar-learn-data.js` from
+before it existed.
+
+### 9b.1 The cause, and how long it had been running
+
+The lazy cache handler was cache-first with a background revalidate — the
+standard stale-while-revalidate shape:
+
+    if (hit) return hit;                    // and quietly refresh for next time
+
+That is right for assets and wrong for content. These files ARE the course:
+lessons, exercises, the syllabus. Serving the cached copy meant every reader ran
+one release behind, permanently, with the fresh copy landing only on the load
+after the one that fetched it.
+
+`refreshLazyCache()` was written in step 7 to cover exactly this and cannot on
+its own. It runs on activate, activate runs on a `CACHE_VERSION` bump, and
+`CACHE_VERSION` had not moved since PR #177 — three content releases earlier.
+Remembering to bump a cache version for a content change is precisely the
+discipline that fails, and it failed three times in a row without a symptom
+either of us could see.
+
+**Every piece of feedback given between #177 and now was against a build one
+release behind.** That is worth stating plainly: some of it may have been about
+defects already fixed, and some of what looked fixed may only have looked so.
+
+### 9b.2 The fix
+
+Network first, cache as the fallback. A round trip on a handful of small files
+is worth paying to never again ship content readers cannot see. Offline is
+unaffected: the fallback is the same unversioned cache, still excluded from the
+version sweep.
+
+`CACHE_VERSION` bumped to v102, which is what moves anyone already carrying the
+old worker onto the new one.
+
+### 9b.3 The gate that existed and could not have caught it
+
+`check-sw-lazy-cache.js` had four assertions, all green throughout: guitar is
+not precached, it caches on first open, it survives a version bump, and it is
+served offline afterwards.
+
+Every one is about what ends up IN the cache. The cache was always correct. What
+was wrong was what got SERVED, and nothing asked that question. The new
+assertion seeds the cache with a known-stale body, puts a different body on the
+network, and requires the network's — plus that the fresh copy is written back,
+so the next offline load is current too.
+
+### 9b.4 And a toast that announced work it never did
+
+`SW_UPDATED` showed "Updating to the latest version…" while nothing reloaded.
+The new shell only applies on the next load, so the message described something
+that was not happening — visible in a screenshot from four steps ago and read
+past every time. Now "Update ready — reload to apply". Reloading automatically
+would be worse: it discards whatever the reader was in the middle of without
+asking.
+
+### What 9b says
+
+Three of the last four defects have been in delivery rather than in logic: the
+cursor ahead of the sound, the exercise repeated across cards, and now content
+that shipped and could not be seen. The engine has been the reliable part; what
+keeps breaking is the path between a correct file and a reader's eyes.
+
+Gates written against the code cannot see any of it. Each of these needed either
+a person looking at the running app, or a check written against the SHAPE OF THE
+DELIVERY — what gets served, what gets drawn, what gets read back — rather than
+against the values a function returns.
+
+## Step 9c — a demonstration is not a drill
+
+Reported against the DADGAD card that puts two chords side by side: the gap
+between them stretched and shrank with the tempo slider, so at 108 bpm the
+comparison went past too fast to hear.
+
+### 9c.1 The distinction the data was missing
+
+Every exercise was a drill. A drill has a tempo — playing it faster is the
+point, and the reader sets it. Two chords placed side by side so they can be
+compared is not that: the gap between them is staging, not rhythm, and a slider
+that changes it is changing the only thing the card is about.
+
+So an exercise may now carry `demo: true` and `beatSeconds`. One beat lasts that
+many seconds whatever the reader has set, and the player offers no tempo control
+for the card — a disabled slider would be worse than none, since it invites the
+reader to wonder what they did wrong. Two exercises qualify, both of the
+"compare these two" shape, and they are the only two in the module with stacked
+chords.
+
+### 9c.2 A contaminated measurement, which is a third kind of bad gate
+
+The first version of the check set the reader's tempo on the workshop bench,
+walked to the demonstration card, and timed the gap at 40 bpm and at 200. With
+the bug reinstated it measured 1262ms against 1245ms and passed.
+
+The assertion was right and the measurement was not. Every non-demo card adopts
+its own prescribed tempo on arrival — a feature added two steps earlier — so
+walking through the lesson overwrote the setting, and the demonstration always
+played at whatever the previous card prescribed. The check was varying an input
+that never reached the thing under test.
+
+That is distinct from the three vacuous gates before it. Those compared a value
+against itself. This one measured a real quantity, correctly, while the
+independent variable was being silently discarded on the way in. Both produce a
+green tick that means nothing; only the second one looks like it is working.
+
+Fixed by setting the tempo on the card immediately before the demonstration and
+stepping forward one, which is the only route where the setting survives.
+
+### 9c.3 A corrupted baseline, and how it announced itself
+
+Partway through the mutation run, a command hit its time limit between applying
+a mutation and restoring the file. The mutated line stayed, a later snapshot
+captured it as "clean", and the next run reported the clean build failing its
+own gate.
+
+That failure was the useful part. A gate that fails on what is supposed to be
+clean code is either a broken gate or a broken baseline, and both need finding
+before any mutation result can be believed. The mutation runs now verify the
+baseline carries the changes under test before trusting a single result, and
+long checks run one per command so a timeout cannot land between a mutation and
+its restore.

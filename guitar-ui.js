@@ -187,6 +187,9 @@
     var card = lesson.cards[S.cardIndex];
     var el = card && (card.tab || card.playalong);
     var ex = el && XD.exercise(el.exercise);
+    /* A demonstration's pace is its own and is not the reader's tempo, so it
+       neither adopts nor overwrites the setting. */
+    if (ex && ex.demo) { save(); return; }
     var bpm = (el && el.bpm) || (ex && ex.bpm);
     /* A card prescribes a starting tempo, and adopting it is right until the
        player has said otherwise. Someone working through the unit at 40 because
@@ -272,7 +275,12 @@
         var notes = byBeat(ex.notes);
         figures += R.tab({ notes: notes, title: ex.title,
                            beatsPerBar: ex.beatsPerBar || 4 }, fb);
-        playable = { notes: notes, bpm: el.bpm || ex.bpm || data.settings.tempo,
+        /* A demonstration has no tempo: its bpm is derived from the fixed
+           seconds-per-beat it declares, so the gap between two chords being
+           compared is the same whatever the reader has the slider set to. */
+        var demoBpm = (ex.demo && ex.beatSeconds > 0) ? 60 / ex.beatSeconds : 0;
+        playable = { notes: notes, demo: !!ex.demo,
+                     bpm: demoBpm || el.bpm || ex.bpm || data.settings.tempo,
                      loop: !!el.loop, title: ex.title };
         caption = el.caption || el.note || '';
       } else {
@@ -368,6 +376,19 @@
      so the tempo control someone learned in one is the same control in the
      other — and there is one place to fix when it is wrong. */
   function transportHtml(playable) {
+    /* A demonstration offers no tempo control, because there is no tempo to
+       control. Showing a disabled slider would be worse than showing none: it
+       invites the reader to wonder what they did wrong. */
+    if (playable && playable.demo) {
+      return '<div class="gtr-transport">' +
+          '<button class="gtr-play" id="gtrPlay" type="button">▶ Play</button>' +
+          '<button class="gtr-btn" id="gtrStop" type="button">■ Stop</button>' +
+          '<label class="gtr-inline"><input id="gtrCountIn" type="checkbox"' +
+            (data.settings.countIn > 0 ? ' checked' : '') + '> Count in</label>' +
+        '</div>' +
+        '<p class="gtr-detail">Played at a fixed pace so the two can be compared.</p>' +
+        '<p class="gtr-detail" id="gtrAudioNote"></p>';
+    }
     /* Always the working tempo, never the card's own number. A card prescribes
        a starting tempo, but the moment it is displayed from one place and
        played from another the two disagree — the box would read 44 while the
@@ -714,7 +735,10 @@
       fb = ex.fb;
     }
 
-    transport.load(notes, fb, data.settings.tempo);
+    var bpm = (S.screen === 'lesson' && _cardPlayable && _cardPlayable.demo)
+      ? _cardPlayable.bpm
+      : data.settings.tempo;
+    transport.load(notes, fb, bpm);
     applyLoop();
     transport.onEnd = stopCursor;
     transport.play({ countInBeats: countInBeats() });

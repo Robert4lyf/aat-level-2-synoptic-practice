@@ -19,6 +19,18 @@
  *
  * `bpm` is a starting tempo, not a target. Every one of these is more useful
  * slow, and the unit says so in the prose rather than here.
+ *
+ * DRILLS AND DEMONSTRATIONS are different things and the difference is marked.
+ * A drill has a tempo: playing it faster is the point, and the reader sets it.
+ * A demonstration is two chords put side by side so they can be compared, and
+ * it has no tempo at all — the gap between them is staging, not rhythm. Left
+ * as a drill, that gap stretched and shrank with a tempo slider that meant
+ * nothing for it, so at 108 bpm the comparison went past too fast to hear.
+ *
+ * A demonstration carries `demo: true` and `beatSeconds`: one beat lasts that
+ * many seconds whatever the reader has set, and the player offers no tempo
+ * control for it. Use it only where the timing genuinely carries no musical
+ * information.
  */
 (function (root, factory) {
   'use strict';
@@ -770,18 +782,18 @@
       ]
     },
     'm3-dadgad-shape': {
-      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      kind: 'authored', curated: true, demo: true, beatSeconds: 1.4, beatsPerBar: 2,
       title: 'A familiar shape, a different chord',
       tags: ['M3', 'tuning', 'DADGAD'],
       notes: [
-        { string: 4, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'p' },
-        { string: 3, fret: 2, beat: 0, dur: 2, hand: 'p', finger: 'i' },
-        { string: 2, fret: 3, beat: 0, dur: 2, hand: 'p', finger: 'm' },
-        { string: 1, fret: 2, beat: 0, dur: 2, hand: 'p', finger: 'a' },
-        { string: 4, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'p' },
-        { string: 3, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'i' },
-        { string: 2, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'm' },
-        { string: 1, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'a' }
+        { string: 4, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 2, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 3, beat: 0, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 2, beat: 0, dur: 1, hand: 'p', finger: 'a' },
+        { string: 4, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'a' }
       ]
     },
     'm3-dadgad-find': {
@@ -815,18 +827,18 @@
       ]
     },
     'm3-capo-shape': {
-      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      kind: 'authored', curated: true, demo: true, beatSeconds: 1.4, beatsPerBar: 2,
       title: 'The same shape, two frets higher',
       tags: ['M3', 'capo'],
       notes: [
-        { string: 5, fret: 2, beat: 0, dur: 2, hand: 'p', finger: 'p' },
-        { string: 4, fret: 4, beat: 0, dur: 2, hand: 'p', finger: 'i' },
-        { string: 3, fret: 4, beat: 0, dur: 2, hand: 'p', finger: 'm' },
-        { string: 2, fret: 4, beat: 0, dur: 2, hand: 'p', finger: 'a' },
-        { string: 5, fret: 2, beat: 4, dur: 2, hand: 'p', finger: 'p' },
-        { string: 4, fret: 4, beat: 4, dur: 2, hand: 'p', finger: 'i' },
-        { string: 3, fret: 3, beat: 4, dur: 2, hand: 'p', finger: 'm' },
-        { string: 2, fret: 4, beat: 4, dur: 2, hand: 'p', finger: 'a' }
+        { string: 5, fret: 2, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 4, beat: 0, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 4, beat: 0, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 4, beat: 0, dur: 1, hand: 'p', finger: 'a' },
+        { string: 5, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'p' },
+        { string: 4, fret: 4, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 3, fret: 3, beat: 1, dur: 1, hand: 'p', finger: 'm' },
+        { string: 2, fret: 4, beat: 1, dur: 1, hand: 'p', finger: 'a' }
       ]
     },
     'm3-capo-pitch': {

@@ -86,7 +86,7 @@ function expectedTempo(lesson, index) {
   ].filter(p => fs.existsSync(p));
   const browser = await chromium.launch(CANDIDATES.length ? { executablePath: CANDIDATES[0] } : {});
 
-  let cardsSeen = 0, figuresSeen = 0;
+  let cardsSeen = 0, figuresSeen = 0, demoCards = 0;
   try {
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
@@ -147,10 +147,24 @@ function expectedTempo(lesson, index) {
           errors.push(`${at}: ${seen.paras} paragraph(s) rendered, ${(card.p || []).length} in the data.`);
         }
 
-        const want = expectedTempo(lesson, i);
-        if (want !== undefined && Number(seen.tempo) !== want) {
-          errors.push(`${at}: the tempo box reads ${seen.tempo} where the exercise prescribes ${want}. ` +
-                      `The card and the transport are reading different numbers.`);
+        /* A demonstration must offer no tempo control at all — its pace is
+           fixed so two chords can be compared, and a slider that changed the
+           gap would be changing the only thing the card is about. */
+        const el0 = card.tab || card.playalong;
+        const ex0 = el0 && X.exercise(el0.exercise);
+        if (ex0 && ex0.demo) {
+          if (seen.tempo !== undefined) {
+            errors.push(`${at} is a demonstration but offers a tempo control reading ${seen.tempo}. ` +
+                        `Its pace is fixed; a slider here would stretch the comparison it exists to make.`);
+          } else {
+            demoCards++;
+          }
+        } else {
+          const want = expectedTempo(lesson, i);
+          if (want !== undefined && Number(seen.tempo) !== want) {
+            errors.push(`${at}: the tempo box reads ${seen.tempo} where the exercise prescribes ${want}. ` +
+                        `The card and the transport are reading different numbers.`);
+          }
         }
 
         const last = i === lesson.cards.length - 1;
@@ -410,6 +424,87 @@ function expectedTempo(lesson, index) {
                  `the figure and the transport.`);
     }
 
+    /* ── A demonstration's pace does not move with the tempo setting ──────
+       The point of these cards is two chords side by side, close enough
+       together to compare. That gap used to be beats, so the tempo slider
+       stretched and shrank it — at 108 bpm the comparison went past too fast to
+       hear, and the slider was changing the only thing the card is about.
+
+       Measured, not inferred: set the reader's tempo to one extreme, play, time
+       the gap between the first and second chord lighting; set it to the other
+       extreme and do it again. The two must agree. Timing it in the browser
+       rather than reading the transport's bpm is deliberate — bpm is what the
+       fix changes, so asserting on it would be asking the fix to confirm
+       itself. */
+    const demoCard = (() => {
+      for (const lesson of D.LESSONS) {
+        for (let i = 0; i < lesson.cards.length; i++) {
+          const el = lesson.cards[i].tab || lesson.cards[i].playalong;
+          const ex = el && X.exercise(el.exercise);
+          if (ex && ex.demo) return { lesson: lesson.id, index: i, ex };
+        }
+      }
+      return null;
+    })();
+
+    if (demoCard) {
+      const gapAt = async (tempo) => {
+        /* Set the tempo on the card IMMEDIATELY BEFORE the demonstration, then
+           step forward one.
+
+           Setting it on the workshop and navigating here does not work, and
+           finding that out is what this comment is for: every non-demo card
+           adopts its own prescribed tempo on arrival, so walking through the
+           lesson overwrites whatever was set and the demo always played at the
+           previous card's number. The first version of this check did exactly
+           that, measured 1262ms against 1245ms with the bug reinstated, and
+           passed — a contaminated measurement rather than a wrong assertion. */
+        await page.click(`[data-lesson="${demoCard.lesson}"]`);
+        await page.waitForSelector('.gtr-card', { timeout: 8000 });
+        for (let k = 0; k < demoCard.index - 1; k++) { await page.click('#gtrNext'); await page.waitForTimeout(60); }
+        await page.waitForSelector('#gtrTempoNum', { timeout: 8000 });
+        await page.fill('#gtrTempoNum', String(tempo));
+        await page.dispatchEvent('#gtrTempoNum', 'change');
+        await page.waitForTimeout(80);
+        await page.click('#gtrNext');
+        await page.waitForTimeout(120);
+        await page.uncheck('#gtrCountIn').catch(() => {});
+        await page.click('#gtrPlay');
+        const ms = await page.evaluate(async () => {
+          const seen = [];
+          const t0 = performance.now();
+          let last = '';
+          while (performance.now() - t0 < 6000 && seen.length < 2) {
+            const lit = [...document.querySelectorAll('.gtr-note.is-playing')]
+              .map(e => e.getAttribute('data-i')).sort().join(',');
+            if (lit && lit !== last) { seen.push(performance.now() - t0); last = lit; }
+            await new Promise(r => setTimeout(r, 15));
+          }
+          return seen.length === 2 ? Math.round(seen[1] - seen[0]) : null;
+        });
+        await page.click('#gtrStop');
+        await page.click('#gtrBack');
+        await page.waitForSelector('[data-lesson]', { timeout: 8000 });
+        return ms;
+      };
+
+      const slow = await gapAt(40);
+      const fast = await gapAt(200);
+      if (slow === null || fast === null) {
+        errors.push(`could not time the two chords on ${demoCard.lesson} card ${demoCard.index + 1} ` +
+                    `(slow=${slow}, fast=${fast}); the demonstration may not be playing.`);
+      } else if (Math.abs(slow - fast) > 250) {
+        errors.push(`${demoCard.lesson} card ${demoCard.index + 1} is a demonstration, but the gap ` +
+                    `between its two chords was ${slow}ms at 40 bpm and ${fast}ms at 200 bpm. ` +
+                    `The tempo setting is stretching the comparison the card exists to make.`);
+      } else {
+        const want = Math.round((demoCard.ex.beatSeconds || 0) * 1000);
+        notes.push(`Demonstration gap: ${slow}ms at 40 bpm, ${fast}ms at 200 bpm ` +
+                   `(declared ${want}ms) — fixed, as it should be.`);
+      }
+      await page.check('#gtrCountIn').catch(() => {});
+    }
+
     /* Progress survives a reload. */
     const before = await page.evaluate(() =>
       Object.keys((JSON.parse(localStorage.getItem('prep_v2_guitar') || '{}').lessons) || {}).length);
@@ -438,7 +533,8 @@ function expectedTempo(lesson, index) {
     server.close();
   }
 
-  notes.unshift(`${cardsSeen} cards opened across ${D.LESSONS.length} lessons; ${figuresSeen} drew a figure.`);
+  notes.unshift(`${cardsSeen} cards opened across ${D.LESSONS.length} lessons; ${figuresSeen} drew a figure; ` +
+                `${demoCards} were demonstrations with no tempo control.`);
 
   console.log(`${BOLD}guitar lessons${RESET}\n`);
   notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
