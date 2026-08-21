@@ -247,6 +247,38 @@
      element is playable, the notes the transport should be given — so the
      player never has to look the exercise up a second time and cannot end up
      showing one thing and playing another. */
+  /* A card may name a scale shape instead of writing its notes out, and the
+     engine produces them. That is what the generator was built for in step 4,
+     and until M5 no lesson had ever called it — the whole M strand is scale
+     work, and writing five box positions by hand for every key would be both
+     enormous and a worse source of truth than the shape itself.
+ 
+     ONE THING IS ADDED HERE that the generator does not do: picking fingers.
+     It returns notes with hand 'f' and no finger, so a generated run would show
+     no i/m letters at all — in a fingerstyle course whose fifth lesson is about
+     never repeating a finger. Strict alternation is applied over the run, which
+     is what the course teaches and what any player would do with a scale. */
+  function generated(spec) {
+    var ex = E.generateExercise({
+      scaleId: spec.scaleId, rootPc: spec.rootPc,
+      positionKind: spec.positionKind || 'box', positionIndex: spec.positionIndex || 0,
+      sequence: spec.sequence || 'straight', descending: !!spec.descending,
+      rhythm: spec.rhythm || ''
+    });
+    if (ex.fault) return null;
+    var pair = spec.fingers || ['i', 'm'];
+    var k = 0, lastBeat = null;
+    var notes = ex.notes.map(function (n) {
+      /* Notes sharing a beat are one chord and take one finger each in order;
+         only a NEW beat advances the alternation. */
+      if (lastBeat !== null && n.beat !== lastBeat) k++;
+      lastBeat = n.beat;
+      return Object.assign({}, n, { hand: 'p', finger: pair[k % pair.length] });
+    });
+    return { notes: notes, title: ex.meta ? spec.title || 'Scale shape' : 'Scale shape',
+             bpm: spec.bpm || 72, beatsPerBar: 4, generated: true, fb: ex.fb };
+  }
+
   /* The fretboard a card is drawn and played on.
      A lesson about DADGAD has to show DADGAD whatever the player has their own
      guitar set to, so a card may declare `context: { tuning, capo }`. Without
@@ -270,9 +302,13 @@
 
     if (card.tab || card.playalong) {
       var el = card.tab || card.playalong;
-      var ex = XD.exercise(el.exercise);
+      var ex = el.generate ? generated(el.generate) : XD.exercise(el.exercise);
       if (ex) {
         var notes = byBeat(ex.notes);
+        /* A generated exercise carries the fretboard it was built on, for the
+           same reason a card does: the notes and the neck they were chosen for
+           must not come apart. */
+        if (ex.fb) fb = ex.fb;
         figures += R.tab({ notes: notes, title: ex.title,
                            beatsPerBar: ex.beatsPerBar || 4 }, fb);
         /* A demonstration has no tempo: its bpm is derived from the fixed

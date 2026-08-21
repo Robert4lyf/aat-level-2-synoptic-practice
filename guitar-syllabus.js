@@ -120,7 +120,7 @@
     { id: 'P1', title: 'The hand',                 strand: 'P', phase: 1, ready: true },
     { id: 'M3', title: 'The fretboard',            strand: 'M', phase: 1, ready: true },
     { id: 'P2', title: 'Arpeggio patterns',        strand: 'P', phase: 1, ready: false },
-    { id: 'M5', title: 'Pentatonics and blues',    strand: 'M', phase: 1, ready: false },
+    { id: 'M5', title: 'Pentatonics and blues',    strand: 'M', phase: 1, ready: true },
     { id: 'P3', title: 'Voicing and balance',      strand: 'P', phase: 1, ready: false },
     { id: 'M7', title: 'Keys and the number system', strand: 'M', phase: 1, ready: false },
     { id: 'M8', title: 'Modes',                    strand: 'M', phase: 1, ready: false }

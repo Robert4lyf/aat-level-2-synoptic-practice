@@ -1397,3 +1397,60 @@ browser DRAWS — 115 units wide is correct in the markup and wrong on the scree
 The new assertions measure the drawn result: real bounding boxes for overlap
 across all 398 fingering labels, and drawn width against the figure's own
 viewBox for magnification.
+
+## Step 9e — M5, and the first unit built from the generator
+
+Three lessons, 15 cards, and not one written-out exercise. A card names a scale,
+a position and a sequence, and guitar-engine.js produces the notes.
+
+### 9e.1 The generator had never been called by a lesson
+
+It was built in step 4 and used only by the workshop bench. M5 is the first
+content to depend on it, which is why it went next: the whole M strand is scale
+work, and if that plumbing did not hold, better to find out at one unit than at
+three. Writing five box positions by hand in every key would be enormous and a
+worse source of truth than the shape — change the shape once and every card
+follows.
+
+One thing had to be added. The generator returns notes with `hand: 'f'` and no
+finger, so a generated run would print no picking letters at all — in a
+fingerstyle course whose fifth lesson is about never repeating a finger. Strict
+i-m alternation is applied over the run, advancing per beat rather than per note
+so a chord takes one finger per voice rather than skipping the pattern forward.
+
+### 9e.2 A pass that came from not looking
+
+With M5 written, `check-guitar-quality.js` went green and reported:
+
+    55 card slots draw on 54 distinct exercises
+
+The module held 70 cards. Every rule keyed on `el.exercise`, and a generated
+card has a spec instead of an id, so all 15 were skipped in silence — invisible
+to the repetition limit, to the playability sweep, and to the count in the note
+line that made it look thorough.
+
+This is the third time the same shape has appeared: the vacuous assertions
+compared a value against itself, the tuning check measured the wrong instrument,
+and this one simply did not see the material. All three reported success. The
+common factor is that none of them would look different if the thing they check
+had vanished entirely — which is the question worth asking of any green tick:
+*what would this say if there were nothing here at all?*
+
+Material now has a key whether it is written out or generated, and every rule is
+keyed on that. The moment it was, the repetition rule failed — `minPent box 1
+straight` was used three times, twice in one lesson. A real defect, of exactly
+the kind a reader caught by hand two steps ago, found by a rule that had been
+switched off by accident.
+
+### 9e.3 Cost, revised again
+
+M3 needed one new player capability (card context). M5 needed another (generated
+material, plus fingering the generator does not supply). Two units in a row, so
+the pattern from 9a holds: each new STRAND wants something the previous ones did
+not.
+
+M7 and M8 should be the first genuinely cheap units — both are scale work, both
+will use the generator, and neither obviously needs anything M5 has not just
+paid for. If they come in without a new capability, the plan's "mostly writing"
+estimate is finally true; if they do not, the estimate was wrong and the
+remaining units should be re-scoped.
