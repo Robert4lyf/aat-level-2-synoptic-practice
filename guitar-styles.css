@@ -150,6 +150,7 @@ body[data-subject="guitar"] .gtr-tab-fret   { fill: var(--gtr-ink); font-size: 9
 body[data-subject="guitar"] .gtr-tab-capo   { fill: var(--gtr-root); font-size: 9px; font-weight: 600; }
 body[data-subject="guitar"] .gtr-tab-pima,
 body[data-subject="guitar"] .gtr-tab-tech   { fill: var(--gtr-muted); font-size: 8px; font-style: italic; }
+body[data-subject="guitar"] .gtr-tab-mark   { fill: var(--gtr-root); font-size: 9px; font-weight: 700; }
 
 /* ── The screen around the figures ────────────────────────────────────────
    Everything above styles what the renderer draws. Everything below styles the

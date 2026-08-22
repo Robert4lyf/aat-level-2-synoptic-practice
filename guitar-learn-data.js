@@ -1046,6 +1046,408 @@
 ,
 
     /* ═════════════════════════════════════════════════════════════════════
+       P2 — Arpeggio patterns
+
+       The unit the implementation plan reserved a capability for and said was
+       "deliberately not stubbed": the picking-hand branch of the generator.
+       That turned out to be the right call for a reason worth recording.
+
+       Twenty cards of "this pattern over those chords" written by hand is
+       several hundred note literals whose whole content is a chord shape the
+       engine already knows and a finger order four characters long. And the
+       shape drawn in the box and the notes printed in the tab would be two
+       separate claims about the same chord — a disagreement this module has
+       now had to fix twice, once at chord level and once at card level.
+
+       So a pattern names ROLES rather than strings: p takes the lowest
+       sounding string, i, m and a take the top three. That is also exactly the
+       claim these lessons make out loud — p-i-m-a is one movement, not one
+       movement per chord — so the encoding and the teaching agree.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'p2-l1', strand: 'P', unit: 'P2', instrument: 'any',
+      title: 'Four fingers over one chord',
+      icon: '🌀',
+      criteria: ['P2.pattern'],
+      summary: 'p-i-m-a and p-a-m-i, held steady over a chord that does not move.',
+      cards: [
+        {
+          h: 'The thumb goes first',
+          p: ['An arpeggio is a chord played one note at a time. Hold the shape, sound the bass with ' +
+              'p, then let i, m and a take the three strings above it in order.',
+              'The fretting hand does nothing but hold. Everything difficult here belongs to the ' +
+              'picking hand, which is why the chord is one you already know.'],
+          practice: { do: 'Hold the shape and play the pattern eight times without lifting a fretting finger.',
+                      until: 'the four notes are the same length and the same loudness as each other.',
+                      mins: 8 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pima', chords: [{ chordId: 'maj', rootPc: 0, times: 4 }],
+                               title: 'p-i-m-a over C', bpm: 52 },
+                       loop: true,
+                       note: 'One note per beat. Slow enough that none of the four is rushed.' }
+        },
+        {
+          h: 'The same movement on a different shape',
+          p: ['Move to a minor chord and the pattern does not change. p still takes the bass, and i, ' +
+              'm and a still take the top three strings — different notes, identical movement.',
+              'That is the whole reason for learning patterns rather than pieces. One movement covers ' +
+              'every chord you will ever hold.'],
+          practice: { do: 'Play four rounds on the minor shape, then four on the previous chord, back and forth.',
+                      until: 'the change of chord makes no audible difference to the picking hand.',
+                      mins: 8 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pima', chords: [{ chordId: 'min', rootPc: 9, times: 4 }],
+                               title: 'p-i-m-a over Am', bpm: 52 },
+                       loop: true,
+                       note: 'Same four fingers, same order, a different chord under them.' }
+        },
+        {
+          h: 'Changing chord without dropping a beat',
+          p: ['Now the chord moves every two rounds. The fretting hand has to arrive before p does, ' +
+              'which means it leaves the old shape a fraction early.',
+              'A gap at the change is the fretting hand travelling on time instead of ahead of time. ' +
+              'Slow down until the gap disappears rather than playing through it.'],
+          practice: { do: 'Play the four chords round twice, then drop the tempo until no change has a gap.',
+                      until: 'a listener could not tell you where one chord ends and the next begins.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pima',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'maj', rootPc: 7, times: 2 },
+                                        { chordId: 'min', rootPc: 9, times: 2 },
+                                        { chordId: 'maj', rootPc: 5, times: 2 }],
+                               title: 'p-i-m-a through four chords', bpm: 50 },
+                       loop: true,
+                       note: 'Two rounds each. The fretting hand moves during the last note, not after it.' }
+        },
+        {
+          h: 'The same four fingers backwards',
+          p: ['p-a-m-i is the same set of strings in the opposite order: bass, then top string, then ' +
+              'down through m to i.',
+              'It is harder than it looks, because a is the weakest finger and it now carries the note ' +
+              'directly after the thumb, where any unevenness is most audible.'],
+          practice: { do: 'Play it slowly and listen only to the note a plays. Match it to the others.',
+                      until: 'the second note of each round is neither weaker nor later than the rest.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pami', chords: [{ chordId: 'maj', rootPc: 0, times: 4 }],
+                               title: 'p-a-m-i over C', bpm: 50 },
+                       loop: true,
+                       note: 'Bass, top, and back down. Listen to the note after the thumb.' }
+        },
+        {
+          h: 'Two shapes, one pattern, no gap',
+          p: ['Put the backwards pattern over a chord change. The demand is the same as before and it ' +
+              'lands on a different finger, so it catches a different fault.',
+              'Alternate the two patterns over these chords until neither feels like the harder one.'],
+          practice: { do: 'Play the pair with p-a-m-i, then with p-i-m-a, four rounds of each.',
+                      until: 'you can start either pattern on either chord without thinking about it.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pami',
+                               chords: [{ chordId: 'maj', rootPc: 7, times: 2 },
+                                        { chordId: 'min', rootPc: 4, times: 2 }],
+                               title: 'p-a-m-i over G and Em', bpm: 52 },
+                       loop: true,
+                       note: 'Two rounds each. The bass string moves; the fingers do not.' }
+        }
+      ]
+    },
+
+    {
+      id: 'p2-l2', strand: 'P', unit: 'P2', instrument: 'any',
+      title: 'Through the middle, and both at once',
+      icon: '🔁',
+      criteria: ['P2.pattern'],
+      summary: 'Six-note patterns, a repeated finger that has to stay even, and the pinch.',
+      cards: [
+        {
+          h: 'Out and back in six',
+          p: ['p-i-m-a-m-i runs up to the top string and back down, six notes instead of four. It fits ' +
+              'a bar of six or, played twice, a bar of three.',
+              'The turn at the top is where it goes wrong: a and m land too close together and the ' +
+              'pattern develops a hiccup halfway through.'],
+          practice: { do: 'Play it at half speed and listen to the two notes either side of the top one.',
+                      until: 'the six notes are evenly spaced with no bump at the turn.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pimami', chords: [{ chordId: 'min', rootPc: 9, times: 2 }],
+                               title: 'p-i-m-a-m-i over Am', bpm: 54 },
+                       loop: true,
+                       note: 'Two notes per beat. The turn at the top is the part to watch.' }
+        },
+        {
+          h: 'The six-note pattern over a change',
+          p: ['Six notes per chord give the fretting hand less warning than four did, so the move has ' +
+              'to start earlier still.',
+              'These two shapes share no fingers at all, which makes them the honest test.'],
+          practice: { do: 'Play two rounds on each chord and watch the fretting hand, not the picking hand.',
+                      until: 'the fretting hand is already moving while the last two notes sound.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pimami',
+                               chords: [{ chordId: 'maj', rootPc: 2, times: 2 },
+                                        { chordId: 'maj', rootPc: 9, times: 2 }],
+                               title: 'p-i-m-a-m-i over D and A', bpm: 52 },
+                       loop: true,
+                       note: 'Two shapes with nothing in common. Move early.' }
+        },
+        {
+          h: 'A finger that comes back',
+          p: ['p-m-i-m plays m twice in every round. A finger that repeats has half the recovery time ' +
+              'of one that alternates, and the second m is almost always weaker.',
+              'This is the pattern that shows whether a stroke is coming from the knuckle or from the ' +
+              'tip. From the tip, the repeat cannot keep up.'],
+          practice: { do: 'Play it and compare the two m notes in each round for loudness.',
+                      until: 'they match, at a tempo where you can still hear the difference.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pmim', chords: [{ chordId: 'min', rootPc: 4, times: 4 }],
+                               title: 'p-m-i-m over Em', bpm: 56 },
+                       loop: true,
+                       note: 'm plays twice a round. Both should sound the same.' }
+        },
+        {
+          h: 'Two notes at once',
+          p: ['A pinch sounds the bass and a treble string together — p and a moving towards each ' +
+              'other rather than in sequence.',
+              'It is the first thing in this unit that is not one note at a time, and it is how an ' +
+              'arpeggio pattern starts to sound like an accompaniment rather than an exercise.'],
+          practice: { do: 'Play the pinch alone, off the beat, until both notes speak at the same instant.',
+                      until: 'the pair sounds like one event rather than two very close ones.',
+                      mins: 8 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pinch',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'maj', rootPc: 5, times: 2 }],
+                               title: 'Pinch and fill over C and F', bpm: 56 },
+                       loop: true,
+                       note: 'The first beat of each round is two notes together.' }
+        },
+        {
+          h: 'Leaving a hole on purpose',
+          p: ['This one has rests in it. The picking hand plays on beats one and three and stops on ' +
+              'two and four, which is far harder than playing continuously.',
+              'A pattern with space in it is the difference between an exercise and something you can ' +
+              'put behind a singer.'],
+          practice: { do: 'Count all four beats out loud and play only on the ones that carry notes.',
+                      until: 'the rests are the same length every round, without counting.',
+                      mins: 8 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'rest', chords: [{ chordId: 'maj', rootPc: 7, times: 3 }],
+                               title: 'Thumb, then a rest, over G', bpm: 60 },
+                       loop: true,
+                       note: 'Beats two and four are silence, not a shorter note.' }
+        },
+        {
+          h: 'The thumb moves as well',
+          p: ['Every pattern so far has kept p on one string. An alternating bass moves it between two, ' +
+              'which is what turns a pattern into an accompaniment that walks.',
+              'The thumb crosses on its own, without the fingers following it. That independence is ' +
+              'the whole skill, and it is worth more than any of the finger patterns above.'],
+          practice: { do: 'Play only the thumb part first, two strings, four bars, no fingers at all.',
+                      until: 'the thumb alternates evenly while the fingers add notes on top.',
+                      mins: 12 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'thumb',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 1 },
+                                        { chordId: 'min', rootPc: 9, times: 1 }],
+                               title: 'Alternating thumb over C and Am', bpm: 56 },
+                       loop: true,
+                       note: 'The thumb takes two different strings. The fingers stay where they are.' }
+        }
+      ]
+    },
+
+    {
+      id: 'p2-l3', strand: 'P', unit: 'P2', instrument: 'any',
+      title: 'The formula set',
+      icon: '🪜',
+      criteria: ['P2.giuliani'],
+      summary: 'One pair of chords, five picking patterns, run daily until the hand stops needing them.',
+      cards: [
+        {
+          h: 'Why one pair of chords',
+          p: ['Giuliani wrote a set of picking-hand formulas over two chords and nothing else. Keeping ' +
+              'the chords fixed removes the only variable that is not the picking hand.',
+              'Run them as a ladder: same two shapes, one pattern after another, five minutes before ' +
+              'anything else you practise.'],
+          practice: { do: 'Play the pattern over the pair four times through at a tempo you can hold.',
+                      until: 'you can start it cold, without a warm-up, and have it even from the first round.',
+                      mins: 8 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pima',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'dom7', rootPc: 7, times: 2 }],
+                               title: 'Formula one over C and G7', bpm: 58 },
+                       loop: true,
+                       note: 'The two shapes the set is built on. Learn the change first.' }
+        },
+        {
+          h: 'The second rung',
+          p: ['The reverse pattern over the same pair. Nothing has changed except the order of the ' +
+              'fingers, so any difference in how it feels is a difference in the hand.',
+              'Work the rung that feels worst, not the one that feels best.'],
+          practice: { do: 'Play it four times through, then go back to the first pattern and compare.',
+                      until: 'neither pattern is noticeably harder than the other.',
+                      mins: 8 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pami',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'dom7', rootPc: 7, times: 2 }],
+                               title: 'Formula two over C and G7', bpm: 58 },
+                       loop: true,
+                       note: 'Same chords, reversed fingers.' }
+        },
+        {
+          h: 'Six notes on the ladder',
+          p: ['The out-and-back pattern over the same pair doubles the note count without changing the ' +
+              'chord change, so the change gets easier while the hand gets busier.',
+              'That is the design of the whole set: one thing gets harder at a time.'],
+          practice: { do: 'Play it four rounds per chord and keep the chord change at the same tempo as before.',
+                      until: 'the extra notes have not slowed the change down.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pimami',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'dom7', rootPc: 7, times: 2 }],
+                               title: 'Formula three over C and G7', bpm: 54 },
+                       loop: true,
+                       note: 'Six notes per round, same two chords underneath.' }
+        },
+        {
+          h: 'The repeated finger, in the set',
+          p: ['p-m-i-m on the ladder. The repeat is the reason this rung exists, and running it ' +
+              'immediately after a pattern that alternates makes the weakness obvious.',
+              'If the second m drops, drop the tempo. It does not fix itself at speed.'],
+          practice: { do: 'Play the alternating pattern for two rounds, then this one, and compare.',
+                      until: 'the repeated finger is as strong on this rung as on the alternating one.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'pmim',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'dom7', rootPc: 7, times: 2 }],
+                               title: 'Formula four over C and G7', bpm: 58 },
+                       loop: true,
+                       note: 'The rung the set exists for. Slow it down until it is even.' }
+        },
+        {
+          h: 'The set without the thumb',
+          p: ['i-m-a with no bass at all. The thumb has been carrying the pulse for the whole unit, ' +
+              'and taking it away shows how much of the timing was coming from it.',
+              'Finish the ladder here, then put the thumb back and hear how much steadier the fingers ' +
+              'have become.'],
+          practice: { do: 'Play the treble pattern alone, then add the thumb back on the first beat.',
+                      until: 'the fingers keep time on their own, with the thumb silent.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'ima',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'dom7', rootPc: 7, times: 2 }],
+                               title: 'Formula five over C and G7', bpm: 60 },
+                       loop: true,
+                       note: 'No thumb. The pulse has to come from somewhere else.' }
+        }
+      ]
+    },
+
+    {
+      id: 'p2-l4', strand: 'P', unit: 'P2', instrument: 'any',
+      title: 'Crossing without a seam',
+      icon: '🧵',
+      criteria: ['P2.crossing'],
+      summary: 'Move a pattern onto different strings mid-phrase with no gap and no change of tone.',
+      cards: [
+        {
+          h: 'Where the seam shows',
+          p: ['A pattern that stays on three strings hides a fault: the hand can sit still. Move the ' +
+              'fingers down a string mid-pattern and two things go wrong at once — a gap opens, and ' +
+              'the tone changes because the hand has shifted along the string.',
+              'Listen for the second one. The gap is obvious; the tone change is what makes it sound ' +
+              'like two players.'],
+          practice: { do: 'Play the pattern and listen only for the note where the fingers move across.',
+                      until: 'that note is the same loudness and the same tone as the one before it.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'cross', chords: [{ chordId: 'min', rootPc: 9, times: 2 }],
+                               title: 'Crossing pairs over Am', bpm: 50 },
+                       loop: true,
+                       note: 'The fingers move down a string halfway through. Listen for the seam.' }
+        },
+        {
+          h: 'The forearm, not the fingers',
+          p: ['A finger reaching for a string it does not normally play stretches, and a stretched ' +
+              'finger strikes at a different angle. Move the whole hand from the forearm instead, so ' +
+              'each finger keeps its own shape.',
+              'Watch the knuckles. If their spacing changes as the pattern crosses, the fingers are ' +
+              'doing the travelling.'],
+          practice: { do: 'Play it watching the knuckles, and stop the moment their spacing changes.',
+                      until: 'you can play four rounds with the hand shape unchanged throughout.',
+                      mins: 10 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'cross',
+                               chords: [{ chordId: 'maj', rootPc: 0, times: 2 },
+                                        { chordId: 'min', rootPc: 9, times: 2 }],
+                               title: 'Crossing pairs over C and Am', bpm: 50 },
+                       loop: true,
+                       note: 'Two chords and a crossing in each. The hand shape should never change.' }
+        },
+        {
+          h: 'The whole width of the chord',
+          p: ['This pattern uses five strings in eight notes, which is as far as the hand travels in ' +
+              'ordinary playing.',
+              'Take it far slower than feels necessary. A crossing played slowly and cleanly teaches ' +
+              'the movement; played fast and roughly it teaches the rough version.'],
+          practice: { do: 'Play it at half the tempo you think you need, four rounds without a gap.',
+                      until: 'the eight notes are even end to end, then raise the tempo by two.',
+                      mins: 12 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'span', chords: [{ chordId: 'maj', rootPc: 7, times: 2 }],
+                               title: 'The whole span over G', bpm: 46 },
+                       loop: true,
+                       note: 'Five strings in eight notes. Slower than feels necessary.' }
+        },
+        {
+          h: 'Crossing and changing at once',
+          p: ['The hardest thing in the unit: the fingers cross strings and the chord changes on the ' +
+              'same beat. Both hands are moving and neither can wait for the other.',
+              'Practise the change on its own first, then the crossing on its own, then put them ' +
+              'together at a tempo where both are still clean.'],
+          practice: { do: 'Play four rounds of each chord, then two, then one, keeping the seam invisible.',
+                      until: 'one round per chord is as smooth as four was.',
+                      mins: 12 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'span',
+                               chords: [{ chordId: 'min', rootPc: 4, times: 2 },
+                                        { chordId: 'maj', rootPc: 2, times: 2 }],
+                               title: 'The whole span over Em and D', bpm: 48 },
+                       loop: true,
+                       note: 'A crossing and a chord change landing together.' }
+        },
+        {
+          h: 'Put the unit together',
+          p: ['Four chords, a pattern that runs up and back down, and a change every round. Everything ' +
+              'in this unit at once, at a tempo where none of it breaks.',
+              'This is what the patterns were for: not the patterns themselves, but being able to hold ' +
+              'a progression underneath a melody without either hand needing attention.'],
+          practice: { do: 'Play the four chords round four times, then raise the tempo and do it again.',
+                      until: 'you can hold the progression while talking to someone.',
+                      mins: 12 },
+          context: { capo: 0 },
+          playalong: { pick: { patternId: 'updown',
+                               chords: [{ chordId: 'min', rootPc: 9, times: 1 },
+                                        { chordId: 'maj', rootPc: 5, times: 1 },
+                                        { chordId: 'maj', rootPc: 0, times: 1 },
+                                        { chordId: 'maj', rootPc: 7, times: 1 }],
+                               title: 'Up and back down through four chords', bpm: 52 },
+                       loop: true,
+                       note: 'One round per chord. The change happens on every bar line.' }
+        }
+      ]
+    },
+
+    /* ═════════════════════════════════════════════════════════════════════
        M5 — Pentatonics and blues
 
        The first unit whose material is GENERATED rather than written out. A
@@ -1288,6 +1690,312 @@
     }
 
 ,
+
+    /* ═════════════════════════════════════════════════════════════════════
+       P3 — Voicing and balance
+
+       The unit that needed the NOTE to carry more than a position.
+
+       P3 is about three differences the picking hand makes and nothing else:
+       one note louder than the ones around it, a change of tone from moving
+       along the string, and a bass stopped rather than left to ring. Every
+       note in the module was sounded at one level, through one timbre, damped
+       at exactly its written length — so all three of this unit's claims would
+       have been inaudible, and these lessons would have been describing
+       something the player could not produce.
+
+       So the note gained `level` and `voice`, and the tab draws its accent
+       FROM `level` rather than from a mark sitting beside it. A figure cannot
+       print an accent the ear does not get.
+
+       This is the last unit of phase 1, and the first one whose material is
+       almost entirely written out again. That is not a step backwards: an
+       arpeggio pattern is a rule and generates well, while a melody is a
+       decision about which note matters, which is the one thing a generator
+       has nothing to say about.
+       ═════════════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'p3-l1', strand: 'P', unit: 'P3', instrument: 'any',
+      title: 'The melody has to win',
+      icon: '🎯',
+      criteria: ['P3.melody'],
+      summary: 'One hand, two voices, and only one of them is meant to be heard first.',
+      cards: [
+        {
+          h: 'Everything at one level is nothing',
+          p: ['Play the first bar. Four notes, all the same weight, and no part of it sounds like a ' +
+              'melody because none of it stands out from the rest.',
+              'Now the second bar: the same four notes with the last one struck harder. That single ' +
+              'difference is what turns an arpeggio into a tune with an accompaniment.'],
+          practice: { do: 'Play both bars back to back and listen for which one has a melody in it.',
+                      until: 'you can hear the difference from the first note of the second bar.',
+                      mins: 6 },
+          playalong: { exercise: 'p3-mel-flat', loop: true, bpm: 54,
+                       note: 'Bar one flat, bar two voiced. The mark under a note means strike it harder.' }
+        },
+        {
+          h: 'How much harder',
+          p: ['Rather more than feels polite. A melody that is barely above its accompaniment sounds ' +
+              'like an accident; one that is clearly above it sounds deliberate.',
+              'The accompaniment is what moves, not the melody. Play the bass and the inner notes ' +
+              'more quietly instead of hammering the top.'],
+          practice: { do: 'Play the figure and drop the accompaniment until the melody sits clearly over it.',
+                      until: 'a listener in the next room hears the melody and not much else.',
+                      mins: 10 },
+          playalong: { exercise: 'p3-mel-two', loop: true, bpm: 52,
+                       note: 'Melody on the top string, bass and inner notes underneath it.' }
+        },
+        {
+          h: 'When the melody is not on top',
+          p: ['Here the accented note is the second string, with a note above it that has to stay ' +
+              'quiet. That is far harder, because a and m are next to each other and the hand wants ' +
+              'to treat them the same.',
+              'This is the exercise that shows whether the fingers are independent or only quick.'],
+          practice: { do: 'Play the pair together and check that only the lower of the two carries.',
+                      until: 'you can move the accent between the two strings at will.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-mel-inner', loop: true, bpm: 48,
+                       note: 'The accent is below the top note. Keep the top string quiet.' }
+        },
+        {
+          h: 'A bass that keeps moving underneath',
+          p: ['Now the accompaniment walks while the melody holds. The thumb has its own line and its ' +
+              'own volume, and neither should distract from the notes above.',
+              'A moving bass is much harder to keep quiet than a static one, because the movement ' +
+              'itself draws the ear.'],
+          practice: { do: 'Play it once listening only to the bass, then again listening only to the melody.',
+                      until: 'you can follow either line on its own while both are sounding.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-mel-line', loop: true, bpm: 56,
+                       note: 'The bass moves every beat. The melody sits on top of it and holds.' }
+        },
+        {
+          h: 'A melody inside a chord',
+          p: ['The last step is a melody note struck at the same instant as the notes under it. There ' +
+              'is no time to arrive early or hit harder afterwards — the difference has to be in the ' +
+              'stroke itself.',
+              'This is where the whole unit is going, and it is the sound of most solo fingerstyle ' +
+              'playing you have heard.'],
+          practice: { do: 'Play each pinch on its own, twenty times, until the top note leads every time.',
+                      until: 'the melody note is clearly first even though both are struck together.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-mel-chord', loop: true, bpm: 50,
+                       note: 'Two notes at once, and one of them has to win.' }
+        }
+      ]
+    },
+
+    {
+      id: 'p3-l2', strand: 'P', unit: 'P3', instrument: 'any',
+      title: 'Where the finger meets the string',
+      icon: '🎚️',
+      criteria: ['P3.attack'],
+      summary: 'Move the hand along the string and the tone changes. That is a choice, not an accident.',
+      cards: [
+        {
+          h: 'Two ends of the same string',
+          p: ['Over the soundhole the note is round and dark. Up near the bridge it is thin and glassy. ' +
+              'Nothing has changed but where the finger touched.',
+              'Play the figure and listen. The first four notes are struck over the soundhole, the ' +
+              'second four close to the bridge.'],
+          practice: { do: 'Play the figure, then play it again moving the hand by half the distance.',
+                      until: 'you can hear three distinct tones between the two extremes.',
+                      mins: 8 },
+          playalong: { exercise: 'p3-tone-compare', loop: true, bpm: 50,
+                       note: 'Same four notes twice. Only the contact point differs.' }
+        },
+        {
+          h: 'Choose the round one on purpose',
+          p: ['A slow line with long notes wants the darker tone: fewer high frequencies, more body, ' +
+              'and it carries further than it sounds like it should.',
+              'Play this whole line over the soundhole and resist moving the hand back towards the ' +
+              'bridge when it gets busy.'],
+          practice: { do: 'Play the line watching the picking hand stay in one place throughout.',
+                      until: 'the last note has the same tone as the first.',
+                      mins: 8 },
+          playalong: { exercise: 'p3-tone-round', loop: true, bpm: 54,
+                       note: 'All of it over the soundhole. Do not let the hand drift.' }
+        },
+        {
+          h: 'Choose the thin one on purpose',
+          p: ['Close to the bridge the note loses its body and keeps its edge, which cuts through ' +
+              'anything else that is playing.',
+              'It is unpleasant on its own and useful the moment something else is in the way. Overused ' +
+              'it sounds brittle, so treat it as a colour rather than a setting.'],
+          practice: { do: 'Play the line near the bridge, then over the soundhole, and pick which suits it.',
+                      until: 'you can produce either tone on demand without looking at the hand.',
+                      mins: 8 },
+          playalong: { exercise: 'p3-tone-edge', loop: true, bpm: 54,
+                       note: 'All of it close to the bridge. Hear what it gains and what it loses.' }
+        },
+        {
+          h: 'Changing tone inside a phrase',
+          p: ['The first half of this line is dark and the second half is bright, with the same note at ' +
+              'the join played both ways.',
+              'The move happens between notes, not during one. A hand that travels while a string is ' +
+              'sounding produces a smear rather than a change of colour.'],
+          practice: { do: 'Play it slowly and move the hand in the gap, not while a note is ringing.',
+                      until: 'the two halves sound like two instruments and the join is clean.',
+                      mins: 10 },
+          playalong: { exercise: 'p3-tone-shift', loop: true, bpm: 52,
+                       note: 'The repeated note at the join is the same pitch with two tones.' }
+        },
+        {
+          h: 'Two tones at the same time',
+          p: ['The thumb and the fingers are far enough apart that they can sit at different points ' +
+              'along the string. A bass struck near the bridge stays out of the way of a melody ' +
+              'struck over the soundhole.',
+              'That is the other way to separate two voices, and it works when volume alone is not ' +
+              'enough.'],
+          practice: { do: 'Play it with the thumb angled towards the bridge and the fingers left where they are.',
+                      until: 'the bass and the melody sound like different instruments.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-tone-voices', loop: true, bpm: 50,
+                       note: 'Thin bass, round melody, struck at the same moment.' }
+        }
+      ]
+    },
+
+    {
+      id: 'p3-l3', strand: 'P', unit: 'P3', instrument: 'any',
+      title: 'Stopping the bass',
+      icon: '🤫',
+      criteria: ['P3.damp'],
+      summary: 'A bass left ringing under the next chord is the most common fault in fingerstyle playing.',
+      cards: [
+        {
+          h: 'Hear the problem first',
+          p: ['Play this and listen to the low string. It rings on through everything above it and ' +
+              'into the second chord, where it does not belong.',
+              'It is easy to miss while playing, because the hands are busy and the ear follows the ' +
+              'melody. It is obvious on a recording, which is where most people first notice it.'],
+          practice: { do: 'Record yourself playing this and listen back for the low string.',
+                      until: 'you can hear the clash without being told where it is.',
+                      mins: 6 },
+          playalong: { exercise: 'p3-damp-ring', loop: true, bpm: 52,
+                       note: 'Nothing here is stopped. Listen to the lowest string.' }
+        },
+        {
+          h: 'The thumb comes back and rests',
+          p: ['The fix is the thumb returning to the string it played and resting on it. That is the ' +
+              'first half of a rest stroke without the second half, so the movement is already learned.',
+              'Land, do not grab. A thumb that pinches the string produces a click as loud as the note ' +
+              'it was stopping.'],
+          practice: { do: 'Play a bass, count one beat, and land the thumb back on it without sounding it.',
+                      until: 'the note stops cleanly with no click and no second note.',
+                      mins: 10 },
+          playalong: { exercise: 'p3-damp-single', loop: true, bpm: 50,
+                       note: 'A mark under a note means stop it there. One bass at a time.' }
+        },
+        {
+          h: 'Stopping at a chord change',
+          p: ['At a change the old bass has to go before the new one arrives, which means the thumb ' +
+              'lands on the outgoing string on the way to the incoming one.',
+              'One movement, not two. Thinking of it as stop-then-play puts a gap in the bass line ' +
+              'every time the chord moves.'],
+          practice: { do: 'Play the two chords and let the thumb pass across the old string on its way.',
+                      until: 'the change is clean and the bass line has no gap in it.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-damp-change', loop: true, bpm: 52,
+                       note: 'Each bass is stopped before the next chord arrives.' }
+        },
+        {
+          h: 'Two basses taking turns',
+          p: ['With an alternating bass each note is stopped by the arrival of the other one, so the ' +
+              'damping is built into the pattern rather than added to it.',
+              'This is why an alternating bass sounds tighter than a static one even at the same tempo.'],
+          practice: { do: 'Play it and check that only one low string is ever sounding.',
+                      until: 'no two basses overlap anywhere in the figure.',
+                      mins: 10 },
+          playalong: { exercise: 'p3-damp-alt', loop: true, bpm: 54,
+                       note: 'Each bass is stopped as the other one lands.' }
+        },
+        {
+          h: 'Ending on silence',
+          p: ['The end of a phrase is the one place damping is unmistakable. Stop everything and the ' +
+              'silence is part of the music; let it ring and the phrase has no ending at all.',
+              'The whole hand comes down flat across the strings. It is the least subtle thing in this ' +
+              'unit and the most effective.'],
+          practice: { do: 'Play the phrase and stop all six strings on the final beat, exactly in time.',
+                      until: 'the silence arrives on the beat rather than shortly after it.',
+                      mins: 8 },
+          playalong: { exercise: 'p3-damp-end', loop: true, bpm: 52,
+                       note: 'The last two notes are stopped as well. Silence, on the beat.' }
+        }
+      ]
+    },
+
+    {
+      id: 'p3-l4', strand: 'P', unit: 'P3', instrument: 'any',
+      title: 'All three at once',
+      icon: '🏁',
+      criteria: ['P3.melody', 'P3.attack', 'P3.damp'],
+      summary: 'Balance, tone and damping in one phrase — the last thing phase one asks for.',
+      cards: [
+        {
+          h: 'Voiced and stopped together',
+          p: ['A melody above its accompaniment, and a bass that stops before the next one arrives. ' +
+              'Two of the three, in one bar, at a tempo slow enough that both are deliberate.',
+              'Damping is the one that goes first when the tempo rises. Notice when it does.'],
+          practice: { do: 'Play four bars and check both: the melody clear, the bass stopped every time.',
+                      until: 'you can play it four times through without either slipping.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-all-melody-damp', loop: true, bpm: 50,
+                       note: 'Accents on the melody, stop marks on the bass.' }
+        },
+        {
+          h: 'Tone doing the separating',
+          p: ['The same texture with the two voices at different points along the string: melody round, ' +
+              'accompaniment thin.',
+              'Volume and tone together separate the voices far more than either does alone, and the ' +
+              'accompaniment can then sit louder without covering anything.'],
+          practice: { do: 'Play it, then play it with both voices at the same contact point, and compare.',
+                      until: 'you can hear how much of the separation was tone rather than volume.',
+                      mins: 12 },
+          playalong: { exercise: 'p3-all-tone-melody', loop: true, bpm: 50,
+                       note: 'Melody over the soundhole, accompaniment nearer the bridge.' }
+        },
+        {
+          h: 'Everything, in two bars',
+          p: ['Balance, tone and damping, all three, over a chord change. This is the hardest two bars ' +
+              'in phase one and it should be taken very slowly.',
+              'When one of the three slips, stop and name which one. Playing on through a fault is how ' +
+              'it becomes the version you know.'],
+          practice: { do: 'Play two bars, name any of the three that slipped, and play them again.',
+                      until: 'you get through four times running with none of the three slipping.',
+                      mins: 14 },
+          playalong: { exercise: 'p3-all-three', loop: true, bpm: 48,
+                       note: 'All three demands at once, over a chord change.' }
+        },
+        {
+          h: 'Four bars to keep',
+          p: ['A phrase rather than an exercise: four bars, four chords, everything this unit teaches ' +
+              'and nothing it does not.',
+              'Learn it from memory. A figure read off a page is played with the eyes, and none of the ' +
+              'three differences here survives that.'],
+          practice: { do: 'Learn one bar a day and play the whole phrase from memory at the end.',
+                      until: 'you can play all four bars with the tab closed.',
+                      mins: 15 },
+          playalong: { exercise: 'p3-all-phrase', loop: true, bpm: 46,
+                       note: 'Four bars, from memory. The last thing phase one asks for.' }
+        },
+        {
+          h: 'The harmony underneath it',
+          p: ['These are the four chords the phrase sits on, played plainly. Hearing them on their own ' +
+              'is what makes the arrangement above them make sense.',
+              'Play the chords, then the phrase, and hear how little was needed to turn one into the ' +
+              'other.'],
+          practice: { do: 'Play the four chords round twice, then the phrase, and hear the same harmony.',
+                      until: 'you can hear the progression inside the arrangement without the chords.',
+                      mins: 10 },
+          changes: { key: 0, bpm: 60, loop: true,
+                     chords: [{ chordId: 'maj', rootPc: 0, beats: 4 }, { chordId: 'min', rootPc: 9, beats: 4 },
+                              { chordId: 'maj', rootPc: 5, beats: 4 }, { chordId: 'maj', rootPc: 7, beats: 4 }],
+                     note: 'I vi IV V. The four chords under the phrase, with nothing on top.' }
+        }
+      ]
+    },
 
     /* ═════════════════════════════════════════════════════════════════════
        M7 — Keys and the number system
@@ -1785,7 +2493,13 @@
   /* Every element a card can carry. The quality checker counts these, so a new
      kind has to be named here before a card may use one — which is how "add an
      element type" stays a decision rather than a typo that disables the rule. */
-  var ELEMENT_KEYS = ['tab', 'chordbox', 'fretboard', 'rhythm', 'playalong', 'changes', 'ear', 'pointer'];
+  /* `rhythm` and `ear` were on this list from the plan and no branch in
+     guitar-ui.js ever drew either. A card using one would have satisfied the
+     rule that every card carries something to play — the rule this list exists
+     to serve — and rendered nothing at all. They come back when the element
+     that draws them does, and check-guitar-quality.js now fails if a kind is
+     listed here that the player does not read. */
+  var ELEMENT_KEYS = ['tab', 'chordbox', 'fretboard', 'playalong', 'changes', 'pointer'];
 
   return {
     LESSONS: LESSONS,

@@ -58,17 +58,27 @@
      Float32Array, which is real weight on a phone for a difference a filter and
      a fade already make.
 
-       attack  seconds to reach full level; softens the leading edge
-       cutoff  one-pole lowpass in Hz, 0 for none; takes off the top
-       gain    trim, since a darker note reads as louder at the same level
+       attack    seconds to reach full level; softens the leading edge
+       cutoff    lowpass corner in Hz, 0 for none; takes off the top
+       highpass  highpass corner in Hz, 0 for none; takes out the bottom
+       gain      trim, since a darker note reads as louder at the same level
 
      The pluck voice is deliberately all-zero: attack 0 and cutoff 0 take the
      same branches the old code took unconditionally, so a scale sounds exactly
      as it did before any of this. The scales were reported as fine; a 2 ms
-     ramp "too small to hear" is still a change nobody asked for. */
+     ramp "too small to hear" is still a change nobody asked for.
+
+     TASTO AND PONTICELLO exist for P3, which teaches moving the contact point
+     along the string. Over the soundhole the note is round and dark; up by the
+     bridge it is thin and glassy. Those are the two ends and they are a filter
+     apart: tasto rolls the top off, ponticello takes the bottom out rather
+     than adding a top that is not in the buffer to add. A unit about hearing a
+     difference has to be able to make one. */
   var VOICES = {
-    pluck: { attack: 0,     cutoff: 0,    gain: 1 },
-    chord: { attack: 0.018, cutoff: 3200, gain: 0.86 }
+    pluck:      { attack: 0,     cutoff: 0,    highpass: 0,   gain: 1 },
+    chord:      { attack: 0.018, cutoff: 3200, highpass: 0,   gain: 0.86 },
+    tasto:      { attack: 0.012, cutoff: 1500, highpass: 0,   gain: 1.08 },
+    ponticello: { attack: 0,     cutoff: 0,    highpass: 620, gain: 1.0 }
   };
   function voiceOf(name) { return VOICES[name] || VOICES.pluck; }
 
@@ -163,15 +173,24 @@
     var level = (gain === undefined ? 0.8 : gain) * v.gain;
     var t = Math.max(when === undefined ? c.currentTime : when, c.currentTime);
 
+    /* Filters chained in whatever order they are present, so a voice may use
+       either, both or neither without a branch per combination. */
+    var tail = src;
     if (v.cutoff > 0) {
       var lp = c.createBiquadFilter();
       lp.type = 'lowpass';
       lp.frequency.value = v.cutoff;
       lp.Q.value = 0.707;                 // Butterworth: no peak at the corner
-      src.connect(lp); lp.connect(g);
-    } else {
-      src.connect(g);
+      tail.connect(lp); tail = lp;
     }
+    if (v.highpass > 0) {
+      var hp = c.createBiquadFilter();
+      hp.type = 'highpass';
+      hp.frequency.value = v.highpass;
+      hp.Q.value = 0.707;
+      tail.connect(hp); tail = hp;
+    }
+    tail.connect(g);
     g.connect(master);
 
     /* Ramp in rather than starting at full level. exponentialRampToValueAtTime
@@ -230,9 +249,25 @@
   function createTransport() {
     var T = {
       notes: [], fb: null, segs: E.compileTempoMap([{ beat: 0, bpm: E.DEFAULT_BPM }]),
-      loop: null, playing: false, t0: 0, countIn: 0,
+      loop: null, playing: false, t0: 0, countIn: 0, voice: '',
       timer: null, scheduled: Object.create(null), onEnd: null
     };
+
+    /* ONE firing path, used by both branches below.
+       The loop branch and the straight branch each used to spell out the
+       playMidi call, and wiring the count-in toggle into one of two such
+       branches was a one-line change that the whole suite passed. A note's
+       level, voice and roll offset are three more things that would have to be
+       remembered twice, so there is now one place to remember them. */
+    function fire(n, atBeat, when) {
+      var seconds = E.beatsToSeconds(n.dur || 0.5, tempoAt(atBeat)) * 1.6;
+      /* delayS is SECONDS, deliberately. A rolled chord spreads by a fixed
+         amount of time whatever the tempo; spreading it in beats would make
+         the roll tighten as the tempo rises, which is a block chord played
+         fast rather than a strum. */
+      playMidi(E.soundingMidi(n, T.fb), when + (n.delayS || 0),
+               0.8 * (n.level > 0 ? n.level : 1), seconds, n.voice || T.voice);
+    }
 
     function schedule() {
       var c = context();
@@ -260,7 +295,7 @@
               var at = E.transportTime(abs, T.segs, T.t0);
               if (at > c.currentTime + LOOKAHEAD_S) continue;
               T.scheduled[key] = true;
-              playMidi(E.soundingMidi(n, T.fb), at, 0.8, E.beatsToSeconds(n.dur || 0.5, tempoAt(n.beat)) * 1.6);
+              fire(n, n.beat, at);
             }
           }
           return;
@@ -275,8 +310,7 @@
         if (T.scheduled['0:' + j]) continue;
         var when = E.transportTime(note.beat, T.segs, T.t0);
         T.scheduled['0:' + j] = true;
-        playMidi(E.soundingMidi(note, T.fb), when, 0.8,
-                 E.beatsToSeconds(note.dur || 0.5, tempoAt(note.beat)) * 1.6);
+        fire(note, note.beat, when);
       }
       /* Stop once the last note has had time to sound. */
       if (E.transportTime(last, T.segs, T.t0) + 2.0 < c.currentTime) T.stop();
@@ -288,10 +322,13 @@
       return s.bpm;
     }
 
-    T.load = function (notes, fb, bpm) {
+    T.load = function (notes, fb, bpm, voice) {
       T.notes = (notes || []).slice().sort(function (a, b) { return a.beat - b.beat; });
       T.fb = fb || E.makeFretboard();
       T.segs = E.compileTempoMap([{ beat: 0, bpm: bpm > 0 ? bpm : E.DEFAULT_BPM }]);
+      /* The voice every note falls back to. A progression wants the chord
+         voice for all of it; a note may still name its own. */
+      T.voice = voice || '';
       return T;
     };
     T.setTempo = function (bpm) {

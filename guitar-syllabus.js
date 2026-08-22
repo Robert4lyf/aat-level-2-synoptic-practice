@@ -78,11 +78,16 @@
     { id: 'M1.minor',       strand: 'M', stage: 1, unit: 'M1',
       text: 'Build a minor scale, and say which degrees differ from the major' },
 
-    /* ── P2 · Arpeggio patterns (phase 1, not yet written) ──────────────── */
+    /* ── P2 · Arpeggio patterns ─────────────────────────────────────────
+       P2.giuliani names the tradition rather than reproducing it. Giuliani's
+       Op. 1 is a set of 120 numbered picking-hand formulas over two chords,
+       long out of copyright and still the standard way this is drilled; the
+       numbering is not reproduced here, because a number claimed from memory
+       is worth nothing to a reader who looks the original up. */
     { id: 'P2.pattern',     strand: 'P', stage: 1, unit: 'P2',
       text: 'Play p-i-m-a and p-a-m-i patterns over a held chord at an even tempo' },
     { id: 'P2.giuliani',    strand: 'P', stage: 2, unit: 'P2',
-      text: 'Work the Giuliani right-hand formulas as a daily pattern set' },
+      text: 'Work a set of picking-hand formulas daily, in the Giuliani tradition' },
     { id: 'P2.crossing',    strand: 'P', stage: 2, unit: 'P2',
       text: 'Cross strings mid-pattern without an audible gap or a change of tone' },
 
@@ -140,9 +145,9 @@
        it was used. */
     { id: 'M1', title: 'Intervals and degrees',    strand: 'M', phase: 1, ready: true },
     { id: 'M3', title: 'The fretboard',            strand: 'M', phase: 1, ready: true },
-    { id: 'P2', title: 'Arpeggio patterns',        strand: 'P', phase: 1, ready: false },
+    { id: 'P2', title: 'Arpeggio patterns',        strand: 'P', phase: 1, ready: true },
     { id: 'M5', title: 'Pentatonics and blues',    strand: 'M', phase: 1, ready: true },
-    { id: 'P3', title: 'Voicing and balance',      strand: 'P', phase: 1, ready: false },
+    { id: 'P3', title: 'Voicing and balance',      strand: 'P', phase: 1, ready: true },
     { id: 'M7', title: 'Keys and the number system', strand: 'M', phase: 1, ready: true },
     { id: 'M8', title: 'Modes',                    strand: 'M', phase: 1, ready: true }
   ];

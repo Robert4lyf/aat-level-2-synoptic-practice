@@ -36,6 +36,7 @@ const D = require('../guitar-learn-data.js');
 const S = require('../guitar-syllabus.js');
 const X = require('../guitar-exercise-data.js');
 const E = require('../guitar-engine.js');
+const R = require('../guitar-render.js');
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', YEL = '\x1b[33m', RESET = '\x1b[0m';
 const errors = [];
@@ -149,6 +150,11 @@ const INSTRUMENTS = ['any', 'steel', 'nylon', 'electric'];
 function materialKey(el) {
   if (!el) return null;
   if (el.exercise) return el.exercise;
+  if (el.pick) {
+    const k = el.pick;
+    return 'pick:' + k.patternId + '/' +
+           (k.chords || []).map(c => c.chordId + '/' + c.rootPc + '/' + (c.times || 1)).join(',');
+  }
   if (el.chords) {
     return 'changes:' + el.chords.map(c => c.chordId + '/' + c.rootPc + '/' + (c.beats || 4)).join(',');
   }
@@ -209,6 +215,26 @@ for (const lesson of D.LESSONS) {
        so it is derived from one place. */
     if (PLAYABLE_KINDS.some(k => els.includes(k))) {
       lessonPlayables++;
+
+      /* THE STRUCTURAL FIX for a bug this file has now shipped twice.
+         Generated cards were invisible to the repetition rule because it read
+         `el.exercise` and they carry `el.generate`; progression cards were
+         invisible to two rules because the playable list said tab and
+         playalong. Both times a new SOURCE of material silently switched a
+         rule off, and both times a reader found it rather than this file.
+
+         So rather than remembering to teach materialKey about the next source,
+         a playable element materialKey cannot read is a failure. The rule that
+         has to be kept in step now says so the moment it stops being in step. */
+      for (const k of els) {
+        if (!PLAYABLE_KINDS.includes(k)) continue;
+        if (materialKey(card[k]) === null) {
+          errors.push(`${at}: the ${k} element carries material the repetition rule cannot read — ` +
+                      `no exercise id, no generate spec, no pick spec, no chord list. Whatever ` +
+                      `source it uses, teach materialKey to read it, or every rule keyed on the ` +
+                      `material silently skips this card.`);
+        }
+      }
 
       const pr = card.practice;
       if (!pr) {
@@ -448,6 +474,179 @@ if (generatedCards) {
   notes.push(`${generatedCards} cards generate their material; ${generatedNotes} notes, all playable.`);
 }
 
+/* ── Every picking spec resolves, and its notes are playable ─────────────
+   The same scrutiny the generated scale specs get, for the same reason: a
+   pattern naming a slot a four-string chord does not have, or two fingers
+   landing on one string at one instant, produces a fault rather than notes and
+   the card draws an error message where the exercise should be.
+
+   Checked in the tuning and capo the CARD declares, not in standard with no
+   capo — an earlier version of the authored sweep passed by asking the wrong
+   question, and the answer meant nothing. */
+let pickCards = 0, pickNotes = 0;
+const pickPatternsUsed = new Set();
+for (const lesson of D.LESSONS) {
+  lesson.cards.forEach((card, i) => {
+    for (const k of elementsOf(card)) {
+      const el = card[k];
+      if (!el || !el.pick) continue;
+      const at = `${lesson.id} card ${i + 1}`;
+      const ctx = card.context || {};
+      pickCards++;
+      const spec = el.pick;
+      if (!Object.prototype.hasOwnProperty.call(E.PICKING, spec.patternId)) {
+        errors.push(`${at} names picking pattern "${spec.patternId}", which the engine does not have.`);
+        continue;
+      }
+      pickPatternsUsed.add(spec.patternId);
+      const ex = E.generatePicking({
+        patternId: spec.patternId, chords: spec.chords, sub: spec.sub,
+        tuning: ctx.tuning || 'standard', capo: ctx.capo || 0
+      });
+      if (ex.fault) {
+        errors.push(`${at} generates a fault: ${ex.fault}. The card would draw an error message.`);
+        continue;
+      }
+      if (!ex.notes.length) {
+        errors.push(`${at} generates no notes.`);
+        continue;
+      }
+      pickNotes += ex.notes.length;
+      for (const n of ex.notes) {
+        const fault = E.noteFault(n, ex.fb);
+        if (fault) errors.push(`${at} generated an unplayable note ${JSON.stringify(n)} — ${fault}`);
+      }
+      /* The boxes drawn beside the tab come from these voicings. A pattern
+         that produced notes but no voicings would draw a tab with nothing
+         above it and no error anywhere. */
+      if (ex.voicings.length !== spec.chords.length) {
+        errors.push(`${at} names ${spec.chords.length} chord(s) and got ${ex.voicings.length} ` +
+                    `voicing(s) back; the chord boxes and the tab would disagree.`);
+      }
+    }
+  });
+}
+if (pickCards) {
+  notes.push(`${pickCards} cards pick over held chords; ${pickNotes} notes, all playable, ` +
+             `${pickPatternsUsed.size} of ${Object.keys(E.PICKING).length} patterns used.`);
+}
+
+/* ── A note's notation cannot contradict its sound ───────────────────────
+   The tab draws an accent from `level` and a stop mark from `tech: 'damp'`.
+   The first is derived — the same number the transport multiplies gain by — so
+   it cannot lie. The second is declared, so it can: a note marked stopped that
+   rings right up to the next one is a figure teaching the opposite of what it
+   says. P3 is a unit about hearing these differences, and a mark the ear
+   cannot confirm is worse there than no mark. */
+const DAMP_MAX_TRAILING_DUR = 1;
+const VOICES_AVAILABLE = ['pluck', 'chord', 'tasto', 'ponticello'];
+for (const id of X.ids()) {
+  const byBeat = X.exercise(id).notes.slice().sort((a, b) => a.beat - b.beat);
+  for (const n of X.exercise(id).notes) {
+    if (n.tech === 'damp') {
+      /* "Stopped" means stopped BEFORE something else happens. Against a fixed
+         number this would pass a note that rings right up to the next one in a
+         slow figure and fail a legitimate one in a fast figure; the question is
+         relative, so the rule is. */
+      const next = byBeat.find(x => x.beat > n.beat + 1e-9);
+      if (next) {
+        if (!(n.dur > 0 && n.dur < next.beat - n.beat)) {
+          errors.push(`exercise ${id}: a note at beat ${n.beat} is marked stopped and lasts ` +
+                      `${n.dur} beats, with the next note ${next.beat - n.beat} beats away. ` +
+                      `It rings right up to it — the tab says stopped and the ear hears held.`);
+        }
+      } else if (!(n.dur > 0 && n.dur <= DAMP_MAX_TRAILING_DUR)) {
+        errors.push(`exercise ${id}: the last note is marked stopped and lasts ${n.dur} beats.`);
+      }
+    }
+    if (n.level !== undefined && !(n.level >= 0.2 && n.level <= 1.6)) {
+      errors.push(`exercise ${id}: level ${n.level} is outside 0.2-1.6.`);
+    }
+    if (n.voice !== undefined && !VOICES_AVAILABLE.includes(n.voice)) {
+      errors.push(`exercise ${id}: voice "${n.voice}" is not one the player has ` +
+                  `(${VOICES_AVAILABLE.join(', ')}).`);
+    }
+  }
+}
+
+/* ── A unit that claims an audible difference has to make one ────────────
+   P3's three criteria are each about something the ear can hear: a note louder
+   than its neighbours, a note with a different tone, a note stopped early. All
+   three are carried by fields the note gained for this unit, and all three are
+   easy to lose silently — drop a `level` and the lesson still reads correctly,
+   the tab still draws, every other rule still passes, and the card teaches
+   nothing because there is no longer anything to hear.
+
+   So a lesson claiming one of these criteria must have material that makes the
+   difference it claims. The criterion and the notes are checked against each
+   other rather than each alone, which is the dimension the prerequisite
+   checker had to be written for as well. */
+const AUDIBLE_CLAIMS = {
+  'P3.melody': [n => n.level >= R.ACCENT_LEVEL, 'a note struck at or above accent level'],
+  'P3.attack': [n => n.voice && n.voice !== 'pluck', 'a note sounded at a named contact point'],
+  'P3.damp':   [n => n.tech === 'damp', 'a note stopped before the next one']
+};
+for (const lesson of D.LESSONS) {
+  for (const id of lesson.criteria || []) {
+    const claim = AUDIBLE_CLAIMS[id];
+    if (!claim) continue;
+    const [test, want] = claim;
+    let found = 0;
+    for (const card of lesson.cards) {
+      for (const k of elementsOf(card)) {
+        const el = card[k];
+        if (!el || !el.exercise) continue;
+        const ex = X.exercise(el.exercise);
+        if (ex) found += ex.notes.filter(test).length;
+      }
+    }
+    if (!found) {
+      errors.push(`${lesson.id} claims ${id} and no note in its material is ${want}. ` +
+                  `The lesson describes a difference the player never makes.`);
+    }
+  }
+}
+
+/* ── The transport fires notes from one place ────────────────────────────
+   The loop branch and the straight branch each used to spell out the playMidi
+   call, and wiring the count-in toggle into one of two such branches was a
+   one-line change the whole suite passed. A note's level, voice and roll
+   offset are three more things that would otherwise be remembered twice. */
+(function () {
+  const audio = require('fs').readFileSync(
+    require('path').join(__dirname, '..', 'guitar-audio.js'), 'utf8');
+  const from = audio.indexOf('function schedule()');
+  const to = audio.indexOf('function tempoAt(');
+  if (from < 0 || to < 0 || to <= from) {
+    errors.push('cannot find the transport scheduler in guitar-audio.js, so this gate is ' +
+                'checking nothing. Fix the landmarks before trusting the pass.');
+    return;
+  }
+  const direct = (audio.slice(from, to).match(/playMidi\(/g) || []).length;
+  if (direct) {
+    errors.push(`the transport scheduler calls playMidi directly ${direct} time(s). ` +
+                `It has two branches and they must not each spell out how a note is sounded — ` +
+                `that is how the count-in came to be wired into one of them.`);
+  }
+})();
+
+/* ── Every element kind the data may use is one the player draws ─────────
+   ELEMENT_KEYS is what a card may carry AND what the "no prose-only card" rule
+   counts. Two of the eight — `rhythm` and `ear` — were listed there and had no
+   branch in the player at all, so a card using one would satisfy the rule that
+   exists to guarantee something to do, and draw nothing. The list of kinds and
+   the list of things that render have to be the same list. */
+(function () {
+  const ui = require('fs').readFileSync(
+    require('path').join(__dirname, '..', 'guitar-ui.js'), 'utf8');
+  const undrawn = D.ELEMENT_KEYS.filter(k => !new RegExp('card\\.' + k + '\\b').test(ui));
+  if (undrawn.length) {
+    errors.push(`${undrawn.join(', ')} listed in ELEMENT_KEYS and never read by guitar-ui.js. ` +
+                `A card using one would pass the rule that every card carries something to play, ` +
+                `and draw nothing at all.`);
+  }
+})();
+
 /* ── Every authored exercise is reachable and sound ─────────────────────── */
 const referenced = new Set();
 for (const lesson of D.LESSONS) {
@@ -460,6 +659,13 @@ for (const lesson of D.LESSONS) {
 const orphans = X.ids().filter(id => !referenced.has(id));
 if (orphans.length) {
   warnings.push(`${orphans.length} authored exercise(s) no lesson uses: ${orphans.join(', ')}.`);
+}
+/* The same question for picking patterns. A pattern in the engine that no card
+   plays is untested content: the sweep above only reaches the ones a lesson
+   names, so an unused one is neither taught nor checked. */
+const unusedPatterns = Object.keys(E.PICKING).filter(id => !pickPatternsUsed.has(id));
+if (unusedPatterns.length) {
+  warnings.push(`${unusedPatterns.length} picking pattern(s) no card uses: ${unusedPatterns.join(', ')}.`);
 }
 
 /* Playability is guitar-engine's own question, asked here against the authored

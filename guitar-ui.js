@@ -279,11 +279,37 @@
              bpm: spec.bpm || 72, beatsPerBar: 4, generated: true, fb: ex.fb };
   }
 
+  /* A picking pattern over held chords, unit P2's whole material.
+
+     The chord boxes and the notes come from ONE call, which is the point: the
+     shape a reader is told to hold and the notes they hear have been two
+     separate assertions about the same chord twice in this project, and both
+     times they came apart. generatePicking returns the voicings it used, so
+     the boxes are drawn from the search that produced the tab rather than from
+     a second search that usually agrees. */
+  function picked(spec, fb) {
+    var ex = E.generatePicking({
+      patternId: spec.patternId, chords: spec.chords, sub: spec.sub,
+      tuning: fb.tuning, capo: fb.capo, handed: fb.handed
+    });
+    if (ex.fault) return null;
+    var boxes = '';
+    ex.voicings.forEach(function (v) {
+      boxes += '<div class="gtr-change">' +
+        '<span class="gtr-change-deg">' + esc(E.chordName(v.chordId, v.rootPc)) + '</span>' +
+        R.chordBox(v.voicing, ex.fb) +
+      '</div>';
+    });
+    return { notes: ex.notes, title: spec.title || ex.meta.name, bpm: spec.bpm || 66,
+             beatsPerBar: spec.beatsPerBar || 4, fb: ex.fb, boxes: boxes };
+  }
+
   /* Build a progression: the boxes to draw and the notes to sound, from one
      voicing search each so the two always agree. `key` turns chord roots into
      scale degrees, which is the whole point of the unit — a progression read as
      one, four, five says the same thing in every key. */
   var DEGREE_NAMES = ['I', 'bII', 'II', 'bIII', 'III', 'IV', 'bV', 'V', 'bVI', 'VI', 'bVII', 'VII'];
+  var ROLL_SPREAD_S = 0.055;      // seconds between strings of a rolled chord
   function changesPlayable(ch, fb) {
     var beat = 0, notes = [], boxes = '';
     for (var i = 0; i < ch.chords.length; i++) {
@@ -303,10 +329,11 @@
         (label ? '<span class="gtr-change-deg">' + esc(label) + '</span>' : '') +
         R.chordBox(v, fb) +
       '</div>';
-      v.notes.forEach(function (n) {
-        notes.push({ string: n.string, fret: n.fret, beat: beat, dur: span,
-                     hand: 'p', finger: n.string >= 4 ? 'p' : 'i' });
-      });
+      /* ROLLED, NOT BLOCKED, and with the chord voice. The arithmetic is
+         E.rollChord so a Node test can ask what it produces — it was wrong
+         here for two units and the only thing that could have caught it was a
+         person listening. */
+      E.rollChord(v.notes, beat, span, ROLL_SPREAD_S).forEach(function (n) { notes.push(n); });
       beat += span;
     }
     return { notes: notes, boxes: boxes };
@@ -335,8 +362,11 @@
 
     if (card.tab || card.playalong) {
       var el = card.tab || card.playalong;
-      var ex = el.generate ? generated(el.generate) : XD.exercise(el.exercise);
+      var ex = el.generate ? generated(el.generate)
+             : el.pick ? picked(el.pick, fb)
+             : XD.exercise(el.exercise);
       if (ex) {
+        if (ex.boxes) figures += '<div class="gtr-changes">' + ex.boxes + '</div>';
         var notes = byBeat(ex.notes);
         /* A generated exercise carries the fretboard it was built on, for the
            same reason a card does: the notes and the neck they were chosen for
@@ -352,6 +382,9 @@
                      bpm: demoBpm || el.bpm || ex.bpm || data.settings.tempo,
                      loop: !!el.loop, title: ex.title };
         caption = el.caption || el.note || '';
+      } else if (el.pick) {
+        figures += '<div class="gtr-fault">This pattern has no playable shape on the ' +
+                   'current tuning and capo.</div>';
       } else {
         figures += '<div class="gtr-fault">Exercise "' + esc(el.exercise) + '" is missing.</div>';
       }
@@ -372,7 +405,7 @@
       if (seq) {
         figures += '<div class="gtr-changes">' + seq.boxes + '</div>';
         playable = { notes: seq.notes, bpm: ch.bpm || 76, loop: !!ch.loop,
-                     title: 'Progression', strum: true };
+                     title: 'Progression' };
         caption = ch.note || '';
       } else {
         figures += '<div class="gtr-fault">A chord in this progression has no playable voicing.</div>';

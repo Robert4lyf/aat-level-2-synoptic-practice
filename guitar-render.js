@@ -56,6 +56,10 @@
   var TB = {                       // tablature
     stringGap: 11, beatGap: 26, padX: 26, padY: 20, fontSize: 9.5, barPad: 11
   };
+  /* At or above this level a note is drawn with an accent. One number, read by
+     the renderer and by the content checker, so "loud enough to mark" and
+     "loud enough to hear" cannot be set to two different things. */
+  var ACCENT_LEVEL = 1.2;
   var MARKER_FRETS = [3, 5, 7, 9, 15, 17, 19, 21];
   var DOUBLE_MARKER_FRETS = [12, 24];
 
@@ -386,6 +390,18 @@
           : text(tx, TB.padY - 9, nte.finger, 'gtr-tab-pima');
       }
       if (nte.tech === 'tap') inner += text(tx, TB.padY - 9, 'T', 'gtr-tab-tech');
+      /* TWO MARKS BELOW THE STAVE, both DERIVED from the thing they claim.
+         An accent is drawn because the note is genuinely struck harder — the
+         same `level` the transport multiplies its gain by — and a stopped note
+         is drawn because its duration is genuinely short. Neither is a second,
+         separate assertion that can drift out of step with the sound, which is
+         the disagreement this module has had to fix twice already.
+         Below rather than above: above the stave already carries the fingering
+         letter for a single-note beat, the capo header and the tap mark. */
+      var mark = (nte.level >= ACCENT_LEVEL ? '>' : '') +
+                 (nte.tech === 'damp' ? '\u2715' : '');
+      if (mark) inner += text(tx, TB.padY + TB.stringGap * (E.STRING_COUNT - 1) + 11,
+                              mark, 'gtr-tab-mark');
       g += noteGroup(i, inner);
     });
 
@@ -397,6 +413,7 @@
     neckDiagram: neckDiagram,
     tab: tab,
     /* exported for the checkers and for tests */
+    ACCENT_LEVEL: ACCENT_LEVEL,
     GEOMETRY: { CB: CB, NK: NK, TB: TB }
   };
 }));
