@@ -32,6 +32,7 @@ const http = require('http');
 const ROOT = path.join(__dirname, '..');
 const D = require('../guitar-learn-data.js');
 const X = require('../guitar-exercise-data.js');
+const E = require('../guitar-engine.js');
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', YEL = '\x1b[33m', RESET = '\x1b[0m';
 const errors = [];
@@ -65,6 +66,36 @@ function serve() {
     });
     server.listen(0, '127.0.0.1', () => resolve({ server, port: server.address().port }));
   });
+}
+
+/* How many notes a card's material actually has, whichever of the three
+   sources it comes from. Written out once because reading `el.exercise` and
+   nothing else is how generated cards became invisible to the content checker,
+   and a picking card resolves to null the same way — here that would have
+   thrown rather than passed, which is better, but the fix is the same. */
+function materialNotes(el, ctx) {
+  if (!el) return null;
+  if (el.exercise) {
+    const ex = X.exercise(el.exercise);
+    return ex ? ex.notes : null;
+  }
+  if (el.pick) {
+    const ex = E.generatePicking({
+      patternId: el.pick.patternId, chords: el.pick.chords, sub: el.pick.sub,
+      tuning: (ctx && ctx.tuning) || 'standard', capo: (ctx && ctx.capo) || 0
+    });
+    return ex.fault ? null : ex.notes;
+  }
+  if (el.generate) {
+    const g = el.generate;
+    const ex = E.generateExercise({
+      scaleId: g.scaleId, rootPc: g.rootPc, positionKind: g.positionKind || 'box',
+      positionIndex: g.positionIndex || 0, sequence: g.sequence || 'straight',
+      descending: !!g.descending
+    });
+    return ex.fault ? null : ex.notes;
+  }
+  return null;
 }
 
 /* What tempo each card should offer, read from the content rather than from
@@ -156,14 +187,36 @@ function expectedTempo(lesson, index) {
            a phone's full width, about three times its natural size. Scaling
            down is fine and wanted; scaling up is the bug. */
         const figure = await page.evaluate(() => {
-          const boxes = [...document.querySelectorAll('.gtr-card .gtr-tab-pima')]
-            .map(e => { const b = e.getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height, t: e.textContent }; });
+          const box = e => { const b = e.getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height, t: e.textContent }; };
+          const hits = (A, B) => A.x < B.x + B.w && B.x < A.x + A.w && A.y < B.y + B.h && B.y < A.y + A.h;
+          /* Everything drawn in the margins of a tab, not only the fingering
+             letters: the capo header, the tap mark and the accent and stop marks
+             share that space and were never measured. */
+          const boxes = [...document.querySelectorAll(
+            '.gtr-card .gtr-tab-pima, .gtr-card .gtr-tab-capo, ' +
+            '.gtr-card .gtr-tab-tech, .gtr-card .gtr-tab-mark')].map(box);
           const clashes = [];
           for (let a = 0; a < boxes.length; a++) {
             for (let b = a + 1; b < boxes.length; b++) {
-              const A = boxes[a], B = boxes[b];
-              if (A.x < B.x + B.w && B.x < A.x + A.w && A.y < B.y + B.h && B.y < A.y + A.h) {
-                clashes.push(`${A.t}/${B.t}`);
+              if (hits(boxes[a], boxes[b])) clashes.push(`${boxes[a].t}/${boxes[b].t}`);
+            }
+          }
+          /* A label clear of every other label can still be unreadable, and was:
+             tucked to the left of a note on a downbeat it landed ON the bar
+             line, because the only thing measured was label against label. The
+             two things a label shares the stave with are the fret digits and
+             the bar lines, so both are measured too. */
+          const digits = [...document.querySelectorAll('.gtr-card .gtr-tab-fret')].map(box);
+          for (const L of boxes) {
+            for (const dgt of digits) if (hits(L, dgt)) clashes.push(`${L.t} over digit ${dgt.t}`);
+          }
+          for (const L of boxes) {
+            for (const ln of document.querySelectorAll('.gtr-card .gtr-tab-bar')) {
+              const x = Number(ln.getAttribute('x1'));
+              const y1 = Number(ln.getAttribute('y1')), y2 = Number(ln.getAttribute('y2'));
+              const top = Math.min(y1, y2), bot = Math.max(y1, y2);
+              if (x > L.x && x < L.x + L.w && L.y < bot && top < L.y + L.h) {
+                clashes.push(`${L.t} across a bar line`);
               }
             }
           }
@@ -416,7 +469,15 @@ function expectedTempo(lesson, index) {
     const ctxCards = [];
     for (const lesson of D.LESSONS) {
       lesson.cards.forEach((card, i) => {
-        if (card.context && (card.context.tuning || card.context.capo)) {
+        /* `'capo' in ctx`, not `ctx.capo`. A card declaring capo 0 is making a
+           statement — this figure is not capo'd whatever you have set — and
+           reading the value for truthiness skipped every one of them: 21 cards
+           declaring no capo were silently exempt from this check while it
+           reported that all the context cards had been done. The question is
+           whether a context was DECLARED, not whether its number is non-zero,
+           and that difference has now cost this module four separate rules. */
+        const ctx = card.context;
+        if (ctx && ('tuning' in ctx || 'capo' in ctx)) {
           ctxCards.push({ lesson: lesson.id, index: i, card });
         }
       });
@@ -427,7 +488,12 @@ function expectedTempo(lesson, index) {
     for (const { lesson, index, card } of ctxCards) {
       const el = card.tab || card.playalong;
       if (!el) continue;
-      const ex = X.exercise(el.exercise);
+      const material = materialNotes(el, card.context);
+      if (!material) {
+        errors.push(`${lesson} card ${index + 1} declares a context and its material does not ` +
+                    `resolve, so this check cannot see what the card draws.`);
+        continue;
+      }
       const want = card.context.tuning || 'standard';
       const wantCapo = card.context.capo || 0;
 
@@ -455,9 +521,9 @@ function expectedTempo(lesson, index) {
          for that tuning — so a right-sounding card cannot draw a wrong neck. */
       const drawn = await page.evaluate(() =>
         [...document.querySelectorAll('.gtr-note[data-i]')].length);
-      if (drawn !== ex.notes.length) {
-        errors.push(`${lesson} card ${index + 1} drew ${drawn} notes for an exercise of ` +
-                    `${ex.notes.length}.`);
+      if (drawn !== material.length) {
+        errors.push(`${lesson} card ${index + 1} drew ${drawn} notes for material of ` +
+                    `${material.length}.`);
       }
       await page.click('#gtrBack');
       await page.waitForSelector('[data-lesson]', { timeout: 8000 });
@@ -578,7 +644,8 @@ function expectedTempo(lesson, index) {
 
   notes.unshift(`${cardsSeen} cards opened across ${D.LESSONS.length} lessons; ${figuresSeen} drew a figure; ` +
                 `${demoCards} were demonstrations with no tempo control.`);
-  notes.push(`${figureLabels} fingering labels measured; none overlapping, no figure magnified.`);
+  notes.push(`${figureLabels} fingering labels measured against each other, the fret digits ` +
+           `and the bar lines; none overlapping, no figure magnified.`);
 
   console.log(`${BOLD}guitar lessons${RESET}\n`);
   notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));

@@ -287,21 +287,31 @@
      times they came apart. generatePicking returns the voicings it used, so
      the boxes are drawn from the search that produced the tab rather than from
      a second search that usually agrees. */
+  function totalRounds(chords) {
+    return (chords || []).reduce(function (n, c) { return n + Math.max(1, Math.round(c.times || 1)); }, 0);
+  }
   function picked(spec, fb) {
     var ex = E.generatePicking({
       patternId: spec.patternId, chords: spec.chords, sub: spec.sub,
       tuning: fb.tuning, capo: fb.capo, handed: fb.handed
     });
     if (ex.fault) return null;
+    /* No label above the box. A chord box already draws its own name — the
+       progression element adds a span because it needs the scale DEGREE there,
+       which is a different fact; adding one here printed "C" twice. */
     var boxes = '';
     ex.voicings.forEach(function (v) {
-      boxes += '<div class="gtr-change">' +
-        '<span class="gtr-change-deg">' + esc(E.chordName(v.chordId, v.rootPc)) + '</span>' +
-        R.chordBox(v.voicing, ex.fb) +
-      '</div>';
+      boxes += '<div class="gtr-change">' + R.chordBox(v.voicing, ex.fb) + '</div>';
     });
+    /* Bar the tab by the length of one round of the pattern, not by four.
+       p-i-m-a-m-i is six eighth notes — three beats — and drawn in 4/4 the
+       rounds straddle the bar lines, so the figure contradicts a lesson whose
+       whole point is that six notes go round and come back. Four stays where
+       the round divides into it evenly. */
+    var round = ex.meta.beats / totalRounds(spec.chords);
+    var bar = (round > 0 && (4 % round === 0 || round % 4 === 0)) ? 4 : round;
     return { notes: ex.notes, title: spec.title || ex.meta.name, bpm: spec.bpm || 66,
-             beatsPerBar: spec.beatsPerBar || 4, fb: ex.fb, boxes: boxes };
+             beatsPerBar: spec.beatsPerBar || bar, fb: ex.fb, boxes: boxes };
   }
 
   /* Build a progression: the boxes to draw and the notes to sound, from one
