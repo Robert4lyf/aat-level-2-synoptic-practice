@@ -279,6 +279,76 @@
              bpm: spec.bpm || 72, beatsPerBar: 4, generated: true, fb: ex.fb };
   }
 
+  /* A picking pattern over held chords, unit P2's whole material.
+
+     The chord boxes and the notes come from ONE call, which is the point: the
+     shape a reader is told to hold and the notes they hear have been two
+     separate assertions about the same chord twice in this project, and both
+     times they came apart. generatePicking returns the voicings it used, so
+     the boxes are drawn from the search that produced the tab rather than from
+     a second search that usually agrees. */
+  function totalRounds(chords) {
+    return (chords || []).reduce(function (n, c) { return n + Math.max(1, Math.round(c.times || 1)); }, 0);
+  }
+  function picked(spec, fb) {
+    var ex = E.generatePicking({
+      patternId: spec.patternId, chords: spec.chords, sub: spec.sub,
+      tuning: fb.tuning, capo: fb.capo, handed: fb.handed
+    });
+    if (ex.fault) return null;
+    /* No label above the box. A chord box already draws its own name — the
+       progression element adds a span because it needs the scale DEGREE there,
+       which is a different fact; adding one here printed "C" twice. */
+    var boxes = '';
+    ex.voicings.forEach(function (v) {
+      boxes += '<div class="gtr-change">' + R.chordBox(v.voicing, ex.fb) + '</div>';
+    });
+    /* Bar the tab by the length of one round of the pattern, not by four.
+       p-i-m-a-m-i is six eighth notes — three beats — and drawn in 4/4 the
+       rounds straddle the bar lines, so the figure contradicts a lesson whose
+       whole point is that six notes go round and come back. Four stays where
+       the round divides into it evenly. */
+    var round = ex.meta.beats / totalRounds(spec.chords);
+    var bar = (round > 0 && (4 % round === 0 || round % 4 === 0)) ? 4 : round;
+    return { notes: ex.notes, title: spec.title || ex.meta.name, bpm: spec.bpm || 66,
+             beatsPerBar: spec.beatsPerBar || bar, fb: ex.fb, boxes: boxes };
+  }
+
+  /* Build a progression: the boxes to draw and the notes to sound, from one
+     voicing search each so the two always agree. `key` turns chord roots into
+     scale degrees, which is the whole point of the unit — a progression read as
+     one, four, five says the same thing in every key. */
+  var DEGREE_NAMES = ['I', 'bII', 'II', 'bIII', 'III', 'IV', 'bV', 'V', 'bVI', 'VI', 'bVII', 'VII'];
+  var ROLL_SPREAD_S = 0.055;      // seconds between strings of a rolled chord
+  function changesPlayable(ch, fb) {
+    var beat = 0, notes = [], boxes = '';
+    for (var i = 0; i < ch.chords.length; i++) {
+      var c = ch.chords[i];
+      var v = E.findVoicing(c.chordId, c.rootPc, fb);
+      if (!v) return null;
+      var span = c.beats || 4;
+      var label = '';
+      if (ch.key !== undefined) {
+        var deg = (((c.rootPc - ch.key) % 12) + 12) % 12;
+        label = DEGREE_NAMES[deg];
+        /* Minor chords are written in lower case, which is the convention the
+           lesson teaches rather than a decoration. */
+        if (c.chordId === 'min' || c.chordId === 'min7') label = label.toLowerCase();
+      }
+      boxes += '<div class="gtr-change">' +
+        (label ? '<span class="gtr-change-deg">' + esc(label) + '</span>' : '') +
+        R.chordBox(v, fb) +
+      '</div>';
+      /* ROLLED, NOT BLOCKED, and with the chord voice. The arithmetic is
+         E.rollChord so a Node test can ask what it produces — it was wrong
+         here for two units and the only thing that could have caught it was a
+         person listening. */
+      E.rollChord(v.notes, beat, span, ROLL_SPREAD_S).forEach(function (n) { notes.push(n); });
+      beat += span;
+    }
+    return { notes: notes, boxes: boxes };
+  }
+
   /* The fretboard a card is drawn and played on.
      A lesson about DADGAD has to show DADGAD whatever the player has their own
      guitar set to, so a card may declare `context: { tuning, capo }`. Without
@@ -302,8 +372,11 @@
 
     if (card.tab || card.playalong) {
       var el = card.tab || card.playalong;
-      var ex = el.generate ? generated(el.generate) : XD.exercise(el.exercise);
+      var ex = el.generate ? generated(el.generate)
+             : el.pick ? picked(el.pick, fb)
+             : XD.exercise(el.exercise);
       if (ex) {
+        if (ex.boxes) figures += '<div class="gtr-changes">' + ex.boxes + '</div>';
         var notes = byBeat(ex.notes);
         /* A generated exercise carries the fretboard it was built on, for the
            same reason a card does: the notes and the neck they were chosen for
@@ -319,8 +392,33 @@
                      bpm: demoBpm || el.bpm || ex.bpm || data.settings.tempo,
                      loop: !!el.loop, title: ex.title };
         caption = el.caption || el.note || '';
+      } else if (el.pick) {
+        figures += '<div class="gtr-fault">This pattern has no playable shape on the ' +
+                   'current tuning and capo.</div>';
       } else {
         figures += '<div class="gtr-fault">Exercise "' + esc(el.exercise) + '" is missing.</div>';
+      }
+    }
+    /* ── A progression ────────────────────────────────────────────────────
+       M7 is about hearing a sequence of chords as degrees rather than as
+       names, and nothing in the player could show a sequence at all — the plan
+       listed a `changes` element and it had never been built.
+
+       It renders as a row of chord boxes with their scale degree above each,
+       and plays as the same chords strummed in time. Both come from the SAME
+       voicing search, so the boxes and the sound cannot disagree — which is the
+       defect this project has hit twice already, at chord level and again at
+       card level. */
+    if (card.changes) {
+      var ch = card.changes;
+      var seq = changesPlayable(ch, fb);
+      if (seq) {
+        figures += '<div class="gtr-changes">' + seq.boxes + '</div>';
+        playable = { notes: seq.notes, bpm: ch.bpm || 76, loop: !!ch.loop,
+                     title: 'Progression' };
+        caption = ch.note || '';
+      } else {
+        figures += '<div class="gtr-fault">A chord in this progression has no playable voicing.</div>';
       }
     }
     if (card.chordbox) {

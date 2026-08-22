@@ -13,6 +13,18 @@
  *           for right- and left-handed players alike.
  *   fret    0..24, measured from the NUT, never from the capo.
  *
+ * THREE OPTIONAL FIELDS, all added for unit P3 and all ignored where absent:
+ *
+ *   level   how hard the note is struck, 1 being ordinary. P3 is about one
+ *           note being louder than the ones around it, and every note in the
+ *           module was played at exactly the same level, so the unit's whole
+ *           claim would have been inaudible.
+ *   voice   which timbre sounds it. P3 teaches moving the contact point along
+ *           the string, which is a change of tone and nothing else.
+ *   delayS  a fixed offset in SECONDS, not beats, used to roll a chord. A
+ *           strum's spread does not scale with tempo — that is what separates
+ *           a strum from a block chord played fast.
+ *
  * No pixel positions, no tab text, anywhere. That is what makes handedness,
  * capo and tuning rendering parameters rather than data migrations, and it is
  * what lets a progress record stay valid when any of the three changes.
@@ -663,6 +675,173 @@
      Picking-hand patterns (p-i-m-a and the Giuliani ladder) will populate the
      same shape with `patternId` in place of `scaleId`; that branch lands with
      unit P2 and is deliberately not stubbed here. */
+  /* A chord ROLLED rather than blocked: the same notes, lowest string first,
+     each one a fixed number of SECONDS behind the one before it.
+
+     Seconds and not beats, deliberately. A strum keeps its spread as the tempo
+     moves; spreading it in beats makes the roll tighten as the tempo rises,
+     which is a block chord played fast rather than a strum.
+
+     It lives here rather than in the player because it was wrong there and
+     nothing could see it: the progression element's comment said its chords
+     were "strummed in time", it set a strum flag, nothing read the flag, and
+     six notes went out at one instant through the default voice — the stacked
+     transient that was reported as too much attack and that the chord voice
+     was added to fix. A pure function in this file is one a test can ask. */
+  function rollChord(notes, beat, span, spreadS, voice) {
+    var spread = spreadS > 0 ? spreadS : 0.055;
+    var low = notes.slice().sort(function (a, b) { return b.string - a.string; });
+    return low.map(function (n, i) {
+      return {
+        string: n.string, fret: n.fret, beat: beat, dur: span,
+        hand: 'p', finger: n.string >= 4 ? 'p' : 'i',
+        voice: voice || 'chord',
+        delayS: i * spread,
+        /* Easing towards the top the way a thumb roll actually lands: an even
+           level across six strings puts the whole weight on the trebles. */
+        level: 1 - i * 0.03
+      };
+    });
+  }
+
+
+  /* ── Picking patterns ─────────────────────────────────────────────────────
+     What the picking hand does over a held chord.
+
+     The plan reserved this for unit P2 and said it was deliberately not
+     stubbed. That was right. P2 is twenty cards of "this pattern over those
+     chords", and writing them out by hand is several hundred note literals
+     whose entire content is a chord shape findVoicing already knows and a
+     finger order four characters long. Worse, the shape in the tab and the
+     shape in the chord box would be two separate assertions about the same
+     chord — which is the disagreement this module has now had to fix twice.
+
+     A pattern is a list of STEPS, one per subdivision. Each step names zero or
+     more finger:slot pairs. An empty step is a rest; two pairs in one step is
+     a pinch, and they sound together.
+
+     A SLOT IS A ROLE, NOT A STRING, because the same pattern has to mean the
+     same thing over a six-string E and a four-string D:
+
+       b    the lowest sounding string, where p lives
+       b2   the next one up, for an alternating bass
+       t1   the highest sounding string, then t2, t3, t4 downwards
+
+     That is also the claim the unit makes out loud — p-i-m-a is one movement,
+     not one movement per chord — so resolving through roles is the encoding
+     that agrees with what is being taught.
+
+     `strings` is the minimum a voicing must sound for the pattern to fit. It
+     is passed to findVoicing rather than checked afterwards: a pattern reaching
+     for t4 needs a five-string shape, and asking for one is cheaper than
+     rejecting the four-string one that comes back. */
+  var PICKING = {
+    pima:   { name: 'p-i-m-a',           sub: 1,
+              steps: ['p:b', 'i:t3', 'm:t2', 'a:t1'] },
+    pami:   { name: 'p-a-m-i',           sub: 1,
+              steps: ['p:b', 'a:t1', 'm:t2', 'i:t3'] },
+    pimami: { name: 'p-i-m-a-m-i',       sub: 0.5,
+              steps: ['p:b', 'i:t3', 'm:t2', 'a:t1', 'm:t2', 'i:t3'] },
+    pmim:   { name: 'p-m-i-m',           sub: 0.5,
+              steps: ['p:b', 'm:t2', 'i:t3', 'm:t2'] },
+    pinch:  { name: 'pinch and fill',    sub: 1,
+              steps: ['p:b+a:t1', 'm:t2', 'i:t3', 'm:t2'] },
+    thumb:  { name: 'alternating thumb', sub: 0.5, strings: 5,
+              steps: ['p:b', 'i:t3', 'p:b2', 'm:t2', 'p:b', 'i:t3', 'p:b2', 'a:t1'] },
+    ima:    { name: 'i-m-a, no thumb',   sub: 0.5,
+              steps: ['i:t3', 'm:t2', 'a:t1', 'm:t2'] },
+    updown: { name: 'up and back down',  sub: 0.5,
+              steps: ['p:b', 'i:t3', 'm:t2', 'a:t1', 'm:t2', 'i:t3', 'p:b2', 'i:t3'] },
+    cross:  { name: 'crossing pairs',    sub: 0.5, strings: 5,
+              steps: ['p:b', 'i:t4', 'm:t3', 'i:t4', 'p:b2', 'm:t3', 'a:t2', 'm:t3'] },
+    span:   { name: 'the whole span',    sub: 0.5, strings: 5,
+              steps: ['p:b', 'i:t4', 'm:t3', 'a:t2', 'a:t1', 'm:t2', 'i:t3', 'p:b2'] },
+    rest:   { name: 'thumb, then a rest', sub: 1,
+              steps: ['p:b', '', 'i:t3+a:t1', ''] }
+  };
+
+  /* The four treble roles and the two bass roles, resolved against one
+     voicing. `notes` comes out of findVoicing ordered from string 6 down, but
+     sorting here rather than relying on that keeps the two independent. */
+  function pickingSlots(voicing) {
+    var low = voicing.notes.slice().sort(function (a, b) { return b.string - a.string; });
+    var high = low.slice().reverse();
+    return {
+      b: low[0], b2: low[1] || low[0],
+      t1: high[0], t2: high[1], t3: high[2], t4: high[3]
+    };
+  }
+
+  /* spec: { patternId, chords: [{ chordId, rootPc, times }], sub, tuning, capo }
+     Returns the same shape generateExercise does — notes, the fretboard they
+     were computed for, and meta — plus the voicings, so a caller can draw the
+     chord boxes from the SAME search that produced the notes rather than
+     running a second one. */
+  function generatePicking(spec) {
+    spec = spec || {};
+    var fb = makeFretboard({ tuning: spec.tuning, capo: spec.capo, handed: spec.handed });
+    if (spec.tuning && !resolveTuningId(spec.tuning)) return { fault: 'unknown tuning: ' + spec.tuning };
+    if (!has(PICKING, spec.patternId)) return { fault: 'unknown picking pattern: ' + spec.patternId };
+    var pat = PICKING[spec.patternId];
+    var chords = spec.chords;
+    if (!Array.isArray(chords) || !chords.length) {
+      return { fault: 'a picking exercise needs at least one chord' };
+    }
+    var sub = Number(spec.sub) > 0 ? Number(spec.sub) : pat.sub;
+    var notes = [], voicings = [], step = 0;
+
+    for (var c = 0; c < chords.length; c++) {
+      var ch = chords[c];
+      if (!has(CHORDS, ch.chordId)) return { fault: 'unknown chord: ' + ch.chordId };
+      var v = findVoicing(ch.chordId, ch.rootPc, fb, { minStrings: pat.strings || 4 });
+      if (!v) {
+        return { fault: 'no voicing for ' + chordName(ch.chordId, ch.rootPc) + ' sounding ' +
+                        (pat.strings || 4) + ' strings in ' + fb.tuning + ' capo ' + fb.capo };
+      }
+      voicings.push({ chordId: ch.chordId, rootPc: ch.rootPc, voicing: v });
+      var slots = pickingSlots(v);
+      var times = Math.max(1, Math.round(Number(ch.times) || 1));
+
+      for (var r = 0; r < times; r++) {
+        for (var s = 0; s < pat.steps.length; s++) {
+          var tokens = String(pat.steps[s]).split('+').filter(Boolean);
+          var beat = beatAt(step, sub);
+          var here = Object.create(null);
+          for (var t = 0; t < tokens.length; t++) {
+            var parts = tokens[t].split(':');
+            var finger = parts[0], slotName = parts[1];
+            var target = slots[slotName];
+            if (!target) {
+              return { fault: 'pattern ' + spec.patternId + ' reaches for ' + slotName + ' and ' +
+                              chordName(ch.chordId, ch.rootPc) + ' sounds only ' + v.notes.length +
+                              ' strings' };
+            }
+            /* Two fingers on one string at one instant is not a chord, it is a
+               collision — and it renders as one digit on top of another with
+               nothing saying so. */
+            if (here[target.string]) {
+              return { fault: 'pattern ' + spec.patternId + ' puts ' + here[target.string] + ' and ' +
+                              finger + ' both on string ' + target.string + ' over ' +
+                              chordName(ch.chordId, ch.rootPc) };
+            }
+            here[target.string] = finger;
+            notes.push({ string: target.string, fret: target.fret, beat: beat, dur: sub,
+                         hand: 'p', finger: finger });
+          }
+          step++;
+        }
+      }
+    }
+    return {
+      notes: notes, fb: fb, voicings: voicings,
+      meta: {
+        patternId: spec.patternId, name: pat.name, sub: sub,
+        chords: chords.map(function (x) { return x.chordId + '/' + x.rootPc + '/' + (x.times || 1); }),
+        tuning: fb.tuning, capo: fb.capo, beats: beatAt(step, sub)
+      }
+    };
+  }
+
   function generateExercise(spec) {
     spec = spec || {};
     var fb = makeFretboard({ tuning: spec.tuning, capo: spec.capo, handed: spec.handed });
@@ -1042,6 +1221,11 @@
     /* generator */
     generateExercise: generateExercise,
     exerciseKey: exerciseKey,
+    /* picking patterns and rolled chords */
+    rollChord: rollChord,
+    PICKING: PICKING,
+    pickingSlots: pickingSlots,
+    generatePicking: generatePicking,
     /* synthesis */
     karplusStrong: karplusStrong,
     renderPitch: renderPitch,

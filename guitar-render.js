@@ -56,6 +56,19 @@
   var TB = {                       // tablature
     stringGap: 11, beatGap: 26, padX: 26, padY: 20, fontSize: 9.5, barPad: 11
   };
+  /* At or above this level a note is drawn with an accent. One number, read by
+     the renderer and by the content checker, so "loud enough to mark" and
+     "loud enough to hear" cannot be set to two different things. */
+  var ACCENT_LEVEL = 1.2;
+  /* Width of one italic 8px fingering letter, used to decide which side of a
+     note it fits on. Measured from the rendered figure rather than guessed. */
+  /* How far above the top string and below the bottom one the marginal marks
+     sit. Both were a pixel closer, which left the em box of a fingering letter
+     overlapping the em box of a string-1 digit — no visible smudge, about a
+     pixel and a half of ink between them, and no room for a check to draw the
+     line anywhere principled. Moved out to a clear three pixels, so the rule
+     "nothing on a figure touches anything else" can be enforced literally. */
+  var ABOVE = 12, BELOW = 13;
   var MARKER_FRETS = [3, 5, 7, 9, 15, 17, 19, 21];
   var DOUBLE_MARKER_FRETS = [12, 24];
 
@@ -129,13 +142,13 @@
   function circle(cx, cy, r, cls) {
     return '<circle cx="' + n2(cx) + '" cy="' + n2(cy) + '" r="' + n2(r) + '" class="' + esc(cls) + '" />';
   }
-  function textEnd(x, y, str, cls) {
-    return '<text x="' + n2(x) + '" y="' + n2(y) + '" class="' + esc(cls) +
-           '" text-anchor="end" dominant-baseline="central">' + esc(str) + '</text>';
-  }
   function text(x, y, str, cls) {
     return '<text x="' + n2(x) + '" y="' + n2(y) + '" class="' + esc(cls) +
            '" text-anchor="middle" dominant-baseline="central">' + esc(str) + '</text>';
+  }
+  function textStart(x, y, str, cls) {
+    return '<text x="' + n2(x) + '" y="' + n2(y) + '" class="' + esc(cls) +
+           '" text-anchor="start" dominant-baseline="central">' + esc(str) + '</text>';
   }
 
   /* ── Chord box ────────────────────────────────────────────────────────────
@@ -341,7 +354,12 @@
     var bars = Math.max(1, Math.round(totalBeats / beatsPerBar));
     var barWidth = beatsPerBar * beatGapPx + TB.barPad;
     var w = TB.padX * 2 + bars * barWidth;
-    var h = TB.padY * 2 + TB.stringGap * (E.STRING_COUNT - 1);
+    /* A capo header needs a row of its own. Sharing the row above the stave
+       with the fingering letters put "Capo 2" straight through the letter over
+       the first note of the bar — which is where a capo'd figure always starts.
+       Present only when there is a capo, so nothing else changes shape. */
+    var topExtra = fb.capo > 0 ? 12 : 0;
+    var h = TB.padY * 2 + topExtra + TB.stringGap * (E.STRING_COUNT - 1);
     /* Bar k's line, and a note at absolute beat t, both derived from the same
        barWidth so a note can never land on top of a line. */
     var barLineX = function (k) { return TB.padX + k * barWidth; };
@@ -349,7 +367,9 @@
       var k = Math.floor(beat / beatsPerBar);
       return barLineX(k) + TB.barPad + (beat - k * beatsPerBar) * beatGapPx;
     };
-    var y = function (stringNo) { return TB.padY + E.tabStringY(stringNo, TB.stringGap); };
+    var y = function (stringNo) { return TB.padY + topExtra + E.tabStringY(stringNo, TB.stringGap); };
+    var aboveY = TB.padY + topExtra - ABOVE;
+    var markY = TB.padY + topExtra + TB.stringGap * (E.STRING_COUNT - 1) + BELOW;
 
     var g = '';
     for (var s = 1; s <= E.STRING_COUNT; s++) {
@@ -359,7 +379,7 @@
       g += line(barLineX(k2), y(1), barLineX(k2), y(E.STRING_COUNT), 'gtr-tab-bar');
     }
     if (fb.capo > 0) {
-      g += '<text x="' + n2(TB.padX) + '" y="' + n2(TB.padY - 9) +
+      g += '<text x="' + n2(TB.padX) + '" y="' + n2(TB.padY - ABOVE + 2) +
            '" class="gtr-tab-capo" text-anchor="start">Capo ' + fb.capo + '</text>';
     }
 
@@ -381,12 +401,46 @@
          as a single unreadable smudge. In a chord each letter sits beside its
          own note instead, which is where a chord book puts it anyway. */
       if (nte.finger && nte.hand === 'p') {
-        inner += (beatCount[nte.beat] > 1)
-          ? textEnd(tx - half - 3, ty, nte.finger, 'gtr-tab-pima')
-          : text(tx, TB.padY - 9, nte.finger, 'gtr-tab-pima');
+        if (beatCount[nte.beat] > 1) {
+          /* Beside its own note, and ALWAYS on the same side.
+             Tucked to the left it landed on the bar line for anything on a
+             downbeat — which is exactly where a chord sits. Choosing a side per
+             note fixed that and produced a worse fault: on a row carrying a
+             chord note at two consecutive beats, the right-hand label of one
+             and the left-hand label of the next met in the middle. One side for
+             every label is the only arrangement with no pair of cases in it. */
+          inner += textStart(tx + half + 3, ty, nte.finger, 'gtr-tab-pima');
+        } else {
+          inner += text(tx, aboveY, nte.finger, 'gtr-tab-pima');
+        }
       }
-      if (nte.tech === 'tap') inner += text(tx, TB.padY - 9, 'T', 'gtr-tab-tech');
+      if (nte.tech === 'tap') inner += text(tx, aboveY, 'T', 'gtr-tab-tech');
       g += noteGroup(i, inner);
+    });
+
+    /* TWO MARKS BELOW THE STAVE, both DERIVED from the thing they claim.
+       An accent is drawn because the note is genuinely struck harder — the same
+       `level` the transport multiplies its gain by — and a stopped note is
+       drawn because its duration is genuinely short. Neither is a second,
+       separate assertion that can drift out of step with the sound, which is
+       the disagreement this module has had to fix twice already.
+
+       ONE MARK PER BEAT, not per note. The mark row is a single line under the
+       stave, so an accented melody note and a stopped bass at the same instant
+       put two glyphs at one point — which is the four-letters-at-one-point
+       fault again, in a row added later and with nothing looking at it. What a
+       beat is marked with is a property of the beat. */
+    var marks = {};
+    notes.forEach(function (nte) {
+      var m = marks[nte.beat] || { accent: false, damp: false };
+      if (nte.level >= ACCENT_LEVEL) m.accent = true;
+      if (nte.tech === 'damp') m.damp = true;
+      marks[nte.beat] = m;
+    });
+    Object.keys(marks).forEach(function (beat) {
+      var m = marks[beat];
+      var glyph = (m.accent ? '>' : '') + (m.damp ? '\u2715' : '');
+      if (glyph) g += text(x(Number(beat)), markY, glyph, 'gtr-tab-mark');
     });
 
     return svgWrap(w, h, opts.title || 'Tablature', 'gtr-tab', g);
@@ -397,6 +451,7 @@
     neckDiagram: neckDiagram,
     tab: tab,
     /* exported for the checkers and for tests */
+    ACCENT_LEVEL: ACCENT_LEVEL,
     GEOMETRY: { CB: CB, NK: NK, TB: TB }
   };
 }));

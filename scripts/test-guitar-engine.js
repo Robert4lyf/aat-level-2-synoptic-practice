@@ -715,6 +715,61 @@ const measure  = (sig, f0) => estimateFreq(sig, SR, f0, AN_START, AN_N, AN_GAP);
   }
 }
 
+/* ── Rolled chords and picking patterns ──────────────────────────────────
+   Both were built for phase 1's last two units, and both encode a decision
+   that was previously made in the player where nothing could test it. */
+{
+  const chord = [{ string: 1, fret: 0 }, { string: 6, fret: 3 }, { string: 4, fret: 0 }];
+  const rolled = E.rollChord(chord, 4, 4, 0.06);
+  eq(rolled.length, 3, 'a rolled chord keeps every note');
+  eq(rolled[0].string, 6, 'a roll starts on the lowest string');
+  eq(rolled[2].string, 1, 'and ends on the highest');
+  ok(rolled.every(n => n.beat === 4), 'every note of a roll is on the same beat');
+  near(rolled[1].delayS, 0.06, 1e-9, 'the second string is one spread behind');
+  near(rolled[2].delayS, 0.12, 1e-9, 'the third is two');
+  ok(rolled.every(n => n.voice === 'chord'), 'a roll uses the chord voice, not the pluck voice');
+  ok(rolled[0].level > rolled[2].level, 'a roll eases towards the top');
+  /* The spread is in seconds, so it is the same at any tempo. Expressed in
+     beats it would tighten as the tempo rose — a block chord played fast. */
+  const slow = E.rollChord(chord, 0, 4, 0.06), fast = E.rollChord(chord, 0, 1, 0.06);
+  eq(slow[2].delayS, fast[2].delayS, 'the roll spread does not change with the note length');
+
+  const pat = E.generatePicking({ patternId: 'pima', chords: [{ chordId: 'maj', rootPc: 0, times: 2 }] });
+  eq(pat.notes.length, 8, 'p-i-m-a over two rounds is eight notes');
+  eq(pat.notes.map(n => n.finger).join(''), 'pimapima', 'the fingers come out in the pattern order');
+  eq(pat.notes[0].string, 5, 'p takes the lowest sounding string of an open C');
+  eq(pat.notes[3].string, 1, 'a takes the highest');
+  eq(pat.voicings.length, 1, 'the voicing it used comes back, so the boxes and the tab agree');
+  ok(E.generatePicking({ patternId: 'nope', chords: [{ chordId: 'maj', rootPc: 0 }] }).fault,
+     'an unknown pattern is a fault, not silence');
+  ok(E.generatePicking({ patternId: 'pima', chords: [] }).fault,
+     'a picking exercise with no chords is a fault');
+  ok(E.generatePicking({ patternId: 'pima', chords: [{ chordId: 'wat', rootPc: 0 }] }).fault,
+     'an unknown chord is a fault');
+  /* Every pattern, over every chord the module has, in every tuning and under
+     every capo a card may declare: the notes must be playable where they were
+     computed. This is the sweep the picking branch never had. */
+  let cases = 0;
+  for (const tuning of Object.keys(E.TUNINGS)) {
+    for (const capo of [0, 2, 5]) {
+      for (const patternId of Object.keys(E.PICKING)) {
+        for (const chordId of Object.keys(E.CHORDS)) {
+          for (let rootPc = 0; rootPc < 12; rootPc += 5) {
+            cases++;
+            const ex = E.generatePicking({ patternId, chords: [{ chordId, rootPc }], tuning, capo });
+            if (ex.fault) { ok(false, `${patternId} ${chordId} ${rootPc} in ${tuning} capo ${capo}: ${ex.fault}`); continue; }
+            for (const n of ex.notes) {
+              const fault = E.noteFault(n, ex.fb);
+              if (fault) ok(false, `${patternId} ${chordId} in ${tuning} capo ${capo}: ${fault}`);
+            }
+          }
+        }
+      }
+    }
+  }
+  ok(cases > 1000, `the picking sweep covered ${cases} cases`);
+}
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
 console.log(`${BOLD}guitar-engine.js — fretboard, timing and synthesis${RESET}\n`);
 console.log(`  ${DIM}${checks} assertions.${RESET}`);
