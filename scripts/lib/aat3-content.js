@@ -1,0 +1,59 @@
+/**
+ * Every Level 3 content file, in one place.
+ *
+ * Level 3 started as one unit in one file. FAPS is 150 guided learning hours
+ * against TPFB's 60, and aat3-learn-data.js was already 380KB, so the second
+ * unit went into aat3-faps-data.js rather than onto the end of the first.
+ *
+ * That split leaves a trap. Six checkers read the content, and every one of
+ * them read `AAT3_LEARN_PATH` by name. A checker not updated when a unit is
+ * added does not fail — it passes, having quietly examined one unit and said
+ * nothing about the other, which is the most expensive kind of green there is.
+ *
+ * So the file list lives here and the checkers ask for it. Adding a third unit
+ * is one line in FILES below, and every checker picks it up.
+ */
+
+'use strict';
+
+const path = require('path');
+const ROOT = path.join(__dirname, '..', '..');
+
+/* Each entry: the file, and the two globals it may export. A file that exports
+   neither is a mistake worth failing on rather than skipping quietly. */
+const FILES = [
+  { file: 'aat3-learn-data.js', path: 'AAT3_LEARN_PATH', practice: null },
+  { file: 'aat3-practice-data.js', path: null, practice: 'AAT3_PRACTICE' },
+  { file: 'aat3-faps-data.js', path: 'AAT3_FAPS_PATH', practice: 'AAT3_FAPS_PRACTICE' },
+];
+
+function load() {
+  const groups = [];
+  const questions = [];
+  const sources = [];
+  FILES.forEach(({ file, path: pathKey, practice }) => {
+    const mod = require(path.join(ROOT, file));
+    if (!pathKey && !practice) throw new Error(`${file}: declares neither a path nor a practice bank.`);
+    if (pathKey) {
+      const p = mod[pathKey];
+      if (!Array.isArray(p)) throw new Error(`${file}: exports no ${pathKey} array.`);
+      p.forEach(g => groups.push(g));
+    }
+    if (practice) {
+      const b = mod[practice];
+      if (!b || !Array.isArray(b.QUESTIONS)) throw new Error(`${file}: exports no ${practice}.QUESTIONS array.`);
+      b.QUESTIONS.forEach(q => questions.push(q));
+    }
+    sources.push(file);
+  });
+  return { groups, questions, sources };
+}
+
+/* Flat list of every lesson across every unit. */
+function lessons(groups) {
+  const out = [];
+  groups.forEach(g => (g.lessons || []).forEach(l => out.push(l)));
+  return out;
+}
+
+module.exports = { ROOT, FILES, load, lessons };

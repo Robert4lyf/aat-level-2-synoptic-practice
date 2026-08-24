@@ -128,8 +128,12 @@
 
   /* ── Data access ─────────────────────────────────────────────────────────── */
 
-  /* Every authored outcome-group, across every unit. */
-  function allGroups() { return root.AAT3_LEARN_PATH || []; }
+  /* Every authored outcome-group, across every unit. Each unit ships its own
+     content file — see scripts/lib/aat3-content.js, which carries the same list
+     for the build checks. */
+  function allGroups() {
+    return (root.AAT3_LEARN_PATH || []).concat(root.AAT3_FAPS_PATH || []);
+  }
 
   /* The groups belonging to the unit on screen. Each group in the content files
      already declares its `unit`, so this is a filter rather than a new index. */
@@ -165,8 +169,8 @@
   }
 
   function practiceBank(unitKey) {
-    var p = root.AAT3_PRACTICE;
-    var all = (p && p.QUESTIONS) || [];
+    var a = root.AAT3_PRACTICE, b = root.AAT3_FAPS_PRACTICE;
+    var all = ((a && a.QUESTIONS) || []).concat((b && b.QUESTIONS) || []);
     var u = unitKey || activeUnit();
     /* `unitKey`, not `unit`: on a numeric question `unit` is the £ or % the
        answer is measured in. See the note at the top of aat3-practice-data.js. */
@@ -579,7 +583,8 @@
        that unit the statement is true again. */
     if (!prog.complete) {
       h += '<div class="a3-notice"><strong>' + prog.authored + ' of ' + u.outcomes.length +
-        ' outcomes are written</strong>, covering ' + prog.pctOfExam + '% of this unit\'s assessment. ' +
+        ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong>, covering ' +
+        prog.pctOfExam + '% of this unit\'s assessment. ' +
         'The rest are listed below in the order the specification sets them out, so you can see what is ' +
         'coming and what is missing. Nothing here has been reviewed by a qualified accountant.</div>';
     }

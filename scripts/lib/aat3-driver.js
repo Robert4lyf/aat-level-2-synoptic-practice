@@ -139,6 +139,9 @@ function loadUI(store) {
   M.AAT3_SYLLABUS = require(path.join(ROOT, 'aat3-syllabus.js')).SYLLABUS;
   M.AAT3_PRACTICE = require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE;
   M.AAT3_LEARN_PATH = require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH;
+  const faps = require(path.join(ROOT, 'aat3-faps-data.js'));
+  M.AAT3_FAPS_PATH = faps.AAT3_FAPS_PATH;
+  M.AAT3_FAPS_PRACTICE = faps.AAT3_FAPS_PRACTICE;
   return M;
 }
 

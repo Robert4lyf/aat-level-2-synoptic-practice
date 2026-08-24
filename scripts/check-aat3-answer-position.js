@@ -48,8 +48,8 @@ const D = require('./lib/aat3-driver.js');
 const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
-const { AAT3_PRACTICE } = require(path.join(D.ROOT, 'aat3-practice-data.js'));
-const { AAT3_LEARN_PATH } = require(path.join(D.ROOT, 'aat3-learn-data.js'));
+const CONTENT = require('./lib/aat3-content.js');
+const { groups: AAT3_LEARN_PATH, questions: ALL_QUESTIONS } = CONTENT.load();
 
 /* Renders per question in the behaviour pass. Enough that a shuffle failing to
    move a two-option gap is a one-in-4096 accident rather than a coin toss. */
@@ -67,7 +67,7 @@ console.log(`${BOLD}AAT Level 3 answer position${RESET}\n`);
 const all = [];
 (AAT3_LEARN_PATH || []).forEach(g => (g.lessons || []).forEach(l =>
   (l.check || []).forEach((q, i) => all.push({ where: `${l.id} Q${i + 1}`, q }))));
-(AAT3_PRACTICE.QUESTIONS || []).forEach(q => all.push({ where: `practice ${q.id}`, q }));
+ALL_QUESTIONS.forEach(q => all.push({ where: `practice ${q.id}`, q }));
 
 /* ── 1. Behaviour: the key moves between renders ─────────────────────────── */
 /* Rendered through the real player rather than reasoned about. A question is

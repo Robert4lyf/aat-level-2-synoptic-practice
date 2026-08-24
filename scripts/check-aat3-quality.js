@@ -25,10 +25,13 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
 const ROOT = path.join(__dirname, '..');
-const { AAT3_LEARN_PATH } = require(path.join(ROOT, 'aat3-learn-data.js'));
 const { TAX } = require(path.join(ROOT, 'aat3-tax-data.js'));
-const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
 const SYL = require(path.join(ROOT, 'aat3-syllabus.js'));
+/* Every unit's content, from the one list — see scripts/lib/aat3-content.js.
+   Reading AAT3_LEARN_PATH by name examined TPFB and said nothing about FAPS,
+   while still reporting green. */
+const CONTENT = require('./lib/aat3-content.js');
+const { groups: AAT3_LEARN_PATH, questions: PRACTICE_QUESTIONS } = CONTENT.load();
 
 const errors = [];
 const warnings = [];
@@ -40,7 +43,7 @@ const lessons = [];
 /* Every question in the module, wherever it lives. The practice bank gets the
    same scrutiny as the lesson checks — and the shared stem map is what stops
    the bank quietly re-asking a lesson, which would make it a memory test. */
-const practice = (AAT3_PRACTICE && AAT3_PRACTICE.QUESTIONS) || [];
+const practice = PRACTICE_QUESTIONS;
 const allQuestions = [];
 lessons.forEach(l => (l.check || []).forEach((q, i) => allQuestions.push({ where: `${l.id} Q${i + 1}`, q })));
 practice.forEach(q => allQuestions.push({ where: `practice ${q.id}`, q, isPractice: true }));
@@ -487,18 +490,22 @@ const GOVERNED = [
    `'£' + T.partialExemption.deMinimisPerMonth.value + ' a month'` — evaluates to
    the very string we are hunting for, so checking the runtime value cannot tell
    a live reference from a hardcoded one. In the source they are unmistakable. */
-const source = require('fs').readFileSync(path.join(ROOT, 'aat3-learn-data.js'), 'utf8');
-GOVERNED.forEach(([value, label]) => {
-  const withCommas = Number(value).toLocaleString('en-GB');
-  /* `\b` is wrong here: £200\b matches inside "£200,000", because the comma is
-     a word boundary. Reject a digit continuation, and a comma or point that is
-     itself followed by a digit — but NOT a sentence-ending "£90,000." */
-  const re = new RegExp('£\\s?(' + value + '|' + withCommas + ')(?!\\d)(?![,.]\\d)', 'g');
-  let m;
-  while ((m = re.exec(source)) !== null) {
-    const line = source.slice(0, m.index).split('\n').length;
-    warnings.push(`aat3-learn-data.js:${line}: the ${label} (£${withCommas}) is hardcoded. Reference aat3-tax-data.js so a Finance Act change is a one-file edit.`);
-  }
+/* Scanned FILE BY FILE. Concatenating them first and reporting one line number
+   into the join names a line that exists in no file anybody can open. */
+CONTENT.FILES.forEach(({ file }) => {
+  const source = require('fs').readFileSync(path.join(ROOT, file), 'utf8');
+  GOVERNED.forEach(([value, label]) => {
+    const withCommas = Number(value).toLocaleString('en-GB');
+    /* `\b` is wrong here: £200\b matches inside "£200,000", because the comma is
+       a word boundary. Reject a digit continuation, and a comma or point that is
+       itself followed by a digit — but NOT a sentence-ending "£90,000." */
+    const re = new RegExp('£\\s?(' + value + '|' + withCommas + ')(?!\\d)(?![,.]\\d)', 'g');
+    let m;
+    while ((m = re.exec(source)) !== null) {
+      const line = source.slice(0, m.index).split('\n').length;
+      warnings.push(`${file}:${line}: the ${label} (£${withCommas}) is hardcoded. Reference aat3-tax-data.js so a Finance Act change is a one-file edit.`);
+    }
+  });
 });
 
 /* ── 4. Teaching depth ───────────────────────────────────────────────────── */
