@@ -171,24 +171,43 @@
    * what lets the build check assert the ranking without standing up a browser.
    *
    * WHICH OUTCOME "HAS THE MOST MISTAKES" needs a total order, or the answer
-   * can change between two renders of identical data. Most wrong answers wins;
-   * then the lower accuracy, so ten wrong out of twelve beats ten out of forty;
-   * then the larger sample, so the claim rests on more evidence; then the
-   * outcome number, which is arbitrary but fixed.
+   * can change between two renders of identical data. Most wrong answers wins —
+   * that is the question being asked, so it outranks a small outcome answered
+   * badly. Ties break on the lower accuracy, so eight wrong out of nine beats
+   * eight out of twenty. Then the larger sample, which only ever fires on a
+   * rounding collision (one wrong in twelve and one in thirteen both read 92%)
+   * because equal mistakes at equal accuracy otherwise pins the sample size.
+   * Then the outcome number, which is arbitrary but fixed.
    *
    * Rows are built from the syllabus so an outcome never practised still shows
    * as a gap rather than vanishing — but any outcome number found in the record
    * and NOT in the syllabus is appended rather than dropped, so the totals
    * always account for every question the reader actually answered.
    */
-  function practiceSummary(record, los) {
+  /* Last resort in the ranking, so it must return a number for every pair it
+     can be handed — including a numeric outcome against a junk key, where
+     subtraction would give NaN and leave the sort order undefined. */
+  function cmpOutcome(a, b) {
+    var an = typeof a === 'number', bn = typeof b === 'number';
+    if (an && bn) return a - b;
+    if (an !== bn) return an ? -1 : 1;
+    return String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
+  }
+
+  function practiceSummary(record, outcomeList) {
     var p = (record && typeof record === 'object') ? record : data.practice;
     var byLo = (p && p.los && typeof p.los === 'object') ? p.los : {};
-    var list = (los || outcomes()).map(function (o) { return { n: o.n, title: o.title, weighting: o.weighting }; });
+    var list = (outcomeList || outcomes()).map(function (o) { return { n: o.n, title: o.title, weighting: o.weighting }; });
     var known = {};
     list.forEach(function (o) { known[String(o.n)] = true; });
     Object.keys(byLo).forEach(function (k) {
-      if (!known[k]) list.push({ n: Number(k), title: 'Outcome ' + k, weighting: null });
+      if (known[k]) return;
+      /* A key that is not a number can only come from a corrupted or edited
+         store, but it still stands for questions somebody answered, so it is
+         carried through as itself rather than coerced into NaN — which would
+         both render as "Outcome NaN" and poison the comparator below. */
+      var n = Number(k);
+      list.push({ n: (k !== '' && isFinite(n)) ? n : k, title: 'Outcome ' + k, weighting: null });
     });
 
     var rows = list.map(function (o) {
@@ -209,7 +228,7 @@
 
     var worst = rows.filter(function (r) { return r.wrong > 0; }).sort(function (a, b) {
       return (b.wrong - a.wrong) || (a.accuracy - b.accuracy) ||
-             (b.attempted - a.attempted) || (a.n - b.n);
+             (b.attempted - a.attempted) || cmpOutcome(a.n, b.n);
     })[0] || null;
 
     return {
@@ -653,13 +672,19 @@
     s.rows.forEach(function (r) {
       var isWorst = !!(s.worst && s.worst.n === r.n);
       var pct = r.accuracy === null ? 0 : r.accuracy;
+      /* An empty bar is decorative, not a reading of nought per cent. Announced
+         as a progressbar it would say "0%" over a row whose own text says the
+         outcome has not been practised — two different claims about the same
+         thing, and the wrong one is the one a screen reader reaches first. */
+      var bar = r.accuracy === null
+        ? '<span class="a3-sum-bar" aria-hidden="true">'
+        : '<span class="a3-sum-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"' +
+          ' aria-label="Outcome ' + esc(r.n) + ' accuracy">';
       h += '<div class="a3-sum-row' + (isWorst ? ' is-worst' : '') + '">' +
         '<span class="a3-sum-row-n">' + esc(r.n) + '</span>' +
         '<span class="a3-sum-row-t">' + esc(r.title) +
           (isWorst ? '<span class="a3-sum-tag">most mistakes</span>' : '') + '</span>' +
-        '<span class="a3-sum-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"' +
-          ' aria-label="Outcome ' + esc(r.n) + ' accuracy">' +
-          '<span class="a3-sum-bar-fill ' + bandClass(r.accuracy) + '" style="width:' + pct + '%"></span></span>' +
+        bar + '<span class="a3-sum-bar-fill ' + bandClass(r.accuracy) + '" style="width:' + pct + '%"></span></span>' +
         '<span class="a3-sum-row-m">' + (r.attempted
           ? r.wrong + ' wrong / ' + r.attempted
           : 'not practised') + '</span>' +

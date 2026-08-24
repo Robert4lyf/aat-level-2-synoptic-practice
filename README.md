@@ -124,12 +124,17 @@ Two details are load-bearing rather than cosmetic:
   taking the larger of each number (see `progress-backup.js`), under which a stored grand total
   would read 10 where the truth is 18. Per-outcome counters merge correctly and the totals are
   derived from them, so there is only one source of truth.
-- **"Most mistakes" is a total order** — most wrong, then lower accuracy, then larger sample,
-  then outcome number — because a partial one would let identical data rank two ways between
-  renders.
+- **"Most mistakes" is a total order.** Most wrong wins — that is the question being asked, so a
+  large outcome answered badly beats a tiny one answered worse. Ties break on lower accuracy,
+  then on the larger sample (which only fires on a rounding collision), then on outcome number.
+  A partial order would let identical data rank two ways between renders.
 
-Both are asserted by `scripts/check-aat3-practice-summary.js`, which also mounts the screen and
-checks the summary reaches the page, so neither claim can drift without the build saying so.
+Both are asserted by `scripts/check-aat3-practice-summary.js`. It also drives the real thing:
+`mount()` writes HTML and then binds click handlers to it, so a fake element that keeps those
+handlers plays a whole practice run — and a whole lesson, to show the lesson does *not* move the
+practice count — through the real grading, then reads the record back. The page assertions are
+scoped to the summary section, because the picker below renders its own "start outcome 4" button
+and an unscoped search for one passes with the summary deleted.
 
 Only practice questions are counted. The questions inside lessons are recorded on the path,
 which keeps the summary an answer to "what do I know" rather than "what have I read".
