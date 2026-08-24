@@ -727,18 +727,32 @@
           (S.answered ? 'Correct' : 'The answer is ' + esc((q.unit === '£' ? '£' : '') + q.answer)) + '</div>';
       }
     } else if (t === 'gapfill') {
+      /* SHUFFLED, like the multiple-choice options and the true/false rows.
+         Gap-fill was the one question type rendered in authored order, and the
+         authored order had the right answer first in 38 of 40 gaps — so
+         "always pick the leftmost pill" scored 95% across the whole module
+         without reading a word of the question. Nothing measured it, because
+         the cue checks were written for MCQ keys and true/false balance.
+         Shuffling makes the position carry no information at all, which is a
+         better fix than rebalancing data that would drift back. */
+      if (!S._gapOrder) {
+        S._gapOrder = (q.gaps || []).map(function (g) {
+          return shuffle((g.options || []).map(function (_, i) { return i; }));
+        });
+      }
       var parts = q.template.split(/(\{\d+\})/);
       h += '<div class="a3-gap">' + parts.map(function (p) {
         var m = /^\{(\d+)\}$/.exec(p);
         if (!m) return esc(p);
         var gi = +m[1], g = q.gaps[gi], sel = S.gapPicks[gi];
-        return '<span class="a3-gapsel">' + g.options.map(function (o, oi) {
+        var order = S._gapOrder[gi] || g.options.map(function (_, i) { return i; });
+        return '<span class="a3-gapsel">' + order.map(function (oi) {
           var on = sel === oi;
           var cls = on ? ' on' : '';
           if (S.answered !== null && oi === g.answer) cls = ' is-right';
           else if (S.answered !== null && on) cls = ' is-wrong';
           return '<button class="a3-pill' + cls + '" data-a3="gap" data-g="' + gi + '" data-o="' + oi + '"' +
-            (S.answered !== null ? ' disabled' : '') + '>' + esc(o) + '</button>';
+            (S.answered !== null ? ' disabled' : '') + '>' + esc(g.options[oi]) + '</button>';
         }).join('') + '</span>';
       }).join('') + '</div>';
       if (S.answered === null) h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="gapsubmit">Submit</button>';
@@ -1011,14 +1025,15 @@
     S.mode = 'lesson';
     S.lessonId = id; S.screen = 'lesson'; S.cardIdx = 0; S.phase = 'teach';
     S.qIdx = 0; S.answered = null; S.picked = null; S.score = 0;
-    S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null;
+    S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null; S._gapOrder = null;
     S.revealed = 0; S.tryShown = false; S.tryInput = ''; S.tryResult = null;
   }
   function resetCardState() {
     S.revealed = 0; S.tryInput = ''; S.tryResult = null;
   }
   function resetQState() {
-    S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null;
+    S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
+    S._order = null; S._gapOrder = null;
   }
   function finish() {
     var checks = currentQuestions();

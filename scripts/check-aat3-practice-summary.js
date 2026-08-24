@@ -48,18 +48,14 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', R
 
 const STORE_KEY = 'prep_v2_aat3';
 
-/* Seeded BEFORE aat3-ui.js is required: the module reads its store on load, so
-   a store set up afterwards would be read too late to matter. */
-function fakeStore(initial) {
-  const m = new Map(Object.entries(initial || {}));
-  return {
-    get length() { return m.size; },
-    key(i) { return Array.from(m.keys())[i]; },
-    getItem(k) { return m.has(k) ? m.get(k) : null; },
-    setItem(k, v) { m.set(k, String(v)); },
-    removeItem(k) { m.delete(k); },
-  };
-}
+/* The driver, the store stand-in and the module loader are shared with
+   check-aat3-answer-position.js — see scripts/lib/aat3-driver.js for why an
+   object with two DOM methods is enough to drive the real player.
+
+   The store is seeded BEFORE aat3-ui.js is required: the module reads it on
+   load, so one set up afterwards would be read too late to matter. */
+const D = require('./lib/aat3-driver.js');
+const { fakeStore, fakeEl, nodes, click, answerCurrent } = D;
 
 const SEED = {
   runs: 4,
@@ -330,97 +326,12 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
   eq(s3.runs, 5, 'and the higher run count is the one kept');
 }
 
-/* ── A fake element that is really a driver ─────────────────────────────── */
-
-/* mount() writes a string of HTML and then walks it binding click handlers. So
-   an element that parses that string into nodes and keeps their handlers can
-   drive the real code: click the real buttons, in the real order, through the
-   real grading. Nothing here reimplements the app — it only supplies the two
-   DOM methods mount() and wire() call. */
-function fakeEl() {
-  const TAG = /<(?:button|span|div|input|a)\b([^>]*\bdata-a3="[^"]*"[^>]*)>/g;
-  const ATTR = /([\w-]+)="([^"]*)"/g;
-  let painted = '';
-  /* Memoised per repaint, and that is the load-bearing part: wire() attaches
-     its handlers to the objects THIS returns, so handing back fresh objects on
-     the next call would hand back nodes with nothing bound to them — every
-     click a silent no-op, and every assertion afterwards green against a screen
-     that never moved. */
-  let parsed = null;
-  return {
-    set innerHTML(v) { painted = v; parsed = null; },
-    get innerHTML() { return painted; },
-    querySelector() { return null; },
-    querySelectorAll() {
-      if (parsed) return parsed;
-      const out = [];
-      let m;
-      TAG.lastIndex = 0;
-      while ((m = TAG.exec(painted))) {
-        const attrs = {};
-        let a;
-        ATTR.lastIndex = 0;
-        while ((a = ATTR.exec(m[1]))) attrs[a[1]] = a[2];
-        const listeners = {};
-        out.push({
-          attrs,
-          value: '',
-          getAttribute(n) { return n in attrs ? attrs[n] : null; },
-          addEventListener(ev, fn) { (listeners[ev] || (listeners[ev] = [])).push(fn); },
-          fire(ev) { (listeners[ev] || []).forEach(fn => fn({ preventDefault() {} })); },
-        });
-      }
-      parsed = out;
-      return out;
-    },
-  };
-}
-
-function nodes(el, act) { return el.querySelectorAll().filter(n => n.getAttribute('data-a3') === act); }
-function click(el, act, pick) {
-  const found = nodes(el, act);
-  const n = pick ? found.find(pick) : found[0];
-  if (!n) throw new Error(`nothing to click for data-a3="${act}"`);
-  n.fire('click');
-  return n;
-}
-
-/* Answer whatever question type is on screen, always taking the first option
-   offered. Deliberately not "the right answer" — the point is to produce a mix
-   of right and wrong and check the record agrees with the app's own score. */
-function answerCurrent(el) {
-  if (nodes(el, 'ans').length) { click(el, 'ans'); return; }
-  if (nodes(el, 'tf').length) {
-    const seen = new Set();
-    nodes(el, 'tf').forEach(n => {
-      const i = n.getAttribute('data-s');
-      if (seen.has(i) || n.getAttribute('data-v') !== 'true') return;
-      seen.add(i); n.fire('click');
-    });
-    click(el, 'tfsubmit'); return;
-  }
-  if (nodes(el, 'gap').length) {
-    const seen = new Set();
-    nodes(el, 'gap').forEach(n => {
-      const g = n.getAttribute('data-g');
-      if (seen.has(g)) return;
-      seen.add(g); n.fire('click');
-    });
-    click(el, 'gapsubmit'); return;
-  }
-  const input = nodes(el, 'numinput')[0];
-  if (input) { input.value = '0'; input.fire('input'); click(el, 'numsubmit'); return; }
-  throw new Error('unrecognised question type: ' + el.innerHTML.slice(0, 300));
-}
-
 /* ── Answering questions moves the numbers ──────────────────────────────── */
 {
   /* A fixed seed so the draw, the option order and therefore the score are the
      same on every run. A build gate that reports a different thing each time is
      not a gate. */
-  const realRandom = Math.random;
-  let seed = 20260824;
-  Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+  const restoreRandom = D.seedRandom(20260824);
 
   const store = fakeStore();
   global.localStorage = store;
@@ -508,7 +419,7 @@ function answerCurrent(el) {
   RELOADED.AAT3_UI.reset('path', 'tpfb');
   eq(RELOADED.AAT3_UI.practiceSummary().attempted, 13, 'the record survives a reload');
 
-  Math.random = realRandom;
+  restoreRandom();
 }
 
 /* ── It reaches the page ────────────────────────────────────────────────── */
