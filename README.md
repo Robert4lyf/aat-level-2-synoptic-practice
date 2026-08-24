@@ -116,7 +116,7 @@ with its own path, practice bank and progress, behind a picker that opens first:
 | Unit | Share of the grade | GLH | State |
 |---|---|---|---|
 | Tax Processes for Businesses (TPFB) | 15% | 60 | **Complete** — 5 of 5 outcomes, 32 lessons |
-| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 4 of 9 outcomes, 25 lessons, 35% of the assessment |
+| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 5 of 9 outcomes, 34 lessons, 45% of the assessment |
 
 FAPS is the largest unit in the qualification: 122 key concepts against TPFB's 93, and more of
 the grade than the other three units it sits alongside put together. It arrives outcome by
@@ -138,11 +138,17 @@ Written so far, in the specification's order:
 - **Outcomes 3 and 4** — the whole non-current asset lifecycle: capital versus revenue, the asset
   register, VAT by registration status, disposals, part-exchange, straight-line and
   diminishing-balance depreciation.
+- **Outcome 5** — the period end adjustments: accruals and prepayments of both expenses and income
+  and the reversals that stop them counting twice, irrecoverable debts and allowances for doubtful
+  receivables, inventory at the lower of cost and net realisable value item by item, and the ethics
+  of the point in the year where the estimates concentrate.
 
 Outcomes 3 and 4 were written before Outcome 2, which is not the order a reader meets them in.
 They are the calculation core — genuinely new at Level 3, and where a right method most easily
 produces a wrong figure — and the plan's rule for a first module is *representative rather than
-easy*. Outcome 2 came next and filled the gap.
+easy*. Outcome 2 came next and filled the gap. Outcome 5 followed it because Outcomes 6 and 7 both
+consume its output: every adjustment in it becomes a line in the extended trial balance and a
+figure in the statements after that.
 
 ### The syllabus is checked against the specification, not just against itself
 

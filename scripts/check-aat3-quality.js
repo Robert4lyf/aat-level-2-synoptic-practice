@@ -411,6 +411,81 @@ lessons.forEach(l => {
   });
 });
 
+/* ── 2a-iii. A key written twice in one object literal ───────────────────── */
+/* JavaScript accepts `{ p: [...], example: {...}, p: [...] }` without a murmur
+   and keeps the LAST one. The content files are large object literals written
+   by hand, and this has now eaten data twice: `unit: 'tpfb'` overwritten by a
+   numeric question's `unit: '£'`, dropping 29 questions out of a practice bank,
+   and two FAPS cards where a second `p` silently deleted three paragraphs of
+   teaching that had been written, reviewed and committed.
+
+   Neither failure is visible at runtime — the object is valid, the file loads,
+   and the only symptom is content that is not there. The depth check caught the
+   second by accident, because the surviving paragraph was short enough to trip
+   a word count. A longer survivor would have passed.
+
+   THE FIRST VERSION OF THIS CHECK ONLY LOOKED AT LINE-LEADING KEYS, which is
+   how these files are usually laid out — and would therefore have missed the
+   very bug that prompted it, because `id: 'P-1-02', unit: 'tpfb', lo: 1,` puts
+   three keys on one line. So the scan is a character walk: it tracks strings,
+   comments and brace depth, and treats an identifier as a key when the last
+   significant character before it was `{` or `,`. That last condition is what
+   keeps ternaries and labels out of it. */
+CONTENT.FILES.forEach(({ file }) => {
+  const src = require('fs').readFileSync(path.join(ROOT, file), 'utf8');
+  const seen = [];               // one Map per open brace depth
+  let depth = 0, inStr = null, line = 1, lastSig = '';
+  let i = 0;
+
+  const isIdStart = c => /[A-Za-z_$]/.test(c);
+  const isIdChar = c => /[\w$]/.test(c);
+
+  while (i < src.length) {
+    const c = src[i], n = src[i + 1];
+    if (c === '\n') { line++; i++; continue; }
+
+    if (inStr) {
+      if (c === '\\') { i += 2; continue; }
+      if (c === inStr) inStr = null;
+      i++; continue;
+    }
+    if (c === '/' && n === '*') { const e = src.indexOf('*/', i + 2); const skip = e === -1 ? src.length : e + 2; line += src.slice(i, skip).split('\n').length - 1; i = skip; continue; }
+    if (c === '/' && n === '/') { const e = src.indexOf('\n', i); i = e === -1 ? src.length : e; continue; }
+    if (c === "'" || c === '"' || c === '`') { inStr = c; lastSig = c; i++; continue; }
+
+    if (c === '{') { depth++; seen[depth] = new Map(); lastSig = c; i++; continue; }
+    if (c === '}') { seen[depth] = null; depth--; lastSig = c; i++; continue; }
+    if (c === '[' || c === ']') { lastSig = c; i++; continue; }
+
+    if (isIdStart(c) && (lastSig === '{' || lastSig === ',')) {
+      let j = i;
+      while (j < src.length && isIdChar(src[j])) j++;
+      const word = src.slice(i, j);
+      let k = j;
+      while (k < src.length && /\s/.test(src[k])) { if (src[k] === '\n') line++; k++; }
+      if (src[k] === ':') {
+        const map = seen[depth];
+        if (map) {
+          if (map.has(word)) {
+            errors.push(`${file}:${line}: the key "${word}" is set twice in the same object (first at line ${map.get(word)}). JavaScript keeps the last one silently, so whatever the first held is gone.`);
+          } else {
+            map.set(word, line);
+          }
+        }
+        lastSig = ':';
+        i = k + 1;
+        continue;
+      }
+      lastSig = word[word.length - 1];
+      i = j;
+      continue;
+    }
+
+    if (!/\s/.test(c)) lastSig = c;
+    i++;
+  }
+});
+
 /* ── 2b. Arithmetic stated in prose must actually compute ────────────────── */
 /* Worked examples and explanations state their sums in the text — "£18,400 +
    £90 − £560 = £17,930". Those are load-bearing: a student who cannot
