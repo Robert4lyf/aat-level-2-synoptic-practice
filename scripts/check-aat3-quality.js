@@ -486,6 +486,67 @@ CONTENT.FILES.forEach(({ file }) => {
   }
 });
 
+/* ── 2a-iv. Every row of a table has to be the same width ────────────────── */
+/* The renderer emits one cell per entry and nothing else. A row with fewer
+   entries than the header therefore renders SHORT — the remaining columns
+   simply stop, and the browser closes the row where the data ran out, so the
+   figures below it slide left under the wrong headings. Nothing throws, the
+   page still paints, and a reader sees a carrying amount sitting in the
+   depreciation column.
+
+   Found by writing one. A four-column statement-of-financial-position layout
+   was drafted with three-column rows underneath it; the shape check passed,
+   because str[][] says nothing about how long each row is.
+
+   Measured at zero across all 58 tables and examples in the module before
+   being added, so it is a ratchet against a new one rather than a backlog. */
+[['table', t => (t.headers ? [t.headers] : []).concat(t.rows || [])],
+ ['example', e => e.rows || []]].forEach(([field, rowsOf]) => {
+  lessons.forEach(l => {
+    (l.cards || []).forEach((c, ci) => {
+      const el = c[field];
+      if (!el) return;
+      const rows = rowsOf(el).filter(Array.isArray);
+      if (rows.length < 2) return;
+      const widths = rows.map(r => r.length);
+      const commonest = widths.slice().sort((a, b) =>
+        widths.filter(w => w === b).length - widths.filter(w => w === a).length)[0];
+      rows.forEach((r, ri) => {
+        if (r.length !== commonest) {
+          errors.push(`${l.id} card ${ci + 1}.${field}: row ${ri + 1} has ${r.length} cells where the rest of the table has ${commonest} — the columns below it will render under the wrong headings.`);
+        }
+      });
+    });
+  });
+});
+
+/* ── 2a-v. The first row of an example is rendered as a header ───────────── */
+/* The renderer emits row 0 with <th> and every other row with <td>, so whatever
+   is written first is styled as the column labels whether it names columns or
+   not. Two Outcome 7 layouts were drafted starting straight in on the figures,
+   which put "Profit for the year … 96,000" across the page in header type with
+   no labels above the money at all.
+
+   Checked as "row 0 must not contain a money amount", which is the part that
+   can be decided mechanically. A label like "Year 1" is fine; "96,000" or
+   "£600" is a line of the statement that has been pushed into the header.
+   All 17 examples in the module satisfied it once the two were fixed. */
+const MONEY_CELL = /£\s?\d|\d{1,3},\d{3}|\d+\.\d{2}/;
+let gridsChecked = 0, headersChecked = 0;
+lessons.forEach(l => {
+  (l.cards || []).forEach(c => { if (c.table) gridsChecked++; if (c.example) { gridsChecked++; headersChecked++; } });
+});
+lessons.forEach(l => {
+  (l.cards || []).forEach((c, ci) => {
+    const rows = c.example && c.example.rows;
+    if (!Array.isArray(rows) || !Array.isArray(rows[0])) return;
+    const money = rows[0].filter(x => MONEY_CELL.test(String(x)));
+    if (money.length) {
+      errors.push(`${l.id} card ${ci + 1}.example: the first row is rendered as the table header, and it carries figures (${money.join(', ')}) — put the column labels there and move this line down.`);
+    }
+  });
+});
+
 /* ── 2b. Arithmetic stated in prose must actually compute ────────────────── */
 /* Worked examples and explanations state their sums in the text — "£18,400 +
    £90 − £560 = £17,930". Those are load-bearing: a student who cannot
@@ -824,6 +885,7 @@ const totalWords = words(flat(AAT3_LEARN_PATH));
 notes.push(`${lessons.length} lessons · ${cardCount} cards · ${Math.round(proseTotal / cardCount)} words of prose and ${Math.round(teachTotal / cardCount)} words of teaching per card.`);
 notes.push(`${workedCount} worked examples (${tryCount} with a try-it) · ${totalWords} words in the module.`);
 notes.push(`${sumsChecked} arithmetic chains stated in prose were evaluated and agree.`);
+notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${headersChecked} example header rows checked for figures.`);
 
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
 notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));

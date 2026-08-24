@@ -116,7 +116,7 @@ with its own path, practice bank and progress, behind a picker that opens first:
 | Unit | Share of the grade | GLH | State |
 |---|---|---|---|
 | Tax Processes for Businesses (TPFB) | 15% | 60 | **Complete** — 5 of 5 outcomes, 32 lessons |
-| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 5 of 9 outcomes, 34 lessons, 45% of the assessment |
+| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 6 of 9 outcomes, 43 lessons, 65% of the assessment |
 
 FAPS is the largest unit in the qualification: 122 key concepts against TPFB's 93, and more of
 the grade than the other three units it sits alongside put together. It arrives outcome by
@@ -142,6 +142,15 @@ Written so far, in the specification's order:
   and the reversals that stop them counting twice, irrecoverable debts and allowances for doubtful
   receivables, inventory at the lower of cost and net realisable value item by item, and the ethics
   of the point in the year where the estimates concentrate.
+- **Outcome 7** — the statements themselves, for sole traders and for partnerships: what each
+  statement answers and how the accounting equation runs through it, the trading vocabulary,
+  building an SPL and an SFP end to end, the sole trader's capital account including drawings of
+  goods and services, the partnership appropriation account and profit-sharing ratios, and
+  partners' capital and current accounts.
+
+At 20% this is the heaviest outcome in the unit, and it came next because every earlier outcome
+feeds it: depreciation, disposals and the period end adjustments are all inputs to the two
+statements it produces.
 
 Outcomes 3 and 4 were written before Outcome 2, which is not the order a reader meets them in.
 They are the calculation core — genuinely new at Level 3, and where a right method most easily

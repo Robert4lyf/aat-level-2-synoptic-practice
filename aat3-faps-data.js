@@ -2994,7 +2994,898 @@
     ],
   };
 
-  var PATH = [LO1, LO2, LO3, LO4, LO5];
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 7 — Produce financial statements for sole traders and partnerships.
+     20% of the assessment, the largest outcome in the unit, and the one every
+     earlier outcome has been feeding. Outcomes 3, 4 and 5 produce the figures;
+     this is where they are laid out and read.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO7 = {
+    unit: 'faps',
+    level: 3,
+    title: 'Financial Accounting: Preparing Financial Statements',
+    outcome: 7,
+    outcomeTitle: 'Produce financial statements for sole traders and partnerships',
+    weighting: 20,
+    lessons: [
+      {
+        id: 'L3-FAPS-7A',
+        title: 'What the two statements are for',
+        icon: '📑',
+        criteria: ['FAPS-7.1.1', 'FAPS-7.1.2', 'FAPS-7.1.3', 'FAPS-7.1.4'],
+        cards: [
+          {
+            h: 'Two statements, two different questions',
+            table: {
+              headers: ['', 'Statement of profit or loss', 'Statement of financial position'],
+              rows: [
+                ['Asks', 'How did the business do?', 'Where has the business got to?'],
+                ['Covers', 'A period — usually the twelve months just ended', 'A single date — the last day of that period'],
+                ['Holds', 'Income and expenses', 'Assets, liabilities and capital'],
+                ['At the year end', 'Its balances are closed off to capital', 'Its balances are carried forward as next year\'s opening figures'],
+              ],
+            },
+            p: [
+              'The bottom row is the one that explains the other three. Income and expense accounts are emptied at the year end, which is all that closing them off to capital amounts to, so a sales figure describes twelve months and then starts again at nil. Asset and liability accounts are not emptied, so a bank balance describes one moment and carries straight on into the next year.',
+              'That is why a business can report a healthy profit and still be unable to pay its suppliers. Profit is measured over a year; the ability to pay is measured on a day. Both statements are needed because neither question answers the other.',
+              'A lender reads them in that order and for different reasons: the profit statement to judge whether the business can service a loan out of trading, the position statement to judge what could be recovered if it cannot.',
+            ],
+          },
+          {
+            h: 'The accounting equation, laid out down the page',
+            formula: 'Assets − Liabilities = Capital',
+            p: [
+              'The statement of financial position is that equation with the three terms stacked instead of written in a line. Assets are listed and totalled, liabilities are deducted, and the figure that survives is called **net assets**. Underneath, the capital section is built up separately and must arrive at that same figure.',
+              'It does so because of how the two sides are built. Every transaction was recorded twice, so the ledger already balances; the statement of financial position is a rearrangement of balances that were equal before anybody laid them out. Agreement is a symptom of the bookkeeping, not a coincidence to be grateful for.',
+              'This shape — net assets on top, capital underneath — is the **net assets presentation**, and it is the one AAT assesses. An older layout put assets on the left of the page and capital and liabilities on the right; it presents identical information and is not the layout the assessment asks for.',
+            ],
+            callout: { kind: 'key', text: 'Net assets and closing capital are two routes to the same figure. When they disagree, something has been posted once instead of twice, or entered on the wrong side.' },
+          },
+          {
+            h: 'Where the two statements meet',
+            flow: [
+              'Profit for the year, from the statement of profit or loss',
+              'Added to the capital account',
+              'Closing capital, on the statement of financial position',
+            ],
+            p: [
+              'One figure crosses from the first statement to the second: profit for the year. Nothing else makes the journey — not the revenue, not the expense totals, not the gross profit.',
+              'The reason is ownership. A profit belongs to the owner from the moment it is earned, whether or not any of it is drawn out. So it increases what the business owes its owner, and the capital balance is the measure of that debt, and it does so through the capital account rather than by appearing on the position statement in its own right.',
+              'A loss travels the same road in the opposite direction, reducing capital. Drawings reduce capital too, and for the same reason: they are the owner taking back part of what the business owes them. Neither drawings nor capital introduced ever touches the profit statement.',
+            ],
+            examtrap: 'Drawings are the classic misplacement. They look like money going out, so they get written among the expenses, where they reduce profit as well as capital and the two halves of the position statement then differ by exactly the drawings figure.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'Which figure passes from the statement of profit or loss to the statement of financial position?',
+            opts: ['Profit for the year, which is added to the capital account', 'Gross profit, which is added to the capital account', 'Sales revenue, which is shown as a receivable', 'Total expenses, which are shown as liabilities'],
+            ans: 0,
+            exp: 'Profit for the year is the single crossing point, and it goes into the capital account because a profit increases what the business owes its owner. Gross profit is an intermediate subtotal that stops at the profit statement, and sales and expenses are period figures that are closed off rather than carried across.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the two financial statements is correct.',
+            statements: [
+              { text: 'The statement of financial position reports a position at a single date.', answer: true },
+              { text: 'Income and expense balances are carried forward into the following year.', answer: false },
+              { text: 'Drawings are deducted in arriving at profit for the year.', answer: false },
+              { text: 'Net assets and closing capital should arrive at the same figure.', answer: true },
+              { text: 'A business reporting a profit must therefore be able to pay its suppliers.', answer: false },
+            ],
+            exp: 'The position statement is dated on one day, while the profit statement covers a period, and income and expense balances are closed off to capital rather than carried forward. Drawings reduce capital and never appear among expenses. Net assets and closing capital are two routes to one number. And profit is measured over a year while the ability to pay is measured on a day, so the two can point in opposite directions.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7B',
+        title: 'The words the trading section uses',
+        icon: '🔤',
+        criteria: ['FAPS-7.1.5'],
+        cards: [
+          {
+            h: 'Three definitions that have to be exact',
+            table: {
+              headers: ['Term', 'Built from'],
+              rows: [
+                ['**Sales revenue**', 'Sales − sales returns'],
+                ['**Net purchases**', 'Purchases − purchases returns + carriage inwards'],
+                ['**Cost of sales**', 'Opening inventory + net purchases − closing inventory'],
+              ],
+            },
+            p: [
+              'A trial balance hands you sales, sales returns, purchases, purchases returns and two carriage figures as separate accounts. None of them is a line in the finished statement. Each finished line is built from two or three of them, and the marks are for the building.',
+              'Returns are deducted from the figure they reverse, which sounds obvious until the two returns accounts are next to each other in a trial balance and both get taken off sales. Sales returns are goods customers sent back, so they reduce revenue. Purchases returns are goods sent back to suppliers, so they reduce what was bought.',
+              'The two inventory figures are the least intuitive part. Opening inventory is added because those goods were bought last year and sold this year, so their cost belongs in this year. Closing inventory is deducted because those goods have been bought and not yet sold, so their cost waits for next year.',
+            ],
+          },
+          {
+            h: 'Carriage inwards and carriage outwards',
+            split: {
+              left: {
+                title: 'Carriage inwards — into cost of sales',
+                items: [
+                  'Delivery charged to the business on goods it buys',
+                  'Part of what it cost to get the goods onto the shelf',
+                  'Added within net purchases, above gross profit',
+                  'Raising it reduces gross profit and profit alike',
+                ],
+              },
+              right: {
+                title: 'Carriage outwards — an expense',
+                items: [
+                  'Delivery the business pays on goods it sells',
+                  'A cost of selling, incurred after the goods are ready',
+                  'Listed among the expenses, below gross profit',
+                  'Raising it leaves gross profit untouched and reduces profit',
+                ],
+              },
+            },
+            p: [
+              'Both are delivery costs and both are paid by the business, so the names are no help at all. The direction is the test: inwards goods are arriving, outwards goods are leaving.',
+              'Getting it wrong costs two marks rather than one, because gross profit and every ratio built on it move as well. A question that gives both figures and asks for gross profit is testing this distinction and nothing else.',
+            ],
+            examtrap: 'Carriage inwards belongs to the goods; carriage outwards belongs to the sale. If the payment was needed before the goods could be sold, it is inwards.',
+          },
+          {
+            h: 'Working through to cost of sales',
+            worked: {
+              title: 'Building cost of sales from a trial balance extract',
+              problem: 'A trial balance shows opening inventory £14,200, purchases £86,500, purchases returns £2,300 and carriage inwards £1,150. Closing inventory has been valued at £16,800. What is the cost of sales?',
+              steps: [
+                {
+                  do: 'Start with purchases and take off what went back: £86,500 − £2,300 + £1,150 = £85,350.',
+                  why: 'Purchases returns reduce what was bought, and carriage inwards adds to it, because the delivery was part of getting the goods in. The three together are net purchases.',
+                },
+                {
+                  do: 'Add the opening inventory: £14,200 + £85,350 = £99,550.',
+                  why: 'This is everything available to sell during the year — what was already on the shelf plus what came in.',
+                },
+                {
+                  do: 'Deduct the closing inventory: £99,550 − £16,800 = £82,750.',
+                  why: 'What is still on the shelf was not sold, so its cost is held back. Next year it becomes the opening inventory and is charged then.',
+                },
+                {
+                  do: 'Sense-check the direction: cost of sales is lower than goods available.',
+                  why: 'Closing inventory can only reduce the charge. A cost of sales larger than opening inventory plus net purchases means the closing figure has been added instead of deducted.',
+                },
+              ],
+              answer: 'Cost of sales is £82,750.',
+              tryIt: {
+                q: 'Opening inventory is £9,400, purchases £52,000, purchases returns £1,600, carriage inwards £700 and closing inventory £11,300. What is the cost of sales?',
+                answer: 49200,
+                unit: '£',
+                hint: 'Build net purchases first, then add opening and deduct closing inventory.',
+                exp: 'Net purchases are £52,000 − £1,600 + £700 = £51,100. Adding opening inventory and deducting closing gives £9,400 + £51,100 − £11,300 = £49,200.',
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Sales are £186,000, sales returns £4,200 and purchases returns £3,100. What is sales revenue?',
+            answer: 181800,
+            unit: '£',
+            exp: 'Sales revenue is sales less sales returns only: £186,000 − £4,200 = £181,800. Purchases returns reduce purchases, not sales, and putting them here is the commonest way this figure goes wrong.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each cost belongs in cost of sales rather than in expenses.',
+            statements: [
+              { text: 'Carriage inwards on goods bought for resale.', answer: true },
+              { text: 'Carriage outwards on goods delivered to customers.', answer: false },
+              { text: 'Purchases returns, deducted from purchases.', answer: true },
+              { text: 'Wages paid to the sales assistants.', answer: false },
+            ],
+            exp: 'Cost of sales holds what it cost to obtain the goods that were sold: net purchases, adjusted for the inventory at each end. Carriage inwards is part of obtaining them and purchases returns reduce them. Delivery to customers and shop wages are costs of running the business, so they sit below gross profit among the expenses.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7C',
+        title: 'Preparing the statement of profit or loss',
+        icon: '📈',
+        criteria: ['FAPS-7.1.6'],
+        cards: [
+          {
+            h: 'The running order, and why it is fixed',
+            example: {
+              title: 'The shape of a sole trader\'s statement of profit or loss',
+              rows: [
+                ['', 'Working', '£'],
+                ['Sales revenue', '', 'X'],
+                ['Opening inventory', 'X', ''],
+                ['Net purchases', 'X', ''],
+                ['Less closing inventory', '(X)', ''],
+                ['Cost of sales', '', '(X)'],
+                ['**Gross profit**', '', '**X**'],
+                ['Sundry income — discounts received, rent received', '', 'X'],
+                ['Expenses — wages, rent, motor, carriage outwards, depreciation, irrecoverable debts', '', '(X)'],
+                ['**Profit for the year**', '', '**X**'],
+              ],
+            },
+            p: [
+              'Two subtotals, and they measure different things. **Gross profit** is what the trading itself earned: revenue less what the goods sold actually cost. **Profit for the year** is what survives after the costs of running the business.',
+              'A statement that keeps them apart can be diagnosed; one that merges them cannot. A business whose gross profit is falling has a problem with its pricing or its buying. A business whose gross profit holds up while profit for the year falls has a problem with its overheads. Merge the two and neither diagnosis is available.',
+              'The inner column is a working, not a result. Opening inventory, net purchases and closing inventory are shown there so the reader can see how cost of sales was arrived at, and only the total moves out to the outer column to be deducted.',
+            ],
+          },
+          {
+            h: 'A statement built end to end',
+            worked: {
+              title: 'Year ended 31 December, from an adjusted trial balance',
+              problem: 'Sales £318,000, sales returns £6,000, opening inventory £21,000, purchases £173,000, purchases returns £3,500, carriage inwards £2,400, discounts received £900. Expenses: wages £62,000, rent and rates £18,500, motor expenses £7,400, carriage outwards £3,200, depreciation £9,800, irrecoverable debts £1,600. Closing inventory is £19,600. Prepare the statement down to profit for the year.',
+              steps: [
+                {
+                  do: 'Sales revenue: £318,000 − £6,000 = £312,000.',
+                  why: 'Sales returns come off here and nowhere else. The figure that heads the statement is what customers kept, not what they were invoiced.',
+                },
+                {
+                  do: 'Net purchases: £173,000 − £3,500 + £2,400 = £171,900.',
+                  why: 'Returns out, carriage inwards in. Carriage outwards stays clear of this working — it is waiting in the expenses.',
+                },
+                {
+                  do: 'Cost of sales: £21,000 + £171,900 − £19,600 = £173,300.',
+                  why: 'Opening inventory joins what was bought; closing inventory is held back for next year.',
+                },
+                {
+                  do: 'Gross profit: £312,000 − £173,300 = £138,700.',
+                  why: 'The trading result, before any cost of running the business has been touched.',
+                },
+                {
+                  do: 'Total the expenses: £62,000 + £18,500 + £7,400 + £3,200 + £9,800 + £1,600 = £102,500.',
+                  why: 'Depreciation and irrecoverable debts sit in this list alongside the cash costs. Neither was a payment this year, and both are costs of the year all the same.',
+                },
+                {
+                  do: 'Profit for the year: £138,700 + £900 − £102,500 = £37,100.',
+                  why: 'Discounts received are income earned by paying suppliers early, so they are added after gross profit rather than netted against purchases.',
+                },
+              ],
+              answer: 'Gross profit £138,700 and profit for the year £37,100.',
+              tryIt: {
+                q: 'Sales £164,000, sales returns £3,000, opening inventory £12,000, purchases £91,000, purchases returns £1,500, carriage inwards £800, closing inventory £13,400. What is the gross profit?',
+                answer: 72100,
+                unit: '£',
+                hint: 'Sales revenue first, then net purchases, then cost of sales.',
+                exp: 'Sales revenue is £164,000 − £3,000 = £161,000. Net purchases are £91,000 − £1,500 + £800 = £90,300, so cost of sales is £12,000 + £90,300 − £13,400 = £88,900. Gross profit is £161,000 − £88,900 = £72,100.',
+              },
+            },
+          },
+          {
+            h: 'The four figures that get put in the wrong place',
+            table: {
+              headers: ['Figure', 'Where it goes', 'Where it gets put'],
+              rows: [
+                ['Carriage outwards', 'Expenses, below gross profit', 'Net purchases, above it'],
+                ['Discounts received', 'Income, after gross profit', 'Deducted from purchases'],
+                ['Discounts allowed', 'Expenses', 'Deducted from sales'],
+                ['Drawings', 'The capital account, on the other statement', 'Expenses'],
+              ],
+            },
+            p: [
+              'The first three change gross profit without changing profit for the year, so a check that the bottom line agrees will not find them. The fourth changes both.',
+              'Discounts repay a closer look, because the wrong treatment is superficially reasonable. A discount received does reduce what was paid to the supplier — but it was earned by settling early rather than by buying well, so it is reported as income of the period in which it was earned and left out of the cost of the goods.',
+              'Drawings have their own lesson later in this outcome. For now the rule is enough: money the owner takes out is a return of capital, and no return of capital ever passes through the profit statement.',
+            ],
+            examtrap: 'When a computer-marked task asks for gross profit and profit for the year separately, a misplaced discount loses the first mark and keeps the second. Marks are not awarded for a figure being consistent with an earlier mistake.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Sales revenue is £212,000, cost of sales £129,500, expenses £61,300 and discounts received £2,400. What is the profit for the year?',
+            answer: 23600,
+            unit: '£',
+            exp: 'Gross profit is £212,000 − £129,500 = £82,500. Sundry income is added and expenses deducted after that: £82,500 + £2,400 − £61,300 = £23,600.',
+          },
+          {
+            type: 'mcq',
+            q: 'A business has treated carriage outwards as part of net purchases. What is the effect on the reported figures?',
+            opts: ['Gross profit is understated and profit for the year is correct', 'Both gross profit and profit for the year are understated', 'Gross profit is overstated and profit for the year is correct', 'Both gross profit and profit for the year are overstated'],
+            ans: 0,
+            exp: 'Adding it to net purchases raises cost of sales, so gross profit falls. The same amount is then missing from the expenses, so profit for the year comes out unchanged, and the bottom line gives no sign of anything wrong.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7D',
+        title: 'Preparing the statement of financial position',
+        icon: '⚖️',
+        criteria: ['FAPS-7.1.7'],
+        cards: [
+          {
+            h: 'The net assets presentation, in order',
+            example: {
+              title: 'The shape of a sole trader\'s statement of financial position',
+              rows: [
+                ['', 'Working', '£'],
+                ['Non-current assets, at carrying amount', '', 'X'],
+                ['Current assets — inventory, receivables less allowance, prepayments, bank', 'X', ''],
+                ['Current liabilities — payables, accruals, overdraft', '(X)', ''],
+                ['**Net current assets**', '', 'X'],
+                ['**Total assets less current liabilities**', '', '**X**'],
+                ['Non-current liabilities — loans repayable after more than a year', '', '(X)'],
+                ['**Net assets**', '', '**X**'],
+                ['Capital — opening, plus capital introduced, plus profit, less drawings', '', '**X**'],
+              ],
+            },
+            p: [
+              'Non-current assets are shown at their carrying amount, with cost and accumulated depreciation set out in columns to its left so a reader can tell new assets from nearly-written-off ones. Every asset in the statement is listed in order of how hard it would be to turn into cash, starting with the hardest, which is why the non-current assets head the page at all. Premises come before inventory; inventory comes before receivables, which are one step from cash; the bank comes last. Liabilities run that ordering in reverse, with whatever is due soonest shown first.',
+              'The ordering carries information. **Net current assets** — current assets less current liabilities, also called working capital — is what the business has available to meet the next twelve months out of resources that will be cash within the same twelve months. A negative figure there is a warning that no profit figure can cancel.',
+              'Non-current liabilities are deducted after that subtotal because they are not a call on the coming year. A loan repayable in four years does not compete with next month\'s suppliers.',
+            ],
+          },
+          {
+            h: 'A statement of financial position built end to end',
+            worked: {
+              title: 'The same business as the previous lesson, at 31 December',
+              problem: 'Premises cost £150,000 with accumulated depreciation £24,000. Fixtures have a carrying amount of £17,500 and vehicles £16,800. Inventory £19,600, trade receivables £28,000 against which the allowance is £1,400, prepayments £1,300, bank £4,700. Trade payables £21,400, accruals £2,100. A bank loan of £45,000 is repayable in five years. Capital at 1 January was £130,000, the owner paid in a further £5,000, profit for the year was £37,100 and drawings were £28,100.',
+              steps: [
+                {
+                  do: 'Premises carrying amount: £150,000 − £24,000 = £126,000. Non-current assets: £126,000 + £17,500 + £16,800 = £160,300.',
+                  why: 'Cost and accumulated depreciation are both shown, because a reader needs to know whether the assets are new or nearly written off. Only the carrying amount enters the running total.',
+                },
+                {
+                  do: 'Receivables net of the allowance: £28,000 − £1,400 = £26,600.',
+                  why: 'The allowance is a deduction on the face of the statement, not a write-off. The ledger balance is untouched and the customers are still being pursued.',
+                },
+                {
+                  do: 'Current assets: £19,600 + £26,600 + £1,300 + £4,700 = £52,200. Current liabilities: £21,400 + £2,100 = £23,500.',
+                  why: 'Accruals belong here because they will be paid within the year. So would an overdraft, which is repayable on demand however long it has been running.',
+                },
+                {
+                  do: 'Net current assets: £52,200 − £23,500 = £28,700. Total assets less current liabilities: £160,300 + £28,700 = £189,000.',
+                  why: 'Working capital is comfortably positive, so the business can meet the coming year out of what will turn into cash within it.',
+                },
+                {
+                  do: 'Net assets: £189,000 − £45,000 = £144,000.',
+                  why: 'The loan is deducted last because it is not due within the year. Deducting it earlier would understate working capital and misdescribe the position.',
+                },
+                {
+                  do: 'Capital: £130,000 + £5,000 + £37,100 − £28,100 = £144,000.',
+                  why: 'Built from the other end and landing on the same figure. Agreement here is the check that the year\'s work has been recorded twice throughout.',
+                },
+              ],
+              answer: 'Net assets of £144,000, matched by closing capital of £144,000.',
+              tryIt: {
+                q: 'Non-current assets have a carrying amount of £96,000. Inventory is £14,000, receivables £22,000 and the bank balance £3,500. Trade payables are £17,200 and accruals £900. A loan of £30,000 is repayable in four years. What are the net assets?',
+                answer: 87400,
+                unit: '£',
+                hint: 'Work down: current assets, current liabilities, then the loan last.',
+                exp: 'Current assets are £14,000 + £22,000 + £3,500 = £39,500 and current liabilities £17,200 + £900 = £18,100, so net current assets are £39,500 − £18,100 = £21,400. Adding the non-current assets gives £96,000 + £21,400 = £117,400, and deducting the loan gives £117,400 − £30,000 = £87,400.',
+              },
+            },
+          },
+          {
+            h: 'When the two halves disagree',
+            p: [
+              'A difference between net assets and closing capital means an entry has gone in once, or twice on the same side, or been picked up from the trial balance on the wrong side. The size of the difference narrows the search considerably.',
+              'If the difference equals a figure in the question, that figure has been omitted from one half. If it equals **twice** a figure, that figure is on the wrong side — reversing it moves the total by double the amount, which is why doubling is the signature of a reversal rather than an omission. If it equals the drawings, drawings have probably been deducted twice or not at all.',
+              'A difference that matches nothing is usually a casting error, and re-adding the columns finds it faster than re-reading the entries. None of this rescues a computer-marked task on its own — but knowing that the halves must agree, and checking, catches an error while there is still time to correct it.',
+            ],
+            callout: { kind: 'warn', text: 'A difference of exactly twice some figure in the question means that figure is on the wrong side, not that it is missing.' },
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Current assets are £64,000 and current liabilities £41,500. Non-current assets have a carrying amount of £188,000 and a loan of £60,000 is repayable in six years. What are the net assets?',
+            answer: 150500,
+            unit: '£',
+            exp: 'Net current assets are £64,000 − £41,500 = £22,500. Adding non-current assets gives £188,000 + £22,500 = £210,500, and the loan is deducted after that subtotal: £210,500 − £60,000 = £150,500.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each item is shown as a current liability.',
+            statements: [
+              { text: 'A bank overdraft at the year end.', answer: true },
+              { text: 'A loan repayable in three years\' time.', answer: false },
+              { text: 'Accrued electricity owed at the year end.', answer: true },
+              { text: 'A prepaid insurance premium.', answer: false },
+            ],
+            exp: 'A current liability falls due within twelve months. An overdraft is repayable on demand and an accrual is owed now, so both qualify. A three-year loan is non-current and is deducted after the working capital subtotal. A prepayment is an asset — the business has paid and is still owed the benefit.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7E',
+        title: 'The capital account of a sole trader',
+        icon: '🏦',
+        criteria: ['FAPS-7.2.1', 'FAPS-7.2.2'],
+        cards: [
+          {
+            h: 'What moves the balance, and in which direction',
+            split: {
+              left: {
+                title: 'Increases capital — credits',
+                items: [
+                  'Opening balance brought forward',
+                  'Capital introduced during the year, in cash or in kind',
+                  'Profit for the year',
+                ],
+              },
+              right: {
+                title: 'Reduces capital — debits',
+                items: [
+                  'Drawings of cash',
+                  'Drawings of goods, taken at cost',
+                  'Personal costs the business has settled',
+                  'A loss for the year',
+                ],
+              },
+            },
+            p: [
+              'Capital is what the business owes its owner, which is why it sits on the credit side and why the two columns above run the way they do. Anything the owner puts in increases the debt; anything they take out reduces it.',
+              'Four movements is the whole list, and a question that asks for a missing figure will give three of them. Rearranging is the skill being tested: closing capital is often supplied and the profit for the year has to be worked back to.',
+              'An asset introduced instead of cash still counts. An owner who brings a van worth £8,000 into the business has increased capital by £8,000 as surely as if they had paid it into the bank, and it is recorded at what the asset is worth on the day it comes in.',
+            ],
+            formula: 'Closing capital = Opening capital + capital introduced + profit − drawings',
+          },
+          {
+            h: 'Drawings that never touch the bank',
+            table: {
+              headers: ['What the owner takes', 'Journal', 'Valued at'],
+              rows: [
+                ['Cash from the till or bank', 'Dr Drawings · Cr Bank', 'The amount taken'],
+                ['Goods from inventory', 'Dr Drawings · Cr Purchases', 'Cost, not selling price'],
+                ['A personal bill the business paid', 'Dr Drawings · Cr the expense account', 'The amount paid'],
+              ],
+            },
+            p: [
+              'Goods are the row that gets misread. The credit goes to purchases rather than to sales, because nothing was sold — the goods left the business without a customer and without revenue. Crediting sales would invent a sale that never happened and put a profit margin on the owner\'s own groceries.',
+              'Cost rather than selling price follows from the same reasoning. The business has lost what the goods cost it; it has not lost the profit it might have made, because that profit was never earned.',
+              'The last row covers services and personal expenses: a shop that pays the owner\'s home broadband has paid a private cost out of business money. Leaving it among the expenses understates profit and overstates the business\'s costs, and moving it to drawings puts both right in one entry.',
+            ],
+            examtrap: 'Goods drawn are credited to purchases at cost. Crediting sales at selling price overstates revenue, overstates gross profit and leaves the capital account short by the margin.',
+          },
+          {
+            h: 'Completing the capital account',
+            worked: {
+              title: 'Working from opening capital to closing capital',
+              problem: 'A sole trader started the year with capital of £68,000. In July she paid a further £10,000 into the business. Profit for the year was £41,500. She drew £26,000 in cash, took goods costing £1,800 for her own use, and the business paid £950 towards her home insurance. What is her capital at the year end?',
+              steps: [
+                {
+                  do: 'Add the credits: £68,000 + £10,000 + £41,500 = £119,500.',
+                  why: 'Opening capital, capital introduced and profit all increase what the business owes her, so they all sit on the same side.',
+                },
+                {
+                  do: 'Total the drawings: £26,000 + £1,800 + £950 = £28,750.',
+                  why: 'Three shapes of one withdrawal — cash, goods at cost and a private bill settled from business funds. All three are withdrawals of capital rather than costs of trading.',
+                },
+                {
+                  do: 'Closing capital: £119,500 − £28,750 = £90,750.',
+                  why: 'This is the figure that must equal net assets on the statement of financial position, and it is the opening capital for next year.',
+                },
+                {
+                  do: 'Check what did not move: the date the £10,000 came in.',
+                  why: 'Capital introduced part-way through the year is not time-apportioned. A sole trader earns no interest on capital, so July and January are worth the same.',
+                },
+              ],
+              answer: 'Closing capital of £90,750.',
+              tryIt: {
+                q: 'Opening capital was £54,000. The owner paid in a further £6,000, drew £31,200 in cash and took goods costing £900. Closing capital is £61,700. What was the profit for the year?',
+                answer: 33800,
+                unit: '£',
+                hint: 'Rearrange the formula — the profit is the figure that makes the account balance.',
+                exp: 'Capital introduced brings the opening figure to £54,000 + £6,000 = £60,000, and drawings total £31,200 + £900 = £32,100. Working backwards, profit is £61,700 + £32,100 − £60,000 = £33,800.',
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'A sole trader takes goods that cost £700 and would have sold for £1,150. How is this recorded?',
+            opts: ['Dr Drawings £700, Cr Purchases £700', 'Dr Drawings £1,150, Cr Sales £1,150', 'Dr Purchases £700, Cr Drawings £700', 'Dr Drawings £1,150, Cr Purchases £1,150'],
+            ans: 0,
+            exp: 'The goods left without being sold, so no revenue arises and the credit reverses part of what was bought. Cost is the right amount because the business has given up what the goods cost it, not the margin it never earned.',
+          },
+          {
+            type: 'numeric',
+            q: 'Opening capital was £47,500, the owner introduced £12,000, drawings were £29,400 and closing capital is £58,600. What was the profit for the year?',
+            answer: 28500,
+            unit: '£',
+            exp: 'Closing capital equals opening capital plus capital introduced plus profit less drawings, so profit is £58,600 + £29,400 − £47,500 − £12,000 = £28,500.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7F',
+        title: 'What changes when there is more than one owner',
+        icon: '🤝',
+        criteria: ['FAPS-7.3.1', 'FAPS-7.3.2', 'FAPS-7.3.3', 'FAPS-7.4.1'],
+        cards: [
+          {
+            h: 'The agreement decides how the profit is split',
+            table: {
+              headers: ['The agreement sets', 'What it does'],
+              rows: [
+                ['Interest on capital', 'Rewards the partner who has more money tied up in the business'],
+                ['Partners\' salaries or commission', 'Rewards the partner who does more of the work'],
+                ['Interest on drawings', 'Discourages taking money out early, and charges those who do'],
+                ['The profit-sharing ratio', 'Splits whatever is left over'],
+              ],
+            },
+            p: [
+              'A sole trader keeps the profit, so no rules are needed. Two or more owners have to agree how to divide it, and the four devices above are how a partnership agreement usually does it. Each is a way of recognising that partners contribute different things — capital, effort, patience — before the residue is shared.',
+              'Where there is no written agreement the Partnership Act 1890 supplies terms: profits and losses shared equally, no interest on capital, and no salary for any partner. Those defaults are rarely what a real partnership wants, which is why agreements exist.',
+              'In this unit the interest and salary figures are given to you. The calculation of interest on capital and interest on drawings is outside the assessment — what is assessed is knowing where each figure goes and what it does to the split.',
+            ],
+            callout: { kind: 'key', text: 'Interest and salaries are not expenses of the business. They are ways of dividing a profit that has already been arrived at.' },
+          },
+          {
+            h: 'The profit statement, with one section added',
+            flow: [
+              'Trading, exactly as for a sole trader',
+              'Profit for the year',
+              'Appropriation account — divide it among the partners',
+            ],
+            p: [
+              'Everything above profit for the year is identical to a sole trader\'s statement. Revenue, cost of sales, gross profit, expenses: same lines, same order, same rules about carriage and discounts. A partnership buys and sells in exactly the way a sole trader does.',
+              'Underneath, where a sole trader\'s statement stops, a partnership adds the **appropriation account**. It takes the profit for the year and distributes it: interest on capital to each partner, salaries to any partner entitled to one, interest on drawings charged back, and the residue split in the profit-sharing ratio.',
+              'The link between the two is a single figure. Profit for the year is the last line of the trading statement and the first line of the appropriation account, and no other figure makes the crossing. So a partner\'s salary never appears among the expenses — putting it there would reduce the profit before the division and give the other partners a share of their colleague\'s pay cut.',
+            ],
+            examtrap: 'A partner\'s salary is an appropriation, not a wage. An employee\'s wage is an expense above profit for the year; a partner\'s salary is a share of the profit below it.',
+          },
+          {
+            h: 'The position statement, with one section split',
+            p: [
+              'The top half is identical too. Non-current assets, working capital, non-current liabilities, net assets — a partnership reaches that figure by the route the previous two lessons set out, and the net assets presentation serves both.',
+              'The change is underneath. A sole trader has one capital balance; a partnership has two accounts for each partner. **Capital accounts** hold the long-term stake each partner has put in and are left alone from year to year. **Current accounts** hold the year-to-year traffic: the appropriations earned and the drawings taken.',
+              'So the financed-by section lists the capital accounts, lists the current accounts, and totals both. That total must still equal net assets, exactly as one closing capital figure does for a sole trader. Splitting the balance in two changes how it is presented and not what it comes to.',
+            ],
+            split: {
+              left: {
+                title: 'Sole trader — financed by',
+                items: [
+                  'One capital account',
+                  'Opening capital, capital introduced, profit, drawings',
+                  'Closing capital = net assets',
+                ],
+              },
+              right: {
+                title: 'Partnership — financed by',
+                items: [
+                  'A capital account for each partner',
+                  'A current account for each partner',
+                  'Capital totals + current totals = net assets',
+                ],
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'Where does a partner\'s salary of £18,000 appear in the financial statements?',
+            opts: ['In the appropriation account, below profit for the year', 'In the expenses, above profit for the year', 'In the trading section, within cost of sales', 'In the statement of financial position, as a liability'],
+            ans: 0,
+            exp: 'A partner\'s salary divides a profit that has already been calculated, so it sits in the appropriation account. Treating it as an expense would reduce profit for the year before the division, so the other partners would end up bearing a share of it.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about partnership accounts is correct.',
+            statements: [
+              { text: 'The trading section of the statement of profit or loss is prepared the same way as for a sole trader.', answer: true },
+              { text: 'Interest on capital is an expense of the business.', answer: false },
+              { text: 'Where there is no agreement, the Partnership Act 1890 shares profits equally.', answer: true },
+              { text: 'The net assets figure is calculated differently for a partnership.', answer: false },
+              { text: 'Candidates are expected to calculate the interest on capital themselves.', answer: false },
+            ],
+            exp: 'A partnership buys and sells as a sole trader does, so everything down to profit for the year is unchanged, and so is the calculation of net assets. Interest on capital and salaries divide profit rather than reduce it. The Act supplies equal sharing where no agreement says otherwise. And the interest figures are given in this assessment, not calculated.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7G',
+        title: 'The appropriation account',
+        icon: '➗',
+        criteria: ['FAPS-7.3.4', 'FAPS-7.3.5', 'FAPS-7.3.6'],
+        cards: [
+          {
+            h: 'The running order, and the one item that is added',
+            example: {
+              title: 'Appropriation account for the year ended 31 December',
+              rows: [
+                ['', 'Working', '£'],
+                ['Profit for the year', '', '96,000'],
+                ['Add interest on drawings — Ahmed £600, Bea £900', '', '1,500'],
+                ['**Profit available for appropriation**', '', '**97,500**'],
+                ['Less salary — Bea', '(14,000)', ''],
+                ['Less interest on capital — Ahmed £4,000, Bea £2,500', '(6,500)', ''],
+                ['', '', '(20,500)'],
+                ['**Residual profit**', '', '**77,000**'],
+                ['Share — Ahmed, three fifths', '46,200', ''],
+                ['Share — Bea, two fifths', '30,800', ''],
+                ['', '', '**77,000**'],
+              ],
+            },
+            p: [
+              'Three of the four items are deducted and one is added. Interest on capital and salaries are amounts the partnership hands to individual partners, so they come out of the pot before it is shared. Interest on drawings runs the other way: the partner is being charged for taking money out early, so the charge goes back into the pot and enlarges what everybody shares.',
+              'That is why the second line increases the total. A partner who has drawn heavily pays interest, the residue everybody shares grows by that amount, and they take their usual fraction of the enlarged residue — so part of the charge comes back to them and the rest reaches the other partners. The charge costs the payer more than it returns whatever the ratio, and that difference is where the deterrent lies.',
+              'The last line of the account must equal the residual profit above it. Whatever is shared out has to be exactly what was there to share.',
+            ],
+          },
+          {
+            h: 'Dividing the profit',
+            worked: {
+              title: 'Ahmed and Bea, sharing three to two',
+              problem: 'Ahmed and Bea share profits 3:2. Profit for the year is £96,000. The agreement gives interest on capital of £4,000 to Ahmed and £2,500 to Bea, and a salary of £14,000 to Bea. Interest on drawings is charged at £600 to Ahmed and £900 to Bea. Prepare the appropriation.',
+              steps: [
+                {
+                  do: 'Add the interest on drawings: £96,000 + £600 + £900 = £97,500.',
+                  why: 'The partners are being charged, so the partnership is better off by the same amount. The charge enlarges the pot before anything is taken out of it.',
+                },
+                {
+                  do: 'Deduct the salary: £97,500 − £14,000 = £83,500.',
+                  why: 'Bea is being paid for doing more of the work. It comes off the top so that the reward reaches her rather than being shared out.',
+                },
+                {
+                  do: 'Deduct the interest on capital: £4,000 + £2,500 = £6,500, leaving £83,500 − £6,500 = £77,000.',
+                  why: 'Each partner is rewarded for the capital tied up before the residue is divided. This £77,000 is the residual profit, and it is the only figure the ratio touches.',
+                },
+                {
+                  do: 'Share in the ratio: £77,000 × 3 ÷ 5 = £46,200 to Ahmed and £77,000 × 2 ÷ 5 = £30,800 to Bea.',
+                  why: 'A 3:2 ratio has five parts, so the denominator is 5. Dividing by the number of partners instead of by the parts is the commonest slip here.',
+                },
+                {
+                  do: 'Check: £46,200 + £30,800 = £77,000.',
+                  why: 'The shares must add back to the residual profit. If they do not, the ratio has been applied to the wrong subtotal.',
+                },
+              ],
+              answer: 'Residual profit of £77,000, shared £46,200 to Ahmed and £30,800 to Bea.',
+              tryIt: {
+                q: 'C and D share profits 2:1. Profit for the year is £72,000. Interest on capital is £3,000 to C and £2,000 to D, D has a salary of £11,000, and interest on drawings is £400 for C and £600 for D. What is C\'s share of the residual profit?',
+                answer: 38000,
+                unit: '£',
+                hint: 'Get to the residual profit first. A 2:1 ratio has three parts.',
+                exp: 'Adding the interest on drawings gives £72,000 + £400 + £600 = £73,000. Taking out the salary and the interest on capital leaves £73,000 − £11,000 − £5,000 = £57,000. C takes two of the three parts: £57,000 × 2 ÷ 3 = £38,000.',
+              },
+            },
+          },
+          {
+            h: 'Ratios, losses and missing partners',
+            p: [
+              'The parts of the ratio are added to get the denominator. Three to two means five parts, so the fractions are three fifths and two fifths; two to one means three parts. A ratio written as a fraction — "one third to Ahmed" — needs no such step, and a ratio written as percentages needs none either.',
+              'A loss goes through the appropriation account unaltered. Interest on capital and salaries are still credited to the partners who are entitled to them, which usually makes the residue a larger loss than the loss the business made, and that larger figure is then shared in the ratio. Nothing about the method changes because the sign has.',
+              'Not every item applies to every partner. An agreement may give a salary to one partner and none to the other, or charge interest on drawings to neither. An item that is absent is simply left out of the column, and a blank is not the same as an error.',
+            ],
+            examtrap: 'The profit-sharing ratio applies to the residual profit only — after salaries and interest on capital have come out and interest on drawings has gone in. Applying it to profit for the year gives every figure in the task the wrong value.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Profit for the year is £54,000. Interest on capital totals £7,500, salaries total £9,000 and interest on drawings totals £1,200. What is the residual profit available for sharing?',
+            answer: 38700,
+            unit: '£',
+            exp: 'Interest on drawings is added and the other two are deducted: £54,000 + £1,200 − £7,500 − £9,000 = £38,700. Deducting the interest on drawings instead of adding it puts every later figure in the task out.',
+          },
+          {
+            type: 'mcq',
+            q: 'Residual profit is £84,000 and three partners share it 4:2:1. What does the partner on two parts receive?',
+            opts: ['£24,000, being two sevenths of the residue', '£28,000, being one third of the residue', '£16,800, being one fifth of the residue', '£42,000, being one half of the residue'],
+            ans: 0,
+            exp: 'The parts add to seven, so each part is £84,000 ÷ 7 = £12,000 and two parts are £24,000. Dividing by the number of partners rather than by the number of parts gives the £28,000 distractor.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7H',
+        title: 'Partners\' capital and current accounts',
+        icon: '📒',
+        criteria: ['FAPS-7.4.2', 'FAPS-7.4.3', 'FAPS-7.4.4', 'FAPS-7.4.5'],
+        cards: [
+          {
+            h: 'Two accounts for each partner, doing two jobs',
+            table: {
+              headers: ['', 'Capital account', 'Current account'],
+              rows: [
+                ['Holds', 'The long-term stake agreed on joining', 'The year-to-year traffic'],
+                ['Moves when', 'A partner brings in or withdraws capital, by agreement', 'Every appropriation and every drawing'],
+                ['In a typical year', 'Does not move at all', 'Several entries on each side'],
+                ['Interest on capital', 'Calculated on this balance', 'Credited here'],
+                ['A debit balance means', 'Rare, and a matter for the agreement', 'The partner has drawn more than they have earned'],
+              ],
+            },
+            p: [
+              'Splitting one balance into two is a device for keeping the agreed stake visible. Interest on capital is calculated on the capital account, so if drawings and profit shares ran through the same account the figure interest was charged on would drift every month and the agreement would become unworkable.',
+              'This arrangement is called **fixed capital**, and it is the one AAT assesses. The alternative — one account per partner, everything in it — is called fluctuating capital and is not examined here.',
+              'A debit balance on a current account is information, not an error to be chased. It says the partner has taken out more than the year credited to them, so they owe the partnership. It appears in the financed-by section as a deduction, and it does not stop the section totalling to net assets.',
+            ],
+          },
+          {
+            h: 'What lands on each side, and where it came from',
+            split: {
+              left: {
+                title: 'Debit — reduces what the partner is owed',
+                items: [
+                  'Drawings of cash',
+                  'Drawings of goods, taken at cost',
+                  'Personal expenses the partnership has settled',
+                  'Interest charged on drawings',
+                  'Share of a loss',
+                ],
+              },
+              right: {
+                title: 'Credit — increases what the partner is owed',
+                items: [
+                  'Balance brought forward, where it is a credit',
+                  'Interest on capital',
+                  'Salary or commission',
+                  'Share of residual profit',
+                ],
+              },
+            },
+            p: [
+              'Every entry on the credit side arrives from the appropriation account, and the two are easy to confuse because they carry the same numbers. The appropriation account is part of the profit statement: it divides one year\'s profit and then it is finished. The current account is a ledger account: it takes those divided amounts, sets the partner\'s drawings against them, and carries a running balance into the next year.',
+              'So the same £14,000 salary appears twice — once as a deduction in the appropriation account, dividing the profit, and once as a credit in Bea\'s current account, recording what she is owed. One entry says how the profit was split; the other says what each partner has left.',
+              'Drawings reach the debit side in the three forms a sole trader\'s do: cash, goods at cost, and private bills paid out of partnership money. Goods are credited to purchases here as they are for a sole trader, and the debit goes to that partner\'s own current account, so what each of them has taken stays separately identifiable all year.',
+            ],
+            examtrap: 'Interest on drawings is deducted from the partner in their current account and added to the pot in the appropriation account. Same figure, opposite directions, and both entries are needed.',
+          },
+          {
+            h: 'Completing the current accounts',
+            worked: {
+              title: 'Ahmed and Bea, continuing from the appropriation account',
+              problem: 'Ahmed\'s current account opened with £3,200 credit and Bea\'s with £1,100 debit. The appropriation gave interest on capital of £4,000 and £2,500, a salary of £14,000 to Bea, and residual shares of £46,200 and £30,800. Interest on drawings was £600 and £900. Ahmed drew £44,000 in cash; Bea drew £38,000 in cash and took goods costing £1,500. What are the closing balances?',
+              steps: [
+                {
+                  do: 'Ahmed\'s credits: £3,200 + £4,000 + £46,200 = £53,400.',
+                  why: 'The opening credit balance plus everything the appropriation account awarded him. He has no salary, so that line is simply absent.',
+                },
+                {
+                  do: 'Ahmed\'s debits: £600 + £44,000 = £44,600, so the balance carried down is £53,400 − £44,600 = £8,800 credit.',
+                  why: 'The year credited him with £50,200 and charged him £44,600 once the interest on drawings is counted, so the balance rises. The £8,800 is what the partnership still owes him.',
+                },
+                {
+                  do: 'Bea\'s credits: £2,500 + £14,000 + £30,800 = £47,300.',
+                  why: 'Her salary and interest on capital are both credits here, having been deductions in the appropriation account. One statement divides the profit; the other records what the division leaves her owed.',
+                },
+                {
+                  do: 'Bea\'s debits: £1,100 + £900 + £38,000 + £1,500 = £41,500.',
+                  why: 'Her opening balance was a debit, so it joins the drawings rather than offsetting them. The goods are debited at the £1,500 they cost, with the credit going to purchases.',
+                },
+                {
+                  do: 'Bea\'s balance carried down: £47,300 − £41,500 = £5,800 credit.',
+                  why: 'She started the year owing the partnership and ends it being owed. A year of earning more than was drawn turns a debit balance round.',
+                },
+              ],
+              answer: 'Ahmed £8,800 credit and Bea £5,800 credit.',
+              tryIt: {
+                q: 'A partner\'s current account opens with a credit balance of £2,400. During the year she is credited with interest on capital of £1,800, a salary of £9,000 and a profit share of £21,600, and is charged interest on drawings of £500. Her drawings were £30,000. What is the closing balance?',
+                answer: 4300,
+                unit: '£',
+                hint: 'Total the credits, total the debits, and take one from the other.',
+                exp: 'The credits come to £2,400 + £1,800 + £9,000 + £21,600 = £34,800 and the debits to £500 + £30,000 = £30,500, leaving £34,800 − £30,500 = £4,300 credit.',
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'truefalse',
+            q: 'Identify whether each entry belongs on the credit side of a partner\'s current account.',
+            statements: [
+              { text: 'The partner\'s share of the residual profit.', answer: true },
+              { text: 'Interest charged on the partner\'s drawings.', answer: false },
+              { text: 'Goods the partner took for personal use.', answer: false },
+              { text: 'A salary the agreement awards the partner.', answer: true },
+              { text: 'A private telephone bill the partnership paid for the partner.', answer: false },
+            ],
+            exp: 'The credit side records what the partnership owes the partner: profit share, salary and interest on capital. The debit side records what reduces that — drawings in any form, interest charged on those drawings, and private costs the partnership has settled. Goods and a private bill are both drawings by another name.',
+          },
+          {
+            type: 'numeric',
+            q: 'A partner opens the year with a current account balance of £900 debit, is credited with £26,400 in total appropriations, is charged £700 interest on drawings and draws £22,000. What is the closing balance?',
+            answer: 2800,
+            unit: '£',
+            exp: 'The debits are the opening balance plus the interest and the drawings: £900 + £700 + £22,000 = £23,600. Against credits of £26,400 that leaves £26,400 − £23,600 = £2,800 credit.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-7I',
+        title: 'The partnership statement of financial position',
+        icon: '🧮',
+        criteria: ['FAPS-7.4.6'],
+        cards: [
+          {
+            h: 'The financed-by section, partner by partner',
+            example: {
+              title: 'How the bottom of the statement is laid out',
+              rows: [
+                ['', 'Ahmed', 'Bea', 'Total'],
+                ['Capital accounts', '80,000', '50,000', '130,000'],
+                ['Current accounts', '8,800', '5,800', '14,600'],
+                ['**Total**', '**88,800**', '**55,800**', '**144,600**'],
+              ],
+            },
+            p: [
+              'Everything above this section is prepared exactly as for a sole trader, down to and including net assets. The net assets presentation, the ordering of the assets, the deduction of non-current liabilities after working capital — all unchanged.',
+              'Below it, one figure becomes four. Each partner has a capital balance and a current balance, and the grand total of the four must equal net assets. Where a current account has a debit balance it is shown in brackets and deducted, which reduces that partner\'s column and the total alike.',
+              'The partner columns are worth completing even when the assessment asks only for the total. Carrying two current account balances across to the wrong partners leaves the grand total exactly right and both partner columns wrong, so agreement with net assets says nothing about it. Only reading each balance back against the account it came from will catch it.',
+            ],
+          },
+          {
+            h: 'Putting the two halves together',
+            worked: {
+              title: 'Ahmed and Bea at 31 December',
+              problem: 'Non-current assets have a carrying amount of £118,000. Inventory is £24,000, trade receivables £31,500, prepayments £900 and the bank balance £6,200. Trade payables are £25,600 and accruals £1,400. A loan of £9,000 is repayable in three years. Capital accounts stand at £80,000 for Ahmed and £50,000 for Bea, and the current accounts closed at £8,800 and £5,800 credit. Show that the statement balances.',
+              steps: [
+                {
+                  do: 'Current assets: £24,000 + £31,500 + £900 + £6,200 = £62,600.',
+                  why: 'Listed hardest to realise first — inventory, then receivables, then prepayments, then the bank.',
+                },
+                {
+                  do: 'Current liabilities: £25,600 + £1,400 = £27,000, so net current assets are £62,600 − £27,000 = £35,600.',
+                  why: 'Working capital measures the cushion for the coming year, and a partnership calculates it by the sole trader\'s method without amendment.',
+                },
+                {
+                  do: 'Total assets less current liabilities: £118,000 + £35,600 = £153,600. Net assets: £153,600 − £9,000 = £144,600.',
+                  why: 'The loan is deducted after the working capital subtotal because it is not due within the year.',
+                },
+                {
+                  do: 'Capital accounts: £80,000 + £50,000 = £130,000. Current accounts: £8,800 + £5,800 = £14,600.',
+                  why: 'The two rows of the financed-by section, each totalled across the partners.',
+                },
+                {
+                  do: 'Check: £130,000 + £14,600 = £144,600, which is the net assets figure.',
+                  why: 'The four balances between them account for the whole of the net assets — the agreement a sole trader gets from one capital figure, arrived at by four.',
+                },
+              ],
+              answer: 'Net assets of £144,600, financed by capital of £130,000 and current accounts of £14,600.',
+              tryIt: {
+                q: 'Two partners have capital accounts of £60,000 and £40,000. Their current accounts close at £7,300 credit and £2,100 debit. What must the net assets total?',
+                answer: 105200,
+                unit: '£',
+                hint: 'A debit balance on a current account is deducted.',
+                exp: 'The capital accounts come to £60,000 + £40,000 = £100,000. The credit current account is added and the debit one deducted: £100,000 + £7,300 − £2,100 = £105,200.',
+              },
+            },
+          },
+          {
+            h: 'Reading the statement once it is built',
+            p: [
+              'The four balances say different things about the same two people. Comparing the capital accounts shows who put more in at the outset. Comparing the current accounts shows who has been drawing ahead of their earnings since — and a partner whose current account has fallen year on year is taking out more than the business is crediting them, whatever the profit statement says.',
+              'That is a conversation for the partners rather than a correction for the bookkeeper. A current account can run into debit without anything being wrong in the accounts, and the accounts are not the place to fix it.',
+              'What does belong to the bookkeeper is the agreement between the halves. If the financed-by total does not equal net assets, the appropriation has gone astray, a current account has been mis-added, or a balance has been shown on the wrong side. Working back through the current accounts before re-reading the asset listing is usually faster, because the current accounts are where the year\'s new entries are.',
+            ],
+            examtrap: 'A current account with a debit balance is deducted in the financed-by section. Adding it makes the two halves differ by exactly twice that balance, which is the signature of a figure on the wrong side.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Capital accounts total £145,000 and the two current accounts stand at £11,400 credit and £3,900 debit. What are the net assets?',
+            answer: 152500,
+            unit: '£',
+            exp: 'The financed-by section totals to net assets, with a debit current account deducted: £145,000 + £11,400 − £3,900 = £152,500.',
+          },
+          {
+            type: 'mcq',
+            q: 'A partnership\'s financed-by section exceeds net assets by exactly £7,200, and one partner\'s current account has a debit balance of £3,600. What has most likely happened?',
+            opts: ['The debit balance has been added instead of deducted', 'The debit balance has been left out of the section', 'The capital accounts have been totalled twice over', 'A profit share of £7,200 has been credited to the wrong partner'],
+            ans: 0,
+            exp: 'A figure on the wrong side moves the total by twice its value, and £3,600 doubled is the £7,200 difference. Omitting it would give a difference of £3,600, and crediting the wrong partner leaves the total unchanged because both partners are inside it.',
+          },
+        ],
+      },
+    ],
+  };
+
+  var PATH = [LO1, LO2, LO3, LO4, LO5, LO7];
 
   /* ══════════════════════════════════════════════════════════════════════════
      PRACTICE BANK — met cold, and separate from the lesson checks.
@@ -3510,6 +4401,148 @@
         { options: ['current liability', 'current asset', 'item of revenue'], answer: 0 },
       ],
       exp: 'Had it and not paid means the business owes — a liability. Paid and not had it means the business is owed the benefit — an asset. Received and not earned means the business owes a service — a liability, and the mirror image of a prepaid expense rather than a copy of it.',
+    },
+    {
+      id: 'F-7-01', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.5'],
+      type: 'numeric',
+      q: 'Opening inventory is £16,500, purchases £108,000, purchases returns £4,200, carriage inwards £1,900 and closing inventory £15,100. What is the cost of sales?',
+      answer: 107100,
+      unit: '£',
+      exp: 'Net purchases are £108,000 − £4,200 + £1,900 = £105,700. Cost of sales is then opening inventory plus net purchases less closing inventory: £16,500 + £105,700 − £15,100 = £107,100.',
+    },
+    {
+      id: 'F-7-02', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.5'],
+      type: 'mcq',
+      q: 'A wholesaler pays £3,400 to have goods delivered in from its supplier and £2,900 to deliver goods out to its customers. How are the two treated?',
+      opts: ['£3,400 within net purchases and £2,900 among the expenses', '£2,900 within net purchases and £3,400 among the expenses', 'Both within net purchases, adding £6,300 to cost of sales', 'Both among the expenses, adding £6,300 below gross profit'],
+      ans: 0,
+      exp: 'Carriage inwards is part of getting the goods onto the shelf, so it belongs in net purchases and above gross profit. Carriage outwards is a cost of selling that arises after the goods are ready, so it sits among the expenses below gross profit.',
+    },
+    {
+      id: 'F-7-03', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.6'],
+      type: 'numeric',
+      q: 'Sales are £276,000, sales returns £8,000, opening inventory £19,000, purchases £152,000, carriage inwards £3,000, carriage outwards £4,500 and closing inventory £22,400. What is the gross profit?',
+      answer: 116400,
+      unit: '£',
+      exp: 'Sales revenue is £276,000 − £8,000 = £268,000 and net purchases £152,000 + £3,000 = £155,000, so cost of sales is £19,000 + £155,000 − £22,400 = £151,600. Gross profit is £268,000 − £151,600 = £116,400. Carriage outwards belongs below gross profit and takes no part in this calculation.',
+    },
+    {
+      id: 'F-7-04', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.2', 'FAPS-7.1.3'],
+      type: 'mcq',
+      q: 'What does a statement of financial position report?',
+      opts: ['The assets, liabilities and capital of the business at one date', 'The income and expenses of the business over a period', 'The cash received and paid by the business over a period', 'The assets the business expects to be holding next year'],
+      ans: 0,
+      exp: 'It is the accounting equation set out down the page at a single date: assets less liabilities equals capital. Income and expenses belong to the statement of profit or loss, which covers a period rather than a moment, and neither statement is a forecast.',
+    },
+    {
+      id: 'F-7-05', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.7'],
+      type: 'numeric',
+      q: 'Non-current assets have a carrying amount of £212,000. Inventory is £31,000, trade receivables £44,000 against an allowance of £2,200, prepayments £1,800 and there is a bank overdraft of £5,400. Trade payables are £38,700 and accruals £2,900. A loan of £75,000 is repayable in seven years. What are the net assets?',
+      answer: 164600,
+      unit: '£',
+      exp: 'Receivables net of the allowance are £44,000 − £2,200 = £41,800, so current assets are £31,000 + £41,800 + £1,800 = £74,600. The overdraft joins the current liabilities: £5,400 + £38,700 + £2,900 = £47,000, leaving net current assets of £74,600 − £47,000 = £27,600. Adding non-current assets gives £212,000 + £27,600 = £239,600, and the loan is deducted last: £239,600 − £75,000 = £164,600.',
+    },
+    {
+      id: 'F-7-06', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.1', 'FAPS-7.1.4'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about where a figure appears is correct.',
+      statements: [
+        { text: 'Drawings appear among the expenses in the statement of profit or loss.', answer: false },
+        { text: 'Closing inventory appears in both financial statements.', answer: true },
+        { text: 'Depreciation for the year appears in the statement of profit or loss.', answer: true },
+        { text: 'Capital introduced during the year appears in the statement of profit or loss.', answer: false },
+        { text: 'An accrual is shown as a current asset.', answer: false },
+      ],
+      exp: 'Drawings and capital introduced are movements on the capital account and stay off the profit statement altogether. Closing inventory does appear twice — deducted in arriving at cost of sales and listed as a current asset. Depreciation is a cost of the year even though nothing was paid. An accrual is money owed, so it is a current liability.',
+    },
+    {
+      id: 'F-7-07', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.2.2'],
+      type: 'numeric',
+      q: 'Opening capital was £82,000. The owner introduced £15,000, profit for the year was £46,300, cash drawings were £38,500 and goods costing £2,200 were taken for personal use. What is the closing capital?',
+      answer: 102600,
+      unit: '£',
+      exp: 'Capital rises by what is put in and by the profit, and falls by everything taken out in any form: £82,000 + £15,000 + £46,300 − £38,500 − £2,200 = £102,600. The goods are taken at cost, not at what they would have sold for.',
+    },
+    {
+      id: 'F-7-08', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.2.2'],
+      type: 'mcq',
+      q: 'A sole trader has taken goods costing £1,300, which would have sold for £2,050, and no entry has been made. What is the effect on the accounts as they stand?',
+      opts: ['Cost of sales is overstated by £1,300 and drawings understated by £1,300', 'Cost of sales is overstated by £2,050 and drawings understated by £2,050', 'Sales are understated by £2,050 and drawings understated by £1,300', 'Profit is overstated by £750, being the margin on the goods taken'],
+      ans: 0,
+      exp: 'The £1,300 is sitting in purchases, and the goods are not in the closing inventory count because they have gone, so cost of sales carries a charge for goods that were never sold. The correcting entry debits drawings and credits purchases with the cost. No sale took place, so revenue and margin do not come into it.',
+    },
+    {
+      id: 'F-7-09', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.2.1', 'FAPS-7.2.2'],
+      type: 'numeric',
+      q: 'A sole trader began the year with capital of £39,600 and introduced no further capital. Drawings were £27,300 and closing capital is £48,900. What was the profit for the year?',
+      answer: 36600,
+      unit: '£',
+      exp: 'Closing capital equals opening capital plus profit less drawings, so the profit is the figure that makes it balance: £48,900 + £27,300 − £39,600 = £36,600. Capital grew by £9,300 even though £27,300 was withdrawn, which only a profit of that size can explain.',
+    },
+    {
+      id: 'F-7-10', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.3.4'],
+      type: 'numeric',
+      q: 'Profit for the year is £118,000. Interest on capital totals £9,400, partners\' salaries total £22,000 and interest on drawings totals £2,100. What is the residual profit available for sharing?',
+      answer: 88700,
+      unit: '£',
+      exp: 'Interest on drawings is a charge to the partners, so it is added to the pot; interest on capital and salaries are paid out of it, so they are deducted: £118,000 + £2,100 − £9,400 − £22,000 = £88,700.',
+    },
+    {
+      id: 'F-7-11', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.3.5'],
+      type: 'numeric',
+      q: 'Residual profit of £97,200 is shared between three partners in the ratio 5:3:1. What does the partner on three parts receive?',
+      answer: 32400,
+      unit: '£',
+      exp: 'The parts add to nine, so one part is £97,200 ÷ 9 = £10,800 and three parts are £10,800 × 3 = £32,400. Dividing by the number of partners instead of by the number of parts is the usual error.',
+    },
+    {
+      id: 'F-7-12', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.3.1', 'FAPS-7.3.2'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about the appropriation account is correct.',
+      statements: [
+        { text: 'A partner\'s salary is deducted in arriving at profit for the year.', answer: false },
+        { text: 'Interest on drawings increases the profit available for appropriation.', answer: true },
+        { text: 'The profit-sharing ratio is applied to profit for the year.', answer: false },
+        { text: 'Interest on capital is deducted in the appropriation account.', answer: true },
+        { text: 'Where a partnership makes a loss, no appropriation account is prepared.', answer: false },
+      ],
+      exp: 'A partner\'s salary divides the profit rather than reducing it, so it appears below profit for the year, and the ratio is applied to what is left after the salaries and interest on capital have come out. Interest charged on drawings goes back into the pot. A loss is appropriated by exactly the same method, which usually leaves a residual loss larger than the loss the business made.',
+    },
+    {
+      id: 'F-7-13', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.4.5'],
+      type: 'numeric',
+      q: 'A partner\'s current account opens with a credit balance of £4,700. She is credited with interest on capital of £2,100, a salary of £12,000 and a profit share of £18,900, and charged interest on drawings of £850. Her drawings were £34,000. What is the closing balance?',
+      answer: 2850,
+      unit: '£',
+      exp: 'The credits total £4,700 + £2,100 + £12,000 + £18,900 = £37,700 and the debits £850 + £34,000 = £34,850, so the balance carried down is £37,700 − £34,850 = £2,850 credit.',
+    },
+    {
+      id: 'F-7-14', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.4.3'],
+      type: 'mcq',
+      q: 'What distinguishes a partner\'s capital account from their current account?',
+      opts: ['The capital account holds the agreed long-term stake and rarely moves', 'The capital account holds the drawings taken during the year', 'The capital account receives the partner\'s share of residual profit', 'The capital account is opened only when a partner joins or leaves'],
+      ans: 0,
+      exp: 'Capital accounts record the stake each partner agreed to put in, and are left alone so that interest on capital has a stable balance to be calculated on. Drawings, profit shares, salaries and interest all run through the current account, which is why it moves several times a year and the capital account usually does not move at all.',
+    },
+    {
+      id: 'F-7-15', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.4.6'],
+      type: 'numeric',
+      q: 'Two partners have capital accounts of £95,000 and £65,000. Their current accounts close at £12,600 credit and £4,300 debit. What must the net assets total?',
+      answer: 168300,
+      unit: '£',
+      exp: 'The financed-by section totals to net assets, and a debit balance on a current account is deducted rather than added: £95,000 + £65,000 + £12,600 − £4,300 = £168,300.',
+    },
+    {
+      id: 'F-7-16', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.5'],
+      type: 'gapfill',
+      q: 'Complete the three definitions the trading section rests on.',
+      template: 'Sales less sales returns is {0}. Purchases less purchases returns plus carriage inwards is {1}. Opening inventory plus net purchases less closing inventory is {2}.',
+      gaps: [
+        { options: ['sales revenue', 'gross profit', 'net purchases'], answer: 0 },
+        { options: ['net purchases', 'cost of sales', 'sales revenue'], answer: 0 },
+        { options: ['cost of sales', 'gross profit', 'net purchases'], answer: 0 },
+      ],
+      exp: 'Each returns figure is deducted from the account it reverses, so sales returns reduce revenue and purchases returns reduce purchases. Carriage inwards is added because delivery was part of obtaining the goods. The two inventory figures then move the cost of goods into the year that sold them.',
     },
   ];
 
