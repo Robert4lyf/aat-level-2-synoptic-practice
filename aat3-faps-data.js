@@ -2219,7 +2219,782 @@
     ],
   };
 
-  var PATH = [LO1, LO2, LO3, LO4];
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 5 — Record period end adjustments. 10% of the assessment, and 25
+     key concepts: more than any other outcome in the unit.
+
+     It is also the one Outcomes 6 and 7 consume. Every adjustment written here
+     is a line in the adjustments column of the extended trial balance and a
+     figure in the statements that follow, so a reader who leaves this outcome
+     shaky does not find out until two outcomes later.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO5 = {
+    unit: 'faps',
+    level: 3,
+    title: 'Financial Accounting: Preparing Financial Statements',
+    outcome: 5,
+    outcomeTitle: 'Record period end adjustments',
+    weighting: 10,
+    lessons: [
+      {
+        id: 'L3-FAPS-5A',
+        title: 'Why the year end needs adjusting',
+        icon: '📅',
+        criteria: ['FAPS-5.1.1', 'FAPS-5.1.2'],
+        cards: [
+          {
+            h: 'The ledger records payments; the accounts report periods',
+            p: [
+              'By the last day of the year the ledger holds an honest record of what was paid and received. It does not yet hold an honest record of what the year **cost** and what the year **earned**, and those are different questions.',
+              'An electricity bill covering October to December arrives in January. The electricity was burned in this year; the payment falls in the next. A twelve-month insurance premium paid in October buys three months of this year and nine months of the next, out of one cheque. Rent from a tenant for December arrives in January. In each case the cash and the economic event have come apart.',
+              'The **accruals principle** says report the event. So the year end is where the ledger is adjusted from a record of cash into a record of the period — expenses moved into the year that consumed them, income into the year that earned it.',
+            ],
+            callout: { kind: 'key', text: 'Every adjustment in this outcome does one job: separate when the cash moved from when the economic event happened, and report the second.' },
+          },
+          {
+            h: 'Four adjustments, one idea',
+            table: {
+              headers: ['Adjustment', 'The cash', 'The event'],
+              rows: [
+                ['**Accrued expense**', 'Not yet paid at the year end', 'Consumed during the year'],
+                ['**Prepaid expense**', 'Paid during the year', 'Partly consumed next year'],
+                ['**Accrued income**', 'Not yet received at the year end', 'Earned during the year'],
+                ['**Prepaid income**', 'Received during the year', 'Partly earned next year'],
+              ],
+            },
+            p: [
+              'The four are the two directions of the same idea applied to the two sides of the profit statement. The vocabulary varies — prepaid income is also called deferred income, and an accrued expense is often just called an accrual — and the treatment does not.',
+              'Two more adjustments in this outcome are the same principle wearing different clothes. An **allowance for doubtful receivables** recognises, in the year that made the sales, the risk that some of those sales will never be collected. **Closing inventory** is held back out of this year\'s cost of sales because the goods have not been sold yet, so their cost belongs to the year that sells them.',
+            ],
+          },
+          {
+            h: 'Which way profit moves',
+            split: {
+              left: {
+                title: 'Raises profit',
+                items: [
+                  'Prepaid expense — cost pushed into next year',
+                  'Accrued income — revenue pulled into this year',
+                  'Higher closing inventory — cost of sales falls',
+                  'A reduction in the allowance for doubtful receivables',
+                ],
+              },
+              right: {
+                title: 'Lowers profit',
+                items: [
+                  'Accrued expense — cost pulled into this year',
+                  'Prepaid income — revenue pushed into next year',
+                  'Lower closing inventory — cost of sales rises',
+                  'An increase in the allowance, or a debt written off',
+                ],
+              },
+            },
+            p: [
+              'Reading those two columns as a list of levers is the point of the ethics material at the end of this outcome. Each adjustment rests on a judgement, each judgement moves profit in a known direction, and a run of them all taken at the favourable end moves it a long way without any single decision being obviously wrong.',
+            ],
+            examtrap: 'A question can give the adjustment and ask for the effect on profit, or give the effect and ask which adjustment produces it. Learning the direction of each one is worth more than learning the journal, because the journal follows from the direction.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'Which principle requires the year end adjustments in this outcome?',
+            opts: ['Accruals', 'Going concern', 'Consistency', 'Money measurement'],
+            ans: 0,
+            exp: 'The accruals principle records a transaction in the period the economic event happens rather than the period the cash moves. Every adjustment here — accruals, prepayments, allowances, closing inventory — separates those two and reports the event.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each adjustment raises the reported profit for the year.',
+            statements: [
+              { text: 'Recognising a prepaid expense at the year end.', answer: true },
+              { text: 'Recognising an accrued expense at the year end.', answer: false },
+              { text: 'Recognising income earned but not yet received.', answer: true },
+              { text: 'Increasing the allowance for doubtful receivables.', answer: false },
+            ],
+            exp: 'A prepayment removes cost from this year, and accrued income adds revenue to it, so both raise profit. An accrual adds cost, and an increase in the allowance is charged as an expense, so both lower it. The direction of each adjustment is worth knowing before the journal, because the journal follows from it.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5B',
+        title: 'Accrued and prepaid expenses',
+        icon: '⏳',
+        criteria: ['FAPS-5.1.3', 'FAPS-5.1.4', 'FAPS-5.1.6', 'FAPS-5.1.7'],
+        cards: [
+          {
+            h: 'The two journals, and where the other half goes',
+            table: {
+              headers: ['', 'Journal', 'On the SFP'],
+              rows: [
+                ['**Accrued expense**', 'Dr the expense · Cr Accruals', 'Current liability — owed and not yet paid'],
+                ['**Prepaid expense**', 'Dr Prepayments · Cr the expense', 'Current asset — paid for and not yet had'],
+              ],
+            },
+            p: [
+              'Both journals move an amount into or out of the expense account so that what remains is the cost of **this** year. The balancing figure is not lost: it sits on the statement of financial position until the period it belongs to arrives.',
+              'The classification is worth taking seriously rather than memorising. An accrual is a liability because the business has had the benefit and still owes for it. A prepayment is an asset because the business has paid and is still owed the benefit. Read that way, neither can be put on the wrong side.',
+            ],
+            callout: { kind: 'key', text: 'Accrual = had it, not paid = liability. Prepayment = paid, not had it = asset.' },
+          },
+          {
+            h: 'An expense paid in advance',
+            worked: {
+              title: 'Insurance of £2,400 paid on 1 October for twelve months, year end 31 December',
+              problem: 'A business pays £2,400 on 1 October for twelve months of insurance cover to 30 September. Its year end is 31 December. What is the charge for the year, what is the adjustment, and where does the balance sit?',
+              steps: [
+                { do: 'Count the months of cover falling in this year: October, November and December — three.', why: 'The adjustment turns on how much of what was bought has actually been consumed by the year end. Counting months is the whole calculation.' },
+                { do: 'Charge for the year: £2,400 × 3 ÷ 12 = £600.', why: 'Three months of a twelve-month policy. That is the cost of insuring this year, and it is the only part that belongs in this year\'s profit.' },
+                { do: 'Prepayment: £2,400 × 9 ÷ 12 = £1,800.', why: 'The other nine months have been paid for and not yet had. The business is owed cover, which makes the amount an asset rather than a cost.' },
+                { do: 'Journal: debit prepayments £1,800, credit insurance £1,800.', why: 'The credit takes the nine months back out of the expense account; the debit parks it on the statement of financial position until next year.' },
+                { do: 'Check: £600 + £1,800 = £2,400.', why: 'The two pieces must add back to what was paid. If they do not, the months have been counted wrongly — which is the only place this calculation goes wrong.' },
+              ],
+              answer: 'An insurance charge of £600 for the year, and a prepayment of £1,800 shown as a current asset.',
+              tryIt: {
+                q: 'A business pays £7,200 on 1 September for a twelve-month software licence to 31 August. Its year end is 31 December. What is the prepayment at the year end?',
+                answer: 4800,
+                unit: '£',
+                hint: 'Count the months that fall after the year end.',
+                exp: 'September to December is four months used, leaving eight months paid for and not yet had: £7,200 × 8 ÷ 12 = £4,800. The charge for the year is the other £2,400, and the prepayment is a current asset.',
+              },
+            },
+          },
+          {
+            h: 'An expense incurred and not yet billed',
+            worked: {
+              title: 'Electricity paid £4,200 in the year, with £950 estimated as unbilled at the year end',
+              problem: 'A business has paid £4,200 for electricity during the year. At the year end the supply for the final period has not been billed, and the amount is estimated at £950. What is the charge for the year and what is the adjustment?',
+              steps: [
+                { do: 'Start with what has been paid: £4,200 sits in the electricity account.', why: 'The ledger records payments. It is the starting point, not the answer.' },
+                { do: 'Add the electricity used and not yet billed: £4,200 + £950 = £5,150.', why: 'The supply was consumed in this year, so its cost belongs to this year whatever date the invoice carries.' },
+                { do: 'Journal: debit electricity £950, credit accruals £950.', why: 'The debit brings the charge up to what the year actually used; the credit records that the business still owes for it.' },
+                { do: 'The £950 is a current liability on the statement of financial position.', why: 'The benefit has been taken and the money has not been paid, which is what a liability is.' },
+                { do: 'An estimate is acceptable here, provided it is a reasonable one made on the best evidence available.', why: 'Faithful representation asks that the process is sound and the figure is not misdescribed, not that every number is exact. A meter reading or the previous quarter\'s bill is the usual evidence.' },
+              ],
+              answer: 'An electricity charge of £5,150 for the year, and an accrual of £950 shown as a current liability.',
+              tryIt: {
+                q: 'A business has paid £11,400 in telephone charges during the year. At the year end £1,260 of usage has not been billed. What is the telephone expense for the year?',
+                answer: 12660,
+                unit: '£',
+                hint: 'The unbilled usage happened in this year.',
+                exp: 'The usage belongs to the year that consumed it, whatever date the invoice carries: £11,400 + £1,260 = £12,660. The £1,260 is credited to accruals and shown as a current liability.',
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'A business pays £3,600 on 1 November for twelve months of rent to 31 October. Its year end is 31 December. What is the prepayment at the year end?',
+            answer: 3000,
+            unit: '£',
+            exp: 'November and December are the two months used, leaving ten paid for and not yet had: £3,600 × 10 ÷ 12 = £3,000. The rent charged to this year is the remaining £600.',
+          },
+          {
+            type: 'mcq',
+            q: 'How is an accrued expense shown on the statement of financial position?',
+            opts: ['As a current liability, because the benefit has been had and not paid for', 'As a current asset, because the payment is still owed to the supplier', 'As a deduction from the relevant expense in the profit statement', 'As a reduction of capital, because the owner bears the eventual cost'],
+            ans: 0,
+            exp: 'An accrual is an amount the business owes for something it has already consumed, which is the definition of a liability. A prepayment is the mirror image — paid for and not yet had — and is a current asset.',
+          },
+          {
+            type: 'gapfill',
+            q: 'Complete the two journals.',
+            template: 'To record an accrued expense: {0} the expense account and credit accruals. To record a prepaid expense: debit prepayments and {1} the expense account. The prepayment is shown as a {2}.',
+            gaps: [
+              { options: ['debit', 'credit', 'reverse'], answer: 0 },
+              { options: ['credit', 'debit', 'clear'], answer: 0 },
+              { options: ['current asset', 'current liability', 'reduction of capital'], answer: 0 },
+            ],
+            exp: 'An accrual adds cost to the year, so the expense is debited and the amount owed is credited to accruals. A prepayment takes cost back out, so the expense is credited and the amount is parked as a current asset until the period it belongs to.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5C',
+        title: 'Accrued and prepaid income',
+        icon: '📨',
+        criteria: ['FAPS-5.1.4', 'FAPS-5.1.6', 'FAPS-5.1.7'],
+        cards: [
+          {
+            h: 'The same idea, with the signs the other way round',
+            p: [
+              'Income adjustments trip people up because the instinct built on expenses points the wrong way. On an expense, money paid in advance is an asset. On income, money **received** in advance is a liability — the business owes a service it has not yet provided.',
+              'So the two rules are mirrors rather than copies. Income earned and not yet received is an asset, because somebody owes the business. Income received and not yet earned is a liability, because the business owes somebody.',
+            ],
+            table: {
+              headers: ['', 'Journal', 'On the SFP'],
+              rows: [
+                ['**Accrued income**', 'Dr Accrued income · Cr the income account', 'Current asset — earned and not yet received'],
+                ['**Prepaid (deferred) income**', 'Dr the income account · Cr Prepaid income', 'Current liability — received and not yet earned'],
+              ],
+            },
+            callout: { kind: 'key', text: 'Accrued income = earned it, not received = asset. Prepaid income = received it, not earned = liability.' },
+          },
+          {
+            h: 'Rent from a tenant',
+            worked: {
+              title: 'Sublet at £900 a month, £9,900 received by the year end',
+              problem: 'A business sublets part of its premises for £900 a month. By the year end it has received £9,900 in rent for the year. What is the rental income for the year and what is the adjustment?',
+              steps: [
+                { do: 'Work out what the year earned: £900 × 12 = £10,800.', why: 'The tenant had the use of the premises for twelve months, so the business earned twelve months of rent whether or not the money arrived.' },
+                { do: 'Compare with what was received: £10,800 − £9,900 = £900.', why: 'One month is outstanding. The income was earned in this year, so it belongs in this year.' },
+                { do: 'Journal: debit accrued income £900, credit rental income £900.', why: 'The credit brings the income up to what the year earned; the debit records that the tenant owes it.' },
+                { do: 'The £900 is a current asset on the statement of financial position.', why: 'Somebody owes the business money for something already provided, which is what a receivable is.' },
+              ],
+              answer: 'Rental income of £10,800 for the year, and accrued income of £900 shown as a current asset.',
+              tryIt: {
+                q: 'A business charges £400 a month for maintenance contracts. By the year end it has received £5,600 covering the twelve months of the year. What is the deferred income at the year end?',
+                answer: 800,
+                unit: '£',
+                hint: 'Compare what the year earned with what came in.',
+                exp: 'The year earned £400 × 12 = £4,800 and £5,600 arrived, so £5,600 − £4,800 = £800 has been received for service not yet provided. That is deferred income, and it is a current liability rather than an asset.',
+              },
+            },
+          },
+          {
+            h: 'Telling the four apart under pressure',
+            flow: ['Is it income or expense?', 'Has the cash moved yet?', 'Asset or liability follows'],
+            p: [
+              'Under time pressure the reliable route is two questions rather than four memorised rules.',
+              'First: **has the business had the benefit, or given it?** An expense the business has had is a cost of this year. Income the business has earned is revenue of this year. That settles the profit statement without thinking about cash at all.',
+              'Second: **has the cash moved?** If the event happened and the cash has not, somebody owes somebody — an accrued expense is a liability, accrued income an asset. If the cash moved and the event has not, the same logic reversed — a prepaid expense is an asset, prepaid income a liability.',
+            ],
+            examtrap: 'The word "prepaid" describes who paid early, and that changes which side it lands on. Prepaid expense: the business paid early, so the business is owed — asset. Prepaid income: the customer paid early, so the business owes — liability.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'A business rents out a workshop for £750 a month. By the year end it has received £8,250 for the year. What is the accrued income at the year end?',
+            answer: 750,
+            unit: '£',
+            exp: 'The year earned £750 × 12 = £9,000 and £8,250 arrived, so £9,000 − £8,250 = £750 is earned and not yet received. It is credited to rental income and shown as a current asset.',
+          },
+          {
+            type: 'mcq',
+            q: 'A customer pays in December for a service the business will provide in February. How is the amount treated at the 31 December year end?',
+            opts: ['Deferred income, shown as a current liability', 'Accrued income, shown as a current asset', 'Revenue of the year, because the cash has been received', 'A prepayment, shown as a current asset'],
+            ans: 0,
+            exp: 'The money has arrived and the service has not been provided, so the business owes it — a liability. It is taken out of income this year and recognised in February, when it is earned. A prepayment is the expense-side mirror of this and sits on the other side.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each classification is correct.',
+            statements: [
+              { text: 'Income earned but not yet received is a current asset.', answer: true },
+              { text: 'Income received but not yet earned is a current asset.', answer: false },
+              { text: 'An expense paid but not yet consumed is a current asset.', answer: true },
+              { text: 'An expense consumed but not yet paid is a current asset.', answer: false },
+            ],
+            exp: 'Earned and not received means somebody owes the business — an asset. Received and not earned means the business owes a service — a liability. Paid and not consumed means the business is owed the benefit — an asset. Consumed and not paid means the business owes for it — a liability.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5D',
+        title: 'Reversing last year\'s adjustments',
+        icon: '🔁',
+        criteria: ['FAPS-5.1.5', 'FAPS-5.1.8'],
+        cards: [
+          {
+            h: 'An adjustment that is never reversed is counted twice',
+            p: [
+              'Last year ended with an accrual of £950 for unbilled electricity. In February the bill arrives and is paid, and the payment goes to the electricity account like every other payment.',
+              'If nothing else happens, that £950 has been charged to profit twice: once last year as the accrual, and again this year as part of the payment. The reversal is what stops it.',
+              'At the start of the new period the previous adjustment is put back the other way: **debit accruals £950, credit electricity £950**. The electricity account now opens with a £950 credit, so when the payment arrives the two cancel and only the part belonging to this year is left.',
+            ],
+            callout: { kind: 'key', text: 'Every accrual and prepayment is reversed at the start of the next period. Without the reversal the amount lands in profit in both years.' },
+          },
+          {
+            h: 'An expense account across a year end',
+            example: {
+              title: 'Electricity: the £950 accrued last year, £4,600 paid this year, £1,100 accrued this year',
+              rows: [
+                ['', 'Debit', 'Credit'],
+                ['Reversal of last year\'s accrual', '', '£950'],
+                ['Payments made during the year', '£4,600', ''],
+                ['This year\'s accrual', '£1,100', ''],
+                ['**Charge to this year\'s profit**', '**£4,750**', ''],
+              ],
+            },
+            p: [
+              'The charge is £4,600 − £950 + £1,100 = £4,750, and each of the three lines earns its place. The payments include an amount that belonged to last year, so the reversal takes it out. The supply used at the end of this year has not been paid for, so the new accrual puts it in.',
+              'A prepayment runs the same way with the signs swapped. Last year\'s prepayment is reversed by debiting the expense — the cover was paid for last year and consumed in this one, so this year carries it.',
+            ],
+          },
+          {
+            h: 'What accounting software does, and does not, do',
+            p: [
+              'Software will hold a recurring journal and post the reversal automatically on the first day of the new period, which removes the commonest cause of a double count. The specification names this and it is worth knowing why it matters.',
+              'What it does not do is decide whether the adjustment was right. A recurring accrual set up three years ago at £950 a quarter will go on posting £950 a quarter after the supplier has changed the tariff, after the premises have been given up, and after the contract has ended. Both sides of the entry are correct, the reversal happens on time, and the figure is wrong.',
+              'An accrual identical to last year\'s to the pound is the standard example of something professional scepticism is meant to notice. It is not evidence of anything by itself; it is a reason to look at the underlying bill.',
+            ],
+            examtrap: 'A question giving an opening accrual, the payments in the year and a closing accrual is asking for the charge, not for the closing balance. Payments, less the opening adjustment, plus the closing one.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'An expense account has an opening accrual of £1,300 brought forward. Payments in the year were £9,800, and £1,750 is accrued at the year end. What is the charge to this year\'s profit?',
+            answer: 10250,
+            unit: '£',
+            exp: 'The payments include £1,300 that belonged to last year, and this year has used £1,750 it has not paid for: £9,800 − £1,300 + £1,750 = £10,250. Forgetting the opening reversal charges last year\'s cost twice.',
+          },
+          {
+            type: 'mcq',
+            q: 'What happens if last year\'s accrual is never reversed?',
+            opts: ['The amount is charged to profit in both years', 'The amount is charged to profit in neither year', 'The statement of financial position balances but profit is understated', 'Nothing, provided the same amount is accrued again this year'],
+            ans: 0,
+            exp: 'The accrual charged the cost to last year. When the payment is made it goes to the expense account and charges it again, so the same cost reaches profit twice. The reversal removes the first charge as the payment replaces it.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about reversals is correct.',
+            statements: [
+              { text: 'Reversing last year\'s accrual credits the expense account at the start of the new period.', answer: true },
+              { text: 'An accrual identical to last year\'s to the pound is a reason to check the underlying bill.', answer: true },
+              { text: 'Accounting software that posts reversals automatically also confirms the amount is still right.', answer: false },
+              { text: 'A prepayment brought forward is reversed by crediting the expense account.', answer: false },
+            ],
+            exp: 'The reversal is the opposite of the original entry, so an accrual that debited the expense is reversed by crediting it. An unchanged figure is not proof of error and is worth a look. Software applies the rule it was given and will post a stale figure indefinitely. A prepayment credited the expense originally, so its reversal debits it — this year consumes what last year paid for.',
+          },
+        ],
+      },
+      {
+        id: 'L3-FAPS-5E',
+        title: 'Irrecoverable debts',
+        icon: '❌',
+        criteria: ['FAPS-5.2.2', 'FAPS-5.2.3', 'FAPS-5.2.5'],
+        cards: [
+          {
+            h: 'Writing a debt off',
+            p: [
+              'A customer has gone into liquidation, or has simply stopped answering, and the business accepts the money is not coming. The debt is **irrecoverable** and it is written off.',
+              'Writing off does two things at once. It removes the receivable, because the business no longer has anything worth calling an asset. And it charges the loss to profit, because the sale was recognised as revenue when it was made and something has to undo that.',
+              'The customer\'s own account in the memorandum receivables ledger is cleared to match, so the two records stay in step. The write-off is made by journal, and the journal carries a narrative — which customer, which invoices, and on what evidence. A write-off is a decision to give up on money the business is owed, and it should be traceable to whoever made it.',
+            ],
+            example: {
+              title: 'Writing off £1,400 owed by a customer in liquidation',
+              rows: [
+                ['Account', 'Debit', 'Credit'],
+                ['Irrecoverable debts expense', '£1,400', ''],
+                ['Sales ledger control account', '', '£1,400'],
+              ],
+            },
+            callout: { kind: 'key', text: 'Write-off: debit irrecoverable debts expense, credit the sales ledger control account. The asset goes and the loss reaches profit.' },
+          },
+          {
+            h: 'When a written-off debt is paid after all',
+            p: [
+              'Occasionally a debt written off in a previous year is paid — a liquidator makes a distribution, or a customer who vanished reappears. The receivable no longer exists in the ledger, so the receipt cannot be posted against it.',
+              'The entry is **debit bank, credit irrecoverable debts**. The credit goes back to the expense account, reducing the charge for the year in which the money actually turned up.',
+              'This is not a correction of an earlier error, and the previous year is not reopened. The write-off was a reasonable judgement on the evidence available at the time, and the recovery is new information belonging to the year it arrived in. Some businesses present the credit separately as irrecoverable debts recovered rather than netting it against the charge; both are met in practice.',
+            ],
+          },
+          {
+            h: 'Three things that are not the same',
+            split: {
+              left: {
+                title: 'The distinctions the specification asks for',
+                items: [
+                  '**Irrecoverable debt** — accepted as lost, removed from receivables',
+                  '**Specific allowance** — a named customer looks doubtful, and the debt stays',
+                  '**General allowance** — a proportion of the rest will not pay, based on experience',
+                ],
+              },
+              right: {
+                title: 'What changes between them',
+                items: [
+                  'A write-off reduces receivables; an allowance never does',
+                  'A write-off is certain; an allowance is an estimate of risk',
+                  'An allowance is shown as a deduction from receivables, which stay at full value underneath',
+                  'A doubtful debt that later goes bad is written off then — and the allowance against it is released',
+                ],
+              },
+            },
+            p: [
+              'The line between a write-off and an allowance is the line between a fact and a forecast, and the accounting keeps them apart on purpose. A reader can see how much the business has given up on and, separately, how much of what remains it expects to lose.',
+            ],
+            examtrap: 'An allowance never touches the receivables ledger. The customer still owes the money and will still be chased for it — the allowance is the business\'s own estimate of what it will collect, not a message to the customer.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'What is the journal to write off an irrecoverable debt of £2,300?',
+            opts: ['Debit irrecoverable debts expense, credit sales ledger control account', 'Debit sales ledger control account, credit irrecoverable debts expense', 'Debit allowance for doubtful receivables, credit sales ledger control account', 'Debit irrecoverable debts expense, credit allowance for doubtful receivables'],
+            ans: 0,
+            exp: 'The debit charges the loss to profit and the credit removes the receivable, because the business no longer holds anything worth calling an asset. The allowance account is not involved in a write-off — that is the separate estimate against the debts still expected to be collected.',
+          },
+          {
+            type: 'mcq',
+            q: 'A debt written off two years ago is unexpectedly paid. How is the receipt recorded?',
+            opts: ['Debit bank, credit irrecoverable debts', 'Debit bank, credit sales ledger control account', 'Debit bank, credit sales revenue for the year', 'Reopen the earlier year and reverse the original write-off'],
+            ans: 0,
+            exp: 'The receivable no longer exists, so the receipt cannot be posted against it, and the sale was recognised as revenue years ago. Crediting irrecoverable debts reduces the charge in the year the money actually arrived. The original write-off was a reasonable judgement on the evidence then available and is not an error to correct.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement is correct.',
+            statements: [
+              { text: 'An allowance for doubtful receivables reduces the balance on the sales ledger control account.', answer: false },
+              { text: 'A write-off removes the debt from receivables.', answer: true },
+              { text: 'A customer covered by a specific allowance is still pursued for payment.', answer: true },
+              { text: 'A general allowance is based on experience of how much of the remaining balance will not be collected.', answer: true },
+            ],
+            exp: 'An allowance sits in its own account and is shown as a deduction from receivables on the face of the statement; the control account is untouched and the customer still owes the money. A write-off is different — the debt is gone from the records. And a general allowance is exactly what its name says: an estimate applied to the balance as a whole.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5F',
+        title: 'Allowances for doubtful receivables',
+        icon: '⚖️',
+        criteria: ['FAPS-5.2.1', 'FAPS-5.2.4', 'FAPS-5.2.5'],
+        cards: [
+          {
+            h: 'Only the movement reaches profit',
+            p: [
+              'The allowance is a running balance, not a yearly charge. It sits against receivables and is carried forward from one year to the next, and what reaches the statement of profit or loss each year is only the **change** in it.',
+              'That is the single most important thing about this calculation and the place most marks are lost. A business with an opening allowance of £2,100 that now requires £5,600 does not charge £5,600. It charges the £3,500 by which the allowance has to rise.',
+              'The reasoning is the accruals principle again. The risk on last year\'s sales was already charged to last year. Charging the whole allowance every year would charge the same risk repeatedly for as long as the customer kept owing.',
+            ],
+            formula: 'Charge (or credit) to profit = Allowance required at the year end − Allowance brought forward',
+            callout: { kind: 'key', text: 'Work out the allowance required, compare it with the one brought forward, and put only the difference through profit.' },
+          },
+          {
+            h: 'A specific and a general allowance together',
+            worked: {
+              title: 'Receivables £84,000, one doubtful debt of £4,000, general allowance 2%, opening allowance £2,100',
+              problem: 'At the year end trade receivables are £84,000. One customer owing £4,000 is in dispute and the whole amount is considered doubtful. Policy is a general allowance of 2% of the remaining receivables. The allowance brought forward is £2,100. What is the adjustment?',
+              steps: [
+                { do: 'Take the specific allowance first: £4,000.', why: 'A named doubtful debt is dealt with in full and on its own evidence. It is then removed from the population the general allowance is applied to, or it would be counted twice.' },
+                { do: 'Find the remaining receivables: £84,000 − £4,000 = £80,000.', why: 'The general allowance is an estimate about the debts that carry no specific concern, so the specifically doubtful one is taken out first.' },
+                { do: 'Apply the general rate: £80,000 × 2% = £1,600.', why: 'Policy applied to the rest of the balance. The rate comes from the organisation\'s own experience of what it collects.' },
+                { do: 'Total allowance required: £4,000 + £1,600 = £5,600.', why: 'This is the balance that must stand on the allowance account at the year end — not the amount charged.' },
+                { do: 'Compare with the allowance brought forward: £5,600 − £2,100 = £3,500.', why: 'Only the movement reaches profit. The £2,100 was charged in an earlier year and is not charged again.' },
+                { do: 'Journal: debit adjustment to allowance for doubtful receivables £3,500, credit allowance for doubtful receivables £3,500.', why: 'The debit is the expense for the year; the credit raises the allowance to the required £5,600.' },
+              ],
+              answer: 'A charge of £3,500 to profit, and an allowance of £5,600 shown as a deduction from receivables.',
+              tryIt: {
+                q: 'Receivables are £60,000, of which £2,000 is specifically doubtful. The general allowance is 3% of the remainder and the allowance brought forward is £3,000. What is the charge to profit for the year?',
+                answer: 740,
+                unit: '£',
+                hint: 'Required allowance first, then compare with the one brought forward.',
+                exp: 'The remainder is £60,000 − £2,000 = £58,000, and 3% of that is £1,740. The allowance required is £2,000 + £1,740 = £3,740, against £3,000 brought forward, so £3,740 − £3,000 = £740 is charged.',
+              },
+            },
+          },
+          {
+            h: 'When the allowance falls',
+            p: [
+              'A required allowance smaller than the one brought forward reverses the journal. Debit the allowance, credit the adjustment account — and the credit reduces expenses, raising profit.',
+              'A business collecting better than it expected should report that, and this is how. What it must not do is set the rate to produce the result: a general allowance quietly cut from 3% to 1% releases two thirds of the balance into profit in a single year, and nothing on the face of the accounts announces it.',
+              'On the statement of financial position the allowance is presented as a deduction from trade receivables, so a reader sees both figures. Receivables of £84,000 less an allowance of £5,600 gives £84,000 − £5,600 = £78,400 as the net figure, with the gross amount still visible above it.',
+            ],
+            examtrap: 'A question giving "the allowance is to be 4% of receivables" is telling you the required balance, not the charge. Read what the opening allowance is before writing anything down — if it is not given, look for it in the trial balance rather than assuming it is nil.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Receivables at the year end are £120,000, none specifically doubtful. Policy is a general allowance of 2.5%. The allowance brought forward is £2,400. What is the charge to profit for the year?',
+            answer: 600,
+            unit: '£',
+            exp: 'The allowance required is £120,000 × 2.5% = £3,000, against £2,400 brought forward, so only the movement of £3,000 − £2,400 = £600 is charged. Charging the whole £3,000 would charge last year\'s risk a second time.',
+          },
+          {
+            type: 'mcq',
+            q: 'The allowance required at the year end is £1,800 and the allowance brought forward is £2,500. What is the effect on this year\'s profit?',
+            opts: ['Profit rises by £700, as the allowance is reduced', 'Profit falls by £700, as the allowance is adjusted', 'Profit rises by £1,800, as the allowance is released', 'Profit falls by £1,800, as the allowance is recreated'],
+            ans: 0,
+            exp: 'The allowance has to fall by £2,500 − £1,800 = £700. The journal debits the allowance and credits the adjustment account, and a credit to an expense account reduces expenses — so profit rises by the movement, not by the whole balance.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about allowances is correct.',
+            statements: [
+              { text: 'Only the movement in the allowance is charged or credited to profit.', answer: true },
+              { text: 'A specifically doubtful debt is excluded before the general percentage is applied.', answer: true },
+              { text: 'The allowance is shown on the statement of financial position as a deduction from trade receivables.', answer: true },
+              { text: 'An allowance brought forward of nil means the whole required allowance is charged this year.', answer: true },
+              { text: 'Raising an allowance increases the reported profit for the year.', answer: false },
+            ],
+            exp: 'The balance is carried forward, so only the change is this year\'s cost. Excluding the specific debt first stops it being covered twice. The gross receivables and the allowance are both shown, so a reader can see each. With nothing brought forward the movement is the whole balance. And raising an allowance is an expense, so it lowers profit.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5G',
+        title: 'Valuing inventory',
+        icon: '📦',
+        criteria: ['FAPS-5.3.1', 'FAPS-5.3.2', 'FAPS-5.3.3', 'FAPS-5.3.4', 'FAPS-5.3.5', 'FAPS-5.3.6'],
+        cards: [
+          {
+            h: 'Why closing inventory is an adjustment at all',
+            p: [
+              'Purchases are charged to the profit statement as they are made. At the year end some of what was bought is still on the shelf, unsold, and its cost belongs to the year that sells it rather than the year that bought it.',
+              'Closing inventory is how that cost is held back. It is deducted in arriving at cost of sales and appears as a current asset, and next year it becomes the opening inventory and is charged then.',
+              'The arithmetic makes the effect on profit direct and worth committing to memory: **cost of sales = opening inventory + net purchases − closing inventory**. A higher closing inventory means a lower cost of sales and a higher profit. Overstate the closing figure and profit is overstated by exactly the same amount.',
+            ],
+            callout: { kind: 'key', text: 'Closing inventory is deducted from cost of sales, so it and profit move together, pound for pound.' },
+          },
+          {
+            h: 'The rule, and what goes into cost',
+            p: [
+              'The standard is **IAS 2, Inventories**, and its rule is that inventory is measured at the **lower of cost and net realisable value**.',
+              '**Cost** is what it took to get the goods to their present location and condition: the purchase price net of trade discount, import duties and irrecoverable taxes, carriage inwards, and for manufactured goods the costs of conversion — direct labour and an appropriate share of production overheads.',
+              '**Net realisable value** is what the goods will fetch less what it will cost to finish and sell them: estimated selling price, less costs of completion, less selling costs.',
+            ],
+            split: {
+              left: {
+                title: 'Included in cost',
+                items: [
+                  'Purchase price, net of trade discount',
+                  'Import duties and irrecoverable taxes',
+                  'Carriage inwards',
+                  'Direct labour on manufactured goods',
+                  'Production overheads properly attributable',
+                ],
+              },
+              right: {
+                title: 'Excluded from cost',
+                items: [
+                  'Selling and distribution costs',
+                  'Carriage outwards',
+                  'Administrative overheads',
+                  'Storage, unless the production process requires it',
+                  'Abnormal waste and rectification',
+                ],
+              },
+            },
+            examtrap: 'Carriage inwards is part of cost and carriage outwards is not. Inwards brought the goods to the business, which is part of getting them into a saleable condition; outwards is a cost of selling them and belongs in expenses.',
+          },
+          {
+            h: 'Item by item, and why it matters',
+            example: {
+              title: 'Three lines, compared two ways',
+              rows: [
+                ['Item', 'Units', 'Cost each', 'NRV each', 'Lower', 'Value'],
+                ['A', '200', '£12', '£15', '£12', '£2,400'],
+                ['B', '150', '£20', '£17', '£17', '£2,550'],
+                ['C', '300', '£8', '£8', '£8', '£2,400'],
+                ['**Item by item**', '', '', '', '', '**£7,350**'],
+                ['Totals compared', '', '£7,800', '£7,950', '£7,800', '£7,800'],
+              ],
+            },
+            p: [
+              'The comparison of cost with net realisable value is made **on an individual item basis**, and this is not a technicality — the two methods give different answers, and comparing totals always gives the higher one.',
+              'Item by item gives £2,400 + £2,550 + £2,400 = £7,350. Comparing the totals gives £7,800, because item A\'s unrealised gain of £600 has been allowed to hide item B\'s real loss of £450.',
+              'The difference of £7,800 − £7,350 = £450 is exactly the loss on B, and prudence is what forbids it being netted off. A fall in value that has happened is recognised; a rise that has not been realised is not.',
+              'Accounting software will hold quantities, run the valuation and produce the figure. It cannot tell that line B is now unsaleable at cost, because nothing in the system knows the market moved — somebody has to enter the new net realisable value.',
+            ],
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Inventory has three lines. A: 100 units, cost £30, NRV £34. B: 80 units, cost £25, NRV £19. C: 50 units, cost £40, NRV £44. What is the closing inventory value?',
+            answer: 6520,
+            unit: '£',
+            exp: 'Each line is taken at the lower of cost and net realisable value: A at cost 100 × £30 = £3,000, B at NRV 80 × £19 = £1,520, C at cost 50 × £40 = £2,000. The total is £3,000 + £1,520 + £2,000 = £6,520.',
+          },
+          {
+            type: 'mcq',
+            q: 'Closing inventory is overstated by £5,000. What is the effect on the reported results?',
+            opts: ['Profit is overstated by £5,000 and current assets are overstated', 'Profit is understated by £5,000 and current assets are overstated', 'Profit is overstated by £5,000 and current assets are unaffected', 'Profit is unaffected and only the statement of financial position is wrong'],
+            ans: 0,
+            exp: 'Closing inventory is deducted in arriving at cost of sales, so an overstatement reduces cost of sales and raises profit pound for pound. The same figure is the current asset on the statement of financial position, so both are overstated by £5,000.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each cost may be included in the value of inventory.',
+            statements: [
+              { text: 'Carriage inwards on goods bought for resale.', answer: true },
+              { text: 'Carriage outwards on goods delivered to customers.', answer: false },
+              { text: 'Import duty paid on goods brought in from abroad.', answer: true },
+              { text: 'The sales team\'s commission on the goods.', answer: false },
+              { text: 'Direct labour used in manufacturing the goods.', answer: true },
+            ],
+            exp: 'Cost is what it took to bring the goods to their present location and condition, so carriage inwards, import duty and direct labour all qualify. Carriage outwards and sales commission are costs of selling and are charged as expenses of the period — they are deducted in arriving at net realisable value, not added to cost.',
+          },
+          {
+            type: 'gapfill',
+            q: 'Complete the IAS 2 rule.',
+            template: 'Inventory is measured at the lower of cost and {0}, compared on {1}. Net realisable value is the estimated selling price less the costs of completion and the costs {2}.',
+            gaps: [
+              { options: ['net realisable value', 'replacement cost', 'original invoice price'], answer: 0 },
+              { options: ['an individual item basis', 'the total of the inventory', 'a category-by-category basis'], answer: 0 },
+              { options: ['to sell', 'of storage', 'of administration'], answer: 0 },
+            ],
+            exp: 'Comparing totals lets an unrealised gain on one line hide a real loss on another, which is why the comparison is made item by item. Net realisable value looks forward to what the goods will actually fetch, after what it will cost to finish and sell them.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5H',
+        title: 'Recording closing inventory',
+        icon: '🧾',
+        criteria: ['FAPS-5.3.7', 'FAPS-5.3.8'],
+        cards: [
+          {
+            h: 'One figure, two places',
+            p: [
+              'Closing inventory is the one adjustment that appears twice in the financial statements at the same value: once as a deduction in arriving at cost of sales, and once as a current asset.',
+              'The journal says so directly. **Debit inventory (asset), credit inventory (cost of sales)** — one figure, one debit, one credit, and both halves land where they are needed.',
+              'Next year the same balance is the **opening** inventory and is charged, which is what closes the loop: the cost is held back for exactly one year and then meets the revenue it helped produce. That is why the opening figure appears as a cost in the statement of profit or loss while the closing figure appears as a deduction — they are the same goods, entering and leaving.',
+            ],
+            example: {
+              title: 'Recording closing inventory of £7,350',
+              rows: [
+                ['Account', 'Debit', 'Credit'],
+                ['Inventory — statement of financial position', '£7,350', ''],
+                ['Inventory — cost of sales', '', '£7,350'],
+              ],
+            },
+            callout: { kind: 'key', text: 'Debit the asset, credit cost of sales — the same figure, appearing on both statements at once.' },
+          },
+          {
+            h: 'Determining the figure in the first place',
+            flow: ['Count what is physically there', 'Value each line at the lower of cost and NRV', 'Adjust for goods in transit and on sale or return', 'Journal it in'],
+            p: [
+              'The count comes before the valuation, and it is a physical count rather than a report from the system. What the system holds is what it was told; what the count finds is what is there.',
+              'Three adjustments are commonly needed once the count is done. **Goods in transit** are included if the risks and rewards have passed to the business, which turns on the delivery terms rather than on where the lorry is. **Goods on sale or return** held by a customer are still the business\'s inventory until the customer accepts them. And **goods held for others** on consignment are excluded, however much of the warehouse they occupy.',
+              'A count taken a few days either side of the year end is workable provided the movements between the count date and the year end are added back or taken out. What is not workable is using last year\'s figure with a percentage on it.',
+            ],
+            examtrap: 'A question giving a count total and then a list of adjustments is asking for the corrected figure. Work through the list rather than reaching for the total — the adjustments are where the marks are.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'What is the journal to record closing inventory of £9,400?',
+            opts: ['Debit inventory (asset) £9,400, credit inventory (cost of sales) £9,400', 'Debit inventory (cost of sales) £9,400, credit inventory (asset) £9,400', 'Debit purchases £9,400, credit inventory (asset) £9,400', 'Debit inventory (asset) £9,400, credit purchases £9,400'],
+            ans: 0,
+            exp: 'One figure lands in both statements: the debit creates the current asset and the credit deducts the amount in arriving at cost of sales. Next year the same balance becomes opening inventory and is charged then.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each item is included in the closing inventory of the business counting it.',
+            statements: [
+              { text: 'Goods held by a customer on sale or return, not yet accepted.', answer: true },
+              { text: 'Goods held in the warehouse on consignment for another business.', answer: false },
+              { text: 'Goods in transit where the risks and rewards have already passed to the business.', answer: true },
+              { text: 'Goods sold and invoiced but awaiting collection by the customer.', answer: false },
+            ],
+            exp: 'Sale or return stock remains the seller\'s until the customer accepts it. Consignment stock belongs to whoever owns it, not whoever stores it. Goods in transit turn on the delivery terms rather than on physical location. And goods sold and invoiced have passed to the customer even if they are still on the premises.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-5I',
+        title: 'The pressure at the period end',
+        icon: '🧭',
+        criteria: ['FAPS-5.4.1', 'FAPS-5.4.2', 'FAPS-5.4.3', 'FAPS-5.4.4'],
+        cards: [
+          {
+            h: 'Every adjustment in this outcome is a judgement',
+            p: [
+              'Look back over the outcome and count what has actually been decided rather than calculated. How much unbilled electricity to accrue. Whether a customer is doubtful, and at what percentage. What the general allowance rate should be. Whether a line of inventory will still fetch cost.',
+              'None of those has a right answer printed on an invoice, and each of them moves profit. Taken one at a time, each can be argued either way inside a range a reviewer would accept. Taken together, and all at the same end of their ranges, they move the reported result a long way.',
+              'That is what makes the period end the point in the accounting year where the scope to affect the reported results is widest, and it is why the specification attaches ethics to this outcome specifically rather than leaving it in Outcome 1.',
+            ],
+            callout: { kind: 'key', text: 'Period end adjustments are where estimates concentrate, so it is where a run of individually defensible judgements can add up to a materially misleading result.' },
+          },
+          {
+            h: 'Dates, and what software will not question',
+            p: [
+              'The specification singles out one mechanical risk alongside the judgemental ones: accounting software requires the user to enter dates accurately.',
+              'An invoice dated into the wrong period lands in the wrong year, and nothing in the system objects. A recurring accrual with the wrong start date reverses in the wrong month. A cut-off that puts three days of January sales into December inflates revenue and receivables together, and the trial balance still balances perfectly.',
+              'None of these produces an error message, because none of them is an error in arithmetic. They are errors about **when**, and the year end is the one moment in the calendar when when matters most.',
+            ],
+            examtrap: 'Cut-off is a favourite scenario: goods despatched on 2 January invoiced as 31 December, or a December purchase invoice entered in January. Ask which period the underlying event falls in, not which period the paperwork says.',
+          },
+          {
+            h: 'What follows from getting it wrong',
+            split: {
+              left: {
+                title: 'The consequences the specification names',
+                items: [
+                  'Non-compliance with regulations',
+                  'Misinformed decisions by the users of the accounts',
+                  'A lender advancing money against a profit that was not earned',
+                  'An investor buying into a business on figures that flatter it',
+                ],
+              },
+              right: {
+                title: 'What is expected of the preparer',
+                items: [
+                  '**Professional scepticism** — question figures that arrive with an explanation attached',
+                  '**Integrity** — do not sign off what you believe to be wrong',
+                  '**Objectivity** — let the evidence set the figure, whoever would prefer another',
+                  'Say so in writing, and escalate, when the answer is not accepted',
+                ],
+              },
+            },
+            p: [
+              'The consequences are worth stating plainly because they are what makes this more than a matter of tidiness. Somebody outside the business acts on these figures with their own money, and they have no way of checking the judgements behind them.',
+            ],
+          },
+          {
+            h: 'The three pressures, and a way through them',
+            table: {
+              headers: ['Pressure', 'How it arrives', 'What it is asking you to do'],
+              rows: [
+                ['**Time**', 'The deadline is fixed and the work is not finished', 'Accept an estimate you have not evidenced'],
+                ['**A favourable result**', 'A covenant, a bonus, a funding round', 'Take every judgement at the helpful end of its range'],
+                ['**Authority**', 'The request comes from somebody senior', 'Treat their preference as the answer'],
+              ],
+            },
+            p: [
+              'They usually arrive together — at the year end, from somebody senior, with a deadline — and that combination is what makes a small concession feel reasonable.',
+              'The defence is to keep the question technical. Not "is this person entitled to ask me", which is a question about the hierarchy and has no good answer, but "what does the evidence support", which has the same answer whoever is asking. If the evidence supports an allowance of £5,600, it supports £5,600 whether the request came from a colleague or a director.',
+              'Where the answer is not accepted, the next steps are ordinary rather than dramatic: put the position and the reasoning in writing, escalate within the organisation, and take advice from your professional body. Resignation is the last resort, not the first.',
+            ],
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'Why does the specification attach ethical considerations to period end adjustments in particular?',
+            opts: ['They concentrate estimates, so several judgements can move profit a long way', 'They are the only entries a bookkeeper makes without a supporting document', 'They are the only adjustments accounting software cannot calculate', 'They are the last entries made, so there is no time to review them'],
+            ans: 0,
+            exp: 'Accruals, allowances and inventory valuations all rest on judgement, and each moves profit in a known direction. Taken together at the favourable end of their ranges they can produce a materially misleading result without any single decision being obviously wrong.',
+          },
+          {
+            type: 'mcq',
+            q: 'Goods are despatched on 2 January and the invoice is dated 31 December, the year end. What should happen?',
+            opts: ['The sale belongs to the new year, whatever the invoice says', 'The sale belongs to the old year, because the invoice is dated in it', 'The sale is split between the two years on a time basis', 'The sale is recorded twice and one entry reversed later'],
+            ans: 0,
+            exp: 'The underlying event is the despatch, and that falls in the new year. Recognising it in December overstates both revenue and receivables, and the trial balance still balances — which is why a cut-off error is not caught by arithmetic and has to be caught by asking which period the event falls in.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each response to period end pressure is appropriate.',
+            statements: [
+              { text: 'Holding an allowance at the figure the evidence supports after a request to reduce it.', answer: true },
+              { text: 'Accepting an unevidenced estimate because the reporting deadline is fixed.', answer: false },
+              { text: 'Putting the position and the reasoning in writing when it is not accepted.', answer: true },
+              { text: 'Resigning immediately on the first disagreement about an estimate.', answer: false },
+            ],
+            exp: 'Objectivity keeps the figure with the evidence whoever prefers otherwise. A deadline is a reason to work faster, not to report something unsupported. Writing the position down and escalating is the ordinary next step. Resignation is the last resort after the internal routes and professional advice have been exhausted, not the first move.',
+          },
+        ],
+      },
+    ],
+  };
+
+  var PATH = [LO1, LO2, LO3, LO4, LO5];
 
   /* ══════════════════════════════════════════════════════════════════════════
      PRACTICE BANK — met cold, and separate from the lesson checks.
@@ -2627,6 +3402,114 @@
       opts: ['A full year, whatever the date of acquisition', 'One month, apportioned from the date of acquisition', 'Nothing, because the asset was held for under a month', 'Half a year, as the convention for a late acquisition'],
       ans: 0,
       exp: 'The convention does the apportioning so nobody has to: an asset bought on any date in the year takes a whole year, and the year it is sold takes none. Pro-rata would give one month here, which is why the policy has to be read before any figure is worked out.',
+    },
+    {
+      id: 'F-5-01', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.6'],
+      type: 'numeric',
+      q: 'A business pays £9,600 on 1 August for twelve months of maintenance cover to 31 July. Its year end is 31 December. What is the prepayment at the year end?',
+      answer: 5600,
+      unit: '£',
+      exp: 'August to December is five months used, leaving seven months paid for and not yet had: £9,600 × 7 ÷ 12 = £5,600. That is the prepayment, shown as a current asset. The charge to this year is the other £4,000.',
+    },
+    {
+      id: 'F-5-02', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.6', 'FAPS-5.1.7'],
+      type: 'numeric',
+      q: 'A business has paid £15,800 for gas during the year. At the year end £2,400 of supply has been used and not yet billed. What is the gas expense for the year?',
+      answer: 18200,
+      unit: '£',
+      exp: 'The supply was consumed in this year, so its cost belongs to this year whatever date the invoice carries: £15,800 + £2,400 = £18,200. The £2,400 is credited to accruals and shown as a current liability.',
+    },
+    {
+      id: 'F-5-03', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.4', 'FAPS-5.1.6'],
+      type: 'numeric',
+      q: 'A business sublets a unit for £1,200 a month. By the year end it has received £13,200 of rent for the year. What is the accrued income at the year end?',
+      answer: 1200,
+      unit: '£',
+      exp: 'The year earned £1,200 × 12 = £14,400 and £13,200 arrived, so £14,400 − £13,200 = £1,200 is earned and not yet received. It is credited to rental income and shown as a current asset, because the tenant owes it.',
+    },
+    {
+      id: 'F-5-04', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.8'],
+      type: 'numeric',
+      q: 'An expense account has an opening accrual of £900. Payments during the year were £7,400 and £1,150 is accrued at the year end. What is the charge to this year\'s profit?',
+      answer: 7650,
+      unit: '£',
+      exp: 'The payments include £900 that belonged to last year, and this year has consumed £1,150 it has not paid for: £7,400 − £900 + £1,150 = £7,650. Omitting the opening reversal would charge last year\'s cost a second time.',
+    },
+    {
+      id: 'F-5-05', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.2.4'],
+      type: 'numeric',
+      q: 'Receivables are £96,000, of which £6,000 is specifically doubtful. The general allowance is 2% of the remainder and the allowance brought forward is £5,200. What is the charge to profit?',
+      answer: 2600,
+      unit: '£',
+      exp: 'The remainder is £96,000 − £6,000 = £90,000 and 2% of that is £1,800, so the allowance required is £6,000 + £1,800 = £7,800. Against £5,200 brought forward, only the movement of £7,800 − £5,200 = £2,600 is charged.',
+    },
+    {
+      id: 'F-5-06', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.2.4'],
+      type: 'mcq',
+      q: 'Receivables are £45,000 and the allowance is to be 4%. The allowance brought forward is £2,300. What reaches the statement of profit or loss?',
+      opts: ['A credit of £500, because the allowance falls', 'A charge of £500, because the allowance is adjusted', 'A charge of £1,800, being the whole allowance required', 'A credit of £2,300, being the allowance released'],
+      ans: 0,
+      exp: 'The allowance required is £45,000 × 4% = £1,800, which is less than the £2,300 brought forward. The allowance falls by £500, so the adjustment account is credited and profit rises. Only the movement ever reaches profit.',
+    },
+    {
+      id: 'F-5-07', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.3.4', 'FAPS-5.3.7'],
+      type: 'numeric',
+      q: 'Inventory: X, 120 units at cost £22 and NRV £27. Y, 90 units at cost £18 and NRV £15. Z, 60 units at cost £31 and NRV £35. What is the closing inventory value?',
+      answer: 5850,
+      unit: '£',
+      exp: 'Each line is taken at the lower of cost and net realisable value, item by item: X at cost 120 × £22 = £2,640, Y at NRV 90 × £15 = £1,350, Z at cost 60 × £31 = £1,860. The total is £2,640 + £1,350 + £1,860 = £5,850.',
+    },
+    {
+      id: 'F-5-08', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.3.2'],
+      type: 'numeric',
+      q: 'Opening inventory is £18,000, net purchases £94,000 and closing inventory £21,000. What is the cost of sales?',
+      answer: 91000,
+      unit: '£',
+      exp: 'Cost of sales is opening inventory plus net purchases less closing inventory: £18,000 + £94,000 − £21,000 = £91,000. The closing figure is held back because those goods have not been sold, and it is charged next year as the opening inventory.',
+    },
+    {
+      id: 'F-5-09', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.2.2', 'FAPS-5.2.3'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about irrecoverable debts and allowances is correct.',
+      statements: [
+        { text: 'Writing off a debt removes it from the sales ledger control account.', answer: true },
+        { text: 'An allowance for doubtful receivables reduces the receivables balance in the ledger.', answer: false },
+        { text: 'A debt written off in an earlier year and later paid is credited to irrecoverable debts.', answer: true },
+        { text: 'A specific allowance is included in the balance the general percentage is applied to.', answer: false },
+      ],
+      exp: 'A write-off removes the asset because the business has given up on it. An allowance is a separate estimate shown as a deduction on the face of the statement, and the customer is still pursued. A later recovery is credited to the expense account in the year the money arrived. And the specifically doubtful debt is taken out before the general rate is applied, or it is covered twice.',
+    },
+    {
+      id: 'F-5-10', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.3.5'],
+      type: 'truefalse',
+      q: 'Identify whether each cost forms part of the cost of inventory.',
+      statements: [
+        { text: 'Carriage inwards on goods purchased.', answer: true },
+        { text: 'Storage of finished goods awaiting sale.', answer: false },
+        { text: 'Production overheads properly attributable to the goods.', answer: true },
+        { text: 'The cost of delivering the goods to customers.', answer: false },
+      ],
+      exp: 'Cost is what it took to bring the goods to their present location and condition. Carriage inwards and attributable production overheads qualify. Storage after production is finished does not, unless the process itself requires it, and delivery to customers is a cost of selling that is deducted in arriving at net realisable value.',
+    },
+    {
+      id: 'F-5-11', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.4.1', 'FAPS-5.4.4'],
+      type: 'mcq',
+      q: 'A director asks you to reduce the general allowance rate from 3% to 1% at the year end, with no change in how customers are paying. What does objectivity require?',
+      opts: ['Hold the rate the collection experience supports, whoever prefers otherwise', 'Apply the requested rate, since setting policy is a matter for the directors', 'Use 2%, which is defensible and satisfies both positions', 'Apply the requested rate and disclose the change in a note'],
+      ans: 0,
+      exp: 'The rate is an estimate of how much of the balance will not be collected, and nothing about collection has changed — so the evidence still supports 3%. Splitting the difference and complying-with-disclosure both let the seniority of the request change a technical answer, which is what objectivity forbids.',
+    },
+    {
+      id: 'F-5-12', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.4'],
+      type: 'gapfill',
+      q: 'Complete the classification of the four adjustments.',
+      template: 'An expense consumed but not yet paid is a {0}. An expense paid but not yet consumed is a {1}. Income received but not yet earned is a {2}.',
+      gaps: [
+        { options: ['current liability', 'current asset', 'reduction of capital'], answer: 0 },
+        { options: ['current asset', 'current liability', 'non-current asset'], answer: 0 },
+        { options: ['current liability', 'current asset', 'item of revenue'], answer: 0 },
+      ],
+      exp: 'Had it and not paid means the business owes — a liability. Paid and not had it means the business is owed the benefit — an asset. Received and not earned means the business owes a service — a liability, and the mirror image of a prepaid expense rather than a copy of it.',
     },
   ];
 
