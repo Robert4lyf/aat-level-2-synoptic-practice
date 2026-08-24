@@ -38,6 +38,8 @@ const S = require(path.join(ROOT, 'aat3-syllabus.js'));
    module actually ships; this list is the ratchet. */
 const MODULES_SHIPPED = [
   { unit: 'faps', outcome: 1 },
+  { unit: 'faps', outcome: 3 },
+  { unit: 'faps', outcome: 4 },
   { unit: 'tpfb', outcome: 1 },
   { unit: 'tpfb', outcome: 2 },
   { unit: 'tpfb', outcome: 3 },

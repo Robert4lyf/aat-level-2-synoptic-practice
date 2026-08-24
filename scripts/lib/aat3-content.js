@@ -19,12 +19,20 @@
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 
-/* Each entry: the file, and the two globals it may export. A file that exports
-   neither is a mistake worth failing on rather than skipping quietly. */
+/* Each entry: the file, the two globals it may export, and whether its unit is
+   governed by a Finance Act. A file that exports neither global is a mistake
+   worth failing on rather than skipping quietly.
+
+   `taxGoverned` scopes the hardcoded-figure scan in check-aat3-quality.js.
+   Those thresholds belong to TPFB, and scanning FAPS against them flags any
+   coincidence: an authorisation limit of £10,000 in a FAPS question was
+   reported as the VAT error-correction limit going stale. FAPS carries no
+   Finance Act at all — it rests on IAS 2, IAS 16 and double entry — so there is
+   nothing in it for that scan to protect. */
 const FILES = [
-  { file: 'aat3-learn-data.js', path: 'AAT3_LEARN_PATH', practice: null },
-  { file: 'aat3-practice-data.js', path: null, practice: 'AAT3_PRACTICE' },
-  { file: 'aat3-faps-data.js', path: 'AAT3_FAPS_PATH', practice: 'AAT3_FAPS_PRACTICE' },
+  { file: 'aat3-learn-data.js', path: 'AAT3_LEARN_PATH', practice: null, taxGoverned: true },
+  { file: 'aat3-practice-data.js', path: null, practice: 'AAT3_PRACTICE', taxGoverned: true },
+  { file: 'aat3-faps-data.js', path: 'AAT3_FAPS_PATH', practice: 'AAT3_FAPS_PRACTICE', taxGoverned: false },
 ];
 
 function load() {

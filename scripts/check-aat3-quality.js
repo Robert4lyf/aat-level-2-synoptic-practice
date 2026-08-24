@@ -475,7 +475,11 @@ lessons.forEach(l => {
 /* ── 3. Tax figures must come from aat3-tax-data.js ──────────────────────── */
 /* Any of these appearing literally in prose is a figure that will silently go
    stale when the Finance Act rolls. Rates and small worked-example amounts are
-   fine; it is the thresholds and limits that must be referenced. */
+   fine; it is the thresholds and limits that must be referenced.
+
+   Scanned only in the files whose unit HAS a Finance Act. FAPS does not, so
+   every one of these amounts is an ordinary number there — and matching them
+   in it produces false alarms that train people to skip the whole section. */
 const GOVERNED = [
   [String(TAX.registration.threshold.value), 'VAT registration threshold'],
   [String(TAX.registration.deregistrationThreshold.value), 'deregistration threshold'],
@@ -492,7 +496,7 @@ const GOVERNED = [
    a live reference from a hardcoded one. In the source they are unmistakable. */
 /* Scanned FILE BY FILE. Concatenating them first and reporting one line number
    into the join names a line that exists in no file anybody can open. */
-CONTENT.FILES.forEach(({ file }) => {
+CONTENT.FILES.filter(f => f.taxGoverned).forEach(({ file }) => {
   const source = require('fs').readFileSync(path.join(ROOT, file), 'utf8');
   GOVERNED.forEach(([value, label]) => {
     const withCommas = Number(value).toLocaleString('en-GB');
