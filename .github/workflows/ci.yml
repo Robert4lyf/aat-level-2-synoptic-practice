@@ -41,10 +41,14 @@ jobs:
         run: npm run check:aat1-quality
       - name: Check AAT Level 3 syllabus integrity and coverage
         run: npm run check:aat3
+      - name: Check the encoded Level 3 syllabus against the published specification
+        run: npm run check:aat3-fidelity
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
         run: npm run check:aat3-summary
+      - name: Check no Level 3 question is answerable from option position
+        run: npm run check:aat3-position
       - name: Check progress backup merge (no data loss, idempotent)
         run: npm run check:backup
       - name: Check cross-device sync (version check, conflict retry, fail-safe)

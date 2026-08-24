@@ -25,9 +25,13 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
 const ROOT = path.join(__dirname, '..');
-const { AAT3_LEARN_PATH } = require(path.join(ROOT, 'aat3-learn-data.js'));
 const { TAX } = require(path.join(ROOT, 'aat3-tax-data.js'));
-const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
+const SYL = require(path.join(ROOT, 'aat3-syllabus.js'));
+/* Every unit's content, from the one list — see scripts/lib/aat3-content.js.
+   Reading AAT3_LEARN_PATH by name examined TPFB and said nothing about FAPS,
+   while still reporting green. */
+const CONTENT = require('./lib/aat3-content.js');
+const { groups: AAT3_LEARN_PATH, questions: PRACTICE_QUESTIONS } = CONTENT.load();
 
 const errors = [];
 const warnings = [];
@@ -39,7 +43,7 @@ const lessons = [];
 /* Every question in the module, wherever it lives. The practice bank gets the
    same scrutiny as the lesson checks — and the shared stem map is what stops
    the bank quietly re-asking a lesson, which would make it a memory test. */
-const practice = (AAT3_PRACTICE && AAT3_PRACTICE.QUESTIONS) || [];
+const practice = PRACTICE_QUESTIONS;
 const allQuestions = [];
 lessons.forEach(l => (l.check || []).forEach((q, i) => allQuestions.push({ where: `${l.id} Q${i + 1}`, q })));
 practice.forEach(q => allQuestions.push({ where: `practice ${q.id}`, q, isPractice: true }));
@@ -181,6 +185,47 @@ allQuestions.forEach(({ where, q }) => {
     }
   }
 });
+
+/* ── 1a. Every practice question names its unit, and names it in the right field
+   ────────────────────────────────────────────────────────────────────────────
+   Two different things were called `unit`. On a numeric question it is the unit
+   of MEASUREMENT — the £ or % the player prints as the input placeholder. When
+   the bank had to be tagged with the AAT unit it belongs to, the obvious field
+   name was already taken, and writing `unit: 'tpfb'` into a question that later
+   said `unit: '£'` did not fail: the second key won, the question fell out of
+   its own practice bank, and nothing said a word.
+
+   So: `unitKey` carries the AAT unit, `unit` carries the measurement, and
+   neither is allowed to hold the other's values. An untagged question is worse
+   than a missing one — outcome numbers restart at 1 in every unit, so it would
+   be counted inside a different unit's outcome 1. */
+{
+  const UNIT_KEYS = Object.keys(SYL.SYLLABUS.units);
+  const MEASURES = /^[£$%€]|hours?|days?|months?$/i;
+  practice.forEach(q => {
+    const where = `practice ${q.id}`;
+    if (!q.unitKey) {
+      errors.push(`${where}: no unitKey — outcome numbers restart in every unit, so this would be counted under another unit's outcome ${q.lo}.`);
+    } else if (UNIT_KEYS.indexOf(q.unitKey) === -1) {
+      errors.push(`${where}: unitKey "${q.unitKey}" is not a unit in aat3-syllabus.js (${UNIT_KEYS.join(', ')}).`);
+    }
+    if (q.unit && UNIT_KEYS.indexOf(q.unit) !== -1) {
+      errors.push(`${where}: \`unit\` is set to "${q.unit}", which is an AAT unit key. \`unit\` is the unit of MEASUREMENT the player shows as a placeholder; the AAT unit goes in \`unitKey\`.`);
+    }
+    if (q.unit && !MEASURES.test(String(q.unit))) {
+      warnings.push(`${where}: \`unit\` is "${q.unit}", which does not look like a unit of measurement.`);
+    }
+    if (q.unitKey && q.lo != null) {
+      const u = SYL.SYLLABUS.units[q.unitKey];
+      if (u && !u.outcomes.some(o => o.n === q.lo)) {
+        errors.push(`${where}: outcome ${q.lo} does not exist in ${q.unitKey.toUpperCase()}.`);
+      }
+    }
+  });
+  const byUnit = {};
+  practice.forEach(q => { byUnit[q.unitKey || '(none)'] = (byUnit[q.unitKey || '(none)'] || 0) + 1; });
+  notes.push(`Practice bank by unit: ${Object.entries(byUnit).map(([k, v]) => `${k} ${v}`).join(', ')}.`);
+}
 
 /* ── 1b. True/false grids must not be answerable by test-wiseness ─────────
    An adversarial review found two cues in the true/false statements that no
@@ -430,7 +475,11 @@ lessons.forEach(l => {
 /* ── 3. Tax figures must come from aat3-tax-data.js ──────────────────────── */
 /* Any of these appearing literally in prose is a figure that will silently go
    stale when the Finance Act rolls. Rates and small worked-example amounts are
-   fine; it is the thresholds and limits that must be referenced. */
+   fine; it is the thresholds and limits that must be referenced.
+
+   Scanned only in the files whose unit HAS a Finance Act. FAPS does not, so
+   every one of these amounts is an ordinary number there — and matching them
+   in it produces false alarms that train people to skip the whole section. */
 const GOVERNED = [
   [String(TAX.registration.threshold.value), 'VAT registration threshold'],
   [String(TAX.registration.deregistrationThreshold.value), 'deregistration threshold'],
@@ -445,18 +494,22 @@ const GOVERNED = [
    `'£' + T.partialExemption.deMinimisPerMonth.value + ' a month'` — evaluates to
    the very string we are hunting for, so checking the runtime value cannot tell
    a live reference from a hardcoded one. In the source they are unmistakable. */
-const source = require('fs').readFileSync(path.join(ROOT, 'aat3-learn-data.js'), 'utf8');
-GOVERNED.forEach(([value, label]) => {
-  const withCommas = Number(value).toLocaleString('en-GB');
-  /* `\b` is wrong here: £200\b matches inside "£200,000", because the comma is
-     a word boundary. Reject a digit continuation, and a comma or point that is
-     itself followed by a digit — but NOT a sentence-ending "£90,000." */
-  const re = new RegExp('£\\s?(' + value + '|' + withCommas + ')(?!\\d)(?![,.]\\d)', 'g');
-  let m;
-  while ((m = re.exec(source)) !== null) {
-    const line = source.slice(0, m.index).split('\n').length;
-    warnings.push(`aat3-learn-data.js:${line}: the ${label} (£${withCommas}) is hardcoded. Reference aat3-tax-data.js so a Finance Act change is a one-file edit.`);
-  }
+/* Scanned FILE BY FILE. Concatenating them first and reporting one line number
+   into the join names a line that exists in no file anybody can open. */
+CONTENT.FILES.filter(f => f.taxGoverned).forEach(({ file }) => {
+  const source = require('fs').readFileSync(path.join(ROOT, file), 'utf8');
+  GOVERNED.forEach(([value, label]) => {
+    const withCommas = Number(value).toLocaleString('en-GB');
+    /* `\b` is wrong here: £200\b matches inside "£200,000", because the comma is
+       a word boundary. Reject a digit continuation, and a comma or point that is
+       itself followed by a digit — but NOT a sentence-ending "£90,000." */
+    const re = new RegExp('£\\s?(' + value + '|' + withCommas + ')(?!\\d)(?![,.]\\d)', 'g');
+    let m;
+    while ((m = re.exec(source)) !== null) {
+      const line = source.slice(0, m.index).split('\n').length;
+      warnings.push(`${file}:${line}: the ${label} (£${withCommas}) is hardcoded. Reference aat3-tax-data.js so a Finance Act change is a one-file edit.`);
+    }
+  });
 });
 
 /* ── 4. Teaching depth ───────────────────────────────────────────────────── */
