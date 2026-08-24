@@ -116,7 +116,7 @@ with its own path, practice bank and progress, behind a picker that opens first:
 | Unit | Share of the grade | GLH | State |
 |---|---|---|---|
 | Tax Processes for Businesses (TPFB) | 15% | 60 | **Complete** — 5 of 5 outcomes, 32 lessons |
-| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 3 of 9 outcomes, 16 lessons, 25% of the assessment |
+| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 4 of 9 outcomes, 25 lessons, 35% of the assessment |
 
 FAPS is the largest unit in the qualification: 122 key concepts against TPFB's 93, and more of
 the grade than the other three units it sits alongside put together. It arrives outcome by
@@ -128,12 +128,21 @@ outcome the specification lists gets a section — the unwritten ones saying the
 Rendering only what exists would leave a reader unable to tell a unit missing two thirds of its
 content from one whose specification simply has fewer outcomes.
 
-Written so far: the accounting principles, primary users, qualitative characteristics and ethics
-of Outcome 1; and the whole non-current asset lifecycle across Outcomes 3 and 4 — capital versus
-revenue, the asset register, VAT by registration status, disposals, part-exchange, straight-line
-and diminishing-balance depreciation. Outcomes 3 and 4 were taken before Outcome 2 on purpose:
-they are the calculation core of the unit and genuinely new at Level 3, where Outcome 2 is
-largely Level 2 double entry revisited.
+Written so far, in the specification's order:
+
+- **Outcome 1** — the accounting principles, primary users, qualitative characteristics and the
+  ethics of preparing accounts.
+- **Outcome 2** — the accounting equation, classifying ledger accounts, the books of prime entry,
+  posting a daybook with VAT, the three ledgers, control accounts, writing up and balancing off an
+  account, the period end, and judging whether a transaction belongs at all.
+- **Outcomes 3 and 4** — the whole non-current asset lifecycle: capital versus revenue, the asset
+  register, VAT by registration status, disposals, part-exchange, straight-line and
+  diminishing-balance depreciation.
+
+Outcomes 3 and 4 were written before Outcome 2, which is not the order a reader meets them in.
+They are the calculation core — genuinely new at Level 3, and where a right method most easily
+produces a wrong figure — and the plan's rule for a first module is *representative rather than
+easy*. Outcome 2 came next and filled the gap.
 
 ### The syllabus is checked against the specification, not just against itself
 

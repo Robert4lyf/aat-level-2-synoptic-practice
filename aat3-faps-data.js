@@ -510,6 +510,798 @@
   };
 
   /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 2 — Understand the principles of advanced double-entry bookkeeping.
+     10% of the assessment.
+
+     This outcome carries more Level 2 in it than any other in the unit, and the
+     specification says so by listing Introduction to Bookkeeping and Principles
+     of Bookkeeping Controls among the units it links with. It is written on the
+     assumption the reader has met debits, credits and daybooks, and spends its
+     length on what Level 3 adds: the equation as a tool rather than a fact,
+     control accounts as reconciliations rather than as ledger accounts, and the
+     period end as a routine with an order to it.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO2 = {
+    unit: 'faps',
+    level: 3,
+    title: 'Financial Accounting: Preparing Financial Statements',
+    outcome: 2,
+    outcomeTitle: 'Understand the principles of advanced double-entry bookkeeping',
+    weighting: 10,
+    lessons: [
+      {
+        id: 'L3-FAPS-2A',
+        title: 'The accounting equation',
+        icon: '⚖️',
+        criteria: ['FAPS-2.1.1', 'FAPS-2.1.2', 'FAPS-2.1.3'],
+        cards: [
+          {
+            h: 'Why double entry works at all',
+            formula: 'Assets = Liabilities + Capital · or · Capital = Assets − Liabilities',
+            p: [
+              'Everything a business controls was paid for by somebody. Either an outsider put the money in and is owed it back — a **liability** — or the owner put it in and has a claim on what is left, called **capital**. Add the two claims together and you have accounted for every asset the business holds.',
+              'That is the accounting equation entire, and it is why double entry balances rather than a rule that it must. Every transaction changes two things, and it changes them in a way that keeps the two sides equal — because a transaction that genuinely left them unequal would be describing an asset nobody paid for.',
+              'A trial balance that does not balance is that equation failing. Something has been recorded on one side and not the other, and the difference is the size of what is missing.',
+            ],
+            callout: { kind: 'key', text: 'Assets = Liabilities + Capital. Double entry keeps that true after every transaction, which is why the books balance rather than a rule that they must.' },
+          },
+          {
+            h: 'Four transactions, and what each one moves',
+            table: {
+              headers: ['Transaction', 'Assets', 'Liabilities', 'Capital'],
+              rows: [
+                ['Owner pays £10,000 into the business bank account', '+10,000', 'no change', '+10,000'],
+                ['Buy a £4,000 machine, paying by bank transfer', '+4,000 machine, −4,000 bank', 'no change', 'no change'],
+                ['Buy £900 of goods on credit', '+900', '+900', 'no change'],
+                ['Owner takes £600 for personal use', '−600', 'no change', '−600'],
+              ],
+            },
+            p: [
+              'The second row is the one to look at twice. Both changes are to assets, and they cancel: the business owns a machine it did not before and holds less cash by the same amount. Nothing on the right-hand side moved, because nobody\'s claim on the business changed.',
+              'The fourth is the business entity principle at work. Drawings reduce the owner\'s claim rather than the business\'s profit, so they come off capital and never appear as an expense.',
+            ],
+          },
+          {
+            h: 'Finding the figure you were not given',
+            worked: {
+              title: 'Opening capital, and then what a year does to it',
+              problem: 'A sole trader\'s business holds assets of £84,000 and owes £31,000. During the year the owner pays in a further £10,000, the business makes a profit of £22,000, and the owner withdraws £15,000. What is capital at the start of the year, and at the end?',
+              steps: [
+                { do: 'Rearrange the equation: Capital = Assets − Liabilities.', why: 'Capital is the residual — what would be left for the owner once everybody else had been paid. It is rarely given directly, and it is almost always the figure a question wants.' },
+                { do: 'Opening capital: £84,000 − £31,000 = £53,000.', why: 'This is the owner\'s claim on the business at the start of the year, whether or not anybody ever wrote it down.' },
+                { do: 'Add what the owner put in and what the business earned: £53,000 + £10,000 + £22,000 = £85,000.', why: 'Capital introduced increases the owner\'s claim directly. Profit does too — it belongs to the owner even when it stays in the business.' },
+                { do: 'Take out the drawings: £85,000 − £15,000 = £70,000.', why: 'Drawings reduce the claim. They are not an expense, so they never touched the £22,000 profit figure and have to be dealt with here instead.' },
+                { do: 'Check the shape of it: closing capital = opening capital + capital introduced + profit − drawings.', why: 'That chain is the whole of the capital account, and it is the one Outcome 7 asks you to write out in full. Recognising it here saves learning it twice.' },
+              ],
+              answer: 'Opening capital £53,000, closing capital £70,000.',
+              tryIt: {
+                q: 'A business holds assets of £96,500 and has liabilities of £38,200. What is the capital balance?',
+                answer: 58300,
+                unit: '£',
+                hint: 'Capital is what is left once the liabilities are met.',
+                exp: 'Capital = Assets − Liabilities, so £96,500 − £38,200 = £58,300. That is the owner\'s residual claim: what the books say would be left if every outside creditor were paid in full and every asset realised at its carrying amount.',
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'A business buys a £4,000 machine and pays for it immediately by bank transfer. What happens to the accounting equation?',
+            opts: ['Assets rise and fall by £4,000, and nothing else moves', 'Assets rise by £4,000 and capital rises by the same', 'Assets rise by £4,000 and liabilities rise by the same', 'Capital falls by £4,000 and liabilities rise by the same'],
+            ans: 0,
+            exp: 'One asset replaces another: the business owns a machine it did not, and holds £4,000 less in the bank. Nobody\'s claim on the business changed, so neither side of the equation moved overall — which is why both entries land on the left-hand side.',
+          },
+          {
+            type: 'numeric',
+            q: 'A business has assets of £71,300 and liabilities of £24,800. What is its capital?',
+            answer: 46500,
+            unit: '£',
+            exp: 'Capital is the residual claim: Assets − Liabilities, so £71,300 − £24,800 = £46,500. It is what the books say would be left for the owner once every outside creditor had been paid.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the accounting equation is correct.',
+            statements: [
+              { text: 'Drawings reduce capital rather than reducing profit.', answer: true },
+              { text: 'Profit increases capital even when it is left in the business.', answer: true },
+              { text: 'Buying goods on credit leaves total assets unchanged.', answer: false },
+              { text: 'A trial balance that does not balance means the equation has been broken somewhere.', answer: true },
+            ],
+            exp: 'Drawings are the owner taking back part of their claim, so they come off capital and never touch the expenses. Profit belongs to the owner whether or not it is withdrawn. Buying on credit raises inventory and raises payables, so assets do move. And an out-of-balance trial balance is exactly the equation failing — something was entered once instead of twice.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2B',
+        title: 'Classifying every account',
+        icon: '🗂️',
+        criteria: ['FAPS-2.2.1'],
+        cards: [
+          {
+            h: 'Five classes, and why the label decides everything',
+            p: [
+              'Every account in the general ledger belongs to exactly one of five classes. The class decides which side its balance normally sits on, which statement it ends up in, and — the reason this lesson exists — what happens to it at the period end.',
+              'A misclassified account is not a small error. Call a liability an expense and profit falls by the whole amount and the statement of financial position no longer balances; call an expense an asset and you have capitalised something that should have gone to profit, the error Outcome 3 spends a card on.',
+            ],
+            table: {
+              headers: ['Class', 'Normal balance', 'Ends up in', 'Examples'],
+              rows: [
+                ['**Assets** — non-current', 'Debit', 'Statement of financial position', 'Land and buildings, plant, vehicles (tangible); goodwill, patents, software licences (intangible)'],
+                ['**Assets** — current', 'Debit', 'Statement of financial position', 'Inventory, receivables, prepayments, bank, cash'],
+                ['**Liabilities** — non-current', 'Credit', 'Statement of financial position', 'A bank loan repayable after more than twelve months'],
+                ['**Liabilities** — current', 'Credit', 'Statement of financial position', 'Payables, accruals, overdraft, VAT owed to HMRC'],
+                ['**Equity (capital)**', 'Credit', 'Statement of financial position', 'Capital introduced, less drawings, plus profit for the year'],
+                ['**Income**', 'Credit', 'Statement of profit or loss', 'Sales revenue, discounts received, rent received'],
+                ['**Expenses**', 'Debit', 'Statement of profit or loss', 'Purchases, wages, rent, depreciation, discounts allowed'],
+              ],
+            },
+          },
+          {
+            h: 'The line that moves, and the one that does not',
+            split: {
+              left: {
+                title: 'Current or non-current',
+                items: [
+                  'Decided by **twelve months** from the reporting date',
+                  'A loan with fourteen months to run is non-current',
+                  'The same loan a year later is current',
+                  'A loan repayable in instalments is split between the two',
+                  'It is about the date, not about the size',
+                ],
+              },
+              right: {
+                title: 'Tangible or intangible',
+                items: [
+                  'Tangible: physical — buildings, machines, vehicles',
+                  'Intangible: no physical substance — goodwill, patents, licences',
+                  'Both are non-current assets and both are depreciated or amortised',
+                  'The distinction is a disclosure one rather than a treatment one',
+                  'Inventory is never a non-current asset, however slowly it sells',
+                ],
+              },
+            },
+            p: [
+              'Two accounts sit awkwardly and should be named now, because Outcome 6 returns to them. **Bank** is an asset when in funds and a liability when overdrawn, and it can be either at a year end. **VAT** is a liability when output tax exceeds input tax and an asset when the business is owed a repayment.',
+            ],
+            examtrap: 'Drawings is not an expense. It is a reduction of capital, so it appears in the capital account rather than in the statement of profit or loss, and posting it as an expense understates profit by the whole amount.',
+          },
+        ],
+        check: [
+          {
+            type: 'truefalse',
+            q: 'Identify whether each account is classified correctly.',
+            statements: [
+              { text: 'A bank loan repayable in fourteen months is a non-current liability.', answer: true },
+              { text: 'A patent held by the business is an intangible non-current asset.', answer: true },
+              { text: 'Drawings are an expense of the business.', answer: false },
+              { text: 'Inventory is a non-current asset where it has been held for over a year.', answer: false },
+              { text: 'Discounts allowed are an expense.', answer: true },
+            ],
+            exp: 'Twelve months from the reporting date is the line, so fourteen months out is non-current. A patent has no physical substance and is intangible. Drawings reduce the owner\'s claim rather than the business\'s profit. Inventory is a current asset however slowly it moves, because it is held to be sold. And discounts allowed are given to customers, so they are a cost to the business.',
+          },
+          {
+            type: 'mcq',
+            q: 'A business is overdrawn at the year end. How does the bank account appear in the statement of financial position?',
+            opts: ['As a current liability', 'As a current asset shown in brackets', 'As a non-current liability', 'As a reduction of capital'],
+            ans: 0,
+            exp: 'An overdraft is money owed to the bank and repayable on demand, so it is a current liability. Bank is one of the few accounts that can carry either a debit or a credit balance, and the class it falls into follows the balance rather than the account name.',
+          },
+          {
+            type: 'gapfill',
+            q: 'Complete the rule for classifying a liability.',
+            template: 'A liability is {0} where it falls due more than {1} after the reporting date. The same loan becomes {2} as that date approaches.',
+            gaps: [
+              { options: ['non-current', 'current', 'contingent'], answer: 0 },
+              { options: ['twelve months', 'six months', 'three years'], answer: 0 },
+              { options: ['current', 'non-current', 'equity'], answer: 0 },
+            ],
+            exp: 'The split turns on twelve months from the reporting date, so a classification is a statement about timing rather than about the size or kind of the debt. A loan therefore migrates from non-current to current as it runs down, and one repayable in instalments is split across both.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2C',
+        title: 'The books of prime entry',
+        icon: '📚',
+        criteria: ['FAPS-2.3.1', 'FAPS-2.3.2'],
+        cards: [
+          {
+            h: 'Why anything sits between the invoice and the ledger',
+            p: [
+              'A business issuing four hundred sales invoices a month could post each one straight to the ledger. That would be eight hundred entries, and the sales account would be an unreadable column of small numbers.',
+              'The **books of prime entry** — the daybooks — are the list that sits in between. Documents are entered in a daybook as they arrive, the daybook is totalled at the end of the period, and the totals are posted to the ledger. Four hundred invoices become one posting.',
+              'The daybook is not part of the double entry. It is a list, and it does the same job for transactions that the asset register does for assets: holds the detail so the ledger can hold the summary.',
+            ],
+            callout: { kind: 'key', text: 'Documents → daybook (a list) → totals posted to the general ledger (the double entry). The daybook holds the detail so the ledger can hold the summary.' },
+          },
+          {
+            h: 'The eight, and what each one lists',
+            table: {
+              headers: ['Book of prime entry', 'What goes in it'],
+              rows: [
+                ['Sales daybook', 'Invoices issued to credit customers'],
+                ['Sales returns daybook', 'Credit notes issued to credit customers'],
+                ['Purchases daybook', 'Invoices received from credit suppliers'],
+                ['Purchases returns daybook', 'Credit notes received from credit suppliers'],
+                ['Discounts allowed daybook', 'Settlement discounts taken by customers'],
+                ['Discounts received daybook', 'Settlement discounts taken from suppliers'],
+                ['Cash book', 'Money in and out, through bank and cash'],
+                ['Journal', 'Everything else, each entry with a narrative'],
+              ],
+            },
+            p: [
+              'The first six all record **credit** transactions — a promise now, money later. The cash book records the money actually moving. A single sale on credit therefore touches the sales daybook when the invoice goes out and the cash book when the customer pays.',
+              'The **journal** is the one that matters most at Level 3, because every period-end adjustment in this unit arrives through it: depreciation, accruals, prepayments, irrecoverable debts, closing inventory, corrections of error. None of those has an invoice, and the journal is how a transaction with no document gets into the books.',
+            ],
+          },
+          {
+            h: 'What a daybook line carries, and why the narrative matters',
+            example: {
+              title: 'Two lines of a sales daybook',
+              rows: [
+                ['Date', 'Invoice', 'Customer', 'Net', 'VAT', 'Total'],
+                ['14 Mar', '4471', 'Hollis Joinery', '£1,200', '£240', '£1,440'],
+                ['16 Mar', '4472', 'Marden Interiors', '£640', '£128', '£768'],
+              ],
+            },
+            p: [
+              'Three money columns, and each one goes to a different account. The net column becomes sales, the VAT column becomes VAT, and the total becomes the amount the customer owes. The next lesson does that posting.',
+              'The journal has a column the others do not: a **narrative**, saying what the entry is for. Every other book of prime entry is backed by a document that explains itself — an invoice says who and what and why. A journal entry has no document behind it, so without a narrative nobody reading the ledger in a year can tell what happened or check whether it was right. A journal without a narrative is an unexplained movement in the accounts, and that is what a person concealing something would also produce.',
+            ],
+            examtrap: 'Settlement discounts have their own daybooks and are easy to post backwards. **Discounts allowed** are given by the business to its customers, so they are an expense. **Discounts received** are given to the business by its suppliers, so they are income.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'A business records the depreciation charge for the year. Which book of prime entry does it go through?',
+            opts: ['The journal', 'The cash book', 'The purchases daybook', 'The sales daybook'],
+            ans: 0,
+            exp: 'Depreciation has no invoice and no money moves, so none of the document-driven daybooks fits. The journal exists for exactly that: entries with no source document, each carrying a narrative saying what it is for. Every period-end adjustment in this unit arrives the same way.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the books of prime entry is correct.',
+            statements: [
+              { text: 'A daybook is a list rather than part of the double entry.', answer: true },
+              { text: 'Discounts allowed are an expense of the business.', answer: true },
+              { text: 'Credit notes received from suppliers go in the sales returns daybook.', answer: false },
+              { text: 'A journal entry may be posted without a narrative where the amount is small.', answer: false },
+            ],
+            exp: 'Daybooks hold detail so the ledger can hold totals; the double entry happens when the totals are posted. Discounts allowed are given to customers and cost the business money. Credit notes from suppliers belong in the purchases returns daybook — sales returns is for credit notes issued. And the narrative is what makes a document-less entry checkable, so it is required whatever the amount.',
+          },
+          {
+            type: 'mcq',
+            q: 'Why does the journal require a narrative when the other books of prime entry do not?',
+            opts: ['Its entries have no source document to explain them', 'Its entries are always larger than those in other daybooks', 'It is the only book posted directly into the general ledger', 'It is the only book that records both a debit and a credit'],
+            ans: 0,
+            exp: 'An invoice or a credit note explains itself — who, what and how much. A journal entry has nothing behind it, so the narrative is the only record of what happened and the only way a reader can judge whether it was right. Size does not come into it, and the other daybooks are posted to the ledger too.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2D',
+        title: 'From daybook to ledger, with VAT',
+        icon: '➡️',
+        criteria: ['FAPS-2.3.3'],
+        cards: [
+          {
+            h: 'Three columns, three accounts',
+            p: [
+              'Posting a daybook is the same move every time. Total the three money columns, then send each total to the account it belongs to. The net column is the trading figure, the VAT column is money held for HMRC, and the gross column is what the customer owes or what the business owes the supplier.',
+              'The direction reverses between sales and purchases because VAT reverses. On a sale the business has **collected** tax it must hand over, so VAT is credited. On a purchase it has **paid** tax it can reclaim, so VAT is debited. The same account carries both, and the balance is what is owed to HMRC or owed back by them.',
+            ],
+            callout: { kind: 'key', text: 'Net → sales or purchases. VAT → the VAT account, credited on sales and debited on purchases. Gross → the receivables or payables control account.' },
+          },
+          {
+            h: 'A month of daybooks, posted',
+            worked: {
+              title: 'Sales £8,000 net, purchases £5,000 net, sales returns £400 net, VAT at 20%',
+              problem: 'At the end of a month the sales daybook totals £8,000 net, the purchases daybook £5,000 net, and the sales returns daybook £400 net. VAT is 20% throughout. Post the totals, and say what the VAT account then shows.',
+              steps: [
+                { do: 'Sales daybook: VAT is £8,000 × 20% = £1,600, so the gross total is £8,000 + £1,600 = £9,600.', why: 'The daybook would already carry all three columns; recomputing one from another is the check that it was added up correctly.' },
+                { do: 'Post it: debit receivables control £9,600, credit sales £8,000, credit VAT £1,600.', why: 'Customers owe the whole invoice including the tax, so the gross figure is the debit. The business keeps only the net as revenue — the VAT was never its money.' },
+                { do: 'Purchases daybook: VAT is £5,000 × 20% = £1,000 and the gross total is £5,000 + £1,000 = £6,000.', why: 'The same arithmetic on the other side of the business.' },
+                { do: 'Post it: debit purchases £5,000, debit VAT £1,000, credit payables control £6,000.', why: 'VAT is debited here because the business has paid it and can reclaim it. The supplier is owed the gross.' },
+                { do: 'Sales returns: VAT is £400 × 20% = £80 and the gross is £400 + £80 = £480. Debit sales returns £400, debit VAT £80, credit receivables control £480.', why: 'A return reverses a sale, so every entry reverses too — including the VAT, which the business no longer owes HMRC because the sale did not stand.' },
+                { do: 'The VAT account now shows £1,600 credited against £1,000 + £80 = £1,080 debited, leaving £1,600 − £1,080 = £520 as a credit balance.', why: 'A credit balance on VAT is money held for HMRC and is a current liability. Had the debits been larger the balance would be a debit — an asset, being a repayment due.' },
+              ],
+              answer: 'VAT stands at £520 credit, owed to HMRC.',
+              tryIt: {
+                q: 'A purchases daybook totals £7,400 net with VAT at 20%. What is the gross total posted to the payables control account?',
+                answer: 8880,
+                unit: '£',
+                hint: 'The supplier is owed the net plus the tax.',
+                exp: 'VAT is £7,400 × 20% = £1,480, so the gross is £7,400 + £1,480 = £8,880. That whole figure is credited to payables control, while purchases takes the £7,400 and VAT takes the £1,480 as a debit the business can reclaim.',
+              },
+            },
+          },
+          {
+            h: 'Where the individual invoices go',
+            p: [
+              'The posting above moved three totals into the general ledger and said nothing about which customer owes what. That detail is not lost — it goes to the **memorandum ledgers** at the same time.',
+              'Every invoice in the sales daybook is also posted to that customer\'s own account in the receivables ledger, at its gross amount. Nothing about that is double entry: it is a second, parallel record kept so the business can answer "how much does Hollis Joinery owe" without reading a year of daybooks.',
+              'So the total of all the customer accounts should equal the receivables control account balance, and a difference between them means something reached one record and not the other. The next two lessons are about that.',
+            ],
+            examtrap: 'The control account takes the **gross** figure and the memorandum ledger takes the **gross** figure. Only the general ledger splits the invoice into net and VAT, because only the general ledger has a VAT account to split it into.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'A sales daybook totals £12,500 net with VAT at 20%. What amount is debited to the receivables control account?',
+            answer: 15000,
+            unit: '£',
+            exp: 'Customers owe the whole invoice, so the control account takes the gross: VAT is £12,500 × 20% = £2,500 and £12,500 + £2,500 = £15,000. Sales takes only the £12,500, because the VAT was never the business\'s revenue.',
+          },
+          {
+            type: 'mcq',
+            q: 'Why is VAT credited when a sales daybook is posted but debited when a purchases daybook is posted?',
+            opts: ['Tax collected on sales is owed to HMRC; tax paid on purchases is reclaimable', 'Sales are always larger than purchases, so the balance must be a credit', 'The sales daybook is posted at the period end and purchases as they arise', 'Customers pay VAT at a different rate from the one suppliers charge'],
+            ans: 0,
+            exp: 'The one VAT account holds both sides. Output tax on sales is money the business has collected on HMRC\'s behalf, so it is credited; input tax on purchases is money it has paid and can reclaim, so it is debited. The balance is whichever way round the two come out.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about posting daybooks is correct.',
+            statements: [
+              { text: 'The receivables control account is debited with the gross total of the sales daybook.', answer: true },
+              { text: 'The sales account is credited with the net total.', answer: true },
+              { text: 'A credit balance on the VAT account is an amount owed to HMRC.', answer: true },
+              { text: 'Individual customer accounts in the receivables ledger form part of the double entry.', answer: false },
+            ],
+            exp: 'Customers owe the tax as well as the goods, so the control account takes the gross. Revenue is the net — the VAT was never the business\'s money. A credit balance means more output tax collected than input tax paid, so HMRC is owed. And the memorandum ledgers are a parallel record of detail, outside the double entry.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2E',
+        title: 'Three ledgers, and how they fit',
+        icon: '🗄️',
+        criteria: ['FAPS-2.3.4'],
+        cards: [
+          {
+            h: 'One does the accounting, two hold the detail',
+            flow: ['Daybooks', 'General ledger — the double entry', 'Memorandum ledgers — receivables and payables detail'],
+            p: [
+              'The **general ledger** is the accounting system. Every account in the five classes lives there, every entry in it is half of a pair, and the trial balance is drawn from it. It contains the receivables and payables **control accounts**, which hold one total each for everything owed to and by the business.',
+              'The **receivables ledger** holds one account per customer, and the **payables ledger** one per supplier. Neither is part of the double entry. They exist because the control account can tell you that customers owe £44,400 and cannot tell you which of them, or for how long, or whether one of them stopped paying four months ago.',
+              'Both are called memorandum or subsidiary ledgers, and the two words mean the same thing: a record kept alongside the books rather than in them.',
+            ],
+            callout: { kind: 'key', text: 'General ledger: the double entry, one control account per class of debt. Memorandum ledgers: one account per customer or supplier, outside the double entry.' },
+          },
+          {
+            h: 'What each one is asked',
+            split: {
+              left: {
+                title: 'Questions for the general ledger',
+                items: [
+                  'What is the total owed to us?',
+                  'What is our revenue for the year?',
+                  'Does the trial balance balance?',
+                  'What goes in the financial statements?',
+                ],
+              },
+              right: {
+                title: 'Questions for the memorandum ledgers',
+                items: [
+                  'How much does this customer owe?',
+                  'Which invoices are still unpaid?',
+                  'Who should get a statement this month?',
+                  'Whose balance should we chase, or write off?',
+                ],
+              },
+            },
+            p: [
+              'The split is why an invoice is posted to both. The general ledger gets it inside a monthly total; the customer\'s own account gets it individually, at the gross figure, on the day.',
+              'Two records built from the same documents should agree, and checking that they do is the **reconciliation** the next lesson covers. When they disagree, the fault is nearly always a posting that reached one and not the other.',
+            ],
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'What is the receivables ledger for?',
+            opts: ['Holding a separate account for each credit customer', 'Holding the total owed by all customers, as part of the double entry', 'Recording sales invoices before they are posted anywhere', 'Listing the VAT charged on each sale for the VAT return'],
+            ans: 0,
+            exp: 'It is a memorandum ledger of one account per customer, outside the double entry. The total owed by everybody sits in the receivables control account in the general ledger, and invoices are first listed in the sales daybook.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the ledgers is correct.',
+            statements: [
+              { text: 'The receivables control account is in the general ledger.', answer: true },
+              { text: 'The payables ledger forms part of the double entry.', answer: false },
+              { text: 'Memorandum and subsidiary mean the same thing here.', answer: true },
+              { text: 'A sales invoice is recorded in the general ledger and in the receivables ledger.', answer: false },
+            ],
+            exp: 'The control accounts are general ledger accounts and carry the totals. The memorandum ledgers sit alongside the books rather than in them, and the two names are interchangeable. The last statement is the near-miss: an individual invoice goes to the customer\'s account immediately, but it reaches the general ledger only inside the daybook total posted at the period end.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2F',
+        title: 'Control accounts',
+        icon: '🔗',
+        criteria: ['FAPS-2.3.5', 'FAPS-2.3.6'],
+        cards: [
+          {
+            h: 'A total that can be checked against something',
+            p: [
+              'A control account holds the total of a group of individual balances kept somewhere else. Its value is that the two are built from the same documents by different routes, so agreeing them tests both.',
+              'The specification names four. **Receivables ledger control** and **payables ledger control** are checked against the memorandum ledgers. **VAT control** is checked against the VAT return. **Wages and salaries control** is checked against the payroll and should clear to nil once everybody has been paid.',
+            ],
+            table: {
+              headers: ['Control account', 'Checked against', 'What a difference means'],
+              rows: [
+                ['Receivables ledger', 'Total of the customer accounts', 'A posting reached one record and not the other'],
+                ['Payables ledger', 'Total of the supplier accounts', 'The same, on the buying side'],
+                ['VAT', 'The VAT return for the period', 'Output or input tax recorded wrongly, or a missing adjustment'],
+                ['Wages and salaries', 'The payroll for the period', 'A deduction not paid over, or gross pay posted net'],
+              ],
+            },
+          },
+          {
+            h: 'Which side each entry falls',
+            split: {
+              left: {
+                title: 'Receivables control — debits',
+                items: [
+                  'Opening balance',
+                  'Credit sales (gross)',
+                  'Dishonoured cheques',
+                  'Interest charged on overdue accounts',
+                ],
+              },
+              right: {
+                title: 'Receivables control — credits',
+                items: [
+                  'Receipts from customers',
+                  'Sales returns (gross)',
+                  'Discounts allowed',
+                  'Irrecoverable debts written off',
+                  'Contra with the payables ledger',
+                ],
+              },
+            },
+            p: [
+              'The **contra** is the entry people miss. Where the same business is both a customer and a supplier, the two balances can be set against each other rather than each paying the other in full. It reduces receivables and payables together, so it is a credit here and a debit in the payables control account.',
+              'The payables control account is the mirror of this one: opening balance and credit purchases on the credit side; payments, purchases returns, discounts received and the contra on the debit side.',
+            ],
+          },
+          {
+            h: 'A receivables ledger control account, drawn up',
+            worked: {
+              title: 'Opening £42,600; sales £128,400; receipts £119,750; returns £3,200; discounts £1,450; debt written off £900; contra £1,300',
+              problem: 'At the start of the year customers owed £42,600. During the year credit sales were £128,400 and receipts from customers £119,750. Sales returns came to £3,200, discounts allowed to £1,450, one debt of £900 was written off, and £1,300 was set off against the payables ledger. What is the closing balance?',
+              steps: [
+                { do: 'Put the debits together: £42,600 + £128,400 = £171,000.', why: 'Only two things increase what customers owe — what they already owed, and what was sold to them on credit.' },
+                { do: 'Put the credits together: £119,750 + £3,200 + £1,450 + £900 + £1,300 = £126,600.', why: 'Five different reasons a balance falls, and only one of them is a payment. The other four reduce the debt without any money arriving.' },
+                { do: 'Take one from the other: £171,000 − £126,600 = £44,400.', why: 'The account is a debit balance, because customers owe the business rather than the other way round.' },
+                { do: 'Check the written-off debt is on the credit side and not left out.', why: 'Writing a debt off removes it from receivables — the business has decided it will not be paid. Leaving it in overstates both receivables and, once the expense is missed, profit.' },
+                { do: 'Check the contra appears here as a credit and in the payables control account as a debit.', why: 'A contra is one transaction touching two control accounts. Entering it in only one is a common error, and it leaves both reconciliations out by the same £1,300.' },
+              ],
+              answer: 'A closing debit balance of £44,400 owed by customers.',
+              tryIt: {
+                q: 'A payables ledger control account opens at £28,900. Credit purchases are £76,500, payments to suppliers £71,200, purchases returns £2,100, discounts received £840 and a contra £1,300. What is the closing balance?',
+                answer: 29960,
+                unit: '£',
+                hint: 'Opening balance and purchases increase it; everything else reduces it.',
+                exp: 'The credits are £28,900 + £76,500 = £105,400 and the debits are £71,200 + £2,100 + £840 + £1,300 = £75,440, leaving £105,400 − £75,440 = £29,960 as a credit balance owed to suppliers.',
+              },
+            },
+          },
+          {
+            h: 'What software changes, and what it does not',
+            p: [
+              'In accounting software the control accounts are not written up by anybody. Posting a sales invoice updates the customer\'s account and the receivables control account in the same operation, so the two cannot disagree.',
+              'That removes the commonest cause of a reconciling difference and leaves the ones it cannot see. An invoice posted to the wrong customer reconciles perfectly — the control total is right and one account is overstated while another is understated. So does an invoice posted twice, once the duplicate has updated both records. So does an invoice entered with the wrong date, which puts a real transaction in the wrong period.',
+              'The reconciliation was never the only reason to keep a control account. The other reason is that it localises an error: a difference tells you which group of accounts to look in, and a business that has stopped reconciling has lost that even when its software cannot make the arithmetic wrong.',
+            ],
+            examtrap: 'A control account reconciliation that agrees does not mean the receivables figure is right. It means the two records agree, which is a different and weaker claim — and one that software makes almost automatic.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'A receivables ledger control account opens at £31,200. Credit sales are £94,600, receipts £88,300, sales returns £1,900 and discounts allowed £640. What is the closing balance?',
+            answer: 34960,
+            unit: '£',
+            exp: 'Debits are £31,200 + £94,600 = £125,800 and credits are £88,300 + £1,900 + £640 = £90,840, so the balance is £125,800 − £90,840 = £34,960 owed by customers.',
+          },
+          {
+            type: 'mcq',
+            q: 'The same business is both a customer and a supplier, and the two balances are set against each other. How is that recorded?',
+            opts: ['Credit receivables control and debit payables control', 'Debit receivables control and credit payables control', 'Credit both control accounts by the same amount', 'Debit both control accounts by the same amount'],
+            ans: 0,
+            exp: 'A contra reduces what is owed to the business and what it owes, together. Receivables fall, so that control account is credited; payables fall, so that one is debited. Entering it in only one leaves both reconciliations out by the same amount.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each entry belongs on the credit side of the receivables ledger control account.',
+            statements: [
+              { text: 'An irrecoverable debt written off.', answer: true },
+              { text: 'A cheque from a customer that has been dishonoured.', answer: false },
+              { text: 'Discounts allowed to customers.', answer: true },
+              { text: 'Credit sales for the period.', answer: false },
+            ],
+            exp: 'Writing a debt off and allowing a discount both reduce what customers owe, so both are credits. A dishonoured cheque puts the debt back — the payment that was credited did not happen — so it is a debit, as are credit sales.',
+          },
+          {
+            type: 'mcq',
+            q: 'A sales invoice is posted to the wrong customer\'s account in accounting software. What does the control account reconciliation show?',
+            opts: ['Nothing — the total is right and the two records still agree', 'A difference equal to the invoice, on the receivables side', 'A difference equal to the VAT on the invoice only', 'A difference that appears in the payables reconciliation instead'],
+            ans: 0,
+            exp: 'One customer is overstated and another understated by the same amount, so the total is unchanged and both records still agree. It is the class of error a reconciliation cannot see, and the reason a reconciliation that agrees is a weaker claim than it looks.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2G',
+        title: 'Writing up a ledger account',
+        icon: '✍️',
+        criteria: ['FAPS-2.3.7'],
+        cards: [
+          {
+            h: 'The shape of every account',
+            p: [
+              'A ledger account is two columns with a line down the middle. Debits on the left, credits on the right, each entry dated and labelled with the account its other half went to. That label is what makes a ledger navigable: reading "Bank" on the credit side of the purchases account tells you where to go to find the matching entry.',
+              'The rules that decide which side are the ones from Level 2, and they follow from the classification in lesson 2B. **Debit** to increase an asset or an expense, or to reduce a liability, income or capital. **Credit** to do the opposite.',
+            ],
+            formula: 'Debit: increase an asset or expense, decrease a liability, income or capital · Credit: the reverse',
+          },
+          {
+            h: 'Balancing off, step by step',
+            worked: {
+              title: 'A bank account for the month',
+              problem: 'A bank account opens the month with a debit balance of £12,400. Receipts from customers during the month total £47,900 and payments out total £41,650. Balance the account off and state the closing balance.',
+              steps: [
+                { do: 'Enter the opening balance as a debit of £12,400, labelled "Balance b/d".', why: 'A debit balance on bank means the business has money. It arrives as the closing balance of the previous period, brought down.' },
+                { do: 'Add the debits: £12,400 + £47,900 = £60,300.', why: 'Money coming in increases an asset, so receipts are debits. Nothing else on this account is a debit.' },
+                { do: 'Total the credits: £41,650.', why: 'Payments out reduce the asset. The two totals will not match, and the difference is the whole point of balancing.' },
+                { do: 'Find the difference: £60,300 − £41,650 = £18,650, and enter it on the SMALLER side as "Balance c/d".', why: 'The credits are smaller, so the balance carried down goes on the credit side. That is what makes both columns total £60,300 and lets the account be ruled off.' },
+                { do: 'Bring it down on the opposite side, below the total, as "Balance b/d" £18,650 debit.', why: 'The account is a debit balance of £18,650 — an asset. Carried down on one side and brought down on the other is the same figure written twice, which is what carries the balance into the next period.' },
+              ],
+              answer: 'A closing debit balance of £18,650.',
+              tryIt: {
+                q: 'A payables account opens with a credit balance of £9,300. Purchases on credit during the month are £24,700 and payments to the supplier are £21,450. What is the closing balance?',
+                answer: 12550,
+                unit: '£',
+                hint: 'Opening balance and purchases are credits; payments are debits.',
+                exp: 'The credits are £9,300 + £24,700 = £34,000 and the debits are £21,450, so the balance is £34,000 − £21,450 = £12,550. It is a credit balance, because the business owes the supplier.',
+              },
+            },
+          },
+          {
+            h: 'Two habits that catch errors early',
+            split: {
+              left: {
+                title: 'Label the other side',
+                items: [
+                  'Every entry names the account its pair went to',
+                  '"Bank" on the credit of purchases means the debit is in bank',
+                  'An entry labelled with its own account name is a mistake',
+                  'An unlabelled entry cannot be traced or checked',
+                ],
+              },
+              right: {
+                title: 'Check the side against the class',
+                items: [
+                  'Assets and expenses: debit to increase',
+                  'Liabilities, income and capital: credit to increase',
+                  'A debit balance on an income account is worth a second look',
+                  'A credit balance on an expense account usually means a reversal or an error',
+                ],
+              },
+            },
+            p: [
+              'The right-hand column is the faster of the two checks and it does not need the other account. Sales carrying a debit balance, or rent carrying a credit one, is either a genuine reversal — a refund, a correction — or something posted the wrong way round, and either way it deserves a look before the trial balance is drawn.',
+            ],
+            examtrap: 'Balance c/d goes on the SMALLER side and balance b/d on the opposite side underneath. Putting them both on the same side is the error that makes an account fail to balance while looking as though it does.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'A receivables account opens with a debit balance of £5,600. Credit sales in the month are £18,200 and receipts from the customer are £16,900. What is the closing balance?',
+            answer: 6900,
+            unit: '£',
+            exp: 'Debits are £5,600 + £18,200 = £23,800 and credits are £16,900, so the balance is £23,800 − £16,900 = £6,900. It is a debit balance, because the customer still owes the business.',
+          },
+          {
+            type: 'mcq',
+            q: 'When an account is balanced off, on which side does the balance carried down go?',
+            opts: ['The side with the smaller total, so both columns then agree', 'The side with the larger total, matching the balance type', 'The debit side, whatever the balance turns out to be', 'The credit side, whatever the balance turns out to be'],
+            ans: 0,
+            exp: 'The balance carried down is the figure that makes the two columns equal, so it goes on the smaller side. It is then brought down on the opposite side underneath the total, which is where the account\'s real balance sits going into the next period.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about writing up ledger accounts is correct.',
+            statements: [
+              { text: 'Each entry is labelled with the account holding its other half.', answer: true },
+              { text: 'A credit balance on an expense account is always an error.', answer: false },
+              { text: 'Debiting an account increases an asset or an expense.', answer: true },
+              { text: 'Balance c/d and balance b/d are entered on the same side.', answer: false },
+            ],
+            exp: 'The label is what lets an entry be traced to its pair. A credit balance on an expense account is unusual and worth investigating, but a refund or a correction can produce one legitimately. Debits increase assets and expenses. And the two halves of the balance go on opposite sides — that is what carries it into the next period.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2H',
+        title: 'The period end, account by account',
+        icon: '🔚',
+        criteria: ['FAPS-2.4.1', 'FAPS-2.4.2', 'FAPS-2.4.4'],
+        cards: [
+          {
+            h: 'Two fates, decided by the class',
+            p: [
+              'At the period end every account in the general ledger is dealt with, and there are only two things that can happen to one. Which happens is decided entirely by the class it was given in lesson 2B.',
+              '**Income and expense accounts are transferred out.** Their balances go to the statement of profit or loss and the accounts are left at nil, ready to start the next period from zero. Sales for the year just gone has nothing to do with sales for the year ahead, so carrying the figure forward would be meaningless — and would count the same revenue twice.',
+              '**Asset, liability and capital accounts are carried down.** Their balances stay where they are, become the statement of financial position, and are brought down as the opening balances of the next period. A machine the business owned on 31 December is still owned on 1 January.',
+            ],
+            callout: { kind: 'key', text: 'Income and expenses are transferred out and start again at nil. Assets, liabilities and capital are carried down and continue. The class decides, every time.' },
+          },
+          {
+            h: 'The same distinction, seen from the statements',
+            table: {
+              headers: ['Class', 'At the period end', 'Because'],
+              rows: [
+                ['Income', 'Transferred to the SPL; account left at nil', 'It measures a period, and the period has ended'],
+                ['Expenses', 'Transferred to the SPL; account left at nil', 'The same'],
+                ['Assets', 'Carried down and brought down', 'It measures a position, and the position persists'],
+                ['Liabilities', 'Carried down and brought down', 'The same'],
+                ['Capital', 'Carried down, after profit and drawings are put through it', 'The owner\'s claim continues, adjusted for the year'],
+              ],
+            },
+            p: [
+              'The third column is the reason for the rule. The statement of profit or loss covers a **period** — a year of trading, which ends. The statement of financial position describes a **moment** — what is held and owed on one date, which the next day inherits.',
+              'So the two statements are not just different reports. They are different kinds of thing, and the period-end treatment of an account follows from which of the two it belongs in.',
+            ],
+          },
+          {
+            h: 'What the software does with all of this',
+            p: [
+              'Accounting software runs the period end as a routine. It transfers the income and expense balances to the profit figure, rolls the asset, liability and capital balances forward, and locks the closed period so nothing can be posted into it by accident.',
+              'The judgements stay with the person. Software knows which class each account was given, and applies the rule perfectly to that; it does not know whether the class was right. An account set up as an expense when it should have been an asset is emptied to profit every year without complaint, and the routine that does it is the same routine that would have been correct had the class been right.',
+              'The period lock is the part that shows up in practice. It is what stops an entry being backdated into a year already reported, and it is why an adjustment found after the close goes into the current period rather than into the one it relates to.',
+            ],
+            examtrap: 'Drawings is a capital-class account and is carried down, not transferred to the statement of profit or loss. It is closed off against capital instead, which is why it never touches the profit figure.',
+          },
+        ],
+        check: [
+          {
+            type: 'truefalse',
+            q: 'Identify whether each account is transferred to the statement of profit or loss at the period end.',
+            statements: [
+              { text: 'Rent paid.', answer: true },
+              { text: 'Motor vehicles at cost.', answer: false },
+              { text: 'Sales revenue.', answer: true },
+              { text: 'Payables control.', answer: false },
+              { text: 'Discounts received.', answer: true },
+            ],
+            exp: 'Rent, sales and discounts received all measure a period that has ended, so they are transferred out and start again at nil. Vehicles and payables describe a position on a date, so they are carried down and brought down as opening balances — the business still owns the vehicles and still owes the suppliers on the first day of the new year.',
+          },
+          {
+            type: 'mcq',
+            q: 'Why are expense accounts left at nil after the period end while asset accounts are not?',
+            opts: ['An expense measures a period that has ended; an asset describes a position that continues', 'An expense is always smaller than an asset and is not worth carrying forward', 'An expense has already been paid, whereas an asset may still be owed for', 'An expense appears in only one of the two financial statements'],
+            ans: 0,
+            exp: 'The statement of profit or loss covers a span of time, which finishes; the statement of financial position describes a moment, which the next day inherits. Carrying an expense forward would count last year\'s cost again this year.',
+          },
+          {
+            type: 'mcq',
+            q: 'An account was set up in the wrong class three years ago. What does the software\'s period-end routine do about it?',
+            opts: ['Applies the rule for the class it was given, correctly and every year', 'Reclassifies it once the balance behaves unlike others in its class', 'Refuses to close the period until the classification is confirmed', 'Transfers it to suspense so that somebody has to look at it'],
+            ans: 0,
+            exp: 'The routine knows which class each account carries and applies the right rule to it. It has no way to know the class itself was wrong, so a misclassification is applied faithfully year after year — which is the class of error automation makes harder to notice rather than easier.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-2I',
+        title: 'Verifying a balance, and judging what belongs',
+        icon: '🔎',
+        criteria: ['FAPS-2.4.3', 'FAPS-2.4.5'],
+        cards: [
+          {
+            h: 'A balance is a claim, and claims get checked',
+            p: [
+              'A ledger balance is an assertion: the business holds this, or owes this. Before it goes into financial statements somebody should have a reason to believe it beyond the fact that it is what the ledger says.',
+              'Most of those reasons come from outside the ledger, and their being outside it is what makes them worth anything. A balance checked against another part of the same system proves only that the system is self-consistent.',
+            ],
+            table: {
+              headers: ['Balance', 'Checked against', 'The kind of evidence'],
+              rows: [
+                ['Bank', 'The bank statement, via a reconciliation', 'A third party who has no reason to agree with you'],
+                ['Payables ledger', 'Supplier statements', 'A third party, on the buying side'],
+                ['Receivables control', 'Total of the memorandum ledger accounts', 'A second, parallel record from the same documents'],
+                ['Payables control', 'Total of the memorandum ledger accounts', 'The same'],
+                ['Inventory', 'A physical count, and the inventory records', 'The goods themselves'],
+                ['Non-current assets', 'The asset register, and physical verification', 'The register, then the assets themselves'],
+              ],
+            },
+          },
+          {
+            h: 'How strong each check is',
+            split: {
+              left: {
+                title: 'Strong — external or physical',
+                items: [
+                  'Bank statement: prepared by somebody else entirely',
+                  'Supplier statement: the same, and it disagrees when you are wrong',
+                  'Physical count: the goods are there or they are not',
+                  'Seeing the asset: it exists or it does not',
+                ],
+              },
+              right: {
+                title: 'Weaker — internal',
+                items: [
+                  'Control account against the memorandum ledger',
+                  'Register against the general ledger',
+                  'Both compare two records built from the same documents',
+                  'A document wrong at source is wrong in both',
+                ],
+              },
+            },
+            p: [
+              'Neither column makes the other pointless. The internal checks are cheap, run over everything, and localise an error to a group of accounts. The external and physical ones are the only ones that can find a transaction that never happened, or an asset that no longer exists.',
+              'A business relying only on the right-hand column can have every record agreeing with every other record and still be wrong about the world.',
+            ],
+          },
+          {
+            h: 'Is this transaction genuine, and does it belong here?',
+            p: [
+              'Verifying a balance assumes the entries underneath it were real. The specification asks separately for the judgement that they were, and it is a different question with a different set of tests.',
+              'Four are worth having in mind. Is there **evidence** — an invoice, a contract, a delivery note? Was it **authorised** by somebody with the authority for that amount? Is it the **business\'s** expense rather than the owner\'s, which is the business entity principle in operational form? And does it fall in **this period**, rather than the last or the next?',
+              'The uncomfortable one in practice is the third. An invoice addressed to the business, properly authorised, correctly dated and genuinely paid can still be for the owner\'s private spending — and it is the only one of the four that a document cannot settle.',
+            ],
+            examtrap: 'A transaction can be genuine and still not belong in this period, or belong in this period and still not be the business\'s. The four tests are separate, and a scenario often satisfies three of them.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'Which of these gives the strongest evidence that a bank balance is correct?',
+            opts: ['A reconciliation to the bank statement', 'A recount of the entries in the cash book', 'Agreement with the figure in last year\'s accounts', 'A check that the trial balance balances'],
+            ans: 0,
+            exp: 'The bank statement is prepared by a third party who has no reason to agree with the business, so agreement is real evidence. The other three all check the business\'s own records against themselves, and a consistent system can be consistently wrong.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each check would detect the problem described.',
+            statements: [
+              { text: 'A physical inventory count would detect goods recorded but no longer held.', answer: true },
+              { text: 'A control account reconciliation would detect an invoice posted to the wrong customer.', answer: false },
+              { text: 'A supplier statement reconciliation would detect an invoice the business never recorded.', answer: true },
+              { text: 'Agreeing the asset register to the general ledger would detect an asset that has been scrapped and recorded nowhere.', answer: false },
+            ],
+            exp: 'A count finds the gap between the records and the goods. A wrong-customer posting leaves the total unchanged, so the reconciliation is silent. A supplier statement is external, so it shows an invoice the business missed. And an asset scrapped with no entry anywhere is still in both records, which agree with each other — only physical verification finds it.',
+          },
+          {
+            type: 'mcq',
+            q: 'An invoice is addressed to the business, authorised by a director and correctly dated, but the goods were delivered to the director\'s home for personal use. What is it?',
+            opts: ['Drawings, because the business entity principle makes it the owner\'s', 'A valid business expense, because it was properly authorised', 'A valid business expense, because the invoice names the business', 'An accrual, because the benefit falls outside the accounting period'],
+            ans: 0,
+            exp: 'Three of the four tests are satisfied and the fourth is not: the spending is the owner\'s rather than the business\'s. Authorisation and paperwork cannot make a private purchase a business expense, and treating it as one overstates expenses and understates drawings.',
+          },
+        ],
+      },
+    ],
+  };
+
+  /* ══════════════════════════════════════════════════════════════════════════
      OUTCOME 3 — Implement procedures for the acquisition and disposal of
      non-current assets. 10% of the assessment.
      ══════════════════════════════════════════════════════════════════════════ */
@@ -1427,7 +2219,7 @@
     ],
   };
 
-  var PATH = [LO1, LO3, LO4];
+  var PATH = [LO1, LO2, LO3, LO4];
 
   /* ══════════════════════════════════════════════════════════════════════════
      PRACTICE BANK — met cold, and separate from the lesson checks.
@@ -1525,6 +2317,139 @@
       opts: ['That the difference in treatment is disclosed, so a reader can allow for it', 'That both businesses adopt the shorter of the two useful lives', 'That the accounts are restated onto a single industry-wide basis', 'That the business with the longer life justifies it to the other'],
       ans: 0,
       exp: 'Comparability is not uniformity. Assets genuinely used differently may properly be depreciated differently, and forcing a single treatment would make the figures less faithful rather than more comparable. What the characteristic requires is that a reader can see the difference and adjust for it.',
+    },
+    {
+      id: 'F-2-01', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.1.3'],
+      type: 'numeric',
+      q: 'A business holds assets of £63,400 and owes £27,900. What is its capital?',
+      answer: 35500,
+      unit: '£',
+      exp: 'Capital is the residual claim, so Assets − Liabilities gives £63,400 − £27,900 = £35,500. It is what the books say would be left for the owner once every outside creditor had been paid in full.',
+    },
+    {
+      id: 'F-2-02', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.1.2'],
+      type: 'truefalse',
+      q: 'Identify whether each transaction leaves total assets unchanged.',
+      statements: [
+        { text: 'Paying a supplier £800 from the bank account.', answer: false },
+        { text: 'Receiving £1,500 from a credit customer.', answer: true },
+        { text: 'Buying a £3,000 vehicle by bank transfer.', answer: true },
+        { text: 'The owner introducing £5,000 of capital.', answer: false },
+      ],
+      exp: 'Receiving from a customer swaps receivables for bank, and buying a vehicle for cash swaps bank for vehicle — one asset for another in both cases. Paying a supplier reduces bank and reduces a liability, and capital introduced raises bank and raises the owner\'s claim, so both change the total.',
+    },
+    {
+      id: 'F-2-03', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.1.3'],
+      type: 'numeric',
+      q: 'A business opens the year with capital of £41,000. The owner introduces £9,000, the business makes a profit of £18,000, and the owner withdraws £12,000. What is closing capital?',
+      answer: 56000,
+      unit: '£',
+      exp: 'Closing capital is opening capital plus capital introduced plus profit less drawings: £41,000 + £9,000 + £18,000 − £12,000 = £56,000. Drawings reduce the owner\'s claim rather than the profit, which is why they are dealt with here and not in the statement of profit or loss.',
+    },
+    {
+      id: 'F-2-04', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.2.1'],
+      type: 'truefalse',
+      q: 'Decide whether each of these accounts has been put in the right class.',
+      statements: [
+        { text: 'Goodwill is an intangible non-current asset.', answer: true },
+        { text: 'A bank overdraft at the year end is a current liability.', answer: true },
+        { text: 'Prepayments are a liability.', answer: false },
+        { text: 'Discounts received are an expense.', answer: false },
+      ],
+      exp: 'Goodwill has no physical substance and is held long term. An overdraft is repayable on demand. A prepayment is a cost paid in advance, so the business is owed a service and it is a current asset. And discounts received are given to the business by its suppliers, so they are income.',
+    },
+    {
+      id: 'F-2-05', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.1', 'FAPS-2.3.2'],
+      type: 'mcq',
+      q: 'A business writes off an irrecoverable debt. Which book of prime entry does the entry pass through?',
+      opts: ['The journal', 'The sales returns daybook', 'The cash book', 'The purchases daybook'],
+      ans: 0,
+      exp: 'No document arrives and no money moves, so none of the document-driven daybooks applies. The journal takes entries with no source document, each carrying a narrative — which is how every period-end adjustment in this unit reaches the ledger.',
+    },
+    {
+      id: 'F-2-06', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.3'],
+      type: 'numeric',
+      q: 'A sales daybook totals £6,200 net with VAT at 20%. What amount is debited to the receivables control account?',
+      answer: 7440,
+      unit: '£',
+      exp: 'Customers owe the whole invoice, so the control account takes the gross figure: VAT is £6,200 × 20% = £1,240 and £6,200 + £1,240 = £7,440. Sales is credited with the net £6,200 only, because the VAT was never the business\'s revenue.',
+    },
+    {
+      id: 'F-2-07', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.3'],
+      type: 'gapfill',
+      q: 'Complete the posting of a purchases daybook.',
+      template: 'Purchases is {0} with the net total, VAT is {1} because the tax can be reclaimed, and the payables control account is {2} with the gross total.',
+      gaps: [
+        { options: ['debited', 'credited', 'left unchanged'], answer: 0 },
+        { options: ['debited', 'credited', 'left unchanged'], answer: 0 },
+        { options: ['credited', 'debited', 'left unchanged'], answer: 0 },
+      ],
+      exp: 'Input tax on purchases is money the business has paid and can reclaim, so VAT is debited — the reverse of a sale, where the tax collected is credited. The supplier is owed the gross, so that is the figure credited to payables control.',
+    },
+    {
+      id: 'F-2-08', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.4'],
+      type: 'mcq',
+      q: 'Where does the total owed by all credit customers appear?',
+      opts: ['In the receivables control account, in the general ledger', 'In the receivables ledger, as part of the double entry', 'In the sales daybook, once it has been totalled', 'In the memorandum ledger, as a single combined account'],
+      ans: 0,
+      exp: 'The control account holds the total and is a general ledger account, so it is part of the double entry. The receivables ledger holds one account per customer and sits outside the double entry, and the sales daybook lists invoices rather than balances.',
+    },
+    {
+      id: 'F-2-09', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.5'],
+      type: 'numeric',
+      q: 'A receivables ledger control account opens at £18,500. Credit sales are £62,300, receipts £57,400, sales returns £2,600, discounts allowed £780 and irrecoverable debts written off £1,150. What is the closing balance?',
+      answer: 18870,
+      unit: '£',
+      exp: 'Debits are £18,500 + £62,300 = £80,800. Credits are £57,400 + £2,600 + £780 + £1,150 = £61,930. The balance is £80,800 − £61,930 = £18,870 owed by customers — a debit balance, since only two things increase what customers owe and five reduce it.',
+    },
+    {
+      id: 'F-2-10', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.5', 'FAPS-2.3.6'],
+      type: 'mcq',
+      q: 'A business posts its sales invoices twice by accident, into both the customer accounts and the control account. What does the reconciliation show?',
+      opts: ['No difference at all in the reconciliation', 'A difference equal to the duplicated invoices', 'A difference equal to the VAT on those invoices', 'A difference visible only after the bank reconciliation'],
+      ans: 0,
+      exp: 'A reconciliation compares two records against each other, so an error that lands in both leaves them agreeing. It is the limit of the check: agreement proves the records match, which is a weaker claim than the receivables figure being right.',
+    },
+    {
+      id: 'F-2-11', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.7'],
+      type: 'numeric',
+      q: 'A bank account opens with a debit balance of £4,300. Receipts in the period are £11,800 and payments £9,750. What is the closing balance?',
+      answer: 6350,
+      unit: '£',
+      exp: 'Debits are £4,300 + £11,800 = £16,100 and credits are £9,750, so the balance is £16,100 − £9,750 = £6,350. It is a debit balance, meaning the business is in funds rather than overdrawn.',
+    },
+    {
+      id: 'F-2-12', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.4.1', 'FAPS-2.4.4'],
+      type: 'truefalse',
+      q: 'Identify whether each account is carried down rather than transferred to the statement of profit or loss.',
+      statements: [
+        { text: 'Inventory.', answer: true },
+        { text: 'Wages.', answer: false },
+        { text: 'Capital.', answer: true },
+        { text: 'Sales revenue.', answer: false },
+        { text: 'Drawings.', answer: true },
+      ],
+      exp: 'Assets, liabilities and capital describe a position on a date, so they are carried down and brought down into the next period. Wages and sales measure a period that has ended and are transferred out, leaving their accounts at nil. Drawings is a capital-class account, closed off against capital rather than against profit.',
+    },
+    {
+      id: 'F-2-13', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.4.3'],
+      type: 'mcq',
+      q: 'Which check would reveal a purchase invoice the business never recorded at all?',
+      opts: ['Reconciling the payables ledger to supplier statements', 'Reconciling the payables control account to the payables ledger', 'Recalculating the totals of the purchases daybook', 'Confirming the trial balance balances'],
+      ans: 0,
+      exp: 'The supplier statement comes from outside the business and shows an invoice the business has no record of. Every other option compares the business\'s own records against each other, and an invoice missing from all of them is missing consistently.',
+    },
+    {
+      id: 'F-2-14', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.4.5'],
+      type: 'truefalse',
+      q: 'Identify whether each transaction should be included in the business\'s records.',
+      statements: [
+        { text: 'A supplier invoice for goods received before the year end but unpaid at it.', answer: true },
+        { text: 'Fuel for the owner\'s private car, invoiced to the business.', answer: false },
+        { text: 'A payment with no invoice, contract or delivery note behind it.', answer: false },
+        { text: 'A purchase authorised at the correct level and supported by a delivery note.', answer: true },
+      ],
+      exp: 'Goods received before the year end belong to that year whether or not they have been paid for. Private fuel is the owner\'s spending, so it is drawings however the invoice is addressed. A payment with no evidence cannot be shown to be genuine. And an authorised, documented purchase satisfies every test.',
     },
     {
       id: 'F-3-01', unitKey: 'faps', lo: 3, criteria: ['FAPS-3.2.3', 'FAPS-3.2.7'],
