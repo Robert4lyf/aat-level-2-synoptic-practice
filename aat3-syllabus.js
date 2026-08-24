@@ -317,6 +317,436 @@
     ]
   };
 
+  /* ── Financial Accounting: Preparing Financial Statements ────────────────
+   *
+   * The largest unit in the qualification by every measure that matters: 150
+   * guided learning hours against TPFB's 60, 40% of the grade against 15%, and
+   * 122 key concepts across nine outcomes against 93 across five.
+   *
+   * It is also the stable one. TPFB carries a Finance Act and its key concept
+   * identifiers moved between spec versions; FAPS is built on IAS 2 and IAS 16
+   * and on double entry, none of which is rolled annually. So this unit has no
+   * `financeAct`, and the coverage checker's finance-act requirement is scoped
+   * to the unit that needs it rather than applied to every unit by default.
+   */
+  var FAPS = {
+    unit: 'faps',
+    code: 'FAPS',
+    title: 'Financial Accounting: Preparing Financial Statements',
+    unitReference: 'R/618/3580',
+    glh: 150,
+    /* Contribution of this unit's assessment to the qualification grade. The
+       largest single share available at Level 3 — more than BUAW and TPFB
+       combined. */
+    qualificationWeighting: 40,
+    assessment: {
+      method: 'Computer based assessment',
+      marking: 'Computer marked',
+      durationMinutes: 150,
+      passMark: 70,
+      /* Unlike TPFB, no task count is claimed here. The specification states
+         none, AAT publishes no sample assessment for this unit (see
+         docs/aat-level-3-plan.md §3.9), and no published mock has been
+         obtained. An indicative figure invented to fill the gap would be
+         presented to a student as fact, so the field is absent instead. */
+      taskCount: null,
+      taskCountSource: 'not stated by AAT and not obtained — deliberately absent',
+      totalMarks: null
+    },
+    excluded: [],
+    outcomes: [
+      {
+        n: 1,
+        title: 'Understand the accounting principles underlying final accounts preparation',
+        weighting: 5,
+        topics: [
+          {
+            id: '1.1',
+            title: 'The primary users of final accounts',
+            concepts: [
+              { id: '1.1.1', tier: 'know', text: 'The primary users of final accounts',
+                indicative: ['existing and potential investors', 'lenders', 'other creditors'] },
+              { id: '1.1.2', tier: 'know', text: 'How final accounts are used by the primary users' }
+            ]
+          },
+          {
+            id: '1.2',
+            title: 'The framework of accounting underlying the preparation of final accounts',
+            concepts: [
+              { id: '1.2.1', tier: 'understand', text: 'The accounting principles',
+                indicative: ['accruals', 'going concern', 'business entity', 'materiality', 'consistency', 'prudence', 'money measurement'] }
+            ]
+          },
+          {
+            id: '1.3',
+            title: 'Qualities of useful financial information',
+            concepts: [
+              { id: '1.3.1', tier: 'know', text: 'The fundamental qualitative characteristics',
+                indicative: ['relevance', 'faithful representation'],
+                note: 'Version 5.11 of the specification prints the first of these as "relevance representation". Read against the IASB Conceptual Framework the two fundamental qualitative characteristics are relevance and faithful representation, so the stray word is a typesetting fault rather than a third characteristic. Encoded as the framework has it, and recorded here so the discrepancy is visible rather than silently corrected.' },
+              { id: '1.3.2', tier: 'know', text: 'The enhancing qualitative characteristics',
+                indicative: ['comparability', 'verifiability', 'timeliness', 'understandability'] },
+              { id: '1.3.3', tier: 'know', text: 'The importance of ensuring financial statements are free from material misstatement' },
+              { id: '1.3.4', tier: 'know', text: "The importance of the accountant's fundamental ethical principles and professional scepticism when preparing financial statements for users" }
+            ]
+          }
+        ]
+      },
+      {
+        n: 2,
+        title: 'Understand the principles of advanced double-entry bookkeeping',
+        weighting: 10,
+        topics: [
+          {
+            id: '2.1',
+            title: 'Use of the accounting equation',
+            concepts: [
+              { id: '2.1.1', tier: 'understand', text: 'The importance of the accounting equation for keeping accounting records' },
+              { id: '2.1.2', tier: 'understand', text: 'The effect of accounting transactions on elements of the accounting equation',
+                indicative: ['capital', 'assets', 'liabilities'] },
+              { id: '2.1.3', tier: 'do', text: 'Calculate the different elements of the accounting equation',
+                indicative: ['capital', 'assets', 'liabilities'] }
+            ]
+          },
+          {
+            id: '2.2',
+            title: 'Classification of ledger accounts',
+            concepts: [
+              { id: '2.2.1', tier: 'know', text: 'The classification of general ledger accounts',
+                indicative: ['assets: non-current (tangible, intangible) and current', 'liabilities: non-current and current', 'equity (capital)', 'income', 'expenses'] }
+            ]
+          },
+          {
+            id: '2.3',
+            title: 'Purpose and use of books of prime entry and ledger accounting',
+            concepts: [
+              { id: '2.3.1', tier: 'understand', text: 'The daybooks (books of prime entry): sales, sales returns, purchases, purchases returns, discounts allowed, discounts received, cash book and journal (including narratives)' },
+              { id: '2.3.2', tier: 'understand', text: 'The information recorded in each type of daybook' },
+              { id: '2.3.3', tier: 'understand', text: 'How daybooks are used to update ledger account records, including dealing with value added tax (VAT)' },
+              { id: '2.3.4', tier: 'understand', text: 'The different ledgers and how they interact: the general ledger and the memorandum (subsidiary) ledgers (receivables ledger and payables ledger)' },
+              { id: '2.3.5', tier: 'understand', text: 'Control accounts',
+                indicative: ['receivables ledger', 'payables ledger', 'wages and salaries', 'VAT'] },
+              { id: '2.3.6', tier: 'understand', text: 'That accounting software automates the transfer of data into the control accounts' },
+              { id: '2.3.7', tier: 'do', text: 'Prepare ledger accounts using double-entry principles' }
+            ]
+          },
+          {
+            id: '2.4',
+            title: 'Carry out financial period end routines',
+            concepts: [
+              { id: '2.4.1', tier: 'understand', text: 'That at the end of the period accounts are balanced off differently depending on their classification in terms of income, expense, asset, liability or capital' },
+              { id: '2.4.2', tier: 'understand', text: 'That accounting software automates the period end routine' },
+              { id: '2.4.3', tier: 'do', text: 'Verify general ledger balances by using relevant sources of information and performing reconciliations where appropriate: physical checks, inventory records, supplier and bank statements, receivables and payables ledgers (memorandum ledger accounts), non-current asset register' },
+              { id: '2.4.4', tier: 'do', text: 'Transfer balances or carry down balances on ledger accounts as appropriate' },
+              { id: '2.4.5', tier: 'do', text: "Determine whether transactions are genuine and valid for inclusion in the organisation's records" }
+            ]
+          }
+        ]
+      },
+      {
+        n: 3,
+        title: 'Implement procedures for the acquisition and disposal of non-current assets',
+        weighting: 10,
+        topics: [
+          {
+            id: '3.1',
+            title: 'Importance of prior authority for capital expenditure',
+            concepts: [
+              { id: '3.1.1', tier: 'understand', text: 'Why authorisation is necessary' },
+              { id: '3.1.2', tier: 'understand', text: 'The appropriate person in an organisation to give authority' }
+            ]
+          },
+          {
+            id: '3.2',
+            title: 'The importance of classifying expenditure into capital or revenue expenditure',
+            concepts: [
+              { id: '3.2.1', tier: 'understand', text: 'That International Financial Reporting Standards (IFRS) exist that are relevant to non-current assets (NCA): IAS 16' },
+              { id: '3.2.2', tier: 'understand', text: 'The definitions of cost, useful life, residual value, depreciable amount, carrying amount' },
+              { id: '3.2.3', tier: 'understand', text: 'Which items can be included in the cost of NCA under the current IFRS (capital expenditure)' },
+              { id: '3.2.4', tier: 'understand', text: 'That revenue expenditure should be excluded from the value of NCA' },
+              { id: '3.2.5', tier: 'understand', text: "The importance of only capitalising expenditure in excess of the level specified in the organisation's policy" },
+              { id: '3.2.6', tier: 'understand', text: 'The effect of capitalisation on the statement of profit or loss (SPL) and statement of financial position (SFP)' },
+              { id: '3.2.7', tier: 'do', text: 'Categorise items into revenue and capital expenditure for the purposes of accounting for non-current assets' }
+            ]
+          },
+          {
+            id: '3.3',
+            title: 'Record acquisitions and disposals of non-current assets',
+            concepts: [
+              { id: '3.3.1', tier: 'understand', text: 'The purpose and content of the non-current asset register, including assisting physical verification and reconciling with general ledger entries and balances' },
+              { id: '3.3.2', tier: 'understand', text: 'The meaning of any balance on the disposals account' },
+              { id: '3.3.3', tier: 'understand', text: 'That part-exchange is a different form of funding to cash or credit' },
+              { id: '3.3.4', tier: 'understand', text: 'That non-current asset registers can be part of accounting software or held independently on spreadsheets' },
+              { id: '3.3.5', tier: 'understand', text: 'How gains and losses on disposal are treated at the period end' },
+              { id: '3.3.6', tier: 'do', text: 'Update the non-current asset register for acquisitions and disposals' },
+              { id: '3.3.7', tier: 'do', text: 'Record acquisitions and disposals in the general ledger (including part-exchanges)' },
+              { id: '3.3.8', tier: 'do', text: 'Treat VAT according to the registration status of the acquiring organisation',
+                excluded: ['VAT treatment of part exchanges'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 4,
+        title: 'Prepare and record depreciation calculations',
+        weighting: 10,
+        topics: [
+          {
+            id: '4.1',
+            title: 'Calculate depreciation',
+            concepts: [
+              { id: '4.1.1', tier: 'understand', text: 'That accounting for depreciation is an application of the accruals principle of accounting' },
+              { id: '4.1.2', tier: 'understand', text: 'That the depreciable amount of the NCA should be allocated over the relevant period of its useful life' },
+              { id: '4.1.3', tier: 'understand', text: 'That depreciation can be calculated automatically by accounting software or independently through spreadsheets then journaled-in' },
+              { id: '4.1.4', tier: 'do', text: 'Calculate the depreciation charge for an asset, using the straight-line method of depreciation, according to organisational policy',
+                indicative: ['using either a given percentage or the useful life calculation method', 'dealing with cases when a residual value is expected or where no residual value is expected', 'depreciating for a full year or pro-rata for part of a year'] },
+              { id: '4.1.5', tier: 'do', text: 'Calculate the depreciation charge for an asset, using the diminishing balance method of depreciation for a full year with a given percentage' }
+            ]
+          },
+          {
+            id: '4.2',
+            title: 'Record depreciation',
+            concepts: [
+              { id: '4.2.1', tier: 'do', text: 'Record depreciation',
+                indicative: ['non-current asset register', 'general ledger, including producing relevant journal entries'] },
+              { id: '4.2.2', tier: 'do', text: 'Reconcile the NCA register to the appropriate general ledger balances' }
+            ]
+          }
+        ]
+      },
+      {
+        n: 5,
+        title: 'Record period end adjustments',
+        weighting: 10,
+        topics: [
+          {
+            id: '5.1',
+            title: 'Record accruals and prepayments of income and expenditure',
+            concepts: [
+              { id: '5.1.1', tier: 'understand', text: 'That adjustments for accruals and prepayments are an application of the accruals principle of accounting' },
+              { id: '5.1.2', tier: 'understand', text: 'Why there can be a difference between the amount paid or received during the period and the amount recognised in the statement of profit or loss for that period' },
+              { id: '5.1.3', tier: 'understand', text: 'How adjustments for accruals and prepayments for the current period and the reversal of adjustments for the previous period affect ledger accounts' },
+              { id: '5.1.4', tier: 'understand', text: 'That accrued and prepaid income and expense balances are recognised as either assets or liabilities' },
+              { id: '5.1.5', tier: 'understand', text: 'That accounting software automates recurring entries including for accruals and prepayments' },
+              { id: '5.1.6', tier: 'do', text: 'Calculate the amount of a prepayment or accrual adjustment to be made' },
+              { id: '5.1.7', tier: 'do', text: 'Account for accruals and prepayments by making entries in the general ledger, including using the journal' },
+              { id: '5.1.8', tier: 'do', text: 'Account for the reversal of accruals and prepayments from a previous period by making entries in the general ledger, including using the journal' }
+            ]
+          },
+          {
+            id: '5.2',
+            title: 'Record irrecoverable debts and allowances for doubtful receivables',
+            concepts: [
+              { id: '5.2.1', tier: 'understand', text: 'That allowances for doubtful receivables are an application of the accruals principle of accounting' },
+              { id: '5.2.2', tier: 'understand', text: 'The differences between irrecoverable debts, allowances for specific doubtful receivables and general allowances for doubtful receivables' },
+              { id: '5.2.3', tier: 'do', text: 'Account for the writing-off of an irrecoverable debt and for the recovery of an irrecoverable debt previously written off in the ledgers' },
+              { id: '5.2.4', tier: 'do', text: 'Calculate new allowances for doubtful receivables and adjustments to existing allowances for doubtful receivables in accordance with organisational policy' },
+              { id: '5.2.5', tier: 'do', text: 'Use the journal to record irrecoverable debts and adjustments to allowances for doubtful receivables' }
+            ]
+          },
+          {
+            id: '5.3',
+            title: 'Record inventory',
+            concepts: [
+              { id: '5.3.1', tier: 'understand', text: 'That accounting for inventory is an application of the accruals basis of accounting' },
+              { id: '5.3.2', tier: 'understand', text: 'The effect that changes in valuation of inventory have on profit/loss for a period' },
+              { id: '5.3.3', tier: 'understand', text: 'That IFRS exist that are relevant to inventory valuation: IAS 2' },
+              { id: '5.3.4', tier: 'understand', text: 'That inventory must be valued at the lower of cost and net realisable value (NRV) on an individual item basis' },
+              { id: '5.3.5', tier: 'understand', text: 'Which types of expenditure can be included in the valuation of inventory' },
+              { id: '5.3.6', tier: 'understand', text: 'That accounting software automates the process of recording, tracking and valuing inventory' },
+              { id: '5.3.7', tier: 'do', text: 'Determine the closing inventory figure in accordance with current accounting standards' },
+              { id: '5.3.8', tier: 'do', text: 'Make entries in the journal to record the value of closing inventory' }
+            ]
+          },
+          {
+            id: '5.4',
+            title: 'Considerations for recording period end adjustments',
+            concepts: [
+              { id: '5.4.1', tier: 'understand', text: 'That when making period end adjustments',
+                indicative: ['there is scope to significantly affect the reported results of the organisation', 'accounting software requires the user to enter dates accurately'] },
+              { id: '5.4.2', tier: 'understand', text: 'The need to apply professional scepticism, integrity and objectivity to prevent misleading and inaccurate information' },
+              { id: '5.4.3', tier: 'understand', text: 'The effects of including misleading or inaccurate period end adjustments (non-compliance with regulations, misinformed decision making by users of the final accounts)' },
+              { id: '5.4.4', tier: 'understand', text: 'How to respond appropriately to period end pressures',
+                indicative: ['time pressure', 'pressure to report favourable results', 'pressure from authority'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 6,
+        title: 'Produce and extend the trial balance',
+        weighting: 15,
+        topics: [
+          {
+            id: '6.1',
+            title: 'Prepare an initial trial balance',
+            concepts: [
+              { id: '6.1.1', tier: 'understand', text: 'That certain accounts can carry either a debit or a credit balance: VAT, disposals, bank, irrecoverable debts expense' },
+              { id: '6.1.2', tier: 'understand', text: 'The importance of producing the trial balance to check for errors' },
+              { id: '6.1.3', tier: 'understand', text: 'The limitations of the trial balance as a check for errors' },
+              { id: '6.1.4', tier: 'understand', text: 'That accounting software completes the transfer of data into the trial balance' },
+              { id: '6.1.5', tier: 'do', text: 'Transfer balances from ledger accounts, a list of balances or written data into the correct debit or credit columns of the initial trial balance' },
+              { id: '6.1.6', tier: 'do', text: 'Correct errors that are not shown by the initial trial balance' },
+              { id: '6.1.7', tier: 'do', text: 'Correct errors that are shown by the initial trial balance by the use and clearing of the suspense account' }
+            ]
+          },
+          {
+            id: '6.2',
+            title: 'Prepare an adjusted trial balance',
+            concepts: [
+              { id: '6.2.1', tier: 'understand', text: 'That accounting software automatically recalculates balances after adjustments' },
+              { id: '6.2.2', tier: 'do', text: 'Place adjustments correctly into the adjustments columns of the adjusted trial balance so that it balances',
+                indicative: ['closing inventory', 'accruals of income or expenses', 'prepayments of income or expenses', 'corrections of errors', 'depreciation', 'irrecoverable debts', 'allowances for doubtful receivables', 'disposals of NCA including part-exchange'] }
+            ]
+          },
+          {
+            id: '6.3',
+            title: 'Complete the extended trial balance (ETB)',
+            concepts: [
+              { id: '6.3.1', tier: 'understand', text: 'The importance of the fully extended trial balance for the preparation of financial statements' },
+              { id: '6.3.2', tier: 'understand', text: 'The difference between entries in the ETB for sole traders and partnerships' },
+              { id: '6.3.3', tier: 'do', text: 'Complete the SPL and SFP columns of the ETB, for sole traders, by extending figures',
+                indicative: ['from the ledger balances and adjustments columns of the adjusted trial balance', 'to the relevant SPL and SFP columns'] },
+              { id: '6.3.4', tier: 'do', text: 'Balance off the ETB, for sole traders, by calculating the profit/loss figure and entering it into the relevant SPL and SFP columns',
+                excluded: ['completion of the ETB for partnerships'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 7,
+        title: 'Produce financial statements for sole traders and partnerships',
+        weighting: 20,
+        topics: [
+          {
+            id: '7.1',
+            title: 'Prepare financial statements for sole traders',
+            concepts: [
+              { id: '7.1.1', tier: 'understand', text: 'The purpose of SPLs' },
+              { id: '7.1.2', tier: 'understand', text: 'The purpose of SFPs' },
+              { id: '7.1.3', tier: 'understand', text: 'How the financial statements are linked to the accounting equation' },
+              { id: '7.1.4', tier: 'understand', text: 'How the SPL and SFP are related' },
+              { id: '7.1.5', tier: 'understand', text: 'Terminology',
+                indicative: ['sales revenue = sales − sales returns', 'net purchases = purchases − purchases returns + carriage inwards', 'cost of sales = opening inventory + net purchases − closing inventory'] },
+              { id: '7.1.6', tier: 'do', text: 'Prepare SPLs' },
+              { id: '7.1.7', tier: 'do', text: 'Prepare SFPs using the net assets presentation' }
+            ]
+          },
+          {
+            id: '7.2',
+            title: 'Opening and closing capital for sole traders',
+            concepts: [
+              { id: '7.2.1', tier: 'understand', text: 'The reasons for movements in the capital balance during a period' },
+              { id: '7.2.2', tier: 'do', text: 'Account for drawings of cash, goods and services, capital injections and profits or losses during a period in order to complete the capital account' }
+            ]
+          },
+          {
+            id: '7.3',
+            title: 'Produce the SPL for partnerships',
+            concepts: [
+              { id: '7.3.1', tier: 'understand', text: 'Why the difference between the SPL for a partnership and for a sole trader is the appropriation account' },
+              { id: '7.3.2', tier: 'understand', text: 'The purpose and content of the partnership appropriation account' },
+              { id: '7.3.3', tier: 'understand', text: 'How the SPL is linked to the partnership appropriation account' },
+              { id: '7.3.4', tier: 'do', text: 'Prepare an appropriation account',
+                indicative: ['interest on capital (calculation not required)', 'interest on drawings (calculation not required)', 'salaries or commission paid to partners'] },
+              { id: '7.3.5', tier: 'do', text: "Calculate each partner's share of any residual profit/loss according to the profit-sharing ratio" },
+              { id: '7.3.6', tier: 'do', text: "Prepare a partnership's SPL" }
+            ]
+          },
+          {
+            id: '7.4',
+            title: 'Produce the SFP for partnerships',
+            concepts: [
+              { id: '7.4.1', tier: 'understand', text: "Why the difference between the SFP for a partnership and for a sole trader is the partners' capital and current accounts" },
+              { id: '7.4.2', tier: 'understand', text: "The difference between the partners' current accounts and the appropriation account" },
+              { id: '7.4.3', tier: 'understand', text: "The difference between the partners' current accounts and the partners' capital account" },
+              { id: '7.4.4', tier: 'do', text: 'Account for drawings in the form of cash, goods or services' },
+              { id: '7.4.5', tier: 'do', text: "Prepare partners' current accounts",
+                indicative: ['interest on capital (calculation not required)', 'interest on drawings (calculation not required)', 'salaries or commission paid to partners', 'drawings'] },
+              { id: '7.4.6', tier: 'do', text: "Prepare a partnership's SFP using the net assets presentation" }
+            ]
+          }
+        ]
+      },
+      {
+        n: 8,
+        title: 'Interpret financial statements using profitability ratios',
+        weighting: 10,
+        topics: [
+          {
+            id: '8.1',
+            title: 'Calculate profitability ratios',
+            concepts: [
+              { id: '8.1.1', tier: 'understand', text: 'The relationship between the SPL and SFP regarding net profit' },
+              { id: '8.1.2', tier: 'understand', text: 'The link between gross profit margin and mark-up' },
+              { id: '8.1.3', tier: 'understand', text: 'The meaning of profitability ratios' },
+              { id: '8.1.4', tier: 'do', text: 'Calculate profitability ratios to assist with interpretation of the financial statements',
+                indicative: [
+                  'ROCE (return on capital employed) = profit for the year / capital employed × 100, where capital employed = capital + non-current liabilities',
+                  'gross profit margin = gross profit / sales revenue × 100',
+                  'net profit margin = profit for the year / sales revenue × 100',
+                  'expense/sales revenue percentage (a specified expense, including cost of sales, as a % of sales revenue) = specified expense / sales revenue × 100'
+                ] }
+            ]
+          },
+          {
+            id: '8.2',
+            title: 'The interpretation of profitability ratios',
+            concepts: [
+              { id: '8.2.1', tier: 'understand', text: 'Why calculating ratios can aid planning, decision making and control for businesses' },
+              { id: '8.2.2', tier: 'understand', text: "Factors that may cause changes in a business's ratios and differences between businesses' ratios" },
+              { id: '8.2.3', tier: 'understand', text: 'Whether a ratio is better or worse than a comparative ratio',
+                indicative: ['a different organisation', 'a different time period', 'an industry standard'] },
+              { id: '8.2.4', tier: 'understand', text: 'The importance of professional scepticism to the interpretation of financial information' }
+            ]
+          }
+        ]
+      },
+      {
+        n: 9,
+        title: 'Prepare accounting records from incomplete information',
+        weighting: 10,
+        topics: [
+          {
+            id: '9.1',
+            title: 'Identify missing figures',
+            concepts: [
+              { id: '9.1.1', tier: 'do', text: 'Calculate missing figures relating to income, expenses, assets, liabilities and capital',
+                indicative: [
+                  'selecting relevant data',
+                  'using daybooks',
+                  'using the cash book',
+                  'reconstructing ledger accounts: receivables and payables ledger control accounts, VAT control account and the bank account',
+                  'calculating and labelling the missing figures of reconstructed accounts',
+                  'calculating opening and closing balances',
+                  'adjusting for VAT'
+                ] }
+            ]
+          },
+          {
+            id: '9.2',
+            title: 'Mark-up and margin',
+            concepts: [
+              { id: '9.2.1', tier: 'understand', text: 'The difference between margin and mark-up' },
+              { id: '9.2.2', tier: 'do', text: 'Calculate margin and mark-up to determine missing figures' },
+              { id: '9.2.3', tier: 'do', text: 'Use cost of sales calculations to determine missing figures' }
+            ]
+          },
+          {
+            id: '9.3',
+            title: 'Reasonableness of figures when information is incomplete',
+            concepts: [
+              { id: '9.3.1', tier: 'understand', text: 'Whether a given figure is reasonable' },
+              { id: '9.3.2', tier: 'understand', text: 'Why an actual balance and a calculated balance can be different' },
+              { id: '9.3.3', tier: 'understand', text: 'The importance of checking information produced by accounting software for accuracy' },
+              { id: '9.3.4', tier: 'understand', text: 'When and how to apply professional scepticism' }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
   var SYLLABUS = {
     qualification: 'AAT Level 3 Diploma in Accounting (Q2022)',
     qualificationNumber: '603/6337/X',
@@ -326,7 +756,7 @@
     /* Weighted unit percentages combine to the qualification grade. Failing any
        single unit makes the whole qualification unclassified. A resit that
        scores lower does not displace an earlier higher result. */
-    units: { tpfb: TPFB }
+    units: { faps: FAPS, tpfb: TPFB }
   };
 
   /* ── Helpers used by the coverage checker and by the app ─────────────────── */

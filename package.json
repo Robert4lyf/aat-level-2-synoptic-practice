@@ -13,6 +13,7 @@
     "check:aat1": "node scripts/check-aat1-coverage.js",
     "check:aat1-quality": "node scripts/check-aat1-quality.js",
     "check:aat3": "node scripts/check-aat3-coverage.js",
+    "check:aat3-fidelity": "node scripts/check-aat3-syllabus-fidelity.js",
     "check:aat3-quality": "node scripts/check-aat3-quality.js",
     "check:aat3-summary": "node scripts/check-aat3-practice-summary.js",
     "check:backup": "node scripts/check-progress-backup.js",
@@ -31,6 +32,6 @@
     "check:guitar-lessons": "node scripts/check-guitar-lessons.js",
     "check:guitar-handedness": "node scripts/check-guitar-handedness.js",
     "check:guitar-controls": "node scripts/check-guitar-controls.js",
-    "test": "node scripts/check-workflow-coverage.js && node scripts/check-csp-hashes.js && node scripts/check-site-password.js && node scripts/check-theme-tokens.js && node scripts/validate-aat-data.js && node scripts/check-question-integrity.js && node scripts/check-aat2-quality.js && node scripts/check-aat1-coverage.js && node scripts/check-aat1-quality.js && node scripts/check-aat3-coverage.js && node scripts/check-aat3-quality.js && node scripts/check-aat3-practice-summary.js && node scripts/check-progress-backup.js && node scripts/check-progress-sync.js && node scripts/validate-story-data.js && node scripts/test-guitar-engine.js && node scripts/check-guitar-playability.js && node scripts/check-guitar-voicings.js && node scripts/check-guitar-coverage.js && node scripts/check-guitar-prerequisites.js && node scripts/check-guitar-quality.js && node scripts/check-guitar-lessons.js && node scripts/check-guitar-handedness.js && node scripts/check-guitar-controls.js && node scripts/check-subject-assets.js && node scripts/check-sw-lazy-cache.js && node scripts/check-subjects-render.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
+    "test": "node scripts/check-workflow-coverage.js && node scripts/check-csp-hashes.js && node scripts/check-site-password.js && node scripts/check-theme-tokens.js && node scripts/validate-aat-data.js && node scripts/check-question-integrity.js && node scripts/check-aat2-quality.js && node scripts/check-aat1-coverage.js && node scripts/check-aat1-quality.js && node scripts/check-aat3-coverage.js && node scripts/check-aat3-syllabus-fidelity.js && node scripts/check-aat3-quality.js && node scripts/check-aat3-practice-summary.js && node scripts/check-progress-backup.js && node scripts/check-progress-sync.js && node scripts/validate-story-data.js && node scripts/test-guitar-engine.js && node scripts/check-guitar-playability.js && node scripts/check-guitar-voicings.js && node scripts/check-guitar-coverage.js && node scripts/check-guitar-prerequisites.js && node scripts/check-guitar-quality.js && node scripts/check-guitar-lessons.js && node scripts/check-guitar-handedness.js && node scripts/check-guitar-controls.js && node scripts/check-subject-assets.js && node scripts/check-sw-lazy-cache.js && node scripts/check-subjects-render.js && node scripts/validate-french-data.js && node scripts/check-french-quality.js"
   }
 }
