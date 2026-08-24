@@ -42,7 +42,16 @@
     tryResult: null,
   };
 
-  var data = { lessons: {}, xp: 0 };
+  /* `practice` is the lifetime record of practice runs, kept per outcome.
+     WHY PER OUTCOME AND NOT A TOTAL. Progress backup merges two devices by
+     taking the larger of each number (see progress-backup.js), so a stored
+     grand total would be wrong the moment the two devices practised different
+     outcomes: max(10, 8) is 10 where the truth is 18. Per-outcome counters
+     merge correctly under that rule, and the totals are derived from them, so
+     there is only ever one source of truth. `correct` rather than `wrong` is
+     stored for the same reason — both rise, but only the pair (attempted,
+     correct) survives a max-merge without ever implying a negative count. */
+  var data = { lessons: {}, xp: 0, practice: { runs: 0, los: {} } };
 
   function load() {
     try {
@@ -51,6 +60,11 @@
         var p = JSON.parse(raw);
         data.lessons = p.lessons || {};
         data.xp = p.xp || 0;
+        var pr = p.practice;
+        data.practice = {
+          runs: (pr && pr.runs) || 0,
+          los: (pr && pr.los && typeof pr.los === 'object') ? pr.los : {},
+        };
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
   }
@@ -131,6 +145,82 @@
       });
     });
     return { total: total, covered: covered, studied: done };
+  }
+
+  /* ── The practice record ─────────────────────────────────────────────────── */
+
+  function outcomes() {
+    var syl = syllabus();
+    return (syl && syl.units && syl.units.tpfb && syl.units.tpfb.outcomes) || [];
+  }
+
+  /* One answered practice question. Called from the single place that advances
+     a practice run, so a question type added later is counted without anyone
+     remembering to count it. */
+  function recordPractice(lo, wasCorrect) {
+    var key = String(lo);
+    var los = data.practice.los;
+    if (!los[key]) los[key] = { attempted: 0, correct: 0 };
+    los[key].attempted++;
+    if (wasCorrect) los[key].correct++;
+  }
+
+  /* The lifetime practice picture as one object.
+   *
+   * Pure — everything it reports is derived from its two arguments — which is
+   * what lets the build check assert the ranking without standing up a browser.
+   *
+   * WHICH OUTCOME "HAS THE MOST MISTAKES" needs a total order, or the answer
+   * can change between two renders of identical data. Most wrong answers wins;
+   * then the lower accuracy, so ten wrong out of twelve beats ten out of forty;
+   * then the larger sample, so the claim rests on more evidence; then the
+   * outcome number, which is arbitrary but fixed.
+   *
+   * Rows are built from the syllabus so an outcome never practised still shows
+   * as a gap rather than vanishing — but any outcome number found in the record
+   * and NOT in the syllabus is appended rather than dropped, so the totals
+   * always account for every question the reader actually answered.
+   */
+  function practiceSummary(record, los) {
+    var p = (record && typeof record === 'object') ? record : data.practice;
+    var byLo = (p && p.los && typeof p.los === 'object') ? p.los : {};
+    var list = (los || outcomes()).map(function (o) { return { n: o.n, title: o.title, weighting: o.weighting }; });
+    var known = {};
+    list.forEach(function (o) { known[String(o.n)] = true; });
+    Object.keys(byLo).forEach(function (k) {
+      if (!known[k]) list.push({ n: Number(k), title: 'Outcome ' + k, weighting: null });
+    });
+
+    var rows = list.map(function (o) {
+      var r = byLo[String(o.n)] || {};
+      var att = Math.max(0, r.attempted || 0);
+      /* Clamped because a merged backup takes the larger of each counter
+         independently, and a hand-edited file need not be coherent at all. */
+      var cor = Math.min(att, Math.max(0, r.correct || 0));
+      return {
+        n: o.n, title: o.title, weighting: o.weighting,
+        attempted: att, correct: cor, wrong: att - cor,
+        accuracy: att ? Math.round((cor / att) * 100) : null,
+      };
+    });
+
+    var attempted = 0, correct = 0;
+    rows.forEach(function (r) { attempted += r.attempted; correct += r.correct; });
+
+    var worst = rows.filter(function (r) { return r.wrong > 0; }).sort(function (a, b) {
+      return (b.wrong - a.wrong) || (a.accuracy - b.accuracy) ||
+             (b.attempted - a.attempted) || (a.n - b.n);
+    })[0] || null;
+
+    return {
+      runs: Math.max(0, (p && p.runs) || 0),
+      attempted: attempted,
+      correct: correct,
+      wrong: attempted - correct,
+      accuracy: attempted ? Math.round((correct / attempted) * 100) : null,
+      rows: rows,
+      worst: worst,
+    };
   }
 
   /* ── Small helpers ───────────────────────────────────────────────────────── */
@@ -496,6 +586,92 @@
       '</div></div></div>';
   }
 
+  /* ── Practice summary ────────────────────────────────────────────────────── */
+
+  /* Level 2 answers "how am I doing" on a Progress tab; Level 3 has no tabs, so
+     the same question is answered where the answer is actionable — at the top
+     of the practice picker, immediately above the outcome the reader would
+     choose next.
+
+     The headline is the count of questions attempted, and the callout names the
+     outcome with the most mistakes and offers to start a run on it. A score on
+     its own tells a reader nothing about where to go next; this makes the next
+     click the weakest thing they own. */
+  function bandClass(pct) {
+    if (pct === null) return 'a3-band-none';
+    return pct >= 70 ? 'a3-band-ok' : pct >= 50 ? 'a3-band-mid' : 'a3-band-bad';
+  }
+
+  function renderPracticeSummary() {
+    var s = practiceSummary();
+
+    if (!s.attempted) {
+      return '<section class="a3-sum a3-sum-empty" aria-label="Your practice so far">' +
+        '<div class="a3-sum-eyebrow">Your practice so far</div>' +
+        '<p class="a3-sum-emptytx">No practice questions answered yet. Answer a few and this will ' +
+          'show how many you have attempted and which outcome is costing you the most marks.</p>' +
+        '</section>';
+    }
+
+    var stat = function (n, label) {
+      return '<div class="a3-sum-stat"><span class="a3-sum-n">' + n + '</span>' +
+        '<span class="a3-sum-l">' + label + '</span></div>';
+    };
+
+    var h = '<section class="a3-sum" aria-label="Your practice so far">';
+    h += '<div class="a3-sum-eyebrow">Your practice so far</div>';
+    h += '<div class="a3-sum-stats">' +
+      stat(s.attempted, 'Questions attempted') +
+      stat(s.accuracy + '%', 'Answered correctly') +
+      stat(s.wrong, s.wrong === 1 ? 'Mistake' : 'Mistakes') +
+      stat(s.runs, s.runs === 1 ? 'Run finished' : 'Runs finished') +
+      '</div>';
+
+    if (s.worst) {
+      h += '<div class="a3-sum-focus">' +
+        '<div class="a3-sum-focus-tx">' +
+          '<div class="a3-sum-focus-k">Most mistakes</div>' +
+          '<div class="a3-sum-focus-t">Outcome ' + esc(s.worst.n) + ' · ' + esc(s.worst.title) + '</div>' +
+          '<div class="a3-sum-focus-m">' + s.worst.wrong + ' wrong out of ' + s.worst.attempted +
+            ' attempted · ' + s.worst.accuracy + '% correct' +
+            (s.worst.weighting ? ' · worth ' + s.worst.weighting + '% of the assessment' : '') +
+          '</div>' +
+        '</div>' +
+        '<button class="a3-btn a3-btn-primary a3-sum-focus-go" data-a3="startpractice" data-lo="' + esc(s.worst.n) + '">' +
+          'Practise Outcome ' + esc(s.worst.n) + '</button>' +
+        '</div>';
+    } else {
+      h += '<div class="a3-sum-focus a3-sum-focus-clean">' +
+        '<div class="a3-sum-focus-tx">' +
+          '<div class="a3-sum-focus-k">No mistakes yet</div>' +
+          '<div class="a3-sum-focus-m">Nothing has gone wrong so far, so there is no weakest ' +
+            'outcome to name. Keep going and this will point at one.</div>' +
+        '</div></div>';
+    }
+
+    h += '<div class="a3-sum-rows">';
+    s.rows.forEach(function (r) {
+      var isWorst = !!(s.worst && s.worst.n === r.n);
+      var pct = r.accuracy === null ? 0 : r.accuracy;
+      h += '<div class="a3-sum-row' + (isWorst ? ' is-worst' : '') + '">' +
+        '<span class="a3-sum-row-n">' + esc(r.n) + '</span>' +
+        '<span class="a3-sum-row-t">' + esc(r.title) +
+          (isWorst ? '<span class="a3-sum-tag">most mistakes</span>' : '') + '</span>' +
+        '<span class="a3-sum-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"' +
+          ' aria-label="Outcome ' + esc(r.n) + ' accuracy">' +
+          '<span class="a3-sum-bar-fill ' + bandClass(r.accuracy) + '" style="width:' + pct + '%"></span></span>' +
+        '<span class="a3-sum-row-m">' + (r.attempted
+          ? r.wrong + ' wrong / ' + r.attempted
+          : 'not practised') + '</span>' +
+        '</div>';
+    });
+    h += '</div>';
+
+    h += '<div class="a3-sum-foot">Practice questions only — the questions inside lessons are ' +
+      'recorded on the path, not here.</div>';
+    return h + '</section>';
+  }
+
   /* ── Practice picker ─────────────────────────────────────────────────────── */
   function renderPractice() {
     var bank = practiceBank();
@@ -515,6 +691,8 @@
 
     h += '<div class="a3-notice">These are separate from the questions inside the lessons, and are meant to be met cold. ' +
       'A run is ' + PRACTICE_LEN + ' questions and records no lesson progress — it tells you what you know, not what you have read.</div>';
+
+    h += renderPracticeSummary();
 
     h += '<div class="a3-pgrid">';
     h += '<button class="a3-pcard a3-pcard-mix" data-a3="startpractice" data-lo="mix">' +
@@ -638,6 +816,7 @@
       data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
     } else {
       data.xp += S.score * 3;
+      data.practice.runs++;
     }
     save();
     S.screen = 'done';
@@ -744,7 +923,20 @@
     if (act === 'nextq') {
       /* Recorded here rather than in each of the four grading paths, so a new
          question type cannot be added without its misses being counted. */
-      if (S.mode === 'practice' && S.answered === false && q) S.practiceMissed.push(q);
+      /* `answered !== null` because a graded answer is what makes this an
+         attempt. The button only renders once the question has been graded, so
+         today this cannot be reached ungraded — but the count is only honest
+         while that stays true, so it is a condition here rather than a
+         property of the renderer. */
+      if (S.mode === 'practice' && q && S.answered !== null) {
+        if (S.answered === false) S.practiceMissed.push(q);
+        recordPractice(q.lo, S.answered === true);
+        /* Written now rather than at the end of the run. A reader who answers
+           six questions and then leaves has attempted six questions, and the
+           summary that claims to count what they attempted has to agree. The
+           save is debounced downstream, so per-question is not per-request. */
+        save();
+      }
       if (S.qIdx === checks.length - 1) finish();
       else { S.qIdx++; resetQState(); }
       return rerender();
@@ -753,5 +945,16 @@
 
   load();
 
-  root.AAT3_UI = { mount: mount, reset: function () { S.screen = 'path'; } };
+  root.AAT3_UI = {
+    mount: mount,
+    /* `screen` is optional and defaults to the path, which is the only thing
+       the app itself ever wants. It is settable so the build check can mount
+       the practice picker and assert the summary that renders there, rather
+       than asserting a regex against this file and calling that a test. */
+    reset: function (screen) { S.screen = screen || 'path'; },
+    /* Exposed so scripts/check-aat3-practice-summary.js can assert the totals
+       and the most-mistakes ranking directly, rather than reading them back out
+       of rendered HTML. */
+    practiceSummary: practiceSummary,
+  };
 }(typeof self !== 'undefined' ? self : this));

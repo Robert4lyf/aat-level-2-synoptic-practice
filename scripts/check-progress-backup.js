@@ -79,8 +79,11 @@ const desktop = {
   story: { v: 1, days: { d2: { best: 60 } } },
 };
 
-const A = { aatPrep_v2: phone, prep_v2_aat3: { lessons: { '3A': { best: 80 } }, xp: 120 }, multisubject_active: 'aat3', prep_v2_settings: { seenSplash: true } };
-const B = { aatPrep_v2: desktop, prep_v2_aat3: { lessons: { '3A': { best: 60 }, '3B': { best: 95 } }, xp: 90 }, multisubject_active: 'aat', prep_v2_settings: { seenSplash: false } };
+/* Level 3 keeps its practice record per outcome rather than as one running
+   total, precisely so this merge adds up — see check-aat3-practice-summary.js,
+   which asserts the arithmetic the two devices below produce. */
+const A = { aatPrep_v2: phone, prep_v2_aat3: { lessons: { '3A': { best: 80 } }, xp: 120, practice: { runs: 2, los: { '1': { attempted: 10, correct: 6 } } } }, multisubject_active: 'aat3', prep_v2_settings: { seenSplash: true } };
+const B = { aatPrep_v2: desktop, prep_v2_aat3: { lessons: { '3A': { best: 60 }, '3B': { best: 95 } }, xp: 90, practice: { runs: 1, los: { '2': { attempted: 8, correct: 3 } } } }, multisubject_active: 'aat', prep_v2_settings: { seenSplash: false } };
 
 console.log('\x1b[1mProgress backup\x1b[0m\n');
 
@@ -141,6 +144,9 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   eq(Object.keys(l3.lessons).sort(), ['3A', '3B'], 'Level 3 lessons from both devices survive');
   eq(l3.lessons['3A'].best, 80, 'Level 3 best score is the higher of the two');
   eq(l3.xp, 120, 'Level 3 XP is the higher of the two');
+  eq(Object.keys(l3.practice.los).sort(), ['1', '2'], 'Level 3 practice on an outcome only one device touched is carried over');
+  eq(l3.practice.los['1'], { attempted: 10, correct: 6 }, 'a per-outcome practice record survives intact');
+  eq(l3.practice.runs, 2, 'finished practice runs take the higher of the two');
 }
 
 /* ── Idempotent and order-independent ───────────────────────────────────── */
