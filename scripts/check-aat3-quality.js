@@ -28,6 +28,7 @@ const ROOT = path.join(__dirname, '..');
 const { AAT3_LEARN_PATH } = require(path.join(ROOT, 'aat3-learn-data.js'));
 const { TAX } = require(path.join(ROOT, 'aat3-tax-data.js'));
 const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
+const SYL = require(path.join(ROOT, 'aat3-syllabus.js'));
 
 const errors = [];
 const warnings = [];
@@ -181,6 +182,47 @@ allQuestions.forEach(({ where, q }) => {
     }
   }
 });
+
+/* ── 1a. Every practice question names its unit, and names it in the right field
+   ────────────────────────────────────────────────────────────────────────────
+   Two different things were called `unit`. On a numeric question it is the unit
+   of MEASUREMENT — the £ or % the player prints as the input placeholder. When
+   the bank had to be tagged with the AAT unit it belongs to, the obvious field
+   name was already taken, and writing `unit: 'tpfb'` into a question that later
+   said `unit: '£'` did not fail: the second key won, the question fell out of
+   its own practice bank, and nothing said a word.
+
+   So: `unitKey` carries the AAT unit, `unit` carries the measurement, and
+   neither is allowed to hold the other's values. An untagged question is worse
+   than a missing one — outcome numbers restart at 1 in every unit, so it would
+   be counted inside a different unit's outcome 1. */
+{
+  const UNIT_KEYS = Object.keys(SYL.SYLLABUS.units);
+  const MEASURES = /^[£$%€]|hours?|days?|months?$/i;
+  practice.forEach(q => {
+    const where = `practice ${q.id}`;
+    if (!q.unitKey) {
+      errors.push(`${where}: no unitKey — outcome numbers restart in every unit, so this would be counted under another unit's outcome ${q.lo}.`);
+    } else if (UNIT_KEYS.indexOf(q.unitKey) === -1) {
+      errors.push(`${where}: unitKey "${q.unitKey}" is not a unit in aat3-syllabus.js (${UNIT_KEYS.join(', ')}).`);
+    }
+    if (q.unit && UNIT_KEYS.indexOf(q.unit) !== -1) {
+      errors.push(`${where}: \`unit\` is set to "${q.unit}", which is an AAT unit key. \`unit\` is the unit of MEASUREMENT the player shows as a placeholder; the AAT unit goes in \`unitKey\`.`);
+    }
+    if (q.unit && !MEASURES.test(String(q.unit))) {
+      warnings.push(`${where}: \`unit\` is "${q.unit}", which does not look like a unit of measurement.`);
+    }
+    if (q.unitKey && q.lo != null) {
+      const u = SYL.SYLLABUS.units[q.unitKey];
+      if (u && !u.outcomes.some(o => o.n === q.lo)) {
+        errors.push(`${where}: outcome ${q.lo} does not exist in ${q.unitKey.toUpperCase()}.`);
+      }
+    }
+  });
+  const byUnit = {};
+  practice.forEach(q => { byUnit[q.unitKey || '(none)'] = (byUnit[q.unitKey || '(none)'] || 0) + 1; });
+  notes.push(`Practice bank by unit: ${Object.entries(byUnit).map(([k, v]) => `${k} ${v}`).join(', ')}.`);
+}
 
 /* ── 1b. True/false grids must not be answerable by test-wiseness ─────────
    An adversarial review found two cues in the true/false statements that no

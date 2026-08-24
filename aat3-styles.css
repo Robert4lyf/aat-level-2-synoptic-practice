@@ -186,6 +186,65 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-pcard-mix .a3-pcard-t { color: #fff; }
 .a3-pcard-mix .a3-pcard-m { color: rgba(255,255,255,.75); }
 
+/* ── Unit picker ──────────────────────────────────────────────────────────── */
+/* The first screen once Level 3 carries more than one unit. Each card has to
+   answer two questions before the reader commits: how much of this unit have I
+   studied, and how much of it exists yet. */
+.a3-ugrid {
+  display: grid; gap: 16px; margin: 6px 0 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.a3-ucard {
+  display: flex; flex-direction: column; gap: 8px; text-align: left;
+  padding: 22px 24px; cursor: pointer; font: inherit; color: inherit;
+  border: 1px solid var(--a3-line); border-radius: var(--a3-r-lg);
+  background: var(--a3-surface); box-shadow: var(--a3-shadow);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.a3-ucard:hover { transform: translateY(-2px); box-shadow: var(--a3-shadow-lg); border-color: var(--a3-line-2); }
+.a3-ucard-k {
+  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: var(--a3-brand-ink);
+}
+.a3-ucard-t {
+  font-family: var(--a3-serif); font-size: 21px; font-weight: 600;
+  line-height: 1.2; letter-spacing: -.012em; color: var(--a3-ink);
+}
+.a3-ucard-m { font-size: 13px; color: var(--a3-ink-3); }
+.a3-ucard-bar {
+  display: block; height: 7px; margin-top: 4px; border-radius: 999px;
+  background: var(--a3-line); overflow: hidden;
+}
+.a3-ucard-bar > span {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--a3-brand), var(--a3-brand-2));
+}
+.a3-ucard-s { font-size: 12.5px; color: var(--a3-ink-3); line-height: 1.5; }
+.a3-ucard-s strong { color: var(--a3-gold); font-weight: 650; }
+/* A part-written unit is marked on its own card rather than only after the
+   reader has opened it and scrolled. */
+.a3-ucard.is-partial { border-left: 3px solid var(--a3-gold); }
+
+.a3-unitback {
+  display: inline-flex; align-items: center; gap: 7px; margin-bottom: 14px;
+  padding: 6px 13px 6px 11px; cursor: pointer; font: inherit; font-size: 13px;
+  border-radius: 999px; border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.08); color: var(--a3-hero-ink);
+  transition: background .12s ease, border-color .12s ease;
+}
+.a3-unitback:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.4); }
+
+/* An outcome the specification lists and nothing teaches yet. Rendered rather
+   than skipped, so a part-built unit reads as part-built instead of as a unit
+   whose specification happens to be short. */
+.a3-outcome.is-unwritten { opacity: .72; }
+.a3-unwritten {
+  border: 1px dashed var(--a3-line-2); border-radius: var(--a3-r);
+  padding: 16px 18px; margin: 4px 0 8px;
+  font-size: 13.5px; line-height: 1.6; color: var(--a3-ink-3);
+  background: var(--a3-surface-2);
+}
+
 /* ── Practice summary ─────────────────────────────────────────────────────── */
 /* Sits at the top of the practice picker, above the outcome cards, because the
    thing it says — which outcome you get wrong most — is only useful next to the

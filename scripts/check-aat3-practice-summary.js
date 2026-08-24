@@ -69,7 +69,10 @@ const SEED = {
     '4': { attempted: 9, correct: 1 },
   },
 };
-global.localStorage = fakeStore({ [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0, practice: SEED }) });
+/* On disk the record is nested per unit: outcome numbers restart at 1 in every
+   unit, so one flat map would add FAPS outcome 1 to TPFB outcome 1. */
+const STORED = { units: { tpfb: SEED } };
+global.localStorage = fakeStore({ [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0, practice: STORED }) });
 
 /* In Node the module's `root` is its own exports object, so the globals it
    reads at call time are set on the module rather than on `window`. */
@@ -79,6 +82,7 @@ UI.AAT3_PRACTICE = require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTI
 UI.AAT3_LEARN_PATH = require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH;
 const summary = UI.AAT3_UI.practiceSummary;
 const OUTCOMES = UI.AAT3_SYLLABUS.units.tpfb.outcomes;
+const FAPS_OUTCOMES = UI.AAT3_SYLLABUS.units.faps.outcomes;
 const BANK = UI.AAT3_PRACTICE.QUESTIONS;
 
 let failures = 0, checks = 0;
@@ -210,10 +214,10 @@ console.log(`${BOLD}AAT Level 3 practice summary${RESET}\n`);
 {
   global.window = global;
   const PB = require(path.join(ROOT, 'progress-backup.js'));
-  const phone   = { [STORE_KEY]: { lessons: {}, xp: 60, practice: { runs: 2, los: { '1': { attempted: 10, correct: 6 } } } } };
-  const desktop = { [STORE_KEY]: { lessons: {}, xp: 30, practice: { runs: 1, los: { '2': { attempted: 8, correct: 3 } } } } };
+  const phone   = { [STORE_KEY]: { lessons: {}, xp: 60, practice: { units: { tpfb: { runs: 2, los: { '1': { attempted: 10, correct: 6 } } } } } } };
+  const desktop = { [STORE_KEY]: { lessons: {}, xp: 30, practice: { units: { tpfb: { runs: 1, los: { '2': { attempted: 8, correct: 3 } } } } } } };
 
-  const merged = PB.mergeAll(phone, desktop)[STORE_KEY].practice;
+  const merged = PB.mergeAll(phone, desktop)[STORE_KEY].practice.units.tpfb;
   const s = summary(merged, OUTCOMES);
   eq(s.attempted, 18, 'work done on two devices adds up — the reason the record is kept per outcome');
   eq(s.correct, 9, 'and so do the correct answers');
@@ -223,15 +227,107 @@ console.log(`${BOLD}AAT Level 3 practice summary${RESET}\n`);
      larger rather than the sum. Asserted so the trade-off is deliberate and
      survives someone "fixing" it into a sum, which would inflate on re-import. */
   const both = PB.mergeAll(
-    { [STORE_KEY]: { practice: { runs: 3, los: { '1': { attempted: 10, correct: 6 } } } } },
-    { [STORE_KEY]: { practice: { runs: 5, los: { '1': { attempted: 7, correct: 5 } } } } }
-  )[STORE_KEY].practice;
+    { [STORE_KEY]: { practice: { units: { tpfb: { runs: 3, los: { '1': { attempted: 10, correct: 6 } } } } } } },
+    { [STORE_KEY]: { practice: { units: { tpfb: { runs: 5, los: { '1': { attempted: 7, correct: 5 } } } } } } }
+  )[STORE_KEY].practice.units.tpfb;
   eq(summary(both, OUTCOMES).attempted, 10, 'the same outcome on both devices takes the larger count, not the sum');
   eq(both.runs, 5, 'finished runs take the larger count too');
 
   /* Importing the same file twice must not move the numbers. */
   const once = PB.mergeAll(phone, desktop);
   eq(PB.mergeAll(once, desktop), once, 'merging the same backup twice changes nothing the second time');
+}
+
+/* A learn path carrying BOTH units, so the two blocks below test per-unit
+   behaviour as a property of the code rather than of how much FAPS has been
+   authored so far. A unit only reaches the picker once it has some content, so
+   without this stub the FAPS half of these assertions would quietly pass by
+   falling back to TPFB — and would go on quietly passing after FAPS shipped. */
+const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
+  UI.AAT3_LEARN_PATH.some(g => g.unit === 'faps')
+    ? []
+    : [{ unit: 'faps', level: 3, title: 'Financial Accounting: Preparing Financial Statements',
+         outcome: 1, outcomeTitle: 'Understand the accounting principles underlying final accounts preparation',
+         weighting: 5, lessons: [] }]
+);
+
+/* ── The record is per unit, and old records still work ─────────────────── */
+{
+  /* Outcome numbers restart at 1 in every unit. A flat record would add FAPS
+     outcome 1 to TPFB outcome 1 and name a weakest outcome belonging to
+     neither, which is worse than reporting nothing. */
+  const store = fakeStore({
+    [STORE_KEY]: JSON.stringify({
+      practice: {
+        units: {
+          tpfb: { runs: 2, los: { '1': { attempted: 10, correct: 9 } } },
+          faps: { runs: 1, los: { '1': { attempted: 10, correct: 1 } } },
+        },
+      },
+    }),
+  });
+  global.localStorage = store;
+  delete require.cache[require.resolve(path.join(ROOT, 'aat3-ui.js'))];
+  const M = require(path.join(ROOT, 'aat3-ui.js'));
+  M.AAT3_SYLLABUS = UI.AAT3_SYLLABUS;
+  M.AAT3_PRACTICE = UI.AAT3_PRACTICE;
+  M.AAT3_LEARN_PATH = TWO_UNIT_PATH;
+
+  M.AAT3_UI.reset('path', 'tpfb');
+  const t = M.AAT3_UI.practiceSummary();
+  eq(t.attempted, 10, 'the summary reports the active unit only, not every unit added together');
+  eq(t.correct, 9, 'and its correct count is that unit\'s');
+  eq(t.worst.n, 1, 'TPFB outcome 1 is the only outcome with a mistake in it');
+  eq(t.wrong, 1, 'one wrong in TPFB, not the eleven a flat record would report');
+
+  M.AAT3_UI.reset('path', 'faps');
+  const f = M.AAT3_UI.practiceSummary();
+  ok(f.rows.length === FAPS_OUTCOMES.length, 'the FAPS summary really is FAPS — nine outcomes, not TPFB\'s five');
+  eq(f.attempted, 10, 'switching unit switches the whole summary');
+  eq(f.wrong, 9, 'and FAPS outcome 1 keeps its own nine mistakes');
+  ok(t.rows[0].title !== f.rows[0].title, 'the two units\' outcome 1 are different outcomes with different titles');
+}
+
+/* ── Migrating a record written before there was a second unit ───────────── */
+{
+  /* The shape that shipped one change ago: `runs` and `los` at the top level,
+     because Level 3 was one unit. Those counters can only be TPFB's. */
+  const legacy = { runs: 3, los: { '2': { attempted: 12, correct: 7 } } };
+  const store = fakeStore({ [STORE_KEY]: JSON.stringify({ lessons: { 'x': { best: 70 } }, xp: 90, practice: legacy }) });
+  global.localStorage = store;
+  delete require.cache[require.resolve(path.join(ROOT, 'aat3-ui.js'))];
+  const M = require(path.join(ROOT, 'aat3-ui.js'));
+  M.AAT3_SYLLABUS = UI.AAT3_SYLLABUS;
+  M.AAT3_PRACTICE = UI.AAT3_PRACTICE;
+  M.AAT3_LEARN_PATH = TWO_UNIT_PATH;
+  M.AAT3_UI.reset('path', 'tpfb');
+
+  const s2 = M.AAT3_UI.practiceSummary();
+  eq(s2.attempted, 12, 'a record written before FAPS existed is read, not discarded');
+  eq(s2.correct, 7, 'with its correct count intact');
+  eq(s2.runs, 3, 'and its finished runs');
+  eq(s2.worst.n, 2, 'and it still names the right outcome');
+
+  M.AAT3_UI.reset('path', 'faps');
+  eq(M.AAT3_UI.practiceSummary().attempted, 0, 'the migrated work lands under TPFB and not under FAPS');
+
+  /* Idempotent, and the newer figure survives. Re-importing an old backup over
+     a migrated store must not double-count and must not overwrite. */
+  global.window = global;
+  const PB2 = require(path.join(ROOT, 'progress-backup.js'));
+  const migrated = { [STORE_KEY]: { practice: { units: { tpfb: { runs: 5, los: { '2': { attempted: 20, correct: 11 } } } } } } };
+  const reimported = PB2.mergeAll(migrated, { [STORE_KEY]: { practice: legacy } })[STORE_KEY];
+  const store2 = fakeStore({ [STORE_KEY]: JSON.stringify(reimported) });
+  global.localStorage = store2;
+  delete require.cache[require.resolve(path.join(ROOT, 'aat3-ui.js'))];
+  const M2 = require(path.join(ROOT, 'aat3-ui.js'));
+  M2.AAT3_SYLLABUS = UI.AAT3_SYLLABUS;
+  M2.AAT3_PRACTICE = UI.AAT3_PRACTICE;
+  M2.AAT3_LEARN_PATH = TWO_UNIT_PATH;
+  M2.AAT3_UI.reset('path', 'tpfb');
+  const s3 = M2.AAT3_UI.practiceSummary();
+  eq(s3.attempted, 20, 'an old backup re-imported over a migrated store neither double-counts nor overwrites the newer figure');
+  eq(s3.runs, 5, 'and the higher run count is the one kept');
 }
 
 /* ── A fake element that is really a driver ─────────────────────────────── */
@@ -335,7 +431,7 @@ function answerCurrent(el) {
   APP.AAT3_LEARN_PATH = UI.AAT3_LEARN_PATH;
 
   const el = fakeEl();
-  APP.AAT3_UI.reset('practice');
+  APP.AAT3_UI.reset('practice', 'tpfb');
   APP.AAT3_UI.mount(el);
   ok(/a3-sum-empty/.test(el.innerHTML), 'a reader with no history is shown the empty state');
 
@@ -355,7 +451,7 @@ function answerCurrent(el) {
   ok(!!scored, 'the done screen reports a score to check the record against');
   const score = Number(scored[1]);
 
-  const rec = JSON.parse(store.getItem(STORE_KEY)).practice;
+  const rec = JSON.parse(store.getItem(STORE_KEY)).practice.units.tpfb;
   eq(rec.los['4'].attempted, 10, 'every answered question was recorded as attempted');
   eq(rec.los['4'].correct, score, 'and the correct count matches the score the app itself reported');
   ok(score < 10, 'the driver got at least one wrong, so a right/wrong mix was actually exercised');
@@ -374,7 +470,7 @@ function answerCurrent(el) {
   click(el, 'startpractice', n => n.getAttribute('data-lo') === '1');
   for (let i = 0; i < 3; i++) { answerCurrent(el); click(el, 'nextq'); }
   click(el, 'exit');
-  const after = JSON.parse(store.getItem(STORE_KEY)).practice;
+  const after = JSON.parse(store.getItem(STORE_KEY)).practice.units.tpfb;
   eq(after.los['1'].attempted, 3, 'questions answered in an abandoned run still count as attempted');
   eq(after.runs, 1, 'but the abandoned run is not counted as finished');
   eq(APP.AAT3_UI.practiceSummary().attempted, 13, 'and the summary totals both runs');
@@ -385,7 +481,7 @@ function answerCurrent(el) {
      apart is one mode check. Drive a whole lesson and show the count does not
      move. */
   const beforeLesson = JSON.stringify(JSON.parse(store.getItem(STORE_KEY)).practice);
-  APP.AAT3_UI.reset('path');
+  APP.AAT3_UI.reset('path', 'tpfb');
   APP.AAT3_UI.mount(el);
   click(el, 'open', n => n.getAttribute('data-id') === 'L3-TPFB-0A');
   let guard = 0;
@@ -407,6 +503,9 @@ function answerCurrent(el) {
   delete require.cache[require.resolve(path.join(ROOT, 'aat3-ui.js'))];
   const RELOADED = require(path.join(ROOT, 'aat3-ui.js'));
   RELOADED.AAT3_SYLLABUS = UI.AAT3_SYLLABUS;
+  RELOADED.AAT3_PRACTICE = UI.AAT3_PRACTICE;
+  RELOADED.AAT3_LEARN_PATH = UI.AAT3_LEARN_PATH;
+  RELOADED.AAT3_UI.reset('path', 'tpfb');
   eq(RELOADED.AAT3_UI.practiceSummary().attempted, 13, 'the record survives a reload');
 
   Math.random = realRandom;
@@ -414,14 +513,15 @@ function answerCurrent(el) {
 
 /* ── It reaches the page ────────────────────────────────────────────────── */
 {
-  global.localStorage = fakeStore({ [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0, practice: SEED }) });
+  global.localStorage = fakeStore({ [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0, practice: STORED }) });
   delete require.cache[require.resolve(path.join(ROOT, 'aat3-ui.js'))];
   const PAGE = require(path.join(ROOT, 'aat3-ui.js'));
   PAGE.AAT3_SYLLABUS = UI.AAT3_SYLLABUS;
   PAGE.AAT3_PRACTICE = UI.AAT3_PRACTICE;
+  PAGE.AAT3_LEARN_PATH = UI.AAT3_LEARN_PATH;
 
   const el = fakeEl();
-  PAGE.AAT3_UI.reset('practice');
+  PAGE.AAT3_UI.reset('practice', 'tpfb');
   PAGE.AAT3_UI.mount(el);
   const page = el.innerHTML;
 
@@ -452,8 +552,9 @@ function answerCurrent(el) {
   const FRESH = require(path.join(ROOT, 'aat3-ui.js'));
   FRESH.AAT3_SYLLABUS = UI.AAT3_SYLLABUS;
   FRESH.AAT3_PRACTICE = UI.AAT3_PRACTICE;
+  FRESH.AAT3_LEARN_PATH = UI.AAT3_LEARN_PATH;
   const el2 = fakeEl();
-  FRESH.AAT3_UI.reset('practice');
+  FRESH.AAT3_UI.reset('practice', 'tpfb');
   FRESH.AAT3_UI.mount(el2);
   const blank = el2.innerHTML;
   ok(/a3-sum-empty/.test(blank), 'before any practice the summary renders its empty state');
