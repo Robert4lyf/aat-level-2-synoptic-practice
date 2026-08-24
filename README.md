@@ -107,6 +107,38 @@ The **Level 1 Award in Bookkeeping** module covers the whole of the Bookkeeping 
 Its own design language is scoped entirely under `body[data-subject="aat1"]`, and its progress
 lives under its own storage key, so nothing it does can reach the other subjects.
 
+## The Level 3 module
+
+The **Level 3 Diploma in Accounting** module covers Tax Processes for Businesses across all
+five outcomes, with its own path, lesson player, practice bank and design language.
+
+Its practice screen opens with a **summary of your practice so far**: how many practice
+questions you have attempted, how many you got right, and — the part worth having — which
+learning outcome you are getting wrong most, named in full with a button that starts a run on
+it. Underneath, every outcome gets a row, so an outcome you have never touched reads *not
+practised* rather than quietly not appearing.
+
+Two details are load-bearing rather than cosmetic:
+
+- **The record is kept per outcome, not as a running total.** Backups merge two devices by
+  taking the larger of each number (see `progress-backup.js`), under which a stored grand total
+  would read 10 where the truth is 18. Per-outcome counters merge correctly and the totals are
+  derived from them, so there is only one source of truth.
+- **"Most mistakes" is a total order.** Most wrong wins — that is the question being asked, so a
+  large outcome answered badly beats a tiny one answered worse. Ties break on lower accuracy,
+  then on the larger sample (which only fires on a rounding collision), then on outcome number.
+  A partial order would let identical data rank two ways between renders.
+
+Both are asserted by `scripts/check-aat3-practice-summary.js`. It also drives the real thing:
+`mount()` writes HTML and then binds click handlers to it, so a fake element that keeps those
+handlers plays a whole practice run — and a whole lesson, to show the lesson does *not* move the
+practice count — through the real grading, then reads the record back. The page assertions are
+scoped to the summary section, because the picker below renders its own "start outcome 4" button
+and an unscoped search for one passes with the summary deleted.
+
+Only practice questions are counted. The questions inside lessons are recorded on the path,
+which keeps the summary an answer to "what do I know" rather than "what have I read".
+
 ## Running it
 
 This is a static site — no build step and no dependencies. Open `index.html` in any modern browser, or host the folder on any static host.

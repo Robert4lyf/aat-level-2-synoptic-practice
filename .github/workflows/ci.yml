@@ -43,6 +43,8 @@ jobs:
         run: npm run check:aat3
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
+      - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
+        run: npm run check:aat3-summary
       - name: Check progress backup merge (no data loss, idempotent)
         run: npm run check:backup
       - name: Check cross-device sync (version check, conflict retry, fail-safe)
