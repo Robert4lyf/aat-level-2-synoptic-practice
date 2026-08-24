@@ -916,11 +916,15 @@
       '<div class="a3-hero-in">' +
       '<div class="a3-eyebrow">Practice</div>' +
       '<h1 class="a3-title">Test yourself</h1>' +
-      '<div class="a3-sub">' + bank.length + ' questions · ' + PRACTICE_LEN + ' per run, drawn at random</div>' +
+      '<div class="a3-sub">' + bank.length + ' questions · up to ' + PRACTICE_LEN + ' per run, drawn at random</div>' +
       '</div></header>';
 
     h += '<div class="a3-notice">These are separate from the questions inside the lessons, and are meant to be met cold. ' +
-      'A run is ' + PRACTICE_LEN + ' questions and records no lesson progress — it tells you what you know, not what you have read.</div>';
+      /* "up to", because a run is a slice of the pool: an outcome with eight
+         questions in the bank gives a run of eight, not a run of ten padded
+         out. Stating a flat ten was accurate while every outcome had more
+         than ten and stopped being accurate the moment one did not. */
+      'A run is up to ' + PRACTICE_LEN + ' questions and records no lesson progress — it tells you what you know, not what you have read.</div>';
 
     h += renderPracticeSummary();
 

@@ -10,7 +10,8 @@ A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q202
 Alongside it are two self-contained modules for the levels either side, each with its own design, its own progress and its own renderer:
 
 - **AAT Level 1 Award in Bookkeeping** — Bookkeeping Fundamentals, all five outcomes
-- **AAT Level 3 Diploma in Accounting** — Tax Processes for Businesses, all five outcomes
+- **AAT Level 3 Diploma in Accounting** — two units: Tax Processes for Businesses (complete) and
+  Financial Accounting: Preparing Financial Statements (in progress)
 
 > ⚠️ This is an independent study tool. It is **not** affiliated with, endorsed by, or officially associated with AAT (the Association of Accounting Technicians).
 
@@ -109,10 +110,52 @@ lives under its own storage key, so nothing it does can reach the other subjects
 
 ## The Level 3 module
 
-The **Level 3 Diploma in Accounting** module covers Tax Processes for Businesses across all
-five outcomes, with its own path, lesson player, practice bank and design language.
+The **Level 3 Diploma in Accounting** module carries two of the qualification's four units, each
+with its own path, practice bank and progress, behind a picker that opens first:
 
-Its practice screen opens with a **summary of your practice so far**: how many practice
+| Unit | Share of the grade | GLH | State |
+|---|---|---|---|
+| Tax Processes for Businesses (TPFB) | 15% | 60 | **Complete** — 5 of 5 outcomes, 32 lessons |
+| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 3 of 9 outcomes, 16 lessons, 25% of the assessment |
+
+FAPS is the largest unit in the qualification: 122 key concepts against TPFB's 93, and more of
+the grade than the other three units it sits alongside put together. It arrives outcome by
+outcome, as TPFB did.
+
+**A part-built unit says so, in three places.** Its card on the picker is marked before it is
+opened, its path carries a notice naming how much of the assessment is written, and every
+outcome the specification lists gets a section — the unwritten ones saying they are unwritten.
+Rendering only what exists would leave a reader unable to tell a unit missing two thirds of its
+content from one whose specification simply has fewer outcomes.
+
+Written so far: the accounting principles, primary users, qualitative characteristics and ethics
+of Outcome 1; and the whole non-current asset lifecycle across Outcomes 3 and 4 — capital versus
+revenue, the asset register, VAT by registration status, disposals, part-exchange, straight-line
+and diminishing-balance depreciation. Outcomes 3 and 4 were taken before Outcome 2 on purpose:
+they are the calculation core of the unit and genuinely new at Level 3, where Outcome 2 is
+largely Level 2 double entry revisited.
+
+### The syllabus is checked against the specification, not just against itself
+
+`scripts/check-aat3-coverage.js` asks whether the encoded syllabus is internally consistent, and
+a tree transcribed wrongly is internally consistent. So `check-aat3-syllabus-fidelity.js` reads
+the published specification in `docs/reference/` and compares: every key concept id in both
+directions, each concept's tier against the "Learners need to…" heading governing it, wording
+overlap, topic and outcome structure, weightings and duration against the unit's own test
+specification table, exclusions, and indicative bullet counts.
+
+It found two faults in the first FAPS draft, both invisible to every other check: inline lists at
+2.3.1 and 2.4.3 split into indicative bullets while the identical construction elsewhere was left
+inline, moving 13 units of teaching load onto two concepts for no reason but inconsistency.
+
+One place the extract cannot be read literally is recorded rather than papered over. Topic 2.3 is
+set in two columns across a page break, so 2.3.6 is emitted after 2.3.7 and lands under the wrong
+heading. The check finds such places itself — the identifiers stop ascending — and requires each
+to be listed with a reason. Claiming a scramble that is not one is itself an error.
+
+### Practice summary
+
+Each unit's practice screen opens with a **summary of your practice so far**: how many practice
 questions you have attempted, how many you got right, and — the part worth having — which
 learning outcome you are getting wrong most, named in full with a button that starts a run on
 it. Underneath, every outcome gets a row, so an outcome you have never touched reads *not
@@ -120,10 +163,11 @@ practised* rather than quietly not appearing.
 
 Two details are load-bearing rather than cosmetic:
 
-- **The record is kept per outcome, not as a running total.** Backups merge two devices by
-  taking the larger of each number (see `progress-backup.js`), under which a stored grand total
-  would read 10 where the truth is 18. Per-outcome counters merge correctly and the totals are
-  derived from them, so there is only one source of truth.
+- **The record is kept per unit and then per outcome, not as a running total.** Backups merge two
+  devices by taking the larger of each number (see `progress-backup.js`), under which a stored
+  grand total would read 10 where the truth is 18. And outcome numbers restart at 1 in every
+  unit, so one flat map would add FAPS outcome 1 to TPFB outcome 1 and name a weakest outcome
+  belonging to neither.
 - **"Most mistakes" is a total order.** Most wrong wins — that is the question being asked, so a
   large outcome answered badly beats a tiny one answered worse. Ties break on lower accuracy,
   then on the larger sample (which only fires on a rounding collision), then on outcome number.
@@ -156,7 +200,14 @@ aat1-learn-data.js     — Level 1 teaching content (26 steps)
 aat1-practice-data.js  — Level 1 practice question bank
 aat1-ui.js             — Level 1 renderer (self-contained)
 aat1-styles.css        — Level 1 design language
-aat3-*.js / aat3-styles.css — the equivalent five files for Level 3
+aat3-syllabus.js       — Level 3 syllabus spine for both units, checked against the specification
+aat3-tax-data.js       — TPFB tax figures, every one sourced and dated
+aat3-learn-data.js     — TPFB teaching content
+aat3-practice-data.js  — TPFB practice question bank
+aat3-faps-data.js      — FAPS teaching content and practice bank
+aat3-ui.js             — Level 3 renderer (self-contained, multi-unit)
+aat3-styles.css        — Level 3 design language
+docs/reference/        — the published qualification specifications, as extracted text
 sync-worker/           — the Cloudflare Worker, with its own deployment README
 worker/index.js        — password gate + asset serving for the deployed site
 wrangler.jsonc         — Cloudflare Workers config (see the note on run_worker_first)

@@ -164,7 +164,7 @@
             p: [
               'Accounts have many readers. A supplier deciding whether to offer credit, a journalist writing about a takeover, an employee wondering whether the firm will still exist next year, a tax inspector — all of them read the same document, and all of them want different things from it.',
               'The framework accounting rests on does not try to serve them all equally. It names three groups as the **primary users** and writes the rules for them: existing and potential **investors**, **lenders**, and **other creditors**.',
-              'They share one feature that the others do not. Each of the three is deciding whether to commit money to the business, or whether to leave money already committed where it is, and none of them can require the business to hand over the information they need. A tax inspector can demand records. A manager already has them. An investor considering a purchase has only what the business chooses to publish, which is why the rules are written to protect that reader in particular.',
+              'They share one feature that the others do not. Each of the three is deciding whether to commit money to the business, or whether to leave money already committed where it is, and none of them can require the business to hand over the information they need. A tax inspector can demand records. A manager already has them. An investor considering a purchase has only what the business chooses to publish. The rules are written to protect that reader in particular.',
             ],
             callout: { kind: 'key', text: 'Primary users: existing and potential investors, lenders, and other creditors. All three are outsiders committing money, and none can demand more than they are given.' },
           },
@@ -179,7 +179,7 @@
               ],
             },
             p: [
-              'The three decisions pull on different parts of the accounts, which is why both statements exist rather than one.',
+              'The three decisions pull on different parts of the accounts. Both statements exist for that reason rather than one.',
               'An investor is asking a question about the future and reads the statement of profit or loss for a trend. A lender is asking about capacity and reads the statement of financial position for what could be sold and what is already owed. A supplier weighing up thirty days\' credit cares about neither the trend nor the long term, only whether there is enough in the bank and enough coming in from customers to cover the invoice.',
               'A fourth use cuts across all three: **stewardship**. Owners who are not managers use the accounts to judge how well the managers have looked after what was entrusted to them. That is a backward-looking question about the year just gone, and it is the one that most needs the figures to be honest rather than flattering.',
             ],
@@ -381,7 +381,7 @@
               ],
             },
             p: [
-              'Timeliness and verifiability pull in opposite directions and the tension is real. Waiting for the final invoice makes an accrual verifiable; publishing before the year is stale makes it timely. Neither wins outright, which is why the characteristics are called enhancing rather than mandatory.',
+              'Timeliness and verifiability pull in opposite directions and the tension is real. Waiting for the final invoice makes an accrual verifiable; publishing before the year is stale makes it timely. Neither wins outright. The framework calls these characteristics enhancing rather than mandatory for exactly that reason.',
               'Understandability carries a warning in the framework itself. A transaction that is genuinely complicated may not be left out to make the accounts easier to read — that would sacrifice relevance and completeness for a characteristic ranked below both.',
             ],
             examtrap: 'Comparability is not uniformity. Two businesses in the same trade may legitimately depreciate at different rates if their assets are genuinely used differently. What comparability requires is that the difference is disclosed, so a reader can see it and allow for it.',
@@ -533,7 +533,7 @@
             p: [
               'Most businesses let a buyer order stationery without asking anyone. Almost none let the same buyer order a £40,000 machine.',
               'The difference is not the amount alone, though the amount is part of it. Capital expenditure commits the business for years: the machine has to be paid for, housed, insured, maintained and eventually disposed of, and until it is disposed of the cash spent on it cannot be spent on anything else. A decision that ties up cash for eight years should be made by somebody who knows what else the cash was for.',
-              'It also lands on the accounts differently. Revenue expenditure hits this year\'s profit and is gone. Capital expenditure sits on the statement of financial position and releases into profit slowly, through depreciation, for as long as the asset lasts. Somebody choosing to capitalise is choosing where profit appears for several years, which is why the choice is not left to whoever happens to be signing.',
+              'It also lands on the accounts differently. Revenue expenditure hits this year\'s profit and is gone. Capital expenditure sits on the statement of financial position and releases into profit slowly, through depreciation, for as long as the asset lasts. Somebody choosing to capitalise is choosing where profit appears for several years. That choice is not left to whoever happens to be signing.',
             ],
             callout: { kind: 'key', text: 'Authorisation exists because capital spending commits cash for years, and because capitalising an item moves cost out of this year\'s profit and into several later ones.' },
           },
@@ -1686,6 +1686,22 @@
       opts: ['A wrong in-service date produces a wrong charge that reconciles perfectly', 'The arithmetic may be performed inconsistently between one period and the next', 'The charge may be omitted altogether for assets acquired late in the year', 'The journal may be posted to the asset cost account rather than to expense'],
       ans: 0,
       exp: 'Software applies the rule it is given to the inputs it is given, so it cannot get the arithmetic wrong or forget an asset. What it will do is depreciate a wrong date, life or class cleanly and consistently for the whole life — and because the register and ledger both come from the same wrong input, the reconciliation agrees.',
+    },
+    {
+      id: 'F-4-09', unitKey: 'faps', lo: 4, criteria: ['FAPS-4.1.4'],
+      type: 'numeric',
+      q: 'A depreciation policy reads "15% per annum straight line on cost". An asset cost £45,000. What is the annual charge?',
+      answer: 6750,
+      unit: '£',
+      exp: 'Straight line applies the rate to cost, so the charge is £45,000 × 15% = £6,750 and it is the same every year. The same rate on the carrying amount would be diminishing balance and would give £6,750 only in the first year.',
+    },
+    {
+      id: 'F-4-10', unitKey: 'faps', lo: 4, criteria: ['FAPS-4.1.4'],
+      type: 'mcq',
+      q: 'A policy charges a full year in the year of acquisition and none in the year of disposal. An asset is bought on 30 November and the year end is 31 December. What is charged in that first year?',
+      opts: ['A full year, whatever the date of acquisition', 'One month, apportioned from the date of acquisition', 'Nothing, because the asset was held for under a month', 'Half a year, as the convention for a late acquisition'],
+      ans: 0,
+      exp: 'The convention does the apportioning so nobody has to: an asset bought on any date in the year takes a whole year, and the year it is sold takes none. Pro-rata would give one month here, which is why the policy has to be read before any figure is worked out.',
     },
   ];
 
