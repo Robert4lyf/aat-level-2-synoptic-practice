@@ -7584,7 +7584,7 @@
             <button class="sty-btn" type="button" id="styReplayBtn">Another go at Tuesday</button>
             <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn2">Clock off</button>
           </div>
-          <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
+          <p class="sty-footnote">Story marks do not affect your readiness score, topic mastery or spaced repetition.</p>
         </div>
       </div>
     </div>`;
