@@ -442,7 +442,7 @@
         '<span class="a1-practice-tx">' +
           '<span class="a1-practice-t">Practice questions</span>' +
           '<span class="a1-practice-m">' + practiceBank().length +
-            ' questions, mixed or by outcome — separate from the lessons</span>' +
+            ' questions, mixed or by outcome</span>' +
         '</span>' +
         '<span class="a1-practice-go" aria-hidden="true">→</span>' +
         '</button>';
@@ -751,9 +751,6 @@
       '<div class="a1-hero-in">' +
       '<p class="a1-lede">' + bank.length + ' questions · ' + PRACTICE_LEN + ' per run, drawn at random</p>' +
       '</div></section>';
-
-    h += '<div class="a1-notice">These are separate from the questions inside the steps, and are meant to be met cold. ' +
-      'A run is ' + PRACTICE_LEN + ' questions and records no step progress — it tells you what you know, not what you have read.</div>';
 
     h += '<div class="a1-pgrid">';
     h += '<button class="a1-pcard a1-pcard-mix" data-a1="startpractice" data-lo="mix">' +

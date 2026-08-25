@@ -718,11 +718,6 @@ body.dark[data-subject="aat1"] .a1-match-tag { color: #06231F; }
 .a1-done-actions { display: flex; gap: 9px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
 
 /* ── Practice picker ──────────────────────────────────────────────────────── */
-.a1-notice {
-  background: var(--a1-surface-2); border: 1px dashed var(--a1-line-2);
-  border-radius: var(--a1-r); padding: 13px 16px; margin-bottom: 18px;
-  font-size: .9rem; line-height: 1.6; color: var(--a1-ink-2);
-}
 .a1-pgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 11px; }
 .a1-pcard {
   display: flex; flex-direction: column; gap: 4px; text-align: left; cursor: pointer;
