@@ -116,7 +116,7 @@ with its own path, practice bank and progress, behind a picker that opens first:
 | Unit | Share of the grade | GLH | State |
 |---|---|---|---|
 | Tax Processes for Businesses (TPFB) | 15% | 60 | **Complete** — 5 of 5 outcomes, 32 lessons |
-| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 6 of 9 outcomes, 43 lessons, 65% of the assessment |
+| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 7 of 9 outcomes, 51 lessons, 80% of the assessment |
 
 FAPS is the largest unit in the qualification: 122 key concepts against TPFB's 93, and more of
 the grade than the other three units it sits alongside put together. It arrives outcome by
@@ -151,6 +151,16 @@ Written so far, in the specification's order:
 At 20% this is the heaviest outcome in the unit, and it came next because every earlier outcome
 feeds it: depreciation, disposals and the period end adjustments are all inputs to the two
 statements it produces.
+- **Outcome 6** — the trial balance and the extended trial balance: why one is drawn up and what
+  agreement does not prove, which column each balance falls in and the four accounts that can go
+  either way, the six errors a trial balance cannot see and how each is corrected, the suspense
+  account, the adjustments columns, extending each line to the profit or position pair, and
+  balancing off with the profit figure. Also why a partnership's extended trial balance differs —
+  and that completing one is excluded from the specification.
+
+Outcome 6 came last of the three because it sits between the other two: Outcome 5 supplies the
+figures for its adjustments columns and Outcome 7 consumes what it produces, so writing it with
+both neighbours already in place meant every cross-reference could point at material that exists.
 
 Outcomes 3 and 4 were written before Outcome 2, which is not the order a reader meets them in.
 They are the calculation core — genuinely new at Level 3, and where a right method most easily

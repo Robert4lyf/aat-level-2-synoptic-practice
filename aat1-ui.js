@@ -606,45 +606,102 @@
     } else if (t === 'match') {
       /* Click a term, then click its partner. No HTML5 drag: it does not work
          on touch without a polyfill, and a beginner on a phone is exactly who
-         this level is for. */
+         this level is for.
+
+         THE TWO GROUPS HAVE TO LOOK DIFFERENT. Below 620px the two columns
+         stack, so what the reader sees is eight boxes in one vertical run with
+         nothing to say where the things-to-match end and the things-to-match-
+         AGAINST begin. Hence a heading on each column that says which step it
+         is, an unfilled slot drawn as a dashed outline, and a colour carried by
+         both halves of a pair so a completed pairing can be read at a glance
+         rather than by comparing a "1" against a "1" eight rows apart. */
       if (!S._order) S._order = shuffle(idxArray(q.right.length));
+      var answered = S.answered !== null;
       var pairedRights = {};
       Object.keys(S.matchPicks).forEach(function (k) { pairedRights[S.matchPicks[k]] = +k; });
+      var pairedCount = Object.keys(S.matchPicks).length;
+      var firstOpen = -1;
+      for (var fi = 0; fi < q.left.length; fi++) {
+        if (S.matchPicks[fi] === undefined) { firstOpen = fi; break; }
+      }
+
+      /* Instruction ABOVE the boxes. Below them it is read after the reader has
+         already worked out what to do, or not at all. */
+      if (!answered) {
+        h += '<div class="a1-match-status">' +
+          '<span class="a1-match-count">' + pairedCount + ' of ' + q.left.length + ' matched</span>' +
+          '<span class="a1-match-say">' +
+            (S.matchSel !== null ? 'Now tap its match in <strong>step 2</strong> below.'
+              : 'Tap an item in <strong>step 1</strong>, then tap its match in <strong>step 2</strong>. A matched pair shares a colour.') +
+          '</span></div>';
+      }
+
       h += '<div class="a1-match">';
-      h += '<div class="a1-match-col">' + q.left.map(function (txt, li) {
-        var sel = S.matchSel === li;
-        var pair = S.matchPicks[li];
-        var cls = sel ? ' is-sel' : (pair !== undefined ? ' is-paired' : '');
-        if (S.answered !== null) cls = pair === li ? ' is-right' : ' is-wrong';
-        return '<button class="a1-match-item' + cls + '" data-a1="matchl" data-i="' + li + '"' +
-          (S.answered !== null ? ' disabled' : '') + '>' +
-          '<span class="a1-match-k">' + (li + 1) + '</span><span>' + md(txt) + '</span>' +
-          (pair !== undefined ? '<span class="a1-match-tag">' + String.fromCharCode(65 + S._order.indexOf(pair)) + '</span>' : '') +
-          '</button>';
-      }).join('') + '</div>';
-      h += '<div class="a1-match-col">' + S._order.map(function (ri, di) {
-        var takenBy = pairedRights[ri];
-        var cls = takenBy !== undefined ? ' is-paired' : '';
-        if (S.answered !== null) cls = takenBy === ri ? ' is-right' : (takenBy !== undefined ? ' is-wrong' : '');
-        return '<button class="a1-match-item' + cls + '" data-a1="matchr" data-i="' + ri + '"' +
-          (S.answered !== null ? ' disabled' : '') + '>' +
-          '<span class="a1-match-k">' + String.fromCharCode(65 + di) + '</span><span>' + md(q.right[ri]) + '</span>' +
-          (takenBy !== undefined ? '<span class="a1-match-tag">' + (takenBy + 1) + '</span>' : '') +
-          '</button>';
-      }).join('') + '</div></div>';
-      if (S.answered === null) {
-        var left = q.left.length - Object.keys(S.matchPicks).length;
-        h += '<div class="a1-match-hint">' +
-          (S.matchSel !== null ? 'Now choose its partner on the right.'
-            : left ? left + ' still to pair — tap one on the left, then its partner on the right.'
-                   : 'All paired. Submit when you are ready.') + '</div>';
+      h += '<div class="a1-match-col">' +
+        '<div class="a1-match-head">' + (answered ? 'Items' : '<span class="a1-match-step">1</span> Tap an item') + '</div>' +
+        q.left.map(function (txt, li) {
+          var sel = S.matchSel === li;
+          var pair = S.matchPicks[li];
+          var cls = sel ? ' is-sel' : (pair !== undefined ? ' is-paired' : '');
+          if (answered) cls = pair === li ? ' is-right' : ' is-wrong';
+          /* Keyed on the LEFT index in both columns, so the two halves of a
+             pair agree. Keying each column on its own index would give every
+             box a colour and none of them a partner. */
+          if (pair !== undefined && !answered) cls += ' a1-mc' + (li % 6);
+          /* The cue goes on the row the reader would touch next, not on all
+             four: repeated down the column it stopped being an affordance and
+             became decoration. */
+          var cue = '';
+          if (!answered) {
+            if (sel) cue = 'now pick its match';
+            else if (pair === undefined && S.matchSel === null && li === firstOpen) cue = 'start here';
+          }
+          return '<button class="a1-match-item a1-match-l' + cls + '" data-a1="matchl" data-i="' + li + '"' +
+            (answered ? ' disabled' : '') + ' aria-pressed="' + (sel ? 'true' : 'false') + '">' +
+            '<span class="a1-match-k">' + (li + 1) + '</span><span>' + md(txt) + '</span>' +
+            (pair !== undefined
+              ? '<span class="a1-match-tag">' + String.fromCharCode(65 + S._order.indexOf(pair)) + '</span>'
+              : (cue ? '<span class="a1-match-cue">' + cue + '</span>' : '')) +
+            '</button>';
+        }).join('') + '</div>';
+
+      h += '<div class="a1-match-col">' +
+        '<div class="a1-match-head">' + (answered ? 'Matched to' : '<span class="a1-match-step">2</span> Then tap its match') + '</div>' +
+        S._order.map(function (ri, di) {
+          var takenBy = pairedRights[ri];
+          var cls = takenBy !== undefined ? ' is-paired' : ' is-open';
+          if (answered) cls = takenBy === ri ? ' is-right' : (takenBy !== undefined ? ' is-wrong' : ' is-open');
+          if (takenBy !== undefined && !answered) cls += ' a1-mc' + (takenBy % 6);
+          return '<button class="a1-match-item a1-match-r' + cls + '" data-a1="matchr" data-i="' + ri + '"' +
+            (answered ? ' disabled' : '') + '>' +
+            '<span class="a1-match-k">' + String.fromCharCode(65 + di) + '</span><span>' + md(q.right[ri]) + '</span>' +
+            (takenBy !== undefined ? '<span class="a1-match-tag">' + (takenBy + 1) + '</span>' : '') +
+            '</button>';
+        }).join('') + '</div></div>';
+
+      if (!answered) {
         h += '<div class="a1-match-actions">' +
           '<button class="a1-btn a1-btn-ghost" data-a1="matchclear">Clear</button>' +
           '<button class="a1-btn a1-btn-primary" data-a1="matchsubmit">Submit</button></div>';
       } else {
-        h += '<div class="a1-match-key">Correct pairs — ' + q.left.map(function (txt, li) {
-          return (li + 1) + '&nbsp;→&nbsp;' + String.fromCharCode(65 + S._order.indexOf(li));
-        }).join(', ') + '</div>';
+        /* "1 → A, 2 → C" made the reader carry four letters back up the page
+           and look each one up. The pairing is written out instead. */
+        h += '<div class="a1-match-key">' +
+          '<div class="a1-match-key-h">Correct pairs</div>' +
+          q.left.map(function (txt, li) {
+            var got = S.matchPicks[li] === li;
+            /* A tick as well as a colour. The border alone would leave a reader
+               who cannot separate the two hues unable to tell which rows they
+               had right, and this line is the whole feedback for the question. */
+            return '<div class="a1-match-key-row' + (got ? ' is-right' : ' is-wrong') + '">' +
+              '<span class="a1-match-key-m" role="img" aria-label="' +
+                (got ? 'You matched this correctly' : 'You matched this wrongly') + '">' +
+                (got ? '✓' : '✗') + '</span>' +
+              '<span class="a1-match-key-l">' + md(txt) + '</span>' +
+              '<span class="a1-match-key-a" aria-hidden="true">→</span>' +
+              '<span class="a1-match-key-r">' + md(q.right[li]) + '</span>' +
+              '</div>';
+          }).join('') + '</div>';
       }
 
     } else if (t === 'ordering') {

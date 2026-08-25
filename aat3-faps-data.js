@@ -3885,7 +3885,730 @@
     ],
   };
 
-  var PATH = [LO1, LO2, LO3, LO4, LO5, LO7];
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 6 — Produce and extend the trial balance. 15% of the assessment,
+     and the hinge of the unit: Outcome 5 fills its adjustments columns and
+     Outcome 7 reads its output.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO6 = {
+    unit: 'faps',
+    level: 3,
+    title: 'Financial Accounting: Preparing Financial Statements',
+    outcome: 6,
+    outcomeTitle: 'Produce and extend the trial balance',
+    weighting: 15,
+    lessons: [
+      {
+        id: 'L3-FAPS-6A',
+        title: 'Why the trial balance is drawn up',
+        icon: '📋',
+        criteria: ['FAPS-6.1.2', 'FAPS-6.1.4'],
+        cards: [
+          {
+            h: 'A list of balances, totalled twice',
+            p: [
+              'Every account in the general ledger is balanced off, and each balance is written into one of two columns according to the side it falls on. The columns are then totalled. If double entry has been kept, the totals agree, because every debit that was ever posted had a credit posted with it.',
+              'Agreement earns its place for a reason that has nothing to do with tidiness: it means the statements built on these figures will balance too. Preparing a whole statement of financial position and only then discovering that the two halves differ by £4,370 wastes the work as well as the time. The trial balance moves that discovery to the cheapest point in the process.',
+              'It is also a working document rather than a published one. Nobody outside the business ever sees it, so it can be laid out however is convenient, and the extended version later in this outcome depends on that freedom.',
+            ],
+            callout: { kind: 'key', text: 'A trial balance that agrees proves the arithmetic of double entry held. It proves nothing about whether the entries went to the right accounts.' },
+          },
+          {
+            h: 'What the software does, and what that changes',
+            p: [
+              'In a computerised system the transfer from the ledger to the trial balance is automatic. The software holds every posting, so it can total the two columns on demand, and it will not accept a journal whose debits and credits differ — the entry is refused before it is saved.',
+              'A trial balance produced by software therefore agrees every time. That is not a sign the bookkeeping is right; it is a consequence of the software refusing to record the mistakes that would have made it disagree. The value has moved rather than disappeared, and it has moved to the errors listed two lessons from now, which a computer is no better at spotting than a ledger clerk was.',
+              'The assessment still asks you to build one by hand, from a list of balances or from written descriptions of transactions. Doing it manually keeps the classification visible — which side an account falls on, and why — and that judgement is the same whether a machine or a person carries out the addition.',
+            ],
+            examtrap: '"The software will catch it" is wrong for every error in lesson 6C. Those errors leave a balanced ledger, and a balanced ledger is precisely what the software is checking for.',
+          },
+          {
+            h: 'Where it sits in the year end',
+            flow: [
+              'Ledger accounts, balanced off',
+              'Initial trial balance',
+              'Errors corrected, suspense cleared',
+              'Adjustments entered',
+              'Extended trial balance',
+              'The two financial statements',
+            ],
+            p: [
+              'Six steps, and the trial balance is the middle three of them. The initial one is a check on the bookkeeping; the adjusted one carries the period end work from Outcome 5; the extended one sorts every figure into the statement it belongs to.',
+              'The order matters more than it looks. Adjustments are entered after the errors have been corrected, because an adjustment calculated on a wrong balance is wrong too — an allowance for doubtful receivables worked out as a percentage of a receivables figure that is later corrected has to be worked out again.',
+              'Each step also narrows what can still go wrong. By the time the extended trial balance is complete, the figures are fixed and the remaining work is presentation: laying the same numbers out in the order a reader expects.',
+            ],
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'Why does a trial balance produced by accounting software always agree?',
+            opts: ['The software refuses any journal whose two sides differ', 'The software checks each posting against the source document', 'The software corrects errors of principle as it posts', 'The software posts every transaction to a suspense account first'],
+            ans: 0,
+            exp: 'The one-sided entries that used to make a trial balance disagree are never recorded, because the entry is refused before it can be saved. Agreement is therefore a property of the software rather than evidence about the bookkeeping, and errors of principle, commission and omission all survive it untouched. Nothing in the software reads a source document or corrects a misclassification.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the trial balance is correct.',
+            statements: [
+              { text: 'It is an internal working document rather than a published statement.', answer: true },
+              { text: 'Agreement proves each entry reached the right account.', answer: false },
+              { text: 'Adjustments are entered before the errors are corrected.', answer: false },
+              { text: 'A trial balance that agrees means the financial statements will balance.', answer: true },
+              { text: 'Preparing one by hand is no longer part of the assessment.', answer: false },
+            ],
+            exp: 'Nobody outside the business sees a trial balance, so its layout can be whatever suits the work. Agreement is about arithmetic, not about classification — the entries could all be in the wrong accounts. Corrections come first, because an adjustment worked out on a balance that later changes has to be worked out again. And the assessment does ask you to build one from a list of balances.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6B',
+        title: 'Which column each balance goes in',
+        icon: '↔️',
+        criteria: ['FAPS-6.1.1', 'FAPS-6.1.5'],
+        cards: [
+          {
+            h: 'Five classes, two columns',
+            table: {
+              headers: ['Class', 'Column', 'Examples'],
+              rows: [
+                ['Assets', 'Debit', 'Premises, equipment, inventory, receivables, prepayments'],
+                ['Expenses', 'Debit', 'Purchases, wages, rent, depreciation charge, carriage'],
+                ['Drawings', 'Debit', 'Cash, goods at cost, private bills the business paid'],
+                ['Liabilities', 'Credit', 'Payables, accruals, loans, accumulated depreciation'],
+                ['Capital and income', 'Credit', 'Capital, sales, discounts received, rent received'],
+              ],
+            },
+            p: [
+              'Accumulated depreciation is the row that catches people, because the asset it relates to is a debit. It sits on the credit side because it is not an asset at all — it is the part of the asset\'s cost already used up, held separately so that both the original cost and the amount written off stay visible.',
+              'The allowance for doubtful receivables is built on the identical logic: a credit balance sitting against a debit balance, reducing it on the face of the statement without touching the ledger account underneath.',
+              'The rest of the table is the accounting equation set out in two columns. Assets and expenses are things the business has or has consumed, and they are debits; capital, liabilities and income are claims on the business, and they are credits.',
+            ],
+          },
+          {
+            h: 'Four accounts that can fall either way',
+            table: {
+              headers: ['Account', 'Debit balance means', 'Credit balance means'],
+              rows: [
+                ['**VAT control**', 'HMRC owes the business a repayment', 'The business owes HMRC — the usual case'],
+                ['**Disposals**', 'A loss on disposal', 'A profit on disposal'],
+                ['**Bank**', 'Money in the account', 'An overdraft'],
+                ['**Irrecoverable debts**', 'Write-offs during the year — the usual case', 'Recoveries exceeded write-offs'],
+                ['**Suspense**', 'Credits exceeded debits in the trial balance', 'Debits exceeded credits'],
+              ],
+            },
+            p: [
+              'These are the balances a question puts in to see whether you are classifying or pattern-matching. A candidate who has learned "bank is an asset, so debit" puts an overdraft in the wrong column and throws the whole trial balance out by twice its value.',
+              'The way through is to read what the balance says rather than what the account is usually called. A disposals account holding £700 on the debit side is telling you the asset was sold for £700 less than it was worth on the books, and a loss is an expense, so a debit is where it belongs.',
+              'The last row is the subject of lesson 6D. It is on this list because a suspense balance appears in a trial balance like any other, and a question that gives you one expects it to be placed correctly.',
+            ],
+            examtrap: 'A balance put in the wrong column moves the totals apart by twice the amount, not once. Half a difference is often a faster clue to what went wrong than the difference itself.',
+          },
+          {
+            h: 'Building one from a list of balances',
+            worked: {
+              title: 'Nine debits, seven credits, one total to prove',
+              problem: 'Premises £95,000, equipment at cost £60,000, inventory at 1 January £20,000, trade receivables £22,400, purchases £108,000, wages £41,200, rent £12,000, drawings £19,500. Sales £196,000, trade payables £15,800, accumulated depreciation £24,000, capital £134,700. The bank account is £3,100 overdrawn, £4,900 of VAT is owed to HMRC, the disposals account shows a loss of £700, and recoveries of irrecoverable debts exceeded write-offs by £300. What does each column total?',
+              steps: [
+                {
+                  do: 'Assets first: £95,000 + £60,000 + £20,000 + £22,400 = £197,400.',
+                  why: 'Opening inventory is an asset balance carried in from last year end and stays a debit until the closing figure replaces it.',
+                },
+                {
+                  do: 'Expenses: £108,000 + £41,200 + £12,000 = £161,200.',
+                  why: 'Purchases is an expense rather than an asset. What was bought and not yet sold is dealt with by the inventory figures, not by moving purchases.',
+                },
+                {
+                  do: 'Place the four that swing: the overdraft is a credit, the VAT owed is a credit, the disposal loss is a debit, the net recovery is a credit.',
+                  why: 'Each is decided by what the balance says. A loss is an expense so it is a debit; the other three are amounts the business owes or has gained, so they are credits.',
+                },
+                {
+                  do: 'Debit total: £197,400 + £161,200 + £700 + £19,500 = £378,800.',
+                  why: 'Assets, expenses, the disposal loss and drawings. Drawings sit here rather than being deducted from capital, because the trial balance lists balances as the ledger holds them.',
+                },
+                {
+                  do: 'Credit total: £196,000 + £15,800 + £3,100 + £4,900 + £24,000 + £300 + £134,700 = £378,800.',
+                  why: 'The two agree, so the ledger has been kept in double entry. Nothing here says the entries reached the right accounts.',
+                },
+              ],
+              answer: 'Both columns total £378,800.',
+              tryIt: {
+                q: 'Drawings £14,000, a bank overdraft of £2,600, a disposals account showing a profit of £1,500, a VAT repayment of £3,900 due from HMRC, and purchases of £71,000. What is the debit total?',
+                answer: 88900,
+                unit: '£',
+                hint: 'Three of the five are debits. Read what each balance says, not what the account is usually called.',
+                exp: 'Drawings and purchases are debits as always, and a repayment due from HMRC is money owed to the business, so it is a debit too: £14,000 + £3,900 + £71,000 = £88,900. The overdraft and the disposal profit are both credits.',
+              },
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'truefalse',
+            q: 'Identify whether each balance belongs in the debit column.',
+            statements: [
+              { text: 'A disposals account showing a loss of £400.', answer: true },
+              { text: 'Accumulated depreciation of £18,000.', answer: false },
+              { text: 'A bank overdraft of £2,200.', answer: false },
+              { text: 'An allowance for doubtful receivables of £750.', answer: false },
+              { text: 'Prepaid rent of £1,100.', answer: true },
+            ],
+            exp: 'A loss on disposal is an expense, and a prepayment is an asset — the business has paid and is still owed the benefit. Accumulated depreciation and the allowance are both credit balances shown against the debit balances they reduce, and an overdraft is money owed to the bank.',
+          },
+          {
+            type: 'numeric',
+            q: 'Debits total £214,600 excluding capital. Credits total £166,900 excluding capital. What is the capital balance?',
+            answer: 47700,
+            unit: '£',
+            exp: 'Capital is the credit balance that makes the two columns agree: £214,600 − £166,900 = £47,700. A trial balance question that withholds one figure is asking you to work back from the requirement that the totals match.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6C',
+        title: 'The errors a trial balance cannot see',
+        icon: '🕳️',
+        criteria: ['FAPS-6.1.3', 'FAPS-6.1.6'],
+        cards: [
+          {
+            h: 'Six ways to be wrong and still balance',
+            table: {
+              headers: ['Error', 'What happened', 'Example'],
+              rows: [
+                ['**Omission**', 'The transaction never went in at all', 'A credit note for £215 was filed and never entered'],
+                ['**Commission**', 'Right amount, right side, wrong account of the right type', '£320 from A Patel credited to A Patil'],
+                ['**Principle**', 'Right amount, right side, wrong type of account', 'A £900 office chair debited to purchases, not fixtures'],
+                ['**Original entry**', 'The wrong figure was used for both sides', 'An invoice for £742 entered in the daybook as £472'],
+                ['**Reversal**', 'The right accounts, the wrong way round', 'Paying a supplier £480 recorded as Dr Bank, Cr Payables'],
+                ['**Compensating**', 'Two separate errors of equal size on opposite sides', 'Purchases undercast £500 and sales undercast £500'],
+              ],
+            },
+            p: [
+              'All six leave a ledger in which total debits equal total credits, so all six survive a trial balance without a mark. Between them they cover most of what actually goes wrong in practice, which is why the check has the reputation it does.',
+              'Commission and principle are the pair that get confused. Both put a figure in the wrong account; the difference is whether the wrong account is the same **kind** of account. A Patel for A Patil is commission, and receivables are still receivables. Purchases for fixtures is principle, because an expense has been recorded as an asset and the profit is now wrong.',
+              'That distinction carries more than the vocabulary suggests. An error of commission leaves both financial statements right in total and one customer\'s balance wrong. An error of principle understates profit and overstates assets, and goes on doing so through every year the asset is depreciated over.',
+            ],
+          },
+          {
+            h: 'Correcting them, and the one that needs doubling',
+            example: {
+              title: 'The journal for each',
+              rows: [
+                ['Error', 'Correcting journal'],
+                ['Omission — credit note £215', 'Dr Sales returns £215 · Cr Receivables £215'],
+                ['Commission — £320 to the wrong customer', 'Dr A Patil £320 · Cr A Patel £320'],
+                ['Principle — £900 chair in purchases', 'Dr Fixtures £900 · Cr Purchases £900'],
+                ['Original entry — £742 entered as £472', 'Dr Receivables £270 · Cr Sales £270'],
+                ['Reversal — £480 payment the wrong way round', 'Dr Payables £960 · Cr Bank £960'],
+                ['Compensating — two £500 undercasts', 'Dr Purchases £500 · Cr Sales £500'],
+              ],
+            },
+            p: [
+              'Every journal in that list has equal debits and credits, which is the point: the ledger balanced before the correction and balances after it. None of these corrections touches a suspense account, because there was never a difference for a suspense account to hold.',
+              'The reversal repays slowing down for. The payment should have been Dr Payables £480 and Cr Bank £480; it went in as the exact opposite. Payables is therefore £480 too high **and** short of the £480 debit it should have received, so it is out by £960 — and the same on the bank. Correcting a reversal always takes twice the original figure, and using the original figure once leaves the accounts wrong by the same amount in the opposite direction.',
+              'The original entry error takes only the difference. £742 − £472 = £270 was missing from both sides, so adding £270 to each is enough; reversing the whole entry and reposting it gets to the same place with more writing.',
+            ],
+            examtrap: 'Reversal corrections are doubled. Original entry corrections are not — there you post the difference. Applying the wrong rule to either leaves the ledger balanced and wrong, so nothing downstream will flag it.',
+          },
+          {
+            h: 'What a disagreement does tell you',
+            split: {
+              left: {
+                title: 'The trial balance catches these',
+                items: [
+                  'A one-sided entry — one half posted, the other forgotten',
+                  'Different amounts on the two sides of one transaction',
+                  'A balance entered in the wrong column',
+                  'A column added up wrongly',
+                  'A ledger balance left off the listing altogether',
+                ],
+              },
+              right: {
+                title: 'And misses these',
+                items: [
+                  'Omission of the whole transaction',
+                  'Commission — wrong account, right type',
+                  'Principle — wrong type of account',
+                  'Original entry — wrong figure on both sides',
+                  'Reversal of the two entries',
+                  'Compensating errors that cancel out',
+                ],
+              },
+            },
+            p: [
+              'Read as a pair, the two columns say what the check is for. It tests whether each transaction was recorded twice for the same amount on opposite sides. Anything that satisfies that test passes, however wrong it is.',
+              'So the left-hand column is the set of errors that produce a difference, and a suspense account is opened to hold exactly that difference. That is the next lesson. The right-hand column produces no difference at all, and those errors are found by reconciliations, by the control accounts from Outcome 2, and by somebody noticing that a figure looks wrong.',
+            ],
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'A payment of £650 to a supplier was recorded as a debit to bank and a credit to payables. What entry corrects it?',
+            opts: ['Dr Payables £1,300 · Cr Bank £1,300', 'Dr Payables £650 · Cr Bank £650', 'Dr Bank £1,300 · Cr Payables £1,300', 'Dr Suspense £1,300 · Cr Bank £1,300'],
+            ans: 0,
+            exp: 'The entry went in exactly backwards, so each account is wrong by £650 twice over — once for the entry it should not have had and once for the entry it never got. Correcting a reversal always takes double the original figure. No suspense account is involved, because the reversed entry balanced and the trial balance never disagreed.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each error would be revealed by the trial balance.',
+            statements: [
+              { text: 'A purchase invoice omitted from the books entirely.', answer: false },
+              { text: 'A sales balance entered in the debit column.', answer: true },
+              { text: 'Repairs to a van debited to the motor vehicles account.', answer: false },
+              { text: 'A cheque debited to the bank but never credited to the customer.', answer: true },
+              { text: 'An invoice for £852 entered in the daybook as £582.', answer: false },
+            ],
+            exp: 'A wrong column and a missing half both leave the totals apart, so both show. An omitted invoice, a repair capitalised as an asset and a figure transposed before it entered the daybook all leave debits equal to credits — the first is an error of omission, the second of principle, the third of original entry.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6D',
+        title: 'The suspense account',
+        icon: '⚖️',
+        criteria: ['FAPS-6.1.7'],
+        cards: [
+          {
+            h: 'A holding account for a difference nobody has explained yet',
+            p: [
+              'When the two columns do not agree, the difference is entered as a **suspense account** balance on whichever side is short. The trial balance then agrees, and the work of finding out why can start without the rest of the year end being held up.',
+              'Which side follows from the arithmetic alone. If the credits come to more than the debits, the debit column needs the difference, so the suspense balance is a debit. If the debits come to more, it is a credit. Reading it as though suspense were an asset or a liability puts it on the wrong side half the time.',
+              'It is a temporary account and has to be gone by the time the financial statements are prepared. A suspense balance still sitting in the ledger at the year end means an error is still in there, unexplained, somewhere among figures that are about to be published.',
+            ],
+            formula: 'Suspense balance = the difference, on the side that is short',
+            callout: { kind: 'warn', text: 'A suspense account never appears in a statement of profit or loss or a statement of financial position. If one is left, the difference has been hidden rather than found.' },
+          },
+          {
+            h: 'Finding the errors and clearing the account',
+            worked: {
+              title: 'A difference of £4,370, and the three entries behind it',
+              problem: 'A trial balance shows debits of £312,180 and credits of £316,550. Three errors are then found. The sales daybook total of £8,400 was credited to sales correctly but posted to the receivables control account as £4,800. Discounts received of £520 were debited to the discounts received account instead of credited to it. And the insurance account balance of £1,810 was left off the listing altogether. Clear the suspense account.',
+              steps: [
+                {
+                  do: 'Open suspense with the difference: £316,550 − £312,180 = £4,370, and the debit column is the short one, so it is a debit balance.',
+                  why: 'Credits exceed debits, so a debit of £4,370 brings the two columns level. Nothing has been explained yet — the balance is a placeholder for three faults not yet identified.',
+                },
+                {
+                  do: 'Error one: receivables are short by £8,400 − £4,800 = £3,600. Dr Receivables control £3,600, Cr Suspense £3,600.',
+                  why: 'One side of the posting used the right figure and the other did not, so the ledger is out by the difference. The credit half of the correction goes to suspense because that is where the missing £3,600 was parked.',
+                },
+                {
+                  do: 'Error two: the £520 is on the wrong side, so it is out by £520 + £520 = £1,040. Dr Suspense £1,040, Cr Discounts received £1,040.',
+                  why: 'A figure on the wrong side is doubly wrong — it is where it should not be and absent from where it should be. Correcting it takes twice the amount, exactly as a reversal does.',
+                },
+                {
+                  do: 'Error three: Dr Insurance £1,810, Cr Suspense £1,810.',
+                  why: 'The ledger account was always right; the listing missed it. Adding it puts the debit column up by £1,810 and takes the same amount out of suspense.',
+                },
+                {
+                  do: 'Prove it: debits £4,370 + £1,040 = £5,410 against credits £3,600 + £1,810 = £5,410.',
+                  why: 'The account closes to nil, which is the test that all three errors have been found. A remaining balance means at least one more is still out there.',
+                },
+              ],
+              answer: 'The suspense account clears exactly, so the three errors between them account for the whole £4,370.',
+              tryIt: {
+                q: 'A trial balance shows debits of £248,900 and credits of £247,400. What is the suspense account balance?',
+                answer: 1500,
+                unit: '£',
+                hint: 'Work out the difference, then ask which column needs it.',
+                exp: 'The difference is £248,900 − £247,400 = £1,500. The debits are the larger side, so the credit column is short and the suspense balance is a credit of £1,500.',
+              },
+            },
+          },
+          {
+            h: 'Which errors reach suspense, and what they do to profit',
+            table: {
+              headers: ['', 'Goes through suspense?', 'Why'],
+              rows: [
+                ['One side of an entry missing', 'Yes', 'The ledger is out by the amount'],
+                ['A figure on the wrong side', 'Yes', 'Out by twice the amount'],
+                ['Different figures on the two sides', 'Yes', 'Out by the difference'],
+                ['A balance omitted from the listing', 'Yes', 'The listing is out, though the ledger is not'],
+                ['Omission, commission, principle', 'No', 'The ledger balanced before and after'],
+                ['Reversal, original entry, compensating', 'No', 'Both sides moved together'],
+              ],
+            },
+            p: [
+              'The test is simply whether the ledger was out of balance. A correcting journal with one leg in suspense is putting back an amount that suspense was holding; a journal with both legs in real accounts is moving a figure that was never missing.',
+              'Corrections change profit as well as clearing suspense, and the assessment often asks for the revised figure. Two of the three errors above touch the profit statement. Moving £520 of discounts received from the debit side to the credit side adds £1,040 of income, and bringing in the omitted insurance adds £1,810 of expense. So profit falls by £1,810 − £1,040 = £770, while the receivables correction changes nothing at all because both accounts it touches sit on the statement of financial position.',
+            ],
+            examtrap: 'Work out the effect on profit account by account rather than from the suspense entries. A correction can clear a large suspense balance and change profit by nothing, or clear none of it and change profit by a great deal.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'A trial balance has debits of £184,300 and credits of £186,900. How is the suspense account opened?',
+            opts: ['A debit balance of £2,600', 'A credit balance of £2,600', 'A debit balance of £5,200', 'A credit balance of £371,200'],
+            ans: 0,
+            exp: 'Credits exceed debits by £186,900 − £184,300 = £2,600, so the debit column is the short one and a debit of £2,600 brings them level. Doubling applies to correcting a figure on the wrong side, not to opening the account.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each correction would involve the suspense account.',
+            statements: [
+              { text: 'A rent payment debited to rent and never credited to bank.', answer: true },
+              { text: 'A van repair debited to the motor vehicles account.', answer: false },
+              { text: 'Discounts allowed of £90 credited rather than debited.', answer: true },
+              { text: 'A sales invoice posted to the wrong customer account.', answer: false },
+              { text: 'A supplier payment recorded the right accounts but the wrong way round.', answer: false },
+            ],
+            exp: 'A missing half and a figure on the wrong side both leave the ledger out of balance, so both were held in suspense. Capitalising a repair, posting to the wrong customer and reversing a pair of entries all leave debits equal to credits, so there was never a difference for suspense to hold and the correction moves figures between real accounts.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6E',
+        title: 'The adjustments columns',
+        icon: '➕',
+        criteria: ['FAPS-6.2.1', 'FAPS-6.2.2'],
+        cards: [
+          {
+            h: 'Two more columns, under the same rule',
+            p: [
+              'Once the errors are out, the period end work from Outcome 5 goes in. Rather than rewriting the ledger balances, the adjusted trial balance sets two further columns beside them — adjustments debit and adjustments credit — and each adjustment is entered as the double entry it is.',
+              'So the adjustments columns have to total the same as each other, for the same reason the ledger columns do. Every adjustment has two halves, and if the halves have all been entered the two totals match. A difference between them means an adjustment went in once, or twice on the same side.',
+              'Keeping the original balances visible is the point of the layout. A reader can see what the ledger held, what was added at the year end, and what the two come to, all on one line, so an error in the adjustment stays traceable instead of being absorbed into a figure nobody can take apart.',
+            ],
+            callout: { kind: 'key', text: 'Two totals to prove, not one. The ledger columns agree with each other and the adjustments columns agree with each other, and neither says anything about the other.' },
+          },
+          {
+            h: 'What each adjustment does to the two columns',
+            table: {
+              headers: ['Adjustment', 'Debit', 'Credit'],
+              rows: [
+                ['Closing inventory', 'Inventory — asset', 'Inventory — cost of sales'],
+                ['Accrued expense', 'The expense', 'Accruals'],
+                ['Prepaid expense', 'Prepayments', 'The expense'],
+                ['Accrued income', 'Accrued income', 'The income account'],
+                ['Prepaid income', 'The income account', 'Deferred income'],
+                ['Depreciation for the year', 'Depreciation charge', 'Accumulated depreciation'],
+                ['Irrecoverable debt written off', 'Irrecoverable debts', 'Trade receivables'],
+                ['Increase in the allowance', 'Allowance adjustment', 'Allowance for doubtful receivables'],
+                ['Correction of an error', 'Whatever the journal says', 'Whatever the journal says'],
+                ['Disposal of a non-current asset', 'Disposals with the cost, accumulated depreciation, and bank with the proceeds', 'The asset at cost, and disposals with both the depreciation and the proceeds'],
+              ],
+            },
+            p: [
+              'Nothing in that table is new. Every line is a journal from Outcome 3, 4 or 5, written into two columns instead of into a ledger account — which is why an assessment can hand you the adjustments as a list of sentences and expect them placed without further explanation.',
+              'Closing inventory is the row that looks wrong and is not. It carries a debit and a credit of the same amount, to two different accounts that share a name: the asset that will appear on the statement of financial position, and the deduction that reduces cost of sales. Outcome 5 sets out why one figure does both jobs.',
+              'A reduction in the allowance runs the other way from the row above — debit the allowance, credit the adjustment account — and only the movement is entered either way, never the whole allowance.',
+            ],
+          },
+          {
+            h: 'Placing a set of adjustments',
+            worked: {
+              title: 'Six adjustments, and a column total to prove',
+              problem: 'Closing inventory is £21,000. Fixtures cost £30,000 and are depreciated at 10% straight line; motor vehicles cost £24,000 with accumulated depreciation of £9,600 and are depreciated at 25% diminishing balance. Wages of £1,200 are accrued and insurance of £900 is prepaid. A debt of £1,000 is to be written off, and the allowance for doubtful receivables is to be 4% of the receivables that remain — trade receivables stand at £26,000 and the allowance brought forward is £900. What does each adjustments column total?',
+              steps: [
+                {
+                  do: 'Closing inventory: debit £21,000 and credit £21,000.',
+                  why: 'One figure, both columns, two different accounts. It is the only adjustment that appears on both sides of its own line.',
+                },
+                {
+                  do: 'Depreciation: fixtures £30,000 × 10% = £3,000; vehicles on a carrying amount of £24,000 − £9,600 = £14,400, so £14,400 × 25% = £3,600. Debit the charge with £3,000 + £3,600 = £6,600.',
+                  why: 'Straight line runs on cost and diminishing balance on the carrying amount, so the accumulated depreciation is subtracted for one method and ignored for the other. The credits go to the two accumulated depreciation accounts separately.',
+                },
+                {
+                  do: 'Accrual and prepayment: debit wages £1,200 and credit accruals; debit prepayments £900 and credit insurance.',
+                  why: 'The expense rises for the accrual and falls for the prepayment. Each half lands in a different column, so the two totals stay level.',
+                },
+                {
+                  do: 'Write off £1,000, then set the allowance: receivables become £26,000 − £1,000 = £25,000, and £25,000 × 4% = £1,000 is required against £900 brought forward, so the increase is £1,000 − £900 = £100.',
+                  why: 'The write-off comes first, because the percentage is applied to what is left after it. Only the movement of £100 is entered — putting in the whole £1,000 would charge the allowance twice over.',
+                },
+                {
+                  do: 'Debit column: £21,000 + £6,600 + £1,200 + £900 + £1,000 + £100 = £30,800. Credit column: £21,000 + £3,000 + £3,600 + £1,200 + £900 + £1,000 + £100 = £30,800.',
+                  why: 'The credit side has one more entry than the debit side, because the single depreciation charge is credited to two accounts. The totals still agree, which is the only test the columns have to pass.',
+                },
+              ],
+              answer: 'Both adjustments columns total £30,800.',
+              tryIt: {
+                q: 'Closing inventory £14,500, depreciation for the year £5,200, an accrual for electricity of £700, prepaid rates of £1,300 and an irrecoverable debt of £450. What does the adjustments debit column total?',
+                answer: 22150,
+                unit: '£',
+                hint: 'Every adjustment puts something in the debit column. Ask what each one debits.',
+                exp: 'Closing inventory debits the asset, depreciation debits the charge, the accrual debits the expense, the prepayment debits prepayments and the write-off debits irrecoverable debts: £14,500 + £5,200 + £700 + £1,300 + £450 = £22,150.',
+              },
+            },
+          },
+          {
+            h: 'What the software does with all of this',
+            p: [
+              'A computerised system does not use adjustment columns. Each adjustment is posted as an ordinary journal, the affected balances change the moment it is saved, and asking for the trial balance again returns the recalculated figures. There is no intermediate document because there is nothing to hold in suspense between one step and the next.',
+              'What that removes is the audit trail across the page. On paper the ledger balance and the adjustment sit side by side, so a reviewer can see both; on screen the balance has simply changed, and reconstructing what it was means reading the journal history. Software makes the recalculation instant and makes the working invisible.',
+              'The assessment tests the paper version, and knowing it earns more than the marks. It lets you say where a figure in a computerised system came from, which is the question anybody reviewing the accounts will actually ask.',
+            ],
+            examtrap: 'A task may give an adjustment already reflected in the ledger balances. Entering it again in the adjustments columns charges it twice, and the columns still agree — so nothing about the layout will warn you.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'Adjustments are closing inventory £18,000, depreciation £7,400, an accrual of £950 and a prepayment of £600. What does the adjustments credit column total?',
+            answer: 26950,
+            unit: '£',
+            exp: 'Every adjustment credits something: inventory credits cost of sales, depreciation credits accumulated depreciation, the accrual credits accruals and the prepayment credits the expense. £18,000 + £7,400 + £950 + £600 = £26,950, and the debit column comes to the same.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the adjustments columns is correct.',
+            statements: [
+              { text: 'The two adjustments columns must total the same as each other.', answer: true },
+              { text: 'The adjustments columns must total the same as the ledger columns.', answer: false },
+              { text: 'Closing inventory is entered in both adjustments columns.', answer: true },
+              { text: 'The whole allowance for doubtful receivables is entered, not just the movement.', answer: false },
+              { text: 'The allowance percentage is applied before any debt is written off.', answer: false },
+            ],
+            exp: 'Each adjustment is a double entry, so the two adjustment totals agree with each other — and they have no relationship at all with the ledger totals, which are a different set of figures. Closing inventory debits the asset and credits cost of sales. Only the movement in the allowance ever reaches the columns, and it is worked out on the receivables that survive the write-off.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6F',
+        title: 'Extending to the profit and position columns',
+        icon: '📤',
+        criteria: ['FAPS-6.3.1', 'FAPS-6.3.3'],
+        cards: [
+          {
+            h: 'Why the trial balance is extended at all',
+            p: [
+              'A trial balance with adjustments in it holds every figure the financial statements need, and holds them in one undifferentiated list. Extending it adds four more columns — profit or loss debit and credit, financial position debit and credit — and puts each line into the pair it belongs to.',
+              'Once that is done, preparing the two statements is transcription. Every figure in the profit columns goes into the statement of profit or loss and every figure in the position columns into the statement of financial position, in the order Outcome 7 sets out. No arithmetic is left to do and nothing has to be classified twice.',
+              'It also localises mistakes. A figure sent to the wrong pair of columns shows up as two column totals that will not reconcile, at a point where one line can still be traced. Discovering the same fault while drafting the statements means going back through everything to find which line moved.',
+            ],
+            callout: { kind: 'key', text: 'Extend the combined figure, not the ledger balance. Ledger balance and adjustment are netted first, and the single result crosses the page.' },
+          },
+          {
+            h: 'Which line goes into which pair',
+            example: {
+              title: 'Nine lines from an extended trial balance',
+              rows: [
+                ['Account', 'Ledger', 'Adjustment', 'Goes to', 'Figure'],
+                ['Premises', '120,000 Dr', '—', 'SFP debit', '120,000'],
+                ['Sales', '265,000 Cr', '—', 'SPL credit', '265,000'],
+                ['Opening inventory', '18,000 Dr', '—', 'SPL debit', '18,000'],
+                ['Wages', '48,000 Dr', '1,200 Dr', 'SPL debit', '49,200'],
+                ['Insurance', '3,600 Dr', '900 Cr', 'SPL debit', '2,700'],
+                ['Trade receivables', '26,000 Dr', '1,000 Cr', 'SFP debit', '25,000'],
+                ['Accumulated depreciation', '12,000 Cr', '3,000 Cr', 'SFP credit', '15,000'],
+                ['Closing inventory', '—', '21,000 Dr and Cr', 'Both pairs', '21,000 each'],
+                ['Drawings', '27,000 Dr', '—', 'SFP debit', '27,000'],
+              ],
+            },
+            p: [
+              'Income and expense accounts go to the profit columns; assets, liabilities, capital and drawings go to the position columns. That is the whole classification, and it is the one from lesson 2B rather than anything new.',
+              'The side is carried over unchanged. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column, and insurance of £3,600 − £900 = £2,700 goes to the same column having been reduced rather than moved.',
+              'Two lines repay a second reading. Accumulated depreciation is a credit that grows: £12,000 + £3,000 = £15,000 to the position credit column, while the charge that created it sits in the profit debit column as a separate line. And receivables of £26,000 − £1,000 = £25,000 shows an adjustment credit reducing a debit balance, which is the shape most write-offs and prepayment reversals take.',
+            ],
+          },
+          {
+            h: 'Closing inventory, the line that goes to both',
+            p: [
+              'Closing inventory has no ledger balance at all — it comes into existence as an adjustment — and it is extended to two different places. The debit goes to the position columns, because unsold goods are an asset the business owns on the last day of the year. The credit goes to the profit columns, where it reduces cost of sales, because goods still on the shelf were not sold and their cost belongs to next year.',
+              'Both halves carry the same figure, and neither is a duplicate of the other. They are the two consequences of one fact, recorded in the two statements that report it.',
+              'Extending only one of them is a common enough slip to name. Miss the credit and the profit is understated by the whole closing inventory; miss the debit and the position statement loses an asset. Either way the column totals stop agreeing, which at least means the error announces itself.',
+            ],
+            examtrap: 'Opening inventory goes only to the profit debit column. It is last year\'s closing figure, already an asset in last year\'s statement, and this year it is a cost of the goods sold, and only that.',
+          },
+        ],
+        check: [
+          {
+            type: 'numeric',
+            q: 'An expense account shows a ledger balance of £8,900 debit and an adjustments credit of £1,400. What figure is extended to the profit or loss debit column?',
+            answer: 7500,
+            unit: '£',
+            exp: 'The two are netted before anything crosses the page: £8,900 − £1,400 = £7,500. The adjustment reduces the expense rather than moving it, so the figure stays in the debit column and only its size changes.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each line is extended to the statement of financial position columns.',
+            statements: [
+              { text: 'Drawings.', answer: true },
+              { text: 'The depreciation charge for the year.', answer: false },
+              { text: 'Accumulated depreciation.', answer: true },
+              { text: 'Opening inventory.', answer: false },
+              { text: 'Discounts received.', answer: false },
+            ],
+            exp: 'Drawings reduce capital and accumulated depreciation is a credit sitting against an asset, so both belong to the position columns. The depreciation charge is this year\'s cost and the opening inventory is part of the cost of goods sold, so both go to the profit columns, as does discounts received — on the credit side, being income.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6G',
+        title: 'Balancing off, and where the profit goes',
+        icon: '🏁',
+        criteria: ['FAPS-6.3.4'],
+        cards: [
+          {
+            h: 'The profit is whatever is missing',
+            p: [
+              'When every line has been extended, all four columns are totalled and none of the four pairs agrees. The profit columns are apart because income exceeded expenses; the position columns are apart by exactly the same amount, because a business that earned more than it spent holds assets it does not owe to anybody but its owner.',
+              'That difference is the profit for the year, and it is entered twice to close both pairs. It goes into the profit **debit** column, where it balances the excess of income over expenses, and into the position **credit** column, where it increases what the business owes its owner.',
+              'A loss reverses both. Expenses exceed income, so the balancing figure goes into the profit credit column, and it reduces capital, so its other half goes into the position debit column. Nothing about the method changes — the figure lands on the other side of each pair.',
+            ],
+            formula: 'Profit = profit-column credits − profit-column debits = position-column debits − position-column credits',
+          },
+          {
+            h: 'Totalling and closing the four columns',
+            worked: {
+              title: 'The last step of an extended trial balance',
+              problem: 'After every line has been extended, the profit or loss columns total £239,800 debit and £287,400 credit. The statement of financial position columns total £255,300 debit and £207,700 credit. Balance the extended trial balance off.',
+              steps: [
+                {
+                  do: 'Profit columns: £287,400 − £239,800 = £47,600.',
+                  why: 'Income of £287,400 against costs of £239,800. A larger credit side is how a profit presents itself at this stage.',
+                },
+                {
+                  do: 'Position columns: £255,300 − £207,700 = £47,600.',
+                  why: 'The same figure, arrived at from unrelated numbers. Agreement is the check — two different differences would mean a line went to the wrong pair of columns.',
+                },
+                {
+                  do: 'Enter £47,600 in the profit debit column: £239,800 + £47,600 = £287,400.',
+                  why: 'The pair now agrees. The entry is on the debit side because the profit is being taken out of the profit statement and handed to the owner.',
+                },
+                {
+                  do: 'Enter £47,600 in the position credit column: £207,700 + £47,600 = £255,300.',
+                  why: 'And that pair agrees too. A credit, because the profit increases what the business owes its owner — the same entry the capital account receives in Outcome 7.',
+                },
+                {
+                  do: 'Label it. A profit for the year of £47,600.',
+                  why: 'One figure appears in two columns on opposite sides of the page. Entering it twice on the same side is the mistake this step invites, and it leaves both pairs further apart than before.',
+                },
+              ],
+              answer: 'A profit of £47,600, closing the profit columns at £287,400 and the position columns at £255,300.',
+              tryIt: {
+                q: 'The profit or loss columns of an extended trial balance total £96,400 debit and £118,900 credit. What is the profit for the year?',
+                answer: 22500,
+                unit: '£',
+                hint: 'Which side is larger, and by how much?',
+                exp: 'Income exceeds expenses by £118,900 − £96,400 = £22,500, so that is the profit. It is entered in the profit debit column to close the pair, and in the position credit column, where it raises capital.',
+              },
+            },
+          },
+          {
+            h: 'Proving it against the capital account',
+            p: [
+              'The profit figure can be checked against the owner\'s capital before anything is drafted, and doing it while the working is still in front of you costs a minute. In the example above the ledger held capital of £156,000 and drawings of £27,000, so closing capital is £156,000 + £47,600 − £27,000 = £176,600.',
+              'Net assets should come to the same. Take the drawings out of the position debit column, because drawings are not an asset: £255,300 − £27,000 = £228,300. Take the capital out of the position credit column, because capital is not a liability: £207,700 − £156,000 = £51,700. Net assets are then £228,300 − £51,700 = £176,600, matching the capital account.',
+              'Two routes, one figure, and the second route uses none of the arithmetic of the first. When they disagree, the profit is wrong or a line was extended to the wrong pair, and both are far cheaper to find here than in a finished statement.',
+            ],
+            examtrap: 'A loss is entered in the profit credit column and the position debit column. Reaching for the profit positions out of habit puts both pairs further out, by twice the loss.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'The profit or loss columns total £164,200 debit and £151,800 credit. What is entered, and where?',
+            opts: ['A loss of £12,400 in the profit credit and position debit columns', 'A loss of £12,400 in the profit debit and position credit columns', 'A profit of £12,400 in the profit debit and position credit columns', 'A loss of £24,800 in the profit credit and position debit columns'],
+            ans: 0,
+            exp: 'Expenses of £164,200 exceed income of £151,800 by £12,400, which is a loss. It closes the profit columns from the credit side and reduces capital, so its other half is a debit in the position columns. The figure is entered once in each pair, never doubled.',
+          },
+          {
+            type: 'numeric',
+            q: 'The statement of financial position columns total £310,600 debit and £268,900 credit. What is the profit for the year?',
+            answer: 41700,
+            unit: '£',
+            exp: 'The position columns are apart by the profit just as the profit columns are: £310,600 − £268,900 = £41,700. The debit side being larger means assets exceed what is owed, which is the residue a profitable year leaves.',
+          },
+        ],
+      },
+
+      {
+        id: 'L3-FAPS-6H',
+        title: 'What changes for a partnership',
+        icon: '🚧',
+        criteria: ['FAPS-6.3.2'],
+        cards: [
+          {
+            h: 'The same document, a different bottom half',
+            table: {
+              headers: ['', 'Sole trader', 'Partnership'],
+              rows: [
+                ['Ledger and adjustments columns', 'Identical', 'Identical'],
+                ['Profit and loss columns', 'Identical', 'Identical'],
+                ['Capital in the position columns', 'One balance', 'One capital account per partner'],
+                ['Also in the position columns', '—', 'One current account per partner'],
+                ['Drawings', 'One balance', 'One per partner, or debited straight to their current accounts'],
+                ['Where the profit goes', 'Straight to the position credit column', 'To the appropriation account first'],
+              ],
+            },
+            p: [
+              'Everything above the profit figure is the same document. A partnership trades, adjusts and extends exactly as a sole trader does, because the trading is the same activity and the adjustments are the same adjustments.',
+              'The bottom half is where two owners show. Instead of one capital balance the position columns carry four balances for two partners — a capital account and a current account each — and each of those is extended like any other credit balance.',
+              'The last row is the one that changes the method rather than the layout, and the next card is about it.',
+            ],
+          },
+          {
+            h: 'Why the profit cannot simply be extended',
+            p: [
+              'A sole trader\'s profit belongs to one person, so it can go straight into the position credit column and be done with. A partnership\'s profit belongs to two or more people in proportions their agreement sets, and the extended trial balance has no column that can express that.',
+              'So the figure leaves the profit columns and goes to the **appropriation account** — interest on capital and any salaries out, interest on drawings in, the residue split in the profit-sharing ratio — and it is each partner\'s share, not the profit, that reaches their current account and the position columns.',
+              'A profit of £60,000 in a partnership where one partner has a salary of £10,000 and the residue is split equally leaves £60,000 − £10,000 = £50,000 to share, so £50,000 ÷ 2 = £25,000 each. One partner\'s current account is credited with £25,000 and the other\'s with £10,000 + £25,000 = £35,000, and £25,000 + £35,000 = £60,000 arrives in the position columns as two figures rather than one. Outcome 7 works the appropriation account through in full.',
+            ],
+            callout: { kind: 'key', text: 'The difference is not the layout but the step in the middle: a partnership divides the profit before any of it reaches the position columns.' },
+          },
+          {
+            h: 'What the specification asks of you here',
+            split: {
+              left: {
+                title: 'Assessed',
+                items: [
+                  'Knowing why a partnership ETB differs from a sole trader\'s',
+                  'That the difference lies in the capital and current accounts',
+                  'That the profit is appropriated before it is credited',
+                  'Completing and balancing an ETB for a sole trader',
+                ],
+              },
+              right: {
+                title: 'Excluded',
+                items: [
+                  'Completing the extended trial balance for a partnership',
+                ],
+              },
+            },
+            p: [
+              'The specification excludes **completion of the ETB for partnerships** from this outcome. You will not be asked to extend one, total it and enter the appropriated shares, and practising that is time spent on a task the assessment does not set.',
+              'Knowing the difference is assessed, which is a different thing and needs separating. A question can ask what changes and why; it will not hand you a partnership trial balance and ask for it filled in.',
+              'The partnership work that is assessed lives in Outcome 7 — the appropriation account, the capital and current accounts, and the statement of financial position that presents them. What is excluded is bringing those into this particular document.',
+            ],
+            examtrap: 'Two exclusions apply to this unit. This is one; the VAT treatment of part-exchanges in Outcome 3 is the other. Both are stated in the specification, and neither is a hint that the underlying idea is unimportant — only that this unit does not test it.',
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'What is the main difference between an extended trial balance for a partnership and one for a sole trader?',
+            opts: ['The profit is appropriated between the partners before it is credited', 'The adjustments columns are totalled separately for each partner', 'The trading section is prepared on a different basis', 'The profit and loss columns are extended in the opposite direction'],
+            ans: 0,
+            exp: 'Everything down to the profit figure is the same document, because the trading and the adjustments are the same. What changes is that a partnership divides the profit through the appropriation account first, so it reaches the position columns as a share in each partner\'s current account rather than as one credit to capital.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about partnership extended trial balances is correct.',
+            statements: [
+              { text: 'The position columns carry a capital and a current account for each partner.', answer: true },
+              { text: 'Completing an ETB for a partnership is assessed in this unit.', answer: false },
+              { text: 'The adjustments are worked out differently from a sole trader\'s.', answer: false },
+              { text: 'Knowing why the two differ is assessed in this unit.', answer: true },
+              { text: 'A partner\'s salary is extended to the profit and loss debit column.', answer: false },
+            ],
+            exp: 'Fixed capital gives each partner two balances, and both sit in the position columns. The specification excludes completing a partnership ETB while still asking you to know why it differs. Adjustments are the same adjustments — depreciation and accruals do not change because there are two owners. And a partner\'s salary is an appropriation of profit, so it never appears among the expenses.',
+          },
+        ],
+      },
+    ],
+  };
+
+  var PATH = [LO1, LO2, LO3, LO4, LO5, LO6, LO7];
 
   /* ══════════════════════════════════════════════════════════════════════════
      PRACTICE BANK — met cold, and separate from the lesson checks.
@@ -4543,6 +5266,160 @@
         { options: ['cost of sales', 'gross profit', 'net purchases'], answer: 0 },
       ],
       exp: 'Each returns figure is deducted from the account it reverses, so sales returns reduce revenue and purchases returns reduce purchases. Carriage inwards is added because delivery was part of obtaining the goods. The two inventory figures then move the cost of goods into the year that sold them.',
+    },
+    {
+      id: 'F-6-01', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.5'],
+      type: 'numeric',
+      q: 'Premises £140,000, purchases £96,500, wages £38,200, drawings £16,400, opening inventory £11,900, and a disposals account showing a loss of £2,300. What do these six balances come to in the debit column?',
+      answer: 305300,
+      unit: '£',
+      exp: 'All six are debits: assets, expenses, drawings and a loss on disposal, which is an expense however the account is titled. £140,000 + £96,500 + £38,200 + £16,400 + £11,900 + £2,300 = £305,300.',
+    },
+    {
+      id: 'F-6-02', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.1'],
+      type: 'mcq',
+      q: 'The VAT control account shows a debit balance at the year end. What does that mean?',
+      opts: ['HMRC owes the business a repayment', 'The business owes HMRC the amount shown', 'Output tax exceeded input tax for the quarter', 'The account has been posted on the wrong side'],
+      ans: 0,
+      exp: 'VAT usually sits as a credit, being money collected for HMRC and not yet paid over. A debit balance reverses that: input tax has exceeded output tax, so the business has paid more VAT than it has charged and is owed the difference.',
+    },
+    {
+      id: 'F-6-03', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.3'],
+      type: 'truefalse',
+      q: 'Identify whether each error would leave the trial balance still agreeing.',
+      statements: [
+        { text: 'A purchase invoice never entered in the books.', answer: true },
+        { text: 'A rent balance entered in the credit column.', answer: false },
+        { text: 'A payment to J Cole debited to J Coles.', answer: true },
+        { text: 'A sales daybook total added up wrongly.', answer: false },
+        { text: 'A cheque credited to bank but never debited to the supplier.', answer: false },
+      ],
+      exp: 'An omitted invoice and a posting to a similarly named account are errors of omission and of commission, and both leave debits equal to credits. A balance in the wrong column, a casting error and a missing half all move the totals apart, which is what a trial balance exists to detect.',
+    },
+    {
+      id: 'F-6-04', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.6'],
+      type: 'mcq',
+      q: 'A payment for servicing a van was debited to the motor vehicles account. What kind of error is this?',
+      opts: ['An error of principle', 'An error of commission', 'An error of original entry', 'A compensating error'],
+      ans: 0,
+      exp: 'A service is an expense and the motor vehicles account is an asset, so a cost has been recorded as an asset — the wrong type of account, which makes it principle rather than commission. Profit is understated this year and the asset is overstated for as long as it is depreciated.',
+    },
+    {
+      id: 'F-6-05', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.6'],
+      type: 'numeric',
+      q: 'A payment of £740 to a supplier was recorded as a debit to bank and a credit to trade payables. What amount must be debited to trade payables to correct it?',
+      answer: 1480,
+      unit: '£',
+      exp: 'Payables carries a £740 credit it should not have and is missing the £740 debit it should have received, so it is out by £740 + £740 = £1,480. Correcting a reversal always takes double the original figure.',
+    },
+    {
+      id: 'F-6-06', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.7'],
+      type: 'numeric',
+      q: 'A trial balance shows debits of £427,150 and credits of £431,900. What is the suspense account balance?',
+      answer: 4750,
+      unit: '£',
+      exp: 'The difference is £431,900 − £427,150 = £4,750. Credits are the larger side, so the debit column is short and the suspense balance is a debit of £4,750.',
+    },
+    {
+      id: 'F-6-07', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.7'],
+      type: 'mcq',
+      q: 'A trial balance has a suspense account with a credit balance of £600. Which single error would account for it?',
+      opts: ['A £600 credit entry that was never posted', 'A £600 debit entry that was never posted', 'A £300 debit entry posted as a credit', 'A £600 invoice omitted from the books entirely'],
+      ans: 0,
+      exp: 'A credit balance in suspense means the debits came to more than the credits, so a credit entry is the one that went missing. A missing debit or a £300 debit posted as a credit would both leave credits the larger side and put suspense on the debit side, and an omitted invoice moves neither total.',
+    },
+    {
+      id: 'F-6-08', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.5'],
+      type: 'numeric',
+      q: 'Excluding capital, the debit column of a trial balance totals £268,400 and the credit column £191,750. What is the capital balance?',
+      answer: 76650,
+      unit: '£',
+      exp: 'Capital is the credit balance that brings the two columns level: £268,400 − £191,750 = £76,650. A trial balance question that withholds one figure is asking you to work back from the requirement that the totals agree.',
+    },
+    {
+      id: 'F-6-09', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.2', 'FAPS-6.1.4'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about producing a trial balance is correct.',
+      statements: [
+        { text: 'It is prepared before the period end adjustments are entered.', answer: true },
+        { text: 'Accounting software transfers the balances into it automatically.', answer: true },
+        { text: 'A trial balance produced by software is evidence the bookkeeping is right.', answer: false },
+        { text: 'It is published alongside the financial statements.', answer: false },
+      ],
+      exp: 'The initial trial balance comes first, so the adjustments are worked out on corrected figures. Software does compile it, and refuses any journal whose two sides differ — which is why it always agrees and why agreement says nothing about the entries. It is a working document and is never published.',
+    },
+    {
+      id: 'F-6-10', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.2.2'],
+      type: 'numeric',
+      q: 'Adjustments are: closing inventory £23,400, depreciation £8,900, accrued wages £1,150, prepaid insurance £2,050, an irrecoverable debt of £780 and a £340 increase in the allowance for doubtful receivables. What does the adjustments debit column total?',
+      answer: 36620,
+      unit: '£',
+      exp: 'Every one of the six debits something — the inventory asset, the depreciation charge, the wages expense, prepayments, irrecoverable debts and the allowance adjustment account: £23,400 + £8,900 + £1,150 + £2,050 + £780 + £340 = £36,620. The credit column comes to the same.',
+    },
+    {
+      id: 'F-6-11', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.2.2'],
+      type: 'mcq',
+      q: 'Receivables after write-offs are £48,000, the allowance is to be 2.5% and £1,450 is brought forward. What goes in the adjustments columns?',
+      opts: ['A debit of £250 to the allowance and a credit of £250 to the adjustment account', 'A credit of £250 to the allowance and a debit of £250 to the adjustment account', 'A debit of £1,200 to the allowance and a credit of £1,200 to the adjustment account', 'A credit of £1,450 to the allowance and a debit of £1,450 to the adjustment account'],
+      ans: 0,
+      exp: 'The allowance required is £48,000 × 2.5% = £1,200 against £1,450 brought forward, so it falls by £250. A falling allowance is debited, and only the movement is ever entered — never the whole allowance and never the brought-forward figure.',
+    },
+    {
+      id: 'F-6-12', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.3.3'],
+      type: 'numeric',
+      q: 'An expense account shows a ledger balance of £14,600 debit and an adjustments debit of £2,300. What figure is extended to the profit or loss columns?',
+      answer: 16900,
+      unit: '£',
+      exp: 'Ledger balance and adjustment are netted before anything crosses the page, and here both are debits, so they add: £14,600 + £2,300 = £16,900. It goes to the profit or loss debit column, an expense being a debit throughout.',
+    },
+    {
+      id: 'F-6-13', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.3.3'],
+      type: 'mcq',
+      q: 'Closing inventory of £19,400 is extended. Where does it appear?',
+      opts: ['A debit in the position columns and a credit in the profit columns', 'A credit in the position columns and a debit in the profit columns', 'A debit in the position columns and a debit in the profit columns', 'A debit in the position columns and nowhere else'],
+      ans: 0,
+      exp: 'Unsold goods are an asset on the last day of the year, which is the debit, and their cost is held back out of cost of sales, which is the credit. Both halves carry the same figure and neither duplicates the other — they are the two consequences of one fact.',
+    },
+    {
+      id: 'F-6-14', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.3.4'],
+      type: 'numeric',
+      q: 'The profit or loss columns of an extended trial balance total £182,700 debit and £176,400 credit. What figure is entered to balance them?',
+      answer: 6300,
+      unit: '£',
+      exp: 'Expenses exceed income by £182,700 − £176,400 = £6,300, so the year made a loss of that size. It is entered in the profit or loss credit column to close the pair, and in the position debit column, because a loss reduces capital.',
+    },
+    {
+      id: 'F-6-15', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.3.4'],
+      type: 'mcq',
+      q: 'A sole trader\'s extended trial balance shows a profit for the year. Where is the profit figure entered?',
+      opts: ['The profit and loss debit column and the position credit column', 'The profit and loss credit column and the position debit column', 'The profit and loss debit column and the position debit column', 'The position credit column and nowhere else'],
+      ans: 0,
+      exp: 'A profit means the income column is the larger, so the debit side needs the difference to close the pair. Its other half is a credit in the position columns, because the profit increases what the business owes its owner — the same entry the capital account receives.',
+    },
+    {
+      id: 'F-6-16', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.3.2'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about a partnership\'s extended trial balance is correct.',
+      statements: [
+        { text: 'The position columns carry a capital and a current account for each partner.', answer: true },
+        { text: 'The profit is appropriated before any of it reaches the position columns.', answer: true },
+        { text: 'The adjustments are calculated differently from a sole trader\'s.', answer: false },
+        { text: 'Completing one is assessed in this unit.', answer: false },
+        { text: 'A partner\'s salary is extended to the profit and loss debit column.', answer: false },
+      ],
+      exp: 'Fixed capital gives each partner two balances, both in the position columns, and the profit is divided through the appropriation account before any share reaches them. Depreciation and accruals do not change because there are two owners. The specification excludes completing a partnership ETB while still asking why it differs, and a partner\'s salary divides profit rather than reducing it.',
+    },
+    {
+      id: 'F-6-17', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.1.7'],
+      type: 'gapfill',
+      q: 'Complete the three rules about the suspense account.',
+      template: 'If the credit column totals more than the debit column, the suspense balance is a {0}. Correcting a figure entered on the wrong side takes {1} the amount. A suspense balance still there at the year end means {2}.',
+      gaps: [
+        { options: ['debit', 'credit', 'liability'], answer: 0 },
+        { options: ['twice', 'half', 'exactly'], answer: 0 },
+        { options: ['an error is still unfound', 'the accounts are ready to publish', 'the adjustment has been posted'] , answer: 0 },
+      ],
+      exp: 'The suspense balance goes on whichever side is short, so a heavy credit column calls for a debit. A figure on the wrong side is doubly wrong — absent from where it belongs and present where it does not — so putting it right takes double. And the account is temporary: anything left in it is an unexplained difference sitting among figures about to be published.',
     },
   ];
 
