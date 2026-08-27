@@ -55,16 +55,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Dr Sales Returns (reducing revenue), Cr Trade Receivables (reducing the amount owed by the customer).' },
 
-  { id: 'itbk-002', topic: 'itbk', difficulty: 'easy',
-    q: 'A business issues shares at a premium. What does the share premium represent?',
-    opts: [
-      'The amount received for shares above their nominal value',
-      'The profit the company has earned since it began trading',
-      'The dividend paid out to shareholders during the period',
-      'The interest charged on money the company has borrowed',
-    ],
-    ans: 0,
-    exp: 'Shares have a nominal (face) value set in the constitution. Anything received above that is share premium, recorded in a separate reserve. It is not profit — it never passes through the income statement — and company law restricts what it may be used for.' },
 
   { id: 'itbk-003', topic: 'itbk', difficulty: 'easy',
     q: 'A business purchases goods on credit. The correct entry is:',
@@ -734,11 +724,6 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-091', topic: 'itbk', difficulty: 'medium',
-    q: 'Which adjustment is required when rent is paid quarterly in arrears and the year end falls mid-quarter?',
-    opts: ['Prepayment only', 'Accrual only', 'Both accrual and prepayment', 'No adjustment needed'],
-    ans: 1,
-    exp: 'Paying in arrears means the service has been received but not yet billed at the year end, so the cost has been incurred without payment. That is an accrual: debit the expense, credit a liability. Paying in advance would produce a prepayment instead.' },
 
 
 
@@ -770,11 +755,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A control account reconciliation compares the control account balance with the total of the individual balances in the subsidiary ledger to confirm they agree.' },
 
-  { id: 'itbk-097', topic: 'itbk', difficulty: 'hard',
-    q: 'A business accrues rent expense of £1,500 at year end. What is the correct journal entry?',
-    opts: ['Dr Rent expense, Cr Accruals', 'Dr Accruals, Cr Rent expense', 'Dr Bank, Cr Rent expense', 'Dr Rent expense, Cr Bank'],
-    ans: 0,
-    exp: 'An accrual recognises a cost incurred but unpaid. The expense is debited so it lands in the correct period, and Accruals is credited as a current liability. The entry reverses at the start of the next period when the invoice is actually settled.' },
 
 
   { id: 'itbk-099', topic: 'itbk', difficulty: 'hard',
@@ -930,7 +910,7 @@ window.ALL_QUESTIONS = [
       'Record the small cash payments made out of the petty cash float',
     ],
     ans: 0,
-    exp: 'The journal handles non-routine entries — corrections, opening balances, accruals, prepayments and bad debt write-offs.' },
+    exp: 'The journal handles the non-routine entries that no other book of prime entry covers — corrections, opening balances, irrecoverable debts and the payroll. That is the test: if a transaction fits one of the other books, it belongs there instead.' },
 
   { id: 'pobc-006', topic: 'pobc', difficulty: 'easy',
     q: 'A normal reason for the cash book and bank statement to differ is:',
@@ -1519,13 +1499,13 @@ window.ALL_QUESTIONS = [
   { id: 'pobc-065', topic: 'pobc', difficulty: 'medium',
     q: 'An error of principle occurs when:',
     opts: [
-      'Capital expenditure is recorded as a revenue repair expense',
-      'A payment is posted to the account of the wrong supplier',
+      'A payment for motor expenses is posted to the motor vehicles account',
+      'A payment is posted to the account of a completely different supplier',
       'The digits in an amount are transposed when it is recorded',
       'The debit and credit entries for a transaction are reversed',
     ],
     ans: 0,
-    exp: 'Error of principle: the transaction is posted to the wrong type of account — for example treating capital expenditure as revenue expenditure.' },
+    exp: 'An error of principle posts a transaction to the wrong type of account altogether — an expense treated as an asset. Posting to the wrong supplier is an error of commission, because the type of account was right; transposed digits are an error of original entry.' },
 
   { id: 'pobc-066', topic: 'pobc', difficulty: 'medium',
     q: 'A reversal of entries (debits and credits swapped) is recorded for a transaction. What is the effect on the trial balance?',
@@ -1869,7 +1849,7 @@ window.ALL_QUESTIONS = [
       'A material element and a labour element',
     ],
     ans: 0,
-    exp: 'Splitting a semi-variable cost separates the standing charge from the usage charge, usually with the high-low method. Direct/indirect and capital/revenue are different classifications answering different questions.' },
+    exp: 'Splitting a semi-variable cost separates the standing charge, which is incurred whatever the usage, from the charge that varies with it. Direct against indirect is a different classification altogether, answering a different question about the same cost.' },
 
   { id: 'poc-011', topic: 'poc', difficulty: 'easy',
     q: 'A semi-variable cost:',
@@ -1880,7 +1860,7 @@ window.ALL_QUESTIONS = [
       'Cannot be analysed into its component parts at all',
     ],
     ans: 0,
-    exp: 'A semi-variable cost has a standing charge that is incurred regardless of use, plus a usage charge that varies — an electricity bill is the standard example. The high-low method separates the two elements.' },
+    exp: 'A semi-variable cost has a standing charge that is incurred regardless of use, plus a usage charge that varies with it — an electricity bill is the standard example. Both elements sit inside one cost, which is why it has to be separated before the cost can be forecast at a new level of output.' },
 
   { id: 'poc-012', topic: 'poc', difficulty: 'easy',
     q: 'A step cost changes when:',
@@ -1899,7 +1879,7 @@ window.ALL_QUESTIONS = [
       'Allocating and apportioning overheads to cost centres, then absorbing them into products',
       'Excluding all fixed production overheads from the cost attributed to each unit of product',
       'Charging only the cost of direct materials to each unit of production',
-      'Deducting the variable cost of sales from revenue to arrive at contribution',
+      'Deducting the total cost of production from revenue to arrive at the profit',
     ],
     ans: 0,
     exp: 'Absorption costing: (1) allocate/apportion overheads to cost centres, (2) calculate an OAR for each, (3) absorb overheads into product cost.' },
@@ -2055,7 +2035,7 @@ window.ALL_QUESTIONS = [
       'Reconciling the cash book against the bank statement',
     ],
     ans: 0,
-    exp: 'Knowing how a cost behaves is what makes planning possible: you cannot flex a budget, calculate break-even or judge whether to accept an order without separating what varies with activity from what does not.' },
+    exp: 'Knowing how a cost behaves is what makes planning possible: you cannot flex a budget, forecast a total cost at a different level of output, or work out a cost per unit without separating what varies with activity from what does not.' },
 
   { id: 'poc-032', topic: 'poc', difficulty: 'easy',
     q: 'What is cost behaviour?',
@@ -2120,7 +2100,7 @@ window.ALL_QUESTIONS = [
       'Charging a share of production overheads to each unit of output',
       'Ignoring production overheads when arriving at the cost of a unit',
       'Recording only the direct material cost of each unit produced',
-      'Deducting overheads from revenue to arrive at the contribution earned',
+      'Deducting overheads from revenue to arrive at the profit for the period',
     ],
     ans: 0,
     exp: 'Overhead absorption charges indirect costs to cost units using a predetermined absorption rate (OAR).' },
@@ -2156,7 +2136,7 @@ window.ALL_QUESTIONS = [
 
   { id: 'poc-044', topic: 'poc', difficulty: 'easy',
     q: 'Which cost increases directly with production volume?',
-    opts: ['Fixed cost', 'Variable cost', 'Sunk cost', 'Opportunity cost'],
+    opts: ['Fixed cost', 'Variable cost', 'Stepped cost', 'Indirect cost'],
     ans: 1,
     exp: 'A variable cost rises in total in direct proportion to output — for example raw materials, where double the output uses double the materials.' },
 
@@ -2169,15 +2149,15 @@ window.ALL_QUESTIONS = [
 
   { id: 'poc-047', topic: 'poc', difficulty: 'easy',
     q: 'Which cost is not affected by output changes?',
-    opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Marginal cost'],
+    opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Semi-variable cost'],
     ans: 1,
     exp: 'A fixed cost stays the same in total whatever the level of output, within the relevant range. Note the qualifier: fixed cost per unit falls as output rises, because the same total is spread more thinly. Confusing total with per-unit behaviour is the standard trap.' },
 
   { id: 'poc-048', topic: 'poc', difficulty: 'easy',
     q: 'Which cost remains unchanged within a relevant range of activity?',
-    opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Marginal cost'],
+    opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Semi-variable cost'],
     ans: 1,
-    exp: 'Fixed costs remain unchanged within the relevant range of activity. Outside that range they may step up or down.' },
+    exp: 'A fixed cost is unchanged in total within the relevant range of activity. Outside that range it may step up or down, which is exactly what a stepped cost does — a fixed cost measured over a wider span of output.' },
 
   { id: 'poc-049', topic: 'poc', difficulty: 'easy',
     q: 'Which increases variable cost total?',
@@ -2376,23 +2356,8 @@ window.ALL_QUESTIONS = [
     exp: 'FIFO assumes the earliest purchases are issued first, so closing inventory consists of the most recent buys. It is a costing assumption, not an instruction to the warehouse: the physical goods may move in any order.' },
 
 
-  { id: 'poc-081', topic: 'poc', difficulty: 'medium',
-    q: 'Which cost is most relevant in decision making?',
-    opts: ['Sunk cost', 'Relevant cost', 'Fixed overhead', 'Historical cost'],
-    ans: 1,
-    exp: 'Relevant costs are future, incremental cash flows that change as a result of a decision. Sunk costs and committed costs are not relevant.' },
 
-  { id: 'poc-082', topic: 'poc', difficulty: 'medium',
-    q: 'Which cost is NOT relevant to decision making?',
-    opts: ['Future incremental cost', 'Opportunity cost', 'Sunk cost', 'Variable cost'],
-    ans: 2,
-    exp: 'A sunk cost has already been incurred and cannot be recovered, so it is irrelevant to any future decision.' },
 
-  { id: 'poc-083', topic: 'poc', difficulty: 'medium',
-    q: 'Which costing method ignores fixed overheads in inventory valuation?',
-    opts: ['Absorption costing', 'Marginal costing', 'FIFO', 'AVCO'],
-    ans: 1,
-    exp: 'Under marginal costing, fixed production overheads are treated as period costs and excluded from inventory valuation.' },
 
   { id: 'poc-084', topic: 'poc', difficulty: 'medium',
     q: 'Which is a variable cost?',
@@ -2421,12 +2386,12 @@ window.ALL_QUESTIONS = [
     q: 'Which method spreads overheads using activity levels?',
     opts: [
       'Absorption costing, which charges overheads to products via an absorption rate',
-      'Marginal costing, which charges only variable costs to each product',
+      'Allocation, which charges a whole overhead to the single cost centre that incurred all of it',
       'FIFO, which values closing inventory by assuming the oldest items are sold first',
       'AVCO, which values inventory using a weighted average unit cost',
     ],
     ans: 0,
-    exp: 'Absorption costing spreads overheads across products using a chosen activity base — typically labour hours, machine hours or units.' },
+    exp: 'Overheads are spread across products using a chosen activity base — typically labour hours, machine hours or units produced. Allocation comes earlier in the same process and charges a whole overhead to one centre rather than spreading it.' },
 
   { id: 'poc-088', topic: 'poc', difficulty: 'medium',
     q: 'Which method values closing inventory at most recent purchases?',
@@ -2445,16 +2410,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'FIFO, LIFO and AVCO are the three classic inventory valuation methods, and the Level 2 syllabus requires all three. LIFO is examined for internal management accounting use only, because it is not permitted for financial reporting under IFRS or UK GAAP.' },
 
-  { id: 'poc-090', topic: 'poc', difficulty: 'medium',
-    q: 'Which of the following is relevant in decision making?',
-    opts: [
-      'Future incremental costs that change as a result of the decision',
-      'Sunk costs that were already incurred before the decision was made',
-      'Historical costs recorded in previous accounting periods',
-      'The depreciation charged on existing non-current assets',
-    ],
-    ans: 0,
-    exp: 'Only costs that lie in the future and change as a result of the decision are relevant. Sunk costs and historic figures cannot be altered by any choice made now, and committed costs will be incurred whichever option is taken.' },
 
   { id: 'poc-091', topic: 'poc', difficulty: 'hard',
     q: 'A cost increases from £5,000 to £7,000 when output rises from 1,000 to 2,000 units. What type of cost is this?',
@@ -2462,7 +2417,7 @@ window.ALL_QUESTIONS = [
       'A semi-variable cost, with a fixed and a variable element',
       'A fixed cost, unchanged in total whatever the output level',
       'A variable cost, moving in direct proportion to output',
-      'A sunk cost, already incurred and no longer recoverable',
+      'A stepped cost, fixed in total until output passes a threshold',
     ],
     ans: 0,
     exp: 'Both fixed and variable elements are present: a £2,000 increase for a 1,000-unit increase implies £2/unit variable cost, with the remainder fixed — a semi-variable cost.' },
@@ -2791,7 +2746,7 @@ window.ALL_QUESTIONS = [
       'It is recorded in the contract but has no legal effect on either party',
     ],
     ans: 0,
-    exp: 'Implied terms are included automatically by statute (e.g. the Consumer Rights Act) or custom and are legally binding even though not written into the contract.' },
+    exp: 'Implied terms are read into a contract without being stated, by statute, by custom in a trade, or by a court making the contract workable. They bind just as express terms do, and some cannot be excluded however the contract is worded.' },
 
   { id: 'besy-029', topic: 'besy', difficulty: 'easy',
     q: 'An increase in interest rates usually leads to:',
@@ -3083,16 +3038,6 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Stakeholder conflict occurs when different groups have competing objectives — for example shareholders favouring profit and employees favouring higher wages.' },
 
-  { id: 'besy-059', topic: 'besy', difficulty: 'easy',
-    q: 'What does UK consumer rights legislation primarily protect?',
-    opts: [
-      'The quality and accuracy of goods and services sold to consumers',
-      'The terms and conditions on which employees are engaged and dismissed',
-      'The way businesses calculate and pay tax to HMRC',
-      'The arrangements between businesses and their banks',
-    ],
-    ans: 0,
-    exp: 'The Consumer Rights Act 2015 requires goods to be of satisfactory quality, fit for purpose and as described, with statutory remedies if they are not.' },
 
   { id: 'besy-060', topic: 'besy', difficulty: 'easy',
     q: 'What is ethical behaviour?',
@@ -3351,16 +3296,6 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Shareholders provide the capital and bear the residual risk, so their return comes from dividends and growth in the value of their shares. Employees are concerned with pay and security, lenders with being repaid, and customers with price and quality.' },
 
-  { id: 'besy-087', topic: 'besy', difficulty: 'easy',
-    q: 'Which UK legislation sets minimum hourly pay?',
-    opts: [
-      'The National Minimum Wage Act, which sets minimum hourly pay',
-      'The Data Protection Act, which governs the use of personal data',
-      'The Consumer Rights Act, which governs goods sold to consumers',
-      'The Equality Act, which prohibits discrimination at work',
-    ],
-    ans: 0,
-    exp: 'The National Minimum Wage Act (and National Living Wage regulations) set legal minimum hourly rates depending on the worker’s age.' },
 
   { id: 'besy-088', topic: 'besy', difficulty: 'medium',
     q: 'A depreciation of the domestic currency will:',
@@ -4252,12 +4187,12 @@ window.ALL_QUESTIONS.push(
   { id: 'dd-006', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each costing term to its formula.',
     pairs: [
-      { left: 'Prime cost', right: 'Direct materials + Direct labour + Direct expenses' },
-      { left: 'Contribution per unit', right: 'Selling price − Variable cost' },
-      { left: 'Break-even units', right: 'Fixed costs ÷ Contribution per unit' },
-      { left: 'Margin of safety (units)', right: 'Budgeted sales − Break-even sales' },
+      { left: 'Prime cost', right: 'Direct materials + direct labour + direct expenses' },
+      { left: 'Overhead absorption rate', right: 'Budgeted overhead ÷ budgeted activity level' },
+      { left: 'Cost per unit', right: 'Total cost ÷ number of units' },
+      { left: 'Variance as a percentage', right: 'Variance ÷ budgeted figure × 100' },
     ],
-    exp: 'Contribution is selling price less variable cost per unit; break-even is fixed costs divided by contribution; margin of safety is budgeted sales less break-even sales; and the absorption rate is budgeted overhead divided by the budgeted activity level.' },
+    exp: 'Four formulas that between them carry most of the calculation marks in Principles of Costing. Note that cost per unit divides the total by the units — adding the per-unit rates together instead misses the fixed cost per unit entirely.' },
 
   { id: 'dd-007', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
     q: 'Match each business structure to its liability characteristic.',
@@ -4269,15 +4204,6 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Incorporation creates a separate legal entity and limits the owners’ liability to the amount paid (or agreed to be paid) for shares.' },
 
-  { id: 'dd-008', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
-    q: 'Match each piece of legislation to what it primarily governs.',
-    pairs: [
-      { left: 'Consumer Rights Act 2015', right: 'Goods must be of satisfactory quality and fit for purpose' },
-      { left: 'Equality Act 2010', right: 'Protects nine protected characteristics from discrimination' },
-      { left: 'UK GDPR / Data Protection Act 2018', right: 'Lawful handling of personal data' },
-      { left: 'National Minimum Wage Act 1998', right: 'Sets minimum hourly pay by age band' },
-    ],
-    exp: 'These four are the most-tested pieces of UK legislation in the Business Environment paper.' },
 
   /* === TABLE-COMPLETION === */
   { id: 'tf-001', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
@@ -4446,13 +4372,13 @@ window.ALL_QUESTIONS.push(
     exp: 'Assets = Capital + Liabilities. Read it as what the business has on one side and where it came from on the other — the owner, or outsiders it owes. Rearranged, Capital = Assets − Liabilities gives the owner’s stake.' },
 
   { id: 'gf-004', topic: 'itbk', difficulty: 'medium', type: 'gapfill',
-    q: 'Complete the statement about year-end adjustments.',
-    template: 'An expense incurred but not yet paid at the year end is called {0}, and is shown in the statement of financial position as a {1}.',
+    q: 'Complete the statements about the analysed cash book.',
+    template: 'The cash and bank columns hold the full amount that moved, and the analysis columns {0} that amount. VAT is analysed on {1}.',
     gaps: [
-      { options: ['an accrual', 'a prepayment', 'a provision', 'a reserve'], answer: 0 },
-      { options: ['current asset', 'current liability', 'non-current asset', 'non-current liability'], answer: 1 },
+      { options: ['break down', 'add to', 'double', 'replace'], answer: 0 },
+      { options: ['a cash sale', 'a receipt settling a sales invoice', 'every receipt that is banked', 'a payment of wages'], answer: 0 },
     ],
-    exp: 'An accrual is an expense the business has incurred but not yet paid, so it is added to the expense and shown as a current liability. It is the accruals concept at work: the cost belongs to the period that consumed it.' },
+    exp: 'Analysis columns split an amount rather than adding to it, so each row must add across to the figure in its cash or bank column. VAT is analysed on a cash sale, because the sale was never invoiced; a receipt settling an invoice carries no VAT here, because the output tax went into the sales day book when the invoice was raised.' },
 
   { id: 'gf-005', topic: 'pobc', difficulty: 'medium', type: 'gapfill',
     q: 'Complete the statement about the VAT control account.',
@@ -4482,12 +4408,12 @@ window.ALL_QUESTIONS.push(
 
   { id: 'gf-008', topic: 'poc', difficulty: 'medium', type: 'gapfill',
     q: 'Complete the costing formulas.',
-    template: 'Contribution per unit is calculated as selling price minus {0}. The break-even point in units equals fixed costs divided by {1}.',
+    template: 'An overhead absorption rate is budgeted overhead divided by {0}. The full production cost of one unit is prime cost plus {1}.',
     gaps: [
-      { options: ['variable cost', 'fixed cost', 'total cost', 'prime cost'], answer: 0 },
-      { options: ['contribution per unit', 'variable cost', 'fixed cost', 'selling price'], answer: 0 },
+      { options: ['the budgeted activity level', 'the actual activity level', 'total sales revenue', 'the number of cost centres'], answer: 0 },
+      { options: ['absorbed production overhead', 'all administrative overhead', 'the selling price of the unit', 'the closing inventory value'], answer: 0 },
     ],
-    exp: 'Contribution per unit = selling price − variable cost. Break-even units = fixed costs ÷ contribution per unit.' },
+    exp: 'The rate is set from budgeted figures before the period starts, which is what lets a cost be quoted while the work is still being planned. Prime cost is the direct costs; adding the absorbed production overhead gives the full production cost, and non-production overheads stay out of it.' },
 
   { id: 'gf-009', topic: 'poc', difficulty: 'easy', type: 'gapfill',
     q: 'Complete the statement about fixed cost behaviour.',
@@ -4499,12 +4425,13 @@ window.ALL_QUESTIONS.push(
     exp: 'Total fixed cost is unchanged within the relevant range; spread over more units, fixed cost per unit falls.' },
 
   { id: 'gf-010', topic: 'poc', difficulty: 'medium', type: 'gapfill',
-    q: 'Select the correct costing method.',
-    template: 'Under {0} costing, fixed production overheads are treated as period costs and excluded from inventory valuation.',
+    q: 'Complete the statements about reporting variances.',
+    template: 'A variance is expressed as a percentage by dividing it by {0}. Under exception reporting, only variances above a threshold set by {1} are reported.',
     gaps: [
-      { options: ['marginal', 'absorption', 'standard', 'historical'], answer: 0 },
+      { options: ['the budgeted figure', 'the actual figure', 'the total cost', 'the previous period'], answer: 0 },
+      { options: ['the organisation’s own policy', 'the accountant on the day', 'the external auditor', 'the budget holder concerned'], answer: 0 },
     ],
-    exp: 'Marginal costing values inventory at variable production cost only; fixed overheads are written off as period costs.' },
+    exp: 'The denominator is always the budget, because the budget is the standard being measured against. And the threshold comes from the organisation’s policy rather than from judgement on the day, which is what makes an exception report consistent from month to month.' },
 
   { id: 'gf-011', topic: 'besy', difficulty: 'easy', type: 'gapfill',
     q: 'Complete the statement about business structures and liability.',
@@ -4550,14 +4477,14 @@ window.ALL_QUESTIONS.push(
 
 
   { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
-    q: 'Match each item to its classification in the financial statements.',
+    q: 'Match each item to the category it belongs to when a bookkeeping system is set up.',
     pairs: [
-      { left: 'Motor vehicle', right: 'Non-current asset' },
-      { left: 'Inventory', right: 'Current asset' },
-      { left: 'Trade payables', right: 'Current liability' },
-      { left: 'Bank loan repayable in 5 years', right: 'Non-current liability' },
+      { left: 'Motor vehicle', right: 'Asset' },
+      { left: 'Trade payables', right: 'Liability' },
+      { left: 'Owner’s capital', right: 'Equity' },
+      { left: 'Rent paid', right: 'Expense' },
     ],
-    exp: 'Assets and liabilities are split into current (within 12 months) and non-current (longer term).' },
+    exp: 'Five categories cover every account: assets, liabilities, equity, income and expenses. Getting the category right is what decides which side of the ledger a balance sits on, and therefore which column of the trial balance it goes into.' },
 
   { id: 'dd-013', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
     q: 'Match each control account entry to the side it appears on in the sales ledger control account.',
@@ -4682,24 +4609,6 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Take the trade discount off first: 2,000 − 200 = 1,800 net. VAT is then charged on what the customer is actually being charged, so 1,800 × 20% = 360, giving 2,160 total. Calculating VAT before the discount overstates both figures.' },
 
-  { id: 'tf-009', topic: 'itbk', difficulty: 'hard', type: 'tablefill',
-    q: 'Complete the statement of profit or loss extract.',
-    table: {
-      title: 'Statement of profit or loss (extract)',
-      columns: ['Item', '£'],
-      rows: [
-        ['Sales revenue', '120,000'],
-        ['Less: cost of sales', '72,000'],
-        ['Gross profit', '?'],
-        ['Less: expenses', '31,000'],
-        ['Profit for the year', '?'],
-      ],
-      blanks: [
-        { row: 2, col: 1, answer: 48000 },
-        { row: 4, col: 1, answer: 17000 },
-      ]
-    },
-    exp: 'Gross profit is revenue less cost of sales: 120,000 − 72,000 = 48,000. Profit for the year then deducts the operating expenses: 48,000 − 31,000 = 17,000. The two figures answer different questions — trading margin, then overall result.' },
 
   { id: 'tf-010', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
     q: 'Complete the VAT control account by calculating the amount due to HMRC.',
@@ -4876,14 +4785,13 @@ window.ALL_QUESTIONS.push(
     exp: 'Overhead absorption end to end: OAR, overhead absorbed, and the under/over-absorption adjustment.' },
 
   { id: 'sc-013', topic: 'poc', difficulty: 'medium', type: 'scenario',
-    setup: 'Greenleaf Ltd is preparing a quotation. The job needs direct materials of £1,200 and direct labour of £800. Production overheads are absorbed at 50% of direct labour cost. The company adds a mark-up of 25% to total cost to set the price.',
+    setup: 'Greenleaf Ltd is costing a job before quoting for it. The job needs direct materials of £1,200 and direct labour of £800. Production overheads are absorbed at 50% of direct labour cost.',
     parts: [
       { type: 'numeric', q: 'What is the prime cost of the job?', answer: 2000, unit: '£', exp: 'Prime cost is the total of the direct costs: £1,200 materials + £800 labour = £2,000. Overheads are excluded by definition — prime cost is what can be traced to the job itself.' },
       { type: 'numeric', q: 'What production overhead is absorbed into the job?', answer: 400, unit: '£', exp: 'Overhead is absorbed on the stated basis, here 50% of direct labour: 50% × £800 = £400. The basis matters — absorbing on materials or on prime cost would give a different figure for the same job.' },
       { type: 'numeric', q: 'What is the total production cost of the job?', answer: 2400, unit: '£', exp: 'Total production cost is prime cost plus absorbed overhead: £2,000 + £400 = £2,400. This is the figure a price is built on, since a price covering only prime cost would leave overheads unrecovered.' },
-      { type: 'numeric', q: 'What price should be quoted, after the 25% mark-up?', answer: 3000, unit: '£', exp: 'A mark-up is added to cost, so £2,400 × 1.25 = £3,000. Note that a 25% mark-up on cost is not a 25% margin on price: the £600 profit is 20% of the £3,000 selling price.' },
     ],
-    exp: 'Job costing: prime cost, overhead absorption, total cost and mark-up pricing.' },
+    exp: 'Job costing in the order the assessment asks for it: prime cost, then absorbed overhead, then total production cost.' },
 
   { id: 'sc-014', topic: 'besy', difficulty: 'medium', type: 'scenario',
     setup: 'Two friends, Priya and Sam, run a graphic-design business together as a general partnership. They are considering incorporating as a private limited company. They also have a major client who has not paid a £4,000 invoice that is now 90 days overdue.',
@@ -4929,7 +4837,7 @@ window.ALL_QUESTIONS.push(
         opts: ['Sustainability reporting, which forms part of corporate social responsibility', 'Tax avoidance, arranging the business’s affairs so as to reduce the tax due', 'A bank reconciliation, agreeing the cash book to the bank statement', 'A control account, summarising the balances in a subsidiary ledger'],
         ans: 0, exp: 'Measuring and reporting environmental impact is part of sustainability and corporate social responsibility.' },
     ],
-    exp: 'Professional ethics, the accruals concept, and the finance function\'s sustainability role.' },
+    exp: 'Professional ethics under pressure from a manager, and the finance function’s role in reporting environmental impact. Both belong to the same job, and a synoptic task will put them in the same scenario.' },
 
   /* ── Additional scenario questions (Phase 6 expansion) ── */
 
@@ -5085,7 +4993,7 @@ window.ALL_QUESTIONS.push(
       opts: ['Liability is limited to the capital invested in the business', 'Personal assets can be seized to pay business debts', 'Liability is capped at the annual turnover figure', 'A sole trader cannot be sued — only the business entity is liable'],
       ans: 1, exp: 'Sole traders have unlimited liability. There is no legal separation between owner and business — creditors can pursue the owner\'s personal assets.' },
   ],
-  exp: 'Cross-unit scenario covering VAT calculation (itbk), SLCA entries (pobc), contribution analysis (poc), and sole trader liability (besy).' },
+  exp: 'Cross-unit scenario covering VAT calculation (itbk), the sales ledger control account (pobc) and sole trader liability (besy) — three units assessed from one set of transactions.' },
 
 
 
@@ -5098,17 +5006,14 @@ window.ALL_QUESTIONS.push(
     { type: 'mcq', q: 'Cost of the 60 units sold (AVCO):',
       opts: ['£3,000', '£3,240', '£3,060', '£2,700'],
       ans: 2, exp: 'Under AVCO every issue is valued at the weighted average cost at that date, here £51.00, so 60 × £51.00 = £3,060. The average is recalculated after each purchase, which is what distinguishes AVCO from FIFO.' },
-    { type: 'mcq', q: 'Gross profit on the April sale:',
-      opts: ['£2,100', '£2,400', '£2,340', '£5,400'],
-      ans: 2, exp: 'Revenue = 60 × £90 = £5,400. Cost of sales (AVCO) = £3,060. Gross profit = £5,400 − £3,060 = £2,340.' },
     { type: 'mcq', q: 'The 30-unit credit purchase on 5 April affects the PLCA as:',
       opts: ['Debit PLCA £1,500', 'Credit PLCA £1,500', 'Debit PLCA £1,800', 'No effect — the PLCA only records cash payments'],
       ans: 1, exp: 'Credit purchases create a liability. Cr PLCA £1,500 / Dr Purchases £1,500. The PLCA credit represents the amount owed to the supplier (30 × £50).' },
   ],
-  exp: 'Cross-unit scenario covering AVCO inventory valuation, cost of sales (itbk), gross profit (poc), and PLCA entries for credit purchases (pobc).' },
+  exp: 'Cross-unit scenario covering AVCO inventory valuation and the cost of an issue (poc), with the payables ledger control account entry for the same purchase (pobc).' },
 
 { id: 'sc-029', topic: 'poc', difficulty: 'medium', type: 'scenario',
-  setup: 'Meadow Bakery is a sole trader run by Sarah. She is considering a £15,000 bank loan at 8% annual interest to buy equipment that would reduce her cost per unit.',
+  setup: 'Meadow Bakery is a sole trader run by Sarah. She is considering a £15,000 bank loan at 8% annual interest to buy equipment that would reduce her cost per unit. She has ruled out taking on a business partner.',
   parts: [
     { type: 'mcq', q: 'The bank loan is an example of:',
       opts: ['Equity finance (share capital)', 'Internal finance (retained profits)', 'External debt finance', 'Trade credit from suppliers'],
@@ -5117,7 +5022,7 @@ window.ALL_QUESTIONS.push(
       opts: ['Keeps full control and all the profits, but is personally liable for the loan', 'Automatically gains limited liability protection over her personal assets', 'Must incorporate as a limited company before borrowing more than £10,000', 'Avoids personal liability entirely, because the loan is the business’s debt'],
       ans: 0, exp: 'As a sole trader, Sarah keeps 100% control and profits but has unlimited liability — the bank can pursue her personal assets if the loan is not repaid.' },
   ],
-  exp: 'Cross-unit scenario covering contribution and profit analysis (poc), types of business finance, and sole trader unlimited liability (besy).' },
+  exp: 'Sources of business finance and the unlimited liability of a sole trader (besy), assessed through a financing decision the owner actually has to make.' },
 
 { id: 'sc-030', topic: 'synoptic', difficulty: 'hard', type: 'scenario',
   setup: 'Whitmore Ltd\'s bookkeeper finds three errors after the trial balance: (1) Office equipment £2,500 posted as Dr Office expenses / Cr Bank — should be Dr Equipment / Cr Bank. (2) A credit sale of £800 entered in the sales day book as £80. (3) Bank charges £120 on the bank statement not in the cashbook.',
@@ -5275,7 +5180,7 @@ window.ALL_QUESTIONS.push(
     q: 'A business has output VAT of £18,400 and input VAT of £11,750 for the quarter. What amount is payable to HMRC?',
     opts: ['£18,400', '£11,750', '£6,650', '£30,150'],
     ans: 2,
-    exp: 'Net VAT = Output VAT − Input VAT = £18,400 − £11,750 = £6,650 payable to HMRC (entered in Box 5 of the VAT return).' },
+    exp: 'Net VAT = output tax − input tax = £18,400 − £11,750 = £6,650 payable to HMRC. That figure is the credit balance left on the VAT control account once the quarter’s entries are complete, and it is settled by payment.' },
 
   { id: 'pobc-206', topic: 'pobc', difficulty: 'hard', type: 'mcq',
     q: 'The PLCA balance is £13,600 but the total of individual supplier balances is £14,200. The list is higher than the PLCA by £600. Which error would explain this?',
@@ -5357,48 +5262,14 @@ window.ALL_QUESTIONS.push(
   // ── BESY additional hard questions ──────────────────────────────────────
 
 
-  { id: 'besy-201', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'Using the same data (inventory £14,000; receivables £22,000; bank £8,000; CL £22,000), what is the acid test (quick) ratio?',
-    opts: ['2:1', '1.36:1', '1.5:1', '0.64:1'],
-    ans: 1,
-    exp: 'Quick assets = Current assets − Inventory = £44,000 − £14,000 = £30,000. Acid test = £30,000 ÷ £22,000 = 1.36:1 (to 2 d.p.). Inventory is excluded because it may not be quickly convertible to cash.' },
-
-  { id: 'besy-202', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'A company had retained earnings of £28,000 at the start of the year. Profit after tax for the year is £15,000. Dividends paid are £6,000. What are the closing retained earnings?',
-    opts: ['£43,000', '£37,000', '£22,000', '£49,000'],
-    ans: 1,
-    exp: 'Closing retained earnings = opening + profit after tax − dividends = £28,000 + £15,000 − £6,000 = £37,000. Dividends are a distribution of profit, not an expense, so they never appear in the income statement.' },
 
 
 
 
-  { id: 'besy-206', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'Revenue is £180,000; trade receivables are £30,000. What are the receivables collection days (to the nearest day)?',
-    opts: ['61 days', '45 days', '90 days', '30 days'],
-    ans: 0,
-    exp: 'Receivables days = (Trade receivables ÷ Revenue) × 365 = (£30,000 ÷ £180,000) × 365 = 60.8 ≈ 61 days.' },
 
-  { id: 'besy-207', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'Cost of sales is £96,000; closing inventory is £16,000. What are inventory days (to the nearest day)?',
-    opts: ['61 days', '73 days', '45 days', '37 days'],
-    ans: 0,
-    exp: 'Inventory days = (inventory ÷ cost of sales) × 365 = (£16,000 ÷ £96,000) × 365 = 61 days. It estimates how long stock sits before being sold. Rising inventory days can signal slowing sales or obsolete stock building up.' },
 
-  { id: 'besy-208', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'Revenue is £200,000; gross profit is £70,000. What is the gross profit margin?',
-    opts: ['35%', '30%', '42%', '65%'],
-    ans: 0,
-    exp: 'Gross profit margin = (gross profit ÷ revenue) × 100 = (£70,000 ÷ £200,000) × 100 = 35%. It measures profitability before overheads. A falling margin points to pricing pressure or rising input costs rather than to overhead control.' },
 
-  { id: 'besy-209', topic: 'besy', difficulty: 'hard', type: 'mcq',
-    q: 'Which item would reduce the NET PROFIT MARGIN but NOT the gross profit margin?',
-    opts: [
-      'An increase in the cost of materials',
-      'Higher direct labour costs',
-      'An increase in administrative salaries',
-      'A fall in selling price'],
-    ans: 2,
-    exp: 'Gross profit = Revenue − Cost of sales (direct costs). Net profit = Gross profit − Operating expenses. Administrative salaries are operating (indirect) expenses: they appear below gross profit, so they reduce net profit margin but do not affect gross profit margin.' },
+
 
   // ── SCENARIO QUESTIONS ───────────────────────────────────────────────────
 
@@ -5526,28 +5397,6 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'A job cost card totals the direct costs then adds absorbed overhead. Labour is 12 × £10 = £120 and overhead 12 × £8 = £96, so with £260 of materials the total production cost is £476.' },
 
-  { id: 'tf-018', topic: 'besy', difficulty: 'hard', type: 'tablefill',
-    q: 'Complete the working capital analysis table for Midway Ltd.',
-    table: {
-      title: 'Working Capital Analysis',
-      columns: ['Item', '£'],
-      rows: [
-        ['Inventory', '21,000'],
-        ['Trade receivables', '34,000'],
-        ['Cash and bank', '5,000'],
-        ['Total current assets', '?'],
-        ['Trade payables', '18,000'],
-        ['Accruals', '3,500'],
-        ['Total current liabilities', '?'],
-        ['Net working capital', '?'],
-      ],
-      blanks: [
-        { row: 3, col: 1, answer: 60000 },
-        { row: 6, col: 1, answer: 21500 },
-        { row: 7, col: 1, answer: 38500 },
-      ]
-    },
-    exp: 'Current assets: £21,000 + £34,000 + £5,000 = £60,000. Current liabilities: £18,000 + £3,500 = £21,500. Net working capital: £60,000 − £21,500 = £38,500.' },
 
   { id: 'tf-019', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
     q: 'A trial balance has a debit excess of £860 (suspense account: credit balance £860). Two correcting journals are processed. Complete the suspense account.',
@@ -5939,7 +5788,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Only registered businesses reclaim input VAT. For an unregistered business the VAT is simply part of the cost. Gross ÷ 6 works because gross = net × 1.2, so VAT = gross × (0.2/1.2).' },
 
-  { id: 'tfq-016', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-control',
+  { id: 'tfq-016', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-ca',
     q: 'Identify whether the following statements about control accounts are true or false.',
     statements: [
       { text: 'The sales ledger control account total should agree with the sum of the individual customer balances.', answer: true },
@@ -5949,7 +5798,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. The subsidiary ledgers sit outside the double entry, so an error in one customer’s account does not unbalance the trial balance — which is precisely why the control account reconciliation exists. And a contra entry offsets a party who is both customer and supplier, so it REDUCES both control accounts.' },
 
-  { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bank',
+  { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bankrec',
     q: 'Identify whether the following statements about bank reconciliation are true or false.',
     statements: [
       { text: 'Unpresented cheques are a timing difference and need no adjustment in the cash book.', answer: true },
@@ -6091,7 +5940,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'One-sided entries and transposition on one side only break the balance. An error of principle (right amount, wrong account) and a complete omission both leave the debits and credits equal.' },
 
-  { id: 'ms-012', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-bank', selectCount: 2,
+  { id: 'ms-012', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-bankrec', selectCount: 2,
     q: 'Which TWO items require an adjustment to the cash book during a bank reconciliation?',
     opts: [
       'Bank charges shown on the statement that have not been recorded in the cash book',
@@ -6433,5 +6282,1110 @@ window.ALL_QUESTIONS.push(
         exp: 'Attribution plus authorisation is the control pair. The other three either do not address the risk or introduce new ones.' },
     ],
     exp: 'Synoptic Task 7 shape: bookkeeping systems, payments and data security assessed together in a workplace situation.' }
+
+);
+
+/* ────────────────────────────────────────────────────────────────────────
+   ITBK COVERAGE GAPS
+
+   A per-criterion probe of the bank found four ITBK criteria with almost
+   nothing behind them, and one — 4.1, entering receipts and payments into an
+   analysed cash book — with nothing at all. Topic area 4 is a quarter of the
+   Introduction to Bookkeeping assessment, and coding (1.3) is one of its
+   named skills. All four have had lessons since v1.15.0; they had no
+   practice.
+
+   Every question below carries a `criteria` tag so the coverage guard in
+   check-aat2-quality.js can prove the gap stays closed.
+   ──────────────────────────────────────────────────────────────────────── */
+window.ALL_QUESTIONS.push(
+
+  /* ── ITBK-4.1  Enter receipts and payments into an analysed cash book ── */
+
+  { id: 'itbk-401', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'Till takings of £504, including VAT at 20%, are banked. Which figures are entered in the analysed cash book?',
+    opts: [
+      'Bank £504.00, cash sales £420.00, VAT £84.00',
+      'Bank £504.00, cash sales £504.00, VAT £100.80',
+      'Bank £420.00, cash sales £420.00, VAT £84.00',
+      'Bank £588.00, cash sales £504.00, VAT £84.00',
+    ], ans: 0,
+    exp: 'The bank column takes the full £504 that moved. The analysis splits it: £504 ÷ 1.2 = £420 net to cash sales and £84 to VAT, which add across to £504. A cash sale creates its VAT at the moment the money arrives, because no invoice was raised earlier.' },
+
+  { id: 'itbk-402', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'A payment of £930 settles a purchase invoice for goods on which £155 of VAT had been charged. How is the payment analysed?',
+    opts: [
+      'The full £930 to a payables column, with no VAT analysed',
+      'The full £930 to a purchases column, with no VAT analysed',
+      '£775 to a payables column and £155 to the VAT column',
+      '£775 to a purchases column and £155 to the VAT column',
+    ], ans: 0,
+    exp: 'The input tax went into the purchases day book when the invoice was entered. Analysing it again here would record the same VAT twice. The payment only converts a payable into cash, so it is analysed in full to payables — not to purchases, which was debited when the invoice arrived.' },
+
+  { id: 'itbk-403', topic: 'itbk', difficulty: 'easy', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'Why does an analysed cash book keep a cash column and a bank column separate?',
+    opts: [
+      'They are two different resources, held in two places and counted in different ways',
+      'The cash column records receipts and the bank column records payments',
+      'Only the bank column is analysed; the cash column is entered in total',
+      'VAT is analysed on movements through the bank account but never on movements of cash in hand',
+    ], ans: 0,
+    exp: 'Notes in a till and a balance at the bank are genuinely different resources. One can be plentiful while the other is short, each is verified differently, and a single combined figure answers neither question. Both sides of the book carry both columns, and both are analysed.' },
+
+  { id: 'itbk-404', topic: 'itbk', difficulty: 'easy', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'Which document is the evidence behind an entry for cash and cheques taken to the bank?',
+    opts: ['The paying-in slip', 'The cheque stub', 'The remittance advice', 'The goods received note'], ans: 0,
+    exp: 'A paying-in slip is the business’s own record of what it banked. A cheque stub evidences a cheque written, a remittance advice arrives with a receipt and says which invoices it covers, and a goods received note belongs to the purchasing cycle rather than the cash book.' },
+
+  { id: 'itbk-405', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'A bookkeeper adds a row’s analysis columns together and enters the result in the bank column. What has gone wrong?',
+    opts: [
+      'The analysis breaks the payment down, so adding it to the payment doubles the entry',
+      'The analysis columns should be entered before the bank column, not after it',
+      'Nothing at all, provided that the VAT column has been excluded from the addition first',
+      'Nothing, provided the row is later cross cast against the payments side',
+    ], ans: 0,
+    exp: 'Analysis columns split an amount; they never add to it. A payment of £144 analysed as £120 and £24 is one payment described in two parts, so the bank column shows £144. Adding the analysis to it records £288, and the row will not cross cast.' },
+
+  { id: 'itbk-num-009', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'A bank payment of £372 is analysed as £310 to motor expenses and the remainder to VAT. What figure, in £, goes in the VAT analysis column?',
+    answer: 62,
+    exp: '£372 − £310 = £62. The analysis columns must add across to the figure in the bank column, so the VAT column takes whatever is left once the net expense has been analysed.' },
+
+  { id: 'tfq-018', topic: 'itbk', difficulty: 'medium', type: 'truefalse', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+    q: 'Identify whether the following statements about the analysed cash book are true or false.',
+    statements: [
+      { text: 'VAT is analysed on a cash sale but not on a receipt settling a sales invoice.', answer: true },
+      { text: 'The bank column holds the gross amount of a payment, VAT included.', answer: true },
+      { text: 'A direct debit is entered in the cash book only once an invoice for it has arrived.', answer: false },
+      { text: 'The analysis columns of a row should add across to the cash or bank figure for that row.', answer: true },
+      { text: 'Wages paid by bank transfer are analysed between a net figure and VAT.', answer: false },
+    ],
+    exp: 'Two are false. A direct debit is recorded from the standing schedule or from the bank statement, because nothing arrives to prompt it — that is what makes it a recurring transaction. And wages are outside the scope of VAT, so there is nothing to split: the whole amount is analysed to wages.' },
+
+  /* ── ITBK-4.3  Total and balance the cash book and petty cash book ───── */
+
+  { id: 'itbk-406', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.3'],
+    q: 'A three-column cash book cross casts exactly. What has this proved?',
+    opts: [
+      'That the columns have been added correctly, and nothing about which entries were made',
+      'That every receipt and payment in the period has been entered in the book',
+      'That each entry in the book has been analysed to the correct column on the correct side',
+      'That the closing bank balance will agree with the bank statement',
+    ], ans: 0,
+    exp: 'Cross casting adds the same figures in a different order, so agreement proves the columns were added correctly and nothing more. It cannot see a receipt entered on the payments side, a figure transcribed wrongly, an entry against the wrong account, or a document left out — each of those leaves a set of internally consistent figures.' },
+
+  { id: 'itbk-407', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.3'],
+    q: 'A cash book fails to cross cast by £288, and £288 is the exact amount of one payment in the book. What is the most likely cause?',
+    opts: [
+      'That payment was entered in the bank column but omitted from the analysis',
+      'That payment was entered on the receipts side instead of the payments side',
+      'Two digits of that payment were transposed when it was written down',
+      'The opening balance was brought down on the wrong side of the book',
+    ], ans: 0,
+    exp: 'A difference equal to one entry points at that entry appearing in one column and not another. A wrong-side entry shows as twice the amount, £576 here; a transposition gives a difference divisible by nine; and an opening balance is not part of the cross cast at all.' },
+
+  { id: 'itbk-408', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.3'],
+    q: 'A cash book fails to cross cast by £270. What does the size of that difference suggest?',
+    opts: [
+      'Two digits have been transposed somewhere, since the difference divides by nine',
+      'An entry has been posted on the wrong side, since the difference divides by two',
+      'An entry has been omitted entirely, since the difference is a round figure',
+      'The VAT analysis has been calculated at the wrong rate on one row',
+    ], ans: 0,
+    exp: '£270 ÷ 9 = £30, and a difference divisible by nine is the signature of transposed digits: £1,240 written as £1,420 differs by £180, which also divides by nine. It is only a clue, not a proof, but it tells you which kind of error to look for first.' },
+
+  { id: 'itbk-num-010', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£', skill: 'itbk-cashbook', criteria: ['ITBK-4.3'],
+    q: 'A cash book shows opening cash in hand £112, cash receipts £638, cash payments £405, and separately opening bank £2,900 with bank receipts £1,450. What is the closing cash in hand, in £?',
+    answer: 345,
+    exp: '£112 + £638 = £750, less £405 = £345. Cash in hand is balanced from the cash column alone — the bank figures in the question belong to a separate calculation, and including them is the standard error in this task.' },
+
+  { id: 'ms-013', topic: 'itbk', difficulty: 'hard', type: 'multiselect', selectCount: 2, skill: 'itbk-cashbook', criteria: ['ITBK-4.3'],
+    q: 'Which TWO of the following errors would still be present in a cash book that cross casts perfectly?',
+    opts: [
+      'A supplier payment of £460 recorded on the receipts side of the book',
+      'A sales invoice that was never entered in the cash book at all',
+      'An analysis column that was added down incorrectly by £50',
+      'A row whose analysis figures were written in the wrong two columns',
+    ], answers: [0, 1],
+    exp: 'Cross casting tests whether the analysis adds across to the cash and bank columns. A wrong-side entry and a wholly omitted document both leave that relationship intact, so neither shows up. A mis-added column breaks the cross cast, and so does a figure moved between columns on the same row.' },
+
+  /* ── ITBK-4.4  Process recurring receipts and payments ───────────────── */
+
+  { id: 'itbk-409', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.4'],
+    q: 'A regular monthly payment to an energy supplier is a different amount every month. Which arrangement is this most likely to be, and why?',
+    opts: [
+      'A direct debit, because the recipient collects an amount that can vary',
+      'A standing order, because the payer instructs the bank afresh each month',
+      'A standing order, because the amount is reviewed before each collection',
+      'A direct debit, because the payer authorises each collection individually',
+    ], ans: 0,
+    exp: 'A direct debit is an authority for the recipient to collect, and the amount they collect can vary. A standing order is an instruction from the payer for a fixed amount at set intervals, so a changing figure on one would be a genuine anomaly rather than a normal month.' },
+
+  { id: 'itbk-410', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.4'],
+    q: 'A direct debit was cancelled in June, but the accounting software has generated the monthly entry ever since. How does this normally come to light?',
+    opts: [
+      'The cash book will not agree with the bank statement, by the value of the entries',
+      'The software will refuse to generate an entry once the mandate is cancelled',
+      'The trial balance will fail to balance by the total value of the entries generated since June',
+      'The supplier will issue a credit note for each payment not collected',
+    ], ans: 0,
+    exp: 'A generated entry is a prediction; the bank statement is the evidence. The cash book stays internally consistent and the trial balance still balances, because the entry was posted to both accounts — so the difference surfaces only at the bank reconciliation.' },
+
+  { id: 'itbk-411', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.4'],
+    q: 'Why is a coding error on a recurring entry treated as more serious than the same error on a one-off payment?',
+    opts: [
+      'It is reproduced every period until someone notices, and each copy looks legitimate',
+      'It cannot be corrected by journal once the entry has been generated automatically',
+      'It affects the figure in the bank column rather than only the analysis columns beside it',
+      'It prevents the software from generating any further entries on that schedule',
+    ], ans: 0,
+    exp: 'The schedule is the defect, so it keeps producing the same wrong coding on time and in the right format every month. That is why the review of recurring transactions belongs on the setup — the amount, the coding and above all the end date — rather than on each generated entry.' },
+
+  { id: 'itbk-num-011', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£', skill: 'itbk-cashbook', criteria: ['ITBK-4.4'],
+    q: 'A monthly standing order for insurance is recorded at £240 in the cash book, but the bank has been paying £275 for the last five months. By how much, in £, is the insurance expense understated?',
+    answer: 175,
+    exp: '£275 − £240 = £35 a month, and 5 × £35 = £175. The cash book also overstates the bank balance by £175, which is where the error will surface. Correcting the five entries is only half the job: the schedule itself has to be amended or next month repeats it.' },
+
+  /* ── ITBK-1.3  Create and use coding systems ─────────────────────────── */
+
+  { id: 'itbk-412', topic: 'itbk', difficulty: 'medium', skill: 'itbk-docs', criteria: ['ITBK-1.3'],
+    q: 'What does a general ledger code tell you that a customer account code does not?',
+    opts: [
+      'Which kind of transaction it was, and therefore which nominal account it lands in',
+      'Which of the two ledgers the account belongs to, sales or purchases',
+      'Which item was sold, so that sales by product line can be analysed',
+      'Which member of staff entered the transaction, and the date on which they entered it',
+    ], ans: 0,
+    exp: 'A customer code says who owes the money; a general ledger code says what kind of transaction it was. A single sales invoice needs both. Identifying the item sold is the job of a product code, which is a third question again.' },
+
+  { id: 'itbk-413', topic: 'itbk', difficulty: 'medium', skill: 'itbk-docs', criteria: ['ITBK-1.3'],
+    q: 'A business wants supplier codes that show at a glance which ledger an account sits in and are still guaranteed unique. Which scheme meets both requirements?',
+    opts: [
+      'Alphanumerical, because letters carry the meaning and digits guarantee uniqueness',
+      'Alphabetical, because the letters are taken directly from the supplier’s name',
+      'Numerical, because a plain sequence can never produce two identical codes',
+      'Alphabetical, because a readable code makes a miscoded entry considerably easier to spot',
+    ], ans: 0,
+    exp: 'Only the alphanumerical scheme does both jobs: SL-THO-04 announces the ledger and the name, and the digits stop two accounts colliding. Alphabetical codes cluster and break when a customer rebrands; numerical codes are unique but carry no information at all.' },
+
+  { id: 'itbk-414', topic: 'itbk', difficulty: 'hard', skill: 'itbk-docs', criteria: ['ITBK-1.3'],
+    q: 'A sales invoice for £840 is posted to the wrong customer account code. Why will the trial balance still agree?',
+    opts: [
+      'Two customer accounts are wrong by £840 in opposite directions, so the total is unchanged',
+      'The error affects the receivables ledger, which is not part of the trial balance',
+      'The general ledger code was correct, so the sales figure absorbs the difference',
+      'A coding error is a one-sided entry, and every one-sided entry is cleared through the suspense account',
+    ], ans: 0,
+    exp: 'One customer is overstated by £840 and another understated by the same amount, so total receivables is untouched. That is why the error is invisible from any total, and why it surfaces only when the wrong customer is chased for money they never owed.' },
+
+  { id: 'itbk-415', topic: 'itbk', difficulty: 'easy', skill: 'itbk-docs', criteria: ['ITBK-1.3'],
+    q: 'Which record uses supplier account codes rather than customer account codes?',
+    opts: [
+      'The discounts received day book',
+      'The discounts allowed day book',
+      'The sales returns day book',
+      'The receivables ledger and the individual accounts inside it',
+    ], ans: 0,
+    exp: 'The sales side and the purchases side mirror each other exactly. Discounts received, purchases, purchases returns and the payables ledger use supplier codes; discounts allowed, sales, sales returns and the receivables ledger use customer codes. Ask who issued the document and the side follows.' },
+
+  { id: 'dd-021', topic: 'itbk', difficulty: 'medium', type: 'dragdrop', skill: 'itbk-docs', criteria: ['ITBK-1.3'],
+    q: 'Match each type of code to what it identifies.',
+    pairs: [
+      { left: 'Customer account code', right: 'One credit customer' },
+      { left: 'Supplier account code', right: 'One credit supplier' },
+      { left: 'Product code', right: 'One item bought or sold' },
+      { left: 'General ledger code', right: 'One nominal account, such as motor expenses' },
+    ],
+    exp: 'Four codes answering four different questions: who owes us, who we owe, which item, and what kind of transaction. A single sales invoice can carry three of them at once, and each one directs a different part of the entry.' }
+
+);
+
+/* ────────────────────────────────────────────────────────────────────────
+   POBC COVERAGE GAPS — the trial balance
+
+   Learning outcome 4 of Principles of Bookkeeping Controls is extracting an
+   initial trial balance and redrafting it after adjustments. The bank had two
+   questions on 4.1 and none at all on 4.2, while carrying twenty-two on the
+   types of error — the diagnosis was well practised and the two tasks either
+   side of it were not.
+   ──────────────────────────────────────────────────────────────────────── */
+window.ALL_QUESTIONS.push(
+
+  /* ── POBC-4.1  Extract an initial trial balance ──────────────────────── */
+
+  { id: 'pobc-401', topic: 'pobc', difficulty: 'easy', skill: 'pobc-tb', criteria: ['POBC-4.1'],
+    q: 'What kind of document is a trial balance?',
+    opts: [
+      'A working schedule extracted from the ledger, outside the double entry itself',
+      'A financial statement presented to the owners alongside the profit figure',
+      'A book of prime entry in which balances are first recorded before posting',
+      'A ledger account in its own right, which is opened and closed at each period end',
+    ], ans: 0,
+    exp: 'It is a two-column list of the general ledger balances at a date, drawn up to prove the ledger adds up. Nothing is posted to it and nothing is posted from it, which is why an error can exist in the ledger while the trial balance agrees perfectly.' },
+
+  { id: 'pobc-402', topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.1'],
+    q: 'In which column of the trial balance does the sales returns account appear?',
+    opts: [
+      'Debit, because a return reverses part of an entry that was originally a credit',
+      'Credit, because sales returns belong to exactly the same category of account as sales',
+      'Debit, because sales returns reduce the amount owed by the credit customer',
+      'Credit, because the account records income that the business has given back',
+    ], ans: 0,
+    exp: 'Sales are income and carry a credit balance, so reducing them takes a debit — sales returns is a debit balance even though sales is a credit. Drawings work the same way: they reduce capital, and reducing a credit balance takes a debit.' },
+
+  { id: 'pobc-403', topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.1'],
+    q: 'The sales ledger control account has a credit balance of £340 because two customers have overpaid. How is it entered in the trial balance?',
+    opts: [
+      '£340 in the credit column, because a balance is entered where it actually is',
+      '£340 in the debit column, because the account is an asset by its nature',
+      'As £340 shown in brackets in the debit column, to signal that it has reversed',
+      'It is omitted, because a control account cannot carry a credit balance',
+    ], ans: 0,
+    exp: 'Put the balance where it is, not where it usually sits. The sales ledger control account is normally a debit, but customer overpayments can turn it into a credit, and it then belongs in the credit column as an ordinary positive figure. Never enter a negative or a bracketed number.' },
+
+  { id: 'pobc-404', topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.1'],
+    q: 'While extracting a trial balance, a bookkeeper copies the £96,400 total of the purchases account instead of its £18,200 balance brought down. What is the consequence?',
+    opts: [
+      'The debit column is overstated by £78,200 and the trial balance will not agree',
+      'The trial balance still agrees, because both sides of the account totalled £96,400',
+      'The purchases figure is right but the period it belongs to is wrong',
+      'Nothing, provided the same treatment is applied to every other ledger account',
+    ], ans: 0,
+    exp: '£96,400 − £18,200 = £78,200 too much in the debit column. The total of an account is just the sum of the entries on one side and means nothing outside the account; only the balance brought down belongs in a trial balance. Copying the total is the commonest error in this task.' },
+
+  { id: 'pobc-num-007', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', skill: 'pobc-tb', criteria: ['POBC-4.1'],
+    q: 'An initial trial balance has debits of £186,450 and credits of £187,290. What balancing figure, in £, must be entered as suspense so the trial balance can be completed?',
+    answer: 840,
+    exp: '£187,290 − £186,450 = £840, entered in the smaller column — here the debit column — and described as suspense. That lets the trial balance be completed and the work carried on, and the balance is then investigated and cleared by journal.' },
+
+  { id: 'tfq-019', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-tb', criteria: ['POBC-4.1'],
+    q: 'Identify whether the following statements about extracting an initial trial balance are true or false.',
+    statements: [
+      { text: 'An account showing a nil balance is left out of the trial balance.', answer: true },
+      { text: 'A trial balance that agrees proves every transaction was posted to the correct account.', answer: false },
+      { text: 'The figure taken into the trial balance is the balance brought down, not the account total.', answer: true },
+      { text: 'A credit balance may be entered as a negative figure in the debit column.', answer: false },
+      { text: 'An initial trial balance is drawn up before any corrections are made.', answer: true },
+    ],
+    exp: 'Two are false. Agreement proves only that each debit posted had an equal credit, which is why errors of commission, principle and omission survive it untouched. And a credit balance is entered as a positive figure in the credit column — negative numbers and brackets both lose the mark in a computer-marked task.' },
+
+  /* ── POBC-4.2  Redraft the trial balance following adjustments ───────── */
+
+  { id: 'pobc-405', topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+    q: 'Wages has a debit balance of £31,450. A journal credits wages with £900. What is the redrafted balance?',
+    opts: [
+      '£30,550 debit, because a credit journal is on the opposite side to the balance',
+      '£32,350 debit, because the journal is added to the balance already in the account',
+      '£900 credit, because the journal replaces the balance that was there before',
+      '£30,550 credit, because the side of the balance follows the side of the journal',
+    ], ans: 0,
+    exp: '£31,450 − £900 = £30,550, still a debit. A journal on the same side as the balance increases it and one on the opposite side decreases it, and that single rule holds for every account type. The balance only changes sides if the journal is larger than the balance.' },
+
+  { id: 'pobc-406', topic: 'pobc', difficulty: 'hard', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+    q: 'The VAT control account has a credit balance of £1,780 and a journal debits it with £2,140. How does it appear in the redrafted trial balance?',
+    opts: [
+      '£360 in the debit column, because the journal exceeded the balance it reduced',
+      '£360 in the credit column, because a control account keeps the side it started on',
+      '£3,920 in the credit column, because the debit journal adds to the liability',
+      'It is omitted, because a debit balance on a VAT account cannot arise',
+    ], ans: 0,
+    exp: '£2,140 − £1,780 = £360, and the debit has overtaken the credit, so the balance crosses over and moves to the other column. A VAT debit balance is perfectly ordinary — it means HMRC owes the business a refund. Forcing the figure back to the side it started on is the error to avoid.' },
+
+  { id: 'pobc-407', topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+    q: 'A redrafted trial balance still shows a suspense balance of £250. What does this tell you?',
+    opts: [
+      'An error has not been found, or a journal has been posted to one account only',
+      'The suspense account has been correctly cleared and £250 is the rounding',
+      'The financial statements may be prepared, provided that the £250 is disclosed in them',
+      'The initial trial balance must be extracted again from the ledger accounts',
+    ], ans: 0,
+    exp: 'A correctly redrafted trial balance contains no suspense at all. A live suspense balance is an admission that something is still unexplained, and it is the first thing a reviewer or auditor looks for. Relabelling the difference rather than finding it leaves the error in the accounts.' },
+
+  { id: 'pobc-408', topic: 'pobc', difficulty: 'hard', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+    q: 'A redrafted trial balance is out by exactly the amount of one of the journals given. What is the most likely cause?',
+    opts: [
+      'That journal was posted to one of its two accounts and not to the other',
+      'That journal was applied to the wrong side of the account it affected',
+      'Two digits were transposed while copying an untouched balance across the page',
+      'The suspense account was cleared before the journals had been applied',
+    ], ans: 0,
+    exp: 'A one-sided posting throws the redraft out by exactly the journal amount. Applying a journal to the wrong side throws it out by exactly twice that amount, which is the other recognisable signature, and a transposition gives a difference divisible by nine.' },
+
+  { id: 'pobc-num-008', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+    q: 'The purchases ledger control account has a credit balance of £24,600. Two journals affect it: one credits it with £1,150 and one debits it with £480. What is the redrafted balance, in £?',
+    answer: 25270,
+    exp: '£24,600 + £1,150 = £25,750, then − £480 = £25,270 credit. The credit journal is on the same side as the balance so it increases it; the debit journal is on the opposite side so it reduces it. Apply the journals one at a time and write down each new figure.' },
+
+  { id: 'ms-014', topic: 'pobc', difficulty: 'medium', type: 'multiselect', selectCount: 2, skill: 'pobc-tb', criteria: ['POBC-4.2'],
+    q: 'A redrafted trial balance does not agree. Which TWO checks should be made first?',
+    opts: [
+      'That every journal was posted to both of the accounts it names',
+      'That each journal was applied to the correct side of the account it affects',
+      'That the initial trial balance was extracted from the correct ledger accounts',
+      'That the suspense balance in the initial trial balance was entered in the smaller column',
+    ], answers: [0, 1],
+    exp: 'The journals you were given were balanced when you received them, so a redraft that disagrees is a fault in your own working. Both halves posted, and each half on the right side, account for nearly every case. The initial trial balance and its suspense figure were settled before the redraft began.' },
+
+  { id: 'sc-054', topic: 'pobc', difficulty: 'hard', type: 'scenario', skill: 'pobc-tb', criteria: ['POBC-4.1', 'POBC-4.2'],
+    setup: 'Halstead Joinery is a sole trader. At 31 May the general ledger shows these balances: Bank £3,140 debit; Sales ledger control account £22,480 debit; Purchases £51,900 debit; Wages £28,650 debit; Drawings £7,200 debit; Purchases ledger control account £14,720 credit; VAT control account £3,860 credit; Sales £70,000 credit; Capital £25,000 credit. Two errors are then found: a page of the wages account was undercast by £180, and the credit side of the VAT control account was overcast by £30.',
+    parts: [
+      { type: 'mcq', q: 'What balancing figure must be entered to complete the initial trial balance?',
+        opts: [
+          '£210 in the debit column, described as suspense',
+          '£210 in the credit column, described as suspense',
+          '£420 in the debit column, described as suspense',
+          'None — the two columns already agree at £113,370',
+        ], ans: 0,
+        exp: 'Debits total £113,370 and credits £113,580, so credits exceed debits by £210. The balancing figure goes in the smaller column — the debit column — and the trial balance is completed at £113,580.' },
+      { type: 'mcq', q: 'Which journal corrects the undercast wages account?',
+        opts: [
+          'Dr Wages £180, Cr Suspense £180',
+          'Cr Wages £180, Dr Suspense £180',
+          'Dr Wages £180, Cr Bank £180',
+          'Dr Suspense £180, Cr Bank £180',
+        ], ans: 0,
+        exp: 'An undercast debit balance is too small, so it needs a further debit of £180. The other half goes to suspense, because the original error was one-sided and suspense is where that missing side has been parked.' },
+      { type: 'numeric', q: 'What is the redrafted balance on the wages account?', answer: 28830, unit: '£',
+        exp: '£28,650 + £180 = £28,830 debit. The journal debits wages, which is the same side as the existing balance, so the balance increases.' },
+      { type: 'numeric', q: 'What is the redrafted balance on the VAT control account?', answer: 3830, unit: '£',
+        exp: '£3,860 − £30 = £3,830 credit. The credit side was overcast by £30, so the correcting journal debits VAT control — the opposite side to the balance — and reduces it.' },
+      { type: 'numeric', q: 'What is the total of each column of the redrafted trial balance?', answer: 113550, unit: '£',
+        exp: 'Debits become £3,140 + £22,480 + £51,900 + £28,830 + £7,200 = £113,550. Credits become £14,720 + £3,830 + £70,000 + £25,000 = £113,550. The two agree and suspense has cleared to nil, which is the signal that both corrections were complete.' },
+      { type: 'mcq', q: 'Why is the redrafted total lower than the initial total of £113,580?',
+        opts: [
+          'The suspense figure was never a real balance, and it is no longer in the list',
+          'Two of the corrections reduced expenses, so the debit column had to fall',
+          'The drawings account is excluded from a redrafted trial balance',
+          'The redrafted trial balance is stated after deducting the profit for the period',
+        ], ans: 0,
+        exp: 'The initial total included £210 of suspense, which existed only to make the columns agree. Once the errors are corrected the suspense line disappears, so the redrafted total is not expected to match the initial one.' },
+    ],
+    exp: 'The whole of Principles of Bookkeeping Controls outcome 4 in one task: extract, balance with suspense, journal the corrections, recalculate each affected account, and redraft with suspense at nil.' }
+
+);
+
+/* ────────────────────────────────────────────────────────────────────────
+   POC COVERAGE GAPS
+
+   Six of the fifteen Principles of Costing criteria had one or two questions
+   behind them, and two had none. The worst of it was learning outcome 4,
+   spreadsheets, which is a tenth of the assessment and is marked mechanically
+   on the contents of the cells: the bank contained nothing on it whatever.
+   Labour payments (2.2) is a calculation criterion and had a single question.
+   ──────────────────────────────────────────────────────────────────────── */
+window.ALL_QUESTIONS.push(
+
+  /* ── POC-2.2  Calculate labour payments ─────────────────────────────── */
+
+  { id: 'poc-401', topic: 'poc', difficulty: 'easy', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'An employee is paid a basic rate of £14 per hour and overtime is paid at time and a half. What is the overtime premium per hour?',
+    opts: [
+      '£7, the extra paid above the basic rate',
+      '£21, the whole of the rate paid for an overtime hour',
+      '£14, the basic rate that applies to every hour worked',
+      '£3.50, half of the difference between the two rates paid',
+    ], ans: 0,
+    exp: 'Time and a half on £14 gives an overtime rate of £21, made up of £14 of basic pay and a £7 premium. The premium is the extra above basic, not the whole overtime rate, and it is multiplied by overtime hours only.' },
+
+  { id: 'poc-num-011', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'An employee works a basic week of 37 hours at £13 per hour, plus 6 hours of overtime paid at time and a half. What is the gross pay, in £?',
+    answer: 598,
+    exp: 'Basic: 37 × £13 = £481. Overtime rate is £13 × 1.5 = £19.50, so 6 × £19.50 = £117. Gross pay is £481 + £117 = £598, of which £39 is overtime premium (6 × £6.50). Set each element out separately, because marks are usually available for each.' },
+
+  { id: 'poc-num-012', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'A worker is paid £1.15 per unit under a piecework scheme with a guaranteed minimum weekly wage of £460. In a week when 380 units are produced, what is the wage payable, in £?',
+    answer: 460,
+    exp: 'Piecework earnings are 380 × £1.15 = £437, which is below the guaranteed minimum. The employee receives the higher of the two figures, so the wage is £460. A question that gives you a guaranteed minimum is testing whether you calculated both and compared them.' },
+
+  { id: 'poc-num-013', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'A differential piecework scheme pays £0.90 per unit for the first 200 units in a week and £1.20 per unit for every unit above 200. An employee produces 260 units. What is their pay, in £?',
+    answer: 252,
+    exp: 'The first 200 units earn 200 × £0.90 = £180, and the 60 units above the threshold earn 60 × £1.20 = £72. Total pay is £252. Applying the higher rate to all 260 units would give £312, and that is the error the scheme description is written to catch.' },
+
+  { id: 'poc-402', topic: 'poc', difficulty: 'medium', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'In a differential piecework scheme, how is the higher rate per unit applied?',
+    opts: [
+      'Only to the units produced above the threshold',
+      'To every unit produced once the threshold has been passed',
+      'To every unit produced, but only in weeks when the threshold is met',
+      'To the units below the threshold, with the lower rate applied above it',
+    ], ans: 0,
+    exp: 'The scheme rewards output beyond a target, so only the units beyond it earn the higher rate. Applying it retrospectively to the whole week overstates the wage, and it is the commonest and most expensive error in this calculation.' },
+
+  { id: 'poc-403', topic: 'poc', difficulty: 'hard', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'A production worker’s wage includes basic pay, overtime basic pay and an overtime premium. Which element is normally treated as an overhead rather than a direct cost?',
+    opts: [
+      'The overtime premium, but not the basic pay for the overtime hours',
+      'The overtime premium together with the basic pay for the overtime hours',
+      'The whole of the overtime payment, the premium and the basic pay alike',
+      'None of it, since a production worker’s wage is a direct cost throughout',
+    ], ans: 0,
+    exp: 'Basic pay for overtime hours is a direct cost like any other hour worked. The premium is usually treated as a production overhead, because it arises from the general need to meet demand rather than from the particular job that happened to be running late.' },
+
+  { id: 'poc-404', topic: 'poc', difficulty: 'hard', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'A customer asks for a rush order and agrees to pay for the overtime it requires. How is the overtime premium treated?',
+    opts: [
+      'As a direct cost of that job, because it is traceable to it',
+      'As a production overhead, because premiums are always indirect costs',
+      'As an administrative overhead, because the customer requested it in writing',
+      'As a direct cost of the period, spread over every job worked on that week',
+    ], ans: 0,
+    exp: 'This is the exception to the usual treatment. Where overtime was worked at a customer’s specific request, the premium is caused by that job and can be traced to it, so it is a direct cost of the job rather than an overhead of the factory.' },
+
+  { id: 'poc-405', topic: 'poc', difficulty: 'medium', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'For costing purposes, what is the important difference between time-rate pay and piecework?',
+    opts: [
+      'Time rate varies with hours worked; piecework varies with units produced',
+      'Time rate is a fixed cost, whereas piecework is a variable cost of output',
+      'Time rate is a direct cost, whereas piecework is always an indirect cost',
+      'Time rate is paid weekly and piecework is paid at the end of the month',
+    ], ans: 0,
+    exp: 'Time-rate pay is variable with the hours worked but not with output — two employees on the same rate for the same hours cost the same whether one made twice as much. Piecework makes labour a genuinely variable cost of output, because the payment follows the units.' },
+
+  { id: 'tfq-020', topic: 'poc', difficulty: 'medium', type: 'truefalse', skill: 'poc-labour', criteria: ['POC-2.2'],
+    q: 'Identify whether the following statements about labour payments are true or false.',
+    statements: [
+      { text: 'A guaranteed minimum means the employee receives the higher of their piecework pay and the minimum.', answer: true },
+      { text: 'The overtime premium is calculated on all hours worked in the week.', answer: false },
+      { text: 'A time-rate scheme gives no direct financial incentive to produce more units.', answer: true },
+      { text: 'A team bonus is shared between the members of the team.', answer: true },
+      { text: 'Piecework removes the need to record the hours an employee worked.', answer: false },
+    ],
+    exp: 'Two are false. The premium is multiplied by overtime hours only — applying it to the whole week is exactly what the formula is written to prevent. And hours are still recorded under piecework: they are needed for the guaranteed minimum comparison, for absorbing overheads on a labour-hour basis, and to comply with working-time records.' },
+
+  /* ── POC-1.3  Costing and financial accounting systems ──────────────── */
+
+  { id: 'poc-406', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.3'],
+    q: 'A business reports a unit cost of £14.00 internally but values the same inventory at a different figure in its published accounts. What is the correct explanation?',
+    opts: [
+      'Both figures are right, because the two systems answer different questions under different rules',
+      'The internal figure is wrong, because published accounts are prepared to a statutory standard',
+      'The published figure is wrong, because the costing system holds the more detailed analysis',
+      'One of the two systems must have failed to record a transaction that the other one has already recorded',
+    ], ans: 0,
+    exp: 'The two systems record the same transactions and then do different things with them. Financial accounting must follow prescribed rules for an external audience; costing analyses the same costs however a decision requires. Neither figure is wrong, and the transactions behind them are identical.' },
+
+  { id: 'poc-407', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.3'],
+    q: 'Which of the two systems may work with budgeted figures as well as actual ones?',
+    opts: [
+      'Costing only, because financial accounting is restricted to historic cost',
+      'Financial accounting only, because a statutory format requires a comparative',
+      'Both, provided the budgeted figures are clearly labelled as estimates',
+      'Neither, because a cost must be evidenced by a document before it is recorded',
+    ], ans: 0,
+    exp: 'Financial accounting uses historic cost only — published accounts describing what a business hoped to spend would be worthless. Costing may use actual, standard or budgeted figures, which is what lets it quote a price before the work has been done. An answer of "both" is wrong.' },
+
+  { id: 'poc-408', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.3'],
+    q: 'Why must the costing records and the financial ledger reconcile to each other?',
+    opts: [
+      'They analyse the same transactions, so a difference proves an inconsistent classification',
+      'Accounting standards require a reconciliation statement to be filed each year',
+      'The costing system posts its totals into the financial ledger at each period end',
+      'A management report has to be signed off by the external auditor before it can be issued to managers',
+    ], ans: 0,
+    exp: 'A business does not record its transactions twice. The same invoices, payslips and bank entries feed both systems, so total costs analysed in the costing records should agree with total costs in the ledger. A gap means something has been classified one way in one system and another way in the other.' },
+
+  { id: 'poc-409', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.3'],
+    q: 'Which statement correctly contrasts the output of the two systems?',
+    opts: [
+      'Financial accounting has a prescribed annual format; costing has whatever format is useful',
+      'Financial accounting reports monthly; costing reports once at the end of the year',
+      'Financial accounting analyses costs by product, whereas costing analyses them by whole entity',
+      'Financial accounting is optional for a sole trader; costing is required by statute',
+    ], ans: 0,
+    exp: 'Financial accounting is external, statutory, historic and prescribed in format, and it treats the business as a single entity. Costing is internal, voluntary in form, produced as often as managers want it, and analyses down to products, jobs, centres and units.' },
+
+  { id: 'poc-410', topic: 'poc', difficulty: 'hard', skill: 'poc-systems', criteria: ['POC-1.3'],
+    q: 'A job carries a budgeted cost of £2,400 and an actual cost of £2,650. What is the £250 difference called, and when was each figure determined?',
+    opts: [
+      'A variance — the budget was set before the work, the actual after it',
+      'A variance — both figures are determined after the work has been completed',
+      'A timing difference — the actual figure will catch up in the next period',
+      'A rounding difference — a budgeted cost is never expected to be exact',
+    ], ans: 0,
+    exp: 'The budget comes first in time and is agreed in advance, which is what makes it a standard to measure against. The actual is what the job genuinely cost once the figures were in. The difference between the two is a variance, and it is the basis of cost control.' },
+
+  /* ── POC-1.4  Sources of information on income and expenditure ──────── */
+
+  { id: 'poc-411', topic: 'poc', difficulty: 'easy', skill: 'poc-systems', criteria: ['POC-1.4'],
+    q: 'Which document shows the quantity of materials issued to a particular job and what those materials cost?',
+    opts: [
+      'The materials requisition, supported by the stores record',
+      'The supplier statement, supported by the remittance advice',
+      'The purchase order, supported by the supplier’s price list',
+      'The goods received note, supported by the delivery note',
+    ], ans: 0,
+    exp: 'A materials requisition is the authority to take materials out of stores for a job, so it records quantity and destination, and the stores record carries the cost at which they were issued. A purchase order and a goods received note concern buying materials, not issuing them to work.' },
+
+  { id: 'poc-412', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.4'],
+    q: 'Where would you establish the total production overhead for a period?',
+    opts: [
+      'From the invoices, standing orders and direct debits that pay the indirect costs',
+      'From the timesheets and job cards completed by production employees',
+      'From the materials requisitions raised by the production department',
+      'From the approved budget, because indirect overheads cannot be measured after the event',
+    ], ans: 0,
+    exp: 'Production overhead is built from the documents behind each indirect cost — the invoices for rent, rates, power and insurance, and the standing orders and direct debits that pay them. Timesheets and requisitions evidence direct labour and direct materials instead, and the budget records what was expected rather than what happened.' },
+
+  { id: 'poc-413', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.4'],
+    q: 'A manager asks what a job was quoted at and what it was invoiced for. Which sources answer the two halves of that question?',
+    opts: [
+      'The quotation for the first, and the sales invoice or sales day book for the second',
+      'The published price list for the first, and the customer’s remittance advice for the second',
+      'The job card for the first, and the materials requisition for the second',
+      'The approved budget for the first, and the bank statement for the second',
+    ], ans: 0,
+    exp: 'A quotation records what was promised to the customer, which is why it matters where a job is priced individually. What was actually charged comes from the sales invoice, and the sales day book if you want the period total. A remittance advice only evidences payment.' },
+
+  { id: 'poc-414', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.4'],
+    q: 'Which statement about a budgeted cost is correct?',
+    opts: [
+      'It is agreed in advance and is not revised once the period has started',
+      'It is a forecast prepared after the period using the actual figures',
+      'It becomes the historic cost once the period has closed and been recorded',
+      'It must be evidenced by a supplier document before it can be used',
+    ], ans: 0,
+    exp: 'A budgeted cost is what the business expected, agreed before the period began. That is precisely what makes it a standard to measure performance against — a figure adjusted during the period would measure nothing. It is the actual cost that becomes the historic cost once recorded.' },
+
+  { id: 'poc-415', topic: 'poc', difficulty: 'medium', skill: 'poc-systems', criteria: ['POC-1.4'],
+    q: 'Asked for the direct labour cost of job 417, a trainee answers "the payroll". Why is that not good enough?',
+    opts: [
+      'The payroll gives total pay, not the hours attributed to any individual job',
+      'The payroll is a confidential record that the costing system may not access',
+      'The payroll is prepared monthly, and job costs must be calculated weekly',
+      'The payroll excludes overtime, which is where most job labour cost arises',
+    ], ans: 0,
+    exp: 'The question asks for a named document that ties hours to a job — the job card or the timesheet. The payroll records what each employee was paid in total, which is the right source for gross pay and the wrong source for the labour cost of one job.' },
+
+  { id: 'dd-022', topic: 'poc', difficulty: 'medium', type: 'dragdrop', skill: 'poc-systems', criteria: ['POC-1.4'],
+    q: 'Match each cost or income figure to the source that evidences it.',
+    pairs: [
+      { left: 'Direct materials issued to a job', right: 'Materials requisition' },
+      { left: 'Direct labour hours on a job', right: 'Timesheet or job card' },
+      { left: 'Rent charged for the period', right: 'Supplier invoice' },
+      { left: 'Revenue earned and from whom', right: 'Sales invoice' },
+    ],
+    exp: 'Nothing in a costing system is invented; every figure traces back to a document. Naming the right one is what a task means by identifying a source of information, and "the payroll" or "the ledger" is too broad to earn the mark.' },
+
+  /* ── POC-3.2  Exception reporting ────────────────────────────────────── */
+
+  { id: 'poc-416', topic: 'poc', difficulty: 'medium', skill: 'poc-budget', criteria: ['POC-3.2'],
+    q: 'Who decides which variances are significant enough to appear on an exception report?',
+    opts: [
+      'The organisation, through a policy the accountant then applies consistently',
+      'The accountant, using judgement about each variance as it arises',
+      'The budget holder whose department the variance has arisen in',
+      'The external auditor, as part of the annual review of the statutory accounts and records',
+    ], ans: 0,
+    exp: 'The specification wording is "identify significant variances according to an organisation’s policy". A task will give you the policy and expect you to apply it consistently, including to variances you might personally think unimportant. Deciding case by case is exactly what a policy exists to prevent.' },
+
+  { id: 'poc-num-014', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '%', skill: 'poc-budget', criteria: ['POC-3.2'],
+    q: 'Materials were budgeted at £64,000 and cost £67,200. What is the variance as a percentage of budget?',
+    answer: 5,
+    exp: 'The variance is £67,200 − £64,000 = £3,200 adverse, and £3,200 ÷ £64,000 × 100 = 5%. The denominator is always the budget, because the budget is the standard being measured against — dividing by the actual gives a different answer and is marked wrong.' },
+
+  { id: 'poc-417', topic: 'poc', difficulty: 'medium', skill: 'poc-budget', criteria: ['POC-3.2'],
+    q: 'Why does exception reporting use percentages rather than pound amounts?',
+    opts: [
+      'A single threshold can then be applied across departments of very different sizes',
+      'Percentages are easier to calculate than the underlying pound variances',
+      'A percentage removes the need to state whether a variance is adverse',
+      'Pound variances cannot be compared with a budgeted figure once the period has closed',
+    ], ans: 0,
+    exp: 'A £1,800 variance is trivial against a £400,000 budget and alarming against a £6,000 one, so a policy of investigating anything over 5% cannot be applied to pound figures. The percentage makes the rule portable — and the adverse or favourable label still has to be attached.' },
+
+  { id: 'poc-418', topic: 'poc', difficulty: 'hard', skill: 'poc-budget', criteria: ['POC-3.2'],
+    q: 'A business investigates any variance above 5% of budget. Rent was budgeted at £12,000 and cost £12,900. What should happen?',
+    opts: [
+      'It is investigated, because the variance is 7.5% of budget',
+      'It is not investigated, because the variance is 7.0% of budget',
+      'It is not investigated, because £900 is small in relation to total costs',
+      'It is investigated, because any adverse variance breaches the policy',
+    ], ans: 0,
+    exp: '£12,900 − £12,000 = £900 adverse, and £900 ÷ £12,000 × 100 = 7.5%, which is above the threshold. The size of the pound figure is irrelevant once a percentage policy is in force, and a favourable variance above the threshold would be investigated too.' },
+
+  { id: 'poc-419', topic: 'poc', difficulty: 'hard', skill: 'poc-budget', criteria: ['POC-3.2'],
+    q: 'What is the main weakness of reporting only variances above a threshold?',
+    opts: [
+      'A small variance repeated every month, or two that offset, can pass unnoticed',
+      'It takes longer to prepare than a report showing every variance in full',
+      'It cannot be applied where a budget has been flexed to actual activity',
+      'It reports favourable variances that managers have no particular reason to investigate',
+    ], ans: 0,
+    exp: 'Each month the variance is below the threshold, so nothing is reported, and a persistent problem accumulates unseen. A pair of offsetting variances can hide the same way. That is why a good exception report shows trends as well as single periods.' },
+
+  { id: 'ms-015', topic: 'poc', difficulty: 'hard', type: 'multiselect', selectCount: 2, skill: 'poc-budget', criteria: ['POC-3.2'],
+    q: 'A business investigates any variance above 5% of budget. Which TWO of the following would appear on the exception report?',
+    opts: [
+      'Materials: budget £48,000, actual £50,600',
+      'Rent: budget £12,000, actual £12,900',
+      'Labour: budget £36,000, actual £34,700',
+      'Power: budget £4,000, actual £4,180',
+    ], answers: [0, 1],
+    exp: 'Materials is £2,600 adverse, 5.4% of budget, and rent is £900 adverse, 7.5% — both above the threshold. Labour is £1,300 favourable at 3.6% and power £180 adverse at 4.5%, so neither is reported. Calculate every percentage first, then apply the rule.' },
+
+  /* ── POC-4.1  Enter and format data ─────────────────────────────────── */
+
+  { id: 'poc-420', topic: 'poc', difficulty: 'easy', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'A task says to enter the budgeted material cost in cell D7 and you enter it correctly in cell D8. What is the result?',
+    opts: [
+      'No mark, because the outcome is marked on the contents of the specified cell',
+      'Full marks, because the figure entered is arithmetically correct',
+      'Partial marks, provided that all of the surrounding column headings are correct',
+      'No mark, but only if a formula elsewhere refers to cell D7',
+    ], ans: 0,
+    exp: 'Learning outcome 4 is marked by the computer against what is actually in the cells named by the task. Accuracy in the right cell is the whole mark, and a correct figure in the wrong cell scores nothing however sound the working behind it.' },
+
+  { id: 'poc-421', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'A figure of four thousand two hundred pounds is typed into a cell as "£4,200". What has gone wrong?',
+    opts: [
+      'The entry becomes text, so it cannot be added and every dependent formula fails',
+      'The entry is rounded to the nearest thousand and displays as £4,000',
+      'Nothing, provided the cell is later formatted with a thousand separator',
+      'Nothing, provided the currency symbol matches the one used in the column headings',
+    ], ans: 0,
+    exp: 'Type the number and nothing else: 4200. A currency symbol or a thousand separator typed into the cell makes the entry text rather than a number, and a text entry breaks every calculation that references it. Both are formats, applied to the cell afterwards.' },
+
+  { id: 'poc-422', topic: 'poc', difficulty: 'hard', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'A cell contains the value 3.5, being a variance the task asked for as a percentage. Percentage format is then applied. What does the cell display?',
+    opts: [
+      '350%, because percentage format multiplies the underlying value by 100',
+      '3.5%, because percentage format simply adds a per-cent sign to the value',
+      '0.035%, because percentage format divides the underlying value by 100',
+      '35%, because percentage format shifts the decimal point one place',
+    ], ans: 0,
+    exp: 'Percentage format displays the value × 100, so the cell must hold the ratio 0.035 rather than the percentage 3.5. Calculate the ratio and let the format do the multiplication, or the schedule reports a 350% variance where 3.5% was meant.' },
+
+  { id: 'poc-423', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'How should a negative figure be entered into a cell?',
+    opts: [
+      'With a minus sign, since brackets are a format rather than typed characters',
+      'In brackets, since that is the convention every set of accounts follows',
+      'As a positive figure, with the negative applied by accountancy format',
+      'With a minus sign and brackets together, so that the sign cannot be missed by a reader',
+    ], ans: 0,
+    exp: 'Type −4200. Brackets round a negative are a display convention applied to the cell by accountancy format, not characters you type in. Typing them makes the entry text, which is the same defect as typing a currency symbol.' },
+
+  { id: 'poc-424', topic: 'poc', difficulty: 'easy', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'A task asks you to make the title of a cost schedule span columns A to D and centre it. Which format does this?',
+    opts: [
+      'Merge, which joins the selected cells into one',
+      'Wrap text, which spreads a long label across the columns',
+      'Fill colour, which shades the range so it reads as a heading',
+      'Borders, which draws a line around the whole range of cells',
+    ], ans: 0,
+    exp: 'Merge joins cells so a heading spans several columns, and "merge cells A1 to D1 and centre the title" is the wording a task uses. Wrap text does something different: it makes a long label display on several lines inside its own cell.' },
+
+  { id: 'poc-425', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'What does accountancy format do to the cells it is applied to?',
+    opts: [
+      'Aligns the currency symbol left and the digits right, and brackets negatives',
+      'Adds a thousand separator and rounds the underlying value to the nearest whole pound',
+      'Converts the entry to text so the alignment cannot be disturbed later',
+      'Applies bold to totals and a single border above them automatically',
+    ], ans: 0,
+    exp: 'Accountancy format is the convention every set of accounts uses: the symbol sits at the left of the cell, the digits at the right, and negatives appear in brackets. Like every format it changes the display only — the underlying number is untouched.' },
+
+  { id: 'poc-426', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'A row is inserted immediately below the last row of a range that a SUM formula adds. What should be checked?',
+    opts: [
+      'Whether the total still covers the new row, since the range may not have expanded',
+      'Whether the inserted row inherited its number format, since formats do not always copy',
+      'Whether the references in the rows below shifted down, since insertion moves them',
+      'Whether the formula became a typed value, since inserting a row rewrites the cell',
+    ], ans: 0,
+    exp: 'A row inserted inside a range is usually picked up; one inserted immediately below the last row of it often is not. After any structural change, look at every total and ask whether it still covers each row it should — a schedule that totals the wrong range looks perfectly right.' },
+
+  { id: 'tfq-021', topic: 'poc', difficulty: 'medium', type: 'truefalse', skill: 'poc-ss', criteria: ['POC-4.1'],
+    q: 'Identify whether the following statements about entering and formatting spreadsheet data are true or false.',
+    statements: [
+      { text: 'Formatting a cell changes how a value is displayed but not the value itself.', answer: true },
+      { text: 'Setting a cell to two decimal places rounds the stored number to two decimals.', answer: false },
+      { text: 'Copy and paste duplicates a formula as well as a displayed value.', answer: true },
+      { text: 'A cell should be selected before a format is applied to it.', answer: true },
+      { text: 'A thousand separator should be typed in so the figure reads clearly.', answer: false },
+    ],
+    exp: 'Two are false. Setting decimals is a display change: the full precision is retained underneath, so later calculations are unaffected by the rounding you can see. And a thousand separator is applied as a format, never typed — typing it makes the entry text and breaks every formula that references it.' },
+
+  /* ── POC-4.2  Use formulas to support cost calculations ─────────────── */
+
+  { id: 'poc-427', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'Which of these formulas would NOT be credited for adding the range B2 to B10?',
+    opts: [
+      '=SUM(B2,B10)',
+      '=SUM(B2:B10)',
+      '=SUM(B2:B9)+B10',
+      '=B2+B3+B4+B5+B6+B7+B8+B9+B10',
+    ], ans: 0,
+    exp: 'A comma means "and these two cells"; a colon means "through". =SUM(B2,B10) adds only the two named cells and misses the seven in between. The other three all reach the right total: a split range and a long addition are inelegant rather than wrong, and neither contains a redundant reference.' },
+
+  { id: 'poc-428', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'Units are in B4, kilograms per unit in B5, price per kilogram in B6, and a delivery charge in B7. Which formula gives the total material cost including delivery?',
+    opts: [
+      '=B4*B5*B6+B7',
+      '=B4*B5*(B6+B7)',
+      '=B4+B5+B6+B7',
+      '=SUM(B4:B7)',
+    ], ans: 0,
+    exp: 'Multiplication is performed before addition, so =B4*B5*B6+B7 costs the material and then adds the delivery once. The bracketed version adds the delivery charge to the price of every kilogram, and the two addition formulas add quantities to prices, which means nothing at all.' },
+
+  { id: 'poc-429', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'Total cost is in B12 and the number of units in B4. Which formula gives the cost per unit?',
+    opts: [
+      '=B12/B4',
+      '=B4/B12',
+      '=SUM(B12/B4)',
+      '=B12/B4*100',
+    ], ans: 0,
+    exp: 'Cost per unit is total cost divided by units, and the forward slash is the division operator. SUM around a single calculation is a redundant bracket that loses the mark, and multiplying by 100 turns a cost into something that is not a cost at all.' },
+
+  { id: 'poc-430', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'A cell shows the correct total but contains a typed number rather than a formula. What happens?',
+    opts: [
+      'No mark, because the marker inspects the formula rather than the displayed result',
+      'Full marks, because the displayed figure is the one that a manager would actually read',
+      'No mark, because a typed number is stored as text and cannot be added',
+      'Partial marks, provided the arithmetic behind the typed figure was correct',
+    ], ans: 0,
+    exp: 'The mark is for the formula. A cell showing the right figure with nothing behind it earns nothing, and it also fails to update when an input changes — which is the whole point of building a schedule on cell references. A typed number is still a number, not text.' },
+
+  { id: 'poc-431', topic: 'poc', difficulty: 'medium', skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'A formula in the budget column is copied across into the actual column. What happens to its cell references?',
+    opts: [
+      'They shift to the new column, which is the behaviour the schedule needs',
+      'They stay pointing at the budget column, so the copy must be edited',
+      'They are converted to values, so the copied cell no longer recalculates',
+      'They shift by one row rather than one column, and the copy must be re-entered',
+    ], ans: 0,
+    exp: 'Relative references move with the formula: a formula summing column B, pasted into column C, sums column C. Write the formula once and copy it across. It is still worth clicking one pasted cell to confirm the references shifted the way you expected.' },
+
+  { id: 'ms-016', topic: 'poc', difficulty: 'hard', type: 'multiselect', selectCount: 2, skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'Which TWO of the following formulas would NOT be credited?',
+    opts: [
+      '=SUM(B1+B2+B3)',
+      '=+C11-B11',
+      '=(B4+B5)*B6',
+      '=B7/B8',
+    ], answers: [0, 1],
+    exp: 'Brackets round single cells inside SUM are redundant — =SUM(B1:B3) is the credited form — and an unnecessary leading plus sign is rejected where =C11-B11 is correct. Brackets that genuinely change the order of operations are fine, and simple division needs nothing added to it.' },
+
+  { id: 'gf-013', topic: 'poc', difficulty: 'medium', type: 'gapfill', skill: 'poc-ss', criteria: ['POC-4.2'],
+    q: 'Complete the statements about spreadsheet formulas.',
+    template: 'Every formula must begin with {0}. Multiplication is written using {1}, and to add a whole range of cells you separate the first and last cell with {2}.',
+    gaps: [
+      { options: ['an equals sign', 'a plus sign', 'the word SUM', 'a bracket'], answer: 0 },
+      { options: ['an asterisk', 'the letter x', 'the word PRODUCT', 'a full stop'], answer: 0 },
+      { options: ['a colon', 'a comma', 'a semicolon', 'a hyphen'], answer: 0 },
+    ],
+    exp: 'Without an equals sign the cell displays the formula as text, which loses the mark completely. Multiplication uses an asterisk, not the letter x and not PRODUCT. And a colon means "through", so =SUM(B2:B10) covers every cell in between while a comma would name only two.' }
+
+);
+
+/* ────────────────────────────────────────────────────────────────────────
+   BESY COVERAGE GAPS
+
+   The Business Environment carried a hundred and eighteen questions and still
+   left six criteria almost untested. The law criteria were the thinnest: 1.1
+   names three pairs of classifications and the bank tested one of them, 1.2
+   had three questions and 1.4 — remedies for breach — had one. Criterion 5.3,
+   how the finance team contributes to the success of an organisation, had
+   none, because the lesson covering it had no check questions either.
+   ──────────────────────────────────────────────────────────────────────── */
+window.ALL_QUESTIONS.push(
+
+  /* ── BESY-1.1  The different classifications of law ─────────────────── */
+
+  { id: 'besy-401', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.1'],
+    q: 'What survives today of the distinction between common law and equity?',
+    opts: [
+      'The remedies: damages are available as of right, equitable remedies at the court’s discretion',
+      'The courts: common law is heard in the County Court and equity in the High Court',
+      'The parties: common law governs businesses and equity governs private individuals',
+      'The procedure: a common-law claim is heard by a jury and an equitable claim by a judge sitting alone',
+    ], ans: 0,
+    exp: 'The two systems were merged into one court structure in the 1870s, so the same court now applies both. What is left of the split is the remedies: damages are a common-law right once breach is proved, while specific performance, an injunction and rescission are equitable and discretionary.' },
+
+  { id: 'besy-402', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.1'],
+    q: 'A dispute between a business and its supplier over an unpaid invoice falls into which classification?',
+    opts: [
+      'Private law, because it is a dispute between two parties rather than with the state',
+      'Public law, because the courts enforcing the contract are an organ of the state',
+      'Public law, because unpaid debts are ultimately a matter of regulatory concern',
+      'Private law, because the amount at stake is too small for the state to take an interest',
+    ], ans: 0,
+    exp: 'Private law governs disputes between individuals and organisations — contract, tort, company law, employment. Public law governs the relationship between the individual and the state, which for an accountant mostly means tax and regulation. The identity of the court does not decide the classification.' },
+
+  { id: 'besy-403', topic: 'besy', difficulty: 'hard', skill: 'besy-law', criteria: ['BESY-1.1'],
+    q: 'Which statement about the three pairs of legal classifications is correct?',
+    opts: [
+      'Criminal law is part of public law, but not every civil claim is part of private law',
+      'Criminal law and public law describe exactly the same body of rules by two names',
+      'Civil law and private law describe exactly the same body of rules by two names',
+      'Equity replaced the common law entirely once the two separate court systems were merged',
+    ], ans: 0,
+    exp: 'The pairs cut across each other, which is what the question tests. Criminal law is a branch of public law, but a judicial review of a government decision is a civil claim brought in public law — so civil and private are not synonyms. Equity supplemented the common law rather than replacing it.' },
+
+  { id: 'besy-404', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.1'],
+    q: 'The same set of facts leads to a prosecution that fails and a civil claim that succeeds. What explains this?',
+    opts: [
+      'The claimant only had to prove the case on the balance of probabilities',
+      'The civil court was not bound by the finding the criminal court had made',
+      'The civil claim was heard by a more senior judge than the prosecution',
+      'The defendant chose not to defend the civil claim after the acquittal',
+    ], ans: 0,
+    exp: 'A criminal charge must be proved beyond reasonable doubt; a civil claim need only be proved on the balance of probabilities. The claimant therefore has a lower bar to clear, which is exactly why the two proceedings can reach different conclusions on identical facts.' },
+
+  { id: 'tfq-022', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law', criteria: ['BESY-1.1', 'BESY-1.2'],
+    q: 'Identify whether the following statements about legal classifications and precedent are true or false.',
+    statements: [
+      { text: 'A criminal prosecution is brought by the state rather than by the injured party.', answer: true },
+      { text: 'Equitable remedies are granted as of right once a breach has been proved.', answer: false },
+      { text: 'A decision of a higher court binds lower courts in later cases with similar facts.', answer: true },
+      { text: 'Tax disputes are heard in the Crown Court.', answer: false },
+      { text: 'Parliament can pass an Act that overturns a decided case.', answer: true },
+    ],
+    exp: 'Two are false. Equitable remedies are discretionary and granted only where damages would be inadequate — that is what distinguishes them from damages, which are a common-law right. And tax disputes go to the First-tier Tribunal (Tax Chamber); the Crown Court hears serious criminal cases.' },
+
+  /* ── BESY-1.2  The main sources of law ──────────────────────────────── */
+
+  { id: 'besy-405', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.2'],
+    q: 'What does the doctrine of judicial precedent require?',
+    opts: [
+      'A lower court must follow the decision of a higher court on materially similar facts',
+      'A court must follow the most recent decision on the point, whichever court made it',
+      'A court must apply the interpretation of a statute preferred by the minister',
+      'A court must give reasons that Parliament has already approved before it decides a case',
+    ], ans: 0,
+    exp: 'Precedent is what makes case law work as a source of law and what makes the law predictable enough to plan around. Seniority decides, not recency: a recent decision of a lower court does not displace an older decision of a higher one.' },
+
+  { id: 'besy-406', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.2'],
+    q: 'Why does an Act of Parliament frequently create a power for a minister to make detailed rules?',
+    opts: [
+      'Parliament has neither the time nor the technical knowledge to legislate on every detail',
+      'An Act of Parliament cannot lawfully contain figures such as rates and thresholds',
+      'Rules made by a minister take effect more slowly, giving businesses longer to prepare',
+      'Delegated rules cannot be challenged in the courts at all, so they are more certain in effect',
+    ], ans: 0,
+    exp: 'Delegated legislation exists for speed, detail and flexibility: a National Insurance threshold can be changed without a new Act. It can be challenged as **ultra vires** if it goes beyond the power the Act granted, which is the main check on it — and a judicial one rather than a parliamentary one.' },
+
+  { id: 'besy-407', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.2'],
+    q: 'What is the main disadvantage of law made by statutory instrument rather than by Act?',
+    opts: [
+      'It receives far less parliamentary scrutiny, and there is a great deal of it',
+      'It binds only the government department that made it, not the general public',
+      'It lapses automatically at the end of each parliamentary session unless renewed',
+      'It cannot deal with figures such as rates, thresholds or technical schedules',
+    ], ans: 0,
+    exp: 'A statutory instrument gets nothing like the attention a Bill receives, and thousands are made each year. It is nonetheless law and it binds everyone. The trade-off — democratic scrutiny given up for speed and detail — is what the specification asks you to be able to state.' },
+
+  /* ── BESY-1.4  Remedies available for breach of contract ────────────── */
+
+  { id: 'besy-408', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.4'],
+    q: 'What is the purpose of an award of damages for breach of contract?',
+    opts: [
+      'To put the injured party in the position they would have been in had the contract been performed',
+      'To penalise the party in breach so that others are discouraged from behaving in the same way',
+      'To return both parties to the positions they occupied before the contract was entered into',
+      'To transfer to the injured party the whole of the profit that the party in breach made by breaching',
+    ], ans: 0,
+    exp: 'Damages compensate; they do not punish. A claim for more than the actual loss will fail, and so will a claim framed as a penalty. Returning both parties to their pre-contract positions is rescission, which is an equitable remedy and a different thing altogether.' },
+
+  { id: 'besy-409', topic: 'besy', difficulty: 'hard', skill: 'besy-law', criteria: ['BESY-1.4'],
+    q: 'A seller refuses to complete the sale of a specific piece of land. Which remedy is the buyer most likely to seek, and why?',
+    opts: [
+      'Specific performance, because damages cannot replace unique subject matter',
+      'Damages, because a court will not order a party to perform a contract of sale',
+      'An injunction, because the seller must be stopped from selling the land at all',
+      'Rescission, because the contract is void once one party refuses to perform it',
+    ], ans: 0,
+    exp: 'Specific performance orders a party to do what they promised, and it is granted where damages would be inadequate — which is the standard position with land, since no other plot is the same. An injunction stops someone doing something, and rescission unwinds the contract rather than enforcing it.' },
+
+  { id: 'besy-410', topic: 'besy', difficulty: 'medium', skill: 'besy-law', criteria: ['BESY-1.4'],
+    q: 'A supplier delivers goods two days late, causing minor inconvenience. What can the buyer do?',
+    opts: [
+      'Claim damages for the loss, while remaining bound to perform their own side',
+      'Treat the contract as at an end and refuse to pay anything for the goods',
+      'Claim damages and also recover the whole of the price that has already been paid',
+      'Do nothing, because a delay in delivery is never a breach of contract',
+    ], ans: 0,
+    exp: 'Only a material breach — one going to the heart of the agreement — lets the injured party treat the contract as ended. A minor breach gives a right to damages while leaving the contract alive, so the buyer must still pay. That is the condition-and-warranty distinction deciding the remedy.' },
+
+  { id: 'ms-017', topic: 'besy', difficulty: 'medium', type: 'multiselect', selectCount: 2, skill: 'besy-law', criteria: ['BESY-1.4'],
+    q: 'Which TWO of the following are equitable remedies for breach of contract?',
+    opts: [
+      'Specific performance, ordering a party to do what they promised to do',
+      'An injunction, ordering a party to stop doing something they should not',
+      'Damages, compensating the injured party for the loss the breach caused',
+      'Discharge by performance, where both parties do everything they promised',
+    ], answers: [0, 1],
+    exp: 'Equitable remedies are discretionary and are granted only where damages would be inadequate; specific performance, injunctions and rescission are the three the specification names. Damages are a common-law right, and discharge by performance is not a remedy at all — it is a contract ending normally.' },
+
+  /* ── BESY-3.4  The need to act ethically ────────────────────────────── */
+
+  { id: 'besy-411', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.4'],
+    q: 'Why does an AAT member owe a duty to the public interest as well as to their employer?',
+    opts: [
+      'Because the profession’s value rests on work others can rely on without checking it',
+      'Because an employer has no legal standing to give instructions to a qualified member',
+      'Because the public interest duty replaces the duty owed to the employer entirely',
+      'Because AAT membership is a contract between the member and the general public',
+    ], ans: 0,
+    exp: 'A professional qualification is a signal that the work can be relied upon, and that signal is worth nothing if members simply do as they are told. The duty sits on top of the duty to the employer rather than replacing it, which is why an instruction from a manager is not the final answer to an ethical question.' },
+
+  { id: 'besy-412', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.4'],
+    q: 'You have raised an ethical concern internally and it has not been resolved. What does the AAT Code contemplate next?',
+    opts: [
+      'Escalating further — to governance, to the professional body, or ultimately resigning',
+      'Complying with the instruction, since the concern has now been properly recorded on file',
+      'Reporting the matter directly to the police before taking any other step',
+      'Resigning immediately, because internal escalation has already been exhausted',
+    ], ans: 0,
+    exp: 'The route runs upwards: supervisor, then senior management or those charged with governance, then the professional body. Resignation is the last resort and the Code does contemplate it, but it may not discharge a reporting obligation — leaving does not unreport a suspicion of money laundering.' },
+
+  { id: 'besy-413', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.4'],
+    q: 'Why is documenting an ethical decision worth the time it takes?',
+    opts: [
+      'It is the evidence, later, that the judgement was made properly rather than conveniently',
+      'It transfers responsibility for the decision from the member to their employer',
+      'It is required before the AAT ethics advice line will discuss a case at all',
+      'It prevents the matter from ever being reopened once the file note has been signed and dated',
+    ], ans: 0,
+    exp: 'A file note recording the threat identified, the safeguard applied and the reasoning is the evidence, later, that the judgement was made properly rather than conveniently. Nothing about writing it down moves responsibility elsewhere or closes the matter off.' },
+
+  { id: 'besy-414', topic: 'besy', difficulty: 'hard', skill: 'besy-ethics', criteria: ['BESY-3.4'],
+    q: 'A junior colleague says the unethical instruction came from a manager, so the responsibility is the manager’s. Why is that wrong?',
+    opts: [
+      'Each member is personally accountable for their own compliance with the Code',
+      'A manager’s instruction is only binding if it has been confirmed in writing',
+      'Responsibility passes to the manager only where the member is AAT qualified',
+      'The manager and the member are jointly liable, so neither can be blamed alone',
+    ], ans: 0,
+    exp: 'Going along with an unethical instruction to protect your job is not a defence — the Code holds each member personally accountable. That is precisely why it sets out a route for raising a concern, and why "I was told to" is the answer that loses the marks.' },
+
+  /* ── BESY-5.3  How the finance team contributes to success ──────────── */
+
+  { id: 'besy-415', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
+    q: 'Why is remaining solvent described as essential to an organisation’s survival?',
+    opts: [
+      'A business that cannot pay its debts on the due date can be forced to stop trading',
+      'Solvency is the figure Companies House uses to decide whether accounts may be filed',
+      'An insolvent business loses the limited liability its shareholders would otherwise have',
+      'Solvency is what determines the rate of corporation tax the business will pay',
+    ], ans: 0,
+    exp: 'Solvency is the ability to pay debts on the due date, and a business that cannot do so may be forced to stop trading however profitable it looked on paper. Managing funds effectively is therefore part of what the finance function contributes, not an administrative extra.' },
+
+  { id: 'besy-416', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
+    q: 'The specification names four things the actions of finance staff support. Which set is correct?',
+    opts: [
+      'Efficient working practices, solvency, legal and regulatory compliance, and long-term stability',
+      'Sales growth, market share, customer satisfaction, and the strength of the brand in its own market',
+      'Recruitment, staff training, appraisal, and the retention of experienced employees',
+      'Product design, production scheduling, quality control, and distribution planning',
+    ], ans: 0,
+    exp: 'Efficient working practices, solvency, legal and regulatory compliance and long-term financial stability are the four, and a well-run finance function protects all of them while a poorly run one puts all four at risk. The other three lists describe what sales, human resources and operations contribute — real enough, but not what this criterion asks about.' },
+
+  { id: 'besy-417', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
+    q: 'A finance assistant is bound by an authorisation limit and also by the organisation’s code of conduct. What distinguishes the two?',
+    opts: [
+      'One is a policy specific to the finance function; the other applies organisation-wide',
+      'One is a legal requirement; the other is guidance the assistant may choose to follow',
+      'One applies to qualified members only; the other applies to every member of staff',
+      'One is set by the finance director; the other is set by the organisation’s external auditor',
+    ], ans: 0,
+    exp: 'The specification distinguishes finance-function-specific policies — an authorisation limit, a credit policy — from organisation-wide ones such as a code of conduct or a data policy. A finance member is bound by both, and neither is optional.' },
+
+  { id: 'besy-418', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
+    q: 'What does effective communication by a finance team require, according to the specification?',
+    opts: [
+      'Content that is clear, complete, accurate, timely and concise, in a medium suited to the recipient',
+      'Content that includes every figure available, leaving the reader to reach their own conclusion about it',
+      'Content circulated to every department, putting it beyond dispute that everyone was told',
+      'Content phrased in technical accounting language, placing its meaning beyond any dispute',
+    ], ans: 0,
+    exp: 'Five properties of the content, plus a medium chosen to suit the recipient and the setting. Sending everything to everyone is not communication, and technical language pitched above the reader defeats the purpose — meeting the needs of the recipient is part of the standard.' },
+
+  { id: 'besy-419', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
+    q: 'What is the finance function’s role in corporate social responsibility reporting?',
+    opts: [
+      'It measures and reports the data behind the claims the organisation makes',
+      'It decides which social and environmental commitments the organisation will adopt',
+      'It has no role, because CSR reporting is a matter for the marketing function',
+      'It audits the report independently before the directors are permitted to publish it',
+    ], ans: 0,
+    exp: 'CSR reporting needs measurement, and finance is the function that measures and reports the data behind the claims an organisation makes. Choosing the commitments is a board decision; auditing them independently is by definition not a job for the function that prepared the figures.' },
+
+  { id: 'tfq-023', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance', criteria: ['BESY-5.3', 'BESY-5.2'],
+    q: 'Identify whether the following statements about how the finance team works are true or false.',
+    statements: [
+      { text: 'Outsourcing the payroll transfers responsibility for what is filed and paid to the provider.', answer: false },
+      { text: 'Segregation of duties means no one person can both cause an error and conceal it.', answer: true },
+      { text: 'Establishing effective working relationships across the business is part of the finance role.', answer: true },
+      { text: 'A management report must follow the statutory format used for published accounts.', answer: false },
+      { text: 'Finance depends on operational data it does not generate itself.', answer: true },
+    ],
+    exp: 'Two are false. Outsourcing adds a relationship to manage and data to share securely, but the business remains accountable for what is filed and paid. And a management report has no prescribed format at all — it looks however is most useful, which is the examiner’s favourite trap in this topic.' },
+
+  /* ── BESY-6.1  Sources of information ───────────────────────────────── */
+
+  { id: 'besy-420', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.1'],
+    q: 'A supplier price list you collected by ringing round suppliers yourself is which kind of source?',
+    opts: [
+      'Primary, because you gathered it first hand for your own purpose',
+      'Secondary, because the prices were set by the suppliers rather than by you',
+      'Secondary, because a price list is a published document rather than raw data',
+      'Primary, because a supplier is a party you already have a relationship with',
+    ], ans: 0,
+    exp: 'What makes a source primary is that you gathered it yourself, for the question you are actually asking. It fits the question exactly, it is as current as you made it, and you know how it was collected — at the cost of the time it took.' },
+
+  { id: 'besy-421', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.1'],
+    q: 'What is the main limitation of a secondary source?',
+    opts: [
+      'It was collected for somebody else’s purpose, so it may not fit the question',
+      'It is more expensive and slower to obtain than gathering the data yourself',
+      'It cannot be cited in a report, because the original researcher owns the figures',
+      'It is always less accurate than data the organisation collects for itself',
+    ], ans: 0,
+    exp: 'Secondary information is cheap, quick and often available at a scale no small business could reach. The trade-off is control: it was defined for someone else’s question, may not match the definition you need, and may be out of date. Cheapness is the advantage, not the drawback.' },
+
+  { id: 'besy-422', topic: 'besy', difficulty: 'hard', skill: 'besy-comms', criteria: ['BESY-6.1'],
+    q: 'Two websites give the same figure for average sector wages. On investigation both cite the same original survey. What follows?',
+    opts: [
+      'They are not independent sources, so the figure has not actually been corroborated',
+      'The figure is confirmed, because two separate publishers have both reported it',
+      'The figure should be discarded, because a survey is never an authoritative source',
+      'The more recently updated of the two websites should be treated as the primary source',
+    ], ans: 0,
+    exp: 'Corroboration only works between sources that gathered their information independently. Two sites tracing back to one survey add nothing to its reliability, however different they looked. A practical minimum for anything consequential is two independent sources, at least one authoritative.' },
+
+  { id: 'besy-423', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.1'],
+    q: 'A competitor’s press release claims their new product is the cheapest in the sector. How should it be treated?',
+    opts: [
+      'As weak evidence of the truth but good evidence of what they want the market to believe',
+      'As a valid source, because a company is legally accountable for what it publishes',
+      'As an invalid source that should not be referred to in a report under any circumstances',
+      'As a primary source, because the company generated the information about itself',
+    ], ans: 0,
+    exp: 'A press release is weak evidence of the truth and good evidence of what the competitor wants the market to believe, which may be exactly what you need to know. "Treat with caution" is not the same as "never use" — but the caution has to be stated when you report it.' },
+
+  { id: 'besy-424', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.1'],
+    q: 'Given more information than the question needs, what is the right approach?',
+    opts: [
+      'Work backwards from the decision and use only what is relevant, current and reliable',
+      'Include every figure supplied, since leaving one out risks losing a mark for omission',
+      'Use the most recent figures supplied and ignore anything published earlier',
+      'Use the figures from the most authoritative publisher and disregard the others',
+    ], ans: 0,
+    exp: 'Work backwards from the decision: assessment tasks supply surplus material deliberately, to see whether you can select. Test each candidate figure for relevance, currency and reliability, and say why anything was left out — including everything is not thoroughness but a failure to choose.' },
+
+  { id: 'besy-425', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.1'],
+    q: 'A statistic comes from a reliable body but carries no publication date. What is the main concern?',
+    opts: [
+      'It may be badly out of date, and staleness is the commonest failure in practice',
+      'It may have been altered after publication without the change being recorded',
+      'It cannot be attributed, so the publisher cannot be named in a report',
+      'It was probably gathered for a different sector from the one that is being examined',
+    ], ans: 0,
+    exp: 'A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher. The commonest failure in practice is not fabrication but staleness, and an undated figure is one you cannot defend.' }
 
 );
