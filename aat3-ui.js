@@ -1266,6 +1266,76 @@
      informative and short enough to actually finish; a mixed run draws across
      every outcome so it cannot be answered from one lesson's vocabulary. */
   var PRACTICE_LEN = 10;
+
+  /* ── Drawing a mixed run to the exam's own weighting ───────────────────────
+     A mixed run used to be a uniform sample of the pool, which quietly made the
+     pool's composition the syllabus. It was not the same shape: Outcome 5 is
+     10% of the assessment and was 15% of the pool, Outcome 2 is 30% and was
+     26%. A reader working through mixed runs was over-practising the smallest
+     outcome and under-practising the largest, and neither of those numbers is
+     visible from inside a run.
+
+     Weighting the DRAW rather than the pool is the fix that keeps working.
+     Question counts drift every time anything is written; the weightings come
+     from the syllabus and change only when AAT changes them. Balancing the pool
+     would be a one-off correction that starts going stale immediately.
+
+     SYSTEMATIC SAMPLING, not largest remainder. Ten questions cannot be split
+     25/30/20/15/10 exactly, and how the leftover seats are handed out decides
+     whether the weighting is honoured on average or only on paper. Largest
+     remainder is deterministic: with these weightings it awards the spare seat
+     to Outcome 1 in EVERY run, so Outcome 1 is permanently 30% of practice
+     against 25% of the exam and Outcome 4 permanently 10% against 15%. Fixing
+     one bias by installing another, quietly.
+
+     One uniform draw, carried across the cumulative shares, has neither
+     problem. Each outcome's seat count is the difference between two floors of
+     its running total offset by that draw, which makes the expected count
+     exactly its share, and makes the seats always sum to n because the last
+     floor is n and the first is zero. A ten-question run comes out 2/3/2/2/1 or
+     3/3/2/1/1 depending on the draw, and averages to 2.5/3/2/1.5/1.
+
+     A shortfall in one outcome is redistributed rather than left as a gap: a
+     run that asked for three and found two must still be ten questions long, or
+     the score at the end is out of a different number than the reader thinks. */
+  function drawWeighted(unitKey, n) {
+    var bank = practiceBank(unitKey);
+    var os = outcomes(unitKey).filter(function (o) {
+      return bank.some(function (q) { return q.lo === o.n; });
+    });
+    if (!os.length) return shuffle(bank).slice(0, n);
+
+    var total = os.reduce(function (a, o) { return a + (o.weighting || 0); }, 0);
+    if (!total) return shuffle(bank).slice(0, n);
+
+    var u = Math.random();
+    var cum = 0, prev = Math.floor(u);
+    var seats = os.map(function (o) {
+      cum += n * (o.weighting || 0) / total;
+      var upto = Math.floor(cum + u);
+      var got = upto - prev;
+      prev = upto;
+      return { n: o.n, whole: got };
+    });
+
+    var pools = {};
+    seats.forEach(function (s) {
+      pools[s.n] = shuffle(bank.filter(function (q) { return q.lo === s.n; }));
+    });
+
+    var out = [];
+    seats.forEach(function (s) { out = out.concat(pools[s.n].splice(0, s.whole)); });
+
+    /* Anything the weighting could not fill, taken from whatever is left over,
+       so the run is always the length it says it is. */
+    if (out.length < n) {
+      var rest = [];
+      Object.keys(pools).forEach(function (k) { rest = rest.concat(pools[k]); });
+      out = out.concat(shuffle(rest).slice(0, n - out.length));
+    }
+    return shuffle(out);
+  }
+
   function startPractice(lo) {
     /* Pinned at the start of the run. Everything downstream files its answers
        against this rather than against whatever unit happens to be active when
@@ -1284,8 +1354,12 @@
       resetQState();
       return;
     }
-    var pool = practiceBank(S.practiceUnit).filter(function (q) { return lo === 'mix' || q.lo === lo; });
-    S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
+    if (lo === 'mix') {
+      S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN);
+    } else {
+      var pool = practiceBank(S.practiceUnit).filter(function (q) { return q.lo === lo; });
+      S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
+    }
     S.practiceMissed = [];
     S.mode = 'practice';
     S.screen = 'quiz';

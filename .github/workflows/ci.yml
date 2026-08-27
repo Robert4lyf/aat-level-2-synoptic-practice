@@ -53,6 +53,8 @@ jobs:
         run: npm run check:aat3-task
       - name: Check Level 3 mistake memory (recorded, served, cleared, merges between devices)
         run: npm run check:aat3-mistakes
+      - name: Check mixed practice is drawn to the exam weighting
+        run: npm run check:aat3-weighting
       - name: Check progress backup merge (no data loss, idempotent)
         run: npm run check:backup
       - name: Check cross-device sync (version check, conflict retry, fail-safe)

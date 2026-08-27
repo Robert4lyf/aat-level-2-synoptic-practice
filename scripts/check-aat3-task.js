@@ -222,17 +222,27 @@ tasks.forEach(entry => {
   M.AAT3_UI.mount(el);
   D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
 
-  /* The first task is answered DELIBERATELY rather than by the generic driver,
-     and it is submitted once with a part still blank before being completed.
-     That leaves every piece of per-question state a task can hold in a
-     non-default condition — typed figures, chosen pills, per-part verdicts and
-     the blank-part marks — so the assertions below are testing all four rather
-     than whichever ones the driver's arbitrary choices happened to set. */
+  /* WHICHEVER TASK CAME FIRST, not the one written first. A run shuffles, so
+     the follower can be dealt before the task it follows; an earlier version
+     assumed the authored order and failed the moment the draw changed, which
+     said nothing about the player at all. Both are tasks with identically
+     shaped parts, so either order tests the same thing.
+
+     The first is answered DELIBERATELY rather than by the generic driver, and
+     is submitted once with a part still blank before being completed. That
+     leaves every piece of per-question state a task can hold in a non-default
+     condition — typed figures, chosen pills, per-part verdicts and the
+     blank-part marks — so the assertions below test all four rather than
+     whichever ones the driver's arbitrary choices happened to set. */
+  const firstIsFollower = /A second task/.test(el.innerHTML);
+  const first = firstIsFollower ? follower : entry.q;
+  const secondStem = firstIsFollower ? entry.q.q : follower.q;
+
   D.click(el, 'tasksubmit');                                  // blank: raises the marks
-  entry.q.parts.forEach((_, pi) => fillPart(el, entry.q, pi, true));
+  first.parts.forEach((_, pi) => fillPart(el, first, pi, true));
   D.click(el, 'tasksubmit');
   D.click(el, 'nextq');
-  ok(/A second task/.test(el.innerHTML), 'the task after a task is reached');
+  ok(el.innerHTML.indexOf(secondStem.slice(0, 30)) !== -1, 'the task after a task is reached');
   const html = el.innerHTML;
 
   const filled = D.nodes(el, 'taskinput')
