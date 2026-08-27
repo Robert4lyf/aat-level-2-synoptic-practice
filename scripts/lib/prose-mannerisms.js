@@ -58,7 +58,27 @@ const NEVER = [
   [/\bholistic(ally)?\b/i,                       'holistic'],
   [/\bmulti-faceted\b/i,                         'multi-faceted'],
   [/\bnavigat(e|es|ing) the\b/i,                 'navigate the (metaphor)'],
-  [/\bit'?s important to note\b/i,               "it's important to note"],
+  /* Both forms. The pattern was `it'?s important to note`, where the optional
+     apostrophe covers "it's" and "its" and nothing covers "it IS important to
+     note" — the uncontracted form, which is the one a model writes more often.
+     A mutation test injected it into a card and the guard said nothing. */
+  [/\bit(?:'|’)?s important to note\b|\bit is important to note\b/i, "it's/it is important to note"],
+  [/\bit should be noted\b/i,                    'it should be noted'],
+
+  /* Added with the FAPS unit, after the gap above showed the list had been
+     written once and never re-examined. Every one of these was measured at
+     ZERO across every module's corpus before being added, so none of them
+     fails anything today and each catches drift the day it appears. Kept to
+     vocabulary with no business in this material — "crucial", "vital" and
+     "robust" are ordinary words an author may legitimately need, and are
+     deliberately not here. */
+  [/\ba testament to\b/i,                        'a testament to'],
+  [/\bcornerstone\b/i,                           'cornerstone'],
+  [/\bmyriad\b/i,                                'myriad'],
+  [/\bboasts?\b/i,                               'boasts'],
+  [/\bin essence\b/i,                            'in essence'],
+  [/\b(deep )?div(e|es|ing) into\b/i,            'dive into'],
+  [/\bgame[- ]chang(er|ing)\b/i,                 'game-changer'],
 ];
 
 /* The signposting frame, and its rate ceiling per 1,000 prose words. */

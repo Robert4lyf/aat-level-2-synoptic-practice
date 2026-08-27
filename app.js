@@ -44,11 +44,11 @@
          (shared by every other subject, and covered by no behavioural tests)
          are untouched by anything Level 3 does. */
       id: 'aat3', name: 'AAT Level 3', short: 'AAT L3', flag: '📗', color: '#4F46E5',
-      desc: 'Tax Processes for Businesses — VAT and payroll for the Q2022 Level 3 Diploma',
-      meta: '5 outcomes · 21 lessons · FA2025',
+      desc: 'Tax Processes for Businesses and Financial Accounting for the Q2022 Level 3 Diploma',
+      meta: '2 units · TPFB complete · FAPS in progress',
       tabs: ['home'],
       ui: 'AAT3_UI',
-      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-ui.js'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-ui.js'],
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values
            keep any incidental app.js reference safe. */
@@ -7584,7 +7584,7 @@
             <button class="sty-btn" type="button" id="styReplayBtn">Another go at Tuesday</button>
             <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn2">Clock off</button>
           </div>
-          <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
+          <p class="sty-footnote">Story marks do not affect your readiness score, topic mastery or spaced repetition.</p>
         </div>
       </div>
     </div>`;

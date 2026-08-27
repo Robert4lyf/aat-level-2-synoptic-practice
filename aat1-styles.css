@@ -645,17 +645,110 @@ body.dark[data-subject="aat1"] .a1-pill.on { color: #06231F; }
   background: var(--a1-brand); color: #fff;
 }
 body.dark[data-subject="aat1"] .a1-match-tag { color: #06231F; }
+/* After marking, the badge takes the result colour. Leaving it brand-teal on a
+   red box has the row saying two things at once. */
+.a1-match-item.is-right .a1-match-tag { background: var(--a1-ok); color: #fff; }
+.a1-match-item.is-wrong .a1-match-tag { background: var(--a1-bad); color: #fff; }
 .a1-match-item.is-sel { border-color: var(--a1-accent); background: var(--a1-accent-wash); }
 .a1-match-item.is-paired { border-color: var(--a1-brand); background: var(--a1-brand-wash); }
 .a1-match-item.is-right { border-color: var(--a1-ok); background: var(--a1-ok-wash); }
 .a1-match-item.is-wrong { border-color: var(--a1-bad); background: var(--a1-bad-wash); }
 .a1-match-item:disabled { cursor: default; }
-.a1-match-hint { font-size: .87rem; color: var(--a1-ink-3); margin-top: 12px; }
-.a1-match-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+/* Telling the two groups apart.
+   The columns stack below 620px, so without these the reader meets eight
+   identical boxes in one run and has to infer from the numbering that the
+   first four are the question and the last four are the answer bank. */
+.a1-match-head {
+  display: flex; align-items: center; gap: 7px;
+  font-size: .72rem; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--a1-ink-3); margin-bottom: 2px;
+}
+.a1-match-step {
+  flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%;
+  display: grid; place-items: center; font-size: .7rem; letter-spacing: 0;
+  background: var(--a1-brand); color: #fff;
+}
+body.dark[data-subject="aat1"] .a1-match-step { color: #06231F; }
+/* An empty slot is drawn as one — a dashed outline reads as "something goes
+   here" in a way a solid box does not. */
+.a1-match-r.is-open { border-style: dashed; background: transparent; }
+.a1-match-cue {
+  flex: 0 0 auto; font-size: .7rem; font-weight: 700; letter-spacing: .02em;
+  text-transform: uppercase; color: var(--a1-ink-3);
+}
+.a1-match-item.is-sel .a1-match-cue { color: var(--a1-accent); }
+
+/* Instruction bar, above the boxes rather than below them. */
+.a1-match-status {
+  display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin: 2px 0 11px;
+}
+.a1-match-count {
+  flex: 0 0 auto; font-size: .78rem; font-weight: 800; white-space: nowrap;
+  padding: 3px 10px; border-radius: 999px;
+  background: var(--a1-brand-wash); color: var(--a1-brand-ink);
+}
+.a1-match-say { font-size: .84rem; line-height: 1.5; color: var(--a1-ink-2); }
+.a1-match-say strong { color: var(--a1-ink); }
+
+/* A colour per pair, carried by BOTH halves, so a completed pairing is legible
+   without comparing a number against a number eight rows apart. Six hues, none
+   of them the green or red the marked state uses — the two never show at once,
+   but a reader who has just seen green mean "correct" should not meet a green
+   that means "pair three". */
+.a1-mc0 { --a1-mc: #2F5FD0; }
+.a1-mc1 { --a1-mc: #0E8577; }
+.a1-mc2 { --a1-mc: #A15C0E; }
+.a1-mc3 { --a1-mc: #8A3FA6; }
+.a1-mc4 { --a1-mc: #B03060; }
+.a1-mc5 { --a1-mc: #0A7490; }
+body.dark[data-subject="aat1"] .a1-mc0 { --a1-mc: #7FA8FF; }
+body.dark[data-subject="aat1"] .a1-mc1 { --a1-mc: #4FCFB8; }
+body.dark[data-subject="aat1"] .a1-mc2 { --a1-mc: #E8A85C; }
+body.dark[data-subject="aat1"] .a1-mc3 { --a1-mc: #C79AE8; }
+body.dark[data-subject="aat1"] .a1-mc4 { --a1-mc: #F08FB4; }
+body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
+.a1-match-item[class*="a1-mc"] { border-color: var(--a1-mc); }
+/* Tint the surface with the pair's own colour rather than leaving the uniform
+   teal of .is-paired underneath it, which fought the border. Where color-mix
+   is unsupported the declaration is dropped and the teal wash shows through,
+   which is the previous behaviour rather than a broken one. */
+.a1-match-item[class*="a1-mc"] { background: color-mix(in srgb, var(--a1-mc) 9%, var(--a1-surface)); }
+.a1-match-item[class*="a1-mc"] .a1-match-tag { background: var(--a1-mc); color: #fff; }
+body.dark[data-subject="aat1"] .a1-match-item[class*="a1-mc"] .a1-match-tag { color: #0B1614; }
+.a1-match-l[class*="a1-mc"] { border-left-width: 5px; }
+.a1-match-r[class*="a1-mc"] { border-right-width: 5px; }
+
+.a1-match-actions { display: flex; gap: 8px; margin-top: 12px; }
 .a1-match-actions .a1-btn-primary { flex: 1; }
+
+/* The marked answer. "1 → A, 2 → C" made the reader carry four letters back up
+   the page and look each one up; the pairing is spelled out instead. */
 .a1-match-key {
-  margin-top: 12px; padding: 10px 13px; border-radius: var(--a1-r);
-  background: var(--a1-surface-2); font-size: .87rem; color: var(--a1-ink-2); line-height: 1.6;
+  margin-top: 12px; padding: 11px 13px; border-radius: var(--a1-r);
+  background: var(--a1-surface-2); font-size: .87rem; color: var(--a1-ink-2); line-height: 1.5;
+}
+.a1-match-key-h {
+  font-size: .72rem; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--a1-ink-3); margin-bottom: 7px;
+}
+.a1-match-key-row {
+  display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 8px; align-items: baseline;
+  padding: 5px 0 5px 9px; border-left: 3px solid transparent;
+}
+.a1-match-key-m { font-weight: 800; font-size: .9rem; }
+.a1-match-key-row.is-right .a1-match-key-m { color: var(--a1-ok); }
+.a1-match-key-row.is-wrong .a1-match-key-m { color: var(--a1-bad); }
+.a1-match-key-row + .a1-match-key-row { border-top: 1px solid var(--a1-line); }
+.a1-match-key-row.is-right { border-left-color: var(--a1-ok); }
+.a1-match-key-row.is-wrong { border-left-color: var(--a1-bad); }
+.a1-match-key-a { color: var(--a1-ink-3); font-weight: 700; }
+.a1-match-key-r { font-weight: 600; color: var(--a1-ink); }
+@media (max-width: 460px) {
+  .a1-match-key-row { grid-template-columns: auto 1fr; gap: 2px 8px; }
+  .a1-match-key-m { grid-row: span 2; align-self: center; }
+  .a1-match-key-a { display: none; }
+  .a1-match-key-r::before { content: "→ "; color: var(--a1-ink-3); }
 }
 
 /* Ordering — move a row up or down. No drag: touch-hostile and needs a polyfill. */
@@ -718,11 +811,6 @@ body.dark[data-subject="aat1"] .a1-match-tag { color: #06231F; }
 .a1-done-actions { display: flex; gap: 9px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
 
 /* ── Practice picker ──────────────────────────────────────────────────────── */
-.a1-notice {
-  background: var(--a1-surface-2); border: 1px dashed var(--a1-line-2);
-  border-radius: var(--a1-r); padding: 13px 16px; margin-bottom: 18px;
-  font-size: .9rem; line-height: 1.6; color: var(--a1-ink-2);
-}
 .a1-pgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 11px; }
 .a1-pcard {
   display: flex; flex-direction: column; gap: 4px; text-align: left; cursor: pointer;

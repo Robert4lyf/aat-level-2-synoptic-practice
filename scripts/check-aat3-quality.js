@@ -25,9 +25,13 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
 const ROOT = path.join(__dirname, '..');
-const { AAT3_LEARN_PATH } = require(path.join(ROOT, 'aat3-learn-data.js'));
 const { TAX } = require(path.join(ROOT, 'aat3-tax-data.js'));
-const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
+const SYL = require(path.join(ROOT, 'aat3-syllabus.js'));
+/* Every unit's content, from the one list — see scripts/lib/aat3-content.js.
+   Reading AAT3_LEARN_PATH by name examined TPFB and said nothing about FAPS,
+   while still reporting green. */
+const CONTENT = require('./lib/aat3-content.js');
+const { groups: AAT3_LEARN_PATH, questions: PRACTICE_QUESTIONS } = CONTENT.load();
 
 const errors = [];
 const warnings = [];
@@ -39,7 +43,7 @@ const lessons = [];
 /* Every question in the module, wherever it lives. The practice bank gets the
    same scrutiny as the lesson checks — and the shared stem map is what stops
    the bank quietly re-asking a lesson, which would make it a memory test. */
-const practice = (AAT3_PRACTICE && AAT3_PRACTICE.QUESTIONS) || [];
+const practice = PRACTICE_QUESTIONS;
 const allQuestions = [];
 lessons.forEach(l => (l.check || []).forEach((q, i) => allQuestions.push({ where: `${l.id} Q${i + 1}`, q })));
 practice.forEach(q => allQuestions.push({ where: `practice ${q.id}`, q, isPractice: true }));
@@ -181,6 +185,47 @@ allQuestions.forEach(({ where, q }) => {
     }
   }
 });
+
+/* ── 1a. Every practice question names its unit, and names it in the right field
+   ────────────────────────────────────────────────────────────────────────────
+   Two different things were called `unit`. On a numeric question it is the unit
+   of MEASUREMENT — the £ or % the player prints as the input placeholder. When
+   the bank had to be tagged with the AAT unit it belongs to, the obvious field
+   name was already taken, and writing `unit: 'tpfb'` into a question that later
+   said `unit: '£'` did not fail: the second key won, the question fell out of
+   its own practice bank, and nothing said a word.
+
+   So: `unitKey` carries the AAT unit, `unit` carries the measurement, and
+   neither is allowed to hold the other's values. An untagged question is worse
+   than a missing one — outcome numbers restart at 1 in every unit, so it would
+   be counted inside a different unit's outcome 1. */
+{
+  const UNIT_KEYS = Object.keys(SYL.SYLLABUS.units);
+  const MEASURES = /^[£$%€]|hours?|days?|months?$/i;
+  practice.forEach(q => {
+    const where = `practice ${q.id}`;
+    if (!q.unitKey) {
+      errors.push(`${where}: no unitKey — outcome numbers restart in every unit, so this would be counted under another unit's outcome ${q.lo}.`);
+    } else if (UNIT_KEYS.indexOf(q.unitKey) === -1) {
+      errors.push(`${where}: unitKey "${q.unitKey}" is not a unit in aat3-syllabus.js (${UNIT_KEYS.join(', ')}).`);
+    }
+    if (q.unit && UNIT_KEYS.indexOf(q.unit) !== -1) {
+      errors.push(`${where}: \`unit\` is set to "${q.unit}", which is an AAT unit key. \`unit\` is the unit of MEASUREMENT the player shows as a placeholder; the AAT unit goes in \`unitKey\`.`);
+    }
+    if (q.unit && !MEASURES.test(String(q.unit))) {
+      warnings.push(`${where}: \`unit\` is "${q.unit}", which does not look like a unit of measurement.`);
+    }
+    if (q.unitKey && q.lo != null) {
+      const u = SYL.SYLLABUS.units[q.unitKey];
+      if (u && !u.outcomes.some(o => o.n === q.lo)) {
+        errors.push(`${where}: outcome ${q.lo} does not exist in ${q.unitKey.toUpperCase()}.`);
+      }
+    }
+  });
+  const byUnit = {};
+  practice.forEach(q => { byUnit[q.unitKey || '(none)'] = (byUnit[q.unitKey || '(none)'] || 0) + 1; });
+  notes.push(`Practice bank by unit: ${Object.entries(byUnit).map(([k, v]) => `${k} ${v}`).join(', ')}.`);
+}
 
 /* ── 1b. True/false grids must not be answerable by test-wiseness ─────────
    An adversarial review found two cues in the true/false statements that no
@@ -366,6 +411,142 @@ lessons.forEach(l => {
   });
 });
 
+/* ── 2a-iii. A key written twice in one object literal ───────────────────── */
+/* JavaScript accepts `{ p: [...], example: {...}, p: [...] }` without a murmur
+   and keeps the LAST one. The content files are large object literals written
+   by hand, and this has now eaten data twice: `unit: 'tpfb'` overwritten by a
+   numeric question's `unit: '£'`, dropping 29 questions out of a practice bank,
+   and two FAPS cards where a second `p` silently deleted three paragraphs of
+   teaching that had been written, reviewed and committed.
+
+   Neither failure is visible at runtime — the object is valid, the file loads,
+   and the only symptom is content that is not there. The depth check caught the
+   second by accident, because the surviving paragraph was short enough to trip
+   a word count. A longer survivor would have passed.
+
+   THE FIRST VERSION OF THIS CHECK ONLY LOOKED AT LINE-LEADING KEYS, which is
+   how these files are usually laid out — and would therefore have missed the
+   very bug that prompted it, because `id: 'P-1-02', unit: 'tpfb', lo: 1,` puts
+   three keys on one line. So the scan is a character walk: it tracks strings,
+   comments and brace depth, and treats an identifier as a key when the last
+   significant character before it was `{` or `,`. That last condition is what
+   keeps ternaries and labels out of it. */
+CONTENT.FILES.forEach(({ file }) => {
+  const src = require('fs').readFileSync(path.join(ROOT, file), 'utf8');
+  const seen = [];               // one Map per open brace depth
+  let depth = 0, inStr = null, line = 1, lastSig = '';
+  let i = 0;
+
+  const isIdStart = c => /[A-Za-z_$]/.test(c);
+  const isIdChar = c => /[\w$]/.test(c);
+
+  while (i < src.length) {
+    const c = src[i], n = src[i + 1];
+    if (c === '\n') { line++; i++; continue; }
+
+    if (inStr) {
+      if (c === '\\') { i += 2; continue; }
+      if (c === inStr) inStr = null;
+      i++; continue;
+    }
+    if (c === '/' && n === '*') { const e = src.indexOf('*/', i + 2); const skip = e === -1 ? src.length : e + 2; line += src.slice(i, skip).split('\n').length - 1; i = skip; continue; }
+    if (c === '/' && n === '/') { const e = src.indexOf('\n', i); i = e === -1 ? src.length : e; continue; }
+    if (c === "'" || c === '"' || c === '`') { inStr = c; lastSig = c; i++; continue; }
+
+    if (c === '{') { depth++; seen[depth] = new Map(); lastSig = c; i++; continue; }
+    if (c === '}') { seen[depth] = null; depth--; lastSig = c; i++; continue; }
+    if (c === '[' || c === ']') { lastSig = c; i++; continue; }
+
+    if (isIdStart(c) && (lastSig === '{' || lastSig === ',')) {
+      let j = i;
+      while (j < src.length && isIdChar(src[j])) j++;
+      const word = src.slice(i, j);
+      let k = j;
+      while (k < src.length && /\s/.test(src[k])) { if (src[k] === '\n') line++; k++; }
+      if (src[k] === ':') {
+        const map = seen[depth];
+        if (map) {
+          if (map.has(word)) {
+            errors.push(`${file}:${line}: the key "${word}" is set twice in the same object (first at line ${map.get(word)}). JavaScript keeps the last one silently, so whatever the first held is gone.`);
+          } else {
+            map.set(word, line);
+          }
+        }
+        lastSig = ':';
+        i = k + 1;
+        continue;
+      }
+      lastSig = word[word.length - 1];
+      i = j;
+      continue;
+    }
+
+    if (!/\s/.test(c)) lastSig = c;
+    i++;
+  }
+});
+
+/* ── 2a-iv. Every row of a table has to be the same width ────────────────── */
+/* The renderer emits one cell per entry and nothing else. A row with fewer
+   entries than the header therefore renders SHORT — the remaining columns
+   simply stop, and the browser closes the row where the data ran out, so the
+   figures below it slide left under the wrong headings. Nothing throws, the
+   page still paints, and a reader sees a carrying amount sitting in the
+   depreciation column.
+
+   Found by writing one. A four-column statement-of-financial-position layout
+   was drafted with three-column rows underneath it; the shape check passed,
+   because str[][] says nothing about how long each row is.
+
+   Measured at zero across all 58 tables and examples in the module before
+   being added, so it is a ratchet against a new one rather than a backlog. */
+[['table', t => (t.headers ? [t.headers] : []).concat(t.rows || [])],
+ ['example', e => e.rows || []]].forEach(([field, rowsOf]) => {
+  lessons.forEach(l => {
+    (l.cards || []).forEach((c, ci) => {
+      const el = c[field];
+      if (!el) return;
+      const rows = rowsOf(el).filter(Array.isArray);
+      if (rows.length < 2) return;
+      const widths = rows.map(r => r.length);
+      const commonest = widths.slice().sort((a, b) =>
+        widths.filter(w => w === b).length - widths.filter(w => w === a).length)[0];
+      rows.forEach((r, ri) => {
+        if (r.length !== commonest) {
+          errors.push(`${l.id} card ${ci + 1}.${field}: row ${ri + 1} has ${r.length} cells where the rest of the table has ${commonest} — the columns below it will render under the wrong headings.`);
+        }
+      });
+    });
+  });
+});
+
+/* ── 2a-v. The first row of an example is rendered as a header ───────────── */
+/* The renderer emits row 0 with <th> and every other row with <td>, so whatever
+   is written first is styled as the column labels whether it names columns or
+   not. Two Outcome 7 layouts were drafted starting straight in on the figures,
+   which put "Profit for the year … 96,000" across the page in header type with
+   no labels above the money at all.
+
+   Checked as "row 0 must not contain a money amount", which is the part that
+   can be decided mechanically. A label like "Year 1" is fine; "96,000" or
+   "£600" is a line of the statement that has been pushed into the header.
+   All 17 examples in the module satisfied it once the two were fixed. */
+const MONEY_CELL = /£\s?\d|\d{1,3},\d{3}|\d+\.\d{2}/;
+let gridsChecked = 0, headersChecked = 0;
+lessons.forEach(l => {
+  (l.cards || []).forEach(c => { if (c.table) gridsChecked++; if (c.example) { gridsChecked++; headersChecked++; } });
+});
+lessons.forEach(l => {
+  (l.cards || []).forEach((c, ci) => {
+    const rows = c.example && c.example.rows;
+    if (!Array.isArray(rows) || !Array.isArray(rows[0])) return;
+    const money = rows[0].filter(x => MONEY_CELL.test(String(x)));
+    if (money.length) {
+      errors.push(`${l.id} card ${ci + 1}.example: the first row is rendered as the table header, and it carries figures (${money.join(', ')}) — put the column labels there and move this line down.`);
+    }
+  });
+});
+
 /* ── 2b. Arithmetic stated in prose must actually compute ────────────────── */
 /* Worked examples and explanations state their sums in the text — "£18,400 +
    £90 − £560 = £17,930". Those are load-bearing: a student who cannot
@@ -430,7 +611,11 @@ lessons.forEach(l => {
 /* ── 3. Tax figures must come from aat3-tax-data.js ──────────────────────── */
 /* Any of these appearing literally in prose is a figure that will silently go
    stale when the Finance Act rolls. Rates and small worked-example amounts are
-   fine; it is the thresholds and limits that must be referenced. */
+   fine; it is the thresholds and limits that must be referenced.
+
+   Scanned only in the files whose unit HAS a Finance Act. FAPS does not, so
+   every one of these amounts is an ordinary number there — and matching them
+   in it produces false alarms that train people to skip the whole section. */
 const GOVERNED = [
   [String(TAX.registration.threshold.value), 'VAT registration threshold'],
   [String(TAX.registration.deregistrationThreshold.value), 'deregistration threshold'],
@@ -445,18 +630,22 @@ const GOVERNED = [
    `'£' + T.partialExemption.deMinimisPerMonth.value + ' a month'` — evaluates to
    the very string we are hunting for, so checking the runtime value cannot tell
    a live reference from a hardcoded one. In the source they are unmistakable. */
-const source = require('fs').readFileSync(path.join(ROOT, 'aat3-learn-data.js'), 'utf8');
-GOVERNED.forEach(([value, label]) => {
-  const withCommas = Number(value).toLocaleString('en-GB');
-  /* `\b` is wrong here: £200\b matches inside "£200,000", because the comma is
-     a word boundary. Reject a digit continuation, and a comma or point that is
-     itself followed by a digit — but NOT a sentence-ending "£90,000." */
-  const re = new RegExp('£\\s?(' + value + '|' + withCommas + ')(?!\\d)(?![,.]\\d)', 'g');
-  let m;
-  while ((m = re.exec(source)) !== null) {
-    const line = source.slice(0, m.index).split('\n').length;
-    warnings.push(`aat3-learn-data.js:${line}: the ${label} (£${withCommas}) is hardcoded. Reference aat3-tax-data.js so a Finance Act change is a one-file edit.`);
-  }
+/* Scanned FILE BY FILE. Concatenating them first and reporting one line number
+   into the join names a line that exists in no file anybody can open. */
+CONTENT.FILES.filter(f => f.taxGoverned).forEach(({ file }) => {
+  const source = require('fs').readFileSync(path.join(ROOT, file), 'utf8');
+  GOVERNED.forEach(([value, label]) => {
+    const withCommas = Number(value).toLocaleString('en-GB');
+    /* `\b` is wrong here: £200\b matches inside "£200,000", because the comma is
+       a word boundary. Reject a digit continuation, and a comma or point that is
+       itself followed by a digit — but NOT a sentence-ending "£90,000." */
+    const re = new RegExp('£\\s?(' + value + '|' + withCommas + ')(?!\\d)(?![,.]\\d)', 'g');
+    let m;
+    while ((m = re.exec(source)) !== null) {
+      const line = source.slice(0, m.index).split('\n').length;
+      warnings.push(`${file}:${line}: the ${label} (£${withCommas}) is hardcoded. Reference aat3-tax-data.js so a Finance Act change is a one-file edit.`);
+    }
+  });
 });
 
 /* ── 4. Teaching depth ───────────────────────────────────────────────────── */
@@ -696,6 +885,7 @@ const totalWords = words(flat(AAT3_LEARN_PATH));
 notes.push(`${lessons.length} lessons · ${cardCount} cards · ${Math.round(proseTotal / cardCount)} words of prose and ${Math.round(teachTotal / cardCount)} words of teaching per card.`);
 notes.push(`${workedCount} worked examples (${tryCount} with a try-it) · ${totalWords} words in the module.`);
 notes.push(`${sumsChecked} arithmetic chains stated in prose were evaluated and agree.`);
+notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${headersChecked} example header rows checked for figures.`);
 
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
 notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));

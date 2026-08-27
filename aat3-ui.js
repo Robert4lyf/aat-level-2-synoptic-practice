@@ -21,9 +21,11 @@
 
   /* ── State ───────────────────────────────────────────────────────────────── */
   var S = {
-    screen: 'path',      // 'path' | 'lesson' | 'practice' | 'quiz' | 'done'
+    screen: 'units',     // 'units' | 'path' | 'lesson' | 'practice' | 'quiz' | 'done'
+    unit: null,          // which unit's path, practice and progress are on screen
     mode: 'lesson',      // 'lesson' | 'practice' — which set the question handlers read
     practiceLo: null,    // an outcome number, or 'mix'
+    practiceUnit: null,  // the unit a run was started in, pinned for its duration
     practiceQs: [],
     practiceMissed: [],
     lessonId: null,
@@ -42,7 +44,54 @@
     tryResult: null,
   };
 
-  var data = { lessons: {}, xp: 0 };
+  /* `practice` is the lifetime record of practice runs, kept per unit and then
+     per outcome within it.
+     WHY PER OUTCOME AND NOT A TOTAL. Progress backup merges two devices by
+     taking the larger of each number (see progress-backup.js), so a stored
+     grand total would be wrong the moment the two devices practised different
+     outcomes: max(10, 8) is 10 where the truth is 18. Per-outcome counters
+     merge correctly under that rule, and the totals are derived from them, so
+     there is only ever one source of truth. `correct` rather than `wrong` is
+     stored for the same reason — both rise, but only the pair (attempted,
+     correct) survives a max-merge without ever implying a negative count.
+     WHY PER UNIT. Outcome numbers restart at 1 in every unit, so one flat map
+     would add FAPS outcome 1 to TPFB outcome 1 and report a weakest outcome
+     that belongs to neither. */
+  var data = { lessons: {}, xp: 0, practice: { units: {} } };
+
+  function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
+
+  /* Reads any shape this record has ever had, and returns the current one.
+
+     Level 3 was a single unit when the practice record was designed, so a store
+     written before FAPS existed keeps `runs` and `los` at the top level. Those
+     counters can only be TPFB's. They are folded in by MAX rather than by
+     assignment, which makes the migration idempotent: re-importing an old
+     backup over a migrated store can neither double-count nor overwrite the
+     newer figure with the older one. */
+  function normalisePractice(p) {
+    var out = { units: {} };
+    if (p && p.units && typeof p.units === 'object') {
+      Object.keys(p.units).forEach(function (k) {
+        var u = p.units[k] || {};
+        out.units[k] = { runs: n0(u.runs), los: (u.los && typeof u.los === 'object') ? u.los : {} };
+      });
+    }
+    var legacyLos = (p && p.los && typeof p.los === 'object') ? p.los : {};
+    var legacyRuns = n0(p && p.runs);
+    if (legacyRuns || Object.keys(legacyLos).length) {
+      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, los: {} });
+      t.runs = Math.max(t.runs, legacyRuns);
+      Object.keys(legacyLos).forEach(function (lo) {
+        var was = legacyLos[lo] || {}, now = t.los[lo] || { attempted: 0, correct: 0 };
+        t.los[lo] = {
+          attempted: Math.max(n0(now.attempted), n0(was.attempted)),
+          correct: Math.max(n0(now.correct), n0(was.correct)),
+        };
+      });
+    }
+    return out;
+  }
 
   function load() {
     try {
@@ -51,8 +100,23 @@
         var p = JSON.parse(raw);
         data.lessons = p.lessons || {};
         data.xp = p.xp || 0;
+        data.practice = normalisePractice(p.practice);
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
+  }
+
+  /* The practice record for one unit, created on demand.
+
+     A falsy key gets a detached record that is never stored. Without that, a
+     call made before the content files have loaded — when there is no active
+     unit to name — would create and then persist a bucket under the key
+     "null", which merges across devices and shows up in the backup summary as
+     a unit nobody studied. */
+  function practiceRec(unitKey) {
+    if (!unitKey) return { runs: 0, los: {} };
+    var u = data.practice.units[unitKey];
+    if (!u) u = data.practice.units[unitKey] = { runs: 0, los: {} };
+    return u;
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
@@ -63,10 +127,54 @@
   }
 
   /* ── Data access ─────────────────────────────────────────────────────────── */
-  function path() { return root.AAT3_LEARN_PATH || []; }
-  function practiceBank() {
-    var p = root.AAT3_PRACTICE;
-    return (p && p.QUESTIONS) || [];
+
+  /* Every authored outcome-group, across every unit. Each unit ships its own
+     content file — see scripts/lib/aat3-content.js, which carries the same list
+     for the build checks. */
+  function allGroups() {
+    return (root.AAT3_LEARN_PATH || []).concat(root.AAT3_FAPS_PATH || []);
+  }
+
+  /* The groups belonging to the unit on screen. Each group in the content files
+     already declares its `unit`, so this is a filter rather than a new index. */
+  function path() {
+    var u = activeUnit();
+    return allGroups().filter(function (g) { return g.unit === u; });
+  }
+
+  /* Unit keys in the order the syllabus lists them, restricted to those that
+     have some teaching material. A unit encoded but not yet written is real
+     work in progress and belongs on the picker; a unit with nothing at all
+     would be an empty room. */
+  function unitKeys() {
+    var syl = syllabus();
+    var known = (syl && syl.units) ? Object.keys(syl.units) : [];
+    var written = {};
+    allGroups().forEach(function (g) { written[g.unit] = true; });
+    return known.filter(function (k) { return written[k]; });
+  }
+
+  /* The unit whose screens are showing. Falls back to the first unit that has
+     content, so a stored key for a unit that has since been removed cannot
+     strand the reader on an empty path. */
+  function activeUnit() {
+    var keys = unitKeys();
+    if (S.unit && keys.indexOf(S.unit) !== -1) return S.unit;
+    return keys[0] || null;
+  }
+
+  function unitMeta(key) {
+    var syl = syllabus();
+    return (syl && syl.units && syl.units[key]) || null;
+  }
+
+  function practiceBank(unitKey) {
+    var a = root.AAT3_PRACTICE, b = root.AAT3_FAPS_PRACTICE;
+    var all = ((a && a.QUESTIONS) || []).concat((b && b.QUESTIONS) || []);
+    var u = unitKey || activeUnit();
+    /* `unitKey`, not `unit`: on a numeric question `unit` is the £ or % the
+       answer is measured in. See the note at the top of aat3-practice-data.js. */
+    return all.filter(function (q) { return q.unitKey === u; });
   }
 
   /* The single place that decides which question set the answer handlers act
@@ -84,10 +192,15 @@
     path().forEach(function (u) { (u.lessons || []).forEach(function (l) { out.push(l); }); });
     return out;
   }
+  /* Searches EVERY unit, not the active one. A lesson id is globally unique and
+     the reader can only be inside a lesson they opened, so scoping this to the
+     active unit would turn a mid-lesson unit switch into a blank screen. */
   function lessonById(id) {
-    var all = lessons();
-    for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i];
-    return null;
+    var found = null;
+    allGroups().forEach(function (g) {
+      (g.lessons || []).forEach(function (l) { if (l.id === id) found = l; });
+    });
+    return found;
   }
   function rec(id) { return data.lessons[id] || null; }
   function isDone(id) { var r = rec(id); return !!(r && r.best >= 60); }
@@ -109,9 +222,10 @@
     workshop: { label: 'Workshop', glyph: '★' },
   };
 
-  function coverage() {
-    var syl = syllabus();
-    if (!syl || !syl.units || !syl.units.tpfb) return null;
+  function coverage(unitKey) {
+    var key = unitKey || activeUnit();
+    var u = unitMeta(key);
+    if (!u) return null;
     var total = 0, covered = 0, done = 0;
     var claimed = {}, doneClaimed = {};
     lessons().forEach(function (l) {
@@ -120,17 +234,112 @@
         if (isDone(l.id)) doneClaimed[t] = true;
       });
     });
-    syl.units.tpfb.outcomes.forEach(function (o) {
+    u.outcomes.forEach(function (o) {
       o.topics.forEach(function (t) {
         t.concepts.forEach(function (c) {
           total++;
-          var tag = 'TPFB-' + c.id;
+          var tag = u.code + '-' + c.id;
           if (claimed[tag]) covered++;
           if (doneClaimed[tag]) done++;
         });
       });
     });
     return { total: total, covered: covered, studied: done };
+  }
+
+  /* ── The practice record ─────────────────────────────────────────────────── */
+
+  function outcomes(unitKey) {
+    var u = unitMeta(unitKey || activeUnit());
+    return (u && u.outcomes) || [];
+  }
+
+  /* One answered practice question. Called from the single place that advances
+     a practice run, so a question type added later is counted without anyone
+     remembering to count it. */
+  function recordPractice(unitKey, lo, wasCorrect) {
+    var los = practiceRec(unitKey).los;
+    var key = String(lo);
+    if (!los[key]) los[key] = { attempted: 0, correct: 0 };
+    los[key].attempted++;
+    if (wasCorrect) los[key].correct++;
+  }
+
+  /* The lifetime practice picture as one object.
+   *
+   * Pure — everything it reports is derived from its two arguments — which is
+   * what lets the build check assert the ranking without standing up a browser.
+   *
+   * WHICH OUTCOME "HAS THE MOST MISTAKES" needs a total order, or the answer
+   * can change between two renders of identical data. Most wrong answers wins —
+   * that is the question being asked, so it outranks a small outcome answered
+   * badly. Ties break on the lower accuracy, so eight wrong out of nine beats
+   * eight out of twenty. Then the larger sample, which only ever fires on a
+   * rounding collision (one wrong in twelve and one in thirteen both read 92%)
+   * because equal mistakes at equal accuracy otherwise pins the sample size.
+   * Then the outcome number, which is arbitrary but fixed.
+   *
+   * Rows are built from the syllabus so an outcome never practised still shows
+   * as a gap rather than vanishing — but any outcome number found in the record
+   * and NOT in the syllabus is appended rather than dropped, so the totals
+   * always account for every question the reader actually answered.
+   */
+  /* Last resort in the ranking, so it must return a number for every pair it
+     can be handed — including a numeric outcome against a junk key, where
+     subtraction would give NaN and leave the sort order undefined. */
+  function cmpOutcome(a, b) {
+    var an = typeof a === 'number', bn = typeof b === 'number';
+    if (an && bn) return a - b;
+    if (an !== bn) return an ? -1 : 1;
+    return String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
+  }
+
+  function practiceSummary(record, outcomeList) {
+    var p = (record && typeof record === 'object') ? record : practiceRec(activeUnit());
+    var byLo = (p && p.los && typeof p.los === 'object') ? p.los : {};
+    var list = (outcomeList || outcomes()).map(function (o) { return { n: o.n, title: o.title, weighting: o.weighting }; });
+    var known = {};
+    list.forEach(function (o) { known[String(o.n)] = true; });
+    Object.keys(byLo).forEach(function (k) {
+      if (known[k]) return;
+      /* A key that is not a number can only come from a corrupted or edited
+         store, but it still stands for questions somebody answered, so it is
+         carried through as itself rather than coerced into NaN — which would
+         both render as "Outcome NaN" and poison the comparator below. */
+      var n = Number(k);
+      list.push({ n: (k !== '' && isFinite(n)) ? n : k, title: 'Outcome ' + k, weighting: null });
+    });
+
+    var rows = list.map(function (o) {
+      var r = byLo[String(o.n)] || {};
+      var att = Math.max(0, r.attempted || 0);
+      /* Clamped because a merged backup takes the larger of each counter
+         independently, and a hand-edited file need not be coherent at all. */
+      var cor = Math.min(att, Math.max(0, r.correct || 0));
+      return {
+        n: o.n, title: o.title, weighting: o.weighting,
+        attempted: att, correct: cor, wrong: att - cor,
+        accuracy: att ? Math.round((cor / att) * 100) : null,
+      };
+    });
+
+    var attempted = 0, correct = 0;
+    rows.forEach(function (r) { attempted += r.attempted; correct += r.correct; });
+
+    var worst = rows.filter(function (r) { return r.wrong > 0; }).sort(function (a, b) {
+      return (b.wrong - a.wrong) || (a.accuracy - b.accuracy) ||
+             (b.attempted - a.attempted) || cmpOutcome(a.n, b.n);
+    })[0] || null;
+
+    return {
+      runs: Math.max(0, (p && p.runs) || 0),
+      attempted: attempted,
+      correct: correct,
+      wrong: attempted - correct,
+      accuracy: attempted ? Math.round((correct / attempted) * 100) : null,
+      rows: rows,
+      worst: worst,
+    };
   }
 
   /* ── Small helpers ───────────────────────────────────────────────────────── */
@@ -261,29 +470,102 @@
     return h + '</div>';
   }
 
+  /* ── Unit picker ─────────────────────────────────────────────────────────── */
+
+  /* How much of a unit is written, measured against the syllabus rather than
+     against itself. A unit that has authored two of its nine outcomes should
+     say so on the card the reader chooses it from, not after they have opened
+     it and scrolled. */
+  function unitProgress(key) {
+    var u = unitMeta(key);
+    var groups = allGroups().filter(function (g) { return g.unit === key; });
+    var ls = [];
+    groups.forEach(function (g) { (g.lessons || []).forEach(function (l) { ls.push(l); }); });
+    var written = {};
+    groups.forEach(function (g) { written[g.outcome] = true; });
+    var total = u ? u.outcomes.length : 0;
+    var authored = u ? u.outcomes.filter(function (o) { return written[o.n]; }).length : 0;
+    /* Share of the ASSESSMENT that is written, which is the number a reader
+       planning revision actually needs — two 20% outcomes are not the same
+       amount of exam as two 5% ones. */
+    var pctOfExam = u ? u.outcomes.reduce(function (a, o) { return a + (written[o.n] ? o.weighting : 0); }, 0) : 0;
+    return {
+      lessons: ls.length,
+      done: ls.filter(function (l) { return isDone(l.id); }).length,
+      outcomes: total,
+      authored: authored,
+      pctOfExam: pctOfExam,
+      complete: total > 0 && authored === total,
+    };
+  }
+
+  function renderUnits() {
+    var keys = unitKeys();
+    if (!keys.length) return '<div class="a3-empty">Level 3 content is still loading.</div>';
+
+    var h = '<div class="a3-root">';
+    h += '<header class="a3-hero a3-hero-sm">' +
+      '<div class="a3-hero-glow" aria-hidden="true"></div>' +
+      '<div class="a3-hero-in">' +
+      '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
+      '<h1 class="a3-title">Choose a unit</h1>' +
+      '<div class="a3-sub">Each unit has its own path, its own practice bank and its own progress.</div>' +
+      '</div></header>';
+
+    h += '<div class="a3-ugrid">';
+    keys.forEach(function (k) {
+      var u = unitMeta(k);
+      var p = unitProgress(k);
+      if (!u) return;
+      var pct = p.lessons ? Math.round((p.done / p.lessons) * 100) : 0;
+      h += '<button class="a3-ucard' + (p.complete ? '' : ' is-partial') + '" data-a3="openunit" data-unit="' + esc(k) + '">' +
+        '<span class="a3-ucard-k">' + esc(u.code) + ' · ' + u.qualificationWeighting + '% of the grade</span>' +
+        '<span class="a3-ucard-t">' + esc(u.title) + '</span>' +
+        '<span class="a3-ucard-m">' + u.glh + ' guided learning hours · ' +
+          u.assessment.durationMinutes + ' min exam · ' + u.outcomes.length + ' outcomes</span>' +
+        '<span class="a3-ucard-bar"><span style="width:' + pct + '%"></span></span>' +
+        '<span class="a3-ucard-s">' +
+          (p.lessons
+            ? p.done + ' of ' + p.lessons + ' lessons done'
+            : 'nothing studied yet') +
+          (p.complete
+            ? ''
+            : ' · <strong>' + p.authored + ' of ' + p.outcomes + ' outcomes written</strong> (' + p.pctOfExam + '% of the exam)') +
+        '</span>' +
+        '</button>';
+    });
+    h += '</div>';
+    h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
+    return h + '</div>';
+  }
+
   /* ── Path screen ─────────────────────────────────────────────────────────── */
   function renderPath() {
+    var key = activeUnit();
+    var u = unitMeta(key);
     var groups = path();
-    var unit = groups[0];
-    if (!unit) return '<div class="a3-empty">Level 3 content is still loading.</div>';
+    if (!u || !groups.length) return '<div class="a3-empty">Level 3 content is still loading.</div>';
     var ls = lessons();
     var doneN = ls.filter(function (l) { return isDone(l.id); }).length;
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
     var cov = coverage();
-    var syl = syllabus();
-    var u = syl && syl.units ? syl.units.tpfb : null;
+    var prog = unitProgress(key);
+    var bank = practiceBank();
     var h = '<div class="a3-root">';
 
     /* Hero */
     h += '<header class="a3-hero">' +
       '<div class="a3-hero-glow" aria-hidden="true"></div>' +
       '<div class="a3-hero-in">' +
+      (unitKeys().length > 1
+        ? '<button class="a3-unitback" data-a3="tounits"><span aria-hidden="true">←</span> All Level 3 units</button>'
+        : '') +
       '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
-      '<h1 class="a3-title">' + esc(unit.title) + '</h1>' +
+      '<h1 class="a3-title">' + esc(u.title) + '</h1>' +
       '<div class="a3-chips">' +
-        (u ? '<span class="a3-chip">' + esc(u.financeAct) + '</span>' : '') +
-        (u ? '<span class="a3-chip">' + u.assessment.durationMinutes + ' min exam</span>' : '') +
-        (u ? '<span class="a3-chip">' + u.qualificationWeighting + '% of the grade</span>' : '') +
+        (u.financeAct ? '<span class="a3-chip">' + esc(u.financeAct) + '</span>' : '') +
+        '<span class="a3-chip">' + u.assessment.durationMinutes + ' min exam</span>' +
+        '<span class="a3-chip">' + u.qualificationWeighting + '% of the grade</span>' +
         '<span class="a3-chip a3-chip-accent">' + data.xp + ' XP</span>' +
       '</div>' +
       '<div class="a3-progress"><div class="a3-progress-bar"><span style="width:' + pct + '%"></span></div>' +
@@ -295,30 +577,49 @@
        unit was part-built and the honest thing was to say so on every visit.
        The unit is complete, so the standing caveat — syllabus coverage is not
        readiness, and nothing here has been checked by a qualified accountant —
-       is made once in lesson 0A rather than repeated above every scroll. */
+       is made once in lesson 0A rather than repeated above every scroll.
+
+       A unit that is genuinely part-built gets the notice back, because for
+       that unit the statement is true again. */
+    if (!prog.complete) {
+      h += '<div class="a3-notice"><strong>' + prog.authored + ' of ' + u.outcomes.length +
+        ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong>, covering ' +
+        prog.pctOfExam + '% of this unit\'s assessment. ' +
+        'The rest are listed below in the order the specification sets them out, so you can see what is ' +
+        'coming and what is missing. Nothing here has been reviewed by a qualified accountant.</div>';
+    }
 
     /* Practice entry. Placed above the track because it is a peer of the
        lessons, not an afterthought at the bottom of a long scroll. */
-    if (practiceBank().length) {
+    if (bank.length) {
       h += '<button class="a3-practice-cta" data-a3="practice">' +
         '<span class="a3-practice-i" aria-hidden="true">◈</span>' +
         '<span class="a3-practice-tx">' +
           '<span class="a3-practice-t">Practice questions</span>' +
-          '<span class="a3-practice-m">' + practiceBank().length +
-            ' questions, by outcome or mixed — separate from the lessons</span>' +
+          '<span class="a3-practice-m">' + bank.length +
+            ' questions, by outcome or mixed</span>' +
         '</span>' +
         '<span class="a3-practice-go" aria-hidden="true">→</span>' +
         '</button>';
     }
 
-    /* The track — one section per outcome, continuous numbering of nodes. */
-    groups.forEach(function (g) {
-      h += '<div class="a3-outcome">' +
-        '<div class="a3-outcome-n">Outcome ' + esc(g.outcome) + '</div>' +
-        '<h2 class="a3-outcome-t">' + esc(g.outcomeTitle) + '</h2>' +
-        (g.weighting ? '<div class="a3-outcome-w">' + g.weighting + '% of the assessment</div>' : '') +
+    /* The track — one section per outcome, driven by the SYLLABUS rather than
+       by what happens to be written. Iterating the authored groups would make
+       an unwritten outcome vanish from the page entirely, and a reader would
+       have no way to tell a unit missing two thirds of its content from one
+       whose specification simply has fewer outcomes. */
+    u.outcomes.forEach(function (o) {
+      var g = groups.filter(function (x) { return x.outcome === o.n; })[0];
+      h += '<div class="a3-outcome' + (g ? '' : ' is-unwritten') + '">' +
+        '<div class="a3-outcome-n">Outcome ' + esc(o.n) + '</div>' +
+        '<h2 class="a3-outcome-t">' + esc(o.title) + '</h2>' +
+        '<div class="a3-outcome-w">' + o.weighting + '% of the assessment</div>' +
         '</div>';
-      h += renderTrack(g.lessons || []);
+      h += g
+        ? renderTrack(g.lessons || [])
+        : '<div class="a3-unwritten">Not written yet. ' +
+          o.topics.length + ' topic area' + (o.topics.length === 1 ? '' : 's') + ' of the specification ' +
+          'sit here, and no lesson claims any of them.</div>';
     });
 
     h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
@@ -431,18 +732,32 @@
           (S.answered ? 'Correct' : 'The answer is ' + esc((q.unit === '£' ? '£' : '') + q.answer)) + '</div>';
       }
     } else if (t === 'gapfill') {
+      /* SHUFFLED, like the multiple-choice options and the true/false rows.
+         Gap-fill was the one question type rendered in authored order, and the
+         authored order had the right answer first in 38 of 40 gaps — so
+         "always pick the leftmost pill" scored 95% across the whole module
+         without reading a word of the question. Nothing measured it, because
+         the cue checks were written for MCQ keys and true/false balance.
+         Shuffling makes the position carry no information at all, which is a
+         better fix than rebalancing data that would drift back. */
+      if (!S._gapOrder) {
+        S._gapOrder = (q.gaps || []).map(function (g) {
+          return shuffle((g.options || []).map(function (_, i) { return i; }));
+        });
+      }
       var parts = q.template.split(/(\{\d+\})/);
       h += '<div class="a3-gap">' + parts.map(function (p) {
         var m = /^\{(\d+)\}$/.exec(p);
         if (!m) return esc(p);
         var gi = +m[1], g = q.gaps[gi], sel = S.gapPicks[gi];
-        return '<span class="a3-gapsel">' + g.options.map(function (o, oi) {
+        var order = S._gapOrder[gi] || g.options.map(function (_, i) { return i; });
+        return '<span class="a3-gapsel">' + order.map(function (oi) {
           var on = sel === oi;
           var cls = on ? ' on' : '';
           if (S.answered !== null && oi === g.answer) cls = ' is-right';
           else if (S.answered !== null && on) cls = ' is-wrong';
           return '<button class="a3-pill' + cls + '" data-a3="gap" data-g="' + gi + '" data-o="' + oi + '"' +
-            (S.answered !== null ? ' disabled' : '') + '>' + esc(o) + '</button>';
+            (S.answered !== null ? ' disabled' : '') + '>' + esc(g.options[oi]) + '</button>';
         }).join('') + '</span>';
       }).join('') + '</div>';
       if (S.answered === null) h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="gapsubmit">Submit</button>';
@@ -496,11 +811,102 @@
       '</div></div></div>';
   }
 
+  /* ── Practice summary ────────────────────────────────────────────────────── */
+
+  /* Level 2 answers "how am I doing" on a Progress tab; Level 3 has no tabs, so
+     the same question is answered where the answer is actionable — at the top
+     of the practice picker, immediately above the outcome the reader would
+     choose next.
+
+     The headline is the count of questions attempted, and the callout names the
+     outcome with the most mistakes and offers to start a run on it. A score on
+     its own tells a reader nothing about where to go next; this makes the next
+     click the weakest thing they own. */
+  function bandClass(pct) {
+    if (pct === null) return 'a3-band-none';
+    return pct >= 70 ? 'a3-band-ok' : pct >= 50 ? 'a3-band-mid' : 'a3-band-bad';
+  }
+
+  function renderPracticeSummary() {
+    var s = practiceSummary();
+
+    if (!s.attempted) {
+      return '<section class="a3-sum a3-sum-empty" aria-label="Your practice so far">' +
+        '<div class="a3-sum-eyebrow">Your practice so far</div>' +
+        '<p class="a3-sum-emptytx">No practice questions answered yet. Answer a few and this will ' +
+          'show how many you have attempted and which outcome is costing you the most marks.</p>' +
+        '</section>';
+    }
+
+    var stat = function (n, label) {
+      return '<div class="a3-sum-stat"><span class="a3-sum-n">' + n + '</span>' +
+        '<span class="a3-sum-l">' + label + '</span></div>';
+    };
+
+    var h = '<section class="a3-sum" aria-label="Your practice so far">';
+    h += '<div class="a3-sum-eyebrow">Your practice so far</div>';
+    h += '<div class="a3-sum-stats">' +
+      stat(s.attempted, 'Questions attempted') +
+      stat(s.accuracy + '%', 'Answered correctly') +
+      stat(s.wrong, s.wrong === 1 ? 'Mistake' : 'Mistakes') +
+      stat(s.runs, s.runs === 1 ? 'Run finished' : 'Runs finished') +
+      '</div>';
+
+    if (s.worst) {
+      h += '<div class="a3-sum-focus">' +
+        '<div class="a3-sum-focus-tx">' +
+          '<div class="a3-sum-focus-k">Most mistakes</div>' +
+          '<div class="a3-sum-focus-t">Outcome ' + esc(s.worst.n) + ' · ' + esc(s.worst.title) + '</div>' +
+          '<div class="a3-sum-focus-m">' + s.worst.wrong + ' wrong out of ' + s.worst.attempted +
+            ' attempted · ' + s.worst.accuracy + '% correct' +
+            (s.worst.weighting ? ' · worth ' + s.worst.weighting + '% of the assessment' : '') +
+          '</div>' +
+        '</div>' +
+        '<button class="a3-btn a3-btn-primary a3-sum-focus-go" data-a3="startpractice" data-lo="' + esc(s.worst.n) + '">' +
+          'Practise Outcome ' + esc(s.worst.n) + '</button>' +
+        '</div>';
+    } else {
+      h += '<div class="a3-sum-focus a3-sum-focus-clean">' +
+        '<div class="a3-sum-focus-tx">' +
+          '<div class="a3-sum-focus-k">No mistakes yet</div>' +
+          '<div class="a3-sum-focus-m">Nothing has gone wrong so far, so there is no weakest ' +
+            'outcome to name. Keep going and this will point at one.</div>' +
+        '</div></div>';
+    }
+
+    h += '<div class="a3-sum-rows">';
+    s.rows.forEach(function (r) {
+      var isWorst = !!(s.worst && s.worst.n === r.n);
+      var pct = r.accuracy === null ? 0 : r.accuracy;
+      /* An empty bar is decorative, not a reading of nought per cent. Announced
+         as a progressbar it would say "0%" over a row whose own text says the
+         outcome has not been practised — two different claims about the same
+         thing, and the wrong one is the one a screen reader reaches first. */
+      var bar = r.accuracy === null
+        ? '<span class="a3-sum-bar" aria-hidden="true">'
+        : '<span class="a3-sum-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"' +
+          ' aria-label="Outcome ' + esc(r.n) + ' accuracy">';
+      h += '<div class="a3-sum-row' + (isWorst ? ' is-worst' : '') + '">' +
+        '<span class="a3-sum-row-n">' + esc(r.n) + '</span>' +
+        '<span class="a3-sum-row-t">' + esc(r.title) +
+          (isWorst ? '<span class="a3-sum-tag">most mistakes</span>' : '') + '</span>' +
+        bar + '<span class="a3-sum-bar-fill ' + bandClass(r.accuracy) + '" style="width:' + pct + '%"></span></span>' +
+        '<span class="a3-sum-row-m">' + (r.attempted
+          ? r.wrong + ' wrong / ' + r.attempted
+          : 'not practised') + '</span>' +
+        '</div>';
+    });
+    h += '</div>';
+
+    h += '<div class="a3-sum-foot">Practice questions only — the questions inside lessons are ' +
+      'recorded on the path, not here.</div>';
+    return h + '</section>';
+  }
+
   /* ── Practice picker ─────────────────────────────────────────────────────── */
   function renderPractice() {
     var bank = practiceBank();
-    var syl = syllabus();
-    var los = syl && syl.units ? syl.units.tpfb.outcomes : [];
+    var los = outcomes();
     var counts = {};
     bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
 
@@ -510,11 +916,14 @@
       '<div class="a3-hero-in">' +
       '<div class="a3-eyebrow">Practice</div>' +
       '<h1 class="a3-title">Test yourself</h1>' +
-      '<div class="a3-sub">' + bank.length + ' questions · ' + PRACTICE_LEN + ' per run, drawn at random</div>' +
+      /* "up to", because a run is a slice of the pool: an outcome with eight
+         questions in the bank gives a run of eight, not a run of ten padded
+         out. Stating a flat ten was accurate while every outcome had more than
+         ten and stopped being accurate the moment one did not. */
+      '<div class="a3-sub">' + bank.length + ' questions · up to ' + PRACTICE_LEN + ' per run, drawn at random</div>' +
       '</div></header>';
 
-    h += '<div class="a3-notice">These are separate from the questions inside the lessons, and are meant to be met cold. ' +
-      'A run is ' + PRACTICE_LEN + ' questions and records no lesson progress — it tells you what you know, not what you have read.</div>';
+    h += renderPracticeSummary();
 
     h += '<div class="a3-pgrid">';
     h += '<button class="a3-pcard a3-pcard-mix" data-a3="startpractice" data-lo="mix">' +
@@ -557,6 +966,7 @@
     if (S.screen === 'practice') return renderPractice();
     if (S.screen === 'quiz') return renderQuiz();
     if (S.screen === 'done') return renderDone();
+    if (S.screen === 'units') return unitKeys().length > 1 ? renderUnits() : renderPath();
     return renderPath();
   }
 
@@ -568,7 +978,7 @@
      picking an option or submitting an answer all re-render, and none of them
      should yank the page to the top while the reader is mid-card. */
   function posKey() {
-    return [S.screen, S.lessonId, S.phase, S.cardIdx, S.qIdx].join('|');
+    return [S.screen, S.unit, S.lessonId, S.phase, S.cardIdx, S.qIdx].join('|');
   }
   var _lastPos = null;
 
@@ -603,7 +1013,11 @@
      every outcome so it cannot be answered from one lesson's vocabulary. */
   var PRACTICE_LEN = 10;
   function startPractice(lo) {
-    var pool = practiceBank().filter(function (q) { return lo === 'mix' || q.lo === lo; });
+    /* Pinned at the start of the run. Everything downstream files its answers
+       against this rather than against whatever unit happens to be active when
+       the question is graded. */
+    S.practiceUnit = activeUnit();
+    var pool = practiceBank(S.practiceUnit).filter(function (q) { return lo === 'mix' || q.lo === lo; });
     S.practiceLo = lo;
     S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
     S.practiceMissed = [];
@@ -617,14 +1031,15 @@
     S.mode = 'lesson';
     S.lessonId = id; S.screen = 'lesson'; S.cardIdx = 0; S.phase = 'teach';
     S.qIdx = 0; S.answered = null; S.picked = null; S.score = 0;
-    S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null;
+    S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null; S._gapOrder = null;
     S.revealed = 0; S.tryShown = false; S.tryInput = ''; S.tryResult = null;
   }
   function resetCardState() {
     S.revealed = 0; S.tryInput = ''; S.tryResult = null;
   }
   function resetQState() {
-    S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null;
+    S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
+    S._order = null; S._gapOrder = null;
   }
   function finish() {
     var checks = currentQuestions();
@@ -638,6 +1053,7 @@
       data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
     } else {
       data.xp += S.score * 3;
+      practiceRec(S.practiceUnit || activeUnit()).runs++;
     }
     save();
     S.screen = 'done';
@@ -685,6 +1101,12 @@
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
     if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
+    if (act === 'openunit') {
+      S.unit = n.getAttribute('data-unit');
+      S.mode = 'lesson'; S.screen = 'path'; S.lessonId = null;
+      return rerender();
+    }
+    if (act === 'tounits') { S.mode = 'lesson'; S.screen = 'units'; S.lessonId = null; return rerender(); }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');
       startPractice(lo === 'mix' ? 'mix' : Number(lo));
@@ -744,7 +1166,20 @@
     if (act === 'nextq') {
       /* Recorded here rather than in each of the four grading paths, so a new
          question type cannot be added without its misses being counted. */
-      if (S.mode === 'practice' && S.answered === false && q) S.practiceMissed.push(q);
+      /* `answered !== null` because a graded answer is what makes this an
+         attempt. The button only renders once the question has been graded, so
+         today this cannot be reached ungraded — but the count is only honest
+         while that stays true, so it is a condition here rather than a
+         property of the renderer. */
+      if (S.mode === 'practice' && q && S.answered !== null) {
+        if (S.answered === false) S.practiceMissed.push(q);
+        recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
+        /* Written now rather than at the end of the run. A reader who answers
+           six questions and then leaves has attempted six questions, and the
+           summary that claims to count what they attempted has to agree. The
+           save is debounced downstream, so per-question is not per-request. */
+        save();
+      }
       if (S.qIdx === checks.length - 1) finish();
       else { S.qIdx++; resetQState(); }
       return rerender();
@@ -753,5 +1188,19 @@
 
   load();
 
-  root.AAT3_UI = { mount: mount, reset: function () { S.screen = 'path'; } };
+  root.AAT3_UI = {
+    mount: mount,
+    /* `screen` is optional and defaults to the path, which is the only thing
+       the app itself ever wants. It is settable so the build check can mount
+       the practice picker and assert the summary that renders there, rather
+       than asserting a regex against this file and calling that a test. */
+    reset: function (screen, unitKey) {
+      S.screen = screen || 'units';
+      if (unitKey) S.unit = unitKey;
+    },
+    /* Exposed so scripts/check-aat3-practice-summary.js can assert the totals
+       and the most-mistakes ranking directly, rather than reading them back out
+       of rendered HTML. */
+    practiceSummary: practiceSummary,
+  };
 }(typeof self !== 'undefined' ? self : this));
