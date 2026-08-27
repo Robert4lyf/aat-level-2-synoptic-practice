@@ -772,3 +772,9 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   background: var(--a3-gold-wash); color: var(--a3-gold);
   font-size: 13.5px; font-weight: 650;
 }
+
+/* The mistakes card. Amber rather than the brand indigo of the other picker
+   cards: it is a different kind of offer — a backlog to clear, not a topic to
+   choose — and it disappears entirely once the backlog is empty. */
+.a3-pcard-missed { border-color: var(--a3-gold); background: var(--a3-gold-wash); }
+.a3-pcard-missed .a3-pcard-k { color: var(--a3-gold); }

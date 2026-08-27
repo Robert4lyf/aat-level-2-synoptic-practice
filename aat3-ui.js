@@ -24,7 +24,7 @@
     screen: 'units',     // 'units' | 'path' | 'lesson' | 'practice' | 'quiz' | 'done'
     unit: null,          // which unit's path, practice and progress are on screen
     mode: 'lesson',      // 'lesson' | 'practice' — which set the question handlers read
-    practiceLo: null,    // an outcome number, or 'mix'
+    practiceLo: null,    // an outcome number, or 'mix', or 'missed'
     practiceUnit: null,  // the unit a run was started in, pinned for its duration
     practiceQs: [],
     practiceMissed: [],
@@ -78,7 +78,11 @@
     if (p && p.units && typeof p.units === 'object') {
       Object.keys(p.units).forEach(function (k) {
         var u = p.units[k] || {};
-        out.units[k] = { runs: n0(u.runs), los: (u.los && typeof u.los === 'object') ? u.los : {} };
+        out.units[k] = {
+          runs: n0(u.runs),
+          los: (u.los && typeof u.los === 'object') ? u.los : {},
+          qs: (u.qs && typeof u.qs === 'object') ? u.qs : {},
+        };
       });
     }
     var legacyLos = (p && p.los && typeof p.los === 'object') ? p.los : {};
@@ -117,10 +121,52 @@
      "null", which merges across devices and shows up in the backup summary as
      a unit nobody studied. */
   function practiceRec(unitKey) {
-    if (!unitKey) return { runs: 0, los: {} };
+    if (!unitKey) return { runs: 0, los: {}, qs: {} };
     var u = data.practice.units[unitKey];
-    if (!u) u = data.practice.units[unitKey] = { runs: 0, los: {} };
+    if (!u) u = data.practice.units[unitKey] = { runs: 0, los: {}, qs: {} };
+    if (!u.qs) u.qs = {};
     return u;
+  }
+
+  /* ── Per-question memory ──────────────────────────────────────────────────
+     The outcome counters above can say WHICH OUTCOME went badly and nothing
+     more, so the app could never offer a reader the questions they actually got
+     wrong. This records two timestamps per question — when it was last answered
+     wrongly, and when it was last answered correctly — and a question counts as
+     outstanding while the wrong one is the more recent.
+
+     TWO TIMESTAMPS RATHER THAN A FLAG, AND THAT IS FORCED BY THE MERGE.
+     progress-backup.js merges two devices field by field: numbers by MAX,
+     booleans by OR. An "outstanding" boolean would therefore be sticky — fix a
+     question on the phone, and the laptop's stale `true` resurrects it at the
+     next merge, for ever. Under MAX, the later of two timestamps wins, which is
+     exactly the semantics wanted: whichever device answered it most recently is
+     the one that knows how it went. Order-independent and idempotent, like the
+     rest of the record.
+
+     Clock skew between devices can misorder two attempts made close together.
+     The cost is a question offered again that did not need to be, which is the
+     harmless direction to fail in. */
+  function recordQuestion(unitKey, qId, correct) {
+    if (!unitKey || !qId) return;
+    var qs = practiceRec(unitKey).qs;
+    var rec = qs[qId] || (qs[qId] = {});
+    if (correct) rec.r = Date.now(); else rec.w = Date.now();
+  }
+  function isOutstanding(rec) {
+    return !!(rec && n0(rec.w) > n0(rec.r));
+  }
+  /* The questions still outstanding, most recently missed first, and only those
+     still in the bank — a question that has been rewritten or removed since it
+     was missed is not a question anyone can be asked again. */
+  function missedQuestions(unitKey) {
+    var qs = practiceRec(unitKey).qs;
+    var byId = {};
+    practiceBank(unitKey).forEach(function (q) { if (q.id) byId[q.id] = q; });
+    return Object.keys(qs)
+      .filter(function (id) { return byId[id] && isOutstanding(qs[id]); })
+      .sort(function (a, b) { return n0(qs[b].w) - n0(qs[a].w); })
+      .map(function (id) { return byId[id]; });
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
@@ -287,6 +333,15 @@
   /* One answered practice question. Called from the single place that advances
      a practice run, so a question type added later is counted without anyone
      remembering to count it. */
+  /* What a finished run is called on the done screen. `practiceLo` is not
+     always an outcome number, and printing it unguarded produced "Outcome
+     missed" the moment a second kind of run existed. */
+  function practiceLabel() {
+    if (S.practiceLo === 'mix') return 'all outcomes';
+    if (S.practiceLo === 'missed') return 'questions you had got wrong';
+    return 'Outcome ' + S.practiceLo;
+  }
+
   function recordPractice(unitKey, lo, wasCorrect) {
     var los = practiceRec(unitKey).los;
     var key = String(lo);
@@ -984,7 +1039,7 @@
       '<div class="a3-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       '<h1 class="a3-done-h">' + head + '</h1>' +
       '<div class="a3-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
-        (isP ? ' · ' + (S.practiceLo === 'mix' ? 'all outcomes' : 'Outcome ' + S.practiceLo) : '') + '</div>' +
+        (isP ? ' · ' + practiceLabel() : '') + '</div>' +
       (isP ? '' : '<div class="a3-stars a3-stars-big">' + [1,2,3].map(function (n) {
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
       weak +
@@ -1116,6 +1171,20 @@
       '<span class="a3-pcard-t">All outcomes</span>' +
       '<span class="a3-pcard-m">' + bank.length + ' questions in the pool</span>' +
       '</button>';
+
+    /* Only offered when there is something to redo. A card reading "0
+       questions" is an invitation to a screen with nothing on it, and a reader
+       who has just cleared their backlog has earned its absence. */
+    var missed = missedQuestions(activeUnit());
+    if (missed.length) {
+      h += '<button class="a3-pcard a3-pcard-missed" data-a3="startpractice" data-lo="missed">' +
+        '<span class="a3-pcard-k">Your mistakes</span>' +
+        '<span class="a3-pcard-t">Questions you got wrong</span>' +
+        '<span class="a3-pcard-m">' + missed.length +
+        (missed.length === 1 ? ' question waiting' : ' questions waiting') +
+        ', most recent first</span>' +
+        '</button>';
+    }
     los.forEach(function (o) {
       var n = counts[o.n] || 0;
       if (!n) return;
@@ -1202,8 +1271,20 @@
        against this rather than against whatever unit happens to be active when
        the question is graded. */
     S.practiceUnit = activeUnit();
-    var pool = practiceBank(S.practiceUnit).filter(function (q) { return lo === 'mix' || q.lo === lo; });
     S.practiceLo = lo;
+    /* The mistakes run is drawn in order, oldest miss last, rather than
+       shuffled: a reader with thirty outstanding questions wants the ten they
+       got wrong most recently, not ten at random from the whole backlog. */
+    if (lo === 'missed') {
+      S.practiceQs = missedQuestions(S.practiceUnit).slice(0, PRACTICE_LEN);
+      S.practiceMissed = [];
+      S.mode = 'practice';
+      S.screen = 'quiz';
+      S.qIdx = 0; S.score = 0;
+      resetQState();
+      return;
+    }
+    var pool = practiceBank(S.practiceUnit).filter(function (q) { return lo === 'mix' || q.lo === lo; });
     S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
     S.practiceMissed = [];
     S.mode = 'practice';
@@ -1310,7 +1391,7 @@
     if (act === 'tounits') { S.mode = 'lesson'; S.screen = 'units'; S.lessonId = null; return rerender(); }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');
-      startPractice(lo === 'mix' ? 'mix' : Number(lo));
+      startPractice(lo === 'mix' || lo === 'missed' ? lo : Number(lo));
       return rerender();
     }
 
@@ -1392,6 +1473,10 @@
       if (S.mode === 'practice' && q && S.answered !== null) {
         if (S.answered === false) S.practiceMissed.push(q);
         recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
+        /* Only practice questions have ids. A lesson check has no identity of
+           its own to remember, and the lesson it belongs to is already tracked
+           by its own progress record. */
+        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true);
         /* Written now rather than at the end of the run. A reader who answers
            six questions and then leaves has attempted six questions, and the
            summary that claims to count what they attempted has to agree. The
