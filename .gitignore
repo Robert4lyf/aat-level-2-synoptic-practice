@@ -1,2 +1,5 @@
 .claude/*
 !.claude/settings.json
+
+# Playwright and its browser download, pulled in only for check:subjects.
+node_modules/

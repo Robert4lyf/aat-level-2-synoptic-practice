@@ -10,7 +10,8 @@ A browser-based study tool for the **AAT Level 2 Certificate in Accounting (Q202
 Alongside it are two self-contained modules for the levels either side, each with its own design, its own progress and its own renderer:
 
 - **AAT Level 1 Award in Bookkeeping** — Bookkeeping Fundamentals, all five outcomes
-- **AAT Level 3 Diploma in Accounting** — Tax Processes for Businesses, all five outcomes
+- **AAT Level 3 Diploma in Accounting** — two units: Tax Processes for Businesses (complete) and
+  Financial Accounting: Preparing Financial Statements (in progress)
 
 > ⚠️ This is an independent study tool. It is **not** affiliated with, endorsed by, or officially associated with AAT (the Association of Accounting Technicians).
 
@@ -140,6 +141,115 @@ The **Level 1 Award in Bookkeeping** module covers the whole of the Bookkeeping 
 Its own design language is scoped entirely under `body[data-subject="aat1"]`, and its progress
 lives under its own storage key, so nothing it does can reach the other subjects.
 
+## The Level 3 module
+
+The **Level 3 Diploma in Accounting** module carries two of the qualification's four units, each
+with its own path, practice bank and progress, behind a picker that opens first:
+
+| Unit | Share of the grade | GLH | State |
+|---|---|---|---|
+| Tax Processes for Businesses (TPFB) | 15% | 60 | **Complete** — 5 of 5 outcomes, 32 lessons |
+| Financial Accounting: Preparing Financial Statements (FAPS) | 40% | 150 | **In progress** — 7 of 9 outcomes, 51 lessons, 80% of the assessment |
+
+FAPS is the largest unit in the qualification: 122 key concepts against TPFB's 93, and more of
+the grade than the other three units it sits alongside put together. It arrives outcome by
+outcome, as TPFB did.
+
+**A part-built unit says so, in three places.** Its card on the picker is marked before it is
+opened, its path carries a notice naming how much of the assessment is written, and every
+outcome the specification lists gets a section — the unwritten ones saying they are unwritten.
+Rendering only what exists would leave a reader unable to tell a unit missing two thirds of its
+content from one whose specification simply has fewer outcomes.
+
+Written so far, in the specification's order:
+
+- **Outcome 1** — the accounting principles, primary users, qualitative characteristics and the
+  ethics of preparing accounts.
+- **Outcome 2** — the accounting equation, classifying ledger accounts, the books of prime entry,
+  posting a daybook with VAT, the three ledgers, control accounts, writing up and balancing off an
+  account, the period end, and judging whether a transaction belongs at all.
+- **Outcomes 3 and 4** — the whole non-current asset lifecycle: capital versus revenue, the asset
+  register, VAT by registration status, disposals, part-exchange, straight-line and
+  diminishing-balance depreciation.
+- **Outcome 5** — the period end adjustments: accruals and prepayments of both expenses and income
+  and the reversals that stop them counting twice, irrecoverable debts and allowances for doubtful
+  receivables, inventory at the lower of cost and net realisable value item by item, and the ethics
+  of the point in the year where the estimates concentrate.
+- **Outcome 7** — the statements themselves, for sole traders and for partnerships: what each
+  statement answers and how the accounting equation runs through it, the trading vocabulary,
+  building an SPL and an SFP end to end, the sole trader's capital account including drawings of
+  goods and services, the partnership appropriation account and profit-sharing ratios, and
+  partners' capital and current accounts.
+
+At 20% this is the heaviest outcome in the unit, and it came next because every earlier outcome
+feeds it: depreciation, disposals and the period end adjustments are all inputs to the two
+statements it produces.
+- **Outcome 6** — the trial balance and the extended trial balance: why one is drawn up and what
+  agreement does not prove, which column each balance falls in and the four accounts that can go
+  either way, the six errors a trial balance cannot see and how each is corrected, the suspense
+  account, the adjustments columns, extending each line to the profit or position pair, and
+  balancing off with the profit figure. Also why a partnership's extended trial balance differs —
+  and that completing one is excluded from the specification.
+
+Outcome 6 came last of the three because it sits between the other two: Outcome 5 supplies the
+figures for its adjustments columns and Outcome 7 consumes what it produces, so writing it with
+both neighbours already in place meant every cross-reference could point at material that exists.
+
+Outcomes 3 and 4 were written before Outcome 2, which is not the order a reader meets them in.
+They are the calculation core — genuinely new at Level 3, and where a right method most easily
+produces a wrong figure — and the plan's rule for a first module is *representative rather than
+easy*. Outcome 2 came next and filled the gap. Outcome 5 followed it because Outcomes 6 and 7 both
+consume its output: every adjustment in it becomes a line in the extended trial balance and a
+figure in the statements after that.
+
+### The syllabus is checked against the specification, not just against itself
+
+`scripts/check-aat3-coverage.js` asks whether the encoded syllabus is internally consistent, and
+a tree transcribed wrongly is internally consistent. So `check-aat3-syllabus-fidelity.js` reads
+the published specification in `docs/reference/` and compares: every key concept id in both
+directions, each concept's tier against the "Learners need to…" heading governing it, wording
+overlap, topic and outcome structure, weightings and duration against the unit's own test
+specification table, exclusions, and indicative bullet counts.
+
+It found two faults in the first FAPS draft, both invisible to every other check: inline lists at
+2.3.1 and 2.4.3 split into indicative bullets while the identical construction elsewhere was left
+inline, moving 13 units of teaching load onto two concepts for no reason but inconsistency.
+
+One place the extract cannot be read literally is recorded rather than papered over. Topic 2.3 is
+set in two columns across a page break, so 2.3.6 is emitted after 2.3.7 and lands under the wrong
+heading. The check finds such places itself — the identifiers stop ascending — and requires each
+to be listed with a reason. Claiming a scramble that is not one is itself an error.
+
+### Practice summary
+
+Each unit's practice screen opens with a **summary of your practice so far**: how many practice
+questions you have attempted, how many you got right, and — the part worth having — which
+learning outcome you are getting wrong most, named in full with a button that starts a run on
+it. Underneath, every outcome gets a row, so an outcome you have never touched reads *not
+practised* rather than quietly not appearing.
+
+Two details are load-bearing rather than cosmetic:
+
+- **The record is kept per unit and then per outcome, not as a running total.** Backups merge two
+  devices by taking the larger of each number (see `progress-backup.js`), under which a stored
+  grand total would read 10 where the truth is 18. And outcome numbers restart at 1 in every
+  unit, so one flat map would add FAPS outcome 1 to TPFB outcome 1 and name a weakest outcome
+  belonging to neither.
+- **"Most mistakes" is a total order.** Most wrong wins — that is the question being asked, so a
+  large outcome answered badly beats a tiny one answered worse. Ties break on lower accuracy,
+  then on the larger sample (which only fires on a rounding collision), then on outcome number.
+  A partial order would let identical data rank two ways between renders.
+
+Both are asserted by `scripts/check-aat3-practice-summary.js`. It also drives the real thing:
+`mount()` writes HTML and then binds click handlers to it, so a fake element that keeps those
+handlers plays a whole practice run — and a whole lesson, to show the lesson does *not* move the
+practice count — through the real grading, then reads the record back. The page assertions are
+scoped to the summary section, because the picker below renders its own "start outcome 4" button
+and an unscoped search for one passes with the summary deleted.
+
+Only practice questions are counted. The questions inside lessons are recorded on the path,
+which keeps the summary an answer to "what do I know" rather than "what have I read".
+
 ## Running it
 
 This is a static site — no build step and no dependencies. Open `index.html` in any modern browser, or host the folder on any static host.
@@ -157,8 +267,18 @@ aat1-learn-data.js     — Level 1 teaching content (26 steps)
 aat1-practice-data.js  — Level 1 practice question bank
 aat1-ui.js             — Level 1 renderer (self-contained)
 aat1-styles.css        — Level 1 design language
-aat3-*.js / aat3-styles.css — the equivalent five files for Level 3
+aat3-syllabus.js       — Level 3 syllabus spine for both units, checked against the specification
+aat3-tax-data.js       — TPFB tax figures, every one sourced and dated
+aat3-learn-data.js     — TPFB teaching content
+aat3-practice-data.js  — TPFB practice question bank
+aat3-faps-data.js      — FAPS teaching content and practice bank
+aat3-ui.js             — Level 3 renderer (self-contained, multi-unit)
+aat3-styles.css        — Level 3 design language
+docs/reference/        — the published qualification specifications, as extracted text
 sync-worker/           — the Cloudflare Worker, with its own deployment README
+worker/index.js        — password gate + asset serving for the deployed site
+wrangler.jsonc         — Cloudflare Workers config (see the note on run_worker_first)
+.assetsignore          — what must never be uploaded as a public asset
 manifest.webmanifest   — PWA manifest (installable app metadata)
 sw.js                  — service worker (offline caching)
 icon-192.png / icon-512.png / apple-touch-icon.png — app icons
@@ -166,7 +286,7 @@ icon-192.png / icon-512.png / apple-touch-icon.png — app icons
 
 ## Installing it as an app
 
-When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **Install** option:
+When the site is served over HTTPS (see [Hosting it](#hosting-it)), browsers offer an **Install** option:
 
 - **Desktop (Chrome/Edge):** an install icon appears in the address bar.
 - **Android:** browser menu → *Add to Home screen* / *Install app*.
@@ -174,9 +294,75 @@ When the site is served over HTTPS (e.g. via GitHub Pages), browsers offer an **
 
 Once installed, the service worker caches the app so it works **fully offline**. Progress is stored locally in the browser, so installed and in-browser use share the same data on a device.
 
-## Hosting on GitHub Pages
+## Hosting it
 
-Once this repository is on GitHub, you can publish it free at a public URL:
+There is no build step — the site is the repository — so any static host will
+serve it. Two are set up here.
+
+### Cloudflare Workers, behind a password (recommended)
+
+This is the option to pick if you want to hand the URL to other people without
+putting the site on the open internet. It redeploys on every push to `main`, and
+it is free: GitHub Pages cannot password-protect a site outside Enterprise, and
+Netlify and Vercel both moved theirs behind paid plans.
+
+The site is served by `worker/index.js`, which checks a password before handing
+back any file. `wrangler.jsonc` and `.assetsignore` configure that; both are in
+the repository, so the dashboard needs almost nothing set by hand.
+
+1. At [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** →
+   **Create** → **Import a repository**, pick this repository.
+2. Deploy command: `npx wrangler deploy`. There is no build command.
+3. The first deploy will serve **503 Not configured** — that is the gate working,
+   not a broken deploy. Nothing is served until step 4.
+4. **Settings → Variables and Secrets**, add:
+
+   | Name | Required | Notes |
+   |---|---|---|
+   | `SITE_PASSWORD` | yes | The shared password. Add it as a **Secret**, not plaintext. |
+   | `SITE_USERNAME` | no | If set, the username must match too. If unset, any username works and only the password is checked. |
+
+5. Redeploy. The site is live at `https://<worker>.<subdomain>.workers.dev` and
+   asks for the password first. A custom domain can be attached free under
+   **Settings → Domains & Routes**.
+
+Every merge to `main` redeploys automatically.
+
+**What this is and is not.** It is one shared password, not per-person accounts,
+and HTTP Basic authentication encodes rather than encrypts it — HTTPS is what
+keeps it private in transit. That is the right weight for sharing a study URL
+with a group. It is not access control for anything sensitive. If you want
+per-person logins with a revocable list, use **Cloudflare Access** instead (free
+up to 50 users); it emails each person a one-time code rather than using a shared
+secret, and it sits in front of the Worker rather than replacing it.
+
+Three things about this setup are worth knowing before editing it:
+
+- **`run_worker_first` is load-bearing.** Cloudflare's default is to serve a
+  matching static asset straight from the edge without invoking the Worker at
+  all — which would serve every page of this site without ever asking for the
+  password. `wrangler.jsonc` sets `assets.run_worker_first` to stop that.
+  Removing it breaks nothing visibly; it silently unlocks the site.
+- **`.assetsignore` decides what is public.** The assets directory is the
+  repository root, so anything not excluded there is served to anyone past the
+  password — and `node_modules` (created at deploy time by `npx wrangler`)
+  contains a 144 MiB binary that is over Cloudflare's 25 MiB per-asset limit and
+  fails the build outright.
+- **The Worker re-applies the security headers itself**, because responses no
+  longer come straight off the edge where `_headers` applies. That makes four
+  copies of the policy (`index.html`, `_headers`, `vercel.json` and the Worker).
+
+`npm run check:csp` fails the build if those four drift apart, and
+`npm run check:password` exercises the gate against mock requests and asserts the
+`wrangler.jsonc` settings it depends on. Both run in CI.
+
+The service worker is unaffected: the browser attaches the stored credentials to
+same-origin requests, so offline caching and PWA install work normally once past
+the prompt, and a 401 is never cached (the worker only stores 200s).
+
+### GitHub Pages, in the open
+
+Simpler, but public to anyone with the link — there is no way to gate it.
 
 1. Go to the repository's **Settings → Pages**.
 2. Under **Build and deployment → Source**, choose **Deploy from a branch**.

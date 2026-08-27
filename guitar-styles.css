@@ -1,0 +1,584 @@
+/* Guitar module — figure styles.
+ *
+ * Scoped entirely under body[data-subject="guitar"], so nothing here can reach
+ * the other five subjects.
+ *
+ * WHY THIS SHIPS WITH THE RENDERER RATHER THAN THE UI SHELL
+ *
+ * guitar-render.js contains no colour at all — every stroke and fill is
+ * currentColor or a token from this file, which is what keeps dark mode from
+ * being a second bug. The consequence is that the renderer is unreadable
+ * without this stylesheet: the little rect that masks the stave line behind a
+ * tab digit has no fill of its own, so with no CSS the browser paints it solid
+ * black and hides the number it exists to reveal. Renderer and stylesheet are
+ * one deliverable.
+ *
+ * THEME DISCIPLINE, done by hand
+ *
+ * scripts/check-theme-tokens.js reads only styles.css, so this file gets none
+ * of that protection. Every token is therefore declared in full on the light
+ * selector and redeclared in full on the dark one — no aliases to :root, and
+ * nothing whose only definition sits inside a dark block.
+ */
+
+body[data-subject="guitar"] {
+  --gtr-ink:      #1f2937;   /* strings, frets, note heads */
+  --gtr-paper:    #ffffff;   /* what a tab digit is punched out of */
+  --gtr-muted:    #6b7280;   /* fret labels, x/o marks, PIMA */
+  --gtr-line:     #9ca3af;   /* stave and string lines */
+  --gtr-root:     #b45309;   /* the root note, and the capo */
+  --gtr-char:     #0f766e;   /* the characteristic note of a mode */
+  --gtr-on-dot:   #ffffff;   /* text sitting inside a filled dot */
+  --gtr-warn:     #b91c1c;   /* a shape drawn on the wrong tuning */
+  --gtr-cursor:     #2563eb; /* the note sounding right now */
+  --gtr-cursor-ink: #ffffff; /* text sitting on the cursor */
+}
+
+body.dark[data-subject="guitar"] {
+  --gtr-ink:      #e5e7eb;
+  --gtr-paper:    #0f1419;
+  --gtr-muted:    #9ca3af;
+  --gtr-line:     #4b5563;
+  --gtr-root:     #fbbf24;
+  --gtr-char:     #5eead4;
+  --gtr-on-dot:   #0f1419;
+  --gtr-warn:     #f87171;
+  --gtr-cursor:     #60a5fa;
+  --gtr-cursor-ink: #0f1419;
+}
+
+/* ── Figure frame ─────────────────────────────────────────────────────────
+   A wide figure scrolls inside itself. The page body must never scroll
+   sideways, which on a phone is the difference between a usable diagram and a
+   broken layout. */
+body[data-subject="guitar"] .gtr-fig {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 12px 0;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-subject="guitar"] .gtr-svg {
+  color: var(--gtr-ink);
+  display: block;
+  height: auto;
+  /* Centred, because a figure is now drawn at its own size rather than
+     stretched to the container, and a short one left-aligned in a wide card
+     reads as a mistake. margin auto rather than text-align so it works whatever
+     the wrapper is doing. */
+  margin-inline: auto;
+}
+body[data-subject="guitar"] .gtr-fig.gtr-chordbox { max-width: 132px; overflow: visible; }
+body[data-subject="guitar"] .gtr-fig.gtr-neck { max-width: 100%; }
+body[data-subject="guitar"] .gtr-fig.gtr-tab  { max-width: 100%; }
+
+/* The minimum and maximum width of a figure are set INLINE by guitar-render.js,
+   from the figure's own natural width. They used to live here as a flat
+   min-width per kind, which forced a short figure out to a long one's floor —
+   min-width beats max-width in CSS, so a 115px demonstration was drawn at 300.
+   Both bounds have to be decided together and only the renderer knows the
+   natural width, so it owns them. Nothing about figure width belongs here. */
+
+/* ── Chord box ───────────────────────────────────────────────────────────── */
+body[data-subject="guitar"] .gtr-cb-string,
+body[data-subject="guitar"] .gtr-cb-fret   { stroke: var(--gtr-line); stroke-width: 1; }
+body[data-subject="guitar"] .gtr-cb-nut    { fill: var(--gtr-ink); }
+body[data-subject="guitar"] .gtr-cb-dot    { fill: var(--gtr-ink); }
+body[data-subject="guitar"] .gtr-cb-finger { fill: var(--gtr-on-dot); font-size: 7px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-cb-name   { fill: var(--gtr-ink); font-size: 11px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-cb-name.is-wrong-tuning { fill: var(--gtr-warn); }
+body[data-subject="guitar"] .gtr-cb-mark,
+body[data-subject="guitar"] .gtr-cb-basefret { fill: var(--gtr-muted); font-size: 9px; }
+
+/* ── The playback cursor ──────────────────────────────────────────────────
+   The note currently sounding, in the neck diagram and the tab at once.
+
+   Carried by fill and a ring rather than by colour alone: the diagrams already
+   use colour to mean root and characteristic note, and a third colour meaning
+   "now" would be one more thing to decode on a figure someone is reading while
+   their hands are busy. The ring reads at a glance and does not collide with
+   what the palette already says.
+
+   No transition on the highlight. At 200bpm notes are 150ms apart and a fade
+   would still be catching up when the next one lands, which reads as lag
+   rather than as polish. */
+/* The wrapper the cursor addresses. It paints nothing itself — but a wide
+   figure scrolls inside its own container on a phone, and a drag starting on a
+   note group should scroll the figure rather than be swallowed by it. If a note
+   ever becomes tappable, this is the line to revisit. */
+body[data-subject="guitar"] .gtr-note { pointer-events: none; }
+
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-nk-dot {
+  fill: var(--gtr-cursor);
+  stroke: var(--gtr-cursor);
+  stroke-width: 5;
+  paint-order: stroke;
+}
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-nk-label { fill: var(--gtr-cursor-ink); }
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-tab-fret {
+  fill: var(--gtr-cursor-ink);
+  font-weight: 700;
+}
+body[data-subject="guitar"] .gtr-note.is-playing .gtr-tab-clear {
+  fill: var(--gtr-cursor);
+  stroke: var(--gtr-cursor);
+  stroke-width: 4;
+  paint-order: stroke;
+  rx: 2;
+}
+/* Reduced motion does not mean no feedback — there is no motion here, only a
+   change of state. Left as it is deliberately. */
+
+/* ── Neck diagram ────────────────────────────────────────────────────────── */
+body[data-subject="guitar"] .gtr-nk-string,
+body[data-subject="guitar"] .gtr-nk-fret   { stroke: var(--gtr-line); stroke-width: 1; }
+body[data-subject="guitar"] .gtr-nk-nut    { stroke: var(--gtr-ink); stroke-width: 2.6; }
+body[data-subject="guitar"] .gtr-nk-capo   { stroke: var(--gtr-root); stroke-width: 3.2; }
+body[data-subject="guitar"] .gtr-nk-inlay  { fill: var(--gtr-line); opacity: .55; }
+body[data-subject="guitar"] .gtr-nk-dot    { fill: var(--gtr-ink); }
+body[data-subject="guitar"] .gtr-nk-dot.is-root { fill: var(--gtr-root); }
+body[data-subject="guitar"] .gtr-nk-dot.is-char { fill: var(--gtr-char); }
+body[data-subject="guitar"] .gtr-nk-label  { fill: var(--gtr-on-dot); font-size: 6.5px; font-weight: 600; }
+
+/* ── Tablature ────────────────────────────────────────────────────────────
+   gtr-tab-clear is the reason this file cannot be deferred: it punches the
+   stave line out from behind a digit, so it must be painted in the page's own
+   background. Given no fill it defaults to black and hides the number. */
+body[data-subject="guitar"] .gtr-tab-string { stroke: var(--gtr-line); stroke-width: 1; }
+body[data-subject="guitar"] .gtr-tab-bar    { stroke: var(--gtr-ink); stroke-width: 1.8; }
+body[data-subject="guitar"] .gtr-tab-clear  { fill: var(--gtr-paper); }
+body[data-subject="guitar"] .gtr-tab-fret   { fill: var(--gtr-ink); font-size: 9.5px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-tab-capo   { fill: var(--gtr-root); font-size: 9px; font-weight: 600; }
+body[data-subject="guitar"] .gtr-tab-pima,
+body[data-subject="guitar"] .gtr-tab-tech   { fill: var(--gtr-muted); font-size: 8px; font-style: italic; }
+
+/* ── The screen around the figures ────────────────────────────────────────
+   Everything above styles what the renderer draws. Everything below styles the
+   markup guitar-ui.js writes around it.
+ 
+   Both halves shipped separately at first: the figure rules were written in the
+   step that built the renderer, the shell markup in the step that built the UI,
+   and the second step never came back for its CSS. The result passed the render
+   sweep — the check asks whether a subject renders, not whether it is legible —
+   and looked like a form from 1996. The lesson is in the review log; the rules
+   are here.
+ 
+   These consume the shared tokens from styles.css (--card, --border, --subj)
+   rather than declaring their own, so dark mode is already handled and
+   check-theme-tokens.js still governs them. Only the figure colours above need
+   hand-maintained pairs, because only those are unique to this subject. */
+
+body[data-subject="guitar"] .gtr-wrap { padding-bottom: 32px; }
+
+body[data-subject="guitar"] .gtr-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 20px;
+  margin: 16px 0;
+}
+
+body[data-subject="guitar"] .gtr-h {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -.01em;
+  color: var(--text-strong);
+}
+
+body[data-subject="guitar"] .gtr-detail {
+  margin: 10px 0 0;
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--subtext);
+}
+body[data-subject="guitar"] .gtr-detail code {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  background: var(--card-muted);
+  border-radius: var(--r-xs);
+  padding: 1px 5px;
+}
+body[data-subject="guitar"] .gtr-detail strong { color: var(--text); font-weight: 600; }
+
+/* ── Control rows ─────────────────────────────────────────────────────────
+   A wrapping grid rather than a fixed column count: these rows hold three
+   controls on the tuning panel and six on the scale panel, and a phone should
+   get one per line without either row needing its own rule. */
+body[data-subject="guitar"] .gtr-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 12px;
+}
+body[data-subject="guitar"] .gtr-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--subtext);
+}
+body[data-subject="guitar"] .gtr-controls select {
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  width: 100%;
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-controls select:focus-visible,
+body[data-subject="guitar"] .gtr-transport input:focus-visible,
+body[data-subject="guitar"] .gtr-tempo input:focus-visible,
+body[data-subject="guitar"] .gtr-step:focus-visible,
+body[data-subject="guitar"] .gtr-chordbtn:focus-visible,
+body[data-subject="guitar"] .gtr-btn:focus-visible,
+body[data-subject="guitar"] .gtr-play:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Chord shapes ─────────────────────────────────────────────────────────
+   Each box is a button, so it needs a hit area a thumb can find and a pressed
+   state that reads without colour. */
+body[data-subject="guitar"] .gtr-chordrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+body[data-subject="guitar"] .gtr-chordbtn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 8px 6px 4px;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+body[data-subject="guitar"] .gtr-chordbtn:hover { border-color: var(--subj, var(--accent)); }
+body[data-subject="guitar"] .gtr-chordbtn:active { transform: translateY(1px); }
+body[data-subject="guitar"] .gtr-chordbtn .gtr-fig { margin: 0; }
+body[data-subject="guitar"] .gtr-chordbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+/* The notes the shape actually sounds in the current tuning. Small, because it
+   is corroboration rather than the point — but present, because without it a
+   shape carries no evidence of which tuning produced it. */
+body[data-subject="guitar"] .gtr-chordpitch {
+  font-size: .68rem;
+  line-height: 1.2;
+  color: var(--subtext);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+}
+
+body[data-subject="guitar"] .gtr-figures { margin-top: 4px; }
+
+/* ── Transport ────────────────────────────────────────────────────────────── */
+body[data-subject="guitar"] .gtr-transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+body[data-subject="guitar"] .gtr-play,
+body[data-subject="guitar"] .gtr-btn {
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  padding: 9px 16px;
+  min-height: 40px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: filter var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+body[data-subject="guitar"] .gtr-play {
+  background: var(--subj, var(--accent));
+  color: #fff;
+  box-shadow: var(--shadow-xs);
+}
+body[data-subject="guitar"] .gtr-btn {
+  background: var(--btn-sec);
+  color: var(--btn-sec-text);
+  border-color: var(--border);
+}
+body[data-subject="guitar"] .gtr-play:hover,
+body[data-subject="guitar"] .gtr-btn:hover { filter: brightness(1.06); }
+body[data-subject="guitar"] .gtr-play:active,
+body[data-subject="guitar"] .gtr-btn:active { transform: translateY(1px); }
+
+body[data-subject="guitar"] .gtr-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .82rem;
+  color: var(--subtext);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-inline input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--subj, var(--accent)); }
+
+/* ── The course ───────────────────────────────────────────────────────────
+   Two screens: the lesson list and the card player. The nav is a pair of
+   buttons rather than the app's tab bar, because a self-rendering subject
+   bypasses that bar entirely and reimplementing it here would mean two things
+   to keep in step. */
+body[data-subject="guitar"] .gtr-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+body[data-subject="guitar"] .gtr-navbtn {
+  flex: 1;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--subtext);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-navbtn.is-on {
+  color: var(--subj, var(--accent));
+  border-color: var(--subj, var(--accent));
+  background: var(--subj-light, var(--card));
+}
+
+body[data-subject="guitar"] .gtr-unit.is-empty { opacity: .62; }
+body[data-subject="guitar"] .gtr-lessonlist { list-style: none; margin: 10px 0 0; padding: 0; }
+body[data-subject="guitar"] .gtr-lessonlist li + li { margin-top: 6px; }
+body[data-subject="guitar"] .gtr-lessonbtn {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 11px 12px;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-lessonbtn:hover { border-color: var(--subj, var(--accent)); }
+body[data-subject="guitar"] .gtr-lesson-icon { font-size: 1.15rem; line-height: 1; }
+body[data-subject="guitar"] .gtr-lesson-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+body[data-subject="guitar"] .gtr-lesson-title { font-weight: 600; font-size: .93rem; }
+body[data-subject="guitar"] .gtr-lesson-sum { font-size: .79rem; color: var(--subtext); line-height: 1.35; }
+body[data-subject="guitar"] .gtr-lesson-state { color: var(--subj, var(--accent)); font-weight: 700; }
+
+/* ── One card at a time ───────────────────────────────────────────────────
+   The player shows a single card because the format only works if the reader
+   stops and plays, and a page that can be scrolled past will be. */
+body[data-subject="guitar"] .gtr-lessonbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+body[data-subject="guitar"] .gtr-lessonbar-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: .95rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body[data-subject="guitar"] .gtr-lessonbar-count {
+  font-size: .8rem;
+  color: var(--subtext);
+  font-variant-numeric: tabular-nums;
+}
+body[data-subject="guitar"] .gtr-dots { display: flex; gap: 5px; margin-bottom: 12px; }
+body[data-subject="guitar"] .gtr-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+body[data-subject="guitar"] .gtr-dot.is-past { background: var(--subtext); }
+body[data-subject="guitar"] .gtr-dot.is-here { background: var(--subj, var(--accent)); transform: scale(1.25); }
+/* The card is a panel that holds one step of a lesson. It gets a little more
+   room than the workshop panels because it is read rather than scanned. */
+body[data-subject="guitar"] .gtr-card {
+  padding: 18px;
+}
+body[data-subject="guitar"] .gtr-card .gtr-p {
+  font-size: .93rem;
+  line-height: 1.62;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+body[data-subject="guitar"] .gtr-cardnav {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+body[data-subject="guitar"] .gtr-cardnav .gtr-btn { flex: 0 0 auto; }
+body[data-subject="guitar"] .gtr-cardnav .gtr-play { flex: 1; }
+body[data-subject="guitar"] .gtr-cardnav .gtr-btn[disabled] { opacity: .45; cursor: default; }
+
+/* ── What to do, and when to stop ─────────────────────────────────────────
+   The practice block is the part that makes a card worth staying on, so it is
+   given weight rather than tucked under the figure as another caption. */
+body[data-subject="guitar"] .gtr-practice {
+  border-left: 3px solid var(--subj, var(--accent));
+  background: var(--subj-light, var(--bg-elevated));
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 11px 13px;
+  margin-top: 14px;
+}
+body[data-subject="guitar"] .gtr-practice-do {
+  font-size: .89rem;
+  line-height: 1.55;
+  color: var(--text);
+  font-weight: 600;
+}
+body[data-subject="guitar"] .gtr-practice-until {
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--text);
+  margin-top: 7px;
+}
+body[data-subject="guitar"] .gtr-practice-label {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--subj, var(--accent));
+  margin-right: 4px;
+}
+body[data-subject="guitar"] .gtr-practice-mins {
+  font-size: .76rem;
+  color: var(--subtext);
+  margin-top: 7px;
+}
+
+body[data-subject="guitar"] .gtr-context {
+  font-size: .8rem;
+  color: var(--subj, var(--accent));
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 7px 10px;
+  margin-top: 10px;
+}
+body[data-subject="guitar"] .gtr-pointer {
+  border-left: 3px solid var(--subj, var(--accent));
+  padding: 8px 0 8px 12px;
+  margin: 10px 0;
+}
+body[data-subject="guitar"] .gtr-pointer-song { font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+body[data-subject="guitar"] .gtr-standalone { display: flex; margin: 10px 0 2px; }
+
+/* ── Tempo ────────────────────────────────────────────────────────────────
+   Its own row under the transport. The slider used to share the transport
+   line at 120px, which put 160 bpm inside about 120 device pixels; the row
+   gives it the full width so a drag has somewhere to go, and the number
+   field beside it means nobody has to drag at all. */
+body[data-subject="guitar"] .gtr-tempo {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+body[data-subject="guitar"] .gtr-tempo-label,
+body[data-subject="guitar"] .gtr-tempo-unit {
+  font-size: .82rem;
+  color: var(--subtext);
+}
+body[data-subject="guitar"] .gtr-tempo-num {
+  /* box-sizing is border-box site-wide, so a bare ch width is eaten by the
+     padding and border before any digits get a look in: 4.4ch at this size is
+     ~35px, less 12px padding and 2px border, leaving 21px of content box for a
+     three-digit tempo that needs about 24. Hence the explicit allowance —
+     4ch of tabular figures, plus the box around them. */
+  width: calc(4ch + 20px);
+  padding: 5px 6px;
+  text-align: center;
+  font: inherit;
+  font-size: .9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+}
+/* The spinners are redundant next to real buttons, and they shrink the
+   typing target on the platforms that show them. */
+body[data-subject="guitar"] .gtr-tempo-num::-webkit-outer-spin-button,
+body[data-subject="guitar"] .gtr-tempo-num::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+body[data-subject="guitar"] .gtr-tempo-num { -moz-appearance: textfield; appearance: textfield; }
+
+body[data-subject="guitar"] .gtr-step {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+body[data-subject="guitar"] .gtr-step:hover { filter: brightness(1.06); }
+body[data-subject="guitar"] .gtr-step:active { transform: translateY(1px); }
+
+body[data-subject="guitar"] .gtr-tempo-range {
+  width: 100%;
+  min-width: 0;
+  accent-color: var(--subj, var(--accent));
+}
+
+/* ── When the generator cannot build a shape ──────────────────────────────
+   A fault is information, not a crash. It says which combination has no
+   playable shape on this tuning, so it gets the weight of a warning rather
+   than the styling of body text. */
+body[data-subject="guitar"] .gtr-fault {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border: 1px solid var(--warn-border);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-size: .87rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  body[data-subject="guitar"] .gtr-panel { padding: 14px; }
+  body[data-subject="guitar"] .gtr-transport { gap: 8px 10px; }
+  /* Narrow: the slider drops to a full-width second line rather than being
+     squeezed to nothing beside the number. */
+  body[data-subject="guitar"] .gtr-tempo { grid-template-columns: auto auto auto auto 1fr; }
+  body[data-subject="guitar"] .gtr-tempo-range { grid-column: 1 / -1; }
+}
+
+/* Figures carry meaning through colour (root, characteristic note), so they
+   also carry it through position and label. Nothing here is colour-only. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="guitar"] .gtr-svg * { transition: none !important; }
+}

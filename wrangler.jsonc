@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aat-study-tool",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-15",
+  "observability": { "enabled": true },
+
+  "assets": {
+    // The site is the repository — there is no build step and no output
+    // directory, so the assets root is the repo root. .assetsignore is what
+    // keeps the tooling, the scripts and node_modules out of the upload.
+    "directory": ".",
+
+    // Lets worker/index.js serve the files itself, via env.ASSETS.fetch().
+    "binding": "ASSETS",
+
+    // REQUIRED FOR THE PASSWORD GATE. Cloudflare's default is to serve a
+    // matching static asset straight from the edge and never invoke the Worker,
+    // which would hand out every page of this site without asking for the
+    // password. Setting this makes every request run worker/index.js first.
+    //
+    // Deleting this line does not break anything visibly. It silently unlocks
+    // the site. scripts/check-site-password.js fails the build if it goes
+    // missing or is set to anything but true.
+    "run_worker_first": true
+  }
+}

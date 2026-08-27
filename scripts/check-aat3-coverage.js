@@ -37,6 +37,13 @@ const S = require(path.join(ROOT, 'aat3-syllabus.js'));
 /* Outcomes whose content is declared complete. Add an entry only when the
    module actually ships; this list is the ratchet. */
 const MODULES_SHIPPED = [
+  { unit: 'faps', outcome: 1 },
+  { unit: 'faps', outcome: 2 },
+  { unit: 'faps', outcome: 3 },
+  { unit: 'faps', outcome: 4 },
+  { unit: 'faps', outcome: 5 },
+  { unit: 'faps', outcome: 6 },
+  { unit: 'faps', outcome: 7 },
   { unit: 'tpfb', outcome: 1 },
   { unit: 'tpfb', outcome: 2 },
   { unit: 'tpfb', outcome: 3 },
@@ -98,14 +105,51 @@ Object.keys(S.SYLLABUS.units).forEach(key => {
    Level 3 content file exists there is nothing to check, which is correct —
    the ratchet starts empty. */
 /* Loaded with require() rather than evaluated in a bare sandbox: the content
-   file depends on aat3-tax-data.js, and resolving that dependency is the whole
-   point — figures live there, not inline. */
-let lessons = [];
-const contentFile = path.join(ROOT, 'aat3-learn-data.js');
-if (fs.existsSync(contentFile)) {
-  const content = require(contentFile);
-  (content.AAT3_LEARN_PATH || []).forEach(unit => {
-    (unit.lessons || []).forEach(l => lessons.push(l));
+   files depend on aat3-tax-data.js, and resolving that dependency is the whole
+   point — figures live there, not inline.
+
+   Every unit's file, from the one list in scripts/lib/aat3-content.js. Naming
+   aat3-learn-data.js here read TPFB and said nothing about FAPS, which is a
+   coverage check that reports green on an uncovered unit. */
+const CONTENT = require('./lib/aat3-content.js');
+const { groups: contentGroups } = CONTENT.load();
+const lessons = CONTENT.lessons(contentGroups);
+
+/* Every authored group must name a unit and an outcome the syllabus knows.
+
+   The path is rendered by walking the SYLLABUS outcomes and finding the group
+   for each, which is what lets an unwritten outcome say so rather than vanish.
+   The same loop silently drops a group whose outcome matches nothing — and a
+   first draft of the FAPS file put its orientation lesson in a group numbered
+   0, so the lesson existed, passed every other check, and never appeared on
+   any screen. */
+contentGroups.forEach(g => {
+  const where = `${g.unit || '(no unit)'} group "${g.outcomeTitle || g.title || '?'}"`;
+  const unit = S.SYLLABUS.units[g.unit];
+  if (!unit) {
+    errors.push(`${where}: names unit "${g.unit}", which is not in aat3-syllabus.js. Its lessons would never be rendered.`);
+    return;
+  }
+  const o = unit.outcomes.find(x => x.n === g.outcome);
+  if (!o) {
+    errors.push(`${where}: names outcome ${g.outcome}, which ${unit.code} does not have. The path is driven by the syllabus, so its ${(g.lessons || []).length} lesson(s) would never appear on any screen.`);
+    return;
+  }
+  if (g.weighting != null && g.weighting !== o.weighting) {
+    errors.push(`${where}: declares weighting ${g.weighting}% and the syllabus says ${o.weighting}%.`);
+  }
+});
+
+/* Two groups for the same outcome is the same fault wearing a different hat:
+   the path finds the first and the second is unreachable. */
+{
+  const seen = new Map();
+  contentGroups.forEach(g => {
+    const k = `${g.unit}/${g.outcome}`;
+    if (seen.has(k)) {
+      errors.push(`${k} has two authored groups — the path renders the first and the ${(g.lessons || []).length} lesson(s) in the second are unreachable.`);
+    }
+    seen.set(k, g);
   });
 }
 

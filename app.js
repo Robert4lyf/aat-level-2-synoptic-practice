@@ -44,11 +44,11 @@
          (shared by every other subject, and covered by no behavioural tests)
          are untouched by anything Level 3 does. */
       id: 'aat3', name: 'AAT Level 3', short: 'AAT L3', flag: '📗', color: '#4F46E5',
-      desc: 'Tax Processes for Businesses — VAT and payroll for the Q2022 Level 3 Diploma',
-      meta: '5 outcomes · 21 lessons · FA2025',
+      desc: 'Tax Processes for Businesses and Financial Accounting for the Q2022 Level 3 Diploma',
+      meta: '2 units · TPFB complete · FAPS in progress',
       tabs: ['home'],
       ui: 'AAT3_UI',
-      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-ui.js'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-ui.js'],
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values
            keep any incidental app.js reference safe. */
@@ -70,6 +70,26 @@
       tabs: ['learn','home','progress'],
       assets: ['lsf-data.js'],
       activate() { window.TOPICS = window.LSF_TOPICS; window.ALL_QUESTIONS = window.LSF_QUESTIONS; window.LEARN_PATH = window.LSF_LEARN_PATH; window.SKILLS = { defs: [] }; }
+    },
+    {
+      /* Guitar renders itself, on the same terms as Levels 1 and 3. Its data is
+         an engine rather than a question bank, so `activate()` has nothing to
+         hand the shared player — it only clears the globals so any incidental
+         reference stays safe. The stylesheet is injected here rather than
+         linked from index.html: three subject stylesheets already load on every
+         page and a fourth is avoidable. */
+      id: 'guitar', name: 'Fingerstyle Guitar', short: 'Guitar', flag: '🎸', color: '#B45309',
+      desc: 'Fingerstyle technique, scales, modes and the fretboard',
+      meta: 'fretboard · scales · exercises',
+      tabs: ['home'],
+      ui: 'GUITAR_UI',
+      assets: ['guitar-engine.js', 'guitar-audio.js', 'guitar-render.js',
+               'guitar-syllabus.js', 'guitar-learn-data.js', 'guitar-exercise-data.js',
+               'guitar-ui.js'],
+      styles: 'guitar-styles.css',
+      activate() {
+        window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };
+      }
     },
     {
       id: 'code-route', name: 'Code de la Route', short: 'Code de la Route', flag: '🚗', color: '#dc2626',
@@ -102,8 +122,51 @@
     });
     return _assetPromises[src];
   }
-  function subjectAssetsReady(id) { return (getSubject(id).assets || []).every(a => _assetReady.has(a)); }
-  function ensureSubjectAssets(id) { return Promise.all((getSubject(id).assets || []).map(loadScript)); }
+  /* A subject may also bring a stylesheet. It joins the same promise chain as
+     the scripts rather than being fired and forgotten, because mount() runs as
+     soon as the assets resolve and an unawaited stylesheet means a frame of
+     unstyled figures. Idempotent: activate() runs on every subject switch.
+
+     Memoised the same way loadScript() is, and for the same reason. The first
+     draft tested `document.getElementById(id)` instead — but the <link> is
+     appended synchronously while the file is still in flight, so from the next
+     line onwards that test says "loaded" about a stylesheet that has not
+     arrived. Switching away and back inside that window would resolve
+     immediately and mount against no CSS, which for guitar means the mask rect
+     behind every tab digit paints solid black. Track the promise, not the
+     element. */
+  const _stylePromises = Object.create(null);
+  const _styleReady = new Set();
+  function styleId(href) { return 'style-' + href.replace(/[^a-z0-9]/gi, '-'); }
+  function loadStyles(href) {
+    if (!href) return Promise.resolve();
+    if (_styleReady.has(href)) return Promise.resolve();
+    if (_stylePromises[href]) return _stylePromises[href];
+    _stylePromises[href] = new Promise((resolve) => {
+      const done = () => { _styleReady.add(href); resolve(); };
+      const id = styleId(href);
+      const existing = document.getElementById(id);
+      /* A <link> already in index.html has no load event left to fire. */
+      if (existing && existing.sheet) { done(); return; }
+      const l = existing || document.createElement('link');
+      l.id = id; l.rel = 'stylesheet'; l.href = href;
+      /* Resolve either way: a missing stylesheet should degrade to unstyled,
+         not hang the subject switch forever. */
+      l.onload = done;
+      l.onerror = done;
+      if (!existing) document.head.appendChild(l);
+    });
+    return _stylePromises[href];
+  }
+  function subjectAssetsReady(id) {
+    const s = getSubject(id);
+    return (s.assets || []).every(a => _assetReady.has(a)) &&
+           (!s.styles || _styleReady.has(s.styles));
+  }
+  function ensureSubjectAssets(id) {
+    const s = getSubject(id);
+    return Promise.all((s.assets || []).map(loadScript).concat([loadStyles(s.styles)]));
+  }
 
   /* Maps a French question ID (fr-NNN) to its CEFR level string.
      A1 = beginner basics, A2 = elementary grammar/vocab, B1 = intermediate structures. */
@@ -7521,7 +7584,7 @@
             <button class="sty-btn" type="button" id="styReplayBtn">Another go at Tuesday</button>
             <button class="sty-btn sty-btn-ghost" type="button" id="styExitBtn2">Clock off</button>
           </div>
-          <p class="sty-footnote">Story marks are recorded separately and deliberately do not affect your readiness score, topic mastery or spaced repetition. This is the job; the question bank is the exam.</p>
+          <p class="sty-footnote">Story marks do not affect your readiness score, topic mastery or spaced repetition.</p>
         </div>
       </div>
     </div>`;
@@ -8721,7 +8784,12 @@
       });
       navigator.serviceWorker.addEventListener('message', function (event) {
         if (event.data && event.data.type === 'SW_UPDATED') {
-          showToast('🔄 Updating to the latest version…', 'info');
+          /* Say what is true. This read "Updating to the latest version…" and
+             nothing reloaded, so the toast announced work that never happened —
+             the new shell only applies on the next load. Reloading here instead
+             would be worse: it throws away whatever the reader was in the
+             middle of, without asking. */
+          showToast('🔄 Update ready — reload to apply', 'info');
         }
       });
     }

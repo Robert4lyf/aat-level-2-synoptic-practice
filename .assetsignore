@@ -1,0 +1,41 @@
+# Files in this repository that must NOT be uploaded as public static assets.
+# Same format as .gitignore, read from the root of the assets directory.
+#
+# Cloudflare Pages excluded things like node_modules automatically; Workers does
+# not, which is what made the first deploy fail — `npx wrangler deploy` installs
+# wrangler into node_modules, and node_modules/workerd/bin/workerd is 144 MiB,
+# well over the 25 MiB per-asset limit.
+#
+# Anything not listed here is served to anyone who gets past the password, so
+# this is also what keeps the build tooling and the data-authoring scripts off
+# the public site.
+
+# Build tooling pulled in at deploy time
+/node_modules
+/package.json
+/package-lock.json
+/bun.lock
+/bun.lockb
+/wrangler.jsonc
+/.assetsignore
+
+# The Worker itself is code, not an asset — it is bundled, not served
+/worker
+
+# Repository and CI plumbing
+/.git
+/.github
+/.gitignore
+/.claude
+
+# Data-authoring and validation tooling — never part of the site
+/scripts
+/tools
+/*.py
+
+# Docs, screenshots and other-host config
+/README.md
+/docs
+/sync-worker
+/vercel.json
+/shot-revision-dark.png
