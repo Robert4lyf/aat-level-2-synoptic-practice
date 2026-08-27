@@ -1532,3 +1532,182 @@ written so far measures a card, a lesson, or a file. None of them measures the
 COURSE — what it is like to move through it in order, at the pace it asks for.
 
 The two added here are the first that do.
+
+## Step 9g — M7 and M8
+
+Two units, six lessons, 30 cards. The M strand is finished.
+
+### 9g.1 M7 needed the capability that was predicted
+
+Before writing it, the note went in: M7 is about chord progressions, the player
+could draw one chord and no more, and the plan's `changes` element had never
+been built. That turned out to be exactly right.
+
+`changes` renders a row of chord boxes with the scale degree above each, and
+plays the same chords strummed in time. Both halves come from ONE voicing
+search, because this project has now had the drawn-and-sounded pair come apart
+twice — at chord level in step 6, and again at card level in step 9a. Making it
+structurally impossible is cheaper than checking for it a third time.
+
+Degrees are the point of the unit rather than decoration: a progression written
+as I V vi IV says the same thing in every key, which is what the whole number
+system buys.
+
+### 9g.2 M8 needed nothing
+
+The first unit in the project written entirely with what already existed:
+generated scale material from M5, degree vocabulary from M1, progressions from
+M7. Three lessons, no new element, no engine change.
+
+So the pattern from 9a — each new STRAND wants one capability — held for four
+units and then stopped, at the point where the strand ran out of new kinds of
+thing to show. That is the shape to expect for P2 and P3: P2 is arpeggio
+patterns over held chords, which the existing elements already cover.
+
+### 9g.3 A rule that had not kept up with the player
+
+Adding `changes` made two M7 lessons fail with "no playable example" — because
+the rule listing playable element kinds said `tab` and `playalong`, and a
+progression is neither.
+
+Worse than the error message: progression cards were also silently EXEMPT from
+the practice-block rule, because that rule sat inside the same condition. A new
+element kind quietly switched off two rules for every card using it — the same
+shape as generated cards going invisible in 9e, two steps earlier, and for the
+same reason: a rule keyed on a specific field rather than on the question it
+means to ask.
+
+The list is now named once and used by all three rules. A mutation removing
+`changes` from it fails immediately.
+
+### What is left
+
+P2 and P3 are the last two Phase 1 units, and both are technique rather than
+theory. Neither should need anything new.
+
+---
+
+## Step 9h — P2 and P3, and the end of phase 1
+
+Two units, eight lessons, 41 cards. Phase 1 is complete: 31 lessons, 156 cards,
+1077 minutes of prescribed practice across eight units.
+
+### 9h.1 The prediction in 9g.2 was wrong, and the plan was right
+
+9g.2 said P2 and P3 should need nothing new. Both needed something, and in P2's
+case the implementation plan had said so from the start — it reserved the
+picking-hand branch of the generator for this unit and recorded that it was
+"deliberately not stubbed".
+
+Writing P2 by hand would have been several hundred note literals whose entire
+content is a chord shape `findVoicing` already knows and a finger order four
+characters long. Worse, the shape drawn in the box and the notes printed in the
+tab would have been two separate assertions about the same chord — the
+disagreement this module has now had to fix twice.
+
+So a pattern names ROLES rather than strings: `b` is the lowest sounding string,
+`t1` the highest, `t2`, `t3`, `t4` downwards. That is not an implementation
+convenience, it is the claim the unit makes out loud — p-i-m-a is one movement,
+not one movement per chord — so the encoding and the teaching say the same
+thing. 38,016 cases swept across every pattern, chord, tuning and capo: no
+faults, no unplayable notes.
+
+The lesson to carry forward is about the prediction, not the units. "Neither
+should need anything new" was a guess made from outside the unit; the plan's
+answer was written while the shape of the work was still in view. Where a
+document written earlier and closer disagrees with a later guess, the document
+wins.
+
+### 9h.2 P3 needed the note to carry more than a position
+
+P3 teaches three differences the picking hand makes: one note louder than the
+ones around it, a change of tone from moving along the string, and a bass
+stopped rather than left to ring. Every note in the module was sounded at one
+level, through one timbre, damped at exactly its written length.
+
+So all three of the unit's claims would have been INAUDIBLE. The lessons would
+have read correctly, drawn correctly, passed every rule, and described
+something the player could not produce. That is a distinct failure from any so
+far: not a rule that stopped applying, but content whose subject the software
+had no way to express.
+
+Hence `level`, `voice` and `delayS` on the note, two voices at the ends of the
+string, and a tab that draws its accent FROM `level` rather than from a mark
+beside it. And a new gate that asks the question directly: a lesson claiming an
+audible criterion must have material that makes that difference. The criterion
+and the notes are checked against each other, which is the same dimension the
+prerequisite checker exists for — neither is wrong alone.
+
+### 9h.3 The strum flag nothing read
+
+The progression element's comment said its chords were "strummed in time". It
+set `strum: true`. Nothing read the flag. Six notes went out at one instant
+through the default pluck voice — which is the stacked-transient sound reported
+back in step 7 as "too much attack for the chords", and precisely what the
+chord voice was added to fix.
+
+Two units shipped sounding wrong, past every gate, because the only thing that
+could have caught it was a person listening. The roll is now `E.rollChord`, a
+pure function in the engine, and a Node test asks it what it produces.
+
+### 9h.4 Four rules, one mistake
+
+`rhythm` and `ear` sat in `ELEMENT_KEYS` — the list that says what a card may
+carry AND what the "no prose-only card" rule counts — with no branch in the
+player drawing either. A card using one would have satisfied the rule that
+exists to guarantee something to do, and rendered nothing at all.
+
+The browser check's context rule read `card.context.capo` for truthiness, so
+every card declaring `capo: 0` was skipped: 21 new cards silently exempt while
+it reported that all the context cards had been checked. A card declaring capo
+0 is making a statement — this figure is not capo'd whatever you have set — and
+the question is whether a context was DECLARED, not whether its number is
+non-zero.
+
+With 9e (generated cards invisible) and 9g.3 (progressions invisible), that is
+FOUR rules disabled by the same mistake: keying on a specific field instead of
+on the question. The structural answer is now in place — a playable element
+whose material `materialKey` cannot read is a failure, so the next new source
+announces itself instead of switching rules off — but the pattern is worth
+stating plainly, because it will present itself again in a fifth costume.
+
+### 9h.5 The overlap rule was measuring a third of the figure
+
+Extending the label check from label-against-label to label-against-digit and
+label-against-bar-line found 94 real collisions across the M strand and the new
+units, all pre-existing or introduced in this step, none visible to the rule as
+it stood. Three separate geometry faults came out of it: a chord's fingering
+letter tucked onto the bar line, a capo header sharing a row with the letters
+over the first note of the bar, and an accent and a stop mark landing on one
+another because the mark row was drawn per note when what a beat is marked with
+is a property of the beat.
+
+The first fix made things worse before it made them better — choosing a side
+per note put the right-hand label of one beat and the left-hand label of the
+next in the same place. One side for every label is the only arrangement with
+no pair of cases in it.
+
+### 9h.6 A restore that restored the wrong thing
+
+The mutation harness put files back with `git checkout -- <file>`. That is
+restore-to-HEAD, not restore-to-what-was-there. Run against uncommitted work it
+reverted the work rather than the mutation, and four files of new content went
+with it — recoverable only because the content blocks had been staged through a
+scratchpad on the way in.
+
+This is the same failure as the run in step 9f that captured a mutated line as
+its clean baseline, wearing different clothes: in both, the mechanism that was
+supposed to protect the work was the thing that damaged it. The harness now
+copies each file aside, mutates, runs, copies back, and compares byte-for-byte
+before the next mutation starts — and the work is committed before any mutation
+runs at all.
+
+### 9h.7 Mutation testing
+
+Twenty mutations, all caught. Seventeen in Node against the content and engine
+gates, three in the browser against the figure geometry. Three of the first
+seventeen were caught only after being SHARPENED — the first attempts were weak
+(a claim moved rather than removed, where a second lesson still claimed it) or
+pointed the wrong way (a term introduced late, planted in a lesson that comes
+later still). A mutation that fails to break anything is evidence about the
+mutation before it is evidence about the gate.
