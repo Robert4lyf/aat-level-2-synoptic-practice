@@ -183,6 +183,30 @@ MODULES_SHIPPED.forEach(m => {
   }
 });
 
+/* ── Every shipped outcome ends in a cheat sheet ──────────────────────────────
+   A reader revising does not reread nine lessons; they want the outcome on one
+   card. Declaring an outcome complete without one leaves that gap invisible —
+   the coverage ratchet above is satisfied by teaching alone, and would stay
+   green forever. So the sheet is part of what shipping an outcome means.
+
+   Checked here rather than in the quality checker because this is a question
+   about MODULES_SHIPPED, not about any card's contents. */
+const sheetOf = {};
+contentGroups.forEach(g => { if (g.cheatsheet) sheetOf[g.unit + '/' + g.outcome] = g.cheatsheet; });
+MODULES_SHIPPED.forEach(m => {
+  const cs = sheetOf[m.unit + '/' + m.outcome];
+  const where = `${m.unit.toUpperCase()} LO${m.outcome}`;
+  if (!cs) { errors.push(`${where} is declared shipped and has no cheat sheet. Every shipped outcome ends in one.`); return; }
+  if (!cs.id) errors.push(`${where}: its cheat sheet has no id.`);
+  if (!cs.card) errors.push(`${where}: its cheat sheet has no card.`);
+  /* Singular on purpose — see sheetOf() in aat3-ui.js. A sheet that could grow
+     a second card is a lesson with the questions left off. */
+  if (cs.cards) errors.push(`${where}: its cheat sheet has a "cards" array. A cheat sheet is one card, in "card".`);
+});
+const sheetIds = Object.values(sheetOf).map(c => c.id).filter(Boolean);
+if (new Set(sheetIds).size !== sheetIds.length) errors.push('Two cheat sheets share an id.');
+notes.push(`${sheetIds.length} cheat sheets, one per shipped outcome.`);
+
 /* ── Report ──────────────────────────────────────────────────────────────── */
 Object.keys(S.SYLLABUS.units).forEach(k => {
   const s = S.unitSummary(k);

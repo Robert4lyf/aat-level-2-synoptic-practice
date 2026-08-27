@@ -195,10 +195,35 @@
   /* Searches EVERY unit, not the active one. A lesson id is globally unique and
      the reader can only be inside a lesson they opened, so scoping this to the
      active unit would turn a mid-lesson unit switch into a blank screen. */
+  /* A cheat sheet is NOT a lesson. It claims no syllabus criteria, carries no
+     questions, and teaches nothing the outcome has not already taught — so
+     holding it in `g.lessons` would inflate the lesson count on the picker,
+     demand check questions it should not have, and offer a node the reader can
+     never tick off. It lives on the group instead, and is normalised here into
+     the shape the lesson screen already knows how to paint.
+
+     `card` is singular by design. A cheat sheet that could grow a second card
+     is a lesson with the questions left off. */
+  function sheetOf(g) {
+    if (!g || !g.cheatsheet || !g.cheatsheet.card) return null;
+    var cs = g.cheatsheet;
+    return {
+      id: cs.id,
+      title: cs.title || 'Cheat sheet',
+      icon: cs.icon || '🗂️',
+      criteria: [],
+      cards: [cs.card],
+      check: [],
+      isSheet: true,
+    };
+  }
+
   function lessonById(id) {
     var found = null;
     allGroups().forEach(function (g) {
       (g.lessons || []).forEach(function (l) { if (l.id === id) found = l; });
+      var sh = sheetOf(g);
+      if (sh && sh.id === id) found = sh;
     });
     return found;
   }
@@ -220,6 +245,7 @@
     concept:  { label: 'Concept',  glyph: '◆' },
     applied:  { label: 'Applied',  glyph: '▲' },
     workshop: { label: 'Workshop', glyph: '★' },
+    sheet:    { label: 'Cheat sheet', glyph: '🗂️' },
   };
 
   function coverage(unitKey) {
@@ -616,7 +642,7 @@
         '<div class="a3-outcome-w">' + o.weighting + '% of the assessment</div>' +
         '</div>';
       h += g
-        ? renderTrack(g.lessons || [])
+        ? renderTrack(g)
         : '<div class="a3-unwritten">Not written yet. ' +
           o.topics.length + ' topic area' + (o.topics.length === 1 ? '' : 's') + ' of the specification ' +
           'sit here, and no lesson claims any of them.</div>';
@@ -626,13 +652,16 @@
     return h + '</div>';
   }
 
-  function renderTrack(ls) {
+  function renderTrack(g) {
+    var ls = (g.lessons || []).slice();
+    var sh = sheetOf(g);
+    if (sh) ls.push(sh);
     var h = '<div class="a3-track">';
     ls.forEach(function (l, i) {
-      var t = nodeType(l);
+      var t = l.isSheet ? 'sheet' : nodeType(l);
       var meta = TYPE_META[t];
-      var done = isDone(l.id);
-      var st = stars(l.id);
+      var done = !l.isSheet && isDone(l.id);
+      var st = l.isSheet ? 0 : stars(l.id);
       var side = i % 2 === 0 ? 'l' : 'r';
       h += '<div class="a3-node-wrap a3-side-' + side + '">' +
         (i > 0 ? '<svg class="a3-link" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="' +
@@ -645,7 +674,9 @@
         '<div class="a3-node-card">' +
           '<div class="a3-node-type">' + esc(meta.label) + '</div>' +
           '<div class="a3-node-title">' + esc(l.title) + '</div>' +
-          '<div class="a3-node-meta">' + (l.cards || []).length + ' cards · ' + (l.check || []).length + ' questions</div>' +
+          '<div class="a3-node-meta">' + (l.isSheet
+            ? 'Everything in this outcome, on one card'
+            : (l.cards || []).length + ' cards · ' + (l.check || []).length + ' questions') + '</div>' +
           (st ? '<div class="a3-stars" aria-label="' + st + ' of 3 stars">' +
             [1,2,3].map(function (n) { return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>' : '') +
         '</div></div>';
@@ -668,7 +699,7 @@
       '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
       '<div class="a3-lessonbar-n">' + (pos + 1) + ' / ' + total + '</div></div>';
 
-    h += '<article class="a3-sheet">';
+    h += '<article class="a3-sheet' + (l.isSheet ? ' a3-cheat' : '') + '">';
     if (S.phase === 'teach') {
       h += cardHtml(cards[S.cardIdx] || {});
       var c = cards[S.cardIdx] || {};
@@ -677,7 +708,9 @@
         (S.cardIdx > 0 ? '<button class="a3-btn a3-btn-ghost" data-a3="back">Back</button>' : '<span></span>') +
         (blocked ? '<span class="a3-nav-hint">Reveal the steps to continue</span>'
                  : '<button class="a3-btn a3-btn-primary" data-a3="next">' +
-                   (S.cardIdx === cards.length - 1 ? 'Start the questions' : 'Continue') + '</button>') +
+                   (S.cardIdx === cards.length - 1
+                     ? (l.isSheet ? 'Back to the path' : 'Start the questions')
+                     : 'Continue') + '</button>') +
         '</div>';
     } else {
       h += questionHtml(checks[S.qIdx], checks.length);
@@ -1125,8 +1158,12 @@
 
     if (act === 'back') { S.cardIdx = Math.max(0, S.cardIdx - 1); resetCardState(); return rerender(); }
     if (act === 'next') {
-      if (S.cardIdx === cards.length - 1) { S.phase = 'check'; S.qIdx = 0; resetQState(); }
-      else { S.cardIdx++; resetCardState(); }
+      if (S.cardIdx === cards.length - 1) {
+        /* A sheet has no check phase to move into, and no score to record —
+           there is nothing to answer, so nothing to be right about. */
+        if (l && l.isSheet) { S.screen = 'path'; S.lessonId = null; }
+        else { S.phase = 'check'; S.qIdx = 0; resetQState(); }
+      } else { S.cardIdx++; resetCardState(); }
       return rerender();
     }
 
