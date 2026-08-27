@@ -52,6 +52,17 @@ const BANK = (() => {
   return [].concat((M.AAT3_PRACTICE || {}).QUESTIONS || [], (M.AAT3_FAPS_PRACTICE || {}).QUESTIONS || []);
 })();
 
+/* The best mock score as the practice screen reports it, read off the element
+   that carries the figure rather than out of the sentence around it. These
+   assertions matched the phrase "best so far 100%"; the offer has since been
+   laid out differently and says the same thing in fewer words, which failed two
+   checks that are about whether the score PERSISTS. Returns null when no score
+   is shown at all, which is its own assertion on a fresh reader. */
+function bestShown(html) {
+  const m = /class="a3-mockpanel-best"><b>(\d+)%<\/b>/.exec(html);
+  return m ? Number(m[1]) : null;
+}
+
 function onScreen(el) {
   const stem = (el.innerHTML.match(/<h2 class="a3-q">([\s\S]*?)<\/h2>/) || [])[1];
   if (!stem) return null;
@@ -235,7 +246,7 @@ function sit(unitKey, how) {
   const el = D.fakeEl();
   M.AAT3_UI.reset('practice', 'tpfb');
   M.AAT3_UI.mount(el);
-  ok(/best so far 100%/.test(el.innerHTML),
+  ok(bestShown(el.innerHTML) === 100,
     'the best mock score is still there after a reload — the record is rebuilt on load, and a field it does not name is lost');
 
   /* The rest of the record has to survive the same trip. */
@@ -266,13 +277,13 @@ function sit(unitKey, how) {
 {
   const r = sit('tpfb', 'right');
   D.click(r.el, 'exit');
-  ok(/best so far 100%/.test(r.el.innerHTML), 'the picker shows the best mock score once there is one');
+  ok(bestShown(r.el.innerHTML) === 100, 'the picker shows the best mock score once there is one');
 
   const fresh = D.loadUI(D.fakeStore());
   const el = D.fakeEl();
   fresh.AAT3_UI.reset('practice', 'tpfb');
   fresh.AAT3_UI.mount(el);
-  ok(!/best so far/.test(el.innerHTML), 'and says nothing about a best score before any paper is sat');
+  ok(bestShown(el.innerHTML) === null, 'and says nothing about a best score before any paper is sat');
 }
 
 restore();

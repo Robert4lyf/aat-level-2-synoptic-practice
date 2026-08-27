@@ -140,6 +140,16 @@ function answer(el, right) {
   }
 }
 
+/* How many outstanding questions the practice screen is offering, read off the
+   element that carries the number rather than off the sentence around it.
+   These assertions matched the whole phrase — "4 questions waiting" — so a
+   rewording of the offer failed three checks about mistake memory, which is not
+   what any of them is for. The count is the claim; the copy is not. */
+function offeredCount(html) {
+  const m = /class="a3-alert-t">(\d+) question/.exec(html);
+  return m ? Number(m[1]) : 0;
+}
+
 const KEY = D.STORE_KEY;
 const readQs = (store) => {
   try { return (JSON.parse(store.getItem(KEY) || '{}').practice.units.tpfb || {}).qs || {}; }
@@ -169,8 +179,8 @@ const readQs = (store) => {
   M.AAT3_UI.mount(el);
   const card = D.nodes(el, 'startpractice').find(n => n.getAttribute('data-lo') === 'missed');
   ok(!!card, 'the mistakes card is offered once there are mistakes');
-  ok(new RegExp(`${wrongIds.length} questions? waiting`).test(el.innerHTML),
-    `the card counts ${wrongIds.length} outstanding questions`);
+  ok(offeredCount(el.innerHTML) === wrongIds.length,
+    `the offer counts ${wrongIds.length} outstanding questions (found ${offeredCount(el.innerHTML)})`);
 
   D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'missed');
   const stems = [];
@@ -270,7 +280,7 @@ const readQs = (store) => {
   const el = D.fakeEl();
   M.AAT3_UI.reset('practice', 'tpfb');
   M.AAT3_UI.mount(el);
-  ok(/1 question waiting/.test(el.innerHTML),
+  ok(offeredCount(el.innerHTML) === 1,
     'a record naming a question no longer in the bank is not counted');
   D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'missed');
   ok(/<h2 class="a3-q">/.test(el.innerHTML), 'the run still has a real question in it');
@@ -298,7 +308,7 @@ const readQs = (store) => {
   const el = D.fakeEl();
   M.AAT3_UI.reset('practice', 'tpfb');
   M.AAT3_UI.mount(el);
-  ok(/1 question waiting/.test(el.innerHTML),
+  ok(offeredCount(el.innerHTML) === 1,
     'a question last answered wrongly and rightly at the same instant counts as fixed, not outstanding');
 }
 
