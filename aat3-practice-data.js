@@ -1247,6 +1247,390 @@
       ans: 0,
       exp: 'A financial interest in a particular outcome is a self-interest threat to objectivity — the risk that judgement is influenced by something other than the facts. Integrity would be engaged too if the technician acted on it, but the threat arises the moment the incentive exists.',
     },
+
+    /* ── Exam-shaped tasks ───────────────────────────────────────────────
+       One dataset, several answers, and rows in the dataset that do not
+       belong in any of them.
+
+       Every other question in this bank hands over the figures it wants
+       operated on: already classified, already converted, none of them
+       spare. That trains the arithmetic and nothing else — and the
+       arithmetic is the easy half. What the assessment actually asks is
+       which rows count, which are excluded from which box, and which are
+       not a taxable supply at all. Those decisions are invisible in a
+       question that has already made them for you.
+
+       So the rows here are deliberately mixed: wages and local authority
+       rates that stay out of Box 7, client entertaining that goes into
+       Box 7 while its VAT stays out of Box 4, exempt and zero-rated sales
+       that belong in Box 6 despite carrying no output tax, and a credit
+       note that reduces rather than adds. The figures are net, so the
+       conversion is the reader's to make.
+
+       Numbered from T- rather than P-, so the bank a question came from is
+       readable in a progress record without a lookup. */
+    {
+      id: 'T-1-01', unitKey: 'tpfb', lo: 1,
+      criteria: ['TPFB-1.2.1', 'TPFB-1.2.2', 'TPFB-1.2.3'],
+      type: 'task',
+      q: 'Decide whether this business must register for VAT, and by when.',
+      brief: 'The business began trading on 1 April and is not yet registered. Figures are monthly, exclusive of VAT.',
+      datasets: [
+        {
+          title: 'Income for the twelve months to 31 March',
+          headers: ['Month', 'Standard £', 'Zero £', 'Exempt £', 'Assets £'],
+          rows: [
+            ['Apr', '6,200.00', '900.00', '400.00', '—'],
+            ['May', '5,800.00', '1,100.00', '400.00', '—'],
+            ['Jun', '7,400.00', '800.00', '400.00', '—'],
+            ['Jul', '6,900.00', '1,300.00', '400.00', '—'],
+            ['Aug', '8,100.00', '700.00', '400.00', '—'],
+            ['Sep', '7,200.00', '950.00', '400.00', '—'],
+            ['Oct', '6,600.00', '1,050.00', '400.00', '—'],
+            ['Nov', '9,300.00', '1,200.00', '400.00', '14,000.00'],
+            ['Dec', '11,400.00', '1,500.00', '400.00', '—'],
+            ['Jan', '5,900.00', '850.00', '400.00', '—'],
+            ['Feb', '6,100.00', '1,000.00', '400.00', '—'],
+            ['Mar', '8,700.00', '1,150.00', '400.00', '—'],
+          ],
+          note: 'The Assets column is the sale of a delivery van in November. Exempt income is rent from a flat above the workshop.',
+        },
+      ],
+      parts: [
+        {
+          label: 'Taxable turnover for the twelve months to 31 March',
+          type: 'numeric', unit: '£', answer: 102100,
+          exp: 'Standard-rated and zero-rated income both count, and nothing else does: 89,600.00 + 12,500.00 = £102,100.00. Zero-rated supplies are taxable at ' + T.rates.zero.value + '%, so they push a business towards registration even though they carry no VAT.',
+        },
+        {
+          label: 'Exempt income for the same twelve months',
+          type: 'numeric', unit: '£', answer: 4800,
+          exp: 'Twelve months of rent at 400.00 is £4,800.00. Exempt income is not a taxable supply, so it plays no part in the threshold test — but it does make the business partly exempt once it registers, which is a separate problem.',
+        },
+        {
+          label: 'At the end of which month did taxable turnover first exceed the threshold?',
+          type: 'choice',
+          options: ['February', 'December', 'January', 'March'],
+          answer: 0,
+          exp: 'The rolling total reaches 85,150.00 at the end of January and 92,250.00 at the end of February, so February is the month it is crossed. December is what you get by counting the van: the proceeds of a capital asset are excluded from the test, and including them puts the total over at 92,400.00 two months early.',
+        },
+        {
+          label: 'By what date must HMRC be notified?',
+          type: 'choice',
+          options: ['30 March', '30 April', '28 February', '1 April'],
+          answer: 0,
+          exp: 'The historic test allows ' + T.registration.historicTest.notifyWithinDays.value + ' days from the END of the month in which the threshold was crossed. February ends on the 28th, so notification is due by 30 March. The clock runs from the month end, not from the day the total happened to tip over.',
+        },
+        {
+          label: 'From what date is the business registered?',
+          type: 'choice',
+          options: ['1 April', '1 March', '30 March', '1 May'],
+          answer: 0,
+          exp: 'Registration takes effect from the first day of the second month after the threshold was exceeded — February, then March, then 1 April. Notifying and being registered are two different dates, and VAT must be accounted for from the second even if the first was met late.',
+        },
+      ],
+      exp: 'Three decisions sit behind one threshold: what counts as taxable turnover, when the rolling total crossed it, and which of the two dates that follow is which. The van is the trap — a capital asset is excluded from the test, and counting it moves the crossing two months earlier and every date with it.',
+    },
+    {
+      id: 'T-2-01', unitKey: 'tpfb', lo: 2,
+      criteria: ['TPFB-2.3.11', 'TPFB-2.3.12', 'TPFB-2.3.13', 'TPFB-3.2.5'],
+      type: 'task',
+      q: 'Complete the VAT return for the quarter ended 31 March.',
+      brief: 'All amounts in the day books are **net of VAT**. The business is registered and accounts for VAT on the invoice basis.',
+      datasets: [
+        {
+          title: 'Sales day book — quarter ended 31 March',
+          headers: ['Date', 'Customer', 'Net £', 'Rate'],
+          rows: [
+            ['12 Jan', 'Ashdown Ltd', '14,600.00', 'Standard'],
+            ['28 Jan', 'Brayford Care Homes', '5,200.00', 'Exempt'],
+            ['09 Feb', 'Calder & Co', '8,400.00', 'Standard'],
+            ['21 Feb', 'Dunmore Foods', '3,750.00', 'Zero'],
+            ['06 Mar', 'Ashdown Ltd — credit note', '(1,200.00)', 'Standard'],
+            ['19 Mar', 'Eastgate Ltd', '6,050.00', 'Standard'],
+          ],
+        },
+        {
+          title: 'Purchases day book — quarter ended 31 March',
+          headers: ['Date', 'Supplier or expense', 'Net £', 'Rate'],
+          rows: [
+            ['15 Jan', 'Farrow Supplies', '9,300.00', 'Standard'],
+            ['02 Feb', 'Local authority rates', '2,400.00', 'Outside the scope'],
+            ['17 Feb', 'Greenway Motors — client entertaining', '880.00', 'Standard'],
+            ['25 Feb', 'Halstead Ltd', '4,120.00', 'Standard'],
+            ['11 Mar', 'Wages', '18,500.00', 'Outside the scope'],
+            ['22 Mar', 'Ivory Print', '1,530.00', 'Zero'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Box 1 — VAT due on sales and other outputs',
+          type: 'numeric', unit: '£', answer: 5570,
+          exp: 'Only the standard-rated lines carry output tax, and the credit note reduces them: 14,600.00 + 8,400.00 − 1,200.00 + 6,050.00 = 27,850.00 net, and at ' + T.rates.standard.value + '% that is £5,570.00. The exempt and zero-rated sales carry none.',
+        },
+        {
+          label: 'Box 4 — VAT reclaimed on purchases and other inputs',
+          type: 'numeric', unit: '£', answer: 2684,
+          exp: 'Standard-rated purchases are 9,300.00 + 880.00 + 4,120.00, but the VAT on client entertaining is blocked, so only 9,300.00 + 4,120.00 = 13,420.00 is recoverable. At ' + T.rates.standard.value + '% that is £2,684.00.',
+        },
+        {
+          label: 'Box 5 — net VAT to pay HMRC',
+          type: 'numeric', unit: '£', answer: 2886,
+          exp: 'Box 3 less Box 4. Box 3 is Box 1 plus Box 2, and there are no acquisitions here, so Box 3 is £5,570.00 and the net figure is 5,570.00 − 2,684.00 = £2,886.00.',
+        },
+        {
+          label: 'Box 6 — total value of sales, excluding VAT',
+          type: 'numeric', unit: '£', answer: 36800,
+          exp: 'Box 6 takes every output, not only the taxed ones: 27,850.00 standard-rated after the credit note, plus 3,750.00 zero-rated, plus 5,200.00 exempt, is £36,800.00. Leaving the exempt sale out is the common error, and it is the one figure a reviewer can check against the accounts.',
+        },
+        {
+          label: 'Box 7 — total value of purchases, excluding VAT',
+          type: 'numeric', unit: '£', answer: 15830,
+          exp: 'Wages and local authority rates are both left out of Box 7. What remains is 9,300.00 + 880.00 + 4,120.00 + 1,530.00 = £15,830.00 — the entertaining is a purchase and belongs here even though its VAT does not reach Box 4.',
+        },
+        {
+          label: 'The client entertaining of £880.00 net — how is it treated?',
+          type: 'choice',
+          options: [
+            'Included in Box 7, and its VAT is not reclaimed in Box 4',
+            'Left out of Box 7, and its VAT is not reclaimed in Box 4',
+            'Included in Box 7, and its VAT is reclaimed in Box 4',
+            'Left out of Box 7, and its VAT is reclaimed in Box 4',
+          ],
+          answer: 0,
+          exp: 'Two separate rules meet on one line. Business entertaining is a real purchase, so its net value belongs in Box 7; input tax on it is blocked, so its VAT never reaches Box 4. Treating the block as though the expense had not happened understates Box 7.',
+        },
+      ],
+      exp: 'The arithmetic here is the easy half. What the return depends on is which rows count: the credit note reduces the standard-rated total rather than adding to it, the exempt and zero-rated sales still belong in Box 6, wages and rates stay out of Box 7 altogether, and entertaining sits in Box 7 while its VAT stays out of Box 4.',
+    },
+    {
+      id: 'T-2-02', unitKey: 'tpfb', lo: 2,
+      criteria: ['TPFB-2.3.11', 'TPFB-2.3.12', 'TPFB-2.3.14'],
+      type: 'task',
+      q: 'Work out the output tax and the Box 6 figure from these invoices.',
+      brief: 'Read the **Basis** column: some amounts are net and one is quoted inclusive of VAT.',
+      datasets: [
+        {
+          title: 'Sales invoices raised in the quarter',
+          headers: ['Ref', 'Description', 'Amount £', 'Basis', 'Rate'],
+          rows: [
+            ['101', 'Consultancy', '4,800.00', 'Net', 'Standard'],
+            ['102', 'Printed books', '2,150.00', 'Net', 'Zero'],
+            ['103', 'Repairs, priced inclusive', '3,660.00', 'Gross', 'Standard'],
+            ['104', 'Domestic fuel', '1,900.00', 'Net', 'Reduced'],
+            ['105', 'Consultancy, 3% discount taken', '6,000.00', 'Net', 'Standard'],
+            ['106', 'Insurance commission', '1,450.00', 'Net', 'Exempt'],
+            ['107', 'Local authority grant, no supply made', '5,000.00', '—', 'Outside the scope'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'VAT on invoice 103, which is priced inclusive',
+          type: 'numeric', unit: '£', answer: 610,
+          exp: 'A gross figure holds the VAT inside it, so the fraction is ' + T.rates.standard.value + '/120 and not ' + T.rates.standard.value + '/100: 3,660.00 × 20 ÷ 120 = £610.00, leaving 3,050.00 net. Applying ' + T.rates.standard.value + '% to the gross figure instead gives 732.00, which is the single most common slip on this calculation.',
+        },
+        {
+          label: 'Net value of invoice 105 after the discount is taken',
+          type: 'numeric', unit: '£', answer: 5820,
+          exp: 'A prompt payment discount that is actually taken reduces the consideration, so the supply is worth 6,000.00 × 97% = £5,820.00 and the VAT follows that figure rather than the list price.',
+        },
+        {
+          label: 'Total output tax for the quarter',
+          type: 'numeric', unit: '£', answer: 2829,
+          exp: 'Three invoices carry standard-rated VAT and one carries reduced: 960.00 on invoice 101, 610.00 on 103, 95.00 on 104 at ' + T.rates.reduced.value + '%, and 1,164.00 on the discounted 5,820.00. That is £2,829.00. The books are zero-rated, the commission is exempt, and the grant is not a supply at all.',
+        },
+        {
+          label: 'Box 6 — total value of outputs, excluding VAT',
+          type: 'numeric', unit: '£', answer: 19170,
+          exp: '4,800.00 + 2,150.00 + 3,050.00 + 1,900.00 + 5,820.00 + 1,450.00 = £19,170.00. The zero-rated and exempt supplies belong here even though neither carries output tax; invoice 103 goes in at its net value, not its gross one; and the grant is left out.',
+        },
+        {
+          label: 'The local authority grant — where does it appear on the return?',
+          type: 'choice',
+          options: [
+            'In neither Box 1 nor Box 6',
+            'In Box 6 only, and not in Box 1',
+            'In Box 1 only, and not in Box 6',
+            'In both Box 1 and Box 6',
+          ],
+          answer: 0,
+          exp: 'Nothing was supplied in return for the grant, so there is no supply and the money is outside the scope of VAT. That is different from exempt: an exempt supply is still a supply and still reaches Box 6, which is why invoice 106 appears there and the grant does not.',
+        },
+      ],
+      exp: 'Every figure here needs a decision before it needs arithmetic: whether the amount is net or gross, whether a discount has changed the consideration, which rate applies, and whether there is a supply at all. Get those five right and the sums are trivial.',
+    },
+    {
+      id: 'T-3-01', unitKey: 'tpfb', lo: 3,
+      criteria: ['TPFB-3.1.5', 'TPFB-3.1.6'],
+      type: 'task',
+      q: 'Decide how these errors from earlier periods must be put right.',
+      brief: 'All six were found during this quarter. Turnover for the period of discovery is well under a million pounds, and none of the errors is more than four years old.',
+      datasets: [
+        {
+          title: 'Errors found in earlier VAT returns',
+          headers: ['Ref', 'What happened', 'VAT understated £', 'VAT overstated £'],
+          rows: [
+            ['E1', 'A sales invoice was left off the return', '4,200.00', '—'],
+            ['E2', 'A purchase invoice was entered twice', '1,850.00', '—'],
+            ['E3', 'A zero-rated sale was treated as standard-rated', '—', '900.00'],
+            ['E4', 'Input tax was reclaimed on client entertaining', '260.00', '—'],
+            ['E5', 'A credit note was left off the return', '—', '1,140.00'],
+            ['E6', 'Cash sales were deliberately suppressed', '3,000.00', '—'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Total VAT understated',
+          type: 'numeric', unit: '£', answer: 9310,
+          exp: '4,200.00 + 1,850.00 + 260.00 + 3,000.00 = £9,310.00. Entering a purchase invoice twice understates the VAT due just as surely as omitting a sale does — the input tax claimed was too high, so the payment was too low.',
+        },
+        {
+          label: 'Total VAT overstated',
+          type: 'numeric', unit: '£', answer: 2040,
+          exp: '900.00 + 1,140.00 = £2,040.00. Both are errors in the business’s own favour to correct: it has paid HMRC more than it owed.',
+        },
+        {
+          label: 'Net error across all six',
+          type: 'numeric', unit: '£', answer: 7270,
+          exp: 'Understatements less overstatements: 9,310.00 − 2,040.00 = £7,270.00. The net error is what the limit is tested against — the two directions are set off, not added.',
+        },
+        {
+          label: 'Amount that may be corrected on the next return',
+          type: 'numeric', unit: '£', answer: 4270,
+          exp: 'E6 is deliberate, so it comes out of the adjustment altogether: (9,310.00 − 3,000.00) − 2,040.00 = £4,270.00. Both figures sit under the ' + money(T.errorCorrection.netErrorLimit.value) + ' limit, so the limit is not what separates them — the behaviour behind the error is.',
+        },
+        {
+          label: 'How must E6 be dealt with?',
+          type: 'choice',
+          options: [
+            'Notified separately to HMRC, whatever its size',
+            'Corrected on the next return, whatever its size',
+            'Notified separately only where it exceeds the limit',
+            'Corrected on the next return where it is under the limit',
+          ],
+          answer: 0,
+          exp: 'A deliberate error can never be rolled into the next return, however small it is. The limit governs careless and innocent errors; deliberate ones are notified separately on their own, and unprompted disclosure is what keeps the penalty down.',
+        },
+      ],
+      exp: 'The arithmetic is two columns and a subtraction. What the task is really asking is which errors go which way, and which one is excluded from the adjustment for a reason that has nothing to do with its size.',
+    },
+    {
+      id: 'T-4-01', unitKey: 'tpfb', lo: 4,
+      criteria: ['TPFB-4.1.11', 'TPFB-4.1.12'],
+      type: 'task',
+      q: 'Work out this employee’s pay for the month.',
+      brief: 'The pension scheme operates on a **net pay arrangement**, so the employee’s contribution comes out of pay before tax is worked out.',
+      datasets: [
+        {
+          title: 'Payroll figures for the month',
+          headers: ['Item', 'Amount £'],
+          rows: [
+            ['Basic pay', '2,400.00'],
+            ['Overtime', '315.00'],
+            ['Employer pension contribution', '168.00'],
+            ['Income tax under PAYE', '402.60'],
+            ['Employee National Insurance', '174.36'],
+            ['Employee pension contribution', '136.50'],
+            ['Student loan repayment', '63.00'],
+            ['Employer National Insurance', '289.15'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Gross pay',
+          type: 'numeric', unit: '£', answer: 2715,
+          exp: 'Gross pay is what the employee has earned: 2,400.00 + 315.00 = £2,715.00. The employer’s pension contribution is money the employer pays on top and never forms part of the employee’s gross pay.',
+        },
+        {
+          label: 'Taxable gross pay',
+          type: 'numeric', unit: '£', answer: 2578.50,
+          exp: 'Under a net pay arrangement the employee’s pension contribution is taken off before tax is calculated: 2,715.00 − 136.50 = £2,578.50. That is why the same contribution appears twice in this task — once reducing taxable pay, and again as one of the deductions from it.',
+        },
+        {
+          label: 'Total deductions from the employee',
+          type: 'numeric', unit: '£', answer: 776.46,
+          exp: '402.60 + 174.36 + 136.50 + 63.00 = £776.46. Everything the employee has withheld counts, whether it goes to HMRC, to the student loans company or to the pension scheme.',
+        },
+        {
+          label: 'Net pay',
+          type: 'numeric', unit: '£', answer: 1938.54,
+          exp: 'Gross pay less deductions: 2,715.00 − 776.46 = £1,938.54. Note that it is gross pay this comes off, not taxable gross pay — subtracting from 2,578.50 double-counts the pension and gives 1,802.04.',
+        },
+        {
+          label: 'The employer National Insurance of £289.15 is',
+          type: 'choice',
+          options: [
+            'a cost to the employer, and not a deduction from the employee',
+            'a deduction from the employee, and not a cost to the employer',
+            'a cost to the employer, and also a deduction from the employee',
+            'neither a cost to the employer nor a deduction from the employee',
+          ],
+          answer: 0,
+          exp: 'Employer National Insurance is a charge on the employer for having the employee at all. It never touches the payslip arithmetic, though it is paid over to HMRC alongside the amounts that do — which is why it appears on this list and in none of the four figures above.',
+        },
+      ],
+      exp: 'Two of the eight lines are the employer’s own costs and belong in none of the answers, and one line appears in two of them for two different reasons. Gross to taxable to net is a chain, and taking a step off the wrong figure carries the error all the way down.',
+    },
+    {
+      id: 'T-5-01', unitKey: 'tpfb', lo: 5,
+      criteria: ['TPFB-5.1.4', 'TPFB-5.1.6', 'TPFB-5.1.7'],
+      type: 'task',
+      q: 'Tell the finance manager what is due, and when.',
+      brief: 'The VAT quarter ended 31 March and the tax year ended 5 April. Everything is filed and paid **electronically**.',
+      datasets: [
+        {
+          title: 'Obligations outstanding at the start of April',
+          headers: ['Obligation', 'Period ended', 'Amount £'],
+          rows: [
+            ['VAT return and payment', '31 March', '8,420.00'],
+            ['PAYE and National Insurance', '5 April', '3,265.00'],
+            ['Class 1A National Insurance on benefits', '5 April', '1,180.00'],
+            ['P60s to employees', '5 April', '—'],
+            ['P11D and P11D(b) to HMRC', '5 April', '—'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'The VAT return and payment are due by',
+          type: 'choice',
+          options: ['7 May', '30 April', '1 May', '31 May'],
+          answer: 0,
+          exp: 'One calendar month and seven days after the end of the period: 31 March plus a month is 30 April, plus seven days is 7 May. The same date governs the return and the money, and the money must have REACHED HMRC by then rather than merely been sent.',
+        },
+        {
+          label: 'The PAYE and National Insurance are due by',
+          type: 'choice',
+          options: ['22 May', '19 May', '22 April', '6 May'],
+          answer: 0,
+          exp: 'Paid electronically, PAYE is due by the ' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the month following the tax month, so the month ended 5 April is due by 22 May. The ' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th is the deadline for paying by post, which is not how this employer pays.',
+        },
+        {
+          label: 'P60s must reach employees by',
+          type: 'choice',
+          options: ['31 May', '6 July', '5 April', '19 May'],
+          answer: 0,
+          exp: 'A P60 summarises the tax year just ended and is due to each employee still employed at 5 April by 31 May. It goes to the employee, not to HMRC, which already has the same figures from the final submission of the year.',
+        },
+        {
+          label: 'P11D and P11D(b) must reach HMRC by',
+          type: 'choice',
+          options: ['6 July', '31 May', '22 July', '5 April'],
+          answer: 0,
+          exp: 'Both forms are due by 6 July following the end of the tax year. 22 July is the date the Class 1A National Insurance those forms declare must be paid electronically — two deadlines a fortnight apart, and reporting the benefits is not the same act as paying for them.',
+        },
+        {
+          label: 'Total that must reach HMRC during May',
+          type: 'numeric', unit: '£', answer: 11685,
+          exp: '8,420.00 of VAT by 7 May and 3,265.00 of PAYE by 22 May is £11,685.00. The Class 1A National Insurance of 1,180.00 is not due until 22 July, so it belongs to a later month however early the P11D that declares it is filed.',
+        },
+      ],
+      exp: 'A finance manager asking what is due next month wants the answer for next month. Three obligations fall in the period and two of them are payments, so the figure that matters is not the total of the table — it is the total of the rows whose deadline lands in May.',
+    },
   ];
 
   /* Grouped for the by-outcome picker. */

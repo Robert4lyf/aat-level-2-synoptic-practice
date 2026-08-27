@@ -49,6 +49,14 @@ jobs:
         run: npm run check:aat3-summary
       - name: Check no Level 3 question is answerable from option position
         run: npm run check:aat3-position
+      - name: Check Level 3 multi-part tasks behave (grading, per-part feedback, no state leak)
+        run: npm run check:aat3-task
+      - name: Check Level 3 mistake memory (recorded, served, cleared, merges between devices)
+        run: npm run check:aat3-mistakes
+      - name: Check mixed practice is drawn to the exam weighting
+        run: npm run check:aat3-weighting
+      - name: Check the timed mock behaves like an exam (no feedback, weighted, reports by outcome)
+        run: npm run check:aat3-mock
       - name: Check progress backup merge (no data loss, idempotent)
         run: npm run check:backup
       - name: Check cross-device sync (version check, conflict retry, fail-safe)

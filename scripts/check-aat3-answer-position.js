@@ -79,6 +79,7 @@ ALL_QUESTIONS.forEach(q => all.push({ where: `practice ${q.id}`, q }));
   const gapfills = all.filter(x => (x.q.type || 'mcq') === 'gapfill');
   const mcqs = all.filter(x => (x.q.type || 'mcq') === 'mcq');
   const tfs = all.filter(x => (x.q.type || 'mcq') === 'truefalse');
+  const tasks = all.filter(x => x.q.type === 'task');
 
   ok(gapfills.length > 0, 'there are gap-fill questions to check');
   ok(mcqs.length > 0, 'there are multiple-choice questions to check');
@@ -169,6 +170,41 @@ ALL_QUESTIONS.forEach(q => all.push({ where: `practice ${q.id}`, q }));
     });
   }
 
+  /* Multi-part tasks. Only the `choice` parts offer options; the numeric parts
+     are typed into and have no position to read. A task's choice parts are
+     multiple-choice questions in every respect that makes a key guessable, so
+     they are sampled here rather than exempted for sitting inside a bigger
+     question. */
+  {
+    const withChoices = tasks.filter(x => (x.q.parts || []).some(p => p.type === 'choice'));
+    ok(withChoices.length > 0, 'there are tasks with choice parts to check');
+    withChoices.slice(0, 6).forEach(entry => {
+      const byPart = new Map();
+      for (let r = 0; r < RENDERS; r++) {
+        const painted = renderQuestion(entry);
+        const groups = new Map();
+        [...painted.matchAll(/data-a3="taskpick" data-p="(\d+)" data-o="(\d+)"/g)].forEach(m => {
+          const p = m[1];
+          if (!groups.has(p)) groups.set(p, []);
+          groups.get(p).push(Number(m[2]));
+        });
+        groups.forEach((order, p) => {
+          const at = order.indexOf(entry.q.parts[Number(p)].answer);
+          if (!byPart.has(p)) byPart.set(p, new Set());
+          byPart.get(p).add(at);
+        });
+      }
+      const expected = (entry.q.parts || []).filter(p => p.type === 'choice').length;
+      ok(byPart.size === expected,
+        `${entry.where}: all ${expected} choice parts render their options`);
+      let stuck = false;
+      byPart.forEach((set, p) => {
+        if ((entry.q.parts[Number(p)].options || []).length > 1 && set.size < 2) stuck = true;
+      });
+      ok(!stuck, `${entry.where}: every choice part places its key in more than one position across ${RENDERS} renders`);
+    });
+  }
+
   restore();
 }
 
@@ -256,7 +292,7 @@ ALL_QUESTIONS.forEach(q => all.push({ where: `practice ${q.id}`, q }));
    ceiling on that number would fight the convention instead of guarding it.
    What has to hold is the shuffle. */
 {
-  const SAMPLED = new Set(['gapfill', 'mcq', 'truefalse']);
+  const SAMPLED = new Set(['gapfill', 'mcq', 'truefalse', 'task']);
   const NO_OPTIONS = {
     numeric: 'the reader types a figure; there are no options to place.',
   };

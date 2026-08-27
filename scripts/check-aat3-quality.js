@@ -86,6 +86,156 @@ const flat = o => {
   return out;
 };
 
+/* A multi-part task: one dataset, several answers derived from it.
+
+   THE RULE THAT MATTERS IS THE LAST ONE. A task exists so the reader has to
+   decide which rows count, so at least one figure it asks for must not be the
+   plain total of a column — otherwise the whole thing can be answered by adding
+   everything up in order, which is the single-step question this type was added
+   to get away from. Asserted rather than trusted to authoring discipline.
+
+   Ragged rows are fatal here for the same reason they are in a lesson table:
+   the renderer emits one cell per entry, so a short row slides every figure
+   below it under the wrong heading, and a reader working from the wrong column
+   gets a defensible wrong answer with nothing to show them why. */
+let taskCount = 0, taskPartCount = 0, taskRowCount = 0;
+function taskErrors(q, where) {
+  const out = [];
+  taskCount++;
+  taskPartCount += (q.parts || []).length;
+  (q.datasets || []).forEach(d => { taskRowCount += (d.rows || []).length; });
+  const ds = q.datasets;
+  if (!Array.isArray(ds) || !ds.length) out.push(`${where}: a task needs at least one dataset.`);
+  else ds.forEach((d, di) => {
+    if (!Array.isArray(d.rows) || !d.rows.length) { out.push(`${where} dataset ${di}: no rows.`); return; }
+    const width = Array.isArray(d.headers) ? d.headers.length : d.rows[0].length;
+    d.rows.forEach((r, ri) => {
+      if (!Array.isArray(r)) { out.push(`${where} dataset ${di} row ${ri}: not an array.`); return; }
+      if (r.length !== width) {
+        out.push(`${where} dataset ${di} row ${ri}: ${r.length} cells against ${width} headers — every figure below it renders under the wrong heading.`);
+      }
+    });
+  });
+
+  const parts = q.parts;
+  if (!Array.isArray(parts) || parts.length < 2) {
+    out.push(`${where}: a task needs at least 2 parts — with one it is a numeric question carrying a table.`);
+    return out;
+  }
+  parts.forEach((p, pi) => {
+    const pw = `${where} part ${pi + 1}`;
+    if (!p.label) out.push(`${pw}: no label.`);
+    if (!p.exp) out.push(`${pw}: no explanation — a reader who got this part wrong learns nothing from a bare answer.`);
+    else if (p.exp.length < MIN_EXP_CHARS) {
+      warnings.push(`${pw}: explanation is only ${p.exp.length} chars — too short to teach anything.`);
+    }
+    const t = p.type || 'numeric';
+    if (t === 'numeric') {
+      if (!Number.isFinite(p.answer)) { out.push(`${pw}: numeric answer is not a finite number.`); return; }
+      /* The same guard the standalone numeric questions carry: a part whose
+         stated answer never appears in its own explanation has one of the two
+         wrong, and the arithmetic checker cannot tell which. */
+      const plain = String(p.answer);
+      const grouped = Number(p.answer).toLocaleString('en-GB');
+      const twoDp = Number(p.answer).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const e = String(p.exp || '');
+      if (e && e.indexOf(plain) === -1 && e.indexOf(grouped) === -1 && e.indexOf(twoDp) === -1) {
+        out.push(`${pw}: the stated answer ${grouped} never appears in its own explanation — one of the two is wrong.`);
+      }
+    } else if (t === 'choice') {
+      if (!Array.isArray(p.options) || p.options.length < 2) { out.push(`${pw}: needs at least 2 options.`); return; }
+      if (!Number.isInteger(p.answer) || p.answer < 0 || p.answer >= p.options.length) {
+        out.push(`${pw}: answer index ${p.answer} is out of range.`);
+        return;
+      }
+      const norm = p.options.map(o => String(o).toLowerCase().replace(/\s+/g, ' ').trim());
+      if (new Set(norm).size !== norm.length) out.push(`${pw}: two options are the same text.`);
+      /* The length cue, policed here exactly as it is on a standalone MCQ. A
+         choice part is a multiple-choice question in every respect that makes a
+         key guessable, and letting it escape the guard because it sits inside a
+         task would put the module's only unguarded options in its newest type. */
+      const lens = p.options.map(o => String(o).length);
+      const others = lens.filter((_, i) => i !== p.answer);
+      const avg = others.reduce((a, b) => a + b, 0) / others.length;
+      const ratio = lens[p.answer] / avg;
+      const gap = Math.abs(lens[p.answer] - avg);
+      if ((ratio > 1.5 || ratio < 0.67) && gap >= MIN_CUE_GAP_CHARS) {
+        out.push(`${pw}: the correct option is ${ratio.toFixed(2)}× the average distractor (${Math.round(gap)} characters apart) — make the options structurally parallel.`);
+      }
+      const hasReason = o => REASON_CLAUSE.test(String(o));
+      const keyReason = hasReason(p.options[p.answer]);
+      const otherReasons = p.options.filter((o, i) => i !== p.answer && hasReason(o)).length;
+      if (otherReasons > 0 && !keyReason && otherReasons === p.options.length - 1) {
+        out.push(`${pw}: every distractor carries a "because…" clause and the correct option does not.`);
+      }
+      if (keyReason && otherReasons === 0 && p.options.length > 2) {
+        out.push(`${pw}: only the correct option carries a "because…" clause.`);
+      }
+    } else {
+      out.push(`${pw}: unknown part type "${t}".`);
+    }
+  });
+
+  /* CAN THE WHOLE THING BE ANSWERED BY TOTALLING COLUMNS?
+     A task exists so the reader has to decide which rows count. If every answer
+     happens to equal the plain total of some column, no decision was ever
+     required: total everything, in order, and score full marks without reading
+     a word. That is the single-step question wearing a table, and it is the
+     shape this type was added to get away from.
+
+     So at least one numeric part must be unreachable that way.
+
+     TWO EARLIER VERSIONS OF THIS RULE WERE WRONG, both in the direction of
+     passing things they should not have.
+
+     The first looked for an amount appearing in no part's explanation, on the
+     theory that an unmentioned figure is one the reader had to discard. It
+     accepted any cell containing a digit, so "12 Jan" counted — every dated day
+     book satisfied it automatically. Measured: 14 spare cells on the first
+     task, 12 of them dates.
+
+     Narrowing it to money-shaped cells fixed that and left something worse. A
+     good explanation NAMES the figure it is excluding — "wages and rates are
+     both left out of Box 7" is exactly the sentence a reader needs — so the
+     better the writing, the more likely the rule was to fire. A check that
+     penalises the thing you want is worse than no check.
+
+     Column totals have neither problem: they are computed from the data alone,
+     say nothing about how it is described, and test the property that actually
+     matters. */
+  const amountOf = (c) => {
+    const s = String(c).trim();
+    if (!/^\(?£?\s?\d[\d,]*\.\d{2}\)?$/.test(s)) return null;
+    const n = Number(s.replace(/[£,()\s]/g, ''));
+    return Number.isFinite(n) ? (/^\(/.test(s) ? -n : n) : null;
+  };
+  const colTotals = [];
+  let amountCells = 0;
+  (Array.isArray(ds) ? ds : []).forEach(d => {
+    const rows = d.rows || [];
+    const width = Array.isArray(d.headers) ? d.headers.length : (rows[0] || []).length;
+    for (let ci = 0; ci < width; ci++) {
+      const vals = rows.map(r => amountOf((r || [])[ci])).filter(v => v !== null);
+      amountCells += vals.length;
+      if (vals.length > 1) colTotals.push(vals.reduce((a, b) => a + b, 0));
+    }
+  });
+  const numericParts = parts.filter(p => (p.type || 'numeric') === 'numeric' && Number.isFinite(p.answer));
+  /* Both rules below are about figures, so both are scoped to tasks that ask
+     for one. A task made entirely of choice parts — which deadline applies to
+     which obligation, say — is a legitimate shape with no arithmetic in it, and
+     demanding amounts of it would be demanding the wrong thing. */
+  if (numericParts.length && !amountCells) {
+    out.push(`${where}: a figure is asked for but no dataset cell is an amount — there is nothing for the reader to work from.`);
+    return out;
+  }
+  const needsSelection = numericParts.filter(p => !colTotals.some(t => Math.abs(t - p.answer) < 0.005));
+  if (numericParts.length && !needsSelection.length) {
+    out.push(`${where}: every figure asked for is the plain total of a dataset column, so the task can be answered by adding everything up without deciding what counts. Ask for at least one figure that requires rows to be included or excluded.`);
+  }
+  return out;
+}
+
 /* ── 1. Question quality ─────────────────────────────────────────────────── */
 const stems = new Map();
 let mcqCount = 0, cueCount = 0;
@@ -179,6 +329,8 @@ allQuestions.forEach(({ where, q }) => {
       if (trues === 0 || trues === q.statements.length) {
         errors.push(`${where}: every statement has the same answer — the grid is guessable.`);
       }
+    } else if (type === 'task') {
+      taskErrors(q, where).forEach(e => errors.push(e));
     } else if (type === 'gapfill') {
       if (!q.template) { errors.push(`${where}: no template.`); return; }
       if (!Array.isArray(q.gaps) || !q.gaps.length) { errors.push(`${where}: no gaps.`); return; }
@@ -600,9 +752,19 @@ function evalChain(expr) {
 }
 
 let sumsChecked = 0;
-carded.forEach(l => {
-  flat({ cards: l.cards, check: l.check }).split(/(?<=[.;])\s/).forEach(() => {});
-  const text = flat({ cards: l.cards, check: l.check });
+
+/* THE PRACTICE BANK IS IN HERE TOO, and it had never been.
+   This pass walked `carded` — lessons and cheat sheets — so a sum written into
+   a practice question's explanation was evaluated by nobody. That was survivable
+   while those explanations were a sentence each; multi-part tasks put a worked
+   chain behind every figure they ask for, which is exactly the material this
+   check exists for. Adding the bank took the count from 330 to a number that
+   includes them, and found nothing wrong — which is the answer you want and not
+   a reason to have left it unasked. */
+const chainSources = carded.map(l => ({ id: l.id, text: flat({ cards: l.cards, check: l.check }) }))
+  .concat(allQuestions.map(({ where, q }) => ({ id: where, text: flat(q) })));
+
+chainSources.forEach(({ id, text }) => {
   const found = text.match(CHAIN) || [];
   found.forEach(expr => {
     const r = evalChain(expr);
@@ -612,7 +774,7 @@ carded.forEach(l => {
        rounded to whole pounds from a fractional one. */
     const off = Math.abs(r.got - r.want);
     if (off > 0.011 && off > Math.abs(r.got) * 1e-9 && Math.round(r.got) !== r.want) {
-      errors.push(`${l.id}: the stated sum "${expr.trim()}" does not compute — it comes to ${r.got.toFixed(2)}.`);
+      errors.push(`${id}: the stated sum "${expr.trim()}" does not compute — it comes to ${r.got.toFixed(2)}.`);
     }
   });
 });
@@ -899,6 +1061,9 @@ const totalWords = words(flat(AAT3_LEARN_PATH));
 notes.push(`${lessons.length} lessons · ${cardCount} cards · ${Math.round(proseTotal / cardCount)} words of prose and ${Math.round(teachTotal / cardCount)} words of teaching per card.`);
 notes.push(`${workedCount} worked examples (${tryCount} with a try-it) · ${totalWords} words in the module.`);
 notes.push(`${sumsChecked} arithmetic chains stated in prose were evaluated and agree.`);
+if (taskCount) {
+  notes.push(`${taskCount} multi-part tasks: ${taskPartCount} parts and ${taskRowCount} dataset rows checked for shape, ragged rows and answerability by column total.`);
+}
 notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${headersChecked} example header rows checked for figures.`);
 
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
