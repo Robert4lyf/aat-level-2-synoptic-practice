@@ -778,3 +778,31 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
    choose — and it disappears entirely once the backlog is empty. */
 .a3-pcard-missed { border-color: var(--a3-gold); background: var(--a3-gold-wash); }
 .a3-pcard-missed .a3-pcard-k { color: var(--a3-gold); }
+
+/* ── The timed mock ──────────────────────────────────────────────────────────
+   The clock sits in the quiz bar and turns red under five minutes. Its text is
+   written directly by the tick rather than repainted, so a reader typing into a
+   task keeps their caret. */
+.a3-pcard-mock { border-color: var(--a3-brand); background: var(--a3-brand-wash); }
+.a3-pcard-mock .a3-pcard-k { color: var(--a3-brand-ink); }
+.a3-mockclock {
+  font-variant-numeric: tabular-nums; font-weight: 700; font-size: 15px;
+  color: var(--a3-ink-2); padding: 0 4px; min-width: 52px; text-align: center;
+}
+.a3-mockclock.is-low { color: var(--a3-bad); }
+
+.a3-mockreport { margin: 22px 0 4px; text-align: left; }
+.a3-mockreport-h {
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--a3-brand-ink); font-weight: 700; margin-bottom: 6px;
+}
+.a3-mockreport .a3-table { min-width: 0; font-size: 13px; }
+.a3-mockreport .a3-table th, .a3-mockreport .a3-table td { padding: 8px 9px; }
+.a3-mockreport tr.is-low td { background: var(--a3-bad-wash); }
+.a3-mockreport tr.is-ok td { background: var(--a3-ok-wash); }
+.a3-mockreport-f {
+  margin-top: 12px; padding: 12px 14px; border-radius: var(--a3-r);
+  background: var(--a3-surface-2); border: 1px solid var(--a3-line);
+  font-size: 13.5px; line-height: 1.6; color: var(--a3-ink-2);
+}
+.a3-try-row-mock { margin-bottom: 6px; }
