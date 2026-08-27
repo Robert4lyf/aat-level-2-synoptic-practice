@@ -924,7 +924,328 @@
     }
   };
 
+
+  /* ── P3 · Voicing and balance ──────────────────────────────────────────
+     The unit that needed the note to carry more than a position.
+
+     P3 is about three differences a player makes with the picking hand and
+     nothing else: one note louder than the ones around it, a change of tone
+     from moving along the string, and a bass stopped rather than left to ring.
+     Every note in the module was played at exactly one level, through exactly
+     one timbre, damped at exactly its written length — so all three of this
+     unit's claims would have been silent, and the lessons would have been
+     describing something the player could not produce.
+
+     Hence `level`, `voice` and a stop that means something, all on the note
+     itself. The renderer draws its accent FROM `level` rather than from a
+     separate mark, so a figure cannot print an accent the ear does not get.
+
+     The two numbers below are set once. They are the difference between a
+     melody that sits above its accompaniment and one that sits inside it, and
+     typing them into ninety literals is how they drift apart. */
+  var MELODY_LEVEL = 1.35, UNDER_LEVEL = 0.72;
+
+  /* One bar of the unit's texture: a stopped bass, two melody notes above an
+     accompaniment that stays under them. spec is
+     { bass: [string, fret], mel: [[s, f], [s, f]], mid: [[s, f], [s, f]] }. */
+  function voicedBar(b, spec, voices) {
+    voices = voices || {};
+    var under = function (n) {
+      if (voices.under) n.voice = voices.under;
+      return n;
+    };
+    var over = function (n) {
+      if (voices.over) n.voice = voices.over;
+      return n;
+    };
+    return [
+      under({ string: spec.bass[0], fret: spec.bass[1], beat: b, dur: 0.75,
+              hand: 'p', finger: 'p', level: UNDER_LEVEL, tech: 'damp' }),
+      over({ string: spec.mel[0][0], fret: spec.mel[0][1], beat: b, dur: 2,
+             hand: 'p', finger: 'a', level: MELODY_LEVEL }),
+      under({ string: spec.mid[0][0], fret: spec.mid[0][1], beat: b + 1, dur: 1,
+              hand: 'p', finger: 'i', level: UNDER_LEVEL }),
+      over({ string: spec.mel[1][0], fret: spec.mel[1][1], beat: b + 2, dur: 2,
+             hand: 'p', finger: 'a', level: MELODY_LEVEL }),
+      under({ string: spec.mid[1][0], fret: spec.mid[1][1], beat: b + 3, dur: 1,
+              hand: 'p', finger: 'm', level: UNDER_LEVEL })
+    ];
+  }
+
+  /* A line of single notes on one voice, i and m alternating. */
+  function line(pairs, startBeat, dur, voice, level) {
+    return pairs.map(function (pr, i) {
+      var n = { string: pr[0], fret: pr[1], beat: startBeat + i * dur, dur: dur,
+                hand: 'p', finger: (i % 2) ? 'm' : 'i' };
+      if (voice) n.voice = voice;
+      if (level) n.level = level;
+      return n;
+    });
+  }
+
+  var P3 = {
+    'p3-mel-two': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'A melody over a bass that stays under it',
+      tags: ['P3', 'melody', 'balance'],
+      notes: [
+        { string: 1, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 5, fret: 3, beat: 0, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL },
+        { string: 1, fret: 3, beat: 2, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 4, fret: 2, beat: 2, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 3, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL },
+        { string: 1, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 5, fret: 0, beat: 4, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 3, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL },
+        { string: 2, fret: 1, beat: 6, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 4, fret: 2, beat: 6, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 3, fret: 2, beat: 7, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL }
+      ]
+    },
+    'p3-mel-inner': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'The melody is not the top note',
+      tags: ['P3', 'melody', 'inner voice'],
+      notes: [
+        { string: 2, fret: 1, beat: 0, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 5, fret: 3, beat: 0, dur: 4, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 2, fret: 3, beat: 1, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 2, fret: 1, beat: 2, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 2, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 2, fret: 1, beat: 4, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 5, fret: 0, beat: 4, dur: 4, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 2, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 2, fret: 1, beat: 6, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 6, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL },
+        { string: 3, fret: 2, beat: 7, dur: 1, hand: 'p', finger: 'm', level: MELODY_LEVEL },
+        { string: 1, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'a', level: UNDER_LEVEL }
+      ]
+    },
+    'p3-mel-line': {
+      kind: 'authored', curated: true, bpm: 56, beatsPerBar: 4,
+      title: 'A melody over a walking bass',
+      tags: ['P3', 'melody', 'bass'],
+      notes: [
+        { string: 6, fret: 3, beat: 0, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 3, beat: 0, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 4, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 5, fret: 2, beat: 2, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 0, beat: 2, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 4, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 6, fret: 3, beat: 4, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 2, beat: 4, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 4, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 5, fret: 2, beat: 6, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 3, beat: 6, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 4, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL }
+      ]
+    },
+    'p3-mel-flat': {
+      kind: 'authored', curated: true, bpm: 54, beatsPerBar: 4,
+      title: 'Flat, then voiced',
+      tags: ['P3', 'melody', 'comparison'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p' },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 6, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 3, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL },
+        { string: 2, fret: 0, beat: 6, dur: 1, hand: 'p', finger: 'm', level: UNDER_LEVEL },
+        { string: 1, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'a', level: MELODY_LEVEL }
+      ]
+    },
+    'p3-mel-chord': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'A melody note inside a chord',
+      tags: ['P3', 'melody', 'pinch'],
+      notes: [
+        { string: 5, fret: 3, beat: 0, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL },
+        { string: 4, fret: 2, beat: 2, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 3, beat: 2, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 2, fret: 1, beat: 3, dur: 1, hand: 'p', finger: 'm', level: UNDER_LEVEL },
+        { string: 4, fret: 3, beat: 4, dur: 2, hand: 'p', finger: 'p', level: UNDER_LEVEL },
+        { string: 1, fret: 1, beat: 4, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 3, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL },
+        { string: 2, fret: 1, beat: 6, dur: 1, hand: 'p', finger: 'm', level: UNDER_LEVEL },
+        { string: 1, fret: 1, beat: 6, dur: 2, hand: 'p', finger: 'a', level: MELODY_LEVEL },
+        { string: 3, fret: 2, beat: 7, dur: 1, hand: 'p', finger: 'i', level: UNDER_LEVEL }
+      ]
+    },
+
+    'p3-tone-compare': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'The same four notes, twice',
+      tags: ['P3', 'tone', 'comparison'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 1, hand: 'p', finger: 'p', voice: 'tasto' },
+        { string: 3, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'i', voice: 'tasto' },
+        { string: 2, fret: 1, beat: 2, dur: 1, hand: 'p', finger: 'm', voice: 'tasto' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a', voice: 'tasto' },
+        { string: 5, fret: 0, beat: 4, dur: 1, hand: 'p', finger: 'p', voice: 'ponticello' },
+        { string: 3, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'i', voice: 'ponticello' },
+        { string: 2, fret: 1, beat: 6, dur: 1, hand: 'p', finger: 'm', voice: 'ponticello' },
+        { string: 1, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'a', voice: 'ponticello' }
+      ]
+    },
+    'p3-tone-round': {
+      kind: 'authored', curated: true, bpm: 54, beatsPerBar: 4,
+      title: 'A line that wants to be round',
+      tags: ['P3', 'tone', 'tasto'],
+      notes: line([[1, 0], [1, 3], [2, 0], [2, 3], [3, 0], [3, 2], [2, 0], [1, 0]], 0, 1, 'tasto')
+    },
+    'p3-tone-edge': {
+      kind: 'authored', curated: true, bpm: 54, beatsPerBar: 4,
+      title: 'A line that wants an edge',
+      tags: ['P3', 'tone', 'ponticello'],
+      notes: line([[3, 2], [2, 1], [2, 3], [1, 0], [1, 3], [1, 0], [2, 3], [2, 1]], 0, 1, 'ponticello')
+    },
+    'p3-tone-shift': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'Moving the hand mid-phrase',
+      tags: ['P3', 'tone', 'shift'],
+      notes: line([[3, 0], [2, 1], [1, 0], [1, 3]], 0, 1, 'tasto')
+        .concat(line([[1, 3], [1, 0], [2, 1], [3, 0]], 4, 1, 'ponticello'))
+    },
+    'p3-tone-voices': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Two tones at once',
+      tags: ['P3', 'tone', 'separation'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'p', voice: 'ponticello', level: UNDER_LEVEL },
+        { string: 1, fret: 0, beat: 0, dur: 2, hand: 'p', finger: 'a', voice: 'tasto' },
+        { string: 5, fret: 0, beat: 2, dur: 2, hand: 'p', finger: 'p', voice: 'ponticello', level: UNDER_LEVEL },
+        { string: 1, fret: 3, beat: 2, dur: 2, hand: 'p', finger: 'a', voice: 'tasto' },
+        { string: 4, fret: 2, beat: 4, dur: 2, hand: 'p', finger: 'p', voice: 'ponticello', level: UNDER_LEVEL },
+        { string: 2, fret: 1, beat: 4, dur: 2, hand: 'p', finger: 'a', voice: 'tasto' },
+        { string: 4, fret: 2, beat: 6, dur: 2, hand: 'p', finger: 'p', voice: 'ponticello', level: UNDER_LEVEL },
+        { string: 1, fret: 0, beat: 6, dur: 2, hand: 'p', finger: 'a', voice: 'tasto' }
+      ]
+    },
+
+    'p3-damp-single': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Stopping one bass',
+      tags: ['P3', 'damping'],
+      notes: [
+        { string: 6, fret: 0, beat: 0, dur: 0.5, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 5, fret: 2, beat: 2, dur: 0.5, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 2, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 4, fret: 2, beat: 4, dur: 0.5, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 1, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'a' },
+        { string: 6, fret: 0, beat: 6, dur: 0.5, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'i' }
+      ]
+    },
+    'p3-damp-change': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'Stopping the bass at the change',
+      tags: ['P3', 'damping', 'chords'],
+      notes: [
+        { string: 5, fret: 3, beat: 0, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 1, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 4, fret: 3, beat: 4, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 1, beat: 6, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 1, beat: 7, dur: 1, hand: 'p', finger: 'a' }
+      ]
+    },
+    'p3-damp-ring': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'The same figure, left to ring',
+      tags: ['P3', 'damping', 'comparison'],
+      notes: [
+        { string: 6, fret: 3, beat: 0, dur: 8, hand: 'p', finger: 'p' },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 3, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 5, fret: 2, beat: 4, dur: 8, hand: 'p', finger: 'p' },
+        { string: 3, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 0, beat: 6, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 7, dur: 1, hand: 'p', finger: 'a' }
+      ]
+    },
+    'p3-damp-alt': {
+      kind: 'authored', curated: true, bpm: 54, beatsPerBar: 4,
+      title: 'Two basses, each stopped by the next',
+      tags: ['P3', 'damping', 'bass'],
+      notes: [
+        { string: 6, fret: 3, beat: 0, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 0, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 2, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 2, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'm' },
+        { string: 5, fret: 2, beat: 4, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 0, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 4, fret: 0, beat: 6, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 1, fret: 3, beat: 7, dur: 1, hand: 'p', finger: 'a' }
+      ]
+    },
+    'p3-damp-end': {
+      kind: 'authored', curated: true, bpm: 52, beatsPerBar: 4,
+      title: 'Ending in silence',
+      tags: ['P3', 'damping', 'phrasing'],
+      notes: [
+        { string: 5, fret: 0, beat: 0, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 2, beat: 1, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 1, beat: 2, dur: 1, hand: 'p', finger: 'm' },
+        { string: 1, fret: 0, beat: 3, dur: 1, hand: 'p', finger: 'a' },
+        { string: 5, fret: 0, beat: 4, dur: 0.75, hand: 'p', finger: 'p', tech: 'damp' },
+        { string: 3, fret: 2, beat: 5, dur: 1, hand: 'p', finger: 'i' },
+        { string: 2, fret: 1, beat: 6, dur: 0.5, hand: 'p', finger: 'm', tech: 'damp' },
+        { string: 1, fret: 0, beat: 7, dur: 0.5, hand: 'p', finger: 'a', tech: 'damp' }
+      ]
+    },
+
+    'p3-all-melody-damp': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'A voiced melody over a stopped bass',
+      tags: ['P3', 'melody', 'damping'],
+      notes: voicedBar(0, { bass: [5, 3], mel: [[1, 0], [1, 3]], mid: [[3, 0], [2, 1]] })
+        .concat(voicedBar(4, { bass: [5, 0], mel: [[1, 0], [2, 1]], mid: [[3, 2], [2, 1]] }))
+    },
+    'p3-all-tone-melody': {
+      kind: 'authored', curated: true, bpm: 50, beatsPerBar: 4,
+      title: 'Melody round, accompaniment thin',
+      tags: ['P3', 'melody', 'tone'],
+      notes: voicedBar(0, { bass: [6, 0], mel: [[1, 0], [1, 3]], mid: [[3, 0], [2, 0]] },
+                       { over: 'tasto', under: 'ponticello' })
+        .concat(voicedBar(4, { bass: [5, 2], mel: [[1, 2], [1, 0]], mid: [[3, 0], [2, 0]] },
+                          { over: 'tasto', under: 'ponticello' }))
+    },
+    'p3-all-three': {
+      kind: 'authored', curated: true, bpm: 48, beatsPerBar: 4,
+      title: 'All three at once',
+      tags: ['P3', 'melody', 'tone', 'damping'],
+      notes: voicedBar(0, { bass: [6, 3], mel: [[1, 3], [1, 2]], mid: [[3, 0], [2, 0]] },
+                       { over: 'tasto', under: 'ponticello' })
+        .concat(voicedBar(4, { bass: [4, 0], mel: [[1, 2], [1, 2]], mid: [[3, 2], [2, 3]] },
+                          { over: 'tasto', under: 'ponticello' }))
+    },
+    'p3-all-phrase': {
+      kind: 'authored', curated: true, bpm: 46, beatsPerBar: 4,
+      title: 'Four bars with everything in them',
+      tags: ['P3', 'phrase'],
+      notes: voicedBar(0, { bass: [5, 3], mel: [[1, 0], [1, 3]], mid: [[3, 0], [2, 1]] })
+        .concat(voicedBar(4, { bass: [5, 0], mel: [[2, 1], [1, 0]], mid: [[3, 2], [2, 1]] }))
+        .concat(voicedBar(8, { bass: [4, 3], mel: [[1, 1], [2, 1]], mid: [[3, 2], [2, 1]] }))
+        .concat(voicedBar(12, { bass: [6, 3], mel: [[1, 3], [1, 0]], mid: [[3, 0], [2, 0]] }))
+    }
+  };
+
   Object.keys(M3).forEach(function (k) { EXERCISES[k] = M3[k]; });
+  Object.keys(P3).forEach(function (k) { EXERCISES[k] = P3[k]; });
 
   function exercise(id) {
     return Object.prototype.hasOwnProperty.call(EXERCISES, id) ? EXERCISES[id] : null;

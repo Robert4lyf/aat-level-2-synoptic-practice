@@ -150,6 +150,7 @@ body[data-subject="guitar"] .gtr-tab-fret   { fill: var(--gtr-ink); font-size: 9
 body[data-subject="guitar"] .gtr-tab-capo   { fill: var(--gtr-root); font-size: 9px; font-weight: 600; }
 body[data-subject="guitar"] .gtr-tab-pima,
 body[data-subject="guitar"] .gtr-tab-tech   { fill: var(--gtr-muted); font-size: 8px; font-style: italic; }
+body[data-subject="guitar"] .gtr-tab-mark   { fill: var(--gtr-root); font-size: 9px; font-weight: 700; }
 
 /* ── The screen around the figures ────────────────────────────────────────
    Everything above styles what the renderer draws. Everything below styles the
@@ -434,6 +435,32 @@ body[data-subject="guitar"] .gtr-cardnav {
 body[data-subject="guitar"] .gtr-cardnav .gtr-btn { flex: 0 0 auto; }
 body[data-subject="guitar"] .gtr-cardnav .gtr-play { flex: 1; }
 body[data-subject="guitar"] .gtr-cardnav .gtr-btn[disabled] { opacity: .45; cursor: default; }
+
+/* ── A progression ────────────────────────────────────────────────────────
+   Chord boxes in a row with their degree above, scrolling sideways rather than
+   wrapping — a progression read across is a sequence, and one that wraps to a
+   second line stops looking like one. */
+body[data-subject="guitar"] .gtr-changes {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin: 10px 0;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-subject="guitar"] .gtr-change {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+body[data-subject="guitar"] .gtr-change-deg {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--subj, var(--accent));
+  font-variant-numeric: tabular-nums;
+}
 
 /* ── What to do, and when to stop ─────────────────────────────────────────
    The practice block is the part that makes a card worth staying on, so it is

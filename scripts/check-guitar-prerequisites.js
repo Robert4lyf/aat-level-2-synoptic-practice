@@ -52,7 +52,11 @@ const INTRODUCED = {
   'flattened':         'm1-l2',
   'free stroke':       'p1-l3',
   'rest stroke':       'p1-l4',
-  'capo':              'm3-l4'
+  'capo':              'm3-l4',
+  'arpeggio':          'p2-l1',
+  'alternating bass':  'p2-l2',
+  'pinch':             'p2-l2',
+  'contact point':     'p3-l2'
 };
 
 /* Words that carry a technical meaning AND an everyday one, left out on
