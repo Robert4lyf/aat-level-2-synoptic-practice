@@ -218,6 +218,37 @@ function sit(unitKey, how) {
   ok(Object.keys(rec.qs || {}).length === 24, 'and all 24 reach the per-question record');
 }
 
+/* ── 6a. What was recorded survives a reload ─────────────────────────────── */
+/* THE BUG THIS SECTION EXISTS FOR. Section 6 reads the record straight out of
+   storage, which proves it was WRITTEN and nothing else. The player rebuilds
+   that record field by field when it loads — a defence against a store written
+   by an older version — and `mocks` and `mockBest` were not among the fields it
+   named. Both were written on the way out and dropped on the way back in, so
+   the best mock score was correct until the page was reloaded and then gone. It
+   took a screenshot to notice.
+ *
+ * So the assertion is not "was it saved" but "is it still there next time",
+ * which is the thing a reader actually experiences. */
+{
+  const r = sit('tpfb', 'right');
+  const M = D.loadUI(r.store);          // a fresh load of the same storage
+  const el = D.fakeEl();
+  M.AAT3_UI.reset('practice', 'tpfb');
+  M.AAT3_UI.mount(el);
+  ok(/best so far 100%/.test(el.innerHTML),
+    'the best mock score is still there after a reload — the record is rebuilt on load, and a field it does not name is lost');
+
+  /* The rest of the record has to survive the same trip. */
+  const before = JSON.parse(r.store.getItem(D.STORE_KEY)).practice.units.tpfb;
+  D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+  D.answerCurrent(el);
+  D.click(el, 'nextq');
+  const after = JSON.parse(r.store.getItem(D.STORE_KEY)).practice.units.tpfb;
+  Object.keys(before).forEach(k => {
+    ok(after[k] !== undefined, `\`${k}\` survives a reload and a subsequent save`);
+  });
+}
+
 /* ── 7. A mock leaves no state behind ────────────────────────────────────── */
 /* Walking out of a paper mid-way must put the reader back in practice with no
    clock running and no mock answers counted towards the next thing they do. */

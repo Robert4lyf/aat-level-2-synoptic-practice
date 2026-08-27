@@ -81,8 +81,15 @@
     if (p && p.units && typeof p.units === 'object') {
       Object.keys(p.units).forEach(function (k) {
         var u = p.units[k] || {};
+        /* EVERY FIELD IS NAMED HERE, and that is the trap in this function: it
+           REBUILDS the record rather than copying it, so a field added anywhere
+           else and not added here is written on the way out and silently gone
+           on the way back in. `mocks` and `mockBest` were, and a reader's best
+           mock score survived until the page was reloaded. */
         out.units[k] = {
           runs: n0(u.runs),
+          mocks: n0(u.mocks),
+          mockBest: n0(u.mockBest),
           los: (u.los && typeof u.los === 'object') ? u.los : {},
           qs: (u.qs && typeof u.qs === 'object') ? u.qs : {},
         };
@@ -124,9 +131,10 @@
      "null", which merges across devices and shows up in the backup summary as
      a unit nobody studied. */
   function practiceRec(unitKey) {
-    if (!unitKey) return { runs: 0, los: {}, qs: {} };
+    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} };
+    if (!unitKey) return blank;
     var u = data.practice.units[unitKey];
-    if (!u) u = data.practice.units[unitKey] = { runs: 0, los: {}, qs: {} };
+    if (!u) u = data.practice.units[unitKey] = blank;
     if (!u.qs) u.qs = {};
     return u;
   }
