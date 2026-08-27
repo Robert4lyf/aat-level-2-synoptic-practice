@@ -45,6 +45,18 @@ const notes = [];
 const lessons = [];
 (AAT1_LEARN_PATH || []).forEach(g => (g.lessons || []).forEach(l => lessons.push(l)));
 
+/* Cheat sheets are not steps on the ladder — they claim no assessment criteria
+   and carry no questions, so the coverage check and the question sweep must not
+   see them. Their single card is content a reader leans on, though, so every
+   CARD-level gate below walks `carded`: shape, depth, arithmetic, prose
+   mannerisms and the promise check apply to a sheet exactly as to a lesson. */
+const sheetList = [];
+(AAT1_LEARN_PATH || []).forEach(g => {
+  const cs = g.cheatsheet;
+  if (cs && cs.card) sheetList.push({ id: cs.id, title: cs.title, cards: [cs.card], check: [], isSheet: true });
+});
+const carded = lessons.concat(sheetList);
+
 /* Every question in the module, wherever it lives. The practice bank gets the
    same scrutiny as the lesson checks, and the shared stem map is what stops the
    bank quietly re-asking a lesson. */
@@ -275,7 +287,7 @@ if (mcqCount) {
 
 /* ── 2. Worked examples ──────────────────────────────────────────────────── */
 let workedCount = 0, tryCount = 0;
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     if (!c.worked) return;
     workedCount++;
@@ -369,7 +381,7 @@ function checkShape(val, spec, where) {
   });
 }
 
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     Object.keys(c).forEach(k => {
       if (!CARD_SHAPE[k]) { errors.push(`${l.id} card ${ci + 1}: unknown field "${k}" — the renderer will ignore it silently.`); return; }
@@ -388,6 +400,36 @@ allQuestions.forEach(({ where, q }) => {
   });
 });
 
+/* ── 3a. Every row of a table has to be the same width ───────────────────────
+   The renderer emits one cell per entry and nothing else, so a row shorter than
+   its header closes where the data runs out and every figure below it shifts
+   left under the wrong heading. Nothing throws, the page still paints, and the
+   shape check above passes because `str[][]` says nothing about row length.
+
+   Level 3 gained this rule when a four-column layout was drafted with
+   three-column rows under it; Level 1 never had it, which a mutation of a
+   Level 1 table went on to prove. Measured at zero across all 49 tables and
+   examples here before being added, so it is a ratchet, not a backlog. */
+[['table', t => (t.headers ? [t.headers] : []).concat(t.rows || [])],
+ ['example', e => e.rows || []]].forEach(([field, rowsOf]) => {
+  carded.forEach(l => {
+    (l.cards || []).forEach((c, ci) => {
+      const el = c[field];
+      if (!el) return;
+      const rows = rowsOf(el).filter(Array.isArray);
+      if (rows.length < 2) return;
+      const widths = rows.map(r => r.length);
+      const commonest = widths.slice().sort((a, b) =>
+        widths.filter(w => w === b).length - widths.filter(w => w === a).length)[0];
+      rows.forEach((r, ri) => {
+        if (r.length !== commonest) {
+          errors.push(`${l.id} card ${ci + 1}.${field}: row ${ri + 1} has ${r.length} cells where the rest of the table has ${commonest} — the columns below it will render under the wrong headings.`);
+        }
+      });
+    });
+  });
+});
+
 /* ── 4. Prose must not promise an element the card does not have ─────────── */
 /* Deliberately narrow: it fires only on phrases promising something ON THIS
    CARD ("the table below", "shown below"), never on a bare mention of "the
@@ -402,7 +444,7 @@ const PROMISES = {
   doc: /\b(the\s+)?(invoice|credit note|statement|document)\s+below\b/i,
   terms: /\b(the\s+)?(key\s+)?terms\s+below\b/i,
 };
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     const prose = Array.isArray(c.p) ? c.p.join(' ') : String(c.p || '');
     Object.keys(PROMISES).forEach(el => {
@@ -459,7 +501,7 @@ function evalChain(expr) {
 
 let sumsChecked = 0;
 const sumSources = [];
-lessons.forEach(l => sumSources.push([l.id, flat({ cards: l.cards, check: l.check })]));
+carded.forEach(l => sumSources.push([l.id, flat({ cards: l.cards, check: l.check })]));
 sumSources.push(['practice bank', flat(practice)]);
 sumSources.forEach(([label, text]) => {
   (text.match(CHAIN) || []).forEach(expr => {
@@ -476,7 +518,7 @@ sumSources.forEach(([label, text]) => {
 
 /* ── 6. Cards must be thick enough to teach ──────────────────────────────── */
 let thin = 0;
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     const where = `${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}")`;
     const prose = words(Array.isArray(c.p) ? c.p.join(' ') : c.p);
@@ -546,7 +588,7 @@ const {
   neverHits, cadenceHits, signpostCount,
 } = require('./lib/prose-mannerisms.js');
 
-lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+carded.forEach(l => (l.cards || []).forEach((c, ci) => {
   const text = (c.p || []).join(' ');
   const found = cadenceHits(text);
   if (found.length > CADENCE_MAX_PER_CARD) {
@@ -558,7 +600,7 @@ lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
 {
   let proseWords = 0;
   const proseBits = [];
-  lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+  carded.forEach(l => (l.cards || []).forEach((c, ci) => {
     (c.p || []).forEach(par => {
       const text = String(par);
       proseBits.push(text);
@@ -578,6 +620,9 @@ lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
 const cardCount = lessons.reduce((s, l) => s + (l.cards || []).length, 0);
 const proseWords = lessons.reduce((s, l) => s + words(flat(l.cards)), 0);
 notes.unshift(`${lessons.length} lessons · ${cardCount} cards · ${proseWords.toLocaleString('en-GB')} words of teaching content.`);
+/* Reported separately because the line above counts the ladder, and a sheet is
+   not a step on it — but its card faced every check above all the same. */
+notes.unshift(`${sheetList.length} cheat sheets, one per outcome, checked as cards alongside the lessons.`);
 notes.push(`${allQuestions.length} questions (${(allQuestions.length - practice.length)} in lessons, ${practice.length} in the practice bank).`);
 notes.push(`Question types: ${Object.keys(typeCounts).sort().map(k => `${k} ${typeCounts[k]}`).join(' · ')}.`);
 notes.push(`${workedCount} worked examples, ${tryCount} with a "now you try".`);

@@ -105,9 +105,36 @@
     path().forEach(function (g) { (g.lessons || []).forEach(function (l) { out.push(l); }); });
     return out;
   }
+  /* A cheat sheet is not a step on the ladder. It claims no assessment
+     criteria, carries no questions, teaches nothing the outcome has not already
+     taught, and cannot be completed — so it stays off `lessons()`, which is
+     what feeds the step numbering, the progress count and the coverage check.
+     It is normalised here into the shape the lesson screen already paints.
+
+     `card` is singular on purpose: a cheat sheet that could grow a second card
+     is a lesson with the questions left off. */
+  function sheetOf(g) {
+    if (!g || !g.cheatsheet || !g.cheatsheet.card) return null;
+    var cs = g.cheatsheet;
+    return {
+      id: cs.id,
+      title: cs.title || 'Cheat sheet',
+      criteria: [],
+      cards: [cs.card],
+      check: [],
+      isSheet: true,
+    };
+  }
+  function sheets() {
+    var out = [];
+    path().forEach(function (g) { var sh = sheetOf(g); if (sh) out.push(sh); });
+    return out;
+  }
   function lessonById(id) {
     var all = lessons();
     for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i];
+    var sh = sheets();
+    for (var j = 0; j < sh.length; j++) if (sh[j].id === id) return sh[j];
     return null;
   }
   /* Ladder position, 1-based and continuous across outcomes — the number the
@@ -146,6 +173,7 @@
     theory:    { label: 'Theory',    glyph: '●' },
     document:  { label: 'Documents', glyph: '▤' },
     practical: { label: 'Practical', glyph: '✎' },
+    sheet:     { label: 'Cheat sheet', glyph: '🗂️' },
   };
 
   function coverage() {
@@ -464,6 +492,8 @@
         n++;
         h += rungHtml(l, n);
       });
+      var sh = sheetOf(g);
+      if (sh) h += rungHtml(sh, null);
       h += '</ol>';
     });
 
@@ -472,14 +502,15 @@
   }
 
   function rungHtml(l, n) {
-    var k = kindOf(l);
+    var k = l.isSheet ? 'sheet' : kindOf(l);
     var meta = KIND_META[k];
-    var done = isDone(l.id);
-    var st = stars(l.id);
-    return '<li class="a1-rung' + (done ? ' is-done' : '') + '">' +
-      '<div class="a1-rung-rail" aria-hidden="true"><span class="a1-rung-n">' + (done ? '✓' : n) + '</span></div>' +
+    var done = !l.isSheet && isDone(l.id);
+    var st = l.isSheet ? 0 : stars(l.id);
+    return '<li class="a1-rung' + (done ? ' is-done' : '') + (l.isSheet ? ' a1-rung-sheet' : '') + '">' +
+      '<div class="a1-rung-rail" aria-hidden="true"><span class="a1-rung-n">' +
+        (l.isSheet ? '🗂️' : (done ? '✓' : n)) + '</span></div>' +
       '<button class="a1-rung-card" data-a1="open" data-id="' + esc(l.id) + '"' +
-        ' aria-label="Step ' + n + ': ' + esc(l.title) + (done ? ', completed' : '') + '">' +
+        ' aria-label="' + (l.isSheet ? '' : 'Step ' + n + ': ') + esc(l.title) + (done ? ', completed' : '') + '">' +
         '<span class="a1-rung-head">' +
           '<span class="a1-rung-kind a1-kind-' + k + '">' + esc(meta.glyph) + ' ' + esc(meta.label) + '</span>' +
           (st ? '<span class="a1-stars" aria-label="' + st + ' of 3 stars">' +
@@ -487,7 +518,9 @@
         '</span>' +
         '<span class="a1-rung-title">' + esc(l.title) + '</span>' +
         (l.summary ? '<span class="a1-rung-sum">' + esc(l.summary) + '</span>' : '') +
-        '<span class="a1-rung-meta">' + (l.cards || []).length + ' pages · ' + (l.check || []).length + ' questions</span>' +
+        '<span class="a1-rung-meta">' + (l.isSheet
+          ? 'Everything in this outcome, on one page'
+          : (l.cards || []).length + ' pages · ' + (l.check || []).length + ' questions') + '</span>' +
       '</button></li>';
   }
 
@@ -504,7 +537,7 @@
     h += '<div class="a1-lessonbar">' +
       '<button class="a1-btn a1-btn-ghost a1-exit" data-a1="exit">Exit</button>' +
       '<div class="a1-lessonbar-mid">' +
-        '<div class="a1-lessonbar-t">Step ' + stepNo(l.id) + ' · ' + esc(l.title) + '</div>' +
+        '<div class="a1-lessonbar-t">' + (l.isSheet ? '' : 'Step ' + stepNo(l.id) + ' · ') + esc(l.title) + '</div>' +
         '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
       '</div>' +
       '<div class="a1-lessonbar-n">' + (pos + 1) + '/' + total + '</div></div>';
@@ -518,7 +551,9 @@
         (S.cardIdx > 0 ? '<button class="a1-btn a1-btn-ghost" data-a1="back">Back</button>' : '<span></span>') +
         (blocked ? '<span class="a1-nav-hint">Reveal the steps to continue</span>'
                  : '<button class="a1-btn a1-btn-primary" data-a1="next">' +
-                   (S.cardIdx === cards.length - 1 ? 'Start the questions' : 'Continue') + '</button>') +
+                   (S.cardIdx === cards.length - 1
+                     ? (l.isSheet ? 'Back to the path' : 'Start the questions')
+                     : 'Continue') + '</button>') +
         '</div>';
     } else {
       h += questionHtml(checks[S.qIdx], checks.length);
@@ -990,8 +1025,11 @@
 
     if (act === 'back') { S.cardIdx = Math.max(0, S.cardIdx - 1); resetCardState(); return rerender(); }
     if (act === 'next') {
-      if (S.cardIdx === cards.length - 1) { S.phase = 'check'; S.qIdx = 0; resetQState(); }
-      else { S.cardIdx++; resetCardState(); }
+      if (S.cardIdx === cards.length - 1) {
+        /* Nothing to answer on a sheet, so nothing to be right about. */
+        if (l && l.isSheet) { S.screen = 'path'; S.lessonId = null; }
+        else { S.phase = 'check'; S.qIdx = 0; resetQState(); }
+      } else { S.cardIdx++; resetCardState(); }
       return rerender();
     }
 

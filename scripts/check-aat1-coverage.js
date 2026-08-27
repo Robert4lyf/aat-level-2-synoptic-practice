@@ -107,10 +107,14 @@ Object.keys(S.SYLLABUS.units).forEach(key => {
 
 /* ── 2. Coverage of shipped outcomes ─────────────────────────────────────── */
 let lessons = [];
+/* Hoisted: the cheat-sheet ratchet further down needs the groups too, and
+   `content` was scoped to the block below. */
+let learnGroups = [];
 const contentFile = path.join(ROOT, 'aat1-learn-data.js');
 if (fs.existsSync(contentFile)) {
   const content = require(contentFile);
-  (content.AAT1_LEARN_PATH || []).forEach(group => {
+  learnGroups = content.AAT1_LEARN_PATH || [];
+  learnGroups.forEach(group => {
     (group.lessons || []).forEach(l => lessons.push(l));
   });
 }
@@ -155,6 +159,27 @@ OUTCOMES_SHIPPED.forEach(m => {
     errors.push(`${unit.code} LO${m.outcome} is declared shipped but ${missing.length} of ${cs.length} scope items have no lesson: ${missing.slice(0, 6).map(c => c.id).join(', ')}${missing.length > 6 ? '…' : ''}`);
   }
 });
+
+/* ── Every shipped outcome ends in a cheat sheet ──────────────────────────────
+   A reader revising does not reread eight steps; they want the outcome on one
+   page. Declaring an outcome shipped without one leaves that gap invisible: the
+   coverage ratchet above is satisfied by teaching alone and would stay green
+   forever. So the sheet is part of what shipping an outcome means. */
+const sheetOf = {};
+learnGroups.forEach(g => { if (g.cheatsheet) sheetOf[g.outcome] = g.cheatsheet; });
+OUTCOMES_SHIPPED.forEach(m => {
+  const cs = sheetOf[m.outcome];
+  const where = `${m.unit.toUpperCase()} LO${m.outcome}`;
+  if (!cs) { errors.push(`${where} is declared shipped and has no cheat sheet. Every shipped outcome ends in one.`); return; }
+  if (!cs.id) errors.push(`${where}: its cheat sheet has no id.`);
+  if (!cs.card) errors.push(`${where}: its cheat sheet has no card.`);
+  /* Singular on purpose — a sheet that could grow a second card is a lesson
+     with the questions left off. */
+  if (cs.cards) errors.push(`${where}: its cheat sheet has a "cards" array. A cheat sheet is one card, in "card".`);
+});
+const sheetIds = Object.values(sheetOf).map(c => c.id).filter(Boolean);
+if (new Set(sheetIds).size !== sheetIds.length) errors.push('Two cheat sheets share an id.');
+notes.push(`${sheetIds.length} cheat sheets, one per shipped outcome.`);
 
 /* Practice coverage is reported rather than enforced. A bank that reaches every
    scope item would be enormous; what matters is that every OUTCOME is
