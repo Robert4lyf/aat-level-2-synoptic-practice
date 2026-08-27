@@ -3632,6 +3632,48 @@
       weighting: 17,
       blurb: 'What the job is, why accuracy and timeliness are treated as duties, and the ethical and legal obligations that come with handling other people’s money and information.',
       lessons: O1,
+    cheatsheet: {
+      id: 'L1-BKFN-1S',
+      title: 'The bookkeeper\'s role on one page',
+      card: {
+        h: 'Outcome 1 at a glance',
+        p: [
+          'The whole of this outcome is one idea from four directions: other people act on what you record, so being right and being on time are both part of the job.',
+        ],
+        split: {
+          left: {
+            title: 'When the numbers are wrong',
+            items: [
+              'Customers billed twice, or not at all',
+              'Suppliers overpaid, or underpaid and chasing',
+              'Profit and tax overstated or understated',
+              'Goodwill lost, and your own position at risk',
+            ],
+          },
+          right: {
+            title: 'When the numbers are late',
+            items: [
+              'A right answer after the deadline is not a partial success',
+              'Payment terms run from the invoice date',
+              'Late invoicing delays the money coming in',
+              'Decisions get made from stale reports',
+            ],
+          },
+        },
+        table: {
+          headers: ['The five principles', 'What it asks of you'],
+          rows: [
+            ['Integrity', 'Be straightforward and honest'],
+            ['Objectivity', 'No bias, no undue influence from anyone'],
+            ['Professional competence and due care', 'Could I do this properly — and did I?'],
+            ['Confidentiality', 'What you learn at work stays there'],
+            ['Professional behaviour', 'Nothing that discredits the profession'],
+          ],
+        },
+        callout: { kind: 'key', text: 'When a scenario describes something you cannot resolve, the answer is almost never "decide and make a note". It is to check with your supervisor.' },
+        examtrap: 'Failing to report a suspicion of money laundering is itself a criminal offence, so staying out of it is not the safe option. And a manager pressing you to change a figure engages objectivity and integrity at once.',
+      },
+    },
     },
     {
       id: 'bkfn-2',
@@ -3640,6 +3682,30 @@
       weighting: 10,
       blurb: 'The smallest outcome and the one everything else rests on: the six kinds of item, the fact that every transaction moves at least two of them, and the equation that holds it all together.',
       lessons: O2,
+    cheatsheet: {
+      id: 'L1-BKFN-2S',
+      title: 'Financial transactions on one page',
+      card: {
+        h: 'Outcome 2 at a glance',
+        p: [
+          'Classify the item first, and how the records must treat it follows. Every transaction then changes at least two of those items — if you can see only one effect, you have not finished describing it.',
+        ],
+        formula: 'Assets = Liabilities + Capital · Income − Expenses = Profit or Loss · Profit increases capital, a loss decreases it',
+        table: {
+          headers: ['The six kinds', 'What it is'],
+          rows: [
+            ['Asset', 'Something the business has or is owed'],
+            ['Liability', 'Something the business owes'],
+            ['Income', 'What the business earns'],
+            ['Expense', 'What the business spends to earn it'],
+            ['Capital', 'What the business owes its owner'],
+            ['Profit or loss', 'Income less expenses, which moves capital'],
+          ],
+        },
+        callout: { kind: 'key', text: 'Capital is a liability in character — the business owes it to the owner. That is why money put in increases capital and money taken out reduces it.' },
+        examtrap: 'A bank overdraft is a liability, not an asset. And paying a supplier is not an expense — the expense happened when the goods arrived; the payment settles what was already owed.',
+      },
+    },
     },
     {
       id: 'bkfn-3',
@@ -3648,6 +3714,50 @@
       weighting: 29,
       blurb: 'The practical heart of the first half: cash against credit, the nine documents and the order they arrive in, preparing an invoice and checking one, and getting them all into the daybooks.',
       lessons: O3,
+    cheatsheet: {
+      id: 'L1-BKFN-3S',
+      title: 'Customers and suppliers on one page',
+      card: {
+        h: 'Outcome 3 at a glance',
+        p: [
+          'Nearly a third of the assessment. One transaction leaves a trail of paper, and most of the marks are for knowing which document does what and which way round it points.',
+        ],
+        table: {
+          headers: ['Stage', 'Document', 'Who issues it'],
+          rows: [
+            ['Before anything moves', 'Quotation', 'The seller'],
+            ['', 'Purchase order', 'The buyer'],
+            ['When goods move', 'Delivery note', 'The seller'],
+            ['', 'Goods received note', 'The buyer'],
+            ['When money is owed', 'Invoice — adds to what is owed', 'The seller'],
+            ['', 'Credit note — subtracts from it', 'The seller'],
+            ['When it is paid', 'Remittance advice', 'The payer'],
+          ],
+        },
+        formula: 'Net + VAT = Total · VAT at ' + VAT + ' is one fifth of the net, so Total = Net × 1.2 · Cross cast: net column + VAT column = total column',
+        split: {
+          left: {
+            title: 'Which daybook',
+            items: [
+              'Invoice we issued → sales daybook',
+              'Invoice we received → purchases daybook',
+              'Credit note we issued → sales returns',
+              'Credit note we received → purchases returns',
+            ],
+          },
+          right: {
+            title: 'Checking an invoice received',
+            items: [
+              'Quantities against the goods received note',
+              'Prices against the quotation or the order',
+              'The arithmetic, line by line and in total',
+              'Wrong? Query it and expect a credit note',
+            ],
+          },
+        },
+        examtrap: 'Receivables are assets and payables are liabilities — reversing them is the commonest error here. Invoice the quantity DELIVERED, not the quantity ordered. And a daybook that cross casts is not a daybook that is right: it proves the arithmetic, not the entries.',
+      },
+    },
     },
     {
       id: 'bkfn-4',
@@ -3656,6 +3766,46 @@
       weighting: 34,
       blurb: 'The largest outcome. Money actually moving: the cash book and its two sides, closing cash in hand and at the bank, reading a bank statement against your own record, and working out what each customer and supplier owes.',
       lessons: O4,
+    cheatsheet: {
+      id: 'L1-BKFN-4S',
+      title: 'Receipts and payments on one page',
+      card: {
+        h: 'Outcome 4 at a glance',
+        p: [
+          'The largest outcome in the unit. Money in on one side, money out on the other — deciding which side comes before any arithmetic.',
+        ],
+        formula: 'Opening amount + receipts − payments = closing amount · Opening owed + invoices − credit notes − payments = owed now',
+        split: {
+          left: {
+            title: 'In the cash book, not on the statement',
+            items: [
+              'Cheques written and not yet presented',
+              'Receipts paid in and not yet cleared',
+              'The business knows; the bank has not caught up',
+            ],
+          },
+          right: {
+            title: 'On the statement, not in the cash book',
+            items: [
+              'Bank charges and interest',
+              'Direct debits and standing orders',
+              'Dishonoured cheques',
+              'No document ever reached the business',
+            ],
+          },
+        },
+        table: {
+          headers: ['Watch for', 'Because'],
+          rows: [
+            ['A negative closing cash in hand', 'Always an error — usually a receipt on the payments side'],
+            ['Two closing figures, not one', 'Cash in hand and cash at the bank are separate columns'],
+            ['VAT on a receipt settling an invoice', 'Already recorded in the sales daybook — do not analyse it twice'],
+            ['A bank statement\'s column headings', 'Written from the bank\'s point of view, so they can look reversed'],
+          ],
+        },
+        examtrap: 'Invoices increase what a customer owes; credit notes and payments both reduce it. And a payment tells you how much came in — only a remittance advice tells you which invoices it covered.',
+      },
+    },
     },
     {
       id: 'bkfn-5',
@@ -3664,6 +3814,47 @@
       weighting: 10,
       blurb: 'The modern half of the unit, and last for a reason: software automates the work the earlier outcomes taught by hand. What it adds, what it does not fix, and what it puts at risk.',
       lessons: O5,
+    cheatsheet: {
+      id: 'L1-BKFN-5S',
+      title: 'Accounting software on one page',
+      card: {
+        h: 'Outcome 5 at a glance',
+        p: [
+          'This outcome comes last because software automates what the rest of the unit taught by hand. Knowing the manual version is what lets you judge whether the automated answer is right.',
+        ],
+        split: {
+          left: {
+            title: 'What software gives you',
+            items: [
+              'Data in without retyping — bank feeds, scanning, imports',
+              'Documents produced and sent automatically',
+              'Reports kept current: aged analyses, trial balance, VAT',
+              'One entry updating every record at once',
+            ],
+          },
+          right: {
+            title: 'What it does not give you',
+            items: [
+              'Judgement — it suggests and flags; a person decides',
+              'Protection from a wrong figure entered confidently',
+              'Correct recurring entries when the amount or timing changes',
+              'Any check on data that was wrong going in',
+            ],
+          },
+        },
+        table: {
+          headers: ['Choice', 'The distinguishing weakness'],
+          rows: [
+            ['Off-the-shelf', 'May not fit an unusual business'],
+            ['Bespoke', 'Costs more and takes longer to build'],
+            ['Traditional, installed', 'Tied to the machine it is on'],
+            ['Cloud', 'Depends on an internet connection'],
+          ],
+        },
+        callout: { kind: 'key', text: 'Back-ups are the one safeguard covering crashes, corruption, accidental deletion and fire alike — but a back-up on the same machine protects against none of them.' },
+        examtrap: 'The two disadvantages the specification names are specific: errors when a recurring entry\'s amount or frequency changes, and manual errors that the software carries through everywhere at once.',
+      },
+    },
     },
   ];
 
