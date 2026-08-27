@@ -471,6 +471,19 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-split-col li { font-size: 14px; line-height: 1.62; color: var(--a3-ink-2); margin-bottom: 6px; }
 
 .a3-tablewrap { overflow-x: auto; margin: 20px 0; -webkit-overflow-scrolling: touch; }
+
+/* A cheat sheet has to fit the screen. Lesson tables carry a 420px floor and
+   scroll sideways when the content needs it, which is a fair trade while a
+   reader is working through a lesson — but the whole claim of a reference card
+   is that it can be taken in at a glance, and a three-column table with its
+   last column past the right edge is not that. Dropping the floor lets the
+   cells wrap instead, and the type comes down a step to buy the space back. */
+.a3-cheat .a3-table { min-width: 0; font-size: 13.5px; }
+.a3-cheat .a3-table th, .a3-cheat .a3-table td { padding: 9px 10px; }
+/* Left as auto rather than visible: with min-width gone a cheat-sheet table
+   should always fit, but an unbreakable cell would otherwise burst the card
+   instead of scrolling inside it. */
+.a3-cheat .a3-tablewrap { overflow-x: auto; }
 .a3-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
 .a3-table th, .a3-table td {
   text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--a3-line);

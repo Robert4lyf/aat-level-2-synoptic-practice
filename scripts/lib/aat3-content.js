@@ -64,4 +64,23 @@ function lessons(groups) {
   return out;
 }
 
-module.exports = { ROOT, FILES, load, lessons };
+/* Cheat sheets, as lesson-shaped objects so the CARD-level checks can walk them
+   with the same code.
+
+   They are deliberately not in `lessons()`. A cheat sheet claims no syllabus
+   criteria and carries no questions, so the coverage ratchet and the
+   "every lesson has check questions" rule must not see it — but its single card
+   is content a reader will rely on, so the shape, depth, arithmetic, table and
+   prose gates all should. Keeping the two lists separate is what lets each
+   checker choose. */
+function sheets(groups) {
+  const out = [];
+  groups.forEach(g => {
+    const cs = g.cheatsheet;
+    if (!cs) return;
+    out.push({ id: cs.id, title: cs.title, cards: cs.card ? [cs.card] : [], check: [], criteria: [], isSheet: true, outcome: g.outcome, unit: g.unit });
+  });
+  return out;
+}
+
+module.exports = { ROOT, FILES, load, lessons, sheets };

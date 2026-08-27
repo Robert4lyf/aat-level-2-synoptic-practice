@@ -507,6 +507,51 @@
         ],
       },
     ]),
+    cheatsheet: {
+      id: 'L3-FAPS-1S',
+      title: 'The principles on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 1 at a glance',
+        p: [
+          'Five per cent of the assessment, and the reasoning the other 95% runs on. Everything here answers one question: who are the accounts for, and what does that oblige the preparer to do?',
+        ],
+        table: {
+          headers: ['The seven principles', 'In one line'],
+          rows: [
+            ['Accruals', 'Report the period the event happened in, not the period the cash moved'],
+            ['Going concern', 'Assume trading continues for the foreseeable future'],
+            ['Business entity', 'The business is separate from its owner'],
+            ['Materiality', 'It matters if leaving it out could change a reader\'s decision'],
+            ['Consistency', 'Same item, same treatment, period to period'],
+            ['Prudence', 'Caution under uncertainty — do not overstate what you own or earn'],
+            ['Money measurement', 'Record only what money can measure reliably'],
+          ],
+        },
+        split: {
+          left: {
+            title: 'Who the accounts are for',
+            items: [
+              'Existing and potential investors',
+              'Lenders, and other creditors',
+              'All three are outsiders committing money',
+              'Management is excluded — it can ask for anything it wants',
+            ],
+          },
+          right: {
+            title: 'What makes the information useful',
+            items: [
+              'Fundamental: relevance, faithful representation',
+              'Enhancing: comparability, verifiability, timeliness, understandability',
+              'Enhancing characteristics improve useful information',
+              'They cannot rescue information that is neither relevant nor faithful',
+            ],
+          },
+        },
+        callout: { kind: 'key', text: 'Material means it could change a primary user\'s decision — judged on size relative to this business and on what the error does, never on an absolute amount.' },
+        examtrap: 'Prudence is caution under uncertainty, not pessimism: deliberately understating an asset is as much a misstatement as overstating it. And going concern is an assumption to be tested, not a promise.',
+      },
+    },
   };
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -1299,6 +1344,49 @@
         ],
       },
     ],
+    cheatsheet: {
+      id: 'L3-FAPS-2S',
+      title: 'Double entry on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 2 at a glance',
+        p: [
+          'The route a transaction takes: document, daybook, ledger, balance. Get the class of the account right and the side follows from it every time.',
+        ],
+        formula: 'Assets = Liabilities + Capital · Debit: up an asset or expense, down a liability, income or capital · Credit: the reverse',
+        table: {
+          headers: ['Class', 'Normal balance', 'Ends up in'],
+          rows: [
+            ['Assets, current and non-current', 'Debit', 'Statement of financial position'],
+            ['Liabilities, current and non-current', 'Credit', 'Statement of financial position'],
+            ['Equity (capital)', 'Credit', 'Statement of financial position'],
+            ['Income', 'Credit', 'Statement of profit or loss'],
+            ['Expenses', 'Debit', 'Statement of profit or loss'],
+          ],
+        },
+        split: {
+          left: {
+            title: 'Daybook to ledger',
+            items: [
+              'Eight books of prime entry, including the cash book and the journal',
+              'Net → sales or purchases',
+              'VAT → the VAT account: credited on sales, debited on purchases',
+              'Gross → the receivables or payables control account',
+            ],
+          },
+          right: {
+            title: 'Three ledgers, one doing the accounting',
+            items: [
+              'General ledger holds the double entry and the control accounts',
+              'Receivables and payables ledgers hold one account per customer or supplier',
+              'Those two sit outside the double entry — memoranda',
+              'Reconciling control to memorandum is what proves the detail',
+            ],
+          },
+        },
+        examtrap: 'At the period end the class decides the fate: income and expenses are transferred out and restart at nil, while assets, liabilities and capital are carried down. Drawings is capital-class, so it is carried down — it is not an expense and never reaches the profit statement.',
+      },
+    },
   };
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -1880,6 +1968,49 @@
         ],
       },
     ],
+    cheatsheet: {
+      id: 'L3-FAPS-3S',
+      title: 'Non-current assets on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 3 at a glance',
+        p: [
+          'One question runs through the whole outcome: does this cost belong to the asset or to this year? Capitalise up to the point the asset can operate as management intends, and expense everything after it.',
+        ],
+        split: {
+          left: {
+            title: 'Capital — added to the asset',
+            items: [
+              'The purchase price itself',
+              'Delivery and installation',
+              'Testing, and professional fees on acquisition',
+              'Improvements that raise what the asset can do',
+            ],
+          },
+          right: {
+            title: 'Revenue — charged to this year',
+            items: [
+              'Repairs and servicing',
+              'Insurance, fuel and road tax',
+              'Training staff to use it',
+              'Anything after it is ready for use',
+            ],
+          },
+        },
+        table: {
+          headers: ['', 'The entries'],
+          rows: [
+            ['Acquisition', 'Dr the asset at cost · Cr bank or payables'],
+            ['VAT on it', 'Recoverable → the VAT account · irrecoverable → capitalised with the asset'],
+            ['Disposal', 'Cost in on the debit · depreciation and proceeds on the credit'],
+            ['The result', 'Credit balance on disposals = a gain · debit balance = a loss'],
+            ['Part-exchange', 'The allowance IS the proceeds · new cost = allowance + cash'],
+          ],
+        },
+        callout: { kind: 'key', text: 'The asset register carries no debits or credits and is not part of the double entry. Correcting it is never done by journal.' },
+        examtrap: 'Use the accumulated depreciation at the DATE of disposal, which means applying the policy for the final period first. And the specification excludes the VAT treatment of part exchanges from this unit.',
+      },
+    },
   };
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -2217,6 +2348,48 @@
         ],
       },
     ],
+    cheatsheet: {
+      id: 'L3-FAPS-4S',
+      title: 'Depreciation on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 4 at a glance',
+        p: [
+          'Depreciation spreads the cost of an asset across the periods that get the use of it. It is not a valuation of the asset and it sets no money aside, which are the two things it is most often mistaken for.',
+        ],
+        formula: 'Straight line = (Cost − Residual value) ÷ Useful life · Diminishing balance = Carrying amount at the start of the year × the rate',
+        table: {
+          headers: ['', 'Straight line', 'Diminishing balance'],
+          rows: [
+            ['Rate applied to', 'Cost', 'Carrying amount'],
+            ['Charge over time', 'The same every year', 'Falls every year'],
+            ['Residual value', 'Deducted before dividing', 'Not deducted — it is where the writing down stops'],
+            ['Suits', 'Assets used evenly, such as premises', 'Assets losing most value early, such as vehicles'],
+          ],
+        },
+        split: {
+          left: {
+            title: 'Recording it',
+            items: [
+              'Dr depreciation charge · Cr accumulated depreciation',
+              'The cost account is never touched',
+              'The charge is an expense; the credit sits against cost',
+              'Then write it against each line of the asset register',
+            ],
+          },
+          right: {
+            title: 'The year-end order',
+            items: [
+              'Disposals first — the gain or loss needs a final charge',
+              'Then the charge on everything still held',
+              'Then reconcile register to ledger: cost and depreciation separately',
+              'The reconciliation is the check, not a step',
+            ],
+          },
+        },
+        examtrap: 'Depreciation starts when the asset is available for use, not on the invoice date. A full-year policy gives a whole year in the year of purchase and none in the year of sale; pro-rata counts months from availability.',
+      },
+    },
   };
 
 
@@ -2992,6 +3165,51 @@
         ],
       },
     ],
+    cheatsheet: {
+      id: 'L3-FAPS-5S',
+      title: 'Period end adjustments on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 5 at a glance',
+        p: [
+          'Every adjustment here does one job: separate the moment the cash moved from the moment the economic event happened, and report the event.',
+        ],
+        table: {
+          headers: ['Adjustment', 'Journal', 'On the position statement'],
+          rows: [
+            ['Accrued expense', 'Dr the expense · Cr accruals', 'Current liability — had it, not paid'],
+            ['Prepaid expense', 'Dr prepayments · Cr the expense', 'Current asset — paid, not had it'],
+            ['Accrued income', 'Dr accrued income · Cr the income', 'Current asset — earned, not received'],
+            ['Prepaid income', 'Dr the income · Cr deferred income', 'Current liability — received, not earned'],
+            ['Irrecoverable debt', 'Dr irrecoverable debts · Cr receivables control', 'The asset goes'],
+            ['Allowance movement', 'Dr the adjustment · Cr the allowance', 'Shown against receivables, ledger untouched'],
+            ['Closing inventory', 'Dr inventory · Cr cost of sales', 'Current asset, and a deduction from cost'],
+          ],
+        },
+        formula: 'Charge (or credit) to profit = Allowance required at the year end − Allowance brought forward · Inventory = lower of cost and net realisable value, item by item',
+        split: {
+          left: {
+            title: 'Raises profit',
+            items: [
+              'A prepaid expense — cost pushed into next year',
+              'Accrued income — revenue pulled into this year',
+              'Higher closing inventory',
+              'A fall in the allowance',
+            ],
+          },
+          right: {
+            title: 'Lowers profit',
+            items: [
+              'An accrued expense — cost pulled into this year',
+              'Prepaid income — revenue pushed into next year',
+              'Lower closing inventory',
+              'A rise in the allowance, or a debt written off',
+            ],
+          },
+        },
+        examtrap: 'Every accrual and prepayment is reversed at the start of the next period; without the reversal the amount reaches profit in both years. And an allowance stated as a percentage of receivables is the required BALANCE, not the charge — only the movement goes through profit.',
+      },
+    },
   };
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -3883,6 +4101,46 @@
         ],
       },
     ],
+    cheatsheet: {
+      id: 'L3-FAPS-7S',
+      title: 'The financial statements on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 7 at a glance',
+        p: [
+          'One figure crosses between the two statements: profit for the year, which goes to the capital account. Nothing else makes the journey.',
+        ],
+        formula: 'Sales revenue = sales − sales returns · Net purchases = purchases − purchases returns + carriage inwards · Cost of sales = opening inventory + net purchases − closing inventory · Closing capital = opening capital + capital introduced + profit − drawings',
+        table: {
+          headers: ['', 'Sole trader', 'Partnership'],
+          rows: [
+            ['Down to profit for the year', 'Identical', 'Identical'],
+            ['Then', 'Straight to the capital account', 'The appropriation account divides it first'],
+            ['Financed by', 'One capital balance', 'A capital AND a current account per partner'],
+            ['Appropriation order', '—', 'Add interest on drawings, deduct salaries and interest on capital, share the rest'],
+          ],
+        },
+        split: {
+          left: {
+            title: 'Above gross profit',
+            items: [
+              'Carriage inwards, inside net purchases',
+              'Opening and closing inventory',
+              'Sales and purchases returns',
+            ],
+          },
+          right: {
+            title: 'Below it',
+            items: [
+              'Carriage outwards — a cost of selling',
+              'Discounts received, as income; discounts allowed, as an expense',
+              'Depreciation, irrecoverable debts, the allowance movement',
+            ],
+          },
+        },
+        examtrap: 'Drawings never appear among the expenses — they reduce capital on the other statement. Goods drawn are credited to purchases at COST. And the profit-sharing ratio applies only to the residual profit, after the salaries and interest on capital have come out.',
+      },
+    },
   };
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -4606,6 +4864,53 @@
         ],
       },
     ],
+    cheatsheet: {
+      id: 'L3-FAPS-6S',
+      title: 'The trial balance on one card',
+      icon: '🗂️',
+      card: {
+        h: 'Outcome 6 at a glance',
+        p: [
+          'A trial balance that agrees proves the arithmetic of double entry held. It proves nothing about whether the entries reached the right accounts — which is what the six errors below are.',
+        ],
+        split: {
+          left: {
+            title: 'It catches these',
+            items: [
+              'One side of an entry missing',
+              'Different amounts on the two sides',
+              'A balance in the wrong column — out by twice',
+              'A column cast wrongly',
+              'A balance left off the listing',
+            ],
+          },
+          right: {
+            title: 'It misses these six',
+            items: [
+              'Omission — the transaction never went in',
+              'Commission — wrong account, right type',
+              'Principle — wrong TYPE of account',
+              'Original entry — wrong figure on both sides',
+              'Reversal — right accounts, wrong way round',
+              'Compensating — two errors that cancel',
+            ],
+          },
+        },
+        table: {
+          headers: ['Step', 'The rule'],
+          rows: [
+            ['Suspense', 'Goes on whichever side is SHORT · credits larger → a debit'],
+            ['Correcting a reversal', 'Takes twice the original figure'],
+            ['Correcting an original entry', 'Takes the difference only'],
+            ['Adjustments columns', 'Agree with each other · unrelated to the ledger totals'],
+            ['Extending', 'Net balance and adjustment first, then carry one figure'],
+            ['Closing inventory', 'Debit the position pair · credit the profit pair'],
+            ['Profit', 'Profit DEBIT and position CREDIT · a loss reverses both'],
+          ],
+        },
+        examtrap: 'A suspense balance left at the year end means an error is still unfound, sitting among figures about to be published. And completion of the extended trial balance for a partnership is excluded from this unit — knowing why it differs is not.',
+      },
+    },
   };
 
   var PATH = [LO1, LO2, LO3, LO4, LO5, LO6, LO7];

@@ -3707,6 +3707,51 @@
       outcomeTitle: 'Understand legislation requirements relating to VAT',
       weighting: 25,
       lessons: ORIENTATION.concat(LESSONS_LO1),
+      cheatsheet: {
+        id: 'L3-TPFB-1S',
+        title: 'The VAT rules on one card',
+        icon: '🗂️',
+        card: {
+          h: 'Outcome 1 at a glance',
+          p: [
+            'A quarter of the assessment, and what the other four rest on. The money is not the business\'s — it is held, recorded, and handed over on time.',
+          ],
+          table: {
+            headers: ['', 'The figure', 'The rule'],
+            rows: [
+              ['Registration', '£' + T.registration.threshold.value.toLocaleString('en-GB'), 'Rolling 12 months, reconsidered each month end. Notify within ' + T.registration.historicTest.notifyWithinDays.value + ' days'],
+              ['Deregistration', '£' + T.registration.deregistrationThreshold.value.toLocaleString('en-GB'), 'Looks FORWARD 12 months, where registration looks back'],
+              ['Filing and paying', 'One month and 7 days', 'The money must REACH HMRC by then, not merely be sent'],
+              ['Records', T.records.retentionYears.value + ' years', 'The duty to keep them stands apart from the duty to pay'],
+              ['Cash accounting', '£' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString('en-GB') + ' to join', 'Fixes cash flow — VAT follows payment rather than invoice'],
+              ['Annual accounting', '£' + T.schemes.annualAccounting.joinThreshold.value.toLocaleString('en-GB') + ' to join', 'Fixes administration: one return, instalments across the year'],
+              ['Flat rate', '£' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' excluding VAT to join', 'Fixes record keeping. Leaving locks you out for 12 months'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'The five categories of supply',
+              items: [
+                'Standard rated, at ' + T.rates.standard.value + '%',
+                'Reduced rated, at ' + T.rates.reduced.value + '%',
+                'Zero rated — taxable at ' + T.rates.zero.value + '%, input tax recoverable',
+                'Exempt — no charge, and input tax not recoverable',
+                'Outside the scope — not a taxable supply at all',
+              ],
+            },
+            right: {
+              title: 'When it goes wrong',
+              items: [
+                'Late return: a point each time, then a fixed penalty at the threshold',
+                'Late payment: a penalty at day 15, another at day 30, then daily interest',
+                'Failure to notify: a percentage of the tax, set by behaviour and disclosure',
+                'A deliberate error is separately notified whatever its size',
+              ],
+            },
+          },
+          examtrap: 'Asked whether a supply is "taxable", zero-rated counts as YES — it is taxable at ' + T.rates.zero.value + '%. Only exempt and outside-the-scope are not. Zero-rated sales therefore count towards the registration threshold, so a business can be obliged to register while never charging a penny of VAT.',
+        },
+      },
     },
     {
       unit: 'tpfb',
@@ -3716,6 +3761,50 @@
       outcomeTitle: 'Calculate VAT',
       weighting: 30,
       lessons: LESSONS_LO2,
+      cheatsheet: {
+        id: 'L3-TPFB-2S',
+        title: 'Calculating VAT on one card',
+        icon: '🗂️',
+        card: {
+          h: 'Outcome 2 at a glance',
+          p: [
+            'The largest outcome in the unit, and nearly all of it is one question in different clothes: which figures belong in this period, and at what amount?',
+          ],
+          formula: 'Net → VAT: Net × ' + T.rates.standard.value + '% · Gross → VAT at ' + T.rates.standard.value + '%: Gross ÷ 6 · Gross → VAT at ' + T.rates.reduced.value + '%: Gross ÷ 21 · Gross → Net: Gross ÷ 1.20 · VAT due = output tax − input tax',
+          table: {
+            headers: ['Adjustment', 'What to do with it'],
+            rows: [
+              ['Prompt payment discount', 'VAT follows the money — taken, VAT reduced; not taken, it stands'],
+              ['Fuel scale charge', 'A GROSS figure, and it is OUTPUT tax'],
+              ['Gifts of goods', 'Past £' + T.gifts.goodsLimit.value + ' a year per person, output tax on the TOTAL cost'],
+              ['Bad debt relief', T.badDebtRelief.debtAgeMonths.value + ' months overdue and written off · added to INPUT tax'],
+              ['Postponed VAT accounting', 'Added to output tax AND input tax — timing, not a relief'],
+              ['Credit notes', 'Reduce whichever side issued them — the most-missed item'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'The tax point decides the period',
+              items: [
+                'Basic: removal, availability or completion',
+                'Overridden by an EARLIER payment or invoice',
+                'Or by an invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days after the basic point',
+                'Invoices must be issued within ' + T.invoicing.issueWithinDays.value + ' days',
+              ],
+            },
+            right: {
+              title: 'When input tax cannot be reclaimed',
+              items: [
+                'Exempt supplies, unless the de minimis test is passed',
+                'De minimis: at most £' + T.partialExemption.deMinimisPerMonth.value + ' a month on average AND at most half of total input tax',
+                'Both limbs have to hold, not either one',
+                'Blocked: business entertainment, and cars available for private use',
+              ],
+            },
+          },
+          examtrap: 'Applying ' + T.rates.standard.value + '% to a gross figure overstates the VAT by a fifth: a "total including VAT" needs ÷ 6. And select by tax point rather than posting date — the software will not flag the difference.',
+        },
+      },
     },
     {
       unit: 'tpfb',
@@ -3725,6 +3814,50 @@
       outcomeTitle: 'Review and verify VAT returns',
       weighting: 20,
       lessons: LESSONS_LO3,
+      cheatsheet: {
+        id: 'L3-TPFB-3S',
+        title: 'Reviewing the return on one card',
+        icon: '🗂️',
+        card: {
+          h: 'Outcome 3 at a glance',
+          p: [
+            'An error found before submission costs nothing. The same error found afterwards costs a correction, interest, possibly a penalty, and a conversation — which is why checking is a step rather than a formality.',
+          ],
+          formula: 'Box 3 = Box 1 + Box 2 · Box 5 = Box 3 − Box 4 · A negative Box 5 means a repayment is due',
+          table: {
+            headers: ['Box', 'What goes in it'],
+            rows: [
+              ['1', 'Output tax on sales'],
+              ['3', 'Total output tax — calculated for you'],
+              ['4', 'Input tax reclaimed, including bad debt relief'],
+              ['5', 'The net figure — calculated for you'],
+              ['6', 'Total sales excluding VAT, INCLUDING zero-rated and exempt'],
+              ['7', 'Total purchases excluding VAT, EXCLUDING wages and PAYE'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'Method 1 — adjust the next return',
+              items: [
+                'Net error at or under £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB'),
+                'Or under ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6, capped at £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB'),
+                'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the period the error is DISCOVERED in',
+                'Careless or innocent errors only',
+              ],
+            },
+            right: {
+              title: 'Method 2 — notify separately',
+              items: [
+                'Anything above those limits',
+                'Every deliberate error, whatever its size',
+                'On form ' + T.errorCorrection.separateNotificationForm,
+                'Nothing at all can be corrected more than ' + T.errorCorrection.timeLimitYears.value + ' years back',
+              ],
+            },
+          },
+          examtrap: 'A net error means net: overstatements and understatements are set against each other before the test is applied. And prompt unprompted disclosure with reasonable care taken can mean no penalty at all, where the same error found by HMRC later will not be free.',
+        },
+      },
     },
     {
       unit: 'tpfb',
@@ -3734,6 +3867,50 @@
       outcomeTitle: 'Understand principles of payroll',
       weighting: 15,
       lessons: LESSONS_LO4,
+      cheatsheet: {
+        id: 'L3-TPFB-4S',
+        title: 'Payroll on one card',
+        icon: '🗂️',
+        card: {
+          h: 'Outcome 4 at a glance',
+          p: [
+            'The same shape as VAT — register, record, report, pay, be penalised — with different details throughout. The details are what is assessed.',
+          ],
+          formula: 'Gross pay − pre-tax deductions = Taxable gross pay · Gross pay − ALL deductions = Net pay · Due to HMRC = PAYE + employee NI + employer NI + student loan',
+          table: {
+            headers: ['Form', 'What it is', 'When'],
+            rows: [
+              ['FPS', 'Reports pay and deductions', 'On or before every payday'],
+              ['EPS', 'Reports reductions and recoveries', 'By the 19th of the following month'],
+              ['P45', 'Given to a leaver', 'On leaving'],
+              ['P60', 'Year-end summary for each employee still employed', 'By 31 May'],
+              ['P11D', 'Benefits in kind', '6 July — to HMRC and to the employee'],
+              ['Payment to HMRC', 'The deductions plus employer NI', '22nd electronically, 19th otherwise'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'Worth having straight',
+              items: [
+                'Payroll records: ' + T.payroll.records.retentionYears.value + ' years — VAT records are ' + T.records.retentionYears.value,
+                'Employer NI is paid to HMRC but never appears as a payslip deduction',
+                'Quarterly PAYMENT never means quarterly REPORTING',
+                'RTI-capable software is compulsory, and free tools exist',
+              ],
+            },
+            right: {
+              title: 'The reconciliation that proves it',
+              items: [
+                'Gross pay + employer NI + employer pension',
+                'equals',
+                'Net pay + due to HMRC + the pension provider + other third parties',
+                'Out by exactly one payslip figure usually means it was counted twice',
+              ],
+            },
+          },
+          examtrap: 'Taxable gross pay is not gross pay less all deductions. It is gross pay less only the deductions made BEFORE tax, so a post-tax deduction reduces net pay without reducing the tax.',
+        },
+      },
     },
     {
       unit: 'tpfb',
@@ -3743,6 +3920,49 @@
       outcomeTitle: 'Report information within the organisation',
       weighting: 10,
       lessons: LESSONS_LO5,
+      cheatsheet: {
+        id: 'L3-TPFB-5S',
+        title: 'Reporting and ethics on one card',
+        icon: '🗂️',
+        card: {
+          h: 'Outcome 5 at a glance',
+          p: [
+            'The outcome that uses all the others. Nothing worked out in Outcomes 1 to 4 is useful until the right person knows it in time to act on it.',
+          ],
+          split: {
+            left: {
+              title: 'The five fundamental principles',
+              items: [
+                'Integrity — straightforward and honest',
+                'Objectivity — no bias, conflict or undue influence',
+                'Professional competence and due care',
+                'Confidentiality',
+                'Professional behaviour',
+              ],
+            },
+            right: {
+              title: 'Where each one bites here',
+              items: [
+                '"The client told me to" is not a defence',
+                'Seniority is not a legitimate need to know',
+                'A confident answer outside your competence is worse than saying you will check',
+                'A return is the business\'s declaration — it approves before submission',
+              ],
+            },
+          },
+          table: {
+            headers: ['The situation', 'What it needs'],
+            rows: [
+              ['An error found in a past return', 'Present the test and the numbers; the decision is not yours'],
+              ['A change in legislation', 'What changed, from when, what it means for us, what we do now'],
+              ['A tax payment falling due', 'Early warning — large, lumpy, non-negotiable, and entirely predictable'],
+              ['A question outside your competence', 'Say so, and find who can answer it'],
+              ['Payroll matters', 'They concern identifiable individuals — need to know, not rank'],
+            ],
+          },
+          examtrap: 'VAT sitting in the current account looks exactly like the business\'s own money. Businesses rarely decide to spend it; they simply spend from a balance that was never theirs, which is why the warning has to arrive before the money does.',
+        },
+      },
     },
   ];
 

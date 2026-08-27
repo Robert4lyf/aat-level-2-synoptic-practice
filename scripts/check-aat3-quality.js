@@ -40,6 +40,15 @@ const notes = [];
 const lessons = [];
 (AAT3_LEARN_PATH || []).forEach(u => (u.lessons || []).forEach(l => lessons.push(l)));
 
+/* Cheat sheets are not lessons — they claim no criteria and carry no questions,
+   so the coverage ratchet and the check-questions rule must not see them. Their
+   single card is content a reader leans on, though, so every CARD-level gate
+   below walks `carded` rather than `lessons`: shape, depth, arithmetic, table
+   geometry, prose mannerisms and near-duplication all apply to a sheet exactly
+   as they do to a lesson. */
+const sheetList = CONTENT.sheets(AAT3_LEARN_PATH || []);
+const carded = lessons.concat(sheetList);
+
 /* Every question in the module, wherever it lives. The practice bank gets the
    same scrutiny as the lesson checks — and the shared stem map is what stops
    the bank quietly re-asking a lesson, which would make it a memory test. */
@@ -286,7 +295,7 @@ if (mcqCount) {
 
 /* ── 2. Worked examples ──────────────────────────────────────────────────── */
 let workedCount = 0, tryCount = 0;
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     if (!c.worked) return;
     workedCount++;
@@ -374,7 +383,7 @@ function checkShape(val, spec, where) {
   });
 }
 
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     Object.keys(c).forEach(k => {
       if (!CARD_SHAPE[k]) { errors.push(`${l.id} card ${ci + 1}: unknown field "${k}" — the renderer will ignore it silently.`); return; }
@@ -399,7 +408,7 @@ const PROMISES = {
   example: /\bexample below\b/i,
   formula: /\bformula below\b/i,
 };
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     const prose = Array.isArray(c.p) ? c.p.join(' ') : String(c.p || '');
     Object.keys(PROMISES).forEach(el => {
@@ -502,7 +511,7 @@ CONTENT.FILES.forEach(({ file }) => {
    being added, so it is a ratchet against a new one rather than a backlog. */
 [['table', t => (t.headers ? [t.headers] : []).concat(t.rows || [])],
  ['example', e => e.rows || []]].forEach(([field, rowsOf]) => {
-  lessons.forEach(l => {
+  carded.forEach(l => {
     (l.cards || []).forEach((c, ci) => {
       const el = c[field];
       if (!el) return;
@@ -533,10 +542,10 @@ CONTENT.FILES.forEach(({ file }) => {
    All 17 examples in the module satisfied it once the two were fixed. */
 const MONEY_CELL = /£\s?\d|\d{1,3},\d{3}|\d+\.\d{2}/;
 let gridsChecked = 0, headersChecked = 0;
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach(c => { if (c.table) gridsChecked++; if (c.example) { gridsChecked++; headersChecked++; } });
 });
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     const rows = c.example && c.example.rows;
     if (!Array.isArray(rows) || !Array.isArray(rows[0])) return;
@@ -591,7 +600,7 @@ function evalChain(expr) {
 }
 
 let sumsChecked = 0;
-lessons.forEach(l => {
+carded.forEach(l => {
   flat({ cards: l.cards, check: l.check }).split(/(?<=[.;])\s/).forEach(() => {});
   const text = flat({ cards: l.cards, check: l.check });
   const found = text.match(CHAIN) || [];
@@ -650,7 +659,7 @@ CONTENT.FILES.filter(f => f.taxGoverned).forEach(({ file }) => {
 
 /* ── 4. Teaching depth ───────────────────────────────────────────────────── */
 let cardCount = 0, proseTotal = 0, teachTotal = 0;
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     cardCount++;
     const label = `${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}")`;
@@ -671,6 +680,11 @@ lessons.forEach(l => {
     }
     if (!c.h) errors.push(`${l.id} card ${ci + 1}: no heading.`);
   });
+});
+
+/* Lessons only. A cheat sheet with check questions would be a lesson with the
+   teaching removed. */
+lessons.forEach(l => {
   if (!(l.check || []).length) errors.push(`${l.id}: no check questions.`);
 });
 
@@ -683,7 +697,7 @@ const {
   neverHits, cadenceHits, signpostCount,
 } = require('./lib/prose-mannerisms.js');
 
-lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+carded.forEach(l => (l.cards || []).forEach((c, ci) => {
   const text = (c.p || []).join(' ');
   const found = cadenceHits(text);
   if (found.length > CADENCE_MAX_PER_CARD) {
@@ -694,7 +708,7 @@ lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
 
 let proseWords = 0;
 const proseBits = [];
-lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
+carded.forEach(l => (l.cards || []).forEach((c, ci) => {
   (c.p || []).forEach(par => {
     const text = String(par);
     proseBits.push(text);
@@ -763,7 +777,7 @@ const DUPLICATE_AT = 0.45;
 const MIN_BIGRAMS = 25;          // too short to judge, and short cards repeat by nature
 
 const fingerprints = [];
-lessons.forEach(l => {
+carded.forEach(l => {
   (l.cards || []).forEach((c, ci) => {
     const g = bigrams(flat(c));
     if (g.size >= MIN_BIGRAMS) {
