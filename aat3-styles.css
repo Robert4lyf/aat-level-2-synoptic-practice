@@ -727,3 +727,48 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   body[data-subject="aat3"] .a3-node:hover { transform: none; }
   body[data-subject="aat3"] .a3-opt:hover:not(:disabled) { transform: none; }
 }
+
+/* ── Multi-part task ─────────────────────────────────────────────────────────
+   A dataset that stays on screen while several answers are given. The table
+   scrolls inside its own wrapper rather than widening the page, and the answer
+   rows are stacked so a 390px screen never puts a label and its input on the
+   same line when there is not room for both. */
+.a3-task-brief { color: var(--a3-ink-2); }
+.a3-dataset { margin: 18px 0; border: 1px solid var(--a3-line); border-radius: var(--a3-r); overflow: hidden; background: var(--a3-surface-2); }
+.a3-dataset-t {
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--a3-brand-ink); font-weight: 700; padding: 12px 14px 0;
+}
+.a3-dataset .a3-tablewrap { margin: 10px 0 0; }
+/* MIN-WIDTH ZERO, unlike a lesson table, and the reason is what the table is
+   for. A lesson table is read; a task table is worked from. At the module's
+   default 420px minimum the amounts column sat off the right edge of a 390px
+   screen, so the reader had to scroll sideways to see the very figures the
+   question asks them to add up — and scroll back to type. Wrapping a supplier
+   name over two lines costs far less than that. The amounts themselves never
+   wrap, so a figure can always be read in one piece. */
+.a3-dataset .a3-table { min-width: 0; font-size: 13px; background: var(--a3-surface); table-layout: auto; }
+.a3-dataset .a3-table th, .a3-dataset .a3-table td { padding: 8px 9px; }
+.a3-dataset .a3-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.a3-dataset-note { padding: 10px 14px; font-size: 13px; color: var(--a3-ink-3); line-height: 1.6; }
+
+.a3-parts { display: flex; flex-direction: column; gap: 12px; margin: 18px 0; }
+.a3-part {
+  padding: 14px; border-radius: var(--a3-r);
+  border: 1px solid var(--a3-line); background: var(--a3-surface);
+}
+.a3-part-l { font-size: 14.5px; font-weight: 650; color: var(--a3-ink); margin-bottom: 10px; line-height: 1.5; }
+.a3-part-in { display: flex; }
+.a3-part-opts { display: flex; flex-wrap: wrap; gap: 7px; }
+.a3-part.is-missing { border-color: var(--a3-gold); background: var(--a3-gold-wash); }
+.a3-part.is-right { border-color: var(--a3-ok); background: var(--a3-ok-wash); }
+.a3-part.is-wrong { border-color: var(--a3-bad); background: var(--a3-bad-wash); }
+.a3-part-v { margin-top: 10px; font-size: 14px; font-weight: 700; }
+.a3-part.is-right .a3-part-v { color: var(--a3-ok); }
+.a3-part.is-wrong .a3-part-v { color: var(--a3-bad); }
+.a3-part-exp { margin: 7px 0 0; font-size: 13.5px; line-height: 1.65; color: var(--a3-ink-2); }
+.a3-part-status {
+  margin-bottom: 10px; padding: 10px 13px; border-radius: 11px;
+  background: var(--a3-gold-wash); color: var(--a3-gold);
+  font-size: 13.5px; font-weight: 650;
+}

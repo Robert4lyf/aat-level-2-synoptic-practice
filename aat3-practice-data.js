@@ -1247,6 +1247,101 @@
       ans: 0,
       exp: 'A financial interest in a particular outcome is a self-interest threat to objectivity — the risk that judgement is influenced by something other than the facts. Integrity would be engaged too if the technician acted on it, but the threat arises the moment the incentive exists.',
     },
+
+    /* ── Exam-shaped tasks ───────────────────────────────────────────────
+       One dataset, several answers, and rows in the dataset that do not
+       belong in any of them.
+
+       Every other question in this bank hands over the figures it wants
+       operated on: already classified, already converted, none of them
+       spare. That trains the arithmetic and nothing else — and the
+       arithmetic is the easy half. What the assessment actually asks is
+       which rows count, which are excluded from which box, and which are
+       not a taxable supply at all. Those decisions are invisible in a
+       question that has already made them for you.
+
+       So the rows here are deliberately mixed: wages and local authority
+       rates that stay out of Box 7, client entertaining that goes into
+       Box 7 while its VAT stays out of Box 4, exempt and zero-rated sales
+       that belong in Box 6 despite carrying no output tax, and a credit
+       note that reduces rather than adds. The figures are net, so the
+       conversion is the reader's to make.
+
+       Numbered from T- rather than P-, so the bank a question came from is
+       readable in a progress record without a lookup. */
+    {
+      id: 'T-2-01', unitKey: 'tpfb', lo: 2,
+      criteria: ['TPFB-2.3.11', 'TPFB-2.3.12', 'TPFB-2.3.13', 'TPFB-3.2.5'],
+      type: 'task',
+      q: 'Complete the VAT return for the quarter ended 31 March.',
+      brief: 'All amounts in the day books are **net of VAT**. The business is registered and accounts for VAT on the invoice basis.',
+      datasets: [
+        {
+          title: 'Sales day book — quarter ended 31 March',
+          headers: ['Date', 'Customer', 'Net £', 'Rate'],
+          rows: [
+            ['12 Jan', 'Ashdown Ltd', '14,600.00', 'Standard'],
+            ['28 Jan', 'Brayford Care Homes', '5,200.00', 'Exempt'],
+            ['09 Feb', 'Calder & Co', '8,400.00', 'Standard'],
+            ['21 Feb', 'Dunmore Foods', '3,750.00', 'Zero'],
+            ['06 Mar', 'Ashdown Ltd — credit note', '(1,200.00)', 'Standard'],
+            ['19 Mar', 'Eastgate Ltd', '6,050.00', 'Standard'],
+          ],
+        },
+        {
+          title: 'Purchases day book — quarter ended 31 March',
+          headers: ['Date', 'Supplier or expense', 'Net £', 'Rate'],
+          rows: [
+            ['15 Jan', 'Farrow Supplies', '9,300.00', 'Standard'],
+            ['02 Feb', 'Local authority rates', '2,400.00', 'Outside the scope'],
+            ['17 Feb', 'Greenway Motors — client entertaining', '880.00', 'Standard'],
+            ['25 Feb', 'Halstead Ltd', '4,120.00', 'Standard'],
+            ['11 Mar', 'Wages', '18,500.00', 'Outside the scope'],
+            ['22 Mar', 'Ivory Print', '1,530.00', 'Zero'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Box 1 — VAT due on sales and other outputs',
+          type: 'numeric', unit: '£', answer: 5570,
+          exp: 'Only the standard-rated lines carry output tax, and the credit note reduces them: 14,600.00 + 8,400.00 − 1,200.00 + 6,050.00 = 27,850.00 net, and at ' + T.rates.standard.value + '% that is £5,570.00. The exempt and zero-rated sales carry none.',
+        },
+        {
+          label: 'Box 4 — VAT reclaimed on purchases and other inputs',
+          type: 'numeric', unit: '£', answer: 2684,
+          exp: 'Standard-rated purchases are 9,300.00 + 880.00 + 4,120.00, but the VAT on client entertaining is blocked, so only 9,300.00 + 4,120.00 = 13,420.00 is recoverable. At ' + T.rates.standard.value + '% that is £2,684.00.',
+        },
+        {
+          label: 'Box 5 — net VAT to pay HMRC',
+          type: 'numeric', unit: '£', answer: 2886,
+          exp: 'Box 3 less Box 4. Box 3 is Box 1 plus Box 2, and there are no acquisitions here, so Box 3 is £5,570.00 and the net figure is 5,570.00 − 2,684.00 = £2,886.00.',
+        },
+        {
+          label: 'Box 6 — total value of sales, excluding VAT',
+          type: 'numeric', unit: '£', answer: 36800,
+          exp: 'Box 6 takes every output, not only the taxed ones: 27,850.00 standard-rated after the credit note, plus 3,750.00 zero-rated, plus 5,200.00 exempt, is £36,800.00. Leaving the exempt sale out is the common error, and it is the one figure a reviewer can check against the accounts.',
+        },
+        {
+          label: 'Box 7 — total value of purchases, excluding VAT',
+          type: 'numeric', unit: '£', answer: 15830,
+          exp: 'Wages and local authority rates are both left out of Box 7. What remains is 9,300.00 + 880.00 + 4,120.00 + 1,530.00 = £15,830.00 — the entertaining is a purchase and belongs here even though its VAT does not reach Box 4.',
+        },
+        {
+          label: 'The client entertaining of £880.00 net — how is it treated?',
+          type: 'choice',
+          options: [
+            'Included in Box 7, and its VAT is not reclaimed in Box 4',
+            'Left out of Box 7, and its VAT is not reclaimed in Box 4',
+            'Included in Box 7, and its VAT is reclaimed in Box 4',
+            'Left out of Box 7, and its VAT is reclaimed in Box 4',
+          ],
+          answer: 0,
+          exp: 'Two separate rules meet on one line. Business entertaining is a real purchase, so its net value belongs in Box 7; input tax on it is blocked, so its VAT never reaches Box 4. Treating the block as though the expense had not happened understates Box 7.',
+        },
+      ],
+      exp: 'The arithmetic here is the easy half. What the return depends on is which rows count: the credit note reduces the standard-rated total rather than adding to it, the exempt and zero-rated sales still belong in Box 6, wages and rates stay out of Box 7 altogether, and entertaining sits in Box 7 while its VAT stays out of Box 4.',
+    },
   ];
 
   /* Grouped for the by-outcome picker. */

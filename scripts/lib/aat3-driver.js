@@ -118,6 +118,22 @@ function answerCurrent(el, choose) {
     click(el, 'gapsubmit'); return;
   }
 
+  /* A multi-part task. Every part has to be filled before the submit does
+     anything, so this fills all of them — the typed parts with a figure and the
+     choice parts with an offered pill — rather than stopping at the first. */
+  if (nodes(el, 'tasksubmit').length) {
+    nodes(el, 'taskinput').forEach(n => { n.value = '0'; n.fire('input'); });
+    const byPart = new Map();
+    nodes(el, 'taskpick').forEach(n => {
+      const p = n.getAttribute('data-p');
+      if (!byPart.has(p)) byPart.set(p, []);
+      byPart.get(p).push(n);
+    });
+    byPart.forEach(list => at(list).fire('click'));
+    click(el, 'tasksubmit');
+    return;
+  }
+
   const input = nodes(el, 'numinput')[0];
   if (input) { input.value = '0'; input.fire('input'); click(el, 'numsubmit'); return; }
 

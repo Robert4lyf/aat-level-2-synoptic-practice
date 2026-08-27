@@ -37,6 +37,10 @@
     tfPicks: {},
     gapPicks: {},
     numInput: '',
+    taskInputs: {},      // multi-part task: part index -> what was typed
+    taskPicks: {},       // multi-part task: part index -> chosen option
+    taskResults: null,   // multi-part task: per-part verdicts, once graded
+    taskNudge: false,    // a submit was attempted with parts still blank
     score: 0,
     revealed: 0,         // worked-example steps shown
     tryShown: false,
@@ -794,6 +798,8 @@
         }).join('') + '</span>';
       }).join('') + '</div>';
       if (S.answered === null) h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="gapsubmit">Submit</button>';
+    } else if (t === 'task') {
+      h += taskHtml(q);
     }
 
     if (S.answered !== null) {
@@ -802,6 +808,152 @@
         (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
     }
     return h;
+  }
+
+  /* ── Multi-part task ───────────────────────────────────────────────────────
+     The exam's spine, and the one shape this module did not have.
+
+     Every other question type hands the reader exactly the figures it wants
+     operated on, already classified, in the order they are needed. A task hands
+     over a table that includes rows which do NOT belong in the answer, and asks
+     for several figures derived from it — with the table still on screen while
+     they work. Selecting and classifying the rows is the assessed skill; the
+     arithmetic is the easy half, and it was the only half being practised.
+
+     ALL PARTS OR NOTHING, WITH PER-PART FEEDBACK. `score` is a count of
+     questions and the progress store keeps (attempted, correct) pairs that
+     merge across devices by MAX, so fractional credit has nowhere to live. It
+     is also the honest reading: a VAT return with one box wrong is a wrong VAT
+     return. What the reader needs is to see WHICH box — that is what the
+     per-part verdicts are for, and they are shown whether or not the whole
+     task was right.
+
+     WHY A FAILED SUBMIT REPAINTS. The other multi-answer types return silently
+     when something is unanswered, which is survivable across three true/false
+     rows and confusing across six boxes. Typing does not repaint — that would
+     take the caret out of the field mid-number — so a live counter is not
+     available; instead the attempt itself marks every blank part. */
+  /* A cell that is an amount: digits to two decimal places, with or without
+     grouping and with or without the brackets that mark a credit. Deliberately
+     narrower than "contains a digit", which would catch "12 Jan" and align a
+     whole column of dates to the right. */
+  var MONEY_CELL = /^\(?£?\s?\d[\d,]*\.\d{2}\)?$/;
+
+  function taskHtml(q) {
+    var parts = q.parts || [];
+    var graded = S.answered !== null;
+
+    if (!S._taskOrder) {
+      S._taskOrder = parts.map(function (p) {
+        return p.type === 'choice'
+          ? shuffle((p.options || []).map(function (_, i) { return i; }))
+          : null;
+      });
+    }
+
+    var h = '';
+    if (q.brief) h += '<p class="a3-p a3-task-brief">' + md(q.brief) + '</p>';
+
+    (q.datasets || []).forEach(function (d) {
+      h += '<div class="a3-dataset">';
+      if (d.title) h += '<div class="a3-dataset-t">' + md(d.title) + '</div>';
+      /* Which columns hold money, worked out from the rows rather than declared
+         in the data. A task's whole job is to be read across and added up, and
+         amounts that wrap mid-figure or sit ragged against a left edge are
+         harder to total than they need to be. Deriving it means a new dataset
+         gets the alignment without anyone remembering to ask for it. */
+      var rows = d.rows || [];
+      var numCol = (d.headers || rows[0] || []).map(function (_, ci) {
+        var vals = rows.map(function (r) { return String(r[ci] == null ? '' : r[ci]); })
+                       .filter(function (v) { return v !== ''; });
+        return vals.length > 0 && vals.every(function (v) { return MONEY_CELL.test(v); });
+      });
+      var cell = function (tag, x, ci) {
+        return '<' + tag + (numCol[ci] ? ' class="a3-num"' : '') + '>' + md(x) + '</' + tag + '>';
+      };
+      h += '<div class="a3-tablewrap"><table class="a3-table">';
+      if (d.headers) {
+        h += '<thead><tr>' + d.headers.map(function (x, ci) {
+          return cell('th', x, ci);
+        }).join('') + '</tr></thead>';
+      }
+      h += '<tbody>' + rows.map(function (r) {
+        return '<tr>' + r.map(function (x, ci) { return cell('td', x, ci); }).join('') + '</tr>';
+      }).join('') + '</tbody></table></div>';
+      if (d.note) h += '<div class="a3-dataset-note">' + md(d.note) + '</div>';
+      h += '</div>';
+    });
+
+    h += '<div class="a3-parts">';
+    parts.forEach(function (p, pi) {
+      var done = partAnswered(p, pi);
+      var right = graded && S.taskResults ? S.taskResults[pi] : false;
+      var cls = graded ? (right ? ' is-right' : ' is-wrong')
+                       : (S.taskNudge && !done ? ' is-missing' : '');
+      h += '<div class="a3-part' + cls + '">' +
+        '<div class="a3-part-l">' + md(p.label) + '</div>';
+
+      if (p.type === 'choice') {
+        var order = S._taskOrder[pi] || (p.options || []).map(function (_, i) { return i; });
+        h += '<div class="a3-part-opts">' + order.map(function (oi) {
+          var on = S.taskPicks[pi] === oi;
+          var c = on ? ' on' : '';
+          if (graded && oi === p.answer) c = ' is-right';
+          else if (graded && on) c = ' is-wrong';
+          return '<button class="a3-pill' + c + '" data-a3="taskpick" data-p="' + pi + '" data-o="' + oi + '"' +
+            (graded ? ' disabled' : '') + '>' + esc(p.options[oi]) + '</button>';
+        }).join('') + '</div>';
+      } else {
+        h += '<div class="a3-part-in">' +
+          '<input class="a3-input" inputmode="decimal" data-a3="taskinput" data-p="' + pi + '"' +
+          ' value="' + esc(S.taskInputs[pi] == null ? '' : S.taskInputs[pi]) + '"' +
+          ' placeholder="' + esc(p.unit || '') + '"' +
+          ' aria-label="' + esc(p.label) + '"' + (graded ? ' disabled' : '') + '></div>';
+      }
+
+      if (graded) {
+        h += '<div class="a3-part-v">' +
+          (right ? 'Correct' : 'Answer — ' + esc(partAnswerText(p))) + '</div>';
+        if (p.exp) h += '<p class="a3-part-exp">' + md(p.exp) + '</p>';
+      }
+      h += '</div>';
+    });
+    h += '</div>';
+
+    if (!graded) {
+      var missing = parts.filter(function (p, pi) { return !partAnswered(p, pi); }).length;
+      if (S.taskNudge && missing) {
+        h += '<div class="a3-part-status">' + missing + ' of ' + parts.length +
+          (missing === 1 ? ' answer is still blank' : ' answers are still blank') + '</div>';
+      }
+      h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="tasksubmit">Submit all ' +
+        parts.length + '</button>';
+    }
+    return h;
+  }
+
+  function partAnswered(p, pi) {
+    return p.type === 'choice' ? S.taskPicks[pi] !== undefined : num(S.taskInputs[pi]) !== null;
+  }
+  /* Money is printed the way the dataset prints it — grouped, to the penny —
+     rather than as the bare number the answer is keyed to. A reader told the
+     answer was "£5570" has to translate it back to the "£5,570.00" in the day
+     book to see where it came from, and the whole point of the verdict is that
+     they can trace it. Typing either form is accepted: num() strips both the
+     symbol and the commas before comparing. */
+  function partAnswerText(p) {
+    if (p.type === 'choice') return (p.options || [])[p.answer];
+    if (p.unit === '£') {
+      return '£' + Number(p.answer).toLocaleString('en-GB', {
+        minimumFractionDigits: 2, maximumFractionDigits: 2,
+      });
+    }
+    return String(p.answer) + (p.unit ? ' ' + p.unit : '');
+  }
+  function partCorrect(p, pi) {
+    if (p.type === 'choice') return S.taskPicks[pi] === p.answer;
+    var g = num(S.taskInputs[pi]);
+    return g !== null && Math.abs(g - p.answer) < 0.005;
   }
 
   /* ── Done screen ─────────────────────────────────────────────────────────── */
@@ -1063,8 +1215,12 @@
   function startLesson(id) {
     S.mode = 'lesson';
     S.lessonId = id; S.screen = 'lesson'; S.cardIdx = 0; S.phase = 'teach';
-    S.qIdx = 0; S.answered = null; S.picked = null; S.score = 0;
-    S.tfPicks = {}; S.gapPicks = {}; S.numInput = ''; S._order = null; S._gapOrder = null;
+    S.qIdx = 0; S.score = 0;
+    /* Delegated rather than repeated. This function listed every per-question
+       field by hand, which meant a new question type had to be remembered in
+       two places, and the one that was forgotten would leak the previous
+       lesson's answers into the first question of the next. */
+    resetQState();
     S.revealed = 0; S.tryShown = false; S.tryInput = ''; S.tryResult = null;
   }
   function resetCardState() {
@@ -1073,6 +1229,15 @@
   function resetQState() {
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
     S._order = null; S._gapOrder = null;
+    /* Three of these four are load-bearing and proved so: remove the reset of
+       taskInputs, taskPicks or taskNudge and check-aat3-task.js §6 fails, with
+       the next task arriving pre-filled, pre-selected, or already scolding the
+       reader about blanks. `taskResults` is the exception — it is only ever
+       read once a task is graded, and `answered` is set to null on the line
+       above, so a stale value cannot reach the screen. It is cleared anyway
+       rather than left lying about for whoever next changes that condition. */
+    S.taskInputs = {}; S.taskPicks = {}; S.taskResults = null; S.taskNudge = false;
+    S._taskOrder = null;
   }
   function finish() {
     var checks = currentQuestions();
@@ -1096,14 +1261,17 @@
     _host = el;
     el.querySelectorAll('[data-a3]').forEach(function (n) {
       var act = n.getAttribute('data-a3');
-      if (act === 'tryinput' || act === 'numinput') {
+      if (act === 'tryinput' || act === 'numinput' || act === 'taskinput') {
         n.addEventListener('input', function () {
-          if (act === 'tryinput') S.tryInput = n.value; else S.numInput = n.value;
+          if (act === 'tryinput') S.tryInput = n.value;
+          else if (act === 'numinput') S.numInput = n.value;
+          else S.taskInputs[+n.getAttribute('data-p')] = n.value;
         });
         n.addEventListener('keydown', function (e) {
           if (e.key === 'Enter') {
             e.preventDefault();
-            var b = el.querySelector('[data-a3="' + (act === 'tryinput' ? 'trycheck' : 'numsubmit') + '"]');
+            var target = act === 'tryinput' ? 'trycheck' : act === 'numinput' ? 'numsubmit' : 'tasksubmit';
+            var b = el.querySelector('[data-a3="' + target + '"]');
             if (b) b.click();
           }
         });
@@ -1197,6 +1365,19 @@
     if (act === 'numsubmit') {
       var g2 = num(S.numInput);
       S.answered = g2 !== null && Math.abs(g2 - q.answer) < 0.005;
+      if (S.answered) S.score++;
+      return rerender();
+    }
+    if (act === 'taskpick') {
+      S.taskPicks[+n.getAttribute('data-p')] = +n.getAttribute('data-o');
+      return rerender();
+    }
+    if (act === 'tasksubmit') {
+      var tparts = (q && q.parts) || [];
+      if (!tparts.length) return;
+      if (!tparts.every(partAnswered)) { S.taskNudge = true; return rerender(); }
+      S.taskResults = tparts.map(partCorrect);
+      S.answered = S.taskResults.every(Boolean);
       if (S.answered) S.score++;
       return rerender();
     }

@@ -86,6 +86,115 @@ const flat = o => {
   return out;
 };
 
+/* A multi-part task: one dataset, several answers derived from it.
+
+   THE RULE THAT MATTERS IS THE LAST ONE. A task exists so the reader has to
+   decide which rows count — a dataset every one of whose rows feeds an answer
+   is a single-step question wearing a table, which is the shape this type was
+   added to get away from. So a task must carry at least one row that no part
+   needs, and it is asserted rather than trusted to authoring discipline.
+
+   Ragged rows are fatal here for the same reason they are in a lesson table:
+   the renderer emits one cell per entry, so a short row slides every figure
+   below it under the wrong heading, and a reader working from the wrong column
+   gets a defensible wrong answer with nothing to show them why. */
+function taskErrors(q, where) {
+  const out = [];
+  const ds = q.datasets;
+  if (!Array.isArray(ds) || !ds.length) out.push(`${where}: a task needs at least one dataset.`);
+  else ds.forEach((d, di) => {
+    if (!Array.isArray(d.rows) || !d.rows.length) { out.push(`${where} dataset ${di}: no rows.`); return; }
+    const width = Array.isArray(d.headers) ? d.headers.length : d.rows[0].length;
+    d.rows.forEach((r, ri) => {
+      if (!Array.isArray(r)) { out.push(`${where} dataset ${di} row ${ri}: not an array.`); return; }
+      if (r.length !== width) {
+        out.push(`${where} dataset ${di} row ${ri}: ${r.length} cells against ${width} headers — every figure below it renders under the wrong heading.`);
+      }
+    });
+  });
+
+  const parts = q.parts;
+  if (!Array.isArray(parts) || parts.length < 2) {
+    out.push(`${where}: a task needs at least 2 parts — with one it is a numeric question carrying a table.`);
+    return out;
+  }
+  parts.forEach((p, pi) => {
+    const pw = `${where} part ${pi + 1}`;
+    if (!p.label) out.push(`${pw}: no label.`);
+    if (!p.exp) out.push(`${pw}: no explanation — a reader who got this part wrong learns nothing from a bare answer.`);
+    else if (p.exp.length < MIN_EXP_CHARS) {
+      warnings.push(`${pw}: explanation is only ${p.exp.length} chars — too short to teach anything.`);
+    }
+    const t = p.type || 'numeric';
+    if (t === 'numeric') {
+      if (!Number.isFinite(p.answer)) { out.push(`${pw}: numeric answer is not a finite number.`); return; }
+      /* The same guard the standalone numeric questions carry: a part whose
+         stated answer never appears in its own explanation has one of the two
+         wrong, and the arithmetic checker cannot tell which. */
+      const plain = String(p.answer);
+      const grouped = Number(p.answer).toLocaleString('en-GB');
+      const twoDp = Number(p.answer).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const e = String(p.exp || '');
+      if (e && e.indexOf(plain) === -1 && e.indexOf(grouped) === -1 && e.indexOf(twoDp) === -1) {
+        out.push(`${pw}: the stated answer ${grouped} never appears in its own explanation — one of the two is wrong.`);
+      }
+    } else if (t === 'choice') {
+      if (!Array.isArray(p.options) || p.options.length < 2) { out.push(`${pw}: needs at least 2 options.`); return; }
+      if (!Number.isInteger(p.answer) || p.answer < 0 || p.answer >= p.options.length) {
+        out.push(`${pw}: answer index ${p.answer} is out of range.`);
+        return;
+      }
+      const norm = p.options.map(o => String(o).toLowerCase().replace(/\s+/g, ' ').trim());
+      if (new Set(norm).size !== norm.length) out.push(`${pw}: two options are the same text.`);
+      /* The length cue, policed here exactly as it is on a standalone MCQ. A
+         choice part is a multiple-choice question in every respect that makes a
+         key guessable, and letting it escape the guard because it sits inside a
+         task would put the module's only unguarded options in its newest type. */
+      const lens = p.options.map(o => String(o).length);
+      const others = lens.filter((_, i) => i !== p.answer);
+      const avg = others.reduce((a, b) => a + b, 0) / others.length;
+      const ratio = lens[p.answer] / avg;
+      const gap = Math.abs(lens[p.answer] - avg);
+      if ((ratio > 1.5 || ratio < 0.67) && gap >= MIN_CUE_GAP_CHARS) {
+        out.push(`${pw}: the correct option is ${ratio.toFixed(2)}× the average distractor (${Math.round(gap)} characters apart) — make the options structurally parallel.`);
+      }
+      const hasReason = o => REASON_CLAUSE.test(String(o));
+      const keyReason = hasReason(p.options[p.answer]);
+      const otherReasons = p.options.filter((o, i) => i !== p.answer && hasReason(o)).length;
+      if (otherReasons > 0 && !keyReason && otherReasons === p.options.length - 1) {
+        out.push(`${pw}: every distractor carries a "because…" clause and the correct option does not.`);
+      }
+      if (keyReason && otherReasons === 0 && p.options.length > 2) {
+        out.push(`${pw}: only the correct option carries a "because…" clause.`);
+      }
+    } else {
+      out.push(`${pw}: unknown part type "${t}".`);
+    }
+  });
+
+  /* Is there anything in the data the reader must decide to leave out? An
+     AMOUNT that appears in a dataset cell and in no part's explanation is doing
+     that job. Matching on the cells rather than on a hand-kept list means the
+     check follows the data when the data is edited.
+
+     MONEY-SHAPED CELLS ONLY, and that is the whole check. A first version
+     accepted any cell containing a digit, so "12 Jan" counted as a figure the
+     reader had to leave out — every dated day book satisfied the rule
+     automatically and a task in which every amount fed an answer would have
+     sailed through. Measured before trusting: it reported 14 spare cells on the
+     first task, 12 of which were dates. */
+  const MONEYISH = /\d[\d,]*\.\d{2}/;
+  const cells = [];
+  (Array.isArray(ds) ? ds : []).forEach(d => (d.rows || []).forEach(r => (r || []).forEach(c => cells.push(String(c)))));
+  const amounts = cells.filter(c => MONEYISH.test(c));
+  const answerText = parts.map(p => String(p.exp || '')).join(' ');
+  const spare = amounts.filter(c => answerText.indexOf(c.replace(/[()]/g, '')) === -1);
+  if (amounts.length && !spare.length) {
+    out.push(`${where}: every figure in the dataset is used by some part. A task exists to make the reader decide which rows count — add at least one row that belongs in none of the answers.`);
+  }
+  return out;
+}
+
 /* ── 1. Question quality ─────────────────────────────────────────────────── */
 const stems = new Map();
 let mcqCount = 0, cueCount = 0;
@@ -179,6 +288,8 @@ allQuestions.forEach(({ where, q }) => {
       if (trues === 0 || trues === q.statements.length) {
         errors.push(`${where}: every statement has the same answer — the grid is guessable.`);
       }
+    } else if (type === 'task') {
+      taskErrors(q, where).forEach(e => errors.push(e));
     } else if (type === 'gapfill') {
       if (!q.template) { errors.push(`${where}: no template.`); return; }
       if (!Array.isArray(q.gaps) || !q.gaps.length) { errors.push(`${where}: no gaps.`); return; }
