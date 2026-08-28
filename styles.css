@@ -3567,6 +3567,15 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
      least useful of the four. */
   flex-wrap: nowrap;
   overflow: hidden;
+  /* AND FADE WHAT IS CUT, for the reason the tab strip is faded. Trimming to
+     one line was the right call — wrapped, these four small facts doubled the
+     height of every row on a phone. But `overflow: hidden` slices the last
+     chip down its middle, and at 320px it took 43px off "✦ +20 XP" on four
+     subjects at once: a chip cut in half reads as a rendering fault, not as a
+     deliberate trim. The mask is the difference between the two, and it costs
+     nothing when everything fits. */
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 14px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 14px), transparent);
 }
 /* Each chip is one short phrase and must stay on one line: squeezed by the row
    above, "~10 min" broke after the tilde and doubled the row's height. */

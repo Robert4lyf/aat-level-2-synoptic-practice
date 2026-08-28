@@ -118,6 +118,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:layout
+      - name: Check no text is cut off where the reader cannot reach it
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:clipped
       - name: Check the shared header works on the subjects that render themselves
         env:
           REQUIRE_PLAYWRIGHT: '1'
