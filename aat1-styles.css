@@ -122,35 +122,6 @@ body.dark[data-subject="aat1"] {
 
 body[data-subject="aat1"] #app { background: var(--a1-paper); }
 
-/* ── The shared header, compacted ────────────────────────────────────────────
-   index.html's header carries a title, a three-line subtitle, a version chip
-   and four controls. At 390px that is 149px of an 844px display before a word
-   of content, and this module then opened with a hero — so the whole first
-   screen was chrome and the reader scrolled to begin.
-
-   The subtitle and the version chip are read once and never again; the title
-   and the controls stay. Scoped to this subject, so the six others keep the
-   header they have.
-
-   `> header`, NOT `header`: the app bar is a direct child of body, and a
-   descendant selector also matches any <header> a screen renders inside #app.
-   Level 3 learned that the expensive way — these rules shrank a screen heading
-   and beat the class that was meant to size it. */
-body[data-subject="aat1"] > header {
-  padding: 9px 18px;
-  gap: 8px;
-}
-body[data-subject="aat1"] > header .sub,
-body[data-subject="aat1"] > header .version-badge,
-body[data-subject="aat1"] > header .badge { display: none; }
-body[data-subject="aat1"] > header h1 { font-size: .98rem; }
-body[data-subject="aat1"] > header .header-left { gap: 10px; }
-
-@media (max-width: 560px) {
-  body[data-subject="aat1"] > header { padding: 8px 12px; }
-  body[data-subject="aat1"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
-}
-
 /* ── The context bar ─────────────────────────────────────────────────────────
    What the hero was for, in a tenth of the height: which unit you are in, how
    far through it you are, and the way out. The hero cost about 1,100px on a

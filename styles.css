@@ -285,6 +285,62 @@ header, main { position: relative; z-index: 1; }
 }
 
 /* ── HEADER ── */
+/* ══ The app bar, compacted for the three AAT subjects ═══════════════════════
+   index.html's header carries a title, a subtitle, a version chip, a badge and
+   four controls. At 390px that wraps to 206px of an 844px display before a word
+   of content — and each of the AAT subjects then drew its own hero on top,
+   so the whole first screen was chrome and the reader scrolled to begin.
+
+   The subtitle and the version chip are read once and never again; the title
+   and the controls stay. The language subjects keep the header they have,
+   because their screens do not open with a bar of their own and the subtitle is
+   the only thing naming what they are.
+
+   ONE RULE, ONE PLACE. This lived three times — once in aat1-styles.css and
+   once in aat3-styles.css, each scoped to its own subject and neither able to
+   see the other. The header is shared chrome; the rule that compacts it belongs
+   with the shared chrome, or the third copy is the one that gets forgotten.
+
+   `> header`, NOT `header`. The app bar is a direct child of body; a descendant
+   selector also matches any <header> a screen renders inside #app, and these
+   rules were shrinking the type on a screen heading and beating the class that
+   was supposed to size it — Level 3's "Choose a unit" came out at body-text
+   size. The child combinator says what is meant: the bar at the top, and
+   nothing else. */
+body[data-subject="aat"] > header,
+body[data-subject="aat1"] > header,
+body[data-subject="aat3"] > header {
+  padding: 9px 18px;
+  gap: 8px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset;
+}
+body[data-subject="aat"] > header .sub,
+body[data-subject="aat"] > header .version-badge,
+body[data-subject="aat1"] > header .sub,
+body[data-subject="aat1"] > header .version-badge,
+body[data-subject="aat1"] > header .badge,
+body[data-subject="aat3"] > header .sub,
+body[data-subject="aat3"] > header .version-badge,
+body[data-subject="aat3"] > header .badge { display: none; }
+body[data-subject="aat"] > header h1,
+body[data-subject="aat1"] > header h1,
+body[data-subject="aat3"] > header h1 { font-size: .98rem; }
+body[data-subject="aat"] > header .header-left,
+body[data-subject="aat1"] > header .header-left,
+body[data-subject="aat3"] > header .header-left { gap: 10px; }
+
+@media (max-width: 560px) {
+  body[data-subject="aat"] > header,
+  body[data-subject="aat1"] > header,
+  body[data-subject="aat3"] > header { padding: 8px 12px; }
+  body[data-subject="aat"] > header .icon-btn,
+  body[data-subject="aat1"] > header .icon-btn,
+  body[data-subject="aat3"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
+  /* Level 2 alone still shows a badge, and at this width it lands on top of
+     the title it is meant to sit beside. */
+  body[data-subject="aat"] > header .badge { display: none; }
+}
+
 header {
   background: var(--header-bg);
   color: var(--header-text);
@@ -1271,6 +1327,30 @@ header .sub {
   gap: 12px;
   margin-top: 4px;
 }
+/* ── The glossary's letter index ─────────────────────────────────────────────
+   See renderGlossary() for why a search box was not enough on its own. */
+.gloss-index {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin: 0 0 18px;
+}
+.gloss-index-l {
+  display: grid; place-items: center;
+  min-width: 28px; padding: 5px 6px;
+  border-radius: 8px; text-decoration: none;
+  border: 1px solid var(--border);
+  background: var(--bg-card); color: var(--text);
+  font-size: .78rem; font-weight: 700;
+}
+.gloss-index-l:hover { border-color: var(--brand-500); color: var(--brand-600, var(--brand-500)); }
+.gloss-group { margin: 0 0 22px; scroll-margin-top: 12px; }
+.gloss-letter {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 0 0 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.05rem; font-weight: 800; color: var(--text);
+}
+.gloss-letter-n { font-size: .7rem; font-weight: 600; color: var(--subtext); }
+
 .gloss-card {
   background: var(--card);
   border-radius: var(--r-md);
@@ -1475,6 +1555,16 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
 }
 
 /* ── NAV TABS (pill style) ── */
+/* SIX TABS DO NOT FIT A 390px PHONE, and the strip has always scrolled to cope
+   — with the scrollbar hidden and no other sign that it does. "📖 Glossary" was
+   cut off mid-word at the right edge, which reads as a rendering fault rather
+   than as an invitation to swipe. The mask below fades the last few pixels of
+   whatever overflows, which is the difference between "this is broken" and
+   "there is more this way".
+
+   `mask-image` rather than an overlay: an overlay has to be painted in the
+   strip's own background colour, which changes between the themes and between
+   the subjects, and it would sit on top of the tab it is fading. */
 .nav-tabs {
   display: flex;
   gap: 6px;
@@ -1488,6 +1578,8 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-xs);
   flex-shrink: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 26px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 26px), transparent);
 }
 .nav-tabs::-webkit-scrollbar { display: none; }
 .nav-tab {
@@ -1504,6 +1596,11 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   transition: background var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .nav-tab:hover { background: var(--bg-main); color: var(--text); }
+@media (max-width: 560px) {
+  /* Tighter, so five of the six fit before the fade begins. */
+  .nav-tabs { gap: 3px; padding: 4px 5px; margin-bottom: 16px; }
+  .nav-tab { padding: 7px 10px; font-size: .78rem; }
+}
 .nav-tab.active {
   background: var(--accent);
   color: #fff;
@@ -1558,12 +1655,11 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   .nav-tab { font-size: .74rem; padding: 7px 11px; }
   .mode-card-grid { grid-template-columns: 1fr 1fr; }
   .focus-topic-row { grid-template-columns: 1.2rem 4rem 1fr 2.2rem; }
-  .journey-node { width: 60px; height: 60px; min-height: 60px; }
-  .journey-icon { font-size: 1.5rem; }
-  .step-pos-l { transform: translateX(-64px); }
-  .step-pos-r { transform: translateX(64px); }
-  .journey-step-label { font-size: .58rem; max-width: 84px; }
-  .journey-nodes::before { opacity: .35; }
+  .journey-node { width: 40px; height: 40px; min-height: 40px; }
+  .journey-icon { font-size: 1.1rem; }
+  .journey-step { grid-template-columns: 46px 1fr auto; gap: 8px; }
+  .journey-step-label { font-size: .87rem; }
+  .journey-nodes::before { left: 23px; opacity: .35; }
   .unit-action-btns { width: 100%; justify-content: flex-start; }
 }
 
@@ -3273,66 +3369,87 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   overflow: hidden;
   position: relative;
 }
+/* ── The unit header ────────────────────────────────────────────────────────
+   A grid, not a wrapping flex row. As a flex row with `flex-wrap`, the icon,
+   the title block, the star total, the accuracy chip, the buttons and the
+   chevron each claimed a line of their own the moment the width ran out — at
+   390px that was about 200px of header per unit, four times over, before a
+   lesson appeared.
+
+   Two fixed columns and one flexible one: the icon, everything that names the
+   unit, and the controls. The controls stack under the title on a phone rather
+   than pushing it into three lines. */
+/* ── The unit header ────────────────────────────────────────────────────────
+   Six children — icon, title block, star total, accuracy, buttons, chevron —
+   in a flex row that wrapped wherever it ran out of width. At 390px that put
+   almost every one of them on a line of its own: about 200px of header per
+   unit, four units, before a single lesson appeared.
+
+   TWO ROWS, DECIDED RATHER THAN DISCOVERED. Row one is what names the unit and
+   the control that folds it; row two is the progress and the actions. The break
+   is forced by a zero-height flex item rather than left to the wrap, because
+   which children land on which line is the whole point and `flex-wrap` decides
+   it from whatever the title happens to be. */
 .journey-unit-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding-bottom: 14px;
+  gap: 6px 10px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.journey-unit-icon { font-size: 2rem; }
-.journey-unit-title { font-weight: 700; font-size: 1rem; }
-.journey-unit-sub { font-size: .78rem; color: var(--subtext); margin-top: 2px; }
+.journey-unit-icon { font-size: 1.6rem; order: 1; flex: none; }
+.journey-unit-info { order: 2; flex: 1 1 0; min-width: 0; }
+.unit-collapse-chevron { order: 3; }
+.journey-unit-header::after { content: ''; order: 4; flex-basis: 100%; height: 0; }
+.journey-unit-header .unit-star-total { order: 5; }
+.journey-unit-header .journey-unit-acc { order: 6; }
+.journey-unit-header .unit-action-btns { order: 7; }
+.journey-unit-title { font-weight: 700; font-size: .98rem; line-height: 1.25; }
+/* Two lines at most. "0/18 lessons in progress · 90-min unit assessment · ~20%
+   of the synoptic" ran to three on a phone, for facts a reader takes in once. */
+.journey-unit-sub {
+  font-size: .76rem; color: var(--subtext); margin-top: 2px; line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 
 /* ── Winding path container ── */
+/* ── The lesson list ────────────────────────────────────────────────────────
+   One row per lesson on a rail. See the note in renderLearningJourney() for
+   what this replaced and why. */
 .journey-nodes {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 16px 0 8px;
-  gap: 0;
-  /* min-height ensures the spine is visible even with few nodes */
+  padding: 12px 0 8px;
+  gap: 6px;
   min-height: 60px;
 }
 
-/* Dashed vertical spine */
+/* The rail, behind the icons rather than down the middle of the card. */
 .journey-nodes::before {
   content: '';
   position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--border-strong) 0px,
-    var(--border-strong) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-  transform: translateX(-50%);
+  left: 26px;
+  top: 12px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border-strong);
   z-index: 0;
   border-radius: 2px;
-  opacity: .5;
+  opacity: .45;
 }
 
-/* ── Each step (node + label) ── */
+/* ── Each step: icon, then what it is ── */
 .journey-step {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
   align-items: center;
-  width: 108px;
-  margin: 6px 0;
+  gap: 10px;
   transition: transform .12s var(--ease);
 }
-/* Three-position winding: left → centre → right */
-.step-pos-l { transform: translateX(-96px); }
-.step-pos-c { transform: translateX(0); }
-.step-pos-r { transform: translateX(96px); }
 
 /* Story steps get a subtle glow aura */
 .journey-step-story .journey-node {
@@ -3346,17 +3463,18 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  width: 72px;
-  height: 72px;
-  min-height: 72px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  margin: 0 4px;
   padding: 0;
-  border: 3px solid;
+  border: 2px solid;
   cursor: pointer;
   transition: transform .15s var(--ease), box-shadow .15s var(--ease);
   overflow: hidden;
 }
 .journey-node:hover:not(:disabled) {
-  transform: translateY(-4px) scale(1.08);
+  transform: scale(1.08);
   box-shadow: var(--shadow-md);
 }
 
@@ -3394,49 +3512,47 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
 }
 
 /* ── Icon inside node ── */
-.journey-icon { font-size: 1.9rem; line-height: 1; pointer-events: none; }
+.journey-icon { font-size: 1.25rem; line-height: 1; pointer-events: none; }
 
-/* ── Tier badge (above node) ── */
-.journey-step-badge {
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 3px;
-}
-
-/* ── Stars (below node) ── */
+/* ── Stars, at the end of the row ── */
 .journey-stars {
   display: flex;
   gap: 1px;
-  margin-top: 5px;
-  justify-content: center;
-  min-height: 16px;
+  justify-content: flex-end;
+  min-width: 34px;
 }
-.journey-star { font-size: .85rem; color: var(--border-strong); }
+.journey-star { font-size: .72rem; color: var(--border-strong); }
 .journey-star.lit { color: #F59E0B; }
 
-/* ── Label (below stars) ── */
+/* ── What the lesson is ── */
+.journey-step-tx { min-width: 0; }
 .journey-step-label {
-  font-size: .63rem;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 4px;
-  line-height: 1.35;
-  max-width: 100px;
+  font-size: .92rem;
+  font-weight: 650;
+  line-height: 1.3;
   color: var(--text);
-  word-break: break-word;
 }
-.node-locked + * .journey-step-label,
 .journey-step:has(.node-locked) .journey-step-label { color: var(--subtext); opacity: .6; }
 
-/* ── Meta (time · xp) ── */
+/* ── Meta (tier · time · xp · questions) ── */
 .journey-step-meta {
   display: flex;
-  gap: 4px;
-  margin-top: 3px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 6px;
+  margin-top: 2px;
+  align-items: center;
+  /* One line. These are four small facts about a lesson; wrapped, they doubled
+     the height of every available row on a phone. What does not fit is the
+     least useful of the four. */
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+/* Each chip is one short phrase and must stay on one line: squeezed by the row
+   above, "~10 min" broke after the tilde and doubled the row's height. */
+.journey-step-meta > * { white-space: nowrap; flex: none; }
+@media (max-width: 560px) {
+  /* The least useful of the four, and the one the row runs out of width for.
+     Hidden rather than clipped: half a "16Q" reads as a fault. */
+  .node-qcount { display: none; }
 }
 
 /* ── Tier-specific border colours on available nodes ── */
@@ -3846,19 +3962,19 @@ body.dark .topic-card-clinic {
 .dark .tier-tier-story-label { background: rgba(245,158,11,.16); color: #fcd34d; }
 
 /* ── Exam weight chip on unit header ── */
+/* Not the link colour. This is a fact about the unit, not somewhere to go, and
+   in --accent at full weight it read as three links wrapped over three lines. */
 .unit-exam-weight {
   font-size: .68rem;
-  color: var(--accent);
+  color: var(--subtext);
   font-weight: 600;
-  opacity: .8;
 }
 
 /* ── Question count on lesson node ── */
 .node-qcount {
-  font-size: .62rem;
+  font-size: .68rem;
   color: var(--subtext);
   font-weight: 600;
-  margin-top: 2px;
 }
 
 /* ── Lesson drill panel (completion screen) ── */
@@ -4355,7 +4471,7 @@ body.dark .topic-card-clinic {
 }
 .journey-unit-collapsed .journey-nodes,
 .journey-unit-collapsed .journey-unit-progress-bg { display: none; }
-.unit-collapse-chevron { margin-left: auto; font-size: .8rem; color: var(--subtext); flex-shrink: 0; }
+.unit-collapse-chevron { font-size: .8rem; color: var(--subtext); flex-shrink: 0; }
 
 /* ═══════════════════════════════════════════════════════════
    FLASHCARD: PROGRESS BAR & TOPIC TAG

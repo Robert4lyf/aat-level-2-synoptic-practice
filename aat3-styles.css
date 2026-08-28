@@ -839,39 +839,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 }
 .a3-try-row-mock { margin-bottom: 6px; }
 
-/* ══ The shell ═══════════════════════════════════════════════════════════════
-   The shared header is a two-line title, a version badge and three buttons, and
-   at 390px it wraps to about 290px tall. On top of that every Level 3 screen
-   drew its own full-bleed hero — another 450px on the units screen — so 740px
-   of an 844px phone was chrome before a single word of content. You scrolled to
-   begin.
-
-   Both are fixed here, and neither touches another subject: everything is
-   scoped to body[data-subject="aat3"], and app.js already stamps that
-   attribute. The shared header keeps its title and its controls and loses the
-   subtitle and the version chip, which are read once and then never again. */
-/* `> header`, NOT `header`. The app bar is a direct child of body; a descendant
-   selector also matches any <header> a screen renders inside #app, and these
-   rules were shrinking the type on a screen heading and beating the class that
-   was supposed to size it — "Choose a unit" came out at the same size as body
-   text. The child combinator says what is meant: the bar at the top, and
-   nothing else. */
-body[data-subject="aat3"] > header {
-  padding: 9px 18px;
-  gap: 8px;
-  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset;
-}
-body[data-subject="aat3"] > header .sub,
-body[data-subject="aat3"] > header .version-badge,
-body[data-subject="aat3"] > header .badge { display: none; }
-body[data-subject="aat3"] > header h1 { font-size: .98rem; }
-body[data-subject="aat3"] > header .header-left { gap: 10px; }
-
-@media (max-width: 560px) {
-  body[data-subject="aat3"] > header { padding: 8px 12px; }
-  body[data-subject="aat3"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
-}
-
 /* ── The context bar ─────────────────────────────────────────────────────────
    What the hero was for, in a tenth of the height: which unit you are in, how
    far through it you are, and the way out. It replaces the hero on every screen
