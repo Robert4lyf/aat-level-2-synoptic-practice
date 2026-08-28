@@ -3567,6 +3567,15 @@ body:not([data-subject="aat"]) .reference-panel { display: none; }
      least useful of the four. */
   flex-wrap: nowrap;
   overflow: hidden;
+  /* AND FADE WHAT IS CUT, for the reason the tab strip is faded. Trimming to
+     one line was the right call — wrapped, these four small facts doubled the
+     height of every row on a phone. But `overflow: hidden` slices the last
+     chip down its middle, and at 320px it took 43px off "✦ +20 XP" on four
+     subjects at once: a chip cut in half reads as a rendering fault, not as a
+     deliberate trim. The mask is the difference between the two, and it costs
+     nothing when everything fits. */
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 14px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 14px), transparent);
 }
 /* Each chip is one short phrase and must stay on one line: squeezed by the row
    above, "~10 min" broke after the tilde and doubled the row's height. */
@@ -6140,3 +6149,103 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
 .diag-unit-score { font-size:.82rem; font-weight:700; }
 .diag-unit-rec { font-size:.8rem; color:var(--text-muted); }
 
+
+/* ── Cheat sheets on the Learn screen ───────────────────────────────────────
+   A strip below the unit's lessons, not a row among them. A sheet teaches
+   nothing new and cannot be completed, so it carries no star, no lock, no
+   tick and no progress — the whole visual language of the rail above is about
+   getting through, and none of it applies to a page you re-read. */
+.journey-sheets {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-strong);
+}
+.journey-sheets-h {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  font-size: .82rem; font-weight: 700; color: var(--text);
+  margin-bottom: 10px;
+}
+.journey-sheets-n { font-size: .74rem; font-weight: 500; color: var(--subtext); }
+.journey-sheets-grid {
+  display: grid;
+  /* minmax(0, …) rather than minmax(auto, …): an `auto` track floors at its
+     content's own minimum width, so one long unbroken title would push the
+     grid wider than the card and scroll the whole page sideways. */
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 8px;
+}
+.journey-sheet {
+  display: flex; align-items: flex-start; gap: 9px; text-align: left;
+  padding: 10px 11px; cursor: pointer; font-family: inherit;
+  background: var(--card-muted); border: 1px solid var(--border);
+  border-radius: var(--r-md); min-width: 0;
+  transition: border-color .14s ease, transform .14s ease;
+}
+.journey-sheet:hover { border-color: var(--accent); transform: translateY(-1px); }
+.journey-sheet:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.journey-sheet-i { flex: none; font-size: 1.05rem; line-height: 1.3; }
+.journey-sheet-tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.journey-sheet-t {
+  font-size: .84rem; font-weight: 700; color: var(--text); line-height: 1.3;
+}
+/* Two lines, then an ellipsis. One line loses the half of the summary that
+   says which sheet this is; unbounded, a four-line chip beside a one-line
+   chip makes the strip look broken. */
+.journey-sheet-m {
+  font-size: .74rem; color: var(--subtext); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── A cheat-sheet table on a narrow screen ─────────────────────────────────
+   Stacked, not scrolled. A cheat sheet is read at a glance, so a column off the
+   right edge defeats the card it is on — and it defeats it silently, because
+   the wrapper scrolls: at 390px the four-column tables showed three columns and
+   a run of tall empty rows, the fourth column's wrapped text sitting just out
+   of sight. The rows here are independent facts rather than columns anybody
+   adds up, so stacking them costs nothing.
+
+   ONLY ON A SHEET. The same renderer paints lesson tables, which are read in
+   sequence with the teaching around them and are the right shape as they are.
+   Level 1 and Level 3 reached this answer first; this is theirs with Level 2's
+   tokens. */
+@media (max-width: 460px) {
+  .lesson-card-sheet .lesson-table,
+  .lesson-card-sheet .lesson-table tbody,
+  .lesson-card-sheet .lesson-table tr,
+  .lesson-card-sheet .lesson-table td { display: block; width: auto; }
+  .lesson-card-sheet .lesson-table thead { display: none; }
+  .lesson-card-sheet .lesson-table { border-collapse: separate; border-spacing: 0; min-width: 0; }
+  .lesson-card-sheet .lesson-table tr {
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+  }
+  .lesson-card-sheet .lesson-table tr:last-child { border-bottom: 0; }
+  .lesson-card-sheet .lesson-table td { border: 0; padding: 1px 0; }
+  .lesson-card-sheet .lesson-table td:first-child {
+    font-weight: 700; color: var(--text-strong); font-size: .92rem; margin-bottom: 3px;
+  }
+  .lesson-card-sheet .lesson-table td[data-h]:not(:first-child)::before {
+    content: attr(data-h); display: block;
+    font-size: .68rem; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--subtext); font-weight: 700; margin-top: 7px;
+  }
+}
+
+/* A cheat sheet's worked figures, on a narrow screen. Same reasoning as the
+   table above and a different failure: `.lesson-example` clips rather than
+   scrolls, so at 320px the two-column layout's 274px minimum sat inside a
+   240px card and 34px of every row was simply gone — no scrollbar, no
+   overflow, nothing to see. Stacked, the label sits above its figure and the
+   minimum width is one column's. */
+@media (max-width: 460px) {
+  .lesson-card-sheet .lesson-example-table,
+  .lesson-card-sheet .lesson-example-table tbody,
+  .lesson-card-sheet .lesson-example-table tr,
+  .lesson-card-sheet .lesson-example-table td { display: block; width: auto; }
+  .lesson-card-sheet .lesson-example-table tr {
+    padding: 8px 14px; border-bottom: 1px solid var(--border);
+  }
+  .lesson-card-sheet .lesson-example-table tr:last-child { border-bottom: none; }
+  .lesson-card-sheet .lesson-example-table td { border: 0; padding: 1px 0; }
+  .lesson-card-sheet .lesson-example-table td:last-child { margin-top: 2px; }
+}

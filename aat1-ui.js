@@ -37,9 +37,9 @@
 
   /* ── State ───────────────────────────────────────────────────────────────── */
   var S = {
-    screen: 'path',      // 'path' | 'lesson' | 'practice' | 'quiz' | 'done'
-    mode: 'lesson',      // 'lesson' | 'practice' — which set the answer handlers read
-    practiceLo: null,    // an outcome number, or 'mix'
+    screen: 'path',      // 'path' | 'lesson' | 'practice' | 'quiz' | 'done' | 'review'
+    mode: 'lesson',      // 'lesson' | 'practice' | 'mock' | 'review' — which set the answer handlers read
+    practiceLo: null,    // an outcome number, or 'mix', or 'missed'
     practiceQs: [],
     practiceMissed: [],
     lessonId: null,
@@ -54,6 +54,22 @@
     matchSel: null,      // left index currently selected, awaiting a right click
     orderSeq: null,      // working order, as indices into q.items
     numInput: '',
+    /* Ordering is the one question type whose working state is created by the
+       renderer rather than by the reader: `orderSeq` is dealt as a shuffle the
+       moment the question is drawn. So "did they answer it" cannot be read off
+       the picks the way it can everywhere else, and under exam conditions a
+       question nobody touched would otherwise be reported as an attempt. This
+       is the only honest answer to that, and it is set by the move handlers. */
+    orderMoved: false,
+    mockEndsAt: 0,       // timed mock: when the clock runs out
+    mockResults: [],     // timed mock: one record per question answered, for the report and the review
+    mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
+    /* Reviewing the paper just sat. `reviewIdx` is which question is open, or
+       null for the list of them; `reviewLast` is the one to scroll back to on
+       returning to that list. */
+    reviewIdx: null,
+    reviewLast: null,
+    reviewWrongOnly: false,
     /* Which outcome sections are folded shut on the ladder. Session-only on
        purpose: folding is a momentary act of tidying, not progress, and storing
        it would mean a reader who collapsed everything once came back weeks
@@ -65,7 +81,42 @@
     tryResult: null,
   };
 
-  var data = { lessons: {}, xp: 0 };
+  /* `practice` is the lifetime record of practice and mock runs.
+
+     FLAT, NOT NESTED PER UNIT. Level 3's equivalent buckets by unit because it
+     teaches two of them and outcome numbers restart at 1 in each, so one flat
+     map would add FAPS Outcome 1 to TPFB Outcome 1. Level 1 is a single-unit
+     qualification — BKFN is the whole award — so there is no second set of
+     outcome numbers to collide with, and a nesting level that can only ever
+     hold one key is a level of indirection bought with nothing.
+
+     PER OUTCOME AND NOT A TOTAL. Progress backup merges two devices by taking
+     the larger of each number (see progress-backup.js), so a stored grand total
+     would be wrong the moment the two devices practised different outcomes:
+     max(10, 8) is 10 where the truth is 18. Per-outcome counters merge
+     correctly under that rule, and the totals are derived from them, so there
+     is only ever one source of truth. `correct` rather than `wrong` is stored
+     for the same reason — both rise, but only the pair (attempted, correct)
+     survives a max-merge without ever implying a negative count. */
+  var data = { lessons: {}, xp: 0, practice: { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} } };
+
+  function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
+
+  /* EVERY FIELD IS NAMED HERE, and that is the trap in this function: it
+     REBUILDS the record rather than copying it, so a field added anywhere else
+     and not added here is written on the way out and silently gone on the way
+     back in. That exact mistake cost Level 3 its `mockBest`, which survived
+     until the page was reloaded. */
+  function normalisePractice(p) {
+    p = p || {};
+    return {
+      runs: n0(p.runs),
+      mocks: n0(p.mocks),
+      mockBest: n0(p.mockBest),
+      los: (p.los && typeof p.los === 'object') ? p.los : {},
+      qs: (p.qs && typeof p.qs === 'object') ? p.qs : {},
+    };
+  }
 
   function load() {
     try {
@@ -74,8 +125,60 @@
         var p = JSON.parse(raw);
         data.lessons = p.lessons || {};
         data.xp = p.xp || 0;
+        data.practice = normalisePractice(p.practice);
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
+  }
+
+  /* One outcome's running tally. Created on demand so an outcome nobody has
+     practised takes no room in the store and merges as an absence. */
+  function recordPractice(lo, correct) {
+    if (lo === undefined || lo === null) return;
+    var los = data.practice.los;
+    var r = los[lo] || (los[lo] = { attempted: 0, correct: 0 });
+    r.attempted++;
+    if (correct) r.correct++;
+  }
+
+  /* ── Per-question memory ──────────────────────────────────────────────────
+     The outcome counters above can say WHICH OUTCOME went badly and nothing
+     more, so the app could never offer a reader the questions they actually got
+     wrong. This records two timestamps per question — when it was last answered
+     wrongly, and when it was last answered correctly — and a question counts as
+     outstanding while the wrong one is the more recent.
+
+     TWO TIMESTAMPS RATHER THAN A FLAG, AND THAT IS FORCED BY THE MERGE.
+     progress-backup.js merges two devices field by field: numbers by MAX,
+     booleans by OR. An "outstanding" boolean would therefore be sticky — fix a
+     question on the phone, and the laptop's stale `true` resurrects it at the
+     next merge, for ever. Under MAX, the later of two timestamps wins, which is
+     exactly the semantics wanted: whichever device answered it most recently is
+     the one that knows how it went. Order-independent and idempotent, like the
+     rest of the record.
+
+     Clock skew between devices can misorder two attempts made close together.
+     The cost is a question offered again that did not need to be, which is the
+     harmless direction to fail in. */
+  function recordQuestion(qId, correct) {
+    if (!qId) return;
+    var qs = data.practice.qs;
+    var r = qs[qId] || (qs[qId] = {});
+    if (correct) r.r = Date.now(); else r.w = Date.now();
+  }
+  function isOutstanding(r) {
+    return !!(r && n0(r.w) > n0(r.r));
+  }
+  /* The questions still outstanding, most recently missed first, and only those
+     still in the bank — a question that has been rewritten or removed since it
+     was missed is not a question anyone can be asked again. */
+  function missedQuestions() {
+    var qs = data.practice.qs;
+    var byId = {};
+    practiceBank().forEach(function (q) { if (q.id) byId[q.id] = q; });
+    return Object.keys(qs)
+      .filter(function (id) { return byId[id] && isOutstanding(qs[id]); })
+      .sort(function (a, b) { return n0(qs[b].w) - n0(qs[a].w); })
+      .map(function (id) { return byId[id]; });
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
@@ -99,8 +202,12 @@
   /* The single place that decides which question set the answer handlers act
      on. Everything downstream is identical for a lesson check and a practice
      question, so this accessor is all that separates the two modes. */
+  /* THE THREE DRAWN MODES ARE LISTED BY NAME, not inferred from "not a
+     lesson". A mode added later must not be able to fall into either branch by
+     default: the lesson branch reads a lesson that may not exist, and the drawn
+     branch reads a pool that may not have been drawn. */
   function currentQuestions() {
-    if (S.mode === 'practice') return S.practiceQs;
+    if (S.mode === 'practice' || S.mode === 'mock' || S.mode === 'review') return S.practiceQs;
     var l = lessonById(S.lessonId);
     return (l && l.check) || [];
   }
@@ -655,7 +762,14 @@
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
-    var h = '<div class="a1-qhead">Question ' + (S.qIdx + 1) + ' of ' + n + '</div>' +
+    /* THE COUNTER IS SUPPRESSED IN A REVIEW, and not for tidiness. It reads
+       `S.qIdx`, which is where the reader got to in the RUN — and a review is
+       not a run: it opens whichever question was tapped while qIdx still sits
+       at the last question of the finished paper. So a review of question one
+       carried a card headed "Question 30 of 30" directly beneath a bar reading
+       "Question 1 of 30". The bar is the one that knows, and it is already
+       saying it, so this line has nothing left to add. */
+    var h = (isReview() ? '' : '<div class="a1-qhead">Question ' + (S.qIdx + 1) + ' of ' + n + '</div>') +
             '<h2 class="a1-q">' + md(q.q) + '</h2>';
     if (q.intro) h += '<p class="a1-p a1-q-intro">' + md(q.intro) + '</p>';
     if (q.doc) h += docHtml(q.doc);
@@ -674,7 +788,12 @@
         if (S.answered !== null) {
           if (oi === q.ans) cls = ' is-right';
           else if (oi === S.picked) cls = ' is-wrong';
-        }
+        /* CHOSEN, BUT NOT YET MARKED. Outside a mock, choosing IS answering, so
+           this state lasted no longer than the click and nothing drew it. Under
+           exam conditions a pick is a pick until the reader moves on — and with
+           nothing to show for it, the reader taps, sees no change, and concludes
+           the tap did not land. */
+        } else if (oi === S.picked) { cls = ' on'; }
         return '<button class="a1-opt' + cls + '" data-a1="ans" data-i="' + oi + '"' +
           (S.answered !== null ? ' disabled' : '') + '>' +
           '<span class="a1-opt-k">' + String.fromCharCode(65 + di) + '</span>' +
@@ -698,13 +817,13 @@
             }).join('') +
           '</span></div>';
       }).join('') + '</div>';
-      if (S.answered === null) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="tfsubmit">Submit</button>';
+      if (S.answered === null && !isMock()) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="tfsubmit">Submit</button>';
 
     } else if (t === 'numeric') {
       if (S.answered === null) {
-        h += '<div class="a1-try-row">' +
+        h += '<div class="a1-try-row' + (isMock() ? ' a1-try-row-mock' : '') + '">' +
           '<input class="a1-input" inputmode="decimal" data-a1="numinput" value="' + esc(S.numInput) + '" placeholder="' + esc(q.unit || '') + '" aria-label="Your answer">' +
-          '<button class="a1-btn a1-btn-primary" data-a1="numsubmit">Check</button></div>';
+          (isMock() ? '' : '<button class="a1-btn a1-btn-primary" data-a1="numsubmit">Check</button>') + '</div>';
       } else {
         h += '<div class="a1-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
           (S.answered ? 'Correct' : 'The answer is ' + esc(fmtAns(q))) + '</div>';
@@ -725,7 +844,7 @@
             (S.answered !== null ? ' disabled' : '') + '>' + esc(o) + '</button>';
         }).join('') + '</span>';
       }).join('') + '</div>';
-      if (S.answered === null) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="gapsubmit">Submit</button>';
+      if (S.answered === null && !isMock()) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="gapsubmit">Submit</button>';
 
     } else if (t === 'match') {
       /* Click a term, then click its partner. No HTML5 drag: it does not work
@@ -804,9 +923,13 @@
         }).join('') + '</div></div>';
 
       if (!answered) {
+        /* Clear is kept under exam conditions and Submit is not. Clear is the
+           only undo this question type has for a reader who paired the wrong
+           two things; Submit is the reveal, and a mock reveals nothing. */
         h += '<div class="a1-match-actions">' +
           '<button class="a1-btn a1-btn-ghost" data-a1="matchclear">Clear</button>' +
-          '<button class="a1-btn a1-btn-primary" data-a1="matchsubmit">Submit</button></div>';
+          (isMock() ? '' : '<button class="a1-btn a1-btn-primary" data-a1="matchsubmit">Submit</button>') +
+          '</div>';
       } else {
         /* "1 → A, 2 → C" made the reader carry four letters back up the page
            and look each one up. The pairing is written out instead. */
@@ -848,16 +971,36 @@
             '</span>' : '') +
           '</li>';
       }).join('') + '</ol>';
-      if (S.answered === null) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="ordersubmit">Submit</button>';
-      else h += '<div class="a1-match-key">Correct order — ' + q.items.map(function (x, i) {
-        return (i + 1) + '. ' + esc(x);
-      }).join(' · ') + '</div>';
+      /* THE TWO HALVES OF THIS ARE NOT OPPOSITES, and writing them as one
+         if/else made them look it. Adding `&& !isMock()` to the submit sent a
+         mock down the `else`, which prints the correct order — the one question
+         type on the paper that answered itself. Ungraded and graded is the
+         outer question; whether a submit is offered is a separate one. */
+      if (S.answered === null) {
+        if (!isMock()) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="ordersubmit">Submit</button>';
+      } else {
+        h += '<div class="a1-match-key">Correct order — ' + q.items.map(function (x, i) {
+          return (i + 1) + '. ' + esc(x);
+        }).join(' · ') + '</div>';
+      }
     }
 
-    if (S.answered !== null) {
-      h += '<div class="a1-exp-box"><div class="a1-exp-l">Why</div><p class="a1-exp">' + md(q.exp || '') + '</p></div>' +
-        '<button class="a1-btn a1-btn-primary a1-wide" data-a1="nextq">' +
-        (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
+    /* NOTHING IS REVEALED IN A MOCK, and it falls out rather than being
+       arranged: the block below is gated on the question having been graded,
+       and under exam conditions grading does not happen until the reader has
+       already moved on. There is no branch here that could be forgotten. */
+    if (isMock()) {
+      h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="mocknext">' +
+        (S.qIdx === n - 1 ? 'Finish the paper' : 'Next question') + '</button>';
+    } else if (S.answered !== null) {
+      h += '<div class="a1-exp-box"><div class="a1-exp-l">Why</div><p class="a1-exp">' + md(q.exp || '') + '</p></div>';
+      /* A review is the same graded screen with somewhere else to go: it moves
+         through a finished paper rather than through a run, so it brings its
+         own navigation and must not offer this one. */
+      if (!isReview()) {
+        h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="nextq">' +
+          (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
+      }
     }
     return h;
   }
@@ -867,18 +1010,75 @@
     return String(q.answer) + (q.unit && q.unit !== '£' ? ' ' + q.unit : '');
   }
 
+  /* ── How the paper went, outcome by outcome ──────────────────────────────── */
+  function mockReport() {
+    var by = {};
+    (S.mockResults || []).forEach(function (r) {
+      var k = String(r.lo);
+      if (!by[k]) by[k] = { asked: 0, right: 0 };
+      by[k].asked++;
+      if (r.correct) by[k].right++;
+    });
+    var u = unit();
+    var os = (u && u.outcomes) || [];
+    var rows = os.filter(function (o) { return by[String(o.n)]; }).map(function (o) {
+      var b = by[String(o.n)];
+      return {
+        n: o.n, title: o.title, weighting: o.weighting,
+        asked: b.asked, right: b.right,
+        pct: Math.round((b.right / b.asked) * 100),
+      };
+    });
+    if (!rows.length) return '';
+
+    /* Worst first, and worst means most of the paper at stake, not the lowest
+       percentage: the outcome to go back to is the one where the marks are. */
+    var ranked = rows.slice().sort(function (a, b) {
+      return ((100 - b.pct) * b.weighting) - ((100 - a.pct) * a.weighting) || a.n - b.n;
+    });
+    var focus = ranked[0] && ranked[0].pct < 100 ? ranked[0] : null;
+
+    var h = '<div class="a1-mockreport">' +
+      '<div class="a1-mockreport-h">How the paper went, outcome by outcome</div>' +
+      '<div class="a1-tablewrap"><table class="a1-table"><thead><tr>' +
+      '<th>Outcome</th><th class="a1-num">Weight</th><th class="a1-num">Right</th><th class="a1-num">Score</th>' +
+      '</tr></thead><tbody>' +
+      rows.map(function (r) {
+        return '<tr class="' + (r.pct >= 70 ? 'is-ok' : 'is-low') + '">' +
+          '<td data-h="Outcome">' + r.n + ' · ' + esc(r.title) + '</td>' +
+          '<td class="a1-num" data-h="Weight">' + r.weighting + '%</td>' +
+          '<td class="a1-num" data-h="Right">' + r.right + ' / ' + r.asked + '</td>' +
+          '<td class="a1-num" data-h="Score">' + r.pct + '%</td></tr>';
+      }).join('') +
+      '</tbody></table></div>';
+    if (focus) {
+      h += '<div class="a1-mockreport-f">Most marks at stake: <strong>Outcome ' + focus.n + ' · ' +
+        esc(focus.title) + '</strong> — ' + focus.pct + '% right, and ' + focus.weighting +
+        '% of the assessment.</div>';
+    }
+    return h + '</div>';
+  }
+
   /* ── Done screen ─────────────────────────────────────────────────────────── */
   function renderDone() {
-    var isP = S.mode === 'practice';
+    var isM = S.mode === 'mock';
+    var isP = S.mode === 'practice' || isM;
     var checks = currentQuestions();
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
     var st = pct >= 100 ? 3 : pct >= 80 ? 2 : pct >= 60 ? 1 : 0;
-    var head = isP
-      ? (pct >= 70 ? 'Solid' : pct >= 50 ? 'Some gaps' : 'Worth going back to the steps')
-      : (pct >= 60 ? 'Step complete' : 'Worth another pass');
+    var head = isM
+      ? (pct >= 70 ? 'A strong paper' : pct >= 50 ? 'Some gaps to close' : 'Worth going back to the steps')
+      : isP
+        ? (pct >= 70 ? 'Solid' : pct >= 50 ? 'Some gaps' : 'Worth going back to the steps')
+        : (pct >= 60 ? 'Step complete' : 'Worth another pass');
 
     var weak = '';
-    if (isP) {
+    if (isM) {
+      weak = (S.mockOver
+        ? '<div class="a1-done-weak">The clock ran out. Questions not reached count as wrong, ' +
+          'exactly as they would in the assessment.</div>'
+        : '') + mockReport();
+    } else if (isP) {
       var missedLos = {};
       (S.practiceMissed || []).forEach(function (q) { missedLos[q.lo] = (missedLos[q.lo] || 0) + 1; });
       var keys = Object.keys(missedLos);
@@ -903,16 +1103,131 @@
       '<div class="a1-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       '<h1 class="a1-done-h">' + head + '</h1>' +
       '<div class="a1-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
-        (isP ? ' · ' + (S.practiceLo === 'mix' ? 'all outcomes' : 'Outcome ' + S.practiceLo) : '') + '</div>' +
+        (isM ? ' · timed mock' : isP ? ' · ' + practiceLabel() : '') + '</div>' +
       (isP ? '' : '<div class="a1-stars a1-stars-big">' + [1, 2, 3].map(function (n) {
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
       weak + onward +
       '<div class="a1-done-actions">' +
-        '<button class="a1-btn a1-btn-primary" data-a1="exit">' +
+        /* THE FIRST THING OFFERED AFTER A PAPER, and ahead of more practice. A
+           percentage and a table by outcome say where the marks went; only the
+           questions themselves say why, and that is what a reader has just
+           spent ninety minutes earning the right to see. */
+        (isM && (S.practiceQs || []).length
+          ? '<button class="a1-btn a1-btn-primary" data-a1="review">Review the paper</button>' : '') +
+        '<button class="a1-btn ' + (isM ? 'a1-btn-ghost' : 'a1-btn-primary') + '" data-a1="exit">' +
           (isP ? 'More practice' : 'Back to the steps') + '</button>' +
-        '<button class="a1-btn a1-btn-ghost" data-a1="retry">Retry</button>' +
+        /* No Retry on a paper. Sitting another mock is starting a new paper,
+           drawn afresh, not repeating this one. */
+        (isM ? '' : '<button class="a1-btn a1-btn-ghost" data-a1="retry">Retry</button>') +
         (isP ? '<button class="a1-btn a1-btn-ghost" data-a1="topath">Back to the steps</button>' : '') +
       '</div></div></div>';
+  }
+
+  /* What a run was, in words, for the result screen and the question bar. The
+     three drawn runs had one label between them — "Outcome N or all outcomes" —
+     which called a mistakes run "all outcomes" the moment a second kind of run
+     existed. */
+  function practiceLabel() {
+    if (S.practiceLo === 'missed') return 'questions you had got wrong';
+    if (S.practiceLo === 'mix') return 'all outcomes';
+    if (S.practiceLo === 'mock') return 'timed mock';
+    return 'Outcome ' + S.practiceLo;
+  }
+
+  /* ── The review screens ──────────────────────────────────────────────────── */
+  function renderReview() {
+    var rows = reviewRows();
+    var right = rows.filter(function (r) { return r.correct; }).length;
+    var wrong = rows.length - right;
+    var shown = rows.filter(function (r) { return !S.reviewWrongOnly || !r.correct; });
+
+    var h = '<div class="a1-root">';
+    h += ctxBar({
+      back: 'reviewback',
+      backLabel: 'Back to the result',
+      title: 'Review the paper',
+      meta: right + ' of ' + rows.length + ' right',
+    });
+    h += '<div class="a1-page">';
+
+    /* Only offered when there is something to filter TO. On a clean sweep the
+       toggle would lead to an empty screen, which is a worse way of saying
+       "nothing went wrong" than not offering it. */
+    if (wrong) {
+      h += '<div class="a1-revfilter" role="group" aria-label="Which questions to show">' +
+        '<button class="a1-revfilter-b' + (S.reviewWrongOnly ? '' : ' on') + '" data-a1="reviewall"' +
+          ' aria-pressed="' + (!S.reviewWrongOnly) + '">All ' + rows.length + '</button>' +
+        '<button class="a1-revfilter-b' + (S.reviewWrongOnly ? ' on' : '') + '" data-a1="reviewwrong"' +
+          ' aria-pressed="' + (!!S.reviewWrongOnly) + '">Got wrong ' + wrong + '</button>' +
+        '</div>';
+    } else {
+      h += '<div class="a1-revclean">Every question on this paper was right.</div>';
+    }
+
+    h += '<ol class="a1-revlist">';
+    shown.forEach(function (r) {
+      var g = (r.q && r.q.lo) ? 'Outcome ' + r.q.lo : '';
+      var note = !r.reached ? 'not reached' : r.blank ? 'left blank' : '';
+      h += '<li><button class="a1-revrow ' + (r.correct ? 'is-right' : 'is-wrong') + '"' +
+        ' data-a1="reviewq" data-i="' + r.i + '"' +
+        ' aria-label="Question ' + (r.i + 1) + ', ' + (r.correct ? 'correct' : 'wrong') + '">' +
+        '<span class="a1-revrow-n">' + (r.i + 1) + '</span>' +
+        '<span class="a1-revrow-tx">' +
+          '<span class="a1-revrow-q">' + esc(String((r.q && r.q.q) || '').replace(/\*\*/g, '')) + '</span>' +
+          '<span class="a1-revrow-m">' + esc(g + (note ? (g ? ' · ' : '') + note : '')) + '</span>' +
+        '</span>' +
+        '<span class="a1-revrow-v" aria-hidden="true">' + (r.correct ? '✓' : '✗') + '</span>' +
+        '</button></li>';
+    });
+    h += '</ol>';
+    h += '<footer class="a1-foot">This review lasts as long as the result screen it was opened from. ' +
+      'The questions you got wrong are kept, and come back on the practice screen.</footer>';
+    return h + '</div></div>';
+  }
+
+  function renderReviewQ() {
+    var row = reviewRow(S.reviewIdx);
+    if (!row || !row.q) { S.reviewIdx = null; return renderReview(); }
+    var seq = reviewSeq();
+    var at = seq.indexOf(S.reviewIdx);
+    var total = (S.practiceQs || []).length;
+
+    var h = '<div class="a1-root a1-reading' + fresh() + '">';
+    h += '<div class="a1-lessonbar">' +
+      '<button class="a1-ctx-back" data-a1="reviewlist" aria-label="Back to the list of questions">' +
+        '<span aria-hidden="true">←</span></button>' +
+      '<div class="a1-lessonbar-mid">' +
+        '<div class="a1-lessonbar-t">Question ' + (S.reviewIdx + 1) + ' of ' + total + '</div>' +
+        /* Which sequence the arrows are moving through, said out loud. With the
+           filter on, Next skips the right answers — and a bar that only said
+           "Question 1 of 30" made that look like questions going missing. */
+        '<div class="a1-lessonbar-m">' +
+          (S.reviewWrongOnly
+            ? 'Wrong answer ' + (at + 1) + ' of ' + seq.length
+            : 'Reviewing the paper') +
+          (row.q.lo ? ' · Outcome ' + row.q.lo : '') + '</div>' +
+      '</div>' +
+      '<div class="a1-revverdict ' + (row.correct ? 'is-right' : 'is-wrong') + '">' +
+        (row.correct ? '✓' : '✗') + '</div>' +
+      '</div>';
+
+    h += '<article class="a1-sheet' + fresh() + '">';
+    if (row.blank) {
+      h += '<div class="a1-revblank">' +
+        (row.reached
+          ? 'You left this one blank, so it was marked wrong — as it would be in the assessment.'
+          : 'The clock ran out before you reached this one. It was marked wrong, as it would be in the assessment.') +
+        ' The right answer is shown below.</div>';
+    }
+    h += questionHtml(row.q, total);
+
+    h += '<div class="a1-revnav">' +
+      '<button class="a1-btn a1-btn-ghost" data-a1="reviewprev"' + (at <= 0 ? ' disabled' : '') + '>← Previous</button>' +
+      '<button class="a1-btn a1-btn-ghost" data-a1="reviewlist">All questions</button>' +
+      '<button class="a1-btn a1-btn-primary" data-a1="reviewnext"' +
+        (at < 0 || at >= seq.length - 1 ? ' disabled' : '') + '>Next →</button>' +
+      '</div>';
+    return h + '</article></div>';
   }
 
   /* ── Practice picker ─────────────────────────────────────────────────────── */
@@ -923,28 +1238,74 @@
     var counts = {};
     bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
 
+    var missed = missedQuestions();
+    var pr = data.practice;
+
     var h = '<div class="a1-root">';
     h += ctxBar({
         back: 'topath',
         backLabel: 'Back to the steps',
         title: 'Practice',
-        meta: bank.length + ' questions · ' + PRACTICE_LEN + ' per run',
+        /* "10 per run" was true while a run was the only thing this screen
+           offered. It now offers a 30-question paper as well, so the honest
+           fact here is the size of the pool; each card says its own length. */
+        meta: bank.length + ' questions in the pool',
       });
 
     h += '<div class="a1-page">';
+
+    /* ── THE THINGS ON THIS SCREEN ARE NOT PEERS ─────────────────────────────
+       The mock is a panel, because sitting a timed paper is the thing this
+       screen is for. The backlog is an alert, and only when there is one. The
+       outcomes are a quiet grid you go to when you already know which one you
+       want. */
+    h += '<button class="a1-mockpanel" data-a1="startmock">' +
+      '<span class="a1-mockpanel-tx">' +
+        '<span class="a1-mockpanel-k">Timed mock · ' + mockMinutes() + ' min</span>' +
+        '<span class="a1-mockpanel-t">Sit a full paper</span>' +
+        '<span class="a1-mockpanel-m">' + MOCK_LEN +
+          ' questions drawn to the assessment weighting. Nothing is revealed until the end.</span>' +
+      '</span>' +
+      (pr.mocks
+        ? '<span class="a1-mockpanel-best"><b>' + pr.mockBest + '%</b>' +
+          '<span>best of ' + pr.mocks + '</span></span>'
+        : '<span class="a1-mockpanel-go" aria-hidden="true">→</span>') +
+      '</button>';
+
+    if (missed.length) {
+      h += '<button class="a1-alert" data-a1="startpractice" data-lo="missed">' +
+        '<span class="a1-alert-i" aria-hidden="true">!</span>' +
+        '<span class="a1-alert-tx">' +
+          '<span class="a1-alert-t">' + missed.length +
+            (missed.length === 1 ? ' question you got wrong' : ' questions you got wrong') + '</span>' +
+          '<span class="a1-alert-m">Served back most recent first, and cleared as you get them right.</span>' +
+        '</span>' +
+        '<span class="a1-alert-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+
     h += '<div class="a1-pgrid">';
     h += '<button class="a1-pcard a1-pcard-mix" data-a1="startpractice" data-lo="mix">' +
       '<span class="a1-pcard-k">Mixed</span>' +
       '<span class="a1-pcard-t">All five outcomes</span>' +
-      '<span class="a1-pcard-m">' + bank.length + ' questions in the pool</span>' +
+      '<span class="a1-pcard-m">' + PRACTICE_LEN +
+        ' questions, drawn to the assessment weighting</span>' +
       '</button>';
     los.forEach(function (o) {
       var n = counts[o.n] || 0;
       if (!n) return;
+      /* The reader's own record against this outcome, where there is one. A
+         count of questions in the pool is a fact about the app; how many of
+         them you have got right is a fact about you, and it is the one that
+         decides which card to press. */
+      var r = pr.los[o.n];
+      var seen = r && r.attempted ? r : null;
       h += '<button class="a1-pcard" data-a1="startpractice" data-lo="' + o.n + '">' +
         '<span class="a1-pcard-k">Outcome ' + o.n + ' · ' + o.weighting + '%</span>' +
         '<span class="a1-pcard-t">' + esc(o.title) + '</span>' +
-        '<span class="a1-pcard-m">' + n + ' questions</span>' +
+        '<span class="a1-pcard-m">' + n + ' questions' +
+          (seen ? ' · ' + Math.round((seen.correct / seen.attempted) * 100) + '% right so far' : '') +
+        '</span>' +
         '</button>';
     });
     h += '</div>';
@@ -956,16 +1317,21 @@
     var qs = currentQuestions();
     if (!qs.length) { S.screen = 'practice'; return renderPractice(); }
     var pct = Math.round((S.qIdx / qs.length) * 100);
+    var left = isMock() ? mockLeft() : 0;
     var h = '<div class="a1-root a1-reading' + fresh() + '">';
-    h += '<div class="a1-lessonbar">' +
+    h += '<div class="a1-lessonbar' + (isMock() ? ' a1-lessonbar-mock' : '') + '">' +
       '<button class="a1-ctx-back" data-a1="exit" aria-label="Leave">' +
         '<span aria-hidden="true">←</span></button>' +
       '<div class="a1-lessonbar-mid">' +
-        '<div class="a1-lessonbar-t">Practice</div>' +
-        '<div class="a1-lessonbar-m">Question ' + (S.qIdx + 1) + ' of ' + qs.length + ' · ' +
-          (S.practiceLo === 'mix' ? 'all outcomes' : 'Outcome ' + S.practiceLo) + '</div>' +
+        '<div class="a1-lessonbar-t">' + (isMock() ? 'Timed mock' : 'Practice') + '</div>' +
+        '<div class="a1-lessonbar-m">Question ' + (S.qIdx + 1) + ' of ' + qs.length +
+          (isMock() ? '' : ' · ' + practiceLabel()) + '</div>' +
       '</div>' +
-      '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
+      (isMock()
+        ? '<div class="a1-mockclock' + (left < 5 * 60000 ? ' is-low' : '') + '" role="timer" aria-live="off">' +
+            clock(left) + '</div>'
+        : '<div class="a1-lessonbar-n">' + pct + '%</div>') +
+      '</div>' +
       '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
     h += '<article class="a1-sheet' + fresh() + '">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
     return h;
@@ -977,6 +1343,7 @@
     if (S.screen === 'practice') return renderPractice();
     if (S.screen === 'quiz') return renderQuiz();
     if (S.screen === 'done') return renderDone();
+    if (S.screen === 'review') return S.reviewIdx === null ? renderReview() : renderReviewQ();
     return renderPath();
   }
 
@@ -985,12 +1352,19 @@
      answer all re-render, and none of them should yank the page to the top
      while the reader is mid-page. */
   function posKey() {
-    return [S.screen, S.lessonId, S.phase, S.cardIdx, S.qIdx].join('|');
+    return [S.screen, S.lessonId, S.phase, S.cardIdx, S.qIdx, S.reviewIdx].join('|');
   }
   var _lastPos = null;
 
   function restoreScroll(el) {
     if (typeof window === 'undefined' || !window.scrollTo) return;
+    /* Back to the list of questions: put the one just read under the reader's
+       eye. Working down a paper of thirty means returning to this list thirty
+       times, and each return to the top costs the place. */
+    if (S.screen === 'review' && S.reviewIdx === null && S.reviewLast !== null) {
+      var row = el.querySelector('[data-a1="reviewq"][data-i="' + S.reviewLast + '"]');
+      if (row && row.scrollIntoView) { row.scrollIntoView({ behavior: 'instant', block: 'center' }); return; }
+    }
     if (S.screen === 'path' && S.lessonId) {
       var node = el.querySelector('[data-a1="open"][data-id="' + S.lessonId + '"]');
       if (node && node.scrollIntoView) {
@@ -1013,6 +1387,16 @@
      in the markup that is about to be written. */
   var _fresh = true;
   function mount(el) {
+    /* A mock's clock is an interval, and suspend() stops it when the reader
+       switches subject — otherwise it goes on ticking towards a finish() that
+       would paint a Level 1 result over whatever subject is on screen. Coming
+       back has to pick it up again, and has to notice that the paper may have
+       run out while it was away: mockEndsAt is an absolute time, so the clock
+       does not pause just because nothing was watching it. */
+    if (isMock() && S.screen === 'quiz') {
+      if (mockLeft() <= 0) { stopMockClock(); S.mockOver = true; finish(); }
+      else if (!_mockTimer) startMockClock();
+    }
     var k = posKey();
     _fresh = k !== _lastPos;
     el.innerHTML = html();
@@ -1027,10 +1411,168 @@
   function rerender() { if (_host) mount(_host); }
 
   var PRACTICE_LEN = 10;
+
+  /* ── Drawing to the assessment's weighting ─────────────────────────────────
+     A shuffled slice of the bank draws in the bank's OWN proportions, which are
+     an accident of the order the questions were written in. This pool happens
+     to sit at 18/11/28/32/11 against an assessment weighted 17/10/29/34/10 —
+     close, but close by luck, and it drifts every time a question is added.
+     Weighting the draw makes the shape a property of the draw rather than of
+     the pool, so the pool can grow unevenly without the practice tilting.
+
+     SYSTEMATIC SAMPLING, NOT LARGEST REMAINDER. Rounding each share and handing
+     the spare seats to the largest remainders is deterministic: with these
+     five weightings it awards the spare seat to the same outcome in EVERY run,
+     so that outcome is permanently over-represented and another permanently
+     under. Fixing one bias by installing another, quietly.
+
+     One uniform draw, carried across the cumulative shares, has neither
+     problem. Each outcome's seat count is the difference between two floors of
+     its running total offset by that draw, which makes the expected count
+     exactly its share, and makes the seats always sum to n because the last
+     floor is n and the first is zero.
+
+     A shortfall in one outcome is redistributed rather than left as a gap: a
+     run that asked for ten and found nine must still be ten questions long, or
+     the score at the end is out of a different number than the reader thinks. */
+  function drawWeighted(n) {
+    var bank = practiceBank();
+    var u = unit();
+    var os = ((u && u.outcomes) || []).filter(function (o) {
+      return bank.some(function (q) { return q.lo === o.n; });
+    });
+    if (!os.length) return shuffle(bank).slice(0, n);
+
+    var total = os.reduce(function (a, o) { return a + (o.weighting || 0); }, 0);
+    if (!total) return shuffle(bank).slice(0, n);
+
+    var uni = Math.random();
+    var cum = 0, prev = Math.floor(uni);
+    var seats = os.map(function (o) {
+      cum += n * (o.weighting || 0) / total;
+      var upto = Math.floor(cum + uni);
+      var got = upto - prev;
+      prev = upto;
+      return { n: o.n, whole: got };
+    });
+
+    var pools = {};
+    seats.forEach(function (st) {
+      pools[st.n] = shuffle(bank.filter(function (q) { return q.lo === st.n; }));
+    });
+
+    var out = [];
+    seats.forEach(function (st) { out = out.concat(pools[st.n].splice(0, st.whole)); });
+
+    /* Anything the weighting could not fill, taken from whatever is left over,
+       so the run is always the length it says it is. */
+    if (out.length < n) {
+      var rest = [];
+      Object.keys(pools).forEach(function (k) { rest = rest.concat(pools[k]); });
+      out = out.concat(shuffle(rest).slice(0, n - out.length));
+    }
+    return shuffle(out);
+  }
+
+  /* ── The timed mock ────────────────────────────────────────────────────────
+     Everything a practice run is not. It runs to the clock the assessment
+     actually allows, draws to the assessment's own weighting, reveals nothing
+     until it is over, and reports by outcome at the end.
+
+     WHY NO FEEDBACK UNTIL THE END. A practice run tells you immediately, which
+     is right for learning and useless for rehearsal: knowing after every
+     question how you are doing is exactly what the assessment withholds, and it
+     is the part readers find hardest. Answers can still be changed until the
+     reader moves on — a pick is a pick, not a commitment — which is how the
+     real computer-based assessment behaves.
+
+     LENGTH. BKFN is assessed by a ninety-minute computer-marked CBA whose
+     published specification names no task count and no mark total, so there is
+     no official number to match and inventing one would be a claim this app
+     cannot support. Thirty is chosen instead against the two things that are
+     knowable: the bank is 74 questions, so a thirty-question paper can be sat
+     several times without becoming the same paper; and ninety minutes over
+     thirty questions is three minutes each, which is a pace a Level 1 reader
+     has to keep rather than one they can amble through. */
+  var MOCK_LEN = 30;
+
+  function mockMinutes() {
+    var u = unit();
+    return (u && u.assessment && u.assessment.durationMinutes) || 90;
+  }
+
+  function startMock() {
+    S.practiceLo = 'mock';
+    S.practiceQs = drawWeighted(MOCK_LEN);
+    S.practiceMissed = [];
+    S.mockResults = [];
+    S.mockOver = false;
+    S.mockEndsAt = Date.now() + mockMinutes() * 60000;
+    S.mode = 'mock';
+    S.screen = 'quiz';
+    S.qIdx = 0; S.score = 0;
+    resetQState();
+    startMockClock();
+  }
+
+  function isMock() { return S.mode === 'mock'; }
+
+  /* THE CLOCK WRITES TO ONE TEXT NODE, and does not repaint.
+     A once-a-second rerender would rebuild every input on the screen, which
+     takes the caret out of whatever figure the reader is halfway through
+     typing. So the tick reaches for the clock element and sets its text; the
+     only repaint is the one at the end, when time runs out and there is nothing
+     left to type into anyway.
+
+     `querySelector` is guarded because the build checks drive the player
+     through a stand-in element that has none: there the clock simply does not
+     tick, which is correct — those runs are not against a wall clock. */
+  var _mockTimer = null;
+  function stopMockClock() {
+    if (_mockTimer && typeof clearInterval === 'function') clearInterval(_mockTimer);
+    _mockTimer = null;
+  }
+  function startMockClock() {
+    stopMockClock();
+    if (typeof setInterval !== 'function') return;
+    _mockTimer = setInterval(function () {
+      if (!isMock() || S.screen !== 'quiz') { stopMockClock(); return; }
+      if (mockLeft() <= 0) {
+        stopMockClock();
+        S.mockOver = true;
+        finish();
+        return rerender();
+      }
+      var el = _host && _host.querySelector && _host.querySelector('.a1-mockclock');
+      if (!el) return;
+      el.textContent = clock(mockLeft());
+      if (mockLeft() < 5 * 60000 && el.classList) el.classList.add('is-low');
+    }, 1000);
+  }
+  function mockLeft() { return Math.max(0, S.mockEndsAt - Date.now()); }
+  /* Hours once there is more than one. A ninety-minute paper opening at "89:59"
+     is readable but wrong-looking — nobody thinks of an assessment as
+     eighty-nine minutes — and "1:29:59" says what the reader is being given. */
+  function clock(ms) {
+    var t = Math.floor(ms / 1000);
+    var h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, sec = t % 60;
+    var mm = h ? (m < 10 ? '0' + m : String(m)) : String(Math.floor(t / 60));
+    return (h ? h + ':' : '') + mm + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
   function startPractice(lo) {
-    var pool = practiceBank().filter(function (q) { return lo === 'mix' || q.lo === lo; });
     S.practiceLo = lo;
-    S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
+    /* The mistakes run is drawn in order, oldest miss last, rather than
+       shuffled: a reader with thirty outstanding questions wants the ten they
+       got wrong most recently, not ten at random from the whole backlog. */
+    if (lo === 'missed') {
+      S.practiceQs = missedQuestions().slice(0, PRACTICE_LEN);
+    } else if (lo === 'mix') {
+      S.practiceQs = drawWeighted(PRACTICE_LEN);
+    } else {
+      var pool = practiceBank().filter(function (q) { return q.lo === lo; });
+      S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
+    }
     S.practiceMissed = [];
     S.mode = 'practice';
     S.screen = 'quiz';
@@ -1049,23 +1591,190 @@
   }
   function resetQState() {
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {};
-    S.matchPicks = {}; S.matchSel = null; S.orderSeq = null;
+    S.matchPicks = {}; S.matchSel = null; S.orderSeq = null; S.orderMoved = false;
     S.numInput = ''; S._order = null;
   }
+
+  /* Marking one answer, for every question type, in one place.
+
+     Each of the six grading handlers used to carry its own comparison. That was
+     survivable while grading happened in exactly one situation; the timed mock
+     grades in a second one — silently, when the reader moves on — and the
+     review grades in a third. Three copies of "is this right" drift apart the
+     first time a type is added or a tolerance is changed. The handlers keep
+     their own guards about WHEN to grade, which differ; what is right is
+     decided here. */
+  function gradeAnswer(q) {
+    var t = (q && q.type) || 'mcq';
+    if (t === 'mcq') return S.picked === q.ans;
+    if (t === 'truefalse') {
+      return (q.statements || []).every(function (st, i) { return S.tfPicks[i] === st.answer; });
+    }
+    if (t === 'gapfill') {
+      return (q.gaps || []).every(function (g, i) { return S.gapPicks[i] === g.answer; });
+    }
+    if (t === 'match') {
+      return (q.left || []).every(function (_, i) { return S.matchPicks[i] === i; });
+    }
+    if (t === 'ordering') {
+      /* Guarded because a mock can reach this question without the renderer
+         having dealt a sequence — the clock can run out on a question never
+         drawn, and the paper is still marked. No sequence is no answer. */
+      return !!S.orderSeq && S.orderSeq.every(function (v, i) { return v === i; });
+    }
+    if (t === 'numeric') {
+      var g = num(S.numInput);
+      return g !== null && Math.abs(g - q.answer) < 0.005;
+    }
+    return false;
+  }
+
   function finish() {
     var checks = currentQuestions();
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
-    /* Practice earns XP but records no step result. Letting it write to
-       data.lessons would tick rungs on the ladder for teaching never opened. */
-    if (S.mode !== 'practice') {
+    /* THREE MODES, TESTED BY NAME. This was `mode !== 'practice'`, which meant
+       "a lesson" for as long as there were two modes; the mock added a third,
+       and reaching this with it would have written a lesson result under a null
+       lesson id — ticking a rung on the ladder for a step never opened. A new
+       mode must not be able to fall into the lesson branch by default. */
+    if (S.mode === 'lesson') {
       var prev = rec(S.lessonId);
       data.lessons[S.lessonId] = { best: Math.max(pct, prev ? prev.best : 0) };
       data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
+    } else if (S.mode === 'mock') {
+      data.practice.mocks = (data.practice.mocks || 0) + 1;
+      /* Best mock, as a percentage. Monotonic, so it merges between devices by
+         the same MAX rule as everything else in this record. */
+      data.practice.mockBest = Math.max(data.practice.mockBest || 0, pct);
+      data.xp += S.score * 4;
     } else {
       data.xp += S.score * 3;
+      data.practice.runs = (data.practice.runs || 0) + 1;
     }
     save();
     S.screen = 'done';
+  }
+
+  /* ── Reviewing the paper just sat ──────────────────────────────────────────
+     A mock tells you nothing while you sit it, which is the whole point, and
+     would otherwise tell you nothing afterwards either beyond a score and a
+     table by outcome. "Which ones did I get wrong, and why" is the question a
+     paper exists to answer, and answering it needs the answers themselves.
+
+     WHAT IS KEPT, AND WHY IT IS MORE THAN A VERDICT. The report already knew
+     each question was right or wrong. Replaying one needs what the reader
+     actually PUT — and the order they saw it in, because options, statements
+     and match targets are shuffled per question and "I picked B" means nothing
+     against a different shuffle.
+
+     RE-MARKED RATHER THAN REMEMBERED. The review restores the recorded answer
+     and then runs it back through gradeAnswer(), the same function that marked
+     the paper. So what the review shows cannot drift from what was scored:
+     there is one marker, not two.
+
+     IN MEMORY, NOT IN THE STORE. Progress merges between devices field by
+     field — numbers by MAX, booleans by OR (see progress-backup.js) — and a sat
+     paper is neither. Merging two devices' papers would splice one reader's
+     answers into another's questions. The durable half of this already exists
+     and merges correctly: every mock question goes through recordQuestion(), so
+     the ones missed come back through the mistakes backlog on the practice
+     screen. This is the post-mortem, and it lasts as long as the result screen
+     it is opened from. */
+
+  function copyMap(o) {
+    var out = {};
+    Object.keys(o || {}).forEach(function (k) { out[k] = o[k]; });
+    return out;
+  }
+
+  /* Everything the reader put into the question on screen, and the order they
+     saw it in. Taken at the moment they move on, which under exam conditions is
+     the moment the answer becomes final. */
+  function snapshotAnswer() {
+    return {
+      picked: S.picked,
+      tf: copyMap(S.tfPicks),
+      gaps: copyMap(S.gapPicks),
+      match: copyMap(S.matchPicks),
+      order: S.orderSeq ? S.orderSeq.slice() : null,
+      orderMoved: S.orderMoved,
+      num: S.numInput,
+      shuffle: S._order,
+    };
+  }
+
+  function restoreAnswer(a) {
+    /* Cleared first, so a question the reader never reached shows as blank
+       rather than wearing the previous one's answers. */
+    resetQState();
+    if (!a) return;
+    S.picked = a.picked;
+    S.tfPicks = copyMap(a.tf);
+    S.gapPicks = copyMap(a.gaps);
+    S.matchPicks = copyMap(a.match);
+    S.orderSeq = a.order ? a.order.slice() : null;
+    S.orderMoved = !!a.orderMoved;
+    S.numInput = a.num || '';
+    S._order = a.shuffle;
+  }
+
+  /* Did the reader put anything at all?
+
+     A blank has to be named, and multiple choice is why. An unanswered question
+     replays with the key marked correct and nothing marked wrong — which is
+     exactly how a question answered CORRECTLY replays. Without this the two are
+     indistinguishable, and the reader would read a run of blanks as a run of
+     right answers. */
+  function gaveAnswer(q, a) {
+    if (!a) return false;
+    var t = (q && q.type) || 'mcq';
+    if (t === 'mcq') return a.picked !== null && a.picked !== undefined;
+    if (t === 'truefalse') return Object.keys(a.tf || {}).length > 0;
+    if (t === 'gapfill') return Object.keys(a.gaps || {}).length > 0;
+    if (t === 'match') return Object.keys(a.match || {}).length > 0;
+    /* Ordering is dealt pre-arranged, so the sequence on screen is never empty
+       and cannot stand in for an attempt. Only a move counts. */
+    if (t === 'ordering') return !!a.orderMoved;
+    if (t === 'numeric') return num(a.num) !== null;
+    return false;
+  }
+
+  function isReview() { return S.mode === 'review'; }
+
+  /* One row of the paper. `mockResults` runs out before `practiceQs` on a paper
+     the clock ended, so a question never reached has no record and is reported
+     as such rather than as an answer nobody can account for. */
+  function reviewRow(i) {
+    var q = (S.practiceQs || [])[i];
+    var r = (S.mockResults || [])[i] || null;
+    return {
+      i: i, q: q,
+      reached: !!r,
+      correct: !!(r && r.correct),
+      blank: !r || !gaveAnswer(q, r.given),
+      given: r ? r.given : null,
+    };
+  }
+  function reviewRows() {
+    return (S.practiceQs || []).map(function (_, i) { return reviewRow(i); });
+  }
+  /* The questions the arrows step through: the whole paper, or just what went
+     wrong when the filter is on — so "next" from a wrong answer reaches the
+     next wrong answer rather than the next question. */
+  function reviewSeq() {
+    return reviewRows()
+      .filter(function (r) { return !S.reviewWrongOnly || !r.correct; })
+      .map(function (r) { return r.i; });
+  }
+
+  function openReviewQ(i) {
+    var row = reviewRow(i);
+    if (!row.q) return;
+    restoreAnswer(row.given);
+    /* The same marker that scored the paper, run again on the same input. */
+    S.answered = gradeAnswer(row.q);
+    S.reviewIdx = i;
+    S.reviewLast = i;
   }
 
   function wire(el) {
@@ -1102,10 +1811,48 @@
     var q = checks[S.qIdx];
 
     if (act === 'open') { startLesson(n.getAttribute('data-id')); return rerender(); }
-    if (act === 'exit') { S.screen = S.mode === 'practice' ? 'practice' : 'path'; return rerender(); }
+    if (act === 'exit') {
+      /* Walking out of a mock stops its clock; leaving it running would fire a
+         finish() over whatever screen the reader had moved on to. */
+      if (isMock()) { stopMockClock(); S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
+      S.screen = S.mode === 'practice' ? 'practice' : 'path';
+      return rerender();
+    }
     if (act === 'retry') {
-      if (S.mode === 'practice') startPractice(S.practiceLo);
+      /* Named modes again. `else startLesson(S.lessonId)` meant "a lesson" only
+         while there were two modes; a mock falling into it would have reopened
+         a null lesson. The mock's result screen offers no Retry — sitting
+         another is starting a new paper, not repeating this one — but the
+         handler must still be safe if one is ever reached. */
+      if (S.mode === 'mock') startMock();
+      else if (S.mode === 'practice') startPractice(S.practiceLo);
       else startLesson(S.lessonId);
+      return rerender();
+    }
+    if (act === 'startmock') { startMock(); return rerender(); }
+
+    /* ── The review of a finished paper ─────────────────────────────────────
+       `mode` moves to 'review' rather than staying 'mock', because the graded
+       screen is drawn by asking isMock() whether to withhold the verdict — and
+       a review is nothing but the verdict. Returning to the result puts it
+       back, so that screen still reads as the mock's. */
+    if (act === 'review') {
+      S.mode = 'review'; S.screen = 'review';
+      S.reviewIdx = null; S.reviewLast = null; S.reviewWrongOnly = false;
+      return rerender();
+    }
+    if (act === 'reviewback') { S.mode = 'mock'; S.screen = 'done'; S.reviewIdx = null; return rerender(); }
+    if (act === 'reviewlist') { S.reviewIdx = null; return rerender(); }
+    if (act === 'reviewq') { openReviewQ(+n.getAttribute('data-i')); return rerender(); }
+    if (act === 'reviewall' || act === 'reviewwrong') {
+      S.reviewWrongOnly = act === 'reviewwrong';
+      S.reviewIdx = null;
+      return rerender();
+    }
+    if (act === 'reviewprev' || act === 'reviewnext') {
+      var rseq = reviewSeq();
+      var rat = rseq.indexOf(S.reviewIdx) + (act === 'reviewnext' ? 1 : -1);
+      if (rat >= 0 && rat < rseq.length) openReviewQ(rseq[rat]);
       return rerender();
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
@@ -1126,7 +1873,7 @@
     if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');
-      startPractice(lo === 'mix' ? 'mix' : Number(lo));
+      startPractice(lo === 'mix' || lo === 'missed' ? lo : Number(lo));
       return rerender();
     }
 
@@ -1153,7 +1900,11 @@
     if (act === 'ans') {
       if (S.answered !== null) return;
       S.picked = +n.getAttribute('data-i');
-      S.answered = S.picked === q.ans;
+      /* Under exam conditions a pick is a pick, not a commitment: it can be
+         changed until the reader moves on, and nothing is revealed. Everywhere
+         else, choosing IS answering. */
+      if (isMock()) return rerender();
+      S.answered = gradeAnswer(q);
       if (S.answered) S.score++;
       return rerender();
     }
@@ -1163,8 +1914,7 @@
     }
     if (act === 'tfsubmit') {
       if (Object.keys(S.tfPicks).length < q.statements.length) return;
-      var all = q.statements.every(function (st, i) { return S.tfPicks[i] === st.answer; });
-      S.answered = all; if (all) S.score++;
+      S.answered = gradeAnswer(q); if (S.answered) S.score++;
       return rerender();
     }
     if (act === 'gap') {
@@ -1173,8 +1923,7 @@
     }
     if (act === 'gapsubmit') {
       if (Object.keys(S.gapPicks).length < q.gaps.length) return;
-      var ok = q.gaps.every(function (g, i) { return S.gapPicks[i] === g.answer; });
-      S.answered = ok; if (ok) S.score++;
+      S.answered = gradeAnswer(q); if (S.answered) S.score++;
       return rerender();
     }
 
@@ -1200,8 +1949,7 @@
     if (act === 'matchclear') { S.matchPicks = {}; S.matchSel = null; return rerender(); }
     if (act === 'matchsubmit') {
       if (Object.keys(S.matchPicks).length < q.left.length) return;
-      var allPaired = q.left.every(function (_, i) { return S.matchPicks[i] === i; });
-      S.answered = allPaired; if (allPaired) S.score++;
+      S.answered = gradeAnswer(q); if (S.answered) S.score++;
       return rerender();
     }
 
@@ -1210,24 +1958,58 @@
       var to = act === 'orderup' ? pos - 1 : pos + 1;
       if (to < 0 || to >= S.orderSeq.length) return;
       var tmp2 = S.orderSeq[pos]; S.orderSeq[pos] = S.orderSeq[to]; S.orderSeq[to] = tmp2;
+      /* The reader has now arranged this rather than been dealt it, which is
+         the only thing that separates an answer from an untouched shuffle. */
+      S.orderMoved = true;
       return rerender();
     }
     if (act === 'ordersubmit') {
-      var right = S.orderSeq.every(function (v, i) { return v === i; });
-      S.answered = right; if (right) S.score++;
+      S.answered = gradeAnswer(q); if (S.answered) S.score++;
       return rerender();
     }
 
     if (act === 'numsubmit') {
-      var g2 = num(S.numInput);
-      S.answered = g2 !== null && Math.abs(g2 - q.answer) < 0.005;
+      S.answered = gradeAnswer(q);
       if (S.answered) S.score++;
       return rerender();
     }
+    /* Moving on IS answering, under exam conditions. The question is graded
+       here, silently, and the reader is told nothing until the paper is over —
+       so this carries the same recording the practice path does, plus the
+       per-question result the report and the review are built from. A question
+       left blank grades as wrong, which is what the assessment does with it. */
+    if (act === 'mocknext') {
+      var mCorrect = gradeAnswer(q);
+      if (mCorrect) S.score++; else S.practiceMissed.push(q);
+      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect, given: snapshotAnswer() });
+      recordPractice(q.lo, mCorrect);
+      recordQuestion(q.id, mCorrect);
+      save();
+      if (S.qIdx === checks.length - 1) { stopMockClock(); finish(); }
+      else { S.qIdx++; resetQState(); }
+      return rerender();
+    }
     if (act === 'nextq') {
-      /* Recorded here rather than in each grading path, so a new question type
-         cannot be added without its misses being counted. */
-      if (S.mode === 'practice' && S.answered === false && q) S.practiceMissed.push(q);
+      /* Recorded here rather than in each of the six grading paths, so a new
+         question type cannot be added without its misses being counted.
+
+         `answered !== null` because a graded answer is what makes this an
+         attempt. The button only renders once the question has been graded, so
+         today this cannot be reached ungraded — but the count is only honest
+         while that stays true, so it is a condition here rather than a
+         property of the renderer. */
+      if (S.mode === 'practice' && q && S.answered !== null) {
+        if (S.answered === false) S.practiceMissed.push(q);
+        recordPractice(q.lo, S.answered === true);
+        /* Only practice questions have ids. A lesson check has no identity of
+           its own to remember, and the lesson it belongs to is already tracked
+           by its own progress record. */
+        recordQuestion(q.id, S.answered === true);
+        /* Written now rather than at the end of the run. A reader who answers
+           six questions and then leaves has attempted six questions, and the
+           record that claims to count what they attempted has to agree. */
+        save();
+      }
       if (S.qIdx === checks.length - 1) finish();
       else { S.qIdx++; resetQState(); }
       return rerender();
@@ -1236,11 +2018,33 @@
 
   load();
 
-  /* `home` is the shared header's 🏠 button — see the note on AAT3_UI.home.
-     There is nothing running here to suspend, so no suspend hook. */
+  /* ── The two lifecycle hooks the shared chrome calls ────────────────────────
+     app.js owns the header and knows nothing about `S`; these are how it asks.
+     Both are no-ops on any subject that does not define them, so the chrome
+     does not need to know which subjects render themselves.
+
+     `home` is the header's 🏠 button. Without it that button sets a screen this
+     module does not read and render() remounts whatever was already there — so
+     it did nothing at all from inside a lesson, a practice run or a mock.
+
+     `suspend` is "you are being switched away from". The mock's clock is an
+     interval that outlives the screen: it stops itself when the mode or the
+     screen changes, and switching subject changes neither, so it would keep
+     ticking under French and paint a Level 1 result over it ninety minutes
+     later. */
   root.AAT1_UI = {
     mount: mount,
-    reset: function () { S.screen = 'path'; },
-    home: function () { S.mode = 'lesson'; S.lessonId = null; S.screen = 'path'; },
+    /* `screen` is optional and defaults to the ladder, which is the only thing
+       the app itself ever wants. It is settable so the build checks can mount
+       the practice picker directly rather than asserting a regex against this
+       file and calling that a test. */
+    reset: function (screen) { stopMockClock(); S.screen = screen || 'path'; },
+    home: function () {
+      stopMockClock();
+      S.mode = 'lesson';
+      S.lessonId = null;
+      S.screen = 'path';
+    },
+    suspend: function () { stopMockClock(); },
   };
 }(typeof self !== 'undefined' ? self : this));

@@ -334,10 +334,18 @@ function countOf(html, re) { return (html.match(re) || []).length; }
    statement the wrong way round and left to work out which way round it should
    have been. On a review of a whole paper that is the answer being withheld. */
 {
-  const r = sit('tpfb', 'blank');
+  /* THE PAPER IS CHOSEN, NOT ACCEPTED. True or false is a minority of the bank,
+     so whether a given 24-question draw contains one is luck — and this
+     asserted against whatever the seed happened to produce. The day the bank
+     grew past 200 questions that luck ran out and the check failed on content
+     that was entirely sound. Papers are sat until one carries a true or false;
+     if none of twenty does, that is reported rather than passed over. */
+  const hasTf = (c) => c.seen.some(x => ((x.q || x).type || 'mcq') === 'truefalse');
+  let r = sit('tpfb', 'blank');
+  for (let i = 0; i < 20 && !hasTf(r); i++) r = sit('tpfb', 'blank');
   D.click(r.el, 'review');
   const tf = r.seen.map((s, i) => ({ s, i })).filter(x => (x.s.q.type || 'mcq') === 'truefalse');
-  ok(tf.length > 0, 'the paper contained a true-or-false question to review');
+  ok(tf.length > 0, 'a paper can be drawn that contains a true-or-false question to review');
   let keyed = 0, wanted = 0;
   tf.forEach(({ s, i }) => {
     const html = openReview(r, i);

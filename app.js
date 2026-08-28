@@ -1204,6 +1204,44 @@
     }
     return null;
   }
+
+  /* ── CHEAT SHEETS ──────────────────────────────────────────────────────────
+     One page per skill, revising what the lessons taught rather than teaching
+     it: the formula, the rule, the two things people get backwards, on a single
+     card a reader can open the night before.
+
+     A CHEAT SHEET IS NOT A LESSON, AND MUST NOT BE ONE. It claims no assessment
+     criteria, carries no questions, teaches nothing a lesson has not already
+     taught, and cannot be completed. Put one into LEARN_PATH and it would be
+     numbered among the lessons, counted in "12/18 lessons", demanded by the
+     unit-complete badge, locked behind whatever came before it, and asked for
+     by the coverage check — none of which is true of a reference page. So they
+     live in their own file and are normalised here into the shape the lesson
+     screen already paints.
+
+     `card` is singular on purpose: a cheat sheet that could grow a second card
+     is a lesson with the questions left off. */
+  function sheetsForTopic(topicId) {
+    return (window.AAT2_SHEETS || []).filter(sh => sh.topic === topicId);
+  }
+  function findSheet(id) {
+    const sh = (window.AAT2_SHEETS || []).find(x => x.id === id);
+    if (!sh || !sh.card) return null;
+    const unit = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === sh.topic) || { title: '' };
+    return {
+      unit,
+      lesson: {
+        id: sh.id,
+        title: sh.title,
+        icon: sh.icon || '📌',
+        criteria: [],
+        skills: sh.skill ? [sh.skill] : [],
+        cards: [sh.card],
+        check: [],
+        isSheet: true,
+      },
+    };
+  }
   function isLessonDone(id) {
     const r = Storage.lessonRec(id);
     return !!(r && r.best >= 50);
@@ -2218,6 +2256,37 @@
   /* Kept under the old name for any caller that still uses it. */
   function buildMockFromBlueprint() { return buildSynopticMock(); }
 
+  /* ── Exposed for the build check, and for nothing else ─────────────────────
+     scripts/check-aat2-exams.js asks whether the two exams this app offers
+     still match the qualification they claim to rehearse: whether the synoptic
+     runs for the two hours BESY is given, whether each unit assessment runs
+     for its unit's ninety minutes, whether the blueprint still totals a hundred
+     marks split the way the real paper is, and whether Principles of Costing
+     stays out of a synoptic it is not part of.
+
+     Every one of those answers lives inside this closure, and a check that
+     cannot reach them can only assert regexes against this file — which is not
+     a test of the exam, it is a test of how the exam happens to be spelled. So
+     the constants and the two builders are named here, deliberately and in one
+     place, exactly as AAT3_UI exposes its practice summary for the same reason.
+
+     Read-only by construction: the blueprint is frozen, so a check cannot
+     scribble on the app it is inspecting and report a green that belongs to a
+     paper nobody will sit. */
+  window.__AAT2_EXAM = Object.freeze({
+    SYNOPTIC_BLUEPRINT: Object.freeze(SYNOPTIC_BLUEPRINT.map(t => Object.freeze(
+      Object.assign({}, t, { areas: Object.freeze(t.areas.map(a => Object.freeze(Object.assign({}, a)))) })))),
+    SYNOPTIC_TOTAL_MARKS,
+    SYNOPTIC_EXCLUDED_TOPICS: Object.freeze(SYNOPTIC_EXCLUDED_TOPICS.slice()),
+    MOCK_DURATION_MS,
+    MOCK_TYPES: Object.freeze(MOCK_TYPES.slice()),
+    UNIT_ASSESSMENTS: Object.freeze(UNIT_ASSESSMENTS.map(u => Object.freeze(Object.assign({}, u)))),
+    buildSynopticMock,
+    buildUnitAssessment,
+    questionMarks,
+    matchesArea,
+  });
+
   function buildUnitAssessment(unitId) {
     const spec = UNIT_ASSESSMENTS.find(u => u.id === unitId);
     if (!spec) return [];
@@ -2283,7 +2352,7 @@
 
   /* ── LESSON PLAYER (learning journey) ── */
   function startLesson(id) {
-    const found = findLesson(id);
+    const found = findLesson(id) || findSheet(id);
     if (!found) { showToast('Lesson not found.', 'error'); return; }
     playClick();
     State.screen = 'lesson';
@@ -2311,6 +2380,9 @@
     const L = State.lesson; if (!L) return;
     if (L.phase === 'teach') {
       if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; L.worked = newWorkedState(); }
+      /* A cheat sheet has no check phase to move into and no score to record —
+         there is nothing to answer, so nothing to be right about. */
+      else if (L.def.isSheet) { goLearn(); return; }
       else { L.phase = 'transition'; }
       render();
     } else if (L.phase === 'transition') {
@@ -5677,6 +5749,30 @@
       const hasRevision = uid && UNIT_REVISION.some(r => r.unit === uid);
       const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(uid)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
       const unitComplete = unitDone && !!(unitTest && unitTest.passed);
+      /* ── THE UNIT'S CHEAT SHEETS ───────────────────────────────────────────
+         BELOW THE LESSONS, NOT AMONG THEM. A sheet is not a step: it teaches
+         nothing new, cannot be completed, and is opened AFTER the teaching
+         rather than instead of it. Mixed into the rail it would read as
+         eighteen lessons of which six are unaccountably ungraded; below it, as
+         a strip of small chips, it reads as what it is — the reference half of
+         the unit, there when you want it and quiet when you do not.
+
+         Two lines each, and no progress of any kind: a page you can re-read a
+         hundred times has no state worth keeping, and a tick beside one would
+         only invite the reader to "finish" a reference. */
+      const unitSheets = sheetsForTopic(uid);
+      const sheetStrip = unitSheets.length ? `<div class="journey-sheets">
+        <div class="journey-sheets-h">📌 Cheat sheets<span class="journey-sheets-n">${unitSheets.length} one-page summaries</span></div>
+        <div class="journey-sheets-grid">
+          ${unitSheets.map(sh => `<button class="journey-sheet" type="button" data-lesson="${escapeHtml(sh.id)}">
+            <span class="journey-sheet-i" aria-hidden="true">${escapeHtml(sh.icon || '📌')}</span>
+            <span class="journey-sheet-tx">
+              <span class="journey-sheet-t">${escapeHtml(sh.title)}</span>
+              <span class="journey-sheet-m">${escapeHtml(sh.blurb || '')}</span>
+            </span>
+          </button>`).join('')}
+        </div>
+      </div>` : '';
       const collapsedOverride = State.collapsedUnits && State.collapsedUnits[uid];
       const collapsed = collapsedOverride !== undefined ? !!collapsedOverride : unitComplete;
       return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}${collapsed ? ' journey-unit-collapsed' : ''}">
@@ -5695,6 +5791,7 @@
         </div>
         <div class="journey-unit-progress-bg"><div class="journey-unit-progress" style="width:${(doneCount/unit.lessons.length*100).toFixed(0)}%"></div></div>
         <div class="journey-nodes">${lessonsHtml}</div>
+        ${sheetStrip}
       </div>`;
     }).join('');
 
@@ -6003,15 +6100,29 @@
       <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
       <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
     </div>` : '';
+    /* `data-h` carries the column's heading down onto every cell. It costs one
+       attribute and it is what lets a narrow screen stack the table into
+       labelled rows instead of pushing the last column off the right edge —
+       see .lesson-card-sheet .lesson-table in styles.css. */
+    const tableHeads = card.table ? (card.table.headers || []) : [];
     const tableHtml = card.table ? `<div class="lesson-table-wrap">
       <table class="lesson-table">
-        <thead><tr>${(card.table.headers || []).map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
-        <tbody>${(card.table.rows || []).map(row => `<tr>${row.map(c => `<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+        <thead><tr>${tableHeads.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+        <tbody>${(card.table.rows || []).map(row => `<tr>${row.map((c, ci) =>
+          `<td${tableHeads[ci] ? ` data-h="${escapeHtml(tableHeads[ci])}"` : ''}>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
       </table>
     </div>` : '';
+    /* mdBold on the TITLE as well as the items. It was escapeHtml, which is
+       the same everywhere except that ** in a title came out as two literal
+       asterisks — "Discounts **allowed** — to our customers", on the page, in
+       front of the reader. Nothing in the existing lessons had put bold in a
+       split title, so nothing had ever shown it; three cheat sheets did, and a
+       browser found it in a second. The title is already inside <strong>, so
+       this bolds a word WITHIN a bold line — which is what the author meant by
+       marking it. */
     const splitHtml = card.split ? `<div class="lesson-split">
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${mdBold(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${mdBold(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
     </div>` : '';
     const formulaHtml = card.formula ? `<div class="lesson-formula">${card.formula.split('·').map(f => `<div class="lesson-formula-line">${escapeHtml(f.trim())}</div>`).join('')}</div>` : '';
     const calloutKind = card.callout ? (card.callout.kind || 'tip') : '';
@@ -6081,18 +6192,18 @@
       <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
       <div class="lesson-player slide-in">
         <div class="lesson-phase-bar">
-          <span class="lesson-phase-pill">Learn ${cardIdx + 1}/${totalCards}</span>
-          <div class="lesson-dots">${dots(totalCards, cardIdx, 'teach')}</div>
+          <span class="lesson-phase-pill">${def.isSheet ? '📌 Cheat sheet' : `Learn ${cardIdx + 1}/${totalCards}`}</span>
+          ${def.isSheet ? '' : `<div class="lesson-dots">${dots(totalCards, cardIdx, 'teach')}</div>`}
         </div>
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
-        <div class="lesson-card fade-in">
+        <div class="lesson-card fade-in${def.isSheet ? ' lesson-card-sheet' : ''}">
           <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
           ${card.body ? `<div class="lesson-card-body">${sanitizeCardBody(card.body)}</div>` : ''}
           ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
-          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Check understanding →' : 'Continue →'}</button>
+          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? (def.isSheet ? 'Done ✓' : 'Check understanding →') : 'Continue →'}</button>
         </div>
       </div>
     </div>`;

@@ -149,6 +149,40 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   eq(l3.practice.runs, 2, 'finished practice runs take the higher of the two');
 }
 
+/* ── Level 1's per-question memory, which is why it is two timestamps ─────
+   The record stores WHEN a question was last answered rightly and WHEN it was
+   last answered wrongly, and treats it as outstanding while the wrong one is
+   the more recent. A boolean would have been simpler and wrong: booleans merge
+   by OR, so a question fixed on the phone would be resurrected for ever by the
+   laptop's stale `true` at the next merge. Under MAX the later timestamp wins,
+   which is the semantics wanted — and this is the check that says so. */
+{
+  const T0 = 1000, T1 = 2000;
+  const phone = { prep_v2_aat1: { lessons: {}, xp: 40, practice: {
+    runs: 2, mocks: 1, mockBest: 70,
+    los: { '1': { attempted: 10, correct: 6 } },
+    qs: { 'q-fixed-on-phone': { r: T1 }, 'q-wrong-on-phone': { w: T1 } } } } };
+  const laptop = { prep_v2_aat1: { lessons: {}, xp: 90, practice: {
+    runs: 1, mocks: 2, mockBest: 55,
+    los: { '1': { attempted: 4, correct: 1 }, '3': { attempted: 6, correct: 5 } },
+    qs: { 'q-fixed-on-phone': { w: T0 }, 'q-wrong-on-laptop': { w: T0 } } } } };
+
+  const outstanding = (r) => !!(r && (r.w || 0) > (r.r || 0));
+  const p1 = PB.mergeAll(phone, laptop).prep_v2_aat1.practice;
+  const p2 = PB.mergeAll(laptop, phone).prep_v2_aat1.practice;
+
+  [['phone first', p1], ['laptop first', p2]].forEach(([label, m]) => {
+    ok(!outstanding(m.qs['q-fixed-on-phone']),
+      `a question fixed on one device stays fixed after merging the other's stale miss (${label})`);
+    ok(outstanding(m.qs['q-wrong-on-phone']), `a miss only one device saw survives the merge (${label})`);
+    ok(outstanding(m.qs['q-wrong-on-laptop']), `and so does a miss only the other device saw (${label})`);
+    eq(m.mockBest, 70, `the better mock score wins (${label})`);
+    eq(m.mocks, 2, `papers sat take the higher count (${label})`);
+    eq(m.los['1'], { attempted: 10, correct: 6 }, `a per-outcome record survives intact (${label})`);
+    eq(m.los['3'], { attempted: 6, correct: 5 }, `an outcome only one device practised is carried over (${label})`);
+  });
+}
+
 /* ── Idempotent and order-independent ───────────────────────────────────── */
 {
   const once = PB.mergeAll(A, B);
