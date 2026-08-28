@@ -1119,5 +1119,11 @@
 
   load();
 
-  root.AAT1_UI = { mount: mount, reset: function () { S.screen = 'path'; } };
+  /* `home` is the shared header's 🏠 button — see the note on AAT3_UI.home.
+     There is nothing running here to suspend, so no suspend hook. */
+  root.AAT1_UI = {
+    mount: mount,
+    reset: function () { S.screen = 'path'; },
+    home: function () { S.mode = 'lesson'; S.lessonId = null; S.screen = 'path'; },
+  };
 }(typeof self !== 'undefined' ? self : this));

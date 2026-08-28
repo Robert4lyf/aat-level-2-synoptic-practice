@@ -3109,7 +3109,25 @@
         onConfirm: () => { stopMockTimer(); closeConfirm(); goHome(); } });
     } else goHome();
   }
-  function goHome() { stopMockTimer(); State.screen='home'; State.activeTab='home'; State.confirmModal=null; render(); }
+  /* The self-rendering subjects' own module, or null. Levels 1 and 3 and the
+     guitar own their screens entirely, so the shared chrome cannot act on them
+     by setting `State` — it has to ask them. */
+  function ownUi() {
+    const k = getSubject(_activeSubjectId).ui;
+    return (k && window[k]) || null;
+  }
+  function goHome() {
+    stopMockTimer();
+    /* The header's Home button did nothing on Levels 1 and 3 or the guitar. It
+       sets State.screen='home', which is the only screen those subjects ever
+       occupy as far as app.js is concerned — the actual screen lives in their
+       own module, and render() just remounts it unchanged. So a reader four
+       cards into a Level 3 lesson tapped Home and stayed exactly where they
+       were. A subject that renders itself has to be asked to go home. */
+    const ui = ownUi();
+    if (ui && ui.home) ui.home();
+    State.screen='home'; State.activeTab='home'; State.confirmModal=null; render();
+  }
 
   function switchSubject(id) {
     const subj = getSubject(id);
@@ -3126,6 +3144,14 @@
   }
   function _commitSubjectSwitch(id) {
     const subj = getSubject(id);
+    /* Stop whatever the subject being left had running. Nothing else does:
+       app.js only ever cleared its OWN transient state here, and a subject
+       that renders itself keeps its state — and its timers — in its own
+       module. A guitar exercise carried on playing into the French screen,
+       and a Level 3 mock's clock carried on ticking towards a finish() that
+       would repaint the Level 3 result over whatever subject was on screen. */
+    const leaving = ownUi();
+    if (leaving && leaving.suspend) leaving.suspend();
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
     if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }

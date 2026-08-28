@@ -1552,6 +1552,16 @@
      in the markup that is about to be written. */
   var _fresh = true;
   function mount(el) {
+    /* A mock's clock is an interval, and suspend() stops it when the reader
+       switches subject — otherwise it goes on ticking towards a finish() that
+       would paint a Level 3 result over whatever subject is on screen.
+       Coming back has to pick it up again, and has to notice that the paper
+       may have run out while it was away: mockEndsAt is an absolute time, so
+       the clock does not pause just because nothing was watching it. */
+    if (isMock() && S.screen === 'quiz') {
+      if (mockLeft() <= 0) { stopMockClock(); S.mockOver = true; finish(); }
+      else if (!_mockTimer) startMockClock();
+    }
     var k = posKey();
     _fresh = k !== _lastPos;
     el.innerHTML = html();
@@ -2052,9 +2062,34 @@
        the practice picker and assert the summary that renders there, rather
        than asserting a regex against this file and calling that a test. */
     reset: function (screen, unitKey) {
+      stopMockClock();
       S.screen = screen || 'units';
       if (unitKey) S.unit = unitKey;
     },
+    /* ── The two lifecycle hooks the shared chrome calls ──────────────────────
+       app.js owns the header and knows nothing about `S`; these are how it
+       asks. Both are no-ops on any subject that does not define them, so the
+       chrome does not need to know which subjects render themselves.
+
+       `home` is the header's 🏠 button. Without it that button sets a screen
+       this module does not read and render() remounts whatever was already
+       there — so it did nothing at all from inside a lesson, a practice run or
+       a mock.
+
+       `suspend` is "you are being switched away from". The mock's clock is an
+       interval that outlives the screen: it stops itself when the mode or the
+       screen changes, and switching subject changes neither, so it kept
+       ticking under French and would have painted a Level 3 result over it
+       ninety minutes later. */
+    home: function () {
+      stopMockClock();
+      S.mode = 'lesson';
+      S.lessonId = null;
+      /* The top of this subject: the unit picker where there is a choice to
+         make, and the path where there is only one unit to pick. */
+      S.screen = unitKeys().length > 1 ? 'units' : 'path';
+    },
+    suspend: function () { stopMockClock(); },
     /* Exposed so scripts/check-aat3-practice-summary.js can assert the totals
        and the most-mistakes ranking directly, rather than reading them back out
        of rendered HTML. */
