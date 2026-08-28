@@ -61,6 +61,8 @@ jobs:
         run: npm run check:aat1-mock
       - name: Check the Level 2 exams against the published specification (duration, marks, coverage)
         run: npm run check:aat2-exams
+      - name: Check every Level 2 topic has its cheat sheets, and each is a sheet not a lesson
+        run: npm run check:aat2-sheets
       - name: Check each self-rendering stylesheet matches its screens (no dead rules, no unstyled classes)
         run: npm run check:styles
       - name: Check progress backup merge (no data loss, idempotent)

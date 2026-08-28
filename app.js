@@ -1204,6 +1204,44 @@
     }
     return null;
   }
+
+  /* ── CHEAT SHEETS ──────────────────────────────────────────────────────────
+     One page per skill, revising what the lessons taught rather than teaching
+     it: the formula, the rule, the two things people get backwards, on a single
+     card a reader can open the night before.
+
+     A CHEAT SHEET IS NOT A LESSON, AND MUST NOT BE ONE. It claims no assessment
+     criteria, carries no questions, teaches nothing a lesson has not already
+     taught, and cannot be completed. Put one into LEARN_PATH and it would be
+     numbered among the lessons, counted in "12/18 lessons", demanded by the
+     unit-complete badge, locked behind whatever came before it, and asked for
+     by the coverage check — none of which is true of a reference page. So they
+     live in their own file and are normalised here into the shape the lesson
+     screen already paints.
+
+     `card` is singular on purpose: a cheat sheet that could grow a second card
+     is a lesson with the questions left off. */
+  function sheetsForTopic(topicId) {
+    return (window.AAT2_SHEETS || []).filter(sh => sh.topic === topicId);
+  }
+  function findSheet(id) {
+    const sh = (window.AAT2_SHEETS || []).find(x => x.id === id);
+    if (!sh || !sh.card) return null;
+    const unit = (window.LEARN_PATH || []).find(u => (u.unit || u.id) === sh.topic) || { title: '' };
+    return {
+      unit,
+      lesson: {
+        id: sh.id,
+        title: sh.title,
+        icon: sh.icon || '📌',
+        criteria: [],
+        skills: sh.skill ? [sh.skill] : [],
+        cards: [sh.card],
+        check: [],
+        isSheet: true,
+      },
+    };
+  }
   function isLessonDone(id) {
     const r = Storage.lessonRec(id);
     return !!(r && r.best >= 50);
@@ -2314,7 +2352,7 @@
 
   /* ── LESSON PLAYER (learning journey) ── */
   function startLesson(id) {
-    const found = findLesson(id);
+    const found = findLesson(id) || findSheet(id);
     if (!found) { showToast('Lesson not found.', 'error'); return; }
     playClick();
     State.screen = 'lesson';
@@ -2342,6 +2380,9 @@
     const L = State.lesson; if (!L) return;
     if (L.phase === 'teach') {
       if (L.cardIdx + 1 < L.def.cards.length) { L.cardIdx++; L.worked = newWorkedState(); }
+      /* A cheat sheet has no check phase to move into and no score to record —
+         there is nothing to answer, so nothing to be right about. */
+      else if (L.def.isSheet) { goLearn(); return; }
       else { L.phase = 'transition'; }
       render();
     } else if (L.phase === 'transition') {
@@ -5708,6 +5749,30 @@
       const hasRevision = uid && UNIT_REVISION.some(r => r.unit === uid);
       const revBtn = hasRevision ? `<button class="unit-rev-btn" type="button" data-unit-rev="${escapeHtml(uid)}" title="Revision notes for ${escapeHtml(unit.title)}">📝 Notes</button>` : '';
       const unitComplete = unitDone && !!(unitTest && unitTest.passed);
+      /* ── THE UNIT'S CHEAT SHEETS ───────────────────────────────────────────
+         BELOW THE LESSONS, NOT AMONG THEM. A sheet is not a step: it teaches
+         nothing new, cannot be completed, and is opened AFTER the teaching
+         rather than instead of it. Mixed into the rail it would read as
+         eighteen lessons of which six are unaccountably ungraded; below it, as
+         a strip of small chips, it reads as what it is — the reference half of
+         the unit, there when you want it and quiet when you do not.
+
+         Two lines each, and no progress of any kind: a page you can re-read a
+         hundred times has no state worth keeping, and a tick beside one would
+         only invite the reader to "finish" a reference. */
+      const unitSheets = sheetsForTopic(uid);
+      const sheetStrip = unitSheets.length ? `<div class="journey-sheets">
+        <div class="journey-sheets-h">📌 Cheat sheets<span class="journey-sheets-n">${unitSheets.length} one-page summaries</span></div>
+        <div class="journey-sheets-grid">
+          ${unitSheets.map(sh => `<button class="journey-sheet" type="button" data-lesson="${escapeHtml(sh.id)}">
+            <span class="journey-sheet-i" aria-hidden="true">${escapeHtml(sh.icon || '📌')}</span>
+            <span class="journey-sheet-tx">
+              <span class="journey-sheet-t">${escapeHtml(sh.title)}</span>
+              <span class="journey-sheet-m">${escapeHtml(sh.blurb || '')}</span>
+            </span>
+          </button>`).join('')}
+        </div>
+      </div>` : '';
       const collapsedOverride = State.collapsedUnits && State.collapsedUnits[uid];
       const collapsed = collapsedOverride !== undefined ? !!collapsedOverride : unitComplete;
       return `<div class="journey-unit ${unitBadgeEarned ? 'unit-mastered' : ''}${collapsed ? ' journey-unit-collapsed' : ''}">
@@ -5726,6 +5791,7 @@
         </div>
         <div class="journey-unit-progress-bg"><div class="journey-unit-progress" style="width:${(doneCount/unit.lessons.length*100).toFixed(0)}%"></div></div>
         <div class="journey-nodes">${lessonsHtml}</div>
+        ${sheetStrip}
       </div>`;
     }).join('');
 
@@ -6034,10 +6100,16 @@
       <div class="lesson-example-title">${escapeHtml(card.example.title)}</div>
       <table class="lesson-example-table"><tbody>${card.example.rows.map(row => `<tr>${row.map(c=>`<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
     </div>` : '';
+    /* `data-h` carries the column's heading down onto every cell. It costs one
+       attribute and it is what lets a narrow screen stack the table into
+       labelled rows instead of pushing the last column off the right edge —
+       see .lesson-card-sheet .lesson-table in styles.css. */
+    const tableHeads = card.table ? (card.table.headers || []) : [];
     const tableHtml = card.table ? `<div class="lesson-table-wrap">
       <table class="lesson-table">
-        <thead><tr>${(card.table.headers || []).map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
-        <tbody>${(card.table.rows || []).map(row => `<tr>${row.map(c => `<td>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+        <thead><tr>${tableHeads.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+        <tbody>${(card.table.rows || []).map(row => `<tr>${row.map((c, ci) =>
+          `<td${tableHeads[ci] ? ` data-h="${escapeHtml(tableHeads[ci])}"` : ''}>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
       </table>
     </div>` : '';
     const splitHtml = card.split ? `<div class="lesson-split">
@@ -6112,18 +6184,18 @@
       <button class="back-btn" id="lessonExitBtn" type="button">← Exit lesson</button>
       <div class="lesson-player slide-in">
         <div class="lesson-phase-bar">
-          <span class="lesson-phase-pill">Learn ${cardIdx + 1}/${totalCards}</span>
-          <div class="lesson-dots">${dots(totalCards, cardIdx, 'teach')}</div>
+          <span class="lesson-phase-pill">${def.isSheet ? '📌 Cheat sheet' : `Learn ${cardIdx + 1}/${totalCards}`}</span>
+          ${def.isSheet ? '' : `<div class="lesson-dots">${dots(totalCards, cardIdx, 'teach')}</div>`}
         </div>
         <div class="lesson-progress-bar-bg"><div class="lesson-progress-bar" style="width:${((cardIdx+1)/totalCards*100).toFixed(0)}%"></div></div>
-        <div class="lesson-card fade-in">
+        <div class="lesson-card fade-in${def.isSheet ? ' lesson-card-sheet' : ''}">
           <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
           ${card.body ? `<div class="lesson-card-body">${sanitizeCardBody(card.body)}</div>` : ''}
           ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}
-          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? 'Check understanding →' : 'Continue →'}</button>
+          <button class="btn-primary" id="lessonContinueBtn" type="button">${cardIdx + 1 >= totalCards ? (def.isSheet ? 'Done ✓' : 'Check understanding →') : 'Continue →'}</button>
         </div>
       </div>
     </div>`;
