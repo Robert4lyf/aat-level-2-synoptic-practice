@@ -94,7 +94,23 @@ function answerRight(el, q) {
   }
 }
 
-/* Sit a whole paper. `how` decides each question: 'right', 'wrong', or 'blank'. */
+/* Answer the multiple choice on screen with an option that is NOT the key.
+   The driver's generic answerCurrent() cannot do this in a mock: it finishes
+   every type by pressing tfsubmit/gapsubmit/numsubmit/tasksubmit, and a mock
+   offers none of those — grading waits for the end of the paper. Multiple
+   choice is the only type this needs, so it is the only type it does. */
+function answerWrongMcq(el, q) {
+  if ((q.type || 'mcq') !== 'mcq') return false;
+  const wrong = q.opts.map((_, i) => i).find(i => i !== q.ans);
+  const n = D.nodes(el, 'ans').find(x => x.getAttribute('data-i') === String(wrong));
+  if (!n) return false;
+  n.fire('click');
+  return true;
+}
+
+/* Sit a whole paper. `how` decides each question: 'right', 'wrong-mcq' — every
+   multiple choice answered with something that is not the key, everything else
+   left alone — or 'blank'. */
 function sit(unitKey, how) {
   const ctx = openMock(unitKey);
   const seen = [];
@@ -103,7 +119,7 @@ function sit(unitKey, how) {
     if (!q) break;
     const before = ctx.el.innerHTML;
     if (how === 'right') answerRight(ctx.el, q);
-    else if (how === 'wrong') D.answerCurrent(ctx.el, 0) /* generic: not the key for typed answers */;
+    else if (how === 'wrong-mcq') answerWrongMcq(ctx.el, q);
     /* BOTH SNAPSHOTS, and the one AFTER answering is the one that matters.
        A first version captured only the screen as it arrived — which is
        pristine by construction — so the leak assertions in section 2 were
@@ -154,7 +170,59 @@ function sit(unitKey, how) {
     `no mock screen offers a button that grades on the spot (found ${offered.join(', ') || 'none'})`);
 }
 
-/* ── 3. A paper answered correctly scores 100, and one left blank scores 0 ── */
+/* ── 3. A choice made under exam conditions has to LOOK made ──────────────
+   Withholding the VERDICT is not the same as withholding the CHOICE, and
+   multiple choice had lost the difference. `is-right` and `is-wrong` were the
+   only states an option could carry and both are gated on the question having
+   been graded — which, in a mock, does not happen until the paper is over. So
+   a reader tapped an option and the screen did not move. The pick was landing
+   and the answer was being recorded; there was nothing to see, and the
+   reasonable conclusion from the outside was that the tap had not worked. It
+   was reported as "you have to long-press rather than tap".
+
+   Asserted for every type that renders its own chosen state. Numeric answers
+   are excluded on purpose: what shows a typed figure is the input's own value,
+   which the browser paints and the module never re-renders — there is nothing
+   in the markup to assert, and nothing that could go missing from it. */
+{
+  const r = sit('tpfb', 'right');
+  const PILL = /class="a3-pill on"/;
+  const SHOWS = {
+    mcq:       h => /class="a3-opt on"/.test(h),
+    truefalse: h => PILL.test(h),
+    gapfill:   h => PILL.test(h),
+    /* Only when there is a pill to look at: a task of numeric parts alone
+       shows its answers in its inputs, like a numeric question. */
+    task:      h => PILL.test(h),
+  };
+  const applies = s => {
+    const t = s.q.type || 'mcq';
+    if (t === 'task') return (s.q.parts || []).some(p => p.type === 'choice');
+    return !!SHOWS[t];
+  };
+  const relevant = r.seen.filter(applies);
+  const invisible = relevant.filter(s => !SHOWS[s.q.type || 'mcq'](s.answered));
+  ok(invisible.length === 0,
+    `every answered question shows WHICH answer was chosen (${invisible.length} of ${relevant.length} showed nothing: ` +
+    `${[...new Set(invisible.map(s => s.q.type || 'mcq'))].join(', ') || 'none'})`);
+
+  /* The assertion above is only worth anything if the paper actually contained
+     the type that broke. A draw that happened to serve no multiple choice
+     would pass it having tested nothing. */
+  const types = new Set(relevant.map(s => s.q.type || 'mcq'));
+  ok(types.has('mcq'), 'and the paper it was checked on contained multiple choice at all');
+
+  /* And it still says nothing about whether the choice was right: this whole
+     run answered CORRECTLY, so a "chosen" state that leaked correctness would
+     look identical to one that does not. The wrong-answer run is what
+     separates them. */
+  const wrong = sit('tpfb', 'wrong-mcq');
+  const wrongMcq = wrong.seen.filter(s => (s.q.type || 'mcq') === 'mcq');
+  ok(wrongMcq.length > 0 && wrongMcq.every(s => /class="a3-opt on"/.test(s.answered)),
+    'a wrong choice is shown as chosen in exactly the same way as a right one');
+}
+
+/* ── 4. A paper answered correctly scores 100, and one left blank scores 0 ── */
 {
   const right = sit('tpfb', 'right');
   ok(/100%/.test(right.el.innerHTML), 'a paper answered correctly scores 100%');

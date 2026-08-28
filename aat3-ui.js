@@ -945,6 +945,21 @@
         if (S.answered !== null) {
           if (oi === q.ans) cls = ' is-right';
           else if (oi === S.picked) cls = ' is-wrong';
+        } else if (oi === S.picked) {
+          /* CHOSEN, NOT YET MARKED. Only a mock is ever in this state —
+             everywhere else choosing IS answering, so an option went straight
+             to is-right or is-wrong and this was the one state the control
+             never needed. Under exam conditions nothing is graded until the
+             paper is over, so without it a reader tapped an option and the
+             screen did not move: the pick was recorded and there was simply
+             nothing to see. It was reported as the tap not working — "you have
+             to long-press rather than tap" — which is what a control that
+             accepts input and shows none looks like from the outside.
+
+             Every other question type already had it: the true/false, gap-fill
+             and task pills all carry `on` from their own pick, independently
+             of whether anything has been graded. */
+          cls = ' on';
         }
         return '<button class="a3-opt' + cls + '" data-a3="ans" data-i="' + oi + '"' +
           (S.answered !== null ? ' disabled' : '') + '>' +
