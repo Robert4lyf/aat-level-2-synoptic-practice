@@ -762,7 +762,14 @@
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
-    var h = '<div class="a1-qhead">Question ' + (S.qIdx + 1) + ' of ' + n + '</div>' +
+    /* THE COUNTER IS SUPPRESSED IN A REVIEW, and not for tidiness. It reads
+       `S.qIdx`, which is where the reader got to in the RUN — and a review is
+       not a run: it opens whichever question was tapped while qIdx still sits
+       at the last question of the finished paper. So a review of question one
+       carried a card headed "Question 30 of 30" directly beneath a bar reading
+       "Question 1 of 30". The bar is the one that knows, and it is already
+       saying it, so this line has nothing left to add. */
+    var h = (isReview() ? '' : '<div class="a1-qhead">Question ' + (S.qIdx + 1) + ' of ' + n + '</div>') +
             '<h2 class="a1-q">' + md(q.q) + '</h2>';
     if (q.intro) h += '<p class="a1-p a1-q-intro">' + md(q.intro) + '</p>';
     if (q.doc) h += docHtml(q.doc);
@@ -1239,7 +1246,10 @@
         back: 'topath',
         backLabel: 'Back to the steps',
         title: 'Practice',
-        meta: bank.length + ' questions · ' + PRACTICE_LEN + ' per run',
+        /* "10 per run" was true while a run was the only thing this screen
+           offered. It now offers a 30-question paper as well, so the honest
+           fact here is the size of the pool; each card says its own length. */
+        meta: bank.length + ' questions in the pool',
       });
 
     h += '<div class="a1-page">';

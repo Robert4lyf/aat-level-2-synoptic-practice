@@ -6221,3 +6221,22 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
     color: var(--subtext); font-weight: 700; margin-top: 7px;
   }
 }
+
+/* A cheat sheet's worked figures, on a narrow screen. Same reasoning as the
+   table above and a different failure: `.lesson-example` clips rather than
+   scrolls, so at 320px the two-column layout's 274px minimum sat inside a
+   240px card and 34px of every row was simply gone — no scrollbar, no
+   overflow, nothing to see. Stacked, the label sits above its figure and the
+   minimum width is one column's. */
+@media (max-width: 460px) {
+  .lesson-card-sheet .lesson-example-table,
+  .lesson-card-sheet .lesson-example-table tbody,
+  .lesson-card-sheet .lesson-example-table tr,
+  .lesson-card-sheet .lesson-example-table td { display: block; width: auto; }
+  .lesson-card-sheet .lesson-example-table tr {
+    padding: 8px 14px; border-bottom: 1px solid var(--border);
+  }
+  .lesson-card-sheet .lesson-example-table tr:last-child { border-bottom: none; }
+  .lesson-card-sheet .lesson-example-table td { border: 0; padding: 1px 0; }
+  .lesson-card-sheet .lesson-example-table td:last-child { margin-top: 2px; }
+}

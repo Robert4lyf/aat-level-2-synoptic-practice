@@ -6112,9 +6112,17 @@
           `<td${tableHeads[ci] ? ` data-h="${escapeHtml(tableHeads[ci])}"` : ''}>${mdBold(c)}</td>`).join('')}</tr>`).join('')}</tbody>
       </table>
     </div>` : '';
+    /* mdBold on the TITLE as well as the items. It was escapeHtml, which is
+       the same everywhere except that ** in a title came out as two literal
+       asterisks — "Discounts **allowed** — to our customers", on the page, in
+       front of the reader. Nothing in the existing lessons had put bold in a
+       split title, so nothing had ever shown it; three cheat sheets did, and a
+       browser found it in a second. The title is already inside <strong>, so
+       this bolds a word WITHIN a bold line — which is what the author meant by
+       marking it. */
     const splitHtml = card.split ? `<div class="lesson-split">
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
-      <div class="lesson-split-col"><strong>${escapeHtml(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${mdBold(card.split.left.title || card.split.left.h || '')}</strong><ul>${(card.split.left.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
+      <div class="lesson-split-col"><strong>${mdBold(card.split.right.title || card.split.right.h || '')}</strong><ul>${(card.split.right.items||[]).map(x=>`<li>${mdBold(x)}</li>`).join('')}</ul></div>
     </div>` : '';
     const formulaHtml = card.formula ? `<div class="lesson-formula">${card.formula.split('·').map(f => `<div class="lesson-formula-line">${escapeHtml(f.trim())}</div>`).join('')}</div>` : '';
     const calloutKind = card.callout ? (card.callout.kind || 'tip') : '';

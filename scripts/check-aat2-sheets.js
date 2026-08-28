@@ -140,6 +140,25 @@ console.log(`${DIM}3. Worth opening${RESET}`);
     const text = JSON.stringify(c);
     const stars = (text.match(/\*\*/g) || []).length;
     ok(stars % 2 === 0, `${s.id}'s bold markers are balanced (${stars} found)`);
+
+    /* AND IN A FIELD THE RENDERER ACTUALLY BOLDS. Balanced is not enough: the
+       lesson player runs mdBold over prose, table cells, split titles and
+       items, the callout and the exam trap — and escapeHtml over the heading,
+       the formula, the flow steps, the example's title and the table headers.
+       A ** in one of those five reaches the reader as two asterisks. Three
+       sheets did exactly that in a split title before the renderer was fixed
+       to bold it; these are the slots where it is still literal. */
+    const plainSlots = [
+      ['heading', c.h],
+      ['formula', c.formula],
+      ['example title', c.example && c.example.title],
+      ...(c.flow || []).map((f, i) => [`flow step ${i + 1}`, f]),
+      ...((c.table && c.table.headers) || []).map((h, i) => [`table header ${i + 1}`, h]),
+    ];
+    plainSlots.forEach(([where, val]) => {
+      ok(!/\*\*/.test(String(val || '')),
+        `${s.id}'s ${where} has no ** — the renderer does not bold it, so it would print as asterisks`);
+    });
   });
 }
 

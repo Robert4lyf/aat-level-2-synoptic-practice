@@ -596,6 +596,16 @@ console.log(`${DIM}11. Reviewing the paper${RESET}`);
   ok(/class="a1-revverdict is-wrong"/.test(c.el.innerHTML), 'opening one shows its verdict');
   ok(/Wrong answer 1 of /.test(c.el.innerHTML), 'and says where in the filtered run it sits');
   ok(/class="a1-exp"/.test(c.el.innerHTML), 'a reviewed question explains itself');
+  /* The card used to carry its own "Question N of M", read off S.qIdx — which
+     is where the reader got to in the RUN, not which question the review has
+     open. Reviewing question one showed a card headed "Question 30 of 30"
+     under a bar reading "Question 1 of 30". */
+  ok(!/class="a1-qhead"/.test(c.el.innerHTML),
+    'and carries no second question counter to contradict the bar\'s');
+  const bars = [...c.el.innerHTML.matchAll(/Question (\d+) of (\d+)/g)];
+  ok(bars.length === 1, `a reviewed question states its number exactly once (found ${bars.length})`);
+  ok(bars.length === 1 && Number(bars[0][1]) === Number(firstWrong) + 1,
+    'and the number it states is the question actually open');
   ok(!/data-a1="nextq"/.test(c.el.innerHTML), 'and does not offer the run\'s Next — a review has its own');
   ok(/data-a1="reviewnext"/.test(c.el.innerHTML), 'which it does offer');
 
