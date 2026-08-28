@@ -398,6 +398,7 @@ const MODULES = [
           const tasks = banks.flatMap(b => (b.QUESTIONS || []))
             .filter(q => q.type === 'task' && q.unitKey === unit);
           const saved = window.AAT3_PRACTICE;
+          const savedFaps = window.AAT3_FAPS_PRACTICE;
           tasks.forEach(t => {
             window.AAT3_PRACTICE = { QUESTIONS: [Object.assign({}, t, { unitKey: unit })] };
             window.AAT3_FAPS_PRACTICE = { QUESTIONS: [] };
@@ -407,6 +408,7 @@ const MODULES = [
             if (go) { go.click(); sweep(`task ${t.id}`); }
           });
           window.AAT3_PRACTICE = saved;
+          window.AAT3_FAPS_PRACTICE = savedFaps;
 
           /* THE REVIEW OF A FINISHED PAPER — the two tallest screens in the
              module. The list is twenty-four rows of question stems clamped to
@@ -417,9 +419,10 @@ const MODULES = [
              and the state that renders the most (every question carries the
              right answer, the explanation and the notice saying it was left
              empty). */
-          remount('practice', unit);
-          const mock = document.querySelector('[data-a3="startmock"]');
-          if (mock) {
+          const sitBlankMock = () => {
+            remount('practice', unit);
+            const mock = document.querySelector('[data-a3="startmock"]');
+            if (!mock) return false;
             mock.click();
             for (let i = 0; i < 60; i++) {
               const next = document.querySelector('[data-a3="mocknext"]');
@@ -427,13 +430,43 @@ const MODULES = [
               next.click();
             }
             const review = document.querySelector('[data-a3="review"]');
-            if (review) {
-              review.click();
-              sweep(`${unit} mock review list`);
+            if (!review) return false;
+            review.click();
+            return true;
+          };
+
+          if (sitBlankMock()) sweep(`${unit} mock review list`);
+
+          /* AND ONE REVIEWED QUESTION OF EVERY TYPE, drawn deliberately rather
+             than taken from wherever the paper happened to start.
+
+             This used to open the first row of a randomly drawn paper, which
+             made the check pass or fail by luck — exactly the flaw the task
+             sweep above was written to avoid, left in place a few lines below
+             it. Six gap-fill questions rendered between 330px and 370px in a
+             320px window for want of a `flex-wrap`, and the gate caught it on
+             roughly one run in four: green on the pull request, red on main.
+
+             So the bank is substituted for one question at a time, the way the
+             tasks are, and every type's review screen is measured on every
+             run. */
+          const reviewBank = banks.flatMap(b => (b.QUESTIONS || []))
+            .filter(q => q.unitKey === unit);
+          const oneOfEach = [];
+          new Set(reviewBank.map(q => q.type || 'mcq')).forEach(t => {
+            const pick = reviewBank.find(q => (q.type || 'mcq') === t);
+            if (pick) oneOfEach.push(pick);
+          });
+          oneOfEach.forEach(q => {
+            window.AAT3_PRACTICE = { QUESTIONS: [Object.assign({}, q, { unitKey: unit })] };
+            window.AAT3_FAPS_PRACTICE = { QUESTIONS: [] };
+            if (sitBlankMock()) {
               const row = document.querySelector('[data-a3="reviewq"]');
-              if (row) { row.click(); sweep(`${unit} mock review question`); }
+              if (row) { row.click(); sweep(`${unit} reviewed ${q.type || 'mcq'} ${q.id}`); }
             }
-          }
+          });
+          window.AAT3_PRACTICE = saved;
+          window.AAT3_FAPS_PRACTICE = savedFaps;
         });
         return { problems: problems, lowest: window.__lowest };
       }, [MIN_CONTRAST, MOD]);
@@ -442,7 +475,7 @@ const MODULES = [
       found.problems.forEach(p => errors.push(`${MOD.name} ${theme} @${WIDTH}px: ${p}`));
       notes.push(`${MOD.name} ${theme} @${WIDTH}px: swept ${MOD.id === 'aat1'
         ? 'the ladder, practice, every cheat sheet, a lesson and one question of every type'
-        : 'units, both paths, both practice screens, every cheat sheet, a lesson, every task and both screens of a mock review'} at ${WIDTH}px.`);
+        : 'units, both paths, both practice screens, every cheat sheet, a lesson, every task, the mock review list and one reviewed question of every type'} at ${WIDTH}px.`);
       if (found.lowest) {
         notes.push(`${MOD.name} ${theme} @${WIDTH}px: faintest text is ${found.lowest.ratio.toFixed(2)}:1 — ` +
           `"${found.lowest.text}" on ${found.lowest.label} (floor ${MIN_CONTRAST}).`);
