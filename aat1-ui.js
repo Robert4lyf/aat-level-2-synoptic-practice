@@ -1099,8 +1099,22 @@
       }
     }
 
+    /* NAME THE STEP THAT WAS JUST FINISHED. The heading is a verdict, and a
+       verdict does not say what it is a verdict on; the screen already names
+       the step COMING NEXT, so the one just completed was the only thing on it
+       without a name. Practice runs and mocks are not one step, so they keep
+       the score line they already have. */
+    var doneLesson = '';
+    if (!isP) {
+      var finished = lessonById(S.lessonId);
+      if (finished) {
+        doneLesson = '<div class="a1-done-lesson">Step ' + stepNo(finished.id) + ' · ' + esc(finished.title) + '</div>';
+      }
+    }
+
     return '<div class="a1-root"><div class="a1-done">' +
       '<div class="a1-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
+      doneLesson +
       '<h1 class="a1-done-h">' + head + '</h1>' +
       '<div class="a1-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
         (isM ? ' · timed mock' : isP ? ' · ' + practiceLabel() : '') + '</div>' +

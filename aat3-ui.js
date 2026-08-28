@@ -1536,8 +1536,21 @@
       }
     }
 
+    /* NAME THE LESSON THAT WAS JUST FINISHED. The heading is a verdict —
+       "Lesson complete", "Worth another pass" — and a verdict does not say what
+       it is a verdict ON. A reader arriving here after a run of short lessons,
+       or returning to a screenshot of one, had a percentage and no subject.
+       Practice runs and mocks are not one lesson, so they keep the score line
+       they already have. */
+    var doneLesson = '';
+    if (!isP) {
+      var finished = lessonById(S.lessonId);
+      if (finished) doneLesson = '<div class="a3-done-lesson">' + esc(finished.title) + '</div>';
+    }
+
     return '<div class="a3-root"><div class="a3-done">' +
       '<div class="a3-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
+      doneLesson +
       '<h1 class="a3-done-h">' + head + '</h1>' +
       '<div class="a3-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
         (isM ? ' · pass mark ' + passMark + '%' : isP ? ' · ' + practiceLabel() : '') + '</div>' +

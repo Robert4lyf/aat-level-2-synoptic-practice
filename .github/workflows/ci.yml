@@ -59,6 +59,10 @@ jobs:
         run: npm run check:aat3-weighting
       - name: Check the timed mock behaves like an exam (no feedback, weighted, reports by outcome)
         run: npm run check:aat3-mock
+      - name: Check every VAT threshold in TPFB agrees with the governed tax data
+        run: npm run check:vat-thresholds
+      - name: Check a finished lesson names itself on the completion screen
+        run: npm run check:lesson-complete
       - name: Check the read-aloud button speaks the card's prose and stops on every exit
         run: npm run check:aat3-speech
       - name: Check the Level 1 timed mock (no feedback, weighted draw, mistake memory, reviewable)

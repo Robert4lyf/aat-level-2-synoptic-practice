@@ -935,6 +935,13 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
   width: 100px; height: 100px; border-radius: 50%; background: var(--a1-surface);
   display: grid; place-items: center; font-size: 1.6rem; font-weight: 800; color: var(--a1-ink);
 }
+/* The step's name, above the verdict that judges it. An eyebrow rather than a
+   heading: the percentage and the verdict are what the reader came for, and the
+   name is the label that makes them mean something. */
+.a1-done-lesson {
+  font-size: var(--a1-t-label); font-weight: 800; letter-spacing: var(--a1-track);
+  text-transform: uppercase; color: var(--a1-brand-ink); margin-bottom: 6px;
+}
 .a1-done-h { font-size: 1.5rem; font-weight: 800; margin: 0 0 6px; }
 .a1-done-sub { color: var(--a1-ink-3); font-size: .95rem; }
 .a1-done-weak, .a1-done-next {
