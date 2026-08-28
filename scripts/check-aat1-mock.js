@@ -644,12 +644,36 @@ console.log(`${DIM}12. The review replays the answer that was given${RESET}`);
      answer run back through the marker, so a snapshot that failed to carry the
      pairs of a matching question, or the sequence of an ordering one, shows up
      here as a screen full of crosses under a row that says right. */
+  /* AND THE PAPER IS CHOSEN, NOT ACCEPTED. The two types whose snapshot can
+     actually fail — matching, whose pairs are a map, and ordering, whose
+     sequence is an array — are a small share of the bank, so whether a given
+     paper contains one is luck. This section asserted against whatever the
+     seeded draw happened to produce, and the day the bank grew past 150
+     questions that luck ran out and the check failed on content that was
+     perfectly fine. So papers are sat until one carries both, and the
+     assertions are made there; if none of twenty does, that is reported rather
+     than passed over. */
+  const containsBoth = (c) => {
+    const kinds = new Set(c.seen.map(q => q.type || 'mcq'));
+    return kinds.has('match') && kinds.has('ordering');
+  };
+  let deep = containsBoth(right) ? right : null;
+  for (let i = 0; i < 20 && !deep; i++) {
+    const c = sit('right');
+    if (containsBoth(c)) deep = c;
+  }
+  ok(!!deep, 'a paper can be drawn that contains both a matching and an ordering question');
+  /* `right` is already on its review screen from the assertions above; a paper
+     found by the loop is still on its result screen and has to be opened. */
+  if (!deep) deep = right;
+  else if (deep !== right) D.click(deep.el, 'review');
+
   const openedRight = [];
   for (let i = 0; i < 30; i++) {
-    D.click(right.el, 'reviewq', n => n.getAttribute('data-i') === String(i));
-    const sheet = right.el.innerHTML.split('a1-sheet')[1] || '';
+    D.click(deep.el, 'reviewq', n => n.getAttribute('data-i') === String(i));
+    const sheet = deep.el.innerHTML.split('a1-sheet')[1] || '';
     openedRight.push({ i, sheet });
-    D.click(right.el, 'reviewlist');
+    D.click(deep.el, 'reviewlist');
   }
   ok(openedRight.length === 30, 'every question on a right paper can be opened');
   const drawnWrong = openedRight.filter(r =>
