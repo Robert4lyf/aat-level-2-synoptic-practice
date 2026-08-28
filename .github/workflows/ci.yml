@@ -116,6 +116,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:chrome
+      - name: Check folding, jumping and the glossary index still reach their targets
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:nav
       - name: Check every lesson card opens and draws
         env:
           REQUIRE_PLAYWRIGHT: '1'
