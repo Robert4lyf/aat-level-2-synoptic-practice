@@ -57,6 +57,8 @@ jobs:
         run: npm run check:aat3-weighting
       - name: Check the timed mock behaves like an exam (no feedback, weighted, reports by outcome)
         run: npm run check:aat3-mock
+      - name: Check the Level 1 timed mock (no feedback, weighted draw, mistake memory, reviewable)
+        run: npm run check:aat1-mock
       - name: Check each self-rendering stylesheet matches its screens (no dead rules, no unstyled classes)
         run: npm run check:styles
       - name: Check progress backup merge (no data loss, idempotent)

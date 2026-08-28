@@ -712,6 +712,12 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   transition: border-color .14s ease, transform .14s ease, background .14s ease;
 }
 .a1-opt:not(:disabled):hover { border-color: var(--a1-brand); transform: translateX(2px); }
+/* CHOSEN, BUT NOT YET MARKED — the state a timed mock spends its whole life in.
+   Outside a mock choosing is answering, so this never lasted long enough to be
+   drawn; under exam conditions, with nothing to show for the tap, the reader
+   concludes the tap did not land. */
+.a1-opt.on { border-color: var(--a1-brand); background: var(--a1-brand-wash); color: var(--a1-ink); }
+.a1-opt.on .a1-opt-k { background: var(--a1-brand); color: var(--a1-on-fill); }
 .a1-opt-k {
   flex: 0 0 auto; width: 24px; height: 24px; border-radius: 7px;
   display: grid; place-items: center; font-size: .8rem; font-weight: 800;
@@ -956,3 +962,146 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 }
 .a1-pcard-t { font-size: 1rem; font-weight: 700; color: var(--a1-ink); line-height: 1.35; }
 .a1-pcard-m { font-size: .83rem; color: var(--a1-ink-3); }
+
+/* ── The timed mock ───────────────────────────────────────────────────────── */
+
+/* The panel that opens a paper. Heavier than the outcome cards below it because
+   it is not one of them: sitting a full paper is what the practice screen is
+   for, and eight identical cards made the reader read all eight to find it. */
+.a1-mockpanel {
+  display: flex; align-items: center; gap: var(--a1-4); width: 100%; text-align: left;
+  padding: var(--a1-5); margin: 0 0 var(--a1-3);
+  border: 0; border-radius: var(--a1-r-lg); cursor: pointer; font-family: inherit;
+  background: linear-gradient(135deg, var(--a1-brand), var(--a1-brand-2));
+  color: var(--a1-on-fill); box-shadow: var(--a1-shadow-lg);
+  transition: transform .15s ease;
+}
+.a1-mockpanel:hover { transform: translateY(-2px); }
+.a1-mockpanel:focus-visible { outline: 3px solid var(--a1-brand-ink); outline-offset: 3px; }
+.a1-mockpanel-tx { flex: 1 1 auto; min-width: 0; }
+.a1-mockpanel-k {
+  display: block; font-size: var(--a1-t-label); font-weight: 800;
+  letter-spacing: var(--a1-track); text-transform: uppercase; opacity: .85;
+}
+.a1-mockpanel-t {
+  display: block; font-size: var(--a1-t-title); font-weight: 800;
+  line-height: 1.2; margin: 3px 0 5px;
+}
+.a1-mockpanel-m { display: block; font-size: var(--a1-t-meta); opacity: .85; line-height: 1.55; }
+.a1-mockpanel-best {
+  flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding-left: var(--a1-3); text-align: center;
+}
+.a1-mockpanel-best b { font-size: 22px; font-weight: 800; line-height: 1; }
+.a1-mockpanel-best span { font-size: 10.5px; opacity: .85; letter-spacing: .04em; }
+.a1-mockpanel-go { flex: none; font-size: 22px; opacity: .85; }
+
+/* The backlog of questions got wrong. An alert rather than a card, and only
+   drawn when there is one — an empty "0 mistakes" card is a card the reader
+   reads on every visit for nothing. */
+.a1-alert {
+  display: flex; align-items: center; gap: var(--a1-3); width: 100%; text-align: left;
+  padding: var(--a1-4); margin: 0 0 var(--a1-3);
+  background: var(--a1-accent-wash); border: 1px solid var(--a1-accent);
+  border-radius: var(--a1-r); cursor: pointer; font-family: inherit;
+}
+.a1-alert:hover { border-color: var(--a1-brand); }
+.a1-alert:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-alert-i {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 15px;
+  background: var(--a1-accent); color: var(--a1-on-fill);
+}
+.a1-alert-tx { flex: 1 1 auto; min-width: 0; }
+.a1-alert-t { display: block; font-size: var(--a1-t-ui); font-weight: 700; color: var(--a1-ink); }
+.a1-alert-m { display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3); margin-top: 2px; line-height: 1.45; }
+.a1-alert-go { flex: none; color: var(--a1-accent-ink); font-size: 18px; }
+
+/* The clock. Takes the place of the percentage in the question bar, because a
+   reader sitting to time wants the minutes, not the progress. */
+.a1-lessonbar-mock { border-bottom: 2px solid var(--a1-brand); }
+.a1-mockclock {
+  flex: 0 0 auto; font-variant-numeric: tabular-nums; font-weight: 800;
+  font-size: 15px; color: var(--a1-brand-ink); letter-spacing: .01em;
+}
+.a1-mockclock.is-low { color: var(--a1-bad); }
+/* Under exam conditions the numeric input has no Check beside it, so the row
+   is the input alone and does not need the gap below it that a button did. */
+.a1-try-row-mock { margin-bottom: 6px; }
+
+/* The report at the end, by outcome. */
+.a1-mockreport { margin: var(--a1-5) 0 var(--a1-1); text-align: left; }
+.a1-mockreport-h {
+  font-size: var(--a1-t-label); font-weight: 800; letter-spacing: var(--a1-track);
+  text-transform: uppercase; color: var(--a1-ink-3); margin-bottom: var(--a1-2);
+}
+.a1-mockreport .a1-table { font-size: 13px; }
+.a1-mockreport .a1-table th, .a1-mockreport .a1-table td { padding: 8px 9px; }
+.a1-mockreport tr.is-low td { background: var(--a1-bad-wash); }
+.a1-mockreport tr.is-ok td { background: var(--a1-ok-wash); }
+.a1-mockreport-f {
+  font-size: var(--a1-t-meta); color: var(--a1-ink-2); line-height: 1.55;
+  background: var(--a1-surface-2); border-radius: var(--a1-r-sm); padding: var(--a1-3);
+}
+
+/* ── Reviewing the paper just sat ─────────────────────────────────────────── */
+.a1-revfilter { display: flex; gap: var(--a1-2); margin: 0 0 var(--a1-4); }
+.a1-revfilter-b {
+  flex: 1 1 0; padding: 9px 10px; border-radius: var(--a1-r-sm); cursor: pointer;
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface);
+  color: var(--a1-ink-2); font-family: inherit; font-size: var(--a1-t-ui); font-weight: 700;
+}
+.a1-revfilter-b.on { background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill); }
+.a1-revfilter-b:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-revclean {
+  padding: var(--a1-3) var(--a1-4); margin-bottom: var(--a1-4);
+  background: var(--a1-ok-wash); border-radius: var(--a1-r-sm);
+  font-size: var(--a1-t-meta); color: var(--a1-ink-2);
+}
+.a1-revlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--a1-2); }
+.a1-revrow {
+  display: grid; grid-template-columns: 24px minmax(0, 1fr) 22px; gap: var(--a1-2);
+  align-items: start; width: 100%; text-align: left; cursor: pointer;
+  padding: var(--a1-3); font-family: inherit;
+  background: var(--a1-surface); border: 1px solid var(--a1-line);
+  border-left-width: 3px; border-radius: var(--a1-r-sm);
+}
+.a1-revrow:hover { border-color: var(--a1-brand); }
+.a1-revrow:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-revrow-n { font-size: 13px; font-weight: 700; color: var(--a1-ink-3); padding-top: 1px; }
+.a1-revrow-tx { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+/* Two lines, then an ellipsis. Truncating to one line loses the half of the
+   question that says which one it was; letting it run makes a list of thirty
+   rows a page nobody scrolls to the end of. */
+.a1-revrow-q {
+  font-size: var(--a1-t-ui); color: var(--a1-ink); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.a1-revrow-m { font-size: 12.5px; color: var(--a1-ink-3); }
+.a1-revrow-v { font-size: 15px; font-weight: 700; text-align: right; padding-top: 1px; }
+.a1-revrow.is-right .a1-revrow-v { color: var(--a1-ok); }
+.a1-revrow.is-wrong .a1-revrow-v { color: var(--a1-bad); }
+.a1-revrow.is-right { border-left-color: var(--a1-ok); }
+.a1-revrow.is-wrong { border-left-color: var(--a1-bad); }
+
+.a1-revverdict {
+  flex: none; width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 15px;
+}
+.a1-revverdict.is-right { background: var(--a1-ok-wash); color: var(--a1-ok); }
+.a1-revverdict.is-wrong { background: var(--a1-bad-wash); color: var(--a1-bad); }
+.a1-revblank {
+  padding: var(--a1-3); margin-bottom: var(--a1-4);
+  background: var(--a1-accent-wash); border-radius: var(--a1-r-sm);
+  font-size: var(--a1-t-meta); color: var(--a1-ink-2); line-height: 1.55;
+}
+.a1-revnav { display: flex; gap: var(--a1-2); align-items: center; margin-top: var(--a1-6); }
+.a1-revnav .a1-btn { flex: 1 1 0; justify-content: center; padding-left: 6px; padding-right: 6px; }
+
+/* The panel stacks below the narrowest phone: a 22px score beside three lines
+   of text leaves the text about eleven characters wide. */
+@media (max-width: 380px) {
+  .a1-mockpanel { flex-direction: column; align-items: flex-start; gap: var(--a1-2); }
+  .a1-mockpanel-best { flex-direction: row; align-items: baseline; gap: var(--a1-2); padding-left: 0; }
+}
