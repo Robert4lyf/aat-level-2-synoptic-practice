@@ -510,6 +510,19 @@ header .sub {
 }
 .icon-btn:active { transform: scale(.97); }
 
+/* THE REFERENCE BUTTON KEEPS ITS GLYPH AND LOSES ITS WORD when the header runs
+   out of room. Levels 1 and 3 gained this button and it cost them a wrapped
+   row at 390px — the header went back to 73px having just come down to 46px.
+   Dropping four characters buys the row back.
+
+   Two separate spans rather than `font-size: 0` on the button with
+   `::first-letter` restoring the glyph: ::first-letter does not apply to an
+   inline-flex box, so that approach renders an empty button, and no automated
+   check catches it because the button is still there and still works. */
+@media (max-width: 420px) {
+  .icon-btn .rt-l { display: none; }
+}
+
 /* ── SPLASH ── */
 .splash {
   min-height: calc(100vh - 92px);
@@ -3090,9 +3103,12 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   font-weight: 600;
 }
 
-/* Hide the Ref button and panel for non-AAT subjects */
-body:not([data-subject="aat"]) #referenceToggle { display: none; }
-body:not([data-subject="aat"]) .reference-panel { display: none; }
+/* The reference panel belongs to the three AAT levels and to nothing else —
+   there is no reference material for Français, LSF, the guitar or the Code de
+   la Route, and an empty drawer is worse than no button. Each level sees only
+   the sections marked for it; see `levels` in app.js. */
+body:not([data-subject="aat"]):not([data-subject="aat1"]):not([data-subject="aat3"]) #referenceToggle { display: none; }
+body:not([data-subject="aat"]):not([data-subject="aat1"]):not([data-subject="aat3"]) .reference-panel { display: none; }
 
 /* Reference panel */
 .reference-panel {

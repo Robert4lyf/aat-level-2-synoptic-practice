@@ -701,6 +701,14 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 /* LINE-HEIGHT, which this had none of. A two-line verdict — "Worth going back
    to the lessons" — was set at the body's 1.7, so the two halves of one
    sentence sat further apart than the paragraphs on a lesson card. */
+/* The lesson's name, above the verdict that judges it. An eyebrow rather than
+   a heading: the percentage and the verdict are what the reader came for, and
+   the name is the label that makes them mean something. */
+.a3-done-lesson {
+  font-size: var(--a3-t-label); font-weight: 700; letter-spacing: var(--a3-track);
+  text-transform: uppercase; color: var(--a3-brand-ink);
+  margin-bottom: var(--a3-2);
+}
 .a3-done-h {
   font-family: var(--a3-serif); font-size: 30px; font-weight: 600;
   line-height: var(--a3-lh-tight); margin: 0 0 var(--a3-2); letter-spacing: -.015em;
