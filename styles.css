@@ -364,6 +364,11 @@ header {
   gap: 14px;
   min-width: 0;
 }
+/* The unclassed wrapper holding the title, subtitle and version badge. Without
+   min-width: 0 a flex item refuses to shrink below its content, so the title's
+   ellipsis never engages and a long subject name pushes the header controls
+   off the right edge instead. */
+.header-left > div { min-width: 0; }
 header h1 {
   font-size: 1.05rem;
   font-weight: 800;
@@ -371,6 +376,78 @@ header h1 {
   line-height: 1.2;
   color: #fff;
 }
+/* The child combinator, because `header h1` also matches a <header> a screen
+   renders inside #app — the same trap the subject-specific rules above call
+   out. This must reach the bar at the top and nothing else.
+
+   Flex rather than block is what makes the title able to truncate. As a block,
+   the h1's inline-flex child sizes itself and overflows the viewport instead of
+   shrinking, so `min-width: 0` below has nothing to act on and a long subject
+   name pushes the page sideways. As a flex container it makes the button a
+   flex item, which is shrinkable, and the min-width chain then works. */
+body > header h1 {
+  display: flex;
+  align-items: center;
+}
+
+/* THE TITLE IS THE SWITCHER. The header used to name the subject twice — an
+   <h1> reading "AAT Level 3" beside a pill reading "AAT L3 ▾" — so one of the
+   four header controls was spent repeating a word already on screen beside it.
+   The button now lives inside the h1 and inherits its type, which is why there
+   is no font declaration here: the title must not change size or weight by
+   becoming pressable.
+
+   The negative margin matches the padding, so the hit area grows past the text
+   without shifting the title off the left margin it shares with the page. */
+.brand-switch {
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* NO max-width: 100% HERE. It looks harmless and truncates the title at every
+     width, including a 1280px header with 1100px to spare. The percentage
+     resolves against the <h1>, whose width comes from `.header-left` — a flex
+     item sized by its own content, which is this button. Chromium settles that
+     circular dependency by shrinking, so the name loses its last few letters
+     to an ellipsis with the room to spell them sitting empty beside it.
+     Squeezing at narrow widths is the min-width below and on the ancestors;
+     it does not need a max-width. */
+  /* Load-bearing, unlike most min-width: 0 in a flex chain: without it the
+     button keeps its automatic minimum size, refuses to shrink, and a long
+     subject name gives the whole app a horizontal scrollbar. */
+  min-width: 0;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  border-radius: 8px;
+  transition: background var(--dur) var(--ease);
+}
+.brand-switch:hover { background: rgba(255, 255, 255, .12); }
+.brand-switch:active { background: rgba(255, 255, 255, .18); }
+.brand-switch:focus-visible { outline: 2px solid rgba(255, 255, 255, .85); outline-offset: 1px; }
+/* Long subject names ("Langue des Signes Française") truncate rather than
+   wrapping the caret onto a second line or pushing the header controls off. */
+.brand-name {
+  /* No min-width: 0 — `overflow: hidden` already sets a flex item's automatic
+     minimum size to zero, and adding it changed nothing when measured. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Sized in em so it tracks the title at every breakpoint, and set apart from
+   the name so it reads as an affordance rather than part of the subject. */
+.brand-caret {
+  font-size: .72em;
+  font-weight: 700;
+  opacity: .65;
+}
+.brand-switch:hover .brand-caret,
+.brand-switch:focus-visible .brand-caret { opacity: 1; }
 header .sub {
   font-size: .65rem;
   opacity: .7;

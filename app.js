@@ -3294,14 +3294,24 @@
     document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
     const dt = document.getElementById('darkToggle');
     if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
-    const sb = document.getElementById('subjectSwitcherBtn');
-    if (sb) { const s = getSubject(_activeSubjectId); sb.textContent = s.flag + ' ' + s.short + ' ▾'; }
-    /* index.html hardcodes the Level 2 title; keep the header honest per subject. */
+    /* THE TITLE IS THE SWITCHER. The header named the subject twice — an <h1>
+       reading "AAT Level 3" beside a pill reading "AAT L3 ▾" — which spent a
+       header slot repeating a word already on screen. The button now lives
+       inside the <h1>, so the thing that names the subject is the thing that
+       changes it, and the short name has no remaining use here.
+
+       Which is why the name goes into `.brand-name` and not into the h1: the
+       h1 owns the button, and writing its textContent would delete it. */
     const subj = getSubject(_activeSubjectId);
-    const h1 = document.querySelector('header h1');
+    const sb = document.getElementById('subjectSwitcherBtn');
+    const brand = document.querySelector('header .brand-name');
+    if (brand) brand.textContent = subj.flag + ' ' + subj.name;
+    /* Without this the label reads "Switch subject" to a screen reader and the
+       visible name is suppressed, so the one control naming the open subject
+       would stop naming it to the readers who most need it said. */
+    if (sb) sb.setAttribute('aria-label', 'Switch subject — currently ' + subj.name);
     const sub = document.querySelector('header .sub');
     const badge = document.querySelector('header .badge');
-    if (h1)  h1.textContent = subj.flag + ' ' + subj.name;
     if (sub) sub.textContent = subj.desc;
     if (badge) badge.style.display = subj.id === 'aat' ? '' : 'none';
   }

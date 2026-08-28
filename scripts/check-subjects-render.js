@@ -17,6 +17,8 @@
  *   - it renders something into #app rather than staying blank
  *   - no uncaught error and no console error while doing so
  *   - the header names that subject, so the chrome and the content agree
+ *   - the title IS the subject switcher, and names the subject only once
+ *   - the title is not truncated on a 1280px header with room to spare
  *   - the --subj token resolves, so its accent colour exists
  *   - progress written under its own key survives a reload
  *
@@ -176,6 +178,42 @@ function serve() {
           return c;
         })(),
         cover: !!document.getElementById('page-cover'),
+        /* THE TITLE IS THE SWITCHER, and the header names the subject once.
+           It used to name it twice — an <h1> reading "AAT Level 3" beside a
+           pill reading "AAT L3 ▾" — so one of four header controls was spent
+           repeating the word beside it. */
+        brand: (() => {
+          const h1 = document.querySelector('body > header h1');
+          const btn = document.getElementById('subjectSwitcherBtn');
+          const nm = document.querySelector('body > header .brand-name');
+          const car = document.querySelector('body > header .brand-caret');
+          const hdr = document.querySelector('body > header');
+          if (!h1 || !btn || !nm || !car || !hdr) {
+            return { missing: [['h1', h1], ['button', btn], ['.brand-name', nm],
+                               ['.brand-caret', car], ['header', hdr]]
+                       .filter(x => !x[1]).map(x => x[0]) };
+          }
+          /* Everything in the top bar EXCEPT the title. If the subject's name
+             appears here too, it is being said twice. */
+          const rest = Array.from(hdr.querySelectorAll('*'))
+            .filter(e => !h1.contains(e) && e !== h1 && !e.querySelector('h1'))
+            .map(e => e.textContent).join(' ');
+          const carBox = car.getBoundingClientRect();
+          return {
+            missing: [],
+            inH1: h1.contains(btn),
+            /* scrollWidth exceeding clientWidth means the ellipsis has eaten
+               part of the name. On a 1280px header that is never right. */
+            clipped: nm.scrollWidth > nm.clientWidth + 1,
+            nameW: Math.round(nm.getBoundingClientRect().width),
+            content: nm.scrollWidth,
+            /* A caret that computes to a zero box is the empty-pill failure:
+               present in the DOM, absent from the screen. */
+            caretPainted: carBox.width > 0 && carBox.height > 0 && !!car.textContent.trim(),
+            aria: btn.getAttribute('aria-label') || '',
+            rest: rest.replace(/\s+/g, ' ')
+          };
+        })(),
         /* Does the subject's own stylesheet apply by the time it has rendered?
            app.js awaits it before mount for exactly one reason: guitar's
            renderer carries no colour of its own, so an unstyled figure is not a
@@ -194,6 +232,38 @@ function serve() {
       if (!seen.heading.includes(subj.name)) {
         errors.push(`${subj.id}: header reads "${seen.heading.trim()}", which does not name ${subj.name}. ` +
                     `applyChrome() and the rendered content disagree about which subject is open.`);
+      }
+      const br = seen.brand;
+      if (br.missing.length) {
+        errors.push(`${subj.id}: the header title switcher is incomplete — no ${br.missing.join(', no ')}.`);
+      } else {
+        if (!br.inH1) {
+          errors.push(`${subj.id}: #subjectSwitcherBtn is not inside the <h1>. The title is meant to BE the ` +
+                      `switcher; a separate control means the header names the subject twice.`);
+        }
+        if (br.rest.includes(subj.name)) {
+          errors.push(`${subj.id}: the top bar names "${subj.name}" outside the title as well — ` +
+                      `"${br.rest.trim().slice(0, 80)}". The subject should be named once.`);
+        }
+        /* The context is 1280px wide with a title of at most ~320px, so there is
+           never a legitimate reason to truncate. This caught a `max-width: 100%`
+           on the button that resolved against a shrink-to-fit ancestor and
+           ellipsised "AAT Level 3" down to "AAT Le…" at EVERY width — invisible
+           to every other check, because the button was still there and still
+           worked. */
+        if (br.clipped) {
+          errors.push(`${subj.id}: the title is truncated at 1280px — "${subj.name}" needs ${br.content}px ` +
+                      `and was given ${br.nameW}px. A header this wide has the room; something is ` +
+                      `collapsing the title's width.`);
+        }
+        if (!br.caretPainted) {
+          errors.push(`${subj.id}: the ▾ caret computes to an empty box, so the title does not read as ` +
+                      `something you can press.`);
+        }
+        if (!br.aria.includes(subj.name)) {
+          errors.push(`${subj.id}: the switcher's aria-label is "${br.aria}", which does not name ` +
+                      `${subj.name} — a screen reader is told it switches subject but not which is open.`);
+        }
       }
       /* An empty --subj is not a failure: styles.css writes var(--subj,
          var(--accent)) throughout, and aat1/aat3 have always relied on that
@@ -242,7 +312,75 @@ function serve() {
       if (!kept) errors.push(`${subj.id}: progress under ${key} did not survive a reload.`);
 
       notes.push(`${subj.id.padEnd(11)} ${String(seen.appLen).padStart(6)} chars · accent ${seen.accent}` +
+                 (seen.brand.missing.length ? '' : ` · title/switcher ${seen.brand.nameW}px`) +
                  (seen.subjToken ? '' : ' (via the --accent fallback)'));
+      await ctx.close();
+    }
+    /* ── The title gives way rather than pushing the page sideways ─────────
+       Every assertion above runs on a 1280px header, where nothing truncates
+       and nothing needs to. This is the other end: a narrow phone and a
+       subject name too long for it.
+
+       The name is injected rather than drawn from the registry because no
+       subject is quite long enough today — "Langue des Signes Française" is
+       290px inside 296px of usable width, five pixels short of proving
+       anything. That margin is the whole reason to assert it: the next subject
+       with a long name inherits whatever this does, and what it did before the
+       <h1> became a flex container was overflow the viewport to 645px and give
+       the whole app a horizontal scrollbar, because an inline-flex button in a
+       block <h1> sizes itself and ignores every min-width: 0 above it. */
+    {
+      const ctx = await browser.newContext({ viewport: { width: 320, height: 640 } });
+      const page = await ctx.newPage();
+      await page.addInitScript(() => {
+        localStorage.setItem('multisubject_active', 'aat3');
+        localStorage.setItem('prep_v2_aat3', JSON.stringify({ settings: { seenSplash: true } }));
+      });
+      await page.goto(`http://127.0.0.1:${port}/`);
+      await page.waitForFunction(() => {
+        const a = document.getElementById('app');
+        return a && a.textContent.trim().length > 40;
+      }, { timeout: 15000 }).catch(() => {});
+
+      const narrow = await page.evaluate(() => {
+        const nm = document.querySelector('body > header .brand-name');
+        const car = document.querySelector('body > header .brand-caret');
+        if (!nm || !car) return null;
+        nm.textContent = '📗 Association of Accounting Technicians Level 3 Diploma in Accounting';
+        return new Promise(res => requestAnimationFrame(() => requestAnimationFrame(() => {
+          const carBox = car.getBoundingClientRect();
+          const doc = document.documentElement;
+          res({
+            truncated: nm.scrollWidth > nm.clientWidth + 1,
+            /* The caret must survive the squeeze: a title that truncates the
+               ▾ away stops reading as a control exactly when it is hardest to
+               tell what the header is. */
+            caretVisible: carBox.width > 0 && carBox.right <= doc.clientWidth + 1,
+            scrollW: doc.scrollWidth,
+            clientW: doc.clientWidth
+          });
+        })));
+      });
+
+      if (!narrow) {
+        errors.push('narrow header: no .brand-name/.brand-caret to test the long-name case against.');
+      } else {
+        if (narrow.scrollW > narrow.clientW) {
+          errors.push(`narrow header: a long subject name pushed the page to ${narrow.scrollW}px inside a ` +
+                      `${narrow.clientW}px viewport, so the whole app scrolls sideways. The title must ` +
+                      `truncate instead of growing.`);
+        }
+        if (!narrow.truncated) {
+          errors.push('narrow header: a 614px subject name in a 320px viewport was not truncated, so the ' +
+                      'ellipsis never engages and the header has no way to give ground.');
+        }
+        if (!narrow.caretVisible) {
+          errors.push('narrow header: the ▾ caret was pushed off-screen by a long subject name.');
+        }
+        if (!errors.length || narrow.truncated) {
+          notes.push(`narrow      a 614px name truncates inside 320px with the caret still on screen`);
+        }
+      }
       await ctx.close();
     }
   } finally {
