@@ -662,7 +662,18 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-pill:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
 
 .a3-gap { font-size: 16.5px; line-height: 2.5; color: var(--a3-ink-2); }
-.a3-gapsel { display: inline-flex; gap: 5px; margin: 0 4px; vertical-align: middle; }
+/* WRAPPING, as Level 1's equivalent has always done. An inline-flex row does
+   not wrap by default, so three pills carrying anything long — "Full Payment
+   Submission", a formatted threshold — could not break and pushed the line
+   wider than the page: six gap-fills rendered between 330px and 370px in a
+   320px window. Nothing scrolled sideways on most runs because the layout gate
+   draws a random mock paper and only sometimes landed on one of them.
+   `max-width` covers the remaining case, where a single pill is on its own
+   wider than the column it sits in. */
+.a3-gapsel {
+  display: inline-flex; flex-wrap: wrap; max-width: 100%;
+  gap: 5px; margin: 0 4px; vertical-align: middle;
+}
 
 .a3-exp-box {
   margin-top: 22px; padding: 17px; border-radius: var(--a3-r);
