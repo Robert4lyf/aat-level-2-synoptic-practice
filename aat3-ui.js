@@ -44,6 +44,11 @@
     mockEndsAt: 0,       // timed mock: when the clock runs out
     mockResults: [],     // timed mock: {q, correct} per question, for the report
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
+    /* Which outcome sections are folded shut on the path. Session-only on
+       purpose: folding a section is a momentary act of tidying, not progress,
+       and storing it would mean a reader who collapsed everything once came
+       back weeks later to a unit that looked empty. */
+    shut: {},
     score: 0,
     revealed: 0,         // worked-example steps shown
     tryShown: false,
@@ -486,12 +491,28 @@
         }).join('') + '</div>';
     }
     if (c.table) {
+      /* Each cell carries its column heading. Nothing shows it on a wide screen
+         — the header row is right there — but on a narrow one the table stops
+         being a grid and becomes a list of labelled facts, and then the label
+         has to come from somewhere. See .a3-cheat .a3-table in the stylesheet.
+
+         WHY THAT IS NEEDED AT ALL. Three columns of accounting vocabulary do
+         not fit across a phone. Measured across the eleven cheat sheets: at
+         312px, thirty-one words — "Deregistration", "irrecoverable",
+         "appropriation", "£1,350,000" — are individually wider than the column
+         they sit in, so they break mid-word however the widths are shared out.
+         Two rounds of tuning proportions moved which words broke and never
+         stopped them breaking. */
+      var heads = c.table.headers || [];
       h += '<div class="a3-tablewrap"><table class="a3-table">';
-      if (c.table.headers) {
-        h += '<thead><tr>' + c.table.headers.map(function (x) { return '<th>' + md(x) + '</th>'; }).join('') + '</tr></thead>';
+      if (heads.length) {
+        h += '<thead><tr>' + heads.map(function (x) { return '<th>' + md(x) + '</th>'; }).join('') + '</tr></thead>';
       }
       h += '<tbody>' + (c.table.rows || []).map(function (r) {
-        return '<tr>' + r.map(function (x) { return '<td>' + md(x) + '</td>'; }).join('') + '</tr>';
+        return '<tr>' + r.map(function (x, ci) {
+          var head = heads[ci] ? ' data-h="' + esc(String(heads[ci]).replace(/\*\*/g, '')) + '"' : '';
+          return '<td' + head + '>' + md(x) + '</td>';
+        }).join('') + '</tr>';
       }).join('') + '</tbody></table></div>';
     }
     if (c.example) {
@@ -603,14 +624,18 @@
     var keys = unitKeys();
     if (!keys.length) return '<div class="a3-empty">Level 3 content is still loading.</div>';
 
-    var h = '<div class="a3-root">';
-    h += '<header class="a3-hero a3-hero-sm">' +
-      '<div class="a3-hero-glow" aria-hidden="true"></div>' +
-      '<div class="a3-hero-in">' +
+    /* THE ONE SCREEN THAT KEEPS A TITLE. Everywhere else the hero was repeating
+       what the reader already knew; here, choosing between two units IS the
+       screen, so a heading and a sentence of orientation earn their space. It
+       is a third of the height the hero used to be, and flat rather than a
+       gradient — the shared header above it is already a gradient, and two
+       stacked read as a mistake. */
+    var h = '<div class="a3-root"><div class="a3-page">';
+    h += '<header class="a3-head">' +
       '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
-      '<h1 class="a3-title">Choose a unit</h1>' +
-      '<div class="a3-sub">Each unit has its own path, its own practice bank and its own progress.</div>' +
-      '</div></header>';
+      '<h1 class="a3-head-t">Choose a unit</h1>' +
+      '<p class="a3-head-s">Each has its own path, its own practice bank and its own progress.</p>' +
+      '</header>';
 
     h += '<div class="a3-ugrid">';
     keys.forEach(function (k) {
@@ -619,15 +644,20 @@
       if (!u) return;
       var pct = p.lessons ? Math.round((p.done / p.lessons) * 100) : 0;
       h += '<button class="a3-ucard' + (p.complete ? '' : ' is-partial') + '" data-a3="openunit" data-unit="' + esc(k) + '">' +
-        '<span class="a3-ucard-k">' + esc(u.code) + ' · ' + u.qualificationWeighting + '% of the grade</span>' +
+        '<span class="a3-ucard-top">' +
+          '<span class="a3-ucard-k">' + esc(u.code) + '</span>' +
+          '<span class="a3-ring' + (pct >= 100 ? ' is-full' : '') + '" style="--p:' + pct + '"' +
+            ' role="img" aria-label="' + pct + '% of the lessons done"></span>' +
+        '</span>' +
         '<span class="a3-ucard-t">' + esc(u.title) + '</span>' +
-        '<span class="a3-ucard-m">' + u.glh + ' guided learning hours · ' +
-          u.assessment.durationMinutes + ' min exam · ' + u.outcomes.length + ' outcomes</span>' +
-        '<span class="a3-ucard-bar"><span style="width:' + pct + '%"></span></span>' +
+        '<span class="a3-ucard-facts">' +
+          '<span><b>' + u.qualificationWeighting + '%</b> of the grade</span>' +
+          '<span><b>' + u.assessment.durationMinutes + '</b> min exam</span>' +
+          '<span><b>' + u.outcomes.length + '</b> outcomes</span>' +
+          '<span><b>' + u.glh + '</b> guided hours</span>' +
+        '</span>' +
         '<span class="a3-ucard-s">' +
-          (p.lessons
-            ? p.done + ' of ' + p.lessons + ' lessons done'
-            : 'nothing studied yet') +
+          (p.lessons ? p.done + ' of ' + p.lessons + ' lessons done' : 'nothing studied yet') +
           (p.complete
             ? ''
             : ' · <strong>' + p.authored + ' of ' + p.outcomes + ' outcomes written</strong> (' + p.pctOfExam + '% of the exam)') +
@@ -636,10 +666,54 @@
     });
     h += '</div>';
     h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
-    return h + '</div>';
+    return h + '</div></div>';
   }
 
   /* ── Path screen ─────────────────────────────────────────────────────────── */
+  /* ── The context bar ────────────────────────────────────────────────────────
+     What the full-bleed hero was for, in a tenth of the height. The hero cost
+     about 450px on a phone and repeated the unit title on every screen; between
+     it and the shared header, 740px of an 844px display was chrome before a
+     word of content.
+
+     Sticky, because on a path this long the two things you always want are to
+     know where you are and to be able to leave. */
+  function ctxBar(opts) {
+    var o = opts || {};
+    var h = '<div class="a3-ctx">';
+    if (o.back) {
+      h += '<button class="a3-ctx-back" data-a3="' + o.back + '" aria-label="' +
+        esc(o.backLabel || 'Back') + '"><span aria-hidden="true">←</span></button>';
+    }
+    h += '<div class="a3-ctx-main">' +
+      '<div class="a3-ctx-unit">' + esc(o.title || '') + '</div>' +
+      (o.meta ? '<div class="a3-ctx-meta">' + esc(o.meta) + '</div>' : '') +
+      '</div>';
+    if (typeof o.pct === 'number') {
+      h += '<div class="a3-ctx-ring"><div class="a3-ring' + (o.pct >= 100 ? ' is-full' : '') +
+        '" style="--p:' + o.pct + '" role="img" aria-label="' + o.pct + '% complete"></div></div>';
+    }
+    return h + '</div>';
+  }
+
+  /* The next thing to do: the first lesson on the path that has not been
+     finished. A study tool whose home screen cannot answer "where was I" makes
+     the reader answer it themselves, by scrolling. */
+  function nextLesson() {
+    var all = lessons();
+    for (var i = 0; i < all.length; i++) {
+      if (!isDone(all[i].id)) return all[i];
+    }
+    return null;
+  }
+  function outcomeOf(l) {
+    var found = null;
+    path().forEach(function (g) {
+      (g.lessons || []).forEach(function (x) { if (x.id === l.id) found = g; });
+    });
+    return found;
+  }
+
   function renderPath() {
     var key = activeUnit();
     var u = unitMeta(key);
@@ -648,39 +722,58 @@
     var ls = lessons();
     var doneN = ls.filter(function (l) { return isDone(l.id); }).length;
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
-    var cov = coverage();
     var prog = unitProgress(key);
     var bank = practiceBank();
     var h = '<div class="a3-root">';
 
-    /* Hero */
-    h += '<header class="a3-hero">' +
-      '<div class="a3-hero-glow" aria-hidden="true"></div>' +
-      '<div class="a3-hero-in">' +
-      (unitKeys().length > 1
-        ? '<button class="a3-unitback" data-a3="tounits"><span aria-hidden="true">←</span> All Level 3 units</button>'
-        : '') +
-      '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
-      '<h1 class="a3-title">' + esc(u.title) + '</h1>' +
-      '<div class="a3-chips">' +
-        (u.financeAct ? '<span class="a3-chip">' + esc(u.financeAct) + '</span>' : '') +
-        '<span class="a3-chip">' + u.assessment.durationMinutes + ' min exam</span>' +
-        '<span class="a3-chip">' + u.qualificationWeighting + '% of the grade</span>' +
-        '<span class="a3-chip a3-chip-accent">' + data.xp + ' XP</span>' +
-      '</div>' +
-      '<div class="a3-progress"><div class="a3-progress-bar"><span style="width:' + pct + '%"></span></div>' +
-        '<div class="a3-progress-meta"><span>' + doneN + ' of ' + ls.length + ' lessons</span>' +
-        (cov ? '<span>' + cov.studied + ' of ' + cov.total + ' syllabus points studied</span>' : '') + '</div></div>' +
-      '</div></header>';
+    h += ctxBar({
+      back: unitKeys().length > 1 ? 'tounits' : null,
+      backLabel: 'All Level 3 units',
+      title: u.title,
+      /* Just the lesson count. The exam duration and the grade weighting were
+         here too and pushed the line past the width of a phone, so it
+         truncated to "90 min exam · …" — a bar that reports a unit's facts by
+         eliding them. Both are on the units screen, where choosing between
+         units is the job. */
+      meta: doneN + ' of ' + ls.length + ' lessons',
+      pct: pct,
+    });
 
-    /* The scope notice that used to sit here is gone. It was written when the
-       unit was part-built and the honest thing was to say so on every visit.
-       The unit is complete, so the standing caveat — syllabus coverage is not
-       readiness, and nothing here has been checked by a qualified accountant —
-       is made once in lesson 0A rather than repeated above every scroll.
+    h += '<div class="a3-page">';
 
-       A unit that is genuinely part-built gets the notice back, because for
-       that unit the statement is true again. */
+    /* ── The two things you came here to do ──────────────────────────────────
+       Continue, and practise. Both above the fold, both one tap, so the long
+       scroll below is for browsing rather than for finding your place. */
+    var next = nextLesson();
+    h += '<div class="a3-actions">';
+    if (next) {
+      var ng = outcomeOf(next);
+      h += '<button class="a3-act a3-act-go" data-a3="open" data-id="' + esc(next.id) + '">' +
+        '<span class="a3-act-k">' + (doneN ? 'Continue' : 'Start here') + '</span>' +
+        '<span class="a3-act-t">' + esc(next.title) + '</span>' +
+        '<span class="a3-act-m">' + (ng ? 'Outcome ' + ng.outcome + ' · ' : '') +
+          (next.cards || []).length + ' cards · ' + (next.check || []).length + ' questions</span>' +
+        '<span class="a3-act-go-i" aria-hidden="true">→</span>' +
+        '</button>';
+    } else {
+      h += '<div class="a3-act a3-act-done">' +
+        '<span class="a3-act-k">Every lesson finished</span>' +
+        '<span class="a3-act-t">The path is complete</span>' +
+        '<span class="a3-act-m">Practice and the timed mock are where the work is now.</span>' +
+        '</div>';
+    }
+    if (bank.length) {
+      h += '<button class="a3-act a3-act-alt" data-a3="practice">' +
+        '<span class="a3-act-k">Practise</span>' +
+        '<span class="a3-act-t">Questions and a timed mock</span>' +
+        '<span class="a3-act-m">' + bank.length + ' questions · drawn to the exam weighting</span>' +
+        '<span class="a3-act-go-i" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+    h += '</div>';
+
+    /* A unit still being written says so, once, here — not above every scroll.
+       For a finished unit the standing caveats live in lesson 0A. */
     if (!prog.complete) {
       h += '<div class="a3-notice"><strong>' + prog.authored + ' of ' + u.outcomes.length +
         ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong>, covering ' +
@@ -689,73 +782,102 @@
         'coming and what is missing. Nothing here has been reviewed by a qualified accountant.</div>';
     }
 
-    /* Practice entry. Placed above the track because it is a peer of the
-       lessons, not an afterthought at the bottom of a long scroll. */
-    if (bank.length) {
-      h += '<button class="a3-practice-cta" data-a3="practice">' +
-        '<span class="a3-practice-i" aria-hidden="true">◈</span>' +
-        '<span class="a3-practice-tx">' +
-          '<span class="a3-practice-t">Practice questions</span>' +
-          '<span class="a3-practice-m">' + bank.length +
-            ' questions, by outcome or mixed</span>' +
-        '</span>' +
-        '<span class="a3-practice-go" aria-hidden="true">→</span>' +
+    /* ── The outcome index ───────────────────────────────────────────────────
+       Nine outcomes and fifty-one lessons is a long way to scroll to reach
+       Outcome 7. The chips jump straight to it, and each one carries its own
+       state so the index doubles as a progress overview. */
+    h += '<nav class="a3-index" aria-label="Jump to an outcome">';
+    u.outcomes.forEach(function (o) {
+      var g = groups.filter(function (x) { return x.outcome === o.n; })[0];
+      var gl = g ? (g.lessons || []) : [];
+      var gd = gl.filter(function (l) { return isDone(l.id); }).length;
+      var state = !g ? ' is-unwritten' : (gl.length && gd === gl.length) ? ' is-done' : gd ? ' is-part' : '';
+      h += '<button class="a3-index-c' + state + '" data-a3="jump" data-o="' + o.n + '"' +
+        ' aria-label="Outcome ' + o.n + ', ' + esc(o.title) + '">' +
+        '<span class="a3-index-n">' + o.n + '</span>' +
+        '<span class="a3-index-w">' + o.weighting + '%</span>' +
         '</button>';
-    }
+    });
+    h += '</nav>';
 
-    /* The track — one section per outcome, driven by the SYLLABUS rather than
-       by what happens to be written. Iterating the authored groups would make
-       an unwritten outcome vanish from the page entirely, and a reader would
-       have no way to tell a unit missing two thirds of its content from one
+    /* ── The track ───────────────────────────────────────────────────────────
+       Driven by the SYLLABUS rather than by what happens to be written:
+       iterating the authored groups would make an unwritten outcome vanish, and
+       a reader could not tell a unit missing two thirds of its content from one
        whose specification simply has fewer outcomes. */
     u.outcomes.forEach(function (o) {
       var g = groups.filter(function (x) { return x.outcome === o.n; })[0];
-      h += '<div class="a3-outcome' + (g ? '' : ' is-unwritten') + '">' +
-        '<div class="a3-outcome-n">Outcome ' + esc(o.n) + '</div>' +
-        '<h2 class="a3-outcome-t">' + esc(o.title) + '</h2>' +
-        '<div class="a3-outcome-w">' + o.weighting + '% of the assessment</div>' +
-        '</div>';
-      h += g
-        ? renderTrack(g)
-        : '<div class="a3-unwritten">Not written yet. ' +
-          o.topics.length + ' topic area' + (o.topics.length === 1 ? '' : 's') + ' of the specification ' +
-          'sit here, and no lesson claims any of them.</div>';
+      var gl = g ? (g.lessons || []) : [];
+      var gd = gl.filter(function (l) { return isDone(l.id); }).length;
+      var shut = !!S.shut[o.n];
+      h += '<section class="a3-oc' + (g ? '' : ' is-unwritten') + (shut ? ' is-shut' : '') +
+        '" id="a3-oc-' + o.n + '">' +
+        '<button class="a3-oc-h" data-a3="fold" data-o="' + o.n + '" aria-expanded="' + (!shut) + '">' +
+          '<span class="a3-oc-n">' + o.n + '</span>' +
+          '<span class="a3-oc-tx">' +
+            '<span class="a3-oc-t">' + esc(o.title) + '</span>' +
+            '<span class="a3-oc-m">' + o.weighting + '% of the assessment' +
+              (g ? ' · ' + gd + ' of ' + gl.length + ' done' : ' · not written yet') + '</span>' +
+          '</span>' +
+          '<span class="a3-oc-fold" aria-hidden="true">' + (shut ? '+' : '−') + '</span>' +
+        '</button>';
+      if (!shut) {
+        h += g
+          ? renderTrack(g)
+          : '<div class="a3-unwritten">Not written yet. ' +
+            o.topics.length + ' topic area' + (o.topics.length === 1 ? '' : 's') + ' of the specification ' +
+            'sit here, and no lesson claims any of them.</div>';
+      }
+      h += '</section>';
     });
 
     h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
-    return h + '</div>';
+    return h + '</div></div>';
   }
 
+  /* ── One outcome's lessons ─────────────────────────────────────────────────
+     A LIST ON A RAIL, not a zig-zag. The nodes used to alternate left and right
+     joined by SVG curves, which looked like a path and behaved like an obstacle:
+     each rung's text had about 250px of a 390px screen to live in, so titles
+     wrapped to three lines and one outcome ran to fifteen hundred pixels. The
+     whole path was ten thousand.
+
+     Linear, the same content is a third of the height and every title fits on
+     one or two lines. The rail and the markers are what still make it read as a
+     path; the zig-zag was never what did that. */
   function renderTrack(g) {
     var ls = (g.lessons || []).slice();
     var sh = sheetOf(g);
     if (sh) ls.push(sh);
-    var h = '<div class="a3-track">';
-    ls.forEach(function (l, i) {
+    var nx = nextLesson();
+    var h = '<ol class="a3-track">';
+    ls.forEach(function (l) {
       var t = l.isSheet ? 'sheet' : nodeType(l);
       var meta = TYPE_META[t];
       var done = !l.isSheet && isDone(l.id);
       var st = l.isSheet ? 0 : stars(l.id);
-      var side = i % 2 === 0 ? 'l' : 'r';
-      h += '<div class="a3-node-wrap a3-side-' + side + '">' +
-        (i > 0 ? '<svg class="a3-link" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="' +
-          (side === 'r' ? 'M0,0 C0,58 100,42 100,100' : 'M100,0 C100,58 0,42 0,100') +
-          '" /></svg>' : '') +
-        '<button class="a3-node a3-node-' + t + (done ? ' is-done' : '') + '" data-a3="open" data-id="' + esc(l.id) + '"' +
-          ' aria-label="' + esc(l.title) + (done ? ', completed' : '') + '">' +
-          '<span class="a3-node-glyph" aria-hidden="true">' + (done ? '✓' : esc(l.icon || meta.glyph)) + '</span>' +
-        '</button>' +
-        '<div class="a3-node-card">' +
-          '<div class="a3-node-type">' + esc(meta.label) + '</div>' +
-          '<div class="a3-node-title">' + esc(l.title) + '</div>' +
-          '<div class="a3-node-meta">' + (l.isSheet
-            ? 'Everything in this outcome, on one card'
-            : (l.cards || []).length + ' cards · ' + (l.check || []).length + ' questions') + '</div>' +
-          (st ? '<div class="a3-stars" aria-label="' + st + ' of 3 stars">' +
-            [1,2,3].map(function (n) { return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>' : '') +
-        '</div></div>';
+      var isNext = nx && l.id === nx.id;
+      h += '<li class="a3-rung a3-rung-' + t + (done ? ' is-done' : '') + (isNext ? ' is-next' : '') + '">' +
+        '<button class="a3-rung-b" data-a3="open" data-id="' + esc(l.id) + '"' +
+          ' aria-label="' + esc(l.title) + (done ? ', completed' : isNext ? ', up next' : '') + '">' +
+          '<span class="a3-rung-mark" aria-hidden="true">' +
+            (done ? '✓' : esc(l.icon || meta.glyph)) + '</span>' +
+          '<span class="a3-rung-tx">' +
+            '<span class="a3-rung-t">' + esc(l.title) + '</span>' +
+            /* A sheet's line does not repeat its own label. "Cheat sheet ·
+               everything in this outcome, on one card" ran past the width of
+               the row and truncated mid-word; the label is already there. */
+            '<span class="a3-rung-m">' + (l.isSheet
+              ? 'Everything in this outcome, on one card'
+              : esc(meta.label) + ' · ' + (l.cards || []).length + ' cards · ' +
+                (l.check || []).length + ' questions') + '</span>' +
+          '</span>' +
+          (st ? '<span class="a3-rung-st" aria-label="' + st + ' of 3 stars">' +
+            [1,2,3].map(function (n) { return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') +
+            '</span>' : '') +
+        '</button></li>';
     });
-    return h + '</div>';
+    return h + '</ol>';
   }
 
   /* ── Lesson screen ───────────────────────────────────────────────────────── */
@@ -767,13 +889,28 @@
     var pos = S.phase === 'teach' ? S.cardIdx : cards.length + S.qIdx;
     var pct = total ? Math.round((pos / total) * 100) : 0;
 
-    var h = '<div class="a3-root a3-reading">';
+    /* The bar says WHICH LESSON, and whether you are reading or being asked.
+       It was a back button, a bar and "1 / 6" — three signals none of which
+       named the thing on screen or admitted that a lesson has two halves. A
+       reader who put the phone down mid-lesson came back to a progress bar. */
+    var h = '<div class="a3-root a3-reading' + fresh() + '">';
     h += '<div class="a3-lessonbar">' +
-      '<button class="a3-btn a3-btn-ghost a3-exit" data-a3="exit">Exit</button>' +
-      '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
-      '<div class="a3-lessonbar-n">' + (pos + 1) + ' / ' + total + '</div></div>';
+      '<button class="a3-ctx-back" data-a3="exit" aria-label="Back to the path">' +
+        '<span aria-hidden="true">←</span></button>' +
+      '<div class="a3-lessonbar-tx">' +
+        '<div class="a3-lessonbar-t">' + esc(l.title) + '</div>' +
+        '<div class="a3-lessonbar-m">' +
+          (l.isSheet ? 'Cheat sheet'
+            : S.phase === 'teach'
+              ? 'Reading · card ' + (S.cardIdx + 1) + ' of ' + cards.length
+              : 'Questions · ' + (S.qIdx + 1) + ' of ' + checks.length) +
+        '</div>' +
+      '</div>' +
+      '<div class="a3-lessonbar-n">' + pct + '%</div>' +
+      '</div>' +
+      '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
 
-    h += '<article class="a3-sheet' + (l.isSheet ? ' a3-cheat' : '') + '">';
+    h += '<article class="a3-sheet' + (l.isSheet ? ' a3-cheat' : '') + fresh() + '">';
     if (S.phase === 'teach') {
       h += cardHtml(cards[S.cardIdx] || {});
       var c = cards[S.cardIdx] || {};
@@ -796,8 +933,10 @@
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
-    var h = '<div class="a3-qhead">Question ' + (S.qIdx + 1) + ' of ' + n + '</div>' +
-            '<h2 class="a3-q">' + md(q.q) + '</h2>';
+    /* No counter here. The bar above the card carries "Question 3 of 10" now,
+       and printing it twice on one screen was the clearest remaining example of
+       the module telling the reader the same thing in two places. */
+    var h = '<h2 class="a3-q">' + md(q.q) + '</h2>';
 
     if (t === 'mcq') {
       if (!S._order) S._order = shuffle(q.opts.map(function (_, i) { return i; }));
@@ -1158,30 +1297,43 @@
 
   function renderPracticeSummary() {
     var s = practiceSummary();
+    var bankCounts = {};
+    practiceBank().forEach(function (q) { bankCounts[q.lo] = (bankCounts[q.lo] || 0) + 1; });
 
-    if (!s.attempted) {
-      return '<section class="a3-sum a3-sum-empty" aria-label="Your practice so far">' +
-        '<div class="a3-sum-eyebrow">Your practice so far</div>' +
-        '<p class="a3-sum-emptytx">No practice questions answered yet. Answer a few and this will ' +
-          'show how many you have attempted and which outcome is costing you the most marks.</p>' +
-        '</section>';
-    }
+    /* THE ROWS RENDER WHETHER OR NOT THERE IS ANY HISTORY, and that is not a
+       cosmetic choice. The empty state used to be a single paragraph and
+       nothing else, which was fine while a separate grid below offered the
+       outcomes — and became a dead end the moment that grid was merged into
+       these rows. A reader on their first visit could sit a mock or take mixed
+       practice, and had no way to choose an outcome at all.
+
+       So the empty state now changes what is SAID, not what is offered: no
+       statistics to report yet, but the same five ways in. */
+    var empty = !s.attempted;
 
     var stat = function (n, label) {
       return '<div class="a3-sum-stat"><span class="a3-sum-n">' + n + '</span>' +
         '<span class="a3-sum-l">' + label + '</span></div>';
     };
 
-    var h = '<section class="a3-sum" aria-label="Your practice so far">';
+    var h = '<section class="a3-sum' + (empty ? ' a3-sum-empty' : '') + '" aria-label="Your practice so far">';
     h += '<div class="a3-sum-eyebrow">Your practice so far</div>';
-    h += '<div class="a3-sum-stats">' +
-      stat(s.attempted, 'Questions attempted') +
-      stat(s.accuracy + '%', 'Answered correctly') +
-      stat(s.wrong, s.wrong === 1 ? 'Mistake' : 'Mistakes') +
-      stat(s.runs, s.runs === 1 ? 'Run finished' : 'Runs finished') +
-      '</div>';
+    if (empty) {
+      h += '<p class="a3-sum-emptytx">No practice questions answered yet. Answer a few and this will ' +
+        'show how many you have attempted and which outcome is costing you the most marks. ' +
+        'In the meantime, every outcome is below.</p>';
+    } else {
+      h += '<div class="a3-sum-stats">' +
+        stat(s.attempted, 'Questions attempted') +
+        stat(s.accuracy + '%', 'Answered correctly') +
+        stat(s.wrong, s.wrong === 1 ? 'Mistake' : 'Mistakes') +
+        stat(s.runs, s.runs === 1 ? 'Run finished' : 'Runs finished') +
+        '</div>';
+    }
 
-    if (s.worst) {
+    if (empty) {
+      /* nothing to focus on yet — the rows below are the whole offer */
+    } else if (s.worst) {
       h += '<div class="a3-sum-focus">' +
         '<div class="a3-sum-focus-tx">' +
           '<div class="a3-sum-focus-k">Most mistakes</div>' +
@@ -1191,8 +1343,12 @@
             (s.worst.weighting ? ' · worth ' + s.worst.weighting + '% of the assessment' : '') +
           '</div>' +
         '</div>' +
-        '<button class="a3-btn a3-btn-primary a3-sum-focus-go" data-a3="startpractice" data-lo="' + esc(s.worst.n) + '">' +
-          'Practise Outcome ' + esc(s.worst.n) + '</button>' +
+        /* A quiet link, not a full-width primary button. Every row below is
+           now a way into its own outcome, so this is a shortcut to the most
+           useful one rather than the only way through — and a solid purple
+           slab was claiming to be the latter. */
+        '<button class="a3-sum-focus-go" data-a3="startpractice" data-lo="' + esc(s.worst.n) + '">' +
+          'Practise Outcome ' + esc(s.worst.n) + ' <span aria-hidden="true">→</span></button>' +
         '</div>';
     } else {
       h += '<div class="a3-sum-focus a3-sum-focus-clean">' +
@@ -1215,15 +1371,24 @@
         ? '<span class="a3-sum-bar" aria-hidden="true">'
         : '<span class="a3-sum-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"' +
           ' aria-label="Outcome ' + esc(r.n) + ' accuracy">';
-      h += '<div class="a3-sum-row' + (isWorst ? ' is-worst' : '') + '">' +
-        '<span class="a3-sum-row-n">' + esc(r.n) + '</span>' +
+      /* A row is a button only where there is something behind it. An outcome
+         with nothing in the bank — a unit still being written — would otherwise
+         start a run of no questions, which bounces straight back to this
+         screen and reads as a broken tap. */
+      var live = !!bankCounts[r.n];
+      var inner = '<span class="a3-sum-row-n">' + esc(r.n) + '</span>' +
         '<span class="a3-sum-row-t">' + esc(r.title) +
           (isWorst ? '<span class="a3-sum-tag">most mistakes</span>' : '') + '</span>' +
         bar + '<span class="a3-sum-bar-fill ' + bandClass(r.accuracy) + '" style="width:' + pct + '%"></span></span>' +
         '<span class="a3-sum-row-m">' + (r.attempted
           ? r.wrong + ' wrong / ' + r.attempted
-          : 'not practised') + '</span>' +
-        '</div>';
+          : 'not practised') + '</span>';
+      h += live
+        ? '<button class="a3-sum-row is-live' + (isWorst ? ' is-worst' : '') + '"' +
+            ' data-a3="startpractice" data-lo="' + esc(r.n) + '"' +
+            ' aria-label="Practise outcome ' + esc(r.n) + ', ' + esc(r.title) + '">' +
+            inner + '<span class="a3-sum-row-go" aria-hidden="true">→</span></button>'
+        : '<div class="a3-sum-row' + (isWorst ? ' is-worst' : '') + '">' + inner + '</div>';
     });
     h += '</div>';
 
@@ -1236,68 +1401,80 @@
   function renderPractice() {
     var bank = practiceBank();
     var los = outcomes();
+    var u = unitMeta(activeUnit());
     var counts = {};
     bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
+    var mrec = practiceRec(activeUnit());
+    var missed = missedQuestions(activeUnit());
 
     var h = '<div class="a3-root">';
-    h += '<header class="a3-hero a3-hero-sm">' +
-      '<div class="a3-hero-glow" aria-hidden="true"></div>' +
-      '<div class="a3-hero-in">' +
-      '<div class="a3-eyebrow">Practice</div>' +
-      '<h1 class="a3-title">Test yourself</h1>' +
-      /* "up to", because a run is a slice of the pool: an outcome with eight
-         questions in the bank gives a run of eight, not a run of ten padded
-         out. Stating a flat ten was accurate while every outcome had more than
-         ten and stopped being accurate the moment one did not. */
-      /* "drawn at random" stopped being true when the draw was weighted, and a
-         line describing how questions are chosen is exactly the line a reader
-         would trust. */
-      '<div class="a3-sub">' + bank.length + ' questions · up to ' + PRACTICE_LEN +
-        ' per run, drawn to the exam weighting</div>' +
-      '</div></header>';
+    h += ctxBar({
+      back: 'topath',
+      backLabel: 'Back to the path',
+      /* The unit's full name plus the bank size does not fit a phone, so it
+         truncated to "Tax Processes for Businesses · 112 que…". The unit is
+         named on the row above in the shared header and again on the path; the
+         useful fact here is how big the bank is. */
+      title: 'Practice',
+      meta: bank.length + ' questions in this unit',
+    });
+    h += '<div class="a3-page">';
+
+    /* ── THE THREE THINGS ARE NOT PEERS, AND NO LONGER LOOK IT ────────────────
+       This was eight cards of identical weight in one grid: the mock, mixed
+       practice, the mistakes backlog and five outcomes, all the same size, all
+       the same shape, differing only in colour. A reader scanning it had to
+       read every card to find the one that mattered.
+
+       Three tiers now. The mock is a panel, because sitting a timed paper is
+       the thing this screen is for. The backlog is an alert, and only when
+       there is one. The outcomes are a quiet grid you go to when you already
+       know which one you want. */
+    h += '<button class="a3-mockpanel" data-a3="startmock">' +
+      '<span class="a3-mockpanel-tx">' +
+        '<span class="a3-mockpanel-k">Timed mock · ' + mockMinutes(activeUnit()) + ' min</span>' +
+        '<span class="a3-mockpanel-t">Sit a full paper</span>' +
+        '<span class="a3-mockpanel-m">' + MOCK_LEN +
+          ' questions drawn to the exam weighting. Nothing is revealed until the end.</span>' +
+      '</span>' +
+      (mrec.mocks
+        ? '<span class="a3-mockpanel-best"><b>' + mrec.mockBest + '%</b>' +
+          '<span>best of ' + mrec.mocks + '</span></span>'
+        : '<span class="a3-mockpanel-go" aria-hidden="true">→</span>') +
+      '</button>';
+
+    if (missed.length) {
+      h += '<button class="a3-alert" data-a3="startpractice" data-lo="missed">' +
+        '<span class="a3-alert-i" aria-hidden="true">!</span>' +
+        '<span class="a3-alert-tx">' +
+          '<span class="a3-alert-t">' + missed.length +
+            (missed.length === 1 ? ' question you got wrong' : ' questions you got wrong') + '</span>' +
+          '<span class="a3-alert-m">Served back most recent first, and cleared as you get them right.</span>' +
+        '</span>' +
+        '<span class="a3-alert-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+
+    h += '<button class="a3-mixed" data-a3="startpractice" data-lo="mix">' +
+      '<span class="a3-mixed-t">Mixed practice</span>' +
+      '<span class="a3-mixed-m">' + PRACTICE_LEN + ' questions from all outcomes, drawn to the exam weighting</span>' +
+      '<span class="a3-mixed-go" aria-hidden="true">→</span>' +
+      '</button>';
 
     h += renderPracticeSummary();
 
-    var mrec = practiceRec(activeUnit());
-    h += '<div class="a3-pgrid">';
-    h += '<button class="a3-pcard a3-pcard-mock" data-a3="startmock">' +
-      '<span class="a3-pcard-k">Mock · ' + mockMinutes(activeUnit()) + ' minutes</span>' +
-      '<span class="a3-pcard-t">Sit a timed paper</span>' +
-      '<span class="a3-pcard-m">' + MOCK_LEN + ' questions to the exam weighting, no answers until the end' +
-      (mrec.mocks ? ' · best so far ' + mrec.mockBest + '%' : '') +
-      '</span></button>';
-    h += '<button class="a3-pcard a3-pcard-mix" data-a3="startpractice" data-lo="mix">' +
-      '<span class="a3-pcard-k">Mixed</span>' +
-      '<span class="a3-pcard-t">All outcomes</span>' +
-      '<span class="a3-pcard-m">' + bank.length + ' questions in the pool</span>' +
-      '</button>';
+    /* NO SEPARATE LIST OF OUTCOMES. There was one — a grid of five cards under
+       "Practise one outcome" — sitting directly beneath a summary that already
+       listed the same five outcomes with the reader's record against each. Two
+       lists of the same thing, one telling you how you are doing and the other
+       letting you act on it.
 
-    /* Only offered when there is something to redo. A card reading "0
-       questions" is an invitation to a screen with nothing on it, and a reader
-       who has just cleared their backlog has earned its absence. */
-    var missed = missedQuestions(activeUnit());
-    if (missed.length) {
-      h += '<button class="a3-pcard a3-pcard-missed" data-a3="startpractice" data-lo="missed">' +
-        '<span class="a3-pcard-k">Your mistakes</span>' +
-        '<span class="a3-pcard-t">Questions you got wrong</span>' +
-        '<span class="a3-pcard-m">' + missed.length +
-        (missed.length === 1 ? ' question waiting' : ' questions waiting') +
-        ', most recent first</span>' +
-        '</button>';
-    }
-    los.forEach(function (o) {
-      var n = counts[o.n] || 0;
-      if (!n) return;
-      h += '<button class="a3-pcard" data-a3="startpractice" data-lo="' + o.n + '">' +
-        '<span class="a3-pcard-k">Outcome ' + o.n + ' · ' + o.weighting + '%</span>' +
-        '<span class="a3-pcard-t">' + esc(o.title) + '</span>' +
-        '<span class="a3-pcard-m">' + n + ' questions</span>' +
-        '</button>';
-    });
-    h += '</div>';
-    h += '<div class="a3-pback"><button class="a3-btn a3-btn-ghost" data-a3="topath">Back to the path</button></div>';
+       The summary's rows are the way in now. A row carries the record and the
+       invitation together, which is what a reader wants from it anyway: the
+       outcome you are worst at is the one you want to open. */
+
     h += '<footer class="a3-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
-    return h + '</div>';
+    return h + '</div></div>';
   }
 
   /* ── Practice quiz — same question renderer as a lesson check ────────────── */
@@ -1305,17 +1482,23 @@
     var qs = currentQuestions();
     if (!qs.length) { S.screen = 'practice'; return renderPractice(); }
     var pct = Math.round((S.qIdx / qs.length) * 100);
-    var h = '<div class="a3-root a3-reading">';
+    var h = '<div class="a3-root a3-reading' + fresh() + '">';
     var left = isMock() ? mockLeft() : 0;
     h += '<div class="a3-lessonbar' + (isMock() ? ' a3-lessonbar-mock' : '') + '">' +
-      '<button class="a3-btn a3-btn-ghost a3-exit" data-a3="exit">Exit</button>' +
+      '<button class="a3-ctx-back" data-a3="exit" aria-label="Leave">' +
+        '<span aria-hidden="true">←</span></button>' +
+      '<div class="a3-lessonbar-tx">' +
+        '<div class="a3-lessonbar-t">' + (isMock() ? 'Timed mock' : 'Practice') + '</div>' +
+        '<div class="a3-lessonbar-m">Question ' + (S.qIdx + 1) + ' of ' + qs.length +
+          (isMock() ? '' : ' · ' + practiceLabel()) + '</div>' +
+      '</div>' +
       (isMock()
         ? '<div class="a3-mockclock' + (left < 5 * 60000 ? ' is-low' : '') + '" role="timer" aria-live="off">' +
             clock(left) + '</div>'
-        : '') +
-      '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
-      '<div class="a3-lessonbar-n">' + (S.qIdx + 1) + ' / ' + qs.length + '</div></div>';
-    h += '<article class="a3-sheet">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
+        : '<div class="a3-lessonbar-n">' + pct + '%</div>') +
+      '</div>' +
+      '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
+    h += '<article class="a3-sheet' + fresh() + '">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
     return h;
   }
 
@@ -1355,15 +1538,30 @@
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
+  /* ── Animate on MOVEMENT, not on every repaint ─────────────────────────────
+     The screen and the card each carried an entrance animation — a 320ms fade
+     and rise — applied unconditionally. Every render replaces the whole DOM, and
+     a render happens on every click: picking an option, choosing a pill,
+     revealing a step, typing into a task and then choosing a pill again. So the
+     page re-performed its entrance each time the reader touched anything, which
+     is the single loudest way an interface can feel cheap.
+
+     `posKey()` already knew the difference — it is what decides whether to
+     restore the scroll position — so the same answer now decides whether
+     anything animates. Computed BEFORE the paint, because the class has to be
+     in the markup that is about to be written. */
+  var _fresh = true;
   function mount(el) {
+    var k = posKey();
+    _fresh = k !== _lastPos;
     el.innerHTML = html();
     wire(el);
-    var k = posKey();
-    if (k !== _lastPos) {
+    if (_fresh) {
       _lastPos = k;
       restoreScroll(el);
     }
   }
+  function fresh() { return _fresh ? ' is-fresh' : ''; }
   var _host = null;
   function rerender() { if (_host) mount(_host); }
 
@@ -1714,6 +1912,20 @@
       return rerender();
     }
     if (act === 'tounits') { S.mode = 'lesson'; S.screen = 'units'; S.lessonId = null; return rerender(); }
+    if (act === 'fold') {
+      var fo = n.getAttribute('data-o');
+      S.shut[fo] = !S.shut[fo];
+      return rerender();
+    }
+    /* Jumping to an outcome unfolds it first: scrolling to a section that is
+       shut lands the reader on a header with nothing under it. */
+    if (act === 'jump') {
+      var jo = n.getAttribute('data-o');
+      if (S.shut[jo]) { S.shut[jo] = false; rerender(); }
+      var target = _host && _host.querySelector && _host.querySelector('#a3-oc-' + jo);
+      if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     if (act === 'startmock') { startMock(); return rerender(); }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');

@@ -40,7 +40,41 @@ body[data-subject="aat3"] {
   --a3-shadow-lg:  0 2px 4px rgba(16,20,40,.06), 0 24px 56px -16px rgba(16,20,40,.24);
   --a3-r:          14px;
   --a3-r-lg:       22px;
+  --a3-r-sm:       10px;
   --a3-serif:      ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+
+  /* ── Type ──────────────────────────────────────────────────────────────────
+     Two families with a rule, rather than two families by accident. The serif
+     is for READING and for the titles of things you read — screen titles, card
+     headings, the name of a lesson. Everything that is not prose is sans:
+     labels, data, numbers, questions, buttons, tables. Before this the serif
+     appeared on some rung titles and not others and on half the headings, which
+     is what made the module read as two products stitched together.
+
+     Sizes are roles, not measurements. Reach for the role. */
+  --a3-t-display:  clamp(26px, 5.2vw, 34px);  /* a screen title */
+  --a3-t-title:    21px;                      /* a card or panel heading */
+  --a3-t-head:     17px;                      /* a row or section heading */
+  --a3-t-body:     16px;                      /* prose, and anything read at length */
+  --a3-t-ui:       14.5px;                    /* buttons, controls, dense text */
+  --a3-t-meta:     13px;                      /* secondary detail */
+  --a3-t-label:    10.5px;                    /* the uppercase eyebrow */
+
+  --a3-lh-prose:   1.72;
+  --a3-lh-tight:   1.28;
+  --a3-track:      .12em;                     /* letter-spacing for eyebrows */
+
+  /* ── Space ─────────────────────────────────────────────────────────────────
+     One four-based rhythm. Every margin and pad below comes from here, so
+     vertical spacing lines up across screens that were built weeks apart. */
+  --a3-1: 4px;  --a3-2: 8px;   --a3-3: 12px;  --a3-4: 16px;
+  --a3-5: 20px; --a3-6: 24px;  --a3-8: 32px;  --a3-10: 40px; --a3-12: 48px;
+
+  /* The comfortable measure for prose. Set once: the lesson card ran to about
+     95 characters a line on a laptop, which is half again the width the eye
+     tracks comfortably. */
+  --a3-measure:    66ch;
+  --a3-page:       720px;   /* the widest a column of content ever gets */
 }
 
 body.dark[data-subject="aat3"] {
@@ -81,54 +115,16 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   max-width: 900px;
   margin: 0 auto;
   padding: 0 20px 80px;
-  animation: a3-in .32s cubic-bezier(.2,.7,.3,1) both;
+}
+/* Only when the reader has actually moved — see mount() in aat3-ui.js. */
+.a3-root.is-fresh, .a3-sheet.is-fresh { animation: a3-in .32s cubic-bezier(.2,.7,.3,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .a3-root.is-fresh, .a3-sheet.is-fresh { animation: none; }
 }
 @keyframes a3-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
-/* ── Hero ─────────────────────────────────────────────────────────────────── */
-.a3-hero {
-  position: relative;
-  margin: 0 -20px 30px;
-  padding: 56px 20px 40px;
-  background: linear-gradient(135deg, var(--a3-hero-1) 0%, var(--a3-hero-2) 52%, var(--a3-hero-3) 100%);
-  color: var(--a3-hero-ink);
-  overflow: hidden;
-}
-.a3-hero-glow {
-  position: absolute; inset: -40% -20% auto auto; width: 560px; height: 560px;
-  background: radial-gradient(closest-side, rgba(167,139,250,.34), transparent 70%);
-  pointer-events: none;
-}
-.a3-hero-in { position: relative; max-width: 860px; margin: 0 auto; }
 .a3-eyebrow {
   font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
   color: rgba(255,255,255,.62); margin-bottom: 14px;
-}
-.a3-title {
-  font-family: var(--a3-serif);
-  font-size: clamp(30px, 5.2vw, 46px); line-height: 1.08; font-weight: 600;
-  letter-spacing: -.018em; margin: 0 0 10px;
-}
-.a3-sub { font-size: 16px; color: rgba(255,255,255,.78); margin-bottom: 22px; }
-.a3-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
-.a3-chip {
-  font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
-  background: rgba(255,255,255,.11); border: 1px solid rgba(255,255,255,.16);
-  color: rgba(255,255,255,.9);
-}
-.a3-chip-accent { background: rgba(227,193,104,.16); border-color: rgba(227,193,104,.34); color: #F3DFA6; }
-
-.a3-progress-bar {
-  height: 7px; border-radius: 999px; background: rgba(255,255,255,.15); overflow: hidden;
-}
-.a3-progress-bar span {
-  display: block; height: 100%; border-radius: 999px;
-  background: linear-gradient(90deg, #A78BFA, #E3C168);
-  transition: width .5s cubic-bezier(.2,.7,.3,1);
-}
-.a3-progress-meta {
-  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  margin-top: 10px; font-size: 12.5px; color: rgba(255,255,255,.68);
 }
 
 /* ── Honest scope notice ──────────────────────────────────────────────────── */
@@ -138,53 +134,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   color: var(--a3-ink-2); margin-bottom: 34px;
 }
 .a3-notice strong { color: var(--a3-ink); }
-
-/* ── Practice ─────────────────────────────────────────────────────────────── */
-.a3-practice-cta {
-  display: flex; align-items: center; gap: 16px; width: 100%; text-align: left;
-  margin: 4px 0 8px; padding: 18px 20px; cursor: pointer;
-  border: 1px solid var(--a3-line); border-radius: var(--a3-r-lg);
-  background: var(--a3-surface); color: inherit; font: inherit;
-  box-shadow: var(--a3-shadow); transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-.a3-practice-cta:hover { transform: translateY(-1px); box-shadow: var(--a3-shadow-lg); border-color: var(--a3-line-2); }
-.a3-practice-i {
-  flex: none; width: 44px; height: 44px; border-radius: 12px;
-  display: grid; place-items: center; font-size: 20px;
-  background: var(--a3-brand-wash); color: var(--a3-brand-ink);
-}
-.a3-practice-tx { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.a3-practice-t { font-weight: 650; font-size: 16px; color: var(--a3-ink); }
-.a3-practice-m { font-size: 13px; color: var(--a3-ink-3); }
-.a3-practice-go { margin-left: auto; flex: none; color: var(--a3-ink-3); font-size: 18px; }
-
-.a3-hero-sm .a3-title { font-size: clamp(26px, 4.2vw, 36px); }
-
-.a3-pgrid {
-  display: grid; gap: 14px; margin: 6px 0 22px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.a3-pcard {
-  display: flex; flex-direction: column; gap: 6px; text-align: left;
-  padding: 18px 20px; cursor: pointer; font: inherit; color: inherit;
-  border: 1px solid var(--a3-line); border-radius: var(--a3-r);
-  background: var(--a3-surface); box-shadow: var(--a3-shadow);
-  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-.a3-pcard:hover { transform: translateY(-2px); box-shadow: var(--a3-shadow-lg); border-color: var(--a3-line-2); }
-.a3-pcard-k {
-  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
-  font-weight: 700; color: var(--a3-brand-ink);
-}
-.a3-pcard-t { font-family: var(--a3-serif); font-size: 18px; font-weight: 600; line-height: 1.25; color: var(--a3-ink); }
-.a3-pcard-m { font-size: 13px; color: var(--a3-ink-3); }
-.a3-pcard-mix {
-  background: linear-gradient(135deg, var(--a3-hero-1), var(--a3-hero-3));
-  border-color: transparent;
-}
-.a3-pcard-mix .a3-pcard-k { color: rgba(255,255,255,.7); }
-.a3-pcard-mix .a3-pcard-t { color: #fff; }
-.a3-pcard-mix .a3-pcard-m { color: rgba(255,255,255,.75); }
 
 /* ── Unit picker ──────────────────────────────────────────────────────────── */
 /* The first screen once Level 3 carries more than one unit. Each card has to
@@ -210,34 +159,11 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   font-family: var(--a3-serif); font-size: 21px; font-weight: 600;
   line-height: 1.2; letter-spacing: -.012em; color: var(--a3-ink);
 }
-.a3-ucard-m { font-size: 13px; color: var(--a3-ink-3); }
-.a3-ucard-bar {
-  display: block; height: 7px; margin-top: 4px; border-radius: 999px;
-  background: var(--a3-line); overflow: hidden;
-}
-.a3-ucard-bar > span {
-  display: block; height: 100%; border-radius: 999px;
-  background: linear-gradient(90deg, var(--a3-brand), var(--a3-brand-2));
-}
 .a3-ucard-s { font-size: 12.5px; color: var(--a3-ink-3); line-height: 1.5; }
 .a3-ucard-s strong { color: var(--a3-gold); font-weight: 650; }
 /* A part-written unit is marked on its own card rather than only after the
    reader has opened it and scrolled. */
 .a3-ucard.is-partial { border-left: 3px solid var(--a3-gold); }
-
-.a3-unitback {
-  display: inline-flex; align-items: center; gap: 7px; margin-bottom: 14px;
-  padding: 6px 13px 6px 11px; cursor: pointer; font: inherit; font-size: 13px;
-  border-radius: 999px; border: 1px solid rgba(255,255,255,.22);
-  background: rgba(255,255,255,.08); color: var(--a3-hero-ink);
-  transition: background .12s ease, border-color .12s ease;
-}
-.a3-unitback:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.4); }
-
-/* An outcome the specification lists and nothing teaches yet. Rendered rather
-   than skipped, so a part-built unit reads as part-built instead of as a unit
-   whose specification happens to be short. */
-.a3-outcome.is-unwritten { opacity: .72; }
 .a3-unwritten {
   border: 1px dashed var(--a3-line-2); border-radius: var(--a3-r);
   padding: 16px 18px; margin: 4px 0 8px;
@@ -300,9 +226,13 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-sum-focus-clean .a3-sum-focus-k { color: var(--a3-ok); }
 
 .a3-sum-rows { display: flex; flex-direction: column; gap: 8px; }
+/* FIVE COLUMNS, because the row has five children. It had four, and making the
+   row a button added a trailing arrow that had no column to sit in — so it
+   wrapped onto an implicit second row, which stretched some rows and not others
+   and put the arrow underneath the outcome title. */
 .a3-sum-row {
   display: grid; align-items: center; gap: 12px;
-  grid-template-columns: 26px minmax(0, 1fr) 120px 92px;
+  grid-template-columns: 26px minmax(0, 1fr) 120px 92px 14px;
   padding: 7px 9px; border-radius: 9px;
 }
 .a3-sum-row.is-worst { background: var(--a3-bad-wash); }
@@ -334,83 +264,14 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--a3-line);
   font-size: 12.5px; line-height: 1.55; color: var(--a3-ink-3);
 }
-
-.a3-pback { margin-bottom: 28px; }
 .a3-done-weak {
-  margin: 4px 0 18px; font-size: 13.5px; color: var(--a3-ink-2);
+  margin: 0 0 var(--a3-4); font-size: var(--a3-t-meta); color: var(--a3-ink-2); line-height: 1.6;
   background: var(--a3-gold-wash); border: 1px solid rgba(176,137,27,.3);
   border-radius: var(--a3-r); padding: 12px 16px;
 }
 
-/* ── Outcome section headers ──────────────────────────────────────────────── */
-/* One per learning outcome. The rule and the numeral give the track an obvious
-   chapter structure once there is more than one outcome to scroll through. */
-.a3-outcome {
-  position: relative; margin: 30px 0 6px; padding: 22px 0 18px;
-  border-top: 1px solid var(--a3-line);
-}
-.a3-track + .a3-outcome { margin-top: 44px; }
-.a3-outcome-n {
-  font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
-  font-weight: 700; color: var(--a3-brand-ink); margin-bottom: 8px;
-}
-.a3-outcome-t {
-  font-family: var(--a3-serif); font-weight: 600;
-  font-size: clamp(21px, 3.1vw, 27px); line-height: 1.2; letter-spacing: -.014em;
-  margin: 0 0 8px; color: var(--a3-ink);
-}
-.a3-outcome-w {
-  display: inline-block; font-size: 12px; font-weight: 600;
-  padding: 4px 11px; border-radius: 999px;
-  background: var(--a3-brand-wash); color: var(--a3-brand-ink);
-}
-
 /* ── The track ────────────────────────────────────────────────────────────── */
 .a3-track { position: relative; padding: 8px 0 20px; }
-.a3-node-wrap { position: relative; display: flex; align-items: center; gap: 20px; min-height: 104px; }
-.a3-side-l { flex-direction: row; }
-.a3-side-r { flex-direction: row-reverse; }
-.a3-side-r .a3-node-card { text-align: right; }
-
-.a3-link {
-  /* An absolutely-positioned SVG with a viewBox derives its width from the
-     aspect ratio when width is auto, so `right` alone is ignored. */
-  position: absolute; top: -62px; left: 37px; width: calc(100% - 74px); height: 72px;
-  z-index: 0; pointer-events: none;
-}
-.a3-link path {
-  fill: none; stroke: var(--a3-line-2); stroke-width: 3;
-  stroke-dasharray: 5 8; stroke-linecap: round; vector-effect: non-scaling-stroke;
-}
-.a3-node, .a3-node-card { position: relative; z-index: 1; }
-
-.a3-node {
-  flex: 0 0 auto; width: 74px; height: 74px; border-radius: 24px;
-  border: 1px solid var(--a3-line); background: var(--a3-surface);
-  box-shadow: var(--a3-shadow); cursor: pointer; font-size: 27px;
-  display: grid; place-items: center; color: var(--a3-ink);
-  transition: transform .18s cubic-bezier(.2,.7,.3,1), box-shadow .18s, border-color .18s;
-}
-.a3-node:hover { transform: translateY(-3px) scale(1.03); box-shadow: var(--a3-shadow-lg); }
-.a3-node:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 3px; }
-.a3-node-concept  { border-color: var(--a3-line-2); }
-.a3-node-applied  { border-color: var(--a3-brand); box-shadow: 0 0 0 4px var(--a3-brand-wash), var(--a3-shadow); }
-.a3-node-workshop {
-  border-color: var(--a3-gold); box-shadow: 0 0 0 4px var(--a3-gold-wash), var(--a3-shadow);
-  background: linear-gradient(160deg, var(--a3-surface), var(--a3-gold-wash));
-}
-.a3-node.is-done {
-  background: linear-gradient(160deg, var(--a3-brand), var(--a3-brand-2));
-  border-color: transparent; color: #fff; box-shadow: var(--a3-shadow-lg);
-}
-
-.a3-node-card { flex: 1 1 auto; min-width: 0; }
-.a3-node-type {
-  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--a3-ink-3); margin-bottom: 3px;
-}
-.a3-node-title { font-size: 17px; font-weight: 650; line-height: 1.3; letter-spacing: -.01em; }
-.a3-node-meta { font-size: 12.5px; color: var(--a3-ink-3); margin-top: 3px; }
 .a3-stars { margin-top: 5px; font-size: 13px; color: var(--a3-line-2); letter-spacing: 2px; }
 .a3-stars .on { color: var(--a3-gold); }
 .a3-stars-big { font-size: 26px; letter-spacing: 5px; margin: 14px 0 22px; }
@@ -422,24 +283,42 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-empty { padding: 60px 20px; text-align: center; color: var(--a3-ink-3); }
 
 /* ── Lesson chrome ────────────────────────────────────────────────────────── */
+/* The bar and the progress line are two elements now, not one row. The line
+   sits under the bar, edge to edge, which is where a reader expects to find
+   "how far through this am I" and frees the row itself to carry the name of the
+   thing they are in. */
 .a3-lessonbar {
-  display: flex; align-items: center; gap: 14px;
-  padding: 18px 0 20px; position: sticky; top: 0; z-index: 5;
-  background: linear-gradient(var(--a3-paper) 72%, transparent);
+  display: flex; align-items: center; gap: var(--a3-3);
+  margin: 0 -20px; padding: var(--a3-3) var(--a3-5);
+  position: sticky; top: 0; z-index: 6;
+  background: color-mix(in srgb, var(--a3-paper) 90%, transparent);
+  backdrop-filter: saturate(1.6) blur(12px);
+  -webkit-backdrop-filter: saturate(1.6) blur(12px);
 }
-.a3-lessonbar-p { flex: 1; height: 6px; border-radius: 999px; background: var(--a3-line); overflow: hidden; }
+.a3-lessonbar-tx { flex: 1 1 auto; min-width: 0; }
+.a3-lessonbar-t {
+  font-size: var(--a3-t-ui); font-weight: 700; color: var(--a3-ink); line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.a3-lessonbar-m { font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 1px; }
+.a3-lessonbar-p {
+  height: 3px; margin: 0 -20px var(--a3-5); background: var(--a3-line); overflow: hidden;
+  position: sticky; top: 58px; z-index: 6;
+}
 .a3-lessonbar-p span {
   display: block; height: 100%; border-radius: 999px;
   background: linear-gradient(90deg, var(--a3-brand), var(--a3-brand-2));
   transition: width .4s cubic-bezier(.2,.7,.3,1);
 }
-.a3-lessonbar-n { font-size: 12.5px; color: var(--a3-ink-3); font-variant-numeric: tabular-nums; }
+.a3-lessonbar-n {
+  flex: none; font-size: var(--a3-t-meta); font-weight: 700; color: var(--a3-ink-3);
+  font-variant-numeric: tabular-nums;
+}
 
 .a3-sheet {
   background: var(--a3-surface); border: 1px solid var(--a3-line);
   border-radius: var(--a3-r-lg); box-shadow: var(--a3-shadow);
   padding: clamp(24px, 4vw, 44px);
-  animation: a3-in .26s cubic-bezier(.2,.7,.3,1) both;
 }
 .a3-reading { max-width: 800px; }
 
@@ -450,7 +329,10 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 /* Cap the measure for long-form reading. Around 68 characters is the band
    where the eye tracks comfortably from one line to the next; the sheet itself
    stays wider so tables and worked examples still have room. */
-.a3-p { font-size: 16.5px; line-height: 1.75; color: var(--a3-ink-2); margin: 0 0 17px; max-width: 68ch; }
+.a3-p {
+  font-size: 16.5px; line-height: var(--a3-lh-prose); color: var(--a3-ink-2);
+  margin: 0 0 17px; max-width: var(--a3-measure);
+}
 .a3-card-h + .a3-p { margin-top: 0; }
 .a3-p strong { color: var(--a3-ink); font-weight: 650; }
 
@@ -478,11 +360,61 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
    is that it can be taken in at a glance, and a three-column table with its
    last column past the right edge is not that. Dropping the floor lets the
    cells wrap instead, and the type comes down a step to buy the space back. */
-.a3-cheat .a3-table { min-width: 0; font-size: 13.5px; }
-.a3-cheat .a3-table th, .a3-cheat .a3-table td { padding: 9px 10px; }
-/* Left as auto rather than visible: with min-width gone a cheat-sheet table
-   should always fit, but an unbreakable cell would otherwise burst the card
-   instead of scrolling inside it. */
+/* FIXED LAYOUT, because `min-width: 0` was not enough. Auto layout still
+   cannot shrink a table below the widest content its columns demand, so a
+   three-column sheet came out 337px wide inside a 312px wrapper: it scrolled
+   sideways and clipped the rule column mid-word, on a card whose entire job is
+   to be read at a glance. Fixed layout makes the columns share the width they
+   have and the text wrap inside them. */
+.a3-cheat .a3-table { min-width: 0; width: 100%; table-layout: fixed; font-size: 12.5px; }
+.a3-cheat .a3-table th, .a3-cheat .a3-table td {
+  padding: 8px 9px; overflow-wrap: break-word; hyphens: auto;
+}
+/* ── A cheat-sheet table on a narrow screen ─────────────────────────────────
+   Stacked, not scrolled, and the reasons are two measurements.
+
+   Left alone, the table came to 337px inside a 312px wrapper, so it scrolled
+   and the rule column — the reason the table exists — sat off the edge of a
+   card meant to be read at a glance.
+
+   Made to fit, by fixing the layout and sharing the width out in proportion, it
+   no longer overflows and three words still break mid-word across the eleven
+   sheets: "Deregistration", "administration:", "electronically,".
+
+   (An earlier note here said thirty-one words. That count came from measuring
+   them in the wrong typeface — `getComputedStyle(el).font` returns an empty
+   string in Chrome whenever the family is inherited, so the measuring span fell
+   back to the default and reported everything as too wide. The real number is
+   three. The conclusion survives the correction, but the number should not
+   stand as written.)
+
+   Three broken words is not on its own worth a different layout. A three-column
+   reference table at 312px in 12.5px type is cramped whether or not the words
+   break, and stacking costs nothing here because a sheet's rows are independent
+   facts rather than a column anybody adds up.
+
+   So each row becomes a labelled block. The first cell is its heading; the rest
+   take their labels from the column headers, carried on data-h by the renderer.
+   Nothing wraps, nothing is clipped, and nothing has to be scrolled to. */
+@media (max-width: 560px) {
+  .a3-cheat .a3-table, .a3-cheat .a3-table tbody,
+  .a3-cheat .a3-table tr, .a3-cheat .a3-table td { display: block; width: auto; }
+  .a3-cheat .a3-table thead { display: none; }
+  .a3-cheat .a3-table { border-collapse: separate; border-spacing: 0; }
+  .a3-cheat .a3-table tr {
+    padding: var(--a3-3) 0; border-bottom: 1px solid var(--a3-line);
+  }
+  .a3-cheat .a3-table tr:last-child { border-bottom: 0; }
+  .a3-cheat .a3-table td { border: 0; padding: 1px 0; }
+  .a3-cheat .a3-table td:first-child {
+    font-weight: 700; color: var(--a3-ink); font-size: 14px; margin-bottom: var(--a3-1);
+  }
+  .a3-cheat .a3-table td[data-h]:not(:first-child)::before {
+    content: attr(data-h); display: block;
+    font-size: var(--a3-t-label); letter-spacing: var(--a3-track); text-transform: uppercase;
+    font-weight: 700; color: var(--a3-ink-3); margin-top: var(--a3-2);
+  }
+}
 .a3-cheat .a3-tablewrap { overflow-x: auto; }
 .a3-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
 .a3-table th, .a3-table td {
@@ -607,9 +539,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-wide { width: 100%; margin-top: 18px; }
 .a3-nav { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 30px; }
 .a3-nav-hint { font-size: 13.5px; color: var(--a3-ink-3); font-style: italic; }
-
-/* ── Questions ────────────────────────────────────────────────────────────── */
-.a3-qhead { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--a3-ink-3); margin-bottom: 12px; }
 .a3-q { font-size: clamp(19px, 2.8vw, 24px); line-height: 1.4; font-weight: 650; letter-spacing: -.012em; margin: 0 0 24px; }
 .a3-opts { display: flex; flex-direction: column; gap: 10px; }
 .a3-opt {
@@ -665,7 +594,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-exp { font-size: 15px; line-height: 1.7; color: var(--a3-ink-2); margin: 0; }
 
 /* ── Completion ───────────────────────────────────────────────────────────── */
-.a3-done { text-align: center; padding: 70px 20px; }
+.a3-done { text-align: center; padding: var(--a3-10) var(--a3-5) var(--a3-12); max-width: 520px; margin: 0 auto; }
 .a3-done-ring {
   width: 158px; height: 158px; margin: 0 auto 26px; border-radius: 50%;
   display: grid; place-items: center; position: relative;
@@ -680,9 +609,23 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   font-variant-numeric: tabular-nums; letter-spacing: -.02em;
 }
 @keyframes a3-pop { from { transform: scale(.82); opacity: 0; } to { transform: none; opacity: 1; } }
-.a3-done-h { font-family: var(--a3-serif); font-size: 30px; font-weight: 600; margin: 0 0 7px; letter-spacing: -.015em; }
-.a3-done-sub { font-size: 15px; color: var(--a3-ink-3); }
-.a3-done-actions { display: flex; gap: 11px; justify-content: center; flex-wrap: wrap; }
+/* LINE-HEIGHT, which this had none of. A two-line verdict — "Worth going back
+   to the lessons" — was set at the body's 1.7, so the two halves of one
+   sentence sat further apart than the paragraphs on a lesson card. */
+.a3-done-h {
+  font-family: var(--a3-serif); font-size: 30px; font-weight: 600;
+  line-height: var(--a3-lh-tight); margin: 0 0 var(--a3-2); letter-spacing: -.015em;
+}
+.a3-done-sub { font-size: var(--a3-t-body); color: var(--a3-ink-3); margin-bottom: var(--a3-5); }
+/* The primary action on its own line, the rest beneath it. Three buttons of
+   similar width wrapping two-then-one made the odd one out look like an
+   afterthought rather than the quieter choice it is. */
+.a3-done-actions { display: grid; gap: var(--a3-2); justify-items: stretch; margin-top: var(--a3-5); }
+.a3-done-actions .a3-btn { width: 100%; justify-content: center; }
+@media (min-width: 520px) {
+  .a3-done-actions { grid-auto-flow: column; justify-content: center; }
+  .a3-done-actions .a3-btn { width: auto; }
+}
 
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 620px) {
@@ -706,11 +649,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   .a3-sum-row-t { grid-area: t; }
   .a3-sum-row-m { grid-area: m; }
   .a3-sum-bar   { grid-area: b; }
-  .a3-node { width: 60px; height: 60px; border-radius: 19px; font-size: 22px; }
-  .a3-node-wrap { gap: 15px; min-height: 88px; }
-  .a3-link { top: -52px; left: 30px; width: 2px; height: 60px; }
-  .a3-side-r .a3-node-card { text-align: left; }
-  .a3-side-r { flex-direction: row; }
   .a3-tf-row { flex-direction: column; align-items: stretch; gap: 10px; }
   .a3-sheet { padding: 22px 18px; }
   .a3-done-ring { width: 130px; height: 130px; }
@@ -724,7 +662,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   body[data-subject="aat3"] .a3-sheet,
   body[data-subject="aat3"] .a3-step.is-shown,
   body[data-subject="aat3"] .a3-done-ring { animation: none; }
-  body[data-subject="aat3"] .a3-node:hover { transform: none; }
   body[data-subject="aat3"] .a3-opt:hover:not(:disabled) { transform: none; }
 }
 
@@ -742,13 +679,39 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-dataset .a3-tablewrap { margin: 10px 0 0; }
 /* MIN-WIDTH ZERO, unlike a lesson table, and the reason is what the table is
    for. A lesson table is read; a task table is worked from. At the module's
-   default 420px minimum the amounts column sat off the right edge of a 390px
-   screen, so the reader had to scroll sideways to see the very figures the
-   question asks them to add up — and scroll back to type. Wrapping a supplier
-   name over two lines costs far less than that. The amounts themselves never
-   wrap, so a figure can always be read in one piece. */
-.a3-dataset .a3-table { min-width: 0; font-size: 13px; background: var(--a3-surface); table-layout: auto; }
-.a3-dataset .a3-table th, .a3-dataset .a3-table td { padding: 8px 9px; }
+   default 420px minimum even a four-column day book sat with its amounts off
+   the right edge of a phone, so the reader scrolled to see the figures the
+   question asks them to add up and scrolled back to type.
+
+   THE WIDE ONES STILL SCROLL, AND THAT IS THE DESIGN. Measured at 390px, the
+   six datasets come to 310, 310, 314, 373, 390 and 428 pixels inside a 310px
+   wrapper. Twelve monthly figures across four columns cannot be made to fit,
+   and both ways of forcing it are worse than scrolling: breaking a figure in
+   half, or stacking the rows and destroying the column the reader is being
+   asked to total. So the two that fit, fit; the four that cannot, scroll — and
+   the fade at the right edge says there is more.
+
+   `overflow-wrap: normal` is a guard rather than a repair. Nothing in the six
+   currently breaks with or without it — an earlier note here claimed otherwise,
+   and that claim came from a measurement taken in the wrong typeface. It stays
+   because a table of amounts is the last place a word should ever be cut, and
+   the next dataset written should not have to rediscover that. */
+.a3-dataset .a3-table {
+  min-width: 100%; width: auto; font-size: 13px;
+  background: var(--a3-surface); table-layout: auto;
+}
+.a3-dataset .a3-table th, .a3-dataset .a3-table td { padding: 8px 9px; overflow-wrap: normal; }
+.a3-dataset .a3-tablewrap {
+  position: relative;
+  /* A right-edge fade, painted only while there is something past it: the
+     background-attachment trick keeps the gradient pinned to the scroll
+     container so it disappears once the reader reaches the end. */
+  background:
+    linear-gradient(to right, var(--a3-surface) 30%, transparent) left / 24px 100% no-repeat local,
+    linear-gradient(to left, var(--a3-surface) 30%, transparent) right / 24px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(11,16,32,.14), transparent) left / 12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(11,16,32,.14), transparent) right / 12px 100% no-repeat scroll;
+}
 .a3-dataset .a3-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .a3-dataset-note { padding: 10px 14px; font-size: 13px; color: var(--a3-ink-3); line-height: 1.6; }
 
@@ -772,19 +735,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   background: var(--a3-gold-wash); color: var(--a3-gold);
   font-size: 13.5px; font-weight: 650;
 }
-
-/* The mistakes card. Amber rather than the brand indigo of the other picker
-   cards: it is a different kind of offer — a backlog to clear, not a topic to
-   choose — and it disappears entirely once the backlog is empty. */
-.a3-pcard-missed { border-color: var(--a3-gold); background: var(--a3-gold-wash); }
-.a3-pcard-missed .a3-pcard-k { color: var(--a3-gold); }
-
-/* ── The timed mock ──────────────────────────────────────────────────────────
-   The clock sits in the quiz bar and turns red under five minutes. Its text is
-   written directly by the tick rather than repainted, so a reader typing into a
-   task keeps their caret. */
-.a3-pcard-mock { border-color: var(--a3-brand); background: var(--a3-brand-wash); }
-.a3-pcard-mock .a3-pcard-k { color: var(--a3-brand-ink); }
 .a3-mockclock {
   font-variant-numeric: tabular-nums; font-weight: 700; font-size: 15px;
   color: var(--a3-ink-2); padding: 0 4px; min-width: 52px; text-align: center;
@@ -806,3 +756,399 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   font-size: 13.5px; line-height: 1.6; color: var(--a3-ink-2);
 }
 .a3-try-row-mock { margin-bottom: 6px; }
+
+/* ══ The shell ═══════════════════════════════════════════════════════════════
+   The shared header is a two-line title, a version badge and three buttons, and
+   at 390px it wraps to about 290px tall. On top of that every Level 3 screen
+   drew its own full-bleed hero — another 450px on the units screen — so 740px
+   of an 844px phone was chrome before a single word of content. You scrolled to
+   begin.
+
+   Both are fixed here, and neither touches another subject: everything is
+   scoped to body[data-subject="aat3"], and app.js already stamps that
+   attribute. The shared header keeps its title and its controls and loses the
+   subtitle and the version chip, which are read once and then never again. */
+/* `> header`, NOT `header`. The app bar is a direct child of body; a descendant
+   selector also matches any <header> a screen renders inside #app, and these
+   rules were shrinking the type on a screen heading and beating the class that
+   was supposed to size it — "Choose a unit" came out at the same size as body
+   text. The child combinator says what is meant: the bar at the top, and
+   nothing else. */
+body[data-subject="aat3"] > header {
+  padding: 9px 18px;
+  gap: 8px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset;
+}
+body[data-subject="aat3"] > header .sub,
+body[data-subject="aat3"] > header .version-badge,
+body[data-subject="aat3"] > header .badge { display: none; }
+body[data-subject="aat3"] > header h1 { font-size: .98rem; }
+body[data-subject="aat3"] > header .header-left { gap: 10px; }
+
+@media (max-width: 560px) {
+  body[data-subject="aat3"] > header { padding: 8px 12px; }
+  body[data-subject="aat3"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
+}
+
+/* ── The context bar ─────────────────────────────────────────────────────────
+   What the hero was for, in a tenth of the height: which unit you are in, how
+   far through it you are, and the way out. It replaces the hero on every screen
+   that is not the units picker, where a full title still earns its space
+   because choosing a unit is the whole job of that screen.
+
+   Sticky, because on a path that runs to ten thousand pixels the one thing you
+   always want is to know where you are and how to leave. */
+.a3-ctx {
+  /* Breaks out of the root's 20px gutter so the bar meets its edges, and the
+     rule under it reads as a division of the page rather than a floating line. */
+  margin: 0 -20px; position: sticky; top: 0; z-index: 6;
+  display: flex; align-items: center; gap: var(--a3-3);
+  padding: var(--a3-3) var(--a3-5);
+  background: color-mix(in srgb, var(--a3-paper) 88%, transparent);
+  backdrop-filter: saturate(1.6) blur(12px);
+  -webkit-backdrop-filter: saturate(1.6) blur(12px);
+  border-bottom: 1px solid var(--a3-line);
+}
+.a3-ctx-back {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--a3-line-2); background: var(--a3-surface);
+  color: var(--a3-ink-2); font-size: 15px; cursor: pointer; font-family: inherit;
+  transition: border-color .14s, color .14s;
+}
+.a3-ctx-back:hover { border-color: var(--a3-brand); color: var(--a3-brand); }
+.a3-ctx-main { min-width: 0; flex: 1 1 auto; }
+/* Two lines before it truncates. "Financial Accounting: Preparing Financial
+   Statements" does not fit on one line of a phone, and a context bar that
+   elides the name of the thing you are in is not giving context. */
+.a3-ctx-unit {
+  font-size: var(--a3-t-ui); font-weight: 700; color: var(--a3-ink); line-height: 1.25;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.a3-ctx-meta {
+  font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.a3-ctx-ring { flex: none; }
+
+/* The progress ring in the context bar: 34px, one arc, no text inside it —
+   the number is already in the line beside it and repeating it makes the bar
+   busier without making it clearer. */
+.a3-ring {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: conic-gradient(var(--a3-brand) calc(var(--p) * 1%), var(--a3-line) 0);
+  display: grid; place-items: center;
+}
+.a3-ring::after {
+  content: ''; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--a3-paper);
+}
+.a3-ring.is-full { background: conic-gradient(var(--a3-ok) 100%, var(--a3-ok) 0); }
+
+/* ══ The path ════════════════════════════════════════════════════════════════ */
+.a3-page { max-width: var(--a3-page); margin: 0 auto; padding: var(--a3-5) var(--a3-4) var(--a3-10); }
+
+/* ── The two things you came here to do ───────────────────────────────────── */
+.a3-actions { display: grid; gap: var(--a3-3); margin-bottom: var(--a3-6); }
+@media (min-width: 660px) { .a3-actions { grid-template-columns: 1fr 1fr; } }
+
+.a3-act {
+  position: relative; display: block; width: 100%; text-align: left;
+  padding: var(--a3-4) var(--a3-10) var(--a3-4) var(--a3-4);
+  border-radius: var(--a3-r); border: 1px solid var(--a3-line);
+  background: var(--a3-surface); color: var(--a3-ink);
+  font-family: inherit; cursor: pointer;
+  box-shadow: var(--a3-shadow);
+  transition: transform .14s, box-shadow .14s, border-color .14s;
+}
+.a3-act:hover { transform: translateY(-1px); box-shadow: var(--a3-shadow-lg); border-color: var(--a3-brand); }
+.a3-act-k {
+  display: block; font-size: var(--a3-t-label); letter-spacing: var(--a3-track);
+  text-transform: uppercase; font-weight: 800; color: var(--a3-brand-ink);
+}
+.a3-act-t {
+  display: block; font-family: var(--a3-serif); font-size: var(--a3-t-title);
+  line-height: var(--a3-lh-tight); margin: var(--a3-2) 0 var(--a3-1); font-weight: 600;
+}
+.a3-act-m { display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3); line-height: 1.5; }
+.a3-act-go-i {
+  position: absolute; right: var(--a3-4); top: 50%; transform: translateY(-50%);
+  font-size: 19px; color: var(--a3-brand); transition: transform .14s;
+}
+.a3-act:hover .a3-act-go-i { transform: translateY(-50%) translateX(3px); }
+/* The primary action is the one with somewhere to go. */
+.a3-act-go { border-color: var(--a3-brand); background: var(--a3-brand-wash); }
+.a3-act-done { cursor: default; box-shadow: none; border-color: var(--a3-ok); background: var(--a3-ok-wash); }
+/* The second of the two actions. Quieter than the primary and quieter than a
+   plain card: it is always available, so it should not compete with the one
+   thing the reader is most likely to want. */
+.a3-act-alt { background: var(--a3-surface-2); box-shadow: none; }
+.a3-act-alt .a3-act-k { color: var(--a3-ink-3); }
+.a3-act-done .a3-act-k { color: var(--a3-ok); }
+
+/* ── The outcome index ────────────────────────────────────────────────────── */
+.a3-index {
+  display: flex; gap: var(--a3-2); margin-bottom: var(--a3-5);
+  overflow-x: auto; padding-bottom: var(--a3-1); -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.a3-index::-webkit-scrollbar { display: none; }
+.a3-index-c {
+  flex: none; display: flex; flex-direction: column; align-items: center; gap: 1px;
+  min-width: 48px; padding: var(--a3-2) var(--a3-3);
+  border-radius: var(--a3-r-sm); border: 1px solid var(--a3-line-2);
+  background: var(--a3-surface); color: var(--a3-ink-2);
+  font-family: inherit; cursor: pointer; transition: all .14s;
+}
+.a3-index-c:hover { border-color: var(--a3-brand); color: var(--a3-brand); }
+.a3-index-n { font-size: var(--a3-t-head); font-weight: 800; line-height: 1; }
+.a3-index-w { font-size: 10px; color: var(--a3-ink-3); font-weight: 600; }
+.a3-index-c.is-part { border-color: var(--a3-brand); color: var(--a3-brand-ink); background: var(--a3-brand-wash); }
+.a3-index-c.is-done { border-color: var(--a3-ok); color: var(--a3-ok); background: var(--a3-ok-wash); }
+.a3-index-c.is-unwritten { opacity: .45; }
+
+/* ── An outcome section ───────────────────────────────────────────────────── */
+.a3-oc { margin-bottom: var(--a3-6); scroll-margin-top: 76px; }
+.a3-oc-h {
+  display: flex; align-items: flex-start; gap: var(--a3-3); width: 100%; text-align: left;
+  padding: var(--a3-3) 0; background: none; border: 0; border-bottom: 1px solid var(--a3-line);
+  font-family: inherit; color: inherit; cursor: pointer;
+}
+.a3-oc-n {
+  flex: none; display: grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 9px; background: var(--a3-brand-wash); color: var(--a3-brand-ink);
+  font-size: var(--a3-t-ui); font-weight: 800;
+}
+.a3-oc-tx { flex: 1 1 auto; min-width: 0; }
+.a3-oc-t {
+  display: block; font-family: var(--a3-serif); font-size: var(--a3-t-head);
+  font-weight: 600; color: var(--a3-ink); line-height: var(--a3-lh-tight);
+}
+.a3-oc-m { display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 2px; }
+.a3-oc-fold {
+  flex: none; width: 26px; height: 26px; display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid var(--a3-line-2); color: var(--a3-ink-3);
+  font-size: 15px; line-height: 1;
+}
+.a3-oc-h:hover .a3-oc-fold { border-color: var(--a3-brand); color: var(--a3-brand); }
+.a3-oc.is-unwritten .a3-oc-n { background: var(--a3-surface-2); color: var(--a3-ink-3); }
+
+/* ── The rungs ────────────────────────────────────────────────────────────────
+   One rail down the left, a marker per lesson. The rail is drawn on the list
+   rather than per row so it is continuous, and it stops short at both ends
+   instead of running off into the section heading. */
+.a3-track { list-style: none; margin: 0; padding: var(--a3-3) 0 0; position: relative; }
+/* Centre of the first marker to centre of the last: 12px of list padding, 8px
+   of button padding, then half of the 40px marker. Guessed at 24px first, which
+   left the rail starting below the first marker and floating past the last. */
+.a3-track::before {
+  content: ''; position: absolute; left: 19px; top: 40px; bottom: 40px;
+  width: 2px; background: var(--a3-line); border-radius: 2px;
+}
+.a3-rung { position: relative; }
+.a3-rung-b {
+  display: flex; align-items: center; gap: var(--a3-3); width: 100%; text-align: left;
+  padding: var(--a3-2) var(--a3-2) var(--a3-2) 0;
+  background: none; border: 0; border-radius: var(--a3-r-sm);
+  font-family: inherit; color: inherit; cursor: pointer; transition: background .14s;
+}
+.a3-rung-b:hover { background: var(--a3-surface-2); }
+.a3-rung-mark {
+  position: relative; z-index: 1; flex: none;
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--a3-surface); border: 2px solid var(--a3-line-2);
+  font-size: 16px; line-height: 1;
+}
+.a3-rung-tx { flex: 1 1 auto; min-width: 0; }
+.a3-rung-t {
+  display: block; font-size: var(--a3-t-ui); font-weight: 650; color: var(--a3-ink);
+  line-height: 1.4;
+}
+.a3-rung-m {
+  display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 1px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* The unearned stars, in a grey that can actually be seen. They were drawn in
+   the line colour, which measured 1.49:1 against the page — faint enough that a
+   reader could not tell there were three of them to earn, which is the entire
+   information an empty state carries. */
+.a3-rung-st {
+  flex: none; font-size: 10px; letter-spacing: .5px;
+  color: color-mix(in srgb, var(--a3-ink-3) 55%, var(--a3-surface));
+}
+.a3-rung-st .on { color: var(--a3-gold); }
+
+.a3-rung.is-done .a3-rung-mark { background: var(--a3-ok); border-color: var(--a3-ok); color: #fff; }
+.a3-rung.is-done .a3-rung-t { color: var(--a3-ink-2); }
+/* Up next is the only rung that draws attention, and it draws it quietly: the
+   marker fills, the row does not. A whole highlighted row next to a highlighted
+   Continue panel says the same thing twice and loudly. */
+.a3-rung.is-next .a3-rung-mark {
+  border-color: var(--a3-brand); color: var(--a3-brand);
+  box-shadow: 0 0 0 4px var(--a3-brand-wash);
+}
+.a3-rung.is-next .a3-rung-t { color: var(--a3-brand-ink); font-weight: 750; }
+.a3-rung-sheet .a3-rung-mark { border-style: dashed; }
+
+.a3-unwritten {
+  margin-top: var(--a3-3); padding: var(--a3-4);
+  border: 1px dashed var(--a3-line-2); border-radius: var(--a3-r);
+  font-size: var(--a3-t-meta); color: var(--a3-ink-3); line-height: 1.6;
+}
+
+/* ══ Screen headings ═════════════════════════════════════════════════════════ */
+/* EVERY PROPERTY THE SHARED `header` RULE SETS IS UNSET HERE.
+   styles.css styles the bare element — `header { background: var(--header-bg);
+   color: var(--header-text); position: sticky; ... }` — for the app bar at the
+   top of the page, and it therefore applies to ANY <header> a subject renders.
+   This one arrived with the app bar's dark navy background and its own dark
+   ink, so "Choose a unit" was black on near-black and effectively invisible.
+   Keeping the semantic element and undoing the inherited skin is the honest fix;
+   swapping it for a <div> would only hide the trap for the next one. */
+.a3-head {
+  display: block; position: static; padding: var(--a3-6) 0 var(--a3-5);
+  background: none; color: inherit; box-shadow: none; border: 0;
+}
+.a3-eyebrow {
+  font-size: var(--a3-t-label); letter-spacing: var(--a3-track); text-transform: uppercase;
+  font-weight: 800; color: var(--a3-brand-ink);
+}
+.a3-head-t {
+  font-family: var(--a3-serif); font-size: var(--a3-t-display); font-weight: 600;
+  line-height: var(--a3-lh-tight); margin: var(--a3-2) 0 0; color: var(--a3-ink);
+}
+.a3-head-s {
+  margin: var(--a3-2) 0 0; font-size: var(--a3-t-body); color: var(--a3-ink-3);
+  line-height: 1.55; max-width: 46ch;
+}
+
+/* ══ Unit cards ══════════════════════════════════════════════════════════════ */
+.a3-ugrid { display: grid; gap: var(--a3-4); }
+@media (min-width: 700px) { .a3-ugrid { grid-template-columns: 1fr 1fr; } }
+.a3-ucard {
+  display: block; width: 100%; text-align: left; padding: var(--a3-5);
+  border-radius: var(--a3-r-lg); border: 1px solid var(--a3-line);
+  background: var(--a3-surface); color: var(--a3-ink);
+  font-family: inherit; cursor: pointer; box-shadow: var(--a3-shadow);
+  transition: transform .16s, box-shadow .16s, border-color .16s;
+}
+.a3-ucard:hover { transform: translateY(-2px); box-shadow: var(--a3-shadow-lg); border-color: var(--a3-brand); }
+.a3-ucard-top { display: flex; align-items: center; justify-content: space-between; gap: var(--a3-3); }
+.a3-ucard-k {
+  font-size: var(--a3-t-label); letter-spacing: var(--a3-track); text-transform: uppercase;
+  font-weight: 800; color: var(--a3-brand-ink);
+}
+.a3-ucard-t {
+  display: block; font-family: var(--a3-serif); font-size: var(--a3-t-title);
+  font-weight: 600; line-height: var(--a3-lh-tight); margin: var(--a3-3) 0 var(--a3-4);
+}
+/* The unit's facts as a small table rather than a run-on sentence. Four numbers
+   read as four numbers; "60 guided learning hours · 90 min exam · 5 outcomes"
+   read as prose you had to parse. */
+.a3-ucard-facts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--a3-2) var(--a3-4);
+  padding: var(--a3-3) 0; border-top: 1px solid var(--a3-line); border-bottom: 1px solid var(--a3-line);
+  font-size: var(--a3-t-meta); color: var(--a3-ink-3);
+}
+.a3-ucard-facts b { color: var(--a3-ink); font-weight: 700; }
+.a3-ucard-s { display: block; margin-top: var(--a3-3); font-size: var(--a3-t-meta); color: var(--a3-ink-3); line-height: 1.5; }
+.a3-ucard-s strong { color: var(--a3-gold); }
+.a3-ucard.is-partial { border-left: 3px solid var(--a3-gold); }
+
+/* ══ Practice ════════════════════════════════════════════════════════════════ */
+/* Tier one: the mock. */
+.a3-mockpanel {
+  display: flex; align-items: center; gap: var(--a3-4); width: 100%; text-align: left;
+  margin: var(--a3-5) 0 var(--a3-3); padding: var(--a3-5);
+  border-radius: var(--a3-r-lg); border: 1px solid var(--a3-brand);
+  background: linear-gradient(135deg, var(--a3-hero-1), var(--a3-hero-2) 55%, var(--a3-hero-3));
+  color: var(--a3-hero-ink); font-family: inherit; cursor: pointer;
+  box-shadow: var(--a3-shadow-lg);
+  transition: transform .16s;
+}
+.a3-mockpanel:hover { transform: translateY(-2px); }
+.a3-mockpanel-tx { flex: 1 1 auto; min-width: 0; }
+.a3-mockpanel-k {
+  display: block; font-size: var(--a3-t-label); letter-spacing: var(--a3-track);
+  text-transform: uppercase; font-weight: 800; opacity: .78;
+}
+.a3-mockpanel-t {
+  display: block; font-family: var(--a3-serif); font-size: 24px; font-weight: 600;
+  line-height: var(--a3-lh-tight); margin: var(--a3-2) 0 var(--a3-2);
+}
+.a3-mockpanel-m { display: block; font-size: var(--a3-t-meta); opacity: .8; line-height: 1.55; }
+.a3-mockpanel-best {
+  flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: var(--a3-3) var(--a3-4); border-radius: var(--a3-r);
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18);
+}
+.a3-mockpanel-best b { font-size: 22px; font-weight: 800; line-height: 1; }
+.a3-mockpanel-best span { font-size: 10.5px; opacity: .8; letter-spacing: .04em; }
+.a3-mockpanel-go { flex: none; font-size: 22px; opacity: .8; }
+
+/* Tier two: a backlog, which is an alert and not an option. */
+.a3-alert {
+  display: flex; align-items: center; gap: var(--a3-3); width: 100%; text-align: left;
+  margin-bottom: var(--a3-3); padding: var(--a3-4);
+  border-radius: var(--a3-r); border: 1px solid var(--a3-gold);
+  background: var(--a3-gold-wash); color: var(--a3-ink);
+  font-family: inherit; cursor: pointer; transition: border-color .14s;
+}
+.a3-alert:hover { border-color: var(--a3-brand); }
+.a3-alert-i {
+  flex: none; display: grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; background: var(--a3-gold); color: var(--a3-paper);
+  font-weight: 800; font-size: 16px;
+}
+.a3-alert-tx { flex: 1 1 auto; min-width: 0; }
+.a3-alert-t { display: block; font-size: var(--a3-t-ui); font-weight: 700; }
+.a3-alert-m { display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 2px; line-height: 1.45; }
+.a3-alert-go { flex: none; color: var(--a3-gold); font-size: 18px; }
+
+/* Tier three: the ordinary ways in. */
+.a3-mixed {
+  display: flex; align-items: center; gap: var(--a3-3); width: 100%; text-align: left;
+  padding: var(--a3-4); margin-bottom: var(--a3-2);
+  border-radius: var(--a3-r); border: 1px solid var(--a3-line);
+  background: var(--a3-surface); color: var(--a3-ink);
+  font-family: inherit; cursor: pointer; transition: border-color .14s;
+}
+.a3-mixed:hover { border-color: var(--a3-brand); }
+.a3-mixed-t { flex: none; font-size: var(--a3-t-ui); font-weight: 700; }
+.a3-mixed-m { flex: 1 1 auto; font-size: var(--a3-t-meta); color: var(--a3-ink-3); line-height: 1.4; }
+.a3-mixed-go { flex: none; color: var(--a3-brand); font-size: 18px; }
+/* On a narrow screen the description drops to its own line. The arrow was
+   given `position: absolute` with no positioning context, so it escaped to the
+   nearest ancestor and landed on top of the text it was meant to follow. It
+   simply moves with the title instead. */
+@media (max-width: 520px) {
+  .a3-mixed { flex-wrap: wrap; row-gap: var(--a3-1); }
+  .a3-mixed-t { flex: 1 1 auto; }
+  .a3-mixed-m { flex-basis: 100%; order: 3; }
+}
+
+/* A summary row that is also the way in. It was a static readout sitting above
+   a separate grid of the same five outcomes; merging them means one list that
+   both reports and acts. */
+.a3-sum-row.is-live {
+  width: 100%; text-align: left; font-family: inherit; color: inherit;
+  background: none; border: 0; cursor: pointer; border-radius: var(--a3-r-sm);
+  transition: background .14s;
+}
+.a3-sum-row.is-live:hover { background: var(--a3-brand-wash); }
+/* Visible at rest, not only on hover: a row that looks inert until the pointer
+   crosses it is a row a keyboard user never learns is a button. */
+.a3-sum-row-go { color: var(--a3-ink-3); font-size: 14px; text-align: right; transition: color .14s; }
+.a3-sum-row.is-live:hover .a3-sum-row-go,
+.a3-sum-row.is-live:focus-visible .a3-sum-row-go { color: var(--a3-brand); }
+
+/* The focus shortcut, restyled from a full-width primary button to a link. */
+.a3-sum-focus-go {
+  align-self: flex-start; margin-top: var(--a3-3);
+  padding: var(--a3-2) var(--a3-3); border-radius: 999px;
+  border: 1px solid var(--a3-bad); background: transparent; color: var(--a3-bad);
+  font-family: inherit; font-size: var(--a3-t-meta); font-weight: 700; cursor: pointer;
+  transition: background .14s, color .14s;
+}
+.a3-sum-focus-go:hover { background: var(--a3-bad); color: var(--a3-paper); }
+.a3-sum-focus-clean .a3-sum-focus-go { border-color: var(--a3-ok); color: var(--a3-ok); }

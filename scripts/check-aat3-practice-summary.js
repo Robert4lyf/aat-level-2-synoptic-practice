@@ -91,6 +91,14 @@ function eq(a, b, label) {
 }
 function row(s, n) { return s.rows.find(r => r.n === n); }
 
+/* Which outcomes the painted practice screen offers a run on. Read off the
+   buttons a reader would press, so it holds however the screen is laid out. */
+function startableOutcomes(html) {
+  const seen = new Set();
+  [...html.matchAll(/data-a3="startpractice" data-lo="(\d+)"/g)].forEach(m => seen.add(Number(m[1])));
+  return [...seen].sort((a, b) => a - b);
+}
+
 console.log(`${BOLD}AAT Level 3 practice summary${RESET}\n`);
 
 /* ── The bank and the syllabus agree ────────────────────────────────────── */
@@ -443,7 +451,16 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
   const open = page.indexOf('<section class="a3-sum');
   ok(open !== -1, 'the practice picker renders the summary section');
   const sum = page.slice(open, page.indexOf('</section>', open));
-  ok(/a3-pgrid/.test(page), 'and the outcome picker still renders underneath it');
+  /* EVERY OUTCOME IS STILL A WAY IN, asserted as the property rather than as
+     the class that used to carry it. This read `/a3-pgrid/` — the grid of
+     outcome cards that sat under the summary — which was a proxy for "the
+     reader can still start a run on one outcome". That grid has since been
+     merged into the summary's own rows, because it was a second list of the
+     same five outcomes directly below the first. The proxy would now fail
+     while the thing it stood for is more true than it was. */
+  ok(startableOutcomes(page).length === OUTCOMES.length,
+    `every one of the ${OUTCOMES.length} outcomes can be started from the practice screen ` +
+    `(found ${startableOutcomes(page).length})`);
 
   ok(sum.indexOf('Questions attempted') !== -1, 'the summary labels the headline count');
   ok(sum.indexOf('>41<') !== -1, 'the headline count is the number of questions attempted');
@@ -471,7 +488,12 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
   ok(/a3-sum-empty/.test(blank), 'before any practice the summary renders its empty state');
   ok(blank.indexOf('Questions attempted') === -1, 'and does not show a grid of zeros');
   ok(blank.indexOf('Most mistakes') === -1, 'and names no worst outcome, because there is not one yet');
-  ok(/a3-pgrid/.test(blank), 'the outcome picker itself still renders underneath');
+  /* The one that matters most on this screen. A reader on their first visit has
+     no statistics to show, and an empty state that reports nothing AND offers
+     nothing is a dead end: mock, mixed, and no way to pick an outcome. */
+  ok(startableOutcomes(blank).length === OUTCOMES.length,
+    `a reader with no history can still start any of the ${OUTCOMES.length} outcomes ` +
+    `(found ${startableOutcomes(blank).length})`);
 }
 
 console.log(failures
