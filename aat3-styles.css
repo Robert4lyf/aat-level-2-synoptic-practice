@@ -1217,3 +1217,37 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 }
 .a3-sum-focus-go:hover { background: var(--a3-bad); color: var(--a3-paper); }
 .a3-sum-focus-clean .a3-sum-focus-go { border-color: var(--a3-ok); color: var(--a3-ok); }
+
+/* ── Reading a card aloud ───────────────────────────────────────────────────
+   A trial, on one lesson. Sits in the lesson bar beside the percentage, which
+   is the only place on a reading screen that is always visible and never
+   scrolls away — the point of the button is that it is reachable at the moment
+   a reader decides they would rather listen than read. */
+.a3-speak {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 11px; border-radius: 999px; cursor: pointer; font-family: inherit;
+  font-size: 12.5px; font-weight: 700; white-space: nowrap;
+  border: 1px solid var(--a3-line-2); background: var(--a3-surface); color: var(--a3-ink-2);
+  transition: border-color .14s ease, background .14s ease, color .14s ease;
+}
+.a3-speak:hover { border-color: var(--a3-brand); color: var(--a3-brand); }
+.a3-speak:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+/* Speaking is a state the reader needs to see from across the room, because the
+   only other evidence of it is a sound they may have muted. */
+.a3-speak.is-on {
+  background: var(--a3-brand); border-color: var(--a3-brand); color: var(--a3-on-fill);
+}
+.a3-speak-i { font-size: 11px; line-height: 1; }
+.a3-speak-l { line-height: 1; }
+/* Below the narrowest phone the bar already carries a back button, two lines of
+   title and the percentage. The word goes and the glyph stays.
+
+   `display: none` on a child, not `font-size: 0` on the button: the first
+   attempt did the latter and restored the glyph with `::first-letter`, which
+   does not apply to an inline-flex box — so the button rendered at 320px as an
+   empty pill, and only a screenshot showed it. */
+@media (max-width: 380px) {
+  .a3-speak { padding: 6px 10px; gap: 0; }
+  .a3-speak-l { display: none; }
+  .a3-speak-i { font-size: 13px; }
+}
