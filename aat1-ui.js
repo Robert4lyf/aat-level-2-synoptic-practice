@@ -54,6 +54,11 @@
     matchSel: null,      // left index currently selected, awaiting a right click
     orderSeq: null,      // working order, as indices into q.items
     numInput: '',
+    /* Which outcome sections are folded shut on the ladder. Session-only on
+       purpose: folding is a momentary act of tidying, not progress, and storing
+       it would mean a reader who collapsed everything once came back weeks
+       later to a course that looked empty. */
+    shut: {},
     score: 0,
     revealed: 0,         // worked-example steps shown
     tryInput: '',
@@ -420,85 +425,141 @@
   }
 
   /* ── Path screen — the ladder ─────────────────────────────────────────────── */
+  /* ── The context bar ────────────────────────────────────────────────────────
+     What the hero was for, in a tenth of the height. The hero cost about
+     1,100px on a phone and repeated the same four facts on every visit — after
+     the first, a reader arriving to do step 12 read the course description
+     again before they could reach it. */
+  function ctxBar(opts) {
+    var o = opts || {};
+    var h = '<div class="a1-ctx">';
+    if (o.back) {
+      h += '<button class="a1-ctx-back" data-a1="' + o.back + '" aria-label="' +
+        esc(o.backLabel || 'Back') + '"><span aria-hidden="true">←</span></button>';
+    }
+    h += '<div class="a1-ctx-main">' +
+      '<div class="a1-ctx-unit">' + esc(o.title || '') + '</div>' +
+      (o.meta ? '<div class="a1-ctx-meta">' + esc(o.meta) + '</div>' : '') +
+      '</div>';
+    if (typeof o.pct === 'number') {
+      h += '<div class="a1-ctx-ring"><div class="a1-ring' + (o.pct >= 100 ? ' is-full' : '') +
+        '" style="--p:' + o.pct + '" role="img" aria-label="' + o.pct + '% complete"></div></div>';
+    }
+    return h + '</div>';
+  }
+
   function renderPath() {
     var groups = path();
     if (!groups.length) return '<div class="a1-empty">Level 1 content is still loading.</div>';
     var ls = lessons();
     var doneN = ls.filter(function (l) { return isDone(l.id); }).length;
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
-    var cov = coverage();
     var u = unit();
     var nx = nextLesson();
-    var started = doneN > 0;
+    var bank = practiceBank();
 
     var h = '<div class="a1-root">';
 
-    /* Two decisions here, both from bugs the browser found.
-       The banner CONTAINS the eyebrow and title rather than sitting behind them
-       as a fixed-height band: the band cut through the first line of the lede
-       as soon as the title wrapped, which it does at any narrow width.
-       And this is a <section>, not a <header>, because styles.css styles the
-       bare `header` element for the app chrome — `display: flex` and
-       `padding: 14px 28px` — and that reached in here, turning the banner into a
-       shrink-to-fit flex item indented by 28px. Level 1 owns no global
-       selectors, so the fix is to stop matching one. */
-    h += '<section class="a1-hero">' +
-      '<div class="a1-hero-top">' +
-      '<div class="a1-eyebrow">AAT Level 1 Award in Bookkeeping</div>' +
-      '<h1 class="a1-title">Bookkeeping Fundamentals</h1>' +
-      '</div>' +
-      '<div class="a1-hero-in">' +
-      '<p class="a1-lede">The first step. No prior knowledge assumed — this starts at what a bookkeeper is for and ends with you reading a bank statement against a cash book.</p>' +
-      '<div class="a1-chips">' +
-        (u ? '<span class="a1-chip">' + u.assessment.durationMinutes + '-minute assessment</span>' : '') +
-        (u ? '<span class="a1-chip">' + u.glh + ' guided hours</span>' : '') +
-        '<span class="a1-chip">' + ls.length + ' steps</span>' +
-        '<span class="a1-chip a1-chip-accent">' + data.xp + ' XP</span>' +
-      '</div>' +
-      (nx ? '<button class="a1-start" data-a1="open" data-id="' + esc(nx.id) + '">' +
-        '<span class="a1-start-k">' + (started ? 'Continue' : 'Start here') + '</span>' +
-        '<span class="a1-start-t">Step ' + stepNo(nx.id) + ' · ' + esc(nx.title) + '</span>' +
-        '</button>' : '') +
-      '<div class="a1-progress"><div class="a1-progress-bar"><span style="width:' + pct + '%"></span></div>' +
-        '<div class="a1-progress-meta"><span>' + doneN + ' of ' + ls.length + ' steps done</span>' +
-        (cov ? '<span>' + cov.studied + ' of ' + cov.total + ' scope items studied</span>' : '') + '</div></div>' +
-      '</div></section>';
+    h += ctxBar({
+      title: 'Bookkeeping Fundamentals',
+      /* Just the step count. The assessment length and the guided hours were
+         here too and pushed the line past the width of a phone; they are facts
+         a reader needs once, and they are on the step-1 lesson that explains
+         where the unit fits. */
+      meta: doneN + ' of ' + ls.length + ' steps',
+      pct: pct,
+    });
 
-    if (practiceBank().length) {
-      h += '<button class="a1-practice-cta" data-a1="practice">' +
-        '<span class="a1-practice-i" aria-hidden="true">✓</span>' +
-        '<span class="a1-practice-tx">' +
-          '<span class="a1-practice-t">Practice questions</span>' +
-          '<span class="a1-practice-m">' + practiceBank().length +
-            ' questions, mixed or by outcome</span>' +
-        '</span>' +
-        '<span class="a1-practice-go" aria-hidden="true">→</span>' +
+    h += '<div class="a1-page">';
+
+    /* ── The two things you came here to do ────────────────────────────────── */
+    h += '<div class="a1-actions">';
+    if (nx) {
+      var ng = groupOf(nx);
+      h += '<button class="a1-act a1-act-go" data-a1="open" data-id="' + esc(nx.id) + '">' +
+        '<span class="a1-act-k">' + (doneN ? 'Continue' : 'Start here') + '</span>' +
+        '<span class="a1-act-t">Step ' + stepNo(nx.id) + ' · ' + esc(nx.title) + '</span>' +
+        '<span class="a1-act-m">' + (ng ? 'Outcome ' + ng.outcome + ' · ' : '') +
+          (nx.cards || []).length + ' pages · ' + (nx.check || []).length + ' questions</span>' +
+        '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
+        '</button>';
+    } else {
+      h += '<div class="a1-act a1-act-done">' +
+        '<span class="a1-act-k">Every step finished</span>' +
+        '<span class="a1-act-t">The course is complete</span>' +
+        '<span class="a1-act-m">Practice is where the work is now.</span>' +
+        '</div>';
+    }
+    if (bank.length) {
+      h += '<button class="a1-act a1-act-alt" data-a1="practice">' +
+        '<span class="a1-act-k">Practise</span>' +
+        '<span class="a1-act-t">Mixed, or one outcome</span>' +
+        '<span class="a1-act-m">' + bank.length + ' questions in the bank</span>' +
+        '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
         '</button>';
     }
+    h += '</div>';
 
-    /* The ladder — one band per outcome, continuous step numbering throughout. */
+    /* ── The outcome index ─────────────────────────────────────────────────── */
+    h += '<nav class="a1-index" aria-label="Jump to an outcome">';
+    groups.forEach(function (g) {
+      var gl = g.lessons || [];
+      var gd = gl.filter(function (l) { return isDone(l.id); }).length;
+      var state = (gl.length && gd === gl.length) ? ' is-done' : gd ? ' is-part' : '';
+      h += '<button class="a1-index-c' + state + '" data-a1="jump" data-o="' + esc(g.outcome) + '"' +
+        ' aria-label="Outcome ' + esc(g.outcome) + ', ' + esc(g.outcomeTitle) + '">' +
+        '<span class="a1-index-n">' + esc(g.outcome) + '</span>' +
+        '<span class="a1-index-w">' + gd + '/' + gl.length + '</span>' +
+        '</button>';
+    });
+    h += '</nav>';
+
+    /* ── The ladder, one foldable section per outcome ───────────────────────
+       Step numbers stay continuous across outcomes: the ladder is one course of
+       twenty-six, not five courses of five, and the number is what a reader
+       uses to say where they got to. */
     var n = 0;
     groups.forEach(function (g) {
-      h += '<div class="a1-outcome">' +
-        '<div class="a1-outcome-top">' +
-          '<span class="a1-outcome-n">Outcome ' + esc(g.outcome) + '</span>' +
-          (g.weighting ? '<span class="a1-outcome-w">' + g.weighting + '% of the assessment</span>' : '') +
-        '</div>' +
-        '<h2 class="a1-outcome-t">' + esc(g.outcomeTitle) + '</h2>' +
-        (g.blurb ? '<p class="a1-outcome-b">' + md(g.blurb) + '</p>' : '') +
-        '</div>';
-      h += '<ol class="a1-ladder">';
-      (g.lessons || []).forEach(function (l) {
-        n++;
-        h += rungHtml(l, n);
-      });
-      var sh = sheetOf(g);
-      if (sh) h += rungHtml(sh, null);
-      h += '</ol>';
+      var gl = g.lessons || [];
+      var gd = gl.filter(function (l) { return isDone(l.id); }).length;
+      var shut = !!S.shut[g.outcome];
+      h += '<section class="a1-oc' + (shut ? ' is-shut' : '') + '" id="a1-oc-' + esc(g.outcome) + '">' +
+        '<button class="a1-oc-h" data-a1="fold" data-o="' + esc(g.outcome) + '" aria-expanded="' + (!shut) + '">' +
+          '<span class="a1-oc-n">' + esc(g.outcome) + '</span>' +
+          '<span class="a1-oc-tx">' +
+            '<span class="a1-oc-t">' + esc(g.outcomeTitle) + '</span>' +
+            '<span class="a1-oc-m">' +
+              (g.weighting ? g.weighting + '% of the assessment · ' : '') +
+              gd + ' of ' + gl.length + ' done</span>' +
+          '</span>' +
+          '<span class="a1-oc-fold" aria-hidden="true">' + (shut ? '+' : '−') + '</span>' +
+        '</button>';
+      if (!shut) {
+        if (g.blurb) h += '<p class="a1-oc-b">' + md(g.blurb) + '</p>';
+        h += '<ol class="a1-ladder">';
+        gl.forEach(function (l) { n++; h += rungHtml(l, n); });
+        var sh = sheetOf(g);
+        if (sh) h += rungHtml(sh, null);
+        h += '</ol>';
+      } else {
+        /* The numbering has to keep running through a folded section, or
+           reopening it would renumber the whole course. */
+        n += gl.length;
+      }
+      h += '</section>';
     });
 
     h += '<footer class="a1-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
-    return h + '</div>';
+    return h + '</div></div>';
+  }
+
+  /* The outcome group a lesson belongs to. */
+  function groupOf(l) {
+    var found = null;
+    path().forEach(function (g) {
+      (g.lessons || []).forEach(function (x) { if (x.id === l.id) found = g; });
+    });
+    return found;
   }
 
   function rungHtml(l, n) {
@@ -506,21 +567,31 @@
     var meta = KIND_META[k];
     var done = !l.isSheet && isDone(l.id);
     var st = l.isSheet ? 0 : stars(l.id);
+    /* TITLE FIRST, then a two-line summary, then one line of everything else.
+       The kind chip used to have a row of its own above the title and the
+       summary ran at full body size, so a rung was four blocks of text and
+       about 350px tall — twenty-six of those is nine thousand pixels of ladder
+       for a course of twenty-six steps. The summary is worth keeping at this
+       level, where a reader genuinely does not know what "a cash book" is, but
+       it is orientation rather than reading: two lines, clamped by the browser
+       so nothing is cut mid-word. */
     return '<li class="a1-rung' + (done ? ' is-done' : '') + (l.isSheet ? ' a1-rung-sheet' : '') + '">' +
       '<div class="a1-rung-rail" aria-hidden="true"><span class="a1-rung-n">' +
         (l.isSheet ? '🗂️' : (done ? '✓' : n)) + '</span></div>' +
       '<button class="a1-rung-card" data-a1="open" data-id="' + esc(l.id) + '"' +
         ' aria-label="' + (l.isSheet ? '' : 'Step ' + n + ': ') + esc(l.title) + (done ? ', completed' : '') + '">' +
         '<span class="a1-rung-head">' +
-          '<span class="a1-rung-kind a1-kind-' + k + '">' + esc(meta.glyph) + ' ' + esc(meta.label) + '</span>' +
+          '<span class="a1-rung-title">' + esc(l.title) + '</span>' +
           (st ? '<span class="a1-stars" aria-label="' + st + ' of 3 stars">' +
             [1, 2, 3].map(function (x) { return '<span class="' + (x <= st ? 'on' : '') + '">★</span>'; }).join('') + '</span>' : '') +
         '</span>' +
-        '<span class="a1-rung-title">' + esc(l.title) + '</span>' +
         (l.summary ? '<span class="a1-rung-sum">' + esc(l.summary) + '</span>' : '') +
-        '<span class="a1-rung-meta">' + (l.isSheet
-          ? 'Everything in this outcome, on one page'
-          : (l.cards || []).length + ' pages · ' + (l.check || []).length + ' questions') + '</span>' +
+        '<span class="a1-rung-meta">' +
+          '<span class="a1-rung-kind a1-kind-' + k + '">' + esc(meta.glyph) + ' ' + esc(meta.label) + '</span>' +
+          (l.isSheet
+            ? '<span>Everything in this outcome, on one page</span>'
+            : '<span>' + (l.cards || []).length + ' pages · ' + (l.check || []).length + ' questions</span>') +
+        '</span>' +
       '</button></li>';
   }
 
@@ -533,16 +604,27 @@
     var pos = S.phase === 'teach' ? S.cardIdx : cards.length + S.qIdx;
     var pct = total ? Math.round((pos / total) * 100) : 0;
 
-    var h = '<div class="a1-root a1-reading">';
+    var h = '<div class="a1-root a1-reading' + fresh() + '">';
+    /* THE BAR NAMES THE LESSON, AND SAYS WHICH HALF OF IT YOU ARE IN. It was an
+       Exit button, a title, a hairline bar and "1/9" — four signals, none of
+       which admitted that a lesson has a reading half and a questions half. A
+       reader who put the phone down partway through came back to a fraction. */
     h += '<div class="a1-lessonbar">' +
-      '<button class="a1-btn a1-btn-ghost a1-exit" data-a1="exit">Exit</button>' +
+      '<button class="a1-ctx-back" data-a1="exit" aria-label="Back to the steps">' +
+        '<span aria-hidden="true">←</span></button>' +
       '<div class="a1-lessonbar-mid">' +
         '<div class="a1-lessonbar-t">' + (l.isSheet ? '' : 'Step ' + stepNo(l.id) + ' · ') + esc(l.title) + '</div>' +
-        '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
+        '<div class="a1-lessonbar-m">' +
+          (l.isSheet ? 'Cheat sheet'
+            : S.phase === 'teach'
+              ? 'Reading · page ' + (S.cardIdx + 1) + ' of ' + cards.length
+              : 'Questions · ' + (S.qIdx + 1) + ' of ' + checks.length) +
+        '</div>' +
       '</div>' +
-      '<div class="a1-lessonbar-n">' + (pos + 1) + '/' + total + '</div></div>';
+      '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
+      '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
 
-    h += '<article class="a1-sheet">';
+    h += '<article class="a1-sheet' + fresh() + '">';
     if (S.phase === 'teach') {
       var c = cards[S.cardIdx] || {};
       h += cardHtml(c);
@@ -835,15 +917,14 @@
     bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
 
     var h = '<div class="a1-root">';
-    h += '<section class="a1-hero a1-hero-sm">' +
-      '<div class="a1-hero-top">' +
-      '<div class="a1-eyebrow">Practice</div>' +
-      '<h1 class="a1-title">Test yourself</h1>' +
-      '</div>' +
-      '<div class="a1-hero-in">' +
-      '<p class="a1-lede">' + bank.length + ' questions · ' + PRACTICE_LEN + ' per run, drawn at random</p>' +
-      '</div></section>';
+    h += ctxBar({
+        back: 'topath',
+        backLabel: 'Back to the steps',
+        title: 'Practice',
+        meta: bank.length + ' questions · ' + PRACTICE_LEN + ' per run',
+      });
 
+    h += '<div class="a1-page">';
     h += '<div class="a1-pgrid">';
     h += '<button class="a1-pcard a1-pcard-mix" data-a1="startpractice" data-lo="mix">' +
       '<span class="a1-pcard-k">Mixed</span>' +
@@ -860,24 +941,26 @@
         '</button>';
     });
     h += '</div>';
-    h += '<div class="a1-pback"><button class="a1-btn a1-btn-ghost" data-a1="topath">Back to the steps</button></div>';
     h += '<footer class="a1-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
-    return h + '</div>';
+    return h + '</div></div>';
   }
 
   function renderQuiz() {
     var qs = currentQuestions();
     if (!qs.length) { S.screen = 'practice'; return renderPractice(); }
     var pct = Math.round((S.qIdx / qs.length) * 100);
-    var h = '<div class="a1-root a1-reading">';
+    var h = '<div class="a1-root a1-reading' + fresh() + '">';
     h += '<div class="a1-lessonbar">' +
-      '<button class="a1-btn a1-btn-ghost a1-exit" data-a1="exit">Exit</button>' +
+      '<button class="a1-ctx-back" data-a1="exit" aria-label="Leave">' +
+        '<span aria-hidden="true">←</span></button>' +
       '<div class="a1-lessonbar-mid">' +
-        '<div class="a1-lessonbar-t">Practice · ' + (S.practiceLo === 'mix' ? 'all outcomes' : 'Outcome ' + S.practiceLo) + '</div>' +
-        '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>' +
+        '<div class="a1-lessonbar-t">Practice</div>' +
+        '<div class="a1-lessonbar-m">Question ' + (S.qIdx + 1) + ' of ' + qs.length + ' · ' +
+          (S.practiceLo === 'mix' ? 'all outcomes' : 'Outcome ' + S.practiceLo) + '</div>' +
       '</div>' +
-      '<div class="a1-lessonbar-n">' + (S.qIdx + 1) + '/' + qs.length + '</div></div>';
-    h += '<article class="a1-sheet">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
+      '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
+      '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
+    h += '<article class="a1-sheet' + fresh() + '">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
     return h;
   }
 
@@ -911,15 +994,28 @@
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
+  /* ── Animate on MOVEMENT, not on every repaint ─────────────────────────────
+     The screen and the page each carried an entrance animation applied
+     unconditionally. Every render replaces the whole DOM and a render happens
+     on every click — pairing two items, revealing a step, choosing a pill — so
+     the module re-performed its entrance each time the reader touched
+     anything, which is the loudest way an interface can feel cheap.
+
+     posKey() already knew the difference; the same answer now decides whether
+     anything animates. Computed BEFORE the paint, because the class has to be
+     in the markup that is about to be written. */
+  var _fresh = true;
   function mount(el) {
+    var k = posKey();
+    _fresh = k !== _lastPos;
     el.innerHTML = html();
     wire(el);
-    var k = posKey();
-    if (k !== _lastPos) {
+    if (_fresh) {
       _lastPos = k;
       restoreScroll(el);
     }
   }
+  function fresh() { return _fresh ? ' is-fresh' : ''; }
   var _host = null;
   function rerender() { if (_host) mount(_host); }
 
@@ -1006,6 +1102,20 @@
       return rerender();
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
+    if (act === 'fold') {
+      var fo = n.getAttribute('data-o');
+      S.shut[fo] = !S.shut[fo];
+      return rerender();
+    }
+    /* Jumping to an outcome unfolds it first: scrolling to a section that is
+       shut lands the reader on a header with nothing under it. */
+    if (act === 'jump') {
+      var jo = n.getAttribute('data-o');
+      if (S.shut[jo]) { S.shut[jo] = false; rerender(); }
+      var target = _host && _host.querySelector && _host.querySelector('#a1-oc-' + jo);
+      if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');

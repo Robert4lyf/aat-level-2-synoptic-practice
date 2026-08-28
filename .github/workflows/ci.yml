@@ -57,8 +57,8 @@ jobs:
         run: npm run check:aat3-weighting
       - name: Check the timed mock behaves like an exam (no feedback, weighted, reports by outcome)
         run: npm run check:aat3-mock
-      - name: Check the Level 3 stylesheet and screens agree (no dead rules, no unstyled classes)
-        run: npm run check:aat3-styles
+      - name: Check each self-rendering stylesheet matches its screens (no dead rules, no unstyled classes)
+        run: npm run check:styles
       - name: Check progress backup merge (no data loss, idempotent)
         run: npm run check:backup
       - name: Check cross-device sync (version check, conflict retry, fail-safe)
@@ -108,10 +108,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:subjects
-      - name: Check nothing on a Level 3 screen falls off a 390px phone
+      - name: Check nothing on a Level 1 or Level 3 screen falls off a 390px phone
         env:
           REQUIRE_PLAYWRIGHT: '1'
-        run: npm run check:aat3-layout
+        run: npm run check:layout
       - name: Check the shared header works on the subjects that render themselves
         env:
           REQUIRE_PLAYWRIGHT: '1'
