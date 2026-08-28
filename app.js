@@ -2218,6 +2218,37 @@
   /* Kept under the old name for any caller that still uses it. */
   function buildMockFromBlueprint() { return buildSynopticMock(); }
 
+  /* ── Exposed for the build check, and for nothing else ─────────────────────
+     scripts/check-aat2-exams.js asks whether the two exams this app offers
+     still match the qualification they claim to rehearse: whether the synoptic
+     runs for the two hours BESY is given, whether each unit assessment runs
+     for its unit's ninety minutes, whether the blueprint still totals a hundred
+     marks split the way the real paper is, and whether Principles of Costing
+     stays out of a synoptic it is not part of.
+
+     Every one of those answers lives inside this closure, and a check that
+     cannot reach them can only assert regexes against this file — which is not
+     a test of the exam, it is a test of how the exam happens to be spelled. So
+     the constants and the two builders are named here, deliberately and in one
+     place, exactly as AAT3_UI exposes its practice summary for the same reason.
+
+     Read-only by construction: the blueprint is frozen, so a check cannot
+     scribble on the app it is inspecting and report a green that belongs to a
+     paper nobody will sit. */
+  window.__AAT2_EXAM = Object.freeze({
+    SYNOPTIC_BLUEPRINT: Object.freeze(SYNOPTIC_BLUEPRINT.map(t => Object.freeze(
+      Object.assign({}, t, { areas: Object.freeze(t.areas.map(a => Object.freeze(Object.assign({}, a)))) })))),
+    SYNOPTIC_TOTAL_MARKS,
+    SYNOPTIC_EXCLUDED_TOPICS: Object.freeze(SYNOPTIC_EXCLUDED_TOPICS.slice()),
+    MOCK_DURATION_MS,
+    MOCK_TYPES: Object.freeze(MOCK_TYPES.slice()),
+    UNIT_ASSESSMENTS: Object.freeze(UNIT_ASSESSMENTS.map(u => Object.freeze(Object.assign({}, u)))),
+    buildSynopticMock,
+    buildUnitAssessment,
+    questionMarks,
+    matchesArea,
+  });
+
   function buildUnitAssessment(unitId) {
     const spec = UNIT_ASSESSMENTS.find(u => u.id === unitId);
     if (!spec) return [];
