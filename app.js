@@ -3287,6 +3287,55 @@
 
   /* ── RENDER ── */
   const app = () => document.getElementById('app');
+  /* BUILD THE SWITCHER IF THE PAGE DID NOT COME WITH ONE.
+     index.html ships the button, so on a matching pair of files this finds it
+     and returns. It exists for the pair that does NOT match.
+
+     The service worker refreshes cached core files ONE AT A TIME from the fetch
+     handler, so a deploy does not land atomically: index.html is 7 KB and
+     arrives quickly, app.js is half a megabyte and may not arrive at all before
+     the reader navigates away. The next load then reads a cache holding one new
+     file and one old one. When the old file is app.js the switcher is gone and
+     nothing here can help — that generation's code is what is running. When the
+     old file is index.html, this rebuilds what the markup is missing, so the
+     header still has a way out of the subject.
+
+     The listener is attached here rather than at boot because a button built on
+     this path never passed through the boot binding, and the flag keeps a
+     button that did from being bound twice — a double-bound switcher renders
+     the picker twice per click. */
+  function ensureSwitcher() {
+    const h1 = document.querySelector('body > header h1');
+    if (!h1) return null;
+    let btn = h1.querySelector('#subjectSwitcherBtn');
+    if (!btn) {
+      /* Any stray switcher elsewhere in the header is from an older markup
+         generation; the title is the only one now. */
+      const stray = document.getElementById('subjectSwitcherBtn');
+      if (stray) stray.remove();
+      h1.textContent = '';
+      btn = document.createElement('button');
+      btn.id = 'subjectSwitcherBtn';
+      btn.className = 'brand-switch';
+      btn.type = 'button';
+      btn.setAttribute('aria-haspopup', 'true');
+      const nm = document.createElement('span');
+      nm.className = 'brand-name';
+      const car = document.createElement('span');
+      car.className = 'brand-caret';
+      car.setAttribute('aria-hidden', 'true');
+      car.textContent = '▾';
+      btn.appendChild(nm);
+      btn.appendChild(car);
+      h1.appendChild(btn);
+    }
+    if (!btn._switchBound) {
+      btn._switchBound = true;
+      btn.addEventListener('click', () => { State.screen = 'subjects'; render(); });
+    }
+    return btn;
+  }
+
   /* Header chrome is shared by every subject; the body below it is not. */
   function applyChrome() {
     const isDark = Storage.isDarkActive();
@@ -3303,8 +3352,8 @@
        Which is why the name goes into `.brand-name` and not into the h1: the
        h1 owns the button, and writing its textContent would delete it. */
     const subj = getSubject(_activeSubjectId);
-    const sb = document.getElementById('subjectSwitcherBtn');
-    const brand = document.querySelector('header .brand-name');
+    const sb = ensureSwitcher();
+    const brand = sb && sb.querySelector('.brand-name');
     if (brand) brand.textContent = subj.flag + ' ' + subj.name;
     /* Without this the label reads "Switch subject" to a screen reader and the
        visible name is suppressed, so the one control naming the open subject
@@ -3327,8 +3376,6 @@
     if (_own && window[_own] && State.screen !== 'subjects') {
       window[_own].mount(el);
       applyChrome();
-      const sw = document.getElementById('subjectSwitcherBtn');
-      if (sw && !sw._selfUi) { sw._selfUi = true; sw.addEventListener('click', () => { State.screen = 'subjects'; render(); }); }
       return;
     }
 
@@ -8941,8 +8988,9 @@
     if (_rt) _rt.addEventListener('click', toggleReference);
     const _hn = document.getElementById('homeNavBtn');
     if (_hn) _hn.addEventListener('click', exitQuiz);
-    const _ss = document.getElementById('subjectSwitcherBtn');
-    if (_ss) _ss.addEventListener('click', () => { State.screen = 'subjects'; render(); });
+    /* The switcher binds in ensureSwitcher(), which runs on every applyChrome()
+       and covers a button this file had to build itself. Binding it here as
+       well would fire the handler twice per click. */
     document.addEventListener('keydown', handleGlobalKey);
 
     // Swipe-between-tabs on touch devices
