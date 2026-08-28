@@ -47,16 +47,47 @@ body[data-subject="aat1"] {
   --a1-bad:        #B22A38;
   --a1-bad-wash:   #FBE9EB;
 
-  --a1-hero-1:     #0B4F49;
-  --a1-hero-2:     #0D8A7A;
-  --a1-hero-3:     #37A98C;
-  --a1-hero-ink:   #F2FBF8;
-
   --a1-shadow:     0 1px 2px rgba(20,40,36,.06), 0 6px 18px -8px rgba(20,40,36,.16);
   --a1-shadow-lg:  0 2px 4px rgba(20,40,36,.07), 0 20px 44px -16px rgba(20,40,36,.24);
   --a1-r:          12px;
   --a1-r-lg:       20px;
+  --a1-r-sm:       9px;
   --a1-mono:       ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* The ink that goes ON a surface filled with a brand or status colour — the
+     step number on a finished rung, a primary button, a chosen pill.
+
+     A TOKEN BECAUSE THE FILLS INVERT AND THE INK DOES NOT FOLLOW. In light,
+     --a1-brand is a deep teal and white sits on it; in dark it is mint, and
+     white on mint is unreadable. This module already knew that and answered it
+     five separate times, with a hand-picked near-black repeated in five
+     `body.dark[data-subject="aat1"]` overrides — which is the same rule written
+     five times and the reason a sixth filled surface added later would be
+     forgotten. Level 3 hit this exactly once and fixed it with one token; the
+     same token, here, replaces all five. */
+  --a1-on-fill:    #FFFFFF;
+
+  /* ── Type roles ───────────────────────────────────────────────────────────
+     Named by the job rather than by size, so a heading changes everywhere it
+     means the same thing. Sizes are absolute rather than rem-relative: the
+     shared stylesheet sets a root size this module does not control. */
+  --a1-t-title:    20px;                     /* a card or section heading */
+  --a1-t-head:     16.5px;                   /* a row heading */
+  --a1-t-body:     16px;                     /* prose */
+  --a1-t-ui:       14.5px;                   /* buttons and controls */
+  --a1-t-meta:     13px;                     /* secondary detail */
+  --a1-t-label:    10.5px;                   /* the uppercase eyebrow */
+  --a1-lh-prose:   1.68;
+  --a1-track:      .11em;
+
+  /* Spacing, in fours. Everything that sets a margin or a padding reaches for
+     one of these, so the vertical rhythm is a decision rather than an accident
+     of whatever number was typed. */
+  --a1-1: 4px;  --a1-2: 8px;   --a1-3: 12px;  --a1-4: 16px;
+  --a1-5: 20px; --a1-6: 24px;  --a1-8: 32px;  --a1-10: 40px; --a1-12: 48px;
+
+  --a1-measure:    64ch;   /* the widest a line of prose gets */
+  --a1-page:       720px;  /* the widest a column of content gets */
 }
 
 body.dark[data-subject="aat1"] {
@@ -83,134 +114,176 @@ body.dark[data-subject="aat1"] {
   --a1-bad:        #FF8FA0;
   --a1-bad-wash:   #2B1219;
 
-  --a1-hero-1:     #05201E;
-  --a1-hero-2:     #0A4A43;
-  --a1-hero-3:     #10665A;
-  --a1-hero-ink:   #DFF5EF;
-
   --a1-shadow:     0 1px 2px rgba(0,0,0,.5), 0 6px 18px -8px rgba(0,0,0,.6);
   --a1-shadow-lg:  0 2px 4px rgba(0,0,0,.5), 0 20px 44px -16px rgba(0,0,0,.7);
+
+  --a1-on-fill:    #06231F;
 }
 
 body[data-subject="aat1"] #app { background: var(--a1-paper); }
+
+/* ── The context bar ─────────────────────────────────────────────────────────
+   What the hero was for, in a tenth of the height: which unit you are in, how
+   far through it you are, and the way out. The hero cost about 1,100px on a
+   phone and said the same four facts on every visit — after the first, a
+   reader arriving to do step 12 read the course description again.
+
+   Sticky, because on a ladder of twenty-six the two things you always want are
+   to know where you are and to be able to leave. */
+.a1-ctx {
+  margin: 0 -20px; position: sticky; top: 0; z-index: 6;
+  display: flex; align-items: center; gap: var(--a1-3);
+  padding: var(--a1-3) var(--a1-5);
+  background: color-mix(in srgb, var(--a1-paper) 88%, transparent);
+  backdrop-filter: saturate(1.6) blur(12px);
+  -webkit-backdrop-filter: saturate(1.6) blur(12px);
+  border-bottom: 1px solid var(--a1-line);
+}
+.a1-ctx-back {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface);
+  color: var(--a1-ink-2); font-size: 15px; cursor: pointer; font-family: inherit;
+  transition: border-color .14s, color .14s;
+}
+.a1-ctx-back:hover { border-color: var(--a1-brand); color: var(--a1-brand); }
+.a1-ctx-back:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-ctx-main { min-width: 0; flex: 1 1 auto; }
+.a1-ctx-unit {
+  font-size: var(--a1-t-head); font-weight: 700; color: var(--a1-ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.a1-ctx-meta { font-size: var(--a1-t-meta); color: var(--a1-ink-3); }
+.a1-ctx-ring { flex: none; }
+
+/* A ring rather than a bar: it reads at a glance, costs 34px square instead of
+   a full-width row, and does not compete with the title beside it. */
+.a1-ring {
+  width: 34px; height: 34px; border-radius: 50%;
+  /* The unfilled track is --a1-line-2 rather than --a1-line: at 0% the ring is
+     nothing BUT the track, and against warm paper the lighter line was a ghost
+     of a circle that read as a rendering fault. */
+  background: conic-gradient(var(--a1-brand) calc(var(--p) * 1%), var(--a1-line-2) 0);
+  display: grid; place-items: center;
+}
+.a1-ring::after {
+  content: ""; width: 25px; height: 25px; border-radius: 50%;
+  background: var(--a1-paper);
+}
+.a1-ring.is-full { background: conic-gradient(var(--a1-ok) 100%, var(--a1-ok) 0); }
+
+/* ── The two things you came to do ───────────────────────────────────────────
+   Continue, and practise. Both above the fold, both one tap, so the ladder
+   below is for browsing rather than for finding your place. */
+.a1-actions { display: flex; flex-direction: column; gap: var(--a1-2); margin: var(--a1-5) 0 var(--a1-6); }
+.a1-act {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: var(--a1-1) var(--a1-3); width: 100%; text-align: left;
+  padding: var(--a1-4) var(--a1-5); border-radius: var(--a1-r);
+  border: 1px solid transparent; cursor: pointer; font-family: inherit;
+}
+.a1-act-k {
+  grid-column: 1; font-size: var(--a1-t-label); font-weight: 800;
+  letter-spacing: var(--a1-track); text-transform: uppercase;
+}
+.a1-act-t { grid-column: 1; font-size: 18px; font-weight: 700; line-height: 1.3; }
+.a1-act-m { grid-column: 1; font-size: var(--a1-t-meta); }
+.a1-act-go-i { grid-column: 2; grid-row: 1 / 4; font-size: 20px; }
+.a1-act-go { background: var(--a1-brand); color: var(--a1-on-fill); box-shadow: var(--a1-shadow); }
+.a1-act-go .a1-act-k, .a1-act-go .a1-act-m { opacity: .85; }
+.a1-act-alt { background: var(--a1-surface); border-color: var(--a1-line-2); color: var(--a1-ink); }
+.a1-act-alt .a1-act-k { color: var(--a1-accent); }
+.a1-act-alt .a1-act-m { color: var(--a1-ink-3); }
+.a1-act-alt:hover { border-color: var(--a1-brand); }
+.a1-act:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-act-done {
+  background: var(--a1-ok-wash); border-color: transparent; color: var(--a1-ink);
+  cursor: default;
+}
+.a1-act-done .a1-act-k { color: var(--a1-ok); }
+.a1-act-done .a1-act-m { color: var(--a1-ink-2); }
+
+/* ── The outcome index ───────────────────────────────────────────────────────
+   Five outcomes and twenty-six steps is a long way to scroll to reach Outcome
+   4. Each chip jumps to its outcome and carries its own state, so the index
+   doubles as an overview of where the work is left. */
+.a1-index {
+  display: flex; gap: var(--a1-2); flex-wrap: wrap; margin: 0 0 var(--a1-6);
+}
+.a1-index-c {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  min-width: 52px; padding: var(--a1-2) var(--a1-3);
+  border-radius: var(--a1-r-sm); cursor: pointer; font-family: inherit;
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface);
+  color: var(--a1-ink-2);
+}
+.a1-index-c:hover { border-color: var(--a1-brand); }
+.a1-index-c:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-index-n { font-size: var(--a1-t-ui); font-weight: 800; }
+.a1-index-w { font-size: 11px; color: var(--a1-ink-3); }
+.a1-index-c.is-part { border-color: var(--a1-accent); }
+.a1-index-c.is-part .a1-index-n { color: var(--a1-accent-ink); }
+.a1-index-c.is-done { background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill); }
+.a1-index-c.is-done .a1-index-w { color: inherit; opacity: .8; }
+
+/* ── A foldable outcome ──────────────────────────────────────────────────────
+   Twenty-six rungs in one scroll is a wall. Folded, an outcome is one row, and
+   the whole course fits on a screen. Session-only on purpose: folding is a
+   momentary act of tidying, not progress, and storing it would mean a reader
+   who collapsed everything once came back weeks later to a course that looked
+   empty. */
+.a1-oc { margin: 0 0 var(--a1-5); }
+.a1-oc-h {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: var(--a1-3); width: 100%; text-align: left; cursor: pointer;
+  padding: var(--a1-3) 0; background: none; border: 0; font-family: inherit;
+  border-bottom: 1px solid var(--a1-line);
+}
+.a1-oc-h:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-oc-n {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; font-size: var(--a1-t-meta); font-weight: 800;
+  background: var(--a1-brand-wash); color: var(--a1-brand-ink);
+}
+.a1-oc-tx { min-width: 0; }
+.a1-oc-t {
+  display: block; font-size: var(--a1-t-title); font-weight: 700;
+  color: var(--a1-ink); line-height: 1.25;
+}
+.a1-oc-m { display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3); margin-top: 2px; }
+.a1-oc-fold { font-size: 17px; color: var(--a1-ink-3); }
+/* Orientation, not reading: what this outcome is about, in the smaller of the
+   two text sizes. At body size these five paragraphs were 534px of the ladder —
+   about a screen — for a fact a reader takes in once. */
+.a1-oc-b {
+  color: var(--a1-ink-2); font-size: var(--a1-t-meta); line-height: 1.55;
+  margin: var(--a1-3) 0 var(--a1-1); max-width: var(--a1-measure);
+}
+.a1-oc.is-shut .a1-oc-h { border-bottom-color: transparent; }
 
 .a1-root {
   color: var(--a1-ink);
   max-width: 860px;
   margin: 0 auto;
-  padding: 0 18px 80px;
-  animation: a1-in .28s cubic-bezier(.2,.7,.3,1) both;
+  padding: 0 20px 80px;
   -webkit-text-size-adjust: 100%;
 }
+/* THE ENTRANCE IS ON A CLASS, NOT ON THE ELEMENT. It used to be unconditional
+   here, and every render replaces the whole DOM — so the page replayed its
+   entrance on every click. `is-fresh` is written only when the reader has
+   actually moved; see mount() in aat1-ui.js. */
+.a1-root.is-fresh, .a1-sheet.is-fresh {
+  animation: a1-in .28s cubic-bezier(.2,.7,.3,1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .a1-root.is-fresh, .a1-sheet.is-fresh { animation: none; }
+}
+/* The column of content under the context bar. The bar spans the full width;
+   what it introduces does not need to. */
+.a1-page { max-width: var(--a1-page); margin: 0 auto; padding-top: var(--a1-5); }
 @keyframes a1-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 .a1-empty { padding: 60px 20px; text-align: center; color: var(--a1-ink-3); }
-
-/* ── Hero ─────────────────────────────────────────────────────────────────── */
-.a1-hero {
-  position: relative;
-  margin: 18px 0 22px;
-  border-radius: var(--a1-r-lg);
-  overflow: hidden;
-  background: var(--a1-surface);
-  border: 1px solid var(--a1-line);
-  box-shadow: var(--a1-shadow-lg);
-}
-/* The banner CONTAINS the eyebrow and title, so its height follows its content.
-   It was previously an absolutely-positioned 128px band behind them, which
-   clipped the first line of the lede as soon as the title wrapped — which it
-   does at any narrow width. */
-.a1-hero-top {
-  position: relative;
-  padding: 22px 22px 24px;
-  background: linear-gradient(120deg, var(--a1-hero-1), var(--a1-hero-2) 55%, var(--a1-hero-3));
-}
-.a1-hero-top::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 34px);
-}
-.a1-hero-in { position: relative; padding: 20px 22px 22px; }
-.a1-eyebrow {
-  position: relative; z-index: 1;
-  color: var(--a1-hero-ink);
-  font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  opacity: .9;
-}
-.a1-title {
-  position: relative; z-index: 1;
-  color: var(--a1-hero-ink);
-  font-size: clamp(1.6rem, 5.2vw, 2.3rem);
-  line-height: 1.14; margin: 6px 0 0; font-weight: 800; letter-spacing: -.015em;
-}
-.a1-lede { color: var(--a1-ink-2); margin: 0; font-size: 1rem; line-height: 1.6; max-width: 60ch; }
-
-.a1-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
-.a1-chip {
-  background: var(--a1-surface-2); color: var(--a1-ink-2);
-  border: 1px solid var(--a1-line);
-  border-radius: 999px; padding: 4px 11px; font-size: .78rem; font-weight: 600;
-}
-.a1-chip-accent { background: var(--a1-accent-wash); color: var(--a1-accent-ink); border-color: transparent; }
-
-.a1-start {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
-  width: 100%; margin-top: 18px; padding: 14px 18px;
-  background: var(--a1-brand); color: #fff;
-  border: 0; border-radius: var(--a1-r); cursor: pointer; text-align: left;
-  box-shadow: var(--a1-shadow);
-  transition: transform .14s ease, background .14s ease;
-}
-.a1-start:hover { background: var(--a1-brand-2); transform: translateY(-1px); }
-body.dark[data-subject="aat1"] .a1-start { color: #06231F; }
-.a1-start-k { font-size: .74rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; opacity: .88; }
-.a1-start-t { font-size: 1.02rem; font-weight: 700; }
-
-.a1-progress { margin-top: 16px; }
-.a1-progress-bar { height: 8px; border-radius: 999px; background: var(--a1-surface-2); overflow: hidden; }
-.a1-progress-bar span {
-  display: block; height: 100%; border-radius: 999px;
-  background: linear-gradient(90deg, var(--a1-brand), var(--a1-brand-2));
-  transition: width .4s cubic-bezier(.2,.7,.3,1);
-}
-.a1-progress-meta {
-  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  margin-top: 7px; font-size: .8rem; color: var(--a1-ink-3);
-}
-
-/* ── Practice entry ───────────────────────────────────────────────────────── */
-.a1-practice-cta {
-  display: flex; align-items: center; gap: 14px; width: 100%;
-  padding: 16px 18px; margin-bottom: 26px;
-  background: var(--a1-surface); border: 1px solid var(--a1-line);
-  border-left: 4px solid var(--a1-accent);
-  border-radius: var(--a1-r); cursor: pointer; text-align: left;
-  box-shadow: var(--a1-shadow);
-  transition: transform .14s ease, border-color .14s ease;
-}
-.a1-practice-cta:hover { transform: translateY(-1px); border-color: var(--a1-accent); }
-.a1-practice-i {
-  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px;
-  display: grid; place-items: center; font-weight: 800;
-  background: var(--a1-accent-wash); color: var(--a1-accent-ink);
-}
-.a1-practice-tx { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.a1-practice-t { font-weight: 700; color: var(--a1-ink); }
-.a1-practice-m { font-size: .84rem; color: var(--a1-ink-3); }
-.a1-practice-go { color: var(--a1-accent); font-size: 1.2rem; }
-
-/* ── Outcome bands ────────────────────────────────────────────────────────── */
-.a1-outcome { margin: 30px 0 14px; }
-.a1-outcome-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.a1-outcome-n {
-  font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
-  color: #fff; background: var(--a1-brand); border-radius: 999px; padding: 3px 10px;
-}
-body.dark[data-subject="aat1"] .a1-outcome-n { color: #06231F; }
-.a1-outcome-w { font-size: .78rem; font-weight: 600; color: var(--a1-ink-3); }
-.a1-outcome-t { font-size: 1.28rem; font-weight: 800; margin: 9px 0 0; letter-spacing: -.01em; }
-.a1-outcome-b { color: var(--a1-ink-2); font-size: .95rem; line-height: 1.6; margin: 7px 0 0; max-width: 62ch; }
 
 /* ── The ladder ───────────────────────────────────────────────────────────── */
 .a1-ladder { list-style: none; margin: 0; padding: 0; }
@@ -229,22 +302,21 @@ body.dark[data-subject="aat1"] .a1-outcome-n { color: #06231F; }
   background: var(--a1-surface); border: 2px solid var(--a1-line-2);
   color: var(--a1-ink-3); font-weight: 800; font-size: .88rem;
 }
-.a1-rung.is-done .a1-rung-n { background: var(--a1-brand); border-color: var(--a1-brand); color: #fff; }
-body.dark[data-subject="aat1"] .a1-rung.is-done .a1-rung-n { color: #06231F; }
+.a1-rung.is-done .a1-rung-n { background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill); }
 .a1-rung.is-done .a1-rung-rail::before { background: var(--a1-brand); opacity: .55; }
 
 .a1-rung-card {
-  flex: 1; display: flex; flex-direction: column; gap: 4px;
-  padding: 14px 16px; text-align: left; cursor: pointer;
+  flex: 1; display: flex; flex-direction: column; gap: var(--a1-1);
+  padding: var(--a1-3) var(--a1-4); text-align: left; cursor: pointer;
   background: var(--a1-surface); border: 1px solid var(--a1-line);
   border-radius: var(--a1-r); box-shadow: var(--a1-shadow);
   transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
 }
 .a1-rung-card:hover { transform: translateX(2px); border-color: var(--a1-brand); box-shadow: var(--a1-shadow-lg); }
-.a1-rung-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.a1-rung-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--a1-2); }
 .a1-rung-kind {
-  font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
-  border-radius: 999px; padding: 3px 9px;
+  font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+  border-radius: 999px; padding: 2px 7px; flex: none;
 }
 .a1-kind-theory    { background: var(--a1-brand-wash);  color: var(--a1-brand-ink); }
 .a1-kind-document  { background: var(--a1-accent-wash); color: var(--a1-accent-ink); }
@@ -263,9 +335,17 @@ body.dark[data-subject="aat1"] .a1-rung.is-done .a1-rung-n { color: #06231F; }
   font-size: .8rem;
 }
 .a1-rung-sheet .a1-rung-card { border-style: dashed; }
-.a1-rung-title { font-size: 1.04rem; font-weight: 700; line-height: 1.3; }
-.a1-rung-sum { font-size: .88rem; color: var(--a1-ink-2); line-height: 1.5; }
-.a1-rung-meta { font-size: .76rem; color: var(--a1-ink-3); margin-top: 2px; }
+.a1-rung-title { font-size: var(--a1-t-head); font-weight: 700; line-height: 1.3; }
+/* Two lines and then an ellipsis, done by the browser — a summary cut at a
+   character count breaks mid-word, and every one of these is a sentence. */
+.a1-rung-sum {
+  font-size: var(--a1-t-meta); color: var(--a1-ink-2); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.a1-rung-meta {
+  display: flex; align-items: center; gap: var(--a1-2); flex-wrap: wrap;
+  font-size: 12px; color: var(--a1-ink-3); margin-top: var(--a1-1);
+}
 
 .a1-stars { display: inline-flex; gap: 2px; color: var(--a1-line-2); font-size: .82rem; }
 .a1-stars .on { color: var(--a1-accent); }
@@ -276,27 +356,70 @@ body.dark[data-subject="aat1"] .a1-rung.is-done .a1-rung-n { color: #06231F; }
   font-size: .78rem; color: var(--a1-ink-3); text-align: center;
 }
 
-/* ── Lesson chrome ────────────────────────────────────────────────────────── */
+/* ── A cheat-sheet table on a narrow screen ─────────────────────────────────
+   Stacked, not scrolled. A cheat sheet is read at a glance, so a column off the
+   right edge defeats the card it is on; and its rows are independent facts
+   rather than a column anybody adds up, so stacking costs nothing.
+
+   FOUND AT 320px, NOT AT 390. Level 1's tables carry no min-width and fit an
+   iPhone at its common width, which is why this was not needed when the layout
+   gate measured one width. On a 320px phone three of the five sheets came to
+   282px, 277px and 261px inside a 234px wrapper. Level 3 hit the same thing
+   first and this is its answer, with Level 1's tokens. */
+@media (max-width: 400px) {
+  .a1-cheat .a1-table, .a1-cheat .a1-table tbody,
+  .a1-cheat .a1-table tr, .a1-cheat .a1-table td { display: block; width: auto; }
+  .a1-cheat .a1-table thead { display: none; }
+  .a1-cheat .a1-table { border-collapse: separate; border-spacing: 0; min-width: 0; }
+  .a1-cheat .a1-table tr {
+    padding: var(--a1-3) 0; border-bottom: 1px solid var(--a1-line);
+  }
+  .a1-cheat .a1-table tr:last-child { border-bottom: 0; }
+  .a1-cheat .a1-table td { border: 0; padding: 1px 0; }
+  .a1-cheat .a1-table td:first-child {
+    font-weight: 700; color: var(--a1-ink); font-size: var(--a1-t-ui);
+    margin-bottom: var(--a1-1);
+  }
+  .a1-cheat .a1-table td[data-h]:not(:first-child)::before {
+    content: attr(data-h); display: block;
+    font-size: var(--a1-t-label); letter-spacing: var(--a1-track); text-transform: uppercase;
+    color: var(--a1-ink-3); font-weight: 700; margin-top: var(--a1-2);
+  }
+}
+
+/* ── Lesson chrome ────────────────────────────────────────────────────────────
+   Which lesson, and which half of it. The bar carried a title and a fraction;
+   the progress rule now sits under the bar rather than inside it, so the bar
+   itself is one line of text and the rule reads as a division of the page. */
 .a1-lessonbar {
   position: sticky; top: 0; z-index: 5;
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 0 12px; margin-bottom: 6px;
-  background: var(--a1-paper);
+  display: flex; align-items: center; gap: var(--a1-3);
+  margin: 0 -20px; padding: var(--a1-2) var(--a1-5);
+  background: color-mix(in srgb, var(--a1-paper) 90%, transparent);
+  backdrop-filter: saturate(1.6) blur(12px);
+  -webkit-backdrop-filter: saturate(1.6) blur(12px);
 }
 .a1-lessonbar-mid { flex: 1; min-width: 0; }
 .a1-lessonbar-t {
-  font-size: .78rem; font-weight: 700; color: var(--a1-ink-3);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px;
+  font-size: var(--a1-t-ui); font-weight: 700; color: var(--a1-ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.a1-lessonbar-p { height: 6px; border-radius: 999px; background: var(--a1-surface-2); overflow: hidden; }
+.a1-lessonbar-m {
+  font-size: 12.5px; color: var(--a1-ink-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.a1-lessonbar-p {
+  height: 3px; background: var(--a1-line); overflow: hidden;
+  margin: 0 -20px var(--a1-5); position: sticky; top: 52px; z-index: 5;
+}
 .a1-lessonbar-p span {
-  display: block; height: 100%; border-radius: 999px;
+  display: block; height: 100%;
   background: linear-gradient(90deg, var(--a1-brand), var(--a1-brand-2));
   transition: width .35s cubic-bezier(.2,.7,.3,1);
 }
 .a1-lessonbar-n {
   flex: 0 0 auto; font-variant-numeric: tabular-nums;
-  font-size: .82rem; font-weight: 700; color: var(--a1-ink-3);
+  font-size: var(--a1-t-meta); font-weight: 700; color: var(--a1-ink-3);
 }
 
 .a1-sheet {
@@ -312,7 +435,7 @@ body.dark[data-subject="aat1"] .a1-rung.is-done .a1-rung-n { color: #06231F; }
   font-size: clamp(1.25rem, 4.4vw, 1.6rem); font-weight: 800;
   line-height: 1.22; letter-spacing: -.015em; margin: 0 0 14px;
 }
-.a1-p { font-size: 1.02rem; line-height: 1.72; color: var(--a1-ink-2); margin: 0 0 14px; }
+.a1-p { font-size: var(--a1-t-body); line-height: var(--a1-lh-prose); color: var(--a1-ink-2); margin: 0 0 var(--a1-3); max-width: var(--a1-measure); }
 .a1-p strong { color: var(--a1-ink); font-weight: 700; }
 .a1-q-intro { color: var(--a1-ink-2); }
 
@@ -352,8 +475,6 @@ body.dark[data-subject="aat1"] .a1-rung.is-done .a1-rung-n { color: #06231F; }
   border: 1px solid var(--a1-line); border-radius: var(--a1-r);
   padding: 13px 15px; background: var(--a1-surface);
 }
-.a1-split-left  { border-top: 3px solid var(--a1-brand); }
-.a1-split-right { border-top: 3px solid var(--a1-accent); }
 .a1-split-col h4 {
   margin: 0 0 8px; font-size: .82rem; font-weight: 800;
   letter-spacing: .05em; text-transform: uppercase; color: var(--a1-ink-3);
@@ -463,9 +584,8 @@ body.dark[data-subject="aat1"] .a1-rung.is-done .a1-rung-n { color: #06231F; }
 }
 .a1-flow-n {
   width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--a1-brand); color: #fff; font-size: .72rem; font-weight: 800;
+  background: var(--a1-brand); color: var(--a1-on-fill); font-size: .72rem; font-weight: 800;
 }
-body.dark[data-subject="aat1"] .a1-flow-n { color: #06231F; }
 .a1-flow-arrow { color: var(--a1-ink-3); font-weight: 700; }
 
 /* ── Callouts ─────────────────────────────────────────────────────────────── */
@@ -476,7 +596,7 @@ body.dark[data-subject="aat1"] .a1-flow-n { color: #06231F; }
 }
 .a1-callout-i {
   flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%;
-  display: grid; place-items: center; font-size: .74rem; font-weight: 800; color: #fff;
+  display: grid; place-items: center; font-size: .74rem; font-weight: 800; color: var(--a1-on-fill);
 }
 .a1-callout-tip     { background: var(--a1-brand-wash);  color: var(--a1-brand-ink); }
 .a1-callout-tip .a1-callout-i     { background: var(--a1-brand); }
@@ -484,7 +604,6 @@ body.dark[data-subject="aat1"] .a1-flow-n { color: #06231F; }
 .a1-callout-key .a1-callout-i     { background: var(--a1-accent); }
 .a1-callout-warning { background: var(--a1-bad-wash);    color: var(--a1-bad); }
 .a1-callout-warning .a1-callout-i { background: var(--a1-bad); }
-body.dark[data-subject="aat1"] .a1-callout-i { color: #06231F; }
 
 .a1-notyet, .a1-trap {
   display: flex; gap: 11px; align-items: baseline; flex-wrap: wrap;
@@ -499,8 +618,7 @@ body.dark[data-subject="aat1"] .a1-callout-i { color: #06231F; }
 }
 .a1-notyet-l { background: var(--a1-line); color: var(--a1-ink-3); }
 .a1-trap { background: var(--a1-bad-wash); color: var(--a1-ink-2); }
-.a1-trap-l { background: var(--a1-bad); color: #fff; }
-body.dark[data-subject="aat1"] .a1-trap-l { color: #2B1219; }
+.a1-trap-l { background: var(--a1-bad); color: var(--a1-on-fill); }
 .a1-notyet span:last-child, .a1-trap span:last-child { flex: 1; min-width: 200px; }
 
 /* ── Worked example ───────────────────────────────────────────────────────── */
@@ -523,8 +641,7 @@ body.dark[data-subject="aat1"] .a1-trap-l { color: #2B1219; }
   display: grid; place-items: center; font-size: .74rem; font-weight: 800;
   background: var(--a1-surface-2); color: var(--a1-ink-3);
 }
-.a1-step.is-shown .a1-step-n { background: var(--a1-ok); color: #fff; }
-body.dark[data-subject="aat1"] .a1-step.is-shown .a1-step-n { color: #06231F; }
+.a1-step.is-shown .a1-step-n { background: var(--a1-ok); color: var(--a1-on-fill); }
 .a1-step-do { font-size: .95rem; line-height: 1.6; color: var(--a1-ink); font-weight: 600; }
 .a1-step-why { font-size: .89rem; line-height: 1.58; color: var(--a1-ink-3); margin-top: 3px; }
 .a1-blur { filter: blur(4px); user-select: none; font-weight: 400; color: var(--a1-ink-3); }
@@ -568,9 +685,8 @@ body.dark[data-subject="aat1"] .a1-step.is-shown .a1-step-n { color: #06231F; }
 }
 .a1-btn:hover { transform: translateY(-1px); }
 .a1-btn:active { transform: none; }
-.a1-btn-primary { background: var(--a1-brand); color: #fff; }
+.a1-btn-primary { background: var(--a1-brand); color: var(--a1-on-fill); }
 .a1-btn-primary:hover { background: var(--a1-brand-2); }
-body.dark[data-subject="aat1"] .a1-btn-primary { color: #06231F; }
 .a1-btn-ghost {
   background: var(--a1-surface-2); color: var(--a1-ink-2); border: 1px solid var(--a1-line);
 }
@@ -578,7 +694,6 @@ body.dark[data-subject="aat1"] .a1-btn-primary { color: #06231F; }
 .a1-wide { width: 100%; margin-top: 16px; }
 .a1-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 22px; }
 .a1-nav-hint { font-size: .87rem; color: var(--a1-ink-3); }
-.a1-exit { flex: 0 0 auto; padding: 8px 14px; font-size: .85rem; }
 
 /* ── Questions ────────────────────────────────────────────────────────────── */
 .a1-qhead {
@@ -603,9 +718,9 @@ body.dark[data-subject="aat1"] .a1-btn-primary { color: #06231F; }
   background: var(--a1-surface-2); color: var(--a1-ink-3);
 }
 .a1-opt.is-right { border-color: var(--a1-ok); background: var(--a1-ok-wash); color: var(--a1-ink); }
-.a1-opt.is-right .a1-opt-k { background: var(--a1-ok); color: #fff; }
+.a1-opt.is-right .a1-opt-k { background: var(--a1-ok); color: var(--a1-on-fill); }
 .a1-opt.is-wrong { border-color: var(--a1-bad); background: var(--a1-bad-wash); }
-.a1-opt.is-wrong .a1-opt-k { background: var(--a1-bad); color: #fff; }
+.a1-opt.is-wrong .a1-opt-k { background: var(--a1-bad); color: var(--a1-on-fill); }
 .a1-opt:disabled { cursor: default; }
 
 .a1-tf { display: flex; flex-direction: column; gap: 9px; }
@@ -626,10 +741,9 @@ body.dark[data-subject="aat1"] .a1-btn-primary { color: #06231F; }
   transition: border-color .12s ease, background .12s ease;
 }
 .a1-pill:not(:disabled):hover { border-color: var(--a1-brand); }
-.a1-pill.on { background: var(--a1-brand); border-color: var(--a1-brand); color: #fff; }
-body.dark[data-subject="aat1"] .a1-pill.on { color: #06231F; }
-.a1-pill.is-right { background: var(--a1-ok); border-color: var(--a1-ok); color: #fff; }
-.a1-pill.is-wrong { background: var(--a1-bad); border-color: var(--a1-bad); color: #fff; }
+.a1-pill.on { background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill); }
+.a1-pill.is-right { background: var(--a1-ok); border-color: var(--a1-ok); color: var(--a1-on-fill); }
+.a1-pill.is-wrong { background: var(--a1-bad); border-color: var(--a1-bad); color: var(--a1-on-fill); }
 .a1-pill:disabled { cursor: default; }
 
 .a1-gap { font-size: 1.02rem; line-height: 2.4; color: var(--a1-ink-2); }
@@ -656,13 +770,12 @@ body.dark[data-subject="aat1"] .a1-pill.on { color: #06231F; }
 .a1-match-tag {
   flex: 0 0 auto; border-radius: 6px; padding: 2px 7px;
   font-size: .74rem; font-weight: 800;
-  background: var(--a1-brand); color: #fff;
+  background: var(--a1-brand); color: var(--a1-on-fill);
 }
-body.dark[data-subject="aat1"] .a1-match-tag { color: #06231F; }
 /* After marking, the badge takes the result colour. Leaving it brand-teal on a
    red box has the row saying two things at once. */
-.a1-match-item.is-right .a1-match-tag { background: var(--a1-ok); color: #fff; }
-.a1-match-item.is-wrong .a1-match-tag { background: var(--a1-bad); color: #fff; }
+.a1-match-item.is-right .a1-match-tag { background: var(--a1-ok); color: var(--a1-on-fill); }
+.a1-match-item.is-wrong .a1-match-tag { background: var(--a1-bad); color: var(--a1-on-fill); }
 .a1-match-item.is-sel { border-color: var(--a1-accent); background: var(--a1-accent-wash); }
 .a1-match-item.is-paired { border-color: var(--a1-brand); background: var(--a1-brand-wash); }
 .a1-match-item.is-right { border-color: var(--a1-ok); background: var(--a1-ok-wash); }
@@ -681,9 +794,8 @@ body.dark[data-subject="aat1"] .a1-match-tag { color: #06231F; }
 .a1-match-step {
   flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%;
   display: grid; place-items: center; font-size: .7rem; letter-spacing: 0;
-  background: var(--a1-brand); color: #fff;
+  background: var(--a1-brand); color: var(--a1-on-fill);
 }
-body.dark[data-subject="aat1"] .a1-match-step { color: #06231F; }
 /* An empty slot is drawn as one — a dashed outline reads as "something goes
    here" in a way a solid box does not. */
 .a1-match-r.is-open { border-style: dashed; background: transparent; }
@@ -728,8 +840,7 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
    is unsupported the declaration is dropped and the teal wash shows through,
    which is the previous behaviour rather than a broken one. */
 .a1-match-item[class*="a1-mc"] { background: color-mix(in srgb, var(--a1-mc) 9%, var(--a1-surface)); }
-.a1-match-item[class*="a1-mc"] .a1-match-tag { background: var(--a1-mc); color: #fff; }
-body.dark[data-subject="aat1"] .a1-match-item[class*="a1-mc"] .a1-match-tag { color: #0B1614; }
+.a1-match-item[class*="a1-mc"] .a1-match-tag { background: var(--a1-mc); color: var(--a1-on-fill); }
 .a1-match-l[class*="a1-mc"] { border-left-width: 5px; }
 .a1-match-r[class*="a1-mc"] { border-right-width: 5px; }
 
@@ -756,6 +867,10 @@ body.dark[data-subject="aat1"] .a1-match-item[class*="a1-mc"] .a1-match-tag { co
 .a1-match-key-row + .a1-match-key-row { border-top: 1px solid var(--a1-line); }
 .a1-match-key-row.is-right { border-left-color: var(--a1-ok); }
 .a1-match-key-row.is-wrong { border-left-color: var(--a1-bad); }
+/* The prompt, deliberately softer than the answer beside it: the right-hand
+   side is what the reader is checking, so it leads. It carried no rule at all
+   and inherited whatever the row gave it. */
+.a1-match-key-l { color: var(--a1-ink-2); }
 .a1-match-key-a { color: var(--a1-ink-3); font-weight: 700; }
 .a1-match-key-r { font-weight: 600; color: var(--a1-ink); }
 @media (max-width: 460px) {
@@ -787,7 +902,7 @@ body.dark[data-subject="aat1"] .a1-match-item[class*="a1-mc"] .a1-match-tag { co
 .a1-order-btn:not(:disabled):hover { border-color: var(--a1-brand); color: var(--a1-brand); }
 .a1-order-btn:disabled { opacity: .35; cursor: default; }
 .a1-order-row.is-right { border-color: var(--a1-ok); background: var(--a1-ok-wash); }
-.a1-order-row.is-right .a1-order-n { background: var(--a1-ok); color: #fff; }
+.a1-order-row.is-right .a1-order-n { background: var(--a1-ok); color: var(--a1-on-fill); }
 .a1-order-row.is-wrong { border-color: var(--a1-bad); background: var(--a1-bad-wash); }
 
 .a1-exp-box {
@@ -841,4 +956,3 @@ body.dark[data-subject="aat1"] .a1-match-item[class*="a1-mc"] .a1-match-tag { co
 }
 .a1-pcard-t { font-size: 1rem; font-weight: 700; color: var(--a1-ink); line-height: 1.35; }
 .a1-pcard-m { font-size: .83rem; color: var(--a1-ink-3); }
-.a1-pback { margin-top: 20px; text-align: center; }

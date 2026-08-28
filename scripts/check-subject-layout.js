@@ -47,7 +47,7 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', Y
 let chromium;
 try { ({ chromium } = require('playwright')); }
 catch (e) {
-  console.log(`${BOLD}AAT Level 3 layout${RESET}\n`);
+  console.log(`${BOLD}Self-rendering subjects: layout at ${WIDTH}px${RESET}\n`);
   if (process.env.REQUIRE_PLAYWRIGHT) {
     console.log(`  ${RED}✗${RESET}  Playwright is required here and is not installed: ${e.message}\n`);
     process.exit(1);
@@ -77,9 +77,17 @@ function serve() {
   });
 }
 
-/* 390px is an iPhone at its most common width and the narrowest thing this has
-   to work on. Everything that fails does so here first. */
-const WIDTH = 390;
+/* 390px is an iPhone at its most common width. 320px is an iPhone SE and the
+   narrowest phone still in use, and it is NOT merely a smaller 390: a grid
+   track whose automatic minimum is its content fits one and not the other, so
+   everything below 360 fails on its own terms.
+
+   Sweeping both found three grids that made the page scroll sideways at 320
+   and nothing at 390 — Level 3's unit cards (a `minmax(300px, 1fr)` left behind
+   by the rebuild as a second live definition of the class), Level 2's Learn
+   units, and its practice cards. */
+const WIDTHS = [320, 390];
+let WIDTH = WIDTHS[WIDTHS.length - 1];
 
 /* Set from what the module achieves, like the rest of the ratchets here, so it
    guards against regression rather than expressing an aspiration. It is NOT a
@@ -90,8 +98,45 @@ const WIDTH = 390;
    written for. A near-black screen heading on the app bar's dark navy gradient
    — which a reader simply cannot see — measures 1.36:1, because both are so
    close to black that the +0.05 in the contrast formula dominates. The floor
-   has to sit above that. */
-const MIN_CONTRAST = 1.75;
+   has to sit above that.
+
+   RAISED FROM 1.75 TO 3.0 once the sweep reached a graded question. 1.75 was
+   what the module managed at the time, and what it managed was poor: in dark
+   mode every chip filled with a brand or status colour carried hard-coded
+   white ink, which those colours invert underneath — a correct pill measured
+   1.79:1 and every primary button 2.87:1. With one token for the ink that goes
+   on a fill, the faintest text in dark mode is 5.29:1. The floor now sits just
+   under the module's true minimum of 3.07:1, which is the deliberately quiet
+   unearned star on the path in light mode. */
+const MIN_CONTRAST = 3.0;
+
+/* The self-rendering subjects, and the handful of things that differ between
+   them. Everything else the sweep asserts — page overflow, clipped cells, words
+   too wide for their column, text too close to its background — is the same
+   question whoever is asking it, so it is asked once and pointed at each. */
+const MODULES = [
+  {
+    id: 'aat1', name: 'AAT Level 1', ui: 'AAT1_UI', store: 'prep_v2_aat1',
+    root: '.a1-root',
+    /* Level 1 has no cheat-sheet table wide enough to need the stricter rule
+       and no dataset at all; its tables carry no min-width and already wrap. */
+    fitTables: '.a1-sheet .a1-table',
+    wordCells: '.a1-sheet td',
+    seed: { lessons: { 'L1-1A': { best: 100 }, 'L1-1B': { best: 80 } } },
+  },
+  {
+    id: 'aat3', name: 'AAT Level 3', ui: 'AAT3_UI', store: 'prep_v2_aat3',
+    root: '.a3-root',
+    fitTables: '.a3-cheat .a3-table',
+    wordCells: '.a3-cheat td, .a3-dataset td',
+    seed: {
+      lessons: { 'L3-TPFB-0A': { best: 100 }, 'L3-TPFB-1A': { best: 80 } },
+      practice: { units: { tpfb: { runs: 2, mocks: 1, mockBest: 62,
+        los: { 1: { attempted: 9, correct: 7 }, 2: { attempted: 8, correct: 3 } },
+        qs: { 'P-2-01': { w: 5000 } } } } },
+    },
+  },
+];
 
 (async () => {
   const errors = [];
@@ -105,28 +150,27 @@ const MIN_CONTRAST = 1.75;
   const browser = await chromium.launch(CANDIDATES.length ? { executablePath: CANDIDATES[0] } : {});
 
   try {
+    for (const W of WIDTHS) {
+    WIDTH = W;
+    for (const MOD of MODULES) {
     for (const dark of [false, true]) {
       const ctx = await browser.newContext({ viewport: { width: WIDTH, height: 860 } });
       const page = await ctx.newPage();
-      await page.addInitScript((d) => {
-        localStorage.setItem('multisubject_active', 'aat3');
-        localStorage.setItem('prep_v2_aat3', JSON.stringify({
-          settings: { darkMode: d },
-          lessons: { 'L3-TPFB-0A': { best: 100 }, 'L3-TPFB-1A': { best: 80 } },
-          practice: { units: { tpfb: { runs: 2, mocks: 1, mockBest: 62,
-            los: { 1: { attempted: 9, correct: 7 }, 2: { attempted: 8, correct: 3 } },
-            qs: { 'P-2-01': { w: 5000 } } } } },
-        }));
-      }, dark);
+      await page.addInitScript(([d, mod]) => {
+        localStorage.setItem('multisubject_active', mod.id);
+        localStorage.setItem(mod.store, JSON.stringify(
+          Object.assign({ settings: { darkMode: d } }, mod.seed)));
+      }, [dark, MOD]);
       await page.goto(`http://127.0.0.1:${port}/index.html`, { waitUntil: 'networkidle' });
-      await page.waitForFunction(() => !!window.AAT3_UI, null, { timeout: 15000 });
+      await page.waitForFunction(g => !!window[g], MOD.ui, { timeout: 15000 });
 
-      const found = await page.evaluate((MIN_CONTRAST) => {
+      const found = await page.evaluate(([MIN_CONTRAST, MOD]) => {
         const problems = [];
 
+        const UI = window[MOD.ui];
         const remount = (screen, unit) => {
-          window.AAT3_UI.reset(screen, unit);
-          window.AAT3_UI.mount(document.querySelector('.a3-root').parentElement);
+          UI.reset(screen, unit);
+          UI.mount(document.querySelector(MOD.root).parentElement);
         };
 
         /* Text a reader cannot see. Walks up for the first ancestor that paints
@@ -179,7 +223,7 @@ const MIN_CONTRAST = 1.75;
         };
 
         const sweep = (label) => {
-          const root = document.querySelector('.a3-root');
+          const root = document.querySelector(MOD.root);
           if (!root) { problems.push(`${label}: nothing rendered`); return; }
 
           /* 1. The page itself does not scroll sideways. */
@@ -204,8 +248,8 @@ const MIN_CONTRAST = 1.75;
              stacked layout that destroys the column the reader is being asked
              to add up. So a dataset may scroll. What it may not do is break a
              word, which the rule below covers. */
-          root.querySelectorAll('.a3-cheat .a3-table').forEach(t => {
-            const w = t.closest('.a3-tablewrap');
+          root.querySelectorAll(MOD.fitTables).forEach(t => {
+            const w = t.parentElement;
             if (w && t.scrollWidth > w.clientWidth + 1) {
               problems.push(`${label}: a cheat-sheet table is ${t.scrollWidth}px in a ${w.clientWidth}px wrapper, so part of it cannot be read without scrolling`);
             }
@@ -223,7 +267,7 @@ const MIN_CONTRAST = 1.75;
           const rule = document.createElement('span');
           rule.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;top:-9999px';
           document.body.appendChild(rule);
-          root.querySelectorAll('.a3-cheat td, .a3-dataset td').forEach(c => {
+          root.querySelectorAll(MOD.wordCells).forEach(c => {
             if (c.offsetParent === null || c.clientWidth <= 0) return;
             const cs = getComputedStyle(c);
             if (cs.display !== 'table-cell') return;   // stacked layout: no columns to overflow
@@ -272,14 +316,61 @@ const MIN_CONTRAST = 1.75;
                heading: dark ink on the app bar's dark navy, at 1.00:1. Setting
                it where contrast merely gets poor would flag every deliberately
                quiet label in the module. */
-            if (window.__a3lowest === undefined || ratio < window.__a3lowest.ratio) {
-              window.__a3lowest = { ratio: ratio, text: t.slice(0, 40), label: label };
+            if (window.__lowest === undefined || ratio < window.__lowest.ratio) {
+              window.__lowest = { ratio: ratio, text: t.slice(0, 40), label: label };
             }
             if (ratio < MIN_CONTRAST) {
               problems.push(`${label}: "${t.slice(0, 34)}" is ${ratio.toFixed(2)}:1 against what is behind it — effectively invisible`);
             }
           });
         };
+
+        /* ── Level 1 ─────────────────────────────────────────────────────────
+           One unit, one ladder, one practice screen — so what is swept is the
+           ladder, the practice picker, every cheat sheet (the only place tables
+           appear at this level), one ordinary lesson for the reading surface,
+           and one question of each type the module can render, since the
+           matching and ordering grids exist nowhere else in the app. */
+        if (MOD.id === 'aat1') {
+          remount('path'); sweep('ladder');
+          remount('practice'); sweep('practice');
+
+          remount('path');
+          const sheets = [...document.querySelectorAll('[data-a1="open"]')]
+            .map(n => n.getAttribute('data-id'))
+            .filter(id => /S$/.test(id || ''));
+          sheets.forEach(id => {
+            remount('path');
+            const b = [...document.querySelectorAll('[data-a1="open"]')].find(n => n.getAttribute('data-id') === id);
+            if (b) { b.click(); sweep(id); }
+          });
+
+          remount('path');
+          const first = document.querySelector('[data-a1="open"]');
+          if (first) { first.click(); sweep('lesson'); }
+
+          /* One question of every type, each drawn from a bank of exactly
+             itself so the run cannot serve anything else — drawing at random
+             and hoping every type turns up would make this pass or fail by
+             luck. `match` and `ordering` are the reason: they are Level 1's
+             own, they are the widest things it renders, and nothing else in
+             the app would catch them. */
+          const bank = ((window.AAT1_PRACTICE || {}).QUESTIONS || []);
+          const saved = window.AAT1_PRACTICE;
+          const seen = {};
+          bank.forEach(q => {
+            const t = q.type || 'mcq';
+            if (seen[t]) return;
+            seen[t] = true;
+            window.AAT1_PRACTICE = { QUESTIONS: [q] };
+            remount('practice');
+            const go = [...document.querySelectorAll('[data-a1="startpractice"]')]
+              .find(n => n.getAttribute('data-lo') === 'mix');
+            if (go) { go.click(); sweep(`question: ${t}`); }
+          });
+          window.AAT1_PRACTICE = saved;
+          return { problems: problems, lowest: window.__lowest };
+        }
 
         remount('units', 'tpfb'); sweep('units');
         ['tpfb', 'faps'].forEach(unit => {
@@ -316,26 +407,56 @@ const MIN_CONTRAST = 1.75;
             if (go) { go.click(); sweep(`task ${t.id}`); }
           });
           window.AAT3_PRACTICE = saved;
+
+          /* THE REVIEW OF A FINISHED PAPER — the two tallest screens in the
+             module. The list is twenty-four rows of question stems clamped to
+             two lines, and a replayed question is a graded question plus a
+             verdict, a blank notice and its own navigation, all on one screen.
+             Neither is reachable by remounting: a paper has to be sat first,
+             so it is sat here, blank, which is both the quickest way through
+             and the state that renders the most (every question carries the
+             right answer, the explanation and the notice saying it was left
+             empty). */
+          remount('practice', unit);
+          const mock = document.querySelector('[data-a3="startmock"]');
+          if (mock) {
+            mock.click();
+            for (let i = 0; i < 60; i++) {
+              const next = document.querySelector('[data-a3="mocknext"]');
+              if (!next) break;
+              next.click();
+            }
+            const review = document.querySelector('[data-a3="review"]');
+            if (review) {
+              review.click();
+              sweep(`${unit} mock review list`);
+              const row = document.querySelector('[data-a3="reviewq"]');
+              if (row) { row.click(); sweep(`${unit} mock review question`); }
+            }
+          }
         });
-        return { problems: problems, lowest: window.__a3lowest };
-      }, MIN_CONTRAST);
+        return { problems: problems, lowest: window.__lowest };
+      }, [MIN_CONTRAST, MOD]);
 
       const theme = dark ? 'dark' : 'light';
-      found.problems.forEach(p => errors.push(`${theme}: ${p}`));
-      notes.push(`${theme}: swept units, both paths, both practice screens, every cheat sheet, ` +
-        `a lesson and every task at ${WIDTH}px.`);
+      found.problems.forEach(p => errors.push(`${MOD.name} ${theme} @${WIDTH}px: ${p}`));
+      notes.push(`${MOD.name} ${theme} @${WIDTH}px: swept ${MOD.id === 'aat1'
+        ? 'the ladder, practice, every cheat sheet, a lesson and one question of every type'
+        : 'units, both paths, both practice screens, every cheat sheet, a lesson, every task and both screens of a mock review'} at ${WIDTH}px.`);
       if (found.lowest) {
-        notes.push(`${theme}: faintest text is ${found.lowest.ratio.toFixed(2)}:1 — ` +
+        notes.push(`${MOD.name} ${theme} @${WIDTH}px: faintest text is ${found.lowest.ratio.toFixed(2)}:1 — ` +
           `"${found.lowest.text}" on ${found.lowest.label} (floor ${MIN_CONTRAST}).`);
       }
       await ctx.close();
+    }
+    }
     }
   } finally {
     await browser.close();
     server.close();
   }
 
-  console.log(`${BOLD}AAT Level 3 layout${RESET}\n`);
+  console.log(`${BOLD}Self-rendering subjects: layout at ${WIDTH}px${RESET}\n`);
   notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
   console.log('');
   if (errors.length) {

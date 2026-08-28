@@ -979,6 +979,17 @@
   root.GUITAR_UI = {
     mount: mount,
     reset: function () { if (transport) transport.stop(true); stopCursor(); },
+    /* The shared header's 🏠 button, and "you are being switched away from" —
+       see the note on AAT3_UI.home. `suspend` is the one that matters here: an
+       exercise left playing carried on sounding into whatever subject the
+       reader moved to, because nothing was calling this. */
+    home: function () {
+      if (transport) transport.stop(true);
+      stopCursor();
+      S.screen = 'lessons';
+      S.lessonId = null;
+    },
+    suspend: function () { if (transport) transport.stop(true); stopCursor(); },
     /* The live transport, or null before the first play. Exposed so the state
        the cursor is painting from can be read independently of the DOM it
        paints into — which is how the cursor is checked: ask the transport what

@@ -23,6 +23,20 @@ body[data-subject="aat3"] {
   --a3-brand-2:    #7C3AED;
   --a3-brand-ink:  #3730A3;
   --a3-brand-wash: #EEF0FE;
+  /* The ink that goes ON a surface filled with a brand or status colour — a
+     chosen pill, a primary button, the letter on a marked option.
+
+     IT HAS TO BE A TOKEN, because the fills invert between the themes and the
+     ink does not follow on its own. In light, --a3-ok is a deep green and white
+     sits on it. In dark, --a3-ok is mint: white on it measures 1.79:1, which is
+     a correct pill whose label a reader cannot read. Every filled chip in the
+     module had `color: #fff` hard-coded, so the whole set went faint together
+     in dark mode — the primary buttons at 2.87:1, the pills at 1.79:1.
+
+     Found by extending the layout sweep to a mock's review, which is the first
+     GRADED question screen it ever reached; the pills had been like this since
+     they were written and nothing looked. */
+  --a3-on-fill:    #FFFFFF;
   --a3-gold:       #B0891B;
   --a3-gold-wash:  #FBF3DC;
 
@@ -91,6 +105,7 @@ body.dark[data-subject="aat3"] {
   --a3-brand-2:    #A78BFA;
   --a3-brand-ink:  #C7C3FF;
   --a3-brand-wash: #1A1B44;
+  --a3-on-fill:    #0B1020;
   --a3-gold:       #E3C168;
   --a3-gold-wash:  #2A2413;
 
@@ -139,10 +154,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 /* The first screen once Level 3 carries more than one unit. Each card has to
    answer two questions before the reader commits: how much of this unit have I
    studied, and how much of it exists yet. */
-.a3-ugrid {
-  display: grid; gap: 16px; margin: 6px 0 30px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
 .a3-ucard {
   display: flex; flex-direction: column; gap: 8px; text-align: left;
   padding: 22px 24px; cursor: pointer; font: inherit; color: inherit;
@@ -456,7 +467,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-callout-i {
   flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%;
   display: grid; place-items: center; font-size: 12px; font-weight: 700;
-  background: var(--a3-brand); color: #fff;
+  background: var(--a3-brand); color: var(--a3-on-fill);
 }
 .a3-callout-warning .a3-callout-i { background: var(--a3-gold); }
 
@@ -478,7 +489,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 }
 .a3-worked-head {
   padding: 14px 18px; background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
-  color: #fff; display: flex; flex-direction: column; gap: 3px;
+  color: var(--a3-on-fill); display: flex; flex-direction: column; gap: 3px;
 }
 .a3-worked-tag { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; opacity: .82; }
 .a3-worked-title { font-size: 15.5px; font-weight: 650; }
@@ -531,12 +542,73 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-btn:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
 .a3-btn-primary {
   background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
-  color: #fff; box-shadow: 0 6px 18px -6px rgba(79,70,229,.6);
+  color: var(--a3-on-fill); box-shadow: 0 6px 18px -6px rgba(79,70,229,.6);
 }
 .a3-btn-primary:hover { box-shadow: 0 10px 26px -8px rgba(79,70,229,.7); }
 .a3-btn-ghost { background: transparent; border-color: var(--a3-line-2); color: var(--a3-ink-2); }
 .a3-btn-ghost:hover { background: var(--a3-surface-2); }
 .a3-wide { width: 100%; margin-top: 18px; }
+/* ── Reviewing a finished paper ─────────────────────────────────────────────
+   A list of twenty-four, then any one of them replayed. The list has to be
+   scannable at a glance — the reader is looking for the crosses — so the
+   verdict is the only colour on the row and the stem is clamped to two lines
+   rather than truncated, which never cuts a word. */
+.a3-revfilter { display: flex; gap: 8px; margin: 0 0 var(--a3-4); }
+.a3-revfilter-b {
+  flex: 1 1 0; padding: 9px 12px; border-radius: var(--a3-r-sm); cursor: pointer;
+  border: 1px solid var(--a3-line-2); background: var(--a3-surface);
+  color: var(--a3-ink-2); font-family: inherit; font-size: 14px; font-weight: 600;
+}
+.a3-revfilter-b.on { background: var(--a3-brand); border-color: var(--a3-brand); color: var(--a3-on-fill); }
+.a3-revfilter-b:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+.a3-revclean {
+  padding: 13px 15px; margin: 0 0 var(--a3-4); border-radius: var(--a3-r-sm);
+  background: var(--a3-ok-wash); color: var(--a3-ink-2); font-size: 14.5px;
+}
+.a3-revlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.a3-revrow {
+  display: grid; grid-template-columns: 28px 1fr 22px; gap: 11px; align-items: start;
+  width: 100%; text-align: left; padding: 13px 14px; cursor: pointer;
+  border-radius: var(--a3-r-sm); border: 1px solid var(--a3-line);
+  /* The verdict as an edge rather than as a whole outline. Ringing every wrong
+     row in red put twenty-two red boxes down one screen, which is loud enough
+     that the two right ones stopped standing out — and finding them is half of
+     what the reader is scanning for. */
+  border-left: 3px solid var(--a3-line-2);
+  background: var(--a3-surface); font-family: inherit;
+}
+.a3-revrow:hover { border-color: var(--a3-brand); }
+.a3-revrow:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+.a3-revrow-n { font-size: 13px; font-weight: 700; color: var(--a3-ink-3); padding-top: 1px; }
+.a3-revrow-tx { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.a3-revrow-q {
+  font-size: 14.5px; line-height: 1.45; color: var(--a3-ink);
+  /* Two lines and then an ellipsis, done by the browser: a stem cut at a
+     character count breaks mid-word, and these stems are mostly numbers. */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.a3-revrow-m { font-size: 12.5px; color: var(--a3-ink-3); }
+.a3-revrow-v { font-size: 15px; font-weight: 700; text-align: right; padding-top: 1px; }
+.a3-revrow.is-right .a3-revrow-v { color: var(--a3-ok); }
+.a3-revrow.is-wrong .a3-revrow-v { color: var(--a3-bad); }
+.a3-revrow.is-right { border-left-color: var(--a3-ok); }
+.a3-revrow.is-wrong { border-left-color: var(--a3-bad); }
+/* The verdict in the bar above a replayed question, so it is answered before
+   the reader has read a word of the question again. */
+.a3-revverdict {
+  flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 15px; font-weight: 700;
+}
+.a3-revverdict.is-right { background: var(--a3-ok-wash); color: var(--a3-ok); }
+.a3-revverdict.is-wrong { background: var(--a3-bad-wash); color: var(--a3-bad); }
+.a3-revblank {
+  padding: 12px 14px; margin: 0 0 var(--a3-5); border-radius: var(--a3-r-sm);
+  background: var(--a3-gold-wash); color: var(--a3-ink-2);
+  font-size: 14px; line-height: 1.55;
+}
+.a3-revnav { display: flex; gap: 8px; align-items: center; margin-top: var(--a3-6); }
+.a3-revnav .a3-btn { flex: 1 1 0; justify-content: center; padding-left: 6px; padding-right: 6px; }
+
 .a3-nav { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 30px; }
 .a3-nav-hint { font-size: 13.5px; color: var(--a3-ink-3); font-style: italic; }
 .a3-q { font-size: clamp(19px, 2.8vw, 24px); line-height: 1.4; font-weight: 650; letter-spacing: -.012em; margin: 0 0 24px; }
@@ -555,10 +627,16 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   background: var(--a3-surface-2); color: var(--a3-ink-3);
   display: grid; place-items: center; font-size: 12.5px; font-weight: 700;
 }
+/* Chosen, not yet marked — a mock, where grading waits for the end of the
+   paper. Deliberately the brand colour rather than a shade of the right/wrong
+   pair: it says "this is the one you picked" and nothing at all about whether
+   it is correct, which is the whole point of sitting a paper blind. */
+.a3-opt.on { border-color: var(--a3-brand); background: var(--a3-brand-wash); color: var(--a3-ink); }
+.a3-opt.on .a3-opt-k { background: var(--a3-brand); color: var(--a3-on-fill); }
 .a3-opt.is-right { border-color: var(--a3-ok); background: var(--a3-ok-wash); color: var(--a3-ink); }
-.a3-opt.is-right .a3-opt-k { background: var(--a3-ok); color: #fff; }
+.a3-opt.is-right .a3-opt-k { background: var(--a3-ok); color: var(--a3-on-fill); }
 .a3-opt.is-wrong { border-color: var(--a3-bad); background: var(--a3-bad-wash); }
-.a3-opt.is-wrong .a3-opt-k { background: var(--a3-bad); color: #fff; }
+.a3-opt.is-wrong .a3-opt-k { background: var(--a3-bad); color: var(--a3-on-fill); }
 .a3-opt:disabled { cursor: default; }
 
 .a3-tf { display: flex; flex-direction: column; gap: 9px; }
@@ -578,9 +656,9 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   cursor: pointer; font-family: inherit; transition: all .14s;
 }
 .a3-pill:hover:not(:disabled) { border-color: var(--a3-brand); }
-.a3-pill.on { background: var(--a3-brand); border-color: var(--a3-brand); color: #fff; }
-.a3-pill.is-right { background: var(--a3-ok); border-color: var(--a3-ok); color: #fff; }
-.a3-pill.is-wrong { background: var(--a3-bad); border-color: var(--a3-bad); color: #fff; }
+.a3-pill.on { background: var(--a3-brand); border-color: var(--a3-brand); color: var(--a3-on-fill); }
+.a3-pill.is-right { background: var(--a3-ok); border-color: var(--a3-ok); color: var(--a3-on-fill); }
+.a3-pill.is-wrong { background: var(--a3-bad); border-color: var(--a3-bad); color: var(--a3-on-fill); }
 .a3-pill:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
 
 .a3-gap { font-size: 16.5px; line-height: 2.5; color: var(--a3-ink-2); }
@@ -756,39 +834,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   font-size: 13.5px; line-height: 1.6; color: var(--a3-ink-2);
 }
 .a3-try-row-mock { margin-bottom: 6px; }
-
-/* ══ The shell ═══════════════════════════════════════════════════════════════
-   The shared header is a two-line title, a version badge and three buttons, and
-   at 390px it wraps to about 290px tall. On top of that every Level 3 screen
-   drew its own full-bleed hero — another 450px on the units screen — so 740px
-   of an 844px phone was chrome before a single word of content. You scrolled to
-   begin.
-
-   Both are fixed here, and neither touches another subject: everything is
-   scoped to body[data-subject="aat3"], and app.js already stamps that
-   attribute. The shared header keeps its title and its controls and loses the
-   subtitle and the version chip, which are read once and then never again. */
-/* `> header`, NOT `header`. The app bar is a direct child of body; a descendant
-   selector also matches any <header> a screen renders inside #app, and these
-   rules were shrinking the type on a screen heading and beating the class that
-   was supposed to size it — "Choose a unit" came out at the same size as body
-   text. The child combinator says what is meant: the bar at the top, and
-   nothing else. */
-body[data-subject="aat3"] > header {
-  padding: 9px 18px;
-  gap: 8px;
-  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset;
-}
-body[data-subject="aat3"] > header .sub,
-body[data-subject="aat3"] > header .version-badge,
-body[data-subject="aat3"] > header .badge { display: none; }
-body[data-subject="aat3"] > header h1 { font-size: .98rem; }
-body[data-subject="aat3"] > header .header-left { gap: 10px; }
-
-@media (max-width: 560px) {
-  body[data-subject="aat3"] > header { padding: 8px 12px; }
-  body[data-subject="aat3"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
-}
 
 /* ── The context bar ─────────────────────────────────────────────────────────
    What the hero was for, in a tenth of the height: which unit you are in, how
@@ -978,7 +1023,7 @@ body[data-subject="aat3"] > header .header-left { gap: 10px; }
 }
 .a3-rung-st .on { color: var(--a3-gold); }
 
-.a3-rung.is-done .a3-rung-mark { background: var(--a3-ok); border-color: var(--a3-ok); color: #fff; }
+.a3-rung.is-done .a3-rung-mark { background: var(--a3-ok); border-color: var(--a3-ok); color: var(--a3-on-fill); }
 .a3-rung.is-done .a3-rung-t { color: var(--a3-ink-2); }
 /* Up next is the only rung that draws attention, and it draws it quietly: the
    marker fills, the row does not. A whole highlighted row next to a highlighted
@@ -1023,8 +1068,17 @@ body[data-subject="aat3"] > header .header-left { gap: 10px; }
 }
 
 /* ══ Unit cards ══════════════════════════════════════════════════════════════ */
+/* ONE COLUMN UNTIL THERE IS ROOM FOR TWO, and no minimum track width.
+   The rule this replaced was `repeat(auto-fit, minmax(300px, 1fr))`, and it
+   survived the rebuild as a second live definition of the same class further
+   up the file — so the 300px floor was still in force. A 320px phone has 280px
+   inside the page gutter, the card would not go below 300, and the whole page
+   scrolled sideways. `minmax(0, 1fr)` on the two-column rule for the same
+   reason: a grid track's automatic minimum is its content, not zero, so two
+   columns can push a container wider than its parent without anything
+   declaring a width at all. */
 .a3-ugrid { display: grid; gap: var(--a3-4); }
-@media (min-width: 700px) { .a3-ugrid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 700px) { .a3-ugrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 .a3-ucard {
   display: block; width: 100%; text-align: left; padding: var(--a3-5);
   border-radius: var(--a3-r-lg); border: 1px solid var(--a3-line);

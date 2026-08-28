@@ -3109,7 +3109,25 @@
         onConfirm: () => { stopMockTimer(); closeConfirm(); goHome(); } });
     } else goHome();
   }
-  function goHome() { stopMockTimer(); State.screen='home'; State.activeTab='home'; State.confirmModal=null; render(); }
+  /* The self-rendering subjects' own module, or null. Levels 1 and 3 and the
+     guitar own their screens entirely, so the shared chrome cannot act on them
+     by setting `State` — it has to ask them. */
+  function ownUi() {
+    const k = getSubject(_activeSubjectId).ui;
+    return (k && window[k]) || null;
+  }
+  function goHome() {
+    stopMockTimer();
+    /* The header's Home button did nothing on Levels 1 and 3 or the guitar. It
+       sets State.screen='home', which is the only screen those subjects ever
+       occupy as far as app.js is concerned — the actual screen lives in their
+       own module, and render() just remounts it unchanged. So a reader four
+       cards into a Level 3 lesson tapped Home and stayed exactly where they
+       were. A subject that renders itself has to be asked to go home. */
+    const ui = ownUi();
+    if (ui && ui.home) ui.home();
+    State.screen='home'; State.activeTab='home'; State.confirmModal=null; render();
+  }
 
   function switchSubject(id) {
     const subj = getSubject(id);
@@ -3126,6 +3144,14 @@
   }
   function _commitSubjectSwitch(id) {
     const subj = getSubject(id);
+    /* Stop whatever the subject being left had running. Nothing else does:
+       app.js only ever cleared its OWN transient state here, and a subject
+       that renders itself keeps its state — and its timers — in its own
+       module. A guitar exercise carried on playing into the French screen,
+       and a Level 3 mock's clock carried on ticking towards a finish() that
+       would repaint the Level 3 result over whatever subject was on screen. */
+    const leaving = ownUi();
+    if (leaving && leaving.suspend) leaving.suspend();
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
     if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }
@@ -3262,20 +3288,44 @@
     }
   }
 
+  /* THE SPLASH DESCRIBES THE SUBJECT IT IS OPENING, which it did not.
+     Every word of it was Level 2's — the title, the description of the Q2022
+     certificate, the synoptic mock, the AAT disclaimer — and it is the FIRST
+     screen of every subject that uses this renderer. So a reader opening
+     Français for the first time was welcomed to "AAT Level 2", told about the
+     Level 2 synoptic assessment, and shown a count of French questions
+     described as audited AAT practice. Three of the four subjects that reach
+     this screen were being introduced as a different product.
+
+     The registry already carries each subject's name and description; the
+     features below are Level 2's own and are shown only there. */
   function renderSplash() {
+    const subj = getSubject(_activeSubjectId);
+    const isAat = subj.id === 'aat';
+    const feats = isAat ? [
+      ['📝', `${window.ALL_QUESTIONS.length} Questions`, 'Across all topics'],
+      ['⏱', 'Synoptic Mock', `${SYNOPTIC_BLUEPRINT.length} tasks, ${SYNOPTIC_TOTAL_MARKS} marks, ${Math.round(MOCK_DURATION_MS / 60000)} min`],
+      ['🧮', 'Numeric Qs', 'With on-screen calculator'],
+      ['🎯', `${PASS_MARK}% Pass Mark`, 'AAT aligned'],
+      ['📖', 'Glossary', 'Key terms explained'],
+    ] : [
+      /* The real count, not the registry's `meta` — that is a hand-written
+         summary ("180+ questions · 37 leçons") which sat under the actual
+         figure and disagreed with it. */
+      ['📝', `${(window.ALL_QUESTIONS || []).length} questions`, 'Across every lesson'],
+      ['🗺️', 'A guided path', 'Lesson by lesson, in order'],
+      ['🔁', 'Spaced repetition', 'What you miss comes back'],
+      ['📈', 'Progress kept', 'Separately for each subject'],
+    ];
     return `<div class="splash fade-in">
-      <div class="splash-logo" aria-hidden="true">📊</div>
-      <h2>AAT Level 2</h2>
-      <p>The Q2022 Level 2 Certificate in Accounting — four units, each assessed in its own right, with The Business Environment assessed synoptically. ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.</p>
+      <div class="splash-logo" aria-hidden="true">${subj.flag}</div>
+      <h2>${escapeHtml(subj.name)}</h2>
+      <p>${escapeHtml(subj.desc)}${isAat ? ` ${window.ALL_QUESTIONS.length} audited practice questions including written tasks, with instant feedback, marks-based mock exams and persistent progress tracking.` : ''}</p>
       <div class="splash-features">
-        <div class="feat"><div class="fi" aria-hidden="true">📝</div><strong>${window.ALL_QUESTIONS.length} Questions</strong><br>Across all topics</div>
-        <div class="feat"><div class="fi" aria-hidden="true">⏱</div><strong>Synoptic Mock</strong><br>${SYNOPTIC_BLUEPRINT.length} tasks, ${SYNOPTIC_TOTAL_MARKS} marks, ${Math.round(MOCK_DURATION_MS / 60000)} min</div>
-        <div class="feat"><div class="fi" aria-hidden="true">🧮</div><strong>Numeric Qs</strong><br>With on-screen calculator</div>
-        <div class="feat"><div class="fi" aria-hidden="true">🎯</div><strong>${PASS_MARK}% Pass Mark</strong><br>AAT aligned</div>
-        <div class="feat"><div class="fi" aria-hidden="true">📖</div><strong>Glossary</strong><br>Key terms explained</div>
+        ${feats.map(([i, t, d]) => `<div class="feat"><div class="fi" aria-hidden="true">${i}</div><strong>${t}</strong><br>${d}</div>`).join('')}
       </div>
       <button class="start-btn" id="startBtn" type="button">Get Started →</button>
-      <p class="disclaimer">⚠️ This app is an independent study tool and is not affiliated with, endorsed by, or officially associated with AAT (Association of Accounting Technicians).</p>
+      ${isAat ? '<p class="disclaimer">⚠️ This app is an independent study tool and is not affiliated with, endorsed by, or officially associated with AAT (Association of Accounting Technicians).</p>' : ''}
     </div>`;
   }
 
@@ -3776,12 +3826,42 @@
       const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
       return safe.replace(re, '<mark>$1</mark>');
     };
-    const grid = items.length ? `<div class="glossary-grid fade-in">
-        ${items.map(g => `<div class="gloss-card">
-          <div class="gloss-term">${highlight(g.term)}</div>
-          <div class="gloss-def">${highlight(g.def)}</div>
-        </div>`).join('')}
-      </div>` : `<div class="empty-state">No matches for "${escapeHtml(q)}".</div>`;
+    const card = g => `<div class="gloss-card">
+      <div class="gloss-term">${highlight(g.term)}</div>
+      <div class="gloss-def">${highlight(g.def)}</div>
+    </div>`;
+
+    /* A SEARCH IS NOT A WAY IN. Unfiltered, 188 terms ran to 23,920px in one
+       undifferentiated scroll — a reader who knows the word they want types it,
+       and a reader who does not is the one a glossary is for, and they had
+       nothing. Grouped by letter with an index across the top, browsing costs
+       one tap; and the terms are not stored alphabetically, so they are sorted
+       here rather than left in the order they were written.
+
+       Only when there is nothing typed: a search result is already a short
+       list, and slicing it into single-entry letter groups would bury it. */
+    let grid;
+    if (!items.length) {
+      grid = `<div class="empty-state">No matches for "${escapeHtml(q)}".</div>`;
+    } else if (q) {
+      grid = `<div class="glossary-grid fade-in">${items.map(card).join('')}</div>`;
+    } else {
+      const groups = new Map();
+      items.slice().sort((a, b) => a.term.localeCompare(b.term, 'en'))
+        .forEach(g => {
+          const k = (g.term[0] || '?').toUpperCase();
+          if (!groups.has(k)) groups.set(k, []);
+          groups.get(k).push(g);
+        });
+      const letters = [...groups.keys()];
+      grid = `<nav class="gloss-index" aria-label="Jump to a letter">
+          ${letters.map(k => `<a class="gloss-index-l" href="#gloss-${escapeHtml(k)}">${escapeHtml(k)}</a>`).join('')}
+        </nav>
+        ${letters.map(k => `<section class="gloss-group" id="gloss-${escapeHtml(k)}">
+          <h3 class="gloss-letter">${escapeHtml(k)}<span class="gloss-letter-n">${groups.get(k).length}</span></h3>
+          <div class="glossary-grid">${groups.get(k).map(card).join('')}</div>
+        </section>`).join('')}`;
+    }
     return `<h2 class="section-title">Key Terms Glossary <span style="font-weight:400;color:var(--subtext);font-size:.8rem">(${window.GLOSSARY.length} terms)</span></h2>
       <div class="search-row">
         <span class="search-icon" aria-hidden="true">🔎</span>
@@ -5539,7 +5619,7 @@
       }
 
       let unlockedSoFar = true;
-      const lessonsHtml = unit.lessons.map((L, nodeIdx) => {
+      const lessonsHtml = unit.lessons.map((L) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
@@ -5555,20 +5635,33 @@
         const badgeText = L.l3Bridge ? 'L3 Bridge' : isStory ? '📖 Story' : tag === 'mastery' ? 'Mastery' : tag === 'advanced' ? 'Advanced' : 'Core';
         const badgeClass = L.l3Bridge ? 'node-l3-badge' : `tier-${tier}-label`;
         const tierLabel = `<span class="node-tier-label ${badgeClass}">${badgeText}</span>`;
-        // Winding path: 3-position cycle (left / centre / right)
-        const posClass = ['step-pos-l','step-pos-c','step-pos-r'][nodeIdx % 3];
-        return `<div class="journey-step ${posClass}${isStory ? ' journey-step-story' : ''}">
-          <div class="journey-step-badge">${!locked ? tierLabel : ''}</div>
+        /* A ROW ON A RAIL, NOT A ZIG-ZAG. The nodes used to alternate left,
+           centre and right down a dashed spine, each in a 108px column. At
+           390px that gave the title about 100px to live in, so every lesson
+           name wrapped to three or four lines and one lesson cost about 230px;
+           Level 2's sixty-eight of them ran the Learn screen to 16,281px.
+
+           Laid out as a row — icon, then title and meta beside it — the same
+           content is a third of the height and every title fits on one or two
+           lines. The rail and the icons are what made it read as a path; the
+           zig-zag never was. Level 3's track was rebuilt this way first, for
+           the same reason and with the same result. */
+        return `<div class="journey-step${isStory ? ' journey-step-story' : ''}">
           <button class="journey-node ${done ? 'node-done' : locked ? 'node-locked' : 'node-available'} node-${tier}${L.l3Bridge ? ' node-l3' : ''}${isStory ? ' node-story' : ''}" type="button"
               ${locked ? 'disabled' : `data-lesson="${escapeHtml(L.id)}"`}
               aria-label="${escapeHtml(L.title)}${done ? ', completed' : locked ? ', locked' : ', available'}">
             <div class="journey-icon">${locked ? '🔒' : escapeHtml(L.icon)}</div>
             ${done ? '<div class="node-done-ring"></div>' : ''}
           </button>
+          <div class="journey-step-tx">
+            <div class="journey-step-label">${escapeHtml(L.title)}</div>
+            ${locked ? '' : `<div class="journey-step-meta">
+              ${tierLabel}
+              <span class="node-time">⏱ ${timeLabel}</span><span class="node-xp">✦ ${xpLabel}</span>
+              ${nodeQCount > 0 ? `<span class="node-qcount">${nodeQCount}Q</span>` : ''}
+            </div>`}
+          </div>
           <div class="journey-stars">${locked ? '' : starRow}</div>
-          <div class="journey-step-label">${escapeHtml(L.title)}</div>
-          ${!locked ? `<div class="journey-step-meta"><span class="node-time">⏱ ${timeLabel}</span><span class="node-xp">✦ ${xpLabel}</span></div>` : ''}
-          ${nodeQCount > 0 && !locked ? `<span class="node-qcount">${nodeQCount}Q</span>` : ''}
         </div>`;
       }).join('');
       const doneCount = unit.lessons.filter(L=>isLessonDone(L.id)).length;

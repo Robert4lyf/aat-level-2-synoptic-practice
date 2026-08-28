@@ -32,6 +32,38 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', R
 const errors = [];
 const notes = [];
 
+/* ── The precache list, against the disk and against index.html ────────────
+   `cache.addAll()` is all-or-nothing: one URL that 404s rejects the whole
+   promise, install fails, and NOTHING is cached — so a single stale filename in
+   CORE_ASSETS does not degrade offline support, it removes it entirely, for
+   every subject, silently. Renaming or deleting a file is the ordinary way to
+   introduce that, and nothing was checking it.
+
+   The second half is the same trap from the other end: a file index.html loads
+   on every page load and CORE_ASSETS does not name is one the app cannot start
+   without offline. Guitar is exempt by LAZY_PATTERN — it is fetched on first
+   open on purpose, which is what the rest of this file is about. */
+function checkPrecacheList() {
+  const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
+  const from = sw.indexOf('var CORE_ASSETS = [');
+  const list = sw.slice(from, sw.indexOf('];', from))
+    .split('\n').map(l => (l.match(/['"]\.\/([^'"]*)['"]/) || [])[1])
+    .filter(f => f);
+  notes.push(`CORE_ASSETS names ${list.length} files, all of them on disk.`);
+
+  list.filter(f => !fs.existsSync(path.join(ROOT, f))).forEach(f => errors.push(
+    `sw.js precaches "${f}", which is not on disk — cache.addAll() rejects on one bad URL, ` +
+    `so install fails and nothing at all is cached offline.`));
+
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const eager = [...new Set([...html.matchAll(/(?:src|href)="([^"?:]+\.(?:js|css))"/g)].map(m => m[1].replace(/^\.\//, '')))];
+  const lazy = /^guitar-[a-z-]+\.(js|css)$/;
+  eager.filter(f => !list.includes(f) && !lazy.test(f)).forEach(f => errors.push(
+    `index.html loads "${f}" on every page load and sw.js does not precache it, ` +
+    `so the app cannot start offline.`));
+  notes.push(`${eager.length} files load on every page; each is precached.`);
+}
+
 /* ── A mock Cache API, small enough to read in one sitting ─────────────────
    `tag` labels what this worker's network returns, so the assertions can tell
    the copy fetched before a version bump from the copy fetched after it. An
@@ -238,7 +270,9 @@ const req = (url) => ({ url, method: 'GET', mode: 'cors' });
     }
   }
 
-  console.log(`${BOLD}service worker — lazy cache${RESET}\n`);
+  checkPrecacheList();
+
+  console.log(`${BOLD}service worker — lazy cache and the precache list${RESET}\n`);
   notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
   console.log('');
   if (errors.length) {
