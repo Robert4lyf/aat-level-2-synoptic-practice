@@ -341,9 +341,101 @@
   const prefersDark = () => !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   /* ── REFERENCE MATERIAL (always-accessible side drawer) ── */
+  /* WHO EACH SECTION IS FOR.
+     The panel began as Level 2's and was shown only there, so nothing needed to
+     say which level a section served. It is now offered at Levels 1 and 3 too,
+     and most of it is wrong for a beginner: AAT Level 1 concept 2.1.3
+     explicitly excludes debits and credits, ledger accounts and transactions
+     including VAT, and aat1-syllabus.js opens by warning that teaching the
+     Level 2 version of a Level 1 topic "would make a beginner's first exposure
+     harder for no assessed benefit". Handing a Level 1 reader DEAD CLIC and
+     "VAT from gross = Gross ÷ 6" is exactly that mistake, so `levels` is not
+     decoration — it is the thing that stops it.
+
+     `items` may be an array or a function returning one, which is how the VAT
+     scheme thresholds come from aat3-tax-data.js rather than from a second copy
+     of the same figures kept here. */
   const REFERENCE = {
     sections: [
-      { title: 'Debit & Credit rules', items: [
+      /* ── Level 1: Bookkeeping Fundamentals ─────────────────────────────
+         Written from aat1-syllabus.js outcome by outcome. Every exclusion the
+         specification records is honoured, and where a reader might reasonably
+         expect the Level 2 treatment the entry says plainly that it is not
+         Level 1 — better than leaving a gap they fill from somewhere else. */
+      { title: 'What a transaction touches', levels: ['aat1'], items: [
+        'Asset — something the business owns, or is owed by someone else.',
+        'Liability — something the business owes to someone else.',
+        'Capital — what the owner has put into the business.',
+        'Income — what the business earns.',
+        'Expense — what the business spends in order to operate.',
+        'Every transaction changes at least two of these, and an amount may go up or down.',
+      ]},
+      { title: 'The accounting equation', levels: ['aat1'], items: [
+        'Assets = Capital + Liabilities',
+        'The equation always balances, whatever the transaction.',
+        'A profit increases capital. A loss decreases it.',
+      ]},
+      { title: 'Invoice and credit note amounts', levels: ['aat1'], items: [
+        'Net = unit price × number of units, less any discount for buying in quantity',
+        'VAT = Net × 20%',
+        'Total = Net + VAT',
+        'Work forwards from the net amount. Finding the VAT inside a VAT-inclusive total is Level 2, not Level 1.',
+        'A credit note reduces an invoice already issued, and carries the same three amounts.',
+      ]},
+      { title: 'Books of prime entry', levels: ['aat1'], items: [
+        'Sales daybook — invoices sent to customers',
+        'Sales returns daybook — credit notes sent to customers',
+        'Purchases daybook — invoices received from suppliers',
+        'Purchases returns daybook — credit notes received from suppliers',
+        'Columns: date · customer or supplier · invoice or credit note number · net · VAT · total',
+        'Cross cast to check: the net and VAT columns added together should equal the total column.',
+      ]},
+      { title: 'Documents, in the order they appear', levels: ['aat1'], items: [
+        'Quotation — a price offered before any order is placed',
+        'Purchase order / sales order — the order itself',
+        'Delivery note — travels with the goods',
+        'Goods received note — records what actually arrived',
+        'Goods returned note — records what went back',
+        'Invoice — the request for payment',
+        'Credit note — reduces an invoice already issued',
+        'Remittance advice — says which invoices a payment covers',
+        'Cash receipt — proof that cash was paid',
+      ]},
+      { title: 'The cash book', levels: ['aat1'], items: [
+        'Two sides: receipts and payments.',
+        'Columns: date · customer or supplier · cash and/or bank · analysis columns, including one for VAT',
+        'Closing cash in hand = Opening + Receipts − Payments',
+        'Closing cash at bank = Opening + Receipts − Payments',
+        'Cross cast to check: the analysis columns should add across to the cash or bank column.',
+      ]},
+      { title: 'Cash book against the bank statement', levels: ['aat1'], items: [
+        'Compare the two and identify what appears on one but not the other.',
+        'In the cash book, not yet on the statement — recently written cheques, recently paid-in receipts.',
+        'On the statement, not yet in the cash book — bank charges, bank interest, direct debits and standing orders you had not recorded.',
+        'Level 1 recognises the differences. Preparing a bank reconciliation, and dealing with an overdrawn balance, are Level 2.',
+      ]},
+      { title: 'Amounts owed', levels: ['aat1'], items: [
+        'Owed by a customer = Opening amount + invoices − credit notes − receipts from them',
+        'Owed to a supplier = Opening amount + invoices − credit notes − payments to them',
+        'An aged receivables or aged payables analysis shows how long each amount has been outstanding.',
+      ]},
+      { title: 'Accounting software', levels: ['aat1'], items: [
+        'Off-the-shelf vs bespoke: cost, level of support, development time, how well it fits the business, ease of updates, training needed.',
+        'Traditional vs cloud: cloud gives access from several devices and updates itself, but needs an internet connection.',
+        'Benefits: imports from bank feeds and CSV, automated calculations and matching, real-time reports, fewer human errors.',
+        'It does not remove every error: a wrong figure keyed at the start is still wrong, and recurring entries go stale when the amount or frequency changes.',
+        'Threats to data: viruses, hacking, phishing, system crashes, employee fraud, corrupt files, natural disasters, accidental deletion.',
+      ]},
+      { title: 'Money laundering obligations', levels: ['aat1'], items: [
+        'Bookkeeping is an accountancy service.',
+        'A bookkeeper offering external bookkeeping services must register for anti-money laundering supervision.',
+        'Money laundering is a criminal offence.',
+        'A suspicion must be reported.',
+        'Failing to report a suspicion is itself a criminal offence.',
+      ]},
+
+      /* ── Levels 2 and 3 ────────────────────────────────────────────────── */
+      { title: 'Debit & Credit rules', levels: ['aat', 'aat3'], items: [
         'Assets: increase on the Debit side, decrease on the Credit side.',
         'Liabilities: increase on the Credit side, decrease on the Debit side.',
         'Capital: increase on the Credit side, decrease on the Debit side.',
@@ -351,36 +443,36 @@
         'Expenses: increase on the Debit side.',
         'Mnemonic — DEAD CLIC: Debits = Expenses, Assets, Drawings. Credits = Liabilities, Income, Capital.',
       ]},
-      { title: 'Accounting equation', items: [
+      { title: 'Accounting equation', levels: ['aat', 'aat3'], items: [
         'Assets = Capital + Liabilities',
         'Capital = Assets − Liabilities',
         'Closing capital = Opening capital + Capital introduced + Profit − Drawings',
       ]},
-      { title: 'VAT (standard rate 20%)', items: [
+      { title: 'VAT (standard rate 20%)', levels: ['aat', 'aat3'], items: [
         'VAT on net = Net × 20%',
         'Gross = Net × 1.20',
         'Net from gross = Gross ÷ 1.20',
         'VAT from gross = Gross ÷ 6',
         'VAT due to HMRC = Output tax − Input tax',
       ]},
-      { title: 'Inventory & cost of sales', items: [
+      { title: 'Inventory & cost of sales', levels: ['aat', 'aat3'], items: [
         'COGS = Opening inventory + Purchases − Closing inventory',
         'Gross profit = Revenue − COGS',
         'FIFO: oldest items sold first; newest remain in closing inventory',
         'AVCO: weighted-average cost, recalculated after each purchase',
         'LIFO: newest items issued first; examined for internal use only, and not permitted under IFRS or UK GAAP',
       ]},
-      { title: 'Depreciation', items: [
+      { title: 'Depreciation', levels: ['aat', 'aat3'], items: [
         'Straight-line = (Cost − Residual) ÷ Useful life',
         'Reducing balance = Carrying value × Rate %',
         'Journal: Dr Depreciation expense, Cr Accumulated depreciation',
       ]},
-      { title: 'Accruals & prepayments', items: [
+      { title: 'Accruals & prepayments', levels: ['aat', 'aat3'], items: [
         'Accrual (incurred, not yet paid): Dr Expense, Cr Accruals (liability)',
         'Prepayment (paid in advance): Dr Prepayments (asset), Cr Expense',
         'Apply the matching (accruals) concept to recognise in the correct period',
       ]},
-      { title: 'Costing formulas', items: [
+      { title: 'Costing formulas', levels: ['aat'], items: [
         'Prime cost = Direct materials + Direct labour + Direct expenses',
         'Contribution per unit = Selling price − Variable cost',
         'Contribution margin ratio = Contribution ÷ Sales',
@@ -391,24 +483,38 @@
         'OAR = Budgeted overheads ÷ Budgeted activity',
         'Over/Under-absorption = Absorbed overheads − Actual overheads',
       ]},
-      { title: 'Payroll & NIC (2026/27 rates)', items: [
+      /* Two payroll sections rather than one. TPFB 4.1.11 asks the student to
+         calculate gross pay, deductions, net pay and the amount due to HMRC
+         FROM FIGURES PROVIDED, and 4.1.12 then excludes "the calculation of
+         Income Tax", "of National Insurance contributions" and "of student loan
+         repayments". An employer's-NIC formula and a table of wage rates are
+         therefore the wrong reference for a TPFB reader — not merely extra. */
+      { title: 'Payroll & NIC (2026/27 rates)', levels: ['aat'], items: [
         'Net pay = Gross pay − PAYE − Employee NIC − Pension − Other deductions',
         "Total employment cost = Gross pay + Employer's NIC + Employer pension",
         "Employer NIC = (Gross pay − £5,000 secondary threshold) × 15%",
         'National Living Wage (21+) from April 2026: £12.71/hr; 18–20: £10.85; 16–17 & apprentice: £8.00',
       ]},
-      { title: 'Elasticity', items: [
+      { title: 'Payroll — gross to net', levels: ['aat3'], items: [
+        'Gross pay — everything earned before any deduction.',
+        'Taxable gross pay — gross pay less deductions made before tax, such as an employee pension contribution.',
+        'Net pay = Gross pay − PAYE − Employee NIC − student loan − pension − any non-statutory deduction',
+        "Amount due to HMRC = PAYE + Employee NIC + Employer's NIC + student loan repayments",
+        'Statutory deductions: PAYE, National Insurance, student loan repayments, and pension where auto-enrolment applies.',
+        'You are given the tax, NIC and student loan figures. Reconciling and reporting them is assessed; computing them is not.',
+      ]},
+      { title: 'Elasticity', levels: ['aat'], items: [
         'PED = |% change demand ÷ % change price|; >1 elastic, <1 inelastic',
         'IED = % change demand ÷ % change income; >1 luxury, 0–1 normal, <0 inferior',
         'XED = % change demand of A ÷ % change price of B; +ve substitutes, −ve complements',
       ]},
-      { title: 'Business structures', items: [
+      { title: 'Business structures', levels: ['aat'], items: [
         'Sole trader: unlimited liability, no legal separation',
         'Partnership: unlimited (general) or limited (LLP)',
         'Private limited (Ltd): limited liability, shares NOT to the public',
         'Public limited (PLC): limited liability, shares to the public',
       ]},
-      { title: 'Types of error', items: [
+      { title: 'Types of error', levels: ['aat', 'aat3'], items: [
         'Omission — transaction missed entirely (TB still balances)',
         'Commission — wrong account, same type (TB balances)',
         'Principle — wrong type of account, e.g. capital vs revenue (TB balances)',
@@ -417,7 +523,7 @@
         'Compensating — two errors cancel out (TB balances)',
         'Single-sided / casting / transposition — TB does NOT balance',
       ]},
-      { title: 'Partnership Act 1890 defaults', items: [
+      { title: 'Partnership Act 1890 defaults', levels: ['aat', 'aat3'], items: [
         'Profits and losses shared EQUALLY (not by capital ratio)',
         'No partners\' salaries (unless agreement says otherwise)',
         'No interest on capital (unless agreement says otherwise)',
@@ -426,16 +532,8 @@
         'Appropriation order: salaries → interest on capital → add back interest on drawings → residual in PSR',
         'Goodwill: raise in OLD ratio, write off in NEW ratio — must not remain on SFP',
       ]},
-      { title: 'VAT schemes (thresholds 2024)', items: [
-        'Standard accounting: VAT on invoice date (default)',
-        'Cash accounting: VAT on cash receipt/payment date — threshold ≤ £1.35m',
-        'Annual accounting: 1 return/yr, 9 monthly or 3 quarterly payments — threshold ≤ £1.35m',
-        'Flat rate: fixed sector % × gross (VAT-inclusive) turnover — threshold ≤ £150,000',
-        'Zero-rated (0%): food, books, children\'s clothing — input VAT IS reclaimable',
-        'Exempt: financial services, education, insurance — input VAT NOT reclaimable',
-        'Box 5 = Box 1 − Box 4. Positive → pay HMRC. Negative → HMRC refunds',
-      ]},
-      { title: 'Variance formulas (L3 MATS)', items: [
+      { title: 'VAT schemes', levels: ['aat', 'aat3'], items: vatSchemeItems },
+      { title: 'Variance formulas (L3 MATS)', levels: ['aat'], items: [
         'Material price = (Standard price − Actual price) × Actual qty purchased',
         'Material usage = (Standard qty for actual output − Actual qty used) × Standard price',
         'Labour rate = (Standard rate − Actual rate) × Actual hours paid',
@@ -445,7 +543,13 @@
         'OAR = Budgeted overheads ÷ Budgeted activity',
         'Over-absorption (absorbed > incurred) → credit P&L · Under-absorption → debit P&L',
       ]},
-      { title: 'Income tax — sole trader (L3 TPFB)', items: [
+      /* This was titled "Income tax — sole trader (L3 TPFB)" and shown to
+         Level 2 only, which hid the problem. TPFB 4.1.12 excludes the
+         calculation of Income Tax outright, so the unit tag was not merely
+         imprecise — it named the one unit that explicitly does not assess this.
+         Rolling the panel out to Level 3 would have put it in front of the
+         readers most likely to trust the label and revise from it. */
+      { title: 'Income tax — sole trader (background, not assessed here)', levels: ['aat'], items: [
         'Taxable profit = Accounting profit + Disallowable expenses − Capital allowances',
         'Always disallowable: depreciation, drawings, private expenses, fines',
         'AIA: 100% first-year on qualifying plant & machinery (limit £1m 2024/25)',
@@ -454,7 +558,7 @@
         'Payments on account: 31 Jan (in year) and 31 Jul (after year) — each 50% of prior year',
         'Balancing payment + Self Assessment return: 31 Jan after year end',
       ]},
-      { title: 'ETB column guide (L3 FAPS)', items: [
+      { title: 'ETB column guide (L3 FAPS)', levels: ['aat', 'aat3'], items: [
         'Four column pairs: Trial Balance → Adjustments → P&L → SFP',
         'Accrual: Dr P&L expense / Cr SFP current liability',
         'Prepayment: Cr P&L expense / Dr SFP current asset',
@@ -462,8 +566,79 @@
         'Profit = P&L balancing debit → same figure credited to SFP equity column',
         'SFP columns balance after transferring profit/loss',
       ]},
+      /* Last at both levels that see it. Ethics reads as a closing section
+         rather than an opening one, and putting it first — which is where the
+         Level 1 run would otherwise leave it for Level 3 — pushes VAT and
+         double entry below the fold on the panel a TPFB reader opens. */
+      { title: 'The five ethical principles', levels: ['aat1', 'aat3'], items: [
+        'Integrity — being straightforward and honest.',
+        'Objectivity — not letting bias, conflict of interest or undue influence override your judgement.',
+        'Professional competence and due care — keeping your knowledge current, working diligently, and knowing the limits of your own competence.',
+        'Confidentiality — not disclosing what you learn at work without proper authority, and not using it for personal advantage.',
+        'Professional behaviour — complying with the law and avoiding anything that discredits the profession.',
+      ]},
     ],
   };
+
+  /* £1350000 → "£1.35m", £150000 → "£150,000". The scheme thresholds are the
+     kind of number a reader checks at a glance, and seven digits do not read
+     at a glance. */
+  function refMoney(n) {
+    if (n >= 1000000) {
+      const m = (n / 1000000).toFixed(2).replace(/\.?0+$/, '');
+      return '£' + m + 'm';
+    }
+    return '£' + n.toLocaleString('en-GB');
+  }
+
+  /* THE THRESHOLDS COME FROM aat3-tax-data.js WHEREVER IT IS LOADED.
+     That file is the governed copy — every figure in it carries a source and a
+     checked date, and a Finance Act change is meant to be a one-file edit. A
+     second copy here would be a second thing to remember, and the pair would
+     drift silently because nothing renders them side by side.
+
+     The literals below are the fallback for Level 2, which does not load the
+     Level 3 data. check-reference-panel.js asserts they still match, so the
+     fallback cannot drift either.
+
+     The old entries gave ONE threshold per scheme. There are two, they differ,
+     and which turnover figure each is measured against differs as well — the
+     flat rate scheme is joined on turnover EXCLUDING VAT and left on turnover
+     INCLUDING VAT. A reader revising "threshold ≤ £150,000" would get any
+     question about leaving a scheme wrong. */
+  function vatSchemeItems() {
+    /* aat3-tax-data.js exports the VAT figures at the TOP level of AAT3_TAX —
+       AAT3_TAX.registration, AAT3_TAX.schemes. Reaching through a `.vat` that
+       does not exist reads as harmless and is not: every lookup goes undefined,
+       every threshold quietly falls back to the literals below, and the panel
+       still renders correct-looking numbers. It agreed with the fallback
+       because it WAS the fallback. */
+    const T = window.AAT3_TAX;
+    const reg = T && T.registration;
+    const sc = T && T.schemes;
+    const regLine = reg
+      ? 'Register once taxable turnover passes ' + refMoney(reg.threshold.value) +
+        ' in any rolling 12 months, or is expected to in the next 30 days alone. Deregister below ' +
+        refMoney(reg.deregistrationThreshold.value) + '.'
+      : 'Register once taxable turnover passes £90,000 in any rolling 12 months, or is expected to in the next 30 days alone. Deregister below £88,000.';
+    const cash = sc && sc.cashAccounting, ann = sc && sc.annualAccounting, flat = sc && sc.flatRate;
+    return [
+      regLine,
+      'Standard accounting: VAT on the invoice date (the default).',
+      'Cash accounting: VAT on the date payment is received or made. Join below ' +
+        refMoney(cash ? cash.joinThreshold.value : 1350000) + ', leave above ' +
+        refMoney(cash ? cash.leaveThreshold.value : 1600000) + ' — both excluding VAT.',
+      'Annual accounting: one return a year, with 9 monthly or 3 quarterly payments on account. Join below ' +
+        refMoney(ann ? ann.joinThreshold.value : 1350000) + ', leave above ' +
+        refMoney(ann ? ann.leaveThreshold.value : 1600000) + '.',
+      'Flat rate: a sector percentage of VAT-INCLUSIVE turnover, and no input tax reclaimed. Join below ' +
+        refMoney(flat ? flat.joinThreshold.value : 150000) + ' excluding VAT, leave above ' +
+        refMoney(flat ? flat.leaveThreshold.value : 230000) + ' including VAT.',
+      'Zero-rated (0%): food, books, children\'s clothing — a taxable supply, so input VAT IS reclaimable.',
+      'Exempt: financial services, education, insurance — input VAT is NOT reclaimable.',
+      'Box 5 = Box 1 − Box 4. Positive → pay HMRC. Negative → HMRC refunds.',
+    ];
+  }
 
   /* ── UNIT REVISION NOTES ── */
   const UNIT_REVISION = [
@@ -828,6 +1003,17 @@
     return `${info.ownExam} · ~${info.synopticMarks}% of the synoptic`;
   }
 
+  /* The sections for the subject on screen. A section with no `levels` would
+     be shown everywhere, which is the failure this whole change is about, so
+     one without them is shown nowhere and the check names it. */
+  function refSections() {
+    const id = _activeSubjectId || 'aat';
+    return REFERENCE.sections.filter(s => Array.isArray(s.levels) && s.levels.indexOf(id) !== -1);
+  }
+  function refItems(section) {
+    return typeof section.items === 'function' ? section.items() : section.items;
+  }
+
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -837,9 +1023,9 @@
         <button class="ref-close" id="referenceClose" type="button" aria-label="Close reference">✕</button>
       </div>
       <div class="ref-body">
-        ${REFERENCE.sections.map(s => `<details class="ref-section" open>
+        ${refSections().map(s => `<details class="ref-section" open>
           <summary>${escapeHtml(s.title)}</summary>
-          <ul>${s.items.map(it => '<li>' + escapeHtml(it) + '</li>').join('')}</ul>
+          <ul>${refItems(s).map(it => '<li>' + escapeHtml(it) + '</li>').join('')}</ul>
         </details>`).join('')}
       </div>
     </div>`;
@@ -852,8 +1038,16 @@
   }
   function updateRefToggleBtn() {
     const btn = document.getElementById('referenceToggle');
-    if (btn) {
-      btn.setAttribute('aria-pressed', State.referenceOpen ? 'true' : 'false');
+    if (!btn) return;
+    btn.setAttribute('aria-pressed', State.referenceOpen ? 'true' : 'false');
+    /* Into the spans, not over them. Assigning textContent here would delete
+       the glyph and label elements the narrow-screen rule needs — the same
+       mistake that briefly left the header with no subject switcher at all. */
+    const i = btn.querySelector('.rt-i'), l = btn.querySelector('.rt-l');
+    if (i && l) {
+      i.textContent = State.referenceOpen ? '📕' : '📘';
+      l.textContent = State.referenceOpen ? 'Hide ref' : 'Ref';
+    } else {
       btn.textContent = State.referenceOpen ? '📕 Hide ref' : '📘 Ref';
     }
   }
@@ -3226,12 +3420,19 @@
     if (leaving && leaving.suspend) leaving.suspend();
     _activeSubjectId = id;
     localStorage.setItem(SUBJECT_STORE_KEY, id);
-    if (id !== 'aat' && State.referenceOpen) { State.referenceOpen = false; }
     _frQLevelCache = null; // force rebuild from the new subject's ALL_QUESTIONS
     subj.activate();
     QUESTION_INDEX = null; // must clear after activate() so questionById() rebuilds from new subject
     Storage.data = defaultData();
     Storage.load();
+    /* Whether the reference drawer is open is a per-subject preference, so it
+       is re-read here from the subject just loaded rather than carried across.
+       This was `if (id !== 'aat') State.referenceOpen = false`, which was the
+       same thing while Level 2 was the only subject with a panel: now that
+       Levels 1 and 3 have one too, hardcoding the one subject that may keep it
+       open would shut the drawer on the two that just gained it. Subjects with
+       no panel never write the flag, so they still open closed. */
+    State.referenceOpen = !!Storage.data.settings.refOpen;
     // Reset all transient state
     State.screen = 'home';
     State.activeTab = subj.tabs[0];
