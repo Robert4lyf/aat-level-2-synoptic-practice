@@ -271,9 +271,16 @@
       if (c.table.headers) {
         h += '<thead><tr>' + c.table.headers.map(function (x) { return '<th>' + md(x) + '</th>'; }).join('') + '</tr></thead>';
       }
+      /* Each cell carries its column heading. Nothing shows it on a wide
+         screen — the header row is right there — but on a narrow one the table
+         stops being a grid and becomes a list of labelled facts, and then the
+         label has to come from somewhere. See .a1-cheat .a1-table in the
+         stylesheet. */
+      var heads = c.table.headers || [];
       h += '<tbody>' + (c.table.rows || []).map(function (r) {
         return '<tr>' + r.map(function (x, i) {
-          return '<td' + (i ? '' : ' class="a1-td-lead"') + '>' + md(x) + '</td>';
+          var head = heads[i] ? ' data-h="' + esc(String(heads[i]).replace(/\*\*/g, '')) + '"' : '';
+          return '<td' + (i ? '' : ' class="a1-td-lead"') + head + '>' + md(x) + '</td>';
         }).join('') + '</tr>';
       }).join('') + '</tbody></table></div>';
       if (c.table.caption) h += '<div class="a1-cap">' + md(c.table.caption) + '</div>';
@@ -624,7 +631,7 @@
       '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
       '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
 
-    h += '<article class="a1-sheet' + fresh() + '">';
+    h += '<article class="a1-sheet' + (l.isSheet ? ' a1-cheat' : '') + fresh() + '">';
     if (S.phase === 'teach') {
       var c = cards[S.cardIdx] || {};
       h += cardHtml(c);

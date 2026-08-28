@@ -630,9 +630,14 @@ header .sub {
 }
 
 /* ── MODE CARD GRID (replaces plain all-topics-btn list) ── */
+/* `min(200px, 100%)` rather than a bare 200px: a grid track's automatic
+   minimum is its content, so on a 320px phone a 200px floor plus a gutter is
+   wider than the container and the whole page scrolls sideways. Capping the
+   floor at the container's own width is what lets the last column collapse
+   instead of overflowing. */
 .mode-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
   gap: 10px;
   margin-top: 4px;
 }
@@ -669,6 +674,11 @@ header .sub {
   background: var(--accent-soft);
   border-radius: var(--r-sm);
 }
+/* A flex item's default minimum width is its content, so the longest
+   unbreakable run inside a practice card — "ITBK · POBC · POC · 90 min each" —
+   pushed the card 7px past a 320px window even once the grid itself fitted.
+   `min-width: 0` is what lets it wrap instead. */
+.mode-card-info { min-width: 0; }
 .mode-card-title {
   font-size: .88rem;
   font-weight: 700;
@@ -1653,7 +1663,19 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   .breakdown-row .bl { min-width: 110px; font-size: .78rem; }
   .nav-tabs { width: 100%; padding: 4px 5px; gap: 4px; }
   .nav-tab { font-size: .74rem; padding: 7px 11px; }
-  .mode-card-grid { grid-template-columns: 1fr 1fr; }
+  /* minmax(0, …), not 1fr: `1fr` is `minmax(auto, 1fr)`, and `auto` here means
+     the widest thing inside the card — so two columns of practice cards were
+     366px wide in a 320px window. */
+  .mode-card-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+/* ONE COLUMN ON THE NARROWEST PHONES. Two half-width cards leave about 71px
+   for their text once the padding, the icon and the gap are taken out, and
+   "Assessment" is eighty. Letting the tracks shrink stops the page scrolling
+   sideways; it does not make a card that narrow readable, and the word would
+   simply break instead. */
+@media (max-width: 359px) {
+  .mode-card-grid { grid-template-columns: minmax(0, 1fr); }
   .focus-topic-row { grid-template-columns: 1.2rem 4rem 1fr 2.2rem; }
   .journey-node { width: 40px; height: 40px; min-height: 40px; }
   .journey-icon { font-size: 1.1rem; }
@@ -5024,7 +5046,7 @@ body.dark .topic-card-clinic {
 }
 .l3-unit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 1rem;
 }
 .l3-unit-card {
@@ -5172,7 +5194,7 @@ body.dark .topic-card-clinic {
 }
 .l3-steps-list li { margin-bottom: .4rem; }
 @media (max-width: 480px) {
-  .l3-unit-grid { grid-template-columns: 1fr; }
+  .l3-unit-grid { grid-template-columns: minmax(0, 1fr); }
   .l3-unit-sections { grid-template-columns: 1fr; }
   .l3-bridge-section { padding: 1rem; }
   .l3-enrol-steps { padding: 1rem; }

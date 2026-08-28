@@ -77,9 +77,17 @@ function serve() {
   });
 }
 
-/* 390px is an iPhone at its most common width and the narrowest thing this has
-   to work on. Everything that fails does so here first. */
-const WIDTH = 390;
+/* 390px is an iPhone at its most common width. 320px is an iPhone SE and the
+   narrowest phone still in use, and it is NOT merely a smaller 390: a grid
+   track whose automatic minimum is its content fits one and not the other, so
+   everything below 360 fails on its own terms.
+
+   Sweeping both found three grids that made the page scroll sideways at 320
+   and nothing at 390 — Level 3's unit cards (a `minmax(300px, 1fr)` left behind
+   by the rebuild as a second live definition of the class), Level 2's Learn
+   units, and its practice cards. */
+const WIDTHS = [320, 390];
+let WIDTH = WIDTHS[WIDTHS.length - 1];
 
 /* Set from what the module achieves, like the rest of the ratchets here, so it
    guards against regression rather than expressing an aspiration. It is NOT a
@@ -142,6 +150,8 @@ const MODULES = [
   const browser = await chromium.launch(CANDIDATES.length ? { executablePath: CANDIDATES[0] } : {});
 
   try {
+    for (const W of WIDTHS) {
+    WIDTH = W;
     for (const MOD of MODULES) {
     for (const dark of [false, true]) {
       const ctx = await browser.newContext({ viewport: { width: WIDTH, height: 860 } });
@@ -429,15 +439,16 @@ const MODULES = [
       }, [MIN_CONTRAST, MOD]);
 
       const theme = dark ? 'dark' : 'light';
-      found.problems.forEach(p => errors.push(`${MOD.name} ${theme}: ${p}`));
-      notes.push(`${MOD.name} ${theme}: swept ${MOD.id === 'aat1'
+      found.problems.forEach(p => errors.push(`${MOD.name} ${theme} @${WIDTH}px: ${p}`));
+      notes.push(`${MOD.name} ${theme} @${WIDTH}px: swept ${MOD.id === 'aat1'
         ? 'the ladder, practice, every cheat sheet, a lesson and one question of every type'
         : 'units, both paths, both practice screens, every cheat sheet, a lesson, every task and both screens of a mock review'} at ${WIDTH}px.`);
       if (found.lowest) {
-        notes.push(`${MOD.name} ${theme}: faintest text is ${found.lowest.ratio.toFixed(2)}:1 — ` +
+        notes.push(`${MOD.name} ${theme} @${WIDTH}px: faintest text is ${found.lowest.ratio.toFixed(2)}:1 — ` +
           `"${found.lowest.text}" on ${found.lowest.label} (floor ${MIN_CONTRAST}).`);
       }
       await ctx.close();
+    }
     }
     }
   } finally {

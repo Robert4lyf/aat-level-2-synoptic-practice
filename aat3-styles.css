@@ -154,10 +154,6 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 /* The first screen once Level 3 carries more than one unit. Each card has to
    answer two questions before the reader commits: how much of this unit have I
    studied, and how much of it exists yet. */
-.a3-ugrid {
-  display: grid; gap: 16px; margin: 6px 0 30px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
 .a3-ucard {
   display: flex; flex-direction: column; gap: 8px; text-align: left;
   padding: 22px 24px; cursor: pointer; font: inherit; color: inherit;
@@ -1072,8 +1068,17 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 }
 
 /* ══ Unit cards ══════════════════════════════════════════════════════════════ */
+/* ONE COLUMN UNTIL THERE IS ROOM FOR TWO, and no minimum track width.
+   The rule this replaced was `repeat(auto-fit, minmax(300px, 1fr))`, and it
+   survived the rebuild as a second live definition of the same class further
+   up the file — so the 300px floor was still in force. A 320px phone has 280px
+   inside the page gutter, the card would not go below 300, and the whole page
+   scrolled sideways. `minmax(0, 1fr)` on the two-column rule for the same
+   reason: a grid track's automatic minimum is its content, not zero, so two
+   columns can push a container wider than its parent without anything
+   declaring a width at all. */
 .a3-ugrid { display: grid; gap: var(--a3-4); }
-@media (min-width: 700px) { .a3-ugrid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 700px) { .a3-ugrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 .a3-ucard {
   display: block; width: 100%; text-align: left; padding: var(--a3-5);
   border-radius: var(--a3-r-lg); border: 1px solid var(--a3-line);

@@ -356,6 +356,37 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   font-size: .78rem; color: var(--a1-ink-3); text-align: center;
 }
 
+/* ── A cheat-sheet table on a narrow screen ─────────────────────────────────
+   Stacked, not scrolled. A cheat sheet is read at a glance, so a column off the
+   right edge defeats the card it is on; and its rows are independent facts
+   rather than a column anybody adds up, so stacking costs nothing.
+
+   FOUND AT 320px, NOT AT 390. Level 1's tables carry no min-width and fit an
+   iPhone at its common width, which is why this was not needed when the layout
+   gate measured one width. On a 320px phone three of the five sheets came to
+   282px, 277px and 261px inside a 234px wrapper. Level 3 hit the same thing
+   first and this is its answer, with Level 1's tokens. */
+@media (max-width: 400px) {
+  .a1-cheat .a1-table, .a1-cheat .a1-table tbody,
+  .a1-cheat .a1-table tr, .a1-cheat .a1-table td { display: block; width: auto; }
+  .a1-cheat .a1-table thead { display: none; }
+  .a1-cheat .a1-table { border-collapse: separate; border-spacing: 0; min-width: 0; }
+  .a1-cheat .a1-table tr {
+    padding: var(--a1-3) 0; border-bottom: 1px solid var(--a1-line);
+  }
+  .a1-cheat .a1-table tr:last-child { border-bottom: 0; }
+  .a1-cheat .a1-table td { border: 0; padding: 1px 0; }
+  .a1-cheat .a1-table td:first-child {
+    font-weight: 700; color: var(--a1-ink); font-size: var(--a1-t-ui);
+    margin-bottom: var(--a1-1);
+  }
+  .a1-cheat .a1-table td[data-h]:not(:first-child)::before {
+    content: attr(data-h); display: block;
+    font-size: var(--a1-t-label); letter-spacing: var(--a1-track); text-transform: uppercase;
+    color: var(--a1-ink-3); font-weight: 700; margin-top: var(--a1-2);
+  }
+}
+
 /* ── Lesson chrome ────────────────────────────────────────────────────────────
    Which lesson, and which half of it. The bar carried a title and a fraction;
    the progress rule now sits under the bar rather than inside it, so the bar
