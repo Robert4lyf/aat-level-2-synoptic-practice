@@ -44,6 +44,10 @@
     mockEndsAt: 0,       // timed mock: when the clock runs out
     mockResults: [],     // timed mock: one record per question answered, for the report and the review
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
+    /* Reading the card aloud. Held in state rather than read off the button,
+       because every click repaints the whole screen and a class on a node that
+       no longer exists is not a source of truth. */
+    speaking: false,
     /* Reviewing the paper just sat. `reviewIdx` is which question is open, or
        null for the list of them; `reviewLast` is the one to scroll back to on
        returning to that list. */
@@ -912,6 +916,18 @@
               : 'Questions · ' + (S.qIdx + 1) + ' of ' + checks.length) +
         '</div>' +
       '</div>' +
+      /* THE GLYPH AND THE WORD ARE SEPARATE ELEMENTS, so the narrowest phone can
+         drop the word and keep the button. The first attempt set `font-size: 0`
+         on the button and tried to restore the glyph with `::first-letter` —
+         which does not apply to an inline-flex box, so at 320px the button
+         rendered as an empty pill. */
+      (speechOffered(l)
+        ? '<button class="a3-speak' + (S.speaking ? ' is-on' : '') + '" data-a3="speak"' +
+          ' aria-label="' + (S.speaking ? 'Stop reading this card aloud' : 'Read this card aloud') + '">' +
+          '<span class="a3-speak-i" aria-hidden="true">' + (S.speaking ? '■' : '▶') + '</span>' +
+          '<span class="a3-speak-l">' + (S.speaking ? 'Stop' : 'Listen') + '</span>' +
+          '</button>'
+        : '') +
       '<div class="a3-lessonbar-n">' + pct + '%</div>' +
       '</div>' +
       '<div class="a3-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
@@ -1982,6 +1998,158 @@
      `querySelector` is guarded because the build checks drive the player
      through a stand-in element that has none: there the clock simply does not
      tick, which is correct — those runs are not against a wall clock. */
+  /* ── Reading a card aloud ──────────────────────────────────────────────────
+     A TRIAL, ON ONE LESSON. The button appears on L3-TPFB-1A and nowhere else,
+     because the question this is meant to answer is whether the thing is worth
+     having at all — and that is a judgement about how it SOUNDS, which no
+     amount of code review settles. Widening it is one edit to the constant
+     below; the machinery is not lesson-specific.
+
+     WHY NOT REUSE app.js's. It has ninety lines of Web Speech API code already,
+     and none of it is reachable: it lives inside that file's closure with
+     nothing on `window`, and every utterance it builds is hard-wired to French
+     — `getFrenchVoice()` filters on `fr`, and each one sets `lang = 'fr-FR'`.
+     Level 3 needs English and its own module boundary, so it gets its own.
+
+     EVERYTHING GOES THROUGH `root`, not `window`. In the browser `root` IS
+     window, so this is the same object; in Node it is the module's exports,
+     which is what lets the build check hand it a stub speech engine and assert
+     what was said and when it was cancelled. The alternative — reaching for
+     `window` directly — would make every one of those assertions impossible. */
+  var SPEECH_TRIAL_LESSON = 'L3-TPFB-1A';
+
+  function speechEngine() { return root.speechSynthesis || null; }
+  function canSpeak() { return !!(speechEngine() && root.SpeechSynthesisUtterance); }
+  /* The trial gate, asked in one place so the button, the handler and the
+     cleanup cannot disagree about where this is switched on. */
+  function speechOffered(lesson) {
+    return canSpeak() && !!lesson && lesson.id === SPEECH_TRIAL_LESSON && S.phase === 'teach';
+  }
+
+  /* An English voice, preferring the British one this material is written in.
+     Voices load asynchronously on most browsers, so this is asked for at speak
+     time rather than cached at load — a cached null from the first paint would
+     never recover. */
+  function englishVoice() {
+    var e = speechEngine();
+    var voices = (e && e.getVoices) ? e.getVoices() : [];
+    if (!voices.length) return null;
+    return voices.find(function (v) { return v.lang === 'en-GB'; })
+      || voices.find(function (v) { return String(v.lang).indexOf('en') === 0; })
+      || null;
+  }
+
+  /* What a card SAYS, as opposed to what it shows.
+
+     Only the prose is spoken: the heading, the paragraphs, the callout and the
+     exam trap. The structural elements are not, and that is a decision rather
+     than an omission — a four-column table read out row by row is worse than
+     silence, and a formula becomes "gross equals net times one point two zero".
+     Where one is present it is ANNOUNCED instead, so a listener knows to look
+     rather than assuming they have heard the whole card.
+
+     Built from the card data, never from the rendered HTML. Scraping the DOM
+     would pick up the markup, the column headings repeated on every cell for
+     the narrow layout, and the button itself. */
+  function cardSpeech(c) {
+    if (!c) return [];
+    var out = [];
+    var say = function (t) {
+      var clean = String(t == null ? '' : t)
+        .replace(/\*\*([^*]+)\*\*/g, '$1')      // bold markers are for the eye
+        .replace(/(^|[^*])\*([^*]+)\*/g, '$1$2')  // and so is emphasis
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (clean) out.push(clean);
+    };
+
+    if (c.h) say(c.h);
+    if (c.p) (Array.isArray(c.p) ? c.p : [c.p]).forEach(say);
+
+    /* Announced, in the order they appear on the card, so "there is more here"
+       arrives at the point the eye would reach it. */
+    if (c.formula) say('There is a formula on screen.');
+    if (c.split) say('There are two lists on screen to compare.');
+    /* TABLES ARE PASSED OVER IN SILENCE, not announced. Reading one aloud is
+       worse than useless — a four-column grid becomes a stream of unanchored
+       words — and announcing it turned out to be little better: on a card whose
+       table IS the substance, "there is a table on screen" is an interruption
+       that tells a listener nothing they did not already know from the prose
+       around it. The prose on these cards introduces its own table; the table
+       is there to be looked at. */
+    if (c.example) say('There is a worked figure on screen.');
+    if (c.flow) say('There is a sequence of steps on screen.');
+    if (c.callout) say(c.callout.text);
+    if (c.examtrap) say('Exam trap. ' + c.examtrap);
+    if (c.worked) say('There is a worked example on screen to step through.');
+    return out;
+  }
+
+  /* SPOKEN AS SENTENCES, NOT AS ONE UTTERANCE, and that is not a stylistic
+     preference. iOS Safari cuts speech off after roughly fifteen seconds of a
+     single utterance; the median card here is about eighty seconds of speech
+     and the longest over three minutes, so one utterance per card would be
+     truncated on every iPhone in the middle of the second paragraph. Queued
+     sentences also give the pauses a reader expects, and let the stop button
+     take effect within a sentence rather than at the end of the card. */
+  function sentences(text) {
+    return String(text).split(/(?<=[.!?])\s+/).filter(function (x) { return x.trim(); });
+  }
+
+  function stopSpeaking() {
+    var e = speechEngine();
+    if (e && e.cancel) e.cancel();
+    S.speaking = false;
+    paintSpeakButton();
+  }
+
+  /* The button is repainted in place rather than by re-rendering, for the same
+     reason the mock clock is: a repaint rebuilds the whole screen, and doing
+     that from an utterance callback would fight whatever the reader is doing.
+     Guarded because the build check drives this through an element that has no
+     querySelector. */
+  function paintSpeakButton() {
+    if (!_host || !_host.querySelector) return;
+    var el = _host.querySelector('.a3-speak');
+    if (!el) return;
+    /* The two spans are updated rather than the button's textContent, which
+       would replace them with a bare string and take the narrow-screen layout
+       with it. */
+    var icon = el.querySelector && el.querySelector('.a3-speak-i');
+    var label = el.querySelector && el.querySelector('.a3-speak-l');
+    if (icon) icon.textContent = S.speaking ? '■' : '▶';
+    if (label) label.textContent = S.speaking ? 'Stop' : 'Listen';
+    if (el.classList) {
+      if (S.speaking) el.classList.add('is-on'); else el.classList.remove('is-on');
+    }
+    el.setAttribute('aria-label', S.speaking ? 'Stop reading this card aloud' : 'Read this card aloud');
+  }
+
+  function speakCard(c) {
+    var e = speechEngine();
+    if (!e || !root.SpeechSynthesisUtterance) return;
+    e.cancel();
+    var lines = [];
+    cardSpeech(c).forEach(function (t) { lines = lines.concat(sentences(t)); });
+    if (!lines.length) return;
+
+    var voice = englishVoice();
+    var utterances = lines.map(function (line) {
+      var u = new root.SpeechSynthesisUtterance(line);
+      u.lang = 'en-GB';
+      u.rate = 0.95;
+      if (voice) u.voice = voice;
+      return u;
+    });
+    /* Only the last one clears the flag. Attaching it to every utterance would
+       end the run at the first full stop. */
+    var last = utterances[utterances.length - 1];
+    last.onend = last.onerror = function () { S.speaking = false; paintSpeakButton(); };
+    S.speaking = true;
+    paintSpeakButton();
+    utterances.forEach(function (u) { e.speak(u); });
+  }
+
   var _mockTimer = null;
   function stopMockClock() {
     if (_mockTimer && typeof clearInterval === 'function') clearInterval(_mockTimer);
@@ -2168,6 +2336,7 @@
 
     if (act === 'open') { startLesson(n.getAttribute('data-id')); return rerender(); }
     if (act === 'exit') {
+      stopSpeaking();
       /* Walking out of a mock stops its clock; leaving it running would fire a
          finish() over whatever screen the reader had moved on to. */
       if (isMock()) { stopMockClock(); S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
@@ -2209,6 +2378,15 @@
     }
     if (act === 'startmock') { startMock(); return rerender(); }
 
+    /* One button, two jobs, decided by what is happening rather than by what
+       the button last said — the screen repaints constantly and the label is
+       rebuilt from `S` every time. */
+    if (act === 'speak') {
+      if (S.speaking) stopSpeaking();
+      else speakCard(cards[S.cardIdx]);
+      return;
+    }
+
     /* ── The review of a finished paper ─────────────────────────────────────
        `mode` moves to 'review' rather than staying 'mock', because the graded
        screen is drawn by asking isMock() whether to withhold the verdict — and
@@ -2249,8 +2427,11 @@
       return rerender();
     }
 
-    if (act === 'back') { S.cardIdx = Math.max(0, S.cardIdx - 1); resetCardState(); return rerender(); }
+    if (act === 'back') { stopSpeaking(); S.cardIdx = Math.max(0, S.cardIdx - 1); resetCardState(); return rerender(); }
     if (act === 'next') {
+      /* The card on screen is about to change, so what is being read no longer
+         matches what is being shown. */
+      stopSpeaking();
       if (S.cardIdx === cards.length - 1) {
         /* A sheet has no check phase to move into, and no score to record —
            there is nothing to answer, so nothing to be right about. */
@@ -2359,6 +2540,7 @@
        than asserting a regex against this file and calling that a test. */
     reset: function (screen, unitKey) {
       stopMockClock();
+      stopSpeaking();
       S.screen = screen || 'units';
       if (unitKey) S.unit = unitKey;
     },
@@ -2379,16 +2561,26 @@
        ninety minutes later. */
     home: function () {
       stopMockClock();
+      stopSpeaking();
       S.mode = 'lesson';
       S.lessonId = null;
       /* The top of this subject: the unit picker where there is a choice to
          make, and the path where there is only one unit to pick. */
       S.screen = unitKeys().length > 1 ? 'units' : 'path';
     },
-    suspend: function () { stopMockClock(); },
+    /* Speech is cancelled here for exactly the reason the clock is: it outlives
+       the screen that started it. Switch subject mid-card without this and a
+       voice goes on reading VAT legislation over Français. */
+    suspend: function () { stopMockClock(); stopSpeaking(); },
     /* Exposed so scripts/check-aat3-practice-summary.js can assert the totals
        and the most-mistakes ranking directly, rather than reading them back out
        of rendered HTML. */
     practiceSummary: practiceSummary,
+    /* Exposed for scripts/check-aat3-speech.js, which asserts what a card would
+       SAY against the card's own data. Reading it back out of the rendered HTML
+       would test the renderer instead, and could not see the difference between
+       a table skipped and a table that failed to render. */
+    cardSpeech: cardSpeech,
+    speechTrialLesson: SPEECH_TRIAL_LESSON,
   };
 }(typeof self !== 'undefined' ? self : this));
