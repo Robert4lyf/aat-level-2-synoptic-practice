@@ -90,8 +90,17 @@ const WIDTH = 390;
    written for. A near-black screen heading on the app bar's dark navy gradient
    — which a reader simply cannot see — measures 1.36:1, because both are so
    close to black that the +0.05 in the contrast formula dominates. The floor
-   has to sit above that. */
-const MIN_CONTRAST = 1.75;
+   has to sit above that.
+
+   RAISED FROM 1.75 TO 3.0 once the sweep reached a graded question. 1.75 was
+   what the module managed at the time, and what it managed was poor: in dark
+   mode every chip filled with a brand or status colour carried hard-coded
+   white ink, which those colours invert underneath — a correct pill measured
+   1.79:1 and every primary button 2.87:1. With one token for the ink that goes
+   on a fill, the faintest text in dark mode is 5.29:1. The floor now sits just
+   under the module's true minimum of 3.07:1, which is the deliberately quiet
+   unearned star on the path in light mode. */
+const MIN_CONTRAST = 3.0;
 
 (async () => {
   const errors = [];
@@ -316,6 +325,33 @@ const MIN_CONTRAST = 1.75;
             if (go) { go.click(); sweep(`task ${t.id}`); }
           });
           window.AAT3_PRACTICE = saved;
+
+          /* THE REVIEW OF A FINISHED PAPER — the two tallest screens in the
+             module. The list is twenty-four rows of question stems clamped to
+             two lines, and a replayed question is a graded question plus a
+             verdict, a blank notice and its own navigation, all on one screen.
+             Neither is reachable by remounting: a paper has to be sat first,
+             so it is sat here, blank, which is both the quickest way through
+             and the state that renders the most (every question carries the
+             right answer, the explanation and the notice saying it was left
+             empty). */
+          remount('practice', unit);
+          const mock = document.querySelector('[data-a3="startmock"]');
+          if (mock) {
+            mock.click();
+            for (let i = 0; i < 60; i++) {
+              const next = document.querySelector('[data-a3="mocknext"]');
+              if (!next) break;
+              next.click();
+            }
+            const review = document.querySelector('[data-a3="review"]');
+            if (review) {
+              review.click();
+              sweep(`${unit} mock review list`);
+              const row = document.querySelector('[data-a3="reviewq"]');
+              if (row) { row.click(); sweep(`${unit} mock review question`); }
+            }
+          }
         });
         return { problems: problems, lowest: window.__a3lowest };
       }, MIN_CONTRAST);
@@ -323,7 +359,7 @@ const MIN_CONTRAST = 1.75;
       const theme = dark ? 'dark' : 'light';
       found.problems.forEach(p => errors.push(`${theme}: ${p}`));
       notes.push(`${theme}: swept units, both paths, both practice screens, every cheat sheet, ` +
-        `a lesson and every task at ${WIDTH}px.`);
+        `a lesson, every task and both screens of a mock review at ${WIDTH}px.`);
       if (found.lowest) {
         notes.push(`${theme}: faintest text is ${found.lowest.ratio.toFixed(2)}:1 — ` +
           `"${found.lowest.text}" on ${found.lowest.label} (floor ${MIN_CONTRAST}).`);

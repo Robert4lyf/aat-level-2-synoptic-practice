@@ -108,9 +108,11 @@ function answerWrongMcq(el, q) {
   return true;
 }
 
-/* Sit a whole paper. `how` decides each question: 'right', 'wrong-mcq' — every
+/* Sit a whole paper. `how` decides each question: 'right'; 'wrong-mcq' — every
    multiple choice answered with something that is not the key, everything else
-   left alone — or 'blank'. */
+   left alone; 'mixed' — every other question right and the rest left blank,
+   which is the only mode that produces a paper the review has something to
+   filter; or 'blank'. */
 function sit(unitKey, how) {
   const ctx = openMock(unitKey);
   const seen = [];
@@ -119,6 +121,7 @@ function sit(unitKey, how) {
     if (!q) break;
     const before = ctx.el.innerHTML;
     if (how === 'right') answerRight(ctx.el, q);
+    else if (how === 'mixed' && i % 2 === 0) answerRight(ctx.el, q);
     else if (how === 'wrong-mcq') answerWrongMcq(ctx.el, q);
     /* BOTH SNAPSHOTS, and the one AFTER answering is the one that matters.
        A first version captured only the screen as it arrived — which is
@@ -222,7 +225,198 @@ function sit(unitKey, how) {
     'a wrong choice is shown as chosen in exactly the same way as a right one');
 }
 
-/* ── 4. A paper answered correctly scores 100, and one left blank scores 0 ── */
+/* ── 4. The review of a finished paper ────────────────────────────────────
+   A mock withholds everything until the end, which is the point, and then had
+   nothing to give back but a score and a table by outcome. "Which ones did I
+   get wrong, and why" is the question a paper exists to answer.
+
+   The property that matters most is that the review cannot disagree with the
+   marking: it restores what the reader put and runs it back through the same
+   gradeAnswer(), so there is one marker rather than two. The tally assertion
+   below is what makes that observable from outside — the review's own count of
+   right answers has to equal the score the paper was given. */
+
+/* The `data-i` of each option, in the order the screen offered them. */
+function optionOrder(html) {
+  return (html.match(/data-a3="ans" data-i="(\d+)"/g) || [])
+    .map(m => Number(/data-i="(\d+)"/.exec(m)[1]));
+}
+function openReview(ctx, i) {
+  D.click(ctx.el, 'reviewq', n => n.getAttribute('data-i') === String(i));
+  return ctx.el.innerHTML;
+}
+function countOf(html, re) { return (html.match(re) || []).length; }
+
+/* 4a. It is offered, and a clean sweep reads as one. */
+{
+  const r = sit('tpfb', 'right');
+  ok(/data-a3="review"/.test(r.el.innerHTML), 'a finished paper offers a review of itself');
+
+  D.click(r.el, 'review');
+  const rows = D.nodes(r.el, 'reviewq');
+  ok(rows.length === r.seen.length,
+    `the review lists every question on the paper (${rows.length} rows for ${r.seen.length} questions)`);
+  ok(countOf(r.el.innerHTML, /class="a3-revrow is-right"/g) === r.seen.length,
+    'and marks them all right, on a paper that was answered right');
+  ok(/Every question on this paper was right/.test(r.el.innerHTML),
+    'a clean sweep says so rather than offering a filter onto an empty list');
+
+  /* THE MULTI-PART TASKS, which is where re-marking is observable. A reviewed
+     question's options are marked from the pick and the key, so a review that
+     asserted "graded" without actually grading would look identical on every
+     other type. A task's per-part verdicts come from gradeAnswer() and from
+     nothing else, so they are what proves the review re-marks rather than
+     assuming. (Found by mutation: replacing the grade with a bare `true`
+     survived every assertion here until this one existed.) */
+  const tasks = r.seen.map((s, i) => ({ s, i })).filter(x => (x.s.q.type || 'mcq') === 'task');
+  ok(tasks.length > 0, 'the paper contained at least one multi-part task to review');
+  let parts = 0, marked = 0, typed = 0, typedWanted = 0;
+  tasks.forEach(({ s, i }) => {
+    const html = openReview(r, i);
+    parts += (s.q.parts || []).length;
+    marked += countOf(html, /class="a3-part is-right"/g);
+    /* And the reader's own figures, back in the boxes they typed them into. */
+    (s.q.parts || []).forEach((p, pi) => {
+      if (p.type === 'choice') return;
+      typedWanted++;
+      if (new RegExp(`data-a3="taskinput" data-p="${pi}" value="[^"]+"`).test(html)) typed++;
+    });
+    D.click(r.el, 'reviewlist');
+  });
+  ok(parts > 0 && marked === parts,
+    `every part of a task answered right is marked right in the review (${marked}/${parts})`);
+  ok(typedWanted > 0 && typed === typedWanted,
+    `and every figure the reader typed is back in the box they typed it into (${typed}/${typedWanted})`);
+}
+
+/* 4b. A wrong answer is shown back as the reader's own, in the shuffle they
+   saw, with the key and the explanation the paper withheld. */
+{
+  const r = sit('tpfb', 'wrong-mcq');
+  D.click(r.el, 'review');
+
+  const mcq = r.seen.map((s, i) => ({ s, i })).filter(x => (x.s.q.type || 'mcq') === 'mcq');
+  ok(mcq.length > 0, 'the paper the review was checked on contained multiple choice at all');
+
+  let choice = 0, key = 0, order = 0, why = 0, verdict = 0;
+  mcq.forEach(({ s, i }) => {
+    const html = openReview(r, i);
+    const q = s.q;
+    /* The reader's own wrong option, marked wrong — not merely the key marked
+       right, which is also what a question left blank would show. */
+    const chosen = q.opts.map((_, k) => k).find(k => k !== q.ans);
+    if (new RegExp(`class="a3-opt is-wrong" data-a3="ans" data-i="${chosen}"`).test(html)) choice++;
+    if (new RegExp(`class="a3-opt is-right" data-a3="ans" data-i="${q.ans}"`).test(html)) key++;
+    /* The same shuffle: "I picked B" means nothing against a different one. */
+    if (String(optionOrder(html)) === String(optionOrder(s.html))) order++;
+    if (/class="a3-exp-box"/.test(html)) why++;
+    if (/class="a3-revverdict is-wrong"/.test(html)) verdict++;
+    D.click(r.el, 'reviewlist');
+  });
+  ok(choice === mcq.length, `a reviewed question shows the answer the reader gave (${choice}/${mcq.length})`);
+  ok(key === mcq.length, `and the answer that was right (${key}/${mcq.length})`);
+  ok(order === mcq.length, `and the options in the order they were sat in (${order}/${mcq.length})`);
+  ok(why === mcq.length, `and the explanation, which the paper itself withheld (${why}/${mcq.length})`);
+  ok(verdict === mcq.length, `and marks every one of them wrong (${verdict}/${mcq.length})`);
+
+  /* Read-only. Every control on a reviewed question is disabled and the run's
+     own "next question" — which would advance a paper that is already over —
+     is not on the screen. */
+  const one = openReview(r, mcq[0].i);
+  ok(!/data-a3="nextq"/.test(one), 'a reviewed question does not offer the button that advances a run');
+  ok(countOf(one, /data-a3="ans"/g) === countOf(one, /data-a3="ans" data-i="\d+" disabled/g),
+    'and every option on it is disabled, so a review cannot change what was scored');
+}
+
+/* 4b². Every type shows the reader what the right answer WAS. Multiple choice
+   and gap-fill and the task pills always did; true or false did not — its row
+   went red and the pills stayed neutral, so a reader was told they had the
+   statement the wrong way round and left to work out which way round it should
+   have been. On a review of a whole paper that is the answer being withheld. */
+{
+  const r = sit('tpfb', 'blank');
+  D.click(r.el, 'review');
+  const tf = r.seen.map((s, i) => ({ s, i })).filter(x => (x.s.q.type || 'mcq') === 'truefalse');
+  ok(tf.length > 0, 'the paper contained a true-or-false question to review');
+  let keyed = 0, wanted = 0;
+  tf.forEach(({ s, i }) => {
+    const html = openReview(r, i);
+    /* One marked pill per statement: the one that was true of it. */
+    wanted += (s.q.statements || []).length;
+    keyed += countOf(html, /class="a3-pill is-right"/g);
+    D.click(r.el, 'reviewlist');
+  });
+  ok(wanted > 0 && keyed === wanted,
+    `a reviewed true-or-false marks the right answer to every statement (${keyed}/${wanted})`);
+}
+
+/* 4c. A blank. Multiple choice is why this matters: an unanswered question
+   replays with the key marked right and nothing marked wrong, which is exactly
+   how a question answered CORRECTLY replays. Without the notice a reader would
+   read a run of blanks as a run of right answers. */
+{
+  const r = sit('tpfb', 'blank');
+  D.click(r.el, 'review');
+  const rows = D.nodes(r.el, 'reviewq').length;
+  ok(countOf(r.el.innerHTML, /left blank/g) === rows,
+    `every unanswered question is listed as left blank (${countOf(r.el.innerHTML, /left blank/g)}/${rows})`);
+  const first = openReview(r, 0);
+  ok(/class="a3-revblank"/.test(first) && /You left this one blank/.test(first),
+    'and says so on the question itself, where it is the only thing separating a blank from a right answer');
+  ok(/class="a3-revverdict is-wrong"/.test(first), 'and marks it wrong');
+}
+
+/* 4d. A partly-right paper: the tally, the filter, the arrows, and the way out. */
+{
+  const r = sit('tpfb', 'mixed');
+  const scored = /(\d+) of (\d+) correct/.exec(r.el.innerHTML);
+  ok(!!scored, 'a partly-answered paper reports a score');
+  const score = scored ? Number(scored[1]) : -1;
+  const total = scored ? Number(scored[2]) : -1;
+  ok(score > 0 && score < total, `and that score is neither nothing nor everything (${score} of ${total})`);
+
+  D.click(r.el, 'review');
+  const all = D.nodes(r.el, 'reviewq').length;
+  const rightRows = countOf(r.el.innerHTML, /class="a3-revrow is-right"/g);
+  /* THE ONE THAT MATTERS. The review re-marks from what was recorded rather
+     than reading back a stored verdict, so this is what would catch the two
+     drifting apart. */
+  ok(rightRows === score,
+    `the review's own count of right answers equals the score the paper was given (${rightRows} vs ${score})`);
+
+  D.click(r.el, 'reviewwrong');
+  const filtered = D.nodes(r.el, 'reviewq').length;
+  ok(filtered === total - score, `"got wrong" lists exactly the ones that went wrong (${filtered} of ${all})`);
+  ok(!/class="a3-revrow is-right"/.test(r.el.innerHTML), 'and lists nothing that was right');
+
+  /* The arrows move through the FILTERED sequence: next from a wrong answer
+     reaches the next wrong answer, not the next question. */
+  const idxs = D.nodes(r.el, 'reviewq').map(n => Number(n.getAttribute('data-i')));
+  D.click(r.el, 'reviewq', n => n.getAttribute('data-i') === String(idxs[0]));
+  ok(/data-a3="reviewprev"[^>]*disabled/.test(r.el.innerHTML),
+    'the first of the sequence offers no "previous"');
+  ok(/Wrong answer 1 of \d+/.test(r.el.innerHTML),
+    'and the bar counts within that sequence rather than within the paper');
+  D.click(r.el, 'reviewnext');
+  ok(/Wrong answer 2 of \d+/.test(r.el.innerHTML), '"next" moves to the second one that went wrong');
+  ok(/class="a3-lessonbar-t">Question \d+ of \d+</.test(r.el.innerHTML),
+    'while still naming where that question sat on the paper');
+
+  /* Out, and on. The review borrows the per-question state the player uses to
+     draw a question; a run started afterwards must not inherit it. */
+  D.click(r.el, 'reviewlist');
+  D.click(r.el, 'reviewback');
+  ok(/A pass, on this paper|Below the pass mark/.test(r.el.innerHTML),
+    'leaving the review lands back on the result of the paper');
+  D.click(r.el, 'exit');
+  D.click(r.el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+  ok(!/class="a3-revverdict|class="a3-revblank"/.test(r.el.innerHTML),
+    'a practice run started afterwards carries nothing of the review');
+  ok(!/class="a3-opt is-right"|class="a3-opt is-wrong"|class="a3-exp-box"/.test(r.el.innerHTML),
+    'and opens on an unanswered question rather than on a graded one');
+}
+
+/* ── 5. A paper answered correctly scores 100, and one left blank scores 0 ── */
 {
   const right = sit('tpfb', 'right');
   ok(/100%/.test(right.el.innerHTML), 'a paper answered correctly scores 100%');

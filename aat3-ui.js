@@ -42,8 +42,14 @@
     taskResults: null,   // multi-part task: per-part verdicts, once graded
     taskNudge: false,    // a submit was attempted with parts still blank
     mockEndsAt: 0,       // timed mock: when the clock runs out
-    mockResults: [],     // timed mock: {q, correct} per question, for the report
+    mockResults: [],     // timed mock: one record per question answered, for the report and the review
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
+    /* Reviewing the paper just sat. `reviewIdx` is which question is open, or
+       null for the list of them; `reviewLast` is the one to scroll back to on
+       returning to that list. */
+    reviewIdx: null,
+    reviewLast: null,
+    reviewWrongOnly: false,
     /* Which outcome sections are folded shut on the path. Session-only on
        purpose: folding a section is a momentary act of tidying, not progress,
        and storing it would mean a reader who collapsed everything once came
@@ -251,7 +257,7 @@
     /* A mock reads the same list. This said `=== 'practice'` and fell through
        to the lesson branch for any other mode, so the first mock ever started
        found no questions and bounced straight back to the picker. */
-    if (S.mode === 'practice' || S.mode === 'mock') return S.practiceQs;
+    if (S.mode === 'practice' || S.mode === 'mock' || S.mode === 'review') return S.practiceQs;
     var l = lessonById(S.lessonId);
     return (l && l.check) || [];
   }
@@ -977,7 +983,22 @@
           '<span class="a3-tf-b">' +
             ['true', 'false'].map(function (v) {
               var on = picked === (v === 'true');
-              return '<button class="a3-pill' + (on ? ' on' : '') + '" data-a3="tf" data-s="' + si + '" data-v="' + v + '"' +
+              /* ONCE GRADED, THE KEY IS MARKED — the same way gap-fill and the
+                 task pills mark theirs, and the way multiple choice does. True
+                 or false was the one type that never showed the right answer:
+                 the ROW went red, saying only that the reader had this
+                 statement the wrong way round, and left them to work out which
+                 way round it should have been. That is survivable when the
+                 verdict arrives one question at a time; on a review of a whole
+                 paper, where the question is "what should I have put", it is
+                 the answer being withheld. */
+              var cls = on ? ' on' : '';
+              if (S.answered !== null) {
+                if ((v === 'true') === st.answer) cls = ' is-right';
+                else if (on) cls = ' is-wrong';
+                else cls = '';
+              }
+              return '<button class="a3-pill' + cls + '" data-a3="tf" data-s="' + si + '" data-v="' + v + '"' +
                 (S.answered !== null ? ' disabled' : '') + '>' + (v === 'true' ? 'True' : 'False') + '</button>';
             }).join('') +
           '</span></div>';
@@ -1034,9 +1055,14 @@
       h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="mocknext">' +
         (S.qIdx === n - 1 ? 'Finish the paper' : 'Next question') + '</button>';
     } else if (S.answered !== null) {
-      h += '<div class="a3-exp-box"><div class="a3-exp-l">Why</div><p class="a3-exp">' + md(q.exp || '') + '</p></div>' +
-        '<button class="a3-btn a3-btn-primary a3-wide" data-a3="nextq">' +
-        (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
+      h += '<div class="a3-exp-box"><div class="a3-exp-l">Why</div><p class="a3-exp">' + md(q.exp || '') + '</p></div>';
+      /* A review is the same graded screen with somewhere else to go: it moves
+         through a finished paper rather than through a run, so it brings its
+         own navigation and must not offer this one. */
+      if (!isReview()) {
+        h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="nextq">' +
+          (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
+      }
     }
     return h;
   }
@@ -1246,6 +1272,222 @@
     return h + '</div>';
   }
 
+  /* ── Reviewing the paper just sat ──────────────────────────────────────────
+     A mock tells you nothing while you sit it, which is the whole point, and
+     then told you nothing afterwards either beyond a score and a table by
+     outcome. "Which ones did I get wrong, and why" is the question a paper
+     exists to answer, and answering it needs the answers themselves.
+
+     WHAT IS KEPT, AND WHY IT IS MORE THAN A VERDICT. The report already knew
+     each question was right or wrong. Replaying one needs what the reader
+     actually PUT — and the order they saw it in, because options and pills are
+     shuffled per question and "I picked B" means nothing against a different
+     shuffle.
+
+     RE-MARKED RATHER THAN REMEMBERED. The review restores the recorded answer
+     and then runs it back through gradeAnswer(), the same function that marked
+     the paper. So what the review shows cannot drift from what was scored:
+     there is one marker, not two.
+
+     IN MEMORY, NOT IN THE STORE. Progress merges between devices field by
+     field — numbers by MAX, booleans by OR (see progress-backup.js) — and a
+     sat paper is neither. Merging two devices' papers would splice one
+     reader's answers into another's questions. The durable half of this
+     already exists and merges correctly: every mock question goes through
+     recordQuestion(), so the ones missed come back through the mistakes
+     backlog on the practice screen. This is the post-mortem, and it lasts as
+     long as the result screen it is opened from. */
+
+  function copyMap(o) {
+    var out = {};
+    Object.keys(o || {}).forEach(function (k) { out[k] = o[k]; });
+    return out;
+  }
+
+  /* Everything the reader put into the question on screen, and the order they
+     saw it in. Taken at the moment they move on, which under exam conditions is
+     the moment the answer becomes final. */
+  function snapshotAnswer() {
+    return {
+      picked: S.picked,
+      tf: copyMap(S.tfPicks),
+      gaps: copyMap(S.gapPicks),
+      num: S.numInput,
+      taskIn: copyMap(S.taskInputs),
+      taskPick: copyMap(S.taskPicks),
+      order: S._order, gapOrder: S._gapOrder, taskOrder: S._taskOrder,
+    };
+  }
+
+  function restoreAnswer(a) {
+    /* Cleared first, so a question the reader never reached shows as blank
+       rather than wearing the previous one's answers. */
+    resetQState();
+    if (!a) return;
+    S.picked = a.picked;
+    S.tfPicks = copyMap(a.tf);
+    S.gapPicks = copyMap(a.gaps);
+    S.numInput = a.num || '';
+    S.taskInputs = copyMap(a.taskIn);
+    S.taskPicks = copyMap(a.taskPick);
+    S._order = a.order; S._gapOrder = a.gapOrder; S._taskOrder = a.taskOrder;
+  }
+
+  /* Did the reader put anything at all?
+
+     A blank has to be named, and multiple choice is why. An unanswered question
+     replays with the key marked correct and nothing marked wrong — which is
+     exactly how a question answered CORRECTLY replays. Without this the two are
+     indistinguishable, and the reader would read a run of blanks as a run of
+     right answers. */
+  function gaveAnswer(q, a) {
+    if (!a) return false;
+    var t = (q && q.type) || 'mcq';
+    if (t === 'mcq') return a.picked !== null && a.picked !== undefined;
+    if (t === 'truefalse') return Object.keys(a.tf || {}).length > 0;
+    if (t === 'gapfill') return Object.keys(a.gaps || {}).length > 0;
+    if (t === 'numeric') return num(a.num) !== null;
+    if (t === 'task') {
+      return Object.keys(a.taskPick || {}).length > 0 ||
+        Object.keys(a.taskIn || {}).some(function (k) { return num(a.taskIn[k]) !== null; });
+    }
+    return false;
+  }
+
+  function isReview() { return S.mode === 'review'; }
+
+  /* One row of the paper. `res` runs out before `qs` on a paper the clock
+     ended, so a question never reached has no record and is reported as such
+     rather than as an answer nobody can account for. */
+  function reviewRow(i) {
+    var q = (S.practiceQs || [])[i];
+    var r = (S.mockResults || [])[i] || null;
+    return {
+      i: i, q: q,
+      reached: !!r,
+      correct: !!(r && r.correct),
+      blank: !r || !gaveAnswer(q, r.given),
+      given: r ? r.given : null,
+    };
+  }
+  function reviewRows() {
+    return (S.practiceQs || []).map(function (_, i) { return reviewRow(i); });
+  }
+  /* The questions the arrows step through: the whole paper, or just what went
+     wrong when the filter is on — so "next" from a wrong answer reaches the
+     next wrong answer rather than the next question. */
+  function reviewSeq() {
+    return reviewRows()
+      .filter(function (r) { return !S.reviewWrongOnly || !r.correct; })
+      .map(function (r) { return r.i; });
+  }
+
+  function openReviewQ(i) {
+    var row = reviewRow(i);
+    if (!row.q) return;
+    restoreAnswer(row.given);
+    /* The same marker that scored the paper, run again on the same input. */
+    S.answered = gradeAnswer(row.q);
+    S.reviewIdx = i;
+    S.reviewLast = i;
+  }
+
+  function renderReview() {
+    var rows = reviewRows();
+    var right = rows.filter(function (r) { return r.correct; }).length;
+    var wrong = rows.length - right;
+    var shown = rows.filter(function (r) { return !S.reviewWrongOnly || !r.correct; });
+
+    var h = '<div class="a3-root">';
+    h += ctxBar({
+      back: 'reviewback',
+      backLabel: 'Back to the result',
+      title: 'Review the paper',
+      meta: right + ' of ' + rows.length + ' right',
+    });
+    h += '<div class="a3-page">';
+
+    /* Only offered when there is something to filter TO. On a clean sweep the
+       toggle would lead to an empty screen, which is a worse way of saying
+       "nothing went wrong" than not offering it. */
+    if (wrong) {
+      h += '<div class="a3-revfilter" role="group" aria-label="Which questions to show">' +
+        '<button class="a3-revfilter-b' + (S.reviewWrongOnly ? '' : ' on') + '" data-a3="reviewall"' +
+          ' aria-pressed="' + (!S.reviewWrongOnly) + '">All ' + rows.length + '</button>' +
+        '<button class="a3-revfilter-b' + (S.reviewWrongOnly ? ' on' : '') + '" data-a3="reviewwrong"' +
+          ' aria-pressed="' + (!!S.reviewWrongOnly) + '">Got wrong ' + wrong + '</button>' +
+        '</div>';
+    } else {
+      h += '<div class="a3-revclean">Every question on this paper was right.</div>';
+    }
+
+    h += '<ol class="a3-revlist">';
+    shown.forEach(function (r) {
+      var g = (r.q && r.q.lo) ? 'Outcome ' + r.q.lo : '';
+      var note = !r.reached ? 'not reached' : r.blank ? 'left blank' : '';
+      h += '<li><button class="a3-revrow ' + (r.correct ? 'is-right' : 'is-wrong') + '"' +
+        ' data-a3="reviewq" data-i="' + r.i + '"' +
+        ' aria-label="Question ' + (r.i + 1) + ', ' + (r.correct ? 'correct' : 'wrong') + '">' +
+        '<span class="a3-revrow-n">' + (r.i + 1) + '</span>' +
+        '<span class="a3-revrow-tx">' +
+          '<span class="a3-revrow-q">' + esc(String((r.q && r.q.q) || '').replace(/\*\*/g, '')) + '</span>' +
+          '<span class="a3-revrow-m">' + esc(g + (note ? (g ? ' · ' : '') + note : '')) + '</span>' +
+        '</span>' +
+        '<span class="a3-revrow-v" aria-hidden="true">' + (r.correct ? '✓' : '✗') + '</span>' +
+        '</button></li>';
+    });
+    h += '</ol>';
+    h += '<footer class="a3-foot">This review lasts as long as the result screen it was opened from. ' +
+      'The questions you got wrong are kept, and come back on the practice screen.</footer>';
+    return h + '</div></div>';
+  }
+
+  function renderReviewQ() {
+    var row = reviewRow(S.reviewIdx);
+    if (!row || !row.q) { S.reviewIdx = null; return renderReview(); }
+    var seq = reviewSeq();
+    var at = seq.indexOf(S.reviewIdx);
+    var total = (S.practiceQs || []).length;
+
+    var h = '<div class="a3-root a3-reading' + fresh() + '">';
+    h += '<div class="a3-lessonbar">' +
+      '<button class="a3-ctx-back" data-a3="reviewlist" aria-label="Back to the list of questions">' +
+        '<span aria-hidden="true">←</span></button>' +
+      '<div class="a3-lessonbar-tx">' +
+        '<div class="a3-lessonbar-t">Question ' + (S.reviewIdx + 1) + ' of ' + total + '</div>' +
+        /* Which sequence the arrows are moving through, said out loud. With
+           the filter on, Next skips the right answers — and a bar that only
+           said "Question 1 of 24" made that look like questions going
+           missing. */
+        '<div class="a3-lessonbar-m">' +
+          (S.reviewWrongOnly
+            ? 'Wrong answer ' + (at + 1) + ' of ' + seq.length
+            : 'Reviewing the paper') +
+          (row.q.lo ? ' · Outcome ' + row.q.lo : '') + '</div>' +
+      '</div>' +
+      '<div class="a3-revverdict ' + (row.correct ? 'is-right' : 'is-wrong') + '">' +
+        (row.correct ? '✓' : '✗') + '</div>' +
+      '</div>';
+
+    h += '<article class="a3-sheet' + fresh() + '">';
+    if (row.blank) {
+      h += '<div class="a3-revblank">' +
+        (row.reached
+          ? 'You left this one blank, so it was marked wrong — as it would be in the assessment.'
+          : 'The clock ran out before you reached this one. It was marked wrong, as it would be in the assessment.') +
+        ' The right answer is shown below.</div>';
+    }
+    h += questionHtml(row.q, total);
+
+    h += '<div class="a3-revnav">' +
+      '<button class="a3-btn a3-btn-ghost" data-a3="reviewprev"' + (at <= 0 ? ' disabled' : '') + '>← Previous</button>' +
+      '<button class="a3-btn a3-btn-ghost" data-a3="reviewlist">All questions</button>' +
+      '<button class="a3-btn a3-btn-primary" data-a3="reviewnext"' +
+        (at < 0 || at >= seq.length - 1 ? ' disabled' : '') + '>Next →</button>' +
+      '</div>';
+    return h + '</article></div>';
+  }
+
   function renderDone() {
     var isM = S.mode === 'mock';
     var isP = S.mode === 'practice' || isM;
@@ -1287,7 +1529,13 @@
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
       weak +
       '<div class="a3-done-actions">' +
-        '<button class="a3-btn a3-btn-primary" data-a3="exit">' +
+        /* THE FIRST THING OFFERED AFTER A PAPER, and ahead of more practice.
+           A percentage and a table by outcome say where the marks went; only
+           the questions themselves say why, and that is what a reader has just
+           spent ninety minutes earning the right to see. */
+        (isM && (S.practiceQs || []).length
+          ? '<button class="a3-btn a3-btn-primary" data-a3="review">Review the paper</button>' : '') +
+        '<button class="a3-btn ' + (isM ? 'a3-btn-ghost' : 'a3-btn-primary') + '" data-a3="exit">' +
           (isP ? 'More practice' : 'Back to the path') + '</button>' +
         (isM ? '' : '<button class="a3-btn a3-btn-ghost" data-a3="retry">Retry</button>') +
         (isP ? '<button class="a3-btn a3-btn-ghost" data-a3="topath">Back to the path</button>' : '') +
@@ -1523,6 +1771,7 @@
     if (S.screen === 'practice') return renderPractice();
     if (S.screen === 'quiz') return renderQuiz();
     if (S.screen === 'done') return renderDone();
+    if (S.screen === 'review') return S.reviewIdx === null ? renderReview() : renderReviewQ();
     if (S.screen === 'units') return unitKeys().length > 1 ? renderUnits() : renderPath();
     return renderPath();
   }
@@ -1535,7 +1784,7 @@
      picking an option or submitting an answer all re-render, and none of them
      should yank the page to the top while the reader is mid-card. */
   function posKey() {
-    return [S.screen, S.unit, S.lessonId, S.phase, S.cardIdx, S.qIdx].join('|');
+    return [S.screen, S.unit, S.lessonId, S.phase, S.cardIdx, S.qIdx, S.reviewIdx].join('|');
   }
   var _lastPos = null;
 
@@ -1543,6 +1792,13 @@
     if (typeof window === 'undefined' || !window.scrollTo) return;
     /* Returning to the path: put the lesson just left back under the reader's
        eye rather than sending them to the top of a 21-node track. */
+    /* Back to the list of questions: put the one just read under the reader's
+       eye. Working down a paper of twenty-four means returning to this list
+       twenty-four times, and each return to the top costs the place. */
+    if (S.screen === 'review' && S.reviewIdx === null && S.reviewLast !== null) {
+      var row = el.querySelector('[data-a3="reviewq"][data-i="' + S.reviewLast + '"]');
+      if (row && row.scrollIntoView) { row.scrollIntoView({ behavior: 'instant', block: 'center' }); return; }
+    }
     if (S.screen === 'path' && S.lessonId) {
       var node = el.querySelector('[data-a3="open"][data-id="' + S.lessonId + '"]');
       if (node && node.scrollIntoView) {
@@ -1952,6 +2208,31 @@
       return;
     }
     if (act === 'startmock') { startMock(); return rerender(); }
+
+    /* ── The review of a finished paper ─────────────────────────────────────
+       `mode` moves to 'review' rather than staying 'mock', because the graded
+       screen is drawn by asking isMock() whether to withhold the verdict — and
+       a review is nothing but the verdict. Returning to the result puts it
+       back, so that screen still reads as the mock's. */
+    if (act === 'review') {
+      S.mode = 'review'; S.screen = 'review';
+      S.reviewIdx = null; S.reviewLast = null; S.reviewWrongOnly = false;
+      return rerender();
+    }
+    if (act === 'reviewback') { S.mode = 'mock'; S.screen = 'done'; S.reviewIdx = null; return rerender(); }
+    if (act === 'reviewlist') { S.reviewIdx = null; return rerender(); }
+    if (act === 'reviewq') { openReviewQ(+n.getAttribute('data-i')); return rerender(); }
+    if (act === 'reviewall' || act === 'reviewwrong') {
+      S.reviewWrongOnly = act === 'reviewwrong';
+      S.reviewIdx = null;
+      return rerender();
+    }
+    if (act === 'reviewprev' || act === 'reviewnext') {
+      var seq = reviewSeq();
+      var at = seq.indexOf(S.reviewIdx) + (act === 'reviewnext' ? 1 : -1);
+      if (at >= 0 && at < seq.length) openReviewQ(seq[at]);
+      return rerender();
+    }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');
       startPractice(lo === 'mix' || lo === 'missed' ? lo : Number(lo));
@@ -2033,7 +2314,7 @@
     if (act === 'mocknext') {
       var mCorrect = gradeAnswer(q);
       if (mCorrect) S.score++; else S.practiceMissed.push(q);
-      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect });
+      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect, given: snapshotAnswer() });
       recordPractice(S.practiceUnit || activeUnit(), q.lo, mCorrect);
       recordQuestion(S.practiceUnit || activeUnit(), q.id, mCorrect);
       save();
