@@ -86,6 +86,16 @@ const OFFERED = ['aat1', 'aat', 'aat3'];
 const WITHHELD = ['french', 'lsf', 'guitar', 'code-route'];
 
 const FORBIDDEN = {
+  /* Level 2's own drawer, which until now had no rules because it was the only
+     one and whatever it held was by definition what it held. Two sections were
+     removed from it — variance formulas labelled for MATS, and income tax for
+     sole traders — because neither is assessed by any unit this app teaches.
+     The patterns stay so that putting them back is a decision someone makes on
+     purpose rather than by copying an old block in. */
+  aat: [
+    ['MATS variance formulas — no unit this app teaches assesses them', /Material (price|usage)\s*=|Labour (rate|efficiency)\s*=/i],
+    ['income tax for sole traders — no unit this app teaches assesses it', /Personal allowance|AIA:|WDA main pool|Disallowable/i]
+  ],
   aat1: [
     ['DEAD CLIC, the Level 2 debit/credit mnemonic (2.1.3 excludes debits and credits)', /DEAD CLIC/i],
     ['a debit/credit posting rule (2.1.3 excludes debits and credits)', /(increase|decrease) on the (Debit|Credit) side/i],
