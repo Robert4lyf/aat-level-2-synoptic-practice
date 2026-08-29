@@ -536,7 +536,11 @@ function countOf(html, re) { return (html.match(re) || []).length; }
 {
   const ctx = openMock('tpfb');
   D.click(ctx.el, 'mocknext');
+  /* Two taps, not one. Back raises a guard now — see
+     scripts/check-mock-exit-guard.js, which owns that behaviour; here it is
+     only the route to the thing this section is about. */
   D.click(ctx.el, 'exit');
+  D.click(ctx.el, 'exitconfirm');
   ok(/data-a3="startmock"/.test(ctx.el.innerHTML), 'exiting a mock lands back on the practice picker');
   D.click(ctx.el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
   ok(!/a3-mockclock/.test(ctx.el.innerHTML), 'a practice run started afterwards carries no clock');

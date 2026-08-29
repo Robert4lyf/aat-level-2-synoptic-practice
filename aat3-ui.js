@@ -44,6 +44,13 @@
     mockEndsAt: 0,       // timed mock: when the clock runs out
     mockResults: [],     // timed mock: one record per question answered, for the report and the review
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
+    /* A mock's exit is guarded, because walking out of a timed paper cannot be
+       undone: the clock stops, the paper is never graded and there is no
+       result and no review. Held in state rather than opened as a native
+       confirm() so it can be styled, read by a screen reader and — the part a
+       native dialog cannot do — survive the repaint the clock fires every
+       second underneath it. */
+    confirmExit: false,
     /* Reading the card aloud. Held in state rather than read off the button,
        because every click repaints the whole screen and a class on a node that
        no longer exists is not a source of truth. */
@@ -1796,6 +1803,15 @@
 
   /* ── Mount and events ────────────────────────────────────────────────────── */
   function html() {
+    /* The guard is drawn OVER whatever screen is underneath rather than
+       replacing it, so the paper — the question, the clock, how far through it
+       is — is still there behind the dialog. A reader deciding whether to walk
+       out of a mock is deciding about what is on the screen, and replacing it
+       with a full-screen question takes away the thing they are weighing. */
+    return screenHtml() + (S.confirmExit ? exitGuard() : '');
+  }
+
+  function screenHtml() {
     if (S.screen === 'lesson') return renderLesson();
     if (S.screen === 'practice') return renderPractice();
     if (S.screen === 'quiz') return renderQuiz();
@@ -1803,6 +1819,29 @@
     if (S.screen === 'review') return S.reviewIdx === null ? renderReview() : renderReviewQ();
     if (S.screen === 'units') return unitKeys().length > 1 ? renderUnits() : renderPath();
     return renderPath();
+  }
+
+  /* ── Leaving a timed paper ──────────────────────────────────────────────────
+     Precise about what actually goes, because a warning that overstates the
+     loss is one readers learn to click through. The paper goes: it is never
+     graded, so there is no percentage, no outcome-by-outcome report and no
+     review, and it does not count towards the best-of. The questions already
+     answered do NOT go — mocknext records each one as it passes, so they are
+     already in the practice record and in the mistakes backlog. */
+  function exitGuard() {
+    return '<div class="a3-guard" role="presentation">' +
+      '<div class="a3-guard-box" role="alertdialog" aria-modal="true" ' +
+        'aria-labelledby="a3-guard-t" aria-describedby="a3-guard-d">' +
+        '<h2 class="a3-guard-h" id="a3-guard-t">Leave the mock?</h2>' +
+        '<p class="a3-guard-p" id="a3-guard-d">Your progress on this paper will be lost. ' +
+          'A mock cannot be resumed, so it will not be marked and there will be no result and no review.</p>' +
+        '<p class="a3-guard-note">Questions you have already answered stay in your practice record.</p>' +
+        '<div class="a3-guard-actions">' +
+          '<button class="a3-btn a3-btn-primary" data-a3="exitcancel" type="button">Stay in the paper</button>' +
+          '<button class="a3-btn a3-btn-quiet" data-a3="exitconfirm" type="button">Leave and lose it</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   /* Where the reader is, as a single comparable string. Cards are long enough
@@ -1869,6 +1908,14 @@
     if (_fresh) {
       _lastPos = k;
       restoreScroll(el);
+    }
+    /* Focus moves to the SAFE choice, not the destructive one. A reader who
+       taps back and then hits Enter out of habit should stay in the paper.
+       This also puts focus inside the dialog, which is what makes the Escape
+       key below reachable and what a screen reader needs to announce it. */
+    if (S.confirmExit && el.querySelector) {
+      var stay = el.querySelector('[data-a3="exitcancel"]');
+      if (stay && stay.focus) { try { stay.focus(); } catch (e) {} }
     }
   }
   function fresh() { return _fresh ? ' is-fresh' : ''; }
@@ -2308,7 +2355,22 @@
       practiceRec(S.practiceUnit || activeUnit()).runs++;
     }
     save();
+    /* The clock can run out while the guard is open — it keeps ticking, and its
+       interval calls finish() directly. Without this the result screen would
+       paint with "Leave the mock?" still sitting on top of it, offering to
+       abandon a paper that has already been marked. */
+    S.confirmExit = false;
     S.screen = 'done';
+  }
+
+  /* Out of a paper and back to the practice screen. Stopping the clock is the
+     load-bearing half: an interval left running fires a finish() over whatever
+     screen the reader has moved on to. */
+  function leaveMock() {
+    stopMockClock();
+    S.mode = 'practice';
+    S.screen = 'practice';
+    return rerender();
   }
 
   function wire(el) {
@@ -2333,6 +2395,20 @@
       }
       n.addEventListener('click', function () { handle(act, n); });
     });
+    /* Escape is the one keystroke every dialog is expected to answer, and it
+       can only mean the safe choice — no dialog should destroy anything on a
+       key pressed to make it go away. Bound to the backdrop rather than the
+       document so it dies with the repaint that removes it; focus is inside
+       the box, so the keystroke bubbles here. */
+    var guard = el.querySelector && el.querySelector('.a3-guard');
+    if (guard) {
+      guard.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          if (e.preventDefault) e.preventDefault();
+          handle('exitcancel', guard);
+        }
+      });
+    }
   }
 
   function num(v) {
@@ -2350,12 +2426,29 @@
     if (act === 'open') { startLesson(n.getAttribute('data-id')); return rerender(); }
     if (act === 'exit') {
       stopSpeaking();
-      /* Walking out of a mock stops its clock; leaving it running would fire a
-         finish() over whatever screen the reader had moved on to. */
-      if (isMock()) { stopMockClock(); S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
+      /* A mock is the only run worth guarding. A lesson can be reopened from
+         the path and a practice run banks each answer as it goes, so backing
+         out of either costs the reader nothing they cannot get back in a tap;
+         a timed paper is ninety minutes that cannot be resumed.
+
+         Only while the paper is being SAT, though. The result screen is reached
+         with the mode still 'mock' — that is what tells renderDone() to
+         withhold the verdict until the reader asks for the review — and by then
+         the paper is marked and banked. Guarding there would ask the reader to
+         confirm losing something they cannot lose, which is how a warning
+         becomes furniture.
+
+         The clock goes on running underneath the dialog, which is the honest
+         thing for it to do: hesitating in an exam costs time. */
+      if (isMock()) {
+        if (S.screen === 'quiz') { S.confirmExit = true; return rerender(); }
+        return leaveMock();
+      }
       S.screen = S.mode === 'practice' ? 'practice' : 'path';
       return rerender();
     }
+    if (act === 'exitcancel') { S.confirmExit = false; return rerender(); }
+    if (act === 'exitconfirm') { S.confirmExit = false; return leaveMock(); }
     if (act === 'retry') {
       /* Named modes again. `else startLesson(S.lessonId)` meant "a lesson" only
          while there were two modes; a mock falling into it would have reopened
@@ -2554,6 +2647,7 @@
     reset: function (screen, unitKey) {
       stopMockClock();
       stopSpeaking();
+      S.confirmExit = false;
       S.screen = screen || 'units';
       if (unitKey) S.unit = unitKey;
     },
@@ -2575,6 +2669,10 @@
     home: function () {
       stopMockClock();
       stopSpeaking();
+      /* The header's Home button leaves a mock outright, so the guard must not
+         survive it: left set, it would reappear over the path the next time
+         anything repainted, asking about a paper that no longer exists. */
+      S.confirmExit = false;
       S.mode = 'lesson';
       S.lessonId = null;
       /* The top of this subject: the unit picker where there is a choice to
@@ -2584,7 +2682,19 @@
     /* Speech is cancelled here for exactly the reason the clock is: it outlives
        the screen that started it. Switch subject mid-card without this and a
        voice goes on reading VAT legislation over Français. */
-    suspend: function () { stopMockClock(); stopSpeaking(); },
+    suspend: function () { stopMockClock(); stopSpeaking(); S.confirmExit = false; },
+    /* ── The header's Home button, asked before it acts ───────────────────────
+       app.js owns the header and cannot know whether leaving costs anything —
+       only this module knows a timed paper is on screen. Returns true when it
+       has raised its own guard and app.js should stand down; false to be taken
+       home as before. Without this the in-screen back button warned and the
+       🏠 beside it discarded the paper silently, which is a worse trap than no
+       warning at all: it teaches the reader that leaving is guarded. */
+    guardExit: function () {
+      if (!isMock() || S.screen !== 'quiz') return false;
+      S.confirmExit = true;
+      return true;
+    },
     /* Exposed so scripts/check-aat3-practice-summary.js can assert the totals
        and the most-mistakes ranking directly, rather than reading them back out
        of rendered HTML. */

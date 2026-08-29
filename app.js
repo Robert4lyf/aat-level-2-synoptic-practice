@@ -3354,11 +3354,46 @@
   }
   function exitQuiz() {
     if (State.screen === 'lesson' || State.screen === 'flash') { goLearn(); return; }
-    if (State.screen === 'delf') { exitDelf(); return; }
+    /* A DELF exam is held ENTIRELY in State.delfExam — no part of it is ever
+       written to storage — so walking out drops every section already sat and
+       self-marked along with the one in progress. Guarded on the same terms as
+       a mock, and for the same reason.
+
+       Not guarded from the hub with nothing done yet: a reader who opened the
+       exam and changed their mind has nothing to lose, and a dialog that fires
+       when there is no cost is one they learn to dismiss without reading. */
+    if (State.screen === 'delf') {
+      if (delfHasProgress()) {
+        openConfirm({ title:'Leave the exam?', message:'Your progress will be lost. A DELF exam is not saved, so the sections you have already sat go with it.',
+          confirmLabel:'Leave and lose it', cancelLabel:'Stay in the exam',
+          onConfirm: () => { closeConfirm(); exitDelf(); } });
+      } else exitDelf();
+      return;
+    }
     if (State.screen === 'quiz' && State.mode === 'mock') {
       openConfirm({ title:'Exit mock exam?', message:'Your progress will be lost. Mock exam attempts cannot be resumed.', confirmLabel:'Exit exam',
         onConfirm: () => { stopMockTimer(); closeConfirm(); goHome(); } });
-    } else goHome();
+      return;
+    }
+    /* Levels 1 and 3 render their own screens, so State.screen is 'home' the
+       whole time they are on and nothing above can see that a timed paper is
+       running. They are asked instead; a subject that does not define the hook,
+       or is not in a mock, answers false and goes home as before. */
+    const own = ownUi();
+    if (own && own.guardExit && own.guardExit()) { render(); return; }
+    goHome();
+  }
+
+  /* Something a reader would mind losing: a section in progress, or any section
+     already sat and scored. `sectionsDone[id]` is false until a section is
+     finished and its mark thereafter — including 0, so this tests against false
+     by identity rather than for truthiness. */
+  function delfHasProgress() {
+    const de = State.delfExam;
+    if (!de) return false;
+    if (de.phase === 'section') return true;
+    const done = de.sectionsDone || {};
+    return Object.keys(done).some(k => done[k] !== false);
   }
   /* The self-rendering subjects' own module, or null. Levels 1 and 3 and the
      guitar own their screens entirely, so the shared chrome cannot act on them
@@ -8920,8 +8955,12 @@
       el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
     });
     // DELF exam events
-    bind('delfExitBtn', 'click', exitDelf);
-    bind('delfHomeBtn', 'click', exitDelf);
+    /* Routed through exitQuiz rather than straight at exitDelf: these are the
+       two buttons that actually leave a DELF exam, and a DELF exam is held
+       entirely in memory. exitQuiz asks first when there is something to lose
+       and calls exitDelf itself when there is not. */
+    bind('delfExitBtn', 'click', exitQuiz);
+    bind('delfHomeBtn', 'click', exitQuiz);
     bind('delfFinishExamBtn', 'click', finishDelfExam);
     bind('delfFinishSectionBtn', 'click', finishDelfSection);
     bind('delfSubmitAssessBtn', 'click', submitDelfSelfAssess);
