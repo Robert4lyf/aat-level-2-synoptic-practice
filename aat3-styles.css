@@ -577,7 +577,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   border-radius: var(--a3-r-lg);
   box-shadow: var(--a3-shadow-lg);
   padding: 26px 24px 22px;
-  max-width: 430px; width: 100%;
+  max-width: 470px; width: 100%;
   animation: a3-pop .2s cubic-bezier(.2,.7,.3,1) both;
 }
 .a3-guard-h {
@@ -592,8 +592,15 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-guard-actions { display: flex; flex-direction: column; gap: 10px; }
 .a3-guard-actions .a3-btn { width: 100%; }
 @media (min-width: 480px) {
-  .a3-guard-actions { flex-direction: row-reverse; justify-content: flex-start; }
-  .a3-guard-actions .a3-btn { width: auto; }
+  .a3-guard-actions { flex-direction: row-reverse; flex-wrap: wrap; justify-content: flex-start; }
+  /* flex: 0 0 auto, so the pair keeps its natural width and WRAPS rather than
+     squeezing. Side by side the two labels came to four pixels more than the
+     box had, and a flex item shrinks before it wraps: both buttons lost two
+     pixels each and broke onto two lines — "Leave and lose / it". Four pixels
+     is not a margin any layout should be relying on, so the box was widened
+     and the shrink taken away, and a label longer than either of these now
+     drops to its own row instead of fracturing. */
+  .a3-guard-actions .a3-btn { width: auto; flex: 0 0 auto; }
 }
 @keyframes a3-guard-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {

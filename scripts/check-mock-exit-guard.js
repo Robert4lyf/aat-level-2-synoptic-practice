@@ -413,6 +413,31 @@ try { ({ chromium } = require('playwright')); } catch (e) { /* handled below */ 
         (document.activeElement && document.activeElement.textContent) || '');
       ok(/stay/i.test(focused), `${name}: focus lands on the safe choice, not the destructive one`);
 
+      /* Neither label fractures. Side by side the two of them came to four
+         pixels more than the box had, and a flex item shrinks before it wraps —
+         so both broke onto two lines: "Leave and lose / it". Invisible to every
+         other check in the suite, because the dialog only exists after a click.
+         Measured at three widths: side by side, stacked, and the narrowest
+         phone the layout sweep covers. */
+      for (const w of [1280, 480, 320]) {
+        await page.setViewportSize({ width: w, height: 900 });
+        const lines = await page.evaluate((g) => {
+          const row = document.querySelector(g + '-actions');
+          if (!row) return null;
+          return [...row.children].map(b => {
+            const lh = parseFloat(getComputedStyle(b).lineHeight) || 20;
+            const inner = b.getBoundingClientRect().height
+              - parseFloat(getComputedStyle(b).paddingTop)
+              - parseFloat(getComputedStyle(b).paddingBottom);
+            return { text: b.textContent.trim(), rows: Math.round(inner / lh) };
+          });
+        }, guard);
+        ok(lines && lines.length === 2 && lines.every(l => l.rows <= 1),
+          `${name}: neither choice wraps to two lines at ${w}px` +
+          (lines ? ` (${lines.map(l => l.text + ': ' + l.rows).join(', ')})` : ''));
+      }
+      await page.setViewportSize({ width: 1280, height: 900 });
+
       ok(errs.length === 0, `${name}: no uncaught error (${errs.join('; ')})`);
       await ctx.close();
     }
