@@ -1919,6 +1919,83 @@
       ],
       exp: 'Two, four and five. The threshold rises with filing frequency, because a business filing twelve times a year has more opportunities to slip than one filing once. The thresholds are supplied in the assessment’s reference material.',
     },
+    /* ── Late submission: how points go away ───────────────────────────────
+       Two mechanisms, and aat3-tax-data.js warns in terms against merging
+       them. Below the threshold a point ages out by itself; at the threshold
+       that stops and the set clears only on two conditions together. The bank
+       tested the thresholds and the fixed penalty and nothing about either
+       exit, which left the harder half of 1.5.3 unexamined. */
+    {
+      id: 'P-1-51', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      type: 'mcq',
+      q: 'A quarterly filer submits a return late that was due on 7 May 2026, and stays below the points threshold. When does the point it earned expire?',
+      opts: [
+        'On 1 June 2028, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months from the first day of the month after the return was due',
+        'On 7 May 2028, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months from the date on which the return itself fell due',
+        'On 1 June 2027, 12 months from the first day of the month after the return was due',
+        'On no fixed date, points falling away only once a period of compliance is served',
+      ],
+      ans: 0,
+      exp: 'The clock runs for ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months from the first day of the month AFTER the one in which the return was due — 1 June 2026 — so the point falls away on 1 June 2028. It does not start on the due date itself, and below the threshold nothing has to be done to earn the expiry.',
+    },
+    {
+      id: 'P-1-56', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      type: 'mcq',
+      q: 'A quarterly filer holds three points, earned in three different months, and is below the threshold. How do they clear?',
+      opts: [
+        'All three together, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months on from the earliest of them',
+        'All three together, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months on from the most recent of them',
+        'None of them, until a full period of compliance has been served',
+        'Each on its own, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months on from the return that earned it',
+      ],
+      ans: 3,
+      exp: 'Separately. Below the threshold a point is a thing in its own right and ages out on its own timetable, so a business can carry three points with three different expiry dates. Only at the threshold do they start behaving as one set, and then they clear together or not at all.',
+    },
+    {
+      id: 'P-1-52', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      type: 'mcq',
+      q: 'A quarterly filer at the points threshold then files every return on time for twelve months. One return from eighteen months ago is still outstanding. What happens to its points?',
+      opts: [
+        'They reset, the ' + T.penalties.lateSubmission.complianceMonths.quarterly + '-month period of compliance having been served in full',
+        'They reset, an unfiled return bearing on the payment penalties rather than on points',
+        'They stay, the outstanding return leaving one of the two reset conditions unmet',
+        'They stay, and will reset once a further ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months of compliance is served',
+      ],
+      ans: 2,
+      exp: 'Both conditions have to be met, not either. The period of compliance — ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months for a quarterly filer — is one; having submitted every outstanding return for the previous ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months is the other. Serving the time with a return still missing achieves nothing, and serving more of it will not help either — the missing return has to be filed. Each further late return costs another £' + T.penalties.lateSubmission.penalty.value + ' meanwhile.',
+    },
+    {
+      id: 'P-1-55', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      type: 'mcq',
+      q: 'A monthly filer at the points threshold has served its period of compliance. Over what period must its returns all have been submitted for the points to reset?',
+      opts: [
+        'The previous ' + T.penalties.lateSubmission.complianceMonths.monthly + ' months, matching the compliance period just served',
+        'The previous ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months, a fixed lookback whatever the filing frequency',
+        'The previous 12 months, midway between the other two compliance periods',
+        'Only those returns falling inside the period of compliance itself',
+      ],
+      ans: 1,
+      exp: T.penalties.lateSubmission.pointExpiryMonths.value + ' months, and it does not move with filing frequency. The compliance period shortens as returns get more frequent — ' + T.penalties.lateSubmission.complianceMonths.annual + ', ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' and ' + T.penalties.lateSubmission.complianceMonths.monthly + ' months — but the lookback for outstanding returns stays at ' + T.penalties.lateSubmission.pointExpiryMonths.value + '. A monthly filer serves the shortest compliance period and still has to account for two years of returns.',
+    },
+    {
+      id: 'P-1-53', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      type: 'numeric',
+      q: 'A monthly filer is at the points threshold. For how many months must it submit every return on time before its points can be reset?',
+      answer: 6, unit: 'months',
+      exp: T.penalties.lateSubmission.complianceMonths.monthly + ' months for a monthly filer, against ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' for quarterly and ' + T.penalties.lateSubmission.complianceMonths.annual + ' for annual — the period shortens as filing gets more frequent, so each business serves a broadly similar number of returns. Completing it is necessary and not sufficient: the outstanding returns must be in as well.',
+    },
+    {
+      id: 'P-1-54', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about late submission points is true or false.',
+      statements: [
+        { text: 'Every point earned below the threshold expires on its own, with nothing required of the business.', answer: true },
+        { text: 'Once the threshold is reached, points carry on expiring one by one as each comes of age.', answer: false },
+        { text: 'The period of compliance is the same length whatever the filing frequency.', answer: false },
+        { text: 'A nil return filed late earns a point exactly as one showing tax due would.', answer: true },
+      ],
+      exp: 'Two mechanisms, and the exam rewards keeping them apart. Below the threshold each point ages out by itself after ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months. At the threshold that automatic expiry stops, and the set clears only after a period of compliance — ' + T.penalties.lateSubmission.complianceMonths.annual + ', ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' or ' + T.penalties.lateSubmission.complianceMonths.monthly + ' months by frequency — with the outstanding returns submitted too. What is penalised throughout is the lateness of the RETURN, which is why a nil return counts the same.',
+    },
 
     /* ── Outcome 2 ─────────────────────────────────────────────────────── */
     {
