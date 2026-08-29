@@ -1996,6 +1996,88 @@
       ],
       exp: 'Two mechanisms, and the exam rewards keeping them apart. Below the threshold each point ages out by itself after ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months. At the threshold that automatic expiry stops, and the set clears only after a period of compliance — ' + T.penalties.lateSubmission.complianceMonths.annual + ', ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' or ' + T.penalties.lateSubmission.complianceMonths.monthly + ' months by frequency — with the outstanding returns submitted too. What is penalised throughout is the lateness of the RETURN, which is why a nil return counts the same.',
     },
+    /* ── The Employment Allowance ───────────────────────────────────────────
+       The bank reached the amount due to HMRC (4.1.11) without ever meeting
+       the one relief that reduces it, so a reader could total the payment
+       perfectly and still overstate it by up to the whole allowance. The
+       employer's National Insurance is GIVEN in each of these, as 4.1.11's own
+       note requires and 4.1.12's exclusion of NIC calculation demands. */
+    {
+      id: 'P-4-31', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.11'],
+      type: 'mcq',
+      q: 'An employer claims the Employment Allowance. Which of the amounts it owes HMRC does the allowance reduce?',
+      opts: [
+        'The employer’s National Insurance, and nothing else it owes',
+        'The employer’s and the employees’ National Insurance together',
+        'Everything in the monthly payment, in proportion to each part',
+        'The PAYE Income Tax first, and any National Insurance after that',
+      ],
+      ans: 0,
+      exp: 'Only the employer’s (secondary) Class 1 National Insurance. PAYE, the employees’ National Insurance, student loan deductions and the Class 1A on benefits are all untouched and still go to HMRC in full. Setting it against the whole amount due is the error the narrowness of the relief invites.',
+    },
+    {
+      id: 'P-4-32', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.11', 'TPFB-4.2.5'],
+      type: 'mcq',
+      q: 'An employer is eligible for the Employment Allowance but has never mentioned it to HMRC. What is the position?',
+      opts: [
+        'HMRC applies it automatically once the eligibility conditions are met',
+        'It is lost for good, the allowance being available only from the date of registration',
+        'It must be claimed on the Employer Payment Summary, and until then is not given',
+        'It is set against the year-end liability when the final submission is made',
+      ],
+      ans: 2,
+      exp: 'The allowance is claimed, not granted. The claim goes on the Employer Payment Summary — the return whose whole purpose is to report why less is owed than the FPS implies — and an eligible employer that never files one simply pays more, with nothing arriving to point out the mistake.',
+    },
+    {
+      id: 'P-4-33', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.11'],
+      type: 'numeric',
+      q: 'For the month an employer owes PAYE of £9,200, employee National Insurance of £4,100 and employer National Insurance of £6,300. It has £6,300 of Employment Allowance remaining. How much is due to HMRC, in pounds?',
+      answer: 13300, unit: '£',
+      exp: '£9,200 + £4,100 + £6,300 = £19,600 before the allowance. The allowance covers the employer’s National Insurance of £6,300 exactly, leaving £19,600 − £6,300 = £13,300. The PAYE and the employees’ National Insurance are not reduced by a penny of it.',
+    },
+    {
+      id: 'P-4-34', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.11'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about the Employment Allowance is true or false.',
+      statements: [
+        { text: 'It is used up as the employer’s National Insurance arises, rather than spread evenly over the year.', answer: true },
+        { text: 'A company whose only employee paid above the secondary threshold is a director may claim it.', answer: false },
+        { text: 'Any part of it left over at the end of a month reduces the following month’s PAYE.', answer: false },
+        { text: 'It reduces what the employer pays over, without changing any employee’s net pay.', answer: true },
+      ],
+      exp: 'It runs down against the employer’s National Insurance month by month until exhausted, so an employer with a large payroll finishes it early in the year. A single-director company is expressly excluded. Anything unused stays against employer’s National Insurance and never moves across to PAYE. And nothing about it touches an employee: their deductions and net pay are the same either way.',
+    },
+
+    /* ── The domestic reverse charge ────────────────────────────────────────
+       Not a named criterion. The unit met it twice already — excluded from cash
+       accounting, and named as something to escalate — without ever saying what
+       it is. These are tagged to the criteria they genuinely test: the
+       distinction between input and output tax, and the effect on the return. */
+    {
+      id: 'P-2-61', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.1'],
+      type: 'mcq',
+      q: 'A VAT-registered builder supplies construction services to another VAT-registered contractor under the domestic reverse charge. Who accounts for the VAT?',
+      opts: [
+        'The builder, who charges it and pays it over as on any other supply',
+        'The contractor, who declares the output tax the builder did not charge',
+        'Neither of them, the supply falling outside the scope of VAT altogether',
+        'Both of them, each accounting for one half of the VAT on the supply',
+      ],
+      ans: 1,
+      exp: 'The customer accounts for it. The supplier charges no VAT at all; the contractor declares the output tax on the supplier’s behalf and reclaims the same amount as input tax under the normal rules. Nobody is ever paid VAT that they might then fail to hand over, which is what the rule exists to prevent.',
+    },
+    {
+      id: 'P-2-62', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.13'],
+      type: 'truefalse',
+      q: 'A contractor receives a £20,000 net purchase under the domestic reverse charge. Identify whether each entry on its return is correct.',
+      statements: [
+        { text: '£4,000 of output tax in Box 1.', answer: true },
+        { text: '£4,000 of input tax in Box 4, if the VAT is recoverable under the normal rules.', answer: true },
+        { text: '£20,000 in Box 6.', answer: false },
+        { text: '£20,000 in Box 7.', answer: true },
+      ],
+      exp: '£20,000 × 20% = £4,000, declared in Box 1 and reclaimed in Box 4, so a fully taxable contractor pays nothing over. The net £20,000 goes in Box 7 with every other purchase — and NOT in Box 6, which is for sales. Output tax without a matching entry in Box 6 is the combination that looks wrong and is right.',
+    },
 
     /* ── Outcome 2 ─────────────────────────────────────────────────────── */
     {

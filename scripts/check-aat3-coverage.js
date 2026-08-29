@@ -172,6 +172,33 @@ lessons.forEach(l => {
   if (n > 8) warnings.push(`${l.id} claims ${n} key concepts — that is a lot for one lesson; consider splitting it.`);
 });
 
+
+/* THE SAME RULE FOR QUESTIONS, which until now had none. Lesson tags were
+   checked against the syllabus from the start; question tags were not, so
+   `criteria: ['TPFB-9.9.9']` on a question passed this check, the quality
+   check, the fidelity check, the validator and the integrity check in silence.
+   A question tagged to a criterion that does not exist is invisible to every
+   report that counts coverage by criterion — it looks like teaching that
+   nothing tests, which is exactly what those reports exist to surface. */
+{
+  const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
+  let checked = 0;
+  (AAT3_PRACTICE.QUESTIONS || []).forEach(q => {
+    if (!(q.criteria || []).length) {
+      errors.push(`${q.id}: claims no criteria, so no coverage report can see it.`);
+      return;
+    }
+    q.criteria.forEach(tag => {
+      checked++;
+      if (!allTags.has(tag)) {
+        errors.push(`${q.id}: claims "${tag}", which is not in the syllabus. ` +
+                    `A question tagged to a criterion that does not exist is counted by nothing.`);
+      }
+    });
+  });
+  notes.push(`${checked} question criteria checked against the syllabus`);
+}
+
 MODULES_SHIPPED.forEach(m => {
   const unit = S.SYLLABUS.units[m.unit];
   if (!unit) { errors.push(`MODULES_SHIPPED names unknown unit "${m.unit}".`); return; }

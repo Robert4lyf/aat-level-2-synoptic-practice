@@ -1023,6 +1023,34 @@
             },
           },
         },
+        {
+          /* NOT A NAMED CRITERION, and the card says so rather than leaving a
+             reader to assume it is examinable. It sits here because postponed
+             import VAT has just taught the same shape — the customer accounts
+             for VAT the supplier did not charge — and because the unit already
+             meets the reverse charge twice elsewhere, as a scheme exclusion and
+             as something to escalate. Meeting a rule three times without ever
+             being told what it is, is worse than a page that says so. */
+          h: 'The same shape, without a border: the domestic reverse charge',
+          p: [
+            'Postponed import VAT moves the accounting for VAT from the point of entry to the return. The **domestic reverse charge** does something very similar without any border at all: for certain supplies **the customer accounts for the VAT instead of the supplier**.',
+            'The version met in practice is the one for **building and construction services**, in force since ' + T.reverseCharge.appliesFrom + '. It applies where the supply is of specified construction services, both parties are VAT registered, the payment falls within the **Construction Industry Scheme**, and the customer is **not an end user**.',
+            'The supplier charges **no VAT**. Its invoice says the reverse charge applies, states that the customer must account for the VAT, and shows the rate or the amount that would have applied — without adding it to the total charged.',
+            'The customer then does both halves of the transaction: it declares the output tax the supplier did not charge, and reclaims the same amount as input tax under the normal rules. For a fully taxable customer the two cancel and the cash effect is **nil** — which is the whole point. Nobody is ever paid VAT that they might fail to hand over.',
+            'An **end user** — a business having the work done for itself rather than selling it on — is outside it, but must tell the supplier **in writing**. Until it does, the supplier applies the reverse charge.',
+          ],
+          table: {
+            headers: ['Return box', 'Supplier', 'Customer'],
+            rows: [
+              ['Box 1 — output tax', 'Nothing', 'The VAT the supplier did not charge'],
+              ['Box 4 — input tax', 'Nothing', 'The same VAT, under the normal rules'],
+              ['Box 6 — net sales', 'The net value of the sale', 'Nothing — a purchase is not a sale'],
+              ['Box 7 — net purchases', 'Nothing', 'The net value of the purchase'],
+            ],
+          },
+          callout: { kind: 'tip', text: 'It is excluded from cash accounting and from the flat rate scheme. A flat rate business doing much construction work is usually better off leaving the scheme, because it charges no output tax to keep a percentage of.' },
+          examtrap: 'Putting the reverse charge purchase in Box 6. Box 6 is sales; the customer has bought something. The output tax goes in Box 1 without the value going in Box 6, which is the one combination that looks wrong and is right.',
+        },
       ],
       check: [
         {
@@ -2921,6 +2949,40 @@
               exp: '£4,200 + £1,900 + £2,300 = £8,400. The £1,100 of pension contributions goes to the pension provider, not HMRC, so it is excluded — while the employer\'s NI is included even though no employee was ever charged it.',
             },
           },
+        },
+        {
+          /* The allowance reduces the very figure the previous card totals up,
+             so it belongs immediately after it. A reader who works through that
+             calculation and never meets this one overstates the amount due to
+             HMRC by up to the whole allowance. */
+          h: 'The allowance that reduces what is owed',
+          p: [
+            'One relief cuts across the figure just calculated. The **Employment Allowance** lets an eligible employer reduce its **employer’s National Insurance** by up to **£' + T.payroll.employmentAllowance.value.toLocaleString('en-GB') + ' a year**.',
+            'Read what it touches carefully, because it is narrower than it first appears. It reduces the **employer’s** (secondary) Class 1 National Insurance and nothing else — not PAYE, not the employee’s National Insurance, not student loan deductions, and not the Class 1A on benefits. Every one of those still goes to HMRC in full.',
+            'It is **claimed, not given**. The claim is made through the **Employer Payment Summary**, and an employer entitled to it that never files an EPS simply pays more than it needs to. Nothing arrives to point out the mistake.',
+            'It is used up **as the liability arises**, month by month, rather than spread evenly across the year. An employer with £3,000 of employer’s NI a month uses the whole allowance inside four months and pays in full from then on.',
+            'It is not available to everyone. A company whose only employee paid above the secondary threshold is **a director** cannot claim it, and neither can most public sector work, nor someone employing domestic staff — care and support workers excepted.',
+          ],
+          callout: { kind: 'warning', text: 'The £100,000 cap on the previous year’s employer’s National Insurance, which used to decide eligibility, was removed from 6 April 2025, when the allowance also rose from £5,000. Material written before then quotes both, and quoting either now is wrong.' },
+          worked: {
+            title: 'What the allowance changes',
+            problem: 'For the month, an employer owes PAYE of £7,900, employee National Insurance of £3,850, employer National Insurance of £5,120 and student loan repayments of £340. It has claimed the Employment Allowance and has £4,000 of it left. How much is due to HMRC?',
+            steps: [
+              { do: 'Total the amount due before the allowance.', why: '£7,900 + £3,850 + £5,120 + £340 = £17,210, exactly as in the previous example.' },
+              { do: 'Identify what the allowance may be set against.', why: 'The employer’s National Insurance of £5,120, and nothing else on the list.' },
+              { do: 'Apply what is left of the allowance.', why: '£4,000 remains, which is less than £5,120, so the whole £4,000 is used and £1,120 of employer’s NI remains payable. The allowance is now exhausted.' },
+              { do: 'Restate the amount due.', why: '£17,210 − £4,000 = £13,210. Next month there is no allowance left, and the full amount is payable again.' },
+            ],
+            answer: '£13,210',
+            tryIt: {
+              q: 'An employer owes PAYE of £5,400, employee National Insurance of £2,100 and employer National Insurance of £2,800 for the month, and has £3,500 of Employment Allowance left. How much is due to HMRC, in pounds?',
+              answer: 7500,
+              unit: '£',
+              hint: 'The allowance covers only one of these three, and there is more allowance than that item needs.',
+              exp: '£5,400 + £2,100 + £2,800 = £10,300 before the allowance. It may only be set against the employer’s National Insurance of £2,800, so £2,800 is used and £10,300 − £2,800 = £7,500 is due. The remaining £700 of allowance carries forward against next month’s employer’s National Insurance — it does not touch the PAYE.',
+            },
+          },
+          examtrap: 'Setting the allowance against the whole amount due rather than against the employer’s National Insurance alone. Here that would have made no visible difference — £4,000 is less than £5,120 either way — but where the allowance left exceeds the employer’s NI it does: the excess is carried on to the next month, not used against the PAYE.',
         },
         {
           h: 'Reconciling the payroll',
