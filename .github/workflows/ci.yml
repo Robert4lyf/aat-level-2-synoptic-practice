@@ -136,6 +136,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:chrome
+      - name: Check a timed paper cannot be lost by tapping back
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:exit-guard
       - name: Check folding, jumping and the glossary index still reach their targets
         env:
           REQUIRE_PLAYWRIGHT: '1'

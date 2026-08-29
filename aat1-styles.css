@@ -692,6 +692,62 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
 }
 .a1-btn-ghost:hover { background: var(--a1-surface); border-color: var(--a1-line-2); }
 .a1-wide { width: 100%; margin-top: 16px; }
+/* The destructive half of a pair. Deliberately the QUIETER of the two: the
+   safe choice keeps the filled primary, because the default a reader falls
+   into by tapping the brighter button should be the one that costs nothing. */
+.a1-btn-quiet {
+  background: transparent; border: 1px solid var(--a1-line-2); color: var(--a1-bad);
+}
+.a1-btn-quiet:hover { background: var(--a1-bad-wash); border-color: var(--a1-bad); }
+
+/* ── The guard over leaving a timed paper ───────────────────────────────────
+   Rendered as a SIBLING of .a1-root rather than inside it, so the entrance
+   animation on the screen underneath cannot drag it around and so it is not
+   clipped by anything the page happens to be scrolled to. That also means it
+   inherits nothing from .a1-root: colour is set here explicitly.
+
+   position: fixed, so it stays put while the paper scrolls behind it. */
+.a1-guard {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background: rgba(12, 24, 22, .60);
+  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+  animation: a1-guard-in .16s ease-out both;
+}
+.a1-guard-box {
+  background: var(--a1-surface); color: var(--a1-ink);
+  border: 1px solid var(--a1-line);
+  border-radius: var(--a1-r-lg);
+  box-shadow: var(--a1-shadow-lg);
+  padding: 24px 22px 20px;
+  max-width: 460px; width: 100%;
+  animation: a1-guard-pop .2s cubic-bezier(.2,.7,.3,1) both;
+}
+.a1-guard-h { font-size: 1.3rem; font-weight: 800; color: var(--a1-ink); margin: 0 0 10px; }
+.a1-guard-p { font-size: 1rem; line-height: 1.6; color: var(--a1-ink-2); margin: 0 0 10px; }
+.a1-guard-note { font-size: .87rem; line-height: 1.55; color: var(--a1-ink-3); margin: 0 0 18px; }
+/* Column on a phone, because "Leave and lose it" beside "Stay in the paper" at
+   320px wraps both labels to two lines and puts the destructive one under the
+   reader's thumb. Safe choice on top in both directions. */
+.a1-guard-actions { display: flex; flex-direction: column; gap: 10px; }
+.a1-guard-actions .a1-btn { width: 100%; }
+@media (min-width: 480px) {
+  .a1-guard-actions { flex-direction: row-reverse; flex-wrap: wrap; justify-content: flex-start; }
+  /* flex: 0 0 auto, so the pair keeps its natural width and WRAPS rather than
+     squeezing. Side by side the two labels came to four pixels more than the
+     box had, and a flex item shrinks before it wraps: both buttons lost two
+     pixels each and broke onto two lines — "Leave and lose / it". Four pixels
+     is not a margin any layout should be relying on, so the box was widened
+     and the shrink taken away, and a label longer than either of these now
+     drops to its own row instead of fracturing. */
+  .a1-guard-actions .a1-btn { width: auto; flex: 0 0 auto; }
+}
+@keyframes a1-guard-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes a1-guard-pop { from { transform: scale(.9); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .a1-guard, .a1-guard-box { animation: none; }
+}
 .a1-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 22px; }
 .a1-nav-hint { font-size: .87rem; color: var(--a1-ink-3); }
 

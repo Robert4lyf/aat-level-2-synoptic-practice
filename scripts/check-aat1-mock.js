@@ -728,7 +728,12 @@ console.log(`${DIM}12. The review replays the answer that was given${RESET}`);
 console.log(`${DIM}13. Leaving a paper${RESET}`);
 {
   const c = openMock();
+  /* Two taps, not one. Back raises a guard now — see
+     scripts/check-mock-exit-guard.js, which owns that behaviour; here it is
+     only the route to the thing this section is about, which is what leaving
+     does to the clock. */
   D.click(c.el, 'exit');
+  D.click(c.el, 'exitconfirm');
   ok(/class="a1-mockpanel"/.test(c.el.innerHTML), 'walking out of a paper lands on the practice screen');
   ok(!/class="a1-mockclock"/.test(c.el.innerHTML), 'and the clock is off the screen');
   /* The clock is an interval; leaving it running would fire a result over
@@ -787,7 +792,10 @@ console.log(`${DIM}14. No timer outlives the paper${RESET}`);
     ok(live === 0, `and ${label} stops it`);
   };
 
-  leaves('walking out', c => D.click(c.el, 'exit'));
+  /* Back now raises a guard, so walking out is two taps. The clock is
+     deliberately still running under the dialog — hesitating in an exam costs
+     time — which is asserted here rather than left to be discovered. */
+  leaves('walking out', c => { D.click(c.el, 'exit'); ok(live === 1, 'the clock runs on under the dialog'); D.click(c.el, 'exitconfirm'); });
   leaves('the Home button', c => c.M.AAT1_UI.home());
   leaves('switching subject', c => c.M.AAT1_UI.suspend());
   leaves('finishing the paper', c => { while (onScreen(c.el)) D.click(c.el, 'mocknext'); });
