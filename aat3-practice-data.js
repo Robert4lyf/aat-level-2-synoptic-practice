@@ -1931,7 +1931,7 @@
       q: 'A quarterly filer submits a return late that was due on 7 May 2026, and stays below the points threshold. When does the point it earned expire?',
       opts: [
         'On 1 June 2028, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months from the first day of the month after the return was due',
-        'On 7 May 2028, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months from the date the return itself was due',
+        'On 7 May 2028, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months from the date on which the return itself fell due',
         'On 1 June 2027, 12 months from the first day of the month after the return was due',
         'On no fixed date, points falling away only once a period of compliance is served',
       ],
@@ -1959,10 +1959,10 @@
         'They reset, the ' + T.penalties.lateSubmission.complianceMonths.quarterly + '-month period of compliance having been served in full',
         'They reset, an unfiled return bearing on the payment penalties rather than on points',
         'They stay, the outstanding return leaving one of the two reset conditions unmet',
-        'They stay, then reset the moment the outstanding return is filed, with no further wait',
+        'They stay, and will reset once a further ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months of compliance is served',
       ],
       ans: 2,
-      exp: 'Both conditions have to be met, not either. The period of compliance — ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months for a quarterly filer — is one; having submitted every outstanding return for the previous ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months is the other. Serving the time with a return still missing achieves nothing, and each further late return costs another £' + T.penalties.lateSubmission.penalty.value + '.',
+      exp: 'Both conditions have to be met, not either. The period of compliance — ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months for a quarterly filer — is one; having submitted every outstanding return for the previous ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months is the other. Serving the time with a return still missing achieves nothing, and serving more of it will not help either — the missing return has to be filed. Each further late return costs another £' + T.penalties.lateSubmission.penalty.value + ' meanwhile.',
     },
     {
       id: 'P-1-55', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
