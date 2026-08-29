@@ -1909,10 +1909,11 @@
       _lastPos = k;
       restoreScroll(el);
     }
+    ensureGuardKeys();
     /* Focus moves to the SAFE choice, not the destructive one. A reader who
        taps back and then hits Enter out of habit should stay in the paper.
-       This also puts focus inside the dialog, which is what makes the Escape
-       key below reachable and what a screen reader needs to announce it. */
+       This also puts focus inside the dialog, which is what a screen reader
+       needs to announce it. */
     if (S.confirmExit && el.querySelector) {
       var stay = el.querySelector('[data-a3="exitcancel"]');
       if (stay && stay.focus) { try { stay.focus(); } catch (e) {} }
@@ -2366,6 +2367,49 @@
   /* Out of a paper and back to the practice screen. Stopping the clock is the
      load-bearing half: an interval left running fires a finish() over whatever
      screen the reader has moved on to. */
+  /* ── The guard's keyboard ───────────────────────────────────────────────────
+     A dialog that says aria-modal="true" has to behave like one, and the first
+     version did not: it listened on the backdrop, so Escape worked only while
+     focus was still inside. Two presses of Tab put focus on the header's theme
+     toggle — the dialog said the page behind it was inert while letting the
+     reader walk straight out into it — and from there Escape reached nothing.
+
+     So the listener is on the document, in the CAPTURE phase, and Tab cycles
+     inside the box. Escape can only mean the safe choice: no dialog should
+     destroy anything on a key pressed to make it go away. Installed once and
+     inert whenever the guard is down, rather than added and removed around a
+     screen that repaints every second — a listener whose removal depends on a
+     later repaint is a listener that outlives its dialog.
+
+     stopPropagation as well as preventDefault, so app.js's own key handling
+     never sees a keystroke the dialog has answered. */
+  var _guardKeysOn = false;
+  function ensureGuardKeys() {
+    if (_guardKeysOn || typeof document === 'undefined' || !document.addEventListener) return;
+    _guardKeysOn = true;
+    document.addEventListener('keydown', function (e) {
+      if (!S.confirmExit) return;
+      var box = _host && _host.querySelector && _host.querySelector('.a3-guard');
+      if (!box) return;
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        e.preventDefault(); e.stopPropagation();
+        handle('exitcancel', box);
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      var btns = box.querySelectorAll ? box.querySelectorAll('button') : null;
+      if (!btns || btns.length < 2) return;
+      e.preventDefault(); e.stopPropagation();
+      var at = -1;
+      for (var i = 0; i < btns.length; i++) if (btns[i] === document.activeElement) at = i;
+      /* Focus outside the box — the reader clicked the header, which sits above
+         the backdrop — is pulled back to the safe choice rather than advanced
+         from nowhere. */
+      var to = at < 0 ? 0 : (at + (e.shiftKey ? -1 : 1) + btns.length) % btns.length;
+      if (btns[to] && btns[to].focus) { try { btns[to].focus(); } catch (err) {} }
+    }, true);
+  }
+
   function leaveMock() {
     stopMockClock();
     S.mode = 'practice';
@@ -2395,20 +2439,6 @@
       }
       n.addEventListener('click', function () { handle(act, n); });
     });
-    /* Escape is the one keystroke every dialog is expected to answer, and it
-       can only mean the safe choice — no dialog should destroy anything on a
-       key pressed to make it go away. Bound to the backdrop rather than the
-       document so it dies with the repaint that removes it; focus is inside
-       the box, so the keystroke bubbles here. */
-    var guard = el.querySelector && el.querySelector('.a3-guard');
-    if (guard) {
-      guard.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' || e.key === 'Esc') {
-          if (e.preventDefault) e.preventDefault();
-          handle('exitcancel', guard);
-        }
-      });
-    }
   }
 
   function num(v) {

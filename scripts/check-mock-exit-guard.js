@@ -265,6 +265,20 @@ for (const L of LEVELS) {
     s3.M[L.ui].suspend();
     s3.M[L.ui].mount(s3.el);
     ok(!has(s3.el), `${L.name}: switching subject clears a dialog left open`);
+
+    /* And the real route: the clock running out. mount() notices an expired
+       paper and finishes it, which is the path a reader who leaves the dialog
+       open until time is up actually takes. */
+    const s4 = inMock();
+    D.click(s4.el, 'exit');
+    ok(has(s4.el), `${L.name}: the dialog is up with the clock still running`);
+    const realNow = Date.now;
+    Date.now = () => realNow() + 200 * 60000;
+    s4.M[L.ui].mount(s4.el);
+    Date.now = realNow;
+    ok(!has(s4.el), `${L.name}: the clock running out under the dialog clears it`);
+    ok(!D.nodes(s4.el, 'exitconfirm').length,
+      `${L.name}: and does not offer to abandon the paper it just marked`);
   }
 
   opened.forEach(o => o.M[L.ui].suspend());
@@ -395,7 +409,8 @@ try { ({ chromium } = require('playwright')); } catch (e) { /* handled below */ 
       await page.click(startBtn);
 
       /* The back button first. */
-      await page.click(`${guard === '.a3-guard' ? '.a3-ctx-back' : '.a1-ctx-back'}`);
+      const backSel = guard === '.a3-guard' ? '.a3-ctx-back' : '.a1-ctx-back';
+      await page.click(backSel);
       ok(await shown(page, guard), `${name}: back raises the dialog in the real app`);
 
       /* Escape is the safe choice, always. */
@@ -437,6 +452,106 @@ try { ({ chromium } = require('playwright')); } catch (e) { /* handled below */ 
           (lines ? ` (${lines.map(l => l.text + ': ' + l.rows).join(', ')})` : ''));
       }
       await page.setViewportSize({ width: 1280, height: 900 });
+
+      /* ── The keyboard, where the first version of this was wrong ─────────
+         It listened on the backdrop, so Escape worked only while focus was
+         still inside. Two presses of Tab put focus on the header's theme
+         toggle — a dialog claiming aria-modal="true" while letting the reader
+         walk straight out into the page behind it — and from there Escape
+         reached nothing at all. Both halves are asserted, in that order. */
+      await page.click('#homeNavBtn');
+      const chain = [];
+      for (let i = 0; i < 6; i++) {
+        await page.keyboard.press('Tab');
+        chain.push(await page.evaluate(g =>
+          !!(document.activeElement && document.activeElement.closest(g)), guard));
+      }
+      ok(chain.every(Boolean), `${name}: Tab cycles inside the dialog and cannot leave it`);
+
+      await page.keyboard.press('Escape');
+      ok(!(await shown(page, guard)), `${name}: Escape still closes it after tabbing`);
+      ok(await shown(page, backSel), `${name}: and the paper is still there`);
+
+      /* The header sits above the backdrop, so a mouse can reach it and take
+         focus out of the dialog. Clicking one is harmless — every header button
+         re-renders, and the repaint puts focus back on the safe choice — so
+         focus is moved WITHOUT a click here. A click would hide both of the
+         next two assertions behind that repaint, which is exactly how the first
+         version of this section passed while the bug was still in.
+
+         Two separate things then have to hold with focus outside: Escape must
+         still be answered (it was not — the listener was on the backdrop), and
+         Tab must pull focus back rather than advancing from nowhere. */
+      await page.click(backSel);
+      await page.click('#darkToggle');
+      ok(await shown(page, guard), `${name}: a header click does not dismiss the dialog`);
+
+      const putFocusOut = () => page.evaluate(g => {
+        const b = document.getElementById('darkToggle');
+        b.focus();
+        return !(document.activeElement && document.activeElement.closest(g));
+      }, guard);
+
+      ok(await putFocusOut(), `${name}: focus can be taken out of the dialog by the header`);
+      await page.keyboard.press('Escape');
+      ok(!(await shown(page, guard)), `${name}: Escape is answered even with focus outside`);
+      ok(await shown(page, backSel), `${name}: and the paper is still there`);
+
+      await page.click(backSel);
+      await putFocusOut();
+      await page.keyboard.press('Tab');
+      ok(await page.evaluate(g =>
+        !!(document.activeElement && document.activeElement.closest(g)), guard),
+        `${name}: Tab pulls focus back into the dialog from outside it`);
+      await page.keyboard.press('Escape');
+      ok(!(await shown(page, guard)), `${name}: and Escape works from there too`);
+
+      /* One Escape, one thing dismissed. app.js listens for Escape on the
+         document too, to shut the reference drawer, and this module's listener
+         runs first because it is in the capture phase — so without
+         stopPropagation a single press would close the dialog AND the drawer
+         behind it, which is not what the reader asked for. */
+      /* Whether the drawer is OPEN, read from where it actually is. It hides by
+         being translated a full width to the right rather than by display or
+         visibility, so its box is 360px wide and visible either way: a
+         detector built on width or visibility answers true whichever state it
+         is in, and the assertion below would hold with the drawer shut. */
+      const drawerOpen = () => page.evaluate(() => {
+        const d = document.getElementById('referencePanel');
+        if (!d) return null;
+        return d.getBoundingClientRect().left < window.innerWidth - 4;
+      });
+
+      await page.click(backSel);
+      await page.click('#referenceToggle');
+      await page.waitForTimeout(450);   // it slides
+      ok(await drawerOpen() === true, `${name}: the reference drawer opens over the dialog`);
+      await page.keyboard.press('Escape');
+      ok(!(await shown(page, guard)), `${name}: Escape closes the dialog`);
+      await page.waitForTimeout(450);
+      ok(await drawerOpen() === true,
+        `${name}: and leaves the reference drawer open — one press, one dismissal`);
+      /* A second Escape, with the dialog gone, reaches app.js as it always did
+         and shuts the drawer — so the capture listener above intercepts only
+         while the dialog is up, rather than swallowing the key for good.
+         (Closed with Escape rather than the Ref button, which the open drawer
+         covers: it sits at z-index 200 in the root stacking context and the
+         header at 1.) */
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(450);
+      ok(await drawerOpen() === false,
+        `${name}: a later Escape reaches app.js and closes the drawer as usual`);
+
+      /* The backdrop covers the back button, so a second tap cannot reach it
+         and cannot stack a second dialog. */
+      await page.click(backSel);
+      ok(await page.evaluate(sel => {
+        const b = document.querySelector(sel);
+        const r = b.getBoundingClientRect();
+        const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return !!(top && top !== b && !b.contains(top));
+      }, backSel), `${name}: the back button is covered while the dialog is up`);
+      await page.keyboard.press('Escape');
 
       ok(errs.length === 0, `${name}: no uncaught error (${errs.join('; ')})`);
       await ctx.close();
