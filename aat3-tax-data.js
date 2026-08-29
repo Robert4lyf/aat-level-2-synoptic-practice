@@ -183,6 +183,34 @@
        specification (TPFB 3.2.1) — they concern Northern Ireland and the EU,
        and the unit excludes Northern Ireland rules generally. They are listed
        here only so the numbering is not silently wrong. */
+    /* ── The domestic reverse charge for construction ───────────────────────
+       NOT a named criterion. It appears here because the unit already meets it
+       twice — it is excluded from cash accounting and from the flat rate
+       scheme, and it is one of the things a technician should escalate rather
+       than guess at — and because a rule that changes who accounts for the VAT
+       is worth understanding wherever a reader meets it. Treated as context,
+       not as something the assessment asks about directly. */
+    reverseCharge: {
+      appliesFrom: '1 March 2021',
+      scope: 'Specified construction services supplied between VAT-registered businesses where the payment falls within the scope of the Construction Industry Scheme, and the customer is neither an end user nor an intermediary supplier.',
+      mechanism: 'The supplier does NOT charge VAT. The customer accounts for the output tax on the supplier’s behalf and recovers it as input tax under the normal rules, so for a fully taxable customer the net cash effect is nil.',
+      why: 'It removes the opportunity for a supplier to charge VAT, be paid it, and disappear without accounting for it — missing trader fraud, to which construction supply chains were particularly exposed.',
+      supplierReturn: { box1: 'No output tax.', box6: 'The NET value of the sale, as normal.' },
+      customerReturn: {
+        box1: 'The output tax the supplier did not charge.',
+        box4: 'The same VAT as input tax, subject to the normal recovery rules.',
+        box6: 'Nothing. The purchase is not a sale.',
+        box7: 'The NET value of the purchase, as normal.'
+      },
+      invoice: 'The supplier’s invoice must state that the reverse charge applies and that the customer is required to account for the VAT, and must show the VAT rate or the amount of VAT that would have applied — without including it in the total charged.',
+      endUser: 'An end user, or an intermediary supplier, must tell the supplier IN WRITING. Until they do, the supplier applies the reverse charge; once they have, normal VAT rules apply to that customer.',
+      fivePercentDisregard: { value: 5, unit: '%',
+        note: 'Where the reverse charge element is 5% or less of the value of the supply, the whole supply may be treated under normal VAT rules.' },
+      schemeInteraction: 'Excluded from cash accounting and from the flat rate scheme — a business doing much reverse charge work is usually better off leaving the flat rate scheme, since it charges no output tax to keep.',
+      source: 'HMRC, VAT domestic reverse charge for building and construction services (VAT Notice 735)',
+      checked: '2026-08-29'
+    },
+
     returnBoxes: {
       box1: { title: 'VAT due on sales and other outputs', note: 'Output tax on all supplies made: standard and reduced rated sales, fuel scale charges, import VAT under postponed accounting, and VAT on gifts of goods over £50. Zero-rated, exempt and outside-the-scope supplies carry no VAT so add nothing here.' },
       box2: { title: 'VAT due in the period on acquisitions of goods made in Northern Ireland from EU member states', assessed: false, note: 'Northern Ireland only. EXCLUDED from this unit — the label was rescoped to NI after 2020 and pre-2021 wording is stale.' },
@@ -409,6 +437,28 @@
           note: 'An EPS is sent only when there is something to report. The FPS says what was paid; the EPS says why less is owed than the FPS implies.'
         },
         source: 'HMRC, Running payroll — reporting to HMRC', checked: '2026-08-08'
+      },
+
+      /* THE ONE FIGURE IN THIS SECTION, and it is here despite the note above
+         because it is not a rate, threshold or band used to CALCULATE anything
+         excluded by 4.1.12. It is a relief set against a liability the
+         assessment gives you, and 4.1.11 asks for the amount due to HMRC — so
+         a reader who does not know the allowance exists overstates that amount
+         by up to the whole of it. */
+      employmentAllowance: {
+        value: 10500, unit: '£',
+        period: 'per tax year',
+        reduces: 'The employer’s (secondary) Class 1 National Insurance ONLY. It does not touch PAYE, employee National Insurance, student loan deductions, or Class 1A on benefits.',
+        claimedVia: 'The Employer Payment Summary. It is claimed, not automatic — an employer entitled to it who never files the EPS simply pays more.',
+        howItIsUsed: 'Set against the employer’s Class 1 NIC as that liability arises, month by month, until the allowance is exhausted. It is not spread evenly across the year.',
+        notAvailable: [
+          'a company whose only employee paid above the secondary threshold is a director',
+          'most public sector work',
+          'workers employed for personal, household or domestic work — care and support workers excepted'
+        ],
+        note: 'The £100,000 cap on the previous year’s secondary Class 1 NIC, which used to restrict eligibility, was REMOVED from 6 April 2025 at the same time the allowance rose from £5,000. Study material written before then still quotes both.',
+        source: 'HMRC, Employment Allowance: check if you are eligible; Claim Employment Allowance',
+        checked: '2026-08-29'
       },
 
       paymentToHmrc: {

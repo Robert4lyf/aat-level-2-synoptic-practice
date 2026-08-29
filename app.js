@@ -533,31 +533,16 @@
         'Goodwill: raise in OLD ratio, write off in NEW ratio — must not remain on SFP',
       ]},
       { title: 'VAT schemes', levels: ['aat', 'aat3'], items: vatSchemeItems },
-      { title: 'Variance formulas (L3 MATS)', levels: ['aat'], items: [
-        'Material price = (Standard price − Actual price) × Actual qty purchased',
-        'Material usage = (Standard qty for actual output − Actual qty used) × Standard price',
-        'Labour rate = (Standard rate − Actual rate) × Actual hours paid',
-        'Labour efficiency = (Standard hours for actual output − Actual hours worked) × Standard rate',
-        'Adverse (A) = actual cost > standard · Favourable (F) = actual cost < standard',
-        'Total material variance = Price + Usage variances',
-        'OAR = Budgeted overheads ÷ Budgeted activity',
-        'Over-absorption (absorbed > incurred) → credit P&L · Under-absorption → debit P&L',
-      ]},
-      /* This was titled "Income tax — sole trader (L3 TPFB)" and shown to
-         Level 2 only, which hid the problem. TPFB 4.1.12 excludes the
-         calculation of Income Tax outright, so the unit tag was not merely
-         imprecise — it named the one unit that explicitly does not assess this.
-         Rolling the panel out to Level 3 would have put it in front of the
-         readers most likely to trust the label and revise from it. */
-      { title: 'Income tax — sole trader (background, not assessed here)', levels: ['aat'], items: [
-        'Taxable profit = Accounting profit + Disallowable expenses − Capital allowances',
-        'Always disallowable: depreciation, drawings, private expenses, fines',
-        'AIA: 100% first-year on qualifying plant & machinery (limit £1m 2024/25)',
-        'WDA main pool: 18% reducing balance · WDA special rate pool: 6%',
-        'Personal allowance: £12,570 · Basic rate 20% up to £37,700 · Higher rate 40%',
-        'Payments on account: 31 Jan (in year) and 31 Jul (after year) — each 50% of prior year',
-        'Balancing payment + Self Assessment return: 31 Jan after year end',
-      ]},
+      /* TWO SECTIONS USED TO SIT HERE and no longer do: variance formulas
+         labelled for MATS, and income tax for sole traders. Neither is assessed
+         in any unit this app teaches — its Level 2 is the Q2022 certificate and
+         its Level 3 is TPFB and FAPS — and the income tax one carried a "(L3
+         TPFB)" tag naming the one unit whose 4.1.12 excludes the calculation of
+         Income Tax outright. They were kept for a while on the reading that
+         they were a deliberate preview of Level 3. They were not: a reference
+         drawer is where a reader looks to settle a question under time
+         pressure, and material that no assessment asks about costs them the
+         attention it takes to find that out. */
       { title: 'ETB column guide (L3 FAPS)', levels: ['aat', 'aat3'], items: [
         'Four column pairs: Trial Balance → Adjustments → P&L → SFP',
         'Accrual: Dr P&L expense / Cr SFP current liability',
