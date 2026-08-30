@@ -407,7 +407,16 @@
         'One that pays its own suppliers before their due dates',
       ],
       ans: 0,
-      exp: 'Cash accounting shifts the tax point to payment, so output tax is not due until the customer pays. That helps most where customers are slow. A business paid at once gains nothing, and paying suppliers early actually delays input tax recovery under the scheme.',
+      /* This said "paying suppliers early actually delays input tax recovery
+         under the scheme", which has the direction backwards: the scheme ties
+         recovery to PAYMENT, so paying early brings recovery FORWARD. What
+         paying early does is leave little for the scheme to change on the
+         input side — the delay it is being compared against is the normal
+         scheme's invoice date, and an early payer was never far from it. The
+         lesson says the opposite of the old wording in as many words ("a
+         business that pays quickly while being paid slowly gains most"), so
+         one of the two was teaching the wrong thing. */
+      exp: 'Cash accounting moves BOTH sides to the cash: output tax when the customer pays, input tax when the supplier is paid. The gain is on the output side, so it is largest where customers are slow. A business paid at once gains nothing. And a business that pays its suppliers early has little to gain either — not because early payment delays anything, but because its input tax recovery was already close to the invoice date the normal scheme would have used. The business that genuinely loses is the one taking long credit from its own suppliers.',
     },
     {
       id: 'P-1-43', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.2'],
@@ -495,6 +504,93 @@
         { options: ['arose', 'was confirmed', 'was notified'], answer: 0 },
       ],
       exp: 'The two tests run on different clocks and that is the whole difficulty. The historic test gives a month’s grace and then starts registration from the first day of the second month after; the future test registers a business from a date that has usually already passed.',
+    },
+    /* ── Scheme thresholds as CEILINGS ──────────────────────────────────────
+       The published assessment asks this as a grid: one turnover figure, and
+       is this business eligible for each scheme. The bank tested the numbers
+       as recall and tested the flat rate scheme's excluding/including-VAT
+       trap, but never asked a reader to apply all three thresholds to a single
+       figure — which is the form the question actually takes.
+
+       It carries the registration threshold alongside them on purpose. Every
+       threshold in this outcome is a number turnover is compared against, and
+       they do not all point the same way: the registration threshold is a
+       FLOOR that pulls a business INTO VAT once it is crossed, while the
+       scheme thresholds are CEILINGS a business has to stay under to get the
+       simplification. Read as floors they invert, and a reader who thinks
+       turnover must REACH the join threshold to qualify has it exactly
+       backwards — they will answer this question and the assessment's version
+       of it wrongly in the same way. The fourth statement is that misreading,
+       stated as bait.
+
+       No figures in this comment. Every one of them belongs to
+       aat3-tax-data.js, and a Finance Act change has to be a one-file edit —
+       a threshold written into prose here is a threshold that goes stale
+       silently. The quality gate flags them, and flagged these. */
+    {
+      id: 'P-1-57', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.1', 'TPFB-1.4.1'],
+      type: 'truefalse',
+      /* "expects the coming year to be similar" is not padding. Every scheme's
+         JOIN test is forward-looking — HMRC asks what the business expects in
+         the next twelve months, not what it did in the last — so a stem that
+         gives only a past figure leaves every eligibility key arguable by a
+         reader who spots that. Published assessments use last year's turnover
+         as the estimate and say nothing; stating it costs six words and makes
+         the key exact, while teaching which direction the test looks. */
+      q: 'A retailer\u2019s taxable turnover for the year just ended, excluding VAT, was ' + money(186000) +
+         ', and it expects the coming year to be similar. Identify whether each statement is true or false.',
+      statements: [
+        { text: 'It is required to be registered for VAT.', answer: true },
+        { text: 'It may join the cash accounting scheme.', answer: true },
+        { text: 'It may join the flat rate scheme.', answer: false },
+        { text: 'Its turnover is too low for it to join the annual accounting scheme.', answer: false },
+      ],
+      exp: 'The thresholds in this outcome do not all point the same way. ' +
+        money(T.registration.threshold.value) + ' is a floor: pass it and registration is compulsory, so ' +
+        money(186000) + ' must be registered. The scheme thresholds are ceilings the business has to stay UNDER. ' +
+        money(186000) + ' is below the ' + money(T.schemes.cashAccounting.joinThreshold.value) +
+        ' join threshold for cash accounting and for annual accounting, so both are open to it — it is not too small for either, it is comfortably inside. It is above the ' +
+        money(T.schemes.flatRate.joinThreshold.value) + ' flat rate join threshold, so that scheme is closed.',
+    },
+    /* The gap between the two ceilings. A business sitting between them is in a
+       state the single-number reading cannot express: too big to join, not yet
+       big enough to be thrown out. Getting this right requires knowing that
+       joining and leaving are governed by different figures, which is the point
+       of there being two. */
+    {
+      id: 'P-1-58', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.1', 'TPFB-1.4.3'],
+      type: 'mcq',
+      q: 'A business already using the cash accounting scheme has taxable turnover of ' +
+         money(1480000) + ' for the year just ended, and expects the coming year to be similar. What is its position?',
+      opts: [
+        'It may stay in the scheme, though it could not join it today',
+        'It must leave the scheme at the end of the current VAT period',
+        'It must leave, and may apply to rejoin after twelve months',
+        'It may stay, and could rejoin on the same terms if it left',
+      ],
+      ans: 0,
+      exp: money(1480000) + ' sits between the two thresholds. Joining needs turnover of ' +
+        money(T.schemes.cashAccounting.joinThreshold.value) + ' or less, so this business could not start using the scheme now. Leaving is only compulsory above ' +
+        money(T.schemes.cashAccounting.leaveThreshold.value) + ', which it has not reached, so it stays. Two different figures, and a business can sit between them: too big to join, not yet big enough to be put out. The twelve-month bar on rejoining belongs to the flat rate scheme, not this one.',
+    },
+    /* Cash accounting from the INPUT side. The bank tested the scheme three
+       times and every one of them was about output tax — when the customer
+       pays, who benefits from slow customers, bad debt relief becoming
+       irrelevant. Input tax appeared only inside explanations, never as the
+       thing being asked, so a reader could have scored full marks on the
+       scheme while believing it moves the output side alone. It moves both. */
+    {
+      id: 'P-1-59', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.1', 'TPFB-1.4.2'],
+      type: 'mcq',
+      q: 'A business on the cash accounting scheme files quarterly. It receives a supplier invoice dated 20 March, inside the quarter ended 31 March, and pays it on 12 April. When may it reclaim the input tax?',
+      opts: [
+        'In the quarter ended 30 June, when the supplier was paid',
+        'In the quarter ended 31 March, when the invoice was received',
+        'In the quarter ended 31 March, since the tax point is unchanged',
+        'In either quarter, provided the same basis is used throughout',
+      ],
+      ans: 0,
+      exp: 'Cash accounting applies to input tax exactly as it applies to output tax — the scheme is not a rule about sales alone. Output tax waits for the customer to pay; input tax waits for the supplier to be paid. Payment was made on 12 April, which falls in the quarter ended 30 June, so that is when the input tax is reclaimable. The invoice date and the normal tax point rules do not govern it while the business is in the scheme.',
     },
     /* ── Outcome 2 — calculate VAT (30%) ───────────────────────────────── */
     {
