@@ -626,7 +626,6 @@
         '<input class="a3-input" inputmode="decimal" data-a3="tryinput" value="' + esc(S.tryInput) + '" placeholder="' + esc(t.unit || '') + '" aria-label="Your answer">' +
         '<button class="a3-btn a3-btn-primary" data-a3="trycheck">Check</button></div>';
       if (t.hint) h += '<div class="a3-hint">Hint — ' + md(t.hint) + '</div>';
-      h += calcHtml();
     } else {
       h += '<div class="a3-try-verdict ' + (S.tryResult ? 'is-right' : 'is-wrong') + '">' +
         (S.tryResult ? 'Correct' : 'Not quite — the answer is ' + esc(t.unit === '£' ? '£' + t.answer : t.answer)) + '</div>';
@@ -1314,12 +1313,7 @@
       h += taskHtml(q);
     }
 
-    /* ONE CALL SITE, and calcOffered() is the whole rule. Rendering it from
-       inside the numeric and task branches instead put the type test in three
-       places, two of which were already inside a branch that had made it — so
-       the rule in calcOffered was decorative, and a mutation that widened it to
-       every question type changed nothing and was caught by nothing. */
-    if (calcOffered(q)) h += calcHtml();
+
 
     /* NOTHING IS REVEALED IN A MOCK, and it falls out rather than being
        arranged: the block below is gated on the question having been graded,
@@ -2109,7 +2103,36 @@
        is — is still there behind the dialog. A reader deciding whether to walk
        out of a mock is deciding about what is on the screen, and replacing it
        with a full-screen question takes away the thing they are weighing. */
-    return screenHtml() + (S.confirmExit ? exitGuard() : '');
+    return screenHtml() + calcSurface() + (S.confirmExit ? exitGuard() : '');
+  }
+
+  /* THE CALCULATOR IS A SIBLING OF THE SCREEN, NOT A CHILD OF IT.
+
+     It is position:fixed, and a fixed element is positioned against the
+     VIEWPORT only while no ancestor carries a transform — an ancestor that does
+     becomes the containing block instead. Both entrance animations here end on
+     a transform and run with `fill-mode: both`, which keeps that value after
+     they finish, so a calculator rendered inside the question card was pinned
+     to the CARD's bottom-right corner: on top of the Check button, halfway up
+     the screen, every time a new question was painted. It only looked right
+     after the first tap, because toggling it does not change posKey and so does
+     not re-run the animation.
+
+     Rendering it out here, beside the exit guard, is the fix that cannot come
+     back: nothing between it and the page root is ever transformed. */
+  function calcSurface() {
+    if (S.screen === 'quiz' || (S.screen === 'lesson' && S.phase === 'check')) {
+      return calcOffered(currentQuestions()[S.qIdx]) ? calcHtml() : '';
+    }
+    if (S.screen === 'lesson' && S.phase === 'teach') {
+      var l = lessonById(S.lessonId);
+      var c = ((l && l.cards) || [])[S.cardIdx] || {};
+      var w = c.worked;
+      /* The try-it appears only once every step has been revealed, and goes
+         once it has been marked. */
+      if (w && w.tryIt && S.revealed >= (w.steps || []).length && S.tryResult === null) return calcHtml();
+    }
+    return '';
   }
 
   function screenHtml() {

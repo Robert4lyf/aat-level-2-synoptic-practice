@@ -333,6 +333,62 @@ function finish() {
         ok(got.bannerBg && got.bannerBg !== 'rgba(0, 0, 0, 0)', `${key}: the banner is styled for this level`);
       }
     }
+    /* ── Room under the advance button ──────────────────────────────────────
+       Grading scrolls the button that continues the run to the bottom of the
+       viewport. Welded to the very edge it sits under a phone's home indicator
+       and reads as a page cut off rather than finished, so scroll-margin-bottom
+       asks for a gap. Measured end to end — answer a question for real, let the
+       scroll happen, and read where the button ended up — because a check on
+       the CSS property alone would pass against a scroll that never ran. */
+    const gap = await page.evaluate(async () => {
+      const need = ['calculator.js', 'sound.js', 'celebrate.js', 'aat3-syllabus.js',
+        'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js',
+        'aat3-faps-data.js', 'aat3-ui.js'];
+      for (const src of need) {
+        if (document.querySelector(`script[src="${src}"]`)) continue;
+        await new Promise((res, rej) => {
+          const s = document.createElement('script');
+          s.src = src; s.async = false; s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        });
+      }
+      /* A question with a long explanation, so the button really is pushed
+         below the fold and the scroll has something to do. */
+      window.AAT3_PRACTICE = { QUESTIONS: [{
+        id: 'G-1', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.1'], type: 'mcq',
+        q: 'Which rate applies to most goods and services supplied in the UK?',
+        opts: ['Standard', 'Zero', 'Exempt', 'Outside the scope'], ans: 0,
+        exp: ('The standard rate is the default. ' +
+              'Everything that is not zero-rated, reduced-rated, exempt or outside the scope carries it. ').repeat(6),
+      }] };
+      window.AAT3_FAPS_PRACTICE = { QUESTIONS: [] };
+      document.body.dataset.subject = 'aat3';
+      const host = document.getElementById('app');
+      window.AAT3_UI.reset('practice', 'tpfb');
+      window.AAT3_UI.mount(host);
+      host.querySelector('[data-a3="startpractice"][data-lo="mix"]').click();
+      const opt = host.querySelector('[data-a3="ans"]');
+      if (!opt) return { err: 'no option to answer' };
+      opt.click();
+      /* The scroll is smooth, so give it time to land. */
+      await new Promise(r => setTimeout(r, 900));
+      const btn = host.querySelector('[data-a3="nextq"]');
+      if (!btn) return { err: 'no advance button after grading' };
+      const r = btn.getBoundingClientRect();
+      return {
+        below: Math.round(window.innerHeight - r.bottom),
+        margin: getComputedStyle(btn).scrollMarginBottom,
+        visible: r.top < window.innerHeight && r.bottom > 0,
+      };
+    });
+    ok(!gap.err, `a graded question can be measured${gap.err ? ': ' + gap.err : ''}`);
+    ok(gap.visible === true, 'the advance button is on screen after grading');
+    ok(gap.below >= 12,
+      `and is not welded to the bottom edge (${gap.below}px of air below it)`);
+    ok(gap.below <= 120,
+      `while still sitting near the bottom rather than mid-screen (${gap.below}px)`);
+    ok(gap.margin === '24px', `the gap comes from scroll-margin-bottom (got ${gap.margin})`);
+
     /* Six celebrations, six animations. The whole point of the request. */
     const names = Object.keys(seen).map(k => seen[k].anim);
     ok(new Set(names).size === 6,

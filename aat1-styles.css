@@ -1326,3 +1326,15 @@ body[data-subject="aat1"] .aat-cel-a1.aat-cel-100 .aat-cel-p {
   62%  { opacity: .6; }
   100% { opacity: 0; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n) + 0.06turn)) scaleY(1.25); }
 }
+
+/* ── Room under the advance button ────────────────────────────────────────────
+   Grading scrolls the button that continues the run to the bottom of the
+   viewport. `block: 'end'` aligns its bottom edge with the viewport's exactly,
+   which leaves it welded to the bottom of the screen — under the home indicator
+   on a phone, and looking like the page has been cut off rather than finished.
+
+   scroll-margin-bottom is the declarative way to ask for the gap: scrollIntoView
+   honours it, so the JavaScript stays "put this at the end" and the amount of
+   air is a design decision that lives in the stylesheet with every other one. */
+body[data-subject="aat1"] [data-a1="nextq"],
+body[data-subject="aat1"] [data-a1="mocknext"] { scroll-margin-bottom: 24px; }

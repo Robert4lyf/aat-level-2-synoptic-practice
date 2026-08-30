@@ -562,6 +562,24 @@ function finish() {
       start.click();
       const fab = host.querySelector('[data-a3="calctoggle"]');
       if (!fab) return { err: 'the numeric question offered no calculator button' };
+      /* WHERE IS IT, ON THE FIRST PAINT OF THE QUESTION.
+
+         A fixed element is positioned against the viewport only while no
+         ancestor carries a transform; an ancestor that does becomes the
+         containing block instead. Both entrance animations in this app end on
+         a transform and run with fill-mode: both, so a button rendered inside
+         the question card was pinned to the CARD's corner — over the Check
+         button, halfway up the screen — until something repainted without the
+         animation.
+
+         Measured HERE, before anything is clicked, because that is the only
+         moment the defect exists: the gate used to open the calculator first
+         and so only ever saw the corrected position. */
+      const fr = fab.getBoundingClientRect();
+      const firstPaint = {
+        right: Math.round(window.innerWidth - fr.right),
+        bottom: Math.round(window.innerHeight - fr.bottom),
+      };
       /* THE PAGE MUST NOT MOVE WHEN IT OPENS. That is the entire reason the
          calculator was lifted out of the flow: a reader working from a table of
          figures at the top of the question cannot have the page jump when they
@@ -598,6 +616,7 @@ function finish() {
         scrollAfter: scrollAfter,
         sheet: sheet,
         closedAfterUse: !host.querySelector('.a3-calcsheet'),
+        firstPaint: firstPaint,
       };
     }, NUMERIC);
     ok(!shown.err, `Level 3's pad is reachable in the browser${shown.err ? ': ' + shown.err : ''}`);
@@ -608,6 +627,10 @@ function finish() {
       `opening the calculator leaves the page exactly where it was ` +
       `(${shown.scrollBefore} → ${shown.scrollAfter})`);
     ok(shown.scrollBefore > 0, 'and the page was genuinely scrolled away from the top when measured');
+    ok(shown.firstPaint && shown.firstPaint.right >= 0 && shown.firstPaint.right <= 40,
+      `on first paint the button sits against the right edge (${shown.firstPaint && shown.firstPaint.right}px in)`);
+    ok(shown.firstPaint && shown.firstPaint.bottom >= 0 && shown.firstPaint.bottom <= 40,
+      `and against the bottom edge, not the card's corner (${shown.firstPaint && shown.firstPaint.bottom}px up)`);
     ok(shown.sheet === true, 'the pad opens as a floating sheet, not as a block in the flow');
     /* The figure has gone into a box the sheet was covering, so the sheet gets
        out of the way rather than making the reader dismiss it to check. */
@@ -704,6 +727,110 @@ function finish() {
         'and announces the change, so the state grading reads is written too');
     }
     ok(errs2.length === 0, `Level 2 runs without an uncaught error${errs2.length ? ': ' + errs2[0] : ''}`);
+
+    /* ── Level 2 at two widths ───────────────────────────────────────────────
+       The whole claim of the narrow layout is that the calculator stops being a
+       block at the bottom of the page and becomes a sheet over it — and that
+       the WIDE layout is untouched, which is the half a change like this
+       usually breaks. Both are measured on the same page, resized between. */
+    const at = async (w, h) => {
+      await p2.setViewportSize({ width: w, height: h });
+      await p2.waitForTimeout(120);
+      return p2.evaluate(() => {
+        const fab = document.getElementById('calcFab');
+        const side = document.getElementById('calcSidebar');
+        const vis = el => !!el && getComputedStyle(el).display !== 'none';
+        return {
+          fab: vis(fab),
+          side: vis(side),
+          fixed: side ? getComputedStyle(side).position : null,
+        };
+      });
+    };
+    const wide = await at(1200, 900);
+    ok(wide.side === true, 'at 1200px the calculator is in its column, as it always was');
+    ok(wide.fixed === 'sticky', 'and still sticky beside the question, not floating');
+    ok(wide.fab === false, 'with no floating button, because none is needed');
+
+    const narrow = await at(390, 844);
+    ok(narrow.fab === true, 'at 390px a button appears to open it');
+    ok(narrow.side === false, 'and the panel is out of the flow until it is asked for');
+    /* And in the corner, not pinned to a transformed ancestor. See the note on
+       Level 3's first-paint measurement above: `.quiz-container` animates in on
+       a transform that its fill-mode keeps, so anything fixed inside it is
+       positioned against that box rather than the screen. */
+    const corner = await p2.evaluate(() => {
+      const f = document.getElementById('calcFab');
+      if (!f) return null;
+      const r = f.getBoundingClientRect();
+      return { right: Math.round(innerWidth - r.right), bottom: Math.round(innerHeight - r.bottom) };
+    });
+    ok(corner && corner.right >= 0 && corner.right <= 40,
+      `the button sits against the right edge (${corner && corner.right}px in)`);
+    ok(corner && corner.bottom >= 0 && corner.bottom <= 40,
+      `and against the bottom edge (${corner && corner.bottom}px up)`);
+
+    /* Opening it must not move the page: the figures the reader is working from
+       are the reason it is open. */
+    const moved = await p2.evaluate(async () => {
+      document.documentElement.style.minHeight = '250vh';
+      window.scrollTo(0, 300);
+      const before = window.scrollY;
+      document.getElementById('calcFab').click();
+      await new Promise(r => requestAnimationFrame(r));
+      const side = document.getElementById('calcSidebar');
+      return {
+        before, after: window.scrollY,
+        open: !!side && getComputedStyle(side).display !== 'none',
+        position: side ? getComputedStyle(side).position : null,
+      };
+    });
+    ok(moved.open === true, 'pressing it opens the panel');
+    ok(moved.position === 'fixed', 'as a sheet over the page rather than a block in it');
+    ok(moved.before === moved.after,
+      `and the page does not move (${moved.before} → ${moved.after})`);
+    ok(moved.before > 0, 'measured from a page genuinely scrolled away from the top');
+
+    const shut = await p2.evaluate(async () => {
+      document.getElementById('calcFab').click();
+      await new Promise(r => requestAnimationFrame(r));
+      const side = document.getElementById('calcSidebar');
+      return !side || getComputedStyle(side).display === 'none';
+    });
+    ok(shut === true, 'and pressing it again puts the panel away');
+
+    /* USING A VALUE PUTS IT AWAY TOO. The figure has just gone into a box the
+       sheet was covering, so leaving it up makes the reader dismiss it to check
+       that the thing they asked for happened. Level 3 was asserted on this;
+       Level 2 was not, and a mutation removing it survived. */
+    const afterUse = await p2.evaluate(async () => {
+      document.getElementById('calcFab').click();
+      await new Promise(r => requestAnimationFrame(r));
+      const key = v => document.querySelector(`.calc-sidebar [data-calc="num"][data-val="${v}"]`);
+      if (!key('7')) return { err: 'no keypad after opening' };
+      /* CLEARED FIRST. The display carries whatever the previous check left on
+         it — the calculator does not reset between assertions any more than it
+         does between keystrokes — so typing 7 onto a live 42 gives 427, which
+         is correct behaviour and a confusing thing to assert against. */
+      const clear = document.querySelector('.calc-sidebar [data-calc="clear"]');
+      if (clear) clear.click();
+      key('7').click();
+      const use = document.getElementById('calcUse');
+      if (!use) return { err: 'no use button' };
+      const BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part]';
+      const box = document.querySelector(BOXES);
+      if (box) box.focus();
+      use.click();
+      await new Promise(r => requestAnimationFrame(r));
+      const side = document.getElementById('calcSidebar');
+      return {
+        closed: !side || getComputedStyle(side).display === 'none',
+        value: document.querySelector(BOXES) ? document.querySelector(BOXES).value : null,
+      };
+    });
+    ok(!afterUse.err, `the narrow sheet can be used${afterUse.err ? ': ' + afterUse.err : ''}`);
+    ok(afterUse.value === '7', `and the figure reaches the answer box (got ${afterUse.value})`);
+    ok(afterUse.closed === true, 'and "Use this value" puts the sheet away');
     await ctx2.close();
   } finally {
     await browser.close();

@@ -6427,3 +6427,81 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
   15%  { opacity: 1; }
   100% { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(calc(38vh + var(--r) * 0.1vh)) scaleY(1); }
 }
+
+/* ── The calculator on a narrow screen ────────────────────────────────────────
+   Above 880px the calculator has its own column beside the question, sticky, in
+   view the whole time. Nothing there needed fixing and nothing there changes:
+   the button below is hidden and the panel is exactly the sidebar it always
+   was.
+
+   Below 880px that column collapses into the flow and the panel lands under
+   everything the reader is working from — so on a task with a table of figures
+   they scroll down to the keypad, up to read the next row, and down again. Same
+   defect as Level 3 had, same fix: a button in the corner, and a panel fixed to
+   the viewport so opening it does not move the page by a pixel.
+
+   THE SWITCH IS ENTIRELY IN CSS. The markup is identical at both widths, so
+   there is no breakpoint in JavaScript to disagree with this one — `calcOpen`
+   is simply inert wherever the sidebar is always visible. */
+.calc-fab { display: none; }
+
+@media (max-width: 880px) {
+  .calc-fab {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; right: 16px; bottom: 16px; z-index: 60;
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    background: var(--card); color: var(--text-strong);
+    box-shadow: var(--shadow-lg, 0 10px 30px -8px rgba(0,0,0,.35));
+    font: inherit; font-size: 22px; line-height: 1; cursor: pointer;
+    transition: transform .16s, background .16s;
+  }
+  .calc-fab:active { transform: scale(.96); }
+  .calc-fab:focus-visible { outline: 3px solid var(--brand-500); outline-offset: 3px; }
+  /* Open, the button becomes the way out of the panel it opened. */
+  .calc-fab.is-open {
+    background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+    color: #fff; border-color: transparent; font-size: 19px;
+  }
+
+  /* Out of the flow entirely until it is asked for, so a question that offers a
+     calculator is not a question with a keypad stapled to the bottom of it. */
+  .calc-sidebar { display: none; }
+  .calc-sidebar.is-open {
+    display: flex;
+    position: fixed; z-index: 59;
+    left: 12px; right: 12px; bottom: 84px;   /* clear of the button */
+    max-width: 320px; margin-left: auto;
+    top: auto; padding: 12px;
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg, 0 16px 44px -12px rgba(0,0,0,.45));
+    /* A guard rather than a scrollbar anyone should meet: a phone in landscape
+       would otherwise run the panel off the top and take its own "Use this
+       value" button with it. */
+    max-height: calc(100vh - 116px); overflow: auto;
+    animation: calc-sheet-in .18s cubic-bezier(.2,.8,.3,1) both;
+  }
+  /* The title earns its space on a desktop sidebar and not on a sheet the
+     reader has just deliberately opened from a labelled button. */
+  .calc-sidebar.is-open .calc-title,
+  .calc-sidebar.is-open .calc-hint { display: none; }
+}
+@keyframes calc-sheet-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .calc-sidebar.is-open { animation: none; }
+  .calc-fab { transition: none; }
+}
+
+/* ── Room under the advance button ────────────────────────────────────────────
+   Grading scrolls the button that continues the run to the bottom of the
+   viewport. `block: 'end'` aligns its bottom edge with the viewport's exactly,
+   which leaves it welded to the bottom of the screen — under the home indicator
+   on a phone, and looking like the page has been cut off rather than finished.
+
+   scroll-margin-bottom is the declarative way to ask for the gap: scrollIntoView
+   honours it, so the JavaScript stays "put this at the end" and the amount of
+   air is a design decision that lives in the stylesheet with every other one. */
+#nextBtn, #lessonNextBtn { scroll-margin-bottom: 24px; }
