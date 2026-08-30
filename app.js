@@ -616,7 +616,7 @@
       'Annual accounting: one return a year, with 9 monthly or 3 quarterly payments on account. Join below ' +
         refMoney(ann ? ann.joinThreshold.value : 1350000) + ', leave above ' +
         refMoney(ann ? ann.leaveThreshold.value : 1600000) + '.',
-      'Flat rate: a sector percentage of VAT-INCLUSIVE turnover, and no input tax reclaimed. Join below ' +
+      'Flat rate: a sector percentage of VAT-INCLUSIVE turnover. It is a NET rate — an allowance for input tax is built into it, so none is reclaimed separately. Join below ' +
         refMoney(flat ? flat.joinThreshold.value : 150000) + ' excluding VAT, leave above ' +
         refMoney(flat ? flat.leaveThreshold.value : 230000) + ' including VAT.',
       'Zero-rated (0%): food, books, children\'s clothing — a taxable supply, so input VAT IS reclaimable.',
