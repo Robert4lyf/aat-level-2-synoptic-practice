@@ -1972,6 +1972,10 @@
        there is no fraction to be through, so the bar fills towards the best
        streak of the run instead — see quizProgress(). */
     endless: false, endlessSeen: null, streak: 0, bestStreak: 0,
+    /* Whether the calculator sheet is open. Only consulted BELOW 880px: at any
+       wider width the sidebar sits in its own grid column and is always there,
+       so this flag is inert and the desktop layout is untouched by it. */
+    calcOpen: false,
     timedOut: false, numericDraft: '',
     glossaryQuery: '', toast: null, toastTimer: null, collapsedUnits: {},
     ddSelectedLeft: null, ddMap: {},        // drag-drop UI state
@@ -3242,7 +3246,7 @@
   }
   function nextMock() {
     if (State.current + 1 >= State.questions.length) finishMock(false);
-    else { State.current++; Calc.reset(); render(); }
+    else { State.current++; Calc.reset(); State.calcOpen = false; render(); }
   }
   function prevMock() { if (State.current > 0) { State.current--; Calc.reset(); render(); } }
 
@@ -3659,9 +3663,10 @@
       if (mc) mc.focus();
     }
     const ni = document.getElementById('numericAnswer');
-    if (ni && !ni.disabled && State.screen === 'quiz') {
+    if (ni && !ni.disabled && State.screen === 'quiz' && !_skipAnswerFocus) {
       try { ni.focus(); if (State.mode === 'practice' && State.numericDraft) ni.setSelectionRange(ni.value.length, ni.value.length); } catch (e) {}
     }
+    _skipAnswerFocus = false;
     if (State.screen === 'home' && State.activeTab === 'progress') animateCounters();
     /* Bring the advance button to the BOTTOM of the viewport once the question
        has been graded.
@@ -3679,6 +3684,9 @@
   /* Which graded question the page has already been scrolled for, so the move
      happens on the repaint that graded and on no other. Reset the moment the
      screen stops showing a graded question. */
+  /* Set for exactly one repaint, by the things that must not steal focus back
+     into the answer box — opening the calculator over it, for one. */
+  let _skipAnswerFocus = false;
   let _scrolledFor = null;
   function scrollAdvanceIntoView() {
     const inQuiz = State.screen === 'quiz' && State.answered !== null;
@@ -4832,7 +4840,21 @@
       const val = k.val != null ? ` data-val="${escapeHtml(k.val)}"` : '';
       return `<button class="${cls}" data-calc="${k.k}"${val} type="button"${aria}>${escapeHtml(k.label)}</button>`;
     }).join('');
-    return `<aside class="calc-sidebar" aria-label="On-screen calculator">
+    /* THE BUTTON AND THE PANEL ARE ONE THING, at narrow widths.
+
+       Above 880px the calculator has its own column beside the question and
+       there is nothing to scroll past: that layout is better than a sheet and
+       is left exactly as it was, with this button hidden by CSS. Below 880px
+       the column collapses into the flow and the calculator lands under
+       everything the reader is working from — the same defect fixed on Level 3,
+       and fixed here the same way. The class does the switching so the DOM is
+       identical at both widths and there is no breakpoint for JavaScript to
+       disagree with CSS about. */
+    return `<button class="calc-fab${State.calcOpen ? ' is-open' : ''}" id="calcFab" type="button"
+        aria-expanded="${State.calcOpen}" aria-controls="calcSidebar"
+        aria-label="${State.calcOpen ? 'Close the calculator' : 'Open the calculator'}"
+      ><span aria-hidden="true">${State.calcOpen ? '✕' : '🧮'}</span></button>
+      <aside class="calc-sidebar${State.calcOpen ? ' is-open' : ''}" id="calcSidebar" aria-label="On-screen calculator">
       <div class="calc-title">🧮 Calculator</div>
       <div class="calc-display-wrap">
         <div class="calc-display" id="calcDisplay" role="status" aria-live="polite">${escapeHtml(Calc.display)}</div>
@@ -8708,6 +8730,15 @@
     document.querySelectorAll('[data-calc]').forEach(el => el.addEventListener('click', () => {
       Calc.press(el.dataset.calc, el.dataset.val);
     }));
+    /* Opening the sheet must not move the page and must not summon the
+       keyboard. render() refocuses the numeric answer box on every paint, which
+       on a phone throws the keyboard up over the calculator that was just
+       asked for — so this one repaint skips it. */
+    bind('calcFab', 'click', () => {
+      State.calcOpen = !State.calcOpen;
+      _skipAnswerFocus = true;
+      render();
+    });
     /* EVERY ANSWER BOX ON A SCREEN THAT SHOWS THE CALCULATOR, not just the one
        on a plain numeric question. The calculator is rendered beside table-fill
        and scenario questions too — both `has-calc` unconditionally — and this
@@ -8735,7 +8766,11 @@
          show a figure that submitting could not see. */
       input.dispatchEvent(new Event('input', { bubbles: true }));
       _lastAnswerBox = input;
+      /* The figure has gone into a box the sheet was covering. Inert above
+         880px, where the sidebar is in its own column and never covered it. */
+      State.calcOpen = false;
       try { input.focus(); } catch (e) {}
+      render();
     });
     bind('nextBtn', 'click', () => State.mode === 'mock' ? nextMock() : nextPractice());
     bind('prevBtn', 'click', prevMock);
