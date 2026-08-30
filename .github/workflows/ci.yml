@@ -140,6 +140,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:exit-guard
+      - name: Check endless practice never ends, and ends properly when stopped
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:endless
       - name: Check folding, jumping and the glossary index still reach their targets
         env:
           REQUIRE_PLAYWRIGHT: '1'

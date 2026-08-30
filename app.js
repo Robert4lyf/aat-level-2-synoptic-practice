@@ -2010,6 +2010,13 @@
     questions: [], current: 0, answered: null, answers: [], score: 0, results: [],
     showReview: false, reviewFilter: 'all',
     mockEndTime: 0, mockTimerInterval: null, confirmModal: null,
+    /* ── Endless practice ────────────────────────────────────────────────────
+       A run with no last question. `questions` is topped up as the reader nears
+       the end of it, so nothing in the eleven question renderers has to know
+       the run is unbounded. What changes is what PROGRESS means: with no end
+       there is no fraction to be through, so the bar fills towards the best
+       streak of the run instead — see quizProgress(). */
+    endless: false, endlessSeen: null, streak: 0, bestStreak: 0,
     timedOut: false, numericDraft: '',
     glossaryQuery: '', toast: null, toastTimer: null, collapsedUnits: {},
     ddSelectedLeft: null, ddMap: {},        // drag-drop UI state
@@ -2202,6 +2209,55 @@
       hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
+  }
+
+  /* ── Endless practice ──────────────────────────────────────────────────────
+     Questions keep coming until the reader stops. Drawn in batches rather than
+     all at once — the AAT bank alone is well over a thousand questions and
+     shuffling the lot to serve twelve is work nobody asked for — and topped up
+     with one to go, so the reader never waits at a boundary they cannot see. */
+  const ENDLESS_BATCH = 12;
+
+  /* A written question is marked by the reader against a rubric, which is the
+     right thing in a mock and the wrong thing here: a self-assessed answer
+     cannot honestly feed a streak, and stopping to grade yourself is exactly
+     the interruption an endless run exists to avoid. The very first question an
+     endless run served was a written one, which is how this was found. */
+  function endlessPool() {
+    return (window.ALL_QUESTIONS || []).filter(q =>
+      (q.type || 'mcq') !== 'written' && !Storage.isConfident(q.id));
+  }
+
+  function topUpEndless() {
+    const pool = endlessPool();
+    let fresh = pool.filter(q => !State.endlessSeen[q.id]);
+    /* Once the whole bank has been seen the set starts again. An endless run
+       that quietly stopped being endless would be worse than repetition. */
+    if (!fresh.length) { State.endlessSeen = {}; fresh = pool; }
+    const add = applyFlipMode(shuffle(fresh).slice(0, ENDLESS_BATCH).map(presentQuestion));
+    add.forEach(q => { State.endlessSeen[q.id] = 1; });
+    State.questions = State.questions.concat(add);
+  }
+
+  function startEndless() {
+    playClick();
+    if (!endlessPool().length) {
+      showToast('No questions left — you have marked them all as confident.', 'warn');
+      return;
+    }
+    _lastTransitionTime = Date.now();
+    Object.assign(State, {
+      screen: 'quiz', mode: 'practice', selectedTopic: 'endless', questions: [],
+      endless: true, endlessSeen: {}, streak: 0, bestStreak: 0,
+      isDiagnostic: false, diagnosticResult: null,
+      current: 0, answered: null, answers: [], score: 0, results: [],
+      showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
+      hintLevel: 0, hintElim: null, combo: 0,
+    });
+    topUpEndless();
+    if (!State.questions.length) { State.endless = false; goHome(); return; }
+    Calc.reset(); render();
   }
 
   /* Adaptive "smart practice": weights weak skills, due reviews and unseen questions,
@@ -3211,7 +3267,15 @@
   function nextPractice() {
     stopSpeech();
     _lastTransitionTime = Date.now();
-    if (State.current + 1 >= State.questions.length) finishPractice();
+    /* The streak is the endless run's only sense of position, so it is kept for
+       every practice run and merely displayed by that one. */
+    if (State.answered !== null) {
+      const last = State.results[State.results.length - 1];
+      if (last && last.correct) { State.streak++; if (State.streak > State.bestStreak) State.bestStreak = State.streak; }
+      else if (last) State.streak = 0;
+    }
+    if (State.endless && State.current + 1 >= State.questions.length - 1) topUpEndless();
+    if (!State.endless && State.current + 1 >= State.questions.length) finishPractice();
     else {
       State.current++; State.answered = null; State.numericDraft = ''; State.typedDraft = '';
       State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
@@ -3227,6 +3291,10 @@
   function prevMock() { if (State.current > 0) { State.current--; Calc.reset(); render(); } }
 
   function finishPractice() {
+    /* An endless run's `questions` is however far the top-up happened to reach,
+       which is not what the reader attempted — so the set is trimmed to the
+       answered count before any percentage is worked out from its length. */
+    if (State.endless) State.questions = State.questions.slice(0, Math.max(1, State.results.length));
     State.screen = 'score';
     Storage.data.session = null;
     const pct = State.questions.length ? Math.round((State.score / State.questions.length) * 100) : 0;
@@ -3375,6 +3443,13 @@
         onConfirm: () => { stopMockTimer(); closeConfirm(); goHome(); } });
       return;
     }
+    /* An endless run has no last question, so leaving IS finishing it — a reader
+       who has answered twenty deserves the result rather than being dropped on
+       the home screen with nothing. Nothing answered yet means nothing to show. */
+    if (State.screen === 'quiz' && State.endless) {
+      if (State.results.length) { finishPractice(); return; }
+      State.endless = false; goHome(); return;
+    }
     /* Levels 1 and 3 render their own screens, so State.screen is 'home' the
        whole time they are on and nothing above can see that a timed paper is
        running. They are asked instead; a subject that does not define the hook,
@@ -3412,7 +3487,7 @@
        were. A subject that renders itself has to be asked to go home. */
     const ui = ownUi();
     if (ui && ui.home) ui.home();
-    State.screen='home'; State.activeTab='home'; State.confirmModal=null; render();
+    State.screen='home'; State.activeTab='home'; State.confirmModal=null; State.endless=false; render();
   }
 
   function switchSubject(id) {
@@ -3455,6 +3530,7 @@
     State.referenceOpen = !!Storage.data.settings.refOpen;
     // Reset all transient state
     State.screen = 'home';
+    State.endless = false;
     State.activeTab = subj.tabs[0];
     State.lesson = null; State.flash = null; State.recall = null; State.questions = []; State.revisionUnit = null;
     State.confirmModal = null;
@@ -3485,7 +3561,10 @@
   function closeConfirm() { State.confirmModal = null; render(); }
 
   function saveSession() {
-    if (State.mode === 'mock') return;
+    /* Not saved, for the same reason a mock is not: the stored session carries
+       question ids and an index but no notion of a run that tops itself up, so
+       a restored endless run would be a fixed slice wearing an endless header. */
+    if (State.mode === 'mock' || State.endless) return;
     Storage.data.session = { mode:State.mode, selectedTopic:State.selectedTopic,
       questionIds: State.questions.map(q => q.id),
       current: State.current, score: State.score, results: State.results,
@@ -4018,6 +4097,7 @@
       { id: 'smartPracticeBtn', icon: '🧠', title: 'Smart Practice', desc: 'Adapts to your skill gaps', cls: '' },
       ...(_activeSubjectId === 'french' ? [{ id: 'recallBtn', icon: '🎴', title: 'Active Recall', desc: 'Retrieve from memory · flashcards', cls: 'mode-recall' }] : []),
       { topic: 'all', icon: '🎯', title: 'Mixed Practice', desc: `${PRACTICE_LENGTH} random questions`, cls: '' },
+      { id: 'endlessBtn', icon: '∞', title: 'Endless Practice', desc: 'Never runs out · build a streak', cls: 'mode-endless' },
       ...(isAAT ? [{ id: 'mockBtn', icon: '⏱', title: 'Synoptic Mock', desc: `${SYNOPTIC_BLUEPRINT.length} tasks · ${SYNOPTIC_TOTAL_MARKS} marks · ${Math.round(MOCK_DURATION_MS / 60000)} min`, cls: 'mode-mock' }] : []),
       ...(isAAT ? [{ id: 'unitExamBtn', icon: '📝', title: 'Unit Assessment', desc: `ITBK · POBC · POC · 90 min each`, cls: 'mode-unit-exam' }] : []),
       ...(isAAT ? [{ id: 'diagnosticBtn', icon: '🧭', title: 'Where should I start?', desc: '12 questions · finds your level per unit', cls: 'mode-diagnostic' }] : []),
@@ -4782,6 +4862,29 @@
     </aside>`;
   }
 
+  /* The progress strip in the quiz header, written once instead of eleven
+     times. It has to branch, and that is why it is a function: an ENDLESS run
+     has no total to be a fraction of, so the bar fills towards the best streak
+     of the run and the counter becomes the streak itself. Repeating the branch
+     across eleven renderers would have guaranteed that one of them was missed. */
+  function quizProgress(total, pct) {
+    if (State.endless) {
+      const best = Math.max(State.bestStreak || 0, State.streak || 0, 1);
+      const meter = Math.round(((State.streak || 0) / best) * 100);
+      const done = State.current + (State.answered !== null ? 1 : 0);
+      return `<div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.streak || 0}" aria-valuemin="0" aria-valuemax="${best}"><div class="progress-bar" style="width:${meter}%"></div></div>
+              <div class="progress-label">${done} answered · ${State.score} right</div>
+            </div>
+            <span class="q-counter q-counter-endless" aria-label="Current streak ${State.streak || 0}"><b>${State.streak || 0}</b><i>streak</i></span>`;
+    }
+    return `<div class="progress-wrap">
+              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+              <div class="progress-label">${State.current + 1} of ${total} completed</div>
+            </div>
+            <span class="q-counter">Q${State.current + 1}/${total}</span>`;
+  }
+
   function renderQuiz() { return State.mode === 'mock' ? renderMockQuiz() : renderPracticeQuiz(); }
 
   function confidentActionBtn(c) {
@@ -4884,11 +4987,7 @@
             ${q._flipped ? '<span class="flip-pill">🔄 EN→FR</span>' : ''}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag this question' : 'Flag this question for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
           ${(() => {
@@ -4983,11 +5082,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="dd-pill">🔗 Match</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
           ${statusLine}
@@ -5052,11 +5147,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="tf-pill">📋 Table</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
           ${table.title ? `<div class="tf-title">${escapeHtml(table.title)}</div>` : ''}
@@ -5129,11 +5220,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="sc-pill">📖 Scenario</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="sc-setup">
             <div class="sc-setup-label">Scenario</div>
@@ -5191,11 +5278,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="gf-pill">✏️ Fill the gaps</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           ${q.q ? `<div class="question-text">${escapeHtml(q.q.replace(/\{\d+\}/g, '___'))}</div>` : ''}
           <div class="gf-sentence">${sentence}</div>
@@ -5220,11 +5303,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${pill}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           ${q.q ? `<div class="question-text">${escapeHtml(q.q)}</div>` : ''}
           ${bodyHtml}${actionHtml}${feedbackHtml}
@@ -5329,11 +5408,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             <span class="sc-pill">🔀 Word order</span>
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
           <p class="wo-hint">Tap words from the bank to build the sentence. Not all words are needed. Tap a placed word to remove it.</p>
@@ -5386,11 +5461,7 @@
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="listen-prompt">
             <button class="listen-play-btn" id="listenPlayBtn" type="button" aria-label="Play audio clip">🔊 Tap to Listen</button>
@@ -5456,13 +5527,7 @@
             ${levelBadge}
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}" title="${flagged ? 'Flagged — click to remove' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}">
-                <div class="progress-bar" style="width:${pct}%"></div>
-              </div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           <div class="question-text">${escapeHtml(q.q)}</div>
           ${q.tts && _activeSubjectId === 'french' ? frTtsBtn('ttsQBtn', 'Listen') : ''}
@@ -5540,11 +5605,7 @@
             <span class="numeric-pill">🎧 Dictée</span>
             ${comboEl}
             <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" title="${flagged ? 'Flagged' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
-            <div class="progress-wrap">
-              <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
-              <div class="progress-label">${State.current + 1} of ${total} completed</div>
-            </div>
-            <span class="q-counter">Q${State.current + 1}/${total}</span>
+            ${quizProgress(total, pct)}
           </div>
           ${bodyHtml}${feedbackHtml}
         </div>
@@ -8527,6 +8588,7 @@
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
     bind('mockBtn', 'click', startMock);
+    bind('endlessBtn', 'click', startEndless);
     bind('protoBtn', 'click', startProto);
     bind('storyBtn', 'click', () => { const s = storyDef(); if (s && s.days && s.days[0]) startStory(s.days[0].id); });
     bind('unitExamBtn', 'click', showUnitAssessmentPicker);

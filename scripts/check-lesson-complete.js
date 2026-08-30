@@ -166,7 +166,15 @@ function nameOn(html, cls) {
   D3.nodes(el, 'open')[0].fire('click');
   D3.click(el, 'exit');
   D3.click(el, 'practice');
-  if (D3.nodes(el, 'startpractice').length) D3.click(el, 'startpractice');
+  /* NAME THE RUN, do not take whichever button happens to be first. This read
+     `D3.click(el, 'startpractice')`, which meant the check silently depended on
+     the ORDER of the offers on the practice screen — and the moment an endless
+     run was added above mixed practice, it started one of those instead and
+     never reached a completion screen at all. A run with no end cannot test a
+     completion screen. */
+  if (D3.nodes(el, 'startpractice').length) {
+    D3.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+  }
   if (runToDone(D3, el, 'a3-done')) {
     const shown = nameOn(el.innerHTML, 'a3-done-lesson');
     if (shown !== null) {
@@ -217,7 +225,15 @@ function nameOn(html, cls) {
   D1.nodes(el, 'open')[0].fire('click');
   D1.click(el, 'exit');
   if (D1.nodes(el, 'practice').length) D1.click(el, 'practice');
-  if (D1.nodes(el, 'startpractice').length) D1.click(el, 'startpractice');
+  /* NAME THE RUN, do not take whichever button happens to be first. This read
+     `D1.click(el, 'startpractice')`, which meant the check silently depended on
+     the ORDER of the offers on the practice screen — and the moment an endless
+     run was added above mixed practice, it started one of those instead and
+     never reached a completion screen at all. A run with no end cannot test a
+     completion screen. */
+  if (D1.nodes(el, 'startpractice').length) {
+    D1.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+  }
   if (runToDone(D1, el, 'a1-done')) {
     const shown = nameOn(el.innerHTML, 'a1-done-lesson');
     if (shown !== null) {

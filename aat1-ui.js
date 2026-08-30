@@ -63,6 +63,15 @@
     orderMoved: false,
     mockEndsAt: 0,       // timed mock: when the clock runs out
     mockResults: [],     // timed mock: one record per question answered, for the report and the review
+    /* ── Endless practice ──────────────────────────────────────────────────
+       A run with no last question. `practiceQs` is topped up as the reader
+       nears the end of it, so the question screen never has to know the run
+       is unbounded. What changes is what progress MEANS: with no end there is
+       no percentage-through, so the bar becomes a streak — the only measure
+       of position an endless run can honestly offer. */
+    endlessSeen: null,   // ids already served this run, so a top-up cannot repeat one
+    streak: 0,           // consecutive right answers, now
+    bestStreak: 0,       // the longest run of them this session
     /* A mock's exit is guarded, because walking out of a timed paper cannot be
        undone: the clock stops, the paper is never graded and there is no
        result and no review. Held in state rather than opened as a native
@@ -776,7 +785,13 @@
        carried a card headed "Question 30 of 30" directly beneath a bar reading
        "Question 1 of 30". The bar is the one that knows, and it is already
        saying it, so this line has nothing left to add. */
-    var h = (isReview() ? '' : '<div class="a1-qhead">Question ' + (S.qIdx + 1) + ' of ' + n + '</div>') +
+    /* "of n" is a lie in an endless run: n is the length of a set that tops
+       itself up, so the total would climb as the reader worked — 3 of 12, then
+       3 of 24. The position is still worth stating; the total is not there to
+       be stated. */
+    var h = (isReview() ? ''
+              : '<div class="a1-qhead">Question ' + (S.qIdx + 1) +
+                (isEndless() ? '' : ' of ' + n) + '</div>') +
             '<h2 class="a1-q">' + md(q.q) + '</h2>';
     if (q.intro) h += '<p class="a1-p a1-q-intro">' + md(q.intro) + '</p>';
     if (q.doc) h += docHtml(q.doc);
@@ -1125,6 +1140,12 @@
       '<h1 class="a1-done-h">' + head + '</h1>' +
       '<div class="a1-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
         (isM ? ' · timed mock' : isP ? ' · ' + practiceLabel() : '') + '</div>' +
+      /* The streak is what a "keep going" run was for, so its result leads with
+         it rather than with a percentage that depends on how long the reader
+         felt like carrying on. */
+      (isP && S.practiceLo === 'endless'
+        ? '<div class="a1-done-streak"><span class="a1-inf" aria-hidden="true">∞</span>' +
+          'Best streak ' + S.bestStreak + '</div>' : '') +
       (isP ? '' : '<div class="a1-stars a1-stars-big">' + [1, 2, 3].map(function (n) {
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
       weak + onward +
@@ -1152,6 +1173,9 @@
     if (S.practiceLo === 'missed') return 'questions you had got wrong';
     if (S.practiceLo === 'mix') return 'all outcomes';
     if (S.practiceLo === 'mock') return 'timed mock';
+    /* Without this an endless run is described as "Outcome endless" on its own
+       result screen. */
+    if (S.practiceLo === 'endless') return 'keep going';
     return 'Outcome ' + S.practiceLo;
   }
 
@@ -1306,6 +1330,18 @@
     }
 
     h += '<div class="a1-pgrid">';
+    /* "Keep going" rather than "Endless practice": this is Level 1, and the
+       plainer word is the one its readers use. The mode is the same. */
+    h += '<button class="a1-endless" data-a1="startpractice" data-lo="endless">' +
+      '<span class="a1-endless-glow" aria-hidden="true"></span>' +
+      '<span class="a1-endless-i" aria-hidden="true">∞</span>' +
+      '<span class="a1-endless-tx">' +
+        '<span class="a1-endless-t">Keep going</span>' +
+        '<span class="a1-endless-m">Questions keep coming until you stop. Build up a streak.</span>' +
+      '</span>' +
+      '<span class="a1-endless-go" aria-hidden="true">→</span>' +
+      '</button>';
+
     h += '<button class="a1-pcard a1-pcard-mix" data-a1="startpractice" data-lo="mix">' +
       '<span class="a1-pcard-k">Mixed</span>' +
       '<span class="a1-pcard-t">All five outcomes</span>' +
@@ -1340,6 +1376,30 @@
     var pct = Math.round((S.qIdx / qs.length) * 100);
     var left = isMock() ? mockLeft() : 0;
     var h = '<div class="a1-root a1-reading' + fresh() + '">';
+    /* ── Endless looks like its own mode ─────────────────────────────────────
+       A run with no last question cannot show "question 3 of 10" or a bar
+       filling towards an end, so both are replaced by what does mean something
+       without one: how many have been answered, and the streak. Same three-part
+       header, different meaning in every slot. */
+    if (isEndless()) {
+      var done = S.qIdx + (S.answered !== null ? 1 : 0);
+      var best = Math.max(S.bestStreak, S.streak, 1);
+      var meter = Math.round((S.streak / best) * 100);
+      h += '<div class="a1-lessonbar a1-lessonbar-endless">' +
+        '<button class="a1-ctx-back" data-a1="exit" aria-label="Stop and see how you did">' +
+          '<span aria-hidden="true">←</span></button>' +
+        '<div class="a1-lessonbar-mid">' +
+          '<div class="a1-lessonbar-t"><span class="a1-inf" aria-hidden="true">∞</span>Keep going</div>' +
+          '<div class="a1-lessonbar-m">' + done + ' answered · ' + S.score + ' right</div>' +
+        '</div>' +
+        '<div class="a1-streak' + (S.streak >= 3 ? ' is-hot' : '') + '" ' +
+          'aria-label="Current streak ' + S.streak + '">' +
+          '<span class="a1-streak-n">' + S.streak + '</span>' +
+          '<span class="a1-streak-l">streak</span>' +
+        '</div>' +
+        '</div>' +
+        '<div class="a1-lessonbar-p a1-lessonbar-p-endless"><span style="width:' + meter + '%"></span></div>';
+    } else {
     h += '<div class="a1-lessonbar' + (isMock() ? ' a1-lessonbar-mock' : '') + '">' +
       '<button class="a1-ctx-back" data-a1="exit" aria-label="Leave">' +
         '<span aria-hidden="true">←</span></button>' +
@@ -1354,7 +1414,9 @@
         : '<div class="a1-lessonbar-n">' + pct + '%</div>') +
       '</div>' +
       '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
-    h += '<article class="a1-sheet' + fresh() + '">' + questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
+    }
+    h += '<article class="a1-sheet' + (isEndless() ? ' a1-sheet-endless' : '') + fresh() + '">' +
+      questionHtml(qs[S.qIdx], qs.length) + '</article></div>';
     return h;
   }
 
@@ -1622,12 +1684,43 @@
     return (h ? h + ':' : '') + mm + ':' + (sec < 10 ? '0' : '') + sec;
   }
 
+  /* Drawn in batches rather than all at once, and topped up with one question
+     to go so the reader never waits at a boundary they cannot see. */
+  var ENDLESS_BATCH = 12;
+  function isEndless() { return S.practiceLo === 'endless'; }
+
+  function topUpEndless() {
+    var pool = practiceBank();
+    var fresh = pool.filter(function (q) { return !S.endlessSeen[q.id]; });
+    /* Once the whole bank has been seen the set starts again: an endless run
+       that quietly stopped being endless would be worse than repetition. */
+    if (!fresh.length) { S.endlessSeen = {}; fresh = pool; }
+    var add = shuffle(fresh).slice(0, ENDLESS_BATCH);
+    add.forEach(function (q) { S.endlessSeen[q.id] = 1; });
+    S.practiceQs = S.practiceQs.concat(add);
+  }
+
+  /* The result screen works out a percentage from the length of `practiceQs`,
+     which in an endless run is however far the top-up happened to reach — so
+     the set is trimmed to what was actually attempted before it is drawn. A run
+     left before anything was answered goes quietly back to the picker. */
+  function endEndless() {
+    var attempted = S.qIdx + (S.answered !== null ? 1 : 0);
+    if (!attempted) { S.screen = 'practice'; return; }
+    S.practiceQs = S.practiceQs.slice(0, attempted);
+    finish();
+  }
+
   function startPractice(lo) {
     S.practiceLo = lo;
     /* The mistakes run is drawn in order, oldest miss last, rather than
        shuffled: a reader with thirty outstanding questions wants the ten they
        got wrong most recently, not ten at random from the whole backlog. */
-    if (lo === 'missed') {
+    if (lo === 'endless') {
+      S.endlessSeen = {};
+      S.practiceQs = [];
+      topUpEndless();
+    } else if (lo === 'missed') {
       S.practiceQs = missedQuestions().slice(0, PRACTICE_LEN);
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(PRACTICE_LEN);
@@ -1636,6 +1729,7 @@
       S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
     }
     S.practiceMissed = [];
+    S.streak = 0; S.bestStreak = 0;
     S.mode = 'practice';
     S.screen = 'quiz';
     S.qIdx = 0; S.score = 0;
@@ -1950,6 +2044,10 @@
         if (S.screen === 'quiz') { S.confirmExit = true; return rerender(); }
         return leaveMock();
       }
+      /* An endless run has no last question, so leaving IS finishing it — and a
+         reader who has answered twenty deserves to see how they did rather than
+         being dropped back on the picker with nothing. */
+      if (isEndless() && S.screen === 'quiz') { endEndless(); return rerender(); }
       S.screen = S.mode === 'practice' ? 'practice' : 'path';
       return rerender();
     }
@@ -2010,7 +2108,10 @@
     if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');
-      startPractice(lo === 'mix' || lo === 'missed' ? lo : Number(lo));
+      /* Only an OUTCOME becomes a number; every named mode passes through. The
+         previous form listed the two names it knew, so any new one became NaN
+         and started a run of no questions in silence. */
+      startPractice(/^\d+$/.test(lo) ? Number(lo) : lo);
       return rerender();
     }
 
@@ -2146,6 +2247,17 @@
            six questions and then leaves has attempted six questions, and the
            record that claims to count what they attempted has to agree. */
         save();
+      }
+      /* The streak is the endless run's only sense of position, so it is kept
+         for every practice run and merely displayed by that one. */
+      if (S.mode === 'practice' && S.answered !== null) {
+        if (S.answered === true) { S.streak++; if (S.streak > S.bestStreak) S.bestStreak = S.streak; }
+        else S.streak = 0;
+      }
+      if (isEndless()) {
+        if (S.qIdx >= checks.length - 2) topUpEndless();
+        S.qIdx++; resetQState();
+        return rerender();
       }
       if (S.qIdx === checks.length - 1) finish();
       else { S.qIdx++; resetQState(); }

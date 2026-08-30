@@ -780,6 +780,41 @@ header .sub {
   color: var(--subtext);
   margin-top: 2px;
 }
+/* ── Endless practice ────────────────────────────────────────────────────────
+   Its own mode, given its own look. Level 2's chrome is blue and its mock is
+   orange; endless takes violet, which is used nowhere else, so the card is
+   findable in a grid of a dozen.
+
+   The structural difference matters more than the hue, and it is in the quiz
+   header rather than here: a run with no last question has no fraction to be
+   through, so the bar fills towards the best STREAK of the run and the counter
+   shows the streak instead of "Q3/15". See quizProgress() in app.js. */
+.mode-card.mode-endless { border-color: rgba(124,58,237,.28); }
+.mode-card.mode-endless:hover { border-color: #7c3aed; }
+.mode-card.mode-endless .mode-card-icon {
+  background: rgba(124,58,237,.10); color: #7c3aed;
+  font-size: 1.45em; line-height: 1; font-weight: 400;
+}
+/* The counter slot carries a streak rather than a position. Same place in the
+   header as "Q3/15" and as the mock's clock — one slot, three meanings, so a
+   reader learns to look in the same spot whatever they are doing. */
+.q-counter-endless {
+  display: inline-flex; flex-direction: column; align-items: center;
+  line-height: 1.05; padding: 3px 9px; border-radius: 9px;
+  background: rgba(124,58,237,.10); border: 1px solid rgba(124,58,237,.30);
+  color: #7c3aed;
+}
+.q-counter-endless b { font-size: 1.05rem; font-weight: 800; }
+.q-counter-endless i {
+  font-style: normal; font-size: .58rem; letter-spacing: .1em;
+  text-transform: uppercase; font-weight: 800; opacity: .85;
+}
+body.dark .q-counter-endless {
+  background: rgba(167,139,250,.14); border-color: rgba(167,139,250,.40); color: #a78bfa;
+}
+body.dark .mode-card.mode-endless { border-color: rgba(167,139,250,.30); }
+body.dark .mode-card.mode-endless .mode-card-icon { background: rgba(167,139,250,.14); color: #a78bfa; }
+
 .mode-card.mode-mock { border-color: rgba(234,88,12,.25); }
 .mode-card.mode-mock:hover { border-color: #ea580c; }
 .mode-card.mode-mock .mode-card-icon { background: rgba(234,88,12,.10); }
