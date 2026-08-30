@@ -144,6 +144,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:endless
+      - name: Check the on-screen calculator adds up and is wired to the answer box
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:calculator
       - name: Check folding, jumping and the glossary index still reach their targets
         env:
           REQUIRE_PLAYWRIGHT: '1'

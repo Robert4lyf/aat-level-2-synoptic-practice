@@ -1925,84 +1925,11 @@
     return q.unit + n;
   }
 
-  /* ── CALCULATOR ── */
-  const Calc = {
-    display: '0', prev: null, pending: null, justEvaled: false, errored: false, memory: 0,
-    reset() { this.display='0'; this.prev=null; this.pending=null; this.justEvaled=false; this.errored=false; this._refresh(); },
-    memoryClear() { this.memory = 0; this._refresh(); },
-    memoryRecall() { if (this.errored) this.reset(); this.display = String(this._round(this.memory)); this.justEvaled = true; this._refresh(); },
-    memoryAdd() { if (this.errored) return; const v = Number(this.display); if (Number.isFinite(v)) { this.memory = this._round(this.memory + v); this._refresh(); } },
-    memorySub() { if (this.errored) return; const v = Number(this.display); if (Number.isFinite(v)) { this.memory = this._round(this.memory - v); this._refresh(); } },
-    sqrt() {
-      if (this.errored) return;
-      const v = Number(this.display);
-      if (!Number.isFinite(v) || v < 0) { this._setError(); return; }
-      this.display = String(this._round(Math.sqrt(v))); this.justEvaled = true; this._refresh();
-    },
-    inputDigit(d) {
-      if (this.errored) this.reset();
-      if (this.justEvaled) { this.display = d; this.justEvaled = false; }
-      else this.display = this.display === '0' ? d : this.display + d;
-      this._refresh();
-    },
-    inputDecimal() {
-      if (this.errored) this.reset();
-      if (this.justEvaled) { this.display = '0.'; this.justEvaled = false; }
-      else if (!this.display.includes('.')) this.display += '.';
-      this._refresh();
-    },
-    backspace() {
-      if (this.errored) { this.reset(); return; }
-      if (this.justEvaled) { this.reset(); return; }
-      this.display = this.display.length > 1 ? this.display.slice(0,-1) : '0';
-      if (this.display === '-' || this.display === '-0') this.display = '0';
-      this._refresh();
-    },
-    toggleSign() {
-      if (this.errored || this.display === '0' || this.display === 'Error') return;
-      this.display = this.display.startsWith('-') ? this.display.slice(1) : '-' + this.display;
-      this._refresh();
-    },
-    applyOp(op) {
-      if (this.errored) return;
-      const cur = Number(this.display);
-      if (!Number.isFinite(cur)) { this._setError(); return; }
-      if (this.pending && !this.justEvaled) {
-        const r = this._compute(this.prev, cur, this.pending);
-        if (!Number.isFinite(r)) { this._setError(); return; }
-        this.prev = r;
-      } else this.prev = cur;
-      this.pending = op; this.justEvaled = true;
-      this.display = String(this._round(this.prev));
-      this._refresh();
-    },
-    evaluate() {
-      if (this.errored || this.pending == null) return;
-      const cur = Number(this.display);
-      const r = this._compute(this.prev, cur, this.pending);
-      if (!Number.isFinite(r)) { this._setError(); return; }
-      this.display = String(this._round(r));
-      this.prev = null; this.pending = null; this.justEvaled = true;
-      this._refresh();
-    },
-    percent() {
-      if (this.errored) return;
-      const cur = Number(this.display);
-      if (!Number.isFinite(cur)) return;
-      const base = (this.pending && this.prev != null) ? this.prev : 1;
-      const r = this._round(cur * base / 100);
-      this.display = String(r); this.justEvaled = true; this._refresh();
-    },
-    _setError() { this.display = 'Error'; this.errored = true; this.pending = null; this.prev = null; this.justEvaled = true; this._refresh(); },
-    _compute(a,b,op) { switch(op){case '+': return a+b; case '-': return a-b; case '*': return a*b; case '/': return b===0?Infinity:a/b;} return b; },
-    _round(n) { return Math.round(n * 1e10) / 1e10; },
-    _refresh() {
-      const el = document.getElementById('calcDisplay');
-      if (el) { el.textContent = this.display; el.classList.toggle('is-error', this.errored); }
-      const m = document.getElementById('calcMemoryIndicator');
-      if (m) m.textContent = this.memory !== 0 ? 'M' : '';
-    },
-  };
+  /* ── CALCULATOR ──
+     The engine and the keypad layout live in calculator.js, shared with Level 3
+     so the two pads cannot come apart. This file owns only the markup and the
+     styling, which belong to Level 2's design system. */
+  const Calc = AATCalc.create({ displayId: 'calcDisplay', memoryId: 'calcMemoryIndicator' });
 
   /* ── STATE ── */
   const State = {
@@ -4823,40 +4750,23 @@
       <span><kbd>Enter</kbd> or <kbd>Space</kbd> ${answered ? 'next' : 'to advance once answered'}</span>
     </div>`;
   }
+  /* The keypad is rendered from AATCalc.KEYS rather than written out, so
+     Level 2's pad and Level 3's are the same pad in two skins — a key added to
+     one is added to both. Only the class prefix and the layout are local. */
   function renderCalculatorSidebar() {
+    const keys = AATCalc.KEYS.map(k => {
+      const cls = 'calc-key' + (k.kind ? ' calc-' + k.kind : '') + (k.span ? ' calc-eq-wide' : '');
+      const aria = k.aria ? ` aria-label="${escapeHtml(k.aria)}"` : '';
+      const val = k.val != null ? ` data-val="${escapeHtml(k.val)}"` : '';
+      return `<button class="${cls}" data-calc="${k.k}"${val} type="button"${aria}>${escapeHtml(k.label)}</button>`;
+    }).join('');
     return `<aside class="calc-sidebar" aria-label="On-screen calculator">
       <div class="calc-title">🧮 Calculator</div>
       <div class="calc-display-wrap">
         <span class="calc-memory" id="calcMemoryIndicator" aria-hidden="true">${Calc.memory !== 0 ? 'M' : ''}</span>
         <div class="calc-display" id="calcDisplay" role="status" aria-live="polite">${escapeHtml(Calc.display)}</div>
       </div>
-      <div class="calc-keys">
-        <button class="calc-key calc-mem" data-calc="mc" type="button" aria-label="Memory clear">MC</button>
-        <button class="calc-key calc-mem" data-calc="mr" type="button" aria-label="Memory recall">MR</button>
-        <button class="calc-key calc-mem" data-calc="msub" type="button" aria-label="Memory subtract">M−</button>
-        <button class="calc-key calc-mem" data-calc="madd" type="button" aria-label="Memory add">M+</button>
-        <button class="calc-key calc-fn" data-calc="clear" type="button">C</button>
-        <button class="calc-key calc-fn" data-calc="back" type="button" aria-label="Backspace">⌫</button>
-        <button class="calc-key calc-fn" data-calc="pct" type="button">%</button>
-        <button class="calc-key calc-fn" data-calc="sqrt" type="button" aria-label="Square root">√</button>
-        <button class="calc-key" data-calc="num" data-val="7" type="button">7</button>
-        <button class="calc-key" data-calc="num" data-val="8" type="button">8</button>
-        <button class="calc-key" data-calc="num" data-val="9" type="button">9</button>
-        <button class="calc-key calc-op" data-calc="op" data-val="/" type="button">÷</button>
-        <button class="calc-key" data-calc="num" data-val="4" type="button">4</button>
-        <button class="calc-key" data-calc="num" data-val="5" type="button">5</button>
-        <button class="calc-key" data-calc="num" data-val="6" type="button">6</button>
-        <button class="calc-key calc-op" data-calc="op" data-val="*" type="button">×</button>
-        <button class="calc-key" data-calc="num" data-val="1" type="button">1</button>
-        <button class="calc-key" data-calc="num" data-val="2" type="button">2</button>
-        <button class="calc-key" data-calc="num" data-val="3" type="button">3</button>
-        <button class="calc-key calc-op" data-calc="op" data-val="-" type="button">−</button>
-        <button class="calc-key calc-fn" data-calc="sign" type="button" aria-label="Toggle sign">±</button>
-        <button class="calc-key" data-calc="num" data-val="0" type="button">0</button>
-        <button class="calc-key" data-calc="dot" type="button">.</button>
-        <button class="calc-key calc-op" data-calc="op" data-val="+" type="button">+</button>
-        <button class="calc-key calc-eq calc-eq-wide" data-calc="eq" type="button">=</button>
-      </div>
+      <div class="calc-keys">${keys}</div>
       <button class="calc-use" id="calcUse" type="button">↳ Use this value</button>
       <p class="calc-hint">Result drops into the answer box.</p>
     </aside>`;
@@ -8718,20 +8628,7 @@
       render();
     }));
     document.querySelectorAll('[data-calc]').forEach(el => el.addEventListener('click', () => {
-      const k = el.dataset.calc;
-      if (k === 'num') Calc.inputDigit(el.dataset.val);
-      else if (k === 'dot') Calc.inputDecimal();
-      else if (k === 'op') Calc.applyOp(el.dataset.val);
-      else if (k === 'eq') Calc.evaluate();
-      else if (k === 'clear') Calc.reset();
-      else if (k === 'back') Calc.backspace();
-      else if (k === 'sign') Calc.toggleSign();
-      else if (k === 'pct') Calc.percent();
-      else if (k === 'sqrt') Calc.sqrt();
-      else if (k === 'mc') Calc.memoryClear();
-      else if (k === 'mr') Calc.memoryRecall();
-      else if (k === 'madd') Calc.memoryAdd();
-      else if (k === 'msub') Calc.memorySub();
+      Calc.press(el.dataset.calc, el.dataset.val);
     }));
     bind('calcUse', 'click', () => {
       const input = document.getElementById('numericAnswer');
