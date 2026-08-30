@@ -81,6 +81,18 @@
     tryShown: false,
     tryInput: '',
     tryResult: null,
+    /* ── The on-screen calculator ──────────────────────────────────────────
+       Shown on the screens that have a numeric answer box and nowhere else —
+       see calcOffered(). Open by default there, because a reader on a
+       question that wants a figure typed in wants the thing that produces
+       the figure; the toggle is for putting it away, not for summoning it.
+
+       SESSION-SCOPED ON PURPOSE. Putting the flag in the persisted store
+       would push a boolean through progress-backup's merge-by-max, which is
+       written for the (attempted, correct) pairs and has no meaning for a
+       preference — and the cost of it being session-scoped is one tap. */
+    calcOpen: true,
+    calcPart: null,      // multi-part task: which box "Use this value" fills
   };
 
   /* `practice` is the lifetime record of practice runs, kept per unit and then
@@ -613,6 +625,7 @@
         '<input class="a3-input" inputmode="decimal" data-a3="tryinput" value="' + esc(S.tryInput) + '" placeholder="' + esc(t.unit || '') + '" aria-label="Your answer">' +
         '<button class="a3-btn a3-btn-primary" data-a3="trycheck">Check</button></div>';
       if (t.hint) h += '<div class="a3-hint">Hint — ' + md(t.hint) + '</div>';
+      h += calcHtml();
     } else {
       h += '<div class="a3-try-verdict ' + (S.tryResult ? 'is-right' : 'is-wrong') + '">' +
         (S.tryResult ? 'Correct' : 'Not quite — the answer is ' + esc(t.unit === '£' ? '£' + t.answer : t.answer)) + '</div>';
@@ -972,6 +985,144 @@
     return h;
   }
 
+  /* ── The on-screen calculator ───────────────────────────────────────────────
+     THE ENGINE IS LEVEL 2'S, not a copy of it: calculator.js holds the
+     arithmetic and the keypad layout, and both levels render KEYS into their
+     own design system. A second implementation would have been correct on the
+     day it was written and would have drifted the first time either half was
+     fixed — and the drift would be invisible, because both pads would still
+     add up, just differently at the edges.
+
+     WHERE IT APPEARS. On the screens with a box to type a figure into, and
+     only while that box is still open: a numeric question, a multi-part task,
+     and the "now you try" on a worked example. That is not a stylistic choice
+     about which questions look computational — it is the set of screens where
+     "Use this value" has somewhere to put the value.
+
+     Everything else was measured rather than assumed. The worry was multiple
+     choice: a question that reads "output tax on £48,000 gross" needs
+     arithmetic even though there is no box. Across both Level 3 banks exactly
+     three of 246 multiple-choice questions have an all-numeric option set —
+     one is a penalty-table lookup, one a fraction of a year, one an addition
+     of two figures — so a keypad on every multiple-choice screen would be
+     chrome on 243 questions to serve three. It is not offered there.
+
+     ONCE GRADED IT GOES. The verdict, the explanation and the next-question
+     button all arrive in the space it was using, and there is nothing left to
+     compute. `answered` is already the condition the answer box itself is
+     gated on, so the two cannot come apart. */
+  /* RESOLVED ON FIRST USE, not at load. This module is fetched lazily, long
+     after calculator.js in the browser — but nothing in the file guarantees
+     that order, and binding at load time meant a null calculator that renders
+     no keypad and throws nothing. That is the failure this module has been
+     bitten by before: a feature that is simply absent, with every check still
+     green. Reaching for it when it is needed makes the order irrelevant. */
+  var _calc = null;
+  function Calc() {
+    if (!_calc && root.AATCalc) {
+      _calc = root.AATCalc.create({ displayId: 'a3CalcDisplay', memoryId: 'a3CalcMemory' });
+    }
+    return _calc;
+  }
+
+  function calcOffered(q) {
+    if (!Calc() || !q || S.answered !== null) return false;
+    var t = q.type || 'mcq';
+    return t === 'numeric' || t === 'task';
+  }
+
+  /* WRITTEN OUT RATHER THAN BUILT from the key's `kind`. `'a3-calc-' + k.kind`
+     is shorter and produces the same four class names — and check-subject-styles
+     could not see any of them, so all four rules read as styling nothing renders.
+     Spelling them makes the stylesheet and the markup checkable against each
+     other, which is the only thing standing between a renamed class and a
+     silently unstyled keypad. */
+  var CALC_KIND_CLASS = { mem: 'a3-calc-mem', fn: 'a3-calc-fn', op: 'a3-calc-op', eq: 'a3-calc-eq' };
+
+  function calcHtml() {
+    var C = Calc();
+    if (!C) return '';
+    var keys = (root.AATCalc.KEYS || []).map(function (k) {
+      return '<button class="a3-calc-key' +
+        (CALC_KIND_CLASS[k.kind] ? ' ' + CALC_KIND_CLASS[k.kind] : '') + (k.span ? ' a3-calc-wide' : '') +
+        '" type="button" data-a3="calckey" data-k="' + esc(k.k) + '"' +
+        (k.val != null ? ' data-v="' + esc(k.val) + '"' : '') +
+        (k.aria ? ' aria-label="' + esc(k.aria) + '"' : '') +
+        '>' + esc(k.label) + '</button>';
+    }).join('');
+    return '<div class="a3-calc' + (S.calcOpen ? ' is-open' : '') + '">' +
+      '<button class="a3-calc-toggle" type="button" data-a3="calctoggle" ' +
+        'aria-expanded="' + (S.calcOpen ? 'true' : 'false') + '">' +
+        '<span class="a3-calc-ic" aria-hidden="true">&#129518;</span>' +
+        '<span class="a3-calc-lb">Calculator</span>' +
+        '<span class="a3-calc-ch" aria-hidden="true">' + (S.calcOpen ? '&#9662;' : '&#9656;') + '</span>' +
+      '</button>' +
+      (S.calcOpen
+        ? '<div class="a3-calc-body">' +
+            '<div class="a3-calc-screen">' +
+              '<span class="a3-calc-mind" id="a3CalcMemory" aria-hidden="true">' +
+                (C.memory !== 0 ? 'M' : '') + '</span>' +
+              '<div class="a3-calc-display' + (C.errored ? ' is-error' : '') + '" ' +
+                'id="a3CalcDisplay" role="status" aria-live="polite">' + esc(C.display) + '</div>' +
+            '</div>' +
+            '<div class="a3-calc-keys">' + keys + '</div>' +
+            '<button class="a3-calc-use" type="button" data-a3="calcuse">' +
+              '&#8627; Use this value</button>' +
+          '</div>'
+        : '') +
+      '</div>';
+  }
+
+  /* Which box "Use this value" fills.
+
+     A task has several. The reader's own attention is the best signal, so the
+     box they last touched wins — `calcPart` is set both on focus and on the
+     first keystroke, because a phone keyboard can put a caret in a field
+     without ever firing focus in the order a desktop would. Untouched, it goes
+     to the first box, which is where someone starting the task is.
+
+     THERE WAS A THIRD RULE HERE and it was dead code: "otherwise the first box
+     still empty". `calcPart` is null only when no box has been touched, and
+     both it and `taskInputs` are cleared together on every question, so in that
+     state every box is empty and "first empty" is always just "first". It
+     survived mutation testing precisely because nothing could tell the two
+     apart. */
+  function taskTarget(q) {
+    var parts = (q && q.parts) || [];
+    var typed = [];
+    parts.forEach(function (p, i) { if (p.type !== 'choice') typed.push(i); });
+    if (!typed.length) return null;
+    if (S.calcPart != null && typed.indexOf(S.calcPart) !== -1) return S.calcPart;
+    return typed[0];
+  }
+
+  /* The value goes into STATE, and the screen is repainted from it — rather
+     than being written onto the input element and left there. The input's
+     value is not the source of truth in this module; `numInput`, `tryInput`
+     and `taskInputs` are, and grading reads those. Writing only the element
+     would show the reader a figure that submitting would not see. */
+  function calcUse() {
+    var C = Calc();
+    if (!C || C.errored) return;
+    var v = C.display;
+    if (S.screen === 'lesson' && S.phase === 'teach') {
+      if (S.tryResult !== null) return;
+      S.tryInput = v;
+      return rerender();
+    }
+    var q = currentQuestions()[S.qIdx];
+    if (!calcOffered(q)) return;
+    if ((q.type || 'mcq') === 'task') {
+      var p = taskTarget(q);
+      if (p == null) return;
+      S.taskInputs[p] = v;
+      S.calcPart = p;
+    } else {
+      S.numInput = v;
+    }
+    return rerender();
+  }
+
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
@@ -1082,6 +1233,13 @@
     } else if (t === 'task') {
       h += taskHtml(q);
     }
+
+    /* ONE CALL SITE, and calcOffered() is the whole rule. Rendering it from
+       inside the numeric and task branches instead put the type test in three
+       places, two of which were already inside a branch that had made it — so
+       the rule in calcOffered was decorative, and a mutation that widened it to
+       every question type changed nothing and was caught by nothing. */
+    if (calcOffered(q)) h += calcHtml();
 
     /* NOTHING IS REVEALED IN A MOCK, and it falls out rather than being
        arranged: the block below is gated on the question having been graded,
@@ -2388,6 +2546,7 @@
   }
   function resetCardState() {
     S.revealed = 0; S.tryInput = ''; S.tryResult = null;
+    if (_calc) _calc.reset();
   }
   function resetQState() {
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
@@ -2401,6 +2560,14 @@
        rather than left lying about for whoever next changes that condition. */
     S.taskInputs = {}; S.taskPicks = {}; S.taskResults = null; S.taskNudge = false;
     S._taskOrder = null;
+    /* The working goes with the question, the way it does on Level 2. A figure
+       left on the display belongs to a sum the reader has finished with, and
+       reading it as the start of the next one is how a wrong answer gets
+       typed. MEMORY SURVIVES, deliberately: M+ is how a reader parks a subtotal
+       across the parts of a task, and clearing it would make the memory keys
+       useless for the only thing they are for. */
+    S.calcPart = null;
+    if (_calc) _calc.reset();
   }
   /* Marking one answer, for every question type, in one place.
 
@@ -2525,8 +2692,18 @@
         n.addEventListener('input', function () {
           if (act === 'tryinput') S.tryInput = n.value;
           else if (act === 'numinput') S.numInput = n.value;
-          else S.taskInputs[+n.getAttribute('data-p')] = n.value;
+          else {
+            var pi = +n.getAttribute('data-p');
+            S.taskInputs[pi] = n.value;
+            /* Which box the calculator will fill. Recorded on the keystroke as
+               well as on focus, because a soft keyboard can put a caret in a
+               field without the focus order a desktop would give. */
+            S.calcPart = pi;
+          }
         });
+        if (act === 'taskinput') {
+          n.addEventListener('focus', function () { S.calcPart = +n.getAttribute('data-p'); });
+        }
         n.addEventListener('keydown', function (e) {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -2552,6 +2729,21 @@
     var cards = (l && l.cards) || [], checks = currentQuestions();
     var card = cards[S.cardIdx] || {};
     var q = checks[S.qIdx];
+
+    /* THE KEYPAD DOES NOT REPAINT THE SCREEN. Every other handler here ends in
+       rerender(), which rebuilds the whole card; doing that on each keypress
+       would take the caret out of the answer box the reader is typing into,
+       which is the one thing a calculator sitting next to it must not do.
+       Calc patches its own two nodes instead — see _refresh() — so this branch
+       returns without asking for a repaint, and must stay above the ones that
+       do. */
+    if (act === 'calckey') {
+      var C = Calc();
+      if (C) C.press(n.getAttribute('data-k'), n.getAttribute('data-v'));
+      return;
+    }
+    if (act === 'calctoggle') { S.calcOpen = !S.calcOpen; return rerender(); }
+    if (act === 'calcuse') { return calcUse(); }
 
     if (act === 'open') { startLesson(n.getAttribute('data-id')); return rerender(); }
     if (act === 'exit') {

@@ -152,6 +152,12 @@ function loadUI(store) {
   const p = path.join(ROOT, 'aat3-ui.js');
   delete require.cache[require.resolve(p)];
   const M = require(p);
+  /* In Node the module's `root` is its own exports, so anything it expects to
+     find on `window` has to be put there by hand. The calculator is a hard
+     dependency the same way the content files are: without it the module
+     renders no keypad at all, silently — which is exactly the shape of defect
+     a check that only asserted "nothing threw" would sail past. */
+  M.AATCalc = require(path.join(ROOT, 'calculator.js')) && global.AATCalc;
   M.AAT3_SYLLABUS = require(path.join(ROOT, 'aat3-syllabus.js')).SYLLABUS;
   M.AAT3_PRACTICE = require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE;
   M.AAT3_LEARN_PATH = require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH;
