@@ -74,7 +74,7 @@ const SUMS = [
      one — both to the penny, because a calculator that is a penny out on a VAT
      fraction is worse than no calculator. */
   [['1', '2', '0', '0', '/', '6', '='], '200', 'the VAT fraction of £1,200 gross'],
-  [['4', '8', '0', '0', '*', '2', '0', 'pct', '='], '960', '20% of £4,800 net'],
+  [['4', '8', '0', '0', '*', '2', '0', 'pct', '='], '960', 'the engine still knows per cent (20% of £4,800)'],
   /* Chaining without pressing equals: an operator has to settle the sum so far.
      If it does not, this reads 2 rather than 6. */
   [['2', '+', '2', '+', '2', '='], '6', 'chaining without pressing equals'],
@@ -83,7 +83,9 @@ SUMS.forEach(([seq, want, label]) => {
   ok(run(seq).display === want, `${label} → ${want} (got ${run(seq).display})`);
 });
 
-ok(run(['9', 'sqrt']).display === '3', 'square root of nine');
+/* The engine keeps these even with no button on the pad, so putting a key back
+   is a one-line change rather than a re-implementation. */
+ok(run(['9', 'sqrt']).display === '3', 'the engine still knows square root');
 ok(run(['5', 'sign']).display === '-5', 'the sign key negates');
 ok(run(['5', 'sign', 'sign']).display === '5', 'and negates back');
 ok(run(['1', '2', '3', 'back']).display === '12', 'backspace drops a digit');
@@ -127,8 +129,16 @@ ok(b.display === '0' && b.memory === 0, 'so one caller\'s working never shows up
 console.log(`${DIM}one pad, two levels${RESET}`);
 
 const KEYS = AATCalc.KEYS || [];
-const WANT = ['mc', 'mr', 'msub', 'madd', 'clear', 'back', 'pct', 'sqrt', 'sign', 'dot', 'eq'];
+const WANT = ['clear', 'back', 'sign', 'dot', 'eq'];
 WANT.forEach(k => ok(KEYS.some(x => x.k === k), `the shared pad has a ${k} key`));
+/* REMOVED ON PURPOSE, and asserted as removed so they cannot drift back in on
+   one level and not the other. The memory row, the square root and the
+   percentage key were all taken off the pad: the assessment's own calculator is
+   this shape, a VAT figure is reached with ÷ 6 or × 1.2, and a square root has
+   no use in either unit. The ENGINE still knows how to do all three — that is
+   asserted below — so restoring a key is a line in the KEYS table. */
+['mc', 'mr', 'msub', 'madd', 'pct', 'sqrt'].forEach(k =>
+  ok(!KEYS.some(x => x.k === k), `the pad no longer offers a ${k} key`));
 '0123456789'.split('').forEach(d =>
   ok(KEYS.some(x => x.k === 'num' && x.val === d), `the shared pad has a ${d} key`));
 ['+', '-', '*', '/'].forEach(o =>
@@ -168,6 +178,11 @@ const APP = code('app.js'), A3 = code('aat3-ui.js');
 ok(/AATCalc\.KEYS/.test(APP), 'Level 2 renders the shared pad rather than its own');
 ok(/AATCalc\.KEYS/.test(A3), 'Level 3 renders the shared pad rather than its own');
 ok(!/data-calc="sqrt"/.test(APP), 'Level 2 no longer hand-writes its keys');
+/* Nineteen keys over twenty slots: five rows of four with a double-width zero.
+   A pad that does not fill its grid leaves a hole, and one that overflows it
+   pushes a key onto a sixth row on its own. */
+const slots = KEYS.reduce((n, k) => n + (k.span || 1), 0);
+ok(slots % 4 === 0, `the pad fills whole rows of four (${KEYS.length} keys over ${slots} slots)`);
 
 /* ── Level 3, through the real player ─────────────────────────────────────── */
 
@@ -306,7 +321,7 @@ console.log(`${DIM}the value reaches grading${RESET}`);
 
 {
   const el = openWith([NUMERIC]);
-  tap(el, ['1', '2', '0', '0', '*', '2', '0', 'pct', '=']);
+  tap(el, ['1', '2', '0', '0', '/', '5', '=']);
   D.click(el, 'calcuse');
   const box = D.nodes(el, 'numinput')[0];
   ok(box && box.attrs.value === '240', `the computed £240 lands in the answer box (got ${box && box.attrs.value})`);
@@ -357,7 +372,7 @@ console.log(`${DIM}between questions${RESET}`);
 
 {
   const el = openWith([NUMERIC, Object.assign({}, NUMERIC, { id: 'C-N2' })]);
-  tap(el, ['8', '8', 'madd']);          // 88 banked in memory, 88 on the display
+  tap(el, ['8', '8']);
   const box = D.nodes(el, 'numinput')[0];
   box.value = '240'; box.fire('input');
   D.click(el, 'numsubmit');
@@ -368,12 +383,19 @@ console.log(`${DIM}between questions${RESET}`);
   D.click(el, 'calcuse');
   const box2 = D.nodes(el, 'numinput')[0];
   ok(box2 && box2.attrs.value === '0', `the display clears for the next question (got ${box2 && box2.attrs.value})`);
-  /* Memory is a subtotal the reader parked ON PURPOSE, often to carry across
-     the parts of a task. Clearing it would make the memory keys pointless. */
-  tap(el, ['mr']);
-  D.click(el, 'calcuse');
-  const box3 = D.nodes(el, 'numinput')[0];
-  ok(box3 && box3.attrs.value === '88', `but memory survives the question change (got ${box3 && box3.attrs.value})`);
+}
+
+/* Clearing the display between questions must not clear MEMORY. There is no
+   memory key on the pad any more, so this is not something a reader can reach
+   today — it is asserted at the engine, because reset() forgetting memory is
+   the kind of thing that would be discovered by putting the key back and
+   finding it useless. */
+{
+  const C = AATCalc.create();
+  C.press('num', '8'); C.press('num', '8'); C.press('madd');
+  C.reset();
+  ok(C.memory === 88, `reset() clears the display without forgetting memory (got ${C.memory})`);
+  ok(C.display === '0', 'and the display is back to zero');
 }
 
 /* ── 7. A keypress does not throw away what the reader typed ──────────────── */

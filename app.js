@@ -1714,10 +1714,19 @@
     window.speechSynthesis.onvoiceschanged = () => { _frVoice = null; getFrenchVoice(); };
   }
 
-  /* ── AUDIO ── */
+  /* ── AUDIO ──
+     The engine and the three levels' voices live in sound.js. Level 2's voice is
+     unchanged note for note — the rising C major triad, the 220Hz square, the
+     440Hz click — because the level people are already using should keep the
+     sound they know.
+
+     Story mode's diegetic effects still call playTone() directly; they are
+     Level 2's alone and have no counterpart on the other levels, so they stay
+     here rather than becoming a fourth voice nothing compares. */
+  const Sound = AATSound.create('aat');
+  function ensureAudio() { return AATSound.isEnabled() ? _audioCtx() : null; }
   let audioCtx = null;
-  function ensureAudio() {
-    if (!Storage.data.settings.soundOn) return null;
+  function _audioCtx() {
     if (!audioCtx) { try { const C = window.AudioContext || window.webkitAudioContext; if (C) audioCtx = new C(); } catch (e) { audioCtx = null; } }
     if (audioCtx && audioCtx.state === 'suspended') { try { audioCtx.resume(); } catch (e) {} }
     return audioCtx;
@@ -1733,9 +1742,9 @@
       o.start(); o.stop(ctx.currentTime + dur);
     } catch (e) {}
   }
-  const playCorrect = () => { playTone(523,'sine',0.12); setTimeout(()=>playTone(659,'sine',0.15),100); setTimeout(()=>playTone(784,'sine',0.20),200); };
-  const playWrong = () => playTone(220, 'square', 0.30, 0.20);
-  const playClick = () => playTone(440, 'sine', 0.07, 0.15);
+  const playCorrect = () => Sound.correct();
+  const playWrong = () => Sound.wrong();
+  const playClick = () => Sound.click();
 
   function confetti() {
     if (reducedMotion) return;
@@ -1929,7 +1938,7 @@
      The engine and the keypad layout live in calculator.js, shared with Level 3
      so the two pads cannot come apart. This file owns only the markup and the
      styling, which belong to Level 2's design system. */
-  const Calc = AATCalc.create({ displayId: 'calcDisplay', memoryId: 'calcMemoryIndicator' });
+  const Calc = AATCalc.create({ displayId: 'calcDisplay' });
   /* Which answer box "Use this value" fills — the one the reader was last in.
      Held here rather than in State because every render replaces the elements,
      and it is re-resolved against the live boxes on each use. */
@@ -4125,7 +4134,7 @@
       ${reviewNudge}
       <div class="sound-row">
         <label for="soundToggle" style="cursor:pointer">🔊 Sound effects</label>
-        <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${Storage.data.settings.soundOn ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
+        <label class="toggle-switch"><input type="checkbox" id="soundToggle" ${AATSound.isEnabled() ? 'checked' : ''} aria-label="Sound effects"><span class="toggle-slider" aria-hidden="true"></span></label>
       </div>
       ${isFrench ? `<div class="sound-row">
         <span style="cursor:default">🔄 Flip mode <span class="flip-mode-hint">show English, type French</span></span>
@@ -4775,7 +4784,11 @@
 
   function renderCalculatorSidebar() {
     const keys = AATCalc.KEYS.map(k => {
-      const cls = 'calc-key' + (k.kind ? ' calc-' + k.kind : '') + (k.span ? ' calc-eq-wide' : '');
+      /* The span class is derived from the number, not from which key happens
+         to be wide. `=` used to be the only wide key and the class was named
+         for it; the memory row going meant `0` became the wide one, and a class
+         called eq-wide on the zero key is how a layout comes apart quietly. */
+      const cls = 'calc-key' + (k.kind ? ' calc-' + k.kind : '') + (k.span ? ' calc-span-' + k.span : '');
       const aria = k.aria ? ` aria-label="${escapeHtml(k.aria)}"` : '';
       const val = k.val != null ? ` data-val="${escapeHtml(k.val)}"` : '';
       return `<button class="${cls}" data-calc="${k.k}"${val} type="button"${aria}>${escapeHtml(k.label)}</button>`;
@@ -4783,7 +4796,6 @@
     return `<aside class="calc-sidebar" aria-label="On-screen calculator">
       <div class="calc-title">🧮 Calculator</div>
       <div class="calc-display-wrap">
-        <span class="calc-memory" id="calcMemoryIndicator" aria-hidden="true">${Calc.memory !== 0 ? 'M' : ''}</span>
         <div class="calc-display" id="calcDisplay" role="status" aria-live="polite">${escapeHtml(Calc.display)}</div>
       </div>
       <div class="calc-keys">${keys}</div>
@@ -8544,7 +8556,14 @@
     bind('resumeBtn', 'click', resumeSession);
     bind('dismissSessionBtn', 'click', dismissSession);
     const st = document.getElementById('soundToggle');
-    if (st) st.addEventListener('change', () => { Storage.data.settings.soundOn = st.checked; Storage.save(); });
+    /* One preference for the whole app. Level 2's per-subject `soundOn` is kept
+       in step so nothing here that still reads it goes out of sync, but the
+       shared flag is the source of truth — three levels making noise should not
+       need three toggles. */
+    if (st) st.addEventListener('change', () => {
+      AATSound.setEnabled(st.checked);
+      Storage.data.settings.soundOn = st.checked; Storage.save();
+    });
     const ft = document.getElementById('flipModeToggle');
     if (ft) ft.addEventListener('change', () => { Storage.data.settings.flipMode = ft.checked; Storage.save(); });
     document.querySelectorAll('[data-opt]').forEach(el => el.addEventListener('click', () => {

@@ -91,6 +91,9 @@ function loadUI(store) {
   const p = path.join(ROOT, 'aat1-ui.js');
   delete require.cache[require.resolve(p)];
   const M = require(p);
+  /* Sound is a hard dependency the same way the content files are: without it
+     the module renders no toggle and plays nothing, silently. */
+  M.AATSound = require(path.join(ROOT, 'sound.js')) && global.AATSound;
   M.AAT1_SYLLABUS = require(path.join(ROOT, 'aat1-syllabus.js')).SYLLABUS;
   M.AAT1_PRACTICE = require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE;
   M.AAT1_LEARN_PATH = require(path.join(ROOT, 'aat1-learn-data.js')).AAT1_LEARN_PATH;

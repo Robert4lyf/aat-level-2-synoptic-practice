@@ -23,34 +23,38 @@
 
   /* The keypad, in reading order, four to a row. Rendered by each level rather
      than by this file, because the class names belong to the level's design
-     system — but the SET of keys and their order live here, so the two pads
-     cannot come apart. `span` is the column span for the odd-sized keys. */
+     system — but the SET of keys and their order live here, so the pads cannot
+     come apart. `span` is the column span for the odd-sized keys.
+
+     FOUR OPERATIONS, A SIGN AND A POINT. The memory row (MC, MR, M−, M+), the
+     square root and the percentage key were all removed at the author's
+     request. None of them is missed: the assessment's own on-screen calculator
+     is this shape, a VAT question is reached with ÷ 6 or × 1.2 rather than with
+     a percentage key whose meaning changes with the pending operator, and a
+     square root has no use anywhere in either unit. The engine still knows how
+     to do all three — `press` handles them, and percent() still carries the
+     operator rule it was fixed to follow — so nothing had to be unlearned to
+     take the buttons away, and putting one back is a line in this list. */
   var KEYS = [
-    { k: 'mc',   label: 'MC', kind: 'mem', aria: 'Memory clear' },
-    { k: 'mr',   label: 'MR', kind: 'mem', aria: 'Memory recall' },
-    { k: 'msub', label: 'M−', kind: 'mem', aria: 'Memory subtract' },
-    { k: 'madd', label: 'M+', kind: 'mem', aria: 'Memory add' },
     { k: 'clear', label: 'C',  kind: 'fn' },
     { k: 'back',  label: '⌫', kind: 'fn', aria: 'Backspace' },
-    { k: 'pct',   label: '%',  kind: 'fn' },
-    { k: 'sqrt',  label: '√',  kind: 'fn', aria: 'Square root' },
+    { k: 'sign',  label: '±',  kind: 'fn', aria: 'Toggle sign' },
+    { k: 'op',  val: '/', label: '÷', kind: 'op', aria: 'Divide' },
     { k: 'num', val: '7', label: '7' },
     { k: 'num', val: '8', label: '8' },
     { k: 'num', val: '9', label: '9' },
-    { k: 'op',  val: '/', label: '÷', kind: 'op', aria: 'Divide' },
+    { k: 'op',  val: '*', label: '×', kind: 'op', aria: 'Multiply' },
     { k: 'num', val: '4', label: '4' },
     { k: 'num', val: '5', label: '5' },
     { k: 'num', val: '6', label: '6' },
-    { k: 'op',  val: '*', label: '×', kind: 'op', aria: 'Multiply' },
+    { k: 'op',  val: '-', label: '−', kind: 'op', aria: 'Subtract' },
     { k: 'num', val: '1', label: '1' },
     { k: 'num', val: '2', label: '2' },
     { k: 'num', val: '3', label: '3' },
-    { k: 'op',  val: '-', label: '−', kind: 'op', aria: 'Subtract' },
-    { k: 'sign', label: '±', kind: 'fn', aria: 'Toggle sign' },
-    { k: 'num', val: '0', label: '0' },
-    { k: 'dot',  label: '.', aria: 'Decimal point' },
     { k: 'op',  val: '+', label: '+', kind: 'op', aria: 'Add' },
-    { k: 'eq',   label: '=', kind: 'eq', span: 4, aria: 'Equals' },
+    { k: 'num', val: '0', label: '0', span: 2 },
+    { k: 'dot',  label: '.', aria: 'Decimal point' },
+    { k: 'eq',   label: '=', kind: 'eq', aria: 'Equals' },
   ];
 
   function create(opts) {

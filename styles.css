@@ -2043,7 +2043,6 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   box-shadow: var(--shadow-sm), 0 3px 10px -2px rgba(31, 58, 160, .35);
 }
 .calc-key.calc-eq:hover { filter: brightness(1.05); }
-.calc-key.calc-zero { grid-column: span 2; }
 .calc-key.is-error { color: var(--danger-600); font-weight: 700; }
 
 .calc-use {
@@ -3242,24 +3241,7 @@ body:not([data-subject="aat"]):not([data-subject="aat1"]):not([data-subject="aat
 
 /* Calculator updates (memory keys + display indicator) */
 .calc-display-wrap { position: relative; }
-.calc-memory {
-  position: absolute;
-  top: 6px;
-  left: 10px;
-  font-size: .7rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: .04em;
-  z-index: 1;
-}
-.calc-key.calc-mem {
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: .82rem;
-  border-color: var(--brand-200);
-}
-.dark .calc-key.calc-mem { background: rgba(91, 129, 245, .14); color: #b8ccff; border-color: rgba(91, 129, 245, .25); }
-.calc-key.calc-eq-wide { grid-column: span 4; }
+.dark .calc-key.calc-span-2 { grid-column: span 2; }
 
 /* ── T-ACCOUNT PLAYGROUND ── */
 .ta-intro {

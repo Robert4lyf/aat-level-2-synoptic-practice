@@ -1243,3 +1243,42 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
   .a1-mockpanel { flex-direction: column; align-items: flex-start; gap: var(--a1-2); }
   .a1-mockpanel-best { flex-direction: row; align-items: baseline; gap: var(--a1-2); padding-left: 0; }
 }
+
+/* ── The sound switch ─────────────────────────────────────────────────────────
+   Level 2 keeps its toggle on a settings row a reader inside this module can
+   never reach, because Level 1 renders every one of its own screens. A noise
+   with no way to stop it is worse than no noise, so the switch sits on the
+   path, just above the footer, where a setting is looked for and not tripped
+   over. */
+body[data-subject="aat1"] .a1-soundrow {
+  display: flex; align-items: center; gap: var(--a1-3);
+  width: 100%; margin: var(--a1-6) 0 var(--a1-3);
+  padding: 12px var(--a1-4);
+  background: var(--a1-surface); border: 1px solid var(--a1-line);
+  border-radius: var(--a1-r); cursor: pointer; font-family: inherit;
+  color: var(--a1-ink-2); font-size: var(--a1-t-ui); font-weight: 600;
+  text-align: left;
+}
+body[data-subject="aat1"] .a1-soundrow:hover { background: var(--a1-surface-2); }
+body[data-subject="aat1"] .a1-soundrow:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+body[data-subject="aat1"] .a1-soundrow-i { font-size: 15px; line-height: 1; }
+body[data-subject="aat1"] .a1-soundrow-l { flex: 1 1 auto; }
+/* A real switch rather than a tick, because the state has to be readable at a
+   glance from across the row. */
+body[data-subject="aat1"] .a1-soundrow-s {
+  flex: 0 0 auto; position: relative;
+  width: 40px; height: 23px; border-radius: 999px;
+  background: var(--a1-line-2); transition: background .18s;
+}
+body[data-subject="aat1"] .a1-soundrow-s::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--a1-surface); transition: transform .18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+body[data-subject="aat1"] .a1-soundrow-s.is-on { background: var(--a1-brand); }
+body[data-subject="aat1"] .a1-soundrow-s.is-on::after { transform: translateX(17px); }
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat1"] .a1-soundrow-s,
+  body[data-subject="aat1"] .a1-soundrow-s::after { transition: none; }
+}
