@@ -316,6 +316,98 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   height: 3px; margin: 0 -20px var(--a3-5); background: var(--a3-line); overflow: hidden;
   position: sticky; top: 58px; z-index: 6;
 }
+/* ── Endless practice ────────────────────────────────────────────────────────
+   A different MODE, given a different look, and the difference is not just
+   colour. Level 3's palette is indigo and its accent is gold; endless takes the
+   gold, which appears nowhere else at this size, so the mode is identifiable
+   from across a room.
+
+   The structural change matters more. A run with no last question has no
+   percentage-through, so the header carries a streak where a bounded run
+   carries "3 of 10", and the rail underneath fills towards the best streak of
+   the run rather than towards an end that does not exist. Same three-part
+   header, entirely different meaning. */
+.a3-lessonbar-endless {
+  background: linear-gradient(120deg, var(--a3-gold-wash), var(--a3-surface) 70%);
+  border-bottom-color: var(--a3-gold);
+}
+.a3-lessonbar-endless .a3-lessonbar-t { color: var(--a3-gold); letter-spacing: .01em; }
+.a3-inf {
+  font-size: 1.15em; line-height: 1; margin-right: 6px; vertical-align: -1px;
+  font-weight: 400;
+}
+/* The streak sits where the percentage does on a bounded run and where the
+   clock does on a mock — one slot, three meanings, so the reader learns to look
+   in the same place whatever they are doing. */
+.a3-streak {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-width: 58px; padding: 4px 8px; border-radius: var(--a3-r-sm);
+  background: var(--a3-surface-2); border: 1px solid var(--a3-line);
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.a3-streak-n { font-size: 19px; font-weight: 750; line-height: 1.05; color: var(--a3-ink-2); }
+.a3-streak-l {
+  font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 800; color: var(--a3-ink-3);
+}
+/* Three in a row is where a streak starts to feel like one. */
+.a3-streak.is-hot {
+  background: var(--a3-gold-wash); border-color: var(--a3-gold); transform: scale(1.04);
+}
+.a3-streak.is-hot .a3-streak-n { color: var(--a3-gold); }
+.a3-streak.is-hot .a3-streak-l { color: var(--a3-gold); }
+@media (prefers-reduced-motion: reduce) { .a3-streak { transition: none; } }
+.a3-lessonbar-p-endless span {
+  background: linear-gradient(90deg, var(--a3-gold), var(--a3-brand-2));
+}
+/* The question card picks up a hairline of the same gold, so the mode reads
+   below the fold as well as at the top of the screen. */
+.a3-sheet-endless { border-color: var(--a3-gold); }
+
+/* The offer on the practice screen. Deliberately not another a3-mixed row: it
+   is a mode, like the mock above it, and it is shaped like one. */
+.a3-endless {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: var(--a3-4); width: 100%; text-align: left;
+  margin: 0 0 var(--a3-3); padding: var(--a3-4) var(--a3-5);
+  border-radius: var(--a3-r-lg); border: 1px solid var(--a3-gold);
+  background: var(--a3-gold-wash); color: var(--a3-ink);
+  font-family: inherit; cursor: pointer; transition: transform .16s;
+}
+.a3-endless:hover { transform: translateY(-2px); }
+.a3-endless:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+/* A slow drift behind the card — the one piece of motion in the module, and it
+   is here because "endless" is the one thing in it that does not stop. */
+.a3-endless-glow {
+  position: absolute; inset: -40% -10%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(176,137,27,.20), transparent 70%);
+  animation: a3-drift 14s ease-in-out infinite alternate;
+}
+@keyframes a3-drift { from { transform: translateX(-12%); } to { transform: translateX(12%); } }
+@media (prefers-reduced-motion: reduce) { .a3-endless-glow { animation: none; } }
+.a3-endless-i {
+  position: relative; flex: 0 0 auto; font-size: 30px; line-height: 1;
+  color: var(--a3-gold); font-weight: 400;
+}
+.a3-endless-tx { position: relative; flex: 1 1 auto; min-width: 0; }
+.a3-endless-t {
+  display: block; font-family: var(--a3-serif); font-size: 20px; font-weight: 600;
+  color: var(--a3-ink);
+}
+.a3-endless-m {
+  display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.5;
+  color: var(--a3-ink-2);
+}
+.a3-endless-go { position: relative; flex: 0 0 auto; font-size: 20px; color: var(--a3-gold); }
+
+/* On the result screen, the streak leads — it is what the run was for. */
+.a3-done-streak {
+  display: inline-flex; align-items: center; gap: 2px;
+  margin: var(--a3-3) 0 0; padding: 7px 15px; border-radius: 999px;
+  background: var(--a3-gold-wash); border: 1px solid var(--a3-gold);
+  color: var(--a3-gold); font-size: 14.5px; font-weight: 700;
+}
+
 .a3-lessonbar-p span {
   display: block; height: 100%; border-radius: 999px;
   background: linear-gradient(90deg, var(--a3-brand), var(--a3-brand-2));

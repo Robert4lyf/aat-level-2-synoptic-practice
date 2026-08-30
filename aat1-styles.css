@@ -695,6 +695,81 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
 /* The destructive half of a pair. Deliberately the QUIETER of the two: the
    safe choice keeps the filled primary, because the default a reader falls
    into by tapping the brighter button should be the one that costs nothing. */
+/* ── "Keep going" — the endless run ──────────────────────────────────────────
+   Its own mode, given its own look, and the difference is not only colour.
+   Level 1's palette is teal with an amber accent; endless takes the amber,
+   which appears nowhere else at this size, so the mode is recognisable at a
+   glance from the ladder screen.
+
+   The structural change matters more than the hue. A run with no last question
+   has no percentage-through, so the header carries a STREAK where a bounded run
+   carries "3 of 10", and the rail underneath fills towards the best streak of
+   the run rather than towards an end that does not exist. */
+.a1-lessonbar-endless {
+  background: linear-gradient(120deg, var(--a1-accent-wash), var(--a1-surface) 70%);
+  border-bottom-color: var(--a1-accent);
+}
+.a1-lessonbar-endless .a1-lessonbar-t { color: var(--a1-accent-ink); }
+.a1-inf { font-size: 1.15em; line-height: 1; margin-right: 6px; vertical-align: -1px; font-weight: 400; }
+/* The streak sits where the percentage does on a bounded run and where the
+   clock does on a mock — one slot, three meanings, so a reader learns to look
+   in the same place whatever they are doing. */
+.a1-streak {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-width: 58px; padding: 4px 8px; border-radius: var(--a1-r-sm);
+  background: var(--a1-surface-2); border: 1px solid var(--a1-line);
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.a1-streak-n { font-size: 1.15rem; font-weight: 800; line-height: 1.05; color: var(--a1-ink-2); }
+.a1-streak-l {
+  font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 800; color: var(--a1-ink-3);
+}
+.a1-streak.is-hot {
+  background: var(--a1-accent-wash); border-color: var(--a1-accent); transform: scale(1.04);
+}
+.a1-streak.is-hot .a1-streak-n, .a1-streak.is-hot .a1-streak-l { color: var(--a1-accent-ink); }
+@media (prefers-reduced-motion: reduce) { .a1-streak { transition: none; } }
+.a1-lessonbar-p-endless span { background: linear-gradient(90deg, var(--a1-accent), var(--a1-brand)); }
+.a1-sheet-endless { border-color: var(--a1-accent); }
+
+/* The offer on the practice screen — a mode, shaped like one, not another row
+   in the grid of outcomes below it. */
+.a1-endless {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  margin: 0 0 12px; padding: 16px 18px;
+  border-radius: var(--a1-r-lg); border: 1px solid var(--a1-accent);
+  background: var(--a1-accent-wash); color: var(--a1-ink);
+  font-family: inherit; cursor: pointer; transition: transform .16s;
+}
+.a1-endless:hover { transform: translateY(-2px); }
+.a1-endless:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+/* A slow drift behind the card — the one piece of motion in the module, and it
+   is here because this is the one thing in it that does not stop. */
+.a1-endless-glow {
+  position: absolute; inset: -40% -10%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(166,91,16,.18), transparent 70%);
+  animation: a1-drift 14s ease-in-out infinite alternate;
+}
+@keyframes a1-drift { from { transform: translateX(-12%); } to { transform: translateX(12%); } }
+@media (prefers-reduced-motion: reduce) { .a1-endless-glow { animation: none; } }
+.a1-endless-i {
+  position: relative; flex: 0 0 auto; font-size: 1.9rem; line-height: 1;
+  color: var(--a1-accent); font-weight: 400;
+}
+.a1-endless-tx { position: relative; flex: 1 1 auto; min-width: 0; }
+.a1-endless-t { display: block; font-size: 1.15rem; font-weight: 800; color: var(--a1-ink); }
+.a1-endless-m { display: block; margin-top: 3px; font-size: .9rem; line-height: 1.5; color: var(--a1-ink-2); }
+.a1-endless-go { position: relative; flex: 0 0 auto; font-size: 1.2rem; color: var(--a1-accent); }
+
+.a1-done-streak {
+  display: inline-flex; align-items: center; gap: 2px;
+  margin: 12px 0 0; padding: 7px 15px; border-radius: 999px;
+  background: var(--a1-accent-wash); border: 1px solid var(--a1-accent);
+  color: var(--a1-accent-ink); font-size: .95rem; font-weight: 800;
+}
+
 .a1-btn-quiet {
   background: transparent; border: 1px solid var(--a1-line-2); color: var(--a1-bad);
 }
