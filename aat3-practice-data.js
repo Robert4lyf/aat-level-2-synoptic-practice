@@ -5216,7 +5216,15 @@
         {
           label: 'Box 4 — VAT reclaimed on purchases and other inputs',
           type: 'numeric', unit: '£', answer: 2684,
-          exp: 'Standard-rated purchases are 9,300.00 + 880.00 + 4,120.00, but the VAT on client entertaining is blocked, so only 9,300.00 + 4,120.00 = 13,420.00 is recoverable. At ' + T.rates.standard.value + '% that is £2,684.00.',
+          /* EVERY ROW ACCOUNTED FOR. This used to name the three standard-rated
+             lines and stop, which left a reader looking at a six-row day book and
+             an explanation for half of it — and reasonably asking whether the
+             zero-rated purchase should have been recovered too. It should not,
+             and the reason is not the same as the entertaining: no VAT was ever
+             charged on it, where the entertaining was charged VAT that is then
+             blocked. Both add nothing to Box 4 and both belong in Box 7, which is
+             exactly the distinction part 6 of this task is built on. */
+          exp: 'Standard-rated purchases are 9,300.00 + 880.00 + 4,120.00, and only those lines carry any VAT at all. The other three add nothing for two DIFFERENT reasons, and the difference is the point: no VAT was ever charged on the zero-rated printing or on the outside-the-scope wages and rates, so there is no input tax there to recover; VAT WAS charged on the client entertaining, and it is blocked. That leaves 9,300.00 + 4,120.00 = 13,420.00, and at ' + T.rates.standard.value + '% that is £2,684.00. Zero-rating costs nothing — a zero-rated supply is taxable at 0%, so there is simply no tax on it to lose. Both the entertaining and the zero-rated purchase still belong in Box 7.',
         },
         {
           label: 'Box 5 — net VAT to pay HMRC',
