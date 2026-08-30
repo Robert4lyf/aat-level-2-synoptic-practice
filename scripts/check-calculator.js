@@ -120,7 +120,8 @@ ok(mem.memory === 0, 'MC clears memory');
    business appearing on Level 3. */
 const a = AATCalc.create(), b = AATCalc.create();
 a.press('num', '9'); a.press('madd');
-ok(b.display === '0' && b.memory === 0, 'each caller gets its own calculator');
+ok(a !== b, 'create() hands back a new calculator each time');
+ok(b.display === '0' && b.memory === 0, 'so one caller\'s working never shows up in another');
 
 /* ── 2. One pad, two levels ───────────────────────────────────────────────── */
 console.log(`${DIM}one pad, two levels${RESET}`);
@@ -152,8 +153,18 @@ KEYS.forEach(k => {
 
 /* Both levels must render every one of them, or the two pads have come apart —
    which is the whole reason the layout is shared rather than copied. */
-const APP = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
-const A3 = fs.readFileSync(path.join(ROOT, 'aat3-ui.js'), 'utf8');
+/* COMMENTS STRIPPED FIRST. The first version tested the raw source, and the
+   comment above renderCalculatorSidebar says the words "AATCalc.KEYS" — so
+   gutting the call to `[].map` left the assertion passing against a Level 2
+   calculator with no keys on it at all. A source grep that can be satisfied by
+   prose about the source is not a check. What Level 2 actually renders is
+   asserted in the browser, in §8. */
+function code(file) {
+  return fs.readFileSync(path.join(ROOT, file), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^\s*\/\/.*$/gm, '');
+}
+const APP = code('app.js'), A3 = code('aat3-ui.js');
 ok(/AATCalc\.KEYS/.test(APP), 'Level 2 renders the shared pad rather than its own');
 ok(/AATCalc\.KEYS/.test(A3), 'Level 3 renders the shared pad rather than its own');
 ok(!/data-calc="sqrt"/.test(APP), 'Level 2 no longer hand-writes its keys');
@@ -349,13 +360,18 @@ console.log(`${DIM}the typed answer survives${RESET}`);
   const box = D.nodes(el, 'numinput')[0];
   box.value = '19'; box.fire('input');
   tap(el, ['4', '+', '4', '=']);
-  /* The whole reason the pad does not repaint. If a keypress rebuilt the card,
-     a half-typed answer would be rebuilt from state — and that is survivable —
-     but a repaint mid-number on a phone also drops the caret. Assert the value
-     is still there and still the reader's. */
+  /* THE ELEMENT ITSELF MUST SURVIVE, not merely its value. A repaint would
+     rebuild the box from state, so "the answer is still 19" passes either way
+     — which is what the first version of this asserted, and a mutation making
+     every keypress call rerender() sailed through it. The cost of the repaint
+     is the caret, which no assertion about the value can see; the driver
+     memoises its parsed nodes per repaint, so identity is exactly the signal.
+     On a phone this is the difference between typing a figure and retyping it
+     after every glance at the pad. */
+  ok(D.nodes(el, 'numinput')[0] === box, 'a keypress does not rebuild the answer box');
   D.click(el, 'numsubmit');
   ok(/a3-try-verdict is-wrong/.test(el.innerHTML),
-    'a half-typed answer is still the answer after using the keypad');
+    'and a half-typed answer is still the answer afterwards');
 }
 
 /* Collapsing the pad puts it away without disturbing the answer. */
@@ -393,6 +409,8 @@ function serve() {
     server.listen(0, '127.0.0.1', () => resolve({ server, port: server.address().port }));
   });
 }
+
+const L2 = require('./lib/aat2-page.js');
 
 let chromium = null;
 try { ({ chromium } = require('playwright')); } catch (e) { /* handled below */ }
@@ -480,12 +498,19 @@ function finish() {
       box.value = '7';                       // something the reader typed
       key('4').click(); key('2').click();
       const display = document.getElementById('a3CalcDisplay');
+      /* READ BEFORE "Use this value" IS CLICKED. That click repaints on
+         purpose, so measuring identity after it would report a rebuild that
+         the keypress did not cause — which is what the first version did, and
+         it failed honestly. Identity, with no `|| box.value === '7'` escape
+         hatch: a detached node keeps its value, so the disjunction could not
+         fail either way. */
+      const boxKept = host.querySelector('[data-a3="numinput"]') === box;
       /* Now the whole point of it: the figure has to reach the answer. */
       host.querySelector('[data-a3="calcuse"]').click();
       const after = host.querySelector('[data-a3="numinput"]');
       return {
         display: display && display.textContent,
-        boxKept: host.querySelector('[data-a3="numinput"]') === box || box.value === '7',
+        boxKept: boxKept,
         used: after && after.value,
       };
     }, NUMERIC);
@@ -494,6 +519,98 @@ function finish() {
     ok(shown.boxKept === true, 'and the answer box is neither rebuilt nor emptied by the keypress');
     ok(shown.used === '42', `"Use this value" puts it in the answer box (got ${shown.used})`);
     await ctx.close();
+
+    /* Level 2's own pad, rendered from the same KEYS. Asserted here rather than
+       by grepping app.js, because a source grep is satisfied by a comment that
+       merely mentions AATCalc.KEYS — which is how gutting renderCalculatorSidebar
+       to `[].map` first went unnoticed. */
+    const ctx2 = await browser.newContext();
+    const p2 = await ctx2.newPage();
+    const errs2 = [];
+    p2.on('pageerror', e => errs2.push('uncaught: ' + e.message));
+    await p2.addInitScript(() => localStorage.setItem('multisubject_active', 'aat'));
+    /* Seeded, so which question types the run serves is the same every time. A
+       walk that depends on the draw is a gate that reports the weather. */
+    await p2.addInitScript(() => {
+      let s = 20260830 >>> 0;
+      Math.random = () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+    });
+    await p2.goto(base, { waitUntil: 'load' });
+    await p2.waitForFunction(() => {
+      const a = document.getElementById('app');
+      return a && a.textContent.trim().length > 40;
+    }, { timeout: 15000 }).catch(() => {});
+    await L2.tap(p2, '#startBtn');
+    await L2.tap(p2, '[data-tab="home"]');
+    await L2.tap(p2, '#endlessBtn');
+    await p2.waitForSelector('.quiz-container', { timeout: 10000 }).catch(() => {});
+    /* Endless serves every type, so a numeric one turns up quickly. Bounded,
+       and the bound is a FAILURE rather than a silent skip — a sweep that
+       cannot answer a type does not announce it, it reports the thing being
+       measured as absent, which is why the answering lives in lib/aat2-page.js
+       and not in a guessed list of submit ids here. */
+    let sidebar = 0, walked = 0, orphans = 0, seen = 0;
+    for (; walked < 40; walked++) {
+      const state = await p2.evaluate(() => ({
+        calc: document.querySelectorAll('.calc-sidebar').length,
+        boxes: document.querySelectorAll('#numericAnswer, [data-tf-blank], [data-sc-part]').length,
+      }));
+      /* A KEYPAD WITH NOTHING TO TYPE INTO is the defect this walk found: a
+         scenario question whose parts are all multiple choice rendered a full
+         calculator and a "Use this value" button on a screen with no answer
+         box at all. Counted across every screen of the walk rather than only
+         the one it stops on, so a single unlucky landing cannot hide it. */
+      if (state.calc) { seen++; if (!state.boxes) orphans++; }
+      if (state.calc && state.boxes) { sidebar = state.calc; break; }
+      await L2.answerCurrent(p2);
+      const next = p2.locator('#nextBtn:not([disabled])');
+      if (!(await next.count())) break;
+      await next.click({ timeout: 2500 }).catch(() => {});
+      await p2.waitForTimeout(45);
+    }
+    ok(orphans === 0,
+      `Level 2 never shows the calculator on a screen with no answer box (${orphans} of ${seen} did)`);
+    ok(sidebar > 0, `Level 2 still shows its calculator on a numeric question` +
+      (sidebar ? '' : ` (walked ${walked}, stalled on ${await L2.currentType(p2)})`));
+    if (sidebar > 0) {
+      const n = await p2.locator('.calc-sidebar [data-calc]').count();
+      ok(n === KEYS.length, `Level 2 renders all ${KEYS.length} shared keys (found ${n})`);
+      ok(await p2.locator('.calc-sidebar #calcDisplay').count() === 1, 'and its display');
+      /* The pad is wired: pressing 4 then 2 has to reach the display. */
+      await p2.locator('.calc-sidebar [data-calc="num"][data-val="4"]').click({ timeout: 2000 });
+      await p2.locator('.calc-sidebar [data-calc="num"][data-val="2"]').click({ timeout: 2000 });
+      const d = await p2.locator('#calcDisplay').textContent();
+      ok(d === '42', `Level 2's keys reach its display (got ${d})`);
+      /* Whichever answer box this screen has. The calculator is shown beside
+         numeric, table-fill and scenario questions, and each carries a
+         different box — the first version of this looked only for
+         #numericAnswer, landed on a table-fill, and reported null. That was
+         not the check being wrong: "Use this value" really did nothing on two
+         of the three types it is offered on. */
+      const BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part]';
+      const before = await p2.locator(BOXES).count();
+      ok(before > 0, `the screen showing the calculator has an answer box (found ${before})`);
+      await p2.locator(BOXES).first().focus().catch(() => {});
+      /* WATCH FOR THE INPUT EVENT, not just the element's value. Level 2 keeps
+         a table-fill's and a scenario's answers in State, written only from the
+         input handler — so setting `.value` alone puts a figure on the screen
+         that submitting cannot see. Reading the value back afterwards cannot
+         tell the two apart: it is the same string either way, which is exactly
+         how a mutation dropping the dispatch survived the first version of
+         this. */
+      await p2.evaluate(sel => {
+        window.__calcInput = 0;
+        document.querySelectorAll(sel).forEach(b =>
+          b.addEventListener('input', () => { window.__calcInput++; }));
+      }, BOXES);
+      await p2.locator('#calcUse').click({ timeout: 2000 }).catch(() => {});
+      const v = await p2.locator(BOXES).first().inputValue().catch(() => null);
+      ok(v === '42', `and "Use this value" fills Level 2's answer box (got ${v})`);
+      ok(await p2.evaluate(() => window.__calcInput) === 1,
+        'and announces the change, so the state grading reads is written too');
+    }
+    ok(errs2.length === 0, `Level 2 runs without an uncaught error${errs2.length ? ': ' + errs2[0] : ''}`);
+    await ctx2.close();
   } finally {
     await browser.close();
     server.close();

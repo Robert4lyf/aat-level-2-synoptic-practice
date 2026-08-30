@@ -236,6 +236,8 @@ function serve() {
   });
 }
 
+const L2 = require('./lib/aat2-page.js');
+
 let chromium = null;
 try { ({ chromium } = require('playwright')); } catch (e) { /* handled below */ }
 
@@ -315,10 +317,7 @@ function finish() {
     /* What is on screen, for the message when the harness cannot answer it —
        a stall in the harness and a run that ended are different failures and
        must not be reported as the same one. */
-    const currentType = pg => pg.evaluate(() => {
-      const ids = [...document.querySelectorAll('button[id]')].map(b => b.id);
-      return ids.filter(i => /submit|next/i.test(i)).join(',') || 'no submit on screen';
-    });
+    const currentType = L2.currentType;
     let stalledOn = null;
     /* An endless run must never label its advance button as the last one. The
        set is topped up before the question renders precisely so this cannot
@@ -337,62 +336,7 @@ function finish() {
          option buttons are disabled and clicking one hangs. Level 2 renders a
          dozen types, each with its own submit, so the answer step tries an
          option, fills any input, then presses whichever submit is on screen. */
-      if (!(await page.locator('#nextBtn').count())) {
-        /* A multi-select needs more than one option chosen before its submit
-           enables, so every option is clicked where the question is one; a
-           single-answer question takes the first and ignores the rest. */
-        const ms = page.locator('.option-btn.ms-btn:not([disabled])');
-        if (await ms.count()) {
-          const n = await ms.count();
-          for (let k = 0; k < n; k++) await ms.nth(k).click({ timeout: 2500 }).catch(() => {});
-        } else {
-          const opt = page.locator('.option-btn:not([disabled])').first();
-          if (await opt.count()) await opt.click({ timeout: 2500 }).catch(() => {});
-        }
-        for (const sel of ['#numericAnswer', '#typedAnswer', '.gap-input', '.tablefill-input']) {
-          const f = page.locator(sel).first();
-          if (await f.count()) await f.fill('0').catch(() => {});
-        }
-        /* A true/false grid needs every row set before its submit will accept,
-           and a gap-fill needs every blank chosen. Both were stalling the sweep
-           and being reported as the run ending. */
-        const rows = await page.locator('[data-tfq-row]').evaluateAll(
-          es => [...new Set(es.map(e => e.getAttribute('data-tfq-row')))]).catch(() => []);
-        for (const r of rows) {
-          const b = page.locator(`[data-tfq-row="${r}"][data-tfq-val]`).first();
-          if (await b.count()) await b.click().catch(() => {});
-        }
-        /* Gap-fill: each blank is a <select>, so pick the first real option. */
-        const gaps = await page.locator('[data-gf-gap]').count().catch(() => 0);
-        for (let g = 0; g < gaps; g++) {
-          const sel = page.locator('[data-gf-gap]').nth(g);
-          const opts = await sel.locator('option').evaluateAll(
-            es => es.map(e => e.value).filter(v => v !== '')).catch(() => []);
-          if (opts.length) await sel.selectOption(opts[0]).catch(() => {});
-        }
-        /* Drag-drop: pair each left item with a right one in turn. */
-        const lefts = await page.locator('[data-dd-left]').evaluateAll(
-          es => es.map(e => e.getAttribute('data-dd-left'))).catch(() => []);
-        const rights = await page.locator('[data-dd-right]').evaluateAll(
-          es => es.map(e => e.getAttribute('data-dd-right'))).catch(() => []);
-        for (let li = 0; li < Math.min(lefts.length, rights.length); li++) {
-          await page.locator(`[data-dd-left="${lefts[li]}"]`).first().click().catch(() => {});
-          await page.locator(`[data-dd-right="${rights[li]}"]`).first().click().catch(() => {});
-        }
-        const blanks = await page.locator('[data-tf-blank]').evaluateAll(
-          es => [...new Set(es.map(e => e.getAttribute('data-tf-blank')))]).catch(() => []);
-        for (const bl of blanks) {
-          const b = page.locator(`[data-tf-blank="${bl}"]`).first();
-          if (await b.count()) await b.click().catch(() => {});
-        }
-        if (!(await page.locator('#nextBtn').count())) {
-          for (const sel of ['#submitBtn', '#submitNumericBtn', '#submitTrueFalseBtn', '#submitGapFillBtn',
-                             '#submitMultiSelectBtn', '#submitScenarioBtn', '#submitDragDropBtn',
-                             '#submitTableFillBtn', '#submitListenTypedBtn']) {
-            if (await tap(sel)) break;
-          }
-        }
-      }
+      await L2.answerCurrent(page);
       const next = page.locator('#nextBtn:not([disabled])');
       if (await next.count()) {
         const label = (await next.first().innerText().catch(() => '')) || '';

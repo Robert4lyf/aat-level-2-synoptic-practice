@@ -1078,21 +1078,21 @@
      A task has several. The reader's own attention is the best signal, so the
      box they last touched wins — `calcPart` is set both on focus and on the
      first keystroke, because a phone keyboard can put a caret in a field
-     without ever firing focus in the order a desktop would.
+     without ever firing focus in the order a desktop would. Untouched, it goes
+     to the first box, which is where someone starting the task is.
 
-     Untouched, it falls to the first box still empty, which is where someone
-     working down the task is. Only when every box is filled does it fall back
-     to the first — by then the reader is correcting something and will have
-     touched it. */
+     THERE WAS A THIRD RULE HERE and it was dead code: "otherwise the first box
+     still empty". `calcPart` is null only when no box has been touched, and
+     both it and `taskInputs` are cleared together on every question, so in that
+     state every box is empty and "first empty" is always just "first". It
+     survived mutation testing precisely because nothing could tell the two
+     apart. */
   function taskTarget(q) {
     var parts = (q && q.parts) || [];
     var typed = [];
     parts.forEach(function (p, i) { if (p.type !== 'choice') typed.push(i); });
     if (!typed.length) return null;
     if (S.calcPart != null && typed.indexOf(S.calcPart) !== -1) return S.calcPart;
-    for (var i = 0; i < typed.length; i++) {
-      if (num(S.taskInputs[typed[i]]) === null) return typed[i];
-    }
     return typed[0];
   }
 
@@ -1196,7 +1196,6 @@
         h += '<div class="a3-try-row' + (isMock() ? ' a3-try-row-mock' : '') + '">' +
           '<input class="a3-input" inputmode="decimal" data-a3="numinput" value="' + esc(S.numInput) + '" placeholder="' + esc(q.unit || '') + '" aria-label="Your answer">' +
           (isMock() ? '' : '<button class="a3-btn a3-btn-primary" data-a3="numsubmit">Check</button>') + '</div>';
-        if (calcOffered(q)) h += calcHtml();
       } else {
         h += '<div class="a3-try-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
           (S.answered ? 'Correct' : 'The answer is ' + esc((q.unit === '£' ? '£' : '') + q.answer)) + '</div>';
@@ -1233,8 +1232,14 @@
       if (S.answered === null && !isMock()) h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="gapsubmit">Submit</button>';
     } else if (t === 'task') {
       h += taskHtml(q);
-      if (calcOffered(q)) h += calcHtml();
     }
+
+    /* ONE CALL SITE, and calcOffered() is the whole rule. Rendering it from
+       inside the numeric and task branches instead put the type test in three
+       places, two of which were already inside a branch that had made it — so
+       the rule in calcOffered was decorative, and a mutation that widened it to
+       every question type changed nothing and was caught by nothing. */
+    if (calcOffered(q)) h += calcHtml();
 
     /* NOTHING IS REVEALED IN A MOCK, and it falls out rather than being
        arranged: the block below is gated on the question having been graded,

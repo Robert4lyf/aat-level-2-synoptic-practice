@@ -1930,6 +1930,10 @@
      so the two pads cannot come apart. This file owns only the markup and the
      styling, which belong to Level 2's design system. */
   const Calc = AATCalc.create({ displayId: 'calcDisplay', memoryId: 'calcMemoryIndicator' });
+  /* Which answer box "Use this value" fills — the one the reader was last in.
+     Held here rather than in State because every render replaces the elements,
+     and it is re-resolved against the live boxes on each use. */
+  let _lastAnswerBox = null;
 
   /* ── STATE ── */
   const State = {
@@ -4753,6 +4757,22 @@
   /* The keypad is rendered from AATCalc.KEYS rather than written out, so
      Level 2's pad and Level 3's are the same pad in two skins — a key added to
      one is added to both. Only the class prefix and the layout are local. */
+  /* Does this question have somewhere to put a figure?
+
+     The scenario and table-fill branches were `has-calc` unconditionally, and a
+     scenario whose parts are all multiple choice would render a full keypad,
+     and a "Use this value" button, on a screen with no answer box on it at
+     all. Derived from the question rather than written at each call site so the
+     layout class and the sidebar cannot disagree — they were two separate
+     literals before, which is how one of them came to be wrong. */
+  function questionTakesCalc(q) {
+    if (_activeSubjectId !== 'aat' || !q) return false;
+    if (isNumeric(q)) return true;
+    if (isTableFill(q)) return true;                       // every blank is a figure
+    if (isScenario(q)) return (q.parts || []).some(isNumeric);
+    return false;
+  }
+
   function renderCalculatorSidebar() {
     const keys = AATCalc.KEYS.map(k => {
       const cls = 'calc-key' + (k.kind ? ' calc-' + k.kind : '') + (k.span ? ' calc-eq-wide' : '');
@@ -4906,7 +4926,7 @@
     const comboEl = (State.combo >= 3 && State.mode === 'practice') ? `<span class="combo-pill combo-${Math.min(State.combo, 10) >= 10 ? 'mega' : State.combo >= 5 ? 'hot' : 'warm'}">🔥 ${State.combo}x combo</span>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
-      <div class="quiz-layout ${numeric ? 'has-calc' : ''}">
+      <div class="quiz-layout ${questionTakesCalc(q) ? 'has-calc' : ''}">
         <div class="quiz-container slide-in">
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
@@ -4933,7 +4953,7 @@
           })()}
           ${bodyHtml}${feedbackHtml}
         </div>
-        ${numeric && _activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -5068,7 +5088,7 @@
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
-      <div class="quiz-layout has-calc">
+      <div class="quiz-layout ${questionTakesCalc(q) ? 'has-calc' : ''}">
         <div class="quiz-container slide-in">
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
@@ -5082,7 +5102,7 @@
           ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitTableFillBtn" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
-        ${_activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -5141,7 +5161,7 @@
     }
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
-      <div class="quiz-layout has-calc">
+      <div class="quiz-layout ${questionTakesCalc(q) ? 'has-calc' : ''}">
         <div class="quiz-container slide-in">
           <div class="quiz-header">
             <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
@@ -5158,7 +5178,7 @@
           ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitScenarioBtn" type="button">Submit all parts ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
-        ${_activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -5737,7 +5757,7 @@
     </div>` : '';
     return `<div class="container">
       <button class="back-btn" id="exitBtn" type="button">← Exit exam</button>
-      <div class="quiz-layout ${numeric ? 'has-calc' : ''}">
+      <div class="quiz-layout ${questionTakesCalc(q) ? 'has-calc' : ''}">
         <div class="quiz-container slide-in">
           <div class="quiz-header">
             <span class="mode-pill">⏱ ${escapeHtml((State.examLabel || 'Mock exam').toUpperCase())}</span>
@@ -5764,7 +5784,7 @@
             ${navGroupsHtml}
           </div>
         </div>
-        ${numeric && _activeSubjectId === 'aat' ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
       </div>
     </div>`;
   }
@@ -8630,11 +8650,33 @@
     document.querySelectorAll('[data-calc]').forEach(el => el.addEventListener('click', () => {
       Calc.press(el.dataset.calc, el.dataset.val);
     }));
+    /* EVERY ANSWER BOX ON A SCREEN THAT SHOWS THE CALCULATOR, not just the one
+       on a plain numeric question. The calculator is rendered beside table-fill
+       and scenario questions too — both `has-calc` unconditionally — and this
+       looked only for #numericAnswer, so on those two types "Use this value"
+       was a button that did nothing at all. Found by a gate walking to a
+       calculator and landing on a table-fill.
+
+       The box the reader was last in wins, then the first one still empty, then
+       the first: a table-fill has a blank per cell and dropping the figure into
+       whichever the renderer emitted first would be wrong nearly every time. */
+    const ANSWER_BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part]';
+    document.querySelectorAll(ANSWER_BOXES).forEach(el => {
+      el.addEventListener('focus', () => { _lastAnswerBox = el; });
+    });
     bind('calcUse', 'click', () => {
-      const input = document.getElementById('numericAnswer');
-      if (!input || input.disabled) return;
+      const boxes = [...document.querySelectorAll(ANSWER_BOXES)].filter(b => !b.disabled);
+      if (!boxes.length) return;
+      const input = (_lastAnswerBox && boxes.indexOf(_lastAnswerBox) !== -1)
+        ? _lastAnswerBox
+        : (boxes.find(b => b.value === '') || boxes[0]);
+      if (Calc.errored) return;
       input.value = Calc.display;
+      /* The event, not just the value: State is what grading reads, and it is
+         only written from the input handler. Setting the element alone would
+         show a figure that submitting could not see. */
       input.dispatchEvent(new Event('input', { bubbles: true }));
+      _lastAnswerBox = input;
       try { input.focus(); } catch (e) {}
     });
     bind('nextBtn', 'click', () => State.mode === 'mock' ? nextMock() : nextPractice());

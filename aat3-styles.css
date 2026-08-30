@@ -1485,14 +1485,20 @@ body[data-subject="aat3"] .a3-calc-key {
 body[data-subject="aat3"] .a3-calc-key:hover { background: var(--a3-surface-2); }
 body[data-subject="aat3"] .a3-calc-key:active { transform: scale(.96); }
 body[data-subject="aat3"] .a3-calc-key:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+/* EVERY KEY KEEPS ITS BORDER. The memory row and the operator column were
+   filled with the brand wash and given `border-color: transparent`, which in
+   the light theme is a pale tint on a pale panel: MC, MR, M-, M+, and the four
+   operators read as text floating in the grid while the number keys beside
+   them read as keys. Same fill, same ink, one visible edge — the tint still
+   groups them, without half the pad looking unpressable. */
 body[data-subject="aat3"] .a3-calc-key.a3-calc-mem {
   background: var(--a3-brand-wash); color: var(--a3-brand-ink);
-  border-color: transparent; font-size: var(--a3-t-meta);
+  border-color: var(--a3-line-2); font-size: var(--a3-t-meta);
 }
 body[data-subject="aat3"] .a3-calc-key.a3-calc-fn { background: var(--a3-surface-2); color: var(--a3-ink-2); }
 body[data-subject="aat3"] .a3-calc-key.a3-calc-op {
   background: var(--a3-brand-wash); color: var(--a3-brand-ink);
-  border-color: transparent; font-size: 17px;
+  border-color: var(--a3-line-2); font-size: 17px;
 }
 body[data-subject="aat3"] .a3-calc-key.a3-calc-eq {
   background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
