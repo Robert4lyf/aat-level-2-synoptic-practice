@@ -92,7 +92,7 @@
        would push a boolean through progress-backup's merge-by-max, which is
        written for the (attempted, correct) pairs and has no meaning for a
        preference — and the cost of it being session-scoped is one tap. */
-    calcOpen: true,
+    calcOpen: false,
     calcPart: null,      // multi-part task: which box "Use this value" fills
   };
 
@@ -1092,6 +1092,31 @@
      silently unstyled keypad. */
   var CALC_KIND_CLASS = { fn: 'a3-calc-fn', op: 'a3-calc-op', eq: 'a3-calc-eq' };
 
+  /* THE CALCULATOR FLOATS, AND THE PAGE DOES NOT MOVE.
+
+     It used to sit in the flow, under the answer row. On a task that hands over
+     a table of figures, that put the keypad below everything the reader needed
+     to look at: work out a total, scroll up to check the next row, scroll back
+     down, key it in, scroll up again. The figures and the tool to use on them
+     were never on screen together.
+
+     Fixed to the bottom of the viewport instead, opened from a button in the
+     same corner. Nothing about the layout changes when it opens, so the scroll
+     position is exactly where the reader left it — which is the whole point.
+     There is deliberately NO SCRIM: the page behind stays readable and
+     scrollable, because the figures behind it are what the calculator is for.
+
+     WHY NOT IN THE HEADER, beside the reference button. Three reasons. The
+     header is already full at 390px — subject, reference, theme, home — and a
+     fifth control there means shrinking tap targets below the size a thumb
+     reliably hits. The header is also the hardest part of a phone to reach one
+     handed, and this is a tool reached for every few seconds inside a single
+     question, not a piece of navigation used once. And anchoring the panel to
+     the same corner as the button is what makes the two read as one thing.
+
+     CLOSED BY DEFAULT, for the same reason it is fixed: a sheet that opens over
+     the question on arrival has taken the screen away from the reader before
+     they asked for it. */
   function calcHtml() {
     var C = Calc();
     if (!C) return '';
@@ -1103,15 +1128,15 @@
         (k.aria ? ' aria-label="' + esc(k.aria) + '"' : '') +
         '>' + esc(k.label) + '</button>';
     }).join('');
-    return '<div class="a3-calc' + (S.calcOpen ? ' is-open' : '') + '">' +
-      '<button class="a3-calc-toggle" type="button" data-a3="calctoggle" ' +
-        'aria-expanded="' + (S.calcOpen ? 'true' : 'false') + '">' +
-        '<span class="a3-calc-ic" aria-hidden="true">&#129518;</span>' +
-        '<span class="a3-calc-lb">Calculator</span>' +
-        '<span class="a3-calc-ch" aria-hidden="true">' + (S.calcOpen ? '&#9662;' : '&#9656;') + '</span>' +
+    var open = !!S.calcOpen;
+    return '<button class="a3-calcfab' + (open ? ' is-open' : '') + '" type="button" ' +
+        'data-a3="calctoggle" aria-expanded="' + (open ? 'true' : 'false') + '" ' +
+        'aria-controls="a3CalcSheet" ' +
+        'aria-label="' + (open ? 'Close the calculator' : 'Open the calculator') + '">' +
+        '<span class="a3-calcfab-i" aria-hidden="true">' + (open ? '&#10005;' : '&#129518;') + '</span>' +
       '</button>' +
-      (S.calcOpen
-        ? '<div class="a3-calc-body">' +
+      (open
+        ? '<div class="a3-calcsheet" id="a3CalcSheet" role="group" aria-label="On-screen calculator">' +
             '<div class="a3-calc-screen">' +
               '<div class="a3-calc-display' + (C.errored ? ' is-error' : '') + '" ' +
                 'id="a3CalcDisplay" role="status" aria-live="polite">' + esc(C.display) + '</div>' +
@@ -1120,8 +1145,7 @@
             '<button class="a3-calc-use" type="button" data-a3="calcuse">' +
               '&#8627; Use this value</button>' +
           '</div>'
-        : '') +
-      '</div>';
+        : '');
   }
 
   /* Which box "Use this value" fills.
@@ -1159,6 +1183,7 @@
     if (S.screen === 'lesson' && S.phase === 'teach') {
       if (S.tryResult !== null) return;
       S.tryInput = v;
+      S.calcOpen = false;
       return rerender();
     }
     var q = currentQuestions()[S.qIdx];
@@ -1171,6 +1196,10 @@
     } else {
       S.numInput = v;
     }
+    /* CLOSE ON USE. The figure has gone into a box the sheet is covering, and
+       leaving it open means the reader has to dismiss it to see whether the
+       thing they asked for actually happened. */
+    S.calcOpen = false;
     return rerender();
   }
 

@@ -1411,40 +1411,59 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 }
 
 /* ── The on-screen calculator ─────────────────────────────────────────────────
-   Level 3's skin on the shared engine — see calculator.js. It sits INSIDE the
-   question card, directly under the answer row, rather than beside it in a
-   column the way Level 2's does. Level 2's is a 280px sidebar that collapses
-   to a stacked block under 880px; Level 3 is one centred 800px column at every
-   width, so a sidebar would have meant inventing a two-column geometry that
-   exists on no other Level 3 screen and disappears on the phone anyway.
+   Level 3's skin on the shared engine — see calculator.js.
 
-   The pad is capped at 340px and left-aligned so that on a laptop the keys stay
-   the size of keys instead of stretching to eight hundred pixels of card. */
-body[data-subject="aat3"] .a3-calc {
-  margin-top: var(--a3-3);
-  border: 1px solid var(--a3-line);
-  border-radius: var(--a3-r);
+   IT FLOATS. It used to sit in the flow under the answer row, which on a task
+   that hands over a table of figures put the keypad below everything the reader
+   needed to look at. Fixed to the bottom of the viewport instead: nothing about
+   the layout changes when it opens, so the page stays exactly where it was.
+
+   No scrim, deliberately. The page behind it is the reason the calculator is
+   open, so it stays readable — and scrollable, since the sheet only covers the
+   lower part of the screen and takes pointer events only where it is drawn. */
+body[data-subject="aat3"] .a3-calcfab {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--a3-line-2);
+  background: var(--a3-surface); color: var(--a3-ink);
+  box-shadow: var(--a3-shadow-lg); cursor: pointer;
+  font-family: inherit; font-size: 22px; line-height: 1;
+  transition: transform .16s, background .16s;
+}
+body[data-subject="aat3"] .a3-calcfab:hover { transform: translateY(-2px); }
+body[data-subject="aat3"] .a3-calcfab:active { transform: translateY(0) scale(.96); }
+body[data-subject="aat3"] .a3-calcfab:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 3px; }
+/* Open, it becomes the way out of the sheet it opened, so it takes the filled
+   treatment a primary control gets and sits above the sheet's own corner. */
+body[data-subject="aat3"] .a3-calcfab.is-open {
+  background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
+  color: var(--a3-on-fill); border-color: transparent; font-size: 19px;
+}
+body[data-subject="aat3"] .a3-calcfab-i { display: block; }
+
+body[data-subject="aat3"] .a3-calcsheet {
+  position: fixed; z-index: 59;
+  right: 12px; bottom: 84px;         /* clear of the button that opened it */
+  left: 12px; max-width: 340px; margin-left: auto;
+  padding: 10px;
+  /* A GUARD, not a scrollbar anyone should meet. On a phone held in landscape,
+     or a short window, an unbounded sheet would run off the top of the screen
+     and take its own "Use this value" button with it. */
+  max-height: calc(100vh - 116px); overflow: auto;
   background: var(--a3-surface-2);
-  overflow: hidden;
+  border: 1px solid var(--a3-line-2); border-radius: var(--a3-r-lg);
+  box-shadow: var(--a3-shadow-lg);
+  animation: a3-calc-in .18s cubic-bezier(.2,.8,.3,1) both;
 }
-body[data-subject="aat3"] .a3-calc-toggle {
-  display: flex; align-items: center; gap: var(--a3-2);
-  width: 100%; padding: 10px var(--a3-3);
-  background: none; border: 0; cursor: pointer; font-family: inherit;
-  font-size: var(--a3-t-meta); font-weight: 650; color: var(--a3-ink-2);
+@keyframes a3-calc-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: none; }
 }
-body[data-subject="aat3"] .a3-calc-toggle:hover { background: var(--a3-brand-wash); }
-body[data-subject="aat3"] .a3-calc-toggle:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: -3px; }
-body[data-subject="aat3"] .a3-calc-lb {
-  flex: 1 1 auto; text-align: left;
-  text-transform: uppercase; letter-spacing: var(--a3-track);
-  font-size: var(--a3-t-label);
-}
-body[data-subject="aat3"] .a3-calc-ic { font-size: 14px; line-height: 1; }
-body[data-subject="aat3"] .a3-calc-ch { color: var(--a3-ink-3); }
-body[data-subject="aat3"] .a3-calc-body {
-  padding: 0 var(--a3-3) var(--a3-3);
-  max-width: 340px;
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat3"] .a3-calcsheet { animation: none; }
+  body[data-subject="aat3"] .a3-calcfab { transition: none; }
+  body[data-subject="aat3"] .a3-calcfab:hover { transform: none; }
 }
 
 body[data-subject="aat3"] .a3-calc-screen { position: relative; }
@@ -1452,8 +1471,8 @@ body[data-subject="aat3"] .a3-calc-display {
   /* tabular-nums so a running total does not jitter sideways as it is typed */
   font-variant-numeric: tabular-nums;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 22px; font-weight: 650; text-align: right;
-  padding: 13px 14px; min-height: 50px;
+  font-size: 21px; font-weight: 650; text-align: right;
+  padding: 10px 13px; min-height: 44px;
   display: flex; align-items: center; justify-content: flex-end;
   background: var(--a3-surface); color: var(--a3-ink);
   border: 1px solid var(--a3-line-2); border-radius: var(--a3-r-sm);
@@ -1468,6 +1487,8 @@ body[data-subject="aat3"] .a3-calc-keys {
 body[data-subject="aat3"] .a3-calc-key {
   /* 44px is the smallest target a thumb hits reliably, and this pad is used
      mid-question on a phone. */
+  /* 44px is the smallest target a thumb hits reliably. It is the floor here,
+     not a starting point to trim from. */
   min-height: 44px; padding: 0;
   font-family: inherit; font-size: var(--a3-t-ui); font-weight: 650;
   color: var(--a3-ink); background: var(--a3-surface);
@@ -1480,9 +1501,7 @@ body[data-subject="aat3"] .a3-calc-key:focus-visible { outline: 3px solid var(--
 /* EVERY KEY KEEPS ITS BORDER. The operator column was filled with the brand
    wash and given `border-color: transparent`, which in the light theme is a
    pale tint on a pale panel: the operators read as text floating in the grid
-   while the number keys beside them read as keys. Same fill, same ink, one
-   visible edge — the tint still groups them, without part of the pad looking
-   unpressable. */
+   while the number keys beside them read as keys. */
 body[data-subject="aat3"] .a3-calc-key.a3-calc-fn { background: var(--a3-surface-2); color: var(--a3-ink-2); }
 body[data-subject="aat3"] .a3-calc-key.a3-calc-op {
   background: var(--a3-brand-wash); color: var(--a3-brand-ink);
@@ -1495,7 +1514,7 @@ body[data-subject="aat3"] .a3-calc-key.a3-calc-eq {
 body[data-subject="aat3"] .a3-calc-w2 { grid-column: span 2; }
 
 body[data-subject="aat3"] .a3-calc-use {
-  width: 100%; margin-top: var(--a3-2); padding: 11px;
+  width: 100%; margin-top: var(--a3-2); padding: 10px;
   font-family: inherit; font-size: var(--a3-t-meta); font-weight: 650;
   color: var(--a3-brand-ink); background: var(--a3-brand-wash);
   border: 1px dashed var(--a3-brand); border-radius: var(--a3-r-sm);
