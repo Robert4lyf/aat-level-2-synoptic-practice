@@ -1706,9 +1706,9 @@
       id: 'P-2-53', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.14'],
       type: 'numeric',
       q: 'Output tax before adjustments is £22,750. A fuel scale charge of £288 applies and bad debt relief of £1,140 is claimed. What is the adjusted output tax, in pounds?',
-      answer: 23038,
+      answer: 22798,
       unit: '£',
-      exp: '£22,750 + £288 = £23,038. The scale charge is added to output tax; bad debt relief is claimed as input tax and does not touch this figure at all — which is why it is given here, and why adding or subtracting it would be wrong.',
+      exp: 'The scale charge is a VAT-inclusive figure, so what it adds is one sixth of it: £288 ÷ 6 = £48. £22,750 + £48 = £22,798. Bad debt relief is claimed as input tax and does not touch output tax at all — which is why it is given here. Adding the whole £288 would give £23,038, which is the trap this question is built on.',
     },
     {
       id: 'P-2-54', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.15'],
@@ -2584,7 +2584,7 @@
     {
       id: 'P-3-09', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
       type: 'numeric',
-      q: 'A VAT control account shows a credit balance of £21,300. A fuel scale charge of £96 was included in the return but never posted, and bad debt relief of £740 was claimed on the return but not posted. What should Box 5 show, in pounds?',
+      q: 'A VAT control account shows a credit balance of £21,300. A fuel scale charge adding £96 of output tax was included in the return but never posted, and bad debt relief of £740 was claimed on the return but not posted. What should Box 5 show, in pounds?',
       answer: 20656, unit: '£',
       exp: '£21,300 + £96 − £740 = £20,656. The fuel scale charge is additional output tax and raises the liability; bad debt relief is claimed as input tax and reduces it. Both were on the return but not in the ledger.',
     },
@@ -2809,7 +2809,7 @@
     {
       id: 'P-3-37', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
       type: 'numeric',
-      q: 'A VAT control account shows a credit balance of £16,400. A fuel scale charge of £240 has not been posted and blocked input tax of £860 was wrongly recovered. What should the balance be, in pounds?',
+      q: 'A VAT control account shows a credit balance of £16,400. A fuel scale charge adding £240 of output tax has not been posted and blocked input tax of £860 was wrongly recovered. What should the balance be, in pounds?',
       answer: 17500,
       unit: '£',
       exp: '£16,400 + £240 + £860 = £17,500. Both adjustments increase what is owed: the scale charge adds output tax, and reversing input tax that should never have been claimed removes a deduction.',

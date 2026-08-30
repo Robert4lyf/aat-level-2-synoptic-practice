@@ -1066,6 +1066,59 @@ if (taskCount) {
 }
 notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${headersChecked} example header rows checked for figures.`);
 
+/* ── The fuel scale charge is a GROSS figure ─────────────────────────────────
+   The module teaches this in its own words — "The scale charge is a gross
+   figure and it is OUTPUT tax" is an exam trap on a card, and a true/false
+   statement asserts that the figure is VAT-inclusive — and HMRC's published
+   table gives a VAT-inclusive consideration per CO2 band, with the VAT at one
+   sixth of it.
+
+   So "a fuel scale charge of £288 applies" adds £48 to output tax, not £288.
+   One question said £288 and added the lot, reaching an answer that its own
+   explanation then justified: the arithmetic gate could not see it, because
+   "£22,750 + £288 = £23,038" is perfectly good arithmetic. What was wrong was
+   the treatment, and the only thing that can catch a wrong treatment is a rule
+   that knows the treatment.
+
+   Two phrasings, two meanings, and both are checked:
+     "a fuel scale charge OF £X"      — X is the gross charge; the VAT is X ÷ 6
+     "a fuel scale charge ADDING £X"  — X is already the output tax; add it whole
+   The second exists because a reconciliation question wants to hand over the
+   adjustment itself. Anything else is ambiguous by construction and is failed
+   here, since the ambiguity is the trap. */
+{
+  const OF = /fuel scale charge of £([\d,]+)/i;
+  const ADDING = /fuel scale charge (?:of £[\d,]+ )?adding £([\d,]+)/i;
+  let scaleChecked = 0;
+  allQuestions.forEach(({ where, q }) => {
+    const stem = q.q || '';
+    if (!/fuel scale charge/i.test(stem)) return;
+    const adding = ADDING.exec(stem);
+    const of = OF.exec(stem);
+    if (!adding && !of) return;          // a stem that names no figure has nothing to get wrong
+    scaleChecked++;
+    const exp = q.exp || '';
+    if (adding) {
+      if (/÷\s*6/.test(exp)) {
+        errors.push(`${where}: the stem says the scale charge ADDS £${adding[1]}, so that figure is ` +
+          `already the output tax — the explanation must not divide it by six.`);
+      }
+      return;
+    }
+    const gross = Number(of[1].replace(/,/g, ''));
+    /* The explanation has to show the sixth being taken. Requiring the figure
+       as well as the operator, so an explanation dividing some OTHER number by
+       six does not satisfy it. */
+    const shown = new RegExp('£' + of[1].replace(/,/g, '[,]?') + '\\s*÷\\s*6').test(exp);
+    if (!shown) {
+      errors.push(`${where}: "a fuel scale charge of £${of[1]}" is a VAT-INCLUSIVE figure, so it adds ` +
+        `£${(gross / 6).toLocaleString('en-GB')} of output tax, not £${of[1]}. The explanation must show ` +
+        `£${of[1]} ÷ 6, or the stem must say "adding £X of output tax" if X is meant to be the VAT itself.`);
+    }
+  });
+  notes.push(`${scaleChecked} fuel scale charge questions checked for the gross-figure treatment.`);
+}
+
 /* ── A numeric question with nothing to calculate ────────────────────────────
    A numeric question puts an answer box on the screen, and the Level 3 player
    puts a calculator under that box — so a question that asks the reader to
