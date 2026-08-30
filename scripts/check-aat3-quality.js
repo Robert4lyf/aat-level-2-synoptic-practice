@@ -1066,6 +1066,45 @@ if (taskCount) {
 }
 notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${headersChecked} example header rows checked for figures.`);
 
+/* ── A numeric question with nothing to calculate ────────────────────────────
+   A numeric question puts an answer box on the screen, and the Level 3 player
+   puts a calculator under that box — so a question that asks the reader to
+   RECALL a figure rather than work one out gets a keypad it has no use for,
+   which is worse than useless: it says a sum is expected.
+
+   The reliable giveaway is that the stem carries no figure at all. Across the
+   module that identifies exactly the recall questions and nothing else, but it
+   only works in ONE direction: a recall question that happens to mention a
+   figure ("a business exceeds the threshold at the end of July — how many days
+   does it have to notify?") reads as computational to any machine. So the data
+   carries the flag and this enforces the half that is checkable — a stem with
+   no figures cannot be anything but recall, and must say so. The other half is
+   an authoring judgement, made when the question is written.
+
+   The converse is checked too: a question marked `recall` must not be one whose
+   answer is worked out from figures it was given, which would be a flag put on
+   the wrong question and a reader denied a calculator they need. */
+{
+  let recallChecked = 0, recallMarked = 0;
+  allQuestions.forEach(({ where, q }) => {
+    if ((q.type || 'mcq') !== 'numeric') return;
+    recallChecked++;
+    const hasFigure = /\d/.test(q.q || '');
+    if (q.recall) recallMarked++;
+    if (!hasFigure && !q.recall) {
+      errors.push(`${where}: numeric question with no figure in its stem — there is nothing to ` +
+        `calculate, so it must be marked \`recall: true\` or it will be given a calculator.`);
+    }
+    if (q.recall && hasFigure) {
+      /* Not an error: this is exactly the case the flag exists for. Surfaced so
+         a flag put on a computational question by mistake is visible. */
+      warnings.push(`${where}: marked \`recall\` but its stem carries a figure — confirm the answer ` +
+        `is recalled rather than worked out from it.`);
+    }
+  });
+  notes.push(`${recallChecked} numeric questions checked for a figure to work from; ${recallMarked} marked as recall.`);
+}
+
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
 notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
 console.log('');
