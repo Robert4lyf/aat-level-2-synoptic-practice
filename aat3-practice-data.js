@@ -914,7 +914,7 @@
       id: 'P-1-87', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.3.1'],
       type: 'numeric',
       q: 'A VAT quarter ends on 30 November. On what day of the following January is the return due? Give the day of the month as a number.',
-      answer: 7, unit: 'days',
+      answer: 7,
       exp: 'One calendar month after 30 November is 31 December; seven days after that is 7 January. The rule is a calendar month PLUS seven days, applied in that order, and it gives the 7th of the second month after almost every quarter end — which is a useful check but not a substitute for doing it properly when a period ends mid-month.',
     },
     {
@@ -4534,7 +4534,7 @@
     {
       id: 'P-2-22', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.9'],
       type: 'numeric',
-      q: 'A business writes off a debt of £4,320 including VAT at the standard rate, six months overdue. How much bad debt relief may it claim, in pounds?',
+      q: 'A business writes off a debt of £4,320 including VAT at the standard rate, more than six months overdue. How much bad debt relief may it claim, in pounds?',
       answer: 720, unit: '£',
       exp: '£4,320 ÷ 6 = £720. The relief is the VAT element of the written-off debt, and it is claimed as input tax rather than as a reduction of output tax. The debt must be at least ' + T.badDebtRelief.debtAgeMonths.value + ' months overdue and written off in the refunds for bad debts account.',
     },

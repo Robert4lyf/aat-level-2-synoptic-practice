@@ -2541,7 +2541,7 @@
             ],
             answer: 'Yes — £18,400 + £90 − £560 + £80 = £18,010, agreeing with Box 5',
             tryIt: {
-              q: 'A VAT control account shows a credit balance of £9,400. A fuel scale charge of £120 was included in the return but not posted, and bad debt relief of £300 was claimed on the return but not posted. What figure should Box 5 show, in pounds?',
+              q: 'A VAT control account shows a credit balance of £9,400. A fuel scale charge adding £120 of output tax was included in the return but not posted, and bad debt relief of £300 was claimed on the return but not posted. What figure should Box 5 show, in pounds?',
               answer: 9220,
               unit: '£',
               hint: 'The scale charge increases what is owed; bad debt relief reduces it.',
