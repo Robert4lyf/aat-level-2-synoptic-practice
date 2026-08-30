@@ -270,6 +270,15 @@ function finish() {
     const errs = [];
     page.on('pageerror', e => errs.push('uncaught: ' + e.message));
     await page.addInitScript(() => localStorage.setItem('multisubject_active', 'aat'));
+    /* SEED THE PAGE'S SHUFFLE. Which question types an endless run serves is
+       otherwise a fresh draw every time, so a sweep that can answer eleven of
+       the twelve types passes locally and fails in CI on the twelfth — which
+       is what happened, on a gap-fill. A flaky gate is worse than none, and the
+       fix is to make the run reproducible rather than to lower the bar. */
+    await page.addInitScript(() => {
+      let s = 20260830 >>> 0;
+      Math.random = () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+    });
     await page.goto(base, { waitUntil: 'load' });
     await page.waitForFunction(() => {
       const a = document.getElementById('app');
@@ -311,6 +320,11 @@ function finish() {
       return ids.filter(i => /submit|next/i.test(i)).join(',') || 'no submit on screen';
     });
     let stalledOn = null;
+    /* An endless run must never label its advance button as the last one. The
+       set is topped up before the question renders precisely so this cannot
+       happen; before that fix it read "See Results ✓" at every batch boundary
+       and then served another question. */
+    let sawSeeResults = false;
     /* Answer whatever is on screen and move on, far past any batch. */
     let served = 0;
     for (let i = 0; i < PAST_ANY_BATCH; i++) {
@@ -348,6 +362,14 @@ function finish() {
           const b = page.locator(`[data-tfq-row="${r}"][data-tfq-val]`).first();
           if (await b.count()) await b.click().catch(() => {});
         }
+        /* Gap-fill: each blank is a <select>, so pick the first real option. */
+        const gaps = await page.locator('[data-gf-gap]').count().catch(() => 0);
+        for (let g = 0; g < gaps; g++) {
+          const sel = page.locator('[data-gf-gap]').nth(g);
+          const opts = await sel.locator('option').evaluateAll(
+            es => es.map(e => e.value).filter(v => v !== '')).catch(() => []);
+          if (opts.length) await sel.selectOption(opts[0]).catch(() => {});
+        }
         /* Drag-drop: pair each left item with a right one in turn. */
         const lefts = await page.locator('[data-dd-left]').evaluateAll(
           es => es.map(e => e.getAttribute('data-dd-left'))).catch(() => []);
@@ -372,6 +394,10 @@ function finish() {
         }
       }
       const next = page.locator('#nextBtn:not([disabled])');
+      if (await next.count()) {
+        const label = (await next.first().innerText().catch(() => '')) || '';
+        if (/see results/i.test(label)) sawSeeResults = true;
+      }
       if (!(await next.count())) { stalledOn = await currentType(page); break; }
       await next.click({ timeout: 2500 }).catch(() => {});
       await page.waitForTimeout(45);
@@ -388,6 +414,8 @@ function finish() {
       + (stalledOn ? ` [harness could not answer: ${stalledOn}]` : ''));
     ok(await page.locator('.q-counter-endless').count() > 0,
       'Level 2: and is still an endless run at that point');
+    ok(sawSeeResults === false,
+      'Level 2: the advance button never offered "See Results" during the run');
 
     await page.click('#exitBtn');
     await page.waitForTimeout(200);

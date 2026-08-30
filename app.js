@@ -4885,7 +4885,24 @@
             <span class="q-counter">Q${State.current + 1}/${total}</span>`;
   }
 
-  function renderQuiz() { return State.mode === 'mock' ? renderMockQuiz() : renderPracticeQuiz(); }
+  function renderQuiz() {
+    /* Belt and braces on the Next button's label, which eleven renderers decide
+       with `State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'`.
+       An endless run must never claim to be on its last question.
+
+       Today it never does: the top-up in nextPractice fires one question EARLY
+       (at `length - 1`), so the set has already grown by the time the last
+       question of a batch renders. That is an off-by-one holding an invariant
+       up, and it is not obvious from either place. Topping up here as well
+       makes the property true where it is USED rather than as a consequence of
+       when it is maintained — so shrinking the batch, or moving the advance-time
+       top-up, cannot quietly reintroduce it. Asserted by
+       check-endless-practice.js, which requires the label never to read "See
+       Results" during a run. */
+    if (State.endless && State.mode === 'practice'
+        && State.current + 1 >= State.questions.length) topUpEndless();
+    return State.mode === 'mock' ? renderMockQuiz() : renderPracticeQuiz();
+  }
 
   function confidentActionBtn(c) {
     if (State.unitQuizId) return '';
