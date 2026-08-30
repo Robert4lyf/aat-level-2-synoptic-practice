@@ -682,7 +682,7 @@
       exp: 'Zero-rated supplies ARE taxable supplies — at a rate of 0% — so they count towards the threshold and carry full input tax recovery. Exempt supplies are not taxable supplies: they do not count towards the threshold, and the business making only exempt supplies has nothing to register in respect of, so it cannot register at all. That absolute is genuinely absolute. The last statement inverts the zero-rating rule, which is precisely what makes zero-rating the more valuable status.',
     },
     {
-      id: 'P-1-67', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4'],
+      id: 'P-1-67', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4'], recall: true,
       type: 'numeric',
       q: 'A business fails to keep the VAT records HMRC requires. What is the maximum penalty HMRC may charge for that failure, in pounds?',
       answer: 500, unit: '£',
@@ -817,7 +817,7 @@
       exp: 'Thirty days alone, not twelve months — the whole threshold has to be expected within a single month for the test to bite. That is a demanding condition, and it is why the future test usually turns on one identifiable event such as a contract or an order. Reading it as a 12-month projection makes the test far easier to trip than it really is.',
     },
     {
-      id: 'P-1-79', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.2'],
+      id: 'P-1-79', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.2'], recall: true,
       type: 'numeric',
       q: 'A business exceeds the rolling threshold at the end of July. How many days does it have from the end of that month in which to notify HMRC?',
       answer: 30, unit: 'days',
@@ -1172,7 +1172,7 @@
       exp: 'Registration is backdated to the date the obligation arose, and output tax is due on supplies made from that date whether or not the business charged any. It may try to recover the VAT from customers, but that is a commercial matter between them and often impossible. Input tax incurred in the same period is recoverable, which softens the figure without removing the problem — and this is why the future test, which backdates furthest, is the expensive one to miss.',
     },
     {
-      id: 'P-1-109', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      id: 'P-1-109', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'], recall: true,
       type: 'numeric',
       q: 'An annual filer is at the late submission points threshold. For how many months must it submit every return on time to reset its points to zero?',
       answer: 24, unit: 'months',
@@ -1228,7 +1228,7 @@
       exp: 'An assessment is a placeholder to the best of HMRC’s judgement, not a settlement: the obligation to file survives it and the return displaces it once made. An assessment may be too high or too low, and where it UNDERSTATES the liability the business must tell HMRC within 30 days or send a correct return — staying quiet about a favourable assessment risks a penalty of up to 30% of the shortfall.',
     },
     {
-      id: 'P-1-114', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.4'],
+      id: 'P-1-114', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.4'], recall: true,
       type: 'numeric',
       q: 'Within how many years may HMRC normally raise a VAT assessment, absent deliberate behaviour? Give the number of years.',
       answer: 4,
@@ -1706,9 +1706,9 @@
       id: 'P-2-53', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.14'],
       type: 'numeric',
       q: 'Output tax before adjustments is £22,750. A fuel scale charge of £288 applies and bad debt relief of £1,140 is claimed. What is the adjusted output tax, in pounds?',
-      answer: 23038,
+      answer: 22798,
       unit: '£',
-      exp: '£22,750 + £288 = £23,038. The scale charge is added to output tax; bad debt relief is claimed as input tax and does not touch this figure at all — which is why it is given here, and why adding or subtracting it would be wrong.',
+      exp: 'The scale charge is a VAT-inclusive figure, so what it adds is one sixth of it: £288 ÷ 6 = £48. £22,750 + £48 = £22,798. Bad debt relief is claimed as input tax and does not touch output tax at all — which is why it is given here. Adding the whole £288 would give £23,038, which is the trap this question is built on.',
     },
     {
       id: 'P-2-54', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.15'],
@@ -2232,7 +2232,7 @@
       exp: 'Both limbs are about INPUT TAX, not turnover: exempt input tax must average no more than ' + money(T.partialExemption.deMinimisPerMonth.value) + ' a month AND must be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. Substituting turnover for input tax in either limb is the standard misremembering, and it can flip the answer in both directions.',
     },
     {
-      id: 'P-2-101', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'],
+      id: 'P-2-101', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'], recall: true,
       type: 'numeric',
       q: 'What is the de minimis limit for exempt input tax over a full VAT year, in pounds?',
       answer: 7500, unit: '£',
@@ -2584,7 +2584,7 @@
     {
       id: 'P-3-09', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
       type: 'numeric',
-      q: 'A VAT control account shows a credit balance of £21,300. A fuel scale charge of £96 was included in the return but never posted, and bad debt relief of £740 was claimed on the return but not posted. What should Box 5 show, in pounds?',
+      q: 'A VAT control account shows a credit balance of £21,300. A fuel scale charge adding £96 of output tax was included in the return but never posted, and bad debt relief of £740 was claimed on the return but not posted. What should Box 5 show, in pounds?',
       answer: 20656, unit: '£',
       exp: '£21,300 + £96 − £740 = £20,656. The fuel scale charge is additional output tax and raises the liability; bad debt relief is claimed as input tax and reduces it. Both were on the return but not in the ledger.',
     },
@@ -2809,7 +2809,7 @@
     {
       id: 'P-3-37', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
       type: 'numeric',
-      q: 'A VAT control account shows a credit balance of £16,400. A fuel scale charge of £240 has not been posted and blocked input tax of £860 was wrongly recovered. What should the balance be, in pounds?',
+      q: 'A VAT control account shows a credit balance of £16,400. A fuel scale charge adding £240 of output tax has not been posted and blocked input tax of £860 was wrongly recovered. What should the balance be, in pounds?',
       answer: 17500,
       unit: '£',
       exp: '£16,400 + £240 + £860 = £17,500. Both adjustments increase what is owed: the scale charge adds output tax, and reversing input tax that should never have been claimed removes a deduction.',
@@ -3655,7 +3655,7 @@
       exp: 'Loss of records must be reported straight away, and the employer is expected to rebuild what it can from bank records, payslips and the submissions already made. The obligation does not disappear with the paperwork. Filing estimated figures silently turns an accident into a false return, which is a far worse position than the fire left the employer in.',
     },
     {
-      id: 'P-4-41', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.5'],
+      id: 'P-4-41', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.5'], recall: true,
       type: 'numeric',
       q: 'For how many years after the end of the tax year they relate to must payroll records be kept?',
       answer: 3,
@@ -4344,7 +4344,7 @@
       exp: T.penalties.lateSubmission.pointExpiryMonths.value + ' months, and it does not move with filing frequency. The compliance period shortens as returns get more frequent — ' + T.penalties.lateSubmission.complianceMonths.annual + ', ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' and ' + T.penalties.lateSubmission.complianceMonths.monthly + ' months — but the lookback for outstanding returns stays at ' + T.penalties.lateSubmission.pointExpiryMonths.value + '. A monthly filer serves the shortest compliance period and still has to account for two years of returns.',
     },
     {
-      id: 'P-1-53', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      id: 'P-1-53', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'], recall: true,
       type: 'numeric',
       q: 'A monthly filer is at the points threshold. For how many months must it submit every return on time before its points can be reset?',
       answer: 6, unit: 'months',

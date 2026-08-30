@@ -1025,8 +1025,26 @@
     return _calc;
   }
 
+  /* A NUMERIC ANSWER BOX IS NOT THE SAME AS ARITHMETIC. The first version of
+     this offered the pad wherever a figure had to be typed, which put a keypad
+     under "An annual filer is at the late submission points threshold. For how
+     many months must it submit every return on time?" — a question with one
+     right answer, 24, and nothing whatever to work out. A calculator there is
+     not merely useless: it tells the reader there is a sum to do.
+
+     Recall questions are marked in the data rather than guessed at, because the
+     giveaway a guess would use — no figure anywhere in the stem — is only
+     reliable in one direction. Across all 190 numeric questions in the module
+     it identifies exactly the seven that are recall, with nothing missed and
+     nothing wrongly caught; but a recall question that happens to mention a
+     figure ("a business exceeds the threshold at the end of July — how many
+     days does it have to notify?") would slip straight through it. The flag
+     says what the question IS; check-aat3-quality.js enforces the half a
+     machine can see, so a new stem with no figures cannot quietly acquire a
+     keypad. */
   function calcOffered(q) {
     if (!Calc() || !q || S.answered !== null) return false;
+    if (q.recall) return false;
     var t = q.type || 'mcq';
     return t === 'numeric' || t === 'task';
   }

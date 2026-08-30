@@ -264,6 +264,30 @@ console.log(`${DIM}and where it is not${RESET}`);
   ok(D.nodes(el, 'calckey').length === 0, `a ${label} question does not carry a keypad`);
 });
 
+/* A NUMERIC QUESTION THAT ASKS THE READER TO REMEMBER, not to work anything
+   out. "For how many months must an annual filer submit on time to reset its
+   points?" has an answer box and one right answer, 24, and nothing to
+   calculate. A keypad there is worse than useless — it tells the reader a sum
+   is expected. Driven through the real player against the real bank, so the
+   assertion is about the questions that actually ship rather than a fixture. */
+{
+  const recalls = questions.filter(q => q.recall);
+  ok(recalls.length > 0, 'the module marks at least one numeric question as recall');
+  recalls.forEach(q => {
+    ok((q.type || 'mcq') === 'numeric', `${q.id}: only a numeric question needs the recall flag`);
+    const el = openWith([Object.assign({}, q, { unitKey: 'tpfb', lo: q.lo || 1 })]);
+    ok(D.nodes(el, 'numinput').length === 1, `${q.id}: still asks for a typed answer`);
+    ok(D.nodes(el, 'calckey').length === 0, `${q.id}: a recall question carries no keypad`);
+    ok(D.nodes(el, 'calcuse').length === 0, `${q.id}: and no "Use this value"`);
+  });
+  /* The flag must be doing work, not sitting on everything: a computational
+     numeric question still gets its pad. Without this the whole feature could
+     be switched off by marking the bank and nothing here would notice. */
+  const el = openWith([NUMERIC]);
+  ok(D.nodes(el, 'calckey').length === KEYS.length,
+    'a numeric question that must be worked out still gets the keypad');
+}
+
 /* Once graded there is nothing left to compute, and the explanation needs the
    room. This is the assertion that catches a panel left on screen under the
    verdict. */

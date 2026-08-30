@@ -2574,7 +2574,7 @@
       check: [
         {
           type: 'numeric',
-          q: 'A VAT control account shows a credit balance of £12,600. A fuel scale charge of £150 was included in the return but never posted, and bad debt relief of £480 was claimed on the return but not posted. What should Box 5 show, in pounds?',
+          q: 'A VAT control account shows a credit balance of £12,600. A fuel scale charge adding £150 of output tax was included in the return but never posted, and bad debt relief of £480 was claimed on the return but not posted. What should Box 5 show, in pounds?',
           answer: 12270,
           unit: '£',
           exp: '£12,600 + £150 − £480 = £12,270. The fuel scale charge is additional output tax and increases the liability; bad debt relief is claimed as input tax and reduces it. Both were on the return but not in the ledger, so both are reconciling items.',
