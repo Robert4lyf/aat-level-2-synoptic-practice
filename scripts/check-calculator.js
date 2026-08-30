@@ -74,7 +74,7 @@ const SUMS = [
      one — both to the penny, because a calculator that is a penny out on a VAT
      fraction is worse than no calculator. */
   [['1', '2', '0', '0', '/', '6', '='], '200', 'the VAT fraction of £1,200 gross'],
-  [['4', '8', '0', '0', '*', '2', '0', 'pct', '='], '960', '20% of £4,800 net'],
+  [['4', '8', '0', '0', '*', '2', '0', 'pct', '='], '960', 'the engine still knows per cent (20% of £4,800)'],
   /* Chaining without pressing equals: an operator has to settle the sum so far.
      If it does not, this reads 2 rather than 6. */
   [['2', '+', '2', '+', '2', '='], '6', 'chaining without pressing equals'],
@@ -83,7 +83,9 @@ SUMS.forEach(([seq, want, label]) => {
   ok(run(seq).display === want, `${label} → ${want} (got ${run(seq).display})`);
 });
 
-ok(run(['9', 'sqrt']).display === '3', 'square root of nine');
+/* The engine keeps these even with no button on the pad, so putting a key back
+   is a one-line change rather than a re-implementation. */
+ok(run(['9', 'sqrt']).display === '3', 'the engine still knows square root');
 ok(run(['5', 'sign']).display === '-5', 'the sign key negates');
 ok(run(['5', 'sign', 'sign']).display === '5', 'and negates back');
 ok(run(['1', '2', '3', 'back']).display === '12', 'backspace drops a digit');
@@ -127,8 +129,16 @@ ok(b.display === '0' && b.memory === 0, 'so one caller\'s working never shows up
 console.log(`${DIM}one pad, two levels${RESET}`);
 
 const KEYS = AATCalc.KEYS || [];
-const WANT = ['mc', 'mr', 'msub', 'madd', 'clear', 'back', 'pct', 'sqrt', 'sign', 'dot', 'eq'];
+const WANT = ['clear', 'back', 'sign', 'dot', 'eq'];
 WANT.forEach(k => ok(KEYS.some(x => x.k === k), `the shared pad has a ${k} key`));
+/* REMOVED ON PURPOSE, and asserted as removed so they cannot drift back in on
+   one level and not the other. The memory row, the square root and the
+   percentage key were all taken off the pad: the assessment's own calculator is
+   this shape, a VAT figure is reached with ÷ 6 or × 1.2, and a square root has
+   no use in either unit. The ENGINE still knows how to do all three — that is
+   asserted below — so restoring a key is a line in the KEYS table. */
+['mc', 'mr', 'msub', 'madd', 'pct', 'sqrt'].forEach(k =>
+  ok(!KEYS.some(x => x.k === k), `the pad no longer offers a ${k} key`));
 '0123456789'.split('').forEach(d =>
   ok(KEYS.some(x => x.k === 'num' && x.val === d), `the shared pad has a ${d} key`));
 ['+', '-', '*', '/'].forEach(o =>
@@ -168,6 +178,11 @@ const APP = code('app.js'), A3 = code('aat3-ui.js');
 ok(/AATCalc\.KEYS/.test(APP), 'Level 2 renders the shared pad rather than its own');
 ok(/AATCalc\.KEYS/.test(A3), 'Level 3 renders the shared pad rather than its own');
 ok(!/data-calc="sqrt"/.test(APP), 'Level 2 no longer hand-writes its keys');
+/* Nineteen keys over twenty slots: five rows of four with a double-width zero.
+   A pad that does not fill its grid leaves a hole, and one that overflows it
+   pushes a key onto a sixth row on its own. */
+const slots = KEYS.reduce((n, k) => n + (k.span || 1), 0);
+ok(slots % 4 === 0, `the pad fills whole rows of four (${KEYS.length} keys over ${slots} slots)`);
 
 /* ── Level 3, through the real player ─────────────────────────────────────── */
 
@@ -194,8 +209,16 @@ function openWith(qs) {
   D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
   return el;
 }
+/* THE PAD IS BEHIND A BUTTON NOW. It is fixed to the bottom of the viewport and
+   closed until asked for, so everything that presses a key opens it first. */
+function openCalc(el) {
+  if (!D.nodes(el, 'calckey').length) D.click(el, 'calctoggle');
+  return el;
+}
+
 /* Type a sequence on the rendered pad. */
 function tap(el, seq) {
+  openCalc(el);
   seq.forEach(s => {
     const want = /^\d$/.test(s) ? n => n.getAttribute('data-k') === 'num' && n.getAttribute('data-v') === s
       : '+-*/'.indexOf(s) !== -1 ? n => n.getAttribute('data-k') === 'op' && n.getAttribute('data-v') === s
@@ -213,12 +236,19 @@ console.log(`${DIM}where it is offered${RESET}`);
 
 {
   const el = openWith([NUMERIC]);
-  ok(/class="a3-calc /.test(el.innerHTML) || /class="a3-calc is-open"/.test(el.innerHTML),
-    'a numeric question offers the calculator');
+  ok(D.nodes(el, 'calctoggle').length === 1, 'a numeric question offers a button to open the calculator');
+  /* CLOSED UNTIL ASKED FOR. A sheet that opens over the question on arrival has
+     taken the screen away before the reader wanted it. */
+  ok(D.nodes(el, 'calckey').length === 0, 'and the pad is closed until it is opened');
+  ok(D.nodes(el, 'calcuse').length === 0, 'so there is nothing to press yet');
+  D.click(el, 'calctoggle');
   ok(D.nodes(el, 'calckey').length === KEYS.length,
-    `all ${KEYS.length} keys render (found ${D.nodes(el, 'calckey').length})`);
+    `opening it renders all ${KEYS.length} keys (found ${D.nodes(el, 'calckey').length})`);
   ok(D.nodes(el, 'calcuse').length === 1, 'and a "Use this value" button');
   ok(/id="a3CalcDisplay"/.test(el.innerHTML), 'and a display');
+  ok(/class="a3-calcsheet"/.test(el.innerHTML), 'as a floating sheet rather than a block in the flow');
+  D.click(el, 'calctoggle');
+  ok(D.nodes(el, 'calckey').length === 0, 'and pressing the button again puts it away');
 }
 
 /* A multi-part task, which is the shape with several boxes to fill. */
@@ -227,7 +257,7 @@ const { questions } = CONTENT.load();
 const someTask = questions.find(q => q.type === 'task');
 ok(!!someTask, 'the module has a task to test against');
 if (someTask) {
-  const el = openWith([Object.assign({}, someTask, { unitKey: 'tpfb', lo: someTask.lo || 1 })]);
+  const el = openCalc(openWith([Object.assign({}, someTask, { unitKey: 'tpfb', lo: someTask.lo || 1 })]));
   ok(D.nodes(el, 'calckey').length === KEYS.length, 'a multi-part task offers the calculator');
 }
 
@@ -247,7 +277,9 @@ if (someTask) {
   /* The try-it only appears once every worked step is revealed. */
   D.click(el, 'stepall');
   ok(D.nodes(el, 'tryinput').length === 1, 'the worked example shows its try-it box');
-  ok(D.nodes(el, 'calckey').length === KEYS.length, 'and offers the calculator beside it');
+  ok(D.nodes(el, 'calctoggle').length === 1, 'and offers the calculator beside it');
+  openCalc(el);
+  ok(D.nodes(el, 'calckey').length === KEYS.length, 'which opens the same pad');
   tap(el, ['2', '+', '3', '=']);
   D.click(el, 'calcuse');
   const box = D.nodes(el, 'tryinput')[0];
@@ -261,7 +293,7 @@ console.log(`${DIM}and where it is not${RESET}`);
 
 [['multiple choice', MCQ], ['true or false', TF], ['gap-fill', GAP]].forEach(([label, q]) => {
   const el = openWith([q]);
-  ok(D.nodes(el, 'calckey').length === 0, `a ${label} question does not carry a keypad`);
+  ok(D.nodes(el, 'calctoggle').length === 0, `a ${label} question does not offer a calculator at all`);
 });
 
 /* A NUMERIC QUESTION THAT ASKS THE READER TO REMEMBER, not to work anything
@@ -277,13 +309,13 @@ console.log(`${DIM}and where it is not${RESET}`);
     ok((q.type || 'mcq') === 'numeric', `${q.id}: only a numeric question needs the recall flag`);
     const el = openWith([Object.assign({}, q, { unitKey: 'tpfb', lo: q.lo || 1 })]);
     ok(D.nodes(el, 'numinput').length === 1, `${q.id}: still asks for a typed answer`);
-    ok(D.nodes(el, 'calckey').length === 0, `${q.id}: a recall question carries no keypad`);
+    ok(D.nodes(el, 'calctoggle').length === 0, `${q.id}: a recall question offers no calculator`);
     ok(D.nodes(el, 'calcuse').length === 0, `${q.id}: and no "Use this value"`);
   });
   /* The flag must be doing work, not sitting on everything: a computational
      numeric question still gets its pad. Without this the whole feature could
      be switched off by marking the bank and nothing here would notice. */
-  const el = openWith([NUMERIC]);
+  const el = openCalc(openWith([NUMERIC]));
   ok(D.nodes(el, 'calckey').length === KEYS.length,
     'a numeric question that must be worked out still gets the keypad');
 }
@@ -292,13 +324,14 @@ console.log(`${DIM}and where it is not${RESET}`);
    room. This is the assertion that catches a panel left on screen under the
    verdict. */
 {
-  const el = openWith([NUMERIC]);
+  const el = openCalc(openWith([NUMERIC]));
   ok(D.nodes(el, 'calckey').length > 0, 'the pad is there before the answer is checked');
   const box = D.nodes(el, 'numinput')[0];
   box.value = '240'; box.fire('input');
   D.click(el, 'numsubmit');
   ok(/a3-try-verdict/.test(el.innerHTML), 'the numeric question grades');
   ok(D.nodes(el, 'calckey').length === 0, 'and the pad goes once it is graded');
+  ok(D.nodes(el, 'calctoggle').length === 0, 'along with the button that opens it');
 }
 
 /* ── 5. The value reaches grading, not just the box ───────────────────────── */
@@ -306,7 +339,7 @@ console.log(`${DIM}the value reaches grading${RESET}`);
 
 {
   const el = openWith([NUMERIC]);
-  tap(el, ['1', '2', '0', '0', '*', '2', '0', 'pct', '=']);
+  tap(el, ['1', '2', '0', '0', '/', '5', '=']);
   D.click(el, 'calcuse');
   const box = D.nodes(el, 'numinput')[0];
   ok(box && box.attrs.value === '240', `the computed £240 lands in the answer box (got ${box && box.attrs.value})`);
@@ -357,7 +390,7 @@ console.log(`${DIM}between questions${RESET}`);
 
 {
   const el = openWith([NUMERIC, Object.assign({}, NUMERIC, { id: 'C-N2' })]);
-  tap(el, ['8', '8', 'madd']);          // 88 banked in memory, 88 on the display
+  tap(el, ['8', '8']);
   const box = D.nodes(el, 'numinput')[0];
   box.value = '240'; box.fire('input');
   D.click(el, 'numsubmit');
@@ -368,19 +401,29 @@ console.log(`${DIM}between questions${RESET}`);
   D.click(el, 'calcuse');
   const box2 = D.nodes(el, 'numinput')[0];
   ok(box2 && box2.attrs.value === '0', `the display clears for the next question (got ${box2 && box2.attrs.value})`);
-  /* Memory is a subtotal the reader parked ON PURPOSE, often to carry across
-     the parts of a task. Clearing it would make the memory keys pointless. */
-  tap(el, ['mr']);
-  D.click(el, 'calcuse');
-  const box3 = D.nodes(el, 'numinput')[0];
-  ok(box3 && box3.attrs.value === '88', `but memory survives the question change (got ${box3 && box3.attrs.value})`);
+}
+
+/* Clearing the display between questions must not clear MEMORY. There is no
+   memory key on the pad any more, so this is not something a reader can reach
+   today — it is asserted at the engine, because reset() forgetting memory is
+   the kind of thing that would be discovered by putting the key back and
+   finding it useless. */
+{
+  const C = AATCalc.create();
+  C.press('num', '8'); C.press('num', '8'); C.press('madd');
+  C.reset();
+  ok(C.memory === 88, `reset() clears the display without forgetting memory (got ${C.memory})`);
+  ok(C.display === '0', 'and the display is back to zero');
 }
 
 /* ── 7. A keypress does not throw away what the reader typed ──────────────── */
 console.log(`${DIM}the typed answer survives${RESET}`);
 
 {
-  const el = openWith([NUMERIC]);
+  /* OPENED FIRST, then the box is taken. Opening the sheet is a repaint of its
+     own and legitimately rebuilds the inputs; what must not rebuild them is a
+     KEYPRESS, which is what this is about. */
+  const el = openCalc(openWith([NUMERIC]));
   const box = D.nodes(el, 'numinput')[0];
   box.value = '19'; box.fire('input');
   tap(el, ['4', '+', '4', '=']);
@@ -403,11 +446,12 @@ console.log(`${DIM}the typed answer survives${RESET}`);
   const el = openWith([NUMERIC]);
   const box = D.nodes(el, 'numinput')[0];
   box.value = '240'; box.fire('input');
+  openCalc(el);
   D.click(el, 'calctoggle');
-  ok(D.nodes(el, 'calckey').length === 0, 'the toggle folds the pad away');
-  ok(D.nodes(el, 'calctoggle').length === 1, 'and leaves the toggle to bring it back');
+  ok(D.nodes(el, 'calckey').length === 0, 'the button folds the sheet away');
+  ok(D.nodes(el, 'calctoggle').length === 1, 'and stays to bring it back');
   D.click(el, 'calctoggle');
-  ok(D.nodes(el, 'calckey').length === KEYS.length, 'the toggle brings it back');
+  ok(D.nodes(el, 'calckey').length === KEYS.length, 'which it does');
   D.click(el, 'numsubmit');
   ok(/a3-try-verdict is-right/.test(el.innerHTML), 'and the typed answer survived both');
 }
@@ -516,7 +560,19 @@ function finish() {
       const start = host.querySelector('[data-a3="startpractice"][data-lo="mix"]');
       if (!start) return { err: 'no practice run to start' };
       start.click();
-      if (!host.querySelector('[data-a3="calckey"]')) return { err: 'the numeric question rendered no keypad' };
+      const fab = host.querySelector('[data-a3="calctoggle"]');
+      if (!fab) return { err: 'the numeric question offered no calculator button' };
+      /* THE PAGE MUST NOT MOVE WHEN IT OPENS. That is the entire reason the
+         calculator was lifted out of the flow: a reader working from a table of
+         figures at the top of the question cannot have the page jump when they
+         reach for the keypad. Measured across the open, in a page scrolled away
+         from the top so there is something to lose. */
+      document.documentElement.style.minHeight = '250vh';
+      window.scrollTo(0, 400);
+      const scrollBefore = window.scrollY;
+      fab.click();
+      const scrollAfter = window.scrollY;
+      if (!host.querySelector('[data-a3="calckey"]')) return { err: 'opening it rendered no keypad' };
       const key = v => host.querySelector(`[data-a3="calckey"][data-k="num"][data-v="${v}"]`);
       const box = host.querySelector('[data-a3="numinput"]');
       box.value = '7';                       // something the reader typed
@@ -529,6 +585,8 @@ function finish() {
          hatch: a detached node keeps its value, so the disjunction could not
          fail either way. */
       const boxKept = host.querySelector('[data-a3="numinput"]') === box;
+      /* Read while it is still open: the click below closes it on purpose. */
+      const sheet = !!host.querySelector('.a3-calcsheet');
       /* Now the whole point of it: the figure has to reach the answer. */
       host.querySelector('[data-a3="calcuse"]').click();
       const after = host.querySelector('[data-a3="numinput"]');
@@ -536,12 +594,24 @@ function finish() {
         display: display && display.textContent,
         boxKept: boxKept,
         used: after && after.value,
+        scrollBefore: scrollBefore,
+        scrollAfter: scrollAfter,
+        sheet: sheet,
+        closedAfterUse: !host.querySelector('.a3-calcsheet'),
       };
     }, NUMERIC);
     ok(!shown.err, `Level 3's pad is reachable in the browser${shown.err ? ': ' + shown.err : ''}`);
     ok(shown.display === '42', `pressing 4 then 2 shows 42 on the display (got ${shown.display})`);
     ok(shown.boxKept === true, 'and the answer box is neither rebuilt nor emptied by the keypress');
     ok(shown.used === '42', `"Use this value" puts it in the answer box (got ${shown.used})`);
+    ok(shown.scrollBefore === shown.scrollAfter,
+      `opening the calculator leaves the page exactly where it was ` +
+      `(${shown.scrollBefore} → ${shown.scrollAfter})`);
+    ok(shown.scrollBefore > 0, 'and the page was genuinely scrolled away from the top when measured');
+    ok(shown.sheet === true, 'the pad opens as a floating sheet, not as a block in the flow');
+    /* The figure has gone into a box the sheet was covering, so the sheet gets
+       out of the way rather than making the reader dismiss it to check. */
+    ok(shown.closedAfterUse === true, 'and "Use this value" puts it away again');
     await ctx.close();
 
     /* Level 2's own pad, rendered from the same KEYS. Asserted here rather than

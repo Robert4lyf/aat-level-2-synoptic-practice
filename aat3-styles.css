@@ -1411,57 +1411,68 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 }
 
 /* ── The on-screen calculator ─────────────────────────────────────────────────
-   Level 3's skin on the shared engine — see calculator.js. It sits INSIDE the
-   question card, directly under the answer row, rather than beside it in a
-   column the way Level 2's does. Level 2's is a 280px sidebar that collapses
-   to a stacked block under 880px; Level 3 is one centred 800px column at every
-   width, so a sidebar would have meant inventing a two-column geometry that
-   exists on no other Level 3 screen and disappears on the phone anyway.
+   Level 3's skin on the shared engine — see calculator.js.
 
-   The pad is capped at 340px and left-aligned so that on a laptop the keys stay
-   the size of keys instead of stretching to eight hundred pixels of card. */
-body[data-subject="aat3"] .a3-calc {
-  margin-top: var(--a3-3);
-  border: 1px solid var(--a3-line);
-  border-radius: var(--a3-r);
+   IT FLOATS. It used to sit in the flow under the answer row, which on a task
+   that hands over a table of figures put the keypad below everything the reader
+   needed to look at. Fixed to the bottom of the viewport instead: nothing about
+   the layout changes when it opens, so the page stays exactly where it was.
+
+   No scrim, deliberately. The page behind it is the reason the calculator is
+   open, so it stays readable — and scrollable, since the sheet only covers the
+   lower part of the screen and takes pointer events only where it is drawn. */
+body[data-subject="aat3"] .a3-calcfab {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--a3-line-2);
+  background: var(--a3-surface); color: var(--a3-ink);
+  box-shadow: var(--a3-shadow-lg); cursor: pointer;
+  font-family: inherit; font-size: 22px; line-height: 1;
+  transition: transform .16s, background .16s;
+}
+body[data-subject="aat3"] .a3-calcfab:hover { transform: translateY(-2px); }
+body[data-subject="aat3"] .a3-calcfab:active { transform: translateY(0) scale(.96); }
+body[data-subject="aat3"] .a3-calcfab:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 3px; }
+/* Open, it becomes the way out of the sheet it opened, so it takes the filled
+   treatment a primary control gets and sits above the sheet's own corner. */
+body[data-subject="aat3"] .a3-calcfab.is-open {
+  background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
+  color: var(--a3-on-fill); border-color: transparent; font-size: 19px;
+}
+body[data-subject="aat3"] .a3-calcfab-i { display: block; }
+
+body[data-subject="aat3"] .a3-calcsheet {
+  position: fixed; z-index: 59;
+  right: 12px; bottom: 84px;         /* clear of the button that opened it */
+  left: 12px; max-width: 340px; margin-left: auto;
+  padding: 10px;
+  /* A GUARD, not a scrollbar anyone should meet. On a phone held in landscape,
+     or a short window, an unbounded sheet would run off the top of the screen
+     and take its own "Use this value" button with it. */
+  max-height: calc(100vh - 116px); overflow: auto;
   background: var(--a3-surface-2);
-  overflow: hidden;
+  border: 1px solid var(--a3-line-2); border-radius: var(--a3-r-lg);
+  box-shadow: var(--a3-shadow-lg);
+  animation: a3-calc-in .18s cubic-bezier(.2,.8,.3,1) both;
 }
-body[data-subject="aat3"] .a3-calc-toggle {
-  display: flex; align-items: center; gap: var(--a3-2);
-  width: 100%; padding: 10px var(--a3-3);
-  background: none; border: 0; cursor: pointer; font-family: inherit;
-  font-size: var(--a3-t-meta); font-weight: 650; color: var(--a3-ink-2);
+@keyframes a3-calc-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: none; }
 }
-body[data-subject="aat3"] .a3-calc-toggle:hover { background: var(--a3-brand-wash); }
-body[data-subject="aat3"] .a3-calc-toggle:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: -3px; }
-body[data-subject="aat3"] .a3-calc-lb {
-  flex: 1 1 auto; text-align: left;
-  text-transform: uppercase; letter-spacing: var(--a3-track);
-  font-size: var(--a3-t-label);
-}
-body[data-subject="aat3"] .a3-calc-ic { font-size: 14px; line-height: 1; }
-body[data-subject="aat3"] .a3-calc-ch { color: var(--a3-ink-3); }
-body[data-subject="aat3"] .a3-calc-body {
-  padding: 0 var(--a3-3) var(--a3-3);
-  max-width: 340px;
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat3"] .a3-calcsheet { animation: none; }
+  body[data-subject="aat3"] .a3-calcfab { transition: none; }
+  body[data-subject="aat3"] .a3-calcfab:hover { transform: none; }
 }
 
 body[data-subject="aat3"] .a3-calc-screen { position: relative; }
-/* The "M" flag over the display. A DIFFERENT class from the memory KEYS, which
-   carry a3-calc-mem from the shared KEYS table — sharing the name put
-   position:absolute on MC, MR, M− and M+ and stacked all four in the corner. */
-body[data-subject="aat3"] .a3-calc-mind {
-  position: absolute; top: 5px; left: 9px;
-  font-size: 10px; font-weight: 700; letter-spacing: var(--a3-track);
-  color: var(--a3-brand); z-index: 1;
-}
 body[data-subject="aat3"] .a3-calc-display {
   /* tabular-nums so a running total does not jitter sideways as it is typed */
   font-variant-numeric: tabular-nums;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 22px; font-weight: 650; text-align: right;
-  padding: 13px 14px; min-height: 50px;
+  font-size: 21px; font-weight: 650; text-align: right;
+  padding: 10px 13px; min-height: 44px;
   display: flex; align-items: center; justify-content: flex-end;
   background: var(--a3-surface); color: var(--a3-ink);
   border: 1px solid var(--a3-line-2); border-radius: var(--a3-r-sm);
@@ -1476,6 +1487,8 @@ body[data-subject="aat3"] .a3-calc-keys {
 body[data-subject="aat3"] .a3-calc-key {
   /* 44px is the smallest target a thumb hits reliably, and this pad is used
      mid-question on a phone. */
+  /* 44px is the smallest target a thumb hits reliably. It is the floor here,
+     not a starting point to trim from. */
   min-height: 44px; padding: 0;
   font-family: inherit; font-size: var(--a3-t-ui); font-weight: 650;
   color: var(--a3-ink); background: var(--a3-surface);
@@ -1485,16 +1498,10 @@ body[data-subject="aat3"] .a3-calc-key {
 body[data-subject="aat3"] .a3-calc-key:hover { background: var(--a3-surface-2); }
 body[data-subject="aat3"] .a3-calc-key:active { transform: scale(.96); }
 body[data-subject="aat3"] .a3-calc-key:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
-/* EVERY KEY KEEPS ITS BORDER. The memory row and the operator column were
-   filled with the brand wash and given `border-color: transparent`, which in
-   the light theme is a pale tint on a pale panel: MC, MR, M-, M+, and the four
-   operators read as text floating in the grid while the number keys beside
-   them read as keys. Same fill, same ink, one visible edge — the tint still
-   groups them, without half the pad looking unpressable. */
-body[data-subject="aat3"] .a3-calc-key.a3-calc-mem {
-  background: var(--a3-brand-wash); color: var(--a3-brand-ink);
-  border-color: var(--a3-line-2); font-size: var(--a3-t-meta);
-}
+/* EVERY KEY KEEPS ITS BORDER. The operator column was filled with the brand
+   wash and given `border-color: transparent`, which in the light theme is a
+   pale tint on a pale panel: the operators read as text floating in the grid
+   while the number keys beside them read as keys. */
 body[data-subject="aat3"] .a3-calc-key.a3-calc-fn { background: var(--a3-surface-2); color: var(--a3-ink-2); }
 body[data-subject="aat3"] .a3-calc-key.a3-calc-op {
   background: var(--a3-brand-wash); color: var(--a3-brand-ink);
@@ -1504,10 +1511,10 @@ body[data-subject="aat3"] .a3-calc-key.a3-calc-eq {
   background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
   color: var(--a3-on-fill); border-color: transparent; font-size: 17px;
 }
-body[data-subject="aat3"] .a3-calc-wide { grid-column: span 4; }
+body[data-subject="aat3"] .a3-calc-w2 { grid-column: span 2; }
 
 body[data-subject="aat3"] .a3-calc-use {
-  width: 100%; margin-top: var(--a3-2); padding: 11px;
+  width: 100%; margin-top: var(--a3-2); padding: 10px;
   font-family: inherit; font-size: var(--a3-t-meta); font-weight: 650;
   color: var(--a3-brand-ink); background: var(--a3-brand-wash);
   border: 1px dashed var(--a3-brand); border-radius: var(--a3-r-sm);
@@ -1519,4 +1526,100 @@ body[data-subject="aat3"] .a3-calc-use:focus-visible { outline: 3px solid var(--
 @media (prefers-reduced-motion: reduce) {
   body[data-subject="aat3"] .a3-calc-key { transition: none; }
   body[data-subject="aat3"] .a3-calc-key:active { transform: none; }
+}
+
+/* ── The sound switch ─────────────────────────────────────────────────────────
+   Level 2 keeps its toggle on a settings row a reader inside this module can
+   never reach, because Level 3 renders every one of its own screens. A noise
+   with no way to stop it is worse than no noise, so the switch sits on the path
+   and on the unit picker — between them, the screens every reader passes
+   through — just above the footer, where a setting is looked for and not
+   tripped over. */
+body[data-subject="aat3"] .a3-soundrow {
+  display: flex; align-items: center; gap: var(--a3-3);
+  width: 100%; margin: var(--a3-6) 0 var(--a3-3);
+  padding: 12px var(--a3-4);
+  background: var(--a3-surface); border: 1px solid var(--a3-line);
+  border-radius: var(--a3-r); cursor: pointer; font-family: inherit;
+  color: var(--a3-ink-2); font-size: var(--a3-t-ui); font-weight: 600;
+  text-align: left;
+}
+body[data-subject="aat3"] .a3-soundrow:hover { background: var(--a3-surface-2); }
+body[data-subject="aat3"] .a3-soundrow:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+body[data-subject="aat3"] .a3-soundrow-i { font-size: 15px; line-height: 1; }
+body[data-subject="aat3"] .a3-soundrow-l { flex: 1 1 auto; }
+/* The track and its knob. A real switch rather than a tick, because the state
+   has to be readable at a glance from across the row. */
+body[data-subject="aat3"] .a3-soundrow-s {
+  flex: 0 0 auto; position: relative;
+  width: 40px; height: 23px; border-radius: 999px;
+  background: var(--a3-line-2); transition: background .18s;
+}
+body[data-subject="aat3"] .a3-soundrow-s::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--a3-surface); transition: transform .18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+body[data-subject="aat3"] .a3-soundrow-s.is-on { background: var(--a3-brand); }
+body[data-subject="aat3"] .a3-soundrow-s.is-on::after { transform: translateX(17px); }
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat3"] .a3-soundrow-s,
+  body[data-subject="aat3"] .a3-soundrow-s::after { transition: none; }
+}
+
+/* ── Milestone celebrations: Level 3 ──────────────────────────────────────────
+   Gold on indigo, the pair this level's endless mode already uses, and the same
+   restraint as its sound: precise rather than exuberant.
+
+   FIFTY rules a ledger. Gold lines sweep in from the left and settle, one under
+   the next, the way a column is ruled off before it is totalled — the most
+   deliberately accountancy-flavoured of the six, and the only one of them that
+   moves in a straight line. */
+body[data-subject="aat3"] .aat-cel-a3 .aat-cel-t {
+  background: var(--a3-gold-wash); color: var(--a3-gold);
+  box-shadow: 0 10px 40px -14px rgba(176,137,27,.6);
+  font-family: var(--a3-serif); letter-spacing: -.01em;
+}
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-50 .aat-cel-p {
+  left: 0; top: calc(6% + var(--i) * 88% / var(--n));
+  height: 3px; width: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(176,137,27,0), var(--a3-gold) 18%, var(--a3-gold) 82%, rgba(176,137,27,0));
+  transform-origin: 0 50%;
+  animation: a3-cel-rule 2.3s cubic-bezier(.16,.8,.24,1) both;
+  animation-delay: calc(var(--i) * 45ms);
+}
+@keyframes a3-cel-rule {
+  0%   { opacity: 0; transform: scaleX(0); }
+  30%  { opacity: .85; transform: scaleX(1); }
+  70%  { opacity: .7; }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+
+/* A HUNDRED is a seal. One ring presses down over the banner while short ticks
+   strike outward around it — the gesture of a document being signed off, which
+   is what a hundred correct in a row deserves and what this unit is about. */
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-p {
+  top: 50%; left: 50%; width: 4px; height: 34px; margin: -17px 0 0 -2px;
+  border-radius: 4px; background: var(--a3-gold);
+  transform-origin: 50% 50%;
+  animation: a3-cel-tick 2.4s cubic-bezier(.2,.9,.25,1) both;
+  animation-delay: calc(120ms + var(--i) * 12ms);
+}
+@keyframes a3-cel-tick {
+  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scaleY(.2); }
+  25%  { opacity: 1; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(-34vh) scaleY(1); }
+  100% { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(-40vh) scaleY(.7); }
+}
+/* The ring itself, pressed rather than drawn. */
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-t::before {
+  content: ''; position: absolute; inset: -34px;
+  border: 4px solid var(--a3-gold); border-radius: 999px;
+  animation: a3-cel-seal 2.4s cubic-bezier(.2,1.1,.3,1) both;
+}
+@keyframes a3-cel-seal {
+  0%   { opacity: 0; transform: scale(2.4) rotate(-14deg); }
+  22%  { opacity: 1; transform: scale(1) rotate(0deg); }
+  80%  { opacity: .9; }
+  100% { opacity: 0; transform: scale(1.06); }
 }

@@ -95,6 +95,7 @@
     revealed: 0,         // worked-example steps shown
     tryInput: '',
     tryResult: null,
+    scrollToNext: false,  // the next repaint should bring the advance button into view
   };
 
   /* `practice` is the lifetime record of practice and mock runs.
@@ -679,6 +680,7 @@
       h += '</section>';
     });
 
+    h += soundRow();
     h += '<footer class="a1-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
     return h + '</div></div>';
   }
@@ -1520,6 +1522,11 @@
       _lastPos = k;
       restoreScroll(el);
     }
+    /* Consumed, not read: the flag has to survive exactly one repaint. Leaving
+       it set would drag the page down again on every subsequent click — the
+       calculator keys, a pill, anything — which is the same defect as animating
+       on every repaint, in a different medium. */
+    if (S.scrollToNext) { S.scrollToNext = false; scrollNextIntoView(el); }
     ensureGuardKeys();
     /* Focus moves to the SAFE choice, not the destructive one. A reader who
        taps back and then hits Enter out of habit should stay in the paper.
@@ -1760,6 +1767,84 @@
      first time a type is added or a tolerance is changed. The handlers keep
      their own guards about WHEN to grade, which differ; what is right is
      decided here. */
+  /* ── Sound ─────────────────────────────────────────────────────────────────
+     Level 1's voice, from sound.js: triangle waves throughout — the mellowest
+     waveform available without filtering — and the widest intervals of the
+     three levels, root to fifth to octave, spread over a third of a second. Its
+     wrong answer is a low triangle rather than Level 2's square, because this
+     is the entry level and a buzzer is a poor thing to meet on your first day.
+
+     Resolved on first use: this file is fetched lazily and nothing guarantees
+     it arrives after sound.js. */
+  var _snd = null;
+  function Snd() {
+    if (!_snd && root.AATSound) { _snd = root.AATSound.create('aat1'); }
+    return _snd;
+  }
+  function beep(kind) { var p = Snd(); if (p && p[kind]) p[kind](); }
+
+  /* Grading, scoring and the sound that goes with it, in one place. There are
+     seven handlers that settle an answer here — multiple choice, true or false,
+     gap-fill, match, order, numeric — and they were seven copies of the same
+     three lines. Adding a sound to each by hand is how one of them stays
+     silent, which a reader notices and no check would: the question still
+     grades. */
+  function settle(q) {
+    S.answered = gradeAnswer(q);
+    if (S.answered) S.score++;
+    beep(S.answered ? 'correct' : 'wrong');
+    /* Grading is the one repaint that should move the page. The verdict and the
+       explanation appear where the answer controls were, which on a phone puts
+       the button that continues the run below the fold — so a reader finishes a
+       question and the screen looks finished with them. Flagged here rather
+       than done here, because the button does not exist until the repaint that
+       follows. Not in a mock: nothing is revealed there, so nothing grows and
+       the button never moves. */
+    if (!isMock()) S.scrollToNext = true;
+    return rerender();
+  }
+
+  /* Put the advance button at the bottom of the viewport. `block: 'end'` rather
+     than 'center', because the reader's eye is on the explanation above it and
+     the button is the destination, not the subject. */
+  /* A run with no finish line can only offer the landmarks the reader builds
+     themselves, so fifty right in a row and a hundred are marked. Only in
+     ENDLESS: a bounded run has an end of its own to arrive at, and a ten
+     question set cannot reach fifty anyway.
+
+     Exact equality rather than a threshold, because the streak moves one at a
+     time — so each milestone fires on the answer that reaches it and never
+     again on the way past. The list of milestones is AATCelebrate's, so the
+     three levels cannot come to disagree about which streaks are worth
+     marking. */
+  function markStreak() {
+    if (!isEndless() || !root.AATCelebrate) return;
+    if (root.AATCelebrate.AT.indexOf(S.streak) === -1) return;
+    root.AATCelebrate.fire('a1', S.streak, S.streak + ' in a row');
+  }
+
+  function scrollNextIntoView(el) {
+    if (typeof window === 'undefined' || !el || !el.querySelector) return;
+    var b = el.querySelector('[data-a1="nextq"]');
+    if (!b || !b.scrollIntoView) return;
+    var calm = false;
+    try { calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    try { b.scrollIntoView({ behavior: calm ? 'instant' : 'smooth', block: 'end' }); }
+    catch (e) { try { b.scrollIntoView(false); } catch (e2) {} }
+  }
+
+  /* A click on the actions that MOVE the reader, and on nothing else. Written
+     out rather than derived: a list of what makes a noise is a thing to read
+     and argue with. Grading is deliberately absent, so a right answer is never
+     a click and a chime at once. */
+  var NAV_SOUNDS = {
+    open: 1, next: 1, back: 1, nextq: 1, mocknext: 1,
+    startpractice: 1, startmock: 1, practice: 1, retry: 1,
+    topath: 1, jump: 1, step: 1, stepall: 1,
+    review: 1, reviewall: 1, reviewwrong: 1, reviewq: 1,
+    reviewnext: 1, reviewprev: 1, reviewback: 1, reviewlist: 1,
+  };
+
   function gradeAnswer(q) {
     var t = (q && q.type) || 'mcq';
     if (t === 'mcq') return S.picked === q.ans;
@@ -2018,7 +2103,40 @@
     return Number(s);
   }
 
+  /* THE LEVEL NEEDS ITS OWN SWITCH. Level 2 keeps the sound toggle on its home
+     tab, which a reader inside this module can never reach — it renders every
+     screen itself. Shipping a noise with no way to stop it is worse than
+     shipping no noise, so the control lives on the path, the one screen every
+     reader passes through. It writes the SHARED preference, so silencing
+     Level 1 silences the app. */
+  function soundRow() {
+    if (!root.AATSound) return '';
+    var on = root.AATSound.isEnabled();
+    return '<button class="a1-soundrow" data-a1="soundtoggle" type="button" ' +
+      'role="switch" aria-checked="' + (on ? 'true' : 'false') + '">' +
+      '<span class="a1-soundrow-i" aria-hidden="true">' + (on ? '\uD83D\uDD0A' : '\uD83D\uDD07') + '</span>' +
+      '<span class="a1-soundrow-l">Sound effects</span>' +
+      '<span class="a1-soundrow-s' + (on ? ' is-on' : '') + '" aria-hidden="true"></span>' +
+      '</button>';
+  }
+
   function handle(act, n) {
+    /* Turning sound OFF must not make a sound, and turning it on should — which
+       is why this sits above the navigation click rather than in its list. */
+    if (act === 'soundtoggle') {
+      if (root.AATSound) {
+        /* THE ORDER IS THE WHOLE TRICK. Flip the preference first, then beep:
+           beep() already respects the preference, so switching ON is audible
+           and switching OFF is silent, with no condition to write. Beeping
+           before the flip would play a click at the exact moment a reader
+           asked for quiet. */
+        root.AATSound.setEnabled(!root.AATSound.isEnabled());
+        beep('click');
+      }
+      return rerender();
+    }
+    if (NAV_SOUNDS[act]) beep('click');
+
     var l = lessonById(S.lessonId);
     var cards = (l && l.cards) || [], checks = currentQuestions();
     var card = cards[S.cardIdx] || {};
@@ -2122,6 +2240,7 @@
       var got = num(S.tryInput);
       S.tryResult = got !== null && Math.abs(got - want) < 0.005;
       if (S.tryResult) { data.xp += 5; save(); }
+      beep(S.tryResult ? 'correct' : 'wrong');
       return rerender();
     }
 
@@ -2142,9 +2261,7 @@
          changed until the reader moves on, and nothing is revealed. Everywhere
          else, choosing IS answering. */
       if (isMock()) return rerender();
-      S.answered = gradeAnswer(q);
-      if (S.answered) S.score++;
-      return rerender();
+      return settle(q);
     }
     if (act === 'tf') {
       S.tfPicks[+n.getAttribute('data-s')] = n.getAttribute('data-v') === 'true';
@@ -2152,8 +2269,7 @@
     }
     if (act === 'tfsubmit') {
       if (Object.keys(S.tfPicks).length < q.statements.length) return;
-      S.answered = gradeAnswer(q); if (S.answered) S.score++;
-      return rerender();
+      return settle(q);
     }
     if (act === 'gap') {
       S.gapPicks[+n.getAttribute('data-g')] = +n.getAttribute('data-o');
@@ -2161,8 +2277,7 @@
     }
     if (act === 'gapsubmit') {
       if (Object.keys(S.gapPicks).length < q.gaps.length) return;
-      S.answered = gradeAnswer(q); if (S.answered) S.score++;
-      return rerender();
+      return settle(q);
     }
 
     /* Match: select on the left, then pair on the right. Clicking a left item
@@ -2187,8 +2302,7 @@
     if (act === 'matchclear') { S.matchPicks = {}; S.matchSel = null; return rerender(); }
     if (act === 'matchsubmit') {
       if (Object.keys(S.matchPicks).length < q.left.length) return;
-      S.answered = gradeAnswer(q); if (S.answered) S.score++;
-      return rerender();
+      return settle(q);
     }
 
     if (act === 'orderup' || act === 'orderdown') {
@@ -2201,16 +2315,9 @@
       S.orderMoved = true;
       return rerender();
     }
-    if (act === 'ordersubmit') {
-      S.answered = gradeAnswer(q); if (S.answered) S.score++;
-      return rerender();
-    }
+    if (act === 'ordersubmit') { return settle(q); }
 
-    if (act === 'numsubmit') {
-      S.answered = gradeAnswer(q);
-      if (S.answered) S.score++;
-      return rerender();
-    }
+    if (act === 'numsubmit') { return settle(q); }
     /* Moving on IS answering, under exam conditions. The question is graded
        here, silently, and the reader is told nothing until the paper is over —
        so this carries the same recording the practice path does, plus the
@@ -2253,6 +2360,7 @@
       if (S.mode === 'practice' && S.answered !== null) {
         if (S.answered === true) { S.streak++; if (S.streak > S.bestStreak) S.bestStreak = S.streak; }
         else S.streak = 0;
+        markStreak();
       }
       if (isEndless()) {
         if (S.qIdx >= checks.length - 2) topUpEndless();

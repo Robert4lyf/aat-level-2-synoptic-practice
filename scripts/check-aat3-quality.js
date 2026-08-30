@@ -57,6 +57,31 @@ const allQuestions = [];
 lessons.forEach(l => (l.check || []).forEach((q, i) => allQuestions.push({ where: `${l.id} Q${i + 1}`, q })));
 practice.forEach(q => allQuestions.push({ where: `practice ${q.id}`, q, isPractice: true }));
 
+/* ── The try-its, which nothing here had ever looked at ──────────────────────
+   A worked example ends with "Now you try": a question, an answer and an
+   explanation, graded by the same code and read by the same reader as anything
+   in `check`. They were not in allQuestions, so every per-question rule in this
+   file — and both of the ones added for the calculator — had a blind spot the
+   size of 41 questions.
+
+   Found by sweeping the numeric bank by hand for treatment errors: the sweep
+   turned up a try-it saying "a fuel scale charge of £120" and adding £120 in
+   full, the exact defect the scale-charge rule had just been written to catch,
+   sitting in the one place the rule could not see.
+
+   They are held SEPARATELY rather than folded into allQuestions, because a
+   try-it is a different shape — no options, no criteria, a shorter explanation —
+   and the rules written for a multiple-choice question would fail it for being
+   what it is. The rules that apply to any question with an answer and a reason
+   iterate `everyQuestion`. */
+const tryIts = [];
+lessons.forEach(l => (l.cards || []).forEach((c, i) => {
+  if (c.worked && c.worked.tryIt) {
+    tryIts.push({ where: `${l.id} card ${i + 1} try-it`, q: Object.assign({ type: 'numeric' }, c.worked.tryIt) });
+  }
+}));
+const everyQuestion = allQuestions.concat(tryIts);
+
 /* ── Thresholds ──────────────────────────────────────────────────────────────
    Set from what the material currently achieves, so they act as a ratchet
    against regression rather than an aspiration. */
@@ -1090,7 +1115,7 @@ notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${heade
   const OF = /fuel scale charge of £([\d,]+)/i;
   const ADDING = /fuel scale charge (?:of £[\d,]+ )?adding £([\d,]+)/i;
   let scaleChecked = 0;
-  allQuestions.forEach(({ where, q }) => {
+  everyQuestion.forEach(({ where, q }) => {
     const stem = q.q || '';
     if (!/fuel scale charge/i.test(stem)) return;
     const adding = ADDING.exec(stem);
@@ -1139,7 +1164,7 @@ notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${heade
    the wrong question and a reader denied a calculator they need. */
 {
   let recallChecked = 0, recallMarked = 0;
-  allQuestions.forEach(({ where, q }) => {
+  everyQuestion.forEach(({ where, q }) => {
     if ((q.type || 'mcq') !== 'numeric') return;
     recallChecked++;
     const hasFigure = /\d/.test(q.q || '');
@@ -1155,7 +1180,23 @@ notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${heade
         `is recalled rather than worked out from it.`);
     }
   });
-  notes.push(`${recallChecked} numeric questions checked for a figure to work from; ${recallMarked} marked as recall.`);
+  /* THE SCOPE IS ASSERTED, NOT ASSUMED. Widening a rule to a surface it could
+     not see is a change that nothing fails when it is undone: every question
+     still passes, and the coverage quietly halves. Counting the numeric items
+     that EXIST and requiring the rule to have seen all of them is what makes
+     the widening permanent — drop try-its back out and this line fails. */
+  const numericExpected = allQuestions.concat(tryIts)
+    .filter(x => ((x.q && x.q.type) || 'mcq') === 'numeric').length;
+  if (recallChecked !== numericExpected) {
+    errors.push(`the recall rule saw ${recallChecked} numeric questions but the module has ` +
+      `${numericExpected} — a surface carrying questions has dropped out of this file's scope.`);
+  }
+  if (!tryIts.length) {
+    errors.push('no worked-example try-its were found — the extractor has stopped matching, ' +
+      'and every per-question rule below is silently checking nothing on that surface.');
+  }
+  notes.push(`${recallChecked} numeric questions checked for a figure to work from ` +
+    `(${tryIts.length} try-its included); ${recallMarked} marked as recall.`);
 }
 
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
