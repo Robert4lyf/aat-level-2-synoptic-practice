@@ -1282,3 +1282,47 @@ body[data-subject="aat1"] .a1-soundrow-s.is-on::after { transform: translateX(17
   body[data-subject="aat1"] .a1-soundrow-s,
   body[data-subject="aat1"] .a1-soundrow-s::after { transition: none; }
 }
+
+/* ── Milestone celebrations: Level 1 ──────────────────────────────────────────
+   Warm and unhurried, the same register as this level's sound. The amber here
+   is --a1-accent, which is already what its endless mode is coloured with, so a
+   milestone reads as this run's own rather than as something borrowed.
+
+   FIFTY is a drift of embers rising from the foot of the screen and going out
+   near the top: slow, soft, nothing sudden. This is the entry level, and the
+   first milestone many readers will ever hit. */
+body[data-subject="aat1"] .aat-cel-a1 .aat-cel-t {
+  background: var(--a1-accent-wash); color: var(--a1-accent-ink);
+  box-shadow: 0 8px 32px -12px rgba(166,91,16,.55);
+}
+body[data-subject="aat1"] .aat-cel-a1.aat-cel-50 .aat-cel-p {
+  bottom: -30px; left: calc(var(--i) * 100% / var(--n));
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--a1-accent); opacity: 0;
+  animation: a1-cel-ember 2.4s ease-out both;
+  animation-delay: calc(var(--i) * 55ms);
+}
+@keyframes a1-cel-ember {
+  0%   { opacity: 0; transform: translateY(0) scale(.5); }
+  15%  { opacity: .9; }
+  70%  { opacity: .7; }
+  100% { opacity: 0; transform: translateY(-88vh) translateX(calc((var(--r) - 50) * 0.4vw)) scale(1.15); }
+}
+
+/* A HUNDRED is a sunburst: tapered rays thrown out from behind the banner and
+   held for a beat before they fade. Radial where fifty was vertical, and bright
+   where fifty was soft — the same warmth, turned up. */
+body[data-subject="aat1"] .aat-cel-a1.aat-cel-100 .aat-cel-p {
+  top: 50%; left: 50%; width: 6px; height: 30vh; margin-left: -3px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, rgba(232,168,92,0), var(--a1-accent));
+  transform-origin: 50% 100%;
+  animation: a1-cel-ray 2.5s cubic-bezier(.2,.75,.3,1) both;
+  animation-delay: calc(var(--i) * 22ms);
+}
+@keyframes a1-cel-ray {
+  0%   { opacity: 0; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n))) scaleY(.1); }
+  22%  { opacity: .8; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n))) scaleY(1); }
+  62%  { opacity: .6; }
+  100% { opacity: 0; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n) + 0.06turn)) scaleY(1.25); }
+}

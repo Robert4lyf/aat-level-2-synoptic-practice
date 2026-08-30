@@ -159,6 +159,7 @@ function loadUI(store) {
      a check that only asserted "nothing threw" would sail past. */
   M.AATCalc = require(path.join(ROOT, 'calculator.js')) && global.AATCalc;
   M.AATSound = require(path.join(ROOT, 'sound.js')) && global.AATSound;
+  M.AATCelebrate = require(path.join(ROOT, 'celebrate.js')) && global.AATCelebrate;
   M.AAT3_SYLLABUS = require(path.join(ROOT, 'aat3-syllabus.js')).SYLLABUS;
   M.AAT3_PRACTICE = require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE;
   M.AAT3_LEARN_PATH = require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH;

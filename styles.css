@@ -6359,3 +6359,71 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
   .lesson-card-sheet .lesson-example-table td { border: 0; padding: 1px 0; }
   .lesson-card-sheet .lesson-example-table td:last-child { margin-top: 2px; }
 }
+
+/* ── Milestone celebrations: the shared frame ─────────────────────────────────
+   The overlay, its position and its exit belong here because they are the same
+   on every level. What each celebration LOOKS like belongs in that level's own
+   stylesheet — see aat1-styles.css and aat3-styles.css, and the Level 2 rules
+   just below. The pieces carry --i, --n and --r from celebrate.js so a
+   stylesheet can fan them out without that file knowing which direction is up
+   in a given design. */
+.aat-cel {
+  position: fixed; inset: 0; z-index: 9000;
+  pointer-events: none;            /* the run continues underneath */
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.aat-cel-p { position: absolute; display: block; }
+.aat-cel-t {
+  position: relative; z-index: 2;
+  font-weight: 800; font-size: clamp(24px, 7vw, 40px);
+  letter-spacing: -.02em; text-align: center;
+  padding: 14px 26px; border-radius: 999px;
+  animation: aat-cel-banner 2.6s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes aat-cel-banner {
+  0%   { opacity: 0; transform: scale(.86); }
+  10%  { opacity: 1; transform: scale(1.04); }
+  18%  { transform: scale(1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(.98); }
+}
+/* Motion removed, meaning kept: the banner still says what was reached. */
+@media (prefers-reduced-motion: reduce) {
+  .aat-cel-t { animation: aat-cel-fade 2.6s linear both; }
+  @keyframes aat-cel-fade { 0%,85% { opacity: 1; } 100% { opacity: 0; } }
+}
+
+/* ── Level 2: violet, the colour its endless mode already uses ───────────────
+   FIFTY is a ripple — rings opening outward from the centre, one after another,
+   the quietest of the six because it is the first milestone and will be seen
+   most often. */
+.aat-cel-aat .aat-cel-t { background: rgba(124,58,237,.14); color: #7c3aed; }
+.dark .aat-cel-aat .aat-cel-t { background: rgba(124,58,237,.22); color: #c4b5fd; }
+.aat-cel-aat.aat-cel-50 .aat-cel-p {
+  top: 50%; left: 50%; width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  border: 2px solid rgba(124,58,237,.55); border-radius: 50%;
+  animation: aat-cel-ripple 2.2s cubic-bezier(.15,.7,.3,1) both;
+  animation-delay: calc(var(--i) * 90ms);
+}
+@keyframes aat-cel-ripple {
+  0%   { opacity: 0; transform: scale(.2); }
+  12%  { opacity: .85; }
+  100% { opacity: 0; transform: scale(22); }
+}
+/* A HUNDRED is a firework: thin streaks thrown outward and fading, each on its
+   own bearing. Louder than the ripple, and unmistakably a different event
+   rather than the same one repeated. */
+.aat-cel-aat.aat-cel-100 .aat-cel-p {
+  top: 50%; left: 50%; width: 3px; height: 46px; margin: -23px 0 0 -1.5px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #7c3aed, rgba(59,98,227,0));
+  transform-origin: 50% 0;
+  animation: aat-cel-streak 1.9s cubic-bezier(.1,.75,.25,1) both;
+  animation-delay: calc(var(--i) * 14ms);
+}
+@keyframes aat-cel-streak {
+  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scaleY(.3); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(calc(38vh + var(--r) * 0.1vh)) scaleY(1); }
+}

@@ -1746,6 +1746,21 @@
   const playWrong = () => Sound.wrong();
   const playClick = () => Sound.click();
 
+  /* A run with no finish line can only offer the landmarks the reader builds
+     themselves, so fifty right in a row and a hundred are marked. Only in
+     ENDLESS: a bounded run has an end of its own to arrive at, and a fifteen
+     question set cannot reach fifty anyway.
+
+     Exact equality rather than a threshold, because the streak moves one at a
+     time — so each milestone fires on the answer that reaches it and never
+     again on the way past. The milestones are AATCelebrate's, so the three
+     levels cannot come to disagree about which streaks are worth marking. */
+  function markStreak() {
+    if (!State.endless || typeof AATCelebrate === 'undefined') return;
+    if (AATCelebrate.AT.indexOf(State.streak) === -1) return;
+    AATCelebrate.fire('aat', State.streak, State.streak + ' in a row');
+  }
+
   function confetti() {
     if (reducedMotion) return;
     const cols = ['#3b62e3','#16a34a','#d97706','#dc2626','#805ad5','#5b81f5'];
@@ -3213,6 +3228,7 @@
       const last = State.results[State.results.length - 1];
       if (last && last.correct) { State.streak++; if (State.streak > State.bestStreak) State.bestStreak = State.streak; }
       else if (last) State.streak = 0;
+      markStreak();
     }
     if (State.endless && State.current + 1 >= State.questions.length - 1) topUpEndless();
     if (!State.endless && State.current + 1 >= State.questions.length) finishPractice();
@@ -3647,14 +3663,37 @@
       try { ni.focus(); if (State.mode === 'practice' && State.numericDraft) ni.setSelectionRange(ni.value.length, ni.value.length); } catch (e) {}
     }
     if (State.screen === 'home' && State.activeTab === 'progress') animateCounters();
-    if (State.screen === 'quiz' && State.answered !== null) {
-      const nextBtn = document.getElementById('nextBtn');
-      if (nextBtn) nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-    if (State.screen === 'lesson' && State.lesson && State.lesson.phase === 'quiz' && State.lesson.qAnswered !== null) {
-      const lessonNextBtn = document.getElementById('lessonNextBtn');
-      if (lessonNextBtn) lessonNextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    /* Bring the advance button to the BOTTOM of the viewport once the question
+       has been graded.
+
+       Two changes from what this used to do. `block: 'end'` rather than
+       'nearest': nearest is satisfied by a button whose top edge has just
+       crept into view, which on a phone is a sliver under the keyboard line
+       rather than something to press. And ONCE per question rather than on
+       every repaint — the reader can still flag, mark themselves confident or
+       open the reference panel after answering, and each of those repaints was
+       dragging the page back down under them. */
+    scrollAdvanceIntoView();
+  }
+
+  /* Which graded question the page has already been scrolled for, so the move
+     happens on the repaint that graded and on no other. Reset the moment the
+     screen stops showing a graded question. */
+  let _scrolledFor = null;
+  function scrollAdvanceIntoView() {
+    const inQuiz = State.screen === 'quiz' && State.answered !== null;
+    const inLesson = State.screen === 'lesson' && State.lesson &&
+      State.lesson.phase === 'quiz' && State.lesson.qAnswered !== null;
+    if (!inQuiz && !inLesson) { _scrolledFor = null; return; }
+    const key = inQuiz ? 'q' + State.current : 'l' + State.lesson.qIdx;
+    if (_scrolledFor === key) return;
+    _scrolledFor = key;
+    const btn = document.getElementById(inQuiz ? 'nextBtn' : 'lessonNextBtn');
+    if (!btn || !btn.scrollIntoView) return;
+    let calm = false;
+    try { calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    try { btn.scrollIntoView({ behavior: calm ? 'instant' : 'smooth', block: 'end' }); }
+    catch (e) { try { btn.scrollIntoView(false); } catch (e2) {} }
   }
 
   /* THE SPLASH DESCRIBES THE SUBJECT IT IS OPENING, which it did not.

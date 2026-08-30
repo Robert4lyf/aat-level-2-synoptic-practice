@@ -95,6 +95,7 @@
     revealed: 0,         // worked-example steps shown
     tryInput: '',
     tryResult: null,
+    scrollToNext: false,  // the next repaint should bring the advance button into view
   };
 
   /* `practice` is the lifetime record of practice and mock runs.
@@ -1521,6 +1522,11 @@
       _lastPos = k;
       restoreScroll(el);
     }
+    /* Consumed, not read: the flag has to survive exactly one repaint. Leaving
+       it set would drag the page down again on every subsequent click — the
+       calculator keys, a pill, anything — which is the same defect as animating
+       on every repaint, in a different medium. */
+    if (S.scrollToNext) { S.scrollToNext = false; scrollNextIntoView(el); }
     ensureGuardKeys();
     /* Focus moves to the SAFE choice, not the destructive one. A reader who
        taps back and then hits Enter out of habit should stay in the paper.
@@ -1787,7 +1793,44 @@
     S.answered = gradeAnswer(q);
     if (S.answered) S.score++;
     beep(S.answered ? 'correct' : 'wrong');
+    /* Grading is the one repaint that should move the page. The verdict and the
+       explanation appear where the answer controls were, which on a phone puts
+       the button that continues the run below the fold — so a reader finishes a
+       question and the screen looks finished with them. Flagged here rather
+       than done here, because the button does not exist until the repaint that
+       follows. Not in a mock: nothing is revealed there, so nothing grows and
+       the button never moves. */
+    if (!isMock()) S.scrollToNext = true;
     return rerender();
+  }
+
+  /* Put the advance button at the bottom of the viewport. `block: 'end'` rather
+     than 'center', because the reader's eye is on the explanation above it and
+     the button is the destination, not the subject. */
+  /* A run with no finish line can only offer the landmarks the reader builds
+     themselves, so fifty right in a row and a hundred are marked. Only in
+     ENDLESS: a bounded run has an end of its own to arrive at, and a ten
+     question set cannot reach fifty anyway.
+
+     Exact equality rather than a threshold, because the streak moves one at a
+     time — so each milestone fires on the answer that reaches it and never
+     again on the way past. The list of milestones is AATCelebrate's, so the
+     three levels cannot come to disagree about which streaks are worth
+     marking. */
+  function markStreak() {
+    if (!isEndless() || !root.AATCelebrate) return;
+    if (root.AATCelebrate.AT.indexOf(S.streak) === -1) return;
+    root.AATCelebrate.fire('a1', S.streak, S.streak + ' in a row');
+  }
+
+  function scrollNextIntoView(el) {
+    if (typeof window === 'undefined' || !el || !el.querySelector) return;
+    var b = el.querySelector('[data-a1="nextq"]');
+    if (!b || !b.scrollIntoView) return;
+    var calm = false;
+    try { calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    try { b.scrollIntoView({ behavior: calm ? 'instant' : 'smooth', block: 'end' }); }
+    catch (e) { try { b.scrollIntoView(false); } catch (e2) {} }
   }
 
   /* A click on the actions that MOVE the reader, and on nothing else. Written
@@ -2317,6 +2360,7 @@
       if (S.mode === 'practice' && S.answered !== null) {
         if (S.answered === true) { S.streak++; if (S.streak > S.bestStreak) S.bestStreak = S.streak; }
         else S.streak = 0;
+        markStreak();
       }
       if (isEndless()) {
         if (S.qIdx >= checks.length - 2) topUpEndless();
