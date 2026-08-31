@@ -1315,7 +1315,7 @@ window.LEARN_PATH = [
                 q: 'A customer takes a 5% prompt payment discount on a net amount of £2,000. What is the gross value of the credit note, in £, with VAT at 20%?',
                 answer: 120, unit: '£',
                 hint: 'Work the discount on the net figure first, then add VAT to it.',
-                exp: '5% × £2,000 = £100 of discount, and VAT on that is £20, so the credit note is £120 gross. Calculating the discount on the gross figure instead would give £124 and overstate the reduction.',
+                exp: '5% × £2,000 = £100 of discount, and VAT on that is £20, so the credit note is £120 gross. Calculating the discount on the VAT-inclusive £2,400 instead would give £120 before VAT and £144 gross, overstating the reduction.',
               },
             },
           },
@@ -2036,7 +2036,7 @@ window.LEARN_PATH = [
             p: [
               'FAPS extends everything in ITBK. You will: produce and interpret an extended trial balance; account for complex depreciation scenarios (straight-line and reducing balance in the same year; part-year depreciation; disposal of non-current assets); handle accruals and prepayments for income as well as expenses; and use journals to correct a wider range of errors.',
               'The disposal of non-current assets is a key new topic: Dr Disposal account with cost, Cr Asset; Dr Accumulated depreciation, Cr Disposal; then record proceeds and the profit or loss on disposal.',
-              'Financial Accounting: Preparing Financial Statements is where the year-end adjustments live. Accruals and prepayments, depreciation, irrecoverable debts, and the distinction between capital and revenue expenditure are all FAPS material — and none of them appears in the Level 2 specification, which is why they are presented in this unit as a preview rather than as Level 2 content.',
+              'Financial Accounting: Preparing Financial Statements is where the year-end adjustments live. Accruals and prepayments, depreciation, and the distinction between capital and revenue expenditure are all FAPS material — none of them appears in the Level 2 specification, which is why they are presented in this unit as a preview rather than as Level 2 content. (Irrecoverable debts are the exception: writing one off is already Level 2 work in Principles of Bookkeeping Controls; what FAPS adds is the allowance for doubtful receivables.)',
               'The unifying idea is the accruals concept: income and expense belong to the period that earned or consumed them, not the period the cash moved. Everything FAPS adds is a mechanism for making the records say that rather than simply recording payments.',
               'From there the same unit builds the statement of profit or loss and the statement of financial position, for sole traders and then for partnerships. At Level 2 you learned what those statements are FOR; at Level 3 you prepare them.',
             ],
@@ -3289,9 +3289,9 @@ window.LEARN_PATH = [
           },
           {
             q: 'The SLCA balance is £14,500 but the sum of individual customer balances is £14,200. What is a likely cause?',
-            opts: ['A receipt was posted to SLCA but not to the individual customer account', 'A sale was posted to the individual account but not to the SLCA', 'The VAT rate was calculated incorrectly', 'Both figures are correct'],
-            ans: 1,
-            exp: 'If a sale was posted to the individual customer account but NOT to the SLCA, the SLCA would be understated relative to the individual accounts. The scenario shows SLCA > individual total, suggesting a receipt was posted to SLCA but missed from the individual account.',
+            opts: ['A sales invoice was posted to the SLCA but not to the individual customer account', 'A sales invoice was posted to the individual customer account but not to the SLCA', 'The VAT on a week of sales invoices was calculated at the wrong rate throughout', 'Neither record is wrong — the two figures are simply totalled on different dates'],
+            ans: 0,
+            exp: 'The SLCA is £300 higher than the list, so something has reached the control account and missed an individual account — an invoice included in the day book total but never posted to the customer\'s own account fits exactly. The mirror error would push the difference the other way, a VAT slip would flow into both records alike, and both figures are struck at the same date.',
           },
           {
             q: 'A contra entry of £600 is agreed between a customer and a supplier. What entries are made?',
@@ -3389,7 +3389,7 @@ window.LEARN_PATH = [
               title: 'Suspense account clearance',
               rows: [
                 ['Opening suspense balance (Dr)', '£400', ''],
-                ['Error found: Cr side £400 understated', '', ''],
+                ['Error found: Dr side £400 understated (a £400 debit to creditors was omitted)', '', ''],
                 ['Journal: Dr Creditors £400 / Cr Suspense £400', '', '£400'],
                 ['Closing suspense balance', '£0', ''],
               ],
@@ -3977,7 +3977,7 @@ window.LEARN_PATH = [
             h: 'Why the redraft matters beyond the exam',
             p: [
               'It is tempting to treat this as an arithmetic exercise, but the redraft is where the whole control system pays off. The financial statements are prepared from the redrafted figures, so an error left in it flows straight through to reported profit and to the statement of financial position.',
-              'Consider the £20,000 sale omitted from the sales account. Left uncorrected, revenue is understated by £20,000 and so is profit. The suspense balance was the only clue that anything was wrong, and clearing it properly is what protects the reported result.',
+              'Consider the £20,000 page of purchases never debited to the purchases account. Left uncorrected, expenses are understated by £20,000 and profit overstated by the same. The suspense balance was the only clue that anything was wrong, and clearing it properly is what protects the reported result.',
               'This is also why an auditor or a reviewer looks for a suspense account first. A live suspense balance in a set of accounts is an admission that something is unexplained, and a business that carries one from period to period is telling everyone that its bookkeeping is not under control.',
               'At Level 3 the same discipline reappears as the extended trial balance, where adjustment columns for accruals, prepayments and depreciation are added alongside the corrections you are doing here.',
             ],
@@ -6060,7 +6060,7 @@ window.LEARN_PATH = [
           {
             h: 'How POC prepares you for MATS',
             p: [
-              'OAR calculations, overhead absorption and over/under absorption, marginal vs absorption costing, CVP analysis (contribution, break-even, margin of safety), budget preparation, and limiting factors from POC all carry directly into MATS.',
+              'OAR calculations, overhead absorption and over/under absorption, cost behaviour and classification, inventory valuation, labour costing and budget preparation from POC all carry directly into MATS — which then adds CVP analysis (contribution, break-even, margin of safety) and limiting-factor decisions on top of them.',
               'At Level 3, you add variance analysis and flexible budgeting on top of this foundation. Students who mastered POC find MATS is a natural progression. The hardest new skill — variance analysis — is just comparing actual to standard using the same arithmetic you have been using throughout Level 2.',
               'The transferable skills are the mechanical ones: absorbing overhead, valuing inventory, calculating labour payments, flexing a budget and labelling a variance. MATS assumes all of these and re-teaches none of them.',
               'What MATS adds is interpretation and decision-making, and those need spare capacity. A student still working out whether a variance is adverse has none left for explaining what caused it.',
@@ -6682,7 +6682,7 @@ window.LEARN_PATH = [
             p: [
               'Five threats can compromise your ethics. **Self-interest**: a financial or other stake clouds judgement. **Self-review**: checking your own earlier work. **Familiarity**: being too close to someone to stay sceptical.',
               '**Intimidation**: pressure or threats — "approve this or lose your job". **Advocacy**: promoting a client\'s position so hard that objectivity is lost.',
-              'The Code names five categories of threat, and the mnemonic SLAMIC covers them: **S**elf-interest, **S**elf-review, **A**dvocacy, **F**amiliarity and **I**ntimidation — with **M**anagement threat added for members in practice.',
+              'The Code names five categories of threat: **self-interest**, **self-review**, **advocacy**, **familiarity** and **intimidation**. Learn the five names exactly as the Code gives them — the human-marked task looks for the terminology, and an invented label earns nothing.',
               '**Self-interest** arises where a financial or other interest could sway judgement, such as a fee dependent on the outcome. **Self-review** arises where you would be evaluating your own earlier work. **Advocacy** arises where promoting a client’s position compromises objectivity.',
               '**Familiarity** arises from a long or close relationship making you too sympathetic to someone’s interests. **Intimidation** arises where pressure — a threat to your job, or to the firm’s fee — deters you from acting properly.',
               'Identifying the category matters because it points at the appropriate safeguard. A familiarity threat is addressed by rotation; an intimidation threat is addressed by escalation and documentation.',
@@ -6884,14 +6884,14 @@ window.LEARN_PATH = [
             ],
           },
           {
-            h: 'Threats to the fundamental principles (SLAMIC)',
+            h: 'Threats to the fundamental principles',
             p: [
-              '**S**elf-interest — financial or other interests that influence judgement.',
-              '**L**ong familiarity (familiarity) — too close a relationship with a client undermines objectivity.',
-              '**A**dvocacy — promoting a client\'s position to the point of compromising objectivity.',
-              '**M**anagement threat — making decisions that should be management\'s responsibility.',
-              '**I**ntimidation — threatened or actual pressure from a client or employer.',
-              '**C**omplacency (self-review) — reviewing your own prior work without sufficient scepticism.',
+              '**Self-interest** — financial or other interests that influence judgement.',
+              '**Self-review** — reviewing your own prior work without sufficient scepticism.',
+              '**Advocacy** — promoting a client\'s position to the point of compromising objectivity.',
+              '**Familiarity** — too close a relationship with a client undermines objectivity.',
+              '**Intimidation** — threatened or actual pressure from a client or employer.',
+              'Those five are the Code\'s own names, and the marker looks for them — write "complacency threat" and the terminology mark is gone. (A sixth label you may meet in practice contexts, the **management threat** — taking decisions that belong to the client\'s management — sits outside the five and outside this assessment.)',
               'When a task describes a situation, work in three steps: name the **threat**, name the **principle** it threatens, then name a **safeguard**. Answers that skip the middle step lose marks even when the safeguard is sensible.',
               'A useful trick is to ask what would make you decide differently from how a disinterested professional would decide. If the answer is money, it is self-interest. If it is friendship, familiarity. If it is fear, intimidation. If it is your own earlier judgement, self-review.',
               'Be ready to give an example of each threat from an employed rather than a practice context, because that is usually the setting a synoptic task describes.',
@@ -7805,7 +7805,7 @@ window.LEARN_PATH = [
             h: 'PAYE, NIC and payroll at Level 3',
             p: [
               'Employers operate **PAYE** (Pay As You Earn) — deducting income tax and employee NIC from gross pay and remitting to HMRC monthly. **Class 1 primary NIC** (employee\'s contribution) is deducted from gross pay at 8% (2024/25) on earnings between the primary and upper thresholds.',
-              '**Class 1 secondary NIC** (employer\'s contribution) is an additional cost of 13.8% on the employee\'s gross earnings above the secondary threshold. Both employer NIC and the employer\'s share of income tax remittances are business costs. Your Level 2 POBC payroll knowledge gives you the conceptual framework for this.',
+              '**Class 1 secondary NIC** (employer\'s contribution) is an additional cost of 13.8% on the employee\'s gross earnings above the secondary threshold. Employer NIC is a business cost; the income tax remitted is the employee\'s own deduction, already inside gross pay, which the employer merely passes on to HMRC. Your Level 2 POBC payroll knowledge gives you the conceptual framework for this.',
               'The payroll journal from Principles of Bookkeeping Controls is the foundation. Level 3 adds the employer’s compliance obligations around it: operating PAYE codes, calculating both National Insurance classes against thresholds, applying the Employment Allowance, and submitting Real Time Information returns on or before each payday.',
             ],
             example: {
