@@ -47,7 +47,7 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', DIM = '\x1b[2m', BOLD = '\x1b[1m', Y
 let chromium;
 try { ({ chromium } = require('playwright')); }
 catch (e) {
-  console.log(`${BOLD}Self-rendering subjects: layout at ${WIDTH}px${RESET}\n`);
+  console.log(`${BOLD}Self-rendering subjects: layout on a phone${RESET}\n`);
   if (process.env.REQUIRE_PLAYWRIGHT) {
     console.log(`  ${RED}✗${RESET}  Playwright is required here and is not installed: ${e.message}\n`);
     process.exit(1);
