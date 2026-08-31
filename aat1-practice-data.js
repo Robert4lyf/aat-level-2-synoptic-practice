@@ -471,15 +471,15 @@
     {
       id: 'P2-05', lo: 2, criteria: ['BKFN-2.2.1', 'BKFN-2.2.2'],
       type: 'mcq',
-      q: 'A business has assets of £26,000 and capital of £15,000. What must its liabilities be?',
+      q: 'A business makes a profit for the year and the owner takes nothing out. Liabilities are unchanged. What follows for the accounting equation?',
       opts: [
-        '£11,000',
-        '£41,000',
-        '£15,000',
-        'It cannot be determined',
+        'Capital rises, so assets must have risen by the same amount',
+        'Capital falls, because the profit belongs to the business',
+        'Liabilities rise to match the profit exactly',
+        'Nothing changes until the profit is banked',
       ],
       ans: 0,
-      exp: 'Assets = liabilities + capital, so liabilities are £26,000 − £15,000 = £11,000. Note that this level asks you to understand the relationship rather than to calculate missing entries from it — but reading the direction of it correctly is fair game.',
+      exp: 'Profit increases capital — it is what the business has earned for its owner. With liabilities unchanged, Assets = Liabilities + Capital can only stay balanced if assets have risen by the same amount, and they have: the profit arrived as money or as amounts owed to the business. This level asks which way the equation moves; calculating a missing figure from it is explicitly excluded.',
     },
     {
       id: 'P2-06', lo: 2, criteria: ['BKFN-2.2.2'],
@@ -539,11 +539,11 @@
       opts: [
         'Goods bought from a supplier on credit',
         'A customer telephoning to ask what a product costs',
-        'An advertisement placed for a new member of staff',
+        'A job advertisement drafted but not yet placed anywhere',
         'An employee asking to take a week of holiday',
       ],
       ans: 0,
-      exp: 'Only an exchange of value is recorded. Buying goods on credit creates an asset and a liability at once, so it goes in. An enquiry, a job advert not yet paid for and a holiday request are all business activity, but no value has moved.',
+      exp: 'Only an exchange of value is recorded. Buying goods on credit creates an asset and a liability at once, so it goes in. An enquiry, a job advert that exists only as a draft and a holiday request are all business activity, but no value has moved.',
     },
     {
       id: 'P2-11', lo: 2, criteria: ['BKFN-2.1.2', 'BKFN-2.1.3'],
@@ -558,11 +558,16 @@
     },
     {
       id: 'P2-12', lo: 2, criteria: ['BKFN-2.2.1'],
-      type: 'numeric',
-      q: 'A business has liabilities of £18,400 and capital of £31,600. What are its assets, in pounds?',
-      answer: 50000,
-      unit: '£',
-      exp: 'Assets = capital + liabilities, so £31,600 + £18,400 = £50,000. Everything the business holds was funded either by its owner or by somebody else, and the equation is simply that statement written down.',
+      type: 'mcq',
+      q: 'The owner takes £500 out of the business bank account for personal use. What happens to the accounting equation?',
+      opts: [
+        'Assets fall by £500 and capital falls by £500',
+        'Assets fall by £500 and liabilities fall by £500',
+        'Capital rises by £500, because the owner has been paid',
+        'It stops balancing until the money is repaid',
+      ],
+      ans: 0,
+      exp: 'Money leaving the bank reduces assets, and the owner taking it out reduces capital — the owner\'s stake shrinks because part of it has been taken back. Both sides move together and the equation balances throughout. Everything the business holds was funded either by its owner or by somebody else, and the equation is simply that statement written down.',
     },
     {
       id: 'P2-13', lo: 2, criteria: ['BKFN-2.1.3'],
@@ -1602,15 +1607,15 @@
     {
       id: 'P4-41', lo: 4, criteria: ['BKFN-4.3.2'],
       type: 'mcq',
-      q: 'A bank statement shows a closing balance labelled as overdrawn. What does that tell the business?',
+      q: 'A bank statement for June shows a figure of £2,064.80 in the balance column beside the final transaction. What is this figure?',
       opts: [
-        'It owes the bank money rather than holding money there',
-        'It holds more at the bank than the cash book shows',
-        'The bank has not yet processed all of the month’s receipts',
-        'The statement covers a different period from the cash book',
+        'The closing balance for the period',
+        'The total of the month’s receipts added down the column',
+        'The total of the month’s payments added down the column',
+        'The opening balance brought forward from May',
       ],
       ans: 0,
-      exp: 'An overdrawn balance is a liability: the account is in deficit and the money is owed to the bank. It says nothing on its own about timing differences or about which period the statement covers — those are separate questions answered by comparing it with the cash book.',
+      exp: 'The balance column reruns after every entry, so the figure beside the final transaction is the closing balance — the position the business compares with its own cash book. The receipts and payments totals come from adding their own columns down, and the opening balance sits at the top of the statement beside "balance brought forward".',
     },
     {
       id: 'P4-42', lo: 4, criteria: ['BKFN-4.3.2'],
@@ -1732,7 +1737,7 @@
       items: [
         'Enter items that appear only on the statement into the cash book',
         'Recalculate the closing balance in the cash book',
-        'List the cash book items that have not yet reached the statement',
+        'List the cash book items still to reach the statement, to explain the difference that remains',
         'Compare the two closing balances and explain any difference',
       ],
       exp: 'The items the business did not know about are real transactions, so they go into the books first and change the balance. Only then is the remaining difference a matter of timing — and comparing before that step compares one balance against an unfinished one.',
