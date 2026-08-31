@@ -4834,15 +4834,44 @@
      all. Derived from the question rather than written at each call site so the
      layout class and the sidebar cannot disagree — they were two separate
      literals before, which is how one of them came to be wrong. */
+  /* Where the reader has a figure to WORK OUT, whether or not they have a box
+     to type it into.
+
+     A typed answer was the original test, and it misses a whole class of
+     question. "Fixed costs are £10,000; variable cost is £5 per unit; 2,000
+     units are produced. Total cost is:" offers four figures to choose between,
+     and choosing needs the same sum as typing would — the reader was left doing
+     it in their head next to a calculator the app would not show them.
+
+     The giveaway a machine could use is only reliable in ONE direction, exactly
+     as on Level 3. Money in the stem and figures in the options catches those
+     questions; it also catches "Which of these formulas would NOT be credited
+     for adding the range B2 to B10?", where `B2` and `B10` read as numbers and
+     there is no arithmetic anywhere, and "A payment of £930 settles an invoice
+     on which £155 of VAT had been charged" — where the right answer needs no
+     sum at all and £775 is the trap the calculator would walk the reader into.
+
+     So the flag is authored, and check-calculator.js enforces the half a
+     machine can see. */
   function questionTakesCalc(q) {
     if (_activeSubjectId !== 'aat' || !q) return false;
+    if (q.calc) return true;                               // authored: a sum with no box
+    return calcCanFill(q);
+  }
+
+  /* Whether there is anywhere for "Use this value" to put the figure. A
+     multiple-choice question has a sum but no box, so the pad is a scratch pad
+     there and the button that promises to fill something must not be drawn —
+     a control that cannot do what it says is worse than no control. */
+  function calcCanFill(q) {
+    if (!q) return false;
     if (isNumeric(q)) return true;
     if (isTableFill(q)) return true;                       // every blank is a figure
     if (isScenario(q)) return (q.parts || []).some(isNumeric);
     return false;
   }
 
-  function renderCalculatorSidebar() {
+  function renderCalculatorSidebar(canFill) {
     const keys = AATCalc.KEYS.map(k => {
       /* The span class is derived from the number, not from which key happens
          to be wide. `=` used to be the only wide key and the class was named
@@ -4873,8 +4902,10 @@
         <div class="calc-display" id="calcDisplay" role="status" aria-live="polite">${escapeHtml(Calc.display)}</div>
       </div>
       <div class="calc-keys">${keys}</div>
-      <button class="calc-use" id="calcUse" type="button">↳ Use this value</button>
-      <p class="calc-hint">Result drops into the answer box.</p>
+      ${canFill
+        ? `<button class="calc-use" id="calcUse" type="button">↳ Use this value</button>
+      <p class="calc-hint">Result drops into the answer box.</p>`
+        : `<p class="calc-hint">Working only — this question is answered by choosing an option.</p>`}
     </aside>`;
   }
 
@@ -5039,7 +5070,7 @@
           })()}
           ${bodyHtml}${feedbackHtml}
         </div>
-        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar(calcCanFill(q)) : ''}
       </div>
     </div>`;
   }
@@ -5188,7 +5219,7 @@
           ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitTableFillBtn" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
-        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar(calcCanFill(q)) : ''}
       </div>
     </div>`;
   }
@@ -5264,7 +5295,7 @@
           ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="submitScenarioBtn" type="button">Submit all parts ✓</button>${confidentActionBtn(confident)}</div>` : ''}
           ${feedbackHtml}
         </div>
-        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar(calcCanFill(q)) : ''}
       </div>
     </div>`;
   }
@@ -5870,7 +5901,7 @@
             ${navGroupsHtml}
           </div>
         </div>
-        ${questionTakesCalc(q) ? renderCalculatorSidebar() : ''}
+        ${questionTakesCalc(q) ? renderCalculatorSidebar(calcCanFill(q)) : ''}
       </div>
     </div>`;
   }
