@@ -1199,6 +1199,151 @@ notes.push(`${gridsChecked} tables and examples checked for ragged rows; ${heade
     `(${tryIts.length} try-its included); ${recallMarked} marked as recall.`);
 }
 
+/* ── An adjustment named in the stem but never in the explanation ────────────
+   The Box 4 defect this rule exists for was not a wrong figure. `T-2-01` put a
+   six-row purchases day book in front of the reader, and its Box 4 explanation
+   accounted for three of those rows. The key was right, so every arithmetic
+   check passed; what was missing was the REASON the other rows contributed
+   nothing, and a reader who cannot see that reason learns the wrong general
+   rule — that a line missing from Box 4 is a line to leave out.
+
+   Prose is not checkable in general, but this one shape is. A composite VAT
+   calculation names its adjustments in words: blocked input tax, bad debt
+   relief, a credit note, a fuel scale charge. Each moves ONE side of the return
+   and each has a rule behind it. If the stem raises one and the explanation
+   never says the words again, the explanation has done the arithmetic and
+   skipped the teaching — which is exactly how `P-2-24` came to show four
+   subtractions and justify none of them.
+
+   Scoped to stems carrying three or more figures, because a question whose
+   whole subject IS the adjustment ("how much bad debt relief may it claim?")
+   explains it at length and needs no reminder to mention it. */
+{
+  const ADJUSTMENTS = [
+    { re: /blocked|entertain/i, name: 'blocked input tax' },
+    { re: /bad debt relief/i, name: 'bad debt relief' },
+    { re: /credit note/i, name: 'a credit note' },
+    { re: /scale charge/i, name: 'a fuel scale charge' },
+  ];
+  /* Named independently of the array above. Deleting an entry from ADJUSTMENTS
+     must FAIL rather than quietly narrow the rule, so the roster the module
+     promises to police is written down separately and compared. */
+  const MUST_POLICE = ['blocked input tax', 'bad debt relief', 'a credit note', 'a fuel scale charge'];
+
+  /* The rule as a pure function, so it can be run against known-bad input below
+     as well as against the module. A rule that is only ever run on clean data
+     cannot tell you it still works. */
+  const adjustmentGaps = rows => {
+    const found = [];
+    const exercised = new Map(MUST_POLICE.map(n => [n, 0]));
+    let examined = 0;
+    rows.forEach(({ where, stem, exp }) => {
+      if ((stem.match(/£[\d,]+/g) || []).length < 3) return;
+      examined++;
+      ADJUSTMENTS.forEach(({ re, name }) => {
+        if (!re.test(stem)) return;
+        if (exercised.has(name)) exercised.set(name, exercised.get(name) + 1);
+        if (!re.test(exp || '')) found.push({ where, name });
+      });
+    });
+    /* `examined` and `exercised` come back from the SAME traversal that produces
+       the findings. A parallel loop counting alongside would let the findings be
+       thrown away while the counts still looked healthy — the reach assertions
+       below would then be measuring a traversal nobody acted on. */
+    return { found, examined, exercised };
+  };
+
+  /* SELF-TEST. Two surfaces the rule must flag and two it must not. If the
+     reporting is removed, an adjustment is dropped, or the figure threshold is
+     raised out of range, these stop matching and the gate fails on its own
+     terms — before it ever looks at the module. */
+  {
+    const FIXTURE = [
+      { where: 'fixture/gap', exp: 'Output tax £31,200 − £1,100 = £30,100. Payable = £13,380.',
+        stem: 'Output tax £31,200; credit notes issued carrying £1,100 of VAT; input tax £16,800.' },
+      { where: 'fixture/blocked-gap', exp: 'Input tax is £21,400 − £700 = £20,700.',
+        stem: 'Input tax £21,400 of which £700 is blocked; output tax £38,900; relief £540.' },
+      { where: 'fixture/explained', exp: 'A credit note issued reduces output tax: £31,200 − £1,100 = £30,100.',
+        stem: 'Output tax £31,200; credit notes issued carrying £1,100 of VAT; input tax £16,800.' },
+      { where: 'fixture/too-few-figures', exp: 'Just the arithmetic.',
+        stem: 'A debt of £4,320 is written off. How much bad debt relief may be claimed?' },
+    ];
+    const got = adjustmentGaps(FIXTURE).found.map(f => `${f.where}:${f.name}`).sort().join('|');
+    const want = 'fixture/blocked-gap:blocked input tax|fixture/gap:a credit note';
+    if (got !== want) {
+      errors.push(`the adjustment rule failed its own self-test: expected to flag [${want}] ` +
+        `but flagged [${got}]. The rule is not detecting what it claims to, so its verdict ` +
+        `on the module below means nothing.`);
+    }
+    const missing = MUST_POLICE.filter(n => !ADJUSTMENTS.some(a => a.name === n));
+    if (missing.length) {
+      errors.push(`ADJUSTMENTS no longer covers ${missing.join(', ')} — an adjustment this ` +
+        `module promises to police has been dropped from the rule.`);
+    }
+  }
+
+  let adjChecked = 0;
+  /* Parts are checked in their own right. T-2-01's Box 4 is a PART, and a rule
+     that only looked at whole questions would have missed the very defect it
+     was written for. */
+  const surfaces = [];
+  let partsSeen = 0;
+  everyQuestion.forEach(({ where, q }) => {
+    if (Array.isArray(q.parts)) {
+      q.parts.forEach((p, i) => {
+        partsSeen++;
+        surfaces.push({
+          where: `${where} part ${i + 1}`,
+          stem: [q.q, q.brief, p.label].filter(Boolean).join(' '),
+          exp: p.exp,
+        });
+      });
+    } else {
+      surfaces.push({ where, stem: [q.q, q.brief].filter(Boolean).join(' '), exp: q.exp });
+    }
+  });
+  const result = adjustmentGaps(surfaces);
+  const exercised = result.exercised;
+  adjChecked = result.examined;
+  result.found.forEach(({ where, name }) => {
+    errors.push(`${where}: the stem raises ${name} but the explanation never mentions it — ` +
+      `a composite calculation must say which side each adjustment moves and why, ` +
+      `or it teaches the arithmetic and none of the rule.`);
+  });
+  /* Scope asserted, as everywhere else in this file: a task whose parts stop
+     being unwrapped would silently drop this rule's best cases. */
+  const partsExpected = everyQuestion.filter(({ q }) => Array.isArray(q.parts))
+    .reduce((n, { q }) => n + q.parts.length, 0);
+  /* Compare what the rule REACHED against what exists. Counting the data alone
+     would pass even if the unwrapping above were deleted, which is the failure
+     mode this assertion is here to prevent. */
+  /* A rule with no live failures can be switched off and nothing will notice —
+     raise the figure threshold, or drop an entry from ADJUSTMENTS, and a clean
+     bank still passes. So the rule's REACH is asserted, not just its verdict:
+     it must still examine composite calculations, and every adjustment it
+     claims to police must still be exercised by real questions. */
+  const MIN_COMPOSITES = 80;  // 97 today; a floor, not a target
+  if (adjChecked < MIN_COMPOSITES) {
+    errors.push(`the adjustment rule examined only ${adjChecked} composite calculations, ` +
+      `below the floor of ${MIN_COMPOSITES} — either the figure threshold has been raised ` +
+      `past the questions it is meant to police, or a surface has left its scope.`);
+  }
+  exercised.forEach((n, name) => {
+    if (n < 1) {
+      errors.push(`no composite calculation in the module raises ${name}, so that entry in ` +
+        `ADJUSTMENTS polices nothing and could be deleted unnoticed — remove it deliberately ` +
+        `or restore the questions that exercised it.`);
+    }
+  });
+  if (partsSeen !== partsExpected || partsSeen < 1) {
+    errors.push(`the adjustment rule reached ${partsSeen} task parts but the module has ` +
+      `${partsExpected} — the surface that carried the Box 4 defect this rule exists for ` +
+      `has dropped out of its scope.`);
+  }
+  notes.push(`${adjChecked} composite calculations checked for an adjustment named in the ` +
+    `stem but not in the explanation (${partsSeen} task parts included).`);
+}
+
 console.log(`${BOLD}AAT Level 3 content quality${RESET}\n`);
 notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
 console.log('');

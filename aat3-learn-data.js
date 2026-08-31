@@ -1149,7 +1149,7 @@
               answer: 10220,
               unit: '£',
               hint: 'Adjust the input tax first — take out what is blocked, add the relief — then subtract from output tax.',
-              exp: 'Input tax = £11,900 − £260 (blocked) + £540 (relief) = £12,180. VAT payable = £22,400 − £12,180 = £10,220.',
+              exp: 'Input tax = £11,900 − £260 blocked + £540 bad debt relief = £12,180. VAT payable = £22,400 − £12,180 = £10,220. The entertaining VAT comes out because it is already inside the purchases figure, and bad debt relief goes in as input tax rather than coming off output tax — both adjustments land on the same side, which is why they can be netted before the subtraction.',
             },
           },
         },
@@ -1170,7 +1170,7 @@
           q: 'Output tax is £19,600. Input tax on purchases is £8,450, including £310 on client entertaining. Bad debt relief of £275 is claimable. What is the VAT payable, in pounds?',
           answer: 11185,
           unit: '£',
-          exp: 'Input tax = £8,450 − £310 + £275 = £8,415. Payable = £19,600 − £8,415 = £11,185. The entertaining VAT must come out because it is already inside the purchases figure.',
+          exp: 'Input tax = £8,450 − £310 + £275 = £8,415. Payable = £19,600 − £8,415 = £11,185. The entertaining VAT must come out because it is already inside the purchases figure, and bad debt relief is added because it is claimed as input tax and not as a reduction of output tax. Netting the relief against output tax instead gives the same £11,185 here, but misstates both Box 1 and Box 4 on the face of the return.',
         },
         {
           q: 'A business issues credit notes to customers during the period. What is the effect?',

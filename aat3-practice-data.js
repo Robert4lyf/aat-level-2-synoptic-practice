@@ -1388,7 +1388,7 @@
       type: 'numeric',
       q: 'For a quarter: output tax on sales £27,400; credit notes issued carrying £900 of VAT; input tax on purchases £14,200, including £340 on client entertaining; bad debt relief £610. What is the VAT payable, in pounds?',
       answer: 12030, unit: '£',
-      exp: 'Output tax £27,400 − £900 = £26,500. Input tax £14,200 − £340 blocked + £610 relief = £14,470. Payable = £26,500 − £14,470 = £12,030. The entertaining VAT comes out because it is already inside the purchases figure, and bad debt relief is added as input tax rather than deducted from output tax.',
+      exp: 'A credit note issued reduces output tax, so £27,400 − £900 = £26,500. Input tax £14,200 − £340 blocked + £610 relief = £14,470. Payable = £26,500 − £14,470 = £12,030. The entertaining VAT comes out because it is already inside the purchases figure, and bad debt relief is added as input tax rather than deducted from output tax.',
     },
     {
       id: 'P-2-11', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.1.1', 'TPFB-2.1.2'],
@@ -2437,7 +2437,7 @@
       type: 'numeric',
       q: 'For a quarter: output tax £14,200; input tax £19,850 of which £430 is blocked. What is the position with HMRC, in pounds?',
       answer: 5220, unit: '£',
-      exp: 'Recoverable input tax is £19,850 − £430 = £19,420. £19,420 − £14,200 = £5,220 repayable BY HMRC, because input tax exceeds output tax. The figure goes in Box 5 exactly as a payable one would — the box does not carry a sign, and it is the direction of the difference that tells the business which way the money moves.',
+      exp: 'Blocked VAT never enters Box 4, so recoverable input tax is £19,850 − £430 = £19,420. £19,420 − £14,200 = £5,220 repayable BY HMRC, because input tax exceeds output tax. The figure goes in Box 5 exactly as a payable one would — the box does not carry a sign, and it is the direction of the difference that tells the business which way the money moves.',
     },
     {
       id: 'P-2-122', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.13'],
@@ -2456,7 +2456,7 @@
       type: 'numeric',
       q: 'Output tax before adjustments is £26,400. A fuel scale charge of £522 applies, and a credit note is issued carrying £780 of VAT. What is the adjusted output tax, in pounds?',
       answer: 25707, unit: '£',
-      exp: 'The scale charge is VAT-inclusive, so the VAT it adds is £522 ÷ 6 = £87. Output tax becomes £26,400 + £87 − £780 = £25,707. Adding the full £522 rather than its VAT element would give £26,142 — the scale charge figure is never itself the adjustment.',
+      exp: 'The scale charge is VAT-inclusive, so the VAT it adds is £522 ÷ 6 = £87. The credit note issued comes off output tax rather than going into input tax, so output tax becomes £26,400 + £87 − £780 = £25,707. Adding the full £522 rather than its VAT element would give £26,142 — the scale charge figure is never itself the adjustment.',
     },
     {
       id: 'P-2-124', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.14'],
@@ -2731,7 +2731,7 @@
       q: 'Box 1 is £38,900, Box 2 is £4,200 and Box 4 is £27,650. What figure goes in Box 5, in pounds?',
       answer: 15450,
       unit: '£',
-      exp: 'Box 3 is Box 1 + Box 2 = £43,100. Box 5 is Box 3 − Box 4 = £43,100 − £27,650 = £15,450 payable. Box 2 is easy to overlook, and leaving it out understates the liability by the whole of it.',
+      exp: 'Box 3 is Box 1 + Box 2 = £38,900 + £4,200 = £43,100. Box 5 is Box 3 − Box 4 = £43,100 − £27,650 = £15,450 payable. Box 2 is easy to overlook, and leaving it out understates the liability by the whole of it.',
     },
     {
       id: 'P-3-31', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.2'],
@@ -2812,7 +2812,7 @@
       q: 'A VAT control account shows a credit balance of £16,400. A fuel scale charge adding £240 of output tax has not been posted and blocked input tax of £860 was wrongly recovered. What should the balance be, in pounds?',
       answer: 17500,
       unit: '£',
-      exp: '£16,400 + £240 + £860 = £17,500. Both adjustments increase what is owed: the scale charge adds output tax, and reversing input tax that should never have been claimed removes a deduction.',
+      exp: '£16,400 + £240 + £860 = £17,500. Both adjustments increase what is owed: the scale charge adds output tax, and reversing blocked input tax that should never have been claimed removes a deduction.',
     },
     {
       id: 'P-3-38', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
@@ -4556,7 +4556,7 @@
       type: 'numeric',
       q: 'Output tax £31,200; credit notes issued carrying £1,100 of VAT; input tax £16,800 including £460 blocked; bad debt relief £380. What is the VAT payable, in pounds?',
       answer: 13380, unit: '£',
-      exp: 'Output tax £31,200 − £1,100 = £30,100. Input tax £16,800 − £460 + £380 = £16,720. Payable = £30,100 − £16,720 = £13,380.',
+      exp: 'Output tax £31,200 − £1,100 = £30,100, because a credit note issued cancels output tax already declared. Input tax £16,800 − £460 + £380 = £16,720: the blocked £460 is already inside the purchases figure and has to come back out, and bad debt relief is claimed as input tax. Payable = £30,100 − £16,720 = £13,380. Each of the three adjustments belongs to one side only — move the credit note into input tax or the relief into output tax and the answer is wrong by twice the adjustment.',
     },
     {
       id: 'P-2-25', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.4'],
