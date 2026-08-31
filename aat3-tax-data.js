@@ -395,8 +395,9 @@
 
     /* ── Payroll (Outcome 4) ────────────────────────────────────────────────
        The specification EXCLUDES calculating Income Tax, National Insurance and
-       student loan repayments (TPFB 4.1.12), so no rates, thresholds or bands
-       appear here — the assessment supplies those figures. What is assessable
+       student loan repayments (the exclusion note beneath TPFB 4.1.11–4.1.12),
+       so no rates, thresholds or bands appear here — the assessment supplies
+       those figures. What is assessable
        is the framework: who registers, what is kept, what is filed, by when,
        and what happens when it is late. */
     payroll: {
@@ -563,7 +564,7 @@
       'The late payment penalty percentages and the days they apply from.',
       'The late payment interest rate, and the Bank of England base rate it is built on.',
       'The behaviour-based penalty table for errors and for failure to notify.',
-      'Income Tax, National Insurance and student loan figures for payroll tasks — the specification excludes calculating these (TPFB 4.1.12).'
+      'Income Tax, National Insurance and student loan figures for payroll tasks — the specification excludes calculating these (the exclusion note beneath TPFB 4.1.11–4.1.12).'
     ],
 
     /* Assessment shape, from a published Q2022 mock. The qualification
