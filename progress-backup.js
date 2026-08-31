@@ -82,12 +82,18 @@
 
   function writeAll(keys, store) {
     var s = store || root.localStorage;
+    /* Serialise everything BEFORE writing anything: encode() is the step on
+       our side that can throw, and an exception midway through a write loop
+       would leave the store half old and half new, with the in-memory
+       modules agreeing with neither. */
+    var pending = [];
     for (var k in keys) {
       if (!Object.prototype.hasOwnProperty.call(keys, k)) continue;
       if (!isProgressKey(k)) continue;           // never write a key we do not own
       if (keys[k] == null) continue;
-      s.setItem(k, encode(keys[k]));
+      pending.push([k, encode(keys[k])]);
     }
+    for (var i = 0; i < pending.length; i++) s.setItem(pending[i][0], pending[i][1]);
   }
 
   /* ── Export ─────────────────────────────────────────────────────────────── */
@@ -100,7 +106,22 @@
     for (var k in all) {
       if (!Object.prototype.hasOwnProperty.call(all, k)) continue;
       if (isDeviceKey(k)) continue;
-      out[k] = all[k];
+      var v = all[k];
+      /* The subject blob itself carries device-local state: settings, an
+         in-progress session, the planner. mergeSubject discards them on the
+         way in, but Replace mode copies the blob wholesale — so they are
+         stripped on the way OUT too, which also keeps a stale quiz and
+         someone's dark-mode out of the file and the sync payload. */
+      if (isObj(v) && (v.settings !== undefined || v.session !== undefined || v.planner !== undefined)) {
+        var c = {};
+        for (var f in v) {
+          if (!Object.prototype.hasOwnProperty.call(v, f)) continue;
+          if (f === 'settings' || f === 'session' || f === 'planner') continue;
+          c[f] = v[f];
+        }
+        v = c;
+      }
+      out[k] = v;
     }
     return out;
   }
@@ -272,6 +293,33 @@
       out.flash = fl;
     }
 
+    /* The mistake notebook is a story per question, not a set of monotonic
+       fields: `cleared` is deliberately set BACK to false by a later wrong
+       answer, so the generic boolean OR would resurrect "cleared" on every
+       merge after a re-miss and silently empty the notebook. Keep the whole
+       record from whichever side saw the question last — the same reasoning
+       as spaced repetition above — but never lose the larger count. */
+    if (isObj(local.mistakes) || isObj(incoming.mistakes)) {
+      var mm = {}, mid;
+      var lm = isObj(local.mistakes) ? local.mistakes : {};
+      var im = isObj(incoming.mistakes) ? incoming.mistakes : {};
+      var mTouched = function (r) {
+        return Math.max((isObj(r) && r.lastAt) || 0, (isObj(r) && r.clearedAt) || 0);
+      };
+      for (mid in lm) if (Object.prototype.hasOwnProperty.call(lm, mid)) mm[mid] = lm[mid];
+      for (mid in im) {
+        if (!Object.prototype.hasOwnProperty.call(im, mid)) continue;
+        var mcur = mm[mid], minc = im[mid];
+        if (!mcur) { mm[mid] = minc; continue; }
+        var mwin = mTouched(minc) > mTouched(mcur) ? minc : mcur, mf;
+        var mout = {};
+        for (mf in mwin) if (Object.prototype.hasOwnProperty.call(mwin, mf)) mout[mf] = mwin[mf];
+        mout.count = Math.max((isObj(mcur) && mcur.count) || 0, (isObj(minc) && minc.count) || 0);
+        mm[mid] = mout;
+      }
+      out.mistakes = mm;
+    }
+
     /* The streak is a single coherent story, not a set of fields: keep the
        side that scored most recently, but never lose the better best. */
     if (isObj(local.stats) && isObj(incoming.stats)) {
@@ -314,14 +362,28 @@
     return out;
   }
 
-  /* Replace: take the file wholesale, still leaving device keys alone. */
+  /* Replace: take the file wholesale, still leaving device keys alone — and
+     leaving the DEVICE-LOCAL fields inside each subject blob (settings,
+     session, planner) with the device, since an older file may still carry
+     them and "replace my progress" was never "adopt someone else's dark-mode
+     and their half-finished quiz". */
   function replaceAll(local, incoming) {
     var out = {}, k;
     for (k in local) if (Object.prototype.hasOwnProperty.call(local, k)) out[k] = local[k];
     for (k in incoming) {
       if (!Object.prototype.hasOwnProperty.call(incoming, k)) continue;
       if (!isProgressKey(k) || isDeviceKey(k)) continue;
-      out[k] = incoming[k];
+      var inc = incoming[k], loc = out[k];
+      if (isObj(inc) && isObj(loc)) {
+        var merged = {}, f;
+        for (f in inc) if (Object.prototype.hasOwnProperty.call(inc, f)) merged[f] = inc[f];
+        if (loc.settings !== undefined) merged.settings = loc.settings; else delete merged.settings;
+        if (loc.session !== undefined) merged.session = loc.session; else delete merged.session;
+        if (loc.planner !== undefined) merged.planner = loc.planner; else delete merged.planner;
+        out[k] = merged;
+      } else {
+        out[k] = inc;
+      }
     }
     return out;
   }

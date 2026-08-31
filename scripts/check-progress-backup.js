@@ -95,7 +95,16 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   const target = fakeStore();
   PB.applyImport(doc, 'replace', target);
   const back = PB.readAll(target);
-  eq(back.aatPrep_v2, A.aatPrep_v2, 'round trip preserves a subject blob exactly');
+  /* Device-local fields INSIDE the subject blob — settings, session, planner
+     — are stripped on export by design, matching the header's "what does NOT
+     travel" contract: Replace mode copies blobs wholesale, so leaving them in
+     the file would carry one device's dark-mode and half-finished quiz to
+     another. Everything else survives byte-identical. */
+  const expectedBlob = Object.assign({}, A.aatPrep_v2);
+  delete expectedBlob.settings; delete expectedBlob.session; delete expectedBlob.planner;
+  eq(back.aatPrep_v2, expectedBlob, 'round trip preserves the blob, minus its device-local fields');
+  ok(!('settings' in back.aatPrep_v2) && !('planner' in back.aatPrep_v2),
+    'settings and planner do not travel inside the blob');
   ok(!('multisubject_active' in back), 'round trip does not carry the active-subject key');
   ok(!('prep_v2_settings' in back), 'round trip does not carry device settings');
   eq(doc.format, PB.FORMAT, 'export is stamped with the format id');
@@ -131,14 +140,24 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   eq(Object.keys(m.flagged).sort(), ['q2', 'q3'], 'flags from both devices are kept');
   eq(Object.keys(m.badges).sort(), ['first-100', 'streak-7'], 'badges from both devices are kept');
   eq(m.mistakes.q2.cleared, true, 'a mistake cleared on either device stays cleared');
-  /* The line above only exercises absent-versus-true. A boolean that is
-     explicitly false locally must still flip when the file says true. */
+  /* The line above only exercises absent-versus-true. Within a record the
+     mistake notebook is a story, not a set of monotonic fields: `cleared`
+     is deliberately set BACK to false by a later wrong answer, so OR-ing
+     the booleans would empty the notebook on every merge after a re-miss.
+     The record whose latest event is newest wins, keeping the larger count. */
   const flags = PB.mergeSubject(
-    { learn: { taDone: { 'ta-9': false } }, mistakes: { q9: { count: 1, cleared: false } } },
-    { learn: { taDone: { 'ta-9': true } }, mistakes: { q9: { count: 1, cleared: true } } }
+    { learn: { taDone: { 'ta-9': false } }, mistakes: {
+        q9: { count: 2, lastAt: 2000, cleared: false },
+        q10: { count: 1, lastAt: 500, cleared: true, clearedAt: 3000 } } },
+    { learn: { taDone: { 'ta-9': true } }, mistakes: {
+        q9: { count: 1, lastAt: 500, cleared: true, clearedAt: 1000 },
+        q10: { count: 3, lastAt: 2000, cleared: false } } }
   );
   eq(flags.learn.taDone['ta-9'], true, 'a false boolean is raised to true by the imported file');
-  eq(flags.mistakes.q9.cleared, true, 'a mistake explicitly uncleared here is cleared by the file');
+  eq(flags.mistakes.q9.cleared, false, 'a question re-missed after it was cleared comes back to the notebook');
+  eq(flags.mistakes.q9.count, 2, 'the larger miss count survives whichever record wins');
+  eq(flags.mistakes.q10.cleared, true, 'a question cleared after its last miss stays cleared');
+  eq(flags.mistakes.q10.count, 3, 'the larger miss count survives when the cleared side wins too');
   eq(m.stats.topics.pobc, { attempts: 9, correct: 6 }, 'a topic only one device has is carried over');
   const l3 = PB.mergeAll(A, B).prep_v2_aat3;
   eq(Object.keys(l3.lessons).sort(), ['3A', '3B'], 'Level 3 lessons from both devices survive');

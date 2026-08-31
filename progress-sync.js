@@ -122,6 +122,15 @@
       init.body = JSON.stringify(body);
     }
     if (ifMatch != null) headers['If-Match'] = String(ifMatch);
+    /* A flush on pagehide/hidden is exactly when the browser tears the page
+       down and aborts its plain fetches with it. keepalive lets the request
+       outlive the page — but keepalive bodies are capped at 64 KiB, so a
+       large document falls back to the ordinary fetch rather than being
+       refused outright. */
+    if (root.document && root.document.visibilityState === 'hidden' &&
+        (init.body == null || init.body.length < 60000)) {
+      init.keepalive = true;
+    }
     return root.fetch(endpoint() + '/state', init);
   }
 

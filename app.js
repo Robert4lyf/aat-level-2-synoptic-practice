@@ -1115,7 +1115,15 @@
     daily: {},
     story: { v: 1, days: {} },
   });
-  const todayKey = () => new Date().toISOString().slice(0, 10);
+  /* Local calendar date, not toISOString(): the ISO string is UTC, which
+     flips the "day" at 1am for a UK user on BST (worse elsewhere) — studying
+     at half past midnight credited yesterday, and the daily challenge rolled
+     over at the wrong moment. */
+  const dayKey = (d) => {
+    const x = d || new Date();
+    return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+  };
+  const todayKey = () => dayKey(new Date());
   const Storage = {
     data: defaultData(),
     load() {
@@ -1234,8 +1242,13 @@
     studyDayStreak() {
       let streak = 0;
       const d = new Date();
+      /* Walk at local noon: stepping a midnight-adjacent time back a day in
+         local terms can land the UTC-keyed string two days back across a DST
+         change, silently skipping a day genuinely studied. Noon is at least
+         ten hours from either boundary. */
+      d.setHours(12, 0, 0, 0);
       for (;;) {
-        const k = d.toISOString().slice(0, 10);
+        const k = dayKey(d);
         const rec = this.data.daily[k];
         if (rec && (rec.xp > 0 || rec.answered > 0)) { streak++; d.setDate(d.getDate() - 1); }
         else if (streak === 0 && k === todayKey()) { d.setDate(d.getDate() - 1); } // today not studied yet — look at yesterday
@@ -8791,13 +8804,17 @@
         const subj = getSubject(id);
         openConfirm({
           title: `Reset ${subj.name} progress?`,
-          message: `This will permanently delete your stats, attempt history and saved settings for ${subj.name} on this device.`,
+          message: `This will permanently delete your stats, attempt history and saved settings for ${subj.name} on this device.${window.ProgressSync && window.ProgressSync.isEnabled && window.ProgressSync.isEnabled() ? ' Sync is on, so progress already synced will merge back from your other devices — turn sync off first for a clean start.' : ''}`,
           confirmLabel: 'Reset',
           onConfirm: () => {
             try { localStorage.removeItem(subjectStorageKey(id)); } catch (e) {}
             if (id === _activeSubjectId) Storage.data = defaultData();
-            closeConfirm();
-            render();
+            /* Reload rather than re-render, for the same reason the import
+               path does: this module and the Level 1/3 ones each hold their
+               saved data in memory, and a stale in-memory copy would write
+               the deleted progress straight back on its next save. */
+            try { sessionStorage.setItem('progressReset', subj.name); } catch (e) {}
+            location.reload();
           }
         });
       });
@@ -9315,6 +9332,11 @@
         showToast(_imp === 'sync' ? '🔄 Progress synced from your other device'
                 : _imp === 'replace' ? '✅ Progress replaced from your file'
                 : '✅ Progress combined with your file', 'success');
+      }
+      const _rst = sessionStorage.getItem('progressReset');
+      if (_rst) {
+        sessionStorage.removeItem('progressReset');
+        showToast(`🗑️ ${_rst} progress reset on this device`, 'success');
       }
     } catch (e) {}
     // Bind static header buttons once — they live outside #app and must not accumulate listeners

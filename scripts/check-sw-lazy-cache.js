@@ -76,7 +76,7 @@ function makeEnv(tag) {
       if (!stores.has(name)) stores.set(name, new Map());
       const m = stores.get(name);
       return {
-        addAll: async (urls) => urls.forEach(u => m.set(u, 'precached')),
+        addAll: async (urls) => urls.forEach(u => m.set(typeof u === 'string' ? u : u.url, 'precached')),
         put: async (req, res) => m.set(typeof req === 'string' ? req : req.url, res._body),
         keys: async () => [...m.keys()].map(url => ({ url, method: 'GET', mode: 'cors' })),
         match: async (req) => {
@@ -106,6 +106,8 @@ function makeEnv(tag) {
   const ctx = {
     self, caches, handlers, stores, fetchLog,
     Response: class { constructor(body, init) { this._body = body; Object.assign(this, init || {}); } },
+    Request: class { constructor(url, init) { this.url = typeof url === 'string' ? url : url.url; this.method = 'GET'; Object.assign(this, init || {}); } },
+    URL,
     fetch: async (req) => {
       const url = typeof req === 'string' ? req : req.url;
       fetchLog.push(url);

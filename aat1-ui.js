@@ -2093,9 +2093,22 @@
         });
         return;
       }
-      n.addEventListener('click', function () { handle(act, n); });
+      n.addEventListener('click', function (e) { handle(act, n, e); });
     });
   }
+
+  /* GHOST-TAP GUARD. Advancing rerenders synchronously, so the second click
+     of a double-tap lands on whatever new button now sits at the same
+     coordinates — in a mock that grades the next, untouched question as
+     blank, with no way back. Level 2 suppresses option clicks for 350ms
+     after a transition (app.js), and this is the same rule for this module.
+     Only trusted events are suppressed: the check scripts click
+     programmatically, back to back, and must not be throttled. */
+  var GUARD_MS = 350;
+  var lastAdvanceAt = 0;
+  var GUARDED_ACTS = { ans: 1, tf: 1, tfsubmit: 1, gap: 1, gapsubmit: 1,
+    numsubmit: 1, matchl: 1, matchr: 1, matchsubmit: 1, orderup: 1,
+    orderdown: 1, ordersubmit: 1, trycheck: 1, mocknext: 1, nextq: 1, next: 1 };
 
   function num(v) {
     var s = String(v == null ? '' : v).replace(/[£,\s]/g, '');
@@ -2120,7 +2133,9 @@
       '</button>';
   }
 
-  function handle(act, n) {
+  function handle(act, n, evt) {
+    if (GUARDED_ACTS[act] && evt && evt.isTrusted && Date.now() - lastAdvanceAt < GUARD_MS) return;
+    if (act === 'mocknext' || act === 'nextq' || act === 'next') lastAdvanceAt = Date.now();
     /* Turning sound OFF must not make a sound, and turning it on should — which
        is why this sits above the navigation click rather than in its list. */
     if (act === 'soundtoggle') {
