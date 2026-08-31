@@ -1044,6 +1044,188 @@ function finish() {
     ok(!afterUse.err, `the narrow sheet can be used${afterUse.err ? ': ' + afterUse.err : ''}`);
     ok(afterUse.value === '7', `and the figure reaches the answer box (got ${afterUse.value})`);
     ok(afterUse.closed === true, 'and "Use this value" puts the sheet away');
+
+    /* ── Level 2: a sum with no box to type it in ────────────────────────────
+       A typed answer was the original test for offering the pad, and it misses
+       a whole class of question. "Fixed costs are £10,000; variable cost is £5
+       per unit; 2,000 units are produced. Total cost is:" offers four figures
+       to choose between, and choosing needs the same sum as typing would.
+
+       Asserted as a CORRESPONDENCE over a real sweep rather than against one
+       hand-picked question: every question the sweep meets is looked up in the
+       bank, and what the screen did is compared with what the data says it
+       should do. A single example proves the flag was read once; this proves
+       nothing else is quietly getting a keypad, or quietly missing one. */
+    {
+      /* data.js assigns to a global `window`, so it is evaluated with one
+         supplied rather than required — requiring it throws in Node. */
+      const w = {};
+      const src = fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8');
+      new Function('window', src)(w);
+      const norm = t => String(t || '').replace(/\s+/g, ' ').replace(/\*\*/g, '').trim();
+      const byStem = new Map(w.ALL_QUESTIONS.map(q => [norm(q.q), q]));
+      const canFill = q => {
+        const t = q.type || 'mcq';
+        return t === 'numeric' || t === 'tablefill'
+          || (t === 'scenario' && (q.parts || []).some(x => x.type === 'numeric'));
+      };
+
+      /* ITS OWN PAGE. The checks above leave this one mid-question, scrolled,
+         at 390px with the sheet open — and a sweep that starts from there walks
+         a handful of questions and reports the correspondence as holding over
+         almost nothing. A fresh context costs a second and removes the
+         dependency on everything before it.
+
+         THE DRAW IS SEEDED. 24 of 646 questions carry the flag, so an unseeded
+         sweep of 60 meets one about nine times in ten — and a gate that passes
+         nine times in ten is a gate that fails for reasons nobody can
+         reproduce. */
+      const ctx3 = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+      const p3 = await ctx3.newPage();
+      await p3.addInitScript(() => localStorage.setItem('multisubject_active', 'aat'));
+      await p3.addInitScript(() => {
+        let s = 20260831 >>> 0;
+        Math.random = () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+      });
+      await p3.goto(base, { waitUntil: 'load' });
+      await p3.waitForFunction(() => {
+        const a = document.getElementById('app');
+        return a && a.textContent.trim().length > 40;
+      }, { timeout: 15000 }).catch(() => {});
+      const tap3 = async sel => {
+        const b = p3.locator(sel + ':not([disabled])').first();
+        if (await b.count() && await b.isVisible().catch(() => false)) {
+          await b.click({ timeout: 2500 }).catch(() => {});
+          await p3.waitForTimeout(90);
+          return true;
+        }
+        return false;
+      };
+      await tap3('#startBtn');
+      await tap3('[data-tab="home"]');
+      await tap3('#endlessBtn');
+      await p3.waitForSelector('.quiz-container', { timeout: 10000 }).catch(() => {});
+
+      const obs = [];
+      for (let i = 0; i < 60; i++) {
+        obs.push(await p3.evaluate(() => {
+          const el = document.querySelector('.question-text');
+          return {
+            stem: el ? el.textContent.replace(/\s+/g, ' ').trim() : null,
+            fab: !!document.getElementById('calcFab'),
+            use: !!document.getElementById('calcUse'),
+            keys: document.querySelectorAll('.calc-key').length,
+            hint: (document.querySelector('.calc-hint') || {}).textContent || null,
+          };
+        }));
+        await L2.answerCurrent(p3);
+        const nx = p3.locator('#nextBtn');
+        if (!(await nx.count())) break;
+        await nx.click({ timeout: 2500 }).catch(() => {});
+        await p3.waitForTimeout(80);
+      }
+
+      let matched = 0, wrongPad = 0, wrongUse = 0, mcqWithPad = 0, mcqNoPad = 0;
+      obs.forEach(o => {
+        const q = byStem.get(norm(o.stem));
+        if (!q) return;
+        matched++;
+        const wantPad = !!(q.calc || canFill(q));
+        if (o.fab !== wantPad) wrongPad++;
+        if (o.fab && o.use !== canFill(q)) wrongUse++;
+        if ((q.type || 'mcq') === 'mcq') { if (o.fab) mcqWithPad++; else mcqNoPad++; }
+      });
+
+      /* THE SWEEP MUST HAVE SEEN SOMETHING. A correspondence over nothing holds
+         trivially, which is how a navigation change that lands the sweep on an
+         empty screen turns this whole block green while checking nothing. */
+      ok(matched >= 30, `the sweep identified ${matched} questions in the bank`);
+      ok(mcqWithPad >= 1,
+        `and met ${mcqWithPad} multiple-choice question(s) that ask for a sum, which now get the pad`);
+      ok(mcqNoPad >= 10,
+        `and ${mcqNoPad} that do not, which still get none`);
+      ok(wrongPad === 0, `every question got the calculator exactly when the bank says it should (${wrongPad} wrong)`);
+      ok(wrongUse === 0, `and "Use this value" appeared only where there is a box to fill (${wrongUse} wrong)`);
+
+      /* On a question with no answer box the pad is a scratch pad, and the
+         button that promises to fill something must not be drawn — a control
+         that cannot do what it says is worse than no control. */
+      const scratch = obs.find(o => o.fab && !o.use);
+      ok(!!scratch, 'a multiple-choice question showed the pad as working-only');
+      if (scratch) {
+        ok(scratch.keys === KEYS.length,
+          `and it is the same ${KEYS.length}-key pad, not a reduced one (got ${scratch.keys})`);
+        ok(/Working only/.test(scratch.hint || ''),
+          `and says so rather than promising an answer box (got ${JSON.stringify(scratch.hint)})`);
+      }
+
+      /* SCOPE, asserted against the bank rather than the sweep: the flag is
+         authored, so the number of questions carrying it is a fact about the
+         content and a drop in it is a regression the sweep alone cannot see. */
+      const flagged = w.ALL_QUESTIONS.filter(q => q.calc);
+      ok(flagged.length >= 20,
+        `${flagged.length} questions in the bank are marked as needing working`);
+      const misflagged = flagged.filter(q => canFill(q));
+      ok(misflagged.length === 0,
+        misflagged.length
+          ? `${misflagged.map(q => q.id).join(', ')}: marked \`calc\` but already gets the pad from its type — the flag is for questions with no answer box`
+          : 'and none of them is a type that already had it');
+
+      /* EVERY QUESTION THE MACHINE CAN SEE IS ACCOUNTED FOR, one way or the
+         other. Money in the stem and figures in every option finds the
+         computational multiple-choice questions; it also finds nine that need
+         no sum at all, so the detector alone cannot decide. What it CAN do is
+         insist that each question it catches has been looked at: marked
+         `calc`, or named here with the reason it is not.
+
+         Without this, dropping the flag from one question is invisible — the
+         count stays healthy and the sweep may never draw it. */
+      const NEEDS_NO_SUM = {
+        'itbk-102': 'both figures are given; the question is which one is recorded',
+        'itbk-105': 'the £240 and the £40 are both in the stem; the answer is the entry',
+        'itbk-207': 'the £600 difference is stated; the answer is which error causes it',
+        'pobc-201': 'the £400 is stated; the answer is which error causes it',
+        'pobc-206': 'the £600 difference is stated; the answer is which error causes it',
+        'itbk-402': 'the right answer needs no arithmetic — £775 is the trap, and a ' +
+          'calculator here would walk the reader into it',
+        'poc-427': 'a spreadsheet formula question; B2 and B10 are cell references, not figures',
+        'poc-428': 'a spreadsheet formula question; the numbers are row references',
+        'poc-429': 'a spreadsheet formula question; the numbers are row references',
+      };
+      const moneyish = o => /[£$]?\d[\d,]*(\.\d+)?/.test(String(o));
+      const figCount = t => (String(t || '').match(/[£$]?\d[\d,]*(?:\.\d+)?/g) || []).length;
+      const caught = w.ALL_QUESTIONS.filter(q =>
+        (q.type || 'mcq') === 'mcq' && (q.opts || []).length > 0
+        && (q.opts || []).every(moneyish) && figCount(q.q) >= 2);
+      ok(caught.length >= 25,
+        `the computational-MCQ detector still finds ${caught.length} candidates to account for`);
+      const unaccounted = caught.filter(q => !q.calc && !NEEDS_NO_SUM[q.id]);
+      ok(unaccounted.length === 0,
+        unaccounted.length
+          ? `${unaccounted.map(q => q.id).join(', ')}: reads as a sum with no answer box but is ` +
+            `neither marked \`calc: true\` nor listed in NEEDS_NO_SUM with a reason`
+          : 'and every one is either marked as needing working or listed as not');
+      /* AND NOT BOTH. Marking a question `calc` while it is listed here as
+         needing no sum is a contradiction, and the flag would win silently:
+         `itbk-402` would get a calculator whose only use is to compute £775,
+         the trap its distractors are built from. The list is the reasoning;
+         the flag must agree with it. */
+      const contradictory = caught.filter(q => q.calc && NEEDS_NO_SUM[q.id]);
+      ok(contradictory.length === 0,
+        contradictory.length
+          ? `${contradictory.map(q => q.id).join(', ')}: marked \`calc: true\` AND listed in ` +
+            `NEEDS_NO_SUM — one of the two is wrong, and the flag is the half that ships`
+          : 'and none is both marked and excluded');
+      const staleExclusions = Object.keys(NEEDS_NO_SUM)
+        .filter(id => !caught.some(q => q.id === id));
+      ok(staleExclusions.length === 0,
+        staleExclusions.length
+          ? `${staleExclusions.join(', ')}: listed in NEEDS_NO_SUM but the detector no longer ` +
+            `catches them — the exclusion is stale and hides nothing`
+          : 'and no exclusion is stale');
+      await ctx3.close();
+    }
+
     await ctx2.close();
   } finally {
     await browser.close();

@@ -757,13 +757,13 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-099', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-099', calc: true, topic: 'itbk', difficulty: 'hard',
     q: 'A business has opening inventory of £8,000, purchases of £42,000 and closing inventory of £6,000. Cost of goods sold is:',
     opts: ['£44,000', '£56,000', '£36,000', '£50,000'],
     ans: 0,
     exp: 'Cost of goods sold = opening inventory + purchases − closing inventory = £8,000 + £42,000 − £6,000 = £44,000.' },
 
-  { id: 'itbk-100', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-100', calc: true, topic: 'itbk', difficulty: 'hard',
     q: 'A business purchases goods for £1,000 less 10% trade discount. What is recorded in the purchase ledger?',
     opts: ['£1,000', '£900', '£100', '£1,100'],
     ans: 1,
@@ -781,7 +781,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Trade discount is deducted before the invoice is raised, so it never enters the accounting records. Only the net figure actually charged is recorded. Settlement discount behaves differently: it is offered for prompt payment and is recorded when taken.' },
 
-  { id: 'itbk-103', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-103', calc: true, topic: 'itbk', difficulty: 'hard',
     q: 'A business sells goods on credit for £600 plus VAT at 20%. Which amount is recorded against the invoice in the sales day book?',
     opts: ['£600', '£720', '£120', '£480'],
     ans: 1,
@@ -854,14 +854,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Two debits of £90 (Purchases and Bank) total £180 with no corresponding credit, so debits exceed credits by exactly £180. Option B would give a credit excess; Option C is correctly balanced; Option D would also create a credit excess.' },
 
-  { id: 'itbk-111', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-111', calc: true, topic: 'itbk', difficulty: 'hard',
     q: 'An invoice is issued for £1,200 plus VAT at 20%. The total payable is:',
     opts: ['£1,200', '£1,440', '£1,020', '£960'],
     ans: 1,
     exp: 'VAT is charged on the net amount: £1,200 × 20% = £240, giving £1,440 gross. To work backwards from a gross figure, divide by 1.2 for the net, or by 6 for the VAT itself — a shortcut worth memorising.' },
 
 
-  { id: 'itbk-113', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-113', calc: true, topic: 'itbk', difficulty: 'hard',
     q: 'Net assets at year end are £45,000. The owner introduced additional capital of £10,000 during the year, opening capital was £30,000 and there were no drawings. What is the profit for the year?',
     opts: ['£5,000', '£15,000', '£25,000', '£55,000'],
     ans: 0,
@@ -2424,7 +2424,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-094', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-094', calc: true, topic: 'poc', difficulty: 'hard',
     q: 'Fixed costs are £10,000; variable cost is £5 per unit; 2,000 units are produced. Total cost is:',
     opts: ['£10,000', '£20,000', '£10,005', '£15,000'],
     ans: 1,
@@ -2451,7 +2451,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'In the total-cost function C = a + bx, "a" is the fixed cost (£8,000) and "b" is the variable cost per unit (£3).' },
 
-  { id: 'poc-101', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-101', calc: true, topic: 'poc', difficulty: 'hard',
     q: 'Total cost is £50,000 and units are 5,000. Average cost per unit is:',
     opts: ['£5', '£10', '£15', '£20'],
     ans: 1,
@@ -5042,13 +5042,13 @@ window.ALL_QUESTIONS.push(
 
   // ── ITBK additional hard questions ──────────────────────────────────────
 
-  { id: 'itbk-200', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-200', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
     q: 'The imprest petty cash fund is set at £150. At month-end, receipts total £112 and cash remaining in the tin is £38. What is the reimbursement cheque raised?',
     opts: ['£38', '£112', '£150', '£74'],
     ans: 1,
     exp: 'Under the imprest system the reimbursement always equals total vouchers (£112), restoring the fund to £150. Check: £38 + £112 = £150 ✓.' },
 
-  { id: 'itbk-201', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-201', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
     q: 'A supplier sends a credit note for £200 net (plus VAT at 20%). How is this recorded in the BUYER\'s books?',
     opts: [
       'Dr PLCA £240, Cr Purchase returns £200, Cr VAT £40',
@@ -5068,7 +5068,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A contra: Dr PLCA £600 (remove the payable) / Cr SLCA £600 (remove the receivable). No cash moves. The entry must also appear in the individual personal accounts for both the payables and receivables ledger.' },
 
-  { id: 'itbk-203', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-203', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
     q: 'At 1 April the SLCA has a Dr balance of £3,200. During April: credit sales £12,000; customer receipts £10,500; sales returns £400; discounts allowed £150; bad debt written off £200. What is the closing SLCA balance?',
     opts: ['£4,150', '£3,950', '£3,750', '£4,350'],
     ans: 1,
@@ -5084,7 +5084,7 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'The credit side records PAYMENTS out of the bank. A standing order to a supplier is a payment. All receipts (options A, B) appear on the debit side. An opening balance in credit would be a debit opening entry.' },
 
-  { id: 'itbk-205', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-205', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
     q: 'A customer settles their balance of £2,000 within the discount period, paying £1,960. What is the double entry for the DISCOUNT ALLOWED?',
     opts: [
       'Dr Discounts allowed £40, Cr SLCA £40',
@@ -5124,7 +5124,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Dr PLCA £480 / Cr Purchase returns £400 / Cr VAT control £80. The PLCA is debited (reducing the creditor). Purchase returns and VAT control are credited.' },
 
-  { id: 'itbk-209', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-209', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
     q: 'A bad debt of £840 is written off. The customer was VAT-registered and the original invoice included VAT at 20%. What is the VAT element that can be reclaimed (if the business uses the standard VAT accounting scheme)?',
     opts: ['£840', '£700', '£140', '£168'],
     ans: 2,
@@ -5162,14 +5162,14 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'An error of principle occurs when a transaction is posted to the correct side but the WRONG CLASS of account — here, a capital/non-current asset (equipment) is recorded as a revenue expense (office expenses). The capital vs revenue distinction is violated.' },
 
-  { id: 'pobc-203', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-203', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
     q: 'A transposition error occurs when rent of £450 is posted as £540. The trial balance total shows debits exceed credits by:',
     opts: ['£90', '£45', '£450', '£540'],
     ans: 0,
     exp: '£540 − £450 = £90. The same single amount is wrong on one side, creating a £90 imbalance. Transposition errors always produce a difference divisible by 9 (here 90 ÷ 9 = 10 — a useful check). A suspense account of £90 Cr would be opened to restore balance.' },
 
 
-  { id: 'pobc-205', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-205', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
     q: 'A business has output VAT of £18,400 and input VAT of £11,750 for the quarter. What amount is payable to HMRC?',
     opts: ['£18,400', '£11,750', '£6,650', '£30,150'],
     ans: 2,
@@ -5195,13 +5195,13 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'Option C is a complete omission — both the Dr (SLCA) and the Cr (Sales) entries are missing. Both sides are equally understated so the TB still agrees. Option A has two debits but no credit (Dr excess). Option B has Dr £600 and Cr £540 (£60 imbalance). Option D has only a debit and no credit — all three create TB imbalances.' },
 
-  { id: 'pobc-208', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-208', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
     q: 'A bank reconciliation shows: cash book balance £5,100; unpresented cheques £850; outstanding lodgements £1,200. What should the bank statement balance be?',
     opts: ['£5,100', '£4,750', '£5,450', '£6,150'],
     ans: 1,
     exp: 'Bank statement balance = Cash book balance + Unpresented cheques − Outstanding lodgements = £5,100 + £850 − £1,200 = £4,750. (Cheques written but not cleared inflate the cash book; lodgements paid in but not shown yet inflate the statement.)' },
 
-  { id: 'pobc-209', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-209', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
     q: 'After updating the cash book, the balance is £3,800 Dr. Unpresented cheques total £650 and outstanding lodgements total £420. The bank statement should show:',
     opts: ['£3,800', '£4,030', '£3,570', '£4,870'],
     ans: 1,
@@ -5211,13 +5211,13 @@ window.ALL_QUESTIONS.push(
 
 
 
-  { id: 'poc-202', topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-202', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'Budgeted factory overheads are £54,000 and budgeted machine hours are 9,000. Actual overheads incurred were £56,200 and actual machine hours worked were 9,000. What is the overhead absorption rate (OAR)?',
     opts: ['£6.00 per machine hour', '£6.24 per machine hour', '£54,000 in total', '£56,200 in total'],
     ans: 0,
     exp: 'OAR = Budgeted overheads ÷ Budgeted activity = £54,000 ÷ 9,000 = £6.00 per machine hour. The OAR is ALWAYS calculated using budgeted figures, not actual.' },
 
-  { id: 'poc-203', topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-203', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'Using the OAR of £6 per machine hour: actual machine hours worked were 9,000 but actual overheads incurred were £56,200. What is the absorption outcome?',
     opts: [
       'Over-absorbed by £2,200 — credit P&L',
@@ -5239,14 +5239,14 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'A direct cost is directly traceable to a specific unit of output. Timber used in a chair can be measured per chair — it is a direct material. Factory manager salary, depreciation and rent cannot be traced to individual units; they are indirect (overhead) costs.' },
 
-  { id: 'poc-207', topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-207', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'Inventory records using AVCO: opening balance 200 units at £4.00. Purchase: 300 units at £5.00. What is the new weighted average cost per unit (to 2 d.p.)?',
     opts: ['£4.50', '£4.60', '£4.00', '£5.00'],
     ans: 1,
     exp: 'New AVCO = Total cost ÷ Total units = ((200 × £4.00) + (300 × £5.00)) ÷ (200 + 300) = (£800 + £1,500) ÷ 500 = £2,300 ÷ 500 = £4.60 per unit.' },
 
 
-  { id: 'poc-209', topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-209', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
     q: 'A job requires 15 kg of material at £8/kg, 6 hours of direct labour at £12/hr, and overheads absorbed at £5 per labour hour. What is the total job cost?',
     opts: ['£282', '£252', '£222', '£312'],
     ans: 2,
@@ -6295,7 +6295,7 @@ window.ALL_QUESTIONS.push(
 
   /* ── ITBK-4.1  Enter receipts and payments into an analysed cash book ── */
 
-  { id: 'itbk-401', topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
+  { id: 'itbk-401', calc: true, topic: 'itbk', difficulty: 'medium', skill: 'itbk-cashbook', criteria: ['ITBK-4.1'],
     q: 'Till takings of £504, including VAT at 20%, are banked. Which figures are entered in the analysed cash book?',
     opts: [
       'Bank £504.00, cash sales £420.00, VAT £84.00',
@@ -6565,7 +6565,7 @@ window.ALL_QUESTIONS.push(
 
   /* ── POBC-4.2  Redraft the trial balance following adjustments ───────── */
 
-  { id: 'pobc-405', topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+  { id: 'pobc-405', calc: true, topic: 'pobc', difficulty: 'medium', skill: 'pobc-tb', criteria: ['POBC-4.2'],
     q: 'Wages has a debit balance of £31,450. A journal credits wages with £900. What is the redrafted balance?',
     opts: [
       '£30,550 debit, because a credit journal is on the opposite side to the balance',
@@ -6575,7 +6575,7 @@ window.ALL_QUESTIONS.push(
     ], ans: 0,
     exp: '£31,450 − £900 = £30,550, still a debit. A journal on the same side as the balance increases it and one on the opposite side decreases it, and that single rule holds for every account type. The balance only changes sides if the journal is larger than the balance.' },
 
-  { id: 'pobc-406', topic: 'pobc', difficulty: 'hard', skill: 'pobc-tb', criteria: ['POBC-4.2'],
+  { id: 'pobc-406', calc: true, topic: 'pobc', difficulty: 'hard', skill: 'pobc-tb', criteria: ['POBC-4.2'],
     q: 'The VAT control account has a credit balance of £1,780 and a journal debits it with £2,140. How does it appear in the redrafted trial balance?',
     opts: [
       '£360 in the debit column, because the journal exceeded the balance it reduced',
@@ -6888,7 +6888,7 @@ window.ALL_QUESTIONS.push(
     ], ans: 0,
     exp: 'A £1,800 variance is trivial against a £400,000 budget and alarming against a £6,000 one, so a policy of investigating anything over 5% cannot be applied to pound figures. The percentage makes the rule portable — and the adverse or favourable label still has to be attached.' },
 
-  { id: 'poc-418', topic: 'poc', difficulty: 'hard', skill: 'poc-budget', criteria: ['POC-3.2'],
+  { id: 'poc-418', calc: true, topic: 'poc', difficulty: 'hard', skill: 'poc-budget', criteria: ['POC-3.2'],
     q: 'A business investigates any variance above 5% of budget. Rent was budgeted at £12,000 and cost £12,900. What should happen?',
     opts: [
       'It is investigated, because the variance is 7.5% of budget',
