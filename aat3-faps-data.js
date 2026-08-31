@@ -1221,7 +1221,7 @@
               'The judgements stay with the person. Software knows which class each account was given, and applies the rule perfectly to that; it does not know whether the class was right. An account set up as an expense when it should have been an asset is emptied to profit every year without complaint, and the routine that does it is the same routine that would have been correct had the class been right.',
               'The period lock is the part that shows up in practice. It is what stops an entry being backdated into a year already reported, and it is why an adjustment found after the close goes into the current period rather than into the one it relates to.',
             ],
-            examtrap: 'Drawings is a capital-class account and is carried down, not transferred to the statement of profit or loss. It is closed off against capital instead, which is why it never touches the profit figure.',
+            examtrap: 'Drawings is a capital-class account, and its balance is never transferred to the statement of profit or loss. It is closed off against capital instead, which is why it never touches the profit figure.',
           },
         ],
         check: [
@@ -2330,9 +2330,9 @@
           {
             type: 'mcq',
             q: 'Total cost in the general ledger exceeds total cost in the asset register. What is the most likely cause?',
-            opts: ['An acquisition was posted to the ledger and never added to the register', 'A disposal was removed from the register and never posted to the ledger', 'The depreciation charge was computed on the wrong useful life', 'The depreciation journal was posted twice in the same period'],
+            opts: ['An acquisition was posted to the ledger and never added to the register', 'A disposal was posted to the ledger and never removed from the register', 'The depreciation charge was computed on the wrong useful life', 'The depreciation journal was posted twice in the same period'],
             ans: 0,
-            exp: 'The ledger holding more cost than the register means the register is short of an asset, which points at an acquisition that reached the double entry and not the memorandum record. A disposal removed only from the register would leave the register short too, but of an asset the ledger still carries — the difference is which record is behind.',
+            exp: 'The ledger holding more cost than the register means the register is short of an asset, which points at an acquisition that reached the double entry and not the memorandum record. A disposal posted only in the ledger produces the opposite symptom — the cost has left the ledger while the register still carries the asset, so the register exceeds the ledger. A wrong life or a doubled charge moves depreciation, not cost.',
           },
           {
             type: 'truefalse',
@@ -4246,7 +4246,7 @@
             ],
           },
           {
-            h: 'Four accounts that can fall either way',
+            h: 'Five balances that can fall either way',
             table: {
               headers: ['Account', 'Debit balance means', 'Credit balance means'],
               rows: [
@@ -5115,15 +5115,15 @@
     {
       id: 'F-2-12', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.4.1', 'FAPS-2.4.4'],
       type: 'truefalse',
-      q: 'Identify whether each account is carried down rather than transferred to the statement of profit or loss.',
+      q: 'Identify whether each account\'s balance is transferred to the statement of profit or loss at the period end.',
       statements: [
-        { text: 'Inventory.', answer: true },
-        { text: 'Wages.', answer: false },
-        { text: 'Capital.', answer: true },
-        { text: 'Sales revenue.', answer: false },
-        { text: 'Drawings.', answer: true },
+        { text: 'Inventory.', answer: false },
+        { text: 'Wages.', answer: true },
+        { text: 'Capital.', answer: false },
+        { text: 'Sales revenue.', answer: true },
+        { text: 'Drawings.', answer: false },
       ],
-      exp: 'Assets, liabilities and capital describe a position on a date, so they are carried down and brought down into the next period. Wages and sales measure a period that has ended and are transferred out, leaving their accounts at nil. Drawings is a capital-class account, closed off against capital rather than against profit.',
+      exp: 'Wages and sales revenue measure a period that has ended, so their balances are transferred to the statement of profit or loss and the accounts start again at nil. Inventory and capital describe a position on a date and are carried down instead. Drawings is the trap: its balance does leave the account, but it is closed off against capital, not against profit — it never touches the statement of profit or loss.',
     },
     {
       id: 'F-2-13', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.4.3'],

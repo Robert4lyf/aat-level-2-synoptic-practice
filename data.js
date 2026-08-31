@@ -92,13 +92,13 @@ window.ALL_QUESTIONS = [
   { id: 'itbk-006', topic: 'itbk', difficulty: 'easy',
     q: 'A credit balance on a customer\'s account indicates:',
     opts: [
-      'A document reducing the amount a customer owes',
-      'A document requesting payment from a credit customer',
-      'A document ordering goods from a chosen supplier',
-      'A document confirming goods have arrived and been checked',
+      'The customer has overpaid or been issued a credit note',
+      'The customer owes more than their agreed credit limit',
+      'A sales invoice has been posted twice to the account',
+      'The customer has been charged interest for late payment',
     ],
     ans: 0,
-    exp: 'Customers normally have debit balances. A credit balance means the customer has overpaid or has been issued a credit note — the business owes them.' },
+    exp: 'Customers normally have debit balances. A credit balance means the customer has overpaid or has been issued a credit note — the business owes them. Owing beyond a limit, a doubled invoice and interest charged would all push the balance further to the debit side, not into credit.' },
 
   { id: 'itbk-007', topic: 'itbk', difficulty: 'easy',
     q: 'A debit balance on the rent account represents:',
@@ -506,13 +506,13 @@ window.ALL_QUESTIONS = [
   { id: 'itbk-050', topic: 'itbk', difficulty: 'easy',
     q: 'Which document is sent by a seller to request payment?',
     opts: [
-      'The amount owed to suppliers for goods bought on credit',
-      'The amount owed by customers for goods sold on credit',
-      'The value of the inventory held at the reporting date',
-      'The capital invested in the business by its owner',
+      'A sales invoice',
+      'A remittance advice',
+      'A credit note',
+      'A delivery note',
     ],
     ans: 0,
-    exp: 'A sales invoice requests payment from the buyer, showing the amount owed, the payment terms and the due date.' },
+    exp: 'A sales invoice requests payment from the buyer, showing the amount owed, the payment terms and the due date. A remittance advice travels the other way, with the payment; a credit note reduces what is owed; a delivery note accompanies the goods and asks for nothing.' },
 
   { id: 'itbk-051', topic: 'itbk', difficulty: 'easy',
     q: 'Which document is used internally to correct errors in the ledger?',
@@ -3184,10 +3184,10 @@ window.ALL_QUESTIONS = [
       'Production costs and the productivity of the resources used',
       'The selling price of the product and nothing else',
       'The level of demand shown by consumers for the product',
-      'The wage rates paid to the workers producing the product',
+      'The tastes and preferences of consumers in the market',
     ],
     ans: 0,
-    exp: 'Supply depends primarily on production costs, the productivity of inputs and the prices of related inputs.' },
+    exp: 'Supply depends primarily on production costs, the productivity of inputs and the prices of related inputs. Consumer demand and tastes shape the demand curve, not the supply curve — and price alone is not the whole story on either side.' },
 
   { id: 'besy-075', topic: 'besy', difficulty: 'easy',
     q: 'What is sustainability reporting?',
@@ -3677,17 +3677,19 @@ window.ALL_QUESTIONS.push(
 
   { id: 'poc-num-003', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£',
     generate: function () {
-      const vc = window._QH.r(5, 30);
-      const sp = vc + window._QH.r(3, 20);
-      const ans = sp - vc;
+      const dm = window._QH.rs(2000, 9000, 250);
+      const dl = window._QH.rs(2000, 9000, 250);
+      const de = window._QH.rs(200, 1000, 100);
+      const ans = dm + dl + de;
       return {
-        q: 'Selling price is £' + sp + ' per unit and variable cost is £' + vc + ' per unit. What is the contribution per unit?',
+        q: 'Direct materials cost £' + window._QH.fmt(dm) + ', direct labour £' + window._QH.fmt(dl) + ' and direct expenses £' + window._QH.fmt(de) + '. What is the prime cost?',
         answer: ans,
         steps: [
-          'Contribution per unit = selling price − variable cost = £' + sp + ' − £' + vc + ' = £' + ans + '.',
-          'The contribution per unit is £' + ans + '.'
+          'Prime cost = direct materials + direct labour + direct expenses.',
+          'Prime cost = £' + window._QH.fmt(dm) + ' + £' + window._QH.fmt(dl) + ' + £' + window._QH.fmt(de) + ' = £' + window._QH.fmt(ans) + '.',
+          'The prime cost is £' + window._QH.fmt(ans) + '.'
         ],
-        exp: 'Contribution = selling price − variable cost = £' + sp + ' − £' + vc + ' = £' + ans + ' per unit.'
+        exp: 'Prime cost is the total of the DIRECT costs only: £' + window._QH.fmt(dm) + ' + £' + window._QH.fmt(dl) + ' + £' + window._QH.fmt(de) + ' = £' + window._QH.fmt(ans) + '. Overheads join later, to make production cost.'
       };
     } },
 
@@ -3741,69 +3743,60 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-007', topic: 'poc', difficulty: 'medium', type: 'numeric',
+  { id: 'poc-num-007', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
     generate: function () {
-      const contrib = window._QH.pick([4, 5, 6, 8, 10, 12]);
-      const beUnits = window._QH.rs(1500, 6000, 500);
-      const fc = contrib * beUnits;
+      const rate = window._QH.pick([10, 12, 14, 16]);
+      const basicH = window._QH.r(35, 40);
+      const otH = window._QH.r(2, 10);
+      const ans = basicH * rate + otH * rate * 1.5;
       return {
-        q: 'Fixed costs are £' + window._QH.fmt(fc) + ' and contribution per unit is £' + contrib + '. What is the break-even point in units?',
-        answer: beUnits,
+        q: 'An employee is paid £' + rate + ' per hour for a basic ' + basicH + '-hour week, with overtime at time-and-a-half. This week they worked ' + (basicH + otH) + ' hours. What is their gross pay for the week?',
+        answer: ans,
         steps: [
-          'Break-even units = fixed costs ÷ contribution per unit.',
-          'Break-even = £' + window._QH.fmt(fc) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(beUnits) + '.',
-          'The break-even point is ' + window._QH.fmt(beUnits) + ' units.'
+          'Basic pay = ' + basicH + ' × £' + rate + ' = £' + window._QH.fmt(basicH * rate) + '.',
+          'Overtime = ' + otH + ' hours at £' + (rate * 1.5) + ' (time-and-a-half) = £' + window._QH.fmt(otH * rate * 1.5) + '.',
+          'Gross pay = £' + window._QH.fmt(basicH * rate) + ' + £' + window._QH.fmt(otH * rate * 1.5) + ' = £' + window._QH.fmt(ans) + '.'
         ],
-        exp: 'Break-even units = fixed costs ÷ contribution per unit = £' + window._QH.fmt(fc) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(beUnits) + ' units.'
+        exp: 'Basic pay is ' + basicH + ' × £' + rate + ' = £' + window._QH.fmt(basicH * rate) + ', and the ' + otH + ' overtime hours are paid at time-and-a-half, £' + (rate * 1.5) + ' each, adding £' + window._QH.fmt(otH * rate * 1.5) + '. Gross pay is £' + window._QH.fmt(ans) + '.'
       };
     } },
 
-  { id: 'poc-num-008', topic: 'poc', difficulty: 'hard', type: 'numeric',
+  { id: 'poc-num-008', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£',
     generate: function () {
-      const beUnits = window._QH.rs(2000, 5000, 250);
-      const margin = window._QH.rs(500, 3000, 250);
-      const budgeted = beUnits + margin;
+      const oar = window._QH.pick([4, 5, 6, 8, 10]);
+      const actH = window._QH.rs(8000, 15000, 500);
+      const absorbed = oar * actH;
+      const diff = window._QH.rs(2000, 12000, 500);
+      const actual = absorbed - diff;
       return {
-        q: 'Budgeted sales are ' + window._QH.fmt(budgeted) + ' units and break-even is ' + window._QH.fmt(beUnits) + ' units. What is the margin of safety in units?',
-        answer: margin,
+        q: 'Overheads are absorbed at £' + oar + ' per labour hour. Actual labour hours were ' + window._QH.fmt(actH) + ' and actual overheads came to £' + window._QH.fmt(actual) + '. By how much are overheads over-absorbed?',
+        answer: diff,
         steps: [
-          'Margin of safety = budgeted sales − break-even sales.',
-          'Margin of safety = ' + window._QH.fmt(budgeted) + ' − ' + window._QH.fmt(beUnits) + ' = ' + window._QH.fmt(margin) + '.',
-          'The margin of safety is ' + window._QH.fmt(margin) + ' units.'
+          'Overheads absorbed = ' + window._QH.fmt(actH) + ' hours × £' + oar + ' = £' + window._QH.fmt(absorbed) + '.',
+          'Over-absorption = absorbed − actual = £' + window._QH.fmt(absorbed) + ' − £' + window._QH.fmt(actual) + ' = £' + window._QH.fmt(diff) + '.',
+          'Overheads are over-absorbed by £' + window._QH.fmt(diff) + '.'
         ],
-        exp: 'Margin of safety = budgeted − break-even = ' + window._QH.fmt(budgeted) + ' − ' + window._QH.fmt(beUnits) + ' = ' + window._QH.fmt(margin) + ' units.'
+        exp: 'Absorbed overhead is the actual hours at the predetermined rate: ' + window._QH.fmt(actH) + ' × £' + oar + ' = £' + window._QH.fmt(absorbed) + '. Actual overheads were £' + window._QH.fmt(actual) + ', so £' + window._QH.fmt(diff) + ' more was charged into production than was really spent — an over-absorption, credited back in the costing records.'
       };
     } },
 
   { id: 'poc-num-009', topic: 'poc', difficulty: 'hard', type: 'numeric',
     generate: function () {
-      const contrib = window._QH.pick([4, 5, 6, 8, 10]);
-      const reqUnits = window._QH.rs(3000, 8000, 500);
-      const fc = window._QH.rs(8000, 30000, 1000);
-      let targetProfit = contrib * reqUnits - fc;
-      if (targetProfit <= 1000) {
-        const safeFc = Math.max(4000, contrib * reqUnits - window._QH.rs(8000, 20000, 1000));
-        targetProfit = contrib * reqUnits - safeFc;
-        return {
-          q: 'Fixed costs £' + window._QH.fmt(safeFc) + ', contribution per unit £' + contrib + '. How many units must be sold to achieve a target profit of £' + window._QH.fmt(targetProfit) + '?',
-          answer: reqUnits,
-          steps: [
-            'Add target profit to fixed costs: £' + window._QH.fmt(safeFc) + ' + £' + window._QH.fmt(targetProfit) + ' = £' + window._QH.fmt(safeFc + targetProfit) + '.',
-            'Divide by contribution per unit: £' + window._QH.fmt(safeFc + targetProfit) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + '.',
-            'The business must sell ' + window._QH.fmt(reqUnits) + ' units.'
-          ],
-          exp: 'Required units = (fixed costs + target profit) ÷ contribution per unit = (£' + window._QH.fmt(safeFc) + ' + £' + window._QH.fmt(targetProfit) + ') ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + ' units.'
-        };
-      }
+      const r1 = window._QH.pick([2, 3, 4]);
+      const r2 = r1 + 1;
+      const n1 = window._QH.rs(100, 200, 25);
+      const extra = window._QH.rs(20, 80, 10);
+      const total = n1 + extra;
+      const ans = n1 * r1 + extra * r2;
       return {
-        q: 'Fixed costs £' + window._QH.fmt(fc) + ', contribution per unit £' + contrib + '. How many units must be sold to achieve a target profit of £' + window._QH.fmt(targetProfit) + '?',
-        answer: reqUnits,
+        q: 'A differential piecework scheme pays £' + r1 + ' per unit for the first ' + n1 + ' units in a week and £' + r2 + ' per unit above that. An employee produces ' + total + ' units. What is their gross pay?',
+        answer: ans,
         steps: [
-          'Add target profit to fixed costs: £' + window._QH.fmt(fc) + ' + £' + window._QH.fmt(targetProfit) + ' = £' + window._QH.fmt(fc + targetProfit) + '.',
-          'Divide by contribution per unit: £' + window._QH.fmt(fc + targetProfit) + ' ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + '.',
-          'The business must sell ' + window._QH.fmt(reqUnits) + ' units.'
+          'First ' + n1 + ' units at £' + r1 + ' = £' + window._QH.fmt(n1 * r1) + '.',
+          'Remaining ' + extra + ' units at £' + r2 + ' = £' + window._QH.fmt(extra * r2) + '.',
+          'Gross pay = £' + window._QH.fmt(n1 * r1) + ' + £' + window._QH.fmt(extra * r2) + ' = £' + window._QH.fmt(ans) + '.'
         ],
-        exp: 'Required units = (fixed costs + target profit) ÷ contribution per unit = (£' + window._QH.fmt(fc) + ' + £' + window._QH.fmt(targetProfit) + ') ÷ £' + contrib + ' = ' + window._QH.fmt(reqUnits) + ' units.'
+        exp: 'Differential piecework pays each band at its own rate — the higher rate applies only to the units ABOVE the band boundary, not to all of them. £' + window._QH.fmt(n1 * r1) + ' for the first ' + n1 + ' units plus £' + window._QH.fmt(extra * r2) + ' for the ' + extra + ' above gives £' + window._QH.fmt(ans) + '.'
       };
     } },
 
@@ -4755,7 +4748,7 @@ window.ALL_QUESTIONS.push(
   { id: 'sc-010', topic: 'pobc', difficulty: 'medium', type: 'scenario',
     setup: 'Harbour Supplies keeps a purchases ledger control account. On 1 May the balance was £18,000 Cr. During May: credit purchases were £47,000, payments to suppliers were £41,000, purchases returns were £1,300, and a contra of £700 was made against the sales ledger.',
     parts: [
-      { type: 'numeric', q: 'What is the closing balance on the purchases ledger control account at 31 May?', answer: 22000, unit: '£', exp: 'Start with what was owed, add credit purchases, then deduct everything that reduces the debt: 18,000 + 47,000 − 41,000 payments − 1,300 returns − 700 discounts = £22,000. It is a credit balance because the business owes it.' },
+      { type: 'numeric', q: 'What is the closing balance on the purchases ledger control account at 31 May?', answer: 22000, unit: '£', exp: 'Start with what was owed, add credit purchases, then deduct everything that reduces the debt: 18,000 + 47,000 − 41,000 payments − 1,300 returns − 700 contra = £22,000. It is a credit balance because the business owes it.' },
       { type: 'mcq', q: 'What should the closing PLCA balance agree with?',
         opts: ['The total of the individual supplier balances in the purchases ledger', 'The balance shown on the bank statement at the end of the month', 'The net VAT figure reported to HMRC on the quarterly return', 'The total of the individual customer balances in the sales ledger'],
         ans: 0, exp: 'The PLCA is a summary account — it must agree with the total of the individual supplier balances.' },
@@ -4878,20 +4871,20 @@ window.ALL_QUESTIONS.push(
     exp: 'VAT on purchases, trade vs settlement discounts, purchases returns day book, and running payable balances.' },
 
   { id: 'sc-019', topic: 'pobc', difficulty: 'hard', type: 'scenario',
-    setup: 'At 30 April, the sales ledger control account (SLCA) shows a closing balance of £18,400 Dr. The list of individual trade receivable balances totals £17,950. Investigation reveals: (1) A credit note of £300 issued to a customer was omitted from the sales returns day book. (2) A customer payment of £150 was posted to the wrong customer account (correct total). (3) A sales invoice of £500 was entered twice in the sales day book.',
+    setup: 'At 30 April, the sales ledger control account (SLCA) shows a closing balance of £18,400 Dr. The list of individual trade receivable balances totals £17,950. Investigation reveals: (1) The sales returns day book was undercast by £300, and the wrong total was posted. (2) A customer payment of £150 was posted to the wrong customer\'s account (the total posted was correct). (3) A credit note of £150 was posted twice to one customer\'s individual account; the day book entry itself was correct.',
     parts: [
       { type: 'mcq', q: 'Which of the three errors would cause the SLCA not to agree with the individual ledger list?',
         opts: ['Error 1 only', 'Error 3 only', 'Errors 1 and 3', 'Error 2 only'],
-        ans: 2, exp: 'Error 1 (omission from day book) affects the SLCA only. Error 3 (duplicate invoice) overestimates the SLCA. Error 2 (wrong customer account) affects only the individual ledger — the total and SLCA are both correct.' },
-      { type: 'mcq', q: 'After correcting error 1 (the omitted credit note of £300), the SLCA balance becomes:',
+        ans: 2, exp: 'Error 1 lives in the day book TOTAL, which only the SLCA is posted from, so the SLCA credit was £300 short. Error 3 lives in an individual account, which only the list picks up, so the list is £150 short. Error 2 moves £150 between two accounts inside the list — its total, and the SLCA, both stay right.' },
+      { type: 'mcq', q: 'After correcting error 1 (the £300 undercast), the SLCA balance becomes:',
         opts: ['£18,100', '£18,700', '£18,400', '£17,650'],
-        ans: 0, exp: 'The SLCA needs a debit to the sales returns account and a credit to the SLCA of £300. New SLCA: £18,400 − £300 = £18,100.' },
+        ans: 0, exp: 'The missing £300 of sales returns is posted: debit sales returns, credit SLCA. New SLCA: £18,400 − £300 = £18,100.' },
       { type: 'mcq', q: 'Error 2 (payment posted to wrong customer account) is an example of:',
         opts: ['Error of omission', 'Error of commission', 'Error of principle', 'Compensating error'],
         ans: 1, exp: 'Posting to the wrong account of the same type (trade receivable) is an error of commission.' },
-      { type: 'mcq', q: 'After correcting all three errors, the SLCA should equal the individual ledger list. What correction is needed for error 3?',
-        opts: ['Debit SLCA £500; credit sales £500', 'Credit SLCA £500; debit sales £500', 'No correction needed — it self-corrects', 'Debit suspense £500; credit SLCA £500'],
-        ans: 1, exp: 'The duplicate posting inflated the SLCA by £500. To correct: credit SLCA £500 and debit sales £500, reversing the duplicate.' },
+      { type: 'mcq', q: 'What correction does error 3 need, and where does that leave the two records?',
+        opts: ['Add £150 back to the customer\'s individual account; the SLCA needs no entry', 'Credit the SLCA £150 so it matches the individual account', 'Debit suspense £150; credit SLCA £150', 'No correction needed — it self-corrects at the next posting'],
+        ans: 0, exp: 'The duplicate exists only in the individual account — the double entry in the ledger was never wrong, so only the memorandum record is corrected. Removing the extra credit note takes the list to £17,950 + £150 = £18,100, which agrees with the corrected SLCA of £18,100: the £450 difference was £300 on one side and £150 on the other.' },
     ],
     exp: 'Sales ledger control account reconciliation, error types, and correction journal entries.' },
 

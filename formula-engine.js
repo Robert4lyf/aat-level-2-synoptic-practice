@@ -633,6 +633,12 @@
       if (nd.k === 'range') {
         var rc = rangeCells(nd, sheet);
         for (var j = 0; j < rc.values.length; j++) out.push({ v: rc.values[j], fromRange: true });
+      } else if (nd.k === 'ref') {
+        /* A single cell reference follows the RANGE rule, as in Excel: text
+           in a referenced cell is ignored by SUM, not coerced — =SUM(A1)
+           with "abc" in A1 is 0, not #VALUE!. Only a value typed directly
+           into the formula must convert. */
+        out.push({ v: evalNode(nd, sheet), fromRange: true });
       } else {
         out.push({ v: evalNode(nd, sheet), fromRange: false });
       }

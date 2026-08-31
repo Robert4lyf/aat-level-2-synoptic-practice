@@ -186,7 +186,7 @@
         { text: 'An assessment is usually lower than the true liability.', answer: false },
         { text: 'Penalties and interest continue to run while an assessment is outstanding.', answer: true },
       ],
-      exp: 'An assessment creates an enforceable debt but the return remains due, and filing it displaces the assessment. The normal limit is four years, extended to twenty for deliberate loss of tax. Assessments are typically HIGHER than the truth, because HMRC will not assume input tax it cannot see.',
+      exp: 'An assessment creates an enforceable debt but the return remains due, and filing it displaces the assessment. The normal limit is four years, extended to twenty for deliberate loss of tax. An assessment may come out too high or too low — too high because HMRC will not assume input tax it cannot see, too low because it works from incomplete information — so "usually lower" is not a claim anyone can make.',
     },
 
     {
@@ -1553,11 +1553,11 @@
       opts: [
         'VAT on an invoice may be rounded down to the nearest penny',
         'VAT on an invoice must be rounded to the nearest whole pound',
-        'VAT on the return must be shown to the nearest penny',
+        'The return’s value boxes must be completed in pounds and pence',
         'VAT must be rounded up wherever a fraction of a penny arises',
       ],
       ans: 0,
-      exp: 'The concession on an invoice runs in the taxpayer’s favour: a fraction of a penny may be ignored. Whole pounds belong on the return rather than the invoice, and there is no rule anywhere requiring VAT to be rounded up.',
+      exp: 'The concession on an invoice runs in the taxpayer’s favour: a fraction of a penny may be ignored. On the return it is the VAT boxes (1 to 5) that carry pounds and pence — the value boxes hold whole pounds — and there is no rule anywhere requiring VAT to be rounded up.',
     },
     {
       id: 'P-2-39', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.4'],
@@ -2112,13 +2112,13 @@
       type: 'mcq',
       q: 'How should the figures on a VAT return itself be expressed?',
       opts: [
-        'In whole pounds, with the pence dropped',
-        'In pounds and pence, exactly as recorded',
-        'Rounded up to the next whole pound',
-        'To the nearest ten pounds throughout',
+        'Pounds and pence in the VAT boxes; whole pounds in the value boxes',
+        'Whole pounds in every box, with the pence simply dropped',
+        'Pounds and pence in every box, exactly as the records hold them',
+        'Whole pounds in the VAT boxes; pounds and pence in the value boxes',
       ],
       ans: 0,
-      exp: 'The return is completed in whole pounds. That is a different rule from the one on invoices, where VAT may be rounded DOWN to the nearest penny in the taxpayer’s favour. Two rounding rules apply at two different stages, and mixing them up produces a return that does not agree to the VAT account for reasons nobody can explain.',
+      exp: 'The return has two kinds of box and two conventions. The VAT boxes (1 to 5) carry pounds and pence — a published mock return shows Box 4 as £8,464.58 — while the value boxes (6 to 9) hold net values in whole pounds. That is a different rule again from the one on invoices, where the total VAT may be rounded DOWN to the nearest penny in the taxpayer’s favour, and where a task states its own rounding rule, that instruction beats any convention.',
     },
     {
       id: 'P-2-90', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.3', 'TPFB-2.3.12'],
@@ -2491,6 +2491,19 @@
       answer: 0, unit: '£',
       exp: '£16,500 × 20% = £3,300 is added to output tax in Box 1 and the same £3,300 recovered as input tax in Box 4, so the net effect is £0. The value also goes into Box 6 and Box 7. The mechanism is designed to be neutral for a fully taxable business — its purpose is to stop overseas suppliers having an advantage, not to raise tax from the customer.',
     },
+    {
+      id: 'P-2-127', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.7'],
+      type: 'mcq',
+      q: 'A business sells a car it has used for several years. Input tax on the purchase was blocked because the car was available for private use. How is the sale treated?',
+      opts: [
+        'As an exempt supply, with no output tax charged',
+        'As a standard-rated supply, with output tax on the full price',
+        'As outside the scope of VAT, because the car is second-hand',
+        'As zero-rated, because the input tax was never recovered',
+      ],
+      ans: 0,
+      exp: 'The sale mirrors the purchase. Because the input tax was blocked on the way in, the disposal is exempt on the way out — charging output tax would tax the same value twice. A van is the other way round: its input tax was recovered, so its sale is a standard-rated supply like any other disposal of a business asset. Second-hand status on its own changes nothing.',
+    },
     /* ── Outcome 3 — review and verify (20%) ───────────────────────────── */
     {
       id: 'P-3-01', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.1.1', 'TPFB-3.1.2'],
@@ -2728,10 +2741,10 @@
     {
       id: 'P-3-30', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.1'],
       type: 'numeric',
-      q: 'Box 1 is £38,900, Box 2 is £4,200 and Box 4 is £27,650. What figure goes in Box 5, in pounds?',
-      answer: 15450,
+      q: 'Box 1 is £38,900, Box 2 is nil and Box 4 is £27,650. What figure goes in Box 5, in pounds?',
+      answer: 11250,
       unit: '£',
-      exp: 'Box 3 is Box 1 + Box 2 = £38,900 + £4,200 = £43,100. Box 5 is Box 3 − Box 4 = £43,100 − £27,650 = £15,450 payable. Box 2 is easy to overlook, and leaving it out understates the liability by the whole of it.',
+      exp: 'Box 3 is Box 1 + Box 2 = £38,900 + £0 = £38,900. Box 5 is Box 3 − Box 4 = £38,900 − £27,650 = £11,250 payable. Box 2 is nil for a business without Northern Ireland acquisitions — which is the assessed case in this unit — but Box 3 is still defined as the sum of the two, so the structure of the calculation does not change.',
     },
     {
       id: 'P-3-31', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.2'],
@@ -3070,11 +3083,11 @@
       q: 'Identify whether each statement about the VAT return boxes is true or false.',
       statements: [
         { text: 'Box 5 is always the difference between Box 3 and Box 4.', answer: true },
-        { text: 'Every figure on the return is entered in whole pounds.', answer: true },
+        { text: 'Every figure on the return, boxes 1 to 9, is entered in whole pounds.', answer: false },
         { text: 'Box 6 shows the VAT charged on sales during the period.', answer: false },
-        { text: 'Box 7 includes the VAT on purchases as well as their value.', answer: false },
+        { text: 'Box 6 holds the value of sales for the period, excluding VAT.', answer: true },
       ],
-      exp: 'Both absolutes here are genuinely absolute: Box 5 is Box 3 less Box 4 on every return ever filed, and the whole return is completed in whole pounds. Boxes 6 and 7 are VALUE boxes — sales and purchases excluding VAT — while boxes 1 and 4 carry the tax. Putting tax into a value box is the most common structural error on a return.',
+      exp: 'One absolute here is genuine: Box 5 is Box 3 less Box 4 on every return ever filed. The whole-pounds one is not — the VAT boxes (1 to 5) carry pounds and pence, and it is the value boxes (6 to 9) that hold whole pounds. Boxes 6 and 7 are VALUE boxes — sales and purchases excluding VAT — while boxes 1 and 4 carry the tax, and putting tax into a value box is the most common structural error on a return.',
     },
     {
       id: 'P-3-62', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.1'],
@@ -3571,9 +3584,10 @@
       exp: 'The FPS is the routine return and goes every pay day; the EPS is the exception and goes by the 19th of the following month. A month with no employees paid still needs an EPS, because the absence itself has to be reported.',
     },
     /* ── Outcome 4, second pass ────────────────────────────────────────────
-       The calculation criteria here are bounded by the specification: 4.1.12
-       excludes calculating Income Tax, National Insurance and student loan
-       repayments, and 4.1.11 says students are PROVIDED with the figures. So
+       The calculation criteria here are bounded by the specification: the
+       exclusion note beneath 4.1.11–4.1.12 rules out calculating Income Tax,
+       National Insurance and student loan repayments, and its companion note
+       says students are PROVIDED with the figures. So
        every numeric question below supplies the deductions and asks what is
        done with them — gross to net, the amount due to HMRC, a reconciliation
        — rather than asking the reader to work out a tax figure the assessment
@@ -4240,13 +4254,13 @@
       type: 'mcq',
       q: 'A business corrects a £70,000 net error on its next return instead of notifying HMRC separately. What is the consequence?',
       opts: [
-        'A further failure, penalised separately from the original error',
+        'The error remains undisclosed, so its penalty keeps the higher, prompted minimum',
         'No consequence, because the tax has been correctly accounted for',
-        'The correction is void and the error remains outstanding',
+        'A brand-new penalty arises for using the wrong method, separate from the error itself',
         'HMRC will issue an assessment for double the amount involved',
       ],
       ans: 0,
-      exp: 'Using the wrong method is a failure in its own right, even though the tax ends up right and HMRC loses nothing. The notification requirement exists so HMRC can see the scale and pattern of errors — an error buried in a return is invisible, and that is what is being protected.',
+      exp: 'Adjusting a figure inside a later return tells HMRC nothing, so the original inaccuracy has still not been disclosed. No separate penalty is created by the choice of method — what is lost is the discount: when HMRC finds the error, the disclosure is prompted and the higher minimum applies. The notification requirement exists so HMRC can see the scale and pattern of errors — an error buried in a return is invisible, and that is what is being protected.',
     },
     {
       id: 'P-1-22', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.7'],
@@ -5457,9 +5471,9 @@
         {
           label: 'The PAYE and National Insurance are due by',
           type: 'choice',
-          options: ['22 May', '19 May', '22 April', '6 May'],
+          options: ['22 April', '19 April', '22 May', '6 May'],
           answer: 0,
-          exp: 'Paid electronically, PAYE is due by the ' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the month following the tax month, so the month ended 5 April is due by 22 May. The ' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th is the deadline for paying by post, which is not how this employer pays.',
+          exp: 'Paid electronically, PAYE is due by the ' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the month following the tax month. The month that ended on 5 April is the tax month 6 March to 5 April, and the month following it runs 6 April to 5 May — so this payment is due by 22 April. The ' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th is the deadline for paying by post, which is not how this employer pays, and 22 May belongs to the next tax month, the one ending 5 May.',
         },
         {
           label: 'P60s must reach employees by',
@@ -5477,11 +5491,11 @@
         },
         {
           label: 'Total that must reach HMRC during May',
-          type: 'numeric', unit: '£', answer: 11685,
-          exp: '8,420.00 of VAT by 7 May and 3,265.00 of PAYE by 22 May is £11,685.00. The Class 1A National Insurance of 1,180.00 is not due until 22 July, so it belongs to a later month however early the P11D that declares it is filed.',
+          type: 'numeric', unit: '£', answer: 8420,
+          exp: 'Only the VAT falls in May: £8,420.00, due by 7 May. The PAYE of 3,265.00 was due by 22 April — the 22nd of the tax month following the one that ended 5 April — and the Class 1A National Insurance of 1,180.00 is not due until 22 July, so neither belongs to May however close it sits on either side.',
         },
       ],
-      exp: 'A finance manager asking what is due next month wants the answer for next month. Three obligations fall in the period and two of them are payments, so the figure that matters is not the total of the table — it is the total of the rows whose deadline lands in May.',
+      exp: 'A finance manager asking what is due next month wants the answer for next month. Every row of the table carries its own deadline, and only one of the payments lands in May — so the figure that matters is not the total of the table, and not even the total of the payments, but the one row whose date falls in the month asked about.',
     },
   ];
 

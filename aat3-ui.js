@@ -2483,7 +2483,12 @@
      sentences also give the pauses a reader expects, and let the stop button
      take effect within a sentence rather than at the end of the card. */
   function sentences(text) {
-    return String(text).split(/(?<=[.!?])\s+/).filter(function (x) { return x.trim(); });
+    /* No lookbehind — a regex literal with one is a parse error on Safari
+       before 16.4, and because it is a literal the whole file dies at load,
+       taking the entire Level 3 module with it. Mark each boundary, then
+       split on the marker. */
+    return String(text).replace(/([.!?])\s+/g, '$1\u0001').split('\u0001')
+      .filter(function (x) { return x.trim(); });
   }
 
   function stopSpeaking() {
@@ -2873,9 +2878,22 @@
         });
         return;
       }
-      n.addEventListener('click', function () { handle(act, n); });
+      n.addEventListener('click', function (e) { handle(act, n, e); });
     });
   }
+
+  /* GHOST-TAP GUARD. Advancing rerenders synchronously, so the second click
+     of a double-tap lands on whatever new button now sits at the same
+     coordinates — in a mock that grades the next, untouched question as
+     blank, with no way back. Level 2 suppresses option clicks for 350ms
+     after a transition (app.js), and this is the same rule for this module.
+     Only trusted events are suppressed: the check scripts click
+     programmatically, back to back, and must not be throttled. */
+  var GUARD_MS = 350;
+  var lastAdvanceAt = 0;
+  var GUARDED_ACTS = { ans: 1, tf: 1, tfsubmit: 1, gap: 1, gapsubmit: 1,
+    numsubmit: 1, taskpick: 1, tasksubmit: 1, trycheck: 1,
+    mocknext: 1, nextq: 1, next: 1 };
 
   function num(v) {
     var s = String(v == null ? '' : v).replace(/[£,\s]/g, '');
@@ -2894,7 +2912,9 @@
     reviewnext: 1, reviewprev: 1, reviewback: 1, reviewlist: 1,
   };
 
-  function handle(act, n) {
+  function handle(act, n, evt) {
+    if (GUARDED_ACTS[act] && evt && evt.isTrusted && Date.now() - lastAdvanceAt < GUARD_MS) return;
+    if (act === 'mocknext' || act === 'nextq' || act === 'next') lastAdvanceAt = Date.now();
     var l = lessonById(S.lessonId);
     var cards = (l && l.cards) || [], checks = currentQuestions();
     var card = cards[S.cardIdx] || {};

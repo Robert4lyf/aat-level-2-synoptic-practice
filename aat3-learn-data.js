@@ -688,6 +688,7 @@
               ['Employee entertaining', 'Recoverable. Where staff bring guests to a staff event, apportion and recover only the employees’ share.'],
               ['Cars', 'Not recoverable on purchase, unless used exclusively for business with no private use at all — a very hard test to meet.'],
               ['Vans and commercial vehicles', 'Recoverable. The block applies to cars, not to commercial vehicles.'],
+              ['Selling a car or a van later', 'Mirrors the purchase. A car whose input tax was blocked sells as an exempt supply — no output tax. A van whose input tax was recovered sells standard-rated.'],
               ['Assets with private use', 'Recoverable only to the extent of business use, so an apportionment is needed.'],
             ],
           },
@@ -695,6 +696,7 @@
             'The third restriction is different in kind. Here the supply is taxable and the business is fully taxable, but the law simply refuses recovery on particular categories of expenditure — generally because the spending has a private or non-business flavour that would be hard to police case by case.',
             '**Entertaining** turns on who is being entertained and why. Entertaining employees is recoverable. Entertaining clients is blocked. Where staff bring guests to a staff event, apportion and recover only the employees\' share. But where employees are acting as **hosts to clients**, HMRC treats the whole cost as incurred for the purpose of entertaining the client, and blocks all of it — including the employees\' portion. Read the purpose, not just the guest list.',
             '**Cars** are blocked on purchase unless used exclusively for business with no private use whatsoever. That test is far stricter than it sounds: merely being *available* for private use defeats it, so the exception is confined in practice to pool cars and to vehicles bought for hire, for driving instruction or as taxis. Note that the block applies to cars specifically — **vans and commercial vehicles are recoverable** in the ordinary way.',
+            'The specification names the **sale** side too, and it mirrors the purchase. Sell a car on which the input tax was blocked and the sale is an **exempt** supply — no output tax is charged, because taxing the disposal of an asset whose VAT was never recovered would tax the same value twice. Sell a **van**, where the input tax was recovered, and the disposal is a **standard-rated** supply like any other sale of a business asset. The question to ask at disposal is what happened to the input tax on the way in.',
             '**Assets with private use** are recoverable only to the extent of business use, so an apportionment is required rather than an all-or-nothing decision.',
             'The reason this lesson exists is the point made at the very start of the unit. Everywhere else, VAT passes through the business untouched. Here it stops, and becomes a genuine cost that will never be recovered.',
           ],
@@ -1865,7 +1867,7 @@
             'The too-low case carries a trap worth knowing, because it is short, hard-edged and exactly the sort of thing an assessment tests. Where an assessment **understates** what is owed, the business must tell HMRC **within 30 days** or send a correct return and payment. Fail to do so and a penalty of **up to 30% of the assessment** may follow. A business that quietly accepts a favourable estimate has not got away with anything.',
             'Third, there are **time limits**. HMRC may normally assess up to **' + T.assessments.normalTimeLimitYears.value + ' years** back — which is why the ' + T.records.retentionYears.value + '-year retention rule exists — extended to **' + T.assessments.extendedTimeLimitYears.value + ' years** where the loss of tax was brought about deliberately. Penalties and interest continue to run throughout, so the passage of time makes the position worse rather than better.',
           ],
-          callout: { kind: 'key', text: 'An assessment is a placeholder debt, not a substitute for the return. Filing displaces it; ignoring it lets penalties and interest accumulate on a figure that is usually too high.' },
+          callout: { kind: 'key', text: 'An assessment is a placeholder debt, not a substitute for the return. Filing displaces it; ignoring it lets penalties and interest accumulate on a figure that may be wrong in either direction.' },
         },
       ],
       check: [
@@ -2072,7 +2074,7 @@
           h: 'Returns are wrong more often than you would think',
           p: [
             'A VAT return is a self-assessment prepared under time pressure from records that were themselves prepared under time pressure. Invoices arrive late. A supply gets rated wrongly. A credit note is posted to the wrong side. Input tax is claimed on a car. None of this is unusual, and the law does not treat it as scandalous — it provides a route for putting it right.',
-            'What the law does insist on is that the route is followed. There are exactly two ways of correcting a previous period\'s error, HMRC calls them **Method 1** and **Method 2**, and which one applies is not a matter of preference. Using the wrong one is itself a failure, penalised separately from the error, even where the tax ends up correct.',
+            'What the law does insist on is that the route is followed. There are exactly two ways of correcting a previous period\'s error, HMRC calls them **Method 1** and **Method 2**, and which one applies is not a matter of preference. Using the wrong one carries a real cost even where the tax ends up correct — not a separate penalty, but the loss of disclosure: adjusting inside a later return tells HMRC nothing, so the penalty on the original error keeps its higher, prompted floor when HMRC finds it. Lesson 1G sets out exactly what that costs.',
             'So the question this lesson answers is a narrow one, and stating it precisely comes before any arithmetic: **given an error in a previous period, may it be corrected on the next return, or must it be separately notified to HMRC?** The rest of the lesson follows from it.',
             'One thing to be clear about at the outset. This is about errors in **previous** periods. An error spotted before the return is submitted is not an error correction at all — it is just a correction. Fix it and file the right figure.',
           ],
@@ -2330,9 +2332,9 @@
             '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up the adjustments taught in Outcome 2 — the **fuel scale charge**, VAT on **gifts of goods once more than £' + T.gifts.goodsLimit.value + ' has gone to one person in a year** (lesson 2E), and **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
             '**Box 4** is input tax: VAT recoverable on purchases. It includes **import VAT reclaimed under postponed accounting** — the same figure that went into Box 1 — and **bad debt relief**, which is claimed as input tax rather than as a reduction of output tax. It excludes everything blocked: client entertaining, cars available for private use, and anything for which the business does not hold a valid VAT invoice.',
             '**Boxes 3 and 5 are calculated, not entered.** Box 3 is Box 1 plus Box 2; since Box 2 is nil for a business without Northern Ireland acquisitions, Box 3 usually equals Box 1. Box 5 is Box 3 minus Box 4 — the figure that is actually paid or reclaimed.',
-            'A negative Box 5 is a **repayment**, and lesson 2G made the point that this is entirely normal for a zero-rated trader or an exporter. Software will present it as a repayment rather than a negative number, but the arithmetic is the same subtraction.',
+            'When Box 4 exceeds Box 3 the return is a **repayment** return, and lesson 2G made the point that this is entirely normal for a zero-rated trader or an exporter. Box 5 still carries a **positive** figure — lesson 1D noted HMRC says expressly that no minus sign is entered there — it is simply the difference the other way round, and software presents it as a repayment.',
           ],
-          formula: 'Box 3 = Box 1 + Box 2 · Box 5 = Box 3 − Box 4 · Box 5 negative means a repayment is due',
+          formula: 'Box 3 = Box 1 + Box 2 · Box 5 = the difference between Box 3 and Box 4, entered as a positive figure · Box 4 above Box 3 means a repayment is due',
         },
         {
           h: 'The value boxes: 6 and 7',
@@ -2622,7 +2624,8 @@
   /* ── Outcome 4: Understand principles of payroll (15%) ────────────────────
      A change of subject: the first three outcomes were VAT throughout. The
      specification excludes CALCULATING Income Tax, National Insurance and
-     student loan repayments (4.1.12) — those figures are supplied. What is
+     student loan repayments (the exclusion note beneath 4.1.11–4.1.12) —
+     those figures are supplied. What is
      assessed is the employer's framework and the arithmetic AROUND the given
      deductions, which is a much narrower and more learnable target than most
      students expect. */
@@ -2818,7 +2821,7 @@
           h: 'Statutory and non-statutory deductions',
           p: [
             'Deductions divide into two kinds, and the difference is about **who requires them**, not how large they are.',
-            '**Statutory deductions** are required by law, and the employer has no discretion. They are **Pay As You Earn (PAYE) Income Tax**, **National Insurance contributions**, **student loan repayments**, and — where the employer has automatically enrolled staff — **pension contributions**. An employee cannot instruct the employer to stop deducting Income Tax; the obligation runs to HMRC, not to the employee.',
+            '**Statutory deductions** are the ones the tax and pensions system itself requires, and the employer has no discretion. They are **Pay As You Earn (PAYE) Income Tax**, **National Insurance contributions**, **student loan repayments**, and — where the employer has automatically enrolled staff — **pension contributions**. An employee cannot instruct the employer to stop deducting Income Tax; the obligation runs to HMRC, not to the employee.',
             '**Non-statutory deductions** are everything else, and they depend on the employee having agreed to them or on a court order. Trade union subscriptions, payroll giving to charity, season ticket loan repayments, workplace savings schemes, and repayments of a salary advance all sit here. So do **attachment of earnings orders**, which are imposed by a court rather than chosen — the point being that they are not part of the tax system.',
             'Two consequences follow. The **order** matters: pre-tax deductions come off before Income Tax is calculated, and everything else comes off afterwards, so putting a deduction in the wrong place changes the tax. And the **amount due to HMRC** includes only the statutory tax and National Insurance items — a union subscription deducted from wages is owed to the union, not to HMRC, and never appears in the payment to them.',
           ],
@@ -2900,9 +2903,9 @@
             { text: 'Taxable gross pay is gross pay less deductions made before tax is calculated.', answer: true },
             { text: 'Net pay is gross pay less all deductions.', answer: true },
             { text: 'A student loan repayment reduces taxable gross pay.', answer: false },
-            { text: 'An attachment of earnings order is a statutory deduction.', answer: false },
+            { text: 'An attachment of earnings order forms part of the amount paid over to HMRC.', answer: false },
           ],
-          exp: 'Taxable gross pay reflects only pre-tax deductions such as a net pay arrangement pension. Net pay reflects all of them. A student loan repayment is taken after tax and does not reduce the taxable figure. And an attachment of earnings order is imposed by a court, not by tax law, so it sits outside the statutory deductions.',
+          exp: 'Taxable gross pay reflects only pre-tax deductions such as a net pay arrangement pension. Net pay reflects all of them. A student loan repayment is taken after tax and does not reduce the taxable figure. And an attachment of earnings order is collected for a court, not for HMRC — it is imposed rather than agreed, but the money withheld never joins the PAYE and National Insurance paid over to them.',
         },
       ],
     },
@@ -3807,7 +3810,7 @@
               title: 'When it goes wrong',
               items: [
                 'Late return: a point each time, then a fixed penalty at the threshold',
-                'Late payment: a penalty at day 15, another at day 30, then daily interest',
+                'Late payment: a penalty at day 15, another at day 30, a third accruing daily from day 31 — interest runs from day one',
                 'Failure to notify: a percentage of the tax, set by behaviour and disclosure',
                 'A deliberate error is separately notified whatever its size',
               ],
@@ -3887,7 +3890,7 @@
           p: [
             'An error found before submission costs nothing. The same error found afterwards costs a correction, interest, possibly a penalty, and a conversation — which is why checking is a step rather than a formality.',
           ],
-          formula: 'Box 3 = Box 1 + Box 2 · Box 5 = Box 3 − Box 4 · A negative Box 5 means a repayment is due',
+          formula: 'Box 3 = Box 1 + Box 2 · Box 5 = the difference between Box 3 and Box 4, entered as a positive figure · Box 4 above Box 3 means a repayment is due',
           table: {
             headers: ['Box', 'What goes in it'],
             rows: [

@@ -92,7 +92,15 @@ var CORE_ASSETS = [
 self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then(function (cache) { return cache.addAll(CORE_ASSETS); })
+      .then(function (cache) {
+        /* cache: 'reload' bypasses the HTTP cache, so a version bump really
+           does fetch fresh copies — the default mode would happily precache
+           whatever stale copy the browser already held, on any host that
+           serves these files with a max-age. */
+        return cache.addAll(CORE_ASSETS.map(function (u) {
+          return new Request(u, { cache: 'reload' });
+        }));
+      })
       .then(function () { return self.skipWaiting(); })
   );
 });
@@ -105,9 +113,15 @@ self.addEventListener('activate', function (event) {
           if (key !== CACHE_VERSION && KEEP_CACHES.indexOf(key) === -1) return caches.delete(key);
         }));
       })
-      .then(function () { return refreshLazyCache(); })
       .then(function () { return self.clients.claim(); })
       .then(function () {
+        /* Refresh the lazy cache in the background, deliberately NOT gating
+           activation on it: functional events queue until activation settles,
+           so awaiting a fistful of network fetches here would hold every page
+           load hostage to a bad connection on each version bump. If the
+           worker is stopped before the refresh finishes, the next activate
+           simply runs it again. */
+        refreshLazyCache();
         // Notify all open tabs that a new version is active so they can prompt a reload.
         return self.clients.matchAll({ type: 'window' }).then(function (clients) {
           clients.forEach(function (client) { client.postMessage({ type: 'SW_UPDATED' }); });
@@ -122,7 +136,10 @@ self.addEventListener('fetch', function (event) {
   /* Leave anything off this origin alone. The only cross-origin traffic is the
      progress sync endpoint, and a cached reply from it would mean handing the
      app somebody's older progress and calling it current. */
-  if (req.url.indexOf(self.location.origin) !== 0) return;
+  /* An exact origin comparison, not a prefix test: "https://site.example"
+     is a prefix of "https://site.example.evil.net", and the whole point of
+     this guard is that the sync endpoint must never be cached. */
+  if (new URL(req.url).origin !== self.location.origin) return;
 
   /* Lazily-cached subject files: same stale-while-revalidate behaviour, but in
      the cache that survives a version bump. */
@@ -166,7 +183,7 @@ self.addEventListener('fetch', function (event) {
     caches.match(req).then(function (cached) {
       // Fetch a fresh copy in the background and update the cache.
       var networkFetch = fetch(req).then(function (res) {
-        if (res && res.status === 200 && req.url.indexOf(self.location.origin) === 0) {
+        if (res && res.status === 200 && new URL(req.url).origin === self.location.origin) {
           var copy = res.clone();
           caches.open(CACHE_VERSION).then(function (cache) { cache.put(req, copy); });
         }

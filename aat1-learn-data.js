@@ -87,7 +87,7 @@
             'One assessment, ninety minutes, marked by computer. That last detail should change how you revise. There is no written answer for an examiner to weigh up and no credit for a well-argued wrong figure: an answer is either the one the marking scheme holds or it is not.',
             'The upside is that this unit is unusually **learnable**. There is a finite set of documents, a finite set of rules about which column a figure belongs in, and a finite vocabulary. Learn those and you have most of the marks. Very little rests on judgement of the kind that takes years to acquire.',
             'The downside is the same fact from the other side. A figure that is nearly right is wrong. Putting a receipt in the payments column is wrong even if the amount is perfect. Reading £1,240 as £1,420 is wrong. Most marks lost at this level are lost to carelessness rather than to ignorance, which is why a whole topic area of the syllabus — and two lessons here — is about how to work so that does not happen.',
-            'The qualification is **not graded**, so there is no distinction to chase. AAT publishes no pass percentage for it; the 70% you will see quoted on training-provider websites is their figure, not AAT’s. Treat the target as "know the material", not "clear a number".',
+            'The qualification is **not graded**, so there is no distinction to chase. The specification publishes no pass percentage; the 70% you will see quoted for AAT computer-based assessments comes from support materials rather than from the specification itself. Treat the target as "know the material", not "clear a number".',
           ],
         },
         {
@@ -159,10 +159,10 @@
           statements: [
             { text: 'The qualification is ungraded — you either pass or you do not.', answer: true },
             { text: 'The assessment is marked by computer rather than by an examiner.', answer: true },
-            { text: 'AAT publishes an official pass percentage for this qualification.', answer: false },
+            { text: 'The specification publishes an official pass percentage for this qualification.', answer: false },
             { text: 'The assessment lasts two hours.', answer: false },
           ],
-          exp: 'The specification states the qualification is not graded and that students must pass one mandatory assessment; it publishes no pass percentage, so the 70% quoted by training providers is not an AAT figure. The assessment is computer based and computer marked, and it lasts 1 hour 30 minutes rather than two hours.',
+          exp: 'The specification states the qualification is not graded and that students must pass one mandatory assessment; it publishes no pass percentage, so the 70% widely quoted for AAT computer-based assessments comes from support materials rather than the specification. The assessment is computer based and computer marked, and it lasts 1 hour 30 minutes rather than two hours.',
         },
         {
           q: 'Which of these is out of scope at Level 1?',
@@ -1466,7 +1466,7 @@
           type: 'truefalse',
           labels: ['Yes', 'No'],
           statements: [
-            { text: 'Capital must be £12,000 for the equation to balance.', answer: true },
+            { text: 'The assets exceed the liabilities, so the owner has capital in the business.', answer: true },
             { text: 'A £2,000 profit always increases capital by exactly £2,000.', answer: true },
             { text: 'If the business takes a further £5,000 loan, capital changes.', answer: false },
             { text: 'Assets and liabilities are equal to each other.', answer: false },
@@ -2409,17 +2409,17 @@
           h: 'Worked: entering, totalling, cross casting',
           worked: {
             title: 'A purchases daybook for the week',
-            problem: 'Three purchase invoices arrive: 4 June from Kesgrave Papers, invoice 9051, net £162.00; 7 June from Halden Inks, invoice 3390, net £84.00; 11 June from Kesgrave Papers, invoice 9078, net £45.00. VAT applies at ' + VAT + '. Enter them, total the columns, and cross cast.',
+            problem: 'Three purchase invoices arrive: 4 June from Kesgrave Papers, invoice 9051, net £184.50; 7 June from Halden Inks, invoice 3390, net £84.00; 11 June from Kesgrave Papers, invoice 9078, net £45.00. VAT applies at ' + VAT + '. Enter them, total the columns, and cross cast. (Invoice 9051 is the overcharged invoice from lesson 3E — it goes in **as billed**, because the daybook records the document that arrived; the credit note that corrects it is a separate document and gets its own entry in the purchases returns daybook when it comes.)',
             steps: [
               { do: 'Enter each invoice on its own row, in date order, with the supplier name and invoice number', why: 'A daybook is a chronological list of documents. The invoice number is what lets an entry be traced back to the paper.' },
-              { do: 'Work out the VAT and total for each row: £162.00 → VAT £32.40, total £194.40', why: 'VAT at the standard rate is a fifth of the net. £162 ÷ 5 = £32.40, and £162 + £32.40 = £194.40.' },
+              { do: 'Work out the VAT and total for each row: £184.50 → VAT £36.90, total £221.40', why: 'VAT at the standard rate is a fifth of the net. £184.50 ÷ 5 = £36.90, and £184.50 + £36.90 = £221.40. The figures are the ones billed — the correction arrives later as a credit note, not as an amendment to this entry.' },
               { do: 'Then £84.00 → VAT £16.80, total £100.80; and £45.00 → VAT £9.00, total £54.00', why: 'Same method for each row. Each row must satisfy net + VAT = total before you go any further.' },
-              { do: 'Total the net column: £162.00 + £84.00 + £45.00 = **£291.00**', why: 'Add down. This is the week’s purchases before VAT.' },
-              { do: 'Total the VAT column: £32.40 + £16.80 + £9.00 = **£58.20**', why: 'Add down. This is the input VAT for the week.' },
-              { do: 'Total the total column: £194.40 + £100.80 + £54.00 = **£349.20**', why: 'Add down. This is the amount owed to suppliers from these invoices.' },
-              { do: 'Cross cast: £291.00 + £58.20 = £349.20, which agrees with the total column', why: 'The check passes, so the three columns have been added correctly. Had it come to anything else, one of the three totals would be wrong.' },
+              { do: 'Total the net column: £184.50 + £84.00 + £45.00 = **£313.50**', why: 'Add down. This is the week’s purchases before VAT.' },
+              { do: 'Total the VAT column: £36.90 + £16.80 + £9.00 = **£62.70**', why: 'Add down. This is the input VAT for the week.' },
+              { do: 'Total the total column: £221.40 + £100.80 + £54.00 = **£376.20**', why: 'Add down. This is the amount owed to suppliers from these invoices.' },
+              { do: 'Cross cast: £313.50 + £62.70 = £376.20, which agrees with the total column', why: 'The check passes, so the three columns have been added correctly. Had it come to anything else, one of the three totals would be wrong.' },
             ],
-            answer: 'Net £291.00 · VAT £58.20 · Total £349.20 — and it cross casts',
+            answer: 'Net £313.50 · VAT £62.70 · Total £376.20 — and it cross casts',
             tryIt: {
               q: 'A sales daybook has a net column totalling £480.00 and a VAT column totalling £96.00. What should the total column come to, in pounds?',
               answer: 576,
@@ -2432,10 +2432,10 @@
             title: 'Purchases daybook — June',
             rows: [
               ['Date', 'Supplier', 'Invoice no.', 'Net', 'VAT', 'Total'],
-              ['4 June', 'Kesgrave Papers', '9051', '162.00', '32.40', '194.40'],
+              ['4 June', 'Kesgrave Papers', '9051', '184.50', '36.90', '221.40'],
               ['7 June', 'Halden Inks', '3390', '84.00', '16.80', '100.80'],
               ['11 June', 'Kesgrave Papers', '9078', '45.00', '9.00', '54.00'],
-              ['**Totals**', '', '', '**291.00**', '**58.20**', '**349.20**'],
+              ['**Totals**', '', '', '**313.50**', '**62.70**', '**376.20**'],
             ],
           },
         },
@@ -2974,7 +2974,7 @@
           h: 'Worked: identifying the differences',
           worked: {
             title: 'Comparing a cash book with a statement',
-            problem: 'A cash book shows a closing bank figure of £1,468.30. The bank statement shows a closing balance of £1,170.45. Comparing the two, the following are found: a cheque for £312.00 written to a supplier on 28 June does not appear on the statement; bank charges of £14.50 on the statement are not in the cash book; and interest received of £2.15 on the statement is not in the cash book. Identify which items are in which record, and show that they account for the difference.',
+            problem: 'A cash book shows a closing bank figure of £1,170.45. The bank statement shows a closing balance of £1,468.30. Comparing the two, the following are found: a cheque for £312.00 written to a supplier on 28 June does not appear on the statement; bank charges of £14.50 on the statement are not in the cash book; and interest received of £2.15 on the statement is not in the cash book. Identify which items are in which record, and show that they account for the difference.',
             steps: [
               { do: 'The difference is £1,468.30 − £1,170.45 = **£297.85**', why: 'Establishing the size of the gap first tells you when you have found everything.' },
               { do: 'In the cash book, not on the statement: the £312.00 cheque', why: 'Written and sent on 28 June, so the cash book has deducted it — but the supplier has not banked it, so the bank still holds the money.' },
@@ -3120,15 +3120,15 @@
           ],
           worked: {
             title: 'Kesgrave Papers’ balance at 30 June',
-            problem: 'The business owed Kesgrave Papers £349.20 at 1 June. The purchases daybook shows invoices from them of £194.40 and £54.00 during June. The purchases returns daybook shows a credit note received of £27.00. The cash book shows a payment to them of £349.20. What is owed to Kesgrave at 30 June?',
+            problem: 'The business owed Kesgrave Papers £349.20 at 1 June. The purchases daybook shows invoices from them of £221.40 and £54.00 during June. The purchases returns daybook shows a credit note received of £27.00 — the correction to the overcharged invoice from lesson 3E. The cash book shows a payment to them of £349.20. What is owed to Kesgrave at 30 June?',
             steps: [
               { do: 'Opening amount owed: **£349.20**', why: 'What was outstanding at the start of the period.' },
-              { do: 'Add the purchase invoices: £349.20 + £194.40 + £54.00 = **£597.60**', why: 'Invoices received increase what the business owes. Both come from the purchases daybook.' },
-              { do: 'Subtract the credit note received: £597.60 − £27.00 = **£570.60**', why: 'A credit note from a supplier reduces what is owed to them — from the purchases returns daybook.' },
-              { do: 'Subtract the payment made: £570.60 − £349.20 = **£221.40**', why: 'Money paid reduces the outstanding amount. From the cash book, payments side.' },
-              { do: 'Sense-check: the payment cleared the opening balance exactly, leaving June’s invoices less the credit note', why: '£194.40 + £54.00 − £27.00 = £221.40, which agrees.' },
+              { do: 'Add the purchase invoices: £349.20 + £221.40 + £54.00 = **£624.60**', why: 'Invoices received increase what the business owes, at the amounts billed. Both come from the purchases daybook.' },
+              { do: 'Subtract the credit note received: £624.60 − £27.00 = **£597.60**', why: 'A credit note from a supplier reduces what is owed to them — from the purchases returns daybook. This is where the £27.00 overcharge comes out: once, as its own document.' },
+              { do: 'Subtract the payment made: £597.60 − £349.20 = **£248.40**', why: 'Money paid reduces the outstanding amount. From the cash book, payments side.' },
+              { do: 'Sense-check: the payment cleared the opening balance exactly, leaving June’s invoices less the credit note', why: '£221.40 + £54.00 − £27.00 = £248.40, which agrees.' },
             ],
-            answer: '£221.40 is owed to Kesgrave Papers at 30 June',
+            answer: '£248.40 is owed to Kesgrave Papers at 30 June',
             tryIt: {
               q: 'A supplier was owed £180.00 at the start of the month. Invoices of £425.00 were received, a credit note of £35.00 was received, and £180.00 was paid. What is owed at the end of the month, in pounds?',
               answer: 390,
@@ -3790,7 +3790,7 @@
             items: [
               'Bank charges and interest',
               'Direct debits and standing orders',
-              'Dishonoured cheques',
+              'BACS receipts nobody told the business about',
               'No document ever reached the business',
             ],
           },
@@ -3827,9 +3827,9 @@
           left: {
             title: 'What software gives you',
             items: [
-              'Data in without retyping — bank feeds, scanning, imports',
+              'Data in without retyping — bank feeds, CSV files, third-party apps',
               'Documents produced and sent automatically',
-              'Reports kept current: aged analyses, trial balance, VAT',
+              'Reports kept current: aged analyses, income and expense',
               'One entry updating every record at once',
             ],
           },
