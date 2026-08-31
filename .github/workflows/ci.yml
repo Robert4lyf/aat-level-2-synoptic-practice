@@ -148,6 +148,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:calculator
+      - name: Check the back button steps through the app instead of leaving it
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:back
       - name: Check each level has its own sound and one switch silences them all
         run: npm run check:sound
       - name: Check the 50 and 100 streak celebrations fire and differ per level

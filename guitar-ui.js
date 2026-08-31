@@ -959,6 +959,9 @@
     _host = el;
     load();
     el.innerHTML = html();
+    /* Kept in step from here as well: this module repaints itself without
+       going back through app.js's render(). */
+    if (root.AATNav) root.AATNav.sync();
     wire(el);
     cacheCursorEls(el);
     if (A && A.ready()) A.warmUp();
@@ -976,8 +979,23 @@
     mount(_host);
   }
 
+  /* ── The platform back button ───────────────────────────────────────────────
+     Two screens, so back is one step: out of a lesson and onto the list.
+     Stopping the transport is not optional — an exercise left sounding while
+     the reader walks out is the same defect `home` exists to fix. */
+  function atRoot() { return S.screen !== 'lesson'; }
+  function back() {
+    if (S.screen !== 'lesson') return;
+    if (transport) transport.stop(true);
+    stopCursor();
+    S.screen = 'lessons';
+    rerender();
+  }
+
   root.GUITAR_UI = {
     mount: mount,
+    atRoot: atRoot,
+    back: back,
     reset: function () { if (transport) transport.stop(true); stopCursor(); },
     /* The shared header's 🏠 button, and "you are being switched away from" —
        see the note on AAT3_UI.home. `suspend` is the one that matters here: an
