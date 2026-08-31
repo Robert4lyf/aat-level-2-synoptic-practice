@@ -1338,3 +1338,121 @@ body[data-subject="aat1"] .aat-cel-a1.aat-cel-100 .aat-cel-p {
    air is a design decision that lives in the stylesheet with every other one. */
 body[data-subject="aat1"] [data-a1="nextq"],
 body[data-subject="aat1"] [data-a1="mocknext"] { scroll-margin-bottom: 24px; }
+
+/* ── On-screen calculator ─────────────────────────────────────────────────────
+   Level 1's arithmetic is the kind actually done on a calculator in the
+   assessment room — 24 folders at £2.75, a tenth off, VAT at a fifth — so the
+   pad is offered on every numeric question and on every worked example's
+   "Now you try".
+
+   IT FLOATS. A keypad in the flow would sit below the answer box, and the
+   figures the question hands over sit above it, so the two would never be on
+   screen together. Fixed to the viewport instead: nothing about the layout
+   changes when it opens, so the page stays exactly where the reader left it.
+
+   No scrim, deliberately. The page behind it is the reason it is open, so it
+   stays readable — and scrollable, since the sheet covers only the lower part
+   of the screen and takes pointer events only where it is drawn. */
+body[data-subject="aat1"] .a1-calcfab {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--a1-line-2);
+  background: var(--a1-surface); color: var(--a1-ink);
+  box-shadow: var(--a1-shadow-lg); cursor: pointer;
+  font-family: inherit; font-size: 22px; line-height: 1;
+  transition: transform .16s, background .16s;
+}
+body[data-subject="aat1"] .a1-calcfab:hover { transform: translateY(-2px); }
+body[data-subject="aat1"] .a1-calcfab:active { transform: translateY(0) scale(.96); }
+body[data-subject="aat1"] .a1-calcfab:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 3px; }
+/* Open, it is the way out of the sheet it opened, so it takes the filled
+   treatment a primary control gets. */
+body[data-subject="aat1"] .a1-calcfab.is-open {
+  background: linear-gradient(120deg, var(--a1-brand), var(--a1-brand-2));
+  color: var(--a1-on-fill); border-color: transparent; font-size: 19px;
+}
+body[data-subject="aat1"] .a1-calcfab-i { display: block; }
+
+body[data-subject="aat1"] .a1-calcsheet {
+  position: fixed; z-index: 59;
+  right: 12px; bottom: 84px;          /* clear of the button that opened it */
+  left: 12px; max-width: 340px; margin-left: auto;
+  padding: 10px;
+  /* A guard, not a scrollbar anyone should meet: on a short window an
+     unbounded sheet would run off the top and take its own "Use this value"
+     button with it. */
+  max-height: calc(100vh - 116px); overflow: auto;
+  background: var(--a1-surface-2);
+  border: 1px solid var(--a1-line-2); border-radius: var(--a1-r-lg);
+  box-shadow: var(--a1-shadow-lg);
+  animation: a1-calc-in .18s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes a1-calc-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat1"] .a1-calcsheet { animation: none; }
+  body[data-subject="aat1"] .a1-calcfab { transition: none; }
+  body[data-subject="aat1"] .a1-calcfab:hover { transform: none; }
+}
+
+body[data-subject="aat1"] .a1-calc-screen { position: relative; }
+body[data-subject="aat1"] .a1-calc-display {
+  /* tabular-nums so a running total does not jitter sideways as it is typed */
+  font-variant-numeric: tabular-nums;
+  font-family: var(--a1-mono);
+  font-size: 21px; font-weight: 650; text-align: right;
+  padding: 10px 13px; min-height: 44px;
+  display: flex; align-items: center; justify-content: flex-end;
+  background: var(--a1-surface); color: var(--a1-ink);
+  border: 1px solid var(--a1-line-2); border-radius: var(--a1-r-sm);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+body[data-subject="aat1"] .a1-calc-display.is-error { color: var(--a1-bad); }
+
+body[data-subject="aat1"] .a1-calc-keys {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  margin-top: var(--a1-2);
+}
+body[data-subject="aat1"] .a1-calc-key {
+  /* 44px is the smallest target a thumb hits reliably, and this pad is used
+     mid-question on a phone. It is the floor, not a starting point to trim. */
+  min-height: 44px; padding: 0;
+  font-family: inherit; font-size: var(--a1-t-ui); font-weight: 650;
+  color: var(--a1-ink); background: var(--a1-surface);
+  border: 1px solid var(--a1-line-2); border-radius: var(--a1-r-sm);
+  cursor: pointer; transition: background .14s, transform .1s;
+}
+body[data-subject="aat1"] .a1-calc-key:hover { background: var(--a1-surface-2); }
+body[data-subject="aat1"] .a1-calc-key:active { transform: scale(.96); }
+body[data-subject="aat1"] .a1-calc-key:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+/* EVERY KEY KEEPS ITS BORDER, including the operators: a pale wash on a pale
+   panel with a transparent border reads as text floating in the grid while the
+   number keys beside it read as keys. */
+body[data-subject="aat1"] .a1-calc-key.a1-calc-fn { background: var(--a1-surface-2); color: var(--a1-ink-2); }
+body[data-subject="aat1"] .a1-calc-key.a1-calc-op {
+  background: var(--a1-brand-wash); color: var(--a1-brand-ink);
+  border-color: var(--a1-line-2); font-size: 17px;
+}
+body[data-subject="aat1"] .a1-calc-key.a1-calc-eq {
+  background: linear-gradient(120deg, var(--a1-brand), var(--a1-brand-2));
+  color: var(--a1-on-fill); border-color: transparent; font-size: 17px;
+}
+body[data-subject="aat1"] .a1-calc-w2 { grid-column: span 2; }
+
+body[data-subject="aat1"] .a1-calc-use {
+  width: 100%; margin-top: var(--a1-2); padding: 10px;
+  font-family: inherit; font-size: var(--a1-t-meta); font-weight: 650;
+  color: var(--a1-brand-ink); background: var(--a1-brand-wash);
+  border: 1px dashed var(--a1-brand); border-radius: var(--a1-r-sm);
+  cursor: pointer;
+}
+body[data-subject="aat1"] .a1-calc-use:hover { filter: brightness(.97); }
+body[data-subject="aat1"] .a1-calc-use:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat1"] .a1-calc-key { transition: none; }
+  body[data-subject="aat1"] .a1-calc-key:active { transform: none; }
+}

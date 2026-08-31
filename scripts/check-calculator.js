@@ -458,6 +458,219 @@ console.log(`${DIM}the typed answer survives${RESET}`);
 
 restore();
 
+/* ── 7b. Level 1, through the real player ─────────────────────────────────── */
+console.log(`${DIM}Level 1${RESET}`);
+
+/* A SEPARATE DRIVER, because a separate player. Level 1 renders itself from
+   aat1-ui.js with its own state, its own `data-a1` namespace and two question
+   types Level 3 does not have. Asserting the pad against Level 3 and grepping
+   Level 1's source for a class name would be exactly the check that passes
+   while the button lands somewhere unusable. */
+const D1 = require('./lib/aat1-driver.js');
+
+const L1_NUMERIC = { id: 'L1-N', lo: 3, criteria: ['BKFN-3.1'], type: 'numeric',
+  q: 'A customer buys 12 units at £4.00 each. What is the net amount, in pounds?',
+  answer: 48, unit: '£', exp: 'Twelve at four pounds is £48.00.' };
+const L1_MCQ = { id: 'L1-M', lo: 3, criteria: ['BKFN-3.1'], type: 'mcq',
+  q: 'Which book records credit sales?', opts: ['Sales day book', 'Cash book', 'Petty cash', 'Journal'],
+  ans: 0, exp: 'The sales day book.' };
+const L1_TF = { id: 'L1-T', lo: 3, criteria: ['BKFN-3.1'], type: 'truefalse',
+  q: 'True or false?', statements: [{ text: 'A', answer: true }, { text: 'B', answer: false }],
+  exp: 'As stated.' };
+
+function l1Open(qs) {
+  const M = D1.loadUI(D1.fakeStore());
+  M.AAT1_PRACTICE = { QUESTIONS: qs };
+  const el = D1.fakeEl();
+  M.AAT1_UI.reset('practice');
+  M.AAT1_UI.mount(el);
+  D1.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+  return el;
+}
+function l1OpenCalc(el) {
+  if (!D1.nodes(el, 'calckey').length) D1.click(el, 'calctoggle');
+  return el;
+}
+function l1Tap(el, seq) {
+  l1OpenCalc(el);
+  seq.forEach(x => {
+    const want = /^\d$/.test(x) ? n => n.getAttribute('data-k') === 'num' && n.getAttribute('data-v') === x
+      : '+-*/'.indexOf(x) !== -1 ? n => n.getAttribute('data-k') === 'op' && n.getAttribute('data-v') === x
+      : x === '=' ? n => n.getAttribute('data-k') === 'eq'
+      : x === '.' ? n => n.getAttribute('data-k') === 'dot'
+      : n => n.getAttribute('data-k') === x;
+    D1.click(el, 'calckey', want);
+  });
+}
+
+{
+  const el = l1Open([L1_NUMERIC]);
+  ok(D1.nodes(el, 'calctoggle').length === 1, 'a Level 1 numeric question offers the calculator');
+  ok(D1.nodes(el, 'calckey').length === 0, 'and it is closed until it is asked for');
+  D1.click(el, 'calctoggle');
+  ok(D1.nodes(el, 'calckey').length === KEYS.length,
+    `opening it renders all ${KEYS.length} keys (found ${D1.nodes(el, 'calckey').length})`);
+  ok(D1.nodes(el, 'calcuse').length === 1, 'and a "Use this value" button');
+  ok(/id="a1CalcDisplay"/.test(el.innerHTML), 'and a display of its own, not Level 3’s');
+  ok(/class="a1-calcsheet"/.test(el.innerHTML), 'as a floating sheet rather than a block in the flow');
+  D1.click(el, 'calctoggle');
+  ok(D1.nodes(el, 'calckey').length === 0, 'and pressing the button again puts it away');
+}
+
+/* THE BUTTON IS OUTSIDE `.a1-root`. `.a1-root.is-fresh` carries an entrance
+   animation with `fill-mode: both`, which retains the final keyframe's
+   transform — and any transformed ancestor, an identity matrix included,
+   becomes the containing block for `position: fixed`. Rendered inside the
+   root, the button anchors to the card instead of the viewport and lands
+   wherever the card happens to be. That is not a hypothetical: it is the bug
+   Level 3 shipped, reported from a screenshot with the button stranded mid-page.
+
+   Asserted on the FIRST PAINT, before anything opens the sheet. All 179 checks
+   in this file missed that bug because every one of them opened the calculator
+   first, and opening it is a repaint that happened to land the button correctly. */
+{
+  const el = l1Open([L1_NUMERIC]);
+  const html = el.innerHTML;
+  const rootAt = html.indexOf('<div class="a1-root');
+  const fabAt = html.indexOf('a1-calcfab');
+  ok(rootAt !== -1 && fabAt !== -1, 'the first paint has both a root and a calculator button');
+  ok(fabAt > html.lastIndexOf('</div>', fabAt),
+    'the calculator button is not nested inside the animated root');
+  /* The structural form of the same thing: everything `.a1-root` opens is
+     closed before the button is written. */
+  const beforeFab = html.slice(0, fabAt);
+  const opens = (beforeFab.match(/<div\b/g) || []).length + (beforeFab.match(/<article\b/g) || []).length;
+  const closes = (beforeFab.match(/<\/div>/g) || []).length + (beforeFab.match(/<\/article>/g) || []).length;
+  ok(opens === closes,
+    `every element opened before the button is closed before it (${opens} opened, ${closes} closed)`);
+}
+
+/* Where it is NOT offered. */
+[['multiple choice', L1_MCQ], ['true or false', L1_TF]].forEach(([label, q]) => {
+  const el = l1Open([q]);
+  ok(D1.nodes(el, 'calctoggle').length === 0, `a Level 1 ${label} question offers no calculator`);
+});
+{
+  const el = l1Open([L1_NUMERIC]);
+  l1Tap(el, ['4', '8', '=']);
+  D1.click(el, 'calcuse');
+  D1.click(el, 'numsubmit');
+  ok(D1.nodes(el, 'calctoggle').length === 0, 'and once the answer is graded the calculator goes away');
+}
+
+/* THE ID IN THE MARKUP AND THE ID THE ENGINE PAINTS TO MUST BE THE SAME ONE.
+   They are written in two different places — `create({displayId})` and the
+   `id="..."` attribute — and nothing but this ties them together. Point the
+   engine at Level 3's display and every other assertion in this section still
+   passes: "Use this value" reads `C.display` from the object, not from the
+   screen, so the figure still reaches the box while the reader watches a
+   display that never moves.
+
+   So the lookup is resolved against the RENDERED MARKUP, the way a browser
+   resolves it: an id that is not on the page cannot be found. */
+function l1PaintedDisplay(el, seq) {
+  l1OpenCalc(el);                       /* opening repaints; do it outside the stub */
+  const painted = Object.create(null);
+  const realDoc = global.document;
+  global.document = {
+    getElementById(id) {
+      if (el.innerHTML.indexOf('id="' + id + '"') === -1) return null;
+      return painted[id] || (painted[id] = { textContent: '', classList: { toggle() {} } });
+    },
+  };
+  try { l1Tap(el, seq); } finally {
+    if (realDoc === undefined) delete global.document; else global.document = realDoc;
+  }
+  return painted;
+}
+{
+  const painted = l1PaintedDisplay(l1Open([L1_NUMERIC]), ['1', '2', '*', '4', '=']);
+  const disp = painted.a1CalcDisplay;
+  ok(!!disp, 'keypresses paint the display element Level 1 actually renders');
+  ok(disp && disp.textContent === '48',
+    `and it shows the running figure (got ${disp && JSON.stringify(disp.textContent)})`);
+}
+
+/* The figure must reach GRADING, not merely the box. */
+{
+  const el = l1Open([L1_NUMERIC]);
+  l1Tap(el, ['1', '2', '*', '4', '=']);
+  D1.click(el, 'calcuse');
+  const box = D1.nodes(el, 'numinput')[0];
+  ok(box && box.attrs.value === '48', `"Use this value" fills the answer box (got ${box && box.attrs.value})`);
+  ok(D1.nodes(el, 'calckey').length === 0, 'and closes the sheet it had covered the box with');
+  D1.click(el, 'numsubmit');
+  ok(/is-right/.test(el.innerHTML), 'and the answer it put there grades as correct');
+}
+
+/* A keypress must not rebuild the answer box: on a phone that is the difference
+   between typing a figure and retyping it after every glance at the pad. */
+{
+  const el = l1OpenCalc(l1Open([L1_NUMERIC]));
+  const box = D1.nodes(el, 'numinput')[0];
+  box.value = '19'; box.fire('input');
+  l1Tap(el, ['4', '+', '4', '=']);
+  ok(D1.nodes(el, 'numinput')[0] === box, 'a keypress does not rebuild the Level 1 answer box');
+  D1.click(el, 'numsubmit');
+  ok(/is-wrong/.test(el.innerHTML), 'and what the reader typed is what gets graded');
+}
+
+/* The display clears between questions: a figure carried over is how a wrong
+   answer gets typed. Read through "Use this value", because the pad does not
+   repaint on a keypress and the markup would lie. */
+{
+  const el = l1Open([L1_NUMERIC, Object.assign({}, L1_NUMERIC, { id: 'L1-N2' })]);
+  l1Tap(el, ['4', '8', '=']);
+  D1.click(el, 'calcuse');
+  D1.click(el, 'numsubmit');
+  D1.click(el, 'nextq');
+  D1.click(el, 'calctoggle');
+  D1.click(el, 'calcuse');
+  const box = D1.nodes(el, 'numinput')[0];
+  ok(box && box.attrs.value === '0',
+    `the Level 1 display clears for the next question (got ${box && box.attrs.value})`);
+}
+
+/* The worked example's "Now you try" — a lesson card, not a question, holding
+   its answer in a different piece of state. */
+{
+  const M = D1.loadUI(D1.fakeStore());
+  const lesson = { id: 'l1-calc-try', title: 'Try', icon: '·',
+    cards: [{ t: 'Card', worked: { title: 'W', steps: [{ t: 'step', d: 'do it' }],
+      tryIt: { q: 'What is it?', answer: 5, unit: '£', exp: 'five' } } }],
+    check: [L1_MCQ] };
+  M.AAT1_LEARN_PATH = [{ outcome: 3, title: 'O', lessons: [lesson] }];
+  const el = D1.fakeEl();
+  M.AAT1_UI.reset('path');
+  M.AAT1_UI.mount(el);
+  D1.click(el, 'open', n => n.getAttribute('data-id') === 'l1-calc-try');
+  D1.click(el, 'stepall');
+  ok(D1.nodes(el, 'tryinput').length === 1, 'the Level 1 worked example shows its try-it box');
+  ok(D1.nodes(el, 'calctoggle').length === 1, 'and offers the calculator beside it');
+  l1Tap(el, ['2', '+', '3', '=']);
+  D1.click(el, 'calcuse');
+  const box = D1.nodes(el, 'tryinput')[0];
+  ok(box && box.attrs.value === '5', `"Use this value" fills the try-it box (got ${box && box.attrs.value})`);
+  D1.click(el, 'trycheck');
+  ok(/is-right/.test(el.innerHTML), 'and the try-it grades it correct');
+  ok(D1.nodes(el, 'calctoggle').length === 0, 'and the calculator goes away once it is graded');
+}
+
+/* SCOPE ASSERTED. Every numeric question in the real bank must be one the pad
+   is offered on — the module has no recall questions today, and a new one added
+   without the flag would get a keypad with nothing to work out. Counting them
+   here is what makes that visible rather than a matter of authoring memory. */
+{
+  const BANK = require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE.QUESTIONS;
+  const numeric = BANK.filter(q => (q.type || 'mcq') === 'numeric');
+  ok(numeric.length >= 30, `the Level 1 bank has ${numeric.length} numeric questions to offer it on`);
+  const noFigure = numeric.filter(q => !/\d/.test(q.q || '') && !q.recall);
+  ok(noFigure.length === 0,
+    noFigure.length
+      ? `${noFigure.map(q => q.id).join(', ')}: numeric with no figure in the stem — mark \`recall: true\` or it gets a keypad with nothing to work out`
+      : 'and every one of them carries a figure to work from');
+}
+
 /* ── 8. Level 2 is unharmed ───────────────────────────────────────────────── */
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
