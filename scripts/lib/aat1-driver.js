@@ -95,6 +95,9 @@ function loadUI(store) {
      the module renders no toggle and plays nothing, silently. */
   M.AATSound = require(path.join(ROOT, 'sound.js')) && global.AATSound;
   M.AATCelebrate = require(path.join(ROOT, 'celebrate.js')) && global.AATCelebrate;
+  /* Same hard dependency as sound: without it `Calc()` stays null, the pad is
+     never offered, and every assertion about it would pass by never running. */
+  M.AATCalc = require(path.join(ROOT, 'calculator.js')) && global.AATCalc;
   M.AAT1_SYLLABUS = require(path.join(ROOT, 'aat1-syllabus.js')).SYLLABUS;
   M.AAT1_PRACTICE = require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE;
   M.AAT1_LEARN_PATH = require(path.join(ROOT, 'aat1-learn-data.js')).AAT1_LEARN_PATH;

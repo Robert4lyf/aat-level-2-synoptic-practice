@@ -96,6 +96,7 @@
     tryInput: '',
     tryResult: null,
     scrollToNext: false,  // the next repaint should bring the advance button into view
+    calcOpen: false,      // the on-screen calculator sheet is showing
   };
 
   /* `practice` is the lifetime record of practice and mock runs.
@@ -227,6 +228,14 @@
     if (S.mode === 'practice' || S.mode === 'mock' || S.mode === 'review') return S.practiceQs;
     var l = lessonById(S.lessonId);
     return (l && l.check) || [];
+  }
+
+  /* The card the lesson screen is showing, or null off that screen. Named
+     alongside `currentQuestions()` because it is the same kind of accessor:
+     the one place that turns state into the thing being rendered. */
+  function currentCard() {
+    var l = lessonById(S.lessonId);
+    return (l && l.cards && l.cards[S.cardIdx]) || null;
   }
 
   function lessons() {
@@ -1429,7 +1438,7 @@
        is — is still there behind the dialog. A reader deciding whether to walk
        out of a mock is deciding about what is on the screen, and replacing it
        with a full-screen question takes away the thing they are weighing. */
-    return screenHtml() + (S.confirmExit ? exitGuard() : '');
+    return screenHtml() + calcSurface() + (S.confirmExit ? exitGuard() : '');
   }
 
   function screenHtml() {
@@ -1750,12 +1759,18 @@
     resetCardState(); resetQState();
   }
   function resetCardState() {
-    S.revealed = 0; S.tryInput = ''; S.tryResult = null;
+    S.revealed = 0; S.tryInput = ''; S.tryResult = null; S.calcOpen = false;
+    if (_calc) _calc.reset();
   }
   function resetQState() {
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {};
     S.matchPicks = {}; S.matchSel = null; S.orderSeq = null; S.orderMoved = false;
-    S.numInput = ''; S._order = null;
+    S.numInput = ''; S._order = null; S.calcOpen = false;
+    /* THE WORKING GOES WITH THE QUESTION. A figure left on the display belongs
+       to a sum the reader has finished with, and reading it as the start of the
+       next one is how a wrong answer gets typed. Memory survives — reset()
+       clears the display without forgetting it. */
+    if (_calc) _calc.reset();
   }
 
   /* Marking one answer, for every question type, in one place.
@@ -1782,6 +1797,128 @@
     return _snd;
   }
   function beep(kind) { var p = Snd(); if (p && p[kind]) p[kind](); }
+
+  /* ── Calculator ────────────────────────────────────────────────────────────
+     Level 1's arithmetic is the kind that is genuinely done on a calculator in
+     the assessment room: 24 folders at £2.75, a 10% trade discount, VAT at a
+     fifth, a cash book that has to balance. Every one of the module's numeric
+     questions carries figures in its stem and asks for a worked figure back,
+     so unlike Level 3 there is no `recall` case here to exclude — but the
+     predicate is written as a predicate anyway, in ONE place, because the
+     moment a question is added that asks the reader to state a figure rather
+     than work one out, the exclusion belongs there and not at four call sites.
+
+     Resolved on first use for the same reason the sound is: this file is
+     fetched lazily and nothing guarantees it arrives after calculator.js. */
+  var _calc = null;
+  function Calc() {
+    if (!_calc && root.AATCalc) {
+      _calc = root.AATCalc.create({ displayId: 'a1CalcDisplay' });
+    }
+    return _calc;
+  }
+
+  /* Two surfaces ask for a worked figure, and they are not the same shape. A
+     practice, quiz or mock question is `numeric` and lives in `S.numInput`; a
+     worked example's "Now you try" lives in `S.tryInput` on the lesson screen
+     and has no question object at all. Both are offered the pad; both stop
+     being offered the moment their answer is settled, because a keypad over a
+     verdict is a keypad with nothing left to compute. */
+  function calcOffered(q) {
+    if (!Calc() || !q || S.answered !== null) return false;
+    if (q.recall) return false;
+    return (q.type || 'mcq') === 'numeric';
+  }
+
+  function tryItOffered() {
+    if (!Calc() || S.screen !== 'lesson' || S.phase !== 'teach') return false;
+    if (S.tryResult !== null) return false;
+    var card = currentCard();
+    return !!(card && card.worked && card.worked.tryIt);
+  }
+
+  /* WRITTEN OUT rather than built from the key's `kind`. `'a1-calc-' + k.kind`
+     produces the same three class names and check-subject-styles cannot see
+     any of them, so every rule for them reads as styling nothing renders.
+     Spelling them keeps the stylesheet and the markup checkable against each
+     other. */
+  var CALC_KIND_CLASS = { fn: 'a1-calc-fn', op: 'a1-calc-op', eq: 'a1-calc-eq' };
+
+  /* IT FLOATS, AND THE PAGE DOES NOT MOVE when it opens. A question that hands
+     over "30 packs at £2.00 with a 10% discount" puts the figures above the
+     answer box; a keypad in the flow would sit below both, so the figures and
+     the tool for them would never be on screen together.
+
+     Fixed to the viewport instead, opened from a button in the same corner, no
+     scrim — the page behind it is the reason it is open, so it stays readable
+     and scrollable. Closed by default: a sheet that opens on arrival has taken
+     the screen away before the reader asked for it. */
+  function calcHtml() {
+    var C = Calc();
+    if (!C) return '';
+    var keys = (root.AATCalc.KEYS || []).map(function (k) {
+      return '<button class="a1-calc-key' +
+        (CALC_KIND_CLASS[k.kind] ? ' ' + CALC_KIND_CLASS[k.kind] : '') +
+        (k.span === 2 ? ' a1-calc-w2' : '') +
+        '" type="button" data-a1="calckey" data-k="' + esc(k.k) + '"' +
+        (k.val != null ? ' data-v="' + esc(k.val) + '"' : '') +
+        (k.aria ? ' aria-label="' + esc(k.aria) + '"' : '') +
+        '>' + esc(k.label) + '</button>';
+    }).join('');
+    var open = !!S.calcOpen;
+    return '<button class="a1-calcfab' + (open ? ' is-open' : '') + '" type="button" ' +
+        'data-a1="calctoggle" aria-expanded="' + (open ? 'true' : 'false') + '" ' +
+        'aria-controls="a1CalcSheet" ' +
+        'aria-label="' + (open ? 'Close the calculator' : 'Open the calculator') + '">' +
+        '<span class="a1-calcfab-i" aria-hidden="true">' + (open ? '&#10005;' : '&#129518;') + '</span>' +
+      '</button>' +
+      (open
+        ? '<div class="a1-calcsheet" id="a1CalcSheet" role="group" aria-label="On-screen calculator">' +
+            '<div class="a1-calc-screen">' +
+              '<div class="a1-calc-display' + (C.errored ? ' is-error' : '') + '" ' +
+                'id="a1CalcDisplay" role="status" aria-live="polite">' + esc(C.display) + '</div>' +
+            '</div>' +
+            '<div class="a1-calc-keys">' + keys + '</div>' +
+            '<button class="a1-calc-use" type="button" data-a1="calcuse">' +
+              '&#8627; Use this value</button>' +
+          '</div>'
+        : '');
+  }
+
+  /* Rendered as a SIBLING of `.a1-root`, never inside it. `.a1-root.is-fresh`
+     carries an entrance animation with `fill-mode: both`, which retains the
+     final keyframe's transform — and an ancestor with any transform, an
+     identity matrix included, becomes the containing block for `position:
+     fixed`. Inside the root the button anchors to the card and lands wherever
+     the card happens to be; outside it, it anchors to the viewport. */
+  function calcSurface() {
+    if (tryItOffered()) return calcHtml();
+    if (S.screen !== 'practice' && S.screen !== 'quiz') return '';
+    var qs = currentQuestions();
+    return calcOffered(qs && qs[S.qIdx]) ? calcHtml() : '';
+  }
+
+  /* The value goes into STATE and the screen is repainted from it, rather than
+     being written onto the input element. `S.numInput` and `S.tryInput` are
+     what grading reads; writing only the element would show the reader a
+     figure that submitting would not see. */
+  function calcUse() {
+    var C = Calc();
+    if (!C || C.errored) return;
+    if (tryItOffered()) {
+      S.tryInput = C.display;
+      S.calcOpen = false;
+      return rerender();
+    }
+    var qs = currentQuestions();
+    if (!calcOffered(qs && qs[S.qIdx])) return;
+    S.numInput = C.display;
+    /* CLOSE ON USE. The figure has landed in a box the sheet is covering, and
+       leaving it open makes the reader dismiss it to see whether the thing
+       they asked for happened. */
+    S.calcOpen = false;
+    return rerender();
+  }
 
   /* Grading, scoring and the sound that goes with it, in one place. There are
      seven handlers that settle an answer here — multiple choice, true or false,
@@ -2151,6 +2288,17 @@
       return rerender();
     }
     if (NAV_SOUNDS[act]) beep('click');
+
+    /* No rerender on a keypress. The calculator patches its own display node in
+       place, and a full repaint here would take the caret out of the answer box
+       the reader is about to type into. */
+    if (act === 'calckey') {
+      var CK = Calc();
+      if (CK) CK.press(n.getAttribute('data-k'), n.getAttribute('data-v'));
+      return;
+    }
+    if (act === 'calctoggle') { S.calcOpen = !S.calcOpen; return rerender(); }
+    if (act === 'calcuse') { return calcUse(); }
 
     var l = lessonById(S.lessonId);
     var cards = (l && l.cards) || [], checks = currentQuestions();
