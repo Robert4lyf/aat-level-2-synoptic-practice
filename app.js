@@ -3450,6 +3450,35 @@
     const k = getSubject(_activeSubjectId).ui;
     return (k && window[k]) || null;
   }
+  /* ── The platform back button ───────────────────────────────────────────────
+     Wired in nav-history.js; what back MEANS is decided here, and it is
+     deliberately the same thing the on-screen back button does. A gesture
+     that discarded a timed paper the button would have guarded is a second,
+     invisible set of rules.
+
+     Delegated for a subject that renders itself: app.js believes Levels 1 and
+     3 and the guitar are permanently on `home`, because the screen they are
+     actually on lives in their own module. Asking State.screen here would say
+     "at root" four cards into a lesson. */
+  function navCanGoBack() {
+    const ui = ownUi();
+    if (ui) return typeof ui.atRoot === 'function' ? !ui.atRoot() : false;
+    /* The subject picker is reached FROM home and returns to it, so it counts
+       as deeper even though it is not a quiz. */
+    if (State.screen === 'subjects') return true;
+    if (State.screen === 'splash') return false;
+    return State.screen !== 'home';
+  }
+  function navBack() {
+    const ui = ownUi();
+    if (ui && typeof ui.back === 'function') { ui.back(); return; }
+    if (State.screen === 'subjects') { State.screen = 'home'; render(); return; }
+    /* exitQuiz already knows every Level 2 screen and its rules — that a mock
+       asks before it goes, that an endless run finishes rather than vanishing,
+       that a lesson returns to the Learn tab rather than the top. */
+    exitQuiz();
+  }
+
   function goHome() {
     stopMockTimer();
     /* The header's Home button did nothing on Levels 1 and 3 or the guitar. It
@@ -3649,6 +3678,10 @@
     if (_own && window[_own] && State.screen !== 'subjects') {
       window[_own].mount(el);
       applyChrome();
+      /* The subject repaints itself without coming back through here, so it
+         syncs from its own mount() too. This covers the first paint, which
+         arrives through this path. */
+      if (window.AATNav) window.AATNav.sync();
       return;
     }
 
@@ -3692,6 +3725,10 @@
        open the reference panel after answering, and each of those repaints was
        dragging the page back down under them. */
     scrollAdvanceIntoView();
+    /* LAST, after the screen is settled. sync() reads "is the app deeper than
+       its root", and asking that mid-render would answer for the screen being
+       replaced. */
+    if (window.AATNav) window.AATNav.sync();
   }
 
   /* Which graded question the page has already been scrolled for, so the move
@@ -9381,6 +9418,10 @@
        and covers a button this file had to build itself. Binding it here as
        well would fire the handler twice per click. */
     document.addEventListener('keydown', handleGlobalKey);
+    /* The platform back button. Armed before the first render, so the very
+       first repaint can push a sentinel if the app restored into a screen
+       deeper than home. */
+    if (window.AATNav) window.AATNav.init({ canGoBack: navCanGoBack, back: navBack });
 
     // Swipe-between-tabs on touch devices
     (function () {

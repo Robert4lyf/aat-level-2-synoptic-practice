@@ -2238,6 +2238,9 @@
        calculator keys, a pill, anything — which is the same defect as animating
        on every repaint, in a different medium. */
     if (S.scrollToNext) { S.scrollToNext = false; scrollNextIntoView(el); }
+    /* This module repaints itself without going back through app.js's
+       render(), so the platform back button is kept in step from here too. */
+    if (root.AATNav) root.AATNav.sync();
     ensureGuardKeys();
     /* Focus moves to the SAFE choice, not the destructive one. A reader who
        taps back and then hits Enter out of habit should stay in the paper.
@@ -2251,6 +2254,54 @@
   function fresh() { return _fresh ? ' is-fresh' : ''; }
   var _host = null;
   function rerender() { if (_host) mount(_host); }
+
+  /* ── The platform back button ───────────────────────────────────────────────
+     Same contract as Level 1: `atRoot` says whether there is anywhere left to
+     go back to inside this module, and `back` takes the step the on-screen
+     back button takes — the mock's guard included. */
+  /* LEVEL 3 HAS ONE MORE SCREEN THAN LEVEL 1: the unit picker sits above the
+     path, and the path's own back button carries `tounits` — but only when
+     there is more than one unit to choose between. With a single unit the
+     path IS the root and renders no back control at all, so the gesture must
+     not invent one. Both cases are read from the same source the button
+     reads. */
+  function pathHasBack() { return unitKeys().length > 1; }
+  function atRoot() {
+    if (S.confirmExit) return false;
+    if (S.screen === 'units') return true;
+    if (S.screen === 'path') return !pathHasBack();
+    return false;
+  }
+  /* THE ACTION EACH SCREEN'S OWN BACK BUTTON CARRIES, screen by screen.
+
+     The first version delegated everything to `exit`, which is written for
+     leaving a RUN and recomputes the same screen when it is already on the
+     picker — so back from the practice picker did nothing at all and the
+     reader pressed it twice to leave the app. Mapping the screens is what
+     makes the gesture and the button provably the same thing: each entry here
+     is the `data-a3` value on that screen's back control. */
+  var BACK_ACTION = {
+    lesson:   'exit',
+    practice: 'topath',
+    quiz:     'exit',
+    done:     'topath',
+  };
+  function back() {
+    if (S.confirmExit) { S.confirmExit = false; return rerender(); }
+    if (S.screen === 'units') return;
+    if (S.screen === 'path') {
+      if (!pathHasBack()) return;
+      return handle('tounits', null, null);
+    }
+    /* Review is two screens behind one name: the list, and one question out of
+       it. */
+    if (S.screen === 'review') {
+      return handle(S.reviewIdx === null ? 'reviewback' : 'reviewlist', null, null);
+    }
+    var a = BACK_ACTION[S.screen];
+    if (!a) { S.screen = 'path'; return rerender(); }
+    return handle(a, null, null);
+  }
 
   /* A practice run is a shuffled slice of the bank. Ten is enough to be
      informative and short enough to actually finish; a mixed run draws across
@@ -3187,6 +3238,8 @@
 
   root.AAT3_UI = {
     mount: mount,
+    atRoot: atRoot,
+    back: back,
     /* `screen` is optional and defaults to the path, which is the only thing
        the app itself ever wants. It is settable so the build check can mount
        the practice picker and assert the summary that renders there, rather
