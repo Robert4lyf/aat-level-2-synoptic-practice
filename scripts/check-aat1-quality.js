@@ -34,6 +34,7 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
 const ROOT = path.join(__dirname, '..');
+const GRID = require(path.join(ROOT, 'question-grid.js'));
 const { AAT1_LEARN_PATH } = require(path.join(ROOT, 'aat1-learn-data.js'));
 const { AAT1_PRACTICE } = require(path.join(ROOT, 'aat1-practice-data.js'));
 const { FACTS } = require(path.join(ROOT, 'aat1-syllabus.js'));
@@ -221,6 +222,11 @@ allQuestions.forEach(({ where, q }) => {
       errors.push(`${where}: the items list repeats an entry — the array is the answer key, so a duplicate makes two arrangements equally correct.`);
     }
     q.items.forEach((x, i) => { if (typeof x !== 'string' || !x.trim()) errors.push(`${where}: items[${i}] is empty or not text.`); });
+
+  } else if (type === 'picklist' || type === 'entrygrid') {
+    /* The rules live in question-grid.js beside the grading, because three
+       levels author these tables and three copies would drift. */
+    GRID.problems(q, where).forEach(e => errors.push(e));
 
   } else {
     errors.push(`${where}: unknown question type "${type}".`);

@@ -72,7 +72,12 @@ const notes = [];
 
 MODULES.forEach((mod) => {
   const css = fs.readFileSync(path.join(ROOT, mod.css), 'utf8');
-  const js = fs.readFileSync(path.join(ROOT, mod.js), 'utf8');
+  /* THE SHARED WIDGETS COUNT AS THIS SUBJECT'S MARKUP. picklist and entrygrid
+     are rendered by question-grid.js on behalf of all three levels, with each
+     level's class names written out there. Reading only `mod.js` would report
+     every rule for those two tables as styling nothing. */
+  const js = fs.readFileSync(path.join(ROOT, mod.js), 'utf8')
+    + fs.readFileSync(path.join(ROOT, 'question-grid.js'), 'utf8');
   const CLASS = new RegExp('\\.(' + mod.prefix + '-[a-z0-9-]+)', 'g');
   const RENDERED = new RegExp('^' + mod.prefix + '-[a-z0-9-]+$');
 

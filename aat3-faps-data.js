@@ -5726,6 +5726,99 @@
       ],
       exp: 'The suspense balance goes on whichever side is short, so a heavy credit column calls for a debit. A figure on the wrong side is doubly wrong — absent from where it belongs and present where it does not — so putting it right takes double. And the account is temporary: anything left in it is an unexplained difference sitting among figures about to be published.',
     },
+    /* ── Entry grids and pick lists ───────────────────────────────────────────
+       The formats where the reader decides WHERE a figure belongs, not just
+       what it is. FAPS asks for exactly this in three places — 2.3.7 prepare
+       ledger accounts, 5.2.5 use the journal, 6.2.2 place adjustments into the
+       right columns of the extended trial balance — and until now the module
+       could only ask about them in prose. */
+    {
+      id: 'F-2-90', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.7'],
+      type: 'entrygrid',
+      q: 'A credit customer is invoiced £4,800 plus VAT at 20%. Record the entry in the general ledger.',
+      entrygrid: {
+        title: 'General ledger',
+        rowHeader: 'Account',
+        columns: ['Debit £', 'Credit £'],
+        rows: [
+          { label: 'Sales ledger control account', col: 0, amount: 5760 },
+          { label: 'Sales', col: 1, amount: 4800 },
+          { label: 'VAT control', col: 1, amount: 960 },
+        ],
+      },
+      exp: 'The customer owes the full invoice, so SLCA is debited with the GROSS £5,760. The business has earned the net £4,800 and owes HMRC the £960, so both are credits. The entry balances at £5,760 each side — and it is the gross figure on the debit side that makes it balance, which is the step most often got wrong by debiting the net.',
+    },
+    {
+      id: 'F-5-90', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.2.5'],
+      type: 'entrygrid',
+      q: 'A debt of £744 including VAT at 20%, more than six months past its due date, is written off as irrecoverable. Record the journal.',
+      entrygrid: {
+        title: 'Journal',
+        rowHeader: 'Account',
+        columns: ['Debit £', 'Credit £'],
+        rows: [
+          { label: 'Irrecoverable debts', col: 0, amount: 620 },
+          { label: 'VAT control', col: 0, amount: 124 },
+          { label: 'Sales ledger control account', col: 1, amount: 744 },
+        ],
+      },
+      exp: 'The whole £744 comes out of receivables, so SLCA is credited with the gross. The debt is over six months past its due date, so the VAT of £744 ÷ 6 = £124 may be reclaimed: that DEBITS the VAT control account and reduces what is owed to HMRC, leaving the net £620 as the real cost. Writing the full £744 to irrecoverable debts overstates the expense by the VAT and forgets a reclaim the business is entitled to — and the six months is what makes that reclaim available, which is why the question says so.',
+    },
+    {
+      id: 'F-6-90', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.2.2'],
+      type: 'entrygrid',
+      q: 'Rent of £12,000 was paid for the year to 31 March. The year end is 31 December. Place the year-end adjustment in the adjustments columns.',
+      entrygrid: {
+        title: 'Adjustments',
+        rowHeader: 'Account',
+        columns: ['Debit £', 'Credit £'],
+        rows: [
+          { label: 'Prepayments', col: 0, amount: 3000 },
+          { label: 'Rent', col: 1, amount: 3000 },
+        ],
+      },
+      exp: 'Three months of the year to 31 March — January to March — fall after the year end, so £12,000 × 3/12 = £3,000 has been paid in advance. A prepayment is an ASSET, so it is debited, and the rent expense is credited to take the £3,000 back out of this year’s charge. Reversing the two would double the error: the expense would rise by £3,000 rather than fall by it.',
+    },
+    {
+      id: 'F-2-91', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.2.1'],
+      type: 'picklist',
+      q: 'Classify each general ledger account.',
+      picklist: {
+        title: 'Ledger accounts',
+        rowHeader: 'Account',
+        choiceHeader: 'Classification',
+        options: ['Asset', 'Liability', 'Income', 'Expense', 'Capital'],
+        rows: [
+          { text: 'Motor vehicles at cost', answer: 0 },
+          { text: 'Bank loan repayable in three years', answer: 1 },
+          { text: 'Discounts received', answer: 2 },
+          { text: 'Drawings', answer: 4 },
+          { text: 'Discounts allowed', answer: 3 },
+          { text: 'Accrued expenses', answer: 1 },
+        ],
+      },
+      exp: 'Discounts received and discounts allowed are the pair most often reversed: received is income to the buyer, allowed is an expense of selling. Drawings sit with capital rather than being an expense, because the owner is taking back what they put in and not incurring a cost of trading. And a loan repayable in three years is still a liability — being due after more than a year makes it non-current, not something other than a debt.',
+    },
+    {
+      id: 'F-6-91', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.3.3'],
+      type: 'picklist',
+      q: 'On the extended trial balance, which pair of columns does each balance extend into?',
+      picklist: {
+        title: 'Extending the trial balance',
+        rowHeader: 'Balance',
+        choiceHeader: 'Extends to',
+        options: ['Statement of profit or loss', 'Statement of financial position'],
+        rows: [
+          { text: 'Depreciation charge for the year', answer: 0 },
+          { text: 'Purchases', answer: 0 },
+          { text: 'Accumulated depreciation', answer: 1 },
+          { text: 'Discounts received', answer: 0 },
+          { text: 'Bank overdraft', answer: 1 },
+          { text: 'Drawings', answer: 1 },
+        ],
+      },
+      exp: 'The depreciation pair is the trap: the CHARGE is this year’s expense and goes to profit or loss, while ACCUMULATED depreciation is every year’s charge added together and sits against the asset on the statement of financial position. Drawings are not an expense, so they never reach profit or loss however large they are. Closing inventory is deliberately absent from this list — it is the one balance that extends into BOTH statements, as an asset and as a credit within cost of sales, so it has no single answer to give.',
+    },
   ];
 
   var API = { AAT3_FAPS_PATH: PATH, AAT3_FAPS_PRACTICE: { QUESTIONS: QUESTIONS } };

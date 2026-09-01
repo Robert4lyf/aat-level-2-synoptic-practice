@@ -25,6 +25,7 @@ const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
 const ROOT = path.join(__dirname, '..');
+const GRID = require(path.join(ROOT, 'question-grid.js'));
 const { TAX } = require(path.join(ROOT, 'aat3-tax-data.js'));
 const SYL = require(path.join(ROOT, 'aat3-syllabus.js'));
 /* Every unit's content, from the one list — see scripts/lib/aat3-content.js.
@@ -366,6 +367,10 @@ allQuestions.forEach(({ where, q }) => {
           errors.push(`${where} gap ${gi}: answer index out of range.`);
         }
       });
+    } else if (type === 'picklist' || type === 'entrygrid') {
+      /* The rules live in question-grid.js beside the grading, because three
+         levels author these tables and three copies would drift. */
+      GRID.problems(q, where).forEach(e => errors.push(e));
     } else {
       errors.push(`${where}: unknown question type "${type}".`);
     }

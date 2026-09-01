@@ -47,6 +47,9 @@
     tfPicks: {},
     gapPicks: {},
     numInput: '',
+    plPicks: {},          // picklist: row index -> chosen option
+    egCells: {},          // entrygrid: 'row:col' -> what the reader typed
+    calcCell: null,       // entrygrid: which cell "Use this value" fills
     taskInputs: {},      // multi-part task: part index -> what was typed
     taskPicks: {},       // multi-part task: part index -> chosen option
     taskResults: null,   // multi-part task: per-part verdicts, once graded
@@ -1080,7 +1083,9 @@
     if (!Calc() || !q || S.answered !== null) return false;
     if (q.recall) return false;
     var t = q.type || 'mcq';
-    return t === 'numeric' || t === 'task';
+    /* An entry grid is a table of amount boxes, so it needs the pad as much
+       as a numeric question does. A picklist has no arithmetic in it. */
+    return t === 'numeric' || t === 'task' || t === 'entrygrid';
   }
 
   /* WRITTEN OUT RATHER THAN BUILT from the key's `kind`. `'a3-calc-' + k.kind`
@@ -1161,6 +1166,24 @@
      state every box is empty and "first empty" is always just "first". It
      survived mutation testing precisely because nothing could tell the two
      apart. */
+  /* Which CELL "Use this value" fills, by the same rule as `taskTarget`: the
+     one the reader last touched, and failing that the first one on the grid —
+     which is where someone starting the entry is. A grid with no cells at all
+     returns null, and the button then does nothing rather than writing the
+     figure somewhere the grading cannot see. */
+  function entryTarget(q) {
+    var G = root.AATGrid;
+    if (!G) return null;
+    var rows = G.entryRows(q), cols = G.entryCols(q);
+    if (!rows.length || !cols.length) return null;
+    var keys = [];
+    rows.forEach(function (r, ri) {
+      cols.forEach(function (c, ci) { keys.push(ri + ':' + ci); });
+    });
+    if (S.calcCell != null && keys.indexOf(S.calcCell) !== -1) return S.calcCell;
+    return keys[0];
+  }
+
   function taskTarget(q) {
     var parts = (q && q.parts) || [];
     var typed = [];
@@ -1192,6 +1215,11 @@
       if (p == null) return;
       S.taskInputs[p] = v;
       S.calcPart = p;
+    } else if ((q.type || 'mcq') === 'entrygrid') {
+      var k = entryTarget(q);
+      if (k == null) return;
+      S.egCells[k] = v;
+      S.calcCell = k;
     } else {
       S.numInput = v;
     }
@@ -1278,6 +1306,24 @@
       } else {
         h += '<div class="a3-try-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
           (S.answered ? 'Correct' : 'The answer is ' + esc((q.unit === '£' ? '£' : '') + q.answer)) + '</div>';
+      }
+    } else if (t === 'picklist' || t === 'entrygrid') {
+      /* Both tables come from question-grid.js, themed with this module's
+         prefix. The submit button and the verdict stay here, because when a
+         question is submittable and what a wrong answer says are this player's
+         business and differ between the three. */
+      var G = root.AATGrid;
+      if (G) {
+        h += t === 'picklist'
+          ? G.picklistHtml(q, { prefix: 'a3', attr: 'data-a3', picks: S.plPicks, showAnswers: S.answered !== null })
+          : G.entryHtml(q, { prefix: 'a3', attr: 'data-a3', cells: S.egCells, showAnswers: S.answered !== null });
+      }
+      if (S.answered === null && !isMock()) {
+        h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="' +
+          (t === 'picklist' ? 'plsubmit' : 'egsubmit') + '">Submit</button>';
+      } else if (S.answered !== null) {
+        h += '<div class="a3-try-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
+          (S.answered ? 'Correct' : 'Not quite — the right entries are shown above') + '</div>';
       }
     } else if (t === 'gapfill') {
       /* SHUFFLED, like the multiple-choice options and the true/false rows.
@@ -1583,6 +1629,8 @@
       num: S.numInput,
       taskIn: copyMap(S.taskInputs),
       taskPick: copyMap(S.taskPicks),
+      pl: copyMap(S.plPicks),
+      eg: copyMap(S.egCells),
       order: S._order, gapOrder: S._gapOrder, taskOrder: S._taskOrder,
     };
   }
@@ -1598,6 +1646,8 @@
     S.numInput = a.num || '';
     S.taskInputs = copyMap(a.taskIn);
     S.taskPicks = copyMap(a.taskPick);
+    S.plPicks = copyMap(a.pl);
+    S.egCells = copyMap(a.eg);
     S._order = a.order; S._gapOrder = a.gapOrder; S._taskOrder = a.taskOrder;
   }
 
@@ -1618,6 +1668,13 @@
     if (t === 'task') {
       return Object.keys(a.taskPick || {}).length > 0 ||
         Object.keys(a.taskIn || {}).some(function (k) { return num(a.taskIn[k]) !== null; });
+    }
+    if (t === 'picklist') return Object.keys(a.pl || {}).length > 0;
+    /* A cell holding only spaces is not an answer. `num` returns null for it,
+       which is the same test the grader applies, so a paper cannot report as
+       attempted something the grading treats as blank. */
+    if (t === 'entrygrid') {
+      return Object.keys(a.eg || {}).some(function (k) { return num(a.eg[k]) !== null; });
     }
     return false;
   }
@@ -2715,6 +2772,7 @@
   function resetQState() {
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
     S._order = null; S._gapOrder = null;
+    S.plPicks = {}; S.egCells = {}; S.calcCell = null;
     /* Three of these four are load-bearing and proved so: remove the reset of
        taskInputs, taskPicks or taskNudge and check-aat3-task.js §6 fails, with
        the next task arriving pre-filled, pre-selected, or already scolding the
@@ -2809,6 +2867,11 @@
       S.taskResults = (q.parts || []).map(partCorrect);
       return S.taskResults.length > 0 && S.taskResults.every(Boolean);
     }
+    /* Both new types grade in question-grid.js rather than here. Three players
+       render these tables and three copies of "is this row right" would drift
+       the first time a tolerance or the blank-versus-zero rule changed. */
+    if (t === 'picklist') return !!(root.AATGrid && root.AATGrid.gradePicklist(q, S.plPicks).right);
+    if (t === 'entrygrid') return !!(root.AATGrid && root.AATGrid.gradeEntry(q, S.egCells).right);
     return false;
   }
 
@@ -2903,6 +2966,26 @@
     _host = el;
     el.querySelectorAll('[data-a3]').forEach(function (n) {
       var act = n.getAttribute('data-a3');
+      /* A <select> announces itself with `change`, not `click`, so it is wired
+         here beside the text inputs rather than with the buttons below. */
+      if (act === 'plpick') {
+        n.addEventListener('change', function () {
+          var r = +n.getAttribute('data-r');
+          if (n.value === '') delete S.plPicks[r]; else S.plPicks[r] = +n.value;
+        });
+        return;
+      }
+      if (act === 'egcell') {
+        /* `calcCell` on the keystroke as well as on focus, for the same reason
+           `calcPart` is: a soft keyboard can put a caret in a field without the
+           focus order a desktop would give. */
+        n.addEventListener('input', function () {
+          S.egCells[n.getAttribute('data-c')] = n.value;
+          S.calcCell = n.getAttribute('data-c');
+        });
+        n.addEventListener('focus', function () { S.calcCell = n.getAttribute('data-c'); });
+        return;
+      }
       if (act === 'tryinput' || act === 'numinput' || act === 'taskinput') {
         n.addEventListener('input', function () {
           if (act === 'tryinput') S.tryInput = n.value;
@@ -2944,6 +3027,11 @@
   var lastAdvanceAt = 0;
   var GUARDED_ACTS = { ans: 1, tf: 1, tfsubmit: 1, gap: 1, gapsubmit: 1,
     numsubmit: 1, taskpick: 1, tasksubmit: 1, trycheck: 1,
+    /* The two table submits belong here for the same reason every other submit
+       does: advancing repaints synchronously, so the second tap of a
+       double-tap lands on whatever button has taken the same coordinates on
+       the next question. */
+    plsubmit: 1, egsubmit: 1,
     mocknext: 1, nextq: 1, next: 1 };
 
   function num(v) {
@@ -3169,6 +3257,12 @@
       return settle(q);
     }
     if (act === 'numsubmit') { return settle(q); }
+    /* NO "answer every row first" GUARD. A gap-fill has one, because a blank
+       pill is indistinguishable from one the reader has not reached; here every
+       row is visible at once and a blank row is a considered answer as often as
+       an oversight. Submitting with a row empty marks that row wrong, which is
+       what the assessment does. */
+    if (act === 'plsubmit' || act === 'egsubmit') { return settle(q); }
     if (act === 'taskpick') {
       S.taskPicks[+n.getAttribute('data-p')] = +n.getAttribute('data-o');
       return rerender();

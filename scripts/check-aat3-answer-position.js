@@ -292,9 +292,55 @@ ALL_QUESTIONS.forEach(q => all.push({ where: `practice ${q.id}`, q }));
    ceiling on that number would fight the convention instead of guarding it.
    What has to hold is the shuffle. */
 {
-  const SAMPLED = new Set(['gapfill', 'mcq', 'truefalse', 'task']);
+  /* ── Pick lists: the cue is the DISTRIBUTION, not the order ────────────────
+     Gap-fill's exploit was positional — the key sat first, so "take the
+     leftmost" scored 95%. A pick list cannot carry that cue in the same way,
+     because one option list serves every row: position says nothing about any
+     particular row, and the reader still has to decide each one.
+
+     What it CAN carry is a lopsided key. If most rows across the module answer
+     "Asset", then "always answer Asset" scores well without reading anything,
+     and no per-question rule would see it because each question on its own
+     looks varied. So the whole module's rows are pooled and the best single
+     fixed answer is scored against them. */
+  {
+    const pls = all.filter(x => (x.q.type || 'mcq') === 'picklist');
+    ok(pls.length > 0, 'there are pick lists to check');
+    if (pls.length) {
+      /* Pooled by the option's TEXT, not its index. Index 0 means something
+         different in every question, so pooling indices would measure nothing;
+         a reader's fixed strategy is "always say Asset", which is a label. */
+      const byLabel = new Map();
+      let rows = 0;
+      pls.forEach(x => {
+        const p = x.q.picklist;
+        (p.rows || []).forEach(r => {
+          rows++;
+          const label = p.options[r.answer];
+          byLabel.set(label, (byLabel.get(label) || 0) + 1);
+        });
+      });
+      let best = 0, bestLabel = '';
+      byLabel.forEach((n, label) => { if (n > best) { best = n; bestLabel = label; } });
+      const share = rows ? best / rows : 0;
+      console.log(`  ${DIM}${rows} pick-list rows; the best fixed answer is ` +
+        `"${bestLabel}" at ${Math.round(share * 100)}%.${RESET}`);
+      /* A THRESHOLD PROPORTIONATE TO THE SAMPLE. Below a dozen rows any share
+         is noise, and failing on it would be a gate that reports the weather.
+         Above that, a single answer covering more than half the rows is a
+         strategy worth more than reading. */
+      if (rows >= 12) {
+        ok(share <= 0.5,
+          `no single fixed answer covers more than half the pick-list rows ` +
+          `("${bestLabel}" is ${Math.round(share * 100)}% of ${rows})`);
+      }
+    }
+  }
+
+  const SAMPLED = new Set(['gapfill', 'mcq', 'truefalse', 'task', 'picklist']);
   const NO_OPTIONS = {
     numeric: 'the reader types a figure; there are no options to place.',
+    entrygrid: 'the reader types amounts into columns; there is no list of options to place.',
   };
 
   const present = new Set(all.map(x => x.q.type || 'mcq'));

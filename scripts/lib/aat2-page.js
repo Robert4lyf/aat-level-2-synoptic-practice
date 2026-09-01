@@ -42,6 +42,18 @@ async function answerCurrent(page) {
     const opt = page.locator('.option-btn:not([disabled])').first();
     if (await opt.count()) await opt.click({ timeout: 2500 }).catch(() => {});
   }
+  /* The two shared tables. A <select> is set and told, an amount box is filled
+     the way every other input here is. Answered rather than skipped, because a
+     sweep that cannot answer a type reports whatever it was measuring as an
+     absence instead of saying it is stuck. */
+  const sels = await page.locator('[data-l2="plpick"]').count().catch(() => 0);
+  for (let i = 0; i < sels; i++) {
+    await page.locator('[data-l2="plpick"]').nth(i).selectOption({ index: 1 }).catch(() => {});
+  }
+  const cells = await page.locator('[data-l2="egcell"]').count().catch(() => 0);
+  for (let i = 0; i < cells; i++) {
+    await page.locator('[data-l2="egcell"]').nth(i).fill('0').catch(() => {});
+  }
   for (const sel of ['#numericAnswer', '#typedAnswer', '.gap-input', '.tablefill-input']) {
     const f = page.locator(sel).first();
     if (await f.count()) await f.fill('0').catch(() => {});
@@ -88,7 +100,8 @@ async function answerCurrent(page) {
    quietly turning some other gate red somewhere else. */
 const SUBMITS = ['#submitBtn', '#submitNumericBtn', '#submitTrueFalseBtn', '#submitGapFillBtn',
   '#submitMultiSelectBtn', '#submitScenarioBtn', '#submitDragDropBtn',
-  '#submitTableFillBtn', '#submitListenTypedBtn'];
+  '#submitTableFillBtn', '#submitListenTypedBtn',
+  '#submitPickListBtn', '#submitEntryGridBtn'];
 
 /* What is on screen, for the message when a sweep cannot answer it. A stall in
    the harness and a run that ended are different failures and must not be

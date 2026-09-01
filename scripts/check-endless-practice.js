@@ -102,6 +102,17 @@ function answer(D, el, pre, wantRight) {
     D.click(el, 'ordersubmit');
     return true;
   }
+  /* The two table types. Answered rather than skipped: a sweep that cannot
+     answer a type reports whatever it was counting as an absence instead of
+     saying it is stuck, which is how a run of ten came back as a run of three. */
+  if (D.nodes(el, 'plsubmit').length) {
+    D.nodes(el, 'plpick').forEach(n => { n.value = '0'; n.fire('change'); });
+    D.click(el, 'plsubmit'); return true;
+  }
+  if (D.nodes(el, 'egsubmit').length) {
+    D.nodes(el, 'egcell').forEach(n => { n.value = '0'; n.fire('input'); });
+    D.click(el, 'egsubmit'); return true;
+  }
   const input = D.nodes(el, 'numinput')[0];
   if (input) { input.value = '0'; input.fire('input'); D.click(el, 'numsubmit'); return true; }
   const ti = D.nodes(el, 'taskinput');
