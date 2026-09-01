@@ -275,8 +275,10 @@
     return out.sort(function (a, b) { return b.w - a.w; })
       .map(function (e) { return byId[e.id]; });
   }
-  /* Spaced review: a question got wrong and later fixed comes back once, a
-     week after the fix — answered right once is not the same as known.
+  /* Spaced review: a question got wrong and later fixed comes back a week
+     after the most recent correct answer — answered right once is not the
+     same as known, and each return that goes right pushes the next another
+     week out.
      Computed from the two timestamps already stored, so it costs the record
      nothing and merges between devices exactly as the backlog does. Served
      oldest fix first. */
@@ -315,6 +317,10 @@
   var POS_KEY = STORE_KEY + '_pos';
   function savePos() {
     if (S.mode !== 'lesson' || S.screen !== 'lesson' || !S.lessonId || S.phase !== 'teach') return;
+    /* Consulting a cheat sheet mid-lesson must not destroy the position in the
+       lesson the reader was actually inside. */
+    var cur = lessonById(S.lessonId);
+    if (cur && cur.isSheet) return;
     try {
       localStorage.setItem(POS_KEY, JSON.stringify({ unit: activeUnit(), lessonId: S.lessonId, cardIdx: S.cardIdx }));
     } catch (e) {}
@@ -332,7 +338,14 @@
     var pos = readPos();
     if (pos && pos.lessonId && pos.unit === activeUnit()) {
       var l = lessonById(pos.lessonId);
-      if (l && !l.isSheet && !isDone(l.id)) return { lesson: l, cardIdx: n0(pos.cardIdx) };
+      if (l && !l.isSheet && !isDone(l.id)) {
+        /* Clamped against the deck HERE, so the hero label and startLesson()
+           cannot disagree — a content release that shortens a lesson must not
+           leave the hero promising "back to card 9 of 6". */
+        var ci = n0(pos.cardIdx);
+        if (ci >= ((l.cards || []).length)) ci = 0;
+        return { lesson: l, cardIdx: ci };
+      }
     }
     var nx = nextLesson();
     return nx ? { lesson: nx, cardIdx: 0 } : null;
@@ -2833,7 +2846,12 @@
      top-up fires with one question left, so the reader never waits at a
      boundary they cannot see. */
   var ENDLESS_BATCH = 12;
-  function isEndless() { return S.practiceLo === 'endless'; }
+  /* Mode-gated, not just practiceLo: `practiceLo` survives a finished endless
+     run, so a LESSON opened afterwards answered isEndless() true — its nextq
+     took the endless branch, qIdx ran past the checks, and finish() was never
+     reached. A lesson could not be completed until something else happened to
+     reset practiceLo. */
+  function isEndless() { return S.mode === 'practice' && S.practiceLo === 'endless'; }
 
   /* More questions, excluding everything already served this run. When the
      unit's whole bank has been seen the set is allowed to start again — an
@@ -3293,6 +3311,17 @@
       if (isMock()) {
         if (S.screen === 'quiz') { S.confirmExit = true; return rerender(); }
         return leaveMock();
+      }
+      /* The answer on screen is banked before anything else happens — the
+         twin of Level 1's fix: settle() scored it and endEndless() counts it
+         as attempted, but only nextq recorded it, so leaving right after
+         answering dropped that question from the per-outcome tally and the
+         mistakes backlog. */
+      if (S.mode === 'practice' && S.screen === 'quiz' && q && S.answered !== null) {
+        if (S.answered === false) S.practiceMissed.push(q);
+        recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
+        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true);
+        save();
       }
       /* An endless run has no last question, so leaving IS finishing it — and a
          reader who has answered twenty deserves to see how they did rather than
