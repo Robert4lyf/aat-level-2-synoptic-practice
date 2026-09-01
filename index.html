@@ -34,8 +34,9 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="icon-512.png">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="aat1-styles.css">
-  <link rel="stylesheet" href="aat3-styles.css">
+  <!-- aat1-styles.css and aat3-styles.css load lazily with their subject's
+       assets (see SUBJECT_REGISTRY in app.js) — they were render-blocking
+       here for every subject. Both remain in the service-worker precache. -->
   <link rel="stylesheet" href="story-styles.css">
 </head>
 <body>
@@ -64,7 +65,7 @@
         <h1><button id="subjectSwitcherBtn" class="brand-switch" type="button"
                 aria-haspopup="true" aria-label="Switch subject — currently AAT Level 2"><span class="brand-name">🧮 AAT Level 2</span><span class="brand-caret" aria-hidden="true">▾</span></button></h1>
         <span class="sub">Bookkeeping, controls, costing and business environment — the Q2022 Level 2 Certificate in Accounting</span>
-        <span class="version-badge">v1.19.0</span>
+        <span class="version-badge">v1.20.0</span>
       </div>
       <span class="badge">EXAM PREP</span>
     </div>

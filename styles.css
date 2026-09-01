@@ -5,6 +5,10 @@
 
 /* ── DESIGN TOKENS ── */
 :root {
+  /* The app's dark mode is its own setting, not the OS's — without this,
+     native controls (select popups, scrollbars, inputs) follow the OS scheme
+     and render light-on-dark or dark-on-light against the app's theme. */
+  color-scheme: light;
   /* Brand — richer, bolder blue */
   --brand-50:  #eff5ff;
   --brand-100: #dbe7fe;
@@ -120,6 +124,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --bg: #080D1A;
   --bg-elevated: #0F172A;
   --card: #0F172A;
@@ -5327,12 +5332,16 @@ body.dark .topic-card-clinic {
    Drives nav-tab active colour, switcher pill, and card accents.
    Light-mode values; dark-mode overrides follow.                          */
 body[data-subject="aat"]        { --subj: #2563eb; --subj-rgb: 37,99,235;  --subj-light: rgba(37,99,235,.08);  }
+body[data-subject="aat1"]       { --subj: #0d8a7a; --subj-rgb: 13,138,122; --subj-light: rgba(13,138,122,.08); }
+body[data-subject="aat3"]       { --subj: #4f46e5; --subj-rgb: 79,70,229;  --subj-light: rgba(79,70,229,.08);  }
 body[data-subject="french"]     { --subj: #00267a; --subj-rgb: 0,38,122;   --subj-light: rgba(0,38,122,.08);   }
 body[data-subject="lsf"]        { --subj: #7c3aed; --subj-rgb: 124,58,237; --subj-light: rgba(124,58,237,.08); }
 body[data-subject="code-route"] { --subj: #b91c1c; --subj-rgb: 185,28,28;  --subj-light: rgba(185,28,28,.08);  }
 body[data-subject="guitar"]     { --subj: #b45309; --subj-rgb: 180,83,9;   --subj-light: rgba(180,83,9,.08);   }
 
 body.dark[data-subject="aat"]        { --subj: #60a5fa; --subj-rgb: 96,165,250;  --subj-light: rgba(96,165,250,.12);  }
+body.dark[data-subject="aat1"]       { --subj: #2dd4bf; --subj-rgb: 45,212,191;  --subj-light: rgba(45,212,191,.12);  }
+body.dark[data-subject="aat3"]       { --subj: #818cf8; --subj-rgb: 129,140,248; --subj-light: rgba(129,140,248,.12); }
 body.dark[data-subject="french"]     { --subj: #93b4ff; --subj-rgb: 147,180,255; --subj-light: rgba(147,180,255,.10); }
 body.dark[data-subject="lsf"]        { --subj: #c4b5fd; --subj-rgb: 196,181,253; --subj-light: rgba(196,181,253,.10); }
 body.dark[data-subject="code-route"] { --subj: #f87171; --subj-rgb: 248,113,113; --subj-light: rgba(248,113,113,.10); }
@@ -5340,10 +5349,16 @@ body.dark[data-subject="guitar"]     { --subj: #fbbf24; --subj-rgb: 251,191,36; 
 
 /* Per-subject card accent colours used in the subject picker */
 .subject-card[data-switch-subject="aat"]        { --card-subj: #2563eb; --card-subj-light: rgba(37,99,235,.09);  }
+.subject-card[data-switch-subject="aat1"]       { --card-subj: #0d8a7a; --card-subj-light: rgba(13,138,122,.09); }
+.subject-card[data-switch-subject="aat3"]       { --card-subj: #4f46e5; --card-subj-light: rgba(79,70,229,.09);  }
+.subject-card[data-switch-subject="guitar"]     { --card-subj: #b45309; --card-subj-light: rgba(180,83,9,.09);   }
 .subject-card[data-switch-subject="french"]     { --card-subj: #00267a; --card-subj-light: rgba(0,38,122,.09);   }
 .subject-card[data-switch-subject="lsf"]        { --card-subj: #7c3aed; --card-subj-light: rgba(124,58,237,.09); }
 .subject-card[data-switch-subject="code-route"] { --card-subj: #b91c1c; --card-subj-light: rgba(185,28,28,.09);  }
 .dark .subject-card[data-switch-subject="aat"]        { --card-subj: #60a5fa; --card-subj-light: rgba(96,165,250,.12);  }
+.dark .subject-card[data-switch-subject="aat1"]       { --card-subj: #2dd4bf; --card-subj-light: rgba(45,212,191,.12);  }
+.dark .subject-card[data-switch-subject="aat3"]       { --card-subj: #818cf8; --card-subj-light: rgba(129,140,248,.12); }
+.dark .subject-card[data-switch-subject="guitar"]     { --card-subj: #fbbf24; --card-subj-light: rgba(251,191,36,.10);  }
 .dark .subject-card[data-switch-subject="french"]     { --card-subj: #93b4ff; --card-subj-light: rgba(147,180,255,.10); }
 .dark .subject-card[data-switch-subject="lsf"]        { --card-subj: #c4b5fd; --card-subj-light: rgba(196,181,253,.10); }
 .dark .subject-card[data-switch-subject="code-route"] { --card-subj: #f87171; --card-subj-light: rgba(248,113,113,.10); }

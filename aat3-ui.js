@@ -113,7 +113,14 @@
      WHY PER UNIT. Outcome numbers restart at 1 in every unit, so one flat map
      would add FAPS outcome 1 to TPFB outcome 1 and report a weakest outcome
      that belongs to neither. */
-  var data = { lessons: {}, xp: 0, practice: { units: {} } };
+  /* `lessonQs` is the mistake memory for LESSON check questions, and it sits
+     OUTSIDE `practice` on purpose: check-aat3-practice-summary asserts a
+     lesson run leaves the practice record byte-identical, and the summary's
+     counts must stay an answer to "what did I practise". Keyed flat — the
+     synthetic id begins with the lesson's globally-unique id, so units cannot
+     collide — and it merges between devices exactly as `qs` does: two
+     timestamps per question under MAX. */
+  var data = { lessons: {}, xp: 0, lessonQs: {}, practice: { units: {} } };
 
   function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
 
@@ -147,7 +154,9 @@
     var legacyLos = (p && p.los && typeof p.los === 'object') ? p.los : {};
     var legacyRuns = n0(p && p.runs);
     if (legacyRuns || Object.keys(legacyLos).length) {
-      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, los: {} });
+      /* The COMPLETE record shape, matching practiceRec() — `{ runs, los }`
+         alone is exactly the partial-record trap the comment above names. */
+      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} });
       t.runs = Math.max(t.runs, legacyRuns);
       Object.keys(legacyLos).forEach(function (lo) {
         var was = legacyLos[lo] || {}, now = t.los[lo] || { attempted: 0, correct: 0 };
@@ -167,6 +176,7 @@
         var p = JSON.parse(raw);
         data.lessons = p.lessons || {};
         data.xp = p.xp || 0;
+        data.lessonQs = (p.lessonQs && typeof p.lessonQs === 'object') ? p.lessonQs : {};
         data.practice = normalisePractice(p.practice);
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
@@ -207,26 +217,87 @@
      Clock skew between devices can misorder two attempts made close together.
      The cost is a question offered again that did not need to be, which is the
      harmless direction to fail in. */
+  /* Lesson-check questions carry no ids of their own, so they get synthetic,
+     stable ones — "<lessonId>~<index>" — and are wrapped with the outcome and
+     unit of the lesson that owns them, so a miss inside a lesson can come back
+     through the same backlog as a miss in practice. Before this, the formative
+     half of the module — 250 questions — was invisible to every analytic. */
+  var LESSON_Q_SEP = '~';
+  function isLessonQId(qId) { return typeof qId === 'string' && qId.indexOf(LESSON_Q_SEP) !== -1; }
+  var _answerable = {};
+  function answerableById(unitKey) {
+    if (_answerable[unitKey]) return _answerable[unitKey];
+    var byId = {};
+    practiceBank(unitKey).forEach(function (q) { if (q.id) byId[q.id] = q; });
+    var built = 0;
+    allGroups().forEach(function (g) {
+      if (g.unit !== unitKey) return;
+      (g.lessons || []).forEach(function (l) {
+        (l.check || []).forEach(function (q, i) {
+          var id = l.id + LESSON_Q_SEP + i;
+          var w = {};
+          for (var k in q) if (Object.prototype.hasOwnProperty.call(q, k)) w[k] = q[k];
+          w.id = id; w.lo = g.outcome; w.unitKey = unitKey;
+          byId[id] = w;
+          built++;
+        });
+      });
+    });
+    /* Cache only once the content files are in — an index built before them
+       would answer "no such question" forever. */
+    if (built || practiceBank(unitKey).length) _answerable[unitKey] = byId;
+    return byId;
+  }
   function recordQuestion(unitKey, qId, correct) {
-    if (!unitKey || !qId) return;
-    var qs = practiceRec(unitKey).qs;
-    var rec = qs[qId] || (qs[qId] = {});
+    if (!qId) return;
+    var map;
+    if (isLessonQId(qId)) map = data.lessonQs;
+    else if (unitKey) map = practiceRec(unitKey).qs;
+    else return;
+    var rec = map[qId] || (map[qId] = {});
     if (correct) rec.r = Date.now(); else rec.w = Date.now();
   }
   function isOutstanding(rec) {
     return !!(rec && n0(rec.w) > n0(rec.r));
   }
   /* The questions still outstanding, most recently missed first, and only those
-     still in the bank — a question that has been rewritten or removed since it
-     was missed is not a question anyone can be asked again. */
+     still answerable — a question that has been rewritten or removed since it
+     was missed is not a question anyone can be asked again. Reads both mistake
+     maps: practice misses (per unit) and lesson-check misses (filtered to this
+     unit by the pool they resolve against). */
   function missedQuestions(unitKey) {
-    var qs = practiceRec(unitKey).qs;
-    var byId = {};
-    practiceBank(unitKey).forEach(function (q) { if (q.id) byId[q.id] = q; });
-    return Object.keys(qs)
-      .filter(function (id) { return byId[id] && isOutstanding(qs[id]); })
-      .sort(function (a, b) { return n0(qs[b].w) - n0(qs[a].w); })
-      .map(function (id) { return byId[id]; });
+    var byId = answerableById(unitKey);
+    var out = [];
+    [practiceRec(unitKey).qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        if (byId[id] && isOutstanding(map[id])) out.push({ id: id, w: n0(map[id].w) });
+      });
+    });
+    return out.sort(function (a, b) { return b.w - a.w; })
+      .map(function (e) { return byId[e.id]; });
+  }
+  /* Spaced review: a question got wrong and later fixed comes back a week
+     after the most recent correct answer — answered right once is not the
+     same as known, and each return that goes right pushes the next another
+     week out.
+     Computed from the two timestamps already stored, so it costs the record
+     nothing and merges between devices exactly as the backlog does. Served
+     oldest fix first. */
+  var REVIEW_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
+  function dueQuestions(unitKey) {
+    var byId = answerableById(unitKey);
+    var now = Date.now();
+    var out = [];
+    [practiceRec(unitKey).qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        var rec = map[id];
+        if (byId[id] && rec && n0(rec.w) > 0 && n0(rec.r) >= n0(rec.w) && now - n0(rec.r) > REVIEW_AFTER_MS) {
+          out.push({ id: id, r: n0(rec.r) });
+        }
+      });
+    });
+    return out.sort(function (a, b) { return a.r - b.r; })
+      .map(function (e) { return byId[e.id]; });
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
@@ -234,6 +305,51 @@
        this a lesson finished here would sit unsynced until something on the
        Level 2 side happened to save. */
     if (root.ProgressSync) root.ProgressSync.noteLocalChange();
+  }
+
+  /* ── Reading position ─────────────────────────────────────────────────────
+     Which card of which lesson the reader was on, and in which unit. Its own
+     localStorage key, deliberately outside the progress record: position is
+     device-local — two devices legitimately sit on different cards, and a
+     MAX-merge of "card 4" and "card 2" answers a question nobody asked. Only
+     the TEACH phase is saved: a half-answered question run is not restorable
+     honestly, so a reader who left mid-questions resumes on the last card of
+     the reading. */
+  var POS_KEY = STORE_KEY + '_pos';
+  function savePos() {
+    if (S.mode !== 'lesson' || S.screen !== 'lesson' || !S.lessonId || S.phase !== 'teach') return;
+    /* Consulting a cheat sheet mid-lesson must not destroy the position in the
+       lesson the reader was actually inside. */
+    var cur = lessonById(S.lessonId);
+    if (cur && cur.isSheet) return;
+    try {
+      localStorage.setItem(POS_KEY, JSON.stringify({ unit: activeUnit(), lessonId: S.lessonId, cardIdx: S.cardIdx }));
+    } catch (e) {}
+  }
+  function readPos() {
+    try { return JSON.parse(localStorage.getItem(POS_KEY) || 'null'); } catch (e) { return null; }
+  }
+  function clearPos() {
+    try { localStorage.removeItem(POS_KEY); } catch (e) {}
+  }
+  /* What the hero card should open: the lesson the reader was inside, at the
+     card they left — provided it belongs to the unit on screen — and only then
+     the first lesson not yet passed. */
+  function continueTarget() {
+    var pos = readPos();
+    if (pos && pos.lessonId && pos.unit === activeUnit()) {
+      var l = lessonById(pos.lessonId);
+      if (l && !l.isSheet && !isDone(l.id)) {
+        /* Clamped against the deck HERE, so the hero label and startLesson()
+           cannot disagree — a content release that shortens a lesson must not
+           leave the hero promising "back to card 9 of 6". */
+        var ci = n0(pos.cardIdx);
+        if (ci >= ((l.cards || []).length)) ci = 0;
+        return { lesson: l, cardIdx: ci };
+      }
+    }
+    var nx = nextLesson();
+    return nx ? { lesson: nx, cardIdx: 0 } : null;
   }
 
   /* ── Data access ─────────────────────────────────────────────────────────── */
@@ -270,6 +386,10 @@
   function activeUnit() {
     var keys = unitKeys();
     if (S.unit && keys.indexOf(S.unit) !== -1) return S.unit;
+    /* Prefer the complete unit as the fallback — the syllabus object lists
+       FAPS first, and a reader stranded without a stored unit should land on
+       the finished course, not the one still being written. */
+    if (keys.indexOf('tpfb') !== -1) return 'tpfb';
     return keys[0] || null;
   }
 
@@ -331,14 +451,27 @@
     };
   }
 
+  /* Indexed once: handle() resolves the current lesson on every single click,
+     including calculator keys and folds, and walking 12 groups × 83 lessons
+     (allocating a throwaway sheet object per group) per keypress is work with
+     one correct answer that never changes. The content files are static after
+     load, so the index is built on first use and kept. */
+  var _lessonIndex = null;
   function lessonById(id) {
-    var found = null;
-    allGroups().forEach(function (g) {
-      (g.lessons || []).forEach(function (l) { if (l.id === id) found = l; });
-      var sh = sheetOf(g);
-      if (sh && sh.id === id) found = sh;
-    });
-    return found;
+    if (id == null) return null;
+    if (!_lessonIndex) {
+      var idx = {};
+      allGroups().forEach(function (g) {
+        (g.lessons || []).forEach(function (l) { idx[l.id] = l; });
+        var sh = sheetOf(g);
+        if (sh) idx[sh.id] = sh;
+      });
+      /* Only keep an index built from loaded content — before the data files
+         arrive an empty index would answer "no such lesson" forever. */
+      if (Object.keys(idx).length) _lessonIndex = idx;
+      else return null;
+    }
+    return _lessonIndex[id] || null;
   }
   function rec(id) { return data.lessons[id] || null; }
   function isDone(id) { var r = rec(id); return !!(r && r.best >= 60); }
@@ -361,31 +494,6 @@
     sheet:    { label: 'Cheat sheet', glyph: '🗂️' },
   };
 
-  function coverage(unitKey) {
-    var key = unitKey || activeUnit();
-    var u = unitMeta(key);
-    if (!u) return null;
-    var total = 0, covered = 0, done = 0;
-    var claimed = {}, doneClaimed = {};
-    lessons().forEach(function (l) {
-      (l.criteria || []).forEach(function (t) {
-        claimed[t] = true;
-        if (isDone(l.id)) doneClaimed[t] = true;
-      });
-    });
-    u.outcomes.forEach(function (o) {
-      o.topics.forEach(function (t) {
-        t.concepts.forEach(function (c) {
-          total++;
-          var tag = u.code + '-' + c.id;
-          if (claimed[tag]) covered++;
-          if (doneClaimed[tag]) done++;
-        });
-      });
-    });
-    return { total: total, covered: covered, studied: done };
-  }
-
   /* ── The practice record ─────────────────────────────────────────────────── */
 
   function outcomes(unitKey) {
@@ -402,6 +510,7 @@
   function practiceLabel() {
     if (S.practiceLo === 'mix') return 'all outcomes';
     if (S.practiceLo === 'missed') return 'questions you had got wrong';
+    if (S.practiceLo === 'refresh') return 'keeping fixed mistakes fresh';
     if (S.practiceLo === 'mock') return 'a timed paper';
     /* Without this the label falls through and an endless run is described as
        "Outcome endless" on its own result screen. */
@@ -693,7 +802,14 @@
   }
 
   function renderUnits() {
-    var keys = unitKeys();
+    /* Complete units first. The syllabus object happens to list FAPS before
+       TPFB, which led a fresh reader to the unit that is 80% written while the
+       registry advertises "TPFB complete" — the finished unit is the sensible
+       first offer. */
+    var keys = unitKeys().slice().sort(function (a, b) {
+      var ca = unitProgress(a).complete ? 0 : 1, cb = unitProgress(b).complete ? 0 : 1;
+      return ca - cb;
+    });
     if (!keys.length) return '<div class="a3-empty">Level 3 content is still loading.</div>';
 
     /* THE ONE SCREEN THAT KEEPS A TITLE. Everywhere else the hero was repeating
@@ -702,7 +818,7 @@
        is a third of the height the hero used to be, and flat rather than a
        gradient — the shared header above it is already a gradient, and two
        stacked read as a mistake. */
-    var h = '<div class="a3-root"><div class="a3-page">';
+    var h = '<div class="a3-root' + fresh() + '"><div class="a3-page">';
     h += '<header class="a3-head">' +
       '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
       '<h1 class="a3-head-t">Choose a unit</h1>' +
@@ -797,7 +913,7 @@
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
     var prog = unitProgress(key);
     var bank = practiceBank();
-    var h = '<div class="a3-root">';
+    var h = '<div class="a3-root' + fresh() + '">';
 
     h += ctxBar({
       back: unitKeys().length > 1 ? 'tounits' : null,
@@ -820,12 +936,22 @@
     var next = nextLesson();
     h += '<div class="a3-actions">';
     if (next) {
-      var ng = outcomeOf(next);
-      h += '<button class="a3-act a3-act-go" data-a3="open" data-id="' + esc(next.id) + '">' +
-        '<span class="a3-act-k">' + (doneN ? 'Continue' : 'Start here') + '</span>' +
-        '<span class="a3-act-t">' + esc(next.title) + '</span>' +
+      /* The lesson the reader was INSIDE beats the first lesson not done:
+         leaving card 4 of a lesson and being sent somewhere earlier is how
+         "Continue" loses a reader's trust. startLesson() reopens the saved
+         card. */
+      var ct = continueTarget();
+      var ctL = (ct && ct.lesson) || next;
+      var resumingCard = ct && ct.cardIdx > 0 && ctL.id === (readPos() || {}).lessonId;
+      var ng = outcomeOf(ctL);
+      h += '<button class="a3-act a3-act-go" data-a3="open" data-id="' + esc(ctL.id) + '">' +
+        '<span class="a3-act-k">' + (doneN || resumingCard ? 'Continue' : 'Start here') + '</span>' +
+        '<span class="a3-act-t">' + esc(ctL.title) + '</span>' +
         '<span class="a3-act-m">' + (ng ? 'Outcome ' + ng.outcome + ' · ' : '') +
-          (next.cards || []).length + ' cards · ' + (next.check || []).length + ' questions</span>' +
+          (resumingCard
+            ? 'back to card ' + (ct.cardIdx + 1) + ' of ' + (ctL.cards || []).length
+            : (ctL.cards || []).length + ' cards · ' + (ctL.check || []).length + ' questions') +
+        '</span>' +
         '<span class="a3-act-go-i" aria-hidden="true">→</span>' +
         '</button>';
     } else {
@@ -848,11 +974,13 @@
     /* A unit still being written says so, once, here — not above every scroll.
        For a finished unit the standing caveats live in lesson 0A. */
     if (!prog.complete) {
+      /* One line, not a paragraph: the essential fact is the coverage number.
+         The unwritten outcomes are visible below, each saying so itself, and
+         the independence disclaimer already sits in this screen's footer. */
       h += '<div class="a3-notice"><strong>' + prog.authored + ' of ' + u.outcomes.length +
-        ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong>, covering ' +
-        prog.pctOfExam + '% of this unit\'s assessment. ' +
-        'The rest are listed below in the order the specification sets them out, so you can see what is ' +
-        'coming and what is missing. Nothing here has been reviewed by a qualified accountant.</div>';
+        ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong> — ' +
+        prog.pctOfExam + '% of this unit\'s assessment. The rest appear below, unwritten, in the ' +
+        'specification\'s order.</div>';
     }
 
     /* ── The outcome index ───────────────────────────────────────────────────
@@ -882,7 +1010,11 @@
       var g = groups.filter(function (x) { return x.outcome === o.n; })[0];
       var gl = g ? (g.lessons || []) : [];
       var gd = gl.filter(function (l) { return isDone(l.id); }).length;
-      var shut = !!S.shut[o.n];
+      /* Keyed by unit AND outcome number. Outcome numbers restart at 1 in
+         every unit, so a bare number meant folding TPFB's Outcome 3 folded
+         FAPS's too — the same cross-unit collision the per-unit practice
+         record was built to avoid. */
+      var shut = !!S.shut[S.unit + ':' + o.n];
       h += '<section class="a3-oc' + (g ? '' : ' is-unwritten') + (shut ? ' is-shut' : '') +
         '" id="a3-oc-' + o.n + '">' +
         '<button class="a3-oc-h" data-a3="fold" data-o="' + o.n + '" aria-expanded="' + (!shut) + '">' +
@@ -1607,7 +1739,11 @@
     if (focus) {
       h += '<div class="a3-mockreport-f">Most marks at stake: <strong>Outcome ' + focus.n + ' · ' +
         esc(focus.title) + '</strong> — ' + focus.pct + '% right, and ' + focus.weighting +
-        '% of the assessment.</div>';
+        '% of the assessment.' +
+        /* The diagnosis used to stop at naming the outcome; the obvious next
+           step is a tap, not a hunt back through the practice screen. */
+        '<button class="a3-btn a3-btn-primary a3-mockreport-go" data-a3="startpractice" data-lo="' +
+          focus.n + '">Practise Outcome ' + focus.n + '</button></div>';
     }
     return h + '</div>';
   }
@@ -1751,7 +1887,7 @@
     var wrong = rows.length - right;
     var shown = rows.filter(function (r) { return !S.reviewWrongOnly || !r.correct; });
 
-    var h = '<div class="a3-root">';
+    var h = '<div class="a3-root' + fresh() + '">';
     h += ctxBar({
       back: 'reviewback',
       backLabel: 'Back to the result',
@@ -1885,7 +2021,7 @@
       if (finished) doneLesson = '<div class="a3-done-lesson">' + esc(finished.title) + '</div>';
     }
 
-    return '<div class="a3-root"><div class="a3-done">' +
+    return '<div class="a3-root' + fresh() + '"><div class="a3-done">' +
       '<div class="a3-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       doneLesson +
       '<h1 class="a3-done-h">' + head + '</h1>' +
@@ -1899,6 +2035,7 @@
           'Best streak ' + S.bestStreak + '</div>' : '') +
       (isP ? '' : '<div class="a3-stars a3-stars-big">' + [1,2,3].map(function (n) {
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
+      (S.lastXp > 0 ? '<div class="a3-done-xp">+' + S.lastXp + ' XP · ' + data.xp + ' total</div>' : '') +
       weak +
       '<div class="a3-done-actions">' +
         /* THE FIRST THING OFFERED AFTER A PAPER, and ahead of more practice.
@@ -2041,8 +2178,9 @@
     bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
     var mrec = practiceRec(activeUnit());
     var missed = missedQuestions(activeUnit());
+    var due = dueQuestions(activeUnit());
 
-    var h = '<div class="a3-root">';
+    var h = '<div class="a3-root' + fresh() + '">';
     h += ctxBar({
       back: 'topath',
       backLabel: 'Back to the path',
@@ -2089,26 +2227,42 @@
         '<span class="a3-alert-go" aria-hidden="true">→</span>' +
         '</button>';
     }
+    /* Spaced review — mistakes fixed a week or more ago, offered back once.
+       Quieter than the backlog: these went right last time, so this is upkeep
+       rather than repair. */
+    if (due.length) {
+      h += '<button class="a3-alert a3-alert-due" data-a3="startpractice" data-lo="refresh">' +
+        '<span class="a3-alert-i" aria-hidden="true">↻</span>' +
+        '<span class="a3-alert-tx">' +
+          '<span class="a3-alert-t">' + due.length +
+            (due.length === 1 ? ' question to keep fresh' : ' questions to keep fresh') + '</span>' +
+          '<span class="a3-alert-m">Fixed a week or more ago. Right once is not the same as known.</span>' +
+        '</span>' +
+        '<span class="a3-alert-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
 
-    /* Offered directly under the mock and above mixed practice: it is the other
-       long-form thing to do on this screen, and it reads as its own mode rather
-       than as a variant of the ten-question run below it. */
-    h += '<button class="a3-endless" data-a3="startpractice" data-lo="endless">' +
-      '<span class="a3-endless-glow" aria-hidden="true"></span>' +
-      '<span class="a3-endless-i" aria-hidden="true">∞</span>' +
-      '<span class="a3-endless-tx">' +
-        '<span class="a3-endless-t">Endless practice</span>' +
-        '<span class="a3-endless-m">Questions keep coming until you stop. No length, no clock — ' +
-          'just a streak to keep going.</span>' +
-      '</span>' +
-      '<span class="a3-endless-go" aria-hidden="true">→</span>' +
-      '</button>';
-
-    h += '<button class="a3-mixed" data-a3="startpractice" data-lo="mix">' +
-      '<span class="a3-mixed-t">Mixed practice</span>' +
-      '<span class="a3-mixed-m">' + PRACTICE_LEN + ' questions from all outcomes, drawn to the exam weighting</span>' +
-      '<span class="a3-mixed-go" aria-hidden="true">→</span>' +
-      '</button>';
+    /* Endless and mixed share one card language and sit side by side from
+       tablet width — five stacked full-width offers was the clutter this
+       screen was known for. */
+    h += '<div class="a3-pduo">' +
+      '<button class="a3-endless" data-a3="startpractice" data-lo="endless">' +
+        '<span class="a3-endless-glow" aria-hidden="true"></span>' +
+        '<span class="a3-endless-i" aria-hidden="true">∞</span>' +
+        '<span class="a3-endless-tx">' +
+          '<span class="a3-endless-t">Endless practice</span>' +
+          '<span class="a3-endless-m">Questions keep coming until you stop. No clock — just a streak.</span>' +
+        '</span>' +
+        '<span class="a3-endless-go" aria-hidden="true">→</span>' +
+      '</button>' +
+      '<button class="a3-mixed" data-a3="startpractice" data-lo="mix">' +
+        '<span class="a3-mixed-tx">' +
+          '<span class="a3-mixed-t">Mixed practice</span>' +
+          '<span class="a3-mixed-m">' + PRACTICE_LEN + ' questions from all outcomes, drawn to the exam weighting</span>' +
+        '</span>' +
+        '<span class="a3-mixed-go" aria-hidden="true">→</span>' +
+      '</button>' +
+    '</div>';
 
     h += renderPracticeSummary();
 
@@ -2312,6 +2466,7 @@
     }
     var k = posKey();
     _fresh = k !== _lastPos;
+    savePos();
     el.innerHTML = html();
     wire(el);
     if (_fresh) {
@@ -2719,7 +2874,12 @@
      top-up fires with one question left, so the reader never waits at a
      boundary they cannot see. */
   var ENDLESS_BATCH = 12;
-  function isEndless() { return S.practiceLo === 'endless'; }
+  /* Mode-gated, not just practiceLo: `practiceLo` survives a finished endless
+     run, so a LESSON opened afterwards answered isEndless() true — its nextq
+     took the endless branch, qIdx ran past the checks, and finish() was never
+     reached. A lesson could not be completed until something else happened to
+     reset practiceLo. */
+  function isEndless() { return S.mode === 'practice' && S.practiceLo === 'endless'; }
 
   /* More questions, excluding everything already served this run. When the
      unit's whole bank has been seen the set is allowed to start again — an
@@ -2758,13 +2918,18 @@
     if (lo === 'missed') {
       S.practiceQs = missedQuestions(S.practiceUnit).slice(0, PRACTICE_LEN);
       S.practiceMissed = [];
+      /* The early return skipped the streak reset below, so a mistakes run
+         inherited — and kept incrementing — the previous run's streak. */
+      S.streak = 0; S.bestStreak = 0;
       S.mode = 'practice';
       S.screen = 'quiz';
       S.qIdx = 0; S.score = 0;
       resetQState();
       return;
     }
-    if (lo === 'endless') {
+    if (lo === 'refresh') {
+      S.practiceQs = dueQuestions(S.practiceUnit).slice(0, PRACTICE_LEN);
+    } else if (lo === 'endless') {
       S.endlessSeen = {};
       S.practiceQs = [];
       topUpEndless();
@@ -2785,6 +2950,13 @@
   function startLesson(id) {
     S.mode = 'lesson';
     S.lessonId = id; S.screen = 'lesson'; S.cardIdx = 0; S.phase = 'teach';
+    /* Resume the reading position if this is the lesson the reader left. */
+    var pos = readPos();
+    if (pos && pos.lessonId === id) {
+      var pl = lessonById(id);
+      var nCards = ((pl && pl.cards) || []).length;
+      if (n0(pos.cardIdx) > 0 && pos.cardIdx < nCards) S.cardIdx = pos.cardIdx;
+    }
     S.qIdx = 0; S.score = 0;
     /* Delegated rather than repeated. This function listed every per-question
        field by hand, which meant a new question type had to be remembered in
@@ -2801,6 +2973,9 @@
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
     S._order = null; S._gapOrder = null;
     S.plPicks = {}; S.egCells = {}; S.calcCell = null; S._plOrder = null;
+    /* S.calcOpen is deliberately NOT cleared: check-calculator.js §6 codifies
+       that the pad stays available across questions the way a desk calculator
+       stays on the desk — only its DISPLAY resets (below). */
     /* Three of these four are load-bearing and proved so: remove the reset of
        taskInputs, taskPicks or taskNudge and check-aat3-task.js §6 fails, with
        the next task arriving pre-filled, pre-selected, or already scolding the
@@ -2905,6 +3080,21 @@
 
   function finish() {
     var checks = currentQuestions();
+    /* A mock whose clock ran out has a question OPEN — possibly fully answered
+       — that mocknext never banked. Grade it on the way out exactly as
+       mocknext would have: without this the review said "the clock ran out
+       before you reached this one" about the question the reader was looking
+       at, and their answer was discarded unmarked. The length guard means the
+       normal path (mocknext banks the last question, then calls finish) can
+       never grade it twice. */
+    if (S.mode === 'mock' && S.mockResults && S.mockResults.length === S.qIdx && checks[S.qIdx]) {
+      var qOpen = checks[S.qIdx];
+      var okOpen = gradeAnswer(qOpen);
+      if (okOpen) S.score++; else S.practiceMissed.push(qOpen);
+      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer() });
+      recordPractice(S.practiceUnit || activeUnit(), qOpen.lo, okOpen);
+      recordQuestion(S.practiceUnit || activeUnit(), qOpen.id, okOpen);
+    }
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
     /* Practice earns XP but records no lesson result. A practice run is not a
        lesson attempt, and letting it write to data.lessons would mark nodes
@@ -2913,10 +3103,13 @@
        "a lesson" for as long as there were two modes; a mock reaching it would
        have written a lesson result under a null lesson id. A new mode must not
        be able to fall into the lesson branch by default. */
+    var xpBefore = data.xp;
     if (S.mode === 'lesson') {
       var prev = rec(S.lessonId);
       data.lessons[S.lessonId] = { best: Math.max(pct, prev ? prev.best : 0) };
       data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
+      /* The lesson is finished, so there is no reading position to come back to. */
+      clearPos();
     } else if (S.mode === 'mock') {
       var mrec = practiceRec(S.practiceUnit || activeUnit());
       mrec.mocks = (mrec.mocks || 0) + 1;
@@ -2928,6 +3121,8 @@
       data.xp += S.score * 3;
       practiceRec(S.practiceUnit || activeUnit()).runs++;
     }
+    /* What this run just earned — the reward loop used to accrue invisibly. */
+    S.lastXp = data.xp - xpBefore;
     save();
     /* The clock can run out while the guard is open — it keeps ticking, and its
        interval calls finish() directly. Without this the result screen would
@@ -3145,6 +3340,17 @@
         if (S.screen === 'quiz') { S.confirmExit = true; return rerender(); }
         return leaveMock();
       }
+      /* The answer on screen is banked before anything else happens — the
+         twin of Level 1's fix: settle() scored it and endEndless() counts it
+         as attempted, but only nextq recorded it, so leaving right after
+         answering dropped that question from the per-outcome tally and the
+         mistakes backlog. */
+      if (S.mode === 'practice' && S.screen === 'quiz' && q && S.answered !== null) {
+        if (S.answered === false) S.practiceMissed.push(q);
+        recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
+        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true);
+        save();
+      }
       /* An endless run has no last question, so leaving IS finishing it — and a
          reader who has answered twenty deserves to see how they did rather than
          being dropped back on the picker with nothing. */
@@ -3166,7 +3372,13 @@
       return rerender();
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
-    if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
+    if (act === 'topath') {
+      /* Arriving from Practice, not from a lesson: restoreScroll() scrolls the
+         path to S.lessonId, and a lesson left an hour ago is not where a
+         reader leaving the practice screen expects to land. */
+      if (S.screen === 'practice') S.lessonId = null;
+      S.mode = 'lesson'; S.screen = 'path'; return rerender();
+    }
     if (act === 'openunit') {
       S.unit = n.getAttribute('data-unit');
       S.mode = 'lesson'; S.screen = 'path'; S.lessonId = null;
@@ -3174,7 +3386,7 @@
     }
     if (act === 'tounits') { S.mode = 'lesson'; S.screen = 'units'; S.lessonId = null; return rerender(); }
     if (act === 'fold') {
-      var fo = n.getAttribute('data-o');
+      var fo = S.unit + ':' + n.getAttribute('data-o');
       S.shut[fo] = !S.shut[fo];
       return rerender();
     }
@@ -3182,7 +3394,8 @@
        shut lands the reader on a header with nothing under it. */
     if (act === 'jump') {
       var jo = n.getAttribute('data-o');
-      if (S.shut[jo]) { S.shut[jo] = false; rerender(); }
+      var jk = S.unit + ':' + jo;
+      if (S.shut[jk]) { S.shut[jk] = false; rerender(); }
       var target = _host && _host.querySelector && _host.querySelector('#a3-oc-' + jo);
       if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
@@ -3336,6 +3549,14 @@
            six questions and then leaves has attempted six questions, and the
            summary that claims to count what they attempted has to agree. The
            save is debounced downstream, so per-question is not per-request. */
+        save();
+      }
+      /* A lesson miss is remembered too — under its synthetic id, in the map
+         kept apart from the practice record (see `data.lessonQs`). This is
+         what lets the mistakes backlog offer back a concept failed inside a
+         lesson, which used to vanish without trace. */
+      if (S.mode === 'lesson' && q && S.answered !== null && l && !l.isSheet) {
+        recordQuestion(activeUnit(), l.id + LESSON_Q_SEP + S.qIdx, S.answered === true);
         save();
       }
       /* The streak is the endless run's only sense of position, so it is kept

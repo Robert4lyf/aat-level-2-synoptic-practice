@@ -23,6 +23,17 @@ var LAZY_CACHE = 'guitar-lazy-v1';
 var KEEP_CACHES = [LAZY_CACHE];
 var LAZY_PATTERN = /\/guitar-[a-z-]+\.(js|css)$/;
 
+/* Course content — question banks, lessons, syllabus spines — for the
+   precached subjects. Guitar's network-first lesson (see the long comment on
+   the fetch handler) applies to these too: four consecutive content-accuracy
+   releases shipped without a CACHE_VERSION bump, so a returning reader with a
+   warm cache was served the UNCORRECTED questions. These files are served
+   network-first with the precache as the offline fallback, so a content fix
+   reaches readers on the next load whether or not anyone remembered the bump.
+   Matches data.js, learn-data.js, aat1-/aat2-/aat3-*-data.js, *-syllabus.js,
+   french/lsf/code-route data — and deliberately not app code. */
+var CONTENT_PATTERN = /\/[a-z0-9-]*(data|syllabus)\.js$/;
+
 /* Surviving the sweep solves half the problem and creates the other half.
  *
  * The versioned cache is rebuilt from the network on every install, so after an
@@ -175,6 +186,27 @@ self.addEventListener('fetch', function (event) {
           return cache.match(req).then(function (hit) {
             return hit || new Response('', { status: 504, statusText: 'Offline' });
           });
+        });
+      })
+    );
+    return;
+  }
+
+  /* Content files: network first, precache as the offline fallback. The fresh
+     copy is written back into the versioned cache so the next offline load is
+     current too. Ordered after LAZY_PATTERN — guitar-learn-data.js matches
+     both, and guitar's copies live in the unversioned lazy cache. */
+  if (CONTENT_PATTERN.test(req.url)) {
+    event.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.status === 200) {
+          var copy = res.clone();
+          caches.open(CACHE_VERSION).then(function (cache) { cache.put(req, copy); });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req).then(function (hit) {
+          return hit || new Response('', { status: 504, statusText: 'Offline' });
         });
       })
     );

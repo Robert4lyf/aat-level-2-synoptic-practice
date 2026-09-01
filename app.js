@@ -24,6 +24,10 @@
       tabs: ['home'],
       ui: 'AAT1_UI',
       assets: ['aat1-syllabus.js', 'aat1-learn-data.js', 'aat1-practice-data.js', 'aat1-ui.js'],
+      /* Injected on first open, not linked from index.html: subject stylesheets
+         are render-blocking for every subject, and guitar already proved the
+         lazy path. Still precached by sw.js, so offline is unaffected. */
+      styles: 'aat1-styles.css',
       activate() {
         /* No shared globals: Level 1 reads its own data directly. Empty values
            keep any incidental app.js reference safe. */
@@ -49,6 +53,7 @@
       tabs: ['home'],
       ui: 'AAT3_UI',
       assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-ui.js'],
+      styles: 'aat3-styles.css', /* lazy, same reasoning as Level 1's */
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values
            keep any incidental app.js reference safe. */
@@ -3578,18 +3583,22 @@
      actually on lives in their own module. Asking State.screen here would say
      "at root" four cards into a lesson. */
   function navCanGoBack() {
+    /* The subject picker is reached FROM home and returns to it, so it counts
+       as deeper even though it is not a quiz. Tested BEFORE ownUi(), matching
+       the ordering render() uses: on Levels 1 and 3 the picker is drawn by
+       app.js over the module's screen, and asking the module here meant a
+       picker opened at a module's root said "at root" — the sentinel was
+       consumed and the NEXT platform-back left the app. */
+    if (State.screen === 'subjects') return true;
     const ui = ownUi();
     if (ui) return typeof ui.atRoot === 'function' ? !ui.atRoot() : false;
-    /* The subject picker is reached FROM home and returns to it, so it counts
-       as deeper even though it is not a quiz. */
-    if (State.screen === 'subjects') return true;
     if (State.screen === 'splash') return false;
     return State.screen !== 'home';
   }
   function navBack() {
+    if (State.screen === 'subjects') { State.screen = 'home'; render(); return; }
     const ui = ownUi();
     if (ui && typeof ui.back === 'function') { ui.back(); return; }
-    if (State.screen === 'subjects') { State.screen = 'home'; render(); return; }
     /* exitQuiz already knows every Level 2 screen and its rules — that a mock
        asks before it goes, that an endless run finishes rather than vanishing,
        that a lesson returns to the Learn tab rather than the top. */
@@ -3647,6 +3656,14 @@
        open would shut the drawer on the two that just gained it. Subjects with
        no panel never write the flag, so they still open closed. */
     State.referenceOpen = !!Storage.data.settings.refOpen;
+    /* …and the drawer itself must be repainted to match: without this it kept
+       the PREVIOUS subject's sections — Level 2 formulas confidently shown
+       under a Level 3 header — and its open/closed state, toggle label and
+       body class all disagreed with the flag just set. */
+    renderReferencePanel();
+    updateRefToggleBtn();
+    /* A streak banner in flight belongs to the subject being left. */
+    if (window.AATCelebrate && typeof AATCelebrate.clear === 'function') AATCelebrate.clear();
     // Reset all transient state
     State.screen = 'home';
     State.endless = false;
@@ -3760,6 +3777,13 @@
     const isDark = Storage.isDarkActive();
     document.body.classList.toggle('dark', isDark);
     document.body.setAttribute('data-subject', _activeSubjectId || 'aat');
+    /* The theme-color metas ship keyed to the OS scheme, but the app's dark
+       mode is its own per-subject setting — with the two disagreeing, the
+       browser painted a light-navy status bar over a near-black page. Pin both
+       metas to the theme actually on screen. */
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => {
+      m.setAttribute('content', isDark ? '#0a1628' : '#1e3a5f');
+    });
     const dt = document.getElementById('darkToggle');
     if (dt) { dt.textContent = isDark ? '☀️ Light' : '🌙 Dark'; dt.setAttribute('aria-pressed', isDark ? 'true' : 'false'); }
     /* THE TITLE IS THE SWITCHER. The header named the subject twice — an <h1>
@@ -4732,6 +4756,13 @@
      throw away the questions on screen. */
   function onRemoteProgress() {
     if (State.screen === 'quiz' || State.confirmModal) return;
+    /* A self-rendering subject (Levels 1 and 3, guitar) keeps its screen in its
+       own module while State.screen sits at 'home' — so the quiz guard above
+       protects nothing there. Ask the module: anywhere below its root (a
+       lesson, a practice run, 70 minutes into a timed mock) must not be
+       destroyed by a reload nothing on screen asked for. */
+    const ui = ownUi();
+    if (ui && typeof ui.atRoot === 'function' && !ui.atRoot()) return;
     try { sessionStorage.setItem('progressImported', 'sync'); } catch (e) {}
     location.reload();
   }
@@ -9612,13 +9643,24 @@
     const _self = !!(_ownUi && window[_ownUi]);
     if (!_self && (!window.ALL_QUESTIONS || !Array.isArray(window.ALL_QUESTIONS) || !window.ALL_QUESTIONS.length)) {
       const el = app(); if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="alert">⚠️ Question bank failed to load. Please reload the page.</div></div>`;
+      document.body.classList.remove('no-fade');
       const _c = document.getElementById('page-cover'); if (_c) _c.remove();
       return;
     }
-    render();
-    document.body.classList.remove('no-fade');
-    const _cover = document.getElementById('page-cover');
-    if (_cover) _cover.remove();
+    /* The cover div hides everything until the first render. If that render
+       throws, the cover must still come down — a blank page with no message is
+       strictly worse than a broken screen — so the removal is in a finally. */
+    try {
+      render();
+    } catch (err) {
+      const el = app();
+      if (el) el.innerHTML = `<div class="container"><div class="empty-state" role="alert">⚠️ Something went wrong drawing the screen. Please reload the page.</div></div>`;
+      setTimeout(() => { throw err; }, 0); // surface it in the console/error reporting
+    } finally {
+      document.body.classList.remove('no-fade');
+      const _cover = document.getElementById('page-cover');
+      if (_cover) _cover.remove();
+    }
     if (window.ProgressSync) {
       window.ProgressSync.onChange(() => {
         /* Redraw only the Progress screen, and only when it is on show —
