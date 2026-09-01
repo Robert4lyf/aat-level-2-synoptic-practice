@@ -24,14 +24,16 @@
  */
 
 body[data-subject="aat1"] {
-  --a1-ink:        #16211F;
-  --a1-ink-2:      #354744;
-  --a1-ink-3:      #667A77;
-  --a1-paper:      #FBFAF6;
+  --a1-ink:        #14201D;
+  --a1-ink-2:      #344743;
+  --a1-ink-3:      #61756F;
+  /* Cool, faintly minted neutrals. The old warm beige (#FBFAF6 with olive
+     lines) read as an older product than the teaching inside it. */
+  --a1-paper:      #F4F8F7;
   --a1-surface:    #FFFFFF;
-  --a1-surface-2:  #F3F2EC;
-  --a1-line:       #E2E2D8;
-  --a1-line-2:     #C9CABE;
+  --a1-surface-2:  #EBF2F0;
+  --a1-line:       #DEE8E5;
+  --a1-line-2:     #C2D1CC;
 
   --a1-brand:      #0D8A7A;
   --a1-brand-2:    #14A08D;
@@ -47,11 +49,11 @@ body[data-subject="aat1"] {
   --a1-bad:        #B22A38;
   --a1-bad-wash:   #FBE9EB;
 
-  --a1-shadow:     0 1px 2px rgba(20,40,36,.06), 0 6px 18px -8px rgba(20,40,36,.16);
-  --a1-shadow-lg:  0 2px 4px rgba(20,40,36,.07), 0 20px 44px -16px rgba(20,40,36,.24);
-  --a1-r:          12px;
-  --a1-r-lg:       20px;
-  --a1-r-sm:       9px;
+  --a1-shadow:     0 1px 2px rgba(20,40,36,.05), 0 8px 24px -10px rgba(20,40,36,.14);
+  --a1-shadow-lg:  0 2px 4px rgba(20,40,36,.06), 0 24px 52px -18px rgba(20,40,36,.26);
+  --a1-r:          14px;
+  --a1-r-lg:       22px;
+  --a1-r-sm:       10px;
   --a1-mono:       ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   /* The ink that goes ON a surface filled with a brand or status colour — the
@@ -179,22 +181,28 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
 .a1-act {
   display: grid; grid-template-columns: 1fr auto; align-items: center;
   gap: var(--a1-1) var(--a1-3); width: 100%; text-align: left;
-  padding: var(--a1-4) var(--a1-5); border-radius: var(--a1-r);
+  padding: var(--a1-5) var(--a1-5); border-radius: var(--a1-r-lg);
   border: 1px solid transparent; cursor: pointer; font-family: inherit;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
 }
+.a1-act:hover { transform: translateY(-2px); }
 .a1-act-k {
   grid-column: 1; font-size: var(--a1-t-label); font-weight: 800;
   letter-spacing: var(--a1-track); text-transform: uppercase;
 }
-.a1-act-t { grid-column: 1; font-size: 18px; font-weight: 700; line-height: 1.3; }
+.a1-act-t { grid-column: 1; font-size: 19px; font-weight: 800; letter-spacing: -.012em; line-height: 1.3; }
 .a1-act-m { grid-column: 1; font-size: var(--a1-t-meta); }
-.a1-act-go-i { grid-column: 2; grid-row: 1 / 4; font-size: 20px; }
-.a1-act-go { background: var(--a1-brand); color: var(--a1-on-fill); box-shadow: var(--a1-shadow); }
+.a1-act-go-i { grid-column: 2; grid-row: 1 / 4; font-size: 20px; transition: transform .16s ease; }
+.a1-act:hover .a1-act-go-i { transform: translateX(3px); }
+.a1-act-go {
+  background: linear-gradient(135deg, var(--a1-brand), var(--a1-brand-2));
+  color: var(--a1-on-fill); box-shadow: var(--a1-shadow-lg);
+}
 .a1-act-go .a1-act-k, .a1-act-go .a1-act-m { opacity: .85; }
-.a1-act-alt { background: var(--a1-surface); border-color: var(--a1-line-2); color: var(--a1-ink); }
+.a1-act-alt { background: var(--a1-surface); border-color: var(--a1-line); color: var(--a1-ink); box-shadow: var(--a1-shadow); }
 .a1-act-alt .a1-act-k { color: var(--a1-accent); }
 .a1-act-alt .a1-act-m { color: var(--a1-ink-3); }
-.a1-act-alt:hover { border-color: var(--a1-brand); }
+.a1-act-alt:hover { border-color: var(--a1-brand); box-shadow: var(--a1-shadow-lg); }
 .a1-act:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
 .a1-act-done {
   background: var(--a1-ok-wash); border-color: transparent; color: var(--a1-ink);
@@ -232,11 +240,19 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
    momentary act of tidying, not progress, and storing it would mean a reader
    who collapsed everything once came back weeks later to a course that looked
    empty. */
-.a1-oc { margin: 0 0 var(--a1-5); }
+/* Each outcome is one soft card holding its rungs as flat rows — twenty-six
+   individually bordered, shadowed cards down one page was the wall this screen
+   was known for. The card gives the outcome a shape; the rows inside recede. */
+.a1-oc {
+  margin: 0 0 var(--a1-4);
+  background: var(--a1-surface); border: 1px solid var(--a1-line);
+  border-radius: var(--a1-r-lg); padding: var(--a1-1) var(--a1-5) var(--a1-4);
+  box-shadow: var(--a1-shadow);
+}
 .a1-oc-h {
   display: grid; grid-template-columns: auto 1fr auto; align-items: center;
   gap: var(--a1-3); width: 100%; text-align: left; cursor: pointer;
-  padding: var(--a1-3) 0; background: none; border: 0; font-family: inherit;
+  padding: var(--a1-4) 0 var(--a1-3); background: none; border: 0; font-family: inherit;
   border-bottom: 1px solid var(--a1-line);
 }
 .a1-oc-h:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
@@ -260,6 +276,7 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   margin: var(--a1-3) 0 var(--a1-1); max-width: var(--a1-measure);
 }
 .a1-oc.is-shut .a1-oc-h { border-bottom-color: transparent; }
+.a1-oc.is-shut { padding-bottom: var(--a1-1); }
 
 .a1-root {
   color: var(--a1-ink);
@@ -305,14 +322,16 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
 .a1-rung.is-done .a1-rung-n { background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill); }
 .a1-rung.is-done .a1-rung-rail::before { background: var(--a1-brand); opacity: .55; }
 
+/* A flat row, not a card: inside the outcome card the rung needs no border of
+   its own. Hover is a wash, matching Level 3's track. */
 .a1-rung-card {
   flex: 1; display: flex; flex-direction: column; gap: var(--a1-1);
-  padding: var(--a1-3) var(--a1-4); text-align: left; cursor: pointer;
-  background: var(--a1-surface); border: 1px solid var(--a1-line);
-  border-radius: var(--a1-r); box-shadow: var(--a1-shadow);
-  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+  padding: var(--a1-2) var(--a1-3); text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid transparent;
+  border-radius: var(--a1-r-sm);
+  transition: background .14s ease;
 }
-.a1-rung-card:hover { transform: translateX(2px); border-color: var(--a1-brand); box-shadow: var(--a1-shadow-lg); }
+.a1-rung-card:hover { background: var(--a1-surface-2); }
 .a1-rung-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--a1-2); }
 .a1-rung-kind {
   font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
@@ -334,7 +353,7 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   color: var(--a1-ink-3);
   font-size: .8rem;
 }
-.a1-rung-sheet .a1-rung-card { border-style: dashed; }
+.a1-rung-sheet .a1-rung-card { border-style: dashed; border-color: transparent; }
 .a1-rung-title { font-size: var(--a1-t-head); font-weight: 700; line-height: 1.3; }
 /* Two lines and then an ellipsis, done by the browser — a summary cut at a
    character count breaks mid-word, and every one of these is a sentence. */
@@ -685,8 +704,11 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
 }
 .a1-btn:hover { transform: translateY(-1px); }
 .a1-btn:active { transform: none; }
-.a1-btn-primary { background: var(--a1-brand); color: var(--a1-on-fill); }
-.a1-btn-primary:hover { background: var(--a1-brand-2); }
+.a1-btn-primary {
+  background: linear-gradient(135deg, var(--a1-brand), var(--a1-brand-2));
+  color: var(--a1-on-fill); box-shadow: 0 6px 18px -6px rgba(13,138,122,.5);
+}
+.a1-btn-primary:hover { box-shadow: 0 10px 26px -8px rgba(13,138,122,.6); }
 .a1-btn-ghost {
   background: var(--a1-surface-2); color: var(--a1-ink-2); border: 1px solid var(--a1-line);
 }
@@ -739,11 +761,13 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   position: relative; overflow: hidden;
   display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
   margin: 0 0 12px; padding: 16px 18px;
-  border-radius: var(--a1-r-lg); border: 1px solid var(--a1-accent);
-  background: var(--a1-accent-wash); color: var(--a1-ink);
-  font-family: inherit; cursor: pointer; transition: transform .16s;
+  border-radius: var(--a1-r); border: 1px solid var(--a1-line);
+  background: var(--a1-surface); color: var(--a1-ink);
+  box-shadow: var(--a1-shadow);
+  font-family: inherit; cursor: pointer;
+  transition: transform .16s, border-color .16s, box-shadow .16s;
 }
-.a1-endless:hover { transform: translateY(-2px); }
+.a1-endless:hover { transform: translateY(-2px); border-color: var(--a1-accent); box-shadow: var(--a1-shadow-lg); }
 .a1-endless:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
 /* A slow drift behind the card — the one piece of motion in the module, and it
    is here because this is the one thing in it that does not stop. */
@@ -1085,6 +1109,9 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 
 /* ── Practice picker ──────────────────────────────────────────────────────── */
 .a1-pgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 11px; }
+/* The endless offer is a mode, not another outcome: full row, so it reads as
+   a banner over the grid instead of a card squeezed into one column. */
+.a1-pgrid .a1-endless { grid-column: 1 / -1; margin: 0; }
 .a1-pcard {
   display: flex; flex-direction: column; gap: 4px; text-align: left; cursor: pointer;
   padding: 16px 17px; background: var(--a1-surface);
@@ -1154,6 +1181,12 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-alert-t { display: block; font-size: var(--a1-t-ui); font-weight: 700; color: var(--a1-ink); }
 .a1-alert-m { display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3); margin-top: 2px; line-height: 1.45; }
 .a1-alert-go { flex: none; color: var(--a1-accent-ink); font-size: 18px; }
+/* The spaced-review offer — quieter than the backlog: these went right last
+   time, so this is upkeep rather than repair. */
+.a1-alert-due { background: var(--a1-brand-wash); border-color: var(--a1-line-2); }
+.a1-alert-due .a1-alert-i { background: var(--a1-brand); }
+.a1-alert-due .a1-alert-go { color: var(--a1-brand-ink); }
+.a1-alert-due:hover { border-color: var(--a1-brand); }
 
 /* The clock. Takes the place of the percentage in the question bar, because a
    reader sitting to time wants the minutes, not the progress. */
@@ -1180,6 +1213,13 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-mockreport-f {
   font-size: var(--a1-t-meta); color: var(--a1-ink-2); line-height: 1.55;
   background: var(--a1-surface-2); border-radius: var(--a1-r-sm); padding: var(--a1-3);
+}
+.a1-mockreport-go { display: block; margin-top: var(--a1-3); }
+
+/* What the run just earned — the reward loop used to accrue invisibly. */
+.a1-done-xp {
+  margin: 10px 0 0; font-size: var(--a1-t-meta); font-weight: 700;
+  color: var(--a1-brand-ink);
 }
 
 /* ── Reviewing the paper just sat ─────────────────────────────────────────── */

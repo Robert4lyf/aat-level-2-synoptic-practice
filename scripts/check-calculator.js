@@ -839,6 +839,16 @@ function finish() {
           document.head.appendChild(s);
         });
       }
+      /* The stylesheet too: it loads lazily with the subject's assets now, and
+         the position assertions below measure a FIXED element — unstyled, the
+         FAB sits in the flow and the numbers mean nothing. */
+      if (!document.querySelector('link[href="aat3-styles.css"]')) {
+        await new Promise((res, rej) => {
+          const l = document.createElement('link');
+          l.rel = 'stylesheet'; l.href = 'aat3-styles.css'; l.onload = res; l.onerror = rej;
+          document.head.appendChild(l);
+        });
+      }
       window.AAT3_PRACTICE = { QUESTIONS: [q] };
       window.AAT3_FAPS_PRACTICE = { QUESTIONS: [] };
       const host = document.createElement('div');
