@@ -1154,6 +1154,12 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-alert-t { display: block; font-size: var(--a1-t-ui); font-weight: 700; color: var(--a1-ink); }
 .a1-alert-m { display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3); margin-top: 2px; line-height: 1.45; }
 .a1-alert-go { flex: none; color: var(--a1-accent-ink); font-size: 18px; }
+/* The spaced-review offer — quieter than the backlog: these went right last
+   time, so this is upkeep rather than repair. */
+.a1-alert-due { background: var(--a1-brand-wash); border-color: var(--a1-line-2); }
+.a1-alert-due .a1-alert-i { background: var(--a1-brand); }
+.a1-alert-due .a1-alert-go { color: var(--a1-brand-ink); }
+.a1-alert-due:hover { border-color: var(--a1-brand); }
 
 /* The clock. Takes the place of the percentage in the question bar, because a
    reader sitting to time wants the minutes, not the progress. */
@@ -1180,6 +1186,13 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-mockreport-f {
   font-size: var(--a1-t-meta); color: var(--a1-ink-2); line-height: 1.55;
   background: var(--a1-surface-2); border-radius: var(--a1-r-sm); padding: var(--a1-3);
+}
+.a1-mockreport-go { display: block; margin-top: var(--a1-3); }
+
+/* What the run just earned — the reward loop used to accrue invisibly. */
+.a1-done-xp {
+  margin: 10px 0 0; font-size: var(--a1-t-meta); font-weight: 700;
+  color: var(--a1-brand-ink);
 }
 
 /* ── Reviewing the paper just sat ─────────────────────────────────────────── */

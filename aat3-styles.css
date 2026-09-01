@@ -1002,6 +1002,13 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   background: var(--a3-surface-2); border: 1px solid var(--a3-line);
   font-size: 13.5px; line-height: 1.6; color: var(--a3-ink-2);
 }
+.a3-mockreport-go { display: block; margin-top: 10px; }
+
+/* What the run just earned — the reward loop used to accrue invisibly. */
+.a3-done-xp {
+  margin: 10px 0 0; font-size: var(--a3-t-meta); font-weight: 700;
+  color: var(--a3-brand);
+}
 .a3-try-row-mock { margin-bottom: 6px; }
 
 /* ── The context bar ─────────────────────────────────────────────────────────
@@ -1327,6 +1334,12 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-alert-t { display: block; font-size: var(--a3-t-ui); font-weight: 700; }
 .a3-alert-m { display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 2px; line-height: 1.45; }
 .a3-alert-go { flex: none; color: var(--a3-gold); font-size: 18px; }
+/* The spaced-review offer — quieter than the backlog: these went right last
+   time, so this is upkeep rather than repair. */
+.a3-alert-due { background: var(--a3-brand-wash); border-color: var(--a3-line); }
+.a3-alert-due .a3-alert-i { background: var(--a3-brand); }
+.a3-alert-due .a3-alert-go { color: var(--a3-brand); }
+.a3-alert-due:hover { border-color: var(--a3-brand); }
 
 /* Tier three: the ordinary ways in. */
 .a3-mixed {

@@ -119,7 +119,13 @@
      is only ever one source of truth. `correct` rather than `wrong` is stored
      for the same reason — both rise, but only the pair (attempted, correct)
      survives a max-merge without ever implying a negative count. */
-  var data = { lessons: {}, xp: 0, practice: { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} } };
+  /* `lessonQs` is the mistake memory for LESSON check questions, and it sits
+     OUTSIDE `practice` on purpose: the practice record is asserted untouched
+     by lesson runs (see the Level 3 twin of that rule in
+     check-aat3-practice-summary), and the summary's counts must stay an answer
+     to "what did I practise". It merges between devices exactly as `qs` does —
+     two timestamps per question under MAX. */
+  var data = { lessons: {}, xp: 0, lessonQs: {}, practice: { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} } };
 
   function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
 
@@ -146,6 +152,7 @@
         var p = JSON.parse(raw);
         data.lessons = p.lessons || {};
         data.xp = p.xp || 0;
+        data.lessonQs = (p.lessonQs && typeof p.lessonQs === 'object') ? p.lessonQs : {};
         data.practice = normalisePractice(p.practice);
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
@@ -180,32 +187,119 @@
      Clock skew between devices can misorder two attempts made close together.
      The cost is a question offered again that did not need to be, which is the
      harmless direction to fail in. */
+  /* Lesson-check questions carry no ids of their own, so they get synthetic,
+     stable ones — "<lessonId>~<index>" — and are wrapped with the outcome of
+     the lesson that owns them, so a miss in a lesson can come back through the
+     same backlog as a miss in practice. Before this, half the questions a
+     learner answered were invisible: failing the same concept six times inside
+     a lesson never surfaced anywhere. */
+  var LESSON_Q_SEP = '~';
+  function isLessonQId(qId) { return typeof qId === 'string' && qId.indexOf(LESSON_Q_SEP) !== -1; }
+  var _answerable = null;
+  function answerableById() {
+    if (_answerable) return _answerable;
+    var byId = {};
+    practiceBank().forEach(function (q) { if (q.id) byId[q.id] = q; });
+    var lessonQs = 0;
+    path().forEach(function (g) {
+      (g.lessons || []).forEach(function (l) {
+        (l.check || []).forEach(function (q, i) {
+          var id = l.id + LESSON_Q_SEP + i;
+          var w = {};
+          for (var k in q) if (Object.prototype.hasOwnProperty.call(q, k)) w[k] = q[k];
+          w.id = id; w.lo = g.outcome;
+          byId[id] = w;
+          lessonQs++;
+        });
+      });
+    });
+    /* Cache only once the content files are in — an index built before them
+       would answer "no such question" forever. */
+    if (lessonQs || practiceBank().length) _answerable = byId;
+    return byId;
+  }
   function recordQuestion(qId, correct) {
     if (!qId) return;
-    var qs = data.practice.qs;
-    var r = qs[qId] || (qs[qId] = {});
+    var map = isLessonQId(qId) ? data.lessonQs : data.practice.qs;
+    var r = map[qId] || (map[qId] = {});
     if (correct) r.r = Date.now(); else r.w = Date.now();
   }
   function isOutstanding(r) {
     return !!(r && n0(r.w) > n0(r.r));
   }
   /* The questions still outstanding, most recently missed first, and only those
-     still in the bank — a question that has been rewritten or removed since it
-     was missed is not a question anyone can be asked again. */
+     still answerable — a question that has been rewritten or removed since it
+     was missed is not a question anyone can be asked again. Reads both mistake
+     maps: practice misses and lesson-check misses. */
   function missedQuestions() {
-    var qs = data.practice.qs;
-    var byId = {};
-    practiceBank().forEach(function (q) { if (q.id) byId[q.id] = q; });
-    return Object.keys(qs)
-      .filter(function (id) { return byId[id] && isOutstanding(qs[id]); })
-      .sort(function (a, b) { return n0(qs[b].w) - n0(qs[a].w); })
-      .map(function (id) { return byId[id]; });
+    var byId = answerableById();
+    var out = [];
+    [data.practice.qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        if (byId[id] && isOutstanding(map[id])) out.push({ id: id, w: n0(map[id].w) });
+      });
+    });
+    return out.sort(function (a, b) { return b.w - a.w; })
+      .map(function (e) { return byId[e.id]; });
+  }
+  /* Spaced review: a question you got wrong and later fixed comes back once,
+     a week after the fix — answered right once is not the same as known.
+     Computed from the two timestamps already stored, so it costs the record
+     nothing and merges between devices exactly as the backlog does. Served
+     oldest fix first. */
+  var REVIEW_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
+  function dueQuestions() {
+    var byId = answerableById();
+    var now = Date.now();
+    var out = [];
+    [data.practice.qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        var r = map[id];
+        if (byId[id] && r && n0(r.w) > 0 && n0(r.r) >= n0(r.w) && now - n0(r.r) > REVIEW_AFTER_MS) {
+          out.push({ id: id, r: n0(r.r) });
+        }
+      });
+    });
+    return out.sort(function (a, b) { return a.r - b.r; })
+      .map(function (e) { return byId[e.id]; });
   }
   function save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
     /* Level 1 persists on its own, so it announces its own writes — otherwise a
        lesson finished here sits unsynced until something else happens to save. */
     if (root.ProgressSync) root.ProgressSync.noteLocalChange();
+  }
+
+  /* ── Reading position ─────────────────────────────────────────────────────
+     Which page of which step the reader was on. Its own localStorage key,
+     deliberately outside the progress record: position is device-local — two
+     devices legitimately sit on different pages, and a MAX-merge of "page 4"
+     and "page 2" answers a question nobody asked. Only the TEACH phase is
+     saved: a half-answered question run is not restorable honestly, so a
+     reader who left mid-questions resumes on the last page of the reading. */
+  var POS_KEY = STORE_KEY + '_pos';
+  function savePos() {
+    if (S.mode !== 'lesson' || S.screen !== 'lesson' || !S.lessonId || S.phase !== 'teach') return;
+    try {
+      localStorage.setItem(POS_KEY, JSON.stringify({ lessonId: S.lessonId, cardIdx: S.cardIdx }));
+    } catch (e) {}
+  }
+  function readPos() {
+    try { return JSON.parse(localStorage.getItem(POS_KEY) || 'null'); } catch (e) { return null; }
+  }
+  function clearPos() {
+    try { localStorage.removeItem(POS_KEY); } catch (e) {}
+  }
+  /* What the hero card should open: the step the reader was inside, at the
+     page they left, and only then the first step not yet passed. */
+  function continueTarget() {
+    var pos = readPos();
+    if (pos && pos.lessonId) {
+      var l = lessonById(pos.lessonId);
+      if (l && !l.isSheet && !isDone(l.id)) return { lesson: l, cardIdx: n0(pos.cardIdx) };
+    }
+    var nx = nextLesson();
+    return nx ? { lesson: nx, cardIdx: 0 } : null;
   }
 
   /* ── Data access ─────────────────────────────────────────────────────────── */
@@ -604,12 +698,21 @@
     /* ── The two things you came here to do ────────────────────────────────── */
     h += '<div class="a1-actions">';
     if (nx) {
-      var ng = groupOf(nx);
-      h += '<button class="a1-act a1-act-go" data-a1="open" data-id="' + esc(nx.id) + '">' +
-        '<span class="a1-act-k">' + (doneN ? 'Continue' : 'Start here') + '</span>' +
-        '<span class="a1-act-t">Step ' + stepNo(nx.id) + ' · ' + esc(nx.title) + '</span>' +
+      /* The step the reader was INSIDE beats the first step not done: leaving
+         page 4 of step 12 and being sent to step 3 is how "Continue" loses a
+         reader's trust. startLesson() reopens the saved page. */
+      var ct = continueTarget();
+      var ctL = (ct && ct.lesson) || nx;
+      var resumingPage = ct && ct.cardIdx > 0 && ctL.id === (readPos() || {}).lessonId;
+      var ng = groupOf(ctL);
+      h += '<button class="a1-act a1-act-go" data-a1="open" data-id="' + esc(ctL.id) + '">' +
+        '<span class="a1-act-k">' + (doneN || resumingPage ? 'Continue' : 'Start here') + '</span>' +
+        '<span class="a1-act-t">Step ' + stepNo(ctL.id) + ' · ' + esc(ctL.title) + '</span>' +
         '<span class="a1-act-m">' + (ng ? 'Outcome ' + ng.outcome + ' · ' : '') +
-          (nx.cards || []).length + ' pages · ' + (nx.check || []).length + ' questions</span>' +
+          (resumingPage
+            ? 'back to page ' + (ct.cardIdx + 1) + ' of ' + (ctL.cards || []).length
+            : (ctL.cards || []).length + ' pages · ' + (ctL.check || []).length + ' questions') +
+        '</span>' +
         '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
         '</button>';
     } else {
@@ -1095,7 +1198,11 @@
     if (focus) {
       h += '<div class="a1-mockreport-f">Most marks at stake: <strong>Outcome ' + focus.n + ' · ' +
         esc(focus.title) + '</strong> — ' + focus.pct + '% right, and ' + focus.weighting +
-        '% of the assessment.</div>';
+        '% of the assessment.' +
+        /* The diagnosis used to stop at naming the outcome; the obvious next
+           step is a tap, not a hunt back through the practice screen. */
+        '<button class="a1-btn a1-btn-primary a1-mockreport-go" data-a1="startpractice" data-lo="' +
+          focus.n + '">Practise Outcome ' + focus.n + '</button></div>';
     }
     return h + '</div>';
   }
@@ -1167,6 +1274,7 @@
           'Best streak ' + S.bestStreak + '</div>' : '') +
       (isP ? '' : '<div class="a1-stars a1-stars-big">' + [1, 2, 3].map(function (n) {
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
+      (S.lastXp > 0 ? '<div class="a1-done-xp">+' + S.lastXp + ' XP · ' + data.xp + ' total</div>' : '') +
       weak + onward +
       '<div class="a1-done-actions">' +
         /* THE FIRST THING OFFERED AFTER A PAPER, and ahead of more practice. A
@@ -1190,6 +1298,7 @@
      existed. */
   function practiceLabel() {
     if (S.practiceLo === 'missed') return 'questions you had got wrong';
+    if (S.practiceLo === 'refresh') return 'keeping fixed mistakes fresh';
     if (S.practiceLo === 'mix') return 'all outcomes';
     if (S.practiceLo === 'mock') return 'timed mock';
     /* Without this an endless run is described as "Outcome endless" on its own
@@ -1303,6 +1412,7 @@
     bank.forEach(function (q) { counts[q.lo] = (counts[q.lo] || 0) + 1; });
 
     var missed = missedQuestions();
+    var due = dueQuestions();
     var pr = data.practice;
 
     var h = '<div class="a1-root">';
@@ -1343,6 +1453,20 @@
           '<span class="a1-alert-t">' + missed.length +
             (missed.length === 1 ? ' question you got wrong' : ' questions you got wrong') + '</span>' +
           '<span class="a1-alert-m">Served back most recent first, and cleared as you get them right.</span>' +
+        '</span>' +
+        '<span class="a1-alert-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+    /* Spaced review — mistakes fixed a week or more ago, offered back once.
+       Quieter than the backlog: these went right last time, so this is upkeep
+       rather than repair. */
+    if (due.length) {
+      h += '<button class="a1-alert a1-alert-due" data-a1="startpractice" data-lo="refresh">' +
+        '<span class="a1-alert-i" aria-hidden="true">↻</span>' +
+        '<span class="a1-alert-tx">' +
+          '<span class="a1-alert-t">' + due.length +
+            (due.length === 1 ? ' question to keep fresh' : ' questions to keep fresh') + '</span>' +
+          '<span class="a1-alert-m">Fixed a week or more ago. Right once is not the same as known.</span>' +
         '</span>' +
         '<span class="a1-alert-go" aria-hidden="true">→</span>' +
         '</button>';
@@ -1533,6 +1657,7 @@
     }
     var k = posKey();
     _fresh = k !== _lastPos;
+    savePos();
     el.innerHTML = html();
     wire(el);
     if (_fresh) {
@@ -1750,6 +1875,8 @@
       topUpEndless();
     } else if (lo === 'missed') {
       S.practiceQs = missedQuestions().slice(0, PRACTICE_LEN);
+    } else if (lo === 'refresh') {
+      S.practiceQs = dueQuestions().slice(0, PRACTICE_LEN);
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(PRACTICE_LEN);
     } else {
@@ -1767,6 +1894,13 @@
   function startLesson(id) {
     S.mode = 'lesson';
     S.lessonId = id; S.screen = 'lesson'; S.cardIdx = 0; S.phase = 'teach';
+    /* Resume the reading position if this is the step the reader left. */
+    var pos = readPos();
+    if (pos && pos.lessonId === id) {
+      var l = lessonById(id);
+      var nCards = ((l && l.cards) || []).length;
+      if (n0(pos.cardIdx) > 0 && pos.cardIdx < nCards) S.cardIdx = pos.cardIdx;
+    }
     S.qIdx = 0; S.score = 0;
     resetCardState(); resetQState();
   }
@@ -2085,10 +2219,13 @@
        and reaching this with it would have written a lesson result under a null
        lesson id — ticking a rung on the ladder for a step never opened. A new
        mode must not be able to fall into the lesson branch by default. */
+    var xpBefore = data.xp;
     if (S.mode === 'lesson') {
       var prev = rec(S.lessonId);
       data.lessons[S.lessonId] = { best: Math.max(pct, prev ? prev.best : 0) };
       data.xp += S.score * 5 + (pct >= 60 ? 20 : 0);
+      /* The step is finished, so there is no reading position to come back to. */
+      clearPos();
     } else if (S.mode === 'mock') {
       data.practice.mocks = (data.practice.mocks || 0) + 1;
       /* Best mock, as a percentage. Monotonic, so it merges between devices by
@@ -2099,6 +2236,8 @@
       data.xp += S.score * 3;
       data.practice.runs = (data.practice.runs || 0) + 1;
     }
+    /* What this run just earned — the reward loop used to accrue invisibly. */
+    S.lastXp = data.xp - xpBefore;
     save();
     /* The clock can run out while the guard is open — it keeps ticking, and its
        interval calls finish() directly. Without this the result screen would
@@ -2637,6 +2776,14 @@
         /* Written now rather than at the end of the run. A reader who answers
            six questions and then leaves has attempted six questions, and the
            record that claims to count what they attempted has to agree. */
+        save();
+      }
+      /* A lesson miss is remembered too — under its synthetic id, in the map
+         kept apart from the practice record (see `data.lessonQs`). This is
+         what lets the mistakes backlog offer back a concept failed inside a
+         lesson, which used to vanish without trace. */
+      if (S.mode === 'lesson' && q && S.answered !== null && l && !l.isSheet) {
+        recordQuestion(l.id + LESSON_Q_SEP + S.qIdx, S.answered === true);
         save();
       }
       /* The streak is the endless run's only sense of position, so it is kept
