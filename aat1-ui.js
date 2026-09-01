@@ -55,6 +55,7 @@
     orderSeq: null,      // working order, as indices into q.items
     numInput: '',
     plPicks: {},          // picklist: row index -> chosen option
+    _plOrder: null,       // picklist: the shuffled row order the reader is shown
     egCells: {},          // entrygrid: 'row:col' -> what the reader typed
     calcCell: null,       // entrygrid: which cell "Use this value" fills
     /* Ordering is the one question type whose working state is created by the
@@ -364,6 +365,31 @@
       var t = r[i]; r[i] = r[j]; r[j] = t;
     }
     return r;
+  }
+
+  /* THE PICK LIST AS THE READER SEES IT. Its rows are shuffled for the same
+     reason a true/false grid's statements are, a few lines into the renderer
+     below: a reader sitting the paper twice must not be able to answer row 3
+     without reading it. Every row carries its own answer, so reordering them is
+     safe — but the RENDERER and the GRADER have to agree on the order, which is
+     why both go through here rather than each reaching for `q.picklist`.
+
+     An entry grid is deliberately not shuffled: its rows are one entry read in
+     order, and a day book ends with a totals row that would stop being the
+     total of the rows above it. */
+  function shownPicklist(q) {
+    if (!q || q.type !== 'picklist' || !q.picklist) return q;
+    var rows = q.picklist.rows || [];
+    if (!S._plOrder || S._plOrder.length !== rows.length) {
+      S._plOrder = shuffle(rows.map(function (_, i) { return i; }));
+    }
+    var out = {}, k;
+    for (k in q) { if (Object.prototype.hasOwnProperty.call(q, k)) out[k] = q[k]; }
+    var pl = {};
+    for (k in q.picklist) { if (Object.prototype.hasOwnProperty.call(q.picklist, k)) pl[k] = q.picklist[k]; }
+    pl.rows = S._plOrder.map(function (i) { return rows[i]; });
+    out.picklist = pl;
+    return out;
   }
   function idxArray(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
 
@@ -890,7 +916,7 @@
       var GR = root.AATGrid;
       if (GR) {
         h += t === 'picklist'
-          ? GR.picklistHtml(q, { prefix: 'a1', attr: 'data-a1', picks: S.plPicks, showAnswers: S.answered !== null })
+          ? GR.picklistHtml(shownPicklist(q), { prefix: 'a1', attr: 'data-a1', picks: S.plPicks, showAnswers: S.answered !== null })
           : GR.entryHtml(q, { prefix: 'a1', attr: 'data-a1', cells: S.egCells, showAnswers: S.answered !== null });
       }
       if (S.answered === null && !isMock()) {
@@ -1791,7 +1817,7 @@
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {};
     S.matchPicks = {}; S.matchSel = null; S.orderSeq = null; S.orderMoved = false;
     S.numInput = ''; S._order = null; S.calcOpen = false;
-    S.plPicks = {}; S.egCells = {}; S.calcCell = null;
+    S.plPicks = {}; S.egCells = {}; S.calcCell = null; S._plOrder = null;
     /* THE WORKING GOES WITH THE QUESTION. A figure left on the display belongs
        to a sum the reader has finished with, and reading it as the start of the
        next one is how a wrong answer gets typed. Memory survives — reset()
@@ -2049,7 +2075,7 @@
       return (q.gaps || []).every(function (g, i) { return S.gapPicks[i] === g.answer; });
     }
     if (t === 'picklist') {
-      return !!(root.AATGrid && root.AATGrid.gradePicklist(q, S.plPicks).right);
+      return !!(root.AATGrid && root.AATGrid.gradePicklist(shownPicklist(q), S.plPicks).right);
     }
     if (t === 'entrygrid') {
       return !!(root.AATGrid && root.AATGrid.gradeEntry(q, S.egCells).right);
@@ -2146,6 +2172,7 @@
       orderMoved: S.orderMoved,
       num: S.numInput,
       pl: copyMap(S.plPicks),
+      plOrder: S._plOrder,
       eg: copyMap(S.egCells),
       shuffle: S._order,
     };
@@ -2164,6 +2191,7 @@
     S.orderMoved = !!a.orderMoved;
     S.numInput = a.num || '';
     S.plPicks = copyMap(a.pl);
+    S._plOrder = a.plOrder || null;
     S.egCells = copyMap(a.eg);
     S._order = a.shuffle;
   }

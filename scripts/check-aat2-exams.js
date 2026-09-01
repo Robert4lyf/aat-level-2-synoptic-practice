@@ -308,6 +308,139 @@ console.log(`${BOLD}AAT Level 2 exams vs. the specification${RESET}\n`);
       });
     }
 
+    /* ── 6. The third question family the specification names ─────────────── */
+    console.log(`${DIM}6. Bookkeeping tables on the paper${RESET}`);
+    {
+      /* AAT's Level 2 specification v5.4 §9.4 says a student will meet
+         "multiple-choice questions, numeric gap-fill questions, or question
+         tools that replicate workplace activities such as making entries in a
+         journal", and synoptic objectives 4, 5 and 7 — bookkeeping
+         transactions, control accounts and the journal, receipts and payments —
+         are thirty of the paper's hundred marks. A mock that met those marks
+         with multiple choice alone rehearsed two of the three families. */
+      const served = await page.evaluate(() => {
+        const E = window.__AAT2_EXAM;
+        const anchored = [];
+        const counts = [];
+        for (let i = 0; i < 25; i++) {
+          const qs = E.buildSynopticMock();
+          const tables = qs.filter(q => q.type === 'picklist' || q.type === 'entrygrid');
+          counts.push(tables.length);
+          /* The two tasks the blueprint anchors one in: 4 (bookkeeping
+             transactions) and 5 (control accounts and the journal). Task
+             indexes are zero-based on the question. */
+          anchored.push([3, 4].every(t => tables.some(q => q._task === t)));
+        }
+        return {
+          min: Math.min(...counts), max: Math.max(...counts),
+          total: counts.reduce((a, b) => a + b, 0),
+          everyAnchored: anchored.every(Boolean),
+        };
+      });
+      /* LEFT TO THE SHUFFLE THIS WAS 14 PAPERS IN 25. A dozen tables against six
+         hundred other questions is a rounding error in a sixteen-mark draw, so
+         the blueprint deals one into Tasks 4 and 5 the way it deals the written
+         response into Task 4 — and this is the assertion that says so. */
+      ok(served.everyAnchored,
+        'every paper puts a bookkeeping table in Task 4 AND in Task 5');
+      ok(served.min >= 2, `no paper serves fewer than two (fewest ${served.min})`);
+      /* AND NOT A PAPER MADE OF THEM. Anchoring deals one per area; a draw that
+         filled a sixteen-mark task with four journals would be a different
+         paper from the one AAT sets. */
+      ok(served.max <= 4, `and none more than four (most ${served.max}, ${served.total} across 25 papers)`);
+
+      /* WHAT ONE IS WORTH, and what a part-right answer earns.
+
+         A pick list's rows are independent decisions, so it is marked a mark a
+         row exactly as a true/false grid is. An entry grid is ONE entry written
+         across several rows: a journal that balances on two lines of three is
+         not two thirds of a journal, and awarding it two marks would teach the
+         thing the type exists to catch. Driven through the real grader rather
+         than read off the source, because "is marked per row" is a claim about
+         what happens to a reader. */
+      const marking = await page.evaluate(() => {
+        const E = window.__AAT2_EXAM;
+        const pick = window.ALL_QUESTIONS.find(q => q.type === 'picklist' && q.picklist.rows.length === 6);
+        const grid = window.ALL_QUESTIONS.find(q => q.type === 'entrygrid' && q.entrygrid.rows.length === 3);
+        if (!pick || !grid) return null;
+
+        const allRight = {}; pick.picklist.rows.forEach((r, i) => { allRight[i] = r.answer; });
+        const oneWrong = Object.assign({}, allRight);
+        oneWrong[0] = (pick.picklist.rows[0].answer + 1) % pick.picklist.options.length;
+        const twoWrong = Object.assign({}, oneWrong);
+        twoWrong[1] = (pick.picklist.rows[1].answer + 1) % pick.picklist.options.length;
+
+        const cells = {};
+        grid.entrygrid.rows.forEach((r, ri) => {
+          grid.entrygrid.columns.forEach((c, ci) => {
+            const k = window.AATGrid.cellKey(r, ci);
+            if (k != null) cells[ri + ':' + ci] = String(k);
+          });
+        });
+        const gridOneWrong = Object.assign({}, cells);
+        gridOneWrong[Object.keys(cells)[0]] = '1';
+
+        return {
+          pickMarks: E.questionMarks(pick),
+          gridMarks: E.questionMarks(grid),
+          pickAll: E.gradeResponse(pick, allRight),
+          pickOne: E.gradeResponse(pick, oneWrong),
+          pickTwo: E.gradeResponse(pick, twoWrong),
+          pickNone: E.gradeResponse(pick, {}),
+          gridAll: E.gradeResponse(grid, cells),
+          gridOne: E.gradeResponse(grid, gridOneWrong),
+        };
+      });
+      ok(!!marking, 'the bank has a six-row pick list and a three-row journal to mark');
+      if (marking) {
+        ok(marking.pickMarks === 6, `a six-row pick list is worth six marks (got ${marking.pickMarks})`);
+        ok(marking.gridMarks === 3, `a three-row journal is worth three marks (got ${marking.gridMarks})`);
+        ok(marking.pickAll.awarded === 6 && marking.pickAll.correct,
+          `all six rows right earns all six marks (got ${marking.pickAll.awarded})`);
+        ok(marking.pickOne.awarded === 5 && !marking.pickOne.correct,
+          `five rows right earns five marks, and is not "correct" (got ${marking.pickOne.awarded})`);
+        ok(marking.pickTwo.awarded === 4,
+          `four rows right earns four marks (got ${marking.pickTwo.awarded})`);
+        ok(marking.pickNone.awarded === 0,
+          `an untouched pick list earns nothing (got ${marking.pickNone.awarded})`);
+        ok(marking.gridAll.awarded === 3 && marking.gridAll.correct,
+          `a journal entered correctly earns its three marks (got ${marking.gridAll.awarded})`);
+        ok(marking.gridOne.awarded === 0 && !marking.gridOne.correct,
+          `and one figure in the wrong place earns NOTHING, not two thirds (got ${marking.gridOne.awarded})`);
+      }
+
+      /* THE SAME THING ON A REAL PAPER. Everything above marks a question as the
+         bank holds it; a paper marks it as the READER SAW IT, and between the
+         two sits the shuffle that reorders a pick list's rows every sitting.
+         Answer a drawn question from its own rows and it must score full marks
+         — if the grader read the bank's order instead, this is where it shows,
+         and nothing else here would. */
+      const onPaper = await page.evaluate(() => {
+        const E = window.__AAT2_EXAM;
+        const out = { tried: 0, full: 0, moved: 0, sameAsBank: 0 };
+        for (let i = 0; i < 10; i++) {
+          const qs = E.buildSynopticMock();
+          qs.filter(q => q.type === 'picklist').forEach(q => {
+            out.tried++;
+            const bank = window.ALL_QUESTIONS.find(b => b.id === q.id);
+            const order = q.picklist.rows.map(r => bank.picklist.rows.indexOf(r)).join(',');
+            if (order === bank.picklist.rows.map((_, k) => k).join(',')) out.sameAsBank++;
+            else out.moved++;
+            const answers = {};
+            q.picklist.rows.forEach((r, k) => { answers[k] = r.answer; });
+            const g = E.gradeResponse(q, answers);
+            if (g.correct && g.awarded === g.max) out.full++;
+          });
+        }
+        return out;
+      });
+      ok(onPaper.tried > 0, `pick lists were drawn onto papers to mark (${onPaper.tried})`);
+      ok(onPaper.full === onPaper.tried,
+        `every one answered from its own rows scores full marks (${onPaper.full} of ${onPaper.tried})`);
+      ok(onPaper.moved > 0,
+        `and the rows really are reordered between sittings (${onPaper.moved} of ${onPaper.tried} differed from the bank)`);
+    }
+
     console.log();
     console.log(`  ${DIM}${spec.bankSize} questions in the bank · synoptic ${spec.totalMarks} marks over ` +
       `${spec.blueprint.length} tasks in ${spec.durationMs / 60000} min · ` +

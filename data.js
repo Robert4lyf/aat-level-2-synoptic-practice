@@ -7436,12 +7436,134 @@ window.ALL_QUESTIONS.push(
       options: ['Add to or deduct from the cash book', 'A timing difference on the reconciliation'],
       rows: [
         { text: 'Bank charges shown on the statement', answer: 0 },
-        { text: 'A cheque written but not yet presented', answer: 1 },
+        { text: 'A cheque written yesterday and not yet presented', answer: 1 },
         { text: 'A direct debit the business had not recorded', answer: 0 },
         { text: 'A lodgement paid in after the bank closed', answer: 1 },
-        { text: 'Interest credited by the bank', answer: 0 },
+        { text: 'A cheque written three weeks ago and still not cleared', answer: 1 },
         { text: 'A dishonoured cheque from a customer', answer: 0 },
       ],
     },
-    exp: 'The division is whether the item is NEW INFORMATION or just early. Anything the bank did that the business did not know about — charges, direct debits, interest, a bounced cheque — is a real transaction missing from the cash book, so the cash book is corrected. Unpresented cheques and outstanding lodgements are already in the cash book and correct; they are simply not at the bank yet, so they reconcile the two balances without either record being wrong.' }
+    exp: 'The division is whether the item is NEW INFORMATION or just early. Anything the bank did that the business did not know about — charges, direct debits, a bounced cheque — is a real transaction missing from the cash book, so the cash book is corrected. Unpresented cheques and outstanding lodgements are already in the cash book and correct; they are simply not at the bank yet, so they reconcile the two balances without either record being wrong. Age makes no difference: a cheque three weeks old that has still not been banked is the same kind of item as one written yesterday, and neither is a mistake to put right.' },
+
+  /* ── Enough of them to fill a paper ────────────────────────────────────────
+     The synoptic draws Task 4 (16 ITBK marks), Task 5 (10 POBC) and Task 7
+     (4 ITBK) from these two areas, and its objectives 4, 5 and 7 are processing
+     bookkeeping transactions, using the journal and reconciling a bank
+     statement. Four tables cannot supply thirty marks without serving the same
+     ones every sitting, which is a paper the reader learns rather than sits. */
+
+  { id: 'itbk-502', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+    q: 'A supplier invoices the business £1,600 plus VAT at 20% for goods bought on credit. Record the double entry in the general ledger.',
+    entrygrid: {
+      title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [
+        { label: 'Purchases', col: 0, amount: 1600 },
+        { label: 'VAT control', col: 0, amount: 320 },
+        { label: 'Purchases ledger control account', col: 1, amount: 1920 },
+      ],
+    },
+    exp: 'A purchase invoice is the mirror of a sales invoice. The business owes the supplier the whole £1,920, so the purchases ledger control account is credited with the GROSS. The cost of the goods is the net £1,600 and the £320 of VAT is input tax the business can reclaim from HMRC, so both are debits — the VAT is not part of the cost, which is why it goes to the VAT control account rather than to purchases.' },
+
+  { id: 'itbk-503', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+    q: 'In which ledger is each account kept?',
+    picklist: {
+      title: 'Accounts in the bookkeeping system', rowHeader: 'Account', choiceHeader: 'Ledger',
+      options: ['General ledger', 'Sales ledger', 'Purchases ledger'],
+      rows: [
+        { text: 'Sales ledger control account', answer: 0 },
+        { text: 'Hale & Co, a credit customer', answer: 1 },
+        { text: 'Barrow Ltd, a credit supplier', answer: 2 },
+        { text: 'VAT control account', answer: 0 },
+        { text: 'Naylor Supplies, a credit supplier', answer: 2 },
+        { text: 'Kerrigan Ltd, a credit customer', answer: 1 },
+      ],
+    },
+    exp: 'The CONTROL accounts live in the general ledger and are part of the double entry — the sales ledger control account is the one figure for everything customers owe. The individual customer and supplier accounts are memorandum accounts kept in the sales and purchases ledgers: they say who owes what, but they are not part of the double entry, which is why their total is checked AGAINST the control account rather than added to it.' },
+
+  { id: 'itbk-504', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+    q: 'The business issues a credit note to a credit customer for £300 plus VAT at 20% for goods returned. Record the double entry in the general ledger.',
+    entrygrid: {
+      title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [
+        { label: 'Sales returns', col: 0, amount: 300 },
+        { label: 'VAT control', col: 0, amount: 60 },
+        { label: 'Sales ledger control account', col: 1, amount: 360 },
+      ],
+    },
+    exp: 'A credit note reverses a sale, so every entry is the other way round from the invoice: the customer no longer owes the £360, so the sales ledger control account is CREDITED with the gross. The £300 goes to sales returns rather than being deducted from sales, so the books still show what was sold and what came back, and the £60 of output tax is taken back off what is owed to HMRC by debiting the VAT control account.' },
+
+  { id: 'itbk-505', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+    q: 'Is the entry in the named account a debit or a credit?',
+    picklist: {
+      title: 'Entries in the general ledger', rowHeader: 'Account and transaction', choiceHeader: 'Entry',
+      options: ['Debit', 'Credit'],
+      rows: [
+        { text: 'Sales, when goods are sold on credit', answer: 1 },
+        { text: 'Sales ledger control account, when a customer pays by BACS', answer: 1 },
+        { text: 'Bank, when a customer pays by BACS', answer: 0 },
+        { text: 'Purchases, when goods are bought on credit', answer: 0 },
+        { text: 'VAT control account, when a sales invoice is issued', answer: 1 },
+        { text: 'Purchases ledger control account, when a supplier is paid', answer: 0 },
+      ],
+    },
+    exp: 'Two of these are the same transaction seen from both sides: a customer paying by BACS debits the bank because the business has more money, and credits the sales ledger control account because it is owed less. The pair that catches people is the control accounts — the SALES ledger control account is an asset and falls on the credit side when it is settled, while the PURCHASES ledger control account is a liability and falls on the debit side when it is paid.' },
+
+  { id: 'pobc-502', topic: 'pobc', difficulty: 'medium', type: 'entrygrid',
+    q: 'A payment of £480 for motor expenses was posted in error to the motor vehicles account. The bank entry was correct. Record the journal to correct the error.',
+    entrygrid: {
+      title: 'Journal', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [
+        { label: 'Motor expenses', col: 0, amount: 480 },
+        { label: 'Motor vehicles', col: 1, amount: 480 },
+      ],
+    },
+    exp: 'Only the two accounts that were confused move, because the bank side was right and the trial balance still agreed — this is an error of principle, which a trial balance cannot find. Take the £480 out of motor vehicles by crediting it, and put it where it belonged by debiting motor expenses. Running the cost through an asset account instead of an expense would overstate both the year\u2019s profit and what the business owns.' },
+
+  { id: 'pobc-503', topic: 'pobc', difficulty: 'hard', type: 'picklist',
+    q: 'Name the type of error in each case.',
+    picklist: {
+      title: 'Errors found during the month', rowHeader: 'What happened', choiceHeader: 'Type of error',
+      options: ['Error of omission', 'Error of commission', 'Error of principle', 'Error of original entry', 'Reversal of entries', 'Compensating error'],
+      rows: [
+        { text: 'A payment for motor expenses was posted to the motor vehicles account', answer: 2 },
+        { text: 'A purchase invoice was never entered in the books at all', answer: 0 },
+        { text: 'Cash received from a customer was debited to the customer\u2019s account and credited to bank', answer: 4 },
+        { text: 'A sales invoice was posted to the account of the wrong customer', answer: 1 },
+        { text: 'Sales were overcast by £90 and purchases were overcast by £90', answer: 5 },
+        { text: 'An invoice for £560 was entered in the day book and posted as £650', answer: 3 },
+      ],
+    },
+    exp: 'Every one of these leaves the trial balance agreeing, which is the point: a balanced trial balance is not a correct one. The pair most often swapped is principle and commission — commission is the RIGHT KIND of account and the wrong one within it (one customer instead of another), while principle is the WRONG KIND altogether (an expense posted to an asset). A reversal has both entries the right size and on the wrong sides, so correcting it takes twice the amount, not once.' },
+
+  { id: 'pobc-504', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+    q: 'Which side of the sales ledger control account does each item go on?',
+    picklist: {
+      title: 'Sales ledger control account', rowHeader: 'Item', choiceHeader: 'Side',
+      options: ['Debit', 'Credit'],
+      rows: [
+        { text: 'Credit sales for the month', answer: 0 },
+        { text: 'Balance brought down at the start of the month', answer: 0 },
+        { text: 'Receipts from credit customers', answer: 1 },
+        { text: 'A cheque from a customer returned unpaid', answer: 0 },
+        { text: 'Sales returns', answer: 1 },
+        { text: 'Discounts allowed', answer: 1 },
+      ],
+    },
+    exp: 'The account is an asset — what customers owe — so anything that INCREASES the debt is a debit and anything that reduces it is a credit. Selling on credit and starting the month owed money are debits; receipts, returns and discounts allowed all reduce the debt and are credits. The dishonoured cheque is the one to think about: the receipt was credited when it came in, and the cheque bouncing puts the debt straight back on, so it is debited.' },
+
+  { id: 'pobc-505', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+    q: 'Would each balance appear in the debit or the credit column of the trial balance?',
+    picklist: {
+      title: 'Balances at the year end', rowHeader: 'Balance', choiceHeader: 'Trial balance column',
+      options: ['Debit', 'Credit'],
+      rows: [
+        { text: 'Purchases', answer: 0 },
+        { text: 'Bank overdraft', answer: 1 },
+        { text: 'Motor vehicles at cost', answer: 0 },
+        { text: 'Discounts received', answer: 1 },
+        { text: 'VAT owed to HM Revenue & Customs', answer: 1 },
+        { text: 'Sales ledger control account', answer: 0 },
+      ],
+    },
+    exp: 'Assets and expenses are debits; liabilities, income and capital are credits. The bank is the one that changes sides: money IN the bank is an asset and a debit, but an OVERDRAFT is money owed to the bank and belongs on the credit side. Discounts received are income, not a reduction of purchases, and VAT owed to HMRC is a liability like any other — the same account would be a debit if HMRC owed the business a refund instead.' }
 );

@@ -74,6 +74,20 @@ function answerAny(D, el, p) {
     D.click(el, 'matchsubmit'); return true;
   }
   if (has('ordersubmit')) { D.click(el, 'ordersubmit'); return true; }
+  /* THE TWO SHARED TABLES. Any answer will do — this walker is looking for the
+     completion screen, not for marks — but it must give ONE. A walker that
+     cannot answer a type does not report "I am stuck on a pick list"; it
+     reports whatever the check was measuring, as an absence, which is how a
+     practice run that drew one came back as "never reached a completion
+     screen" on runs where the draw happened to include it. */
+  if (has('plsubmit')) {
+    pick('plpick').forEach(n => { n.value = '0'; n.fire('change'); });
+    D.click(el, 'plsubmit'); return true;
+  }
+  if (has('egsubmit')) {
+    pick('egcell').forEach(n => { n.value = '0'; n.fire('input'); });
+    D.click(el, 'egsubmit'); return true;
+  }
   if (has('taskinput') || has('tasksubmit')) {
     pick('taskinput').forEach(n => { n.value = '0'; n.fire('input'); });
     const byPart = new Map();
