@@ -68,6 +68,18 @@ function answerAny(D, el, p) {
     const b = pick('numinput')[0];
     b.value = '0'; b.fire('input'); D.click(el, 'numsubmit'); return true;
   }
+  /* Pick lists are <select>s bound to 'change', entry grids are <input>s bound
+     to 'input' — a click on either registers nothing. These two types arrived
+     after this walker was written, and a mixed run that happened to draw one
+     stalled on it until the loop gave up: the 1-in-5 flake this branch ends. */
+  if (has('plsubmit')) {
+    pick('plpick').forEach(n => { n.value = '0'; n.fire('change'); });
+    D.click(el, 'plsubmit'); return true;
+  }
+  if (has('egsubmit')) {
+    pick('egcell').forEach(n => { n.value = '0'; n.fire('input'); });
+    D.click(el, 'egsubmit'); return true;
+  }
   if (has('matchl')) {
     const L = pick('matchl'), R = pick('matchr');
     L.forEach((n, i) => { n.fire('click'); if (R[i]) R[i].fire('click'); });
@@ -184,7 +196,10 @@ function nameOn(html, cls) {
       notes.push('aat3        a practice run names no lesson, as it should not');
     }
   } else {
-    notes.push(`${DIM}aat3        practice run did not reach a completion screen; not asserted${RESET}`);
+    /* An error, not a note: downgrading a stall hid the picklist/entrygrid
+       blind spot at Level 1 for a while — the same gap must not hide here. */
+    errors.push('aat3: a practice run never reached a completion screen, so the check that it does ' +
+                'NOT name a lesson proved nothing.');
   }
 }
 

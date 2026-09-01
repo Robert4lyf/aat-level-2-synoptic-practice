@@ -271,19 +271,30 @@
     path().forEach(function (g) { var sh = sheetOf(g); if (sh) out.push(sh); });
     return out;
   }
+  /* Indexed once: handle() resolves the current lesson on every single click,
+     and lessons() + sheets() each rebuild their array per call. The learn path
+     is static after load, so the id → lesson map and the id → step-number map
+     are built on first use and kept. */
+  var _lessonIndex = null, _stepIndex = null;
+  function buildIndexes() {
+    var li = {}, si = {};
+    lessons().forEach(function (l, i) { li[l.id] = l; si[l.id] = i + 1; });
+    sheets().forEach(function (sh) { li[sh.id] = sh; });
+    /* Only kept once built from loaded content — before the data file arrives
+       an empty index would answer "no such lesson" forever. */
+    if (Object.keys(li).length) { _lessonIndex = li; _stepIndex = si; }
+    return { li: li, si: si };
+  }
   function lessonById(id) {
-    var all = lessons();
-    for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i];
-    var sh = sheets();
-    for (var j = 0; j < sh.length; j++) if (sh[j].id === id) return sh[j];
-    return null;
+    if (id == null) return null;
+    var li = _lessonIndex || buildIndexes().li;
+    return li[id] || null;
   }
   /* Ladder position, 1-based and continuous across outcomes — the number the
      reader sees on the rung and in the lesson bar. */
   function stepNo(id) {
-    var all = lessons();
-    for (var i = 0; i < all.length; i++) if (all[i].id === id) return i + 1;
-    return 0;
+    var si = _stepIndex || buildIndexes().si;
+    return si[id] || 0;
   }
   function rec(id) { return data.lessons[id] || null; }
   function isDone(id) { var r = rec(id); return !!(r && r.best >= 60); }
@@ -316,30 +327,6 @@
     practical: { label: 'Practical', glyph: '✎' },
     sheet:     { label: 'Cheat sheet', glyph: '🗂️' },
   };
-
-  function coverage() {
-    var u = unit();
-    if (!u) return null;
-    var total = 0, covered = 0, done = 0;
-    var claimed = {}, doneClaimed = {};
-    lessons().forEach(function (l) {
-      (l.criteria || []).forEach(function (t) {
-        claimed[t] = true;
-        if (isDone(l.id)) doneClaimed[t] = true;
-      });
-    });
-    u.outcomes.forEach(function (o) {
-      o.topics.forEach(function (t) {
-        t.concepts.forEach(function (c) {
-          total++;
-          var tag = 'BKFN-' + c.id;
-          if (claimed[tag]) covered++;
-          if (doneClaimed[tag]) done++;
-        });
-      });
-    });
-    return { total: total, covered: covered, studied: done };
-  }
 
   /* ── Small helpers ───────────────────────────────────────────────────────── */
   function esc(s) {
@@ -597,7 +584,6 @@
     var ls = lessons();
     var doneN = ls.filter(function (l) { return isDone(l.id); }).length;
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
-    var u = unit();
     var nx = nextLesson();
     var bank = practiceBank();
 
@@ -1670,6 +1656,7 @@
     S.practiceLo = 'mock';
     S.practiceQs = drawWeighted(MOCK_LEN);
     S.practiceMissed = [];
+    S.streak = 0; S.bestStreak = 0; /* same reset startPractice() does */
     S.mockResults = [];
     S.mockOver = false;
     S.mockEndsAt = Date.now() + mockMinutes() * 60000;
@@ -1924,7 +1911,12 @@
      the card happens to be; outside it, it anchors to the viewport. */
   function calcSurface() {
     if (tryItOffered()) return calcHtml();
-    if (S.screen !== 'practice' && S.screen !== 'quiz') return '';
+    /* 'quiz' only. This also admitted 'practice' — the PICKER, which has no
+       question on it — so leaving a run on an unanswered numeric question
+       painted the calculator, and sometimes the whole open keypad sheet, over
+       the outcome cards, with a "Use this value" that wrote into a question
+       nobody could see. */
+    if (S.screen !== 'quiz') return '';
     var qs = currentQuestions();
     return calcOffered(qs && qs[S.qIdx]) ? calcHtml() : '';
   }
@@ -2072,6 +2064,21 @@
 
   function finish() {
     var checks = currentQuestions();
+    /* A mock whose clock ran out has a question OPEN — possibly fully answered
+       — that mocknext never banked. Grade it on the way out, exactly as
+       mocknext would have: without this the review said "the clock ran out
+       before you reached this one" about a question the reader was looking at,
+       and their answer was discarded unmarked. The length guard means the
+       normal path (mocknext banks the last question, then calls finish) can
+       never grade it twice. */
+    if (S.mode === 'mock' && S.mockResults && S.mockResults.length === S.qIdx && checks[S.qIdx]) {
+      var qOpen = checks[S.qIdx];
+      var okOpen = gradeAnswer(qOpen);
+      if (okOpen) S.score++; else S.practiceMissed.push(qOpen);
+      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer() });
+      recordPractice(qOpen.lo, okOpen);
+      recordQuestion(qOpen.id, okOpen);
+    }
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
     /* THREE MODES, TESTED BY NAME. This was `mode !== 'practice'`, which meant
        "a lesson" for as long as there were two modes; the mock added a third,
@@ -2423,6 +2430,18 @@
         if (S.screen === 'quiz') { S.confirmExit = true; return rerender(); }
         return leaveMock();
       }
+      /* The answer on screen is banked before anything else happens. It was
+         graded — settle() scored it, and endEndless() counts it as attempted —
+         but only nextq recorded it, so leaving right after answering dropped
+         that question from the per-outcome tally and the mistakes backlog. The
+         one most likely to be a miss is the one someone leaves on. */
+      if (S.mode === 'practice' && S.screen === 'quiz' && q && S.answered !== null) {
+        if (S.answered === false) S.practiceMissed.push(q);
+        recordPractice(q.lo, S.answered === true);
+        recordQuestion(q.id, S.answered === true);
+        save();
+      }
+      S.calcOpen = false;
       /* An endless run has no last question, so leaving IS finishing it — and a
          reader who has answered twenty deserves to see how they did rather than
          being dropped back on the picker with nothing. */

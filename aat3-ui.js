@@ -146,7 +146,9 @@
     var legacyLos = (p && p.los && typeof p.los === 'object') ? p.los : {};
     var legacyRuns = n0(p && p.runs);
     if (legacyRuns || Object.keys(legacyLos).length) {
-      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, los: {} });
+      /* The COMPLETE record shape, matching practiceRec() — `{ runs, los }`
+         alone is exactly the partial-record trap the comment above names. */
+      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} });
       t.runs = Math.max(t.runs, legacyRuns);
       Object.keys(legacyLos).forEach(function (lo) {
         var was = legacyLos[lo] || {}, now = t.los[lo] || { attempted: 0, correct: 0 };
@@ -330,14 +332,27 @@
     };
   }
 
+  /* Indexed once: handle() resolves the current lesson on every single click,
+     including calculator keys and folds, and walking 12 groups × 83 lessons
+     (allocating a throwaway sheet object per group) per keypress is work with
+     one correct answer that never changes. The content files are static after
+     load, so the index is built on first use and kept. */
+  var _lessonIndex = null;
   function lessonById(id) {
-    var found = null;
-    allGroups().forEach(function (g) {
-      (g.lessons || []).forEach(function (l) { if (l.id === id) found = l; });
-      var sh = sheetOf(g);
-      if (sh && sh.id === id) found = sh;
-    });
-    return found;
+    if (id == null) return null;
+    if (!_lessonIndex) {
+      var idx = {};
+      allGroups().forEach(function (g) {
+        (g.lessons || []).forEach(function (l) { idx[l.id] = l; });
+        var sh = sheetOf(g);
+        if (sh) idx[sh.id] = sh;
+      });
+      /* Only keep an index built from loaded content — before the data files
+         arrive an empty index would answer "no such lesson" forever. */
+      if (Object.keys(idx).length) _lessonIndex = idx;
+      else return null;
+    }
+    return _lessonIndex[id] || null;
   }
   function rec(id) { return data.lessons[id] || null; }
   function isDone(id) { var r = rec(id); return !!(r && r.best >= 60); }
@@ -359,31 +374,6 @@
     workshop: { label: 'Workshop', glyph: '★' },
     sheet:    { label: 'Cheat sheet', glyph: '🗂️' },
   };
-
-  function coverage(unitKey) {
-    var key = unitKey || activeUnit();
-    var u = unitMeta(key);
-    if (!u) return null;
-    var total = 0, covered = 0, done = 0;
-    var claimed = {}, doneClaimed = {};
-    lessons().forEach(function (l) {
-      (l.criteria || []).forEach(function (t) {
-        claimed[t] = true;
-        if (isDone(l.id)) doneClaimed[t] = true;
-      });
-    });
-    u.outcomes.forEach(function (o) {
-      o.topics.forEach(function (t) {
-        t.concepts.forEach(function (c) {
-          total++;
-          var tag = u.code + '-' + c.id;
-          if (claimed[tag]) covered++;
-          if (doneClaimed[tag]) done++;
-        });
-      });
-    });
-    return { total: total, covered: covered, studied: done };
-  }
 
   /* ── The practice record ─────────────────────────────────────────────────── */
 
@@ -856,7 +846,11 @@
       var g = groups.filter(function (x) { return x.outcome === o.n; })[0];
       var gl = g ? (g.lessons || []) : [];
       var gd = gl.filter(function (l) { return isDone(l.id); }).length;
-      var shut = !!S.shut[o.n];
+      /* Keyed by unit AND outcome number. Outcome numbers restart at 1 in
+         every unit, so a bare number meant folding TPFB's Outcome 3 folded
+         FAPS's too — the same cross-unit collision the per-unit practice
+         record was built to avoid. */
+      var shut = !!S.shut[S.unit + ':' + o.n];
       h += '<section class="a3-oc' + (g ? '' : ' is-unwritten') + (shut ? ' is-shut' : '') +
         '" id="a3-oc-' + o.n + '">' +
         '<button class="a3-oc-h" data-a3="fold" data-o="' + o.n + '" aria-expanded="' + (!shut) + '">' +
@@ -2730,6 +2724,9 @@
     if (lo === 'missed') {
       S.practiceQs = missedQuestions(S.practiceUnit).slice(0, PRACTICE_LEN);
       S.practiceMissed = [];
+      /* The early return skipped the streak reset below, so a mistakes run
+         inherited — and kept incrementing — the previous run's streak. */
+      S.streak = 0; S.bestStreak = 0;
       S.mode = 'practice';
       S.screen = 'quiz';
       S.qIdx = 0; S.score = 0;
@@ -2773,6 +2770,9 @@
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
     S._order = null; S._gapOrder = null;
     S.plPicks = {}; S.egCells = {}; S.calcCell = null;
+    /* S.calcOpen is deliberately NOT cleared: check-calculator.js §6 codifies
+       that the pad stays available across questions the way a desk calculator
+       stays on the desk — only its DISPLAY resets (below). */
     /* Three of these four are load-bearing and proved so: remove the reset of
        taskInputs, taskPicks or taskNudge and check-aat3-task.js §6 fails, with
        the next task arriving pre-filled, pre-selected, or already scolding the
@@ -2877,6 +2877,21 @@
 
   function finish() {
     var checks = currentQuestions();
+    /* A mock whose clock ran out has a question OPEN — possibly fully answered
+       — that mocknext never banked. Grade it on the way out exactly as
+       mocknext would have: without this the review said "the clock ran out
+       before you reached this one" about the question the reader was looking
+       at, and their answer was discarded unmarked. The length guard means the
+       normal path (mocknext banks the last question, then calls finish) can
+       never grade it twice. */
+    if (S.mode === 'mock' && S.mockResults && S.mockResults.length === S.qIdx && checks[S.qIdx]) {
+      var qOpen = checks[S.qIdx];
+      var okOpen = gradeAnswer(qOpen);
+      if (okOpen) S.score++; else S.practiceMissed.push(qOpen);
+      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer() });
+      recordPractice(S.practiceUnit || activeUnit(), qOpen.lo, okOpen);
+      recordQuestion(S.practiceUnit || activeUnit(), qOpen.id, okOpen);
+    }
     var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
     /* Practice earns XP but records no lesson result. A practice run is not a
        lesson attempt, and letting it write to data.lessons would mark nodes
@@ -3138,7 +3153,13 @@
       return rerender();
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
-    if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
+    if (act === 'topath') {
+      /* Arriving from Practice, not from a lesson: restoreScroll() scrolls the
+         path to S.lessonId, and a lesson left an hour ago is not where a
+         reader leaving the practice screen expects to land. */
+      if (S.screen === 'practice') S.lessonId = null;
+      S.mode = 'lesson'; S.screen = 'path'; return rerender();
+    }
     if (act === 'openunit') {
       S.unit = n.getAttribute('data-unit');
       S.mode = 'lesson'; S.screen = 'path'; S.lessonId = null;
@@ -3146,7 +3167,7 @@
     }
     if (act === 'tounits') { S.mode = 'lesson'; S.screen = 'units'; S.lessonId = null; return rerender(); }
     if (act === 'fold') {
-      var fo = n.getAttribute('data-o');
+      var fo = S.unit + ':' + n.getAttribute('data-o');
       S.shut[fo] = !S.shut[fo];
       return rerender();
     }
@@ -3154,7 +3175,8 @@
        shut lands the reader on a header with nothing under it. */
     if (act === 'jump') {
       var jo = n.getAttribute('data-o');
-      if (S.shut[jo]) { S.shut[jo] = false; rerender(); }
+      var jk = S.unit + ':' + jo;
+      if (S.shut[jk]) { S.shut[jk] = false; rerender(); }
       var target = _host && _host.querySelector && _host.querySelector('#a3-oc-' + jo);
       if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
