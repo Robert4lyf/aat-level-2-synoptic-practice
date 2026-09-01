@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const GRID = require(path.join(__dirname, '..', 'question-grid.js'));
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m', CYAN = '\x1b[36m', BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
@@ -217,6 +218,15 @@ for (const q of Q) {
   else if (type === 'truefalse') checkTrueFalse(q.id, q);
   else if (type === 'multiselect') checkMultiSelect(q.id, q);
   else if (type === 'written') checkWritten(q.id, q);
+  /* The two shared table types are authored the same way on all four levels, so
+     the rules that decide whether one is well formed live with the renderer in
+     question-grid.js and every level's gate calls the same `problems()`. Left
+     out of this dispatch they fell through to the warning below, which reads as
+     "nobody has taught the validator about this yet" — and would have gone on
+     reading that way after someone did. */
+  else if (type === 'picklist' || type === 'entrygrid') {
+    GRID.problems(q, q.id).forEach(p => err(q.id, p.replace(new RegExp('^' + q.id + ' ?'), '')));
+  }
   else warn(q.id, `unrecognised type "${type}"`);
 
   // Contradiction check: a TRUE contradiction is the same stem AND the same set of

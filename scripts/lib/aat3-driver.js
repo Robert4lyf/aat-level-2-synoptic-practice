@@ -43,7 +43,11 @@ function fakeStore(initial) {
 }
 
 function fakeEl() {
-  const TAG = /<(?:button|span|div|input|a)\b([^>]*\bdata-a3="[^"]*"[^>]*)>/g;
+  /* `select` is in the list because picklist rows are dropdowns: without it
+     the fake DOM parses the table's buttons and none of its controls, and every
+     assertion about a picklist would be made against a question nobody can
+     answer. */
+  const TAG = /<(?:button|span|div|input|select|a)\b([^>]*\bdata-a3="[^"]*"[^>]*)>/g;
   const ATTR = /([\w-]+)="([^"]*)"/g;
   let painted = '';
   let parsed = null;
@@ -134,6 +138,19 @@ function answerCurrent(el, choose) {
     return;
   }
 
+  /* A pick list and an entry grid. Both are answered rather than skipped,
+     because a sweep that cannot answer a type reports whatever it was measuring
+     as an absence rather than saying it is stuck. The answers here are
+     deliberately arbitrary — these sweeps count questions served, not marks. */
+  if (nodes(el, 'plsubmit').length) {
+    nodes(el, 'plpick').forEach(n => { n.value = '0'; n.fire('change'); });
+    click(el, 'plsubmit'); return;
+  }
+  if (nodes(el, 'egsubmit').length) {
+    nodes(el, 'egcell').forEach(n => { n.value = '0'; n.fire('input'); });
+    click(el, 'egsubmit'); return;
+  }
+
   const input = nodes(el, 'numinput')[0];
   if (input) { input.value = '0'; input.fire('input'); click(el, 'numsubmit'); return; }
 
@@ -158,6 +175,10 @@ function loadUI(store) {
      renders no keypad at all, silently — which is exactly the shape of defect
      a check that only asserted "nothing threw" would sail past. */
   M.AATCalc = require(path.join(ROOT, 'calculator.js')) && global.AATCalc;
+  /* picklist and entrygrid render and grade here; without it those two
+     question types render nothing and every assertion about them would pass
+     by never running. */
+  M.AATGrid = require(path.join(ROOT, 'question-grid.js')) && global.AATGrid;
   M.AATSound = require(path.join(ROOT, 'sound.js')) && global.AATSound;
   M.AATCelebrate = require(path.join(ROOT, 'celebrate.js')) && global.AATCelebrate;
   M.AAT3_SYLLABUS = require(path.join(ROOT, 'aat3-syllabus.js')).SYLLABUS;

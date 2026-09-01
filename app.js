@@ -1615,7 +1615,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: unitId, questions: picked,
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, plDraft: {}, egDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0, unitQuizPassMark: UNIT_QUIZ_PASS_MARK,
     });
     Calc.reset(); render();
@@ -1845,6 +1845,8 @@
   function isNumeric(q) { return q && q.type === 'numeric'; }
   function isDragDrop(q) { return q && q.type === 'dragdrop'; }
   function isTableFill(q) { return q && q.type === 'tablefill'; }
+  function isPickList(q) { return q && q.type === 'picklist'; }
+  function isEntryGrid(q) { return q && q.type === 'entrygrid'; }
   function isScenario(q) { return q && q.type === 'scenario'; }
   function isGapFill(q) { return q && q.type === 'gapfill'; }
   function isWordOrder(q) { return q && q.type === 'wordorder'; }
@@ -1932,9 +1934,24 @@
         answers: q.answers.map(a => order.indexOf(a)).sort((x, y) => x - y) };
     }
     if (isWritten(q)) { return { ...q }; }
+    /* Passed through unchanged, and they MUST be listed here: the fall-through
+       at the bottom of this function is the simple-MCQ case and does
+       `q.opts.map(...)`, so any type that reaches it without an `opts` array
+       throws the moment it is drawn and takes the whole run with it.
+       Nothing to shuffle in either: a pick list's options are one ordered list
+       shared by every row, and an entry grid has no options at all. */
+    if (isPickList(q)) { return { ...q }; }
+    if (isEntryGrid(q)) { return { ...q }; }
     if (isWordOrder(q)) { return { ...q }; }
     if (isTyped(q)) { return { ...q }; }
     if (isListenTyped(q)) { return { ...q }; }
+    /* THE FALL-THROUGH IS THE SIMPLE-MCQ CASE, and a type that reaches it
+       without an `opts` array used to throw here and take the whole run down —
+       which is exactly what picklist and entrygrid did the first time one was
+       drawn. Guarded so the next new type is passed through intact instead of
+       crashing on its first appearance; a type that genuinely needs shuffling
+       is a line above this one. */
+    if (!Array.isArray(q.opts)) return { ...q };
     // simple MCQ — shuffle so the source data's answer-position bias never surfaces
     const order = shuffle(q.opts.map((_, i) => i));
     return { ...q, opts: order.map(i => q.opts[i]), ans: order.indexOf(q.ans) };
@@ -1993,6 +2010,8 @@
     glossaryQuery: '', toast: null, toastTimer: null, collapsedUnits: {},
     ddSelectedLeft: null, ddMap: {},        // drag-drop UI state
     tfDraft: {},                            // table-fill blank inputs
+    plDraft: {},                            // pick list: row index -> chosen option
+    egDraft: {},                            // entry grid: 'row:col' -> what the reader typed
     scDraft: {},                            // scenario sub-answers
     gfDraft: {},                            // gap-fill dropdown selections
     woDraft: [],                            // word-order placed word indices
@@ -2177,7 +2196,7 @@
       isDiagnostic:false, diagnosticResult:null,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, plDraft:{}, egDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
       hintLevel:0, hintElim:null, combo:0,
     });
     Calc.reset(); saveSession(); render();
@@ -2224,7 +2243,7 @@
       isDiagnostic: false, diagnosticResult: null,
       current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, plDraft: {}, egDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     topUpEndless();
@@ -2344,7 +2363,7 @@
       screen:'quiz', mode:'practice', selectedTopic:'smart', questions:smartPicked,
       current:0, answered:null, answers:[], score:0, results:[],
       showReview:false, reviewFilter:'all', timedOut:false, numericDraft:'',
-      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
+      ddSelectedLeft:null, ddMap:{}, tfDraft:{}, plDraft:{}, egDraft:{}, scDraft:{}, gfDraft:{}, woDraft:[], typedDraft:'',
       hintLevel:0, hintElim:null,
     });
     Calc.reset(); saveSession(); render();
@@ -2375,7 +2394,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'focus',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, plDraft: {}, egDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     Calc.reset(); saveSession(); render();
@@ -2390,7 +2409,7 @@
       screen: 'quiz', mode: 'practice', selectedTopic: 'lesson',
       questions: picked, current: 0, answered: null, answers: [], score: 0, results: [],
       showReview: false, reviewFilter: 'all', timedOut: false, numericDraft: '',
-      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
+      ddSelectedLeft: null, ddMap: {}, tfDraft: {}, plDraft: {}, egDraft: {}, scDraft: {}, gfDraft: {}, woDraft: [], typedDraft: '',
       hintLevel: 0, hintElim: null, combo: 0,
     });
     render();
@@ -3251,7 +3270,7 @@
     if (!State.endless && State.current + 1 >= State.questions.length) finishPractice();
     else {
       State.current++; State.answered = null; State.numericDraft = ''; State.typedDraft = '';
-      State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
+      State.ddSelectedLeft = null; State.ddMap = {}; State.tfDraft = {}; State.plDraft = {}; State.egDraft = {}; State.scDraft = {}; State.gfDraft = {}; State.woDraft = [];
       State.tfqDraft = {}; State.msDraft = []; State.writtenDraft = ''; State.writtenRubric = {}; State.writtenRevealed = false;
       State.hintLevel = 0; State.hintElim = null;
       Calc.reset(); saveSession(); render();
@@ -3357,6 +3376,24 @@
       return { correct: ok, awarded: ok ? max : 0, max,
         chosen: q.table.blanks.map((b, i) => picks[i] == null || picks[i] === '' ? '—' : picks[i]).join(', '),
         expected: q.table.blanks.map(b => String(b.answer)).join(', ') };
+    }
+    /* Graded by question-grid.js, so a paper and a practice run cannot come to
+       different verdicts on the same table. Without these two branches both
+       types fell through to the simple-MCQ case below, which reads `q.opts` —
+       a field neither of them has. */
+    if (isPickList(q) && window.AATGrid) {
+      const r = window.AATGrid.gradePicklist(q, response || {});
+      return { correct: r.right, awarded: r.right ? max : 0, max,
+        chosen: q.picklist.rows.map((row, i) => (response || {})[i] == null ? '—' : q.picklist.options[(response || {})[i]]).join(', '),
+        expected: q.picklist.rows.map(row => q.picklist.options[row.answer]).join(', ') };
+    }
+    if (isEntryGrid(q) && window.AATGrid) {
+      const r = window.AATGrid.gradeEntry(q, response || {});
+      const cell = (ri, ci) => { const v = (response || {})[ri + ':' + ci]; return v == null || v === '' ? '—' : v; };
+      const keyCell = (row, ci) => { const k = window.AATGrid.cellKey(row, ci); return k == null ? '—' : k; };
+      return { correct: r.right, awarded: r.right ? max : 0, max,
+        chosen: q.entrygrid.rows.map((row, ri) => q.entrygrid.columns.map((c, ci) => cell(ri, ci)).join('/')).join(', '),
+        expected: q.entrygrid.rows.map(row => q.entrygrid.columns.map((c, ci) => keyCell(row, ci)).join('/')).join(', ') };
     }
     // simple MCQ
     const ok = response === q.ans;
@@ -4903,6 +4940,9 @@
   function calcCanFill(q) {
     if (!q) return false;
     if (isNumeric(q)) return true;
+    /* An entry grid is a table of amount boxes, and "Use this value" fills the
+       one the reader last touched. */
+    if (isEntryGrid(q)) return true;
     if (isTableFill(q)) return true;                       // every blank is a figure
     if (isScenario(q)) return (q.parts || []).some(isNumeric);
     return false;
@@ -4998,6 +5038,7 @@
     if (!q) { goHome(); return ''; }
     if (isDragDrop(q)) return renderDragDropQuiz(q);
     if (isTableFill(q)) return renderTableFillQuiz(q);
+    if (isPickList(q) || isEntryGrid(q)) return renderGridQuiz(q);
     if (isScenario(q)) return renderScenarioQuiz(q);
     if (isGapFill(q)) return renderGapFillQuiz(q);
     if (isTrueFalse(q)) return renderTrueFalseQuiz(q);
@@ -5202,6 +5243,84 @@
         </div>
       </div>
     </div>`;
+  }
+
+  /* ── Pick list and entry grid ───────────────────────────────────────────────
+     One renderer for both, because the two differ only in which table
+     question-grid.js draws and which submit button sits under it. Everything
+     around them — the header, the flag and confident buttons, the feedback
+     block, the calculator column — is the same furniture every other Level 2
+     question type gets, and duplicating it per type is how one of them ends up
+     without a flag button. */
+  function renderGridQuiz(q) {
+    const total = State.questions.length;
+    const pct = ((State.current + 1) / total * 100).toFixed(0);
+    const topic = window.TOPICS.find(t => t.id === q.topic) || { icon: '📐', short: 'Mixed' };
+    const answered = State.answered !== null;
+    const flagged = Storage.isFlagged(q.id);
+    const confident = Storage.isConfident(q.id);
+    const pick = isPickList(q);
+    const tableHtml = !window.AATGrid ? '' : (pick
+      ? window.AATGrid.picklistHtml(q, { prefix: 'l2', attr: 'data-l2', picks: State.plDraft, showAnswers: answered })
+      : window.AATGrid.entryHtml(q, { prefix: 'l2', attr: 'data-l2', cells: State.egDraft, showAnswers: answered }));
+    let feedbackHtml = '';
+    if (answered) {
+      const ok = State.answered.correct;
+      feedbackHtml = `<div class="feedback ${ok ? 'correct' : 'wrong'} fade-in" role="status" aria-live="polite">
+        <strong>${ok ? '✅ All correct' : '❌ ' + State.answered.score + ' of ' + State.answered.total + ' correct'}</strong><br>
+        <em>${escapeHtml(q.exp)}</em>
+      </div>
+      <div class="quiz-action-row"><button class="next-btn" id="nextBtn" type="button">${State.current + 1 >= total ? 'See Results ✓' : 'Next Question →'}</button>${confidentActionBtn(confident)}</div>`;
+    }
+    return `<div class="container">
+      <button class="back-btn" id="exitBtn" type="button">← Back to topics</button>
+      <div class="quiz-layout ${questionTakesCalc(q) ? 'has-calc' : ''}">
+        <div class="quiz-container slide-in">
+          <div class="quiz-header">
+            <span class="topic-pill">${topic.icon} ${escapeHtml(topic.short)}</span>
+            <span class="tf-pill">${pick ? '📋 Choose' : '📒 Enter'}</span>
+            <button class="flag-btn ${flagged ? 'is-flagged' : ''}" id="flagBtn" type="button" aria-pressed="${flagged}" aria-label="${flagged ? 'Unflag' : 'Flag for review'}">${flagged ? '⭐' : '☆'}</button>
+          </div>
+          <div class="progress-wrap"><div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>
+          <div class="progress-label">${State.current + 1} of ${total}</div></div>
+          <div class="question-text">${escapeHtml(q.q)}</div>
+          ${tableHtml}
+          ${!answered ? `<div class="quiz-action-row"><button class="next-btn" id="${pick ? 'submitPickListBtn' : 'submitEntryGridBtn'}" type="button">Submit answers ✓</button>${confidentActionBtn(confident)}</div>` : ''}
+          ${feedbackHtml}
+        </div>
+        ${questionTakesCalc(q) ? renderCalculatorSidebar(calcCanFill(q)) : ''}
+      </div>
+    </div>`;
+  }
+
+  /* Graded in question-grid.js, recorded here. The per-row detail goes into
+     State.answered so the feedback line can say "3 of 5" rather than only
+     right or wrong — a table the reader got mostly right is a different result
+     from one they got mostly wrong, and a single verdict hides that. */
+  function submitGrid() {
+    if (State.answered !== null) return;
+    const q = State.questions[State.current];
+    if (!window.AATGrid) return;
+    const pick = isPickList(q);
+    const res = pick
+      ? window.AATGrid.gradePicklist(q, State.plDraft)
+      : window.AATGrid.gradeEntry(q, State.egDraft);
+    const score = res.per.filter(Boolean).length;
+    State.answered = { kind: pick ? 'picklist' : 'entrygrid', correct: res.right,
+      per: res.per, score: score, total: res.per.length };
+    if (res.right) { State.score++; playCorrect(); } else { playWrong(); }
+    updateCombo(res.right);
+    Storage.recordAnswer(q, res.right); Storage.save();
+    const chosen = pick
+      ? q.picklist.rows.map((r, i) => State.plDraft[i] == null ? '—' : q.picklist.options[State.plDraft[i]]).join('; ')
+      : q.entrygrid.rows.map((r, ri) => q.entrygrid.columns
+          .map((c, ci) => State.egDraft[ri + ':' + ci] || '—').join('/')).join('; ');
+    const key = pick
+      ? q.picklist.rows.map(r => q.picklist.options[r.answer]).join('; ')
+      : q.entrygrid.rows.map((r, ri) => q.entrygrid.columns
+          .map((c, ci) => { const k = window.AATGrid.cellKey(r, ci); return k == null ? '—' : k; }).join('/')).join('; ');
+    State.results.push({ id:q.id, q:q.q, correct:res.right, chosen: chosen, correctOpt: key, exp:q.exp, topic:q.topic, skill:q.skill });
+    saveSession(); render();
   }
 
   function renderTableFillQuiz(q) {
@@ -5738,6 +5857,16 @@
     if (isWritten(q)) return renderWrittenTask(q, response, false);
     if (isGapFill(q)) return renderGapFillBody(q, response || {}, false);
     if (isTableFill(q)) return renderTableFillBody(q, response || {}, false);
+    /* SHOWANSWERS IS FALSE HERE. This is the body of a question in a LIVE timed
+       paper — nothing is revealed in a mock until it is submitted — and the
+       first version of this passed `true`, which would have printed the key
+       beside every row of a journal the reader was being marked on. */
+    if (isPickList(q) && window.AATGrid) {
+      return window.AATGrid.picklistHtml(q, { prefix: 'l2', attr: 'data-l2', picks: response || {}, showAnswers: false });
+    }
+    if (isEntryGrid(q) && window.AATGrid) {
+      return window.AATGrid.entryHtml(q, { prefix: 'l2', attr: 'data-l2', cells: response || {}, showAnswers: false });
+    }
     return `<div class="options" role="radiogroup" aria-label="Answer options">
       ${q.opts.map((opt, i) => `<button class="option-btn ${response === i ? 'selected' : ''}" type="button" data-opt="${i}" role="radio" aria-checked="${response === i}">
         <span class="option-label" aria-hidden="true">${LETTERS[i]}</span><span>${escapeHtml(opt)}</span>
@@ -8735,6 +8864,8 @@
     bind('submitNumericBtn', 'click', submitNumericPractice);
     bind('submitDragDropBtn', 'click', submitDragDrop);
     bind('submitTableFillBtn', 'click', submitTableFill);
+    bind('submitPickListBtn', 'click', submitGrid);
+    bind('submitEntryGridBtn', 'click', submitGrid);
     bind('submitScenarioBtn', 'click', submitScenario);
     document.querySelectorAll('[data-dd-left]').forEach(el => el.addEventListener('click', (e) => {
       if (e.target && e.target.dataset && e.target.dataset.ddClear != null) { e.stopPropagation(); clearDragPair(+e.target.dataset.ddClear); return; }
@@ -8747,6 +8878,30 @@
         if (State.mode === 'mock') setExamAnswerKey(i, e.target.value);
         else State.tfDraft[i] = e.target.value;
       });
+    });
+    /* The two shared tables. A <select> announces itself with `change`, an
+       amount box with `input`. Bound after every repaint like every other
+       control here, so a rebuilt table never carries a dead listener. */
+    /* IN A MOCK THE ANSWER GOES TO THE PAPER, not to the practice draft — the
+       same split every other type here makes. Writing only the draft left a
+       reader's journal recorded nowhere: the paper marked it unanswered while
+       the screen showed it filled in. */
+    document.querySelectorAll('[data-l2="plpick"]').forEach(el => {
+      el.addEventListener('change', () => {
+        const r = Number(el.getAttribute('data-r'));
+        const v = el.value === '' ? null : Number(el.value);
+        if (State.mode === 'mock') setExamAnswerKey(r, v);
+        else if (v == null) delete State.plDraft[r];
+        else State.plDraft[r] = v;
+      });
+    });
+    document.querySelectorAll('[data-l2="egcell"]').forEach(el => {
+      el.addEventListener('input', () => {
+        const k = el.getAttribute('data-c');
+        if (State.mode === 'mock') setExamAnswerKey(k, el.value);
+        else State.egDraft[k] = el.value;
+      });
+      el.addEventListener('focus', () => { _lastAnswerBox = el; });
     });
     /* True/false grid */
     document.querySelectorAll('[data-tfq-row]').forEach(el => el.addEventListener('click', () => {
@@ -8830,7 +8985,7 @@
        The box the reader was last in wins, then the first one still empty, then
        the first: a table-fill has a blank per cell and dropping the figure into
        whichever the renderer emitted first would be wrong nearly every time. */
-    const ANSWER_BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part]';
+    const ANSWER_BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part], [data-l2="egcell"]';
     document.querySelectorAll(ANSWER_BOXES).forEach(el => {
       el.addEventListener('focus', () => { _lastAnswerBox = el; });
     });

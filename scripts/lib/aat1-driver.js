@@ -34,7 +34,11 @@ function fakeStore(initial) {
 }
 
 function fakeEl() {
-  const TAG = /<(?:button|span|div|input|a|li)\b([^>]*\bdata-a1="[^"]*"[^>]*)>/g;
+  /* `select` is in the list because picklist rows are dropdowns: without it
+     the fake DOM parses the table's buttons and none of its controls, and every
+     assertion about a picklist would be made against a question nobody can
+     answer. */
+  const TAG = /<(?:button|span|div|input|select|a|li)\b([^>]*\bdata-a1="[^"]*"[^>]*)>/g;
   const ATTR = /([\w-]+)="([^"]*)"/g;
   let painted = '';
   let parsed = null;
@@ -98,6 +102,10 @@ function loadUI(store) {
   /* Same hard dependency as sound: without it `Calc()` stays null, the pad is
      never offered, and every assertion about it would pass by never running. */
   M.AATCalc = require(path.join(ROOT, 'calculator.js')) && global.AATCalc;
+  /* picklist and entrygrid render and grade here; without it those two
+     question types render nothing and every assertion about them would pass
+     by never running. */
+  M.AATGrid = require(path.join(ROOT, 'question-grid.js')) && global.AATGrid;
   M.AAT1_SYLLABUS = require(path.join(ROOT, 'aat1-syllabus.js')).SYLLABUS;
   M.AAT1_PRACTICE = require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE;
   M.AAT1_LEARN_PATH = require(path.join(ROOT, 'aat1-learn-data.js')).AAT1_LEARN_PATH;

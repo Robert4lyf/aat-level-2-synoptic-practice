@@ -1977,6 +1977,74 @@
       ],
       exp: 'The trade is cost and speed against fit. Ready-made software is available at once and cheaper because the cost is shared across every buyer; bespoke software does exactly what one business needs, and that business pays for all of it.',
     },
+    /* ── Pick lists and entry grids ───────────────────────────────────────────
+       LO3.4 and LO4.1 are `do` criteria — make entries in the books of prime
+       entry, total the columns, cross cast them — and the module could only ask
+       about them in prose. These are the formats that ask the reader to
+       actually do it.
+
+       NO DOUBLE ENTRY HERE, deliberately. This unit's scope stops at the books
+       of prime entry and the cash book: there are no ledger accounts, no
+       journals and no trial balance anywhere in BKFN, so a debit-and-credit
+       grid would be teaching outside the syllabus and telling the reader it is
+       Level 1. The columns are the day book's own — net, VAT, gross. */
+    {
+      id: 'P3-90', lo: 3, criteria: ['BKFN-3.4.1'],
+      type: 'picklist',
+      q: 'Choose the book of prime entry for each document.',
+      picklist: {
+        title: 'Documents to be entered',
+        rowHeader: 'Document',
+        choiceHeader: 'Book of prime entry',
+        options: ['Sales day book', 'Sales returns day book', 'Purchases day book', 'Purchases returns day book', 'Cash book'],
+        rows: [
+          { text: 'A sales invoice sent to a credit customer', answer: 0 },
+          { text: 'A credit note received from a supplier', answer: 3 },
+          { text: 'A cheque paid to a supplier', answer: 4 },
+          { text: 'A purchase invoice received from a supplier', answer: 2 },
+          { text: 'A credit note sent to a credit customer', answer: 1 },
+          { text: 'Cash takings banked at the end of the day', answer: 4 },
+        ],
+      },
+      exp: 'The two credit notes are the pair to be careful with, and the test is who SENT it. A credit note the business sends to its own customer cancels a sale, so it belongs in the sales returns day book; one received from a supplier cancels a purchase and goes in the purchases returns day book. Everything involving money actually moving — a cheque out, takings banked — goes in the cash book, whoever it was with.',
+    },
+    {
+      id: 'P4-90', lo: 4, criteria: ['BKFN-4.3.3', 'BKFN-4.3.4'],
+      type: 'picklist',
+      q: 'The cash book and the bank statement do not agree. Where does each item appear?',
+      picklist: {
+        title: 'Items to place',
+        rowHeader: 'Item',
+        choiceHeader: 'Appears in',
+        options: ['The cash book only', 'The bank statement only'],
+        rows: [
+          { text: 'A cheque written and posted yesterday, not yet paid in by the supplier', answer: 0 },
+          { text: 'Bank charges the business did not know about', answer: 1 },
+          { text: 'A cheque received and recorded, but not yet banked', answer: 0 },
+          { text: 'A direct debit the business had not recorded', answer: 1 },
+          { text: 'Interest the bank has added', answer: 1 },
+          { text: 'Takings recorded today and paid in after the bank closed', answer: 0 },
+        ],
+      },
+      exp: 'The rule behind every row is who knew first. Anything the BUSINESS did — writing a cheque, receiving one, banking the takings — is in the cash book straight away and reaches the statement only when the bank processes it. Anything the BANK did — charges, direct debits, interest — is on the statement first, and the business finds out when the statement arrives. Neither list is wrong; they are the same account seen at two different moments.',
+    },
+    {
+      id: 'P3-91', lo: 3, criteria: ['BKFN-3.4.3', 'BKFN-3.4.4'],
+      type: 'entrygrid',
+      q: 'Three sales invoices were raised today: **101** to Hale & Co for **£400.00** before VAT, **102** to Barrow Ltd for **£250.00**, and **103** to Naylor for **£160.00**. Enter them in the sales day book, then total each column. VAT is at 20%.',
+      entrygrid: {
+        title: 'Sales day book',
+        rowHeader: 'Entry',
+        columns: ['Net £', 'VAT £', 'Gross £'],
+        rows: [
+          { label: 'Invoice 101 — Hale & Co', cells: { 0: 400, 1: 80, 2: 480 } },
+          { label: 'Invoice 102 — Barrow Ltd', cells: { 0: 250, 1: 50, 2: 300 } },
+          { label: 'Invoice 103 — Naylor', cells: { 0: 160, 1: 32, 2: 192 } },
+          { label: 'Totals for the day', cells: { 0: 810, 1: 162, 2: 972 } },
+        ],
+      },
+      exp: 'VAT at 20% is a fifth of the net: £80.00, £50.00 and £32.00. The gross is the net plus its VAT — £480.00, £300.00 and £192.00. Then each column is totalled DOWN: £810.00 net, £162.00 VAT, £972.00 gross. Cross casting is the check that makes the book trustworthy: the net total plus the VAT total must equal the gross total, 810.00 + 162.00 = 972.00. Casting down and cross casting are two different checks, and a book that passes one can still fail the other.',
+    },
   ];
 
   var AAT1_PRACTICE = { QUESTIONS: QUESTIONS };

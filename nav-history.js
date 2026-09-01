@@ -108,4 +108,4 @@
 
   root.AATNav = API;
   if (typeof module === 'object' && module.exports) module.exports = API;
-})(typeof self !== 'undefined' ? self : this);
+})(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));

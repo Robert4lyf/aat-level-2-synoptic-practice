@@ -54,6 +54,9 @@
     matchSel: null,      // left index currently selected, awaiting a right click
     orderSeq: null,      // working order, as indices into q.items
     numInput: '',
+    plPicks: {},          // picklist: row index -> chosen option
+    egCells: {},          // entrygrid: 'row:col' -> what the reader typed
+    calcCell: null,       // entrygrid: which cell "Use this value" fills
     /* Ordering is the one question type whose working state is created by the
        renderer rather than by the reader: `orderSeq` is dealt as a shuffle the
        moment the question is drawn. So "did they answer it" cannot be read off
@@ -878,6 +881,25 @@
         }).join('') + '</span>';
       }).join('') + '</div>';
       if (S.answered === null && !isMock()) h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="gapsubmit">Submit</button>';
+
+    } else if (t === 'picklist' || t === 'entrygrid') {
+      /* Both tables come from question-grid.js, themed with this module's
+         prefix. The submit button and the verdict stay here: when a question
+         becomes submittable, and what a wrong answer says, are this player's
+         business and differ between the three levels. */
+      var GR = root.AATGrid;
+      if (GR) {
+        h += t === 'picklist'
+          ? GR.picklistHtml(q, { prefix: 'a1', attr: 'data-a1', picks: S.plPicks, showAnswers: S.answered !== null })
+          : GR.entryHtml(q, { prefix: 'a1', attr: 'data-a1', cells: S.egCells, showAnswers: S.answered !== null });
+      }
+      if (S.answered === null && !isMock()) {
+        h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="' +
+          (t === 'picklist' ? 'plsubmit' : 'egsubmit') + '">Submit</button>';
+      } else if (S.answered !== null) {
+        h += '<div class="a1-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
+          (S.answered ? 'Correct' : 'Not quite — the right entries are shown above') + '</div>';
+      }
 
     } else if (t === 'match') {
       /* Click a term, then click its partner. No HTML5 drag: it does not work
@@ -1769,6 +1791,7 @@
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {};
     S.matchPicks = {}; S.matchSel = null; S.orderSeq = null; S.orderMoved = false;
     S.numInput = ''; S._order = null; S.calcOpen = false;
+    S.plPicks = {}; S.egCells = {}; S.calcCell = null;
     /* THE WORKING GOES WITH THE QUESTION. A figure left on the display belongs
        to a sum the reader has finished with, and reading it as the start of the
        next one is how a wrong answer gets typed. Memory survives — reset()
@@ -1830,7 +1853,12 @@
   function calcOffered(q) {
     if (!Calc() || !q || S.answered !== null) return false;
     if (q.recall) return false;
-    return (q.type || 'mcq') === 'numeric';
+    var t = q.type || 'mcq';
+    /* A DAY BOOK IS ARITHMETIC. Its columns are VAT at 20% and a gross total,
+       worked out line by line and then cast down — the same sums a numeric
+       question asks for, only several of them. A pick list is not: it asks
+       which book or which side, and there is nothing in it to compute. */
+    return t === 'numeric' || t === 'entrygrid';
   }
 
   function tryItOffered() {
@@ -1905,6 +1933,23 @@
      being written onto the input element. `S.numInput` and `S.tryInput` are
      what grading reads; writing only the element would show the reader a
      figure that submitting would not see. */
+  /* Which CELL "Use this value" fills: the one the reader last touched, and
+     failing that the first on the grid — which is where someone starting the
+     entry is. A grid with no cells returns null, and the button then does
+     nothing rather than writing the figure where the grading cannot see it. */
+  function entryTarget(q) {
+    var G = root.AATGrid;
+    if (!G) return null;
+    var rows = G.entryRows(q), cols = G.entryCols(q);
+    if (!rows.length || !cols.length) return null;
+    var keys = [];
+    rows.forEach(function (r, ri) {
+      cols.forEach(function (c, ci) { keys.push(ri + ':' + ci); });
+    });
+    if (S.calcCell != null && keys.indexOf(S.calcCell) !== -1) return S.calcCell;
+    return keys[0];
+  }
+
   function calcUse() {
     var C = Calc();
     if (!C || C.errored) return;
@@ -1914,7 +1959,16 @@
       return rerender();
     }
     var qs = currentQuestions();
-    if (!calcOffered(qs && qs[S.qIdx])) return;
+    var q = qs && qs[S.qIdx];
+    if (!calcOffered(q)) return;
+    if ((q.type || 'mcq') === 'entrygrid') {
+      var k = entryTarget(q);
+      if (k == null) return;
+      S.egCells[k] = C.display;
+      S.calcCell = k;
+      S.calcOpen = false;
+      return rerender();
+    }
     S.numInput = C.display;
     /* CLOSE ON USE. The figure has landed in a box the sheet is covering, and
        leaving it open makes the reader dismiss it to see whether the thing
@@ -1993,6 +2047,12 @@
     }
     if (t === 'gapfill') {
       return (q.gaps || []).every(function (g, i) { return S.gapPicks[i] === g.answer; });
+    }
+    if (t === 'picklist') {
+      return !!(root.AATGrid && root.AATGrid.gradePicklist(q, S.plPicks).right);
+    }
+    if (t === 'entrygrid') {
+      return !!(root.AATGrid && root.AATGrid.gradeEntry(q, S.egCells).right);
     }
     if (t === 'match') {
       return (q.left || []).every(function (_, i) { return S.matchPicks[i] === i; });
@@ -2085,6 +2145,8 @@
       order: S.orderSeq ? S.orderSeq.slice() : null,
       orderMoved: S.orderMoved,
       num: S.numInput,
+      pl: copyMap(S.plPicks),
+      eg: copyMap(S.egCells),
       shuffle: S._order,
     };
   }
@@ -2101,6 +2163,8 @@
     S.orderSeq = a.order ? a.order.slice() : null;
     S.orderMoved = !!a.orderMoved;
     S.numInput = a.num || '';
+    S.plPicks = copyMap(a.pl);
+    S.egCells = copyMap(a.eg);
     S._order = a.shuffle;
   }
 
@@ -2122,6 +2186,13 @@
        and cannot stand in for an attempt. Only a move counts. */
     if (t === 'ordering') return !!a.orderMoved;
     if (t === 'numeric') return num(a.num) !== null;
+    if (t === 'picklist') return Object.keys(a.pl || {}).length > 0;
+    /* A cell holding only spaces is not an answer. `num` returns null for it,
+       which is the same test the grader applies, so a paper cannot report as
+       attempted something the grading treats as blank. */
+    if (t === 'entrygrid') {
+      return Object.keys(a.eg || {}).some(function (k) { return num(a.eg[k]) !== null; });
+    }
     return false;
   }
 
@@ -2220,6 +2291,25 @@
     _host = el;
     el.querySelectorAll('[data-a1]').forEach(function (n) {
       var act = n.getAttribute('data-a1');
+      /* A <select> announces itself with `change`, not `click`, so it is wired
+         here beside the text inputs rather than with the buttons below. */
+      if (act === 'plpick') {
+        n.addEventListener('change', function () {
+          var r = +n.getAttribute('data-r');
+          if (n.value === '') delete S.plPicks[r]; else S.plPicks[r] = +n.value;
+        });
+        return;
+      }
+      if (act === 'egcell') {
+        /* `calcCell` on the keystroke as well as on focus: a soft keyboard can
+           put a caret in a field without the focus order a desktop would give. */
+        n.addEventListener('input', function () {
+          S.egCells[n.getAttribute('data-c')] = n.value;
+          S.calcCell = n.getAttribute('data-c');
+        });
+        n.addEventListener('focus', function () { S.calcCell = n.getAttribute('data-c'); });
+        return;
+      }
       if (act === 'tryinput' || act === 'numinput') {
         n.addEventListener('input', function () {
           if (act === 'tryinput') S.tryInput = n.value; else S.numInput = n.value;
@@ -2248,7 +2338,12 @@
   var lastAdvanceAt = 0;
   var GUARDED_ACTS = { ans: 1, tf: 1, tfsubmit: 1, gap: 1, gapsubmit: 1,
     numsubmit: 1, matchl: 1, matchr: 1, matchsubmit: 1, orderup: 1,
-    orderdown: 1, ordersubmit: 1, trycheck: 1, mocknext: 1, nextq: 1, next: 1 };
+    orderdown: 1, ordersubmit: 1, trycheck: 1, mocknext: 1, nextq: 1, next: 1,
+    /* The two new submits belong here for the same reason every other submit
+       does: advancing repaints synchronously, so the second tap of a
+       double-tap lands on whatever button has taken the same coordinates on
+       the next question. */
+    plsubmit: 1, egsubmit: 1 };
 
   function num(v) {
     var s = String(v == null ? '' : v).replace(/[£,\s]/g, '');
@@ -2484,6 +2579,10 @@
     if (act === 'ordersubmit') { return settle(q); }
 
     if (act === 'numsubmit') { return settle(q); }
+    /* NO "answer every row first" GUARD, unlike gap-fill. Every row of a table
+       is visible at once, so a blank row is a considered answer as often as an
+       oversight — and the assessment marks it wrong rather than refusing it. */
+    if (act === 'plsubmit' || act === 'egsubmit') { return settle(q); }
     /* Moving on IS answering, under exam conditions. The question is graded
        here, silently, and the reader is told nothing until the paper is over —
        so this carries the same recording the practice path does, plus the

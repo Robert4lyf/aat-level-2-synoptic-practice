@@ -34,6 +34,7 @@
 'use strict';
 
 const D = require('./lib/aat1-driver.js');
+const GRID = require('../question-grid.js');
 const SYL = require('../aat1-syllabus.js').SYLLABUS;
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m';
@@ -71,7 +72,14 @@ function openMock(ctx) {
 function onScreen(el) {
   const stem = (el.innerHTML.match(/<h2 class="a1-q">([\s\S]*?)<\/h2>/) || [])[1];
   if (!stem) return null;
-  const text = stem.replace(/<[^>]*>/g, '').trim();
+  /* ENTITIES DECODED BEFORE COMPARING. The stem is escaped on its way into the
+     DOM, so a question containing "Hale & Co" renders as "Hale &amp; Co" and
+     never matches its own bank entry — the sweep then reports the run as
+     ending, which reads exactly like a draw that came up short. */
+  const text = stem.replace(/<[^>]*>/g, '')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .trim();
   return BANK.find(q => String(q.q).replace(/\*\*/g, '').trim() === text) || null;
 }
 
@@ -108,6 +116,26 @@ function answerRight(el, q) {
     q.left.forEach((_, i) => { hit('matchl', { 'data-i': i }); hit('matchr', { 'data-i': i }); });
     return true;
   }
+  /* The two tables, answered CORRECTLY from the key — this helper's whole job
+     is a paper that should score 100%, so filling them with zeroes the way the
+     sweeps do would quietly make that impossible. */
+  if (t === 'picklist') {
+    D.nodes(el, 'plpick').forEach(n => {
+      const r = Number(n.getAttribute('data-r'));
+      const want = q.picklist.rows[r];
+      if (want) { n.value = String(want.answer); n.fire('change'); }
+    });
+    return true;
+  }
+  if (t === 'entrygrid') {
+    D.nodes(el, 'egcell').forEach(n => {
+      const [ri, ci] = n.getAttribute('data-c').split(':').map(Number);
+      const key = GRID.cellKey(q.entrygrid.rows[ri], ci);
+      n.value = key == null ? '' : String(key);
+      n.fire('input');
+    });
+    return true;
+  }
   if (t === 'ordering') {
     /* A selection sort through the only control the reader has: move up. Each
        click repaints, so the sequence is re-read every time. */
@@ -133,7 +161,8 @@ function answerRightPractice(el, q) {
   answerRight(el, q);
   const t = q.type || 'mcq';
   const submit = { truefalse: 'tfsubmit', gapfill: 'gapsubmit', numeric: 'numsubmit',
-                   match: 'matchsubmit', ordering: 'ordersubmit' }[t];
+                   match: 'matchsubmit', ordering: 'ordersubmit',
+                   picklist: 'plsubmit', entrygrid: 'egsubmit' }[t];
   if (submit && D.nodes(el, submit).length) D.click(el, submit);
   return D.nodes(el, 'nextq').length > 0;
 }

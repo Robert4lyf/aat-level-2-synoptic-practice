@@ -76,9 +76,15 @@ function loadNav(w) {
   const p = path.join(ROOT, 'nav-history.js');
   delete require.cache[require.resolve(p)];
   const src = fs.readFileSync(p, 'utf8');
-  /* The module binds to `self`; hand it the fake instead. */
-  const fn = new Function('self', 'module', src + '\nreturn self.AATNav;');
-  return fn(w, { exports: {} });
+  /* The module binds to `window` when there is one, exactly as calculator.js,
+     sound.js and celebrate.js do — so the fake is handed in under that name.
+     `globalThis` is shadowed too: without it the module would find the real one
+     and quietly attach itself there instead of to the fake, and every assertion
+     below would then be made against a module wired to a history nobody is
+     driving. */
+  const fn = new Function('window', 'globalThis', 'module',
+    src + '\nreturn window.AATNav;');
+  return fn(w, w, { exports: {} });
 }
 
 {

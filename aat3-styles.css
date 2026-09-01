@@ -1635,3 +1635,106 @@ body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-t::before {
    air is a design decision that lives in the stylesheet with every other one. */
 body[data-subject="aat3"] [data-a3="nextq"],
 body[data-subject="aat3"] [data-a3="mocknext"] { scroll-margin-bottom: 24px; }
+
+/* ── Pick list and entry grid ─────────────────────────────────────────────────
+   Two tables the reader fills in. Both scroll INSIDE their own box rather than
+   pushing the page sideways: an entry grid with three money columns is wider
+   than 390px however hard the type is squeezed, and a page that scrolls
+   horizontally loses the question stem off the left edge as soon as it does. */
+body[data-subject="aat3"] .a3-pl,
+body[data-subject="aat3"] .a3-eg { margin: var(--a3-4) 0; }
+body[data-subject="aat3"] .a3-pl-title,
+body[data-subject="aat3"] .a3-eg-title {
+  font-size: var(--a3-t-label); font-weight: 700; letter-spacing: var(--a3-track);
+  text-transform: uppercase; color: var(--a3-ink-3); margin-bottom: var(--a3-2);
+}
+body[data-subject="aat3"] .a3-pl-scroll,
+body[data-subject="aat3"] .a3-eg-scroll {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--a3-line); border-radius: var(--a3-r);
+}
+body[data-subject="aat3"] .a3-pl-table,
+body[data-subject="aat3"] .a3-eg-table {
+  width: 100%; border-collapse: collapse; font-size: var(--a3-t-meta);
+}
+body[data-subject="aat3"] .a3-pl-table th,
+body[data-subject="aat3"] .a3-pl-table td,
+body[data-subject="aat3"] .a3-eg-table th,
+body[data-subject="aat3"] .a3-eg-table td {
+  padding: 9px 10px; border-bottom: 1px solid var(--a3-line); text-align: left;
+  vertical-align: middle;
+}
+body[data-subject="aat3"] .a3-pl-table thead th,
+body[data-subject="aat3"] .a3-eg-table thead th {
+  background: var(--a3-surface-2); color: var(--a3-ink-2);
+  font-size: var(--a3-t-label); letter-spacing: var(--a3-track); text-transform: uppercase;
+  position: sticky; top: 0;
+}
+body[data-subject="aat3"] .a3-pl-table tbody tr:last-child th,
+body[data-subject="aat3"] .a3-pl-table tbody tr:last-child td,
+body[data-subject="aat3"] .a3-eg-table tbody tr:last-child th,
+body[data-subject="aat3"] .a3-eg-table tbody tr:last-child td { border-bottom: 0; }
+body[data-subject="aat3"] .a3-pl-table tbody th,
+body[data-subject="aat3"] .a3-eg-table tbody th {
+  font-weight: 600; color: var(--a3-ink); font-size: var(--a3-t-meta);
+}
+
+body[data-subject="aat3"] .a3-pl-sel {
+  width: 100%; min-height: 44px; padding: 8px 10px;
+  font-family: inherit; font-size: var(--a3-t-meta); color: var(--a3-ink);
+  background: var(--a3-surface); border: 1px solid var(--a3-line-2);
+  border-radius: var(--a3-r-sm);
+}
+body[data-subject="aat3"] .a3-pl-sel:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+
+/* An amount box. tabular-nums so a column of figures lines up on the decimal
+   the way a ledger column does. */
+body[data-subject="aat3"] .a3-eg-in {
+  width: 100%; min-width: 88px; min-height: 44px; padding: 8px 10px;
+  font-family: var(--a3-mono); font-variant-numeric: tabular-nums;
+  font-size: var(--a3-t-meta); text-align: right; color: var(--a3-ink);
+  background: var(--a3-surface); border: 1px solid var(--a3-line-2);
+  border-radius: var(--a3-r-sm);
+}
+body[data-subject="aat3"] .a3-eg-in:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+body[data-subject="aat3"] .a3-eg-hint {
+  margin: var(--a3-2) 0 0; font-size: var(--a3-t-label); color: var(--a3-ink-3);
+}
+
+/* Marked. The row carries the verdict; a wrong CELL is named too, because on a
+   journal the row is wrong for a reason that lives in one column. */
+body[data-subject="aat3"] .a3-pl-row.is-right th,
+body[data-subject="aat3"] .a3-eg-row.is-right th { box-shadow: inset 3px 0 0 var(--a3-ok); }
+body[data-subject="aat3"] .a3-pl-row.is-wrong th,
+body[data-subject="aat3"] .a3-eg-row.is-wrong th { box-shadow: inset 3px 0 0 var(--a3-bad); }
+body[data-subject="aat3"] .a3-eg-cell.is-wrong { background: var(--a3-bad-wash); }
+body[data-subject="aat3"] .a3-pl-said,
+body[data-subject="aat3"] .a3-eg-said { display: block; color: var(--a3-ink); }
+body[data-subject="aat3"] .a3-eg-said { text-align: right; font-variant-numeric: tabular-nums; }
+/* What it should have been, under what they put. Marked with an arrow so the
+   two are never read as one figure. */
+body[data-subject="aat3"] .a3-pl-key,
+body[data-subject="aat3"] .a3-eg-key {
+  display: block; margin-top: 2px; color: var(--a3-ok);
+  font-size: var(--a3-t-label); font-weight: 650;
+}
+body[data-subject="aat3"] .a3-pl-key::before,
+body[data-subject="aat3"] .a3-eg-key::before { content: '→ '; }
+body[data-subject="aat3"] .a3-eg-key { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* A pick list on a narrow phone. Two columns inside 320px leave the option
+   list 74px wide, which breaks "Purchases day book" mid-word. Stacked instead:
+   the item reads as a line of text and its dropdown sits under it at full
+   width. The roles in the markup keep the structure a screen reader announces,
+   which `display: block` on a table would otherwise discard. */
+@media (max-width: 480px) {
+  body[data-subject="aat3"] .a3-pl-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  body[data-subject="aat3"] .a3-pl-table,
+  body[data-subject="aat3"] .a3-pl-table tbody,
+  body[data-subject="aat3"] .a3-pl-row { display: block; width: 100%; }
+  body[data-subject="aat3"] .a3-pl-row { padding: 10px; border-bottom: 1px solid var(--a3-line); }
+  body[data-subject="aat3"] .a3-pl-row:last-child { border-bottom: 0; }
+  body[data-subject="aat3"] .a3-pl-table th,
+  body[data-subject="aat3"] .a3-pl-table td { display: block; padding: 0; border-bottom: 0; }
+  body[data-subject="aat3"] .a3-pl-table tbody th { margin-bottom: 6px; }
+}

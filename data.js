@@ -7382,3 +7382,66 @@ window.ALL_QUESTIONS.push(
     exp: 'A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher. The commonest failure in practice is not fabrication but staleness, and an undated figure is one you cannot defend.' }
 
 );
+
+/* ── Pick lists and entry grids ───────────────────────────────────────────────
+   The formats where the reader decides WHERE a figure belongs rather than only
+   what it is. `tablefill` already covers "work out the missing figure in this
+   table"; what it cannot ask is which column or which side, because its blanks
+   are placed for the reader before they start. */
+window.ALL_QUESTIONS.push(
+  { id: 'itbk-500', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+    q: 'A credit customer is invoiced £2,400 plus VAT at 20%. Record the double entry in the general ledger.',
+    entrygrid: {
+      title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [
+        { label: 'Sales ledger control account', col: 0, amount: 2880 },
+        { label: 'Sales', col: 1, amount: 2400 },
+        { label: 'VAT control', col: 1, amount: 480 },
+      ],
+    },
+    exp: 'The customer owes the whole invoice, so the SLCA is debited with the GROSS £2,880. The business has earned the net £2,400 and owes HMRC the £480, and both are credits. It is the gross figure on the debit side that makes the entry balance at £2,880 each way — debiting the net instead is the commonest way to get this wrong, and it leaves the journal £480 out.' },
+
+  { id: 'itbk-501', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+    q: 'Choose the book of prime entry for each document.',
+    picklist: {
+      title: 'Documents to be entered', rowHeader: 'Document', choiceHeader: 'Book of prime entry',
+      options: ['Sales day book', 'Sales returns day book', 'Purchases day book', 'Purchases returns day book', 'Cash book', 'Petty cash book'],
+      rows: [
+        { text: 'An invoice sent to a credit customer', answer: 0 },
+        { text: 'A credit note received from a supplier', answer: 3 },
+        { text: 'A cheque paid to a supplier', answer: 4 },
+        { text: 'A taxi fare reimbursed from the tin', answer: 5 },
+        { text: 'An invoice received from a supplier', answer: 2 },
+        { text: 'A credit note sent to a credit customer', answer: 1 },
+      ],
+    },
+    exp: 'The two credit notes are the pair to be careful with, and the test is who SENT it: one the business sends to its own customer cancels a sale and belongs in the sales returns day book, while one received from a supplier cancels a purchase. The petty cash book is a separate book from the cash book, not a column in it — small cash reimbursements go there, cheques go in the cash book.' },
+
+  { id: 'pobc-500', topic: 'pobc', difficulty: 'hard', type: 'entrygrid',
+    q: 'A debt of £1,440 including VAT at 20%, more than six months past its due date, is written off as irrecoverable. Record the journal.',
+    entrygrid: {
+      title: 'Journal', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [
+        { label: 'Irrecoverable debts', col: 0, amount: 1200 },
+        { label: 'VAT control', col: 0, amount: 240 },
+        { label: 'Sales ledger control account', col: 1, amount: 1440 },
+      ],
+    },
+    exp: 'The whole £1,440 comes out of receivables, so the SLCA is credited with the gross. Because the debt is over six months past its due date the VAT of £1,440 ÷ 6 = £240 can be reclaimed, which DEBITS the VAT control account and reduces what is owed to HMRC — leaving the net £1,200 as the real cost to the business. Writing the full £1,440 to irrecoverable debts overstates the expense and forgets a reclaim the business is entitled to.' },
+
+  { id: 'pobc-501', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+    q: 'A bank reconciliation is being prepared. Where does each item belong?',
+    picklist: {
+      title: 'Reconciling items', rowHeader: 'Item', choiceHeader: 'Treatment',
+      options: ['Add to or deduct from the cash book', 'A timing difference on the reconciliation'],
+      rows: [
+        { text: 'Bank charges shown on the statement', answer: 0 },
+        { text: 'A cheque written but not yet presented', answer: 1 },
+        { text: 'A direct debit the business had not recorded', answer: 0 },
+        { text: 'A lodgement paid in after the bank closed', answer: 1 },
+        { text: 'Interest credited by the bank', answer: 0 },
+        { text: 'A dishonoured cheque from a customer', answer: 0 },
+      ],
+    },
+    exp: 'The division is whether the item is NEW INFORMATION or just early. Anything the bank did that the business did not know about — charges, direct debits, interest, a bounced cheque — is a real transaction missing from the cash book, so the cash book is corrected. Unpresented cheques and outstanding lodgements are already in the cash book and correct; they are simply not at the bank yet, so they reconcile the two balances without either record being wrong.' }
+);

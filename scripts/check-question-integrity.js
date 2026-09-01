@@ -34,8 +34,15 @@ const pqStart = appSrc.indexOf('function presentQuestion(');
 if (pqStart === -1) {
   errors.push('presentQuestion() not found in app.js — the shuffle guard cannot run.');
 } else {
-  // The simple-MCQ path is the tail of the function, after all the type branches.
-  const pqBody = appSrc.slice(pqStart, pqStart + 2600);
+  /* THE WHOLE FUNCTION, found by its end rather than by a byte count. This read
+     a fixed 2600 characters, which was comfortably more than the function
+     needed until two more type branches were added — and then the simple-MCQ
+     tail fell outside the window and this check reported that app.js had
+     stopped remapping `ans`, which it had not. A window that silently stops
+     covering what it is checking is worse than one that is too small to work
+     at all: it fails, but for a reason nobody can act on. */
+  const pqEnd = appSrc.indexOf('\n  function ', pqStart + 1);
+  const pqBody = appSrc.slice(pqStart, pqEnd === -1 ? appSrc.length : pqEnd);
   const mcqTail = pqBody.slice(pqBody.indexOf('// simple MCQ'));
   if (!mcqTail || mcqTail.length < 40) {
     errors.push('Could not locate the simple-MCQ branch of presentQuestion() — has it been restructured?');
