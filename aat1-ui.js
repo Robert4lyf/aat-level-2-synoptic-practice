@@ -681,7 +681,7 @@
     var nx = nextLesson();
     var bank = practiceBank();
 
-    var h = '<div class="a1-root">';
+    var h = '<div class="a1-root' + fresh() + '">';
 
     h += ctxBar({
       title: 'Bookkeeping Fundamentals',
@@ -1260,7 +1260,7 @@
       }
     }
 
-    return '<div class="a1-root"><div class="a1-done">' +
+    return '<div class="a1-root' + fresh() + '"><div class="a1-done">' +
       '<div class="a1-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       doneLesson +
       '<h1 class="a1-done-h">' + head + '</h1>' +
@@ -1314,7 +1314,7 @@
     var wrong = rows.length - right;
     var shown = rows.filter(function (r) { return !S.reviewWrongOnly || !r.correct; });
 
-    var h = '<div class="a1-root">';
+    var h = '<div class="a1-root' + fresh() + '">';
     h += ctxBar({
       back: 'reviewback',
       backLabel: 'Back to the result',
@@ -1415,7 +1415,7 @@
     var due = dueQuestions();
     var pr = data.practice;
 
-    var h = '<div class="a1-root">';
+    var h = '<div class="a1-root' + fresh() + '">';
     h += ctxBar({
         back: 'topath',
         backLabel: 'Back to the steps',

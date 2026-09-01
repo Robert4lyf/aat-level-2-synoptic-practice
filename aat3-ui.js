@@ -779,7 +779,7 @@
        is a third of the height the hero used to be, and flat rather than a
        gradient — the shared header above it is already a gradient, and two
        stacked read as a mistake. */
-    var h = '<div class="a3-root"><div class="a3-page">';
+    var h = '<div class="a3-root' + fresh() + '"><div class="a3-page">';
     h += '<header class="a3-head">' +
       '<div class="a3-eyebrow">AAT Level 3 Diploma in Accounting · Q2022</div>' +
       '<h1 class="a3-head-t">Choose a unit</h1>' +
@@ -874,7 +874,7 @@
     var pct = ls.length ? Math.round((doneN / ls.length) * 100) : 0;
     var prog = unitProgress(key);
     var bank = practiceBank();
-    var h = '<div class="a3-root">';
+    var h = '<div class="a3-root' + fresh() + '">';
 
     h += ctxBar({
       back: unitKeys().length > 1 ? 'tounits' : null,
@@ -935,11 +935,13 @@
     /* A unit still being written says so, once, here — not above every scroll.
        For a finished unit the standing caveats live in lesson 0A. */
     if (!prog.complete) {
+      /* One line, not a paragraph: the essential fact is the coverage number.
+         The unwritten outcomes are visible below, each saying so itself, and
+         the independence disclaimer already sits in this screen's footer. */
       h += '<div class="a3-notice"><strong>' + prog.authored + ' of ' + u.outcomes.length +
-        ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong>, covering ' +
-        prog.pctOfExam + '% of this unit\'s assessment. ' +
-        'The rest are listed below in the order the specification sets them out, so you can see what is ' +
-        'coming and what is missing. Nothing here has been reviewed by a qualified accountant.</div>';
+        ' outcomes ' + (prog.authored === 1 ? 'is' : 'are') + ' written</strong> — ' +
+        prog.pctOfExam + '% of this unit\'s assessment. The rest appear below, unwritten, in the ' +
+        'specification\'s order.</div>';
     }
 
     /* ── The outcome index ───────────────────────────────────────────────────
@@ -1844,7 +1846,7 @@
     var wrong = rows.length - right;
     var shown = rows.filter(function (r) { return !S.reviewWrongOnly || !r.correct; });
 
-    var h = '<div class="a3-root">';
+    var h = '<div class="a3-root' + fresh() + '">';
     h += ctxBar({
       back: 'reviewback',
       backLabel: 'Back to the result',
@@ -1978,7 +1980,7 @@
       if (finished) doneLesson = '<div class="a3-done-lesson">' + esc(finished.title) + '</div>';
     }
 
-    return '<div class="a3-root"><div class="a3-done">' +
+    return '<div class="a3-root' + fresh() + '"><div class="a3-done">' +
       '<div class="a3-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       doneLesson +
       '<h1 class="a3-done-h">' + head + '</h1>' +
@@ -2137,7 +2139,7 @@
     var missed = missedQuestions(activeUnit());
     var due = dueQuestions(activeUnit());
 
-    var h = '<div class="a3-root">';
+    var h = '<div class="a3-root' + fresh() + '">';
     h += ctxBar({
       back: 'topath',
       backLabel: 'Back to the path',
@@ -2199,25 +2201,27 @@
         '</button>';
     }
 
-    /* Offered directly under the mock and above mixed practice: it is the other
-       long-form thing to do on this screen, and it reads as its own mode rather
-       than as a variant of the ten-question run below it. */
-    h += '<button class="a3-endless" data-a3="startpractice" data-lo="endless">' +
-      '<span class="a3-endless-glow" aria-hidden="true"></span>' +
-      '<span class="a3-endless-i" aria-hidden="true">∞</span>' +
-      '<span class="a3-endless-tx">' +
-        '<span class="a3-endless-t">Endless practice</span>' +
-        '<span class="a3-endless-m">Questions keep coming until you stop. No length, no clock — ' +
-          'just a streak to keep going.</span>' +
-      '</span>' +
-      '<span class="a3-endless-go" aria-hidden="true">→</span>' +
-      '</button>';
-
-    h += '<button class="a3-mixed" data-a3="startpractice" data-lo="mix">' +
-      '<span class="a3-mixed-t">Mixed practice</span>' +
-      '<span class="a3-mixed-m">' + PRACTICE_LEN + ' questions from all outcomes, drawn to the exam weighting</span>' +
-      '<span class="a3-mixed-go" aria-hidden="true">→</span>' +
-      '</button>';
+    /* Endless and mixed share one card language and sit side by side from
+       tablet width — five stacked full-width offers was the clutter this
+       screen was known for. */
+    h += '<div class="a3-pduo">' +
+      '<button class="a3-endless" data-a3="startpractice" data-lo="endless">' +
+        '<span class="a3-endless-glow" aria-hidden="true"></span>' +
+        '<span class="a3-endless-i" aria-hidden="true">∞</span>' +
+        '<span class="a3-endless-tx">' +
+          '<span class="a3-endless-t">Endless practice</span>' +
+          '<span class="a3-endless-m">Questions keep coming until you stop. No clock — just a streak.</span>' +
+        '</span>' +
+        '<span class="a3-endless-go" aria-hidden="true">→</span>' +
+      '</button>' +
+      '<button class="a3-mixed" data-a3="startpractice" data-lo="mix">' +
+        '<span class="a3-mixed-tx">' +
+          '<span class="a3-mixed-t">Mixed practice</span>' +
+          '<span class="a3-mixed-m">' + PRACTICE_LEN + ' questions from all outcomes, drawn to the exam weighting</span>' +
+        '</span>' +
+        '<span class="a3-mixed-go" aria-hidden="true">→</span>' +
+      '</button>' +
+    '</div>';
 
     h += renderPracticeSummary();
 
