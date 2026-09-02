@@ -98,7 +98,26 @@ const LEVEL3 = {
     M.AAT3_UI.mount(el);
     return el;
   },
+  /* A lesson whose check question carries an id, which is the condition the
+     "practice runs only" guard actually defends. Real lesson checks have no id
+     of their own today, so against the shipped data the guard is invisible —
+     and an invisible guard is one a refactor deletes. Injecting the path makes
+     the guard observable rather than merely intended. */
   lesson(M) {
+    M.AAT3_LEARN_PATH = [{
+      unit: 'tpfb', level: 3, outcome: 1, outcomeTitle: 'Synthetic', weighting: 100,
+      title: 'Tax Processes for Businesses',
+      lessons: [{
+        id: 'L3-SYN-1A', title: 'Synthetic lesson', criteria: [],
+        cards: [{ h: 'A card', p: 'Something to read.' }],
+        check: [{
+          id: 'SYN-CHECK-1', type: 'mcq', q: 'Synthetic question X-1-1',
+          opts: ['right', 'wrong'], ans: 0, exp: 'Because.',
+        }],
+      }],
+    }];
+    M.AAT3_FAPS_PATH = [];
+    M.AAT3_MATS_PATH = [];
     const el = D3.fakeEl();
     M.AAT3_UI.reset('path', 'tpfb');
     M.AAT3_UI.mount(el);
@@ -126,7 +145,20 @@ const LEVEL1 = {
     M.AAT1_UI.mount(el);
     return el;
   },
+  /* See the Level 3 note: a check question with an id is what makes the
+     "practice runs only" guard observable. */
   lesson(M) {
+    M.AAT1_LEARN_PATH = [{
+      id: 'syn', outcome: 1, outcomeTitle: 'Synthetic', weighting: 100, blurb: 'x',
+      lessons: [{
+        id: 'L1-SYN-1A', title: 'Synthetic lesson', summary: 'x', kind: 'theory', criteria: [],
+        cards: [{ h: 'A card', p: 'Something to read.' }],
+        check: [{
+          id: 'SYN-CHECK-1', type: 'mcq', q: 'Synthetic question X-1-1',
+          opts: ['right', 'wrong'], ans: 0, exp: 'Because.',
+        }],
+      }],
+    }];
     const el = D1.fakeEl();
     M.AAT1_UI.reset('path');
     M.AAT1_UI.mount(el);
@@ -233,6 +265,27 @@ PLAYERS.forEach(P => {
       `${P.name}: the retiring stamp survives, so the merge can still order the two`);
     ok(/I know this/.test(el.innerHTML), `${P.name}: the button is back to offering the retirement`);
   }
+  {
+    /* A STALE TAP. The button is rendered only on a graded question, so the
+       renderer alone would seem to be guard enough — and it is not, because a
+       node from the previous paint is still live in the reader's hand for as
+       long as the finger is travelling. Advance to the next, unanswered
+       question and fire the OLD node: without the guard in the handler, this
+       retires a question the reader has not answered and never chose. */
+    const store = D.fakeStore();
+    const el = P.mount(P.load(store));
+    runTo(el, 'mix');
+    const stale = D.nodes(el, 'retire')[0];
+    ok(!!stale, `${P.name}: there is a control to go stale`);
+    D.click(el, 'nextq');
+    const nowOn = servedId(el.innerHTML);
+    ok(!!nowOn && D.nodes(el, 'retire').length === 0,
+      `${P.name}: the next question arrives ungraded, with no control on it`);
+    if (stale) stale.fire('click');
+    const after = P.qs(store);
+    ok(!((after[nowOn] || {}).k > 0),
+      `${P.name}: a stale tap cannot retire the unanswered question underneath it`);
+  }
 
   /* ── 3. A retired question is never drawn again ──────────────────────── */
   section('  what the draw does with it');
@@ -312,6 +365,11 @@ PLAYERS.forEach(P => {
     const want = 7;
     const recs = {};
     IDS.slice(0, want).forEach(id => { recs[id] = { k: Date.now() }; });
+    /* A question retired and then rewritten out of the bank. It is not one the
+       reader can bring back, so counting it would leave a figure on the screen
+       that the restore button cannot move — the count says "8 put away", the
+       tap brings back 7, and the row stays. */
+    recs['X-9-9'] = { k: Date.now() };
     const store = P.seed(recs);
     const el = P.mount(P.load(store));
     const html = el.innerHTML;
@@ -320,7 +378,8 @@ PLAYERS.forEach(P => {
     const m = new RegExp('(\\d+)\\s+questions? put away').exec(html);
     ok(!!m, `${P.name}: the practice screen says how many are put away`);
     ok(m && Number(m[1]) === want,
-      `${P.name}: and the figure is right (said ${m ? m[1] : 'nothing'}, put away ${want})`);
+      `${P.name}: and the figure counts only what can be brought back ` +
+      `(said ${m ? m[1] : 'nothing'}, ${want} answerable + 1 gone from the bank)`);
     ok(/in practice/.test(html), `${P.name}: the pool size on screen is the live one`);
   }
 
