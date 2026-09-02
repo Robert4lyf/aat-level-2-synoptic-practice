@@ -190,3 +190,7 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:cips2-render
+      - name: Check CIPS L2M1 installs and reloads offline
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:cips2-offline
