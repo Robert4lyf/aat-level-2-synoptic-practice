@@ -1058,7 +1058,14 @@
              (weak.row.weighting ? ', and worth ' + weak.row.weighting + '% of the paper' : '') };
     }
 
-    var never = by.filter(function (x) { return x.lessons && x.done >= x.lessons && !x.rec.mocks; })
+    /* No "and the unit has lessons at all" here, deliberately: unitKeys() only
+       returns units that have at least one authored group, so a unit with a
+       practice bank and no path never reaches this list. The guard was written
+       and then removed, because mutation testing showed nothing could tell it
+       from its absence — and a condition no check can defend is one a later
+       refactor deletes for the wrong reason. check-nextstep asserts the
+       invariant it rests on instead. */
+    var never = by.filter(function (x) { return x.done >= x.lessons && !x.rec.mocks; })
       .sort(function (a, b) { return b.weight - a.weight; })[0];
     if (never) {
       return { kind: 'mock', unit: never,

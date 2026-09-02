@@ -105,8 +105,12 @@ const LEVEL3 = {
   },
   /* The recommendation as the reader sees it: its title, its explanation, and
      the node that acts on it. Read off the page, never computed here. */
-  read(store) {
+  read(store, opts) {
     const M = D3.loadUI(store);
+    /* `paths` lets a section make a unit's path EMPTY — a unit with a bank and
+       no lessons written yet, which is what every unit looks like partway
+       through being authored. */
+    if (opts && opts.paths) Object.keys(opts.paths).forEach(k => { M[k] = opts.paths[k]; });
     const el = D3.fakeEl();
     M.AAT3_UI.reset('units', 'tpfb');
     M.AAT3_UI.mount(el);
@@ -114,6 +118,24 @@ const LEVEL3 = {
     const t = /a3-nudge-t">([^<]*)</.exec(el.innerHTML);
     const m = /a3-nudge-m">([^<]*)</.exec(el.innerHTML);
     return { M, el, node: n, title: t ? t[1] : null, why: m ? m[1] : null };
+  },
+  /* Which unit's bank the question currently on screen came from, found by its
+     stem. This is how "the run it opened is the unit it named" is asserted
+     without reaching inside the module for S.practiceUnit — the reader can see
+     the question, and the question is the evidence. */
+  unitOnScreen(el) {
+    const stem = /a3-q">([\s\S]*?)<\/h2>/.exec(el.innerHTML);
+    if (!stem) return null;
+    const flat = stem[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    const banks = this.banks();
+    let found = null;
+    Object.keys(banks).forEach(u => {
+      banks[u].forEach(q => {
+        const qs = String(q.q || '').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
+        if (qs && flat.indexOf(qs.slice(0, 40)) !== -1) found = u;
+      });
+    });
+    return found;
   },
 };
 
@@ -303,6 +325,21 @@ const P3 = LEVEL3;
   ok(/a3-lessonbar-t">/.test(lesson.el.innerHTML),
     'a lesson: one tap opens the lesson rather than the path');
 
+  /* THE RUN OPENS IN THE UNIT THE PANEL NAMED. Every case above happens to be
+     in TPFB, which is the unit the screen resets to — so none of them could
+     tell "set the unit, then act" from "act, in whatever unit was already
+     open". This one puts the only evidence in MATS. */
+  const elsewhere = P3.read(P3.store({
+    mats: { wrong: 6, done: 9999, mocks: 1 },
+    tpfb: { done: 9999, mocks: 1 },
+    faps: { done: 9999, mocks: 1 },
+  }));
+  ok(namesUnit(elsewhere, 'MATS'), `the evidence is in MATS (said "${elsewhere.why}")`);
+  elsewhere.node.fire('click');
+  ok(P3.unitOnScreen(elsewhere.el) === 'mats',
+    `and the question served is MATS's, not the unit that was already open ` +
+    `(came from ${P3.unitOnScreen(elsewhere.el)})`);
+
   const mockSpec = { tpfb: { done: 9999, mocks: 0 }, faps: { done: 9999, mocks: 1 }, mats: { done: 9999, mocks: 1 } };
   const mock = P3.read(P3.store(mockSpec));
   ok(/mock/i.test(mock.title || ''), `a first mock is offered (said "${mock.title}")`);
@@ -312,6 +349,22 @@ const P3 = LEVEL3;
      that keeps the event loop alive: without this the check passes and then
      hangs for ever, which reads exactly like a check that is slow. */
   mock.M.AAT3_UI.suspend();
+
+  /* THE INVARIANT THE MOCK RUNG RESTS ON. It offers a first mock to any unit
+     whose lessons are all read, and asks nothing about whether the unit HAS
+     lessons — which is safe only because a unit with a practice bank and no
+     path is not a unit at all as far as this screen is concerned. That is what
+     is asserted here, rather than the guard that used to be in the module:
+     with MATS's path emptied, MATS must not be offered anywhere, because
+     `0 done of 0 lessons` would otherwise read as "finished" and earn a timed
+     paper on material nobody has written. */
+  const unwritten = P3.read(
+    P3.store({ tpfb: { done: 9999, mocks: 1 }, faps: { done: 9999, mocks: 1 }, mats: { done: 0, mocks: 0 } }),
+    { paths: { AAT3_MATS_PATH: [] } });
+  ok(!/MATS/.test((unwritten.title || '') + (unwritten.why || '')),
+    `a unit with a bank but no path is not recommended at all (said "${unwritten.title} — ${unwritten.why}")`);
+  ok(!/data-unit="mats"/.test(unwritten.el.innerHTML),
+    'and does not appear on the units screen either');
 }
 console.log('');
 
@@ -374,7 +427,27 @@ const P1 = LEVEL1;
     `the dearer outcome is named, not the worse one (said "${r.title}")`);
 }
 {
-  section('  6. the button goes where it says');
+  section('  6. a store that does not add up');
+  /* progress-backup merges two devices by taking the larger of each counter
+     INDEPENDENTLY, and a hand-edited file need not be coherent at all. An
+     unclamped `correct` of -5 over 10 attempts reads as -50% right, which
+     costs more than any real weakness and would headline over it for ever. */
+    const M = D1.loadUI(D1.fakeStore());
+    const outs = M.AAT1_SYLLABUS.units.bkfn.outcomes.slice().sort((a, b) => a.weighting - b.weighting);
+    const junk = outs[0], real = outs[outs.length - 1];
+    const los = {};
+    /* Far enough negative to beat a real weakness on the bigger outcome if it
+       is not clamped: -30 over 10 reads as -300% right, which costs
+       400 x weighting against the genuine 60 x weighting below. A milder
+       nonsense figure would lose the comparison and prove nothing. */
+    los[junk.n] = { attempted: 10, correct: -30 };
+    los[real.n] = { attempted: 40, correct: 16 };   // 40% right, and the bigger outcome
+    const r = P1.read(P1.store({ bkfn: { done: 9999, mocks: 1, los } }));
+    ok(new RegExp('^Outcome ' + real.n + '\\b').test(r.title || ''),
+      `an incoherent counter cannot outrank a real weakness (said "${r.title}")`);
+}
+{
+  section('  7. the button goes where it says');
   const cases = [
     ['a backlog', { bkfn: { wrong: 6, mocks: 1 } }, /you had got wrong|got wrong/],
     ['a review queue', { bkfn: { due: 20, mocks: 1 } }, /spaced review/],
