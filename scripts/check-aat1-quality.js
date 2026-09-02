@@ -296,8 +296,17 @@ stems.forEach((where, stem) => {
     /* A repeat spanning both files is the defect the practice bank exists to
        avoid, so it fails rather than warns. */
     const spansPractice = where.some(w => w.startsWith('practice')) && where.some(w => !w.startsWith('practice'));
+    /* TWO PRACTICE QUESTIONS WITH THE SAME STEM FAIL TOO, and this was a
+       warning until it broke something. A stem is how a harness driving a real
+       paper identifies which question is on screen — check-aat1-mock.js looks
+       the stem up in the bank — so two questions sharing one make a paper
+       containing both look like a paper that repeated a question, and make the
+       mistakes backlog clear the wrong number. It is also the shape a reader
+       meets twice in one run and reads as a bug. */
+    const twoInPractice = where.filter(w => w.startsWith('practice')).length > 1;
     const msg = `Question stem repeated in ${where.join(', ')}: "${stem.slice(0, 60)}…"`;
     if (spansPractice) errors.push(msg + ' — the practice bank must not re-ask a lesson check.');
+    else if (twoInPractice) errors.push(msg + ' — a stem is how a harness identifies a question, so two cannot share one.');
     else warnings.push(msg);
   }
 });
