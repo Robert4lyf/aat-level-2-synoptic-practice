@@ -348,6 +348,26 @@ PLAYERS.forEach(P => {
     D.click(t.el, 'speak');
     ok(t.engine.cancels > before, `${P.name}: pressing it again cancels`);
 
+    /* ONLY THE LAST UTTERANCE ENDS THE RUN. A card is queued as one utterance
+       per sentence, so an `onend` attached to every one of them would clear the
+       speaking flag at the first full stop — the button would flip back to
+       Listen while the voice was still on its second paragraph, and pressing it
+       would start the card again from the top. Nothing on screen looks wrong,
+       which is why this is driven rather than read: the first utterance is
+       ENDED here, and the module must still consider itself speaking. */
+    const t3 = P.mount(FIRST);
+    D.click(t3.el, 'speak');
+    const queue = t3.engine.spoken;
+    ok(queue.length > 2, `${P.name}: there is more than one utterance to end early (${queue.length})`);
+    if (queue[0].onend) queue[0].onend();
+    UI(t3.M).mount(t3.el);
+    ok(new RegExp(`class="${P.pfx}-speak is-on"`).test(t3.el.innerHTML),
+      `${P.name}: the first sentence ending does not end the card`);
+    if (queue[queue.length - 1].onend) queue[queue.length - 1].onend();
+    UI(t3.M).mount(t3.el);
+    ok(!new RegExp(`class="${P.pfx}-speak is-on"`).test(t3.el.innerHTML),
+      `${P.name}: and the last sentence ending does`);
+
     /* And the button says so on a fresh paint, from state rather than from
        whatever the last DOM write left behind. */
     const t2 = P.mount(FIRST);
