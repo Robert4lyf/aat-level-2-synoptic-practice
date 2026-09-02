@@ -418,7 +418,15 @@ specConcepts.forEach((spec, id) => {
   const enc = encoded.get(id);
   if (!enc) return;
   const want = contentWords(spec.text);
-  if (want.length < 3) return;                     // too short to measure meaningfully
+  /* TWO CONTENT WORDS IS ENOUGH TO MEASURE; one is not.
+     This said `< 3`, which skipped every short concept — and BUAW has several,
+     including "the meaning of sustainability". Mutation testing replaced that
+     one with "the rules on charitable donations" and the check passed, because
+     it had declined to look. With two words the ratio still discriminates: a
+     genuine rewording keeps at least one of them, and a concept swapped for a
+     different one keeps neither. A single word cannot be measured this way, so
+     one is still where the floor sits. */
+  if (want.length < 2) return;
   const hay = String(enc.text + ' ' + (enc.indicative || []).join(' ') + ' ' + (enc.note || '')).toLowerCase();
   const hit = want.filter(w => hay.includes(w)).length;
   const ratio = hit / want.length;
