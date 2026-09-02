@@ -93,6 +93,20 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       if(consoleErrors.length)errors.push('subject bridge browser errors: '+consoleErrors.join(' | '));await ctx.close();
     }
     notes.push('Shared picker opens CIPS and returning preserves the previously active subject.');
+
+    /* 6 — a completed course offers review, not an unexpected restart at lesson 1. */
+    {
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{
+        const lessons={};for(let i=1;i<=13;i++){const id='c2m1-'+String(i).padStart(2,'0');lessons[id]={done:true,at:1};}
+        localStorage.setItem('prep_v2_cips2',JSON.stringify({settings:{darkMode:false},lessons,checkpoint:{attempted:26,correct:26},practice:{runs:0,los:{},qs:{}}}));
+      });
+      const cta=(await page.textContent('[data-c2-complete-review="true"]')||'').trim();
+      if(!/Review L2M1/.test(cta))errors.push(`completed overview CTA is ${JSON.stringify(cta)} instead of a review action.`);
+      else {await page.click('[data-c2-complete-review="true"]');await page.waitForSelector('.c2-module');const title=(await page.textContent('#c2PageTitle')||'').trim();if(!/Introducing Procurement and Supply/.test(title))errors.push('completed-course review action did not open the module map.');}
+      if(consoleErrors.length)errors.push('completed-course browser errors: '+consoleErrors.join(' | '));
+      await ctx.close();
+    }
+    notes.push('After all 13 lessons are complete, the primary overview action opens review rather than restarting lesson 1.');
   }finally{await browser.close();server.close();}
   console.log(`${BOLD}CIPS L2M1 browser quality${RESET}\n`);notes.forEach(n=>console.log(`  ${DIM}${n}${RESET}`));console.log('');
   if(errors.length){console.log(`${RED}${BOLD}${errors.length} browser/UX problem(s)${RESET}`);errors.forEach(e=>console.log(`  ${RED}✗${RESET} ${e}`));console.log('');process.exit(1);}
