@@ -7228,7 +7228,7 @@
     {
       id: 'F-4-16', unitKey: 'faps', lo: 4, criteria: ['FAPS-4.1.1'],
       type: 'truefalse',
-      q: 'Identify whether each statement about depreciation is correct.',
+      q: 'Identify whether each statement about what depreciation is for is correct.',
       statements: [
         { text: 'Depreciation applies the accruals principle by matching cost to the periods that benefit.', answer: true },
         { text: 'Depreciation sets money aside to replace the asset.', answer: false },
