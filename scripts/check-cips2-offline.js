@@ -7,7 +7,7 @@ const RED='\x1b[31m',GREEN='\x1b[32m',DIM='\x1b[2m',BOLD='\x1b[1m',YEL='\x1b[33m
 let chromium;
 try{({chromium}=require('playwright'));}catch(e){console.log(`${BOLD}CIPS offline install${RESET}\n`);if(process.env.REQUIRE_PLAYWRIGHT){console.log(`  ${RED}✗${RESET} Playwright required: ${e.message}`);process.exit(1);}console.log(`  ${YEL}⚠${RESET} Playwright unavailable — skipping.\n`);process.exit(0);}
 const MIME={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.webmanifest':'application/manifest+json','.png':'image/png','.svg':'image/svg+xml'};
-const REQUIRED=['cips2.html','cips2-styles.css','cips2-page.js','cips2-bridge.js','cips2-register.js','cips2-l2m1-syllabus.js','cips2-l2m1-learn-data.js','cips2-l2m1-practice-data.js'];
+const REQUIRED=['cips2.html','cips2-styles.css','cips2-page.js','cips2-bridge.js','cips2-register.js','cips2-theme-bootstrap.js','cips2-l2m1-syllabus.js','cips2-l2m1-learn-data.js','cips2-l2m1-practice-data.js'];
 function serve(){return new Promise(resolve=>{const server=http.createServer((req,res)=>{const u=decodeURIComponent(req.url.split('?')[0]),file=path.join(ROOT,u==='/'?'index.html':u);if(!file.startsWith(ROOT)||!fs.existsSync(file)||fs.statSync(file).isDirectory()){res.writeHead(404);res.end('not found');return;}res.writeHead(200,{'Content-Type':MIME[path.extname(file)]||'application/octet-stream'});fs.createReadStream(file).pipe(res);});server.listen(0,'127.0.0.1',()=>resolve({server,port:server.address().port}));});}
 (async()=>{
   const errors=[],{server,port}=await serve(),base=`http://127.0.0.1:${port}/`;
