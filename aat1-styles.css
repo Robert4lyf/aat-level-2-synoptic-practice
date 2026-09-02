@@ -1066,6 +1066,66 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-order-row.is-right .a1-order-n { background: var(--a1-ok); color: var(--a1-on-fill); }
 .a1-order-row.is-wrong { border-color: var(--a1-bad); background: var(--a1-bad-wash); }
 
+/* ── Written response ───────────────────────────────────────────────────────
+   The same two states Level 3 renders, in this level's own palette: the
+   scenario with a box to write in, then the reader's answer beside a model
+   with a rubric to mark against. */
+.a1-wr { display: flex; flex-direction: column; gap: 15px; }
+.a1-wr-setup {
+  padding: 15px 17px; border-radius: var(--a1-r); font-size: 15px; line-height: 1.6;
+  background: var(--a1-surface-2); border: 1px solid var(--a1-line); color: var(--a1-ink-2);
+}
+.a1-wr-req {
+  display: block; margin-bottom: 8px;
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
+  color: var(--a1-brand-ink);
+}
+.a1-wr-label { font-size: 12.5px; font-weight: 650; color: var(--a1-ink-3); }
+.a1-wr-in {
+  width: 100%; box-sizing: border-box; resize: vertical; min-height: 150px;
+  padding: 13px 15px; border-radius: var(--a1-r); font: inherit; font-size: 15px; line-height: 1.6;
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface); color: var(--a1-ink);
+}
+.a1-wr-in:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; border-color: var(--a1-brand); }
+.a1-wr-count { font-size: 12.5px; color: var(--a1-ink-3); margin-top: -7px; }
+.a1-wr-count.is-short { color: var(--a1-accent-ink); }
+.a1-wr-note { font-size: 13px; line-height: 1.6; color: var(--a1-ink-3); margin: 0; }
+
+.a1-wr-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.a1-wr-side {
+  padding: 14px 16px; border-radius: var(--a1-r); min-width: 0;
+  border: 1px solid var(--a1-line); background: var(--a1-surface);
+}
+.a1-wr-side.is-model { border-color: var(--a1-ok); background: var(--a1-ok-wash); }
+.a1-wr-h {
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--a1-ink-3); font-weight: 700; margin-bottom: 7px;
+}
+.a1-wr-body { font-size: 14.5px; line-height: 1.6; color: var(--a1-ink-2); white-space: pre-wrap; }
+
+.a1-wr-rub {
+  padding: 15px 17px; border-radius: var(--a1-r);
+  border: 1px solid var(--a1-line); background: var(--a1-surface-2);
+}
+.a1-wr-rh { font-size: 13px; font-weight: 650; color: var(--a1-ink); margin-bottom: 11px; }
+.a1-wr-row {
+  display: flex; gap: 11px; align-items: flex-start; cursor: pointer;
+  padding: 10px 12px; border-radius: var(--a1-r-sm); margin-bottom: 7px;
+  border: 1px solid var(--a1-line); background: var(--a1-surface);
+}
+.a1-wr-row.on { border-color: var(--a1-ok); background: var(--a1-ok-wash); }
+.a1-wr-box { width: 19px; height: 19px; margin: 1px 0 0; accent-color: var(--a1-ok); flex: none; }
+.a1-wr-pt { flex: 1 1 auto; font-size: 14.5px; line-height: 1.55; color: var(--a1-ink-2); }
+.a1-wr-mk {
+  flex: none; min-width: 22px; text-align: right;
+  font-size: 13px; font-weight: 700; color: var(--a1-ink-3); font-variant-numeric: tabular-nums;
+}
+.a1-wr-tot { margin-top: 11px; font-size: 14px; color: var(--a1-ink-2); }
+
+@media (max-width: 620px) {
+  .a1-wr-cmp { grid-template-columns: 1fr; }
+}
+
 .a1-exp-box {
   margin-top: 18px; padding: 14px 16px; border-radius: var(--a1-r);
   background: var(--a1-surface-2); border-left: 4px solid var(--a1-brand);

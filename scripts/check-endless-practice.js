@@ -64,6 +64,11 @@ const LEVELS = [
    leaning on either one's helper. */
 function answer(D, el, pre, wantRight) {
   const at = list => list[wantRight ? 0 : Math.min(1, list.length - 1)];
+  /* Written first, because it is the one type answered in three steps rather
+     than one. Claiming every rubric point passes it and claiming none fails
+     it, which is how this loop produces a wrong answer on a type that has no
+     wrong option to pick. */
+  if (D.answerWritten && D.answerWritten(el, wantRight ? 'all' : 'none')) return true;
   if (D.nodes(el, 'ans').length) { at(D.nodes(el, 'ans')).fire('click'); return true; }
   if (D.nodes(el, 'tf').length) {
     const seen = new Set();

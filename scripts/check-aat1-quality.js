@@ -228,6 +228,25 @@ allQuestions.forEach(({ where, q }) => {
        levels author these tables and three copies would drift. */
     GRID.problems(q, where).forEach(e => errors.push(e));
 
+  } else if (type === 'written') {
+    /* Only the shape of the data. Whether the model stays hidden until it is
+       earned, whether the rubric grades at the pass mark and whether the mark
+       reaches the progress record are properties of the SCREEN, and they live
+       in scripts/check-written.js, which drives the real player. */
+    if (!q.setup) errors.push(`${where}: a written task needs a scenario to answer about.`);
+    if (!q.modelAnswer) errors.push(`${where}: a written task needs a model answer to be marked against.`);
+    if (!Array.isArray(q.rubric) || q.rubric.length < 3) {
+      errors.push(`${where}: a written task needs at least three rubric points.`);
+    } else q.rubric.forEach((r, ri) => {
+      if (!r || !r.point) errors.push(`${where} rubric ${ri + 1}: no point.`);
+      if (!r || !Number.isFinite(r.marks) || r.marks <= 0) {
+        errors.push(`${where} rubric ${ri + 1}: is not worth a positive number of marks.`);
+      }
+    });
+    if (!Number.isFinite(q.minWords) || q.minWords < 30) {
+      errors.push(`${where}: a written task needs a minWords of at least 30.`);
+    }
+
   } else {
     errors.push(`${where}: unknown question type "${type}".`);
   }
@@ -277,8 +296,17 @@ stems.forEach((where, stem) => {
     /* A repeat spanning both files is the defect the practice bank exists to
        avoid, so it fails rather than warns. */
     const spansPractice = where.some(w => w.startsWith('practice')) && where.some(w => !w.startsWith('practice'));
+    /* TWO PRACTICE QUESTIONS WITH THE SAME STEM FAIL TOO, and this was a
+       warning until it broke something. A stem is how a harness driving a real
+       paper identifies which question is on screen — check-aat1-mock.js looks
+       the stem up in the bank — so two questions sharing one make a paper
+       containing both look like a paper that repeated a question, and make the
+       mistakes backlog clear the wrong number. It is also the shape a reader
+       meets twice in one run and reads as a bug. */
+    const twoInPractice = where.filter(w => w.startsWith('practice')).length > 1;
     const msg = `Question stem repeated in ${where.join(', ')}: "${stem.slice(0, 60)}…"`;
     if (spansPractice) errors.push(msg + ' — the practice bank must not re-ask a lesson check.');
+    else if (twoInPractice) errors.push(msg + ' — a stem is how a harness identifies a question, so two cannot share one.');
     else warnings.push(msg);
   }
 });
