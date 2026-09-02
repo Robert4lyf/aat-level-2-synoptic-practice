@@ -17,6 +17,7 @@ Implemented learner scope:
 - Shared progress backup/sync transport is loaded on the CIPS page and initialised on direct entry; a remote merge reloads the learner surface from the merged store.
 - A responsive CIPS reader, module map, practice runner, progress view and searchable glossary.
 - Entry through the shared subject picker, preserving the previously active subject when the reader returns.
+- The saved CIPS theme is applied before visible course content is parsed, avoiding a cold-load flash of the wrong theme.
 
 ## Assessment claims
 
@@ -51,7 +52,7 @@ This is an explicit seam, not hidden debt. If the subject registry is later extr
 
 `check-cips2-render.js` additionally drives the real learner surface and checks the 390px/1280px layouts, named controls and touch targets, the DOM-visible 1–13 sequence, all 13 lesson openings, checkpoint feedback and persistence, practice grading and LO recording, dark-mode persistence, the completed-course Review action, progress transport availability, and subject-picker entry/return behaviour.
 
-`check-cips2-offline.js` proves the service worker controls the CIPS page, required CIPS assets are installed, and L2M1 renders after the browser is taken offline.
+`check-cips2-offline.js` proves the service worker controls the CIPS page, required CIPS assets — including the pre-paint theme bootstrap — are installed, and L2M1 renders after the browser is taken offline.
 
 ## Manual/adversarial review findings
 
@@ -59,13 +60,14 @@ This is an explicit seam, not hidden debt. If the subject registry is later extr
 2. **MutationObserver feedback-loop risk — fixed.** The sequence helper initially rewrote `textContent` every time its observed subtree mutated. Because that rewrite creates a child-list mutation, it could trigger itself indefinitely. It now writes only when the current number differs from the required value.
 3. **Completed-course CTA reopened lesson 1 — fixed.** With no unfinished lesson, the overview's fallback target was lesson 1 while the label still said Continue learning. The completed state now says Review L2M1 and opens the module map.
 4. **Direct CIPS visits did not initialise cross-device sync — fixed.** The page now loads the shared backup/sync modules and calls `ProgressSync.init()`. If a remote pull changes local state, the page reloads from the merged store.
-5. **Syllabus coverage/depth — pass.** Every audited source position is mapped to teaching and every criterion has practice. Manual sampling across all six LOs found no assessed concept presented without an explanatory route before checking it.
-6. **Beyond-syllabus material — one low-severity enrichment note.** The LO3 customer/supply-chain lesson mentions the “bullwhip effect” when discussing poor information. That term is not one of the audited L2M1 indicative-content positions, is not used as a required definition, and is not assessed by a checkpoint/practice item. Treat it as optional context, not required CIPS knowledge. A later editorial pass may remove or briefly define it for beginner clarity.
-7. **Distractor ambiguity — no blocking issue found.** Manual sampling across the six LO banks found distractors plausible enough to require understanding while leaving one clearly best answer under the taught material. Automated gates additionally reject invalid answer keys, duplicate options and position imbalance.
-8. **Subject-picker isolation — pass.** The bridge does not write `multisubject_active`; the browser gate verifies a learner can enter CIPS and return with the previously active main-app subject unchanged.
-9. **Responsive/accessibility surface — pass subject to final CI.** Browser tests cover 390px and 1280px horizontal overflow, accessible button naming and primary touch targets. Key light/dark text pairs were also spot-checked for readable contrast; no blocking contrast issue was identified. The sequence-number fix is DOM-visible rather than CSS-only.
-10. **Offline boundary — pass subject to final CI.** The CIPS page, bridge, stylesheet, register helper and all L2M1 data are part of the versioned core install, while the existing shared progress scripts were already core assets.
-11. **Progress/merge compatibility — pass.** CIPS uses the existing `prep_v2_*` naming convention picked up by generic backup/export. Its lesson and practice records are monotonic progress data, and the existing backup/sync regression suites remain part of CI alongside the CIPS browser integration check.
+5. **Dark-mode cold-load flash — fixed.** Theme state was originally applied only when the main CIPS script reached the end of the page. A small CSP-compatible external bootstrap now applies the saved/system theme immediately after `<body>` opens and is part of the offline core cache.
+6. **Syllabus coverage/depth — pass.** Every audited source position is mapped to teaching and every criterion has practice. Manual sampling across all six LOs found no assessed concept presented without an explanatory route before checking it.
+7. **Beyond-syllabus material — one low-severity enrichment note.** The LO3 customer/supply-chain lesson mentions the “bullwhip effect” when discussing poor information. That term is not one of the audited L2M1 indicative-content positions, is not used as a required definition, and is not assessed by a checkpoint/practice item. Treat it as optional context, not required CIPS knowledge. A later editorial pass may remove or briefly define it for beginner clarity.
+8. **Distractor ambiguity — no blocking issue found.** Manual sampling across the six LO banks found distractors plausible enough to require understanding while leaving one clearly best answer under the taught material. Automated gates additionally reject invalid answer keys, duplicate options and position imbalance.
+9. **Subject-picker isolation — pass.** The bridge does not write `multisubject_active`; the browser gate verifies a learner can enter CIPS and return with the previously active main-app subject unchanged.
+10. **Responsive/accessibility surface — pass subject to final CI.** Browser tests cover 390px and 1280px horizontal overflow, accessible button naming and primary touch targets. Key light/dark text pairs were also spot-checked for readable contrast; no blocking contrast issue was identified. The sequence-number fix is DOM-visible rather than CSS-only.
+11. **Offline boundary — pass subject to final CI.** The CIPS page, bridge, stylesheet, register helper, theme bootstrap and all L2M1 data are part of the versioned core install, while the existing shared progress scripts were already core assets.
+12. **Progress/merge compatibility — pass.** CIPS uses the existing `prep_v2_*` naming convention picked up by generic backup/export. Its lesson and practice records are monotonic progress data, and the existing backup/sync regression suites remain part of CI alongside the CIPS browser integration check.
 
 ## Known non-blocking debt
 
