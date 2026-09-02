@@ -245,6 +245,81 @@
   function isOutstanding(r) {
     return !!(r && n0(r.w) > n0(r.r));
   }
+
+  /* ── Retiring a question you already know ─────────────────────────────────
+     Level 2 has had this control since it shipped; this is the same idea in the
+     record shape Levels 1 and 3 use, and the Level 3 player carries the same
+     code with its own prefix.
+
+     TWO TIMESTAMPS, NOT A FLAG, for exactly the reason `w` and `r` are two
+     timestamps: progress-backup merges numbers by MAX and booleans by OR, so a
+     `retired: true` would be sticky — bring a question back on the phone, and
+     the laptop's stale `true` retires it again at the next merge, for ever.
+     Retired while the retiring stamp is the later of the two, which is
+     order-independent, idempotent, and settles a disagreement between two
+     devices in favour of whichever one the reader touched last.
+
+     `k` for known, `ku` for known-undone. Short because there is one of these
+     per question and the store is JSON in localStorage. */
+  function isRetired(r) {
+    return !!(r && n0(r.k) > n0(r.ku));
+  }
+  /* The record for one question, whichever of the two maps it lives in, created
+     on demand. Lesson-check questions carry a synthetic id and live in
+     `lessonQs`; everything else is in the practice record. */
+  function qRec(qId, make) {
+    if (!qId) return null;
+    var map = isLessonQId(qId) ? data.lessonQs : data.practice.qs;
+    if (!map[qId] && !make) return null;
+    return map[qId] || (map[qId] = {});
+  }
+  function retired(qId) { return isRetired(qRec(qId, false)); }
+  function toggleRetire(qId) {
+    var r = qRec(qId, true);
+    if (!r) return false;
+    var now = Date.now();
+    /* Written rather than deleted. A record whose stamps were removed would be
+       indistinguishable from one that had never been retired, and the merge
+       would then resurrect the retirement from the other device. */
+    if (isRetired(r)) r.ku = now; else r.k = now;
+    save();
+    return isRetired(r);
+  }
+  /* How many questions are put away, counted over the ids that are still
+     answerable rather than over the store: a question retired and then
+     rewritten out of the bank is not one the reader can bring back, and
+     counting it would leave a number on the practice screen that no button can
+     move. */
+  function retiredQuestions() {
+    var byId = answerableById();
+    var out = [];
+    [data.practice.qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        if (byId[id] && isRetired(map[id])) out.push(byId[id]);
+      });
+    });
+    return out;
+  }
+  /* Bring every one of them back, in one act. Retiring is reversible one
+     question at a time only while the question is still being served — and it
+     is not, that being the point — so without this the control would be a
+     one-way door. */
+  function restoreRetired() {
+    var byId = answerableById();
+    var now = Date.now(), n = 0;
+    [data.practice.qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        if (byId[id] && isRetired(map[id])) { map[id].ku = now; n++; }
+      });
+    });
+    if (n) save();
+    return n;
+  }
+  /* The bank minus what the reader has put away. Every draw that is not a mock
+     goes through this; see drawWeighted for why a mock does not. */
+  function livePool() {
+    return practiceBank().filter(function (q) { return !retired(q.id); });
+  }
   /* The questions still outstanding, most recently missed first, and only those
      still answerable — a question that has been rewritten or removed since it
      was missed is not a question anyone can be asked again. Reads both mistake
@@ -254,7 +329,12 @@
     var out = [];
     [data.practice.qs, data.lessonQs].forEach(function (map) {
       Object.keys(map || {}).forEach(function (id) {
-        if (byId[id] && isOutstanding(map[id])) out.push({ id: id, w: n0(map[id].w) });
+        /* A retired question is out of every draw, the backlog included: the
+           reader said they know it, and serving it back because they once got
+           it wrong would make the control mean nothing. */
+        if (byId[id] && isOutstanding(map[id]) && !isRetired(map[id])) {
+          out.push({ id: id, w: n0(map[id].w) });
+        }
       });
     });
     return out.sort(function (a, b) { return b.w - a.w; })
@@ -292,7 +372,7 @@
         /* A question still outstanding belongs to the mistakes backlog, which
            serves it sooner and more insistently. Offering it in both places
            would double-count it on the practice screen. */
-        if (!byId[id] || isOutstanding(r)) return;
+        if (!byId[id] || isOutstanding(r) || isRetired(r)) return;
         var at = dueSince(r, now);
         if (at !== null) out.push({ id: id, r: at });
       });
@@ -1036,6 +1116,33 @@
     return h + '</div>';
   }
 
+  /* ── "I know this" ────────────────────────────────────────────────────────
+     OFFERED AFTER THE ANSWER, NEVER BEFORE IT. Shown alongside the question it
+     would be a way of skipping something hard; shown alongside the explanation
+     it is a judgement the reader has just earned the right to make, because
+     they have seen whether they were right.
+
+     PRACTICE RUNS ONLY. Not in a mock, where nothing is graded until the paper
+     is over and there is nothing to judge yet — and where the questions are
+     drawn from the full bank anyway. Not in a review, which walks a finished
+     paper and has its own navigation. Not inside a lesson: a lesson's check
+     questions are part of reading it, there is no pool to take them out of,
+     and the lesson still has to be finished either way. A lesson question that
+     later surfaces through the backlog IS served in a practice run, and can be
+     retired there like any other. */
+  function retireOffered(q) {
+    return !!(q && q.id) && S.mode === 'practice' && S.answered !== null && !isReview();
+  }
+  function retireBtn(q) {
+    var on = retired(q.id);
+    return '<button class="a1-retire' + (on ? ' is-on' : '') + '" data-a1="retire"' +
+      ' aria-pressed="' + (on ? 'true' : 'false') + '"' +
+      ' title="' + (on ? 'Put this back into practice' : 'Stop showing me this question') + '">' +
+      '<span class="a1-retire-i" aria-hidden="true">' + (on ? '\u21ba' : '\u2713') + '</span>' +
+      '<span class="a1-retire-l">' + (on ? 'Bring back' : 'I know this') + '</span>' +
+      '</button>';
+  }
+
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
@@ -1315,8 +1422,11 @@
          through a finished paper rather than through a run, so it brings its
          own navigation and must not offer this one. */
       if (!isReview()) {
-        h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="nextq">' +
+        var adv = '<button class="a1-btn a1-btn-primary a1-wide" data-a1="nextq">' +
           (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
+        h += retireOffered(q)
+          ? '<div class="a1-qfoot">' + adv + retireBtn(q) + '</div>'
+          : adv;
       }
     }
     return h;
@@ -1586,6 +1696,7 @@
 
     var missed = missedQuestions();
     var due = dueQuestions();
+    var put = retiredQuestions();
     var pr = data.practice;
 
     var h = '<div class="a1-root' + fresh() + '">';
@@ -1596,7 +1707,12 @@
         /* "10 per run" was true while a run was the only thing this screen
            offered. It now offers a 30-question paper as well, so the honest
            fact here is the size of the pool; each card says its own length. */
-        meta: bank.length + ' questions in the pool',
+        /* The live figure once anything is put away, because that is the number
+           a run will actually draw from, and "338 questions" over a pool of 298
+           is the app disagreeing with itself. */
+        meta: put.length
+          ? (bank.length - put.length) + ' in practice \u00b7 ' + put.length + ' put away'
+          : bank.length + ' questions in the pool',
       });
 
     h += '<div class="a1-page">';
@@ -1642,6 +1758,24 @@
           '<span class="a1-alert-m">Spaced out further each time you get one right. Right once is not the same as known.</span>' +
         '</span>' +
         '<span class="a1-alert-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+
+    /* The way back from "I know this". Retiring is reversible one question at a
+       time only while that question is still being served, and it is not — so
+       without a control here the button on the question screen would be a
+       one-way door. Rendered only when there is something behind it. */
+    if (put.length) {
+      h += '<button class="a1-restore" data-a1="restore">' +
+        '<span class="a1-restore-i" aria-hidden="true">\u21ba</span>' +
+        '<span class="a1-restore-tx">' +
+          '<span class="a1-restore-t">' + put.length +
+            (put.length === 1 ? ' question put away' : ' questions put away') + '</span>' +
+          '<span class="a1-restore-m">Marked \u201cI know this\u201d, so practice runs skip ' +
+            (put.length === 1 ? 'it' : 'them') + '. A timed mock still asks ' +
+            (put.length === 1 ? 'it' : 'them') + '. Tap to bring ' +
+            (put.length === 1 ? 'it' : 'them') + ' back.</span>' +
+        '</span>' +
         '</button>';
     }
 
@@ -1884,8 +2018,18 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for ten and found nine must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(n, noWritten) {
-    var bank = practiceBank();
+  function drawWeighted(n, noWritten, keepRetired) {
+    /* WHY A MOCK STILL DRAWS FROM RETIRED QUESTIONS, and nothing else does.
+       Everywhere else, "I know this" means stop asking me. A mock is the one
+       place where honouring that would work against the reader: it is a
+       rehearsal of a real paper at the real weighting, and the real paper has
+       never heard of anything you put away. Drawing a mock from the shrunken
+       pool would hand back a score against an easier exam than the one being
+       sat — and, at the far end, an outcome with every question retired could
+       not fill its seats at all, so the weighting itself would quietly stop
+       holding. Keeping them in also means retirement can never hide a weakness
+       from the one measure that is supposed to find it. */
+    var bank = keepRetired ? practiceBank() : livePool();
     /* WHY A MOCK HAS NO WRITTEN TASKS IN IT. A written task is marked by the
        reader against a rubric they can only see once the model answer is on
        screen — and a mock reveals nothing until the paper is over. Including
@@ -1958,7 +2102,7 @@
 
   function startMock() {
     S.practiceLo = 'mock';
-    S.practiceQs = drawWeighted(MOCK_LEN, true);
+    S.practiceQs = drawWeighted(MOCK_LEN, true, true);
     S.practiceMissed = [];
     S.streak = 0; S.bestStreak = 0; /* same reset startPractice() does */
     S.mockResults = [];
@@ -2027,7 +2171,7 @@
   function isEndless() { return S.mode === 'practice' && S.practiceLo === 'endless'; }
 
   function topUpEndless() {
-    var pool = practiceBank();
+    var pool = livePool();
     var fresh = pool.filter(function (q) { return !S.endlessSeen[q.id]; });
     /* Once the whole bank has been seen the set starts again: an endless run
        that quietly stopped being endless would be worse than repetition. */
@@ -2064,7 +2208,7 @@
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(PRACTICE_LEN);
     } else {
-      var pool = practiceBank().filter(function (q) { return q.lo === lo; });
+      var pool = livePool().filter(function (q) { return q.lo === lo; });
       S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
     }
     S.practiceMissed = [];
@@ -2352,6 +2496,9 @@
     topath: 1, jump: 1, step: 1, stepall: 1,
     review: 1, reviewall: 1, reviewwrong: 1, reviewq: 1,
     reviewnext: 1, reviewprev: 1, reviewback: 1, reviewlist: 1,
+    /* Retiring is a decision about the pool, not a move through it, so it gets
+       the flat click rather than the advance noise. */
+    retire: 1, restore: 1,
   };
 
   function gradeAnswer(q) {
@@ -2692,7 +2839,7 @@
        does: advancing repaints synchronously, so the second tap of a
        double-tap lands on whatever button has taken the same coordinates on
        the next question. */
-    plsubmit: 1, egsubmit: 1 };
+    plsubmit: 1, egsubmit: 1, retire: 1 };
 
   function num(v) {
     var s = String(v == null ? '' : v).replace(/[£,\s]/g, '');
@@ -2977,6 +3124,19 @@
       save();
       if (S.qIdx === checks.length - 1) { stopMockClock(); finish(); }
       else { S.qIdx++; resetQState(); }
+      return rerender();
+    }
+    if (act === 'restore') {
+      restoreRetired();
+      return rerender();
+    }
+    /* Toggling the retirement does not advance and does not grade — it repaints
+       so the button can say what it now means. Guarded the same way the graded
+       submits are: it sits next to the advance button, and a stray second tap
+       of a double-tap must not land on it. */
+    if (act === 'retire') {
+      if (!retireOffered(q)) return;
+      toggleRetire(q.id);
       return rerender();
     }
     if (act === 'nextq') {

@@ -1248,6 +1248,53 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-alert-due .a1-alert-go { color: var(--a1-brand-ink); }
 .a1-alert-due:hover { border-color: var(--a1-brand); }
 
+/* ── "I know this": retiring a question, and getting it back ──────────────
+   The button sits beside the advance button on a graded practice question, and
+   deliberately does not compete with it: the advance button is what a reader
+   is reaching for, and this is a decision they make occasionally. So the row
+   gives the advance button all the space it wants and this one only what it
+   needs. Below 380px the label drops and the tick carries it, rather than the
+   two buttons wrapping onto separate lines and pushing Next off the fold. */
+.a1-qfoot { display: flex; align-items: stretch; gap: var(--a1-2); }
+.a1-qfoot .a1-wide { flex: 1 1 auto; width: auto; }
+.a1-retire {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 var(--a1-3); border-radius: var(--a1-r-sm);
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface);
+  color: var(--a1-ink-3); font-family: inherit; font-size: var(--a1-t-meta);
+  font-weight: 600; cursor: pointer; transition: border-color .14s, color .14s;
+}
+.a1-retire:hover { border-color: var(--a1-brand); color: var(--a1-brand-ink); }
+.a1-retire:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-retire.is-on {
+  border-color: var(--a1-brand); background: var(--a1-brand-wash); color: var(--a1-brand-ink);
+}
+.a1-retire-i { font-size: 14px; line-height: 1; }
+@media (max-width: 380px) { .a1-retire-l { display: none; } }
+
+/* The way back, on the practice screen. Quieter than either alert above it:
+   nothing is wrong and nothing is due — this is a note about the shape of the
+   pool, and it is only here at all because retiring must be reversible. */
+.a1-restore {
+  display: flex; align-items: center; gap: var(--a1-3); width: 100%; text-align: left;
+  padding: var(--a1-4); margin: 0 0 var(--a1-3);
+  background: transparent; border: 1px dashed var(--a1-line-2);
+  border-radius: var(--a1-r); cursor: pointer; font-family: inherit;
+}
+.a1-restore:hover { border-color: var(--a1-brand); }
+.a1-restore:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-restore-i {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 15px;
+  background: var(--a1-surface-2); color: var(--a1-ink-3);
+}
+.a1-restore-tx { flex: 1 1 auto; min-width: 0; }
+.a1-restore-t { display: block; font-size: var(--a1-t-ui); font-weight: 700; color: var(--a1-ink); }
+.a1-restore-m {
+  display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3);
+  margin-top: 2px; line-height: 1.45;
+}
+
 /* The clock. Takes the place of the percentage in the question bar, because a
    reader sitting to time wants the minutes, not the progress. */
 .a1-lessonbar-mock { border-bottom: 2px solid var(--a1-brand); }
