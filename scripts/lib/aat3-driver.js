@@ -209,6 +209,9 @@ function loadUI(store) {
   const mats = require(path.join(ROOT, 'aat3-mats-data.js'));
   M.AAT3_MATS_PATH = mats.AAT3_MATS_PATH;
   M.AAT3_MATS_PRACTICE = mats.AAT3_MATS_PRACTICE;
+  const buaw = require(path.join(ROOT, 'aat3-buaw-data.js'));
+  M.AAT3_BUAW_PATH = buaw.AAT3_BUAW_PATH;
+  M.AAT3_BUAW_PRACTICE = buaw.AAT3_BUAW_PRACTICE;
   /* The glossary is a hard dependency the same way the banks are: without it
      the glossary screen renders empty and every assertion about it would pass
      by never running. */

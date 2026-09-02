@@ -39,6 +39,8 @@
 
 const fs = require('fs');
 const path = require('path');
+/* Used well above the destructure below, so required here rather than there. */
+const { paras } = require('./lib/prose-mannerisms.js');
 const RED = '\x1b[31m', GREEN = '\x1b[32m', YELLOW = '\x1b[33m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
@@ -478,7 +480,7 @@ lessons.forEach(l => {
     depthByUnit[u].push({
       lesson: l.id, ci: ci + 1, h: String(c.h || ''),
       n: words(flat(c)),
-      prose: words((c.p || []).join(' ')),
+      prose: words(paras(c).join(' ')),
       rich: RICH_ELEMENTS.some(k => c[k]),
     });
   });
@@ -620,7 +622,7 @@ const {
 } = require('./lib/prose-mannerisms.js');
 
 lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
-  const text = (c.p || []).join(' ');
+  const text = paras(c).join(' ');
   const found = cadenceHits(text);
   if (found.length > CADENCE_MAX_PER_CARD) {
     errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): ${found.length} rhetorical cadences stacked on one card — ${[...new Set(found)].join('; ')}. One is emphasis; a pile-up is what makes prose read as machine-written. Make the points instead of announcing them.`);
@@ -632,7 +634,7 @@ lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
   let proseWords = 0;
   const proseBits = [];
   lessons.forEach(l => (l.cards || []).forEach((c, ci) => {
-    (c.p || []).forEach(par => {
+    paras(c).forEach(par => {
       const text = String(par);
       neverHits(text).forEach(label => errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): prose contains "${label}" — a machine-writing tell, not this material's voice.`));
       /* The rate is measured over the four Level 2 units, so the preview

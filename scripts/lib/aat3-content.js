@@ -36,6 +36,7 @@ const FILES = [
   /* MATS carries no Finance Act either — it rests on costing arithmetic, which
      is not rolled annually — so the hardcoded-threshold scan does not apply. */
   { file: 'aat3-mats-data.js', path: 'AAT3_MATS_PATH', practice: 'AAT3_MATS_PRACTICE', taxGoverned: false },
+  { file: 'aat3-buaw-data.js', path: 'AAT3_BUAW_PATH', practice: 'AAT3_BUAW_PRACTICE', taxGoverned: false },
 ];
 
 function load() {
