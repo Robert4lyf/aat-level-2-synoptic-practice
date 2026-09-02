@@ -167,6 +167,10 @@ function answerRight(el, q) {
    nothing and stops silently, which is how a check can report a ten-question
    run as zero questions and a cleared backlog as uncleared. */
 function answerRightPractice(el, q) {
+  /* A written task is answered and submitted in one move, because it has three
+     steps of its own — write, reveal, tick — and no submit button the table
+     below could name. */
+  if (D.answerWritten(el, 'all')) return D.nodes(el, 'nextq').length > 0;
   answerRight(el, q);
   const t = q.type || 'mcq';
   const submit = { truefalse: 'tfsubmit', gapfill: 'gapsubmit', numeric: 'numsubmit',

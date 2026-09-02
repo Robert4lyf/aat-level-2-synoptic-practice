@@ -55,6 +55,13 @@
     taskPicks: {},       // multi-part task: part index -> chosen option
     taskResults: null,   // multi-part task: per-part verdicts, once graded
     taskNudge: false,    // a submit was attempted with parts still blank
+    /* ── Written response ──────────────────────────────────────────────────
+       The one question type this module grades by asking the reader to grade
+       themselves. See the block above writtenHtml for why it exists and which
+       units it is exam rehearsal for. */
+    wrText: '',          // written: what the reader has typed
+    wrShown: false,      // written: has the model answer been revealed?
+    wrTicks: {},         // written: rubric index -> did the reader claim it?
     mockEndsAt: 0,       // timed mock: when the clock runs out
     mockResults: [],     // timed mock: one record per question answered, for the report and the review
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
@@ -1420,12 +1427,137 @@
     return rerender();
   }
 
+  /* ── Written response ────────────────────────────────────────────────────
+     WHY THIS TYPE EXISTS, AND FOR WHICH UNITS IT IS EXAM REHEARSAL.
+
+     Read the specification's own test-specification tables before assuming.
+     MATS is "partially computer/partially human marked" and so is Business
+     Awareness; FAPS and TPFB are "computer marked". So for MATS this shape is
+     the assessment — criteria like 4.3.3 ("report on remedial action to address
+     adverse variances") and 6.1.4 ("interpret and report on CVP analysis") are
+     asking a candidate to write, and examining them by multiple choice tests
+     whether a reader can RECOGNISE a good answer, which is a different and
+     easier thing than producing one.
+
+     For FAPS and TPFB it is a study technique rather than a format they will
+     meet, and the note under the box says exactly that rather than implying an
+     exam shape that does not exist. It earns its place there anyway: writing an
+     explanation out is the fastest way to discover that you cannot, and a
+     reader who can only pick the right sentence from four has not been tested
+     on whether they could have written it.
+
+     HOW IT IS MARKED. The reader writes, then reveals the model answer, then
+     ticks each rubric point they actually made. Seventy per cent of the marks
+     is a pass, matching the assessment's own pass mark. The order is the whole
+     design: revealing the model first turns the task into a reading exercise,
+     so the reveal is gated on having written something.
+
+     WHY IT IS HONEST ANYWAY. Self-marking is generous and everybody knows it.
+     What it is not is useless: the rubric names the points an examiner looks
+     for, and reading your own answer against them is the feedback. The screen
+     says the mark is self-assessed rather than pretending otherwise. */
+
+  /* Is this unit's assessment partly marked by a person? Read from the syllabus
+     rather than listed here, so a unit whose marking type changes says so on
+     the screen without anybody remembering to update a second list. */
+  function humanMarked(unitKey) {
+    var u = unitMeta(unitKey || activeUnit());
+    return !!(u && u.assessment && /human/i.test(u.assessment.marking || ''));
+  }
+
+  /* What a question is worth. Written tasks carry a rubric whose points sum to
+     the marks; everything else is one mark, which is all the score in this
+     module has ever counted. */
+  function qMarks(q) {
+    if (!q) return 1;
+    if (Array.isArray(q.rubric) && q.rubric.length) {
+      var t = q.rubric.reduce(function (s2, r) { return s2 + (Number(r.marks) || 0); }, 0);
+      if (t > 0) return t;
+    }
+    return (typeof q.marks === 'number' && q.marks > 0) ? q.marks : 1;
+  }
+
+  function wrWords(text) {
+    var t = String(text == null ? '' : text).trim();
+    return t ? t.split(/\s+/).length : 0;
+  }
+
+  /* Enough to have tried. The authored minimum is a target for a full answer;
+     the gate on revealing the model is deliberately lower, because the point is
+     to stop the reader reading the answer cold rather than to police length. */
+  function wrEnough(q) {
+    return wrWords(S.wrText) >= Math.min(20, q.minWords || 20);
+  }
+
+  function wrAwarded(q) {
+    return (q.rubric || []).reduce(function (s2, r, i) {
+      return s2 + (S.wrTicks[i] ? (Number(r.marks) || 0) : 0);
+    }, 0);
+  }
+
+  function writtenHtml(q) {
+    var marks = qMarks(q);
+    var h = '<div class="a3-wr">';
+    if (q.setup) {
+      h += '<div class="a3-wr-setup"><span class="a3-wr-req">The situation</span>' +
+        md(q.setup) + '</div>';
+    }
+
+    if (!S.wrShown) {
+      var words = wrWords(S.wrText);
+      var min = q.minWords || 0;
+      h += '<label class="a3-wr-label" for="a3-wr-in">Your answer &middot; ' + marks + ' mark' +
+        (marks === 1 ? '' : 's') + (min ? ' &middot; aim for at least ' + min + ' words' : '') + '</label>' +
+        '<textarea id="a3-wr-in" class="a3-wr-in" data-a3="wrinput" rows="10" spellcheck="true" ' +
+        'placeholder="Write your answer here\u2026">' + esc(S.wrText) + '</textarea>' +
+        '<div class="a3-wr-count' + (min && words < min ? ' is-short' : '') + '">' +
+        words + ' word' + (words === 1 ? '' : 's') + (min ? ' &middot; minimum ' + min : '') + '</div>' +
+        '<p class="a3-wr-note">' +
+        (humanMarked(q.unitKey)
+          ? 'This unit is partly marked by a person, and this is the shape that half takes. '
+          : 'This unit is computer marked, so you will not be asked to write in the assessment. ' +
+            'You are asked to here because writing an explanation out is the fastest way to find ' +
+            'out whether you can. ') +
+        'Write your answer first, then mark it yourself against the rubric.</p>';
+      return h + '</div>';
+    }
+
+    var graded = S.answered !== null;
+    h += '<div class="a3-wr-cmp">' +
+      '<div class="a3-wr-side"><div class="a3-wr-h">What you wrote</div>' +
+        '<div class="a3-wr-body">' + (esc(S.wrText) || '<em>Nothing</em>') + '</div></div>' +
+      '<div class="a3-wr-side is-model"><div class="a3-wr-h">A model answer</div>' +
+        '<div class="a3-wr-body">' + esc(q.modelAnswer || '') + '</div></div>' +
+      '</div>';
+    h += '<div class="a3-wr-rub">' +
+      '<div class="a3-wr-rh">Mark your own answer &mdash; tick every point you actually made</div>' +
+      (q.rubric || []).map(function (r, i) {
+        return '<label class="a3-wr-row' + (S.wrTicks[i] ? ' on' : '') + '">' +
+          '<input type="checkbox" class="a3-wr-box" data-a3="wrtick" data-i="' + i + '"' +
+          (S.wrTicks[i] ? ' checked' : '') + (graded ? ' disabled' : '') + '>' +
+          '<span class="a3-wr-pt">' + md(r.point) + '</span>' +
+          '<span class="a3-wr-mk">' + r.marks + '</span></label>';
+      }).join('') +
+      '<div class="a3-wr-tot">Self-assessed <strong>' + wrAwarded(q) + ' / ' + marks + '</strong>' +
+      ' &middot; ' + Math.ceil(marks * 0.7) + ' to pass</div>' +
+      '</div>';
+    return h + '</div>';
+  }
+
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
     /* No counter here. The bar above the card carries "Question 3 of 10" now,
        and printing it twice on one screen was the clearest remaining example of
        the module telling the reader the same thing in two places. */
+    /* EVERY TYPE GETS THIS HEADING, the written task included, and it is not a
+       cosmetic decision. `<h2 class="a3-q">` is how four harnesses answer both
+       "is a question on screen" and "WHICH question is on screen" — the mistakes
+       backlog, the mock, the weighting sweep and the exit guard all read the
+       stem out of it. A type that renders no stem is a type those checks step
+       straight past, reporting a short run as a finished one. So the written
+       task's requirement is its stem, printed here like any other, and its
+       scenario sits below it inside the block. */
     var h = '<h2 class="a3-q">' + md(q.q) + '</h2>';
 
     if (t === 'mcq') {
@@ -1547,6 +1679,19 @@
       if (S.answered === null && !isMock()) h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="gapsubmit">Submit</button>';
     } else if (t === 'task') {
       h += taskHtml(q);
+    } else if (t === 'written') {
+      h += writtenHtml(q);
+      if (S.answered === null && !isMock()) {
+        if (!S.wrShown) {
+          var ready = wrEnough(q);
+          h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="wrshow"' +
+            (ready ? '' : ' disabled') + '>' +
+            (ready ? 'Reveal the model answer' : 'Write an answer first') + '</button>';
+        } else {
+          h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="wrmark">Record ' +
+            wrAwarded(q) + ' / ' + qMarks(q) + '</button>';
+        }
+      }
     }
 
 
@@ -1872,6 +2017,15 @@
     if (t === 'entrygrid') {
       return Object.keys(a.eg || {}).some(function (k) { return num(a.eg[k]) !== null; });
     }
+    /* NO BRANCH FOR `written`, deliberately. This function, snapshotAnswer and
+       restoreAnswer are the mock-and-review path, and drawWeighted keeps
+       written tasks out of a mock — so a written branch here is code no check
+       can reach and none of them had one. Mutation testing said so: breaking it
+       changed nothing observable.
+
+       If written tasks are ever admitted to a mock, §7 of check-written.js goes
+       red, and that is the moment to write these three branches AND the checks
+       that hold them up. */
     return false;
   }
 
@@ -2611,8 +2765,16 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for three and found two must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(unitKey, n, tasksFirst) {
+  function drawWeighted(unitKey, n, tasksFirst, noWritten) {
     var bank = practiceBank(unitKey);
+    /* WHY A MOCK HAS NO WRITTEN TASKS IN IT. A written task is marked by the
+       reader against a rubric they can only see once the model answer is on
+       screen — and a mock reveals nothing until the paper is over. Include one
+       and there are two ways out, both wrong: show the model under exam
+       conditions, or bank a task that scored nothing because there was no way
+       to mark it. So the timed paper stays objectively marked, and written work
+       lives in the practice runs, where the feedback loop it needs exists. */
+    if (noWritten) bank = bank.filter(function (q) { return q.type !== 'written'; });
     var os = outcomes(unitKey).filter(function (o) {
       return bank.some(function (q) { return q.lo === o.n; });
     });
@@ -2687,7 +2849,7 @@
   function startMock() {
     S.practiceUnit = activeUnit();
     S.practiceLo = 'mock';
-    S.practiceQs = drawWeighted(S.practiceUnit, MOCK_LEN, true);
+    S.practiceQs = drawWeighted(S.practiceUnit, MOCK_LEN, true, true);
     S.practiceMissed = [];
     S.mockResults = [];
     S.mockOver = false;
@@ -3017,6 +3179,7 @@
        rather than left lying about for whoever next changes that condition. */
     S.taskInputs = {}; S.taskPicks = {}; S.taskResults = null; S.taskNudge = false;
     S._taskOrder = null;
+    S.wrText = ''; S.wrShown = false; S.wrTicks = {};
     /* The working goes with the question, the way it does on Level 2. A figure
        left on the display belongs to a sum the reader has finished with, and
        reading it as the start of the next one is how a wrong answer gets
@@ -3105,6 +3268,11 @@
     /* Both new types grade in question-grid.js rather than here. Three players
        render these tables and three copies of "is this row right" would drift
        the first time a tolerance or the blank-versus-zero rule changed. */
+    /* SELF-ASSESSED, and the pass mark is the assessment's own. A written task
+       has no key to compare against, so what "correct" means here is that the
+       reader claimed at least 70% of the rubric — the same threshold the real
+       paper is passed on. */
+    if (t === 'written') return wrAwarded(q) >= qMarks(q) * 0.7;
     if (t === 'picklist') return !!(root.AATGrid && root.AATGrid.gradePicklist(shownPicklist(q), S.plPicks).right);
     if (t === 'entrygrid') return !!(root.AATGrid && root.AATGrid.gradeEntry(q, S.egCells).right);
     return false;
@@ -3241,6 +3409,15 @@
         n.addEventListener('focus', function () { S.calcCell = n.getAttribute('data-c'); });
         return;
       }
+      if (act === 'wrinput') {
+        /* No repaint on the keystroke. Every other input in this module is a
+           short number; this is ten lines of prose, and rerendering would drop
+           the caret to the end of it on every character typed. The word count
+           is refreshed by the repaints that already happen — revealing,
+           marking, moving on — which is often enough for a target. */
+        n.addEventListener('input', function () { S.wrText = n.value; });
+        return;
+      }
       if (act === 'tryinput' || act === 'numinput' || act === 'taskinput') {
         n.addEventListener('input', function () {
           if (act === 'tryinput') S.tryInput = n.value;
@@ -3286,7 +3463,7 @@
        does: advancing repaints synchronously, so the second tap of a
        double-tap lands on whatever button has taken the same coordinates on
        the next question. */
-    plsubmit: 1, egsubmit: 1,
+    plsubmit: 1, egsubmit: 1, wrshow: 1, wrmark: 1,
     mocknext: 1, nextq: 1, next: 1 };
 
   function num(v) {
@@ -3304,6 +3481,10 @@
     topath: 1, tounits: 1, jump: 1, step: 1, stepall: 1,
     review: 1, reviewall: 1, reviewwrong: 1, reviewq: 1,
     reviewnext: 1, reviewprev: 1, reviewback: 1, reviewlist: 1,
+    /* Revealing the model is a move to the next step of the same question, so
+       it sounds like one. Recording the mark is not here: it goes through
+       settle(), which makes the right-or-wrong noise instead. */
+    wrshow: 1,
   };
 
   function handle(act, n, evt) {
@@ -3530,6 +3711,25 @@
       return settle(q);
     }
     if (act === 'numsubmit') { return settle(q); }
+    if (act === 'wrshow') {
+      /* The guard is in the handler as well as on the button. Disabling a
+         button is a hint to a person and no obstacle at all to a harness or a
+         stale repaint, and reading the model without writing first is the one
+         thing this type has to prevent. */
+      if (!wrEnough(q)) return;
+      S.wrShown = true;
+      return rerender();
+    }
+    if (act === 'wrtick') {
+      if (S.answered !== null) return;
+      var wi = +n.getAttribute('data-i');
+      S.wrTicks[wi] = !S.wrTicks[wi];
+      return rerender();
+    }
+    if (act === 'wrmark') {
+      if (!S.wrShown) return;
+      return settle(q);
+    }
     /* NO "answer every row first" GUARD. A gap-fill has one, because a blank
        pill is indistinguishable from one the reader has not reached; here every
        row is visible at once and a blank row is a considered answer as often as

@@ -43,11 +43,12 @@ function fakeStore(initial) {
 }
 
 function fakeEl() {
-  /* `select` is in the list because picklist rows are dropdowns: without it
-     the fake DOM parses the table's buttons and none of its controls, and every
-     assertion about a picklist would be made against a question nobody can
-     answer. */
-  const TAG = /<(?:button|span|div|input|select|a)\b([^>]*\bdata-a3="[^"]*"[^>]*)>/g;
+  /* `select` is in the list because picklist rows are dropdowns, and `textarea`
+     because a written task is answered in one: without them the fake DOM parses
+     the buttons around a control and not the control itself, so every assertion
+     about that question type would be made against something nobody can
+     answer — green, and about nothing. */
+  const TAG = /<(?:button|span|div|input|select|textarea|a)\b([^>]*\bdata-a3="[^"]*"[^>]*)>/g;
   const ATTR = /([\w-]+)="([^"]*)"/g;
   let painted = '';
   let parsed = null;
@@ -149,6 +150,21 @@ function answerCurrent(el, choose) {
   if (nodes(el, 'egsubmit').length) {
     nodes(el, 'egcell').forEach(n => { n.value = '0'; n.fire('input'); });
     click(el, 'egsubmit'); return;
+  }
+
+  /* A written task is three steps rather than one: type enough to unlock the
+     model, reveal it, then tick the rubric and record. `choose` decides how many
+     points are claimed — 0 claims none, which is how a sweep produces a wrong
+     answer on a type that has no wrong option to pick. */
+  if (nodes(el, 'wrinput').length) {
+    const box = nodes(el, 'wrinput')[0];
+    box.value = new Array(25).fill('word').join(' ');
+    box.fire('input');
+    click(el, 'wrshow');
+    const ticks = nodes(el, 'wrtick');
+    ticks.slice(0, Math.min(pickIdx, ticks.length)).forEach(t => t.fire('click'));
+    click(el, 'wrmark');
+    return;
   }
 
   const input = nodes(el, 'numinput')[0];

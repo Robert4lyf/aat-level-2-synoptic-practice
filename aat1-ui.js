@@ -54,6 +54,13 @@
     matchSel: null,      // left index currently selected, awaiting a right click
     orderSeq: null,      // working order, as indices into q.items
     numInput: '',
+    /* ── Written response ──────────────────────────────────────────────────
+       See the block above writtenHtml for what this type is for. Bookkeeping is
+       computer marked, so it is a study technique here rather than a rehearsal
+       of a format, and the note under the box says so. */
+    wrText: '',          // written: what the reader has typed
+    wrShown: false,      // written: has the model answer been revealed?
+    wrTicks: {},         // written: rubric index -> did the reader claim it?
     plPicks: {},          // picklist: row index -> chosen option
     _plOrder: null,       // picklist: the shuffled row order the reader is shown
     egCells: {},          // entrygrid: 'row:col' -> what the reader typed
@@ -944,6 +951,91 @@
   }
 
   /* ── Questions ───────────────────────────────────────────────────────────── */
+  /* ── Written response ────────────────────────────────────────────────────
+     WHY A COMPUTER-MARKED UNIT ASKS THE READER TO WRITE.
+
+     Bookkeeping Transactions is computer marked, so nothing in the assessment
+     will ask for prose and the note under the box says exactly that. It is here
+     anyway because picking the right sentence out of four and being able to
+     write it are different abilities, and only one of them is what a colleague
+     asking "why does that go on the credit side?" will meet. Writing an
+     explanation out is the fastest way to find out that you cannot.
+
+     Marked the way Level 3 marks it, and for the same reasons: write, reveal
+     the model, tick the rubric points you actually made, pass at 70%. The
+     reveal is gated on having written something, because a model answer read
+     cold is a passage of text rather than an exercise. */
+
+  function qMarks(q) {
+    if (!q) return 1;
+    if (Array.isArray(q.rubric) && q.rubric.length) {
+      var t = q.rubric.reduce(function (s2, r) { return s2 + (Number(r.marks) || 0); }, 0);
+      if (t > 0) return t;
+    }
+    return (typeof q.marks === 'number' && q.marks > 0) ? q.marks : 1;
+  }
+
+  function wrWords(text) {
+    var t = String(text == null ? '' : text).trim();
+    return t ? t.split(/\s+/).length : 0;
+  }
+
+  function wrEnough(q) {
+    return wrWords(S.wrText) >= Math.min(20, q.minWords || 20);
+  }
+
+  function wrAwarded(q) {
+    return (q.rubric || []).reduce(function (s2, r, i) {
+      return s2 + (S.wrTicks[i] ? (Number(r.marks) || 0) : 0);
+    }, 0);
+  }
+
+  function writtenHtml(q) {
+    var marks = qMarks(q);
+    var h = '<div class="a1-wr">';
+    if (q.setup) {
+      h += '<div class="a1-wr-setup"><span class="a1-wr-req">The situation</span>' +
+        md(q.setup) + '</div>';
+    }
+
+    if (!S.wrShown) {
+      var words = wrWords(S.wrText);
+      var min = q.minWords || 0;
+      h += '<label class="a1-wr-label" for="a1-wr-in">Your answer &middot; ' + marks + ' mark' +
+        (marks === 1 ? '' : 's') + (min ? ' &middot; aim for at least ' + min + ' words' : '') + '</label>' +
+        '<textarea id="a1-wr-in" class="a1-wr-in" data-a1="wrinput" rows="8" spellcheck="true" ' +
+        'placeholder="Write your answer here\u2026">' + esc(S.wrText) + '</textarea>' +
+        '<div class="a1-wr-count' + (min && words < min ? ' is-short' : '') + '">' +
+        words + ' word' + (words === 1 ? '' : 's') + (min ? ' &middot; minimum ' + min : '') + '</div>' +
+        '<p class="a1-wr-note">This unit is computer marked, so you will not be asked to write in ' +
+        'the assessment. You are asked to here because explaining something is the fastest way to ' +
+        'find out whether you understand it. Write your answer first, then mark it yourself ' +
+        'against the rubric.</p>';
+      return h + '</div>';
+    }
+
+    var graded = S.answered !== null;
+    h += '<div class="a1-wr-cmp">' +
+      '<div class="a1-wr-side"><div class="a1-wr-h">What you wrote</div>' +
+        '<div class="a1-wr-body">' + (esc(S.wrText) || '<em>Nothing</em>') + '</div></div>' +
+      '<div class="a1-wr-side is-model"><div class="a1-wr-h">A model answer</div>' +
+        '<div class="a1-wr-body">' + esc(q.modelAnswer || '') + '</div></div>' +
+      '</div>';
+    h += '<div class="a1-wr-rub">' +
+      '<div class="a1-wr-rh">Mark your own answer &mdash; tick every point you actually made</div>' +
+      (q.rubric || []).map(function (r, i) {
+        return '<label class="a1-wr-row' + (S.wrTicks[i] ? ' on' : '') + '">' +
+          '<input type="checkbox" class="a1-wr-box" data-a1="wrtick" data-i="' + i + '"' +
+          (S.wrTicks[i] ? ' checked' : '') + (graded ? ' disabled' : '') + '>' +
+          '<span class="a1-wr-pt">' + md(r.point) + '</span>' +
+          '<span class="a1-wr-mk">' + r.marks + '</span></label>';
+      }).join('') +
+      '<div class="a1-wr-tot">Self-assessed <strong>' + wrAwarded(q) + ' / ' + marks + '</strong>' +
+      ' &middot; ' + Math.ceil(marks * 0.7) + ' to pass</div>' +
+      '</div>';
+    return h + '</div>';
+  }
+
   function questionHtml(q, n) {
     if (!q) return '';
     var t = q.type || 'mcq';
@@ -1192,6 +1284,21 @@
         h += '<div class="a1-match-key">Correct order — ' + q.items.map(function (x, i) {
           return (i + 1) + '. ' + esc(x);
         }).join(' · ') + '</div>';
+      }
+    }
+
+    if (t === 'written') {
+      h += writtenHtml(q);
+      if (S.answered === null && !isMock()) {
+        if (!S.wrShown) {
+          var wrReady = wrEnough(q);
+          h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="wrshow"' +
+            (wrReady ? '' : ' disabled') + '>' +
+            (wrReady ? 'Reveal the model answer' : 'Write an answer first') + '</button>';
+        } else {
+          h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="wrmark">Record ' +
+            wrAwarded(q) + ' / ' + qMarks(q) + '</button>';
+        }
       }
     }
 
@@ -1777,8 +1884,14 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for ten and found nine must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(n) {
+  function drawWeighted(n, noWritten) {
     var bank = practiceBank();
+    /* WHY A MOCK HAS NO WRITTEN TASKS IN IT. A written task is marked by the
+       reader against a rubric they can only see once the model answer is on
+       screen — and a mock reveals nothing until the paper is over. Including
+       one would either show the model under exam conditions or bank a task
+       that scored nothing because there was no way to mark it. */
+    if (noWritten) bank = bank.filter(function (q) { return q.type !== 'written'; });
     var u = unit();
     var os = ((u && u.outcomes) || []).filter(function (o) {
       return bank.some(function (q) { return q.lo === o.n; });
@@ -1845,7 +1958,7 @@
 
   function startMock() {
     S.practiceLo = 'mock';
-    S.practiceQs = drawWeighted(MOCK_LEN);
+    S.practiceQs = drawWeighted(MOCK_LEN, true);
     S.practiceMissed = [];
     S.streak = 0; S.bestStreak = 0; /* same reset startPractice() does */
     S.mockResults = [];
@@ -1984,6 +2097,7 @@
     S.matchPicks = {}; S.matchSel = null; S.orderSeq = null; S.orderMoved = false;
     S.numInput = ''; S._order = null; S.calcOpen = false;
     S.plPicks = {}; S.egCells = {}; S.calcCell = null; S._plOrder = null;
+    S.wrText = ''; S.wrShown = false; S.wrTicks = {};
     /* THE WORKING GOES WITH THE QUESTION. A figure left on the display belongs
        to a sum the reader has finished with, and reading it as the start of the
        next one is how a wrong answer gets typed. Memory survives — reset()
@@ -2230,6 +2344,10 @@
      a click and a chime at once. */
   var NAV_SOUNDS = {
     open: 1, next: 1, back: 1, nextq: 1, mocknext: 1,
+    /* Revealing the model moves to the next step of the same question, so it
+       sounds like one. Recording the mark goes through settle(), which makes
+       the right-or-wrong noise instead. */
+    wrshow: 1,
     startpractice: 1, startmock: 1, practice: 1, retry: 1,
     topath: 1, jump: 1, step: 1, stepall: 1,
     review: 1, reviewall: 1, reviewwrong: 1, reviewq: 1,
@@ -2264,6 +2382,10 @@
       var g = num(S.numInput);
       return g !== null && Math.abs(g - q.answer) < 0.005;
     }
+    /* SELF-ASSESSED, at the assessment's own pass mark. A written task has no
+       key to compare against, so "correct" means the reader claimed at least
+       70% of the rubric. */
+    if (t === 'written') return wrAwarded(q) >= qMarks(q) * 0.7;
     return false;
   }
 
@@ -2529,6 +2651,13 @@
         n.addEventListener('focus', function () { S.calcCell = n.getAttribute('data-c'); });
         return;
       }
+      if (act === 'wrinput') {
+        /* No repaint on the keystroke. Every other input here is a short
+           number; this is several lines of prose, and rerendering would drop
+           the caret to the end of it on every character typed. */
+        n.addEventListener('input', function () { S.wrText = n.value; });
+        return;
+      }
       if (act === 'tryinput' || act === 'numinput') {
         n.addEventListener('input', function () {
           if (act === 'tryinput') S.tryInput = n.value; else S.numInput = n.value;
@@ -2557,7 +2686,8 @@
   var lastAdvanceAt = 0;
   var GUARDED_ACTS = { ans: 1, tf: 1, tfsubmit: 1, gap: 1, gapsubmit: 1,
     numsubmit: 1, matchl: 1, matchr: 1, matchsubmit: 1, orderup: 1,
-    orderdown: 1, ordersubmit: 1, trycheck: 1, mocknext: 1, nextq: 1, next: 1,
+    orderdown: 1, ordersubmit: 1, trycheck: 1, wrshow: 1, wrmark: 1,
+    mocknext: 1, nextq: 1, next: 1,
     /* The two new submits belong here for the same reason every other submit
        does: advancing repaints synchronously, so the second tap of a
        double-tap lands on whatever button has taken the same coordinates on
@@ -2810,6 +2940,25 @@
     if (act === 'ordersubmit') { return settle(q); }
 
     if (act === 'numsubmit') { return settle(q); }
+    if (act === 'wrshow') {
+      /* The guard is in the handler as well as on the button. Disabling a
+         button is a hint to a person and no obstacle at all to a harness or a
+         stale repaint, and reading the model without writing first is the one
+         thing this type has to prevent. */
+      if (!wrEnough(q)) return;
+      S.wrShown = true;
+      return rerender();
+    }
+    if (act === 'wrtick') {
+      if (S.answered !== null) return;
+      var wi = +n.getAttribute('data-i');
+      S.wrTicks[wi] = !S.wrTicks[wi];
+      return rerender();
+    }
+    if (act === 'wrmark') {
+      if (!S.wrShown) return;
+      return settle(q);
+    }
     /* NO "answer every row first" GUARD, unlike gap-fill. Every row of a table
        is visible at once, so a blank row is a considered answer as often as an
        oversight — and the assessment marks it wrong rather than refusing it. */
