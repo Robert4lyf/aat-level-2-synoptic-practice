@@ -385,7 +385,7 @@
      content file — see scripts/lib/aat3-content.js, which carries the same list
      for the build checks. */
   function allGroups() {
-    return (root.AAT3_LEARN_PATH || []).concat(root.AAT3_FAPS_PATH || []);
+    return (root.AAT3_LEARN_PATH || []).concat(root.AAT3_FAPS_PATH || [], root.AAT3_MATS_PATH || []);
   }
 
   /* The groups belonging to the unit on screen. Each group in the content files
@@ -425,9 +425,14 @@
     return (syl && syl.units && syl.units[key]) || null;
   }
 
+  /* Every unit's bank, concatenated and then filtered by unit. One list per
+     data file rather than a loop over names, so a unit added and not wired in
+     here is a unit whose practice screen is empty — visibly, on the first run,
+     rather than silently. */
   function practiceBank(unitKey) {
-    var a = root.AAT3_PRACTICE, b = root.AAT3_FAPS_PRACTICE;
-    var all = ((a && a.QUESTIONS) || []).concat((b && b.QUESTIONS) || []);
+    var a = root.AAT3_PRACTICE, b = root.AAT3_FAPS_PRACTICE, c = root.AAT3_MATS_PRACTICE;
+    var all = ((a && a.QUESTIONS) || [])
+      .concat((b && b.QUESTIONS) || [], (c && c.QUESTIONS) || []);
     var u = unitKey || activeUnit();
     /* `unitKey`, not `unit`: on a numeric question `unit` is the £ or % the
        answer is measured in. See the note at the top of aat3-practice-data.js. */

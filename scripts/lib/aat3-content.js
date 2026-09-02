@@ -33,6 +33,9 @@ const FILES = [
   { file: 'aat3-learn-data.js', path: 'AAT3_LEARN_PATH', practice: null, taxGoverned: true },
   { file: 'aat3-practice-data.js', path: null, practice: 'AAT3_PRACTICE', taxGoverned: true },
   { file: 'aat3-faps-data.js', path: 'AAT3_FAPS_PATH', practice: 'AAT3_FAPS_PRACTICE', taxGoverned: false },
+  /* MATS carries no Finance Act either — it rests on costing arithmetic, which
+     is not rolled annually — so the hardcoded-threshold scan does not apply. */
+  { file: 'aat3-mats-data.js', path: 'AAT3_MATS_PATH', practice: 'AAT3_MATS_PRACTICE', taxGoverned: false },
 ];
 
 function load() {

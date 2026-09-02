@@ -830,7 +830,7 @@ function finish() {
          fresh shuffle every time. A gate that depends on the draw is a gate
          that reports the weather. */
       const need = ['calculator.js', 'aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js',
-        'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-ui.js'];
+        'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-ui.js'];
       for (const src of need) {
         if (document.querySelector(`script[src="${src}"]`)) continue;
         await new Promise((res, rej) => {

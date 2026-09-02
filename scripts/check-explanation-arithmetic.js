@@ -59,8 +59,11 @@ function load() {
   push('AAT L3 TPFB practice', require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE.QUESTIONS);
   const faps = require(path.join(ROOT, 'aat3-faps-data.js'));
   push('AAT L3 FAPS practice', (faps.AAT3_FAPS_PRACTICE || {}).QUESTIONS);
+  const mats = require(path.join(ROOT, 'aat3-mats-data.js'));
+  push('AAT L3 MATS practice', (mats.AAT3_MATS_PRACTICE || {}).QUESTIONS);
   const l3checks = [];
-  [].concat(require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH || [], faps.AAT3_FAPS_PATH || [])
+  [].concat(require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH || [], faps.AAT3_FAPS_PATH || [],
+            mats.AAT3_MATS_PATH || [])
     .forEach(g => (g.lessons || []).forEach(l => (l.check || []).forEach((q, i) =>
       l3checks.push(Object.assign({ id: `${l.id} Q${i + 1}` }, q)))));
   push('AAT L3 lesson checks', l3checks);

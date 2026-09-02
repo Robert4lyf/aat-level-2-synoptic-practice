@@ -190,6 +190,9 @@ function loadUI(store) {
   const faps = require(path.join(ROOT, 'aat3-faps-data.js'));
   M.AAT3_FAPS_PATH = faps.AAT3_FAPS_PATH;
   M.AAT3_FAPS_PRACTICE = faps.AAT3_FAPS_PRACTICE;
+  const mats = require(path.join(ROOT, 'aat3-mats-data.js'));
+  M.AAT3_MATS_PATH = mats.AAT3_MATS_PATH;
+  M.AAT3_MATS_PRACTICE = mats.AAT3_MATS_PRACTICE;
   return M;
 }
 

@@ -104,6 +104,7 @@ const BANKS = [
   ['Level 2', level2Bank()],
   ['Level 3 TPFB', require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE.QUESTIONS],
   ['Level 3 FAPS', require(path.join(ROOT, 'aat3-faps-data.js')).AAT3_FAPS_PRACTICE.QUESTIONS],
+  ['Level 3 MATS', require(path.join(ROOT, 'aat3-mats-data.js')).AAT3_MATS_PRACTICE.QUESTIONS],
 ];
 
 let authored = 0;
@@ -129,7 +130,7 @@ ok(authored >= 10, `${authored} questions of these two types are authored across
    questions: one asks which CATEGORY something falls in, the other asks which
    COLUMN a figure goes in, and a bank missing either is missing a shape its
    assessment uses. */
-['Level 1', 'Level 2', 'Level 3 FAPS', 'Level 3 TPFB'].forEach((name) => {
+['Level 1', 'Level 2', 'Level 3 FAPS', 'Level 3 TPFB', 'Level 3 MATS'].forEach((name) => {
   const bank = (BANKS.find(b => b[0] === name) || [])[1] || [];
   ['picklist', 'entrygrid'].forEach((type) => {
     const n = bank.filter(q => q.type === type).length;
@@ -199,7 +200,7 @@ const PLAYERS = [
     ui: M => M.AAT1_UI, right: /a1-verdict is-right/, wrong: /a1-verdict is-wrong/ },
   { name: 'Level 3 FAPS', px: 'a3', driver: './lib/aat3-driver.js',
     bank: require(path.join(ROOT, 'aat3-faps-data.js')).AAT3_FAPS_PRACTICE.QUESTIONS,
-    install(M, qs) { M.AAT3_FAPS_PRACTICE = { QUESTIONS: qs }; M.AAT3_PRACTICE = { QUESTIONS: [] }; },
+    install(M, qs) { M.AAT3_FAPS_PRACTICE = { QUESTIONS: qs }; M.AAT3_PRACTICE = { QUESTIONS: [] }; M.AAT3_MATS_PRACTICE = { QUESTIONS: [] }; },
     reset(M) { M.AAT3_UI.reset('practice', 'faps'); },
     open(D, M, qs) {
       this.install(M, qs);
@@ -216,8 +217,20 @@ const PLAYERS = [
      questions no harness opens is a unit nobody has checked. */
   { name: 'Level 3 TPFB', px: 'a3', driver: './lib/aat3-driver.js',
     bank: require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE.QUESTIONS,
-    install(M, qs) { M.AAT3_PRACTICE = { QUESTIONS: qs }; M.AAT3_FAPS_PRACTICE = { QUESTIONS: [] }; },
+    install(M, qs) { M.AAT3_PRACTICE = { QUESTIONS: qs }; M.AAT3_FAPS_PRACTICE = { QUESTIONS: [] }; M.AAT3_MATS_PRACTICE = { QUESTIONS: [] }; },
     reset(M) { M.AAT3_UI.reset('practice', 'tpfb'); },
+    open(D, M, qs) {
+      this.install(M, qs);
+      const el = D.fakeEl();
+      this.reset(M); M.AAT3_UI.mount(el);
+      D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+      return el;
+    },
+    ui: M => M.AAT3_UI, right: /a3-try-verdict is-right/, wrong: /a3-try-verdict is-wrong/ },
+  { name: 'Level 3 MATS', px: 'a3', driver: './lib/aat3-driver.js',
+    bank: require(path.join(ROOT, 'aat3-mats-data.js')).AAT3_MATS_PRACTICE.QUESTIONS,
+    install(M, qs) { M.AAT3_MATS_PRACTICE = { QUESTIONS: qs }; M.AAT3_PRACTICE = { QUESTIONS: [] }; M.AAT3_FAPS_PRACTICE = { QUESTIONS: [] }; },
+    reset(M) { M.AAT3_UI.reset('practice', 'mats'); },
     open(D, M, qs) {
       this.install(M, qs);
       const el = D.fakeEl();
