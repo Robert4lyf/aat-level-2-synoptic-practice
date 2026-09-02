@@ -117,6 +117,10 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then(function (cache) {
+        /* cache: 'reload' bypasses the HTTP cache, so a version bump really
+           does fetch fresh copies — the default mode would happily precache
+           whatever stale copy the browser already held, on any host that
+           serves these files with a max-age. */
         return cache.addAll(CORE_ASSETS.map(function (u) {
           return new Request(u, { cache: 'reload' });
         }));
@@ -135,7 +139,14 @@ self.addEventListener('activate', function (event) {
       })
       .then(function () { return self.clients.claim(); })
       .then(function () {
+        /* Refresh the lazy cache in the background, deliberately NOT gating
+           activation on it: functional events queue until activation settles,
+           so awaiting a fistful of network fetches here would hold every page
+           load hostage to a bad connection on each version bump. If the
+           worker is stopped before the refresh finishes, the next activate
+           simply runs it again. */
         refreshLazyCache();
+        // Notify all open tabs that a new version is active so they can prompt a reload.
         return self.clients.matchAll({ type: 'window' }).then(function (clients) {
           clients.forEach(function (client) { client.postMessage({ type: 'SW_UPDATED' }); });
         });
@@ -146,8 +157,36 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
   var req = event.request;
   if (req.method !== 'GET') return;
+  /* Leave anything off this origin alone. The only cross-origin traffic is the
+     progress sync endpoint, and a cached reply from it would mean handing the
+     app somebody's older progress and calling it current. */
+  /* An exact origin comparison, not a prefix test: "https://site.example"
+     is a prefix of "https://site.example.evil.net", and the whole point of
+     this guard is that the sync endpoint must never be cached. */
   if (new URL(req.url).origin !== self.location.origin) return;
 
+  /* Lazily-cached subject files: same stale-while-revalidate behaviour, but in
+     the cache that survives a version bump. */
+  /* NETWORK FIRST, cache as the fallback.
+   *
+   * This was cache-first, with a background fetch updating the cache for next
+   * time. That is the standard stale-while-revalidate shape and it is wrong for
+   * this material. These files are the course CONTENT — lessons, exercises, the
+   * syllabus — and they change on every content release, so serving the cached
+   * copy meant every reader ran one deploy behind, permanently. A whole unit
+   * shipped and the lesson list still said "Not written yet", because the copy
+   * being served predated it.
+   *
+   * The versioned refresh in refreshLazyCache() was supposed to cover this and
+   * cannot on its own: it only runs on activate, activate only runs on a
+   * CACHE_VERSION bump, and remembering to bump the version for a content
+   * change is exactly the discipline that fails. Three content releases went
+   * out without one.
+   *
+   * So: ask the network, fall back to the cache when it does not answer. A
+   * round trip on a handful of small files is worth paying to never again ship
+   * content that readers cannot see. Offline is unaffected — the fallback is
+   * the same cache, still excluded from the version sweep. */
   if (LAZY_PATTERN.test(req.url)) {
     event.respondWith(
       caches.open(LAZY_CACHE).then(function (cache) {
@@ -164,6 +203,10 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
+  /* Content files: network first, precache as the offline fallback. The fresh
+     copy is written back into the versioned cache so the next offline load is
+     current too. Ordered after LAZY_PATTERN — guitar-learn-data.js matches
+     both, and guitar's copies live in the unversioned lazy cache. */
   if (CONTENT_PATTERN.test(req.url)) {
     event.respondWith(
       fetch(req).then(function (res) {
@@ -183,6 +226,7 @@ self.addEventListener('fetch', function (event) {
 
   event.respondWith(
     caches.match(req).then(function (cached) {
+      // Fetch a fresh copy in the background and update the cache.
       var networkFetch = fetch(req).then(function (res) {
         if (res && res.status === 200 && new URL(req.url).origin === self.location.origin) {
           var copy = res.clone();
@@ -190,9 +234,12 @@ self.addEventListener('fetch', function (event) {
         }
         return res;
       }).catch(function () { return null; });
+
+      // Serve cached immediately if present; otherwise wait for the network.
       if (cached) return cached;
       return networkFetch.then(function (res) {
         if (res) return res;
+        // Offline and uncached — fall back to the app shell for navigations.
         if (req.mode === 'navigate') return caches.match('./index.html');
         return new Response('', { status: 504, statusText: 'Offline' });
       });
