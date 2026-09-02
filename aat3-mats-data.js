@@ -4,13 +4,19 @@
  * same reason FAPS has one: three units in one file would be most of a
  * megabyte of course material behind a single load.
  *
- * WHAT IS WRITTEN, AND WHAT IS NOT
+ * WHAT IS WRITTEN
  *
  * MATS is 120 guided learning hours and 30% of the qualification — second only
- * to FAPS — so it arrives outcome by outcome, as FAPS did. The path shows all
- * seven outcomes whichever are written, because a reader has to be able to tell
- * a part-built unit from a short specification. Nothing is hidden and nothing
- * is implied.
+ * to FAPS — and it was written outcome by outcome, as FAPS was. All seven are
+ * now here, in syllabus order: purpose and use, dealing with costs, attributing
+ * costs, deviations from budgets, spreadsheet techniques, short-term decisions
+ * and cash management.
+ *
+ * Outcome 3 was written first, before Outcome 2, because it is the largest
+ * single slice of the unit and a reader working through a part-built module
+ * should meet the heaviest material rather than wait for it. The file no longer
+ * shows that history — everything is in syllabus order now — but the ordering
+ * of the commits does.
  *
  * Every lesson declares the key concepts it covers in `criteria`, checked by
  * scripts/check-aat3-coverage.js against the MATS spine in aat3-syllabus.js,
@@ -1484,10 +1490,9 @@
      OUTCOME 3 — Attribute costs according to organisational requirements (20%)
 
      The largest single outcome in the unit and the one with the most arithmetic
-     in it. Written before Outcome 2 for that reason: a reader working through a
-     part-built unit should meet the heaviest material first, not last. It reads
-     perfectly well after Outcome 2 now that Outcome 2 exists, and the path
-     shows them in syllabus order.
+     in it. Written first for that reason, before Outcome 2 existed: a reader
+     working through a part-built unit should meet the heaviest material rather
+     than wait for it.
      ══════════════════════════════════════════════════════════════════════════ */
 
   var LO3_LESSONS = [
@@ -2692,6 +2697,692 @@
             ],
           },
           exp: 'Attributing a variance to a decision is what turns a number into something a manager can act on. Notice that two of these are favourable and still trace back to a decision worth questioning: a cheaper supplier and a lower grade of staff both save money now and both routinely cost more elsewhere. The question a report should ask of a favourable variance is the same one it asks of an adverse one.',
+        },
+      ],
+    },
+  ];
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 5 — Use spreadsheet techniques to provide management accounting
+     information (15%)
+
+     THE HONEST LIMIT, promised in the module header and delivered here. This
+     outcome is a doing skill and this app has no spreadsheet in it. What these
+     lessons teach is the knowledge around the skill — which function answers
+     which question, what absolute referencing is for, which auditing tool finds
+     which error, which chart suits which comparison, how a workbook should be
+     laid out — and the first card says plainly that the doing has to happen in
+     a real spreadsheet. Teaching it silently, as though reading were enough,
+     would be worse than not teaching it.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO5_LESSONS = [
+    {
+      id: 'L3-MATS-5A',
+      title: 'Designing a management accounting workbook',
+      icon: '🧮',
+      criteria: ['MATS-5.1.1'],
+      cards: [
+        {
+          h: 'What this module can and cannot do for you',
+          p: [
+            'Outcome 5 is **15% of the unit and it is a doing skill**. It asks you to build spreadsheets, write formulas, format cells, produce charts and audit somebody else\'s work — and this app has no spreadsheet in it. Nobody should pretend otherwise, so it is said here plainly rather than left to be discovered.',
+            'What these lessons can do is the knowledge that sits around the skill: which function answers which question, what absolute referencing is for and when it matters, which auditing tool finds which kind of error, which chart suits which comparison, and how a management accounting workbook should be laid out so that somebody else can check it. That is genuinely most of what goes wrong in an assessment, because a candidate who does not know that VLOOKUP searches the first column will not find out by clicking.',
+            '**The doing has to happen in a real spreadsheet.** Open Excel or an equivalent, rebuild the worked examples from Outcomes 3, 4, 6 and 7 in it, and check your figures against the ones printed there. Every calculation in this unit is a workbook waiting to be built, and building six of them is worth more than reading about all of them.',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'The six things the specification wants a spreadsheet designed for are the six things you have already calculated by hand in this unit: flexing budgets, variances, operating statements, overhead absorption and allocation, short-term decisions, and cash budgeting.',
+          },
+        },
+        {
+          h: 'One layout, used for all six',
+          table: {
+            headers: ['Block', 'What goes in it', 'Why it is separate'],
+            rows: [
+              ['Inputs', 'Every figure that can change — volumes, rates, prices, terms', 'One place to change an assumption, and one place to check it'],
+              ['Workings', 'The calculations, each in its own cell, referring to the inputs', 'A formula reading an input cell updates when the input does'],
+              ['Output', 'The statement itself — the budget, the operating statement, the cash budget', 'What is printed or shown, with no typed numbers in it'],
+              ['Notes', 'Assumptions, sources, and what each block is for', 'The next person, who may be you in six months'],
+            ],
+          },
+          p: [
+            'The single most important rule in the table is that **no figure is ever typed into a formula**. A rate of £16.00 belongs in an input cell that the formulas point at, not written into forty of them. When the rate changes — and in this unit it always changes, because the next part of the task flexes something — one edit updates the whole workbook.',
+            'The second rule follows from it: **the output block contains no typed numbers at all**. Every cell in it is a formula reading from workings or inputs. A statement with one hard-typed figure in it will quietly stop agreeing with everything around it the first time an assumption moves.',
+          ],
+        },
+        {
+          h: 'What each of the six needs',
+          table: {
+            headers: ['Statement', 'The inputs it needs', 'The design point'],
+            rows: [
+              ['Flexed budget', 'Standard cost per unit, budget volume, actual volume', 'Flex the variable rows by formula; the fixed row is a straight link'],
+              ['Variances', 'The flexed budget and the actual results', 'One column of differences, one of the direction — never typed in'],
+              ['Operating statement', 'Flexed profit and each variance', 'It must total to actual profit, so build that check into a cell'],
+              ['Overhead absorption', 'Costs by centre, apportionment bases, activity levels', 'Add a row that checks the apportioned shares still total the cost'],
+              ['Short-term decisions', 'Price, variable cost, fixed costs, volume', 'Put the volume in one input cell so the whole thing can be re-run'],
+              ['Cash budget', 'Sales, credit terms, payment terms, opening balance', 'Link each closing balance to the next opening balance by formula'],
+            ],
+          },
+          examtrap: 'Build the check into the workbook rather than doing it in your head. Apportioned shares that total the original cost, variances that total the profit difference, a cash budget where each opening balance equals the previous closing balance — each is one cell, and each catches an error the moment it is made rather than after the statement has been printed.',
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'Why should a rate that is used in many formulas be held in its own input cell rather than typed into each formula?',
+          opts: [
+            'One edit updates every formula that refers to it',
+            'Formulas containing typed numbers cannot be copied down a column',
+            'A spreadsheet cannot store a number inside a formula at all',
+            'It reduces the size of the file the workbook is saved as',
+          ],
+          ans: 0,
+          exp: 'A figure typed into forty formulas has to be found in forty formulas when it changes, and the one that is missed is the one nobody notices. Held in a single input cell it changes once and every dependent cell follows. Spreadsheets are perfectly capable of holding a number inside a formula — that is the problem, not a limitation.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify which block of a well-designed workbook each item belongs in.',
+          picklist: {
+            title: 'Where does it go?',
+            rowHeader: 'Item',
+            choiceHeader: 'Block',
+            options: ['Inputs', 'Workings', 'Output'],
+            rows: [
+              { text: 'The standard cost of £16.00 a unit', answer: 0 },
+              { text: 'The flexed budget cost for each line, calculated by formula', answer: 1 },
+              { text: 'The operating statement as it will be printed', answer: 2 },
+              { text: 'The credit terms offered to customers', answer: 0 },
+              { text: 'The month-by-month split of receipts from customers', answer: 1 },
+            ],
+          },
+          exp: 'Anything that could change on somebody\'s say-so is an input: a rate, a volume, a set of terms. Anything worked out from those is a working. The output is the statement itself and contains no typed figures at all — every cell in it points somewhere else, which is what lets one changed assumption flow all the way through to the printed page.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about workbook design is correct.',
+          statements: [
+            { text: 'An arithmetic check, such as apportioned shares totalling the original cost, is worth building into a cell.', answer: true },
+            { text: 'The output block of a workbook should contain typed figures as well as formulas.', answer: false },
+            { text: 'Assumptions should be recorded in the workbook rather than kept separately.', answer: true },
+          ],
+          exp: 'A check that lives in a cell runs itself every time anything changes, which is worth far more than the same check done once by eye. Typed figures in the output block are how a statement stops agreeing with the workings behind it, silently and usually after it has been circulated. And an assumption nobody wrote down is one nobody can question — including the person who made it, six months later.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-5B',
+      title: 'Getting data in, and keeping it reliable',
+      icon: '🔗',
+      criteria: ['MATS-5.1.2'],
+      cards: [
+        {
+          h: 'Three ways a figure arrives in a cell',
+          table: {
+            headers: ['Method', 'What it does', 'When to use it'],
+            rows: [
+              ['Typed in', 'A value with no connection to anything', 'Only in the inputs block, and only for a genuine assumption'],
+              ['Pasted as values', 'The RESULT of a formula, with the formula and the link discarded', 'When a figure is now historical and must not change again'],
+              ['Linked', 'A live reference that updates when the source changes', 'When the source will keep changing and the figure should follow'],
+            ],
+          },
+          p: [
+            'The choice between the last two is the one that matters. **Linking** — a formula pointing at another cell, another sheet or another workbook — keeps the two in step for as long as both exist. **Paste Special as values** freezes what was there at that moment and cuts the connection.',
+            'Both are right in different places. Last month\'s closed actuals should be pasted as values, because they are a fact and should not move if somebody edits the source. This month\'s figures, still being entered, should be linked, because the whole point is that they update.',
+          ],
+          examtrap: 'A link that points at a workbook somebody later renames, moves or deletes does not warn you politely — it either shows an error or, worse, keeps showing the last value it saw. Anything relied on outside the file it lives in is worth either bringing into the workbook or pasting as a value once it is final.',
+        },
+        {
+          h: 'Data that is valid, and data that is merely present',
+          split: {
+            left: {
+              title: 'Before it is used',
+              items: [
+                'Where did it come from, and who produced it?',
+                'Does it cover the same period as everything else?',
+                'Is it at cost or at selling price?',
+                'Has the same transaction arrived from two sources?',
+              ],
+            },
+            right: {
+              title: 'How to make it safe',
+              items: [
+                'Note the source in the workbook, next to the figure',
+                'Use **Remove Duplicates** on a list before summarising it',
+                'Check a total against the system it came from',
+                'Restrict entry with **data validation** where people type',
+              ],
+            },
+          },
+          p: [
+            '**Duplication** is the failure worth naming, because it is invisible in a total. An invoice list exported twice, or a customer appearing under two spellings, produces a figure that looks entirely ordinary and is wrong. Remove Duplicates deals with exact repeats; the near-repeats have to be found by sorting on the field they differ in and looking.',
+            'Data pulled from several sources — the accounting system, a stock report, a bank download — will rarely share a period end, a rounding convention or a definition of cost. Reconciling one total against its source before anything is built on it costs a minute and saves the whole statement.',
+          ],
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A figure is copied from a source sheet and pasted using Paste Special as values. What has happened?',
+          opts: [
+            'The result has been copied and the link to the source discarded',
+            'The formula has been copied and will recalculate in the new cell',
+            'A live link has been created that updates with the source',
+            'The formatting has been copied but the value has not',
+          ],
+          ans: 0,
+          exp: 'Pasting as values takes what the cell was showing and leaves the formula and the reference behind, so the figure is frozen at that moment. That is exactly right for a closed period and exactly wrong for a figure that should keep up with its source, which needs a link instead. Choosing between the two is the judgement this part of the syllabus is testing.',
+        },
+        {
+          type: 'mcq',
+          q: 'An exported list of sales invoices has been pasted into a workbook twice by mistake. What is the most direct way to correct it?',
+          opts: [
+            'Use Remove Duplicates on the list before it is summarised',
+            'Sort the list by value and delete the larger half of the rows',
+            'Recalculate the total and divide the result by two',
+            'Apply conditional formatting to highlight the repeated rows',
+          ],
+          ans: 0,
+          exp: 'Remove Duplicates deletes exact repeats and leaves one of each, which is precisely the situation. Halving the total works only if every row was duplicated exactly once and nothing else changed, which nobody can be sure of. Conditional formatting would show the problem without fixing it, and deleting by value would destroy genuine rows that happen to share an amount.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify whether each figure should be linked or pasted as a value.',
+          picklist: {
+            title: 'Link or freeze?',
+            rowHeader: 'Figure',
+            choiceHeader: 'Treatment',
+            options: ['Link to the source', 'Paste as a value'],
+            rows: [
+              { text: 'Last year\'s audited results, used as a comparative', answer: 1 },
+              { text: 'This month\'s sales figures, still being entered', answer: 0 },
+              { text: 'A closing balance that becomes the next month\'s opening balance', answer: 0 },
+              { text: 'A supplier quotation received in writing and now fixed', answer: 1 },
+              { text: 'The standard cost card the whole workbook is built on', answer: 0 },
+            ],
+          },
+          exp: 'The question to ask of every figure is whether it should still change. A closed year and a written quotation are facts and should be frozen — if the source moves, they must not. This month\'s figures, a carried-forward balance and the standard cost card are all things the workbook needs to follow, and each of them is a link precisely so that one edit reaches everywhere it should.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-5C',
+      title: 'Formatting figures, and building charts',
+      icon: '🎨',
+      criteria: ['MATS-5.1.3'],
+      cards: [
+        {
+          h: 'Number formats, and what each is for',
+          table: {
+            headers: ['Format', 'What it does', 'Where it belongs'],
+            rows: [
+              ['General', 'No formatting at all — the default', 'Nowhere in a finished statement'],
+              ['Number', 'Set decimal places and a thousand separator', 'Quantities: units, hours, kilograms'],
+              ['Currency', 'A currency symbol immediately before the figure', 'A single money figure in a sentence or a heading'],
+              ['Accounting', 'Symbols and decimal points aligned down the column, zero as a dash', 'Any column of money in a statement'],
+              ['Percentage', 'Multiplies by 100 and adds the sign', 'Ratios, margins, absorption percentages'],
+            ],
+          },
+          p: [
+            'The distinction worth learning is **Currency against Accounting**. Currency puts the symbol tight against the number, so a column of them has the symbols in ragged positions. Accounting pushes every symbol to the left edge of the cell and lines the decimal points up, which is what makes a column of figures readable — and it shows a zero as a dash rather than as £0.00.',
+            'Formatting changes what is **displayed** and never what is stored. A cell showing £1,234 may hold £1,233.62, and a column of such cells will not appear to add up. When a total has to agree with the figures printed above it, round the values with a formula rather than hiding the decimals with a format.',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'Adverse and negative figures are shown in brackets or with a leading minus, and the choice is made once for the whole workbook. A statement that uses brackets in one column and a minus sign in the next is asking to be misread.',
+          },
+        },
+        {
+          h: 'Choosing the right chart',
+          table: {
+            headers: ['Chart', 'What it shows well', 'The question it answers'],
+            rows: [
+              ['Column', 'Values compared across categories, vertically', 'Which department spent the most?'],
+              ['Bar', 'The same comparison, horizontally', 'The same — use it when the labels are long'],
+              ['Line', 'A value moving over time', 'Is the cash balance sliding?'],
+              ['Pie', 'One series as shares of a whole', 'What proportion of cost is materials?'],
+              ['Exploded pie', 'The same, with one slice pulled out', 'How large is THIS slice against the rest?'],
+              ['Stacked column', 'Totals and their composition together', 'Total cost by month, split by element'],
+            ],
+          },
+          p: [
+            'A **pie chart shows one series only** and is the chart most often used wrongly. It answers "what share of the whole?" and nothing else: it cannot show a trend, it cannot compare two periods, and beyond about six slices nobody can read it. A trend belongs on a **line**; a comparison belongs on a **column** or **bar**.',
+            '**3D** adds nothing but distortion. It is on the specification because it is on the toolbar, and it is worth knowing how to produce and how to turn off — a 3D pie makes the front slice look larger than the identical slice at the back.',
+          ],
+        },
+        {
+          h: 'Labelling a chart so it can be read',
+          split: {
+            left: {
+              title: 'What has to be there',
+              items: [
+                'A **title** saying what is charted and for what period',
+                '**Axis titles** with the unit — "£000", "units", "months"',
+                'A **legend**, when there is more than one series',
+                'An **axis scale** that starts at zero unless there is a stated reason',
+              ],
+            },
+            right: {
+              title: 'What can be added',
+              items: [
+                'A **data table** beneath, when the figures matter as well as the shape',
+                'Data labels, when there are few enough points to read them',
+                'A changed **chart type**, without rebuilding — the data stays put',
+                'Colours that mean something and survive being printed in grey',
+              ],
+            },
+          },
+          examtrap: 'An axis that starts somewhere other than zero exaggerates every difference on the chart. Sometimes that is the honest choice — a cash balance moving between £48,000 and £52,000 is invisible on a zero-based axis — but it has to be a decision, and the reader has to be able to see the scale that was used.',
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'Which number format aligns currency symbols and decimal points down a column and shows zero as a dash?',
+          opts: [
+            'Accounting',
+            'Currency',
+            'Number',
+            'General',
+          ],
+          ans: 0,
+          exp: 'Accounting format is built for columns of money: the symbol goes to the left edge of the cell, the decimal points line up, and a zero appears as a dash so that a genuinely nil line is distinguishable from one nobody has filled in. Currency puts the symbol tight against each figure, which reads well in a sentence and badly in a column.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify the most suitable chart for each question.',
+          picklist: {
+            title: 'Choosing a chart',
+            rowHeader: 'What is being shown',
+            choiceHeader: 'Chart',
+            options: ['Line chart', 'Pie chart', 'Column chart'],
+            rows: [
+              { text: 'The monthly cash balance across a year', answer: 0 },
+              { text: 'The share of total cost taken by each cost element', answer: 1 },
+              { text: 'Overhead absorbed by each of five departments', answer: 2 },
+              { text: 'The trend in receivable days over eight quarters', answer: 0 },
+              { text: 'Actual against budgeted cost for each of four products', answer: 2 },
+            ],
+          },
+          exp: 'Anything moving over time is a line, because the eye reads a slope as a trend. Anything that is a share of one whole is a pie, and only a share of one whole — a pie cannot compare two periods or show a movement. Anything comparing categories is a column, and that includes comparing two series side by side, which a pie chart cannot do at all.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about formatting and charts is correct.',
+          statements: [
+            { text: 'Changing a cell format changes what is displayed but not the value stored.', answer: true },
+            { text: 'A pie chart can display two series so that periods can be compared.', answer: false },
+            { text: 'An axis that does not start at zero exaggerates the differences shown.', answer: true },
+          ],
+          exp: 'A cell showing £1,234 may be holding £1,233.62, which is why a column of formatted figures can appear not to add up — the fix is to round the value with a formula, not to hide the decimals. A pie shows one series as shares of a whole and nothing else. And a truncated axis makes small differences look large, which is sometimes the honest choice and always has to be visible to the reader.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-5D',
+      title: 'Formulas, functions and referencing',
+      icon: 'ƒ',
+      criteria: ['MATS-5.2.1'],
+      cards: [
+        {
+          h: 'Absolute and relative references',
+          table: {
+            headers: ['Written as', 'What happens when it is copied', 'Use it for'],
+            rows: [
+              ['A1', 'Both the column and the row move', 'The figure on the same row as the formula'],
+              ['$A$1', 'Neither moves — it always points at A1', 'A single rate or total used by every row'],
+              ['A$1', 'The column moves, the row is fixed', 'A heading row read by every row beneath it'],
+              ['$A1', 'The column is fixed, the row moves', 'A label column read by every column across'],
+            ],
+          },
+          p: [
+            'This is the single largest source of wrong answers in a spreadsheet task, and it produces errors that look like arithmetic mistakes. A formula reading a VAT rate from B1 works perfectly in its own row; copied down ten rows it reads B2, B3, B4 — cells that are empty or hold something else entirely — and every figure below the first is wrong without anything looking broken.',
+            'The habit worth building is to ask, of every reference in a formula about to be copied: **should this move?** The answer for the row\'s own data is yes; for a rate, a total or a lookup table it is no, and it takes a dollar sign in front of each part that must stay still.',
+          ],
+        },
+        {
+          h: 'The functions the specification names',
+          table: {
+            headers: ['Function', 'What it returns', 'Worth knowing'],
+            rows: [
+              ['SUM', 'The total of a range', 'The one everybody knows and the one most often typed as A1+A2+A3'],
+              ['AVERAGE', 'The mean of the numbers in a range', 'Ignores empty cells and text — which is not always what you want'],
+              ['MIN, MAX', 'The smallest and largest number in a range', 'The fastest way to find the high and low points for high-low'],
+              ['ROUND', 'A number rounded to a stated number of decimals', 'ROUND(x, 2) for pence; ROUND(x, 0) for whole pounds'],
+              ['ROUNDUP, ROUNDDOWN', 'Rounded away from or towards zero, regardless of the digit', 'ROUNDUP for order quantities — you cannot buy 0.4 of a box'],
+              ['COUNT', 'How many cells in a range contain a NUMBER', 'Skips text and blanks, which is what distinguishes it from COUNTA'],
+              ['COUNTA', 'How many cells are not empty, whatever they contain', 'Counts text, so it counts headings and labels too'],
+              ['COUNTIF', 'How many cells in a range meet one condition', 'COUNTIF(range, ">1000") — how many invoices are large?'],
+              ['SUMIF', 'The total of the cells that meet one condition', 'SUMIF(range, criteria, sum range) — cost for one department'],
+              ['IF', 'One value if a test is true, another if it is false', 'IF(actual>budget, "Adverse", "Favourable")'],
+              ['VLOOKUP', 'A value from a table, matched on its FIRST COLUMN', 'The column number counts from that first column, not from column A'],
+              ['HLOOKUP', 'The same, matched on the first ROW instead', 'For tables laid out across the page rather than down it'],
+              ['DAYS', 'The number of days between two dates', 'Invoice date to payment date, for a receivables analysis'],
+            ],
+          },
+          examtrap: 'COUNT and COUNTA are not interchangeable. COUNT ignores anything that is not a number, so a column of amounts with a heading returns the number of amounts. COUNTA counts the heading as well. Choosing the wrong one produces a figure that is out by exactly one, which is the hardest kind of error to notice.',
+        },
+        {
+          h: 'The two lookups, and the two what-if tools',
+          worked: {
+            title: 'Reading a rate out of a table',
+            problem: 'A rate table occupies cells A2 to C6. Column A holds the department code, column B the department name and column C the absorption rate. A formula in cell F2 needs the rate for the code held in E2.',
+            steps: [
+              {
+                do: 'Write =VLOOKUP(E2, $A$2:$C$6, 3, FALSE).',
+                why: 'VLOOKUP searches the FIRST column of the range it is given — here column A — so the code has to be in that first column for the lookup to find it at all.',
+              },
+              {
+                do: 'Count the columns from the start of the RANGE, not from column A of the sheet. The rate is the third column of A:C, so the index is 3.',
+                why: 'If the range had started at B, the same rate would be the second column and the index would be 2. Counting from the sheet instead of from the range is the standard error.',
+              },
+              {
+                do: 'Fix the table with dollar signs: $A$2:$C$6.',
+                why: 'Without them, copying the formula down moves the table down with it, and the last rows search a range that no longer contains the data.',
+              },
+              {
+                do: 'End with FALSE for an exact match.',
+                why: 'TRUE, or leaving it out, asks for an approximate match and requires the first column to be sorted. On unsorted codes it returns whatever it lands nearest to, confidently and wrongly.',
+              },
+            ],
+            answer: '=VLOOKUP(E2, $A$2:$C$6, 3, FALSE) — first column searched, index counted from the range, table fixed, exact match',
+            tryIt: {
+              q: 'A lookup table occupies B4 to F20 and the value wanted is in column E. What column index number does VLOOKUP need?',
+              answer: 4,
+              hint: 'Count from the first column of the range.',
+              exp: 'B is the first column of the range, so B is 1, C is 2, D is 3 and E is 4. Counting from column A of the sheet would give 5 and return column F instead — a value that exists, looks plausible and is the wrong one, which is why this error survives so long.',
+            },
+          },
+        },
+        {
+          h: 'Goal seek and forecast',
+          split: {
+            left: {
+              title: 'Goal seek',
+              items: [
+                'Sets ONE cell to a target by changing ONE other cell',
+                '"What volume gives a profit of £96,000?"',
+                'Works backwards through the formulas already built',
+                'Changes the input cell permanently — note the old value first',
+              ],
+            },
+            right: {
+              title: 'Forecast',
+              items: [
+                'Predicts a value from a set of existing pairs',
+                'Fits a straight line through what has already happened',
+                '"What would cost be at 17,000 units?"',
+                'Only as good as the linearity it assumes — the CVP warning again',
+              ],
+            },
+          },
+          p: [
+            'Goal seek is the tool for every "how many units would we need" question in Outcome 6, and it gets there without rearranging the formula. Forecast is the tool for extending a semi-variable cost beyond the observations, and it carries exactly the caution the high-low method carries: a straight line through a range is trustworthy inside that range and a guess outside it.',
+          ],
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A formula in C2 reads =B2*$F$1 and is copied down to C3 and C4. What does the formula in C4 read?',
+          opts: [
+            '=B4*$F$1',
+            '=B4*$F$3',
+            '=B2*$F$1',
+            '=B4*F3',
+          ],
+          ans: 0,
+          exp: 'B2 is relative, so it moves down with the formula and becomes B4. $F$1 is absolute in both parts, so it stays exactly where it is however far the formula is copied. That is the whole purpose of the dollar signs: the row\'s own figure moves, the shared rate does not.',
+        },
+        {
+          type: 'numeric',
+          q: 'A range holds these five cells: 400, a blank cell, the text "Total", 950 and 120. What does COUNT return for that range?',
+          answer: 3,
+          exp: 'COUNT counts only the cells holding a number, so it finds 400, 950 and 120 and returns 3. COUNTA would return 4, because it counts everything that is not empty and so includes the word "Total". The difference between the two is exactly one here, which is the kind of error that survives a long time in a workbook.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify the function that answers each question.',
+          picklist: {
+            title: 'Which function?',
+            rowHeader: 'The question',
+            choiceHeader: 'Function',
+            options: ['SUMIF', 'COUNTIF', 'VLOOKUP', 'IF'],
+            rows: [
+              { text: 'What is the total cost charged to the machining department?', answer: 0 },
+              { text: 'How many invoices in the list are over £1,000?', answer: 1 },
+              { text: 'What absorption rate applies to this department code?', answer: 2 },
+              { text: 'Should this variance be labelled adverse or favourable?', answer: 3 },
+              { text: 'How many products in the list have a negative contribution?', answer: 1 },
+            ],
+          },
+          exp: 'The two conditional functions differ only in what they give back: SUMIF adds the amounts that meet a condition, COUNTIF counts how many meet it. VLOOKUP fetches a value from a table by matching a key in its first column. IF chooses between two outcomes on a test, which is exactly how a variance gets its direction without anybody typing it.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-5E',
+      title: 'Tools for analysing a list',
+      icon: '🔬',
+      criteria: ['MATS-5.2.2', 'MATS-5.2.3'],
+      cards: [
+        {
+          h: 'Sorting, filtering and highlighting',
+          table: {
+            headers: ['Tool', 'What it does', 'What to watch'],
+            rows: [
+              ['Sort', 'Reorders the rows permanently, on one field or several in order', 'Select the whole list — sorting one column alone scrambles the rows'],
+              ['Filter', 'Hides the rows that do not match; nothing is deleted', 'A total below a filtered list still adds the hidden rows unless it is a SUBTOTAL'],
+              ['Multiple criteria', 'Sort within a sort, or filter on two fields at once', 'Department, then value descending, finds the biggest item in each department'],
+              ['Conditional formatting', 'Applies a format automatically when a condition is met', 'It can test another cell through a formula, not just its own'],
+            ],
+          },
+          p: [
+            'Conditional formatting is worth more in this unit than its position on the specification suggests. A rule that turns any variance above 5% of its budget red does the "which variances should be investigated?" work of Outcome 4 automatically, on every future month, without anybody remembering to look.',
+            'The difference between sort and filter is worth being clear about: **sorting changes the file** and filtering only changes what is shown. A filtered list still contains every row, which is why a plain SUM beneath one gives the total of everything rather than the total of what is visible.',
+          ],
+        },
+        {
+          h: 'Summarising: subtotals and pivot tables',
+          split: {
+            left: {
+              title: 'Subtotals',
+              items: [
+                'Inserts a subtotal row at each change in a chosen field',
+                'The function is yours to pick: **sum, average, maximum, minimum**',
+                'The list MUST be sorted on that field first',
+                'Collapsible, so the detail can be hidden and shown',
+              ],
+            },
+            right: {
+              title: 'Pivot tables',
+              items: [
+                'Summarises a list by any field, in rows and columns at once',
+                'Rearranged by dragging — no formulas to rewrite',
+                'A **pivot chart** draws whatever the table is currently showing',
+                'Does NOT update on its own — it has to be refreshed',
+              ],
+            },
+          },
+          p: [
+            'Subtotals suit a list already in the order you want to read it — cost by department, down the page, with a total at each break. A pivot table suits a question you have not settled yet: cost by department **and** by month, then by product instead, then filtered to one region, all without touching a formula.',
+            'The trap in Subtotals is the sorting. Applied to an unsorted list it does exactly what it was asked to do and inserts a subtotal every time the value in the column changes — which on unsorted data is nearly every row.',
+          ],
+        },
+        {
+          h: 'When new data arrives',
+          p: [
+            'Adding rows to a list is the easy part. The question the specification actually asks is the second one: **is the new data included in everything built on that list?** The honest answer, unless something was done about it in advance, is usually no.',
+          ],
+          table: {
+            headers: ['What was built on the list', 'What happens when rows are added below it', 'The fix'],
+            rows: [
+              ['A SUM over a fixed range', 'The new rows fall outside it and are silently excluded', 'Extend the range, or build the list as a Table'],
+              ['A pivot table', 'Nothing changes until it is refreshed — and the source range may not reach', 'Refresh it, and base it on a Table rather than a fixed range'],
+              ['A chart', 'The new points do not appear; the chart looks complete and is not', 'Extend the series range, or base the chart on a Table'],
+              ['Conditional formatting', 'The new rows are outside the rule and are never highlighted', 'Apply the rule to the whole column, or extend it'],
+            ],
+          },
+          examtrap: 'Every one of these failures is silent. A chart missing its last three months still looks like a finished chart, and a pivot table showing last week\'s figures does not say so anywhere. After adding data, the discipline is to check each thing built on it — and the way to avoid needing that discipline is to base everything on a Table, which grows by itself.',
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A list of costs is not sorted, and the Subtotal tool is used to subtotal by department. What happens?',
+          opts: [
+            'A subtotal is inserted every time the department changes, which is nearly every row',
+            'The list is sorted automatically before the subtotals are inserted',
+            'One subtotal is produced for each department, wherever its rows appear',
+            'The tool reports an error and no subtotals are inserted at all',
+          ],
+          ans: 0,
+          exp: 'Subtotals works by watching a column for changes and breaking at each one, so on unsorted data it breaks constantly and produces a subtotal of one or two rows over and over. It does not sort for you and it does not warn you, because it has done exactly what it was asked. Sorting on the field first is not a nicety here — it is what makes the tool mean anything.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify the tool that best suits each requirement.',
+          picklist: {
+            title: 'Which tool?',
+            rowHeader: 'Requirement',
+            choiceHeader: 'Tool',
+            options: ['Filter', 'Conditional formatting', 'Pivot table'],
+            rows: [
+              { text: 'Show only the invoices from one supplier, temporarily', answer: 0 },
+              { text: 'Turn every variance above 5% of budget red, automatically', answer: 1 },
+              { text: 'Summarise cost by department and by month at the same time', answer: 2 },
+              { text: 'Highlight any receivable balance more than 60 days old', answer: 1 },
+              { text: 'Rearrange a summary by product instead of by region, without formulas', answer: 2 },
+            ],
+          },
+          exp: 'A filter changes what is shown and nothing else, which is right for a temporary look at part of a list. Conditional formatting applies a rule that keeps working on every future month without anybody remembering it. A pivot table is for a question still being explored — two dimensions at once, and rearranged by dragging rather than by rewriting formulas.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about updating a workbook is correct.',
+          statements: [
+            { text: 'A pivot table has to be refreshed before it reflects rows added to its source.', answer: true },
+            { text: 'A chart automatically extends to include rows added below its source range.', answer: false },
+            { text: 'Filtering a list deletes the rows that do not match the criteria.', answer: false },
+          ],
+          exp: 'A pivot table holds a snapshot and shows it until it is refreshed, saying nothing meanwhile about being out of date. A chart plots the range it was given, so new rows below it simply never appear — and the chart still looks finished, which is what makes the failure dangerous. Filtering hides rows and deletes nothing, which is also why a plain SUM beneath a filtered list totals everything rather than what is visible.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-5F',
+      title: 'Auditing, protecting and presenting',
+      icon: '🛡️',
+      criteria: ['MATS-5.2.4', 'MATS-5.3.1', 'MATS-5.3.2'],
+      cards: [
+        {
+          h: 'Three tools for finding out what a workbook is doing',
+          table: {
+            headers: ['Tool', 'What it shows', 'The question it answers'],
+            rows: [
+              ['Trace precedents', 'Arrows from the cells that FEED the selected formula', '"Where did this figure come from?"'],
+              ['Trace dependents', 'Arrows to the cells that USE the selected cell', '"What breaks if I change this?"'],
+              ['Show formulas', 'Every formula on the sheet, in place of its result', '"Which of these cells is a formula and which was typed in?"'],
+            ],
+          },
+          p: [
+            'The two trace tools point in opposite directions and are used at opposite moments. **Precedents** is what you use on somebody else\'s workbook, or your own after a break: select the figure that looks wrong and follow the arrows back to whatever produced it. **Dependents** is what you use before changing anything: select the cell you are about to edit and see how far the change will travel.',
+            '**Show formulas** is the fastest check there is on a workbook you have been handed. Switch it on and the typed numbers stand out immediately from the formulas around them — which is exactly how a hard-coded figure sitting in the middle of a calculated column gets found.',
+          ],
+          examtrap: 'Trace precedents and trace dependents are the pair most often confused, and the names say which is which if you read them as questions. Precedents come BEFORE this cell; dependents DEPEND ON it. An error hunt runs backwards through precedents; an impact assessment runs forwards through dependents.',
+        },
+        {
+          h: 'Stopping the workbook being broken',
+          split: {
+            left: {
+              title: 'Data validation',
+              items: [
+                'Restricts **what can be entered** in a cell',
+                'A list of allowed values, a number in a range, a date after a given one',
+                'Can show an input message before, and an error alert after',
+                'Stops a typo becoming a figure nobody questions',
+              ],
+            },
+            right: {
+              title: 'Protecting cells',
+              items: [
+                'Every cell is **locked by default** — and locking does nothing until the sheet is protected',
+                'So the order is: **unlock the input cells**, then protect the sheet',
+                'That leaves the formulas safe and the inputs editable',
+                'Protecting a sheet without unlocking the inputs makes the workbook unusable',
+              ],
+            },
+          },
+          p: [
+            'The two tools do different jobs and a workbook that people other than its author will use needs both. **Validation controls what goes into the cells that are meant to be typed in**; **protection stops anything being typed into the cells that are not**. Between them they mean the only thing a user can do is change an assumption, which is exactly what the inputs block was for.',
+          ],
+        },
+        {
+          h: 'Making it readable, on screen and on paper',
+          table: {
+            headers: ['Tool', 'What it does'],
+            rows: [
+              ['Freeze panes', 'Keeps the rows above and columns left of the selection visible while the rest scrolls'],
+              ['Hide and unhide rows or columns', 'Removes working columns from view without deleting them'],
+              ['Font, size, colour, bold, italic, alignment', 'Separates headings from figures and totals from detail'],
+              ['Headers and footers', 'Puts the file name, the date and the page number on every printed page'],
+              ['Margins and orientation', 'Landscape for a twelve-month cash budget; portrait for a narrow statement'],
+              ['Print area', 'Prints the statement and not the workings behind it'],
+            ],
+          },
+          p: [
+            '**Freeze panes** is the one that matters most while the work is being done. A twelve-column cash budget is unreadable once the month headings have scrolled off the top, and a long list is unreadable once the row labels have scrolled off the left. Freezing takes one click and removes a whole class of error where a figure is entered into the wrong column.',
+            'The printing settings matter because a statement is usually read on paper or as a PDF by somebody who did not build it. A cash budget spread over three pages because nobody set the orientation is a cash budget nobody reads.',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'A hidden column is hidden, not gone. Its formulas still calculate, its figures still feed the totals, and anybody can unhide it — so hiding is a presentation tool and never a security one. That job belongs to protection.',
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'picklist',
+          q: 'Identify the tool that answers each question.',
+          picklist: {
+            title: 'Auditing and protecting',
+            rowHeader: 'The question',
+            choiceHeader: 'Tool',
+            options: ['Trace precedents', 'Trace dependents', 'Data validation'],
+            rows: [
+              { text: 'Where did the figure in this cell come from?', answer: 0 },
+              { text: 'What will break if I change the rate in this cell?', answer: 1 },
+              { text: 'How do I stop anyone entering a negative volume here?', answer: 2 },
+              { text: 'Which cells feed into this total?', answer: 0 },
+              { text: 'How do I restrict this cell to a list of department codes?', answer: 2 },
+            ],
+          },
+          exp: 'Precedents come before a cell and dependents depend on it, so an error hunt runs backwards through precedents and an impact assessment runs forwards through dependents. Data validation is the third, different job: it controls what can be entered rather than showing what has been. Reading the two trace tools as questions is the reliable way to keep them apart.',
+        },
+        {
+          type: 'mcq',
+          q: 'A workbook is to be shared with colleagues who should be able to change the input assumptions but not the formulas. What has to be done?',
+          opts: [
+            'Unlock the input cells, then protect the worksheet',
+            'Protect the worksheet, which leaves the input cells editable',
+            'Lock the formula cells, which is enough on its own',
+            'Hide the columns containing the formulas',
+          ],
+          ans: 0,
+          exp: 'Every cell starts out locked, and locking has no effect at all until the sheet itself is protected — so protecting a sheet without unlocking the inputs first freezes the entire workbook. Locking the formula cells achieves nothing on its own, because they were already locked. And hiding a column is presentation: the figures still calculate and anyone can unhide it.',
+        },
+        {
+          type: 'mcq',
+          q: 'A twelve-month cash budget is being reviewed on screen and the month headings scroll off the top. Which tool is needed?',
+          opts: [
+            'Freeze panes',
+            'Hide rows',
+            'Set the print area',
+            'Conditional formatting',
+          ],
+          ans: 0,
+          exp: 'Freeze panes keeps the rows above and the columns left of the selection in view while everything else scrolls, which is what makes a wide statement readable and stops figures being entered under the wrong month. Hiding rows removes them from view entirely, the print area affects paper only, and conditional formatting changes how cells look rather than what stays on screen.',
         },
       ],
     },
@@ -3915,6 +4606,66 @@
             '**Variances come in pairs.** Cheaper material gives a favourable price and an adverse usage; cheaper staff give a favourable rate and adverse hours. When a question shows one of each in the same month, the expected answer is that they are connected.',
           ],
           examtrap: 'Fixed production overhead is never flexed. Its flexed figure IS the original budget, so the variance is budget against actual spend. Flexing it manufactures a variance out of arithmetic and breaks the reconciliation at the bottom of the statement.',
+        },
+      },
+    },
+    {
+      unit: 'mats',
+      level: 3,
+      title: 'Management Accounting Techniques',
+      outcome: 5,
+      outcomeTitle: 'Use spreadsheet techniques to provide management accounting information',
+      weighting: 15,
+      lessons: LO5_LESSONS,
+      cheatsheet: {
+        id: 'L3-MATS-5S',
+        title: 'Outcome 5 — functions, tools and layout',
+        icon: '🗂️',
+        card: {
+          h: 'Everything Outcome 5 asks for, on one page',
+          flow: ['Inputs — every figure that can change', 'Workings — formulas pointing at the inputs', 'Output — no typed numbers at all', 'Checks — built into cells, not done by eye'],
+          formula: 'A1 both move · $A$1 neither moves · A$1 row fixed · $A1 column fixed',
+          table: {
+            headers: ['Function', 'What it returns'],
+            rows: [
+              ['SUM · AVERAGE · MIN · MAX', 'Total, mean, smallest, largest of a range'],
+              ['ROUND · ROUNDUP · ROUNDDOWN', 'To n decimals · always away from zero · always towards it'],
+              ['COUNT · COUNTA', 'Cells holding a NUMBER · cells that are not empty'],
+              ['COUNTIF · SUMIF', 'How many meet a condition · what they come to'],
+              ['IF', 'One value if a test is true, another if it is false'],
+              ['VLOOKUP · HLOOKUP', 'Matches the first COLUMN · matches the first ROW'],
+              ['DAYS', 'The number of days between two dates'],
+              ['Goal seek · Forecast', 'One cell to a target by changing one other · a value from a fitted line'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'Tools',
+              items: [
+                '**Sort** reorders permanently · **Filter** only hides',
+                '**Subtotals** need the list sorted on that field first',
+                '**Pivot table** — two dimensions at once; must be refreshed',
+                '**Conditional formatting** — a rule that keeps working every month',
+                'New rows are NOT picked up by a fixed range, a chart or a pivot',
+              ],
+            },
+            right: {
+              title: 'Auditing, protecting, presenting',
+              items: [
+                '**Trace precedents** — where did this come from?',
+                '**Trace dependents** — what breaks if I change it?',
+                '**Show Formulas** — finds the typed number in a calculated column',
+                '**Protection** — unlock the inputs, THEN protect the sheet',
+                '**Freeze panes** · print area · headers and footers',
+              ],
+            },
+          },
+          p: [
+            '**Accounting format**, not Currency, for a column of money: symbols aligned, decimal points aligned, zero shown as a dash. Formatting changes the display and never the stored value, so round with ROUND when a total has to agree with the figures printed above it.',
+            '**Charts:** line for a movement over time, column or bar for a comparison of categories, pie for shares of ONE whole and nothing else. Label the title, the axes with their units, the legend, and the axis scale if it does not start at zero.',
+            '**This outcome is a doing skill.** Rebuild the worked examples from Outcomes 3, 4, 6 and 7 in a real spreadsheet and check your figures against the printed ones. Reading about it is not the same as having done it, and the assessment can tell.',
+          ],
+          examtrap: 'VLOOKUP searches the FIRST column of the range it is given, and the column index counts from that first column and not from column A of the sheet. Both errors return a real value that looks plausible, which is why they survive so long.',
         },
       },
     },
@@ -5413,6 +6164,399 @@
         },
       ],
       exp: 'Set beside the original budget, Marden looks to have overspent by £319,200 − £288,000 = £31,200. Almost all of that is the cost of 1,000 units the budget never planned for, and flexing removes it: the real story is £10,200 of underperformance, most of which is a selling price of £49.00 where £50.00 was planned. Two departments beat their standards and one modest overspend on materials was more than offset elsewhere. None of that is visible until the budget has been flexed.',
+    },
+    /* ── Outcome 5 — spreadsheet techniques (15%) ───────────────────────── */
+    {
+      id: 'M-5-01', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.1'],
+      type: 'mcq',
+      q: 'What belongs in the inputs block of a management accounting workbook?',
+      opts: [
+        'Every figure that could change on somebody\'s instruction',
+        'Every figure that appears anywhere in the finished statement',
+        'The formulas that the output block will refer back to',
+        'The totals that the statement is required to agree with',
+      ],
+      ans: 0,
+      exp: 'An input is an assumption: a rate, a volume, a set of credit terms. Gathering them in one block means one edit changes the workbook and one glance checks what it was built on. Formulas belong in workings, and totals are calculated rather than entered — a total typed into an inputs block is exactly the hard-coded figure this layout exists to prevent.',
+    },
+    {
+      id: 'M-5-02', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.1'],
+      type: 'picklist',
+      q: 'Identify which block of a well-designed workbook each item belongs in.',
+      picklist: {
+        title: 'Workbook layout',
+        rowHeader: 'Item', choiceHeader: 'Block',
+        options: ['Inputs', 'Workings', 'Output'],
+        rows: [
+          { text: 'The budgeted volume for the period', answer: 0 },
+          { text: 'The month-by-month receipts calculated from the credit terms', answer: 1 },
+          { text: 'The cash budget as it will be printed for the owner', answer: 2 },
+          { text: 'The overhead absorption rate per machine hour', answer: 0 },
+          { text: 'Each variance, calculated as flexed budget less actual', answer: 1 },
+        ],
+      },
+      exp: 'The test is whether somebody could reasonably change the figure. A volume and a rate could, so they are inputs. Anything derived from them is a working. The output is the statement itself and holds no typed figures at all — every cell in it points at a working or an input, which is what lets one changed assumption reach the printed page without anybody retyping anything.',
+    },
+    {
+      id: 'M-5-03', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.1'],
+      type: 'mcq',
+      q: 'Why is an arithmetic check worth building into a cell rather than performed by eye?',
+      opts: [
+        'It re-runs itself every time anything in the workbook changes',
+        'A formula is more accurate than the same calculation done mentally',
+        'The assessment awards marks specifically for including check cells',
+        'It prevents anyone from entering a figure that would break the check',
+      ],
+      ans: 0,
+      exp: 'A check done by eye is done once, on the version that existed at the time. A check living in a cell — apportioned shares totalling the original cost, variances totalling the profit difference — runs on every future change and shows the failure the moment it happens. It does not stop anyone entering anything, which is what data validation and protection are for.',
+    },
+    {
+      id: 'M-5-04', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.2'],
+      type: 'mcq',
+      q: 'What is the effect of pasting a copied cell using Paste Special as values?',
+      opts: [
+        'The result is pasted and the link to the source is discarded',
+        'The formula is pasted and recalculates in its new position',
+        'A live reference is created that updates with the source',
+        'Only the cell formatting is pasted, without the contents',
+      ],
+      ans: 0,
+      exp: 'Pasting as values takes what the cell was showing and leaves the formula and the reference behind, freezing the figure at that moment. That is right for a closed period, where the number is now a fact, and wrong for anything that should keep up with its source. Choosing between freezing and linking is the judgement this part of the specification is about.',
+    },
+    {
+      id: 'M-5-05', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.2'],
+      type: 'picklist',
+      q: 'Identify whether each figure should be linked to its source or pasted as a value.',
+      picklist: {
+        title: 'Link or freeze?',
+        rowHeader: 'Figure', choiceHeader: 'Treatment',
+        options: ['Link to the source', 'Paste as a value'],
+        rows: [
+          { text: 'The prior year comparative, now signed off and final', answer: 1 },
+          { text: 'The standard cost card the whole workbook is built on', answer: 0 },
+          { text: 'A price quoted in writing by a supplier and now agreed', answer: 1 },
+          { text: 'This month\'s actual costs, still being posted', answer: 0 },
+          { text: 'A closing balance that opens the following month', answer: 0 },
+        ],
+      },
+      exp: 'The question to ask of any figure is whether it should still be able to move. Signed-off comparatives and agreed quotations are facts, and if the source changes they must not follow. A cost card, this month\'s live figures and a carried-forward balance are all things the workbook needs to keep up with, so each is a link — and the carried-forward balance is the one that makes a cash budget work at all.',
+    },
+    {
+      id: 'M-5-06', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.2'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about getting data into a workbook is correct.',
+      statements: [
+        { text: 'Remove Duplicates deletes exact repeats and leaves one of each.', answer: true },
+        { text: 'A link to another workbook can break if that workbook is renamed or moved.', answer: true },
+        { text: 'Data taken from two systems can be assumed to share a period end and a definition of cost.', answer: false },
+      ],
+      exp: 'Remove Duplicates handles exact repeats; near-repeats, such as a customer entered under two spellings, have to be found by sorting on the field they differ in. A link is a reference to a location, so moving or renaming the target breaks it — sometimes visibly, sometimes by continuing to show the last value it saw. And figures from different systems rarely share a cut-off or a costing convention, which is why one total should be reconciled to its source before anything is built on it.',
+    },
+    {
+      id: 'M-5-07', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.3'],
+      type: 'mcq',
+      q: 'Which number format aligns the currency symbols down a column and shows a zero as a dash?',
+      opts: [
+        'Accounting',
+        'Currency',
+        'Number',
+        'Percentage',
+      ],
+      ans: 0,
+      exp: 'Accounting format is designed for columns of money: the symbol goes to the left edge of each cell, the decimal points line up beneath one another, and a nil line shows as a dash rather than as £0.00, so a genuine zero is distinguishable from a cell nobody has filled in. Currency puts the symbol tight against the figure, which reads well in a sentence and raggedly in a column.',
+    },
+    {
+      id: 'M-5-08', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.3'],
+      type: 'picklist',
+      q: 'Identify the most suitable chart for each purpose.',
+      picklist: {
+        title: 'Choosing a chart',
+        rowHeader: 'Purpose', choiceHeader: 'Chart',
+        options: ['Line chart', 'Pie chart', 'Column chart'],
+        rows: [
+          { text: 'Showing how the cash balance moves across twelve months', answer: 0 },
+          { text: 'Showing what proportion of total cost each element takes', answer: 1 },
+          { text: 'Comparing budgeted and actual cost for six departments', answer: 2 },
+          { text: 'Showing the trend in inventory days over three years', answer: 0 },
+          { text: 'Comparing overhead absorbed by each production centre', answer: 2 },
+        ],
+      },
+      exp: 'Anything moving over time belongs on a line, because a slope reads as a trend. Anything that is a share of one whole belongs on a pie — and only that, since a pie shows one series and cannot compare two periods or two measures. Anything comparing categories belongs on a column, including a budget set beside an actual, which is a comparison a pie chart cannot express at all.',
+    },
+    {
+      id: 'M-5-09', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.3'],
+      type: 'mcq',
+      q: 'A chart\'s vertical axis begins at £45,000 rather than at zero. What is the effect?',
+      opts: [
+        'Differences between the plotted values are exaggerated',
+        'The values plotted above £45,000 are shown incorrectly',
+        'The chart cannot display a legend or a data table',
+        'The chart type can no longer be changed afterwards',
+      ],
+      ans: 0,
+      exp: 'Cutting the axis magnifies every gap on the chart, so a movement of a few per cent can be made to look dramatic. It is sometimes the honest choice — a balance moving between £48,000 and £52,000 is invisible on a zero-based axis — but it has to be a decision the reader can see, which is why the axis scale is part of what has to be labelled.',
+    },
+    {
+      id: 'M-5-10', unitKey: 'mats', lo: 5, criteria: ['MATS-5.1.3'],
+      type: 'mcq',
+      q: 'A column of figures is formatted to show no decimal places, and the total shown does not equal the sum of the figures displayed. Why?',
+      opts: [
+        'The cells still hold their decimals; only the display was changed',
+        'The total was entered as a value rather than as a formula',
+        'The format has rounded each stored value to a whole number',
+        'The total is using a different number format from the column',
+      ],
+      ans: 0,
+      exp: 'Formatting changes what is displayed and never what is stored, so a cell showing £1,234 may be holding £1,233.62 and the total adds the figures nobody can see. The fix is to round the values themselves with ROUND, so that what is stored is what is shown. Hiding the decimals with a format leaves the discrepancy in place and makes it harder to find.',
+    },
+    {
+      id: 'M-5-11', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'mcq',
+      q: 'A formula in D5 reads =C5*$B$2 and is copied down to D8. What does the formula in D8 read?',
+      opts: [
+        '=C8*$B$2',
+        '=C8*$B$5',
+        '=C5*$B$2',
+        '=C8*B5',
+      ],
+      ans: 0,
+      exp: 'C5 is a relative reference, so it moves with the formula and becomes C8. $B$2 is absolute in both column and row, so it stays put however far the formula travels. That is exactly the pattern needed when each row has its own figure and every row shares one rate — and leaving the dollar signs off is the commonest reason a column of results is right at the top and wrong all the way down.',
+    },
+    {
+      id: 'M-5-12', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'numeric',
+      q: 'A range holds the values 1,400, 850, 2,300, 640 and 1,900. What does =COUNTIF(range,">1000") return?',
+      answer: 3,
+      exp: 'Three of the five values exceed 1,000: 1,400, 2,300 and 1,900. COUNTIF returns how many cells meet the condition and never their total, which would be 5,600. The pair worth keeping straight is COUNTIF against SUMIF — the same test, one giving a count and the other giving an amount.',
+    },
+    {
+      id: 'M-5-13', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'numeric',
+      q: 'Column A holds Machining, Assembly, Machining and Finishing. Column B holds the matching costs 3,200, 1,800, 2,600 and 900. What does =SUMIF(A:A,"Machining",B:B) return?',
+      unit: '£', answer: 5800,
+      exp: 'The two Machining rows carry 3,200 and 2,600, so 3,200 + 2,600 = £5,800. SUMIF tests the first range, and adds the matching cells from the third — which is why the third argument matters: leaving it out would add the values in column A itself, and column A holds text.',
+    },
+    {
+      id: 'M-5-14', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'numeric',
+      q: 'A VLOOKUP table occupies cells D2 to J40, and the value to be returned sits in column F. What column index number does the function need?',
+      answer: 3,
+      exp: 'The index counts from the first column of the RANGE, not from column A of the sheet. D is 1, E is 2 and F is 3. Counting from the sheet would give 6 and return column I instead — a value that exists, looks plausible and is the wrong one, which is why this error survives so long in a workbook.',
+    },
+    {
+      id: 'M-5-15', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'picklist',
+      q: 'Identify the function that answers each question.',
+      picklist: {
+        title: 'Which function?',
+        rowHeader: 'The question', choiceHeader: 'Function',
+        options: ['SUMIF', 'COUNTIF', 'VLOOKUP', 'ROUNDUP'],
+        rows: [
+          { text: 'What is the total overhead charged to the finishing department?', answer: 0 },
+          { text: 'How many cost centres exceeded their budget this month?', answer: 1 },
+          { text: 'What is the absorption rate for this department code?', answer: 2 },
+          { text: 'How many whole boxes must be ordered to cover 137 units?', answer: 3 },
+          { text: 'How many products in the list have a contribution below £5?', answer: 1 },
+        ],
+      },
+      exp: 'SUMIF and COUNTIF apply the same test and differ only in what they give back — an amount or a count. VLOOKUP fetches a value from a table by matching a key in its first column. ROUNDUP is the one people forget: an order quantity always rounds away from zero, because a supplier cannot deliver four tenths of a box however the arithmetic falls.',
+    },
+    {
+      id: 'M-5-16', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'mcq',
+      q: 'A VLOOKUP is returning the wrong values. The key being searched for sits in the third column of the table range. What is wrong?',
+      opts: [
+        'VLOOKUP searches only the first column of the range it is given',
+        'The column index number must be larger than the number of columns',
+        'VLOOKUP cannot be used on a range of more than two columns',
+        'The lookup value has to be a number rather than text',
+      ],
+      ans: 0,
+      exp: 'VLOOKUP matches on the first column of the range and nothing else, so a key sitting in the third column is never searched. Either the range has to start at that column, or the table has to be rearranged, or HLOOKUP is the right function because the data runs across rather than down. VLOOKUP handles text keys and any number of columns perfectly well.',
+    },
+    {
+      id: 'M-5-17', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about spreadsheet functions is correct.',
+      statements: [
+        { text: 'COUNT ignores cells containing text, whereas COUNTA counts them.', answer: true },
+        { text: 'ROUNDUP rounds to the nearest value, in whichever direction is closer.', answer: false },
+        { text: 'HLOOKUP matches on the first column of the range, as VLOOKUP does.', answer: false },
+      ],
+      exp: 'COUNT counts numbers only, so a column of amounts under a text heading returns the number of amounts; COUNTA counts the heading too, and the difference of exactly one is a hard error to spot. ROUNDUP always rounds away from zero whatever the digit, which is what makes it right for order quantities. And HLOOKUP is the horizontal one: it matches on the first ROW, for tables laid out across the page.',
+    },
+    {
+      id: 'M-5-18', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1'],
+      type: 'mcq',
+      q: 'A workbook calculates profit from a volume held in one cell. Which tool finds the volume that would give a profit of £96,000?',
+      opts: [
+        'Goal seek',
+        'Forecast',
+        'Conditional formatting',
+        'A pivot table',
+      ],
+      ans: 0,
+      exp: 'Goal seek sets one cell to a target by changing one other cell, working backwards through the formulas already built — which is exactly the target-profit question of Outcome 6 answered without rearranging anything. Forecast predicts a value from existing pairs by fitting a straight line. The other two summarise or highlight data and calculate nothing backwards.',
+    },
+    {
+      id: 'M-5-19', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.2'],
+      type: 'mcq',
+      q: 'What must be done to a list before the Subtotal tool is used on a field?',
+      opts: [
+        'It must be sorted on that field',
+        'It must be filtered to remove blank rows',
+        'It must be converted into a pivot table',
+        'It must have its headings removed',
+      ],
+      ans: 0,
+      exp: 'Subtotals works by breaking the list every time the value in the chosen column changes, so on an unsorted list it breaks constantly and produces a subtotal of one or two rows over and over. It does not sort for you and it reports no error, because it has done precisely what it was asked. Sorting first is what makes the output mean anything.',
+    },
+    {
+      id: 'M-5-20', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.2'],
+      type: 'picklist',
+      q: 'Identify the tool that best suits each requirement.',
+      picklist: {
+        title: 'Which tool?',
+        rowHeader: 'Requirement', choiceHeader: 'Tool',
+        options: ['Filter', 'Conditional formatting', 'Pivot table'],
+        rows: [
+          { text: 'Temporarily show only the rows for one cost centre', answer: 0 },
+          { text: 'Turn any variance above 5% of its budget red, every month', answer: 1 },
+          { text: 'Summarise cost by department and by month at the same time', answer: 2 },
+          { text: 'Flag any receivable balance older than sixty days', answer: 1 },
+          { text: 'Rearrange a summary by product rather than by region', answer: 2 },
+        ],
+      },
+      exp: 'A filter changes what is shown and nothing else, which suits a temporary look at part of a list. Conditional formatting applies a rule that keeps working on every future month whether or not anybody remembers to look. A pivot table is for a question still being explored: two dimensions at once, and rearranged by dragging rather than by rewriting a single formula.',
+    },
+    {
+      id: 'M-5-21', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.3'],
+      type: 'mcq',
+      q: 'Twenty rows are added to the bottom of a list that a pivot table summarises. What happens to the pivot table?',
+      opts: [
+        'It shows the old figures until it is refreshed, and says nothing meanwhile',
+        'It updates automatically as soon as the rows are entered',
+        'It reports an error because its source range has changed',
+        'It expands its source range to include the new rows',
+      ],
+      ans: 0,
+      exp: 'A pivot table holds a snapshot and keeps showing it until somebody refreshes it, with nothing on screen to say it is out of date. Worse, if the source was a fixed range the new rows are outside it and refreshing alone will not help. Basing it on a Table rather than a fixed range is the fix, because a Table grows as rows are added to it.',
+    },
+    {
+      id: 'M-5-22', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.4'],
+      type: 'mcq',
+      q: 'Before changing a rate held in one cell, which auditing tool shows how far the change will travel?',
+      opts: [
+        'Trace dependents',
+        'Trace precedents',
+        'Show formulas',
+        'Data validation',
+      ],
+      ans: 0,
+      exp: 'Dependents are the cells that depend on the one selected, so tracing them forwards shows everything a change would reach. Precedents run the other way and answer where a figure came from, which is the tool for hunting an error rather than assessing an impact. Show formulas reveals what every cell is doing but not the chain between them, and validation controls entry rather than showing anything.',
+    },
+    {
+      id: 'M-5-23', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.4'],
+      type: 'gapfill',
+      q: 'Complete the sentence about formula auditing.',
+      template: 'Tracing {0} answers the question of where a figure came from, tracing {1} answers what would break if it changed, and {2} makes a typed number sitting in a calculated column immediately visible.',
+      gaps: [
+        { options: ['precedents', 'dependents', 'references'], answer: 0 },
+        { options: ['dependents', 'precedents', 'validations'], answer: 0 },
+        { options: ['Show Formulas', 'Conditional formatting', 'Freeze panes'], answer: 0 },
+      ],
+      exp: 'The names say which is which if they are read as questions: precedents come before a cell and dependents depend on it, so an error hunt runs backwards and an impact assessment runs forwards. Show Formulas displays every formula in place of its result, and the cells holding a typed number stand out from the ones around them at a glance — which is how a hard-coded figure in the middle of a column is found.',
+    },
+    {
+      id: 'M-5-24', unitKey: 'mats', lo: 5, criteria: ['MATS-5.3.1'],
+      type: 'mcq',
+      q: 'A workbook must let colleagues change the input assumptions but not the formulas. In what order is that achieved?',
+      opts: [
+        'Unlock the input cells, then protect the worksheet',
+        'Protect the worksheet, then unlock the formula cells',
+        'Lock the formula cells, which is sufficient on its own',
+        'Apply data validation to the formula cells',
+      ],
+      ans: 0,
+      exp: 'Every cell begins locked, and locking has no effect whatever until the sheet itself is protected — so protecting first freezes the whole workbook, and locking the formulas achieves nothing because they were locked already. Unlocking the inputs and then protecting the sheet leaves exactly the intended result. Validation restricts what may be entered, which is a different job from deciding where anything may be entered at all.',
+    },
+    {
+      id: 'M-5-25', unitKey: 'mats', lo: 5, criteria: ['MATS-5.3.2'],
+      type: 'picklist',
+      q: 'Identify the tool that achieves each presentation requirement.',
+      picklist: {
+        title: 'Presenting a workbook',
+        rowHeader: 'Requirement', choiceHeader: 'Tool',
+        options: ['Freeze panes', 'Set the print area', 'Insert a footer'],
+        rows: [
+          { text: 'Keep the month headings visible while scrolling right', answer: 0 },
+          { text: 'Print the statement without the workings behind it', answer: 1 },
+          { text: 'Show the file name and page number on every printed page', answer: 2 },
+          { text: 'Keep the row labels visible while scrolling down a long list', answer: 0 },
+          { text: 'Restrict what goes on paper to one named range of cells', answer: 1 },
+        ],
+      },
+      exp: 'Freeze panes holds the rows above and columns left of the selection in view, which is what makes a wide cash budget or a long list readable and stops a figure being entered under the wrong month. The print area governs what reaches paper and nothing else. A footer carries the identifying detail — file name, date, page — that turns a printout into something anybody can trace back to its source.',
+    },
+    {
+      id: 'M-5-26', unitKey: 'mats', lo: 5, criteria: ['MATS-5.2.1', 'MATS-5.2.2'],
+      type: 'task',
+      q: 'State what each formula returns for the extract below.',
+      brief: 'The extract occupies rows 2 to 7 of a worksheet. Row 1 holds the column headings. Department names are in column B and costs in column C.',
+      datasets: [
+        {
+          title: 'Cost extract — rows 2 to 7',
+          headers: ['Row', 'Department', 'Cost £'],
+          rows: [
+            ['2', 'Machining', '4,800.00'],
+            ['3', 'Assembly', '2,150.00'],
+            ['4', 'Machining', '3,700.00'],
+            ['5', 'Finishing', '1,250.00'],
+            ['6', 'Machining', '2,500.00'],
+            ['7', 'Assembly', '3,900.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: '=SUM(C2:C7)',
+          type: 'numeric', unit: '£', answer: 18300,
+          exp: '4,800 + 2,150 + 3,700 + 1,250 + 2,500 + 3,900 = £18,300. SUM adds every number in the range and ignores the text and blanks it meets, which is why it can safely be given a whole column.',
+        },
+        {
+          label: '=COUNTIF(B2:B7,"Machining")',
+          type: 'numeric', answer: 3,
+          exp: 'Machining appears in rows 2, 4 and 6, so the answer is 3. COUNTIF returns how many cells meet the condition and never what they are worth, which is the SUMIF question instead.',
+        },
+        {
+          label: '=SUMIF(B2:B7,"Machining",C2:C7)',
+          type: 'numeric', unit: '£', answer: 11000,
+          exp: 'The three Machining rows carry 4,800, 3,700 and 2,500, so 4,800 + 3,700 = £8,500 and £8,500 + £2,500 = £11,000. The third argument is what tells the function where to take the amounts from; without it, it would try to add the department names.',
+        },
+        {
+          label: '=MAX(C2:C7)',
+          type: 'numeric', unit: '£', answer: 4800,
+          exp: 'The largest cost in the range is £4,800. MAX and MIN together are the fastest way to find the high and low observations a high-low calculation needs, and they read the values rather than the row order.',
+        },
+        {
+          label: '=AVERAGE(C2:C7)',
+          type: 'numeric', unit: '£', answer: 3050,
+          exp: '£18,300 ÷ 6 = £3,050. AVERAGE ignores empty cells and text rather than treating them as zero, which is usually what is wanted and occasionally is not — a blank month in a run of twelve raises the average rather than lowering it.',
+        },
+        {
+          label: 'To count the entries in B1:B7 including the heading in B1, the function needed is:',
+          type: 'choice',
+          options: [
+            'COUNTA, which counts every cell that is not empty',
+            'COUNT, which counts every cell that is not empty',
+            'COUNTIF, with no condition given to it',
+            'SUM, which counts the entries as it adds them',
+          ],
+          answer: 0,
+          exp: 'COUNTA counts anything that is not blank, headings included, and returns 7 here. COUNT counts numbers only and would return 0, because column B holds nothing but text. COUNTIF requires a condition, and SUM adds numbers rather than counting cells. The difference between COUNT and COUNTA is exactly the heading row, which is a hard error to notice.',
+        },
+      ],
+      exp: 'Five functions on six rows, and the whole of the conditional pair is visible in the middle three answers: the same test on the same column, giving a count of 3 and an amount of £11,000. The last part is the one worth remembering — COUNT would return nothing at all on a column of text, and the difference between it and COUNTA is precisely the heading row that so often makes a figure out by one.',
     },
     /* ── Outcome 6 — short-term decision making (15%) ───────────────────── */
     {
