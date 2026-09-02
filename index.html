@@ -56,7 +56,7 @@
       } catch (e) {}
     }());
   </script>
-  <!-- Cover div: hides all content until JS has rendered the app. Removed by init() after render(). -->
+  <!-- Cover div: hides all content until JS renders the app. Removed by init() after render(). -->
   <div id="page-cover" aria-hidden="true"></div>
   <a class="skip-link" href="#app">Skip to main content</a>
   <header>
@@ -104,6 +104,7 @@
   <script src="sync-config.js"></script>
   <script src="progress-sync.js"></script>
   <script src="app.js"></script>
+  <script src="cips2-bridge.js"></script>
   <script>
     /* Register the service worker for offline use (PWA). */
     if ('serviceWorker' in navigator) {

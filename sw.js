@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v179';
+var CACHE_VERSION = 'aat-l2-v180';
 
 /* Guitar's files are cached lazily, on first open, rather than precached with
    everything else — its engine, renderer, audio and stylesheet are dead weight
@@ -16,9 +16,9 @@ var CACHE_VERSION = 'aat-l2-v179';
  * would lose a subject they had been using. Naming it separately and excluding
  * it from the sweep is what stops that.
  *
- * The existing seven subjects stay in CORE_ASSETS untouched. The README
- * promises every subject works fully offline, and quietly moving French or LSF
- * out to tidy this up would break that for people who already rely on it. */
+ * The existing subjects stay in CORE_ASSETS untouched. The README promises
+ * every subject works fully offline, so CIPS joins that same core promise now
+ * that a complete learner-facing module is exposed in the subject picker. */
 var LAZY_CACHE = 'guitar-lazy-v1';
 var KEEP_CACHES = [LAZY_CACHE];
 var LAZY_PATTERN = /\/guitar-[a-z-]+\.(js|css)$/;
@@ -31,7 +31,7 @@ var LAZY_PATTERN = /\/guitar-[a-z-]+\.(js|css)$/;
    network-first with the precache as the offline fallback, so a content fix
    reaches readers on the next load whether or not anyone remembered the bump.
    Matches data.js, learn-data.js, aat1-/aat2-/aat3-*-data.js, *-syllabus.js,
-   french/lsf/code-route data — and deliberately not app code. */
+   french/lsf/code-route/CIPS data — and deliberately not app code. */
 var CONTENT_PATTERN = /\/[a-z0-9-]*(data|syllabus)\.js$/;
 
 /* Surviving the sweep solves half the problem and creates the other half.
@@ -92,6 +92,15 @@ var CORE_ASSETS = [
   './aat3-faps-data.js',
   './aat3-mats-data.js',
   './aat3-ui.js',
+  './cips2.html',
+  './cips2-styles.css',
+  './cips2-page.js',
+  './cips2-bridge.js',
+  './cips2-register.js',
+  './cips2-theme-bootstrap.js',
+  './cips2-l2m1-syllabus.js',
+  './cips2-l2m1-learn-data.js',
+  './cips2-l2m1-practice-data.js',
   './french-data.js',
   './delf-data.js',
   './img-delf-a1-sp3.svg',
