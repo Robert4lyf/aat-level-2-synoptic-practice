@@ -4245,6 +4245,43 @@
       ],
       exp: 'Most data is lost by accident rather than by attack, which is why backups matter as much as passwords. Phishing works precisely by imitation — the bank, a supplier, a colleague. And moving to the cloud changes where the risks are rather than removing them: the password, the device and the person are still the way in.',
     },
+    {
+      id: 'P5-38', lo: 5, criteria: ['BKFN-5.1.2'],
+      type: 'mcq',
+      q: 'What does it mean to say that a live bank feed gives information "in real time"?',
+      opts: [
+        'Transactions appear in the software as the bank processes them',
+        'The bank sends a statement at the same time each week',
+        'The software calculates how long each transaction took',
+        'The records can only be viewed during banking hours',
+      ],
+      ans: 0,
+      exp: 'A feed brings each transaction across as the bank sees it, rather than waiting for a statement somebody then types up. The gain is not only the typing saved: the cash position on screen is today\'s, which is the figure a decision about paying somebody actually needs.',
+    },
+    {
+      id: 'P5-39', lo: 5, criteria: ['BKFN-5.1.3'],
+      type: 'mcq',
+      q: 'A manager asks what the business is owed. The bookkeeper opens a real-time receivables report. What does "real time" guarantee about it?',
+      opts: [
+        'It includes every invoice and receipt entered up to that moment',
+        'It includes invoices that have been raised but not yet entered',
+        'It has been checked and approved by somebody else',
+        'It will not change once it has been produced',
+      ],
+      ans: 0,
+      exp: 'Real time means built from the data as it stands now, so anything entered a minute ago is in it. What it cannot include is anything nobody has entered yet — an invoice still in the tray is invisible to the most current report there is. It is also unchecked and it will change the moment the next entry is made.',
+    },
+    {
+      id: 'P5-40', lo: 5, criteria: ['BKFN-5.1.3', 'BKFN-5.1.2'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about real-time information is correct.',
+      statements: [
+        { text: 'A real-time report reflects the position at the moment it is produced.', answer: true },
+        { text: 'A real-time report can show transactions nobody has entered yet.', answer: false },
+        { text: 'Working from a single integrated system means the same figure does not have to be entered twice.', answer: true },
+      ],
+      exp: 'The first is what real time means and the third is what integration buys — a figure entered once reaches the ledger, the customer account and the reports without anybody retyping it. The second is the limit worth stating out loud: currency is not completeness, and a report built the instant it is asked for is still only as complete as what has been entered.',
+    },
   ];
 
   var AAT1_PRACTICE = { QUESTIONS: QUESTIONS };
