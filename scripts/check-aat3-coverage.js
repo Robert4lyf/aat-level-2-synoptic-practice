@@ -54,6 +54,7 @@ const MODULES_SHIPPED = [
   { unit: 'mats', outcome: 1 },
   { unit: 'mats', outcome: 2 },
   { unit: 'mats', outcome: 3 },
+  { unit: 'mats', outcome: 4 },
 ];
 
 const errors = [];

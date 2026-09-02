@@ -1988,6 +1988,716 @@
      THE PATH
      ══════════════════════════════════════════════════════════════════════════ */
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 4 — Investigate deviations from budgets (15%)
+
+     Where the unit stops describing costs and starts judging them. Note the
+     scope: the specification asks for TOTAL variances — sales price, material,
+     labour, variable overhead and fixed production — and not for the price and
+     usage or rate and efficiency splits, which are Level 4 work. Teaching the
+     splits here would be teaching the wrong exam, so the module says plainly
+     what is in scope and stops there.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO4_LESSONS = [
+    {
+      id: 'L3-MATS-4A',
+      title: 'Standard prices and standard costs',
+      icon: '🎯',
+      criteria: ['MATS-4.1.1', 'MATS-4.1.2'],
+      cards: [
+        {
+          h: 'A price and a cost decided in advance',
+          p: [
+            'A **standard** is what one unit ought to cost, and what it ought to sell for, agreed before the period begins. It is not a forecast of what will happen and it is not last year\'s average — it is a considered target built from the quantity of each resource a unit should need and the price that resource should command.',
+            'Two numbers make up every line: a **quantity** and a **price**. Two kilograms at £6.00; half an hour at £14.00. Keeping them apart matters, because when the actual cost differs from the standard the question is always which of the two moved.',
+          ],
+          example: {
+            title: 'Standard cost card — one Trentham casting',
+            rows: [
+              ['', 'Quantity', 'Rate', '£'],
+              ['Direct materials', '2 kg', '£6.00', '12.00'],
+              ['Direct labour', '0.5 hours', '£14.00', '7.00'],
+              ['Variable production overhead', '0.5 hours', '£4.00', '2.00'],
+              ['Fixed production overhead', '0.5 hours', '£6.00', '3.00'],
+              ['**Standard absorption cost**', '', '', '**24.00**'],
+              ['Standard selling price', '', '', '35.00'],
+              ['**Standard profit**', '', '', '**11.00**'],
+            ],
+          },
+        },
+        {
+          h: 'From one card to a whole budget',
+          p: [
+            'The card describes one unit. Multiply it by the volume the business plans to make and every line of the budget appears — which is the practical reason standards exist at all. **Fixed** production overhead is the one line that is not multiplied: it was a total before the card was written, and £3.00 a unit is what that total works out at when it is spread over the planned volume.',
+          ],
+          worked: {
+            title: 'Building the budget from the card',
+            problem: 'Trentham Castings budgets to make and sell 10,000 units on the standard card above. Budgeted fixed production overhead is £30,000 for the period.',
+            steps: [
+              {
+                do: 'Revenue: 10,000 × £35.00 = £350,000.',
+                why: 'The standard price is a target as much as the standard cost is. A budget built on last year\'s realised prices bakes last year\'s discounting into this year\'s plan.',
+              },
+              {
+                do: 'Materials: 10,000 × £12.00 = £120,000, which is also 10,000 × 2 = 20,000 kg bought at £6.00.',
+                why: 'The budget is needed in both forms. Finance wants the money; the buyer wants the 20,000 kg, because that is what has to be ordered.',
+              },
+              {
+                do: 'Labour 10,000 × £7.00 = £70,000 and variable overhead 10,000 × £2.00 = £20,000.',
+                why: 'Both vary with volume, so both are simply the per-unit figure times the number of units.',
+              },
+              {
+                do: 'Fixed production overhead: £30,000, multiplied by nothing.',
+                why: 'The £3.00 on the card came FROM this £30,000, as £30,000 ÷ 10,000. Multiplying the £3.00 back up by 10,000 is right only at this one volume, and treating it as a cost per unit at any other volume is the single most common error in this outcome.',
+              },
+              {
+                do: 'Profit: costs of 120,000 + 70,000 + 20,000 + 30,000 = £240,000, so £350,000 − £240,000 = £110,000. Cross-check against the card: 10,000 × £11.00 = £110,000.',
+                why: 'The two agree only because the budget volume matches the volume the fixed overhead rate was set on. That is exactly the coincidence the next lesson breaks.',
+              },
+            ],
+            answer: 'Budgeted profit £110,000, on revenue of £350,000 and cost of £240,000',
+            tryIt: {
+              q: 'The same standard card, but the budget is for 12,000 units. Fixed production overhead is still £30,000 in total. What is the budgeted profit?',
+              answer: 138000,
+              unit: '£',
+              hint: 'Only the variable lines move with volume.',
+              exp: 'The variable cost is 12.00 + 7.00 + 2.00 = £21.00, so contribution is 35.00 − 21.00 = £14.00 a unit and 12,000 × 14.00 = £168,000, less fixed costs of £30,000, giving £138,000. Multiplying the £11.00 standard profit by 12,000 gives £132,000 and is wrong: it flexes the fixed overhead as though it grew with output.',
+            },
+          },
+        },
+        {
+          h: 'Where a standard comes from, and when it goes stale',
+          table: {
+            headers: ['Type of standard', 'What it assumes', 'What it does to behaviour'],
+            rows: [
+              ['Ideal', 'Perfect conditions — no waste, no idle time, no breakdowns', 'Always missed, so the variances stop being read'],
+              ['Attainable', 'Efficient working with normal, expected levels of loss', 'Demanding but reachable — the usual choice'],
+              ['Basic', 'Left unchanged for years as a long-run reference point', 'Drifts out of date and flatters current performance'],
+            ],
+          },
+          p: [
+            'A standard is only useful while it is still true. A supplier price rise, a new machine, a change of material — any of these makes the card wrong, and once the card is wrong the variances measure the staleness of the standard rather than the performance of the department.',
+            'That is why "revise the standard" is a legitimate answer to a persistent variance. If every month for six months has shown the same adverse material price variance, the price has changed and the card has not.',
+          ],
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A standard card shows 3 kg of material at £4.50 a kilogram, 0.4 hours of labour at £15.00 an hour and variable overhead at £5.00 a labour hour. What is the standard marginal cost of one unit?',
+          unit: '£',
+          answer: 21.5,
+          exp: '3 × £4.50 = £13.50 of materials, 0.4 × £15.00 = £6.00 of labour and 0.4 × £5.00 = £2.00 of variable overhead, so £13.50 + £6.00 + £2.00 = £21.50. Marginal cost stops there: any fixed production overhead on the card belongs to the absorption cost and not to this figure.',
+        },
+        {
+          type: 'mcq',
+          q: 'Why is a standard cost expressed as a quantity and a rate rather than as one figure?',
+          opts: [
+            'So that a difference can be traced to the amount used or to the price paid',
+            'So that the card can be used under marginal and absorption costing alike',
+            'Because accounting standards require both figures to be disclosed',
+            'Because the quantity is budgeted while the rate is a known fact',
+          ],
+          ans: 0,
+          exp: 'Splitting the line is what makes a variance diagnosable. £12.00 of material becoming £13.20 tells nobody anything; two kilograms at £6.60 instead of £6.00 sends you to the buyer, and 2.2 kilograms at £6.00 sends you to the factory floor. The card is used under both costing techniques, but that is a convenience rather than the reason, and no accounting standard governs a document nobody outside the business sees.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about standards is correct.',
+          statements: [
+            { text: 'An attainable standard allows for normal, expected levels of loss.', answer: true },
+            { text: 'A persistent variance in the same direction may mean the standard is out of date.', answer: true },
+            { text: 'An ideal standard is the most useful basis for motivating a workforce.', answer: false },
+          ],
+          exp: 'An attainable standard is demanding without being fictional, which is why it is the usual choice. A variance that appears in the same direction month after month is evidence about the card rather than about the department. And an ideal standard assumes perfect conditions that never arrive, so it produces an adverse variance every single period — at which point people stop reading the report, which is the opposite of motivating.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-4B',
+      title: 'Types of budget, and flexing',
+      icon: '🪄',
+      criteria: ['MATS-4.1.3', 'MATS-4.1.6'],
+      cards: [
+        {
+          h: 'Three kinds of budget',
+          table: {
+            headers: ['Budget', 'What it is', 'What it is for'],
+            rows: [
+              ['Fixed', 'Set for one planned level of activity and not changed', 'Planning — deciding what to buy, hire and borrow'],
+              ['Flexed', 'Recalculated at the activity that actually happened', 'Control — judging performance without volume in the way'],
+              ['Rolling', 'Extended by one period as each period ends', 'Keeping a full year ahead always budgeted'],
+            ],
+          },
+          p: [
+            'A **fixed** budget is not a budget of fixed costs; the word means it is not adjusted. It is the plan, and it is the right thing to plan against.',
+            'A **rolling** budget — sometimes called a continuous budget — adds a thirteenth month as the first month closes, so the business is never looking at a horizon that shortens as the year goes on. It costs more to prepare, which is the trade-off.',
+          ],
+        },
+        {
+          h: 'Why a fixed budget cannot judge performance',
+          p: [
+            'Trentham budgeted to make 10,000 units at a total cost of £240,000 and actually made 11,500 at a cost of £276,400. Set side by side that is £36,400 of overspend, and a manager reading it would be in trouble.',
+            'But 1,500 more units were made, and each of them was always going to cost £21.00 in materials, labour and variable overhead. **1,500 × £21.00 = £31,500** of that £36,400 is volume, not extravagance. The real overspend is £36,400 − £31,500 = **£4,900** — still worth asking about, and under a seventh of what the raw comparison implied.',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'Comparing actual cost at one volume with budgeted cost at another measures the difference in volume far more than the difference in performance. Flexing removes the volume so that what is left is performance.',
+          },
+        },
+        {
+          h: 'Flexing a budget',
+          p: [
+            'To flex, take the standard cost card and rebuild the budget at the volume that actually occurred. Every **variable** line is multiplied by the new volume. Every **fixed** line is copied across untouched, because that is what fixed means.',
+          ],
+          worked: {
+            title: 'The Trentham budget flexed to actual output',
+            problem: 'The budget was set for 10,000 units. 11,500 units were made and sold. The standard card gives materials £12.00, labour £7.00 and variable overhead £2.00 a unit, with a standard selling price of £35.00. Budgeted fixed production overhead is £30,000.',
+            steps: [
+              {
+                do: 'Flex the revenue: 11,500 × £35.00 = £402,500.',
+                why: 'Revenue is flexed as well as cost. Skipping it makes every unit of extra volume look like a sales triumph rather than the plan working.',
+              },
+              {
+                do: 'Flex each variable cost: materials 11,500 × £12.00 = £138,000, labour 11,500 × £7.00 = £80,500, variable overhead 11,500 × £2.00 = £23,000.',
+                why: 'Each line is flexed on its own standard, not by scaling the old total up by a percentage. The two happen to give the same answer here and stop doing so the moment a standard has changed mid-year.',
+              },
+              {
+                do: 'Copy the fixed overhead across at £30,000.',
+                why: 'Making half as much again does not raise the rent. Flexing it would invent £4,500 of cost the business never faced, and would show as a fixed overhead variance that is purely arithmetic.',
+              },
+              {
+                do: 'Total: 138,000 + 80,500 + 23,000 + 30,000 = £271,500, so flexed profit is £402,500 − £271,500 = £131,000.',
+                why: 'This is what the business SHOULD have earned making 11,500 units. It is the only figure the actual result can fairly be set against.',
+              },
+            ],
+            answer: 'Flexed revenue £402,500 · flexed cost £271,500 · flexed profit £131,000',
+            tryIt: {
+              q: 'A budget was set for 8,000 units at a standard variable cost of £21.00 a unit, with fixed costs of £30,000. Actual output was 9,400 units. What is the flexed budget total cost?',
+              answer: 227400,
+              unit: '£',
+              hint: 'Flex the variable element only.',
+              exp: '9,400 × £21.00 = £197,400 of variable cost, and the fixed element is carried across unchanged, so £197,400 + £30,000 = £227,400. Flexing the fixed cost as well would give £30,000 ÷ 8,000 = £3.75 a unit and 9,400 × £3.75 = £35,250, adding £5,250 of cost that nobody ever spent.',
+            },
+          },
+          examtrap: 'Flex on the volume that actually happened, not on the volume that was sold if they differ, and not on some average of the two. And flex the revenue line — a flexed statement that leaves revenue at budget reports the whole of the extra sales as a favourable price variance.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A budget for 5,000 units shows variable costs of £90,000 and fixed costs of £42,000. Actual output was 6,200 units. What is the total cost in the flexed budget?',
+          unit: '£',
+          answer: 153600,
+          exp: 'The variable cost per unit is £90,000 ÷ 5,000 = £18.00, so the flexed variable cost is 6,200 × £18.00 = £111,600. The fixed £42,000 is carried across untouched, giving £111,600 + £42,000 = £153,600. Scaling the whole £132,000 up in proportion would give £163,680 and charge the business for rent it never paid.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about budgets is correct.',
+          statements: [
+            { text: 'A flexed budget is prepared at the level of activity that actually occurred.', answer: true },
+            { text: 'A rolling budget adds a further period as each period ends, keeping the horizon constant.', answer: true },
+            { text: 'Fixed costs are increased in proportion to volume when a budget is flexed.', answer: false },
+          ],
+          exp: 'Flexing rebuilds the plan at the actual volume so that like is compared with like, and a rolling budget stops the planning horizon shrinking as the year runs down. The third is the error the whole technique exists to avoid: a fixed cost does not move with volume, so it is copied into the flexed budget unchanged. Scaling it up manufactures a variance out of nothing.',
+        },
+        {
+          type: 'mcq',
+          q: 'Actual costs were £310,000 for 12,000 units against a fixed budget of £260,000 for 10,000 units. Standard variable cost is £20.00 a unit. What does the comparison of £50,000 mostly represent?',
+          opts: [
+            'The cost of making 2,000 units the budget never planned for',
+            'Overspending by the production department against its standards',
+            'An increase in fixed overhead driven by the higher output',
+            'A rise in the standard variable cost during the period',
+          ],
+          ans: 0,
+          exp: '2,000 × £20.00 = £40,000 of the £50,000 is simply the cost of making units the budget never planned for. The flexed budget is £260,000 + £40,000 = £300,000, so the genuine overspend is £310,000 − £300,000 = £10,000 — real, worth asking about, and a fifth of what the raw comparison suggested.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-4C',
+      title: 'Budgets for a multi-product business',
+      icon: '🧾',
+      criteria: ['MATS-4.1.5'],
+      cards: [
+        {
+          h: 'Six budgets, built in a fixed order',
+          table: {
+            headers: ['Budget', 'Built from', 'Expressed in'],
+            rows: [
+              ['Revenue', 'Units of each product × its standard selling price', 'Money'],
+              ['Materials', 'Units × kilograms a unit, then × price a kilogram', 'Quantity AND money'],
+              ['Labour', 'Units × hours a unit, then × rate an hour', 'Hours AND money'],
+              ['Variable overhead', 'Total hours (or units) × the absorption rate', 'Money'],
+              ['Fixed production overhead', 'A total agreed in advance', 'Money'],
+              ['Non-manufacturing overhead', 'A total agreed in advance', 'Money'],
+            ],
+          },
+          p: [
+            'With more than one product the order matters, because the later budgets need the totals from the earlier ones. Work **product by product** down to quantities — kilograms, hours — then add the products together and price the combined quantity once. Two products drawing on the same store and the same workforce share one material budget and one labour budget.',
+            'Materials and labour are wanted in quantity as well as in money. The buyer cannot order £190,000; they order 38,000 kilograms. The same is true of the labour budget, which is what tells the business how many people it needs.',
+          ],
+        },
+        {
+          h: 'Two products, one budget',
+          worked: {
+            title: 'Trentham — cast and forged units',
+            problem: 'Cast units: 6,000 budgeted, selling at £60, needing 3 kg of material and 1.5 labour hours each. Forged units: 4,000 budgeted, selling at £90, needing 5 kg and 2.0 hours each. Material costs £5.00 a kilogram and labour £12.00 an hour. Variable production overhead is absorbed at £3.00 a labour hour. Fixed production overhead is £60,000 and non-manufacturing overhead £45,000.',
+            steps: [
+              {
+                do: 'Revenue: 6,000 × £60 = £360,000 and 4,000 × £90 = £360,000, so £360,000 + £360,000 = £720,000.',
+                why: 'Each product carries its own price, so revenue is the one budget that can never be built from a combined volume.',
+              },
+              {
+                do: 'Materials in kilograms first: 6,000 × 3 = 18,000 kg and 4,000 × 5 = 20,000 kg, giving 18,000 + 20,000 = 38,000 kg. Then price it: 38,000 × £5.00 = £190,000.',
+                why: 'Quantity before money. The buyer needs the 38,000 kg to place orders against, and pricing once at the end avoids rounding each product separately.',
+              },
+              {
+                do: 'Labour in hours: 6,000 × 1.5 = 9,000 and 4,000 × 2.0 = 8,000, so 9,000 + 8,000 = 17,000 hours, and 17,000 × £12.00 = £204,000.',
+                why: 'The hours figure is the one the business plans headcount from. If the budget covers a year at roughly 1,700 productive hours each, 17,000 hours is ten people.',
+              },
+              {
+                do: 'Variable overhead on those same hours: 17,000 × £3.00 = £51,000.',
+                why: 'It is absorbed on labour hours, so the labour budget has to be finished before this one can start — which is why the order is not arbitrary.',
+              },
+              {
+                do: 'Add the two fixed totals as they stand and total the cost: 190,000 + 204,000 + 51,000 + 60,000 + 45,000 = £550,000. Budgeted profit is £720,000 − £550,000 = £170,000.',
+                why: 'Non-manufacturing overhead is below the production line but still above the profit, so leaving it out of the cost total overstates the result by the whole £45,000.',
+              },
+            ],
+            answer: 'Revenue £720,000 · cost £550,000 · budgeted profit £170,000, on 38,000 kg and 17,000 hours',
+            tryIt: {
+              q: 'A third product is added: 2,500 units, each needing 4 kg of the same material at £5.00 a kilogram. What does it add to the materials budget in money?',
+              answer: 50000,
+              unit: '£',
+              hint: 'Quantity first, then price it.',
+              exp: '2,500 × 4 = 10,000 kg, and 10,000 × £5.00 = £50,000. The combined materials budget becomes 38,000 + 10,000 = 48,000 kg costing £190,000 + £50,000 = £240,000. Nothing else on the card changes, because the material price is the same whichever product draws on the store.',
+            },
+          },
+        },
+        {
+          h: 'Where the figures come from',
+          split: {
+            left: {
+              title: 'Given to you in the task',
+              items: [
+                'Budgeted **units** of each product',
+                'The standard **quantity** of each resource a unit',
+                'The standard **price or rate** of each resource',
+                'Fixed and non-manufacturing overhead **totals**',
+              ],
+            },
+            right: {
+              title: 'What you have to build',
+              items: [
+                'Material quantity, **then** material cost',
+                'Labour hours, **then** labour cost',
+                'Variable overhead on the hours you just built',
+                'A cost total that includes the non-manufacturing line',
+              ],
+            },
+          },
+          examtrap: 'The two mistakes that cost most marks here are pricing before adding — working out each product\'s material cost separately and rounding twice — and leaving the non-manufacturing overhead out of the total because it sat below a subtotal on the page. Read what the subtotal is labelled before you decide what belongs above it.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A business budgets 3,000 units of X, each needing 2.5 labour hours, and 5,000 units of Y, each needing 1.2 labour hours. Labour costs £14.00 an hour. What is the labour budget in money?',
+          unit: '£',
+          answer: 189000,
+          exp: '3,000 × 2.5 = 7,500 hours and 5,000 × 1.2 = 6,000 hours, so 7,500 + 6,000 = 13,500 hours in total, and 13,500 × £14.00 = £189,000. The hours figure is worth writing down on its own: it is what the variable overhead budget is built on and what the headcount plan needs.',
+        },
+        {
+          type: 'entrygrid',
+          q: 'Product P needs 4 kg a unit and 6,000 units are budgeted. Product Q needs 7 kg a unit and 2,000 units are budgeted. Material costs £8.00 a kilogram. Complete the materials budget.',
+          entrygrid: {
+            title: 'Materials budget',
+            rowHeader: 'Line',
+            columns: ['Kilograms', 'Cost £'],
+            rows: [
+              { label: 'Product P', cells: { 0: 24000, 1: 192000 } },
+              { label: 'Product Q', cells: { 0: 14000, 1: 112000 } },
+              { label: 'Total materials budget', cells: { 0: 38000, 1: 304000 } },
+            ],
+          },
+          exp: '6,000 × 4 = 24,000 kg for P and 2,000 × 7 = 14,000 kg for Q, so 24,000 + 14,000 = 38,000 kg altogether. Priced at £8.00 that is 24,000 × 8.00 = £192,000 and 14,000 × 8.00 = £112,000, totalling £304,000 — which is also 38,000 × 8.00 = £304,000, the check that the quantities and the money agree.',
+        },
+        {
+          type: 'mcq',
+          q: 'Why is the labour budget prepared before the variable production overhead budget?',
+          opts: [
+            'Because variable overhead is often absorbed on labour hours',
+            'Because labour is a larger cost than variable overhead',
+            'Because overhead budgets are always prepared last of all',
+            'Because labour hours determine the fixed overhead total',
+          ],
+          ans: 0,
+          exp: 'The overhead budget needs a figure the labour budget produces, so the order follows the dependency rather than the size of the numbers. Where variable overhead is absorbed on machine hours instead, the machine hours budget comes first for exactly the same reason. Fixed overhead is a total agreed in advance and is not driven by hours at all.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-4D',
+      title: 'The operating statement',
+      icon: '📋',
+      criteria: ['MATS-4.1.4'],
+      cards: [
+        {
+          h: 'A bridge from what should have happened to what did',
+          p: [
+            'An operating statement starts at the **flexed budget profit** — what the business should have earned at the volume it actually achieved — and works down to the **actual profit**, naming every variance that explains the gap. Read it top to bottom and you have the whole month in one page: the plan, each thing that went differently, and the result.',
+            'Its value is that it accounts for the difference **completely**. If the variances listed do not carry you exactly from one profit to the other, something has been missed or double-counted, and that arithmetic check is the first thing to run before reading a word of it.',
+          ],
+        },
+        {
+          h: 'Trentham, month to 30 June',
+          example: {
+            title: 'Operating statement — 11,500 units made and sold',
+            rows: [
+              ['', '£', ''],
+              ['Flexed budget profit', '131,000', ''],
+              ['Sales price variance', '(3,500)', 'Adverse'],
+              ['Direct materials variance', '(3,700)', 'Adverse'],
+              ['Direct labour variance', '1,600', 'Favourable'],
+              ['Variable overhead variance', '(1,300)', 'Adverse'],
+              ['Fixed production overhead variance', '(1,500)', 'Adverse'],
+              ['**Actual profit**', '**122,600**', ''],
+            ],
+          },
+          p: [
+            'The gap is 131,000 − 122,600 = **£8,400** adverse, and the five variances net to exactly that: 3,500 + 3,700 + 1,300 + 1,500 = £10,000 adverse against £1,600 favourable. Anyone reading it can see immediately that no single failure caused the month — four modest adverse variances did, and the one department that beat its standard was labour.',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'Adverse variances reduce profit and are shown in brackets; favourable variances increase it. That is the only sign convention you need, and it applies to a revenue variance exactly as it does to a cost one.',
+          },
+        },
+        {
+          h: 'What it does and does not tell you',
+          split: {
+            left: {
+              title: 'What it shows',
+              items: [
+                'Which costs and revenues departed from standard',
+                'The size of each departure, in pounds',
+                'Whether the month was better or worse than it should have been',
+                'A complete reconciliation, with nothing unexplained',
+              ],
+            },
+            right: {
+              title: 'What it does not show',
+              items: [
+                'Why any of them happened',
+                'Whether the standard itself was right',
+                'Whether anybody could have prevented it',
+                'The effect of volume — flexing removed that first',
+              ],
+            },
+          },
+          examtrap: 'The statement begins at the FLEXED budget profit, not at the original budget profit. Starting from the original leaves the whole effect of the volume difference inside the variances, and the statement stops reconciling — which is the fastest way to spot that the wrong opening figure was used.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A flexed budget profit is £84,000. The variances are: sales price £2,100 favourable, materials £5,400 adverse, labour £900 adverse and fixed overhead £1,200 favourable. What is the actual profit?',
+          unit: '£',
+          answer: 81000,
+          exp: 'Favourable variances add and adverse ones subtract: 2,100 + 1,200 = £3,300 favourable and 5,400 + 900 = £6,300 adverse, so the net effect is £3,000 adverse. £84,000 − £3,000 = £81,000. The statement is only complete when the variances carry you exactly from the flexed profit to this figure.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify whether each variance is favourable or adverse.',
+          picklist: {
+            title: 'Reading the sign',
+            rowHeader: 'Situation',
+            choiceHeader: 'Variance',
+            options: ['Favourable', 'Adverse'],
+            rows: [
+              { text: 'Actual materials cost £141,700 against a flexed budget of £138,000', answer: 1 },
+              { text: 'Actual revenue £399,000 against a flexed budget of £402,500', answer: 1 },
+              { text: 'Actual labour cost £78,900 against a flexed budget of £80,500', answer: 0 },
+              { text: 'Actual variable overhead £24,300 against a flexed budget of £23,000', answer: 1 },
+              { text: 'Actual fixed overhead £28,800 against a budget of £30,000', answer: 0 },
+            ],
+          },
+          exp: 'For a cost, spending more than the flexed budget is adverse and spending less is favourable. For revenue it is the other way round in appearance but the same rule underneath: earning less than the flexed budget reduces profit, so it is adverse. Test every line the same way — did this push profit up or down? — and the sign never has to be memorised.',
+        },
+        {
+          type: 'mcq',
+          q: 'An operating statement starts at the original budget profit rather than the flexed budget profit. What is the consequence?',
+          opts: [
+            'The listed variances no longer reconcile to the actual profit',
+            'The variances are still correct but their signs are reversed',
+            'Only the sales price variance is affected by the change',
+            'The statement is unaffected, since the two profits are always equal',
+          ],
+          ans: 0,
+          exp: 'The whole point of the flexed profit is that it already carries the effect of the volume difference. Start from the original and that effect is left over, so the variances cannot bridge the gap and the statement fails its own arithmetic check. The two profits coincide only in the special case where actual volume equalled budgeted volume — which is why testing the technique on such a month proves nothing about it.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-4E',
+      title: 'Calculating the total variances',
+      icon: '⚖️',
+      criteria: ['MATS-4.2.1', 'MATS-4.2.2', 'MATS-4.2.3'],
+      cards: [
+        {
+          h: 'Favourable or adverse, decided one way',
+          p: [
+            'A **variance** is the difference between the flexed budget and what actually happened. It is **favourable** when it makes profit higher than the flexed budget said it would be, and **adverse** when it makes profit lower. That is the whole rule, and it works on a revenue line as well as a cost one without any second convention to remember.',
+            'For a cost, favourable means spending less than the flexed budget allowed. For revenue, favourable means earning more than the flexed budget expected. Nobody needs to memorise which way round to subtract if the question asked at the end is always the same one: **did this push profit up or down?**',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'Favourable is not the same as good, and adverse is not the same as bad. A favourable material variance from buying inferior material that then wasted labour hours is a bad month wearing the wrong label, which is what the next lesson is about.',
+          },
+        },
+        {
+          h: 'The five totals this unit asks for',
+          table: {
+            headers: ['Variance', 'How it is found', 'Favourable when'],
+            rows: [
+              ['Sales price (total)', 'Actual revenue − flexed budget revenue', 'Actual revenue is higher'],
+              ['Raw material (total)', 'Flexed budget cost − actual cost', 'Actual cost is lower'],
+              ['Labour (total)', 'Flexed budget cost − actual cost', 'Actual cost is lower'],
+              ['Variable overhead (total)', 'Flexed budget cost − actual cost', 'Actual cost is lower'],
+              ['Fixed production overhead (total)', 'Budgeted overhead − actual overhead', 'Actual overhead is lower'],
+            ],
+          },
+          p: [
+            'Note the last row. Fixed overhead is **not flexed**, so its flexed budget figure is the original budget figure, and the variance is simply what was budgeted against what was spent. Every other line is measured against a budget that has already been rebuilt at the actual volume.',
+            'Each of these is a **total**. Splitting a material variance into its price and usage halves, or a labour variance into rate and efficiency, is Level 4 work; this unit asks for the totals and marks them as totals.',
+          ],
+        },
+        {
+          h: 'One month, all five',
+          worked: {
+            title: 'Trentham — flexed budget against actual',
+            problem: 'The flexed budget for 11,500 units is: revenue £402,500, materials £138,000, labour £80,500, variable overhead £23,000, fixed overhead £30,000. Actual results were: revenue £399,000, materials £141,700, labour £78,900, variable overhead £24,300, fixed overhead £31,500.',
+            steps: [
+              {
+                do: 'Sales price: revenue fell short by £402,500 − £399,000 = £3,500, so £3,500 adverse.',
+                why: 'The volume difference has already been taken out by flexing, so whatever revenue is left over or short must be price — either a discount given or a price rise not achieved.',
+              },
+              {
+                do: 'Materials: £141,700 against £138,000, so £141,700 − £138,000 = £3,700 adverse.',
+                why: 'More was spent than the flexed budget allowed for the units actually made, which means either the price paid or the quantity used was above standard.',
+              },
+              {
+                do: 'Labour: £78,900 against £80,500, so £80,500 − £78,900 = £1,600 favourable.',
+                why: 'The one line that beat its standard. On its own that is good news; read alongside an adverse material variance it may be the other half of one story.',
+              },
+              {
+                do: 'Variable overhead: £24,300 − £23,000 = £1,300 adverse. Fixed overhead: £31,500 − £30,000 = £1,500 adverse.',
+                why: 'The fixed line is measured against the ORIGINAL £30,000, because nothing about making 1,500 extra units was ever going to change it.',
+              },
+              {
+                do: 'Net them: adverse of 3,500 + 3,700 + 1,300 + 1,500 = £10,000 against £1,600 favourable, so £10,000 − £1,600 = £8,400 adverse.',
+                why: 'The net must equal the gap between flexed profit and actual profit — £131,000 − £122,600 = £8,400. When it does not, a variance has been signed the wrong way, and this is the check that finds it.',
+              },
+            ],
+            answer: 'Sales price £3,500 A · materials £3,700 A · labour £1,600 F · variable overhead £1,300 A · fixed overhead £1,500 A · net £8,400 adverse',
+            tryIt: {
+              q: 'The flexed budget allows £96,000 of labour and the actual labour cost was £101,400. How large is the total labour variance?',
+              answer: 5400,
+              unit: '£',
+              hint: 'The size is one question; the direction is the next.',
+              exp: '£101,400 − £96,000 = £5,400 more than the flexed budget allowed, so the variance is £5,400 adverse. Subtracting the other way round gives the same size with the opposite sign, which is why the reliable habit is to ask whether profit went up or down rather than to memorise an order of subtraction.',
+            },
+          },
+        },
+        {
+          h: 'Where the marks are lost',
+          split: {
+            left: {
+              title: 'Do',
+              items: [
+                'Flex **before** comparing anything',
+                'Compare each cost with its own flexed line',
+                'Measure fixed overhead against the original budget',
+                'Check the variances net to the profit difference',
+              ],
+            },
+            right: {
+              title: 'Do not',
+              items: [
+                'Compare actual with the **original** budget',
+                'Flex the fixed overhead line',
+                'Report a size without saying favourable or adverse',
+                'Assume favourable means the month went well',
+              ],
+            },
+          },
+          examtrap: 'A variance stated without a direction is worth nothing: £3,700 could be a saving or an overspend, and the reader cannot tell. Write "£3,700 adverse" every time, even when the answer box only asks for a figure — the direction is usually a separate mark.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'The flexed budget allows £64,800 of materials for the units actually made, and £61,950 was spent. How large is the total materials variance?',
+          unit: '£',
+          answer: 2850,
+          exp: '£64,800 − £61,950 = £2,850 less was spent than the flexed budget allowed, so the variance is £2,850 favourable. It is favourable because it raises profit above the flexed figure — which is the test to apply, rather than remembering that costs work one way and revenues the other.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about variances is correct.',
+          statements: [
+            { text: 'A favourable sales price variance means actual revenue exceeded the flexed budget revenue.', answer: true },
+            { text: 'The fixed production overhead variance is found by flexing budgeted overhead to actual volume.', answer: false },
+            { text: 'A favourable variance always indicates that the department performed well.', answer: false },
+          ],
+          exp: 'Flexing has already removed the volume from the revenue line, so a favourable balance there is price. Fixed overhead is never flexed, which is precisely why its variance is the budget against the actual spend and nothing else. And favourable describes the direction of the effect on profit, not the quality of the decision behind it — cheap material that then wastes labour hours produces a favourable variance and a worse month.',
+        },
+        {
+          type: 'entrygrid',
+          q: 'The flexed budget is: materials £52,000, labour £38,000, variable overhead £11,000. Actual costs were materials £54,600, labour £36,200, variable overhead £11,900. Enter the size of each variance.',
+          entrygrid: {
+            title: 'Total cost variances',
+            rowHeader: 'Cost',
+            columns: ['Favourable £', 'Adverse £'],
+            rows: [
+              { label: 'Direct materials', col: 1, amount: 2600 },
+              { label: 'Direct labour', col: 0, amount: 1800 },
+              { label: 'Variable overhead', col: 1, amount: 900 },
+            ],
+          },
+          exp: '£54,600 − £52,000 = £2,600 overspent on materials and £11,900 − £11,000 = £900 overspent on variable overhead, both adverse. Labour came in under: £38,000 − £36,200 = £1,800 favourable. Netting them gives 2,600 + 900 = £3,500 adverse against £1,800 favourable, so £1,700 adverse in total — and the actual cost of £102,700 is exactly £1,700 above the flexed £101,000.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-4F',
+      title: 'Investigating and reporting variances',
+      icon: '🔎',
+      criteria: ['MATS-4.3.1', 'MATS-4.3.2', 'MATS-4.3.3'],
+      cards: [
+        {
+          h: 'What each variance is usually telling you',
+          table: {
+            headers: ['Variance', 'Likely causes', 'Who would know'],
+            rows: [
+              ['Materials adverse', 'Supplier price rise · bulk discount lost · poorer quality causing waste · urgent order at a premium', 'Buyer, production manager'],
+              ['Materials favourable', 'Cheaper supplier · discount negotiated · a lower grade of material bought', 'Buyer'],
+              ['Labour adverse', 'Pay award above standard · overtime worked · unskilled staff taking longer', 'HR, production manager'],
+              ['Labour favourable', 'Lower grade of staff used · a genuine efficiency gain · idle time avoided', 'Production manager'],
+              ['Sales price adverse', 'Discounting to hold volume · a competitor undercutting · list price not achieved', 'Sales manager'],
+              ['Fixed overhead adverse', 'Rent or insurance rise · unbudgeted repair · a standard set too long ago', 'Finance'],
+            ],
+          },
+          p: [
+            'None of these is a conclusion, and a report that states one as though it were is doing the same job as a guess. The table narrows the search; the person named at the end of the row settles it.',
+          ],
+        },
+        {
+          h: 'Variances do not happen one at a time',
+          p: [
+            'The most useful thing to know about variance analysis is that one decision often produces two variances with opposite signs. Buying a cheaper grade of material gives a **favourable** material price effect — and then more of it is wasted and the machines jam, so the material total may turn adverse anyway and the labour hours certainly rise.',
+            'The pattern repeats everywhere. Cutting the selling price gives an adverse sales price variance and, if it worked, a volume the flexed budget has already absorbed. Using cheaper, less skilled staff gives a favourable labour rate and an adverse efficiency in the hours they take. **Read the variances together or you will congratulate one department for a problem it caused in another.**',
+          ],
+          examtrap: 'When a question shows one favourable and one adverse variance in the same month, the expected answer is nearly always that they are connected. Saying so is what distinguishes an interpretation from a description.',
+        },
+        {
+          h: 'Which ones are worth investigating',
+          table: {
+            headers: ['Test', 'The question to ask'],
+            rows: [
+              ['Size in money', 'Is it large enough to matter to a business this size?'],
+              ['Size as a percentage', 'Is £4,000 on £40,000 the same news as £4,000 on £900,000?'],
+              ['Trend', 'Is it growing, or has it appeared in the same direction for months?'],
+              ['Controllability', 'Could anyone here have prevented it, or is it a market price?'],
+              ['Cost against benefit', 'Will investigating cost more than anything it could recover?'],
+            ],
+          },
+          p: [
+            'A business normally sets a rule in advance — anything above a stated amount, or above a stated percentage of the budgeted figure, is investigated — because deciding case by case after the event invites the comfortable answer. Both tests are needed: a percentage rule alone chases trivial money on small lines, and a money rule alone ignores a small line that has doubled.',
+            'A variance nobody could have controlled is still worth **knowing** about, because it usually means the standard needs revising. It is just not worth investigating as a performance failure.',
+          ],
+        },
+        {
+          h: 'Reporting, and what to recommend',
+          p: [
+            'A variance report that stops at the numbers has done half the job. What is asked for is the size, the likely cause, and what should be done — in that order, briefly, and to someone who can act on it.',
+          ],
+          split: {
+            left: {
+              title: 'Remedial action worth proposing',
+              items: [
+                'Renegotiate with the supplier, or find another',
+                'Train or reallocate staff where quality caused rework',
+                'Schedule to avoid the overtime that caused the premium',
+                'Review the selling price rather than keep discounting',
+                'Revise a standard that has been overtaken by events',
+              ],
+            },
+            right: {
+              title: 'What makes a report useless',
+              items: [
+                'A figure with no direction attached',
+                'A cause asserted with no evidence behind it',
+                'Blame aimed at a manager who controlled nothing',
+                'A recommendation that costs more than the variance',
+                'Silence about a favourable variance that hid a problem',
+              ],
+            },
+          },
+          callout: {
+            kind: 'key',
+            text: 'Revising the standard is a legitimate recommendation and often the right one. A card that no longer describes reality generates a variance every month that measures nothing but its own age.',
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'A month shows a favourable materials variance and an adverse labour variance. What is the most likely single explanation?',
+          opts: [
+            'A cheaper, lower grade of material took longer to work with',
+            'A pay award was made at the same time as a supplier discount',
+            'The material standard and the labour standard were both wrong',
+            'Production volume was higher than the original budget allowed',
+          ],
+          ans: 0,
+          exp: 'One decision producing two variances of opposite sign is the commonest pattern in this outcome, and cheaper material that is harder to machine is its textbook case. The second option is possible but needs two unrelated events on the same page. The last is ruled out by the technique itself: flexing removed the volume difference before any variance was calculated.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about investigating variances is correct.',
+          statements: [
+            { text: 'A variance should be judged both in money and as a percentage of the budgeted figure.', answer: true },
+            { text: 'Revising an out-of-date standard can be a valid response to a persistent variance.', answer: true },
+            { text: 'A variance outside the control of the business is not worth reporting at all.', answer: false },
+          ],
+          exp: 'Money alone misses a small line that has doubled; a percentage alone chases trivial sums on small lines, so both tests are applied. A standard that no longer describes reality produces a variance every month that measures its own age, and revising it is the fix. An uncontrollable variance is still worth reporting — the business needs to know a market price has moved, even though nobody here is going to be asked to explain it.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify the most likely cause of each variance.',
+          picklist: {
+            title: 'Cause and effect',
+            rowHeader: 'Variance',
+            choiceHeader: 'Most likely cause',
+            options: ['A purchasing decision', 'A labour decision', 'A selling decision'],
+            rows: [
+              { text: 'Adverse materials variance after losing a bulk discount', answer: 0 },
+              { text: 'Adverse labour variance caused by overtime worked at a premium', answer: 1 },
+              { text: 'Adverse sales price variance after discounting to hold market share', answer: 2 },
+              { text: 'Favourable materials variance after switching to a cheaper supplier', answer: 0 },
+              { text: 'Favourable labour variance after using a lower grade of staff', answer: 1 },
+            ],
+          },
+          exp: 'Attributing a variance to a decision is what turns a number into something a manager can act on. Notice that two of these are favourable and still trace back to a decision worth questioning: a cheaper supplier and a lower grade of staff both save money now and both routinely cost more elsewhere. The question a report should ask of a favourable variance is the same one it asks of an adverse one.',
+        },
+      ],
+    },
+  ];
+
+
   var PATH = [
     {
       unit: 'mats',
@@ -2148,6 +2858,63 @@
             '**Activity-based costing** — pool the cost of an activity, divide by the driver that causes it, charge each product by its driver usage. It changes which product carries the overhead, never how much overhead there is.',
           ],
           examtrap: 'Absorbed = budgeted RATE × ACTUAL activity. Actual overhead ÷ actual hours is a rate nobody used; budgeted overhead ÷ budgeted hours hands back the budget. Both give a difference of nil, which is the tell that the wrong figures went in.',
+        },
+      },
+    },
+    {
+      unit: 'mats',
+      level: 3,
+      title: 'Management Accounting Techniques',
+      outcome: 4,
+      outcomeTitle: 'Investigate deviations from budgets',
+      weighting: 15,
+      lessons: LO4_LESSONS,
+      cheatsheet: {
+        id: 'L3-MATS-4S',
+        title: 'Outcome 4 — flexing, variances and the statement',
+        icon: '🗂️',
+        card: {
+          h: 'Everything Outcome 4 asks for, on one page',
+          flow: ['Standard card × budgeted volume = the budget', 'Rebuild it at ACTUAL volume = the flexed budget', 'Flexed against actual = the variances', 'Flexed profit − variances = actual profit'],
+          formula: 'Flex the VARIABLE lines · copy the FIXED lines across unchanged',
+          table: {
+            headers: ['Variance (total)', 'How it is found', 'Favourable when'],
+            rows: [
+              ['Sales price', 'Actual revenue − flexed budget revenue', 'Actual revenue is higher'],
+              ['Raw material', 'Flexed budget cost − actual cost', 'Actual cost is lower'],
+              ['Labour', 'Flexed budget cost − actual cost', 'Actual cost is lower'],
+              ['Variable overhead', 'Flexed budget cost − actual cost', 'Actual cost is lower'],
+              ['Fixed production overhead', 'BUDGETED overhead − actual overhead', 'Actual overhead is lower'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'Budgets, in the order they are built',
+              items: [
+                'Revenue — units × each product\'s own price',
+                'Materials — **quantity first**, then price it once',
+                'Labour — **hours first**, then rate them',
+                'Variable overhead — the rate × those hours',
+                'Fixed production and non-manufacturing — totals agreed in advance',
+              ],
+            },
+            right: {
+              title: 'Which variances to investigate',
+              items: [
+                'Size **in money** — does it matter to a business this size?',
+                'Size **as a percentage** — of the figure it relates to',
+                'Trend — the same direction for months means a stale standard',
+                'Controllability — could anyone here have prevented it?',
+                'Cost against benefit — will the inquiry recover its own cost?',
+              ],
+            },
+          },
+          p: [
+            '**Favourable** means profit ended higher than the flexed budget said; **adverse** means lower. One test covers costs and revenues alike, so no second convention is needed. A figure with no direction attached is worth nothing — write "£3,700 adverse" every time.',
+            '**The operating statement** starts at the FLEXED budget profit, lists every variance, and must land exactly on the actual profit. If it does not, a variance has been signed the wrong way or the original budget profit was used as the opening figure.',
+            '**Variances come in pairs.** Cheaper material gives a favourable price and an adverse usage; cheaper staff give a favourable rate and adverse hours. When a question shows one of each in the same month, the expected answer is that they are connected.',
+          ],
+          examtrap: 'Fixed production overhead is never flexed. Its flexed figure IS the original budget, so the variance is budget against actual spend. Flexing it manufactures a variance out of arithmetic and breaks the reconciliation at the bottom of the statement.',
         },
       },
     },
@@ -3185,6 +3952,353 @@
       q: 'Factory rent of £84,000 is apportioned on floor area. Machining occupies 4,200 square metres, Assembly 2,800 and Stores 1,400. How much rent is apportioned to Machining?',
       unit: '£', answer: 42000,
       exp: 'Total floor area is 4,200 + 2,800 + 1,400 = 8,400 square metres, so Machining takes 4,200 ÷ 8,400 = one half: £84,000 × 0.5 = £42,000.00. Assembly takes £28,000.00 and Stores £14,000.00, and the three add back to £84,000.00 — apportionment shares a cost out in full and never leaves a remainder.',
+    },
+    /* ── Outcome 4 — investigating deviations from budgets (15%) ────────── */
+    {
+      id: 'M-4-01', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.1'],
+      type: 'mcq',
+      q: 'What is a standard cost?',
+      opts: [
+        'What one unit ought to cost, agreed before the period begins',
+        'What one unit did cost, averaged over the period just ended',
+        'The lowest cost at which one unit has ever been produced',
+        'The cost of one unit as reported in the financial statements',
+      ],
+      ans: 0,
+      exp: 'A standard is a target set in advance from the quantity of each resource a unit should need and the price that resource should command. Last year\'s average is a record rather than a target, and building next year\'s plan on it locks in whatever went wrong. The lowest cost ever achieved is an ideal standard, which is missed every period and soon ignored.',
+    },
+    {
+      id: 'M-4-02', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.1'],
+      type: 'numeric',
+      q: 'A standard card shows 5 kg of material at £3.20 a kilogram, 0.8 labour hours at £15.00 an hour, variable overhead at £6.00 a labour hour and fixed overhead at £9.00 a labour hour. What is the standard absorption cost of one unit?',
+      unit: '£', answer: 40,
+      exp: '5 × £3.20 = £16.00 of material, 0.8 × £15.00 = £12.00 of labour, 0.8 × £6.00 = £4.80 of variable overhead and 0.8 × £9.00 = £7.20 of fixed overhead. £16.00 + £12.00 + £4.80 + £7.20 = £40.00. Stopping before the fixed line would give the marginal cost of £32.80 instead.',
+    },
+    {
+      id: 'M-4-03', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.2'],
+      type: 'numeric',
+      q: 'A standard card shows a selling price of £48.00 and a variable cost of £29.00. Budgeted fixed costs are £84,000 and the budget is for 7,000 units. What is the budgeted profit?',
+      unit: '£', answer: 49000,
+      exp: 'Contribution is £48.00 − £29.00 = £19.00 a unit, so 7,000 × £19.00 = £133,000, and the fixed costs come off in one figure: £133,000 − £84,000 = £49,000. Spreading the £84,000 over 7,000 units first gives £12.00 a unit and the same answer here — but only at this one volume, which is why it is a habit worth avoiding.',
+    },
+    {
+      id: 'M-4-04', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.3'],
+      type: 'picklist',
+      q: 'Identify the type of budget being described.',
+      picklist: {
+        title: 'Types of budget',
+        rowHeader: 'Description', choiceHeader: 'Type',
+        options: ['Fixed', 'Flexed', 'Rolling'],
+        rows: [
+          { text: 'Set for one planned level of activity and not adjusted afterwards', answer: 0 },
+          { text: 'Rebuilt at the level of activity that actually occurred', answer: 1 },
+          { text: 'Extended by one further month as each month closes', answer: 2 },
+          { text: 'The budget against which resources are ordered and staff hired', answer: 0 },
+          { text: 'The budget an operating statement starts from', answer: 1 },
+        ],
+      },
+      exp: 'The word "fixed" describes the budget, not its costs: it is the plan, and it is what a business commits resources against. A flexed budget exists for control rather than planning, which is why the operating statement begins there. A rolling budget keeps a constant horizon ahead instead of one that shortens as the year runs down.',
+    },
+    {
+      id: 'M-4-05', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.3'],
+      type: 'mcq',
+      q: 'What is the main drawback of a rolling budget?',
+      opts: [
+        'It takes more time and effort to prepare than an annual budget',
+        'It cannot be compared with actual results at the period end',
+        'It has to be flexed before any variance can be calculated',
+        'It ignores fixed costs, which are only budgeted once a year',
+      ],
+      ans: 0,
+      exp: 'Adding a period every time one closes means budgeting all year rather than once a year, and that cost is the reason many businesses do not do it. Nothing about the technique stops the budget being compared with actual results or being flexed — a rolling budget is flexed for control in exactly the way an annual one is, and it budgets fixed costs like any other.',
+    },
+    {
+      id: 'M-4-06', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.3', 'MATS-4.1.6'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about flexing a budget is correct.',
+      statements: [
+        { text: 'A flexed budget shows what costs should have been at the volume actually achieved.', answer: true },
+        { text: 'A fixed budget is one made up entirely of fixed costs.', answer: false },
+        { text: 'Revenue is left at its original figure when a budget is flexed.', answer: false },
+      ],
+      exp: 'Flexing answers one question: at the volume that actually happened, what should this have cost? The word "fixed" in fixed budget means unadjusted, not made of fixed costs — a fixed budget contains plenty of variable ones. And revenue is flexed along with everything else; leaving it at the original figure reports the whole of any extra volume as a favourable price variance, which it plainly is not.',
+    },
+    {
+      id: 'M-4-07', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.6'],
+      type: 'numeric',
+      q: 'A budget for 4,000 units shows variable costs of £68,000 and fixed costs of £51,000. Actual output was 5,500 units. What is the total cost in the flexed budget?',
+      unit: '£', answer: 144500,
+      exp: 'The variable cost per unit is £68,000 ÷ 4,000 = £17.00, so the flexed variable cost is 5,500 × £17.00 = £93,500, and the fixed £51,000 is carried across untouched: £93,500 + £51,000 = £144,500. Scaling the whole £119,000 up in proportion would give £163,625 and charge the business for premises it never rented.',
+    },
+    {
+      id: 'M-4-08', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.6'],
+      type: 'numeric',
+      q: 'A standard card shows a selling price of £26.00 and a variable cost of £15.00. Budgeted fixed costs are £72,000. The budget was for 9,000 units but 11,000 were made and sold. What is the flexed budget profit?',
+      unit: '£', answer: 49000,
+      exp: 'Contribution is £26.00 − £15.00 = £11.00 a unit, so the flexed contribution is 11,000 × £11.00 = £121,000, and the fixed costs stay at £72,000: £121,000 − £72,000 = £49,000. The original budget profit was 9,000 × £11.00 = £99,000 less £72,000, or £27,000 — and the whole £22,000 difference is volume, which is exactly what flexing exists to take out of the comparison.',
+    },
+    {
+      id: 'M-4-09', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.6'],
+      type: 'entrygrid',
+      q: 'A budget was set for 6,000 units: materials £54,000, labour £42,000, variable overhead £18,000, fixed overhead £39,000. Actual output was 7,000 units. Complete the flexed budget.',
+      entrygrid: {
+        title: 'Flexed budget, 7,000 units',
+        rowHeader: 'Cost',
+        columns: ['Original budget £', 'Flexed budget £'],
+        rows: [
+          { label: 'Direct materials', cells: { 0: 54000, 1: 63000 } },
+          { label: 'Direct labour', cells: { 0: 42000, 1: 49000 } },
+          { label: 'Variable overhead', cells: { 0: 18000, 1: 21000 } },
+          { label: 'Fixed overhead', cells: { 0: 39000, 1: 39000 } },
+        ],
+      },
+      exp: 'Each variable line is rebuilt on its own rate: £54,000 ÷ 6,000 = £9.00 a unit and 7,000 × £9.00 = £63,000; £42,000 ÷ 6,000 = £7.00 and 7,000 × £7.00 = £49,000; £18,000 ÷ 6,000 = £3.00 and 7,000 × £3.00 = £21,000. The fixed line is copied across at £39,000, because making a sixth more units does not raise the rent.',
+    },
+    {
+      id: 'M-4-10', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.6'],
+      type: 'mcq',
+      q: 'Why is a budget flexed before variances are calculated?',
+      opts: [
+        'So that the difference in volume does not appear as a difference in performance',
+        'So that fixed costs can be shared across the units actually produced',
+        'So that the original budget can be reported as having been achieved',
+        'So that favourable and adverse variances cancel each other out',
+      ],
+      ans: 0,
+      exp: 'Comparing actual cost at one volume with budgeted cost at another measures the volume far more than it measures anyone\'s performance. Flexing rebuilds the plan at the volume that happened, so what is left is spending and pricing. Fixed costs are deliberately NOT shared out during flexing, and nothing about the technique cancels variances or rescues the original budget.',
+    },
+    {
+      id: 'M-4-11', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.5'],
+      type: 'numeric',
+      q: 'A business budgets 4,500 units of Product J, needing 6 kg each, and 3,200 units of Product K, needing 2.5 kg each, of the same material. How many kilograms are in the materials budget?',
+      unit: 'kg', answer: 35000,
+      exp: '4,500 × 6 = 27,000 kg for J and 3,200 × 2.5 = 8,000 kg for K, so 27,000 + 8,000 = 35,000 kg. Building the quantity before the money is the habit worth keeping: the buyer places orders in kilograms, and pricing once at the end avoids rounding each product separately.',
+    },
+    {
+      id: 'M-4-12', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.5'],
+      type: 'numeric',
+      q: 'A business budgets 2,800 units of Product L at 1.75 labour hours each and 4,000 units of Product M at 0.9 hours each. Labour costs £13.00 an hour. What is the labour budget in money?',
+      unit: '£', answer: 110500,
+      exp: '2,800 × 1.75 = 4,900 hours and 4,000 × 0.9 = 3,600 hours, so 4,900 + 3,600 = 8,500 hours, and 8,500 × £13.00 = £110,500. The 8,500 hours is worth recording separately: it is what the variable overhead budget is built on and what the headcount plan needs.',
+    },
+    {
+      id: 'M-4-13', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.5'],
+      type: 'entrygrid',
+      q: 'Product R sells for £34.00 and 5,000 units are budgeted. Product S sells for £52.00 and 2,500 units are budgeted. Each R needs 2 kg of material and each S needs 3 kg, at £7.00 a kilogram. Complete the two budgets.',
+      entrygrid: {
+        title: 'Revenue and materials budgets',
+        rowHeader: 'Line',
+        columns: ['Product R', 'Product S'],
+        rows: [
+          { label: 'Revenue budget £', cells: { 0: 170000, 1: 130000 } },
+          { label: 'Material required, kg', cells: { 0: 10000, 1: 7500 } },
+          { label: 'Materials budget £', cells: { 0: 70000, 1: 52500 } },
+        ],
+      },
+      exp: 'Revenue is 5,000 × £34.00 = £170,000 and 2,500 × £52.00 = £130,000, giving £300,000 in total. Material is 5,000 × 2 = 10,000 kg and 2,500 × 3 = 7,500 kg, which at £7.00 is 10,000 × 7.00 = £70,000 and 7,500 × 7.00 = £52,500. Each product carries its own selling price, so revenue is the one budget that can never be built from a combined volume.',
+    },
+    {
+      id: 'M-4-14', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.5'],
+      type: 'mcq',
+      q: 'A business absorbs variable production overhead on machine hours. Which budget must be completed before the variable overhead budget?',
+      opts: [
+        'The machine hours budget',
+        'The labour hours budget',
+        'The fixed overhead budget',
+        'The non-manufacturing overhead budget',
+      ],
+      ans: 0,
+      exp: 'The overhead budget is the absorption rate multiplied by the activity it is absorbed on, so that activity has to be budgeted first. Where the rate is per labour hour the labour budget comes first; where it is per machine hour, as here, the machine hours budget does. The two fixed totals are agreed in advance and depend on no other budget.',
+    },
+    {
+      id: 'M-4-15', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.4'],
+      type: 'numeric',
+      q: 'A flexed budget profit is £96,500. The variances are: sales price £4,200 adverse, materials £1,900 favourable, labour £3,300 adverse and variable overhead £700 favourable. What is the actual profit?',
+      unit: '£', answer: 91600,
+      exp: 'Favourable variances add and adverse ones subtract: 1,900 + 700 = £2,600 favourable against 4,200 + 3,300 = £7,500 adverse, so the net effect is £4,900 adverse. £96,500 − £4,900 = £91,600. An operating statement is only complete when the listed variances carry you exactly from the flexed profit to the actual one.',
+    },
+    {
+      id: 'M-4-16', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.4'],
+      type: 'mcq',
+      q: 'What figure does an operating statement begin with?',
+      opts: [
+        'The flexed budget profit',
+        'The original budget profit',
+        'The actual profit for the period',
+        'The standard profit per unit',
+      ],
+      ans: 0,
+      exp: 'The statement bridges from what the business should have earned at the volume it actually achieved to what it did earn, naming each variance on the way. Starting from the original budget profit leaves the effect of the volume difference unexplained, so the variances no longer reconcile — which is the quickest way to spot that the wrong opening figure was used.',
+    },
+    {
+      id: 'M-4-17', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.1'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about the direction of a variance is correct.',
+      statements: [
+        { text: 'A variance is only meaningful once it has been labelled favourable or adverse.', answer: true },
+        { text: 'Spending less than the flexed budget allowed gives a favourable variance.', answer: true },
+        { text: 'Earning less revenue than the flexed budget expected gives a favourable variance.', answer: false },
+      ],
+      exp: 'A bare figure cannot be read: £3,700 is either a saving or an overspend and the reader has no way to tell, so the direction is part of the answer rather than a decoration on it. The rule behind both of the other statements is the same one — did this push profit above or below the flexed figure? Spending less does; earning less does not.',
+    },
+    {
+      id: 'M-4-18', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.3'],
+      type: 'numeric',
+      q: 'The flexed budget revenue is £286,000 and actual revenue was £292,400. How large is the total sales price variance?',
+      unit: '£', answer: 6400,
+      exp: '£292,400 − £286,000 = £6,400 more revenue than the flexed budget expected, so the variance is £6,400 favourable. Because flexing has already removed the volume difference from the revenue line, whatever is left over can only be price — a rise achieved, or a discount not given.',
+    },
+    {
+      id: 'M-4-19', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.3'],
+      type: 'numeric',
+      q: 'A budget for 5,000 units allowed £75,000 of materials. Actual output was 6,400 units and materials cost £98,300. How large is the total materials variance?',
+      unit: '£', answer: 2300,
+      exp: 'Flex first: £75,000 ÷ 5,000 = £15.00 a unit, and 6,400 × £15.00 = £96,000. Then compare: £98,300 − £96,000 = £2,300 more than the flexed budget allowed, so £2,300 adverse. Comparing the £98,300 with the original £75,000 would report £23,300 adverse, almost all of which is simply the cost of making 1,400 more units.',
+    },
+    {
+      id: 'M-4-20', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.3'],
+      type: 'numeric',
+      q: 'Budgeted fixed production overhead was £64,000 for 8,000 units. Actual output was 9,500 units and actual fixed overhead was £61,900. How large is the total fixed production overhead variance?',
+      unit: '£', answer: 2100,
+      exp: '£64,000 − £61,900 = £2,100 less was spent than budgeted, so the variance is £2,100 favourable. The output figures are there to be ignored: fixed overhead is not flexed, so its flexed budget figure is the original £64,000. Flexing it to 9,500 units would give £76,000 and invent a £14,100 favourable variance out of arithmetic alone.',
+    },
+    {
+      id: 'M-4-21', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.1'],
+      type: 'picklist',
+      q: 'Identify whether each result gives a favourable or an adverse variance.',
+      picklist: {
+        title: 'Direction of the variance',
+        rowHeader: 'Result', choiceHeader: 'Variance',
+        options: ['Favourable', 'Adverse'],
+        rows: [
+          { text: 'Labour cost £41,600 against a flexed budget of £44,000', answer: 0 },
+          { text: 'Revenue £188,000 against a flexed budget of £195,000', answer: 1 },
+          { text: 'Materials cost £73,900 against a flexed budget of £71,200', answer: 1 },
+          { text: 'Fixed overhead £29,400 against a budget of £31,000', answer: 0 },
+          { text: 'Revenue £212,500 against a flexed budget of £206,000', answer: 0 },
+        ],
+      },
+      exp: 'One test settles every row: did this push profit above the flexed figure or below it? Spending less on a cost pushes it up, and so does earning more revenue; spending more or earning less pushes it down. Applying that question is more reliable than remembering that costs are subtracted one way round and revenues the other.',
+    },
+    {
+      id: 'M-4-22', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.2'],
+      type: 'gapfill',
+      q: 'Complete the sentence about flexed budgets.',
+      template: 'Flexing multiplies each {0} cost by the volume actually achieved and carries the {1} cost across unchanged, so that what remains when actual results are compared with it is no longer distorted by {2}.',
+      gaps: [
+        { options: ['variable', 'fixed', 'standard'], answer: 0 },
+        { options: ['fixed', 'variable', 'marginal'], answer: 0 },
+        { options: ['volume', 'price', 'waste'], answer: 0 },
+      ],
+      exp: 'The flexed budget is the plan rebuilt at the volume that actually happened, so the variable lines move and the fixed lines do not. What that buys is a fair comparison: with the volume difference already accounted for, the remaining gap between flexed and actual is spending and pricing, which is what a manager can be asked about.',
+    },
+    {
+      id: 'M-4-23', unitKey: 'mats', lo: 4, criteria: ['MATS-4.3.1'],
+      type: 'mcq',
+      q: 'A month shows a favourable labour rate outcome and an adverse materials variance. Which single explanation covers both?',
+      opts: [
+        'Less experienced staff were used and wasted more material',
+        'A pay freeze coincided with an unexpected supplier price rise',
+        'Output was above budget, so more of both resources was used',
+        'The material standard was revised part-way through the month',
+      ],
+      ans: 0,
+      exp: 'One decision producing two variances of opposite sign is the pattern this outcome keeps returning to, and cheaper labour that spoils more material is its standard case. The second option needs two unrelated events to land in the same month. Higher output is ruled out by the technique: flexing removed the volume difference before either variance was worked out.',
+    },
+    {
+      id: 'M-4-24', unitKey: 'mats', lo: 4, criteria: ['MATS-4.3.2'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about selecting variances to investigate is correct.',
+      statements: [
+        { text: 'A variance is judged both in money and as a percentage of the figure it relates to.', answer: true },
+        { text: 'Investigating every variance found is the most efficient use of management time.', answer: false },
+        { text: 'A variance the business could not have controlled should be left out of the report.', answer: false },
+      ],
+      exp: 'Two tests are used because either alone misleads: money alone hides a small line that has doubled, and a percentage alone chases trivial sums. Investigating everything spends more on the inquiry than it recovers, which is why a business sets its rule in advance. And an uncontrollable variance still belongs in the report — a market price that has moved is exactly the news that means the standard needs revising.',
+    },
+    {
+      id: 'M-4-25', unitKey: 'mats', lo: 4, criteria: ['MATS-4.3.3'],
+      type: 'mcq',
+      q: 'The same adverse material price variance has appeared every month for six months. What is the most appropriate response?',
+      opts: [
+        'Review the standard price, which may no longer reflect the market',
+        'Ask the production manager to explain the current month in writing',
+        'Investigate the buyer\'s decisions over the whole six-month period',
+        'Treat the variance as uncontrollable and stop reporting it',
+      ],
+      ans: 0,
+      exp: 'A variance in the same direction month after month is evidence about the standard rather than about anybody\'s performance — the price has moved and the card has not. Asking one manager to explain one month of a six-month pattern answers the wrong question, and quietly dropping the line loses the information altogether. Revising a standard that has been overtaken by events is a legitimate recommendation and often the right one.',
+    },
+    {
+      id: 'M-4-26', unitKey: 'mats', lo: 4, criteria: ['MATS-4.1.6', 'MATS-4.2.3', 'MATS-4.1.4'],
+      type: 'task',
+      q: 'Flex the budget, calculate the variances and reconcile to the actual profit.',
+      brief: 'Marden Plastics budgeted for 8,000 units and made and sold 9,000. Everything made was sold, and there was no opening or closing inventory.',
+      datasets: [
+        {
+          title: 'Standard cost card and budget',
+          headers: ['Item', 'Amount'],
+          rows: [
+            ['Standard selling price a unit', '£50.00'],
+            ['Standard direct materials a unit', '£12.00'],
+            ['Standard direct labour a unit', '£12.00'],
+            ['Standard variable overhead a unit', '£6.00'],
+            ['Budgeted fixed production overhead', '£48,000.00'],
+            ['Budgeted units', '8,000'],
+          ],
+        },
+        {
+          title: 'Actual results — 9,000 units',
+          headers: ['Item', 'Amount'],
+          rows: [
+            ['Revenue', '£441,000.00'],
+            ['Direct materials', '£110,700.00'],
+            ['Direct labour', '£106,200.00'],
+            ['Variable overhead', '£55,800.00'],
+            ['Fixed production overhead', '£46,500.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Total cost in the flexed budget',
+          type: 'numeric', unit: '£', answer: 318000,
+          exp: 'The variable lines flex to 9,000 units: 9,000 × £12.00 = £108,000 of materials, 9,000 × £12.00 = £108,000 of labour and 9,000 × £6.00 = £54,000 of variable overhead. The fixed £48,000 is carried across unchanged, so £108,000 + £108,000 + £54,000 + £48,000 = £318,000.',
+        },
+        {
+          label: 'Profit in the flexed budget',
+          type: 'numeric', unit: '£', answer: 132000,
+          exp: 'Flexed revenue is 9,000 × £50.00 = £450,000, so £450,000 − £318,000 = £132,000. This is what Marden should have earned making and selling 9,000 units, and it is the only figure the actual result can fairly be measured against.',
+        },
+        {
+          label: 'Total direct materials variance',
+          type: 'numeric', unit: '£', answer: 2700,
+          exp: '£110,700 − £108,000 = £2,700 more than the flexed budget allowed, so £2,700 adverse. Comparing the actual spend with the original budget of 8,000 × £12.00 = £96,000 would report £14,700 adverse, most of which is simply the cost of the extra 1,000 units.',
+        },
+        {
+          label: 'Total sales price variance',
+          type: 'numeric', unit: '£', answer: 9000,
+          exp: '£450,000 − £441,000 = £9,000 of revenue that the flexed budget expected and did not arrive, so £9,000 adverse. Volume is already accounted for, so this is price: 9,000 units earned £441,000, which is £49.00 each against a standard of £50.00.',
+        },
+        {
+          label: 'Actual profit for the period',
+          type: 'numeric', unit: '£', answer: 121800,
+          exp: 'Actual costs are £110,700 + £106,200 + £55,800 + £46,500 = £319,200, so £441,000 − £319,200 = £121,800. The gap from the flexed profit is £132,000 − £121,800 = £10,200 adverse, which the five variances must add back to exactly.',
+        },
+        {
+          label: 'Which costs came in below the flexed budget?',
+          type: 'choice',
+          options: [
+            'Direct labour and fixed production overhead',
+            'Direct materials and variable overhead',
+            'Direct labour and variable overhead',
+            'Fixed production overhead only',
+          ],
+          answer: 0,
+          exp: 'Labour was £108,000 − £106,200 = £1,800 favourable and fixed overhead £48,000 − £46,500 = £1,500 favourable. Materials were £2,700 adverse and variable overhead £55,800 − £54,000 = £1,800 adverse. With the £9,000 adverse on price, the five net to £9,000 + £2,700 + £1,800 = £13,500 adverse against £1,800 + £1,500 = £3,300 favourable, which is £10,200 adverse and exactly the profit gap.',
+        },
+      ],
+      exp: 'Set beside the original budget, Marden looks to have overspent by £319,200 − £288,000 = £31,200. Almost all of that is the cost of 1,000 units the budget never planned for, and flexing removes it: the real story is £10,200 of underperformance, most of which is a selling price of £49.00 where £50.00 was planned. Two departments beat their standards and one modest overspend on materials was more than offset elsewhere. None of that is visible until the budget has been flexed.',
     },
   ];
 
