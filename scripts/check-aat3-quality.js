@@ -418,6 +418,38 @@ allQuestions.forEach(({ where, q }) => {
   notes.push(`Practice bank by unit: ${Object.entries(byUnit).map(([k, v]) => `${k} ${v}`).join(', ')}.`);
 }
 
+/* ── No two questions ask the same thing in the same words ─────────────────── */
+
+/* WHAT A REPEATED STEM COSTS. Two questions worded identically are two
+   different questions to the marker and one question to the reader: met in the
+   same endless run they read as a bug, and met in the same paper they read as
+   a paper that has run out of things to ask.
+
+   It also breaks anything that identifies a question BY its stem, which is what
+   a harness driving a real paper has to do — that is how this rule was found.
+   Three collisions had gone in unnoticed while a mock check quietly reported a
+   correct paper as scoring 96%, because it answered the first question with
+   that wording and the screen was showing the second.
+
+   Compared within a unit, because two units may legitimately examine the same
+   idea, and normalised so that a difference of spacing or case is not a
+   difference of question. */
+{
+  const seen = new Map();
+  practice.forEach(q => {
+    const stem = String(q.q || q.task || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (!stem) return;
+    const key = (q.unitKey || '?') + '|' + stem;
+    if (seen.has(key)) {
+      errors.push(`practice ${q.id}: asks the same thing in the same words as ${seen.get(key)} ` +
+        `— "${stem.slice(0, 60)}${stem.length > 60 ? '…' : ''}". Reword one of them.`);
+    } else {
+      seen.set(key, q.id);
+    }
+  });
+  notes.push(`${seen.size} distinct question stems across the practice banks.`);
+}
+
 /* ── 1b. True/false grids must not be answerable by test-wiseness ─────────
    An adversarial review found two cues in the true/false statements that no
    check was measuring. Both are properties of the SET, not of any one grid,

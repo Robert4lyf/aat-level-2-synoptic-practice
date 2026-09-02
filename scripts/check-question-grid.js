@@ -325,23 +325,46 @@ PLAYERS.forEach(pl => {
 
     const norm = t => String(t).replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
     const stemRe = new RegExp('<h2 class="' + pl.px + '-q">([\\s\\S]*?)</h2>');
-    let leaked = 0, matched = 0, sawSubmit = 0;
-    for (let i = 0; i < 12; i++) {
+    /* WALK THE PAPER THE PAPER SETS, not a number written here. This loop ran a
+       fixed twelve times, which was every question while the bank held fewer
+       than twelve of these types. The FAPS bank now holds twenty-six and its
+       paper is twenty-four long, so the walk stopped halfway and reported a
+       correct paper as scoring 50% — a harness that had quietly stopped
+       measuring what it claimed to. The bound is now a guard against a paper
+       that never ends, not a description of one. */
+    let leaked = 0, matched = 0, sawSubmit = 0, screens = 0, unmatched = 0;
+    for (let i = 0; i < 200; i++) {
       const html = el.innerHTML;
       if (new RegExp(pl.px + '-(pl|eg)-(key|said)').test(html)) leaked++;
       if (/data-a[13]="(plsubmit|egsubmit)"/.test(html)) sawSubmit++;
       const m = html.match(stemRe);
-      const text = m ? norm(m[1].replace(/<[^>]*>/g, '').replace(/&amp;/g, '&')) : null;
-      const q = mine.find(x => norm(x.q) === text);
-      if (q) { matched++; answerOnScreen(D, el, q, right); }
+      /* DECODED, not just de-tagged. The renderer escapes the stem, so a
+         question whose wording contains an apostrophe arrives as `&#39;` and
+         never matches the bank — which showed up as a paper scoring 92% with
+         two questions "not recognised", and would have been read as a product
+         defect rather than as this harness reading escaped HTML as text. */
+      const text = m ? norm(decode(m[1].replace(/<[^>]*>/g, ''))) : null;
+      /* A screen with no stem is the result screen, not a question the paper
+         served. Counting it made every paper one question longer than it was. */
+      if (text !== null) {
+        const q = mine.find(x => norm(x.q) === text);
+        screens++;
+        if (q) { matched++; answerOnScreen(D, el, q, right); } else unmatched++;
+      }
       if (!D.nodes(el, 'mocknext').length) break;
       D.click(el, 'mocknext');
     }
     const pct = Number((el.innerHTML.match(/(\d+)%/) || [])[1]);
 
     if (right) {
-      ok(matched === mine.length,
-        `${pl.name} mock: every one of the ${mine.length} questions was reached (got ${matched})`);
+      /* THE BANK HOLDS ONLY THESE TYPES, so every screen the paper drew must be
+         one of them and must have been answered. Counting screens rather than
+         the bank keeps this honest whether the paper is shorter than the bank
+         (a weighted draw over nine outcomes) or the same length as it. */
+      ok(screens > 0 && unmatched === 0,
+        `${pl.name} mock: every one of the ${screens} questions the paper served was answered (${unmatched} not recognised)`);
+      ok(matched >= Math.min(mine.length, 3),
+        `${pl.name} mock: the paper served a meaningful number of them (${matched})`);
       /* NOTHING REVEALED WHILE THE PAPER IS BEING SAT. A type that printed its
          key beside the controls would hand over the marks, and no existing
          check looks inside these tables. */
@@ -365,7 +388,7 @@ PLAYERS.forEach(pl => {
          they open it. Every question on this paper was answered correctly, so
          every re-grade must say so too. */
       const ids = D.nodes(el, 'reviewq').map(n => n.getAttribute('data-i'));
-      ok(ids.length === mine.length, `${pl.name} mock: review lists all ${mine.length} questions`);
+      ok(ids.length === screens, `${pl.name} mock: review lists all ${screens} questions the paper served`);
       ids.forEach(i => {
         D.click(el, 'reviewq', n => n.getAttribute('data-i') === i);
         ok(pl.right.test(el.innerHTML),

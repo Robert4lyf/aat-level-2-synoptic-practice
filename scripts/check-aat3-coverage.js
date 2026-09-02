@@ -44,6 +44,8 @@ const MODULES_SHIPPED = [
   { unit: 'faps', outcome: 5 },
   { unit: 'faps', outcome: 6 },
   { unit: 'faps', outcome: 7 },
+  { unit: 'faps', outcome: 8 },
+  { unit: 'faps', outcome: 9 },
   { unit: 'tpfb', outcome: 1 },
   { unit: 'tpfb', outcome: 2 },
   { unit: 'tpfb', outcome: 3 },
