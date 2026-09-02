@@ -23,6 +23,9 @@
 
 const D = require('./lib/aat3-driver.js');
 const SYL = require('../aat3-syllabus.js').SYLLABUS;
+/* The shared table renderer, for reading an entry grid's key back out of
+   whichever shape the row was authored in. */
+const GRID = require('../question-grid.js');
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m';
 const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
@@ -63,6 +66,13 @@ function bestShown(html) {
   return m ? Number(m[1]) : null;
 }
 
+/* The renderer escapes the row text it puts in `aria-label`; this puts it back,
+   so a row whose text contains an apostrophe can still be matched to the bank. */
+function decode(t) {
+  return String(t).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+}
+
 function onScreen(el) {
   const stem = (el.innerHTML.match(/<h2 class="a3-q">([\s\S]*?)<\/h2>/) || [])[1];
   if (!stem) return null;
@@ -90,6 +100,24 @@ function answerRight(el, q) {
         const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(pi));
         box.value = String(p.answer); box.fire('input');
       }
+    });
+  } else if (t === 'picklist') {
+    /* BY THE ROW ON SCREEN, NOT BY THE BANK'S ORDER. Pick-list rows are
+       shuffled per sitting, so rows[data-r] is a different row from the one the
+       control belongs to. The control names its own row in `aria-label`. */
+    D.nodes(el, 'plpick').forEach(n => {
+      const label = decode(n.getAttribute('aria-label') || '');
+      const row = q.picklist.rows.find(x => decode(x.text) === label);
+      if (!row) return;
+      n.value = String(row.answer);
+      n.fire('change');
+    });
+  } else if (t === 'entrygrid') {
+    D.nodes(el, 'egcell').forEach(n => {
+      const [ri, ci] = n.getAttribute('data-c').split(':').map(Number);
+      const v = GRID.cellKey(q.entrygrid.rows[ri], ci);
+      n.value = v == null ? '' : String(v);
+      n.fire('input');
     });
   }
 }

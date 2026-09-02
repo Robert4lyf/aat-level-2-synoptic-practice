@@ -104,6 +104,7 @@ const BANKS = [
   ['Level 2', level2Bank()],
   ['Level 3 TPFB', require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE.QUESTIONS],
   ['Level 3 FAPS', require(path.join(ROOT, 'aat3-faps-data.js')).AAT3_FAPS_PRACTICE.QUESTIONS],
+  ['Level 3 MATS', require(path.join(ROOT, 'aat3-mats-data.js')).AAT3_MATS_PRACTICE.QUESTIONS],
 ];
 
 let authored = 0;
@@ -117,12 +118,24 @@ BANKS.forEach(([name, bank]) => {
 });
 ok(authored >= 10, `${authored} questions of these two types are authored across the levels`);
 
-/* EVERY LEVEL THAT SHOULD HAVE THEM, HAS THEM. Wiring a type into a player and
-   never writing a question for it is a change nothing fails when undone. */
-[['Level 1', 1], ['Level 2', 1], ['Level 3 FAPS', 1]].forEach(([name, least]) => {
+/* EVERY LEVEL THAT SHOULD HAVE THEM, HAS THEM — AND HAS BOTH. Wiring a type
+   into a player and never writing a question for it is a change nothing fails
+   when undone.
+
+   COUNTED PER TYPE, not together. The first version of this rule counted pick
+   lists and entry grids as one population, so a bank with twenty-three pick
+   lists and no entry grid satisfied it — which is precisely the state TPFB was
+   in, and precisely the state this rule was added to catch. Deleting every
+   entry grid from that bank left the gate green. They are two different
+   questions: one asks which CATEGORY something falls in, the other asks which
+   COLUMN a figure goes in, and a bank missing either is missing a shape its
+   assessment uses. */
+['Level 1', 'Level 2', 'Level 3 FAPS', 'Level 3 TPFB', 'Level 3 MATS'].forEach((name) => {
   const bank = (BANKS.find(b => b[0] === name) || [])[1] || [];
-  const n = bank.filter(q => q.type === 'picklist' || q.type === 'entrygrid').length;
-  ok(n >= least, `${name} has ${n} of them`);
+  ['picklist', 'entrygrid'].forEach((type) => {
+    const n = bank.filter(q => q.type === type).length;
+    ok(n >= 1, `${name} has ${n} ${type} question${n === 1 ? '' : 's'}`);
+  });
 });
 
 /* LEVEL 1 HAS NO DOUBLE ENTRY IN ITS SYLLABUS. BKFN stops at the books of prime
@@ -169,20 +182,59 @@ console.log(`${DIM}each player${RESET}`);
 const PLAYERS = [
   { name: 'Level 1', px: 'a1', driver: './lib/aat1-driver.js',
     bank: require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE.QUESTIONS,
+    /* `install` and `reset` are separate hooks rather than one `open` because
+       section 4 needs the same two steps and then a MOCK instead of a practice
+       run. An earlier version told the two apart with `if (pl.name === …)`,
+       which silently did the wrong thing the moment a third player was added:
+       the new bank was installed under the old one's global and the paper
+       served nothing, reported as a bank with no questions in it. */
+    install(M, qs) { M.AAT1_PRACTICE = { QUESTIONS: qs }; },
+    reset(M) { M.AAT1_UI.reset('practice'); },
     open(D, M, qs) {
-      M.AAT1_PRACTICE = { QUESTIONS: qs };
+      this.install(M, qs);
       const el = D.fakeEl();
-      M.AAT1_UI.reset('practice'); M.AAT1_UI.mount(el);
+      this.reset(M); M.AAT1_UI.mount(el);
       D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
       return el;
     },
     ui: M => M.AAT1_UI, right: /a1-verdict is-right/, wrong: /a1-verdict is-wrong/ },
-  { name: 'Level 3', px: 'a3', driver: './lib/aat3-driver.js',
+  { name: 'Level 3 FAPS', px: 'a3', driver: './lib/aat3-driver.js',
     bank: require(path.join(ROOT, 'aat3-faps-data.js')).AAT3_FAPS_PRACTICE.QUESTIONS,
+    install(M, qs) { M.AAT3_FAPS_PRACTICE = { QUESTIONS: qs }; M.AAT3_PRACTICE = { QUESTIONS: [] }; M.AAT3_MATS_PRACTICE = { QUESTIONS: [] }; },
+    reset(M) { M.AAT3_UI.reset('practice', 'faps'); },
     open(D, M, qs) {
-      M.AAT3_FAPS_PRACTICE = { QUESTIONS: qs }; M.AAT3_PRACTICE = { QUESTIONS: [] };
+      this.install(M, qs);
       const el = D.fakeEl();
-      M.AAT3_UI.reset('practice', 'faps'); M.AAT3_UI.mount(el);
+      this.reset(M); M.AAT3_UI.mount(el);
+      D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+      return el;
+    },
+    ui: M => M.AAT3_UI, right: /a3-try-verdict is-right/, wrong: /a3-try-verdict is-wrong/ },
+  /* BOTH LEVEL 3 UNITS, not one of them. The two banks are different files
+     rendered by the same player, and driving only FAPS proved the player works
+     — which it already did. What it could not see was forty TPFB tables that
+     had never been rendered, answered or graded by anything. A unit whose
+     questions no harness opens is a unit nobody has checked. */
+  { name: 'Level 3 TPFB', px: 'a3', driver: './lib/aat3-driver.js',
+    bank: require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE.QUESTIONS,
+    install(M, qs) { M.AAT3_PRACTICE = { QUESTIONS: qs }; M.AAT3_FAPS_PRACTICE = { QUESTIONS: [] }; M.AAT3_MATS_PRACTICE = { QUESTIONS: [] }; },
+    reset(M) { M.AAT3_UI.reset('practice', 'tpfb'); },
+    open(D, M, qs) {
+      this.install(M, qs);
+      const el = D.fakeEl();
+      this.reset(M); M.AAT3_UI.mount(el);
+      D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+      return el;
+    },
+    ui: M => M.AAT3_UI, right: /a3-try-verdict is-right/, wrong: /a3-try-verdict is-wrong/ },
+  { name: 'Level 3 MATS', px: 'a3', driver: './lib/aat3-driver.js',
+    bank: require(path.join(ROOT, 'aat3-mats-data.js')).AAT3_MATS_PRACTICE.QUESTIONS,
+    install(M, qs) { M.AAT3_MATS_PRACTICE = { QUESTIONS: qs }; M.AAT3_PRACTICE = { QUESTIONS: [] }; M.AAT3_FAPS_PRACTICE = { QUESTIONS: [] }; },
+    reset(M) { M.AAT3_UI.reset('practice', 'mats'); },
+    open(D, M, qs) {
+      this.install(M, qs);
+      const el = D.fakeEl();
+      this.reset(M); M.AAT3_UI.mount(el);
       D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
       return el;
     },
@@ -315,11 +367,10 @@ PLAYERS.forEach(pl => {
 
   [true, false].forEach(right => {
     const M = D.loadUI(D.fakeStore());
-    if (pl.name === 'Level 1') M.AAT1_PRACTICE = { QUESTIONS: mine };
-    else { M.AAT3_FAPS_PRACTICE = { QUESTIONS: mine }; M.AAT3_PRACTICE = { QUESTIONS: [] }; }
+    pl.install(M, mine);
     const UI = pl.ui(M);
     const el = D.fakeEl();
-    if (pl.name === 'Level 1') UI.reset('practice'); else UI.reset('practice', 'faps');
+    pl.reset(M);
     UI.mount(el);
     D.click(el, 'startmock');
 

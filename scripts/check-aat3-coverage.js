@@ -51,6 +51,13 @@ const MODULES_SHIPPED = [
   { unit: 'tpfb', outcome: 3 },
   { unit: 'tpfb', outcome: 4 },
   { unit: 'tpfb', outcome: 5 },
+  { unit: 'mats', outcome: 1 },
+  { unit: 'mats', outcome: 2 },
+  { unit: 'mats', outcome: 3 },
+  { unit: 'mats', outcome: 4 },
+  { unit: 'mats', outcome: 5 },
+  { unit: 'mats', outcome: 6 },
+  { unit: 'mats', outcome: 7 },
 ];
 
 const errors = [];

@@ -56,7 +56,53 @@ const BOLD = '\x1b[1m', DIM = '\x1b[2m', RESET = '\x1b[0m';
 
 const SPEC_FILE = path.join(ROOT, 'docs/reference/aat-l3-spec-v5.11-extracted.txt');
 const S = require(path.join(ROOT, 'aat3-syllabus.js'));
-const UNIT = 'faps';
+
+/* WHICH UNITS ARE CHECKED, and what identifies each one inside the extract.
+   Everything unit-specific lives here; the body below is written once.
+
+   It was written for FAPS alone, and stayed that way when MATS was encoded —
+   so a MATS outcome weighting could be wrong by five points and this file,
+   whose section 5 exists precisely to catch that, would report a clean pass.
+   A checker scoped to one unit is not a checker, it is a checker for that unit.
+
+   TPFB is still absent, and deliberately: it was encoded from the same PDF
+   before this check or the extract existed, and retro-fitting it is worth doing
+   and is its own change. */
+const UNITS = [
+  {
+    key: 'faps',
+    name: 'Financial Accounting: Preparing Financial Statements',
+    head: /Financial Accounting: Preparing Financial Statements/,
+    strip: /^Financial Accounting: Preparing Financial Statements( \d+)?\s*$/,
+    tableStart: /^Test specification for Financial Accounting: Preparing Financial Statements/,
+    tableEnd: /^Management Accounting Techniques\s*$/,
+    /* A floor on the parse, not on the unit: below this the parser has broken
+       and every comparison after it is meaningless rather than passing. */
+    minConcepts: 100,
+    /* Concepts the extracted text prints under a heading that does not govern
+       them, with the reason. The check verifies each entry is REALLY scrambled
+       before accepting it, so this cannot be used to wave through a tier that
+       is simply wrong. */
+    scrambles: {
+      '2.3.6': 'Topic 2.3 is set in two columns and breaks across pages 48 and 49. ' +
+               'The extract emits the right-hand column ("Learners need to be able to: 2.3.7") ' +
+               'before the tail of the left ("2.3.6 that accounting software automates the ' +
+               'transfer of data into the control accounts"), so 2.3.6 lands under the ' +
+               '"be able to" heading. It is a statement of fact about software, carries no verb ' +
+               'a learner could perform, and sits in the understand column of the printed page.',
+    },
+  },
+  {
+    key: 'mats',
+    name: 'Management Accounting Techniques',
+    head: /Management Accounting Techniques/,
+    strip: /^Management Accounting Techniques( \d+)?\s*$/,
+    tableStart: /^Test specification for Management Accounting Techniques/,
+    tableEnd: /^Tax Processes for Businesses/,
+    minConcepts: 60,
+    scrambles: {},
+  },
+];
 
 const errors = [];
 const warnings = [];
@@ -70,19 +116,6 @@ const notes = [];
 const OVERLAP_FLOOR = 0.5;
 const OVERLAP_WARN = 0.7;
 
-/* Concepts the extracted text prints under a heading that does not govern them,
-   with the reason. The check verifies each entry is REALLY scrambled before
-   accepting it, so this cannot be used to wave through a tier that is simply
-   wrong. */
-const LAYOUT_SCRAMBLES = {
-  '2.3.6': 'Topic 2.3 is set in two columns and breaks across pages 48 and 49. ' +
-           'The extract emits the right-hand column ("Learners need to be able to: 2.3.7") ' +
-           'before the tail of the left ("2.3.6 that accounting software automates the ' +
-           'transfer of data into the control accounts"), so 2.3.6 lands under the ' +
-           '"be able to" heading. It is a statement of fact about software, carries no verb ' +
-           'a learner could perform, and sits in the understand column of the printed page.',
-};
-
 /* ── Read the specification ──────────────────────────────────────────────── */
 if (!fs.existsSync(SPEC_FILE)) {
   console.log(`${RED}✗${RESET} ${SPEC_FILE} is missing — the fidelity check has nothing to read.`);
@@ -90,7 +123,7 @@ if (!fs.existsSync(SPEC_FILE)) {
 }
 const specRaw = fs.readFileSync(SPEC_FILE, 'utf8');
 
-/* The FAPS scope of content, bounded by its own headings so the slice survives
+/* A unit's scope of content, bounded by its own headings so the slice survives
    the spec being re-extracted at different line numbers. */
 function sliceScope(text, startRe, endRe) {
   const lines = text.split('\n');
@@ -102,14 +135,14 @@ function sliceScope(text, startRe, endRe) {
   return from === -1 || to === -1 ? null : lines.slice(from, to);
 }
 
-/* "Scope of content" appears once per unit, so anchor on the FAPS running head
-   that precedes it and end at the unit's "Delivering this unit". */
+/* "Scope of content" appears once per unit, so anchor on the unit's running
+   head that precedes it and end at the unit's "Delivering this unit". */
+function checkUnit(CFG) {
 const scopeLines = (() => {
   const lines = specRaw.split('\n');
   let from = -1;
   for (let i = 0; i < lines.length; i++) {
-    if (/^Scope of content\s*$/.test(lines[i]) &&
-        /Financial Accounting: Preparing Financial Statements/.test(lines[i - 1] || '')) { from = i; break; }
+    if (/^Scope of content\s*$/.test(lines[i]) && CFG.head.test(lines[i - 1] || '')) { from = i; break; }
   }
   if (from === -1) return null;
   for (let i = from; i < lines.length; i++) {
@@ -119,14 +152,16 @@ const scopeLines = (() => {
 })();
 
 if (!scopeLines) {
-  console.log(`${RED}✗${RESET} Could not locate the FAPS scope of content in the extract — the check would silently assert nothing.`);
+  console.log(`${RED}✗${RESET} Could not locate the ${CFG.key.toUpperCase()} scope of content in the extract — the check would silently assert nothing.`);
   process.exit(1);
 }
+
+const LAYOUT_SCRAMBLES = CFG.scrambles;
 
 /* Strip page furniture: the running head, the page counter and blank lines. */
 const scope = scopeLines
   .filter(l => !/^-- \d+ of \d+ --\s*$/.test(l))
-  .filter(l => !/^Financial Accounting: Preparing Financial Statements( \d+)?\s*$/.test(l))
+  .filter(l => !CFG.strip.test(l))
   .filter(l => l.trim() !== '');
 
 /* ── Parse it ────────────────────────────────────────────────────────────── */
@@ -141,7 +176,16 @@ const TIER_HEADINGS = {
 
 const CONCEPT_RE = /^([1-9]\.\d+\.\d+)\s+(.*)$/;
 const TOPIC_RE = /^([1-9]\.\d+)\s+([A-Z].*)$/;
-const OUTCOME_RE = /^([1-9])\.\s+([A-Z].*)$/;
+/* THE DOT IS OPTIONAL, because the specification is inconsistent about it: FAPS
+   prints every outcome heading as "3. Title", MATS prints outcomes 2, 3 and 4
+   as "2 Title" and the rest with the dot. Requiring the dot made the parser
+   miss three MATS headings, leave `currentOutcome` at 1, and report seventeen
+   correctly-encoded concepts as filed under the wrong outcome.
+
+   Dropping the dot widens what this can match, so it is narrowed again by
+   sequence: a real outcome heading is always the NEXT one. A wrapped line that
+   happens to begin with a digit and a capital cannot satisfy that. */
+const OUTCOME_RE = /^([1-9])\.?\s+([A-Z].*)$/;
 
 const specConcepts = new Map();   // id → { tier, text, bullets, excluded, topic, outcome }
 const specTopics = new Map();     // id → title
@@ -155,7 +199,8 @@ scope.forEach(raw => {
   if (heading) { tier = heading; return; }
 
   const om = OUTCOME_RE.exec(line);
-  if (om && !CONCEPT_RE.test(line) && !TOPIC_RE.test(line)) {
+  if (om && !CONCEPT_RE.test(line) && !TOPIC_RE.test(line) &&
+      Number(om[1]) === (currentOutcome === null ? 1 : currentOutcome + 1)) {
     currentOutcome = Number(om[1]);
     specOutcomes.set(currentOutcome, om[2].trim());
     current = null;
@@ -203,17 +248,17 @@ specConcepts.forEach(c => {
   c.excluded = c.excluded.map(e => tidy(e).replace(/[.]$/, ''));
 });
 
-console.log(`${BOLD}AAT Level 3 syllabus fidelity — FAPS against the published specification${RESET}\n`);
-notes.push(`Read ${specConcepts.size} key concepts, ${specTopics.size} topic areas and ${specOutcomes.size} outcomes out of the specification extract.`);
+const U = CFG.key.toUpperCase();
+notes.push(`${U}: read ${specConcepts.size} key concepts, ${specTopics.size} topic areas and ${specOutcomes.size} outcomes out of the specification extract.`);
 
-if (specConcepts.size < 100) {
-  errors.push(`Only ${specConcepts.size} concepts parsed out of the extract — the parser has broken and every comparison below is meaningless.`);
+if (specConcepts.size < CFG.minConcepts) {
+  errors.push(`${U}: only ${specConcepts.size} concepts parsed out of the extract, against a floor of ${CFG.minConcepts} — the parser has broken and every comparison below is meaningless.`);
 }
 
 /* ── The encoding ────────────────────────────────────────────────────────── */
-const unit = S.SYLLABUS.units[UNIT];
+const unit = S.SYLLABUS.units[CFG.key];
 if (!unit) {
-  console.log(`${RED}✗${RESET} No "${UNIT}" unit in aat3-syllabus.js.`);
+  console.log(`${RED}✗${RESET} No "${CFG.key}" unit in aat3-syllabus.js.`);
   process.exit(1);
 }
 const encoded = new Map();
@@ -224,8 +269,8 @@ unit.outcomes.forEach(o => o.topics.forEach(t => t.concepts.forEach(c => {
 /* ── 1. Ids ──────────────────────────────────────────────────────────────── */
 const missing = [...specConcepts.keys()].filter(id => !encoded.has(id));
 const invented = [...encoded.keys()].filter(id => !specConcepts.has(id));
-missing.forEach(id => errors.push(`${id} is in the specification and not in the encoding — "${specConcepts.get(id).text.slice(0, 70)}…"`));
-invented.forEach(id => errors.push(`${id} is encoded and appears nowhere in the specification.`));
+missing.forEach(id => errors.push(`${U} ${id} is in the specification and not in the encoding — "${specConcepts.get(id).text.slice(0, 70)}…"`));
+invented.forEach(id => errors.push(`${U} ${id} is encoded and appears nowhere in the specification.`));
 
 /* ── 2. Tiers ────────────────────────────────────────────────────────────── */
 /* Which ids the extract prints out of sequence within their topic. Computed,
@@ -336,11 +381,9 @@ specOutcomes.forEach((title, n) => {
    percentage, so it is found by searching from the end of the FAPS pages
    rather than by line number. */
 {
-  const tail = sliceScope(specRaw,
-    /^Test specification for Financial Accounting: Preparing Financial Statements/,
-    /^Management Accounting Techniques\s*$/);
+  const tail = sliceScope(specRaw, CFG.tableStart, CFG.tableEnd);
   if (!tail) {
-    errors.push('Could not find the FAPS test specification table — outcome weightings are unverified.');
+    errors.push(`${U}: could not find the test specification table — outcome weightings are unverified.`);
   } else {
     const text = tail.join('\n');
     let found = 0;
@@ -350,27 +393,39 @@ specOutcomes.forEach((title, n) => {
          already proved matches the specification's. */
       const esc = o.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
       const m = new RegExp(esc + '\\s*(\\d+)%', 'i').exec(text.replace(/\n/g, ' '));
-      if (!m) { errors.push(`Outcome ${o.n}: no weighting found for it in the test specification table.`); return; }
+      if (!m) { errors.push(`${U} outcome ${o.n}: no weighting found for it in the test specification table.`); return; }
       found++;
       if (Number(m[1]) !== o.weighting) {
-        errors.push(`Outcome ${o.n} is encoded at ${o.weighting}% and the test specification table says ${m[1]}%.`);
+        errors.push(`${U} outcome ${o.n} is encoded at ${o.weighting}% and the test specification table says ${m[1]}%.`);
       }
     });
-    if (found) notes.push(`Outcome weightings checked against the test specification table: ${found}/${unit.outcomes.length}.`);
+    if (found) notes.push(`${U}: outcome weightings checked against the test specification table: ${found}/${unit.outcomes.length}.`);
 
     const dur = /(\d)\s*hours?\s*(\d+)\s*minutes/i.exec(text);
     if (dur) {
       const mins = Number(dur[1]) * 60 + Number(dur[2]);
       if (mins !== unit.assessment.durationMinutes) {
-        errors.push(`Assessment duration is encoded as ${unit.assessment.durationMinutes} minutes and the test specification says ${dur[0]} (${mins}).`);
+        errors.push(`${U}: assessment duration is encoded as ${unit.assessment.durationMinutes} minutes and the test specification says ${dur[0]} (${mins}).`);
       } else {
-        notes.push(`Assessment duration confirmed: ${dur[0]} = ${mins} minutes.`);
+        notes.push(`${U}: assessment duration confirmed: ${dur[0]} = ${mins} minutes.`);
       }
     } else {
-      warnings.push('Could not read the assessment duration out of the test specification table.');
+      warnings.push(`${U}: could not read the assessment duration out of the test specification table.`);
     }
-    if (/Computer marked/i.test(text) && !/computer marked/i.test(unit.assessment.marking)) {
-      errors.push(`The test specification says the unit is computer marked; the encoding says "${unit.assessment.marking}".`);
+    /* THE MARKING TYPE, BOTH WAYS. The old rule only fired when the table said
+       "Computer marked" and the encoding did not, so a unit the table calls
+       partially human marked could be encoded as anything at all — and MATS is
+       exactly that unit. Normalising both sides and requiring the encoded
+       phrase to appear in the table catches the encoding being wrong whatever
+       the table happens to say. */
+    const flat = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const wantMark = flat(unit.assessment.marking);
+    if (!wantMark) {
+      errors.push(`${U}: no marking type encoded.`);
+    } else if (!flat(text).includes(wantMark)) {
+      errors.push(`${U}: the encoding says the unit is "${unit.assessment.marking}" and the test specification table does not say that.`);
+    } else {
+      notes.push(`${U}: marking type confirmed as "${unit.assessment.marking}".`);
     }
   }
 }
@@ -397,7 +452,7 @@ specConcepts.forEach((spec, id) => {
 });
 {
   const n = [...specConcepts.values()].filter(c => c.excluded.length).length;
-  notes.push(`Concept-level exclusions in the specification: ${n}, all encoded.`);
+  notes.push(`${U}: concept-level exclusions in the specification: ${n}, all encoded.`);
 }
 
 /* ── 7. Indicative content ───────────────────────────────────────────────── */
@@ -423,7 +478,13 @@ specConcepts.forEach((spec, id) => {
     ? `${id}: ${got} indicative bullets encoded against ${want} in the specification — the teaching load is understated by ${want - got}. Not encoded: "${missed.join('; ').slice(0, 120)}".`
     : `${id}: ${got} indicative bullets encoded against ${want} in the specification — the load is overstated by ${got - want}. Where the specification runs a list inline after a colon, it belongs in the concept text, not split into bullets.`);
 });
-notes.push(`Indicative bullets: ${bulletSpec} in the specification, ${bulletEnc} encoded.`);
+notes.push(`${U}: indicative bullets: ${bulletSpec} in the specification, ${bulletEnc} encoded.`);
+
+  return { concepts: specConcepts.size, topics: specTopics.size, outcomes: specOutcomes.size };
+}
+
+console.log(`${BOLD}AAT Level 3 syllabus fidelity — against the published specification${RESET}\n`);
+const tallies = UNITS.map(cfg => ({ cfg, n: checkUnit(cfg) }));
 
 /* ── Report ──────────────────────────────────────────────────────────────── */
 notes.forEach(n => console.log(`  ${DIM}${n}${RESET}`));
@@ -439,4 +500,5 @@ if (errors.length) {
   console.log(`\n${RED}${BOLD}── The encoded syllabus disagrees with the specification.${RESET}\n`);
   process.exit(1);
 }
-console.log(`${GREEN}${BOLD}── FAPS matches the published specification ✓${RESET}  ${DIM}(${specConcepts.size} concepts, ${specTopics.size} topic areas, ${specOutcomes.size} outcomes)${RESET}\n`);
+const summary = tallies.map(t => `${t.cfg.key.toUpperCase()} ${t.n.concepts}/${t.n.topics}/${t.n.outcomes}`).join(', ');
+console.log(`${GREEN}${BOLD}── ${tallies.map(t => t.cfg.key.toUpperCase()).join(' and ')} match the published specification ✓${RESET}  ${DIM}(concepts/topics/outcomes — ${summary})${RESET}\n`);

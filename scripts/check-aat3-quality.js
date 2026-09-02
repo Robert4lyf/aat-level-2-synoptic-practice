@@ -392,7 +392,12 @@ allQuestions.forEach(({ where, q }) => {
    be counted inside a different unit's outcome 1. */
 {
   const UNIT_KEYS = Object.keys(SYL.SYLLABUS.units);
-  const MEASURES = /^[£$%€]|hours?|days?|months?$/i;
+  /* A currency symbol, or a named measure. `units` and `kg` belong here: a
+     re-order level and an economic order quantity are answered in units, and a
+     stores question in kilograms, so flagging them taught nothing. The point of
+     the test is to catch an AAT unit key sitting in `unit`, which line 403
+     already does exactly; this is the softer net behind it. */
+  const MEASURES = /^[£$%€]|^(hours?|days?|weeks?|months?|units?|items?|kg|tonnes?|litres?|miles?)$/i;
   practice.forEach(q => {
     const where = `practice ${q.id}`;
     if (!q.unitKey) {

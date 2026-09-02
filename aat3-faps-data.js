@@ -7228,7 +7228,7 @@
     {
       id: 'F-4-16', unitKey: 'faps', lo: 4, criteria: ['FAPS-4.1.1'],
       type: 'truefalse',
-      q: 'Identify whether each statement about depreciation is correct.',
+      q: 'Identify whether each statement about what depreciation is for is correct.',
       statements: [
         { text: 'Depreciation applies the accruals principle by matching cost to the periods that benefit.', answer: true },
         { text: 'Depreciation sets money aside to replace the asset.', answer: false },
@@ -7991,6 +7991,521 @@
       q: 'A sole trader\'s drawings for the year were cash of £24,000 and goods costing £3,400. Opening capital was £68,000 and profit for the year £45,000. What is the closing capital?',
       answer: 85600, unit: '£',
       exp: 'Goods taken are drawings at cost, so total drawings are £24,000 + £3,400 = £27,400. Closing capital = £68,000 + £45,000 − £27,400 = £85,600.',
+    },
+
+    /* ── Multi-part tasks ────────────────────────────────────────────────────
+       WHY THEY ARE HERE. FAPS is a 150-minute paper, the longest on this level,
+       and it is built out of extended tasks: take a set of balances, decide
+       what each one is, and carry it through to a figure. This bank was 260
+       questions with not one of them — every question a single step, when the
+       thing the assessment tests is the chain.
+
+       WHAT MAKES A TASK A TASK, rather than a numeric question wearing a table:
+       at least one figure asked for must NOT be the plain total of a dataset
+       column, so the reader has to decide which rows count. Several of the
+       datasets below therefore carry rows that belong nowhere in the answer —
+       training costs among the capital ones, drawings among the expenses — and
+       that is deliberate. scripts/check-aat3-quality.js enforces it. */
+    {
+      id: 'F-2-92', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.3', 'FAPS-2.3.4'],
+      type: 'task',
+      q: 'Post the month’s day books to the general ledger.',
+      brief: 'Halden Ltd had no balance outstanding at 1 March and has paid nothing during the month.',
+      datasets: [
+        {
+          title: 'Sales day book — March',
+          headers: ['Date', 'Customer', 'Document', 'Net £', 'VAT £', 'Total £'],
+          rows: [
+            ['3 Mar', 'Halden Ltd', 'Invoice 2041', '2,400.00', '480.00', '2,880.00'],
+            ['9 Mar', 'Prewitt & Co', 'Invoice 2042', '1,750.00', '350.00', '2,100.00'],
+            ['24 Mar', 'Ashgrove plc', 'Invoice 2043', '3,120.00', '624.00', '3,744.00'],
+          ],
+        },
+        {
+          title: 'Sales returns day book — March',
+          headers: ['Date', 'Customer', 'Document', 'Net £', 'VAT £', 'Total £'],
+          rows: [
+            ['17 Mar', 'Halden Ltd', 'Credit note 118', '300.00', '60.00', '360.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Amount debited to the sales ledger control account for the month',
+          type: 'numeric', unit: '£', answer: 8724,
+          exp: 'The sales day book total, gross: 2,880.00 + 2,100.00 + 3,744.00 = £8,724.00. The control account is debited with what customers owe, which is the VAT-inclusive figure — the customer owes the VAT as much as the goods.',
+        },
+        {
+          label: 'Amount credited to the sales ledger control account for the month',
+          type: 'numeric', unit: '£', answer: 360,
+          exp: 'The sales returns day book total, gross: £360.00. Returns reduce what customers owe, so they go on the opposite side of the control account from invoices, and they go there gross for the same reason invoices do.',
+        },
+        {
+          label: 'Amount credited to the sales account for the month',
+          type: 'numeric', unit: '£', answer: 7270,
+          exp: 'The business has earned the NET of the invoices, and the returns come off it: 2,400.00 + 1,750.00 + 3,120.00 = 7,270.00 of sales, against which the 300.00 net return is posted to sales returns rather than netted here. The sales account is credited with £7,270.00.',
+        },
+        {
+          label: 'Balance owed by Halden Ltd at 31 March',
+          type: 'numeric', unit: '£', answer: 2520,
+          exp: 'Only Halden’s own two documents touch its account: 2,880.00 invoiced less 360.00 credited = £2,520.00. This is the figure no column total gives you — reading the day books as two lists of totals answers the first three parts and not this one.',
+        },
+        {
+          label: 'The double entry for the sales returns day book total is:',
+          type: 'choice',
+          options: [
+            'Debit sales returns and VAT control, credit sales ledger control',
+            'Debit sales ledger control, credit sales returns and VAT control',
+            'Debit sales returns only, credit sales ledger control',
+            'Debit sales and VAT control, credit bank',
+          ],
+          answer: 0,
+          exp: 'A credit note reverses an invoice, so every side of the original entry flips. The invoice debited the control account and credited sales and VAT; the credit note debits sales returns and VAT control and credits the control account. Leaving the VAT out — the third option — is the common version of this error, and it leaves the VAT control account overstating what is owed to HMRC by the VAT on goods that came back.',
+        },
+      ],
+      exp: 'Day books are totalled and posted in one go, which is the point of them, but three of the four figures asked for here are totals and one is not. A reader who works only in totals can post the ledger and still not know what any individual customer owes — and the customer balance is what a query, a statement or a credit control call actually needs.',
+    },
+    {
+      id: 'F-3-27', unitKey: 'faps', lo: 3, criteria: ['FAPS-3.2.2', 'FAPS-3.3.5'],
+      type: 'task',
+      q: 'Deal with the machine bought this year and the one it replaced.',
+      brief: 'The new machine was bought on 1 January. The old machine was given in part exchange on the same day.',
+      datasets: [
+        {
+          title: 'Amounts paid in connection with the new machine',
+          headers: ['Item', 'Amount £'],
+          rows: [
+            ['Purchase price of the machine', '24,000.00'],
+            ['Delivery to site', '680.00'],
+            ['Installation and commissioning', '1,450.00'],
+            ['Training the operators to use it', '900.00'],
+            ['First year’s maintenance contract', '1,200.00'],
+            ['Replacement guard fitted after an accident in month eight', '340.00'],
+          ],
+        },
+        {
+          title: 'The machine it replaced',
+          headers: ['Item', 'Amount £'],
+          rows: [
+            ['Original cost', '15,000.00'],
+            ['Accumulated depreciation to the date of disposal', '11,250.00'],
+            ['Part-exchange allowance given by the supplier', '2,900.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Amount capitalised as the cost of the new machine',
+          type: 'numeric', unit: '£', answer: 26130,
+          exp: 'Capital expenditure is everything spent BRINGING THE ASSET INTO USE, and stops there: 24,000.00 + 680.00 delivery + 1,450.00 installation = £26,130.00. Delivery and installation are capitalised even though nothing tangible was bought with them, because without them there is no working machine.',
+        },
+        {
+          label: 'Amount charged to the statement of profit or loss as revenue expenditure',
+          type: 'numeric', unit: '£', answer: 2440,
+          exp: 'Everything that is a cost of USING the machine rather than of acquiring it: 900.00 training + 1,200.00 maintenance + 340.00 replacement guard = £2,440.00. The guard is the one that looks capital — it is a physical part of the machine — but it restores the machine to the condition it was already in rather than improving it, so it is revenue.',
+        },
+        {
+          label: 'Operator training is revenue expenditure because:',
+          type: 'choice',
+          options: [
+            'it is a cost of using the asset rather than of bringing it into use',
+            'it is a cost of bringing the asset into its working condition',
+            'it was paid to a third party rather than to the supplier',
+            'it falls below the business’s capitalisation limit',
+          ],
+          answer: 0,
+          exp: 'The test is what the spending achieved, not who was paid or how much. Training makes the people able to use the machine; the machine works whether or not they have been trained, so the cost is not part of getting it into working condition. It is also why training is repeated for every new operator while the machine is capitalised once.',
+        },
+        {
+          label: 'Loss on disposal of the old machine',
+          type: 'numeric', unit: '£', answer: 850,
+          exp: 'Carrying amount is 15,000.00 − 11,250.00 = £3,750.00. The part exchange allowance of 2,900.00 is the proceeds, so 3,750.00 − 2,900.00 = £850.00 lost. A part exchange is a disposal with the proceeds taken in kind — the fact that no cash changed hands makes no difference to any of this.',
+        },
+        {
+          label: 'That result is reported as:',
+          type: 'choice',
+          options: [
+            'a loss, charged to the statement of profit or loss',
+            'a profit, credited to the statement of profit or loss',
+            'a loss, added to the cost of the new machine',
+            'a profit, deducted from the cost of the new machine',
+          ],
+          answer: 0,
+          exp: 'A profit or loss on disposal is not really a gain or a loss on selling — it is the correction of depreciation charged over the asset’s life, recognised in the year the truth is known. It belongs in profit or loss for that year. Rolling it into the cost of the replacement, which the third and fourth options do, would hide a past mis-estimate inside a new asset and carry it forward for years more.',
+        },
+      ],
+      exp: 'Two decisions and one arithmetic step. Both decisions are about the same question — what did this spending buy? — and both are answered by looking at what changed rather than at what the invoice said. Adding up the first table gives £28,570.00, a figure that is right about nothing.',
+    },
+    {
+      id: 'F-4-27', unitKey: 'faps', lo: 4, criteria: ['FAPS-4.1.2', 'FAPS-4.1.3'],
+      type: 'task',
+      q: 'Calculate the depreciation charge for the year to 31 December.',
+      brief: 'All three assets were held for the whole year and a full year’s depreciation is charged on each.',
+      datasets: [
+        {
+          title: 'Non-current assets at 1 January',
+          headers: ['Asset', 'Cost £', 'Accumulated depreciation £', 'Method'],
+          rows: [
+            ['Delivery van', '28,000.00', '12,600.00', 'Reducing balance, 25%'],
+            ['Packing machine', '16,500.00', '6,600.00', 'Straight line, 5 years, no residual value'],
+            ['Office fit-out', '9,000.00', '3,600.00', 'Straight line, 5 years, no residual value'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Depreciation charge on the delivery van',
+          type: 'numeric', unit: '£', answer: 3850,
+          exp: 'Reducing balance applies the rate to the CARRYING AMOUNT: 28,000.00 − 12,600.00 = 15,400.00, and 15,400.00 × 25% = £3,850.00. Applying 25% to the 28,000.00 cost gives 7,000.00, which is what this asset was charged in its first year and never again.',
+        },
+        {
+          label: 'Depreciation charge on the packing machine',
+          type: 'numeric', unit: '£', answer: 3300,
+          exp: 'Straight line applies the rate to COST, and ignores what has been charged so far: 16,500.00 ÷ 5 = £3,300.00, the same figure every year until the asset is fully written down.',
+        },
+        {
+          label: 'Total depreciation charge for the year',
+          type: 'numeric', unit: '£', answer: 8950,
+          exp: 'The office fit-out is 9,000.00 ÷ 5 = 1,800.00, so 3,850.00 + 3,300.00 + 1,800.00 = £8,950.00. Neither column of the table totals to this: the charge has to be worked out asset by asset, because the method differs by asset and not by business.',
+        },
+        {
+          label: 'The van’s charge falls every year and the machine’s does not because:',
+          type: 'choice',
+          options: [
+            'reducing balance applies the rate to the carrying amount, which falls each year',
+            'reducing balance applies the rate to the cost, which falls each year',
+            'straight line applies the rate to the carrying amount, which is constant',
+            'the van is nearer the end of its useful life than the machine is',
+          ],
+          answer: 0,
+          exp: 'The rate is fixed under both methods; what differs is what it is applied TO. Reducing balance charges a constant percentage of a shrinking base, so the charge shrinks with it — which suits an asset that loses most of its value early, like a vehicle. Straight line charges a constant fraction of a fixed cost, which suits an asset consumed evenly. Cost never falls, so the second option describes something that cannot happen.',
+        },
+      ],
+      exp: 'One year, three assets, two methods — and the whole task turns on remembering which base each method uses. Total the cost column and you get 53,500.00; total the depreciation column and you get 22,800.00; neither is a step towards any of these answers.',
+    },
+    {
+      id: 'F-5-91', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.2', 'FAPS-5.1.4', 'FAPS-5.2.3'],
+      type: 'task',
+      q: 'Make the period end adjustments and state the figures that reach the financial statements.',
+      brief: 'The year ended 31 December. Rent is £1,500 a month and eleven months have been paid. The insurance premium covers the year to 31 March. The electricity bill for the quarter to 31 January, £1,860.00, arrived after the year end and is accrued on a time basis. A customer owing £1,600.00 has gone into liquidation and the debt is to be written off. The allowance for doubtful receivables is then to be set at 2% of what remains.',
+      datasets: [
+        {
+          title: 'Trial balance extract at 31 December, before adjustments',
+          headers: ['Account', 'Debit £', 'Credit £'],
+          rows: [
+            ['Rent paid', '16,500.00', '—'],
+            ['Insurance paid', '4,800.00', '—'],
+            ['Electricity paid', '5,240.00', '—'],
+            ['Trade receivables', '42,600.00', '—'],
+            ['Allowance for doubtful receivables', '—', '1,100.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Rent charged to the statement of profit or loss',
+          type: 'numeric', unit: '£', answer: 18000,
+          exp: 'Eleven months have been paid and twelve have been used, so one month is accrued: 16,500.00 + 1,500.00 = £18,000.00. The accrual is a credit balance carried forward as a liability — the landlord is owed December.',
+        },
+        {
+          label: 'Insurance charged to the statement of profit or loss',
+          type: 'numeric', unit: '£', answer: 3600,
+          exp: 'The premium covers to 31 March, so three of its twelve months belong to next year: 4,800.00 × 3 ÷ 12 = 1,200.00 prepaid, leaving 4,800.00 − 1,200.00 = £3,600.00. The prepayment is a debit balance carried forward as an asset — cover already bought.',
+        },
+        {
+          label: 'Electricity charged to the statement of profit or loss',
+          type: 'numeric', unit: '£', answer: 6480,
+          exp: 'Two of the three months in the quarter to 31 January fall before the year end: 1,860.00 × 2 ÷ 3 = 1,240.00 accrued, so 5,240.00 + 1,240.00 = £6,480.00. Accruing the whole 1,860.00 would charge January’s electricity to the year that ended in December.',
+        },
+        {
+          label: 'The allowance for doubtful receivables at 31 December',
+          type: 'numeric', unit: '£', answer: 820,
+          exp: 'The allowance is set on what is LEFT after the write-off, never on the original figure: 42,600.00 − 1,600.00 = 41,000.00, and 41,000.00 × 2% = £820.00. Applying 2% to 42,600.00 would provide against a debt already removed in full.',
+        },
+        {
+          label: 'Amount by which the allowance is reduced',
+          type: 'numeric', unit: '£', answer: 280,
+          exp: 'Only the MOVEMENT reaches profit or loss: 1,100.00 − 820.00 = £280.00. The allowance is a standing balance that is adjusted to the figure now required, not an expense recreated from nothing each year — charging the whole 820.00 would double-count the 1,100.00 already provided.',
+        },
+        {
+          label: 'The reduction in the allowance is:',
+          type: 'choice',
+          options: [
+            'credited to the statement of profit or loss, reducing the expense',
+            'debited to the statement of profit or loss, increasing the expense',
+            'credited to trade receivables, reducing the asset',
+            'debited to capital, reducing the owner’s investment',
+          ],
+          answer: 0,
+          exp: 'The allowance is a credit balance sitting against receivables. Reducing it means debiting the allowance account, and the other side of that entry is a credit to profit or loss — a release, which reduces the irrecoverable debts expense for the year and can turn it negative. The asset itself is untouched: the allowance is presented against receivables but is a separate account.',
+        },
+      ],
+      exp: 'Five adjustments, and each one asks the same question in a different disguise: does this belong to the year that has ended? The two that catch people are the ORDER of the write-off and the allowance — the allowance is set on what survives the write-off — and the fact that only the movement on an allowance is an expense. The write-off itself is a separate £1,600.00 charge to irrecoverable debts.',
+    },
+    {
+      id: 'F-6-92', unitKey: 'faps', lo: 6, criteria: ['FAPS-6.2.1', 'FAPS-6.3.2'],
+      type: 'task',
+      q: 'Complete the extended trial balance.',
+      brief: 'Closing inventory has been counted and valued at £11,900.00. It has not yet been entered.',
+      datasets: [
+        {
+          title: 'Extract from the extended trial balance',
+          headers: ['Account', 'Ledger Dr £', 'Ledger Cr £', 'Adjustment Dr £', 'Adjustment Cr £'],
+          rows: [
+            ['Inventory at 1 January', '14,300.00', '—', '—', '—'],
+            ['Purchases', '96,400.00', '—', '—', '—'],
+            ['Rent', '16,500.00', '—', '1,500.00', '—'],
+            ['Accruals', '—', '—', '—', '1,500.00'],
+            ['Trade receivables', '42,600.00', '—', '—', '1,600.00'],
+            ['Irrecoverable debts', '—', '—', '1,600.00', '—'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Adjusted balance on the rent account',
+          type: 'numeric', unit: '£', answer: 18000,
+          exp: 'A debit balance with a debit adjustment gets larger: 16,500.00 + 1,500.00 = £18,000.00. The matching credit sits on the accruals line, which is what keeps the adjustment columns equal to one another.',
+        },
+        {
+          label: 'Adjusted balance on trade receivables',
+          type: 'numeric', unit: '£', answer: 41000,
+          exp: 'A debit balance with a credit adjustment gets smaller: 42,600.00 − 1,600.00 = £41,000.00. Its other side is the irrecoverable debts line, so the same 1,600.00 appears once as a reduction in an asset and once as an expense.',
+        },
+        {
+          label: 'Closing inventory is entered on the extended trial balance as:',
+          type: 'choice',
+          options: [
+            'a debit in the statement of financial position and a credit in the statement of profit or loss',
+            'a credit in the statement of financial position and a debit in the statement of profit or loss',
+            'a debit in both the statement of financial position and the statement of profit or loss',
+            'a credit in both the statement of financial position and the statement of profit or loss',
+          ],
+          answer: 0,
+          exp: 'Closing inventory is the one figure that appears twice, on opposite sides, and is the reason it has no ledger balance to adjust. It is an asset the business still holds, so it is a debit in the statement of financial position; and it is stock bought but not sold, so it is credited in profit or loss to take it back out of cost of sales. Two entries, two statements, one figure.',
+        },
+        {
+          label: 'Cost of sales for the year',
+          type: 'numeric', unit: '£', answer: 98800,
+          exp: 'Opening inventory plus purchases less closing inventory: 14,300.00 + 96,400.00 − 11,900.00 = £98,800.00. Nothing in the adjustment columns touches it — the rent accrual and the write-off are both expenses of other kinds — so a reader who adds the adjustment column into cost of sales has moved £3,100.00 into the wrong line.',
+        },
+      ],
+      exp: 'An extended trial balance is a working paper, and the only rule it obeys is that every adjustment has two sides: the adjustment debit column and the adjustment credit column each total £3,100.00 here, which is the check to make before extending anything. Closing inventory is the exception that proves it — it has no ledger balance at all, and it is entered as two new lines rather than as an adjustment to an old one.',
+    },
+    {
+      id: 'F-7-56', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.1.2', 'FAPS-7.2.1'],
+      type: 'task',
+      q: 'Prepare the sole trader’s results for the year to 31 December.',
+      brief: 'There were no non-current assets, no receivables and no payables at either year end.',
+      datasets: [
+        {
+          title: 'Balances at 31 December',
+          headers: ['Account', 'Amount £'],
+          rows: [
+            ['Revenue', '214,500.00'],
+            ['Inventory at 1 January', '14,300.00'],
+            ['Purchases', '128,700.00'],
+            ['Inventory at 31 December', '16,900.00'],
+            ['Distribution costs', '21,400.00'],
+            ['Administrative expenses', '33,600.00'],
+            ['Drawings', '18,000.00'],
+            ['Capital at 1 January', '62,400.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Cost of sales',
+          type: 'numeric', unit: '£', answer: 126100,
+          exp: 'Opening inventory plus purchases less closing inventory: 14,300.00 + 128,700.00 − 16,900.00 = £126,100.00. Closing inventory is deducted because it was bought but not sold, so its cost belongs to next year’s sales rather than this year’s.',
+        },
+        {
+          label: 'Gross profit',
+          type: 'numeric', unit: '£', answer: 88400,
+          exp: 'Revenue less cost of sales: 214,500.00 − 126,100.00 = £88,400.00. Nothing else reaches this line — gross profit measures the trade itself, before any of the cost of running the business.',
+        },
+        {
+          label: 'Profit for the year',
+          type: 'numeric', unit: '£', answer: 33400,
+          exp: 'Gross profit less the operating expenses: 88,400.00 − 21,400.00 − 33,600.00 = £33,400.00. Drawings are not among them, which is what the fourth part turns on.',
+        },
+        {
+          label: 'Capital at 31 December',
+          type: 'numeric', unit: '£', answer: 77800,
+          exp: 'Opening capital plus profit less drawings: 62,400.00 + 33,400.00 − 18,000.00 = £77,800.00. This is the figure no column total gives — the £ column adds to 509,800.00, which is a mixture of income, expenses, assets and capital and means nothing at all.',
+        },
+        {
+          label: 'Drawings do not appear in the statement of profit or loss because:',
+          type: 'choice',
+          options: [
+            'they are the owner taking back capital, not a cost of trading',
+            'they are a cost of trading that is charged to capital instead',
+            'they are an expense deducted after the profit has been struck',
+            'they are drawn out of profit, so they reduce revenue instead',
+          ],
+          answer: 0,
+          exp: 'A sole trader’s business is not a separate legal person, but it IS a separate accounting entity — that is the whole basis on which a set of accounts for it can be prepared. Money the owner takes out is the entity returning what the owner put in, not a cost the entity incurred in trading. Treating drawings as an expense would understate the profit the business actually made and, in a bad year, make a profitable trade look like a loss.',
+        },
+      ],
+      exp: 'Four figures in a chain, each feeding the next, and one decision at the end that decides where a fifth belongs. The dataset is deliberately not in the order the statement uses: closing inventory sits above two expenses that have nothing to do with cost of sales, and capital and drawings sit at the bottom among the trading figures.',
+    },
+    {
+      id: 'F-7-57', unitKey: 'faps', lo: 7, criteria: ['FAPS-7.3.2', 'FAPS-7.3.4'],
+      type: 'task',
+      q: 'Appropriate the partnership’s profit for the year to 30 June.',
+      brief: 'Rowe and Fenn share residual profits and losses 3:2. Salaries and interest on capital are appropriations, not expenses.',
+      datasets: [
+        {
+          title: 'Rowe and Fenn — year to 30 June',
+          headers: ['Item', 'Amount £'],
+          rows: [
+            ['Profit for the year', '96,000.00'],
+            ['Rowe — partner’s salary', '14,000.00'],
+            ['Fenn — partner’s salary', '9,000.00'],
+            ['Rowe — interest on capital', '3,200.00'],
+            ['Fenn — interest on capital', '2,400.00'],
+            ['Rowe — drawings', '26,000.00'],
+            ['Fenn — drawings', '21,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Profit available to share after salaries and interest on capital',
+          type: 'numeric', unit: '£', answer: 67400,
+          exp: 'Take the appropriations off the profit before the ratio is applied: 96,000.00 − 14,000.00 − 9,000.00 − 3,200.00 − 2,400.00 = £67,400.00. Salaries and interest are not expenses of the partnership — they are the first slices of its profit, which is why they never touch the statement of profit or loss.',
+        },
+        {
+          label: 'Rowe’s share of the residual profit',
+          type: 'numeric', unit: '£', answer: 40440,
+          exp: 'Three fifths of what is left: 67,400.00 × 3 ÷ 5 = £40,440.00. Fenn takes the other two fifths, 26,960.00, and the two add back to 67,400.00 — the check worth making every time, because a ratio applied to the wrong base is the commonest error in this task.',
+        },
+        {
+          label: 'Fenn’s total share of profit for the year',
+          type: 'numeric', unit: '£', answer: 38360,
+          exp: 'Everything Fenn is entitled to: 9,000.00 salary + 2,400.00 interest + 26,960.00 residual = £38,360.00. Drawings are not part of it — what a partner takes out during the year has no bearing on what they have earned.',
+        },
+        {
+          label: 'Movement on Rowe’s current account for the year',
+          type: 'numeric', unit: '£', answer: 31640,
+          exp: 'Credited with everything earned and debited with everything taken: 14,000.00 + 3,200.00 + 40,440.00 − 26,000.00 = £31,640.00 increase. Rowe has earned £57,640.00 and drawn £26,000.00, so the difference stays in the business.',
+        },
+        {
+          label: 'Interest on capital is:',
+          type: 'choice',
+          options: [
+            'debited to the appropriation account and credited to the partner’s current account',
+            'debited to the appropriation account and credited to the partner’s capital account',
+            'charged as an expense in the partnership’s statement of profit or loss',
+            'credited to the appropriation account and debited to the partner’s current account',
+          ],
+          answer: 0,
+          exp: 'Capital accounts hold what a partner has agreed to invest and change only when that agreement changes; current accounts hold the running score of earnings and drawings. Interest on capital is an earning, so it belongs in the current account — putting it in the capital account would grow the base on which next year’s interest is calculated and compound something the partners never agreed to.',
+        },
+      ],
+      exp: 'A partnership’s profit is not shared until the agreement has been honoured — salaries first, then interest on capital, then the ratio on what is left. Drawings appear in the dataset and belong in none of the appropriation arithmetic; they are there because a reader who sweeps up every row gets 171,600.00 and a reader who reads the agreement gets four right answers.',
+    },
+    {
+      id: 'F-8-27', unitKey: 'faps', lo: 8, criteria: ['FAPS-8.1.1', 'FAPS-8.2.1'],
+      type: 'task',
+      q: 'Calculate the profitability ratios for Year 2 and say what they show.',
+      brief: 'Give each percentage to one decimal place.',
+      datasets: [
+        {
+          title: 'Two years compared',
+          headers: ['Item', 'Year 1 £', 'Year 2 £'],
+          rows: [
+            ['Revenue', '420,000.00', '486,000.00'],
+            ['Cost of sales', '252,000.00', '311,040.00'],
+            ['Distribution and administrative expenses', '109,200.00', '126,360.00'],
+            ['Capital employed', '290,000.00', '320,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Gross profit margin for Year 2, as a percentage',
+          type: 'numeric', unit: '%', answer: 36,
+          exp: 'Gross profit is 486,000.00 − 311,040.00 = 174,960.00, and the margin is that over revenue: 174,960.00 ÷ 486,000.00 = 0.36, or 36.0%. In Year 1 it was 168,000.00 ÷ 420,000.00 = 0.4, or 40.0%, so the margin has fallen even though revenue rose.',
+        },
+        {
+          label: 'Operating profit margin for Year 2, as a percentage',
+          type: 'numeric', unit: '%', answer: 10,
+          exp: 'Operating profit is 174,960.00 − 126,360.00 = 48,600.00, so the margin is 48,600.00 ÷ 486,000.00 = 0.1, or 10.0%. Year 1 was 58,800.00 ÷ 420,000.00 = 0.14, or 14.0% — the fall is larger than the fall in gross margin, because expenses grew as well.',
+        },
+        {
+          label: 'Return on capital employed for Year 2, as a percentage',
+          type: 'numeric', unit: '%', answer: 15.2,
+          exp: 'Operating profit over capital employed: 48,600.00 ÷ 320,000.00 = 0.151875, which is 15.2% to one decimal place. Year 1 was 58,800.00 ÷ 290,000.00 = 0.202758, or 20.3%. More money is invested in the business and it is earning less on it.',
+        },
+        {
+          label: 'The fall in gross profit margin from Year 1 to Year 2 shows that:',
+          type: 'choice',
+          options: [
+            'each £1 of revenue is producing less gross profit than it did',
+            'each £1 of revenue is producing more gross profit than it did',
+            'the business sold fewer goods than it did in the previous year',
+            'expenses other than cost of sales rose faster than revenue did',
+          ],
+          answer: 0,
+          exp: 'A margin is a rate, not an amount: it says what each pound of revenue leaves behind, and it can fall while gross profit in pounds rises — which is exactly what happened, since gross profit grew from 168,000.00 to 174,960.00. The third option confuses a rate with a volume, and the fourth describes what the operating margin would show, not the gross one.',
+        },
+      ],
+      exp: 'Every ratio here is a fraction whose numerator has to be built before it can be used, and the numerator is never a row of the table. Reading revenue and capital employed straight off the dataset and dividing one by the other produces a number, and it is not a profitability ratio.',
+    },
+    {
+      id: 'F-9-27', unitKey: 'faps', lo: 9, criteria: ['FAPS-9.1.1', 'FAPS-9.2.2'],
+      type: 'task',
+      q: 'Reconstruct the missing figures for the year.',
+      brief: 'The owner keeps no sales records. All sales are made at a mark-up of 40% on cost. There were no trade receivables at the start of the year.',
+      datasets: [
+        {
+          title: 'What is known',
+          headers: ['Item', 'Amount £'],
+          rows: [
+            ['Inventory at 1 January', '12,400.00'],
+            ['Purchases for the year', '88,000.00'],
+            ['Inventory at 31 December', '15,600.00'],
+            ['Cash from sales banked during the year', '96,300.00'],
+            ['Cash taken from the till by the owner', '4,200.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Cost of sales for the year',
+          type: 'numeric', unit: '£', answer: 84800,
+          exp: 'The one figure that can be built from records the owner did keep: 12,400.00 + 88,000.00 − 15,600.00 = £84,800.00. Incomplete records work backwards from whatever is complete, and inventory and purchases usually are, because both leave paperwork behind.',
+        },
+        {
+          label: 'Revenue for the year',
+          type: 'numeric', unit: '£', answer: 118720,
+          exp: 'A MARK-UP is a percentage of COST, so revenue is cost of sales plus 40% of it: 84,800.00 × 1.4 = £118,720.00. The £96,300.00 banked is not revenue — it is what reached the bank, which is a different question.',
+        },
+        {
+          label: 'Owed by credit customers at 31 December',
+          type: 'numeric', unit: '£', answer: 18220,
+          exp: 'Everything sold, less everything collected in cash, whether banked or taken: 118,720.00 − 96,300.00 − 4,200.00 = £18,220.00. Forgetting the money the owner took from the till before banking overstates receivables by that £4,200.00 — takings that never reached the bank were still takings.',
+        },
+        {
+          label: 'A colleague calculates revenue as cost of sales ÷ 0.6. They have:',
+          type: 'choice',
+          options: [
+            'treated the 40% as a margin on revenue rather than a mark-up on cost',
+            'treated the 40% as a mark-up on cost rather than a margin on revenue',
+            'applied the percentage to gross profit rather than to cost of sales',
+            'applied the percentage to opening inventory rather than to purchases',
+          ],
+          answer: 0,
+          exp: 'Dividing by 0.6 assumes cost is 60% of revenue, which is what a 40% MARGIN means. A 40% mark-up means gross profit is 40% of COST, so cost is 100/140 of revenue and the multiplier is 1.4. The two give very different answers from the same percentage, which is why the wording of the question matters more here than the arithmetic.',
+        },
+        {
+          label: 'Revenue if the 40% had been a margin instead',
+          type: 'numeric', unit: '£', answer: 141333.33,
+          exp: '84,800.00 ÷ 0.6 = £141,333.33. That is £22,613.33 more than the mark-up gives, on the same cost of sales and the same percentage — the size of the gap is the reason the distinction is worth being certain about.',
+        },
+      ],
+      exp: 'Incomplete records is a chain of inference and every link has to hold: inventory and purchases give cost of sales, the mark-up gives revenue, and revenue against cash gives what is still owed. The two cash rows are the ones a reader is most likely to misuse — banked cash looks like revenue and is not, and the owner’s takings look irrelevant and are not.',
     },
   ];
 

@@ -49,6 +49,29 @@ groups.forEach(g => (g.lessons || []).forEach(l => (l.check || []).forEach((q, i
 
 ok(tasks.length > 0, 'the module contains at least one multi-part task');
 
+/* EVERY UNIT, NOT JUST THE ONE THAT HAPPENED TO GET THEM FIRST. TPFB had six
+   tasks and FAPS had none, for months, and nothing said so: the type worked,
+   the checks that drove it passed, and the unit with the longest paper — the
+   one whose assessment is BUILT out of extended tasks — had no question of the
+   shape it is assessed in. The rule that catches that is a per-unit one, and
+   it is a floor on the content rather than on the code. */
+{
+  const SYL = require('../aat3-syllabus.js').SYLLABUS;
+  Object.keys(SYL.units).forEach(unitKey => {
+    const bank = questions.filter(q => q.unitKey === unitKey);
+    /* SCOPED TO UNITS THAT HAVE A BANK. A unit encoded in the syllabus with no
+       questions at all is not "missing its tasks" — it is unwritten, which is a
+       larger and different absence that check-aat3-coverage.js tracks against
+       its own shipped list. Demanding a task of an empty unit would report the
+       same gap twice and block the syllabus for a unit from landing before its
+       content does, which is the order this repo writes them in. */
+    if (!bank.length) return;
+    const mine = bank.filter(q => q.type === 'task');
+    ok(mine.length > 0,
+      `${unitKey} has at least one multi-part task among its ${bank.length} practice questions (has ${mine.length})`);
+  });
+}
+
 /* A one-question practice run carrying exactly this task, which is the
    shortest path to the real grading that does not reach inside the module. */
 function open(entry) {

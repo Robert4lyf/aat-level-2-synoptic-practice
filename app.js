@@ -52,7 +52,7 @@
       meta: '2 units · TPFB complete · FAPS in progress',
       tabs: ['home'],
       ui: 'AAT3_UI',
-      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-ui.js'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-ui.js'],
       styles: 'aat3-styles.css', /* lazy, same reasoning as Level 1's */
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values

@@ -72,7 +72,8 @@ function runAndCount(unitKey) {
 Object.keys(SYL.units).forEach(unitKey => {
   const unit = SYL.units[unitKey];
   const M = D.loadUI(D.fakeStore());
-  const bank = [].concat((M.AAT3_PRACTICE || {}).QUESTIONS || [], (M.AAT3_FAPS_PRACTICE || {}).QUESTIONS || [])
+  const bank = [].concat((M.AAT3_PRACTICE || {}).QUESTIONS || [], (M.AAT3_FAPS_PRACTICE || {}).QUESTIONS || [],
+    (M.AAT3_MATS_PRACTICE || {}).QUESTIONS || [])
     .filter(q => q.unitKey === unitKey);
   if (!bank.length) return;
 
