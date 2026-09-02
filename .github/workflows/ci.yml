@@ -45,6 +45,16 @@ jobs:
         run: npm run check:aat3
       - name: Check the encoded Level 3 syllabus against the published specification
         run: npm run check:aat3-fidelity
+      - name: Check CIPS Level 2 syllabus integrity
+        run: npm run check:cips2
+      - name: Check the encoded CIPS Level 2 syllabus against the reviewed source manifest
+        run: npm run check:cips2-fidelity
+      - name: Adversarially prove the CIPS syllabus gates reject representative corruption
+        run: npm run check:cips2-adversarial
+      - name: Check CIPS L2M1 teaching coverage and practice-bank quality
+        run: npm run check:cips2-l2m1
+      - name: Adversarially prove the CIPS L2M1 content gate rejects corruption
+        run: npm run check:cips2-l2m1-adversarial
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
@@ -118,8 +128,8 @@ jobs:
 
   render:
     # Separated because it is the only job needing a browser: it loads the real
-    # site in Chromium and opens all seven subjects. Kept out of the checks job
-    # so a Playwright install failure cannot mask a content failure.
+    # site in Chromium and opens all subjects. Kept out of the checks job so a
+    # Playwright install failure cannot mask a content failure.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -184,3 +194,11 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:guitar-controls
+      - name: Check the CIPS L2M1 reader, practice, progress and subject-picker bridge
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:cips2-render
+      - name: Check CIPS L2M1 installs and reloads offline
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:cips2-offline
