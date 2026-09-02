@@ -224,6 +224,16 @@
     var map = isLessonQId(qId) ? data.lessonQs : data.practice.qs;
     var r = map[qId] || (map[qId] = {});
     if (correct) r.r = Date.now(); else r.w = Date.now();
+    /* The two timestamps stay: the mistakes backlog is built from them, and a
+       record written before schedules existed still has to work. `sr` is the
+       spaced-repetition schedule on top — see spaced.js, shared with Levels 2
+       and 3 so a reader meets one algorithm rather than three.
+
+       Guarded, not assumed: answering a question is the one thing this player
+       must never fail to do, and an unguarded call would take a whole run down
+       if the file were ever missing. §7 of check-spaced.js is what makes sure
+       it is actually shipped. */
+    if (root.AATSpaced) r.sr = root.AATSpaced.schedule(r.sr, correct);
   }
   function isOutstanding(r) {
     return !!(r && n0(r.w) > n0(r.r));
@@ -243,14 +253,28 @@
     return out.sort(function (a, b) { return b.w - a.w; })
       .map(function (e) { return byId[e.id]; });
   }
-  /* Spaced review: a question got wrong and later fixed comes back a week
-     after the most recent correct answer — answered right once is not the
-     same as known, and each return that goes right pushes the next another
-     week out.
-     Computed from the two timestamps already stored, so it costs the record
-     nothing and merges between devices exactly as the backlog does. Served
-     oldest fix first. */
+  /* Spaced review. Every answered question carries a schedule (see spaced.js):
+     get it right and the gap to the next sight of it widens, get it wrong and
+     it comes back tomorrow. Answered right once is not the same as known, so
+     first-time correct answers are scheduled too — the material most likely to
+     slip is what a reader got right once and has not seen since.
+
+     Records written before schedules existed have only the two timestamps, and
+     keep the rule they were written under: a mistake fixed a week ago comes
+     back. They pick up a schedule the next time they are answered. */
   var REVIEW_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
+  /* The moment this record fell due, or null if it has not. Both branches
+     return a due time rather than a last-seen time, so schedules and legacy
+     records sort against each other on the same scale. */
+  function dueSince(r, now) {
+    if (!r) return null;
+    var sr = r.sr;
+    if (sr && typeof sr.dueAt === 'number') return sr.dueAt <= now ? sr.dueAt : null;
+    if (n0(r.w) > 0 && n0(r.r) >= n0(r.w) && now - n0(r.r) > REVIEW_AFTER_MS) {
+      return n0(r.r) + REVIEW_AFTER_MS;
+    }
+    return null;
+  }
   function dueQuestions() {
     var byId = answerableById();
     var now = Date.now();
@@ -258,9 +282,12 @@
     [data.practice.qs, data.lessonQs].forEach(function (map) {
       Object.keys(map || {}).forEach(function (id) {
         var r = map[id];
-        if (byId[id] && r && n0(r.w) > 0 && n0(r.r) >= n0(r.w) && now - n0(r.r) > REVIEW_AFTER_MS) {
-          out.push({ id: id, r: n0(r.r) });
-        }
+        /* A question still outstanding belongs to the mistakes backlog, which
+           serves it sooner and more insistently. Offering it in both places
+           would double-count it on the practice screen. */
+        if (!byId[id] || isOutstanding(r)) return;
+        var at = dueSince(r, now);
+        if (at !== null) out.push({ id: id, r: at });
       });
     });
     return out.sort(function (a, b) { return a.r - b.r; })
@@ -1337,7 +1364,7 @@
      existed. */
   function practiceLabel() {
     if (S.practiceLo === 'missed') return 'questions you had got wrong';
-    if (S.practiceLo === 'refresh') return 'keeping fixed mistakes fresh';
+    if (S.practiceLo === 'refresh') return 'spaced review';
     if (S.practiceLo === 'mix') return 'all outcomes';
     if (S.practiceLo === 'mock') return 'timed mock';
     /* Without this an endless run is described as "Outcome endless" on its own
@@ -1496,16 +1523,16 @@
         '<span class="a1-alert-go" aria-hidden="true">→</span>' +
         '</button>';
     }
-    /* Spaced review — mistakes fixed a week or more ago, offered back once.
-       Quieter than the backlog: these went right last time, so this is upkeep
-       rather than repair. */
+    /* Spaced review — questions whose schedule says they are due. Quieter than
+       the backlog: these went right last time, so this is upkeep rather than
+       repair. */
     if (due.length) {
       h += '<button class="a1-alert a1-alert-due" data-a1="startpractice" data-lo="refresh">' +
         '<span class="a1-alert-i" aria-hidden="true">↻</span>' +
         '<span class="a1-alert-tx">' +
           '<span class="a1-alert-t">' + due.length +
-            (due.length === 1 ? ' question to keep fresh' : ' questions to keep fresh') + '</span>' +
-          '<span class="a1-alert-m">Fixed a week or more ago. Right once is not the same as known.</span>' +
+            (due.length === 1 ? ' question due for review' : ' questions due for review') + '</span>' +
+          '<span class="a1-alert-m">Spaced out further each time you get one right. Right once is not the same as known.</span>' +
         '</span>' +
         '<span class="a1-alert-go" aria-hidden="true">→</span>' +
         '</button>';
