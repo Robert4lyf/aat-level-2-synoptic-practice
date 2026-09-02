@@ -120,9 +120,18 @@ function answerRight(el, q) {
      is a paper that should score 100%, so filling them with zeroes the way the
      sweeps do would quietly make that impossible. */
   if (t === 'picklist') {
+    /* BY THE ROW ON SCREEN, NOT BY THE BANK'S. A pick list's rows are shuffled
+       for each sitting the way a true/false grid's statements are, so
+       `rows[data-r]` is a different row from the one the reader is looking at.
+       This answered by index and passed for as long as no shuffle happened to
+       move a row — which made it fail one run in two, on content that was
+       fine, and read as a flake rather than as a harness a change had left
+       behind. The control names its own row in `aria-label`. */
+    const decode = (x) => String(x).replace(/&amp;/g, '&').replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     D.nodes(el, 'plpick').forEach(n => {
-      const r = Number(n.getAttribute('data-r'));
-      const want = q.picklist.rows[r];
+      const label = decode(n.getAttribute('aria-label') || '');
+      const want = q.picklist.rows.find(x => decode(x.text) === label);
       if (want) { n.value = String(want.answer); n.fire('change'); }
     });
     return true;

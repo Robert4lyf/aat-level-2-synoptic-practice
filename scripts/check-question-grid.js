@@ -189,12 +189,23 @@ const PLAYERS = [
     ui: M => M.AAT3_UI, right: /a3-try-verdict is-right/, wrong: /a3-try-verdict is-wrong/ },
 ];
 
+/* The row text as the renderer escaped it, back to what the bank holds. */
+function decode(t) {
+  return String(t).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+}
+
 /* Fill the controls on screen from the key, or deliberately away from it. */
 function answerOnScreen(D, el, q, right) {
   if (q.picklist) {
     D.nodes(el, 'plpick').forEach(n => {
-      const r = Number(n.getAttribute('data-r'));
-      const a = q.picklist.rows[r].answer;
+      /* BY THE ROW ON SCREEN, NOT BY THE BANK'S ORDER. The rows are shuffled
+         per sitting, so `rows[data-r]` is the wrong row — which is what a
+         reader would be marked on if the grader made the same mistake. The
+         control names its row in `aria-label`, so look the answer up by that. */
+      const label = decode(n.getAttribute('aria-label') || '');
+      const row = q.picklist.rows.find(x => decode(x.text) === label) || q.picklist.rows[0];
+      const a = row.answer;
       n.value = String(right ? a : (a + 1) % q.picklist.options.length);
       n.fire('change');
     });
@@ -244,6 +255,54 @@ PLAYERS.forEach(pl => {
     ok(new RegExp(pl.px + '-(pl|eg)-key').test(el.innerHTML),
       `${pl.name} ${q.id}: and the right answer is shown beside what they put`);
   });
+});
+
+/* ── 3b. The rows are shuffled, and the marking follows them ──────────────── */
+
+/* WHY THIS MATTERS MORE THAN IT LOOKS. A true/false grid has its statements
+   shuffled on all three levels so the reader cannot learn the pattern; a pick
+   list is the same shape and was not, so a reader sitting a paper twice could
+   answer row 3 without reading it. Shuffling rows is only safe if the RENDERER
+   and the GRADER agree on the order — get that wrong and a reader who answers
+   every row correctly is marked wrong, which is a worse bug than the one being
+   fixed. So this asserts both halves: that the order moves, and that a paper
+   answered against the order ON SCREEN is marked right. */
+PLAYERS.forEach(pl => {
+  const D = require(pl.driver);
+  const q = pl.bank.find(x => x.type === 'picklist' && x.picklist.rows.length >= 4);
+  if (!q) { ok(false, `${pl.name} has a pick list to shuffle`); return; }
+
+  /* The row LABELS in the order they are drawn, over enough runs that a single
+     shuffle landing on the original order is not read as no shuffle at all. */
+  const seen = new Set();
+  for (let i = 0; i < 12; i++) {
+    const M = D.loadUI(D.fakeStore());
+    const el = pl.open(D, M, [q]);
+    const order = D.nodes(el, 'plpick').map(n => n.getAttribute('aria-label')).join('|');
+    if (order) seen.add(order);
+  }
+  ok(seen.size > 1,
+    `${pl.name} ${q.id}: the rows are not always in the same order (${seen.size} orders in 12 runs)`);
+
+  /* AND THE MARKING FOLLOWS THE SCREEN. Answered from the row text as rendered
+     — which is what a reader does — a correct answer must be correct. If the
+     grader read the bank's row order instead of the shuffled one this fails
+     nearly every run. */
+  for (let i = 0; i < 6; i++) {
+    const M = D.loadUI(D.fakeStore());
+    const el = pl.open(D, M, [q]);
+    D.nodes(el, 'plpick').forEach(n => {
+      /* Look the row's answer up BY ITS TEXT, not by its position. */
+      const label = decode(n.getAttribute('aria-label') || '');
+      const row = q.picklist.rows.find(x => decode(x.text) === label);
+      ok(!!row, `${pl.name} ${q.id}: every row on screen is a row of the question`);
+      n.value = String(row ? row.answer : 0);
+      n.fire('change');
+    });
+    D.click(el, 'plsubmit');
+    ok(pl.right.test(el.innerHTML),
+      `${pl.name} ${q.id}: answered from the rows as shown, it is marked correct (run ${i + 1})`);
+  }
 });
 
 /* ── 4. A timed paper ─────────────────────────────────────────────────────── */
@@ -298,32 +357,50 @@ PLAYERS.forEach(pl => {
       D.click(el, 'review');
       ok(!/left blank|not reached/.test(el.innerHTML),
         `${pl.name} mock: review reports none of them left blank after a full, correct paper`);
-      D.click(el, 'reviewq');
-      ok(new RegExp(pl.px + '-(pl|eg)-said').test(el.innerHTML),
-        `${pl.name} mock: and reopening one in review shows the entries they made`);
+      /* AND THE REVIEW AGREES WITH THE PAPER. The score is taken as the reader
+         moves on; the review screen MARKS THE QUESTION AGAIN from the stored
+         answer. Anything the paper knew and the record does not — which rows a
+         pick list showed, and in what order — makes the two disagree, and the
+         reader is shown a question ticked in the list and marked wrong when
+         they open it. Every question on this paper was answered correctly, so
+         every re-grade must say so too. */
+      const ids = D.nodes(el, 'reviewq').map(n => n.getAttribute('data-i'));
+      ok(ids.length === mine.length, `${pl.name} mock: review lists all ${mine.length} questions`);
+      ids.forEach(i => {
+        D.click(el, 'reviewq', n => n.getAttribute('data-i') === i);
+        ok(pl.right.test(el.innerHTML),
+          `${pl.name} mock: question ${Number(i) + 1} re-marks as right in review, as the paper scored it`);
+        ok(new RegExp(pl.px + '-(pl|eg)-said').test(el.innerHTML),
+          `${pl.name} mock: and shows the entries they made`);
+        D.click(el, 'reviewlist');
+      });
     } else {
       ok(pct === 0, `${pl.name} mock: a paper answered wrongly scores 0% (got ${pct})`);
     }
   });
 });
 
-/* THE LEVEL 2 MOCK EXCLUDES THEM, DELIBERATELY. Its paper is calibrated to an
-   8-task blueprint with a mark quota per area, and these questions carry no
-   mark value of their own. They are offered in practice and endless, where the
-   learning happens; putting them in a timed paper is a separate change that has
-   to set marks first. Asserted so the exclusion reads as a decision rather than
-   as something nobody got round to. */
+/* THE LEVEL 2 SYNOPTIC SERVES THEM. AAT's Level 2 specification v5.4 §9.4 lists
+   three families of question — multiple choice, numeric gap-fill, and "question
+   tools that replicate workplace activities such as making entries in a
+   journal" — and the synoptic's objectives 4, 5 and 7 (process bookkeeping
+   transactions; produce and reconcile control accounts and use journals;
+   bookkeeping systems, receipts and payments) are thirty of its hundred marks.
+   A paper that met those marks with multiple choice alone rehearsed two of the
+   three formats. The exclusion here was mine, and it did not survive reading
+   the specification. */
 {
   const app = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
-  const m = app.match(/const MOCK_TYPES = \[([^\]]*)\]/);
+  const m = app.match(/const MOCK_TYPES = \[([\s\S]*?)\]/);
   ok(!!m, 'Level 2 still has an explicit list of the types its mock may serve');
+  ok(!!m && /'picklist'/.test(m[1]) && /'entrygrid'/.test(m[1]),
+    'and both table types are on it, as the specification\u2019s third question family');
 
-  /* THE THREE PIECES A PAPER NEEDS, asserted whether or not the paper serves
-     these types yet. All three were missing when the types were first wired in
-     and none of them showed: the exclusion above meant nothing exercised them.
-     Kept as a standing requirement rather than a note, so the day someone adds
-     the types to MOCK_TYPES they find the path already built instead of
-     discovering it a paper at a time.
+  /* THE THREE PIECES A PAPER NEEDS. All three were missing when the types were
+     first wired in and none of them showed, because nothing exercised the exam
+     path. They are asserted here as well as driven in a browser below, because
+     a regex over the source says WHICH piece is gone when a paper breaks, and a
+     failed paper only says that it did.
 
        renderer  — the exam body draws the table with the key HIDDEN. Handed
                    `showAnswers: true` it prints the answers during the paper.
@@ -461,8 +538,14 @@ function finish() {
 
       if (pick) {
         const n = q.picklist.options.length;
+        /* BY THE ROW ON SCREEN. Level 2 shuffles a pick list's rows per sitting,
+           so the bank's order is not the reader's, and answering by bank index
+           tests nothing but the shuffle. */
+        const shown = await page.locator(control).evaluateAll(
+          es => es.map(e => e.getAttribute('aria-label')));
         for (let r = 0; r < q.picklist.rows.length; r++) {
-          const a = q.picklist.rows[r].answer;
+          const row = q.picklist.rows.find(x => x.text === shown[r]) || q.picklist.rows[r];
+          const a = row.answer;
           await page.locator(control).nth(r)
             .selectOption(String(right ? a : (a + 1) % n)).catch(() => {});
         }

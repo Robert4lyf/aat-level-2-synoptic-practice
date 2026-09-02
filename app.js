@@ -283,7 +283,17 @@
      Tasks 4 and 7: they combine a written communication element with genuine
      bookkeeping work, and without an explicit split the random draw fills them
      with whichever area has more questions — which skews the whole paper away
-     from the real ITBK ~32 / POBC ~10 / BESY ~58 balance. */
+     from the real ITBK ~32 / POBC ~10 / BESY ~58 balance.
+
+     `written: true` anchors the extended response; `table: true` does the same
+     job for the bookkeeping tool. AAT's specification (v5.4 §9.4) names three
+     families of question — multiple choice, numeric gap-fill, and "question
+     tools that replicate workplace activities such as making entries in a
+     journal" — and Tasks 4 and 5 are where the third belongs. Left to the
+     shuffle it appears in two papers out of three: a dozen tables against six
+     hundred other questions is a rounding error in a sixteen-mark draw, and the
+     reader who most needs the practice is the one who never meets it. So one is
+     dealt, exactly as the written task is, and the quota fills around it. */
   const SYNOPTIC_BLUEPRINT = [
     { n: 1, title: 'Business types and their functions', marks: 10, markRange: [8, 12],
       areas: [{ area: 'besy-structure', marks: 10 }] },
@@ -293,9 +303,9 @@
       areas: [{ area: 'besy-ethics', marks: 14 }] },
     { n: 4, title: 'Bookkeeping transactions and communicating information', marks: 22, markRange: [18, 24],
       written: true,
-      areas: [{ area: 'besy-comms', marks: 6, written: true }, { area: 'itbk', marks: 16 }] },
+      areas: [{ area: 'besy-comms', marks: 6, written: true }, { area: 'itbk', marks: 16, table: true }] },
     { n: 5, title: 'Control accounts, reconciliations and journals', marks: 10, markRange: [8, 12],
-      areas: [{ area: 'pobc', marks: 10 }] },
+      areas: [{ area: 'pobc', marks: 10, table: true }] },
     { n: 6, title: 'The principles of contract law', marks: 7, markRange: [6, 10],
       areas: [{ area: 'besy-law', marks: 7 }] },
     { n: 7, title: 'Bookkeeping systems, receipts, payments and data security', marks: 10, markRange: [8, 12],
@@ -335,6 +345,18 @@
       return q.rubric.reduce((s, r) => s + (Number(r.marks) || 0), 0) || DEFAULT_QUESTION_MARKS;
     }
     if (q.type === 'truefalse' && Array.isArray(q.statements)) return q.statements.length;
+    /* A TABLE IS WORTH ITS ROWS. Both shared table types are sized by how much
+       bookkeeping they ask for, the same way a true/false grid is sized by its
+       statements — so a six-row book-of-prime-entry table is six marks and a
+       three-line journal is three, without an author having to remember to say
+       so. Rows, not cells: a day book with three columns is still three
+       decisions per line, not nine. An authored `marks` still wins, above. */
+    if (q.type === 'picklist' && q.picklist && Array.isArray(q.picklist.rows)) {
+      return q.picklist.rows.length;
+    }
+    if (q.type === 'entrygrid' && q.entrygrid && Array.isArray(q.entrygrid.rows)) {
+      return q.entrygrid.rows.length;
+    }
     if (q.type === 'scenario' && Array.isArray(q.parts)) {
       return q.parts.reduce((s, p) => s + questionMarks(p), 0) || DEFAULT_QUESTION_MARKS;
     }
@@ -1943,9 +1965,20 @@
        at the bottom of this function is the simple-MCQ case and does
        `q.opts.map(...)`, so any type that reaches it without an `opts` array
        throws the moment it is drawn and takes the whole run with it.
-       Nothing to shuffle in either: a pick list's options are one ordered list
-       shared by every row, and an entry grid has no options at all. */
-    if (isPickList(q)) { return { ...q }; }
+       A pick list's OPTIONS are one ordered list shared by every row, so there
+       is nothing to shuffle there — but its ROWS are exactly what a true/false
+       grid's statements are, and those are shuffled two branches above so the
+       pattern is never memorable. A reader sitting the paper a second time
+       should not be able to answer row 3 without reading it. Each row carries
+       its own answer, so reordering them is safe; the draft, the paper's answer
+       key and the grader all index the question AS PRESENTED.
+
+       An entry grid is not shuffled, and that is not an oversight: its rows are
+       one entry read in order, and a day book ends with a totals row that would
+       stop being the total of the rows above it. */
+    if (isPickList(q)) {
+      return { ...q, picklist: { ...q.picklist, rows: shuffle((q.picklist.rows || []).slice()) } };
+    }
     if (isEntryGrid(q)) { return { ...q }; }
     if (isWordOrder(q)) { return { ...q }; }
     if (isTyped(q)) { return { ...q }; }
@@ -2434,7 +2467,15 @@
   }
   /* Formats a mock can present. Everything the practice screens can render
      except drag-drop, which needs feedback-on-submit to make sense. */
-  const MOCK_TYPES = ['mcq', 'numeric', 'truefalse', 'multiselect', 'gapfill', 'tablefill', 'written'];
+  /* THE THIRD FAMILY THE SPECIFICATION NAMES. AAT's Level 2 specification (v5.4
+     §9.4) says a student will meet "multiple-choice questions, numeric gap-fill
+     questions, or question tools that replicate workplace activities such as
+     making entries in a journal" — and the synoptic's own objectives 4, 5 and 7
+     are processing bookkeeping transactions, using the journal and reconciling
+     a bank statement, thirty of the paper's hundred marks. A paper that served
+     those marks as multiple choice alone rehearsed two of the three formats. */
+  const MOCK_TYPES = ['mcq', 'numeric', 'truefalse', 'multiselect', 'gapfill', 'tablefill',
+    'picklist', 'entrygrid', 'written'];
 
   /* Does a question belong to an area? An area is either a topic id ('itbk') or
      a skill id ('besy-finance'). */
@@ -2458,18 +2499,40 @@
           if (MOCK_TYPES.indexOf(q.type || 'mcq') === -1) return false;
           return matchesArea(q, spec.area);
         });
-        // Where the blueprint marks an area as the written element, a written
-        // task anchors it; objective items fill whatever quota remains.
-        const written = spec.written ? shuffle(pool.filter(q => q.type === 'written')) : [];
-        const objective = shuffle(pool.filter(q => q.type !== 'written'));
-        const ordered = written.slice(0, 1).concat(objective);
+        /* Where the blueprint marks an area as the written element, a written
+           task anchors it; where it marks one as a bookkeeping area, a table
+           does. Objective items fill whatever quota remains.
+
+           ONE TABLE, NOT AS MANY AS THE SHUFFLE OFFERS: the rest are held out
+           of the area so a sixteen-mark task cannot come back as three journals
+           and a pick list. */
+        const isTable = q => q.type === 'picklist' || q.type === 'entrygrid';
+        const written = spec.written
+          ? shuffle(pool.filter(q => q.type === 'written')).slice(0, 1) : [];
+        const table = spec.table ? shuffle(pool.filter(isTable)).slice(0, 1) : [];
+        const objective = shuffle(pool.filter(q =>
+          q.type !== 'written' && !(spec.table && isTable(q))));
+        const ordered = written.concat(table, objective);
+        const anchored = new Set(written.concat(table).map(q => q.id));
         let filled = 0;
         for (const q of ordered) {
           if (filled >= spec.marks) break;
           const marks = questionMarks(q);
-          // Skip anything that would take this area past its quota, unless it is
-          // the first pick (better a slight overshoot than an empty task).
+          /* Skip anything that would take this area past its quota.
+             The exception is an EMPTY area with nothing that fits — better a
+             slight overshoot than a task with no questions in it. It used to be
+             "unless it is the first pick", which was the same thing while every
+             question was worth a mark or two. It stopped being the same thing
+             when tables entered the draw: a six-mark pick list drawn first into
+             Task 7's four-mark slot was taken without ever asking whether
+             something that fitted was further down the shuffle. So look for one
+             that fits before settling for one that does not. */
           if (filled && filled + marks > spec.marks) continue;
+          /* An ANCHOR is exempt: it was dealt on purpose, and dropping it for
+             something that fits better is how the extended written response
+             disappeared from a paper the real one is human-marked for. */
+          if (!filled && marks > spec.marks && !anchored.has(q.id)
+              && ordered.some(o => o !== q && questionMarks(o) <= spec.marks)) continue;
           const pq = presentQuestion(q);
           pq._task = taskIdx;
           pq._marks = questionMarks(pq);
@@ -2516,6 +2579,11 @@
     buildUnitAssessment,
     questionMarks,
     matchesArea,
+    /* HOW A PAPER MARKS ONE ANSWER. Named for the same reason the builders are:
+       a check that cannot call it can only assert that the source is spelled a
+       certain way, and "a pick list awards a mark a row" is a claim about what
+       happens, not about how it is written. */
+    gradeResponse,
   });
 
   function buildUnitAssessment(unitId) {
@@ -3329,8 +3397,16 @@
   }
   /* Grade one exam response of any type.
      Returns { correct, awarded, max, chosen, expected, selfAssessed }.
-     `awarded` is partial for true/false grids and written tasks; every other
-     type is all-or-nothing. */
+     `awarded` is partial for true/false grids, pick lists and written tasks;
+     every other type is all-or-nothing.
+
+     WHY A PICK LIST IS PARTIAL AND AN ENTRY GRID IS NOT. A pick list's rows are
+     independent decisions — which book each of six documents belongs in — and
+     getting five of them right is worth five marks, exactly as a true/false
+     grid is marked. An entry grid is one entry written across several rows: a
+     journal that balances on two lines of three is not two thirds of a journal,
+     it is a wrong journal, and marking it as most of one would teach the thing
+     the type exists to catch. */
   function gradeResponse(q, response) {
     const max = questionMarks(q);
     const unanswered = response == null || response === '';
@@ -3388,7 +3464,11 @@
        a field neither of them has. */
     if (isPickList(q) && window.AATGrid) {
       const r = window.AATGrid.gradePicklist(q, response || {});
-      return { correct: r.right, awarded: r.right ? max : 0, max,
+      /* A mark a row, capped at the question's allocation — `max` is the row
+         count unless an author overrode it, and a smaller authored figure must
+         not be exceeded by a reader who got every row right. */
+      const rows = r.per.filter(Boolean).length;
+      return { correct: r.right, awarded: Math.min(rows, max), max,
         chosen: q.picklist.rows.map((row, i) => (response || {})[i] == null ? '—' : q.picklist.options[(response || {})[i]]).join(', '),
         expected: q.picklist.rows.map(row => q.picklist.options[row.answer]).join(', ') };
     }

@@ -317,6 +317,23 @@
           keys.every(function (k, i) { return i === 0 || k !== keys[i - 1]; })) {
         out.push(where + ': with two options the answers strictly alternate, which is a pattern a reader can follow instead of the question.');
       }
+      /* WHAT GUESSING IS WORTH. A pick list is marked a mark a row on a timed
+         paper, so a reader who picks the commonest option for every row without
+         reading one of them collects that many marks. Four "cash book"s out of
+         six is two thirds of the marks for knowing nothing, which is not a
+         question, it is a subsidy. Half the rows, rounded up, is the most any
+         one answer may take — that still allows the even splits a two-option
+         table needs, and the one-each shape of a six-option table. */
+      var cap = Math.ceil(keys.length / 2);
+      var tally = {};
+      keys.forEach(function (k) { tally[k] = (tally[k] || 0) + 1; });
+      Object.keys(tally).forEach(function (k) {
+        if (tally[k] > cap) {
+          out.push(where + ': "' + p.options[k] + '" answers ' + tally[k] + ' of ' + keys.length +
+            ' rows — picking it every time and reading nothing would earn ' + tally[k] +
+            ' of ' + keys.length + ' marks.');
+        }
+      });
       return out;
     }
     if (t !== 'entrygrid') return out;
