@@ -72,8 +72,9 @@ const LEVEL3 = {
       taught: [],
     }));
   },
-  open(unit) {
+  open(unit, terms) {
     const M = D3.loadUI(D3.fakeStore());
+    if (terms) M.AAT3_GLOSSARY = { UNITS: { [unit]: terms } };
     const el = D3.fakeEl();
     M.AAT3_UI.reset('path', unit);
     M.AAT3_UI.mount(el);
@@ -94,8 +95,9 @@ const LEVEL1 = {
         (c.terms || []).forEach(t => taught.push({ where: l.id, t: t.t, d: t.d })))));
     return [{ key: 'bkfn', terms: G, outcomes: SYL1.units.bkfn.outcomes, taught }];
   },
-  open() {
+  open(unit, terms) {
     const M = D1.loadUI(D1.fakeStore());
+    if (terms) M.AAT1_GLOSSARY = { TERMS: terms };
     const el = D1.fakeEl();
     M.AAT1_UI.reset('path');
     M.AAT1_UI.mount(el);
@@ -241,6 +243,25 @@ PLAYERS.forEach(P => {
     const mid = L.terms[Math.floor(L.terms.length / 2)];
     ok(html.indexOf(mid.d.slice(0, 40).replace(/&/g, '&amp;')) !== -1 || html.indexOf(mid.t) !== -1,
       `${P.name}: a term from the middle of the list is present (${mid.t})`);
+  }
+  {
+    /* A TERM WHOSE OUTCOME DOES NOT EXIST STILL REACHES THE PAGE. §1 asserts
+       the shipped data has none, so this cannot be tested against it — and
+       that is precisely why it is tested with an injected one. The screen is
+       built by walking the outcomes and pulling each one's terms out, so a
+       mistyped `lo` falls through every group and lands nowhere: a definition
+       findable only by someone who already knows the word, which is the one bug
+       a glossary can have that looks like no bug at all.
+
+       Both the good term and the orphan are asserted, so a screen that rendered
+       nothing at all could not pass this by rendering the orphan alone. */
+    const orphan = { t: 'Zzorphan', d: 'A term tagged to an outcome that does not exist in this unit.', lo: 99 };
+    const good = { t: 'Zzanchor', d: 'A term tagged to an outcome that does exist in this unit.', lo: L.outcomes[0].n };
+    const { el } = P.open(unit, [good, orphan]);
+    ok(el.innerHTML.indexOf(good.t) !== -1, `${P.name}: a well-tagged term renders`);
+    ok(el.innerHTML.indexOf(orphan.t) !== -1,
+      `${P.name}: and one tagged to no outcome is shown rather than silently dropped`);
+    ok(/Other terms/.test(el.innerHTML), `${P.name}: under a heading that says what it is`);
   }
 
   /* ── 5. Search ─────────────────────────────────────────────────────────── */
