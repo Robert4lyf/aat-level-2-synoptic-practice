@@ -42,8 +42,8 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const rows=await page.$$('[data-go="lesson"]');
       if(rows.length!==13)errors.push(`module map exposes ${rows.length} lessons instead of 13.`);
       const ids=await page.$$eval('[data-go="lesson"]',els=>els.map(e=>e.getAttribute('data-id')));
-      const sequence=await page.$$eval('[data-go="lesson"]',els=>els.map(e=>{const s=e.querySelector('.c2-step');return (getComputedStyle(s,'::before').content||'').replace(/["']/g,'');}));
-      if(sequence.join(',')!=='1,2,3,4,5,6,7,8,9,10,11,12,13')errors.push(`module map lesson sequence is ${JSON.stringify(sequence)} instead of 1–13.`);
+      const sequence=await page.$$eval('[data-go="lesson"] .c2-step',els=>els.map(e=>(e.textContent||'').trim()));
+      if(sequence.join(',')!=='1,2,3,4,5,6,7,8,9,10,11,12,13')errors.push(`module map lesson sequence is ${JSON.stringify(sequence)} instead of 1–13 in the DOM.`);
       for(const id of ids){await page.click(`[data-go="lesson"][data-id="${id}"]`);await page.waitForSelector('.c2-reading-card');const title=await page.textContent('#c2PageTitle');if(!title||title.trim().length<5)errors.push(`${id}: opens without a lesson heading.`);await page.click('[data-screen="module"]');}
       await page.click('[data-go="lesson"][data-id="c2m1-01"]');
       while(await page.$('[data-card="next"]'))await page.click('[data-card="next"]');
@@ -59,7 +59,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       if(consoleErrors.length)errors.push('lesson walk browser errors: '+consoleErrors.join(' | '));
       await ctx.close();
     }
-    notes.push('All 13 lessons open in one visible 1–13 sequence; a completed checkpoint persists across reload.');
+    notes.push('All 13 lessons open in one DOM-visible 1–13 sequence; a completed checkpoint persists across reload.');
 
     /* 3 — practice really grades, explains and records by LO. */
     {
