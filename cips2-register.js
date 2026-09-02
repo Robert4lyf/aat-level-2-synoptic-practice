@@ -68,6 +68,18 @@
     if (moduleTab) moduleTab.click();
   }, true);
 
+  /* CIPS stores progress under the same prep_v2_* convention as the existing
+     self-rendering subjects. Initialising the shared transport here means a
+     direct visit pulls progress written on another device instead of waiting
+     until the learner happens to answer something locally. A remote merge can
+     replace records cips2-page.js already read into memory, so refresh once in
+     that case and let the normal page load rebuild from the merged store. */
+  if (window.ProgressSync && typeof window.ProgressSync.init === 'function') {
+    window.ProgressSync.init({
+      onRemoteChange: function () { window.location.reload(); }
+    });
+  }
+
   if (!('serviceWorker' in navigator)) return;
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('sw.js').catch(function () { /* online study still works */ });
