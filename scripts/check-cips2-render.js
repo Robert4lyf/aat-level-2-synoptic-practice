@@ -35,9 +35,15 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
     }
     notes.push('CIPS landing renders without horizontal overflow at 390px and 1280px, with named primary controls and shared progress transport available.');
 
+    /* addInitScript runs before every reload/navigation, not only the first one.
+       Every seed below therefore marks sessionStorage before changing localStorage.
+       Without that guard, the persistence checks would erase/reset the very value
+       they were about to verify and the subject-return check would reset its own
+       expected answer on the navigation home. */
+
     /* 2 — every authored lesson is reachable, numbered as one sequence, and first lesson persists completion. */
     {
-      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>localStorage.removeItem('prep_v2_cips2'));
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.removeItem('prep_v2_cips2');});
       await page.click('[data-c2nav="module"]');
       const rows=await page.$$('[data-go="lesson"]');
       if(rows.length!==13)errors.push(`module map exposes ${rows.length} lessons instead of 13.`);
@@ -63,7 +69,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
 
     /* 3 — practice really grades, explains and records by LO. */
     {
-      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>localStorage.removeItem('prep_v2_cips2'));
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.removeItem('prep_v2_cips2');});
       await page.click('[data-c2nav="practice"]');await page.click('[data-start-practice="1"]');
       const stem=(await page.textContent('#c2PageTitle')).trim();
       const key=await page.evaluate(stem=>{const q=window.CIPS2_L2M1_PRACTICE.QUESTIONS.find(x=>x.q===stem);return q?{answer:q.answer,id:q.id}:null;},stem);
@@ -75,14 +81,14 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
 
     /* 4 — theme is a preference, not session state. */
     {
-      const {ctx,page}=await open('cips2.html',390,844,()=>{localStorage.setItem('prep_v2_cips2',JSON.stringify({settings:{darkMode:false}}));});
+      const {ctx,page}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.setItem('prep_v2_cips2',JSON.stringify({settings:{darkMode:false}}));});
       const before=await page.evaluate(()=>document.body.classList.contains('dark'));await page.click('#c2Theme');const after=await page.evaluate(()=>document.body.classList.contains('dark'));if(before===after)errors.push('theme toggle did not change the theme.');await page.reload({waitUntil:'load'});const persisted=await page.evaluate(()=>document.body.classList.contains('dark'));if(persisted!==after)errors.push('theme choice did not survive reload.');await ctx.close();
     }
     notes.push('CIPS dark/light preference survives reload.');
 
     /* 5 — enter from the real subject picker, return without changing prior subject. */
     {
-      const {ctx,page,consoleErrors}=await open('index.html',390,844,()=>localStorage.setItem('multisubject_active','aat'));
+      const {ctx,page,consoleErrors}=await open('index.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.setItem('multisubject_active','aat');});
       await page.click('#subjectSwitcherBtn');await page.waitForSelector('[data-switch-subject="cips2"]',{timeout:3000});
       const order=await page.$$eval('.subject-card',els=>els.map(e=>e.getAttribute('data-switch-subject')));
       if(order.indexOf('cips2')!==order.indexOf('aat3')+1)errors.push('CIPS is not grouped immediately after AAT Level 3 in the subject picker.');
@@ -97,6 +103,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
     /* 6 — a completed course offers review, not an unexpected restart at lesson 1. */
     {
       const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{
+        if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');
         const lessons={};for(let i=1;i<=13;i++){const id='c2m1-'+String(i).padStart(2,'0');lessons[id]={done:true,at:1};}
         localStorage.setItem('prep_v2_cips2',JSON.stringify({settings:{darkMode:false},lessons,checkpoint:{attempted:26,correct:26},practice:{runs:0,los:{},qs:{}}}));
       });
