@@ -16,6 +16,15 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="cips2-styles.css">
+  <!-- The course is one sequence even though the module map is grouped by LO.
+       Number unfinished rows across the whole map rather than restarting at 1
+       inside every outcome. Completed rows keep their check mark. -->
+  <style>
+    .c2-module { counter-reset: c2-lesson; }
+    .c2-module .c2-lesson-row { counter-increment: c2-lesson; }
+    .c2-module .c2-lesson-row:not(.is-done) .c2-step { font-size: 0; }
+    .c2-module .c2-lesson-row:not(.is-done) .c2-step::before { content: counter(c2-lesson); font-size: 12px; }
+  </style>
 </head>
 <body data-subject="cips2">
   <a class="skip-link" href="#cipsApp">Skip to main content</a>
@@ -36,6 +45,9 @@
   </div>
   <noscript><div class="c2-fatal"><h1>JavaScript is required</h1><p>This study tool needs JavaScript enabled.</p></div></noscript>
 
+  <script src="progress-backup.js"></script>
+  <script src="sync-config.js"></script>
+  <script src="progress-sync.js"></script>
   <script src="cips2-l2m1-syllabus.js"></script>
   <script src="cips2-l2m1-learn-data.js"></script>
   <script src="cips2-l2m1-practice-data.js"></script>
