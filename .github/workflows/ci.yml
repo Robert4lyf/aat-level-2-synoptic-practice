@@ -79,6 +79,8 @@ jobs:
         run: npm run check:retire
       - name: Check the next-step recommendation moves with the evidence and lands where it says
         run: npm run check:nextstep
+      - name: Check the glossary agrees with the teaching and its flashcards are scheduled
+        run: npm run check:glossary
       - name: Check spaced repetition on all three levels (one schedule, due selection, merge)
         run: npm run check:spaced
       - name: Check progress backup merge (no data loss, idempotent)

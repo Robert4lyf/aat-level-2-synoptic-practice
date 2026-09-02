@@ -90,6 +90,17 @@
        native dialog cannot do — survive the repaint the clock fires every
        second underneath it. */
     confirmExit: false,
+    /* ── The glossary and its flashcards ────────────────────────────────────
+       `glossQuery` is what has been typed into the search box, session-only:
+       a search is a momentary act, and a reader coming back weeks later to a
+       glossary filtered to one word they no longer remember typing would think
+       the glossary had emptied.
+
+       `flash` is one run of cards. Held here rather than persisted — what a run
+       is worth is the SCHEDULE it writes, and that goes into the same
+       per-question store every other answer does. */
+    glossQuery: '',
+    flash: null,
     /* Reading the card aloud. Held in state rather than read off the button,
        because every click repaints the whole screen and a class on a node that
        no longer exists is not a source of truth. */
@@ -1000,6 +1011,19 @@
         '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
         '</button>';
     }
+    /* THE THIRD WAY IN, and quieter than the other two on purpose. Reading and
+       practising are what a reader came to do; the vocabulary is what they
+       reach for when a word in one of them did not land. Offered only where
+       there is a glossary, so a build without one does not advertise an empty
+       screen. */
+    if (glossary().length) {
+      h += '<button class="a1-act a1-act-alt a1-act-quiet" data-a1="gloss">' +
+        '<span class="a1-act-k">Glossary</span>' +
+        '<span class="a1-act-t">' + glossary().length + ' terms, and flashcards</span>' +
+        '<span class="a1-act-m">Search the vocabulary, or be asked to produce it from memory</span>' +
+        '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
+        '</button>';
+    }
     h += '</div>';
 
     /* ── The outcome index ─────────────────────────────────────────────────── */
@@ -1816,6 +1840,202 @@
   }
 
   /* ── Practice picker ─────────────────────────────────────────────────────── */
+  /* ── The glossary, and being drilled on it ────────────────────────────────
+     THE SAME FEATURE LEVEL 3 CARRIES, with this unit's own vocabulary. See the
+     block above renderGlossary in aat3-ui.js for why flashcards exist alongside
+     a practice bank that already asks about these ideas: a practice question
+     gives four options and asks you to pick, a card gives a word and asks you
+     to produce the meaning, and recognition is not recall.
+
+     WHY THE GLOSSARY IS ITS OWN FILE AND NOT THE CARDS' `terms` LISTS. Twenty
+     cards in this unit already carry a terms list, and those exist to be read
+     in place — a definition arrives beside the paragraph that needs it. This is
+     for looking a word up weeks later, and for being drilled on it, which wants
+     every term in one place regardless of which lesson introduced it. The two
+     must agree, and scripts/check-glossary.js asserts that every term taught on
+     a card is here.
+
+     THE SCHEDULE IS THE SAME ONE. A card graded here writes through
+     recordQuestion into the same per-question store as every practice answer,
+     with the same spaced-repetition schedule from spaced.js. The synthetic id
+     is "gloss~<term>", which puts it in the lesson-question map (see
+     isLessonQId): a term is not a bank question, so it must not land in the
+     practice `qs` map and be counted as practice the reader never did. */
+  function glossary() {
+    var G = root.AAT1_GLOSSARY;
+    return (G && G.TERMS) || [];
+  }
+  var GLOSS_PREFIX = 'gloss' + LESSON_Q_SEP;
+  function glossId(term) { return GLOSS_PREFIX + term; }
+
+  /* Searched over BOTH the term and its definition. A reader who has forgotten
+     the word but remembers "the one where the payee controls the amount" is
+     exactly the reader a glossary is for, and a term-only search fails them. */
+  function glossMatches() {
+    var q = String(S.glossQuery || '').trim().toLowerCase();
+    var all = glossary();
+    if (!q) return all;
+    return all.filter(function (t) {
+      return (t.t + ' ' + t.d).toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  function renderGlossary() {
+    var all = glossary();
+    var rows = glossMatches();
+    var q = String(S.glossQuery || '');
+
+    var h = '<div class="a1-root' + fresh() + '">';
+    h += ctxBar({
+      back: 'topath',
+      backLabel: 'Back to the steps',
+      title: 'Glossary',
+      meta: all.length + ' terms',
+    });
+    h += '<div class="a1-page">';
+
+    if (!all.length) {
+      h += '<div class="a1-empty">No glossary yet.</div>';
+      return h + '</div></div>';
+    }
+
+    h += '<button class="a1-flashstart" data-a1="startflash">' +
+      '<span class="a1-flashstart-i" aria-hidden="true">◆</span>' +
+      '<span class="a1-flashstart-tx">' +
+        '<span class="a1-flashstart-t">Test yourself on ' + FLASH_LEN + ' of them</span>' +
+        '<span class="a1-flashstart-m">The word, then the meaning from memory. Drawn to the exam ' +
+          'weighting, and scheduled like everything else you answer.</span>' +
+      '</span>' +
+      '<span class="a1-flashstart-go" aria-hidden="true">→</span>' +
+      '</button>';
+
+    h += '<div class="a1-glosssearch">' +
+      '<input class="a1-glossin" type="search" data-a1="glossin" value="' + esc(q) + '"' +
+      ' placeholder="Search the terms and the definitions…" aria-label="Search the glossary">' +
+      (q ? '<button class="a1-glossclear" data-a1="glossclear" aria-label="Clear the search">×</button>' : '') +
+      '</div>';
+
+    if (!rows.length) {
+      h += '<div class="a1-empty">Nothing matches “' + esc(q) + '”.</div>';
+      return h + '</div></div>';
+    }
+
+    /* GROUPED BY OUTCOME RATHER THAN ALPHABETICALLY. A reader revising outcome
+       4 wants outcome 4's vocabulary together; a reader looking one word up
+       types it, and the search box serves that better than an alphabet would. */
+    var u = unit();
+    var los = (u && u.outcomes) || [];
+    var seen = {};
+    los.forEach(function (o) {
+      var mine = rows.filter(function (t) { return t.lo === o.n; });
+      if (!mine.length) return;
+      mine.forEach(function (t) { seen[t.t] = 1; });
+      h += '<section class="a1-glossgroup">' +
+        '<h2 class="a1-glossgroup-h"><span class="a1-glossgroup-n">' + esc(o.n) + '</span>' +
+        esc(o.title) + '</h2><dl class="a1-glosslist">';
+      mine.forEach(function (t) {
+        h += '<div class="a1-glossrow"><dt>' + esc(t.t) + '</dt><dd>' + md(t.d) + '</dd></div>';
+      });
+      h += '</dl></section>';
+    });
+    /* A term whose `lo` matches no outcome would otherwise vanish silently.
+       Shown rather than dropped: a definition nobody can find is the one bug a
+       glossary can have that looks like no bug at all. */
+    var orphans = rows.filter(function (t) { return !seen[t.t]; });
+    if (orphans.length) {
+      h += '<section class="a1-glossgroup"><h2 class="a1-glossgroup-h">Other terms</h2><dl class="a1-glosslist">';
+      orphans.forEach(function (t) {
+        h += '<div class="a1-glossrow"><dt>' + esc(t.t) + '</dt><dd>' + md(t.d) + '</dd></div>';
+      });
+      h += '</dl></section>';
+    }
+
+    h += '<footer class="a1-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
+    return h + '</div></div>';
+  }
+
+  /* Twelve cards. Long enough to be worth starting and short enough to finish
+     on a bus, which is the whole case for flashcards over a practice run. */
+  var FLASH_LEN = 12;
+
+  function startFlash() {
+    var pool = glossary();
+    if (!pool.length) return;
+    /* DUE FIRST, THEN UNSEEN, THEN THE REST — the same priority the practice
+       screen uses, and for the same reason. */
+    var now = Date.now();
+    var due = [], unseen = [], rest = [];
+    pool.forEach(function (t) {
+      var r = data.lessonQs[glossId(t.t)];
+      if (!r) unseen.push(t);
+      else if (isOutstanding(r) || dueSince(r, now) !== null) due.push(t);
+      else rest.push(t);
+    });
+    var deck = shuffle(due).concat(shuffle(unseen)).concat(shuffle(rest)).slice(0, FLASH_LEN);
+    S.flash = { cards: deck, idx: 0, shown: false, got: 0 };
+    S.screen = 'flash';
+  }
+
+  function renderFlash() {
+    var F = S.flash;
+    if (!F || !F.cards.length) { S.screen = 'gloss'; return renderGlossary(); }
+    if (F.idx >= F.cards.length) return renderFlashDone();
+    var card = F.cards[F.idx];
+    var pct = Math.round((F.idx / F.cards.length) * 100);
+
+    var h = '<div class="a1-root a1-reading' + fresh() + '">';
+    h += '<div class="a1-lessonbar">' +
+      '<button class="a1-ctx-back" data-a1="gloss" aria-label="Back to the glossary">' +
+        '<span aria-hidden="true">←</span></button>' +
+      '<div class="a1-lessonbar-mid">' +
+        '<div class="a1-lessonbar-t">Flashcards</div>' +
+        '<div class="a1-lessonbar-m">Card ' + (F.idx + 1) + ' of ' + F.cards.length +
+          ' · ' + F.got + ' known</div>' +
+      '</div>' +
+      '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
+      '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
+
+    h += '<article class="a1-sheet' + fresh() + '">';
+    /* The term is an h2 with the same class every question stem uses, so the
+       harnesses that identify a screen by its stem can see this one too. */
+    h += '<h2 class="a1-q">' + esc(card.t) + '</h2>';
+    if (!F.shown) {
+      h += '<p class="a1-flash-ask">Say what it means, then turn the card over.</p>' +
+        '<button class="a1-btn a1-btn-primary a1-wide" data-a1="flashflip">Turn it over</button>';
+    } else {
+      h += '<div class="a1-flash-def">' + md(card.d) + '</div>' +
+        '<p class="a1-flash-ask">Did you have it?</p>' +
+        '<div class="a1-flash-grade">' +
+          '<button class="a1-btn a1-btn-ghost" data-a1="flashno">Not yet</button>' +
+          '<button class="a1-btn a1-btn-primary" data-a1="flashyes">I had it</button>' +
+        '</div>';
+    }
+    h += '</article></div>';
+    return h;
+  }
+
+  function renderFlashDone() {
+    var F = S.flash;
+    var n = F.cards.length;
+    var pct = n ? Math.round((F.got / n) * 100) : 0;
+    var h = '<div class="a1-root' + fresh() + '"><div class="a1-page">';
+    /* THE RESULT SCREEN EVERY OTHER RUN USES. A flashcard run ending in its own
+       bespoke panel would be a second visual language for the same event, and
+       the classes here already carry the ring, the heading and the button row. */
+    h += '<section class="a1-done">' +
+      '<div class="a1-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
+      '<div class="a1-done-lesson">Flashcards</div>' +
+      '<h2 class="a1-done-h">' + F.got + ' of ' + n + ' recalled</h2>' +
+      '<p class="a1-done-sub">The ones you did not have come back sooner; the ones you did ' +
+        'come back later.</p>' +
+      '<div class="a1-done-actions">' +
+        '<button class="a1-btn a1-btn-primary" data-a1="startflash">Another ' + FLASH_LEN + '</button>' +
+        '<button class="a1-btn a1-btn-ghost" data-a1="gloss">Back to the glossary</button>' +
+      '</div></section>';
+    h += '</div></div>';
+    return h;
+  }
+
   function renderPractice() {
     var bank = practiceBank();
     var u = unit();
@@ -2010,6 +2230,8 @@
   }
 
   function screenHtml() {
+    if (S.screen === 'gloss') return renderGlossary();
+    if (S.screen === 'flash') return renderFlash();
     if (S.screen === 'lesson') return renderLesson();
     if (S.screen === 'practice') return renderPractice();
     if (S.screen === 'quiz') return renderQuiz();
@@ -2116,6 +2338,26 @@
     if (S.confirmExit && el.querySelector) {
       var stay = el.querySelector('[data-a1="exitcancel"]');
       if (stay && stay.focus) { try { stay.focus(); } catch (e) {} }
+    }
+    /* THE SEARCH BOX GETS ITS CARET BACK. Typing into the glossary filters the
+       list, which means a repaint, which means the input the reader is typing
+       into is replaced by a new one — and a new input is not focused and holds
+       no caret. Without this the box takes exactly one character and then
+       silently stops accepting them, which reads as the keyboard breaking.
+
+       Only while there is something in it: focusing an empty box on arrival
+       would open the keyboard over the glossary on every phone, on a screen
+       whose point is to be read. */
+    if (S.screen === 'gloss' && S.glossQuery && el.querySelector) {
+      var box = el.querySelector('.a1-glossin');
+      if (box && box.focus) {
+        try {
+          box.focus();
+          /* To the end, not to the start — which is where a fresh input puts
+             it, and which would type the next character in front of the last. */
+          if (box.setSelectionRange) box.setSelectionRange(box.value.length, box.value.length);
+        } catch (e) {}
+      }
     }
   }
   function fresh() { return _fresh ? ' is-fresh' : ''; }
@@ -2796,6 +3038,10 @@
     /* Retiring is a decision about the pool, not a move through it, so it gets
        the flat click rather than the advance noise. */
     retire: 1, restore: 1,
+    /* Turning a card over is a move to the next step of the same card, so it
+       sounds like one. Grading is not here: it makes the right-or-wrong noise
+       itself, the way settle() does. */
+    gloss: 1, startflash: 1, flashflip: 1,
   };
 
   function gradeAnswer(q) {
@@ -3095,6 +3341,20 @@
         n.addEventListener('focus', function () { S.calcCell = n.getAttribute('data-c'); });
         return;
       }
+      /* THE SEARCH BOX IS BOUND HERE, LIKE EVERY OTHER INPUT, and not in
+         handle(). handle() is only ever reached from the click listener at the
+         bottom of this function, so an `input` binding written there is never
+         installed — the box takes text and nothing happens, which is a defect
+         that looks exactly like a filter with no matches.
+
+         AND IT DOES REPAINT ON THE KEYSTROKE, unlike the written task below:
+         the point of typing here is to narrow the list, so the list has to be
+         rebuilt. What that costs is the caret, and mount() puts it back — see
+         the note at the end of it. */
+      if (act === 'glossin') {
+        n.addEventListener('input', function () { S.glossQuery = n.value; rerender(); });
+        return;
+      }
       if (act === 'wrinput') {
         /* No repaint on the keystroke. Every other input here is a short
            number; this is several lines of prose, and rerendering would drop
@@ -3136,7 +3396,10 @@
        does: advancing repaints synchronously, so the second tap of a
        double-tap lands on whatever button has taken the same coordinates on
        the next question. */
-    plsubmit: 1, egsubmit: 1, retire: 1 };
+    plsubmit: 1, egsubmit: 1, retire: 1,
+    /* The grade buttons sit where the flip button was a moment ago, which is
+       the double-tap this guard exists for. */
+    flashflip: 1, flashyes: 1, flashno: 1 };
 
   function num(v) {
     var s = String(v == null ? '' : v).replace(/[£,\s]/g, '');
@@ -3276,6 +3539,31 @@
       return rerender();
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
+    if (act === 'gloss') { S.screen = 'gloss'; S.flash = null; return rerender(); }
+    if (act === 'glossclear') { S.glossQuery = ''; return rerender(); }
+    if (act === 'startflash') { startFlash(); return rerender(); }
+    if (act === 'flashflip') {
+      if (!S.flash || S.flash.shown) return;
+      S.flash.shown = true;
+      return rerender();
+    }
+    if (act === 'flashyes' || act === 'flashno') {
+      var F = S.flash;
+      /* Guarded rather than assumed: the buttons only render once the card is
+         turned over, but a tap from the previous paint is still live while the
+         finger is travelling — and grading a card the reader has not seen the
+         back of is exactly the thing this must not do. */
+      if (!F || !F.shown || F.idx >= F.cards.length) return;
+      var got = act === 'flashyes';
+      /* Written through the same recorder every graded answer goes through, so
+         a term picks up the same spaced-repetition schedule as a question. */
+      recordQuestion(glossId(F.cards[F.idx].t), got);
+      save();
+      if (got) F.got++;
+      beep(got ? 'correct' : 'wrong');
+      F.idx++; F.shown = false;
+      return rerender();
+    }
     if (act === 'fold') {
       var fo = n.getAttribute('data-o');
       S.shut[fo] = !S.shut[fo];
@@ -3542,6 +3830,10 @@
     practice: 'topath',
     quiz:     'exit',
     done:     'topath',
+    gloss:    'topath',
+    /* A flashcard run backs out to the glossary it was started from, not to
+       the ladder: leaving a run is not leaving the vocabulary. */
+    flash:    'gloss',
   };
   function back() {
     if (S.confirmExit) { S.confirmExit = false; return rerender(); }
