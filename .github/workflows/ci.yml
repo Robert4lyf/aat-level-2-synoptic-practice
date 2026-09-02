@@ -73,6 +73,8 @@ jobs:
         run: npm run check:aat2-sheets
       - name: Check each self-rendering stylesheet matches its screens (no dead rules, no unstyled classes)
         run: npm run check:styles
+      - name: Check written tasks (model hidden until earned, rubric marks at the pass mark)
+        run: npm run check:written
       - name: Check spaced repetition on all three levels (one schedule, due selection, merge)
         run: npm run check:spaced
       - name: Check progress backup merge (no data loss, idempotent)
