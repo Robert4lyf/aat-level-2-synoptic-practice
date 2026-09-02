@@ -2698,6 +2698,472 @@
   ];
 
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 6 — Use management accounting techniques to support short-term
+     decision making (15%)
+
+     Contribution again, put to work. Everything here rests on the one
+     subtraction Outcome 1 introduced, which is why the two read well together
+     and why a reader who skipped Outcome 1 will find this outcome arbitrary.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO6_LESSONS = [
+    {
+      id: 'L3-MATS-6A',
+      title: 'Contribution and relevant costs',
+      icon: '➗',
+      criteria: ['MATS-6.1.1', 'MATS-6.1.2'],
+      cards: [
+        {
+          h: 'The figure every short-term decision turns on',
+          formula: 'Contribution = Revenue − Variable costs · Contribution per unit = Selling price − Variable cost per unit',
+          p: [
+            '**Contribution** is what a sale leaves behind once the costs that exist only because of the sale have been paid. It contributes towards the fixed costs of being in business and, once those are covered, straight to profit.',
+            'Short-term decisions are made on contribution rather than profit for one reason: **in the short term the fixed costs do not change**. The rent is the same whether the order is taken or refused, so it cannot help decide. Anything that adds contribution adds the same amount to profit, and anything that removes contribution removes it.',
+          ],
+          examtrap: 'Profit per unit is an average of what has already happened; contribution per unit is what the NEXT unit does. A product showing a loss per unit after fixed costs are apportioned may still be worth making, and dropping it removes its contribution while leaving the fixed costs behind for the others to carry.',
+        },
+        {
+          h: 'Which costs are relevant to a decision',
+          split: {
+            left: {
+              title: 'Relevant — include it',
+              items: [
+                '**Future** — it has not been incurred yet',
+                '**Cash** — it involves money moving',
+                '**Differential** — it changes because of the decision',
+                'Extra materials, extra hours, extra delivery cost',
+              ],
+            },
+            right: {
+              title: 'Not relevant — leave it out',
+              items: [
+                '**Sunk** — already spent, whatever is decided now',
+                '**Committed** — contractually unavoidable either way',
+                '**Non-cash** — depreciation, an apportioned overhead',
+                'A share of the factory rent charged to the job',
+              ],
+            },
+          },
+          p: [
+            'The three tests are applied together and a cost has to pass all of them. Money already spent on a design study is gone whichever way the decision goes, so it changes nothing. Depreciation is an allocation of a payment made years ago and is never relevant. And an apportioned fixed overhead is a bookkeeping share of a cost that will be exactly the same tomorrow.',
+            'What IS relevant and often forgotten is **opportunity cost** — the contribution given up by using a resource here instead of on its best alternative. A machine already running flat out has one; a machine standing idle does not.',
+          ],
+        },
+        {
+          h: 'A special order, decided on contribution',
+          worked: {
+            title: 'Should the order be accepted?',
+            problem: 'A business sells its product at £40 with a variable cost of £24. Fixed costs of £240,000 are already covered by existing sales, and there is spare capacity. A customer offers to buy 3,000 units at £31 each, in a market where the existing customers will never see the price.',
+            steps: [
+              {
+                do: 'Find the contribution the order would earn: £31.00 − £24.00 = £7.00 a unit.',
+                why: 'Only the variable cost is relevant, because it is the only cost that arises because the order was taken.',
+              },
+              {
+                do: 'Multiply by the volume: 3,000 × £7.00 = £21,000.',
+                why: 'Every pound of it drops through to profit, since the fixed costs are unchanged by the decision.',
+              },
+              {
+                do: 'Test the tempting wrong answer: the full absorption cost is £24.00 + (£240,000 ÷ 20,000) = £36.00, so £31.00 looks like a loss of £5.00 a unit, or £15,000.',
+                why: 'That £12.00 of fixed overhead a unit is an apportionment of a cost the business is paying anyway. Charging it to a decision it cannot influence is what makes a profitable order look unprofitable.',
+              },
+              {
+                do: 'Accept — but check the conditions first: is there genuinely spare capacity, and will the low price stay out of sight of existing customers?',
+                why: 'If capacity is full, the order displaces sales at £16.00 of contribution and the arithmetic reverses. If the price leaks, the £21,000 gained is set against the discount every other customer then demands.',
+              },
+            ],
+            answer: 'Accept: contribution rises by £21,000, and so does profit',
+            tryIt: {
+              q: 'The same product sells at £40 with a variable cost of £24. A customer offers £29 for 2,500 units and there is spare capacity. By how much would profit rise if the order is accepted?',
+              answer: 12500,
+              unit: '£',
+              hint: 'Only the variable cost is relevant.',
+              exp: '£29.00 − £24.00 = £5.00 of contribution a unit, and 2,500 × £5.00 = £12,500. Because the fixed costs are unchanged by the decision, the whole £12,500 reaches profit. Costing the order at the full absorption cost of £36.00 would show a £7.00 loss a unit and reject an order that makes the business £12,500 better off.',
+            },
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A product sells for £62 with variable costs of £41. Fixed costs are £147,000 for the period and 9,000 units are sold. What is the total contribution?',
+          unit: '£',
+          answer: 189000,
+          exp: '£62 − £41 = £21 of contribution a unit, and 9,000 × £21 = £189,000. The fixed costs come off after that to give a profit of £189,000 − £147,000 = £42,000, but they are no part of contribution and they do not change if one more unit is sold.',
+        },
+        {
+          type: 'picklist',
+          q: 'Identify whether each cost is relevant to a decision about accepting a one-off order.',
+          picklist: {
+            title: 'Relevant costs',
+            rowHeader: 'Cost',
+            choiceHeader: 'Treatment',
+            options: ['Relevant', 'Not relevant'],
+            rows: [
+              { text: 'Extra materials that would have to be bought for the order', answer: 0 },
+              { text: 'A market research study already paid for last year', answer: 1 },
+              { text: 'Depreciation of the machine the order would run on', answer: 1 },
+              { text: 'Overtime that would have to be worked to complete it', answer: 0 },
+              { text: 'A share of factory rent apportioned to the department', answer: 1 },
+            ],
+          },
+          exp: 'A relevant cost is future, cash and different because of the decision, and it has to pass all three tests. The research money is gone whichever way the decision goes. Depreciation is an allocation of a payment made years ago, so no cash moves now. The apportioned rent will be identical tomorrow whatever is decided today. What remains — the extra material and the overtime — is caused by saying yes.',
+        },
+        {
+          type: 'mcq',
+          q: 'Why are fixed costs normally ignored when a short-term decision is made?',
+          opts: [
+            'They are the same whichever way the decision goes',
+            'They are usually smaller than the variable costs involved',
+            'They are recovered separately through the absorption rate',
+            'They cannot be measured reliably before the period ends',
+          ],
+          ans: 0,
+          exp: 'A cost that does not change cannot help choose between two courses of action, so including it adds arithmetic without adding information. Size has nothing to do with it — an enormous fixed cost is still irrelevant if it is unaffected. And absorption is a costing convention for valuing units, not a reason to leave a cost out of a decision.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-6B',
+      title: 'Break-even, margin of safety and target profit',
+      icon: '📊',
+      criteria: ['MATS-6.1.3'],
+      cards: [
+        {
+          h: 'Four calculations from one contribution figure',
+          formula: 'Break-even units = Fixed costs ÷ Contribution per unit',
+          table: {
+            headers: ['What is wanted', 'How it is found'],
+            rows: [
+              ['Break-even in units', 'Fixed costs ÷ contribution per unit'],
+              ['Break-even in revenue', 'Fixed costs ÷ profit-volume ratio, or break-even units × price'],
+              ['Profit-volume ratio', 'Contribution ÷ revenue, usually as a percentage'],
+              ['Units for a target profit', '(Fixed costs + target profit) ÷ contribution per unit'],
+              ['Margin of safety in units', 'Budgeted sales − break-even sales'],
+              ['Margin of safety percentage', 'Margin of safety ÷ budgeted sales × 100'],
+            ],
+          },
+          p: [
+            'Every one of these is the same division wearing a different hat: **how many units of contribution are needed to cover something**. Break-even covers the fixed costs. Target profit covers the fixed costs and the profit as well. Nothing else has to be memorised once that is seen.',
+            'The **profit-volume ratio** — also called the contribution to sales ratio — is contribution expressed as a proportion of revenue. It answers the same question in pounds of revenue rather than in units, which matters when a business sells several products and cannot add their units together.',
+          ],
+        },
+        {
+          h: 'One product, all four figures',
+          worked: {
+            title: 'A product at £40 with £240,000 of fixed costs',
+            problem: 'Selling price £40, variable cost £24 a unit, fixed costs £240,000 for the period, budgeted sales 20,000 units.',
+            steps: [
+              {
+                do: 'Contribution per unit: £40 − £24 = £16.',
+                why: 'Everything that follows is built on this one number, so it is worth writing down before anything else.',
+              },
+              {
+                do: 'Break-even: £240,000 ÷ 16 = 15,000 units.',
+                why: 'Fifteen thousand lots of £16 exactly cover the £240,000. Sell one more and the business is £16 in profit; sell one fewer and it is £16 short.',
+              },
+              {
+                do: 'Profit-volume ratio: 16 ÷ 40 = 0.40, or 40%. Break-even revenue is £240,000 ÷ 0.40 = £600,000, which is also 15,000 × £40 = £600,000.',
+                why: 'Two routes to the same figure is the check worth running. Forty pence in every pound of revenue is contribution, so £600,000 of revenue produces the £240,000 needed.',
+              },
+              {
+                do: 'Margin of safety: 20,000 − 15,000 = 5,000 units, and 5,000 ÷ 20,000 = 0.25, or 25%.',
+                why: 'Sales could fall by a quarter before the business made a loss. The percentage is the form worth quoting, because 5,000 units means nothing until it is set against the plan.',
+              },
+              {
+                do: 'Units for a target profit of £96,000: (240,000 + 96,000) ÷ 16, so £336,000 ÷ 16 = 21,000 units.',
+                why: 'The target profit joins the fixed costs on the top of the fraction because it is one more thing the contribution has to cover.',
+              },
+            ],
+            answer: 'Break-even 15,000 units or £600,000 · P/V ratio 40% · margin of safety 5,000 units or 25% · 21,000 units for £96,000 of profit',
+            tryIt: {
+              q: 'A product sells for £25 with a variable cost of £15. Fixed costs are £180,000 and budgeted sales are 24,000 units. What is the margin of safety in units?',
+              answer: 6000,
+              unit: 'units',
+              hint: 'Break-even first.',
+              exp: 'Contribution is £25 − £15 = £10 a unit, so break-even is £180,000 ÷ 10 = 18,000 units, and the margin of safety is 24,000 − 18,000 = 6,000 units. As a percentage that is 6,000 ÷ 24,000 = 25%, which is the form a report would quote.',
+            },
+          },
+        },
+        {
+          h: 'Where the arithmetic goes wrong',
+          split: {
+            left: {
+              title: 'The common errors',
+              items: [
+                'Dividing fixed costs by the **selling price** instead of by contribution',
+                'Using total contribution rather than contribution **per unit**',
+                'Taking the margin of safety from break-even instead of from **budgeted** sales',
+                'Subtracting the target profit instead of adding it',
+              ],
+            },
+            right: {
+              title: 'The checks',
+              items: [
+                'Break-even units × contribution should equal the fixed costs',
+                'Break-even revenue × the P/V ratio should equal the fixed costs',
+                'Margin of safety cannot exceed budgeted sales',
+                'Target-profit volume must be **above** break-even',
+              ],
+            },
+          },
+          examtrap: 'A margin of safety expressed in units and one expressed in revenue are different numbers describing the same thing, and the percentage is identical either way. Quote whichever the question asked for, and say which it is — "5,000" alone could be units or pounds, and only one of them is right.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A product sells for £18 with a variable cost of £11. Fixed costs are £119,000 for the period. How many units must be sold to break even?',
+          unit: 'units',
+          answer: 17000,
+          exp: 'Contribution is £18 − £11 = £7 a unit, so £119,000 ÷ 7 = 17,000 units. The check is that 17,000 × £7 = £119,000, exactly covering the fixed costs and leaving nothing over — which is what breaking even means.',
+        },
+        {
+          type: 'numeric',
+          q: 'A product sells for £45 with a variable cost of £27. Fixed costs are £126,000 and the business wants a profit of £54,000. How many units must it sell?',
+          unit: 'units',
+          answer: 10000,
+          exp: 'Contribution is £45 − £27 = £18 a unit, and the contribution has to cover the fixed costs and the target together: £126,000 + £54,000 = £180,000, so £180,000 ÷ 18 = 10,000 units. Break-even alone would be £126,000 ÷ 18 = 7,000 units, so the profit target costs 3,000 units of extra volume.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about break-even analysis is correct.',
+          statements: [
+            { text: 'The profit-volume ratio is contribution expressed as a proportion of revenue.', answer: true },
+            { text: 'A higher margin of safety percentage means sales can fall further before a loss arises.', answer: true },
+            { text: 'Break-even is found by dividing fixed costs by the selling price per unit.', answer: false },
+          ],
+          exp: 'The profit-volume ratio restates contribution in pounds of revenue, which is what lets a multi-product business use it at all. A larger margin of safety is exactly what it sounds like: more room between the plan and the point where losses start. The third is the classic slip — dividing by the price ignores the variable cost each unit brings with it and gives a break-even far below the real one.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-6C',
+      title: 'The break-even chart, and reading it',
+      icon: '📉',
+      criteria: ['MATS-6.1.3', 'MATS-6.1.4'],
+      cards: [
+        {
+          h: 'Three lines and one crossing point',
+          table: {
+            headers: ['Line', 'Where it starts', 'What its slope is'],
+            rows: [
+              ['Total revenue', 'The origin — no sales, no revenue', 'The selling price per unit'],
+              ['Total cost', 'The fixed costs on the vertical axis', 'The variable cost per unit'],
+              ['Fixed cost', 'The same point, and stays level', 'Nothing — it is horizontal'],
+            ],
+          },
+          p: [
+            'The horizontal axis is **units** (or level of activity) and the vertical axis is **£**. The total cost line begins above the origin because the fixed costs are incurred before a single unit is made, and that head start is the whole reason the two lines cross rather than running parallel.',
+            'Where **total revenue crosses total cost** is the break-even point, and it can be read off either axis: units below it, revenue across to the left. To the left of that crossing the cost line is on top, and the vertical gap between the lines is the loss. To the right the revenue line is on top, and the same gap is the profit.',
+          ],
+          flow: ['Plot fixed cost as a horizontal line', 'Plot total cost from that intercept', 'Plot revenue from the origin', 'Read break-even where they cross'],
+        },
+        {
+          h: 'The points that would be plotted',
+          example: {
+            title: 'Price £40, variable cost £24, fixed costs £240,000',
+            rows: [
+              ['Units', 'Total revenue £', 'Total cost £', 'Profit / (loss) £'],
+              ['0', '—', '240,000', '(240,000)'],
+              ['5,000', '200,000', '360,000', '(160,000)'],
+              ['10,000', '400,000', '480,000', '(80,000)'],
+              ['**15,000**', '**600,000**', '**600,000**', '**—**'],
+              ['20,000', '800,000', '720,000', '80,000'],
+            ],
+          },
+          p: [
+            'The two lines meet at 15,000 units and £600,000 of revenue, which is exactly what the calculation gives: £240,000 ÷ £16 = 15,000. A chart and a calculation are two views of the same arithmetic, and if they disagree one of them has been drawn or worked wrongly.',
+            'The **margin of safety** is the horizontal distance from the break-even point to the budgeted volume — from 15,000 across to 20,000 on this chart. Read vertically at that budgeted point, the gap between the lines is the budgeted profit of £80,000.',
+          ],
+        },
+        {
+          h: 'What the numbers are telling somebody',
+          table: {
+            headers: ['Figure', 'What it says', 'What to do about it'],
+            rows: [
+              ['Low margin of safety', 'A small drop in sales pushes the business into loss', 'Raise volume or price, or cut fixed costs'],
+              ['High margin of safety', 'There is room for a bad quarter', 'Capacity may be worth using for a discounted order'],
+              ['High profit-volume ratio', 'Each extra pound of revenue brings a lot of contribution', 'Volume is where the leverage is — push sales'],
+              ['Low profit-volume ratio', 'A great deal of revenue is needed to cover the fixed costs', 'Variable cost is where the leverage is — look at inputs'],
+              ['Break-even near capacity', 'The business must run nearly flat out to survive', 'The cost structure itself is the problem'],
+            ],
+          },
+          p: [
+            'Reporting on CVP means saying what the figures mean for the business, not restating them. "The margin of safety is 4%" is a number; "sales can fall by only 4% before the business makes a loss, so the fixed cost base looks too heavy for this volume" is a report.',
+          ],
+        },
+        {
+          h: 'What CVP assumes, and where it stops being true',
+          split: {
+            left: {
+              title: 'The assumptions',
+              items: [
+                'Selling price is **constant** at every volume',
+                'Variable cost per unit is **constant** at every volume',
+                'Fixed costs do not change across the range',
+                'Everything produced is sold — no inventory movement',
+                'One product, or an unchanging sales mix',
+              ],
+            },
+            right: {
+              title: 'Where each one breaks',
+              items: [
+                'Selling more usually means discounting',
+                'Bulk buying cuts the input price; overtime raises the labour cost',
+                'Fixed costs **step** — another supervisor, another unit of rent',
+                'Making more than is sold parks cost in inventory',
+                'A shift in mix changes the average contribution',
+              ],
+            },
+          },
+          examtrap: 'Every one of these assumptions is a straight line drawn through a curve. That is not a reason to distrust the technique — it is a reason to trust it only near the volumes it was built on. A break-even calculated at 15,000 units says very little about what would happen at 60,000.',
+        },
+      ],
+      check: [
+        {
+          type: 'mcq',
+          q: 'On a break-even chart, what does the vertical gap between the total revenue line and the total cost line represent at a given volume?',
+          opts: [
+            'The profit or loss at that volume',
+            'The contribution earned at that volume',
+            'The fixed costs at that volume',
+            'The margin of safety at that volume',
+          ],
+          ans: 0,
+          exp: 'Revenue above cost is profit and cost above revenue is loss, so the gap is one or the other depending on which side of the crossing point you are. Contribution is the gap between revenue and the VARIABLE cost line, which is not drawn on a conventional break-even chart. The margin of safety is a horizontal distance, not a vertical one.',
+        },
+        {
+          type: 'numeric',
+          q: 'A product sells for £40 with a variable cost of £24 and fixed costs of £240,000. What is the total cost at an output of 10,000 units?',
+          unit: '£',
+          answer: 480000,
+          exp: '10,000 × £24 = £240,000 of variable cost, plus the fixed £240,000, so £240,000 + £240,000 = £480,000. Revenue at that volume is 10,000 × £40 = £400,000, so the chart shows the cost line above the revenue line and a loss of £80,000 — which is 5,000 units short of break-even at £16 of contribution each.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about cost-volume-profit analysis is correct.',
+          statements: [
+            { text: 'CVP analysis assumes that everything produced in the period is sold.', answer: true },
+            { text: 'On a break-even chart the total cost line starts at the origin.', answer: false },
+            { text: 'CVP analysis remains reliable at volumes far outside the range observed.', answer: false },
+          ],
+          exp: 'Assuming production equals sales is what keeps inventory out of the model, and it is one of the assumptions that has to be stated when the analysis is reported. The cost line starts at the fixed costs on the vertical axis, because those are incurred before anything is made — that head start is why the lines cross at all. And every relationship in CVP is a straight line drawn through a range of real behaviour, so it is trustworthy near the volumes it was built on and not far outside them.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-6D',
+      title: 'Changing the activity level',
+      icon: '🔀',
+      criteria: ['MATS-6.2.1', 'MATS-6.2.2'],
+      cards: [
+        {
+          h: 'What moves per unit, and what does not',
+          example: {
+            title: 'Price £40, variable cost £24, fixed costs £240,000',
+            rows: [
+              ['Units', 'Fixed cost per unit £', 'Total cost per unit £', 'Profit per unit £'],
+              ['10,000', '24.00', '48.00', '(8.00)'],
+              ['**15,000**', '**16.00**', '**40.00**', '**—**'],
+              ['20,000', '12.00', '36.00', '4.00'],
+              ['30,000', '8.00', '32.00', '8.00'],
+            ],
+          },
+          p: [
+            'The variable cost stays at £24.00 in every row — that is what variable means. What moves is the **fixed cost per unit**, and it moves simply because the same £240,000 is being divided among more units. Every change in the profit per unit traces back to that one division.',
+            'Notice the row at 15,000 units: the total cost per unit is exactly the selling price, which is another way of saying the business breaks even there. And notice that profit per unit **doubles** between 20,000 and 30,000 units while volume rises by only half — a small change in volume moves profit far more than proportionately, because the fixed costs do not move at all.',
+          ],
+        },
+        {
+          h: 'Testing a change before making it',
+          worked: {
+            title: 'Three proposals, one product',
+            problem: 'The product sells at £40 with a variable cost of £24 and fixed costs of £240,000. Budgeted sales are 20,000 units, giving a profit of 20,000 × £16 = £320,000 less £240,000, or £80,000.',
+            steps: [
+              {
+                do: 'Cut the price to £36 and volume rises to 30,000 units. Contribution becomes £36 − £24 = £12, so profit is 30,000 × £12 = £360,000 less £240,000, which is £120,000.',
+                why: 'A quarter off the contribution, and volume half as many again, leaves the business £40,000 better off. At £12 of contribution the proposal only matches the old profit somewhere above 26,600 units, so most of the extra 10,000 is what makes it worth doing — and whether that volume is achievable is a marketing judgement rather than an arithmetical one.',
+              },
+              {
+                do: 'Leave everything else and let fixed costs rise by £48,000 to £288,000. Profit falls to £320,000 − £288,000 = £32,000, and break-even rises to £288,000 ÷ 16 = 18,000 units.',
+                why: 'A fixed cost increase reduces profit pound for pound and eats the margin of safety from 5,000 units down to 2,000. Nothing about the product has changed.',
+              },
+              {
+                do: 'Let the variable cost rise to £25 instead. Contribution becomes £15, so profit is 20,000 × £15 = £300,000 less £240,000, which is £60,000, and break-even rises to £240,000 ÷ 15 = 16,000 units.',
+                why: 'A £1 rise in variable cost cost £20,000 of profit, one pound for every unit sold. That is why input prices matter more to a high-volume business than a single glance at the cost card suggests.',
+              },
+              {
+                do: 'Compare the three against the £80,000 baseline before recommending anything.',
+                why: 'Each was worked from the same starting point and only one thing changed in each. Changing two at once and comparing the result with the original tells you nothing about which change did what.',
+              },
+            ],
+            answer: 'Price cut £120,000 · higher fixed costs £32,000 · higher variable cost £60,000, against a baseline of £80,000',
+            tryIt: {
+              q: 'A product sells at £30 with a variable cost of £18 and fixed costs of £144,000. The price is raised to £32 and volume falls from 16,000 to 14,000 units. What is the new profit?',
+              answer: 52000,
+              unit: '£',
+              hint: 'Rebuild the contribution first, then apply the new volume.',
+              exp: 'Contribution becomes £32 − £18 = £14, so 14,000 × £14 = £196,000 less the unchanged £144,000 gives £52,000. The old profit was 16,000 × £12 = £192,000 less £144,000, or £48,000, so the rise is worth taking even though 2,000 fewer units are sold.',
+            },
+          },
+        },
+        {
+          h: 'The direction each change pushes in',
+          table: {
+            headers: ['Change', 'Contribution per unit', 'Break-even', 'Margin of safety'],
+            rows: [
+              ['Selling price up', 'Rises', 'Falls', 'Widens, if volume holds'],
+              ['Selling price down', 'Falls', 'Rises', 'Narrows, unless volume rises enough'],
+              ['Variable cost up', 'Falls', 'Rises', 'Narrows'],
+              ['Fixed costs up', 'Unchanged', 'Rises', 'Narrows'],
+              ['Volume up, nothing else', 'Unchanged', 'Unchanged', 'Widens'],
+            ],
+          },
+          examtrap: 'Only the last two rows are safe to state without arithmetic. A price cut raises volume and lowers contribution at the same time, and which effect wins depends entirely on the numbers — so work it out rather than reasoning about the direction. The bottom row is the one people get wrong the other way: selling more does not move break-even at all, because break-even is a property of the cost structure and not of how much is sold.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'A product sells for £52 with a variable cost of £34 and fixed costs of £198,000. If the variable cost rises to £37, how many units are needed to break even?',
+          unit: 'units',
+          answer: 13200,
+          exp: 'Contribution falls from £52 − £34 = £18 to £52 − £37 = £15, so break-even rises from £198,000 ÷ 18 = 11,000 units to £198,000 ÷ 15 = 13,200 units. A £3 rise in the input has cost 2,200 units of extra volume before the business earns anything at all.',
+        },
+        {
+          type: 'mcq',
+          q: 'Volume rises while price, variable cost and fixed costs all stay the same. What happens to the break-even point in units?',
+          opts: [
+            'It is unchanged, because none of the figures it depends on has moved',
+            'It falls, because the fixed costs are spread over more units',
+            'It rises, because more units are now needed to cover the costs',
+            'It falls, because the contribution per unit increases with volume',
+          ],
+          ans: 0,
+          exp: 'Break-even is fixed costs divided by contribution per unit, and volume appears in neither. What volume does change is the margin of safety, which widens because the gap between the plan and the break-even point has grown. The second option describes the fixed cost PER UNIT falling, which is true and is a different figure entirely.',
+        },
+        {
+          type: 'entrygrid',
+          q: 'A product sells for £20 with a variable cost of £12 and fixed costs of £96,000. Complete the forecast at each volume.',
+          entrygrid: {
+            title: 'Profit at three volumes',
+            rowHeader: 'Line',
+            columns: ['15,000 units', '18,000 units', '21,000 units'],
+            rows: [
+              { label: 'Total contribution £', cells: { 0: 120000, 1: 144000, 2: 168000 } },
+              { label: 'Fixed costs £', cells: { 0: 96000, 1: 96000, 2: 96000 } },
+              { label: 'Profit £', cells: { 0: 24000, 1: 48000, 2: 72000 } },
+            ],
+          },
+          exp: 'Contribution is £20 − £12 = £8 a unit, so 15,000 × 8 = £120,000, 18,000 × 8 = £144,000 and 21,000 × 8 = £168,000. The fixed costs are the same £96,000 in every column — that is the whole point of the row. Break-even is £96,000 ÷ 8 = 12,000 units, so every column here is above it, and profit rises by £24,000 for each 3,000 units because each of them carries £8 of contribution and no extra fixed cost at all.',
+        },
+      ],
+    },
+  ];
+
+
   var PATH = [
     {
       unit: 'mats',
@@ -2915,6 +3381,63 @@
             '**Variances come in pairs.** Cheaper material gives a favourable price and an adverse usage; cheaper staff give a favourable rate and adverse hours. When a question shows one of each in the same month, the expected answer is that they are connected.',
           ],
           examtrap: 'Fixed production overhead is never flexed. Its flexed figure IS the original budget, so the variance is budget against actual spend. Flexing it manufactures a variance out of arithmetic and breaks the reconciliation at the bottom of the statement.',
+        },
+      },
+    },
+    {
+      unit: 'mats',
+      level: 3,
+      title: 'Management Accounting Techniques',
+      outcome: 6,
+      outcomeTitle: 'Use management accounting techniques to support short-term decision making',
+      weighting: 15,
+      lessons: LO6_LESSONS,
+      cheatsheet: {
+        id: 'L3-MATS-6S',
+        title: 'Outcome 6 — contribution, break-even and change',
+        icon: '🗂️',
+        card: {
+          h: 'Everything Outcome 6 asks for, on one page',
+          formula: 'Contribution per unit = Selling price − Variable cost per unit',
+          table: {
+            headers: ['What is wanted', 'How it is found'],
+            rows: [
+              ['Break-even in units', 'Fixed costs ÷ contribution per unit'],
+              ['Break-even in revenue', 'Fixed costs ÷ profit-volume ratio, or break-even units × price'],
+              ['Profit-volume ratio', 'Contribution ÷ revenue, as a percentage'],
+              ['Units for a target profit', '(Fixed costs + target profit) ÷ contribution per unit'],
+              ['Margin of safety in units', 'Budgeted sales − break-even sales'],
+              ['Margin of safety percentage', 'Margin of safety ÷ budgeted sales × 100'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'Relevant to a decision',
+              items: [
+                '**Future** — not yet incurred',
+                '**Cash** — money actually moves',
+                '**Differential** — it changes because of the decision',
+                'Plus **opportunity cost** — contribution given up elsewhere',
+                'NOT sunk, committed, depreciation or apportioned overhead',
+              ],
+            },
+            right: {
+              title: 'The break-even chart',
+              items: [
+                'Revenue line starts at the **origin**',
+                'Total cost line starts at the **fixed costs**',
+                'They cross at break-even',
+                'Vertical gap = profit or loss',
+                'Horizontal gap to budget = margin of safety',
+              ],
+            },
+          },
+          p: [
+            '**Break-even moves only when the price, the variable cost or the fixed costs move.** Volume is in neither half of the division, so selling more never changes it — it changes the margin of safety, which is a different figure.',
+            '**Per unit as volume rises:** variable cost unchanged, fixed cost falls, total cost falls, profit rises. Every one of those traces back to the same £X of fixed cost being divided among more units.',
+            '**CVP assumes** a constant price, a constant variable cost, fixed costs that do not step, everything made being sold, and an unchanging sales mix. Each is a straight line drawn through a curve, so the analysis is trustworthy near the volumes it was built on and not far outside them.',
+          ],
+          examtrap: 'Divide the fixed costs by CONTRIBUTION, never by the selling price. And take the margin of safety from budgeted sales, not from break-even — the same subtraction the other way round gives a number with no meaning attached to it.',
         },
       },
     },
@@ -4299,6 +4822,327 @@
         },
       ],
       exp: 'Set beside the original budget, Marden looks to have overspent by £319,200 − £288,000 = £31,200. Almost all of that is the cost of 1,000 units the budget never planned for, and flexing removes it: the real story is £10,200 of underperformance, most of which is a selling price of £49.00 where £50.00 was planned. Two departments beat their standards and one modest overspend on materials was more than offset elsewhere. None of that is visible until the budget has been flexed.',
+    },
+    /* ── Outcome 6 — short-term decision making (15%) ───────────────────── */
+    {
+      id: 'M-6-01', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.1'],
+      type: 'mcq',
+      q: 'What is contribution?',
+      opts: [
+        'Revenue less all costs that vary with the level of activity',
+        'Revenue less the full production cost of the units sold',
+        'Revenue less all costs incurred during the period',
+        'Revenue less the fixed costs of being in business',
+      ],
+      ans: 0,
+      exp: 'Contribution deducts only what exists because the sale happened, wherever in the business it arises — variable selling costs included. Deducting the full production cost gives gross profit, which carries a share of fixed production overhead. Deducting every cost gives profit. And deducting the fixed costs alone describes nothing at all.',
+    },
+    {
+      id: 'M-6-02', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.1'],
+      type: 'numeric',
+      q: 'A product sells for £73 with variable costs of £46. Fixed costs are £216,000 and 12,000 units are sold. What is the total contribution?',
+      unit: '£', answer: 324000,
+      exp: '£73 − £46 = £27 of contribution a unit, and 12,000 × £27 = £324,000. The fixed costs come off after that to give a profit of £324,000 − £216,000 = £108,000, but they form no part of contribution and do not change if one more unit is sold.',
+    },
+    {
+      id: 'M-6-03', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.2'],
+      type: 'picklist',
+      q: 'A business is deciding whether to accept a one-off order. Identify how each cost should be treated.',
+      picklist: {
+        title: 'Relevant costs',
+        rowHeader: 'Cost', choiceHeader: 'Treatment',
+        options: ['Relevant', 'Not relevant'],
+        rows: [
+          { text: 'Material that would have to be bought specially for the order', answer: 0 },
+          { text: 'Consultancy fees already paid to assess the market', answer: 1 },
+          { text: 'Contribution lost on other work displaced by the order', answer: 0 },
+          { text: 'Straight-line depreciation of the machine to be used', answer: 1 },
+          { text: 'A share of head office costs apportioned to the department', answer: 1 },
+        ],
+      },
+      exp: 'A relevant cost must be future, must involve cash, and must differ because of the decision. The consultancy money is gone whichever way this goes, depreciation allocates a payment made years ago, and the head office share will be identical tomorrow. The displaced contribution is the one people miss: it is an opportunity cost, it is genuinely caused by saying yes, and leaving it out is how a business fills its capacity with its least profitable work.',
+    },
+    {
+      id: 'M-6-04', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.2'],
+      type: 'numeric',
+      q: 'A product normally sells for £58 with a variable cost of £34. A customer offers £41 for 1,800 units and there is spare capacity. By how much would profit rise if the order is accepted?',
+      unit: '£', answer: 12600,
+      exp: '£41 − £34 = £7 of contribution a unit, and 1,800 × £7 = £12,600. With spare capacity the fixed costs are unchanged by the decision, so the whole £12,600 reaches profit. The order still earns less per unit than normal work, which is why the spare capacity condition matters: on a full factory it would displace £24 of contribution a unit and lose money.',
+    },
+    {
+      id: 'M-6-05', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.2'],
+      type: 'mcq',
+      q: 'What is an opportunity cost?',
+      opts: [
+        'The contribution given up by using a resource for one thing rather than another',
+        'A cost that has already been incurred and cannot now be recovered',
+        'A cost that will be incurred whichever course of action is chosen',
+        'The additional cash cost of taking on one extra unit of work',
+      ],
+      ans: 0,
+      exp: 'An opportunity cost is a benefit forgone rather than a payment made, which is why it appears in no ledger and is so easily left out. It exists only where the resource is scarce: a machine already running flat out has one, and a machine standing idle does not. The second option describes a sunk cost, the third an unavoidable one, and the fourth a marginal cost.',
+    },
+    {
+      id: 'M-6-06', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.1', 'MATS-6.1.2'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about short-term decisions is correct.',
+      statements: [
+        { text: 'Fixed costs are normally ignored because they do not change with the decision.', answer: true },
+        { text: 'A product showing a loss per unit after apportioned fixed costs may still be worth making.', answer: true },
+        { text: 'Depreciation of an existing machine is a relevant cost of using it on an order.', answer: false },
+      ],
+      exp: 'A cost that is the same either way cannot help choose between the two, so including it adds arithmetic without information. A product with positive contribution is covering part of the fixed costs, and dropping it leaves those costs behind for everything else to carry. Depreciation is an allocation of a payment made when the machine was bought: no cash moves now, and nothing about the decision changes it.',
+    },
+    {
+      id: 'M-6-07', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'numeric',
+      q: 'A product sells for £34 with a variable cost of £21. Fixed costs are £156,000 for the period. How many units must be sold to break even?',
+      unit: 'units', answer: 12000,
+      exp: 'Contribution is £34 − £21 = £13 a unit, so £156,000 ÷ 13 = 12,000 units. The check is that 12,000 × £13 = £156,000, which covers the fixed costs exactly and leaves nothing over. Dividing by the £34 selling price instead would give a break-even under 4,600 units and ignore the variable cost each unit brings with it.',
+    },
+    {
+      id: 'M-6-08', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'numeric',
+      q: 'A product sells for £50 with a variable cost of £30 and fixed costs of £310,000. What is the break-even point expressed in sales revenue?',
+      unit: '£', answer: 775000,
+      exp: 'Contribution is £50 − £30 = £20 a unit, so break-even is £310,000 ÷ 20 = 15,500 units, and 15,500 × £50 = £775,000. The profit-volume ratio route gives the same figure: 20 ÷ 50 = 0.40, and £310,000 ÷ 0.40 = £775,000. Two routes agreeing is the check worth running.',
+    },
+    {
+      id: 'M-6-09', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'numeric',
+      q: 'A product sells for £80 with a variable cost of £52. What is the profit-volume ratio, as a percentage?',
+      unit: '%', answer: 35,
+      exp: 'Contribution is £80 − £52 = £28 a unit, and the profit-volume ratio expresses that as a proportion of revenue: 28 ÷ 80 = 0.35, or 35%. Thirty-five pence in every pound of revenue is contribution, which is what lets a multi-product business work in revenue when it cannot add its units together.',
+    },
+    {
+      id: 'M-6-10', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'numeric',
+      q: 'A product sells for £28 with a variable cost of £16 and fixed costs of £102,000. Budgeted sales are 12,500 units. What is the margin of safety in units?',
+      unit: 'units', answer: 4000,
+      exp: 'Contribution is £28 − £16 = £12, so break-even is £102,000 ÷ 12 = 8,500 units, and the margin of safety is 12,500 − 8,500 = 4,000 units. Taking the margin from break-even rather than from budgeted sales is the standard slip, and it gives the same number with no meaning attached to it.',
+    },
+    {
+      id: 'M-6-11', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'numeric',
+      q: 'Budgeted sales are 45,000 units and the break-even point is 36,000 units. What is the margin of safety as a percentage?',
+      unit: '%', answer: 20,
+      exp: 'The margin of safety is 45,000 − 36,000 = 9,000 units, and as a proportion of the plan that is 9,000 ÷ 45,000 = 0.20, or 20%. Sales could fall by a fifth before the business made a loss. The percentage is the form worth quoting, because 9,000 units means nothing until it is set against the volume it is a margin on.',
+    },
+    {
+      id: 'M-6-12', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'numeric',
+      q: 'A product sells for £64 with a variable cost of £43. Fixed costs are £189,000 and the business wants a profit of £84,000. How many units must it sell?',
+      unit: 'units', answer: 13000,
+      exp: 'Contribution is £64 − £43 = £21 a unit, and it has to cover the fixed costs and the target together: £189,000 + £84,000 = £273,000, so £273,000 ÷ 21 = 13,000 units. Break-even alone is £189,000 ÷ 21 = 9,000 units, so the profit target costs 4,000 units of extra volume.',
+    },
+    {
+      id: 'M-6-13', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'entrygrid',
+      q: 'A product sells for £35 with a variable cost of £20 and fixed costs of £180,000. Budgeted sales are 16,000 units. Complete the analysis.',
+      entrygrid: {
+        title: 'Cost-volume-profit analysis',
+        rowHeader: 'Measure',
+        columns: ['Units', '£'],
+        rows: [
+          { label: 'Contribution per unit', col: 1, amount: 15 },
+          { label: 'Break-even point', cells: { 0: 12000, 1: 420000 } },
+          { label: 'Margin of safety', cells: { 0: 4000, 1: 140000 } },
+          { label: 'Budgeted profit', col: 1, amount: 60000 },
+        ],
+      },
+      exp: 'Contribution is £35 − £20 = £15, so break-even is £180,000 ÷ 15 = 12,000 units, which at £35 is 12,000 × 35 = £420,000 of revenue. The margin of safety is 16,000 − 12,000 = 4,000 units, or 4,000 × 35 = £140,000. Budgeted profit is 16,000 × 15 = £240,000 of contribution less the £180,000 of fixed costs, so £60,000 — which is also the 4,000 units of margin at £15 each.',
+    },
+    {
+      id: 'M-6-14', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'mcq',
+      q: 'How is the number of units needed for a target profit found?',
+      opts: [
+        'Fixed costs plus target profit, divided by contribution per unit',
+        'Fixed costs divided by contribution per unit, plus the target profit',
+        'Target profit divided by contribution per unit, plus break-even units',
+        'Fixed costs less target profit, divided by contribution per unit',
+      ],
+      ans: 0,
+      exp: 'The target profit joins the fixed costs on the top of the fraction because it is one more thing the contribution has to cover. The third option reaches the same answer by a longer route and is not wrong arithmetically, but it needs break-even worked out first and invites the two to be added when one of them is already in units and the other is not.',
+    },
+    {
+      id: 'M-6-15', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3'],
+      type: 'gapfill',
+      q: 'Complete the sentence about break-even analysis.',
+      template: 'Break-even in units is the {0} divided by the {1}, and the margin of safety is the amount by which {2} exceed that point.',
+      gaps: [
+        { options: ['fixed costs', 'variable costs', 'total costs'], answer: 0 },
+        { options: ['contribution per unit', 'selling price per unit', 'variable cost per unit'], answer: 0 },
+        { options: ['budgeted sales', 'fixed costs', 'variable costs'], answer: 0 },
+      ],
+      exp: 'The question the division answers is how many units of contribution are needed to cover the fixed costs, so the fixed costs go on top and the contribution per unit underneath. Dividing by the selling price is the classic error: it ignores the variable cost that comes with each unit and reports a break-even far below the real one. The margin of safety is then the gap between the plan and that point.',
+    },
+    {
+      id: 'M-6-16', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.4'],
+      type: 'mcq',
+      q: 'A business reports a margin of safety of 3%. What does this tell management?',
+      opts: [
+        'A very small fall in sales would push the business into a loss',
+        'Only 3% of sales revenue is available to cover the fixed costs',
+        'The business is operating at 3% below its break-even point',
+        'Fixed costs are 3% higher than the contribution earned',
+      ],
+      ans: 0,
+      exp: 'The margin of safety is the room between the planned volume and the point where losses begin, so 3% means almost none. That is a statement about the cost structure rather than about the sales team: fixed costs are heavy for this level of activity, and the answer is more volume, a better price, or a lighter fixed base. The proportion of revenue available to cover fixed costs is the profit-volume ratio, which is a different figure.',
+    },
+    {
+      id: 'M-6-17', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.4'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about the assumptions behind CVP analysis is correct.',
+      statements: [
+        { text: 'CVP analysis assumes the sales mix stays constant where more than one product is sold.', answer: true },
+        { text: 'CVP analysis allows for fixed costs stepping up as activity rises.', answer: false },
+        { text: 'CVP analysis assumes the selling price falls as more units are sold.', answer: false },
+      ],
+      exp: 'A changing mix changes the average contribution per unit, so the model has to hold the mix still to work at all. The other two are the straight lines the model draws through curved reality: fixed costs are taken as constant across the whole range when they really step, and the selling price is taken as constant when selling more usually means discounting. Neither is a reason to distrust the technique, only to use it near the volumes it was built on.',
+    },
+    {
+      id: 'M-6-18', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.4'],
+      type: 'mcq',
+      q: 'Which of these is a report on a CVP analysis rather than a restatement of it?',
+      opts: [
+        'Sales can fall by only 4% before a loss arises, so the fixed cost base looks heavy for this volume',
+        'The margin of safety is 4% of budgeted sales and the profit-volume ratio is 32% of revenue',
+        'Break-even is 28,800 units, against budgeted sales of 30,000 units for the coming year',
+        'Contribution is £9.60 a unit and the fixed costs for the period are £276,480 in total',
+      ],
+      ans: 0,
+      exp: 'The other three are correct figures and say nothing a manager can act on. A report names the consequence and points at the decision: what the margin means, what is causing it, and what would change it. Restating the numbers in a sentence is the commonest way of losing marks on an interpretation task, because it looks like an answer.',
+    },
+    {
+      id: 'M-6-19', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.2'],
+      type: 'numeric',
+      q: 'A product sells for £45 with a variable cost of £27 and fixed costs of £126,000. The price is cut to £42 and volume rises from 9,000 to 11,000 units. What is the new profit?',
+      unit: '£', answer: 39000,
+      exp: 'Contribution becomes £42 − £27 = £15, so 11,000 × £15 = £165,000 less the unchanged £126,000 gives £39,000. The old profit was 9,000 × £18 = £162,000 less £126,000, or £36,000, so the cut is worth making by £3,000 — but only just, and only if the 11,000 units actually arrive.',
+    },
+    {
+      id: 'M-6-20', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.2'],
+      type: 'numeric',
+      q: 'A product sells for £26 with a variable cost of £15 and fixed costs of £143,000. Fixed costs then rise by £22,000. What is the new break-even point in units?',
+      unit: 'units', answer: 15000,
+      exp: 'Contribution is unchanged at £26 − £15 = £11 a unit, and the fixed costs become £143,000 + £22,000 = £165,000, so break-even is £165,000 ÷ 11 = 15,000 units. It was £143,000 ÷ 11 = 13,000 units before, so £22,000 of extra fixed cost has to be carried by 2,000 more units at £11 each.',
+    },
+    {
+      id: 'M-6-21', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.2'],
+      type: 'numeric',
+      q: 'A product sells for £38 with a variable cost of £22 and fixed costs of £160,000. Sales are 16,000 units. If the variable cost rises to £24, what is the new profit?',
+      unit: '£', answer: 64000,
+      exp: 'Contribution falls from £38 − £22 = £16 to £38 − £24 = £14, so profit becomes 16,000 × £14 = £224,000 less £160,000, which is £64,000. It was 16,000 × £16 = £256,000 less £160,000, or £96,000 — so a £2 rise in the input cost £32,000, which is £2 for every one of the 16,000 units sold.',
+    },
+    {
+      id: 'M-6-22', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.1'],
+      type: 'picklist',
+      q: 'Identify the effect of each change on the break-even point in units, with everything else unchanged.',
+      picklist: {
+        title: 'Effect on break-even',
+        rowHeader: 'Change', choiceHeader: 'Break-even',
+        options: ['Rises', 'Falls', 'Unchanged'],
+        rows: [
+          { text: 'The selling price is increased', answer: 1 },
+          { text: 'Fixed costs are increased', answer: 0 },
+          { text: 'The variable cost per unit is increased', answer: 0 },
+          { text: 'Sales volume increases', answer: 2 },
+          { text: 'The variable cost per unit is reduced', answer: 1 },
+        ],
+      },
+      exp: 'Break-even is fixed costs divided by contribution per unit, so only three things can move it: the price, the variable cost and the fixed costs. Volume appears nowhere in that division, which is why selling more does not change break-even at all — it changes the margin of safety, which is a different figure and moves in the direction people expect.',
+    },
+    {
+      id: 'M-6-23', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.1'],
+      type: 'mcq',
+      q: 'Output rises from 8,000 to 10,000 units with no other change. What happens to cost per unit?',
+      opts: [
+        'It falls, because the fixed cost per unit is spread more thinly',
+        'It falls, because the variable cost per unit reduces with volume',
+        'It rises, because more resources are consumed in total',
+        'It is unchanged, because the standard cost card has not been revised',
+      ],
+      ans: 0,
+      exp: 'The variable cost per unit is the one figure that does not move with volume — that is what variable means. Total cost certainly rises, but the question is about cost per unit, and the fixed element is now divided among 10,000 units rather than 8,000. That single division is the source of every economy of scale in a costing context.',
+    },
+    {
+      id: 'M-6-24', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.2'],
+      type: 'numeric',
+      q: 'A product sells for £60 with a variable cost of £39 and fixed costs of £300,000. Sales are 24,000 units. If the price is cut to £57, how many units must be sold to earn the same profit as before?',
+      unit: 'units', answer: 28000,
+      exp: 'Keeping profit unchanged means keeping TOTAL CONTRIBUTION unchanged, because the fixed costs do not move — so the £300,000 never enters the calculation. Present contribution is 24,000 × £21 = £504,000. At the new price it is £57 − £39 = £18 a unit, so £504,000 ÷ 18 = 28,000 units. A 5% price cut needs 4,000 more units, a sixth more volume, simply to stand still.',
+    },
+    {
+      id: 'M-6-25', unitKey: 'mats', lo: 6, criteria: ['MATS-6.2.1'],
+      type: 'mcq',
+      q: 'Which figure is unaffected by a change in sales volume alone?',
+      opts: [
+        'The break-even point in units',
+        'The margin of safety in units',
+        'Total contribution for the period',
+        'The profit or loss for the period',
+      ],
+      ans: 0,
+      exp: 'Break-even is a property of the cost structure — fixed costs over contribution per unit — and volume is in neither. The other three all move: the margin of safety widens as the plan pulls away from break-even, and total contribution and profit both rise by the contribution per unit for every extra unit sold.',
+    },
+    {
+      id: 'M-6-26', unitKey: 'mats', lo: 6, criteria: ['MATS-6.1.3', 'MATS-6.1.4', 'MATS-6.2.2'],
+      type: 'task',
+      q: 'Analyse the year\'s plan and report on it.',
+      brief: 'Ravensworth Bakery makes one line of speciality loaf. All the figures below relate to the coming year.',
+      datasets: [
+        {
+          title: 'Ravensworth Bakery — budget for the year',
+          headers: ['Item', 'Amount'],
+          rows: [
+            ['Selling price a loaf', '£6.00'],
+            ['Variable cost a loaf', '£3.60'],
+            ['Fixed costs for the year', '£108,000.00'],
+            ['Budgeted sales, loaves', '60,000'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Break-even point in loaves',
+          type: 'numeric', unit: 'units', answer: 45000,
+          exp: 'Contribution is £6.00 − £3.60 = £2.40 a loaf, so £108,000 ÷ 2.40 = 45,000 loaves. The check is that 45,000 × 2.40 = £108,000, exactly covering the fixed costs.',
+        },
+        {
+          label: 'Profit-volume ratio, as a percentage',
+          type: 'numeric', unit: '%', answer: 40,
+          exp: '2.40 ÷ 6.00 = 0.40, or 40%. Forty pence in every pound of revenue is contribution, which also gives break-even in revenue as £108,000 ÷ 0.40 = £270,000 — the same as 45,000 × 6.00 = £270,000.',
+        },
+        {
+          label: 'Margin of safety, as a percentage',
+          type: 'numeric', unit: '%', answer: 25,
+          exp: 'The margin is 60,000 − 45,000 = 15,000 loaves, and 15,000 ÷ 60,000 = 0.25, or 25%. Sales could fall by a quarter before the bakery made a loss.',
+        },
+        {
+          label: 'Budgeted profit for the year',
+          type: 'numeric', unit: '£', answer: 36000,
+          exp: '60,000 × £2.40 = £144,000 of contribution less £108,000 of fixed costs gives £36,000. It is also the margin of safety earning contribution: 15,000 × 2.40 = £36,000, since everything up to break-even went on the fixed costs.',
+        },
+        {
+          label: 'Loaves needed for a target profit of £60,000',
+          type: 'numeric', unit: 'units', answer: 70000,
+          exp: 'The contribution has to cover the fixed costs and the target together: £108,000 + £60,000 = £168,000, and £168,000 ÷ 2.40 = 70,000 loaves. That is 10,000 above the budget, so the target needs a sixth more volume than the plan.',
+        },
+        {
+          label: 'The most useful thing to tell the owner is that:',
+          type: 'choice',
+          options: [
+            'sales can fall by a quarter before the bakery makes a loss',
+            'the bakery breaks even at 45,000 loaves in the year',
+            'contribution is £2.40 a loaf and fixed costs are £108,000',
+            'the profit-volume ratio for the year is 40 per cent',
+          ],
+          answer: 0,
+          exp: 'The other three are correct and are restatements of the arithmetic. The first turns the same figures into something an owner can act on — it names the risk in language a non-accountant can weigh, and it is what a report on a CVP analysis is for. Interpretation marks are lost far more often to accurate restatement than to wrong figures.',
+        },
+      ],
+      exp: 'A margin of safety of 25% is comfortable rather than comfortable-and-idle: the bakery can lose a quarter of its volume before it loses money, and the 40% profit-volume ratio means every extra pound of revenue brings 40p of contribution with it. That combination points to volume rather than cost as the lever worth pulling — the fixed base is being covered, and growth drops through to profit quickly. The target profit needs 70,000 loaves, a sixth more than the plan, which is the number the conversation should now be about.',
     },
   ];
 
