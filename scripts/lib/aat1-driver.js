@@ -106,6 +106,9 @@ function loadUI(store) {
      question types render nothing and every assertion about them would pass
      by never running. */
   M.AATGrid = require(path.join(ROOT, 'question-grid.js')) && global.AATGrid;
+  /* Every graded answer writes a spaced-repetition schedule through this.
+     Without it recordQuestion() throws on the first question of any run. */
+  M.AATSpaced = require(path.join(ROOT, 'spaced.js')) && global.AATSpaced;
   M.AAT1_SYLLABUS = require(path.join(ROOT, 'aat1-syllabus.js')).SYLLABUS;
   M.AAT1_PRACTICE = require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE;
   M.AAT1_LEARN_PATH = require(path.join(ROOT, 'aat1-learn-data.js')).AAT1_LEARN_PATH;

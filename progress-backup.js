@@ -206,6 +206,17 @@
     return due - iv * DAY_MS;
   }
 
+  /* Is this object one schedule, as spaced.js writes them? Recognised by shape
+     rather than by the key it is filed under, because the three levels file
+     them differently: Level 2 keeps a top-level `sr` map of question id to
+     schedule, Levels 1 and 3 keep one inside each question's own record, two
+     or three objects deep. A shape test catches all of them and cannot be
+     fooled by the map itself, which has no `dueAt` of its own. */
+  function isSchedule(v) {
+    return isObj(v) && typeof v.dueAt === 'number' && typeof v.interval === 'number' &&
+           typeof v.ease === 'number';
+  }
+
   function mergeHistory(a, b) {
     var all = (Array.isArray(a) ? a : []).concat(Array.isArray(b) ? b : []);
     var seen = {}, out = [];
@@ -234,6 +245,14 @@
     }
     if (Array.isArray(local) || Array.isArray(incoming)) {
       return local;                                  // only `history` merges, handled above
+    }
+    /* A spaced-repetition schedule is a RECORD, not a set of independent
+       numbers. Merging it field by field — the larger `reps` from one device,
+       the later `dueAt` from the other — invents a schedule neither device
+       ever computed, and the reader gets an interval nothing earned. Take the
+       whole record from whichever side graded it last. */
+    if (isSchedule(local) && isSchedule(incoming)) {
+      return srTouchedAt(incoming) > srTouchedAt(local) ? incoming : local;
     }
     if (isObj(local) && isObj(incoming)) return mergeObject(local, incoming);
     return local;                                    // strings and mismatched types

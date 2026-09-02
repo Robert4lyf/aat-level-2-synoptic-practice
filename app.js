@@ -1087,42 +1087,27 @@
      quickly while stubborn ones stay frequent — tuned per item, not one schedule
      for all. Grading is binary (recalled / not). Drives quizzes, Active Recall,
      Smart Practice and the daily-review nudge. (The AAT glossary flashcards keep
-     their own simple box model.) */
-  const SR_DAY_MS = 24 * 60 * 60 * 1000;
-  const SR_EASE_DEFAULT = 2.5, SR_EASE_MIN = 1.3, SR_EASE_MAX = 2.7;
-  function srSchedule(rec, correct) {
-    let ease = (rec && typeof rec.ease === 'number') ? rec.ease : SR_EASE_DEFAULT;
-    let reps = (rec && typeof rec.reps === 'number') ? rec.reps : 0;
-    let interval = (rec && typeof rec.interval === 'number') ? rec.interval : 0;
-    if (correct) {
-      reps += 1;
-      if (reps === 1) interval = 1;
-      else if (reps === 2) interval = 3;
-      else interval = Math.max(1, Math.round(interval * ease));
-      ease = Math.min(SR_EASE_MAX, ease + 0.08);   // reward consistent recall
-    } else {
-      reps = 0;
-      interval = 1;                                 // relearn from tomorrow
-      ease = Math.max(SR_EASE_MIN, ease - 0.2);     // missed → comes back sooner for longer
-    }
-    interval = Math.min(interval, 365);
-    return {
-      ease: Math.round(ease * 100) / 100,
-      reps, interval,
-      dueAt: Date.now() + interval * SR_DAY_MS,
-      lastResult: !!correct,
-    };
-  }
-  // Convert a legacy Leitner box record {box,dueAt} to the adaptive model.
-  function srMigrate(r) {
-    const box = Math.max(1, Math.min(SR_MAX_BOX, (r && r.box) || 1));
-    const days = [1, 3, 7, 14, 30][box - 1] || 1;
-    return {
-      ease: SR_EASE_DEFAULT, reps: box, interval: days,
-      dueAt: (r && r.dueAt) || (Date.now() + days * SR_DAY_MS),
-      lastResult: r && r.lastResult,
-    };
-  }
+     their own simple box model.)
+
+     THE SCHEDULE ITSELF LIVES IN spaced.js, shared with Levels 1 and 3.
+
+     It was written here and only here, and the two other players had something
+     narrower — a fixed seven-day return for questions that had been got wrong
+     and later fixed, which left everything a reader got right the first time
+     out of review entirely. Rather than copy this algorithm into two more
+     files, where three copies drift the first time an interval is tuned, it
+     moved out and all three call it. These wrappers keep the names the rest of
+     this file already uses; the day-in-milliseconds constant went with it.
+
+     GUARDED, NOT ASSUMED. Marking an answer is the one thing this app must
+     never fail to do. If spaced.js were ever missing — a stale cache, a
+     truncated deploy — an unguarded call would throw inside recordAnswer() and
+     take the whole quiz down with it. The fall-back leaves the record as it
+     was: review scheduling stops, answering does not. §7 of
+     check-spaced.js is what makes sure the file is actually shipped. */
+  const srSchedule = (rec, correct) =>
+    (window.AATSpaced ? window.AATSpaced.schedule(rec, correct) : rec);
+  const srMigrate = (r) => (window.AATSpaced ? window.AATSpaced.fromBox(r) : r);
 
   const defaultData = () => ({
     settings: { darkMode: null, soundOn: true, seenSplash: false, refOpen: false, flipMode: false },

@@ -181,6 +181,9 @@ function loadUI(store) {
   M.AATGrid = require(path.join(ROOT, 'question-grid.js')) && global.AATGrid;
   M.AATSound = require(path.join(ROOT, 'sound.js')) && global.AATSound;
   M.AATCelebrate = require(path.join(ROOT, 'celebrate.js')) && global.AATCelebrate;
+  /* Every graded answer writes a spaced-repetition schedule through this.
+     Without it recordQuestion() throws on the first question of any run. */
+  M.AATSpaced = require(path.join(ROOT, 'spaced.js')) && global.AATSpaced;
   M.AAT3_SYLLABUS = require(path.join(ROOT, 'aat3-syllabus.js')).SYLLABUS;
   M.AAT3_PRACTICE = require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE;
   M.AAT3_LEARN_PATH = require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH;
