@@ -49,6 +49,8 @@ jobs:
         run: npm run check:cips2
       - name: Check the encoded CIPS Level 2 syllabus against the reviewed source manifest
         run: npm run check:cips2-fidelity
+      - name: Adversarially prove the CIPS syllabus gates reject representative corruption
+        run: npm run check:cips2-adversarial
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
