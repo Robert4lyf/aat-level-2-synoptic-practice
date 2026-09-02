@@ -44,6 +44,9 @@ const notes = [];
 function answerAny(D, el, p) {
   const has = a => D.nodes(el, a).length;
   const pick = a => D.nodes(el, a);
+  /* Written first, because it is the one type answered in three steps rather
+     than one and has no submit button the branches below would recognise. */
+  if (D.answerWritten && D.answerWritten(el, 'all')) return true;
   if (has('ans')) { pick('ans')[0].fire('click'); return true; }
   if (has('tf')) {
     const seen = new Set();

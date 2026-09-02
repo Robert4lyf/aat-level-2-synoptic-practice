@@ -2045,6 +2045,82 @@
       },
       exp: 'VAT at 20% is a fifth of the net: £80.00, £50.00 and £32.00. The gross is the net plus its VAT — £480.00, £300.00 and £192.00. Then each column is totalled DOWN: £810.00 net, £162.00 VAT, £972.00 gross. Cross casting is the check that makes the book trustworthy: the net total plus the VAT total must equal the gross total, 810.00 + 162.00 = 972.00. Casting down and cross casting are two different checks, and a book that passes one can still fail the other.',
     },
+    /* ── Written tasks ──────────────────────────────────────────────────────
+       Bookkeeping Fundamentals is computer marked, so none of these rehearses
+       a format the reader will meet. They are here because explaining a rule
+       is how you find out whether you understand it, and every one of them is
+       the sort of thing a colleague actually asks a bookkeeper out loud. */
+    {
+      id: 'P1-W1', lo: 1, criteria: ['BKFN-1.2.1', 'BKFN-1.2.2', 'BKFN-1.2.3'],
+      type: 'written', minWords: 60,
+      setup: 'You work in the accounts office of Thornwell Tiles. The sales figures for last month were sent to the manager nine days late, and one of them was wrong: a £4,000 credit note had not been entered, so sales looked £4,000 higher than they were. On the strength of those figures the manager ordered extra stock and agreed a bonus for the sales team.',
+      q: 'Explain to the office supervisor what went wrong here, and suggest two things that would stop it happening again.',
+      rubric: [
+        { point: 'Separates the two faults — the information was late, and it was also inaccurate', marks: 2 },
+        { point: 'Gives a consequence of the figures being wrong, such as stock ordered that is not needed', marks: 2 },
+        { point: 'Gives a consequence of the figures being late, such as a decision made before the correct figures arrived', marks: 2 },
+        { point: 'Suggests at least two specific preventions — a checking step, a deadline, a reconciliation', marks: 2 },
+      ],
+      modelAnswer: 'Two separate things went wrong and it is worth keeping them apart.\n\nThe figures were inaccurate. A credit note for £4,000 was never entered, so sales were overstated by that amount. Acting on an overstated figure, the manager ordered stock the business may not sell and agreed a bonus on sales that were never made — the first ties up cash, and the second is difficult to take back once it has been promised.\n\nThe figures were also late. Nine days is most of the window in which anything could have been done about a slow month, so even correct figures arriving then would have been worth less than they should have been. Late information does not stop a decision being made; it means the decision gets made without it.\n\nTwo things would help. First, a checking step before the figures leave the office: agree the sales total to the sales day book, credit notes included, and have somebody other than the preparer look at it. Second, a fixed deadline — the fifth working day, say — with the figures going out on that day marked as draft if anything is still outstanding, rather than waiting until everything is perfect and sending nothing at all.',
+      exp: 'Two faults, two consequences, two preventions. The task looks like one question and is really three, and the marks are spread across all of them — an answer that explains only that the figure was wrong has left two thirds of them on the table. Notice also that "be more careful" is not a prevention: a checking step and a deadline are things somebody can actually put in place.',
+    },
+    {
+      id: 'P2-W1', lo: 2, criteria: ['BKFN-2.1.1', 'BKFN-2.1.3', 'BKFN-2.2.1'],
+      type: 'written', minWords: 60,
+      setup: 'A new colleague has just started in the accounts office. They have entered a £900 payment for office rent into the bank column of the cash book and stopped there, and they cannot see why anything else needs doing. "The money has gone out," they say. "That is the whole transaction."',
+      q: 'Explain to your new colleague why one entry is never enough, using their rent payment as the example.',
+      rubric: [
+        { point: 'States that every transaction changes at least two things in the records', marks: 2 },
+        { point: 'Names both effects of the rent payment: the bank falls by £900 and rent expense rises by £900', marks: 2 },
+        { point: 'Explains what the second entry is FOR — without it nothing records what the money was spent on', marks: 2 },
+        { point: 'Connects it to the accounting equation, or to the trial balance not balancing', marks: 1 },
+      ],
+      modelAnswer: 'Every transaction changes at least two things in the records, and the rent payment is a clear case of it.\n\nOne thing that changed is the bank: there is £900 less in it than there was. That is the entry you have made, and it is right. But something else changed as well — the business has incurred £900 of rent expense. If only the bank entry is made, the records show money leaving and nothing at all showing what it was spent on, so at the end of the month the rent account would read nil and the business would appear to occupy its premises for free.\n\nThat is what the second entry is for. It does not repeat the first one; it records the other half of what happened.\n\nThere is a check built into this. Assets less liabilities always equal capital, and a transaction entered only once breaks that equation — which is why the trial balance will not balance, and by exactly the £900 that is missing. When a trial balance is out, a single-sided entry is the first thing to look for.',
+      exp: 'The colleague is not wrong that the money went out — they are wrong that it is the whole story, and an answer that starts by telling them they are wrong will not land. What earns the marks is naming BOTH effects of this particular transaction rather than restating the rule in general terms, and then saying what goes wrong if the second one is missing.',
+    },
+    {
+      id: 'P3-W1', lo: 3, criteria: ['BKFN-3.2.1', 'BKFN-3.2.2'],
+      type: 'written', minWords: 60,
+      setup: 'A customer, Marston Builders, emails to say that invoice 2214 for £1,260 including VAT is wrong. They ordered and received 40 boxes of tiles at £26.25 each including VAT, which is £1,050, and they were charged for 48. You check the delivery note and they are right: 40 boxes were sent.',
+      q: 'Reply to Marston Builders. Explain what has happened, what document you will issue, and what they should do about the invoice they are holding.',
+      rubric: [
+        { point: 'States the difference clearly as £210, being 8 boxes at £26.25', marks: 2 },
+        { point: 'Explains the cause — the invoice was raised for 48 boxes when the delivery note shows 40', marks: 2 },
+        { point: 'Names a CREDIT NOTE as the document to be issued, rather than a replacement invoice or a refund', marks: 2 },
+        { point: 'Tells the customer what to do meanwhile — pay £1,050, or wait for the credit note before paying', marks: 1 },
+        { point: 'Ends by inviting the customer to make contact about anything else on their statement', marks: 1 },
+      ],
+      modelAnswer: 'Subject: Invoice 2214 — credit note to follow\n\nDear Marston Builders,\n\nThank you for letting us know, and you are right.\n\nInvoice 2214 was raised for 48 boxes when the delivery note shows that 40 were sent. The difference is 8 boxes at £26.25 including VAT, which is £210, so the invoice should have been £1,050 rather than £1,260.\n\nI will raise a credit note for £210 today and email a copy to you. A credit note is the right document here rather than a replacement invoice: the original invoice has already been entered in both our records, and cancelling it by issuing a credit reduces your account by the £210 without either of us having to unpick what has already been posted.\n\nIn the meantime, please pay £1,050 against invoice 2214 rather than the full amount. Your account will then be clear once the credit note is posted.\n\nI am sorry for the error. Please contact me if anything else on your statement does not look right.\n\nKind regards,\nAccounts, Thornwell Tiles',
+      exp: 'The document matters as much as the figure. A credit note is what reduces an invoice that has already been issued and posted — not a replacement invoice, which would leave the first one still sitting on the account, and not a refund, since the customer has not paid yet. Quantifying the difference and naming its cause are the other two things a reply like this has to do, and telling the customer what to pay in the meantime is what stops a second email.',
+    },
+    {
+      id: 'P4-W1', lo: 4, criteria: ['BKFN-4.3.3', 'BKFN-4.3.4'],
+      type: 'written', minWords: 60,
+      setup: 'The cash book shows a closing bank balance of £8,420 at 31 May. The bank statement for the same date shows £9,655. Nothing has been posted wrongly. Two cheques totalling £1,485 were written and sent on 29 May, and bank charges of £250 appear on the statement.',
+      q: 'Explain to the owner why the two figures differ, and say which of the two items needs an entry in the cash book.',
+      rubric: [
+        { point: 'States that the two figures can both be right, because they are prepared at different moments', marks: 2 },
+        { point: 'Explains the unpresented cheques — written and recorded, but not yet through the bank', marks: 2 },
+        { point: 'Explains the bank charges — the bank knows about them, the cash book does not yet', marks: 2 },
+        { point: 'Identifies the bank charges as the item needing an entry, and the cheques as needing none', marks: 2 },
+      ],
+      modelAnswer: 'Both figures are right. They differ because they were prepared at different moments in the same set of transactions.\n\nThe first difference is the two cheques totalling £1,485. They were written and sent on 29 May, so the cash book recorded them straight away — that is the correct treatment, because as far as the business is concerned the money is committed. The bank has not seen them yet, because the suppliers have not paid them in. These are unpresented cheques, and they need no entry at all: the cash book is already right and the bank will catch up.\n\nThe second is the bank charges of £250. Here it is the other way round. The bank has taken the money and shown it on the statement, and the business only found out when the statement arrived — so the cash book does not know about it yet. This one does need an entry: £250 has genuinely left the account and the cash book has to record it.\n\nSo of the two, only the bank charges need posting. Once that is done, the corrected cash book balance of £8,170 plus the £1,485 of unpresented cheques agrees with the statement at £9,655.',
+      exp: 'The pattern to learn is which side is behind. If the cash book knows something the bank does not — a cheque written, a lodgement not yet cleared — nothing needs entering, because the cash book is already right. If the bank knows something the cash book does not — charges, interest, a direct debit nobody told you about — that needs an entry, because it has genuinely happened. Getting that the right way round is most of bank reconciliation.',
+    },
+    {
+      id: 'P5-W1', lo: 5, criteria: ['BKFN-5.1.5', 'BKFN-5.1.7', 'BKFN-5.3.1'],
+      type: 'written', minWords: 60,
+      setup: 'Thornwell Tiles keeps its books on paper. The owner has been told that accounting software would "sort everything out" and wants your view before spending anything. The business has about 60 credit customers, sends 200 invoices a month, and has one part-time bookkeeper who has never used accounting software.',
+      q: 'Write a short note to the owner giving a balanced view: what software would genuinely improve, what it would not, and one risk to plan for.',
+      rubric: [
+        { point: 'Names at least two real benefits for a business of this size, such as automatic postings or instant customer balances', marks: 2 },
+        { point: 'Makes the point that software does not fix wrong or missing source data', marks: 2 },
+        { point: 'Names a cost or difficulty — the licence, the time to move over, or training the bookkeeper', marks: 2 },
+        { point: 'Names a specific security risk and something to do about it', marks: 2 },
+      ],
+      modelAnswer: 'Software would help, but not with everything, and it is worth being clear about which is which before spending anything.\n\nWhat it would genuinely improve. At 200 invoices a month across 60 credit customers, the biggest saving is that entering an invoice once posts it everywhere it needs to go, instead of the same figure being written into a day book and then a customer account by hand. It would also give an instant balance for any customer and an aged list of who owes what, which on paper takes an afternoon. Bank transactions can usually be imported straight from the bank rather than typed.\n\nWhat it would not do. Software will process whatever it is given, accurately and quickly. If a delivery note never reaches the office, or an invoice is entered against the wrong customer, the software will carry that error into every report it produces — faster than we manage at the moment. It does not remove the need for checking; it changes what has to be checked.\n\nOne risk to plan for. Security. Putting the whole ledger in one place makes it a target, and a stolen or shared password would expose every customer we have. I would make that a condition of going ahead: separate logins for each person rather than a shared one, two-factor authentication switched on, and a backup that is tested rather than assumed. I would also budget for the bookkeeper to be trained properly, because a system nobody is confident with gets worked around.',
+      exp: 'The word that carries this task is "balanced". An answer that only lists benefits has written an advertisement, and one that only lists risks has not answered the question either. The point most often missed is the middle one: software processes bad data faster than a person does, so it improves speed and consistency rather than accuracy. And a risk named without a response to it is only half a recommendation.',
+    },
   ];
 
   var AAT1_PRACTICE = { QUESTIONS: QUESTIONS };
