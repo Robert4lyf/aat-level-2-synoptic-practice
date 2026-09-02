@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v180';
+var CACHE_VERSION = 'aat-l2-v181';
 
 /* Guitar's files are cached lazily, on first open, rather than precached with
    everything else — its engine, renderer, audio and stylesheet are dead weight

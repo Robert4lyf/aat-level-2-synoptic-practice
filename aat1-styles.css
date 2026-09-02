@@ -1248,6 +1248,36 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-alert-due .a1-alert-go { color: var(--a1-brand-ink); }
 .a1-alert-due:hover { border-color: var(--a1-brand); }
 
+/* ── Read a card aloud ─────────────────────────────────────────────────────
+   A pill in the lesson bar, between the title and the percentage. Quiet until
+   it is speaking, because speaking is a state the reader needs to see from
+   across the room — the only other evidence of it is a sound they may have
+   muted. */
+.a1-speak {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 11px; border-radius: 999px; cursor: pointer; font-family: inherit;
+  font-size: 12.5px; font-weight: 700; white-space: nowrap;
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface); color: var(--a1-ink-2);
+  transition: border-color .14s ease, background .14s ease, color .14s ease;
+}
+.a1-speak:hover { border-color: var(--a1-brand); color: var(--a1-brand-ink); }
+.a1-speak:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-speak.is-on {
+  background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill);
+}
+.a1-speak-i { font-size: 11px; line-height: 1; }
+.a1-speak-l { line-height: 1; }
+/* At 320px the bar carries a back button, the lesson title, this and the
+   percentage. The word goes and the glyph stays — `display: none` on the child
+   rather than `font-size: 0` on the button, which does not work: the trick of
+   restoring the glyph with `::first-letter` does not apply to an inline-flex
+   box, and the button renders as an empty pill. */
+@media (max-width: 380px) {
+  .a1-speak { padding: 6px 10px; gap: 0; }
+  .a1-speak-l { display: none; }
+  .a1-speak-i { font-size: 13px; }
+}
+
 /* ── "I know this": retiring a question, and getting it back ──────────────
    The button sits beside the advance button on a graded practice question, and
    deliberately does not compete with it: the advance button is what a reader

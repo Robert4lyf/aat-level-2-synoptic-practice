@@ -63,8 +63,8 @@ jobs:
         run: npm run check:vat-thresholds
       - name: Check a finished lesson names itself on the completion screen
         run: npm run check:lesson-complete
-      - name: Check the read-aloud button speaks the card's prose and stops on every exit
-        run: npm run check:aat3-speech
+      - name: Check read-aloud on both players (every card, nothing silent, nothing outlives the card)
+        run: npm run check:speech
       - name: Check the Level 1 timed mock (no feedback, weighted draw, mistake memory, reviewable)
         run: npm run check:aat1-mock
       - name: Check the Level 2 exams against the published specification (duration, marks, coverage)

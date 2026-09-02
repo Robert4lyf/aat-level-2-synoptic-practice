@@ -1261,7 +1261,7 @@
          on the button and tried to restore the glyph with `::first-letter` —
          which does not apply to an inline-flex box, so at 320px the button
          rendered as an empty pill. */
-      (speechOffered(l)
+      (speechOffered(cards[S.cardIdx])
         ? '<button class="a3-speak' + (S.speaking ? ' is-on' : '') + '" data-a3="speak"' +
           ' aria-label="' + (S.speaking ? 'Stop reading this card aloud' : 'Read this card aloud') + '">' +
           '<span class="a3-speak-i" aria-hidden="true">' + (S.speaking ? '■' : '▶') + '</span>' +
@@ -3024,11 +3024,18 @@
      through a stand-in element that has none: there the clock simply does not
      tick, which is correct — those runs are not against a wall clock. */
   /* ── Reading a card aloud ──────────────────────────────────────────────────
-     A TRIAL, ON ONE LESSON. The button appears on L3-TPFB-1A and nowhere else,
-     because the question this is meant to answer is whether the thing is worth
-     having at all — and that is a judgement about how it SOUNDS, which no
-     amount of code review settles. Widening it is one edit to the constant
-     below; the machinery is not lesson-specific.
+     ON EVERY CARD THAT HAS SOMETHING TO SAY. This began as a trial on one
+     lesson, gated by a constant, because the question — is it worth having? —
+     is a judgement about how it SOUNDS, which no amount of code review
+     settles. It sounded right, so the constant is gone.
+
+     WHAT REPLACED IT IS NOT "always on". The button is offered where there is
+     prose to read and withheld where there is not, asked of the CARD rather
+     than of the lesson: a card whose whole substance is a table produces no
+     speech (see cardSpeech), and a Listen button that plays silence is worse
+     than no button, because the reader cannot tell it from a fault. So the
+     offer and the content are decided by the same function, and cannot
+     disagree.
 
      WHY NOT REUSE app.js's. It has ninety lines of Web Speech API code already,
      and none of it is reachable: it lives inside that file's closure with
@@ -3041,14 +3048,13 @@
      which is what lets the build check hand it a stub speech engine and assert
      what was said and when it was cancelled. The alternative — reaching for
      `window` directly — would make every one of those assertions impossible. */
-  var SPEECH_TRIAL_LESSON = 'L3-TPFB-1A';
-
   function speechEngine() { return root.speechSynthesis || null; }
   function canSpeak() { return !!(speechEngine() && root.SpeechSynthesisUtterance); }
-  /* The trial gate, asked in one place so the button, the handler and the
-     cleanup cannot disagree about where this is switched on. */
-  function speechOffered(lesson) {
-    return canSpeak() && !!lesson && lesson.id === SPEECH_TRIAL_LESSON && S.phase === 'teach';
+  /* Asked in one place so the button, the handler and the cleanup cannot
+     disagree about where this is switched on. Takes the CARD, not the lesson:
+     what there is to say changes from one card to the next. */
+  function speechOffered(card) {
+    return canSpeak() && S.phase === 'teach' && cardSpeech(card).length > 0;
   }
 
   /* An English voice, preferring the British one this material is written in.
@@ -3772,8 +3778,12 @@
        the button last said — the screen repaints constantly and the label is
        rebuilt from `S` every time. */
     if (act === 'speak') {
+      /* Guarded here as well as on the button, because a tap from the previous
+         paint is still live while the finger is travelling — and the card
+         index does not move when the lesson turns to its questions, so a stale
+         tap would read a card aloud over a question. */
       if (S.speaking) stopSpeaking();
-      else speakCard(cards[S.cardIdx]);
+      else if (speechOffered(cards[S.cardIdx])) speakCard(cards[S.cardIdx]);
       return;
     }
 
@@ -4040,11 +4050,10 @@
        and the most-mistakes ranking directly, rather than reading them back out
        of rendered HTML. */
     practiceSummary: practiceSummary,
-    /* Exposed for scripts/check-aat3-speech.js, which asserts what a card would
+    /* Exposed for scripts/check-speech.js, which asserts what a card would
        SAY against the card's own data. Reading it back out of the rendered HTML
        would test the renderer instead, and could not see the difference between
        a table skipped and a table that failed to render. */
     cardSpeech: cardSpeech,
-    speechTrialLesson: SPEECH_TRIAL_LESSON,
   };
 }(typeof self !== 'undefined' ? self : this));
