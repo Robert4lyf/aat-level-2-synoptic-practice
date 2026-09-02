@@ -747,6 +747,363 @@
     ]
   };
 
+  /* ── MATS ────────────────────────────────────────────────────────────────
+     Encoded from the specification text in docs/reference/, not from memory.
+     That distinction earned itself: a first pass written from recall had four
+     of the seven outcome weightings wrong (LO3 as 15 rather than 20, LO4 as 10
+     rather than 15, LO6 as 20 rather than 15, LO7 as 15 rather than 10), which
+     would have tilted every weighted draw and every mock in this unit.
+
+     TWO THINGS ABOUT THIS UNIT ARE UNLIKE THE OTHER TWO.
+
+     It is PARTIALLY HUMAN MARKED. FAPS and TPFB are computer marked
+     throughout; MATS is not, and the human-marked part is most plausibly the
+     spreadsheet output (see docs/aat-level-3-plan.md §3.8). Recorded as the
+     specification states it rather than normalised to match its neighbours.
+
+     LO5 IS SPREADSHEET SKILL, and this app has no spreadsheet. Designing a
+     workbook, building a pivot table, formatting a chart axis — these are done
+     with a mouse in Excel and cannot be assessed by a question bank. That is
+     15% of the unit, 4.5% of the qualification. What is written here teaches
+     and tests the KNOWLEDGE around those skills — which function does what,
+     what absolute referencing is for, which audit tool answers which question —
+     and the module says plainly that the hands-on part has to happen in a real
+     spreadsheet. Pretending otherwise would be the more serious failure. */
+  var MATS = {
+    unit: 'mats',
+    code: 'MATS',
+    title: 'Management Accounting Techniques',
+    unitReference: 'D/618/3582',
+    glh: 120,
+    /* Second only to FAPS, and double TPFB or BUAW. */
+    qualificationWeighting: 30,
+    assessment: {
+      method: 'Computer based assessment',
+      marking: 'Partially computer/partially human marked',
+      durationMinutes: 150,
+      passMark: 70,
+      /* As with FAPS: the specification states no task count, and no published
+         mock has been obtained. An invented figure would be shown to a student
+         as fact. */
+      taskCount: null,
+      taskCountSource: 'not stated by AAT and not obtained — deliberately absent',
+      totalMarks: null
+    },
+    excluded: [],
+    outcomes: [
+      {
+        n: 1,
+        title: 'Understand the purpose and use of management accounting within organisations',
+        weighting: 10,
+        topics: [
+          {
+            id: '1.1',
+            title: 'Internal reporting calculations',
+            concepts: [
+              { id: '1.1.1', tier: 'know', text: 'The purpose of costing, budgeting and internal reporting' },
+              { id: '1.1.2', tier: 'know', text: 'The importance of providing accurate information to management for the purposes of planning, control and decision-making' },
+              { id: '1.1.3', tier: 'do', text: 'Calculate revenue, costs, contribution and reported profits for an organisation' },
+              { id: '1.1.4', tier: 'do', text: 'Calculate segmented revenue, costs, contribution and reported profits by product' }
+            ]
+          },
+          {
+            id: '1.2',
+            title: 'Differences between marginal and absorption costing',
+            concepts: [
+              { id: '1.2.1', tier: 'understand', text: 'The difference between product and period costs',
+                indicative: ['some period costs are carried forward in the value of closing inventory under absorption costing',
+                             'in marginal costing only variable costs are included in inventory and period costs are written off in full'] },
+              { id: '1.2.2', tier: 'understand', text: 'The differences between costing techniques',
+                indicative: ['marginal costing', 'absorption costing'] },
+              { id: '1.2.3', tier: 'understand', text: 'The impact on reported performance of marginal versus full absorption costing in both the short run and the long run' },
+              { id: '1.2.4', tier: 'understand', text: 'When each technique is appropriate' },
+              { id: '1.2.5', tier: 'do', text: 'Calculate prime cost, marginal cost and full absorption cost',
+                indicative: ['prime cost', 'marginal cost', 'full absorption cost'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 2,
+        title: 'Use techniques required for dealing with costs',
+        weighting: 15,
+        topics: [
+          {
+            id: '2.1',
+            title: 'Record and calculate materials, labour and overhead costs',
+            concepts: [
+              { id: '2.1.1', tier: 'do', text: 'Use appropriate data and information from both manual records and software packages',
+                indicative: ['prepare and interpret inventory records for materials, work-in-progress and finished goods',
+                             'calculate materials and labour costs',
+                             'account for overheads',
+                             'calculate cost per equivalent unit of finished production'] }
+            ]
+          },
+          {
+            id: '2.2',
+            title: 'Prepare cost accounting journals',
+            concepts: [
+              { id: '2.2.1', tier: 'understand', text: 'Principles of cost accounting journal entries',
+                indicative: ['direct materials or indirect materials', 'direct or indirect labour', 'overheads costs'] },
+              { id: '2.2.2', tier: 'do', text: 'Prepare cost accounting journals',
+                indicative: ['materials', 'labour', 'overheads'] }
+            ]
+          },
+          {
+            id: '2.3',
+            title: 'Apply inventory control methods',
+            concepts: [
+              { id: '2.3.1', tier: 'do', text: 'Calculate inventory control and valuation measures',
+                indicative: ['inventory buffers, lead times, minimum/maximum order quantities',
+                             'economic order quantity (EOQ)',
+                             'compliance with inventory control policies',
+                             'the effect on reported profits of choice of method'],
+                note: 'The specification prints the formulas and states twice that students will be PROVIDED with one side of each pair — either buffer inventory or re-order level, and either maximum inventory level or maximum re-order quantity. buffer inventory = re-order level − (average usage × average lead time); re-order level = (average usage × average lead time) + buffer inventory; maximum inventory level = buffer inventory + maximum re-order quantity; maximum re-order quantity = maximum inventory level − buffer inventory; minimum re-order quantity = average usage × average lead time; EOQ = √((2 × annual usage × ordering cost) ÷ inventory holding cost).' },
+              { id: '2.3.2', tier: 'do', text: 'Account for inventories using first-in-first-out (FIFO) and average cost (AVCO) methods' },
+              { id: '2.3.3', tier: 'do', text: 'Analyse closing inventory balances' }
+            ]
+          },
+          {
+            id: '2.4',
+            title: 'Cost behaviours',
+            concepts: [
+              { id: '2.4.1', tier: 'understand', text: 'The implications of different cost behaviours for cost analysis, decision making and reporting',
+                indicative: ['fixed', 'variable', 'semi-variable', 'stepped'] },
+              { id: '2.4.2', tier: 'do', text: 'Use the high-low method to separate fixed and variable cost elements of semi-variable costs' }
+            ]
+          },
+          {
+            id: '2.5',
+            title: 'Differences between costing systems',
+            concepts: [
+              { id: '2.5.1', tier: 'understand', text: 'The appropriate choice of costing system for different business sectors and individual organisations' },
+              { id: '2.5.2', tier: 'understand', text: 'The effect of waste on costing inputs and outputs' },
+              { id: '2.5.3', tier: 'do', text: 'Record cost information using different costing systems',
+                indicative: ['job costing', 'batch costing', 'unit costing', 'service costing'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 3,
+        title: 'Attribute costs according to organisational requirements',
+        weighting: 20,
+        topics: [
+          {
+            id: '3.1',
+            title: 'Calculate and attribute overhead costs using traditional methods',
+            concepts: [
+              { id: '3.1.1', tier: 'know', text: 'Different methods of indirect cost recovery',
+                indicative: ['apportionment', 'allocation'] },
+              { id: '3.1.2', tier: 'do', text: 'Attribute overhead costs to production and service cost centres',
+                indicative: ['apportionment versus allocation', 'direct method', 'step-down method'] }
+            ]
+          },
+          {
+            id: '3.2',
+            title: 'Calculate overhead recovery rates using traditional methods',
+            concepts: [
+              { id: '3.2.1', tier: 'do', text: 'Calculate overhead recovery rates in accordance with suitable bases of absorption',
+                indicative: ['for a manufacturer: machine hours or direct labour hours',
+                             'for a service business: suitable basis for the specific business'] }
+            ]
+          },
+          {
+            id: '3.3',
+            title: 'Calculate overhead recovery rates using activity-based costing',
+            concepts: [
+              { id: '3.3.1', tier: 'know', text: 'The concept of activity-based costing',
+                indicative: ['appropriate cost drivers', 'use of cost pools'] },
+              { id: '3.3.2', tier: 'do', text: 'Calculate overhead recovery rates using appropriate cost drivers' }
+            ]
+          },
+          {
+            id: '3.4',
+            title: 'Under- or over-recovery of overheads',
+            concepts: [
+              { id: '3.4.1', tier: 'understand', text: 'How to account for under- or over-recovered overhead costs in accordance with established procedures',
+                indicative: ['making under- or over-absorption calculations',
+                             'interpreting the significance of under- or over-recoveries of overhead costs on unit costs and total profit'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 4,
+        title: 'Investigate deviations from budgets',
+        weighting: 15,
+        topics: [
+          {
+            id: '4.1',
+            title: 'Principles of standard prices/costs and budgeting',
+            concepts: [
+              { id: '4.1.1', tier: 'understand', text: "A product's standard price and standard cost" },
+              { id: '4.1.2', tier: 'understand', text: 'How standard prices and costs can be used to develop budgets' },
+              { id: '4.1.3', tier: 'understand', text: 'Different types of budget',
+                indicative: ['fixed', 'flexed', 'rolling'] },
+              { id: '4.1.4', tier: 'understand', text: 'How operating statements are used to compare budgeted volume and standard revenue/cost versus actual performance' },
+              { id: '4.1.5', tier: 'do', text: 'Prepare budgets for multi-product organisations',
+                indicative: ['revenue', 'materials', 'labour', 'variable overheads', 'fixed overheads', 'non-manufacturing overheads'] },
+              { id: '4.1.6', tier: 'do', text: 'Flex fixed budgets for actual volume' }
+            ]
+          },
+          {
+            id: '4.2',
+            title: 'Calculate variances',
+            concepts: [
+              { id: '4.2.1', tier: 'do', text: 'Recognise variances as being either favourable or adverse' },
+              { id: '4.2.2', tier: 'do', text: 'Calculate variances using flexed budgets' },
+              { id: '4.2.3', tier: 'do', text: 'Compare flexed budget versus actual costs and revenues to calculate the total variances',
+                indicative: ['sales price variance (total)', 'raw material variance (total)', 'labour variance (total)',
+                             'variable overhead variance (total)', 'fixed production variance (total)'],
+                note: 'TOTAL variances only. The specification names five, each qualified "(total)", and never asks for the price/usage or rate/efficiency splits that Level 4 requires. Teaching the sub-variances here would be teaching above the unit.' }
+            ]
+          },
+          {
+            id: '4.3',
+            title: 'Analyse and investigate variances',
+            concepts: [
+              { id: '4.3.1', tier: 'do', text: 'Determine the cause and effects of revenue and cost variances' },
+              { id: '4.3.2', tier: 'do', text: 'Recognise significant variances for investigation' },
+              { id: '4.3.3', tier: 'do', text: 'Report on remedial action to address adverse variances' }
+            ]
+          }
+        ]
+      },
+      {
+        n: 5,
+        title: 'Use spreadsheet techniques to provide management accounting information',
+        weighting: 15,
+        topics: [
+          {
+            id: '5.1',
+            title: 'Organise, record and format data',
+            concepts: [
+              { id: '5.1.1', tier: 'do', text: 'Organise data',
+                indicative: ['design spreadsheets to support: flexing budgets; the calculation and analysis of variances; production of operating statements; overhead absorption and allocation; short-term decision making; cash budgeting'] },
+              { id: '5.1.2', tier: 'do', text: 'Ensure data is valid and reliable',
+                indicative: ['select data from different sources',
+                             'enter data manually into appropriate cells and worksheets',
+                             'link data from different sources within the same worksheet or across different worksheets: copying and pasting special values; linking',
+                             'remove duplications in data'] },
+              { id: '5.1.3', tier: 'do', text: 'Format data',
+                indicative: ['formatting cells: advanced formatting, i.e. data manipulation, data security, data statistics; decimals, whole numbers, thousand separator, %; currency, accountancy, general, number; show adverse or negative figures with ( ) or −',
+                             'produce, format and adjust charts and graphs: chart production in 3D, exploded, bar, column, pie and line; changing chart type',
+                             'chart labelling: axis scale; titles; legend; data tables'] }
+            ]
+          },
+          {
+            id: '5.2',
+            title: 'Use tools to manipulate, analyse and verify data',
+            concepts: [
+              { id: '5.2.1', tier: 'do', text: 'Use a range of formulas and functions to perform calculations',
+                indicative: ['mathematical and logical functions using absolute and relative cell referencing: sum; average; minimum; maximum; round; roundup; rounddown; sumif; count; counta; countif; IF (simple and nested); VLOOKUP; HLOOKUP; days',
+                             'statistical techniques: goal seek; forecast'] },
+              { id: '5.2.2', tier: 'do', text: 'Use tools to support analysis of data',
+                indicative: ['data sort/data filter using single and/or multiple criteria',
+                             'conditional formatting (using function)',
+                             'lookup tables: pivot tables; pivot charts',
+                             'subtotals: average; sum; maximum; minimum',
+                             'comments box: show; hide'] },
+              { id: '5.2.3', tier: 'do', text: 'Edit and update data',
+                indicative: ['include new data in a worksheet or chart',
+                             'consider whether new data is included in any existing analysis or charts'] },
+              { id: '5.2.4', tier: 'do', text: 'Verify accuracy of data by using formula auditing tools',
+                indicative: ['trace precedents', 'trace dependents', 'show formulas'] }
+            ]
+          },
+          {
+            id: '5.3',
+            title: 'Use tools to prepare, protect and present accounting information',
+            concepts: [
+              { id: '5.3.1', tier: 'do', text: 'Protect integrity of data',
+                indicative: ['use data validation to restrict data entry and editing',
+                             'protect individual and ranges of cells'] },
+              { id: '5.3.2', tier: 'do', text: 'Enhance the visual presentation of data',
+                indicative: ['insert and edit headers and footers', 'hide and unhide rows or columns',
+                             'format columns and rows: font type, colour, size, bold, italics, alignment',
+                             'freezing rows and columns', 'adjust margins, orientation and print area',
+                             'use a range of charts to summarise and present information',
+                             'chart alteration: moving, resizing, changing type, stacked, 3D, exploded',
+                             'changing data series: chart colour and format, cell fill colour',
+                             'format charts: scales, axes, labels, data series, data tables'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 6,
+        title: 'Use management accounting techniques to support short-term decision making',
+        weighting: 15,
+        topics: [
+          {
+            id: '6.1',
+            title: 'Estimate and use short-term future revenue and costs',
+            concepts: [
+              { id: '6.1.1', tier: 'understand', text: 'The concept of contribution, that is revenue minus variable costs' },
+              { id: '6.1.2', tier: 'do', text: 'Use estimates of relevant future revenue and costs' },
+              { id: '6.1.3', tier: 'do', text: 'Use cost-volume-profit (CVP) analysis, both by calculation and by linear break-even chart',
+                indicative: ['break-even analysis', 'margin of safety and margin of safety percentage',
+                             'target profit', 'profit-volume ratio'] },
+              { id: '6.1.4', tier: 'do', text: 'Interpret and report on CVP analysis' }
+            ]
+          },
+          {
+            id: '6.2',
+            title: 'Examine the effects of changing activity levels',
+            concepts: [
+              { id: '6.2.1', tier: 'understand', text: 'The effect of changing activity levels on unit revenue, costs and profits' },
+              { id: '6.2.2', tier: 'do', text: 'Calculate changes in forecast unit revenue, costs and profits' }
+            ]
+          }
+        ]
+      },
+      {
+        n: 7,
+        title: 'Understand principles of cash management',
+        weighting: 10,
+        topics: [
+          {
+            id: '7.1',
+            title: 'Principles of cash budgeting',
+            concepts: [
+              { id: '7.1.1', tier: 'understand', text: 'The key differences between cash and profit' },
+              { id: '7.1.2', tier: 'understand', text: 'Principles of forecasting cash receipts and payments',
+                indicative: ['sales, purchases and production', 'the acquisition and disposal of non-current assets',
+                             'accounts receivable and payable', 'capital and new loans, repayment of loans and drawings'] },
+              { id: '7.1.3', tier: 'understand', text: 'The funding methods available for the acquisition of non-current assets',
+                indicative: ['cash', 'part-exchange', 'borrowing — loans, hire purchase'] },
+              { id: '7.1.4', tier: 'understand', text: 'The suitability of each funding method for the acquisition of non-current assets' },
+              { id: '7.1.5', tier: 'understand', text: 'The importance of liquidity and use of resources ratios' },
+              { id: '7.1.6', tier: 'understand', text: 'The working capital cycle' },
+              { id: '7.1.7', tier: 'do', text: 'Produce cash budgets' },
+              { id: '7.1.8', tier: 'do', text: 'Calculate working capital using resources ratios',
+                indicative: ['inventory holding period (days) = inventories ÷ cost of sales × 365',
+                             'trade receivables collection period (days) = trade receivables ÷ revenue × 365',
+                             'trade payables payment period (days) = trade payables ÷ cost of sales × 365',
+                             'working capital cycle (days) = inventory days + receivable days − payable days'],
+                note: 'The specification prints all four formulas, and prints the denominators asymmetrically on purpose: inventory and payables days run on COST OF SALES, receivables days on REVENUE. Using revenue throughout is the commonest error and the one these formulas exist to prevent.' }
+            ]
+          },
+          {
+            id: '7.2',
+            title: 'Improving cash flow',
+            concepts: [
+              { id: '7.2.1', tier: 'understand', text: "The importance of liquidity for businesses' survival" },
+              { id: '7.2.2', tier: 'understand', text: 'The actions that can be taken if there is insufficient liquidity',
+                indicative: ['raise additional finance from owners in the form of capital',
+                             'raise additional finance externally in the form of debt'] },
+              { id: '7.2.3', tier: 'understand', text: 'Other methods of improving cash flow',
+                indicative: ['chase receivables', 'delay supplier payments', 'offer prompt payment discounts (PPD)',
+                             'dispose of non-current assets', 'reduce inventory'] },
+              { id: '7.2.4', tier: 'understand', text: 'How accounting software and the use of automation and visualisation can aid cash flow planning' }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
   var SYLLABUS = {
     qualification: 'AAT Level 3 Diploma in Accounting (Q2022)',
     qualificationNumber: '603/6337/X',
@@ -756,7 +1113,7 @@
     /* Weighted unit percentages combine to the qualification grade. Failing any
        single unit makes the whole qualification unclassified. A resit that
        scores lower does not displace an earlier higher result. */
-    units: { faps: FAPS, tpfb: TPFB }
+    units: { faps: FAPS, mats: MATS, tpfb: TPFB }
   };
 
   /* ── Helpers used by the coverage checker and by the app ─────────────────── */

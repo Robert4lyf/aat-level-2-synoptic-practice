@@ -58,9 +58,17 @@ ok(tasks.length > 0, 'the module contains at least one multi-part task');
 {
   const SYL = require('../aat3-syllabus.js').SYLLABUS;
   Object.keys(SYL.units).forEach(unitKey => {
-    const mine = questions.filter(q => q.unitKey === unitKey && q.type === 'task');
+    const bank = questions.filter(q => q.unitKey === unitKey);
+    /* SCOPED TO UNITS THAT HAVE A BANK. A unit encoded in the syllabus with no
+       questions at all is not "missing its tasks" — it is unwritten, which is a
+       larger and different absence that check-aat3-coverage.js tracks against
+       its own shipped list. Demanding a task of an empty unit would report the
+       same gap twice and block the syllabus for a unit from landing before its
+       content does, which is the order this repo writes them in. */
+    if (!bank.length) return;
+    const mine = bank.filter(q => q.type === 'task');
     ok(mine.length > 0,
-      `${unitKey} has at least one multi-part task in its practice bank (has ${mine.length})`);
+      `${unitKey} has at least one multi-part task among its ${bank.length} practice questions (has ${mine.length})`);
   });
 }
 
