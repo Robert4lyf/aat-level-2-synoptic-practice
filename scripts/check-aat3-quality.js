@@ -371,6 +371,28 @@ allQuestions.forEach(({ where, q }) => {
       /* The rules live in question-grid.js beside the grading, because three
          levels author these tables and three copies would drift. */
       GRID.problems(q, where).forEach(e => errors.push(e));
+    } else if (type === 'written') {
+      /* Only what this file is for — the shape of the data. Whether the model
+         stays hidden until it is earned, whether the rubric grades at the
+         assessment's own pass mark and whether the mark reaches the progress
+         record are properties of the SCREEN, and they live in
+         scripts/check-written.js, which drives the real player. */
+      if (!q.setup) errors.push(`${where}: a written task needs a scenario to answer about.`);
+      if (!q.modelAnswer) errors.push(`${where}: a written task needs a model answer to be marked against.`);
+      if (!Array.isArray(q.rubric) || q.rubric.length < 3) {
+        errors.push(`${where}: a written task needs at least three rubric points.`);
+      } else q.rubric.forEach((r, ri) => {
+        if (!r || !r.point) errors.push(`${where} rubric ${ri + 1}: no point.`);
+        if (!r || !Number.isFinite(r.marks) || r.marks <= 0) {
+          errors.push(`${where} rubric ${ri + 1}: is not worth a positive number of marks.`);
+        }
+      });
+      /* A minimum worth writing. Below about thirty words nothing is being
+         explained, and the type stops being different from a multiple choice
+         with a bigger box. */
+      if (!Number.isFinite(q.minWords) || q.minWords < 30) {
+        errors.push(`${where}: a written task needs a minWords of at least 30.`);
+      }
     } else {
       errors.push(`${where}: unknown question type "${type}".`);
     }

@@ -341,6 +341,11 @@ ALL_QUESTIONS.forEach(q => all.push({ where: `practice ${q.id}`, q }));
   const NO_OPTIONS = {
     numeric: 'the reader types a figure; there are no options to place.',
     entrygrid: 'the reader types amounts into columns; there is no list of options to place.',
+    /* A rubric is not a set of alternatives. Every point on it is separately
+       claimable and there is no key among them to hide in a position, so the
+       order it is written in carries no information for a reader to exploit —
+       which is the property this whole file exists to protect. */
+    written: 'the reader writes prose and then claims rubric points; there is no key among options to place.',
   };
 
   const present = new Set(all.map(x => x.q.type || 'mcq'));

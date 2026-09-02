@@ -83,6 +83,8 @@ jobs:
         run: npm run check:aat2-sheets
       - name: Check each self-rendering stylesheet matches its screens (no dead rules, no unstyled classes)
         run: npm run check:styles
+      - name: Check written tasks (model hidden until earned, rubric marks at the pass mark)
+        run: npm run check:written
       - name: Check spaced repetition on all three levels (one schedule, due selection, merge)
         run: npm run check:spaced
       - name: Check progress backup merge (no data loss, idempotent)
@@ -120,8 +122,8 @@ jobs:
 
   render:
     # Separated because it is the only job needing a browser: it loads the real
-    # site in Chromium and opens all seven subjects. Kept out of the checks job
-    # so a Playwright install failure cannot mask a content failure.
+    # site in Chromium and opens all subjects. Kept out of the checks job so a
+    # Playwright install failure cannot mask a content failure.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

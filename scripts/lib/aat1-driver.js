@@ -38,7 +38,11 @@ function fakeEl() {
      the fake DOM parses the table's buttons and none of its controls, and every
      assertion about a picklist would be made against a question nobody can
      answer. */
-  const TAG = /<(?:button|span|div|input|select|a|li)\b([^>]*\bdata-a1="[^"]*"[^>]*)>/g;
+  /* `textarea` is in the list because a written task is answered in one:
+     without it the fake DOM parses the buttons around the box and not the box
+     itself, so every assertion about that type would be made against something
+     nobody can answer — green, and about nothing. */
+  const TAG = /<(?:button|span|div|input|select|textarea|a|li)\b([^>]*\bdata-a1="[^"]*"[^>]*)>/g;
   const ATTR = /([\w-]+)="([^"]*)"/g;
   let painted = '';
   let parsed = null;
@@ -83,6 +87,26 @@ function click(el, act, pick) {
   return n;
 }
 
+/* Answer whichever written task is on screen, claiming `claim` rubric points.
+
+   Shared rather than repeated, because four harnesses drive Level 1 questions
+   with their own inline dispatchers, and a type none of them can answer is a
+   type that stalls every one of them — reporting a short run as a finished
+   one. Returns false when the question on screen is not a written task, so a
+   dispatcher can fall through to its own handling. */
+function answerWritten(el, claim) {
+  if (!nodes(el, 'wrinput').length) return false;
+  const box = nodes(el, 'wrinput')[0];
+  box.value = new Array(25).fill('word').join(' ');
+  box.fire('input');
+  click(el, 'wrshow');
+  const ticks = nodes(el, 'wrtick');
+  const want = claim === 'all' ? ticks.length : (claim === 'none' ? 0 : Number(claim) || 0);
+  ticks.slice(0, Math.min(want, ticks.length)).forEach(t => t.fire('click'));
+  click(el, 'wrmark');
+  return true;
+}
+
 /* A fresh, fully-wired copy of the module reading `store`.
 
    Requiring it again after clearing the cache is what makes "does this survive
@@ -124,4 +148,4 @@ function seedRandom(seed) {
   return () => { Math.random = real; };
 }
 
-module.exports = { ROOT, STORE_KEY, fakeStore, fakeEl, nodes, click, loadUI, seedRandom };
+module.exports = { ROOT, STORE_KEY, fakeStore, fakeEl, nodes, click, answerWritten, loadUI, seedRandom };
