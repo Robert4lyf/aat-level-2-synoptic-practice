@@ -3164,6 +3164,540 @@
   ];
 
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     OUTCOME 7 — Understand principles of cash management (10%)
+
+     The smallest outcome in the unit and the one most likely to decide whether
+     a business is still trading next year. Note the formulas: the specification
+     prints all four of the resource ratios and the working capital cycle, so
+     they are reproduced exactly as it states them — inventory and payables
+     against cost of sales, receivables against revenue.
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  var LO7_LESSONS = [
+    {
+      id: 'L3-MATS-7A',
+      title: 'Cash is not profit',
+      icon: '💷',
+      criteria: ['MATS-7.1.1', 'MATS-7.1.2'],
+      cards: [
+        {
+          h: 'Two different questions about the same business',
+          p: [
+            '**Profit** asks whether the business earned more than it spent in a period, measured on the accruals basis: revenue when it was earned, cost when it was incurred, whenever the money moves. **Cash** asks whether there was money in the bank on the day it was needed. A business can be profitable and go under, and businesses regularly do.',
+            'The gap between them is timing and it is nobody\'s error. A sale made on credit in March is March\'s profit and May\'s cash. A machine bought in March is all of March\'s cash and eight years of depreciation. Both statements are right; they are answering different questions.',
+          ],
+          table: {
+            headers: ['Item', 'Effect on profit', 'Effect on cash'],
+            rows: [
+              ['Credit sale made', 'Increases it now', 'Nothing until the customer pays'],
+              ['Customer pays an old invoice', 'None — the profit was taken already', 'Increases it now'],
+              ['Non-current asset bought', 'Only the depreciation, spread over its life', 'The whole cost, now'],
+              ['Depreciation charged', 'Reduces it', 'None at all — no money moves'],
+              ['Loan received', 'None — it is not income', 'Increases it now'],
+              ['Loan repaid', 'None — only the interest is an expense', 'Reduces it now'],
+              ['Owner\'s drawings', 'None — they are not an expense', 'Reduces it now'],
+              ['Inventory bought and unsold', 'None until it is sold', 'Reduces it now'],
+            ],
+          },
+        },
+        {
+          h: 'What a cash forecast has to catch',
+          split: {
+            left: {
+              title: 'Receipts to forecast',
+              items: [
+                'Cash sales, in the month they are made',
+                'Credit sales, in the month the customer **pays**',
+                'Proceeds of selling a non-current asset',
+                'New capital from the owner, and new loans',
+              ],
+            },
+            right: {
+              title: 'Payments to forecast',
+              items: [
+                'Purchases, in the month the supplier is **paid**',
+                'Wages, expenses and tax, on their own dates',
+                'The full cost of any non-current asset bought',
+                'Loan repayments, interest, and drawings',
+              ],
+            },
+          },
+          p: [
+            'Two things are on neither list and both are commonly written in by mistake. **Depreciation** never appears, because no money moves — if a question gives you overheads "including depreciation of £2,000", the £2,000 has to come out before the figure is entered. And a **credit sale** does not appear in the month it was made; it appears in the month the money arrives.',
+          ],
+          examtrap: 'Read the credit terms twice. "One month\'s credit" means January\'s sales are received in February. "60% in the month of sale and the balance the following month" means every month\'s receipt is built from two different months\' sales, and building it from one is the single commonest error in a cash budget task.',
+        },
+      ],
+      check: [
+        {
+          type: 'picklist',
+          q: 'Identify how each item affects the cash budget for the month it is listed under.',
+          picklist: {
+            title: 'Cash or not cash',
+            rowHeader: 'Item',
+            choiceHeader: 'In the cash budget?',
+            options: ['A receipt', 'A payment', 'Neither'],
+            rows: [
+              { text: 'Depreciation charged on the delivery vans', answer: 2 },
+              { text: 'A bank loan received from the lender', answer: 0 },
+              { text: 'The owner taking drawings from the business', answer: 1 },
+              { text: 'A credit sale invoiced this month, payable in two months', answer: 2 },
+              { text: 'Payment to a supplier for goods bought last month', answer: 1 },
+            ],
+          },
+          exp: 'A cash budget records money moving and nothing else. Depreciation moves none. A credit sale moves none this month either — it will be a receipt in two months\' time, which is exactly the timing a cash budget exists to expose. A loan is a receipt even though it is not income, and drawings are a payment even though they are not an expense: the profit statement and the cash budget disagree on both, and both are right.',
+        },
+        {
+          type: 'numeric',
+          q: 'Overheads for March are budgeted at £17,400, of which £3,100 is depreciation. Everything else is paid in the month it arises. What figure goes in the March cash budget?',
+          unit: '£',
+          answer: 14300,
+          exp: '£17,400 − £3,100 = £14,300. Depreciation is an accounting allocation of a payment made when the asset was bought, so no money leaves the bank for it in March or any other month. Entering the whole £17,400 would understate the closing balance by £3,100 and, in a tight month, invent an overdraft that would not happen.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about cash and profit is correct.',
+          statements: [
+            { text: 'A profitable business can still run out of cash.', answer: true },
+            { text: 'Receiving a bank loan increases cash but not profit.', answer: true },
+            { text: 'Buying a non-current asset for cash reduces profit by its full cost.', answer: false },
+          ],
+          exp: 'Profit and cash answer different questions, and a business selling well on long credit terms while paying its suppliers quickly can be profitable every month and still miss a payroll. A loan is not income, so it never touches profit — it has to be repaid. And an asset bought for cash takes the whole amount out of the bank at once while reaching profit only as depreciation, spread across the years that use it.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-7B',
+      title: 'Producing a cash budget',
+      icon: '📆',
+      criteria: ['MATS-7.1.7'],
+      cards: [
+        {
+          h: 'The shape of the statement',
+          flow: ['Opening balance', '+ Receipts', '− Payments', '= Closing balance', 'which becomes next month\'s opening balance'],
+          p: [
+            'A cash budget is one column per month and four blocks down: the balance brought forward, everything coming in, everything going out, and the balance carried forward. The **closing balance of one month is the opening balance of the next**, which is what makes it a forecast rather than a list — a bad month is still sitting there in the following month\'s opening figure.',
+            'What it is for is the closing line. Read across it and the business can see the month it goes overdrawn, how deep, and for how long — in time to arrange an overdraft, chase a customer or move a payment, rather than on the day the cheque bounces.',
+          ],
+        },
+        {
+          h: 'Three months, worked in order',
+          worked: {
+            title: 'Ashfield Joinery — January to March',
+            problem: 'Sales were £50,000 in December and are budgeted at £60,000 in January, £70,000 in February and £80,000 in March. Forty per cent of each month\'s sales is received in the month of sale and the rest in the following month. Purchases are half of each month\'s sales value and are paid one month after the month they relate to. Wages are £14,000 a month and other overheads are £11,000 a month, of which £2,000 is depreciation. A machine costing £30,000 is paid for in February and a £20,000 loan is received in March. The bank balance at 1 January is £8,000.',
+            steps: [
+              {
+                do: 'January receipts: 40% of January\'s £60,000 is £24,000, plus 60% of December\'s £50,000, which is £30,000. Total £24,000 + £30,000 = £54,000.',
+                why: 'Every month\'s receipt is built from two months\' sales. Taking it from one month is the commonest way this task is lost, and it goes wrong in every column at once.',
+              },
+              {
+                do: 'January payments: December purchases were half of £50,000, so £25,000 is paid now. Wages £14,000. Overheads £11,000 − £2,000 = £9,000. Total £25,000 + £14,000 + £9,000 = £48,000.',
+                why: 'The depreciation comes out before the figure is entered. And the purchases paid in January belong to December, because the terms say one month after.',
+              },
+              {
+                do: 'January closes at £8,000 + £54,000 − £48,000 = £14,000.',
+                why: 'Opening plus in minus out. That £14,000 is now February\'s opening figure, and it carries January\'s result forward whether it was good or bad.',
+              },
+              {
+                do: 'February: receipts are 40% of £70,000 = £28,000 plus 60% of £60,000 = £36,000, so £64,000. Payments are January purchases of £30,000, wages £14,000, overheads £9,000 and the machine £30,000, so £83,000. The month has £14,000 + £64,000 = £78,000 available against £83,000 of payments, so it closes £5,000 overdrawn.',
+                why: 'February is overdrawn, and it is overdrawn because of one payment for a machine. This is precisely the warning the exercise exists to produce, and it arrives with a month to do something about it.',
+              },
+              {
+                do: 'March: receipts are 40% of £80,000 = £32,000 plus 60% of £70,000 = £42,000 plus the £20,000 loan, so £94,000. Payments are February purchases of £35,000, wages £14,000 and overheads £9,000, so £58,000. The month closes at £94,000 − £58,000 − £5,000 = £31,000.',
+                why: 'The loan is a receipt although it is not income, and the negative opening balance is carried in with its sign. Starting March from zero because February ended below it is the other error worth watching for.',
+              },
+            ],
+            answer: 'January closes at £14,000 · February at −£5,000 · March at £31,000',
+            tryIt: {
+              q: 'Sixty per cent of each month\'s sales is received in the month of sale and the rest the following month. April sales were £45,000 and May sales are budgeted at £55,000. What is the receipt from customers in May?',
+              answer: 51000,
+              unit: '£',
+              hint: 'Two months\' sales make up one month\'s receipt.',
+              exp: '60% of May\'s £55,000 is £33,000, and 40% of April\'s £45,000 is £18,000, so £33,000 + £18,000 = £51,000. Taking 60% of May alone gives £33,000 and misses the whole of what April\'s customers owe; taking all of May\'s sales gives £55,000 and assumes nobody takes credit at all.',
+            },
+          },
+        },
+        {
+          h: 'Reading the closing line',
+          table: {
+            headers: ['What the closing line shows', 'What it means', 'What to do with a month\'s notice'],
+            rows: [
+              ['A single deep month, then recovery', 'One large payment, usually an asset', 'Arrange an overdraft, or delay or finance the purchase'],
+              ['A balance sliding down every month', 'The business is losing cash structurally', 'Look at the working capital cycle, not at one payment'],
+              ['A large positive balance sitting idle', 'Cash is earning nothing', 'Invest it, repay debt, or bring a purchase forward'],
+              ['Overdrawn at every month end', 'The facility is being used as permanent funding', 'Refinance onto a loan; an overdraft is repayable on demand'],
+            ],
+          },
+          callout: {
+            kind: 'key',
+            text: 'A cash budget is not a prediction anybody expects to come true. It is a way of finding out which month is going to be difficult while there is still time to do something about it, and the answer usually costs nothing if it is seen early enough.',
+          },
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'Half of each month\'s sales is received in the month of sale, 30% in the next month and 20% in the month after that. Sales were £40,000 in May, £50,000 in June and £60,000 in July. What is the receipt from customers in July?',
+          unit: '£',
+          answer: 53000,
+          exp: '50% of July\'s £60,000 is £30,000, 30% of June\'s £50,000 is £15,000 and 20% of May\'s £40,000 is £8,000, so £30,000 + £15,000 + £8,000 = £53,000. Three months of sales feed one month\'s receipt here, and the oldest of them is the one most often left out.',
+        },
+        {
+          type: 'entrygrid',
+          q: 'Opening cash at 1 October is £6,000. Receipts are £48,000 in October, £52,000 in November and £61,000 in December. Payments are £55,000, £49,000 and £58,000. Complete the closing balances.',
+          entrygrid: {
+            title: 'Cash budget, October to December',
+            rowHeader: 'Line',
+            columns: ['October £', 'November £', 'December £'],
+            rows: [
+              { label: 'Opening balance', cells: { 0: 6000, 1: -1000, 2: 2000 } },
+              { label: 'Closing balance', cells: { 0: -1000, 1: 2000, 2: 5000 } },
+            ],
+          },
+          exp: 'October has £6,000 + £48,000 = £54,000 available against £55,000 of payments, so it closes £1,000 overdrawn, and that negative figure opens November with its sign intact. November closes at £52,000 − £49,000 − £1,000 = £2,000, and December at £2,000 + £61,000 − £58,000 = £5,000. Restarting a month at zero because the last one ended below it is the error this layout is designed to expose.',
+        },
+        {
+          type: 'mcq',
+          q: 'A cash budget shows one month heavily overdrawn because of a machine purchase, with every other month positive. What is the most appropriate response?',
+          opts: [
+            'Arrange an overdraft facility for that month in advance',
+            'Cancel the purchase, since the business cannot afford it',
+            'Recalculate the budget excluding the machine purchase',
+            'Move the machine cost into depreciation over its useful life',
+          ],
+          ans: 0,
+          exp: 'One deep month surrounded by positive ones is a timing problem, not a solvency one, and a facility arranged a month ahead costs a fraction of an unauthorised overdraft discovered on the day. Cancelling a purchase the business can afford over its life is an overreaction. And the last two options are ways of making the budget look better without changing when the money leaves the bank, which is the only thing a cash budget is about.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-7C',
+      title: 'Paying for a non-current asset',
+      icon: '🏗️',
+      criteria: ['MATS-7.1.3', 'MATS-7.1.4'],
+      cards: [
+        {
+          h: 'Four ways to get the asset',
+          table: {
+            headers: ['Method', 'What happens', 'What it costs'],
+            rows: [
+              ['Cash', 'The whole price leaves the bank at once; the asset is owned outright', 'No interest — but the cash is gone and earning nothing else'],
+              ['Part-exchange', 'The old asset is traded against the new one, reducing the cash needed', 'The trade-in value is usually below what a private sale would fetch'],
+              ['Loan', 'A lender advances the price; the business owns the asset from day one', 'Interest, often security over assets, and fixed repayment dates'],
+              ['Hire purchase', 'Instalments are paid; ownership passes with the final one', 'Usually the dearest of the four, with the asset itself as security'],
+            ],
+          },
+          p: [
+            'The four are not alternatives to be ranked once and for all — each suits a different business on a different day. What decides between them is the state of the cash budget and how long the asset will last.',
+          ],
+        },
+        {
+          h: 'Choosing between them',
+          split: {
+            left: {
+              title: 'Points towards cash or part-exchange',
+              items: [
+                'A healthy cash balance earning very little',
+                'A short-lived, low-value asset',
+                'An old asset the supplier will take in',
+                'A wish to avoid interest and covenants',
+              ],
+            },
+            right: {
+              title: 'Points towards a loan or hire purchase',
+              items: [
+                'A cash budget already tight in the months ahead',
+                'A long-lived asset that will earn over many years',
+                'A return on the asset above the interest rate',
+                'A preference to keep cash for working capital',
+              ],
+            },
+          },
+          p: [
+            'The principle underneath is **matching the funding to the asset**. A machine that will earn for eight years can reasonably be paid for over several of them, so the cost falls in the same periods as the benefit. Paying for it out of one month\'s cash makes that month carry a cost that eight years will share.',
+            'The reverse mistake is as real. Borrowing over five years for something that will be replaced in two leaves the business paying for an asset it no longer has — which is the standard argument against funding short-lived equipment on a long loan.',
+          ],
+          examtrap: 'An overdraft is not a way of buying a non-current asset. It is repayable on demand and priced for short-term swings in working capital, so using it for a permanent purchase means the business can be asked for the money at any time, with the money spent.',
+        },
+      ],
+      check: [
+        {
+          type: 'picklist',
+          q: 'Identify the funding method each description points to.',
+          picklist: {
+            title: 'Funding a purchase',
+            rowHeader: 'Description',
+            choiceHeader: 'Method',
+            options: ['Cash', 'Part-exchange', 'Hire purchase'],
+            rows: [
+              { text: 'Ownership passes to the business with the final instalment', answer: 2 },
+              { text: 'The old machine is traded in against the price of the new one', answer: 1 },
+              { text: 'The full price leaves the bank on the day of purchase', answer: 0 },
+              { text: 'No interest is paid, but the balance available falls sharply', answer: 0 },
+              { text: 'The asset itself stands as the security for the finance', answer: 2 },
+            ],
+          },
+          exp: 'The distinguishing feature of hire purchase is that ownership arrives last, which is also why the asset can stand as its own security. Part-exchange is not really a funding method on its own — it reduces the amount that has to be found by some other means. And paying cash costs no interest, which is the visible half of the trade-off; the invisible half is whatever the cash would otherwise have done.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business with a tight cash budget needs a machine that will last eight years. Which funding method fits best?',
+          opts: [
+            'A bank loan repayable over several years',
+            'Cash from the current bank balance',
+            'The existing overdraft facility',
+            'Cash, with the purchase delayed until funds allow',
+          ],
+          ans: 0,
+          exp: 'Matching the funding to the asset means the cost falls in roughly the periods that get the benefit, which a multi-year loan does and a single cash payment does not. Paying cash from a tight balance is what the cash budget has already warned against. An overdraft is repayable on demand and is priced for short-term swings, not permanent assets. And delaying the purchase postpones the earnings as well as the cost.',
+        },
+        {
+          type: 'mcq',
+          q: 'What is the main drawback of paying cash for a large non-current asset?',
+          opts: [
+            'The cash is no longer available for working capital or other uses',
+            'The asset cannot be depreciated once it has been paid for outright',
+            'Interest has to be charged to the business on its own funds',
+            'Ownership of the asset does not pass until the final payment',
+          ],
+          ans: 0,
+          exp: 'Cash spent on a machine is cash that cannot pay a supplier, meet a payroll or take a discount, and that opportunity cost is invisible precisely because no interest is charged for it. Depreciation is unaffected by how an asset was funded. No business charges itself interest on its own money. And ownership passing at the end describes hire purchase, not a cash purchase.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-7D',
+      title: 'Liquidity, resource ratios and the working capital cycle',
+      icon: '🔄',
+      criteria: ['MATS-7.1.5', 'MATS-7.1.6', 'MATS-7.1.8', 'MATS-7.2.1'],
+      cards: [
+        {
+          h: 'Why liquidity decides survival',
+          p: [
+            '**Liquidity** is the ability to pay what is due when it falls due. It is not the same as being profitable and it is not the same as being solvent on paper: a business whose assets exceed its liabilities can still fail because the assets are inventory and the liabilities are due on Friday.',
+            'That is why liquidity, rather than profit, is what kills companies. Suppliers stop delivering, staff leave, and a lender that has to be told the payment will be late will price the next loan accordingly. Nothing in the accounts recovers from those quickly.',
+          ],
+          callout: {
+            kind: 'key',
+            text: 'Profit is an opinion about a period. Cash is a fact about a day. A business that runs out of the second does not get to argue about the first.',
+          },
+        },
+        {
+          h: 'The three resource ratios',
+          formula: 'Inventory days = Inventories ÷ Cost of sales × 365 · Receivable days = Trade receivables ÷ Revenue × 365 · Payable days = Trade payables ÷ Cost of sales × 365',
+          table: {
+            headers: ['Ratio', 'What it measures', 'Read it as'],
+            rows: [
+              ['Inventory holding period', 'How long goods sit before they are sold', 'Lower is faster — but too low risks stockouts'],
+              ['Trade receivables collection period', 'How long customers take to pay', 'Lower is better; compare it with the credit terms offered'],
+              ['Trade payables payment period', 'How long the business takes to pay suppliers', 'Higher preserves cash, but strains the relationship'],
+            ],
+          },
+          p: [
+            'Notice which figure sits underneath each one. Inventory and payables are both divided by **cost of sales**, because both are measured at cost. Receivables are divided by **revenue**, because that is what customers were invoiced. Using revenue throughout is the standard slip and it understates inventory and payable days every time.',
+          ],
+        },
+        {
+          h: 'The working capital cycle',
+          formula: 'Working capital cycle (days) = Inventory days + Receivable days − Payable days',
+          p: [
+            'The cycle is the number of days between paying for goods and being paid for them — the length of time the business is funding its own trading out of its own pocket. **The longer it is, the more cash the business has to find** simply to keep operating at its current size.',
+            'Payable days are subtracted because the supplier is financing that part of the cycle. Suppliers are, for most businesses, the largest source of short-term finance there is, and it is free until the relationship or a prompt payment discount makes it otherwise.',
+          ],
+          worked: {
+            title: 'Four figures, one cycle',
+            problem: 'Inventories £84,000, trade receivables £96,000, trade payables £50,400. Revenue for the year £876,000 and cost of sales £613,200.',
+            steps: [
+              {
+                do: 'Inventory days: £84,000 ÷ £613,200 × 365 = 50 days.',
+                why: 'Inventory is carried at cost, so cost of sales is what it has to be measured against. Dividing by revenue would flatter it by whatever the margin is.',
+              },
+              {
+                do: 'Receivable days: £96,000 ÷ £876,000 × 365 = 40 days.',
+                why: 'Customers were invoiced at selling price, so revenue is the right denominator. Forty days against thirty-day terms says the terms are not being enforced.',
+              },
+              {
+                do: 'Payable days: £50,400 ÷ £613,200 × 365 = 30 days.',
+                why: 'Purchases are at cost, so cost of sales again. Thirty days is ordinary; it is the comparison with the receivable days that matters.',
+              },
+              {
+                do: 'Cycle: 50 + 40 − 30 = 60 days.',
+                why: 'Two months between paying for the goods and collecting for them. Every extra day of it has to be funded by the owner, a lender or an overdraft.',
+              },
+              {
+                do: 'Test one change: collect in 30 days instead of 40 and the cycle falls to 50 + 30 − 30 = 50 days.',
+                why: 'Ten days of a £876,000 turnover is roughly £24,000 of cash released once, and it stays released. That is the arithmetic behind chasing receivables.',
+              },
+            ],
+            answer: 'Inventory 50 days · receivables 40 days · payables 30 days · cycle 60 days',
+            tryIt: {
+              q: 'Inventories are £45,000 and cost of sales for the year is £365,000. What is the inventory holding period, in days?',
+              answer: 45,
+              unit: 'days',
+              hint: 'Inventory is measured at cost.',
+              exp: '£45,000 ÷ £365,000 × 365 = 45 days. A shortcut worth knowing: cost of sales ÷ 365 is £1,000 of stock used a day, so £45,000 of inventory is 45 days\' worth. Dividing by revenue instead would give a smaller figure and quietly flatter the business by the size of its margin.',
+            },
+          },
+        },
+        {
+          h: 'What each ratio is telling somebody',
+          table: {
+            headers: ['Movement', 'Possible good reason', 'Possible warning'],
+            rows: [
+              ['Inventory days rising', 'Stocking up ahead of a busy season', 'Goods are not selling, or are becoming obsolete'],
+              ['Receivable days rising', 'Longer terms offered to win a large customer', 'Credit control has slipped, or a customer is in trouble'],
+              ['Payable days rising', 'Better terms negotiated with suppliers', 'The business cannot pay, and discounts are being lost'],
+              ['Cycle lengthening', 'Deliberate growth in inventory and credit sales', 'More cash is needed every month to stand still'],
+            ],
+          },
+          examtrap: 'Every one of these movements has an innocent explanation and a worrying one, and the ratio alone cannot tell you which. What a report should do is name both and say what evidence would settle it — a rising payable period read alongside a falling cash balance means something quite different from the same period read alongside a new supplier agreement.',
+        },
+      ],
+      check: [
+        {
+          type: 'numeric',
+          q: 'Trade receivables are £120,000 and revenue for the year is £1,095,000. What is the trade receivables collection period, in days?',
+          unit: 'days',
+          answer: 40,
+          exp: '£120,000 ÷ £1,095,000 × 365 = 40 days. The shortcut: revenue ÷ 365 is £3,000 invoiced a day, so £120,000 outstanding is 40 days\' worth. Against thirty-day terms that is ten days of slippage, and ten days of a £1,095,000 turnover is £30,000 of cash sitting in somebody else\'s bank account.',
+        },
+        {
+          type: 'truefalse',
+          q: 'Identify whether each statement about working capital is correct.',
+          statements: [
+            { text: 'Trade payables are subtracted in the working capital cycle because suppliers finance that part of it.', answer: true },
+            { text: 'The inventory holding period is calculated using revenue as the denominator.', answer: false },
+            { text: 'A longer working capital cycle reduces the amount of cash a business needs.', answer: false },
+          ],
+          exp: 'Credit taken from suppliers funds part of the gap between paying for goods and being paid for them, which is why it comes off. Inventory is carried at cost, so cost of sales is the denominator — using revenue understates the period by the whole margin. And a longer cycle means more days of trading the business is funding itself, so it needs MORE cash, not less: growth on a long cycle is precisely how profitable businesses run out of money.',
+        },
+        {
+          type: 'numeric',
+          q: 'Inventory days are 62, receivable days are 48 and payable days are 35. What is the working capital cycle, in days?',
+          unit: 'days',
+          answer: 75,
+          exp: '62 + 48 = 110 days from buying the goods to being paid for them, less the 35 days of credit the suppliers allow, so 110 − 35 = 75 days. For two and a half months the business is funding its own trading, and every day of that has to come from the owner, a lender or an overdraft.',
+        },
+      ],
+    },
+    {
+      id: 'L3-MATS-7E',
+      title: 'Improving cash flow',
+      icon: '💡',
+      criteria: ['MATS-7.2.2', 'MATS-7.2.3', 'MATS-7.2.4'],
+      cards: [
+        {
+          h: 'Raising money, and freeing money',
+          split: {
+            left: {
+              title: 'Raise finance',
+              items: [
+                '**Capital from the owners** — no repayment date, no interest, but it dilutes or demands',
+                '**Debt from a lender** — a loan for the long term, an overdraft for the swings',
+                'A loan matches a long-lived need; an overdraft is repayable on demand',
+                'Both cost something, and both take time to arrange',
+              ],
+            },
+            right: {
+              title: 'Free up what is already there',
+              items: [
+                '**Chase receivables** — the fastest and usually the cheapest',
+                '**Delay supplier payments** — free, and the relationship pays for it',
+                '**Offer prompt payment discounts** — cash now, at a price',
+                '**Sell non-current assets** — one-off, and only what is genuinely spare',
+                '**Reduce inventory** — releases cash and risks stockouts',
+              ],
+            },
+          },
+          p: [
+            'The right-hand column comes first in practice, because it is faster and cheaper than arranging finance and because a lender will ask why it has not been done. Working capital is where most small businesses are keeping their money without meaning to.',
+          ],
+        },
+        {
+          h: 'What each action really costs',
+          table: {
+            headers: ['Action', 'What it releases', 'What it costs'],
+            rows: [
+              ['Chase receivables', 'Cash already earned, brought forward', 'Time, and goodwill if it is done badly'],
+              ['Delay paying suppliers', 'Cash, immediately and repeatedly', 'Discounts lost, terms withdrawn, deliveries stopped'],
+              ['Offer a prompt payment discount', 'Cash from customers weeks earlier', 'A real percentage of revenue, permanently'],
+              ['Sell non-current assets', 'A single lump of cash', 'Whatever the asset was earning; a loss on disposal'],
+              ['Reduce inventory', 'Cash tied up on shelves', 'Stockouts, lost sales, higher ordering costs'],
+              ['Raise a loan', 'A large sum, on a known date', 'Interest, security, covenants and repayment dates'],
+            ],
+          },
+          p: [
+            'A **prompt payment discount** deserves particular care because its cost is easy to understate. Two per cent for paying twenty days early is two per cent of revenue given away, and given away on customers who would have paid anyway. It works when the cash is worth more than that; it is expensive when it is not.',
+          ],
+          examtrap: 'Delaying supplier payments is on the specification\'s own list and is a legitimate answer — but a recommendation that says only "pay suppliers later" is a weak one. Say for how long, and note what it risks: the supplier who stops delivering is more expensive than the overdraft that was avoided.',
+        },
+        {
+          h: 'What software does that a spreadsheet cannot',
+          table: {
+            headers: ['Capability', 'What it changes'],
+            rows: [
+              ['Automated bank feeds', 'The cash position is today\'s, not last month\'s'],
+              ['Aged receivable reports', 'Who owes what, and for how long, without anybody compiling it'],
+              ['Automatic payment reminders', 'Chasing happens on time and without an awkward phone call'],
+              ['Rolling forecasts from live data', 'The forecast updates itself as invoices and payments are entered'],
+              ['Dashboards and visualisation', 'A slide in the closing balance is visible at a glance'],
+              ['Scenario modelling', '"What if the biggest customer pays thirty days late?" answered in seconds'],
+            ],
+          },
+          p: [
+            'None of this removes the judgement. Software makes the forecast current, makes the pattern visible, and makes the chasing happen — but somebody still has to decide whether to arrange the overdraft, take the discount or delay the machine. **Automation moves the work from compiling the numbers to acting on them**, which is where it was always supposed to be.',
+          ],
+        },
+      ],
+      check: [
+        {
+          type: 'picklist',
+          q: 'Identify what each action to improve cash flow costs the business.',
+          picklist: {
+            title: 'The price of each remedy',
+            rowHeader: 'Action',
+            choiceHeader: 'Main cost',
+            options: ['A percentage of revenue', 'Supplier goodwill', 'Lost sales or output'],
+            rows: [
+              { text: 'Offering a prompt payment discount to credit customers', answer: 0 },
+              { text: 'Delaying payments to suppliers beyond the agreed terms', answer: 1 },
+              { text: 'Reducing inventory levels to free up cash', answer: 2 },
+              { text: 'Selling a delivery van that is still in regular use', answer: 2 },
+              { text: 'Taking the full credit period rather than paying early', answer: 1 },
+            ],
+          },
+          exp: 'Every remedy has a price and the skill is naming it. A discount is a permanent slice of revenue given to customers who would mostly have paid anyway. Anything that leans on suppliers is paid for in goodwill, and the supplier who stops delivering costs more than the overdraft avoided. And selling an asset still in use, or cutting stock below what trade needs, buys cash by giving up the capacity to trade.',
+        },
+        {
+          type: 'mcq',
+          q: 'A business needs cash within a fortnight. Which action is likely to produce it soonest?',
+          opts: [
+            'Chasing the overdue trade receivables',
+            'Applying to the bank for a term loan',
+            'Selling a non-current asset no longer used',
+            'Asking the owners to introduce further capital',
+          ],
+          ans: 0,
+          exp: 'The money is already earned and already owed; collecting it needs nobody\'s approval and no negotiation. A loan application takes weeks and a lender will want to know why the receivables have not been chased first. Selling an asset needs a buyer at a fair price, and asking the owners for capital is neither quick nor certain. Speed and cheapness usually point the same way here.',
+        },
+        {
+          type: 'mcq',
+          q: 'How does automation most usefully change cash flow planning?',
+          opts: [
+            'The forecast reflects today\'s position rather than last month\'s',
+            'It removes the need for management judgement about funding',
+            'It guarantees that customers pay within the agreed terms',
+            'It replaces the cash budget with a profit forecast',
+          ],
+          ans: 0,
+          exp: 'Bank feeds and live data mean the closing balance being looked at is current, and a forecast that is current is one somebody can act on. What automation does not do is decide anything: whether to arrange the facility, take the discount or delay the purchase is still a judgement. It also cannot make a customer pay, though automatic reminders make the asking happen reliably.',
+        },
+      ],
+    },
+  ];
+
+
   var PATH = [
     {
       unit: 'mats',
@@ -3438,6 +3972,63 @@
             '**CVP assumes** a constant price, a constant variable cost, fixed costs that do not step, everything made being sold, and an unchanging sales mix. Each is a straight line drawn through a curve, so the analysis is trustworthy near the volumes it was built on and not far outside them.',
           ],
           examtrap: 'Divide the fixed costs by CONTRIBUTION, never by the selling price. And take the margin of safety from budgeted sales, not from break-even — the same subtraction the other way round gives a number with no meaning attached to it.',
+        },
+      },
+    },
+    {
+      unit: 'mats',
+      level: 3,
+      title: 'Management Accounting Techniques',
+      outcome: 7,
+      outcomeTitle: 'Understand principles of cash management',
+      weighting: 10,
+      lessons: LO7_LESSONS,
+      cheatsheet: {
+        id: 'L3-MATS-7S',
+        title: 'Outcome 7 — cash, budgets and working capital',
+        icon: '🗂️',
+        card: {
+          h: 'Everything Outcome 7 asks for, on one page',
+          flow: ['Opening balance', '+ Receipts', '− Payments', '= Closing balance', '= next month\'s opening balance'],
+          formula: 'Inventory days = Inventories ÷ Cost of sales × 365 · Receivable days = Trade receivables ÷ Revenue × 365 · Payable days = Trade payables ÷ Cost of sales × 365 · Cycle = Inventory + Receivable − Payable',
+          table: {
+            headers: ['Item', 'Profit', 'Cash'],
+            rows: [
+              ['Credit sale made', 'Now', 'When the customer pays'],
+              ['Non-current asset bought', 'Only the depreciation', 'The whole cost, now'],
+              ['Depreciation charged', 'Reduces it', 'Never appears'],
+              ['Loan received or repaid', 'Neither — only the interest', 'In full, on the day'],
+              ['Owner\'s drawings', 'Neither', 'Reduces it now'],
+            ],
+          },
+          split: {
+            left: {
+              title: 'Funding a non-current asset',
+              items: [
+                '**Cash** — no interest, but the liquidity is gone',
+                '**Part-exchange** — reduces the sum to find; trade-in value is low',
+                '**Loan** — owned from day one, interest and security',
+                '**Hire purchase** — ownership passes with the last instalment',
+                'Match the funding period to the **life of the asset**',
+              ],
+            },
+            right: {
+              title: 'Improving cash flow',
+              items: [
+                'Capital from owners · debt from lenders',
+                'Chase receivables — fastest and usually cheapest',
+                'Delay supplier payments — free, paid for in goodwill',
+                'Prompt payment discounts — cash now, revenue given up',
+                'Sell spare non-current assets · reduce inventory',
+              ],
+            },
+          },
+          p: [
+            '**Two things never appear in a cash budget:** depreciation, because no money moves, and a credit sale in the month it was made. If overheads are given "including depreciation", take it out before entering the figure.',
+            '**Inventory and payables divide by COST OF SALES; receivables divide by REVENUE.** Using revenue throughout understates two of the three by the whole margin, and it is the standard slip.',
+            '**A longer cycle needs more cash**, not less — it is the number of days the business funds its own trading. Growth on a long cycle is how a profitable business runs out of money.',
+          ],
+          examtrap: 'Read the credit terms twice and build each month\'s receipt from every month that feeds it. "40% in the month of sale, the balance the following month" means two months\' sales in every column, and getting it from one goes wrong in every column at once.',
         },
       },
     },
@@ -5143,6 +5734,367 @@
         },
       ],
       exp: 'A margin of safety of 25% is comfortable rather than comfortable-and-idle: the bakery can lose a quarter of its volume before it loses money, and the 40% profit-volume ratio means every extra pound of revenue brings 40p of contribution with it. That combination points to volume rather than cost as the lever worth pulling — the fixed base is being covered, and growth drops through to profit quickly. The target profit needs 70,000 loaves, a sixth more than the plan, which is the number the conversation should now be about.',
+    },
+    /* ── Outcome 7 — principles of cash management (10%) ────────────────── */
+    {
+      id: 'M-7-01', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.1'],
+      type: 'mcq',
+      q: 'Why can a profitable business run out of cash?',
+      opts: [
+        'Profit is earned when a sale is made, but the money may arrive months later',
+        'Profit is calculated after tax, whereas cash is measured before it',
+        'Profit includes the cost of assets, whereas cash excludes them entirely',
+        'Profit is measured for a year, whereas cash is measured for a month',
+      ],
+      ans: 0,
+      exp: 'Profit is measured on the accruals basis and cash on the day money moves, so a business selling well on long credit terms while paying its own suppliers quickly can be profitable every month and still miss a payroll. The timing gap is nobody\'s error — both statements are right, and they answer different questions. The other three describe differences that do not exist.',
+    },
+    {
+      id: 'M-7-02', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.1'],
+      type: 'picklist',
+      q: 'Identify how each transaction affects the business this month.',
+      picklist: {
+        title: 'Profit, cash, or both',
+        rowHeader: 'Transaction', choiceHeader: 'Effect this month',
+        options: ['Profit only', 'Cash only', 'Both'],
+        rows: [
+          { text: 'Depreciation charged on the factory machinery', answer: 0 },
+          { text: 'A bank loan of £40,000 received', answer: 1 },
+          { text: 'A cash sale made over the counter', answer: 2 },
+          { text: 'The owner takes £2,000 of drawings', answer: 1 },
+          { text: 'A credit sale invoiced, payable in 60 days', answer: 0 },
+        ],
+      },
+      exp: 'Depreciation reduces profit and moves no money. A loan increases cash and is not income, so it never touches profit; drawings reduce cash and are not an expense, so they do not either. A cash sale is the one row where the two coincide, which is why it is the exception rather than the rule. And a credit sale is profit now and cash in sixty days — the gap the whole outcome is about.',
+    },
+    {
+      id: 'M-7-03', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.2'],
+      type: 'numeric',
+      q: 'Overheads for August are budgeted at £23,800, of which £4,600 is depreciation. Everything else is paid in the month it arises. What figure appears in the August cash budget?',
+      unit: '£', answer: 19200,
+      exp: '£23,800 − £4,600 = £19,200. Depreciation allocates a payment made when the asset was bought, so no money leaves the bank for it now. Entering the full £23,800 understates the closing balance by £4,600, which in a tight month is enough to invent an overdraft that would never have happened.',
+    },
+    {
+      id: 'M-7-04', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.2'],
+      type: 'numeric',
+      q: 'Thirty per cent of each month\'s sales is received in the month of sale and the rest in the following month. Sales were £64,000 in September and are budgeted at £72,000 in October. What is the receipt from customers in October?',
+      unit: '£', answer: 66400,
+      exp: '30% of October\'s £72,000 is £21,600, and 70% of September\'s £64,000 is £44,800, so £21,600 + £44,800 = £66,400. One month\'s receipt is built from two months\' sales; taking 30% of October alone gives £21,600 and forgets everything September\'s customers still owe.',
+    },
+    {
+      id: 'M-7-05', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.2'],
+      type: 'mcq',
+      q: 'A supplier allows two months\' credit. In which month does a purchase made in March appear in the cash budget?',
+      opts: [
+        'May',
+        'March',
+        'April',
+        'June',
+      ],
+      ans: 0,
+      exp: 'Two months\' credit means the money leaves the bank two months after the purchase month, so a March purchase is paid in May. The cash budget records the movement of money and never the date of the transaction that caused it — which is exactly why it is a different statement from the profit forecast, where the March purchase belongs to March.',
+    },
+    {
+      id: 'M-7-06', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.1'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about a cash budget is correct.',
+      statements: [
+        { text: 'The closing balance of one month becomes the opening balance of the next.', answer: true },
+        { text: 'Depreciation is included among the payments in a cash budget.', answer: false },
+        { text: 'A loan repayment reduces profit as well as cash.', answer: false },
+      ],
+      exp: 'Carrying the closing balance forward is what makes a cash budget a forecast rather than a list — a bad month is still there in the next month\'s opening figure. Depreciation moves no money and so appears nowhere in it. And repaying a loan returns money that was never income: only the interest is an expense, so the capital repayment reduces cash and leaves profit alone.',
+    },
+    {
+      id: 'M-7-07', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.7'],
+      type: 'numeric',
+      q: 'A cash budget shows an opening balance of £11,500 for June, receipts of £74,200 and payments of £81,900. What is the closing balance at 30 June?',
+      unit: '£', answer: 3800,
+      exp: '£11,500 + £74,200 = £85,700 available against £81,900 of payments, so the month closes at £85,700 − £81,900 = £3,800. It is worth noticing that receipts were smaller than payments and the month still ended in credit: the opening balance absorbed the difference, which is what an opening balance is for.',
+    },
+    {
+      id: 'M-7-08', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.7'],
+      type: 'numeric',
+      q: 'Forty per cent of sales is received in the month of sale, 45% in the next month and 15% in the month after. Sales were £30,000 in January, £40,000 in February and £50,000 in March. What is the receipt from customers in March?',
+      unit: '£', answer: 42500,
+      exp: '40% of March\'s £50,000 is £20,000, 45% of February\'s £40,000 is £18,000 and 15% of January\'s £30,000 is £4,500, so £20,000 + £18,000 + £4,500 = £42,500. Three months of sales feed one month\'s receipt, and the oldest and smallest slice is the one most often left out.',
+    },
+    {
+      id: 'M-7-09', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.7'],
+      type: 'entrygrid',
+      q: 'Opening cash at 1 April is £9,400. Receipts are £62,000 in April, £58,500 in May and £71,000 in June. Payments are £57,300, £64,900 and £62,100. Complete the balances.',
+      entrygrid: {
+        title: 'Cash budget, April to June',
+        rowHeader: 'Line',
+        columns: ['April £', 'May £', 'June £'],
+        rows: [
+          { label: 'Opening balance', cells: { 0: 9400, 1: 14100, 2: 7700 } },
+          { label: 'Closing balance', cells: { 0: 14100, 1: 7700, 2: 16600 } },
+        ],
+      },
+      exp: 'April closes at £9,400 + £62,000 − £57,300 = £14,100, which opens May. May closes at £14,100 + £58,500 − £64,900 = £7,700, and June at £7,700 + £71,000 − £62,100 = £16,600. May spent more than it received and still ended in credit because April\'s balance carried it — the chain from one month to the next is the whole point of the layout.',
+    },
+    {
+      id: 'M-7-10', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.7'],
+      type: 'mcq',
+      q: 'A cash budget shows the closing balance falling steadily every month for a year, with no unusual payments in any of them. What does this suggest?',
+      opts: [
+        'The business is losing cash structurally, so the working capital cycle needs examining',
+        'A single large payment has been entered in the wrong month of the budget',
+        'Depreciation has been included among the payments in error for the year',
+        'The opening balance brought forward into the first month was overstated',
+      ],
+      ans: 0,
+      exp: 'One deep month is a timing problem; a steady slide with nothing unusual in it is a pattern, and patterns come from how the business trades rather than from any single entry. The place to look is the working capital cycle — how long inventory sits, how long customers take and how long suppliers allow. The other three would each produce a visible distortion in one month, not a decline across twelve.',
+    },
+    {
+      id: 'M-7-11', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.3'],
+      type: 'picklist',
+      q: 'Identify the funding method each feature describes.',
+      picklist: {
+        title: 'Funding a non-current asset',
+        rowHeader: 'Feature', choiceHeader: 'Method',
+        options: ['Cash', 'Part-exchange', 'Hire purchase'],
+        rows: [
+          { text: 'Ownership passes only when the last instalment is paid', answer: 2 },
+          { text: 'The value of the old asset reduces the amount to be found', answer: 1 },
+          { text: 'The full price leaves the bank on the day of purchase', answer: 0 },
+          { text: 'The asset being acquired stands as security for the finance', answer: 2 },
+          { text: 'No interest is paid, but liquidity falls immediately', answer: 0 },
+        ],
+      },
+      exp: 'Hire purchase is defined by ownership arriving last, which is also what lets the asset stand as its own security. Part-exchange is not a funding method on its own — it reduces the sum that has to be found by some other route, and the trade-in value is usually below what a private sale would fetch. Paying cash avoids interest, and the cost of it is whatever the money would otherwise have done.',
+    },
+    {
+      id: 'M-7-12', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.4'],
+      type: 'mcq',
+      q: 'Which principle should guide the choice of funding for a non-current asset?',
+      opts: [
+        'The funding period should broadly match the life of the asset',
+        'The cheapest available method should always be chosen',
+        'Assets should be funded from cash wherever the balance allows',
+        'The method that keeps the asset off the statement of financial position',
+      ],
+      ans: 0,
+      exp: 'Matching means the cost falls in roughly the periods that get the benefit. An eight-year machine paid for out of one month\'s cash makes that month carry what eight years should share; a two-year asset funded over five leaves the business paying for something it no longer owns. Headline cheapness ignores what the cash would otherwise have done, and paying cash from a tight balance is what a cash budget exists to warn against.',
+    },
+    {
+      id: 'M-7-13', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.3'],
+      type: 'mcq',
+      q: 'What distinguishes hire purchase from a bank loan used to buy the same asset?',
+      opts: [
+        'Ownership of the asset passes only with the final instalment',
+        'Hire purchase involves no interest, whereas a loan does',
+        'The asset is never recorded in the buyer\'s accounts at all',
+        'Hire purchase repayments are fixed, whereas loan repayments vary',
+      ],
+      ans: 0,
+      exp: 'With a loan the business owns the asset from day one and owes the lender separately. With hire purchase the instalments buy the asset gradually and title arrives at the end, which is what allows the asset itself to serve as security. Hire purchase carries interest and is usually the dearer of the two, and both arrangements are typically on fixed repayment schedules.',
+    },
+    {
+      id: 'M-7-14', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.8'],
+      type: 'numeric',
+      q: 'Inventories are £72,000 and cost of sales for the year is £584,000. What is the inventory holding period, in days?',
+      unit: 'days', answer: 45,
+      exp: '£72,000 ÷ £584,000 × 365 = 45 days. The shortcut is worth knowing: cost of sales ÷ 365 is £1,600 of stock consumed a day, so £72,000 on the shelves is 45 days\' worth. Dividing by revenue instead would give a smaller figure and flatter the business by the whole of its margin.',
+    },
+    {
+      id: 'M-7-15', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.8'],
+      type: 'numeric',
+      q: 'Trade receivables are £146,000 and revenue for the year is £1,460,000. What is the trade receivables collection period, in days?',
+      unit: 'days', answer: 36.5,
+      exp: '£146,000 ÷ £1,460,000 × 365 = 36.5 days. Receivables are divided by revenue because that is what customers were invoiced. Against thirty-day terms the business is running about a week late, and a week of a £1,460,000 turnover is roughly £28,000 sitting in other people\'s bank accounts.',
+    },
+    {
+      id: 'M-7-16', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.8'],
+      type: 'numeric',
+      q: 'Trade payables are £58,000 and cost of sales for the year is £730,000. What is the trade payables payment period, in days?',
+      unit: 'days', answer: 29,
+      exp: '£58,000 ÷ £730,000 × 365 = 29 days. Payables are divided by cost of sales because purchases are made at cost, exactly as inventory is. Twenty-nine days is unremarkable on thirty-day terms; what matters is how it compares with how long the business itself waits to be paid.',
+    },
+    {
+      id: 'M-7-17', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.8', 'MATS-7.1.6'],
+      type: 'truefalse',
+      q: 'Identify whether each statement about the resource ratios is correct.',
+      statements: [
+        { text: 'The trade payables payment period is calculated using cost of sales.', answer: true },
+        { text: 'The trade receivables collection period is calculated using revenue.', answer: true },
+        { text: 'A shorter working capital cycle means the business needs more cash to trade.', answer: false },
+      ],
+      exp: 'Payables and inventory are both measured at cost, so cost of sales is the denominator for both; receivables were invoiced at selling price, so revenue is theirs. Using revenue throughout is the standard slip and it understates two of the three ratios by the whole margin. And the cycle works the other way from the third statement: it is the number of days the business funds its own trading, so a shorter one needs LESS cash, not more.',
+    },
+    {
+      id: 'M-7-18', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.6'],
+      type: 'numeric',
+      q: 'Inventory days are 54, trade receivables days are 41 and trade payables days are 38. What is the working capital cycle, in days?',
+      unit: 'days', answer: 57,
+      exp: '54 + 41 = 95 days pass between the goods arriving and the customer paying, and the suppliers fund 38 of them, so 95 − 38 = 57 days. For nearly two months the business is financing its own trading out of its own resources, and every day of that has to come from the owner, a lender or an overdraft.',
+    },
+    {
+      id: 'M-7-19', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.5'],
+      type: 'mcq',
+      q: 'What does liquidity measure?',
+      opts: [
+        'Whether a business can pay what is due when it falls due',
+        'Whether a business earned more than it spent in the period',
+        'Whether a business owns more than it owes in total',
+        'Whether a business is holding enough inventory to trade',
+      ],
+      ans: 0,
+      exp: 'Liquidity is about timing and availability, not about totals. A business whose assets comfortably exceed its liabilities can still fail when the assets are inventory and the liabilities are due on Friday. The second option describes profitability and the third solvency — three different questions that a business has to be able to answer yes to separately.',
+    },
+    {
+      id: 'M-7-20', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.1'],
+      type: 'mcq',
+      q: 'Why does a shortage of liquidity threaten survival more directly than a poor profit figure?',
+      opts: [
+        'Suppliers, staff and lenders all withdraw support once payments are missed',
+        'A loss must be reported to Companies House whereas a cash shortage need not',
+        'Profit can be restated in the following period but cash cannot be',
+        'Lenders monitor cash balances daily but review profit only annually',
+      ],
+      ans: 0,
+      exp: 'A missed payment is visible immediately to the people the business depends on, and their responses compound: deliveries stop, staff leave, and a lender that has been told the payment will be late prices the next facility accordingly. A poor year can be explained and traded through. Neither restatement nor the filing requirements have anything to do with it.',
+    },
+    {
+      id: 'M-7-21', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.3'],
+      type: 'picklist',
+      q: 'Identify the main cost of each action taken to improve cash flow.',
+      picklist: {
+        title: 'What each remedy costs',
+        rowHeader: 'Action', choiceHeader: 'Main cost',
+        options: ['A permanent slice of revenue', 'Supplier relationships', 'The capacity to trade'],
+        rows: [
+          { text: 'Offering a 2% discount for payment within ten days', answer: 0 },
+          { text: 'Paying suppliers two weeks beyond the agreed terms', answer: 1 },
+          { text: 'Cutting inventory below the level trade needs', answer: 2 },
+          { text: 'Selling a machine that is still in daily use', answer: 2 },
+          { text: 'Extending the credit period taken on all purchases', answer: 1 },
+        ],
+      },
+      exp: 'Naming the price of a remedy is what turns a list into a recommendation. A discount is given away permanently, and mostly to customers who would have paid anyway. Anything that leans on suppliers is paid for in goodwill, and a supplier who stops delivering costs more than the overdraft avoided. Selling working assets or cutting stock too far buys cash by giving up the ability to trade.',
+    },
+    {
+      id: 'M-7-22', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.2'],
+      type: 'mcq',
+      q: 'What distinguishes raising capital from the owners from raising debt externally?',
+      opts: [
+        'Capital carries no repayment date and no interest obligation',
+        'Capital is cheaper for the business in every circumstance',
+        'Debt is repayable only if the business becomes profitable',
+        'Debt does not appear in the statement of financial position',
+      ],
+      ans: 0,
+      exp: 'Owners\' capital has no contractual repayment date and no interest, which is what makes it the more resilient of the two when cash is tight. It is not free: owners expect a return and new capital dilutes the existing ones. Debt has to be repaid whether the business is profitable or not, which is precisely the risk it carries, and it sits on the statement of financial position like any other liability.',
+    },
+    {
+      id: 'M-7-23', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.6'],
+      type: 'gapfill',
+      q: 'Complete the sentence about the working capital cycle.',
+      template: 'The working capital cycle is inventory days plus receivable days {0} payable days, and a business that lengthens it will need {1} cash to trade at the same size, because it is funding {2} of the gap itself.',
+      gaps: [
+        { options: ['minus', 'plus', 'divided by'], answer: 0 },
+        { options: ['more', 'less', 'the same'], answer: 0 },
+        { options: ['more days', 'fewer days', 'none'], answer: 0 },
+      ],
+      exp: 'Payable days come off because the supplier is funding that stretch of the gap between paying for goods and being paid for them. Whatever is left is what the business funds itself, so lengthening the cycle means more days to finance and more cash needed simply to keep trading at the current size. Growth on a long cycle is the classic way a profitable business runs out of money.',
+    },
+    {
+      id: 'M-7-24', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.3'],
+      type: 'mcq',
+      q: 'What is the main drawback of offering a prompt payment discount?',
+      opts: [
+        'It is given to every customer who takes it, including those who would have paid on time',
+        'It has to be offered to all customers on identical terms by law',
+        'It increases the trade receivables collection period rather than reducing it',
+        'It cannot be withdrawn once it has appeared on a sales invoice',
+      ],
+      ans: 0,
+      exp: 'The cash arrives earlier, and a real percentage of revenue is given up to get it — including from the customers who were never a problem. Two per cent for twenty days is expensive money when it is annualised, and it works only when the cash is worth more than that. Nothing in law requires identical terms, the whole purpose is to shorten the collection period, and terms can be changed on future invoices.',
+    },
+    {
+      id: 'M-7-25', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.4'],
+      type: 'mcq',
+      q: 'How do automation and visualisation most usefully support cash flow planning?',
+      opts: [
+        'They keep the forecast current and make a developing problem visible early',
+        'They decide which funding option the business should take',
+        'They ensure that every customer pays within the agreed terms',
+        'They remove the need to prepare a cash budget at all',
+      ],
+      ans: 0,
+      exp: 'Bank feeds make the position today\'s rather than last month\'s, dashboards make a slide in the closing balance visible at a glance, and scenario tools answer "what if the biggest customer pays late" in seconds. What none of it does is decide anything: whether to arrange the facility, take the discount or delay the purchase is still judgement. Automation moves the work from compiling numbers to acting on them.',
+    },
+    {
+      id: 'M-7-26', unitKey: 'mats', lo: 7, criteria: ['MATS-7.1.7', 'MATS-7.1.2'],
+      type: 'task',
+      q: 'Prepare the cash budget for the quarter and comment on it.',
+      brief: 'Bexley Signs is budgeting for May, June and July. April\'s sales were £40,000 and are already known. The bank balance at 1 May is £3,000.',
+      datasets: [
+        {
+          title: 'Sales and terms',
+          headers: ['Item', 'Amount'],
+          rows: [
+            ['April sales, actual', '£40,000.00'],
+            ['May sales, budgeted', '£48,000.00'],
+            ['June sales, budgeted', '£56,000.00'],
+            ['July sales, budgeted', '£60,000.00'],
+            ['Received in the month of sale', '25%'],
+            ['Received in the following month', '75%'],
+          ],
+        },
+        {
+          title: 'Costs and other movements',
+          headers: ['Item', 'Amount'],
+          rows: [
+            ['Purchases, as a share of the same month\'s sales', '60%'],
+            ['Purchases are paid', 'One month after the month they relate to'],
+            ['Wages each month, paid in the month', '£9,000.00'],
+            ['Other overheads each month, including £1,500 depreciation', '£6,500.00'],
+            ['New machine, paid for in June', '£20,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Receipts from customers in May',
+          type: 'numeric', unit: '£', answer: 42000,
+          exp: '25% of May\'s £48,000 is £12,000, and 75% of April\'s £40,000 is £30,000, so £12,000 + £30,000 = £42,000. Every month\'s receipt is built from two months\' sales, and taking it from one is the commonest way this task is lost.',
+        },
+        {
+          label: 'Total payments in May',
+          type: 'numeric', unit: '£', answer: 38000,
+          exp: 'April\'s purchases were 60% of £40,000 = £24,000 and are paid now. Wages are £9,000, and the overheads are £6,500 − £1,500 = £5,000 of cash, because depreciation moves no money. £24,000 + £9,000 + £5,000 = £38,000.',
+        },
+        {
+          label: 'Closing bank balance at 31 May',
+          type: 'numeric', unit: '£', answer: 7000,
+          exp: '£3,000 + £42,000 = £45,000 available against £38,000 of payments, so the month closes at £45,000 − £38,000 = £7,000. That figure now opens June.',
+        },
+        {
+          label: 'Amount by which the bank is overdrawn at 30 June',
+          type: 'numeric', unit: '£', answer: 5800,
+          exp: 'June receipts are 25% of £56,000 = £14,000 plus 75% of £48,000 = £36,000, so £50,000. Payments are May purchases of £28,800, wages £9,000, cash overheads £5,000 and the machine £20,000, totalling £62,800. Against £7,000 + £50,000 = £57,000 available, the month ends £5,800 overdrawn — entirely because of one payment for a machine.',
+        },
+        {
+          label: 'Closing bank balance at 31 July',
+          type: 'numeric', unit: '£', answer: 3600,
+          exp: 'July receipts are 25% of £60,000 = £15,000 plus 75% of £56,000 = £42,000, so £57,000. Payments are June purchases of £33,600, wages £9,000 and overheads £5,000, totalling £47,600. So £57,000 − £47,600 = £9,400 is generated, and £9,400 − £5,800 = £3,600 remains once June\'s overdraft is cleared.',
+        },
+        {
+          label: 'The most useful thing to tell the owner is that:',
+          type: 'choice',
+          options: [
+            'an overdraft of about £6,000 should be arranged for June, before it is needed',
+            'the business is overdrawn at 30 June and back in credit by 31 July',
+            'receipts in June are £50,000 and payments in June are £62,800',
+            'the machine costs £20,000 and is paid for in a single month',
+          ],
+          answer: 0,
+          exp: 'The other three are accurate and leave the owner to work out what to do. The first names the action and the deadline, which is the entire purpose of preparing the budget a quarter ahead: a facility arranged in May costs a fraction of an unauthorised overdraft discovered in June, and the difference is nothing but notice.',
+        },
+      ],
+      exp: 'Three months of ordinary trading generate cash steadily — £7,000 in May and £9,400 in July — and one payment for a machine takes the business £5,800 overdrawn in between. That is a timing problem rather than a solvency one, and the budget has found it a month before it happens. The choices are all cheap while there is notice: arrange a facility, ask the supplier for terms, or move the purchase to July. None of them is available on the day the payment leaves.',
     },
   ];
 
