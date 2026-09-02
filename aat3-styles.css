@@ -1420,6 +1420,43 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-alert-due .a3-alert-go { color: var(--a3-brand); }
 .a3-alert-due:hover { border-color: var(--a3-brand); }
 
+/* ── "Next best thing to do" ───────────────────────────────────────────────
+   Sits above the unit grid and is allowed to be the loudest thing on the
+   screen, because it is the only element that has an opinion. Everything below
+   it is a neutral list of three units; this is the one that says which.
+
+   A gradient rather than a flat wash, and the only one in the module besides
+   the header: it has to read as an answer rather than as a fourth unit card,
+   and at this size shape alone did not do it — an early version was a bordered
+   panel and testers scrolled straight past it into the grid. */
+.a3-nudge {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  column-gap: var(--a3-3); width: 100%; text-align: left;
+  margin: 0 0 var(--a3-4); padding: var(--a3-4) var(--a3-4);
+  border: 0; border-radius: var(--a3-r-lg); cursor: pointer; font-family: inherit;
+  color: var(--a3-on-fill);
+  background: linear-gradient(135deg, var(--a3-brand), var(--a3-brand-2));
+  box-shadow: var(--a3-shadow);
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.a3-nudge:hover { transform: translateY(-2px); box-shadow: var(--a3-shadow-lg); }
+.a3-nudge:focus-visible { outline: 3px solid var(--a3-gold); outline-offset: 3px; }
+.a3-nudge-k {
+  grid-column: 1; display: block; font-size: 11px; font-weight: 800;
+  letter-spacing: .09em; text-transform: uppercase; opacity: .82;
+}
+.a3-nudge-t {
+  grid-column: 1; display: block; font-size: 17px; font-weight: 800;
+  line-height: 1.3; margin-top: 3px;
+}
+.a3-nudge-m {
+  grid-column: 1; display: block; font-size: var(--a3-t-meta);
+  line-height: 1.5; margin-top: 4px; opacity: .88;
+}
+/* Spans all three text rows so the arrow sits on the vertical centre of the
+   block rather than on the centre of whichever row it happens to follow. */
+.a3-nudge-go { grid-column: 2; grid-row: 1 / 4; font-size: 20px; opacity: .9; }
+
 /* ── "I know this": retiring a question, and getting it back ──────────────
    The button sits beside the advance button on a graded practice question, and
    deliberately does not compete with it: the advance button is what a reader

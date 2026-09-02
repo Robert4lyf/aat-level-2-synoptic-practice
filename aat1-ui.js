@@ -829,6 +829,108 @@
     return h + '</div>';
   }
 
+  /* ── What should I do now? ────────────────────────────────────────────────
+     NOT A NEW PANEL. Level 3 puts this above a grid of three units, because
+     there the question really is "which unit"; here there is one unit and the
+     path screen already leads with Continue, which is the right first offer
+     and should not be argued with. What it led with SECOND was the problem:
+
+       Practise · Mixed, or one outcome · 338 questions in the bank
+
+     — three facts and no recommendation, on a screen whose whole job is to say
+     what to do next. Every number needed to do better is already recorded:
+     which questions went wrong and were never put right, which the schedule
+     says are due, which outcome is losing marks, whether a mock has ever been
+     sat. Nothing put them together.
+
+     So the second button keeps its place and gains an opinion. The reading
+     half of the screen is untouched.
+
+     THE ORDER IS THE OPINION:
+
+       1. Questions you got wrong and have not fixed. Repair before anything
+          else: material you are already known to be shaky on, and the cheapest
+          to put right.
+       2. Questions the schedule says are due. Forgetting is the loss spaced
+          repetition exists to prevent, and a card left past its due date is
+          the one thing here that gets worse on its own. Held to a higher
+          threshold so it does not headline over three cards.
+       3. An outcome you keep getting wrong, weighted by its share of the
+          assessment — 60% on an outcome worth a third of the paper costs more
+          than 50% on one worth a tenth.
+       4. A mock, once every step is done and one has never been sat.
+       5. Mixed practice, when there is nothing more specific to say. This is
+          the offer that used to be the only one.
+
+     Reading the next lesson is not in this list because the button above
+     already is that, and better: it resumes the exact page.
+
+     THRESHOLDS ARE DELIBERATELY NOT ZERO. "1 question due for review" is true
+     and is not advice; a recommendation that fires on a single card teaches the
+     reader to ignore the recommendation. */
+  var NUDGE_MISSED = 3;
+  var NUDGE_DUE = 5;
+  var NUDGE_WEAK_ATTEMPTS = 8;
+  var NUDGE_WEAK_PCT = 70;
+
+  function nextStep() {
+    var bank = practiceBank();
+    if (!bank.length) return null;
+
+    var missed = missedQuestions().length;
+    if (missed >= NUDGE_MISSED) {
+      return { lo: 'missed', k: 'Put right what went wrong',
+        t: missed + (missed === 1 ? ' question you got wrong' : ' questions you got wrong'),
+        m: 'Served back most recent first, and cleared as you get them right.' };
+    }
+
+    var due = dueQuestions().length;
+    if (due >= NUDGE_DUE) {
+      return { lo: 'refresh', k: 'Due for review',
+        t: due + ' questions are ready to come back',
+        m: 'Answered right once is not the same as known \u2014 these are the ones closest to slipping.' };
+    }
+
+    /* The per-outcome record, read where it lives. Level 3 has a
+       practiceSummary() that assembles this because it has to reconcile three
+       units and a legacy store shape; here there is one unit and one map.
+
+       Clamped, because a merged backup takes the larger of `attempted` and
+       `correct` INDEPENDENTLY, and a hand-edited file need not be coherent at
+       all — an unclamped pair can report 120% right and sort above everything
+       real. */
+    var weak = null;
+    var u = unit();
+    ((u && u.outcomes) || []).forEach(function (o) {
+      var r = data.practice.los[o.n];
+      var att = Math.max(0, (r && r.attempted) || 0);
+      if (att < NUDGE_WEAK_ATTEMPTS) return;
+      var cor = Math.min(att, Math.max(0, (r && r.correct) || 0));
+      var pct = Math.round((cor / att) * 100);
+      if (pct >= NUDGE_WEAK_PCT) return;
+      var cost = (100 - pct) * (o.weighting || 1);
+      if (!weak || cost > weak.cost) weak = { o: o, pct: pct, cost: cost };
+    });
+    if (weak) {
+      return { lo: weak.o.n, k: 'Costing you marks',
+        t: 'Outcome ' + weak.o.n + ' \u00b7 ' + weak.o.title,
+        m: weak.pct + '% right so far' +
+           (weak.o.weighting ? ', and worth ' + weak.o.weighting + '% of the assessment' : '') + '.' };
+    }
+
+    var ls = lessons();
+    var allRead = ls.length > 0 && ls.every(function (l) { return isDone(l.id); });
+    if (allRead && !data.practice.mocks) {
+      return { mock: true, k: 'Nothing left to read',
+        t: 'Sit your first timed mock',
+        m: 'A full paper at the real length and weighting. The only thing left that tells you whether it stuck.' };
+    }
+
+    return { lo: 'mix', k: 'Practise',
+      t: 'Mixed, or one outcome',
+      m: bank.length + ' questions in the bank, drawn to the exam weighting.' };
+  }
+
   function renderPath() {
     var groups = path();
     if (!groups.length) return '<div class="a1-empty">Level 1 content is still loading.</div>';
@@ -879,11 +981,22 @@
         '<span class="a1-act-m">Practice is where the work is now.</span>' +
         '</div>';
     }
-    if (bank.length) {
-      h += '<button class="a1-act a1-act-alt" data-a1="practice">' +
-        '<span class="a1-act-k">Practise</span>' +
-        '<span class="a1-act-t">Mixed, or one outcome</span>' +
-        '<span class="a1-act-m">' + bank.length + ' questions in the bank</span>' +
+    /* The second action, and what it says is a recommendation rather than a
+       category. See nextStep() above for the order and why. `practice` is kept
+       as the act for the generic offer, so a reader who wants to choose for
+       themselves still lands on the picker; anything more specific goes
+       straight to the run it named. */
+    var ns = nextStep();
+    if (ns) {
+      var nAttrs = ns.mock
+        ? ' data-a1="startmock"'
+        : ns.lo === 'mix'
+          ? ' data-a1="practice"'
+          : ' data-a1="startpractice" data-lo="' + esc(ns.lo) + '"';
+      h += '<button class="a1-act a1-act-alt"' + nAttrs + '>' +
+        '<span class="a1-act-k">' + esc(ns.k) + '</span>' +
+        '<span class="a1-act-t">' + esc(ns.t) + '</span>' +
+        '<span class="a1-act-m">' + esc(ns.m) + '</span>' +
         '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
         '</button>';
     }

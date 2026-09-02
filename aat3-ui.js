@@ -926,6 +926,170 @@
     };
   }
 
+  /* ── What should I do now? ────────────────────────────────────────────────
+     THE PROBLEM THIS SOLVES IS A CHOICE, NOT A MISSING FEATURE. Level 3 is
+     three units, each with a path, a practice bank, a mistakes backlog, a
+     spaced-review queue and a mock. That is fifteen ways in from a screen that
+     offered three, and the reader with twenty minutes has to work out which
+     one is worth having. Every number they would need to make that judgement
+     is already recorded; nothing put them together.
+
+     ONE ANSWER, NOT A DASHBOARD. A second grid of statistics would be the same
+     problem restated more precisely. This names a single action, says why, and
+     goes there in one tap. It is a suggestion sitting above the units, not a
+     gate in front of them — the grid below is untouched, because a reader who
+     knows what they want should never have to argue with a recommendation.
+
+     THE ORDER IS THE OPINION, and it is worth stating plainly:
+
+       1. Questions you got wrong and have not fixed. Repair before anything
+          else: this is material you have already been shown to be shaky on,
+          and it is the cheapest to put right.
+       2. Questions the schedule says are due. Second because forgetting is the
+          loss spaced repetition exists to prevent, and a card left past its
+          due date is the one thing here that gets worse on its own. Held to a
+          higher threshold than the backlog so it does not headline over three
+          cards.
+       3. The next lesson you have not read. New material comes after upkeep,
+          not before it — and the unit chosen is one already started, because
+          finishing beats starting.
+       4. An outcome you keep getting wrong, weighted by its share of the exam.
+          Below the backlog because it names a topic rather than a question,
+          which is a coarser thing to act on.
+       5. A mock, once a unit's lessons are done and it has never been sat.
+       6. Mixed practice, when there is nothing more specific to say.
+
+     THRESHOLDS ARE DELIBERATELY NOT ZERO. "1 question due for review" is true
+     and is not advice; a recommendation that fires on a single card teaches
+     the reader to ignore the recommendation. */
+  var NUDGE_MISSED = 3;      // fewer than this is not worth a headline
+  var NUDGE_DUE = 5;
+  var NUDGE_WEAK_ATTEMPTS = 8;   // below this an accuracy figure is noise
+  var NUDGE_WEAK_PCT = 70;       // the pass mark every Level 3 assessment uses
+
+  /* The next unread lesson in a unit, in path order, or null. */
+  function nextLesson(unitKey) {
+    var found = null;
+    allGroups().forEach(function (g) {
+      if (g.unit !== unitKey || found) return;
+      (g.lessons || []).forEach(function (l) {
+        if (!found && !isDone(l.id)) found = l;
+      });
+    });
+    return found;
+  }
+
+  function nextStep() {
+    var keys = unitKeys().filter(function (k) { return practiceBank(k).length || nextLesson(k); });
+    if (!keys.length) return null;
+
+    var by = keys.map(function (k) {
+      var u = unitMeta(k);
+      var p = unitProgress(k);
+      return {
+        key: k,
+        code: (u && u.code) || k,
+        title: (u && u.title) || k,
+        weight: (u && u.qualificationWeighting) || 0,
+        rec: practiceRec(k),
+        missed: missedQuestions(k).length,
+        due: dueQuestions(k).length,
+        lesson: nextLesson(k),
+        done: p.done,
+        lessons: p.lessons,
+        complete: p.complete,
+      };
+    });
+    var most = function (field) {
+      return by.slice().sort(function (a, b) { return (b[field] - a[field]) || (b.weight - a.weight); })[0];
+    };
+
+    var m = most('missed');
+    if (m && m.missed >= NUDGE_MISSED) {
+      return { kind: 'missed', unit: m, lo: 'missed',
+        title: 'Put right ' + m.missed + ' questions you got wrong',
+        why: 'In ' + m.code + '. Served back most recent first, and cleared as you get them right.' };
+    }
+
+    var d = most('due');
+    if (d && d.due >= NUDGE_DUE) {
+      return { kind: 'refresh', unit: d, lo: 'refresh',
+        title: d.due + ' questions are due for review',
+        why: 'In ' + d.code + '. Answered right once is not the same as known — these are the ones ' +
+             'the schedule says are closest to slipping.' };
+    }
+
+    /* Finishing beats starting: a unit already under way outranks an untouched
+       one, so a reader three lessons into MATS is not sent to open FAPS because
+       FAPS is worth more.
+
+       Among units NOT yet started, a fully written one comes before a partly
+       written one whatever the weighting, which is the same judgement the grid
+       below makes and for the same reason: sending a beginner into a unit that
+       stops halfway through is a worse first hour than sending them into a
+       smaller one that finishes. Only then does the exam weighting decide. */
+    var l = by.filter(function (x) { return x.lesson; }).sort(function (a, b) {
+      var sa = a.done > 0 ? 0 : 1, sb = b.done > 0 ? 0 : 1;
+      var ca = a.complete ? 0 : 1, cb = b.complete ? 0 : 1;
+      return (sa - sb) || (b.done - a.done) || (ca - cb) || (b.weight - a.weight);
+    })[0];
+    if (l) {
+      return { kind: 'lesson', unit: l, lessonId: l.lesson.id,
+        title: l.done ? 'Carry on with ' + l.code : 'Start ' + l.code,
+        why: l.lesson.title + ' \u00b7 ' +
+             (l.done ? l.done + ' of ' + l.lessons + ' lessons done' : l.lessons + ' lessons, none read yet') };
+    }
+
+    /* The weakest outcome anywhere, ranked by the marks at stake rather than by
+       accuracy alone: 60% on an outcome worth 20% of the paper costs more than
+       50% on one worth 5%. */
+    var weak = null;
+    by.forEach(function (x) {
+      practiceSummary(x.rec, (unitMeta(x.key) || {}).outcomes || []).rows.forEach(function (r) {
+        if (r.attempted < NUDGE_WEAK_ATTEMPTS || r.accuracy === null || r.accuracy >= NUDGE_WEAK_PCT) return;
+        var cost = (100 - r.accuracy) * (r.weighting || 1);
+        if (!weak || cost > weak.cost) weak = { unit: x, row: r, cost: cost };
+      });
+    });
+    if (weak) {
+      return { kind: 'weak', unit: weak.unit, lo: weak.row.n,
+        title: 'Outcome ' + weak.row.n + ' is costing you marks',
+        why: weak.unit.code + ' \u00b7 ' + weak.row.title + ' \u00b7 ' + weak.row.accuracy + '% right' +
+             (weak.row.weighting ? ', and worth ' + weak.row.weighting + '% of the paper' : '') };
+    }
+
+    var never = by.filter(function (x) { return x.lessons && x.done >= x.lessons && !x.rec.mocks; })
+      .sort(function (a, b) { return b.weight - a.weight; })[0];
+    if (never) {
+      return { kind: 'mock', unit: never,
+        title: 'Sit your first ' + never.code + ' mock',
+        why: 'Every lesson read. A timed paper at the exam weighting is the only thing left that ' +
+             'tells you whether it stuck.' };
+    }
+
+    var any = most('weight');
+    return { kind: 'mix', unit: any, lo: 'mix',
+      title: 'Mixed practice in ' + any.code,
+      why: 'Nothing is overdue and nothing is outstanding. Drawn to the exam weighting.' };
+  }
+
+  /* The suggestion, rendered. Carries its own action rather than pointing at a
+     screen: "go to the practice screen and press the amber one" is a second
+     decision, which is the thing this is here to remove. */
+  function nudgeHtml() {
+    var s2 = nextStep();
+    if (!s2) return '';
+    var attrs = ' data-unit="' + esc(s2.unit.key) + '" data-kind="' + esc(s2.kind) + '"' +
+      (s2.lo != null ? ' data-lo="' + esc(s2.lo) + '"' : '') +
+      (s2.lessonId ? ' data-id="' + esc(s2.lessonId) + '"' : '');
+    return '<button class="a3-nudge" data-a3="donext"' + attrs + '>' +
+      '<span class="a3-nudge-k">Next best thing to do</span>' +
+      '<span class="a3-nudge-t">' + esc(s2.title) + '</span>' +
+      '<span class="a3-nudge-m">' + esc(s2.why) + '</span>' +
+      '<span class="a3-nudge-go" aria-hidden="true">\u2192</span>' +
+      '</button>';
+  }
+
   function renderUnits() {
     /* Complete units first. The syllabus object happens to list FAPS before
        TPFB, which led a fresh reader to the unit that is 80% written while the
@@ -949,6 +1113,8 @@
       '<h1 class="a3-head-t">Choose a unit</h1>' +
       '<p class="a3-head-s">Each has its own path, its own practice bank and its own progress.</p>' +
       '</header>';
+
+    h += nudgeHtml();
 
     h += '<div class="a3-ugrid">';
     keys.forEach(function (k) {
@@ -3633,7 +3799,7 @@
      to be surprised by. */
   var NAV_SOUNDS = {
     open: 1, openunit: 1, next: 1, back: 1, nextq: 1, mocknext: 1,
-    startpractice: 1, startmock: 1, practice: 1, retry: 1,
+    startpractice: 1, startmock: 1, practice: 1, retry: 1, donext: 1,
     topath: 1, tounits: 1, jump: 1, step: 1, stepall: 1,
     review: 1, reviewall: 1, reviewwrong: 1, reviewq: 1,
     reviewnext: 1, reviewprev: 1, reviewback: 1, reviewlist: 1,
@@ -3750,6 +3916,18 @@
          reader leaving the practice screen expects to land. */
       if (S.screen === 'practice') S.lessonId = null;
       S.mode = 'lesson'; S.screen = 'path'; return rerender();
+    }
+    /* One tap, one action. Sets the unit the suggestion was about and then
+       does the thing, rather than dropping the reader on a screen with the
+       thing on it — which is the second decision this exists to remove. */
+    if (act === 'donext') {
+      S.unit = n.getAttribute('data-unit');
+      var nk = n.getAttribute('data-kind');
+      if (nk === 'lesson') { startLesson(n.getAttribute('data-id')); return rerender(); }
+      if (nk === 'mock') { startMock(); return rerender(); }
+      var nlo = n.getAttribute('data-lo');
+      startPractice(nlo === 'missed' || nlo === 'refresh' || nlo === 'mix' ? nlo : +nlo);
+      return rerender();
     }
     if (act === 'openunit') {
       S.unit = n.getAttribute('data-unit');

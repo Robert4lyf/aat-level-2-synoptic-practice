@@ -77,6 +77,8 @@ jobs:
         run: npm run check:written
       - name: Check retiring a question retires it (and that a mock still asks it)
         run: npm run check:retire
+      - name: Check the next-step recommendation moves with the evidence and lands where it says
+        run: npm run check:nextstep
       - name: Check spaced repetition on all three levels (one schedule, due selection, merge)
         run: npm run check:spaced
       - name: Check progress backup merge (no data loss, idempotent)
