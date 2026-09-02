@@ -31,8 +31,9 @@
  * restart at 1 in each unit: an untagged question would not merely fall out of
  * its own bank, it would be counted inside another unit's outcome 1.
  *
- * Question types are the four the Level 3 player already renders: mcq,
- * numeric, truefalse and gapfill. Figures come from aat3-tax-data.js.
+ * Question types are the seven the Level 3 player renders: mcq, numeric,
+ * truefalse, gapfill, task, picklist and entrygrid. Figures come from
+ * aat3-tax-data.js.
  *
  * A NOTE ON STYLE
  *
@@ -5497,6 +5498,745 @@
       ],
       exp: 'A finance manager asking what is due next month wants the answer for next month. Every row of the table carries its own deadline, and only one of the payments lands in May — so the figure that matters is not the total of the table, and not even the total of the payments, but the one row whose date falls in the month asked about.',
     },
+    /* ── The two table types ─────────────────────────────────────────────────
+       WHY THEY ARE HERE, AND WHY THEY ARRIVED LATE. This bank was 441 questions
+       with not one pick list and not one entry grid — and the VAT return is an
+       entry grid. Nine boxes, and the whole skill is knowing which figure goes
+       in which one and whether the box wants the tax or the value. Every other
+       type in this file can ask a reader to CALCULATE that figure; only these
+       two can ask them to PLACE it, which is the decision the assessment
+       actually turns on.
+
+       They are weighted like the rest of the bank — ten to Outcome 1, twelve to
+       Outcome 2, eight to Outcome 3, six to Outcome 4, four to Outcome 5 — so
+       adding them does not tilt a pool that was drawn to the exam's shares.
+
+       AUTHORING RULES WORTH KNOWING BEFORE ADDING MORE, all enforced by
+       scripts/check-question-grid.js:
+         · no option may answer more than half a pick list's rows, or picking it
+           blind and reading nothing collects that many marks;
+         · with two options the answers must not strictly alternate, which is a
+           pattern a reader can follow instead of the question;
+         · an entry grid's label must not contain the figure it is asking for;
+         · a debit-and-credit grid must balance;
+         · every column must be used, or there is no placement to make. */
+
+    /* ── Outcome 1 — legislation (25%) ─────────────────────────────────── */
+    {
+      id: 'P-1-120', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.3'],
+      type: 'picklist',
+      q: 'Classify each supply for VAT.',
+      picklist: {
+        title: 'Supplies made or received this quarter',
+        rowHeader: 'Supply', choiceHeader: 'Category',
+        options: ['Standard-rated', 'Zero-rated', 'Exempt', 'Outside the scope'],
+        rows: [
+          { text: 'Hot rotisserie chicken sold to take away', answer: 0 },
+          { text: 'Shoes made in a size for a seven-year-old', answer: 1 },
+          { text: 'Rent charged to the tenant of a residential flat', answer: 2 },
+          { text: 'Wages paid to the business’s own employees', answer: 3 },
+          { text: 'A printed cookery book', answer: 1 },
+          { text: 'Postal services supplied by Royal Mail under the universal service obligation', answer: 2 },
+        ],
+      },
+      exp: 'Four categories, and only the first two are taxable supplies. Zero-rated is taxable AT 0%, so the input tax on the costs of making it stays recoverable; exempt is not a taxable supply at all, so it does not. Outside the scope is not a supply — wages are the classic case, because an employee is not selling anything to the employer. The two traps are both about a boundary inside one product: cold takeaway food is zero-rated and HOT takeaway food is standard-rated, and footwear is zero-rated only in children’s sizes.',
+    },
+    {
+      id: 'P-1-121', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.1', 'TPFB-1.2.2'],
+      type: 'picklist',
+      q: 'None of these businesses is registered for VAT. Identify which test, if either, obliges each one to register.',
+      picklist: {
+        title: 'Registration tests',
+        rowHeader: 'Circumstance', choiceHeader: 'Test',
+        options: ['Historic test', 'Future test', 'Neither'],
+        rows: [
+          { text: 'Taxable turnover for the twelve months to 31 May came to £92,400', answer: 0 },
+          { text: 'On 3 June a contract is signed that will bring in £95,000 of standard-rated work within the next 30 days', answer: 1 },
+          { text: 'Exempt rental income for the twelve months to 31 May came to £140,000', answer: 2 },
+          { text: 'An order taken today will deliver £91,000 of zero-rated goods inside the next three weeks', answer: 1 },
+          { text: 'Taxable turnover for the year to 31 May was £74,000 and the owner expects no change', answer: 2 },
+        ],
+      },
+      exp: 'The historic test looks BACK over any rolling twelve months and is applied at the end of every month. The future test looks forward at the next 30 DAYS ALONE — not at a year’s projection, which is why a single large order can trigger it. The threshold is ' + money(T.registration.threshold.value) + ' on both. The £140,000 is the one to watch: exempt income is not taxable turnover at any size, so a business with nothing but exempt supplies never registers however large it grows. The £91,000 of zero-rated goods is the mirror image — zero-rated supplies ARE taxable, at 0%, so they count in full.',
+    },
+    {
+      id: 'P-1-122', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.1', 'TPFB-1.4.2'],
+      type: 'picklist',
+      q: 'Match each description to the VAT scheme it belongs to.',
+      picklist: {
+        title: 'VAT schemes',
+        rowHeader: 'Description', choiceHeader: 'Scheme',
+        options: ['Cash accounting', 'Annual accounting', 'Flat rate', 'The normal scheme'],
+        rows: [
+          { text: 'VAT is accounted for when money is received and when suppliers are paid', answer: 0 },
+          { text: 'One return a year, with nine interim payments on account', answer: 1 },
+          { text: 'VAT due is a percentage of VAT-inclusive turnover, and input tax is not reclaimed separately', answer: 2 },
+          { text: 'Bad debt relief never arises, because VAT is not paid over on an invoice the customer has not settled', answer: 0 },
+          { text: 'A business may join only if it expects taxable turnover of no more than ' + money(T.schemes.flatRate.joinThreshold.value) + ', excluding VAT, in the next twelve months', answer: 2 },
+          { text: 'Returns are quarterly, on invoice dates, and due one month and seven days after the period end', answer: 3 },
+        ],
+      },
+      exp: 'Cash accounting changes WHEN VAT is accounted for, annual accounting changes HOW OFTEN a return is filed, and the flat rate scheme changes HOW MUCH is paid. The bad debt row follows from the first: under cash accounting the output tax on an unpaid invoice was never accounted for, so there is nothing to relieve. The flat rate join threshold of ' + money(T.schemes.flatRate.joinThreshold.value) + ' is far below the ' + money(T.schemes.cashAccounting.joinThreshold.value) + ' for the other two, because it is a scheme for genuinely small businesses.',
+    },
+    {
+      id: 'P-1-123', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.2', 'TPFB-1.5.3', 'TPFB-1.5.5'],
+      type: 'picklist',
+      q: 'A business files quarterly. Identify what each failure attracts.',
+      picklist: {
+        title: 'Non-compliance',
+        rowHeader: 'What happened', choiceHeader: 'Consequence',
+        options: ['A late submission penalty point', 'A late payment penalty', 'A failure to notify penalty', 'No penalty'],
+        rows: [
+          { text: 'A return is filed three weeks late. The business is owed a repayment and owes HMRC nothing.', answer: 0 },
+          { text: 'The VAT on a return is paid in full on the twelfth day after the due date.', answer: 3 },
+          { text: 'The business went over the registration threshold in March and told HMRC in September.', answer: 2 },
+          { text: 'The VAT due is still unpaid forty days after the due date.', answer: 1 },
+          { text: 'A first return in two years is filed one day late.', answer: 0 },
+        ],
+      },
+      exp: 'Submission and payment are penalised separately, and a point is charged for a late return even where nothing is owed — that is the whole reason the regime moved to points. On payment there is nothing at all until day 15, so paying on day 12 costs no penalty (late payment INTEREST still runs from day one, but interest is not a penalty). By day 40 the first penalty of ' + T.penalties.latePayment.firstPenaltyDay15.value + '% at day 15 and a further ' + T.penalties.latePayment.firstPenaltyDay30.value + '% at day 30 have both bitten. Registering late is neither of those: it is a failure to notify, charged as a percentage of the VAT that should have been paid.',
+    },
+    {
+      id: 'P-1-124', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.3.4'],
+      type: 'picklist',
+      q: 'Identify what Making Tax Digital for VAT requires of a registered business.',
+      picklist: {
+        title: 'Making Tax Digital',
+        rowHeader: 'Practice', choiceHeader: 'Status',
+        options: ['Required', 'Not required'],
+        rows: [
+          { text: 'Keeping digital records of every sale and purchase', answer: 0 },
+          { text: 'Submitting the return through functional compatible software', answer: 0 },
+          { text: 'A digital link wherever data moves between the records and the return', answer: 0 },
+          { text: 'Keeping a paper copy of every purchase invoice', answer: 1 },
+          { text: 'Typing the nine box figures into HMRC’s online VAT account', answer: 1 },
+        ],
+      },
+      exp: 'Making Tax Digital governs the ROUTE the figures take, not the paperwork behind them. Records must be digital, the software must be compatible and authorised, and the path from record to return must be a digital link rather than a re-keying — which is exactly why typing the boxes into the online account is no longer allowed for a business within MTD. Nothing in it requires paper invoices to be kept as paper: a scanned copy satisfies the record-keeping rules.',
+    },
+    {
+      id: 'P-1-125', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.3'],
+      type: 'picklist',
+      q: 'Identify the deregistration position of each business.',
+      picklist: {
+        title: 'Deregistration',
+        rowHeader: 'Circumstance', choiceHeader: 'Position',
+        options: ['Must deregister', 'May deregister', 'Neither'],
+        rows: [
+          { text: 'The business has stopped trading and made its final supply', answer: 0 },
+          { text: 'Taxable turnover for the next twelve months is expected to be £80,000', answer: 1 },
+          { text: 'Taxable turnover for the next twelve months is expected to be £89,500', answer: 2 },
+          { text: 'The business has been sold as a going concern and the owner has ceased to trade', answer: 0 },
+          { text: 'Every supply the business makes has become exempt following a change in the law', answer: 0 },
+        ],
+      },
+      exp: 'Compulsory deregistration is about ceasing to make taxable supplies — stopping, selling up, or having every supply become exempt. Voluntary deregistration is about size: it is permitted where taxable turnover for the NEXT twelve months is expected to fall below ' + money(T.registration.deregistrationThreshold.value) + '. That is why £80,000 may deregister and £89,500 may not, even though both are below the ' + money(T.registration.threshold.value) + ' registration threshold. The gap between the two thresholds exists precisely so a business trading around the line does not register and deregister every year.',
+    },
+    {
+      id: 'P-1-126', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.3.3'],
+      type: 'picklist',
+      q: 'A quarterly return is filed on its due date and payment is arranged the same day. Identify whether each payment method gets the money to HMRC in time.',
+      picklist: {
+        title: 'Paying on the due date',
+        rowHeader: 'Method', choiceHeader: 'Outcome',
+        options: ['Reaches HMRC in time', 'Arrives late'],
+        rows: [
+          { text: 'A Faster Payment instructed that day', answer: 0 },
+          { text: 'A Bacs payment instructed that day', answer: 1 },
+          { text: 'A direct debit already in place, collected by HMRC three working days later', answer: 0 },
+          { text: 'A CHAPS payment instructed before the bank’s cut-off that day', answer: 0 },
+          { text: 'A cheque posted that day', answer: 1 },
+        ],
+      },
+      exp: 'What the law requires is that CLEARED FUNDS reach HMRC by the deadline, not that the instruction was given by then — so the question is always how long the method takes, never when the payer acted. Faster Payments and CHAPS arrive the same day; Bacs takes three working days and a posted cheque longer still, so both miss. The direct debit is the exception that looks like a failure: HMRC collects it three working days after the deadline by design, and a payment collected under a standing direct debit is on time even though the money leaves later than any of the others.',
+    },
+    {
+      id: 'P-1-127', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4', 'TPFB-1.1.5'],
+      type: 'picklist',
+      q: 'Identify how long each record must be kept, and by whom.',
+      picklist: {
+        title: 'Record keeping',
+        rowHeader: 'Record', choiceHeader: 'Retention',
+        options: ['Six years', 'Three years', 'Neither of those periods'],
+        rows: [
+          { text: 'VAT invoices issued and received', answer: 0 },
+          { text: 'The VAT account', answer: 0 },
+          { text: 'Payroll records of pay and deductions', answer: 1 },
+          { text: 'Records supporting a bad debt relief claim, kept from the date of the claim', answer: 2 },
+          { text: 'Employee leave and sickness absence records', answer: 1 },
+        ],
+      },
+      exp: 'Two retention periods sit side by side in this unit and are constantly swapped: VAT records for six years, payroll records for three years from the end of the tax year they relate to. Bad debt relief is a third: ' + T.badDebtRelief.recordRetentionYears.value + ' years from the date of the CLAIM, which is neither of the other two and runs from a different starting point. HMRC may inspect any of them, and may visit the business to do so.',
+    },
+    {
+      id: 'P-1-128', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.1'],
+      type: 'entrygrid',
+      q: 'A business is not registered for VAT. Its income for the twelve months to 31 October was: standard-rated sales £71,400; zero-rated sales £18,900; rent from the flat above the shop, which is exempt, £9,600; and £12,000 for the delivery van it sold in July. Sort each amount into the column it belongs in for the historic test.',
+      entrygrid: {
+        title: 'Twelve months to 31 October',
+        rowHeader: 'Income',
+        columns: ['Counts towards taxable turnover £', 'Excluded £'],
+        rows: [
+          { label: 'Standard-rated sales', col: 0, amount: 71400 },
+          { label: 'Zero-rated sales', col: 0, amount: 18900 },
+          { label: 'Rent from the flat above the shop', col: 1, amount: 9600 },
+          { label: 'Proceeds of selling the delivery van', col: 1, amount: 12000 },
+        ],
+      },
+      exp: 'Taxable turnover is everything taxable, at whatever rate: 71,400.00 + 18,900.00 = £90,300.00, which is £300.00 over the ' + money(T.registration.threshold.value) + ' threshold, so this business must register. Both exclusions are ones readers get wrong in opposite directions — exempt rent is left in because it is income, and the van is left in because it was a sale. Neither counts: exempt supplies are not taxable, and the disposal of a capital asset is not part of the turnover the test measures. Had either been included the answer would have looked comfortably over the line for the wrong reason.',
+    },
+    {
+      id: 'P-1-129', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.1', 'TPFB-1.4.2'],
+      type: 'entrygrid',
+      q: 'A business joins the annual accounting scheme. Its VAT liability for the previous year was £24,000, and this year’s turns out to be the same. Show what it pays under each of the two instalment patterns.',
+      entrygrid: {
+        title: 'Annual accounting',
+        rowHeader: 'Payment',
+        columns: ['If paid monthly £', 'If paid quarterly £'],
+        rows: [
+          { label: 'Each interim payment', cells: { 0: 2400, 1: 6000 } },
+          { label: 'Total of the interim payments', cells: { 0: 21600, 1: 18000 } },
+          { label: 'Balancing payment with the annual return', cells: { 0: 2400, 1: 6000 } },
+        ],
+      },
+      exp: 'Monthly is nine payments of ' + T.schemes.annualAccounting.instalments.monthly.percentEach + '% of last year’s liability: 24,000.00 × 10% = £2,400.00 each, 9 × 2,400.00 = £21,600.00 paid on account, leaving 24,000.00 − 21,600.00 = £2,400.00 to settle. Quarterly is three payments of ' + T.schemes.annualAccounting.instalments.quarterly.percentEach + '%: 24,000.00 × 25% = £6,000.00 each, 3 × 6,000.00 = £18,000.00 on account, leaving 24,000.00 − 18,000.00 = £6,000.00. Neither pattern pays the whole liability on account, by design — the instalments are set from LAST year, so the balancing payment is where this year’s difference lands. Both the return and that balancing payment are due two months after the year end, not one month and seven days.',
+    },
+
+    /* ── Outcome 2 — calculate VAT (30%) ───────────────────────────────── */
+    {
+      id: 'P-2-128', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.11', 'TPFB-2.3.12'],
+      type: 'entrygrid',
+      q: 'Each of these amounts is the total the customer pays. Split each one into its net value and the VAT it contains.',
+      entrygrid: {
+        title: 'Working back from the gross',
+        rowHeader: 'Transaction',
+        columns: ['Net £', 'VAT £'],
+        rows: [
+          { label: 'A standard-rated purchase costing £894.00 in total', cells: { 0: 745, 1: 149 } },
+          { label: 'A reduced-rated fuel bill of £262.50 in total', cells: { 0: 250, 1: 12.5 } },
+          { label: 'A standard-rated sale invoiced at £1,800.00 in total', cells: { 0: 1500, 1: 300 } },
+        ],
+      },
+      exp: 'At the standard rate the VAT is one sixth of the gross: 894.00 ÷ 6 = £149.00, leaving 894.00 − 149.00 = £745.00 net; and 1,800.00 ÷ 6 = £300.00, leaving £1,500.00. At the reduced rate the fraction is different and is the one most often got wrong — 5/105, or one twenty-first: 262.50 ÷ 21 = £12.50, leaving £250.00. Dividing a reduced-rated gross by 6 would have produced £43.75 of VAT on a bill that never carried it.',
+    },
+    {
+      id: 'P-2-129', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.4'],
+      type: 'entrygrid',
+      q: 'A supplier invoices £2,000.00 net of VAT for standard-rated goods, offering 3% off for payment within ten days. Show what the customer pays on each of the two outcomes.',
+      entrygrid: {
+        title: 'Prompt payment discount',
+        rowHeader: 'Amount',
+        columns: ['If the discount is not taken £', 'If the discount is taken £'],
+        rows: [
+          { label: 'Net value of the supply', cells: { 0: 2000, 1: 1940 } },
+          { label: 'VAT', cells: { 0: 400, 1: 388 } },
+          { label: 'Total paid', cells: { 0: 2400, 1: 2328 } },
+        ],
+      },
+      exp: 'VAT follows the amount ACTUALLY PAID, not the amount first invoiced. Take the discount and the net falls by 3%: 2,000.00 × 0.97 = £1,940.00, so the VAT is 1,940.00 × 20% = £388.00 and the total £2,328.00. Leave it and the full 2,000.00 × 20% = £400.00 stands, for £2,400.00. The rule changed in 2015 — VAT used to be charged on the discounted figure whether or not the discount was taken — and the practical consequence is that the supplier cannot know the VAT until the customer decides, which is why the invoice must set out the terms and either a credit note follows or the customer adjusts what it recovers.',
+    },
+    {
+      id: 'P-2-130', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.8'],
+      type: 'entrygrid',
+      q: 'A director’s car is used privately as well as for business. In the quarter the business bought £576.00 of fuel including VAT, and the fuel scale charge for the car’s CO₂ band is £402.00. Show what each figure adds to.',
+      entrygrid: {
+        title: 'Fuel scale charge',
+        rowHeader: 'Item',
+        columns: ['Added to output tax £', 'Added to input tax £'],
+        rows: [
+          { label: 'The fuel scale charge for the quarter', col: 0, amount: 67 },
+          { label: 'VAT on all the fuel bought in the quarter', col: 1, amount: 96 },
+        ],
+      },
+      exp: 'The scale charge is a GROSS figure, so the VAT inside it is one sixth: 402.00 ÷ 6 = £67.00 of output tax. The fuel itself is also gross: 576.00 ÷ 6 = £96.00 of input tax, reclaimed in full. That is the point of the scheme — rather than picking apart which miles were private, the business recovers all the VAT on fuel and pays a fixed output-tax charge for the private use. Net effect this quarter: 96.00 − 67.00 = £29.00 in the business’s favour. The net value of the scale charge, 402.00 − 67.00 = £335.00, is also added to Box 6.',
+    },
+    {
+      id: 'P-2-131', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'],
+      type: 'entrygrid',
+      q: 'A partly exempt business has £19,430.00 of input tax for the quarter. Sort it into what it may and may not recover.',
+      entrygrid: {
+        title: 'Partial exemption, quarter to 30 June',
+        rowHeader: 'Input tax',
+        columns: ['Recoverable £', 'Not recoverable £'],
+        rows: [
+          { label: 'Directly attributable to taxable supplies', col: 0, amount: 14200 },
+          { label: 'Directly attributable to exempt supplies', col: 1, amount: 1930 },
+          { label: 'Residual, apportioned to taxable supplies', col: 0, amount: 2640 },
+          { label: 'Residual, apportioned to exempt supplies', col: 1, amount: 660 },
+        ],
+      },
+      exp: 'Exempt input tax for the quarter is 1,930.00 + 660.00 = £2,590.00. The de minimis test has TWO limbs and both must be met: no more than ' + money(T.partialExemption.deMinimisPerQuarter.value) + ' in the quarter, AND no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. The second limb passes comfortably — 2,590.00 ÷ 19,430.00 is 13.3% — but the first fails, because £2,590.00 exceeds ' + money(T.partialExemption.deMinimisPerQuarter.value) + '. Failing either limb is enough, so none of the exempt input tax is recoverable and the business claims 14,200.00 + 2,640.00 = £16,840.00. A reader who checks only the percentage concludes the opposite.',
+    },
+    {
+      id: 'P-2-132', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.7'],
+      type: 'entrygrid',
+      q: 'Sort the VAT on each of these purchases into what may and may not be reclaimed.',
+      entrygrid: {
+        title: 'Input tax',
+        rowHeader: 'Purchase',
+        columns: ['Reclaimable £', 'Blocked £'],
+        rows: [
+          { label: 'A mobile phone contract for a member of staff', col: 0, amount: 84 },
+          { label: 'Lunch to entertain a UK client', col: 1, amount: 37 },
+          { label: 'A car bought for a sales rep, also available for private use', col: 1, amount: 4600 },
+          { label: 'A van used only for deliveries', col: 0, amount: 3100 },
+        ],
+      },
+      exp: 'Two blocks account for most of what is disallowed, and they are blocks on the ITEM rather than on the amount. Business entertaining of UK customers is never recoverable, however clearly it was for the business. A car is blocked as soon as it is AVAILABLE for private use — availability, not actual private mileage, is the test, and it is why the block bites on almost every company car. A van is a commercial vehicle and falls outside the car block entirely, so its £3,100.00 is reclaimed in full. Reclaimable here: 84.00 + 3,100.00 = £3,184.00.',
+    },
+    {
+      id: 'P-2-133', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.10'],
+      type: 'entrygrid',
+      q: 'A VAT-registered importer uses postponed VAT accounting and recovers all its input tax. In the quarter it imported goods worth £17,000, bought UK goods for £4,700 excluding VAT, and made standard-rated sales of £12,000 excluding VAT. Show the VAT each one produces.',
+      entrygrid: {
+        title: 'Output tax and input tax',
+        rowHeader: 'Transaction',
+        columns: ['Output tax (Box 1) £', 'Input tax (Box 4) £'],
+        rows: [
+          { label: 'Import VAT on the goods brought in from outside the UK', cells: { 0: 3400, 1: 3400 } },
+          { label: 'The UK purchase', cells: { 1: 940 } },
+          { label: 'The standard-rated sales', cells: { 0: 2400 } },
+        ],
+      },
+      exp: 'Postponed VAT accounting puts the import VAT in BOTH boxes: 17,000.00 × 20% = £3,400.00 declared as output tax in Box 1 and recovered as input tax in Box 4 on the same return. For a fully taxable importer the two cancel and nothing is paid — which is the point, because before postponed accounting the VAT was paid at the border and reclaimed a quarter later, and the gap was pure working capital. The other two rows behave normally: 4,700.00 × 20% = £940.00 of input tax, 12,000.00 × 20% = £2,400.00 of output tax.',
+    },
+    {
+      id: 'P-2-134', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.13'],
+      type: 'entrygrid',
+      q: 'A VAT-registered building contractor receives a subcontractor’s invoice for £8,600 of construction services falling under the domestic reverse charge. It also bought materials for £2,150 excluding VAT and made its own standard-rated sales of £31,000 excluding VAT. Show the VAT on each.',
+      entrygrid: {
+        title: 'The contractor’s quarter',
+        rowHeader: 'Transaction',
+        columns: ['Output tax (Box 1) £', 'Input tax (Box 4) £'],
+        rows: [
+          { label: 'The subcontractor’s reverse charge invoice', cells: { 0: 1720, 1: 1720 } },
+          { label: 'Materials from the builders’ merchant', cells: { 1: 430 } },
+          { label: 'The contractor’s own sales', cells: { 0: 6200 } },
+        ],
+      },
+      exp: 'Under the domestic reverse charge the subcontractor charges no VAT, and the CUSTOMER accounts for it: 8,600.00 × 20% = £1,720.00 goes into Box 1 as output tax the supplier did not charge, and the same £1,720.00 into Box 4 under the normal recovery rules. For a fully taxable contractor the cash effect is nil. The two ordinary rows are unaffected: 2,150.00 × 20% = £430.00 of input tax and 31,000.00 × 20% = £6,200.00 of output tax. The rule exists because a supplier who charges VAT, collects it and disappears costs HMRC the whole amount, and construction supply chains were where that happened most.',
+    },
+    {
+      id: 'P-2-135', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.2', 'TPFB-2.2.3'],
+      type: 'picklist',
+      q: 'Identify what fixes the tax point in each case.',
+      picklist: {
+        title: 'Tax points',
+        rowHeader: 'Sequence of events', choiceHeader: 'Tax point',
+        options: ['The date of supply', 'The invoice date', 'The date payment was received'],
+        rows: [
+          { text: 'Goods delivered 3 May; invoice issued 20 May; paid 30 June', answer: 0 },
+          { text: 'Goods delivered 3 May; invoice issued 10 May; paid 30 June', answer: 1 },
+          { text: 'A deposit received 1 April for goods delivered 20 May', answer: 2 },
+          { text: 'Services completed 14 June; invoice issued 25 June; paid 1 August', answer: 1 },
+          { text: 'Services completed 14 June; invoice issued 5 July; paid 1 August', answer: 0 },
+        ],
+      },
+      exp: 'The BASIC tax point is the date of supply. An invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days of it overrides that date and becomes the ACTUAL tax point; issued later, it does not, and the supply date stands. That single rule decides four of these five: 10 May is seven days after 3 May and wins, 20 May is seventeen and does not; 25 June is eleven days after 14 June and wins, 5 July is twenty-one and does not. Payment is different again — money received BEFORE the supply creates its own tax point for that amount on the day it arrives, which is why a deposit is taxed in April for goods that arrive in May.',
+    },
+    {
+      id: 'P-2-136', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.1'],
+      type: 'picklist',
+      q: 'Classify each amount.',
+      picklist: {
+        title: 'Inputs and outputs',
+        rowHeader: 'Amount', choiceHeader: 'Classification',
+        options: ['Output tax', 'Input tax', 'Neither'],
+        rows: [
+          { text: 'VAT charged on a sales invoice to a customer', answer: 0 },
+          { text: 'VAT charged by a supplier on a purchase invoice', answer: 1 },
+          { text: 'Wages paid to the business’s own employees', answer: 2 },
+          { text: 'The fuel scale charge', answer: 0 },
+          { text: 'Bad debt relief claimed on a sales invoice the customer never paid', answer: 1 },
+          { text: 'A local authority grant given for nothing in return', answer: 2 },
+        ],
+      },
+      exp: 'Output tax is VAT on what the business SELLS, input tax VAT on what it BUYS — and the two rows that break that pattern are the ones worth learning. The fuel scale charge is output tax even though nothing was sold: it is a deemed charge for private use. Bad debt relief is input tax even though nothing was bought: the VAT is recovered through Box 4, not by reducing the original sale. Wages and a grant carry no VAT at all, because neither is a supply.',
+    },
+    {
+      id: 'P-2-137', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.1'],
+      type: 'picklist',
+      q: 'Identify what a full VAT invoice must show.',
+      picklist: {
+        title: 'A full VAT invoice',
+        rowHeader: 'Detail', choiceHeader: 'Status',
+        options: ['Required', 'Not required'],
+        rows: [
+          { text: 'The supplier’s VAT registration number', answer: 0 },
+          { text: 'A sequential invoice number', answer: 0 },
+          { text: 'The rate of VAT charged on each item', answer: 0 },
+          { text: 'The customer’s VAT registration number', answer: 1 },
+          { text: 'The supplier’s bank details', answer: 1 },
+          { text: 'The date the customer intends to pay', answer: 1 },
+        ],
+      },
+      exp: 'The required details all serve one purpose: letting HMRC trace the tax from the supplier who charged it to the customer who reclaims it. Hence the supplier’s registration number, a unique sequential number, and the rate against each line so a mixed invoice can be checked. The customer’s own VAT number is NOT required on an ordinary UK invoice — it is required on a reverse charge invoice, which is where the belief that it is always needed comes from. Bank details and payment intentions are commercial matters the invoice may carry but VAT law does not ask for.',
+    },
+    {
+      id: 'P-2-138', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.5'],
+      type: 'picklist',
+      q: 'Each business makes only the supplies described. Identify whether it can recover the input tax on its costs.',
+      picklist: {
+        title: 'Zero-rated against exempt',
+        rowHeader: 'Business', choiceHeader: 'Input tax',
+        options: ['Fully recoverable', 'Not recoverable'],
+        rows: [
+          { text: 'A bakery selling cold sandwiches, all zero-rated', answer: 0 },
+          { text: 'A publisher selling printed books, all zero-rated', answer: 0 },
+          { text: 'A landlord letting residential flats, all exempt', answer: 1 },
+          { text: 'An insurance broker, all exempt', answer: 1 },
+          { text: 'A shop selling children’s clothing, all zero-rated', answer: 0 },
+        ],
+      },
+      exp: 'Zero-rated and exempt look identical from the customer’s side — no VAT on the bill either way — and are opposites from the seller’s. A zero-rated supply is TAXABLE at 0%, so the business registers, files returns and recovers all its input tax; it charges nothing and reclaims everything, which is why a zero-rated trader is usually in permanent repayment and registers voluntarily. An exempt supply is not taxable at all, so the business cannot register in respect of it and the VAT on its costs is simply a cost. Same invoice to the customer, opposite consequence to the seller.',
+    },
+    {
+      id: 'P-2-139', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.15'],
+      type: 'picklist',
+      q: 'A UK VAT-registered business makes each of these supplies. Identify the VAT treatment.',
+      picklist: {
+        title: 'International trade',
+        rowHeader: 'Supply', choiceHeader: 'Treatment',
+        options: ['Zero-rated as an export', 'Standard-rated', 'Outside the scope of UK VAT'],
+        rows: [
+          { text: 'Goods exported to a customer in Australia, with evidence of export held', answer: 0 },
+          { text: 'Goods sold to a customer in Manchester', answer: 1 },
+          { text: 'Consultancy supplied to a business customer in Germany, under the general rule', answer: 2 },
+          { text: 'Goods exported to a business customer in Canada, with evidence of export held', answer: 0 },
+          { text: 'Goods sold to a consumer in Birmingham', answer: 1 },
+        ],
+      },
+      exp: 'Goods and services follow different questions. Exported GOODS are zero-rated — a UK supply taxed at 0% — but only where the evidence of export is held; without it the supply is standard-rated and the VAT comes out of the seller’s margin. SERVICES to a business customer abroad are decided by place of supply: under the general rule the supply happens where the customer belongs, so it is outside the scope of UK VAT altogether rather than zero-rated. The distinction matters on the return, where a zero-rated export still goes in Box 6 and an out-of-scope service does not.',
+    },
+
+    /* ── Outcome 3 — review and verify VAT returns (20%) ───────────────── */
+    {
+      id: 'P-3-82', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.1', 'TPFB-3.2.5'],
+      type: 'entrygrid',
+      q: 'For the quarter a business made standard-rated sales of £84,000 and zero-rated sales of £11,500, both excluding VAT, and bought standard-rated goods for £39,000 and zero-rated goods for £6,200, again excluding VAT. Complete the return.',
+      entrygrid: {
+        title: 'VAT return, quarter to 31 March',
+        rowHeader: 'Box',
+        columns: ['VAT £', 'Net value £'],
+        rows: [
+          { label: 'Box 1 — VAT due on sales and other outputs', col: 0, amount: 16800 },
+          { label: 'Box 4 — VAT reclaimed on purchases and other inputs', col: 0, amount: 7800 },
+          { label: 'Box 5 — net VAT to pay or reclaim', col: 0, amount: 9000 },
+          { label: 'Box 6 — total value of sales and other outputs', col: 1, amount: 95500 },
+          { label: 'Box 7 — total value of purchases and other inputs', col: 1, amount: 45200 },
+        ],
+      },
+      exp: 'Some boxes want the TAX and some want the VALUE, and mixing them is the commonest way a return goes wrong. Box 1 is 84,000.00 × 20% = £16,800.00 — the zero-rated sales carry no VAT and add nothing. Box 4 is 39,000.00 × 20% = £7,800.00. Box 5 is 16,800.00 − 7,800.00 = £9,000.00 to pay. Boxes 6 and 7 are value boxes and include EVERYTHING, zero-rated supplies included: 84,000.00 + 11,500.00 = £95,500.00 and 39,000.00 + 6,200.00 = £45,200.00. Leaving the zero-rated figures out of 6 and 7 because they carried no VAT is the error this question is built around.',
+    },
+    {
+      id: 'P-3-83', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.1.5', 'TPFB-3.2.5'],
+      type: 'entrygrid',
+      q: 'Before adjustments a business has £21,400.00 of output tax and £9,260.00 of input tax for the quarter. It must also account for a fuel scale charge carrying £67.00 of VAT, claim bad debt relief of £315.00, and correct an under-declaration of output tax of £480.00 from the previous quarter. Complete the three VAT boxes.',
+      entrygrid: {
+        title: 'VAT return with adjustments',
+        rowHeader: 'Box',
+        columns: ['VAT £', 'Net value £'],
+        rows: [
+          { label: 'Box 1 — VAT due on sales and other outputs', col: 0, amount: 21947 },
+          { label: 'Box 4 — VAT reclaimed on purchases and other inputs', col: 0, amount: 9575 },
+          { label: 'Box 5 — net VAT to pay or reclaim', col: 0, amount: 12372 },
+          { label: 'Box 6 — total value of sales and other outputs, given as', col: 1, amount: 107000 },
+        ],
+      },
+      exp: 'Three adjustments, and each one has a box it belongs to. The fuel scale charge and the prior-period under-declaration both INCREASE output tax: 21,400.00 + 67.00 + 480.00 = £21,947.00. Bad debt relief is recovered as input tax rather than by reducing the sale: 9,260.00 + 315.00 = £9,575.00. Box 5 is then 21,947.00 − 9,575.00 = £12,372.00. The trap is the error correction — it is tempting to net a previous quarter’s under-declaration against Box 5 directly, but an under-declared SALE is corrected where the sale belonged, in Box 1.',
+    },
+    {
+      id: 'P-3-84', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
+      type: 'entrygrid',
+      q: 'A business had £16,800.00 of output tax and £7,800.00 of input tax for the quarter, and issued credit notes to customers carrying £260.00 of VAT. Complete its VAT control account, including the balance carried down.',
+      entrygrid: {
+        title: 'VAT control account',
+        rowHeader: 'Entry',
+        columns: ['Debit £', 'Credit £'],
+        rows: [
+          { label: 'Input tax on purchases', col: 0, amount: 7800 },
+          { label: 'VAT on credit notes issued to customers', col: 0, amount: 260 },
+          { label: 'Balance carried down', col: 0, amount: 8740 },
+          { label: 'Output tax on sales', col: 1, amount: 16800 },
+        ],
+      },
+      exp: 'The account is credited with what the business owes HMRC and debited with what reduces it. Output tax of £16,800.00 is the credit. Input tax of £7,800.00 is a debit, and so is the £260.00 on credit notes — a credit note to a CUSTOMER cancels output tax, so it moves to the debit side rather than reducing the credit. The balance owed is 16,800.00 − 7,800.00 − 260.00 = £8,740.00, carried down on the debit side so both columns total £16,800.00. Reconciling this balance to Box 5 before filing is what catches a return built from the wrong quarter’s figures.',
+    },
+    {
+      id: 'P-3-85', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.1', 'TPFB-3.2.3'],
+      type: 'entrygrid',
+      q: 'A business in a repayment position has £4,120.00 of output tax on standard-rated sales and £9,880.00 of input tax on standard-rated purchases, with no other supplies. Complete the return.',
+      entrygrid: {
+        title: 'VAT return, quarter to 30 September',
+        rowHeader: 'Box',
+        columns: ['VAT £', 'Net value £'],
+        rows: [
+          { label: 'Box 1 — VAT due on sales and other outputs', col: 0, amount: 4120 },
+          { label: 'Box 4 — VAT reclaimed on purchases and other inputs', col: 0, amount: 9880 },
+          { label: 'Box 5 — net VAT to pay or reclaim', col: 0, amount: 5760 },
+          { label: 'Box 6 — total value of sales and other outputs', col: 1, amount: 20600 },
+          { label: 'Box 7 — total value of purchases and other inputs', col: 1, amount: 49400 },
+        ],
+      },
+      exp: 'Box 5 is ALWAYS POSITIVE. HMRC’s instruction is to deduct the smaller of Boxes 3 and 4 from the larger and enter the difference, and states expressly that a minus sign must not be used — so a repayment of 9,880.00 − 4,120.00 = £5,760.00 is entered as 5,760.00, not as −5,760.00. Which way the money flows is read from Box 4 exceeding Box 3, not from a sign. The value boxes work back from the tax at the standard rate: 4,120.00 ÷ 0.2 = £20,600.00 and 9,880.00 ÷ 0.2 = £49,400.00.',
+    },
+    {
+      id: 'P-3-86', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.1.5', 'TPFB-3.1.6'],
+      type: 'entrygrid',
+      q: 'A review of earlier quarters finds output tax under-declared by £3,200.00, input tax over-claimed by £850.00 and input tax under-claimed by £1,400.00. Show which way each error pushes the VAT due.',
+      entrygrid: {
+        title: 'Errors found in earlier quarters',
+        rowHeader: 'Error',
+        columns: ['Increases VAT due £', 'Decreases VAT due £'],
+        rows: [
+          { label: 'Output tax under-declared', col: 0, amount: 3200 },
+          { label: 'Input tax over-claimed', col: 0, amount: 850 },
+          { label: 'Input tax under-claimed', col: 1, amount: 1400 },
+        ],
+      },
+      exp: 'Under-declaring output tax and over-claiming input tax both mean too little was paid, so both increase what is owed; under-claiming input tax means too much was paid, so it reduces it. The NET error is 3,200.00 + 850.00 − 1,400.00 = £2,650.00 under-declared. Netting is the point: the test that decides how the error is corrected is applied to that single figure and not to the largest of the three, so an error that looks like £3,200.00 is £2,650.00 for every purpose that follows.',
+    },
+    {
+      id: 'P-3-87', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.1', 'TPFB-3.2.2'],
+      type: 'picklist',
+      q: 'Identify where each amount is reported on the VAT return.',
+      picklist: {
+        title: 'Which box',
+        rowHeader: 'Amount', choiceHeader: 'Box',
+        options: ['Box 1', 'Box 4', 'Box 6', 'Box 7', 'Nowhere on the return'],
+        rows: [
+          { text: 'Output tax on standard-rated sales', answer: 0 },
+          { text: 'The net value of zero-rated sales', answer: 2 },
+          { text: 'Input tax on a standard-rated purchase', answer: 1 },
+          { text: 'The net value of goods imported from outside the UK', answer: 3 },
+          { text: 'Wages paid to employees', answer: 4 },
+          { text: 'VAT on entertaining a UK client', answer: 4 },
+        ],
+      },
+      exp: 'Boxes 1 and 4 carry TAX; boxes 6 and 7 carry VALUES, and they include supplies that carried no tax — which is why zero-rated sales appear in Box 6 despite adding nothing to Box 1. The two that appear nowhere are there for different reasons, and only one of them is absent entirely. Wages are outside the scope of VAT — neither a purchase nor a supply — and belong in no box at all. The entertaining is a genuine business purchase whose VAT simply cannot be recovered, so the TAX appears nowhere while the NET VALUE still goes into Box 7 like any other purchase. Blocked input tax and an excluded transaction are not the same thing.',
+    },
+    {
+      id: 'P-3-88', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.1.1', 'TPFB-3.1.2', 'TPFB-3.1.3'],
+      type: 'picklist',
+      q: 'Identify how each error must be dealt with.',
+      picklist: {
+        title: 'Correcting errors',
+        rowHeader: 'Error found', choiceHeader: 'Method',
+        options: ['Correct on the next return', 'Notify HMRC separately'],
+        rows: [
+          { text: 'A net under-declaration of £6,400, found by the bookkeeper', answer: 0 },
+          { text: 'A net under-declaration of £62,000', answer: 1 },
+          { text: 'A deliberate under-declaration of £900', answer: 1 },
+          { text: 'A net over-declaration of £3,100', answer: 0 },
+          { text: 'A net under-declaration of £24,000, where Box 6 for the period was £3,000,000', answer: 0 },
+        ],
+      },
+      exp: 'The test has two limbs, and an error passes if it meets EITHER: at or below ' + money(T.errorCorrection.netErrorLimit.value) + ', or no more than ' + T.errorCorrection.turnoverPercentage.value + '% of the Box 6 figure subject to an absolute ceiling of ' + money(T.errorCorrection.absoluteCeiling.value) + '. So £6,400 and £3,100 pass on the first limb; £24,000 fails it but passes on the second, because 1% of 3,000,000.00 is £30,000.00 and the error is inside both that and the ceiling; and £62,000 breaches the ceiling and must be notified. The £900 is the one that ignores the arithmetic entirely: a DELIBERATE error is always separately notified, however small, on form ' + T.errorCorrection.separateNotificationForm + '.',
+    },
+    {
+      id: 'P-3-89', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.2'],
+      type: 'picklist',
+      q: 'Identify which VAT boxes each transaction affects.',
+      picklist: {
+        title: 'Imports, exports and the reverse charge',
+        rowHeader: 'Transaction', choiceHeader: 'Boxes affected',
+        options: ['Box 1 only', 'Box 4 only', 'Boxes 1 and 4', 'Box 7 only'],
+        rows: [
+          { text: 'Import VAT on goods, accounted for under postponed VAT accounting', answer: 2 },
+          { text: 'The net value of those imported goods', answer: 3 },
+          { text: 'Output tax on a standard-rated UK sale', answer: 0 },
+          { text: 'Input tax on a UK purchase with a valid VAT invoice', answer: 1 },
+          { text: 'The VAT on a subcontractor’s invoice received under the domestic reverse charge', answer: 2 },
+        ],
+      },
+      exp: 'Postponed import VAT and the domestic reverse charge behave identically on the return and for the same reason: the buyer declares the tax the seller did not collect, in Box 1, and recovers it in Box 4 under the normal rules. The tax and the value part company on the import — the VAT goes in Boxes 1 and 4, the NET value in Box 7 as an ordinary purchase. A reader who puts the import value in Box 4 has put a value in a tax box, which is the same mistake in a harder disguise.',
+    },
+
+    /* ── Outcome 4 — principles of payroll (15%) ───────────────────────── */
+    {
+      id: 'P-4-70', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.11'],
+      type: 'entrygrid',
+      q: 'For one employee this month: PAYE income tax £412.00, employee’s Class 1 National Insurance £187.00, employer’s Class 1 National Insurance £344.00, employee’s pension contribution £96.00, employer’s pension contribution £144.00. Sort each amount into the column it belongs in.',
+      entrygrid: {
+        title: 'One employee, one month',
+        rowHeader: 'Amount',
+        columns: ['Deducted from the employee’s pay £', 'Cost to the employer on top of pay £'],
+        rows: [
+          { label: 'PAYE income tax', col: 0, amount: 412 },
+          { label: 'Employee’s Class 1 National Insurance', col: 0, amount: 187 },
+          { label: 'Employer’s Class 1 National Insurance', col: 1, amount: 344 },
+          { label: 'Employee’s pension contribution', col: 0, amount: 96 },
+          { label: 'Employer’s pension contribution', col: 1, amount: 144 },
+        ],
+      },
+      exp: 'Two questions live in the same payslip and are constantly merged. What the EMPLOYEE loses is 412.00 + 187.00 + 96.00 = £695.00, and only that reduces the net pay. What the EMPLOYER pays on top is 344.00 + 144.00 = £488.00 — real money, but it never appears in the employee’s net pay because it was never theirs. Class 1 National Insurance has both an employee and an employer side at different rates, which is why it appears twice and why reading only the words "National Insurance" gets the row wrong.',
+    },
+    {
+      id: 'P-4-71', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.11'],
+      type: 'entrygrid',
+      q: 'A month’s payroll produces: PAYE income tax £528.00, employee’s Class 1 National Insurance £231.00, employer’s Class 1 National Insurance £402.00, an employee pension contribution of £120.00 paid to a pension provider, and a trade union subscription of £9.00 deducted at the employee’s request. Sort each amount by where it is sent.',
+      entrygrid: {
+        title: 'Where the deductions go',
+        rowHeader: 'Amount',
+        columns: ['Payable to HMRC £', 'Payable to someone else £'],
+        rows: [
+          { label: 'PAYE income tax deducted', col: 0, amount: 528 },
+          { label: 'Employee’s Class 1 National Insurance', col: 0, amount: 231 },
+          { label: 'Employer’s Class 1 National Insurance', col: 0, amount: 402 },
+          { label: 'Employee’s pension contribution', col: 1, amount: 120 },
+          { label: 'Trade union subscription', col: 1, amount: 9 },
+        ],
+      },
+      exp: 'The amount due to HMRC is 528.00 + 231.00 + 402.00 = £1,161.00 — the tax, both sides of National Insurance, and nothing else. The employer’s own National Insurance is the row most often left out: it is not deducted from anybody, but it is still payable to HMRC and is part of the same monthly payment. Pension contributions and union subscriptions are deductions from pay that belong to third parties; the employer is holding them for someone else and must pass them on, but not to HMRC.',
+    },
+    {
+      id: 'P-4-72', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.6', 'TPFB-4.1.12'],
+      type: 'entrygrid',
+      q: 'An employee earns basic pay of £2,400.00 and overtime of £315.00. PAYE income tax of £396.00 and employee’s National Insurance of £178.00 are deducted, along with a pension contribution of £136.00 taken before tax. Sort each amount into the column it belongs in.',
+      entrygrid: {
+        title: 'Gross to net',
+        rowHeader: 'Item',
+        columns: ['£ added', '£ deducted'],
+        rows: [
+          { label: 'Basic pay for the month', col: 0, amount: 2400 },
+          { label: 'Overtime', col: 0, amount: 315 },
+          { label: 'PAYE income tax', col: 1, amount: 396 },
+          { label: 'Employee’s National Insurance', col: 1, amount: 178 },
+          { label: 'Pension contribution, taken before tax', col: 1, amount: 136 },
+        ],
+      },
+      exp: 'Gross pay is 2,400.00 + 315.00 = £2,715.00; deductions are 396.00 + 178.00 + 136.00 = £710.00; net pay is 2,715.00 − 710.00 = £2,005.00. TAXABLE gross pay is a fourth figure and a different one again: the pension is taken before tax, so tax was worked out on 2,715.00 − 136.00 = £2,579.00. Four figures — gross, taxable gross, deductions, net — all derived from the same five rows, and the pension is what separates the first from the second.',
+    },
+    {
+      id: 'P-4-73', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.7', 'TPFB-4.1.8'],
+      type: 'picklist',
+      q: 'Classify each amount on a payroll.',
+      picklist: {
+        title: 'Deductions',
+        rowHeader: 'Amount', choiceHeader: 'Classification',
+        options: ['Statutory deduction', 'Non-statutory deduction', 'Not a deduction from pay'],
+        rows: [
+          { text: 'PAYE income tax', answer: 0 },
+          { text: 'Employee’s Class 1 National Insurance', answer: 0 },
+          { text: 'A trade union subscription the employee has agreed to', answer: 1 },
+          { text: 'Employer’s Class 1 National Insurance', answer: 2 },
+          { text: 'A student loan repayment', answer: 0 },
+          { text: 'Giving to charity under a Payroll Giving Scheme', answer: 1 },
+        ],
+      },
+      exp: 'A STATUTORY deduction is one the law requires the employer to make whether or not the employee agrees — tax, employee National Insurance and student loan repayments. A NON-STATUTORY deduction is made only because the employee asked for it, and can be stopped when they ask. The employer’s National Insurance is neither: it is a cost the employer bears on top of pay, so it is not a deduction at all, and putting it in either of the first two columns overstates what the employee has lost.',
+    },
+    {
+      id: 'P-4-74', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.1', 'TPFB-4.2.2'],
+      type: 'picklist',
+      q: 'Identify which Real Time Information submission carries each item.',
+      picklist: {
+        title: 'Reporting to HMRC',
+        rowHeader: 'Item', choiceHeader: 'Submission',
+        options: ['Full Payment Submission', 'Employer Payment Summary', 'Neither'],
+        rows: [
+          { text: 'Pay and deductions for every employee paid this month', answer: 0 },
+          { text: 'A claim for the Employment Allowance', answer: 1 },
+          { text: 'A declaration that no employees were paid this month', answer: 1 },
+          { text: 'A new starter’s details', answer: 0 },
+          { text: 'A P60 given to an employee after the year end', answer: 2 },
+        ],
+      },
+      exp: 'The FPS reports what WAS PAID, and goes on or before every payday. The EPS reports why LESS IS OWED than the FPS implies — statutory pay recovered, the Employment Allowance, and the months in which nobody was paid — and is sent only when there is something to report, by the 19th of the following tax month. The P60 is neither: it is given to the EMPLOYEE rather than submitted to HMRC, which is the distinction the last row is testing.',
+    },
+    {
+      id: 'P-4-75', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.1', 'TPFB-4.2.3'],
+      type: 'picklist',
+      q: 'Identify the payroll form each description belongs to.',
+      picklist: {
+        title: 'Payroll forms',
+        rowHeader: 'Description', choiceHeader: 'Form',
+        options: ['P45', 'P60', 'P11D'],
+        rows: [
+          { text: 'Given to an employee who leaves part-way through the tax year', answer: 0 },
+          { text: 'Given to every employee still employed at 5 April', answer: 1 },
+          { text: 'Reports expenses and benefits provided to an employee', answer: 2 },
+          { text: 'Shows total pay and tax for the whole tax year', answer: 1 },
+          { text: 'Carries pay and tax to date so the next employer can use the right code', answer: 0 },
+        ],
+      },
+      exp: 'A P45 moves WITH the employee: it exists so the next employer can pick up the right tax code and cumulative figures rather than starting from emergency code. A P60 is an END-OF-YEAR summary for someone still employed, due by 31 May. A P11D reports benefits rather than pay, is due by 6 July, and is needed only where the benefits were not payrolled — an employer who payrolls its benefits taxes them through the payslip and files no P11D for them at all.',
+    },
+
+    /* ── Outcome 5 — report information within the organisation (10%) ──── */
+    {
+      id: 'P-5-40', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.1', 'TPFB-5.1.2'],
+      type: 'picklist',
+      q: 'You are a junior in the accounts team. Identify what to do with each of these.',
+      picklist: {
+        title: 'Who to tell',
+        rowHeader: 'Situation', choiceHeader: 'Action',
+        options: ['Deal with it yourself', 'Refer it to your line manager', 'Notify HMRC separately'],
+        rows: [
+          { text: 'A colleague asks when the next return is due', answer: 0 },
+          { text: 'A director asks you to leave a large sale off this quarter’s return', answer: 1 },
+          { text: 'A customer asks for a duplicate of a VAT invoice issued last month', answer: 0 },
+          { text: 'A net under-declaration of £68,000 in a return submitted two years ago, which the finance director has asked you to put right', answer: 2 },
+          { text: 'A supplier asks whether the domestic reverse charge applies to a contract you have not seen', answer: 1 },
+        ],
+      },
+      exp: 'The line is drawn by two questions: is this within what you know, and is anyone asking you to do something improper? A deadline and a duplicate invoice are routine and answerable. A contract you have not seen is beyond your knowledge, and a request to omit a sale is beyond your authority — both go up, and the second goes up whoever asked. The £68,000 is different again: it is over the ' + money(T.errorCorrection.absoluteCeiling.value) + ' ceiling, so putting it right MEANS notifying HMRC separately on form ' + T.errorCorrection.separateNotificationForm + ' rather than adjusting the next return.',
+    },
+    {
+      id: 'P-5-41', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],
+      type: 'picklist',
+      q: 'Identify the effect of each on the business’s own cash flow.',
+      picklist: {
+        title: 'Cash flow',
+        rowHeader: 'Change', choiceHeader: 'Effect',
+        options: ['Improves cash flow', 'Worsens cash flow', 'No effect on cash flow'],
+        rows: [
+          { text: 'Joining the cash accounting scheme, for a business that gives sixty days’ credit', answer: 0 },
+          { text: 'Paying VAT by direct debit rather than by a cheque posted on the due date', answer: 0 },
+          { text: 'A late payment penalty charged on VAT still outstanding at day 15', answer: 1 },
+          { text: 'Moving from quarterly to monthly returns, for a business that is always in repayment', answer: 0 },
+          { text: 'A registered customer reclaiming, on their own return, the VAT you charged them', answer: 2 },
+        ],
+      },
+      exp: 'VAT is somebody else’s money passing through the business, so cash flow is about TIMING almost every time. Cash accounting stops VAT being paid over before the customer has paid. A direct debit is collected three working days after the deadline, so money leaves later than a cheque that had to be posted early to arrive. Monthly returns bring a repayment trader its refunds twelve times a year instead of four. The penalty is the only one that is a genuine cost rather than a timing difference. The last row is neither: what the customer does on their own return is their cash flow, not yours, and the VAT you charged reaches HMRC on the same day whatever they do with it.',
+    },
+    {
+      id: 'P-5-42', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.2.1', 'TPFB-5.2.4'],
+      type: 'picklist',
+      q: 'You need to check a VAT rule that may have changed. Identify which sources you can rely on.',
+      picklist: {
+        title: 'Keeping up to date',
+        rowHeader: 'Source', choiceHeader: 'Reliability',
+        options: ['A reliable primary source', 'Not a reliable primary source'],
+        rows: [
+          { text: 'The relevant HMRC VAT Notice on gov.uk', answer: 0 },
+          { text: 'The Finance Act as enacted', answer: 0 },
+          { text: 'An email from a colleague summarising what they think changed', answer: 1 },
+          { text: 'A textbook printed four years ago', answer: 1 },
+          { text: 'HMRC’s VAT Notes and agent update bulletins', answer: 0 },
+        ],
+      },
+      exp: 'A primary source is one that states the rule itself and carries a date: the legislation, and HMRC’s own published notices and bulletins. Everything else is somebody’s reading of it at some past moment. The textbook is the trap, because it was authoritative when printed — thresholds, penalty percentages and allowances all move, and a four-year-old book is confidently wrong rather than obviously out of date. A colleague’s summary is worth having and worth checking; it is not what you would cite.',
+    },
+    {
+      id: 'P-5-43', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.2.2', 'TPFB-5.2.3', 'TPFB-5.2.5'],
+      type: 'picklist',
+      q: 'Identify whether each is acceptable practice.',
+      picklist: {
+        title: 'Confidentiality and authorisation',
+        rowHeader: 'Practice', choiceHeader: 'Verdict',
+        options: ['Acceptable', 'Not acceptable'],
+        rows: [
+          { text: 'Emailing a payroll report to a colleague in the same team who needs it for the month-end journal', answer: 0 },
+          { text: 'Telling a friend outside the firm what a named employee earns', answer: 1 },
+          { text: 'Submitting a VAT return before the client has authorised it, to meet the deadline', answer: 1 },
+          { text: 'Keeping payroll files where only the payroll team can open them', answer: 0 },
+          { text: 'Discussing a client’s VAT position in a crowded café', answer: 1 },
+        ],
+      },
+      exp: 'Confidentiality is not about secrecy but about NEED: a colleague posting the month-end journal needs the payroll figures and a friend needs nothing, so the same file is properly shared in one case and a breach in the other. Restricting access to the payroll team is the same principle written into the system. The café is a breach even when nobody appears to be listening. Authorisation is separate and just as firm: a deadline is never a reason to file a return the client has not approved, because the return is their declaration and not yours.',
+    },
+
   ];
 
   /* Grouped for the by-outcome picker. */
