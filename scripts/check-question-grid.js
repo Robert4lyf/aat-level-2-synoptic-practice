@@ -117,12 +117,24 @@ BANKS.forEach(([name, bank]) => {
 });
 ok(authored >= 10, `${authored} questions of these two types are authored across the levels`);
 
-/* EVERY LEVEL THAT SHOULD HAVE THEM, HAS THEM. Wiring a type into a player and
-   never writing a question for it is a change nothing fails when undone. */
-[['Level 1', 1], ['Level 2', 1], ['Level 3 FAPS', 1], ['Level 3 TPFB', 1]].forEach(([name, least]) => {
+/* EVERY LEVEL THAT SHOULD HAVE THEM, HAS THEM — AND HAS BOTH. Wiring a type
+   into a player and never writing a question for it is a change nothing fails
+   when undone.
+
+   COUNTED PER TYPE, not together. The first version of this rule counted pick
+   lists and entry grids as one population, so a bank with twenty-three pick
+   lists and no entry grid satisfied it — which is precisely the state TPFB was
+   in, and precisely the state this rule was added to catch. Deleting every
+   entry grid from that bank left the gate green. They are two different
+   questions: one asks which CATEGORY something falls in, the other asks which
+   COLUMN a figure goes in, and a bank missing either is missing a shape its
+   assessment uses. */
+['Level 1', 'Level 2', 'Level 3 FAPS', 'Level 3 TPFB'].forEach((name) => {
   const bank = (BANKS.find(b => b[0] === name) || [])[1] || [];
-  const n = bank.filter(q => q.type === 'picklist' || q.type === 'entrygrid').length;
-  ok(n >= least, `${name} has ${n} of them`);
+  ['picklist', 'entrygrid'].forEach((type) => {
+    const n = bank.filter(q => q.type === type).length;
+    ok(n >= 1, `${name} has ${n} ${type} question${n === 1 ? '' : 's'}`);
+  });
 });
 
 /* LEVEL 1 HAS NO DOUBLE ENTRY IN ITS SYLLABUS. BKFN stops at the books of prime
