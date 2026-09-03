@@ -3757,6 +3757,37 @@
     return btn;
   }
 
+  /* ── "#subjects" means: show me the picker ──────────────────────────────────
+     cips2.html is a separate page, so its copy of the brand switcher cannot
+     open the picker the way the button above does — it has to come here first.
+     Landing on index.html plain re-opens whichever subject was last active, so
+     a caret marked "switch subject" dropped the reader straight into Level 3
+     having never been offered a choice.
+
+     Bound to hashchange as well as read at startup, because the two arrivals
+     are different events: coming from cips2.html is a cross-document
+     navigation and runs init, but setting the hash on a page that is ALREADY
+     index.html changes nothing but the URL and fires hashchange alone. A hash
+     that works only on a cold load is a hash that will be reported as broken.
+
+     Cleared as soon as it is honoured: it describes one arrival, not the page.
+     Left in place, a reload or a back-press would re-open the picker over
+     whatever the reader had since chosen. A hash rather than a query string so
+     the service worker still matches the cached index.html.
+
+     Clearing it is also what makes this safe to bind more than once: the second
+     call sees a hash that is no longer #subjects and does nothing. That is not
+     an invitation to bind it twice — it is why a stray duplicate would be
+     harmless rather than drawing the picker twice, which is the failure the
+     switcher button above keeps a _switchBound flag to avoid. */
+  function openPickerIfAsked() {
+    if (location.hash !== '#subjects') return false;
+    State.screen = 'subjects';
+    try { history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {}
+    return true;
+  }
+  window.addEventListener('hashchange', () => { if (openPickerIfAsked()) render(); });
+
   /* Header chrome is shared by every subject; the body below it is not. */
   function applyChrome() {
     const isDark = Storage.isDarkActive();
@@ -9621,6 +9652,18 @@
     renderReferencePanel();
     updateRefToggleBtn();
     if (Storage.data.settings.seenSplash) State.screen = 'home';
+    /* ARRIVING WITH THE PICKER ASKED FOR. cips2.html is a separate page, so its
+       copy of the brand switcher cannot open the picker the way this one does —
+       it has to come here first. Landing on index.html plain re-opens whatever
+       subject was last active, so pressing a caret marked "switch subject" on
+       CIPS dropped the reader straight into Level 3 without ever showing a
+       choice. The hash says what the press meant.
+
+       Cleared immediately, because it describes one arrival and not the page:
+       left in place, a reload or a back-press would re-open the picker over
+       whatever the reader had since chosen. A hash rather than a query string
+       so the service worker still matches the cached index.html. */
+    openPickerIfAsked();
     /* The self-rendering subjects carry no shared question bank — each reads its
        own data — so this guard would fire on a healthy load. Skip it when the
        active subject's own renderer is ready. */

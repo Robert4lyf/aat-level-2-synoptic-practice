@@ -109,7 +109,30 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const ctext=(await page.textContent('[data-switch-subject="cips2"]')||'').replace(/\s+/g,' ');
       if(!/CIPS Level 2/.test(ctext)||!/13 lessons/.test(ctext))errors.push('subject-picker CIPS card is missing its identity or readiness metadata.');
       await page.click('[data-switch-subject="cips2"]');await page.waitForURL(/cips2\.html$/);await page.waitForSelector('#c2PageTitle');
-      await page.click('#subjectSwitcherBtn');await page.waitForURL(/index\.html$/);const active=await page.evaluate(()=>localStorage.getItem('multisubject_active'));if(active!=='aat')errors.push(`returning from CIPS changed the prior active subject to ${active}.`);
+      /* Leaving CIPS by its caret must OFFER A CHOICE, not silently reopen the
+         subject that happened to be active last. index.html restores that
+         subject on a plain arrival, so pressing a control marked "switch
+         subject" landed the reader inside Level 3 having been shown nothing —
+         the whole point of a caret is that a menu follows it. */
+      await page.click('#subjectSwitcherBtn');await page.waitForURL(/index\.html/);
+      await page.waitForSelector('.subject-picker',{timeout:5000}).catch(()=>errors.push('leaving CIPS by the brand caret did not open the subject picker — it reopened the last active subject instead.'));
+      const active=await page.evaluate(()=>localStorage.getItem('multisubject_active'));if(active!=='aat')errors.push(`returning from CIPS changed the prior active subject to ${active}.`);
+      /* And the request is spent once honoured: a reload must not put the
+         picker back over whatever the reader has since chosen. */
+      if(/#subjects/.test(await page.url()))errors.push('the #subjects request stayed in the URL, so a reload or a back-press reopens the picker.');
+      await page.reload({waitUntil:'load'});await page.waitForTimeout(900);
+      if(await page.$('.subject-picker'))errors.push('the subject picker reopened on reload — the arrival request outlived the arrival.');
+      /* THE OTHER ARRIVAL. Coming from cips2.html is a cross-document
+         navigation and runs init; asking for the picker on a page that is
+         ALREADY index.html changes nothing but the URL and fires hashchange
+         alone. Both have to work, and only the first is exercised above — a
+         first version of this fix handled the cross-document case only, passed
+         every check here, and left a hash that did nothing whenever the reader
+         happened to be on index.html already. */
+      await page.evaluate(()=>{location.hash='#subjects';});await page.waitForTimeout(700);
+      const viaHash=await page.$$eval('.subject-picker',e=>e.length);
+      if(viaHash!==1)errors.push(`asking for the picker by hash on an already-loaded index.html drew ${viaHash} pickers; expected exactly 1.`);
+      if(/#subjects/.test(await page.url()))errors.push('the hash-triggered picker did not clear its own request from the URL.');
       if(consoleErrors.length)errors.push('subject bridge browser errors: '+consoleErrors.join(' | '));await ctx.close();
     }
     notes.push('Shared picker opens CIPS and returning preserves the previously active subject.');

@@ -540,11 +540,14 @@
     S.practiceQs = []; S.practiceResults = []; S.lessonId = null; S.screen = 'home';
     render({ focus: true });
   });
-  /* The brand is the way out of a subject on every other page in this app. It
-     opens a picker there because the picker is on the same page; here the
-     picker IS another page, so it goes to it. Same affordance, same place. */
+  /* The brand is the way out of a subject on every other page in this app,
+     where it opens the picker in place. The picker lives on index.html, so this
+     copy has to travel — and it must ASK FOR THE PICKER on arrival. Going to
+     index.html plain re-opens whichever subject was last active, so a caret
+     labelled "switch subject" landed the reader in Level 3 having never been
+     offered a choice. app.js reads the hash and opens the picker. */
   var brand = document.getElementById('subjectSwitcherBtn');
-  if (brand) brand.addEventListener('click', function () { window.location.href = 'index.html'; });
+  if (brand) brand.addEventListener('click', function () { window.location.href = 'index.html#subjects'; });
 
   document.addEventListener('keydown',function(e){
     if(e.altKey||e.ctrlKey||e.metaKey)return;
