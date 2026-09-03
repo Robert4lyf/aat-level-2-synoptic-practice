@@ -101,6 +101,14 @@ const MUTANTS = [
     }
   },
   {
+    /* The chrome stays sticky and correct; only the tab strip inside it is
+       mis-pinned. Nothing about the chrome's own position is wrong, so this can
+       only be caught by measuring a bar against the bar above it. */
+    name: 'CIPS tab strip mis-pinned inside a chrome that is otherwise right',
+    apply: d => edit(d, 'cips2-styles.css', '.c2-tabs {\n  display: flex;',
+      '.c2-tabs {\n  position: sticky; top: 60px; z-index: 35;\n  display: flex;')
+  },
+  {
     name: 'CIPS context bar back at top: 0',
     apply: d => edit(d, 'cips2-styles.css',
       '.c2-ctx {\n  position: sticky; top: var(--chrome-h, 0px); z-index: 6;',

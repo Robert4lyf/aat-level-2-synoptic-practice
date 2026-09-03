@@ -271,10 +271,21 @@ async function audit(page, where, sel) {
             });
             return (await page.screenshot({ clip: clip })).toString('base64');
           };
+          /* AND THE PAGE MUST ACTUALLY HAVE MOVED between the two photographs.
+             The first version scrolled down by 60 from a position audit() had
+             already clamped to the bottom of a 613px-scrollable lesson: the page
+             did not move, the two photographs were identical, and identical was
+             read as opaque. A probe that cannot tell "the same because nothing
+             shows through" from "the same because nothing happened" is not a
+             probe, so the movement is asserted too. */
+          const posA = await page.evaluate(() => window.scrollY);
           const a = await shoot();
-          await page.evaluate(() => window.scrollBy(0, 60));
+          await page.evaluate(() => window.scrollBy(0, -80));
           await page.waitForTimeout(120);
+          const posB = await page.evaluate(() => window.scrollY);
           const b = await shoot();
+          ok(Math.abs(posA - posB) > 20,
+            `CIPS lesson @${width}: the opacity probe could not scroll the page (${posA}px then ${posB}px), so it compared two photographs of the same thing and proved nothing.`);
           ok(a === b,
             `CIPS lesson @${width}: the context bar's pixels change when the page scrolls behind it — it is not opaque, so prose passing under it shows through.`);
         }
