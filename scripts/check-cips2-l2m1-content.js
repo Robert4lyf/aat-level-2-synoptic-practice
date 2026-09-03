@@ -111,7 +111,34 @@ function validate(sy, learn, practice) {
   criterionMap.forEach((_,id)=>{ if(!(criterionPractice.get(id)>0)) errors.push(`${id}: no practice question maps to this criterion`); });
   if (stats.applied < Math.ceil(qs.length/2)) errors.push(`only ${stats.applied}/${qs.length} practice questions are applied; at least half must require context/application`);
 
+  validateBridgeCard(learn, practice, errors);
   return { errors, stats };
+}
+
+/* THE SUBJECT-PICKER CARD COUNTS WHAT THE BANK ACTUALLY HOLDS.
+
+   cips2-bridge.js runs on index.html, which does not load any CIPS data, so
+   the card it injects cannot read the lesson list or the question bank — the
+   numbers on it are typed. Typed numbers drift, and this one is the first
+   thing a reader is told about the course before they open it.
+
+   The browser check asserts the card says "13 lessons", which pins the typed
+   string rather than the truth: grow the bank and both the card and that check
+   stay happily wrong together. This compares the string against the data. */
+function validateBridgeCard(learn, practice, errors) {
+  const fs = require('fs');
+  const src = fs.readFileSync(path.join(ROOT, 'cips2-bridge.js'), 'utf8');
+  const m = /\.sc-meta[\s\S]{0,120}?textContent\s*=\s*'([^']+)'/.exec(src);
+  if (!m) { errors.push('cips2-bridge.js: could not find the subject-picker card\'s meta line to check its counts against the data.'); return; }
+  const said = m[1];
+  const lessons = /(\d+)\s+lessons/.exec(said);
+  const questions = /(\d+)\s+practice questions/.exec(said);
+  if (!lessons) errors.push(`the picker card ("${said}") no longer states a lesson count.`);
+  else if (Number(lessons[1]) !== learn.LESSONS.length)
+    errors.push(`the picker card says ${lessons[1]} lessons; the module has ${learn.LESSONS.length}.`);
+  if (!questions) errors.push(`the picker card ("${said}") no longer states a question count.`);
+  else if (Number(questions[1]) !== practice.QUESTIONS.length)
+    errors.push(`the picker card says ${questions[1]} practice questions; the bank holds ${practice.QUESTIONS.length}.`);
 }
 
 function validateQuestion(q,label,errors,deep) {
