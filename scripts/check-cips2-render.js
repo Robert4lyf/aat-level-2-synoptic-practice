@@ -323,6 +323,107 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       await ctx.close();
     }
     notes.push('A progress file carrying both the old and the new shape keeps every lesson from both, and is left in the new shape alone.');
+
+    /* 10 — moving between cards puts the reader at the top of the new one.
+       Cards run from a short recap to several hundred words, so pressing Next
+       at the foot of a long card used to leave the page at that same offset in
+       the new one: not a scroll position so much as the first paragraphs
+       appearing to be missing.
+
+       MEASURED ON THE CARD'S OWN TOP EDGE, not on its heading. A first version
+       of this asked whether the h1 was below the sticky bars, and the heading
+       sits about forty pixels inside the card — so a renderer that forgot the
+       context bar's height, and left the top of the card tucked under it,
+       passed cleanly. The edge is the thing that must clear the bars.
+
+       AND ONLY WHERE THE PAGE WAS REALLY SCROLLED. Three of this lesson's five
+       cards are shorter than the viewport, so on those the page cannot scroll
+       and every implementation looks identical. Asserting on them proves
+       nothing, so each move first checks that it had somewhere to fall from. */
+    {
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.removeItem('prep_v2_cips2');});
+      await page.click('[data-c2nav="module"]');
+      await page.click('[data-go="lesson"]');
+      await page.waitForSelector('.c2-reading-card');
+
+      const NEAR = 70;   /* the card may rest a little below the bars, not far */
+      const placement = () => page.evaluate(() => {
+        const card=document.querySelector('.c2-reading-card');
+        if(!card)return null;
+        const chrome=document.querySelector('[data-app-chrome]');
+        const bar=document.querySelector('.c2-ctx');
+        const stack=Math.max(chrome?chrome.getBoundingClientRect().bottom:0, bar?bar.getBoundingClientRect().bottom:0);
+        return {cardTop:+card.getBoundingClientRect().top.toFixed(1), stack:+stack.toFixed(1),
+          scrollY:+window.scrollY.toFixed(1),
+          heading:(card.querySelector('#c2PageTitle')||{}).textContent||''};
+      });
+      /* Fall to the bottom of the current card and report how far that was. A
+         move made from a page that could not scroll tells us nothing. */
+      const dropToBottom = async () => {
+        await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
+        await page.waitForTimeout(140);
+        return page.evaluate(()=>+window.scrollY.toFixed(1));
+      };
+      const judge = (label, m) => {
+        if(!m){errors.push(`${label}: no reading card on screen after the move.`);return;}
+        if(m.cardTop < m.stack - 1)
+          errors.push(`${label}: the top of the card is at ${m.cardTop}px, above the sticky bars which end at ${m.stack}px — its opening is hidden behind them.`);
+        else if(m.cardTop > m.stack + NEAR)
+          errors.push(`${label}: the top of the card is at ${m.cardTop}px with the bars ending at ${m.stack}px — the reader is left ${Math.round(m.cardTop-m.stack)}px into the page rather than at the card.`);
+      };
+
+      let informative=0;
+      const seen=[];
+      for(let i=0;i<6;i++){
+        const fell=await dropToBottom();
+        const next=await page.$('[data-card="next"]');
+        if(!next)break;
+        await next.click();
+        await page.waitForTimeout(220);
+        const m=await placement();
+        if(m)seen.push(m.heading.trim());
+        if(fell>150){informative++;judge(`card ${i+2} (arrived from a page scrolled ${fell}px)`,m);}
+      }
+      if(informative<2)errors.push(`only ${informative} card advances started from a scrolled page; this check needs at least two to mean anything.`);
+      if(new Set(seen).size!==seen.length)errors.push(`the same card heading appeared twice while advancing: ${JSON.stringify(seen)}.`);
+
+      /* Back and the arrow keys are the same move by other routes, and each
+         needs its own scrolled start — an earlier version tested them from the
+         last card of the lesson, which is short enough that the page never
+         moved and both passed whatever the code did. */
+      const onLongCard = async () => (await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight)) > 300;
+      /* Returns true when we are ON a long card, whether or not we had to move
+         to get there. An earlier version only returned true if it had moved,
+         so arriving already on one reported failure and skipped the check
+         below entirely — the arrow-key regression sailed through it. */
+      const rewindToLongCard = async () => {
+        if(await onLongCard())return true;
+        for(let i=0;i<8;i++){
+          const prev=await page.$('[data-card="prev"]:not([disabled])');
+          if(!prev)break;
+          await prev.click(); await page.waitForTimeout(180);
+          if(await onLongCard())return true;
+        }
+        return false;
+      };
+
+      if(!(await rewindToLongCard()))errors.push('could not reach a card long enough to scroll; the Back and arrow-key checks below would be vacuous.');
+      else {
+        let fell=await dropToBottom();
+        if(fell<=150)errors.push(`the Back check started from a page scrolled only ${fell}px — it cannot tell a fix from its absence.`);
+        else { await page.click('[data-card="prev"]'); await page.waitForTimeout(220); judge(`going Back (from a page scrolled ${fell}px)`, await placement()); }
+
+        if(await rewindToLongCard()){
+          fell=await dropToBottom();
+          if(fell<=150)errors.push(`the arrow-key check started from a page scrolled only ${fell}px — it cannot tell a fix from its absence.`);
+          else { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(220); judge(`the right-arrow key (from a page scrolled ${fell}px)`, await placement()); }
+        }
+      }
+
+      if(consoleErrors.length)errors.push('card-scroll browser errors: '+consoleErrors.join(' | '));
+      await ctx.close();
+    }
+    notes.push('Moving between lesson cards — by button, by Back, or by arrow key — puts the top of the new card just below the sticky stack.');
   }finally{await browser.close();server.close();}
   console.log(`${BOLD}CIPS browser quality${RESET}\n`);notes.forEach(n=>console.log(`  ${DIM}${n}${RESET}`));console.log('');
   if(errors.length){console.log(`${RED}${BOLD}${errors.length} browser/UX problem(s)${RESET}`);errors.forEach(e=>console.log(`  ${RED}✗${RESET} ${e}`));console.log('');process.exit(1);}

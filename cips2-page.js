@@ -618,6 +618,37 @@
     render({ focus: true });
   }
 
+  /* THE TOP OF THE NEW CARD, NOT WHEREVER THE LAST ONE ENDED.
+     Cards vary from a short recap to several hundred words, so pressing Next
+     at the foot of a long card left the page scrolled to that same offset in
+     the new one — which does not read as a scroll position, it reads as the
+     first paragraphs being missing. The card is placed just below the sticky
+     stack rather than at viewport zero, because the chrome and the context bar
+     cover the top of the page and scrolling the card under them would hide the
+     heading the reader is looking for. */
+  function scrollToCard() {
+    var card = host && host.querySelector('.c2-reading-card');
+    if (!card) return;
+    var chrome = document.querySelector('[data-app-chrome]');
+    var ctx = host.querySelector('.c2-ctx');
+    var covered = (chrome ? chrome.getBoundingClientRect().height : 0) +
+                  (ctx ? ctx.getBoundingClientRect().height : 0);
+    var y = card.getBoundingClientRect().top +
+            (window.pageYOffset || document.documentElement.scrollTop || 0) - covered - 12;
+    window.scrollTo(0, Math.max(0, y));
+  }
+  function showCard(delta) {
+    var l = LD.lesson(S.lessonId);
+    if (!l) return;
+    var next = Math.max(0, Math.min(l.cards.length - 1, S.cardIdx + delta));
+    if (next === S.cardIdx) return;
+    S.cardIdx = next;
+    /* focus:true moves the reader to the new card's heading as well; it focuses
+       with preventScroll, so it does not fight the scroll above. */
+    render({ focus: true });
+    scrollToCard();
+  }
+
   function openLesson(id) {
     if (!LD.lesson(id)) return;
     S.screen='lesson'; S.lessonId=id; S.cardIdx=0; S.lessonPhase='read';
@@ -683,7 +714,7 @@
     Array.prototype.forEach.call(host.querySelectorAll('[data-open-module]'),function(b){b.addEventListener('click',function(){openModule(b.getAttribute('data-open-module'));});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-screen]'),function(b){b.addEventListener('click',function(){S.screen=b.getAttribute('data-screen');S.practiceQs=[];S.lessonId=null;render({focus:true});});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-go="lesson"]'),function(b){b.addEventListener('click',function(){openLesson(b.getAttribute('data-id'));});});
-    Array.prototype.forEach.call(host.querySelectorAll('[data-card]'),function(b){b.addEventListener('click',function(){var l=LD.lesson(S.lessonId);if(!l)return;var d=b.getAttribute('data-card')==='next'?1:-1;S.cardIdx=Math.max(0,Math.min(l.cards.length-1,S.cardIdx+d));render();});});
+    Array.prototype.forEach.call(host.querySelectorAll('[data-card]'),function(b){b.addEventListener('click',function(){showCard(b.getAttribute('data-card')==='next'?1:-1);});});
     /* checkCorrect resets HERE, not only in openLesson. The checkpoint can be
        entered more than once in a single visit to a lesson — answer a question,
        press the back arrow to re-read a card, press "Check your understanding"
@@ -729,8 +760,12 @@
     var tag=(e.target&&e.target.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea'||tag==='select')return;
     if(S.screen==='lesson'&&S.lessonPhase==='read'){
       var l=LD.lesson(S.lessonId);if(!l)return;
-      if(e.key==='ArrowRight'&&S.cardIdx<l.cards.length-1){S.cardIdx++;e.preventDefault();render();}
-      if(e.key==='ArrowLeft'&&S.cardIdx>0){S.cardIdx--;e.preventDefault();render();}
+      /* The arrows are the same move as the buttons, so they go through the
+         same function — an earlier version scrolled on the button and not on
+         the key, which is the kind of split nobody notices until they use the
+         other one. */
+      if(e.key==='ArrowRight'&&S.cardIdx<l.cards.length-1){e.preventDefault();showCard(1);}
+      if(e.key==='ArrowLeft'&&S.cardIdx>0){e.preventDefault();showCard(-1);}
     } else if(S.screen==='practice'&&S.practiceQs.length&&!S.practiceAnswered&&/^[1-9]$/.test(e.key)){
       /* Bounded by the question, not by a constant: every question in the bank
          has four options today, and a five-option one would have left its fifth
