@@ -122,6 +122,17 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       if(/#subjects/.test(await page.url()))errors.push('the #subjects request stayed in the URL, so a reload or a back-press reopens the picker.');
       await page.reload({waitUntil:'load'});await page.waitForTimeout(900);
       if(await page.$('.subject-picker'))errors.push('the subject picker reopened on reload — the arrival request outlived the arrival.');
+      /* THE OTHER ARRIVAL. Coming from cips2.html is a cross-document
+         navigation and runs init; asking for the picker on a page that is
+         ALREADY index.html changes nothing but the URL and fires hashchange
+         alone. Both have to work, and only the first is exercised above — a
+         first version of this fix handled the cross-document case only, passed
+         every check here, and left a hash that did nothing whenever the reader
+         happened to be on index.html already. */
+      await page.evaluate(()=>{location.hash='#subjects';});await page.waitForTimeout(700);
+      const viaHash=await page.$$eval('.subject-picker',e=>e.length);
+      if(viaHash!==1)errors.push(`asking for the picker by hash on an already-loaded index.html drew ${viaHash} pickers; expected exactly 1.`);
+      if(/#subjects/.test(await page.url()))errors.push('the hash-triggered picker did not clear its own request from the URL.');
       if(consoleErrors.length)errors.push('subject bridge browser errors: '+consoleErrors.join(' | '));await ctx.close();
     }
     notes.push('Shared picker opens CIPS and returning preserves the previously active subject.');

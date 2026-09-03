@@ -3773,7 +3773,13 @@
      Cleared as soon as it is honoured: it describes one arrival, not the page.
      Left in place, a reload or a back-press would re-open the picker over
      whatever the reader had since chosen. A hash rather than a query string so
-     the service worker still matches the cached index.html. */
+     the service worker still matches the cached index.html.
+
+     Clearing it is also what makes this safe to bind more than once: the second
+     call sees a hash that is no longer #subjects and does nothing. That is not
+     an invitation to bind it twice — it is why a stray duplicate would be
+     harmless rather than drawing the picker twice, which is the failure the
+     switcher button above keeps a _switchBound flag to avoid. */
   function openPickerIfAsked() {
     if (location.hash !== '#subjects') return false;
     State.screen = 'subjects';
