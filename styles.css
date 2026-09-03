@@ -314,7 +314,8 @@ header, main { position: relative; z-index: 1; }
    nothing else. */
 body[data-subject="aat"] > header,
 body[data-subject="aat1"] > header,
-body[data-subject="aat3"] > header {
+body[data-subject="aat3"] > header,
+body[data-subject="cips2"] > header {
   padding: 9px 18px;
   gap: 8px;
   box-shadow: 0 1px 0 rgba(255,255,255,.06) inset;
@@ -326,21 +327,28 @@ body[data-subject="aat1"] > header .version-badge,
 body[data-subject="aat1"] > header .badge,
 body[data-subject="aat3"] > header .sub,
 body[data-subject="aat3"] > header .version-badge,
-body[data-subject="aat3"] > header .badge { display: none; }
+body[data-subject="aat3"] > header .badge,
+body[data-subject="cips2"] > header .sub,
+body[data-subject="cips2"] > header .version-badge,
+body[data-subject="cips2"] > header .badge { display: none; }
 body[data-subject="aat"] > header h1,
 body[data-subject="aat1"] > header h1,
-body[data-subject="aat3"] > header h1 { font-size: .98rem; }
+body[data-subject="aat3"] > header h1,
+body[data-subject="cips2"] > header h1 { font-size: .98rem; }
 body[data-subject="aat"] > header .header-left,
 body[data-subject="aat1"] > header .header-left,
-body[data-subject="aat3"] > header .header-left { gap: 10px; }
+body[data-subject="aat3"] > header .header-left,
+body[data-subject="cips2"] > header .header-left { gap: 10px; }
 
 @media (max-width: 560px) {
   body[data-subject="aat"] > header,
   body[data-subject="aat1"] > header,
-  body[data-subject="aat3"] > header { padding: 8px 12px; }
+  body[data-subject="aat3"] > header,
+  body[data-subject="cips2"] > header { padding: 8px 12px; }
   body[data-subject="aat"] > header .icon-btn,
   body[data-subject="aat1"] > header .icon-btn,
-  body[data-subject="aat3"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
+  body[data-subject="aat3"] > header .icon-btn,
+  body[data-subject="cips2"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
   /* Level 2 alone still shows a badge, and at this width it lands on top of
      the title it is meant to sit beside. */
   body[data-subject="aat"] > header .badge { display: none; }
@@ -5485,6 +5493,37 @@ body.dark[data-subject="aat"] .unit-card {
 }
 
 /* ────────────────────────────────────────────────────────────────────────────
+   CIPS LEVEL 2 – PROCUREMENT GREEN
+   Feel: operational, plain, commercial.
+   CIPS renders its own screens on its own page and keeps its own palette
+   there; what it shares is the app bar, so the only thing it declares here is
+   the gradient that bar is filled with. Deep forest to the teal the module's
+   own accent is drawn from.
+   ──────────────────────────────────────────────────────────────────────────── */
+body[data-subject="cips2"] {
+  --subj: #0b6b57; --subj-rgb: 11,107,87; --subj-light: rgba(11,107,87,.09);
+  --header-bg:  linear-gradient(135deg, #04231C 0%, #075445 45%, #0B6B57 100%);
+  /* The same colours cips2-styles.css keeps as --c2-*, restated in the names
+     the shared components read. A component CIPS renders — the tab strip, the
+     skip link — then comes out in CIPS's palette rather than in AAT's, which
+     is the whole reason for sharing it. */
+  --bg-card: #ffffff;
+  --bg-main: #f3f7f5;
+  --border:  #dbe5e1;
+  --text:    #15221f;
+  --subtext: #66736f;
+}
+body.dark[data-subject="cips2"] {
+  --subj: #42d3ad; --subj-rgb: 66,211,173; --subj-light: rgba(66,211,173,.11);
+  --header-bg:  linear-gradient(135deg, #020F0C 0%, #05332A 45%, #08483B 100%);
+  --bg-card: #101b18;
+  --bg-main: #091310;
+  --border:  #293d38;
+  --text:    #edf7f4;
+  --subtext: #a8bbb5;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
    FRENCH – PARISIAN WARMTH
    Feel: cultured, warm, literary.
    Deep navy header with French tricolor bottom stripe · warm cream background
@@ -5690,12 +5729,32 @@ body.dark[data-subject="code-route"] .unit-card {
    ensure the pill tab bar and L3 bridge cards are unambiguously dark.
    ─────────────────────────────────────────────────────────────────────────── */
 .dark .nav-tabs {
-  background: #0F172A;
-  border-color: #1e2a44;
+  /* Was #0F172A flat — AAT's dark card colour, painted on every subject. On a
+     page whose own ground is a different colour (CIPS's is near-black green)
+     the strip read as a piece of another app dropped onto it. The fallbacks are
+     the values that were hardcoded here, so a subject that declares no dark
+     surface of its own is byte-identical to before. */
+  background: var(--bg-card, #0F172A);
+  border-color: var(--border, #1e2a44);
 }
 .dark .nav-tab {
   color: #c5d0e4;
 }
+/* THE INK ON THE SELECTED PILL, and the reason it needs saying twice.
+
+   `.nav-tab.active` sets `color: #fff`, which is right in light mode: --subj is
+   a deep colour there. In dark mode --subj inverts to a LIGHT one for every
+   subject in this app — #60a5fa, #2dd4bf, #818cf8, #93b4ff, #c4b5fd, #f87171,
+   #fbbf24, #42d3ad — and white on those is around 2:1. It was not even getting
+   white: `.dark .nav-tab` above has the same specificity as `.nav-tab.active`
+   and comes later in the file, so the selected tab's label was #c5d0e4 on a
+   pale fill, measured at 1.21:1 on CIPS. The label of the tab you are on was
+   the least readable text on the screen, on every subject, in dark mode.
+
+   The fill inverts between the themes and the ink does not follow on its own —
+   the same trap Level 3 keeps --a3-on-fill for. Here the ink is near-black,
+   which clears 4.5:1 against all eight of those fills. */
+.dark .nav-tab.active { color: #08111f; }
 .dark .nav-tab:hover {
   background: #0b1322;
   color: #e6ebf4;

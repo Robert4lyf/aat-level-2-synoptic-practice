@@ -20,29 +20,31 @@
 <body data-subject="cips2">
   <script src="cips2-theme-bootstrap.js"></script>
   <a class="skip-link" href="#cipsApp">Skip to main content</a>
-  <div class="c2-shell">
-    <!-- The bar and the tabs are ONE sticky group, not two stickies with an
-         offset between them. They were two, and the tabs were pinned at a
-         hardcoded copy of the bar's min-height (68px, then 62px on phones)
-         against a bar that measures 70.6px — so nine pixels of the tab strip
-         sat behind the bar at every scroll position on every phone. A group
-         has no number to keep in step. Its measured height is published as
-         --chrome-h by chrome-offset.js, which is what the context bar inside
-         the page sticks to. -->
-    <div class="c2-chrome" data-app-chrome>
-      <div class="c2-top" role="banner">
-        <a class="c2-hub-link" href="index.html" aria-label="Back to subject picker"><span aria-hidden="true">←</span><span class="c2-hub-label">Subjects</span></a>
-        <div class="c2-brand"><strong>📦 CIPS Level 2</strong><span>Certificate in Procurement and Supply Operations</span></div>
-        <button class="c2-theme" id="c2Theme" type="button" aria-label="Toggle dark mode" aria-pressed="false"><span class="c2-theme-i" aria-hidden="true">🌙</span><span class="c2-theme-l">Dark</span></button>
+  <!-- THE SHARED APP HEADER, not a CIPS invention. Every other subject in this
+       app renders this exact element out of styles.css and supplies only its own
+       --header-bg gradient; CIPS had built a 121px light bar of its own, with a
+       back-link where the others have a subject switcher and a lone theme icon
+       where the others have a row of pill buttons. The markup below is
+       index.html's, with the ids app.js binds swapped for the same ids
+       cips2-page.js binds — same header, same shape, same 46px. -->
+  <header data-app-chrome>
+    <div class="header-left">
+      <div>
+        <!-- No aria-haspopup, which index.html's copy of this button carries and
+             this one must not: there the caret opens a picker on the same page,
+             here it goes to the picker's page. Announcing a menu that never
+             opens is a worse promise than the plain one. -->
+        <h1><button id="subjectSwitcherBtn" class="brand-switch" type="button"
+                aria-label="Leave CIPS Level 2 and choose another subject"><span class="brand-name">📦 CIPS Level 2</span><span class="brand-caret" aria-hidden="true">▾</span></button></h1>
+        <span class="sub">Certificate in Procurement and Supply Operations</span>
       </div>
-      <nav class="c2-tabs" aria-label="CIPS study sections">
-        <button type="button" data-c2nav="home">Overview</button>
-        <button type="button" data-c2nav="module">L2M1</button>
-        <button type="button" data-c2nav="practice">Practice</button>
-        <button type="button" data-c2nav="progress">Progress</button>
-        <button type="button" data-c2nav="glossary">Glossary</button>
-      </nav>
     </div>
+    <div class="header-right">
+      <button class="icon-btn" id="darkToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">🌙 Dark</button>
+      <button class="icon-btn" id="homeNavBtn" type="button" aria-label="Go home">🏠 Home</button>
+    </div>
+  </header>
+  <div class="c2-shell">
     <main id="cipsApp" tabindex="-1"></main>
   </div>
   <noscript><div class="c2-fatal"><h1>JavaScript is required</h1><p>This study tool needs JavaScript enabled.</p></div></noscript>

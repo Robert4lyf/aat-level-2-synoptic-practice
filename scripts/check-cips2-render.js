@@ -29,8 +29,22 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       if(seen.buttons)errors.push(`${w}px: ${seen.buttons} button(s) have no accessible text/name.`);
       if(!seen.sync||!seen.backup)errors.push(`${w}px: CIPS did not load the shared progress backup/sync transport.`);
       if(consoleErrors.length)errors.push(`${w}px: browser errors: ${consoleErrors.join(' | ')}`);
-      const minTargets=await page.evaluate(()=>[...document.querySelectorAll('.c2-tabs button,.c2-theme,.c2-hub-link')].map(e=>({t:(e.textContent||'').trim(),h:e.getBoundingClientRect().height,w:e.getBoundingClientRect().width})).filter(x=>x.h<40||x.w<40));
-      if(minTargets.length)errors.push(`${w}px: undersized primary touch target(s): ${JSON.stringify(minTargets)}`);
+      /* The header's controls, which are now the app's shared `.icon-btn`s and
+         brand switcher rather than CIPS-only buttons. The section tabs are the
+         shared `.nav-tab` and are deliberately not held to this floor: they are
+         the same size here as on Level 2, and a CIPS-only exception to that is
+         the inconsistency this page was just fixed for. */
+      const minTargets=await page.evaluate(()=>[...document.querySelectorAll('header .icon-btn, header .brand-switch')].map(e=>({t:(e.textContent||'').trim(),h:e.getBoundingClientRect().height,w:e.getBoundingClientRect().width})).filter(x=>x.h<24||x.w<24));
+      if(minTargets.length)errors.push(`${w}px: undersized header control(s): ${JSON.stringify(minTargets)}`);
+      /* The bar itself is the shared one, at the shared size. A CIPS page that
+         grows its own header again fails here. */
+      const hdr=await page.evaluate(()=>{const h=document.querySelector('body > header');return h?{h:Math.round(h.getBoundingClientRect().height),brand:!!h.querySelector('.brand-switch'),ctrls:h.querySelectorAll('.icon-btn').length}:null;});
+      if(!hdr)errors.push(`${w}px: CIPS has no shared app header.`);
+      else{
+        if(!hdr.brand)errors.push(`${w}px: the header has no brand switcher, which is how every other subject is left.`);
+        if(hdr.ctrls<2)errors.push(`${w}px: the header carries ${hdr.ctrls} icon button(s); the shared header has theme and home.`);
+        if(hdr.h>80)errors.push(`${w}px: the CIPS header is ${hdr.h}px — the shared bar is 46px on a phone and 50px above.`);
+      }
       await ctx.close();
     }
     notes.push('CIPS landing renders without horizontal overflow at 390px and 1280px, with named primary controls and shared progress transport available.');
@@ -82,7 +96,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
     /* 4 — theme is a preference, not session state. */
     {
       const {ctx,page}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.setItem('prep_v2_cips2',JSON.stringify({settings:{darkMode:false}}));});
-      const before=await page.evaluate(()=>document.body.classList.contains('dark'));await page.click('#c2Theme');const after=await page.evaluate(()=>document.body.classList.contains('dark'));if(before===after)errors.push('theme toggle did not change the theme.');await page.reload({waitUntil:'load'});const persisted=await page.evaluate(()=>document.body.classList.contains('dark'));if(persisted!==after)errors.push('theme choice did not survive reload.');await ctx.close();
+      const before=await page.evaluate(()=>document.body.classList.contains('dark'));await page.click('#darkToggle');const after=await page.evaluate(()=>document.body.classList.contains('dark'));if(before===after)errors.push('theme toggle did not change the theme.');await page.reload({waitUntil:'load'});const persisted=await page.evaluate(()=>document.body.classList.contains('dark'));if(persisted!==after)errors.push('theme choice did not survive reload.');await ctx.close();
     }
     notes.push('CIPS dark/light preference survives reload.');
 
@@ -95,7 +109,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const ctext=(await page.textContent('[data-switch-subject="cips2"]')||'').replace(/\s+/g,' ');
       if(!/CIPS Level 2/.test(ctext)||!/13 lessons/.test(ctext))errors.push('subject-picker CIPS card is missing its identity or readiness metadata.');
       await page.click('[data-switch-subject="cips2"]');await page.waitForURL(/cips2\.html$/);await page.waitForSelector('#c2PageTitle');
-      await page.click('.c2-hub-link');await page.waitForURL(/index\.html$/);const active=await page.evaluate(()=>localStorage.getItem('multisubject_active'));if(active!=='aat')errors.push(`returning from CIPS changed the prior active subject to ${active}.`);
+      await page.click('#subjectSwitcherBtn');await page.waitForURL(/index\.html$/);const active=await page.evaluate(()=>localStorage.getItem('multisubject_active'));if(active!=='aat')errors.push(`returning from CIPS changed the prior active subject to ${active}.`);
       if(consoleErrors.length)errors.push('subject bridge browser errors: '+consoleErrors.join(' | '));await ctx.close();
     }
     notes.push('Shared picker opens CIPS and returning preserves the previously active subject.');

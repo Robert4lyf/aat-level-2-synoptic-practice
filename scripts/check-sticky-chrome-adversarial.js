@@ -93,20 +93,12 @@ const MUTANTS = [
       'position: sticky; top: calc(var(--chrome-h, 0px) + 52px); z-index: 5;')
   },
   {
-    name: 'CIPS tab strip pinned at a typed 68px again',
-    apply: d => {
-      edit(d, 'cips2-styles.css', '.c2-chrome {\n  position: sticky; top: 0; z-index: 40;', '.c2-chrome {\n  z-index: 40;');
-      edit(d, 'cips2-styles.css', '.c2-top {\n  display: grid;', '.c2-top {\n  position: sticky; top: 0; z-index: 40;\n  display: grid;');
-      edit(d, 'cips2-styles.css', '.c2-tabs {\n  display: flex;', '.c2-tabs {\n  position: sticky; top: 68px; z-index: 35;\n  display: flex;');
-    }
-  },
-  {
-    /* The chrome stays sticky and correct; only the tab strip inside it is
-       mis-pinned. Nothing about the chrome's own position is wrong, so this can
-       only be caught by measuring a bar against the bar above it. */
-    name: 'CIPS tab strip mis-pinned inside a chrome that is otherwise right',
-    apply: d => edit(d, 'cips2-styles.css', '.c2-tabs {\n  display: flex;',
-      '.c2-tabs {\n  position: sticky; top: 60px; z-index: 35;\n  display: flex;')
+    /* CIPS's bar is now the shared app header, so the way to break it is the
+       way it can be broken on any page: stop it being pinned. Everything the
+       gate measures on this page is measured from its bottom edge. */
+    name: 'the CIPS app bar stops being pinned to the top',
+    apply: d => edit(d, 'styles.css', 'header {\n  background: var(--header-bg);',
+      'header {\n  position: static !important;\n  background: var(--header-bg);')
   },
   {
     name: 'CIPS context bar back at top: 0',
@@ -123,8 +115,8 @@ const MUTANTS = [
   {
     name: 'CIPS context bar hides its own title on phones, as the old bar did',
     apply: d => edit(d, 'cips2-styles.css',
-      '  .c2-hub-link { width:44px; padding:0; justify-content:center; }',
-      '  .c2-ctx-t { display:none; }\n  .c2-hub-link { width:44px; padding:0; justify-content:center; }')
+      '@media (max-width: 760px) {\n',
+      '@media (max-width: 760px) {\n  .c2-ctx-t { display:none; }\n')
   },
   {
     name: 'chrome-offset.js never loaded, so --chrome-h is never published',

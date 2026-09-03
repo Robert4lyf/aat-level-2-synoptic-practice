@@ -247,7 +247,7 @@ async function audit(page, where, sel) {
         await page.waitForTimeout(220);
         await page.click('[data-go="lesson"]');
         await page.waitForTimeout(280);
-        const seen = await audit(page, `CIPS lesson @${width}`, ['.c2-top', '.c2-tabs', '.c2-ctx']);
+        const seen = await audit(page, `CIPS lesson @${width}`, ['.c2-ctx']);
         /* The title is the reason the bar exists, and the old bar hid its own
            title below 760px — which is every phone this app is used on. */
         const title = (await page.textContent('.c2-ctx-t') || '').trim();
