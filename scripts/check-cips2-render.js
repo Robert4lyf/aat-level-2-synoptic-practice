@@ -72,7 +72,8 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       if(!(await page.$('.c2-feedback')))errors.push('checkpoint gives no immediate explanation after an answer.');
       await page.click('[data-next-check]');await page.click('[data-check-choice="1"]');await page.click('[data-finish-check]');
       const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}'));
-      if(!(stored.lessons&&stored.lessons['c2m1-01']&&stored.lessons['c2m1-01'].done))errors.push('finishing lesson 1 did not persist completion.');
+      const l2m1=(stored.modules||{}).l2m1||{};
+      if(!(l2m1.lessons&&l2m1.lessons['c2m1-01']&&l2m1.lessons['c2m1-01'].done))errors.push('finishing lesson 1 did not persist completion under its module.');
       await page.reload({waitUntil:'load'});await page.click('[data-c2nav="module"]');
       const done=await page.$eval('[data-go="lesson"][data-id="c2m1-01"]',e=>e.classList.contains('is-done'));
       if(!done)errors.push('lesson completion disappeared after reload.');
@@ -88,7 +89,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const stem=(await page.textContent('#c2PageTitle')).trim();
       const key=await page.evaluate(stem=>{const q=window.CIPS2_L2M1_PRACTICE.QUESTIONS.find(x=>x.q===stem);return q?{answer:q.answer,id:q.id}:null;},stem);
       if(!key)errors.push('practice screen cannot be reconciled to its question bank.');
-      else {await page.click(`[data-practice-choice="${key.answer}"]`);const fb=(await page.textContent('.c2-feedback')||'').trim();if(!/^Correct/.test(fb))errors.push('choosing the bank answer was not graded correct.');const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}'));if(!stored.practice||!stored.practice.los||!stored.practice.los['1']||stored.practice.los['1'].attempted!==1)errors.push('practice answer did not increment LO1 attempt history.');}
+      else {await page.click(`[data-practice-choice="${key.answer}"]`);const fb=(await page.textContent('.c2-feedback')||'').trim();if(!/^Correct/.test(fb))errors.push('choosing the bank answer was not graded correct.');const stored=await page.evaluate(()=>((JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}').modules)||{}).l2m1||{});if(!stored.practice||!stored.practice.los||!stored.practice.los['1']||stored.practice.los['1'].attempted!==1)errors.push('practice answer did not increment LO1 attempt history.');}
       if(consoleErrors.length)errors.push('practice browser errors: '+consoleErrors.join(' | '));await ctx.close();
     }
     notes.push('Practice grades against the authored bank, explains immediately and records the correct LO.');
@@ -107,7 +108,10 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const order=await page.$$eval('.subject-card',els=>els.map(e=>e.getAttribute('data-switch-subject')));
       if(order.indexOf('cips2')!==order.indexOf('aat3')+1)errors.push('CIPS is not grouped immediately after AAT Level 3 in the subject picker.');
       const ctext=(await page.textContent('[data-switch-subject="cips2"]')||'').replace(/\s+/g,' ');
-      if(!/CIPS Level 2/.test(ctext)||!/13 lessons/.test(ctext))errors.push('subject-picker CIPS card is missing its identity or readiness metadata.');
+      /* The counts themselves are checked against the banks in
+         check-cips2-content.js. Repeating a number here would pin the typed
+         string a second time, which is the bug that check was written for. */
+      if(!/CIPS Level 2/.test(ctext)||!/L2M1/.test(ctext)||!/L2M2/.test(ctext)||!/\d+ lessons/.test(ctext)||!/\d+ practice questions/.test(ctext))errors.push(`subject-picker CIPS card is missing its identity or readiness metadata: ${JSON.stringify(ctext)}`);
       await page.click('[data-switch-subject="cips2"]');await page.waitForURL(/cips2\.html$/);await page.waitForSelector('#c2PageTitle');
       /* Leaving CIPS by its caret must OFFER A CHOICE, not silently reopen the
          subject that happened to be active last. index.html restores that
@@ -137,7 +141,13 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
     }
     notes.push('Shared picker opens CIPS and returning preserves the previously active subject.');
 
-    /* 6 — a completed course offers review, not an unexpected restart at lesson 1. */
+    /* 6 — a completed course offers review, not an unexpected restart at lesson 1.
+       AND the seed below is deliberately the PRE-L2M2 STORAGE SHAPE: lessons,
+       checkpoint and practice at the top level of prep_v2_cips2, which is what
+       every existing reader has on disk. If the migration into the per-module
+       shape were dropped, this reader — who has finished all thirteen lessons —
+       would be shown an untouched course, and the CTA below would read "Start"
+       rather than "Review". */
     {
       const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{
         if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');
@@ -151,8 +161,14 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
          renderer is finally made right, which is exactly backwards. */
       const SEL='.c2-hero .c2-hero-actions .c2-primary';
       const cta=(await page.textContent(SEL)||'').trim();
-      if(!/Review L2M1/.test(cta))errors.push(`completed overview CTA is ${JSON.stringify(cta)} instead of a review action.`);
+      if(!/Review L2M1/.test(cta))errors.push(`completed overview CTA is ${JSON.stringify(cta)} instead of a review action — the pre-L2M2 progress shape was not migrated.`);
       else {await page.click(SEL);await page.waitForSelector('.c2-module');const title=(await page.textContent('#c2PageTitle')||'').trim();if(!/Introducing Procurement and Supply/.test(title))errors.push('completed-course review action did not open the module map.');}
+      /* Migrated once and written back in the new shape, so the next load is
+         not a second migration of a file that no longer has the old keys. */
+      const shape=await page.evaluate(()=>JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}'));
+      if(!shape.modules||!shape.modules.l2m1||!shape.modules.l2m1.lessons||!shape.modules.l2m1.lessons['c2m1-13'])errors.push('the pre-L2M2 progress file was not rewritten into the per-module shape.');
+      if(shape.lessons)errors.push('the migrated file still carries the old top-level lessons key.');
+      if(!shape.settings||shape.settings.darkMode!==false)errors.push('migration lost the top-level settings that cips2-theme-bootstrap.js reads before this script runs.');
       if(consoleErrors.length)errors.push('completed-course browser errors: '+consoleErrors.join(' | '));
       await ctx.close();
     }
@@ -183,7 +199,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const m=/You scored (\d+) \/ (\d+)/.exec(said);
       if(!m)errors.push('the lesson-complete card no longer states a checkpoint score.');
       else if(Number(m[1])>Number(m[2]))errors.push(`re-entering a checkpoint counted the abandoned attempt: "${m[0]}".`);
-      const stored=await page.evaluate(()=>{const l=JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}').lessons||{};return Object.values(l)[0];});
+      const stored=await page.evaluate(()=>{const m=(JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}').modules)||{};const l=(m.l2m1||{}).lessons||{};return Object.values(l)[0];});
       if(stored&&stored.checkpoint&&stored.checkpoint.correct>stored.checkpoint.total)errors.push(`a checkpoint score above its own total was written to storage: ${JSON.stringify(stored.checkpoint)}.`);
       /* This screen draws no context bar, so it must keep the section tabs —
          it had neither, which is a screen with no way out but its own buttons. */
@@ -193,8 +209,122 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       await ctx.close();
     }
     notes.push('A checkpoint re-entered mid-lesson scores itself once, and the screen at the end of a lesson is still navigable.');
+
+    /* 8 — the second module is a real course, not a second label on the first.
+       Everything below would pass on a page that merely renamed a tab: what it
+       actually asks is whether the map, the bank, the glossary and the stored
+       progress all follow the module the reader switched to. */
+    {
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.removeItem('prep_v2_cips2');});
+      const expect=await page.evaluate(()=>({
+        m1:{lessons:window.CIPS2_L2M1_LEARN.LESSONS.length,qs:window.CIPS2_L2M1_PRACTICE.QUESTIONS.length,title:window.CIPS2_MODULES.l2m1.title,los:window.CIPS2_MODULES.l2m1.outcomes.length,exam:window.CIPS2_MODULES.l2m1.assessment.questionCount},
+        m2:{lessons:window.CIPS2_L2M2_LEARN.LESSONS.length,qs:window.CIPS2_L2M2_PRACTICE.QUESTIONS.length,title:window.CIPS2_MODULES.l2m2.title,los:window.CIPS2_MODULES.l2m2.outcomes.length,exam:window.CIPS2_MODULES.l2m2.assessment.questionCount,ids:window.CIPS2_L2M2_LEARN.LESSONS.map(l=>l.id)}
+      }));
+      if(expect.m1.lessons===expect.m2.lessons)errors.push('the two modules have the same lesson count, so this section cannot tell them apart — pick a different discriminator.');
+
+      const cards=await page.$$('[data-open-module]');
+      if(cards.length!==2)errors.push(`the overview offers ${cards.length} module cards; both modules with content should appear.`);
+
+      await page.click('[data-open-module="l2m2"]');
+      await page.waitForSelector('.c2-module');
+      const title=(await page.textContent('#c2PageTitle')||'').trim();
+      if(title!==expect.m2.title)errors.push(`switching to L2M2 opened ${JSON.stringify(title)} instead of ${JSON.stringify(expect.m2.title)}.`);
+      const rows=await page.$$eval('[data-go="lesson"]',els=>els.map(e=>e.getAttribute('data-id')));
+      if(rows.length!==expect.m2.lessons)errors.push(`the L2M2 map shows ${rows.length} lessons; the module has ${expect.m2.lessons}.`);
+      if(rows.some(id=>!expect.m2.ids.includes(id)))errors.push(`the L2M2 map lists lessons that are not L2M2's: ${JSON.stringify(rows.filter(id=>!expect.m2.ids.includes(id)))}.`);
+      const tab=(await page.textContent('[data-c2nav="module"]')||'').trim();
+      if(tab!=='L2M2')errors.push(`the module tab still reads ${JSON.stringify(tab)} after switching to L2M2.`);
+
+      /* The practice bank must be L2M2's. A page that switched the map but not
+         the bank would grade L2M2 answers against L2M1 questions. */
+      await page.click('[data-c2nav="practice"]');
+      const loButtons=(await page.$$('[data-start-practice]')).length;
+      if(loButtons!==expect.m2.los+1)errors.push(`the L2M2 practice screen offers ${loButtons} choices; expected ${expect.m2.los} outcomes plus mixed.`);
+      const note=(await page.textContent('.c2-practice-note')||'').replace(/\s+/g,' ');
+      if(note.indexOf(String(expect.m2.exam)+'-question')<0)errors.push(`the practice note describes a ${/(\d+)-question/.exec(note)?RegExp.$1:'?'}-question exam on L2M2, whose paper is ${expect.m2.exam}.`);
+      await page.click('[data-start-practice="1"]');
+      const stem=(await page.textContent('#c2PageTitle')||'').trim();
+      const from=await page.evaluate(stem=>({
+        m2:!!window.CIPS2_L2M2_PRACTICE.QUESTIONS.find(x=>x.q===stem),
+        m1:!!window.CIPS2_L2M1_PRACTICE.QUESTIONS.find(x=>x.q===stem)
+      }),stem);
+      if(!from.m2||from.m1)errors.push('a practice question served under L2M2 does not come from the L2M2 bank.');
+
+      /* Progress is recorded against the module it was earned in. */
+      const key=await page.evaluate(stem=>{const q=window.CIPS2_L2M2_PRACTICE.QUESTIONS.find(x=>x.q===stem);return q?q.answer:null;},stem);
+      if(key!==null){
+        await page.click(`[data-practice-choice="${key}"]`);
+        const st=await page.evaluate(()=>JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}'));
+        const rec=(st.modules||{}).l2m2||{};
+        if(!rec.practice||!rec.practice.los||!rec.practice.los['1'])errors.push('an answer given in L2M2 was not recorded against l2m2.');
+        if(((st.modules||{}).l2m1||{}).practice&&Object.keys(st.modules.l2m1.practice.los||{}).length)errors.push('an answer given in L2M2 was recorded against l2m1.');
+        if(st.activeModule!=='l2m2')errors.push(`the stored active module is ${JSON.stringify(st.activeModule)} after switching to L2M2.`);
+      }
+
+      /* The glossary follows too. Leave the run first: a practice run carries a
+         context bar, and the tabs are deliberately hidden while it does. */
+      await page.click('[data-ctx-back]');
+      await page.waitForSelector('[data-c2nav="glossary"]');
+      await page.click('[data-c2nav="glossary"]');
+      const terms=await page.$$eval('.c2-glossary-list dt',els=>els.map(e=>(e.textContent||'').trim()));
+      const glossFrom=await page.evaluate(()=>({m2:window.CIPS2_L2M2_LEARN.GLOSSARY.map(g=>g[0]),m1:window.CIPS2_L2M1_LEARN.GLOSSARY.map(g=>g[0])}));
+      const onlyM1=terms.filter(t=>glossFrom.m1.includes(t)&&!glossFrom.m2.includes(t));
+      if(!terms.length)errors.push('the L2M2 glossary rendered no terms.');
+      if(onlyM1.length)errors.push(`the glossary under L2M2 shows L2M1-only terms: ${JSON.stringify(onlyM1.slice(0,3))}.`);
+
+      /* And the choice survives a reload, or a reader loses their place every
+         time they close the tab. */
+      await page.reload({waitUntil:'load'});
+      await page.waitForSelector('#c2PageTitle');
+      const tabAfter=(await page.textContent('[data-c2nav="module"]')||'').trim();
+      if(tabAfter!=='L2M2')errors.push(`after reload the active module reverted to ${JSON.stringify(tabAfter)}.`);
+
+      if(consoleErrors.length)errors.push('second-module browser errors: '+consoleErrors.join(' | '));
+      await ctx.close();
+    }
+    notes.push('L2M2 is a separate course: its own map, bank, glossary and stored progress, and the choice survives a reload.');
+
+    /* 9 — the upgrade window, where a file carries BOTH progress shapes.
+       This page is served by a service worker, so a second device can go on
+       running the previous version after this one ships: it keeps writing
+       `lessons` at the top level while this version writes `modules`, and the
+       sync merge unions the two into one file that has both. Preferring
+       `modules` and stopping there loses everything the un-upgraded device did
+       — which is the reader's own work, on their own account, silently. */
+    {
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{
+        if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');
+        localStorage.setItem('prep_v2_cips2',JSON.stringify({
+          settings:{darkMode:false},
+          /* what the old device wrote: lessons 1–4 of L2M1 */
+          lessons:{'c2m1-01':{done:true,at:1},'c2m1-02':{done:true,at:1},'c2m1-03':{done:true,at:1},'c2m1-04':{done:true,at:1}},
+          checkpoint:{attempted:8,correct:7},
+          practice:{runs:2,los:{'1':{attempted:8,correct:6}},qs:{}},
+          /* what the new device wrote: lessons 5–6, and some L2M2 */
+          modules:{
+            l2m1:{lessons:{'c2m1-05':{done:true,at:2},'c2m1-06':{done:true,at:2}},checkpoint:{attempted:4,correct:4},practice:{runs:1,los:{'2':{attempted:8,correct:8}},qs:{}}},
+            l2m2:{lessons:{'c2m2-01':{done:true,at:2}},checkpoint:{attempted:3,correct:3},practice:{runs:1,los:{},qs:{}}}
+          }
+        }));
+      });
+      await page.click('[data-c2nav="module"]');
+      const done=await page.$$eval('[data-go="lesson"].is-done',els=>els.map(e=>e.getAttribute('data-id')).sort());
+      const want=['c2m1-01','c2m1-02','c2m1-03','c2m1-04','c2m1-05','c2m1-06'];
+      const lost=want.filter(id=>!done.includes(id));
+      if(lost.length)errors.push(`upgrading with both progress shapes present lost lessons ${JSON.stringify(lost)} — the flat half of the file was discarded.`);
+      const merged=await page.evaluate(()=>JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}'));
+      const m1=(merged.modules||{}).l2m1||{};
+      if(!m1.checkpoint||m1.checkpoint.attempted!==8)errors.push(`merged checkpoint attempts are ${m1.checkpoint&&m1.checkpoint.attempted}; the larger of the two sides is 8.`);
+      if(!m1.practice||m1.practice.runs!==2)errors.push(`merged practice runs are ${m1.practice&&m1.practice.runs}; the larger of the two sides is 2.`);
+      if(!m1.practice||!m1.practice.los||!m1.practice.los['1']||!m1.practice.los['2'])errors.push('merging the two shapes dropped one side\'s per-outcome practice record.');
+      if(!((merged.modules||{}).l2m2||{}).lessons||!merged.modules.l2m2.lessons['c2m2-01'])errors.push('the merge lost the other module entirely.');
+      if(merged.lessons)errors.push('after the merge the file still carries the old top-level lessons key, so the next load merges it again.');
+      if(consoleErrors.length)errors.push('upgrade-window browser errors: '+consoleErrors.join(' | '));
+      await ctx.close();
+    }
+    notes.push('A progress file carrying both the old and the new shape keeps every lesson from both, and is left in the new shape alone.');
   }finally{await browser.close();server.close();}
-  console.log(`${BOLD}CIPS L2M1 browser quality${RESET}\n`);notes.forEach(n=>console.log(`  ${DIM}${n}${RESET}`));console.log('');
+  console.log(`${BOLD}CIPS browser quality${RESET}\n`);notes.forEach(n=>console.log(`  ${DIM}${n}${RESET}`));console.log('');
   if(errors.length){console.log(`${RED}${BOLD}${errors.length} browser/UX problem(s)${RESET}`);errors.forEach(e=>console.log(`  ${RED}✗${RESET} ${e}`));console.log('');process.exit(1);}
-  console.log(`${GREEN}${BOLD}CIPS L2M1 learner journey passes ✓${RESET}\n`);process.exit(0);
+  console.log(`${GREEN}${BOLD}CIPS learner journey passes ✓${RESET}\n`);process.exit(0);
 })().catch(e=>{console.error(e);process.exit(1);});

@@ -24,7 +24,7 @@
     var flag = card.querySelector('.sc-flag'); if (flag) flag.textContent = '📦';
     var name = card.querySelector('.sc-name'); if (name) name.textContent = 'CIPS Level 2';
     var desc = card.querySelector('.sc-desc'); if (desc) desc.textContent = 'Certificate in Procurement and Supply Operations';
-    var meta = card.querySelector('.sc-meta'); if (meta) meta.textContent = 'L2M1 complete · 13 lessons · 48 practice questions';
+    var meta = card.querySelector('.sc-meta'); if (meta) meta.textContent = 'L2M1 + L2M2 · 23 lessons · 96 practice questions';
     card.setAttribute('aria-label', 'Open CIPS Level 2 study');
 
     /* Keep professional qualifications together rather than tacking CIPS onto

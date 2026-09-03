@@ -3,3 +3,11 @@
 
 # Playwright and its browser download, pulled in only for check:subjects.
 node_modules/
+
+# Throwaway bug-hunt and probe scripts. Two of these were committed in PR #236
+# — unreferenced, and hardcoding an absolute path, so they cannot run anywhere
+# else. scripts/check-no-scratch-files.js fails the build if it recurs.
+*.tmp.js
+*.tmp.mjs
+*.bak
+*.orig

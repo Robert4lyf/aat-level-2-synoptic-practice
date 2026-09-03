@@ -51,10 +51,10 @@ jobs:
         run: npm run check:cips2-fidelity
       - name: Adversarially prove the CIPS syllabus gates reject representative corruption
         run: npm run check:cips2-adversarial
-      - name: Check CIPS L2M1 teaching coverage and practice-bank quality
-        run: npm run check:cips2-l2m1
-      - name: Adversarially prove the CIPS L2M1 content gate rejects corruption
-        run: npm run check:cips2-l2m1-adversarial
+      - name: Check CIPS teaching coverage and practice-bank quality in every module
+        run: npm run check:cips2-content
+      - name: Adversarially prove the CIPS content gate rejects corruption in every module
+        run: npm run check:cips2-content-adversarial
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
@@ -105,6 +105,8 @@ jobs:
         run: npm run check:french-quality
       - name: Check each level's reference drawer holds its own material and nothing its syllabus excludes
         run: npm run check:reference
+      - name: Check no throwaway scratch file is tracked
+        run: npm run check:scratch
       - name: Check the workflow runs every check in npm test
         run: npm run check:workflow
       - name: Test the guitar engine (pitch, geometry, scales, timing)

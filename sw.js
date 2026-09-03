@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v189';
+var CACHE_VERSION = 'aat-l2-v190';
 
 /* Guitar's files are cached lazily, on first open, rather than precached with
    everything else — its engine, renderer, audio and stylesheet are dead weight
@@ -105,6 +105,9 @@ var CORE_ASSETS = [
   './cips2-l2m1-syllabus.js',
   './cips2-l2m1-learn-data.js',
   './cips2-l2m1-practice-data.js',
+  './cips2-l2m2-syllabus.js',
+  './cips2-l2m2-learn-data.js',
+  './cips2-l2m2-practice-data.js',
   './french-data.js',
   './delf-data.js',
   './img-delf-a1-sp3.svg',
