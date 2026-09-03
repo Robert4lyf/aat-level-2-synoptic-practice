@@ -21,22 +21,34 @@
   <script src="cips2-theme-bootstrap.js"></script>
   <a class="skip-link" href="#cipsApp">Skip to main content</a>
   <div class="c2-shell">
-    <div class="c2-top" role="banner">
-      <a class="c2-hub-link" href="index.html" aria-label="Back to subject picker"><span aria-hidden="true">←</span><span class="c2-hub-label">Subjects</span></a>
-      <div class="c2-brand"><strong>📦 CIPS Level 2</strong><span>Certificate in Procurement and Supply Operations</span></div>
-      <button class="c2-theme" id="c2Theme" type="button" aria-label="Toggle dark mode" aria-pressed="false">🌙 Dark</button>
+    <!-- The bar and the tabs are ONE sticky group, not two stickies with an
+         offset between them. They were two, and the tabs were pinned at a
+         hardcoded copy of the bar's min-height (68px, then 62px on phones)
+         against a bar that measures 70.6px — so nine pixels of the tab strip
+         sat behind the bar at every scroll position on every phone. A group
+         has no number to keep in step. Its measured height is published as
+         --chrome-h by chrome-offset.js, which is what the context bar inside
+         the page sticks to. -->
+    <div class="c2-chrome" data-app-chrome>
+      <div class="c2-top" role="banner">
+        <a class="c2-hub-link" href="index.html" aria-label="Back to subject picker"><span aria-hidden="true">←</span><span class="c2-hub-label">Subjects</span></a>
+        <div class="c2-brand"><strong>📦 CIPS Level 2</strong><span>Certificate in Procurement and Supply Operations</span></div>
+        <button class="c2-theme" id="c2Theme" type="button" aria-label="Toggle dark mode" aria-pressed="false"><span class="c2-theme-i" aria-hidden="true">🌙</span><span class="c2-theme-l">Dark</span></button>
+      </div>
+      <nav class="c2-tabs" aria-label="CIPS study sections">
+        <button type="button" data-c2nav="home">Overview</button>
+        <button type="button" data-c2nav="module">L2M1</button>
+        <button type="button" data-c2nav="practice">Practice</button>
+        <button type="button" data-c2nav="progress">Progress</button>
+        <button type="button" data-c2nav="glossary">Glossary</button>
+      </nav>
     </div>
-    <nav class="c2-tabs" aria-label="CIPS study sections">
-      <button type="button" data-c2nav="home">Overview</button>
-      <button type="button" data-c2nav="module">L2M1</button>
-      <button type="button" data-c2nav="practice">Practice</button>
-      <button type="button" data-c2nav="progress">Progress</button>
-      <button type="button" data-c2nav="glossary">Glossary</button>
-    </nav>
     <main id="cipsApp" tabindex="-1"></main>
   </div>
   <noscript><div class="c2-fatal"><h1>JavaScript is required</h1><p>This study tool needs JavaScript enabled.</p></div></noscript>
 
+  <script src="chrome-offset.js"></script>
+  <script src="nav-history.js"></script>
   <script src="progress-backup.js"></script>
   <script src="sync-config.js"></script>
   <script src="progress-sync.js"></script>

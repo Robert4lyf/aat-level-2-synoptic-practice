@@ -3,7 +3,6 @@ body[data-subject="cips2"] {
   --c2-brand: #0b6b57;
   --c2-brand-strong: #075445;
   --c2-brand-soft: #e9f6f1;
-  --c2-teal: #0f766e;
   --c2-ink: #15221f;
   --c2-muted: #66736f;
   --c2-line: #dbe5e1;
@@ -23,7 +22,6 @@ body.dark[data-subject="cips2"] {
   --c2-brand: #42d3ad;
   --c2-brand-strong: #75e5c5;
   --c2-brand-soft: rgba(66, 211, 173, .11);
-  --c2-teal: #5eead4;
   --c2-ink: #edf7f4;
   --c2-muted: #a8bbb5;
   --c2-line: #293d38;
@@ -51,8 +49,20 @@ body[data-subject="cips2"] input:focus-visible {
 }
 
 .c2-shell { min-height: 100vh; }
-.c2-top {
+
+/* ONE STICKY, NOT TWO. The bar and the tab strip used to stick separately, the
+   tabs pinned at a typed copy of the bar's min-height. A min-height is a floor,
+   not a height: the bar measures 70.6px against the 68px that was typed (62px
+   under 760px), so nine pixels of the tab strip lived behind it. Sticking the
+   pair as a group asks the browser for the number instead of guessing it, and
+   chrome-offset.js publishes the group's measured height as --chrome-h for the
+   context bar below it. */
+.c2-chrome {
   position: sticky; top: 0; z-index: 40;
+  background: var(--c2-paper);
+  border-bottom: 1px solid var(--c2-line);
+}
+.c2-top {
   display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 16px;
   min-height: 68px; padding: 10px max(18px, env(safe-area-inset-left));
   background: color-mix(in srgb, var(--c2-paper) 94%, transparent);
@@ -68,14 +78,16 @@ body[data-subject="cips2"] input:focus-visible {
 .c2-brand strong { display: block; font-size: 16px; line-height: 1.2; color: var(--c2-ink); }
 .c2-brand span { display: block; margin-top: 2px; color: var(--c2-muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .c2-theme {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   min-width: 86px; min-height: 44px; padding: 0 12px; border: 1px solid var(--c2-line);
   border-radius: 10px; background: var(--c2-paper); color: var(--c2-ink); font-weight: 700; cursor: pointer;
 }
+.c2-theme-i { font-size: 17px; line-height: 1; }
 
 .c2-tabs {
-  position: sticky; top: 68px; z-index: 35; display: flex; justify-content: center; gap: 4px;
+  display: flex; justify-content: center; gap: 4px;
   padding: 7px 14px; overflow-x: auto; scrollbar-width: none;
-  background: var(--c2-paper); border-bottom: 1px solid var(--c2-line);
+  background: var(--c2-paper);
 }
 .c2-tabs::-webkit-scrollbar { display: none; }
 .c2-tabs button {
@@ -97,6 +109,11 @@ body[data-subject="cips2"] input:focus-visible {
     radial-gradient(circle at 92% 10%, color-mix(in srgb, var(--c2-brand) 13%, transparent), transparent 38%),
     var(--c2-paper); box-shadow: var(--c2-shadow);
 }
+/* A grid item's automatic minimum size is its content, so a long unbreakable
+   string in the lead paragraph would push this column — and the hero — wider
+   than the page. Under 760px the track is a bare `1fr`, where that minimum is
+   not already capped by a minmax(0, …). */
+.c2-hero-copy { min-width: 0; }
 .c2-hero h1 { max-width: 760px; margin: 8px 0 14px; font-size: clamp(34px,5.2vw,62px); line-height: 1.02; letter-spacing: -.035em; }
 .c2-hero-actions, .c2-complete-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .c2-btn {
@@ -173,16 +190,61 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 .c2-chevron { color:var(--c2-muted); font-size:24px; }
 
 .c2-reader,.c2-check,.c2-practice-run { width:min(820px,calc(100% - 32px)); }
-.c2-readerbar,.c2-runbar { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:14px; align-items:center; margin-bottom:14px; }
-.c2-back { min-height:44px; padding:0 8px; border:0; background:none; color:var(--c2-muted); font-weight:800; cursor:pointer; }
-.c2-reader-meta { min-width:0; text-align:center; }
-.c2-reader-meta span,.c2-reader-meta strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.c2-reader-meta span { color:var(--c2-brand-strong); font-size:11px; font-weight:900; }
-.c2-reader-meta strong { margin-top:2px; font-size:13px; }
-.c2-reader-count,.c2-scorepill { color:var(--c2-muted); font-size:12px; font-weight:800; }
-.c2-reader-progress { display:flex; gap:5px; margin:0 0 12px; }
-.c2-reader-progress span { height:4px; flex:1; border-radius:99px; background:var(--c2-line); }
-.c2-reader-progress span.is-on { background:var(--c2-brand); }
+/* ══ The context bar ═════════════════════════════════════════════════════════
+   The same component Level 3 carries, in CIPS colours: where you are, how far
+   through it you are, and the way out. It replaces three different per-screen
+   rows — a reader bar, a run bar and a strip of dots — none of which was
+   sticky, so on a lesson card taller than the viewport the escape hatch and
+   the lesson's name had both scrolled off the top. Worse, under 760px the old
+   bar hid its own title (`.c2-reader-meta strong { display:none }`), which is
+   every phone: a context bar that elides the name of the thing you are in is
+   not giving context.
+
+   It sticks at --chrome-h — the measured height of the sticky group above it,
+   published by chrome-offset.js — rather than at a number, because that height
+   is 70.6px on a phone and different again on a desktop. */
+.c2-ctx {
+  position: sticky; top: var(--chrome-h, 0px); z-index: 6;
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 18px; padding: 10px 0;
+  /* OPAQUE, not glass. A translucent bar over blurred backdrop looks better on
+     an empty screen and fails on the screen that matters: scrolled into a
+     lesson, the prose passing underneath showed through the bar's own meta line
+     and both became hard to read. This bar exists to say where you are, so it
+     wins the pixels it covers. */
+  background: var(--c2-wash);
+  border-bottom: 1px solid var(--c2-line);
+}
+.c2-ctx-back {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--c2-line); background: var(--c2-paper);
+  color: var(--c2-muted); font-size: 16px; cursor: pointer;
+  transition: border-color .14s, color .14s;
+}
+.c2-ctx-back:hover { border-color: var(--c2-brand); color: var(--c2-brand); }
+.c2-ctx-main { min-width: 0; flex: 1 1 auto; }
+/* Two lines before it truncates. "Understanding the sourcing process and the
+   documents that carry it" does not fit on one line of a phone, and the whole
+   point of the bar is to say which lesson this is. */
+.c2-ctx-t {
+  font-size: 14.5px; font-weight: 800; color: var(--c2-ink); line-height: 1.25;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.c2-ctx-m {
+  font-size: 12px; color: var(--c2-muted); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* The ring repeats no number: the fraction is already in the line beside it. */
+.c2-ctx-ring {
+  flex: none; width: 34px; height: 34px; border-radius: 50%;
+  background: conic-gradient(var(--c2-brand) calc(var(--p) * 1%), var(--c2-line) 0);
+  display: grid; place-items: center;
+}
+.c2-ctx-ring::after {
+  content: ''; width: 26px; height: 26px; border-radius: 50%; background: var(--c2-wash);
+}
+.c2-ctx-ring.is-full { background: conic-gradient(var(--c2-good) 100%, var(--c2-good) 0); }
 
 .c2-reading-card,.c2-question-card { padding:clamp(24px,5vw,48px); border:1px solid var(--c2-line); border-radius:20px; background:var(--c2-paper); box-shadow:var(--c2-shadow); }
 .c2-reading-card { min-height:440px; }
@@ -229,10 +291,11 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 .c2-practice-choice strong { margin-top:8px; font-size:16px; line-height:1.3; }
 .c2-practice-choice small { margin-top:auto; padding-top:12px; color:var(--c2-muted); }
 .c2-practice-choice.is-mixed { grid-column:span 3; min-height:105px; background:var(--c2-brand-soft); }
+/* Repair sits beside mixed and reads as the more urgent of the two. It only
+   appears when there is something in it, so it never offers an empty run. */
+.c2-practice-choice.is-wrong { grid-column:span 3; min-height:105px; background:var(--c2-bad-soft); border-color:var(--c2-bad); }
+.c2-practice-choice.is-wrong span { color:var(--c2-bad); }
 .c2-practice-note { margin-top:18px; padding:16px 18px; border:1px solid var(--c2-line); border-radius:12px; color:var(--c2-muted); background:var(--c2-paper); font-size:13px; line-height:1.55; }
-.c2-runprogress { min-width:0; }
-.c2-runprogress > span { display:block; margin-bottom:5px; color:var(--c2-muted); font-size:11px; font-weight:800; }
-.c2-scorepill { padding:7px 10px; border-radius:99px; background:var(--c2-brand-soft); color:var(--c2-brand-strong); }
 
 .c2-result-hero { display:grid; grid-template-columns:180px 1fr; gap:26px; align-items:center; margin-bottom:18px; padding:30px; border:1px solid var(--c2-line); border-radius:20px; background:var(--c2-paper); box-shadow:var(--c2-shadow); }
 .c2-result-score { width:150px; height:150px; display:grid; place-content:center; border-radius:50%; background:var(--c2-brand-soft); text-align:center; }
@@ -272,13 +335,23 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 
 @media (max-width: 760px) {
   .c2-top { grid-template-columns:auto minmax(0,1fr) auto; gap:8px; min-height:62px; padding:8px 10px; }
-  .c2-hub-link { width:44px; padding:0; justify-content:center; font-size:0; }
-  .c2-hub-link::first-letter { font-size:17px; }
+  /* ICON ONLY, BY HIDING THE LABEL — not by shrinking the button's text to
+     nothing and betting that ::first-letter grows the icon back. That bet lost
+     twice. ::first-letter only applies to a block container's first line box,
+     and both of these are inline-flex with the glyph inside a span, so it never
+     matched: the Subjects link rendered as an empty 44px square with no arrow
+     in it at all. And `font-size: 0` never reached the theme button, because
+     `body[data-subject="cips2"] button { font: inherit }` above is one
+     attribute selector more specific than a class — so it kept its 16px "🌙
+     Dark", which does not fit a 44px box and pushed the button to 54px tall
+     with its own label clipped. */
+  .c2-hub-link { width:44px; padding:0; justify-content:center; }
+  .c2-hub-label { display:none; }
   .c2-brand strong { font-size:14px; }
   .c2-brand span { font-size:10px; }
-  .c2-theme { min-width:44px; width:44px; padding:0; overflow:hidden; font-size:0; }
-  .c2-theme::first-letter { font-size:17px; }
-  .c2-tabs { top:62px; justify-content:flex-start; padding-inline:8px; }
+  .c2-theme { min-width:44px; width:44px; padding:0; }
+  .c2-theme-l { display:none; }
+  .c2-tabs { justify-content:flex-start; padding-inline:8px; }
   .c2-tabs button { min-height:44px; padding-inline:12px; }
   .c2-page { width:min(100% - 22px,1080px); padding-top:22px; }
   .c2-hero { grid-template-columns:1fr; padding:26px 22px; }
@@ -296,8 +369,6 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
   .c2-mins { display:none; }
   .c2-lesson-copy small { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
   .c2-reader,.c2-check,.c2-practice-run { width:min(100% - 18px,820px); }
-  .c2-readerbar { grid-template-columns:auto minmax(0,1fr) auto; gap:7px; }
-  .c2-reader-meta strong { display:none; }
   .c2-reading-card,.c2-question-card { padding:24px 20px; }
   .c2-reading-card { min-height:390px; }
   .c2-reading-card p { font-size:16px; line-height:1.7; }
@@ -306,9 +377,7 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
   .c2-complete { padding-top:34px; }
   .c2-complete-card { padding:34px 20px; }
   .c2-practice-grid { grid-template-columns:1fr 1fr; }
-  .c2-practice-choice.is-mixed { grid-column:span 2; }
-  .c2-runbar { grid-template-columns:auto minmax(100px,1fr); }
-  .c2-scorepill { display:none; }
+  .c2-practice-choice.is-mixed,.c2-practice-choice.is-wrong { grid-column:span 2; }
   .c2-result-hero { grid-template-columns:1fr; justify-items:center; text-align:center; padding:24px 20px; }
   .c2-statgrid { grid-template-columns:1fr 1fr; }
   .c2-glossary-list > div { grid-template-columns:1fr; gap:5px; }
@@ -321,7 +390,7 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
   .c2-hero-actions .c2-btn,.c2-complete-actions .c2-btn { width:100%; }
   .c2-factgrid { grid-template-columns:1fr; }
   .c2-practice-grid { grid-template-columns:1fr; }
-  .c2-practice-choice.is-mixed { grid-column:auto; }
+  .c2-practice-choice.is-mixed,.c2-practice-choice.is-wrong { grid-column:auto; }
   .c2-statgrid { grid-template-columns:1fr 1fr; gap:8px; }
   .c2-progress-line { grid-template-columns:1fr; gap:2px; }
 }

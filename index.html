@@ -59,7 +59,7 @@
   <!-- Cover div: hides all content until JS renders the app. Removed by init() after render(). -->
   <div id="page-cover" aria-hidden="true"></div>
   <a class="skip-link" href="#app">Skip to main content</a>
-  <header>
+  <header data-app-chrome>
     <div class="header-left">
       <div>
         <h1><button id="subjectSwitcherBtn" class="brand-switch" type="button"
@@ -88,6 +88,7 @@
        data files (french/delf, lsf, code-route — ~1.6 MB) are loaded on demand
        by app.js the first time that subject is opened. They remain in the
        service-worker precache (sw.js), so offline use still covers every subject. -->
+  <script src="chrome-offset.js"></script>
   <script src="calculator.js"></script>
   <script src="nav-history.js"></script>
   <script src="question-grid.js"></script>

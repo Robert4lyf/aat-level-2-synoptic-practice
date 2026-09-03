@@ -132,8 +132,12 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
 
    Sticky, because on a ladder of twenty-six the two things you always want are
    to know where you are and to be able to leave. */
+/* Sticky UNDER the app header, whose height is measured into --chrome-h by
+   chrome-offset.js. `top: 0` put this bar behind the header rather than below
+   it, and the header paints at z-index 50 — so scrolled, the back button was
+   not merely hidden, it was unclickable. */
 .a1-ctx {
-  margin: 0 -20px; position: sticky; top: 0; z-index: 6;
+  margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;
   display: flex; align-items: center; gap: var(--a1-3);
   padding: var(--a1-3) var(--a1-5);
   background: color-mix(in srgb, var(--a1-paper) 88%, transparent);
@@ -411,7 +415,7 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
    the progress rule now sits under the bar rather than inside it, so the bar
    itself is one line of text and the rule reads as a division of the page. */
 .a1-lessonbar {
-  position: sticky; top: 0; z-index: 5;
+  position: sticky; top: var(--chrome-h, 0px); z-index: 5;
   display: flex; align-items: center; gap: var(--a1-3);
   margin: 0 -20px; padding: var(--a1-2) var(--a1-5);
   background: color-mix(in srgb, var(--a1-paper) 90%, transparent);
@@ -427,9 +431,12 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   font-size: 12.5px; color: var(--a1-ink-3);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* 58px is .a1-lessonbar's measured height; it was 52px, so this 3px rule sat
+   entirely behind the bar whenever the page was scrolled. See the note on
+   .a3-lessonbar-p. */
 .a1-lessonbar-p {
   height: 3px; background: var(--a1-line); overflow: hidden;
-  margin: 0 -20px var(--a1-5); position: sticky; top: 52px; z-index: 5;
+  margin: 0 -20px var(--a1-5); position: sticky; top: calc(var(--chrome-h, 0px) + 58px); z-index: 5;
 }
 .a1-lessonbar-p span {
   display: block; height: 100%;

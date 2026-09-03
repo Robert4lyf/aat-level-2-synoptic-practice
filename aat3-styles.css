@@ -307,7 +307,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-lessonbar {
   display: flex; align-items: center; gap: var(--a3-3);
   margin: 0 -20px; padding: var(--a3-3) var(--a3-5);
-  position: sticky; top: 0; z-index: 6;
+  position: sticky; top: var(--chrome-h, 0px); z-index: 6;
   background: color-mix(in srgb, var(--a3-paper) 90%, transparent);
   backdrop-filter: saturate(1.6) blur(12px);
   -webkit-backdrop-filter: saturate(1.6) blur(12px);
@@ -318,9 +318,14 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .a3-lessonbar-m { font-size: var(--a3-t-meta); color: var(--a3-ink-3); margin-top: 1px; }
+/* Under the bar, which is under the header. 64px is .a3-lessonbar's measured
+   height — content-driven, but the same at 320px as at 1280px, and
+   check-sticky-chrome.js measures it at four widths so a stale number fails a
+   check rather than shipping. It was 58px, five short, and since this rule is
+   3px tall it spent every scrolled moment entirely behind the bar. */
 .a3-lessonbar-p {
   height: 3px; margin: 0 -20px var(--a3-5); background: var(--a3-line); overflow: hidden;
-  position: sticky; top: 58px; z-index: 6;
+  position: sticky; top: calc(var(--chrome-h, 0px) + 64px); z-index: 6;
 }
 /* ── Endless practice ────────────────────────────────────────────────────────
    A different MODE, given a different look, and the difference is not just
@@ -1096,8 +1101,16 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
    always want is to know where you are and how to leave. */
 .a3-ctx {
   /* Breaks out of the root's 20px gutter so the bar meets its edges, and the
-     rule under it reads as a division of the page rather than a floating line. */
-  margin: 0 -20px; position: sticky; top: 0; z-index: 6;
+     rule under it reads as a division of the page rather than a floating line.
+
+     UNDER THE APP HEADER, not under the top of the window. The header is sticky
+     too and paints at z-index 50, so `top: 0` did not put this bar below it —
+     it put this bar behind it. Scrolled, elementFromPoint at the centre of the
+     back button returned the header: the way out of a unit could not be
+     pressed. --chrome-h is the header's measured height (chrome-offset.js);
+     the fallback is 0 so that a page which never loaded it still gets a bar in
+     the old place rather than one floating in the middle of the screen. */
+  margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;
   display: flex; align-items: center; gap: var(--a3-3);
   padding: var(--a3-3) var(--a3-5);
   background: color-mix(in srgb, var(--a3-paper) 88%, transparent);
