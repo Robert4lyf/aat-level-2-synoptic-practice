@@ -42,11 +42,22 @@
 
   function measure() {
     if (!el || !doc.documentElement) return;
-    /* getBoundingClientRect, not offsetHeight: the header is 46.4px at some
-       widths and rounding it down leaves a sliver of the bar beneath it
-       showing through. Rounding UP can only ever cost a fraction of a pixel of
-       content, which is the safe direction to be wrong in. */
-    var h = Math.ceil(el.getBoundingClientRect().height);
+    /* getBoundingClientRect, not offsetHeight: the header is 72.81px at the
+       widths where it wraps, and a whole-pixel measurement cannot describe it.
+
+       ROUNDED DOWN, and the direction matters. This used to round up, on the
+       reasoning that rounding down would leave "a sliver of the bar beneath it
+       showing through" — which is exactly backwards. The bars sit at z-index 5
+       and 6; the chrome is opaque at z-index 50. Rounding DOWN tucks a bar a
+       fraction of a pixel further under the chrome, where it cannot be seen.
+       Rounding UP pushed it a fraction of a pixel further DOWN, and opened a
+       gap between the two through which the scrolling page showed. Measured at
+       320px and 360px, where the chrome is 72.81px tall: --chrome-h was
+       published as 73 and every bar beneath it sat 0.19px too low.
+
+       Rounding is not the whole fix — see the -1px in the rules that consume
+       this. It is the half that stops the published number overshooting. */
+    var h = Math.floor(el.getBoundingClientRect().height);
     if (h === last) return;
     last = h;
     doc.documentElement.style.setProperty('--chrome-h', h + 'px');

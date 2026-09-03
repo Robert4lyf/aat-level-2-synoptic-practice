@@ -136,8 +136,17 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
    chrome-offset.js. `top: 0` put this bar behind the header rather than below
    it, and the header paints at z-index 50 — so scrolled, the back button was
    not merely hidden, it was unclickable. */
+/* THE ONE-PIXEL OVERLAP. Sticky bars do not abut the thing above them, they
+   overlap it, and the overlap is invisible because everything above paints
+   over it. Abutting exactly is not achievable: layout heights are fractional
+   (the chrome is 72.81px where it wraps) and so is the device pixel grid — at
+   the 2.75x of a common Android phone, an edge at CSS 46px falls on device
+   pixel 126.5 and the two sides round apart. The result was a single row of
+   device pixels between the header and the bar, through which the scrolling
+   page showed: reported from a phone, and visible in a screenshot as one line
+   of clipped text. */
 .a1-ctx {
-  margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;
+  margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;
   display: flex; align-items: center; gap: var(--a1-3);
   padding: var(--a1-3) var(--a1-5);
   background: color-mix(in srgb, var(--a1-paper) 88%, transparent);
@@ -415,7 +424,7 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
    the progress rule now sits under the bar rather than inside it, so the bar
    itself is one line of text and the rule reads as a division of the page. */
 .a1-lessonbar {
-  position: sticky; top: var(--chrome-h, 0px); z-index: 5;
+  position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 5;
   display: flex; align-items: center; gap: var(--a1-3);
   margin: 0 -20px; padding: var(--a1-2) var(--a1-5);
   background: color-mix(in srgb, var(--a1-paper) 90%, transparent);
@@ -436,7 +445,7 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
    .a3-lessonbar-p. */
 .a1-lessonbar-p {
   height: 3px; background: var(--a1-line); overflow: hidden;
-  margin: 0 -20px var(--a1-5); position: sticky; top: calc(var(--chrome-h, 0px) + 58px); z-index: 5;
+  margin: 0 -20px var(--a1-5); position: sticky; top: calc(var(--chrome-h, 0px) + 55px); z-index: 5;
 }
 .a1-lessonbar-p span {
   display: block; height: 100%;

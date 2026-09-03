@@ -63,48 +63,81 @@ function edit(dir, rel, from, to) {
 /* Each mutant is the defect, restated. `why` is what shipped. */
 const MUTANTS = [
   {
+    /* THE REPORTED BUG, first half. Rounding the chrome's height UP publishes a
+       number past its real bottom edge, so every bar beneath sits a fraction of
+       a pixel too low and the scrolling page shows through the seam. */
+    name: 'the chrome measurement rounds up again, pushing every bar past its real edge',
+    apply: d => edit(d, 'chrome-offset.js',
+      'var h = Math.floor(el.getBoundingClientRect().height);',
+      'var h = Math.ceil(el.getBoundingClientRect().height);')
+  },
+  {
+    /* Second half. Meeting the chrome exactly is not enough either: fractional
+       layout and a fractional device-pixel grid split the seam anyway. */
+    name: 'the Level 3 context bar abuts the chrome exactly instead of overlapping it',
+    apply: d => edit(d, 'aat3-styles.css',
+      'margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);',
+      'margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);')
+  },
+  {
+    name: 'the Level 1 context bar abuts the chrome exactly instead of overlapping it',
+    apply: d => edit(d, 'aat1-styles.css',
+      '.a1-ctx {\n  margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;',
+      '.a1-ctx {\n  margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;')
+  },
+  {
+    name: 'the CIPS context bar abuts the chrome exactly instead of overlapping it',
+    apply: d => edit(d, 'cips2-styles.css',
+      '.c2-ctx {\n  position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;',
+      '.c2-ctx {\n  position: sticky; top: var(--chrome-h, 0px); z-index: 6;')
+  },
+  {
+    /* The second tier, where the gap was 0.73px at every width and nobody had
+       reported it. The bar above it is not the chrome, so it needs its own. */
+    name: 'the Level 3 progress rule leaves its old gap below the lesson bar',
+    apply: d => edit(d, 'aat3-styles.css',
+      'position: sticky; top: calc(var(--chrome-h, 0px) + 61px); z-index: 6;',
+      'position: sticky; top: calc(var(--chrome-h, 0px) + 64px); z-index: 6;')
+  },
+  {
+    name: 'the Level 1 progress rule leaves its old gap below the lesson bar',
+    apply: d => edit(d, 'aat1-styles.css',
+      'position: sticky; top: calc(var(--chrome-h, 0px) + 55px); z-index: 5;',
+      'position: sticky; top: calc(var(--chrome-h, 0px) + 58px); z-index: 5;')
+  },
+  {
+    /* The other end of the band: an overlap big enough that the chrome is
+       covering the bar's own content rather than just its edge. */
+    name: 'the overlap grows until the chrome is eating the bar',
+    apply: d => edit(d, 'aat3-styles.css',
+      'margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);',
+      'margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 9px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);')
+  },
+  {
     name: 'Level 3 context bar back at top: 0 (the unclickable back button)',
     apply: d => edit(d, 'aat3-styles.css',
-      'margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);',
+      'margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);',
       'margin: 0 -20px; position: sticky; top: 0; z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);')
   },
   {
     name: 'Level 3 lesson bar back at top: 0',
     apply: d => edit(d, 'aat3-styles.css',
-      'margin: 0 -20px; padding: var(--a3-3) var(--a3-5);\n  position: sticky; top: var(--chrome-h, 0px); z-index: 6;',
+      'margin: 0 -20px; padding: var(--a3-3) var(--a3-5);\n  position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;',
       'margin: 0 -20px; padding: var(--a3-3) var(--a3-5);\n  position: sticky; top: 0; z-index: 6;')
   },
   {
-    name: 'Level 3 progress rule back at its old 58px (hidden behind its own bar)',
-    apply: d => edit(d, 'aat3-styles.css',
-      'position: sticky; top: calc(var(--chrome-h, 0px) + 64px); z-index: 6;',
-      'position: sticky; top: calc(var(--chrome-h, 0px) + 58px); z-index: 6;')
-  },
-  {
-    name: 'Level 1 context bar back at top: 0',
+    name: 'Level 1 lesson bar back at top: 0',
     apply: d => edit(d, 'aat1-styles.css',
-      '.a1-ctx {\n  margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;',
-      '.a1-ctx {\n  margin: 0 -20px; position: sticky; top: 0; z-index: 6;')
+      'position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 5;',
+      'position: sticky; top: 0; z-index: 5;')
   },
   {
-    name: 'Level 1 progress rule back at its old 52px',
-    apply: d => edit(d, 'aat1-styles.css',
-      'position: sticky; top: calc(var(--chrome-h, 0px) + 58px); z-index: 5;',
-      'position: sticky; top: calc(var(--chrome-h, 0px) + 52px); z-index: 5;')
-  },
-  {
-    /* CIPS's bar is now the shared app header, so the way to break it is the
-       way it can be broken on any page: stop it being pinned. Everything the
-       gate measures on this page is measured from its bottom edge. */
+    /* CIPS's bar is the shared app header, so the way to break it is the way it
+       can be broken on any page: stop it being pinned. Everything the gate
+       measures on this page is measured from its bottom edge. */
     name: 'the CIPS app bar stops being pinned to the top',
     apply: d => edit(d, 'styles.css', 'header {\n  background: var(--header-bg);',
       'header {\n  position: static !important;\n  background: var(--header-bg);')
-  },
-  {
-    name: 'CIPS context bar back at top: 0',
-    apply: d => edit(d, 'cips2-styles.css',
-      '.c2-ctx {\n  position: sticky; top: var(--chrome-h, 0px); z-index: 6;',
-      '.c2-ctx {\n  position: sticky; top: 0; z-index: 6;')
   },
   {
     name: 'CIPS context bar translucent again (prose showing through it)',
@@ -125,14 +158,14 @@ const MUTANTS = [
   {
     name: 'chrome-offset.js publishes a constant instead of a measurement',
     apply: d => edit(d, 'chrome-offset.js',
-      "var h = Math.ceil(el.getBoundingClientRect().height);",
+      "var h = Math.floor(el.getBoundingClientRect().height);",
       "var h = 46;")
   },
   {
     name: 'the context bar is in the right place but painted under something else',
     apply: d => edit(d, 'aat3-styles.css',
-      'margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);',
-      'margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);\n  pointer-events: none;')
+      'margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);',
+      'margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;\n  display: flex; align-items: center; gap: var(--a3-3);\n  pointer-events: none;')
   }
 ];
 

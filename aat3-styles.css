@@ -307,7 +307,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-lessonbar {
   display: flex; align-items: center; gap: var(--a3-3);
   margin: 0 -20px; padding: var(--a3-3) var(--a3-5);
-  position: sticky; top: var(--chrome-h, 0px); z-index: 6;
+  position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;
   background: color-mix(in srgb, var(--a3-paper) 90%, transparent);
   backdrop-filter: saturate(1.6) blur(12px);
   -webkit-backdrop-filter: saturate(1.6) blur(12px);
@@ -325,7 +325,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
    3px tall it spent every scrolled moment entirely behind the bar. */
 .a3-lessonbar-p {
   height: 3px; margin: 0 -20px var(--a3-5); background: var(--a3-line); overflow: hidden;
-  position: sticky; top: calc(var(--chrome-h, 0px) + 64px); z-index: 6;
+  position: sticky; top: calc(var(--chrome-h, 0px) + 61px); z-index: 6;
 }
 /* ── Endless practice ────────────────────────────────────────────────────────
    A different MODE, given a different look, and the difference is not just
@@ -1099,6 +1099,15 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 
    Sticky, because on a path that runs to ten thousand pixels the one thing you
    always want is to know where you are and how to leave. */
+/* THE ONE-PIXEL OVERLAP. Sticky bars do not abut the thing above them, they
+   overlap it, and the overlap is invisible because everything above paints
+   over it. Abutting exactly is not achievable: layout heights are fractional
+   (the chrome is 72.81px where it wraps) and so is the device pixel grid — at
+   the 2.75x of a common Android phone, an edge at CSS 46px falls on device
+   pixel 126.5 and the two sides round apart. The result was a single row of
+   device pixels between the header and the bar, through which the scrolling
+   page showed: reported from a phone, and visible in a screenshot as one line
+   of clipped text. */
 .a3-ctx {
   /* Breaks out of the root's 20px gutter so the bar meets its edges, and the
      rule under it reads as a division of the page rather than a floating line.
@@ -1110,7 +1119,7 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
      pressed. --chrome-h is the header's measured height (chrome-offset.js);
      the fallback is 0 so that a page which never loaded it still gets a bar in
      the old place rather than one floating in the middle of the screen. */
-  margin: 0 -20px; position: sticky; top: var(--chrome-h, 0px); z-index: 6;
+  margin: 0 -20px; position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;
   display: flex; align-items: center; gap: var(--a3-3);
   padding: var(--a3-3) var(--a3-5);
   background: color-mix(in srgb, var(--a3-paper) 88%, transparent);
