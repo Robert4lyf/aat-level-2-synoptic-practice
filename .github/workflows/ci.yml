@@ -105,6 +105,8 @@ jobs:
         run: npm run check:french-quality
       - name: Check each level's reference drawer holds its own material and nothing its syllabus excludes
         run: npm run check:reference
+      - name: Check no throwaway scratch file is tracked
+        run: npm run check:scratch
       - name: Check the workflow runs every check in npm test
         run: npm run check:workflow
       - name: Test the guitar engine (pitch, geometry, scales, timing)
