@@ -1,4 +1,4 @@
-/* CIPS Level 2 — learner-facing shell for the first complete module (L2M1).
+/* CIPS Level 2 — learner-facing shell for the modules that have content.
  *
  * Deliberately self-contained. The main study app's app.js is a large shared
  * surface; this subject owns its reader, progress and practice state so the
@@ -7,18 +7,51 @@
 (function (root) {
   'use strict';
 
-  var MOD = root.CIPS2_MODULES && root.CIPS2_MODULES.l2m1;
-  var LD = root.CIPS2_L2M1_LEARN;
-  var PB = root.CIPS2_L2M1_PRACTICE;
+  /* ── The modules this page can teach ───────────────────────────────────────
+     A module is offered only when all three of its files loaded: the syllabus
+     it is mapped to, the teaching content and the question bank. An id listed
+     here whose data was never written does not produce a broken tab — it is
+     simply absent from MODULES, and the qualification path on the overview
+     screen still shows it as mapped rather than live. */
+  var REGISTRY = [
+    { id: 'l2m1', learn: 'CIPS2_L2M1_LEARN', practice: 'CIPS2_L2M1_PRACTICE' },
+    { id: 'l2m2', learn: 'CIPS2_L2M2_LEARN', practice: 'CIPS2_L2M2_PRACTICE' }
+  ];
+  var MODULES = REGISTRY.map(function (r) {
+    return {
+      id: r.id,
+      syl: root.CIPS2_MODULES && root.CIPS2_MODULES[r.id],
+      learn: root[r.learn],
+      practice: root[r.practice]
+    };
+  }).filter(function (m) { return m.syl && m.learn && m.practice; });
+
+  /* The five mandatory modules of the qualification, in order. Names are typed
+     because L2M3–L2M5 carry no data on this page, so there is nothing to read
+     them from; check-cips2-content.js compares every one of them against
+     the corresponding syllabus file so they cannot drift. */
+  var PATH = [
+    { id: 'l2m1', code: 'L2M1', title: 'Introducing Procurement and Supply' },
+    { id: 'l2m2', code: 'L2M2', title: 'Procurement and Supply Operations' },
+    { id: 'l2m3', code: 'L2M3', title: 'Stakeholder Relationships' },
+    { id: 'l2m4', code: 'L2M4', title: 'Systems Technology' },
+    { id: 'l2m5', code: 'L2M5', title: 'Inventory, Logistics and Expediting' }
+  ];
+
   var STORE_KEY = 'prep_v2_cips2';
 
-  if (!MOD || !LD || !PB) {
+  if (!MODULES.length) {
     var fail = document.getElementById('cipsApp');
     if (fail) fail.innerHTML = '<div class="c2-fatal"><h1>CIPS content could not load</h1><p>Reload the page. If you are offline, open CIPS once while connected so it can be stored for offline study.</p></div>';
     return;
   }
 
+  /* The active module's three sources. Reassigned by setModule(), so every
+     screen below reads whichever module the reader is in. */
+  var MOD, LD, PB;
+
   var S = {
+    moduleId: null,
     screen: 'home',
     lessonId: null,
     cardIdx: 0,
@@ -37,35 +70,118 @@
     glossaryQuery: ''
   };
 
-  var data = {
-    settings: { darkMode: null },
-    lessons: {},
-    checkpoint: { attempted: 0, correct: 0 },
-    practice: { runs: 0, los: {}, qs: {} }
-  };
+  /* `store` is the whole file; `data` is the record for the module the reader
+     is currently in. Every screen below was written against `data`, and it
+     still is — setModule() re-points it, so adding a module did not mean
+     rewriting each reference. */
+  var store = { settings: { darkMode: null }, activeModule: null, modules: {} };
+  var data = null;
+  var migrated = false;
 
+  function blankModule() {
+    return { lessons: {}, checkpoint: { attempted: 0, correct: 0 }, practice: { runs: 0, los: {}, qs: {} } };
+  }
   function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
+  function plainObject(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
+  function sanitiseModule(p) {
+    var m = blankModule();
+    if (!plainObject(p)) return m;
+    if (plainObject(p.lessons)) m.lessons = p.lessons;
+    if (p.checkpoint) {
+      m.checkpoint.attempted = n0(p.checkpoint.attempted);
+      m.checkpoint.correct = n0(p.checkpoint.correct);
+    }
+    if (plainObject(p.practice)) {
+      m.practice.runs = n0(p.practice.runs);
+      m.practice.los = plainObject(p.practice.los) ? p.practice.los : {};
+      m.practice.qs = plainObject(p.practice.qs) ? p.practice.qs : {};
+    }
+    return m;
+  }
+
+  /* Union of two records for the same module, under the rules the rest of this
+     app already merges progress by: a lesson done anywhere is done, and every
+     counter and timestamp takes the larger of the two. Both sides are the same
+     reader's work, so nothing here should ever go backwards. */
+  function foldLegacy(into, from) {
+    Object.keys(from.lessons).forEach(function (id) {
+      var a = into.lessons[id], b = from.lessons[id];
+      if (!a || (b && b.done && !a.done)) into.lessons[id] = b;
+    });
+    into.checkpoint.attempted = Math.max(into.checkpoint.attempted, from.checkpoint.attempted);
+    into.checkpoint.correct = Math.max(into.checkpoint.correct, from.checkpoint.correct);
+    into.practice.runs = Math.max(into.practice.runs, from.practice.runs);
+    Object.keys(from.practice.los).forEach(function (lo) {
+      var a = into.practice.los[lo], b = from.practice.los[lo] || {};
+      if (!a) { into.practice.los[lo] = b; return; }
+      a.attempted = Math.max(n0(a.attempted), n0(b.attempted));
+      a.correct = Math.max(n0(a.correct), n0(b.correct));
+    });
+    Object.keys(from.practice.qs).forEach(function (id) {
+      var a = into.practice.qs[id], b = from.practice.qs[id] || {};
+      if (!a) { into.practice.qs[id] = b; return; }
+      if (n0(b.r) > n0(a.r)) a.r = b.r;
+      if (n0(b.w) > n0(a.w)) a.w = b.w;
+    });
+    return into;
+  }
+
+  /* ONE MODULE'S PROGRESS USED TO BE THE WHOLE FILE.
+     Until L2M2 there was only L2M1, so `lessons`, `checkpoint` and `practice`
+     sat at the top level of prep_v2_cips2. Read as if it were the new shape,
+     a reader who had finished L2M1 would open the course and be shown none of
+     it — so the old flat shape is migrated into the l2m1 slot on load, and
+     written back in the new shape on the next save.
+
+     `settings` deliberately stays at the top level: cips2-theme-bootstrap.js
+     reads it before this file runs, to paint the right theme on first paint. */
   function load() {
     try {
       var raw = localStorage.getItem(STORE_KEY);
       if (!raw) return;
       var p = JSON.parse(raw) || {};
-      if (p.settings) data.settings.darkMode = p.settings.darkMode;
-      if (p.lessons && typeof p.lessons === 'object') data.lessons = p.lessons;
-      if (p.checkpoint) {
-        data.checkpoint.attempted = n0(p.checkpoint.attempted);
-        data.checkpoint.correct = n0(p.checkpoint.correct);
+      if (p.settings) store.settings.darkMode = p.settings.darkMode;
+      var legacy = (p.lessons || p.checkpoint || p.practice) ? sanitiseModule(p) : null;
+      if (plainObject(p.modules)) {
+        Object.keys(p.modules).forEach(function (k) { store.modules[k] = sanitiseModule(p.modules[k]); });
+        /* BOTH SHAPES AT ONCE, which is not a contradiction — it is what two
+           devices produce during an upgrade. This page is served by a service
+           worker, so one device can go on running the previous version for some
+           time after the new one is live: it keeps writing the flat shape while
+           the upgraded device writes the nested one, and progress-backup's
+           merge, which walks keys and takes the larger of two numbers, unions
+           them into a file that has `lessons` at the top AND `modules` beneath.
+           Preferring `modules` and stopping there would silently drop
+           everything the un-upgraded device had done. */
+        if (legacy) { store.modules.l2m1 = foldLegacy(store.modules.l2m1 || blankModule(), legacy); migrated = true; }
+      } else if (legacy) {
+        store.modules.l2m1 = legacy;
+        migrated = true;
       }
-      if (p.practice && typeof p.practice === 'object') {
-        data.practice.runs = n0(p.practice.runs);
-        data.practice.los = p.practice.los && typeof p.practice.los === 'object' ? p.practice.los : {};
-        data.practice.qs = p.practice.qs && typeof p.practice.qs === 'object' ? p.practice.qs : {};
-      }
+      if (typeof p.activeModule === 'string') store.activeModule = p.activeModule;
     } catch (e) { /* corrupt progress must never prevent studying */ }
   }
   function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
     if (root.ProgressSync) root.ProgressSync.noteLocalChange();
+  }
+
+  function moduleById(id) {
+    return MODULES.filter(function (m) { return m.id === id; })[0] || null;
+  }
+  function recordFor(id) { return store.modules[id] || blankModule(); }
+  /* Lessons finished in a module the reader is not currently in — the overview
+     screen shows every module's progress, not just the active one. */
+  function doneCountFor(m) {
+    var rec = recordFor(m.id);
+    return m.learn.LESSONS.filter(function (l) { return !!(rec.lessons[l.id] && rec.lessons[l.id].done); }).length;
+  }
+  function setModule(id) {
+    var m = moduleById(id) || MODULES[0];
+    MOD = m.syl; LD = m.learn; PB = m.practice;
+    S.moduleId = m.id;
+    store.activeModule = m.id;
+    data = store.modules[m.id] || (store.modules[m.id] = blankModule());
   }
 
   function esc(s) {
@@ -106,7 +222,7 @@
   function totalMinutes() { return LD.LESSONS.reduce(function (s, l) { return s + l.minutes; }, 0); }
 
   function applyTheme() {
-    var dark = data.settings.darkMode;
+    var dark = store.settings.darkMode;
     if (dark == null) dark = !!(root.matchMedia && root.matchMedia('(prefers-color-scheme: dark)').matches);
     document.body.classList.toggle('dark', !!dark);
     var btn = document.getElementById('darkToggle');
@@ -151,9 +267,9 @@
   }
 
   function examFactHtml() {
-    return '<aside class="c2-examfact" aria-label="L2M1 assessment format">' +
+    return '<aside class="c2-examfact" aria-label="' + esc(MOD.code) + ' assessment format">' +
       '<div class="c2-eyebrow">Assessment context</div>' +
-      '<h2>L2M1 exam shape</h2>' +
+      '<h2>' + esc(MOD.code) + ' exam shape</h2>' +
       '<div class="c2-factgrid">' +
         '<div><strong>' + MOD.assessment.questionCount + '</strong><span>objective-response questions</span></div>' +
         '<div><strong>' + MOD.assessment.durationMinutes + '</strong><span>minutes</span></div>' +
@@ -164,6 +280,14 @@
     '</aside>';
   }
 
+  /* "One module is available" was true when it was written and stopped being
+     true the moment a second one shipped. Both this sentence and the live/mapped
+     marks on the path list below are counted from MODULES. */
+  function liveSentence() {
+    var live = MODULES.map(function (m) { return m.syl.code; });
+    if (live.length === 1) return 'The complete module is <strong>' + esc(live[0]) + ' ' + esc(MODULES[0].syl.title) + '</strong>.';
+    return '<strong>' + esc(live.join(' and ')) + '</strong> carry full teaching content and practice; the remaining modules are syllabus-mapped.';
+  }
   function homeHtml() {
     var done = completedCount();
     var next = nextLesson();
@@ -172,7 +296,7 @@
         '<div class="c2-hero-copy">' +
           '<div class="c2-eyebrow">CIPS Level 2 Certificate · 603/3282/7</div>' +
           '<h1 id="c2PageTitle">Procurement and Supply Operations</h1>' +
-          '<p class="c2-lead">A structured route through the qualification syllabus. The first complete module is <strong>L2M1 Introducing Procurement and Supply</strong>.</p>' +
+          '<p class="c2-lead">A structured route through the qualification syllabus. ' + liveSentence() + '</p>' +
           '<div class="c2-hero-actions">' +
             /* Once every lesson is finished there is no "next" one, and
                nextLesson() falls back to the first. Offering that as "Continue
@@ -182,37 +306,50 @@
                renderer, by rewriting the label and intercepting the click in
                the capture phase. */
             (done === LD.LESSONS.length
-              ? '<button class="c2-btn c2-primary" type="button" data-screen="module">Review L2M1 <span aria-hidden="true">→</span></button>'
+              ? '<button class="c2-btn c2-primary" type="button" data-screen="module">Review ' + esc(MOD.code) + ' <span aria-hidden="true">→</span></button>'
               : '<button class="c2-btn c2-primary" type="button" data-go="lesson" data-id="' + esc(next.id) + '">' +
-                (done ? 'Continue learning' : 'Start L2M1') + ' <span aria-hidden="true">→</span></button>') +
+                (done ? 'Continue learning' : 'Start ' + esc(MOD.code)) + ' <span aria-hidden="true">→</span></button>') +
             '<button class="c2-btn c2-secondary" type="button" data-screen="module">View module map</button>' +
           '</div>' +
         '</div>' +
         '<div class="c2-hero-progress">' +
           '<span class="c2-ring" style="--p:' + pct(done, LD.LESSONS.length) + '"><strong>' + done + '</strong><small>of ' + LD.LESSONS.length + '<br>lessons</small></span>' +
-          '<p>' + (done === LD.LESSONS.length ? 'L2M1 teaching complete.' : esc(next.title) + ' is next.') + '</p>' +
+          '<p>' + (done === LD.LESSONS.length ? esc(MOD.code) + ' teaching complete.' : esc(next.title) + ' is next.') + '</p>' +
         '</div>' +
       '</section>' +
       '<section class="c2-overview-grid">' +
-        '<article class="c2-panel c2-module-card">' +
-          '<div class="c2-module-top"><span class="c2-code">L2M1</span><span class="c2-status is-live">Complete module</span></div>' +
-          '<h2>' + esc(MOD.title) + '</h2>' +
-          '<p>' + MOD.outcomes.length + ' learning outcomes · ' + LD.LESSONS.length + ' lessons · about ' + Math.round(totalMinutes()/60*10)/10 + ' hours of guided reading and checks</p>' +
-          progressBar(done, LD.LESSONS.length, 'L2M1 lessons') +
-          '<button class="c2-textbtn" type="button" data-screen="module">Open L2M1 <span aria-hidden="true">→</span></button>' +
-        '</article>' +
+        MODULES.map(moduleCardHtml).join('') +
         '<article class="c2-panel c2-path-card">' +
           '<div class="c2-eyebrow">Qualification path</div><h2>Five mandatory modules</h2>' +
-          '<ol class="c2-mini-modules">' +
-            '<li class="is-live"><span>L2M1</span><b>Introducing Procurement and Supply</b><small>learning content available</small></li>' +
-            '<li><span>L2M2</span><b>Procurement and Supply Operations</b><small>syllabus mapped</small></li>' +
-            '<li><span>L2M3</span><b>Stakeholder Relationships</b><small>syllabus mapped</small></li>' +
-            '<li><span>L2M4</span><b>Systems Technology</b><small>syllabus mapped</small></li>' +
-            '<li><span>L2M5</span><b>Inventory, Logistics and Expediting</b><small>syllabus mapped</small></li>' +
-          '</ol>' +
+          '<ol class="c2-mini-modules">' + PATH.map(function (m) {
+            var live = !!moduleById(m.id);
+            return '<li' + (live ? ' class="is-live"' : '') + '><span>' + esc(m.code) + '</span><b>' + esc(m.title) + '</b>' +
+              '<small>' + (live ? 'learning content available' : 'syllabus mapped') + '</small></li>';
+          }).join('') + '</ol>' +
         '</article>' +
       '</section>' + examFactHtml() +
     '</div>';
+  }
+
+  /* One card per module that has content. The card for the module the reader is
+     already in opens its map; the others switch to that module first — which is
+     the only place in the page where the active module changes, so there is one
+     path for a reader to change course and one place for it to go wrong. */
+  function moduleCardHtml(m) {
+    var mine = m.id === S.moduleId;
+    var lessons = m.learn.LESSONS.length;
+    var mins = m.learn.LESSONS.reduce(function (t, l) { return t + l.minutes; }, 0);
+    var mdone = doneCountFor(m);
+    return '<article class="c2-panel c2-module-card' + (mine ? ' is-current' : '') + '">' +
+      '<div class="c2-module-top"><span class="c2-code">' + esc(m.syl.code) + '</span>' +
+        '<span class="c2-status is-live">' + (mine ? 'Current module' : 'Complete module') + '</span></div>' +
+      '<h2>' + esc(m.syl.title) + '</h2>' +
+      '<p>' + m.syl.outcomes.length + ' learning outcomes · ' + lessons + ' lessons · about ' +
+        Math.round(mins / 60 * 10) / 10 + ' hours of guided reading and checks</p>' +
+      progressBar(mdone, lessons, m.syl.code + ' lessons') +
+      '<button class="c2-textbtn" type="button" data-open-module="' + esc(m.id) + '">' +
+        (mine ? 'Open ' : 'Switch to ') + esc(m.syl.code) + ' <span aria-hidden="true">→</span></button>' +
+    '</article>';
   }
 
   function moduleHtml() {
@@ -232,7 +369,7 @@
           '</button>';
         }).join('') + '</div></section>';
     }).join('');
-    return '<div class="c2-page c2-module"><div class="c2-pagehead"><div><div class="c2-eyebrow">L2M1 · ' + MOD.credits + ' credits</div>' +
+    return '<div class="c2-page c2-module"><div class="c2-pagehead"><div><div class="c2-eyebrow">' + esc(MOD.code) + ' · ' + MOD.credits + ' credits</div>' +
       '<h1 id="c2PageTitle">' + esc(MOD.title) + '</h1><p>Every lesson maps to one published assessment criterion. Complete the short checkpoint at the end to mark a lesson done.</p></div>' +
       '<div class="c2-page-progress"><strong>' + completedCount() + '/' + LD.LESSONS.length + '</strong><span>lessons complete</span></div></div>' +
       groups + '</div>';
@@ -300,7 +437,7 @@
   function practiceLandingHtml() {
     var overall = practiceTotals();
     var wrong = wrongQuestions();
-    return '<div class="c2-page c2-practice"><div class="c2-pagehead"><div><div class="c2-eyebrow">Original question bank · L2M1</div><h1 id="c2PageTitle">Practice</h1>' +
+    return '<div class="c2-page c2-practice"><div class="c2-pagehead"><div><div class="c2-eyebrow">Original question bank · ' + esc(MOD.code) + '</div><h1 id="c2PageTitle">Practice</h1>' +
       '<p>Choose one learning outcome for a focused run of ' + PB.forLo(MOD.outcomes[0].n).length + ', or mixed practice for ' + (MOD.outcomes.length * 2) + ' questions drawn evenly across all ' + MOD.outcomes.length + ' outcomes.</p></div>' +
       (overall.attempted ? '<div class="c2-page-progress"><strong>' + pct(overall.correct, overall.attempted) + '%</strong><span>lifetime accuracy</span></div>' : '') + '</div>' +
       '<div class="c2-practice-grid">' + MOD.outcomes.map(function (o) {
@@ -309,7 +446,14 @@
       '<button class="c2-practice-choice is-mixed" type="button" data-start-practice="mix"><span>Mixed</span><strong>All learning outcomes</strong><small>' + (MOD.outcomes.length * 2) + ' questions · evenly drawn</small></button>' +
       (wrong.length ? '<button class="c2-practice-choice is-wrong" type="button" data-start-practice="wrong"><span>Repair</span><strong>Questions you got wrong</strong><small>' + wrong.length + ' waiting</small></button>' : '') +
       '</div>' +
-      '<aside class="c2-practice-note"><strong>Assessment format:</strong> CIPS publishes L2M1 as a 72-question objective-response examination with 12 questions per learning outcome. This practice bank follows the syllabus scope but does not reproduce the official assessment.</aside>' +
+      /* The module code, the question count and the per-outcome count were all
+         typed here, and described L2M1 alone. On L2M2 every one of them was
+         wrong — a 36-question paper announced as 72. They come from
+         MOD.assessment now, beside the exam-shape panel that already did. */
+      '<aside class="c2-practice-note"><strong>Assessment format:</strong> CIPS publishes ' + esc(MOD.code) +
+        ' as a ' + MOD.assessment.questionCount + '-question objective-response examination with ' +
+        MOD.assessment.questionsPerLearningOutcome + ' questions per learning outcome. ' +
+        'This practice bank follows the syllabus scope but does not reproduce the official assessment.</aside>' +
     '</div>';
   }
   function shortOutcome(t) { return String(t).replace(/^Understand /,'').replace(/^Know /,'').replace(/^how /,''); }
@@ -356,7 +500,7 @@
   }
   function progressHtml() {
     var done = completedCount(), overall = practiceTotals();
-    return '<div class="c2-page c2-progress"><div class="c2-pagehead"><div><div class="c2-eyebrow">Your L2M1 record</div><h1 id="c2PageTitle">Progress</h1><p>Lesson completion shows coverage. Practice accuracy shows retrieval. Keep both moving.</p></div></div>' +
+    return '<div class="c2-page c2-progress"><div class="c2-pagehead"><div><div class="c2-eyebrow">Your ' + esc(MOD.code) + ' record</div><h1 id="c2PageTitle">Progress</h1><p>Lesson completion shows coverage. Practice accuracy shows retrieval. Keep both moving.</p></div></div>' +
       '<div class="c2-statgrid"><article><strong>'+done+'</strong><span>of '+LD.LESSONS.length+' lessons</span></article><article><strong>'+data.practice.runs+'</strong><span>practice runs</span></article><article><strong>'+(overall.attempted?pct(overall.correct,overall.attempted)+'%':'—')+'</strong><span>practice accuracy</span></article><article><strong>'+data.checkpoint.correct+'/'+data.checkpoint.attempted+'</strong><span>checkpoint answers</span></article></div>' +
       '<section class="c2-panel"><h2>Learning outcomes</h2><div class="c2-progress-los">' + MOD.outcomes.map(function(o){var ls=LD.lessonsForLo(o.n),ld=ls.filter(function(l){return lessonDone(l.id);}).length,r=loRecord(o.n);return '<article><div class="c2-progress-lohead"><span>LO '+o.n+'</span><strong>'+esc(shortOutcome(o.title))+'</strong></div><div class="c2-progress-line"><span>Lessons</span>'+progressBar(ld,ls.length,'LO '+o.n+' lesson completion')+'</div><div class="c2-progress-line"><span>Practice</span>'+(r.attempted?progressBar(r.correct,r.attempted,'LO '+o.n+' practice accuracy'):'<em>No practice yet</em>')+'</div></article>';}).join('') + '</div></section></div>';
   }
@@ -364,7 +508,7 @@
   function glossaryHtml() {
     var term = S.glossaryQuery.toLowerCase().trim();
     var rows = LD.GLOSSARY.filter(function (g) { return !term || (g[0]+' '+g[1]).toLowerCase().indexOf(term) >= 0; });
-    return '<div class="c2-page c2-glossary"><div class="c2-pagehead"><div><div class="c2-eyebrow">L2M1 reference</div><h1 id="c2PageTitle">Glossary</h1><p>Short definitions for the vocabulary used in this module.</p></div></div>' +
+    return '<div class="c2-page c2-glossary"><div class="c2-pagehead"><div><div class="c2-eyebrow">' + esc(MOD.code) + ' reference</div><h1 id="c2PageTitle">Glossary</h1><p>Short definitions for the vocabulary used in this module.</p></div></div>' +
       '<label class="c2-search"><span>Search terms</span><input id="c2GlossarySearch" type="search" value="'+esc(S.glossaryQuery)+'" placeholder="e.g. PQQ, upstream, value for money" autocomplete="off"></label>' +
       '<dl class="c2-glossary-list">'+rows.map(function(g){return '<div><dt>'+esc(g[0])+'</dt><dd>'+esc(g[1])+'</dd></div>';}).join('')+'</dl>' +
       (!rows.length?'<p class="c2-empty">No matching terms.</p>':'')+'</div>';
@@ -380,15 +524,19 @@
      the context bar answers "what am I inside and how do I leave" — showing
      both would offer two different navigations for one screen, and CIPS is the
      only place in the app that ever did. */
-  var TABS = [
-    { id: 'home', label: 'Overview' },
-    { id: 'module', label: 'L2M1' },
-    { id: 'practice', label: 'Practice' },
-    { id: 'progress', label: 'Progress' },
-    { id: 'glossary', label: 'Glossary' }
-  ];
+  function tabs() {
+    return [
+      { id: 'home', label: 'Overview' },
+      /* Not a constant: with two modules live, a tab permanently reading "L2M1"
+         would name the wrong course for half the readers using it. */
+      { id: 'module', label: MOD.code },
+      { id: 'practice', label: 'Practice' },
+      { id: 'progress', label: 'Progress' },
+      { id: 'glossary', label: 'Glossary' }
+    ];
+  }
   function tabsHtml() {
-    return '<div class="nav-tabs" role="tablist">' + TABS.map(function (t) {
+    return '<div class="nav-tabs" role="tablist">' + tabs().map(function (t) {
       var on = t.id === S.screen || (t.id === 'practice' && S.screen === 'results');
       return '<button class="nav-tab' + (on ? ' active' : '') + '" type="button" role="tab"' +
         ' aria-selected="' + (on ? 'true' : 'false') + '" data-c2nav="' + t.id + '">' + esc(t.label) + '</button>';
@@ -455,6 +603,21 @@
     }
   }
 
+  /* Switching module resets everything that names a lesson or a question,
+     because every one of those ids belongs to the module being left. A practice
+     run left in flight would otherwise be graded against the other module's
+     bank. */
+  function openModule(id) {
+    if (!moduleById(id)) return;
+    setModule(id);
+    S.screen = 'module'; S.lessonId = null; S.cardIdx = 0; S.lessonPhase = 'read';
+    S.practiceQs = []; S.practiceResults = []; S.practiceIdx = 0;
+    S.practiceChoice = null; S.practiceAnswered = false; S.practiceCorrect = 0;
+    S.glossaryQuery = '';
+    save();
+    render({ focus: true });
+  }
+
   function openLesson(id) {
     if (!LD.lesson(id)) return;
     S.screen='lesson'; S.lessonId=id; S.cardIdx=0; S.lessonPhase='read';
@@ -517,6 +680,7 @@
 
   function wire() {
     Array.prototype.forEach.call(host.querySelectorAll('[data-c2nav]'),function(b){b.addEventListener('click',function(){S.practiceQs=[];S.practiceResults=[];S.lessonId=null;S.screen=b.getAttribute('data-c2nav');render({focus:true});});});
+    Array.prototype.forEach.call(host.querySelectorAll('[data-open-module]'),function(b){b.addEventListener('click',function(){openModule(b.getAttribute('data-open-module'));});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-screen]'),function(b){b.addEventListener('click',function(){S.screen=b.getAttribute('data-screen');S.practiceQs=[];S.lessonId=null;render({focus:true});});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-go="lesson"]'),function(b){b.addEventListener('click',function(){openLesson(b.getAttribute('data-id'));});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-card]'),function(b){b.addEventListener('click',function(){var l=LD.lesson(S.lessonId);if(!l)return;var d=b.getAttribute('data-card')==='next'?1:-1;S.cardIdx=Math.max(0,Math.min(l.cards.length-1,S.cardIdx+d));render();});});
@@ -543,7 +707,7 @@
      ids, the classes and the behaviour are the ones every other subject has. */
   var theme = document.getElementById('darkToggle');
   if (theme) theme.addEventListener('click', function () {
-    data.settings.darkMode = !document.body.classList.contains('dark');
+    store.settings.darkMode = !document.body.classList.contains('dark');
     save(); applyTheme();
   });
   var home = document.getElementById('homeNavBtn');
@@ -586,5 +750,14 @@
      looking at. */
   if (root.AATNav) root.AATNav.init({ canGoBack: canGoBack, back: goBack });
 
-  load(); applyTheme(); render();
+  load();
+  setModule(store.activeModule);
+  /* Write the migrated file back at once rather than waiting for the reader to
+     do something that saves. Until it is written, the file on disk still has
+     the old top-level keys, so anything reading it — a backup, an export, the
+     sync worker, the next version of this page — sees a shape the app no longer
+     writes. Only after a migration: a reader with no progress at all should not
+     have a progress file created for them just by opening the page. */
+  if (migrated) save();
+  applyTheme(); render();
 })(typeof window !== 'undefined' ? window : globalThis);

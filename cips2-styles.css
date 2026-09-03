@@ -112,13 +112,20 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 .c2-ring small { color: var(--c2-muted); font-weight: 700; line-height: 1.2; text-align:center; }
 .c2-hero-progress p { max-width: 230px; color: var(--c2-muted); font-size: 14px; }
 
-.c2-overview-grid { display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-top:18px; }
+/* auto-fit, not a fixed pair: the grid held one module card and the path card
+   when it was written. A second module makes three, and a hard 1fr 1fr leaves
+   the third stranded in a half-width row. */
+.c2-overview-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:18px; margin-top:18px; }
 .c2-module-card,.c2-path-card { padding:24px; }
 .c2-module-top { display:flex; justify-content:space-between; gap:12px; align-items:center; }
 .c2-code { font-size:13px; font-weight:900; color:var(--c2-brand-strong); }
 .c2-status { padding:5px 9px; border-radius:99px; font-size:11px; font-weight:800; background:var(--c2-brand-soft); color:var(--c2-brand-strong); }
 .c2-module-card h2,.c2-path-card h2,.c2-examfact h2,.c2-panel h2 { margin:9px 0 8px; font-size:22px; }
 .c2-module-card > p { color:var(--c2-muted); }
+/* The module the reader is actually in. With more than one card on the screen,
+   nothing else on the card says which course the tabs, practice and glossary
+   are currently showing. */
+.c2-module-card.is-current { box-shadow: inset 0 0 0 2px var(--c2-brand-strong); }
 .c2-textbtn { min-height:44px; margin-top:12px; padding:0; border:0; background:none; color:var(--c2-brand-strong); font-weight:850; cursor:pointer; }
 .c2-mini-modules { display:grid; gap:10px; margin:14px 0 0; padding:0; list-style:none; }
 .c2-mini-modules li { display:grid; grid-template-columns:48px 1fr; column-gap:9px; padding:11px 12px; border-radius:11px; background:var(--c2-wash); }
