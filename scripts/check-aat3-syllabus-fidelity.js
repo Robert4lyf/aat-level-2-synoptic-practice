@@ -65,6 +65,8 @@ const S = require(path.join(ROOT, 'aat3-syllabus.js'));
    whose section 5 exists precisely to catch that, would report a clean pass.
    A checker scoped to one unit is not a checker, it is a checker for that unit.
 
+   BUAW was added with the unit, so it has never had the window MATS had.
+
    TPFB is still absent, and deliberately: it was encoded from the same PDF
    before this check or the extract existed, and retro-fitting it is worth doing
    and is its own change. */
@@ -101,6 +103,44 @@ const UNITS = [
     tableEnd: /^Tax Processes for Businesses/,
     minConcepts: 60,
     scrambles: {},
+  },
+  {
+    key: 'buaw',
+    name: 'Business Awareness',
+    head: /Business Awareness/,
+    strip: /^Business Awareness( \d+)?\s*$/,
+    tableStart: /^Test specification for Business Awareness/,
+    /* BUAW is the first unit printed, and the section that follows it in the
+       extract is FAPS. */
+    tableEnd: /^Financial Accounting: Preparing Financial Statements\s*$/,
+    minConcepts: 70,
+    scrambles: {
+      /* Topic 3.1 is set in two columns across pages 37 and 38: the left holds
+         3.1.1 to 3.1.10 under "Learners need to understand", the right holds
+         3.1.11 to 3.1.17 under "Learners need to be able to". The extract emits
+         the right-hand column before the tail of the left, so 3.1.5 onwards
+         land under the "be able to" heading.
+
+         They are plainly not "be able to" items. Each is a statement of what a
+         principle IS — confidentiality, professional scepticism, the difference
+         between a principles-based and a rules-based approach, what safeguards
+         exist — carrying no verb a learner could be asked to perform, and each
+         sits in the understand column of the printed page. The genuine "be able
+         to" items in this topic all begin "recognise", and they are 3.1.11 to
+         3.1.17. */
+      '3.1.5': 'Two-column layout across pages 37-38: the extract emits the right-hand ' +
+               '"be able to" column (3.1.11 onwards) before the tail of the left-hand ' +
+               '"understand" column, so 3.1.5 lands under the wrong heading. It states what ' +
+               'the principle of confidentiality is and carries no performable verb.',
+      '3.1.6': 'Same two-column scramble as 3.1.5. It defines professional scepticism.',
+      '3.1.7': 'Same two-column scramble as 3.1.5. It states the difference between a ' +
+               'principles-based and a rules-based approach.',
+      '3.1.8': 'Same two-column scramble as 3.1.5. It states how documented policies act as ' +
+               'safeguards.',
+      '3.1.9': 'Same two-column scramble as 3.1.5. It lists the types of safeguard that exist.',
+      '3.1.10': 'Same two-column scramble as 3.1.5. It states what an accountant should do ' +
+                'when a threat cannot be reduced.',
+    },
   },
 ];
 
@@ -191,6 +231,9 @@ const specConcepts = new Map();   // id → { tier, text, bullets, excluded, top
 const specTopics = new Map();     // id → title
 const specOutcomes = new Map();   // n  → title
 let tier = null, current = null, currentTopic = null, currentOutcome = null;
+/* The outcome whose title may continue on the next line — see the note in the
+   loop below. */
+let pendingOutcome = null;
 
 scope.forEach(raw => {
   const line = raw.trim();
@@ -198,11 +241,33 @@ scope.forEach(raw => {
   const heading = TIER_HEADINGS[line.toLowerCase()];
   if (heading) { tier = heading; return; }
 
+  /* AN OUTCOME TITLE CAN WRAP, and until BUAW none of them did. Its outcome 2
+     runs to 108 characters and the extract breaks it after "their", so the
+     parsed title was the first line alone and the encoded — correct — title
+     was reported as differing from it. Three of BUAW's five failed that way,
+     and the checker was wrong every time.
+
+     A continuation is a line that carries no structural marker of its own and
+     begins in lower case, which is what a mid-sentence break looks like and
+     what no heading in this document ever does. Consumed until a line arrives
+     that is not one: BUAW's outcome 1 wraps over THREE lines ("... in" /
+     "which" / "they operate"), so stopping after the first continuation fixed
+     three of its titles and left that one still reported as differing. */
+  if (pendingOutcome !== null) {
+    if (line && /^[a-z]/.test(line) && !CONCEPT_RE.test(line) &&
+        !TOPIC_RE.test(line) && !OUTCOME_RE.test(line) && !TIER_HEADINGS[line.toLowerCase()]) {
+      specOutcomes.set(pendingOutcome, specOutcomes.get(pendingOutcome) + ' ' + line);
+      return;
+    }
+    pendingOutcome = null;
+  }
+
   const om = OUTCOME_RE.exec(line);
   if (om && !CONCEPT_RE.test(line) && !TOPIC_RE.test(line) &&
       Number(om[1]) === (currentOutcome === null ? 1 : currentOutcome + 1)) {
     currentOutcome = Number(om[1]);
     specOutcomes.set(currentOutcome, om[2].trim());
+    pendingOutcome = currentOutcome;
     current = null;
     return;
   }
@@ -283,9 +348,30 @@ const scrambled = new Set();
     if (!byTopic.has(t)) byTopic.set(t, []);
     byTopic.get(t).push(id);
   });
+  /* AND EVERYTHING THAT FOLLOWS ONE, up to the end of the run.
+
+     The first version marked only the id that jumps backwards, which is right
+     for FAPS — one concept displaced by one page break. BUAW's topic 3.1 is a
+     two-column spread where the extract emits the WHOLE right-hand column
+     before the tail of the left, so 3.1.5 jumps and 3.1.6 to 3.1.10 then follow
+     it in perfect order under the same wrong heading. Marking only the jump
+     meant the five that inherited its heading could not be exempted, and the
+     checker refused an exemption for each of them on the ground that they were
+     printed in sequence — which they were, behind a displaced one.
+
+     A run ends where the ids resume their proper place: the moment an id is
+     greater than the highest seen before the jump, the extract is back in
+     order and nothing after it is covered. */
   byTopic.forEach(ids => {
+    let highWater = ids.length ? Number(ids[0].split('.')[2]) : 0;
+    let inRun = false;
     for (let i = 1; i < ids.length; i++) {
-      if (Number(ids[i].split('.')[2]) < Number(ids[i - 1].split('.')[2])) scrambled.add(ids[i]);
+      const n = Number(ids[i].split('.')[2]);
+      const prev = Number(ids[i - 1].split('.')[2]);
+      if (n < prev) { scrambled.add(ids[i]); inRun = true; }
+      else if (inRun && n <= highWater) scrambled.add(ids[i]);
+      else inRun = false;
+      if (n > highWater) highWater = n;
     }
   });
 }
@@ -332,7 +418,15 @@ specConcepts.forEach((spec, id) => {
   const enc = encoded.get(id);
   if (!enc) return;
   const want = contentWords(spec.text);
-  if (want.length < 3) return;                     // too short to measure meaningfully
+  /* TWO CONTENT WORDS IS ENOUGH TO MEASURE; one is not.
+     This said `< 3`, which skipped every short concept — and BUAW has several,
+     including "the meaning of sustainability". Mutation testing replaced that
+     one with "the rules on charitable donations" and the check passed, because
+     it had declined to look. With two words the ratio still discriminates: a
+     genuine rewording keeps at least one of them, and a concept swapped for a
+     different one keeps neither. A single word cannot be measured this way, so
+     one is still where the floor sits. */
+  if (want.length < 2) return;
   const hay = String(enc.text + ' ' + (enc.indicative || []).join(' ') + ' ' + (enc.note || '')).toLowerCase();
   const hit = want.filter(w => hay.includes(w)).length;
   const ratio = hit / want.length;

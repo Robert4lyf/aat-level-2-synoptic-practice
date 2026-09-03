@@ -23,7 +23,7 @@
       meta: '26 steps · 5 outcomes · beginner',
       tabs: ['home'],
       ui: 'AAT1_UI',
-      assets: ['aat1-syllabus.js', 'aat1-learn-data.js', 'aat1-practice-data.js', 'aat1-ui.js'],
+      assets: ['aat1-syllabus.js', 'aat1-learn-data.js', 'aat1-practice-data.js', 'aat1-glossary-data.js', 'aat1-ui.js'],
       /* Injected on first open, not linked from index.html: subject stylesheets
          are render-blocking for every subject, and guitar already proved the
          lazy path. Still precached by sw.js, so offline is unaffected. */
@@ -48,11 +48,11 @@
          (shared by every other subject, and covered by no behavioural tests)
          are untouched by anything Level 3 does. */
       id: 'aat3', name: 'AAT Level 3', short: 'AAT L3', flag: '📗', color: '#4F46E5',
-      desc: 'Tax Processes for Businesses and Financial Accounting for the Q2022 Level 3 Diploma',
-      meta: '2 units · TPFB complete · FAPS in progress',
+      desc: 'All four units of the Q2022 Level 3 Diploma in Accounting',
+      meta: '4 units · TPFB, FAPS, MATS and BUAW',
       tabs: ['home'],
       ui: 'AAT3_UI',
-      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-ui.js'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-buaw-data.js', 'aat3-glossary-data.js', 'aat3-ui.js'],
       styles: 'aat3-styles.css', /* lazy, same reasoning as Level 1's */
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values

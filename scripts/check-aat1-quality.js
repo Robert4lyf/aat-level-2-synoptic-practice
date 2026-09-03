@@ -619,11 +619,11 @@ while ((rv = REVERSE_VAT.exec(learnSrc)) !== null) {
    Message strings stay here so each module reports in its own voice. */
 const {
   SIGNPOST_CEILING_PER_1K, CADENCE_MAX_PER_CARD,
-  neverHits, cadenceHits, signpostCount,
+  neverHits, cadenceHits, signpostCount, paras,
 } = require('./lib/prose-mannerisms.js');
 
 carded.forEach(l => (l.cards || []).forEach((c, ci) => {
-  const text = (c.p || []).join(' ');
+  const text = paras(c).join(' ');
   const found = cadenceHits(text);
   if (found.length > CADENCE_MAX_PER_CARD) {
     errors.push(`${l.id} card ${ci + 1} ("${String(c.h || '').slice(0, 40)}"): ${found.length} rhetorical cadences stacked on one card — ${[...new Set(found)].join('; ')}. One is emphasis; a pile-up is what makes prose read as machine-written. Make the points instead of announcing them.`);
@@ -635,7 +635,7 @@ carded.forEach(l => (l.cards || []).forEach((c, ci) => {
   let proseWords = 0;
   const proseBits = [];
   carded.forEach(l => (l.cards || []).forEach((c, ci) => {
-    (c.p || []).forEach(par => {
+    paras(c).forEach(par => {
       const text = String(par);
       proseBits.push(text);
       proseWords += words(text);

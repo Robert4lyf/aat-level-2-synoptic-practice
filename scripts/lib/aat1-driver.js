@@ -136,6 +136,9 @@ function loadUI(store) {
   M.AAT1_SYLLABUS = require(path.join(ROOT, 'aat1-syllabus.js')).SYLLABUS;
   M.AAT1_PRACTICE = require(path.join(ROOT, 'aat1-practice-data.js')).AAT1_PRACTICE;
   M.AAT1_LEARN_PATH = require(path.join(ROOT, 'aat1-learn-data.js')).AAT1_LEARN_PATH;
+  /* Same hard dependency as the banks: without it the glossary screen renders
+     empty and every assertion about it would pass by never running. */
+  M.AAT1_GLOSSARY = require(path.join(ROOT, 'aat1-glossary-data.js')).AAT1_GLOSSARY;
   return M;
 }
 

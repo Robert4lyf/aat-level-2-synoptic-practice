@@ -53,6 +53,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { paras } = require('./lib/prose-mannerisms.js');
 const ROOT = path.join(__dirname, '..');
 const E = require(path.join(ROOT, 'guitar-engine.js'));
 const R = require(path.join(ROOT, 'guitar-render.js'));
@@ -444,7 +445,7 @@ function cardText(c) {
   const bits = [];
   const push = v => { if (typeof v === 'string') bits.push(v); };
   push(c.h); push(c.title); push(c.body);
-  (c.p || []).forEach(push);
+  paras(c).forEach(push);
   (c.flow || []).forEach(push);
   if (c.callout) push(c.callout.text);
   push(c.examtrap);

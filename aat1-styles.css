@@ -1248,6 +1248,176 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-alert-due .a1-alert-go { color: var(--a1-brand-ink); }
 .a1-alert-due:hover { border-color: var(--a1-brand); }
 
+/* ── Read a card aloud ─────────────────────────────────────────────────────
+   A pill in the lesson bar, between the title and the percentage. Quiet until
+   it is speaking, because speaking is a state the reader needs to see from
+   across the room — the only other evidence of it is a sound they may have
+   muted. */
+.a1-speak {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 11px; border-radius: 999px; cursor: pointer; font-family: inherit;
+  font-size: 12.5px; font-weight: 700; white-space: nowrap;
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface); color: var(--a1-ink-2);
+  transition: border-color .14s ease, background .14s ease, color .14s ease;
+}
+.a1-speak:hover { border-color: var(--a1-brand); color: var(--a1-brand-ink); }
+.a1-speak:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-speak.is-on {
+  background: var(--a1-brand); border-color: var(--a1-brand); color: var(--a1-on-fill);
+}
+.a1-speak-i { font-size: 11px; line-height: 1; }
+.a1-speak-l { line-height: 1; }
+/* At 320px the bar carries a back button, the lesson title, this and the
+   percentage. The word goes and the glyph stays — `display: none` on the child
+   rather than `font-size: 0` on the button, which does not work: the trick of
+   restoring the glyph with `::first-letter` does not apply to an inline-flex
+   box, and the button renders as an empty pill. */
+@media (max-width: 380px) {
+  .a1-speak { padding: 6px 10px; gap: 0; }
+  .a1-speak-l { display: none; }
+  .a1-speak-i { font-size: 13px; }
+}
+
+/* ── The glossary, and its flashcards ─────────────────────────
+   A definition list rather than a grid of cards, and that is a reading
+   decision. Level 2's glossary is a grid, which is right there because its
+   terms are browsed; these are LOOKED UP, and a two-column grid makes the eye
+   travel down one column and back up the next past the word it wanted. One
+   term per row, term and meaning side by side from tablet width and stacked
+   below it. */
+.a1-glosssearch { position: relative; margin: 0 0 var(--a1-4); }
+.a1-glossin {
+  width: 100%; box-sizing: border-box; padding: 11px 38px 11px 13px;
+  border: 1px solid var(--a1-line-2); border-radius: var(--a1-r-sm);
+  background: var(--a1-surface); color: var(--a1-ink);
+  font-family: inherit; font-size: var(--a1-t-ui);
+}
+.a1-glossin:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-glossclear {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 28px; height: 28px; border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--a1-surface-2); color: var(--a1-ink-3);
+  font-family: inherit; font-size: 17px; line-height: 1;
+}
+.a1-glossclear:hover { color: var(--a1-ink); }
+
+.a1-glossgroup { margin: 0 0 var(--a1-5); }
+.a1-glossgroup-h {
+  display: flex; align-items: center; gap: var(--a1-2);
+  margin: 0 0 var(--a1-2); font-size: var(--a1-t-ui); font-weight: 800;
+  color: var(--a1-ink-2);
+}
+.a1-glossgroup-n {
+  flex: none; display: grid; place-items: center; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--a1-brand); color: var(--a1-on-fill);
+  font-size: 12px; font-weight: 800;
+}
+.a1-glosslist { margin: 0; padding: 0; border-top: 1px solid var(--a1-line); }
+.a1-glossrow {
+  display: grid; gap: 2px var(--a1-4); padding: var(--a1-3) 0;
+  border-bottom: 1px solid var(--a1-line);
+}
+.a1-glossrow dt { font-weight: 700; color: var(--a1-ink); }
+.a1-glossrow dd {
+  margin: 0; color: var(--a1-ink-3); font-size: var(--a1-t-meta); line-height: 1.55;
+}
+@media (min-width: 640px) {
+  .a1-glossrow { grid-template-columns: 190px 1fr; }
+  .a1-glossrow dd { font-size: var(--a1-t-body); }
+}
+
+/* The way into a run, at the top of the glossary because it is the thing a
+   reader who has already read the list wants. */
+.a1-flashstart {
+  display: flex; align-items: center; gap: var(--a1-3); width: 100%; text-align: left;
+  margin: 0 0 var(--a1-4); padding: var(--a1-4);
+  border: 1px solid var(--a1-brand); border-radius: var(--a1-r);
+  background: var(--a1-brand-wash); color: var(--a1-ink);
+  font-family: inherit; cursor: pointer; transition: border-color .14s;
+}
+.a1-flashstart:hover { border-color: var(--a1-brand); }
+.a1-flashstart:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-flashstart-i {
+  flex: none; display: grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; background: var(--a1-brand); color: var(--a1-on-fill);
+  font-size: 13px;
+}
+.a1-flashstart-tx { flex: 1 1 auto; min-width: 0; }
+.a1-flashstart-t { display: block; font-size: var(--a1-t-ui); font-weight: 700; }
+.a1-flashstart-m {
+  display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3);
+  margin-top: 2px; line-height: 1.45;
+}
+.a1-flashstart-go { flex: none; color: var(--a1-brand); font-size: 18px; }
+
+/* A card in a run. The prompt sits on the ordinary question heading, so the
+   card looks like the questions it is standing in for rather than like a
+   separate feature. */
+.a1-flash-ask {
+  color: var(--a1-ink-3); font-size: var(--a1-t-meta); margin: 0 0 var(--a1-4);
+}
+.a1-flash-def {
+  padding: var(--a1-4); margin: 0 0 var(--a1-4);
+  border-left: 3px solid var(--a1-brand); border-radius: 0 var(--a1-r-sm) var(--a1-r-sm) 0;
+  background: var(--a1-surface-2); color: var(--a1-ink); line-height: 1.6;
+}
+/* Two buttons of equal weight, because the reader is being asked to be honest
+   rather than to succeed — making "I had it" the bigger target would be a
+   thumb on the scale of their own self-assessment. */
+.a1-flash-grade { display: grid; grid-template-columns: 1fr 1fr; gap: var(--a1-2); }
+.a1-flash-grade .a1-btn { width: 100%; justify-content: center; }
+
+/* The third action on the path screen, held back from the two above it. */
+.a1-act-quiet { opacity: .92; }
+.a1-act-quiet:hover { opacity: 1; }
+
+/* ── "I know this": retiring a question, and getting it back ──────────────
+   The button sits beside the advance button on a graded practice question, and
+   deliberately does not compete with it: the advance button is what a reader
+   is reaching for, and this is a decision they make occasionally. So the row
+   gives the advance button all the space it wants and this one only what it
+   needs. Below 380px the label drops and the tick carries it, rather than the
+   two buttons wrapping onto separate lines and pushing Next off the fold. */
+.a1-qfoot { display: flex; align-items: stretch; gap: var(--a1-2); }
+.a1-qfoot .a1-wide { flex: 1 1 auto; width: auto; }
+.a1-retire {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 var(--a1-3); border-radius: var(--a1-r-sm);
+  border: 1px solid var(--a1-line-2); background: var(--a1-surface);
+  color: var(--a1-ink-3); font-family: inherit; font-size: var(--a1-t-meta);
+  font-weight: 600; cursor: pointer; transition: border-color .14s, color .14s;
+}
+.a1-retire:hover { border-color: var(--a1-brand); color: var(--a1-brand-ink); }
+.a1-retire:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-retire.is-on {
+  border-color: var(--a1-brand); background: var(--a1-brand-wash); color: var(--a1-brand-ink);
+}
+.a1-retire-i { font-size: 14px; line-height: 1; }
+@media (max-width: 380px) { .a1-retire-l { display: none; } }
+
+/* The way back, on the practice screen. Quieter than either alert above it:
+   nothing is wrong and nothing is due — this is a note about the shape of the
+   pool, and it is only here at all because retiring must be reversible. */
+.a1-restore {
+  display: flex; align-items: center; gap: var(--a1-3); width: 100%; text-align: left;
+  padding: var(--a1-4); margin: 0 0 var(--a1-3);
+  background: transparent; border: 1px dashed var(--a1-line-2);
+  border-radius: var(--a1-r); cursor: pointer; font-family: inherit;
+}
+.a1-restore:hover { border-color: var(--a1-brand); }
+.a1-restore:focus-visible { outline: 3px solid var(--a1-brand); outline-offset: 2px; }
+.a1-restore-i {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 15px;
+  background: var(--a1-surface-2); color: var(--a1-ink-3);
+}
+.a1-restore-tx { flex: 1 1 auto; min-width: 0; }
+.a1-restore-t { display: block; font-size: var(--a1-t-ui); font-weight: 700; color: var(--a1-ink); }
+.a1-restore-m {
+  display: block; font-size: var(--a1-t-meta); color: var(--a1-ink-3);
+  margin-top: 2px; line-height: 1.45;
+}
+
 /* The clock. Takes the place of the percentage in the question bar, because a
    reader sitting to time wants the minutes, not the progress. */
 .a1-lessonbar-mock { border-bottom: 2px solid var(--a1-brand); }

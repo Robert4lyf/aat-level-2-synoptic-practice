@@ -1104,6 +1104,357 @@
     ]
   };
 
+  /* ── BUAW · Business Awareness ─────────────────────────────────────────────
+     THE UNIT WITH NO ARITHMETIC IN IT, and the one this app was least shaped
+     for. TPFB, FAPS and MATS are built out of figures that are right or wrong;
+     BUAW is built out of judgements — which stakeholder has power here, which
+     ethical threat is this, what would PESTLE say about that. There is exactly
+     one calculation in the whole scope of content, and it is the effect of a
+     price change on revenue.
+
+     That is not a reason to weaken the questions. It is the reason WRITTEN
+     TASKS matter more here than anywhere else in the qualification: BUAW is
+     "partially computer/partially human marked" and the specification says in
+     terms that "some tasks will require extended written responses". A bank of
+     multiple choice would rehearse the recognisable half of a paper whose
+     assessed half is prose.
+
+     THE SCOPE IS ENCODED AS THE SPECIFICATION STATES IT, including the places
+     where its own numbering is uneven — outcome 3's "learners need to be able
+     to" items are numbered 3.1.11 to 3.1.17 and sit alongside 3.1.1 to 3.1.10
+     rather than under their own topic. Renumbering them to look tidier would
+     break the one thing this file is for: being able to say "criterion 3.1.13"
+     and have it mean what AAT means by it. */
+  var BUAW = {
+    unit: 'buaw',
+    code: 'BUAW',
+    title: 'Business Awareness',
+    unitReference: 'D/618/3579',
+    glh: 70,
+    /* The smallest unit in the qualification, level with TPFB. */
+    qualificationWeighting: 15,
+    assessment: {
+      method: 'Computer based assessment',
+      marking: 'Partially computer/partially human marked',
+      durationMinutes: 150,
+      passMark: 70,
+      taskCount: null,
+      taskCountSource: 'not stated by AAT and not obtained — deliberately absent',
+      totalMarks: null
+    },
+    excluded: [],
+    outcomes: [
+      {
+        n: 1,
+        title: 'Understand business types, structures and governance, and the legal framework in which they operate',
+        weighting: 25,
+        topics: [
+          {
+            id: '1.1',
+            title: 'The types of businesses',
+            concepts: [
+              { id: '1.1.1', tier: 'understand', text: 'The standard organisation types and their key characteristics',
+                indicative: ['sole traders', 'partnerships (unlimited liability)',
+                             'limited liability partnerships and limited partnerships',
+                             'private limited companies', 'public limited companies',
+                             'not-for-profit organisations including public sector'] },
+              { id: '1.1.2', tier: 'understand', text: "The impact of business type on the organisation's governance",
+                indicative: ['degree of separation of ownership', 'control/management'] },
+              { id: '1.1.3', tier: 'understand', text: 'Types of funding used by businesses',
+                indicative: ['new capital introduced', 'profits retained', 'lending', 'working capital'] },
+              { id: '1.1.4', tier: 'understand', text: 'Common features of business organisations',
+                indicative: ['a structure determined by groups of interrelated individuals',
+                             'achievement of common objectives, i.e. goal congruence',
+                             'co-operative relationships', 'defined responsibility, authority, relationship',
+                             'individuals working together as teams', 'division of work'] },
+              { id: '1.1.5', tier: 'understand', text: 'The differences between manufacturing and service businesses',
+                indicative: ['availability of internal information', 'the processes and activities',
+                             'reporting requirements'] }
+            ]
+          },
+          {
+            id: '1.2',
+            title: 'The legal framework for companies and partnerships',
+            concepts: [
+              { id: '1.2.1', tier: 'understand', text: 'The key elements of companies legislation',
+                indicative: ['the rights and roles of shareholders', 'the role and duties of directors',
+                             'regulates company formation and reporting'] },
+              { id: '1.2.2', tier: 'understand', text: 'The key elements of unlimited liability partnerships',
+                indicative: ['what a partnership agreement typically contains',
+                             'that formal partnership agreements may not exist for all partnerships',
+                             'the definition of goodwill and its relevance to the partnership',
+                             'the impact of a change in partner on the partnership'] }
+            ]
+          },
+          {
+            id: '1.3',
+            title: "Business stakeholders' interactions and needs",
+            concepts: [
+              { id: '1.3.1', tier: 'understand', text: 'Different business stakeholders',
+                indicative: ['customers', 'suppliers', 'finance providers', 'owners', 'government',
+                             'employees', 'regulatory/professional bodies', 'the general public'] },
+              { id: '1.3.2', tier: 'understand', text: "Stakeholders' objectives and requirements from the business" },
+              { id: '1.3.3', tier: 'understand', text: "Stakeholders' contributions to and impact on the business" },
+              { id: '1.3.4', tier: 'understand', text: 'The relative significance of stakeholders to the business (including attitudes to risk)' }
+            ]
+          },
+          {
+            id: '1.4',
+            title: 'Organisational structure and governance',
+            concepts: [
+              { id: '1.4.1', tier: 'understand', text: 'Organisational structure',
+                indicative: ['different organisational structures: functional, divisional, matrix',
+                             'the impact that the span of control has on the organisation structure, i.e. tall or flat'] },
+              { id: '1.4.2', tier: 'understand', text: 'The importance of governance in different organisation types',
+                indicative: ["what is meant by the term 'governance' in a business context",
+                             'the impact of organisational structure and size on governance',
+                             'the difference between centralised and decentralised control'] },
+              { id: '1.4.3', tier: 'understand', text: 'The role of operational, managerial and corporate/strategic levels within an organisation' },
+              { id: '1.4.4', tier: 'understand', text: "The role of the finance function in contributing towards the operation of the other business functions and the organisation's plans and decision making",
+                indicative: ['operations/production', 'sales and marketing', 'human resources',
+                             'information technology', 'distribution and logistics'] },
+              { id: '1.4.5', tier: 'understand', text: 'The concept of risk and risk management',
+                indicative: ['difference between risk and uncertainty',
+                             'types of risk: business risk, financial risk, strategic risk, operational risk (cyber risk and reputational risk)',
+                             'risk management: transfer, accept, reduce, avoid'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 2,
+        title: 'Understand the impact of the external and internal environment on businesses, their performance and decisions',
+        weighting: 20,
+        topics: [
+          {
+            id: '2.1',
+            title: 'The use of PESTLE model for analysing the external environment',
+            concepts: [
+              { id: '2.1.1', tier: 'understand', text: "The use of PESTLE to analyse the impact of the business's macro environment" },
+              { id: '2.1.2', tier: 'understand', text: 'Political factors affecting a business',
+                indicative: ['government policy', 'taxation', 'imports and exports', 'public spending'] },
+              { id: '2.1.3', tier: 'understand', text: 'Economic factors affecting a business',
+                indicative: ['interest rates', 'exchange rates', 'changes in disposable income',
+                             'business cycles', 'demand-pull and cost-push inflation'] },
+              { id: '2.1.4', tier: 'understand', text: 'Social factors affecting a business',
+                indicative: ['demographic changes', 'trends', 'unemployment'] },
+              { id: '2.1.5', tier: 'understand', text: 'Technological factors affecting a business',
+                indicative: ['changes in technology', 'impact on structure'] },
+              { id: '2.1.6', tier: 'understand', text: 'Legal factors affecting a business',
+                indicative: ['trade regulations', 'changes in law and regulations'] },
+              { id: '2.1.7', tier: 'understand', text: 'Environmental factors affecting a business',
+                indicative: ['environmental changes', 'sustainability'] },
+              { id: '2.1.8', tier: 'do', text: 'Identify PESTLE factors affecting a business' },
+              { id: '2.1.9', tier: 'do', text: 'Recognise the impact of PESTLE factors on the business' }
+            ]
+          },
+          {
+            id: '2.2',
+            title: 'The micro-economic environment',
+            concepts: [
+              { id: '2.2.1', tier: 'understand', text: 'The concept of supply and demand' },
+              { id: '2.2.2', tier: 'understand', text: 'How prices are determined by the price mechanism (supply = demand, i.e. shifts along the supply/demand curves) and market forces (shifts of the supply/demand curves) and the impact of the type of goods (normal, necessity, substitute and complementary)' },
+              { id: '2.2.3', tier: 'understand', text: 'The impact of price changes on volumes, revenues, costs and profitability' },
+              { id: '2.2.4', tier: 'understand', text: 'How the levels of competition in the micro-economic environment are influenced',
+                indicative: ['product features', 'number of sellers and buyers',
+                             'barriers to entry, i.e. licences and regulatory controls, cost to set up, expertise',
+                             'location', 'availability of information'] }
+            ]
+          },
+          {
+            id: '2.3',
+            title: 'The importance of sustainability',
+            concepts: [
+              { id: '2.3.1', tier: 'understand', text: 'The meaning of sustainability' },
+              { id: '2.3.2', tier: 'understand', text: 'The three aspects of sustainable performance',
+                indicative: ['social', 'ecological/environmental', 'economic/financial'] },
+              { id: '2.3.3', tier: 'understand', text: 'The importance of sustainable practice',
+                indicative: ['taking a long-term view and allowing the needs of present generations to be met without compromising the ability of future generations to meet their own needs',
+                             "considering the needs of the organisation's wider stakeholders",
+                             'long-term responsible management and use of resources',
+                             'operating sustainably in relation to products and services, customers, employees, the workplace, the supply chain and business functions and processes',
+                             "the accountant's public interest duty to protect society as a whole and the organisation's sustainability"] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 3,
+        title: 'Understand how businesses and accountants comply with principles of professional ethics',
+        weighting: 20,
+        topics: [
+          {
+            id: '3.1',
+            title: 'The relevance of the ethical code for professional accountants',
+            concepts: [
+              { id: '3.1.1', tier: 'understand', text: 'The principle of integrity',
+                indicative: ['the effect of accountants being associated with misleading information',
+                             'the key ethical values of honesty, transparency and fairness when liaising with clients, suppliers and colleagues',
+                             'how integrity is threatened by self-interest and familiarity threats'] },
+              { id: '3.1.2', tier: 'understand', text: 'The principle of objectivity',
+                indicative: ['what is meant by a conflict of interest, including self-interest threats arising from financial interests, and compensation and incentives linked to financial reporting and decision making',
+                             'the importance of appearing to be objective as well as actually being objective',
+                             'the importance of professional scepticism when exercising professional judgement in relation to financial accounting and the link between compromised objectivity and possible accusations of bribery or fraud'] },
+              { id: '3.1.3', tier: 'understand', text: 'The principle of professional behaviour',
+                indicative: ['how compliance with relevant laws and regulations in relation to financial accounting is a minimum requirement but an act that is permitted by the law or regulations is not necessarily ethical',
+                             'the link between bringing disrepute on the profession and disciplinary action brought by a professional accountancy body'] },
+              { id: '3.1.4', tier: 'understand', text: 'The principle of professional competence and acting with due care' },
+              { id: '3.1.5', tier: 'understand', text: 'The principle of confidentiality',
+                indicative: ['how financial accounting information confidentiality may be affected by compliance with data protection laws'] },
+              { id: '3.1.6', tier: 'understand', text: 'Professional scepticism',
+                indicative: ['assessing information critically, with a questioning mind, and being alert to possible misstatements due to error or fraud',
+                             'the importance of professional scepticism when exercising professional judgement in relation to transactions recording and financial reporting'] },
+              { id: '3.1.7', tier: 'understand', text: 'The difference between a principles-based approach and a rules-based approach' },
+              { id: '3.1.8', tier: 'understand', text: 'How documented organisational policies on relevant issues can be used as safeguards to prevent threats and ethical conflict from arising' },
+              { id: '3.1.9', tier: 'understand', text: 'The types of safeguard that may be applied' },
+              { id: '3.1.10', tier: 'understand', text: 'What an accountant should do when a threat cannot be eliminated or reduced to an acceptable level' },
+              { id: '3.1.11', tier: 'do', text: 'Recognise threats to integrity in financial accounting: intimidation/self-interest threats to present misleading information to users of financial statements' },
+              { id: '3.1.12', tier: 'do', text: 'Recognise threats to objectivity: intimidation, self-review, advocacy, self-interest, familiarity threats resulting in bias' },
+              { id: '3.1.13', tier: 'do', text: 'Recognise professional competence and due care threats: keeping knowledge up to date, pressure in working role, self-interest, self-review, familiarity threats' },
+              { id: '3.1.14', tier: 'do', text: 'Recognise areas in which up to date technical knowledge can be critical and the consequences of not maintaining CPD' },
+              { id: '3.1.15', tier: 'do', text: 'Recognise when confidential information can or must be disclosed, when it must not be disclosed, and when situations pose a threat to confidentiality' },
+              { id: '3.1.16', tier: 'do', text: 'Recognise situations when professional scepticism should be applied and the action to be taken' },
+              /* The CPD bullet is printed under 3.1.17 in the extract, not under 3.1.4
+                 where its subject belongs — the same two-column spread that
+                 scrambles the tiers of 3.1.5 to 3.1.10. Encoded where the
+                 document puts it, so the load figures agree; the teaching in
+                 aat3-buaw-data.js covers it under competence, where it reads. */
+              { id: '3.1.17', tier: 'do', text: 'Recognise which safeguards may be appropriate',
+                indicative: ['how professional qualifications and continuing professional development (CPD) support professional competence'] }
+            ]
+          },
+          {
+            id: '3.2',
+            title: 'Ethical conflicts and reporting unethical behaviour',
+            concepts: [
+              { id: '3.2.1', tier: 'understand', text: 'How ethical conflicts arise' },
+              { id: '3.2.2', tier: 'understand', text: 'How to determine whether behaviour is ethical or unethical' },
+              { id: '3.2.3', tier: 'understand', text: 'Key organisational values and compliance with regulations',
+                indicative: ['being transparent with customers and suppliers',
+                             'reporting financial and regulatory information clearly and on time',
+                             'whether to accept and give gifts and hospitality',
+                             'paying suppliers a fair price and on time',
+                             'providing fair treatment, decent wages and good working conditions to employees',
+                             'use of social media'] },
+              { id: '3.2.4', tier: 'understand', text: 'The stages in the process for ethical conflict resolution when a situation presents a conflict in application of the fundamental principles' },
+              { id: '3.2.5', tier: 'understand', text: 'What happens when a course of action is unethical',
+                indicative: ['when disciplinary action by the relevant professional accountancy body may be brought against the accountant for misconduct, and the possible penalties that can arise',
+                             'when internal disciplinary procedures may be brought against the accountant by the employer for unethical or illegal behaviour'] },
+              { id: '3.2.6', tier: 'understand', text: 'The link between lack of professional competence and due care and claims for breach of contract and professional negligence' },
+              { id: '3.2.7', tier: 'understand', text: 'The requirement for professional indemnity insurance' },
+              { id: '3.2.8', tier: 'understand', text: 'When and how to report unethical behaviour to responsible persons at work',
+                indicative: ['when it is appropriate to report that a breach of the ethical code has taken place',
+                             "report in line with formal internal whistle-blowing or 'speak-out' procedures that may be available for reporting unethical behaviour",
+                             'seek advice confidentially from relevant managers or helplines as appropriate',
+                             'circumstances when there may be public interest disclosure protection available under statute for blowing the whistle externally in the public interest in relation to certain illegal or unethical acts by the employer',
+                             'seeking third-party advice before blowing the whistle externally'] }
+            ]
+          },
+          {
+            id: '3.3',
+            title: 'Money laundering',
+            concepts: [
+              { id: '3.3.1', tier: 'understand', text: 'Money laundering law and regulations',
+                indicative: ['the process of money laundering (layering, placement, integration)',
+                             "the consequences for an accountant of failing to act appropriately in response to money laundering, including the potential for the offences of 'tipping off' and 'failure to disclose'",
+                             "the consequences for any person of 'prejudicing an investigation'",
+                             'the nature of the protection given to accountants by protected disclosures and authorised disclosures under money laundering law and regulations',
+                             'all accountants will be regulated by their professional body or by HMRC'] },
+              { id: '3.3.2', tier: 'understand', text: 'The importance of reporting suspected money laundering in accordance with regulations',
+                indicative: ['select the information that should be reported by an accountant making a required disclosure in either an internal report or a suspicious activity report regarding suspicions about money laundering',
+                             'timescales for disclosure of suspected money laundering'] }
+            ]
+          }
+        ]
+      },
+      {
+        n: 4,
+        title: 'Understand the impact of new technologies in accounting and the risks associated with data security',
+        weighting: 15,
+        topics: [
+          {
+            id: '4.1',
+            title: 'Technology',
+            concepts: [
+              { id: '4.1.1', tier: 'understand', text: 'The impact of emerging and developing technologies on accounting systems',
+                indicative: ['automation of processes', 'AI and machine learning', 'blockchain',
+                             'electronic filing of documents', 'electronic signing of documents', 'data analytics'] },
+              { id: '4.1.2', tier: 'understand', text: 'How technological developments have increased outsourcing and offshoring, which has impacted business development',
+                indicative: ['cost structure', 'markets', 'locations'] },
+              { id: '4.1.3', tier: 'understand', text: 'The effect of automation and AI in accounting systems on the role of the accountant and the finance function' },
+              { id: '4.1.4', tier: 'understand', text: 'The key features of cloud accounting',
+                indicative: ['access to data and information from anywhere',
+                             'remote data storage so no backup by the business is required',
+                             'automation capabilities', 'availability of apps/plug-ins/add-ins',
+                             'interactions with stakeholders', 'real-time data'] },
+              { id: '4.1.5', tier: 'understand', text: 'Benefits and limitations of cloud accounting for an organisation' }
+            ]
+          },
+          {
+            id: '4.2',
+            title: 'Data protection, information-security and cybersecurity',
+            concepts: [
+              { id: '4.2.1', tier: 'understand', text: 'The principles of data protection',
+                indicative: ['lawfulness, fairness and transparency', 'purpose limitation', 'data minimisation',
+                             'accuracy', 'storage limitation', 'integrity and confidentiality (security)',
+                             'accountability'] },
+              { id: '4.2.2', tier: 'understand', text: 'The impact of data protection breaches on the individual and business' },
+              { id: '4.2.3', tier: 'understand', text: 'The importance of maintaining information security',
+                indicative: ['accounting systems access levels', 'security controls, i.e. firewalls',
+                             'integrity controls (input, processing and output controls)'] },
+              { id: '4.2.4', tier: 'understand', text: 'The importance of cybersecurity to address cyber risks' },
+              { id: '4.2.5', tier: 'understand', text: 'The risks to data and operations posed by cyberattacks' }
+            ]
+          }
+        ]
+      },
+      {
+        n: 5,
+        title: 'Communicate information to stakeholders',
+        weighting: 20,
+        topics: [
+          {
+            id: '5.1',
+            title: 'Information requirements in a business organisation',
+            concepts: [
+              { id: '5.1.1', tier: 'understand', text: 'The attributes of good quality information' },
+              { id: '5.1.2', tier: 'understand', text: 'The type, purpose and characteristics of information at operational, managerial and corporate/strategic levels within an organisation' },
+              { id: '5.1.3', tier: 'understand', text: 'The characteristics of big data',
+                indicative: ['value', 'variety', 'velocity', 'veracity', 'volume'] },
+              { id: '5.1.4', tier: 'understand', text: 'The benefits and limitations of the use of big data' },
+              { id: '5.1.5', tier: 'understand', text: 'The sources of internal and external big data' },
+              { id: '5.1.6', tier: 'understand', text: 'The need to apply professional scepticism in relation to big data' },
+              { id: '5.1.7', tier: 'understand', text: 'The use of data analytics from external sources' }
+            ]
+          },
+          {
+            id: '5.2',
+            title: 'Visualising information',
+            concepts: [
+              { id: '5.2.1', tier: 'understand', text: 'The importance of being able to visualise information in different formats',
+                indicative: ['images', 'charts', 'diagrams', 'tables', 'matrices', 'graphs'] },
+              { id: '5.2.2', tier: 'understand', text: 'Patterns or significant anomalies within data' },
+              { id: '5.2.3', tier: 'understand', text: 'The importance of choosing the most appropriate forms of visualised data for communication purposes' },
+              { id: '5.2.4', tier: 'understand', text: 'That accounting software packages use dashboards to communicate to non-technical stakeholders' },
+              { id: '5.2.5', tier: 'do', text: 'Interpret visual information to indicate relationships and trends' }
+            ]
+          },
+          {
+            id: '5.3',
+            title: 'Communicating information',
+            concepts: [
+              { id: '5.3.1', tier: 'understand', text: 'The principles used to determine the appropriate method of communication to use both internally and externally by the business' },
+              { id: '5.3.2', tier: 'understand', text: 'The characteristics of professional communication',
+                indicative: ['meeting different stakeholder requirements',
+                             'use of appropriate communication medium for desired outcome',
+                             'importance of communicating valid information', 'importance of confidentiality'] }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
   var SYLLABUS = {
     qualification: 'AAT Level 3 Diploma in Accounting (Q2022)',
     qualificationNumber: '603/6337/X',
@@ -1113,7 +1464,7 @@
     /* Weighted unit percentages combine to the qualification grade. Failing any
        single unit makes the whole qualification unclassified. A resit that
        scores lower does not displace an earlier higher result. */
-    units: { faps: FAPS, mats: MATS, tpfb: TPFB }
+    units: { faps: FAPS, mats: MATS, tpfb: TPFB, buaw: BUAW }
   };
 
   /* ── Helpers used by the coverage checker and by the app ─────────────────── */

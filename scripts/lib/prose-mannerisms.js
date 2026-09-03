@@ -153,7 +153,25 @@ function signpostCount(text, re) {
   return (String(text).match(global_(re || SIGNPOST)) || []).length;
 }
 
+/* A card's paragraphs, however they were authored.
+ *
+ * EVERY RENDERER IN THIS APP ACCEPTS `p` AS A STRING OR AN ARRAY — they all do
+ * `Array.isArray(c.p) ? c.p : [c.p]` — and every checker here assumed an array,
+ * because until now every card happened to be written as one. A card authored
+ * with a bare string therefore skipped the prose checks silently on Levels 1
+ * and 2 and in the guitar module, and crashed the Level 3 one outright. The
+ * checkers have to accept exactly what the renderers accept, or the rule they
+ * enforce is "written the way the existing cards happen to be written" rather
+ * than the rule anybody stated.
+ */
+function paras(card) {
+  const p = card && card.p;
+  if (!p) return [];
+  return Array.isArray(p) ? p : [p];
+}
+
 module.exports = {
+  paras,
   NEVER,
   SIGNPOST,
   SIGNPOST_CEILING_PER_1K,

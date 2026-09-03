@@ -1420,6 +1420,182 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-alert-due .a3-alert-go { color: var(--a3-brand); }
 .a3-alert-due:hover { border-color: var(--a3-brand); }
 
+/* ── The glossary, and its flashcards ─────────────────────────
+   A definition list rather than a grid of cards, and that is a reading
+   decision. Level 2's glossary is a grid, which is right there because its
+   terms are browsed; these are LOOKED UP, and a two-column grid makes the eye
+   travel down one column and back up the next past the word it wanted. One
+   term per row, term and meaning side by side from tablet width and stacked
+   below it. */
+.a3-glosssearch { position: relative; margin: 0 0 var(--a3-4); }
+.a3-glossin {
+  width: 100%; box-sizing: border-box; padding: 11px 38px 11px 13px;
+  border: 1px solid var(--a3-line-2); border-radius: var(--a3-r-sm);
+  background: var(--a3-surface); color: var(--a3-ink);
+  font-family: inherit; font-size: var(--a3-t-ui);
+}
+.a3-glossin:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+.a3-glossclear {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 28px; height: 28px; border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--a3-surface-2); color: var(--a3-ink-3);
+  font-family: inherit; font-size: 17px; line-height: 1;
+}
+.a3-glossclear:hover { color: var(--a3-ink); }
+
+.a3-glossgroup { margin: 0 0 var(--a3-5); }
+.a3-glossgroup-h {
+  display: flex; align-items: center; gap: var(--a3-2);
+  margin: 0 0 var(--a3-2); font-size: var(--a3-t-ui); font-weight: 800;
+  color: var(--a3-ink-2);
+}
+.a3-glossgroup-n {
+  flex: none; display: grid; place-items: center; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--a3-brand); color: var(--a3-on-fill);
+  font-size: 12px; font-weight: 800;
+}
+.a3-glosslist { margin: 0; padding: 0; border-top: 1px solid var(--a3-line); }
+.a3-glossrow {
+  display: grid; gap: 2px var(--a3-4); padding: var(--a3-3) 0;
+  border-bottom: 1px solid var(--a3-line);
+}
+.a3-glossrow dt { font-weight: 700; color: var(--a3-ink); }
+.a3-glossrow dd {
+  margin: 0; color: var(--a3-ink-3); font-size: var(--a3-t-meta); line-height: 1.55;
+}
+@media (min-width: 640px) {
+  .a3-glossrow { grid-template-columns: 190px 1fr; }
+  .a3-glossrow dd { font-size: var(--a3-t-body); }
+}
+
+/* The way into a run, at the top of the glossary because it is the thing a
+   reader who has already read the list wants. */
+.a3-flashstart {
+  display: flex; align-items: center; gap: var(--a3-3); width: 100%; text-align: left;
+  margin: 0 0 var(--a3-4); padding: var(--a3-4);
+  border: 1px solid var(--a3-brand); border-radius: var(--a3-r);
+  background: var(--a3-brand-wash); color: var(--a3-ink);
+  font-family: inherit; cursor: pointer; transition: border-color .14s;
+}
+.a3-flashstart:hover { border-color: var(--a3-brand); }
+.a3-flashstart:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+.a3-flashstart-i {
+  flex: none; display: grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; background: var(--a3-brand); color: var(--a3-on-fill);
+  font-size: 13px;
+}
+.a3-flashstart-tx { flex: 1 1 auto; min-width: 0; }
+.a3-flashstart-t { display: block; font-size: var(--a3-t-ui); font-weight: 700; }
+.a3-flashstart-m {
+  display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3);
+  margin-top: 2px; line-height: 1.45;
+}
+.a3-flashstart-go { flex: none; color: var(--a3-brand); font-size: 18px; }
+
+/* A card in a run. The prompt sits on the ordinary question heading, so the
+   card looks like the questions it is standing in for rather than like a
+   separate feature. */
+.a3-flash-ask {
+  color: var(--a3-ink-3); font-size: var(--a3-t-meta); margin: 0 0 var(--a3-4);
+}
+.a3-flash-def {
+  padding: var(--a3-4); margin: 0 0 var(--a3-4);
+  border-left: 3px solid var(--a3-brand); border-radius: 0 var(--a3-r-sm) var(--a3-r-sm) 0;
+  background: var(--a3-surface-2); color: var(--a3-ink); line-height: 1.6;
+}
+/* Two buttons of equal weight, because the reader is being asked to be honest
+   rather than to succeed — making "I had it" the bigger target would be a
+   thumb on the scale of their own self-assessment. */
+.a3-flash-grade { display: grid; grid-template-columns: 1fr 1fr; gap: var(--a3-2); }
+.a3-flash-grade .a3-btn { width: 100%; justify-content: center; }
+
+/* The third action on the path screen, held back from the two above it. */
+.a3-act-quiet { opacity: .92; }
+.a3-act-quiet:hover { opacity: 1; }
+
+/* ── "Next best thing to do" ───────────────────────────────────────────────
+   Sits above the unit grid and is allowed to be the loudest thing on the
+   screen, because it is the only element that has an opinion. Everything below
+   it is a neutral list of three units; this is the one that says which.
+
+   A gradient rather than a flat wash, and the only one in the module besides
+   the header: it has to read as an answer rather than as a fourth unit card,
+   and at this size shape alone did not do it — an early version was a bordered
+   panel and testers scrolled straight past it into the grid. */
+.a3-nudge {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  column-gap: var(--a3-3); width: 100%; text-align: left;
+  margin: 0 0 var(--a3-4); padding: var(--a3-4) var(--a3-4);
+  border: 0; border-radius: var(--a3-r-lg); cursor: pointer; font-family: inherit;
+  color: var(--a3-on-fill);
+  background: linear-gradient(135deg, var(--a3-brand), var(--a3-brand-2));
+  box-shadow: var(--a3-shadow);
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.a3-nudge:hover { transform: translateY(-2px); box-shadow: var(--a3-shadow-lg); }
+.a3-nudge:focus-visible { outline: 3px solid var(--a3-gold); outline-offset: 3px; }
+.a3-nudge-k {
+  grid-column: 1; display: block; font-size: 11px; font-weight: 800;
+  letter-spacing: .09em; text-transform: uppercase; opacity: .82;
+}
+.a3-nudge-t {
+  grid-column: 1; display: block; font-size: 17px; font-weight: 800;
+  line-height: 1.3; margin-top: 3px;
+}
+.a3-nudge-m {
+  grid-column: 1; display: block; font-size: var(--a3-t-meta);
+  line-height: 1.5; margin-top: 4px; opacity: .88;
+}
+/* Spans all three text rows so the arrow sits on the vertical centre of the
+   block rather than on the centre of whichever row it happens to follow. */
+.a3-nudge-go { grid-column: 2; grid-row: 1 / 4; font-size: 20px; opacity: .9; }
+
+/* ── "I know this": retiring a question, and getting it back ──────────────
+   The button sits beside the advance button on a graded practice question, and
+   deliberately does not compete with it: the advance button is what a reader
+   is reaching for, and this is a decision they make occasionally. So the row
+   gives the advance button all the space it wants and this one only what it
+   needs. Below 380px the label drops and the tick carries it, rather than the
+   two buttons wrapping onto separate lines and pushing Next off the fold. */
+.a3-qfoot { display: flex; align-items: stretch; gap: var(--a3-2); }
+.a3-qfoot .a3-wide { flex: 1 1 auto; width: auto; }
+.a3-retire {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 var(--a3-3); border-radius: var(--a3-r-sm);
+  border: 1px solid var(--a3-line-2); background: var(--a3-surface);
+  color: var(--a3-ink-3); font-family: inherit; font-size: var(--a3-t-meta);
+  font-weight: 600; cursor: pointer; transition: border-color .14s, color .14s;
+}
+.a3-retire:hover { border-color: var(--a3-brand); color: var(--a3-brand); }
+.a3-retire.is-on {
+  border-color: var(--a3-brand); background: var(--a3-brand-wash); color: var(--a3-brand);
+}
+.a3-retire-i { font-size: 14px; line-height: 1; }
+@media (max-width: 380px) { .a3-retire-l { display: none; } }
+
+/* The way back, on the practice screen. Quieter than either alert above it:
+   nothing is wrong and nothing is due — this is a note about the shape of the
+   pool, and it is only here at all because retiring must be reversible. */
+.a3-restore {
+  display: flex; align-items: center; gap: var(--a3-3); width: 100%; text-align: left;
+  margin-bottom: var(--a3-3); padding: var(--a3-4);
+  border-radius: var(--a3-r); border: 1px dashed var(--a3-line-2);
+  background: transparent; color: var(--a3-ink);
+  font-family: inherit; cursor: pointer; transition: border-color .14s;
+}
+.a3-restore:hover { border-color: var(--a3-brand); }
+.a3-restore-i {
+  flex: none; display: grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; background: var(--a3-surface-2); color: var(--a3-ink-3);
+  font-weight: 800; font-size: 15px;
+}
+.a3-restore-tx { flex: 1 1 auto; min-width: 0; }
+.a3-restore-t { display: block; font-size: var(--a3-t-ui); font-weight: 700; }
+.a3-restore-m {
+  display: block; font-size: var(--a3-t-meta); color: var(--a3-ink-3);
+  margin-top: 2px; line-height: 1.45;
+}
+
 /* Tier three: the ordinary ways in. Endless and mixed share one card
    language and, from tablet width, one row — five stacked full-width offers
    was the clutter this screen was known for. */

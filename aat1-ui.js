@@ -90,6 +90,21 @@
        native dialog cannot do — survive the repaint the clock fires every
        second underneath it. */
     confirmExit: false,
+    /* ── The glossary and its flashcards ────────────────────────────────────
+       `glossQuery` is what has been typed into the search box, session-only:
+       a search is a momentary act, and a reader coming back weeks later to a
+       glossary filtered to one word they no longer remember typing would think
+       the glossary had emptied.
+
+       `flash` is one run of cards. Held here rather than persisted — what a run
+       is worth is the SCHEDULE it writes, and that goes into the same
+       per-question store every other answer does. */
+    glossQuery: '',
+    flash: null,
+    /* Reading the card aloud. Held in state rather than read off the button,
+       because every click repaints the whole screen and a class on a node that
+       no longer exists is not a source of truth. */
+    speaking: false,
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
     /* Reviewing the paper just sat. `reviewIdx` is which question is open, or
        null for the list of them; `reviewLast` is the one to scroll back to on
@@ -245,6 +260,81 @@
   function isOutstanding(r) {
     return !!(r && n0(r.w) > n0(r.r));
   }
+
+  /* ── Retiring a question you already know ─────────────────────────────────
+     Level 2 has had this control since it shipped; this is the same idea in the
+     record shape Levels 1 and 3 use, and the Level 3 player carries the same
+     code with its own prefix.
+
+     TWO TIMESTAMPS, NOT A FLAG, for exactly the reason `w` and `r` are two
+     timestamps: progress-backup merges numbers by MAX and booleans by OR, so a
+     `retired: true` would be sticky — bring a question back on the phone, and
+     the laptop's stale `true` retires it again at the next merge, for ever.
+     Retired while the retiring stamp is the later of the two, which is
+     order-independent, idempotent, and settles a disagreement between two
+     devices in favour of whichever one the reader touched last.
+
+     `k` for known, `ku` for known-undone. Short because there is one of these
+     per question and the store is JSON in localStorage. */
+  function isRetired(r) {
+    return !!(r && n0(r.k) > n0(r.ku));
+  }
+  /* The record for one question, whichever of the two maps it lives in, created
+     on demand. Lesson-check questions carry a synthetic id and live in
+     `lessonQs`; everything else is in the practice record. */
+  function qRec(qId, make) {
+    if (!qId) return null;
+    var map = isLessonQId(qId) ? data.lessonQs : data.practice.qs;
+    if (!map[qId] && !make) return null;
+    return map[qId] || (map[qId] = {});
+  }
+  function retired(qId) { return isRetired(qRec(qId, false)); }
+  function toggleRetire(qId) {
+    var r = qRec(qId, true);
+    if (!r) return false;
+    var now = Date.now();
+    /* Written rather than deleted. A record whose stamps were removed would be
+       indistinguishable from one that had never been retired, and the merge
+       would then resurrect the retirement from the other device. */
+    if (isRetired(r)) r.ku = now; else r.k = now;
+    save();
+    return isRetired(r);
+  }
+  /* How many questions are put away, counted over the ids that are still
+     answerable rather than over the store: a question retired and then
+     rewritten out of the bank is not one the reader can bring back, and
+     counting it would leave a number on the practice screen that no button can
+     move. */
+  function retiredQuestions() {
+    var byId = answerableById();
+    var out = [];
+    [data.practice.qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        if (byId[id] && isRetired(map[id])) out.push(byId[id]);
+      });
+    });
+    return out;
+  }
+  /* Bring every one of them back, in one act. Retiring is reversible one
+     question at a time only while the question is still being served — and it
+     is not, that being the point — so without this the control would be a
+     one-way door. */
+  function restoreRetired() {
+    var byId = answerableById();
+    var now = Date.now(), n = 0;
+    [data.practice.qs, data.lessonQs].forEach(function (map) {
+      Object.keys(map || {}).forEach(function (id) {
+        if (byId[id] && isRetired(map[id])) { map[id].ku = now; n++; }
+      });
+    });
+    if (n) save();
+    return n;
+  }
+  /* The bank minus what the reader has put away. Every draw that is not a mock
+     goes through this; see drawWeighted for why a mock does not. */
+  function livePool() {
+    return practiceBank().filter(function (q) { return !retired(q.id); });
+  }
   /* The questions still outstanding, most recently missed first, and only those
      still answerable — a question that has been rewritten or removed since it
      was missed is not a question anyone can be asked again. Reads both mistake
@@ -254,7 +344,12 @@
     var out = [];
     [data.practice.qs, data.lessonQs].forEach(function (map) {
       Object.keys(map || {}).forEach(function (id) {
-        if (byId[id] && isOutstanding(map[id])) out.push({ id: id, w: n0(map[id].w) });
+        /* A retired question is out of every draw, the backlog included: the
+           reader said they know it, and serving it back because they once got
+           it wrong would make the control mean nothing. */
+        if (byId[id] && isOutstanding(map[id]) && !isRetired(map[id])) {
+          out.push({ id: id, w: n0(map[id].w) });
+        }
       });
     });
     return out.sort(function (a, b) { return b.w - a.w; })
@@ -292,7 +387,7 @@
         /* A question still outstanding belongs to the mistakes backlog, which
            serves it sooner and more insistently. Offering it in both places
            would double-count it on the practice screen. */
-        if (!byId[id] || isOutstanding(r)) return;
+        if (!byId[id] || isOutstanding(r) || isRetired(r)) return;
         var at = dueSince(r, now);
         if (at !== null) out.push({ id: id, r: at });
       });
@@ -745,6 +840,108 @@
     return h + '</div>';
   }
 
+  /* ── What should I do now? ────────────────────────────────────────────────
+     NOT A NEW PANEL. Level 3 puts this above a grid of three units, because
+     there the question really is "which unit"; here there is one unit and the
+     path screen already leads with Continue, which is the right first offer
+     and should not be argued with. What it led with SECOND was the problem:
+
+       Practise · Mixed, or one outcome · 338 questions in the bank
+
+     — three facts and no recommendation, on a screen whose whole job is to say
+     what to do next. Every number needed to do better is already recorded:
+     which questions went wrong and were never put right, which the schedule
+     says are due, which outcome is losing marks, whether a mock has ever been
+     sat. Nothing put them together.
+
+     So the second button keeps its place and gains an opinion. The reading
+     half of the screen is untouched.
+
+     THE ORDER IS THE OPINION:
+
+       1. Questions you got wrong and have not fixed. Repair before anything
+          else: material you are already known to be shaky on, and the cheapest
+          to put right.
+       2. Questions the schedule says are due. Forgetting is the loss spaced
+          repetition exists to prevent, and a card left past its due date is
+          the one thing here that gets worse on its own. Held to a higher
+          threshold so it does not headline over three cards.
+       3. An outcome you keep getting wrong, weighted by its share of the
+          assessment — 60% on an outcome worth a third of the paper costs more
+          than 50% on one worth a tenth.
+       4. A mock, once every step is done and one has never been sat.
+       5. Mixed practice, when there is nothing more specific to say. This is
+          the offer that used to be the only one.
+
+     Reading the next lesson is not in this list because the button above
+     already is that, and better: it resumes the exact page.
+
+     THRESHOLDS ARE DELIBERATELY NOT ZERO. "1 question due for review" is true
+     and is not advice; a recommendation that fires on a single card teaches the
+     reader to ignore the recommendation. */
+  var NUDGE_MISSED = 3;
+  var NUDGE_DUE = 5;
+  var NUDGE_WEAK_ATTEMPTS = 8;
+  var NUDGE_WEAK_PCT = 70;
+
+  function nextStep() {
+    var bank = practiceBank();
+    if (!bank.length) return null;
+
+    var missed = missedQuestions().length;
+    if (missed >= NUDGE_MISSED) {
+      return { lo: 'missed', k: 'Put right what went wrong',
+        t: missed + (missed === 1 ? ' question you got wrong' : ' questions you got wrong'),
+        m: 'Served back most recent first, and cleared as you get them right.' };
+    }
+
+    var due = dueQuestions().length;
+    if (due >= NUDGE_DUE) {
+      return { lo: 'refresh', k: 'Due for review',
+        t: due + ' questions are ready to come back',
+        m: 'Answered right once is not the same as known \u2014 these are the ones closest to slipping.' };
+    }
+
+    /* The per-outcome record, read where it lives. Level 3 has a
+       practiceSummary() that assembles this because it has to reconcile three
+       units and a legacy store shape; here there is one unit and one map.
+
+       Clamped, because a merged backup takes the larger of `attempted` and
+       `correct` INDEPENDENTLY, and a hand-edited file need not be coherent at
+       all — an unclamped pair can report 120% right and sort above everything
+       real. */
+    var weak = null;
+    var u = unit();
+    ((u && u.outcomes) || []).forEach(function (o) {
+      var r = data.practice.los[o.n];
+      var att = Math.max(0, (r && r.attempted) || 0);
+      if (att < NUDGE_WEAK_ATTEMPTS) return;
+      var cor = Math.min(att, Math.max(0, (r && r.correct) || 0));
+      var pct = Math.round((cor / att) * 100);
+      if (pct >= NUDGE_WEAK_PCT) return;
+      var cost = (100 - pct) * (o.weighting || 1);
+      if (!weak || cost > weak.cost) weak = { o: o, pct: pct, cost: cost };
+    });
+    if (weak) {
+      return { lo: weak.o.n, k: 'Costing you marks',
+        t: 'Outcome ' + weak.o.n + ' \u00b7 ' + weak.o.title,
+        m: weak.pct + '% right so far' +
+           (weak.o.weighting ? ', and worth ' + weak.o.weighting + '% of the assessment' : '') + '.' };
+    }
+
+    var ls = lessons();
+    var allRead = ls.length > 0 && ls.every(function (l) { return isDone(l.id); });
+    if (allRead && !data.practice.mocks) {
+      return { mock: true, k: 'Nothing left to read',
+        t: 'Sit your first timed mock',
+        m: 'A full paper at the real length and weighting. The only thing left that tells you whether it stuck.' };
+    }
+
+    return { lo: 'mix', k: 'Practise',
+      t: 'Mixed, or one outcome',
+      m: bank.length + ' questions in the bank, drawn to the exam weighting.' };
+  }
+
   function renderPath() {
     var groups = path();
     if (!groups.length) return '<div class="a1-empty">Level 1 content is still loading.</div>';
@@ -795,11 +992,35 @@
         '<span class="a1-act-m">Practice is where the work is now.</span>' +
         '</div>';
     }
-    if (bank.length) {
-      h += '<button class="a1-act a1-act-alt" data-a1="practice">' +
-        '<span class="a1-act-k">Practise</span>' +
-        '<span class="a1-act-t">Mixed, or one outcome</span>' +
-        '<span class="a1-act-m">' + bank.length + ' questions in the bank</span>' +
+    /* The second action, and what it says is a recommendation rather than a
+       category. See nextStep() above for the order and why. `practice` is kept
+       as the act for the generic offer, so a reader who wants to choose for
+       themselves still lands on the picker; anything more specific goes
+       straight to the run it named. */
+    var ns = nextStep();
+    if (ns) {
+      var nAttrs = ns.mock
+        ? ' data-a1="startmock"'
+        : ns.lo === 'mix'
+          ? ' data-a1="practice"'
+          : ' data-a1="startpractice" data-lo="' + esc(ns.lo) + '"';
+      h += '<button class="a1-act a1-act-alt"' + nAttrs + '>' +
+        '<span class="a1-act-k">' + esc(ns.k) + '</span>' +
+        '<span class="a1-act-t">' + esc(ns.t) + '</span>' +
+        '<span class="a1-act-m">' + esc(ns.m) + '</span>' +
+        '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+    /* THE THIRD WAY IN, and quieter than the other two on purpose. Reading and
+       practising are what a reader came to do; the vocabulary is what they
+       reach for when a word in one of them did not land. Offered only where
+       there is a glossary, so a build without one does not advertise an empty
+       screen. */
+    if (glossary().length) {
+      h += '<button class="a1-act a1-act-alt a1-act-quiet" data-a1="gloss">' +
+        '<span class="a1-act-k">Glossary</span>' +
+        '<span class="a1-act-t">' + glossary().length + ' terms, and flashcards</span>' +
+        '<span class="a1-act-m">Search the vocabulary, or be asked to produce it from memory</span>' +
         '<span class="a1-act-go-i" aria-hidden="true">→</span>' +
         '</button>';
     }
@@ -927,6 +1148,18 @@
               : 'Questions · ' + (S.qIdx + 1) + ' of ' + checks.length) +
         '</div>' +
       '</div>' +
+      /* THE GLYPH AND THE WORD ARE SEPARATE ELEMENTS, so the narrowest phone can
+         drop the word and keep the button. Setting `font-size: 0` on the button
+         and restoring the glyph with `::first-letter` does not work — that
+         pseudo-element does not apply to an inline-flex box, and the button
+         renders as an empty pill at 320px. */
+      (speechOffered(cards[S.cardIdx])
+        ? '<button class="a1-speak' + (S.speaking ? ' is-on' : '') + '" data-a1="speak"' +
+          ' aria-label="' + (S.speaking ? 'Stop reading this card aloud' : 'Read this card aloud') + '">' +
+          '<span class="a1-speak-i" aria-hidden="true">' + (S.speaking ? '\u25a0' : '\u25b6') + '</span>' +
+          '<span class="a1-speak-l">' + (S.speaking ? 'Stop' : 'Listen') + '</span>' +
+          '</button>'
+        : '') +
       '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
       '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
 
@@ -1034,6 +1267,33 @@
       ' &middot; ' + Math.ceil(marks * 0.7) + ' to pass</div>' +
       '</div>';
     return h + '</div>';
+  }
+
+  /* ── "I know this" ────────────────────────────────────────────────────────
+     OFFERED AFTER THE ANSWER, NEVER BEFORE IT. Shown alongside the question it
+     would be a way of skipping something hard; shown alongside the explanation
+     it is a judgement the reader has just earned the right to make, because
+     they have seen whether they were right.
+
+     PRACTICE RUNS ONLY. Not in a mock, where nothing is graded until the paper
+     is over and there is nothing to judge yet — and where the questions are
+     drawn from the full bank anyway. Not in a review, which walks a finished
+     paper and has its own navigation. Not inside a lesson: a lesson's check
+     questions are part of reading it, there is no pool to take them out of,
+     and the lesson still has to be finished either way. A lesson question that
+     later surfaces through the backlog IS served in a practice run, and can be
+     retired there like any other. */
+  function retireOffered(q) {
+    return !!(q && q.id) && S.mode === 'practice' && S.answered !== null && !isReview();
+  }
+  function retireBtn(q) {
+    var on = retired(q.id);
+    return '<button class="a1-retire' + (on ? ' is-on' : '') + '" data-a1="retire"' +
+      ' aria-pressed="' + (on ? 'true' : 'false') + '"' +
+      ' title="' + (on ? 'Put this back into practice' : 'Stop showing me this question') + '">' +
+      '<span class="a1-retire-i" aria-hidden="true">' + (on ? '\u21ba' : '\u2713') + '</span>' +
+      '<span class="a1-retire-l">' + (on ? 'Bring back' : 'I know this') + '</span>' +
+      '</button>';
   }
 
   function questionHtml(q, n) {
@@ -1315,8 +1575,11 @@
          through a finished paper rather than through a run, so it brings its
          own navigation and must not offer this one. */
       if (!isReview()) {
-        h += '<button class="a1-btn a1-btn-primary a1-wide" data-a1="nextq">' +
+        var adv = '<button class="a1-btn a1-btn-primary a1-wide" data-a1="nextq">' +
           (S.qIdx === n - 1 ? 'Finish' : 'Next question') + '</button>';
+        h += retireOffered(q)
+          ? '<div class="a1-qfoot">' + adv + retireBtn(q) + '</div>'
+          : adv;
       }
     }
     return h;
@@ -1577,6 +1840,202 @@
   }
 
   /* ── Practice picker ─────────────────────────────────────────────────────── */
+  /* ── The glossary, and being drilled on it ────────────────────────────────
+     THE SAME FEATURE LEVEL 3 CARRIES, with this unit's own vocabulary. See the
+     block above renderGlossary in aat3-ui.js for why flashcards exist alongside
+     a practice bank that already asks about these ideas: a practice question
+     gives four options and asks you to pick, a card gives a word and asks you
+     to produce the meaning, and recognition is not recall.
+
+     WHY THE GLOSSARY IS ITS OWN FILE AND NOT THE CARDS' `terms` LISTS. Twenty
+     cards in this unit already carry a terms list, and those exist to be read
+     in place — a definition arrives beside the paragraph that needs it. This is
+     for looking a word up weeks later, and for being drilled on it, which wants
+     every term in one place regardless of which lesson introduced it. The two
+     must agree, and scripts/check-glossary.js asserts that every term taught on
+     a card is here.
+
+     THE SCHEDULE IS THE SAME ONE. A card graded here writes through
+     recordQuestion into the same per-question store as every practice answer,
+     with the same spaced-repetition schedule from spaced.js. The synthetic id
+     is "gloss~<term>", which puts it in the lesson-question map (see
+     isLessonQId): a term is not a bank question, so it must not land in the
+     practice `qs` map and be counted as practice the reader never did. */
+  function glossary() {
+    var G = root.AAT1_GLOSSARY;
+    return (G && G.TERMS) || [];
+  }
+  var GLOSS_PREFIX = 'gloss' + LESSON_Q_SEP;
+  function glossId(term) { return GLOSS_PREFIX + term; }
+
+  /* Searched over BOTH the term and its definition. A reader who has forgotten
+     the word but remembers "the one where the payee controls the amount" is
+     exactly the reader a glossary is for, and a term-only search fails them. */
+  function glossMatches() {
+    var q = String(S.glossQuery || '').trim().toLowerCase();
+    var all = glossary();
+    if (!q) return all;
+    return all.filter(function (t) {
+      return (t.t + ' ' + t.d).toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  function renderGlossary() {
+    var all = glossary();
+    var rows = glossMatches();
+    var q = String(S.glossQuery || '');
+
+    var h = '<div class="a1-root' + fresh() + '">';
+    h += ctxBar({
+      back: 'topath',
+      backLabel: 'Back to the steps',
+      title: 'Glossary',
+      meta: all.length + ' terms',
+    });
+    h += '<div class="a1-page">';
+
+    if (!all.length) {
+      h += '<div class="a1-empty">No glossary yet.</div>';
+      return h + '</div></div>';
+    }
+
+    h += '<button class="a1-flashstart" data-a1="startflash">' +
+      '<span class="a1-flashstart-i" aria-hidden="true">◆</span>' +
+      '<span class="a1-flashstart-tx">' +
+        '<span class="a1-flashstart-t">Test yourself on ' + FLASH_LEN + ' of them</span>' +
+        '<span class="a1-flashstart-m">The word, then the meaning from memory. Drawn to the exam ' +
+          'weighting, and scheduled like everything else you answer.</span>' +
+      '</span>' +
+      '<span class="a1-flashstart-go" aria-hidden="true">→</span>' +
+      '</button>';
+
+    h += '<div class="a1-glosssearch">' +
+      '<input class="a1-glossin" type="search" data-a1="glossin" value="' + esc(q) + '"' +
+      ' placeholder="Search the terms and the definitions…" aria-label="Search the glossary">' +
+      (q ? '<button class="a1-glossclear" data-a1="glossclear" aria-label="Clear the search">×</button>' : '') +
+      '</div>';
+
+    if (!rows.length) {
+      h += '<div class="a1-empty">Nothing matches “' + esc(q) + '”.</div>';
+      return h + '</div></div>';
+    }
+
+    /* GROUPED BY OUTCOME RATHER THAN ALPHABETICALLY. A reader revising outcome
+       4 wants outcome 4's vocabulary together; a reader looking one word up
+       types it, and the search box serves that better than an alphabet would. */
+    var u = unit();
+    var los = (u && u.outcomes) || [];
+    var seen = {};
+    los.forEach(function (o) {
+      var mine = rows.filter(function (t) { return t.lo === o.n; });
+      if (!mine.length) return;
+      mine.forEach(function (t) { seen[t.t] = 1; });
+      h += '<section class="a1-glossgroup">' +
+        '<h2 class="a1-glossgroup-h"><span class="a1-glossgroup-n">' + esc(o.n) + '</span>' +
+        esc(o.title) + '</h2><dl class="a1-glosslist">';
+      mine.forEach(function (t) {
+        h += '<div class="a1-glossrow"><dt>' + esc(t.t) + '</dt><dd>' + md(t.d) + '</dd></div>';
+      });
+      h += '</dl></section>';
+    });
+    /* A term whose `lo` matches no outcome would otherwise vanish silently.
+       Shown rather than dropped: a definition nobody can find is the one bug a
+       glossary can have that looks like no bug at all. */
+    var orphans = rows.filter(function (t) { return !seen[t.t]; });
+    if (orphans.length) {
+      h += '<section class="a1-glossgroup"><h2 class="a1-glossgroup-h">Other terms</h2><dl class="a1-glosslist">';
+      orphans.forEach(function (t) {
+        h += '<div class="a1-glossrow"><dt>' + esc(t.t) + '</dt><dd>' + md(t.d) + '</dd></div>';
+      });
+      h += '</dl></section>';
+    }
+
+    h += '<footer class="a1-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
+    return h + '</div></div>';
+  }
+
+  /* Twelve cards. Long enough to be worth starting and short enough to finish
+     on a bus, which is the whole case for flashcards over a practice run. */
+  var FLASH_LEN = 12;
+
+  function startFlash() {
+    var pool = glossary();
+    if (!pool.length) return;
+    /* DUE FIRST, THEN UNSEEN, THEN THE REST — the same priority the practice
+       screen uses, and for the same reason. */
+    var now = Date.now();
+    var due = [], unseen = [], rest = [];
+    pool.forEach(function (t) {
+      var r = data.lessonQs[glossId(t.t)];
+      if (!r) unseen.push(t);
+      else if (isOutstanding(r) || dueSince(r, now) !== null) due.push(t);
+      else rest.push(t);
+    });
+    var deck = shuffle(due).concat(shuffle(unseen)).concat(shuffle(rest)).slice(0, FLASH_LEN);
+    S.flash = { cards: deck, idx: 0, shown: false, got: 0 };
+    S.screen = 'flash';
+  }
+
+  function renderFlash() {
+    var F = S.flash;
+    if (!F || !F.cards.length) { S.screen = 'gloss'; return renderGlossary(); }
+    if (F.idx >= F.cards.length) return renderFlashDone();
+    var card = F.cards[F.idx];
+    var pct = Math.round((F.idx / F.cards.length) * 100);
+
+    var h = '<div class="a1-root a1-reading' + fresh() + '">';
+    h += '<div class="a1-lessonbar">' +
+      '<button class="a1-ctx-back" data-a1="gloss" aria-label="Back to the glossary">' +
+        '<span aria-hidden="true">←</span></button>' +
+      '<div class="a1-lessonbar-mid">' +
+        '<div class="a1-lessonbar-t">Flashcards</div>' +
+        '<div class="a1-lessonbar-m">Card ' + (F.idx + 1) + ' of ' + F.cards.length +
+          ' · ' + F.got + ' known</div>' +
+      '</div>' +
+      '<div class="a1-lessonbar-n">' + pct + '%</div></div>' +
+      '<div class="a1-lessonbar-p"><span style="width:' + pct + '%"></span></div>';
+
+    h += '<article class="a1-sheet' + fresh() + '">';
+    /* The term is an h2 with the same class every question stem uses, so the
+       harnesses that identify a screen by its stem can see this one too. */
+    h += '<h2 class="a1-q">' + esc(card.t) + '</h2>';
+    if (!F.shown) {
+      h += '<p class="a1-flash-ask">Say what it means, then turn the card over.</p>' +
+        '<button class="a1-btn a1-btn-primary a1-wide" data-a1="flashflip">Turn it over</button>';
+    } else {
+      h += '<div class="a1-flash-def">' + md(card.d) + '</div>' +
+        '<p class="a1-flash-ask">Did you have it?</p>' +
+        '<div class="a1-flash-grade">' +
+          '<button class="a1-btn a1-btn-ghost" data-a1="flashno">Not yet</button>' +
+          '<button class="a1-btn a1-btn-primary" data-a1="flashyes">I had it</button>' +
+        '</div>';
+    }
+    h += '</article></div>';
+    return h;
+  }
+
+  function renderFlashDone() {
+    var F = S.flash;
+    var n = F.cards.length;
+    var pct = n ? Math.round((F.got / n) * 100) : 0;
+    var h = '<div class="a1-root' + fresh() + '"><div class="a1-page">';
+    /* THE RESULT SCREEN EVERY OTHER RUN USES. A flashcard run ending in its own
+       bespoke panel would be a second visual language for the same event, and
+       the classes here already carry the ring, the heading and the button row. */
+    h += '<section class="a1-done">' +
+      '<div class="a1-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
+      '<div class="a1-done-lesson">Flashcards</div>' +
+      '<h2 class="a1-done-h">' + F.got + ' of ' + n + ' recalled</h2>' +
+      '<p class="a1-done-sub">The ones you did not have come back sooner; the ones you did ' +
+        'come back later.</p>' +
+      '<div class="a1-done-actions">' +
+        '<button class="a1-btn a1-btn-primary" data-a1="startflash">Another ' + FLASH_LEN + '</button>' +
+        '<button class="a1-btn a1-btn-ghost" data-a1="gloss">Back to the glossary</button>' +
+      '</div></section>';
+    h += '</div></div>';
+    return h;
+  }
+
   function renderPractice() {
     var bank = practiceBank();
     var u = unit();
@@ -1586,6 +2045,7 @@
 
     var missed = missedQuestions();
     var due = dueQuestions();
+    var put = retiredQuestions();
     var pr = data.practice;
 
     var h = '<div class="a1-root' + fresh() + '">';
@@ -1596,7 +2056,12 @@
         /* "10 per run" was true while a run was the only thing this screen
            offered. It now offers a 30-question paper as well, so the honest
            fact here is the size of the pool; each card says its own length. */
-        meta: bank.length + ' questions in the pool',
+        /* The live figure once anything is put away, because that is the number
+           a run will actually draw from, and "338 questions" over a pool of 298
+           is the app disagreeing with itself. */
+        meta: put.length
+          ? (bank.length - put.length) + ' in practice \u00b7 ' + put.length + ' put away'
+          : bank.length + ' questions in the pool',
       });
 
     h += '<div class="a1-page">';
@@ -1642,6 +2107,24 @@
           '<span class="a1-alert-m">Spaced out further each time you get one right. Right once is not the same as known.</span>' +
         '</span>' +
         '<span class="a1-alert-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
+
+    /* The way back from "I know this". Retiring is reversible one question at a
+       time only while that question is still being served, and it is not — so
+       without a control here the button on the question screen would be a
+       one-way door. Rendered only when there is something behind it. */
+    if (put.length) {
+      h += '<button class="a1-restore" data-a1="restore">' +
+        '<span class="a1-restore-i" aria-hidden="true">\u21ba</span>' +
+        '<span class="a1-restore-tx">' +
+          '<span class="a1-restore-t">' + put.length +
+            (put.length === 1 ? ' question put away' : ' questions put away') + '</span>' +
+          '<span class="a1-restore-m">Marked \u201cI know this\u201d, so practice runs skip ' +
+            (put.length === 1 ? 'it' : 'them') + '. A timed mock still asks ' +
+            (put.length === 1 ? 'it' : 'them') + '. Tap to bring ' +
+            (put.length === 1 ? 'it' : 'them') + ' back.</span>' +
+        '</span>' +
         '</button>';
     }
 
@@ -1747,6 +2230,8 @@
   }
 
   function screenHtml() {
+    if (S.screen === 'gloss') return renderGlossary();
+    if (S.screen === 'flash') return renderFlash();
     if (S.screen === 'lesson') return renderLesson();
     if (S.screen === 'practice') return renderPractice();
     if (S.screen === 'quiz') return renderQuiz();
@@ -1854,6 +2339,26 @@
       var stay = el.querySelector('[data-a1="exitcancel"]');
       if (stay && stay.focus) { try { stay.focus(); } catch (e) {} }
     }
+    /* THE SEARCH BOX GETS ITS CARET BACK. Typing into the glossary filters the
+       list, which means a repaint, which means the input the reader is typing
+       into is replaced by a new one — and a new input is not focused and holds
+       no caret. Without this the box takes exactly one character and then
+       silently stops accepting them, which reads as the keyboard breaking.
+
+       Only while there is something in it: focusing an empty box on arrival
+       would open the keyboard over the glossary on every phone, on a screen
+       whose point is to be read. */
+    if (S.screen === 'gloss' && S.glossQuery && el.querySelector) {
+      var box = el.querySelector('.a1-glossin');
+      if (box && box.focus) {
+        try {
+          box.focus();
+          /* To the end, not to the start — which is where a fresh input puts
+             it, and which would type the next character in front of the last. */
+          if (box.setSelectionRange) box.setSelectionRange(box.value.length, box.value.length);
+        } catch (e) {}
+      }
+    }
   }
   function fresh() { return _fresh ? ' is-fresh' : ''; }
   var _host = null;
@@ -1884,8 +2389,18 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for ten and found nine must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(n, noWritten) {
-    var bank = practiceBank();
+  function drawWeighted(n, noWritten, keepRetired) {
+    /* WHY A MOCK STILL DRAWS FROM RETIRED QUESTIONS, and nothing else does.
+       Everywhere else, "I know this" means stop asking me. A mock is the one
+       place where honouring that would work against the reader: it is a
+       rehearsal of a real paper at the real weighting, and the real paper has
+       never heard of anything you put away. Drawing a mock from the shrunken
+       pool would hand back a score against an easier exam than the one being
+       sat — and, at the far end, an outcome with every question retired could
+       not fill its seats at all, so the weighting itself would quietly stop
+       holding. Keeping them in also means retirement can never hide a weakness
+       from the one measure that is supposed to find it. */
+    var bank = keepRetired ? practiceBank() : livePool();
     /* WHY A MOCK HAS NO WRITTEN TASKS IN IT. A written task is marked by the
        reader against a rubric they can only see once the model answer is on
        screen — and a mock reveals nothing until the paper is over. Including
@@ -1958,7 +2473,7 @@
 
   function startMock() {
     S.practiceLo = 'mock';
-    S.practiceQs = drawWeighted(MOCK_LEN, true);
+    S.practiceQs = drawWeighted(MOCK_LEN, true, true);
     S.practiceMissed = [];
     S.streak = 0; S.bestStreak = 0; /* same reset startPractice() does */
     S.mockResults = [];
@@ -1983,6 +2498,174 @@
      `querySelector` is guarded because the build checks drive the player
      through a stand-in element that has none: there the clock simply does not
      tick, which is correct — those runs are not against a wall clock. */
+  /* ── Reading a card aloud ──────────────────────────────────────────────────
+     THE SAME MACHINERY LEVEL 3 CARRIES, and deliberately a second copy of it
+     rather than a shared module: the two players have separate closures, no
+     common runtime, and their cards are not the same shape. Level 1 has three
+     kinds Level 3 does not — a key-terms list, a document facsimile and a
+     "not at this level" note — and each needed its own decision about whether
+     it can be said out loud at all. A shared cardSpeech would have to know
+     about both card vocabularies, which is the coupling, not the saving.
+
+     ON EVERY CARD THAT HAS SOMETHING TO SAY, and withheld where there is not:
+     a card whose whole substance is a document facsimile produces no prose,
+     and a Listen button that plays silence is worse than no button, because
+     the reader cannot tell it from a fault. The offer and the content are
+     decided by the same function, so they cannot disagree.
+
+     EVERYTHING GOES THROUGH `root`, not `window`. In the browser `root` IS
+     window, so this is the same object; in Node it is the module's exports,
+     which is what lets the build check hand it a stub speech engine and assert
+     what was said and when it was cancelled. */
+  function speechEngine() { return root.speechSynthesis || null; }
+  function canSpeak() { return !!(speechEngine() && root.SpeechSynthesisUtterance); }
+  function speechOffered(card) {
+    return canSpeak() && S.phase === 'teach' && cardSpeech(card).length > 0;
+  }
+
+  /* An English voice, preferring the British one this material is written in.
+     Voices load asynchronously on most browsers, so this is asked for at speak
+     time rather than cached at load — a cached null from the first paint would
+     never recover. */
+  function englishVoice() {
+    var e = speechEngine();
+    var voices = (e && e.getVoices) ? e.getVoices() : [];
+    if (!voices.length) return null;
+    return voices.find(function (v) { return v.lang === 'en-GB'; })
+      || voices.find(function (v) { return String(v.lang).indexOf('en') === 0; })
+      || null;
+  }
+
+  /* What a card SAYS, as opposed to what it shows. Built from the card data,
+     never from the rendered HTML — scraping the DOM would pick up the markup
+     and the per-cell column headings the narrow layout carries.
+
+     IN THE ORDER THE CARD RENDERS THEM, so "there is more here" arrives at the
+     point the eye would reach it. Compare cardHtml above: heading, prose, key
+     terms, formula, split, table, example, document, flow, callout, not-yet,
+     watch-out, worked.
+
+     WHAT IS READ AND WHAT IS ONLY ANNOUNCED. Prose is read. A key-terms list
+     is read, because a term and its definition is a sentence and reads as one;
+     it is the one structured element here that survives being spoken. Tables
+     are passed over in silence — a four-column grid becomes a stream of
+     unanchored words, and announcing it turned out to be little better on a
+     card whose table IS the substance. Everything else is announced but not
+     read: a formula becomes "gross equals net times one point two zero", and a
+     document facsimile read field by field is worse than useless — but a
+     listener has to know it is there, or they will think they have heard the
+     whole card. */
+  function cardSpeech(c) {
+    if (!c) return [];
+    var out = [];
+    var say = function (t) {
+      var clean = String(t == null ? '' : t)
+        .replace(/\*\*([^*]+)\*\*/g, '$1')      // bold markers are for the eye
+        .replace(/(^|[^*])\*([^*]+)\*/g, '$1$2')  // and so is emphasis
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (clean) out.push(clean);
+    };
+
+    if (c.h) say(c.h);
+    if (c.p) (Array.isArray(c.p) ? c.p : [c.p]).forEach(say);
+    if (c.terms && c.terms.length) {
+      say('Key terms.');
+      c.terms.forEach(function (t) { say(t.t + '. ' + t.d); });
+    }
+    if (c.formula) say('There is a formula on screen.');
+    if (c.split) say('There are two lists on screen to compare.');
+    /* Tables: silence. See the block above. */
+    if (c.example) say('There is a worked figure on screen.');
+    if (c.doc) {
+      /* NAMED, because Level 1 is a documents unit and half its cards are a
+         picture of a piece of paper. "There is a document" would leave a
+         listener wondering which; the kind is the one word that helps. */
+      say('There is a ' + String((c.doc.tag || c.doc.title || 'document')).toLowerCase() +
+        ' on screen to look at.');
+    }
+    if (c.flow) say('There is a sequence of steps on screen.');
+    if (c.callout) say(c.callout.text);
+    /* Prefixed with the label the card itself prints, so a listener hears the
+       same framing a reader sees. */
+    if (c.notyet) say('Not at this level. ' + c.notyet);
+    if (c.examtrap) {
+      say('Watch out. ' + (typeof c.examtrap === 'string' ? c.examtrap : (c.examtrap.text || '')));
+    }
+    if (c.worked) say('There is a worked example on screen to step through.');
+    return out;
+  }
+
+  /* SPOKEN AS SENTENCES, NOT AS ONE UTTERANCE, and that is not a stylistic
+     preference. iOS Safari cuts speech off after roughly fifteen seconds of a
+     single utterance, and the median card here runs well past that, so one
+     utterance per card would be truncated on every iPhone in the middle of the
+     second paragraph. Queued sentences also give the pauses a reader expects,
+     and let the stop button take effect within a sentence rather than at the
+     end of the card. */
+  function sentences(text) {
+    /* No lookbehind — a regex literal with one is a parse error on Safari
+       before 16.4, and because it is a literal the whole file dies at load,
+       taking the entire Level 1 module with it. Mark each boundary, then split
+       on the marker. */
+    return String(text).replace(/([.!?])\s+/g, '$1\u0001').split('\u0001')
+      .filter(function (x) { return x.trim(); });
+  }
+
+  function stopSpeaking() {
+    var e = speechEngine();
+    if (e && e.cancel) e.cancel();
+    S.speaking = false;
+    paintSpeakButton();
+  }
+
+  /* The button is repainted in place rather than by re-rendering, for the same
+     reason the mock clock is: a repaint rebuilds the whole screen, and doing
+     that from an utterance callback would fight whatever the reader is doing.
+     Guarded because the build check drives this through an element that has no
+     querySelector. */
+  function paintSpeakButton() {
+    if (!_host || !_host.querySelector) return;
+    var el = _host.querySelector('.a1-speak');
+    if (!el) return;
+    /* The two spans are updated rather than the button's textContent, which
+       would replace them with a bare string and take the narrow-screen layout
+       with it. */
+    var icon = el.querySelector && el.querySelector('.a1-speak-i');
+    var label = el.querySelector && el.querySelector('.a1-speak-l');
+    if (icon) icon.textContent = S.speaking ? '\u25a0' : '\u25b6';
+    if (label) label.textContent = S.speaking ? 'Stop' : 'Listen';
+    if (el.classList) {
+      if (S.speaking) el.classList.add('is-on'); else el.classList.remove('is-on');
+    }
+    el.setAttribute('aria-label', S.speaking ? 'Stop reading this card aloud' : 'Read this card aloud');
+  }
+
+  function speakCard(c) {
+    var e = speechEngine();
+    if (!e || !root.SpeechSynthesisUtterance) return;
+    e.cancel();
+    var lines = [];
+    cardSpeech(c).forEach(function (t) { lines = lines.concat(sentences(t)); });
+    if (!lines.length) return;
+
+    var voice = englishVoice();
+    var utterances = lines.map(function (line) {
+      var u = new root.SpeechSynthesisUtterance(line);
+      u.lang = 'en-GB';
+      u.rate = 0.95;
+      if (voice) u.voice = voice;
+      return u;
+    });
+    /* Only the last one clears the flag. Attaching it to every utterance would
+       end the run at the first full stop. */
+    var last = utterances[utterances.length - 1];
+    last.onend = last.onerror = function () { S.speaking = false; paintSpeakButton(); };
+    S.speaking = true;
+    paintSpeakButton();
+    utterances.forEach(function (u) { e.speak(u); });
+  }
+
   var _mockTimer = null;
   function stopMockClock() {
     if (_mockTimer && typeof clearInterval === 'function') clearInterval(_mockTimer);
@@ -2027,7 +2710,7 @@
   function isEndless() { return S.mode === 'practice' && S.practiceLo === 'endless'; }
 
   function topUpEndless() {
-    var pool = practiceBank();
+    var pool = livePool();
     var fresh = pool.filter(function (q) { return !S.endlessSeen[q.id]; });
     /* Once the whole bank has been seen the set starts again: an endless run
        that quietly stopped being endless would be worse than repetition. */
@@ -2064,7 +2747,7 @@
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(PRACTICE_LEN);
     } else {
-      var pool = practiceBank().filter(function (q) { return q.lo === lo; });
+      var pool = livePool().filter(function (q) { return q.lo === lo; });
       S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
     }
     S.practiceMissed = [];
@@ -2352,6 +3035,13 @@
     topath: 1, jump: 1, step: 1, stepall: 1,
     review: 1, reviewall: 1, reviewwrong: 1, reviewq: 1,
     reviewnext: 1, reviewprev: 1, reviewback: 1, reviewlist: 1,
+    /* Retiring is a decision about the pool, not a move through it, so it gets
+       the flat click rather than the advance noise. */
+    retire: 1, restore: 1,
+    /* Turning a card over is a move to the next step of the same card, so it
+       sounds like one. Grading is not here: it makes the right-or-wrong noise
+       itself, the way settle() does. */
+    gloss: 1, startflash: 1, flashflip: 1,
   };
 
   function gradeAnswer(q) {
@@ -2651,6 +3341,20 @@
         n.addEventListener('focus', function () { S.calcCell = n.getAttribute('data-c'); });
         return;
       }
+      /* THE SEARCH BOX IS BOUND HERE, LIKE EVERY OTHER INPUT, and not in
+         handle(). handle() is only ever reached from the click listener at the
+         bottom of this function, so an `input` binding written there is never
+         installed — the box takes text and nothing happens, which is a defect
+         that looks exactly like a filter with no matches.
+
+         AND IT DOES REPAINT ON THE KEYSTROKE, unlike the written task below:
+         the point of typing here is to narrow the list, so the list has to be
+         rebuilt. What that costs is the caret, and mount() puts it back — see
+         the note at the end of it. */
+      if (act === 'glossin') {
+        n.addEventListener('input', function () { S.glossQuery = n.value; rerender(); });
+        return;
+      }
       if (act === 'wrinput') {
         /* No repaint on the keystroke. Every other input here is a short
            number; this is several lines of prose, and rerendering would drop
@@ -2692,7 +3396,10 @@
        does: advancing repaints synchronously, so the second tap of a
        double-tap lands on whatever button has taken the same coordinates on
        the next question. */
-    plsubmit: 1, egsubmit: 1 };
+    plsubmit: 1, egsubmit: 1, retire: 1,
+    /* The grade buttons sit where the flip button was a moment ago, which is
+       the double-tap this guard exists for. */
+    flashflip: 1, flashyes: 1, flashno: 1 };
 
   function num(v) {
     var s = String(v == null ? '' : v).replace(/[£,\s]/g, '');
@@ -2754,6 +3461,7 @@
 
     if (act === 'open') { startLesson(n.getAttribute('data-id')); return rerender(); }
     if (act === 'exit') {
+      stopSpeaking();
       /* A mock is the only run worth guarding. A lesson can be reopened from
          the ladder and a practice run banks each answer as it goes, so backing
          out of either costs the reader nothing they cannot get back in a tap;
@@ -2831,6 +3539,31 @@
       return rerender();
     }
     if (act === 'practice') { S.mode = 'practice'; S.screen = 'practice'; return rerender(); }
+    if (act === 'gloss') { S.screen = 'gloss'; S.flash = null; return rerender(); }
+    if (act === 'glossclear') { S.glossQuery = ''; return rerender(); }
+    if (act === 'startflash') { startFlash(); return rerender(); }
+    if (act === 'flashflip') {
+      if (!S.flash || S.flash.shown) return;
+      S.flash.shown = true;
+      return rerender();
+    }
+    if (act === 'flashyes' || act === 'flashno') {
+      var F = S.flash;
+      /* Guarded rather than assumed: the buttons only render once the card is
+         turned over, but a tap from the previous paint is still live while the
+         finger is travelling — and grading a card the reader has not seen the
+         back of is exactly the thing this must not do. */
+      if (!F || !F.shown || F.idx >= F.cards.length) return;
+      var got = act === 'flashyes';
+      /* Written through the same recorder every graded answer goes through, so
+         a term picks up the same spaced-repetition schedule as a question. */
+      recordQuestion(glossId(F.cards[F.idx].t), got);
+      save();
+      if (got) F.got++;
+      beep(got ? 'correct' : 'wrong');
+      F.idx++; F.shown = false;
+      return rerender();
+    }
     if (act === 'fold') {
       var fo = n.getAttribute('data-o');
       S.shut[fo] = !S.shut[fo];
@@ -2866,8 +3599,24 @@
       return rerender();
     }
 
-    if (act === 'back') { S.cardIdx = Math.max(0, S.cardIdx - 1); resetCardState(); return rerender(); }
+    if (act === 'speak') {
+      /* Guarded here as well as on the button, because a tap from the previous
+         paint is still live while the finger is travelling — and the card
+         index does not move when the lesson turns to its questions, so a stale
+         tap would read a card aloud over a question. */
+      if (S.speaking) stopSpeaking();
+      else if (speechOffered(cards[S.cardIdx])) speakCard(cards[S.cardIdx]);
+      return;
+    }
+
+    if (act === 'back') {
+      /* The card on screen is about to change, so what is being read no longer
+         matches what is being shown. */
+      stopSpeaking();
+      S.cardIdx = Math.max(0, S.cardIdx - 1); resetCardState(); return rerender();
+    }
     if (act === 'next') {
+      stopSpeaking();
       if (S.cardIdx === cards.length - 1) {
         /* Nothing to answer on a sheet, so nothing to be right about. */
         if (l && l.isSheet) { S.screen = 'path'; S.lessonId = null; }
@@ -2979,6 +3728,19 @@
       else { S.qIdx++; resetQState(); }
       return rerender();
     }
+    if (act === 'restore') {
+      restoreRetired();
+      return rerender();
+    }
+    /* Toggling the retirement does not advance and does not grade — it repaints
+       so the button can say what it now means. Guarded the same way the graded
+       submits are: it sits next to the advance button, and a stray second tap
+       of a double-tap must not land on it. */
+    if (act === 'retire') {
+      if (!retireOffered(q)) return;
+      toggleRetire(q.id);
+      return rerender();
+    }
     if (act === 'nextq') {
       /* Recorded here rather than in each of the six grading paths, so a new
          question type cannot be added without its misses being counted.
@@ -3068,6 +3830,10 @@
     practice: 'topath',
     quiz:     'exit',
     done:     'topath',
+    gloss:    'topath',
+    /* A flashcard run backs out to the glossary it was started from, not to
+       the ladder: leaving a run is not leaving the vocabulary. */
+    flash:    'gloss',
   };
   function back() {
     if (S.confirmExit) { S.confirmExit = false; return rerender(); }
@@ -3084,15 +3850,25 @@
 
   root.AAT1_UI = {
     mount: mount,
+    /* Exposed so the build check can assert what a card SAYS against the
+       card's own data. None of it is observable from the screen — a listener
+       cannot tell a table deliberately skipped from a table that failed to
+       render. */
+    cardSpeech: cardSpeech,
     atRoot: atRoot,
     back: back,
     /* `screen` is optional and defaults to the ladder, which is the only thing
        the app itself ever wants. It is settable so the build checks can mount
        the practice picker directly rather than asserting a regex against this
        file and calling that a test. */
-    reset: function (screen) { stopMockClock(); S.confirmExit = false; S.screen = screen || 'path'; },
+    /* SPEECH IS STOPPED WHEREVER THE CLOCK IS. Both outlive the screen that
+       started them, and a voice reading bookkeeping over another subject is
+       the same defect as a clock still ticking under one, with a louder
+       failure mode. */
+    reset: function (screen) { stopMockClock(); stopSpeaking(); S.confirmExit = false; S.screen = screen || 'path'; },
     home: function () {
       stopMockClock();
+      stopSpeaking();
       /* The header's Home button leaves a mock outright, so the guard must not
          survive it: left set, it would reappear over the ladder the next time
          anything repainted, asking about a paper that no longer exists. */
@@ -3101,7 +3877,7 @@
       S.lessonId = null;
       S.screen = 'path';
     },
-    suspend: function () { stopMockClock(); S.confirmExit = false; },
+    suspend: function () { stopMockClock(); stopSpeaking(); S.confirmExit = false; },
     /* ── The header's Home button, asked before it acts ───────────────────────
        app.js owns the header and cannot know whether leaving costs anything —
        only this module knows a timed paper is on screen. Returns true when it

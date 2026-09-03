@@ -73,8 +73,8 @@ jobs:
         run: npm run check:vat-thresholds
       - name: Check a finished lesson names itself on the completion screen
         run: npm run check:lesson-complete
-      - name: Check the read-aloud button speaks the card's prose and stops on every exit
-        run: npm run check:aat3-speech
+      - name: Check read-aloud on both players (every card, nothing silent, nothing outlives the card)
+        run: npm run check:speech
       - name: Check the Level 1 timed mock (no feedback, weighted draw, mistake memory, reviewable)
         run: npm run check:aat1-mock
       - name: Check the Level 2 exams against the published specification (duration, marks, coverage)
@@ -85,6 +85,12 @@ jobs:
         run: npm run check:styles
       - name: Check written tasks (model hidden until earned, rubric marks at the pass mark)
         run: npm run check:written
+      - name: Check retiring a question retires it (and that a mock still asks it)
+        run: npm run check:retire
+      - name: Check the next-step recommendation moves with the evidence and lands where it says
+        run: npm run check:nextstep
+      - name: Check the glossary agrees with the teaching and its flashcards are scheduled
+        run: npm run check:glossary
       - name: Check spaced repetition on all three levels (one schedule, due selection, merge)
         run: npm run check:spaced
       - name: Check progress backup merge (no data loss, idempotent)
