@@ -202,3 +202,7 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:cips2-offline
+      - name: Check no sticky bar hides behind the app header
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:sticky-chrome

@@ -50,7 +50,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       const ids=await page.$$eval('[data-go="lesson"]',els=>els.map(e=>e.getAttribute('data-id')));
       const sequence=await page.$$eval('[data-go="lesson"] .c2-step',els=>els.map(e=>(e.textContent||'').trim()));
       if(sequence.join(',')!=='1,2,3,4,5,6,7,8,9,10,11,12,13')errors.push(`module map lesson sequence is ${JSON.stringify(sequence)} instead of 1–13 in the DOM.`);
-      for(const id of ids){await page.click(`[data-go="lesson"][data-id="${id}"]`);await page.waitForSelector('.c2-reading-card');const title=await page.textContent('#c2PageTitle');if(!title||title.trim().length<5)errors.push(`${id}: opens without a lesson heading.`);await page.click('[data-screen="module"]');}
+      for(const id of ids){await page.click(`[data-go="lesson"][data-id="${id}"]`);await page.waitForSelector('.c2-reading-card');const title=await page.textContent('#c2PageTitle');if(!title||title.trim().length<5)errors.push(`${id}: opens without a lesson heading.`);await page.click('[data-ctx-back]');}
       await page.click('[data-go="lesson"][data-id="c2m1-01"]');
       while(await page.$('[data-card="next"]'))await page.click('[data-card="next"]');
       await page.click('[data-start-check]');
@@ -107,9 +107,15 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
         const lessons={};for(let i=1;i<=13;i++){const id='c2m1-'+String(i).padStart(2,'0');lessons[id]={done:true,at:1};}
         localStorage.setItem('prep_v2_cips2',JSON.stringify({settings:{darkMode:false},lessons,checkpoint:{attempted:26,correct:26},practice:{runs:0,los:{},qs:{}}}));
       });
-      const cta=(await page.textContent('[data-c2-complete-review="true"]')||'').trim();
+      /* Asked of the hero's primary action, not of a marker attribute. The
+         attribute this used to look for was written by a MutationObserver that
+         patched the renderer's output from outside it; a check that names the
+         workaround passes when the workaround is present and fails when the
+         renderer is finally made right, which is exactly backwards. */
+      const SEL='.c2-home .c2-hero-actions .c2-primary';
+      const cta=(await page.textContent(SEL)||'').trim();
       if(!/Review L2M1/.test(cta))errors.push(`completed overview CTA is ${JSON.stringify(cta)} instead of a review action.`);
-      else {await page.click('[data-c2-complete-review="true"]');await page.waitForSelector('.c2-module');const title=(await page.textContent('#c2PageTitle')||'').trim();if(!/Introducing Procurement and Supply/.test(title))errors.push('completed-course review action did not open the module map.');}
+      else {await page.click(SEL);await page.waitForSelector('.c2-module');const title=(await page.textContent('#c2PageTitle')||'').trim();if(!/Introducing Procurement and Supply/.test(title))errors.push('completed-course review action did not open the module map.');}
       if(consoleErrors.length)errors.push('completed-course browser errors: '+consoleErrors.join(' | '));
       await ctx.close();
     }
