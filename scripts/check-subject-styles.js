@@ -65,19 +65,41 @@ const MODULES = [
       'a3-oc',         // 'a3-oc' + state, and 'a3-oc-' + part
     ],
   },
+  {
+    /* CIPS renders its own screens too, so the same rule applies to it. It was
+       outside this gate until its quality pass, which is how it had come to
+       carry a `.c2-reader-progress` nobody rendered and a `.c2-theme-i` nobody
+       styled at the same time. Its chrome is markup in cips2.html rather than
+       strings in the renderer — the header, the tab strip, the theme button —
+       so that file counts as its markup as well. */
+    name: 'CIPS Level 2',
+    css: 'cips2-styles.css',
+    js: 'cips2-page.js',
+    also: ['cips2.html'],
+    prefix: 'c2',
+    built: [
+      'c2-kind-',      // 'c2-reading-card c2-kind-' + kind
+    ],
+  },
 ];
 
 const errors = [];
 const notes = [];
 
 MODULES.forEach((mod) => {
-  const css = fs.readFileSync(path.join(ROOT, mod.css), 'utf8');
+  /* Comments stripped before anything is read out of the file. These
+     stylesheets explain themselves at length, and an explanation naturally
+     names the class it is about — including classes that have just been
+     DELETED, which is exactly when a comment says their name. Reading prose as
+     if it were a selector reported a rule that no longer existed as dead. */
+  const css = fs.readFileSync(path.join(ROOT, mod.css), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
   /* THE SHARED WIDGETS COUNT AS THIS SUBJECT'S MARKUP. picklist and entrygrid
      are rendered by question-grid.js on behalf of all three levels, with each
      level's class names written out there. Reading only `mod.js` would report
      every rule for those two tables as styling nothing. */
   const js = fs.readFileSync(path.join(ROOT, mod.js), 'utf8')
-    + fs.readFileSync(path.join(ROOT, 'question-grid.js'), 'utf8');
+    + fs.readFileSync(path.join(ROOT, 'question-grid.js'), 'utf8')
+    + (mod.also || []).map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('');
   const CLASS = new RegExp('\\.(' + mod.prefix + '-[a-z0-9-]+)', 'g');
   const RENDERED = new RegExp('^' + mod.prefix + '-[a-z0-9-]+$');
 

@@ -128,8 +128,12 @@
      them sticky. */
   function ctxBar(o) {
     var h = '<div class="c2-ctx">';
+    /* The attribute carries no destination. Where back goes is goBack()'s
+       decision, made from the current screen, so that the arrow and the
+       platform back button cannot disagree — and an attribute naming a
+       destination nothing reads would suggest otherwise to the next reader. */
     if (o.back) {
-      h += '<button class="c2-ctx-back" type="button" data-ctx-back="' + esc(o.back) + '" aria-label="' +
+      h += '<button class="c2-ctx-back" type="button" data-ctx-back aria-label="' +
         esc(o.backLabel || 'Back') + '"><span aria-hidden="true">←</span></button>';
     }
     h += '<div class="c2-ctx-main">' +
@@ -167,7 +171,7 @@
   function homeHtml() {
     var done = completedCount();
     var next = nextLesson();
-    return '<div class="c2-page c2-home">' +
+    return '<div class="c2-page">' +
       '<section class="c2-hero">' +
         '<div class="c2-hero-copy">' +
           '<div class="c2-eyebrow">CIPS Level 2 Certificate · 603/3282/7</div>' +
@@ -249,7 +253,7 @@
     var idx = Math.max(0, Math.min(S.cardIdx, l.cards.length - 1));
     var c = l.cards[idx];
     return '<div class="c2-page c2-reader">' +
-      ctxBar({ back: 'module', backLabel: 'Back to the module map', title: l.title,
+      ctxBar({ back: true, backLabel: 'Back to the module map', title: l.title,
         meta: 'Lesson ' + lessonStep(l.id) + ' of ' + LD.LESSONS.length + ' · ' + l.criterion +
               ' · card ' + (idx + 1) + ' of ' + l.cards.length,
         pct: pct(idx + 1, l.cards.length) }) +
@@ -271,7 +275,7 @@
     var qi = Math.max(0, Math.min(S.checkIdx, qs.length - 1));
     var q = qs[qi];
     return '<div class="c2-page c2-check">' +
-      ctxBar({ back: 'read', backLabel: 'Back to the lesson', title: l.title,
+      ctxBar({ back: true, backLabel: 'Back to the lesson', title: l.title,
         meta: 'Checkpoint · question ' + (qi + 1) + ' of ' + qs.length,
         pct: pct(qi + (S.checkAnswered ? 1 : 0), qs.length) }) +
       '<section class="c2-question-card"><div class="c2-card-label">Check ' + (qi + 1) + ' of ' + qs.length + '</div><h1 id="c2PageTitle">' + esc(q.prompt) + '</h1>' +
@@ -318,7 +322,7 @@
     var q = S.practiceQs[S.practiceIdx];
     if (!q) return practiceResultsHtml();
     return '<div class="c2-page c2-practice-run">' +
-      ctxBar({ back: 'stoppractice', backLabel: 'End this practice run', title: runTitle(),
+      ctxBar({ back: true, backLabel: 'End this practice run', title: runTitle(),
         meta: 'Question ' + (S.practiceIdx + 1) + ' of ' + S.practiceQs.length +
               ' · ' + S.practiceCorrect + ' correct so far',
         pct: pct(S.practiceIdx + (S.practiceAnswered ? 1 : 0), S.practiceQs.length) }) +

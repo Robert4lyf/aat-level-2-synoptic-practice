@@ -112,7 +112,7 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
          patched the renderer's output from outside it; a check that names the
          workaround passes when the workaround is present and fails when the
          renderer is finally made right, which is exactly backwards. */
-      const SEL='.c2-home .c2-hero-actions .c2-primary';
+      const SEL='.c2-hero .c2-hero-actions .c2-primary';
       const cta=(await page.textContent(SEL)||'').trim();
       if(!/Review L2M1/.test(cta))errors.push(`completed overview CTA is ${JSON.stringify(cta)} instead of a review action.`);
       else {await page.click(SEL);await page.waitForSelector('.c2-module');const title=(await page.textContent('#c2PageTitle')||'').trim();if(!/Introducing Procurement and Supply/.test(title))errors.push('completed-course review action did not open the module map.');}

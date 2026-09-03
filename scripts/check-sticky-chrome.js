@@ -26,15 +26,22 @@
  * WHAT IS ASSERTED, at four widths, on three surfaces:
  *
  *   §1 --chrome-h is published, and equals the chrome's measured height
- *   §2 every sticky bar's top edge is at or below the chrome's bottom edge,
- *      scrolled to the point where sticking actually engages
- *   §3 every control inside a sticky bar is hit-testable where it is drawn —
- *      the assertion that would have caught the unclickable back button, and
- *      the one a pixel measurement alone does not make
- *   §4 nothing overflows horizontally as a result
+ *   §2 the chrome itself is pinned to the top, because everything below is
+ *      measured from its bottom edge and a chrome that scrolls away makes
+ *      every other assertion here vacuously true
+ *   §3 every sticky bar below the chrome starts at or after the chrome ends
+ *   §4 no sticky bar overlaps the sticky bar above it — the rule §3 alone does
+ *      not make. The lesson bar's 3px progress rule was pinned five pixels too
+ *      high: correctly below the chrome, and entirely behind the bar it
+ *      belongs under. Measuring only against the chrome called that fine.
+ *   §5 every control inside a sticky bar is hit-testable where it is drawn
+ *   §6 nothing overflows horizontally as a result
  *
- * §3 is the one that matters. A bar can be at the right coordinate and still be
- * covered by something else, and "looks fine in a screenshot" is not a check.
+ * §4 and §5 are the ones that matter, and both were added after the first
+ * version of this file passed against defects it was written to catch. A bar
+ * can be at the right coordinate relative to the chrome and still be covered,
+ * either by another bar or by paint order, and "looks fine in a screenshot" is
+ * not a check.
  */
 'use strict';
 const path = require('path'), http = require('http'), fs = require('fs');
@@ -72,14 +79,14 @@ const WIDTHS = [320, 390, 768, 1280];
    perfectly correct top coordinate and still be unreachable, because whether a
    press lands on it is decided by paint order and not by geometry. */
 const INSPECT = `(sel) => {
+  const r2 = n => Math.round(n * 100) / 100;
   const chrome = document.querySelector('[data-app-chrome]');
   if (!chrome) return { error: 'no [data-app-chrome] on this page' };
-  const cb = chrome.getBoundingClientRect().bottom;
+  const cr = chrome.getBoundingClientRect();
   const bars = [];
   sel.forEach(s => {
     document.querySelectorAll(s).forEach(el => {
-      const cs = getComputedStyle(el);
-      if (cs.position !== 'sticky') return;
+      if (getComputedStyle(el).position !== 'sticky') return;
       const r = el.getBoundingClientRect();
       /* Only bars the reader can currently see. One that has scrolled past the
          bottom of the window is not covered by anything. */
@@ -94,14 +101,25 @@ const INSPECT = `(sel) => {
           reachable: !!(at && (at === c || (at.closest && at.closest(s) === el && c.contains(at))) )
         });
       });
-      bars.push({ sel: s, top: Math.round(r.top * 100) / 100, height: Math.round(r.height), controls: controls });
+      bars.push({
+        sel: s, top: r2(r.top), bottom: r2(r.bottom), height: Math.round(r.height),
+        /* A bar inside the chrome is not measured against the chrome's bottom
+           edge — it is part of it. It is still measured against its neighbours,
+           which is where CIPS's tab strip went wrong. */
+        inChrome: chrome.contains(el),
+        controls: controls
+      });
     });
   });
+  bars.sort((a, b) => a.top - b.top);
   return {
-    chromeBottom: Math.round(cb * 100) / 100,
+    chromeTop: r2(cr.top),
+    chromeBottom: r2(cr.bottom),
+    chromePosition: getComputedStyle(chrome).position,
     chromeVar: getComputedStyle(document.documentElement).getPropertyValue('--chrome-h').trim(),
-    chromeHeight: Math.round(chrome.getBoundingClientRect().height * 100) / 100,
+    chromeHeight: r2(cr.height),
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    scrollY: Math.round(window.scrollY),
     bars: bars
   };
 }`;
@@ -127,12 +145,34 @@ async function audit(page, where, sel) {
 
   ok(seen.overflow <= 1, `${where}: page overflows horizontally by ${seen.overflow}px.`);
 
+  /* §2. Everything below is measured from the chrome's bottom edge, so a chrome
+     that has scrolled away turns every one of those assertions into a
+     tautology — the page is scrolled, so its bottom is above the viewport and
+     nothing can be "behind" it. This is the assertion that makes the rest mean
+     something, and without it, splitting CIPS's chrome group back into two
+     mis-stacked stickies passed cleanly. */
+  ok(seen.chromePosition === 'sticky' || seen.chromePosition === 'fixed',
+    `${where}: the element marked data-app-chrome has position: ${seen.chromePosition} — it scrolls away, and nothing beneath it can be positioned against it.`);
+  ok(seen.scrollY < 2 || seen.chromeTop <= 0.5,
+    `${where}: the chrome is at ${seen.chromeTop}px with the page scrolled to ${seen.scrollY}px — it is not pinned to the top.`);
+
   ok(seen.bars.length > 0, `${where}: no sticky bar found — the selectors this check watches have been renamed, and it is now watching nothing.`);
+
+  /* §4. Bar against the bar above it, in the order they appear on screen. */
+  let previous = null;
   seen.bars.forEach(b => {
-    /* A quarter-pixel of slack for subpixel layout; anything more is a bar
+    /* §3. A quarter-pixel of slack for subpixel layout; anything more is a bar
        sitting behind the chrome. */
-    ok(b.top >= seen.chromeBottom - 0.25,
-      `${where}: ${b.sel} sticks at ${b.top}px, which is ${Math.round((seen.chromeBottom - b.top) * 100) / 100}px behind the chrome (ends at ${seen.chromeBottom}px).`);
+    if (!b.inChrome) {
+      ok(b.top >= seen.chromeBottom - 0.25,
+        `${where}: ${b.sel} sticks at ${b.top}px, which is ${Math.round((seen.chromeBottom - b.top) * 100) / 100}px behind the chrome (ends at ${seen.chromeBottom}px).`);
+    }
+    if (previous && previous.sel !== b.sel) {
+      ok(b.top >= previous.bottom - 0.25,
+        `${where}: ${b.sel} sticks at ${b.top}px, ${Math.round((previous.bottom - b.top) * 100) / 100}px behind ${previous.sel}, which ends at ${previous.bottom}px.`);
+    }
+    previous = b;
+    /* §5. */
     b.controls.forEach(c => {
       ok(c.reachable, `${where}: the "${c.name}" control in ${b.sel} is drawn where something else receives the press.`);
     });
@@ -196,7 +236,7 @@ async function audit(page, where, sel) {
         await page.waitForTimeout(220);
         await page.click('[data-go="lesson"]');
         await page.waitForTimeout(280);
-        const seen = await audit(page, `CIPS lesson @${width}`, ['.c2-ctx']);
+        const seen = await audit(page, `CIPS lesson @${width}`, ['.c2-top', '.c2-tabs', '.c2-ctx']);
         /* The title is the reason the bar exists, and the old bar hid its own
            title below 760px — which is every phone this app is used on. */
         const title = (await page.textContent('.c2-ctx-t') || '').trim();
@@ -207,12 +247,36 @@ async function audit(page, where, sel) {
         });
         ok(shown, `CIPS lesson @${width}: the context bar's title is present in the markup but not displayed.`);
         if (seen && seen.bars.length) {
-          /* Opaque. A see-through bar over scrolling prose is illegible, and
-             `backdrop-filter` is not everywhere. */
-          const bg = await page.evaluate(() => getComputedStyle(document.querySelector('.c2-ctx')).backgroundColor);
-          const alpha = /rgba?\([^)]*?,\s*([\d.]+)\s*\)$/.exec(bg);
-          ok(!alpha || Number(alpha[1]) >= 0.99,
-            `CIPS lesson @${width}: the context bar's background is ${bg} — prose scrolling under it shows through.`);
+          /* OPAQUE, tested by its symptom rather than by parsing a colour.
+
+             The first version of this read backgroundColor and looked for an
+             alpha channel in `rgba(...)`. A `color-mix` does not compute to
+             that, so the regex found nothing — and finding nothing was treated
+             as opaque. It passed against a bar that was 88% transparent, which
+             is the exact defect it was written for.
+
+             The second version painted a black overlay behind the bar and
+             compared pixels. That tests a z-index race, not translucency.
+
+             This one asks the question the reader asks: does the bar change
+             when the prose behind it moves? Scroll a little, photograph the
+             same bar, require the two photographs to be identical. Nothing in
+             the bar's own content depends on scroll position, so any
+             difference is the page showing through it. */
+          const shoot = async () => {
+            const clip = await page.evaluate(() => {
+              const r = document.querySelector('.c2-ctx').getBoundingClientRect();
+              return { x: Math.round(r.left), y: Math.round(r.top) + 1,
+                       width: Math.round(r.width), height: Math.max(1, Math.round(r.height) - 2) };
+            });
+            return (await page.screenshot({ clip: clip })).toString('base64');
+          };
+          const a = await shoot();
+          await page.evaluate(() => window.scrollBy(0, 60));
+          await page.waitForTimeout(120);
+          const b = await shoot();
+          ok(a === b,
+            `CIPS lesson @${width}: the context bar's pixels change when the page scrolls behind it — it is not opaque, so prose passing under it shows through.`);
         }
         await ctx.close();
       }

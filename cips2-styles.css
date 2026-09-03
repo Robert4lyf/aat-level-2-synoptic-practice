@@ -3,7 +3,6 @@ body[data-subject="cips2"] {
   --c2-brand: #0b6b57;
   --c2-brand-strong: #075445;
   --c2-brand-soft: #e9f6f1;
-  --c2-teal: #0f766e;
   --c2-ink: #15221f;
   --c2-muted: #66736f;
   --c2-line: #dbe5e1;
@@ -23,7 +22,6 @@ body.dark[data-subject="cips2"] {
   --c2-brand: #42d3ad;
   --c2-brand-strong: #75e5c5;
   --c2-brand-soft: rgba(66, 211, 173, .11);
-  --c2-teal: #5eead4;
   --c2-ink: #edf7f4;
   --c2-muted: #a8bbb5;
   --c2-line: #293d38;
@@ -111,6 +109,11 @@ body[data-subject="cips2"] input:focus-visible {
     radial-gradient(circle at 92% 10%, color-mix(in srgb, var(--c2-brand) 13%, transparent), transparent 38%),
     var(--c2-paper); box-shadow: var(--c2-shadow);
 }
+/* A grid item's automatic minimum size is its content, so a long unbreakable
+   string in the lead paragraph would push this column — and the hero — wider
+   than the page. Under 760px the track is a bare `1fr`, where that minimum is
+   not already capped by a minmax(0, …). */
+.c2-hero-copy { min-width: 0; }
 .c2-hero h1 { max-width: 760px; margin: 8px 0 14px; font-size: clamp(34px,5.2vw,62px); line-height: 1.02; letter-spacing: -.035em; }
 .c2-hero-actions, .c2-complete-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .c2-btn {
