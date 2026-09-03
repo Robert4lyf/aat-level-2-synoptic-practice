@@ -157,6 +157,42 @@ function serve(){return new Promise(resolve=>{const server=http.createServer((re
       await ctx.close();
     }
     notes.push('After all 13 lessons are complete, the primary overview action opens review rather than restarting lesson 1.');
+
+    /* 7 — a checkpoint entered twice scores itself once, and the screen at the
+       end of a lesson is still navigable. */
+    {
+      const {ctx,page,consoleErrors}=await open('cips2.html',390,844,()=>{if(sessionStorage.getItem('__c2seed'))return;sessionStorage.setItem('__c2seed','1');localStorage.removeItem('prep_v2_cips2');});
+      await page.click('[data-c2nav="module"]');
+      await page.click('[data-go="lesson"]');
+      while(await page.$('[data-card="next"]'))await page.click('[data-card="next"]');
+      const right=i=>page.evaluate(n=>window.CIPS2_L2M1_LEARN.LESSONS[0].check[n].answer,i);
+      /* Enter the checkpoint, answer, back out to the reading, enter again.
+         Every other field was reset on re-entry and the running score was not,
+         so answers from the abandoned attempt were counted twice and a
+         two-question checkpoint reported three correct. */
+      await page.click('[data-start-check]');
+      await page.click(`[data-check-choice="${await right(0)}"]`);
+      await page.click('[data-ctx-back]');
+      await page.click('[data-start-check]');
+      await page.click(`[data-check-choice="${await right(0)}"]`);
+      await page.click('[data-next-check]');
+      await page.click(`[data-check-choice="${await right(1)}"]`);
+      await page.click('[data-finish-check]');
+      await page.waitForSelector('.c2-complete-card');
+      const said=(await page.textContent('.c2-complete-card')||'').replace(/\s+/g,' ');
+      const m=/You scored (\d+) \/ (\d+)/.exec(said);
+      if(!m)errors.push('the lesson-complete card no longer states a checkpoint score.');
+      else if(Number(m[1])>Number(m[2]))errors.push(`re-entering a checkpoint counted the abandoned attempt: "${m[0]}".`);
+      const stored=await page.evaluate(()=>{const l=JSON.parse(localStorage.getItem('prep_v2_cips2')||'{}').lessons||{};return Object.values(l)[0];});
+      if(stored&&stored.checkpoint&&stored.checkpoint.correct>stored.checkpoint.total)errors.push(`a checkpoint score above its own total was written to storage: ${JSON.stringify(stored.checkpoint)}.`);
+      /* This screen draws no context bar, so it must keep the section tabs —
+         it had neither, which is a screen with no way out but its own buttons. */
+      const tabs=(await page.$$('.nav-tab')).length, ctxb=(await page.$$('.c2-ctx')).length;
+      if(!tabs&&!ctxb)errors.push('the lesson-complete screen offers neither section tabs nor a context bar.');
+      if(consoleErrors.length)errors.push('lesson-complete browser errors: '+consoleErrors.join(' | '));
+      await ctx.close();
+    }
+    notes.push('A checkpoint re-entered mid-lesson scores itself once, and the screen at the end of a lesson is still navigable.');
   }finally{await browser.close();server.close();}
   console.log(`${BOLD}CIPS L2M1 browser quality${RESET}\n`);notes.forEach(n=>console.log(`  ${DIM}${n}${RESET}`));console.log('');
   if(errors.length){console.log(`${RED}${BOLD}${errors.length} browser/UX problem(s)${RESET}`);errors.forEach(e=>console.log(`  ${RED}✗${RESET} ${e}`));console.log('');process.exit(1);}

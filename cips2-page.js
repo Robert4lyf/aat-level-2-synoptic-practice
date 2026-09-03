@@ -301,10 +301,10 @@
     var overall = practiceTotals();
     var wrong = wrongQuestions();
     return '<div class="c2-page c2-practice"><div class="c2-pagehead"><div><div class="c2-eyebrow">Original question bank · L2M1</div><h1 id="c2PageTitle">Practice</h1>' +
-      '<p>Choose one learning outcome for a focused 8-question run, or mixed practice for 12 questions drawn evenly across all six outcomes.</p></div>' +
+      '<p>Choose one learning outcome for a focused run of ' + PB.forLo(MOD.outcomes[0].n).length + ', or mixed practice for ' + (MOD.outcomes.length * 2) + ' questions drawn evenly across all ' + MOD.outcomes.length + ' outcomes.</p></div>' +
       (overall.attempted ? '<div class="c2-page-progress"><strong>' + pct(overall.correct, overall.attempted) + '%</strong><span>lifetime accuracy</span></div>' : '') + '</div>' +
       '<div class="c2-practice-grid">' + MOD.outcomes.map(function (o) {
-        var r = loRecord(o.n); return '<button class="c2-practice-choice" type="button" data-start-practice="' + o.n + '"><span>LO ' + o.n + '</span><strong>' + esc(shortOutcome(o.title)) + '</strong><small>' + (r.attempted ? pct(r.correct,r.attempted) + '% accuracy' : '8 questions') + '</small></button>';
+        var r = loRecord(o.n); return '<button class="c2-practice-choice" type="button" data-start-practice="' + o.n + '"><span>LO ' + o.n + '</span><strong>' + esc(shortOutcome(o.title)) + '</strong><small>' + (r.attempted ? pct(r.correct,r.attempted) + '% accuracy' : PB.forLo(o.n).length + ' questions') + '</small></button>';
       }).join('') +
       '<button class="c2-practice-choice is-mixed" type="button" data-start-practice="mix"><span>Mixed</span><strong>All learning outcomes</strong><small>' + (MOD.outcomes.length * 2) + ' questions · evenly drawn</small></button>' +
       (wrong.length ? '<button class="c2-practice-choice is-wrong" type="button" data-start-practice="wrong"><span>Repair</span><strong>Questions you got wrong</strong><small>' + wrong.length + ' waiting</small></button>' : '') +
@@ -394,9 +394,14 @@
         ' aria-selected="' + (on ? 'true' : 'false') + '" data-c2nav="' + t.id + '">' + esc(t.label) + '</button>';
     }).join('') + '</div>';
   }
-  /* A screen is "deep" when it is inside something the context bar names. */
+  /* A screen is "deep" when it is inside something the context bar names — and
+     the test has to be exactly that, because the tabs are hidden on the strength
+     of it. The completion card at the end of a lesson draws no context bar, so
+     counting it as deep left a screen with no app navigation at all: no tabs,
+     no back arrow, nothing but its own two buttons. */
   function isDeep() {
-    return S.screen === 'lesson' || (S.screen === 'practice' && S.practiceQs.length);
+    if (S.screen === 'lesson') return S.lessonPhase !== 'complete';
+    return S.screen === 'practice' && S.practiceQs.length > 0;
   }
 
   function screenHtml() {
@@ -515,7 +520,13 @@
     Array.prototype.forEach.call(host.querySelectorAll('[data-screen]'),function(b){b.addEventListener('click',function(){S.screen=b.getAttribute('data-screen');S.practiceQs=[];S.lessonId=null;render({focus:true});});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-go="lesson"]'),function(b){b.addEventListener('click',function(){openLesson(b.getAttribute('data-id'));});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-card]'),function(b){b.addEventListener('click',function(){var l=LD.lesson(S.lessonId);if(!l)return;var d=b.getAttribute('data-card')==='next'?1:-1;S.cardIdx=Math.max(0,Math.min(l.cards.length-1,S.cardIdx+d));render();});});
-    var sc=host.querySelector('[data-start-check]');if(sc)sc.addEventListener('click',function(){S.lessonPhase='check';S.checkIdx=0;S.checkChoice=null;S.checkAnswered=false;render({focus:true});});
+    /* checkCorrect resets HERE, not only in openLesson. The checkpoint can be
+       entered more than once in a single visit to a lesson — answer a question,
+       press the back arrow to re-read a card, press "Check your understanding"
+       again — and the other three fields were reset while the score was not.
+       Answers from the abandoned attempt were still counted, so a two-question
+       checkpoint reported "You scored 3 / 2" and stored {correct:3,total:2}. */
+    var sc=host.querySelector('[data-start-check]');if(sc)sc.addEventListener('click',function(){S.lessonPhase='check';S.checkIdx=0;S.checkChoice=null;S.checkAnswered=false;S.checkCorrect=0;render({focus:true});});
     var cb=host.querySelector('[data-ctx-back]');if(cb)cb.addEventListener('click',function(){goBack();});
     Array.prototype.forEach.call(host.querySelectorAll('[data-check-choice]'),function(b){b.addEventListener('click',function(){if(S.checkAnswered)return;var l=LD.lesson(S.lessonId),q=l.check[S.checkIdx],choice=Number(b.getAttribute('data-check-choice'));S.checkChoice=choice;S.checkAnswered=true;data.checkpoint.attempted++;if(choice===q.answer){S.checkCorrect++;data.checkpoint.correct++;}save();render();});});
     var nc=host.querySelector('[data-next-check]');if(nc)nc.addEventListener('click',function(){S.checkIdx++;S.checkChoice=null;S.checkAnswered=false;render({focus:true});});
