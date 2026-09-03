@@ -70,7 +70,18 @@ function serve() {
   });
 }
 
-const WIDTHS = [320, 390, 768, 1280];
+/* Four widths, because the header is a different height at three of them and
+   the phone rules change at the fourth. STICKY_WIDTHS narrows that set, and
+   exists for one caller: check-sticky-chrome-adversarial.js, which runs this
+   file thirteen times over and only needs each mutant to be REJECTED, not
+   rejected at every size. Every regression it applies is visible at 320px —
+   where the header is tallest and the phone rules are in force — so it runs
+   one width and takes four minutes instead of fifteen. A mutant that somehow
+   only showed at 1280 would survive there and be reported as a survivor, which
+   is the safe direction to be wrong in: a survivor is investigated. */
+const WIDTHS = (process.env.STICKY_WIDTHS || '320,390,768,1280')
+  .split(',').map(w => Number(w.trim())).filter(w => w > 0);
+if (!WIDTHS.length) { console.error('STICKY_WIDTHS named no usable width.'); process.exit(1); }
 
 /* Ask the page, at its current scroll position, where the chrome ends and where
    every sticky bar begins — and whether each bar's own controls can be reached.

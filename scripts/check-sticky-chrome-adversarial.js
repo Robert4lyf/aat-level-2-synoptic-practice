@@ -153,7 +153,12 @@ for (const m of MUTANTS) {
   try {
     m.apply(dir);
     const r = cp.spawnSync(process.execPath, [path.join(dir, 'scripts', 'check-sticky-chrome.js')],
-      { cwd: dir, encoding: 'utf8', timeout: 600000, env: Object.assign({}, process.env, { REQUIRE_PLAYWRIGHT: '1' }) });
+      { cwd: dir, encoding: 'utf8', timeout: 600000,
+        /* One width per mutant. See the note on WIDTHS in check-sticky-chrome.js:
+           the question here is whether the gate rejects the defect, not whether
+           it rejects it four times, and thirteen four-width runs put a quarter
+           of an hour on every CI build for no extra evidence. */
+        env: Object.assign({}, process.env, { REQUIRE_PLAYWRIGHT: '1', STICKY_WIDTHS: '320' }) });
     verdict = r.status === 0 ? 'SURVIVED' : 'caught';
     if (verdict === 'SURVIVED') {
       survived++;
