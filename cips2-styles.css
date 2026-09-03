@@ -36,65 +36,40 @@ body.dark[data-subject="cips2"] {
   --c2-shadow: 0 16px 38px rgba(0, 0, 0, .28);
 }
 
-body[data-subject="cips2"] * { box-sizing: border-box; }
-body[data-subject="cips2"] a { color: inherit; }
-body[data-subject="cips2"] button,
-body[data-subject="cips2"] input { font: inherit; }
-body[data-subject="cips2"] button { -webkit-tap-highlight-color: transparent; }
-body[data-subject="cips2"] button:focus-visible,
-body[data-subject="cips2"] a:focus-visible,
-body[data-subject="cips2"] input:focus-visible {
+/* CIPS'S OWN SUBTREE, NOT THE WHOLE DOCUMENT. These began as
+   `body[data-subject="cips2"] button { ... }`, which was fine while every
+   button on the page was CIPS's own — and stopped being fine twice.
+
+   First it beat CIPS's own `.c2-theme { font-size: 0 }`, because an attribute
+   selector plus an element outranks a class, so the phone rule that was meant
+   to shrink the theme button to an icon never applied. Then, when this page
+   adopted the shared app bar, the same rule reached the bar's `.icon-btn`s and
+   made them 4px taller than the identical buttons on every other subject —
+   which is 10px of header, and the whole point of adopting it was that the bar
+   should be the same bar.
+
+   `.c2-shell` is what CIPS renders; `.c2-fatal` is its noscript fallback. The
+   app bar is outside both, and now these cannot see it.
+   `box-sizing: border-box` is gone entirely: styles.css line 197 already sets
+   it on `*, *::before, *::after`. */
+.c2-shell a,
+.c2-fatal a { color: inherit; }
+.c2-shell button,
+.c2-shell input { font: inherit; }
+.c2-shell button { -webkit-tap-highlight-color: transparent; }
+.c2-shell button:focus-visible,
+.c2-shell a:focus-visible,
+.c2-shell input:focus-visible {
   outline: 3px solid var(--c2-focus);
   outline-offset: 3px;
 }
 
 .c2-shell { min-height: 100vh; }
 
-/* ONE STICKY, NOT TWO. The bar and the tab strip used to stick separately, the
-   tabs pinned at a typed copy of the bar's min-height. A min-height is a floor,
-   not a height: the bar measures 70.6px against the 68px that was typed (62px
-   under 760px), so nine pixels of the tab strip lived behind it. Sticking the
-   pair as a group asks the browser for the number instead of guessing it, and
-   chrome-offset.js publishes the group's measured height as --chrome-h for the
-   context bar below it. */
-.c2-chrome {
-  position: sticky; top: 0; z-index: 40;
-  background: var(--c2-paper);
-  border-bottom: 1px solid var(--c2-line);
-}
-.c2-top {
-  display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 16px;
-  min-height: 68px; padding: 10px max(18px, env(safe-area-inset-left));
-  background: color-mix(in srgb, var(--c2-paper) 94%, transparent);
-  border-bottom: 1px solid var(--c2-line);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-}
-.c2-hub-link {
-  display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 12px;
-  border: 1px solid var(--c2-line); border-radius: 10px; text-decoration: none;
-  color: var(--c2-muted); background: var(--c2-paper); font-weight: 700; font-size: 14px;
-}
-.c2-brand { min-width: 0; }
-.c2-brand strong { display: block; font-size: 16px; line-height: 1.2; color: var(--c2-ink); }
-.c2-brand span { display: block; margin-top: 2px; color: var(--c2-muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.c2-theme {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  min-width: 86px; min-height: 44px; padding: 0 12px; border: 1px solid var(--c2-line);
-  border-radius: 10px; background: var(--c2-paper); color: var(--c2-ink); font-weight: 700; cursor: pointer;
-}
-.c2-theme-i { font-size: 17px; line-height: 1; }
-
-.c2-tabs {
-  display: flex; justify-content: center; gap: 4px;
-  padding: 7px 14px; overflow-x: auto; scrollbar-width: none;
-  background: var(--c2-paper);
-}
-.c2-tabs::-webkit-scrollbar { display: none; }
-.c2-tabs button {
-  flex: 0 0 auto; min-height: 42px; padding: 0 14px; border: 0; border-radius: 9px;
-  background: transparent; color: var(--c2-muted); font-size: 14px; font-weight: 750; cursor: pointer;
-}
-.c2-tabs button.is-on { color: var(--c2-brand-strong); background: var(--c2-brand-soft); }
+/* The section tabs sit in the page, not in the chrome, and are the app's own
+   `.nav-tabs` from styles.css — the same component Level 2 uses. This wrapper
+   only gives them the page's gutter; everything else about them is shared. */
+.c2-nav { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 18px 0 0; }
 
 #cipsApp { width: 100%; }
 .c2-page { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 64px; }
@@ -334,25 +309,7 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 .c2-fatal { width:min(680px,calc(100% - 32px)); margin:60px auto; padding:30px; border:1px solid var(--c2-line); border-radius:18px; background:var(--c2-paper); }
 
 @media (max-width: 760px) {
-  .c2-top { grid-template-columns:auto minmax(0,1fr) auto; gap:8px; min-height:62px; padding:8px 10px; }
-  /* ICON ONLY, BY HIDING THE LABEL — not by shrinking the button's text to
-     nothing and betting that ::first-letter grows the icon back. That bet lost
-     twice. ::first-letter only applies to a block container's first line box,
-     and both of these are inline-flex with the glyph inside a span, so it never
-     matched: the Subjects link rendered as an empty 44px square with no arrow
-     in it at all. And `font-size: 0` never reached the theme button, because
-     `body[data-subject="cips2"] button { font: inherit }` above is one
-     attribute selector more specific than a class — so it kept its 16px "🌙
-     Dark", which does not fit a 44px box and pushed the button to 54px tall
-     with its own label clipped. */
-  .c2-hub-link { width:44px; padding:0; justify-content:center; }
-  .c2-hub-label { display:none; }
-  .c2-brand strong { font-size:14px; }
-  .c2-brand span { font-size:10px; }
-  .c2-theme { min-width:44px; width:44px; padding:0; }
-  .c2-theme-l { display:none; }
-  .c2-tabs { justify-content:flex-start; padding-inline:8px; }
-  .c2-tabs button { min-height:44px; padding-inline:12px; }
+  .c2-nav { width:min(100% - 22px,1080px); padding-top:14px; }
   .c2-page { width:min(100% - 22px,1080px); padding-top:22px; }
   .c2-hero { grid-template-columns:1fr; padding:26px 22px; }
   .c2-hero h1 { font-size:38px; }
@@ -384,7 +341,6 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 }
 
 @media (max-width: 420px) {
-  .c2-brand span { display:none; }
   .c2-hero h1 { font-size:34px; }
   .c2-hero-actions,.c2-complete-actions { flex-direction:column; }
   .c2-hero-actions .c2-btn,.c2-complete-actions .c2-btn { width:100%; }

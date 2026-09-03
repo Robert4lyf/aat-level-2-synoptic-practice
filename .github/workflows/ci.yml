@@ -210,3 +210,7 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:sticky-chrome-adversarial
+      - name: Check the tab you are on is readable on every subject, both themes
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:tab-contrast

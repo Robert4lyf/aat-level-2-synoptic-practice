@@ -109,14 +109,10 @@
     var dark = data.settings.darkMode;
     if (dark == null) dark = !!(root.matchMedia && root.matchMedia('(prefers-color-scheme: dark)').matches);
     document.body.classList.toggle('dark', !!dark);
-    var btn = document.getElementById('c2Theme');
+    var btn = document.getElementById('darkToggle');
     if (btn) {
-      /* Icon and label as separate elements, so the phone rule can hide the
-         label and keep the icon. The header used to set one string and shrink
-         it away with `font-size: 0`, which a more specific rule overrode — the
-         button kept its full text inside a 44px box. */
-      btn.innerHTML = '<span class="c2-theme-i" aria-hidden="true">' + (dark ? '\u2600' : '\uD83C\uDF19') +
-        '</span><span class="c2-theme-l">' + (dark ? 'Light' : 'Dark') + '</span>';
+      /* The same two strings app.js writes into the same button. */
+      btn.textContent = dark ? '☀️ Light' : '🌙 Dark';
       btn.setAttribute('aria-pressed', String(!!dark));
     }
   }
@@ -374,7 +370,36 @@
       (!rows.length?'<p class="c2-empty">No matching terms.</p>':'')+'</div>';
   }
 
-  function mainHtml() {
+  /* THE SECTION TABS, in the app's own component and in the app's own place.
+     They used to be a CIPS-only strip inside the chrome, which made the bar at
+     the top of this page twice the height of the bar on every other subject.
+     Level 2 renders `.nav-tabs` inside its own screen and lets them scroll; so
+     does this now.
+
+     Not on the screens that have a context bar. Tabs answer "which section",
+     the context bar answers "what am I inside and how do I leave" — showing
+     both would offer two different navigations for one screen, and CIPS is the
+     only place in the app that ever did. */
+  var TABS = [
+    { id: 'home', label: 'Overview' },
+    { id: 'module', label: 'L2M1' },
+    { id: 'practice', label: 'Practice' },
+    { id: 'progress', label: 'Progress' },
+    { id: 'glossary', label: 'Glossary' }
+  ];
+  function tabsHtml() {
+    return '<div class="nav-tabs" role="tablist">' + TABS.map(function (t) {
+      var on = t.id === S.screen || (t.id === 'practice' && S.screen === 'results');
+      return '<button class="nav-tab' + (on ? ' active' : '') + '" type="button" role="tab"' +
+        ' aria-selected="' + (on ? 'true' : 'false') + '" data-c2nav="' + t.id + '">' + esc(t.label) + '</button>';
+    }).join('') + '</div>';
+  }
+  /* A screen is "deep" when it is inside something the context bar names. */
+  function isDeep() {
+    return S.screen === 'lesson' || (S.screen === 'practice' && S.practiceQs.length);
+  }
+
+  function screenHtml() {
     if (S.screen === 'module') return moduleHtml();
     if (S.screen === 'lesson') return lessonHtml();
     if (S.screen === 'practice') return S.practiceQs.length ? currentPracticeHtml() : practiceLandingHtml();
@@ -383,13 +408,15 @@
     if (S.screen === 'glossary') return glossaryHtml();
     return homeHtml();
   }
+  function mainHtml() {
+    return (isDeep() ? '' : '<div class="c2-nav">' + tabsHtml() + '</div>') + screenHtml();
+  }
 
   var host = document.getElementById('cipsApp');
   function render(opts) {
     if (!host) return;
     host.innerHTML = mainHtml();
     wire();
-    syncNav();
     applyTheme();
     /* Every repaint, because the platform back button's behaviour depends on
        how deep the reader is and that is what a repaint changes. Cheap: it
@@ -398,13 +425,6 @@
     if (opts && opts.focus) {
       setTimeout(function(){var h=document.getElementById('c2PageTitle'); if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}},0);
     }
-  }
-  function syncNav() {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-c2nav]'), function (b) {
-      var target=b.getAttribute('data-c2nav');
-      var active=(target==='home' && S.screen==='home') || target===S.screen || (target==='module' && S.screen==='lesson');
-      b.classList.toggle('is-on',active); b.setAttribute('aria-current',active?'page':'false');
-    });
   }
 
   /* ── What "back" means, in one place ───────────────────────────────────────
@@ -491,6 +511,7 @@
   }
 
   function wire() {
+    Array.prototype.forEach.call(host.querySelectorAll('[data-c2nav]'),function(b){b.addEventListener('click',function(){S.practiceQs=[];S.practiceResults=[];S.lessonId=null;S.screen=b.getAttribute('data-c2nav');render({focus:true});});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-screen]'),function(b){b.addEventListener('click',function(){S.screen=b.getAttribute('data-screen');S.practiceQs=[];S.lessonId=null;render({focus:true});});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-go="lesson"]'),function(b){b.addEventListener('click',function(){openLesson(b.getAttribute('data-id'));});});
     Array.prototype.forEach.call(host.querySelectorAll('[data-card]'),function(b){b.addEventListener('click',function(){var l=LD.lesson(S.lessonId);if(!l)return;var d=b.getAttribute('data-card')==='next'?1:-1;S.cardIdx=Math.max(0,Math.min(l.cards.length-1,S.cardIdx+d));render();});});
@@ -506,8 +527,24 @@
     var gs=host.querySelector('#c2GlossarySearch');if(gs)gs.addEventListener('input',function(e){S.glossaryQuery=e.target.value;var pos=e.target.selectionStart;render();var n=host.querySelector('#c2GlossarySearch');if(n){n.focus();try{n.setSelectionRange(pos,pos);}catch(_){}}});
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-c2nav]'),function(b){b.addEventListener('click',function(){var s=b.getAttribute('data-c2nav');S.practiceQs=[];S.lessonId=null;S.screen=s;render({focus:true});});});
-  var theme=document.getElementById('c2Theme');if(theme)theme.addEventListener('click',function(){var cur=document.body.classList.contains('dark');data.settings.darkMode=!cur;save();applyTheme();});
+  /* The shared header's three controls, bound to the ids app.js binds on
+     index.html. app.js is not on this page, so the bindings are here — but the
+     ids, the classes and the behaviour are the ones every other subject has. */
+  var theme = document.getElementById('darkToggle');
+  if (theme) theme.addEventListener('click', function () {
+    data.settings.darkMode = !document.body.classList.contains('dark');
+    save(); applyTheme();
+  });
+  var home = document.getElementById('homeNavBtn');
+  if (home) home.addEventListener('click', function () {
+    S.practiceQs = []; S.practiceResults = []; S.lessonId = null; S.screen = 'home';
+    render({ focus: true });
+  });
+  /* The brand is the way out of a subject on every other page in this app. It
+     opens a picker there because the picker is on the same page; here the
+     picker IS another page, so it goes to it. Same affordance, same place. */
+  var brand = document.getElementById('subjectSwitcherBtn');
+  if (brand) brand.addEventListener('click', function () { window.location.href = 'index.html'; });
 
   document.addEventListener('keydown',function(e){
     if(e.altKey||e.ctrlKey||e.metaKey)return;
