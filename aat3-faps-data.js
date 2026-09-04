@@ -47,10 +47,10 @@
           {
             h: 'What this unit asks you to produce',
             p: [
-              'Every other Level 3 unit asks you to understand something. This one asks you to **build** something: a statement of profit or loss and a statement of financial position, starting from a trial balance somebody hands you and ending with figures a bank manager could read.',
+              'Every other Level 3 unit asks you to understand something. This one asks you to **build** something: a statement of profit or loss and a statement of financial position. You start from a trial balance somebody hands you, and end with figures a bank manager could read.',
               'That difference runs through the whole unit. A question here rarely asks what depreciation is. It gives you a machine, a purchase date, a policy and a year end, and asks for the charge. Then it asks where the charge goes, what it does to profit, and what the asset is now worth on the face of the accounts.',
               'The chain has a fixed shape, and every outcome in this unit is one link in it. Transactions go into daybooks. Daybooks post to ledgers. Ledger balances make a trial balance. The trial balance is adjusted for the things that happened but were never a payment — depreciation, accruals, closing inventory, debts that will not be paid. The adjusted figures become the two statements. Ratios then say whether the result is any good.',
-              'If a link is weak the whole chain gives way somewhere later, usually in a way that is hard to trace. A prepayment posted on the wrong side does not announce itself; it comes out as a profit figure that is wrong by twice the adjustment, three tasks further on.',
+              'If a link is weak the whole chain gives way somewhere later, usually in a way that is hard to trace. A prepayment posted on the wrong side does not announce itself. It comes out three tasks later as a profit figure wrong by twice the adjustment.',
             ],
             callout: { kind: 'key', text: 'Nine outcomes, one chain: source documents → ledgers → trial balance → adjustments → financial statements → interpretation.' },
           },
@@ -104,13 +104,13 @@
             },
             p: [
               'The left-hand column is assumed rather than retaught. Outcome 2 revisits double entry, but it revisits it at speed and adds to it; it does not start from what a debit is.',
-              'If the left-hand column feels shaky, the Level 2 units in this app — Introduction to Bookkeeping and Principles of Bookkeeping Controls — cover all six items, and an afternoon there will save a great deal of confusion later. Depreciation is hard enough without also being unsure which side of the ledger it lands on.',
+              'If the left-hand column feels shaky, two Level 2 units in this app cover all six items: Introduction to Bookkeeping, and Principles of Bookkeeping Controls. An afternoon there will save a great deal of confusion later. Depreciation is hard enough without also being unsure which side of the ledger it lands on.',
             ],
           },
           {
             h: 'What this material is, and what it is not',
             p: [
-              'This is an independent study tool. It is not produced by AAT, not endorsed by AAT, and not checked by anybody with a qualification to check it. The syllabus spine it is built on is encoded from the published specification and verified against it automatically, so the coverage claims are honest; the teaching itself is written from scratch and carries no such guarantee.',
+              'This is an independent study tool. It is not produced by AAT, not endorsed by AAT, and not checked by anybody with a qualification to check it. The syllabus spine it is built on is encoded from the published specification and verified against it automatically, so the coverage claims are honest. The teaching itself is written from scratch and carries no such guarantee.',
               'Covering a syllabus point is not the same as being ready to sit the exam. The specification says what must be taught, not how well you must be able to do it under time pressure with a calculator and no notes. Treat full coverage as the floor.',
               'Where the specification excludes something, this material says so rather than teaching it anyway. Two exclusions apply to this unit: the VAT treatment of part-exchanges, and completing an extended trial balance for a partnership. Both come up in their own lessons.',
             ],
@@ -162,9 +162,9 @@
           {
             h: 'Three groups, named on purpose',
             p: [
-              'Accounts have many readers. A supplier deciding whether to offer credit, a journalist writing about a takeover, an employee wondering whether the firm will still exist next year, a tax inspector — all of them read the same document, and all of them want different things from it.',
+              'Accounts have many readers. A supplier deciding whether to offer credit, a journalist writing about a takeover, an employee wondering whether the firm will still exist next year, a tax inspector. All of them read the same document, and all of them want different things from it.',
               'The framework accounting rests on does not try to serve them all equally. It names three groups as the **primary users** and writes the rules for them: existing and potential **investors**, **lenders**, and **other creditors**.',
-              'They share one feature that the others do not. Each of the three is deciding whether to commit money to the business, or whether to leave money already committed where it is, and none of them can require the business to hand over the information they need. A tax inspector can demand records. A manager already has them. An investor considering a purchase has only what the business chooses to publish. The rules are written to protect that reader in particular.',
+              'They share one feature that the others do not. Each of the three is deciding whether to commit money to the business, or whether to leave money already committed where it is. And none of them can require the business to hand over the information they need. A tax inspector can demand records. A manager already has them. An investor considering a purchase has only what the business chooses to publish. The rules are written to protect that reader in particular.',
             ],
             callout: { kind: 'key', text: 'Primary users: existing and potential investors, lenders, and other creditors. All three are outsiders committing money, and none can demand more than they are given.' },
           },
@@ -180,7 +180,7 @@
             },
             p: [
               'The three decisions pull on different parts of the accounts. Both statements exist for that reason rather than one.',
-              'An investor is asking a question about the future and reads the statement of profit or loss for a trend. A lender is asking about capacity and reads the statement of financial position for what could be sold and what is already owed. A supplier weighing up thirty days\' credit cares about neither the trend nor the long term, only whether there is enough in the bank and enough coming in from customers to cover the invoice.',
+              'An investor is asking a question about the future and reads the statement of profit or loss for a trend. A lender is asking about capacity and reads the statement of financial position for what could be sold and what is already owed. A supplier weighing up thirty days’ credit cares about neither the trend nor the long term. It cares whether there is enough in the bank, and enough coming in from customers, to cover the invoice.',
               'A fourth use cuts across all three: **stewardship**. Owners who are not managers use the accounts to judge how well the managers have looked after what was entrusted to them. That is a backward-looking question about the year just gone, and it is the one that most needs the figures to be honest rather than flattering.',
             ],
           },
@@ -251,13 +251,13 @@
               ],
             },
             p: [
-              'The third column is the one to learn. A principle stated as a definition is easy to nod along to and hard to apply; a principle stated as a thing you are not allowed to do is testable against a scenario.',
+              'The third column is the one to learn. A principle stated as a definition is easy to nod along to and hard to apply. A principle stated as a thing you are not allowed to do is testable against a scenario.',
             ],
           },
           {
             h: 'Accruals, which the rest of the unit runs on',
             p: [
-              'The accruals principle earns its own card because five separate outcomes later in this unit are applications of it, and the specification says so each time.',
+              'The accruals principle earns its own card. Five separate outcomes later in this unit are applications of it, and the specification says so each time.',
               'Depreciation exists because a machine bought for cash in one year is used up over eight, and the accruals principle puts the cost in the years that used it. An accrual for an unpaid electricity bill exists because the electricity was burned in this year whatever the bill\'s date. An allowance for doubtful receivables exists because the risk of non-payment arose from this year\'s sales. Closing inventory is held back out of cost of sales because the goods have not been sold yet.',
               'Every one of those adjustments is the same move: separate **when the cash moved** from **when the economic event happened**, and report the second. A student who understands that once does not have to memorise four rules.',
             ],
@@ -286,7 +286,7 @@
               },
             },
             p: [
-              'Prudence and the accruals principle can appear to pull against each other, and questions are built on the tension. Accruals says recognise the revenue when the sale happens; prudence says do not recognise revenue that may never arrive. The resolution is that prudence governs the **measurement** of an uncertain amount, not whether the event is recorded at all: the sale goes in, and the doubt about collection is dealt with by an allowance.',
+              'Prudence and the accruals principle can appear to pull against each other, and questions are built on the tension. Accruals says recognise the revenue when the sale happens; prudence says do not recognise revenue that may never arrive. The resolution is that prudence governs the **measurement** of an uncertain amount, not whether the event is recorded at all. The sale goes in, and the doubt about collection is dealt with by an allowance.',
             ],
           },
         ],
@@ -382,7 +382,7 @@
             },
             p: [
               'Timeliness and verifiability pull in opposite directions and the tension is real. Waiting for the final invoice makes an accrual verifiable; publishing before the year is stale makes it timely. Neither wins outright. The framework calls these characteristics enhancing rather than mandatory for exactly that reason.',
-              'Understandability carries a warning in the framework itself. A transaction that is genuinely complicated may not be left out to make the accounts easier to read — that would sacrifice relevance and completeness for a characteristic ranked below both.',
+              'Understandability carries a warning in the framework itself. A transaction that is genuinely complicated may not be left out to make the accounts easier to read. That would sacrifice relevance and completeness for a characteristic ranked below both.',
             ],
             examtrap: 'Comparability is not uniformity. Two businesses in the same trade may legitimately depreciate at different rates if their assets are genuinely used differently. What comparability requires is that the difference is disclosed, so a reader can see it and allow for it.',
           },
@@ -426,7 +426,7 @@
             h: 'What material misstatement means',
             p: [
               'A misstatement is any difference between what the accounts say and what they should say. It becomes **material** when it could reasonably be expected to influence a decision one of the primary users makes on the strength of those accounts.',
-              'That is a definition with no number in it, and deliberately so. A £5,000 error is trivial in a business turning over £40 million and fatal in one turning over £60,000. Materiality depends on size relative to the business, and on nature: an error that turns a profit into a loss, or that takes a covenant through its limit, is material at any size because of what it changes rather than how big it is.',
+              'That is a definition with no number in it, and deliberately so. A £5,000 error is trivial in a business turning over £40 million and fatal in one turning over £60,000. Materiality depends on size relative to the business, and on nature. An error that turns a profit into a loss, or that takes a covenant through its limit, is material at any size. What it changes matters more than how big it is.',
               'Misstatement covers both error and omission, and both intentional and unintentional. A figure left out entirely misstates the accounts as surely as a figure put in wrongly.',
             ],
             callout: { kind: 'key', text: 'Material means "could change a primary user\'s decision" — judged on size relative to the business and on the nature of what the error does, never on an absolute amount.' },
@@ -435,7 +435,7 @@
             h: 'Why preparing accounts is an ethical activity',
             p: [
               'The accounts a business publishes are prepared by people who work for it, or are paid by it. Those people have the information, the access and the discretion; the readers have none of the three. Every rule about ethics in this unit follows from that imbalance.',
-              'The discretion is larger than it looks from outside. Almost every period-end adjustment involves a judgement that could reasonably go two ways — how long a machine will last, how much of a debt will be collected, whether inventory can still be sold at cost. Each judgement moves profit, and a run of them all taken at the optimistic end moves it a great deal, without any single decision being obviously wrong.',
+              'The discretion is larger than it looks from outside. Almost every period-end adjustment involves a judgement that could reasonably go two ways. How long a machine will last, how much of a debt will be collected, whether inventory can still be sold at cost. Each judgement moves profit, and a run of them all taken at the optimistic end moves it a great deal, without any single decision being obviously wrong.',
             ],
             split: {
               left: {
@@ -463,17 +463,17 @@
           {
             h: 'Professional scepticism, in practice',
             p: [
-              'Professional scepticism is a questioning mind: alertness to conditions that may indicate misstatement, and a critical assessment of evidence rather than acceptance of it.',
+              'Professional scepticism is a questioning mind. It means alertness to conditions that may indicate misstatement, and a critical assessment of evidence rather than acceptance of it.',
               'It is not suspicion, and it does not assume dishonesty. It assumes that plausible things are sometimes wrong, and that a figure which arrives with an explanation attached deserves the same look as one that does not.',
-              'In this unit it usually means noticing when something does not fit: a receivables balance that has not moved in eight months, an accrual identical to last year\'s to the pound, an inventory line still held at cost when the same goods are on sale at half price, a machine with no depreciation in a year everything else was depreciated.',
+              'In this unit it usually means noticing when something does not fit. A receivables balance that has not moved in eight months. An accrual identical to last year’s to the pound. An inventory line still held at cost when the same goods are on sale at half price. A machine with no depreciation in a year everything else was depreciated.',
             ],
             examtrap: 'Scepticism applies hardest to figures produced by software. "The system calculated it" is not evidence that the inputs were right — a depreciation routine will happily run on a wrong in-service date, and produce a clean, plausible, wrong figure every year until somebody looks.',
           },
           {
             h: 'When the pressure comes from your own side',
             p: [
-              'The uncomfortable cases are not the ones where somebody asks for fraud. They are the ones where a manager who is not lying wants a judgement taken at the end of the range that suits them, and has a reason that sounds fine.',
-              'The three pressures the specification names are time, the wish for a favourable result, and authority — and they usually arrive together, at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
+              'The uncomfortable cases are not the ones where somebody asks for fraud. They are the ones where a manager, who is not lying, wants a judgement taken at the end of the range that suits them. The reason they give sounds fine.',
+              'The three pressures the specification names are time, the wish for a favourable result, and authority. They usually arrive together: at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
               'The defence is to keep the question technical. Not "is my manager entitled to ask me this", which is a question about the hierarchy, but "what does the evidence support" — a question with an answer that does not change according to who is asking. If the evidence supports a four-year life, it supports a four-year life whoever would prefer six.',
             ],
           },
@@ -585,8 +585,8 @@
             h: 'Why double entry works at all',
             formula: 'Assets = Liabilities + Capital · or · Capital = Assets − Liabilities',
             p: [
-              'Everything a business controls was paid for by somebody. Either an outsider put the money in and is owed it back — a **liability** — or the owner put it in and has a claim on what is left, called **capital**. Add the two claims together and you have accounted for every asset the business holds.',
-              'That is the accounting equation entire, and it is why double entry balances rather than a rule that it must. Every transaction changes two things, and it changes them in a way that keeps the two sides equal — because a transaction that genuinely left them unequal would be describing an asset nobody paid for.',
+              'Everything a business controls was paid for by somebody. Either an outsider put the money in and is owed it back — a **liability**. Or the owner put it in and has a claim on what is left, called **capital**. Add the two claims together and you have accounted for every asset the business holds.',
+              'That is the accounting equation entire, and it is why double entry balances rather than a rule that it must. Every transaction changes two things, and it changes them in a way that keeps the two sides equal. A transaction that genuinely left them unequal would be describing an asset nobody paid for.',
               'A trial balance that does not balance is that equation failing. Something has been recorded on one side and not the other, and the difference is the size of what is missing.',
             ],
             callout: { kind: 'key', text: 'Assets = Liabilities + Capital. Double entry keeps that true after every transaction, which is why the books balance rather than a rule that they must.' },
@@ -668,8 +668,8 @@
           {
             h: 'Five classes, and why the label decides everything',
             p: [
-              'Every account in the general ledger belongs to exactly one of five classes. The class decides which side its balance normally sits on, which statement it ends up in, and — the reason this lesson exists — what happens to it at the period end.',
-              'A misclassified account is not a small error. Call a liability an expense and profit falls by the whole amount and the statement of financial position no longer balances; call an expense an asset and you have capitalised something that should have gone to profit, the error Outcome 3 spends a card on.',
+              'Every account in the general ledger belongs to exactly one of five classes. The class decides which side its balance normally sits on, and which statement it ends up in. It also decides — the reason this lesson exists — what happens to it at the period end.',
+              'A misclassified account is not a small error. Call a liability an expense and profit falls by the whole amount, and the statement of financial position no longer balances. Call an expense an asset and you have capitalised something that should have gone to profit — the error Outcome 3 spends a card on.',
             ],
             table: {
               headers: ['Class', 'Normal balance', 'Ends up in', 'Examples'],
@@ -780,7 +780,7 @@
             },
             p: [
               'The first six all record **credit** transactions — a promise now, money later. The cash book records the money actually moving. A single sale on credit therefore touches the sales daybook when the invoice goes out and the cash book when the customer pays.',
-              'The **journal** is the one that matters most at Level 3, because every period-end adjustment in this unit arrives through it: depreciation, accruals, prepayments, irrecoverable debts, closing inventory, corrections of error. None of those has an invoice, and the journal is how a transaction with no document gets into the books.',
+              'The **journal** is the one that matters most at Level 3. Every period-end adjustment in this unit arrives through it: depreciation, accruals, prepayments, irrecoverable debts, closing inventory, corrections of error. None of those has an invoice, and the journal is how a transaction with no document gets into the books.',
             ],
           },
           {
@@ -795,7 +795,7 @@
             },
             p: [
               'Three money columns, and each one goes to a different account. The net column becomes sales, the VAT column becomes VAT, and the total becomes the amount the customer owes. The next lesson does that posting.',
-              'The journal has a column the others do not: a **narrative**, saying what the entry is for. Every other book of prime entry is backed by a document that explains itself — an invoice says who and what and why. A journal entry has no document behind it, so without a narrative nobody reading the ledger in a year can tell what happened or check whether it was right. A journal without a narrative is an unexplained movement in the accounts, and that is what a person concealing something would also produce.',
+              'The journal has a column the others do not: a **narrative**, saying what the entry is for. Every other book of prime entry is backed by a document that explains itself. An invoice says who and what and why. A journal entry has no document behind it. Without a narrative, nobody reading the ledger in a year can tell what happened or check whether it was right. A journal without a narrative is an unexplained movement in the accounts, and that is what a person concealing something would also produce.',
             ],
             examtrap: 'Settlement discounts have their own daybooks and are easy to post backwards. **Discounts allowed** are given by the business to its customers, so they are an expense. **Discounts received** are given to the business by its suppliers, so they are income.',
           },
@@ -838,7 +838,7 @@
           {
             h: 'Three columns, three accounts',
             p: [
-              'Posting a daybook is the same move every time. Total the three money columns, then send each total to the account it belongs to. The net column is the trading figure, the VAT column is money held for HMRC, and the gross column is what the customer owes or what the business owes the supplier.',
+              'Posting a daybook is the same move every time. Total the three money columns, then send each total to the account it belongs to. The net column is the trading figure. The VAT column is money held for HMRC. The gross column is what the customer owes, or what the business owes the supplier.',
               'The direction reverses between sales and purchases because VAT reverses. On a sale the business has **collected** tax it must hand over, so VAT is credited. On a purchase it has **paid** tax it can reclaim, so VAT is debited. The same account carries both, and the balance is what is owed to HMRC or owed back by them.',
             ],
             callout: { kind: 'key', text: 'Net → sales or purchases. VAT → the VAT account, credited on sales and debited on purchases. Gross → the receivables or payables control account.' },
@@ -870,7 +870,7 @@
             h: 'Where the individual invoices go',
             p: [
               'The posting above moved three totals into the general ledger and said nothing about which customer owes what. That detail is not lost — it goes to the **memorandum ledgers** at the same time.',
-              'Every invoice in the sales daybook is also posted to that customer\'s own account in the receivables ledger, at its gross amount. Nothing about that is double entry: it is a second, parallel record kept so the business can answer "how much does Hollis Joinery owe" without reading a year of daybooks.',
+              'Every invoice in the sales daybook is also posted to that customer’s own account in the receivables ledger, at its gross amount. Nothing about that is double entry. It is a second, parallel record, kept so the business can answer "how much does Hollis Joinery owe" without reading a year of daybooks.',
               'So the total of all the customer accounts should equal the receivables control account balance, and a difference between them means something reached one record and not the other. The next two lessons are about that.',
             ],
             examtrap: 'The control account takes the **gross** figure and the memorandum ledger takes the **gross** figure. Only the general ledger splits the invoice into net and VAT, because only the general ledger has a VAT account to split it into.',
@@ -916,8 +916,8 @@
             flow: ['Daybooks', 'General ledger — the double entry', 'Memorandum ledgers — receivables and payables detail'],
             p: [
               'The **general ledger** is the accounting system. Every account in the five classes lives there, every entry in it is half of a pair, and the trial balance is drawn from it. It contains the receivables and payables **control accounts**, which hold one total each for everything owed to and by the business.',
-              'The **receivables ledger** holds one account per customer, and the **payables ledger** one per supplier. Neither is part of the double entry. They exist because the control account can tell you that customers owe £44,400 and cannot tell you which of them, or for how long, or whether one of them stopped paying four months ago.',
-              'Both are called memorandum or subsidiary ledgers, and the two words mean the same thing: a record kept alongside the books rather than in them.',
+              'The **receivables ledger** holds one account per customer, and the **payables ledger** one per supplier. Neither is part of the double entry. They exist because the control account can tell you that customers owe £44,400 but not which of them. Nor for how long, nor whether one of them stopped paying four months ago.',
+              'Both are called memorandum or subsidiary ledgers. The two words mean the same thing: a record kept alongside the books rather than in them.',
             ],
             callout: { kind: 'key', text: 'General ledger: the double entry, one control account per class of debt. Memorandum ledgers: one account per customer or supplier, outside the double entry.' },
           },
@@ -1018,7 +1018,7 @@
             },
             p: [
               'The **contra** is the entry people miss. Where the same business is both a customer and a supplier, the two balances can be set against each other rather than each paying the other in full. It reduces receivables and payables together, so it is a credit here and a debit in the payables control account.',
-              'The payables control account is the mirror of this one: opening balance and credit purchases on the credit side; payments, purchases returns, discounts received and the contra on the debit side.',
+              'The payables control account is the mirror of this one. Opening balance and credit purchases go on the credit side; payments, purchases returns, discounts received and the contra go on the debit side.',
             ],
           },
           {
@@ -1048,7 +1048,7 @@
             p: [
               'In accounting software the control accounts are not written up by anybody. Posting a sales invoice updates the customer\'s account and the receivables control account in the same operation, so the two cannot disagree.',
               'That removes the commonest cause of a reconciling difference and leaves the ones it cannot see. An invoice posted to the wrong customer reconciles perfectly — the control total is right and one account is overstated while another is understated. So does an invoice posted twice, once the duplicate has updated both records. So does an invoice entered with the wrong date, which puts a real transaction in the wrong period.',
-              'The reconciliation was never the only reason to keep a control account. The other reason is that it localises an error: a difference tells you which group of accounts to look in, and a business that has stopped reconciling has lost that even when its software cannot make the arithmetic wrong.',
+              'The reconciliation was never the only reason to keep a control account. The other reason is that it localises an error. A difference tells you which group of accounts to look in. A business that has stopped reconciling has lost that, even when its software cannot make the arithmetic wrong.',
             ],
             examtrap: 'A control account reconciliation that agrees does not mean the receivables figure is right. It means the two records agree, which is a different and weaker claim — and one that software makes almost automatic.',
           },
@@ -1148,7 +1148,7 @@
               },
             },
             p: [
-              'The right-hand column is the faster of the two checks and it does not need the other account. Sales carrying a debit balance, or rent carrying a credit one, is either a genuine reversal — a refund, a correction — or something posted the wrong way round, and either way it deserves a look before the trial balance is drawn.',
+              'The right-hand column is the faster of the two checks, and it does not need the other account. Sales carrying a debit balance, or rent carrying a credit one, is either a genuine reversal — a refund, a correction — or something posted the wrong way round. Either way it deserves a look before the trial balance is drawn.',
             ],
             examtrap: 'Balance c/d goes on the SMALLER side and balance b/d on the opposite side underneath. Putting them both on the same side is the error that makes an account fail to balance while looking as though it does.',
           },
@@ -1192,7 +1192,7 @@
             h: 'Two fates, decided by the class',
             p: [
               'At the period end every account in the general ledger is dealt with, and there are only two things that can happen to one. Which happens is decided entirely by the class it was given in lesson 2B.',
-              '**Income and expense accounts are transferred out.** Their balances go to the statement of profit or loss and the accounts are left at nil, ready to start the next period from zero. Sales for the year just gone has nothing to do with sales for the year ahead, so carrying the figure forward would be meaningless — and would count the same revenue twice.',
+              '**Income and expense accounts are transferred out.** Their balances go to the statement of profit or loss and the accounts are left at nil, ready to start the next period from zero. Sales for the year just gone has nothing to do with sales for the year ahead. Carrying the figure forward would be meaningless, and would count the same revenue twice.',
               '**Asset, liability and capital accounts are carried down.** Their balances stay where they are, become the statement of financial position, and are brought down as the opening balances of the next period. A machine the business owned on 31 December is still owned on 1 January.',
             ],
             callout: { kind: 'key', text: 'Income and expenses are transferred out and start again at nil. Assets, liabilities and capital are carried down and continue. The class decides, every time.' },
@@ -1217,9 +1217,9 @@
           {
             h: 'What the software does with all of this',
             p: [
-              'Accounting software runs the period end as a routine. It transfers the income and expense balances to the profit figure, rolls the asset, liability and capital balances forward, and locks the closed period so nothing can be posted into it by accident.',
-              'The judgements stay with the person. Software knows which class each account was given, and applies the rule perfectly to that; it does not know whether the class was right. An account set up as an expense when it should have been an asset is emptied to profit every year without complaint, and the routine that does it is the same routine that would have been correct had the class been right.',
-              'The period lock is the part that shows up in practice. It is what stops an entry being backdated into a year already reported, and it is why an adjustment found after the close goes into the current period rather than into the one it relates to.',
+              'Accounting software runs the period end as a routine. It transfers the income and expense balances to the profit figure, and rolls the asset, liability and capital balances forward. It then locks the closed period, so nothing can be posted into it by accident.',
+              'The judgements stay with the person. Software knows which class each account was given, and applies the rule perfectly to that. It does not know whether the class was right. An account set up as an expense when it should have been an asset is emptied to profit every year without complaint. The routine that does it is the same routine that would have been correct had the class been right.',
+              'The period lock is the part that shows up in practice. It stops an entry being backdated into a year already reported. It is also why an adjustment found after the close goes into the current period rather than the one it relates to.',
             ],
             examtrap: 'Drawings is a capital-class account, and its balance is never transferred to the statement of profit or loss. It is closed off against capital instead, which is why it never touches the profit figure.',
           },
@@ -1302,7 +1302,7 @@
             },
             p: [
               'Neither column makes the other pointless. The internal checks are cheap, run over everything, and localise an error to a group of accounts. The external and physical ones are the only ones that can find a transaction that never happened, or an asset that no longer exists.',
-              'A business relying only on the right-hand column can have every record agreeing with every other record and still be wrong about the world.',
+              'Rely only on the right-hand column and every record can agree with every other record. The business is still wrong about the world.',
             ],
           },
           {
@@ -1310,7 +1310,7 @@
             p: [
               'Verifying a balance assumes the entries underneath it were real. The specification asks separately for the judgement that they were, and it is a different question with a different set of tests.',
               'Four are worth having in mind. Is there **evidence** — an invoice, a contract, a delivery note? Was it **authorised** by somebody with the authority for that amount? Is it the **business\'s** expense rather than the owner\'s, which is the business entity principle in operational form? And does it fall in **this period**, rather than the last or the next?',
-              'The uncomfortable one in practice is the third. An invoice addressed to the business, properly authorised, correctly dated and genuinely paid can still be for the owner\'s private spending — and it is the only one of the four that a document cannot settle.',
+              'The uncomfortable one in practice is the third. An invoice addressed to the business, properly authorised, correctly dated and genuinely paid can still be for the owner’s private spending. It is the only one of the four that a document cannot settle.',
             ],
             examtrap: 'A transaction can be genuine and still not belong in this period, or belong in this period and still not be the business\'s. The four tests are separate, and a scenario often satisfies three of them.',
           },
@@ -1412,7 +1412,7 @@
             h: 'Why capital spending is authorised separately',
             p: [
               'Most businesses let a buyer order stationery without asking anyone. Almost none let the same buyer order a £40,000 machine.',
-              'The difference is not the amount alone, though the amount is part of it. Capital expenditure commits the business for years: the machine has to be paid for, housed, insured, maintained and eventually disposed of, and until it is disposed of the cash spent on it cannot be spent on anything else. A decision that ties up cash for eight years should be made by somebody who knows what else the cash was for.',
+              'The difference is not the amount alone, though the amount is part of it. Capital expenditure commits the business for years. The machine has to be paid for, housed, insured, maintained and eventually disposed of. Until it is disposed of, the cash spent on it cannot be spent on anything else. A decision that ties up cash for eight years should be made by somebody who knows what else the cash was for.',
               'It also lands on the accounts differently. Revenue expenditure hits this year\'s profit and is gone. Capital expenditure sits on the statement of financial position and releases into profit slowly, through depreciation, for as long as the asset lasts. Somebody choosing to capitalise is choosing where profit appears for several years. That choice is not left to whoever happens to be signing.',
             ],
             callout: { kind: 'key', text: 'Authorisation exists because capital spending commits cash for years, and because capitalising an item moves cost out of this year\'s profit and into several later ones.' },
@@ -1429,8 +1429,8 @@
               ],
             },
             p: [
-              'The exact levels differ by business and no figure here is a rule. What holds everywhere is the shape: authority rises with the size and the length of the commitment, and the person authorising is senior enough to see what else the money was for.',
-              'Two related controls usually travel with it. Spending is authorised **before** the order goes out rather than after the invoice arrives, because an approval sought afterwards is not a decision. And the person who authorises is not the person who records the purchase, so an unauthorised asset cannot be quietly added to the register by the one person who would notice.',
+              'The exact levels differ by business and no figure here is a rule. What holds everywhere is the shape. Authority rises with the size and the length of the commitment, and the person authorising is senior enough to see what else the money was for.',
+              'Two related controls usually travel with it. Spending is authorised **before** the order goes out rather than after the invoice arrives, because an approval sought afterwards is not a decision. And the person who authorises is not the person who records the purchase. That stops an unauthorised asset being quietly added to the register by the one person who would notice.',
             ],
             examtrap: 'A question may show an invoice for an asset with no authorisation, or authorisation by somebody below the stated limit. The answer is not to post it and mention it — an unauthorised commitment is referred upwards before it enters the records.',
           },
@@ -1466,7 +1466,7 @@
           {
             h: 'The test, and where it comes from',
             p: [
-              'The standard governing non-current assets is **IAS 16, Property, Plant and Equipment**, and the test it sets for what may be added to the cost of an asset is short: the purchase price, plus any cost **directly attributable to bringing the asset to the location and condition necessary for it to be capable of operating in the way management intends**.',
+              'The standard governing non-current assets is **IAS 16, Property, Plant and Equipment**. The test it sets for what may be added to the cost of an asset is short. The purchase price, plus any cost **directly attributable to bringing the asset to the location and condition necessary for it to be capable of operating in the way management intends**.',
               'Read that clause slowly, because every borderline case turns on it. Delivery is directly attributable — the machine cannot operate in the warehouse if it is still on a lorry. Installation is directly attributable. So is the fee paid to the engineer who commissions it, and the cost of preparing the floor it stands on.',
               'The moment the asset is capable of operating as intended, capitalisation stops. Everything after that point is revenue expenditure, however large and however closely connected to the asset.',
             ],
@@ -1501,7 +1501,7 @@
               },
             },
             p: [
-              'Two of the revenue items catch people out. **Staff training** is directly connected to the machine and is still revenue, because it changes what the staff can do rather than what the machine can do. And **moving the asset later** is revenue even though the identical cost was capital first time round: the first delivery brought the asset to the condition necessary to operate, and the second merely relocated an asset already operating.',
+              'Two of the revenue items catch people out. **Staff training** is directly connected to the machine and is still revenue, because it changes what the staff can do rather than what the machine can do. And **moving the asset later** is revenue, even though the identical cost was capital first time round. The first delivery brought the asset to the condition necessary to operate; the second merely relocated an asset already operating.',
             ],
           },
           {
@@ -1529,8 +1529,8 @@
             h: 'The capitalisation threshold',
             p: [
               'A business also sets a **capitalisation policy**: a level below which an item is expensed however long it will last. A £45 desk fan may serve for a decade and still be written off on the day it is bought.',
-              'That is materiality doing its job. Tracking a £45 fan through an asset register for ten years, depreciating it, verifying it in a stock count and eventually recording its disposal costs far more than the accuracy it buys, and no reader of the accounts would decide anything differently either way.',
-              'The policy has to be applied consistently in both directions. An item above the threshold is capitalised even in a year when the business would rather have the expense; an item below it is expensed even when capitalising would flatter the profit. A threshold applied only when it suits is not a policy.',
+              'That is materiality doing its job. Tracking a £45 fan through an asset register for ten years costs far more than the accuracy it buys. It has to be depreciated, verified in a stock count, and eventually recorded as a disposal. And no reader of the accounts would decide anything differently either way.',
+              'The policy has to be applied consistently in both directions. An item above the threshold is capitalised even in a year when the business would rather have the expense. An item below it is expensed even when capitalising would flatter the profit. A threshold applied only when it suits is not a policy.',
             ],
           },
         ],
@@ -1594,8 +1594,8 @@
               ],
             },
             p: [
-              'Useful life is the one most often misread. A van may run for fifteen years, but a business that replaces its fleet every four has a useful life of four — the question is how long the asset serves **this** business, not how long it would survive.',
-              'That is also why two businesses can depreciate identical vans over different lives without either being wrong, and why the estimate is a judgement that has to be made honestly rather than to suit a profit target.',
+              'Useful life is the one most often misread. A van may run for fifteen years, but a business that replaces its fleet every four has a useful life of four. The question is how long the asset serves **this** business, not how long it would survive.',
+              'That is also why two businesses can depreciate identical vans over different lives without either being wrong. And it is why the estimate is a judgement, to be made honestly rather than to suit a profit target.',
             ],
           },
           {
@@ -1603,7 +1603,7 @@
             p: [
               'Take £20,000 spent on a machine with a five-year life and no residual value, and follow it two ways.',
               '**Expensed:** profit this year falls by £20,000. Nothing appears on the statement of financial position. In years two to five the machine costs nothing at all, and profit in each of those years is higher than the trading actually justified.',
-              '**Capitalised:** profit this year falls by the first depreciation charge of £4,000, and £20,000 − £4,000 = £16,000 sits under non-current assets. Each of the next four years carries another £4,000, and the carrying amount falls to nil as the machine reaches the end of its life.',
+              '**Capitalised:** profit this year falls by the first depreciation charge of £4,000, and £20,000 − £4,000 = £16,000 sits under non-current assets. Each of the next four years carries another £4,000. The carrying amount falls to nil as the machine reaches the end of its life.',
               'Over five years both routes charge £20,000 to profit. What changes is **which years** carry it — and since the machine earns revenue in all five, only the second route matches the cost to the periods that benefit. That match is the accruals principle, and depreciation is how it is applied to a non-current asset.',
             ],
             callout: { kind: 'key', text: 'Capitalising changes the timing of the charge, not its total. Over the asset\'s life the same cost reaches profit either way.' },
@@ -1631,7 +1631,7 @@
               },
             },
             p: [
-              'The right-hand column is the more serious of the two, and it is the direction in which pressure usually runs. Capitalising a repair improves this year\'s profit and puts an asset on the statement of financial position, and both effects are what somebody under pressure to report a good year would want. It also takes several years to unwind, so it is not a mistake that corrects itself.',
+              'The right-hand column is the more serious of the two, and it is the direction in which pressure usually runs. Capitalising a repair improves this year’s profit and puts an asset on the statement of financial position. Both effects are what somebody under pressure to report a good year would want. It also takes several years to unwind, so it is not a mistake that corrects itself.',
             ],
           },
         ],
@@ -1673,8 +1673,8 @@
           {
             h: 'A record that sits outside the double entry',
             p: [
-              'The general ledger knows that the business holds £480,000 of plant and machinery with £215,000 of accumulated depreciation against it. It does not know that £24,000 of that is a press bought in March, standing in the Leeds workshop, four years into an eight-year life.',
-              'The **non-current asset register** holds the detail. It is a memorandum record — outside the double entry, carrying no debits or credits — with one line per asset, and it is the only place the business can answer a question about a particular thing it owns.',
+              'The general ledger knows that the business holds £480,000 of plant and machinery, with £215,000 of accumulated depreciation against it. It does not know that £24,000 of that is a press bought in March. Nor that the press stands in the Leeds workshop, four years into an eight-year life.',
+              'The **non-current asset register** holds the detail. It is a memorandum record — outside the double entry, carrying no debits or credits — with one line per asset. It is the only place the business can answer a question about a particular thing it owns.',
             ],
             table: {
               headers: ['Field', 'What it is for'],
@@ -1695,7 +1695,7 @@
             p: [
               '**Physical verification** works in both directions, and both matter. Register to floor asks whether everything recorded still exists — an asset scrapped two years ago and never written out is carrying depreciation and inflating the accounts. Floor to register asks whether everything that exists is recorded, which is how an unauthorised purchase or an asset acquired with a business surfaces.',
               '**Reconciliation to the general ledger** is the one an assessment asks for most. Total cost per the register should equal the cost balance in the general ledger, and total accumulated depreciation per the register should equal the accumulated depreciation balance. Where they differ, something has been posted to one and not the other.',
-              'The usual causes are worth knowing in advance: an acquisition posted to the ledger and never added to the register, a disposal removed from the register and never posted, a private-use adjustment made in one place only, or an asset written off physically with no entry anywhere.',
+              'The usual causes are worth knowing in advance. An acquisition posted to the ledger and never added to the register. A disposal removed from the register and never posted. A private-use adjustment made in one place only. Or an asset written off physically with no entry anywhere.',
             ],
             examtrap: 'The register carries no debits or credits and is not part of the double entry. A question asking for the journal to "correct the register" is testing whether you know that — the correction is made in the ledger, in the register, or in both, depending on which one is wrong.',
           },
@@ -1703,7 +1703,7 @@
             h: 'Where the register lives',
             p: [
               'A register may be a module inside accounting software, or a spreadsheet kept alongside it. Both are common and the specification names both.',
-              'Software keeps the register and the ledger in step automatically, which removes the commonest cause of a reconciling difference and introduces a subtler one: if the acquisition is entered with the wrong date, cost or life, the software will depreciate it wrongly, consistently, and without complaint for the whole of its life. Nothing in the reconciliation will show it, because both sides agree — they agree on the wrong figure.',
+              'Software keeps the register and the ledger in step automatically. That removes the commonest cause of a reconciling difference, and introduces a subtler one. Enter the acquisition with the wrong date, cost or life and the software will depreciate it wrongly, consistently, and without complaint for the whole of its life. Nothing in the reconciliation will show it, because both sides agree — they agree on the wrong figure.',
               'A spreadsheet has the opposite profile. Every difference between it and the ledger is visible at the year end, and every formula is somebody\'s to get right. The risks are a dragged formula that skips a row, a total that does not include the newest line, and a file that two people have edited.',
             ],
           },
@@ -1740,7 +1740,7 @@
             h: 'The entries',
             p: [
               'An acquisition on credit is two entries and a note. Debit the relevant non-current asset cost account with the capitalised amount, debit VAT if it is recoverable, and credit the payables account with the total owed. Then add the asset to the register, which is not part of the double entry and is the step most often forgotten.',
-              'The cost account is chosen by class — motor vehicles, plant and machinery, fixtures and fittings, land and buildings — because depreciation policies differ by class and the statement of financial position discloses them separately.',
+              'The cost account is chosen by class: motor vehicles, plant and machinery, fixtures and fittings, land and buildings. Depreciation policies differ by class, and the statement of financial position discloses them separately.',
             ],
             example: {
               title: 'Machine bought on credit for £12,000 plus VAT at 20%, business VAT registered',
@@ -1756,8 +1756,8 @@
             h: 'VAT follows the registration status',
             p: [
               'A **VAT-registered** business recovers the input tax on the purchase, so the VAT is not a cost to it. The asset is capitalised **net**: £12,000 × 20% = £2,400 goes to the VAT account and the machine stands at £12,000.',
-              'A business that is **not registered** cannot recover anything. The VAT is part of what it had to pay to get the machine, so it is directly attributable, and the asset is capitalised **gross** at £12,000 + £2,400 = £14,400. Every depreciation charge for the rest of that machine\'s life is then computed on £14,400.',
-              'One case sits outside the pattern and is worth knowing because it is common. Input tax on a **car** is normally blocked, so even a registered business cannot recover it unless the car is used exclusively for business — a taxi or a driving-school vehicle. Where the VAT cannot be recovered it is capitalised with the car, exactly as it would be for an unregistered business. The rule the specification states for this unit is registration status; the car block belongs to Tax Processes and is mentioned here because a scenario can raise it.',
+              'A business that is **not registered** cannot recover anything. The VAT is part of what it had to pay to get the machine, so it is directly attributable. The asset is capitalised **gross** at £12,000 + £2,400 = £14,400. Every depreciation charge for the rest of that machine’s life is then computed on £14,400.',
+              'One case sits outside the pattern and is worth knowing because it is common. Input tax on a **car** is normally blocked. Even a registered business cannot recover it unless the car is used exclusively for business — a taxi or a driving-school vehicle. Where the VAT cannot be recovered it is capitalised with the car, exactly as it would be for an unregistered business. The rule the specification states for this unit is registration status. The car block belongs to Tax Processes, and is mentioned here because a scenario can raise it.',
             ],
             callout: { kind: 'key', text: 'Recoverable VAT goes to the VAT account and the asset is capitalised net. Irrecoverable VAT is part of the cost of getting the asset, so it is capitalised with it.' },
           },
@@ -1840,9 +1840,9 @@
           {
             h: 'What a gain or loss actually is',
             p: [
-              'A gain on disposal is not a profit the business made by trading, and a loss is not money it lost on the day. Both are corrections.',
-              'Depreciation spreads cost over an estimated life to an estimated residual value. Both estimates are made years before the asset is sold, and neither is going to be exactly right. If the asset was depreciated faster than it lost value, the carrying amount is below what it fetches and the difference appears as a gain; if it was depreciated too slowly, a loss appears.',
-              'So a business that regularly reports large gains on disposal is telling you its useful lives are too short, and one reporting persistent losses is telling you they are too long. That is a real signal and an assessment can ask you to read it.',
+              'A gain on disposal is not a profit the business made by trading. A loss is not money it lost on the day. Both are corrections.',
+              'Depreciation spreads cost over an estimated life to an estimated residual value. Both estimates are made years before the asset is sold, and neither is going to be exactly right. If the asset was depreciated faster than it lost value, the carrying amount is below what it fetches, and the difference appears as a gain. If it was depreciated too slowly, a loss appears.',
+              'So a business that regularly reports large gains on disposal is telling you its useful lives are too short. One reporting persistent losses is telling you they are too long. That is a real signal, and an assessment can ask you to read it.',
             ],
             examtrap: 'Use the accumulated depreciation **at the date of disposal**, which means applying the depreciation policy for the final period first — a part-year charge under pro-rata, or none at all where the policy charges nothing in the year of disposal. Reaching for last year\'s figure without asking what the policy requires is the commonest error in a disposal question.',
           },
@@ -1882,8 +1882,8 @@
             h: 'A disposal and an acquisition at once',
             p: [
               'Trading an old van in against a new one looks like one transaction and is two. The old van is disposed of, and the new van is acquired; the part-exchange allowance is simply the form the proceeds take.',
-              'The specification puts it as part-exchange being **a different form of funding** to cash or credit. The business is paying for the new asset partly with an old asset instead of entirely with money, and the accounting treats that old asset exactly as it would treat any other disposal.',
-              'So the allowance is the proceeds, it goes into the disposals account like any other proceeds, and the gain or loss is worked out the same way. What differs is where the money goes: instead of arriving in the bank, it goes straight into the cost of the new asset.',
+              'The specification puts it as part-exchange being **a different form of funding** to cash or credit. The business is paying for the new asset partly with an old asset instead of entirely with money. The accounting treats that old asset exactly as it would treat any other disposal.',
+              'So the allowance is the proceeds. It goes into the disposals account like any other proceeds, and the gain or loss is worked out the same way. What differs is where the money goes. Instead of arriving in the bank, it goes straight into the cost of the new asset.',
             ],
             callout: { kind: 'key', text: 'The part-exchange allowance is the proceeds of the old asset. Cost of the new asset = the allowance + whatever cash is paid on top.' },
           },
