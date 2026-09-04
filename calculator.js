@@ -186,5 +186,145 @@
     };
   }
 
-  root.AATCalc = { create: create, KEYS: KEYS };
+  /* ── Moving the calculator ─────────────────────────────────────────────────
+     The panel covers whatever is under it, and on a task with a table or an
+     entry grid that is often the figures being added up. So it can be dragged,
+     by its screen — the one large surface on it that is not a key.
+
+     SHARED FOR THE SAME REASON THE ENGINE IS. Three levels render three panels
+     with three class prefixes, and a drag implemented three times is a drag
+     that clamps to the viewport in three slightly different ways. The markup
+     still belongs to each level: this is handed the two elements it needs.
+
+     POSITION IS REMEMBERED PER PANEL, IN MEMORY, because the levels rebuild
+     their panels on repaint — answering a question replaces the element that
+     was dragged, and a calculator that jumped home every time the reader
+     pressed a key would be worse than one that could not be moved at all. It
+     is deliberately not persisted to storage: a calculator parked over the
+     corner of one exam's table should not be waiting there weeks later. */
+  var POS = {};
+
+  function draggable(opts) {
+    opts = opts || {};
+    var panel = opts.panel, handle = opts.handle;
+    if (!panel || !handle || typeof window === 'undefined') return;
+
+    var key = opts.key || 'calc';
+
+    /* ONLY WHERE THE PANEL FLOATS OVER THE PAGE.
+
+       Dragging answers one problem: the calculator is covering the figures
+       being added up. Level 2's desktop calculator has that problem solved
+       already — it is a 280px grid track beside the question, covering
+       nothing — so dragging it there would buy the reader nothing and cost
+       them the column, which would either collapse under the question or
+       leave a 280px hole where the panel used to be.
+
+       Read from the computed style rather than from a width. The same element
+       is a docked column above 880px and a floating sheet below it, and that
+       breakpoint lives in the stylesheet; a matchMedia here would be a second
+       copy of it, free to disagree with the first. Level 1 and Level 3 float
+       at every width and are draggable at every width. */
+    if (window.getComputedStyle(panel).position !== 'fixed') return;
+
+    function viewport() {
+      return { w: window.innerWidth || 0, h: window.innerHeight || 0 };
+    }
+    /* Never off the edge. A panel dragged past the side of the window would be
+       unreachable, and the only way back would be a reload — which on Level 2
+       and Level 3 costs the reader their half-typed sum. */
+    function clamp(x, y, w, h) {
+      var v = viewport(), pad = 4;
+      return {
+        x: Math.min(Math.max(pad, x), Math.max(pad, v.w - w - pad)),
+        y: Math.min(Math.max(pad, y), Math.max(pad, v.h - h - pad))
+      };
+    }
+    function place(x, y) {
+      var w = panel.offsetWidth, h = panel.offsetHeight;
+      var c = clamp(x, y, w, h);
+      panel.style.position = 'fixed';
+      /* right/bottom/margin are how the sheets sit in their default corner;
+         all three fight an explicit left/top and have to go. */
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+      panel.style.marginLeft = '0';
+      panel.style.width = w + 'px';
+      panel.style.maxWidth = 'none';
+      panel.style.left = c.x + 'px';
+      panel.style.top = c.y + 'px';
+      panel.classList.add('is-floating');
+      POS[key] = { x: c.x, y: c.y };
+    }
+
+    /* Re-applied on mount, because the element handed in is usually a new one:
+       the panel the reader dragged was replaced by the last repaint. */
+    if (POS[key]) place(POS[key].x, POS[key].y);
+
+    if (handle.getAttribute('data-calc-drag') === '1') return;
+    handle.setAttribute('data-calc-drag', '1');
+    handle.setAttribute('title', 'Drag to move the calculator');
+    handle.setAttribute('tabindex', '0');
+    handle.setAttribute('role', 'button');
+    handle.setAttribute('aria-label', 'Move the calculator. Drag it, or use the arrow keys.');
+
+    var dragging = false, grabX = 0, grabY = 0;
+
+    handle.addEventListener('pointerdown', function (e) {
+      if (e.button != null && e.button !== 0) return;
+      var r = panel.getBoundingClientRect();
+      grabX = e.clientX - r.left; grabY = e.clientY - r.top;
+      dragging = true;
+      panel.classList.add('is-dragging');
+      try { handle.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+    });
+    handle.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      place(e.clientX - grabX, e.clientY - grabY);
+      e.preventDefault();
+    });
+    function release() {
+      if (!dragging) return;
+      dragging = false;
+      panel.classList.remove('is-dragging');
+    }
+    handle.addEventListener('pointerup', release);
+    handle.addEventListener('pointercancel', release);
+
+    /* A drag is a mouse and a touchscreen. The arrows are everyone else — a
+       control that can only be moved by pointer is one a keyboard user cannot
+       move out of their own way. */
+    handle.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 24 : 8, dx = 0, dy = 0;
+      if (e.key === 'ArrowLeft') dx = -step;
+      else if (e.key === 'ArrowRight') dx = step;
+      else if (e.key === 'ArrowUp') dy = -step;
+      else if (e.key === 'ArrowDown') dy = step;
+      else return;
+      var r = panel.getBoundingClientRect();
+      place(r.left + dx, r.top + dy);
+      e.preventDefault();
+    });
+
+    /* A window that shrinks can leave a moved panel outside it, which is the
+       same lost calculator by another route. */
+    if (!draggable._resize) {
+      draggable._resize = true;
+      window.addEventListener('resize', function () {
+        Object.keys(POS).forEach(function (k) {
+          var el = document.querySelector('[data-calc-panel="' + k + '"]');
+          if (!el) return;
+          var v = { w: window.innerWidth || 0, h: window.innerHeight || 0 }, pad = 4;
+          var x = Math.min(Math.max(pad, POS[k].x), Math.max(pad, v.w - el.offsetWidth - pad));
+          var y = Math.min(Math.max(pad, POS[k].y), Math.max(pad, v.h - el.offsetHeight - pad));
+          el.style.left = x + 'px'; el.style.top = y + 'px';
+          POS[k] = { x: x, y: y };
+        });
+      });
+    }
+    panel.setAttribute('data-calc-panel', key);
+  }
+
+  root.AATCalc = { create: create, KEYS: KEYS, draggable: draggable };
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));

@@ -148,10 +148,12 @@ async function audit(page, where, sel) {
   if (seen.error) { errors.push(`${where}: ${seen.error}`); checks++; return seen; }
 
   ok(/^\d+px$/.test(seen.chromeVar), `${where}: --chrome-h is ${JSON.stringify(seen.chromeVar)}, not a pixel length — chrome-offset.js did not run.`);
-  /* Rounded UP by the module, so it may exceed the true height by under a pixel
-     and must never fall short of it. */
+  /* Rounded DOWN by the module, so it may fall short of the true height by
+     under a pixel and must never exceed it. Overshooting is what pushed every
+     bar below the chrome's real bottom edge and opened the seam this file now
+     watches for; see the note in chrome-offset.js. */
   const declared = parseFloat(seen.chromeVar);
-  ok(declared >= seen.chromeHeight - 0.01 && declared < seen.chromeHeight + 1,
+  ok(declared <= seen.chromeHeight + 0.01 && declared > seen.chromeHeight - 1,
     `${where}: --chrome-h is ${seen.chromeVar} but the chrome measures ${seen.chromeHeight}px.`);
 
   ok(seen.overflow <= 1, `${where}: page overflows horizontally by ${seen.overflow}px.`);
@@ -169,18 +171,38 @@ async function audit(page, where, sel) {
 
   ok(seen.bars.length > 0, `${where}: no sticky bar found — the selectors this check watches have been renamed, and it is now watching nothing.`);
 
-  /* §4. Bar against the bar above it, in the order they appear on screen. */
+  /* §3/§4. THE SEAM, against the chrome and against the bar above.
+
+     This used to ask only that a bar was not BEHIND the thing above it, which
+     let any size of gap through — and a gap is what shipped. A bar that meets
+     the edge above it exactly is not good enough either: layout heights are
+     fractional (the chrome is 72.81px where it wraps) and so is the device
+     pixel grid, so an exact meeting at 2.75x lands on device pixel 126.5 and
+     the two sides round apart, leaving one row of pixels through which the
+     scrolling page shows. It was reported from a phone and is visible in the
+     screenshot as a single line of clipped text.
+
+     So the requirement is an OVERLAP, in a band. At least ~1px, because
+     anything less is under a device pixel on a 2.75x or 3x screen and can
+     still split. At most 4px, because everything above paints over the overlap
+     and a large one would be silently eating the bar's own content. */
+  const MIN_OVERLAP = 0.9, MAX_OVERLAP = 4;
+  const seam = (name, edge, b) => {
+    const overlap = Math.round((edge - b.top) * 1000) / 1000;
+    ok(overlap >= MIN_OVERLAP && overlap <= MAX_OVERLAP,
+      overlap < MIN_OVERLAP
+        ? `${where}: ${b.sel} sticks at ${b.top}px and ${name} ends at ${edge}px — they ${overlap < 0 ? `leave a ${-overlap}px gap` : `meet with only ${overlap}px of overlap`}, so the scrolling page shows through the seam.`
+        : `${where}: ${b.sel} sticks at ${b.top}px, overlapping ${name} by ${overlap}px — more than the ${MAX_OVERLAP}px the seam needs, so ${name} is covering the bar's own content.`);
+  };
   let previous = null;
   seen.bars.forEach(b => {
-    /* §3. A quarter-pixel of slack for subpixel layout; anything more is a bar
-       sitting behind the chrome. */
+    /* Against whatever is immediately above THIS bar — the chrome for the
+       first one, the bar above for the rest. Checking every bar against the
+       chrome would demand that a second-tier rule overlap something it is not
+       meant to touch. */
     if (!b.inChrome) {
-      ok(b.top >= seen.chromeBottom - 0.25,
-        `${where}: ${b.sel} sticks at ${b.top}px, which is ${Math.round((seen.chromeBottom - b.top) * 100) / 100}px behind the chrome (ends at ${seen.chromeBottom}px).`);
-    }
-    if (previous && previous.sel !== b.sel) {
-      ok(b.top >= previous.bottom - 0.25,
-        `${where}: ${b.sel} sticks at ${b.top}px, ${Math.round((previous.bottom - b.top) * 100) / 100}px behind ${previous.sel}, which ends at ${previous.bottom}px.`);
+      if (previous && previous.sel !== b.sel) seam(previous.sel, previous.bottom, b);
+      else seam('the chrome', seen.chromeBottom, b);
     }
     previous = b;
     /* §5. */

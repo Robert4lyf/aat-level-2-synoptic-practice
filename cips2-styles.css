@@ -185,8 +185,17 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
    It sticks at --chrome-h — the measured height of the sticky group above it,
    published by chrome-offset.js — rather than at a number, because that height
    is 70.6px on a phone and different again on a desktop. */
+/* THE ONE-PIXEL OVERLAP. Sticky bars do not abut the thing above them, they
+   overlap it, and the overlap is invisible because everything above paints
+   over it. Abutting exactly is not achievable: layout heights are fractional
+   (the chrome is 72.81px where it wraps) and so is the device pixel grid — at
+   the 2.75x of a common Android phone, an edge at CSS 46px falls on device
+   pixel 126.5 and the two sides round apart. The result was a single row of
+   device pixels between the header and the bar, through which the scrolling
+   page showed: reported from a phone, and visible in a screenshot as one line
+   of clipped text. */
 .c2-ctx {
-  position: sticky; top: var(--chrome-h, 0px); z-index: 6;
+  position: sticky; top: calc(var(--chrome-h, 0px) - 1px); z-index: 6;
   display: flex; align-items: center; gap: 12px;
   margin: 0 0 18px; padding: 10px 0;
   /* OPAQUE, not glass. A translucent bar over blurred backdrop looks better on
