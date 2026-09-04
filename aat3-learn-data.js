@@ -36,10 +36,11 @@
           h: 'What Tax Processes for Businesses is about',
           p: [
             'This unit is about **two taxes a business handles on other people\'s behalf**. VAT is collected from its customers for HMRC. Payroll taxes are deducted from its employees, again for HMRC. In neither case is the business paying tax of its own.',
-            'That framing carries almost every rule in the unit. If the money were the business\'s own, the state would have only the ordinary interest of a creditor in being paid. Because it is not — because a shop holds VAT belonging to the Exchequer between the moment a customer pays and the moment the return falls due — the law surrounds that money with obligations that would look disproportionate for an ordinary debt.',
-            'So HMRC can require registration, dictate what records are kept and for how long, demand returns on a fixed calendar, inspect those records, visit premises, and levy penalties for lateness that bear little relation to the harm caused by a few days\' delay. That is what happens when a private business is conscripted as a tax collector.',
-            'The same thread runs through the fussy-looking rules: why a valid VAT invoice is required before input tax can be reclaimed, why a deposit can create a tax liability before anything has been delivered, why a penalty starts accruing on a named day. Each of them protects public money held in private hands.',
-            'What this unit is **not** about is how much tax a business owes on its own profits. Corporation tax, and the income tax a sole trader pays on trading profit, belong to different units at a different level. If you have met the phrase *adjusting accounting profit for tax*, that is not this. The specification is explicit that even within payroll you are not asked to calculate income tax, National Insurance or student loan deductions (all of which lesson 4C handles as given figures) — you are given those figures and asked to handle them correctly.',
+            'That one fact drives almost every rule in the unit. If the money were the business\'s own, HMRC would be an ordinary creditor waiting to be paid. It is not. A shop holds the Exchequer\'s VAT from the moment a customer pays until the return falls due. So the law puts obligations round that money that would look heavy-handed for an ordinary debt.',
+            'HMRC can require registration. It can say what records to keep and for how long, demand returns on a fixed calendar, inspect those records and visit the premises. It can charge penalties for lateness that look out of all proportion to a few days\' delay. That is what happens when a private business is made a tax collector.',
+            'The same thread runs through the rules that look fussy. Why a valid VAT invoice is needed before input tax can be reclaimed. Why a deposit can create a tax liability before anything is delivered. Why a penalty starts on a named day. Each one protects public money held in private hands.',
+            'This unit is **not** about how much tax a business owes on its own profits. Corporation tax, and the income tax a sole trader pays on trading profit, sit in other units at another level. If you have met the phrase *adjusting accounting profit for tax*, that is not this.',
+            'The same goes inside payroll. You are not asked to calculate income tax, National Insurance or student loan deductions. Lesson 4C treats all three as figures you are given. Your job is to handle them correctly.',
           ],
           callout: { kind: 'key', text: 'The whole unit sits on one idea: the money is not yours. You are holding it, recording it, and handing it over on time.' },
         },
@@ -59,10 +60,11 @@
             ],
           },
           p: [
-            'Tax Processes for Businesses is assessed on its own, in a single sitting, and the result feeds into the overall qualification grade alongside the other three units.',
-            'Two features of that assessment should shape how you study. The first is that it is **computer marked**. There is no extended written answer to compose and no examiner judgement to satisfy: an answer is either right or it is not. So there is no credit for a well-argued wrong answer, and no risk of a good answer being marked down for how it is expressed.',
+            'Tax Processes for Businesses is assessed on its own, in one sitting. The result feeds into the overall qualification grade alongside the other three units.',
+            'Two features of that assessment should shape how you study. The first is that it is **computer marked**. There is no essay to write and no examiner to convince: an answer is either right or it is not. Nothing is given for a well-argued wrong answer, and nothing is lost for clumsy wording.',
             'That makes the unit unusually **learnable**. The rule set is finite. The thresholds, deadlines, categories and adjustments can all be known, and knowing them is most of the mark. Very little is left to interpretation.',
-            'The second feature is the flip side of the first: **precision counts absolutely**. A figure that is nearly right is wrong. A rule remembered approximately — six months rather than four years, output tax rather than input tax, the gross figure rather than the net — loses the mark outright. Where other units reward broad understanding, this one rewards exactness. Note carefully what that does and does not mean: it is the RULES that must be exact, not your recall of the rates and limits, because the assessment supplies a good many of the figures. The card after next sets out which.',
+            'The second feature is the flip side of the first: **precision counts absolutely**. A figure that is nearly right is wrong. So is a rule remembered roughly — six months instead of four years, output tax instead of input tax, gross instead of net. Other units reward broad understanding. This one rewards exactness.',
+            'Be clear about what that does and does not mean. It is the **rules** that must be exact, not your recall of every rate and limit. The assessment gives you a good many of the figures. The card after next sets out which.',
           ],
         },
         {
@@ -79,31 +81,33 @@
           },
           p: [
             'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are.',
-            'VAT dominates. Three of the five outcomes are VAT and nothing else, and they carry 75% of the assessment between them. Payroll is a single outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation — you are told what the deductions are and asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about communicating VAT *and* payroll matters to the right person in the right way.',
-            '**This material covers all five outcomes.** Take them in order, because each depends on the one before. Outcome 1 establishes what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 checks the result — verifying a return, reconciling it to the records, and correcting it when it is wrong. Outcome 4 changes subject to payroll, which turns out to have the same shape: register, record, report, pay, be penalised. Outcome 5 then asks you to explain all of it to somebody else, which is what the work is actually for.',
-            'One caveat. Covering a syllabus is not the same as being ready to sit an assessment: that needs practice under timed conditions against real question formats. Treat this as the textbook rather than the whole of the preparation.',
+            'VAT dominates. Three of the five outcomes are VAT and nothing else, and together they carry 75% of the marks. Payroll is one outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation. You are told what the deductions are, then asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about telling the right person about VAT *and* payroll matters, in the right way.',
+            '**This material covers all five outcomes.** Take them in order, because each depends on the one before.',
+            'Outcome 1 sets out what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 checks the result: verifying a return, reconciling it to the records, correcting it when it is wrong.',
+            'Outcome 4 changes subject to payroll, which turns out to have the same shape — register, record, report, pay, be penalised. Outcome 5 then asks you to explain all of it to somebody else, which is what the work is actually for.',
+            'One caveat. Covering a syllabus is not the same as being ready to sit the assessment. That takes timed practice against real question formats. Treat this as the textbook, not the whole of the preparation.',
           ],
         },
         {
           h: 'What the exam gives you',
           p: [
-            'One feature of this assessment changes how you should revise, and it is easy to miss: **AAT supplies reference material that you can view during the exam**. A published mock\'s model answers cite it at almost every numerical step.',
-            'What that means in practice is that a number of the figures this unit teaches are **looked up, not recalled**. The fuel scale charges. The flat rate percentages. The partial exemption de minimis limits (lesson 2D). The conditions for bad debt relief. The penalty points thresholds and the £' + T.penalties.lateSubmission.penalty.value + ' penalty. The late payment percentages and the days they run from. The interest rate and the Bank of England base rate it is built on. The behaviour tables for errors and for failure to notify.',
-            'Two of those will mean nothing yet. The **fuel scale charge** and **bad debt relief** are defined in the next lesson and dealt with properly in 2E; they appear in the list above only because the assessment hands you their figures.',
-            'This is not permission to stop learning them. Knowing roughly what the de minimis limit is tells you a calculation is needed at all, and looking up a table you do not understand is slow and error-prone under time pressure. Familiarity is what lets you find the right row quickly and know what to do with it.',
-            'What it does change is where the effort goes. The marks are in knowing **which rule applies**, **whether its conditions are met**, and **how to apply it** — not in reciting figures. If you find yourself drilling percentages, you are revising the part the exam hands you and neglecting the part it tests.',
-            'What is *not* supplied is judgement: which category a supply falls into, which method an error correction requires, which side of the return a figure belongs on, whether a business must register. Those are the questions this material spends its time on, and they are where the marks actually are.',
+            'One feature of this assessment changes how you should revise, and it is easy to miss. **AAT supplies reference material you can view during the exam.** A published mock\'s model answers cite it at almost every numerical step.',
+            'So many of the figures this unit teaches are **looked up, not recalled**. The fuel scale charges. The flat rate percentages. The partial exemption de minimis limits (lesson 2D). The conditions for bad debt relief. The penalty points thresholds and the £' + T.penalties.lateSubmission.penalty.value + ' penalty. The late payment percentages and the days they run from. The interest rate, and the Bank of England base rate it is built on. The behaviour tables for errors and for failure to notify.',
+            'Two of those will mean nothing yet. The **fuel scale charge** and **bad debt relief** are defined in the next lesson and dealt with properly in 2E. They appear above only because the assessment hands you their figures.',
+            'This is not permission to stop learning them. Knowing roughly what the de minimis limit is tells you a calculation is needed at all. And looking up a table you do not understand is slow and error-prone under time pressure. Familiarity is what lets you find the right row fast and know what to do with it.',
+            'What it does change is where the effort goes. The marks are in knowing **which rule applies**, **whether its conditions are met** and **how to apply it** — not in reciting figures. If you are drilling percentages, you are revising the part the exam hands you and neglecting the part it tests.',
+            'What is *not* supplied is judgement. Which category a supply falls into. Which method an error correction requires. Which side of the return a figure belongs on. Whether a business must register at all. Those are the questions this material spends its time on, and that is where the marks are.',
           ],
           callout: { kind: 'tip', text: 'Figures are supplied; judgement is not. Revise which rule applies and how to apply it, rather than the numbers themselves.' },
         },
         {
           h: 'What you already know',
           p: [
-            'If you have come from Level 2 you have already met VAT twice: in Introduction to Bookkeeping, and again in Principles of Bookkeeping Controls. You know more than you may think, and the boundary is worth being precise about, because the temptation is either to assume everything ahead is new or to assume it is all revision. Neither is true.',
+            'If you came from Level 2 you have already met VAT twice: in Introduction to Bookkeeping, and again in Principles of Bookkeeping Controls. You know more than you may think. The boundary is worth being precise about, because it is tempting to assume everything ahead is new, or that it is all revision. Neither is true.',
             'What Level 2 gave you was **mechanical competence**. You can charge VAT on a sale and reclaim it on a purchase. You know output tax and input tax, and that only the difference is settled with HMRC. You can move between net and gross at the standard rate. You have posted VAT through the daybooks into a control account, and you know that account should agree with the return.',
-            'What Level 2 did not give you was **judgement**, and that is the entire difference between the two levels. It never asked which rate applied, because everything was standard-rated. It never asked which period a supply belonged to, because the invoice date was always taken as correct. It never asked whether the input tax could be recovered at all, because it always could. And it never asked what to do when a figure turned out to be wrong.',
-            'Level 3 asks all four of those questions, constantly. That is why the material ahead spends so much time on categories, dates and restrictions rather than on arithmetic — the arithmetic you can already do.',
-            'The codes beside the list below are lesson numbers, so a term you do not recognise can be looked up rather than puzzled over.',
+            'What Level 2 did not give you was **judgement**, and that is the whole difference between the levels. It never asked which rate applied, because everything was standard-rated. It never asked which period a supply belonged to, because the invoice date was always taken as correct. It never asked whether the input tax could be recovered, because it always could. And it never asked what to do when a figure turned out to be wrong.',
+            'Level 3 asks all four of those questions, constantly. That is why the material ahead spends its time on categories, dates and restrictions rather than on arithmetic. The arithmetic you can already do.',
+            'The codes beside the list below are lesson numbers. If a term is new, look it up rather than puzzle over it.',
           ],
           split: {
             left: { title: 'Already yours from Level 2', items: ['VAT is charged on sales and reclaimed on purchases', 'Output tax and input tax, and that only the difference is settled', 'The standard rate is 20%, and gross ÷ 6 gets you the VAT', 'The VAT control account, and that it should agree with the return *(3E)*', 'Returns are usually quarterly and filed through Making Tax Digital *(1D)*'] },
@@ -150,8 +154,8 @@
           h: 'A tax on spending, collected in instalments',
           p: [
             'VAT is a tax on **consumer spending**. The person who ultimately bears it is the final customer — you, buying something in a shop. That sentence is the foundation of everything else in the unit. Almost every confusion about VAT comes from losing sight of it.',
-            'What makes VAT unusual, and worth a unit of its own, is the way it is collected. HMRC does not take the tax from that final customer directly. It collects the same tax in instalments, from every business in the chain that brought the goods to the shelf, and each business hands over only the tax on the **value it added** at its own stage.',
-            'That is where the name comes from. Value Added Tax is not really a tax on value added in any economic sense; it is a tax on consumption, collected by reference to value added, because collecting it that way spreads the administrative burden across the supply chain and makes evasion harder. If one retailer under-declares, the tax has still been collected from everyone above them in the chain.',
+            'What makes VAT unusual, and worth a unit of its own, is the way it is collected. HMRC does not take the tax from that final customer directly. It collects the same tax in instalments, from every business in the chain that brought the goods to the shelf. Each business hands over only the tax on the **value it added** at its own stage.',
+            'That is where the name comes from. Value Added Tax is not really a tax on value added in any economic sense. It is a tax on consumption, collected by reference to value added. Collecting it that way spreads the administrative burden across the supply chain and makes evasion harder. If one retailer under-declares, the tax has still been collected from everyone above them.',
             'The consequence for a registered business is that VAT should pass **through** it rather than stick to it. It charges tax on what it sells, recovers tax on what it buys, and settles the difference. Across the life of a transaction the business should be neither better nor worse off.',
           ],
         },
@@ -185,9 +189,10 @@
           p: [
             'Three consequences follow from the chain, and each explains a rule you will meet later. In the assessment they appear as facts to be recalled rather than conclusions to be reasoned to, and a fact that is understood is much harder to forget.',
             '**First, VAT should be broadly neutral for a registered business.** It charges VAT, it reclaims VAT, and it settles the difference. Neither figure touches profit, because neither is its money. This is exactly why the exceptions sting. When input tax is blocked — on client entertaining, or on a car available for any private use — the VAT stops passing through and becomes a real, unrecoverable cost. A car priced at £30,000 before VAT carries £6,000 of input tax that can never be reclaimed, so it genuinely costs the business £36,000.',
-            '**Second, the money passing through is not the business\'s own.** Between charging a customer and paying HMRC, the business is holding public money. That is the justification for the entire compliance apparatus: prescribed records kept for a prescribed period, powers of inspection and premises visits, a fixed filing calendar, and penalties that begin on a specific day regardless of intent. A business that spends its VAT and then cannot pay has, in substance, spent somebody else\'s money.',
-            'Two of the terms in the warning below are used before their own lessons explain them. **Blocked input tax** is VAT the business is charged but is forbidden to reclaim at all — the car above is the standard example, and lesson 2D has the list. The **flat rate scheme** lets a small business pay HMRC a fixed percentage of its takings instead of accounting for input and output tax separately, and lesson 1E covers it.',
-            '**Third, only the final consumer bears the tax.** The chain of charge-and-reclaim passes the burden along untouched until it reaches someone who cannot reclaim. Usually that is a private individual. But it can equally be a business making exempt supplies — an insurance broker, say — which cannot recover its input tax and therefore absorbs it exactly as a consumer does. That is what exemption means, and it is why the difference between exempt and zero-rated matters so much later.',
+            '**Second, the money passing through is not the business\'s own.** Between charging a customer and paying HMRC, the business is holding public money.',
+            'That is the justification for the whole compliance apparatus. Prescribed records, kept for a prescribed period. Powers of inspection and premises visits. A fixed filing calendar. Penalties that begin on a set day whatever the intent. A business that spends its VAT and then cannot pay has, in substance, spent somebody else\'s money.',
+            'Two terms in the warning below are used before their own lessons explain them. **Blocked input tax** is VAT the business is charged but is forbidden to reclaim at all. The car above is the standard example, and lesson 2D has the list. The **flat rate scheme** lets a small business pay HMRC a fixed percentage of its takings instead of accounting for input and output tax separately. Lesson 1E covers it.',
+            '**Third, only the final consumer bears the tax.** The chain of charge-and-reclaim passes the burden along untouched until it reaches someone who cannot reclaim. Usually that is a private individual. But it can equally be a business making exempt supplies — an insurance broker, say. It cannot recover its input tax, so it absorbs it exactly as a consumer does. That is what exemption means, and it is why exempt and zero-rated differ so much later on.',
           ],
           callout: { kind: 'warning', text: 'The neutrality is the general rule, not a guarantee. Blocked input tax (2D), partial exemption (2D) and the flat rate scheme (1E) are all places where VAT does become a real cost to a business.' },
         },
@@ -199,20 +204,24 @@
           },
           formula: 'VAT payable to HMRC = Output tax − Input tax · Input tax greater than output tax means a repayment is due',
           p: [
-            'Two terms run through every calculation in this unit, and they are transposed under time pressure often enough to be fixed firmly now.',
+            'Two terms run through every calculation in this unit. They get transposed under time pressure often enough to be worth fixing firmly now.',
             '**Output tax** is the VAT on what the business sells — its outputs. It is charged to the customer and owed to HMRC. **Input tax** is the VAT on what the business buys — its inputs. It is charged by the supplier and recoverable from HMRC.',
-            'The mnemonic that survives an exam is the plain one: *outputs* go *out* to customers, and the tax on them is output tax.',
-            'You met both terms at Level 2, and they are restated because almost every calculation in this unit is ultimately a decision about which of the two a figure belongs to, and whether it counts at all. Outcome 2 is where that bites hardest — a credit note, a fuel scale charge, a gift of goods, bad debt relief and an import each land on a particular side, and lessons 2E and 2F are where you meet them. Putting a figure on the wrong side does not produce a slightly wrong answer: it moves the result by twice the amount, and produces a confidently wrong one.',
+            'The mnemonic that survives an exam is the plain one. *Outputs* go *out* to customers, and the tax on them is output tax.',
+            'You met both terms at Level 2. They are restated because almost every calculation in this unit comes down to one decision: which of the two a figure belongs to, and whether it counts at all.',
+            'Outcome 2 is where that bites hardest. A credit note, a fuel scale charge, a gift of goods, bad debt relief and an import each land on a particular side. Lessons 2E and 2F are where you meet them.',
+            'Putting a figure on the wrong side does not give a slightly wrong answer. It moves the result by twice the amount, and gives a confidently wrong one.',
             'Neither of those adjustment names is obvious, and both were listed in lesson 0A, so here is the short version. A **fuel scale charge** is extra *output* tax, declared where a business reclaims the VAT on road fuel that is also used privately in a car. **Bad debt relief** is extra *input* tax, recovering VAT already paid over on a sale the customer never settled. They sit on opposite sides, which is the decision this card is about.',
           ],
         },
         {
           h: 'What a VAT return is, and when it happens',
           p: [
-            'A **VAT return** is a periodic declaration — for most businesses covering three months — of the output tax charged and the input tax reclaimed, with the difference either paid to HMRC or repaid by them.',
-            'It is not an invoice, a demand, or an assessment raised by HMRC. It is the business\'s own statement of what it believes it owes. That is precisely why the system surrounds it with rules about evidence, and why the penalty regime is as developed as it is: HMRC is relying on the taxpayer\'s own declaration, and a self-assessed tax only works if that declaration can be trusted and checked.',
-            'Filing and payment are both due **one calendar month and seven days** after the period ends. A quarter ending 31 March is therefore due on 7 May. Note that the deadline covers both the return and the money — submitting on time but paying late still attracts a penalty, and the two failures are penalised under entirely separate regimes.',
-            'The return is filed electronically, from software connected directly to HMRC, under a regime called Making Tax Digital. Lesson 1D sets out what that requires and why it matters; the one consequence worth carrying from here is that a figure entered wrongly at source now flows straight through to submission with no manual stage at which anybody would notice.',
+            'A **VAT return** is a periodic declaration of the output tax charged and the input tax reclaimed. For most businesses it covers three months. The difference is either paid to HMRC or repaid by them.',
+            'It is not an invoice, a demand, or an assessment raised by HMRC. It is the business\'s own statement of what it believes it owes.',
+            'That is why the system surrounds it with rules about evidence, and why the penalty regime is as developed as it is. HMRC is relying on the taxpayer\'s own declaration, and a self-assessed tax only works if that declaration can be trusted and checked.',
+            'Filing and payment are both due **one calendar month and seven days** after the period ends. A quarter ending 31 March is therefore due on 7 May. The deadline covers both the return and the money. Submitting on time but paying late still attracts a penalty, and the two failures are penalised under entirely separate regimes.',
+            'The return is filed electronically, from software connected directly to HMRC, under a regime called Making Tax Digital. Lesson 1D sets out what that requires and why it matters.',
+            'The one consequence worth carrying from here: a figure entered wrongly at source now flows straight through to submission. There is no manual stage at which anybody would notice.',
             'A VAT return is **nine numbered boxes**, and nothing more. Below is a completed one for a business with £60,000 of standard-rated sales, £15,000 of zero-rated sales and £35,000 of purchases in the quarter, all figures net of VAT.',
             'Two things in it are tested later and both surprise people. Boxes 3 and 5 are **calculated rather than entered** — £12,000 + nil, and £12,000 − £7,000. And Box 6 is **£75,000**, not £60,000: it takes the net value of *all* sales including the zero-rated ones, even though those added nothing whatever to Box 1. A return that reports only the sales that carried VAT understates Box 6, and Box 6 turns out to matter for more than presentation.',
           ],
@@ -301,7 +310,7 @@
             ],
           },
           p: [
-            'Almost everything needed is already in the books; the skill is knowing which record answers which question, and what each one is liable to hide.',
+            'Almost everything needed is already in the books. The skill is knowing which record answers which question, and what each one is liable to hide.',
             'One entry in the table deserves separate treatment. The **VAT control account** is best thought of as a check rather than a source. It is built independently, by posting daybook totals through the ledger, so if the return and the control account disagree the difference is a genuine finding rather than a nuisance. It points at a posting error, a missing adjustment, or a transaction sitting in the wrong period, and it is the single most useful reconciliation available before submission.',
             'The other entry worth naming is the software\'s own draft return. It is a starting point, not an answer. It reflects every configuration decision made when suppliers and nominal codes were set up, and it will reproduce a systematic error perfectly for as long as that setup stands.',
           ],
@@ -309,10 +318,12 @@
         {
           h: 'The right period, not the right month',
           p: [
-            'A VAT period is defined by its **tax points**, not by when an invoice happened to be entered in the ledger or when the money moved. A transaction belongs to the period containing its tax point, however late it reached the books. Lesson 2B deals with how a tax point is determined; what matters here is the principle that it, and nothing else, decides which return a supply falls on.',
-            'So the first job is to establish the exact date range the return covers, and then to select records whose tax points fall inside it. Two traps recur, and both are ordinary rather than exotic — they are what actually happens in a real business.',
+            'A VAT period is defined by its **tax points**. Not by when an invoice was entered in the ledger, and not by when the money moved. A transaction belongs to the period containing its tax point, however late it reached the books.',
+            'Lesson 2B deals with how a tax point is worked out. What matters here is the principle: the tax point, and nothing else, decides which return a supply falls on.',
+            'So the first job is to fix the exact date range the return covers. Then select records whose tax points fall inside it. Two traps recur, and both are ordinary rather than exotic. They are what actually happens in a real business.',
             '**Cut-off at each end.** An invoice dated on the last day of the period belongs in that period, even if it was not posted until the following week. Conversely, an invoice posted on the first day of the new period but dated before the cut-off belongs to the old one. Real ledgers are full of both, because invoices arrive in the post and get entered when somebody has time.',
-            '**Late-entered documents.** An invoice relating to a previous period, entered now, is not simply this period\'s. If the earlier return has already been submitted, including it here is not a tidy solution — it is an error correction, governed by its own thresholds and rules, which is the subject of Outcome 3. Quietly absorbing it into the current return may be acceptable if it falls within the correction limits, and may be a reportable error if it does not.',
+            '**Late-entered documents.** An invoice for a previous period, entered now, is not simply this period\'s. If the earlier return has already gone in, including it here is not a tidy solution. It is an error correction, with its own thresholds and rules, and that is the subject of Outcome 3.',
+            'Quietly absorbing it into the current return may be acceptable if it falls within the correction limits. It may be a reportable error if it does not.',
             'The practical consequence is that you cannot build a return by filtering the ledger on posting date, however convenient that is. Accounting software will happily produce such a report, and it will look right.',
           ],
           callout: { kind: 'warning', text: 'Selecting by posting date rather than tax point is the single most common way to build a return from the wrong data. The software will not flag it, because nothing is arithmetically wrong.' },
@@ -320,10 +331,11 @@
         {
           h: 'Validating what you have extracted',
           p: [
-            'Extracting a figure is not the same as being able to support it. Input tax may only be reclaimed where there is evidence of the VAT actually charged, and an entry in the purchases day book is a record of what somebody typed, not evidence of anything.',
-            'The primary evidence is a **valid VAT invoice**: one showing the supplier\'s VAT registration number, the date and tax point, a description of what was supplied, and the net, rate and VAT for each rate charged. Several documents that circulate alongside it are not VAT invoices and will not support a reclaim. A supplier\'s **statement** summarises what is owed across a month and shows no VAT analysis. A **pro-forma invoice** is a request for payment issued before the supply, expressly not a VAT invoice. A **delivery note** evidences that goods moved, not what tax was charged. An **order confirmation** evidences only an intention to trade.',
+            'Extracting a figure is not the same as being able to support it. Input tax may only be reclaimed where there is evidence of the VAT actually charged. An entry in the purchases day book is a record of what somebody typed, not evidence of anything.',
+            'The primary evidence is a **valid VAT invoice**. It shows the supplier\'s VAT registration number, the date and tax point, a description of what was supplied, and the net, rate and VAT for each rate charged.',
+            'Several documents that circulate alongside it are not VAT invoices and will not support a reclaim. A supplier\'s **statement** summarises what is owed across a month and shows no VAT analysis. A **pro-forma invoice** is a request for payment issued before the supply, and expressly not a VAT invoice. A **delivery note** evidences that goods moved, not what tax was charged. An **order confirmation** evidences only an intention to trade.',
             'There are two sensible relaxations of the general rule, and they matter most exactly where the problem is worst. For supplies of **£25 or less including VAT** — car parking, road tolls, telephone calls, vending machines — no VAT invoice is required at all, provided the supplier is registered. And where an invoice genuinely cannot be obtained, HMRC has discretion to accept alternative evidence.',
-            'Petty cash is where all of this bites. Small purchases arrive with till receipts, many of which carry no VAT number and no VAT analysis, and the amounts are small enough that nobody wants to spend time on them. But a reclaim that cannot be evidenced is a reclaim that will be denied on inspection, however genuine the underlying expense was.',
+            'Petty cash is where all of this bites. Small purchases arrive with till receipts, many carrying no VAT number and no VAT analysis. The amounts are small enough that nobody wants to spend time on them. But a reclaim that cannot be evidenced will be denied on inspection, however genuine the expense was.',
           ],
           examtrap: 'Given a list of documents and asked which support a reclaim, the answer turns on whether the document is a VAT invoice — not on whether the expense was legitimate.',
         },
@@ -336,7 +348,8 @@
           p: [
             'Accounting software applies whichever rate it has been configured to use, totals the result without arithmetic error, and drafts the return. It has removed one entire class of mistake from the process.',
             'It has not removed the other. The rate a supply attracts, whether a tax point falls in this period, whether input tax is recoverable at all — these are **judgements**. Software executes the judgement it was given when a supplier or a nominal code was set up; it does not make one. It cannot tell that a meal was client entertaining rather than staff subsistence, or that a car has private use, because nothing in the transaction data says so.',
-            'The practical consequence is that errors have changed character rather than disappeared. They used to be random — a transposed digit, a missed line — and random errors are relatively easy to spot, because they look wrong. Errors now tend to be **systematic**: a supplier set up at the wrong rate produces a consistent, plausible error across every transaction with that supplier, for as long as the setup stands. Nothing looks odd, and the total is internally consistent.',
+            'The practical consequence is that errors have changed character rather than disappeared. They used to be random — a transposed digit, a missed line — and random errors are relatively easy to spot, because they look wrong.',
+            'Errors now tend to be **systematic**. A supplier set up at the wrong rate produces a consistent, plausible error across every transaction with that supplier, for as long as the setup stands. Nothing looks odd, and the total is internally consistent.',
             'Under Making Tax Digital the return is filed from functional compatible software, with digital records and digital links between them. That is good for auditability and bad for catching things by eye, because it removes the manual re-keying stage at which somebody used to look at the numbers. Accuracy at the point of entry matters more than it used to, not less.',
           ],
         },
@@ -388,10 +401,11 @@
         {
           h: 'Why the tax point decides everything',
           p: [
-            'You have the figures. Before they can be used, each supply has to be dated, and for VAT the date that matters is not always the one on the invoice, nor the day the money moved.',
+            'You have the figures. Before they can be used, each supply has to be dated. For VAT the date that matters is not always the one on the invoice, nor the day the money moved.',
             'The **tax point**, or time of supply, is the date a supply is treated as taking place for VAT purposes. It fixes three separate things at once, which is why it gets a topic area of its own rather than a passing mention.',
             'It determines **which VAT period** the supply falls into, and therefore which return declares it. It determines **which rate** applies, which matters whenever a rate has changed between the supply and the invoice. And it determines **eligibility for the special schemes**, several of which are defined by reference to when supplies are treated as made.',
-            'So a supply with the wrong tax point is not a small error. It lands on the wrong return — understating one period and overstating the next — and if a rate changed in between, it is charged at the wrong rate as well. Neither problem is visible from the arithmetic.',
+            'So a supply with the wrong tax point is not a small error. It lands on the wrong return, understating one period and overstating the next.',
+            'If a rate changed in between, it is charged at the wrong rate as well. Neither problem is visible from the arithmetic.',
             'One reassurance: tax point questions are rarely about calculation. They give you a set of dates and ask you to apply a rule. The marks are in knowing which rule bites, and in what order to test them.',
           ],
           callout: { kind: 'key', text: 'Tax point questions are rarely about arithmetic. They ask you to apply a rule to a date, so the marks are in knowing which rule bites.' },
@@ -403,7 +417,8 @@
             'Start with the **basic tax point**: the date the goods are removed or made available to the customer, or the date a service is completed. This is the default, and it applies whenever nothing else overrides it.',
             'Then test for an **actual tax point**, which replaces the basic one. Two overrides matter, and they work in opposite directions along the calendar.',
             '**Payment or invoice before the basic tax point.** Whichever happens first becomes the tax point, and only for the amount concerned. A deposit received in advance creates a tax point for the deposit; the balance follows the normal rules and may well land in a different period.',
-            '**An invoice issued within 14 days after the basic tax point.** Here the invoice date becomes the tax point instead. Note the direction: this rule can only move the tax point **forward**, to the invoice date. If the invoice is issued later than 14 days, the rule simply does not apply and the basic tax point stands — a late invoice never pushes a supply into a later period.',
+            '**An invoice issued within 14 days after the basic tax point.** Here the invoice date becomes the tax point instead.',
+            'Note the direction: this rule can only move the tax point **forward**, to the invoice date. If the invoice is issued later than 14 days, the rule does not apply and the basic tax point stands. A late invoice never pushes a supply into a later period.',
             'The 14-day rule is not quite automatic in both directions. A supplier may ask HMRC to use the basic tax point instead, and HMRC may allow a period longer than 14 days where a business\'s invoicing cycle requires it. Neither is common, but both exist.',
           ],
           formula: 'Basic tax point = date of removal / availability / completion · Overridden by earlier payment or invoice · Overridden by an invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days after',
@@ -423,7 +438,7 @@
           },
           p: [
             'Four situations come up repeatedly because the ordinary rules do not settle them cleanly, and each has its own answer.',
-            'Advance payments and deposits are the ones most often missed, because they create a tax point for **part** of a supply before anything has been delivered. A single order can therefore straddle two VAT periods perfectly legitimately — the deposit in one, the balance in the next.',
+            'Advance payments and deposits are missed most often. They create a tax point for **part** of a supply before anything has been delivered. So a single order can straddle two VAT periods perfectly legitimately — the deposit in one, the balance in the next.',
             'One important qualification on deposits. A deposit taken as **security** — against the safe return of hired goods, say — is not consideration for a supply at all, and creates no tax point on receipt. Only a deposit that is a genuine part-payment towards the supply does. If the security deposit is later retained because the goods came back damaged, the position changes at that point.',
             'Note also that a business using the **cash accounting scheme** replaces these rules entirely: its tax point is the date payment is received or made. That is one of the reasons the tax point matters for scheme eligibility.',
           ],
@@ -436,7 +451,9 @@
           },
           p: [
             'A full VAT invoice has a prescribed content, and the customer\'s right to reclaim depends on it. An invoice missing the supplier\'s VAT number is not a minor irregularity — it is not evidence of input tax.',
-            'Three variants relax the requirements in specific circumstances. A **simplified** invoice may be issued for retail supplies up to £250 including VAT: it omits the customer\'s details and shows VAT-inclusive amounts with the rate applied, and it cannot include exempt supplies. A **modified** invoice is for higher-value retail supplies above that £250 line, showing VAT-inclusive totals with the VAT stated separately, and must be agreed with the customer. Neither is a lesser document; each is valid evidence within its own limits.',
+            'Three variants relax the requirements in specific circumstances.',
+            'A **simplified** invoice may be issued for retail supplies up to £250 including VAT. It leaves out the customer\'s details and shows VAT-inclusive amounts with the rate applied. It cannot include exempt supplies.',
+            'A **modified** invoice is for higher-value retail supplies above that £250 line. It shows VAT-inclusive totals with the VAT stated separately, and must be agreed with the customer. Neither is a lesser document. Each is valid evidence within its own limits.',
             '**Mixed-rated** supplies deserve particular care. Where one invoice covers items at different rates, each rate must be shown separately with its own net and VAT figures. A single blended total makes the invoice invalid as evidence for the customer\'s reclaim, because there is no way to establish how much VAT was charged at which rate.',
           ],
         },
@@ -446,7 +463,7 @@
             'A VAT invoice must normally be issued within **30 days** of the basic tax point. Miss that, and the basic tax point stands — issuing late does not move the supply.',
             'The two periods are easy to confuse, because both concern the gap between a supply and its invoice, and both are counted in days from the same starting point. Keep the jobs separate. **Fourteen days moves the tax point** to the invoice date. **Thirty days is the deadline for issuing the document at all.** One is about which period the supply falls into; the other is a compliance obligation in its own right.',
             '**Electronic invoices** have exactly the same legal standing as paper ones. They must contain the same information, their authenticity of origin and integrity of content must be assured, and they must remain legible for the whole retention period. In practice the customer is expected to agree to receive them electronically, though that agreement can be tacit.',
-            'There is no separate, lesser standard for e-invoices. A digital document missing the supplier\'s VAT number is exactly as invalid as a paper one, and a PDF that cannot be opened in six years\' time has not been retained in any meaningful sense.',
+            'There is no separate, lesser standard for e-invoices. A digital document missing the supplier\'s VAT number is exactly as invalid as a paper one. And a PDF that cannot be opened in six years\' time has not been retained in any meaningful sense.',
           ],
           callout: { kind: 'key', text: 'Two numbers, two jobs: ' + T.invoicing.actualTaxPointDays.value + ' days moves the tax point to the invoice date; ' + T.invoicing.issueWithinDays.value + ' days is the deadline for issuing the invoice.' },
         },
@@ -528,8 +545,9 @@
           p: [
             'With the figures found and dated, this is where the arithmetic happens. Level 2 taught you these mechanics; they are revisited because Level 3 runs them in both directions, at two rates, and expects the rounding rules to be right.',
             '**Inputs** are what the business buys. **Outputs** are what it sells. **Input tax** is the VAT on its purchases; **output tax** is the VAT on its sales. The business collects output tax on HMRC\'s behalf and recovers the input tax it has been charged, and only the difference is settled.',
-            'Getting the pairing wrong reverses the entire return, so fix the association until it is automatic: *outputs* go *out* to customers, and the tax on them is output tax.',
-            'Where output tax exceeds input tax, the difference is payable to HMRC. Where input tax exceeds output tax, it is repayable to the business — a position that is entirely normal for some businesses and not a sign of error, as the last lesson in this outcome explains.',
+            'Getting the pairing wrong reverses the whole return. So fix the association until it is automatic: *outputs* go *out* to customers, and the tax on them is output tax.',
+            'Where output tax exceeds input tax, the difference is payable to HMRC. Where input tax exceeds output tax, it is repayable to the business.',
+            'A repayment position is normal for some businesses. It is not a sign of error, as the last lesson in this outcome explains.',
           ],
           formula: 'VAT due to HMRC = Output tax − Input tax · Input tax greater than output tax means a repayment is due',
         },
@@ -537,9 +555,11 @@
           h: 'Net to VAT, and gross to VAT',
           p: [
             'Working forward from a **net** figure is straightforward: multiply by the rate. A net figure of £2,480 at the standard rate carries £496 of VAT, and the gross is £2,976.',
-            'Working backwards from a **gross** figure is where the errors creep in, because the rate cannot simply be applied to it — the gross already contains the VAT. Applying 20% to a VAT-inclusive figure overstates the tax by a fifth, and produces an answer that looks entirely reasonable.',
+            'Working backwards from a **gross** figure is where the errors creep in. The rate cannot simply be applied to it, because the gross already contains the VAT.',
+            'Applying 20% to a VAT-inclusive figure overstates the tax by a fifth — and produces an answer that looks entirely reasonable.',
             'The arithmetic is better understood than memorised. At the standard rate of 20%, the gross is 120% of the net. The VAT is therefore 20/120 of the gross — which cancels down to **one sixth**. At the reduced rate of 5%, the gross is 105% of the net, so the VAT is 5/105 of the gross, or **one twenty-first**.',
-            'Both fractions are exact, not approximations, and both are quicker than the alternative of dividing back to the net first. Whichever route you take, sense-check the answer by adding the VAT back to the net: if it does not reproduce the gross you started with, you have applied the wrong operation.',
+            'Both fractions are exact, not approximations, and both are quicker than dividing back to the net first.',
+            'Whichever route you take, sense-check the answer by adding the VAT back to the net. If that does not reproduce the gross you started with, you have applied the wrong operation.',
             'Watch the language in a question. *Plus VAT* and *excluding VAT* mean the figure is net. *Including VAT*, *inclusive of VAT*, *gross*, and a stated total a customer paid all mean it already contains the tax.',
           ],
           formula: 'Net → VAT: Net × ' + T.rates.standard.value + '% · Gross → VAT at ' + T.rates.standard.value + '%: Gross ÷ 6 · Gross → VAT at ' + T.rates.reduced.value + '%: Gross ÷ 21 · Gross → Net: Gross ÷ ' + (1 + T.rates.standard.value / 100).toFixed(2),
@@ -565,11 +585,14 @@
         {
           h: 'Rounding',
           p: [
-            'Rounding in VAT is one of those areas where a plausible general rule turns out to be several specific ones, and the assessment tests the specifics.',
+            'Rounding in VAT is one of those areas where a plausible general rule turns out to be several specific ones. The assessment tests the specifics.',
             '**Calculating the VAT on an invoice.** HMRC permits VAT to be worked out **per line item** or **per unit**, rounding to the nearest penny. Line-by-line calculation is not an error — it is one of the prescribed methods, and it is what accounting software actually does.',
-            '**The invoice-trader concession.** Separately, an invoice trader may round the total VAT on an invoice **down** to a whole penny. This is a concession in the taxpayer\'s favour, and it is genuinely narrow: it is not available to retailers, who have their own rules under the retail schemes.',
-            '**On the VAT return itself**, the **VAT boxes (1 to 5)** are completed in **pounds and pence** — a published mock return shows Box 1 as £13,000.00 and Box 4 as £8,464.58. The **value boxes (6 to 9)** carry net values excluding VAT, and are conventionally entered in whole pounds.',
-            'Be careful with what you have been told about rounding those value boxes. The rule often quoted — round them DOWN to whole pounds — could not be confirmed against current HMRC guidance while this lesson was written, and an assessment is more likely to tell you how to round than to test the convention. The published exam instructions say to apply **normal mathematical rules unless the task says otherwise**. Read the task instruction and follow it.',
+            '**The invoice-trader concession.** Separately, an invoice trader may round the total VAT on an invoice **down** to a whole penny.',
+            'This is a concession in the taxpayer\'s favour, and it is genuinely narrow. It is not available to retailers, who have their own rules under the retail schemes.',
+            '**On the VAT return itself**, the **VAT boxes (1 to 5)** are completed in **pounds and pence**. A published mock return shows Box 1 as £13,000.00 and Box 4 as £8,464.58.',
+            'The **value boxes (6 to 9)** carry net values excluding VAT, and are conventionally entered in whole pounds.',
+            'Be careful with what you have been told about rounding those value boxes. The rule often quoted — round them DOWN to whole pounds — could not be confirmed against current HMRC guidance when this lesson was written.',
+            'An assessment is more likely to tell you how to round than to test the convention. The published exam instructions say to apply **normal mathematical rules unless the task says otherwise**. Read the task instruction and follow it.',
             'One habit is worth adopting whatever the context: do not round intermediate workings. Carry the full figure through and round once, at the end. Rounding at each step compounds small differences across a period, and on a large return the accumulated drift can be enough to fail a reconciliation.',
           ],
           callout: { kind: 'key', text: 'VAT boxes (1 to 5) carry pounds and pence. Value boxes (6 to 9) are whole pounds. Where a task states a rounding rule, that instruction beats any convention.' },
@@ -658,7 +681,8 @@
             'So far every purchase has been assumed recoverable. It is not. This lesson covers the three situations where input tax is restricted or blocked, and it is where VAT stops being cost-neutral and starts costing the business real money.',
             'Start with the pair that is confused most often. Zero-rated and exempt supplies look identical from the customer\'s side: no VAT is charged either way. The difference is entirely on the supplier\'s side, and it concerns the **input tax** on the costs of making that supply.',
             'A **zero-rated** supply is a **taxable** supply on which the rate happens to be 0%. Because it is taxable, the input tax relating to it remains fully recoverable, and its value counts towards taxable turnover for registration purposes.',
-            'An **exempt** supply is within the scope of VAT but exempted from the charge. Input tax relating to it is **not** recoverable, and its value does not count towards the registration threshold. Note that exempt is not the same as **outside the scope** — a fourth category altogether, covering things that are not taxable supplies at all — and the syllabus treats the two as distinct.',
+            'An **exempt** supply is within the scope of VAT but exempted from the charge. Input tax relating to it is **not** recoverable, and its value does not count towards the registration threshold.',
+            'Exempt is not the same as **outside the scope**. That is a fourth category altogether, covering things that are not taxable supplies at all, and the syllabus treats the two as distinct.',
             'The practical difference is stark. A business making only zero-rated supplies charges nothing and reclaims everything: it is in a permanent repayment position, receiving money from HMRC every quarter. A business making only exempt supplies charges nothing and reclaims nothing: the VAT on its costs is simply absorbed, exactly as a private consumer absorbs it. One is a net beneficiary of the system; the other is, in effect, its final consumer.',
           ],
           split: {
@@ -674,7 +698,8 @@
             'Input tax **wholly attributable to taxable supplies** is recoverable in full. Input tax **wholly attributable to exempt supplies** is not recoverable. Input tax on **residual overheads** — rent, heating, professional fees, everything that supports both activities — is apportioned between the two, normally by reference to the value of supplies made.',
             'That is administratively heavy for a business whose exempt activity is incidental, so there is relief. If the exempt input tax passes the **de minimis** test, all of it may be recovered as though the business were fully taxable.',
             'The test has two limbs and **both** must be satisfied. The exempt input tax must average no more than £' + T.partialExemption.deMinimisPerMonth.value + ' a month, and it must be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. A quarter is three months, so the monthly figure is the quarterly exempt input tax divided by three.',
-            'The order in which you test them does not matter, but the conjunction does: passing one limb while failing the other does not qualify. HMRC also operates two simplified tests and an annual review of the position, both of which are beyond this unit — within it, treat the two-limb test as the test.',
+            'The order in which you test them does not matter, but the conjunction does. Passing one limb while failing the other does not qualify.',
+            'HMRC also operates two simplified tests and an annual review of the position. Both are beyond this unit. Within it, treat the two-limb test as the test.',
           ],
           formula: 'De minimis: exempt input tax ≤ £' + T.partialExemption.deMinimisPerMonth.value + ' per month on average AND ≤ ' + T.partialExemption.inputTaxProportion.value + '% of total input tax',
           callout: { kind: 'warning', text: 'BOTH limbs must be satisfied. Passing the £' + T.partialExemption.deMinimisPerMonth.value + ' test while exempt input tax is more than half the total does not qualify.' },
@@ -693,11 +718,15 @@
             ],
           },
           p: [
-            'The third restriction is different in kind. Here the supply is taxable and the business is fully taxable, but the law simply refuses recovery on particular categories of expenditure — generally because the spending has a private or non-business flavour that would be hard to police case by case.',
-            '**Entertaining** turns on who is being entertained and why. Entertaining employees is recoverable. Entertaining clients is blocked. Where staff bring guests to a staff event, apportion and recover only the employees\' share. But where employees are acting as **hosts to clients**, HMRC treats the whole cost as incurred for the purpose of entertaining the client, and blocks all of it — including the employees\' portion. Read the purpose, not just the guest list.',
-            '**Cars** are blocked on purchase unless used exclusively for business with no private use whatsoever. That test is far stricter than it sounds: merely being *available* for private use defeats it, so the exception is confined in practice to pool cars and to vehicles bought for hire, for driving instruction or as taxis. Note that the block applies to cars specifically — **vans and commercial vehicles are recoverable** in the ordinary way.',
-            'The specification names the **sale** side too, and it mirrors the purchase. Sell a car on which the input tax was blocked and the sale is an **exempt** supply — no output tax is charged, because taxing the disposal of an asset whose VAT was never recovered would tax the same value twice. Sell a **van**, where the input tax was recovered, and the disposal is a **standard-rated** supply like any other sale of a business asset. The question to ask at disposal is what happened to the input tax on the way in.',
-            '**Assets with private use** are recoverable only to the extent of business use, so an apportionment is required rather than an all-or-nothing decision.',
+            'The third restriction is different in kind. Here the supply is taxable and the business is fully taxable, but the law simply refuses recovery on particular categories of spending.',
+            'The reason is usually that the spending has a private or non-business flavour that would be hard to police case by case.',
+            '**Entertaining** turns on who is being entertained and why. Entertaining employees is recoverable. Entertaining clients is blocked. Where staff bring guests to a staff event, apportion and recover only the employees\' share.',
+            'But where employees act as **hosts to clients**, HMRC treats the whole cost as incurred to entertain the client, and blocks all of it — including the employees\' portion. Read the purpose, not just the guest list.',
+            '**Cars** are blocked on purchase unless used exclusively for business, with no private use whatsoever. That test is far stricter than it sounds: merely being *available* for private use defeats it.',
+            'In practice the exception is confined to pool cars, and to vehicles bought for hire, for driving instruction or as taxis. The block applies to cars specifically — **vans and commercial vehicles are recoverable** in the ordinary way.',
+            'The specification names the **sale** side too, and it mirrors the purchase. Sell a car on which the input tax was blocked and the sale is an **exempt** supply. No output tax is charged, because taxing the disposal of an asset whose VAT was never recovered would tax the same value twice.',
+            'Sell a **van**, where the input tax was recovered, and the disposal is a **standard-rated** supply like any other sale of a business asset. The question to ask at disposal is what happened to the input tax on the way in.',
+            '**Assets with private use** are recoverable only to the extent of business use. That calls for an apportionment, not an all-or-nothing decision.',
             'The reason this lesson exists is the point made at the very start of the unit. Everywhere else, VAT passes through the business untouched. Here it stops, and becomes a genuine cost that will never be recovered.',
           ],
         },
@@ -781,9 +810,11 @@
           h: 'Four things that move the figures after the invoice',
           p: [
             'The last three lessons dealt with supplies as they were made. Real periods are untidier than that: customers take discounts, cars are fuelled privately, goods are given away, and some invoices are never paid at all.',
-            'This lesson covers the four routine adjustments that change the VAT position after the original supply has been recorded. What makes them worth grouping together is that they pull in different directions, and the commonest error with all of them is putting them on the wrong side of the return.',
+            'This lesson covers the four routine adjustments that change the VAT position after the original supply has been recorded.',
+            'What makes them worth grouping is that they pull in different directions. The commonest error with all four is putting them on the wrong side of the return.',
             'A **prompt payment discount** taken by the customer reduces output tax, because less consideration was ultimately received. A **fuel scale charge** increases output tax, because it is a charge for private consumption of business fuel. A **gift of goods** past the £' + T.gifts.goodsLimit.value + ' limit increases output tax too, because giving away goods the business reclaimed VAT on is treated as a supply. **Bad debt relief** increases input tax, recovering output tax that was declared on a sale which produced no money.',
-            'Note the asymmetry in that last one: relief for a bad debt is claimed as extra *input* tax, not as a reduction of output tax. The effect on the amount payable is identical, but the return asks for the two figures separately, and the boxes will not reconcile if it is put in the wrong place.',
+            'Note the asymmetry in that last one. Relief for a bad debt is claimed as extra *input* tax, not as a reduction of output tax.',
+            'The effect on the amount payable is identical. But the return asks for the two figures separately, and the boxes will not reconcile if it goes in the wrong place.',
           ],
           split: {
             left: { title: 'Reduces what you owe', items: ['PPD taken by the customer — less output tax', 'Bad debt relief — more input tax'] },
@@ -795,7 +826,9 @@
           p: [
             'A prompt payment discount is a reduction offered for early settlement — commonly something like 2.5% for payment within ten days. It creates a problem for VAT because, at the moment the invoice is raised, nobody knows what the customer will actually pay.',
             'The rule is that **VAT is due on the consideration actually received**. If the discount is taken, the consideration is lower and so is the VAT.',
-            'The mechanics follow from that. The supplier invoices the **full** amount, with VAT on the full amount, and states the discount terms on the invoice. If the customer then takes the discount, the VAT must be adjusted downwards — normally by issuing a credit note for the difference, or by the invoice carrying wording that allows the customer to adjust their own claim without one. HMRC\'s model wording sets out the discount terms including the deadline, states that the customer may only recover the VAT actually paid, and adds that no credit note will be issued.',
+            'The mechanics follow from that. The supplier invoices the **full** amount, with VAT on the full amount, and states the discount terms on the invoice.',
+            'If the customer then takes the discount, the VAT must be adjusted downwards. Normally that means issuing a credit note for the difference. Alternatively the invoice carries wording letting the customer adjust their own claim without one.',
+            'HMRC\'s model wording sets out the discount terms, including the deadline. It states that the customer may only recover the VAT actually paid, and adds that no credit note will be issued.',
             'What is **not** permitted is assuming at the outset that the discount will be taken and charging the lower VAT up front. That was the pre-2015 treatment and it no longer applies.',
             'There is a mirror obligation on the customer, which is easy to overlook. A customer who takes the discount may only reclaim the VAT actually paid, and must restrict their input tax claim accordingly — whether or not a credit note ever arrives.',
           ],
@@ -804,7 +837,7 @@
         {
           h: 'A discount taken',
           p: [
-            'Discount questions are asking two things at once: what VAT is finally due, and what adjustment that implies to what was originally declared. Answer both.',
+            'Discount questions ask two things at once. What VAT is finally due, and what adjustment that implies to what was originally declared. Answer both.',
           ],
           worked: {
             title: 'Adjusting output tax for a PPD',
@@ -830,7 +863,9 @@
           p: [
             'Where a business reclaims input tax on road fuel that is also used privately, it has to deal with the private element somehow. There are four permitted approaches, and the exam favours the third.',
             'It can **reclaim nothing** on road fuel at all — simple, but it must then apply that treatment to every vehicle, including commercial ones. It can **reclaim only the business proportion**, which requires detailed mileage records. It can reclaim only on fuel for business mileage where employees are reimbursed. Or it can **reclaim all the input tax and apply a fuel scale charge**, which trades a fixed charge for the record-keeping burden.',
-            'The scale charge is a fixed amount set by reference to the vehicle\'s CO2 emissions and the length of the VAT period. You are not expected to memorise the amounts: they come from a table HMRC publishes, and that table is part of the reference material supplied during the assessment. The charge is treated as **additional output tax**, which is what makes it increase the VAT payable rather than reduce the amount recoverable.',
+            'The scale charge is a fixed amount, set by reference to the vehicle\'s CO2 emissions and the length of the VAT period.',
+            'You are not expected to memorise the amounts. They come from a table HMRC publishes, and that table is part of the reference material supplied during the assessment.',
+            'The charge is treated as **additional output tax**. That is what makes it increase the VAT payable rather than reduce the amount recoverable.',
             'Two details are routinely got wrong. The figure you look up is **VAT-inclusive**, so the VAT element is one sixth of it — the same divide-by-six as any other gross amount, not the whole figure. And the charge applies **per car**, for each car where fuel is available for private use; a business using the scale charge cannot pick and choose between qualifying vehicles.',
             'The charge applies to cars. Vans and commercial vehicles are outside it.',
           ],
@@ -848,9 +883,12 @@
         {
           h: 'Gifts of goods',
           p: [
-            'A business that buys goods reclaims the input tax, and the system squares itself when those goods are eventually sold, because output tax arises on the sale. Give the goods away instead and that second half never happens — so the rules treat a business gift of goods as a **deemed supply**, and the missing output tax is put back by hand.',
-            'The concession that keeps small gestures workable: **no output tax is due so long as the total cost of gifts to the same person stays at or under £' + T.gifts.goodsLimit.value + ', excluding VAT, in any 12-month period**. It is a running total per recipient, not a per-gift test — three £20 gifts to one customer breach it just as surely as one £60 hamper.',
-            'Once the total goes over, output tax is due on the **whole cost of all the gifts to that person**, not merely the excess over the limit. And it is charged on **cost to the business**, never on what the goods would sell for. The tax is additional output tax and lands in **Box 1**, which is why it appears alongside the fuel scale charge when lesson 3C dissects the return.',
+            'A business that buys goods reclaims the input tax. The system squares itself when those goods are sold, because output tax arises on the sale.',
+            'Give the goods away instead and that second half never happens. So the rules treat a business gift of goods as a **deemed supply**, and the missing output tax is put back by hand.',
+            'The concession that keeps small gestures workable is a limit per recipient. **No output tax is due while the total cost of gifts to the same person stays at or under £' + T.gifts.goodsLimit.value + ', excluding VAT, in any 12-month period.**',
+            'It is a running total per recipient, not a per-gift test. Three £20 gifts to one customer breach it just as surely as one £60 hamper.',
+            'Once the total goes over, output tax is due on the **whole cost of all the gifts to that person**, not just the excess. And it is charged on **cost to the business**, never on what the goods would sell for.',
+            'The tax is additional output tax and lands in **Box 1**. That is why it appears alongside the fuel scale charge when lesson 3C dissects the return.',
             'Two neighbouring cases are treated differently, and the contrast is exactly the kind of thing an assessment asks. **Free samples** are not liable to VAT however many are supplied, provided they are genuine specimens for the recipient to assess the product. And a **service** given away free is normally no supply in the first place, so nothing arises — the deemed-supply rule is about goods.',
           ],
           worked: {
@@ -879,8 +917,8 @@
             'When a customer does not pay, the supplier has a problem the VAT system has to answer. Output tax was declared on the sale and paid over to HMRC at the time — but no money ever arrived. Without relief, the business would have funded tax on income it never received.',
             '**Bad debt relief** recovers that VAT. The conditions are cumulative and all of them must be met.',
             'The VAT must already have been **accounted for and paid** to HMRC — which is the whole basis of the claim. The debt must be at least **six months overdue**, measured from the later of the payment due date and the date of supply. It must have been **written off** in the business\'s refunds for bad debts account. The supply must not have been made at above the customary selling price. And the debt must not have been paid, sold or factored on.',
-            'A claim must be made within **four years and six months** of the later of the payment due date and the date of supply, and the supporting records kept for four years from the date of claim.',
-            'The relief is claimed by **adding the VAT to input tax**, not by reducing output tax — the original sale stands, and the return shows both the tax charged and the tax recovered.',
+            'A claim must be made within **four years and six months**. That runs from the later of the payment due date and the date of supply. Keep the supporting records for four years from the date of claim.',
+            'The relief is claimed by **adding the VAT to input tax**, not by reducing output tax. The original sale stands, and the return shows both the tax charged and the tax recovered.',
             'There is a matching obligation on the other side that is easy to forget. A **customer** who has reclaimed input tax on a purchase and has not paid within six months of the relevant date must **repay** that input tax to HMRC. The relief is symmetrical: it is not a windfall for the debtor.',
           ],
           formula: 'Debt at least ' + T.badDebtRelief.debtAgeMonths.value + ' months overdue · written off in the accounts · claimed within ' + T.badDebtRelief.claimWindow.value + ' · relief added to INPUT tax',
@@ -972,10 +1010,13 @@
           h: 'Goods leaving the UK',
           p: [
             'Everything so far has assumed both parties are in the UK. Trade across a border changes both the rate charged and the mechanics of paying the tax.',
-            'Exports of goods from the UK are **zero-rated**. No VAT is charged to the overseas customer, and because zero-rating is a taxable rate rather than an exemption, the input tax on the costs of making that supply remains fully recoverable. An exporter is therefore typically in a repayment position — charging nothing while recovering everything.',
-            'The zero-rating is conditional, and the condition is evidence. The business must hold proof that the goods physically left the UK, and must obtain it within the time limit: **three months** for most exports, or six where the goods are processed or incorporated into something else before they leave.',
+            'Exports of goods from the UK are **zero-rated**. No VAT is charged to the overseas customer. And because zero-rating is a taxable rate rather than an exemption, the input tax on the costs of making that supply stays fully recoverable.',
+            'An exporter is therefore usually in a repayment position — charging nothing while recovering everything.',
+            'The zero-rating is conditional, and the condition is evidence. The business must hold proof that the goods physically left the UK, and must obtain it within the time limit.',
+            'That is **three months** for most exports. It is six where the goods are processed or built into something else before they leave.',
             'Miss that window and the consequence is severe. The supply must be standard-rated, with the VAT declared in Box 1 of the return for the period in which the time limit expired. Zero-rating can be reinstated if the evidence turns up later, but in the meantime the business owes tax it never charged.',
-            'That is the commercial risk, and it is entirely one-sided. The customer has long since paid a price that contained no VAT, and there is usually no realistic prospect of going back to an overseas buyer months later to ask for 20% more. The VAT comes out of the exporter\'s margin. This is why export documentation is treated as a compliance matter rather than an administrative one.',
+            'That is the commercial risk, and it is entirely one-sided. The customer has long since paid a price containing no VAT. There is rarely any prospect of going back to an overseas buyer months later to ask for 20% more.',
+            'The VAT comes out of the exporter\'s margin. That is why export documentation is treated as a compliance matter rather than an administrative one.',
           ],
           callout: { kind: 'warning', text: 'The commercial risk here is one-sided. If the export evidence is missing, the VAT is still due — and the customer has long since paid a price that did not include it.' },
         },
@@ -984,7 +1025,8 @@
           p: [
             'Import VAT is due on goods brought into the UK, charged at the rate those goods would attract if bought domestically. Standard-rated goods bear import VAT at 20%.',
             'The question is not whether the tax is due but **when it is paid**, and that turns out to matter a great deal. Traditionally import VAT was paid at the border, at the point the goods were cleared, and then reclaimed as input tax on the next return. In principle that is fine: a fully taxable importer recovers every penny.',
-            'In practice it was painful. A business importing £200,000 of goods a quarter had to find £40,000 in cash at the border and then wait — potentially up to four months, depending on where in the VAT quarter the import fell — to recover money it was always going to get back in full. For an importer of any size that is a permanent, significant working-capital cost imposed by nothing more than the timing of a tax that nets to zero.',
+            'In practice it was painful. A business importing £200,000 of goods a quarter had to find £40,000 in cash at the border. Then it waited to recover money it was always going to get back in full.',
+            'The wait could be up to four months, depending on where in the VAT quarter the import fell. For an importer of any size that is a permanent working-capital cost, imposed by nothing more than the timing of a tax that nets to zero.',
             '**Postponed VAT accounting** removes that gap. Instead of paying at the border, the importer accounts for the import VAT on the VAT return itself.',
             'It is optional, not a replacement. A business may still pay at the border and reclaim in the ordinary way, supported by the monthly **C79 certificate** that HMRC issues as evidence of import VAT paid. Both routes are current, and a question may use either.',
           ],
@@ -993,10 +1035,12 @@
           h: 'How postponed VAT accounting works on the return',
           p: [
             'Under postponed VAT accounting the same amount is entered on the return **twice**: once as output tax, and once as input tax.',
-            'It is declared as output tax because the import VAT is a liability the business has incurred — this is the entry that replaces the payment at the border. It is then reclaimed as input tax under the ordinary rules, exactly as if it had been charged by a UK supplier. For a fully taxable business the two entries cancel, and the cash-flow cost of importing disappears.',
-            'The value of the goods themselves also enters the total purchases figure, so the return still shows the scale of the business\'s importing activity even though the net tax effect is nil.',
-            'That word **nil** deserves care, because it holds only where the input tax is fully recoverable. A **partially exempt** business, or one importing something on which input tax is blocked, still faces a real cost: the output tax entry stands in full while the input tax entry is restricted, and the difference is payable. Postponed VAT accounting changes when import VAT is paid, not whether it is due.',
-            'Without postponed accounting the treatment is different in shape as well as timing: the import VAT appears as **input tax only**, evidenced by the C79 certificate, having already been paid in cash at the frontier.',
+            'It is declared as output tax because the import VAT is a liability the business has incurred. This is the entry that replaces the payment at the border.',
+            'It is then reclaimed as input tax under the ordinary rules, exactly as if a UK supplier had charged it. For a fully taxable business the two entries cancel, and the cash-flow cost of importing disappears.',
+            'The value of the goods themselves also enters the total purchases figure. So the return still shows the scale of the business\'s importing, even though the net tax effect is nil.',
+            'That word **nil** deserves care. It holds only where the input tax is fully recoverable.',
+            'A **partially exempt** business, or one importing something on which input tax is blocked, still faces a real cost. The output tax entry stands in full while the input tax entry is restricted, and the difference is payable. Postponed VAT accounting changes when import VAT is paid, not whether it is due.',
+            'Without postponed accounting the treatment differs in shape as well as timing. The import VAT appears as **input tax only**, evidenced by the C79 certificate, having already been paid in cash at the frontier.',
           ],
           formula: 'PVA: import VAT added to output tax AND to input tax · net effect nil where input tax is fully recoverable · the value of the goods also enters total purchases',
           examtrap: 'PVA is not a relief and does not make import VAT disappear. It is a timing mechanism. The commonest error is entering it once rather than twice.',
@@ -1036,9 +1080,11 @@
           h: 'The same shape, without a border: the domestic reverse charge',
           p: [
             'Postponed import VAT moves the accounting for VAT from the point of entry to the return. The **domestic reverse charge** does something very similar without any border at all: for certain supplies **the customer accounts for the VAT instead of the supplier**.',
-            'The version met in practice is the one for **building and construction services**, in force since ' + T.reverseCharge.appliesFrom + '. It applies where the supply is of specified construction services, both parties are VAT registered, the payment falls within the **Construction Industry Scheme**, and the customer is **not an end user**.',
-            'The supplier charges **no VAT**. Its invoice says the reverse charge applies, states that the customer must account for the VAT, and shows the rate or the amount that would have applied — without adding it to the total charged.',
-            'The customer then does both halves of the transaction: it declares the output tax the supplier did not charge, and reclaims the same amount as input tax under the normal rules. For a fully taxable customer the two cancel and the cash effect is **nil** — which is the whole point. Nobody is ever paid VAT that they might fail to hand over.',
+            'The version met in practice is the one for **building and construction services**, in force since ' + T.reverseCharge.appliesFrom + '.',
+            'It applies where four things are true. The supply is of specified construction services. Both parties are VAT registered. The payment falls within the **Construction Industry Scheme**. And the customer is **not an end user**.',
+            'The supplier charges **no VAT**. Its invoice says the reverse charge applies and states that the customer must account for the VAT. It shows the rate or the amount that would have applied, without adding it to the total charged.',
+            'The customer then does both halves of the transaction. It declares the output tax the supplier did not charge, and reclaims the same amount as input tax under the normal rules.',
+            'For a fully taxable customer the two cancel and the cash effect is **nil**. That is the whole point: nobody is ever paid VAT that they might fail to hand over.',
             'An **end user** — a business having the work done for itself rather than selling it on — is outside it, but must tell the supplier **in writing**. Until it does, the supplier applies the reverse charge.',
           ],
           table: {
@@ -1100,7 +1146,8 @@
             'Every lesson in this outcome has produced one component of a single figure. This is where they come together.',
             'Given a period\'s records, work out the VAT payable to HMRC or repayable by them. It is the task the whole outcome has been building toward, and it is the one most likely to appear as a substantial question carrying several marks.',
             'It is not conceptually difficult. Output tax less input tax; the arithmetic is subtraction. What makes it go wrong is that there are many small components, each of which has to be identified, valued, and placed on the correct side. A single item on the wrong side moves the answer by twice its value, and there is nothing in the result to indicate that anything is amiss.',
-            'The defence is method. Work down a fixed checklist rather than through the question in the order it happens to present things — assessment questions are deliberately written so that the adjustments are scattered through a narrative rather than grouped helpfully at the end.',
+            'The defence is method. Work down a fixed checklist rather than through the question in the order it happens to present things.',
+            'Assessment questions are written so the adjustments are scattered through a narrative rather than grouped helpfully at the end.',
           ],
           flow: ['Total output tax', 'Total input tax', 'Apply every adjustment', 'Output − Input = payable or repayable'],
         },
@@ -1122,8 +1169,10 @@
           },
           p: [
             'Work down this list rather than through the question in the order it presents things. Questions are written so that adjustments appear scattered through a narrative, and reading sequentially is how items get missed.',
-            'Two items account for most lost marks. **Credit notes** reduce whichever side issued them — a credit note to a customer reduces output tax, one from a supplier reduces input tax — and it is easy to net them against the wrong figure. **Blocked input tax** has to be taken *out* of a purchases figure that already includes it, which means subtracting rather than simply not adding, and is easy to overlook entirely when the entertaining or car expense is buried in a total.',
-            'Do not forget the components taught earlier in the outcome that are easy to leave out of a period calculation: cash and petty cash takings carry output tax, deposits and advance payments create tax points in the period they are received, and a prompt payment discount taken reduces output tax.',
+            'Two items account for most lost marks.',
+            '**Credit notes** reduce whichever side issued them. A credit note to a customer reduces output tax; one from a supplier reduces input tax. It is easy to net them against the wrong figure.',
+            '**Blocked input tax** has to be taken *out* of a purchases figure that already includes it. That means subtracting, not simply not adding — and it is easy to miss when the entertaining or car expense is buried in a total.',
+            'Some components taught earlier in the outcome are easy to leave out of a period calculation. Cash and petty cash takings carry output tax. Deposits and advance payments create tax points in the period they are received. A prompt payment discount taken reduces output tax.',
           ],
           examtrap: 'The two most-missed items are credit notes, which reduce whichever side issued them, and blocked input tax, which has to be taken OUT of a purchases figure that already includes it.',
         },
@@ -1159,8 +1208,10 @@
           h: 'Payable or repayable?',
           p: [
             'Having reached a number, say which direction it goes. If output tax exceeds input tax, the difference is **payable** to HMRC. If input tax exceeds output tax, it is **repayable** to the business.',
-            'A repayment position is entirely normal and is not a sign that something has gone wrong. A business making mainly **zero-rated** supplies charges almost no output tax while recovering input tax in full, and will be in repayment nearly every period — a bookshop, a children\'s clothing retailer, most food producers. A business that has just made a large capital purchase may be in repayment for a single quarter and payable thereafter. An **exporter** is in the same position for the same reason.',
-            'Always state the direction explicitly. A correct figure labelled the wrong way round is not a correct answer, and in a computer-marked assessment there is no partial credit for arithmetic that was right until the last step.',
+            'A repayment position is entirely normal and is not a sign that something has gone wrong.',
+            'A business making mainly **zero-rated** supplies charges almost no output tax while recovering input tax in full. It will be in repayment nearly every period — a bookshop, a children\'s clothing retailer, most food producers.',
+            'A business that has just made a large capital purchase may be in repayment for a single quarter and payable after that. An **exporter** is in the same position for the same reason.',
+            'Always state the direction explicitly. A correct figure labelled the wrong way round is not a correct answer. In a computer-marked assessment there is no partial credit for arithmetic that was right until the last step.',
             'Sense-check before you finish. Does the direction make sense for this business? A general retailer selling standard-rated goods to the public should be paying HMRC; if your working produces a repayment, something has probably been put on the wrong side. An exporter that comes out payable deserves the same second look. The check takes seconds and catches the error that the arithmetic cannot.',
           ],
           callout: { kind: 'key', text: 'Sense-check before you finish: does the sign make sense for this business? A retailer in permanent repayment, or an exporter permanently paying, both suggest something has been put on the wrong side.' },
@@ -1225,8 +1276,11 @@
         {
           h: 'Who makes the rules and who enforces them',
           p: [
-            'VAT is created by statute — principally the Value Added Tax Act 1994 and the regulations made under it — and amended every year by the Finance Act. The body that administers and enforces it is **HM Revenue and Customs**, and for the purposes of this unit HMRC is *the* relevant tax authority for VAT in the United Kingdom. There is no other. When the material says "notify HMRC" or "HMRC may assess", it is describing a statutory power, not a matter of custom or good practice.',
-            'That distinction is worth holding on to, because it explains the tone of everything that follows. HMRC is not a supplier the business negotiates with. It sets the deadlines, it decides what records must exist, it may inspect them, and where a business does not file, HMRC may simply decide the figure itself and pursue it as a debt. A commercial creditor has none of those powers.',
+            'VAT is created by statute, principally the Value Added Tax Act 1994 and the regulations made under it. It is amended every year by the Finance Act.',
+            'The body that administers and enforces it is **HM Revenue and Customs**. For this unit, HMRC is *the* relevant tax authority for VAT in the United Kingdom. There is no other.',
+            'So when the material says "notify HMRC" or "HMRC may assess", it is describing a statutory power, not custom or good practice.',
+            'That distinction is worth holding on to, because it explains the tone of everything that follows. HMRC is not a supplier the business negotiates with.',
+            'It sets the deadlines, it decides what records must exist, and it may inspect them. Where a business does not file, HMRC may simply decide the figure itself and pursue it as a debt. A commercial creditor has none of those powers.',
             'It also explains why the unit is written the way it is. Most of Outcome 1 is not arithmetic. It is knowing what the law requires, by when, and what happens when it does not happen — the framework inside which the calculations of Outcome 2 are performed.',
             'One boundary the specification draws explicitly: **the rules relating to Northern Ireland are not assessed in this unit**. Northern Ireland has a distinct position for goods, and you may meet it in practice, but it is outside what the assessment can ask.',
           ],
@@ -1238,18 +1292,22 @@
             'Two terms do a great deal of work in the legislation, and they are narrower than ordinary English suggests.',
             'A **taxable person** is a person — an individual, a partnership, a company, a charity — who is registered for VAT or who is *required* to be. That second limb matters more than it looks. A business that has passed the registration threshold and simply not registered is still a taxable person; it is a taxable person that is breaking the law. Its liability to account for VAT began when it should have registered, not when it eventually did. This is why the late registration penalty in lesson 1F is calculated on the VAT that *should* have been paid.',
             'A **taxable supply** is a supply of goods or services made in the UK in the course of business that is not exempt. Note what that definition includes: standard-rated, reduced-rated and **zero-rated** supplies are all taxable. Zero-rated is a taxable supply on which the rate happens to be nil. It is not the same as exempt, and Level 3 will punish the confusion repeatedly.',
-            'Putting the two together gives the charge: VAT is due on taxable supplies made in the UK by a taxable person in the course or furtherance of business. Strip out any one element — a private sale between individuals, a supply made abroad, an exempt supply — and there is no VAT to charge.',
+            'Putting the two together gives the charge. VAT is due on taxable supplies made in the UK by a taxable person, in the course or furtherance of business.',
+            'Strip out any one element and there is no VAT to charge. A private sale between individuals. A supply made abroad. An exempt supply.',
           ],
           callout: { kind: 'warning', text: 'A business required to register is a taxable person even before it registers. Its VAT liability starts from the date registration was due, not the date it got round to it.' },
         },
         {
           h: 'The five categories of supply',
           p: [
-            'Every supply a business makes falls into exactly one of five categories, and almost every decision in this unit begins by placing a supply in the right one. Learn them as a set rather than individually, because it is the *contrasts* between them that get tested.',
-            'The first three — standard, reduced and zero — are the taxable rates. They differ only in the percentage applied, and in all three cases the supplier charges VAT (even if at 0%) and recovers input tax on related purchases in the normal way.',
+            'Every supply a business makes falls into exactly one of five categories. Almost every decision in this unit begins by placing a supply in the right one.',
+            'Learn them as a set rather than one at a time. It is the *contrasts* between them that get tested.',
+            'The first three — standard, reduced and zero — are the taxable rates. They differ only in the percentage applied.',
+            'In all three the supplier charges VAT, even if at 0%, and recovers input tax on related purchases in the normal way.',
             'The fourth, **exempt**, is different in kind rather than degree. No VAT is charged, and — this is the sting — input tax on costs incurred in making those supplies cannot be recovered. The business absorbs it. Insurance, most finance, postal services, health and welfare, education and betting are the familiar examples.',
             'The fifth, **outside the scope**, means the transaction is not a supply within the UK VAT system at all. Wages paid to employees, dividends, most statutory charges such as vehicle excise duty, and supplies made outside the UK sit here. There is nothing to record on the return in Boxes 1 or 4, and nothing to recover.',
-            'The distinction that costs the most marks is **zero-rated versus exempt**. Both mean the customer is charged no VAT, so from the outside they look identical. From the inside they are opposites: a zero-rated trader recovers all its input tax and is usually in a repayment position, while an exempt trader recovers none of it and quietly bears the cost.',
+            'The distinction that costs the most marks is **zero-rated versus exempt**. Both mean the customer is charged no VAT, so from the outside they look identical.',
+            'From the inside they are opposites. A zero-rated trader recovers all its input tax and is usually in a repayment position. An exempt trader recovers none of it, and quietly bears the cost.',
           ],
           table: {
             headers: ['Category', 'Rate charged', 'Input tax recoverable?', 'Typical examples'],
@@ -1265,11 +1323,12 @@
         {
           h: 'Why the zero-rated / exempt distinction matters so much',
           p: [
-            'The difference shows up in money rather than in words, because the two categories behave identically from the customer’s side and oppositely from the business’s side.',
+            'The difference shows up in money rather than in words. The two categories behave identically from the customer\u2019s side, and oppositely from the business\u2019s.',
             'Consider two businesses, each with £100,000 of sales and £40,000 of standard-rated costs. The first sells children’s clothing — zero-rated. The second is an insurance broker — exempt. Neither charges its customers a penny of VAT.',
             'The clothing retailer charges £0 of output tax and reclaims £8,000 of input tax on its costs. It receives £8,000 from HMRC. Its costs are genuinely £40,000.',
             'The broker charges £0 of output tax and reclaims nothing. It receives nothing from HMRC, and its costs are £48,000. The £8,000 has become an ordinary business expense that reduces its profit, exactly as it would for a private individual.',
-            'Same customer experience, £8,000 apart — the broker\'s costs are £48,000 against the retailer\'s £40,000, and its profit £52,000 against £60,000. That is why the specification asks you to know the categories rather than the rates, and why "no VAT is charged" is never a sufficient answer to a question about a supply.',
+            'Same customer experience, £8,000 apart. The broker\'s costs are £48,000 against the retailer\'s £40,000, and its profit £52,000 against £60,000.',
+            'That is why the specification asks you to know the categories rather than the rates. And why "no VAT is charged" is never a sufficient answer to a question about a supply.',
           ],
           examtrap: 'Asked whether a supply is "taxable", zero-rated counts as YES. It is a taxable supply at a rate of 0%. Only exempt and outside-the-scope supplies are not taxable supplies.',
         },
@@ -1279,7 +1338,8 @@
             'The chain in lesson 0B showed VAT passing through each registered business untouched and settling on the final consumer. The categories are what decide where "final" is.',
             'For most supplies the chain ends with a private individual, who has no VAT registration and so no way to reclaim. That is the intended result: VAT is a tax on consumer spending, and the consumer bears it.',
             'But the chain can also end early. A business making exempt supplies cannot reclaim, so the chain stops with it — it bears the tax exactly as a consumer does, even though it is a business. A partially exempt business bears part of it. A business below the registration threshold that has chosen not to register is in the same position: it pays VAT on its purchases and cannot recover it.',
-            'So the question "who bears the VAT?" is answered not by who paid it at the till, but by who was unable to pass it on. Keeping that question in mind makes several later rules — partial exemption (2D), the benefit of voluntary registration (1C), the logic of the flat rate scheme (1E) — considerably easier to reason about than to memorise.',
+            'So "who bears the VAT?" is not answered by who paid it at the till. It is answered by who could not pass it on.',
+            'Keep that question in mind and several later rules stop being things to memorise. You can reason them out instead: partial exemption (2D), the point of voluntary registration (1C), the logic of the flat rate scheme (1E).',
           ],
           callout: { kind: 'tip', text: 'The tax stops at the first person in the chain who cannot reclaim. Usually that is the consumer; sometimes it is an exempt or unregistered business.' },
         },
@@ -1346,7 +1406,8 @@
           h: 'Why record keeping is a legal duty, not good practice',
           p: [
             'Every business keeps records because it needs to know how it is doing. A VAT-registered business keeps records because **the law requires it to**, in a prescribed form, for a prescribed period, and subject to inspection. Those are different obligations, and the second is the one this unit tests.',
-            'The justification is the one running through the whole unit. The business is holding public money and calculating its own liability. HMRC does not see the underlying transactions; it sees nine boxes on a return that the business itself completed. The records are the only thing standing between a self-assessed tax and an honour system, which is why the duty to keep them is enforced separately from the duty to pay.',
+            'The justification is the one running through the whole unit. The business is holding public money and calculating its own liability.',
+            'HMRC does not see the underlying transactions. It sees nine boxes on a return the business itself completed. The records are the only thing standing between a self-assessed tax and an honour system. That is why the duty to keep them is enforced separately from the duty to pay.',
             'That separation is the detail students most often miss. The penalty for failing to keep records is not a penalty for underpaying tax. A business can pay every penny it owes, on time, and still be penalised because it cannot produce the evidence. The two obligations stand independently.',
           ],
           callout: { kind: 'key', text: 'The duty to keep records is independent of the duty to pay. Paying the right amount does not excuse being unable to prove it.' },
@@ -1354,10 +1415,10 @@
         {
           h: 'What must be kept, and for how long',
           p: [
-            'The requirement is broad: essentially everything that evidences the figures on the return. HMRC’s list runs to business correspondence and delivery notes, which gives a sense of how widely it is drawn — the test is not "is this an accounting record?" but "does this evidence a supply?".',
+            'The requirement is broad: essentially everything that evidences the figures on the return. HMRC’s list runs as far as business correspondence and delivery notes. That shows how wide it is drawn. The test is not "is this an accounting record?" but "does this evidence a supply?".',
             'At the centre sits the **VAT account** — the summary linking the business’s books to the boxes on the return. It is the document that shows how a set of daybooks became a return, and it is the first thing an officer asks for.',
-            'The retention period is **' + T.records.retentionYears.value + ' years**. That is deliberately longer than the two periods it has to outlast, both of which run for four years and both of which are covered later: HMRC may normally raise an assessment going back four years (lesson 1F), and an error in a return may normally be corrected within four years (lesson 3A). Six years of records means the evidence still exists when either of those powers is exercised near the end of its window. Where tax has been lost deliberately HMRC may go back twenty years, which is why the retention rule gives a margin rather than an exact match.',
-            'Records may be kept electronically, and for most businesses now they must be. This is the record-keeping half of Making Tax Digital, which lesson 1D deals with in full: the records behind the return have to be held digitally, and the data has to flow from record to return without being retyped. Copying a figure by hand between two systems breaks that chain even if the figure is correct.',
+            'The retention period is **' + T.records.retentionYears.value + ' years**. That is deliberately longer than the two periods it has to outlast, and both of those run for four years. HMRC may normally raise an assessment going back four years (lesson 1F). An error in a return may normally be corrected within four years (lesson 3A). Six years of records means the evidence still exists when either of those powers is exercised near the end of its window. Where tax has been lost deliberately HMRC may go back twenty years, which is why the retention rule gives a margin rather than an exact match.',
+            'Records may be kept electronically, and for most businesses now they must be. This is the record-keeping half of Making Tax Digital, covered in full in lesson 1D. The records behind the return have to be held digitally, and the data has to flow from record to return without being retyped. Copying a figure by hand between two systems breaks that chain, even if the figure is correct.',
           ],
           table: {
             headers: ['Requirement', 'The rule'],
@@ -1372,10 +1433,10 @@
         {
           h: 'HMRC’s rights of inspection and visit',
           p: [
-            'HMRC may inspect a registered business’s records, enter its business premises at a reasonable time, and require documents to be produced. These are powers of the tax authority, exercisable as part of routine compliance work — a visit is not an accusation, and most businesses will receive one at some point without anything being wrong.',
-            'Visits are usually **arranged in advance**, with notice of what the officer wants to see and roughly how long it will take. HMRC may make an unannounced visit, but that is the exception rather than the pattern, and it is generally reserved for cases where advance notice would defeat the purpose.',
-            'What an officer typically does is trace figures in both directions: from the return back through the VAT account to the daybooks and the invoices, and forward from a sample of invoices to check they were recorded, categorised and rated correctly. Anything that cannot be traced is the problem — which is the practical reason the retention rule matters. A business that has discarded its purchase invoices cannot demonstrate its input tax claim, and input tax that cannot be evidenced is input tax that can be disallowed.',
-            'The reasonable response to all of this is not anxiety but organisation. A business whose records are complete, retained and reconcilable has nothing to fear from an inspection; a business whose records are none of those things has a problem that existed long before the officer arrived.',
+            'HMRC may inspect a registered business’s records, enter its premises at a reasonable time, and require documents to be produced. These are ordinary powers, used as part of routine compliance work. A visit is not an accusation. Most businesses will get one at some point with nothing wrong.',
+            'Visits are usually **arranged in advance**, with notice of what the officer wants to see and roughly how long it will take. HMRC may turn up unannounced, but that is the exception. It is kept for cases where advance notice would defeat the purpose.',
+            'An officer traces figures in both directions. Backwards: from the return, through the VAT account, to the daybooks and the invoices. Forwards: from a sample of invoices, to check each one was recorded, categorised and rated correctly. Anything that cannot be traced is the problem. That is the practical reason the retention rule matters. A business that has thrown away its purchase invoices cannot prove its input tax claim, and input tax that cannot be evidenced can be disallowed.',
+            'The right response to all this is not anxiety but organisation. A business whose records are complete, retained and reconcilable has nothing to fear from an inspection. A business whose records are none of those things has a problem that started long before the officer arrived.',
           ],
           callout: { kind: 'tip', text: 'Rights of inspection exist because the business holds public money. A visit is routine compliance, not an allegation — but it is only survivable if the records are complete.' },
         },
@@ -1430,7 +1491,7 @@
           h: 'The threshold, and what counts towards it',
           p: [
             'A business must register for VAT once its **taxable turnover** passes the registration threshold of **£' + T.registration.threshold.value.toLocaleString('en-GB') + '**. Two words in that sentence do all the work.',
-            'One qualification before them. A business that crosses the threshold only **temporarily** may apply to HMRC for an **exception from registration**, showing that its taxable turnover for the following 12 months will not exceed the deregistration threshold. It is an application rather than a right — HMRC decides — but the obligation is not quite as absolute as it first reads.',
+            'One qualification before them. A business that crosses the threshold only **temporarily** may apply to HMRC for an **exception from registration**. It has to show that its taxable turnover for the following 12 months will not exceed the deregistration threshold. This is an application, not a right: HMRC decides. So the obligation is not quite as absolute as it first reads.',
             '**Taxable** means what lesson 1A meant by it: standard-rated, reduced-rated and zero-rated supplies all count. Exempt supplies and supplies outside the scope do not. A business with £120,000 of sales, £100,000 of which is exempt insurance commission, has taxable turnover of £20,000 and no obligation to register. Conversely, a zero-rated food producer with £95,000 of sales must register, even though it will never charge a customer a penny of VAT.',
             '**Turnover** means the value of supplies, not profit and not cash received. It is measured net of VAT, and it includes sales the business has invoiced but not yet been paid for.',
             'The threshold is not tested against a financial year. It is tested on a **rolling 12-month basis**, which means it must be reconsidered at the end of every single month, looking back over the previous twelve. A business with steady sales of £8,000 a month will cross £' + T.registration.threshold.value.toLocaleString('en-GB') + ' partway through its second year without anything unusual happening in any individual month.',
@@ -1440,10 +1501,10 @@
         {
           h: 'Two tests, two different answers',
           p: [
-            'There are two separate tests for compulsory registration, and they differ in what triggers them, when HMRC must be told, and — the part most often got wrong — **the date registration takes effect**. Getting the trigger right and the effective date wrong loses the mark just as completely as getting neither.',
-            'The **historic test** looks backwards. At the end of each month, add up taxable turnover for the previous twelve months. If it exceeds the threshold, the business must notify HMRC within **' + T.registration.historicTest.notifyWithinDays.value + ' days of the end of that month**, and registration takes effect from **the first day of the second month** after the threshold was exceeded. The gap is deliberate: it gives the business a short run-in to change its invoicing and systems before it has to start charging.',
-            'The **future test** looks forwards, and it is much sharper than students expect. It bites when the business expects taxable turnover to exceed the threshold **in the next 30 days alone** — not over the next year. This is the test that catches a business winning a single unusually large contract. Notification is due by the end of that 30-day period, and registration takes effect from **the date the expectation arose**, which is the start of the period, not the end of it.',
-            'Read those two effective dates side by side. Under the historic test registration starts *after* a delay; under the future test it starts *immediately, and retrospectively by the time you notify*. A business that realises on 1 May that it will bill £100,000 in the next fortnight is registered from 1 May, and every invoice it issues from that date carries VAT.',
+            'There are two separate tests for compulsory registration. They differ in what triggers them, when HMRC must be told, and — the part most often got wrong — **the date registration takes effect**. Get the trigger right and the effective date wrong and you lose the mark just as completely as getting neither.',
+            'The **historic test** looks backwards. At the end of each month, add up taxable turnover for the previous twelve months. If it exceeds the threshold, the business must notify HMRC within **' + T.registration.historicTest.notifyWithinDays.value + ' days of the end of that month**. Registration then takes effect from **the first day of the second month** after the threshold was exceeded. The gap is deliberate: it gives the business a short run-in to change its invoicing and systems before it has to start charging.',
+            'The **future test** looks forwards, and it is much sharper than students expect. It bites when the business expects taxable turnover to exceed the threshold **in the next 30 days alone** — not over the next year. This is the test that catches a business winning a single unusually large contract. Notification is due by the end of that 30-day period. Registration takes effect from **the date the expectation arose** — the start of the period, not the end of it.',
+            'Read those two effective dates side by side. Under the historic test registration starts *after* a delay; under the future test it starts *immediately, and retrospectively by the time you notify*. A business that realises on 1 May that it will bill £100,000 in the next fortnight is registered from 1 May. Every invoice it issues from that date carries VAT.',
           ],
           table: {
             headers: ['', 'Historic test', 'Future test'],
@@ -1482,11 +1543,11 @@
         {
           h: 'Registering voluntarily',
           p: [
-            'A business below the threshold may register anyway, and for some businesses this is plainly the right decision rather than a marginal one.',
+            'A business below the threshold may register anyway. For some, this is plainly the right decision rather than a marginal one.',
             'The clearest case is a business making **zero-rated supplies**. It charges its customers 0%, so registration costs its customers nothing at all, while allowing it to recover input tax on everything it buys. It will be in a repayment position almost every period. A small bakery selling zero-rated food has no reason not to register.',
-            'A second case is a business whose customers are themselves VAT-registered. Those customers reclaim whatever VAT they are charged, so the extra 20% costs them nothing in substance — meaning registration is close to free in commercial terms, while letting the supplier recover its own input tax. A business trading mainly with the public is in the opposite position: to a private customer, VAT is a genuine 20% price increase.',
-            'Third, a business planning significant expenditure before it begins trading — fitting out premises, buying equipment — may register to recover that input tax rather than absorb it.',
-            'Against all this sit real costs: returns to file on a fixed calendar, records to keep in prescribed form, penalties to be exposed to, and the credibility of every figure resting on evidence. Voluntary registration is a decision with a downside, not a free option, and the exam expects you to be able to argue both sides.',
+            'A second case is a business whose customers are themselves VAT-registered. Those customers reclaim whatever VAT they are charged, so the extra 20% costs them nothing. Registration is close to free in commercial terms, and it lets the supplier recover its own input tax. A business trading mainly with the public is in the opposite position: to a private customer, VAT is a real 20% price increase.',
+            'Third, a business may spend heavily before it begins trading — fitting out premises, buying equipment. Registering lets it recover that input tax rather than absorb it.',
+            'Against all this sit real costs: returns to file on a fixed calendar, records to keep in prescribed form, exposure to penalties, and every figure needing evidence. Voluntary registration is a decision with a downside, not a free option. The exam expects you to be able to argue both sides.',
           ],
           split: {
             left: { title: 'Points towards registering voluntarily', items: ['The business makes zero-rated supplies and will be in repayment', 'Its customers are VAT-registered and reclaim what they are charged', 'It has large input tax to recover, especially pre-trading', 'It wants to appear larger or more established'] },
@@ -1497,9 +1558,9 @@
           h: 'Coming out again: deregistration',
           p: [
             'Deregistration mirrors registration, and like registration it comes in a compulsory form and a voluntary one.',
-            '**Compulsory deregistration** applies when the business ceases to be eligible to be registered — it stops trading, it is sold, or its supplies become wholly exempt. HMRC must be told within **' + T.registration.deregistration.compulsoryNotifyWithinDays.value + ' days** of the business ceasing to be eligible, and a penalty may follow if it is not.',
+            '**Compulsory deregistration** applies when the business stops being eligible to be registered. It stops trading, it is sold, or its supplies become wholly exempt. HMRC must be told within **' + T.registration.deregistration.compulsoryNotifyWithinDays.value + ' days** of that happening, and a penalty may follow if it is not.',
             '**Voluntary deregistration** is available where taxable turnover for the **next 12 months** is expected to fall below the deregistration threshold of **£' + T.registration.deregistrationThreshold.value.toLocaleString('en-GB') + '**. Note that this is a forward-looking test, on expected turnover, not a backward-looking one on what has already happened. HMRC may refuse the application.',
-            'The deregistration threshold is set £' + (T.registration.threshold.value - T.registration.deregistrationThreshold.value).toLocaleString('en-GB') + ' below the registration threshold, and the gap is there for a reason. Without it, a business hovering around the line would be obliged to register and permitted to deregister in the same breath, and would spend its life going in and out of the system. The gap creates a buffer zone in which a registered business simply stays registered.',
+            'The deregistration threshold is set £' + (T.registration.threshold.value - T.registration.deregistrationThreshold.value).toLocaleString('en-GB') + ' below the registration threshold, and the gap is there for a reason. Without it, a business hovering around the line would be obliged to register and permitted to deregister in the same breath. It would spend its life going in and out of the system. The gap creates a buffer zone in which a registered business simply stays registered.',
           ],
           examtrap: 'The registration threshold looks BACK 12 months (historic test); the voluntary deregistration threshold looks FORWARD 12 months. Reversing the direction is a common and expensive slip.',
         },
@@ -1560,19 +1621,19 @@
         {
           h: 'The standard calendar',
           p: [
-            'Under the normal scheme a business files a return every **three months** and both files and pays by the same deadline: **one calendar month and seven days** after the end of the VAT period. A quarter ending 31 March is due on 7 May; one ending 30 June is due on 7 August.',
-            'Two features of that deadline are worth noticing. First, it covers **both obligations**. Submitting the return on time but paying late is a failure, and the two failures are penalised under entirely separate regimes — the points system for the return, a percentage charge for the money. A business can be penalised twice over for the same period.',
+            'Under the normal scheme a business files a return every **three months**. Filing and payment share one deadline: **one calendar month and seven days** after the end of the VAT period. A quarter ending 31 March is due on 7 May; one ending 30 June is due on 7 August.',
+            'Two features of that deadline are worth noticing. First, it covers **both obligations**. Submitting the return on time but paying late is still a failure. The two failures are penalised under separate regimes: the points system for the return, a percentage charge for the money. A business can be penalised twice over for the same period.',
             'Second, HMRC states the rule as "one calendar month and seven days", and that phrase is worth reading carefully, because taken as day-by-day arithmetic it misleads. Thirty days after 30 September is 30 October, and seven more is 6 November — but the deadline is 7 November. The reliable way to compute it is to go to the **last day of the month following the period end** and add seven days. Quarter ending 30 September: end of October is 31 October, plus seven is 7 November. Quarter ending 31 March: end of April is 30 April, plus seven is 7 May. Put another way, it is always the **7th of the second month after** the period ends.',
-            'Where input tax exceeds output tax the return produces a **repayment** rather than a payment, and HMRC pays the business. On the nine-box return you saw earlier that is Box 4 coming out larger than Box 3. Note how it is entered: deduct the smaller of the two figures from the larger and put the difference in Box 5 as a **positive** number — HMRC says expressly that a minus sign must not be entered there, and the return itself records which way the money goes. A repayment is the ordinary position for zero-rated traders and exporters and is not an indication that anything has gone wrong.',
+            'Where input tax exceeds output tax the return produces a **repayment** rather than a payment, and HMRC pays the business. On the nine-box return you saw earlier that is Box 4 coming out larger than Box 3. Note how it is entered. Deduct the smaller of the two figures from the larger, and put the difference in Box 5 as a **positive** number. HMRC says expressly that a minus sign must not be entered there; the return itself records which way the money goes. A repayment is the ordinary position for zero-rated traders and exporters, and is not a sign that anything has gone wrong.',
           ],
           formula: 'Deadline = the last day of the month FOLLOWING the period end, plus 7 days · equivalently, the 7th of the second month after the period end',
         },
         {
           h: 'When monthly returns are worth having',
           p: [
-            'A business may apply to file **monthly** rather than quarterly, and for one particular kind of business it is a straightforwardly good idea.',
-            'A **repayment trader** — one whose input tax routinely exceeds its output tax — is lending money to HMRC between the moment it incurs the input tax and the moment the return is filed and processed. On a quarterly cycle that wait can approach four months for expenditure incurred early in a quarter. Filing monthly cuts it to a few weeks.',
-            'The businesses in this position are zero-rated suppliers, who charge no output tax while recovering input tax in full — the category lesson 1A introduced — and exporters, whose supplies are zero-rated for the same reason and behave identically. A food producer or a children’s clothing wholesaler will be in repayment nearly every period, and the cash-flow benefit of monthly filing is real and recurring.',
+            'A business may apply to file **monthly** rather than quarterly. For one kind of business it is plainly a good idea.',
+            'A **repayment trader** is one whose input tax routinely exceeds its output tax. Such a business lends money to HMRC from the moment it incurs the input tax until the return is filed and processed. On a quarterly cycle that wait can approach four months for expenditure incurred early in a quarter. Filing monthly cuts it to a few weeks.',
+            'Which businesses are in this position? Zero-rated suppliers, who charge no output tax but recover input tax in full — the category lesson 1A introduced. And exporters, whose supplies are zero-rated for the same reason and behave identically. A food producer or a children’s clothing wholesaler will be in repayment nearly every period. For them the cash-flow benefit of monthly filing is real and recurring.',
             'The cost is administrative: twelve filings a year instead of four, twelve opportunities to be late, and twelve sets of figures to prepare. For a business that pays VAT over rather than reclaims it, monthly filing simply accelerates its own payments and has nothing to recommend it. The question to ask is always which direction the money flows.',
           ],
           callout: { kind: 'tip', text: 'Monthly returns suit repayment traders — zero-rated suppliers and exporters. For a business that pays VAT over, monthly filing just means paying sooner, more often.' },
@@ -1580,9 +1641,9 @@
         {
           h: 'The deadline is when the money arrives',
           p: [
-            'The statutory deadline is fixed, but the last safe day to *start* a payment is not, because what the law requires is that **cleared funds reach HMRC** by the deadline. A payment initiated on the due date by a slow method is a late payment, and the penalty regime does not care that the instruction was given in time.',
-            'Some methods are effectively instant. **Faster Payments** usually arrive the same or the next day, including weekends and bank holidays; **CHAPS** arrives the same working day if sent within the bank’s cut-off; a debit or corporate credit card payment online is treated as made on the day.',
-            'Others take **three working days**: Bacs, standing orders, and payment in person at a bank or building society. Working days exclude weekends and bank holidays, so a three-working-day method started on the Thursday before a bank holiday Monday will not arrive until the following Wednesday.',
+            'The statutory deadline is fixed. The last safe day to *start* a payment is not, because what the law requires is that **cleared funds reach HMRC** by the deadline. Start a payment on the due date by a slow method and it is a late payment. The penalty regime does not care that the instruction was given in time.',
+            'Some methods are effectively instant. **Faster Payments** usually arrive the same or the next day, including weekends and bank holidays. **CHAPS** arrives the same working day if sent within the bank’s cut-off. A debit or corporate credit card payment online is treated as made on the day.',
+            'Others take **three working days**: Bacs, standing orders, and payment in person at a bank or building society. Working days exclude weekends and bank holidays. Start a three-working-day method on the Thursday before a bank holiday Monday and it will not arrive until the following Wednesday.',
             '**Direct debit** works differently again, and in the business’s favour. It must be set up at least three working days before the return is submitted; HMRC then collects automatically **three working days after the deadline**. That is a genuine extension of the payment date, not merely a convenience — the money leaves the account later than it would under any other method. If the return is filed late, collection moves to three days after filing.',
           ],
           table: {
@@ -1601,8 +1662,8 @@
           h: 'Making Tax Digital',
           p: [
             'Returns must be submitted under **Making Tax Digital**. Lessons 0B and 1B have both gestured at it — this is where it is set out properly. It imposes two requirements, one about filing and one about records, both easy to state and easy to underestimate.',
-            'The first is that the return must be filed from **functional compatible software** — software able to connect to HMRC’s systems directly and authorised to do so. Typing figures into a web form is no longer an available route for a VAT-registered business. The authorisation step matters: software must be linked to the business’s HMRC account before it can file, and doing that for the first time on the day of the deadline is a well-known way to miss it.',
-            'The second is the record-keeping requirement lesson 1B raised: the underlying **records must be kept digitally, with digital links between them**. A digital link is any transfer of data between systems that happens without manual intervention — an export and import, a linked cell, an API call. Retyping a figure from one system into another is not a digital link, even if the figure is typed correctly.',
+            'The first is that the return must be filed from **functional compatible software** — software able to connect to HMRC’s systems directly, and authorised to do so. Typing figures into a web form is no longer an available route for a VAT-registered business. The authorisation step matters. Software must be linked to the business’s HMRC account before it can file. Doing that for the first time on the deadline day is a well-known way to miss it.',
+            'The second is the record-keeping requirement lesson 1B raised: the underlying **records must be kept digitally, with digital links between them**. A digital link is any transfer of data between systems without manual intervention — an export and import, a linked cell, an API call. Retyping a figure from one system into another is not a digital link. It makes no difference that the figure is typed correctly.',
             'The practical consequence deserves stating plainly, because it changes what carefulness means. Under the old regime a figure was seen by a person at least once, when the return was typed up, and an obvious absurdity might be caught there. Under MTD a figure entered wrongly at source flows through to submission untouched. Nobody is looking at it. That is why Outcome 3 — reviewing and verifying the return — exists as a separate learning outcome.',
           ],
           callout: { kind: 'warning', text: 'A digital link means no retyping. Copying a figure by hand between two systems breaks the link even when the figure is right.' },
@@ -1668,9 +1729,9 @@
         {
           h: 'Three schemes, three different problems',
           p: [
-            'The normal scheme asks a business to account for VAT on invoices as they are issued, four times a year, with full records of every transaction on both sides. For a small business that is a real administrative and cash-flow burden, and three optional schemes exist to relieve it. Each solves a *different* problem, and the exam expects you to match the scheme to the difficulty rather than recite all three.',
+            'The normal scheme asks a business to account for VAT on invoices as they are issued, four times a year, with full records of every transaction on both sides. For a small business that is a real administrative and cash-flow burden. Three optional schemes exist to relieve it. Each solves a *different* problem, and the exam expects you to match the scheme to the difficulty rather than recite all three.',
             '**Cash accounting** solves a cash-flow problem: paying VAT on invoices customers have not yet settled. **Annual accounting** solves an administrative and budgeting problem: four returns a year and a liability that is hard to predict. **The flat rate scheme** solves a record-keeping problem: the effort of tracking input tax on every purchase.',
-            'They are not mutually exclusive in every combination — annual accounting can be operated alongside either of the others — but each has its own thresholds, its own mechanics and its own exit rules. What follows takes them one at a time, then compares them.',
+            'Some combinations are allowed — annual accounting can be run alongside either of the others. But each scheme has its own thresholds, its own mechanics and its own exit rules. What follows takes them one at a time, then compares them.',
             'One thing they have in common is worth stating first: none of them changes what the customer is charged. A business on any of these schemes still charges VAT at the normal rate on its invoices. The schemes change what the business does with the figures afterwards.',
           ],
           callout: { kind: 'key', text: 'Cash accounting fixes cash flow. Annual accounting fixes administration and budgeting. The flat rate scheme fixes record keeping. Match the scheme to the problem in the question.' },
@@ -1678,10 +1739,10 @@
         {
           h: 'Cash accounting',
           p: [
-            'Under cash accounting, output tax is accounted for when **payment is received** and input tax reclaimed when **suppliers are paid** — not when invoices are issued or received. The scheme changes the timing of the figures and nothing else: on its own it leaves the filing pattern and deadline exactly as they were, at quarterly returns due one month and seven days after the period end. A business that operates annual accounting alongside it files annually, but that is the annual accounting scheme doing the work, not cash accounting.',
-            'The benefit is automatic and continuous. A business that gives its customers 60 days to pay is, under the normal scheme, handing VAT to HMRC on invoices it has not yet been paid for. Under cash accounting that never happens. And if a customer never pays at all, no VAT was ever accounted for, so **bad debt relief becomes irrelevant** while the business is in the scheme, because there is nothing to relieve. (Bad debt relief is the mechanism, set out in lesson 2E, by which a business on the normal scheme recovers VAT it has already paid over on an invoice the customer never settled.)',
+            'Under cash accounting, output tax is accounted for when **payment is received**, and input tax reclaimed when **suppliers are paid**. Not when invoices are issued or received. The scheme changes the timing of the figures and nothing else. On its own it leaves the filing pattern and deadline exactly as they were: quarterly returns, due one month and seven days after the period end. A business running annual accounting alongside it files annually, but that is annual accounting doing the work, not cash accounting.',
+            'The benefit is automatic and continuous. A business that gives its customers 60 days to pay is, under the normal scheme, handing VAT to HMRC on invoices it has not yet been paid for. Under cash accounting that never happens. And if a customer never pays at all, no VAT was ever accounted for. So **bad debt relief becomes irrelevant** while the business is in the scheme: there is nothing to relieve. (Bad debt relief is the mechanism set out in lesson 2E. It lets a business on the normal scheme recover VAT it has already paid over on an invoice the customer never settled.)',
             'The price is symmetry: input tax cannot be reclaimed until the supplier has actually been paid. A business that takes long credit from its own suppliers loses as much as it gains, and a business that pays quickly while being paid slowly gains most.',
-            'The thresholds are **£' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString('en-GB') + '** to join, on estimated taxable turnover for the next 12 months, and **£' + T.schemes.cashAccounting.leaveThreshold.value.toLocaleString('en-GB') + '** at which the business must leave. Some supplies are excluded from the scheme altogether and must be dealt with normally: goods on lease or hire purchase, imports, supplies under the domestic reverse charge, invoices payable more than six months ahead, and invoices issued in advance of the supply. The **domestic reverse charge** is a rule for certain sectors — construction most importantly — under which the customer rather than the supplier accounts for the VAT on the supply; it is named here only because it is on the exclusion list, and lesson 5A treats an unfamiliar reverse charge as something to refer upwards rather than decide alone.',
+            'The thresholds are **£' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString('en-GB') + '** to join, on estimated taxable turnover for the next 12 months, and **£' + T.schemes.cashAccounting.leaveThreshold.value.toLocaleString('en-GB') + '** at which the business must leave. Some supplies are excluded from the scheme altogether and must be dealt with normally. Goods on lease or hire purchase, imports, supplies under the domestic reverse charge, invoices payable more than six months ahead, and invoices issued in advance of the supply. The **domestic reverse charge** is a rule for certain sectors — construction most importantly — under which the customer rather than the supplier accounts for the VAT on the supply. It is named here only because it is on the exclusion list. Lesson 5A treats an unfamiliar reverse charge as something to refer upwards rather than decide alone.',
           ],
           split: {
             left: { title: 'Cash accounting helps', items: ['A business that gives long credit to customers', 'A business exposed to bad debts — no VAT is ever paid on an unpaid invoice', 'A business paid slowly but paying its own suppliers quickly'] },
@@ -1691,10 +1752,10 @@
         {
           h: 'Annual accounting',
           p: [
-            'Annual accounting replaces four returns with **one**, filed after the end of a twelve-month VAT year, and spreads the liability across the year in payments on account based on the **previous year’s** liability.',
-            'The business chooses between **nine monthly instalments of 10%**, due at the end of months 4 to 12, or **three quarterly instalments of 25%**, due at the end of months 4, 7 and 10. Either way the instalments total less than the expected liability, leaving a balancing figure at the year end.',
-            'The deadline for the annual return is the detail most often missed, because it is **not** the usual one month and seven days. The return and the **balancing payment** are both due **two months after the end of the VAT year**. A business that applies the quarterly deadline to an annual scheme return will file a month early — harmless — or apply the wrong rule elsewhere, which is not.',
-            'The thresholds are **£' + T.schemes.annualAccounting.joinThreshold.value.toLocaleString('en-GB') + '** to join and **£' + T.schemes.annualAccounting.leaveThreshold.value.toLocaleString('en-GB') + '** to leave, the same figures as cash accounting. The scheme suits a stable business that values predictability and one filing a year. It suits a **repayment trader** badly: a business owed money by HMRC would now collect it once a year instead of four times, having made payments on account in the meantime.',
+            'Annual accounting replaces four returns with **one**, filed after the end of a twelve-month VAT year. The liability is spread across the year in payments on account, based on the **previous year’s** liability.',
+            'The business chooses between two patterns. **Nine monthly instalments of 10%**, due at the end of months 4 to 12. Or **three quarterly instalments of 25%**, due at the end of months 4, 7 and 10. Either way the instalments total less than the expected liability, leaving a balancing figure at the year end.',
+            'The deadline for the annual return is the detail most often missed. It is **not** the usual one month and seven days. The return and the **balancing payment** are both due **two months after the end of the VAT year**. Apply the quarterly deadline to an annual scheme return and you will file a month early — harmless — or apply the wrong rule elsewhere, which is not.',
+            'The thresholds are **£' + T.schemes.annualAccounting.joinThreshold.value.toLocaleString('en-GB') + '** to join and **£' + T.schemes.annualAccounting.leaveThreshold.value.toLocaleString('en-GB') + '** to leave, the same figures as cash accounting. The scheme suits a stable business that values predictability and one filing a year. It suits a **repayment trader** badly. A business owed money by HMRC would now collect it once a year instead of four times, and would have made payments on account in the meantime.',
           ],
           table: {
             headers: ['', 'Annual accounting'],
@@ -1711,19 +1772,19 @@
         {
           h: 'The flat rate scheme',
           p: [
-            'The flat rate scheme is the most different of the three, because it changes **how much VAT is due**, not merely when it is paid or how often it is reported.',
+            'The flat rate scheme is the most different of the three. It changes **how much VAT is due**, not just when it is paid or how often it is reported.',
             'The business continues to charge its customers VAT at the normal rate. But instead of calculating output tax less input tax, it pays HMRC a **flat percentage of its VAT-inclusive turnover** and keeps the difference. In exchange, it **does not reclaim input tax separately**. The percentage depends on trade sector, and the assessment supplies it — you are never expected to know the sector rates from memory.',
-            'Be exact about what that percentage is doing, because "you cannot reclaim input tax" makes the scheme sound like a straight loss. It is not. HMRC sets the sector percentages with **an allowance for input tax built into them**: the flat rate is a **net** figure standing in for output tax LESS input tax, not a discounted output tax. The input tax has not been taken away — it has been averaged, and paid to the business in advance as a lower rate.',
-            'Two things follow, and both are examinable. The rate is well below 20% precisely because that allowance is inside it. And the rate varies **by sector** because sectors differ in how much input tax they would normally reclaim: a trade that buys a lot of materials gets a lower percentage than one selling mostly its own labour. This is also why a **limited cost business** is pushed onto its own high rate — a business with almost no purchases has almost no input tax to give up, so an ordinary sector allowance would be paying it for something it never had.',
-            'Three refinements attach to that basic bargain. A business in its **first year of VAT registration** takes a **1% discount** off its sector rate, running until the first anniversary of registration. A **limited cost business** — one whose spending on relevant goods, including VAT, is under 2% of its flat rate turnover, or over 2% but under £1,000 a year — must use **' + T.schemes.flatRate.limitedCostBusiness.value + '%** whatever its sector. Watch the period on that £1,000: it is the ANNUAL figure, and for a quarterly return the test is **£250** — the one that actually applies to the quarterly filers this unit assumes throughout; this exists to stop labour-only businesses with almost no costs profiting from a scheme designed for businesses with real purchases. And although input tax is not normally recoverable, it **may** be reclaimed on a single purchase of capital expenditure goods costing **£' + T.schemes.flatRate.capitalGoodsException.value.toLocaleString('en-GB') + ' or more including VAT**.',
-            'The thresholds are asymmetric and the difference is deliberately awkward: **£' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' excluding VAT** to join, but **£' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' including VAT** to leave. They are not measured on the same basis, and a question that gives you one figure and asks about the other is testing exactly that.',
+            'Be exact about what that percentage is doing, because "you cannot reclaim input tax" makes the scheme sound like a straight loss. It is not. HMRC sets the sector percentages with **an allowance for input tax built into them**. The flat rate is a **net** figure, standing in for output tax LESS input tax — not a discounted output tax. The input tax has not been taken away. It has been averaged, and paid to the business in advance as a lower rate.',
+            'Two things follow, and both are examinable. The rate is well below 20% precisely because that allowance is inside it. And the rate varies **by sector**, because sectors differ in how much input tax they would normally reclaim. A trade that buys a lot of materials gets a lower percentage than one selling mostly its own labour. This is also why a **limited cost business** is pushed onto its own high rate. A business with almost no purchases has almost no input tax to give up, so an ordinary sector allowance would be paying it for something it never had.',
+            'Three refinements attach to that basic bargain. A business in its **first year of VAT registration** takes a **1% discount** off its sector rate, running until the first anniversary of registration. Next, the **limited cost business** rule: such a business must use **' + T.schemes.flatRate.limitedCostBusiness.value + '%** whatever its sector. A limited cost business is one whose spending on relevant goods, including VAT, is under 2% of its flat rate turnover, or over 2% but under £1,000 a year. Watch the period on that £1,000: it is the ANNUAL figure. For a quarterly return the test is **£250**, and that is the one that applies to the quarterly filers this unit assumes throughout. The rule exists to stop labour-only businesses with almost no costs profiting from a scheme designed for businesses with real purchases. Third, although input tax is not normally recoverable, it **may** be reclaimed on a single purchase of capital expenditure goods costing **£' + T.schemes.flatRate.capitalGoodsException.value.toLocaleString('en-GB') + ' or more including VAT**.',
+            'The thresholds are asymmetric, and the difference is deliberately awkward: **£' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' excluding VAT** to join, but **£' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' including VAT** to leave. They are not measured on the same basis. A question that gives you one figure and asks about the other is testing exactly that.',
           ],
           examtrap: 'Flat rate thresholds are measured differently at each end: £' + T.schemes.flatRate.joinThreshold.value.toLocaleString('en-GB') + ' EXCLUDING VAT to join, £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString('en-GB') + ' INCLUDING VAT to leave. And the flat percentage applies to VAT-inclusive turnover — it is a NET rate, covering input tax as well as output tax, not a reduced rate of output tax.',
         },
         {
           h: 'Working out a flat rate payment',
           p: [
-            'The calculation itself is a single multiplication. What makes it go wrong is applying the percentage to the wrong turnover figure — it is the **VAT-inclusive** total, not the net sales figure the business would otherwise put in Box 6.',
+            'The calculation itself is a single multiplication. What makes it go wrong is applying the percentage to the wrong turnover figure. It is the **VAT-inclusive** total, not the net sales figure the business would otherwise put in Box 6.',
           ],
           worked: {
             title: 'Flat rate VAT due for a quarter',
@@ -1750,9 +1811,9 @@
           p: [
             'Withdrawal comes in the same two forms as everything else in this outcome.',
             '**Voluntary withdrawal** is available from any of the three schemes. A business simply tells HMRC, normally leaving at the end of a VAT period. No reason is required — a business may conclude the scheme no longer suits it, and that is enough.',
-            '**Compulsory withdrawal** happens when the scheme’s leave threshold is breached, or where HMRC withdraws use of the scheme to protect the revenue. For cash accounting the business must also leave if it is convicted of a VAT offence or penalised for dishonest evasion — the scheme is a concession, and it can be taken away.',
-            'One asymmetry is worth remembering because it makes leaving the flat rate scheme a decision rather than an experiment: a business that has left the flat rate scheme **cannot rejoin for 12 months**. There is no such restriction on cash accounting, where a business whose turnover fell back below the join threshold could return.',
-            'Leaving also has consequences for the figures. A business leaving cash accounting must account for the VAT still outstanding on invoices issued but unpaid, even though it has not been paid — at which point ordinary bad debt relief becomes available to it again if a debt subsequently goes bad.',
+            '**Compulsory withdrawal** happens when the scheme’s leave threshold is breached, or where HMRC withdraws the scheme to protect the revenue. For cash accounting the business must also leave if it is convicted of a VAT offence or penalised for dishonest evasion. The scheme is a concession, and it can be taken away.',
+            'One asymmetry is worth remembering. A business that has left the flat rate scheme **cannot rejoin for 12 months**, which makes leaving a decision rather than an experiment. There is no such restriction on cash accounting: a business whose turnover fell back below the join threshold could return.',
+            'Leaving also has consequences for the figures. A business leaving cash accounting must account for the VAT still outstanding on invoices issued but unpaid, even though it has not been paid. From that point ordinary bad debt relief is available to it again if a debt later goes bad.',
           ],
           callout: { kind: 'warning', text: 'Leave the flat rate scheme and you cannot rejoin for 12 months. Treat it as a decision to be modelled, not a setting to be toggled.' },
         },
@@ -1813,19 +1874,19 @@
         {
           h: 'Failing to register on time',
           p: [
-            'A business that should have registered and did not has committed a **failure to notify**, and HMRC has statutory power to penalise it. The reasoning goes back to lesson 1A: the business was a taxable person from the date registration fell due, so it should have been charging VAT from that date. It did not, and the tax that should have reached the Exchequer did not arrive.',
-            'That lost amount has a name — the **potential lost revenue**, or PLR. It is the VAT that would have been paid had the business registered on time, and the penalty is calculated as a **percentage of it**. The penalty scales with the tax at stake, so registering three months late on modest turnover is a small matter, and registering three years late on substantial turnover is not.',
-            'A harsher consequence often bites before the penalty does. Because the business was liable from the date registration fell due, it owes the output tax on everything it sold in the intervening period — whether or not it charged its customers any VAT. Most customers cannot be persuaded to pay a 20% surcharge on invoices settled a year ago, so in practice the business absorbs the tax out of margin it has already spent.',
+            'A business that should have registered and did not has committed a **failure to notify**. HMRC has statutory power to penalise it. The reasoning goes back to lesson 1A. The business was a taxable person from the date registration fell due, so it should have been charging VAT from that date. It did not, and the tax that should have reached the Exchequer never arrived.',
+            'That lost amount has a name — the **potential lost revenue**, or PLR. It is the VAT that would have been paid had the business registered on time. The penalty is a **percentage of it**. So the penalty scales with the tax at stake. Registering three months late on modest turnover is a small matter; registering three years late on substantial turnover is not.',
+            'A harsher consequence often bites before the penalty does. The business was liable from the date registration fell due. So it owes the output tax on everything it sold in the intervening period, whether or not it charged its customers any VAT. Most customers cannot be persuaded to pay a 20% surcharge on invoices settled a year ago. In practice the business absorbs the tax out of margin it has already spent.',
           ],
           callout: { kind: 'warning', text: 'The penalty is usually the smaller problem. The larger one is owing output tax on sales made since registration fell due, on which no VAT was ever charged to the customer.' },
         },
         {
           h: 'How the failure to notify penalty is set',
           p: [
-            'The percentage applied to the potential lost revenue depends on **behaviour**, and this is the structure to learn — the exact minima matter less than understanding what drives the figure.',
+            'The percentage applied to the potential lost revenue depends on **behaviour**. This is the structure to learn: the exact minima matter less than what drives the figure.',
             'Three categories of behaviour, in ascending order of seriousness. **Non-deliberate** — the business did not realise, perhaps because it never tracked its rolling turnover — carries a maximum of **' + T.penalties.failureToNotify.behaviours.nonDeliberate.max + '%**. **Deliberate** — it knew it should register and chose not to — carries a maximum of **' + T.penalties.failureToNotify.behaviours.deliberate.max + '%**. **Deliberate and concealed** — it also took active steps to hide the failure, such as falsifying records — carries a maximum of **' + T.penalties.failureToNotify.behaviours.deliberateAndConcealed.max + '%**.',
             'Those maxima are then **reduced for the quality of disclosure**, and the single most valuable distinction is between **unprompted** and **prompted**. A disclosure is unprompted if made when the business had no reason to think HMRC had discovered, or was about to discover, the failure. Come forward first and the reduction is substantial: a non-deliberate failure disclosed unprompted within 12 months can be reduced to **nil**. Wait to be caught and the same failure carries a minimum of 10%.',
-            'Finally, a **reasonable excuse** removes the penalty altogether for a **non-deliberate** failure, provided the failure is put right without unreasonable delay once the excuse ends. Serious illness or bereavement may qualify; not knowing the law, or relying on someone else without checking, generally does not.',
+            'Finally, a **reasonable excuse** removes the penalty altogether for a **non-deliberate** failure. The failure has to be put right without unreasonable delay once the excuse ends. Serious illness or bereavement may qualify. Not knowing the law, or relying on someone else without checking, generally does not.',
           ],
           table: {
             headers: ['Behaviour', 'Maximum', 'Minimum if unprompted', 'Minimum if prompted'],
@@ -1841,11 +1902,11 @@
         {
           h: 'Late returns: the points system',
           p: [
-            'Late **submission** of a return is penalised on a points basis, and the design is deliberately forgiving of the occasional slip while being unforgiving of a pattern.',
+            'Late **submission** of a return is penalised on a points basis. The design forgives the occasional slip but not a pattern.',
             'Each late return earns **one point**. Nothing is charged for a point on its own. Once the business reaches its **threshold**, a **£' + T.penalties.lateSubmission.penalty.value + '** penalty is charged, and a further £' + T.penalties.lateSubmission.penalty.value + ' for every late return after that, for as long as it stays at the threshold.',
             'The threshold **rises with filing frequency**: **' + T.penalties.lateSubmission.thresholds.annual + ' points** for annual filers, **' + T.penalties.lateSubmission.thresholds.quarterly + '** for quarterly, **' + T.penalties.lateSubmission.thresholds.monthly + '** for monthly. That makes sense — a business filing twelve times a year has more opportunities to be late, so it is allowed more points before the penalty bites.',
-            'Points do not last forever, and there are **two different ways** they go away. A single point earned while the business is still **below** its threshold simply **expires automatically after 24 months**, counted from the first day of the month after the one in which the late return was due. Nothing has to be done to earn that.',
-            'Once the business is **at** its threshold, automatic expiry stops and clearing the points takes real effort. It must complete a **period of compliance**, submitting everything on time for **' + T.penalties.lateSubmission.complianceMonths.annual + ' months** (annual), **' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months** (quarterly) or **' + T.penalties.lateSubmission.complianceMonths.monthly + ' months** (monthly) — *and* it must have submitted all outstanding returns for the previous 24 months. Both conditions, not either.',
+            'Points do not last forever, and there are **two different ways** they go away. A single point earned while the business is still **below** its threshold **expires automatically after 24 months**. The 24 months are counted from the first day of the month after the one in which the late return was due. Nothing has to be done to earn that.',
+            'Once the business is **at** its threshold, automatic expiry stops and clearing the points takes real effort. It must complete a **period of compliance**, submitting everything on time for **' + T.penalties.lateSubmission.complianceMonths.annual + ' months** (annual), **' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months** (quarterly) or **' + T.penalties.lateSubmission.complianceMonths.monthly + ' months** (monthly). *And* it must have submitted all outstanding returns for the previous 24 months. Both conditions, not either.',
             'Note what is being penalised here: **lateness of the return, not of the money**. A nil return filed late earns a point in exactly the same way as one showing a large liability.',
           ],
           table: {
@@ -1860,12 +1921,12 @@
         {
           h: 'When no return is submitted at all',
           p: [
-            'Points and penalties assume a return eventually arrives. Where one does not, HMRC has a further power: it may raise an **assessment to the best of its judgement**, estimating the liability from whatever information it has — previous returns, trade data, information from third parties. These are sometimes called prime or central assessments.',
+            'Points and penalties assume a return eventually arrives. Where one does not, HMRC has a further power. It may raise an **assessment to the best of its judgement**, estimating the liability from whatever information it has: previous returns, trade data, information from third parties. These are sometimes called prime or central assessments.',
             'Three features of an assessment are each a common misunderstanding.',
             'First, an assessment does **not** discharge the obligation to file. The return is still due; the assessment simply creates an enforceable debt in the meantime, so that HMRC is not left waiting indefinitely with nothing to collect. Submitting the return displaces the assessment with the real figure.',
             'Second, the assessment is HMRC’s best judgement, not the business’s, and it may come out either too high or too low. Too high is possible because HMRC will not assume input tax it cannot see; too low is possible because it is working from incomplete information. Ignoring one because "it is wrong anyway" is the worst available response in both directions.',
             'The too-low case carries a trap worth knowing, because it is short, hard-edged and exactly the sort of thing an assessment tests. Where an assessment **understates** what is owed, the business must tell HMRC **within 30 days** or send a correct return and payment. Fail to do so and a penalty of **up to 30% of the assessment** may follow. A business that quietly accepts a favourable estimate has not got away with anything.',
-            'Third, there are **time limits**. HMRC may normally assess up to **' + T.assessments.normalTimeLimitYears.value + ' years** back — which is why the ' + T.records.retentionYears.value + '-year retention rule exists — extended to **' + T.assessments.extendedTimeLimitYears.value + ' years** where the loss of tax was brought about deliberately. Penalties and interest continue to run throughout, so the passage of time makes the position worse rather than better.',
+            'Third, there are **time limits**. HMRC may normally assess up to **' + T.assessments.normalTimeLimitYears.value + ' years** back, which is why the ' + T.records.retentionYears.value + '-year retention rule exists. That extends to **' + T.assessments.extendedTimeLimitYears.value + ' years** where the loss of tax was brought about deliberately. Penalties and interest continue to run throughout, so the passage of time makes the position worse rather than better.',
           ],
           callout: { kind: 'key', text: 'An assessment is a placeholder debt, not a substitute for the return. Filing displaces it; ignoring it lets penalties and interest accumulate on a figure that may be wrong in either direction.' },
         },
@@ -1933,7 +1994,9 @@
             'Late **payment** is penalised entirely separately from late submission, and the structure is escalating rather than fixed — the longer the money is outstanding, the harder it bites. Three things can be running at once: a first penalty, a second penalty, and interest.',
             'Nothing at all is charged if payment is made **within 15 days** of the due date. This is a genuine grace period, and it exists because HMRC would rather have the money slightly late than fight about it.',
             'The **first penalty** is a single penalty built from two elements. It is triggered once payment is more than 15 days late, and the first element is **' + T.penalties.latePayment.firstPenaltyDay15.value + '%** of whatever was outstanding at **day 15**. If any of the debt is still unpaid at **day 30**, a second element of **' + T.penalties.latePayment.firstPenaltyDay30.value + '%** of the amount outstanding then is added to it. So a business that clears the debt on day 20 pays one element; a business still owing anything at day 30 pays both. Once both are set the first penalty is fixed — it does not grow further.',
-            'A **second penalty** — a genuinely separate charge, not a third element of the first — then begins to accrue from **day 31**, daily at **' + T.penalties.latePayment.secondPenaltyAnnualised.value + '% a year** on the balance still outstanding, until it is paid or a **Time to Pay agreement** is reached — a formal arrangement with HMRC to settle the debt by instalments, which stops further penalties accruing from the date it is agreed for as long as the business keeps to it. So from day 31 the first penalty is complete at both its elements, this second penalty is accruing on top of it, and interest is running underneath all of it.',
+            'A **second penalty** then starts to build from **day 31**. It is a genuinely separate charge, not a third element of the first. It runs daily at **' + T.penalties.latePayment.secondPenaltyAnnualised.value + '% a year** on the balance still outstanding.',
+            'It runs until the debt is paid, or until a **Time to Pay agreement** is reached. That is a formal arrangement with HMRC to settle by instalments. It stops further penalties building from the date it is agreed, for as long as the business keeps to it.',
+            'So from day 31 three things are running at once. The first penalty is complete at both its elements. The second penalty is building on top of it. And interest is running underneath all of it.',
             'Running alongside all of it is **late payment interest**, charged at the **Bank of England base rate plus 4%** from the first day the payment is overdue. Interest is not a penalty and is not affected by the 15-day grace period — it runs from day one. And it continues even where a Time to Pay agreement has stopped further penalties accruing.',
           ],
           table: {
@@ -1951,7 +2014,7 @@
         {
           h: 'Working out what late payment costs',
           p: [
-            'Questions on this tend to give a liability and a payment date and ask for the penalty. The method is to work out where the payment date sits relative to the three checkpoints — day 15, day 30, and beyond — and then apply only the charges that have been triggered.',
+            'Questions on this tend to give a liability and a payment date and ask for the penalty. Work out where the payment date sits against the three checkpoints — day 15, day 30, and beyond. Then apply only the charges that have been triggered.',
           ],
           worked: {
             title: 'Penalties on a VAT liability paid 40 days late',
@@ -1977,12 +2040,12 @@
           h: 'Getting error correction wrong',
           p: [
             'Outcome 3 covers the mechanics of correcting an error. What belongs here is the **consequence of doing it wrongly**, because that is a matter of legislation rather than method.',
-            'The rule being applied — lesson 3A sets it out in full, including what "net" means when several errors are found at once — is that a small **net error** may be corrected on the next return, while a larger one must be separately notified to HMRC on **form ' + T.errorCorrection.separateNotificationForm + '**. Be precise about what goes wrong when a business adjusts a large error on the next return instead of notifying it, because it is easy to overstate. **No separate penalty is created by the choice of method.** What happens is that the original inaccuracy has still not been disclosed — adjusting a figure inside a later return does not tell HMRC anything, and does not count as disclosure.',
+            'The rule is set out in full in lesson 3A, including what "net" means when several errors are found at once. In short: a small **net error** may be corrected on the next return, while a larger one must be separately notified to HMRC on **form ' + T.errorCorrection.separateNotificationForm + '**. Be precise about what goes wrong when a business adjusts a large error on the next return instead of notifying it, because it is easy to overstate. **No separate penalty is created by the choice of method.** What happens is that the original inaccuracy has still not been disclosed. Adjusting a figure inside a later return does not tell HMRC anything, and does not count as disclosure.',
             'The consequence is the loss of something valuable rather than the arrival of something new. The penalty for the original inaccuracy remains live and unmitigated. When HMRC finds it — and the notification threshold exists precisely because large errors get looked at — the disclosure is then **prompted**, so the higher minimum applies. A careless error that could have been reduced to ' + T.errorCorrection.penaltyForError.careless.unpromptedMin + '% by notifying it now has a floor of ' + T.errorCorrection.penaltyForError.careless.promptedMin + '%. The business has not bought a second penalty; it has thrown away the discount on the first.',
             'Understanding that, rather than memorising it, explains why the notification requirement exists at all. It is what lets HMRC see the scale and pattern of errors across the taxpayer population. An error buried in a return is invisible; the same error notified is data.',
             'Two further points. A **deliberate** error must **always** be separately notified, whatever its size — the value limits apply only to genuine mistakes. And errors carry a behaviour-based penalty, calculated as a percentage of the tax and reduced for the quality of disclosure.',
             'That penalty table is **not** the failure-to-notify table from lesson 1F, and the difference is examinable. Errors in a return fall under a separate regime with its own first band — **careless** rather than non-deliberate — and no twelve-month distinction. A careless error disclosed unprompted can be reduced to **' + T.errorCorrection.penaltyForError.careless.unpromptedMin + '%**; prompted, the floor is **' + T.errorCorrection.penaltyForError.careless.promptedMin + '%**, not the 10% that applies to a late notification. Deliberate runs to ' + T.errorCorrection.penaltyForError.deliberate.max + '%, and deliberate and concealed to ' + T.errorCorrection.penaltyForError.deliberateAndConcealed.max + '%.',
-            'The most valuable line in the table below is the one that is easy to skip: an inaccuracy made **despite taking reasonable care** carries no penalty at all. Care taken before the return goes, and disclosure made the moment an error is found, are together worth more than any amount of argument afterwards.',
+            'The most valuable line in the table below is the one that is easy to skip. An inaccuracy made **despite taking reasonable care** carries no penalty at all. Care taken before the return goes, and disclosure made the moment an error is found, are worth more than any argument afterwards.',
           ],
           table: {
             headers: ['Behaviour', 'Maximum', 'Minimum if unprompted', 'Minimum if prompted'],
@@ -1998,10 +2061,10 @@
         {
           h: 'Reclaiming VAT that was never recoverable',
           p: [
-            'The last of these concerns **incorrect recovery** — input tax reclaimed that the business was not entitled to reclaim. Outcome 2 sets out which items are blocked, and you have not met them yet: in short, client entertaining, cars available for private use, purchases without a valid VAT invoice, and costs attributable to exempt supplies. What matters here is not the list but what follows from getting it wrong.',
-            'The **operational** consequence is straightforward. The input tax is disallowed and becomes repayable, with interest from the date it was wrongly recovered. A business that has reclaimed £6,000 on a car for three years does not simply stop; it repays what it took, with interest, and the cash impact arrives all at once.',
+            'The last of these concerns **incorrect recovery** — input tax reclaimed that the business was not entitled to reclaim. Outcome 2 sets out which items are blocked, and you have not met them yet. In short: client entertaining, cars available for private use, purchases without a valid VAT invoice, and costs attributable to exempt supplies. What matters here is not the list but what follows from getting it wrong.',
+            'The **operational** consequence is straightforward. The input tax is disallowed and becomes repayable, with interest from the date it was wrongly recovered. A business that has reclaimed £6,000 on a car for three years does not simply stop. It repays what it took, with interest, and the cash impact arrives all at once.',
             'The **legal** consequence depends, as ever, on behaviour. A genuine misunderstanding about a borderline item is careless at worst and may attract a low penalty or none. A pattern of reclaiming VAT on obviously blocked items, or on invoices the business knows it does not hold, moves quickly towards deliberate. At the far end, VAT fraud is a criminal offence, not merely a matter of penalties.',
-            'There is a professional dimension too, and the specification cares about it. An accounting technician who prepares a return knowing it claims input tax the business is not entitled to has a problem that is not solved by the penalty being the client’s. The obligation to act with integrity and to make a disclosure where required sits with the person preparing the figures, and it is the subject of Outcome 5.',
+            'There is a professional dimension too, and the specification cares about it. Suppose an accounting technician prepares a return knowing it claims input tax the business is not entitled to. That the penalty falls on the client does not solve the technician’s problem. The obligation to act with integrity, and to make a disclosure where required, sits with the person preparing the figures. It is the subject of Outcome 5.',
           ],
           split: {
             left: { title: 'Operational consequences', items: ['The input tax is disallowed and becomes repayable', 'Interest runs from the date of the wrongful recovery', 'HMRC may look at earlier periods too, up to ' + T.assessments.normalTimeLimitYears.value + ' years', 'Records and systems come under closer scrutiny'] },
@@ -2074,8 +2137,8 @@
           h: 'Returns are wrong more often than you would think',
           p: [
             'A VAT return is a self-assessment prepared under time pressure from records that were themselves prepared under time pressure. Invoices arrive late. A supply gets rated wrongly. A credit note is posted to the wrong side. Input tax is claimed on a car. None of this is unusual, and the law does not treat it as scandalous — it provides a route for putting it right.',
-            'What the law does insist on is that the route is followed. There are exactly two ways of correcting a previous period\'s error, HMRC calls them **Method 1** and **Method 2**, and which one applies is not a matter of preference. Using the wrong one carries a real cost even where the tax ends up correct — not a separate penalty, but the loss of disclosure: adjusting inside a later return tells HMRC nothing, so the penalty on the original error keeps its higher, prompted floor when HMRC finds it. Lesson 1G sets out exactly what that costs.',
-            'So the question this lesson answers is a narrow one, and stating it precisely comes before any arithmetic: **given an error in a previous period, may it be corrected on the next return, or must it be separately notified to HMRC?** The rest of the lesson follows from it.',
+            'What the law does insist on is that the route is followed. There are exactly two ways of correcting a previous period’s error. HMRC calls them **Method 1** and **Method 2**, and which one applies is not a matter of preference. Using the wrong one carries a real cost even where the tax ends up correct. Not a separate penalty, but the loss of disclosure. Adjusting inside a later return tells HMRC nothing, so the penalty on the original error keeps its higher, prompted floor when HMRC finds it. Lesson 1G sets out exactly what that costs.',
+            'So the question this lesson answers is a narrow one. State it precisely before any arithmetic: **given an error in a previous period, may it be corrected on the next return, or must it be separately notified to HMRC?** The rest of the lesson follows from it.',
             'One thing to be clear about at the outset. This is about errors in **previous** periods. An error spotted before the return is submitted is not an error correction at all — it is just a correction. Fix it and file the right figure.',
           ],
           callout: { kind: 'key', text: 'Method 1: adjust it on the next return. Method 2: notify HMRC separately on form ' + T.errorCorrection.separateNotificationForm + '. The choice is determined by the rules, not by convenience.' },
@@ -2085,8 +2148,8 @@
           p: [
             'Method 1 — correcting on the next return — is available only if the error passes **both** limbs of a two-part test. Fail either one and Method 2 becomes compulsory.',
             'The **first limb** is a flat figure. A net error of **£' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + ' or less** may always be corrected on the next return. Below that figure nothing else needs checking; the error is small enough that HMRC does not want to hear about it separately.',
-            'The **second limb** catches larger errors and scales them to the size of the business. An error **above £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '** may still go on the next return if it does not exceed **' + T.errorCorrection.turnoverPercentage.value + '% of the Box 6 figure** for the period in which the error is discovered — subject to an absolute ceiling of **£' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '**. Above that ceiling, Method 2 is required however large the business is.',
-            'Read the two limbs together and the structure is: small errors always qualify; middling errors qualify if the business is big enough that the error is proportionately trivial; very large errors never qualify. That is a sensible design, and remembering the reason makes the mechanics much easier to reproduce under pressure than remembering three numbers.',
+            'The **second limb** catches larger errors and scales them to the size of the business. An error **above £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '** may still go on the next return. It qualifies if it does not exceed **' + T.errorCorrection.turnoverPercentage.value + '% of the Box 6 figure** for the period in which the error is discovered. That is subject to an absolute ceiling of **£' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '**. Above that ceiling, Method 2 is required however large the business is.',
+            'Read the two limbs together and the structure is simple. Small errors always qualify. Middling errors qualify if the business is big enough that the error is proportionately trivial. Very large errors never qualify. That is a sensible design, and remembering the reason makes the mechanics much easier to reproduce under pressure than remembering three numbers.',
           ],
           flow: ['Net error ≤ £' + T.errorCorrection.netErrorLimit.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → is it ≤ ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6 AND ≤ £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + '?', 'Yes → Method 1', 'No → Method 2'],
           examtrap: 'The ' + T.errorCorrection.turnoverPercentage.value + '% is of the Box 6 figure for the period in which the error is DISCOVERED — not the period in which it was made. Questions give both figures.',
@@ -2094,10 +2157,10 @@
         {
           h: '"Net error" means net',
           p: [
-            'The word doing most of the work in that test is **net**, and it is the detail that most often produces a wrong answer even when the thresholds have been learned correctly.',
+            'The word doing most of the work in that test is **net**. It is the detail that most often produces a wrong answer, even when the thresholds have been learned correctly.',
             'The net error is the **total of all errors found, under-declarations less over-declarations**, for the periods being corrected. It is not the largest single error, and it is not the sum of their absolute values.',
-            'So a business that finds it under-declared output tax by £9,000 and separately over-claimed input tax by £4,000 has a net error of £13,000 — both are under-declarations of VAT due, and they add. But a business that under-declared output tax by £9,000 and *also* under-claimed input tax by £4,000 has a net error of £5,000, because the second error was in HMRC\'s favour and offsets the first.',
-            'That second case is the one to watch. Two errors of £9,000 and £4,000 might look like a £13,000 problem requiring Method 2, when in fact the business owes £5,000 net and may correct it on the next return. Working out the direction of each error before adding anything is not optional.',
+            'Take a business that under-declared output tax by £9,000 and separately over-claimed input tax by £4,000. Its net error is £13,000: both are under-declarations of VAT due, so they add. Now take a business that under-declared output tax by £9,000 and *also* under-claimed input tax by £4,000. Its net error is £5,000, because the second error was in HMRC’s favour and offsets the first.',
+            'That second case is the one to watch. Two errors of £9,000 and £4,000 might look like a £13,000 problem requiring Method 2. In fact the business owes £5,000 net and may correct it on the next return. Working out the direction of each error before adding anything is not optional.',
           ],
           split: {
             left: { title: 'Increases the net error', items: ['Output tax **under**-declared — too little VAT charged', 'Input tax **over**-claimed — too much VAT reclaimed', 'Both mean VAT is owed to HMRC'] },
@@ -2108,8 +2171,8 @@
           h: 'Time limits, and the errors the test does not cover',
           p: [
             'Two qualifications sit outside the two-limb test, and both override it.',
-            'The first is the **four-year time limit**. An error may only be corrected within four years — measured from the end of the period for under- or over-declared **output** tax, and from the return due date for under-claimed **input** tax. Beyond four years the correction is simply out of time, whichever method would otherwise have applied.',
-            'The second is the treatment of **deliberate** errors. A deliberate error must **always** be separately notified under Method 2, whatever its size. The value limits exist for genuine mistakes; they are not a shelter for a decision. Burying a deliberate error inside the next return is a further failure on top of the original one, and it moves the whole matter into the deliberate-and-concealed band of the penalty regime — the most expensive band there is.',
+            'The first is the **four-year time limit**. An error may only be corrected within four years. That is measured from the end of the period for under- or over-declared **output** tax, and from the return due date for under-claimed **input** tax. Beyond four years the correction is simply out of time, whichever method would otherwise have applied.',
+            'The second is the treatment of **deliberate** errors. A deliberate error must **always** be separately notified under Method 2, whatever its size. The value limits exist for genuine mistakes; they are not a shelter for a decision. Burying a deliberate error inside the next return is a further failure on top of the original one. It moves the whole matter into the deliberate-and-concealed band of the penalty regime — the most expensive band there is.',
             'It is also worth knowing that **Method 2 may be used voluntarily** for any error, including a small one. There is no rule against notifying an error you were entitled to adjust quietly. A business that wants a clean, documented record — or an accountant who wants the disclosure to be visibly unprompted — may reasonably choose it.',
           ],
           callout: { kind: 'warning', text: 'A deliberate error is always Method 2, whatever the amount. And nothing at all can be corrected more than four years back.' },
@@ -2117,10 +2180,10 @@
         {
           h: 'What separate notification involves, and what it costs',
           p: [
-            'Method 2 means telling HMRC about the error directly, on **form ' + T.errorCorrection.separateNotificationForm + '** or through the online error correction service, rather than folding it into a return. The notification states what the error was, which periods it affected, how much VAT is involved and in which direction.',
+            'Method 2 means telling HMRC about the error directly, rather than folding it into a return. That is done on **form ' + T.errorCorrection.separateNotificationForm + '** or through the online error correction service. The notification states what the error was, which periods it affected, how much VAT is involved and in which direction.',
             'Two consequences follow, and neither is automatic punishment.',
             '**Interest** runs where the error meant VAT was paid late. That is not a penalty and is not discretionary — the business had money that should have been HMRC\'s, and interest is the price of that.',
-            'A **penalty** depends entirely on **behaviour**, following the same structure as the failure to notify regime in lesson 1F. An error made despite taking reasonable care attracts no penalty at all. A careless error attracts a modest one. A deliberate error attracts a large one, and concealment larger still. Every band is reduced for the quality of disclosure, and an **unprompted** disclosure — made before the business had reason to think HMRC was about to find it — is worth a great deal.',
+            'A **penalty** depends entirely on **behaviour**, following the same structure as the failure to notify regime in lesson 1F. An error made despite taking reasonable care attracts no penalty at all. A careless error attracts a modest one. A deliberate error attracts a large one, and concealment larger still. Every band is reduced for the quality of disclosure. An **unprompted** disclosure — one made before the business had reason to think HMRC was about to find it — is worth a great deal.',
             'The practical lesson is the same one that runs through the whole penalty regime: the moment an error is found is the moment it is cheapest to disclose. Waiting does not make it go away, and being found rather than confessing costs real money.',
           ],
           callout: { kind: 'tip', text: 'Reasonable care taken and prompt unprompted disclosure can mean no penalty at all. The same error found by HMRC eighteen months later will not be free.' },
@@ -2187,7 +2250,7 @@
           h: 'From "there is an error" to "here is the figure"',
           p: [
             'Knowing which method applies is half the outcome. The other half is producing the number: working out what the correction actually is, deciding which way it goes, and seeing what it does to the return.',
-            'The method is always the same three steps, and following them in order prevents nearly every mistake that these questions are designed to produce. **Work out what was recorded. Work out what should have been recorded. The difference is the adjustment.** Resist the urge to leap straight to the answer; the difference between "the invoice was £2,400" and "the error was £2,400" is exactly the kind of slip that a computer-marked assessment cannot give partial credit for.',
+            'The method is always the same three steps, and following them in order prevents nearly every mistake that these questions are designed to produce. **Work out what was recorded. Work out what should have been recorded. The difference is the adjustment.** Resist the urge to leap straight to the answer. The difference between "the invoice was £2,400" and "the error was £2,400" is exactly the kind of slip a computer-marked assessment cannot give partial credit for.',
             'Then decide the **direction**, which is a separate question and deserves separate attention. Does the correction increase the VAT due to HMRC, or reduce it? Every error is one or the other, and the arithmetic that follows depends entirely on getting that right.',
           ],
           callout: { kind: 'key', text: 'What was recorded, what should have been recorded, and the difference between them. Then the direction — more VAT due, or less.' },
@@ -2195,7 +2258,7 @@
         {
           h: 'A single error',
           p: [
-            'Start with one error in isolation, because the compound cases are only this repeated. Note in particular how the question gives a *gross* figure — as they usually do — and how much of the work is in the first step rather than the last.',
+            'Start with one error in isolation, because the compound cases are only this repeated. Note how the question gives a *gross* figure, as they usually do. And note how much of the work is in the first step rather than the last.',
           ],
           worked: {
             title: 'Output tax under-declared on a missed invoice',
@@ -2221,8 +2284,8 @@
         {
           h: 'Several errors at once',
           p: [
-            'Assessment questions rarely give one error. They give three or four pointing in different directions and expect a single net figure, because that is what the two-limb test needs and because it is the only way to test whether direction has been understood.',
-            'The discipline is to build a table rather than work in prose: one line per error, each showing the amount and the direction, then a single total. Keeping under-declarations and over-declarations in separate columns and subtracting once at the end is far more reliable than trying to add signed numbers in your head.',
+            'Assessment questions rarely give one error. They give three or four pointing in different directions, and expect a single net figure. That is what the two-limb test needs, and it is the only way to test whether direction has been understood.',
+            'The discipline is to build a table rather than work in prose. One line per error, each showing the amount and the direction, then a single total. Keep under-declarations and over-declarations in separate columns and subtract once at the end. That is far more reliable than adding signed numbers in your head.',
           ],
           worked: {
             title: 'Four errors, one net figure, one decision',
@@ -2249,9 +2312,9 @@
           h: 'What the adjustment does to the return',
           p: [
             'The last requirement of this topic area is to recognise the **impact** of the adjustment — not merely to compute it. The adjustment has three effects, and you should be able to state each.',
-            'The **immediate** effect is on Box 5. A correction that increases VAT due raises the payment; one that reduces it lowers the payment, or turns it into a repayment. Under Method 1 the adjustment is folded into the return, so no separate figure appears — this is why an unexplained jump in a period\'s liability should always prompt the question of whether a prior-period correction is buried in it.',
+            'The **immediate** effect is on Box 5. A correction that increases VAT due raises the payment; one that reduces it lowers the payment, or turns it into a repayment. Under Method 1 the adjustment is folded into the return, so no separate figure appears. That is why an unexplained jump in a period’s liability should always prompt the question of whether a prior-period correction is buried in it.',
             'The **record-keeping** effect is that the VAT account must show the correction separately. Adjusting the return without adjusting the underlying account leaves the two disagreeing, and the reconciliation in lesson 3E will then fail for a reason nobody can trace six months later.',
-            'The **cash** effect is the one businesses feel. A large Method 1 correction arrives in a single period, on top of that period\'s ordinary liability. A business that has been under-declaring for a year does not repay it gently over the next year; it repays it all at once, on one due date, and if it cannot the late payment regime of lesson 1G begins immediately.',
+            'The **cash** effect is the one businesses feel. A large Method 1 correction arrives in a single period, on top of that period’s ordinary liability. A business that has been under-declaring for a year does not repay it gently over the next year. It repays it all at once, on one due date. And if it cannot, the late payment regime of lesson 1G begins immediately.',
           ],
           examtrap: 'Under Method 1 the correction disappears into the return\'s ordinary figures. Only the VAT account shows it separately — which is exactly why the VAT account has to be kept properly.',
         },
@@ -2307,8 +2370,8 @@
         {
           h: 'Nine boxes, and the ones this unit asks about',
           p: [
-            'The VAT return has nine boxes. Outcome 2 built the figures that go in them; this topic is about knowing precisely what each one contains, because the assessment asks directly and because you cannot verify a return without it.',
-            'Three of the nine are **not assessed in this unit**. Boxes 2, 8 and 9 all concern movements of goods between Northern Ireland and the EU, and the specification excludes Northern Ireland rules from the unit entirely. They are mentioned here only so that the numbering makes sense — if you meet Box 3 as "boxes 1 and 2 added together" and have never heard of Box 2, the definition looks broken.',
+            'The VAT return has nine boxes. Outcome 2 built the figures that go in them. This topic is about knowing precisely what each one contains, because the assessment asks directly and because you cannot verify a return without it.',
+            'Three of the nine are **not assessed in this unit**. Boxes 2, 8 and 9 all concern movements of goods between Northern Ireland and the EU, and the specification excludes Northern Ireland rules from the unit entirely. They are mentioned here only so that the numbering makes sense. If you meet Box 3 as "boxes 1 and 2 added together" and have never heard of Box 2, the definition looks broken.',
             'That leaves six to know properly, and they fall into two natural groups whose difference is the single most useful thing in this lesson. Boxes 1 to 5 are the **VAT boxes** — amounts of tax. Boxes 6 to 9 are the **value boxes** — the net values of the supplies themselves, excluding VAT. Confusing the two groups is the most common error in return preparation, and almost everything that follows is a consequence of the distinction.',
           ],
           table: {
@@ -2329,10 +2392,10 @@
         {
           h: 'The VAT boxes: 1, 3, 4 and 5',
           p: [
-            '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up the adjustments taught in Outcome 2 — the **fuel scale charge**, VAT on **gifts of goods once more than £' + T.gifts.goodsLimit.value + ' has gone to one person in a year** (lesson 2E), and **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
-            '**Box 4** is input tax: VAT recoverable on purchases. It includes **import VAT reclaimed under postponed accounting** — the same figure that went into Box 1 — and **bad debt relief**, which is claimed as input tax rather than as a reduction of output tax. It excludes everything blocked: client entertaining, cars available for private use, and anything for which the business does not hold a valid VAT invoice.',
+            '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up three adjustments taught in Outcome 2. The **fuel scale charge**. VAT on **gifts of goods once more than £' + T.gifts.goodsLimit.value + ' has gone to one person in a year** (lesson 2E). And **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
+            '**Box 4** is input tax: VAT recoverable on purchases. It includes **import VAT reclaimed under postponed accounting** — the same figure that went into Box 1. It also includes **bad debt relief**, which is claimed as input tax rather than as a reduction of output tax. It excludes everything blocked: client entertaining, cars available for private use, and anything for which the business does not hold a valid VAT invoice.',
             '**Boxes 3 and 5 are calculated, not entered.** Box 3 is Box 1 plus Box 2; since Box 2 is nil for a business without Northern Ireland acquisitions, Box 3 usually equals Box 1. Box 5 is Box 3 minus Box 4 — the figure that is actually paid or reclaimed.',
-            'When Box 4 exceeds Box 3 the return is a **repayment** return, and lesson 2G made the point that this is entirely normal for a zero-rated trader or an exporter. Box 5 still carries a **positive** figure — lesson 1D noted HMRC says expressly that no minus sign is entered there — it is simply the difference the other way round, and software presents it as a repayment.',
+            'When Box 4 exceeds Box 3 the return is a **repayment** return. Lesson 2G made the point that this is entirely normal for a zero-rated trader or an exporter. Box 5 still carries a **positive** figure; lesson 1D noted that HMRC says expressly no minus sign is entered there. It is simply the difference the other way round, and software presents it as a repayment.',
           ],
           formula: 'Box 3 = Box 1 + Box 2 · Box 5 = the difference between Box 3 and Box 4, entered as a positive figure · Box 4 above Box 3 means a repayment is due',
         },
@@ -2342,17 +2405,17 @@
             'The value boxes are where returns most often go quietly wrong, because their contents are broader than intuition suggests.',
             '**Box 6** is the total **net value of ALL sales and other outputs**, excluding VAT. Everything turns on the word "all". It includes standard-rated and reduced-rated sales, and it also includes **zero-rated sales, exempt sales and exports** — supplies that contributed nothing whatever to Box 1. The instinct to leave out a sale that carried no VAT is exactly wrong, and it is what makes a Box 6 figure too small.',
             '**Box 7** is the total **net value of all purchases and other inputs**, excluding VAT, including imports. It excludes things that are outside the scope of VAT altogether: **wages, PAYE and National Insurance, drawings**, and other non-business expenditure. A Box 7 figure that has swallowed the payroll is a large and obvious error, and it is one of the first things a reviewer checks.',
-            'Box 6 matters beyond the return itself, because it is the figure the **1% error correction test** is measured against. A business that habitually understates Box 6 by omitting its zero-rated sales is also, without realising, shrinking the size of error it may correct on a future return.',
+            'Box 6 matters beyond the return itself. It is the figure the **1% error correction test** is measured against. A business that habitually understates Box 6 by omitting its zero-rated sales is shrinking, without realising it, the size of error it may correct on a future return.',
           ],
           examtrap: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.',
         },
         {
           h: 'Imports and exports on the return',
           p: [
-            'Lesson 2F covered the mechanics; what matters here is where the figures land, because imports and exports touch different boxes and behave quite differently.',
+            'Lesson 2F covered the mechanics. What matters here is where the figures land, because imports and exports touch different boxes and behave quite differently.',
             '**Exports** — goods sent outside the UK — are **zero-rated**. No VAT arises, so Box 1 is unaffected. But the net value still belongs in **Box 6**, exactly like any other zero-rated sale. An exporter that omits its export sales from Box 6 will report a Box 6 figure close to nil while reclaiming substantial input tax, which is both wrong and conspicuous.',
             '**Imports under postponed VAT accounting** are the neat case, and the one most likely to be examined because it looks paradoxical. The import VAT is declared as output tax in **Box 1** and simultaneously reclaimed as input tax in **Box 4**. For a fully taxable business the two cancel and the net effect on Box 5 is **nil** — no cash crosses at the border and none crosses on the return. The net value of the goods goes in **Box 7**.',
-            'The word "fully taxable" in that sentence is load-bearing. A **partially exempt** business cannot recover all of its input tax, so the Box 4 entry is smaller than the Box 1 entry and postponed accounting produces a real net cost. PVA is a timing mechanism, not a relief, and it only nets to nothing for a business that could recover the VAT anyway.',
+            'The word "fully taxable" in that sentence is load-bearing. A **partially exempt** business cannot recover all of its input tax. So the Box 4 entry is smaller than the Box 1 entry, and postponed accounting produces a real net cost. PVA is a timing mechanism, not a relief, and it only nets to nothing for a business that could recover the VAT anyway.',
           ],
           table: {
             headers: ['Transaction', 'Box 1', 'Box 4', 'Box 6', 'Box 7'],
@@ -2424,8 +2487,8 @@
           h: 'Why checking is a step and not a formality',
           p: [
             'It would be easy to treat "check the return before submission" as advice rather than content. The specification makes it a key concept, and there are good reasons why.',
-            'The first is that **submission is a declaration**. The return is the business\'s own statement of what it owes, and once submitted it is the figure HMRC relies on. Getting it wrong is not a draft that will be reviewed by somebody else; it is a legal statement that then has to be corrected through the machinery of lesson 3A, with interest and possibly a penalty.',
-            'The second is the point lesson 1D made about Making Tax Digital. Under MTD, figures flow from the underlying records to the return through **digital links, with no manual stage**. That is precisely what removes the accidental safety net. Under the old regime somebody typed the figures and might have noticed that Box 6 was implausibly small; now nobody types anything, and a wrong figure at source arrives at HMRC untouched. The check has to be deliberate because it is no longer incidental.',
+            'The first is that **submission is a declaration**. The return is the business’s own statement of what it owes, and once submitted it is the figure HMRC relies on. Getting it wrong is not a draft that somebody else will review. It is a legal statement, and it then has to be corrected through the machinery of lesson 3A, with interest and possibly a penalty.',
+            'The second is the point lesson 1D made about Making Tax Digital. Under MTD, figures flow from the underlying records to the return through **digital links, with no manual stage**. That is precisely what removes the accidental safety net. Under the old regime somebody typed the figures and might have noticed that Box 6 was implausibly small. Now nobody types anything, and a wrong figure at source arrives at HMRC untouched. The check has to be deliberate because it is no longer incidental.',
             'The third is that **errors are cheapest when found early**. An error caught before submission is not an error at all — there is no correction, no notification, no interest, no penalty, no question about behaviour. The same error caught eighteen months later by an HMRC officer is all of those things. The few minutes spent checking buy a genuinely disproportionate amount of protection.',
           ],
           callout: { kind: 'key', text: 'An error found before submission costs nothing. The same error found after submission costs a correction, interest, possibly a penalty, and a conversation about behaviour.' },
@@ -2448,9 +2511,9 @@
         {
           h: 'When the return and the records disagree',
           p: [
-            'A reviewer\'s real skill is diagnostic: given a difference between the return and the accounting records, working out what would produce a difference of that shape. Some causes are innocent and some are errors, and telling them apart quickly is what the specification means by identifying reasons for differences.',
-            'Several **legitimate** causes exist, and a reviewer who has not internalised them will chase problems that are not there. **Timing differences** are the commonest: the tax point rules of lesson 2B mean a supply belongs to the period of its tax point, which is not always the period the accounting system recorded it in. Under **cash accounting** the return follows receipts and payments while the ledgers follow invoices, so the two are *expected* to differ. **Prior-period error corrections** made under Method 1 sit in the return without appearing in this period\'s ledgers at all. And **partial exemption** restrictions reduce recoverable input tax below the amount in the purchase ledger.',
-            'The **error** causes look different in character. Input tax claimed on a blocked item, a supply given the wrong rate, a credit note posted to the wrong side, a transposition, a missing invoice, or output tax accounted for in the wrong period.',
+            'A reviewer’s real skill is diagnostic. Given a difference between the return and the accounting records, work out what would produce a difference of that shape. Some causes are innocent and some are errors. Telling them apart quickly is what the specification means by identifying reasons for differences.',
+            'Several **legitimate** causes exist, and a reviewer who does not know them will chase problems that are not there. **Timing differences** are the commonest. The tax point rules of lesson 2B mean a supply belongs to the period of its tax point. That is not always the period the accounting system recorded it in. Under **cash accounting** the return follows receipts and payments while the ledgers follow invoices, so the two are *expected* to differ. **Prior-period error corrections** made under Method 1 sit in the return without appearing in this period’s ledgers at all. And **partial exemption** restrictions reduce recoverable input tax below the amount in the purchase ledger.',
+            'The **error** causes look different in character. Input tax claimed on a blocked item. A supply given the wrong rate. A credit note posted to the wrong side. A transposition, a missing invoice, or output tax accounted for in the wrong period.',
             'The practical approach is to size the difference first and let its shape suggest the cause. A difference that is exactly 20% of a round number points at a single omitted or duplicated invoice. A difference divisible by 9 is very often a transposition — £1,530 recorded as £1,350 differs by £180. A difference matching the fuel scale charge to the penny is an adjustment that was forgotten. Sizing before hunting saves a great deal of time.',
           ],
           table: {
@@ -2516,7 +2579,7 @@
         {
           h: 'The VAT control account',
           p: [
-            'Reconciliation is the formal version of the checking in the last lesson: proving that the return and the accounting records tell the same story, and explaining every difference between them.',
+            'Reconciliation is the formal version of the checking in the last lesson. It proves that the return and the accounting records tell the same story, and explains every difference between them.',
             'The document at the centre of it is the **VAT control account**, which lesson 1B identified as the record HMRC asks for first. It is an ordinary ledger account, and Level 2 taught you to post to it. Output tax is **credited** to it as sales are recorded, because it is a liability owed to HMRC. Input tax is **debited**, because it reduces that liability. The balance at the period end is what the business owes — and it should equal Box 5.',
             'Should, but does not automatically. The control account is built from the daybooks; the return is built from the control account **plus the adjustments** that live outside the daybooks. Every one of those adjustments is a legitimate difference that has to be identified and explained, and identifying them is what a reconciliation does.',
             'A successful reconciliation proves less than it appears to. It proves the return is **consistent** with the records. It does not prove either is **right**: a sale recorded at the wrong rate in the daybook will flow through to both, and reconcile perfectly. Reconciliation and review are two different checks, and a business needs both.',
@@ -2529,7 +2592,7 @@
         {
           h: 'Reconciling in practice',
           p: [
-            'The method is the same as any reconciliation you have met: start with one figure, apply the known reconciling items, and arrive at the other. Start from the control account balance, because that is the one built mechanically from the ledgers, and work towards Box 5.',
+            'The method is the same as any reconciliation you have met. Start with one figure, apply the known reconciling items, and arrive at the other. Start from the control account balance, because that is the one built mechanically from the ledgers, and work towards Box 5.',
           ],
           worked: {
             title: 'Reconciling a control account balance to Box 5',
@@ -2554,10 +2617,10 @@
         {
           h: 'Reviewing a return from the accounting information',
           p: [
-            'The other "be able to" requirement in this topic is the reverse exercise: given a set of accounting information, review a return somebody else prepared and say whether it is right.',
+            'The other "be able to" requirement in this topic is the reverse exercise. Given a set of accounting information, review a return somebody else prepared and say whether it is right.',
             'This is a different skill from building one, and it needs a different approach. When building a return you work forwards from the records. When reviewing, work **backwards from the return**, asking of each figure: what should this be, and does the evidence support it?',
             'A workable order is to check the **structure** first — is Box 3 really Box 1 plus Box 2, is Box 5 really Box 3 less Box 4? These are arithmetic and either agree or do not. Then check the **ratios**, as in lesson 3D. Then check **completeness**: are the adjustments there, and does Box 6 include the zero-rated and exempt sales? Then check the **exclusions**: is there blocked input tax in Box 4, or wages in Box 7?',
-            'Working in that order matters, because a structural error makes every later check meaningless — if Box 5 does not equal Box 3 minus Box 4 then something is badly wrong with how the return was assembled, and there is no point examining the ratios of figures that were not combined correctly in the first place.',
+            'Working in that order matters, because a structural error makes every later check meaningless. If Box 5 does not equal Box 3 minus Box 4, something is badly wrong with how the return was assembled. There is no point examining the ratios of figures that were not combined correctly in the first place.',
           ],
           flow: ['Check the structure', 'Check the ratios', 'Check completeness', 'Check the exclusions', 'Reconcile to the records'],
         },
@@ -2566,8 +2629,8 @@
           p: [
             'Finding a problem is not the end of the task. What happens next depends on when it was found and how large it is, and the whole of this outcome comes together at that point.',
             'If the return has **not yet been submitted**, amend it. There is no error to correct, nothing to notify and nothing to disclose.',
-            'If it **has been submitted**, lesson 3A decides the route: work out the net error, apply the two-limb test, and either adjust the next return under Method 1 or notify separately under Method 2. Remember that a deliberate error is always Method 2, and that nothing is correctable beyond four years.',
-            'If the problem is **systemic** rather than a one-off — input tax claimed on entertaining every quarter, or zero-rated sales routinely omitted from Box 6 — then correcting this period is only half the job. The same error is in earlier returns too, and the aggregate may be large enough to change which method applies. It is also the kind of pattern HMRC finds quickly on inspection, and finding it yourself first is worth real money under the unprompted disclosure rules.',
+            'If it **has been submitted**, lesson 3A decides the route. Work out the net error, apply the two-limb test, and either adjust the next return under Method 1 or notify separately under Method 2. Remember that a deliberate error is always Method 2, and that nothing is correctable beyond four years.',
+            'Sometimes the problem is **systemic** rather than a one-off: input tax claimed on entertaining every quarter, or zero-rated sales routinely omitted from Box 6. Then correcting this period is only half the job. The same error is in earlier returns too, and the aggregate may be large enough to change which method applies. It is also the kind of pattern HMRC finds quickly on inspection, and finding it yourself first is worth real money under the unprompted disclosure rules.',
             'And if the problem raises a question about **whether the figures were wrong on purpose**, that is no longer a technical matter. Lesson 1G touched on it: the obligation to act with integrity sits with whoever prepares the return, and it is not discharged by the penalty falling on somebody else. Outcome 5 deals with who to tell and how.',
           ],
           callout: { kind: 'tip', text: 'Before submission, just fix it. After submission, run the two-limb test. If it is systemic, check the earlier periods too — the aggregate may change the method.' },
@@ -2642,7 +2705,7 @@
           h: 'The second tax collected on somebody else\'s behalf',
           p: [
             'Everything so far has been VAT. This outcome changes subject, and the reason the two sit in the same unit is not accidental.',
-            'Lesson 0A framed the unit as being about **two taxes a business handles on other people\'s behalf**. VAT is collected from customers. Payroll taxes are deducted from employees. In both cases the business is holding money that belongs to the Exchequer and passing it on, and in both cases that is what justifies the machinery around it — compulsory registration, prescribed records, fixed deadlines, rights of inspection, and penalties that begin on a named day.',
+            'Lesson 0A framed the unit as being about **two taxes a business handles on other people’s behalf**. VAT is collected from customers. Payroll taxes are deducted from employees. In both cases the business is holding money that belongs to the Exchequer and passing it on. In both cases that is what justifies the machinery around it: compulsory registration, prescribed records, fixed deadlines, rights of inspection, and penalties that begin on a named day.',
             'So if the shape of this outcome feels familiar, that is because it is the same shape. Register, keep records, file returns, pay on time, be penalised if you do not. What changes is the detail: different deadlines, different forms, different retention period, a different penalty structure. The temptation is to assume the VAT answers carry across, and several of them very nearly do without being right.',
             '**Payroll is operated by any business or individual who employs staff**, and the obligation is genuinely universal. A sole director of their own limited company is an employer of one, and must run payroll. A household employing a nanny is an employer. There is no size below which the rules stop applying. And as with VAT, **HMRC is the relevant tax authority** — the same body, the same statutory footing.',
           ],
@@ -2653,7 +2716,7 @@
           p: [
             'Registration is the first obligation, and unlike VAT registration there is **no threshold to cross**. The trigger is simply employing somebody.',
             'The timing rule is short: an employer must register **before the first payday**, and cannot register **more than two months** in advance. The window is deliberately narrow at both ends. Registering after the first payment has already been made is late; registering six months before trading starts is not permitted.',
-            'What follows registration is an **employer PAYE reference**, which is needed before any submission can be made. This is the practical reason the deadline matters: the reference does not arrive instantly, and an employer who registers the day before payday may find they cannot file on time even though they intended to. The same trap appeared in lesson 1D with Making Tax Digital authorisation.',
+            'What follows registration is an **employer PAYE reference**, which is needed before any submission can be made. This is the practical reason the deadline matters. The reference does not arrive instantly, and an employer who registers the day before payday may find they cannot file on time even though they intended to. The same trap appeared in lesson 1D with Making Tax Digital authorisation.',
             'Notice how different this is from VAT. VAT registration turns on a **turnover threshold**, tested backwards and forwards, and a small business may trade for years without it. Employer registration turns on a single binary fact: is anyone being paid? A business with £20,000 of turnover and one part-time employee must register as an employer while being nowhere near the VAT threshold.',
           ],
           split: {
@@ -2664,10 +2727,10 @@
         {
           h: 'What HMRC can require, and what it can inspect',
           p: [
-            'HMRC\'s powers over payroll mirror its powers over VAT, and for the same reason — the employer is holding deducted money that is not its own.',
-            'HMRC may require an employer to **register**, to **keep records** in a prescribed form, to **submit returns** on a fixed calendar, and to **pay the amounts due** by statutory deadlines. Each of those is a separate obligation with its own consequence for failure, which is the point most worth carrying into the penalties lesson: an employer can comply with three of the four and still be penalised for the fourth.',
+            'HMRC’s powers over payroll mirror its powers over VAT, and for the same reason. The employer is holding deducted money that is not its own.',
+            'HMRC may require an employer to **register**, to **keep records** in a prescribed form, and to **submit returns** on a fixed calendar. It may also require the employer to **pay the amounts due** by statutory deadlines. Each of those is a separate obligation with its own consequence for failure. Carry that into the penalties lesson: an employer can comply with three of the four and still be penalised for the fourth.',
             'HMRC also has **rights of inspection**. It may inspect payroll records, visit business premises at a reasonable time, and require documents to be produced. As with VAT, an employer compliance visit is routine work rather than an accusation, and it is generally arranged in advance — though HMRC may visit unannounced.',
-            'What an officer looks for is whether the deductions actually made match what should have been made, and whether what was deducted was actually paid over. That second half is the one that catches struggling businesses. Deducting tax from an employee\'s wage and then using the money for something else is not a late payment in the ordinary commercial sense; it is spending money deducted from somebody else\'s pay, and HMRC treats it accordingly.',
+            'What an officer looks for is whether the deductions actually made match what should have been made, and whether what was deducted was actually paid over. That second half is the one that catches struggling businesses. Deducting tax from an employee’s wage and then using the money for something else is spending money deducted from somebody else’s pay. HMRC treats it far more seriously than an ordinary late commercial payment.',
           ],
           callout: { kind: 'warning', text: 'Deductions are the employee\'s money until they reach HMRC. An employer who deducts and does not pay over has spent somebody else\'s wages, and the penalty regime reflects that.' },
         },
@@ -2721,10 +2784,10 @@
         {
           h: 'What must be kept, and for how long',
           p: [
-            'The payroll record-keeping duty is drawn as widely as the VAT one, and for the same reason: HMRC sees submissions, not the underlying facts, so the records are what makes the system checkable.',
-            'An employer must keep what it **paid** each employee and the **deductions** made, the **reports submitted** to HMRC and the **payments made** to HMRC, employee **leave and sickness absence**, **tax code notices**, **taxable expenses and benefits**, and Payroll Giving documents where the scheme is operated.',
-            'The retention period is **' + T.payroll.records.retentionYears.value + ' years from the end of the tax year** the records relate to. That is worth committing to memory as a contrast rather than in isolation, because **VAT records must be kept for ' + T.records.retentionYears.value + ' years** and the two are examined in the same unit. Three for payroll, six for VAT. Mixing them up is one of the easiest marks in the paper to throw away.',
-            'The consequence of failing to keep records is severe and comes in two parts. HMRC may **estimate what is owed** — an estimate the employer is then in a poor position to argue with, having no records — **and** charge a penalty of up to **£' + T.payroll.records.penalty.value.toLocaleString('en-GB') + '**. If records are lost, stolen or destroyed, HMRC must be told immediately and the employer must make reasonable efforts to reconstruct them.',
+            'The payroll record-keeping duty is drawn as widely as the VAT one, and for the same reason. HMRC sees submissions, not the underlying facts, so the records are what makes the system checkable.',
+            'An employer must keep what it **paid** each employee and the **deductions** made. It must keep the **reports submitted** to HMRC and the **payments made** to HMRC. It must also keep employee **leave and sickness absence**, **tax code notices**, **taxable expenses and benefits**, and Payroll Giving documents where the scheme is operated.',
+            'The retention period is **' + T.payroll.records.retentionYears.value + ' years from the end of the tax year** the records relate to. Commit that to memory as a contrast rather than in isolation, because **VAT records must be kept for ' + T.records.retentionYears.value + ' years** and the two are examined in the same unit. Three for payroll, six for VAT. Mixing them up is one of the easiest marks in the paper to throw away.',
+            'The consequence of failing to keep records is severe and comes in two parts. HMRC may **estimate what is owed**, and the employer with no records is in a poor position to argue with the estimate. HMRC may **also** charge a penalty of up to **£' + T.payroll.records.penalty.value.toLocaleString('en-GB') + '**. If records are lost, stolen or destroyed, HMRC must be told immediately and the employer must make reasonable efforts to reconstruct them.',
           ],
           table: {
             headers: ['', 'Payroll', 'VAT'],
@@ -2739,19 +2802,19 @@
         {
           h: 'Software is not optional',
           p: [
-            'Payroll must be run using **software capable of reporting under Real Time Information** — the regime, set out in lesson 4F, under which the employer reports pay and deductions to HMRC on or before every payday rather than once a year. This is not a recommendation about efficiency; RTI submissions have to be made electronically in a prescribed format every time employees are paid, and that cannot be done on paper.',
+            'Payroll must be run using **software capable of reporting under Real Time Information**. RTI is the regime, set out in lesson 4F, under which the employer reports pay and deductions to HMRC on or before every payday rather than once a year. This is not a recommendation about efficiency. RTI submissions have to be made electronically in a prescribed format every time employees are paid, and that cannot be done on paper.',
             'HMRC provides **Basic PAYE Tools** free for employers with fewer than 10 employees, which removes the cost objection for the smallest businesses. Larger employers use commercial payroll software, often integrated with their accounting system.',
-            'The parallel with Making Tax Digital in lesson 1D is close, and the consequence is the same one worth internalising: the figures flow from the payroll system to HMRC without a person reading them. Where a wrong tax code or a mistyped hours figure would once have been caught by somebody preparing a return, it now goes straight through. Checking has to be deliberate because it is no longer incidental.',
+            'The parallel with Making Tax Digital in lesson 1D is close, and the consequence is the same. The figures flow from the payroll system to HMRC without a person reading them. Where a wrong tax code or a mistyped hours figure would once have been caught by somebody preparing a return, it now goes straight through. Checking has to be deliberate because it is no longer incidental.',
           ],
           callout: { kind: 'tip', text: 'RTI-capable software is compulsory. HMRC\'s Basic PAYE Tools is free for employers with fewer than 10 employees, so cost is not a reason to be non-compliant.' },
         },
         {
           h: 'Employee data is personal data',
           p: [
-            'The specification asks specifically about **data protection as it applies to employees\' personal data**, and it belongs here because payroll is where a business holds the most sensitive information about the people who work for it.',
-            'Consider what a payroll record actually contains: name, address, date of birth, National Insurance number, bank details, salary, and — through sickness absence and statutory payments — information about health, pregnancy and family circumstances. Some of that is **special category data** under UK GDPR, subject to stricter conditions than ordinary personal data.',
+            'The specification asks specifically about **data protection as it applies to employees’ personal data**. It belongs here because payroll is where a business holds the most sensitive information about the people who work for it.',
+            'Consider what a payroll record actually contains. Name, address, date of birth, National Insurance number, bank details, salary. And, through sickness absence and statutory payments, information about health, pregnancy and family circumstances. Some of that is **special category data** under UK GDPR, subject to stricter conditions than ordinary personal data.',
             'The principles that bear most directly on payroll are worth stating individually. Data must be processed **lawfully, fairly and transparently** — employees should know what is held and why. It must be collected for **specified purposes** and not reused for unrelated ones; payroll data gathered to pay people is not a marketing list. It must be **adequate and limited to what is necessary**, so collecting information the payroll does not need is itself a breach. It must be **accurate** and kept up to date. It must not be **kept longer than necessary**, which is where the three-year retention rule and data protection meet, and where they can pull in opposite directions. And it must be kept **secure**, with appropriate technical and organisational measures.',
-            'The practical consequences are mundane and are exactly what an assessment would ask about: payroll files are not left where colleagues can read them, payslips are not distributed openly, salary information is not discussed with people who have no need to know, access to the payroll system is restricted to those who require it, and a breach — a payroll file emailed to the wrong recipient — has to be dealt with rather than quietly hoped about.',
+            'The practical consequences are mundane, and they are exactly what an assessment would ask about. Payroll files are not left where colleagues can read them. Payslips are not distributed openly. Salary information is not discussed with people who have no need to know. Access to the payroll system is restricted to those who require it. And a breach — a payroll file emailed to the wrong recipient — has to be dealt with, not quietly hoped about.',
           ],
           split: {
             left: { title: 'The principles that bite hardest in payroll', items: ['Lawful, fair and transparent', 'Collected for a specified purpose only', 'Adequate, relevant, and limited to what is needed', 'Accurate and kept up to date', 'Not kept longer than necessary', 'Kept secure'] },
@@ -2811,7 +2874,7 @@
             'The specification asks for the difference between **gross pay, taxable pay, taxable gross pay and net pay**. Four terms, easily blurred, and the distinctions carry real marks because a payslip question is usually a question about which figure a deduction attaches to.',
             '**Gross pay** is everything the employee earns before any deduction at all: basic pay, overtime, commission, bonuses, holiday pay, statutory payments. It is the top line and the starting point for everything else.',
             '**Taxable gross pay** is gross pay **less deductions made before tax is calculated**. The main ones are employee **pension contributions** under a net pay arrangement, and **payroll giving**. These reduce the figure on which Income Tax is worked out, which is precisely the benefit of making them this way — relief is given immediately rather than reclaimed later.',
-            '**Taxable pay** is the amount actually subject to Income Tax. In most payslip questions it is the same figure as taxable gross pay; the reason the specification lists both is that the terms are used slightly differently in different sources, and you should recognise either.',
+            '**Taxable pay** is the amount actually subject to Income Tax. In most payslip questions it is the same figure as taxable gross pay. The specification lists both because the terms are used slightly differently in different sources, and you should recognise either.',
             '**Net pay** is what reaches the employee\'s bank account: gross pay less **every** deduction, whether it was taken before tax or after.',
           ],
           formula: 'Gross pay − pre-tax deductions = Taxable gross pay · Gross pay − ALL deductions = Net pay',
@@ -2822,8 +2885,8 @@
           p: [
             'Deductions divide into two kinds, and the difference is about **who requires them**, not how large they are.',
             '**Statutory deductions** are the ones the tax and pensions system itself requires, and the employer has no discretion. They are **Pay As You Earn (PAYE) Income Tax**, **National Insurance contributions**, **student loan repayments**, and — where the employer has automatically enrolled staff — **pension contributions**. An employee cannot instruct the employer to stop deducting Income Tax; the obligation runs to HMRC, not to the employee.',
-            '**Non-statutory deductions** are everything else, and they depend on the employee having agreed to them or on a court order. Trade union subscriptions, payroll giving to charity, season ticket loan repayments, workplace savings schemes, and repayments of a salary advance all sit here. So do **attachment of earnings orders**, which are imposed by a court rather than chosen — the point being that they are not part of the tax system.',
-            'Two consequences follow. The **order** matters: pre-tax deductions come off before Income Tax is calculated, and everything else comes off afterwards, so putting a deduction in the wrong place changes the tax. And the **amount due to HMRC** includes only the statutory tax and National Insurance items — a union subscription deducted from wages is owed to the union, not to HMRC, and never appears in the payment to them.',
+            '**Non-statutory deductions** are everything else. They depend on the employee having agreed to them, or on a court order. Trade union subscriptions, payroll giving to charity, season ticket loan repayments, workplace savings schemes, and repayments of a salary advance all sit here. So do **attachment of earnings orders**, which are imposed by a court rather than chosen. The point is that none of them are part of the tax system.',
+            'Two consequences follow. The **order** matters: pre-tax deductions come off before Income Tax is calculated, and everything else comes off afterwards. Putting a deduction in the wrong place changes the tax. And the **amount due to HMRC** includes only the statutory tax and National Insurance items. A union subscription deducted from wages is owed to the union, not to HMRC, and never appears in the payment to them.',
           ],
           split: {
             left: { title: 'Statutory — required by law', items: ['PAYE Income Tax', 'National Insurance contributions', 'Student loan repayments', 'Auto-enrolment pension contributions'] },
@@ -2860,9 +2923,9 @@
         {
           h: 'Reconciling gross to net',
           p: [
-            'The other "be able to" requirement here is **reconciliation**: proving that gross pay, the deductions and net pay all agree. It is the same discipline as the VAT reconciliation in lesson 3E, and it is checked the same way — by showing that the parts account for the whole.',
+            'The other "be able to" requirement here is **reconciliation**: proving that gross pay, the deductions and net pay all agree. It is the same discipline as the VAT reconciliation in lesson 3E. It is checked the same way, by showing that the parts account for the whole.',
             'The reconciliation is simply the identity **gross pay less total deductions equals net pay**, demonstrated line by line. If it does not balance, something has been omitted, double-counted, or put on the wrong side.',
-            'The failure that recurs is **double-counting a pre-tax deduction**. A pension contribution taken off to reach taxable gross pay is easy to subtract a second time when totalling the deductions, and the reconciliation then shows net pay lower than it should be by exactly the pension amount. If a reconciliation is out by a figure that appears on the payslip, that figure has almost certainly been used twice.',
+            'The failure that recurs is **double-counting a pre-tax deduction**. A pension contribution taken off to reach taxable gross pay is easy to subtract a second time when totalling the deductions. The reconciliation then shows net pay lower than it should be by exactly the pension amount. If a reconciliation is out by a figure that appears on the payslip, that figure has almost certainly been used twice.',
             'The same check works in the other direction. Given net pay and the deductions, gross pay must be recoverable by adding them all back. An assessment may give the figures either way round, and the identity holds regardless of which end you start from.',
           ],
           formula: 'Gross pay − total deductions = Net pay · Net pay + total deductions = Gross pay',
@@ -2921,8 +2984,8 @@
           h: 'The payment is more than the deductions',
           p: [
             'Having built a payslip, the last calculation is what the **employer** must send HMRC. This is the figure students most often get wrong, and the reason is a single conceptual point.',
-            'The amount due is not merely what was deducted from employees. It is **everything deducted from employees, plus the employer\'s own National Insurance contribution**. Employer\'s NI is a genuine cost of employment borne by the business — it is not withheld from anybody\'s wage, it does not appear as a deduction on the payslip, and the employee never sees it. But it is paid over to HMRC in the same payment.',
-            'So the total has four components in a typical case: **PAYE Income Tax** deducted from employees, **employee National Insurance** deducted from employees, **employer National Insurance** paid by the business, and **student loan repayments** deducted from employees.',
+            'The amount due is not merely what was deducted from employees. It is **everything deducted from employees, plus the employer’s own National Insurance contribution**. Employer’s NI is a genuine cost of employment borne by the business. It is not withheld from anybody’s wage, it does not appear as a deduction on the payslip, and the employee never sees it. But it is paid over to HMRC in the same payment.',
+            'So the total has four components in a typical case. **PAYE Income Tax** deducted from employees, **employee National Insurance** deducted from employees, **employer National Insurance** paid by the business, and **student loan repayments** deducted from employees.',
             'And it excludes several things that were on the payslip. **Pension contributions** go to the pension provider, not HMRC. **Union subscriptions** go to the union. **Attachment of earnings** goes wherever the court directed. A deduction being made through the payroll does not make it money owed to HMRC — the question is always who the money belongs to.',
           ],
           formula: 'Due to HMRC = PAYE + employee NI + employer NI + student loan repayments',
@@ -2963,10 +3026,10 @@
           h: 'The allowance that reduces what is owed',
           p: [
             'One relief cuts across the figure just calculated. The **Employment Allowance** lets an eligible employer reduce its **employer’s National Insurance** by up to **£' + T.payroll.employmentAllowance.value.toLocaleString('en-GB') + ' a year**.',
-            'Read what it touches carefully, because it is narrower than it first appears. It reduces the **employer’s** (secondary) Class 1 National Insurance and nothing else — not PAYE, not the employee’s National Insurance, not student loan deductions, and not the Class 1A on benefits. Every one of those still goes to HMRC in full.',
+            'Read what it touches carefully, because it is narrower than it first appears. It reduces the **employer’s** (secondary) Class 1 National Insurance and nothing else. Not PAYE, not the employee’s National Insurance, not student loan deductions, and not the Class 1A on benefits. Every one of those still goes to HMRC in full.',
             'It is **claimed, not given**. The claim is made through the **Employer Payment Summary**, and an employer entitled to it that never files an EPS simply pays more than it needs to. Nothing arrives to point out the mistake.',
             'It is used up **as the liability arises**, month by month, rather than spread evenly across the year. An employer with £3,000 of employer’s NI a month uses the whole allowance inside four months and pays in full from then on.',
-            'It is not available to everyone. A company whose only employee paid above the secondary threshold is **a director** cannot claim it, and neither can most public sector work, nor someone employing domestic staff — care and support workers excepted.',
+            'It is not available to everyone. A company cannot claim it if its only employee paid above the secondary threshold is **a director**. Nor can most public sector work, nor someone employing domestic staff — care and support workers excepted.',
           ],
           callout: { kind: 'warning', text: 'The £100,000 cap on the previous year’s employer’s National Insurance, which used to decide eligibility, was removed from 6 April 2025, when the allowance also rose from £5,000. Material written before then quotes both, and quoting either now is wrong.' },
           worked: {
@@ -2994,8 +3057,8 @@
           p: [
             'The final "be able to" of this topic is reconciliation, and it works at two levels which are worth keeping distinct.',
             'The **individual** reconciliation is the one from the last lesson: for each employee, gross pay less every deduction equals net pay.',
-            'The **employer** reconciliation is the one that proves the payroll as a whole: the total cost to the business is the total net pay to employees, plus everything owed to HMRC, plus everything owed to third parties. Nothing may appear twice and nothing may be unaccounted for.',
-            'Stated as an identity: **gross pay + employer NI + employer pension = net pay + HMRC + pension provider + other third parties**. The left is what the employment cost; the right is where the money went. An imbalance means something has been misclassified, and the size of the gap usually names the culprit — a gap equal to the employer\'s NI means it has been left out of the payment to HMRC, which is the most frequent error of all.',
+            'The **employer** reconciliation is the one that proves the payroll as a whole. The total cost to the business is the total net pay to employees, plus everything owed to HMRC, plus everything owed to third parties. Nothing may appear twice and nothing may be unaccounted for.',
+            'Stated as an identity: **gross pay + employer NI + employer pension = net pay + HMRC + pension provider + other third parties**. The left is what the employment cost; the right is where the money went. An imbalance means something has been misclassified, and the size of the gap usually names the culprit. A gap equal to the employer’s NI means it has been left out of the payment to HMRC, which is the most frequent error of all.',
             'Notice that gross pay is not the cost of employing somebody. Employer\'s National Insurance and employer pension contributions are real costs on top of it. An employee on £30,000 costs the business meaningfully more than £30,000, and the payroll reconciliation is where that becomes visible.',
           ],
           formula: 'Gross pay + employer NI + employer pension = Net pay + due to HMRC + pension provider + other third parties',
@@ -3045,8 +3108,8 @@
         {
           h: 'Six forms, each with a moment',
           p: [
-            'Payroll produces a small set of standard forms. Each exists for a particular moment in the employment relationship, and learning them by **when** rather than by name is far more reliable — the assessment usually describes a situation and asks which form applies.',
-            'A **starter checklist** is completed when someone joins **without a P45**, collecting what is needed to work out a tax code. A **payslip** is issued **every pay period**, on or before payday, itemising gross pay, deductions and net pay; it is a legal right rather than a courtesy. A **P45** is issued when an employee **leaves**, recording pay and tax to that date so the next employer can operate the right code.',
+            'Payroll produces a small set of standard forms. Each exists for a particular moment in the employment relationship. Learning them by **when** rather than by name is far more reliable, because the assessment usually describes a situation and asks which form applies.',
+            'A **starter checklist** is completed when someone joins **without a P45**, collecting what is needed to work out a tax code. A **payslip** is issued **every pay period**, on or before payday, itemising gross pay, deductions and net pay. It is a legal right rather than a courtesy. A **P45** is issued when an employee **leaves**. It records pay and tax to that date so the next employer can operate the right code.',
             'The remaining three are annual. A **P60** is the end-of-year certificate given to everyone still employed on 5 April, summarising the year\'s taxable pay and deductions. A **P11D** reports **expenses and benefits** provided to an employee that were not put through the payroll. A **P11D(b)** is the employer\'s declaration and the **Class 1A National Insurance** due on those benefits.',
             'Note the relationship between the last two, because it is a common confusion. The P11D is per employee and reports the benefits; the P11D(b) is one form for the employer and carries the Class 1A liability. An employer that payrolls all its benefits needs no P11Ds at all — but it still needs a P11D(b).',
           ],
@@ -3065,10 +3128,10 @@
         {
           h: 'The dates worth memorising',
           p: [
-            'Three annual dates carry most of the marks in this topic, and they cluster in a way that makes them easier to hold together than separately.',
+            'Three annual dates carry most of the marks in this topic. They cluster, which makes them easier to hold together than separately.',
             'The tax year ends **5 April**. **31 May** is the P60 deadline — employees get their end-of-year certificate about eight weeks later. **6 July** is the P11D and P11D(b) deadline, and it is also the date by which the employee must receive their copy of the P11D. **22 July** is when the Class 1A National Insurance on those benefits must reach HMRC electronically, or **19 July** if paying by cheque.',
             'That last pair should look familiar. The **22nd electronic, 19th non-electronic** split is the same one that applies to ordinary monthly PAYE payments, covered in the next lesson. It is a general rule about how HMRC treats payment methods rather than something specific to Class 1A, which makes it one fact rather than two.',
-            'A useful way to hold the sequence: the year ends in April, employees are told where they stand by the end of May, benefits are reported in early July, and the tax on those benefits is paid a fortnight later.',
+            'A useful way to hold the sequence. The year ends in April. Employees are told where they stand by the end of May. Benefits are reported in early July, and the tax on those benefits is paid a fortnight later.',
           ],
           flow: ['5 April — tax year ends', '31 May — P60 to employees', '6 July — P11D and P11D(b)', '22 July — Class 1A NIC paid'],
           examtrap: 'The P11D deadline is 6 July for BOTH filing with HMRC and giving the employee their copy. The Class 1A payment is a separate, later date — 22 July electronically.',
@@ -3076,11 +3139,11 @@
         {
           h: 'P11D or payrolling — two ways to handle benefits',
           p: [
-            'The specification asks specifically for the difference between **reporting benefits on a P11D** and **payrolling** them, and the distinction is about **when the employee pays the tax**.',
+            'The specification asks specifically for the difference between **reporting benefits on a P11D** and **payrolling** them. The distinction is about **when the employee pays the tax**.',
             'Under the **P11D route**, benefits are reported after the tax year ends. HMRC then collects the tax by adjusting the employee\'s tax code, typically in a later year. The employee pays eventually, but by an indirect route and on a delay, and the tax code change often arrives without explanation, which is why it generates so many queries.',
             'Under **payrolling**, the taxable value of the benefit is put through the payroll and taxed **in real time**, spread across the year alongside ordinary pay. No P11D is needed for a payrolled benefit. The employee pays the right tax as they go, sees it on the payslip, and avoids the tax code adjustment altogether.',
-            'Two qualifications matter. The employer must **register with HMRC before the start of the tax year** in which it wants to payroll benefits — this cannot be decided retrospectively. And a **P11D(b) is still required** either way, because the employer\'s Class 1A National Insurance on the benefits is due regardless of how the employee\'s Income Tax was collected.',
-            'Payrolling is the direction of travel, and for good reason: it is simpler for the employee, more transparent, and removes a whole class of tax code confusion. But it requires a decision in advance, which is exactly the sort of detail an assessment likes to test.',
+            'Two qualifications matter. The employer must **register with HMRC before the start of the tax year** in which it wants to payroll benefits. This cannot be decided retrospectively. And a **P11D(b) is still required** either way. The employer’s Class 1A National Insurance on the benefits is due regardless of how the employee’s Income Tax was collected.',
+            'Payrolling is the direction of travel, and for good reason. It is simpler for the employee, more transparent, and removes a whole class of tax code confusion. But it requires a decision in advance, which is exactly the sort of detail an assessment likes to test.',
           ],
           split: {
             left: { title: 'P11D route', items: ['Reported after the tax year ends', 'Tax collected via a tax code adjustment', 'The employee pays late and indirectly', 'A P11D per employee, by 6 July'] },
@@ -3151,8 +3214,8 @@
             'Payroll is reported to HMRC under **Real Time Information**, and the name describes the change it made. Before RTI, an employer deducted tax all year and told HMRC what had happened once, after the year ended. Under RTI a submission is made **every time employees are paid**.',
             'The consequence is that HMRC knows what each employee has earned within days rather than months. That is what makes real-time adjustment of tax codes possible, and it is what allows Universal Credit to respond to earnings as they change. It also means an employer\'s errors are visible almost immediately rather than at the year end.',
             'Two submissions do the work, and understanding what each is **for** makes the details follow.',
-            'The **Full Payment Submission (FPS)** reports **what was paid**: for every employee paid in the period, their gross pay, Income Tax, National Insurance, student loan and pension deductions, together with starters, leavers and changes of detail. It must be sent **on or before the date the employees are paid** — not afterwards, and not at the month end. This holds even for an employer paying HMRC quarterly, because the reporting cycle and the payment cycle are separate things.',
-            'The **Employer Payment Summary (EPS)** reports **why less is owed** than the FPS implies: statutory pay recovered, the Employment Allowance, CIS deductions suffered — and a declaration that no employees were paid at all in a month. It is due by the **19th of the following tax month**, and is only sent when there is something to report.',
+            'The **Full Payment Submission (FPS)** reports **what was paid**. For every employee paid in the period it gives gross pay, Income Tax, National Insurance, student loan and pension deductions, together with starters, leavers and changes of detail. It must be sent **on or before the date the employees are paid** — not afterwards, and not at the month end. This holds even for an employer paying HMRC quarterly, because the reporting cycle and the payment cycle are separate things.',
+            'The **Employer Payment Summary (EPS)** reports **why less is owed** than the FPS implies. That covers statutory pay recovered, the Employment Allowance, CIS deductions suffered, and a declaration that no employees were paid at all in a month. It is due by the **19th of the following tax month**, and is only sent when there is something to report.',
           ],
           table: {
             headers: ['', 'FPS', 'EPS'],
@@ -3167,8 +3230,8 @@
         {
           h: 'Paying HMRC',
           p: [
-            'Reporting and paying are separate obligations with separate deadlines, exactly as they were for VAT — except that in VAT the two shared a date, and here they do not.',
-            'The payment deadline is the **' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the following month** if paying electronically, or the **' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th** if paying by post. This is the same electronic/non-electronic split seen on the Class 1A deadline in the last lesson, and it reflects the same underlying principle from lesson 1D: what matters is when **cleared funds reach HMRC**, so a slower method needs a longer run-up.',
+            'Reporting and paying are separate obligations with separate deadlines, exactly as they were for VAT. The difference is that in VAT the two shared a date. Here they do not.',
+            'The payment deadline is the **' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the following month** if paying electronically, or the **' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th** if paying by post. This is the same electronic/non-electronic split seen on the Class 1A deadline in the last lesson. It reflects the same principle from lesson 1D: what matters is when **cleared funds reach HMRC**, so a slower method needs a longer run-up.',
             'A smaller employer may pay **quarterly** rather than monthly, where the average monthly liability is under **£' + T.payroll.paymentToHmrc.quarterlyThreshold.value.toLocaleString('en-GB') + '**. The reporting obligation is unaffected: the FPS is still due on or before every payday, twelve times a year for a monthly payroll, even though only four payments are made. Assuming quarterly payment implies quarterly reporting is a trap the assessment sets deliberately.',
             'The pattern to carry away is that **the FPS is tied to the payday, and the payment is tied to the month end**. They move independently, and an employer can be perfectly compliant on one and late on the other.',
           ],
@@ -3178,9 +3241,9 @@
         {
           h: 'Late filing',
           p: [
-            'A late FPS is penalised on a **monthly** basis, and the penalty is scaled by **headcount** rather than by the tax at stake — a design that differs from every other penalty in this unit.',
+            'A late FPS is penalised on a **monthly** basis, and the penalty is scaled by **headcount** rather than by the tax at stake. That design differs from every other penalty in this unit.',
             'The amounts are **£' + T.payroll.penalties.lateFiling.byEmployees['1to9'] + '** for 1 to 9 employees, **£' + T.payroll.penalties.lateFiling.byEmployees['10to49'] + '** for 10 to 49, **£' + T.payroll.penalties.lateFiling.byEmployees['50to249'] + '** for 50 to 249, and **£' + T.payroll.penalties.lateFiling.byEmployees['250plus'] + '** for 250 or more. They are charged for each month or part month the return is late.',
-            'The **first failure in a tax year is not penalised** — a genuine allowance for the occasional slip, in the same spirit as the points threshold for VAT returns, though the mechanism is quite different. Annual schemes are excepted from that relief.',
+            'The **first failure in a tax year is not penalised**. That is a genuine allowance for the occasional slip, in the same spirit as the points threshold for VAT returns, though the mechanism is quite different. Annual schemes are excepted from that relief.',
             'A return still outstanding after **three months** attracts a further penalty of **5% of the tax** that should have been reported on it. At that point the penalty stops being a flat administrative charge and starts scaling with the money involved.',
           ],
           table: {
@@ -3197,7 +3260,7 @@
         {
           h: 'Late payment',
           p: [
-            'Late **payment** is penalised as a **percentage of the amount paid late**, and the percentage escalates with the number of times it has happened in the tax year. This is a different mechanism again from the VAT regime in lesson 1G, where the escalation was by elapsed time rather than by repetition.',
+            'Late **payment** is penalised as a **percentage of the amount paid late**. The percentage escalates with the number of times it has happened in the tax year. That is a different mechanism again from the VAT regime in lesson 1G, where the escalation was by elapsed time rather than by repetition.',
             'The **first failure to pay on time in a tax year does not count as a default**. After that: **' + T.payroll.penalties.latePayment.byDefaults['1to3'] + '%** for 1 to 3 defaults, **' + T.payroll.penalties.latePayment.byDefaults['4to6'] + '%** for 4 to 6, **' + T.payroll.penalties.latePayment.byDefaults['7to9'] + '%** for 7 to 9, and **' + T.payroll.penalties.latePayment.byDefaults['10plus'] + '%** for 10 or more. An employer that is habitually a few days late therefore pays progressively more for the same behaviour.',
             'Two further penalties catch prolonged non-payment, and both apply even where only one payment in the year was late. An amount still unpaid after **6 months** attracts an additional **5%**, and after **12 months** a further **5%**.',
             '**Daily interest** runs on everything unpaid from the due date until payment, separately from all of the above. As with VAT, interest is not a penalty and is not discretionary — it is the price of holding money that was due.',
@@ -3292,7 +3355,7 @@
             'There is no single "report it upwards" rule. Different information belongs to different people, and matching them is what the assessment tests.',
             'Your **line manager** is the default for anything routine, anything uncertain, and anything outside your own competence. Escalating is not an admission of inadequacy — it is the professional response, and lesson 5C explains why the Code treats it that way.',
             'The **finance function** — a financial controller, finance manager or whoever runs cash — needs the **amounts and dates**. They cannot budget for a payment they have not been told about, and this is the single most consequential communication in the outcome.',
-            '**Directors, owners or the board** need decisions and risks: whether to join a special scheme, the effect of a change in business operations, a penalty exposure, a systemic error that spans several periods. These are matters somebody with authority has to decide, not matters for the person preparing the figures.',
+            '**Directors, owners or the board** need decisions and risks. Whether to join a special scheme, the effect of a change in business operations, a penalty exposure, a systemic error that spans several periods. These are matters somebody with authority has to decide, not matters for the person preparing the figures.',
             'The **client**, in a practice setting, occupies the same position as the employer does in-house — but with one addition. Nothing may be **submitted to HMRC** on a client\'s behalf without their authorisation, which lesson 5C returns to.',
             'And **HMRC** receives returns, error disclosures and notifications — but only through the proper channel and, critically, only with authority. A technician does not decide unilaterally to disclose a client\'s error to HMRC.',
           ],
@@ -3313,7 +3376,7 @@
             'The specification asks specifically when a query is **beyond your current experience or expertise** and should go to a line manager. Being concrete matters here, because "when you are not sure" is too vague to act on.',
             'Some situations are beyond a Level 3 technician almost by definition. A **partial exemption calculation** using a special method. A supply whose **place of supply** is genuinely uncertain. A question about whether a business should **register in another country**. Anything touching the **domestic reverse charge** in an unfamiliar sector. A large or **deliberate error**. Any suggestion that figures have been altered on purpose.',
             'A second class is subtler and matters more: situations where you **could produce an answer but should not be the one deciding**. Whether to adopt the flat rate scheme is arithmetic you can do, but it is a business decision with consequences you may not see. Whether an error is careless or deliberate is a judgement about somebody\'s state of mind. Whether to disclose to HMRC is a decision with legal weight.',
-            'The professional test is not "can I produce a number?" but "**am I the right person to be relied on for this?**". Producing a confident answer outside your competence is a breach of professional competence and due care, and it is more damaging than saying you need to check — because the person receiving it has no way of knowing it was a guess.',
+            'The professional test is not "can I produce a number?" but "**am I the right person to be relied on for this?**". Producing a confident answer outside your competence is a breach of professional competence and due care. It is more damaging than saying you need to check, because the person receiving it has no way of knowing it was a guess.',
           ],
           split: {
             left: { title: 'Refer upwards', items: ['Special-method partial exemption', 'Uncertain place of supply, or overseas registration', 'An unfamiliar reverse charge', 'A large error, or one that may be deliberate', 'Any suspicion figures were altered on purpose'] },
@@ -3391,7 +3454,7 @@
           h: 'Why the timing matters so much',
           p: [
             'The specification singles out **the significant effect on cash flows and cash budgeting of the requirement to pay HMRC on time**. It is the only cash-flow concept in the unit, and it earns its place.',
-            'Consider what these payments look like from a business\'s bank account. They are **large** — a business turning over £1m of standard-rated sales hands over roughly £200,000 of VAT a year, and payroll taxes on a £500,000 wage bill run to six figures. They are **lumpy**, arriving as single amounts on fixed dates rather than spread across the month. They are **non-negotiable**, in a way that a supplier invoice is not: a supplier may accept late payment, and HMRC charges a penalty from a named day. And they are **not the business\'s money**, which means there is no argument for prioritising anything else over them.',
+            'Consider what these payments look like from a business’s bank account. They are **large**. A business turning over £1m of standard-rated sales hands over roughly £200,000 of VAT a year, and payroll taxes on a £500,000 wage bill run to six figures. They are **lumpy**, arriving as single amounts on fixed dates rather than spread across the month. They are **non-negotiable**, in a way that a supplier invoice is not: a supplier may accept late payment, and HMRC charges a penalty from a named day. And they are **not the business’s money**, which means there is no argument for prioritising anything else over them.',
             'Put those four together and the conclusion follows. VAT and PAYE are the most predictable large outflows a business has, and also the least forgiving. Predictability is the opportunity: unlike most costs, the date is known months ahead and the amount is knowable weeks ahead. A business that plans for them is never surprised. A business that does not is surprised four times a year.',
           ],
           callout: { kind: 'key', text: 'Large, lumpy, non-negotiable, and not the business\'s money — but entirely predictable. That combination is what makes tax the easiest large outflow to plan for and the most damaging to ignore.' },
@@ -3402,18 +3465,18 @@
             'The specific danger is worth naming, because it is how otherwise healthy businesses fail.',
             'VAT is collected from customers throughout the quarter and paid to HMRC after it ends. For up to four months, a business is holding money that belongs to the Exchequer and sitting in its own bank account. It looks exactly like the business\'s own cash. It appears in the balance, it can be spent, and nothing in the day-to-day operation of the account distinguishes it.',
             'A business under pressure spends it. Not usually as a decision — it simply pays wages and suppliers from a balance that included VAT, and finds at the quarter end that it cannot pay HMRC. The payment then falls due against an account that no longer holds it.',
-            'What follows escalates on a fixed schedule, as lesson 1G set out: no penalty within 15 days, then 3% at day 15, another 3% at day 30, then 10% a year accruing daily, with interest throughout. And the following quarter arrives before the last one is cleared. This is the pattern behind a large share of HMRC debt, and it starts with a business that never separated money it was holding from money it had earned.',
-            'The defence is unglamorous and effective: **set the VAT aside as it is collected**, in a separate account if possible, and treat the payment date as an immovable commitment rather than a bill to be prioritised alongside others.',
+            'What follows escalates on a fixed schedule, as lesson 1G set out. No penalty within 15 days, then 3% at day 15, another 3% at day 30, then 10% a year accruing daily, with interest throughout. And the following quarter arrives before the last one is cleared. This is the pattern behind a large share of HMRC debt, and it starts with a business that never separated money it was holding from money it had earned.',
+            'The defence is unglamorous and effective. **Set the VAT aside as it is collected**, in a separate account if possible. Treat the payment date as an immovable commitment, not a bill to be prioritised alongside others.',
           ],
           callout: { kind: 'warning', text: 'VAT sitting in the current account looks exactly like the business\'s own money. Businesses do not usually decide to spend it — they simply spend from a balance that included it.' },
         },
         {
           h: 'What this means for advice',
           p: [
-            'Because the outcome is about **communication**, understanding the cash-flow effect is not enough on its own: you have to be able to explain it, and to spot when a change makes it worse.',
+            'Because the outcome is about **communication**, understanding the cash-flow effect is not enough on its own. You have to be able to explain it, and to spot when a change makes it worse.',
             'Several things covered earlier in this unit change a business\'s cash position, and recognising them is exactly what an assessment would ask.',
             '**Cash accounting** improves cash flow for a business that gives credit — VAT is not paid over until the customer pays. **Annual accounting** makes cash flow predictable through instalments, but suits a repayment trader badly. **Monthly returns** accelerate repayments for a zero-rated trader or an exporter. **Registering for VAT** means output tax begins leaving the business on a fixed calendar for the first time. **Growth** raises the liability proportionately, so a business that has just had its best quarter faces its largest ever payment.',
-            'That last case deserves emphasis, because it is counter-intuitive and it catches people. A growing business generates more VAT, pays more PAYE as it hires, and often has more cash tied up in stock and receivables at the same time. The quarter after a boom is when the largest tax bill lands. Growth is a cash-flow risk, not only a cash-flow benefit, and it is exactly the sort of thing a technician who sees the figures should be raising with whoever manages the money.',
+            'That last case deserves emphasis, because it is counter-intuitive and it catches people. A growing business generates more VAT, pays more PAYE as it hires, and often has more cash tied up in stock and receivables at the same time. The quarter after a boom is when the largest tax bill lands. Growth is a cash-flow risk, not only a cash-flow benefit. It is exactly the sort of thing a technician who sees the figures should be raising with whoever manages the money.',
           ],
           table: {
             headers: ['Change', 'Effect on cash flow'],
@@ -3478,7 +3541,7 @@
           p: [
             'Three of this outcome\'s requirements are about **providing information** — on new legislation, on VAT matters, and on payroll matters. They share a structure, and having it in mind is more useful than memorising three separate lists.',
             'A good communication answers four questions. **What has happened or will happen** — the fact itself, stated plainly. **What it means for this business** — the consequence, specific to them rather than general. **What needs to be done** — the action, and who must take it. **By when** — the date, and what follows from missing it.',
-            'The second of those is what separates a useful communication from a forwarded link. "The VAT rate on hospitality changes from 1 April" is a fact. "The VAT rate on hospitality changes from 1 April, which affects roughly 60% of our sales; the till system and price lists need updating before then, and I will need a day to do it" is advice.',
+            'The second of those is what separates a useful communication from a forwarded link. "The VAT rate on hospitality changes from 1 April" is a fact. Compare: "The VAT rate on hospitality changes from 1 April, which affects roughly 60% of our sales. The till system and price lists need updating before then, and I will need a day to do it." That is advice.',
             'Pitch matters too. The recipient is usually not a tax specialist — that is why they are being told. Jargon that is precise between technicians is noise to a director, and an explanation that is not understood has not been given.',
           ],
           flow: ['What has changed', 'What it means for us', 'What must be done', 'By when'],
@@ -3487,10 +3550,10 @@
           h: 'Communicating a change in legislation',
           p: [
             'Tax changes annually and sometimes more often, so this is a recurring task rather than an occasional one. The categories worth being ready for are the ones this unit has already covered.',
-            'A **change in VAT rate** is the most disruptive, because it touches everything: pricing, invoicing, the till system, quotes already given, and contracts spanning the change date. The tax point rules of lesson 2B decide which rate applies to a supply straddling it, which is exactly the sort of question that arrives on the day and cannot wait.',
+            'A **change in VAT rate** is the most disruptive, because it touches everything: pricing, invoicing, the till system, quotes already given, and contracts spanning the change date. The tax point rules of lesson 2B decide which rate applies to a supply straddling it. That is exactly the sort of question that arrives on the day and cannot wait.',
             'A **change in thresholds** may bring a business into VAT registration, or make it eligible to leave a scheme. Someone monitoring rolling turnover is the first to know, and the last person who should keep it to themselves.',
-            'A **change in penalties** matters because it changes the cost of behaviour the business may currently regard as tolerable. When the VAT late payment penalty rose from 2% to 3% at day 15, a business habitually paying a fortnight late became materially worse off without doing anything differently.',
-            '**Payroll changes** arrive every April with the new tax year — rates, thresholds, statutory pay, the National Living Wage. The employer must have them in the payroll software before the first payday of the new year, which makes this a deadline rather than an item of news.',
+            'A **change in penalties** matters because it changes the cost of behaviour the business may currently regard as tolerable. Take the VAT late payment penalty rising from 2% to 3% at day 15. A business habitually paying a fortnight late became materially worse off without doing anything differently.',
+            '**Payroll changes** arrive every April with the new tax year: rates, thresholds, statutory pay, the National Living Wage. The employer must have them in the payroll software before the first payday of the new year. That makes this a deadline rather than an item of news.',
           ],
           example: {
             title: 'Communicating a rate change well',
@@ -3508,19 +3571,19 @@
           p: [
             'The specification lists what a technician should be able to provide information on, and every item is something an earlier lesson covered. Read as a list, it is a fair summary of the whole unit seen from the outside.',
             '**Completion of the return** — what the figures are and what they mean. **Errors and omissions**, current and previous period — that one has been found, its size, and which periods it affects. **Whether to correct or disclose** — the two-limb test of lesson 3A applied to this error, presented as an analysis for somebody else to decide on. **Penalties and assessments** — the exposure, and how behaviour and disclosure affect it. **The effects of a rate change or other regulatory change**. **The effect of a change in business operations** — starting to export, adding an exempt activity, buying a car. And **the effect of adopting a special scheme** on payment and recovery.',
-            'Two of those deserve care. On **whether to correct or disclose**, the technician\'s job is to lay out the test and the numbers, not to decide alone — the decision affects the business\'s relationship with HMRC and may turn on whether the error was deliberate, which is a judgement about people rather than figures.',
-            'And on **penalties**, the honest communication includes the part nobody wants to deliver: that an unprompted disclosure is worth substantially more than one made after HMRC starts asking, so delay has a price. Softening that is not kindness.',
+            'Two of those deserve care. On **whether to correct or disclose**, the technician’s job is to lay out the test and the numbers, not to decide alone. The decision affects the business’s relationship with HMRC. It may turn on whether the error was deliberate, which is a judgement about people rather than figures.',
+            'And on **penalties**, the honest communication includes the part nobody wants to deliver. An unprompted disclosure is worth substantially more than one made after HMRC starts asking, so delay has a price. Softening that is not kindness.',
           ],
           callout: { kind: 'tip', text: 'On an error, present the test and the numbers and let the decision sit with whoever has authority. Your job is to make the choice informed, not to make it.' },
         },
         {
           h: 'The payroll matters you may be asked about',
           p: [
-            'The payroll list is shorter — **completion of payroll reports**, **penalties**, and **the effects of regulatory changes** — but the communications carry a dimension VAT ones do not.',
+            'The payroll list is shorter: **completion of payroll reports**, **penalties**, and **the effects of regulatory changes**. But the communications carry a dimension VAT ones do not.',
             'Payroll information is about **identifiable individuals**, and lesson 4B set out what follows. A question about a colleague\'s pay is not answered because the person asking is senior; it is answered if they have a legitimate need to know. That is a genuinely awkward conversation to have with a manager, and it is exactly the situation this outcome is preparing you for.',
-            'On **reports**, the useful communication is usually about what the figures mean rather than what they are: why the amount due to HMRC exceeds what employees had deducted (the employer\'s National Insurance), why a payslip shows a smaller pension deduction than expected, why a new starter appears to have paid too much tax.',
-            'On **penalties**, the point worth making is the one from lesson 4F: late filing is penalised **per month by headcount**, and repeated late payment escalates from 1% to 4% across the year. A business that is habitually a few days late is paying progressively more for behaviour it has stopped noticing.',
-            'On **regulatory changes**, the annual April cycle is the thing to communicate ahead of time rather than during. The software must be updated, the rates must be right, and the first payday of the new tax year is a hard deadline that arrives at the same time every year.',
+            'On **reports**, the useful communication is usually about what the figures mean rather than what they are. Why the amount due to HMRC exceeds what employees had deducted — the employer’s National Insurance. Why a payslip shows a smaller pension deduction than expected. Why a new starter appears to have paid too much tax.',
+            'On **penalties**, the point worth making is the one from lesson 4F. Late filing is penalised **per month by headcount**, and repeated late payment escalates from 1% to 4% across the year. A business that is habitually a few days late is paying progressively more for behaviour it has stopped noticing.',
+            'On **regulatory changes**, the annual April cycle is the thing to communicate ahead of time rather than during. The software must be updated and the rates must be right. The first payday of the new tax year is a hard deadline, and it arrives at the same time every year.',
           ],
           examtrap: 'Payroll communications concern identifiable individuals. Seniority is not the same as a legitimate need to know, and confidentiality — one of the five fundamental principles, set out in lesson 5E — does not yield to rank.',
         },
@@ -3574,9 +3637,9 @@
         {
           h: 'Where changes are found',
           p: [
-            'Tax changes every year, and a technician working from what they learned when they qualified will be wrong within a couple of years without ever noticing the moment it happened. The specification therefore asks **where to find information about changes to VAT and payroll law and practice**, and "the HMRC website" is not a sufficient answer.',
+            'Tax changes every year. A technician working from what they learned when they qualified will be wrong within a couple of years, without ever noticing the moment it happened. So the specification asks **where to find information about changes to VAT and payroll law and practice**. "The HMRC website" is not a sufficient answer.',
             '**HMRC Agent Update** is published **monthly** and carries guidance and news for tax agents and advisers. **HMRC Employer Bulletin** is published **six times a year** and is the payroll equivalent — rate changes, RTI developments, deadline reminders. Both can be subscribed to by email, which converts keeping up to date from something you must remember to do into something that arrives.',
-            'Beneath those sit the **VAT notices and PAYE guidance on GOV.UK** themselves, updated continuously as the law changes; the **Finance Act** each year, which is where rates, thresholds and penalties actually move; **AAT\'s own technical updates and CPD**, which interpret changes for members; and **software vendors\' release notes**, which describe the legislative changes built into a product.',
+            'Beneath those sit the **VAT notices and PAYE guidance on GOV.UK** themselves, updated continuously as the law changes. Then the **Finance Act** each year, which is where rates, thresholds and penalties actually move. Then **AAT’s own technical updates and CPD**, which interpret changes for members. And **software vendors’ release notes**, which describe the legislative changes built into a product.',
             'The practical point is that these are **push** rather than **pull** sources. A technician who relies on remembering to check will eventually not check during the month that mattered.',
           ],
           table: {
@@ -3594,9 +3657,9 @@
         {
           h: 'Why keeping current is an obligation',
           p: [
-            'The specification treats **maintaining up to date and relevant knowledge** as a requirement rather than good practice, and the reason is in the Code of Professional Ethics that lesson 5E covers.',
+            'The specification treats **maintaining up to date and relevant knowledge** as a requirement rather than good practice. The reason is in the Code of Professional Ethics that lesson 5E covers.',
             '**Professional competence and due care** is one of the five fundamental principles, and it has two limbs. Attaining competence, and **maintaining** it. Knowledge that was correct when acquired does not stay correct, so competence is not a state you reach but one you keep.',
-            'This unit provides its own illustration. It is written to **Finance Act 2025**, assessable from January 2026, and the unit is reissued every September for the following Finance Act. The **VAT late payment penalty changed from 2% to 3%** at day 15, and from 4% to 10% annualised — a technician still quoting the old figures would be confidently, precisely wrong, and would sound exactly as authoritative as one quoting the new ones.',
+            'This unit provides its own illustration. It is written to **Finance Act 2025**, assessable from January 2026, and the unit is reissued every September for the following Finance Act. The **VAT late payment penalty changed from 2% to 3%** at day 15, and from 4% to 10% annualised. A technician still quoting the old figures would be confidently, precisely wrong, and would sound exactly as authoritative as one quoting the new ones.',
             'Worse, some superseded rules survive in circulation for years. The **5%/10%/15% late registration penalty** described in VAT Notice 700/41 applied only to failures before April 2010, and is still repeated in study material today. Being out of date rarely announces itself. It has to be actively guarded against, which is what CPD is for.',
           ],
           callout: { kind: 'warning', text: 'Being out of date does not feel like being out of date. A superseded figure sounds exactly as authoritative as a current one — which is why keeping current is an obligation rather than a habit.' },
@@ -3604,10 +3667,10 @@
         {
           h: 'Software has to be updated too',
           p: [
-            'The specification asks separately about **updating accounting software for changes to VAT and payroll legislation**, and it is a distinct point from personal knowledge.',
+            'The specification asks separately about **updating accounting software for changes to VAT and payroll legislation**. That is a distinct point from personal knowledge.',
             'Under Making Tax Digital and RTI, the software does not merely record what a person decided — it **applies the rules**. It calculates the VAT on a sale from the rate held against the product. It calculates tax and National Insurance from the bands held in the payroll module. It files directly to HMRC without a person retyping anything.',
             'So software running last year\'s rates does not produce an obviously wrong figure that somebody catches. It produces a **plausible figure that is wrong**, on every transaction, until somebody notices. A payroll running last April\'s thresholds under-deducts consistently across an entire workforce, and the error is discovered when HMRC asks about it.',
-            'Three things follow. Updates must be applied **before the change takes effect**, not after — for payroll that means before the first payday of the new tax year, which is a hard date. Rates held against individual products or customers may need changing separately from a system-wide update. And after any change, the first run should be **checked** rather than assumed, which is where the review techniques of lesson 3D earn their keep.',
+            'Three things follow. Updates must be applied **before the change takes effect**, not after. For payroll that means before the first payday of the new tax year, which is a hard date. Rates held against individual products or customers may need changing separately from a system-wide update. And after any change, the first run should be **checked** rather than assumed. That is where the review techniques of lesson 3D earn their keep.',
           ],
           examtrap: 'Out-of-date software does not fail visibly. It produces plausible wrong figures on every transaction until somebody checks — which is why the update must precede the change, not follow it.',
         },
@@ -3679,10 +3742,10 @@
         {
           h: 'Authorisation before submission',
           p: [
-            'The specification asks specifically about **the importance of seeking authorisation before returns are submitted**, and the reason a step that looks like a formality is treated as a principle is the subject of this card.',
+            'The specification asks specifically about **the importance of seeking authorisation before returns are submitted**. This card explains why a step that looks like a formality is treated as a principle.',
             'A submitted return is a **declaration by the business or client**, not by the person who prepared it. It commits them to a figure, exposes them to penalties if it is wrong, and forms the basis on which HMRC will act. The person who bears those consequences is entitled to see it before it is made in their name.',
-            'For an **agent** the position is formal: authorisation to act must be in place before anything can be filed, and the client should approve the return itself. For an **employee** it is usually a matter of internal authority — a technician prepares the return, and someone with the standing to commit the business approves it.',
-            'The requirement protects the preparer as much as the business. A return approved by whoever is accountable for it is a shared position rather than an individual one, and the approval step is a genuine last check by someone who knows things the preparer may not — a credit note agreed verbally, a contract that changed, an asset sold. Skipping it to save time removes the last opportunity for that knowledge to surface.',
+            'For an **agent** the position is formal. Authorisation to act must be in place before anything can be filed, and the client should approve the return itself. For an **employee** it is usually a matter of internal authority: a technician prepares the return, and someone with the standing to commit the business approves it.',
+            'The requirement protects the preparer as much as the business. A return approved by whoever is accountable for it is a shared position rather than an individual one. The approval step is also a genuine last check by someone who knows things the preparer may not: a credit note agreed verbally, a contract that changed, an asset sold. Skipping it to save time removes the last opportunity for that knowledge to surface.',
           ],
           callout: { kind: 'key', text: 'A return is a declaration by the business, not by whoever typed it. The person exposed to the penalty is entitled to approve it first — and often knows something the preparer does not.' },
         },
@@ -3692,7 +3755,7 @@
             'Lesson 4B covered data protection for employee data. The Code adds a professional duty of **confidentiality** that is wider than data protection law and applies to the business\'s information as much as to individuals\'.',
             'Confidentiality means not disclosing information acquired at work **without proper authority**, and not using it **for personal advantage**. Both limbs matter. Knowing a client is about to lose its largest customer is confidential; acting on that knowledge is a separate breach from disclosing it.',
             'The duty does not stop when the engagement or the employment does. Information learned about a former employer remains confidential afterwards, which is a point people find genuinely counter-intuitive.',
-            'It is not absolute. Disclosure is permitted where it is **required by law**, where it is **permitted by law and authorised** by the client or employer, and where there is a **professional duty or right** to disclose. Money laundering reporting is the standard example of the first: a required disclosure overrides the confidentiality duty, and the fact that a client would object is not a reason to withhold it.',
+            'It is not absolute. Disclosure is permitted in three cases. Where it is **required by law**. Where it is **permitted by law and authorised** by the client or employer. And where there is a **professional duty or right** to disclose. Money laundering reporting is the standard example of the first. A required disclosure overrides the confidentiality duty, and the fact that a client would object is not a reason to withhold it.',
             '**Information security** is the practical arm. Payroll and VAT records are attractive to fraudsters — bank details, National Insurance numbers, salary data. Access restricted to those who need it, care with attachments and email addresses, no discussion of client or colleague affairs in public, and breaches handled rather than hoped about.',
           ],
           split: {
@@ -3703,10 +3766,10 @@
         {
           h: 'Acting in good faith with HMRC',
           p: [
-            'The last key concept of the unit is the one that gives the rest its point: the importance of **acting in good faith and exercising care over facts or information presented on behalf of clients or employers when dealing with HMRC**, in line with the AAT Code.',
+            'The last key concept of the unit is the one that gives the rest its point. It is the importance of **acting in good faith and exercising care over facts or information presented on behalf of clients or employers when dealing with HMRC**. That is the AAT Code’s requirement.',
             'The obligation runs to **the accuracy of what is submitted**, not merely to following instructions. A technician who submits a return knowing it understates output tax has not discharged their duty by pointing out that the client told them to. Integrity is the principle engaged, and it does not yield to the fact that somebody else asked.',
-            '"Exercising care over facts" also covers what you did **not** check. Accepting a figure that looks implausible, without asking, is a failure of due care even if nobody instructed you to accept it. The review techniques of lesson 3D are the professional obligation in practical form: a Box 1 that is 6% of Box 6 for a wholly standard-rated trader is a question to ask, not a figure to file.',
-            'Where a genuine conflict arises — an employer instructing something you believe is wrong — the Code\'s expectation is to raise it internally first, escalate within the organisation, seek advice from AAT if it is unresolved, and document what happened throughout. What is not available is quietly complying, and neither is quietly resigning while leaving the return filed.',
+            '"Exercising care over facts" also covers what you did **not** check. Accepting a figure that looks implausible, without asking, is a failure of due care even if nobody instructed you to accept it. The review techniques of lesson 3D are the professional obligation in practical form. A Box 1 that is 6% of Box 6 for a wholly standard-rated trader is a question to ask, not a figure to file.',
+            'Sometimes a genuine conflict arises — an employer instructing something you believe is wrong. The Code’s expectation is to raise it internally first, escalate within the organisation, seek advice from AAT if it is unresolved, and document what happened throughout. What is not available is quietly complying, and neither is quietly resigning while leaving the return filed.',
             'This is where the unit ends, and it ends here for a reason. Everything before it was mechanism — thresholds, tax points, boxes, deadlines. Mechanism is only worth having if the person operating it can be relied on, which is the whole of what the Code is for.',
           ],
           callout: { kind: 'warning', text: '"The client told me to" is not a defence. The obligation runs to the accuracy of what is submitted, and integrity does not yield to instruction.' },

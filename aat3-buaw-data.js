@@ -59,8 +59,8 @@
         {
           h: 'The unit about everything around the numbers',
           p: [
-            'Tax Processes, Financial Accounting and Management Accounting all ask you to produce a figure and be right about it. Business Awareness asks something different: **why is this business shaped the way it is, who has a claim on it, what could go wrong, and what would you do if someone asked you to look the other way.**',
-            'It is 15% of the Level 3 qualification, 70 guided learning hours, and a **two-and-a-half hour** paper — the same length as the FAPS and MATS papers on a much smaller body of content, which tells you something about how much writing is expected.',
+            'Tax Processes, Financial Accounting and Management Accounting all ask you to produce a figure and be right about it. Business Awareness asks something different. **Why is this business shaped the way it is? Who has a claim on it? What could go wrong? And what would you do if someone asked you to look the other way?**',
+            'It is 15% of the Level 3 qualification, 70 guided learning hours, and a **two-and-a-half hour** paper. That is the same length as the FAPS and MATS papers, on a much smaller body of content. Which tells you something about how much writing is expected.',
           ],
           callout: {
             kind: 'key',
@@ -79,7 +79,7 @@
               ['5 · Communicating to stakeholders', '20%', 'You have found something out. Who needs it, in what form, and how soon?'],
             ],
           },
-          p: ['Outcome 1 is the largest and it underpins the rest: stakeholders reappear in outcome 5, risk reappears in outcome 4, and the finance function’s relationship with the other functions reappears everywhere.'],
+          p: ['Outcome 1 is the largest, and it underpins the rest. Stakeholders reappear in outcome 5, risk reappears in outcome 4, and the finance function’s relationship with the other functions reappears everywhere.'],
         },
         {
           h: 'How to answer a question in this unit',
@@ -90,7 +90,7 @@
             'Say what follows for this business',
           ],
           p: [
-            'Almost every question here is a scenario. The marks are not for naming the concept — they are for **applying it to the business in front of you**. "Rising interest rates are an economic factor" is worth little; "rising interest rates raise the cost of Ashgrove’s overdraft, which it uses every month between paying suppliers and being paid" is worth the mark.',
+            'Almost every question here is a scenario. The marks are not for naming the concept — they are for **applying it to the business in front of you**. "Rising interest rates are an economic factor" is worth little. "Rising interest rates raise the cost of Ashgrove’s overdraft, which it uses every month between paying suppliers and being paid" is worth the mark.',
             'In a written task, the number of marks tells you how many separate points are wanted. Four marks is four points, not one point said four ways.',
           ],
           examtrap: 'Listing the PESTLE letters, or the five ethical principles, without applying any of them. Recall is the cheap half of every question in this unit.',
@@ -99,7 +99,7 @@
           h: 'What this module does not do',
           p: [
             'This is an independent study tool. It is not AAT material, it has no sample assessment behind it, and the wording of a real BUAW task will not match the wording here.',
-            'Where the specification names something and gives no detail — the exact stages of the ethical conflict resolution process, for instance — the material teaches the shape AAT’s own guidance uses and says that it is doing so, rather than inventing a numbered list and presenting it as the list.',
+            'Sometimes the specification names something and gives no detail — the exact stages of the ethical conflict resolution process, for instance. The material then teaches the shape AAT’s own guidance uses, and says that it is doing so. It does not invent a numbered list and present it as the list.',
           ],
           callout: {
             kind: 'warning',
@@ -176,7 +176,7 @@
           h: 'Separation of ownership from control',
           p: [
             'In a sole trader the owner is the manager. There is no gap between the person whose money is at stake and the person deciding how to spend it, so there is nothing to govern.',
-            'In a plc, thousands of shareholders own the business and a board of directors runs it. That gap is what governance exists to manage — the whole apparatus of directors’ duties, reporting and audit is there because the people making the decisions are spending somebody else’s money.',
+            'In a plc, thousands of shareholders own the business and a board of directors runs it. That gap is what governance exists to manage. The whole apparatus of directors’ duties, reporting and audit is there because the people making the decisions are spending somebody else’s money.',
           ],
           split: {
             left: {
@@ -294,7 +294,7 @@
               ],
             },
           },
-          p: ['The reporting consequence is real: a manufacturer’s statement of financial position carries a large inventory figure that has to be valued and audited, and a service business’s does not.'],
+          p: ['The reporting consequence is real. A manufacturer’s statement of financial position carries a large inventory figure that has to be valued and audited. A service business’s does not.'],
           examtrap: 'Do not say a service business "has no costs to trace". It has: they are hours, and a service business that cannot say which client absorbed which hours cannot price its work.',
         },
       ],
@@ -332,7 +332,7 @@
         {
           h: 'What companies legislation is for',
           p: [
-            'A company is a legal person that nobody can meet. Legislation exists to make that person accountable: it governs **how a company is formed**, **what its directors must do**, and **what it must report** to the people who cannot see inside it.',
+            'A company is a legal person that nobody can meet. Legislation exists to make that person accountable. It governs **how a company is formed**, **what its directors must do**, and **what it must report** to the people who cannot see inside it.',
             'The specification asks for three things: the rights and roles of shareholders, the role and duties of directors, and the fact that the legislation regulates formation and reporting. It does not ask for section numbers.',
           ],
         },
@@ -383,7 +383,7 @@
         {
           h: 'Formation and reporting',
           p: [
-            'Forming a company means registering it — the constitution, the registered office, the first directors and the shareholding — and it exists from the moment it is registered, not from the moment it starts trading.',
+            'Forming a company means registering it: the constitution, the registered office, the first directors and the shareholding. It exists from the moment it is registered, not from the moment it starts trading.',
             'Reporting means filing accounts and a confirmation statement each year, and telling the registrar when the registered details change. The filings are public: anybody can look them up, which is exactly the point.',
           ],
           callout: {
@@ -475,8 +475,8 @@
         {
           h: 'Goodwill, and why a change of partner raises it',
           p: [
-            '**Goodwill** is the value of the business above its identifiable net assets — its reputation, its customer relationships, its trained staff, the fact that the phone rings.',
-            'It matters at a change of partner because it has been built by the existing partners and a new one would otherwise share it for nothing. The usual treatment is to introduce goodwill into the accounts in the OLD profit-sharing ratio, then write it out again in the NEW one — which leaves each partner credited or debited with exactly the change in their share of it.',
+            '**Goodwill** is the value of the business above its identifiable net assets. Its reputation, its customer relationships, its trained staff, the fact that the phone rings.',
+            'It matters at a change of partner because the existing partners built it, and a new one would otherwise share it for nothing. The usual treatment is to introduce goodwill into the accounts in the OLD profit-sharing ratio, then write it out again in the NEW one. That leaves each partner credited or debited with exactly the change in their share of it.',
           ],
           callout: {
             kind: 'key',
@@ -491,7 +491,7 @@
             'Goodwill is adjusted between old and new ratios',
             'A new partnership begins',
           ],
-          p: ['Legally, admitting or losing a partner dissolves the old partnership and creates a new one, even where the name over the door and the staff are the same. That is why the profit for the year has to be apportioned at the date of the change rather than shared across the whole year in one ratio.'],
+          p: ['Legally, admitting or losing a partner dissolves the old partnership and creates a new one. That holds even where the name over the door and the staff are the same. It is why the profit for the year has to be apportioned at the date of the change, rather than shared across the whole year in one ratio.'],
         },
       ],
       check: [
@@ -564,7 +564,7 @@
         },
         {
           h: 'Not every stakeholder matters equally',
-          p: ['Significance is a function of **power** — how much they can do about it — and **interest** — how much they care. A bank with a charge over the premises has both; a member of the public who has heard of the company has neither.'],
+          p: ['Significance is a function of **power** and **interest**. Power is how much they can do about it; interest is how much they care. A bank with a charge over the premises has both. A member of the public who has heard of the company has neither.'],
           split: {
             left: {
               title: 'High power',
@@ -670,12 +670,12 @@
               ],
             },
           },
-          p: ['The two are the same fact seen twice: widen the span and the organisation gets flatter, because the same number of people fit under fewer managers.'],
+          p: ['The two are the same fact seen twice. Widen the span and the organisation gets flatter, because the same number of people fit under fewer managers.'],
         },
         {
           h: 'Governance is how the organisation is held to account',
           p: [
-            'Governance is the system of rules, practices and relationships by which an organisation is **directed and controlled** — who decides, who checks, and to whom they answer.',
+            'Governance is the system of rules, practices and relationships by which an organisation is **directed and controlled**. Who decides, who checks, and to whom they answer.',
             'Size and structure change what it has to look like. A sole trader needs none: there is nobody to hold to account but themselves. A plc needs a board, non-executive directors, an audit committee and a published report, because the owners are absent and numerous.',
           ],
           callout: {
@@ -807,7 +807,7 @@
               ['Operational risk', 'Risk from internal processes, people and systems failing', 'A cyberattack; a fire; a supplier failing; reputational damage'],
             ],
           },
-          p: ['**Cyber risk** and **reputational risk** sit under operational risk in this specification, and both are worth naming explicitly: a data breach is an operational failure whose largest cost is usually the reputational one.'],
+          p: ['**Cyber risk** and **reputational risk** sit under operational risk in this specification, and both are worth naming explicitly. A data breach is an operational failure whose largest cost is usually the reputational one.'],
         },
         {
           h: 'Four things you can do about a risk',
@@ -886,7 +886,7 @@
       cards: [
         {
           h: 'Six letters for the things a business cannot control',
-          p: ['PESTLE is a checklist for the **macro** environment — the forces that act on every business in a market, which no single business can change. Its value is not the letters; it is that a checklist stops you noticing only the factor you were already worried about.'],
+          p: ['PESTLE is a checklist for the **macro** environment: the forces that act on every business in a market, which no single business can change. Its value is not the letters. It is that a checklist stops you noticing only the factor you were already worried about.'],
           table: {
             headers: ['Letter', 'Covers', 'Examples the specification names'],
             rows: [
@@ -903,8 +903,8 @@
         {
           h: 'Political factors',
           p: [
-            'Government policy sets the conditions a business trades in: what is taxed, what is subsidised, what is spent on, and how easily goods cross a border.',
-            'Public spending is the one readers under-use. A business selling to the NHS, to schools or to local authorities has one customer whose budget is set politically — a spending review changes its revenue without anything happening in its market.',
+            'Government policy sets the conditions a business trades in. What is taxed, what is subsidised, what is spent on, and how easily goods cross a border.',
+            'Public spending is the one readers under-use. A business selling to the NHS, to schools or to local authorities has one customer whose budget is set politically. A spending review changes its revenue without anything happening in its market.',
           ],
           example: {
             title: 'One political change, several effects',
@@ -1005,7 +1005,7 @@
         },
         {
           h: 'Technological factors change structure, not just tools',
-          p: ['The specification asks for the **impact on structure**, and that is the part readers skip. Technology that automates a process removes the people who did it, flattens a layer of supervision, and moves the remaining work to a different skill set — the organisation chart changes, not only the equipment.'],
+          p: ['The specification asks for the **impact on structure**, and that is the part readers skip. Technology that automates a process removes the people who did it, flattens a layer of supervision, and moves the remaining work to a different skill set. The organisation chart changes, not only the equipment.'],
           callout: {
             kind: 'tip',
             text: 'A technological factor answer that stops at "they could use software" has not earned the mark. Say what it does to cost, to headcount, to where the work is done, or to what the finance function spends its time on.',
@@ -1124,7 +1124,7 @@
               ['Complementary', 'Used together with another', 'A rise in one REDUCES demand for the other — printers and cartridges'],
             ],
           },
-          p: ['The two that get confused are substitutes and complements, and the test is simple: if the price of A rises and people buy more B, they are substitutes; if they buy less B, they are complements.'],
+          p: ['The two that get confused are substitutes and complements, and the test is simple. If the price of A rises and people buy more B, they are substitutes. If they buy less B, they are complements.'],
         },
       ],
       check: [
@@ -1279,13 +1279,13 @@
               ['Operate sustainably throughout', 'Products, customers, employees, the workplace, the supply chain, and the processes themselves'],
             ],
           },
-          p: ['Note the last row: the specification asks for sustainability **across business functions and processes**, not as a separate initiative bolted on to the side.'],
+          p: ['Note the last row. The specification asks for sustainability **across business functions and processes**, not as a separate initiative bolted on to the side.'],
         },
         {
           h: 'The accountant’s public interest duty',
           p: [
             'The specification names this directly, and it is the part that connects sustainability to outcome 3. An accountant’s duty is not only to the employer or the client: it is to **protect society as a whole**, and that includes the organisation’s own sustainability.',
-            'In practice that means an accountant who sees the business trading in a way that cannot continue — depleting a resource, deferring maintenance, hiding an environmental cost — has a professional interest in saying so, not merely a personal opinion about it.',
+            'In practice, take an accountant who sees the business trading in a way that cannot continue: depleting a resource, deferring maintenance, hiding an environmental cost. They have a professional interest in saying so, not merely a personal opinion about it.',
           ],
           callout: {
             kind: 'key',
@@ -1348,7 +1348,7 @@
         {
           h: 'Integrity: being associated with misleading information',
           p: [
-            'An accountant breaches integrity not only by writing something false but by being **knowingly associated** with information that is misleading — including by omission, and including by staying silent while somebody else presents it.',
+            'An accountant breaches integrity not only by writing something false, but by being **knowingly associated** with information that is misleading. That includes by omission, and includes staying silent while somebody else presents it.',
             'The values behind it are honesty, transparency and fairness, and they apply to clients, suppliers and colleagues alike.',
           ],
           callout: {
@@ -1386,13 +1386,13 @@
               ],
             },
           },
-          p: ['**Professional behaviour** is the widest of the five: complying with law and regulation is a **minimum**, and an act that the law permits is not automatically ethical. Bringing the profession into disrepute can lead to disciplinary action by the professional body even where no law was broken.'],
+          p: ['**Professional behaviour** is the widest of the five. Complying with law and regulation is a **minimum**, and an act that the law permits is not automatically ethical. Bringing the profession into disrepute can lead to disciplinary action by the professional body, even where no law was broken.'],
         },
         {
           h: 'Professional scepticism',
           p: [
             'Assessing information **critically, with a questioning mind, and alert to possible misstatement due to error or fraud**. It is not suspicion of everybody; it is refusing to accept an explanation simply because it was offered by someone plausible.',
-            'It applies to recording transactions and to financial reporting, and it is what turns an unusual figure into a question rather than into a number typed in.',
+            'It applies to recording transactions and to financial reporting. It is what turns an unusual figure into a question, rather than into a number typed in.',
           ],
           callout: {
             kind: 'tip',
@@ -1561,8 +1561,8 @@
         {
           h: 'How ethical conflicts arise',
           p: [
-            'A conflict arises when two of the fundamental principles pull in different directions, or when what the employer wants and what the principles require are not the same thing.',
-            'The commonest shapes: pressure to report a figure a particular way; being asked to keep quiet about something that should be disclosed; being asked to do work outside your competence because there is nobody else.',
+            'A conflict arises when two of the fundamental principles pull in different directions. Or when what the employer wants and what the principles require are not the same thing.',
+            'The commonest shapes are these. Pressure to report a figure a particular way. Being asked to keep quiet about something that should be disclosed. Being asked to do work outside your competence, because there is nobody else.',
           ],
         },
         {
@@ -1632,13 +1632,13 @@
               ],
             },
           },
-          p: ['The link between competence and negligence is one the specification draws directly: a failure of professional competence and due care is what a breach of contract or negligence claim is built on. **Professional indemnity insurance** exists to meet those claims, and holding it is a requirement of practice.'],
+          p: ['The link between competence and negligence is one the specification draws directly. A failure of professional competence and due care is what a breach of contract or negligence claim is built on. **Professional indemnity insurance** exists to meet those claims, and holding it is a requirement of practice.'],
         },
         {
           h: 'Whistle-blowing',
           p: [
             'Reporting should follow the organisation’s formal internal **whistle-blowing** or "speak-out" procedure where one exists. Advice can be sought confidentially from managers or from a professional helpline first.',
-            'Where disclosure is made externally in the public interest about certain illegal or unethical acts by an employer, statutory **public interest disclosure protection** may be available — but it is conditional, and the specification is clear that third-party advice should be taken before blowing the whistle externally.',
+            'Disclosure may be made externally, in the public interest, about certain illegal or unethical acts by an employer. Statutory **public interest disclosure protection** may then be available. But it is conditional, and the specification is clear that third-party advice should be taken before blowing the whistle externally.',
           ],
           callout: {
             kind: 'warning',
@@ -1735,7 +1735,7 @@
           h: 'Who is regulated, and what a report contains',
           p: [
             'All accountants providing services in scope are supervised for anti-money-laundering purposes, either by their professional body or by HMRC. Bookkeeping and accountancy are accountancy services, so this is not confined to auditors.',
-            'A report — internal to the nominated officer, or a suspicious activity report to the authorities — should identify the **person or business suspected**, **what is suspected and why**, the **information the suspicion rests on**, and the **whereabouts of the laundered property** where known.',
+            'A report may be internal, to the nominated officer, or a suspicious activity report to the authorities. Either should identify the **person or business suspected**, and **what is suspected and why**. It should also give the **information the suspicion rests on**, and the **whereabouts of the laundered property** where known.',
           ],
           callout: {
             kind: 'key',
@@ -1841,8 +1841,8 @@
             ],
           },
           p: [
-            'Technology is what made both practical: a bookkeeping team three time zones away can work in the same cloud system as the business, in real time, on the same records.',
-            'The specification asks for the impact on **cost structure, markets and locations**. Cost structure shifts from fixed in-house salaries to a variable contract price; markets open up because a business can serve customers it could not previously reach; locations become a choice rather than a constraint.',
+            'Technology is what made both practical. A bookkeeping team three time zones away can work in the same cloud system as the business, in real time, on the same records.',
+            'The specification asks for the impact on **cost structure, markets and locations**. Cost structure shifts from fixed in-house salaries to a variable contract price. Markets open up, because a business can serve customers it could not previously reach. Locations become a choice rather than a constraint.',
           ],
           examtrap: 'The risks are the other half of the answer: loss of direct control, dependence on a provider, data protection where information crosses a border, and communication across time zones.',
         },
@@ -2029,7 +2029,7 @@
           p: [
             '**Input controls** stop bad data getting in — validation rules, range checks, required fields, and a second person approving a new supplier.',
             '**Processing controls** check the system did what it should — batch totals, reconciliations, exception reports.',
-            '**Output controls** check what comes out — distribution lists, review before issue, and confirmation that reports reached only the people entitled to them.',
+            '**Output controls** check what comes out. Distribution lists, review before issue, and confirmation that reports reached only the people entitled to them.',
           ],
         },
       ],
@@ -2287,7 +2287,7 @@
           h: 'Professional scepticism applies to data too',
           p: [
             'The specification asks for scepticism **in relation to big data** specifically, and it is asking about veracity. Where did this come from? Who collected it, and for what? What is missing from it, and would the gap change the answer?',
-            'Data bought from an external source is the sharpest case: the buyer did not see it collected, cannot check it, and inherits whatever bias was in it. Analytics from an external source is useful and is not evidence in the way an internal reconciliation is.',
+            'Data bought from an external source is the sharpest case. The buyer did not see it collected, cannot check it, and inherits whatever bias was in it. Analytics from an external source is useful. It is not evidence in the way an internal reconciliation is.',
           ],
           callout: {
             kind: 'warning',
@@ -2435,7 +2435,7 @@
               ['Formal letter', 'External, legal, or where a record matters', 'Routine internal matters'],
             ],
           },
-          p: ['The principles behind the choice: **who the audience is**, **how urgent it is**, **how complex it is**, **whether a record is needed**, and **how sensitive it is**.'],
+          p: ['Five principles sit behind the choice. **Who the audience is**, **how urgent it is**, **how complex it is**, **whether a record is needed**, and **how sensitive it is**.'],
         },
         {
           h: 'What makes communication professional',

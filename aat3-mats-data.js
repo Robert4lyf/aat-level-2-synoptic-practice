@@ -60,7 +60,7 @@
           h: 'Accounting for the people inside the business',
           p: [
             'Financial accounting produces one set of statements a year, for people outside the business, in a form the law and the standards dictate. **Management accounting produces whatever the people inside the business need, whenever they need it, in whatever form is useful.** Nobody outside ever sees it and no standard governs it.',
-            'That freedom is the whole difficulty of the unit. There is no single right layout for a cost statement, no rule that says which overhead goes where, and no auditor to tell you afterwards. What there is instead is a set of techniques, each with a question it answers well and questions it answers badly, and the skill being assessed is choosing between them and then getting the arithmetic right.',
+            'That freedom is the whole difficulty of the unit. There is no single right layout for a cost statement, no rule that says which overhead goes where, and no auditor to tell you afterwards. What there is instead is a set of techniques, each with a question it answers well and questions it answers badly. The skill being assessed is choosing between them, and then getting the arithmetic right.',
           ],
         },
         {
@@ -77,8 +77,8 @@
             ],
           },
           p: [
-            'It is the only Level 3 unit that is **not** computer marked throughout. The human-marked part is most plausibly the spreadsheet work in Outcome 5, which a machine cannot mark for layout or for whether a formula was used rather than a typed figure.',
-            'Two and a half hours against 120 guided learning hours makes this a paper you sit rather than one you sprint. The pass mark is the same 70% as every other Level 3 unit, but the arithmetic here is longer than in Tax Processes and less forgiving than in Business Awareness: a transposed figure early in an overhead schedule follows you down the page, and the marks lost are the ones the rest of the task depended on.',
+            'It is the only Level 3 unit that is **not** computer marked throughout. The human-marked part is most plausibly the spreadsheet work in Outcome 5. A machine cannot mark that for layout, or for whether a formula was used rather than a typed figure.',
+            'Two and a half hours against 120 guided learning hours makes this a paper you sit rather than one you sprint. The pass mark is the same 70% as every other Level 3 unit. But the arithmetic here is longer than in Tax Processes and less forgiving than in Business Awareness. A transposed figure early in an overhead schedule follows you down the page, and the marks lost are the ones the rest of the task depended on.',
             'AAT publishes no task count for this unit, so none is quoted anywhere in this module. Where a figure is unknown it is left unknown rather than guessed at, because a made-up number a reader plans around is worse than no number at all.',
           ],
         },
@@ -105,7 +105,7 @@
           h: 'What this app can and cannot give you',
           p: [
             'Six of the seven outcomes are taught and tested here in full. **Outcome 5 is not, and cannot be.** It asks you to design spreadsheets, build pivot tables, apply conditional formatting and format chart axes, and none of that can be done in a question bank.',
-            'What is written here for Outcome 5 is the knowledge around the skill — which function to reach for, what absolute referencing does and when it matters, which auditing tool answers which question, how a variance spreadsheet should be laid out so a reviewer can follow it. That is worth having and it is not a substitute. **Open a real spreadsheet and build the things in Outcome 5 yourself.**',
+            'What is written here for Outcome 5 is the knowledge around the skill. Which function to reach for. What absolute referencing does, and when it matters. Which auditing tool answers which question. How a variance spreadsheet should be laid out so a reviewer can follow it. That is worth having and it is not a substitute. **Open a real spreadsheet and build the things in Outcome 5 yourself.**',
           ],
           examtrap: 'Outcome 5 is 15% of this unit — a seventh of the marks, and more than the pass margin. A student who is fluent in every other outcome and has never built a spreadsheet can still fail.',
         },
@@ -175,9 +175,9 @@
         {
           h: 'Why accuracy is not a nicety here',
           p: [
-            'A financial statement that is wrong gets corrected and restated. A management report that is wrong gets **acted on** — a product is dropped, a price is cut, a supplier is changed — and by the time anyone notices, the decision has already cost money.',
+            'A financial statement that is wrong gets corrected and restated. A management report that is wrong gets **acted on**: a product is dropped, a price is cut, a supplier is changed. By the time anyone notices, the decision has already cost money.',
             'That is the specific reason accuracy matters more in management accounting than the absence of an audit would suggest. Nobody checks this work, and it is the work people act on.',
-            'It also explains why the assessment cares so much about the small disciplines — labelling a column, stating a basis, checking that a total adds back. A management report carries no notes, no accounting policies and no auditor\'s opinion, so the only thing standing between a figure and a decision is whoever prepared it.',
+            'It also explains why the assessment cares so much about the small disciplines: labelling a column, stating a basis, checking that a total adds back. A management report carries no notes, no accounting policies and no auditor’s opinion. The only thing standing between a figure and a decision is whoever prepared it.',
           ],
           callout: {
             kind: 'key',
@@ -222,7 +222,7 @@
           p: [
             '**Contribution** is what a sale leaves behind once you have paid the costs that only exist because the sale happened. It is what the sale *contributes* towards the fixed costs of being in business — and, once those are covered, towards profit.',
             'The whole of Outcome 6 rests on it, and so does most of Outcome 1. If you take one thing from this unit, take the habit of separating variable costs from fixed ones before doing anything else.',
-            'The reason the subtraction is done in that order is that only the first part changes when volume changes. Sell one more unit and revenue rises by the selling price and variable cost rises by the variable cost per unit; the fixed costs do not move at all. So contribution per unit stays constant while profit per unit does not, and every short-term decision in this unit is easier to reason about in the figure that stays still.',
+            'The subtraction is done in that order because only the first part changes when volume changes. Sell one more unit and revenue rises by the selling price, while variable cost rises by the variable cost per unit. The fixed costs do not move at all. So contribution per unit stays constant while profit per unit does not. Every short-term decision in this unit is easier to reason about in the figure that stays still.',
           ],
         },
         {
@@ -239,15 +239,15 @@
             ],
           },
           p: [
-            'Contribution per unit is 25.00 − 14.00 = **£11.00**, and 4,000 × 11.00 = £44,000, which is the same figure reached from the top. Being able to move between the per-unit view and the total view without recalculating from scratch is most of the speed you need in the assessment.',
+            'Contribution per unit is 25.00 − 14.00 = **£11.00**, and 4,000 × 11.00 = £44,000. That is the same figure reached from the top. Being able to move between the per-unit view and the total view, without recalculating from scratch, is most of the speed you need in the assessment.',
             'The layout is worth copying exactly. Revenue, then variable costs, then a ruled contribution line, then fixed costs, then profit — with the contribution line drawn even when the question has not asked for it. A statement that stops at profit and never shows contribution cannot be re-used when the next part of the task changes the volume, and re-using it is usually the point.',
           ],
         },
         {
           h: 'Where the fixed costs went',
           p: [
-            'Notice that fixed costs appear **once, in total, at the bottom** — not spread across the 4,000 units. That is deliberate and it is the marginal costing layout. Fixed costs do not change because one more unit was sold, so attaching a slice of them to each unit tells you something that is not true of the next unit you sell.',
-            'A "profit per unit" of 13,000 ÷ 4,000 = £3.25 is a real enough average of what happened, but it is a dangerous number to plan with: selling one more chisel does not add £3.25, it adds £11.00, because the fixed costs were already paid. That gap between the average and the next one is why the marginal layout exists at all.',
+            'Notice that fixed costs appear **once, in total, at the bottom** — not spread across the 4,000 units. That is deliberate and it is the marginal costing layout. Fixed costs do not change because one more unit was sold. Attaching a slice of them to each unit tells you something that is not true of the next unit you sell.',
+            'A "profit per unit" of 13,000 ÷ 4,000 = £3.25 is a real enough average of what happened. But it is a dangerous number to plan with. Selling one more chisel does not add £3.25, it adds £11.00, because the fixed costs were already paid. That gap between the average and the next one is why the marginal layout exists at all.',
           ],
           examtrap: 'Contribution is not gross profit. Gross profit deducts cost of sales, which under absorption costing includes a share of fixed production overhead. Contribution deducts variable costs only, and the two figures differ whenever any production overhead is fixed.',
         },
@@ -290,9 +290,9 @@
         {
           h: 'One total hides several stories',
           p: [
-            'A business making three products has one revenue figure, one cost figure and one profit figure — and none of them tells anybody what to do. **Segmenting** means running the same subtraction separately for each product, so the question stops being "are we profitable?" and becomes "which of these is carrying the others?"',
-            'The segments do not have to be products. The same statement is built by region, by customer, by channel or by branch, and the technique is identical: split revenue and variable costs by segment, stop at contribution, and leave the shared fixed costs undivided at the foot of the total column.',
-            'Stopping at contribution is the discipline that makes the statement useful. Push on to a profit per product and the answer depends entirely on how the fixed costs were split — a choice made by whoever built the report, not a fact about the product.',
+            'A business making three products has one revenue figure, one cost figure and one profit figure. None of them tells anybody what to do. **Segmenting** means running the same subtraction separately for each product. The question stops being "are we profitable?" and becomes "which of these is carrying the others?"',
+            'The segments do not have to be products. The same statement is built by region, by customer, by channel or by branch, and the technique is identical. Split revenue and variable costs by segment, stop at contribution, and leave the shared fixed costs undivided at the foot of the total column.',
+            'Stopping at contribution is the discipline that makes the statement useful. Push on to a profit per product and the answer depends entirely on how the fixed costs were split. That is a choice made by whoever built the report, not a fact about the product.',
           ],
         },
         {
@@ -309,14 +309,14 @@
             ],
           },
           p: [
-            'Every product contributes, and the three contributions add back to the £44,000 total. Saws contribute least in pounds — but at 6,200 ÷ 16,000 that is a **38.8%** contribution to sales ratio against chisels\' 45.0% and planes\' 45.0%, so the ranking by margin is not the ranking by size.',
-            'That difference is what a segmented statement is for. Judged on contribution in pounds, saws look like the product to drop; judged on the ratio, they are simply the smallest line on the page and every pound of saw revenue still leaves 38.8p behind. Which reading matters depends on what is scarce — floor space, machine hours, or nothing at all.',
+            'Every product contributes, and the three contributions add back to the £44,000 total. Saws contribute least in pounds. But at 6,200 ÷ 16,000 that is a **38.8%** contribution to sales ratio, against chisels’ 45.0% and planes’ 45.0%. So the ranking by margin is not the ranking by size.',
+            'That difference is what a segmented statement is for. Judged on contribution in pounds, saws look like the product to drop. Judged on the ratio, they are simply the smallest line on the page, and every pound of saw revenue still leaves 38.8p behind. Which reading matters depends on what is scarce — floor space, machine hours, or nothing at all.',
           ],
         },
         {
           h: 'Why the fixed row stops at the total column',
           p: [
-            'The fixed costs are shown once, against the business, and are deliberately **not** split three ways. They could be — an arbitrary split by revenue would give chisels £14,880 of them — and the resulting "profit by product" would then be a figure that changes whenever the split method changes, while nothing about the business changed at all.',
+            'The fixed costs are shown once, against the business, and are deliberately **not** split three ways. They could be: an arbitrary split by revenue would give chisels £14,880 of them. But the resulting "profit by product" would change whenever the split method changed, while nothing about the business changed at all.',
             'That is why segmented reporting stops at contribution. Contribution is a fact about the product; profit after an apportionment of fixed cost is a fact about the apportionment.',
           ],
           examtrap: 'A product showing a loss after fixed costs have been apportioned to it is not automatically a product to drop. If it still makes a positive contribution, dropping it removes the contribution and leaves the fixed costs behind — and total profit falls.',
@@ -373,15 +373,15 @@
             },
           },
           p: [
-            'The consequence is about **timing**. A product cost incurred this month on a unit that is still in the warehouse does not touch this month\'s profit at all — it is sitting in closing inventory, waiting.',
-            'Nothing about the cash is different: both were paid when they were paid. What differs is the month in which each one is allowed to reduce reported profit, and for a product cost that month is decided by the customer rather than by the supplier.',
+            'The consequence is about **timing**. A product cost incurred this month on a unit that is still in the warehouse does not touch this month’s profit at all. It is sitting in closing inventory, waiting.',
+            'Nothing about the cash is different: both were paid when they were paid. What differs is the month in which each one is allowed to reduce reported profit. For a product cost that month is decided by the customer rather than by the supplier.',
           ],
         },
         {
           h: 'Where the two costing techniques part company',
           p: [
             'Both techniques agree that direct materials and direct labour are product costs. They disagree about **fixed production overhead**.',
-            'Under **absorption costing** it is a product cost: a share of it attaches to every unit made, and the share on unsold units is carried forward in the value of closing inventory. Under **marginal costing** only variable costs enter inventory, and the fixed production overhead is written off in full as a period cost of the month it arose.',
+            'Under **absorption costing** it is a product cost. A share of it attaches to every unit made, and the share on unsold units is carried forward in the value of closing inventory. Under **marginal costing** only variable costs enter inventory. The fixed production overhead is written off in full as a period cost of the month it arose.',
           ],
           callout: {
             kind: 'key',
@@ -432,7 +432,7 @@
           formula: 'Difference in profit = Change in inventory units × Fixed production overhead per unit',
           p: [
             'The two techniques report different profits whenever inventory moves, and by exactly that amount. **Inventory rising** means some fixed overhead is carried forward instead of charged, so absorption reports the higher profit. **Inventory falling** means fixed overhead carried in from last period is released into this one, so absorption reports the lower profit.',
-            'When inventory is unchanged the two agree exactly, which is a useful check: if a question tells you production equalled sales and your two profits differ, one of the statements is wrong rather than the techniques disagreeing.',
+            'When inventory is unchanged the two agree exactly, which is a useful check. If a question tells you production equalled sales and your two profits differ, one of the statements is wrong. The techniques are not disagreeing.',
             'Over the life of a product the difference nets to nil, because every unit made is eventually sold and every pound of fixed overhead eventually reaches profit or loss. It is a question of which period bears it, not of how much there is.',
           ],
         },
@@ -496,7 +496,7 @@
             },
           },
           p: [
-            'Over the **long run** the two agree: across the life of a business every unit made is eventually sold, inventory returns to nothing, and the same fixed costs have been charged either way. The disagreement is entirely a **short-run** timing difference.',
+            'Over the **long run** the two agree. Across the life of a business every unit made is eventually sold, inventory returns to nothing, and the same fixed costs have been charged either way. The disagreement is entirely a **short-run** timing difference.',
           ],
           examtrap: 'Absorption profit rises when production rises, even if not one extra unit is sold — because more fixed overhead has been parked in inventory. That is why a manager paid on absorption profit can improve their figures by making things nobody wants, and why marginal costing is the safer basis for judging performance.',
         },
@@ -544,7 +544,7 @@
           flow: ['Direct materials + direct labour + direct expenses', '= PRIME COST', '+ variable production overhead', '= MARGINAL COST', '+ fixed production overhead', '= FULL ABSORPTION COST'],
           p: [
             'They are cumulative, which makes them easy to build and easy to muddle. **Prime cost** is the direct costs alone. **Marginal cost** adds the overhead that varies with output. **Full absorption cost** adds a share of the overhead that does not.',
-            'Notice what none of the three includes: selling, distribution and administration. Every one of these is a cost of MAKING the unit, so a cost incurred after the unit exists stays outside all three however obviously it was caused by the sale. That is why full absorption cost is not the cost of getting a unit to a customer, and quoting it as though it were is how a price ends up too low.',
+            'Notice what none of the three includes: selling, distribution and administration. Every one of these is a cost of MAKING the unit. A cost incurred after the unit exists stays outside all three, however obviously it was caused by the sale. That is why full absorption cost is not the cost of getting a unit to a customer. Quoting it as though it were is how a price ends up too low.',
           ],
         },
         {
@@ -618,8 +618,8 @@
         {
           h: 'The three inventory accounts a factory keeps',
           p: [
-            'A retailer buys goods and sells them, so one inventory account is enough. A manufacturer buys one thing and sells another, and the transformation takes time, so it keeps **three**: raw materials waiting to be used, work in progress part-way through being made, and finished goods waiting to be sold.',
-            'Cost accounting is largely the business of moving value along that chain and being able to say, at any moment, how much is sitting in each account. Every technique later in this outcome is either a way of putting a value on one of those movements or a way of explaining the balance that is left behind.',
+            'A retailer buys goods and sells them, so one inventory account is enough. A manufacturer buys one thing and sells another, and the transformation takes time, so it keeps **three**. Raw materials waiting to be used, work in progress part-way through being made, and finished goods waiting to be sold.',
+            'Cost accounting is largely the business of moving value along that chain. It has to be able to say, at any moment, how much is sitting in each account. Every technique later in this outcome either puts a value on one of those movements, or explains the balance that is left behind.',
           ],
           flow: ['Materials inventory', 'Work in progress', 'Finished goods', 'Cost of sales'],
           table: {
@@ -745,7 +745,7 @@
         {
           h: 'The problem half-finished units create',
           p: [
-            'A month\'s costs have to be shared between the units that were finished and the units still on the line. Sharing them over the finished units alone overstates every one of them; sharing them over the total number of units pretends a half-built unit cost as much as a finished one. Neither is defensible.',
+            'A month’s costs have to be shared between the units that were finished and the units still on the line. Share them over the finished units alone and every one of them is overstated. Share them over the total number of units and a half-built unit is treated as costing as much as a finished one. Neither is defensible.',
             'The answer is to convert the unfinished units into the number of **finished** units the same work would have produced. Eight hundred units a quarter of the way through are, in cost terms, two hundred finished units. That figure is an **equivalent unit**, and once every unit is expressed in the same terms the cost can simply be divided.',
           ],
           formula: 'Equivalent units = units completed + (units in closing WIP × their percentage of completion)',
@@ -753,7 +753,7 @@
         {
           h: 'Materials and conversion move at different speeds',
           p: [
-            'Materials are usually issued in full at the start of a process, so a unit one quarter of the way through is already **100% complete for materials**. Labour and overhead — together called **conversion cost** — accumulate as the unit moves, so the same unit is only 25% complete for those.',
+            'Materials are usually issued in full at the start of a process. So a unit one quarter of the way through is already **100% complete for materials**. Labour and overhead — together called **conversion cost** — accumulate as the unit moves, so the same unit is only 25% complete for those.',
             'That is why the calculation is done twice: one equivalent-unit figure and one cost per equivalent unit for materials, another pair for conversion. Adding the two costs per equivalent unit gives the cost of one completed unit.',
           ],
           worked: {
@@ -849,7 +849,7 @@
         {
           h: 'A second set of books, with its own accounts',
           p: [
-            'Cost bookkeeping records the same transactions the financial ledger does, but arranged so that the cost of a unit can be read off at the end. It uses **control accounts** — materials inventory, wages, production overhead, work in progress, finished goods — and every entry is a movement between two of them.',
+            'Cost bookkeeping records the same transactions the financial ledger does, but arranged so that the cost of a unit can be read off at the end. It uses **control accounts**: materials inventory, wages, production overhead, work in progress, finished goods. Every entry is a movement between two of them.',
             'The whole system is driven by one decision made over and over: **is this cost direct or indirect?** Direct costs are debited to work in progress and become part of a unit. Indirect costs are debited to production overhead control and wait there until they are absorbed. Get that one classification right and the journals follow from it mechanically.',
           ],
         },
@@ -1016,7 +1016,7 @@
         {
           h: 'The economic order quantity',
           p: [
-            'The levels say **when** to order. The EOQ says **how much**. Two costs pull against each other: every order costs something to place regardless of its size, so large orders are cheap to administer; every unit held costs something to keep, so large orders are expensive to store. The EOQ is the quantity where the two are equal and their total is at its lowest.',
+            'The levels say **when** to order. The EOQ says **how much**. Two costs pull against each other. Every order costs something to place regardless of its size, so large orders are cheap to administer. Every unit held costs something to keep, so large orders are expensive to store. The EOQ is the quantity where the two are equal and their total is at its lowest.',
           ],
           formula: 'EOQ = √((2 × annual usage × ordering cost) ÷ inventory holding cost)',
           worked: {
@@ -1073,7 +1073,7 @@
             },
           },
           p: [
-            'An assessment task will often hand you a stores record and ask whether the policy was complied with. Work down the balances, mark the point each order was placed, and compare it with the levels — the answer is nearly always visible without any arithmetic beyond a subtraction.',
+            'An assessment task will often hand you a stores record and ask whether the policy was complied with. Work down the balances, mark the point each order was placed, and compare it with the levels. The answer is nearly always visible without any arithmetic beyond a subtraction.',
           ],
         },
       ],
@@ -1156,8 +1156,8 @@
             ],
           },
           p: [
-            'FIFO empties the 200 units at £5.00 first and then takes 200 of the £6.00 units, so the issue is 1,000 + 1,200 = **£2,200** and the 100 units left are the newer ones at £6.00.',
-            'AVCO averages before it issues: 500 units holding £2,800 is £5.60 each, so the issue is 400 × £5.60 = **£2,240** and the 100 units left are worth £560. Both methods have accounted for the same £3,500 of purchases and opening stock — they have simply drawn the line between issue and balance in different places.',
+            'FIFO empties the 200 units at £5.00 first, then takes 200 of the £6.00 units. So the issue is 1,000 + 1,200 = **£2,200**, and the 100 units left are the newer ones at £6.00.',
+            'AVCO averages before it issues: 500 units holding £2,800 is £5.60 each. So the issue is 400 × £5.60 = **£2,240** and the 100 units left are worth £560. Both methods have accounted for the same £3,500 of purchases and opening stock. They have simply drawn the line between issue and balance in different places.',
           ],
         },
         {
@@ -1320,8 +1320,8 @@
         {
           h: 'When the fixed cost steps in the middle',
           p: [
-            'High-low assumes the fixed element is identical at both observations. If the question tells you it is not — a second supervisor taken on above a certain output, a bigger unit rented — the difference between the two totals is no longer all variable, and dividing it straight away is wrong.',
-            'The repair is to make the two points comparable first: strip the step out of the higher observation, so that both figures carry the same fixed cost, and only then divide.',
+            'High-low assumes the fixed element is identical at both observations. Sometimes the question tells you it is not: a second supervisor taken on above a certain output, a bigger unit rented. Then the difference between the two totals is no longer all variable, and dividing it straight away is wrong.',
+            'The repair is to make the two points comparable first. Strip the step out of the higher observation, so that both figures carry the same fixed cost, and only then divide.',
           ],
           examtrap: 'With the same £58,000 at 12,000 units and £82,000 at 20,000 units, but fixed costs rising by £6,000 once output passes 15,000: the high point becomes £82,000 − £6,000 = £76,000, so £76,000 − £58,000 = £18,000 and £18,000 ÷ 8,000 = £2.25 a unit. Then 12,000 × £2.25 = £27,000, so the fixed cost below the step is £58,000 − £27,000 = £31,000, and above it £31,000 + £6,000 = £37,000. Forgetting to strip the step first gives £3.00 and a fixed cost that fits neither level.',
         },
@@ -1389,9 +1389,9 @@
         {
           h: 'Why a service needs two dimensions',
           p: [
-            'A haulier that moves one tonne 500 miles and a haulier that moves 50 tonnes 10 miles have both driven, but they have not done the same work. A cost per mile flatters the first and a cost per tonne flatters the second, so service costing multiplies the two into a **composite cost unit** and divides by that instead.',
-            'A bus route costing £96,000 a month and carrying 480,000 passenger-miles costs £96,000 ÷ 480,000 = **£0.20 a passenger-mile**, and that figure can be set against another route of a completely different length and loading. A single dimension could not do that: cost per mile rewards an empty bus and cost per passenger rewards a short one.',
-            'The same reasoning explains why a hotel counts occupied bed-nights rather than beds, and a hospital patient-days rather than patients. In each case one dimension is capacity and the other is time or distance, and the cost the business is trying to control depends on both.',
+            'A haulier that moves one tonne 500 miles and a haulier that moves 50 tonnes 10 miles have both driven, but they have not done the same work. A cost per mile flatters the first and a cost per tonne flatters the second. So service costing multiplies the two into a **composite cost unit**, and divides by that instead.',
+            'A bus route costing £96,000 a month and carrying 480,000 passenger-miles costs £96,000 ÷ 480,000 = **£0.20 a passenger-mile**. That figure can be set against another route of a completely different length and loading. A single dimension could not do that: cost per mile rewards an empty bus and cost per passenger rewards a short one.',
+            'The same reasoning explains why a hotel counts occupied bed-nights rather than beds, and a hospital patient-days rather than patients. In each case one dimension is capacity and the other is time or distance. The cost the business is trying to control depends on both.',
           ],
           table: {
             headers: ['Business', 'Composite cost unit'],
@@ -1408,7 +1408,7 @@
           h: 'Waste: expected, and unexpected',
           p: [
             'Almost every process loses some of what goes into it — evaporation, offcuts, units that fail inspection. Costing splits that loss in two, and the split decides where the money lands.',
-            '**Normal loss** is the waste the process is known to produce. It is expected, so its cost is absorbed by the units that survive: divide the process cost by the EXPECTED good output, not by the input. **Abnormal loss** is whatever is lost beyond that. It is valued at the same rate as good output and written off separately, so that a bad month appears as a bad month rather than as a quietly higher unit cost.',
+            '**Normal loss** is the waste the process is known to produce. It is expected, so its cost is absorbed by the units that survive: divide the process cost by the EXPECTED good output, not by the input. **Abnormal loss** is whatever is lost beyond that. It is valued at the same rate as good output and written off separately. That way a bad month appears as a bad month, rather than as a quietly higher unit cost.',
           ],
           worked: {
             title: 'Normal and abnormal loss in one process',
@@ -1590,14 +1590,14 @@
           p: [
             'A **production** cost centre makes the product. A **service** cost centre — stores, maintenance, the canteen — exists to support the ones that do. Units pass through production centres and never through stores, so an overhead rate can only be built on a production centre.',
             'Everything sitting in a service centre therefore has to be pushed out into the production centres before any rate can be calculated. That second step is **reapportionment**.',
-            'Whether a centre is a production or a service centre is decided by the product, not by how expensive or how busy it is. If a unit physically passes through it and is changed by it, it is a production centre; if it only supports the centres that do, it is a service centre. A question will normally say which is which, and when it does not the list of what happens in each is the tell.',
+            'Whether a centre is a production or a service centre is decided by the product, not by how expensive or how busy it is. If a unit physically passes through it and is changed by it, it is a production centre. If it only supports the centres that do, it is a service centre. A question will normally say which is which. When it does not, the list of what happens in each is the tell.',
           ],
           flow: ['Allocate and apportion to ALL centres', 'Reapportion service centres into production centres', 'Calculate a recovery rate per production centre'],
         },
         {
           h: 'The direct method',
           p: [
-            'The simplest rule: **ignore the service centres\' use of each other** and push each one straight into the production centres, in proportion to the production centres\' usage only.',
+            'The simplest rule: **ignore the service centres’ use of each other**. Push each one straight into the production centres, in proportion to the production centres’ usage only.',
           ],
           worked: {
             title: 'Two production centres, one service centre',
@@ -1639,7 +1639,7 @@
             ],
           },
           p: [
-            'Service centres often serve each other: stores issues materials to maintenance, maintenance repairs the stores forklift. The **step-down** method deals with this in one direction only. Close the service centre that serves the most other service centres first, spread it across everything it serves — production centres and the remaining service centres — and then close the next one **without sending anything back**.',
+            'Service centres often serve each other: stores issues materials to maintenance, maintenance repairs the stores forklift. The **step-down** method deals with this in one direction only. Close the service centre that serves the most other service centres first. Spread it across everything it serves — production centres and the remaining service centres. Then close the next one **without sending anything back**.',
             'So stores is closed first and its £30,000 goes to all three centres it serves, maintenance included. Maintenance then holds £18,000 + £6,000 = **£24,000**, and that whole figure is split 70/30 between the two production centres — nothing goes back to stores, which is already closed. Total: 115,800 + 72,200 = **£188,000**, the same as 84,000 + 56,000 + 18,000 + 30,000.',
           ],
           examtrap: 'After the first service centre is closed, the second one is bigger than it started. Splitting the ORIGINAL £18,000 instead of the £24,000 it now holds leaves £6,000 stranded in a closed centre, and the production totals no longer add back to the original total — which is the check that catches it.',
@@ -1687,9 +1687,9 @@
           h: 'One division, decided in advance',
           formula: 'Overhead absorption rate = Budgeted overhead ÷ Budgeted activity',
           p: [
-            'Both figures are **budgeted**. The rate is set before the period starts, because a cost card is needed before the year is over — a quotation cannot wait until March to find out what the overhead actually was.',
+            'Both figures are **budgeted**. The rate is set before the period starts, because a cost card is needed before the year is over. A quotation cannot wait until March to find out what the overhead actually was.',
             'Setting it in advance is also the reason under- and over-absorption exists, which is the next lesson.',
-            'The alternative — waiting for the actual figures and dividing those — would give a rate that is arithmetically perfect and commercially useless, because it arrives months after every quotation that needed it. Worse, it would make each unit cost depend on how busy the factory happened to be that year, so the same chisel would carry more overhead in a quiet year than in a busy one. A predetermined rate buys a stable cost card at the price of a difference to clear at the year end.',
+            'The alternative is to wait for the actual figures and divide those. That would give a rate that is arithmetically perfect and commercially useless, because it arrives months after every quotation that needed it. Worse, it would make each unit cost depend on how busy the factory happened to be that year. The same chisel would carry more overhead in a quiet year than in a busy one. A predetermined rate buys a stable cost card, at the price of a difference to clear at the year end.',
           ],
         },
         {
@@ -1777,8 +1777,8 @@
         {
           h: 'When hours stop explaining the overhead',
           p: [
-            'Traditional absorption assumes overhead is driven by **volume** — more hours, more overhead. Much modern overhead is not: setting up a machine costs the same whether the run is 10 units or 10,000, and a purchase order costs the same for a large delivery as a small one.',
-            'Activity-based costing groups overhead into a **cost pool** for each activity, finds the **cost driver** that actually causes it, and charges each product by how much of that driver it consumes.',
+            'Traditional absorption assumes overhead is driven by **volume** — more hours, more overhead. Much modern overhead is not. Setting up a machine costs the same whether the run is 10 units or 10,000, and a purchase order costs the same for a large delivery as a small one.',
+            'Activity-based costing groups overhead into a **cost pool** for each activity, and finds the **cost driver** that actually causes it. Each product is then charged by how much of that driver it consumes.',
           ],
           flow: ['Identify the activity', 'Pool its cost', 'Find the driver that causes it', 'Rate = pool ÷ total driver units', 'Charge each product by its driver usage'],
         },
@@ -1795,8 +1795,8 @@
             ],
           },
           p: [
-            'A **cost pool** gathers the cost of one activity, and a **cost driver** is the thing that causes that activity to happen. The pairing is the whole of the technique: choose a driver that genuinely triggers the cost, divide the pool by the total driver units, and charge each product for the driver units it used.',
-            'The reason this changes anything is that most of these drivers have nothing to do with volume. A set-up costs the same whether the run that follows is ten units or ten thousand, so a low-volume product that needs as many set-ups as a high-volume one is carrying a cost that machine hours would have handed to its bigger neighbour.',
+            'A **cost pool** gathers the cost of one activity, and a **cost driver** is the thing that causes that activity to happen. The pairing is the whole of the technique. Choose a driver that genuinely triggers the cost, divide the pool by the total driver units, and charge each product for the driver units it used.',
+            'The reason this changes anything is that most of these drivers have nothing to do with volume. A set-up costs the same whether the run that follows is ten units or ten thousand. So a low-volume product that needs as many set-ups as a high-volume one carries a cost that machine hours would have handed to its bigger neighbour.',
           ],
           callout: {
             kind: 'key',
@@ -1942,7 +1942,7 @@
           h: 'What it means, and what it does not',
           p: [
             'An under- or over-absorption is not a costing error and it is not a saving. It is the arithmetic consequence of setting a rate in advance, and it always has **two possible causes**: activity differed from budget, or spending did, or both.',
-            'Its effect on **unit cost** is nil — units were costed at the rate, and the rate is what it is. Its effect on **total profit** is the whole adjustment, which is why a large under-absorption can turn a month that looked fine into a loss.',
+            'Its effect on **unit cost** is nil. Units were costed at the rate, and the rate is what it is. Its effect on **total profit** is the whole adjustment. That is why a large under-absorption can turn a month that looked fine into a loss.',
           ],
           examtrap: 'Absorbed = budgeted RATE × ACTUAL activity. Using actual overhead ÷ actual hours gives a rate nobody ever used, and using budgeted hours gives the budgeted overhead back — either way the answer is zero difference, which is the tell that the wrong figures went in.',
         },
@@ -2014,7 +2014,7 @@
         {
           h: 'A price and a cost decided in advance',
           p: [
-            'A **standard** is what one unit ought to cost, and what it ought to sell for, agreed before the period begins. It is not a forecast of what will happen and it is not last year\'s average — it is a considered target built from the quantity of each resource a unit should need and the price that resource should command.',
+            'A **standard** is what one unit ought to cost, and what it ought to sell for, agreed before the period begins. It is not a forecast of what will happen, and it is not last year’s average. It is a considered target, built from the quantity of each resource a unit should need and the price that resource should command.',
             'Two numbers make up every line: a **quantity** and a **price**. Two kilograms at £6.00; half an hour at £14.00. Keeping them apart matters, because when the actual cost differs from the standard the question is always which of the two moved.',
           ],
           example: {
@@ -2034,7 +2034,7 @@
         {
           h: 'From one card to a whole budget',
           p: [
-            'The card describes one unit. Multiply it by the volume the business plans to make and every line of the budget appears — which is the practical reason standards exist at all. **Fixed** production overhead is the one line that is not multiplied: it was a total before the card was written, and £3.00 a unit is what that total works out at when it is spread over the planned volume.',
+            'The card describes one unit. Multiply it by the volume the business plans to make and every line of the budget appears — which is the practical reason standards exist at all. **Fixed** production overhead is the one line that is not multiplied. It was a total before the card was written, and £3.00 a unit is what that total works out at when spread over the planned volume.',
           ],
           worked: {
             title: 'Building the budget from the card',
@@ -2082,7 +2082,7 @@
             ],
           },
           p: [
-            'A standard is only useful while it is still true. A supplier price rise, a new machine, a change of material — any of these makes the card wrong, and once the card is wrong the variances measure the staleness of the standard rather than the performance of the department.',
+            'A standard is only useful while it is still true. A supplier price rise, a new machine, a change of material — any of these makes the card wrong. Once the card is wrong, the variances measure the staleness of the standard rather than the performance of the department.',
             'That is why "revise the standard" is a legitimate answer to a persistent variance. If every month for six months has shown the same adverse material price variance, the price has changed and the card has not.',
           ],
         },
@@ -2137,7 +2137,7 @@
           },
           p: [
             'A **fixed** budget is not a budget of fixed costs; the word means it is not adjusted. It is the plan, and it is the right thing to plan against.',
-            'A **rolling** budget — sometimes called a continuous budget — adds a thirteenth month as the first month closes, so the business is never looking at a horizon that shortens as the year goes on. It costs more to prepare, which is the trade-off.',
+            'A **rolling** budget — sometimes called a continuous budget — adds a thirteenth month as the first month closes. So the business is never looking at a horizon that shortens as the year goes on. It costs more to prepare, which is the trade-off.',
           ],
         },
         {
@@ -2353,8 +2353,8 @@
         {
           h: 'A bridge from what should have happened to what did',
           p: [
-            'An operating statement starts at the **flexed budget profit** — what the business should have earned at the volume it actually achieved — and works down to the **actual profit**, naming every variance that explains the gap. Read it top to bottom and you have the whole month in one page: the plan, each thing that went differently, and the result.',
-            'Its value is that it accounts for the difference **completely**. If the variances listed do not carry you exactly from one profit to the other, something has been missed or double-counted, and that arithmetic check is the first thing to run before reading a word of it.',
+            'An operating statement starts at the **flexed budget profit** — what the business should have earned at the volume it actually achieved. It then works down to the **actual profit**, naming every variance that explains the gap. Read it top to bottom and you have the whole month in one page: the plan, each thing that went differently, and the result.',
+            'Its value is that it accounts for the difference **completely**. If the variances listed do not carry you exactly from one profit to the other, something has been missed or double-counted. That arithmetic check is the first thing to run, before reading a word of it.',
           ],
         },
         {
@@ -2373,7 +2373,7 @@
             ],
           },
           p: [
-            'The gap is 131,000 − 122,600 = **£8,400** adverse, and the five variances net to exactly that: 3,500 + 3,700 + 1,300 + 1,500 = £10,000 adverse against £1,600 favourable. Anyone reading it can see immediately that no single failure caused the month — four modest adverse variances did, and the one department that beat its standard was labour.',
+            'The gap is 131,000 − 122,600 = **£8,400** adverse, and the five variances net to exactly that: 3,500 + 3,700 + 1,300 + 1,500 = £10,000 adverse against £1,600 favourable. Anyone reading it can see immediately that no single failure caused the month. Four modest adverse variances did, and the one department that beat its standard was labour.',
           ],
           callout: {
             kind: 'key',
@@ -2476,7 +2476,7 @@
           },
           p: [
             'Note the last row. Fixed overhead is **not flexed**, so its flexed budget figure is the original budget figure, and the variance is simply what was budgeted against what was spent. Every other line is measured against a budget that has already been rebuilt at the actual volume.',
-            'Each of these is a **total**. Splitting a material variance into its price and usage halves, or a labour variance into rate and efficiency, is Level 4 work; this unit asks for the totals and marks them as totals.',
+            'Each of these is a **total**. Splitting a material variance into its price and usage halves, or a labour variance into rate and efficiency, is Level 4 work. This unit asks for the totals and marks them as totals.',
           ],
         },
         {
@@ -2602,7 +2602,7 @@
         {
           h: 'Variances do not happen one at a time',
           p: [
-            'The most useful thing to know about variance analysis is that one decision often produces two variances with opposite signs. Buying a cheaper grade of material gives a **favourable** material price effect — and then more of it is wasted and the machines jam, so the material total may turn adverse anyway and the labour hours certainly rise.',
+            'The most useful thing to know about variance analysis is that one decision often produces two variances with opposite signs. Buying a cheaper grade of material gives a **favourable** material price effect. Then more of it is wasted and the machines jam, so the material total may turn adverse anyway and the labour hours certainly rise.',
             'The pattern repeats everywhere. Cutting the selling price gives an adverse sales price variance and, if it worked, a volume the flexed budget has already absorbed. Using cheaper, less skilled staff gives a favourable labour rate and an adverse efficiency in the hours they take. **Read the variances together or you will congratulate one department for a problem it caused in another.**',
           ],
           examtrap: 'When a question shows one favourable and one adverse variance in the same month, the expected answer is nearly always that they are connected. Saying so is what distinguishes an interpretation from a description.',
@@ -2620,7 +2620,7 @@
             ],
           },
           p: [
-            'A business normally sets a rule in advance — anything above a stated amount, or above a stated percentage of the budgeted figure, is investigated — because deciding case by case after the event invites the comfortable answer. Both tests are needed: a percentage rule alone chases trivial money on small lines, and a money rule alone ignores a small line that has doubled.',
+            'A business normally sets a rule in advance: anything above a stated amount, or above a stated percentage of the budgeted figure, is investigated. Deciding case by case after the event invites the comfortable answer. Both tests are needed. A percentage rule alone chases trivial money on small lines, and a money rule alone ignores a small line that has doubled.',
             'A variance nobody could have controlled is still worth **knowing** about, because it usually means the standard needs revising. It is just not worth investigating as a performance failure.',
           ],
         },
@@ -2728,7 +2728,7 @@
           h: 'What this module can and cannot do for you',
           p: [
             'Outcome 5 is **15% of the unit and it is a doing skill**. It asks you to build spreadsheets, write formulas, format cells, produce charts and audit somebody else\'s work — and this app has no spreadsheet in it. Nobody should pretend otherwise, so it is said here plainly rather than left to be discovered.',
-            'What these lessons can do is the knowledge that sits around the skill: which function answers which question, what absolute referencing is for and when it matters, which auditing tool finds which kind of error, which chart suits which comparison, and how a management accounting workbook should be laid out so that somebody else can check it. That is genuinely most of what goes wrong in an assessment, because a candidate who does not know that VLOOKUP searches the first column will not find out by clicking.',
+            'What these lessons can do is the knowledge that sits around the skill. Which function answers which question. What absolute referencing is for, and when it matters. Which auditing tool finds which kind of error. Which chart suits which comparison. And how a management accounting workbook should be laid out so that somebody else can check it. That is genuinely most of what goes wrong in an assessment, because a candidate who does not know that VLOOKUP searches the first column will not find out by clicking.',
             '**The doing has to happen in a real spreadsheet.** Open Excel or an equivalent, rebuild the worked examples from Outcomes 3, 4, 6 and 7 in it, and check your figures against the ones printed there. Every calculation in this unit is a workbook waiting to be built, and building six of them is worth more than reading about all of them.',
           ],
           callout: {
@@ -2857,7 +2857,7 @@
           },
           p: [
             '**Duplication** is the failure worth naming, because it is invisible in a total. An invoice list exported twice, or a customer appearing under two spellings, produces a figure that looks entirely ordinary and is wrong. Remove Duplicates deals with exact repeats; the near-repeats have to be found by sorting on the field they differ in and looking.',
-            'Data pulled from several sources — the accounting system, a stock report, a bank download — will rarely share a period end, a rounding convention or a definition of cost. Reconciling one total against its source before anything is built on it costs a minute and saves the whole statement.',
+            'Data pulled from several sources — the accounting system, a stock report, a bank download — will rarely share a period end, a rounding convention or a definition of cost. Reconcile one total against its source before anything is built on it. That costs a minute and saves the whole statement.',
           ],
         },
       ],
@@ -2925,7 +2925,7 @@
             ],
           },
           p: [
-            'The distinction worth learning is **Currency against Accounting**. Currency puts the symbol tight against the number, so a column of them has the symbols in ragged positions. Accounting pushes every symbol to the left edge of the cell and lines the decimal points up, which is what makes a column of figures readable — and it shows a zero as a dash rather than as £0.00.',
+            'The distinction worth learning is **Currency against Accounting**. Currency puts the symbol tight against the number, so a column of them has the symbols in ragged positions. Accounting pushes every symbol to the left edge of the cell and lines the decimal points up, which is what makes a column of figures readable. It also shows a zero as a dash rather than as £0.00.',
             'Formatting changes what is **displayed** and never what is stored. A cell showing £1,234 may hold £1,233.62, and a column of such cells will not appear to add up. When a total has to agree with the figures printed above it, round the values with a formula rather than hiding the decimals with a format.',
           ],
           callout: {
@@ -2948,7 +2948,7 @@
           },
           p: [
             'A **pie chart shows one series only** and is the chart most often used wrongly. It answers "what share of the whole?" and nothing else: it cannot show a trend, it cannot compare two periods, and beyond about six slices nobody can read it. A trend belongs on a **line**; a comparison belongs on a **column** or **bar**.',
-            '**3D** adds nothing but distortion. It is on the specification because it is on the toolbar, and it is worth knowing how to produce and how to turn off — a 3D pie makes the front slice look larger than the identical slice at the back.',
+            '**3D** adds nothing but distortion. It is on the specification because it is on the toolbar, and it is worth knowing how to produce and how to turn off. A 3D pie makes the front slice look larger than the identical slice at the back.',
           ],
         },
         {
@@ -3037,8 +3037,8 @@
             ],
           },
           p: [
-            'This is the single largest source of wrong answers in a spreadsheet task, and it produces errors that look like arithmetic mistakes. A formula reading a VAT rate from B1 works perfectly in its own row; copied down ten rows it reads B2, B3, B4 — cells that are empty or hold something else entirely — and every figure below the first is wrong without anything looking broken.',
-            'The habit worth building is to ask, of every reference in a formula about to be copied: **should this move?** The answer for the row\'s own data is yes; for a rate, a total or a lookup table it is no, and it takes a dollar sign in front of each part that must stay still.',
+            'This is the single largest source of wrong answers in a spreadsheet task, and it produces errors that look like arithmetic mistakes. A formula reading a VAT rate from B1 works perfectly in its own row. Copied down ten rows it reads B2, B3, B4 — cells that are empty or hold something else entirely. Every figure below the first is wrong, without anything looking broken.',
+            'The habit worth building is to ask, of every reference in a formula about to be copied: **should this move?** The answer for the row’s own data is yes. For a rate, a total or a lookup table it is no, and it takes a dollar sign in front of each part that must stay still.',
           ],
         },
         {
@@ -3118,7 +3118,7 @@
             },
           },
           p: [
-            'Goal seek is the tool for every "how many units would we need" question in Outcome 6, and it gets there without rearranging the formula. Forecast is the tool for extending a semi-variable cost beyond the observations, and it carries exactly the caution the high-low method carries: a straight line through a range is trustworthy inside that range and a guess outside it.',
+            'Goal seek is the tool for every "how many units would we need" question in Outcome 6, and it gets there without rearranging the formula. Forecast is the tool for extending a semi-variable cost beyond the observations. It carries exactly the caution the high-low method carries: a straight line through a range is trustworthy inside that range, and a guess outside it.',
           ],
         },
       ],
@@ -3179,8 +3179,8 @@
             ],
           },
           p: [
-            'Conditional formatting is worth more in this unit than its position on the specification suggests. A rule that turns any variance above 5% of its budget red does the "which variances should be investigated?" work of Outcome 4 automatically, on every future month, without anybody remembering to look.',
-            'The difference between sort and filter is worth being clear about: **sorting changes the file** and filtering only changes what is shown. A filtered list still contains every row, which is why a plain SUM beneath one gives the total of everything rather than the total of what is visible.',
+            'Conditional formatting is worth more in this unit than its position on the specification suggests. A rule that turns any variance above 5% of its budget red does the "which variances should be investigated?" work of Outcome 4 automatically. It does it on every future month, without anybody remembering to look.',
+            'The difference between sort and filter is worth being clear about. **Sorting changes the file**; filtering only changes what is shown. A filtered list still contains every row. That is why a plain SUM beneath one gives the total of everything rather than the total of what is visible.',
           ],
         },
         {
@@ -3206,8 +3206,8 @@
             },
           },
           p: [
-            'Subtotals suit a list already in the order you want to read it — cost by department, down the page, with a total at each break. A pivot table suits a question you have not settled yet: cost by department **and** by month, then by product instead, then filtered to one region, all without touching a formula.',
-            'The trap in Subtotals is the sorting. Applied to an unsorted list it does exactly what it was asked to do and inserts a subtotal every time the value in the column changes — which on unsorted data is nearly every row.',
+            'Subtotals suit a list already in the order you want to read it: cost by department, down the page, with a total at each break. A pivot table suits a question you have not settled yet. Cost by department **and** by month, then by product instead, then filtered to one region, all without touching a formula.',
+            'The trap in Subtotals is the sorting. Applied to an unsorted list it does exactly what it was asked to do, and inserts a subtotal every time the value in the column changes. On unsorted data that is nearly every row.',
           ],
         },
         {
@@ -3287,8 +3287,8 @@
             ],
           },
           p: [
-            'The two trace tools point in opposite directions and are used at opposite moments. **Precedents** is what you use on somebody else\'s workbook, or your own after a break: select the figure that looks wrong and follow the arrows back to whatever produced it. **Dependents** is what you use before changing anything: select the cell you are about to edit and see how far the change will travel.',
-            '**Show formulas** is the fastest check there is on a workbook you have been handed. Switch it on and the typed numbers stand out immediately from the formulas around them — which is exactly how a hard-coded figure sitting in the middle of a calculated column gets found.',
+            'The two trace tools point in opposite directions and are used at opposite moments. **Precedents** is what you use on somebody else’s workbook, or your own after a break. Select the figure that looks wrong and follow the arrows back to whatever produced it. **Dependents** is what you use before changing anything. Select the cell you are about to edit and see how far the change will travel.',
+            '**Show formulas** is the fastest check there is on a workbook you have been handed. Switch it on and the typed numbers stand out immediately from the formulas around them. That is exactly how a hard-coded figure sitting in the middle of a calculated column gets found.',
           ],
           examtrap: 'Trace precedents and trace dependents are the pair most often confused, and the names say which is which if you read them as questions. Precedents come BEFORE this cell; dependents DEPEND ON it. An error hunt runs backwards through precedents; an impact assessment runs forwards through dependents.',
         },
@@ -3315,7 +3315,7 @@
             },
           },
           p: [
-            'The two tools do different jobs and a workbook that people other than its author will use needs both. **Validation controls what goes into the cells that are meant to be typed in**; **protection stops anything being typed into the cells that are not**. Between them they mean the only thing a user can do is change an assumption, which is exactly what the inputs block was for.',
+            'The two tools do different jobs, and a workbook that people other than its author will use needs both. **Validation controls what goes into the cells that are meant to be typed in.** **Protection stops anything being typed into the cells that are not.** Between them, the only thing a user can do is change an assumption. That is exactly what the inputs block was for.',
           ],
         },
         {
@@ -3537,7 +3537,7 @@
           },
           p: [
             'Every one of these is the same division wearing a different hat: **how many units of contribution are needed to cover something**. Break-even covers the fixed costs. Target profit covers the fixed costs and the profit as well. Nothing else has to be memorised once that is seen.',
-            'The **profit-volume ratio** — also called the contribution to sales ratio — is contribution expressed as a proportion of revenue. It answers the same question in pounds of revenue rather than in units, which matters when a business sells several products and cannot add their units together.',
+            'The **profit-volume ratio** — also called the contribution to sales ratio — is contribution expressed as a proportion of revenue. It answers the same question in pounds of revenue rather than in units. That matters when a business sells several products and cannot add their units together.',
           ],
         },
         {
@@ -3646,7 +3646,7 @@
             ],
           },
           p: [
-            'The horizontal axis is **units** (or level of activity) and the vertical axis is **£**. The total cost line begins above the origin because the fixed costs are incurred before a single unit is made, and that head start is the whole reason the two lines cross rather than running parallel.',
+            'The horizontal axis is **units** (or level of activity) and the vertical axis is **£**. The total cost line begins above the origin, because the fixed costs are incurred before a single unit is made. That head start is the whole reason the two lines cross rather than running parallel.',
             'Where **total revenue crosses total cost** is the break-even point, and it can be read off either axis: units below it, revenue across to the left. To the left of that crossing the cost line is on top, and the vertical gap between the lines is the loss. To the right the revenue line is on top, and the same gap is the profit.',
           ],
           flow: ['Plot fixed cost as a horizontal line', 'Plot total cost from that intercept', 'Plot revenue from the origin', 'Read break-even where they cross'],
@@ -3665,7 +3665,7 @@
             ],
           },
           p: [
-            'The two lines meet at 15,000 units and £600,000 of revenue, which is exactly what the calculation gives: £240,000 ÷ £16 = 15,000. A chart and a calculation are two views of the same arithmetic, and if they disagree one of them has been drawn or worked wrongly.',
+            'The two lines meet at 15,000 units and £600,000 of revenue, which is exactly what the calculation gives: £240,000 ÷ £16 = 15,000. A chart and a calculation are two views of the same arithmetic. If they disagree, one of them has been drawn or worked wrongly.',
             'The **margin of safety** is the horizontal distance from the break-even point to the budgeted volume — from 15,000 across to 20,000 on this chart. Read vertically at that budgeted point, the gap between the lines is the budgeted profit of £80,000.',
           ],
         },
@@ -3682,7 +3682,7 @@
             ],
           },
           p: [
-            'Reporting on CVP means saying what the figures mean for the business, not restating them. "The margin of safety is 4%" is a number; "sales can fall by only 4% before the business makes a loss, so the fixed cost base looks too heavy for this volume" is a report.',
+            'Reporting on CVP means saying what the figures mean for the business, not restating them. "The margin of safety is 4%" is a number. "Sales can fall by only 4% before the business makes a loss, so the fixed cost base looks too heavy for this volume" is a report.',
           ],
         },
         {
@@ -3764,7 +3764,7 @@
           },
           p: [
             'The variable cost stays at £24.00 in every row — that is what variable means. What moves is the **fixed cost per unit**, and it moves simply because the same £240,000 is being divided among more units. Every change in the profit per unit traces back to that one division.',
-            'Notice the row at 15,000 units: the total cost per unit is exactly the selling price, which is another way of saying the business breaks even there. And notice that profit per unit **doubles** between 20,000 and 30,000 units while volume rises by only half — a small change in volume moves profit far more than proportionately, because the fixed costs do not move at all.',
+            'Notice the row at 15,000 units: the total cost per unit is exactly the selling price. That is another way of saying the business breaks even there. And notice that profit per unit **doubles** between 20,000 and 30,000 units while volume rises by only half. A small change in volume moves profit far more than proportionately, because the fixed costs do not move at all.',
           ],
         },
         {
@@ -3875,7 +3875,7 @@
         {
           h: 'Two different questions about the same business',
           p: [
-            '**Profit** asks whether the business earned more than it spent in a period, measured on the accruals basis: revenue when it was earned, cost when it was incurred, whenever the money moves. **Cash** asks whether there was money in the bank on the day it was needed. A business can be profitable and go under, and businesses regularly do.',
+            '**Profit** asks whether the business earned more than it spent in a period, measured on the accruals basis. Revenue when it was earned, cost when it was incurred, whenever the money moves. **Cash** asks whether there was money in the bank on the day it was needed. A business can be profitable and go under, and businesses regularly do.',
             'The gap between them is timing and it is nobody\'s error. A sale made on credit in March is March\'s profit and May\'s cash. A machine bought in March is all of March\'s cash and eight years of depreciation. Both statements are right; they are answering different questions.',
           ],
           table: {
@@ -3968,8 +3968,8 @@
           h: 'The shape of the statement',
           flow: ['Opening balance', '+ Receipts', '− Payments', '= Closing balance', 'which becomes next month\'s opening balance'],
           p: [
-            'A cash budget is one column per month and four blocks down: the balance brought forward, everything coming in, everything going out, and the balance carried forward. The **closing balance of one month is the opening balance of the next**, which is what makes it a forecast rather than a list — a bad month is still sitting there in the following month\'s opening figure.',
-            'What it is for is the closing line. Read across it and the business can see the month it goes overdrawn, how deep, and for how long — in time to arrange an overdraft, chase a customer or move a payment, rather than on the day the cheque bounces.',
+            'A cash budget is one column per month and four blocks down: the balance brought forward, everything coming in, everything going out, and the balance carried forward. The **closing balance of one month is the opening balance of the next**. That is what makes it a forecast rather than a list: a bad month is still sitting there in the following month’s opening figure.',
+            'What it is for is the closing line. Read across it and the business can see the month it goes overdrawn, how deep, and for how long. That is in time to arrange an overdraft, chase a customer or move a payment — rather than on the day the cheque bounces.',
           ],
         },
         {
@@ -4107,7 +4107,7 @@
           },
           p: [
             'The principle underneath is **matching the funding to the asset**. A machine that will earn for eight years can reasonably be paid for over several of them, so the cost falls in the same periods as the benefit. Paying for it out of one month\'s cash makes that month carry a cost that eight years will share.',
-            'The reverse mistake is as real. Borrowing over five years for something that will be replaced in two leaves the business paying for an asset it no longer has — which is the standard argument against funding short-lived equipment on a long loan.',
+            'The reverse mistake is as real. Borrowing over five years for something that will be replaced in two leaves the business paying for an asset it no longer has. That is the standard argument against funding short-lived equipment on a long loan.',
           ],
           examtrap: 'An overdraft is not a way of buying a non-current asset. It is repayable on demand and priced for short-term swings in working capital, so using it for a permanent purchase means the business can be asked for the money at any time, with the money spent.',
         },
@@ -4166,7 +4166,7 @@
         {
           h: 'Why liquidity decides survival',
           p: [
-            '**Liquidity** is the ability to pay what is due when it falls due. It is not the same as being profitable and it is not the same as being solvent on paper: a business whose assets exceed its liabilities can still fail because the assets are inventory and the liabilities are due on Friday.',
+            '**Liquidity** is the ability to pay what is due when it falls due. It is not the same as being profitable, and it is not the same as being solvent on paper. A business whose assets exceed its liabilities can still fail, because the assets are inventory and the liabilities are due on Friday.',
             'That is why liquidity, rather than profit, is what kills companies. Suppliers stop delivering, staff leave, and a lender that has to be told the payment will be late will price the next loan accordingly. Nothing in the accounts recovers from those quickly.',
           ],
           callout: {
@@ -4193,7 +4193,7 @@
           h: 'The working capital cycle',
           formula: 'Working capital cycle (days) = Inventory days + Receivable days − Payable days',
           p: [
-            'The cycle is the number of days between paying for goods and being paid for them — the length of time the business is funding its own trading out of its own pocket. **The longer it is, the more cash the business has to find** simply to keep operating at its current size.',
+            'The cycle is the number of days between paying for goods and being paid for them. That is how long the business is funding its own trading out of its own pocket. **The longer it is, the more cash the business has to find** simply to keep operating at its current size.',
             'Payable days are subtracted because the supplier is financing that part of the cycle. Suppliers are, for most businesses, the largest source of short-term finance there is, and it is free until the relationship or a prompt payment discount makes it otherwise.',
           ],
           worked: {
@@ -4337,7 +4337,7 @@
             ],
           },
           p: [
-            'None of this removes the judgement. Software makes the forecast current, makes the pattern visible, and makes the chasing happen — but somebody still has to decide whether to arrange the overdraft, take the discount or delay the machine. **Automation moves the work from compiling the numbers to acting on them**, which is where it was always supposed to be.',
+            'None of this removes the judgement. Software makes the forecast current, makes the pattern visible, and makes the chasing happen. But somebody still has to decide whether to arrange the overdraft, take the discount or delay the machine. **Automation moves the work from compiling the numbers to acting on them**, which is where it was always supposed to be.',
           ],
         },
       ],

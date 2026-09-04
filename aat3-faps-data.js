@@ -47,10 +47,10 @@
           {
             h: 'What this unit asks you to produce',
             p: [
-              'Every other Level 3 unit asks you to understand something. This one asks you to **build** something: a statement of profit or loss and a statement of financial position, starting from a trial balance somebody hands you and ending with figures a bank manager could read.',
+              'Every other Level 3 unit asks you to understand something. This one asks you to **build** something: a statement of profit or loss and a statement of financial position. You start from a trial balance somebody hands you, and end with figures a bank manager could read.',
               'That difference runs through the whole unit. A question here rarely asks what depreciation is. It gives you a machine, a purchase date, a policy and a year end, and asks for the charge. Then it asks where the charge goes, what it does to profit, and what the asset is now worth on the face of the accounts.',
               'The chain has a fixed shape, and every outcome in this unit is one link in it. Transactions go into daybooks. Daybooks post to ledgers. Ledger balances make a trial balance. The trial balance is adjusted for the things that happened but were never a payment — depreciation, accruals, closing inventory, debts that will not be paid. The adjusted figures become the two statements. Ratios then say whether the result is any good.',
-              'If a link is weak the whole chain gives way somewhere later, usually in a way that is hard to trace. A prepayment posted on the wrong side does not announce itself; it comes out as a profit figure that is wrong by twice the adjustment, three tasks further on.',
+              'If a link is weak the whole chain gives way somewhere later, usually in a way that is hard to trace. A prepayment posted on the wrong side does not announce itself. It comes out three tasks later as a profit figure wrong by twice the adjustment.',
             ],
             callout: { kind: 'key', text: 'Nine outcomes, one chain: source documents → ledgers → trial balance → adjustments → financial statements → interpretation.' },
           },
@@ -104,13 +104,13 @@
             },
             p: [
               'The left-hand column is assumed rather than retaught. Outcome 2 revisits double entry, but it revisits it at speed and adds to it; it does not start from what a debit is.',
-              'If the left-hand column feels shaky, the Level 2 units in this app — Introduction to Bookkeeping and Principles of Bookkeeping Controls — cover all six items, and an afternoon there will save a great deal of confusion later. Depreciation is hard enough without also being unsure which side of the ledger it lands on.',
+              'If the left-hand column feels shaky, two Level 2 units in this app cover all six items: Introduction to Bookkeeping, and Principles of Bookkeeping Controls. An afternoon there will save a great deal of confusion later. Depreciation is hard enough without also being unsure which side of the ledger it lands on.',
             ],
           },
           {
             h: 'What this material is, and what it is not',
             p: [
-              'This is an independent study tool. It is not produced by AAT, not endorsed by AAT, and not checked by anybody with a qualification to check it. The syllabus spine it is built on is encoded from the published specification and verified against it automatically, so the coverage claims are honest; the teaching itself is written from scratch and carries no such guarantee.',
+              'This is an independent study tool. It is not produced by AAT, not endorsed by AAT, and not checked by anybody with a qualification to check it. The syllabus spine it is built on is encoded from the published specification and verified against it automatically, so the coverage claims are honest. The teaching itself is written from scratch and carries no such guarantee.',
               'Covering a syllabus point is not the same as being ready to sit the exam. The specification says what must be taught, not how well you must be able to do it under time pressure with a calculator and no notes. Treat full coverage as the floor.',
               'Where the specification excludes something, this material says so rather than teaching it anyway. Two exclusions apply to this unit: the VAT treatment of part-exchanges, and completing an extended trial balance for a partnership. Both come up in their own lessons.',
             ],
@@ -162,9 +162,9 @@
           {
             h: 'Three groups, named on purpose',
             p: [
-              'Accounts have many readers. A supplier deciding whether to offer credit, a journalist writing about a takeover, an employee wondering whether the firm will still exist next year, a tax inspector — all of them read the same document, and all of them want different things from it.',
+              'Accounts have many readers. A supplier deciding whether to offer credit, a journalist writing about a takeover, an employee wondering whether the firm will still exist next year, a tax inspector. All of them read the same document, and all of them want different things from it.',
               'The framework accounting rests on does not try to serve them all equally. It names three groups as the **primary users** and writes the rules for them: existing and potential **investors**, **lenders**, and **other creditors**.',
-              'They share one feature that the others do not. Each of the three is deciding whether to commit money to the business, or whether to leave money already committed where it is, and none of them can require the business to hand over the information they need. A tax inspector can demand records. A manager already has them. An investor considering a purchase has only what the business chooses to publish. The rules are written to protect that reader in particular.',
+              'They share one feature that the others do not. Each of the three is deciding whether to commit money to the business, or whether to leave money already committed where it is. And none of them can require the business to hand over the information they need. A tax inspector can demand records. A manager already has them. An investor considering a purchase has only what the business chooses to publish. The rules are written to protect that reader in particular.',
             ],
             callout: { kind: 'key', text: 'Primary users: existing and potential investors, lenders, and other creditors. All three are outsiders committing money, and none can demand more than they are given.' },
           },
@@ -180,7 +180,7 @@
             },
             p: [
               'The three decisions pull on different parts of the accounts. Both statements exist for that reason rather than one.',
-              'An investor is asking a question about the future and reads the statement of profit or loss for a trend. A lender is asking about capacity and reads the statement of financial position for what could be sold and what is already owed. A supplier weighing up thirty days\' credit cares about neither the trend nor the long term, only whether there is enough in the bank and enough coming in from customers to cover the invoice.',
+              'An investor is asking a question about the future and reads the statement of profit or loss for a trend. A lender is asking about capacity and reads the statement of financial position for what could be sold and what is already owed. A supplier weighing up thirty days’ credit cares about neither the trend nor the long term. It cares whether there is enough in the bank, and enough coming in from customers, to cover the invoice.',
               'A fourth use cuts across all three: **stewardship**. Owners who are not managers use the accounts to judge how well the managers have looked after what was entrusted to them. That is a backward-looking question about the year just gone, and it is the one that most needs the figures to be honest rather than flattering.',
             ],
           },
@@ -251,13 +251,13 @@
               ],
             },
             p: [
-              'The third column is the one to learn. A principle stated as a definition is easy to nod along to and hard to apply; a principle stated as a thing you are not allowed to do is testable against a scenario.',
+              'The third column is the one to learn. A principle stated as a definition is easy to nod along to and hard to apply. A principle stated as a thing you are not allowed to do is testable against a scenario.',
             ],
           },
           {
             h: 'Accruals, which the rest of the unit runs on',
             p: [
-              'The accruals principle earns its own card because five separate outcomes later in this unit are applications of it, and the specification says so each time.',
+              'The accruals principle earns its own card. Five separate outcomes later in this unit are applications of it, and the specification says so each time.',
               'Depreciation exists because a machine bought for cash in one year is used up over eight, and the accruals principle puts the cost in the years that used it. An accrual for an unpaid electricity bill exists because the electricity was burned in this year whatever the bill\'s date. An allowance for doubtful receivables exists because the risk of non-payment arose from this year\'s sales. Closing inventory is held back out of cost of sales because the goods have not been sold yet.',
               'Every one of those adjustments is the same move: separate **when the cash moved** from **when the economic event happened**, and report the second. A student who understands that once does not have to memorise four rules.',
             ],
@@ -286,7 +286,7 @@
               },
             },
             p: [
-              'Prudence and the accruals principle can appear to pull against each other, and questions are built on the tension. Accruals says recognise the revenue when the sale happens; prudence says do not recognise revenue that may never arrive. The resolution is that prudence governs the **measurement** of an uncertain amount, not whether the event is recorded at all: the sale goes in, and the doubt about collection is dealt with by an allowance.',
+              'Prudence and the accruals principle can appear to pull against each other, and questions are built on the tension. Accruals says recognise the revenue when the sale happens; prudence says do not recognise revenue that may never arrive. The resolution is that prudence governs the **measurement** of an uncertain amount, not whether the event is recorded at all. The sale goes in, and the doubt about collection is dealt with by an allowance.',
             ],
           },
         ],
@@ -382,7 +382,7 @@
             },
             p: [
               'Timeliness and verifiability pull in opposite directions and the tension is real. Waiting for the final invoice makes an accrual verifiable; publishing before the year is stale makes it timely. Neither wins outright. The framework calls these characteristics enhancing rather than mandatory for exactly that reason.',
-              'Understandability carries a warning in the framework itself. A transaction that is genuinely complicated may not be left out to make the accounts easier to read — that would sacrifice relevance and completeness for a characteristic ranked below both.',
+              'Understandability carries a warning in the framework itself. A transaction that is genuinely complicated may not be left out to make the accounts easier to read. That would sacrifice relevance and completeness for a characteristic ranked below both.',
             ],
             examtrap: 'Comparability is not uniformity. Two businesses in the same trade may legitimately depreciate at different rates if their assets are genuinely used differently. What comparability requires is that the difference is disclosed, so a reader can see it and allow for it.',
           },
@@ -426,7 +426,7 @@
             h: 'What material misstatement means',
             p: [
               'A misstatement is any difference between what the accounts say and what they should say. It becomes **material** when it could reasonably be expected to influence a decision one of the primary users makes on the strength of those accounts.',
-              'That is a definition with no number in it, and deliberately so. A £5,000 error is trivial in a business turning over £40 million and fatal in one turning over £60,000. Materiality depends on size relative to the business, and on nature: an error that turns a profit into a loss, or that takes a covenant through its limit, is material at any size because of what it changes rather than how big it is.',
+              'That is a definition with no number in it, and deliberately so. A £5,000 error is trivial in a business turning over £40 million and fatal in one turning over £60,000. Materiality depends on size relative to the business, and on nature. An error that turns a profit into a loss, or that takes a covenant through its limit, is material at any size. What it changes matters more than how big it is.',
               'Misstatement covers both error and omission, and both intentional and unintentional. A figure left out entirely misstates the accounts as surely as a figure put in wrongly.',
             ],
             callout: { kind: 'key', text: 'Material means "could change a primary user\'s decision" — judged on size relative to the business and on the nature of what the error does, never on an absolute amount.' },
@@ -435,7 +435,7 @@
             h: 'Why preparing accounts is an ethical activity',
             p: [
               'The accounts a business publishes are prepared by people who work for it, or are paid by it. Those people have the information, the access and the discretion; the readers have none of the three. Every rule about ethics in this unit follows from that imbalance.',
-              'The discretion is larger than it looks from outside. Almost every period-end adjustment involves a judgement that could reasonably go two ways — how long a machine will last, how much of a debt will be collected, whether inventory can still be sold at cost. Each judgement moves profit, and a run of them all taken at the optimistic end moves it a great deal, without any single decision being obviously wrong.',
+              'The discretion is larger than it looks from outside. Almost every period-end adjustment involves a judgement that could reasonably go two ways. How long a machine will last, how much of a debt will be collected, whether inventory can still be sold at cost. Each judgement moves profit, and a run of them all taken at the optimistic end moves it a great deal, without any single decision being obviously wrong.',
             ],
             split: {
               left: {
@@ -463,18 +463,18 @@
           {
             h: 'Professional scepticism, in practice',
             p: [
-              'Professional scepticism is a questioning mind: alertness to conditions that may indicate misstatement, and a critical assessment of evidence rather than acceptance of it.',
+              'Professional scepticism is a questioning mind. It means alertness to conditions that may indicate misstatement, and a critical assessment of evidence rather than acceptance of it.',
               'It is not suspicion, and it does not assume dishonesty. It assumes that plausible things are sometimes wrong, and that a figure which arrives with an explanation attached deserves the same look as one that does not.',
-              'In this unit it usually means noticing when something does not fit: a receivables balance that has not moved in eight months, an accrual identical to last year\'s to the pound, an inventory line still held at cost when the same goods are on sale at half price, a machine with no depreciation in a year everything else was depreciated.',
+              'In this unit it usually means noticing when something does not fit. A receivables balance that has not moved in eight months. An accrual identical to last year’s to the pound. An inventory line still held at cost when the same goods are on sale at half price. A machine with no depreciation in a year everything else was depreciated.',
             ],
             examtrap: 'Scepticism applies hardest to figures produced by software. "The system calculated it" is not evidence that the inputs were right — a depreciation routine will happily run on a wrong in-service date, and produce a clean, plausible, wrong figure every year until somebody looks.',
           },
           {
             h: 'When the pressure comes from your own side',
             p: [
-              'The uncomfortable cases are not the ones where somebody asks for fraud. They are the ones where a manager who is not lying wants a judgement taken at the end of the range that suits them, and has a reason that sounds fine.',
-              'The three pressures the specification names are time, the wish for a favourable result, and authority — and they usually arrive together, at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
-              'The defence is to keep the question technical. Not "is my manager entitled to ask me this", which is a question about the hierarchy, but "what does the evidence support" — a question with an answer that does not change according to who is asking. If the evidence supports a four-year life, it supports a four-year life whoever would prefer six.',
+              'The uncomfortable cases are not the ones where somebody asks for fraud. They are the ones where a manager, who is not lying, wants a judgement taken at the end of the range that suits them. The reason they give sounds fine.',
+              'The three pressures the specification names are time, the wish for a favourable result, and authority. They usually arrive together: at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
+              'The defence is to keep the question technical. Not "is my manager entitled to ask me this", which is a question about the hierarchy. But "what does the evidence support" — a question whose answer does not change according to who is asking. If the evidence supports a four-year life, it supports a four-year life whoever would prefer six.',
             ],
           },
         ],
@@ -585,8 +585,8 @@
             h: 'Why double entry works at all',
             formula: 'Assets = Liabilities + Capital · or · Capital = Assets − Liabilities',
             p: [
-              'Everything a business controls was paid for by somebody. Either an outsider put the money in and is owed it back — a **liability** — or the owner put it in and has a claim on what is left, called **capital**. Add the two claims together and you have accounted for every asset the business holds.',
-              'That is the accounting equation entire, and it is why double entry balances rather than a rule that it must. Every transaction changes two things, and it changes them in a way that keeps the two sides equal — because a transaction that genuinely left them unequal would be describing an asset nobody paid for.',
+              'Everything a business controls was paid for by somebody. Either an outsider put the money in and is owed it back — a **liability**. Or the owner put it in and has a claim on what is left, called **capital**. Add the two claims together and you have accounted for every asset the business holds.',
+              'That is the accounting equation entire, and it is why double entry balances rather than a rule that it must. Every transaction changes two things, and it changes them in a way that keeps the two sides equal. A transaction that genuinely left them unequal would be describing an asset nobody paid for.',
               'A trial balance that does not balance is that equation failing. Something has been recorded on one side and not the other, and the difference is the size of what is missing.',
             ],
             callout: { kind: 'key', text: 'Assets = Liabilities + Capital. Double entry keeps that true after every transaction, which is why the books balance rather than a rule that they must.' },
@@ -668,8 +668,8 @@
           {
             h: 'Five classes, and why the label decides everything',
             p: [
-              'Every account in the general ledger belongs to exactly one of five classes. The class decides which side its balance normally sits on, which statement it ends up in, and — the reason this lesson exists — what happens to it at the period end.',
-              'A misclassified account is not a small error. Call a liability an expense and profit falls by the whole amount and the statement of financial position no longer balances; call an expense an asset and you have capitalised something that should have gone to profit, the error Outcome 3 spends a card on.',
+              'Every account in the general ledger belongs to exactly one of five classes. The class decides which side its balance normally sits on, and which statement it ends up in. It also decides — the reason this lesson exists — what happens to it at the period end.',
+              'A misclassified account is not a small error. Call a liability an expense and profit falls by the whole amount, and the statement of financial position no longer balances. Call an expense an asset and you have capitalised something that should have gone to profit — the error Outcome 3 spends a card on.',
             ],
             table: {
               headers: ['Class', 'Normal balance', 'Ends up in', 'Examples'],
@@ -780,7 +780,7 @@
             },
             p: [
               'The first six all record **credit** transactions — a promise now, money later. The cash book records the money actually moving. A single sale on credit therefore touches the sales daybook when the invoice goes out and the cash book when the customer pays.',
-              'The **journal** is the one that matters most at Level 3, because every period-end adjustment in this unit arrives through it: depreciation, accruals, prepayments, irrecoverable debts, closing inventory, corrections of error. None of those has an invoice, and the journal is how a transaction with no document gets into the books.',
+              'The **journal** is the one that matters most at Level 3. Every period-end adjustment in this unit arrives through it: depreciation, accruals, prepayments, irrecoverable debts, closing inventory, corrections of error. None of those has an invoice, and the journal is how a transaction with no document gets into the books.',
             ],
           },
           {
@@ -795,7 +795,7 @@
             },
             p: [
               'Three money columns, and each one goes to a different account. The net column becomes sales, the VAT column becomes VAT, and the total becomes the amount the customer owes. The next lesson does that posting.',
-              'The journal has a column the others do not: a **narrative**, saying what the entry is for. Every other book of prime entry is backed by a document that explains itself — an invoice says who and what and why. A journal entry has no document behind it, so without a narrative nobody reading the ledger in a year can tell what happened or check whether it was right. A journal without a narrative is an unexplained movement in the accounts, and that is what a person concealing something would also produce.',
+              'The journal has a column the others do not: a **narrative**, saying what the entry is for. Every other book of prime entry is backed by a document that explains itself. An invoice says who and what and why. A journal entry has no document behind it. Without a narrative, nobody reading the ledger in a year can tell what happened or check whether it was right. A journal without a narrative is an unexplained movement in the accounts, and that is what a person concealing something would also produce.',
             ],
             examtrap: 'Settlement discounts have their own daybooks and are easy to post backwards. **Discounts allowed** are given by the business to its customers, so they are an expense. **Discounts received** are given to the business by its suppliers, so they are income.',
           },
@@ -838,7 +838,7 @@
           {
             h: 'Three columns, three accounts',
             p: [
-              'Posting a daybook is the same move every time. Total the three money columns, then send each total to the account it belongs to. The net column is the trading figure, the VAT column is money held for HMRC, and the gross column is what the customer owes or what the business owes the supplier.',
+              'Posting a daybook is the same move every time. Total the three money columns, then send each total to the account it belongs to. The net column is the trading figure. The VAT column is money held for HMRC. The gross column is what the customer owes, or what the business owes the supplier.',
               'The direction reverses between sales and purchases because VAT reverses. On a sale the business has **collected** tax it must hand over, so VAT is credited. On a purchase it has **paid** tax it can reclaim, so VAT is debited. The same account carries both, and the balance is what is owed to HMRC or owed back by them.',
             ],
             callout: { kind: 'key', text: 'Net → sales or purchases. VAT → the VAT account, credited on sales and debited on purchases. Gross → the receivables or payables control account.' },
@@ -870,7 +870,7 @@
             h: 'Where the individual invoices go',
             p: [
               'The posting above moved three totals into the general ledger and said nothing about which customer owes what. That detail is not lost — it goes to the **memorandum ledgers** at the same time.',
-              'Every invoice in the sales daybook is also posted to that customer\'s own account in the receivables ledger, at its gross amount. Nothing about that is double entry: it is a second, parallel record kept so the business can answer "how much does Hollis Joinery owe" without reading a year of daybooks.',
+              'Every invoice in the sales daybook is also posted to that customer’s own account in the receivables ledger, at its gross amount. Nothing about that is double entry. It is a second, parallel record, kept so the business can answer "how much does Hollis Joinery owe" without reading a year of daybooks.',
               'So the total of all the customer accounts should equal the receivables control account balance, and a difference between them means something reached one record and not the other. The next two lessons are about that.',
             ],
             examtrap: 'The control account takes the **gross** figure and the memorandum ledger takes the **gross** figure. Only the general ledger splits the invoice into net and VAT, because only the general ledger has a VAT account to split it into.',
@@ -916,8 +916,8 @@
             flow: ['Daybooks', 'General ledger — the double entry', 'Memorandum ledgers — receivables and payables detail'],
             p: [
               'The **general ledger** is the accounting system. Every account in the five classes lives there, every entry in it is half of a pair, and the trial balance is drawn from it. It contains the receivables and payables **control accounts**, which hold one total each for everything owed to and by the business.',
-              'The **receivables ledger** holds one account per customer, and the **payables ledger** one per supplier. Neither is part of the double entry. They exist because the control account can tell you that customers owe £44,400 and cannot tell you which of them, or for how long, or whether one of them stopped paying four months ago.',
-              'Both are called memorandum or subsidiary ledgers, and the two words mean the same thing: a record kept alongside the books rather than in them.',
+              'The **receivables ledger** holds one account per customer, and the **payables ledger** one per supplier. Neither is part of the double entry. They exist because the control account can tell you that customers owe £44,400 but not which of them. Nor for how long, nor whether one of them stopped paying four months ago.',
+              'Both are called memorandum or subsidiary ledgers. The two words mean the same thing: a record kept alongside the books rather than in them.',
             ],
             callout: { kind: 'key', text: 'General ledger: the double entry, one control account per class of debt. Memorandum ledgers: one account per customer or supplier, outside the double entry.' },
           },
@@ -1018,7 +1018,7 @@
             },
             p: [
               'The **contra** is the entry people miss. Where the same business is both a customer and a supplier, the two balances can be set against each other rather than each paying the other in full. It reduces receivables and payables together, so it is a credit here and a debit in the payables control account.',
-              'The payables control account is the mirror of this one: opening balance and credit purchases on the credit side; payments, purchases returns, discounts received and the contra on the debit side.',
+              'The payables control account is the mirror of this one. Opening balance and credit purchases go on the credit side; payments, purchases returns, discounts received and the contra go on the debit side.',
             ],
           },
           {
@@ -1048,7 +1048,7 @@
             p: [
               'In accounting software the control accounts are not written up by anybody. Posting a sales invoice updates the customer\'s account and the receivables control account in the same operation, so the two cannot disagree.',
               'That removes the commonest cause of a reconciling difference and leaves the ones it cannot see. An invoice posted to the wrong customer reconciles perfectly — the control total is right and one account is overstated while another is understated. So does an invoice posted twice, once the duplicate has updated both records. So does an invoice entered with the wrong date, which puts a real transaction in the wrong period.',
-              'The reconciliation was never the only reason to keep a control account. The other reason is that it localises an error: a difference tells you which group of accounts to look in, and a business that has stopped reconciling has lost that even when its software cannot make the arithmetic wrong.',
+              'The reconciliation was never the only reason to keep a control account. The other reason is that it localises an error. A difference tells you which group of accounts to look in. A business that has stopped reconciling has lost that, even when its software cannot make the arithmetic wrong.',
             ],
             examtrap: 'A control account reconciliation that agrees does not mean the receivables figure is right. It means the two records agree, which is a different and weaker claim — and one that software makes almost automatic.',
           },
@@ -1148,7 +1148,7 @@
               },
             },
             p: [
-              'The right-hand column is the faster of the two checks and it does not need the other account. Sales carrying a debit balance, or rent carrying a credit one, is either a genuine reversal — a refund, a correction — or something posted the wrong way round, and either way it deserves a look before the trial balance is drawn.',
+              'The right-hand column is the faster of the two checks, and it does not need the other account. Sales carrying a debit balance, or rent carrying a credit one, is either a genuine reversal — a refund, a correction — or something posted the wrong way round. Either way it deserves a look before the trial balance is drawn.',
             ],
             examtrap: 'Balance c/d goes on the SMALLER side and balance b/d on the opposite side underneath. Putting them both on the same side is the error that makes an account fail to balance while looking as though it does.',
           },
@@ -1192,7 +1192,7 @@
             h: 'Two fates, decided by the class',
             p: [
               'At the period end every account in the general ledger is dealt with, and there are only two things that can happen to one. Which happens is decided entirely by the class it was given in lesson 2B.',
-              '**Income and expense accounts are transferred out.** Their balances go to the statement of profit or loss and the accounts are left at nil, ready to start the next period from zero. Sales for the year just gone has nothing to do with sales for the year ahead, so carrying the figure forward would be meaningless — and would count the same revenue twice.',
+              '**Income and expense accounts are transferred out.** Their balances go to the statement of profit or loss and the accounts are left at nil, ready to start the next period from zero. Sales for the year just gone has nothing to do with sales for the year ahead. Carrying the figure forward would be meaningless, and would count the same revenue twice.',
               '**Asset, liability and capital accounts are carried down.** Their balances stay where they are, become the statement of financial position, and are brought down as the opening balances of the next period. A machine the business owned on 31 December is still owned on 1 January.',
             ],
             callout: { kind: 'key', text: 'Income and expenses are transferred out and start again at nil. Assets, liabilities and capital are carried down and continue. The class decides, every time.' },
@@ -1217,9 +1217,9 @@
           {
             h: 'What the software does with all of this',
             p: [
-              'Accounting software runs the period end as a routine. It transfers the income and expense balances to the profit figure, rolls the asset, liability and capital balances forward, and locks the closed period so nothing can be posted into it by accident.',
-              'The judgements stay with the person. Software knows which class each account was given, and applies the rule perfectly to that; it does not know whether the class was right. An account set up as an expense when it should have been an asset is emptied to profit every year without complaint, and the routine that does it is the same routine that would have been correct had the class been right.',
-              'The period lock is the part that shows up in practice. It is what stops an entry being backdated into a year already reported, and it is why an adjustment found after the close goes into the current period rather than into the one it relates to.',
+              'Accounting software runs the period end as a routine. It transfers the income and expense balances to the profit figure, and rolls the asset, liability and capital balances forward. It then locks the closed period, so nothing can be posted into it by accident.',
+              'The judgements stay with the person. Software knows which class each account was given, and applies the rule perfectly to that. It does not know whether the class was right. An account set up as an expense when it should have been an asset is emptied to profit every year without complaint. The routine that does it is the same routine that would have been correct had the class been right.',
+              'The period lock is the part that shows up in practice. It stops an entry being backdated into a year already reported. It is also why an adjustment found after the close goes into the current period rather than the one it relates to.',
             ],
             examtrap: 'Drawings is a capital-class account, and its balance is never transferred to the statement of profit or loss. It is closed off against capital instead, which is why it never touches the profit figure.',
           },
@@ -1302,7 +1302,7 @@
             },
             p: [
               'Neither column makes the other pointless. The internal checks are cheap, run over everything, and localise an error to a group of accounts. The external and physical ones are the only ones that can find a transaction that never happened, or an asset that no longer exists.',
-              'A business relying only on the right-hand column can have every record agreeing with every other record and still be wrong about the world.',
+              'Rely only on the right-hand column and every record can agree with every other record. The business is still wrong about the world.',
             ],
           },
           {
@@ -1310,7 +1310,7 @@
             p: [
               'Verifying a balance assumes the entries underneath it were real. The specification asks separately for the judgement that they were, and it is a different question with a different set of tests.',
               'Four are worth having in mind. Is there **evidence** — an invoice, a contract, a delivery note? Was it **authorised** by somebody with the authority for that amount? Is it the **business\'s** expense rather than the owner\'s, which is the business entity principle in operational form? And does it fall in **this period**, rather than the last or the next?',
-              'The uncomfortable one in practice is the third. An invoice addressed to the business, properly authorised, correctly dated and genuinely paid can still be for the owner\'s private spending — and it is the only one of the four that a document cannot settle.',
+              'The uncomfortable one in practice is the third. An invoice addressed to the business, properly authorised, correctly dated and genuinely paid can still be for the owner’s private spending. It is the only one of the four that a document cannot settle.',
             ],
             examtrap: 'A transaction can be genuine and still not belong in this period, or belong in this period and still not be the business\'s. The four tests are separate, and a scenario often satisfies three of them.',
           },
@@ -1412,7 +1412,7 @@
             h: 'Why capital spending is authorised separately',
             p: [
               'Most businesses let a buyer order stationery without asking anyone. Almost none let the same buyer order a £40,000 machine.',
-              'The difference is not the amount alone, though the amount is part of it. Capital expenditure commits the business for years: the machine has to be paid for, housed, insured, maintained and eventually disposed of, and until it is disposed of the cash spent on it cannot be spent on anything else. A decision that ties up cash for eight years should be made by somebody who knows what else the cash was for.',
+              'The difference is not the amount alone, though the amount is part of it. Capital expenditure commits the business for years. The machine has to be paid for, housed, insured, maintained and eventually disposed of. Until it is disposed of, the cash spent on it cannot be spent on anything else. A decision that ties up cash for eight years should be made by somebody who knows what else the cash was for.',
               'It also lands on the accounts differently. Revenue expenditure hits this year\'s profit and is gone. Capital expenditure sits on the statement of financial position and releases into profit slowly, through depreciation, for as long as the asset lasts. Somebody choosing to capitalise is choosing where profit appears for several years. That choice is not left to whoever happens to be signing.',
             ],
             callout: { kind: 'key', text: 'Authorisation exists because capital spending commits cash for years, and because capitalising an item moves cost out of this year\'s profit and into several later ones.' },
@@ -1429,8 +1429,8 @@
               ],
             },
             p: [
-              'The exact levels differ by business and no figure here is a rule. What holds everywhere is the shape: authority rises with the size and the length of the commitment, and the person authorising is senior enough to see what else the money was for.',
-              'Two related controls usually travel with it. Spending is authorised **before** the order goes out rather than after the invoice arrives, because an approval sought afterwards is not a decision. And the person who authorises is not the person who records the purchase, so an unauthorised asset cannot be quietly added to the register by the one person who would notice.',
+              'The exact levels differ by business and no figure here is a rule. What holds everywhere is the shape. Authority rises with the size and the length of the commitment, and the person authorising is senior enough to see what else the money was for.',
+              'Two related controls usually travel with it. Spending is authorised **before** the order goes out rather than after the invoice arrives, because an approval sought afterwards is not a decision. And the person who authorises is not the person who records the purchase. That stops an unauthorised asset being quietly added to the register by the one person who would notice.',
             ],
             examtrap: 'A question may show an invoice for an asset with no authorisation, or authorisation by somebody below the stated limit. The answer is not to post it and mention it — an unauthorised commitment is referred upwards before it enters the records.',
           },
@@ -1466,7 +1466,7 @@
           {
             h: 'The test, and where it comes from',
             p: [
-              'The standard governing non-current assets is **IAS 16, Property, Plant and Equipment**, and the test it sets for what may be added to the cost of an asset is short: the purchase price, plus any cost **directly attributable to bringing the asset to the location and condition necessary for it to be capable of operating in the way management intends**.',
+              'The standard governing non-current assets is **IAS 16, Property, Plant and Equipment**. The test it sets for what may be added to the cost of an asset is short. The purchase price, plus any cost **directly attributable to bringing the asset to the location and condition necessary for it to be capable of operating in the way management intends**.',
               'Read that clause slowly, because every borderline case turns on it. Delivery is directly attributable — the machine cannot operate in the warehouse if it is still on a lorry. Installation is directly attributable. So is the fee paid to the engineer who commissions it, and the cost of preparing the floor it stands on.',
               'The moment the asset is capable of operating as intended, capitalisation stops. Everything after that point is revenue expenditure, however large and however closely connected to the asset.',
             ],
@@ -1501,7 +1501,7 @@
               },
             },
             p: [
-              'Two of the revenue items catch people out. **Staff training** is directly connected to the machine and is still revenue, because it changes what the staff can do rather than what the machine can do. And **moving the asset later** is revenue even though the identical cost was capital first time round: the first delivery brought the asset to the condition necessary to operate, and the second merely relocated an asset already operating.',
+              'Two of the revenue items catch people out. **Staff training** is directly connected to the machine and is still revenue, because it changes what the staff can do rather than what the machine can do. And **moving the asset later** is revenue, even though the identical cost was capital first time round. The first delivery brought the asset to the condition necessary to operate; the second merely relocated an asset already operating.',
             ],
           },
           {
@@ -1529,8 +1529,8 @@
             h: 'The capitalisation threshold',
             p: [
               'A business also sets a **capitalisation policy**: a level below which an item is expensed however long it will last. A £45 desk fan may serve for a decade and still be written off on the day it is bought.',
-              'That is materiality doing its job. Tracking a £45 fan through an asset register for ten years, depreciating it, verifying it in a stock count and eventually recording its disposal costs far more than the accuracy it buys, and no reader of the accounts would decide anything differently either way.',
-              'The policy has to be applied consistently in both directions. An item above the threshold is capitalised even in a year when the business would rather have the expense; an item below it is expensed even when capitalising would flatter the profit. A threshold applied only when it suits is not a policy.',
+              'That is materiality doing its job. Tracking a £45 fan through an asset register for ten years costs far more than the accuracy it buys. It has to be depreciated, verified in a stock count, and eventually recorded as a disposal. And no reader of the accounts would decide anything differently either way.',
+              'The policy has to be applied consistently in both directions. An item above the threshold is capitalised even in a year when the business would rather have the expense. An item below it is expensed even when capitalising would flatter the profit. A threshold applied only when it suits is not a policy.',
             ],
           },
         ],
@@ -1594,8 +1594,8 @@
               ],
             },
             p: [
-              'Useful life is the one most often misread. A van may run for fifteen years, but a business that replaces its fleet every four has a useful life of four — the question is how long the asset serves **this** business, not how long it would survive.',
-              'That is also why two businesses can depreciate identical vans over different lives without either being wrong, and why the estimate is a judgement that has to be made honestly rather than to suit a profit target.',
+              'Useful life is the one most often misread. A van may run for fifteen years, but a business that replaces its fleet every four has a useful life of four. The question is how long the asset serves **this** business, not how long it would survive.',
+              'That is also why two businesses can depreciate identical vans over different lives without either being wrong. And it is why the estimate is a judgement, to be made honestly rather than to suit a profit target.',
             ],
           },
           {
@@ -1603,7 +1603,7 @@
             p: [
               'Take £20,000 spent on a machine with a five-year life and no residual value, and follow it two ways.',
               '**Expensed:** profit this year falls by £20,000. Nothing appears on the statement of financial position. In years two to five the machine costs nothing at all, and profit in each of those years is higher than the trading actually justified.',
-              '**Capitalised:** profit this year falls by the first depreciation charge of £4,000, and £20,000 − £4,000 = £16,000 sits under non-current assets. Each of the next four years carries another £4,000, and the carrying amount falls to nil as the machine reaches the end of its life.',
+              '**Capitalised:** profit this year falls by the first depreciation charge of £4,000, and £20,000 − £4,000 = £16,000 sits under non-current assets. Each of the next four years carries another £4,000. The carrying amount falls to nil as the machine reaches the end of its life.',
               'Over five years both routes charge £20,000 to profit. What changes is **which years** carry it — and since the machine earns revenue in all five, only the second route matches the cost to the periods that benefit. That match is the accruals principle, and depreciation is how it is applied to a non-current asset.',
             ],
             callout: { kind: 'key', text: 'Capitalising changes the timing of the charge, not its total. Over the asset\'s life the same cost reaches profit either way.' },
@@ -1631,7 +1631,7 @@
               },
             },
             p: [
-              'The right-hand column is the more serious of the two, and it is the direction in which pressure usually runs. Capitalising a repair improves this year\'s profit and puts an asset on the statement of financial position, and both effects are what somebody under pressure to report a good year would want. It also takes several years to unwind, so it is not a mistake that corrects itself.',
+              'The right-hand column is the more serious of the two, and it is the direction in which pressure usually runs. Capitalising a repair improves this year’s profit and puts an asset on the statement of financial position. Both effects are what somebody under pressure to report a good year would want. It also takes several years to unwind, so it is not a mistake that corrects itself.',
             ],
           },
         ],
@@ -1673,8 +1673,8 @@
           {
             h: 'A record that sits outside the double entry',
             p: [
-              'The general ledger knows that the business holds £480,000 of plant and machinery with £215,000 of accumulated depreciation against it. It does not know that £24,000 of that is a press bought in March, standing in the Leeds workshop, four years into an eight-year life.',
-              'The **non-current asset register** holds the detail. It is a memorandum record — outside the double entry, carrying no debits or credits — with one line per asset, and it is the only place the business can answer a question about a particular thing it owns.',
+              'The general ledger knows that the business holds £480,000 of plant and machinery, with £215,000 of accumulated depreciation against it. It does not know that £24,000 of that is a press bought in March. Nor that the press stands in the Leeds workshop, four years into an eight-year life.',
+              'The **non-current asset register** holds the detail. It is a memorandum record — outside the double entry, carrying no debits or credits — with one line per asset. It is the only place the business can answer a question about a particular thing it owns.',
             ],
             table: {
               headers: ['Field', 'What it is for'],
@@ -1695,7 +1695,7 @@
             p: [
               '**Physical verification** works in both directions, and both matter. Register to floor asks whether everything recorded still exists — an asset scrapped two years ago and never written out is carrying depreciation and inflating the accounts. Floor to register asks whether everything that exists is recorded, which is how an unauthorised purchase or an asset acquired with a business surfaces.',
               '**Reconciliation to the general ledger** is the one an assessment asks for most. Total cost per the register should equal the cost balance in the general ledger, and total accumulated depreciation per the register should equal the accumulated depreciation balance. Where they differ, something has been posted to one and not the other.',
-              'The usual causes are worth knowing in advance: an acquisition posted to the ledger and never added to the register, a disposal removed from the register and never posted, a private-use adjustment made in one place only, or an asset written off physically with no entry anywhere.',
+              'The usual causes are worth knowing in advance. An acquisition posted to the ledger and never added to the register. A disposal removed from the register and never posted. A private-use adjustment made in one place only. Or an asset written off physically with no entry anywhere.',
             ],
             examtrap: 'The register carries no debits or credits and is not part of the double entry. A question asking for the journal to "correct the register" is testing whether you know that — the correction is made in the ledger, in the register, or in both, depending on which one is wrong.',
           },
@@ -1703,7 +1703,7 @@
             h: 'Where the register lives',
             p: [
               'A register may be a module inside accounting software, or a spreadsheet kept alongside it. Both are common and the specification names both.',
-              'Software keeps the register and the ledger in step automatically, which removes the commonest cause of a reconciling difference and introduces a subtler one: if the acquisition is entered with the wrong date, cost or life, the software will depreciate it wrongly, consistently, and without complaint for the whole of its life. Nothing in the reconciliation will show it, because both sides agree — they agree on the wrong figure.',
+              'Software keeps the register and the ledger in step automatically. That removes the commonest cause of a reconciling difference, and introduces a subtler one. Enter the acquisition with the wrong date, cost or life and the software will depreciate it wrongly, consistently, and without complaint for the whole of its life. Nothing in the reconciliation will show it, because both sides agree — they agree on the wrong figure.',
               'A spreadsheet has the opposite profile. Every difference between it and the ledger is visible at the year end, and every formula is somebody\'s to get right. The risks are a dragged formula that skips a row, a total that does not include the newest line, and a file that two people have edited.',
             ],
           },
@@ -1740,7 +1740,7 @@
             h: 'The entries',
             p: [
               'An acquisition on credit is two entries and a note. Debit the relevant non-current asset cost account with the capitalised amount, debit VAT if it is recoverable, and credit the payables account with the total owed. Then add the asset to the register, which is not part of the double entry and is the step most often forgotten.',
-              'The cost account is chosen by class — motor vehicles, plant and machinery, fixtures and fittings, land and buildings — because depreciation policies differ by class and the statement of financial position discloses them separately.',
+              'The cost account is chosen by class: motor vehicles, plant and machinery, fixtures and fittings, land and buildings. Depreciation policies differ by class, and the statement of financial position discloses them separately.',
             ],
             example: {
               title: 'Machine bought on credit for £12,000 plus VAT at 20%, business VAT registered',
@@ -1756,8 +1756,8 @@
             h: 'VAT follows the registration status',
             p: [
               'A **VAT-registered** business recovers the input tax on the purchase, so the VAT is not a cost to it. The asset is capitalised **net**: £12,000 × 20% = £2,400 goes to the VAT account and the machine stands at £12,000.',
-              'A business that is **not registered** cannot recover anything. The VAT is part of what it had to pay to get the machine, so it is directly attributable, and the asset is capitalised **gross** at £12,000 + £2,400 = £14,400. Every depreciation charge for the rest of that machine\'s life is then computed on £14,400.',
-              'One case sits outside the pattern and is worth knowing because it is common. Input tax on a **car** is normally blocked, so even a registered business cannot recover it unless the car is used exclusively for business — a taxi or a driving-school vehicle. Where the VAT cannot be recovered it is capitalised with the car, exactly as it would be for an unregistered business. The rule the specification states for this unit is registration status; the car block belongs to Tax Processes and is mentioned here because a scenario can raise it.',
+              'A business that is **not registered** cannot recover anything. The VAT is part of what it had to pay to get the machine, so it is directly attributable. The asset is capitalised **gross** at £12,000 + £2,400 = £14,400. Every depreciation charge for the rest of that machine’s life is then computed on £14,400.',
+              'One case sits outside the pattern and is worth knowing because it is common. Input tax on a **car** is normally blocked. Even a registered business cannot recover it unless the car is used exclusively for business — a taxi or a driving-school vehicle. Where the VAT cannot be recovered it is capitalised with the car, exactly as it would be for an unregistered business. The rule the specification states for this unit is registration status. The car block belongs to Tax Processes, and is mentioned here because a scenario can raise it.',
             ],
             callout: { kind: 'key', text: 'Recoverable VAT goes to the VAT account and the asset is capitalised net. Irrecoverable VAT is part of the cost of getting the asset, so it is capitalised with it.' },
           },
@@ -1840,9 +1840,9 @@
           {
             h: 'What a gain or loss actually is',
             p: [
-              'A gain on disposal is not a profit the business made by trading, and a loss is not money it lost on the day. Both are corrections.',
-              'Depreciation spreads cost over an estimated life to an estimated residual value. Both estimates are made years before the asset is sold, and neither is going to be exactly right. If the asset was depreciated faster than it lost value, the carrying amount is below what it fetches and the difference appears as a gain; if it was depreciated too slowly, a loss appears.',
-              'So a business that regularly reports large gains on disposal is telling you its useful lives are too short, and one reporting persistent losses is telling you they are too long. That is a real signal and an assessment can ask you to read it.',
+              'A gain on disposal is not a profit the business made by trading. A loss is not money it lost on the day. Both are corrections.',
+              'Depreciation spreads cost over an estimated life to an estimated residual value. Both estimates are made years before the asset is sold, and neither is going to be exactly right. If the asset was depreciated faster than it lost value, the carrying amount is below what it fetches, and the difference appears as a gain. If it was depreciated too slowly, a loss appears.',
+              'So a business that regularly reports large gains on disposal is telling you its useful lives are too short. One reporting persistent losses is telling you they are too long. That is a real signal, and an assessment can ask you to read it.',
             ],
             examtrap: 'Use the accumulated depreciation **at the date of disposal**, which means applying the depreciation policy for the final period first — a part-year charge under pro-rata, or none at all where the policy charges nothing in the year of disposal. Reaching for last year\'s figure without asking what the policy requires is the commonest error in a disposal question.',
           },
@@ -1882,8 +1882,8 @@
             h: 'A disposal and an acquisition at once',
             p: [
               'Trading an old van in against a new one looks like one transaction and is two. The old van is disposed of, and the new van is acquired; the part-exchange allowance is simply the form the proceeds take.',
-              'The specification puts it as part-exchange being **a different form of funding** to cash or credit. The business is paying for the new asset partly with an old asset instead of entirely with money, and the accounting treats that old asset exactly as it would treat any other disposal.',
-              'So the allowance is the proceeds, it goes into the disposals account like any other proceeds, and the gain or loss is worked out the same way. What differs is where the money goes: instead of arriving in the bank, it goes straight into the cost of the new asset.',
+              'The specification puts it as part-exchange being **a different form of funding** to cash or credit. The business is paying for the new asset partly with an old asset instead of entirely with money. The accounting treats that old asset exactly as it would treat any other disposal.',
+              'So the allowance is the proceeds. It goes into the disposals account like any other proceeds, and the gain or loss is worked out the same way. What differs is where the money goes. Instead of arriving in the bank, it goes straight into the cost of the new asset.',
             ],
             callout: { kind: 'key', text: 'The part-exchange allowance is the proceeds of the old asset. Cost of the new asset = the allowance + whatever cash is paid on top.' },
           },
@@ -1934,7 +1934,7 @@
               },
             },
             p: [
-              'The first error is the common one, and it does lasting damage. A new van capitalised at £16,500 rather than £22,000 is understated by the whole allowance, every depreciation charge for its life is too small, and the gain on the old van never appears in profit at all.',
+              'The first error is the common one, and it does lasting damage. A new van capitalised at £16,500 rather than £22,000 is understated by the whole allowance. Every depreciation charge for its life is then too small, and the gain on the old van never appears in profit at all.',
             ],
             examtrap: 'The specification excludes **the VAT treatment of part exchanges** from this unit. A part-exchange question will not require you to deal with VAT on the trade-in, and working figures out net of VAT is a way to get the wrong answer to a question that never asked.',
           },
@@ -2035,9 +2035,9 @@
             h: 'Not a valuation, and not a fund',
             p: [
               'Two things depreciation is regularly mistaken for, and it is neither.',
-              'It is **not an attempt to value the asset**. A machine carried at £15,360 is not being claimed to be worth £15,360; the figure is what is left of a cost after some of it has been charged to profit. A three-year-old van whose market value collapsed after a recall carries on depreciating on its original schedule, because the schedule was never about market value. A permanent fall below the carrying amount is dealt with separately, by impairment, which this unit does not assess.',
+              'It is **not an attempt to value the asset**. A machine carried at £15,360 is not being claimed to be worth £15,360. The figure is what is left of a cost after some of it has been charged to profit. A three-year-old van whose market value collapsed after a recall carries on depreciating on its original schedule, because the schedule was never about market value. A permanent fall below the carrying amount is dealt with separately, by impairment, which this unit does not assess.',
               'It is **not money set aside**. Charging £4,000 of depreciation puts nothing in the bank and funds no replacement. The credit goes to accumulated depreciation, which is a contra-asset sitting against cost, not a pot of cash.',
-              'What depreciation does is allocate. The **depreciable amount** — cost less residual value — is spread across the periods the asset serves, so each year carries a share of the cost of the asset it used. That is the accruals principle applied to something that was paid for once and consumed slowly.',
+              'What depreciation does is allocate. The **depreciable amount** — cost less residual value — is spread across the periods the asset serves. Each year carries a share of the cost of the asset it used. That is the accruals principle applied to something that was paid for once and consumed slowly.',
             ],
             callout: { kind: 'key', text: 'Depreciation allocates cost across the periods that benefit. It does not value the asset and it sets no money aside.' },
           },
@@ -2064,8 +2064,8 @@
               },
             },
             p: [
-              'Both are estimates, both are made years before the truth is known, and both move profit. That combination is why the specification attaches professional scepticism to this area: a life quietly extended or a residual value quietly raised improves reported profit every year until the asset is sold, and neither change looks like anything on the face of the accounts.',
-              'When either estimate turns out wrong, the correction arrives as a gain or loss on disposal — which is why persistent gains or losses are a signal about the estimates rather than about the sale.',
+              'Both are estimates, both are made years before the truth is known, and both move profit. That combination is why the specification attaches professional scepticism to this area. A life quietly extended, or a residual value quietly raised, improves reported profit every year until the asset is sold. Neither change looks like anything on the face of the accounts.',
+              'When either estimate turns out wrong, the correction arrives as a gain or loss on disposal. That is why persistent gains or losses are a signal about the estimates rather than about the sale.',
             ],
           },
           {
@@ -2073,7 +2073,7 @@
             p: [
               'Accounting software will hold the method, the rate and the in-service date, calculate the charge every period, post it, and update both the ledger and the register. A spreadsheet will do the same arithmetic and leave a journal to be entered by hand.',
               'Both are normal and the specification names both. The difference that matters is where the risk sits.',
-              'Software cannot get the arithmetic wrong and cannot forget an asset. What it can do is apply the right method to the wrong inputs — an in-service date a month out, a life copied from the previous line, a class that carries someone else\'s policy — and go on doing it, cleanly and consistently, for the whole of the asset\'s life. A reconciliation will not find it, because the register and the ledger agree. Only somebody reading the register line against the invoice will.',
+              'Software cannot get the arithmetic wrong and cannot forget an asset. What it can do is apply the right method to the wrong inputs. An in-service date a month out, a life copied from the previous line, a class that carries someone else’s policy. It then goes on doing it, cleanly and consistently, for the whole of the asset’s life. A reconciliation will not find it, because the register and the ledger agree. Only somebody reading the register line against the invoice will.',
             ],
             examtrap: 'Depreciation begins when the asset is **available for use**, which is not always the date on the invoice. A machine delivered in March and commissioned in May starts depreciating in May, and a pro-rata policy computes from then.',
           },
@@ -2110,7 +2110,7 @@
             h: 'The same amount every year',
             formula: 'Annual charge = (Cost − Residual value) ÷ Useful life · or · Annual charge = Cost × the given percentage',
             p: [
-              'Straight line charges an equal amount to every year of the asset\'s life, and it is the right choice where the asset is consumed evenly — a building, office furniture, a fixture that works as hard in year six as in year one.',
+              'Straight line charges an equal amount to every year of the asset’s life. It is the right choice where the asset is consumed evenly — a building, office furniture, a fixture that works as hard in year six as in year one.',
               'A policy states it in one of two ways and the two are not interchangeable. **By useful life**, where the depreciable amount is divided by the number of years. **By percentage**, where a stated rate is applied to **cost** every year. Read the policy: a rate applied to cost is straight line, and the same rate applied to the carrying amount is the other method entirely.',
             ],
           },
@@ -2142,7 +2142,7 @@
               'A policy also says how the year of acquisition is treated, and the two conventions give different answers to the same question.',
               'A **full year in the year of acquisition and none in the year of disposal** is the simpler convention. An asset bought on any date in the year takes a whole year\'s charge; the year it is sold takes none. No apportionment is needed and the policy does the work.',
               '**Pro-rata** charges by the months the asset was available for use. The £4,000 machine above, available from 1 October with a 31 December year end, is charged for three months: £4,000 × 3 ÷ 12 = £1,000. The following year takes the full £4,000.',
-              'Which convention applies is stated in the question, and applying the wrong one is a way of getting a correctly-calculated figure marked wrong.',
+              'Which convention applies is stated in the question. Apply the wrong one and a correctly-calculated figure is marked wrong.',
             ],
             examtrap: 'Pro-rata months run from when the asset was **available for use**, not from the invoice date and not from the date it was paid for. Where a question gives a delivery date and a commissioning date, the commissioning date is the one that starts the clock.',
           },
@@ -2194,7 +2194,7 @@
             formula: 'Annual charge = Carrying amount at the start of the year × the given percentage',
             p: [
               'Diminishing balance applies a fixed percentage to the **carrying amount** rather than to cost. Because the carrying amount falls every year, so does the charge: large early, small later, and never quite reaching nil.',
-              'That pattern suits assets that give most of their service early or lose most of their value early — vehicles, computers, anything that is worth markedly less the moment it is a year old. It also roughly offsets the fact that repair costs rise as an asset ages, so the total annual cost of owning it stays steadier than either figure alone.',
+              'That pattern suits assets that give most of their service early, or lose most of their value early. Vehicles, computers, anything that is worth markedly less the moment it is a year old. It also roughly offsets the fact that repair costs rise as an asset ages, so the total annual cost of owning it stays steadier than either figure alone.',
               'The specification asks for this method **for a full year with a given percentage**, so no residual value is deducted and no pro-rata apportionment is needed. The percentage does all the work.',
             ],
             callout: { kind: 'key', text: 'Straight line applies the rate to cost. Diminishing balance applies it to the carrying amount, so the charge falls every year.' },
@@ -2234,7 +2234,7 @@
               ],
             },
             p: [
-              'The method is chosen to match how the asset is consumed, and once chosen the consistency principle keeps it. A change is permitted when the pattern of use genuinely changes; a change made because a different method would report a better number is the example the ethics material uses.',
+              'The method is chosen to match how the asset is consumed, and once chosen the consistency principle keeps it. A change is permitted when the pattern of use genuinely changes. A change made because a different method would report a better number is the example the ethics material uses.',
               'A question can give either method, or both for different classes in the same business, and the class is what tells you which. Vehicles on diminishing balance and buildings on straight line in one trial balance is an ordinary arrangement rather than a trick.',
             ],
           },
@@ -2314,8 +2314,8 @@
             flow: ['Bring assets sold up to date, as the policy requires', 'Work out the gain or loss on those disposals', 'Charge depreciation on everything still held', 'Update the register line by line', 'Reconcile register totals to the ledger'],
             p: [
               'Doing these out of order produces answers that are individually correct and collectively wrong.',
-              'Assets being sold are dealt with **first**, because the gain or loss compares the proceeds with the carrying amount at the date of disposal, and that carrying amount is not right until the policy has been applied for the final period. Under pro-rata that means a part-year charge; under a full-year policy it means no charge at all in the year of sale. Either way the figure comes from the policy, and reaching for last year\'s accumulated depreciation instead is the commonest error in a disposal question.',
-              'The reconciliation comes **last**, because it is the check rather than a step. Running it before the disposals have been written out of the register produces a difference that is not a fault, and chasing it wastes the time that should have gone on the real one.',
+              'Assets being sold are dealt with **first**. The gain or loss compares the proceeds with the carrying amount at the date of disposal. That carrying amount is not right until the policy has been applied for the final period. Under pro-rata that means a part-year charge; under a full-year policy it means no charge at all in the year of sale. Either way the figure comes from the policy, and reaching for last year’s accumulated depreciation instead is the commonest error in a disposal question.',
+              'The reconciliation comes **last**, because it is the check rather than a step. Run it before the disposals have been written out of the register and it produces a difference that is not a fault. Chasing that wastes the time that should have gone on the real one.',
             ],
           },
         ],
@@ -2422,7 +2422,7 @@
             p: [
               'By the last day of the year the ledger holds an honest record of what was paid and received. It does not yet hold an honest record of what the year **cost** and what the year **earned**, and those are different questions.',
               'An electricity bill covering October to December arrives in January. The electricity was burned in this year; the payment falls in the next. A twelve-month insurance premium paid in October buys three months of this year and nine months of the next, out of one cheque. Rent from a tenant for December arrives in January. In each case the cash and the economic event have come apart.',
-              'The **accruals principle** says report the event. So the year end is where the ledger is adjusted from a record of cash into a record of the period — expenses moved into the year that consumed them, income into the year that earned it.',
+              'The **accruals principle** says report the event. So the year end is where the ledger is adjusted from a record of cash into a record of the period. Expenses move into the year that consumed them, income into the year that earned it.',
             ],
             callout: { kind: 'key', text: 'Every adjustment in this outcome does one job: separate when the cash moved from when the economic event happened, and report the second.' },
           },
@@ -2438,8 +2438,8 @@
               ],
             },
             p: [
-              'The four are the two directions of the same idea applied to the two sides of the profit statement. The vocabulary varies — prepaid income is also called deferred income, and an accrued expense is often just called an accrual — and the treatment does not.',
-              'Two more adjustments in this outcome are the same principle wearing different clothes. An **allowance for doubtful receivables** recognises, in the year that made the sales, the risk that some of those sales will never be collected. **Closing inventory** is held back out of this year\'s cost of sales because the goods have not been sold yet, so their cost belongs to the year that sells them.',
+              'The four are the two directions of the same idea, applied to the two sides of the profit statement. The vocabulary varies. Prepaid income is also called deferred income, and an accrued expense is often just called an accrual. The treatment does not vary.',
+              'Two more adjustments in this outcome are the same principle wearing different clothes. An **allowance for doubtful receivables** recognises, in the year that made the sales, the risk that some of those sales will never be collected. **Closing inventory** is held back out of this year’s cost of sales because the goods have not been sold yet. Their cost belongs to the year that sells them.',
             ],
           },
           {
@@ -2465,7 +2465,7 @@
               },
             },
             p: [
-              'Reading those two columns as a list of levers is the point of the ethics material at the end of this outcome. Each adjustment rests on a judgement, each judgement moves profit in a known direction, and a run of them all taken at the favourable end moves it a long way without any single decision being obviously wrong.',
+              'Reading those two columns as a list of levers is the point of the ethics material at the end of this outcome. Each adjustment rests on a judgement, and each judgement moves profit in a known direction. A run of them all taken at the favourable end moves it a long way, without any single decision being obviously wrong.',
             ],
             examtrap: 'A question can give the adjustment and ask for the effect on profit, or give the effect and ask which adjustment produces it. Learning the direction of each one is worth more than learning the journal, because the journal follows from the direction.',
           },
@@ -2680,7 +2680,7 @@
             p: [
               'Last year ended with an accrual of £950 for unbilled electricity. In February the bill arrives and is paid, and the payment goes to the electricity account like every other payment.',
               'If nothing else happens, that £950 has been charged to profit twice: once last year as the accrual, and again this year as part of the payment. The reversal is what stops it.',
-              'At the start of the new period the previous adjustment is put back the other way: **debit accruals £950, credit electricity £950**. The electricity account now opens with a £950 credit, so when the payment arrives the two cancel and only the part belonging to this year is left.',
+              'At the start of the new period the previous adjustment is put back the other way: **debit accruals £950, credit electricity £950**. The electricity account now opens with a £950 credit. When the payment arrives the two cancel, and only the part belonging to this year is left.',
             ],
             callout: { kind: 'key', text: 'Every accrual and prepayment is reversed at the start of the next period. Without the reversal the amount lands in profit in both years.' },
           },
@@ -2705,7 +2705,7 @@
             h: 'What accounting software does, and does not, do',
             p: [
               'Software will hold a recurring journal and post the reversal automatically on the first day of the new period, which removes the commonest cause of a double count. The specification names this and it is worth knowing why it matters.',
-              'What it does not do is decide whether the adjustment was right. A recurring accrual set up three years ago at £950 a quarter will go on posting £950 a quarter after the supplier has changed the tariff, after the premises have been given up, and after the contract has ended. Both sides of the entry are correct, the reversal happens on time, and the figure is wrong.',
+              'What it does not do is decide whether the adjustment was right. A recurring accrual set up three years ago at £950 a quarter will go on posting £950 a quarter. It carries on after the supplier has changed the tariff, after the premises have been given up, and after the contract has ended. Both sides of the entry are correct, the reversal happens on time, and the figure is wrong.',
               'An accrual identical to last year\'s to the pound is the standard example of something professional scepticism is meant to notice. It is not evidence of anything by itself; it is a reason to look at the underlying bill.',
             ],
             examtrap: 'A question giving an opening accrual, the payments in the year and a closing accrual is asking for the charge, not for the closing balance. Payments, less the opening adjustment, plus the closing one.',
@@ -2792,7 +2792,7 @@
               },
             },
             p: [
-              'The line between a write-off and an allowance is the line between a fact and a forecast, and the accounting keeps them apart on purpose. A reader can see how much the business has given up on and, separately, how much of what remains it expects to lose.',
+              'The line between a write-off and an allowance is the line between a fact and a forecast. The accounting keeps them apart on purpose. A reader can see how much the business has given up on and, separately, how much of what remains it expects to lose.',
             ],
             examtrap: 'An allowance never touches the receivables ledger. The customer still owes the money and will still be chased for it — the allowance is the business\'s own estimate of what it will collect, not a message to the customer.',
           },
@@ -2835,7 +2835,7 @@
           {
             h: 'Only the movement reaches profit',
             p: [
-              'The allowance is a running balance, not a yearly charge. It sits against receivables and is carried forward from one year to the next, and what reaches the statement of profit or loss each year is only the **change** in it.',
+              'The allowance is a running balance, not a yearly charge. It sits against receivables and is carried forward from one year to the next. What reaches the statement of profit or loss each year is only the **change** in it.',
               'That is the single most important thing about this calculation and the place most marks are lost. A business with an opening allowance of £2,100 that now requires £5,600 does not charge £5,600. It charges the £3,500 by which the allowance has to rise.',
               'The reasoning is the accruals principle again. The risk on last year\'s sales was already charged to last year. Charging the whole allowance every year would charge the same risk repeatedly for as long as the customer kept owing.',
             ],
@@ -2869,8 +2869,8 @@
             h: 'When the allowance falls',
             p: [
               'A required allowance smaller than the one brought forward reverses the journal. Debit the allowance, credit the adjustment account — and the credit reduces expenses, raising profit.',
-              'A business collecting better than it expected should report that, and this is how. What it must not do is set the rate to produce the result: a general allowance quietly cut from 3% to 1% releases two thirds of the balance into profit in a single year, and nothing on the face of the accounts announces it.',
-              'On the statement of financial position the allowance is presented as a deduction from trade receivables, so a reader sees both figures. Receivables of £84,000 less an allowance of £5,600 gives £84,000 − £5,600 = £78,400 as the net figure, with the gross amount still visible above it.',
+              'A business collecting better than it expected should report that, and this is how. What it must not do is set the rate to produce the result. A general allowance quietly cut from 3% to 1% releases two thirds of the balance into profit in a single year. Nothing on the face of the accounts announces it.',
+              'On the statement of financial position the allowance is presented as a deduction from trade receivables, so a reader sees both figures. Receivables of £84,000 less an allowance of £5,600 gives £84,000 − £5,600 = £78,400 as the net figure. The gross amount is still visible above it.',
             ],
             examtrap: 'A question giving "the allowance is to be 4% of receivables" is telling you the required balance, not the charge. Read what the opening allowance is before writing anything down — if it is not given, look for it in the trial balance rather than assuming it is nil.',
           },
@@ -2914,7 +2914,7 @@
           {
             h: 'Why closing inventory is an adjustment at all',
             p: [
-              'Purchases are charged to the profit statement as they are made. At the year end some of what was bought is still on the shelf, unsold, and its cost belongs to the year that sells it rather than the year that bought it.',
+              'Purchases are charged to the profit statement as they are made. At the year end some of what was bought is still on the shelf, unsold. Its cost belongs to the year that sells it, not the year that bought it.',
               'Closing inventory is how that cost is held back. It is deducted in arriving at cost of sales and appears as a current asset, and next year it becomes the opening inventory and is charged then.',
               'The arithmetic makes the effect on profit direct and worth committing to memory: **cost of sales = opening inventory + net purchases − closing inventory**. A higher closing inventory means a lower cost of sales and a higher profit. Overstate the closing figure and profit is overstated by exactly the same amount.',
             ],
@@ -2923,9 +2923,9 @@
           {
             h: 'The rule, and what goes into cost',
             p: [
-              'The standard is **IAS 2, Inventories**, and its rule is that inventory is measured at the **lower of cost and net realisable value**.',
-              '**Cost** is what it took to get the goods to their present location and condition: the purchase price net of trade discount, import duties and irrecoverable taxes, carriage inwards, and for manufactured goods the costs of conversion — direct labour and an appropriate share of production overheads.',
-              '**Net realisable value** is what the goods will fetch less what it will cost to finish and sell them: estimated selling price, less costs of completion, less selling costs.',
+              'The standard is **IAS 2, Inventories**. Its rule is that inventory is measured at the **lower of cost and net realisable value**.',
+              '**Cost** is what it took to get the goods to their present location and condition. That is the purchase price net of trade discount, import duties and irrecoverable taxes, and carriage inwards. For manufactured goods it also includes the costs of conversion — direct labour and an appropriate share of production overheads.',
+              '**Net realisable value** is what the goods will fetch, less what it will cost to finish and sell them. Estimated selling price, less costs of completion, less selling costs.',
             ],
             split: {
               left: {
@@ -2965,7 +2965,7 @@
               ],
             },
             p: [
-              'The comparison of cost with net realisable value is made **on an individual item basis**, and this is not a technicality — the two methods give different answers, and comparing totals always gives the higher one.',
+              'The comparison of cost with net realisable value is made **on an individual item basis**. This is not a technicality. The two methods give different answers, and comparing totals always gives the higher one.',
               'Item by item gives £2,400 + £2,550 + £2,400 = £7,350. Comparing the totals gives £7,800, because item A\'s unrealised gain of £600 has been allowed to hide item B\'s real loss of £450.',
               'The difference of £7,800 − £7,350 = £450 is exactly the loss on B, and prudence is what forbids it being netted off. A fall in value that has happened is recognised; a rise that has not been realised is not.',
               'Accounting software will hold quantities, run the valuation and produce the figure. It cannot tell that line B is now unsaleable at cost, because nothing in the system knows the market moved — somebody has to enter the new net realisable value.',
@@ -3022,9 +3022,9 @@
           {
             h: 'One figure, two places',
             p: [
-              'Closing inventory is the one adjustment that appears twice in the financial statements at the same value: once as a deduction in arriving at cost of sales, and once as a current asset.',
+              'Closing inventory is the one adjustment that appears twice in the financial statements at the same value. Once as a deduction in arriving at cost of sales, and once as a current asset.',
               'The journal says so directly. **Debit inventory (asset), credit inventory (cost of sales)** — one figure, one debit, one credit, and both halves land where they are needed.',
-              'Next year the same balance is the **opening** inventory and is charged, which is what closes the loop: the cost is held back for exactly one year and then meets the revenue it helped produce. That is why the opening figure appears as a cost in the statement of profit or loss while the closing figure appears as a deduction — they are the same goods, entering and leaving.',
+              'Next year the same balance is the **opening** inventory, and is charged. That closes the loop: the cost is held back for exactly one year, then meets the revenue it helped produce. It is why the opening figure appears as a cost in the statement of profit or loss while the closing figure appears as a deduction. They are the same goods, entering and leaving.',
             ],
             example: {
               title: 'Recording closing inventory of £7,350',
@@ -3042,7 +3042,7 @@
             p: [
               'The count comes before the valuation, and it is a physical count rather than a report from the system. What the system holds is what it was told; what the count finds is what is there.',
               'Three adjustments are commonly needed once the count is done. **Goods in transit** are included if the risks and rewards have passed to the business, which turns on the delivery terms rather than on where the lorry is. **Goods on sale or return** held by a customer are still the business\'s inventory until the customer accepts them. And **goods held for others** on consignment are excluded, however much of the warehouse they occupy.',
-              'A count taken a few days either side of the year end is workable provided the movements between the count date and the year end are added back or taken out. What is not workable is using last year\'s figure with a percentage on it.',
+              'A count taken a few days either side of the year end is workable. The movements between the count date and the year end have to be added back or taken out. What is not workable is using last year’s figure with a percentage on it.',
             ],
             examtrap: 'A question giving a count total and then a list of adjustments is asking for the corrected figure. Work through the list rather than reaching for the total — the adjustments are where the marks are.',
           },
@@ -3080,7 +3080,7 @@
             p: [
               'Look back over the outcome and count what has actually been decided rather than calculated. How much unbilled electricity to accrue. Whether a customer is doubtful, and at what percentage. What the general allowance rate should be. Whether a line of inventory will still fetch cost.',
               'None of those has a right answer printed on an invoice, and each of them moves profit. Taken one at a time, each can be argued either way inside a range a reviewer would accept. Taken together, and all at the same end of their ranges, they move the reported result a long way.',
-              'That is what makes the period end the point in the accounting year where the scope to affect the reported results is widest, and it is why the specification attaches ethics to this outcome specifically rather than leaving it in Outcome 1.',
+              'That is what makes the period end the point in the accounting year where the scope to affect the reported results is widest. It is why the specification attaches ethics to this outcome specifically, rather than leaving it in Outcome 1.',
             ],
             callout: { kind: 'key', text: 'Period end adjustments are where estimates concentrate, so it is where a run of individually defensible judgements can add up to a materially misleading result.' },
           },
@@ -3130,9 +3130,9 @@
               ],
             },
             p: [
-              'They usually arrive together — at the year end, from somebody senior, with a deadline — and that combination is what makes a small concession feel reasonable.',
-              'The defence is to keep the question technical. Not "is this person entitled to ask me", which is a question about the hierarchy and has no good answer, but "what does the evidence support", which has the same answer whoever is asking. If the evidence supports an allowance of £5,600, it supports £5,600 whether the request came from a colleague or a director.',
-              'Where the answer is not accepted, the next steps are ordinary rather than dramatic: put the position and the reasoning in writing, escalate within the organisation, and take advice from your professional body. Resignation is the last resort, not the first.',
+              'They usually arrive together: at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
+              'The defence is to keep the question technical. Not "is this person entitled to ask me", which is a question about the hierarchy and has no good answer. But "what does the evidence support", which has the same answer whoever is asking. If the evidence supports an allowance of £5,600, it supports £5,600 whether the request came from a colleague or a director.',
+              'Where the answer is not accepted, the next steps are ordinary rather than dramatic. Put the position and the reasoning in writing, escalate within the organisation, and take advice from your professional body. Resignation is the last resort, not the first.',
             ],
           },
         ],
@@ -3245,9 +3245,9 @@
               ],
             },
             p: [
-              'The bottom row is the one that explains the other three. Income and expense accounts are emptied at the year end, which is all that closing them off to capital amounts to, so a sales figure describes twelve months and then starts again at nil. Asset and liability accounts are not emptied, so a bank balance describes one moment and carries straight on into the next year.',
+              'The bottom row is the one that explains the other three. Income and expense accounts are emptied at the year end, which is all that closing them off to capital amounts to. So a sales figure describes twelve months and then starts again at nil. Asset and liability accounts are not emptied, so a bank balance describes one moment and carries straight on into the next year.',
               'That is why a business can report a healthy profit and still be unable to pay its suppliers. Profit is measured over a year; the ability to pay is measured on a day. Both statements are needed because neither question answers the other.',
-              'A lender reads them in that order and for different reasons: the profit statement to judge whether the business can service a loan out of trading, the position statement to judge what could be recovered if it cannot.',
+              'A lender reads them in that order, and for different reasons. The profit statement judges whether the business can service a loan out of trading. The position statement judges what could be recovered if it cannot.',
             ],
           },
           {
@@ -3256,7 +3256,7 @@
             p: [
               'The statement of financial position is that equation with the three terms stacked instead of written in a line. Assets are listed and totalled, liabilities are deducted, and the figure that survives is called **net assets**. Underneath, the capital section is built up separately and must arrive at that same figure.',
               'It does so because of how the two sides are built. Every transaction was recorded twice, so the ledger already balances; the statement of financial position is a rearrangement of balances that were equal before anybody laid them out. Agreement is a symptom of the bookkeeping, not a coincidence to be grateful for.',
-              'This shape — net assets on top, capital underneath — is the **net assets presentation**, and it is the one AAT assesses. An older layout put assets on the left of the page and capital and liabilities on the right; it presents identical information and is not the layout the assessment asks for.',
+              'This shape — net assets on top, capital underneath — is the **net assets presentation**, and it is the one AAT assesses. An older layout put assets on the left of the page and capital and liabilities on the right. It presents identical information, but it is not the layout the assessment asks for.',
             ],
             callout: { kind: 'key', text: 'Net assets and closing capital are two routes to the same figure. When they disagree, something has been posted once instead of twice, or entered on the wrong side.' },
           },
@@ -3269,7 +3269,7 @@
             ],
             p: [
               'One figure crosses from the first statement to the second: profit for the year. Nothing else makes the journey — not the revenue, not the expense totals, not the gross profit.',
-              'The reason is ownership. A profit belongs to the owner from the moment it is earned, whether or not any of it is drawn out. So it increases what the business owes its owner, and the capital balance is the measure of that debt, and it does so through the capital account rather than by appearing on the position statement in its own right.',
+              'The reason is ownership. A profit belongs to the owner from the moment it is earned, whether or not any of it is drawn out. So it increases what the business owes its owner, and the capital balance is the measure of that debt. It does that through the capital account, rather than by appearing on the position statement in its own right.',
               'A loss travels the same road in the opposite direction, reducing capital. Drawings reduce capital too, and for the same reason: they are the owner taking back part of what the business owes them. Neither drawings nor capital introduced ever touches the profit statement.',
             ],
             examtrap: 'Drawings are the classic misplacement. They look like money going out, so they get written among the expenses, where they reduce profit as well as capital and the two halves of the position statement then differ by exactly the drawings figure.',
@@ -3316,7 +3316,7 @@
             },
             p: [
               'A trial balance hands you sales, sales returns, purchases, purchases returns and two carriage figures as separate accounts. None of them is a line in the finished statement. Each finished line is built from two or three of them, and the marks are for the building.',
-              'Returns are deducted from the figure they reverse, which sounds obvious until the two returns accounts are next to each other in a trial balance and both get taken off sales. Sales returns are goods customers sent back, so they reduce revenue. Purchases returns are goods sent back to suppliers, so they reduce what was bought.',
+              'Returns are deducted from the figure they reverse. That sounds obvious until the two returns accounts sit next to each other in a trial balance and both get taken off sales. Sales returns are goods customers sent back, so they reduce revenue. Purchases returns are goods sent back to suppliers, so they reduce what was bought.',
               'The two inventory figures are the least intuitive part. Opening inventory is added because those goods were bought last year and sold this year, so their cost belongs in this year. Closing inventory is deducted because those goods have been bought and not yet sold, so their cost waits for next year.',
             ],
           },
@@ -3430,7 +3430,7 @@
             p: [
               'Two subtotals, and they measure different things. **Gross profit** is what the trading itself earned: revenue less what the goods sold actually cost. **Profit for the year** is what survives after the costs of running the business.',
               'A statement that keeps them apart can be diagnosed; one that merges them cannot. A business whose gross profit is falling has a problem with its pricing or its buying. A business whose gross profit holds up while profit for the year falls has a problem with its overheads. Merge the two and neither diagnosis is available.',
-              'The inner column is a working, not a result. Opening inventory, net purchases and closing inventory are shown there so the reader can see how cost of sales was arrived at, and only the total moves out to the outer column to be deducted.',
+              'The inner column is a working, not a result. Opening inventory, net purchases and closing inventory are shown there so the reader can see how cost of sales was arrived at. Only the total moves out to the outer column to be deducted.',
             ],
           },
           {
@@ -3487,7 +3487,7 @@
             },
             p: [
               'The first three change gross profit without changing profit for the year, so a check that the bottom line agrees will not find them. The fourth changes both.',
-              'Discounts repay a closer look, because the wrong treatment is superficially reasonable. A discount received does reduce what was paid to the supplier — but it was earned by settling early rather than by buying well, so it is reported as income of the period in which it was earned and left out of the cost of the goods.',
+              'Discounts repay a closer look, because the wrong treatment is superficially reasonable. A discount received does reduce what was paid to the supplier. But it was earned by settling early rather than by buying well. So it is reported as income of the period in which it was earned, and left out of the cost of the goods.',
               'Drawings have their own lesson later in this outcome. For now the rule is enough: money the owner takes out is a return of capital, and no return of capital ever passes through the profit statement.',
             ],
             examtrap: 'When a computer-marked task asks for gross profit and profit for the year separately, a misplaced discount loses the first mark and keeps the second. Marks are not awarded for a figure being consistent with an earlier mistake.',
@@ -3534,8 +3534,8 @@
               ],
             },
             p: [
-              'Non-current assets are shown at their carrying amount, with cost and accumulated depreciation set out in columns to its left so a reader can tell new assets from nearly-written-off ones. Every asset in the statement is listed in order of how hard it would be to turn into cash, starting with the hardest, which is why the non-current assets head the page at all. Premises come before inventory; inventory comes before receivables, which are one step from cash; the bank comes last. Liabilities run that ordering in reverse, with whatever is due soonest shown first.',
-              'The ordering carries information. **Net current assets** — current assets less current liabilities, also called working capital — is what the business has available to meet the next twelve months out of resources that will be cash within the same twelve months. A negative figure there is a warning that no profit figure can cancel.',
+              'Non-current assets are shown at their carrying amount, with cost and accumulated depreciation set out in columns to its left so a reader can tell new assets from nearly-written-off ones. Every asset in the statement is listed in order of how hard it would be to turn into cash, starting with the hardest. That is why the non-current assets head the page at all. Premises come before inventory; inventory comes before receivables, which are one step from cash; the bank comes last. Liabilities run that ordering in reverse, with whatever is due soonest shown first.',
+              'The ordering carries information. **Net current assets** is current assets less current liabilities, also called working capital. It is what the business has available to meet the next twelve months, out of resources that will be cash within the same twelve months. A negative figure there is a warning that no profit figure can cancel.',
               'Non-current liabilities are deducted after that subtotal because they are not a call on the coming year. A loan repayable in four years does not compete with next month\'s suppliers.',
             ],
           },
@@ -3583,9 +3583,9 @@
           {
             h: 'When the two halves disagree',
             p: [
-              'A difference between net assets and closing capital means an entry has gone in once, or twice on the same side, or been picked up from the trial balance on the wrong side. The size of the difference narrows the search considerably.',
-              'If the difference equals a figure in the question, that figure has been omitted from one half. If it equals **twice** a figure, that figure is on the wrong side — reversing it moves the total by double the amount, which is why doubling is the signature of a reversal rather than an omission. If it equals the drawings, drawings have probably been deducted twice or not at all.',
-              'A difference that matches nothing is usually a casting error, and re-adding the columns finds it faster than re-reading the entries. None of this rescues a computer-marked task on its own — but knowing that the halves must agree, and checking, catches an error while there is still time to correct it.',
+              'A difference between net assets and closing capital means an entry has gone in once, or twice on the same side. Or it has been picked up from the trial balance on the wrong side. The size of the difference narrows the search considerably.',
+              'If the difference equals a figure in the question, that figure has been omitted from one half. If it equals **twice** a figure, that figure is on the wrong side. Reversing an entry moves the total by double the amount, which is why doubling is the signature of a reversal rather than an omission. If it equals the drawings, drawings have probably been deducted twice or not at all.',
+              'A difference that matches nothing is usually a casting error, and re-adding the columns finds it faster than re-reading the entries. None of this rescues a computer-marked task on its own. But knowing that the halves must agree, and checking, catches an error while there is still time to correct it.',
             ],
             callout: { kind: 'warn', text: 'A difference of exactly twice some figure in the question means that figure is on the wrong side, not that it is missing.' },
           },
@@ -3642,7 +3642,7 @@
             p: [
               'Capital is what the business owes its owner, which is why it sits on the credit side and why the two columns above run the way they do. Anything the owner puts in increases the debt; anything they take out reduces it.',
               'Four movements is the whole list, and a question that asks for a missing figure will give three of them. Rearranging is the skill being tested: closing capital is often supplied and the profit for the year has to be worked back to.',
-              'An asset introduced instead of cash still counts. An owner who brings a van worth £8,000 into the business has increased capital by £8,000 as surely as if they had paid it into the bank, and it is recorded at what the asset is worth on the day it comes in.',
+              'An asset introduced instead of cash still counts. An owner who brings a van worth £8,000 into the business has increased capital by £8,000, as surely as if they had paid it into the bank. It is recorded at what the asset is worth on the day it comes in.',
             ],
             formula: 'Closing capital = Opening capital + capital introduced + profit − drawings',
           },
@@ -3659,7 +3659,7 @@
             p: [
               'Goods are the row that gets misread. The credit goes to purchases rather than to sales, because nothing was sold — the goods left the business without a customer and without revenue. Crediting sales would invent a sale that never happened and put a profit margin on the owner\'s own groceries.',
               'Cost rather than selling price follows from the same reasoning. The business has lost what the goods cost it; it has not lost the profit it might have made, because that profit was never earned.',
-              'The last row covers services and personal expenses: a shop that pays the owner\'s home broadband has paid a private cost out of business money. Leaving it among the expenses understates profit and overstates the business\'s costs, and moving it to drawings puts both right in one entry.',
+              'The last row covers services and personal expenses. A shop that pays the owner’s home broadband has paid a private cost out of business money. Leaving it among the expenses understates profit and overstates the business’s costs. Moving it to drawings puts both right in one entry.',
             ],
             examtrap: 'Goods drawn are credited to purchases at cost. Crediting sales at selling price overstates revenue, overstates gross profit and leaves the capital account short by the margin.',
           },
@@ -3735,7 +3735,7 @@
             p: [
               'A sole trader keeps the profit, so no rules are needed. Two or more owners have to agree how to divide it, and the four devices above are how a partnership agreement usually does it. Each is a way of recognising that partners contribute different things — capital, effort, patience — before the residue is shared.',
               'Where there is no written agreement the Partnership Act 1890 supplies terms: profits and losses shared equally, no interest on capital, and no salary for any partner. Those defaults are rarely what a real partnership wants, which is why agreements exist.',
-              'In this unit the interest and salary figures are given to you. The calculation of interest on capital and interest on drawings is outside the assessment — what is assessed is knowing where each figure goes and what it does to the split.',
+              'In this unit the interest and salary figures are given to you. The calculation of interest on capital and interest on drawings is outside the assessment. What is assessed is knowing where each figure goes, and what it does to the split.',
             ],
             callout: { kind: 'key', text: 'Interest and salaries are not expenses of the business. They are ways of dividing a profit that has already been arrived at.' },
           },
@@ -3748,8 +3748,8 @@
             ],
             p: [
               'Everything above profit for the year is identical to a sole trader\'s statement. Revenue, cost of sales, gross profit, expenses: same lines, same order, same rules about carriage and discounts. A partnership buys and sells in exactly the way a sole trader does.',
-              'Underneath, where a sole trader\'s statement stops, a partnership adds the **appropriation account**. It takes the profit for the year and distributes it: interest on capital to each partner, salaries to any partner entitled to one, interest on drawings charged back, and the residue split in the profit-sharing ratio.',
-              'The link between the two is a single figure. Profit for the year is the last line of the trading statement and the first line of the appropriation account, and no other figure makes the crossing. So a partner\'s salary never appears among the expenses — putting it there would reduce the profit before the division and give the other partners a share of their colleague\'s pay cut.',
+              'Underneath, where a sole trader’s statement stops, a partnership adds the **appropriation account**. It takes the profit for the year and distributes it. Interest on capital to each partner, salaries to any partner entitled to one, interest on drawings charged back, and the residue split in the profit-sharing ratio.',
+              'The link between the two is a single figure. Profit for the year is the last line of the trading statement and the first line of the appropriation account, and no other figure makes the crossing. So a partner’s salary never appears among the expenses. Putting it there would reduce the profit before the division, and give the other partners a share of their colleague’s pay cut.',
             ],
             examtrap: 'A partner\'s salary is an appropriation, not a wage. An employee\'s wage is an expense above profit for the year; a partner\'s salary is a share of the profit below it.',
           },
@@ -3829,7 +3829,7 @@
             },
             p: [
               'Three of the four items are deducted and one is added. Interest on capital and salaries are amounts the partnership hands to individual partners, so they come out of the pot before it is shared. Interest on drawings runs the other way: the partner is being charged for taking money out early, so the charge goes back into the pot and enlarges what everybody shares.',
-              'That is why the second line increases the total. A partner who has drawn heavily pays interest, the residue everybody shares grows by that amount, and they take their usual fraction of the enlarged residue — so part of the charge comes back to them and the rest reaches the other partners. The charge costs the payer more than it returns whatever the ratio, and that difference is where the deterrent lies.',
+              'That is why the second line increases the total. A partner who has drawn heavily pays interest, and the residue everybody shares grows by that amount. They then take their usual fraction of the enlarged residue, so part of the charge comes back to them and the rest reaches the other partners. The charge costs the payer more than it returns whatever the ratio, and that difference is where the deterrent lies.',
               'The last line of the account must equal the residual profit above it. Whatever is shared out has to be exactly what was there to share.',
             ],
           },
@@ -3874,7 +3874,7 @@
             h: 'Ratios, losses and missing partners',
             p: [
               'The parts of the ratio are added to get the denominator. Three to two means five parts, so the fractions are three fifths and two fifths; two to one means three parts. A ratio written as a fraction — "one third to Ahmed" — needs no such step, and a ratio written as percentages needs none either.',
-              'A loss goes through the appropriation account unaltered. Interest on capital and salaries are still credited to the partners who are entitled to them, which usually makes the residue a larger loss than the loss the business made, and that larger figure is then shared in the ratio. Nothing about the method changes because the sign has.',
+              'A loss goes through the appropriation account unaltered. Interest on capital and salaries are still credited to the partners who are entitled to them. That usually makes the residue a larger loss than the loss the business made, and that larger figure is then shared in the ratio. Nothing about the method changes because the sign has.',
               'Not every item applies to every partner. An agreement may give a salary to one partner and none to the other, or charge interest on drawings to neither. An item that is absent is simply left out of the column, and a blank is not the same as an error.',
             ],
             examtrap: 'The profit-sharing ratio applies to the residual profit only — after salaries and interest on capital have come out and interest on drawings has gone in. Applying it to profit for the year gives every figure in the task the wrong value.',
@@ -3917,7 +3917,7 @@
               ],
             },
             p: [
-              'Splitting one balance into two is a device for keeping the agreed stake visible. Interest on capital is calculated on the capital account, so if drawings and profit shares ran through the same account the figure interest was charged on would drift every month and the agreement would become unworkable.',
+              'Splitting one balance into two is a device for keeping the agreed stake visible. Interest on capital is calculated on the capital account. If drawings and profit shares ran through the same account, the figure interest was charged on would drift every month and the agreement would become unworkable.',
               'This arrangement is called **fixed capital**, and it is the one AAT assesses. The alternative — one account per partner, everything in it — is called fluctuating capital and is not examined here.',
               'A debit balance on a current account is information, not an error to be chased. It says the partner has taken out more than the year credited to them, so they owe the partnership. It appears in the financed-by section as a deduction, and it does not stop the section totalling to net assets.',
             ],
@@ -3946,9 +3946,9 @@
               },
             },
             p: [
-              'Every entry on the credit side arrives from the appropriation account, and the two are easy to confuse because they carry the same numbers. The appropriation account is part of the profit statement: it divides one year\'s profit and then it is finished. The current account is a ledger account: it takes those divided amounts, sets the partner\'s drawings against them, and carries a running balance into the next year.',
-              'So the same £14,000 salary appears twice — once as a deduction in the appropriation account, dividing the profit, and once as a credit in Bea\'s current account, recording what she is owed. One entry says how the profit was split; the other says what each partner has left.',
-              'Drawings reach the debit side in the three forms a sole trader\'s do: cash, goods at cost, and private bills paid out of partnership money. Goods are credited to purchases here as they are for a sole trader, and the debit goes to that partner\'s own current account, so what each of them has taken stays separately identifiable all year.',
+              'Every entry on the credit side arrives from the appropriation account, and the two are easy to confuse because they carry the same numbers. The appropriation account is part of the profit statement. It divides one year’s profit and then it is finished. The current account is a ledger account. It takes those divided amounts, sets the partner’s drawings against them, and carries a running balance into the next year.',
+              'So the same £14,000 salary appears twice. Once as a deduction in the appropriation account, dividing the profit. Once as a credit in Bea’s current account, recording what she is owed. One entry says how the profit was split; the other says what each partner has left.',
+              'Drawings reach the debit side in the three forms a sole trader’s do: cash, goods at cost, and private bills paid out of partnership money. Goods are credited to purchases here as they are for a sole trader, and the debit goes to that partner’s own current account. So what each of them has taken stays separately identifiable all year.',
             ],
             examtrap: 'Interest on drawings is deducted from the partner in their current account and added to the pot in the appropriation account. Same figure, opposite directions, and both entries are needed.',
           },
@@ -4076,9 +4076,9 @@
           {
             h: 'Reading the statement once it is built',
             p: [
-              'The four balances say different things about the same two people. Comparing the capital accounts shows who put more in at the outset. Comparing the current accounts shows who has been drawing ahead of their earnings since — and a partner whose current account has fallen year on year is taking out more than the business is crediting them, whatever the profit statement says.',
+              'The four balances say different things about the same two people. Comparing the capital accounts shows who put more in at the outset. Comparing the current accounts shows who has been drawing ahead of their earnings since. A partner whose current account has fallen year on year is taking out more than the business is crediting them, whatever the profit statement says.',
               'That is a conversation for the partners rather than a correction for the bookkeeper. A current account can run into debit without anything being wrong in the accounts, and the accounts are not the place to fix it.',
-              'What does belong to the bookkeeper is the agreement between the halves. If the financed-by total does not equal net assets, the appropriation has gone astray, a current account has been mis-added, or a balance has been shown on the wrong side. Working back through the current accounts before re-reading the asset listing is usually faster, because the current accounts are where the year\'s new entries are.',
+              'What does belong to the bookkeeper is the agreement between the halves. If the financed-by total does not equal net assets, the appropriation has gone astray, a current account has been mis-added, or a balance has been shown on the wrong side. Work back through the current accounts before re-reading the asset listing. That is usually faster, because the current accounts are where the year’s new entries are.',
             ],
             examtrap: 'A current account with a debit balance is deducted in the financed-by section. Adding it makes the two halves differ by exactly twice that balance, which is the signature of a figure on the wrong side.',
           },
@@ -4175,9 +4175,9 @@
           {
             h: 'What the software does, and what that changes',
             p: [
-              'In a computerised system the transfer from the ledger to the trial balance is automatic. The software holds every posting, so it can total the two columns on demand, and it will not accept a journal whose debits and credits differ — the entry is refused before it is saved.',
-              'A trial balance produced by software therefore agrees every time. That is not a sign the bookkeeping is right; it is a consequence of the software refusing to record the mistakes that would have made it disagree. The value has moved rather than disappeared, and it has moved to the errors listed two lessons from now, which a computer is no better at spotting than a ledger clerk was.',
-              'The assessment still asks you to build one by hand, from a list of balances or from written descriptions of transactions. Doing it manually keeps the classification visible — which side an account falls on, and why — and that judgement is the same whether a machine or a person carries out the addition.',
+              'In a computerised system the transfer from the ledger to the trial balance is automatic. The software holds every posting, so it can total the two columns on demand. It will not accept a journal whose debits and credits differ: the entry is refused before it is saved.',
+              'A trial balance produced by software therefore agrees every time. That is not a sign the bookkeeping is right. It is a consequence of the software refusing to record the mistakes that would have made it disagree. The value has moved rather than disappeared. It has moved to the errors listed two lessons from now, which a computer is no better at spotting than a ledger clerk was.',
+              'The assessment still asks you to build one by hand, from a list of balances or from written descriptions of transactions. Doing it manually keeps the classification visible: which side an account falls on, and why. That judgement is the same whether a machine or a person carries out the addition.',
             ],
             examtrap: '"The software will catch it" is wrong for every error in lesson 6C. Those errors leave a balanced ledger, and a balanced ledger is precisely what the software is checking for.',
           },
@@ -4192,8 +4192,8 @@
               'The two financial statements',
             ],
             p: [
-              'Six steps, and the trial balance is the middle three of them. The initial one is a check on the bookkeeping; the adjusted one carries the period end work from Outcome 5; the extended one sorts every figure into the statement it belongs to.',
-              'The order matters more than it looks. Adjustments are entered after the errors have been corrected, because an adjustment calculated on a wrong balance is wrong too — an allowance for doubtful receivables worked out as a percentage of a receivables figure that is later corrected has to be worked out again.',
+              'Six steps, and the trial balance is the middle three of them. The initial one is a check on the bookkeeping. The adjusted one carries the period end work from Outcome 5. The extended one sorts every figure into the statement it belongs to.',
+              'The order matters more than it looks. Adjustments are entered after the errors have been corrected, because an adjustment calculated on a wrong balance is wrong too. Take an allowance for doubtful receivables worked out as a percentage of a receivables figure. Correct that figure later and the allowance has to be worked out again.',
               'Each step also narrows what can still go wrong. By the time the extended trial balance is complete, the figures are fixed and the remaining work is presentation: laying the same numbers out in the order a reader expects.',
             ],
           },
@@ -4240,8 +4240,8 @@
               ],
             },
             p: [
-              'Accumulated depreciation is the row that catches people, because the asset it relates to is a debit. It sits on the credit side because it is not an asset at all — it is the part of the asset\'s cost already used up, held separately so that both the original cost and the amount written off stay visible.',
-              'The allowance for doubtful receivables is built on the identical logic: a credit balance sitting against a debit balance, reducing it on the face of the statement without touching the ledger account underneath.',
+              'Accumulated depreciation is the row that catches people, because the asset it relates to is a debit. It sits on the credit side because it is not an asset at all. It is the part of the asset’s cost already used up, held separately so that both the original cost and the amount written off stay visible.',
+              'The allowance for doubtful receivables is built on the identical logic. A credit balance sits against a debit balance, reducing it on the face of the statement without touching the ledger account underneath.',
               'The rest of the table is the accounting equation set out in two columns. Assets and expenses are things the business has or has consumed, and they are debits; capital, liabilities and income are claims on the business, and they are credits.',
             ],
           },
@@ -4258,8 +4258,8 @@
               ],
             },
             p: [
-              'These are the balances a question puts in to see whether you are classifying or pattern-matching. A candidate who has learned "bank is an asset, so debit" puts an overdraft in the wrong column and throws the whole trial balance out by twice its value.',
-              'The way through is to read what the balance says rather than what the account is usually called. A disposals account holding £700 on the debit side is telling you the asset was sold for £700 less than it was worth on the books, and a loss is an expense, so a debit is where it belongs.',
+              'These are the balances a question puts in to see whether you are classifying or pattern-matching. A candidate who has learned "bank is an asset, so debit" puts an overdraft in the wrong column. That throws the whole trial balance out by twice its value.',
+              'The way through is to read what the balance says rather than what the account is usually called. A disposals account holding £700 on the debit side is telling you the asset was sold for £700 less than it was worth on the books. A loss is an expense, so a debit is where it belongs.',
               'The last row is the subject of lesson 6D. It is on this list because a suspense balance appears in a trial balance like any other, and a question that gives you one expects it to be placed correctly.',
             ],
             examtrap: 'A balance put in the wrong column moves the totals apart by twice the amount, not once. Half a difference is often a faster clue to what went wrong than the difference itself.',
@@ -4367,7 +4367,7 @@
             p: [
               'Every journal in that list has equal debits and credits, which is the point: the ledger balanced before the correction and balances after it. None of these corrections touches a suspense account, because there was never a difference for a suspense account to hold.',
               'The reversal repays slowing down for. The payment should have been Dr Payables £480 and Cr Bank £480; it went in as the exact opposite. Payables is therefore £480 too high **and** short of the £480 debit it should have received, so it is out by £960 — and the same on the bank. Correcting a reversal always takes twice the original figure, and using the original figure once leaves the accounts wrong by the same amount in the opposite direction.',
-              'The original entry error takes only the difference. £742 − £472 = £270 was missing from both sides, so adding £270 to each is enough; reversing the whole entry and reposting it gets to the same place with more writing.',
+              'The original entry error takes only the difference. £742 − £472 = £270 was missing from both sides, so adding £270 to each is enough. Reversing the whole entry and reposting it gets to the same place with more writing.',
             ],
             examtrap: 'Reversal corrections are doubled. Original entry corrections are not — there you post the difference. Applying the wrong rule to either leaves the ledger balanced and wrong, so nothing downstream will flag it.',
           },
@@ -4398,7 +4398,7 @@
             },
             p: [
               'Read as a pair, the two columns say what the check is for. It tests whether each transaction was recorded twice for the same amount on opposite sides. Anything that satisfies that test passes, however wrong it is.',
-              'So the left-hand column is the set of errors that produce a difference, and a suspense account is opened to hold exactly that difference. That is the next lesson. The right-hand column produces no difference at all, and those errors are found by reconciliations, by the control accounts from Outcome 2, and by somebody noticing that a figure looks wrong.',
+              'So the left-hand column is the set of errors that produce a difference, and a suspense account is opened to hold exactly that difference. That is the next lesson. The right-hand column produces no difference at all. Those errors are found by reconciliations, by the control accounts from Outcome 2, and by somebody noticing that a figure looks wrong.',
             ],
           },
         ],
@@ -4434,9 +4434,9 @@
           {
             h: 'A holding account for a difference nobody has explained yet',
             p: [
-              'When the two columns do not agree, the difference is entered as a **suspense account** balance on whichever side is short. The trial balance then agrees, and the work of finding out why can start without the rest of the year end being held up.',
+              'When the two columns do not agree, the difference is entered as a **suspense account** balance on whichever side is short. The trial balance then agrees. The work of finding out why can start without the rest of the year end being held up.',
               'Which side follows from the arithmetic alone. If the credits come to more than the debits, the debit column needs the difference, so the suspense balance is a debit. If the debits come to more, it is a credit. Reading it as though suspense were an asset or a liability puts it on the wrong side half the time.',
-              'It is a temporary account and has to be gone by the time the financial statements are prepared. A suspense balance still sitting in the ledger at the year end means an error is still in there, unexplained, somewhere among figures that are about to be published.',
+              'It is a temporary account, and has to be gone by the time the financial statements are prepared. A suspense balance still sitting in the ledger at the year end means an error is still in there. Unexplained, somewhere among figures that are about to be published.',
             ],
             formula: 'Suspense balance = the difference, on the side that is short',
             callout: { kind: 'warn', text: 'A suspense account never appears in a statement of profit or loss or a statement of financial position. If one is left, the difference has been hidden rather than found.' },
@@ -4492,7 +4492,7 @@
               ],
             },
             p: [
-              'The test is simply whether the ledger was out of balance. A correcting journal with one leg in suspense is putting back an amount that suspense was holding; a journal with both legs in real accounts is moving a figure that was never missing.',
+              'The test is simply whether the ledger was out of balance. A correcting journal with one leg in suspense is putting back an amount that suspense was holding. A journal with both legs in real accounts is moving a figure that was never missing.',
               'Corrections change profit as well as clearing suspense, and the assessment often asks for the revised figure. Two of the three errors above touch the profit statement. Moving £520 of discounts received from the debit side to the credit side adds £1,040 of income, and bringing in the omitted insurance adds £1,810 of expense. So profit falls by £1,810 − £1,040 = £770, while the receivables correction changes nothing at all because both accounts it touches sit on the statement of financial position.',
             ],
             examtrap: 'Work out the effect on profit account by account rather than from the suspense entries. A correction can clear a large suspense balance and change profit by nothing, or clear none of it and change profit by a great deal.',
@@ -4530,9 +4530,9 @@
           {
             h: 'Two more columns, under the same rule',
             p: [
-              'Once the errors are out, the period end work from Outcome 5 goes in. Rather than rewriting the ledger balances, the adjusted trial balance sets two further columns beside them — adjustments debit and adjustments credit — and each adjustment is entered as the double entry it is.',
+              'Once the errors are out, the period end work from Outcome 5 goes in. Rather than rewriting the ledger balances, the adjusted trial balance sets two further columns beside them: adjustments debit and adjustments credit. Each adjustment is entered as the double entry it is.',
               'So the adjustments columns have to total the same as each other, for the same reason the ledger columns do. Every adjustment has two halves, and if the halves have all been entered the two totals match. A difference between them means an adjustment went in once, or twice on the same side.',
-              'Keeping the original balances visible is the point of the layout. A reader can see what the ledger held, what was added at the year end, and what the two come to, all on one line, so an error in the adjustment stays traceable instead of being absorbed into a figure nobody can take apart.',
+              'Keeping the original balances visible is the point of the layout. A reader can see what the ledger held, what was added at the year end, and what the two come to, all on one line. An error in the adjustment then stays traceable, instead of being absorbed into a figure nobody can take apart.',
             ],
             callout: { kind: 'key', text: 'Two totals to prove, not one. The ledger columns agree with each other and the adjustments columns agree with each other, and neither says anything about the other.' },
           },
@@ -4554,9 +4554,9 @@
               ],
             },
             p: [
-              'Nothing in that table is new. Every line is a journal from Outcome 3, 4 or 5, written into two columns instead of into a ledger account — which is why an assessment can hand you the adjustments as a list of sentences and expect them placed without further explanation.',
-              'Closing inventory is the row that looks wrong and is not. It carries a debit and a credit of the same amount, to two different accounts that share a name: the asset that will appear on the statement of financial position, and the deduction that reduces cost of sales. Outcome 5 sets out why one figure does both jobs.',
-              'A reduction in the allowance runs the other way from the row above — debit the allowance, credit the adjustment account — and only the movement is entered either way, never the whole allowance.',
+              'Nothing in that table is new. Every line is a journal from Outcome 3, 4 or 5, written into two columns instead of into a ledger account. That is why an assessment can hand you the adjustments as a list of sentences and expect them placed without further explanation.',
+              'Closing inventory is the row that looks wrong and is not. It carries a debit and a credit of the same amount, to two different accounts that share a name. One is the asset that will appear on the statement of financial position; the other is the deduction that reduces cost of sales. Outcome 5 sets out why one figure does both jobs.',
+              'A reduction in the allowance runs the other way from the row above: debit the allowance, credit the adjustment account. Either way only the movement is entered, never the whole allowance.',
             ],
           },
           {
@@ -4600,7 +4600,7 @@
             h: 'What the software does with all of this',
             p: [
               'A computerised system does not use adjustment columns. Each adjustment is posted as an ordinary journal, the affected balances change the moment it is saved, and asking for the trial balance again returns the recalculated figures. There is no intermediate document because there is nothing to hold in suspense between one step and the next.',
-              'What that removes is the audit trail across the page. On paper the ledger balance and the adjustment sit side by side, so a reviewer can see both; on screen the balance has simply changed, and reconstructing what it was means reading the journal history. Software makes the recalculation instant and makes the working invisible.',
+              'What that removes is the audit trail across the page. On paper the ledger balance and the adjustment sit side by side, so a reviewer can see both. On screen the balance has simply changed, and reconstructing what it was means reading the journal history. Software makes the recalculation instant and makes the working invisible.',
               'The assessment tests the paper version, and knowing it earns more than the marks. It lets you say where a figure in a computerised system came from, which is the question anybody reviewing the accounts will actually ask.',
             ],
             examtrap: 'A task may give an adjustment already reflected in the ledger balances. Entering it again in the adjustments columns charges it twice, and the columns still agree — so nothing about the layout will warn you.',
@@ -4638,8 +4638,8 @@
           {
             h: 'Why the trial balance is extended at all',
             p: [
-              'A trial balance with adjustments in it holds every figure the financial statements need, and holds them in one undifferentiated list. Extending it adds four more columns — profit or loss debit and credit, financial position debit and credit — and puts each line into the pair it belongs to.',
-              'Once that is done, preparing the two statements is transcription. Every figure in the profit columns goes into the statement of profit or loss and every figure in the position columns into the statement of financial position, in the order Outcome 7 sets out. No arithmetic is left to do and nothing has to be classified twice.',
+              'A trial balance with adjustments in it holds every figure the financial statements need, and holds them in one undifferentiated list. Extending it adds four more columns: profit or loss debit and credit, financial position debit and credit. Each line then goes into the pair it belongs to.',
+              'Once that is done, preparing the two statements is transcription. Every figure in the profit columns goes into the statement of profit or loss. Every figure in the position columns goes into the statement of financial position, in the order Outcome 7 sets out. No arithmetic is left to do and nothing has to be classified twice.',
               'It also localises mistakes. A figure sent to the wrong pair of columns shows up as two column totals that will not reconcile, at a point where one line can still be traced. Discovering the same fault while drafting the statements means going back through everything to find which line moved.',
             ],
             callout: { kind: 'key', text: 'Extend the combined figure, not the ledger balance. Ledger balance and adjustment are netted first, and the single result crosses the page.' },
@@ -4663,14 +4663,14 @@
             },
             p: [
               'Income and expense accounts go to the profit columns; assets, liabilities, capital and drawings go to the position columns. That is the whole classification, and it is the one from lesson 2B rather than anything new.',
-              'The side is carried over unchanged. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column, and insurance of £3,600 − £900 = £2,700 goes to the same column having been reduced rather than moved.',
-              'Two lines repay a second reading. Accumulated depreciation is a credit that grows: £12,000 + £3,000 = £15,000 to the position credit column, while the charge that created it sits in the profit debit column as a separate line. And receivables of £26,000 − £1,000 = £25,000 shows an adjustment credit reducing a debit balance, which is the shape most write-offs and prepayment reversals take.',
+              'The side is carried over unchanged. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column. Insurance of £3,600 − £900 = £2,700 goes to the same column, having been reduced rather than moved.',
+              'Two lines repay a second reading. Accumulated depreciation is a credit that grows: £12,000 + £3,000 = £15,000 to the position credit column. The charge that created it sits in the profit debit column as a separate line. And receivables of £26,000 − £1,000 = £25,000 shows an adjustment credit reducing a debit balance, which is the shape most write-offs and prepayment reversals take.',
             ],
           },
           {
             h: 'Closing inventory, the line that goes to both',
             p: [
-              'Closing inventory has no ledger balance at all — it comes into existence as an adjustment — and it is extended to two different places. The debit goes to the position columns, because unsold goods are an asset the business owns on the last day of the year. The credit goes to the profit columns, where it reduces cost of sales, because goods still on the shelf were not sold and their cost belongs to next year.',
+              'Closing inventory has no ledger balance at all. It comes into existence as an adjustment, and it is extended to two different places. The debit goes to the position columns, because unsold goods are an asset the business owns on the last day of the year. The credit goes to the profit columns, where it reduces cost of sales. Goods still on the shelf were not sold, and their cost belongs to next year.',
               'Both halves carry the same figure, and neither is a duplicate of the other. They are the two consequences of one fact, recorded in the two statements that report it.',
               'Extending only one of them is a common enough slip to name. Miss the credit and the profit is understated by the whole closing inventory; miss the debit and the position statement loses an asset. Either way the column totals stop agreeing, which at least means the error announces itself.',
             ],
@@ -4709,8 +4709,8 @@
           {
             h: 'The profit is whatever is missing',
             p: [
-              'When every line has been extended, all four columns are totalled and none of the four pairs agrees. The profit columns are apart because income exceeded expenses; the position columns are apart by exactly the same amount, because a business that earned more than it spent holds assets it does not owe to anybody but its owner.',
-              'That difference is the profit for the year, and it is entered twice to close both pairs. It goes into the profit **debit** column, where it balances the excess of income over expenses, and into the position **credit** column, where it increases what the business owes its owner.',
+              'When every line has been extended, all four columns are totalled and none of the four pairs agrees. The profit columns are apart because income exceeded expenses. The position columns are apart by exactly the same amount, because a business that earned more than it spent holds assets it does not owe to anybody but its owner.',
+              'That difference is the profit for the year, and it is entered twice to close both pairs. It goes into the profit **debit** column, where it balances the excess of income over expenses. And into the position **credit** column, where it increases what the business owes its owner.',
               'A loss reverses both. Expenses exceed income, so the balancing figure goes into the profit credit column, and it reduces capital, so its other half goes into the position debit column. Nothing about the method changes — the figure lands on the other side of each pair.',
             ],
             formula: 'Profit = profit-column credits − profit-column debits = position-column debits − position-column credits',
@@ -4755,9 +4755,9 @@
           {
             h: 'Proving it against the capital account',
             p: [
-              'The profit figure can be checked against the owner\'s capital before anything is drafted, and doing it while the working is still in front of you costs a minute. In the example above the ledger held capital of £156,000 and drawings of £27,000, so closing capital is £156,000 + £47,600 − £27,000 = £176,600.',
+              'The profit figure can be checked against the owner’s capital before anything is drafted. Doing it while the working is still in front of you costs a minute. In the example above the ledger held capital of £156,000 and drawings of £27,000, so closing capital is £156,000 + £47,600 − £27,000 = £176,600.',
               'Net assets should come to the same. Take the drawings out of the position debit column, because drawings are not an asset: £255,300 − £27,000 = £228,300. Take the capital out of the position credit column, because capital is not a liability: £207,700 − £156,000 = £51,700. Net assets are then £228,300 − £51,700 = £176,600, matching the capital account.',
-              'Two routes, one figure, and the second route uses none of the arithmetic of the first. When they disagree, the profit is wrong or a line was extended to the wrong pair, and both are far cheaper to find here than in a finished statement.',
+              'Two routes, one figure, and the second route uses none of the arithmetic of the first. When they disagree, the profit is wrong or a line was extended to the wrong pair. Both are far cheaper to find here than in a finished statement.',
             ],
             examtrap: 'A loss is entered in the profit credit column and the position debit column. Reaching for the profit positions out of habit puts both pairs further out, by twice the loss.',
           },
@@ -4801,16 +4801,16 @@
             },
             p: [
               'Everything above the profit figure is the same document. A partnership trades, adjusts and extends exactly as a sole trader does, because the trading is the same activity and the adjustments are the same adjustments.',
-              'The bottom half is where two owners show. Instead of one capital balance the position columns carry four balances for two partners — a capital account and a current account each — and each of those is extended like any other credit balance.',
+              'The bottom half is where two owners show. Instead of one capital balance, the position columns carry four balances for two partners: a capital account and a current account each. Each of those is extended like any other credit balance.',
               'The last row is the one that changes the method rather than the layout, and the next card is about it.',
             ],
           },
           {
             h: 'Why the profit cannot simply be extended',
             p: [
-              'A sole trader\'s profit belongs to one person, so it can go straight into the position credit column and be done with. A partnership\'s profit belongs to two or more people in proportions their agreement sets, and the extended trial balance has no column that can express that.',
-              'So the figure leaves the profit columns and goes to the **appropriation account** — interest on capital and any salaries out, interest on drawings in, the residue split in the profit-sharing ratio — and it is each partner\'s share, not the profit, that reaches their current account and the position columns.',
-              'A profit of £60,000 in a partnership where one partner has a salary of £10,000 and the residue is split equally leaves £60,000 − £10,000 = £50,000 to share, so £50,000 ÷ 2 = £25,000 each. One partner\'s current account is credited with £25,000 and the other\'s with £10,000 + £25,000 = £35,000, and £25,000 + £35,000 = £60,000 arrives in the position columns as two figures rather than one. Outcome 7 works the appropriation account through in full.',
+              'A sole trader’s profit belongs to one person, so it can go straight into the position credit column. A partnership’s profit belongs to two or more people, in proportions their agreement sets. The extended trial balance has no column that can express that.',
+              'So the figure leaves the profit columns and goes to the **appropriation account**. Interest on capital and any salaries out, interest on drawings in, the residue split in the profit-sharing ratio. It is then each partner’s share, not the profit, that reaches their current account and the position columns.',
+              'Take a profit of £60,000 in a partnership where one partner has a salary of £10,000 and the residue is split equally. That leaves £60,000 − £10,000 = £50,000 to share, so £50,000 ÷ 2 = £25,000 each. One partner’s current account is credited with £25,000, and the other’s with £10,000 + £25,000 = £35,000. So £25,000 + £35,000 = £60,000 arrives in the position columns as two figures rather than one. Outcome 7 works the appropriation account through in full.',
             ],
             callout: { kind: 'key', text: 'The difference is not the layout but the step in the middle: a partnership divides the profit before any of it reaches the position columns.' },
           },
@@ -4938,7 +4938,7 @@
             p: [
               'A business made £40,000 profit last year. Is that good?',
               'The honest answer is that you cannot tell. £40,000 on sales of £80,000 is remarkable. The same £40,000 on sales of £4 million is close to breaking even. The same £40,000 earned on capital of £2 million would be better left in a savings account.',
-              'A **ratio** fixes that by putting the figure next to the thing that produced it. Every profitability ratio in this outcome is one number divided by another and multiplied by a hundred, and the whole skill is knowing which second number makes the first one mean something.',
+              'A **ratio** fixes that by putting the figure next to the thing that produced it. Every profitability ratio in this outcome is one number divided by another and multiplied by a hundred. The whole skill is knowing which second number makes the first one mean something.',
             ],
             callout: { kind: 'key', text: 'A ratio is a profit figure divided by whatever generated it. On its own a profit is a number; against sales or capital it becomes a rate you can compare.' },
           },
@@ -4961,7 +4961,7 @@
               'Ratios exist to support three things: **planning**, **decision making** and **control**.',
               'Planning is forward looking. A business that knows its gross profit margin has held at 40% for three years can price next year\'s work and forecast what a 10% rise in volume would produce.',
               'Decision making is a choice between options. A lender comparing two applicants reads their ROCE. An owner deciding whether to drop a product line reads what that line does to the margin.',
-              'Control is the quiet one and the most useful. A margin that falls from 40% to 34% with no change in prices is a signal that something has gone wrong — theft, waste, a supplier increase absorbed rather than passed on, or goods sold at a discount nobody authorised. The ratio does not say which. It says look.',
+              'Control is the quiet one and the most useful. A margin that falls from 40% to 34% with no change in prices is a signal that something has gone wrong. Theft, waste, a supplier increase absorbed rather than passed on, or goods sold at a discount nobody authorised. The ratio does not say which. It says look.',
             ],
             callout: { kind: 'note', text: 'A ratio never explains anything. It narrows where to look, and the explanation always comes from asking about the business.' },
           },
@@ -5015,7 +5015,7 @@
             h: 'Margin and mark-up are the same profit over different bases',
             p: [
               'Gross profit can be expressed against either of the two figures that make it. Against **sales** it is the margin. Against **cost of sales** it is the mark-up. The pound figure of gross profit does not change; only what it is compared with does.',
-              'Because sales are always larger than cost of sales, the mark-up percentage is always the larger of the two. If a question gives you one and asks for the other, that is the check: a mark-up smaller than its margin has been worked out upside down.',
+              'Because sales are always larger than cost of sales, the mark-up percentage is always the larger of the two. If a question gives you one and asks for the other, that is the check. A mark-up smaller than its margin has been worked out upside down.',
             ],
             formula: 'Margin = gross profit ÷ sales × 100 · Mark-up = gross profit ÷ cost of sales × 100',
             table: {
@@ -5102,7 +5102,7 @@
           {
             h: 'What moves a ratio',
             p: [
-              'When a ratio changes, the cause is almost always one of a short list, and a question will usually expect you to name a plausible one rather than prove it.',
+              'When a ratio changes, the cause is almost always one of a short list. A question will usually expect you to name a plausible one rather than prove it.',
             ],
             split: {
               left: { title: 'A gross profit margin falls when', items: ['Selling prices are cut or discounted', 'Suppliers raise their prices and it is absorbed', 'Wastage, damage or theft rises', 'The mix shifts toward lower-margin goods', 'Closing inventory is understated'] },
@@ -5114,8 +5114,8 @@
             h: 'Professional scepticism',
             p: [
               'Scepticism is not suspicion. It is the habit of not accepting a figure just because it is presented tidily, and it belongs in interpretation as much as in preparation.',
-              'A ratio is only as good as the statements underneath it. If closing inventory is overstated, cost of sales falls, gross profit rises and the margin improves — and nothing about the ratio itself looks wrong. If the two businesses being compared value inventory differently, or one owns its premises while the other rents, the comparison is not like for like however carefully the arithmetic was done.',
-              'So the questions to hold are: where did these figures come from, is anything in them a one-off, are the two sides comparable, and does the answer agree with what else I know about this business?',
+              'A ratio is only as good as the statements underneath it. If closing inventory is overstated, cost of sales falls, gross profit rises and the margin improves — and nothing about the ratio itself looks wrong. Suppose the two businesses being compared value inventory differently, or one owns its premises while the other rents. The comparison is not like for like, however carefully the arithmetic was done.',
+              'So the questions to hold are these. Where did these figures come from? Is anything in them a one-off? Are the two sides comparable? And does the answer agree with what else I know about this business?',
             ],
             callout: { kind: 'warn', text: 'Software produces ratios instantly and will produce them from wrong figures just as fast. A percentage carried to two decimal places is not evidence that the inputs were right.' },
           },
@@ -5194,14 +5194,14 @@
             h: 'Why a business arrives with half its books',
             p: [
               'Small businesses do not always keep double entry. A sole trader may have a bank statement, a folder of invoices, a till roll and no ledgers at all. Something is always missing — a stolen cash book, a year of takings never written down, a purchases figure nobody totalled.',
-              'The accounts still have to be prepared. This outcome is the set of techniques for getting a complete set of statements out of an incomplete set of records, and every one of them works the same way: build the account you would have kept, put in everything you do know, and the gap is the answer.',
+              'The accounts still have to be prepared. This outcome is the set of techniques for getting a complete set of statements out of an incomplete set of records. Every one of them works the same way. Build the account you would have kept, put in everything you do know, and the gap is the answer.',
             ],
             callout: { kind: 'key', text: 'The method never changes. Draw the account, enter what is known on both sides, and the missing figure is whatever makes it balance.' },
           },
           {
             h: 'Profit without a profit and loss account',
             p: [
-              'If no records of income and expenses survive at all, profit can still be found — from the two things a trader always knows, what the business owned and owed at each end of the year.',
+              'If no records of income and expenses survive at all, profit can still be found. It comes from the two things a trader always knows: what the business owned and owed at each end of the year.',
               'Capital rises with profit and with money the owner puts in. It falls with drawings. So the change in capital across the year, adjusted for the owner\'s own movements, IS the profit.',
             ],
             formula: 'Profit = closing capital − opening capital + drawings − capital introduced',
@@ -5358,7 +5358,7 @@
           {
             h: 'Cost of sales is the bridge',
             p: [
-              'The other half of this outcome is the cost of sales calculation, which links inventory and purchases to the trading account and can be rearranged for whichever term is missing.',
+              'The other half of this outcome is the cost of sales calculation. It links inventory and purchases to the trading account, and can be rearranged for whichever term is missing.',
             ],
             formula: 'Cost of sales = opening inventory + purchases − closing inventory',
             table: {
@@ -5459,9 +5459,9 @@
           {
             h: 'Software and scepticism',
             p: [
-              'Most small businesses now keep records in software rather than on paper, which changes what goes missing. Ledgers are rarely lost; instead a bank feed misses a fortnight, a transaction is posted to the wrong account, or an opening balance was never entered when the system was set up.',
+              'Most small businesses now keep records in software rather than on paper, which changes what goes missing. Ledgers are rarely lost. Instead a bank feed misses a fortnight, a transaction is posted to the wrong account, or an opening balance was never entered when the system was set up.',
               'Software output looks authoritative and is only as good as what was entered. A report that reconciles is evidence the software added correctly, not that the underlying entries were right.',
-              '**Professional scepticism** is the habit of checking rather than assuming, and it applies in both directions: do not accept a figure because it is neat, and do not assume dishonesty because a figure is odd. Ask the client, corroborate against something independent, and record what you were told.',
+              '**Professional scepticism** is the habit of checking rather than assuming, and it applies in both directions. Do not accept a figure because it is neat, and do not assume dishonesty because a figure is odd. Ask the client, corroborate against something independent, and record what you were told.',
             ],
             callout: { kind: 'warn', text: 'Scepticism is not distrust. It is declining to treat a presentation as evidence — including a presentation your own working produced.' },
           },
