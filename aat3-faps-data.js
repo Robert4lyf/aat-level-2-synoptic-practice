@@ -474,7 +474,7 @@
             p: [
               'The uncomfortable cases are not the ones where somebody asks for fraud. They are the ones where a manager, who is not lying, wants a judgement taken at the end of the range that suits them. The reason they give sounds fine.',
               'The three pressures the specification names are time, the wish for a favourable result, and authority. They usually arrive together: at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
-              'The defence is to keep the question technical. Not "is my manager entitled to ask me this", which is a question about the hierarchy, but "what does the evidence support" — a question with an answer that does not change according to who is asking. If the evidence supports a four-year life, it supports a four-year life whoever would prefer six.',
+              'The defence is to keep the question technical. Not "is my manager entitled to ask me this", which is a question about the hierarchy. But "what does the evidence support" — a question whose answer does not change according to who is asking. If the evidence supports a four-year life, it supports a four-year life whoever would prefer six.',
             ],
           },
         ],
@@ -3131,7 +3131,7 @@
             },
             p: [
               'They usually arrive together: at the year end, from somebody senior, with a deadline. That combination is what makes a small concession feel reasonable.',
-              'The defence is to keep the question technical. Not "is this person entitled to ask me", which is a question about the hierarchy and has no good answer, but "what does the evidence support", which has the same answer whoever is asking. If the evidence supports an allowance of £5,600, it supports £5,600 whether the request came from a colleague or a director.',
+              'The defence is to keep the question technical. Not "is this person entitled to ask me", which is a question about the hierarchy and has no good answer. But "what does the evidence support", which has the same answer whoever is asking. If the evidence supports an allowance of £5,600, it supports £5,600 whether the request came from a colleague or a director.',
               'Where the answer is not accepted, the next steps are ordinary rather than dramatic. Put the position and the reasoning in writing, escalate within the organisation, and take advice from your professional body. Resignation is the last resort, not the first.',
             ],
           },
@@ -4177,7 +4177,7 @@
             p: [
               'In a computerised system the transfer from the ledger to the trial balance is automatic. The software holds every posting, so it can total the two columns on demand. It will not accept a journal whose debits and credits differ: the entry is refused before it is saved.',
               'A trial balance produced by software therefore agrees every time. That is not a sign the bookkeeping is right. It is a consequence of the software refusing to record the mistakes that would have made it disagree. The value has moved rather than disappeared. It has moved to the errors listed two lessons from now, which a computer is no better at spotting than a ledger clerk was.',
-              'The assessment still asks you to build one by hand, from a list of balances or from written descriptions of transactions. Doing it manually keeps the classification visible — which side an account falls on, and why — and that judgement is the same whether a machine or a person carries out the addition.',
+              'The assessment still asks you to build one by hand, from a list of balances or from written descriptions of transactions. Doing it manually keeps the classification visible: which side an account falls on, and why. That judgement is the same whether a machine or a person carries out the addition.',
             ],
             examtrap: '"The software will catch it" is wrong for every error in lesson 6C. Those errors leave a balanced ledger, and a balanced ledger is precisely what the software is checking for.',
           },
@@ -4192,8 +4192,8 @@
               'The two financial statements',
             ],
             p: [
-              'Six steps, and the trial balance is the middle three of them. The initial one is a check on the bookkeeping; the adjusted one carries the period end work from Outcome 5; the extended one sorts every figure into the statement it belongs to.',
-              'The order matters more than it looks. Adjustments are entered after the errors have been corrected, because an adjustment calculated on a wrong balance is wrong too — an allowance for doubtful receivables worked out as a percentage of a receivables figure that is later corrected has to be worked out again.',
+              'Six steps, and the trial balance is the middle three of them. The initial one is a check on the bookkeeping. The adjusted one carries the period end work from Outcome 5. The extended one sorts every figure into the statement it belongs to.',
+              'The order matters more than it looks. Adjustments are entered after the errors have been corrected, because an adjustment calculated on a wrong balance is wrong too. Take an allowance for doubtful receivables worked out as a percentage of a receivables figure. Correct that figure later and the allowance has to be worked out again.',
               'Each step also narrows what can still go wrong. By the time the extended trial balance is complete, the figures are fixed and the remaining work is presentation: laying the same numbers out in the order a reader expects.',
             ],
           },
@@ -4240,8 +4240,8 @@
               ],
             },
             p: [
-              'Accumulated depreciation is the row that catches people, because the asset it relates to is a debit. It sits on the credit side because it is not an asset at all — it is the part of the asset\'s cost already used up, held separately so that both the original cost and the amount written off stay visible.',
-              'The allowance for doubtful receivables is built on the identical logic: a credit balance sitting against a debit balance, reducing it on the face of the statement without touching the ledger account underneath.',
+              'Accumulated depreciation is the row that catches people, because the asset it relates to is a debit. It sits on the credit side because it is not an asset at all. It is the part of the asset’s cost already used up, held separately so that both the original cost and the amount written off stay visible.',
+              'The allowance for doubtful receivables is built on the identical logic. A credit balance sits against a debit balance, reducing it on the face of the statement without touching the ledger account underneath.',
               'The rest of the table is the accounting equation set out in two columns. Assets and expenses are things the business has or has consumed, and they are debits; capital, liabilities and income are claims on the business, and they are credits.',
             ],
           },
@@ -4258,8 +4258,8 @@
               ],
             },
             p: [
-              'These are the balances a question puts in to see whether you are classifying or pattern-matching. A candidate who has learned "bank is an asset, so debit" puts an overdraft in the wrong column and throws the whole trial balance out by twice its value.',
-              'The way through is to read what the balance says rather than what the account is usually called. A disposals account holding £700 on the debit side is telling you the asset was sold for £700 less than it was worth on the books, and a loss is an expense, so a debit is where it belongs.',
+              'These are the balances a question puts in to see whether you are classifying or pattern-matching. A candidate who has learned "bank is an asset, so debit" puts an overdraft in the wrong column. That throws the whole trial balance out by twice its value.',
+              'The way through is to read what the balance says rather than what the account is usually called. A disposals account holding £700 on the debit side is telling you the asset was sold for £700 less than it was worth on the books. A loss is an expense, so a debit is where it belongs.',
               'The last row is the subject of lesson 6D. It is on this list because a suspense balance appears in a trial balance like any other, and a question that gives you one expects it to be placed correctly.',
             ],
             examtrap: 'A balance put in the wrong column moves the totals apart by twice the amount, not once. Half a difference is often a faster clue to what went wrong than the difference itself.',
@@ -4367,7 +4367,7 @@
             p: [
               'Every journal in that list has equal debits and credits, which is the point: the ledger balanced before the correction and balances after it. None of these corrections touches a suspense account, because there was never a difference for a suspense account to hold.',
               'The reversal repays slowing down for. The payment should have been Dr Payables £480 and Cr Bank £480; it went in as the exact opposite. Payables is therefore £480 too high **and** short of the £480 debit it should have received, so it is out by £960 — and the same on the bank. Correcting a reversal always takes twice the original figure, and using the original figure once leaves the accounts wrong by the same amount in the opposite direction.',
-              'The original entry error takes only the difference. £742 − £472 = £270 was missing from both sides, so adding £270 to each is enough; reversing the whole entry and reposting it gets to the same place with more writing.',
+              'The original entry error takes only the difference. £742 − £472 = £270 was missing from both sides, so adding £270 to each is enough. Reversing the whole entry and reposting it gets to the same place with more writing.',
             ],
             examtrap: 'Reversal corrections are doubled. Original entry corrections are not — there you post the difference. Applying the wrong rule to either leaves the ledger balanced and wrong, so nothing downstream will flag it.',
           },
@@ -4398,7 +4398,7 @@
             },
             p: [
               'Read as a pair, the two columns say what the check is for. It tests whether each transaction was recorded twice for the same amount on opposite sides. Anything that satisfies that test passes, however wrong it is.',
-              'So the left-hand column is the set of errors that produce a difference, and a suspense account is opened to hold exactly that difference. That is the next lesson. The right-hand column produces no difference at all, and those errors are found by reconciliations, by the control accounts from Outcome 2, and by somebody noticing that a figure looks wrong.',
+              'So the left-hand column is the set of errors that produce a difference, and a suspense account is opened to hold exactly that difference. That is the next lesson. The right-hand column produces no difference at all. Those errors are found by reconciliations, by the control accounts from Outcome 2, and by somebody noticing that a figure looks wrong.',
             ],
           },
         ],
@@ -4434,9 +4434,9 @@
           {
             h: 'A holding account for a difference nobody has explained yet',
             p: [
-              'When the two columns do not agree, the difference is entered as a **suspense account** balance on whichever side is short. The trial balance then agrees, and the work of finding out why can start without the rest of the year end being held up.',
+              'When the two columns do not agree, the difference is entered as a **suspense account** balance on whichever side is short. The trial balance then agrees. The work of finding out why can start without the rest of the year end being held up.',
               'Which side follows from the arithmetic alone. If the credits come to more than the debits, the debit column needs the difference, so the suspense balance is a debit. If the debits come to more, it is a credit. Reading it as though suspense were an asset or a liability puts it on the wrong side half the time.',
-              'It is a temporary account and has to be gone by the time the financial statements are prepared. A suspense balance still sitting in the ledger at the year end means an error is still in there, unexplained, somewhere among figures that are about to be published.',
+              'It is a temporary account, and has to be gone by the time the financial statements are prepared. A suspense balance still sitting in the ledger at the year end means an error is still in there. Unexplained, somewhere among figures that are about to be published.',
             ],
             formula: 'Suspense balance = the difference, on the side that is short',
             callout: { kind: 'warn', text: 'A suspense account never appears in a statement of profit or loss or a statement of financial position. If one is left, the difference has been hidden rather than found.' },
@@ -4492,7 +4492,7 @@
               ],
             },
             p: [
-              'The test is simply whether the ledger was out of balance. A correcting journal with one leg in suspense is putting back an amount that suspense was holding; a journal with both legs in real accounts is moving a figure that was never missing.',
+              'The test is simply whether the ledger was out of balance. A correcting journal with one leg in suspense is putting back an amount that suspense was holding. A journal with both legs in real accounts is moving a figure that was never missing.',
               'Corrections change profit as well as clearing suspense, and the assessment often asks for the revised figure. Two of the three errors above touch the profit statement. Moving £520 of discounts received from the debit side to the credit side adds £1,040 of income, and bringing in the omitted insurance adds £1,810 of expense. So profit falls by £1,810 − £1,040 = £770, while the receivables correction changes nothing at all because both accounts it touches sit on the statement of financial position.',
             ],
             examtrap: 'Work out the effect on profit account by account rather than from the suspense entries. A correction can clear a large suspense balance and change profit by nothing, or clear none of it and change profit by a great deal.',
@@ -4530,9 +4530,9 @@
           {
             h: 'Two more columns, under the same rule',
             p: [
-              'Once the errors are out, the period end work from Outcome 5 goes in. Rather than rewriting the ledger balances, the adjusted trial balance sets two further columns beside them — adjustments debit and adjustments credit — and each adjustment is entered as the double entry it is.',
+              'Once the errors are out, the period end work from Outcome 5 goes in. Rather than rewriting the ledger balances, the adjusted trial balance sets two further columns beside them: adjustments debit and adjustments credit. Each adjustment is entered as the double entry it is.',
               'So the adjustments columns have to total the same as each other, for the same reason the ledger columns do. Every adjustment has two halves, and if the halves have all been entered the two totals match. A difference between them means an adjustment went in once, or twice on the same side.',
-              'Keeping the original balances visible is the point of the layout. A reader can see what the ledger held, what was added at the year end, and what the two come to, all on one line, so an error in the adjustment stays traceable instead of being absorbed into a figure nobody can take apart.',
+              'Keeping the original balances visible is the point of the layout. A reader can see what the ledger held, what was added at the year end, and what the two come to, all on one line. An error in the adjustment then stays traceable, instead of being absorbed into a figure nobody can take apart.',
             ],
             callout: { kind: 'key', text: 'Two totals to prove, not one. The ledger columns agree with each other and the adjustments columns agree with each other, and neither says anything about the other.' },
           },
@@ -4554,9 +4554,9 @@
               ],
             },
             p: [
-              'Nothing in that table is new. Every line is a journal from Outcome 3, 4 or 5, written into two columns instead of into a ledger account — which is why an assessment can hand you the adjustments as a list of sentences and expect them placed without further explanation.',
-              'Closing inventory is the row that looks wrong and is not. It carries a debit and a credit of the same amount, to two different accounts that share a name: the asset that will appear on the statement of financial position, and the deduction that reduces cost of sales. Outcome 5 sets out why one figure does both jobs.',
-              'A reduction in the allowance runs the other way from the row above — debit the allowance, credit the adjustment account — and only the movement is entered either way, never the whole allowance.',
+              'Nothing in that table is new. Every line is a journal from Outcome 3, 4 or 5, written into two columns instead of into a ledger account. That is why an assessment can hand you the adjustments as a list of sentences and expect them placed without further explanation.',
+              'Closing inventory is the row that looks wrong and is not. It carries a debit and a credit of the same amount, to two different accounts that share a name. One is the asset that will appear on the statement of financial position; the other is the deduction that reduces cost of sales. Outcome 5 sets out why one figure does both jobs.',
+              'A reduction in the allowance runs the other way from the row above: debit the allowance, credit the adjustment account. Either way only the movement is entered, never the whole allowance.',
             ],
           },
           {
@@ -4600,7 +4600,7 @@
             h: 'What the software does with all of this',
             p: [
               'A computerised system does not use adjustment columns. Each adjustment is posted as an ordinary journal, the affected balances change the moment it is saved, and asking for the trial balance again returns the recalculated figures. There is no intermediate document because there is nothing to hold in suspense between one step and the next.',
-              'What that removes is the audit trail across the page. On paper the ledger balance and the adjustment sit side by side, so a reviewer can see both; on screen the balance has simply changed, and reconstructing what it was means reading the journal history. Software makes the recalculation instant and makes the working invisible.',
+              'What that removes is the audit trail across the page. On paper the ledger balance and the adjustment sit side by side, so a reviewer can see both. On screen the balance has simply changed, and reconstructing what it was means reading the journal history. Software makes the recalculation instant and makes the working invisible.',
               'The assessment tests the paper version, and knowing it earns more than the marks. It lets you say where a figure in a computerised system came from, which is the question anybody reviewing the accounts will actually ask.',
             ],
             examtrap: 'A task may give an adjustment already reflected in the ledger balances. Entering it again in the adjustments columns charges it twice, and the columns still agree — so nothing about the layout will warn you.',
@@ -4638,8 +4638,8 @@
           {
             h: 'Why the trial balance is extended at all',
             p: [
-              'A trial balance with adjustments in it holds every figure the financial statements need, and holds them in one undifferentiated list. Extending it adds four more columns — profit or loss debit and credit, financial position debit and credit — and puts each line into the pair it belongs to.',
-              'Once that is done, preparing the two statements is transcription. Every figure in the profit columns goes into the statement of profit or loss and every figure in the position columns into the statement of financial position, in the order Outcome 7 sets out. No arithmetic is left to do and nothing has to be classified twice.',
+              'A trial balance with adjustments in it holds every figure the financial statements need, and holds them in one undifferentiated list. Extending it adds four more columns: profit or loss debit and credit, financial position debit and credit. Each line then goes into the pair it belongs to.',
+              'Once that is done, preparing the two statements is transcription. Every figure in the profit columns goes into the statement of profit or loss. Every figure in the position columns goes into the statement of financial position, in the order Outcome 7 sets out. No arithmetic is left to do and nothing has to be classified twice.',
               'It also localises mistakes. A figure sent to the wrong pair of columns shows up as two column totals that will not reconcile, at a point where one line can still be traced. Discovering the same fault while drafting the statements means going back through everything to find which line moved.',
             ],
             callout: { kind: 'key', text: 'Extend the combined figure, not the ledger balance. Ledger balance and adjustment are netted first, and the single result crosses the page.' },
@@ -4663,14 +4663,14 @@
             },
             p: [
               'Income and expense accounts go to the profit columns; assets, liabilities, capital and drawings go to the position columns. That is the whole classification, and it is the one from lesson 2B rather than anything new.',
-              'The side is carried over unchanged. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column, and insurance of £3,600 − £900 = £2,700 goes to the same column having been reduced rather than moved.',
-              'Two lines repay a second reading. Accumulated depreciation is a credit that grows: £12,000 + £3,000 = £15,000 to the position credit column, while the charge that created it sits in the profit debit column as a separate line. And receivables of £26,000 − £1,000 = £25,000 shows an adjustment credit reducing a debit balance, which is the shape most write-offs and prepayment reversals take.',
+              'The side is carried over unchanged. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column. Insurance of £3,600 − £900 = £2,700 goes to the same column, having been reduced rather than moved.',
+              'Two lines repay a second reading. Accumulated depreciation is a credit that grows: £12,000 + £3,000 = £15,000 to the position credit column. The charge that created it sits in the profit debit column as a separate line. And receivables of £26,000 − £1,000 = £25,000 shows an adjustment credit reducing a debit balance, which is the shape most write-offs and prepayment reversals take.',
             ],
           },
           {
             h: 'Closing inventory, the line that goes to both',
             p: [
-              'Closing inventory has no ledger balance at all — it comes into existence as an adjustment — and it is extended to two different places. The debit goes to the position columns, because unsold goods are an asset the business owns on the last day of the year. The credit goes to the profit columns, where it reduces cost of sales, because goods still on the shelf were not sold and their cost belongs to next year.',
+              'Closing inventory has no ledger balance at all. It comes into existence as an adjustment, and it is extended to two different places. The debit goes to the position columns, because unsold goods are an asset the business owns on the last day of the year. The credit goes to the profit columns, where it reduces cost of sales. Goods still on the shelf were not sold, and their cost belongs to next year.',
               'Both halves carry the same figure, and neither is a duplicate of the other. They are the two consequences of one fact, recorded in the two statements that report it.',
               'Extending only one of them is a common enough slip to name. Miss the credit and the profit is understated by the whole closing inventory; miss the debit and the position statement loses an asset. Either way the column totals stop agreeing, which at least means the error announces itself.',
             ],
@@ -4709,8 +4709,8 @@
           {
             h: 'The profit is whatever is missing',
             p: [
-              'When every line has been extended, all four columns are totalled and none of the four pairs agrees. The profit columns are apart because income exceeded expenses; the position columns are apart by exactly the same amount, because a business that earned more than it spent holds assets it does not owe to anybody but its owner.',
-              'That difference is the profit for the year, and it is entered twice to close both pairs. It goes into the profit **debit** column, where it balances the excess of income over expenses, and into the position **credit** column, where it increases what the business owes its owner.',
+              'When every line has been extended, all four columns are totalled and none of the four pairs agrees. The profit columns are apart because income exceeded expenses. The position columns are apart by exactly the same amount, because a business that earned more than it spent holds assets it does not owe to anybody but its owner.',
+              'That difference is the profit for the year, and it is entered twice to close both pairs. It goes into the profit **debit** column, where it balances the excess of income over expenses. And into the position **credit** column, where it increases what the business owes its owner.',
               'A loss reverses both. Expenses exceed income, so the balancing figure goes into the profit credit column, and it reduces capital, so its other half goes into the position debit column. Nothing about the method changes — the figure lands on the other side of each pair.',
             ],
             formula: 'Profit = profit-column credits − profit-column debits = position-column debits − position-column credits',
@@ -4755,9 +4755,9 @@
           {
             h: 'Proving it against the capital account',
             p: [
-              'The profit figure can be checked against the owner\'s capital before anything is drafted, and doing it while the working is still in front of you costs a minute. In the example above the ledger held capital of £156,000 and drawings of £27,000, so closing capital is £156,000 + £47,600 − £27,000 = £176,600.',
+              'The profit figure can be checked against the owner’s capital before anything is drafted. Doing it while the working is still in front of you costs a minute. In the example above the ledger held capital of £156,000 and drawings of £27,000, so closing capital is £156,000 + £47,600 − £27,000 = £176,600.',
               'Net assets should come to the same. Take the drawings out of the position debit column, because drawings are not an asset: £255,300 − £27,000 = £228,300. Take the capital out of the position credit column, because capital is not a liability: £207,700 − £156,000 = £51,700. Net assets are then £228,300 − £51,700 = £176,600, matching the capital account.',
-              'Two routes, one figure, and the second route uses none of the arithmetic of the first. When they disagree, the profit is wrong or a line was extended to the wrong pair, and both are far cheaper to find here than in a finished statement.',
+              'Two routes, one figure, and the second route uses none of the arithmetic of the first. When they disagree, the profit is wrong or a line was extended to the wrong pair. Both are far cheaper to find here than in a finished statement.',
             ],
             examtrap: 'A loss is entered in the profit credit column and the position debit column. Reaching for the profit positions out of habit puts both pairs further out, by twice the loss.',
           },
@@ -4801,16 +4801,16 @@
             },
             p: [
               'Everything above the profit figure is the same document. A partnership trades, adjusts and extends exactly as a sole trader does, because the trading is the same activity and the adjustments are the same adjustments.',
-              'The bottom half is where two owners show. Instead of one capital balance the position columns carry four balances for two partners — a capital account and a current account each — and each of those is extended like any other credit balance.',
+              'The bottom half is where two owners show. Instead of one capital balance, the position columns carry four balances for two partners: a capital account and a current account each. Each of those is extended like any other credit balance.',
               'The last row is the one that changes the method rather than the layout, and the next card is about it.',
             ],
           },
           {
             h: 'Why the profit cannot simply be extended',
             p: [
-              'A sole trader\'s profit belongs to one person, so it can go straight into the position credit column and be done with. A partnership\'s profit belongs to two or more people in proportions their agreement sets, and the extended trial balance has no column that can express that.',
-              'So the figure leaves the profit columns and goes to the **appropriation account** — interest on capital and any salaries out, interest on drawings in, the residue split in the profit-sharing ratio — and it is each partner\'s share, not the profit, that reaches their current account and the position columns.',
-              'A profit of £60,000 in a partnership where one partner has a salary of £10,000 and the residue is split equally leaves £60,000 − £10,000 = £50,000 to share, so £50,000 ÷ 2 = £25,000 each. One partner\'s current account is credited with £25,000 and the other\'s with £10,000 + £25,000 = £35,000, and £25,000 + £35,000 = £60,000 arrives in the position columns as two figures rather than one. Outcome 7 works the appropriation account through in full.',
+              'A sole trader’s profit belongs to one person, so it can go straight into the position credit column. A partnership’s profit belongs to two or more people, in proportions their agreement sets. The extended trial balance has no column that can express that.',
+              'So the figure leaves the profit columns and goes to the **appropriation account**. Interest on capital and any salaries out, interest on drawings in, the residue split in the profit-sharing ratio. It is then each partner’s share, not the profit, that reaches their current account and the position columns.',
+              'Take a profit of £60,000 in a partnership where one partner has a salary of £10,000 and the residue is split equally. That leaves £60,000 − £10,000 = £50,000 to share, so £50,000 ÷ 2 = £25,000 each. One partner’s current account is credited with £25,000, and the other’s with £10,000 + £25,000 = £35,000. So £25,000 + £35,000 = £60,000 arrives in the position columns as two figures rather than one. Outcome 7 works the appropriation account through in full.',
             ],
             callout: { kind: 'key', text: 'The difference is not the layout but the step in the middle: a partnership divides the profit before any of it reaches the position columns.' },
           },
@@ -4938,7 +4938,7 @@
             p: [
               'A business made £40,000 profit last year. Is that good?',
               'The honest answer is that you cannot tell. £40,000 on sales of £80,000 is remarkable. The same £40,000 on sales of £4 million is close to breaking even. The same £40,000 earned on capital of £2 million would be better left in a savings account.',
-              'A **ratio** fixes that by putting the figure next to the thing that produced it. Every profitability ratio in this outcome is one number divided by another and multiplied by a hundred, and the whole skill is knowing which second number makes the first one mean something.',
+              'A **ratio** fixes that by putting the figure next to the thing that produced it. Every profitability ratio in this outcome is one number divided by another and multiplied by a hundred. The whole skill is knowing which second number makes the first one mean something.',
             ],
             callout: { kind: 'key', text: 'A ratio is a profit figure divided by whatever generated it. On its own a profit is a number; against sales or capital it becomes a rate you can compare.' },
           },
@@ -4961,7 +4961,7 @@
               'Ratios exist to support three things: **planning**, **decision making** and **control**.',
               'Planning is forward looking. A business that knows its gross profit margin has held at 40% for three years can price next year\'s work and forecast what a 10% rise in volume would produce.',
               'Decision making is a choice between options. A lender comparing two applicants reads their ROCE. An owner deciding whether to drop a product line reads what that line does to the margin.',
-              'Control is the quiet one and the most useful. A margin that falls from 40% to 34% with no change in prices is a signal that something has gone wrong — theft, waste, a supplier increase absorbed rather than passed on, or goods sold at a discount nobody authorised. The ratio does not say which. It says look.',
+              'Control is the quiet one and the most useful. A margin that falls from 40% to 34% with no change in prices is a signal that something has gone wrong. Theft, waste, a supplier increase absorbed rather than passed on, or goods sold at a discount nobody authorised. The ratio does not say which. It says look.',
             ],
             callout: { kind: 'note', text: 'A ratio never explains anything. It narrows where to look, and the explanation always comes from asking about the business.' },
           },
@@ -5015,7 +5015,7 @@
             h: 'Margin and mark-up are the same profit over different bases',
             p: [
               'Gross profit can be expressed against either of the two figures that make it. Against **sales** it is the margin. Against **cost of sales** it is the mark-up. The pound figure of gross profit does not change; only what it is compared with does.',
-              'Because sales are always larger than cost of sales, the mark-up percentage is always the larger of the two. If a question gives you one and asks for the other, that is the check: a mark-up smaller than its margin has been worked out upside down.',
+              'Because sales are always larger than cost of sales, the mark-up percentage is always the larger of the two. If a question gives you one and asks for the other, that is the check. A mark-up smaller than its margin has been worked out upside down.',
             ],
             formula: 'Margin = gross profit ÷ sales × 100 · Mark-up = gross profit ÷ cost of sales × 100',
             table: {
@@ -5102,7 +5102,7 @@
           {
             h: 'What moves a ratio',
             p: [
-              'When a ratio changes, the cause is almost always one of a short list, and a question will usually expect you to name a plausible one rather than prove it.',
+              'When a ratio changes, the cause is almost always one of a short list. A question will usually expect you to name a plausible one rather than prove it.',
             ],
             split: {
               left: { title: 'A gross profit margin falls when', items: ['Selling prices are cut or discounted', 'Suppliers raise their prices and it is absorbed', 'Wastage, damage or theft rises', 'The mix shifts toward lower-margin goods', 'Closing inventory is understated'] },
@@ -5114,8 +5114,8 @@
             h: 'Professional scepticism',
             p: [
               'Scepticism is not suspicion. It is the habit of not accepting a figure just because it is presented tidily, and it belongs in interpretation as much as in preparation.',
-              'A ratio is only as good as the statements underneath it. If closing inventory is overstated, cost of sales falls, gross profit rises and the margin improves — and nothing about the ratio itself looks wrong. If the two businesses being compared value inventory differently, or one owns its premises while the other rents, the comparison is not like for like however carefully the arithmetic was done.',
-              'So the questions to hold are: where did these figures come from, is anything in them a one-off, are the two sides comparable, and does the answer agree with what else I know about this business?',
+              'A ratio is only as good as the statements underneath it. If closing inventory is overstated, cost of sales falls, gross profit rises and the margin improves — and nothing about the ratio itself looks wrong. Suppose the two businesses being compared value inventory differently, or one owns its premises while the other rents. The comparison is not like for like, however carefully the arithmetic was done.',
+              'So the questions to hold are these. Where did these figures come from? Is anything in them a one-off? Are the two sides comparable? And does the answer agree with what else I know about this business?',
             ],
             callout: { kind: 'warn', text: 'Software produces ratios instantly and will produce them from wrong figures just as fast. A percentage carried to two decimal places is not evidence that the inputs were right.' },
           },
@@ -5194,14 +5194,14 @@
             h: 'Why a business arrives with half its books',
             p: [
               'Small businesses do not always keep double entry. A sole trader may have a bank statement, a folder of invoices, a till roll and no ledgers at all. Something is always missing — a stolen cash book, a year of takings never written down, a purchases figure nobody totalled.',
-              'The accounts still have to be prepared. This outcome is the set of techniques for getting a complete set of statements out of an incomplete set of records, and every one of them works the same way: build the account you would have kept, put in everything you do know, and the gap is the answer.',
+              'The accounts still have to be prepared. This outcome is the set of techniques for getting a complete set of statements out of an incomplete set of records. Every one of them works the same way. Build the account you would have kept, put in everything you do know, and the gap is the answer.',
             ],
             callout: { kind: 'key', text: 'The method never changes. Draw the account, enter what is known on both sides, and the missing figure is whatever makes it balance.' },
           },
           {
             h: 'Profit without a profit and loss account',
             p: [
-              'If no records of income and expenses survive at all, profit can still be found — from the two things a trader always knows, what the business owned and owed at each end of the year.',
+              'If no records of income and expenses survive at all, profit can still be found. It comes from the two things a trader always knows: what the business owned and owed at each end of the year.',
               'Capital rises with profit and with money the owner puts in. It falls with drawings. So the change in capital across the year, adjusted for the owner\'s own movements, IS the profit.',
             ],
             formula: 'Profit = closing capital − opening capital + drawings − capital introduced',
@@ -5358,7 +5358,7 @@
           {
             h: 'Cost of sales is the bridge',
             p: [
-              'The other half of this outcome is the cost of sales calculation, which links inventory and purchases to the trading account and can be rearranged for whichever term is missing.',
+              'The other half of this outcome is the cost of sales calculation. It links inventory and purchases to the trading account, and can be rearranged for whichever term is missing.',
             ],
             formula: 'Cost of sales = opening inventory + purchases − closing inventory',
             table: {
@@ -5459,9 +5459,9 @@
           {
             h: 'Software and scepticism',
             p: [
-              'Most small businesses now keep records in software rather than on paper, which changes what goes missing. Ledgers are rarely lost; instead a bank feed misses a fortnight, a transaction is posted to the wrong account, or an opening balance was never entered when the system was set up.',
+              'Most small businesses now keep records in software rather than on paper, which changes what goes missing. Ledgers are rarely lost. Instead a bank feed misses a fortnight, a transaction is posted to the wrong account, or an opening balance was never entered when the system was set up.',
               'Software output looks authoritative and is only as good as what was entered. A report that reconciles is evidence the software added correctly, not that the underlying entries were right.',
-              '**Professional scepticism** is the habit of checking rather than assuming, and it applies in both directions: do not accept a figure because it is neat, and do not assume dishonesty because a figure is odd. Ask the client, corroborate against something independent, and record what you were told.',
+              '**Professional scepticism** is the habit of checking rather than assuming, and it applies in both directions. Do not accept a figure because it is neat, and do not assume dishonesty because a figure is odd. Ask the client, corroborate against something independent, and record what you were told.',
             ],
             callout: { kind: 'warn', text: 'Scepticism is not distrust. It is declining to treat a presentation as evidence — including a presentation your own working produced.' },
           },
