@@ -1578,9 +1578,14 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
    is reaching for, and this is a decision they make occasionally. So the row
    gives the advance button all the space it wants and this one only what it
    needs. Below 380px the label drops and the tick carries it, rather than the
-   two buttons wrapping onto separate lines and pushing Next off the fold. */
-.a3-qfoot { display: flex; align-items: stretch; gap: var(--a3-2); }
-.a3-qfoot .a3-wide { flex: 1 1 auto; width: auto; }
+   two buttons wrapping onto separate lines and pushing Next off the fold.
+
+   The gap above the pair belongs to the ROW, not to the advance button. When
+   .a3-wide carried its own margin-top the two buttons no longer matched: the
+   retire button, stretching to the row, took in the advance button's margin
+   as extra height and started 18px higher than it. */
+.a3-qfoot { display: flex; align-items: stretch; gap: var(--a3-2); margin-top: 18px; }
+.a3-qfoot .a3-wide { flex: 1 1 auto; width: auto; margin-top: 0; }
 .a3-retire {
   flex: none; display: inline-flex; align-items: center; gap: 6px;
   padding: 0 var(--a3-3); border-radius: var(--a3-r-sm);

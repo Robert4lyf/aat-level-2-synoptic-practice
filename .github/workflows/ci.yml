@@ -150,6 +150,10 @@ jobs:
         env:
           REQUIRE_PLAYWRIGHT: '1'
         run: npm run check:layout
+      - name: Check the pair of buttons under a graded question match
+        env:
+          REQUIRE_PLAYWRIGHT: '1'
+        run: npm run check:answer-actions
       - name: Check no text is cut off where the reader cannot reach it
         env:
           REQUIRE_PLAYWRIGHT: '1'
