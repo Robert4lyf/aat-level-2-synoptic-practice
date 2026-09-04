@@ -57,6 +57,8 @@ jobs:
         run: npm run check:cips2-content-adversarial
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
+      - name: Check AAT Level 3 teaching prose is plain English
+        run: npm run check:aat3-plain-english
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
         run: npm run check:aat3-summary
       - name: Check no Level 3 question is answerable from option position

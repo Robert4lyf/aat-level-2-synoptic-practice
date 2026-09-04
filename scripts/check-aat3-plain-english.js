@@ -18,6 +18,22 @@
  * exception, and the definition of a Time to Pay agreement, none of which the
  * reader could hold at once.
  *
+ * After the rewrite, nothing is over 30 and the mean sentence has come down
+ * from 19.7 words to 15.5:
+ *
+ *     TPFB  19.5 -> 15.3   worst 77 -> 30
+ *     FAPS  19.3 -> 15.7   worst 60 -> 30
+ *     MATS  21.0 -> 16.3   worst 57 -> 30
+ *     BUAW  19.6 -> 15.0   worst 50 -> 30
+ *
+ * NOTHING HERE MEASURES WHETHER THE MATERIAL IS STILL ALL PRESENT. A rewrite
+ * that silently deleted a paragraph would leave this gate, and every content
+ * gate beside it, entirely green — that happened once during the rewrite and
+ * was caught by hand. Every currency amount, percentage and box reference in
+ * all four units was diffed as a multiset against the pre-rewrite files
+ * afterwards: none lost, none invented. That check was manual and stays
+ * manual; treat this gate as measuring readability and nothing else.
+ *
  * THE CEILING IS A CEILING, NOT A TARGET. Plain-English guidance puts the
  * average at 15 to 20 words and the limit near 30. This unit teaches tax and
  * financial statements, where a sentence sometimes has to carry a condition
