@@ -2789,10 +2789,10 @@
     {
       id: 'P-3-34', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.4'],
       type: 'numeric',
-      q: 'A reconciliation is out by £72. An invoice was posted with VAT of £286 when the invoice showed £358. What is the difference explained by, in pounds?',
-      answer: 72,
+      q: 'A reconciliation is out by £95. An invoice showed VAT of £358 but was posted as £385. How much of the difference is still unexplained, in pounds?',
+      answer: 68,
       unit: '£',
-      exp: '£358 − £286 = £72, exactly the difference. A single transposition or mis-keying that matches the discrepancy is almost always the whole explanation — and it is worth confirming the figure rather than assuming, because two errors can net to the same number.',
+      exp: '£385 − £358 = £27 overstated, so the mis-posting explains £27 of the £95. That leaves £95 − £27 = £68 still to find. An error that matches only part of a difference is a warning, not a conclusion — stopping at the first thing you find would leave a second error in the records.',
     },
     {
       id: 'P-3-35', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.5'],
@@ -3209,7 +3209,7 @@
       type: 'numeric',
       q: 'A reconciliation is out by £54. An invoice was posted with VAT of £429 when the invoice showed £375. By how much is input tax overstated, in pounds?',
       answer: 54, unit: '£',
-      exp: '£429 − £375 = £54, which is exactly the difference the reconciliation found — so the single mis-posting explains all of it and no further hunting is needed. A difference that matches a known transposition to the penny is strong evidence; one that is merely close usually means two errors, not one.',
+      exp: '£429 − £375 = £54, which is exactly the difference the reconciliation found — so the single mis-posting explains all of it and no further hunting is needed. A difference that matches a known mis-posting to the penny is strong evidence; one that is merely close usually means two errors, not one.',
     },
     {
       id: 'P-3-72', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.4'],
