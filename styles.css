@@ -3254,6 +3254,20 @@ body:not([data-subject="aat"]):not([data-subject="aat1"]):not([data-subject="aat
 
 /* Calculator updates (memory keys + display indicator) */
 .calc-display-wrap { position: relative; }
+/* THE SCREEN IS THE DRAG HANDLE. touch-action:none is what stops a touch drag
+   scrolling the page instead of moving the panel; without it the calculator
+   stays put and the question slides away behind it. */
+.calc-display-wrap {
+  cursor: move; touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.calc-display-wrap:focus-visible { outline: 3px solid var(--brand-500); outline-offset: 2px; }
+.calc-sidebar.is-dragging { box-shadow: 0 20px 50px -12px rgba(0,0,0,.45); opacity: .96; }
+.calc-sidebar.is-dragging .calc-display-wrap { cursor: grabbing; }
+
+/* Only the phone sheet is ever floating — above 880px this panel is a column
+   beside the question and the drag does not engage. */
+.calc-sidebar.is-floating { z-index: 59; }
+
 .dark .calc-key.calc-span-2 { grid-column: span 2; }
 
 /* ── T-ACCOUNT PLAYGROUND ── */

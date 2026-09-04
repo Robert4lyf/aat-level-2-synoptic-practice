@@ -3318,8 +3318,21 @@
     return rerender();
   }
 
+  function wireCalcDrag(el) {
+    /* Dragged by its screen — the one surface on the sheet that is not a key.
+       Re-run on every mount because the sheet is rebuilt on repaint, and the
+       shared helper puts a moved panel back where the reader left it. */
+    if (!root.AATCalc || !root.AATCalc.draggable) return;
+    root.AATCalc.draggable({
+      key: 'aat1',
+      panel: el.querySelector('.a1-calcsheet'),
+      handle: el.querySelector('.a1-calcsheet .a1-calc-screen')
+    });
+  }
+
   function wire(el) {
     _host = el;
+    wireCalcDrag(el);
     el.querySelectorAll('[data-a1]').forEach(function (n) {
       var act = n.getAttribute('data-a1');
       /* A <select> announces itself with `change`, not `click`, so it is wired

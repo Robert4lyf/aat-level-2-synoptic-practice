@@ -1038,10 +1038,13 @@ function finish() {
         const fab = document.getElementById('calcFab');
         const side = document.getElementById('calcSidebar');
         const vis = el => !!el && getComputedStyle(el).display !== 'none';
+        const scr = side && side.querySelector('.calc-display-wrap');
         return {
           fab: vis(fab),
           side: vis(side),
           fixed: side ? getComputedStyle(side).position : null,
+          /* Set by the shared helper when it decides the panel is draggable. */
+          handle: !!(scr && scr.getAttribute('data-calc-drag') === '1'),
         };
       });
     };
@@ -1049,6 +1052,12 @@ function finish() {
     ok(wide.side === true, 'at 1200px the calculator is in its column, as it always was');
     ok(wide.fixed === 'sticky', 'and still sticky beside the question, not floating');
     ok(wide.fab === false, 'with no floating button, because none is needed');
+    /* AND NO DRAG HANDLE, because there is nothing to drag it off. Dragging
+       answers one problem — the calculator covering the figures being added up
+       — and a panel with its own column beside the question does not have it.
+       Lifting this one out would cost the reader the column and give them
+       nothing, so the shared helper reads the computed position and declines. */
+    ok(wide.handle === false, 'and its screen is not a drag handle, because a docked column covers nothing');
 
     const narrow = await at(390, 844);
     ok(narrow.fab === true, 'at 390px a button appears to open it');
@@ -1088,6 +1097,19 @@ function finish() {
     ok(moved.before === moved.after,
       `and the page does not move (${moved.before} → ${moved.after})`);
     ok(moved.before > 0, 'measured from a page genuinely scrolled away from the top');
+    /* AND NOW IT IS DRAGGABLE. The same element that declined a drag handle at
+       1200px, where it was a column beside the question, takes one here where
+       it is a sheet over the question — which is the whole rule, and neither
+       width alone can show it. */
+    const sheetHandle = await p2.evaluate(() => {
+      const scr = document.querySelector('#calcSidebar .calc-display-wrap');
+      return { handle: !!(scr && scr.getAttribute('data-calc-drag') === '1'),
+               cursor: scr ? getComputedStyle(scr).cursor : null };
+    });
+    ok(sheetHandle.handle === true,
+      'and as a sheet its screen IS a drag handle, so it can be moved off the figures it covers');
+    ok(sheetHandle.cursor === 'move',
+      `and says so with the cursor (${sheetHandle.cursor})`);
 
     const shut = await p2.evaluate(async () => {
       document.getElementById('calcFab').click();
@@ -1359,6 +1381,162 @@ function finish() {
             `catches them — the exclusion is stale and hides nothing`
           : 'and no exclusion is stale');
       await ctx3.close();
+    }
+
+    /* ── §9 The calculator can be moved, by its screen ───────────────────────
+       The panel covers whatever is under it, and on a task built round a table
+       of figures that is often the figures. So it drags.
+
+       DRIVEN WITH REAL MOUSE INPUT rather than synthesised PointerEvents. The
+       implementation calls setPointerCapture, which needs a live pointer id;
+       hand-built events give it one the browser never issued, and the capture
+       silently does nothing — so a version of this written with dispatchEvent
+       would exercise a code path the reader never takes. */
+    {
+      const ctx4 = await browser.newContext({ viewport: { width: 1200, height: 900 } });
+      const page4 = await ctx4.newPage();
+      const errs4 = [];
+      page4.on('pageerror', e => errs4.push('uncaught: ' + e.message));
+      await page4.addInitScript(() => localStorage.setItem('multisubject_active', 'aat'));
+      await page4.goto(base, { waitUntil: 'load' });
+      await page4.waitForFunction(() => {
+        const a = document.getElementById('app');
+        return a && a.textContent.trim().length > 40;
+      }, { timeout: 15000 }).catch(() => {});
+
+      const opened = await page4.evaluate(async (q) => {
+        document.body.dataset.subject = 'aat3';
+        const need = ['calculator.js', 'aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js',
+          'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-ui.js'];
+        for (const src of need) {
+          if (document.querySelector(`script[src="${src}"]`)) continue;
+          await new Promise((res, rej) => {
+            const el = document.createElement('script');
+            el.src = src; el.async = false; el.onload = res; el.onerror = rej;
+            document.head.appendChild(el);
+          });
+        }
+        if (!document.querySelector('link[href="aat3-styles.css"]')) {
+          await new Promise((res, rej) => {
+            const l = document.createElement('link');
+            l.rel = 'stylesheet'; l.href = 'aat3-styles.css'; l.onload = res; l.onerror = rej;
+            document.head.appendChild(l);
+          });
+        }
+        window.AAT3_PRACTICE = { QUESTIONS: [q] };
+        window.AAT3_FAPS_PRACTICE = { QUESTIONS: [] };
+        const host = document.createElement('div');
+        document.body.appendChild(host);
+        window.__dragHost = host;
+        window.AAT3_UI.reset('practice', 'tpfb');
+        window.AAT3_UI.mount(host);
+        const start = host.querySelector('[data-a3="startpractice"][data-lo="mix"]');
+        if (!start) return { err: 'no practice run to start' };
+        start.click();
+        const fab = host.querySelector('[data-a3="calctoggle"]');
+        if (!fab) return { err: 'the numeric question offered no calculator button' };
+        fab.click();
+        const sheet = document.querySelector('.a3-calcsheet');
+        const screen = document.querySelector('.a3-calcsheet .a3-calc-screen');
+        if (!sheet || !screen) return { err: 'opening it rendered no sheet or no screen' };
+        const s = sheet.getBoundingClientRect(), h = screen.getBoundingClientRect();
+        return {
+          sheet: { x: Math.round(s.left), y: Math.round(s.top) },
+          screen: { x: Math.round(h.left + h.width / 2), y: Math.round(h.top + h.height / 2) },
+          key: (() => { const k = document.querySelector('.a3-calcsheet .a3-calc-key');
+                        const r = k && k.getBoundingClientRect();
+                        return r ? { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) } : null; })()
+        };
+      }, NUMERIC);
+
+      if (opened.err) { ok(false, `the drag check could not reach a calculator: ${opened.err}`); }
+      else {
+        const rect = () => page4.evaluate(() => {
+          const el = document.querySelector('.a3-calcsheet');
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height) };
+        });
+
+        /* 1. It moves, and by the distance the pointer moved. */
+        const before = await rect();
+        await page4.mouse.move(opened.screen.x, opened.screen.y);
+        await page4.mouse.down();
+        await page4.mouse.move(opened.screen.x - 260, opened.screen.y - 180, { steps: 8 });
+        await page4.mouse.up();
+        const after = await rect();
+        const dx = after.x - before.x, dy = after.y - before.y;
+        ok(Math.abs(dx + 260) <= 6 && Math.abs(dy + 180) <= 6,
+          `dragging the screen 260px left and 180px up moves the calculator the same way ` +
+          `(it moved ${dx}, ${dy})`);
+
+        /* 2. A KEY IS NOT A HANDLE. The whole pad is inside the panel, so a
+           drag bound to the panel rather than to its screen would move the
+           calculator every time someone dragged a fingertip across 7. */
+        if (opened.key) {
+          const k = await page4.evaluate(() => {
+            const el = document.querySelector('.a3-calcsheet .a3-calc-key');
+            const r = el.getBoundingClientRect();
+            return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+          });
+          const b2 = await rect();
+          await page4.mouse.move(k.x, k.y);
+          await page4.mouse.down();
+          await page4.mouse.move(k.x + 120, k.y + 90, { steps: 6 });
+          await page4.mouse.up();
+          const a2 = await rect();
+          /* Not exact equality: the press lands as a click, the display
+             repaints from "0" to a digit, and the box settles by a pixel. The
+             drag under test is 120 by 90, so three pixels of slack still tells
+             a handle that ignores keys from one that does not. */
+          ok(Math.abs(a2.x - b2.x) <= 3 && Math.abs(a2.y - b2.y) <= 3,
+            `dragging from a key does not move the calculator (it moved ${a2.x - b2.x}, ${a2.y - b2.y})`);
+        }
+
+        /* 3. IT SURVIVES A REPAINT. The levels rebuild the sheet on every
+           repaint, so the element that was dragged is not the element that
+           ends up on screen. Without the position being remembered and
+           re-applied, answering a question would fling the calculator back to
+           the corner it was moved out of. */
+        const b3 = await rect();
+        await page4.evaluate(() => window.AAT3_UI.mount(window.__dragHost));
+        await page4.waitForTimeout(120);
+        const a3 = await rect();
+        ok(a3 && Math.abs(a3.x - b3.x) <= 2 && Math.abs(a3.y - b3.y) <= 2,
+          `the calculator stays where it was put across a repaint ` +
+          `(it moved ${a3 ? a3.x - b3.x : '?'}, ${a3 ? a3.y - b3.y : '?'})`);
+
+        /* 4. IT CANNOT BE LOST. Dragged past the edge of the window it would be
+           unreachable, and the only way back would be a reload — which costs
+           the reader the sum they were part way through. */
+        const scr = await page4.evaluate(() => {
+          const r = document.querySelector('.a3-calcsheet .a3-calc-screen').getBoundingClientRect();
+          return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+        });
+        await page4.mouse.move(scr.x, scr.y);
+        await page4.mouse.down();
+        await page4.mouse.move(1195, 895, { steps: 10 });
+        await page4.mouse.up();
+        const edge = await rect();
+        const vp = await page4.evaluate(() => ({ w: window.innerWidth, h: window.innerHeight }));
+        ok(edge.x >= 0 && edge.y >= 0 && edge.x + edge.w <= vp.w + 1 && edge.y + edge.h <= vp.h + 1,
+          `dragged at the corner of the window it stays inside it ` +
+          `(box ${edge.x},${edge.y} ${edge.w}×${edge.h} in ${vp.w}×${vp.h})`);
+
+        /* 5. AND NOT ONLY BY POINTER. A panel that can only be moved with a
+           mouse is one a keyboard user cannot move out of their own way. */
+        const b5 = await rect();
+        await page4.evaluate(() => document.querySelector('.a3-calcsheet .a3-calc-screen').focus());
+        await page4.keyboard.press('ArrowLeft');
+        await page4.keyboard.press('ArrowLeft');
+        const a5 = await rect();
+        ok(a5.x < b5.x, `the arrow keys move it too (${b5.x} → ${a5.x})`);
+
+        ok(errs4.length === 0,
+          `moving it raises no uncaught error${errs4.length ? ': ' + errs4[0] : ''}`);
+      }
+
+      await ctx4.close();
     }
 
     await ctx2.close();

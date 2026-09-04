@@ -9093,6 +9093,15 @@
     document.querySelectorAll('[data-calc]').forEach(el => el.addEventListener('click', () => {
       Calc.press(el.dataset.calc, el.dataset.val);
     }));
+    /* Dragged by its screen, so it can be moved off the table or entry grid it
+       is covering. Only where it covers one: on a desktop this panel is a
+       column beside the question rather than a sheet over it, and the helper
+       reads that off its computed position and leaves it alone. */
+    AATCalc.draggable({
+      key: 'aat2',
+      panel: document.getElementById('calcSidebar'),
+      handle: document.querySelector('#calcSidebar .calc-display-wrap')
+    });
     /* Opening the sheet must not move the page and must not summon the
        keyboard. render() refocuses the numeric answer box on every paint, which
        on a phone throws the keyboard up over the calculator that was just
