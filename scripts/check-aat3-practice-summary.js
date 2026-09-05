@@ -450,7 +450,24 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
      of this check did. */
   const open = page.indexOf('<section class="a3-sum');
   ok(open !== -1, 'the practice picker renders the summary section');
-  const sum = page.slice(open, page.indexOf('</section>', open));
+  /* TO THE MATCHING CLOSE, NOT THE FIRST ONE. This took `indexOf('</section>')`
+     and got away with it only while the summary contained no section of its
+     own. The trend chart is one — a labelled region inside a labelled region,
+     which is what it is — and the naive slice then ended at the chart's close
+     tag, cutting off the outcome rows below it. Three assertions about those
+     rows failed against markup that was right, which is the worst way for a
+     check to be wrong: it accuses the code. */
+  const sum = (function () {
+    let depth = 0, i = open;
+    const re = /<(\/?)section\b/g;
+    re.lastIndex = open;
+    let m;
+    while ((m = re.exec(page))) {
+      depth += m[1] ? -1 : 1;
+      if (depth === 0) { i = m.index + '</section>'.length; break; }
+    }
+    return page.slice(open, i);
+  }());
   /* EVERY OUTCOME IS STILL A WAY IN, asserted as the property rather than as
      the class that used to carry it. This read `/a3-pgrid/` — the grid of
      outcome cards that sat under the summary — which was a proxy for "the
