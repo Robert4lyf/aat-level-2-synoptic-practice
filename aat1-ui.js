@@ -2036,6 +2036,12 @@
     return h;
   }
 
+  /* The same two thresholds Level 3 uses — see the note there. Three was two
+     answers into a run, so the gold was on for most of a session and meant
+     little; ten is worth reaching and twenty-five is worth marking again. */
+  var STREAK_GOLD = 10;
+  var STREAK_SPARKLE = 25;
+
   function renderPractice() {
     var bank = practiceBank();
     var u = unit();
@@ -2191,7 +2197,8 @@
           '<div class="a1-lessonbar-t"><span class="a1-inf" aria-hidden="true">∞</span>Keep going</div>' +
           '<div class="a1-lessonbar-m">' + done + ' answered · ' + S.score + ' right</div>' +
         '</div>' +
-        '<div class="a1-streak' + (S.streak >= 3 ? ' is-hot' : '') + '" ' +
+        '<div class="a1-streak' + (S.streak >= STREAK_GOLD ? ' is-hot' : '') +
+          (S.streak >= STREAK_SPARKLE ? ' is-sparkling' : '') + '" ' +
           'aria-label="Current streak ' + S.streak + '">' +
           '<span class="a1-streak-n">' + S.streak + '</span>' +
           '<span class="a1-streak-l">streak</span>' +

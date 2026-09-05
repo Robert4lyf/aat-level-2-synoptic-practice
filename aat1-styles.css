@@ -763,11 +763,43 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
   font-weight: 800; color: var(--a1-ink-3);
 }
+/* Ten in a row, not three — see the matching note in aat3-styles.css for why
+   the old threshold made the lit badge meaningless. STREAK_GOLD in aat1-ui.js. */
 .a1-streak.is-hot {
   background: var(--a1-accent-wash); border-color: var(--a1-accent); transform: scale(1.04);
 }
 .a1-streak.is-hot .a1-streak-n, .a1-streak.is-hot .a1-streak-l { color: var(--a1-accent-ink); }
-@media (prefers-reduced-motion: reduce) { .a1-streak { transition: none; } }
+
+/* Twenty-five (STREAK_SPARKLE). Absolutely positioned because ::before and
+   ::after inside a flex column are flex items and would push the badge apart;
+   the glow is static so the tier survives prefers-reduced-motion. */
+.a1-streak.is-sparkling {
+  position: relative;
+  box-shadow: 0 0 10px -2px var(--a1-accent);
+}
+.a1-streak.is-sparkling::before,
+.a1-streak.is-sparkling::after {
+  content: ''; position: absolute; width: 10px; height: 10px;
+  background: var(--a1-accent); pointer-events: none;
+  /* A four-point star. NOT rotated by the animation: a 45-degree turn lands it
+     on the diagonal, where the same shape reads as a small x rather than as a
+     sparkle. It grows and fades instead. */
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+  animation: a1-sparkle 2.2s ease-in-out infinite;
+}
+.a1-streak.is-sparkling::before { top: -4px; right: -4px; }
+/* Offset by less than half the cycle, so the two are rarely both at their
+   dimmest and the badge never looks like it has simply stopped. */
+.a1-streak.is-sparkling::after { bottom: -4px; left: -4px; animation-delay: .8s; }
+@keyframes a1-sparkle {
+  0%, 100% { opacity: .45; transform: scale(.6); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a1-streak { transition: none; }
+  .a1-streak.is-sparkling::before,
+  .a1-streak.is-sparkling::after { animation: none; opacity: 1; transform: none; }
+}
 .a1-lessonbar-p-endless span { background: linear-gradient(90deg, var(--a1-accent), var(--a1-brand)); }
 .a1-sheet-endless { border-color: var(--a1-accent); }
 
