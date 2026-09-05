@@ -1737,10 +1737,10 @@
       items: [
         'Enter items that appear only on the statement into the cash book',
         'Recalculate the closing balance in the cash book',
-        'List the cash book items still to reach the statement, to explain the difference that remains',
-        'Compare the two closing balances and explain any difference',
+        'Compare the recalculated cash book balance with the statement balance',
+        'List the cash book items still to reach the statement, which account for the difference',
       ],
-      exp: 'The items the business did not know about are real transactions, so they go into the books first and change the balance. Only then is the remaining difference a matter of timing — and comparing before that step compares one balance against an unfinished one.',
+      exp: 'The items the business did not know about are real transactions, so they go into the books first and change the balance — comparing before that step measures one balance against an unfinished one. Once the cash book is complete the two are compared, and whatever is still between them is timing: the cheques and lodgements the bank has not seen yet.',
     },
     {
       id: 'P4-54', lo: 4, criteria: ['BKFN-4.3.3', 'BKFN-4.3.4'],
@@ -2511,15 +2511,15 @@
     {
       id: 'P2-17', lo: 2, criteria: ['BKFN-2.1.1'],
       type: 'mcq',
-      q: 'The owner pays £5,000 of their own money into the business bank account. How is the £5,000 classified?',
+      q: 'A friend of the owner lends the business £5,000, paid into the business bank account and repayable next year. How is the £5,000 classified?',
       opts: [
+        'A liability',
         'Capital',
         'Income',
         'An expense',
-        'A liability of the owner',
       ],
       ans: 0,
-      exp: 'Money put in by the owner is capital: it is what the business owes back to them, and it is not something the business has earned. Calling it income would flatter the profit figure with money no customer paid. The bank balance rises by £5,000 and capital rises by £5,000, so the accounting equation still balances.',
+      exp: 'Money paid into the bank is not capital just because it arrived. Capital is what the business owes its OWNER; this is owed to somebody else and has to be repaid, which makes it a liability. It is not income either — nothing was earned, and treating a loan as income would show a profit the business never made. The bank rises by £5,000 and liabilities rise by £5,000, so the equation still balances, exactly as it would for an introduction of capital. What separates the two is who the money is owed back to.',
     },
     {
       id: 'P2-18', lo: 2, criteria: ['BKFN-2.1.1'],
@@ -3422,15 +3422,15 @@
     {
       id: 'P4-100', lo: 4, criteria: ['BKFN-4.1.3'],
       type: 'mcq',
-      q: 'What is an automatic bank feed?',
+      q: 'Cash is taken over the counter and no invoice is raised. Which record evidences the sale for the cash book?',
       opts: [
-        'Transactions imported into the software directly from the bank',
-        'A monthly paper statement posted by the bank',
-        'A standing order the bank sets up on request',
-        'A report the business sends to the bank each month',
+        'The till roll or cash receipt',
+        'The paying-in book counterfoil',
+        'The bank statement for the day',
+        'The sales day book entry',
       ],
       ans: 0,
-      exp: 'A feed pulls transactions from the bank into the accounting system as they happen, so the cash book is built from the bank\'s own data rather than typed from a statement. It removes typing errors and makes the record current — but it still needs checking, because the feed says what moved and not what it was for.',
+      exp: 'A counter sale leaves no invoice behind, so the record made at the moment of the sale is the evidence: the till roll, or the receipt handed over. The paying-in book is the next step and a different fact — it evidences what was BANKED, which may be several days of takings at once and may not be the same figure. The bank statement is later still. And the sales day book records credit sales, which is what a counter sale is not.',
     },
     {
       id: 'P4-101', lo: 4, criteria: ['BKFN-4.1.3'],
@@ -3749,9 +3749,9 @@
       statements: [
         { text: 'Bank charges found on the statement must be entered in the cash book.', answer: true },
         { text: 'Unpresented cheques must be entered in the cash book when found.', answer: false },
-        { text: 'A Direct Debit the business had not recorded needs a cash book entry.', answer: false },
+        { text: 'A Direct Debit the business had not recorded needs a cash book entry.', answer: true },
       ],
-      exp: 'Charges are money that has genuinely gone and the cash book has to catch up, so the first is true. An unpresented cheque is already in the cash book — entering it again would deduct it twice. The third is the trap: a Direct Debit nobody recorded DOES need entering, so the statement as written is false because it is the same case as the charges.',
+      exp: 'Charges are money that has genuinely gone and the cash book has to catch up, so the first is true. An unpresented cheque is already in the cash book — entering it again would deduct it twice. A Direct Debit nobody recorded is the same case as the charges rather than the same case as the cheque: the money has left the account and the cash book has never known about it, so it needs entering. What separates the two is whether the cash book has already had its say.',
     },
     {
       id: 'P4-129', lo: 4, criteria: ['BKFN-4.4.1'],
@@ -3993,11 +3993,11 @@
         rows: [
           { text: 'A live bank feed rather than typing from a statement', answer: 2 },
           { text: 'Importing 400 sales lines from a CSV rather than keying them', answer: 0 },
-          { text: 'Figures arriving from the bank rather than being retyped', answer: 1 },
+          { text: 'The software totalling a day book rather than somebody adding it up', answer: 1 },
           { text: 'Access to the same ledger from the office and from a client site', answer: 2 },
         ],
       },
-      exp: 'The three benefits overlap and the specification lists all of them, but they are not the same thing. Time saved is work not done; error reduced is work done right; sooner is the same work arriving while it can still be acted on. A feed delivers all three at once, which is why it is the example the syllabus reaches for.',
+      exp: 'The three benefits overlap, and the point of the table is that each row has one that dominates. Time saved is work not done — four hundred lines nobody keys. Error reduced is work done right — an addition a machine cannot get wrong. Sooner is the same work arriving while it can still be acted on, which is what a live feed and a ledger reachable from anywhere both buy.',
     },
     {
       id: 'P5-21', lo: 5, criteria: ['BKFN-5.1.2'],
@@ -4099,10 +4099,10 @@
           { text: 'Sends a reminder when a customer payment falls due', answer: 1 },
           { text: 'Shows a customer statement in real time', answer: 2 },
           { text: 'Flags a receipt that differs from the invoice amount', answer: 0 },
-          { text: 'Emails a remittance advice after a supplier is paid', answer: 1 },
+          { text: 'Emails a customer a list of their overdue invoices', answer: 1 },
         ],
       },
-      exp: 'Matching is the largest saving: a bank line of £4,812 has to be attached to the invoices it settles, and software that learns from previous allocations can suggest it. Reminders and remittances are correspondence that used to be somebody\'s afternoon. And a statement in real time answers "what does this customer owe right now" without anybody printing anything.',
+      exp: 'Matching is the largest saving: a bank line of £4,812 has to be attached to the invoices it settles, and software that learns from previous allocations can suggest it. Chasing is correspondence that used to be somebody\'s afternoon: a reminder as a payment falls due, a list of what is already overdue. And a statement in real time answers "what does this customer owe right now" without anybody printing anything.',
     },
     {
       id: 'P5-28', lo: 5, criteria: ['BKFN-5.1.6'],
