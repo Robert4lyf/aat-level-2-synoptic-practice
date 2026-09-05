@@ -2031,7 +2031,7 @@
     {
       id: 'P3-91', lo: 3, criteria: ['BKFN-3.4.3', 'BKFN-3.4.4'],
       type: 'entrygrid',
-      q: 'Three sales invoices were raised today: **101** to Hale & Co for **£400.00** before VAT, **102** to Barrow Ltd for **£250.00**, and **103** to Naylor for **£160.00**. Enter them in the sales day book, then total each column. VAT is at 20%.',
+      q: 'Three sales invoices were raised today: **101** to Hale & Co for **£400.00** before VAT, **102** to Barrow Ltd for **£250.00**, and **103** to Naylor for **£160.00**. Enter them in the sales day book, then total each column. VAT is at ' + VAT + '.',
       entrygrid: {
         title: 'Sales day book',
         rowHeader: 'Entry',
@@ -2043,7 +2043,7 @@
           { label: 'Totals for the day', cells: { 0: 810, 1: 162, 2: 972 } },
         ],
       },
-      exp: 'VAT at 20% is a fifth of the net: £80.00, £50.00 and £32.00. The gross is the net plus its VAT — £480.00, £300.00 and £192.00. Then each column is totalled DOWN: £810.00 net, £162.00 VAT, £972.00 gross. Cross casting is the check that makes the book trustworthy: the net total plus the VAT total must equal the gross total, 810.00 + 162.00 = 972.00. Casting down and cross casting are two different checks, and a book that passes one can still fail the other.',
+      exp: 'VAT at ' + VAT + ' is a fifth of the net: £80.00, £50.00 and £32.00. The gross is the net plus its VAT — £480.00, £300.00 and £192.00. Then each column is totalled DOWN: £810.00 net, £162.00 VAT, £972.00 gross. Cross casting is the check that makes the book trustworthy: the net total plus the VAT total must equal the gross total, 810.00 + 162.00 = 972.00. Casting down and cross casting are two different checks, and a book that passes one can still fail the other.',
     },
     /* ── Written tasks ──────────────────────────────────────────────────────
        Bookkeeping Fundamentals is computer marked, so none of these rehearses
@@ -2073,9 +2073,9 @@
         { point: 'States that every transaction changes at least two things in the records', marks: 2 },
         { point: 'Names both effects of the rent payment: the bank falls by £900 and rent expense rises by £900', marks: 2 },
         { point: 'Explains what the second entry is FOR — without it nothing records what the money was spent on', marks: 2 },
-        { point: 'Connects it to the accounting equation, or to the trial balance not balancing', marks: 1 },
+        { point: 'Connects it to the accounting equation — with only the bank entry made, assets have fallen and nothing else has moved, so it no longer balances', marks: 1 },
       ],
-      modelAnswer: 'Every transaction changes at least two things in the records, and the rent payment is a clear case of it.\n\nOne thing that changed is the bank: there is £900 less in it than there was. That is the entry you have made, and it is right. But something else changed as well — the business has incurred £900 of rent expense. If only the bank entry is made, the records show money leaving and nothing at all showing what it was spent on, so at the end of the month the rent account would read nil and the business would appear to occupy its premises for free.\n\nThat is what the second entry is for. It does not repeat the first one; it records the other half of what happened.\n\nThere is a check built into this. Assets less liabilities always equal capital, and a transaction entered only once breaks that equation — which is why the trial balance will not balance, and by exactly the £900 that is missing. When a trial balance is out, a single-sided entry is the first thing to look for.',
+      modelAnswer: 'Every transaction changes at least two things in the records, and the rent payment is a clear case of it.\n\nOne thing that changed is the bank: there is £900 less in it than there was. That is the entry you have made, and it is right. But something else changed as well — the business has incurred £900 of rent expense. If only the bank entry is made, the records show money leaving and nothing at all showing what it was spent on, so at the end of the month the rent account would read nil and the business would appear to occupy its premises for free.\n\nThat is what the second entry is for. It does not repeat the first one; it records the other half of what happened.\n\nThere is a check built into this. Assets always equal liabilities plus capital, and a transaction entered only once breaks that: the bank has fallen by £900 and nothing else has moved, so the two sides no longer agree — by exactly the £900 that is missing. When the records do not balance, a single-sided entry like this is the first thing to look for.',
       exp: 'The colleague is not wrong that the money went out — they are wrong that it is the whole story, and an answer that starts by telling them they are wrong will not land. What earns the marks is naming BOTH effects of this particular transaction rather than restating the rule in general terms, and then saying what goes wrong if the second one is missing.',
     },
     {
@@ -2631,33 +2631,47 @@
     },
     {
       id: 'P2-26', lo: 2, criteria: ['BKFN-2.2.1'],
-      type: 'numeric',
-      q: 'A business has assets of £74,300 and liabilities of £28,900. What is the capital?',
-      unit: '£', answer: 45400,
-      exp: 'Capital is what is left for the owner once everything owed has been met: £74,300 − £28,900 = £45,400. It is the same equation as assets = liabilities + capital, rearranged — and the rearrangement is worth being fluent in, because a question will give you any two of the three and ask for the other.',
+      type: 'mcq',
+      q: 'Which of these correctly describes the two sides of the accounting equation?',
+      opts: [
+        'What the business has, and where the money for it came from',
+        'What the business earned this year, and what it spent on running costs',
+        'What the business owns outright, and what it still expects to sell',
+        'What the business owes its suppliers, and what it has already paid them',
+      ],
+      ans: 0,
+      exp: 'Assets are what the business has. Liabilities and capital are where the money to acquire them came from — lenders and suppliers on one hand, the owner on the other. Because everything the business holds was funded from one of those two places, the two sides are always the same total. Income and expenses reach the equation only through profit, which changes capital.',
     },
     {
       id: 'P2-27', lo: 2, criteria: ['BKFN-2.2.1'],
-      type: 'numeric',
-      q: 'A business has capital of £31,500 and liabilities of £19,750. What are its total assets?',
-      unit: '£', answer: 51250,
-      exp: 'Assets = liabilities + capital, so £19,750 + £31,500 = £51,250. Everything the business has must have been funded either by borrowing or by the owner, which is what the equation is saying — the two sides are the same total looked at from different directions.',
+      type: 'mcq',
+      q: 'A business borrows £6,000 from the bank, and the money is paid into its bank account. How does the accounting equation change?',
+      opts: [
+        'Assets rise by £6,000 and liabilities rise by £6,000',
+        'Assets rise by £6,000 and capital rises by £6,000',
+        'Assets rise by £6,000 and liabilities fall by £6,000',
+        'Liabilities rise by £6,000 and capital falls by £6,000',
+      ],
+      ans: 0,
+      exp: 'The bank balance is an asset and it has gone up; the loan is owed to an outsider, so a liability has gone up by the same amount. Both sides of assets = liabilities + capital rise by £6,000 and it still balances. Capital is untouched — a loan is not the owner’s money, however it arrived — and nothing has been paid off, so no liability falls. This level asks which way the equation moves, never for a missing figure.',
     },
     {
-      id: 'P2-28', lo: 2, criteria: ['BKFN-2.2.1'],
-      type: 'entrygrid',
-      q: 'Two figures are given for each business. Work out the third from the accounting equation.',
-      entrygrid: {
+      id: 'P2-28', lo: 2, criteria: ['BKFN-2.2.1', 'BKFN-2.2.3'],
+      type: 'picklist',
+      q: 'Identify what each transaction does to the two totals of the accounting equation.',
+      picklist: {
         title: 'Assets = liabilities + capital',
-        rowHeader: 'Business',
-        columns: ['Assets £', 'Liabilities £', 'Capital £'],
+        rowHeader: 'Transaction', choiceHeader: 'Effect on the totals',
+        options: ['Both totals rise', 'Both totals fall', 'Neither total changes'],
         rows: [
-          { label: 'Arden Tools', cells: { 0: 62000, 1: 24000, 2: 38000 }, given: [1, 2] },
-          { label: 'Bexley Signs', cells: { 0: 45500, 1: 12300, 2: 33200 }, given: [0, 1] },
-          { label: 'Calder Joinery', cells: { 0: 88400, 1: 51900, 2: 36500 }, given: [0, 2] },
+          { text: 'The owner pays £2,000 of savings into the business bank account', answer: 0 },
+          { text: 'The business pays £800 it owed to a supplier', answer: 1 },
+          { text: 'A customer pays £450 they owed for goods bought on credit', answer: 2 },
+          { text: 'The business takes out a £5,000 bank loan', answer: 0 },
+          { text: 'The owner takes £300 from the bank for personal use', answer: 1 },
         ],
       },
-      exp: 'Each row is the same equation with a different unknown. Arden: £24,000 + £38,000 = £62,000. Bexley: £45,500 − £12,300 = £33,200. Calder: £88,400 − £36,500 = £51,900. Whichever figure is missing, the other two decide it — there is never a choice about the third number.',
+      exp: 'Money arriving from outside the business — from the owner or from a lender — raises an asset and raises capital or a liability with it, so both totals rise. Paying a debt or paying the owner takes an asset out and takes a liability or capital out with it, so both totals fall. A customer paying what they owed swaps one asset for another: the bank rises and the amount owed falls, and neither total moves. In every case the equation still balances, which is the point — it cannot do otherwise unless something has been recorded wrongly.',
     },
     {
       id: 'P2-29', lo: 2, criteria: ['BKFN-2.2.2'],
@@ -2923,9 +2937,9 @@
     {
       id: 'P3-108', lo: 3, criteria: ['BKFN-3.2.3'],
       type: 'numeric',
-      q: 'An invoice shows a net amount of £640.00. VAT is charged at the standard rate of 20%. What is the total?',
+      q: 'An invoice shows a net amount of £640.00. VAT is charged at the standard rate of ' + VAT + '. What is the total?',
       unit: '£', answer: 768,
-      exp: '£640.00 × 20% = £128.00 of VAT, and £640.00 + £128.00 = £768.00. A useful check: VAT at 20% is a fifth of the net, and the total is the net plus a fifth, which is the net times 1.2 — £640.00 × 1.2 = £768.00 gets there in one step.',
+      exp: '£640.00 × ' + VAT + ' = £128.00 of VAT, and £640.00 + £128.00 = £768.00. A useful check: VAT at ' + VAT + ' is a fifth of the net, and the total is the net plus a fifth, which is the net times 1.2 — £640.00 × 1.2 = £768.00 gets there in one step.',
     },
     {
       id: 'P3-109', lo: 3, criteria: ['BKFN-3.2.3'],
@@ -2937,14 +2951,14 @@
     {
       id: 'P3-110', lo: 3, criteria: ['BKFN-3.2.3'],
       type: 'numeric',
-      q: 'A customer buys 30 units at £22.00 each with a 10% bulk discount. VAT is charged at 20%. What is the invoice total?',
+      q: 'A customer buys 30 units at £22.00 each with a 10% bulk discount. VAT is charged at ' + VAT + '. What is the invoice total?',
       unit: '£', answer: 712.8,
-      exp: '30 × £22.00 = £660.00, less a discount of £660.00 × 10% = £66.00, giving a net of £660.00 − £66.00 = £594.00. VAT is £594.00 × 20% = £118.80, so the total is £594.00 + £118.80 = £712.80. Working out the VAT before the discount would give £132.00 and overcharge the customer.',
+      exp: '30 × £22.00 = £660.00, less a discount of £660.00 × 10% = £66.00, giving a net of £660.00 − £66.00 = £594.00. VAT is £594.00 × ' + VAT + ' = £118.80, so the total is £594.00 + £118.80 = £712.80. Working out the VAT before the discount would give £132.00 and overcharge the customer.',
     },
     {
       id: 'P3-111', lo: 3, criteria: ['BKFN-3.2.3'],
       type: 'entrygrid',
-      q: 'Complete the invoice. Each line is quantity × unit price, and VAT is charged at 20% on the net total.',
+      q: 'Complete the invoice. Each line is quantity × unit price, and VAT is charged at ' + VAT + ' on the net total.',
       entrygrid: {
         title: 'Invoice 3081 — Hartley Builders',
         rowHeader: 'Line',
@@ -2956,14 +2970,14 @@
           { label: 'VAT and invoice total', cells: { 1: 148, 2: 888 } },
         ],
       },
-      exp: '40 × £9.50 = £380.00 and 15 × £24.00 = £360.00, so the net total is £380.00 + £360.00 = £740.00. VAT is a fifth of that: £740.00 × 20% = £148.00, and the invoice total is £740.00 + £148.00 = £888.00. VAT is worked out once on the net total rather than line by line, which avoids a rounding difference between the lines and the foot.',
+      exp: '40 × £9.50 = £380.00 and 15 × £24.00 = £360.00, so the net total is £380.00 + £360.00 = £740.00. VAT is a fifth of that: £740.00 × ' + VAT + ' = £148.00, and the invoice total is £740.00 + £148.00 = £888.00. VAT is worked out once on the net total rather than line by line, which avoids a rounding difference between the lines and the foot.',
     },
     {
       id: 'P3-112', lo: 3, criteria: ['BKFN-3.2.3'],
       type: 'numeric',
-      q: 'A credit note is raised for 6 units returned at £35.00 each. VAT is charged at 20%. What is the total of the credit note?',
+      q: 'A credit note is raised for 6 units returned at £35.00 each. VAT is charged at ' + VAT + '. What is the total of the credit note?',
       unit: '£', answer: 252,
-      exp: '6 × £35.00 = £210.00 net, VAT of £210.00 × 20% = £42.00, and £210.00 + £42.00 = £252.00. A credit note is worked out exactly as an invoice is — the VAT comes off too, because the sale it reverses had VAT on it and the seller reclaims what was charged.',
+      exp: '6 × £35.00 = £210.00 net, VAT of £210.00 × ' + VAT + ' = £42.00, and £210.00 + £42.00 = £252.00. A credit note is worked out exactly as an invoice is — the VAT comes off too, because the sale it reverses had VAT on it and the seller reclaims what was charged.',
     },
     {
       id: 'P3-113', lo: 3, criteria: ['BKFN-3.3.1'],
@@ -3030,9 +3044,9 @@
     {
       id: 'P3-118', lo: 3, criteria: ['BKFN-3.3.2'],
       type: 'numeric',
-      q: 'A purchase invoice shows a net amount of £515.00 and VAT of £113.30. VAT should be at the standard rate of 20%. What is the correct VAT amount?',
+      q: 'A purchase invoice shows a net amount of £515.00 and VAT of £113.30. VAT should be at the standard rate of ' + VAT + '. What is the correct VAT amount?',
       unit: '£', answer: 103,
-      exp: '£515.00 × 20% = £103.00. The invoice has charged £113.30, which is £10.30 too much — and 113.30 ÷ 515.00 is 22%, so the supplier has applied the wrong rate rather than made an addition error. Checking the VAT against a fifth of the net catches this in a moment.',
+      exp: '£515.00 × ' + VAT + ' = £103.00. The invoice has charged £113.30, which is £10.30 too much — and 113.30 ÷ 515.00 is 22%, so the supplier has applied the wrong rate rather than made an addition error. Checking the VAT against a fifth of the net catches this in a moment.',
     },
     {
       id: 'P3-119', lo: 3, criteria: ['BKFN-3.3.2'],
@@ -3050,7 +3064,7 @@
           { text: 'VAT shown as £84.00 on a net amount of £430.00', answer: 2 },
         ],
       },
-      exp: 'Naming the type points at the document that settles it: a price error is checked against the order or quotation, a quantity error against the goods received note, and an arithmetic error against the invoice itself. The last row is arithmetic rather than a wrong rate — £430.00 × 20% = £86.00, so the £84.00 is a miscalculation of the right rate.',
+      exp: 'Naming the type points at the document that settles it: a price error is checked against the order or quotation, a quantity error against the goods received note, and an arithmetic error against the invoice itself. The last row is arithmetic rather than a wrong rate — £430.00 × ' + VAT + ' = £86.00, so the £84.00 is a miscalculation of the right rate.',
     },
     {
       id: 'P3-120', lo: 3, criteria: ['BKFN-3.3.2'],
@@ -3163,7 +3177,7 @@
         'Net equals VAT multiplied by five',
       ],
       ans: 0,
-      exp: 'The total is what the customer pays, made up of the amount for the goods plus the tax on them. The last option is nearly right at a 20% rate — net is five times VAT — but it is a consequence of the rate rather than a rule of the book, and it stops being true the moment a line is zero-rated.',
+      exp: 'The total is what the customer pays, made up of the amount for the goods plus the tax on them. The last option is nearly right at a ' + VAT + ' rate — net is five times VAT — but it is a consequence of the rate rather than a rule of the book, and it stops being true the moment a line is zero-rated.',
     },
     {
       id: 'P3-128', lo: 3, criteria: ['BKFN-3.4.2', 'BKFN-3.4.3'],
@@ -3179,7 +3193,7 @@
     {
       id: 'P3-129', lo: 3, criteria: ['BKFN-3.4.3'],
       type: 'entrygrid',
-      q: 'Two sales invoices were raised: **2201** to Fenwick Ltd for **£620.00** net, and **2202** to Ashby & Co for **£285.00** net. Enter them in the day book. VAT is 20% of the net amount.',
+      q: 'Two sales invoices were raised: **2201** to Fenwick Ltd for **£620.00** net, and **2202** to Ashby & Co for **£285.00** net. Enter them in the day book. VAT is ' + VAT + ' of the net amount.',
       entrygrid: {
         title: 'Sales day book',
         rowHeader: 'Invoice',
@@ -3189,14 +3203,14 @@
           { label: '2202 — Ashby & Co', cells: { 0: 285, 1: 57, 2: 342 } },
         ],
       },
-      exp: 'VAT at 20% is a fifth of the net: £620.00 × 20% = £124.00 and £285.00 × 20% = £57.00. The total on each line is the net plus its own VAT — £620.00 + £124.00 = £744.00 and £285.00 + £57.00 = £342.00. Each line stands on its own before anything is totalled downwards.',
+      exp: 'VAT at ' + VAT + ' is a fifth of the net: £620.00 × ' + VAT + ' = £124.00 and £285.00 × ' + VAT + ' = £57.00. The total on each line is the net plus its own VAT — £620.00 + £124.00 = £744.00 and £285.00 + £57.00 = £342.00. Each line stands on its own before anything is totalled downwards.',
     },
     {
       id: 'P3-130', lo: 3, criteria: ['BKFN-3.4.3'],
       type: 'numeric',
-      q: 'A sales invoice has a total of £1,032.00 including VAT at 20%. What net amount is entered in the day book?',
-      unit: '£', answer: 860,
-      exp: 'The total is the net plus a fifth of it, so the total is 1.2 times the net: £1,032.00 ÷ 1.2 = £860.00. The VAT is then £1,032.00 − £860.00 = £172.00. Taking 20% of the gross gives £206.40, which is the classic error — the 20% is charged on the net, not on the total.',
+      q: 'A sales invoice shows a net amount of £860.00 and VAT at the standard rate. What figure is entered in the total column of the sales day book?',
+      unit: '£', answer: 1032,
+      exp: 'VAT at ' + VAT + ' is a fifth of the net, so £860.00 ÷ 5 = £172.00, and the total column takes the net plus its VAT: £860.00 + £172.00 = £1,032.00. All three figures go on the row — net, VAT and total — and the total is what the customer will actually pay. The calculation only ever runs this way at this level: from the net to the VAT to the total, never back from a VAT-inclusive figure.',
     },
     {
       id: 'P3-131', lo: 3, criteria: ['BKFN-3.4.3'],
@@ -3232,7 +3246,7 @@
     {
       id: 'P3-134', lo: 3, criteria: ['BKFN-3.4.4'],
       type: 'entrygrid',
-      q: 'Three credit notes were issued: **CN 411** for **£240.00** net, **CN 412** for **£165.00** and **CN 413** for **£95.00**. Complete each line, then total each column. VAT is 20% of the net amount.',
+      q: 'Three credit notes were issued: **CN 411** for **£240.00** net, **CN 412** for **£165.00** and **CN 413** for **£95.00**. Complete each line, then total each column. VAT is ' + VAT + ' of the net amount.',
       entrygrid: {
         title: 'Sales returns day book — totals',
         rowHeader: 'Line',
@@ -3376,7 +3390,7 @@
     {
       id: 'P4-97', lo: 4, criteria: ['BKFN-4.1.2'],
       type: 'picklist',
-      q: 'Identify which cash book column each figure belongs in for a £96.00 cash sale including VAT at 20%.',
+      q: 'Identify which cash book column each figure belongs in for a £96.00 cash sale including VAT at ' + VAT + '.',
       picklist: {
         title: 'One cash sale, three columns',
         rowHeader: 'Figure', choiceHeader: 'Column',
@@ -3387,7 +3401,7 @@
           { text: '£80.00', answer: 2 },
         ],
       },
-      exp: 'The money that actually came in is £96.00, and that is what the cash column records. Of it, £16.00 is VAT the business is collecting for HMRC and £80.00 is its own income — the total divided by 1.2 gives the net, and the difference is the VAT. The two analysis figures must add back to the cash figure, which is the cross cast.',
+      exp: 'The money that actually came in is £96.00, and that is what the cash column records. Of it, £80.00 is the business’s own income and £16.00 is VAT it is collecting for HMRC — a fifth of the £80.00 net, and £80.00 + £16.00 = £96.00. The two analysis figures must add back to the cash figure, which is the cross cast.',
     },
     {
       id: 'P4-98', lo: 4, criteria: ['BKFN-4.1.2'],
@@ -3448,17 +3462,17 @@
     {
       id: 'P4-102', lo: 4, criteria: ['BKFN-4.1.4'],
       type: 'entrygrid',
-      q: 'Two cash sales were taken over the counter: **£216.00** on 4 May and **£90.00** on 6 May, each including VAT at 20%. Enter them and split each between the sales and VAT analysis columns.',
+      q: 'Two cash sales were taken over the counter: **£180.00** plus VAT on 4 May and **£75.00** plus VAT on 6 May, with VAT at ' + VAT + ' in each case. Enter the cash received on each line and split it between the sales and VAT analysis columns.',
       entrygrid: {
         title: 'Cash book — receipts side',
         rowHeader: 'Receipt',
-        columns: ['Bank £', 'Sales £', 'VAT £'],
+        columns: ['Cash £', 'Sales £', 'VAT £'],
         rows: [
           { label: 'Counter sale, 4 May', cells: { 0: 216, 1: 180, 2: 36 } },
           { label: 'Counter sale, 6 May', cells: { 0: 90, 1: 75, 2: 15 } },
         ],
       },
-      exp: 'The net is the gross divided by 1.2: £216.00 ÷ 1.2 = £180.00 and £90.00 ÷ 1.2 = £75.00. The VAT is the difference — £216.00 − £180.00 = £36.00 and £90.00 − £75.00 = £15.00. Each line cross casts: the two analysis figures add back to the money that actually arrived.',
+      exp: 'VAT is a fifth of the net: £180.00 ÷ 5 = £36.00 and £75.00 ÷ 5 = £15.00. The cash column takes what actually came in, which is the net plus its VAT — £180.00 + £36.00 = £216.00 and £75.00 + £15.00 = £90.00. Each line cross casts: the two analysis figures add back to the money that arrived, and the VAT column is what lets the month’s VAT be posted as one figure.',
     },
     {
       id: 'P4-103', lo: 4, criteria: ['BKFN-4.1.4'],
@@ -3477,7 +3491,7 @@
     {
       id: 'P4-105', lo: 4, criteria: ['BKFN-4.1.4'],
       type: 'entrygrid',
-      q: 'Three payments were made from the bank: **£480.00** to Ellis Supplies, **£264.00** to Harmer Tools and **£156.00** to Norwood Timber, each including VAT at 20%. Complete each line, then total each column and check that it cross casts.',
+      q: 'Three payments were made from the bank: **£400.00** plus VAT to Ellis Supplies, **£220.00** plus VAT to Harmer Tools and **£130.00** plus VAT to Norwood Timber, with VAT at ' + VAT + ' in each case. Complete each line, then total each column and check that it cross casts.',
       entrygrid: {
         title: 'Cash book — payments side',
         rowHeader: 'Line',
@@ -3489,7 +3503,7 @@
           { label: 'Totals', cells: { 0: 900, 1: 750, 2: 150 } },
         ],
       },
-      exp: 'Each line first: the net is the gross divided by 1.2, so £400.00, £220.00 and £130.00, with the VAT as the difference. Then down each column: £480.00 + £264.00 + £156.00 = £900.00, £400.00 + £220.00 + £130.00 = £750.00, and £80.00 + £44.00 + £26.00 = £150.00. It cross casts, because £750.00 + £150.00 = £900.00.',
+      exp: 'Each line first: VAT is a fifth of the net, so £80.00, £44.00 and £26.00, and the bank column takes the net plus its VAT — £480.00, £264.00 and £156.00. Then down each column: £480.00 + £264.00 + £156.00 = £900.00, £400.00 + £220.00 + £130.00 = £750.00, and £80.00 + £44.00 + £26.00 = £150.00. It cross casts, because £750.00 + £150.00 = £900.00.',
     },
     {
       id: 'P4-106', lo: 4, criteria: ['BKFN-4.1.4'],
@@ -3638,15 +3652,15 @@
     {
       id: 'P4-119', lo: 4, criteria: ['BKFN-4.3.2'],
       type: 'mcq',
-      q: 'A bank statement shows a closing balance of £420.00 marked OD. What does this mean?',
+      q: 'A bank statement shows a figure in the balance column against every entry, not only the last one. What does each of those figures show?',
       opts: [
-        'The account is overdrawn by £420.00',
-        'The account holds £420.00 on deposit',
-        '£420.00 is due to be paid in on the next working day',
-        'The bank has charged £420.00 in the period',
+        'The position of the account after that entry was processed',
+        'The amount of the entry on that line, restated',
+        'The total of all the receipts on the statement so far',
+        'The balance at the start of that day, before any entries',
       ],
       ans: 0,
-      exp: 'OD stands for overdrawn: the business owes the bank £420.00 rather than holding it. Reading it as a positive balance overstates the funds available by £840.00, since the figure is not £420.00 in credit but £420.00 the wrong side of nil — which is how a payment run gets authorised that the account cannot meet.',
+      exp: 'The balance column is a running balance: after each receipt or payment the bank reworks the position and prints it, which is why the last figure in the column is the closing balance. It is not a restatement of the entry, and it is not a running total of receipts alone — payments have been taken off as well. Reading the column this way is what lets a bookkeeper see the position on any day the statement covers, not only at its end.',
     },
     {
       id: 'P4-120', lo: 4, criteria: ['BKFN-4.3.2'],
@@ -3654,10 +3668,10 @@
       q: 'Identify whether each statement about bank statement balances is correct.',
       statements: [
         { text: 'The closing balance on one statement is the opening balance on the next.', answer: true },
-        { text: 'A balance marked OD means the account is overdrawn.', answer: true },
+        { text: 'The balance column shows the position after every entry, not only at the end.', answer: true },
         { text: 'The statement balance and the cash book balance should always be identical.', answer: false },
       ],
-      exp: 'Statements run continuously, and OD means overdrawn. The third is the point of the whole topic: the two figures are usually different and both are usually right, because each knows about transactions the other does not — cheques written and not yet presented on one side, charges taken and not yet entered on the other.',
+      exp: 'Statements run continuously, and the balance column is reworked after every entry rather than only at the foot of the page. The third is the point of the whole topic: the two figures are usually different and both are usually right, because each knows about transactions the other does not — cheques written and not yet presented on one side, charges taken and not yet entered on the other.',
     },
     {
       id: 'P4-121', lo: 4, criteria: ['BKFN-4.3.3'],
@@ -3738,9 +3752,9 @@
     {
       id: 'P4-127', lo: 4, criteria: ['BKFN-4.3.4'],
       type: 'numeric',
-      q: 'A corrected cash book balance is £5,220.00. Unpresented cheques total £1,340.00 and a lodgement of £900.00 has not yet cleared. What should the bank statement show?',
-      unit: '£', answer: 5660,
-      exp: 'Add back the cheques the bank has not seen and take off the lodgement it has not credited: £5,220.00 + £1,340.00 = £6,560.00, then £6,560.00 − £900.00 = £5,660.00. If the statement shows anything else, there is a further difference still to find.',
+      q: 'The cash book shows £5,220.00 at the bank. The statement shows a standing order of £340.00 and a BACS receipt of £900.00 from a customer, neither of which the business had recorded. What should the cash book balance be once both are entered?',
+      unit: '£', answer: 5780,
+      exp: 'Both items are real and both were missed, so both go in: £5,220.00 − £340.00 = £4,880.00, and £4,880.00 + £900.00 = £5,780.00. The standing order left the account without anybody writing anything down, and the customer paid straight into the bank without sending a remittance advice — two ways money moves that the statement is often the first to reveal. A cheque the business wrote and the bank has not yet seen would need no entry at all, which is the other half of this topic.',
     },
     {
       id: 'P4-128', lo: 4, criteria: ['BKFN-4.3.4'],
@@ -3886,7 +3900,7 @@
     {
       id: 'P4-140', lo: 4, criteria: ['BKFN-4.4.4'],
       type: 'mcq',
-      q: 'A supplier statement shows £4,600.00 owing but the purchase ledger account shows £4,150.00. An invoice for £450.00 arrived after the statement was printed. What does this explain?',
+      q: 'A supplier statement shows £4,600.00 owing but the business’s own records show £4,150.00 owed to that supplier. An invoice for £450.00 arrived after the statement was printed. What does this explain?',
       opts: [
         'The whole difference: £4,150.00 plus the £450.00 invoice is £4,600.00',
         'None of it, because an invoice not yet entered has no effect either way',
