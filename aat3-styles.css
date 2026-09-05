@@ -1817,6 +1817,27 @@ body[data-subject="aat3"] .a3-calc-key.a3-calc-eq {
   background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
   color: var(--a3-on-fill); border-color: transparent; font-size: 17px;
 }
+/* THE OPERATION THAT IS WAITING. Once × has been pressed the display goes
+   back to showing a number, and until this the pad looked exactly the same
+   whether an operation was pending or nothing was — so a reader keying
+   1200 × 1.2 could not tell that the × had landed, and, more often, could not
+   tell that they had forgotten it.
+
+   Filled, not tinted a shade darker. A change only a reader already looking
+   for it would notice is no use to a reader who does not know to look. The
+   fill separates from the resting operator wash by 5.5:1 in light and 5.4:1 in
+   dark, and the label clears 6:1 on it in both — measured against these two
+   themes' own tokens rather than assumed from one of them. The heavier weight
+   is a second channel, for greyscale and for anyone who cannot pick the hue
+   out. The third is aria-pressed on the button itself, set in calculator.js.
+
+   It goes out where the arithmetic says it does: on =, on C, and on an error,
+   all three of which clear `pending`. */
+body[data-subject="aat3"] .a3-calc-key.a3-calc-op.is-pending {
+  background: var(--a3-brand); color: var(--a3-on-fill);
+  border-color: var(--a3-brand); font-weight: 800;
+}
+
 body[data-subject="aat3"] .a3-calc-w2 { grid-column: span 2; }
 
 body[data-subject="aat3"] .a3-calc-use {
@@ -2044,3 +2065,78 @@ body[data-subject="aat3"] .a3-eg-key { text-align: right; font-variant-numeric: 
   body[data-subject="aat3"] .a3-pl-table td { display: block; padding: 0; border-bottom: 0; }
   body[data-subject="aat3"] .a3-pl-table tbody th { margin-bottom: 6px; }
 }
+
+/* ── Accuracy over time ─────────────────────────────────────────────────────
+   The five series hues are the validated categorical palette, stepped
+   separately for each surface rather than flipped: the light steps are darker
+   than the reference theme's because this app's chart surface is pure white,
+   where the reference aqua, yellow and magenta all fell under 3:1. Every hue
+   below clears the lightness band, the chroma floor, adjacent-pair CVD
+   separation (worst 8.2 protan), the normal-vision floor (worst 15.6) and 3:1
+   against its own surface, checked with the validator rather than by eye.
+
+   THE TOTAL IS NOT A SIXTH SERIES. It is the aggregate of the other five, so
+   it wears ink rather than a hue and is drawn heavier. Giving it a colour
+   would make it look like a peer of the outcomes it is summarising. */
+.a3-tr { margin: 0 0 var(--a3-3); padding: var(--a3-4); border-radius: var(--a3-r);
+  border: 1px solid var(--a3-line); background: var(--a3-surface); }
+.a3-tr-k { font-size: var(--a3-t-meta); font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--a3-ink-3); margin-bottom: var(--a3-3); }
+.a3-tr-empty { margin: 0; font-size: var(--a3-t-meta); color: var(--a3-ink-3); line-height: 1.5; }
+
+.a3-tr-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* Recessive, as grid and axes must be: they locate the marks and never
+   compete with them. */
+.a3-tr-grid { stroke: var(--a3-line); stroke-width: 1; }
+.a3-tr-pass { stroke: var(--a3-line-2); stroke-width: 1; stroke-dasharray: 3 3; }
+.a3-tr-ylab { fill: var(--a3-ink-3); font-size: 9px; text-anchor: end;
+  font-family: inherit; }
+.a3-tr-xlab { fill: var(--a3-ink-3); font-size: 9px; font-family: inherit; }
+.a3-tr-xlab-s { text-anchor: start; }
+.a3-tr-xlab-e { text-anchor: end; }
+
+/* One custom property per series, and every mark reads it. Setting `stroke`
+   and `fill` on the series classes directly was the first version and it drew
+   five filled wedges: `.a3-tr-s1 { fill }` and `.a3-tr-line { fill: none }`
+   are both one class, so source order decided it and the fill won. A variable
+   has no specificity to lose. */
+.a3-tr-s1 { --s: #2a78d6; }
+.a3-tr-s2 { --s: #c9541f; }
+.a3-tr-s3 { --s: #0e8a60; }
+.a3-tr-s4 { --s: #9c6f0c; }
+.a3-tr-s5 { --s: #c74a7a; }
+.a3-tr-total { --s: var(--a3-ink-2); }
+
+.a3-tr-line { fill: none; stroke: var(--s); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+.a3-tr-line.a3-tr-total { stroke-width: 2.6; }
+/* A ring in the surface colour, so a dot sitting where two series cross still
+   reads as one dot rather than as a smudge. */
+.a3-tr-dot { fill: var(--s); stroke: var(--a3-surface); stroke-width: 1.5; }
+
+.a3-tr-key { display: flex; flex-wrap: wrap; gap: 3px var(--a3-3); list-style: none;
+  margin: var(--a3-3) 0 0; padding: 0; }
+/* Legend text wears an ink token, never the series colour — the swatch beside
+   it is what carries identity. */
+.a3-tr-keyitem { display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; color: var(--a3-ink-2); }
+.a3-tr-sw { width: 13px; height: 3px; border-radius: 2px; flex: none; background: var(--s); }
+.a3-tr-sw.a3-tr-total { height: 4px; }
+
+.a3-tr-tbl { margin-top: var(--a3-3); }
+.a3-tr-tbl > summary { font-size: 11.5px; color: var(--a3-ink-3); cursor: pointer; }
+.a3-tr-tbl > summary:hover { color: var(--a3-brand); }
+/* Wide content scrolls inside its own box rather than pushing the page. */
+.a3-tr-tblwrap { overflow-x: auto; margin-top: var(--a3-2); }
+.a3-tr-n { color: var(--a3-ink-3); }
+.a3-tr-foot { margin: var(--a3-3) 0 0; font-size: 11.5px;
+  color: var(--a3-ink-3); line-height: 1.5; }
+
+/* Dark mode is stepped, not flipped: these are the palette's own dark steps,
+   validated against --a3-surface #10152A, where all five clear 3:1 unaided. */
+body.dark[data-subject="aat3"] .a3-tr-s1 { --s: #3987e5; }
+body.dark[data-subject="aat3"] .a3-tr-s2 { --s: #d95926; }
+body.dark[data-subject="aat3"] .a3-tr-s3 { --s: #199e70; }
+body.dark[data-subject="aat3"] .a3-tr-s4 { --s: #c98500; }
+body.dark[data-subject="aat3"] .a3-tr-s5 { --s: #d55181; }

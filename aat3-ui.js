@@ -168,6 +168,7 @@
           mockBest: n0(u.mockBest),
           los: (u.los && typeof u.los === 'object') ? u.los : {},
           qs: (u.qs && typeof u.qs === 'object') ? u.qs : {},
+          hist: (u.hist && typeof u.hist === 'object') ? u.hist : {},
         };
       });
     }
@@ -176,7 +177,7 @@
     if (legacyRuns || Object.keys(legacyLos).length) {
       /* The COMPLETE record shape, matching practiceRec() — `{ runs, los }`
          alone is exactly the partial-record trap the comment above names. */
-      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} });
+      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {} });
       t.runs = Math.max(t.runs, legacyRuns);
       Object.keys(legacyLos).forEach(function (lo) {
         var was = legacyLos[lo] || {}, now = t.los[lo] || { attempted: 0, correct: 0 };
@@ -210,11 +211,13 @@
      "null", which merges across devices and shows up in the backup summary as
      a unit nobody studied. */
   function practiceRec(unitKey) {
-    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {} };
+    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {} };
     if (!unitKey) return blank;
     var u = data.practice.units[unitKey];
     if (!u) u = data.practice.units[unitKey] = blank;
     if (!u.qs) u.qs = {};
+    /* A record written before the history existed has no `hist`. */
+    if (!u.hist) u.hist = {};
     return u;
   }
 
@@ -658,12 +661,63 @@
     return 'Outcome ' + S.practiceLo;
   }
 
+  /* ── The history behind the trend chart ───────────────────────────────────
+     The counters above are LIFETIME SUMS, and a sum cannot be un-summed. Two
+     hundred attempts at 85% says nothing about whether the last twenty went
+     well, which is exactly the question a reader asks after a good session —
+     and the number barely moves, because each new answer is one part in two
+     hundred. So each answer is also counted into the day it happened on.
+
+     WHY DAYS AND NOT SESSIONS. A day is a boundary both devices agree on
+     without coordinating, which matters because this record merges. A session
+     id would need to be unique across devices and would still split a single
+     evening into three lines if the reader put the phone down twice.
+
+     WHY {a, c} OBJECTS AND NOT [a, c] ARRAYS. progress-backup.js merges two
+     devices field by field, numbers by MAX — and its array rule is `return
+     local`, so a pair stored as an array would silently discard whichever
+     device synced second. Stored as an object of numbers, the generic merge
+     already does the right thing per day, per outcome, with no change needed
+     there: MAX never double-counts a day that both devices saw.
+
+     WHY MAX AND NOT SUM IS RIGHT HERE. Summing would double-count every
+     re-sync of the same day. MAX under-counts the case where two devices were
+     genuinely used on the same day, which is the safe direction to be wrong
+     in: it can only understate practice, never invent it. That is also the
+     rule the lifetime counters already merge under, so the two agree. */
+  var HIST_DAYS = 120;
+
+  /* LOCAL date, not UTC. A session at 23:30 in British Summer Time is a
+     Tuesday to the reader and a Wednesday to toISOString(), which would split
+     one evening across two points on the chart. */
+  function dayKey(ts) {
+    var d = (typeof ts === 'number') ? new Date(ts) : new Date();
+    var m = d.getMonth() + 1, day = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
+  }
+
+  /* Keyed by an ISO-style date so a plain string sort is a chronological sort:
+     the oldest key is always the one to drop. */
+  function pruneHist(hist) {
+    var days = Object.keys(hist).sort();
+    while (days.length > HIST_DAYS) delete hist[days.shift()];
+  }
+
   function recordPractice(unitKey, lo, wasCorrect) {
-    var los = practiceRec(unitKey).los;
+    var rec = practiceRec(unitKey);
+    var los = rec.los;
     var key = String(lo);
     if (!los[key]) los[key] = { attempted: 0, correct: 0 };
     los[key].attempted++;
     if (wasCorrect) los[key].correct++;
+
+    if (!rec.hist) rec.hist = {};
+    var today = dayKey();
+    var day = rec.hist[today] || (rec.hist[today] = {});
+    var cell = day[key] || (day[key] = { a: 0, c: 0 });
+    cell.a++;
+    if (wasCorrect) cell.c++;
+    pruneHist(rec.hist);
   }
 
   /* The lifetime practice picture as one object.
@@ -740,6 +794,120 @@
       accuracy: attempted ? Math.round((correct / attempted) * 100) : null,
       rows: rows,
       worst: worst,
+    };
+  }
+
+  /* ── Accuracy over time ───────────────────────────────────────────────────
+     Turns the day buckets into plottable series. Pure, for the same reason
+     practiceSummary is: the build check asserts the shape of the trend without
+     standing up a browser.
+
+     A DAY WITH TWO ANSWERS IS NOISE, NOT A DATA POINT. One question answered
+     in an outcome is 0% or 100%, and plotting it draws a line that swings the
+     full height of the chart on a sample nobody would act on. Points below
+     MIN_POINT attempts are therefore not plotted for that outcome — the line
+     joins the days either side of them rather than diving to zero. Their
+     answers still count: they are in the lifetime figures, and in the unit
+     total for that day, which pools every outcome and so clears the floor on
+     days no single outcome does.
+
+     WHERE THE FLOOR COMES FROM. At eight answers the 95% interval around 85%
+     is still about twenty-five points wide, so eight is not a comfortable
+     sample — it is the point below which the arithmetic stops resembling a
+     measurement at all. Four, the first value tried, admits quarter-steps: a
+     four-question day can only read 0, 25, 50, 75 or 100, and a run of them
+     drew a chart that swung between the floor and the ceiling on days the
+     reader had barely practised. The unit total is the line to trust; the
+     outcome lines are the texture underneath it.
+
+     THE X AXIS IS TIME, NOT SESSION NUMBER. Evenly spacing the days you
+     practised would compress a fortnight's break into the same gap as an
+     overnight one, and the shape of a break is part of what the reader is
+     looking at. */
+  var MIN_POINT = 8;
+
+  /* Written out rather than composed, for two reasons: check-subject-styles
+     greps the source for every class a stylesheet defines, and a name built
+     as 'a3-tr-s' + n is invisible to it — dead CSS could then accumulate here
+     unnoticed. And the length of this list IS the number of categorical slots,
+     which is what stops a sixth outcome quietly reusing the first one's hue. */
+  var SERIES_CLASS = ['a3-tr-s1', 'a3-tr-s2', 'a3-tr-s3', 'a3-tr-s4', 'a3-tr-s5'];
+
+  function dayToMs(key) {
+    var p = String(key).split('-');
+    /* Local midnight, matching how the key was written. Date.parse on a bare
+       YYYY-MM-DD is UTC by spec, which would drift the x axis by a timezone. */
+    var t = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])).getTime();
+    return isFinite(t) ? t : null;
+  }
+
+  function practiceTrend(hist, outcomeList) {
+    var days = Object.keys(hist && typeof hist === 'object' ? hist : {})
+      .filter(function (k) { return dayToMs(k) !== null; })
+      .sort();
+
+    var list = (outcomeList || outcomes()).map(function (o) { return { n: o.n, title: o.title }; });
+
+    var pt = function (day, a, c) {
+      /* Clamped: a merged backup takes the larger of `a` and `c` separately,
+         so a record can arrive claiming more correct than attempted. */
+      var att = Math.max(0, a || 0), cor = Math.min(att, Math.max(0, c || 0));
+      return { day: day, ms: dayToMs(day), a: att, c: cor,
+               pct: att ? Math.round((cor / att) * 100) : null };
+    };
+
+    var series = list.map(function (o) {
+      var key = String(o.n), points = [];
+      days.forEach(function (d) {
+        var cell = (hist[d] || {})[key];
+        if (!cell) return;
+        var p = pt(d, cell.a, cell.c);
+        if (p.a >= MIN_POINT) points.push(p);
+      });
+      return { n: o.n, title: o.title, points: points };
+    });
+
+    var total = [];
+    days.forEach(function (d) {
+      var cells = hist[d] || {}, a = 0, c = 0;
+      Object.keys(cells).forEach(function (k) {
+        var cell = cells[k] || {};
+        var att = Math.max(0, cell.a || 0);
+        a += att; c += Math.min(att, Math.max(0, cell.c || 0));
+      });
+      if (a >= MIN_POINT) total.push(pt(d, a, c));
+    });
+
+    /* AT MOST FIVE LINES, AND NEVER A REUSED HUE. There are five categorical
+       slots, and TPFB has exactly five outcomes — but FAPS has nine, and the
+       obvious `idx % 5` would have given outcomes 6 to 9 the same colours as
+       1 to 4. Two lines the reader cannot tell apart is worse than one line
+       missing, and nine lines on a phone is unreadable either way.
+
+       So the slots go to the five outcomes with the most answers in the
+       window — the ones actually being worked on — and the rest are carried
+       with `slot: null`: absent from the chart, present in the table, and
+       still inside the unit total, which is the line that answers the
+       question anyway. */
+    var ranked = series.filter(function (s) { return s.points.length >= 2; })
+      .map(function (s) {
+        var n = 0; s.points.forEach(function (p) { n += p.a; });
+        return { s: s, n: n };
+      })
+      .sort(function (a, b) { return (b.n - a.n) || cmpOutcome(a.s.n, b.s.n); });
+    series.forEach(function (s) { s.slot = null; });
+    ranked.slice(0, SERIES_CLASS.length).forEach(function (r, i) { r.s.slot = i; });
+
+    /* Two points is the least that can be a line. One is a dot, and a dot
+       drawn under the heading "accuracy over time" claims a trend it does not
+       have — so the screen says how much more is needed instead. */
+    return {
+      days: days, series: series, total: total,
+      from: total.length ? total[0].day : null,
+      to: total.length ? total[total.length - 1].day : null,
+      enough: total.length >= 2,
+      plottedOutcomes: Math.min(ranked.length, SERIES_CLASS.length),
+      hiddenOutcomes: Math.max(0, ranked.length - SERIES_CLASS.length),
     };
   }
 
@@ -1541,7 +1709,7 @@
   var _calc = null;
   function Calc() {
     if (!_calc && root.AATCalc) {
-      _calc = root.AATCalc.create({ displayId: 'a3CalcDisplay' });
+      _calc = root.AATCalc.create({ displayId: 'a3CalcDisplay', panelId: 'a3CalcSheet' });
     }
     return _calc;
   }
@@ -1611,8 +1779,13 @@
     var keys = (root.AATCalc.KEYS || []).map(function (k) {
       return '<button class="a3-calc-key' +
         (CALC_KIND_CLASS[k.kind] ? ' ' + CALC_KIND_CLASS[k.kind] : '') + (k.span === 2 ? ' a3-calc-w2' : '') +
+        /* The pending operator is lit at render time as well as patched live,
+           because a repaint rebuilds this markup from scratch and would
+           otherwise put out a light the arithmetic still has on. */
+        root.AATCalc.opClass(k, C.pending) +
         '" type="button" data-a3="calckey" data-k="' + esc(k.k) + '"' +
         (k.val != null ? ' data-v="' + esc(k.val) + '"' : '') +
+        root.AATCalc.opAttrs(k, C.pending) +
         (k.aria ? ' aria-label="' + esc(k.aria) + '"' : '') +
         '>' + esc(k.label) + '</button>';
     }).join('');
@@ -2570,6 +2743,171 @@
     return pct >= 70 ? 'a3-band-ok' : pct >= 50 ? 'a3-band-mid' : 'a3-band-bad';
   }
 
+  /* ── The trend chart ──────────────────────────────────────────────────────
+     WHY THE Y AXIS DOES NOT START AT ZERO. A bar encodes length, so cropping
+     its baseline lies about the ratio between bars. A line encodes position,
+     and nobody reads the gap to the axis as the quantity — so the honest
+     constraint here is different: show the whole of the data, and show the
+     reference the reader is actually working towards. The axis is therefore
+     pinned to 100 at the top and drops to whichever is lower of 70% — the
+     pass mark, which is the only number on this screen with a consequence —
+     and the worst day on the chart, rounded down. On a reader sitting between
+     85% and 95%, a 0–100 axis would squash every bit of movement they came to
+     look at into the top sixth of the box. The floor is labelled, so the range
+     is stated rather than implied.
+
+     MARKERS DISAPPEAR ON A LONG RUN. Twelve dots on twelve days is a reading
+     aid; ninety dots on ninety days is a solid bar. Past MAX_DOTS the line is
+     drawn alone. */
+  var CHART_W = 320, CHART_H = 168;
+  var PAD_L = 26, PAD_R = 8, PAD_T = 10, PAD_B = 22;
+  var PASS_PCT = 70;
+  var MAX_DOTS = 12;
+
+  function trendGeometry(trend) {
+    var lo = PASS_PCT, i, j, pts;
+    var all = trend.series.concat([{ points: trend.total }]);
+    for (i = 0; i < all.length; i++) {
+      pts = all[i].points;
+      for (j = 0; j < pts.length; j++) if (pts[j].pct !== null && pts[j].pct < lo) lo = pts[j].pct;
+    }
+    lo = Math.max(0, Math.floor(lo / 10) * 10);
+    var t0 = trend.total.length ? trend.total[0].ms : 0;
+    var t1 = trend.total.length ? trend.total[trend.total.length - 1].ms : 0;
+    var span = Math.max(1, t1 - t0);
+    return {
+      lo: lo, hi: 100, t0: t0, span: span,
+      x: function (ms) { return PAD_L + ((ms - t0) / span) * (CHART_W - PAD_L - PAD_R); },
+      y: function (pct) {
+        return PAD_T + (1 - (pct - lo) / (100 - lo)) * (CHART_H - PAD_T - PAD_B);
+      },
+    };
+  }
+
+  function shortDay(key) {
+    var ms = dayToMs(key);
+    if (ms === null) return esc(key);
+    var d = new Date(ms);
+    return d.getDate() + ' ' +
+      ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+  }
+
+  function trendPath(g, points) {
+    return points.map(function (p) {
+      return (Math.round(g.x(p.ms) * 10) / 10) + ',' + (Math.round(g.y(p.pct) * 10) / 10);
+    }).join(' ');
+  }
+
+  function renderTrend(trend) {
+    var h = '<section class="a3-tr" aria-label="Accuracy over time">';
+    h += '<div class="a3-tr-k">Accuracy over time</div>';
+
+    if (!trend.enough) {
+      /* The counters this chart replaces are lifetime sums that were never
+         timestamped, so there is no back-history to draw and none can be
+         reconstructed. Saying that plainly beats an empty box. */
+      var got = trend.total.length;
+      h += '<p class="a3-tr-empty">' + (got
+        ? 'One day of practice recorded so far. A second day of practice draws the first line — ' +
+          'this chart only counts days from when it started recording, so earlier practice is not in it.'
+        : 'Nothing to plot yet. This chart is built from the days you practise on, and it started ' +
+          'recording from this version onward — so it fills in as you go rather than showing ' +
+          'practice you did before.') + '</p></section>';
+      return h;
+    }
+
+    var g = trendGeometry(trend);
+    var lines = [], dots = [], i;
+
+    /* Gridlines every ten points inside the range, plus the pass mark, which
+       is dashed and drawn over them so it reads as a threshold rather than as
+       one more gridline. */
+    var grid = '';
+    for (i = g.lo; i <= 100; i += 10) {
+      grid += '<line class="a3-tr-grid" x1="' + PAD_L + '" x2="' + (CHART_W - PAD_R) +
+        '" y1="' + g.y(i) + '" y2="' + g.y(i) + '"/>';
+    }
+    grid += '<line class="a3-tr-pass" x1="' + PAD_L + '" x2="' + (CHART_W - PAD_R) +
+      '" y1="' + g.y(PASS_PCT) + '" y2="' + g.y(PASS_PCT) + '"/>';
+
+    var labels = '<text class="a3-tr-ylab" x="' + (PAD_L - 4) + '" y="' + (g.y(100) + 3) + '">100%</text>' +
+      '<text class="a3-tr-ylab" x="' + (PAD_L - 4) + '" y="' + (g.y(PASS_PCT) + 3) + '">' + PASS_PCT + '%</text>' +
+      (g.lo < PASS_PCT - 5
+        ? '<text class="a3-tr-ylab" x="' + (PAD_L - 4) + '" y="' + (g.y(g.lo) + 3) + '">' + g.lo + '%</text>'
+        : '') +
+      '<text class="a3-tr-xlab a3-tr-xlab-s" x="' + PAD_L + '" y="' + (CHART_H - 6) + '">' + shortDay(trend.from) + '</text>' +
+      '<text class="a3-tr-xlab a3-tr-xlab-e" x="' + (CHART_W - PAD_R) + '" y="' + (CHART_H - 6) + '">' + shortDay(trend.to) + '</text>';
+
+    trend.series.forEach(function (s) {
+      if (s.slot === null || s.points.length < 2) return;
+      var cls = SERIES_CLASS[s.slot];
+      lines.push('<polyline class="a3-tr-line ' + cls + '" points="' + trendPath(g, s.points) + '"/>');
+      if (s.points.length <= MAX_DOTS) {
+        s.points.forEach(function (p) {
+          dots.push('<circle class="a3-tr-dot ' + cls + '" cx="' + g.x(p.ms) + '" cy="' + g.y(p.pct) + '" r="3"/>');
+        });
+      }
+    });
+    /* The unit total is not a sixth outcome, so it does not take a sixth hue.
+       It is the aggregate of the other five, drawn heavier, in ink, and last
+       so it sits on top of them. */
+    lines.push('<polyline class="a3-tr-line a3-tr-total" points="' + trendPath(g, trend.total) + '"/>');
+    if (trend.total.length <= MAX_DOTS) {
+      trend.total.forEach(function (p) {
+        dots.push('<circle class="a3-tr-dot a3-tr-total" cx="' + g.x(p.ms) + '" cy="' + g.y(p.pct) + '" r="3.4"/>');
+      });
+    }
+
+    h += '<svg class="a3-tr-svg" viewBox="0 0 ' + CHART_W + ' ' + CHART_H + '" role="img" ' +
+      'aria-label="Accuracy per day of practice, ' + esc(shortDay(trend.from)) + ' to ' +
+      esc(shortDay(trend.to)) + ', by outcome and for the unit as a whole. The figures are in the table below.">' +
+      grid + labels + lines.join('') + dots.join('') + '</svg>';
+
+    /* A legend, because identity must never be colour alone. */
+    h += '<ul class="a3-tr-key">';
+    h += '<li class="a3-tr-keyitem"><span class="a3-tr-sw a3-tr-total"></span>Whole unit</li>';
+    trend.series.forEach(function (s) {
+      if (s.slot === null || s.points.length < 2) return;
+      h += '<li class="a3-tr-keyitem"><span class="a3-tr-sw ' + SERIES_CLASS[s.slot] + '"></span>' +
+        'Outcome ' + esc(s.n) + '</li>';
+    });
+    h += '</ul>';
+
+    /* The table view. Required anyway for anyone who cannot read the lines,
+       and the fastest way for anybody to read an exact figure off a day. */
+    h += '<details class="a3-tr-tbl"><summary>Show these figures as a table</summary>' +
+      '<div class="a3-tr-tblwrap"><table class="a3-table"><thead><tr><th scope="col">Day</th>' +
+      '<th scope="col">Whole unit</th>';
+    trend.series.forEach(function (s) {
+      if (s.slot === null || s.points.length < 2) return;
+      h += '<th scope="col">O' + esc(s.n) + '</th>';
+    });
+    h += '</tr></thead><tbody>';
+    trend.total.forEach(function (p) {
+      h += '<tr><th scope="row">' + shortDay(p.day) + '</th>' +
+        '<td>' + p.pct + '% <span class="a3-tr-n">(' + p.c + '/' + p.a + ')</span></td>';
+      trend.series.forEach(function (s) {
+        if (s.slot === null || s.points.length < 2) return;
+        var hit = null;
+        s.points.forEach(function (q) { if (q.day === p.day) hit = q; });
+        h += '<td>' + (hit ? hit.pct + '% <span class="a3-tr-n">(' + hit.c + '/' + hit.a + ')</span>' : '—') + '</td>';
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table></div></details>';
+
+    h += '<p class="a3-tr-foot">One point per day you practised. An outcome is only plotted for a ' +
+      'day it got at least ' + MIN_POINT + ' answers, because a handful of questions reads as a ' +
+      'wild swing rather than as a change in how well you know it. Those answers still count in ' +
+      'the whole-unit line and in every figure above.' +
+      (trend.hiddenOutcomes
+        ? ' Five outcomes are plotted at a time, so the ' + trend.hiddenOutcomes + ' you have ' +
+          'answered least in ' + (trend.hiddenOutcomes === 1 ? 'is' : 'are') + ' left off — reusing ' +
+          'a colour would make two lines impossible to tell apart.'
+        : '') + '</p>';
+    return h + '</section>';
+  }
+
   function renderPracticeSummary() {
     var s = practiceSummary();
     var bankCounts = {};
@@ -2633,6 +2971,12 @@
             'outcome to name. Keep going and this will point at one.</div>' +
         '</div></div>';
     }
+
+    /* Between the callout and the rows: the callout says which outcome is
+       worst right now, the rows say where each one stands overall, and this
+       says which way any of it is moving — which none of the lifetime figures
+       above can, because they are sums. */
+    if (!empty) h += renderTrend(practiceTrend(practiceRec(activeUnit()).hist));
 
     h += '<div class="a3-sum-rows">';
     s.rows.forEach(function (r) {
@@ -4566,5 +4910,12 @@
        would test the renderer instead, and could not see the difference between
        a table skipped and a table that failed to render. */
     cardSpeech: cardSpeech,
+    /* Exposed for scripts/check-aat3-trend.js. `practiceTrend` is pure, so the
+       noise floor, the ordering and the two-points rule are assertable without
+       a browser; `dayKey` is exposed with it because the one thing that cannot
+       be checked from the outside is whether a late-evening answer lands on
+       the reader's own date or on UTC's. */
+    practiceTrend: practiceTrend,
+    dayKey: dayKey,
   };
 }(typeof self !== 'undefined' ? self : this));

@@ -2006,7 +2006,7 @@
      The engine and the keypad layout live in calculator.js, shared with Level 3
      so the two pads cannot come apart. This file owns only the markup and the
      styling, which belong to Level 2's design system. */
-  const Calc = AATCalc.create({ displayId: 'calcDisplay' });
+  const Calc = AATCalc.create({ displayId: 'calcDisplay', panelId: 'calcSidebar' });
   /* Which answer box "Use this value" fills — the one the reader was last in.
      Held here rather than in State because every render replaces the elements,
      and it is re-resolved against the live boxes on each use. */
@@ -5081,10 +5081,15 @@
          to be wide. `=` used to be the only wide key and the class was named
          for it; the memory row going meant `0` became the wide one, and a class
          called eq-wide on the zero key is how a layout comes apart quietly. */
-      const cls = 'calc-key' + (k.kind ? ' calc-' + k.kind : '') + (k.span ? ' calc-span-' + k.span : '');
+      /* The pending operator is lit at render time as well as patched live: a
+         repaint rebuilds this markup and would otherwise put out a light the
+         half-typed sum still has on. */
+      const cls = 'calc-key' + (k.kind ? ' calc-' + k.kind : '') + (k.span ? ' calc-span-' + k.span : '')
+        + AATCalc.opClass(k, Calc.pending);
       const aria = k.aria ? ` aria-label="${escapeHtml(k.aria)}"` : '';
       const val = k.val != null ? ` data-val="${escapeHtml(k.val)}"` : '';
-      return `<button class="${cls}" data-calc="${k.k}"${val} type="button"${aria}>${escapeHtml(k.label)}</button>`;
+      const op = AATCalc.opAttrs(k, Calc.pending);
+      return `<button class="${cls}" data-calc="${k.k}"${val}${op} type="button"${aria}>${escapeHtml(k.label)}</button>`;
     }).join('');
     /* THE BUTTON AND THE PANEL ARE ONE THING, at narrow widths.
 
