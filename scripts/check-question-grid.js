@@ -280,15 +280,39 @@ PLAYERS.forEach(pl => {
     const isPick = !!q.picklist;
     const control = isPick ? 'plpick' : 'egcell';
     const submit = isPick ? 'plsubmit' : 'egsubmit';
+    /* ONE CONTROL PER CELL THE READER IS ASKED FOR, which is no longer every
+       cell: a `given` column is printed rather than rendered as an input, so a
+       partly-completed table can be shown. Counting every cell here would fail
+       exactly the questions the given cell was added to fix. */
+    const givenCount = isPick ? 0 : (q.entrygrid.rows || []).reduce(
+      (n, r) => n + (Array.isArray(r.given) ? r.given.length : 0), 0);
     const wanted = isPick
       ? q.picklist.rows.length
-      : q.entrygrid.rows.length * q.entrygrid.columns.length;
+      : q.entrygrid.rows.length * q.entrygrid.columns.length - givenCount;
 
     /* Right. */
     let M = D.loadUI(D.fakeStore());
     let el = pl.open(D, M, [q]);
     ok(D.nodes(el, control).length === wanted,
       `${pl.name} ${q.id}: renders ${wanted} control(s) (got ${D.nodes(el, control).length})`);
+
+    /* AND THE GIVEN FIGURES ARE ON THE SCREEN. Marking a column `given` and
+       then not printing it would take the input away and show nothing in its
+       place — strictly worse than the blank box it replaced. */
+    if (!isPick && givenCount) {
+      const html = el.innerHTML;
+      let printed = 0, want = 0;
+      (q.entrygrid.rows || []).forEach((r) => {
+        (Array.isArray(r.given) ? r.given : []).forEach((ci) => {
+          const v = r.cells ? r.cells[ci] : (r.col === ci ? r.amount : null);
+          if (v == null) return;
+          want++;
+          if (html.indexOf(Number(v).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })) !== -1) printed++;
+        });
+      });
+      ok(printed === want,
+        `${pl.name} ${q.id}: shows all ${want} given figure(s) (found ${printed})`);
+    }
     ok(D.nodes(el, submit).length === 1, `${pl.name} ${q.id}: offers a submit button`);
     /* NOTHING IS SHOWN BEFORE IT IS SUBMITTED. */
     ok(!new RegExp(pl.px + '-(pl|eg)-key').test(el.innerHTML),

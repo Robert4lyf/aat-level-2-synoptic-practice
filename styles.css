@@ -6686,6 +6686,20 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
 .l2-pl-row.is-wrong th,
 .l2-eg-row.is-wrong th { box-shadow: inset 3px 0 0 var(--wrong-border); }
 .l2-eg-cell.is-wrong { background: var(--wrong-bg); }
+/* A FIGURE THE READER WAS GIVEN, not one they are being asked for. Printed
+   rather than rendered as an input, so a partly-completed table can be shown —
+   the shape the real assessment uses most, and one this grid could not express
+   until now. Ten questions had been written as though it could and rendered as
+   tables of blank boxes over data nobody had been shown.
+
+   IT MUST NOT LOOK LIKE AN ANSWERED INPUT. Recessive ground, quieter ink and no
+   border: the eye should read down the column and see which cells are being
+   asked for. Tabular figures so the given and typed columns line up. */
+.l2-eg-given {
+  background: var(--card-muted); color: var(--subtext);
+  text-align: right; font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--border);
+}
 .l2-pl-said,
 .l2-eg-said { display: block; color: var(--text); }
 .l2-eg-said { text-align: right; font-variant-numeric: tabular-nums; }

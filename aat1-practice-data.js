@@ -2646,15 +2646,15 @@
     {
       id: 'P2-28', lo: 2, criteria: ['BKFN-2.2.1'],
       type: 'entrygrid',
-      q: 'Complete the missing figure in each business\'s accounting equation.',
+      q: 'Two figures are given for each business. Work out the third from the accounting equation.',
       entrygrid: {
         title: 'Assets = liabilities + capital',
         rowHeader: 'Business',
         columns: ['Assets £', 'Liabilities £', 'Capital £'],
         rows: [
-          { label: 'Arden Tools', cells: { 0: 62000, 1: 24000, 2: 38000 } },
-          { label: 'Bexley Signs', cells: { 0: 45500, 1: 12300, 2: 33200 } },
-          { label: 'Calder Joinery', cells: { 0: 88400, 1: 51900, 2: 36500 } },
+          { label: 'Arden Tools', cells: { 0: 62000, 1: 24000, 2: 38000 }, given: [1, 2] },
+          { label: 'Bexley Signs', cells: { 0: 45500, 1: 12300, 2: 33200 }, given: [0, 1] },
+          { label: 'Calder Joinery', cells: { 0: 88400, 1: 51900, 2: 36500 }, given: [0, 2] },
         ],
       },
       exp: 'Each row is the same equation with a different unknown. Arden: £24,000 + £38,000 = £62,000. Bexley: £45,500 − £12,300 = £33,200. Calder: £88,400 − £36,500 = £51,900. Whichever figure is missing, the other two decide it — there is never a choice about the third number.',
@@ -3179,7 +3179,7 @@
     {
       id: 'P3-129', lo: 3, criteria: ['BKFN-3.4.3'],
       type: 'entrygrid',
-      q: 'Enter these two sales invoices in the day book. VAT is 20% of the net amount.',
+      q: 'Two sales invoices were raised: **2201** to Fenwick Ltd for **£620.00** net, and **2202** to Ashby & Co for **£285.00** net. Enter them in the day book. VAT is 20% of the net amount.',
       entrygrid: {
         title: 'Sales day book',
         rowHeader: 'Invoice',
@@ -3232,7 +3232,7 @@
     {
       id: 'P3-134', lo: 3, criteria: ['BKFN-3.4.4'],
       type: 'entrygrid',
-      q: 'Total each column of the sales returns day book.',
+      q: 'Three credit notes were issued: **CN 411** for **£240.00** net, **CN 412** for **£165.00** and **CN 413** for **£95.00**. Complete each line, then total each column. VAT is 20% of the net amount.',
       entrygrid: {
         title: 'Sales returns day book — totals',
         rowHeader: 'Line',
@@ -3448,7 +3448,7 @@
     {
       id: 'P4-102', lo: 4, criteria: ['BKFN-4.1.4'],
       type: 'entrygrid',
-      q: 'Enter these two cash sales, each including VAT at 20%. Split each between the sales and VAT analysis columns.',
+      q: 'Two cash sales were taken over the counter: **£216.00** on 4 May and **£90.00** on 6 May, each including VAT at 20%. Enter them and split each between the sales and VAT analysis columns.',
       entrygrid: {
         title: 'Cash book — receipts side',
         rowHeader: 'Receipt',
@@ -3477,7 +3477,7 @@
     {
       id: 'P4-105', lo: 4, criteria: ['BKFN-4.1.4'],
       type: 'entrygrid',
-      q: 'Total each column of the payments side and check that it cross casts.',
+      q: 'Three payments were made from the bank: **£480.00** to Ellis Supplies, **£264.00** to Harmer Tools and **£156.00** to Norwood Timber, each including VAT at 20%. Complete each line, then total each column and check that it cross casts.',
       entrygrid: {
         title: 'Cash book — payments side',
         rowHeader: 'Line',
@@ -3559,15 +3559,15 @@
     {
       id: 'P4-113', lo: 4, criteria: ['BKFN-4.2.2'],
       type: 'entrygrid',
-      q: 'Complete the closing balance for each week.',
+      q: 'Complete the closing balance for each week. Week 1\'s opening balance is given; each later week opens on the closing balance of the week before.',
       entrygrid: {
         title: 'Bank column, three weeks',
         rowHeader: 'Week',
         columns: ['Opening £', 'Receipts £', 'Payments £', 'Closing £'],
         rows: [
-          { label: 'Week 1', cells: { 0: 1200, 1: 3450, 2: 2810, 3: 1840 } },
-          { label: 'Week 2', cells: { 0: 1840, 1: 2960, 2: 3315, 3: 1485 } },
-          { label: 'Week 3', cells: { 0: 1485, 1: 4120, 2: 2790, 3: 2815 } },
+          { label: 'Week 1', cells: { 0: 1200, 1: 3450, 2: 2810, 3: 1840 }, given: [0, 1, 2] },
+          { label: 'Week 2', cells: { 0: 1840, 1: 2960, 2: 3315, 3: 1485 }, given: [1, 2] },
+          { label: 'Week 3', cells: { 0: 1485, 1: 4120, 2: 2790, 3: 2815 }, given: [1, 2] },
         ],
       },
       exp: 'Week 1: £1,200.00 + £3,450.00 = £4,650.00, less £2,810.00, leaves £1,840.00. Week 2 opens on that: £1,840.00 + £2,960.00 = £4,800.00, less £3,315.00, leaves £1,485.00 — a week where more went out than came in and the balance still held, because the opening figure absorbed it. Week 3: £1,485.00 + £4,120.00 = £5,605.00, less £2,790.00, leaves £2,815.00.',
@@ -3862,9 +3862,9 @@
         rowHeader: 'Customer',
         columns: ['Invoiced £', 'Returns £', 'Received £', 'Owed £'],
         rows: [
-          { label: 'Redfern Ltd', cells: { 0: 3600, 1: 240, 2: 2100, 3: 1260 } },
-          { label: 'Ashworth & Co', cells: { 0: 1875, 1: 0, 2: 1875, 3: 0 } },
-          { label: 'Calverley Homes', cells: { 0: 5420, 1: 620, 2: 3000, 3: 1800 } },
+          { label: 'Redfern Ltd', cells: { 0: 3600, 1: 240, 2: 2100, 3: 1260 }, given: [0, 1, 2] },
+          { label: 'Ashworth & Co', cells: { 0: 1875, 1: 0, 2: 1875, 3: 0 }, given: [0, 1, 2] },
+          { label: 'Calverley Homes', cells: { 0: 5420, 1: 620, 2: 3000, 3: 1800 }, given: [0, 1, 2] },
         ],
       },
       exp: 'Each row is invoices less credit notes less receipts. Redfern: £3,600.00 − £240.00 = £3,360.00, less £2,100.00, leaves £1,260.00. Ashworth has paid in full, so the balance is nil — which is a real answer and not a blank. Calverley: £5,420.00 − £620.00 = £4,800.00, less £3,000.00, leaves £1,800.00.',
@@ -3930,9 +3930,9 @@
         rowHeader: 'Customer',
         columns: ['Opening £', 'Invoiced £', 'Received £', 'Closing £'],
         rows: [
-          { label: 'Dunmore Ltd', cells: { 0: 720, 1: 2450, 2: 1900, 3: 1270 } },
-          { label: 'Everley Group', cells: { 0: 1340, 1: 980, 2: 2320, 3: 0 } },
-          { label: 'Fairhurst Ltd', cells: { 0: 2050, 1: 3700, 2: 2400, 3: 3350 } },
+          { label: 'Dunmore Ltd', cells: { 0: 720, 1: 2450, 2: 1900, 3: 1270 }, given: [0, 1, 2] },
+          { label: 'Everley Group', cells: { 0: 1340, 1: 980, 2: 2320, 3: 0 }, given: [0, 1, 2] },
+          { label: 'Fairhurst Ltd', cells: { 0: 2050, 1: 3700, 2: 2400, 3: 3350 }, given: [0, 1, 2] },
         ],
       },
       exp: 'Opening plus invoiced less received, each row. Dunmore: £720.00 + £2,450.00 = £3,170.00, less £1,900.00, leaves £1,270.00. Everley: £1,340.00 + £980.00 = £2,320.00, less £2,320.00, leaves nil — they have cleared the account exactly. Fairhurst: £2,050.00 + £3,700.00 = £5,750.00, less £2,400.00, leaves £3,350.00.',
