@@ -1740,6 +1740,15 @@ body[data-subject="aat1"] .a1-calc-key.a1-calc-eq {
   background: linear-gradient(120deg, var(--a1-brand), var(--a1-brand-2));
   color: var(--a1-on-fill); border-color: transparent; font-size: 17px;
 }
+/* THE OPERATION THAT IS WAITING — see the matching rule in aat3-styles.css for
+   why it is a fill rather than a darker tint. Level 1's brand is the teal, so
+   the numbers differ: the fill separates from the resting operator wash by
+   3.8:1 in light and 7.6:1 in dark, and the label clears 4.3:1 and 8.6:1. */
+body[data-subject="aat1"] .a1-calc-key.a1-calc-op.is-pending {
+  background: var(--a1-brand); color: var(--a1-on-fill);
+  border-color: var(--a1-brand); font-weight: 800;
+}
+
 body[data-subject="aat1"] .a1-calc-w2 { grid-column: span 2; }
 
 body[data-subject="aat1"] .a1-calc-use {

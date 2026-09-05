@@ -1817,6 +1817,27 @@ body[data-subject="aat3"] .a3-calc-key.a3-calc-eq {
   background: linear-gradient(120deg, var(--a3-brand), var(--a3-brand-2));
   color: var(--a3-on-fill); border-color: transparent; font-size: 17px;
 }
+/* THE OPERATION THAT IS WAITING. Once × has been pressed the display goes
+   back to showing a number, and until this the pad looked exactly the same
+   whether an operation was pending or nothing was — so a reader keying
+   1200 × 1.2 could not tell that the × had landed, and, more often, could not
+   tell that they had forgotten it.
+
+   Filled, not tinted a shade darker. A change only a reader already looking
+   for it would notice is no use to a reader who does not know to look. The
+   fill separates from the resting operator wash by 5.5:1 in light and 5.4:1 in
+   dark, and the label clears 6:1 on it in both — measured against these two
+   themes' own tokens rather than assumed from one of them. The heavier weight
+   is a second channel, for greyscale and for anyone who cannot pick the hue
+   out. The third is aria-pressed on the button itself, set in calculator.js.
+
+   It goes out where the arithmetic says it does: on =, on C, and on an error,
+   all three of which clear `pending`. */
+body[data-subject="aat3"] .a3-calc-key.a3-calc-op.is-pending {
+  background: var(--a3-brand); color: var(--a3-on-fill);
+  border-color: var(--a3-brand); font-weight: 800;
+}
+
 body[data-subject="aat3"] .a3-calc-w2 { grid-column: span 2; }
 
 body[data-subject="aat3"] .a3-calc-use {

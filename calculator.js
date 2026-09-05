@@ -57,10 +57,52 @@
     { k: 'eq',   label: '=', kind: 'eq', aria: 'Equals' },
   ];
 
+  /* ── The pending operator is lit on the pad ────────────────────────────────
+     A reader keying 1200 × 1.2 has no way to tell, once the display has gone
+     back to showing a number, whether the × landed. The pad looked identical
+     whether an operation was waiting or nothing was. That matters in both
+     directions: it says WHICH operation is about to happen, and — the more
+     common mistake — it says that NONE is, so a forgotten operator is visible
+     before the next number is typed on top of the old one rather than after
+     the answer comes out wrong.
+
+     `pending` already holds exactly this. It is set by applyOp, cleared by
+     evaluate, reset and _setError, so nothing new has to be tracked and the
+     light cannot disagree with the arithmetic.
+
+     THE ATTRIBUTE AND THE CLASS LIVE HERE, not in the three renderers, because
+     the state is patched in two places that must agree: the level rebuilds the
+     pad's HTML on a repaint (so the render has to emit the state), and _refresh
+     patches the live buttons on a keypress (because Levels 1 and 3 deliberately
+     do NOT repaint on a keypress — that is what keeps the caret in the answer
+     box). A class name written out twice per level, six times over, is a class
+     name that goes stale on one of them.
+
+     `aria-pressed` rather than colour alone. An operator key is genuinely a
+     two-state control while a sum is half-typed, and a reader who cannot see
+     the fill is exactly the reader who most needs to be told the × landed. */
+  var OP_ATTR = 'data-calc-op';
+  var OP_ON = 'is-pending';
+
+  /* Returned with a leading space so a renderer can concatenate it straight
+     into a class list or a tag without testing it first. */
+  function opClass(k, pending) {
+    return (k && k.kind === 'op' && k.val === pending) ? ' ' + OP_ON : '';
+  }
+  function opAttrs(k, pending) {
+    if (!k || k.kind !== 'op') return '';
+    return ' ' + OP_ATTR + '="' + k.val + '" aria-pressed="' +
+      (k.val === pending ? 'true' : 'false') + '"';
+  }
+
   function create(opts) {
     opts = opts || {};
     var displayId = opts.displayId || 'calcDisplay';
     var memoryId = opts.memoryId || 'calcMemoryIndicator';
+    /* Scopes the operator lights to one pad. Only one calculator is ever on
+       screen, so an unscoped query would be right today — and would light the
+       wrong pad's keys the first time that stopped being true. */
+    var panelId = opts.panelId || null;
 
     return {
       display: '0', prev: null, pending: null, justEvaled: false, errored: false, memory: 0,
@@ -182,6 +224,23 @@
         }
         var m = document.getElementById(memoryId);
         if (m) m.textContent = this.memory !== 0 ? 'M' : '';
+        this._lightOps();
+      },
+
+      /* Patched rather than repainted, for the same reason the display is. */
+      _lightOps() {
+        if (typeof document === 'undefined' || !document.querySelectorAll) return;
+        var scope = (panelId && document.getElementById(panelId)) || document;
+        if (!scope.querySelectorAll) return;
+        var ops = scope.querySelectorAll('[' + OP_ATTR + ']');
+        for (var i = 0; i < ops.length; i++) {
+          /* `pending` is null when nothing is waiting, and getAttribute never
+             returns null for an attribute the selector just matched, so this
+             is false for every key at rest without a special case. */
+          var on = ops[i].getAttribute(OP_ATTR) === this.pending;
+          if (ops[i].classList) ops[i].classList.toggle(OP_ON, on);
+          if (ops[i].setAttribute) ops[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+        }
       },
     };
   }
@@ -326,5 +385,6 @@
     panel.setAttribute('data-calc-panel', key);
   }
 
-  root.AATCalc = { create: create, KEYS: KEYS, draggable: draggable };
+  root.AATCalc = { create: create, KEYS: KEYS, draggable: draggable,
+    opClass: opClass, opAttrs: opAttrs, OP_ATTR: OP_ATTR, OP_ON: OP_ON };
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));

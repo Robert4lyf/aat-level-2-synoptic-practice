@@ -2828,7 +2828,7 @@
   var _calc = null;
   function Calc() {
     if (!_calc && root.AATCalc) {
-      _calc = root.AATCalc.create({ displayId: 'a1CalcDisplay' });
+      _calc = root.AATCalc.create({ displayId: 'a1CalcDisplay', panelId: 'a1CalcSheet' });
     }
     return _calc;
   }
@@ -2880,8 +2880,12 @@
       return '<button class="a1-calc-key' +
         (CALC_KIND_CLASS[k.kind] ? ' ' + CALC_KIND_CLASS[k.kind] : '') +
         (k.span === 2 ? ' a1-calc-w2' : '') +
+        /* Lit at render time as well as patched live — a repaint rebuilds this
+           markup and would otherwise put out a light the sum still has on. */
+        root.AATCalc.opClass(k, C.pending) +
         '" type="button" data-a1="calckey" data-k="' + esc(k.k) + '"' +
         (k.val != null ? ' data-v="' + esc(k.val) + '"' : '') +
+        root.AATCalc.opAttrs(k, C.pending) +
         (k.aria ? ' aria-label="' + esc(k.aria) + '"' : '') +
         '>' + esc(k.label) + '</button>';
     }).join('');

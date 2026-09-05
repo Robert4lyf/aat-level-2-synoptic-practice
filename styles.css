@@ -2049,6 +2049,26 @@ input:focus-visible + .toggle-slider { box-shadow: var(--shadow-focus); }
   border-color: var(--brand-200);
 }
 .dark .calc-key.calc-op { background: rgba(91, 129, 245, .15); color: #b8ccff; border-color: rgba(91, 129, 245, .3); }
+/* THE OPERATION THAT IS WAITING — see aat3-styles.css for why this is a fill
+   rather than a darker tint.
+
+   TWO RULES HERE, UNLIKE LEVELS 1 AND 3, because Level 2's brand ramp is a set
+   of fixed hues rather than tokens the dark theme re-points. One fill for both
+   themes would have to be brand-600, and against this pad's dark operator key
+   that is 2.3:1 — a lit key all but indistinguishable from the three unlit
+   ones beside it, which is the entire thing this is for. The lighter step with
+   dark ink reads at 5.0:1 against its neighbours and 5.8:1 for the label.
+
+   Placed after the .dark operator rule above so it wins at equal specificity. */
+.calc-key.calc-op.is-pending {
+  background: var(--brand-600); color: #fff;
+  border-color: var(--brand-600); font-weight: 800;
+}
+.dark .calc-key.calc-op.is-pending {
+  background: var(--brand-400); color: #0F172A;
+  border-color: var(--brand-400);
+}
+
 .calc-key.calc-eq {
   background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
   color: #fff;

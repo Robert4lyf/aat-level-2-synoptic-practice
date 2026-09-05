@@ -1709,7 +1709,7 @@
   var _calc = null;
   function Calc() {
     if (!_calc && root.AATCalc) {
-      _calc = root.AATCalc.create({ displayId: 'a3CalcDisplay' });
+      _calc = root.AATCalc.create({ displayId: 'a3CalcDisplay', panelId: 'a3CalcSheet' });
     }
     return _calc;
   }
@@ -1779,8 +1779,13 @@
     var keys = (root.AATCalc.KEYS || []).map(function (k) {
       return '<button class="a3-calc-key' +
         (CALC_KIND_CLASS[k.kind] ? ' ' + CALC_KIND_CLASS[k.kind] : '') + (k.span === 2 ? ' a3-calc-w2' : '') +
+        /* The pending operator is lit at render time as well as patched live,
+           because a repaint rebuilds this markup from scratch and would
+           otherwise put out a light the arithmetic still has on. */
+        root.AATCalc.opClass(k, C.pending) +
         '" type="button" data-a3="calckey" data-k="' + esc(k.k) + '"' +
         (k.val != null ? ' data-v="' + esc(k.val) + '"' : '') +
+        root.AATCalc.opAttrs(k, C.pending) +
         (k.aria ? ' aria-label="' + esc(k.aria) + '"' : '') +
         '>' + esc(k.label) + '</button>';
     }).join('');

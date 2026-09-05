@@ -746,6 +746,137 @@ function gridQ(px) {
     `${name}: untouched, it fills the first cell (got ${first && first.attrs.value})`);
 });
 
+/* ── 7d. The operation that is waiting is visible ─────────────────────────── */
+console.log(`${DIM}the pending operation${RESET}`);
+
+/* THE DEFECT. Press 1200, then ×, and the display goes back to showing 1200.
+   Nothing anywhere on the pad said an operation was waiting, so a reader had
+   no way to tell that the × had landed — and, the commoner mistake by far, no
+   way to tell that they had forgotten it. The next number then replaced the
+   first instead of multiplying it, and the wrong answer looked like arithmetic
+   the reader had got wrong themselves.
+
+   WHY THIS IS NOT ONE ASSERTION. The lit key is patched in TWO places that
+   have to agree, and either one alone is a bug the other hides:
+
+     - the RENDER emits it, because a repaint rebuilds the pad's markup from
+       nothing and would otherwise put out a light the half-typed sum still has
+     - _refresh PATCHES it, because none of the three levels repaints on a
+       keypress — that is deliberate, it is what keeps the caret in the answer
+       box — so a render-only implementation would never light anything at all
+       until something unrelated happened to repaint
+
+   So the render path is asserted here from the markup, and the patch path is
+   asserted in the browser in §8, where there is a real document to patch. */
+
+/* The pure helpers first, because everything else is built on them. */
+{
+  const OP = { k: 'op', val: '*', kind: 'op' };
+  const NUM = { k: 'num', val: '5' };
+  const EQ = { k: 'eq', kind: 'eq' };
+  ok(AATCalc.opClass(OP, '*') === ' ' + AATCalc.OP_ON, 'the waiting operator is given the lit class');
+  ok(AATCalc.opClass(OP, '+') === '', 'and an operator that is not waiting is not');
+  ok(AATCalc.opClass(OP, null) === '', 'and none is lit when no operation is waiting');
+  /* A digit key whose `val` happens to equal a pending operator cannot exist
+     today — the values are digits and symbols — but the kind is what decides,
+     not the value, and asserting that keeps it true if a key is ever added. */
+  ok(AATCalc.opClass(NUM, '5') === '', 'a number key is never lit, whatever is pending');
+  ok(AATCalc.opClass(EQ, '=') === '', 'and nor is equals');
+  ok(/aria-pressed="true"/.test(AATCalc.opAttrs(OP, '*')), 'the waiting operator is announced as pressed');
+  ok(/aria-pressed="false"/.test(AATCalc.opAttrs(OP, '+')), 'and the others as not pressed');
+  ok(AATCalc.opAttrs(NUM, '5') === '', 'a number key carries no pressed state at all');
+  /* ARIA IS NOT DECORATION HERE. A reader who cannot see the fill is exactly
+     the reader who most needs telling that the × landed, so the state has a
+     second channel that is not colour. */
+  ok(/data-calc-op="\*"/.test(AATCalc.opAttrs(OP, '*')), 'and the operator marks itself for the live patch');
+}
+
+/* The light follows the arithmetic, through a whole sum. `pending` is set by
+   applyOp and cleared by evaluate, reset and _setError, so this is really an
+   assertion that nothing else has to be kept in step — but it is the thing a
+   reader relies on, and "it goes out on =" is not obvious from the field. */
+{
+  const lit = C => ['+', '-', '*', '/'].filter(o => AATCalc.opClass({ k: 'op', val: o, kind: 'op' }, C.pending));
+  const C = AATCalc.create();
+  ok(lit(C).length === 0, 'nothing is lit on a fresh calculator');
+  C.press('num', '5'); ok(lit(C).length === 0, 'nor after a number');
+  C.press('op', '*');
+  ok(lit(C).join('') === '*', `pressing × lights ×, and only × (lit: ${lit(C).join(' ') || 'none'})`);
+  C.press('op', '+');
+  ok(lit(C).join('') === '+', 'changing your mind to + moves the light rather than lighting both');
+  C.press('num', '3'); ok(lit(C).join('') === '+', 'and typing the second number leaves it lit');
+  C.press('eq'); ok(lit(C).length === 0, 'equals puts it out, because the operation has happened');
+  C.press('op', '/'); C.press('clear');
+  ok(lit(C).length === 0, 'and C puts it out');
+  const E = AATCalc.create();
+  E.press('num', '5'); E.press('op', '/'); E.press('num', '0'); E.press('eq');
+  ok(E.errored === true, 'a divide by zero errors (the state the next assertion needs)');
+  ok(lit(E).length === 0, 'and an error puts it out rather than leaving a light over "Error"');
+}
+
+/* Every level's rendered markup, from the real players. A pad that renders no
+   `data-calc-op` cannot be patched at all, however correct the engine is. */
+{
+  const el = openWith([NUMERIC]);
+  openCalc(el);
+  const ops = D.nodes(el, 'calckey').filter(n => n.getAttribute('data-calc-op') !== null);
+  ok(ops.length === 4, `Level 3 marks its four operator keys for the light (found ${ops.length})`);
+  ok(ops.every(n => n.getAttribute('data-k') === 'op'), 'and marks nothing that is not an operator');
+  ok(ops.map(n => n.getAttribute('data-calc-op')).sort().join('') === '*+-/',
+    'with the operator each one applies');
+  ok(ops.every(n => n.getAttribute('aria-pressed') === 'false'),
+    'none announced as pressed while no operation is waiting');
+  ok(!/is-pending/.test(el.innerHTML), 'and none lit');
+
+  /* Now press one and REPAINT, which is the path this half is about. Level 3
+     does not repaint on a keypress, so the repaint is forced the way the app
+     would cause one — by re-mounting — and the light has to survive it. */
+  tap(el, ['1', '2', '*']);
+  D.click(el, 'calctoggle'); D.click(el, 'calctoggle');   // close and reopen: a real repaint
+  const after = D.nodes(el, 'calckey').filter(n => n.getAttribute('data-calc-op') !== null);
+  const on = after.filter(n => n.getAttribute('aria-pressed') === 'true');
+  ok(on.length === 1 && on[0].getAttribute('data-calc-op') === '*',
+    `Level 3's × survives a repaint still lit (lit after repaint: ` +
+    `${on.map(n => n.getAttribute('data-calc-op')).join(' ') || 'none'})`);
+  ok(/is-pending/.test(el.innerHTML), 'and carries the class the stylesheet paints');
+}
+{
+  const el = l1Open([L1_NUMERIC]);
+  l1OpenCalc(el);
+  const ops = D1.nodes(el, 'calckey').filter(n => n.getAttribute('data-calc-op') !== null);
+  ok(ops.length === 4, `Level 1 marks its four operator keys for the light (found ${ops.length})`);
+  ok(ops.every(n => n.getAttribute('aria-pressed') === 'false'), 'none pressed at rest');
+  l1Tap(el, ['1', '2', '-']);
+  D1.click(el, 'calctoggle'); D1.click(el, 'calctoggle');
+  const on = D1.nodes(el, 'calckey').filter(n => n.getAttribute('aria-pressed') === 'true');
+  ok(on.length === 1 && on[0].getAttribute('data-calc-op') === '-',
+    `Level 1's − survives a repaint still lit (lit after repaint: ` +
+    `${on.map(n => n.getAttribute('data-calc-op')).join(' ') || 'none'})`);
+  /* THE CLASS AS WELL AS THE ARIA STATE. They come from two different helpers,
+     and asserting only the aria let a mutation dropping Level 1's opClass call
+     through: a screen reader would have said "pressed" over a key that was not
+     painted, which is the defect for everyone who can see the pad. */
+  ok(/is-pending/.test(el.innerHTML), 'and carries the class the stylesheet paints');
+}
+
+/* THE STYLESHEETS ACTUALLY PAINT IT. A class nothing styles is a light that
+   never comes on, and every assertion above would still pass. Asserted from
+   the source here as a floor — that a rule for the class exists at all on each
+   of the three — and measured for real, as a computed colour that differs from
+   the key beside it, in the browser below. */
+{
+  const ON = AATCalc.OP_ON;
+  [['aat3-styles.css', 'a3-calc-op'], ['aat1-styles.css', 'a1-calc-op'], ['styles.css', 'calc-op']]
+    .forEach(([file, cls]) => {
+      const css = fs.readFileSync(path.join(ROOT, file), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+      const re = new RegExp('\\.' + cls + '\\.' + ON + '\\s*\\{([^}]*)\\}');
+      const m = css.match(re);
+      ok(!!m, `${file} paints the waiting operator`);
+      ok(!!m && /background\s*:/.test(m[1]),
+        `${file} gives it a fill, not just a colour change`);
+    });
+}
+
 /* ── 8. Level 2 is unharmed ───────────────────────────────────────────────── */
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
@@ -933,6 +1064,69 @@ function finish() {
     /* The figure has gone into a box the sheet was covering, so the sheet gets
        out of the way rather than making the reader dismiss it to check. */
     ok(shown.closedAfterUse === true, 'and "Use this value" puts it away again');
+
+    /* THE LIGHT, PATCHED LIVE — the half §7d cannot reach. Level 3 does not
+       repaint on a keypress, so in a real browser the lit key has to be patched
+       onto the button that is already there. A render-only implementation
+       passes every assertion in §7d and lights nothing at all here.
+
+       And the COMPUTED FILL is read, not just the class: a class the stylesheet
+       does not paint is a light that never comes on, and no assertion about
+       markup can tell the difference. */
+    const lamp = await page.evaluate(async () => {
+      const q = sel => document.querySelector(sel);
+      /* THE KEYS CARRY A 140ms BACKGROUND TRANSITION, so getComputedStyle read
+         on the line after the click returns the colour the key is transitioning
+         AWAY FROM, not the one it is going to. A first version read it there
+         and reported the fill as unchanged — the stylesheet was right and the
+         assertion was early. Settled rather than slept past by a fixed guess:
+         two frames put the new value in the box, then the duration passes. */
+      const settle = async () => {
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+        await new Promise(r => setTimeout(r, 250));
+      };
+      const fab = q('[data-a3="calctoggle"]');
+      if (!fab) return { err: 'no calculator button' };
+      if (!q('[data-a3="calckey"]')) fab.click();
+      const op = v => q(`[data-a3="calckey"][data-k="op"][data-v="${v}"]`);
+      const times = op('*'), plus = op('+');
+      if (!times || !plus) return { err: 'no operator keys' };
+      await settle();
+      const bgRest = getComputedStyle(times).backgroundColor;
+      times.click();
+      const same = op('*') === times;          // the pad was patched, not rebuilt
+      await settle();
+      const bgLit = getComputedStyle(times).backgroundColor;
+      const out = {
+        same,
+        litClass: times.className.indexOf('is-pending') !== -1,
+        litAria: times.getAttribute('aria-pressed'),
+        otherClass: plus.className.indexOf('is-pending') !== -1,
+        otherAria: plus.getAttribute('aria-pressed'),
+        bgRest, bgLit,
+        bgNeighbour: getComputedStyle(plus).backgroundColor,
+      };
+      /* And it goes out again on equals. */
+      q('[data-a3="calckey"][data-k="num"][data-v="3"]').click();
+      q('[data-a3="calckey"][data-k="eq"]').click();
+      out.afterEq = op('*').className.indexOf('is-pending') !== -1;
+      out.afterEqAria = op('*').getAttribute('aria-pressed');
+      return out;
+    });
+    ok(!lamp.err, `Level 3's operator keys are reachable${lamp.err ? ': ' + lamp.err : ''}`);
+    ok(lamp.same === true,
+      'pressing × patches the key that is already there rather than repainting the pad');
+    ok(lamp.litClass === true, 'and lights it');
+    ok(lamp.litAria === 'true', 'and announces it as pressed');
+    ok(lamp.otherClass === false && lamp.otherAria === 'false',
+      'while + beside it stays unlit and unpressed');
+    ok(lamp.bgLit !== lamp.bgRest,
+      `and the stylesheet actually paints the difference (${lamp.bgRest} → ${lamp.bgLit})`);
+    ok(lamp.bgLit !== lamp.bgNeighbour,
+      `so the lit key does not look like the unlit ones (both ${lamp.bgLit})`);
+    ok(lamp.afterEq === false && lamp.afterEqAria === 'false',
+      'and equals puts it out, live, without a repaint');
+
     await ctx.close();
 
     /* Level 2's own pad, rendered from the same KEYS. Asserted here rather than
@@ -1151,6 +1345,54 @@ function finish() {
     ok(!afterUse.err, `the narrow sheet can be used${afterUse.err ? ': ' + afterUse.err : ''}`);
     ok(afterUse.value === '7', `and the figure reaches the answer box (got ${afterUse.value})`);
     ok(afterUse.closed === true, 'and "Use this value" puts the sheet away');
+
+    /* LEVEL 2'S LIGHT ACROSS A REPAINT. Unlike Levels 1 and 3, Level 2 has a
+       control that repaints the whole screen while a sum is half-typed — the
+       button that opens and closes the panel calls render() — so the pad the
+       reader comes back to is freshly built markup. Nothing above covered it,
+       and a mutation dropping the class from Level 2's renderer survived:
+       reopening the panel would have shown a × that was still pending and no
+       longer lit, which is worse than never lighting it, because by then the
+       reader has learnt to trust the light. */
+    const l2lamp = await p2.evaluate(async () => {
+      const fab = document.getElementById('calcFab');
+      const opKey = v => document.querySelector(`.calc-sidebar [data-calc="op"][data-val="${v}"]`);
+      if (!document.querySelector('.calc-sidebar [data-calc]')) {
+        fab.click();
+        await new Promise(r => requestAnimationFrame(r));
+      }
+      const times = opKey('*');
+      if (!times) return { err: 'no operator key on Level 2' };
+      document.querySelector('.calc-sidebar [data-calc="num"][data-val="8"]').click();
+      times.click();
+      const lit = times.className.indexOf('is-pending') !== -1;
+      const pressed = times.getAttribute('aria-pressed');
+      /* Close and reopen: two full renders, so the button read back is a
+         different node built from scratch. */
+      fab.click();
+      await new Promise(r => requestAnimationFrame(r));
+      fab.click();
+      await new Promise(r => requestAnimationFrame(r));
+      const again = opKey('*');
+      return {
+        lit, pressed,
+        rebuilt: again !== times,
+        litAfter: !!again && again.className.indexOf('is-pending') !== -1,
+        pressedAfter: again && again.getAttribute('aria-pressed'),
+        othersAfter: ['+', '-', '/'].filter(v => {
+          const n = opKey(v);
+          return n && n.className.indexOf('is-pending') !== -1;
+        }),
+      };
+    });
+    ok(!l2lamp.err, `Level 2's operator keys are reachable${l2lamp.err ? ': ' + l2lamp.err : ''}`);
+    ok(l2lamp.lit === true && l2lamp.pressed === 'true', 'pressing × on Level 2 lights it');
+    ok(l2lamp.rebuilt === true,
+      'closing and reopening the panel really does rebuild the keys (the repaint this is about)');
+    ok(l2lamp.litAfter === true && l2lamp.pressedAfter === 'true',
+      'and the × is still lit on the rebuilt pad, because the sum is still waiting');
+    ok(l2lamp.othersAfter && l2lamp.othersAfter.length === 0,
+      `and no other operator is lit (${(l2lamp.othersAfter || []).join(' ') || 'none'})`);
 
     /* ── Level 2: a sum with no box to type it in ────────────────────────────
        A typed answer was the original test for offering the pad, and it misses
