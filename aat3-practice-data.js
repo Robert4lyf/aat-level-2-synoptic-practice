@@ -1989,7 +1989,7 @@
     {
       id: 'P-2-79', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.3'],
       type: 'mcq',
-      q: 'The standard rate of VAT changes on 1 April. A supply has a basic tax point of 27 March and is invoiced on 4 April. Which rate applies?',
+      q: 'The standard rate of VAT changes on 1 April. A supply has a basic tax point of 27 March and is invoiced on 24 April. Which rate applies?',
       opts: [
         'The rate in force at the tax point that governs the supply',
         'The rate in force on the date the invoice was issued',
@@ -1997,7 +1997,7 @@
         'Whichever of the two rates is lower for the customer',
       ],
       ans: 0,
-      exp: 'The tax point fixes the rate as well as the period, which is the second job it does and the one readers forget. Here the invoice falls within ' + T.invoicing.actualTaxPointDays.value + ' days of 27 March, so the invoice date becomes the actual tax point and the new rate applies — but the reasoning runs through the tax point rather than straight to the invoice date, and on other facts the two diverge.',
+      exp: 'The tax point fixes the rate as well as the period, which is the second job it does and the one readers forget. The invoice is 28 days after 27 March, outside the ' + T.invoicing.actualTaxPointDays.value + '-day window, so the basic tax point stands and the OLD rate applies — even though the invoice itself is dated after the change. Nothing is wrong with the invoice: 28 days is still inside the ' + T.invoicing.issueWithinDays.value + '-day deadline for issuing one. An invoice dated after a rate change does not carry the new rate with it; the tax point decides, and only the shorter window moves the tax point.',
     },
     {
       id: 'P-2-80', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.3'],
