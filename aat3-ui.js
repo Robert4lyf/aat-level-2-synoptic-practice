@@ -63,6 +63,8 @@
     wrShown: false,      // written: has the model answer been revealed?
     wrTicks: {},         // written: rubric index -> did the reader claim it?
     mockEndsAt: 0,       // timed mock: when the clock runs out
+    mockMarks: 0,        // timed mock: marks earned so far, which is what the verdict is read from
+    mockMax: 0,          // timed mock: marks available on the questions graded so far
     mockResults: [],     // timed mock: one record per question answered, for the report and the review
     mockOver: false,     // timed mock: the clock ran out rather than the reader finishing
     /* A mock's exit is guarded, because walking out of a timed paper cannot be
@@ -2533,6 +2535,9 @@
       correct: !!(r && r.correct),
       blank: !r || !gaveAnswer(q, r.given),
       given: r ? r.given : null,
+      /* The banked mark for this question. Absent on a question the clock
+         never reached, which is why the row reports "not reached" instead. */
+      rec: r,
     };
   }
   function reviewRows() {
@@ -2590,6 +2595,15 @@
     shown.forEach(function (r) {
       var g = (r.q && r.q.lo) ? 'Outcome ' + r.q.lo : '';
       var note = !r.reached ? 'not reached' : r.blank ? 'left blank' : '';
+      /* THE MARK, on anything worth more than one. Without it a six-row grid
+         with one slip reads as a bare ✗ beside a missed multiple choice, and
+         the reader cannot see that one of them cost a mark and the other cost
+         five. Only shown where it says something: on a one-mark question the
+         tick already carries it. */
+      var rec = r.rec || {};
+      if (typeof rec.max === 'number' && rec.max > 1) {
+        note = (note ? note + ' · ' : '') + rec.awarded + '/' + rec.max + ' marks';
+      }
       h += '<li><button class="a3-revrow ' + (r.correct ? 'is-right' : 'is-wrong') + '"' +
         ' data-a3="reviewq" data-i="' + r.i + '"' +
         ' aria-label="Question ' + (r.i + 1) + ', ' + (r.correct ? 'correct' : 'wrong') + '">' +
@@ -2657,7 +2671,14 @@
     var isM = S.mode === 'mock';
     var isP = S.mode === 'practice' || isM;
     var checks = currentQuestions();
-    var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
+    /* A MOCK IS SCORED IN MARKS; everything else is scored in questions.
+       The denominator is the whole paper, not the part that was reached — a
+       run the clock ended is marked out of what it was set, exactly as it
+       would be on the day. */
+    var mockTotal = isM ? paperMarks(checks) : 0;
+    var pct = isM
+      ? (mockTotal ? Math.round((S.mockMarks / mockTotal) * 100) : 100)
+      : (checks.length ? Math.round((S.score / checks.length) * 100) : 100);
     var st = pct >= 100 ? 3 : pct >= 80 ? 2 : pct >= 60 ? 1 : 0;
     var passMark = (unitMeta(S.practiceUnit || activeUnit()) || {}).assessment;
     passMark = (passMark && passMark.passMark) || 70;
@@ -2701,7 +2722,9 @@
       '<div class="a3-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       doneLesson +
       '<h1 class="a3-done-h">' + head + '</h1>' +
-      '<div class="a3-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
+      '<div class="a3-done-sub">' +
+        (isM ? S.mockMarks + ' of ' + mockTotal + ' marks'
+             : S.score + ' of ' + checks.length + ' correct') +
         (isM ? ' · pass mark ' + passMark + '%' : isP ? ' · ' + practiceLabel() : '') + '</div>' +
       /* The streak is what an endless run was FOR, so its result screen leads
          with it rather than with a percentage that depends on how long the
@@ -3800,6 +3823,8 @@
     S.practiceQs = drawWeighted(S.practiceUnit, MOCK_LEN, true, true, true);
     S.practiceMissed = [];
     S.mockResults = [];
+    S.mockMarks = 0;
+    S.mockMax = 0;
     S.mockOver = false;
     S.mockEndsAt = Date.now() + mockMinutes(S.practiceUnit) * 60000;
     S.mode = 'mock';
@@ -4202,6 +4227,104 @@
     catch (e) { try { b.scrollIntoView(false); } catch (e2) {} }
   }
 
+  /* ── What a question is worth, and what this attempt earned ────────────────
+   *
+   * THE MOCK USED TO COUNT QUESTIONS. Every question scored one point whatever
+   * its shape, and the pass mark — the assessment's own 70% — was applied to
+   * questions-right over questions-asked. A real assessment marks by MARKS: a
+   * six-row journal is not worth the same as one multiple choice, and getting
+   * five of its six rows right is not worth nothing.
+   *
+   * Both halves of that mattered, and the second one made the app HARSHER than
+   * the assessment it imitates. All-or-nothing on a six-row entry grid means a
+   * reader who made one slip scored zero for the task, so the app could tell
+   * somebody they had failed a paper the real marker would have passed. That is
+   * the worst direction for a practice tool to be wrong in.
+   *
+   * WHAT A MARK IS, PER TYPE. One per independently right-or-wrong decision:
+   * a statement in a true/false set, a gap, a row of a pick list or an entry
+   * grid, a part of a multi-part task, a rubric point in a written answer.
+   * Everything with a single answer — multiple choice, numeric, ordering, and
+   * matching, which is graded as one arrangement — is one mark.
+   *
+   * THE ROW IS THE UNIT ON A GRID, not the cell, and that is deliberate: a
+   * journal line with the right figure on the wrong side is one error, and
+   * question-grid.js already grades a row as right only when every cell in it
+   * matches. Both graders hand back `per`, so this needs nothing from them.
+   *
+   * S.score IS LEFT ALONE. It counts questions answered fully correctly, and
+   * the streak, the outcome accuracy, the "most mistakes" ranking and the
+   * accuracy-over-time chart are all built on it — "have I learned this" is a
+   * yes-or-no question about a whole question. Marks are a second, parallel
+   * total that only the mock reads. Mixing them would have quietly changed the
+   * meaning of every practice figure in the app.
+   */
+  /* PURE, and separate from the marking, because the paper's total has to
+     include questions the clock never reached. Those score nothing and were
+     never graded — there is no answer state to read — but their marks are in
+     the denominator, exactly as they would be on the day. A `max` derived
+     inside the marking function could only ever total the questions that were
+     answered, which would quietly rescale the paper to whatever the reader got
+     through and hand a timed-out attempt a flattering percentage. */
+  function maxMarks(q) {
+    var t = (q && q.type) || 'mcq';
+    if (t === 'truefalse') return (q.statements || []).length || 1;
+    if (t === 'gapfill') return (q.gaps || []).length || 1;
+    if (t === 'task') return (q.parts || []).length || 1;
+    /* Row counts, not the shuffled view: shownPicklist reorders the rows and
+       never adds or drops one, so the question itself is the safer source. */
+    if (t === 'picklist') return ((q.picklist && q.picklist.rows) || []).length || 1;
+    if (t === 'entrygrid') return ((q.entrygrid && q.entrygrid.rows) || []).length || 1;
+    if (t === 'written') return qMarks(q);
+    return 1;
+  }
+
+  function paperMarks(qs) {
+    var t = 0;
+    (qs || []).forEach(function (q) { t += maxMarks(q); });
+    return t;
+  }
+
+  function awardMarks(q) {
+    var t = (q && q.type) || 'mcq';
+    var max = maxMarks(q), per;
+
+    function tally(list) {
+      var right = 0;
+      (list || []).forEach(function (v) { if (v) right++; });
+      /* Capped at the question's own total. A grader handing back more rows
+         than the question declares would otherwise inflate the paper. */
+      return { awarded: Math.min(right, max), max: max };
+    }
+
+    if (t === 'truefalse') {
+      return tally((q.statements || []).map(function (st, i) { return S.tfPicks[i] === st.answer; }));
+    }
+    if (t === 'gapfill') {
+      return tally((q.gaps || []).map(function (g, i) { return S.gapPicks[i] === g.answer; }));
+    }
+    if (t === 'task') {
+      /* partCorrect is what gradeAnswer uses; the two must agree part for part
+         or a task could be "wrong" while scoring full marks. */
+      return tally((q.parts || []).map(partCorrect));
+    }
+    if (t === 'picklist') {
+      per = root.AATGrid ? root.AATGrid.gradePicklist(shownPicklist(q), S.plPicks).per : null;
+      return tally(per);
+    }
+    if (t === 'entrygrid') {
+      per = root.AATGrid ? root.AATGrid.gradeEntry(q, S.egCells).per : null;
+      return tally(per);
+    }
+    if (t === 'written') {
+      /* Already granular: the reader ticks the rubric points they made, and
+         each carries its own marks. */
+      return { awarded: Math.min(wrAwarded(q), max), max: max };
+    }
+    /* One answer, one mark. */
+    return { awarded: gradeAnswer(q) ? 1 : 0, max: max };
+  }
+
   function gradeAnswer(q) {
     var t = (q && q.type) || 'mcq';
     if (t === 'mcq') return S.picked === q.ans;
@@ -4244,8 +4367,11 @@
     if (S.mode === 'mock' && S.mockResults && S.mockResults.length === S.qIdx && checks[S.qIdx]) {
       var qOpen = checks[S.qIdx];
       var okOpen = gradeAnswer(qOpen);
+      var mOpen = awardMarks(qOpen);
+      S.mockMarks += mOpen.awarded; S.mockMax += mOpen.max;
       if (okOpen) S.score++; else S.practiceMissed.push(qOpen);
-      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer() });
+      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer(),
+        awarded: mOpen.awarded, max: mOpen.max });
       recordPractice(S.practiceUnit || activeUnit(), qOpen.lo, okOpen);
       recordQuestion(S.practiceUnit || activeUnit(), qOpen.id, okOpen);
     }
@@ -4785,8 +4911,11 @@
        grades as wrong, which is what the assessment does with it. */
     if (act === 'mocknext') {
       var mCorrect = gradeAnswer(q);
+      var mMark = awardMarks(q);
+      S.mockMarks += mMark.awarded; S.mockMax += mMark.max;
       if (mCorrect) S.score++; else S.practiceMissed.push(q);
-      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect, given: snapshotAnswer() });
+      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect, given: snapshotAnswer(),
+        awarded: mMark.awarded, max: mMark.max });
       recordPractice(S.practiceUnit || activeUnit(), q.lo, mCorrect);
       recordQuestion(S.practiceUnit || activeUnit(), q.id, mCorrect);
       save();
