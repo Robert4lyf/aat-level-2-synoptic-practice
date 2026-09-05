@@ -57,6 +57,8 @@ jobs:
         run: npm run check:cips2-content-adversarial
       - name: Check AAT Level 3 content quality (cues, depth, stale tax figures)
         run: npm run check:aat3-quality
+      - name: Check a deploy reaches the reader (cache freshness)
+        run: npm run check:cache-freshness
       - name: Check AAT Level 3 teaching prose is plain English
         run: npm run check:aat3-plain-english
       - name: Check the accuracy-over-time history is recorded, kept and merged
