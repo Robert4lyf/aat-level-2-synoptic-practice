@@ -5931,7 +5931,7 @@
     {
       id: 'P-3-83', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.1.5', 'TPFB-3.2.5'],
       type: 'entrygrid',
-      q: 'Before adjustments a business has £21,400.00 of output tax and £9,260.00 of input tax for the quarter. It must also account for a fuel scale charge carrying £67.00 of VAT, claim bad debt relief of £315.00, and correct an under-declaration of output tax of £480.00 from the previous quarter. Complete the three VAT boxes.',
+      q: 'Before adjustments a business has £21,400.00 of output tax and £9,260.00 of input tax for the quarter, all of it on standard-rated supplies with nothing zero-rated or exempt. It must also account for a fuel scale charge carrying £67.00 of VAT, claim bad debt relief of £315.00, and correct an under-declaration of output tax of £480.00 from the previous quarter. Complete the four boxes.',
       entrygrid: {
         title: 'VAT return with adjustments',
         rowHeader: 'Box',
@@ -5940,10 +5940,10 @@
           { label: 'Box 1 — VAT due on sales and other outputs', col: 0, amount: 21947 },
           { label: 'Box 4 — VAT reclaimed on purchases and other inputs', col: 0, amount: 9575 },
           { label: 'Box 5 — net VAT to pay or reclaim', col: 0, amount: 12372 },
-          { label: 'Box 6 — total value of sales and other outputs, given as', col: 1, amount: 107000 },
+          { label: 'Box 7 — total value of purchases and other inputs', col: 1, amount: 46300 },
         ],
       },
-      exp: 'Three adjustments, and each one has a box it belongs to. The fuel scale charge and the prior-period under-declaration both INCREASE output tax: 21,400.00 + 67.00 + 480.00 = £21,947.00. Bad debt relief is recovered as input tax rather than by reducing the sale: 9,260.00 + 315.00 = £9,575.00. Box 5 is then 21,947.00 − 9,575.00 = £12,372.00. The trap is the error correction — it is tempting to net a previous quarter’s under-declaration against Box 5 directly, but an under-declared SALE is corrected where the sale belonged, in Box 1.',
+      exp: 'Three adjustments, and each one has a box it belongs to. The fuel scale charge and the prior-period under-declaration both INCREASE output tax: 21,400.00 + 67.00 + 480.00 = £21,947.00. Bad debt relief is recovered as input tax rather than by reducing the sale: 9,260.00 + 315.00 = £9,575.00. Box 5 is then 21,947.00 − 9,575.00 = £12,372.00. The trap is the error correction — it is tempting to net a previous quarter’s under-declaration against Box 5 directly, but an under-declared SALE is corrected where the sale belonged, in Box 1. Box 7 wants the VALUE of the purchases rather than the tax on them, 9,260.00 ÷ 0.2 = £46,300.00, and the bad debt relief adds nothing to it: relief on a sale that went unpaid raises the tax reclaimed in Box 4 without any purchase having been made.',
     },
     {
       id: 'P-3-84', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.6'],
