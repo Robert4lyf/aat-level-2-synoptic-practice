@@ -600,18 +600,28 @@ function stripComments(src) {
    3.3.2, and teaching it would send a student reaching for ÷ 6 in an exam where
    every question runs the other way. The material may NAME the exclusion — the
    `notyet` element does — but must never present the method as a rule to use. */
-const learnSrc = fs.readFileSync(path.join(ROOT, 'aat1-learn-data.js'), 'utf8');
-const REVERSE_VAT = /(gross|total|VAT-inclusive)[^'\n]{0,40}(÷|\/)\s*6\b/gi;
-let rv;
-while ((rv = REVERSE_VAT.exec(learnSrc)) !== null) {
-  const line = learnSrc.slice(0, rv.index).split('\n').length;
-  const context = learnSrc.slice(Math.max(0, rv.index - 200), rv.index);
-  /* Allow it where the surrounding text is plainly telling the reader NOT to
-     use it, which is the only legitimate appearance at this level. */
-  if (!/not required|excluded|never|does not|do not|wrong answer/i.test(context)) {
-    errors.push(`aat1-learn-data.js:${line}: presents the reverse-VAT calculation ("${rv[0].trim()}"), which scope items 3.2.3 and 3.3.2 exclude at this level.`);
+/* BOTH FILES, AND BOTH SPELLINGS OF THE METHOD. The bank is where the reader
+   is actually asked to do things, and it carried three questions that quietly
+   worked a net figure back out of a VAT-inclusive one — "£1,032.00 ÷ 1.2",
+   "the gross divided by 1.2" — while the lessons a page earlier promised that
+   would never be asked. ÷ 6 and ÷ 1.2 are the same excluded calculation. */
+const REVERSE_VAT = /(gross|total|VAT-inclusive|including VAT)[^'\n]{0,40}(÷|\/|divided by)\s*(6|1\.2)\b/gi;
+[['aat1-learn-data.js'], ['aat1-practice-data.js']].forEach(([file]) => {
+  const fileSrc = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  let rv;
+  REVERSE_VAT.lastIndex = 0;
+  while ((rv = REVERSE_VAT.exec(fileSrc)) !== null) {
+    const line = fileSrc.slice(0, rv.index).split('\n').length;
+    /* The match itself is part of the context: "it is **not** the net divided
+       by 6" carries its own denial between the two halves of the pattern. */
+    const context = fileSrc.slice(Math.max(0, rv.index - 200), rv.index) + rv[0];
+    /* Allow it where the surrounding text is plainly telling the reader NOT to
+       use it, which is the only legitimate appearance at this level. */
+    if (!/not required|excluded|never|does not|do not|\bnot\b|wrong answer/i.test(context)) {
+      errors.push(`${file}:${line}: presents the reverse-VAT calculation ("${rv[0].trim()}"), which scope items 3.2.3 and 3.3.2 exclude at this level.`);
+    }
   }
-}
+});
 
 /* ── Prose mannerisms ────────────────────────────────────────────────────────
    The patterns and matchers live in scripts/lib/prose-mannerisms.js, shared
