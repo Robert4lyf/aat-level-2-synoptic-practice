@@ -405,8 +405,12 @@ function countOf(html, re) { return (html.match(re) || []).length; }
 /* 4d. A partly-right paper: the tally, the filter, the arrows, and the way out. */
 {
   const r = sit('tpfb', 'mixed');
-  const scored = /(\d+) of (\d+) correct/.exec(r.el.innerHTML);
-  ok(!!scored, 'a partly-answered paper reports a score');
+  /* A MOCK IS REPORTED IN MARKS, not in questions. It used to say "12 of 24
+     correct", which marked a six-row journal and a one-line multiple choice
+     the same and awarded nothing for five of the six rows — so the app could
+     fail a reader the real assessment would have passed. */
+  const scored = /(\d+) of (\d+) marks/.exec(r.el.innerHTML);
+  ok(!!scored, 'a partly-answered paper reports a score in marks');
   const score = scored ? Number(scored[1]) : -1;
   const total = scored ? Number(scored[2]) : -1;
   ok(score > 0 && score < total, `and that score is neither nothing nor everything (${score} of ${total})`);
@@ -414,15 +418,24 @@ function countOf(html, re) { return (html.match(re) || []).length; }
   D.click(r.el, 'review');
   const all = D.nodes(r.el, 'reviewq').length;
   const rightRows = countOf(r.el.innerHTML, /class="a3-revrow is-right"/g);
-  /* THE ONE THAT MATTERS. The review re-marks from what was recorded rather
-     than reading back a stored verdict, so this is what would catch the two
-     drifting apart. */
-  ok(rightRows === score,
-    `the review's own count of right answers equals the score the paper was given (${rightRows} vs ${score})`);
+  /* THE PAPER IS WORTH MORE THAN IT HAS QUESTIONS, which is the whole point:
+     if every question were one mark these two would be equal and none of the
+     rest of this would mean anything. */
+  ok(total > all, `the paper is marked out of more than its question count (${total} marks over ${all} questions)`);
+  /* PARTIAL CREDIT IS REALLY BEING AWARDED. Every fully-right question earns
+     at least one mark, so marks can never be below the count of right rows;
+     STRICTLY above it is the evidence that a multi-part question scored
+     something without being wholly right, or that a right one was worth more
+     than one. All-or-nothing scoring cannot produce this. */
+  ok(score >= rightRows,
+    `marks are never below the number of questions answered fully right (${score} vs ${rightRows})`);
+  ok(score > rightRows,
+    `and a partly-right paper earns more than a mark a question — partial credit is awarded ` +
+    `(${score} marks from ${rightRows} fully-right questions)`);
 
   D.click(r.el, 'reviewwrong');
   const filtered = D.nodes(r.el, 'reviewq').length;
-  ok(filtered === total - score, `"got wrong" lists exactly the ones that went wrong (${filtered} of ${all})`);
+  ok(filtered === all - rightRows, `"got wrong" lists exactly the ones that went wrong (${filtered} of ${all})`);
   ok(!/class="a3-revrow is-right"/.test(r.el.innerHTML), 'and lists nothing that was right');
 
   /* The arrows move through the FILTERED sequence: next from a wrong answer
@@ -459,9 +472,69 @@ function countOf(html, re) { return (html.match(re) || []).length; }
   ok(/A pass, on this paper/.test(right.el.innerHTML), 'and reads as a pass');
 
   const blank = sit('tpfb', 'blank');
-  ok(/>0%<|0 of 24 correct/.test(blank.el.innerHTML),
-    'a paper left entirely blank scores nothing — an unanswered question marks as wrong');
+  const blankScore = /(\d+) of (\d+) marks/.exec(blank.el.innerHTML);
+  ok(!!blankScore && Number(blankScore[1]) === 0 && Number(blankScore[2]) > 0,
+    `a paper left entirely blank scores nothing — an unanswered question marks as wrong ` +
+    `(${blankScore ? blankScore[0] : 'no score reported'})`);
+  const rightScore = /(\d+) of (\d+) marks/.exec(right.el.innerHTML);
+  ok(!!rightScore && Number(rightScore[1]) === Number(rightScore[2]),
+    `a paper answered correctly earns every mark (${rightScore ? rightScore[0] : '—'})`);
+  /* Not compared against the blank paper's total: each sit() draws its own
+     24 questions, so the two papers are legitimately worth different amounts.
+     The denominator is pinned properly by the timed-out paper below, where the
+     questions that were never reached are the whole point. */
   ok(/Below the pass mark/.test(blank.el.innerHTML), 'and reads as below the pass mark');
+}
+
+/* ── 5b. A paper the clock ended is marked out of the whole paper ──────────
+ *
+ * THE DENOMINATOR IS WHAT THIS IS ABOUT. Marks are accumulated as questions
+ * are graded, so the obvious total — the marks banked so far — is the marks of
+ * the questions the reader actually reached. That would mark a paper abandoned
+ * after two questions out of two questions, and hand somebody who ran out of
+ * time a flattering percentage instead of the failure the real assessment
+ * would record. The total has to come from the paper as drawn.
+ *
+ * Every question is worth at least one mark, so a 24-question paper can never
+ * be worth less than 24 — which a total summed over two answered questions
+ * could not reach.
+ */
+{
+  const ctx = openMock('tpfb');
+  let answered = 0;
+  for (let i = 0; i < 2; i++) {
+    const q = onScreen(ctx.el);
+    if (!q) break;
+    answerRight(ctx.el, q);
+    answered++;
+    if (!D.nodes(ctx.el, 'mocknext').length) break;
+    D.click(ctx.el, 'mocknext');
+  }
+  ok(answered === 2, `two questions answered before the clock is jumped (got ${answered})`);
+
+  /* The render path finishes a mock whose clock has passed, so moving Date.now
+     past the end and repainting is exactly what the reader's browser does when
+     the timer runs out — no test-only entry point into the module. */
+  const realNow = Date.now;
+  Date.now = () => realNow() + 4 * 60 * 60 * 1000;
+  try {
+    if (D.nodes(ctx.el, 'mocknext').length) D.click(ctx.el, 'mocknext');
+  } finally {
+    Date.now = realNow;
+  }
+
+  const html = ctx.el.innerHTML;
+  ok(/The clock ran out/.test(html), 'the paper ends when the clock passes');
+  const m = /(\d+) of (\d+) marks/.exec(html);
+  ok(!!m, 'and reports a score in marks');
+  const got = m ? Number(m[1]) : -1, outOf = m ? Number(m[2]) : -1;
+  ok(outOf >= 24,
+    `marked out of the whole 24-question paper, not just what was reached ` +
+    `(out of ${outOf}; a paper worth only what was answered could not reach 24)`);
+  ok(got > 0 && got < outOf,
+    `with the two answered questions earning something and the rest nothing (${got} of ${outOf})`);
+  ok(/Below the pass mark/.test(html),
+    'and two questions out of twenty-four is below the pass mark');
 }
 
 /* ── 4. The report names the outcomes, weighted ──────────────────────────── */

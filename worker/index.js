@@ -92,11 +92,37 @@ function parseCredentials(header) {
   return { username: decoded.slice(0, separator), password: decoded.slice(separator + 1) };
 }
 
+/* NOTHING IN THIS SITE IS SAFE TO CACHE BY URL.
+ *
+ * There is no build step, so there is no content hashing: app.js is app.js
+ * from one release to the next, and so is index.html, sw.js and every
+ * stylesheet. A URL that is cacheable for an hour is a URL that serves last
+ * hour's app, and the browser has no way to tell it apart from this one's.
+ *
+ * The Worker previously set no Cache-Control at all and passed through
+ * whatever the assets binding chose, which is how a reader ended up on a build
+ * old enough to predate several releases while the same commit served fresh
+ * from GitHub Pages. The two hosts differ in exactly this: nothing else about
+ * the files changes between them.
+ *
+ * `no-cache` is not `no-store`. The response is still stored and still
+ * revalidated with its ETag, so an unchanged file costs a 304 and no body —
+ * cheap, and correct. `no-store` would forbid storing it at all and make every
+ * load a full download.
+ *
+ * sw.js MATTERS MOST. A stale service worker script is a service worker that
+ * never updates, which means CACHE_VERSION never bumps, which means the old
+ * caches are never swept and every asset the worker holds stays frozen. One
+ * stale file freezes all of them, and no amount of reloading clears it.
+ */
+const CACHE_CONTROL = 'no-cache';
+
 function withSecurityHeaders(response) {
   /* Response headers from the assets binding are immutable, so rebuild rather
      than mutate. */
   const out = new Response(response.body, response);
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) out.headers.set(name, value);
+  out.headers.set('Cache-Control', CACHE_CONTROL);
   return out;
 }
 

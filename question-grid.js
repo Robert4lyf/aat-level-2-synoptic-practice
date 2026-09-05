@@ -77,21 +77,21 @@
       plRow: 'a1-pl-row', plSel: 'a1-pl-sel', plSaid: 'a1-pl-said', plKey: 'a1-pl-key',
       eg: 'a1-eg', egTitle: 'a1-eg-title', egScroll: 'a1-eg-scroll', egTable: 'a1-eg-table',
       egRow: 'a1-eg-row', egCell: 'a1-eg-cell', egIn: 'a1-eg-in', egSaid: 'a1-eg-said',
-      egKey: 'a1-eg-key', egHint: 'a1-eg-hint',
+      egKey: 'a1-eg-key', egHint: 'a1-eg-hint', egGiven: 'a1-eg-given',
     },
     a3: {
       pl: 'a3-pl', plTitle: 'a3-pl-title', plScroll: 'a3-pl-scroll', plTable: 'a3-pl-table',
       plRow: 'a3-pl-row', plSel: 'a3-pl-sel', plSaid: 'a3-pl-said', plKey: 'a3-pl-key',
       eg: 'a3-eg', egTitle: 'a3-eg-title', egScroll: 'a3-eg-scroll', egTable: 'a3-eg-table',
       egRow: 'a3-eg-row', egCell: 'a3-eg-cell', egIn: 'a3-eg-in', egSaid: 'a3-eg-said',
-      egKey: 'a3-eg-key', egHint: 'a3-eg-hint',
+      egKey: 'a3-eg-key', egHint: 'a3-eg-hint', egGiven: 'a3-eg-given',
     },
     l2: {
       pl: 'l2-pl', plTitle: 'l2-pl-title', plScroll: 'l2-pl-scroll', plTable: 'l2-pl-table',
       plRow: 'l2-pl-row', plSel: 'l2-pl-sel', plSaid: 'l2-pl-said', plKey: 'l2-pl-key',
       eg: 'l2-eg', egTitle: 'l2-eg-title', egScroll: 'l2-eg-scroll', egTable: 'l2-eg-table',
       egRow: 'l2-eg-row', egCell: 'l2-eg-cell', egIn: 'l2-eg-in', egSaid: 'l2-eg-said',
-      egKey: 'l2-eg-key', egHint: 'l2-eg-hint',
+      egKey: 'l2-eg-key', egHint: 'l2-eg-hint', egGiven: 'l2-eg-given',
     },
   };
 
@@ -190,6 +190,29 @@
     return row.col === ci ? row.amount : null;
   }
 
+  /* WHICH CELLS ARE PRINTED RATHER THAN ASKED.
+   *
+   * Until this, every cell of every grid rendered as an empty input, so a
+   * partly-completed table — the commonest shape in the real assessment —
+   * could not be expressed at all. Ten questions were written as though it
+   * could: "Complete the closing balance for each customer" over a table with
+   * nothing in it, "total each column" of a day book that was never shown.
+   * Every figure lived in the answer key and nowhere the reader could reach.
+   *
+   * `given` names the columns whose figure is SHOWN. The value still lives in
+   * `cells`, so the grader, the column totals and the balance rule all keep
+   * reading one place — a second copy of the number is a second thing to get
+   * wrong. A given cell is printed, is not marked, and is not the reader's to
+   * get right or wrong.
+   */
+  function givenCols(row) {
+    var out = {};
+    if (!row || !Array.isArray(row.given)) return out;
+    row.given.forEach(function (ci) { out[Number(ci)] = true; });
+    return out;
+  }
+  function isGiven(row, ci) { return givenCols(row)[Number(ci)] === true; }
+
   /* Does what the reader put in this cell match what belongs there?
 
      A CELL THAT SHOULD BE EMPTY ACCEPTS A TYPED ZERO. A bookkeeper leaves it
@@ -213,13 +236,18 @@
     var rows = entryRows(q);
     var cols = entryCols(q);
     var per = rows.map(function (r, ri) {
+      /* A GIVEN CELL IS NOT MARKED. It was printed for the reader to work
+         from, so crediting or faulting them for it marks the question rather
+         than the answer. */
       return cols.every(function (c, ci) {
+        if (isGiven(r, ci)) return true;
         return cellOk(amount(cells && cells[ri + ':' + ci]), cellKey(r, ci));
       });
     });
     var touched = 0;
     rows.forEach(function (r, ri) {
       cols.forEach(function (c, ci) {
+        if (isGiven(r, ci)) return;
         if (amount(cells && cells[ri + ':' + ci]) != null) touched++;
       });
     });
@@ -262,6 +290,13 @@
       var tds = cols.map(function (c, ci) {
         var key = cellKey(r, ci);
         var val = cells[ri + ':' + ci];
+        /* Printed, not asked. Rendered before the answered/unanswered split
+           because it reads the same either way — it was never in question. */
+        if (isGiven(r, ci)) {
+          return '<td class="' + C.egCell + ' ' + C.egGiven + '">' +
+            esc(key == null ? '' : Number(key).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })) +
+            '</td>';
+        }
         if (done) {
           var thisOk = cellOk(amount(val), key);
           return '<td class="' + C.egCell + (thisOk ? '' : ' is-wrong') + '">' +
@@ -404,6 +439,21 @@
     if (Object.keys(used).length < 2) {
       out.push(where + ': every figure goes in the same column — there is no placement decision to make.');
     }
+
+    /* `given` names real columns, and never every column of a row. */
+    g.rows.forEach(function (r, ri) {
+      if (!r.given) return;
+      var at = where + ' row ' + (ri + 1);
+      if (!Array.isArray(r.given)) { out.push(at + ': given must be an array of column indexes.'); return; }
+      r.given.forEach(function (ci) {
+        if (!isInt(ci) || ci < 0 || ci >= g.columns.length) out.push(at + ': given column ' + ci + ' is out of range.');
+        if (cellKey(r, ci) == null) out.push(at + ': column ' + ci + ' is marked given but has no figure to show.');
+      });
+      if (unique(r.given).length >= g.columns.length) {
+        out.push(at + ': every column is given, so the row asks the reader for nothing.');
+      }
+    });
+
     return out;
   }
 

@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v201';
+var CACHE_VERSION = 'aat-l2-v206';
 
 /* Guitar's files are cached lazily, on first open, rather than precached with
    everything else — its engine, renderer, audio and stylesheet are dead weight
@@ -31,8 +31,34 @@ var LAZY_PATTERN = /\/guitar-[a-z-]+\.(js|css)$/;
    network-first with the precache as the offline fallback, so a content fix
    reaches readers on the next load whether or not anyone remembered the bump.
    Matches data.js, learn-data.js, aat1-/aat2-/aat3-*-data.js, *-syllabus.js,
-   french/lsf/code-route/CIPS data — and deliberately not app code. */
+   french/lsf/code-route/CIPS data. */
 var CONTENT_PATTERN = /\/[a-z0-9-]*(data|syllabus)\.js$/;
+
+/* THE APP ITSELF, and the same argument a second time.
+ *
+ * Content was moved to network-first because a warm cache served last
+ * release's questions. The code was left cache-first, and it has exactly the
+ * same problem for exactly the same reason — there is no build step, so
+ * app.js is app.js from one release to the next and the cache has no way to
+ * tell this week's from a month ago's. The result is worse than a stale
+ * lesson: the reader gets CURRENT question data running on OLD code, so the
+ * app looks like a build from weeks back while the material inside it is
+ * today's. Reported from a phone that had been reloading for a while.
+ *
+ * The versioned sweep was supposed to cover this. It only runs when the
+ * service worker activates, the worker only activates when its own script is
+ * seen to change, and if sw.js itself is served from a cache — which it was,
+ * the Worker set no Cache-Control at all — then nothing activates and nothing
+ * is ever swept. One stale file froze all of them.
+ *
+ * So the shell joins the content: ask the network, fall back to the cache.
+ * Offline is unaffected, because the fallback IS the cache. What it costs is
+ * a conditional request per file on a warm load, which is a 304 and no body.
+ *
+ * Icons, fonts and images are deliberately NOT here. They are the files that
+ * genuinely do not change, they are the largest, and they are the ones worth
+ * serving instantly from disk. */
+var SHELL_PATTERN = /\/[^/]*\.(html|js|css|webmanifest)$/;
 
 /* Surviving the sweep solves half the problem and creates the other half.
  *
@@ -225,6 +251,28 @@ self.addEventListener('fetch', function (event) {
       }).catch(function () {
         return caches.match(req).then(function (hit) {
           return hit || new Response('', { status: 504, statusText: 'Offline' });
+        });
+      })
+    );
+    return;
+  }
+
+  /* The shell — index.html, the players, the stylesheets — network first, for
+     the reasons on SHELL_PATTERN. Navigations count: a request for "/" has no
+     extension to match, and it is the one that decides which app you get. */
+  if (SHELL_PATTERN.test(req.url) || req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.status === 200) {
+          var copy = res.clone();
+          caches.open(CACHE_VERSION).then(function (cache) { cache.put(req, copy); });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req).then(function (hit) {
+          if (hit) return hit;
+          if (req.mode === 'navigate') return caches.match('./index.html');
+          return new Response('', { status: 504, statusText: 'Offline' });
         });
       })
     );

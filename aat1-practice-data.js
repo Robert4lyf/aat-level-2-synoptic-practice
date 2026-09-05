@@ -1737,10 +1737,10 @@
       items: [
         'Enter items that appear only on the statement into the cash book',
         'Recalculate the closing balance in the cash book',
-        'List the cash book items still to reach the statement, to explain the difference that remains',
-        'Compare the two closing balances and explain any difference',
+        'Compare the recalculated cash book balance with the statement balance',
+        'List the cash book items still to reach the statement, which account for the difference',
       ],
-      exp: 'The items the business did not know about are real transactions, so they go into the books first and change the balance. Only then is the remaining difference a matter of timing — and comparing before that step compares one balance against an unfinished one.',
+      exp: 'The items the business did not know about are real transactions, so they go into the books first and change the balance — comparing before that step measures one balance against an unfinished one. Once the cash book is complete the two are compared, and whatever is still between them is timing: the cheques and lodgements the bank has not seen yet.',
     },
     {
       id: 'P4-54', lo: 4, criteria: ['BKFN-4.3.3', 'BKFN-4.3.4'],
@@ -2511,15 +2511,15 @@
     {
       id: 'P2-17', lo: 2, criteria: ['BKFN-2.1.1'],
       type: 'mcq',
-      q: 'The owner pays £5,000 of their own money into the business bank account. How is the £5,000 classified?',
+      q: 'A friend of the owner lends the business £5,000, paid into the business bank account and repayable next year. How is the £5,000 classified?',
       opts: [
+        'A liability',
         'Capital',
         'Income',
         'An expense',
-        'A liability of the owner',
       ],
       ans: 0,
-      exp: 'Money put in by the owner is capital: it is what the business owes back to them, and it is not something the business has earned. Calling it income would flatter the profit figure with money no customer paid. The bank balance rises by £5,000 and capital rises by £5,000, so the accounting equation still balances.',
+      exp: 'Money paid into the bank is not capital just because it arrived. Capital is what the business owes its OWNER; this is owed to somebody else and has to be repaid, which makes it a liability. It is not income either — nothing was earned, and treating a loan as income would show a profit the business never made. The bank rises by £5,000 and liabilities rise by £5,000, so the equation still balances, exactly as it would for an introduction of capital. What separates the two is who the money is owed back to.',
     },
     {
       id: 'P2-18', lo: 2, criteria: ['BKFN-2.1.1'],
@@ -2646,15 +2646,15 @@
     {
       id: 'P2-28', lo: 2, criteria: ['BKFN-2.2.1'],
       type: 'entrygrid',
-      q: 'Complete the missing figure in each business\'s accounting equation.',
+      q: 'Two figures are given for each business. Work out the third from the accounting equation.',
       entrygrid: {
         title: 'Assets = liabilities + capital',
         rowHeader: 'Business',
         columns: ['Assets £', 'Liabilities £', 'Capital £'],
         rows: [
-          { label: 'Arden Tools', cells: { 0: 62000, 1: 24000, 2: 38000 } },
-          { label: 'Bexley Signs', cells: { 0: 45500, 1: 12300, 2: 33200 } },
-          { label: 'Calder Joinery', cells: { 0: 88400, 1: 51900, 2: 36500 } },
+          { label: 'Arden Tools', cells: { 0: 62000, 1: 24000, 2: 38000 }, given: [1, 2] },
+          { label: 'Bexley Signs', cells: { 0: 45500, 1: 12300, 2: 33200 }, given: [0, 1] },
+          { label: 'Calder Joinery', cells: { 0: 88400, 1: 51900, 2: 36500 }, given: [0, 2] },
         ],
       },
       exp: 'Each row is the same equation with a different unknown. Arden: £24,000 + £38,000 = £62,000. Bexley: £45,500 − £12,300 = £33,200. Calder: £88,400 − £36,500 = £51,900. Whichever figure is missing, the other two decide it — there is never a choice about the third number.',
@@ -3179,7 +3179,7 @@
     {
       id: 'P3-129', lo: 3, criteria: ['BKFN-3.4.3'],
       type: 'entrygrid',
-      q: 'Enter these two sales invoices in the day book. VAT is 20% of the net amount.',
+      q: 'Two sales invoices were raised: **2201** to Fenwick Ltd for **£620.00** net, and **2202** to Ashby & Co for **£285.00** net. Enter them in the day book. VAT is 20% of the net amount.',
       entrygrid: {
         title: 'Sales day book',
         rowHeader: 'Invoice',
@@ -3232,7 +3232,7 @@
     {
       id: 'P3-134', lo: 3, criteria: ['BKFN-3.4.4'],
       type: 'entrygrid',
-      q: 'Total each column of the sales returns day book.',
+      q: 'Three credit notes were issued: **CN 411** for **£240.00** net, **CN 412** for **£165.00** and **CN 413** for **£95.00**. Complete each line, then total each column. VAT is 20% of the net amount.',
       entrygrid: {
         title: 'Sales returns day book — totals',
         rowHeader: 'Line',
@@ -3422,15 +3422,15 @@
     {
       id: 'P4-100', lo: 4, criteria: ['BKFN-4.1.3'],
       type: 'mcq',
-      q: 'What is an automatic bank feed?',
+      q: 'Cash is taken over the counter and no invoice is raised. Which record evidences the sale for the cash book?',
       opts: [
-        'Transactions imported into the software directly from the bank',
-        'A monthly paper statement posted by the bank',
-        'A standing order the bank sets up on request',
-        'A report the business sends to the bank each month',
+        'The till roll or cash receipt',
+        'The paying-in book counterfoil',
+        'The bank statement for the day',
+        'The sales day book entry',
       ],
       ans: 0,
-      exp: 'A feed pulls transactions from the bank into the accounting system as they happen, so the cash book is built from the bank\'s own data rather than typed from a statement. It removes typing errors and makes the record current — but it still needs checking, because the feed says what moved and not what it was for.',
+      exp: 'A counter sale leaves no invoice behind, so the record made at the moment of the sale is the evidence: the till roll, or the receipt handed over. The paying-in book is the next step and a different fact — it evidences what was BANKED, which may be several days of takings at once and may not be the same figure. The bank statement is later still. And the sales day book records credit sales, which is what a counter sale is not.',
     },
     {
       id: 'P4-101', lo: 4, criteria: ['BKFN-4.1.3'],
@@ -3448,7 +3448,7 @@
     {
       id: 'P4-102', lo: 4, criteria: ['BKFN-4.1.4'],
       type: 'entrygrid',
-      q: 'Enter these two cash sales, each including VAT at 20%. Split each between the sales and VAT analysis columns.',
+      q: 'Two cash sales were taken over the counter: **£216.00** on 4 May and **£90.00** on 6 May, each including VAT at 20%. Enter them and split each between the sales and VAT analysis columns.',
       entrygrid: {
         title: 'Cash book — receipts side',
         rowHeader: 'Receipt',
@@ -3477,7 +3477,7 @@
     {
       id: 'P4-105', lo: 4, criteria: ['BKFN-4.1.4'],
       type: 'entrygrid',
-      q: 'Total each column of the payments side and check that it cross casts.',
+      q: 'Three payments were made from the bank: **£480.00** to Ellis Supplies, **£264.00** to Harmer Tools and **£156.00** to Norwood Timber, each including VAT at 20%. Complete each line, then total each column and check that it cross casts.',
       entrygrid: {
         title: 'Cash book — payments side',
         rowHeader: 'Line',
@@ -3559,15 +3559,15 @@
     {
       id: 'P4-113', lo: 4, criteria: ['BKFN-4.2.2'],
       type: 'entrygrid',
-      q: 'Complete the closing balance for each week.',
+      q: 'Complete the closing balance for each week. Week 1\'s opening balance is given; each later week opens on the closing balance of the week before.',
       entrygrid: {
         title: 'Bank column, three weeks',
         rowHeader: 'Week',
         columns: ['Opening £', 'Receipts £', 'Payments £', 'Closing £'],
         rows: [
-          { label: 'Week 1', cells: { 0: 1200, 1: 3450, 2: 2810, 3: 1840 } },
-          { label: 'Week 2', cells: { 0: 1840, 1: 2960, 2: 3315, 3: 1485 } },
-          { label: 'Week 3', cells: { 0: 1485, 1: 4120, 2: 2790, 3: 2815 } },
+          { label: 'Week 1', cells: { 0: 1200, 1: 3450, 2: 2810, 3: 1840 }, given: [0, 1, 2] },
+          { label: 'Week 2', cells: { 0: 1840, 1: 2960, 2: 3315, 3: 1485 }, given: [1, 2] },
+          { label: 'Week 3', cells: { 0: 1485, 1: 4120, 2: 2790, 3: 2815 }, given: [1, 2] },
         ],
       },
       exp: 'Week 1: £1,200.00 + £3,450.00 = £4,650.00, less £2,810.00, leaves £1,840.00. Week 2 opens on that: £1,840.00 + £2,960.00 = £4,800.00, less £3,315.00, leaves £1,485.00 — a week where more went out than came in and the balance still held, because the opening figure absorbed it. Week 3: £1,485.00 + £4,120.00 = £5,605.00, less £2,790.00, leaves £2,815.00.',
@@ -3749,9 +3749,9 @@
       statements: [
         { text: 'Bank charges found on the statement must be entered in the cash book.', answer: true },
         { text: 'Unpresented cheques must be entered in the cash book when found.', answer: false },
-        { text: 'A Direct Debit the business had not recorded needs a cash book entry.', answer: false },
+        { text: 'A Direct Debit the business had not recorded needs a cash book entry.', answer: true },
       ],
-      exp: 'Charges are money that has genuinely gone and the cash book has to catch up, so the first is true. An unpresented cheque is already in the cash book — entering it again would deduct it twice. The third is the trap: a Direct Debit nobody recorded DOES need entering, so the statement as written is false because it is the same case as the charges.',
+      exp: 'Charges are money that has genuinely gone and the cash book has to catch up, so the first is true. An unpresented cheque is already in the cash book — entering it again would deduct it twice. A Direct Debit nobody recorded is the same case as the charges rather than the same case as the cheque: the money has left the account and the cash book has never known about it, so it needs entering. What separates the two is whether the cash book has already had its say.',
     },
     {
       id: 'P4-129', lo: 4, criteria: ['BKFN-4.4.1'],
@@ -3862,9 +3862,9 @@
         rowHeader: 'Customer',
         columns: ['Invoiced £', 'Returns £', 'Received £', 'Owed £'],
         rows: [
-          { label: 'Redfern Ltd', cells: { 0: 3600, 1: 240, 2: 2100, 3: 1260 } },
-          { label: 'Ashworth & Co', cells: { 0: 1875, 1: 0, 2: 1875, 3: 0 } },
-          { label: 'Calverley Homes', cells: { 0: 5420, 1: 620, 2: 3000, 3: 1800 } },
+          { label: 'Redfern Ltd', cells: { 0: 3600, 1: 240, 2: 2100, 3: 1260 }, given: [0, 1, 2] },
+          { label: 'Ashworth & Co', cells: { 0: 1875, 1: 0, 2: 1875, 3: 0 }, given: [0, 1, 2] },
+          { label: 'Calverley Homes', cells: { 0: 5420, 1: 620, 2: 3000, 3: 1800 }, given: [0, 1, 2] },
         ],
       },
       exp: 'Each row is invoices less credit notes less receipts. Redfern: £3,600.00 − £240.00 = £3,360.00, less £2,100.00, leaves £1,260.00. Ashworth has paid in full, so the balance is nil — which is a real answer and not a blank. Calverley: £5,420.00 − £620.00 = £4,800.00, less £3,000.00, leaves £1,800.00.',
@@ -3930,9 +3930,9 @@
         rowHeader: 'Customer',
         columns: ['Opening £', 'Invoiced £', 'Received £', 'Closing £'],
         rows: [
-          { label: 'Dunmore Ltd', cells: { 0: 720, 1: 2450, 2: 1900, 3: 1270 } },
-          { label: 'Everley Group', cells: { 0: 1340, 1: 980, 2: 2320, 3: 0 } },
-          { label: 'Fairhurst Ltd', cells: { 0: 2050, 1: 3700, 2: 2400, 3: 3350 } },
+          { label: 'Dunmore Ltd', cells: { 0: 720, 1: 2450, 2: 1900, 3: 1270 }, given: [0, 1, 2] },
+          { label: 'Everley Group', cells: { 0: 1340, 1: 980, 2: 2320, 3: 0 }, given: [0, 1, 2] },
+          { label: 'Fairhurst Ltd', cells: { 0: 2050, 1: 3700, 2: 2400, 3: 3350 }, given: [0, 1, 2] },
         ],
       },
       exp: 'Opening plus invoiced less received, each row. Dunmore: £720.00 + £2,450.00 = £3,170.00, less £1,900.00, leaves £1,270.00. Everley: £1,340.00 + £980.00 = £2,320.00, less £2,320.00, leaves nil — they have cleared the account exactly. Fairhurst: £2,050.00 + £3,700.00 = £5,750.00, less £2,400.00, leaves £3,350.00.',
@@ -3993,11 +3993,11 @@
         rows: [
           { text: 'A live bank feed rather than typing from a statement', answer: 2 },
           { text: 'Importing 400 sales lines from a CSV rather than keying them', answer: 0 },
-          { text: 'Figures arriving from the bank rather than being retyped', answer: 1 },
+          { text: 'The software totalling a day book rather than somebody adding it up', answer: 1 },
           { text: 'Access to the same ledger from the office and from a client site', answer: 2 },
         ],
       },
-      exp: 'The three benefits overlap and the specification lists all of them, but they are not the same thing. Time saved is work not done; error reduced is work done right; sooner is the same work arriving while it can still be acted on. A feed delivers all three at once, which is why it is the example the syllabus reaches for.',
+      exp: 'The three benefits overlap, and the point of the table is that each row has one that dominates. Time saved is work not done — four hundred lines nobody keys. Error reduced is work done right — an addition a machine cannot get wrong. Sooner is the same work arriving while it can still be acted on, which is what a live feed and a ledger reachable from anywhere both buy.',
     },
     {
       id: 'P5-21', lo: 5, criteria: ['BKFN-5.1.2'],
@@ -4099,10 +4099,10 @@
           { text: 'Sends a reminder when a customer payment falls due', answer: 1 },
           { text: 'Shows a customer statement in real time', answer: 2 },
           { text: 'Flags a receipt that differs from the invoice amount', answer: 0 },
-          { text: 'Emails a remittance advice after a supplier is paid', answer: 1 },
+          { text: 'Emails a customer a list of their overdue invoices', answer: 1 },
         ],
       },
-      exp: 'Matching is the largest saving: a bank line of £4,812 has to be attached to the invoices it settles, and software that learns from previous allocations can suggest it. Reminders and remittances are correspondence that used to be somebody\'s afternoon. And a statement in real time answers "what does this customer owe right now" without anybody printing anything.',
+      exp: 'Matching is the largest saving: a bank line of £4,812 has to be attached to the invoices it settles, and software that learns from previous allocations can suggest it. Chasing is correspondence that used to be somebody\'s afternoon: a reminder as a payment falls due, a list of what is already overdue. And a statement in real time answers "what does this customer owe right now" without anybody printing anything.',
     },
     {
       id: 'P5-28', lo: 5, criteria: ['BKFN-5.1.6'],

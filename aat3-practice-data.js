@@ -5753,7 +5753,7 @@
     {
       id: 'P-2-131', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'],
       type: 'entrygrid',
-      q: 'A partly exempt business has £19,430.00 of input tax for the quarter. Sort it into what it may and may not recover.',
+      q: 'A partly exempt business has £19,430.00 of input tax for the quarter: **£14,200.00** directly attributable to taxable supplies, **£1,930.00** directly attributable to exempt supplies, and residual input tax apportioned **£2,640.00** to taxable and **£660.00** to exempt. Sort it into what it may and may not recover.',
       entrygrid: {
         title: 'Partial exemption, quarter to 30 June',
         rowHeader: 'Input tax',
@@ -5770,7 +5770,7 @@
     {
       id: 'P-2-132', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.7'],
       type: 'entrygrid',
-      q: 'Sort the VAT on each of these purchases into what may and may not be reclaimed.',
+      q: 'Sort the VAT on each of these purchases into what may and may not be reclaimed: a staff mobile phone contract, **£84.00**; lunch entertaining a UK client, **£37.00**; a car for a sales rep that is also available for private use, **£4,600.00**; and a van used only for deliveries, **£3,100.00**.',
       entrygrid: {
         title: 'Input tax',
         rowHeader: 'Purchase',

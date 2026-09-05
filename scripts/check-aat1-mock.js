@@ -284,7 +284,10 @@ console.log(`${DIM}3. Answers can be changed until the reader moves on${RESET}`)
     /* And the change is what gets marked. */
     D.click(c.el, 'mocknext');
     while (onScreen(c.el)) D.click(c.el, 'mocknext');
-    ok(/1 of 30 correct|[1-9]\d? of 30 correct/.test(c.el.innerHTML), 'the final pick is the one marked');
+    /* A MOCK IS REPORTED IN MARKS, not in questions — a five-row pick list and
+       a one-line multiple choice are not worth the same, and five of six rows
+       right is not worth nothing. */
+    ok(/[1-9]\d* of \d+ marks/.test(c.el.innerHTML), 'the final pick is the one marked');
   }
 }
 
@@ -293,11 +296,38 @@ console.log(`${DIM}4. Marking${RESET}`);
 {
   const right = sit('right');
   ok(pctShown(right.el.innerHTML) === 100, `a paper answered right scores 100% (got ${pctShown(right.el.innerHTML)})`);
-  ok(/30 of 30 correct/.test(right.el.innerHTML), 'and says so as a count');
+  const rightM = /(\d+) of (\d+) marks/.exec(right.el.innerHTML);
+  ok(!!rightM && Number(rightM[1]) === Number(rightM[2]),
+    `and earns every mark on the paper (${rightM ? rightM[0] : 'no score reported'})`);
+  /* The paper is worth more than it has questions, or none of the rest of this
+     means anything: at one mark each, marks and questions are the same number. */
+  ok(!!rightM && Number(rightM[2]) > 30,
+    `a 30-question paper is worth more than 30 marks (${rightM ? rightM[2] : '?'})`);
 
   const blank = sit('blank');
   ok(pctShown(blank.el.innerHTML) === 0, `a paper left blank scores 0% (got ${pctShown(blank.el.innerHTML)})`);
-  ok(/0 of 30 correct/.test(blank.el.innerHTML), 'an unanswered question marks as wrong, as the assessment does');
+  const blankM = /(\d+) of (\d+) marks/.exec(blank.el.innerHTML);
+  ok(!!blankM && Number(blankM[1]) === 0 && Number(blankM[2]) > 30,
+    `an unanswered question marks as wrong, as the assessment does ` +
+    `(${blankM ? blankM[0] : 'no score reported'})`);
+
+  /* PARTIAL CREDIT. Answering every other question leaves the rest blank, and
+     a blank multi-part question scores nothing — so every mark on this paper
+     comes from a question that was answered. If marking were all-or-nothing,
+     the marks would equal the count of fully-right questions exactly; strictly
+     more than that is a question that earned something without being wholly
+     right, or a right one worth more than a mark. Either way the paper is no
+     longer being counted a mark a question. */
+  const mixed = sit('mixed');
+  const mixedM = /(\d+) of (\d+) marks/.exec(mixed.el.innerHTML);
+  D.click(mixed.el, 'review');
+  const rightRows = (mixed.el.innerHTML.match(/class="a1-revrow is-right"/g) || []).length;
+  ok(!!mixedM, 'a half-answered paper reports a score in marks');
+  ok(!!mixedM && Number(mixedM[1]) > 0 && Number(mixedM[1]) < Number(mixedM[2]),
+    `neither nothing nor everything (${mixedM ? mixedM[0] : '—'})`);
+  ok(!!mixedM && rightRows > 0 && Number(mixedM[1]) > rightRows,
+    `and earns more than a mark a question — partial credit is awarded ` +
+    `(${mixedM ? mixedM[1] : '?'} marks from ${rightRows} fully-right questions)`);
 
   const wrong = sit('wrong-mcq');
   const wpct = pctShown(wrong.el.innerHTML);

@@ -73,6 +73,8 @@
        is the only honest answer to that, and it is set by the move handlers. */
     orderMoved: false,
     mockEndsAt: 0,       // timed mock: when the clock runs out
+    mockMarks: 0,        // timed mock: marks earned so far, which is what the verdict is read from
+    mockMax: 0,          // timed mock: marks available on the questions graded so far
     mockResults: [],     // timed mock: one record per question answered, for the report and the review
     /* ── Endless practice ──────────────────────────────────────────────────
        A run with no last question. `practiceQs` is topped up as the reader
@@ -1648,7 +1650,13 @@
     var isM = S.mode === 'mock';
     var isP = S.mode === 'practice' || isM;
     var checks = currentQuestions();
-    var pct = checks.length ? Math.round((S.score / checks.length) * 100) : 100;
+    /* A MOCK IS SCORED IN MARKS; everything else is scored in questions. The
+       denominator is the whole paper rather than the part that was reached,
+       so a run the clock ended is marked out of what it was set. */
+    var mockTotal = isM ? paperMarks(checks) : 0;
+    var pct = isM
+      ? (mockTotal ? Math.round((S.mockMarks / mockTotal) * 100) : 100)
+      : (checks.length ? Math.round((S.score / checks.length) * 100) : 100);
     var st = pct >= 100 ? 3 : pct >= 80 ? 2 : pct >= 60 ? 1 : 0;
     var head = isM
       ? (pct >= 70 ? 'A strong paper' : pct >= 50 ? 'Some gaps to close' : 'Worth going back to the steps')
@@ -1700,7 +1708,9 @@
       '<div class="a1-done-ring" style="--p:' + pct + '"><span>' + pct + '%</span></div>' +
       doneLesson +
       '<h1 class="a1-done-h">' + head + '</h1>' +
-      '<div class="a1-done-sub">' + S.score + ' of ' + checks.length + ' correct' +
+      '<div class="a1-done-sub">' +
+        (isM ? S.mockMarks + ' of ' + mockTotal + ' marks'
+             : S.score + ' of ' + checks.length + ' correct') +
         (isM ? ' · timed mock' : isP ? ' · ' + practiceLabel() : '') + '</div>' +
       /* The streak is what a "keep going" run was for, so its result leads with
          it rather than with a percentage that depends on how long the reader
@@ -1777,6 +1787,12 @@
     shown.forEach(function (r) {
       var g = (r.q && r.q.lo) ? 'Outcome ' + r.q.lo : '';
       var note = !r.reached ? 'not reached' : r.blank ? 'left blank' : '';
+      /* The mark, on anything worth more than one: without it a five-row grid
+         with one slip reads as the same bare ✗ as a missed multiple choice. */
+      var rec = r.rec || {};
+      if (typeof rec.max === 'number' && rec.max > 1) {
+        note = (note ? note + ' · ' : '') + rec.awarded + '/' + rec.max + ' marks';
+      }
       h += '<li><button class="a1-revrow ' + (r.correct ? 'is-right' : 'is-wrong') + '"' +
         ' data-a1="reviewq" data-i="' + r.i + '"' +
         ' aria-label="Question ' + (r.i + 1) + ', ' + (r.correct ? 'correct' : 'wrong') + '">' +
@@ -2484,6 +2500,8 @@
     S.practiceMissed = [];
     S.streak = 0; S.bestStreak = 0; /* same reset startPractice() does */
     S.mockResults = [];
+    S.mockMarks = 0;
+    S.mockMax = 0;
     S.mockOver = false;
     S.mockEndsAt = Date.now() + mockMinutes() * 60000;
     S.mode = 'mock';
@@ -3055,6 +3073,61 @@
     gloss: 1, startflash: 1, flashflip: 1,
   };
 
+  /* ── What a question is worth, and what this attempt earned ────────────────
+     The same scheme as Level 3 — see the long note in aat3-ui.js for why the
+     mock stopped counting questions. Level 1 adds two shapes Level 3 has not
+     got: `match`, which is one arrangement and so one mark, and `ordering`,
+     which is one sequence and the same.
+
+     maxMarks is PURE and separate from the marking because the paper's total
+     must include questions the clock never reached — they score nothing, but
+     their marks stay in the denominator. */
+  function maxMarks(q) {
+    var t = (q && q.type) || 'mcq';
+    if (t === 'truefalse') return (q.statements || []).length || 1;
+    if (t === 'gapfill') return (q.gaps || []).length || 1;
+    if (t === 'picklist') return ((q.picklist && q.picklist.rows) || []).length || 1;
+    if (t === 'entrygrid') return ((q.entrygrid && q.entrygrid.rows) || []).length || 1;
+    if (t === 'written') return qMarks(q);
+    return 1;
+  }
+
+  function paperMarks(qs) {
+    var t = 0;
+    (qs || []).forEach(function (q) { t += maxMarks(q); });
+    return t;
+  }
+
+  function awardMarks(q) {
+    var t = (q && q.type) || 'mcq';
+    var max = maxMarks(q), per;
+
+    function tally(list) {
+      var right = 0;
+      (list || []).forEach(function (v) { if (v) right++; });
+      return { awarded: Math.min(right, max), max: max };
+    }
+
+    if (t === 'truefalse') {
+      return tally((q.statements || []).map(function (st, i) { return S.tfPicks[i] === st.answer; }));
+    }
+    if (t === 'gapfill') {
+      return tally((q.gaps || []).map(function (g, i) { return S.gapPicks[i] === g.answer; }));
+    }
+    if (t === 'picklist') {
+      per = root.AATGrid ? root.AATGrid.gradePicklist(shownPicklist(q), S.plPicks).per : null;
+      return tally(per);
+    }
+    if (t === 'entrygrid') {
+      per = root.AATGrid ? root.AATGrid.gradeEntry(q, S.egCells).per : null;
+      return tally(per);
+    }
+    if (t === 'written') {
+      return { awarded: Math.min(wrAwarded(q), max), max: max };
+    }
+    return { awarded: gradeAnswer(q) ? 1 : 0, max: max };
+  }
+
   function gradeAnswer(q) {
     var t = (q && q.type) || 'mcq';
     if (t === 'mcq') return S.picked === q.ans;
@@ -3102,8 +3175,11 @@
     if (S.mode === 'mock' && S.mockResults && S.mockResults.length === S.qIdx && checks[S.qIdx]) {
       var qOpen = checks[S.qIdx];
       var okOpen = gradeAnswer(qOpen);
+      var mOpen = awardMarks(qOpen);
+      S.mockMarks += mOpen.awarded; S.mockMax += mOpen.max;
       if (okOpen) S.score++; else S.practiceMissed.push(qOpen);
-      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer() });
+      S.mockResults.push({ id: qOpen.id, lo: qOpen.lo, correct: okOpen, given: snapshotAnswer(),
+        awarded: mOpen.awarded, max: mOpen.max });
       recordPractice(qOpen.lo, okOpen);
       recordQuestion(qOpen.id, okOpen);
     }
@@ -3252,6 +3328,8 @@
       correct: !!(r && r.correct),
       blank: !r || !gaveAnswer(q, r.given),
       given: r ? r.given : null,
+      /* The banked mark. Absent on a question the clock never reached. */
+      rec: r,
     };
   }
   function reviewRows() {
@@ -3744,7 +3822,10 @@
     if (act === 'mocknext') {
       var mCorrect = gradeAnswer(q);
       if (mCorrect) S.score++; else S.practiceMissed.push(q);
-      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect, given: snapshotAnswer() });
+      var mMark = awardMarks(q);
+      S.mockMarks += mMark.awarded; S.mockMax += mMark.max;
+      S.mockResults.push({ id: q.id, lo: q.lo, correct: mCorrect, given: snapshotAnswer(),
+        awarded: mMark.awarded, max: mMark.max });
       recordPractice(q.lo, mCorrect);
       recordQuestion(q.id, mCorrect);
       save();
