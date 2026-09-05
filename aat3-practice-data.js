@@ -1906,9 +1906,9 @@
         { text: 'Software removes the need to check the VAT rate applied to a supply.', answer: false },
         { text: 'A default VAT code on a supplier record can carry an error across many invoices.', answer: true },
         { text: 'Automated calculation guarantees the return will be correct.', answer: false },
-        { text: 'Software can reconcile the VAT account to the ledger without human judgement about what the figures mean.', answer: false },
+        { text: 'A difference that software flags on the VAT reconciliation still needs a person to judge whether it is a problem.', answer: true },
       ],
-      exp: 'Automation moves the risk rather than removing it. The arithmetic becomes reliable; the CLASSIFICATION does not, and a wrong default on a supplier record repeats the same error silently until somebody looks. A reconciliation that balances still needs a person to ask whether the differences are the expected ones — a timing difference and a blocked input tax error both show up as a difference, and only one of them is fine.',
+      exp: 'Automation moves the risk rather than removing it. The arithmetic becomes reliable; the CLASSIFICATION does not, and a wrong default on a supplier record repeats the same error silently until somebody looks. Software will do the reconciling and flag the difference perfectly well on its own; what it cannot do is tell you whether that difference is a timing difference or a blocked input tax error, and only one of those is fine.',
     },
     {
       id: 'P-2-73', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.1'],

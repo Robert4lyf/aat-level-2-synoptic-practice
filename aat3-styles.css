@@ -361,13 +361,54 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
   font-weight: 800; color: var(--a3-ink-3);
 }
-/* Three in a row is where a streak starts to feel like one. */
+/* Ten in a row is where a streak starts to feel like one. It was three, which
+   is two answers in — the badge was gold for most of a session, so the gold
+   said nothing. The number lives in aat3-ui.js as STREAK_GOLD. */
 .a3-streak.is-hot {
   background: var(--a3-gold-wash); border-color: var(--a3-gold); transform: scale(1.04);
 }
 .a3-streak.is-hot .a3-streak-n { color: var(--a3-gold); }
 .a3-streak.is-hot .a3-streak-l { color: var(--a3-gold); }
-@media (prefers-reduced-motion: reduce) { .a3-streak { transition: none; } }
+
+/* Twenty-five (STREAK_SPARKLE) earns two sparkles on the corners.
+
+   ABSOLUTELY POSITIONED, WHICH IS NOT DECORATION. `.a3-streak` is a flex
+   column, and in a flex container ::before and ::after are flex ITEMS — left
+   in flow they would sit above and below the number and push the badge apart.
+
+   THE GLOW IS STATIC AND THE SPARKLES ARE NOT THE ONLY DIFFERENCE. Under
+   prefers-reduced-motion the twinkle stops, so without something unanimated a
+   streak of twenty-five would look identical to one of ten for any reader who
+   asked the animation to stop — which is most of the point of the tier. */
+.a3-streak.is-sparkling {
+  position: relative;
+  box-shadow: 0 0 10px -2px var(--a3-gold);
+}
+.a3-streak.is-sparkling::before,
+.a3-streak.is-sparkling::after {
+  content: ''; position: absolute; width: 10px; height: 10px;
+  background: var(--a3-gold); pointer-events: none;
+  /* A four-point star. NOT rotated by the animation: a 45-degree turn lands it
+     on the diagonal, where the same shape reads as a small x rather than as a
+     sparkle. It grows and fades instead. */
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+  animation: a3-sparkle 2.2s ease-in-out infinite;
+}
+.a3-streak.is-sparkling::before { top: -4px; right: -4px; }
+/* Offset by less than half the cycle, so the two are rarely both at their
+   dimmest and the badge never looks like it has simply stopped. */
+.a3-streak.is-sparkling::after { bottom: -4px; left: -4px; animation-delay: .8s; }
+@keyframes a3-sparkle {
+  0%, 100% { opacity: .45; transform: scale(.6); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a3-streak { transition: none; }
+  /* Held at full size rather than hidden: they are the tier's mark, and a
+     reader who stops the motion should still see they reached it. */
+  .a3-streak.is-sparkling::before,
+  .a3-streak.is-sparkling::after { animation: none; opacity: 1; transform: none; }
+}
 .a3-lessonbar-p-endless span {
   background: linear-gradient(90deg, var(--a3-gold), var(--a3-brand-2));
 }

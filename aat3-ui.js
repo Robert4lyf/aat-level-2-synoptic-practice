@@ -3230,6 +3230,19 @@
   }
 
   /* ── Practice picker ─────────────────────────────────────────────────────── */
+  /* WHERE THE STREAK BADGE CHANGES STATE.
+
+     It used to turn gold at three, which is two answers into a run — often
+     enough that the gold said almost nothing, and a reader saw the badge lit
+     for most of a session. Ten is far enough in to be worth reaching, and
+     twenty-five is rare enough to be worth marking differently again.
+
+     Named rather than written into the markup because the two numbers are a
+     scale: a threshold changed here and not in the stylesheet's comment about
+     it is how the two drift apart, and the same pair is used on Level 1. */
+  var STREAK_GOLD = 10;
+  var STREAK_SPARKLE = 25;
+
   function renderPractice() {
     var bank = practiceBank();
     var los = outcomes();
@@ -3391,7 +3404,8 @@
           '<div class="a3-lessonbar-m">' + done + (done === 1 ? ' answered' : ' answered') +
             ' · ' + S.score + ' right</div>' +
         '</div>' +
-        '<div class="a3-streak' + (S.streak >= 3 ? ' is-hot' : '') + '" ' +
+        '<div class="a3-streak' + (S.streak >= STREAK_GOLD ? ' is-hot' : '') +
+          (S.streak >= STREAK_SPARKLE ? ' is-sparkling' : '') + '" ' +
           'aria-label="Current streak ' + S.streak + '">' +
           '<span class="a3-streak-n">' + S.streak + '</span>' +
           '<span class="a3-streak-l">streak</span>' +

@@ -227,6 +227,87 @@ LEVELS.forEach(L => {
   ok(bounded.length === 0, `${L.name}: a bounded practice run celebrates nothing`);
 });
 
+/* ── 3b. The streak badge earns each of its two tiers ──────────────────────────
+ *
+ * The badge went gold at THREE, which is two answers into a run. It was lit for
+ * most of a session, so being lit meant nothing. Ten now turns it gold and
+ * twenty-five adds sparkles.
+ *
+ * BOTH BOUNDARIES FROM BOTH SIDES. A threshold is the one part of this that can
+ * be wrong by one and look right: `> 10` and `>= 10` differ on exactly one
+ * streak in a hundred, and a check that only ever looked at a long run would
+ * never see it. So each tier is read at the answer before it and the answer it
+ * lands on.
+ *
+ * DRIVEN THROUGH THE REAL PLAYER, and the class read off the rendered markup,
+ * because the two thresholds are in the renderer while what they mean is in the
+ * stylesheet. §5 takes the same class names to a browser to prove they paint.
+ */
+console.log(`${DIM}the streak badge${RESET}`);
+
+const TIERS = [
+  { theme: 'a3', driver: './lib/aat3-driver.js', ui: 'AAT3_UI', name: 'Level 3',
+    open: M => M.AAT3_UI.reset('practice', 'tpfb'), unit: 'tpfb' },
+  { theme: 'a1', driver: './lib/aat1-driver.js', ui: 'AAT1_UI', name: 'Level 1',
+    open: M => M.AAT1_UI.reset('practice') },
+];
+
+TIERS.forEach(L => {
+  const D = require(L.driver);
+  const M = D.loadUI(D.fakeStore());
+  if (L.theme === 'a3') { M.AAT3_PRACTICE = { QUESTIONS: bank(60, 'tpfb') }; M.AAT3_FAPS_PRACTICE = { QUESTIONS: [] }; }
+  else { M.AAT1_PRACTICE = { QUESTIONS: bank(60) }; }
+  const el = D.fakeEl();
+  L.open(M);
+  M[L.ui].mount(el);
+  D.click(el, 'startpractice', n => n.getAttribute('data-lo') === 'endless');
+
+  /* The badge carries no data attribute — it is read off the markup the same
+     way a reader reads it, by its class. */
+  const badge = () => {
+    const m = new RegExp('<div class="' + L.theme + '-streak([^"]*)"').exec(el.innerHTML);
+    return m ? m[1] : null;
+  };
+  const at = {};
+  for (let n = 1; n <= 26; n++) {
+    const opts = D.nodes(el, 'ans');
+    const right = opts.find(x => x.getAttribute('data-i') === '0');
+    if (!right) break;
+    right.fire('click');
+    const advance = D.nodes(el, 'nextq');
+    if (!advance.length) break;
+    advance[0].fire('click');
+    at[n] = badge();
+  }
+
+  ok(at[1] !== null, `${L.name}: the streak badge is on the endless bar`);
+  /* The old threshold, asserted as gone. Without this the whole change is a
+     comment: every other assertion here passes just as well at three. */
+  ok(at[3] !== null && at[3].indexOf('is-hot') === -1,
+    `${L.name}: three in a row no longer lights it (got "${at[3]}")`);
+  ok(at[9] !== null && at[9].indexOf('is-hot') === -1,
+    `${L.name}: nine is still not gold (got "${at[9]}")`);
+  ok(at[10] !== null && at[10].indexOf('is-hot') !== -1,
+    `${L.name}: ten turns it gold (got "${at[10]}")`);
+  ok(at[24] !== null && at[24].indexOf('is-sparkling') === -1,
+    `${L.name}: twenty-four is gold without sparkles (got "${at[24]}")`);
+  ok(at[25] !== null && at[25].indexOf('is-sparkling') !== -1,
+    `${L.name}: twenty-five sparkles (got "${at[25]}")`);
+  /* Additive, not a swap: the sparkle tier keeps the gold it earned at ten. */
+  ok(at[25] !== null && at[25].indexOf('is-hot') !== -1,
+    `${L.name}: and is still gold at twenty-five (got "${at[25]}")`);
+  ok(at[26] !== null && at[26].indexOf('is-sparkling') !== -1,
+    `${L.name}: and stays sparkling past it (got "${at[26]}")`);
+});
+
+/* The thresholds are named in the renderer rather than written into the markup,
+   so the two levels cannot drift to different numbers unnoticed. */
+['aat3-ui.js', 'aat1-ui.js'].forEach(f => {
+  const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
+  ok(/var STREAK_GOLD = 10;/.test(src), `${f}: names the gold threshold`);
+  ok(/var STREAK_SPARKLE = 25;/.test(src), `${f}: names the sparkle threshold`);
+});
+
 /* ── 4. The six actually paint, in a real browser ─────────────────────────────
    Reading the stylesheet proves a rule was written. It does not prove the rule
    MATCHES: every celebration outside Level 2's is scoped under
@@ -333,6 +414,77 @@ function finish() {
         ok(got.bannerBg && got.bannerBg !== 'rgba(0, 0, 0, 0)', `${key}: the banner is styled for this level`);
       }
     }
+    /* ── The badge's two tiers, painted ─────────────────────────────────────
+       §3b proves the renderer puts the classes on. This proves the stylesheets
+       do something with them, which no amount of reading markup can.
+
+       THE HEIGHT IS THE POINT OF THE THIRD ASSERTION. `.aN-streak` is a flex
+       COLUMN, and ::before/::after in a flex container are flex ITEMS — left in
+       normal flow the two sparkles would stack above and below the number and
+       stretch the badge, pushing the endless bar apart at exactly the moment a
+       reader is being congratulated. They are positioned absolutely to prevent
+       that, and this measures that it worked. */
+    for (const [theme, subject, sheet] of [['a3', 'aat3', 'aat3-styles.css'], ['a1', 'aat1', 'aat1-styles.css']]) {
+      const tier = await page.evaluate(async ([theme, subject, sheet]) => {
+        if (!document.querySelector(`link[href="${sheet}"]`)) {
+          await new Promise(res => {
+            const l = document.createElement('link');
+            l.rel = 'stylesheet'; l.href = sheet; l.onload = res; l.onerror = res;
+            document.head.appendChild(l);
+          });
+        }
+        document.body.dataset.subject = subject;
+        const host = document.createElement('div');
+        document.body.appendChild(host);
+        const make = extra => {
+          const d = document.createElement('div');
+          d.className = theme + '-streak' + (extra ? ' ' + extra : '');
+          d.innerHTML = `<span class="${theme}-streak-n">25</span>` +
+                        `<span class="${theme}-streak-l">streak</span>`;
+          host.appendChild(d);
+          return d;
+        };
+        const plain = make('');
+        const hot = make('is-hot');
+        const spark = make('is-hot is-sparkling');
+        /* The pseudo-element argument is the whole point of the reads below:
+           getComputedStyle(el) with the second argument dropped silently
+           answers about the ELEMENT, which reported position:relative and
+           animation:none and looked like a stylesheet bug. */
+        const cs = (el, pseudo) => getComputedStyle(el, pseudo || null);
+        const box = el => ({ w: el.offsetWidth, h: el.offsetHeight });
+        const out = {
+          plainBg: cs(plain).backgroundColor,
+          hotBg: cs(hot).backgroundColor,
+          sparkShadow: cs(spark).boxShadow,
+          hotShadow: cs(hot).boxShadow,
+          beforeAnim: cs(spark, '::before').animationName,
+          beforePos: cs(spark, '::before').position,
+          afterPos: cs(spark, '::after').position,
+          beforeContent: cs(spark, '::before').content,
+          plainBox: box(plain), hotBox: box(hot), sparkBox: box(spark),
+        };
+        host.remove();
+        return out;
+      }, [theme, subject, sheet]);
+
+      ok(tier.hotBg !== tier.plainBg,
+        `${theme}: the gold tier changes the badge (${tier.plainBg} → ${tier.hotBg})`);
+      ok(tier.beforeContent && tier.beforeContent !== 'none',
+        `${theme}: the sparkle tier draws a sparkle (content ${tier.beforeContent})`);
+      ok(tier.beforeAnim && tier.beforeAnim !== 'none',
+        `${theme}: and animates it (got ${tier.beforeAnim})`);
+      ok(tier.beforePos === 'absolute' && tier.afterPos === 'absolute',
+        `${theme}: both sparkles are out of flow (${tier.beforePos}/${tier.afterPos})`);
+      ok(tier.sparkBox.h === tier.hotBox.h && tier.sparkBox.w === tier.hotBox.w,
+        `${theme}: and do not resize the badge ` +
+        `(${tier.hotBox.w}x${tier.hotBox.h} → ${tier.sparkBox.w}x${tier.sparkBox.h})`);
+      /* Something unanimated has to separate the tiers, or a reader with
+         prefers-reduced-motion sees twenty-five and ten as the same badge. */
+      ok(tier.sparkShadow && tier.sparkShadow !== 'none' && tier.sparkShadow !== tier.hotShadow,
+        `${theme}: the sparkle tier is marked without motion too (got ${tier.sparkShadow})`);
+    }
+
     /* ── Room under the advance button ──────────────────────────────────────
        Grading scrolls the button that continues the run to the bottom of the
        viewport. Welded to the very edge it sits under a phone's home indicator
