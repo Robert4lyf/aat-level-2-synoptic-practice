@@ -446,11 +446,12 @@
         {
           h: 'What a VAT invoice must carry, and its variants',
           split: {
-            left: { title: 'Full VAT invoice', items: ['Unique sequential number', 'Supplier name, address and VAT number', 'Customer name and address', 'Date of issue and tax point', 'Description, quantity and rate for each supply', 'Net amount, rate of VAT, total VAT'] },
+            left: { title: 'Full VAT invoice', items: ['Unique sequential number', 'Supplier name, address and VAT number', 'Customer name and address', 'Tax point, and the date of issue where it differs', 'Description, quantity and VAT rate for each supply', 'Net amount for each supply, and the gross total excluding VAT', '**The rate of any cash discount offered**', '**The unit price**, where the items are countable', 'Total VAT chargeable — **in sterling**'] },
             right: { title: 'Variants', items: ['**Simplified** — for small retail supplies; less detail, no customer details, VAT-inclusive amounts', '**Modified** — for higher-value retail; shows VAT-inclusive totals with the VAT separately stated', '**Mixed-rated** — must show each rate separately, not one blended total'] },
           },
           p: [
             'A full VAT invoice has a prescribed content, and the customer\'s right to reclaim depends on it. An invoice missing the supplier\'s VAT number is not a minor irregularity — it is not evidence of input tax.',
+            'The list is longer than most people remember, and the reference material sets it out in full. Three items are the ones candidates leave out. **The rate of any cash discount offered.** **The unit price**, where the goods are countable. And **the total VAT in sterling** — every other money figure on the invoice may be in any currency, but that one may not.',
             'Three variants relax the requirements in specific circumstances.',
             'A **simplified** invoice may be issued for retail supplies up to £250 including VAT. It leaves out the customer\'s details and shows VAT-inclusive amounts with the rate applied. It cannot include exempt supplies.',
             'A **modified** invoice is for higher-value retail supplies above that £250 line. It shows VAT-inclusive totals with the VAT stated separately, and must be agreed with the customer. Neither is a lesser document. Each is valid evidence within its own limits.',
@@ -1068,6 +1069,33 @@
               exp: '£13,500 × 20% = £2,700 declared as output tax, and the same £2,700 reclaimed as input tax since the business is fully taxable. Net effect nil.',
             },
           },
+        },
+        {
+          /* SERVICES WERE MISSING FROM THIS LESSON. It taught goods out, goods
+             in, and the domestic reverse charge, and left the reader to infer
+             services from the reverse charge card. The reference material
+             tabulates all four cases in one place, and the case it makes
+             visible is the one nobody teaches: a service sold to a CONSUMER
+             abroad carries UK VAT. */
+          h: 'Services across a border, which follow a different question',
+          p: [
+            'Goods are decided by direction: out is zero-rated, in is postponed accounting. Services are not. They are decided by **place of supply** — where the law says the supply happens — and UK VAT applies only where that place is the UK.',
+            'For a service sold to a **business** customer abroad, the place of supply is where the **customer** is. The supply is therefore **outside the scope** of UK VAT. That is not the same as zero-rated: a zero-rated export goes in Box 6, an out-of-scope service does not.',
+            'For a service sold to a **non-business** customer — a consumer — the place of supply is where the **supplier** is. The supplier is in the UK, so **UK VAT is charged** at the normal rate.',
+            'The same service, sold abroad twice, gives two different answers depending only on who bought it. That is the point the assessment tests.',
+            'Services coming the other way are simpler. A service **bought** from overseas falls under the **reverse charge**. The UK customer accounts for the output tax and recovers it as input tax — exactly the shape postponed import VAT has for goods.',
+          ],
+          table: {
+            headers: ['Supply', 'Treatment'],
+            rows: [
+              ['Export of goods', 'Zero-rated'],
+              ['Import of goods', 'UK VAT, using postponed accounting'],
+              ['Export of services to a business', 'Place of supply is the customer — outside the scope of UK VAT'],
+              ['Export of services to a consumer', 'Place of supply is the supplier — charge UK VAT'],
+              ['Import of services', 'Reverse charge'],
+            ],
+          },
+          callout: { kind: 'key', text: 'Goods follow the direction of travel. Services follow the place of supply, and for services that depends on whether the customer is in business.' },
         },
         {
           /* NOT A NAMED CRITERION, and the card says so rather than leaving a
@@ -1905,8 +1933,9 @@
             'Late **submission** of a return is penalised on a points basis. The design forgives the occasional slip but not a pattern.',
             'Each late return earns **one point**. Nothing is charged for a point on its own. Once the business reaches its **threshold**, a **£' + T.penalties.lateSubmission.penalty.value + '** penalty is charged, and a further £' + T.penalties.lateSubmission.penalty.value + ' for every late return after that, for as long as it stays at the threshold.',
             'The threshold **rises with filing frequency**: **' + T.penalties.lateSubmission.thresholds.annual + ' points** for annual filers, **' + T.penalties.lateSubmission.thresholds.quarterly + '** for quarterly, **' + T.penalties.lateSubmission.thresholds.monthly + '** for monthly. That makes sense — a business filing twelve times a year has more opportunities to be late, so it is allowed more points before the penalty bites.',
-            'Points do not last forever, and there are **two different ways** they go away. A single point earned while the business is still **below** its threshold **expires automatically after 24 months**. The 24 months are counted from the first day of the month after the one in which the late return was due. Nothing has to be done to earn that.',
-            'Once the business is **at** its threshold, automatic expiry stops and clearing the points takes real effort. It must complete a **period of compliance**, submitting everything on time for **' + T.penalties.lateSubmission.complianceMonths.annual + ' months** (annual), **' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months** (quarterly) or **' + T.penalties.lateSubmission.complianceMonths.monthly + ' months** (monthly). *And* it must have submitted all outstanding returns for the previous 24 months. Both conditions, not either.',
+            'Points do not last forever, and there are **two different ways** they go away. A single point earned while the business is still **below** its threshold **expires by itself**. Nothing has to be done to earn that.',
+            'The expiry date is always a **month end**. Where the return deadline was *not* the last day of a month, the point expires on the last day of the month **' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months** later. Where the deadline *was* a month end, it is **' + T.penalties.lateSubmission.pointExpiryMonthEndMonths.value + ' months** instead. A return due on 7 May 2026 earns a point that falls away on **31 May 2028**. One due on 31 March 2026 falls away on **30 April 2028** instead.',
+            'Once the business is **at** its threshold, automatic expiry stops and clearing the points takes real effort. It must complete a **period of compliance**, submitting everything on time for **' + T.penalties.lateSubmission.complianceMonths.annual + ' months** (annual), **' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months** (quarterly) or **' + T.penalties.lateSubmission.complianceMonths.monthly + ' months** (monthly). *And* it must have submitted all outstanding returns due in the previous **' + T.penalties.lateSubmission.resetLookbackMonths.value + ' months**, on time or not. Both conditions, not either.',
             'Note what is being penalised here: **lateness of the return, not of the money**. A nil return filed late earns a point in exactly the same way as one showing a large liability.',
           ],
           table: {

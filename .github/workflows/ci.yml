@@ -79,6 +79,8 @@ jobs:
         run: npm run check:aat3-mock
       - name: Check every VAT threshold in TPFB agrees with the governed tax data
         run: npm run check:vat-thresholds
+      - name: Check every figure sourced to the AAT reference material appears in it
+        run: npm run check:reference-material
       - name: Check a finished lesson names itself on the completion screen
         run: npm run check:lesson-complete
       - name: Check read-aloud on both players (every card, nothing silent, nothing outlives the card)
