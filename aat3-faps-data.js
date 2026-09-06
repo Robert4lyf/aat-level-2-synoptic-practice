@@ -7021,7 +7021,7 @@
     {
       id: 'F-2-28', unitKey: 'faps', lo: 2, criteria: ['FAPS-2.3.3'],
       type: 'numeric',
-      q: 'A sales daybook shows net sales of £14,500 for the month. VAT is charged at 20%. What amount is debited to the receivables ledger control account?',
+      q: 'A sales daybook shows sales of £14,500 excluding VAT for the month. VAT is charged at 20%. What amount is debited to the receivables ledger control account?',
       answer: 17400, unit: '£',
       exp: 'Customers owe the gross: £14,500 + (£14,500 × 20% = £2,900) = £17,400. The £14,500 is credited to sales and the £2,900 to VAT, so the entry balances at £17,400 each way.',
     },
