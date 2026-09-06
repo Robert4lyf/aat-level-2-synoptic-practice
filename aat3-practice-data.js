@@ -2298,7 +2298,7 @@
     {
       id: 'P-2-107', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.8'],
       type: 'mcq',
-      q: 'What is the alternative to applying the fuel scale charge, for a business whose cars are fuelled partly for private motoring?',
+      q: 'A business fuels its cars partly for private motoring and does not want to apply the fuel scale charge. Which alternative still recovers input tax on the business fuel?',
       opts: [
         'Recover input tax only on the fuel used for business journeys',
         'Recover all the input tax and make no adjustment at all',
@@ -2306,7 +2306,7 @@
         'Recover half the input tax as a fixed statutory proportion',
       ],
       ans: 0,
-      exp: 'A business may either recover all the VAT on road fuel and apply the scale charge, or keep detailed mileage records and recover only the business proportion. The scale charge exists precisely to spare a business that record keeping. Recovering everything without an adjustment is not an option, and there is no statutory half.',
+      exp: 'There are FOUR ways to handle VAT on road fuel, and three of them are open to a business with private use: recover everything and pay the scale charge; recover only the business mileage, which is this answer and needs detailed records; or recover nothing at all. That last one is a real alternative to the scale charge — it is simply not this one, because the question asks which route still recovers input tax, and it recovers none. It also has to be applied to EVERY vehicle, commercial ones included. Recovering everything with no adjustment is only for fuel used wholly for business. And there is no statutory half for fuel: the 50% belongs to hiring or leasing a CAR, not to fuelling one.',
     },
     {
       id: 'P-2-108', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.9'],
@@ -4018,9 +4018,9 @@
         { text: 'Whether a partial exemption special method should be adopted.', answer: true },
         { text: 'The date this quarter’s VAT return is due.', answer: false },
         { text: 'Whether an error appears to have been made deliberately.', answer: true },
-        { text: 'Whether to disclose an error to HMRC.', answer: true },
+        { text: 'Whether to notify an error separately when the limits do not require it.', answer: true },
       ],
-      exp: 'A special method, a judgement about somebody’s intent, and a disclosure decision all carry consequences beyond the figures. A filing deadline is a matter of fact that any technician should answer directly.',
+      exp: 'A special method, a judgement about somebody’s intent, and a VOLUNTARY disclosure all carry consequences beyond the figures. The last is a referral precisely because the limits do NOT compel it: Method 2 may be used for any error, so somebody has to weigh coming forward early against saying nothing, and that weighing is not the technician’s to do alone. A filing deadline is a matter of fact that any technician should answer directly. Contrast an error the limits DO catch — working out that £60,000 clears the £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + ' ceiling and must go on form ' + T.errorCorrection.separateNotificationForm + ' is rule application, and belongs with the technician (see P-5-23 and P-5-40).',
     },
     {
       id: 'P-5-03', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],
@@ -4877,10 +4877,10 @@
       statements: [
         { text: 'Whether a business should join the flat rate scheme.', answer: true },
         { text: 'Whether an invoice dated 3 May falls in the quarter ended 30 June.', answer: false },
-        { text: 'Whether a large error from three years ago must be notified separately.', answer: false },
+        { text: 'Whether a £60,000 net error from three years ago must be notified separately.', answer: false },
         { text: 'Whether a director’s personal expenditure may be recovered as input tax.', answer: true },
       ],
-      exp: 'The two referrals involve judgement about the business’s position or about somebody’s conduct — a scheme choice depends on facts the technician may not have, and a director’s private spending raises a question about behaviour rather than about VAT alone. The other two are matters of applying a known rule to known facts, which is exactly the technician’s job: referring them upward is its own kind of failure.',
+      exp: 'The two referrals involve judgement about the business’s position or about somebody’s conduct — a scheme choice depends on facts the technician may not have, and a director’s private spending raises a question about behaviour rather than about VAT alone. The other two are matters of applying a known rule to known facts, which is exactly the technician’s job: referring them upward is its own kind of failure. Note what makes the error mechanical: £60,000 is over the £50,000 ceiling, so separate notification is required whatever the Box 6 figure shows. Had the error been a smaller one, whether it was DELIBERATE would decide it — and that is a judgement about conduct, which would put it with the referrals.',
     },
     {
       id: 'P-5-24', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],

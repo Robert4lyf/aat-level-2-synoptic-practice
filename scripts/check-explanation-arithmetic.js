@@ -15,7 +15,12 @@
  * different figure, and a sentence saying the answer was wrong.
  *
  * So this recomputes instead. Every equation in every explanation, in every
- * bank, is parsed and evaluated:
+ * bank, is parsed and evaluated. LEVEL 2 WAS NOT IN THAT SET until now, which
+ * made the sentence above false for the largest bank in the app: 658 practice
+ * questions and 345 lesson checks, none of them ever recomputed. Its arithmetic
+ * turned out to be clean — 106 equations, all correct — so nothing changed but
+ * the coverage. That is the point: the gap was invisible precisely because
+ * there was nothing wrong yet.
  *
  *   a + b + c = d          chains of any length, left to right
  *   a − b − c = d          the same, and mixed with +
@@ -39,6 +44,7 @@
 
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
 
@@ -67,6 +73,19 @@ function load() {
     .forEach(g => (g.lessons || []).forEach(l => (l.check || []).forEach((q, i) =>
       l3checks.push(Object.assign({ id: `${l.id} Q${i + 1}` }, q)))));
   push('AAT L3 lesson checks', l3checks);
+
+  /* Level 2 hangs its data off `window` rather than exporting it, so it is read
+     the way every other Level 2 gate reads it — evaluated against a stub
+     object — instead of being left out for the want of a `module.exports`. */
+  const w = {};
+  w.ALL_QUESTIONS = [];
+  new Function('window', fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8'))(w);
+  new Function('window', fs.readFileSync(path.join(ROOT, 'learn-data.js'), 'utf8'))(w);
+  push('AAT L2 practice', w.ALL_QUESTIONS);
+  const l2checks = [];
+  (w.LEARN_PATH || []).forEach(g => (g.lessons || []).forEach(l => (l.check || []).forEach((q, i) =>
+    l2checks.push(Object.assign({ id: `${l.id} Q${i + 1}` }, q)))));
+  push('AAT L2 lesson checks', l2checks);
 
   return out;
 }

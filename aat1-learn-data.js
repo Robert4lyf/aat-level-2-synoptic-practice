@@ -63,7 +63,7 @@
           h: 'What bookkeeping actually is',
           p: [
             'A business does things all day that involve money. It sells something. It buys stock. It pays the electricity bill. Somebody puts fuel in the van. `Bookkeeping` is the work of writing all of that down in an organised way, so that at any point somebody can answer questions about it.',
-            'Nobody can hold a year of a business in their head. Without records, the owner of a small shop cannot tell you whether the shop made money last month, which customers still owe them, whether that invoice from the wholesaler has already been paid, or how much of the money in the bank is really theirs rather than tax they are holding for somebody else. Every one of those questions has a definite answer, and the records are the only place it exists.',
+            'Nobody can hold a year of a business in their head. Without records, the owner of a small shop cannot tell you whether the shop made money last month. Nor which customers still owe them, nor whether that invoice from the wholesaler has already been paid. Nor how much of the money in the bank is really theirs, rather than tax they are holding for somebody else. Every one of those questions has a definite answer, and the records are the only place it exists.',
             'Filing is part of the job, but only the part that keeps the paper findable. The records themselves are what the accounts sent to Companies House are built from, what the tax return is built from, and what an owner uses to decide whether they can afford to hire somebody. If the bookkeeping is wrong, each of those is wrong too, and nobody further down the chain has any way of knowing.',
             'This unit teaches the first layer of that work. It is deliberately narrow — one business, straightforward transactions, no complications — so that the shape of the work is familiar before the volume arrives.',
           ],
@@ -123,7 +123,7 @@
         {
           h: 'What this material is, and what it is not',
           p: [
-            'This is a textbook and a question bank, written independently. It is not affiliated with AAT, endorsed by AAT, or approved by anybody. It follows the published qualification specification closely — every lesson names the scope items it covers, and a build check fails if a lesson claims something the specification does not contain — but following a specification is not the same as being a good preparation for sitting an assessment.',
+            'This is a textbook and a question bank, written independently. It is not affiliated with AAT, endorsed by AAT, or approved by anybody. It follows the published qualification specification closely: every lesson names the scope items it covers, and a build check fails if a lesson claims something the specification does not contain. But following a specification is not the same as being a good preparation for sitting an assessment.',
             'Two honest limitations. Nothing here has been reviewed by a qualified accountant or an AAT tutor. And covering a syllabus is not the same as exam readiness, which also needs timed practice against AAT’s own question formats. AAT publishes practice assessments to registered students through MyAAT, and they are the right thing to sit before the real one. Use this to learn the material; use those to find out whether you can do it under a clock.',
             'What this material does offer is depth. Each step teaches the idea properly rather than listing bullet points to memorise, and every question explains why the right answer is right. That is the part a bullet-point summary cannot do.',
           ],
@@ -475,7 +475,7 @@
           p: [
             'One chain is worth following all the way through, because it is the most commonly examined and the one that surprises people.',
             'A business delivers goods on 3 March. The sales invoice is not raised until 24 March. Payment terms are 30 days. Nothing here is inaccurate — the invoice, when it goes out, is perfectly correct.',
-            'But the customer’s 30 days begin when they receive the invoice, not when they received the goods. Payment is now due at the end of April instead of early April. The business has waited three extra weeks for money it earned in early March, and if it is short of cash in the meantime that is a genuine problem — possibly a borrowing cost, possibly not being able to pay its own suppliers on time, which starts the supplier chain running as well.',
+            'But the customer’s 30 days begin when they receive the invoice, not when they received the goods. Payment is now due at the end of April instead of early April. The business has waited three extra weeks for money it earned in early March. If it is short of cash in the meantime, that is a genuine problem: possibly a borrowing cost, possibly not being able to pay its own suppliers on time. That starts the supplier chain running as well.',
             'Notice that no error was ever made. Every figure was right. The whole cost came from a delay of three weeks in doing the work, which is exactly why the specification treats timeliness as a duty in its own right.',
           ],
           flow: ['Goods delivered 3 March', 'Invoice raised 24 March', 'Terms start on receipt', 'Payment due end April', 'Three weeks of cash lost'],
@@ -485,7 +485,7 @@
           h: 'Stale reports, and the decisions taken from them',
           p: [
             'The last consequences on the list are about reports, and they are the ones with the largest reach.',
-            'Reports are produced from the records at a moment in time. If the records are three weeks behind, the report describes the business as it was three weeks ago, and it does so without saying so — a report of amounts owed by customers looks equally authoritative whether it is current or a month out of date.',
+            'Reports are produced from the records at a moment in time. If the records are three weeks behind, the report describes the business as it was three weeks ago — and it does so without saying so. A report of amounts owed by customers looks equally authoritative whether it is current or a month out of date.',
             'So somebody reads it and acts. They see that customers owe £14,000 and plan around that money arriving, when in fact half of it was paid a fortnight ago and £9,000 of new invoices have not yet been entered. The figure is not wrong in the sense of being miscalculated. It is simply no longer true, which for the purpose of a decision is the same thing.',
             'This is why "out of date information in reports" and "incorrect management decision making" are listed as separate consequences: the first is the state of the report, the second is what somebody does because of it.',
           ],
@@ -838,7 +838,7 @@
           },
           p: [
             'The structure here is worth noticing: one act, four separate frameworks broken, plus a consequence that is not a breach of anything but may outlast all of them.',
-            'A bookkeeper who emails a client’s payroll file to the wrong recipient has in one action shared information without authority, probably breached data protection law, breached the ethical code they are bound by, breached the confidentiality term in their employment contract, and damaged both the firm’s reputation and their own. No malice is required, and no benefit is obtained. The consequences do not scale with intent.',
+            'A bookkeeper who emails a client’s payroll file to the wrong recipient does five things in one action. They share information without authority. They probably breach data protection law. They breach the ethical code they are bound by, and the confidentiality term in their employment contract. And they damage both the firm’s reputation and their own. No malice is required, and no benefit is obtained. The consequences do not scale with intent.',
             'That is why the safeguards on the next cards are worth taking seriously rather than treating as an IT department’s concern. The person who causes a breach is almost never trying to.',
           ],
           callout: { kind: 'warning', text: 'One careless email can breach data protection law, the ethical code and your employment contract simultaneously. Intent is not part of any of those tests.' },
@@ -868,7 +868,7 @@
             ],
           },
           p: [
-            'Two of these deserve emphasis. **Not sharing passwords** is separate from having a strong one, and it is the more commonly breached: sharing a login also means every action taken under it appears to have been taken by you, so there is a self-interested reason as well as a security one.',
+            'Two of these deserve emphasis. **Not sharing passwords** is separate from having a strong one, and it is the more commonly breached. Sharing a login also means every action taken under it appears to have been taken by you. So there is a self-interested reason as well as a security one.',
             'The **secure network** point is the modern addition. Working from home or from a café is normal, and it moves confidential data onto connections nobody in the business controls. That is why the specification names remote and hybrid working explicitly rather than assuming an office.',
           ],
           notyet: 'Scope item 1.3.3 excludes *creating* passwords. You need to know that strong passwords are a safeguard and that they must not be shared, but you will not be asked to compose one or to judge whether a particular string is strong enough.',
@@ -1604,7 +1604,7 @@
           p: [
             'A credit sale generates a sequence of documents, and the sequence is not arbitrary — each one exists because of a question somebody needs answered at that point.',
             'The specification names nine documents. Learning them as a list of definitions is possible but hard; learning them as a story is much easier, because each document’s purpose is obvious once you know where in the story it sits.',
-            'The story runs: the customer asks how much · the business says how much · the customer orders · the goods go · the goods arrive · the bill goes · anything wrong comes back · the customer pays · the customer says what the payment covers.',
+            'The story runs: the customer asks how much · the business says how much · the customer orders · the goods go · the goods arrive. Then: the bill goes · anything wrong comes back · the customer pays · the customer says what the payment covers.',
           ],
           flow: ['Quotation', 'Order', 'Delivery note', 'Goods received note', 'Invoice', 'Credit note', 'Payment', 'Remittance advice'],
         },
