@@ -2298,7 +2298,7 @@
     {
       id: 'P-2-107', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.8'],
       type: 'mcq',
-      q: 'What is the alternative to applying the fuel scale charge, for a business whose cars are fuelled partly for private motoring?',
+      q: 'A business fuels its cars partly for private motoring and does not want to apply the fuel scale charge. Which alternative still recovers input tax on the business fuel?',
       opts: [
         'Recover input tax only on the fuel used for business journeys',
         'Recover all the input tax and make no adjustment at all',
@@ -2306,7 +2306,7 @@
         'Recover half the input tax as a fixed statutory proportion',
       ],
       ans: 0,
-      exp: 'A business may either recover all the VAT on road fuel and apply the scale charge, or keep detailed mileage records and recover only the business proportion. The scale charge exists precisely to spare a business that record keeping. Recovering everything without an adjustment is not an option, and there is no statutory half.',
+      exp: 'There are FOUR ways to handle VAT on road fuel, and three of them are open to a business with private use: recover everything and pay the scale charge; recover only the business mileage, which is this answer and needs detailed records; or recover nothing at all. That last one is a real alternative to the scale charge — it is simply not this one, because the question asks which route still recovers input tax, and it recovers none. It also has to be applied to EVERY vehicle, commercial ones included. Recovering everything with no adjustment is only for fuel used wholly for business. And there is no statutory half for fuel: the 50% belongs to hiring or leasing a CAR, not to fuelling one.',
     },
     {
       id: 'P-2-108', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.9'],
