@@ -67,23 +67,45 @@ console.log(`${BOLD}Spaced repetition${RESET}\n`);
 const DAY = 24 * 60 * 60 * 1000;
 const T0 = 1700000000000;                    // a fixed "now", so nothing is clock-dependent
 
+/* When was this schedule written? The §3 cases grade in a real page at a real
+   clock, so the grading moment is not T0 and has to be recovered from the
+   record — and recovering it is exactly what catches a player that grades
+   WITHOUT passing the question's id.
+
+   With the id, dueAt = graded + (interval + spread(id)) days. Subtract both and
+   what is left is the grading moment, a second or two ago. Without it, dueAt is
+   short by spread(id) days and what is left is days in the past. */
+function srGradedAt(sr, qId) {
+  return sr.dueAt - (sr.interval + SPACED.spreadDays(sr.interval, qId, sr.reps)) * DAY;
+}
+
 /* ── 1. The arithmetic ────────────────────────────────────────────────────── */
 console.log(`${DIM}1. The schedule itself${RESET}`);
 {
   /* Three successes in a row. The first two intervals are deliberately fixed:
      an item recalled once is not known, and letting the ease loose immediately
-     would space a lucky guess out to a week. */
+     would space a lucky guess out to a month. Called WITHOUT A KEY here, so
+     these are the nominal ladder positions with no spread on top. */
   const a = SPACED.schedule(undefined, true, T0);
-  ok(a.interval === 1, `first correct answer returns tomorrow (got ${a.interval})`);
+  ok(a.interval === SPACED.FIRST_INTERVAL,
+    `first correct answer returns in ${SPACED.FIRST_INTERVAL} days (got ${a.interval})`);
   ok(a.reps === 1, 'and counts one rep');
-  ok(a.dueAt === T0 + DAY, 'with a due date one day out');
+  ok(a.dueAt === T0 + SPACED.FIRST_INTERVAL * DAY, 'with a due date to match');
+
+  /* THE FIRST INTERVAL IS NOT ONE DAY, and that is the point of it. A question
+     reaches this schedule having already been answered correctly in practice;
+     handing it back the next morning is what turned one session into a daily
+     pile of eighty. */
+  ok(SPACED.FIRST_INTERVAL > 1, 'a question answered right is not handed back tomorrow');
 
   const b = SPACED.schedule(a, true, T0);
-  ok(b.interval === 3, `second correct answer returns in three days (got ${b.interval})`);
+  ok(b.interval === SPACED.SECOND_INTERVAL,
+    `second correct answer returns in ${SPACED.SECOND_INTERVAL} days (got ${b.interval})`);
+  ok(SPACED.SECOND_INTERVAL > SPACED.FIRST_INTERVAL, 'and the ladder climbs');
 
   const c = SPACED.schedule(b, true, T0);
-  /* interval 3 × ease 2.66 = 7.98 → 8. From here the ease is in charge. */
-  ok(c.interval === 8, `third correct answer uses the ease (expected 8, got ${c.interval})`);
+  /* interval 7 × ease 2.66 = 18.62 → 19. From here the ease is in charge. */
+  ok(c.interval === 19, `third correct answer uses the ease (expected 19, got ${c.interval})`);
   ok(c.ease > b.ease && b.ease > a.ease, 'and the ease rises with each success');
 
   const d = SPACED.schedule(c, false, T0);
@@ -106,6 +128,81 @@ console.log(`${DIM}1. The schedule itself${RESET}`);
   ok(easy.interval === SPACED.INTERVAL_MAX,
     `the interval is capped at a year (got ${easy.interval})`);
   ok(easy.dueAt === T0 + SPACED.INTERVAL_MAX * DAY, 'and the due date respects the cap');
+
+  /* ── The spread ─────────────────────────────────────────────────────────
+     THE DEFECT THIS EXISTS FOR. Identical inputs gave identical intervals, so
+     every question graded in one sitting fell due on the same day — and then
+     on the same day again. A cohort of 81 stayed a cohort of 81 for ever:
+     81 due on day 1, 81 on day 4, 81 on day 12. Nothing in the algorithm
+     could break that up, because nothing in it told one question from
+     another. These assert that it now can. */
+  const cohort = [];
+  for (let i = 0; i < 81; i++) cohort.push({ key: 'q' + i, rec: SPACED.schedule(undefined, true, T0, 'q' + i) });
+
+  const days = new Set(cohort.map(e => Math.floor((e.rec.dueAt - T0) / DAY)));
+  ok(days.size >= 5,
+    `81 questions graded together fall due across ${days.size} different days, not one`);
+
+  /* ONE-SIDED. A two-sided jitter would pull some questions in SOONER than the
+     interval they earned, which is the opposite of what was wanted. */
+  ok(cohort.every(e => e.rec.dueAt >= T0 + e.rec.interval * DAY),
+    'and no question is ever brought forward of its interval');
+
+  /* STABLE. Hashed from the question's own id, so the same question grades to
+     the same date on every device and every reload. A spread that moved on
+     each recompute would make two devices disagree for ever. */
+  ok(SPACED.schedule(undefined, true, T0, 'q7').dueAt === SPACED.schedule(undefined, true, T0, 'q7').dueAt,
+    'the spread is stable for a given question');
+  ok(SPACED.schedule(undefined, true, T0, 'q7').dueAt !== SPACED.schedule(undefined, true, T0, 'q8').dueAt,
+    'and differs between questions');
+
+  /* THE LADDER ITSELF IS UNSPREAD. Rolling the spread into `interval` would
+     compound it at the next multiplication and walk the ladder away from its
+     constants within three or four reviews. */
+  ok(cohort.every(e => e.rec.interval === SPACED.FIRST_INTERVAL),
+    'the spread moves the due date, not the interval');
+
+  /* A MISS TAKES NO SPREAD. Coming back promptly is the whole point of a miss,
+     and there is no cohort to break up — a reader misses a few, not eighty. */
+  const missed = SPACED.schedule({ ease: 2.5, reps: 3, interval: 20, dueAt: T0 }, false, T0, 'q1');
+  ok(missed.dueAt === T0 + DAY, 'a miss still comes back tomorrow, unspread');
+
+  /* WITHOUT A KEY, exactly the interval. A caller that supplies no id keeps the
+     old behaviour rather than silently getting an unseeded spread. */
+  ok(SPACED.schedule(undefined, true, T0).dueAt === T0 + SPACED.FIRST_INTERVAL * DAY,
+    'no key means no spread');
+
+  /* ── Fanning out a backlog banked under the old schedule ────────────────
+     The constants above only reach questions graded from now on. A reader who
+     already holds 81 falling due together needs them fanned out once, or they
+     meet all 81 again tomorrow. */
+  const banked = [];
+  for (let i = 0; i < 81; i++) {
+    banked.push({ key: 'b' + i, rec: { ease: 2.5, reps: 1, interval: 3, dueAt: T0 - (81 - i) * 3600000, lastResult: true } });
+  }
+  const moved = SPACED.deferBacklog(banked, T0, SPACED.BACKLOG_PER_DAY);
+  const stillDue = banked.filter(e => !moved[e.key]).length;
+  ok(stillDue === SPACED.BACKLOG_PER_DAY,
+    `a day's worth stays due and the rest move (got ${stillDue} left due)`);
+  ok(banked.every(e => !moved[e.key] || moved[e.key] > e.rec.dueAt),
+    'nothing is ever brought forward');
+  ok(Object.keys(moved).length === 81 - SPACED.BACKLOG_PER_DAY,
+    'nothing is dropped — every question still has a date');
+
+  /* THE MOST OVERDUE STAY DUE. Deferring the oldest material and keeping the
+     newest would be exactly backwards. */
+  const keptOldest = banked.slice(0, SPACED.BACKLOG_PER_DAY).every(e => !moved[e.key]);
+  ok(keptOldest, 'and the most overdue are the ones left due today');
+
+  /* SETTLED AFTER ONE PASS. Running it twice must not push everything out
+     again; a second pass has only a day's worth due and moves none of it. */
+  const after = banked.map(e => ({ key: e.key, rec: moved[e.key] ? Object.assign({}, e.rec, { dueAt: moved[e.key] }) : e.rec }));
+  ok(Object.keys(SPACED.deferBacklog(after, T0, SPACED.BACKLOG_PER_DAY)).length === 0,
+    'a second pass over a fanned-out backlog moves nothing');
+
+  /* AND IT NEVER TOUCHES WHAT IS NOT DUE. */
+  ok(Object.keys(SPACED.deferBacklog([{ key: 'z', rec: { ease: 2.5, reps: 1, interval: 3, dueAt: T0 + 5 * DAY } }], T0, 10)).length === 0,
+    'a question not yet due is left alone');
 
   /* isDue is inclusive of the moment itself: an item due at noon is due at
      noon, not a millisecond later. */
@@ -224,8 +321,28 @@ CASES.forEach((C) => {
   ok(!right.err, `${C.name}: a correct answer was graded${right.err ? ' — ' + right.err : ''}`);
   const rr = right.rec;
   ok(!!(rr && rr.sr), `${C.name}: a correct answer writes a schedule`);
-  ok(!!(rr && rr.sr && rr.sr.interval === 1 && rr.sr.reps === 1),
+  ok(!!(rr && rr.sr && rr.sr.interval === SPACED.FIRST_INTERVAL && rr.sr.reps === 1),
     `${C.name}: and it is the first-success schedule`);
+  /* THE PLAYER MUST PASS THE QUESTION'S ID, or every question it grades in one
+     sitting lands on the same day again — the defect the spread exists to fix,
+     reintroduced one caller at a time. Nothing else in this suite would notice:
+     the record still has an ease, an interval and a due date, and every other
+     assertion here passes.
+
+     The test is arithmetic. Undo the interval AND this question's spread from
+     the due date; if the id was passed, what is left is the moment it was just
+     graded. If it was not, what is left is that moment minus the spread —
+     hours or days adrift. */
+  if (rr && rr.sr) {
+    const spread = SPACED.spreadDays(rr.sr.interval, C.mcq, rr.sr.reps);
+    /* Guard the guard: a question whose seed happened to land near zero would
+       make the assertion below vacuous, and it would pass for ever without
+       testing anything. */
+    ok(spread > 0.25,
+      `${C.name}: the fixture question ${C.mcq} has a spread worth testing (${spread.toFixed(2)}d)`);
+    ok(Math.abs(srGradedAt(rr.sr, C.mcq) - Date.now()) < 60000,
+      `${C.name}: and the question's id is passed, so it takes its own spread`);
+  }
   ok(!!(rr && rr.sr && rr.sr.lastResult === true), `${C.name}: recorded as recalled`);
   ok(!!(rr && rr.sr && rr.sr.dueAt > Date.now()), `${C.name}: with a due date in the future`);
   ok(!!(rr && typeof rr.r === 'number'),
@@ -336,7 +453,8 @@ CASES.forEach((C) => {
   /* And answering one gives it a schedule, so nobody is stranded on the old
      rule for ever. */
   const rec = SPACED.schedule(undefined, true, now);
-  ok(rec.dueAt === now + DAY, `${C.name}: answering a legacy record schedules it from scratch`);
+  ok(rec.dueAt === now + SPACED.FIRST_INTERVAL * DAY,
+    `${C.name}: answering a legacy record schedules it from scratch`);
 });
 
 /* ── 6. Two devices ──────────────────────────────────────────────────────── */

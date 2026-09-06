@@ -142,7 +142,7 @@
      synthetic id begins with the lesson's globally-unique id, so units cannot
      collide — and it merges between devices exactly as `qs` does: two
      timestamps per question under MAX. */
-  var data = { lessons: {}, xp: 0, lessonQs: {}, practice: { units: {} } };
+  var data = { lessons: {}, xp: 0, lessonQs: {}, practice: { units: {} }, srSpreadAt: 0 };
 
   function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
 
@@ -201,8 +201,49 @@
         data.xp = p.xp || 0;
         data.lessonQs = (p.lessonQs && typeof p.lessonQs === 'object') ? p.lessonQs : {};
         data.practice = normalisePractice(p.practice);
+        data.srSpreadAt = n0(p.srSpreadAt);
       }
     } catch (e) { /* corrupt storage: start clean rather than fail to render */ }
+    spreadBacklogOnce();
+  }
+
+  /* ── Fanning out a backlog banked under the old schedule ──────────────────
+     Longer intervals and the spread only shape questions graded from now on. A
+     reader who has been using the app already holds a cohort banked under the
+     old constants, every one of them falling due on the same day — the 81 that
+     started this. Nothing in the schedule reaches them; they would simply
+     arrive together again tomorrow.
+
+     So once, and once only, the backlog is fanned out: a day's worth stays due
+     now and the rest move back a day at a time, most overdue first. It defers,
+     it never drops, and `srSpreadAt` records that it has run. That field is a
+     number, so the backup merge takes the LARGER of two devices — meaning it
+     runs on the first device to load and nowhere else, rather than once per
+     device and compounding. */
+  function srMaps() {
+    var maps = [data.lessonQs];
+    var units = (data.practice && data.practice.units) || {};
+    Object.keys(units).forEach(function (k) {
+      if (units[k] && units[k].qs) maps.push(units[k].qs);
+    });
+    return maps;
+  }
+  function spreadBacklogOnce() {
+    if (data.srSpreadAt || !root.AATSpaced || !root.AATSpaced.deferBacklog) return;
+    var entries = [];
+    srMaps().forEach(function (map, i) {
+      Object.keys(map || {}).forEach(function (id) {
+        var rec = map[id];
+        if (rec && rec.sr) entries.push({ key: i + '/' + id, rec: rec.sr, map: map, id: id });
+      });
+    });
+    var now = Date.now();
+    var moved = root.AATSpaced.deferBacklog(entries, now, root.AATSpaced.BACKLOG_PER_DAY);
+    entries.forEach(function (e) {
+      if (moved[e.key]) e.map[e.id].sr.dueAt = moved[e.key];
+    });
+    data.srSpreadAt = now;
+    save();
   }
 
   /* The practice record for one unit, created on demand.
@@ -290,7 +331,10 @@
        must never fail to do, and an unguarded call would take a whole run down
        if the file were ever missing. §7 of check-spaced.js is what makes sure
        it is actually shipped. */
-    if (root.AATSpaced) rec.sr = root.AATSpaced.schedule(rec.sr, correct);
+    /* The id is the spread key: it is what gives this question its own place
+       in the review window instead of the same day as everything else graded
+       in the same sitting. See spaced.js. */
+    if (root.AATSpaced) rec.sr = root.AATSpaced.schedule(rec.sr, correct, undefined, qId);
   }
   function isOutstanding(rec) {
     return !!(rec && n0(rec.w) > n0(rec.r));
