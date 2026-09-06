@@ -4018,9 +4018,9 @@
         { text: 'Whether a partial exemption special method should be adopted.', answer: true },
         { text: 'The date this quarter’s VAT return is due.', answer: false },
         { text: 'Whether an error appears to have been made deliberately.', answer: true },
-        { text: 'Whether to disclose an error to HMRC.', answer: true },
+        { text: 'Whether to notify an error separately when the limits do not require it.', answer: true },
       ],
-      exp: 'A special method, a judgement about somebody’s intent, and a disclosure decision all carry consequences beyond the figures. A filing deadline is a matter of fact that any technician should answer directly.',
+      exp: 'A special method, a judgement about somebody’s intent, and a VOLUNTARY disclosure all carry consequences beyond the figures. The last is a referral precisely because the limits do NOT compel it: Method 2 may be used for any error, so somebody has to weigh coming forward early against saying nothing, and that weighing is not the technician’s to do alone. A filing deadline is a matter of fact that any technician should answer directly. Contrast an error the limits DO catch — working out that £60,000 clears the £' + T.errorCorrection.absoluteCeiling.value.toLocaleString('en-GB') + ' ceiling and must go on form ' + T.errorCorrection.separateNotificationForm + ' is rule application, and belongs with the technician (see P-5-23 and P-5-40).',
     },
     {
       id: 'P-5-03', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],
