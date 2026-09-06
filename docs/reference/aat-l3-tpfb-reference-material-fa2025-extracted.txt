@@ -1,0 +1,620 @@
+-- 1 of 20 --
+Level 3 Tax Processes for
+Businesses (TPFB)
+reference material
+Finance Act 2025 – for assessments from 26 January 2026
+
+-- 2 of 20 --
+AAT is a registered charity. No. 1050724 2
+Reference material for AAT assessment of Tax Processes for Businesses
+ Introduction
+
+This document comprises data that you may need to consult during your Tax Processes for
+Businesses computer-based assessment.
+
+The material can be consulted during the practice and live assessments by using the reference
+materials section at each task position. It’s made available here so you can familiarise yourself
+with the content before the assessment.
+
+Do not take a print of this document into the exam room with you*.
+
+This document may be changed to reflect periodical updates in the computer-based assessment,
+so please check you have the most recent version while studying. This version is based on
+Finance Act 2025 and is for use in AAT Q2022 assessments from 26 January 2026.
+
+*Unless you need a printed version as part of reasonable adjustments for particular needs, in
+which case you must discuss this with your tutor at least six weeks before the assessment date.
+
+-- 3 of 20 --
+AAT is a registered charity. No. 1050724 3
+Contents
+1. Rates of VAT 4
+2. Registration and deregistration for VAT 4
+3. Failure to register for VAT 5
+4. Changes to VAT registration 5
+5. Keeping business and VAT records 5
+6. Contents of VAT invoices 6
+7. Partial exemption for VAT 6
+8. International trade and VAT 7
+9. Tax points for VAT 7
+10. Time limits for issuing VAT invoices 7
+11. Blocked expenses and VAT  8
+12. Fuel scale charges and VAT 8
+13. VAT bad debt relief 10
+14. Due dates for submitting VAT returns and payment of VAT 11
+15. Special accounting schemes for VAT 11
+15.1 Annual accounting scheme 11
+15.2 Cash accounting scheme 12
+15.3 Flat rate scheme 12
+16. Errors in previous VAT returns 13
+17. Late submission and late payment of VAT 14
+17.1. Late submission 14
+17.2. Late payment 15
+17.3. Interest charged 15
+18. Assessment of VAT 15
+19. Penalties for inaccuracies in VAT returns 15
+20. Payroll record retention 16
+21. Types of payroll submission 16
+22. Payroll deadlines 16
+23. Penalties for late submission of payroll returns 17
+24. Penalties for late payroll payments 18
+25. Penalties for inaccuracies in payroll returns 19
+
+-- 4 of 20 --
+AAT is a registered charity. No. 1050724 4
+1. Rates of VAT
+        Taxable supplies:
+
+Standard
+rate
+20%
+Reduced
+rate
+  5%
+Zero rate   0%
+
+              Non-taxable supplies have no VAT applied:
+•  Exempt
+•  Outside the scope of VAT
+
+2. Registration and deregistration for VAT
+
+Registration threshold £90,000
+Deregistration threshold £88,000
+
+Compulsory registration Notify HMRC Registration effective from
+Historic test Within 30 days of the end of the
+month threshold was exceeded
+First day of the second
+month after threshold was
+exceeded
+Future test Before the end of the 30 day
+period that threshold was expected
+to be exceeded
+From the start of the 30 day
+period that threshold was
+expected to be exceeded
+
+Deregistration  Notify HMRC Deregistration effective
+from
+Compulsory Within 30 days of the business
+ceasing to make taxable supplies
+Date of cessation
+Voluntary Evidence that taxable supplies will
+not exceed the VAT deregistration
+threshold in the next 12 months
+Date request received by
+HMRC, or agreed later date
+
+-- 5 of 20 --
+AAT is a registered charity. No. 1050724 5
+3. Failure to register for VAT
+
+• This can result in a penalty for failure to notify. The penalty is a % of potential lost revenue (PLR).
+
+Type of behaviour Within 12 months of tax
+being due
+12 months or more after tax
+was due
+ unprompted prompted unprompted prompted
+Non-deliberate 0-30% 10-30% 10-30% 20-30%
+Deliberate but not
+concealed
+20-70%               35-70%     20-70%              35-70%
+Deliberate and concealed   30-100%              50-100%    30-100%           50-100%
+
+• Penalties will not be applied if there is a reasonable excuse.
+
+• HMRC will treat the business as though it had registered on time and will expect VAT to be
+accounted for as if it had been charged. The business has two choices:
+
+i. treat the invoices as VAT inclusive and absorb the VAT which should have been
+charged, or
+
+ii. account for VAT as an addition to the charges already invoiced and attempt to
+recover this VAT from its customers.
+
+4. Changes to VAT registration
+      HMRC must be notified of a change of:
+
+5. Keeping business and VAT records
+
+Name, trading name or address Within 30 days
+Partnership members Within 30 days
+Agent’s details Within 30 days
+Bank account details 14 days in advance
+Change in business activity Within 30 days
+Record retention period 6 years
+Penalty for failure to keep records £500
+
+-- 6 of 20 --
+AAT is a registered charity. No. 1050724 6
+6. Contents of VAT invoices
+
+Full VAT invoices
+
+• a sequential number based on one or more series which uniquely identifies the document
+• the time of the supply (tax point)
+• the date of issue of the document (where different to the time of supply)
+• supplier’s name, address, and VAT registration number
+• customer’s name and address
+• a description sufficient to identify the goods or services supplied
+• for each description, the quantity of the goods or the extent of the services, the rate of VAT and
+the amount payable excluding VAT — this can be expressed in any currency
+• the gross total amount payable, excluding VAT — this can be expressed in any currency
+• the rate of any cash discount offered
+• the total amount of VAT chargeable — this must be expressed in sterling
+• the unit price (applicable to countable elements).
+
+Simplified VAT invoices (≤£250)
+
+• suppliers name, address, and VAT registration number
+• the time of supply (tax point)
+• a description which identifies the goods or services supplied
+• for each applicable VAT rate, the total amount payable, including VAT  and the VAT rate.
+
+Modified VAT invoices
+
+• a full VAT invoice showing the VAT inclusive rather than VAT exclusive values.
+
+7. Partial exemption for VAT
+De minimis amount ≤£625 per month
+Proportion of total input tax ≤50%
+
+• Generally, a partially exempt business cannot reclaim the input tax paid on purchases that relate to
+exempt supplies.
+
+• If the amount of input tax incurred relating to exempt supplies is below a minimum de minimis
+amount, input tax can be reclaimed in full.
+
+• If the amount of input tax incurred relating to exempt supplies is above the de minimis amount,
+only the part of the input tax that related to non-exempt supplies can be reclaimed.
+
+-- 7 of 20 --
+AAT is a registered charity. No. 1050724 7
+8. International trade and VAT
+Export of goods Zero-rated
+Import of goods UK VAT applied using postponed accounting.
+Export of services Apply UK VAT if place of supply is in the UK:
+• f or supplies to business, place of supply is the
+location of the customer (outside the scope of UK
+VAT)
+• f or supplies to non-business customers, place of
+supply is the location of the supplier (charge UK
+VAT).
+Import of services Reverse charge applies
+
+9. Tax points for VAT
+Basic tax point date Date of despatch of the goods/carrying out of the service
+Actual tax point date may be earlier If either:
+• p ayment is received earlier
+• i nvoice is issued earlier.
+Actual tax point becomes the earlier of these two dates.
+Actual tax point date may be later If invoice is issued within 14 days of despatch/service (and
+advance payment didn’t apply).
+
+• Deposits are treated separately to final payment and so may have a different tax point.
+• The tax point is always the date of payment if cash basis is being applied.
+• Where services are being supplied on a continuous basis over a period in excess of a month, but
+invoices are being issued regularly throughout the period, a tax point is created every time an invoice
+is issued or a payment is made, whichever happens first.
+• Goods on sale or return will have a tax point date either on adoption (the customer indicates they will
+keep the goods) or 12 months after removal of the goods where this is earlier.
+
+10. Time limits for issuing VAT invoices
+Within 30 days of tax point which is either:
+• within 30 days of date of supply or
+• within 30 days of payment if payment was in advance.
+
+-- 8 of 20 --
+AAT is a registered charity. No. 1050724 8
+11. Blocked expenses and VAT
+Input tax cannot be recovered on blocked expenses.
+ Business entertainment
+• The exception is that input tax can be reclaimed in respect of entertaining overseas
+customers, but not UK or Isle of Man customers.
+
+• When the entertainment is in respect of a mixed group of both employees and non-
+employees (e.g. customers and/or suppliers), the business can only reclaim VAT on the
+proportion of the expenses that is for employees and on the proportion for overseas
+customers.
+
+Cars
+• Input tax can only be recovered on cars if it is wholly for business (no private use).
+• 50% of input tax can be recovered when cars are hired/leased.
+• VAT can be recovered on commercial vehicles such as vans/lorries.
+
+Assets with private use
+• The input tax recovery should be based only on the proportion related to business use.
+
+12. Fuel scale charges and VAT
+If the business pays for road fuel, it can deal with the VAT charged on the fuel in one of four ways:
+
+• reclaim all of the VAT. All of the fuel must be used only for business purposes
+
+• reclaim all of the VAT and pay the appropriate fuel scale charge (as follows) - this is a way of
+accounting for output tax on fuel that the business buys but that is then used for private
+motoring
+
+• reclaim only the VAT that relates to fuel used for business mileage. Detailed records of
+business and private mileage must be kept
+
+• do not reclaim any VAT. This can be a useful option if mileage is low and also if fuel is used
+for both business and private motoring. If the business chooses this option, it must apply it to
+all vehicles, including commercial vehicles.
+
+-- 9 of 20 --
+AAT is a registered charity. No. 1050724 9
+The fuel scale charge is as follows:
+Description of vehicle:
+vehicle’s CO2
+emissions figure
+VAT inclusive consideration for
+a 12 month prescribed
+accounting period (£)
+VAT inclusive consideration
+for a 3 month prescribed
+accounting period (£)
+VAT inclusive consideration
+for a 1 month prescribed
+accounting period (£)
+120 or less 661 164 54
+125 990 248 82
+130 1,059 263 87
+135 1,122 280 93
+140 1,191 297 99
+145 1,255 313 103
+150 1,323 330 109
+155 1,387 347 115
+160 1,456 363 120
+165 1,520 380 126
+170 1,588 396 131
+175 1,652 412 137
+180 1,721 429 143
+185 1,784 446 148
+190 1,853 462 153
+195 1,917 479 159
+200 1,985 496 164
+
+-- 10 of 20 --
+AAT is a registered charity. No. 1050724 10
+Description of vehicle:
+vehicle’s CO2
+emissions figure
+VAT inclusive consideration for
+a 12 month prescribed
+accounting period (£)
+VAT inclusive consideration
+for a 3 month prescribed
+accounting period (£)
+VAT inclusive consideration
+for a 1 month prescribed
+accounting period (£)
+205 2,049 512 170
+210 2,118 528 175
+215 2,182 545 181
+220 2,250 561 187
+225 or more 2,314 578 192
+
+• Where the CO2 emission figure is not a multiple of 5, the figure is rounded down to the next
+multiple of 5 to determine the level of the charge.
+
+13. VAT bad debt relief
+VAT that has been paid to HMRC and which has not been received from the customer can be
+reclaimed as bad debt relief. The conditions are that:
+
+• the debt is more than six months and less than four years and six months old
+
+• the debt has been written off in the VAT account and transferred to a separate bad debt account
+
+• the debt has not been sold or handed to a factoring company
+
+• the business did not charge more than the normal selling price for the items.
+
+Bad debt relief does not apply when the cash accounting scheme is used because the VAT is
+not paid to HMRC until after the customer has paid it to the supplier.
+
+-- 11 of 20 --
+AAT is a registered charity. No. 1050724 11
+14. Due dates for submitting VAT returns and payment of VAT
+Deadline for submitting return and paying VAT  1 month and 7 days after the end of the VAT
+period
+Deadline if being paid by direct debit HMRC will collect 3 working days after the
+submission deadline.
+
+• Please see alternative submission and payment deadlines for special accounting schemes.
+
+15. Special accounting schemes for VAT
+
+15.1 Annual accounting scheme
+
+Joining the scheme Maximum (estimated) taxable
+turnover in the next 12 months
+£1.35m
+Leaving the scheme Compulsory if taxable turnover at
+the end of the VAT accounting
+year exceeds the threshold
+£1.6m
+VAT returns One annual return 2 months after the end of the
+accounting period
+VAT payments (monthly) Nine monthly interim payments
+(10% of estimated VAT bill based
+on previous returns)
+At the end of months 4 to 12
+in the accounting period
+
+Balancing payment 2 months after the end of the
+accounting period
+VAT payments (quarterly) Three interim payments (25% of
+estimated VAT bill based on
+previous returns)
+At the end of months 4, 7
+and 10 in the accounting
+period
+Balancing payment 2 months after the end of the
+accounting period
+
+-- 12 of 20 --
+AAT is a registered charity. No. 1050724 12
+15.2 Cash accounting scheme
+Joining the scheme Maximum (estimated) taxable
+turnover in the next 12 months
+£1.35m
+Leaving the scheme Compulsory if taxable turnover at
+the end of a VAT accounting year
+exceeds the threshold
+£1.6m
+Deadlines for submission and
+payment
+ Same as normal scheme
+
+15.3 Flat rate scheme
+Joining the scheme Maximum taxable turnover
+(excluding VAT) in the next 12
+months
+
+£150,000
+Leaving the scheme On the anniversary of joining,
+maximum turnover (including
+VAT) in the last 12 months or
+expected in the next 12 months
+£230,000
+Discount In first year of being VAT
+registered
+1%
+Limited cost business Goods cost less than either:
+• 2% of turnover, or
+• £1,000 a year
+16.5%
+Capital expenditure Input tax can be recovered on
+individual large capital
+purchases
+£2,000
+Deadlines for submission and
+payment
+ Same as normal scheme
+
+• The appropriate flat rate % will be provided in the assessment.
+
+-- 13 of 20 --
+AAT is a registered charity. No. 1050724 13
+16. Errors in previous VAT returns
+
+Errors can be corrected that have been included in VAT returns for the preceding four years, as long as the
+net value of the errors is either:
+
+• £10,000 or less
+• between £10,000 and £50,000 but less than 1% of the total value of sales (Box 6).
+
+For these kinds of errors, make an adjustment or correction in the next VAT return.
+
+If VAT is due to HMRC because of the net errors, the net value of errors is added to the VAT due on sales
+and other outputs.
+
+If VAT is reclaimable because of the net errors, the net value of errors is added to VAT reclaimed on
+purchases and other inputs.
+
+HMRC must be informed separately about net errors that are:
+
+• over £50,000
+• over £10,000 if they exceed 1% of the total value of sales
+• deliberate errors.
+
+-- 14 of 20 --
+AAT is a registered charity. No. 1050724 14
+17. Late submission and late payment of VAT
+17.1. Late submission
+Submission frequency Penalty point threshold Period of compliance to
+reset points
+Annual 2 points 24 months
+Quarterly 4 points 12 months
+
+Initial penalty £200
+Subsequent penalty £200
+
+Removal of penalty points
+Business has not
+reached penalty
+threshold
+Individual penalty points will expire automatically,
+depending on the date the VAT return was due.
+If the deadline for the VAT return was:
+• not the last day of a month — a penalty point
+expires on the last day of the month, 24 months
+after this
+• the last day of a month — a penalty point expires
+on the last day of the month, 25 months after this
+Business has reached
+penalty threshold
+All points will be reset to zero if both conditions below are
+met:
+• a period of compliance (meeting all submission
+obligations on time for the period of compliance),
+and
+• all submissions due in the preceding 24 months
+have been made (whether or not they were on
+time).
+
+-- 15 of 20 --
+AAT is a registered charity. No. 1050724 15
+17.2. Late payment
+Number of days overdue First late payment
+penalty
+Second late payment penalty
+up to 15 None None
+16 to 30 3% on the VAT
+outstanding at day 15
+None
+31 or more 3% on the VAT
+outstanding at day 15
+
+AND
+
+3% on the VAT
+outstanding at day 30
+A daily rate based on 10% per
+annum charged every day from
+day 31 until paid in full
+
+17.3. Interest charged
+Interest is calculated at the Bank of England base rate plus 4%.
+The Bank of England base rate will be given in the assessment.
+18. Assessment of VAT
+If a VAT Return is not submitted on time, HMRC will issue a ‘VAT notice of assessment of tax’
+which will state how much HMRC think is owed.
+If HMRC issue an assessment that is too low, a penalty of up to 30% can be charged for not
+telling them it is incorrect within 30 days.
+19. Penalties for inaccuracies in VAT returns
+A penalty can be charged as a percentage of the potential lost revenue (PLR):
+Type of behaviour Unprompted
+disclosure
+%
+Prompted
+disclosure
+%
+Careless 0 - 30 15 - 30
+Deliberate 20 - 70 35 - 70
+Deliberate and concealed 30 - 100 50 - 100
+
+-- 16 of 20 --
+AAT is a registered charity. No. 1050724 16
+20. Payroll record retention
+Retention period 3 years from end of tax year
+Penalty for failure to maintain records £3,000
+
+21. Types of payroll submission
+Full Payment Submission (FPS)
+
+• File on or before employees pay day.
+• Include payments to and deductions for all employees.
+
+Employer Payment Summary (EPS)
+
+• File if no employees were paid in the month.
+• Send by the 19th of the following tax month.
+
+22. Payroll deadlines
+Registering for PAYE You must register before the first payday.
+You cannot register more than 2 months before
+you start paying people
+Month end date for PAYE 5th of each month
+Payment date for monthly payroll 22nd of the following month if paid
+electronically.
+19th otherwise.
+If monthly amounts are <£1,500, quarterly
+payments can be made
+Provide employees with P60 31st May following the end of the tax year
+Filing deadline for Expenses & Benefits
+forms (unless they are payrolled)
+6th July following the end of the tax year
+Class 1A NIC payment date 22nd July following the end of the tax year, if
+paying electronically.
+19th July following the end of the tax year,
+otherwise.
+
+-- 17 of 20 --
+AAT is a registered charity. No. 1050724 17
+23. Penalties for late submission of payroll returns
+      Penalties may apply if:
+- an FPS was late
+- the expected amount of FPSs were not filed
+- an EPS was not filed.
+
+Number of employees Monthly penalty
+1 to 9 £100
+10 to 49 £200
+50 to 249 £300
+250 or more £400
+
+Penalties may not apply if:
+
+• the FPS is late but all reported payments on the FPS are within three days of the employee
+payday (unless there is regular lateness)
+• a new employer is late but sends the first FPS within 30 days of paying an employee
+• it is a business’s first failure in the tax year to send a report on time.
+
+-- 18 of 20 --
+AAT is a registered charity. No. 1050724 18
+24. Penalties for late payroll payments
+Late payment of monthly/quarterly payments
+• The first failure to pay in a tax year does not count as a default.
+• Late payment penalties apply to late payments and payments of less than is due.
+
+Number of defaults in a
+tax year
+Penalty percentage applied to the amount that is late in the
+relevant tax month
+1 to 3 1%
+4 to 6 2%
+7 to 9 3%
+10 or more 4%
+
+Additional penalties will apply if:
+A monthly or quarterly amount remains outstanding after 6 months 5% of unpaid tax
+A monthly or quarterly amount remains outstanding after 12 months A further 5% of
+unpaid tax
+These additional penalties apply even where only one payment in the tax year is late.
+Late payments of amounts due annually or occasionally
+30 days late 5%
+6 months late Additional 5%
+12 months late Additional 5%
+         Interest
+ Interest is calculated at the Bank of England base rate plus 4%.
+The Bank of England base rate will be given in the assessment.
+
+-- 19 of 20 --
+AAT is a registered charity. No. 1050724 19
+25. Penalties for inaccuracies in payroll returns
+A penalty can be charged as a percentage of the potential lost revenue (PLR):
+Type of behaviour Unprompted
+disclosure
+%
+Prompted
+disclosure
+%
+Careless 0 - 30 15 - 30
+Deliberate 20 - 70 35 - 70
+Deliberate and concealed 30 - 100 50 - 100
+
+-- 20 of 20 --
+AAT is a registered charity. No. 1050724
