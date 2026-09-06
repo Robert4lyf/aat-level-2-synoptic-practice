@@ -61,8 +61,8 @@ jobs:
         run: npm run check:cache-freshness
       - name: Check every entry grid shows the data it asks about
         run: npm run check:grid-answerable
-      - name: Check AAT Level 3 teaching prose is plain English
-        run: npm run check:aat3-plain-english
+      - name: Check teaching prose is plain English on all three levels
+        run: npm run check:plain-english
       - name: Check the accuracy-over-time history is recorded, kept and merged
         run: npm run check:aat3-trend
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)

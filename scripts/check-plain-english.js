@@ -34,6 +34,24 @@
  * afterwards: none lost, none invented. That check was manual and stays
  * manual; treat this gate as measuring readability and nothing else.
  *
+ * LEVELS 1 AND 2 WERE NOT IN THIS GATE UNTIL NOW, and it showed. Measured
+ * against Level 3's rule the day they were added:
+ *
+ *     L3  1255 paragraphs  mean 15.5  worst  30    0 over 30
+ *     L1   330 paragraphs  mean 17.3  worst  54   81 over 30
+ *     L2  1771 paragraphs  mean 18.1  worst 102  343 over 30
+ *
+ * Rewriting 424 sentences at once is not a change anyone can review, and the
+ * risk is not hypothetical — see the note above about a rewrite that silently
+ * dropped a paragraph. So the ceiling is PER LEVEL: 30 where the prose has
+ * been through the rewrite, 45 where it has not, with the worst tier fixed
+ * first. Twenty-four sentences ran past 45 words, the longest at 102; those
+ * are rewritten and the figures diffed as a multiset, none lost or invented.
+ *
+ * THE 45 IS A RATCHET, NOT A RESTING PLACE. It exists to stop Levels 1 and 2
+ * getting worse while the remaining ~300 sentences between 30 and 45 words are
+ * worked through. Lower it as they are; never raise it.
+ *
  * THE CEILING IS A CEILING, NOT A TARGET. Plain-English guidance puts the
  * average at 15 to 20 words and the limit near 30. This unit teaches tax and
  * financial statements, where a sentence sometimes has to carry a condition
@@ -47,24 +65,32 @@
  * is the honest measure here: it is the reader's working memory that a
  * seventy-word sentence overruns, not their vocabulary.
  *
- * Run: node scripts/check-aat3-plain-english.js   (exit 1 on any failure)
+ * Run: node scripts/check-plain-english.js   (exit 1 on any failure)
  */
 'use strict';
+const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const RED='\x1b[31m', GREEN='\x1b[32m', DIM='\x1b[2m', BOLD='\x1b[1m', RESET='\x1b[0m';
 
-/* No sentence in a teaching paragraph may exceed this. */
-const MAX_SENTENCE = 30;
+/* No sentence in a teaching paragraph may exceed its level's ceiling. */
+const REWRITTEN = 30;      /* prose that has been through the rewrite */
+const NOT_YET = 45;        /* prose that has not — a ratchet, see the header */
 /* And a paragraph may not average more than this, so a long sentence cannot be
-   bought back by surrounding it with three-word ones. */
+   bought back by surrounding it with three-word ones. Applied only where the
+   sentence ceiling is 30: at 45 it would fail hundreds of paragraphs that the
+   ratchet is deliberately not asking anyone to fix yet. */
 const MAX_PARAGRAPH_MEAN = 22;
 
 const UNITS = [
-  { file: 'aat3-learn-data.js', key: 'AAT3_LEARN_PATH', label: 'TPFB' },
-  { file: 'aat3-faps-data.js',  key: 'AAT3_FAPS_PATH',  label: 'FAPS' },
-  { file: 'aat3-mats-data.js',  key: 'AAT3_MATS_PATH',  label: 'MATS' },
-  { file: 'aat3-buaw-data.js',  key: 'AAT3_BUAW_PATH',  label: 'BUAW' },
+  { file: 'aat3-learn-data.js', key: 'AAT3_LEARN_PATH', label: 'TPFB', max: REWRITTEN },
+  { file: 'aat3-faps-data.js',  key: 'AAT3_FAPS_PATH',  label: 'FAPS', max: REWRITTEN },
+  { file: 'aat3-mats-data.js',  key: 'AAT3_MATS_PATH',  label: 'MATS', max: REWRITTEN },
+  { file: 'aat3-buaw-data.js',  key: 'AAT3_BUAW_PATH',  label: 'BUAW', max: REWRITTEN },
+  { file: 'aat1-learn-data.js', key: 'AAT1_LEARN_PATH', label: 'L1',   max: NOT_YET },
+  /* Level 2 hangs its path off `window`, so it is read the way every other
+     Level 2 gate reads it rather than left out for the want of an export. */
+  { file: 'learn-data.js',      key: 'LEARN_PATH',      label: 'L2',   max: NOT_YET, global: true },
 ];
 
 /* Sentence splitting, kept deliberately blunt. A cleverer splitter would have
@@ -105,8 +131,47 @@ const errors = [];
 let checks = 0, totalSentences = 0, totalWords = 0;
 const rows = [];
 
+/* ── The ratchet guards itself ────────────────────────────────────────────
+   Everything below measures the PROSE. Nothing in it can notice the gate's own
+   ceilings being raised, or a level being quietly dropped from the table — and
+   both are one-line edits that would leave every check here green while the
+   standard silently disappeared. Mutation testing found exactly that: a 50-word
+   sentence in Level 2 goes undetected if `max` is edited to 999, or if the L2
+   row is deleted.
+
+   So the configuration is asserted too. A ceiling may only ever be one of the
+   two declared constants, the constants may only move DOWN, and all six banks
+   must be present. Loosening the standard now means editing this block, which
+   is a deliberate act rather than a number nobody reviews. */
+if (REWRITTEN > 30) {
+  errors.push(`the rewritten-prose ceiling has been raised to ${REWRITTEN}; the ratchet only goes down`);
+}
+if (NOT_YET > 45) {
+  errors.push(`the not-yet-rewritten ceiling has been raised to ${NOT_YET}; the ratchet only goes down`);
+}
+if (NOT_YET < REWRITTEN) {
+  errors.push(`the two ceilings have been crossed over (${NOT_YET} < ${REWRITTEN})`);
+}
 UNITS.forEach(u => {
-  const mod = require(path.join(ROOT, u.file));
+  if (u.max !== REWRITTEN && u.max !== NOT_YET) {
+    errors.push(`${u.label} carries a ceiling of ${u.max}, which is neither of the two declared constants`);
+  }
+});
+['TPFB', 'FAPS', 'MATS', 'BUAW', 'L1', 'L2'].forEach(label => {
+  if (!UNITS.some(u => u.label === label)) {
+    errors.push(`${label} is no longer in the gate — its prose is unmeasured`);
+  }
+});
+
+UNITS.forEach(u => {
+  let mod;
+  if (u.global) {
+    const w = {};
+    new Function('window', fs.readFileSync(path.join(ROOT, u.file), 'utf8'))(w);
+    mod = w;
+  } else {
+    mod = require(path.join(ROOT, u.file));
+  }
   const out = [];
   paragraphs(mod[u.key], '', out);
 
@@ -121,13 +186,13 @@ UNITS.forEach(u => {
     worst = Math.max(worst, ...lens);
 
     checks++;
-    const long = ss.filter(s => words(s) > MAX_SENTENCE);
+    const long = ss.filter(s => words(s) > u.max);
     if (long.length) {
       overSentence++;
       const l = long[0];
       errors.push(`${u.label} ${p.id} "${p.heading}" paragraph ${p.index + 1}: ` +
-        `a ${words(l)}-word sentence (ceiling ${MAX_SENTENCE}) — "${l.slice(0, 90)}…"`);
-    } else if (mean > MAX_PARAGRAPH_MEAN) {
+        `a ${words(l)}-word sentence (ceiling ${u.max}) — "${l.slice(0, 90)}…"`);
+    } else if (u.max === REWRITTEN && mean > MAX_PARAGRAPH_MEAN) {
       overMean++;
       errors.push(`${u.label} ${p.id} "${p.heading}" paragraph ${p.index + 1}: ` +
         `averages ${mean.toFixed(1)} words a sentence over ${lens.length} sentences ` +
@@ -142,7 +207,7 @@ UNITS.forEach(u => {
     `${overSentence + overMean} over the ceiling`);
 });
 
-console.log(`${BOLD}Level 3 prose: plain English${RESET}\n`);
+console.log(`${BOLD}Teaching prose: plain English${RESET}\n`);
 rows.forEach(r => console.log(`  ${DIM}${r}${RESET}`));
 console.log(`  ${DIM}${'all'.padEnd(5)} ${String(checks).padStart(4)} paragraphs · ` +
   `${String(totalSentences).padStart(4)} sentences · mean ${(totalWords / totalSentences).toFixed(1)} words${RESET}\n`);
@@ -153,5 +218,6 @@ if (errors.length) {
   console.log(`\n${RED}${BOLD}${errors.length} of ${checks} paragraphs are harder to read than they need to be.${RESET}\n`);
   process.exit(1);
 }
-console.log(`${GREEN}${BOLD}${checks} paragraphs pass — no sentence over ${MAX_SENTENCE} words ✓${RESET}\n`);
+console.log(`${GREEN}${BOLD}${checks} paragraphs pass — nothing over its level's ceiling ` +
+  `(${REWRITTEN} words where the prose has been rewritten, ${NOT_YET} where it has not) ✓${RESET}\n`);
 process.exit(0);
