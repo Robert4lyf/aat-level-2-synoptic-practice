@@ -61,6 +61,8 @@ jobs:
         run: npm run check:cache-freshness
       - name: Check every entry grid shows the data it asks about
         run: npm run check:grid-answerable
+      - name: Check no question has more than one defensible answer
+        run: npm run check:answerable
       - name: Check teaching prose is plain English on all three levels
         run: npm run check:plain-english
       - name: Check the accuracy-over-time history is recorded, kept and merged
