@@ -22,6 +22,13 @@
  *            deliberateness is a conduct judgement and "large" never said which
  *            limb decided it.
  *
+ *   P-5-24   "standard-rated sales of £186,000 net in a quarter." The word net
+ *            was there — and it is the wrong word, because THIS APP teaches the
+ *            other meaning: aat3-faps-data.js asks "Sales are £186,000, sales
+ *            returns £4,200 … What is sales revenue?" One word, two meanings,
+ *            and nothing in the stem says which. In F-2-28 the answer flipped on
+ *            it: £14,500 read one way, £17,400 the other.
+ *
  * WHY NOTHING CAUGHT THEM. Every existing gate reads one question at a time and
  * asks whether it is well FORMED — options distinct, key in range, explanation
  * present, arithmetic sound. None asks whether it is well POSED: whether the
@@ -47,6 +54,13 @@
  *      which figure crosses a governed limit and two options do, both are
  *      right. Arithmetic, so exact.
  *
+ *   §4 A VAT BASE FIGURE WHOSE NET/GROSS STATUS IS NOT SAID IN WORDS. A period
+ *      sales total described with a bare "net" or "gross" in a question that is
+ *      about VAT. Scoped to VAT stems on purpose: in a financial-statements
+ *      question, net of returns is the CORRECT reading, and the control mutant
+ *      that must survive is exactly that — "Net sales are £186,000, sales
+ *      returns £4,200" is not flagged, which is what proves the scoping real.
+ *
  * WHAT IT DELIBERATELY DOES NOT DO, said plainly rather than left to be found.
  * It cannot catch the P-5-02 case: two questions, worded differently, teaching
  * opposite things about the same decision. §1 needs the wording to match, and
@@ -55,6 +69,12 @@
  * output. Nor can it tell an under-specified stem from a precise one: "a large
  * error" and "a £60,000 error" are the same shape to a regular expression. Both
  * of those stay a reading job, and this file does not pretend otherwise.
+ *
+ * §3 currently matches NO question in any bank — its live population is zero.
+ * It fires on a constructed instance and is kept as a guard against a defect
+ * that has not been written yet, which is a different and weaker thing than a
+ * rule with live coverage. §4 records its population for that reason and fails
+ * if it falls, so it can never quietly become a §3.
  *
  * Run: node scripts/check-answerable-as-asked.js   (exit 1 on any failure)
  */
@@ -221,11 +241,78 @@ BANKS.forEach(([bank, qs]) => qs.forEach(q => {
   });
 }));
 
+/* ── §4 a VAT base figure whose net/gross status is not said in words ─────── */
+/* "£186,000 net" cannot carry the VAT meaning unambiguously in this app,
+   because "net sales" already means sales less returns HERE — aat3-faps-data.js
+   asks "Sales are £186,000, sales returns £4,200 … What is sales revenue?".
+   One word, two meanings, and the reader cannot tell which is intended from the
+   stem. Where the answer turns on it the stem must say EXCLUDING or INCLUDING
+   VAT, which cannot mean anything else. Scoped to stems that are about VAT, so
+   a period total described as net in a financial-statements bank — where net of
+   returns is the correct reading — is left alone. */
+const PERIOD_TOTAL = /\b(?:net|gross)\s+(?:standard-rated\s+|zero-rated\s+|reduced-rate\s+|taxable\s+)?(?:sales|turnover|takings|receipts)\b|\b(?:sales|turnover|takings|receipts)\s+of\s+£[\d,]+\s+(?:net|gross)\b/i;
+const ABOUT_VAT = /\bvat\b|output tax|input tax|\bbox [1-9]\b|flat rate/i;
+const SAYS_WHICH = /excluding vat|including vat|exclusive of vat|inclusive of vat|vat-exclusive|vat-inclusive|net of vat|before vat|plus vat/i;
+/* Counted over the POPULATION the rule polices, not over its violations: a
+   count of violations reads zero when the bank is clean, which is exactly when
+   a drifted regex would go unnoticed. This number must stay non-zero. */
+const HAS_PERIOD_TOTAL = /\b(?:sales|turnover|takings|receipts)\b/i;
+/* The decision AND the reporting are one function, so the self-check below can
+   put specimens through the identical code path the banks go through. Asserting
+   the regexes match is not enough: a gate whose error push is deleted still
+   passes every regex test while reporting nothing. */
+function scanVatBase(banks, sink) {
+  let population = 0;
+  banks.forEach(([bank, qs]) => qs.forEach(q => {
+    const stem = String(q.q || ''), exp = String(q.exp || '');
+    if (!ABOUT_VAT.test(stem) && !ABOUT_VAT.test(exp)) return;
+    if (!HAS_PERIOD_TOTAL.test(stem) || !/£/.test(stem)) return;
+    population++;
+    if (!PERIOD_TOTAL.test(stem)) return;
+    if (SAYS_WHICH.test(stem)) return;
+    sink.push(`§4 ${bank} ${q.id}: a VAT question describes a period total with a bare ` +
+      `"${(stem.match(/\b(net|gross)\b/i) || [])[0]}" — "${stem.slice(0, 72)}…" — and in this app ` +
+      `that word also means net of returns. Say excluding VAT or including VAT.`);
+  }));
+  return population;
+}
+
+/* Three specimens down the real path: the wording of the defect that prompted
+   this rule, the wording that fixed it, and a question with no VAT in it where
+   "net" correctly means net of returns. Exactly one must be reported. */
+const SPECIMEN_BAD = 'A business makes standard-rated sales of £186,000 net in a quarter and '
+  + 'incurs recoverable input tax of £21,400. How much should it set aside for the VAT payment, in pounds?';
+const SPECIMEN_GOOD = 'A business makes standard-rated sales of £186,000 excluding VAT in a quarter and '
+  + 'incurs recoverable input tax of £21,400. How much should it set aside for the VAT payment, in pounds?';
+const SPECIMEN_NO_VAT = 'Sales are £186,000 and sales returns £4,200. What is net sales revenue?';
+const probe = [];
+const probed = scanVatBase([['self-check', [
+  { id: 'the defect', q: SPECIMEN_BAD },
+  { id: 'the fix', q: SPECIMEN_GOOD },
+  { id: 'net of returns', q: SPECIMEN_NO_VAT },
+]]], probe);
+if (probed !== 2) {
+  errors.push(`§4 sees ${probed} of the 2 VAT specimens as in scope — ABOUT_VAT or HAS_PERIOD_TOTAL has drifted`);
+}
+if (probe.length !== 1 || !/the defect/.test(probe[0] || '')) {
+  errors.push('§4 does not report the wording it was built for, and only that wording — ' +
+    `it reported ${probe.length}: ${probe.map(e => e.slice(0, 40)).join('; ') || 'nothing'}`);
+}
+
+/* Counted over the POPULATION the rule polices, not over its violations: a
+   count of violations reads zero when the bank is clean, which is exactly when
+   a drifted regex would go unnoticed. This number must stay non-zero. */
+const vatBaseQs = scanVatBase(BANKS, errors);
+if (vatBaseQs < 20) {
+  errors.push(`§4 polices only ${vatBaseQs} VAT stems carrying a period total; it was built over 20 or more, ` +
+    'so PERIOD_TOTAL or ABOUT_VAT has drifted and the rule is watching almost nothing');
+}
+
 /* ── report ───────────────────────────────────────────────────────────────── */
 console.log(`${BOLD}Answerable as asked${RESET}\n`);
 console.log(`  ${DIM}${BANKS.reduce((n, b) => n + b[1].length, 0)} questions across ${BANKS.length} banks · ` +
   `${statements} true/false statements · ${stems} stems · ` +
-  `${thresholdQs} threshold questions · ${ENUMERATED.length} governed lists consulted${RESET}\n`);
+  `${thresholdQs} threshold questions · ${vatBaseQs} VAT base figures · ${ENUMERATED.length} governed lists consulted${RESET}\n`);
 
 if (errors.length) {
   console.log(`${RED}${BOLD}${errors.length} question${errors.length === 1 ? '' : 's'} with more than one defensible answer${RESET}`);

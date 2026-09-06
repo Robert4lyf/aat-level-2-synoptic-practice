@@ -103,7 +103,7 @@
     {
       id: 'P-1-05', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.1'],
       type: 'numeric',
-      q: 'A flat rate scheme business has a sector rate of 14.5% and net standard-rated sales of £48,000 for the quarter. It is in its fifth year of registration. How much VAT is due to HMRC, in pounds?',
+      q: 'A flat rate scheme business has a sector rate of 14.5% and standard-rated sales of £48,000 excluding VAT for the quarter. It is in its fifth year of registration. How much VAT is due to HMRC, in pounds?',
       answer: 8352, unit: '£',
       exp: money(48000) + ' × 1.20 = ' + money(57600) + ' VAT-inclusive turnover. ' + money(57600) + ' × 14.5% = £8,352. The flat rate applies to the GROSS figure; applying it to the net would give £6,960. No first-year discount applies in year five.',
     },
@@ -1856,7 +1856,7 @@
     {
       id: 'P-2-68', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.1.3'],
       type: 'numeric',
-      q: 'In a quarter a business made standard-rated sales of £84,000 net, zero-rated sales of £16,500, exempt supplies of £7,200 and charged output tax of £16,800. What figure goes in Box 6, in pounds?',
+      q: 'In a quarter a business made standard-rated sales of £84,000 excluding VAT, zero-rated sales of £16,500, exempt supplies of £7,200 and charged output tax of £16,800. What figure goes in Box 6, in pounds?',
       answer: 107700, unit: '£',
       exp: '£84,000 + £16,500 + £7,200 = £107,700. Every category of supply goes into Box 6 — standard, zero-rated and exempt alike — because the box asks for the value of outputs rather than the value of taxable outputs. The £16,800 of output tax is deliberately in the question as the figure to leave out; adding it would give £124,500.',
     },
@@ -4813,7 +4813,7 @@
     {
       id: 'P-5-15', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],
       type: 'numeric',
-      q: 'A business sets aside VAT as it collects it. In a quarter it makes standard-rated sales of £240,000 net. How much output tax should it have set aside, in pounds?',
+      q: 'A business sets aside VAT as it collects it. In a quarter it makes standard-rated sales of £240,000 excluding VAT. How much output tax should it have set aside, in pounds?',
       answer: 48000, unit: '£',
       exp: '£240,000 × 20% = £48,000. Setting it aside as it is collected is the practical defence against spending money that belongs to the Exchequer — the VAT sits in the current account looking exactly like the business’s own cash until the return falls due.',
     },
@@ -4885,7 +4885,7 @@
     {
       id: 'P-5-24', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],
       type: 'numeric',
-      q: 'A business makes standard-rated sales of £186,000 net in a quarter and incurs recoverable input tax of £21,400. How much should it set aside for the VAT payment, in pounds?',
+      q: 'A business makes standard-rated sales of £186,000 excluding VAT in a quarter and incurs recoverable input tax of £21,400. How much should it set aside for the VAT payment, in pounds?',
       answer: 15800, unit: '£',
       exp: '£186,000 × 20% = £37,200 of output tax, less £21,400 of input tax, gives £37,200 − £21,400 = £15,800. Setting aside the OUTPUT tax alone would reserve £37,200 and tie up cash needlessly; setting aside nothing until the return is prepared is how a business is surprised by its own liability.',
     },
