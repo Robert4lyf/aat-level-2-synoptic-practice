@@ -4877,10 +4877,10 @@
       statements: [
         { text: 'Whether a business should join the flat rate scheme.', answer: true },
         { text: 'Whether an invoice dated 3 May falls in the quarter ended 30 June.', answer: false },
-        { text: 'Whether a large error from three years ago must be notified separately.', answer: false },
+        { text: 'Whether a £60,000 net error from three years ago must be notified separately.', answer: false },
         { text: 'Whether a director’s personal expenditure may be recovered as input tax.', answer: true },
       ],
-      exp: 'The two referrals involve judgement about the business’s position or about somebody’s conduct — a scheme choice depends on facts the technician may not have, and a director’s private spending raises a question about behaviour rather than about VAT alone. The other two are matters of applying a known rule to known facts, which is exactly the technician’s job: referring them upward is its own kind of failure.',
+      exp: 'The two referrals involve judgement about the business’s position or about somebody’s conduct — a scheme choice depends on facts the technician may not have, and a director’s private spending raises a question about behaviour rather than about VAT alone. The other two are matters of applying a known rule to known facts, which is exactly the technician’s job: referring them upward is its own kind of failure. Note what makes the error mechanical: £60,000 is over the £50,000 ceiling, so separate notification is required whatever the Box 6 figure shows. Had the error been a smaller one, whether it was DELIBERATE would decide it — and that is a judgement about conduct, which would put it with the referrals.',
     },
     {
       id: 'P-5-24', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.1.3'],
