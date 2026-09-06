@@ -1105,8 +1105,8 @@
      take the whole quiz down with it. The fall-back leaves the record as it
      was: review scheduling stops, answering does not. §7 of
      check-spaced.js is what makes sure the file is actually shipped. */
-  const srSchedule = (rec, correct) =>
-    (window.AATSpaced ? window.AATSpaced.schedule(rec, correct) : rec);
+  const srSchedule = (rec, correct, key) =>
+    (window.AATSpaced ? window.AATSpaced.schedule(rec, correct, undefined, key) : rec);
   const srMigrate = (r) => (window.AATSpaced ? window.AATSpaced.fromBox(r) : r);
 
   const defaultData = () => ({
@@ -1117,7 +1117,7 @@
     },
     flagged: {},
     confident: {},
-    sr: {},
+    sr: {}, srSpreadAt: 0,
     history: [], session: null,
     learn: { lessons: {}, xp: 0, flashReviews: 0, taDone: {}, unitTests: {}, bestCombo: 0 },
     flash: {},
@@ -1156,6 +1156,22 @@
         for (const id in this.data.sr) {
           const r = this.data.sr[id];
           if (r && typeof r.ease !== 'number') this.data.sr[id] = srMigrate(r);
+        }
+        /* Fan out a backlog banked under the old schedule, once.
+           Longer intervals and the per-question spread only shape questions
+           graded from now on; a cohort already banked all falls due on the same
+           day and would keep arriving together. A day's worth stays due now and
+           the rest move back a day at a time, most overdue first — deferred,
+           never dropped. `srSpreadAt` is a number, so the backup merge takes
+           the LARGER of two devices and this runs on the first to load rather
+           than once per device. */
+        this.data.srSpreadAt = Number(this.data.srSpreadAt) || 0;
+        if (!this.data.srSpreadAt && window.AATSpaced && window.AATSpaced.deferBacklog) {
+          const entries = Object.keys(this.data.sr).map(id => ({ key: id, rec: this.data.sr[id] }));
+          const now = Date.now();
+          const moved = window.AATSpaced.deferBacklog(entries, now, window.AATSpaced.BACKLOG_PER_DAY);
+          for (const id in moved) this.data.sr[id].dueAt = moved[id];
+          this.data.srSpreadAt = now;
         }
         this.data.history = Array.isArray(this.data.history) ? this.data.history : [];
         this.data.learn = Object.assign(d.learn, (this.data.learn && typeof this.data.learn === 'object') ? this.data.learn : {});
@@ -1222,7 +1238,7 @@
       else if (correct) { st.current++; if (st.current > st.best) st.best = st.current; st.lastCorrectAt = Date.now(); }
       else { st.current = 0; }
       // Adaptive spaced-repetition update
-      this.data.sr[question.id] = srSchedule(this.data.sr[question.id], correct);
+      this.data.sr[question.id] = srSchedule(this.data.sr[question.id], correct, question.id);
       // Mistake notebook: log wrong answers; redeem on a later correct answer
       if (!correct) {
         const m = this.data.mistakes[question.id] || { count: 0 };
@@ -2897,7 +2913,7 @@
     const q = questionById(R.cards[R.idx]);
     if (q) {
       // Feed the same adaptive spaced-repetition schedule as the rest of the app.
-      Storage.data.sr[q.id] = srSchedule(Storage.data.sr[q.id], ok);
+      Storage.data.sr[q.id] = srSchedule(Storage.data.sr[q.id], ok, q.id);
       Storage.day().answered++;   // counts toward the daily streak
       Storage.addXp(1);
     }
