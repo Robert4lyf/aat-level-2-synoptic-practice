@@ -55,34 +55,35 @@
   }
 
   var ctx = null;
-  function audio() {
+  function ctxOf() {
     if (!isEnabled()) return null;
     if (typeof root.AudioContext !== 'function' && typeof root.webkitAudioContext !== 'function') return null;
+    /* A context Android has torn down never resumes: resume() on a closed
+       context rejects for the life of the page, so the app goes permanently
+       silent until a reload. Rebuild instead. */
+    if (ctx && ctx.state === 'closed') ctx = null;
     if (!ctx) {
       try { ctx = new (root.AudioContext || root.webkitAudioContext)(); } catch (e) { ctx = null; }
     }
-    /* A context created before the first tap starts suspended, and every browser
-       requires a gesture to resume it. Every sound here is fired from a click,
-       so resuming on the way past is enough and costs nothing when it is
-       already running. */
-    if (ctx && ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} }
     return ctx;
   }
 
-  /* One note. `f` hertz, `t` waveform, `d` seconds, `v` peak gain. */
-  function tone(f, t, d, v) {
-    var c = audio();
+  /* One note. `f` hertz, `t` waveform, `d` seconds, `v` peak gain, `at` seconds
+     from now ON THE AUDIO CLOCK — not on a timer. See play(). */
+  function tone(f, t, d, v, at, c) {
+    c = c || ctxOf();
     if (!c) return;
     try {
       var o = c.createOscillator(), g = c.createGain();
       o.connect(g); g.connect(c.destination);
       o.type = t; o.frequency.value = f;
-      g.gain.setValueAtTime(v, c.currentTime);
+      var start = c.currentTime + (at || 0);
+      g.gain.setValueAtTime(v, start);
       /* To 0.001 rather than to 0: exponentialRampToValueAtTime cannot reach
          zero, and a linear ramp to silence puts an audible click on the release
          of every note. */
-      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + d);
-      o.start(); o.stop(c.currentTime + d);
+      g.gain.exponentialRampToValueAtTime(0.001, start + d);
+      o.start(start); o.stop(start + d);
     } catch (e) {}
   }
 
@@ -131,12 +132,47 @@
     },
   };
 
+  function schedule(c, steps) {
+    steps.forEach(function (s) { tone(s.f, s.t, s.d, s.v, (s.at || 0) / 1000, c); });
+  }
+
+  /* WHY THIS WAITS, AND WHY THE MELODY IS ON THE AUDIO CLOCK.
+     resume() returns a PROMISE. The old code called it and carried straight on
+     to schedule notes against ctx.currentTime — which does not advance while a
+     context is suspended, so every note in the melody was written at the same
+     frozen instant and the ramps piled up on each other. On a fast phone the
+     resume completed inside the same task and nothing was heard to be wrong; on
+     slower hardware it did not. That is the shape of the bug: not silence every
+     time, silence SOMETIMES, and more often on a slower tablet.
+
+     The staggered notes went through setTimeout, which made it worse twice
+     over. Wall-clock timers are throttled hard on Android, so the tune arrived
+     ragged under load; and a note fired from a timer is no longer inside the
+     tap that resumed the context, which is the gesture the autoplay policy
+     wants to see. Scheduling the whole melody on the audio clock instead puts
+     it down in one go, inside the gesture, on a clock nothing throttles. */
+  function withContext(fn) {
+    if (!isEnabled()) return;
+    var c = ctxOf();
+    if (!c) return;
+    if (c.state === 'running') { try { fn(c); } catch (e) {} return; }
+    var p;
+    try { p = c.resume(); } catch (e) { return; }
+    if (p && typeof p.then === 'function') { p.then(function () { try { fn(c); } catch (e) {} }, function () {}); }
+    else { try { fn(c); } catch (e) {} }
+  }
+
   function play(steps) {
     if (!steps || !isEnabled()) return;
-    steps.forEach(function (s) {
-      if (!s.at) { tone(s.f, s.t, s.d, s.v); return; }
-      setTimeout(function () { tone(s.f, s.t, s.d, s.v); }, s.at);
-    });
+    withContext(function (c) { schedule(c, steps); });
+  }
+
+  /* Level 2 hands the page's audio back when the reader leaves. It is the app
+     that suspends here, so it is the app that must resume — which is what
+     withContext does on the next sound, and what the old code only pretended
+     to do. */
+  function suspend() {
+    if (ctx && ctx.state === 'running') { try { ctx.suspend(); } catch (e) {} }
   }
 
   /* A player for one level. Named rather than passed a voice object, so a
@@ -157,6 +193,13 @@
     VOICES: VOICES,
     isEnabled: isEnabled,
     setEnabled: setEnabled,
+    /* Story mode in Level 2 builds node graphs that are not notes — a noise
+       buffer through a biquad — so it needs the context itself. It must not
+       build a SECOND one: two contexts on a page compete for Android's audio
+       focus, and only one of them was ever being resumed on the way back from a
+       lock screen. One context, one resume path, one place that waits. */
+    withContext: withContext,
+    suspend: suspend,
     /* Exposed for the checks, which need to count what would have been played
        without a browser to play it in. */
     _tone: tone,

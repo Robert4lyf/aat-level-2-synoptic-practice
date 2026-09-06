@@ -288,12 +288,96 @@ ok(pitches(l2w) === '220' && waves(l2w) === 'square', 'and still the 220Hz squar
 const l2k = capture(() => players.aat.click());
 ok(pitches(l2k) === '440' && waves(l2k) === 'sine', 'and the 440Hz click');
 
+/* ── 8. A context that is not running yet ─────────────────────────────────── */
+/* WHY THIS SECTION EXISTS. Every check above passed while the app was
+   intermittently silent on an Android tablet, because the fake above is kinder
+   than any real browser: it starts RUNNING and its resume() is synchronous. A
+   real AudioContext starts suspended until a gesture and resume() returns a
+   promise that settles a tick or more later — on slower hardware, several. The
+   defect lived entirely in that gap, so a fake that closes the gap can never
+   see it. This models the real thing instead. */
+console.log(`${DIM}a context that has to be resumed first${RESET}`);
+
+const late = [];
+function LateCtx() {
+  this.state = 'suspended';       /* as a real one is, before any gesture */
+  this.currentTime = 0;
+  this.destination = { _dest: true };
+  LateCtx.made++;
+  LateCtx.live.push(this);
+}
+LateCtx.made = 0;
+LateCtx.live = [];
+LateCtx.prototype.resume = function () {
+  const c = this;
+  /* A PROMISE, and one that does not settle in this task — the whole point. */
+  return new Promise(resolve => realSetTimeout(() => { c.state = 'running'; resolve(); }, 0));
+};
+LateCtx.prototype.createGain = FakeCtx.prototype.createGain;
+LateCtx.prototype.createOscillator = function () {
+  const o = { frequency: { value: 0 }, type: '', _g: null, _start: 0,
+              connect(g) { o._g = g; },
+              start(t) { o._start = t || 0; },
+              stop(t) { late.push({ f: o.frequency.value, start: o._start, end: t }); } };
+  return o;
+};
+
+global.AudioContext = LateCtx;
+/* Timers are NOT flattened here: a melody that still needs them would show up
+   as notes arriving after this section has finished counting. */
 global.setTimeout = realSetTimeout;
-console.log();
-if (failures) { console.log(`${RED}${BOLD}✗ ${failures} of ${checks} checks failed${RESET}`); process.exit(1); }
-console.log(`${GREEN}${BOLD}✓ ${checks} checks passed${RESET}`);
-/* EXIT EXPLICITLY. Starting a timed mock starts its clock, which is a
-   setInterval nobody stops here — so the checks all finish, the summary
-   prints, and node then sits with a live timer forever. In CI that is not a
-   failure, it is a job that hangs until the runner kills it. */
-process.exit(0);
+delete require.cache[require.resolve(path.join(ROOT, 'sound.js'))];
+delete global.AATSound;
+require(path.join(ROOT, 'sound.js'));
+const LateSound = global.AATSound;
+LateSound.setEnabled(true);
+
+late.length = 0;
+LateSound.create('aat').correct();
+ok(late.length === 0, 'nothing is scheduled into a context that is still suspended');
+
+(async () => {
+  await new Promise(r => realSetTimeout(r, 20));
+
+  ok(late.length === 3, `all three notes arrive once the context resumes (got ${late.length})`);
+
+  /* THE DEFECT ITSELF. Scheduled against a frozen currentTime, the three notes
+     of the chime all landed on the same instant and the ramps piled up. They
+     must be staggered, and staggered on the audio clock. */
+  const starts = late.map(n => n.start);
+  ok(new Set(starts).size === 3,
+    `the chime is three separate notes, not three at one instant (starts ${starts.join(', ')})`);
+  ok(starts[0] < starts[1] && starts[1] < starts[2], 'and they are in ascending order in time');
+  /* Spacing read from the voice, not hard-coded: retuning a chime is a change
+     to the tune, not a defect, and this section is about the clock. */
+  const want = LateSound.VOICES.aat.correct.map(n => (n.at || 0) / 1000);
+  ok(starts.every((t, i) => Math.abs((t - starts[0]) - want[i]) < 0.001),
+    `spaced as the voice asks, on the audio clock (wanted ${want.join(', ')}, got ${starts.map(t => (t - starts[0]).toFixed(3)).join(', ')})`);
+
+  /* A context Android has torn down must be replaced, not resumed forever. */
+  const before = LateCtx.made;
+  LateSound.create('aat').click();
+  await new Promise(r => realSetTimeout(r, 5));
+  ok(LateCtx.made === before, 'a live context is reused rather than rebuilt each time');
+
+  /* Now the platform tears it down, as Android does to a backgrounded page.
+     resume() on a closed context rejects for the life of the page, so a module
+     that keeps reaching for it is silent until a reload. */
+  late.length = 0;
+  LateCtx.live.forEach(c => { c.state = 'closed'; });
+  LateSound.create('aat').click();
+  await new Promise(r => realSetTimeout(r, 20));
+  ok(LateCtx.made > before, 'a context the platform has closed is rebuilt rather than left silent');
+  ok(late.length === 1, `and the sound still plays after the rebuild (got ${late.length})`);
+
+  global.setTimeout = realSetTimeout;
+  console.log();
+  if (failures) { console.log(`${RED}${BOLD}✗ ${failures} of ${checks} checks failed${RESET}`); process.exit(1); }
+  console.log(`${GREEN}${BOLD}✓ ${checks} checks passed${RESET}`);
+  /* EXIT EXPLICITLY. Starting a timed mock starts its clock, which is a
+     setInterval nobody stops here — so the checks all finish, the summary
+     prints, and node then sits with a live timer forever. In CI that is not a
+     failure, it is a job that hangs until the runner kills it. */
+  process.exit(0);
+})();
+

@@ -1763,25 +1763,22 @@
 
      Story mode's diegetic effects still call playTone() directly; they are
      Level 2's alone and have no counterpart on the other levels, so they stay
-     here rather than becoming a fourth voice nothing compares. */
+     here rather than becoming a fourth voice nothing compares. They no longer
+     keep a context of their own, though: this file used to build a SECOND
+     AudioContext beside the engine's, and two of them on one page compete for
+     Android's audio focus while only one is ever resumed on the way back from a
+     lock screen. The graphs are still built here; the context comes from
+     sound.js, which waits for the resume before handing it over. */
   const Sound = AATSound.create('aat');
-  function ensureAudio() { return AATSound.isEnabled() ? _audioCtx() : null; }
-  let audioCtx = null;
-  function _audioCtx() {
-    if (!audioCtx) { try { const C = window.AudioContext || window.webkitAudioContext; if (C) audioCtx = new C(); } catch (e) { audioCtx = null; } }
-    if (audioCtx && audioCtx.state === 'suspended') { try { audioCtx.resume(); } catch (e) {} }
-    return audioCtx;
-  }
   function playTone(freq, type, dur, vol = 0.3) {
-    const ctx = ensureAudio(); if (!ctx) return;
-    try {
+    AATSound.withContext(ctx => {
       const o = ctx.createOscillator(), g = ctx.createGain();
       o.connect(g); g.connect(ctx.destination);
       o.type = type; o.frequency.value = freq;
       g.gain.setValueAtTime(vol, ctx.currentTime);
       g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
       o.start(); o.stop(ctx.currentTime + dur);
-    } catch (e) {}
+    });
   }
   const playCorrect = () => Sound.correct();
   const playWrong = () => Sound.wrong();
@@ -7810,8 +7807,7 @@
     return buf;
   }
   function stNoise(dur, freq, vol, type) {
-    const ctx = ensureAudio(); if (!ctx) return;
-    try {
+    AATSound.withContext(ctx => {
       const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
       src.buffer = stNoiseBuf(ctx);
       f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = 0.9;
@@ -7819,7 +7815,7 @@
       g.gain.setValueAtTime(vol, ctx.currentTime);
       g.gain.exponentialRampToValueAtTime(0.0008, ctx.currentTime + dur);
       src.start(); src.stop(ctx.currentTime + dur);
-    } catch (e) {}
+    });
   }
   const sndPen    = () => { stNoise(0.09, 2600, 0.16, 'bandpass'); setTimeout(() => stNoise(0.07, 3200, 0.11, 'bandpass'), 70); };
   const sndPaper  = () => { stNoise(0.16, 1500, 0.13, 'highpass'); setTimeout(() => stNoise(0.12, 2200, 0.08, 'highpass'), 90); };
@@ -9787,7 +9783,7 @@
     }());
 
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden && audioCtx && audioCtx.state === 'running') { try { audioCtx.suspend(); } catch (e) {} }
+      if (document.hidden) { AATSound.suspend(); }
     });
     window.addEventListener('beforeunload', () => { stopMockTimer(); stopDelfTimer(); });
     if (window.matchMedia) {
