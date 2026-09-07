@@ -2194,15 +2194,9 @@
     },
     {
       id: 'P-2-97', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.5', 'TPFB-2.1.3'],
-      type: 'mcq',
+      type: 'numeric',
       q: 'A business makes standard-rated supplies of £120,000, zero-rated supplies of £40,000 and exempt supplies of £30,000 in a year. What is its taxable turnover?',
-      opts: [
-        '£160,000',
-        '£190,000',
-        '£120,000',
-        '£150,000',
-      ],
-      ans: 0,
+      answer: 160000, unit: '£',
       exp: 'Taxable turnover is standard-rated plus reduced-rated plus zero-rated: £120,000 + £40,000 = £160,000. Exempt supplies are excluded, which rules out £190,000. Excluding the zero-rated supplies as well would give £120,000 and is the more damaging error, since it understates turnover against the registration threshold.',
     },
     {
@@ -3966,15 +3960,9 @@
     },
     {
       id: 'P-4-67', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.8'],
-      type: 'mcq',
+      type: 'numeric',
       q: 'An employer with 30 employees files its FPS late for the third time in a tax year. What is the monthly late filing penalty?',
-      opts: [
-        money(T.payroll.penalties.lateFiling.byEmployees['10to49']),
-        money(T.payroll.penalties.lateFiling.byEmployees['1to9']),
-        money(T.payroll.penalties.lateFiling.byEmployees['50to249']),
-        money(T.payroll.penalties.lateFiling.byEmployees['250plus']),
-      ],
-      ans: 0,
+      answer: T.payroll.penalties.lateFiling.byEmployees['10to49'], unit: '£',
       exp: 'The penalty is set by headcount: ' + money(T.payroll.penalties.lateFiling.byEmployees['10to49']) + ' a month for 10 to 49 employees. The other bands are 1 to 9, 50 to 249, and 250 or more. The FIRST late filing in a tax year is not penalised, so a third failure is the second chargeable one — and a return still outstanding after three months attracts a further penalty of 5% of the tax that should have been reported.',
     },
     {
@@ -4219,15 +4207,10 @@
     },
     {
       id: 'P-1-18', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.2'],
-      type: 'mcq',
+      type: 'numeric', recall: true,
+      
       q: 'A business on annual accounting makes nine monthly interim payments. What percentage of the previous year’s liability is each one?',
-      opts: [
-        '10%',
-        '25%',
-        '9%',
-        '11.1%',
-      ],
-      ans: 0,
+      answer: 10, unit: '%',
       exp: 'Nine monthly instalments of 10% each, due at the end of months 4 to 12. The alternative is three quarterly instalments of 25%, due at the end of months 4, 7 and 10. Either way a balancing payment follows with the annual return.',
     },
     {
