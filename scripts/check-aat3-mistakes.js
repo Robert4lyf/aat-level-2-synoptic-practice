@@ -26,6 +26,14 @@
 'use strict';
 
 const D = require('./lib/aat3-driver.js');
+const GRID = require('../question-grid.js');
+
+/* The renderer escapes row text, so a label read back off the DOM has to be
+   decoded before it can be matched against the bank. */
+function decodeEntities(t) {
+  return String(t).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+}
 const BACKUP = require('../progress-backup.js');
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m';
@@ -129,6 +137,28 @@ function answer(el, right) {
       }
     });
     D.click(el, 'tasksubmit');
+  } else if (t === 'picklist') {
+    /* BY THE ROW ON SCREEN, NOT BY THE BANK'S ORDER. Pick-list rows are
+       shuffled per sitting, so the nth control is not the nth row of the
+       question. The control names its own row in `aria-label`. */
+    D.nodes(el, 'plpick').forEach(n => {
+      const label = decodeEntities(n.getAttribute('aria-label') || '');
+      const row = q.picklist.rows.find(x => decodeEntities(x.text) === label);
+      if (!row) return;
+      const want = right ? row.answer : (row.answer === 0 ? 1 : 0);
+      n.value = String(want);
+      n.fire('change');
+    });
+    D.click(el, 'plsubmit');
+  } else if (t === 'entrygrid') {
+    D.nodes(el, 'egcell').forEach(n => {
+      const [ri, ci] = n.getAttribute('data-c').split(':').map(Number);
+      const v = GRID.cellKey(q.entrygrid.rows[ri], ci);
+      const cell = v == null ? '' : String(right ? v : Number(v) + 1);
+      n.value = cell;
+      n.fire('input');
+    });
+    D.click(el, 'egsubmit');
   } else {
     throw new Error('unhandled question type: ' + t);
   }
