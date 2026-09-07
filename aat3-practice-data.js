@@ -5932,6 +5932,209 @@
       ],
       exp: 'Seven rows, and three of them are not recoverable input tax at all: UK entertaining is blocked, wages are outside the scope, and half the leased car is disallowed. The fuel is the pair to the scale charge — reclaim all the input tax on fuel, then add back an output tax figure for the private motoring rather than trying to split the fuel bill.',
     },
+    {
+      id: 'T-3-02', unitKey: 'tpfb', lo: 3,
+      criteria: ['TPFB-3.1.2', 'TPFB-3.1.3', 'TPFB-3.1.5'],
+      type: 'task',
+      q: 'Decide how each error must be corrected.',
+      brief: 'Four errors have come to light while preparing the return for the quarter ended 30 June. **Box 6 for that quarter is £940,000.** None of the errors was deliberate.',
+      datasets: [
+        {
+          title: 'Errors found',
+          headers: ['Ref', 'Period it belongs to', 'Effect on VAT', '£'],
+          rows: [
+            ['A', 'Quarter ended 30 Sep, two years ago', 'Output tax understated', '7,400.00'],
+            ['B', 'Quarter ended 31 Dec, last year', 'Input tax overclaimed', '4,900.00'],
+            ['C', 'Quarter ended 31 Mar, six years ago', 'Output tax understated', '2,300.00'],
+            ['D', 'Quarter ended 30 Jun, three years ago', 'Input tax understated', '1,100.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'The net error on the corrections that are still in time',
+          type: 'numeric', unit: '£', answer: 11200,
+          exp: 'A, B and D are inside the four-year limit; C is six years old and cannot be corrected at all. Errors that INCREASE the VAT due are added and one that decreases it is deducted: £7,400.00 + £4,900.00 − £1,100.00 = £11,200.00. Understated input tax works in the business’s favour, so it comes off the net error rather than on to it.',
+        },
+        {
+          label: 'Error C is',
+          type: 'choice',
+          options: [
+            'out of time — errors may only be corrected within four years',
+            'correctable on the next return, being under £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + '',
+            'separately notifiable, being more than four years old',
+            'correctable, because output tax was understated',
+          ],
+          answer: 0,
+          exp: 'Four years is a cut-off, not a threshold to be measured against: past it there is nothing to correct by either method. Its size is irrelevant, which is why £2,300.00 — comfortably inside every limit — is the figure given.',
+        },
+        {
+          label: 'Against the two-limb test the net error is',
+          type: 'choice',
+          options: [
+            'over £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' AND over 1% of Box 6, so it must be notified separately',
+            'over £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' but within 1% of Box 6, so it may go on the next return',
+            'within £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ', so it may go on the next return',
+            'within 1% of Box 6, so it may go on the next return',
+          ],
+          answer: 0,
+          exp: '£11,200.00 is over the £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' limit, so the first limb fails and the second decides it: 1% of Box 6 is £9,400.00 — and £11,200.00 is MORE than that. So this is separately notifiable after all, on form VAT652. Both limbs have to be read, and reading only the first is what makes the wrong option here tempting.',
+        },
+        {
+          label: 'The method that must be used',
+          type: 'choice',
+          options: [
+            'Method 2 — notify HMRC separately on form VAT652',
+            'Method 1 — adjust the VAT account and correct it on the next return',
+            'Either, at the business’s choice',
+            'Neither — the errors are out of time',
+          ],
+          answer: 0,
+          exp: 'The net error exceeds both £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' and 1% of Box 6, so Method 1 is not available and Method 2 is required. Method 2 may always be used voluntarily, but here there is no choice about it.',
+        },
+        {
+          label: 'If instead the net error had been £8,000 and corrected on the next return, it would',
+          type: 'choice',
+          options: [
+            'increase Box 1, because the VAT is owed to HMRC',
+            'increase Box 4, because it is an adjustment to input tax',
+            'be entered in Box 6 with the turnover it relates to',
+            'be split between Box 1 and Box 4 in the proportions of the errors',
+          ],
+          answer: 0,
+          exp: 'A Method 1 correction goes in one place and it depends on which way the money runs: VAT owed TO HMRC is added to Box 1, VAT owed BY HMRC to Box 4. The net error here is money owed to HMRC, so it lands in Box 1 whether the individual errors were about output tax or input tax.',
+        },
+      ],
+      exp: 'The four-year limit is applied first and takes one error out entirely. Then the direction of each remaining error matters — an understated input tax reduces the net error — and only then the two-limb test, where the 1% of Box 6 does the work that £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' alone would get wrong.',
+    },
+    {
+      id: 'T-4-02', unitKey: 'tpfb', lo: 4,
+      criteria: ['TPFB-4.1.6', 'TPFB-4.1.11', 'TPFB-4.1.12'],
+      type: 'task',
+      q: 'Work through this employee’s pay for the month.',
+      brief: 'One employee, paid monthly. The pension contribution is under a scheme that is deducted **before** tax is worked out; the union subscription and the season ticket loan repayment are not.',
+      datasets: [
+        {
+          title: 'Pay and deductions for the month',
+          headers: ['Item', '£'],
+          rows: [
+            ['Basic salary', '3,200.00'],
+            ['Overtime', '410.00'],
+            ['Bonus', '250.00'],
+            ['Employee pension contribution', '180.00'],
+            ['Income tax', '512.00'],
+            ['Employee National Insurance', '246.00'],
+            ['Union subscription', '15.00'],
+            ['Season ticket loan repayment', '90.00'],
+            ['Employer National Insurance', '498.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Gross pay',
+          type: 'numeric', unit: '£', answer: 3860,
+          exp: '£3,200.00 + £410.00 + £250.00 = £3,860.00. Gross pay is everything EARNED before any deduction. The employer’s National Insurance is a cost to the employer and never part of what the employee earns, so it stays out of this figure and out of every figure below it except the last.',
+        },
+        {
+          label: 'Taxable gross pay',
+          type: 'numeric', unit: '£', answer: 3680,
+          exp: '£3,860.00 − £180.00 = £3,680.00. Only the pension comes off before tax is worked out. The union subscription and the loan repayment are taken from pay that has ALREADY been taxed, so they change what the employee receives without changing what they are taxed on.',
+        },
+        {
+          label: 'Total deductions from gross pay',
+          type: 'numeric', unit: '£', answer: 1043,
+          exp: '£180.00 pension + £512.00 tax + £246.00 National Insurance + £15.00 union + £90.00 loan = £1,043.00. Statutory and non-statutory deductions alike come out of the employee’s pay; what separates them is whether the employer must make them, not whether they reduce net pay.',
+        },
+        {
+          label: 'Net pay',
+          type: 'numeric', unit: '£', answer: 2817,
+          exp: '£3,860.00 − £1,043.00 = £2,817.00 — the figure that reaches the employee’s bank account. It reconciles the other way too: taxable gross pay £3,680.00 less tax £512.00, National Insurance £246.00, union £15.00 and loan £90.00 gives the same £2,817.00.',
+        },
+        {
+          label: 'Total payable to HMRC for the month',
+          type: 'numeric', unit: '£', answer: 1256,
+          exp: '£512.00 income tax + £246.00 employee National Insurance + £498.00 employer National Insurance = £1,256.00. HMRC gets both halves of the National Insurance, which is why the employer’s share matters here and nowhere above. The pension, the union and the loan are owed to other people entirely.',
+        },
+      ],
+      exp: 'Nine rows and each figure wants a different subset. Employer National Insurance belongs only to the last part. The pension is the only deduction that changes taxable pay. And the union subscription and loan repayment reduce what is paid out without touching what is taxed — which is the distinction between gross, taxable gross and net that this task exists to draw.',
+    },
+    {
+      id: 'T-5-02', unitKey: 'tpfb', lo: 5,
+      criteria: ['TPFB-5.1.3', 'TPFB-5.1.4', 'TPFB-5.1.6'],
+      type: 'task',
+      q: 'Tell the finance manager what has to be paid, and when.',
+      brief: 'Today is **10 April**. The business files VAT quarterly and pays HMRC electronically. The manager wants to know what leaves the bank account this month.',
+      datasets: [
+        {
+          title: 'Amounts outstanding',
+          headers: ['Liability', 'Period it covers', 'Amount £'],
+          rows: [
+            ['VAT', 'Quarter ended 28 February', '14,600.00'],
+            ['PAYE and National Insurance', 'Tax month ended 5 April', '3,940.00'],
+            ['VAT', 'Quarter ended 31 May', 'not yet known'],
+            ['Class 1A National Insurance', 'Tax year ended 5 April', '1,260.00'],
+            ['Corporation tax', 'Year ended 31 December', '22,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'The VAT for the quarter ended 28 February is due by',
+          type: 'choice',
+          options: [
+            '7 April',
+            '31 March',
+            '22 April',
+            '30 April',
+          ],
+          answer: 0,
+          exp: 'One calendar month and seven days after the end of the period: 28 February plus one month is 31 March, plus seven days is 7 April. Today being 10 April, it is already late — which is the first thing the manager needs to hear.',
+        },
+        {
+          label: 'The PAYE for the tax month ended 5 April is due by',
+          type: 'choice',
+          options: [
+            '22 April, paying electronically',
+            '19 April, paying electronically',
+            '5 May',
+            '7 May',
+          ],
+          answer: 0,
+          exp: 'The PAYE month runs 6th to 5th, and payment is due by the 22nd of the following month when made electronically — the 19th only for a non-electronic payment. This business pays electronically, so the three extra days are its to use.',
+        },
+        {
+          label: 'Total that must actually leave the account during April',
+          type: 'numeric', unit: '£', answer: 18540,
+          exp: '£14,600.00 of VAT, already overdue on 7 April, plus £3,940.00 of PAYE due on 22 April = £18,540.00. The Class 1A National Insurance is not due until 22 July, the May quarter’s VAT is not yet known, and the corporation tax has its own deadline nine months and a day after the year end. Adding the whole table gives £41,800.00 and answers a question nobody asked.',
+        },
+        {
+          label: 'What the manager most needs telling first',
+          type: 'choice',
+          options: [
+            'that the February quarter VAT is already overdue',
+            'that corporation tax is the largest single amount',
+            'that the May quarter VAT cannot yet be estimated',
+            'that Class 1A National Insurance falls due in July',
+          ],
+          answer: 0,
+          exp: 'Reporting is not just totalling. A payment that passed its deadline three days ago is accruing a penalty and interest now, and every other item on the table can wait. Leading with the biggest number instead of the most urgent one is a failure of reporting rather than of arithmetic.',
+        },
+        {
+          label: 'Paying the February VAT on 25 April would attract',
+          type: 'choice',
+          options: [
+            'a 3% penalty, the payment being more than 15 days late',
+            'no penalty, the payment being within 30 days',
+            'a 6% penalty, being more than 15 days late',
+            'no penalty, because the return itself was filed on time',
+          ],
+          answer: 0,
+          exp: 'Due 7 April and paid 25 April is 18 days, so the first late payment penalty of 3% bites at day 15. The second 3% only follows if it is still unpaid at day 30, which would be 7 May. Filing on time protects against penalty POINTS and does nothing about late payment — two separate regimes.',
+        },
+      ],
+      exp: 'The table holds five liabilities and only two fall in April. The rest is there because a finance manager’s question — what leaves the account this month — is answered by dates, not by the size of the numbers, and the largest figure on the table is one of the ones that does not belong.',
+    },
     /* ── The two table types ─────────────────────────────────────────────────
        WHY THEY ARE HERE, AND WHY THEY ARRIVED LATE. This bank was 441 questions
        with not one pick list and not one entry grid — and the VAT return is an
