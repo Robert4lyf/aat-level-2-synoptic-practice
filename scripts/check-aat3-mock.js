@@ -163,6 +163,19 @@ function sit(unitKey, how) {
   return Object.assign(ctx, { seen });
 }
 
+/* The app's own mark model, mirrored: one mark per independently right-or-wrong
+   decision, and one for anything with a single answer. Kept here rather than
+   reached for inside aat3-ui.js, which does not export it. */
+function maxMarksOf(q) {
+  const t = (q && q.type) || 'mcq';
+  if (t === 'truefalse') return (q.statements || []).length || 1;
+  if (t === 'gapfill') return (q.gaps || []).length || 1;
+  if (t === 'task') return (q.parts || []).length || 1;
+  if (t === 'picklist') return ((q.picklist && q.picklist.rows) || []).length || 1;
+  if (t === 'entrygrid') return ((q.entrygrid && q.entrygrid.rows) || []).length || 1;
+  return 1;
+}
+
 /* ── 1. The paper is the right length, and every question is a real one ──── */
 {
   const r = sit('tpfb', 'blank');
@@ -173,6 +186,20 @@ function sit(unitKey, how) {
     `a mock is a paper's worth of questions (got ${r.seen.length})`);
   const paperTasks = r.seen.filter(x => x.q && x.q.type === 'task').length;
   ok(paperTasks === 8, `a mock is 8 tasks, as the assessment is (got ${paperTasks})`);
+
+  /* AND IT IS WORTH WHAT THE PANEL PROMISES. The screen offering the mock says
+     "8 tasks and 80 marks", so 80 is a claim made to the reader and not an
+     internal target. It used to come out at 80, 81, 82 or 83 depending on what
+     the last question happened to be worth — the fill added a question and THEN
+     checked the total. Asserted across several papers because one paper could
+     hit 80 by luck. */
+  const totals = [];
+  for (let i = 0; i < 6; i++) {
+    const paper = sit('tpfb', 'blank');
+    totals.push(paper.seen.reduce((a, x) => a + (x.q ? maxMarksOf(x.q) : 0), 0));
+  }
+  ok(totals.every(t => t === 80),
+    `every paper is worth exactly the 80 marks the panel promises (got ${totals.join(', ')})`);
   ok(r.seen.every(s => s.q), 'every question on the paper is one from the bank');
   const ids = r.seen.map(s => s.q.id);
   ok(new Set(ids).size === ids.length, 'no question appears twice on one paper');

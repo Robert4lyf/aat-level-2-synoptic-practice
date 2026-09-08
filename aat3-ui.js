@@ -3904,7 +3904,25 @@
         if (gap < worst) { worst = gap; pick = o.n; }
       });
       if (pick === null) break;
-      var q = byLo[pick].shift();
+      /* NEAR THE TARGET, FIT RATHER THAN TAKE. Everywhere else the front of a
+         shuffled queue is exactly right — it is what keeps two papers from
+         being the same paper. But the last question decided the total, and
+         taking whatever happened to be in front overshot by however much it was
+         worth: 80, 81, 82, 83 marks against a panel that promises 80. So only
+         when the front of the queue would overshoot does this look through the
+         rest for the one that lands closest. It reorders at most the final pick
+         or two, and leaves the shuffle doing its job for all the rest. */
+      var pool = byLo[pick];
+      var idx = 0;
+      var need = MOCK_MARKS - marks;
+      if (maxMarks(pool[0]) > need) {
+        var bestGap = Math.abs(maxMarks(pool[0]) - need);
+        for (var i = 1; i < pool.length && bestGap > 0; i++) {
+          var gap2 = Math.abs(maxMarks(pool[i]) - need);
+          if (gap2 < bestGap) { bestGap = gap2; idx = i; }
+        }
+      }
+      var q = pool.splice(idx, 1)[0];
       seen[q.id] = true;
       chosen.push(q);
       marks += maxMarks(q);
